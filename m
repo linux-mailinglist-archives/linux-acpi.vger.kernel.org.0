@@ -2,165 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF620E110
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2019 13:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 757D3E35C
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2019 15:12:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727776AbfD2LKD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Apr 2019 07:10:03 -0400
-Received: from mout.kundenserver.de ([212.227.17.10]:36565 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727710AbfD2LKD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Apr 2019 07:10:03 -0400
-Received: from [192.168.1.110] ([77.9.18.117]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1M5PVb-1hKFDL2woH-001TpN; Mon, 29 Apr 2019 13:09:22 +0200
-Subject: Re: [PATCH 2/2] gpio: sch: Add interrupt support
-To:     Jan Kiszka <jan.kiszka@siemens.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        id S1727018AbfD2NMO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Apr 2019 09:12:14 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:34132 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725838AbfD2NMN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Apr 2019 09:12:13 -0400
+Received: by mail-wr1-f65.google.com with SMTP id v16so13570509wrp.1
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Apr 2019 06:12:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=4FdyeOJZ2ex4Zc6ZUlDkL19h7wiPhcsY/XH7KMsWAxQ=;
+        b=HgNtv9S47DA4Fn0yj6/I2EWI/tgw5TVQmj2ZvENRrg2Q6D5I22lEwiJ+nvfE15WAHX
+         BKzEHpCrIygb9USpVb4rR6tOhdcVkmUrPCtKfk06/JxFdlzOVZp0b2aDnaKp0EUSsQ2q
+         o3t9vbzy9vllw96TCcZBrsAYMYPgzp5bxWqhROtLh0PzsJ74+zEAVdF4uawzeViM65Af
+         C6VLivUFXfwqFVhGFisRqiWzUqtn3tQMA11lBtQjvGUX2RUMWwYniJ6A7iCTTvm00UNg
+         HppRgTsgLxzJZdTIGVna3AYMeFd8TWV6Oh3PCkCnbnZcgnvD+11A4FF1NRkY478Zb3/1
+         c7ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=4FdyeOJZ2ex4Zc6ZUlDkL19h7wiPhcsY/XH7KMsWAxQ=;
+        b=fJzB3I0DGQEhKcRYW/tS5+z5qDe5vFqZ6zWMZ6F7AFlBfSE3/qXq1NWfHDLS/Uz5GH
+         Q/p18ljRY7pAGXAD+YEcH8/fgg+GCoqX0U2SbDw78S1VsLVwt2thAj/EVPgK0vCdcO9i
+         aooqUF5sC5w+edizGQ2I4ayXuAyoORF+JdnQEjEmDNJvCAqAa54/yspNKzlb/sO1ontN
+         nd0aMIapAC0ju2xDkX1aBhgrukz/Pau9Av673KHcQLQW+xLeWb0vAD0aPyefYa98Nd5Q
+         BmZIiUeh/ytkHZ4pKHJXbQEEhk8g8zAVMu4eoaLLoCiZ2jVEafFK77CXIj4vwDOy2Szs
+         qVFg==
+X-Gm-Message-State: APjAAAXxLkBaq7iXElNLdOlZqPJENgi0mBdRbyys1RCttFF0CTxBdY+D
+        KxDjHaiab6eDJznGz8NgCfex0w==
+X-Google-Smtp-Source: APXvYqyNyKPUk3RMZvucVYLDyIAejSOjYUUI55d5btNbFVE5w9HCcH1t4jUqsOLBUsU+oE8U7O6zcQ==
+X-Received: by 2002:a5d:4fc3:: with SMTP id h3mr29334wrw.54.1556543531886;
+        Mon, 29 Apr 2019 06:12:11 -0700 (PDT)
+Received: from sudo.home ([2a01:cb1d:112:6f00:f9fc:88:6502:8fa7])
+        by smtp.gmail.com with ESMTPSA id s16sm5410282wrg.71.2019.04.29.06.12.09
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 29 Apr 2019 06:12:10 -0700 (PDT)
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+To:     linux-gpio@vger.kernel.org
+Cc:     linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahisa Kojima <masahisa.kojima@linaro.org>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-References: <20190424081802.GV2654@lahna.fi.intel.com>
- <5a28f22c-22f7-760a-d076-68ff19800d44@siemens.com>
- <20190424084259.GW2654@lahna.fi.intel.com>
- <7e328b7e-f4f0-851a-4152-a9ffd058201c@siemens.com>
- <20190424094506.GA2654@lahna.fi.intel.com>
- <292e6eff-82cc-6e4d-925b-77a60399e2e0@siemens.com>
- <20190424100130.GB2654@lahna.fi.intel.com>
- <1200464b-f969-ebc2-ae82-1f8ca98aaca1@siemens.com>
- <20190424103306.GC2654@lahna.fi.intel.com>
- <9377620b-d74a-04d9-a51e-8590400b1c0f@siemens.com>
- <20190426130615.GT9224@smile.fi.intel.com>
- <bd5453e1-0279-02ab-3304-edc6ebf509dc@siemens.com>
- <bc856e19-470d-7655-5680-a031831ab513@metux.net>
- <2f3da791-4a10-c2c4-dc5a-22ad16ed7be6@siemens.com>
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Organization: metux IT consult
-Message-ID: <ea29ee73-705b-7d13-0084-11274db02394@metux.net>
-Date:   Mon, 29 Apr 2019 13:09:20 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Graeme Gregory <graeme.gregory@linaro.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Subject: [PATCH v2 0/4] synquacer: implement ACPI gpio/interrupt support
+Date:   Mon, 29 Apr 2019 15:12:04 +0200
+Message-Id: <20190429131208.3620-1-ard.biesheuvel@linaro.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <2f3da791-4a10-c2c4-dc5a-22ad16ed7be6@siemens.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:ndrTni+YBOZxXZkZ7IToqMM/GZvcULIwUsm5LDP+g2mahGQGo3L
- 42W9sLV2w/xr90//pC5hSi2csbLgwvbiPN8Q4w2C8lVkQe7e16PfaiFla85V3Cexir2dvvq
- gU5NMPkssVTbRqODecV03tBQ/g1QPduJz13w+mEiKoUOIGVlx994YhspHaSSAtLgkM/cM0T
- 8b0UBRbZFfrBSW+vrzk2Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:fJ15T8TPtGg=:WAfQ/bsI3PPtJ50PIgEQc9
- Apen7Spd//EH5xwygy/W9OwZ0o0OzHJDmI73fnux74+l1uwLmMaAG0g5f7N+ncpGn7h7aulme
- 9v7T3O9aGVfwuuMjqzV0F1IF3nap9kFvLwWVmZZ+OTe6cbVp6kRS1/ZLvDcjjoy0l1tDcbKQL
- T55DKe4oyq0QKSkyvEbqOZ5ow8mu8KgRGPMqXJBDIcgTZDrolRVp283U+66OykDqgFz0SOnmZ
- Wr11OJXKqcMylgEZsfelTsue5VQsy6YtXWZf2n9Syca3d9nwP2xknjaEQF2T+eoM+qllyKdnw
- MHdjBAGyuJj/sPM0BMT0EEdsI1R6gah+uUaNtIzhfV/OPXv7vHcivZoxM/9uFXV5ZUMAItarc
- y1J5lY0X+NkzHHb6r/sYpXncL8+eRmipTRPBoof+dNOyREJT2A15n3xBoBNE8LecYB4vIigH0
- dqbA5PykJgHA69rdV5rUiPM8SAUzLJDsaBudc9QTeeCKpb8BMnM1Ru6rrKdTFg6h+/7oz1rKP
- 0DT7N/pER6SkbbgYjmC3Ii9YaFpOyvygQ2nHjHmT+sfSwrs1Ic8d7jsRCo2cLCHFI2O2BlwK7
- RJ9ItRBtpURKyISLa1CP5KBb5kkwWG9vywgFqOU8YgxngTeZgpRYdspsGK1gySd9FYcf01SkU
- TBlJkdE+YISZL4PauROfgPgOTBCbOT/wCvpN0qjk63Dy0+o6AugX4m1Lm+8SnuYQcmF7kXIYp
- BbbcdhjRQU08QqqjqhGsTmPAEDqEvOCbynfVdcW/nKnYf35PuEG3md6X81E=
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 26.04.19 18:03, Jan Kiszka wrote:
+Wire up the existing GPIO and interrupt controller drivers to the ACPI
+subsystem so they can be used on ACPI systems for ACPI event (power
+button, hardware error notification etc)
 
-> Leaving that blunt hack aside:
-> 
-> import mraa
-> 
-> pin = mraa.Gpio(13)
-> pin.dir(mraa.DIR_OUT)
-> pin.write(1)
-> 
-> And the same goes for nodejs, java and c++.
+Changes since v1:
+- Describe the EXIU controller as a separate device, which is a more accurate
+  depiction of reality, and untangles the code a bit as well. Note that this
+  requires the GPIO AML device to describe the EXIU interrupts explicitly.
+- Add a patch to obtain the ACPI GSI irqdomain. The EXIU driver needs this
+  to obtain the default parent domain, since the GIC is not modeled as an
+  ACPI object in the namespace, and so the parent<->child link cannot be
+  expressed in AML.
+- Drop the Kconfig symbol for the GPIO controller. Just include the ACPI part
+  when CONFIG_ACPI is defined.
 
-Such trivial wrappers are easy write in the coffe break.
-For those usecases the good old sysfs interface is really sufficient.
+Cc: Masahisa Kojima <masahisa.kojima@linaro.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Marc Zyngier <marc.zyngier@arm.com>
+Cc: Graeme Gregory <graeme.gregory@linaro.org>
+Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Len Brown <lenb@kernel.org>
 
-(I'm frequently replacing those kind of "abstraction layers" of sevaral
-10kLoC in various client projects by just a few lines of really tiny
-shim ...)
+Ard Biesheuvel (4):
+  acpi/irq: implement getter for GSI irqdomain
+  irqchip/exiu: preparatory refactor for ACPI support
+  irqchip/exiu: implement ACPI support
+  gpio: mb86s7x: enable ACPI support
 
-And relying on numeric gpio ids is generally a bad idea.
-(exactly one of the kind of problems why certain clients call me in
-great despair, when it broke again :p)
-
-> Moreover, this allows you to abstract away where "Pin 13" actually came
-> from on that board if the kernel changes (BSP -> upstream...) or the
-> extension board or ... 
-
-As said: numeric pin IDs are a *bad* idea.
-If it's a *name* (=string), then that seems to be a usecase for labels.
-For convenience, you could just pupulate the fs w/ proper symlinks that
-are named by the pin names from the schematics.
-
-> We will exploit that when moving to a completely
-> different base hardware with the next revision or our IOT2000.
-
-When doing that, you could also kick out Intel and move to ARM, as quite
-everybody else does ;-)
-
-<snip>
-
-> You also have to keep the class of "cool, I've just created my first
-> Node.RED node!" IoT newbies in mind.
-
-As said above: writing a small js wrapper for that is just a coffee
-break job.
-
-> These higher abstraction help to
-> keep them away from the wrong lower APIs - or enable them to do
-> something at all ("Cool, I've just connected my first two nodes!"). 
-
-gpio's are already very low-level. Highlevel would be things like keys,
-leds, etc.
-
-That's one of the things I frequently have to teach my clients: first
-make yourself clear about what you're *actually* doing with these pins
-and then pick the right drivers.
-
-Okay, we could talk about creating some nice oftree-overlay generators,
-to make it easier for newbies. Or create some small DSL, perhaps w/ some
-tiny GUI editor. But don't let them play w/ raw gpio's - this quickly
-goes horribly wrong (I've seen that in the field, many times).
-
-It's nice, that you folks (Siemens) are now doing your own controller,
-so you can finally throw out the ugly AMX+co crap. But please don't
-repeat their mistakes. We don't need yet another raspi for building
-automation - we need a different programming model than the old PLC-
-style spaghetti configuration :p
-
-(oh, and if you add ATEX and railways certification, I might have a new
-customer for you ;-))
-
-Okay, that's getting far OT, so maybe we should continue off-list ;-)
-
-> By far not all of them have consultants at hand.
-
-They better should :p
-
-> And while we only ship our IOT2000 image with mraa and all the fun as
-> reference image, it's way more for quite a few users. Even if you do not
-> want to look behind the curtains of certain software components (that we
-> primarily inherited and then started to clean up), they are working, or
-> we would have heard.
-
-Maybe because some field techs rather grab some beers and go to some
-friend who happens to be a linux hacker, instead of burning their time
-on the official channels those big corporate structures ;-)
-
-
---mtx
+ drivers/acpi/irq.c             |  14 +-
+ drivers/gpio/gpio-mb86s7x.c    |  57 ++++++--
+ drivers/irqchip/irq-sni-exiu.c | 147 +++++++++++++++-----
+ include/linux/acpi.h           |   1 +
+ 4 files changed, 170 insertions(+), 49 deletions(-)
 
 -- 
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+2.20.1
+
