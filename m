@@ -2,66 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 56BBDE389
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2019 15:19:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FD28E555
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2019 16:50:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726321AbfD2NTF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Apr 2019 09:19:05 -0400
-Received: from mga17.intel.com ([192.55.52.151]:40169 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725838AbfD2NTF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 29 Apr 2019 09:19:05 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Apr 2019 06:19:04 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,409,1549958400"; 
-   d="scan'208";a="139772786"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
-  by orsmga006.jf.intel.com with ESMTP; 29 Apr 2019 06:19:02 -0700
-Received: from andy by smile with local (Exim 4.92)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1hL6BR-0008ET-05; Mon, 29 Apr 2019 16:19:01 +0300
-Date:   Mon, 29 Apr 2019 16:19:00 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jan Kiszka <jan.kiszka@siemens.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-gpio@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J., Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH v2] gpio: sch: Add interrupt support
-Message-ID: <20190429131900.GD9224@smile.fi.intel.com>
-References: <046793ee-ba51-6a1b-1aa5-14560d849df7@siemens.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <046793ee-ba51-6a1b-1aa5-14560d849df7@siemens.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1728318AbfD2Oup (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Apr 2019 10:50:45 -0400
+Received: from condef-03.nifty.com ([202.248.20.68]:46648 "EHLO
+        condef-03.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728350AbfD2Oup (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Apr 2019 10:50:45 -0400
+Received: from conuserg-08.nifty.com ([10.126.8.71])by condef-03.nifty.com with ESMTP id x3TEkG9M011741
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Apr 2019 23:46:16 +0900
+Received: from grover.flets-west.jp (softbank126125154137.bbtec.net [126.125.154.137]) (authenticated)
+        by conuserg-08.nifty.com with ESMTP id x3TEjcf1013725;
+        Mon, 29 Apr 2019 23:45:38 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com x3TEjcf1013725
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1556549139;
+        bh=KazEk9hxi8U+torRKasXD0v/5Dw35CGY2jNpa95zJ0k=;
+        h=From:To:Cc:Subject:Date:From;
+        b=x3p/1yoTt1qfBJ8BtWa/94gnwhth+mOGtXYdZrowO8QhSTpN7y82EP7/u3zdrRv79
+         b4eqIxKtVy9ER/h7dUGxDCT+7U8Rc8dVwzL9l0yvpAsyqRHhs9irkjuoUiWHK2peHz
+         ElHU7+A7RnA+O+EJaHNTwi3ajpDNSFOGWFtu8QX6i5UQdh1j0YDCupXuiB6S/2IcY7
+         s5IhzdeztEupu1nWn4LcYWSh2B6d8p3yDWgVzjXfW2sICRxxtfxi3lSFMzICQyMxrj
+         8yshP3fcBlqwU23KKddnq6cQxFvkt7kdn6VObZDd65LvV6VwTEFoCgjcxIDb0+FShJ
+         U7JRKPlkDHkAw==
+X-Nifty-SrcIP: [126.125.154.137]
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Robert Moore <robert.moore@intel.com>,
+        linux-kernel@vger.kernel.org,
+        Erik Schmauss <erik.schmauss@intel.com>, devel@acpica.org
+Subject: [PATCH] tools/power/acpi: exclude tools/* from .gitignore pattern
+Date:   Mon, 29 Apr 2019 23:45:06 +0900
+Message-Id: <1556549106-16119-1-git-send-email-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Apr 29, 2019 at 07:55:52AM +0200, Jan Kiszka wrote:
-> Validated on the Quark platform, this adds interrupt support on rising
-> and/or falling edges.
+tools/power/acpi/.gitignore has the following entries:
 
-Can we split it to two:
-- Add IRQ support on edge
-- Add ACPI handler (with explanation in the commit message why we do like this,
-  based on the thread from v1)
+  acpidbg
+  acpidump
+  ec
 
-?
+They are intended to ignore the following build artifacts:
 
+  tools/power/acpi/acpidbg
+  tools/power/acpi/acpidump
+  tools/power/acpi/ec
 
+However, those .gitignore entries are effective not only for the
+current directory, but also for any sub-directories.
+
+So, the following directories are also considered to be ignored:
+
+  tools/power/acpi/tools/acpidbg
+  tools/power/acpi/tools/acpidump
+  tools/power/acpi/tools/ec
+
+They are obviously version-controlled, so should be excluded from the
+.gitignore patterns.
+
+You can fix it by prefixing the patterns with '/', which means they
+are only effective in the current directory.
+
+I also prefixed the "include" consistently. IMHO, '/' prefixing is
+safer when you intend to ignore specific files or directories.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+
+ tools/power/acpi/.gitignore | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/tools/power/acpi/.gitignore b/tools/power/acpi/.gitignore
+index cba3d99..f698a0e 100644
+--- a/tools/power/acpi/.gitignore
++++ b/tools/power/acpi/.gitignore
+@@ -1,4 +1,4 @@
+-acpidbg
+-acpidump
+-ec
+-include
++/acpidbg
++/acpidump
++/ec
++/include/
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.7.4
 
