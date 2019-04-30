@@ -2,91 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F0853FE1F
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2019 18:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2138FFAC
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2019 20:23:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726341AbfD3Qrs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Apr 2019 12:47:48 -0400
-Received: from mga09.intel.com ([134.134.136.24]:51649 "EHLO mga09.intel.com"
+        id S1726883AbfD3SXl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Apr 2019 14:23:41 -0400
+Received: from mga14.intel.com ([192.55.52.115]:4149 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725942AbfD3Qrr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 30 Apr 2019 12:47:47 -0400
-X-Amp-Result: UNSCANNABLE
+        id S1726864AbfD3SXl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 30 Apr 2019 14:23:41 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Apr 2019 09:47:47 -0700
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Apr 2019 11:23:40 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.60,414,1549958400"; 
-   d="scan'208";a="342168766"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
-  by fmsmga005.fm.intel.com with ESMTP; 30 Apr 2019 09:47:45 -0700
-Received: from andy by smile with local (Exim 4.92)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1hLVuy-0007xt-7k; Tue, 30 Apr 2019 19:47:44 +0300
-Date:   Tue, 30 Apr 2019 19:47:44 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH] ACPI / property: fix handling of data_nodes in
- acpi_get_next_subnode()
-Message-ID: <20190430164744.GO9224@smile.fi.intel.com>
-References: <20190430155229.14213-1-pierre-louis.bossart@linux.intel.com>
- <20190430163041.GN9224@smile.fi.intel.com>
- <ba56e822-92ee-7a75-5c62-45f3a572ccde@linux.intel.com>
+   d="scan'208";a="144938228"
+Received: from cng16-mobl.amr.corp.intel.com (HELO [10.252.205.95]) ([10.252.205.95])
+  by fmsmga008.fm.intel.com with ESMTP; 30 Apr 2019 11:23:39 -0700
+Subject: Re: [alsa-devel] [PATCH] ACPI / device_sysfs: change _ADR
+ representation to 64 bits
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Vinod Koul <vkoul@kernel.org>
+Cc:     "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        Takashi Iwai <tiwai@suse.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Srini Kandagatla <srinivas.kandagatla@linaro.org>,
+        jank@cadence.com, Joe Perches <joe@perches.com>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Erik Schmauss <erik.schmauss@intel.com>,
+        Len Brown <lenb@kernel.org>
+References: <20190415151857.25531-1-pierre-louis.bossart@linux.intel.com>
+ <20190416032923.GQ28103@vkoul-mobl>
+ <CAJZ5v0jOkQ7aWn6B_yVTYd7y+78mpGSzBoGuWe3uCdzDRNE94Q@mail.gmail.com>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Message-ID: <eda0ed4e-fc36-a53a-225f-e7d54bb73413@linux.intel.com>
+Date:   Tue, 30 Apr 2019 13:23:38 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ba56e822-92ee-7a75-5c62-45f3a572ccde@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CAJZ5v0jOkQ7aWn6B_yVTYd7y+78mpGSzBoGuWe3uCdzDRNE94Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Apr 30, 2019 at 11:41:50AM -0500, Pierre-Louis Bossart wrote:
-> On 4/30/19 11:30 AM, Andy Shevchenko wrote:
-> > On Tue, Apr 30, 2019 at 10:52:29AM -0500, Pierre-Louis Bossart wrote:
-> > > When the DSDT tables expose devices with subdevices and a set of
-> > > hierarchical _DSD properties, the data returned by
-> > > acpi_get_next_subnode() is incorrect, with the results suggesting a bad
-> > > pointer assignment. The parser works fine with device_nodes or
-> > > data_nodes, but not with a combination of the two.
-> > > 
-> > > The problem is traced to an invalid pointer used when jumping from
-> > > handling device_nodes to data nodes. The existing code looks for data
-> > > nodes below the last subdevice found instead of the common root. Fix
-> > > by forcing the acpi_device pointer to be derived from the same fwnode
-> > > for the two types of subnodes.
-> > > 
-> > > This same problem of handling device and data nodes was already fixed
-> > > in a similar way by 'commit bf4703fdd166 ("ACPI / property: fix data
-> > > node parsing in acpi_get_next_subnode()")' but broken later by 'commit
-> > > 34055190b19 ("ACPI / property: Add fwnode_get_next_child_node()")', so
-> > > this should probably go to linux-stable all the way to 4.12
-> > 
-> > Period is missed in above sentence.
-> > 
-> > I think it make sense to add Fixes: tag.
+
+
+On 4/16/19 3:09 AM, Rafael J. Wysocki wrote:
+> On Tue, Apr 16, 2019 at 5:29 AM Vinod Koul <vkoul@kernel.org> wrote:
+>>
+>> On 15-04-19, 10:18, Pierre-Louis Bossart wrote:
+>>> Standards such as the MIPI DisCo for SoundWire 1.0 specification
+>>> assume the _ADR field is 64 bits.
+>>>
+>>> _ADR is defined as an "Integer" represented as 64 bits since ACPI 2.0
+>>> released in 2002. The low levels already use _ADR as 64 bits, e.g. in
+>>> struct acpi_device_info.
+>>>
+>>> This patch bumps the representation used for sysfs to 64 bits.
+>>>
+>>> Example with a SoundWire device, the results show the complete
+>>> vendorID and linkID which were omitted before:
+>>>
+>>> Before:
+>>> $ more /sys/bus/acpi/devices/device\:38/adr
+>>> 0x5d070000
+>>> After:
+>>> $ more /sys/bus/acpi/devices/device\:38/adr
+>>> 0x000010025d070000
+>>
+>> This looks fine but the sysfs file is an ABI. Not sure if we can modify
+>> the value returned this way.. Though it should not cause userspace
+>> reading 32bits to break...
 > 
-> Thanks Andy for the review. I hesitated to add a fixes tag. The line about
-> resetting the adev pointer was indeed removed in the latter commit, but
-> there were a slew of other changes done later by Sakari on hierarchical _DSD
-> so it's quite complicated to say when this was last fully functional.
+> Well, IIRC using "08" instead of "016" in the format field would
+> preserve the existing behavior for 32-bit values, wouldn't it?
 
-I see, btw, you forgot to add Sakari to Cc list, he is doing a lot lately WRT
-device properties.
+yes, but it makes the 64-bit address not aligned depending on the number 
+of leading zeroes, see below. I get a migraine just looking at the results.
 
-> > Nevertheless,
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > 
-> > Thank you for fixing this interesting issue!
+Maybe add a test to use 08 for values that are below 0xFFFFFFFF and 16 
+for addresses who really need the full range, typically because of an 
+encoding?
 
--- 
-With Best Regards,
-Andy Shevchenko
+w/ value-dependent format:
+/sys/bus/acpi/devices# cat */*/adr
 
+0x00160000
+0x00140003
+0x000d0000
+0x000d0002
+0x000d0003
+0x00070000
+0x00070001
+0x00070002
+0x00070003
+0x000010025d070100
+0x000110025d070100
+0x000210025d070100
+0x000310025d070100
+0x000010025d070000
+0x000110025d070000
+0x000210025d070000
+0x000310025d070000
+0x00000000
+
+w/ 0x08 only:
+
+0x00160000
+0x00140003
+0x000d0000
+0x000d0002
+0x000d0003
+0x00070000
+0x00070001
+0x00070002
+0x00070003
+0x10025d070100
+0x110025d070100
+0x210025d070100
+0x310025d070100
+0x10025d070000
+0x110025d070000
+0x210025d070000
+0x310025d070000
+0x00000000
+0x00000000
 
