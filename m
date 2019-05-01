@@ -2,141 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2138FFAC
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2019 20:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A52210580
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 May 2019 08:42:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726883AbfD3SXl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Apr 2019 14:23:41 -0400
-Received: from mga14.intel.com ([192.55.52.115]:4149 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726864AbfD3SXl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 30 Apr 2019 14:23:41 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Apr 2019 11:23:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,414,1549958400"; 
-   d="scan'208";a="144938228"
-Received: from cng16-mobl.amr.corp.intel.com (HELO [10.252.205.95]) ([10.252.205.95])
-  by fmsmga008.fm.intel.com with ESMTP; 30 Apr 2019 11:23:39 -0700
-Subject: Re: [alsa-devel] [PATCH] ACPI / device_sysfs: change _ADR
- representation to 64 bits
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>
-Cc:     "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        Takashi Iwai <tiwai@suse.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1726005AbfEAGmW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 1 May 2019 02:42:22 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:42971 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725776AbfEAGmW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 May 2019 02:42:22 -0400
+Received: by mail-pf1-f196.google.com with SMTP id w25so8218388pfi.9;
+        Tue, 30 Apr 2019 23:42:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=JsEmKkv5N9dvLUrbidM9wSUlAe5nAnboBrCBffm62Oo=;
+        b=cwL3PtqtIkyYXoJT8odJ4izToz0VBot3Jm0mH9awQEBSbg1neNxRnFwh69nPWQIIU9
+         OdnBFc6HA9635L6JCd7SgGIXGR6FKmL/7sO4BqDh0P/UaoaF+FFA3dRSUBIlS4iOno3Y
+         6+Se5F8lLsaEheXKR0qTOXC727tJuyvgt5NUz1UZEL31cbZItaTzFHuUw0UMY6kI1Xi4
+         JfsTy9tGNmOKxBAHKrPYZn/aphnf4y0tR8uQIB0cqqCF/R16SWDz7PbPXNvPGRiMIffA
+         Cmis7AMgaST3fUN0AzleS+JKzMpseqENAuj9usG0m93dD6ufvhU0A+k4wAOXpejBdiBV
+         yEMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=JsEmKkv5N9dvLUrbidM9wSUlAe5nAnboBrCBffm62Oo=;
+        b=dKnOGb1xJAu3P5biostlnsTSgDRaxDzWezSF4NfGq8hspuTPAYOYT9smCTAX/CwdaI
+         MgpOpR8roNjVo5Uka/x7kj5g5N6z87Xd1sgzSUE6dwD7PzSVFhpRnpMc1+yOf9131zSx
+         2/jFyJS59X18PTwGKGzImPxSUP3Dje3izrUviOnkV9esNneIOVWKMrT+sG+DWiNw9LKH
+         3Zv21/Pw5wBgUc4F+db0FTfbhwceU/IGq2sH7gf8JCMkXhhVd0mVUSQ280CcAlId7PPE
+         cihwcx9FVd1tWG2DKcWbC3WpRuNNBBNj6/i3alUc/4N/oGZiRGSqEkUnKujwrh+ktk/4
+         u17A==
+X-Gm-Message-State: APjAAAVnYogATEUKHfLnfTXYFtv/nY/W/vyGmUuudBNI+151asdsOKB1
+        n4FrzmcjzGH1h85NtTHsgz7x3CiuTROZmw==
+X-Google-Smtp-Source: APXvYqzzg8hCBN/xO+owS00ws0DIIRdvdI1vRuQPYNc5wNzisAaB1v4Ael0P4vq8O2PlbTqQSZrnTw==
+X-Received: by 2002:aa7:8384:: with SMTP id u4mr22819697pfm.214.1556692941512;
+        Tue, 30 Apr 2019 23:42:21 -0700 (PDT)
+Received: from nishad ([106.51.235.3])
+        by smtp.gmail.com with ESMTPSA id b144sm15434921pfb.68.2019.04.30.23.42.16
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 30 Apr 2019 23:42:20 -0700 (PDT)
+Date:   Wed, 1 May 2019 12:12:13 +0530
+From:   Nishad Kamdar <nishadkamdar@gmail.com>
+To:     Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Keith Busch <keith.busch@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Srini Kandagatla <srinivas.kandagatla@linaro.org>,
-        jank@cadence.com, Joe Perches <joe@perches.com>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Erik Schmauss <erik.schmauss@intel.com>,
         Len Brown <lenb@kernel.org>
-References: <20190415151857.25531-1-pierre-louis.bossart@linux.intel.com>
- <20190416032923.GQ28103@vkoul-mobl>
- <CAJZ5v0jOkQ7aWn6B_yVTYd7y+78mpGSzBoGuWe3uCdzDRNE94Q@mail.gmail.com>
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Message-ID: <eda0ed4e-fc36-a53a-225f-e7d54bb73413@linux.intel.com>
-Date:   Tue, 30 Apr 2019 13:23:38 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+Cc:     linux-nvdimm@lists.01.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Joe Perches <joe@perches.com>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH] acpi/nfit: Use the correct style for SPDX License Identifier
+Message-ID: <20190501064209.GA4716@nishad>
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0jOkQ7aWn6B_yVTYd7y+78mpGSzBoGuWe3uCdzDRNE94Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+This patch corrects the SPDX License Identifier style
+in drivers/acpi/nfit/intel.h. For C header files
+Documentation/process/license-rules.rst mandates C-like comments
+(opposed to C source files where C++ style should be used)
 
+Changes made by using a script provided by Joe Perches here:
+https://lkml.org/lkml/2019/2/7/46
 
-On 4/16/19 3:09 AM, Rafael J. Wysocki wrote:
-> On Tue, Apr 16, 2019 at 5:29 AM Vinod Koul <vkoul@kernel.org> wrote:
->>
->> On 15-04-19, 10:18, Pierre-Louis Bossart wrote:
->>> Standards such as the MIPI DisCo for SoundWire 1.0 specification
->>> assume the _ADR field is 64 bits.
->>>
->>> _ADR is defined as an "Integer" represented as 64 bits since ACPI 2.0
->>> released in 2002. The low levels already use _ADR as 64 bits, e.g. in
->>> struct acpi_device_info.
->>>
->>> This patch bumps the representation used for sysfs to 64 bits.
->>>
->>> Example with a SoundWire device, the results show the complete
->>> vendorID and linkID which were omitted before:
->>>
->>> Before:
->>> $ more /sys/bus/acpi/devices/device\:38/adr
->>> 0x5d070000
->>> After:
->>> $ more /sys/bus/acpi/devices/device\:38/adr
->>> 0x000010025d070000
->>
->> This looks fine but the sysfs file is an ABI. Not sure if we can modify
->> the value returned this way.. Though it should not cause userspace
->> reading 32bits to break...
-> 
-> Well, IIRC using "08" instead of "016" in the format field would
-> preserve the existing behavior for 32-bit values, wouldn't it?
+Suggested-by: Joe Perches <joe@perches.com>
+Signed-off-by: Nishad Kamdar <nishadkamdar@gmail.com>
+---
+ drivers/acpi/nfit/intel.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-yes, but it makes the 64-bit address not aligned depending on the number 
-of leading zeroes, see below. I get a migraine just looking at the results.
-
-Maybe add a test to use 08 for values that are below 0xFFFFFFFF and 16 
-for addresses who really need the full range, typically because of an 
-encoding?
-
-w/ value-dependent format:
-/sys/bus/acpi/devices# cat */*/adr
-
-0x00160000
-0x00140003
-0x000d0000
-0x000d0002
-0x000d0003
-0x00070000
-0x00070001
-0x00070002
-0x00070003
-0x000010025d070100
-0x000110025d070100
-0x000210025d070100
-0x000310025d070100
-0x000010025d070000
-0x000110025d070000
-0x000210025d070000
-0x000310025d070000
-0x00000000
-
-w/ 0x08 only:
-
-0x00160000
-0x00140003
-0x000d0000
-0x000d0002
-0x000d0003
-0x00070000
-0x00070001
-0x00070002
-0x00070003
-0x10025d070100
-0x110025d070100
-0x210025d070100
-0x310025d070100
-0x10025d070000
-0x110025d070000
-0x210025d070000
-0x310025d070000
-0x00000000
-0x00000000
+diff --git a/drivers/acpi/nfit/intel.h b/drivers/acpi/nfit/intel.h
+index 0aca682ab9d7..8f5461c1dd9d 100644
+--- a/drivers/acpi/nfit/intel.h
++++ b/drivers/acpi/nfit/intel.h
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: GPL-2.0
++/* SPDX-License-Identifier: GPL-2.0 */
+ /*
+  * Copyright(c) 2018 Intel Corporation. All rights reserved.
+  * Intel specific definitions for NVDIMM Firmware Interface Table - NFIT
+-- 
+2.17.1
 
