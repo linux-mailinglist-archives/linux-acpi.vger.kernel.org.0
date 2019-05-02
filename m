@@ -2,137 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3DD5120CE
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 May 2019 19:04:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 924AA122F3
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 May 2019 22:00:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726120AbfEBRE1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 May 2019 13:04:27 -0400
-Received: from mga14.intel.com ([192.55.52.115]:45691 "EHLO mga14.intel.com"
+        id S1725995AbfEBUAy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 May 2019 16:00:54 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:36290 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725962AbfEBRE1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 2 May 2019 13:04:27 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 May 2019 10:04:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,422,1549958400"; 
-   d="scan'208";a="342792989"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga005.fm.intel.com with ESMTP; 02 May 2019 10:04:25 -0700
-Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTPS id A233E2085C;
-        Thu,  2 May 2019 20:04:24 +0300 (EEST)
-Received: from sailus by punajuuri.localdomain with local (Exim 4.89)
-        (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1hMF8C-0007w6-42; Thu, 02 May 2019 20:04:24 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     andriy.shevchenko@linux.intel.com
-Subject: [PATCH 1/1] Documentation: ACPI: Direct references are allowed to devices only
-Date:   Thu,  2 May 2019 20:04:23 +0300
-Message-Id: <20190502170423.30468-1-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.11.0
+        id S1725962AbfEBUAx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 2 May 2019 16:00:53 -0400
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 8047A308620E;
+        Thu,  2 May 2019 20:00:53 +0000 (UTC)
+Received: from lszubowi.bos.redhat.com (dhcp-17-123.bos.redhat.com [10.18.17.123])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id BA89A4274;
+        Thu,  2 May 2019 20:00:52 +0000 (UTC)
+From:   Lenny Szubowicz <lszubowi@redhat.com>
+To:     rjw@rjwysocki.net, lenb@kernel.org,
+        srinivas.pandruvada@linux.intel.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: ACPI / LPIT: Correct LPIT end address for lpit_process()
+Date:   Thu,  2 May 2019 16:00:52 -0400
+Message-Id: <20190502200052.26754-1-lszubowi@redhat.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.42]); Thu, 02 May 2019 20:00:53 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In ACPI it is possible to make references to device objects only, not to
-other objects inside a device. In practice this means that hierarchical
-data extension targets must be in parentheses to make them strings.
+Correct the LPIT end address which is passed into lpit_process()
+and the end address limit test in lpit_process().
 
-Otherwise an acpica warning is produced.
+The LPI state descriptor subtables follow the fixed sized
+acpi_lpit_header up to the end of the LPIT. The last LPI state
+descriptor can end at exactly the end of the LPIT.
 
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Note that this is a fix to a latent problem. Although incorrect,
+the unpatched version works because the passed in end address
+is just slightly beyond the actual end of the LPIT and the size
+of the ACPI LPIT header is smaller than the size of the only
+currently defined LPI state descriptor, acpi_lpit_native.
+
+Signed-off-by: Lenny Szubowicz <lszubowi@redhat.com>
 ---
- Documentation/acpi/dsd/data-node-references.txt |  6 +++---
- Documentation/acpi/dsd/graph.txt                | 12 ++++++------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/acpi/acpi_lpit.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/acpi/dsd/data-node-references.txt b/Documentation/acpi/dsd/data-node-references.txt
-index c3871565c8cfb..cd0971ea999a3 100644
---- a/Documentation/acpi/dsd/data-node-references.txt
-+++ b/Documentation/acpi/dsd/data-node-references.txt
-@@ -41,8 +41,8 @@ Example
- 	    Name (_DSD, Package () {
- 		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
- 		Package () {
--		    Package () { "node@0", NOD0 },
--		    Package () { "node@1", NOD1 },
-+		    Package () { "node@0", "NOD0" },
-+		    Package () { "node@1", "NOD1" },
- 		}
- 	    })
- 	    Name (NOD0, Package() {
-@@ -54,7 +54,7 @@ Example
- 	    Name (NOD1, Package() {
- 		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
- 		Package () {
--		    Package () { "anothernode", ANOD },
-+		    Package () { "anothernode", "ANOD" },
- 		}
- 	    })
- 	    Name (ANOD, Package() {
-diff --git a/Documentation/acpi/dsd/graph.txt b/Documentation/acpi/dsd/graph.txt
-index b9ce910781dcd..aee673c96aa80 100644
---- a/Documentation/acpi/dsd/graph.txt
-+++ b/Documentation/acpi/dsd/graph.txt
-@@ -42,7 +42,7 @@ with "port" and must be followed by the "@" character and the number of the port
- as its key. The target object it refers to should be called "PRTX", where "X" is
- the number of the port. An example of such a package would be:
+diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
+index e43cb71b6972..8b170a07908a 100644
+--- a/drivers/acpi/acpi_lpit.c
++++ b/drivers/acpi/acpi_lpit.c
+@@ -137,7 +137,7 @@ static void lpit_update_residency(struct lpit_residency_info *info,
  
--    Package() { "port@4", PRT4 }
-+    Package() { "port@4", "PRT4" }
+ static void lpit_process(u64 begin, u64 end)
+ {
+-	while (begin + sizeof(struct acpi_lpit_native) < end) {
++	while (begin + sizeof(struct acpi_lpit_native) <= end) {
+ 		struct acpi_lpit_native *lpit_native = (struct acpi_lpit_native *)begin;
  
- Further on, endpoints are located under the port nodes. The hierarchical
- data extension key of the endpoint nodes must begin with
-@@ -51,7 +51,7 @@ endpoint. The object it refers to should be called "EPXY", where "X" is the
- number of the port and "Y" is the number of the endpoint. An example of such a
- package would be:
+ 		if (!lpit_native->header.type && !lpit_native->header.flags) {
+@@ -156,7 +156,6 @@ static void lpit_process(u64 begin, u64 end)
+ void acpi_init_lpit(void)
+ {
+ 	acpi_status status;
+-	u64 lpit_begin;
+ 	struct acpi_table_lpit *lpit;
  
--    Package() { "endpoint@0", EP40 }
-+    Package() { "endpoint@0", "EP40" }
+ 	status = acpi_get_table(ACPI_SIG_LPIT, 0, (struct acpi_table_header **)&lpit);
+@@ -164,6 +163,6 @@ void acpi_init_lpit(void)
+ 	if (ACPI_FAILURE(status))
+ 		return;
  
- Each port node contains a property extension key "port", the value of which is
- the number of the port. Each endpoint is similarly numbered with a property
-@@ -88,7 +88,7 @@ A simple example of this is show below:
- 		},
- 		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
- 		Package () {
--		    Package () { "port@0", PRT0 },
-+		    Package () { "port@0", "PRT0" },
- 		}
- 	    })
- 	    Name (PRT0, Package() {
-@@ -98,7 +98,7 @@ A simple example of this is show below:
- 		},
- 		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
- 		Package () {
--		    Package () { "endpoint@0", EP00 },
-+		    Package () { "endpoint@0", "EP00" },
- 		}
- 	    })
- 	    Name (EP00, Package() {
-@@ -118,7 +118,7 @@ A simple example of this is show below:
- 	    Name (_DSD, Package () {
- 		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
- 		Package () {
--		    Package () { "port@4", PRT4 },
-+		    Package () { "port@4", "PRT4" },
- 		}
- 	    })
- 
-@@ -129,7 +129,7 @@ A simple example of this is show below:
- 		},
- 		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
- 		Package () {
--		    Package () { "endpoint@0", EP40 },
-+		    Package () { "endpoint@0", "EP40" },
- 		}
- 	    })
- 
+-	lpit_begin = (u64)lpit + sizeof(*lpit);
+-	lpit_process(lpit_begin, lpit_begin + lpit->header.length);
++	lpit_process((u64)lpit + sizeof(*lpit),
++		     (u64)lpit + lpit->header.length);
+ }
 -- 
-2.11.0
+2.18.1
 
