@@ -2,92 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D8371448B
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 May 2019 08:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C1EA14675
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 May 2019 10:36:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725830AbfEFGpk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 May 2019 02:45:40 -0400
-Received: from mga03.intel.com ([134.134.136.65]:14674 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725813AbfEFGpk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 6 May 2019 02:45:40 -0400
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 May 2019 23:45:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,437,1549958400"; 
-   d="scan'208";a="171109728"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
-  by fmsmga001.fm.intel.com with SMTP; 05 May 2019 23:45:34 -0700
-Received: by lahna (sSMTP sendmail emulation); Mon, 06 May 2019 09:45:34 +0300
-Date:   Mon, 6 May 2019 09:45:34 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Furquan Shaikh <furquan@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Schmauss, Erik" <erik.schmauss@intel.com>, mh@mike.franken.de,
-        Lukas Wunner <lukas@wunner.de>, Takashi Iwai <tiwai@suse.de>,
-        Bjorn Helgaas <bhelgaas@google.com>, ckellner@redhat.com,
-        Jiri Slaby <jslaby@suse.cz>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Robert Moore <robert.moore@intel.com>
-Subject: Re: [REGRESSION 5.0.8] Dell thunderbolt dock broken (xhci_hcd and
- thunderbolt)
-Message-ID: <20190506064534.GG2895@lahna.fi.intel.com>
-References: <s5hsgu0ihyg.wl-tiwai@suse.de>
- <EksOpJxc6GB@mike.franken.de>
- <20190430090021.GF26516@lahna.fi.intel.com>
- <CAJZ5v0j_fYqtMv07C-V_9fCJ6=1ec3GjvT2M7PXVNSbZpoM67Q@mail.gmail.com>
- <20190502114839.GC24696@kroah.com>
- <CAEGmHFFGpUmK1VitkUxqXL29dBrKwbceT0pEOeR_7+_4+eLzvA@mail.gmail.com>
+        id S1726145AbfEFIge (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 May 2019 04:36:34 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:39232 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725837AbfEFIge (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 May 2019 04:36:34 -0400
+Received: by mail-oi1-f195.google.com with SMTP id x16so3046701oic.6;
+        Mon, 06 May 2019 01:36:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RI5tWDg9So1VuC7W9/kUG69QrGBsy3wNS2QspBOJr3w=;
+        b=XbBzkcntIQ8KvmGHRNmMqBg7DNzXmU/7Xy2HR1LvaBM56eKmeIhF68IME/HdMknXnb
+         eAfkHKq7rzRhaH7VbsGV+6VyKfdV228y27Y+IlxW2kVGJ2bRevVUza67cn4P6UhqsWIC
+         xoUu00HdWF1+5+O4Sa1/qMgu+Ux+tRS1MFC0kdsj4zgV1q/fCE/5nT4vVFvJvnm+9LQ4
+         z3rHUH7qJX/+qAw4b7B4kKyVG6yzu6XIz7hWsmXPJVFmrkdfhhB5q6SxvsSlkXjL9Czg
+         hIYzZK99AOTq7Hj4uLc1kwN84KjtObZbV9shZibaJeVo189qzXefOxrTAKG3B5H0/WQo
+         xvaw==
+X-Gm-Message-State: APjAAAV+WIOtpiX1b9iW6NnyVMk6AeFVIKy3MbYRWpqYH7GLPpZ3TymM
+        wmiNU8R4MrK2OHJCxTa8y7VVpykBax5b59aAO6Q=
+X-Google-Smtp-Source: APXvYqwAJUUjNvKVg6KZ3xRKyBM0B1Mi/aBfBkvmIKfrou4l4YatPD9RnwfhnPr74P6+x5gOB/MDST+7GGsfyLwLVXk=
+X-Received: by 2002:aca:f01:: with SMTP id 1mr387656oip.68.1557131793348; Mon,
+ 06 May 2019 01:36:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAEGmHFFGpUmK1VitkUxqXL29dBrKwbceT0pEOeR_7+_4+eLzvA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.11.4 (2019-03-13)
+References: <20190501125322.23791-1-pierre-louis.bossart@linux.intel.com> <20190502045817.GZ3845@vkoul-mobl.Dlink>
+In-Reply-To: <20190502045817.GZ3845@vkoul-mobl.Dlink>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 6 May 2019 10:36:22 +0200
+Message-ID: <CAJZ5v0i+M8y3ddr+Z5o5af8OatMXq3xqCF5CUg5PjnANrTOSHw@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI / device_sysfs: change _ADR representation to 64 bits
+To:     Vinod Koul <vkoul@kernel.org>
+Cc:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Takashi Iwai <tiwai@suse.de>, Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        jank@cadence.com, Joe Perches <joe@perches.com>,
+        Srini Kandagatla <srinivas.kandagatla@linaro.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Schmauss <erik.schmauss@intel.com>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 03, 2019 at 04:35:02PM -0700, Furquan Shaikh wrote:
-> Thanks for reporting the issue and apologize for the breakage. When I
-> pushed the patch, my understanding was that the device drivers do not
-> depend on stale GPE events to take any action.
-> 
-> I am curious to understand the behavior for the thunderbolt device
-> since I do not have one to test with. The failure seems to be a result
-> of either having a edge-triggered interrupt or a pulse interrupt which
-> indicates some kind of ready condition to the kernel driver. All the
-> runtime GPEs seem to be initialized as part of acpi_init before ACPI
-> bus is scanned. So, is this some special kind of requirement for
-> thunderbolt that requires GPE enabled before the device can actually
-> be probed. And so the GPEs going active before being enabled are then
-> used as a way to call into ACPI Method to enable something which is
-> essential for probing of device?
+On Thu, May 2, 2019 at 6:58 AM Vinod Koul <vkoul@kernel.org> wrote:
+>
+> On 01-05-19, 07:53, Pierre-Louis Bossart wrote:
+> > Standards such as the MIPI DisCo for SoundWire 1.0 specification
+> > assume the _ADR field is 64 bits.
+> >
+> > _ADR is defined as an "Integer" represented as 64 bits since ACPI 2.0
+> > released in 2002. The low levels already use _ADR as 64 bits, e.g. in
+> > struct acpi_device_info.
+> >
+> > This patch bumps the representation used for sysfs to 64 bits. To
+> > avoid any compatibility/ABI issues, the printf format is only extended
+> > to 16 characters when the actual _ADR value exceeds the 32 bit
+> > maximum.
+> >
+> > Example with a SoundWire device, the results show the complete
+> > vendorID and linkID which were omitted before:
+> >
+> > Before:
+> > $ more /sys/bus/acpi/devices/device\:38/adr
+> > 0x5d070000
+> > After:
+> > $ more /sys/bus/acpi/devices/device\:38/adr
+> > 0x000010025d070000
+> >
+> > Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+> > ---
+> > v2: only use 64 bits when required to avoid compatibility issues
+> > (feedback from Vinod and Rafael)
+> >
+> >  drivers/acpi/device_sysfs.c | 6 ++++--
+> >  include/acpi/acpi_bus.h     | 2 +-
+> >  2 files changed, 5 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+> > index 8940054d6250..7dda0ee05cd1 100644
+> > --- a/drivers/acpi/device_sysfs.c
+> > +++ b/drivers/acpi/device_sysfs.c
+> > @@ -428,8 +428,10 @@ static ssize_t acpi_device_adr_show(struct device *dev,
+> >  {
+> >       struct acpi_device *acpi_dev = to_acpi_device(dev);
+> >
+> > -     return sprintf(buf, "0x%08x\n",
+> > -                    (unsigned int)(acpi_dev->pnp.bus_address));
+> > +     if (acpi_dev->pnp.bus_address > 0xFFFFFFFF)
+>
+> Would prefer to use U32_MAX instead of 0xFFFFFFFF
 
-IIRC the idea is that when you boot with a TBT device connected (this is
-only for the BIOS assisted/ACPI enumeration mode) the Thunderbolt host
-router (the device with PCIe switch + xHCI + NHI) is configured in two
-phases. The basic configuration is done in the ASL code that then waits
-for a synchronization event (signal) from the SMI hotplug handler that
-allows it to continue. The GPE which can be either edge or level is then
-used to call the SMI hotplug handler to initialize the host router and
-its resources properly.
-
-If this is not done the PCI stack finds the host router half-configured
-causing the failure.
-
-> The other question I have is given that handling of GPE events that
-> were active before being enabled is required at least for some set of
-> devices (e.g. thunderbolt), what is a good way to solve the original
-> problem that was being addressed by the patch being reverted i.e.
-> stale events resulting in spurious wakes on wakeup GPEs. One way I can
-> think of is clearing the status of GPEs when they are setup for
-> wake(acpi_setup_gpe_for_wake). What do you think?
-
-Sounds good to me.
+I would.
