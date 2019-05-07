@@ -2,108 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A58315AAA
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2019 07:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D022615DCC
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2019 09:01:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729219AbfEGFkv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 May 2019 01:40:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60208 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729211AbfEGFks (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 7 May 2019 01:40:48 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AAD41205ED;
-        Tue,  7 May 2019 05:40:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557207647;
-        bh=RigganWX4DUWno7wtAZgPTbcGgZR+KOR1pXcA44Ef6o=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kh9FG/qwVqu591wUlHDIqR6BoGjZj0jjvJS2lSepx3Bp4CK6AYrZ7WdeBGGuknmJF
-         VwlplFsZTlPxnALWTg7zb/A4O4eSANgTOTdto47403ldtgW4FgtdiPo3OTZRbV0yR/
-         Jz9eGWhtRcDll+pVrDIxyCoOnZ9RW60LPRL3brPo=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Erik Schmauss <erik.schmauss@intel.com>,
-        Michael J Gruber <mjg@fedoraproject.org>,
-        Bob Moore <robert.moore@intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <alexander.levin@microsoft.com>,
-        linux-acpi@vger.kernel.org, devel@acpica.org
-Subject: [PATCH AUTOSEL 4.14 78/95] ACPICA: Namespace: remove address node from global list after method termination
-Date:   Tue,  7 May 2019 01:38:07 -0400
-Message-Id: <20190507053826.31622-78-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190507053826.31622-1-sashal@kernel.org>
-References: <20190507053826.31622-1-sashal@kernel.org>
+        id S1726437AbfEGHBr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 May 2019 03:01:47 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:36504 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726322AbfEGHBr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 May 2019 03:01:47 -0400
+Received: by mail-ot1-f68.google.com with SMTP id b18so13917053otq.3;
+        Tue, 07 May 2019 00:01:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zKMbIttCgzcVVkRNu5fztyhWx+BL/3mOVoqyvi0NAEI=;
+        b=INSgcKv8O9yM65+VKqHoMOrNHbmlcEnHOVbaCQOGmt0PIZC9v+jY+T8l/YedGA5NA/
+         Tz+qZPZ6yZNqFT/CK02u6QG74NWhUgkOr+nAw/XnxufPoizP/znYNYR6UvgAoH6RSot3
+         Qtnkr2Gu+NlLSZkbT1vC0qUNTcyBWXp0alwHZ0xOETpG2m5UoJaUs5b3siE7wEY2C44A
+         /VEzhFCZ/DsDN2t1bOfBmP3N1MOOvUF/3QZSD0OfwmuF2Gfz4gE/9nbeMkakfGUF+AVn
+         KjV97vEHwb4/wwI88lcpGfze914MRqPgIEf4fZsZGDYq2o3gzCIkEq/Z+usY809PiwxL
+         fA/g==
+X-Gm-Message-State: APjAAAWjshv6yrOs7FjIStrYJZnaE7Mu+mxWsg5RK/0NvCvpYmGmH3he
+        i5ztm6LkBFBO4cALu3OnYbeUbyxpo+gnkRebga8=
+X-Google-Smtp-Source: APXvYqx5HZyzDhKKw/pMsuceYuNU8AOS/SQGy+9vmSPw9U4np+bboCTLUqSXmY0Nhp2RD3+3Fq6+UQEkP8tUjoPf56M=
+X-Received: by 2002:a05:6830:1251:: with SMTP id s17mr17144503otp.186.1557212506581;
+ Tue, 07 May 2019 00:01:46 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <CAEJqkgh-eh0F0rNBChhurH0LWTLFP0DyfFzKj66p4Z2d1kM2gw@mail.gmail.com>
+In-Reply-To: <CAEJqkgh-eh0F0rNBChhurH0LWTLFP0DyfFzKj66p4Z2d1kM2gw@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 7 May 2019 09:01:34 +0200
+Message-ID: <CAJZ5v0gRWEL1shQE3im0VxiPRBYat86o=R_NVQbc3JgOX8uT6w@mail.gmail.com>
+Subject: Re: [Kernel 5.1] ACPI_DEBUG messages without CONFIG_ACPI_DEBUG being set
+To:     Gabriel C <nix.or.die@gmail.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Schmauss, Erik" <erik.schmauss@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Erik Schmauss <erik.schmauss@intel.com>
++Erik
 
-[ Upstream commit c5781ffbbd4f742a58263458145fe7f0ac01d9e0 ]
-
-ACPICA commit b233720031a480abd438f2e9c643080929d144c3
-
-ASL operation_regions declare a range of addresses that it uses. In a
-perfect world, the range of addresses should be used exclusively by
-the AML interpreter. The OS can use this information to decide which
-drivers to load so that the AML interpreter and device drivers use
-different regions of memory.
-
-During table load, the address information is added to a global
-address range list. Each node in this list contains an address range
-as well as a namespace node of the operation_region. This list is
-deleted at ACPI shutdown.
-
-Unfortunately, ASL operation_regions can be declared inside of control
-methods. Although this is not recommended, modern firmware contains
-such code. New module level code changes unintentionally removed the
-functionality of adding and removing nodes to the global address
-range list.
-
-A few months ago, support for adding addresses has been re-
-implemented. However, the removal of the address range list was
-missed and resulted in some systems to crash due to the address list
-containing bogus namespace nodes from operation_regions declared in
-control methods. In order to fix the crash, this change removes
-dynamic operation_regions after control method termination.
-
-Link: https://github.com/acpica/acpica/commit/b2337200
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=202475
-Fixes: 4abb951b73ff ("ACPICA: AML interpreter: add region addresses in global list during initialization")
-Reported-by: Michael J Gruber <mjg@fedoraproject.org>
-Signed-off-by: Erik Schmauss <erik.schmauss@intel.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Cc: 4.20+ <stable@vger.kernel.org> # 4.20+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
----
- drivers/acpi/acpica/nsobject.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/acpi/acpica/nsobject.c b/drivers/acpi/acpica/nsobject.c
-index 707b2aa501e1..099be6424255 100644
---- a/drivers/acpi/acpica/nsobject.c
-+++ b/drivers/acpi/acpica/nsobject.c
-@@ -222,6 +222,10 @@ void acpi_ns_detach_object(struct acpi_namespace_node *node)
- 		}
- 	}
- 
-+	if (obj_desc->common.type == ACPI_TYPE_REGION) {
-+		acpi_ut_remove_address_range(obj_desc->region.space_id, node);
-+	}
-+
- 	/* Clear the Node entry in all cases */
- 
- 	node->object = NULL;
--- 
-2.20.1
-
+On Tue, May 7, 2019 at 1:33 AM Gabriel C <nix.or.die@gmail.com> wrote:
+>
+> Hello,
+>
+> while testing kernel-5.1 I get on one of my Lenovo Laptops very
+> strange 'ACPI Debug:' messages.
+>
+> After some grepping I realized these are Debug messages from DSDT ,
+> however my kernel does
+> not have ACPI_DEBUG enabled.
+>
+> I found out the module triggering this, on this Laptop is
+> ideapad_laptop , but looking at the code
+> I cannot see what would causes that.
+>
+> Also on the same Laptop with any 5.0.X kernels I cannot see these.
+>
+>
+> ~$ grep -i ACPI_DEBUG /boot/config-5.1-fw1
+> # CONFIG_ACPI_DEBUGGER is not set
+> # CONFIG_ACPI_DEBUG is not set
+> # CONFIG_THINKPAD_ACPI_DEBUGFACILITIES is not set
+> # CONFIG_THINKPAD_ACPI_DEBUG is not set
+>
+> .. dmesg ..
+> ...
+> [   68.020812] calling  ideapad_acpi_driver_init+0x0/0x1000
+> [ideapad_laptop] @ 1322
+> [   68.026708] input: Ideapad extra buttons as
+> /devices/pci0000:00/0000:00:1f.0/PNP0C09:00/VPC2004:00/input/input16
+> [   68.038236] ACPI Debug:  "=====QUERY_64====="
+> [   68.050232] ACPI Debug:  "=====QUERY_65====="
+> [   68.060218] ACPI Debug:  "=====QUERY_64====="
+> [   68.092216] probe of VPC2004:00 returned 1 after 71386 usecs
+> [   68.092245] initcall ideapad_acpi_driver_init+0x0/0x1000
+> [ideapad_laptop] returned 0 after 69751 usecssg
+>
+> ...
+>
+> These =====QUERY_XX===== messages are from DSDT:
+>
+> ~/acpi$ grep QUERY dsdt.dsl
+>                Debug = "=====QUERY_11====="
+>                Debug = "=====QUERY_12====="
+>                Debug = "=====QUERY_24====="
+>                Debug = "=====QUERY_25====="
+>                Debug = "=====QUERY_37====="
+>                Debug = "=====QUERY_38====="
+>                Debug = "=====QUERY_64====="
+>                Debug = "=====QUERY_65====="
+>
+> Also this is the code from DSDT for QUERY 64 and 65:
+>
+> ...
+>             Method (_Q64, 0, NotSerialized)  // _Qxx: EC Query
+>            {
+>                Debug = "=====QUERY_64====="
+>                If ((OSYS == 0x07D9))
+>                {
+>                    If (((WLEX == One) & (WLAT == One)))
+>                    {
+>                        SGOV (0x02040005, One)
+>                    }
+>                    Else
+>                    {
+>                        SGOV (0x02040005, Zero)
+>                    }
+>                }
+>            }
+>
+>            Method (_Q65, 0, NotSerialized)  // _Qxx: EC Query
+>            {
+>                Debug = "=====QUERY_65====="
+>                If ((OSYS == 0x07D9))
+>                {
+>                    If (((BTEX == One) & (BTAT == One)))
+>                    {
+>                        SGOV (0x0202000B, One)
+>                    }
+>                    Else
+>                    {
+>                        SGOV (0x0202000B, Zero)
+>                    }
+>                }
+>            }
+>
+> ...
+>
+>
+> Any idea what would cause this ?
+>
+> BR,
+>
+> Gabriel C
