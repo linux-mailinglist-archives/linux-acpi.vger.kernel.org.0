@@ -2,53 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4504D16704
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2019 17:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03136167A6
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2019 18:19:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726609AbfEGPkl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 May 2019 11:40:41 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:44410 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726513AbfEGPkl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 May 2019 11:40:41 -0400
-Received: by mail-ot1-f68.google.com with SMTP id d10so10248847otp.11
-        for <linux-acpi@vger.kernel.org>; Tue, 07 May 2019 08:40:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eDjq30ddseBaIw6socWxfPv6NTtk+5QW4X1Ug5iEyJk=;
-        b=P0NmBCU8zUOfaF8xaYZsuZ8crvxFB33fl7wDNB9MZv5fgE9bufZ9uXOFacVBRIyhyk
-         7jy7cEut0ZZu1RaoDtrr50BVaB/CX/skGeBOtXxoGAGKW89ZemgDpFwl6g0BCyZNTY71
-         c96Bv/+lzcoe4YYcd5EMePUR4gTK7GrAqK6itLr2obeqWzYKb3Dql3mDDHzIv1x+/JnT
-         zIvYGvdBDonXfV8sEZV0PvMIvA63l1OoRV+8kWQPCfuhVRSXMOb+jYMxWFhFzCGAXSHH
-         RES21PeWYeTfPIbRNgVP3JVS3PVW0F6JNq0X1vpUrTbfXgSQ4Ev5ZlVumch1kGRMghci
-         mHRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eDjq30ddseBaIw6socWxfPv6NTtk+5QW4X1Ug5iEyJk=;
-        b=FfHB1n7zqtB+5y4VHCvRc4dLnsGjzdNo7/VoAOLHXfPBOK0P3iub8g6eP0WLX2b8p/
-         QzNwlsjOiNDO7u+oGv14oXQz0OG2BkVvw+o7aVU9/v1PQFeYCIIIgm/ArJseiLpQ+x1M
-         JnIV5M33mjr5LcMXv4/8Wa9XdlqfpyuuritLY0M75PwTwveRGbrAWhHLqFFgzwPl+8vy
-         G1pLCuFhwCs/HvLepzv0AXUbLgRncskaftoW7W6qWRFXB2f3yLh72tmu1dWk6PIDrlhD
-         0EXiu18uPK41aXQx3/COsHoHIJppg28U0Ov3TWE9IUsDwpZ/QqaDu2hLNi0tEaG49Vr3
-         S2wQ==
-X-Gm-Message-State: APjAAAW6kvUz5vUU/Mlu3vG9wR6fOCOy1xGKWw5D6BC+hYNhPwhcd2qf
-        HLvXzurANJyaC5fF0/TBL4R2n+iNI98B9rLwVkR+6w==
-X-Google-Smtp-Source: APXvYqxgIWANkc/KHq9kAogc8tqlkqRrOccsWEIKbqAeeZcNH5LiQg3MPoGwMh9hdCCYG0LuKCXgqpIi0akzNLzuZFI=
-X-Received: by 2002:a9d:222c:: with SMTP id o41mr22033787ota.353.1557243640877;
- Tue, 07 May 2019 08:40:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190426050039.17460-1-pagupta@redhat.com> <20190426050039.17460-4-pagupta@redhat.com>
-In-Reply-To: <20190426050039.17460-4-pagupta@redhat.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Tue, 7 May 2019 08:40:30 -0700
-Message-ID: <CAPcyv4hRdvypEj4LBTMfUFm80BdpRYbOugrkkj-3Kk_LErXPqQ@mail.gmail.com>
-Subject: Re: [PATCH v7 3/6] libnvdimm: add dax_dev sync flag
-To:     Pankaj Gupta <pagupta@redhat.com>
-Cc:     linux-nvdimm <linux-nvdimm@lists.01.org>,
+        id S1726523AbfEGQTt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 May 2019 12:19:49 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:48568 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726197AbfEGQTt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 May 2019 12:19:49 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x47GE4tr157451;
+        Tue, 7 May 2019 16:17:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=JFFlnWS0WxSMENUMsRBMs4+e/sfuzMFmGvWcjKKQQuc=;
+ b=TKQ0ZY42TnZrA9kUXuIIQxHZJtlgsPZc/HUlXzQ4TUAvfAYUIXRd3TufRkYlIsL/qYnH
+ gEOc/3eGhv+v8nTxOS8S21kRqbBtPYiYTEKBQBAnom75SF+6NN9JdMkr6m+iXE4suPUy
+ M8pk/1FBF18jWlrv22JoleV2scB2kxIrjAnXvCYleCsCB2wshmO8nENxJSX0+PxVJUiQ
+ ZYNWGbaeLaZaSTwok9d5T6R6aHykl/CLecrfPWn2A3d57LkaTuFX9ZNvyXgC4fQ28IyP
+ l2LCbcZAeGQ6QNp9COGNfS/FdR1duRVLEebs8Og572/1EJwAKTyBze4/M2itosUoGBUM Pg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 2s94b0phet-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 07 May 2019 16:17:57 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x47GH2b6135005;
+        Tue, 7 May 2019 16:17:56 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2s9ayeyus1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 07 May 2019 16:17:56 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x47GHiM0002137;
+        Tue, 7 May 2019 16:17:44 GMT
+Received: from localhost (/67.169.218.210)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 07 May 2019 09:17:44 -0700
+Date:   Tue, 7 May 2019 09:17:36 -0700
+From:   "Darrick J. Wong" <darrick.wong@oracle.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     Pankaj Gupta <pagupta@redhat.com>,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         virtualization@lists.linux-foundation.org,
         KVM list <kvm@vger.kernel.org>,
@@ -68,7 +64,6 @@ Cc:     linux-nvdimm <linux-nvdimm@lists.01.org>,
         Len Brown <lenb@kernel.org>, Jan Kara <jack@suse.cz>,
         "Theodore Ts'o" <tytso@mit.edu>,
         Andreas Dilger <adilger.kernel@dilger.ca>,
-        "Darrick J. Wong" <darrick.wong@oracle.com>,
         lcapitulino@redhat.com, Kevin Wolf <kwolf@redhat.com>,
         Igor Mammedov <imammedo@redhat.com>,
         jmoyer <jmoyer@redhat.com>,
@@ -81,33 +76,80 @@ Cc:     linux-nvdimm <linux-nvdimm@lists.01.org>,
         Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
         Paolo Bonzini <pbonzini@redhat.com>, kilobyte@angband.pl,
         yuval shaia <yuval.shaia@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v7 6/6] xfs: disable map_sync for async flush
+Message-ID: <20190507161736.GV5207@magnolia>
+References: <20190426050039.17460-1-pagupta@redhat.com>
+ <20190426050039.17460-7-pagupta@redhat.com>
+ <CAPcyv4hCP4E4xPkQx25tqhznon6ADwrYJB1yujkrO-A7LUnsmg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4hCP4E4xPkQx25tqhznon6ADwrYJB1yujkrO-A7LUnsmg@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9250 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905070105
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9250 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905070105
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 25, 2019 at 10:02 PM Pankaj Gupta <pagupta@redhat.com> wrote:
->
-> This patch adds 'DAXDEV_SYNC' flag which is set
-> for nd_region doing synchronous flush. This later
-> is used to disable MAP_SYNC functionality for
-> ext4 & xfs filesystem for devices don't support
-> synchronous flush.
->
-> Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
-[..]
-> diff --git a/include/linux/dax.h b/include/linux/dax.h
-> index 0dd316a74a29..c97fc0cc7167 100644
-> --- a/include/linux/dax.h
-> +++ b/include/linux/dax.h
-> @@ -7,6 +7,9 @@
->  #include <linux/radix-tree.h>
->  #include <asm/pgtable.h>
->
-> +/* Flag for synchronous flush */
-> +#define DAXDEV_F_SYNC true
+On Tue, May 07, 2019 at 08:37:01AM -0700, Dan Williams wrote:
+> On Thu, Apr 25, 2019 at 10:03 PM Pankaj Gupta <pagupta@redhat.com> wrote:
+> >
+> > Dont support 'MAP_SYNC' with non-DAX files and DAX files
+> > with asynchronous dax_device. Virtio pmem provides
+> > asynchronous host page cache flush mechanism. We don't
+> > support 'MAP_SYNC' with virtio pmem and xfs.
+> >
+> > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
+> > ---
+> >  fs/xfs/xfs_file.c | 9 ++++++---
+> >  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> Darrick, does this look ok to take through the nvdimm tree?
 
-I'd feel better, i.e. it reads more canonically, if this was defined
-as (1UL << 0) and the argument to alloc_dax() was changed to 'unsigned
-long flags' rather than a bool.
+<urk> forgot about this, sorry. :/
+
+> >
+> > diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
+> > index a7ceae90110e..f17652cca5ff 100644
+> > --- a/fs/xfs/xfs_file.c
+> > +++ b/fs/xfs/xfs_file.c
+> > @@ -1203,11 +1203,14 @@ xfs_file_mmap(
+> >         struct file     *filp,
+> >         struct vm_area_struct *vma)
+> >  {
+> > +       struct dax_device       *dax_dev;
+> > +
+> > +       dax_dev = xfs_find_daxdev_for_inode(file_inode(filp));
+> >         /*
+> > -        * We don't support synchronous mappings for non-DAX files. At least
+> > -        * until someone comes with a sensible use case.
+> > +        * We don't support synchronous mappings for non-DAX files and
+> > +        * for DAX files if underneath dax_device is not synchronous.
+> >          */
+> > -       if (!IS_DAX(file_inode(filp)) && (vma->vm_flags & VM_SYNC))
+> > +       if (!daxdev_mapping_supported(vma, dax_dev))
+> >                 return -EOPNOTSUPP;
+
+LGTM, and I'm fine with it going through nvdimm.  Nothing in
+xfs-5.2-merge touches that function so it should be clean.
+
+Reviewed-by: Darrick J. Wong <darrick.wong@oracle.com>
+
+--D
+
+> >
+> >         file_accessed(filp);
+> > --
+> > 2.20.1
+> >
