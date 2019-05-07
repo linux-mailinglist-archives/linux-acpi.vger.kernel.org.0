@@ -2,202 +2,280 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BB6316C29
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2019 22:26:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1E2416D42
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2019 23:38:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726435AbfEGUZ7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 May 2019 16:25:59 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:37415 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726236AbfEGUZ6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 May 2019 16:25:58 -0400
-Received: by mail-pf1-f195.google.com with SMTP id g3so9239029pfi.4
-        for <linux-acpi@vger.kernel.org>; Tue, 07 May 2019 13:25:58 -0700 (PDT)
+        id S1728588AbfEGVh5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 May 2019 17:37:57 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:40597 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726650AbfEGVh4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 May 2019 17:37:56 -0400
+Received: by mail-lf1-f67.google.com with SMTP id o16so12940358lfl.7;
+        Tue, 07 May 2019 14:37:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=SDTbfUna34Qd79ay/PvHpXeLqKHYqAqzFBtMK1XzxGI=;
-        b=ON/NQjQWEi3fON/DDBAYu5HG4F3A9wQYYX3ZHXewW6rdfpyfN6GDeKnlxgf9/si9a9
-         9JHSodUWXjDvUXWyvoEwEE0DgwhDeKMop/6LDrDPkGLUCYR03QkkfX5S7JFJ8pfilSDZ
-         xvvi21rJRzAsyyhE+/kT6jH7WSjJD4+uklULukm2H+Pokk9wj1CJ1/NtVElLjBkK6KcS
-         JqikN21lQ/W3kOqZE29va5iKvC/1zmXoxZvy0PuN6Nh+lQFN6TTKu80Ldt+bYozlFh95
-         K/LSeCc2Mr0qC2NpnPv30EkDStUnE9M9IgeET/tA/SjNLgtMCQoX8YEn/nGCjEfLlQaU
-         jpyQ==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=c2AE0M9uKxK1GU3dXIY+HrWBQ1aPXALof+/VlxHoO1M=;
+        b=DbNXzgMpRyh83SvjTc5fgop9liZROTeCkrJGrIMAKnH2aSH/LcjlunA9HTEQgF+rul
+         fVxaDKk7NMt9d6pbHZBJzW5ng7rRKuykuwsuBittWxi+JRaxuAxvPpAn4q/FjOo1yfoT
+         rwmLbWRldEEy6U6vrxyKPVpA2gSly1lNMmXbH5XKQjbd+rJTRhPY03YWyqEcxuJGDDsy
+         ORZVda2Rdjm9HP6Vw+wX+WE7ZIvr2g3DUY5F8KOvIcdIoUtPnsScpb1T6NBfSnpOem3F
+         y6hDn5TVggVc14Fdk4eCrk5RSrMgd9YWfBGkK0Jgf/tUduV4OnBlu7alxcXegoxpXiDm
+         J1uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=SDTbfUna34Qd79ay/PvHpXeLqKHYqAqzFBtMK1XzxGI=;
-        b=ehjQpm7zQdrZPEaIVszNNZtgCI5C81zoveySyB1Ah3uLoUuQLQLofg+lGrWrw7J/I8
-         K58udWUqLYQj2OzL2/A+/c6amrOPAXnNDgK3eBj8DxHpa5fOmxXgoOh8YU396eT/Orbj
-         C/OWykcybswCK7n85ZTy85PZdzzu2RbTjCovOoR7/hbqrFVKDD4xahCHzScnwEQ+VUYt
-         JlGzQLZNO7YjtFmE7YQ4qGn2QWaycAJnklK7xO7+c83CxvWZeF4XrBLDGp7hOy37o9o2
-         +FEmoIjP1uSD9ZmGAH1Ooa7PX6B3U73a8iHgYCQjJWb1AxaKB2+y7IViDSZJKDmGybQr
-         RNYg==
-X-Gm-Message-State: APjAAAVL9HwCSh4x9UqZpPVRx7ORv/FbBCDFYmEAYhgFa0esRR7EjomI
-        Tsjn7md0VQGpYPv8jkk7svYsZQ==
-X-Google-Smtp-Source: APXvYqxbPfJ5tBulG/r6tvcVjjtvKQlgkwdEbMW3aGkGHvRkjNKPxepulcAi/TILththSdbF+vLDMw==
-X-Received: by 2002:aa7:8dc3:: with SMTP id j3mr43498542pfr.141.1557260757236;
-        Tue, 07 May 2019 13:25:57 -0700 (PDT)
-Received: from jstaron2.mtv.corp.google.com ([2620:15c:202:201:b94f:2527:c39f:ca2d])
-        by smtp.gmail.com with ESMTPSA id f5sm15855223pgo.75.2019.05.07.13.25.55
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 May 2019 13:25:56 -0700 (PDT)
-Subject: Re: [Qemu-devel] [PATCH v7 2/6] virtio-pmem: Add virtio pmem driver
-To:     Pankaj Gupta <pagupta@redhat.com>, linux-nvdimm@lists.01.org,
-        linux-kernel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        qemu-devel@nongnu.org, linux-ext4@vger.kernel.org,
-        linux-xfs@vger.kernel.org
-Cc:     jack@suse.cz, mst@redhat.com, jasowang@redhat.com,
-        david@fromorbit.com, lcapitulino@redhat.com,
-        adilger.kernel@dilger.ca, zwisler@kernel.org, aarcange@redhat.com,
-        dave.jiang@intel.com, darrick.wong@oracle.com,
-        vishal.l.verma@intel.com, david@redhat.com, willy@infradead.org,
-        hch@infradead.org, jmoyer@redhat.com, nilal@redhat.com,
-        lenb@kernel.org, kilobyte@angband.pl, riel@surriel.com,
-        yuval.shaia@oracle.com, stefanha@redhat.com, pbonzini@redhat.com,
-        dan.j.williams@intel.com, kwolf@redhat.com, tytso@mit.edu,
-        xiaoguangrong.eric@gmail.com, cohuck@redhat.com, rjw@rjwysocki.net,
-        imammedo@redhat.com, smbarber@google.com
-References: <20190426050039.17460-1-pagupta@redhat.com>
- <20190426050039.17460-3-pagupta@redhat.com>
-From:   =?UTF-8?Q?Jakub_Staro=c5=84?= <jstaron@google.com>
-Message-ID: <3d6479ae-6c39-d614-f1d9-aa1978e2e438@google.com>
-Date:   Tue, 7 May 2019 13:25:54 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=c2AE0M9uKxK1GU3dXIY+HrWBQ1aPXALof+/VlxHoO1M=;
+        b=R1JkDsMrPya4xu3DLCDDYIk4hH8dbSjOzGByG+ve6J4+pe+1MiPfiOxWRrbUtif1X/
+         4ntK3FU4Ga4VgITPRDX8IoPgpqtwotTWjbVoIjFtd48C5CdHz7f9vV6QVMLN8wnsyrOX
+         LEL8D5SmNSM5Dyrjv9lU3c5q7WmbpuVIUYS2DIu08w+5vKRITJKEo0JCtL1eCOwkCqMd
+         7/3/Q3TOn6H4PS102UZwm3sMtx0o3MqdaocfaJBAJPCVEWIplPcqk+R6NentWeAxkKds
+         +eqNQHHFn5ETgr/5p0/aWwhqiQfScPPsMP9L6LPj3rToJ+82SYBwCeavL93l6dGIUeey
+         0hQA==
+X-Gm-Message-State: APjAAAXNqV/P99wR8OQxxOgp0UoRHT7lQbJS02Yql2DRFD9NZd/NVZcI
+        r4+uz/W8uXoUl+ZO3Wb76Z739uVdcVIeiyRd2g==
+X-Google-Smtp-Source: APXvYqwGEIJQDKGUklBybOb13P03Jr/Opb2A6gTJ5xcjl3Z1hLJsdqb8cp455ZXZTFghgckkxPAIIzgwj/K6ua1Kvuk=
+X-Received: by 2002:ac2:53ad:: with SMTP id j13mr4458442lfh.14.1557265074026;
+ Tue, 07 May 2019 14:37:54 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190426050039.17460-3-pagupta@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CAEJqkgh-eh0F0rNBChhurH0LWTLFP0DyfFzKj66p4Z2d1kM2gw@mail.gmail.com>
+ <CAJZ5v0gRWEL1shQE3im0VxiPRBYat86o=R_NVQbc3JgOX8uT6w@mail.gmail.com>
+ <CAEJqkgiNYXwsJaT0d3JyMW-2yJ2DV53FHPV5-iAy7b-NbAEAcw@mail.gmail.com>
+ <CAJZ5v0ghNMPMdc03T-is-=-k11rZ8K5O9Av+TnbBY_2mNr-eug@mail.gmail.com>
+ <CAEJqkgiB7woieNZ-vVm7x-GzVrqGpJWLXOM9JpSUgPgE7eA6gA@mail.gmail.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C5A9EBD@ORSMSX122.amr.corp.intel.com>
+ <CAEJqkggvtYobXNjFbvqjajMcbZ_+3PrQJC-9kK+nn5cgXgOyWg@mail.gmail.com> <CF6A88132359CE47947DB4C6E1709ED53C5A9F1C@ORSMSX122.amr.corp.intel.com>
+In-Reply-To: <CF6A88132359CE47947DB4C6E1709ED53C5A9F1C@ORSMSX122.amr.corp.intel.com>
+From:   Gabriel C <nix.or.die@gmail.com>
+Date:   Tue, 7 May 2019 23:39:13 +0200
+Message-ID: <CAEJqkgiTRo0K9YTAK6VaYoHKqae4Oz6q4pxboRMt+s99A=gG3w@mail.gmail.com>
+Subject: Re: [Kernel 5.1] ACPI_DEBUG messages without CONFIG_ACPI_DEBUG being set
+To:     "Schmauss, Erik" <erik.schmauss@intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Moore, Robert" <robert.moore@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 4/25/19 10:00 PM, Pankaj Gupta wrote:
+Am Di., 7. Mai 2019 um 22:17 Uhr schrieb Schmauss, Erik
+<erik.schmauss@intel.com>:
+>
+>
+>
+> > -----Original Message-----
+> > From: Gabriel C [mailto:nix.or.die@gmail.com]
+> > Sent: Tuesday, May 7, 2019 12:06 PM
+> > To: Schmauss, Erik <erik.schmauss@intel.com>
+> > Cc: Rafael J. Wysocki <rafael@kernel.org>; ACPI Devel Maling List <linux-
+> > acpi@vger.kernel.org>; LKML <linux-kernel@vger.kernel.org>; Moore,
+> > Robert <robert.moore@intel.com>
+> > Subject: Re: [Kernel 5.1] ACPI_DEBUG messages without
+> > CONFIG_ACPI_DEBUG being set
+> >
+> > Am Di., 7. Mai 2019 um 20:46 Uhr schrieb Schmauss, Erik
+> > <erik.schmauss@intel.com>:
+> > >
+> > >
+> > >
+> > > > -----Original Message-----
+> > > > From: Gabriel C [mailto:nix.or.die@gmail.com]
+> > > > Sent: Tuesday, May 7, 2019 2:33 AM
+> > > > To: Rafael J. Wysocki <rafael@kernel.org>
+> > > > Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>; LKML
+> > > > <linux- kernel@vger.kernel.org>; Schmauss, Erik
+> > > > <erik.schmauss@intel.com>
+> > > > Subject: Re: [Kernel 5.1] ACPI_DEBUG messages without
+> > > > CONFIG_ACPI_DEBUG being set
+> > > >
+> > > > Am Di., 7. Mai 2019 um 10:35 Uhr schrieb Rafael J. Wysocki
+> > > > <rafael@kernel.org>:
+> > > > >
+> > > > > On Tue, May 7, 2019 at 9:31 AM Gabriel C <nix.or.die@gmail.com>
+> > wrote:
+> > > > > >
+> > > > > > Am Di., 7. Mai 2019 um 09:01 Uhr schrieb Rafael J. Wysocki
+> > > > <rafael@kernel.org>:
+> > > > > > >
+> > > > > >  Hello Rafael ,  Erik
+> > > > > >
+> > > > > > > +Erik
+> > > > > > >
+> > > > > > > On Tue, May 7, 2019 at 1:33 AM Gabriel C
+> > > > > > > <nix.or.die@gmail.com>
+> > > > wrote:
+> > > > > > > >
+> > > > > > > > Hello,
+> > > > > > > >
+> > > > > > > > while testing kernel-5.1 I get on one of my Lenovo Laptops
+> > > > > > > > very strange 'ACPI Debug:' messages.
+> > > > > > > >
+> > > > > > > > After some grepping I realized these are Debug messages from
+> > > > > > > > DSDT , however my kernel does not have ACPI_DEBUG enabled.
+> > > > > > > >
+> > > > > > > > I found out the module triggering this, on this Laptop is
+> > > > > > > > ideapad_laptop , but looking at the code I cannot see what
+> > > > > > > > would causes that.
+> > > > > > > >
+> > > > > > > > Also on the same Laptop with any 5.0.X kernels I cannot see these.
+> > > > > > > >
+> > > > > > > >
+> > > > > > > > ~$ grep -i ACPI_DEBUG /boot/config-5.1-fw1 #
+> > > > > > > > CONFIG_ACPI_DEBUGGER is not set # CONFIG_ACPI_DEBUG is
+> > not
+> > > > set #
+> > > > > > > > CONFIG_THINKPAD_ACPI_DEBUGFACILITIES is not set #
+> > > > > > > > CONFIG_THINKPAD_ACPI_DEBUG is not set
+> > > > > > > >
+> > > > > > > > .. dmesg ..
+> > > > > > > > ...
+> > > > > > > > [   68.020812] calling  ideapad_acpi_driver_init+0x0/0x1000
+> > > > > > > > [ideapad_laptop] @ 1322
+> > > > > > > > [   68.026708] input: Ideapad extra buttons as
+> > > > > > > >
+> > > > /devices/pci0000:00/0000:00:1f.0/PNP0C09:00/VPC2004:00/input/input16
+> > > > > > > > [   68.038236] ACPI Debug:  "=====QUERY_64====="
+> > > > > > > > [   68.050232] ACPI Debug:  "=====QUERY_65====="
+> > > > > > > > [   68.060218] ACPI Debug:  "=====QUERY_64====="
+> > > > > > > > [   68.092216] probe of VPC2004:00 returned 1 after 71386 usecs
+> > > > > > > > [   68.092245] initcall ideapad_acpi_driver_init+0x0/0x1000
+> > > > > > > > [ideapad_laptop] returned 0 after 69751 usecssg
+> > > > > > > >
+> > > > > > > > ...
+> > > > > > > >
+> > > > > > > > These =====QUERY_XX===== messages are from DSDT:
+> > > > > > > >
+> > > > > > > > ~/acpi$ grep QUERY dsdt.dsl
+> > > > > > > >                Debug = "=====QUERY_11====="
+> > > > > > > >                Debug = "=====QUERY_12====="
+> > > > > > > >                Debug = "=====QUERY_24====="
+> > > > > > > >                Debug = "=====QUERY_25====="
+> > > > > > > >                Debug = "=====QUERY_37====="
+> > > > > > > >                Debug = "=====QUERY_38====="
+> > > > > > > >                Debug = "=====QUERY_64====="
+> > > > > > > >                Debug = "=====QUERY_65====="
+> > > > > > > >
+> > > > > > > > Also this is the code from DSDT for QUERY 64 and 65:
+> > > > > > > >
+> > > > > > > > ...
+> > > > > > > >             Method (_Q64, 0, NotSerialized)  // _Qxx: EC Query
+> > > > > > > >            {
+> > > > > > > >                Debug = "=====QUERY_64====="
+> > > > > > > >                If ((OSYS == 0x07D9))
+> > > > > > > >                {
+> > > > > > > >                    If (((WLEX == One) & (WLAT == One)))
+> > > > > > > >                    {
+> > > > > > > >                        SGOV (0x02040005, One)
+> > > > > > > >                    }
+> > > > > > > >                    Else
+> > > > > > > >                    {
+> > > > > > > >                        SGOV (0x02040005, Zero)
+> > > > > > > >                    }
+> > > > > > > >                }
+> > > > > > > >            }
+> > > > > > > >
+> > > > > > > >            Method (_Q65, 0, NotSerialized)  // _Qxx: EC Query
+> > > > > > > >            {
+> > > > > > > >                Debug = "=====QUERY_65====="
+> > > > > > > >                If ((OSYS == 0x07D9))
+> > > > > > > >                {
+> > > > > > > >                    If (((BTEX == One) & (BTAT == One)))
+> > > > > > > >                    {
+> > > > > > > >                        SGOV (0x0202000B, One)
+> > > > > > > >                    }
+> > > > > > > >                    Else
+> > > > > > > >                    {
+> > > > > > > >                        SGOV (0x0202000B, Zero)
+> > > > > > > >                    }
+> > > > > > > >                }
+> > > > > > > >            }
+> > > > > > > >
+> > > > > > > > ...
+> > > > > > > >
+> > > > > > > >
+> > > > > > > > Any idea what would cause this ?
+> > > > > >
+> > > > > > I think I found what is causing that.
+> > > > > >
+> > > > > > Commit aa9aaa4d61c0048d3faad056893cd7860bbc084c is moving
+> > > > definition
+> > > > > > of Linux's  ACPI_DEBUG_DEFAULT to incude/acpi/platform/aclinux.h
+> > > > > > , however include/acpi/acpi.h didn't got updated and
+> > > > > > ACPI_DEBUG_DEFAULT now being always defined as  (ACPI_LV_INIT
+> > |
+> > > > > > ACPI_LV_DEBUG_OBJECT | ACPI_LV_EVALUATION |
+> > ACPI_LV_REPAIR)
+> > > > >
+> > > > > I'm not sure what you mean by this.
+> > > > >
+> > > > > include/acpi/acpi.h should get the right definitions through
+> > > > > include/acpi/platform/acenv.h and include/acpi/acoutput.h that are
+> > > > > included by it.
+> > > > >
+> > > >
+> > > > Hmm yes should , I missed that include. However it does not work.
+> > > >
+> > > > I've just put back old code back into drivers/acpi/bus.c to test and
+> > > > all working now fine without any other changes.
+> > > >
+> > > > > It looks like incude/acpi/platform/aclinux.h has not been included
+> > > > > by include/acpi/platform/acenv.h for some reason when building
+> > > > > this module.
+> > > >
+> > > > If this one getting it wrong all will do so , they all just include
+> > <linux/acpi.h>.
+> > > >
+> > > > Probably not so much users will notice that , I just did because my
+> > > > BIOS vendor forgot DEBUG around.
+> > >
+> > > Do you still get this issue after doing make clean and rebuilding your
+> > kernel?
+> >
+> > A clean build from tarball has this issue for me. I don't think is a building
+> > problem , any <5.1 kernel is fine , kernel 5.1 with your commit reverted is fine
+> > too , kernel 5.1 with your commit in but the removed hunk in bus.c re-added
+> > is fine also.
+>
+> I took a closer look. This was an obvious mistake on my part. Thanks for catching it.
+>
+> The following should fix it:
+>
 
-> +void host_ack(struct virtqueue *vq)
-> +{
-> +	unsigned int len;
-> +	unsigned long flags;
-> +	struct virtio_pmem_request *req, *req_buf;
-> +	struct virtio_pmem *vpmem = vq->vdev->priv;
+I can confirm it does fix the bug , thx.
+
+
+> diff --git a/include/acpi/platform/aclinux.h b/include/acpi/platform/aclinux.h
+> index 624b90b34085..70b55b8fe48b 100644
+> --- a/include/acpi/platform/aclinux.h
+> +++ b/include/acpi/platform/aclinux.h
+> @@ -66,6 +66,12 @@
+>
+>  #define ACPI_INIT_FUNCTION __init
+>
 > +
-> +	spin_lock_irqsave(&vpmem->pmem_lock, flags);
-> +	while ((req = virtqueue_get_buf(vq, &len)) != NULL) {
-> +		req->done = true;
-> +		wake_up(&req->host_acked);
+> +/* Use a specific bugging default separate from ACPICA */
 > +
-> +		if (!list_empty(&vpmem->req_list)) {
-> +			req_buf = list_first_entry(&vpmem->req_list,
-> +					struct virtio_pmem_request, list);
-> +			list_del(&vpmem->req_list);
-
-Shouldn't it be rather `list_del(vpmem->req_list.next)`? We are trying to unlink
-first element of the list and `vpmem->req_list` is just the list head.
-
-> +int virtio_pmem_flush(struct nd_region *nd_region)
-> +{
-> +	int err;
-> +	unsigned long flags;
-> +	struct scatterlist *sgs[2], sg, ret;
-> +	struct virtio_device *vdev = nd_region->provider_data;
-> +	struct virtio_pmem *vpmem = vdev->priv;
-> +	struct virtio_pmem_request *req;
+> +#undef ACPI_DEBUG_DEFAULT
+> +#define ACPI_DEBUG_DEFAULT          (ACPI_LV_INFO | ACPI_LV_REPAIR)
 > +
-> +	might_sleep();
-> +	req = kmalloc(sizeof(*req), GFP_KERNEL);
-> +	if (!req)
-> +		return -ENOMEM;
-> +
-> +	req->done = req->wq_buf_avail = false;
-> +	strcpy(req->name, "FLUSH");
-> +	init_waitqueue_head(&req->host_acked);
-> +	init_waitqueue_head(&req->wq_buf);
-> +	sg_init_one(&sg, req->name, strlen(req->name));
-> +	sgs[0] = &sg;
-> +	sg_init_one(&ret, &req->ret, sizeof(req->ret));
-> +	sgs[1] = &ret;
-> +
-> +	spin_lock_irqsave(&vpmem->pmem_lock, flags);
-> +	err = virtqueue_add_sgs(vpmem->req_vq, sgs, 1, 1, req, GFP_ATOMIC);
-> +	if (err) {
-> +		dev_err(&vdev->dev, "failed to send command to virtio pmem device\n");
-> +
-> +		list_add_tail(&vpmem->req_list, &req->list);
-> +		spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
-> +
-> +		/* When host has read buffer, this completes via host_ack */
-> +		wait_event(req->wq_buf, req->wq_buf_avail);
-> +		spin_lock_irqsave(&vpmem->pmem_lock, flags);
-> +	}
-
-Aren't the arguments in `list_add_tail` swapped? The element we are adding should
-be first, the list should be second. Also, shouldn't we resubmit the request after
-waking up from `wait_event(req->wq_buf, req->wq_buf_avail)`?
-
-I propose rewriting it like that:
-
-diff --git a/drivers/nvdimm/virtio_pmem.c b/drivers/nvdimm/virtio_pmem.c
-index 66b582f751a3..ff0556b04e86 100644
---- a/drivers/nvdimm/virtio_pmem.c
-+++ b/drivers/nvdimm/virtio_pmem.c
-@@ -25,7 +25,7 @@ void host_ack(struct virtqueue *vq)
- 		if (!list_empty(&vpmem->req_list)) {
- 			req_buf = list_first_entry(&vpmem->req_list,
- 					struct virtio_pmem_request, list);
--			list_del(&vpmem->req_list);
-+			list_del(vpmem->req_list.next);
- 			req_buf->wq_buf_avail = true;
- 			wake_up(&req_buf->wq_buf);
- 		}
-@@ -59,17 +59,33 @@ int virtio_pmem_flush(struct nd_region *nd_region)
- 	sgs[1] = &ret;
- 
- 	spin_lock_irqsave(&vpmem->pmem_lock, flags);
--	err = virtqueue_add_sgs(vpmem->req_vq, sgs, 1, 1, req, GFP_ATOMIC);
--	if (err) {
--		dev_err(&vdev->dev, "failed to send command to virtio pmem device\n");
-+	/*
-+	 * If virtqueue_add_sgs returns -ENOSPC then req_vq virtual queue does not
-+	 * have free descriptor slots. We add the request to req_list and wait
-+	 * for host_ack to wake us up when free slots are available.
-+	 */
-+	while ((err = virtqueue_add_sgs(vpmem->req_vq, sgs, 1, 1, req, GFP_ATOMIC)) == -ENOSPC) {
-+		dev_err(&vdev->dev, "failed to send command to virtio pmem device, no free slots in the virtqueue, postponing request\n");
-+		req->wq_buf_avail = false;
- 
--		list_add_tail(&vpmem->req_list, &req->list);
-+		list_add_tail(&req->list, &vpmem->req_list);
- 		spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
- 
- 		/* When host has read buffer, this completes via host_ack */
- 		wait_event(req->wq_buf, req->wq_buf_avail);
- 		spin_lock_irqsave(&vpmem->pmem_lock, flags);
- 	}
-+
-+	/*
-+	 * virtqueue_add_sgs failed with error different than -ENOSPC, we can't
-+	 * do anything about that.
-+	 */
-+	if (err) {
-+		dev_info(&vdev->dev, "failed to send command to virtio pmem device, error code %d\n", err);
-+		spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
-+		err = -EIO;
-+		goto ret;
-+	}
- 	err = virtqueue_kick(vpmem->req_vq);
- 	spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
-
-
-Let me know if it looks reasonable to you.
-
-Thank you,
-Jakub Staron
-
+>  #ifndef CONFIG_ACPI
+>
+>  /* External globals for __KERNEL__, stubs is needed */
+> @@ -82,11 +88,6 @@
+>  #define ACPI_NO_ERROR_MESSAGES
+>  #undef ACPI_DEBUG_OUTPUT
+>
+> -/* Use a specific bugging default separate from ACPICA */
+> -
+> -#undef ACPI_DEBUG_DEFAULT
+> -#define ACPI_DEBUG_DEFAULT          (ACPI_LV_INFO | ACPI_LV_REPAIR)
+> -
+>  /* External interface for __KERNEL__, stub is needed */
+>
+>  #define ACPI_EXTERNAL_RETURN_STATUS(prototype) \
