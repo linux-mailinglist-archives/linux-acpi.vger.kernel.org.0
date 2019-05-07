@@ -2,206 +2,202 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C4E7816C0B
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2019 22:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BB6316C29
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2019 22:26:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726276AbfEGURC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 May 2019 16:17:02 -0400
-Received: from mga14.intel.com ([192.55.52.115]:47724 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726225AbfEGURC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 7 May 2019 16:17:02 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 May 2019 13:17:01 -0700
-X-ExtLoop1: 1
-Received: from orsmsx109.amr.corp.intel.com ([10.22.240.7])
-  by fmsmga004.fm.intel.com with ESMTP; 07 May 2019 13:17:01 -0700
-Received: from orsmsx111.amr.corp.intel.com (10.22.240.12) by
- ORSMSX109.amr.corp.intel.com (10.22.240.7) with Microsoft SMTP Server (TLS)
- id 14.3.408.0; Tue, 7 May 2019 13:17:00 -0700
-Received: from orsmsx122.amr.corp.intel.com ([169.254.11.68]) by
- ORSMSX111.amr.corp.intel.com ([169.254.12.39]) with mapi id 14.03.0415.000;
- Tue, 7 May 2019 13:17:00 -0700
-From:   "Schmauss, Erik" <erik.schmauss@intel.com>
-To:     Gabriel C <nix.or.die@gmail.com>
-CC:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Moore, Robert" <robert.moore@intel.com>
-Subject: RE: [Kernel 5.1] ACPI_DEBUG messages without CONFIG_ACPI_DEBUG
- being set
-Thread-Topic: [Kernel 5.1] ACPI_DEBUG messages without CONFIG_ACPI_DEBUG
- being set
-Thread-Index: AQHVBGRFH2iPoaZGrUKM6INtXuK3nKZfsfkAgAAIwICAABFWAIAAEDuAgAAkt+CAAHtzAP//ndgQ
-Date:   Tue, 7 May 2019 20:17:00 +0000
-Message-ID: <CF6A88132359CE47947DB4C6E1709ED53C5A9F1C@ORSMSX122.amr.corp.intel.com>
-References: <CAEJqkgh-eh0F0rNBChhurH0LWTLFP0DyfFzKj66p4Z2d1kM2gw@mail.gmail.com>
- <CAJZ5v0gRWEL1shQE3im0VxiPRBYat86o=R_NVQbc3JgOX8uT6w@mail.gmail.com>
- <CAEJqkgiNYXwsJaT0d3JyMW-2yJ2DV53FHPV5-iAy7b-NbAEAcw@mail.gmail.com>
- <CAJZ5v0ghNMPMdc03T-is-=-k11rZ8K5O9Av+TnbBY_2mNr-eug@mail.gmail.com>
- <CAEJqkgiB7woieNZ-vVm7x-GzVrqGpJWLXOM9JpSUgPgE7eA6gA@mail.gmail.com>
- <CF6A88132359CE47947DB4C6E1709ED53C5A9EBD@ORSMSX122.amr.corp.intel.com>
- <CAEJqkggvtYobXNjFbvqjajMcbZ_+3PrQJC-9kK+nn5cgXgOyWg@mail.gmail.com>
-In-Reply-To: <CAEJqkggvtYobXNjFbvqjajMcbZ_+3PrQJC-9kK+nn5cgXgOyWg@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiZjNiNGU3YWQtMDgyOC00MGUzLTg3MWItYjQ0ZDE3NjAwYjYyIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiZ2FhRVwvXC9PSFkydFF2N21cLzNHWUNUYTBBdTJjRDBHNTlUaStnMGNkSjc1UTU5V1QxUjZnbmF5NXYzeFZ4aGNzdyJ9
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.0.600.7
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.140]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726435AbfEGUZ7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 May 2019 16:25:59 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:37415 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726236AbfEGUZ6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 May 2019 16:25:58 -0400
+Received: by mail-pf1-f195.google.com with SMTP id g3so9239029pfi.4
+        for <linux-acpi@vger.kernel.org>; Tue, 07 May 2019 13:25:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=SDTbfUna34Qd79ay/PvHpXeLqKHYqAqzFBtMK1XzxGI=;
+        b=ON/NQjQWEi3fON/DDBAYu5HG4F3A9wQYYX3ZHXewW6rdfpyfN6GDeKnlxgf9/si9a9
+         9JHSodUWXjDvUXWyvoEwEE0DgwhDeKMop/6LDrDPkGLUCYR03QkkfX5S7JFJ8pfilSDZ
+         xvvi21rJRzAsyyhE+/kT6jH7WSjJD4+uklULukm2H+Pokk9wj1CJ1/NtVElLjBkK6KcS
+         JqikN21lQ/W3kOqZE29va5iKvC/1zmXoxZvy0PuN6Nh+lQFN6TTKu80Ldt+bYozlFh95
+         K/LSeCc2Mr0qC2NpnPv30EkDStUnE9M9IgeET/tA/SjNLgtMCQoX8YEn/nGCjEfLlQaU
+         jpyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=SDTbfUna34Qd79ay/PvHpXeLqKHYqAqzFBtMK1XzxGI=;
+        b=ehjQpm7zQdrZPEaIVszNNZtgCI5C81zoveySyB1Ah3uLoUuQLQLofg+lGrWrw7J/I8
+         K58udWUqLYQj2OzL2/A+/c6amrOPAXnNDgK3eBj8DxHpa5fOmxXgoOh8YU396eT/Orbj
+         C/OWykcybswCK7n85ZTy85PZdzzu2RbTjCovOoR7/hbqrFVKDD4xahCHzScnwEQ+VUYt
+         JlGzQLZNO7YjtFmE7YQ4qGn2QWaycAJnklK7xO7+c83CxvWZeF4XrBLDGp7hOy37o9o2
+         +FEmoIjP1uSD9ZmGAH1Ooa7PX6B3U73a8iHgYCQjJWb1AxaKB2+y7IViDSZJKDmGybQr
+         RNYg==
+X-Gm-Message-State: APjAAAVL9HwCSh4x9UqZpPVRx7ORv/FbBCDFYmEAYhgFa0esRR7EjomI
+        Tsjn7md0VQGpYPv8jkk7svYsZQ==
+X-Google-Smtp-Source: APXvYqxbPfJ5tBulG/r6tvcVjjtvKQlgkwdEbMW3aGkGHvRkjNKPxepulcAi/TILththSdbF+vLDMw==
+X-Received: by 2002:aa7:8dc3:: with SMTP id j3mr43498542pfr.141.1557260757236;
+        Tue, 07 May 2019 13:25:57 -0700 (PDT)
+Received: from jstaron2.mtv.corp.google.com ([2620:15c:202:201:b94f:2527:c39f:ca2d])
+        by smtp.gmail.com with ESMTPSA id f5sm15855223pgo.75.2019.05.07.13.25.55
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Tue, 07 May 2019 13:25:56 -0700 (PDT)
+Subject: Re: [Qemu-devel] [PATCH v7 2/6] virtio-pmem: Add virtio pmem driver
+To:     Pankaj Gupta <pagupta@redhat.com>, linux-nvdimm@lists.01.org,
+        linux-kernel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        qemu-devel@nongnu.org, linux-ext4@vger.kernel.org,
+        linux-xfs@vger.kernel.org
+Cc:     jack@suse.cz, mst@redhat.com, jasowang@redhat.com,
+        david@fromorbit.com, lcapitulino@redhat.com,
+        adilger.kernel@dilger.ca, zwisler@kernel.org, aarcange@redhat.com,
+        dave.jiang@intel.com, darrick.wong@oracle.com,
+        vishal.l.verma@intel.com, david@redhat.com, willy@infradead.org,
+        hch@infradead.org, jmoyer@redhat.com, nilal@redhat.com,
+        lenb@kernel.org, kilobyte@angband.pl, riel@surriel.com,
+        yuval.shaia@oracle.com, stefanha@redhat.com, pbonzini@redhat.com,
+        dan.j.williams@intel.com, kwolf@redhat.com, tytso@mit.edu,
+        xiaoguangrong.eric@gmail.com, cohuck@redhat.com, rjw@rjwysocki.net,
+        imammedo@redhat.com, smbarber@google.com
+References: <20190426050039.17460-1-pagupta@redhat.com>
+ <20190426050039.17460-3-pagupta@redhat.com>
+From:   =?UTF-8?Q?Jakub_Staro=c5=84?= <jstaron@google.com>
+Message-ID: <3d6479ae-6c39-d614-f1d9-aa1978e2e438@google.com>
+Date:   Tue, 7 May 2019 13:25:54 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
+In-Reply-To: <20190426050039.17460-3-pagupta@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogR2FicmllbCBDIFttYWls
-dG86bml4Lm9yLmRpZUBnbWFpbC5jb21dDQo+IFNlbnQ6IFR1ZXNkYXksIE1heSA3LCAyMDE5IDEy
-OjA2IFBNDQo+IFRvOiBTY2htYXVzcywgRXJpayA8ZXJpay5zY2htYXVzc0BpbnRlbC5jb20+DQo+
-IENjOiBSYWZhZWwgSi4gV3lzb2NraSA8cmFmYWVsQGtlcm5lbC5vcmc+OyBBQ1BJIERldmVsIE1h
-bGluZyBMaXN0IDxsaW51eC0NCj4gYWNwaUB2Z2VyLmtlcm5lbC5vcmc+OyBMS01MIDxsaW51eC1r
-ZXJuZWxAdmdlci5rZXJuZWwub3JnPjsgTW9vcmUsDQo+IFJvYmVydCA8cm9iZXJ0Lm1vb3JlQGlu
-dGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtLZXJuZWwgNS4xXSBBQ1BJX0RFQlVHIG1lc3NhZ2Vz
-IHdpdGhvdXQNCj4gQ09ORklHX0FDUElfREVCVUcgYmVpbmcgc2V0DQo+IA0KPiBBbSBEaS4sIDcu
-IE1haSAyMDE5IHVtIDIwOjQ2IFVociBzY2hyaWViIFNjaG1hdXNzLCBFcmlrDQo+IDxlcmlrLnNj
-aG1hdXNzQGludGVsLmNvbT46DQo+ID4NCj4gPg0KPiA+DQo+ID4gPiAtLS0tLU9yaWdpbmFsIE1l
-c3NhZ2UtLS0tLQ0KPiA+ID4gRnJvbTogR2FicmllbCBDIFttYWlsdG86bml4Lm9yLmRpZUBnbWFp
-bC5jb21dDQo+ID4gPiBTZW50OiBUdWVzZGF5LCBNYXkgNywgMjAxOSAyOjMzIEFNDQo+ID4gPiBU
-bzogUmFmYWVsIEouIFd5c29ja2kgPHJhZmFlbEBrZXJuZWwub3JnPg0KPiA+ID4gQ2M6IEFDUEkg
-RGV2ZWwgTWFsaW5nIExpc3QgPGxpbnV4LWFjcGlAdmdlci5rZXJuZWwub3JnPjsgTEtNTA0KPiA+
-ID4gPGxpbnV4LSBrZXJuZWxAdmdlci5rZXJuZWwub3JnPjsgU2NobWF1c3MsIEVyaWsNCj4gPiA+
-IDxlcmlrLnNjaG1hdXNzQGludGVsLmNvbT4NCj4gPiA+IFN1YmplY3Q6IFJlOiBbS2VybmVsIDUu
-MV0gQUNQSV9ERUJVRyBtZXNzYWdlcyB3aXRob3V0DQo+ID4gPiBDT05GSUdfQUNQSV9ERUJVRyBi
-ZWluZyBzZXQNCj4gPiA+DQo+ID4gPiBBbSBEaS4sIDcuIE1haSAyMDE5IHVtIDEwOjM1IFVociBz
-Y2hyaWViIFJhZmFlbCBKLiBXeXNvY2tpDQo+ID4gPiA8cmFmYWVsQGtlcm5lbC5vcmc+Og0KPiA+
-ID4gPg0KPiA+ID4gPiBPbiBUdWUsIE1heSA3LCAyMDE5IGF0IDk6MzEgQU0gR2FicmllbCBDIDxu
-aXgub3IuZGllQGdtYWlsLmNvbT4NCj4gd3JvdGU6DQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBBbSBE
-aS4sIDcuIE1haSAyMDE5IHVtIDA5OjAxIFVociBzY2hyaWViIFJhZmFlbCBKLiBXeXNvY2tpDQo+
-ID4gPiA8cmFmYWVsQGtlcm5lbC5vcmc+Og0KPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiAgSGVsbG8g
-UmFmYWVsICwgIEVyaWsNCj4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gK0VyaWsNCj4gPiA+ID4gPiA+
-DQo+ID4gPiA+ID4gPiBPbiBUdWUsIE1heSA3LCAyMDE5IGF0IDE6MzMgQU0gR2FicmllbCBDDQo+
-ID4gPiA+ID4gPiA8bml4Lm9yLmRpZUBnbWFpbC5jb20+DQo+ID4gPiB3cm90ZToNCj4gPiA+ID4g
-PiA+ID4NCj4gPiA+ID4gPiA+ID4gSGVsbG8sDQo+ID4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiA+
-IHdoaWxlIHRlc3Rpbmcga2VybmVsLTUuMSBJIGdldCBvbiBvbmUgb2YgbXkgTGVub3ZvIExhcHRv
-cHMNCj4gPiA+ID4gPiA+ID4gdmVyeSBzdHJhbmdlICdBQ1BJIERlYnVnOicgbWVzc2FnZXMuDQo+
-ID4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiA+IEFmdGVyIHNvbWUgZ3JlcHBpbmcgSSByZWFsaXpl
-ZCB0aGVzZSBhcmUgRGVidWcgbWVzc2FnZXMgZnJvbQ0KPiA+ID4gPiA+ID4gPiBEU0RUICwgaG93
-ZXZlciBteSBrZXJuZWwgZG9lcyBub3QgaGF2ZSBBQ1BJX0RFQlVHIGVuYWJsZWQuDQo+ID4gPiA+
-ID4gPiA+DQo+ID4gPiA+ID4gPiA+IEkgZm91bmQgb3V0IHRoZSBtb2R1bGUgdHJpZ2dlcmluZyB0
-aGlzLCBvbiB0aGlzIExhcHRvcCBpcw0KPiA+ID4gPiA+ID4gPiBpZGVhcGFkX2xhcHRvcCAsIGJ1
-dCBsb29raW5nIGF0IHRoZSBjb2RlIEkgY2Fubm90IHNlZSB3aGF0DQo+ID4gPiA+ID4gPiA+IHdv
-dWxkIGNhdXNlcyB0aGF0Lg0KPiA+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPiBBbHNvIG9uIHRo
-ZSBzYW1lIExhcHRvcCB3aXRoIGFueSA1LjAuWCBrZXJuZWxzIEkgY2Fubm90IHNlZSB0aGVzZS4N
-Cj4gPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+ID4gfiQgZ3JlcCAtaSBB
-Q1BJX0RFQlVHIC9ib290L2NvbmZpZy01LjEtZncxICMNCj4gPiA+ID4gPiA+ID4gQ09ORklHX0FD
-UElfREVCVUdHRVIgaXMgbm90IHNldCAjIENPTkZJR19BQ1BJX0RFQlVHIGlzDQo+IG5vdA0KPiA+
-ID4gc2V0ICMNCj4gPiA+ID4gPiA+ID4gQ09ORklHX1RISU5LUEFEX0FDUElfREVCVUdGQUNJTElU
-SUVTIGlzIG5vdCBzZXQgIw0KPiA+ID4gPiA+ID4gPiBDT05GSUdfVEhJTktQQURfQUNQSV9ERUJV
-RyBpcyBub3Qgc2V0DQo+ID4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiA+IC4uIGRtZXNnIC4uDQo+
-ID4gPiA+ID4gPiA+IC4uLg0KPiA+ID4gPiA+ID4gPiBbICAgNjguMDIwODEyXSBjYWxsaW5nICBp
-ZGVhcGFkX2FjcGlfZHJpdmVyX2luaXQrMHgwLzB4MTAwMA0KPiA+ID4gPiA+ID4gPiBbaWRlYXBh
-ZF9sYXB0b3BdIEAgMTMyMg0KPiA+ID4gPiA+ID4gPiBbICAgNjguMDI2NzA4XSBpbnB1dDogSWRl
-YXBhZCBleHRyYSBidXR0b25zIGFzDQo+ID4gPiA+ID4gPiA+DQo+ID4gPiAvZGV2aWNlcy9wY2kw
-MDAwOjAwLzAwMDA6MDA6MWYuMC9QTlAwQzA5OjAwL1ZQQzIwMDQ6MDAvaW5wdXQvaW5wdXQxNg0K
-PiA+ID4gPiA+ID4gPiBbICAgNjguMDM4MjM2XSBBQ1BJIERlYnVnOiAgIj09PT09UVVFUllfNjQ9
-PT09PSINCj4gPiA+ID4gPiA+ID4gWyAgIDY4LjA1MDIzMl0gQUNQSSBEZWJ1ZzogICI9PT09PVFV
-RVJZXzY1PT09PT0iDQo+ID4gPiA+ID4gPiA+IFsgICA2OC4wNjAyMThdIEFDUEkgRGVidWc6ICAi
-PT09PT1RVUVSWV82ND09PT09Ig0KPiA+ID4gPiA+ID4gPiBbICAgNjguMDkyMjE2XSBwcm9iZSBv
-ZiBWUEMyMDA0OjAwIHJldHVybmVkIDEgYWZ0ZXIgNzEzODYgdXNlY3MNCj4gPiA+ID4gPiA+ID4g
-WyAgIDY4LjA5MjI0NV0gaW5pdGNhbGwgaWRlYXBhZF9hY3BpX2RyaXZlcl9pbml0KzB4MC8weDEw
-MDANCj4gPiA+ID4gPiA+ID4gW2lkZWFwYWRfbGFwdG9wXSByZXR1cm5lZCAwIGFmdGVyIDY5NzUx
-IHVzZWNzc2cNCj4gPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+ID4gLi4uDQo+ID4gPiA+ID4gPiA+
-DQo+ID4gPiA+ID4gPiA+IFRoZXNlID09PT09UVVFUllfWFg9PT09PSBtZXNzYWdlcyBhcmUgZnJv
-bSBEU0RUOg0KPiA+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPiB+L2FjcGkkIGdyZXAgUVVFUlkg
-ZHNkdC5kc2wNCj4gPiA+ID4gPiA+ID4gICAgICAgICAgICAgICAgRGVidWcgPSAiPT09PT1RVUVS
-WV8xMT09PT09Ig0KPiA+ID4gPiA+ID4gPiAgICAgICAgICAgICAgICBEZWJ1ZyA9ICI9PT09PVFV
-RVJZXzEyPT09PT0iDQo+ID4gPiA+ID4gPiA+ICAgICAgICAgICAgICAgIERlYnVnID0gIj09PT09
-UVVFUllfMjQ9PT09PSINCj4gPiA+ID4gPiA+ID4gICAgICAgICAgICAgICAgRGVidWcgPSAiPT09
-PT1RVUVSWV8yNT09PT09Ig0KPiA+ID4gPiA+ID4gPiAgICAgICAgICAgICAgICBEZWJ1ZyA9ICI9
-PT09PVFVRVJZXzM3PT09PT0iDQo+ID4gPiA+ID4gPiA+ICAgICAgICAgICAgICAgIERlYnVnID0g
-Ij09PT09UVVFUllfMzg9PT09PSINCj4gPiA+ID4gPiA+ID4gICAgICAgICAgICAgICAgRGVidWcg
-PSAiPT09PT1RVUVSWV82ND09PT09Ig0KPiA+ID4gPiA+ID4gPiAgICAgICAgICAgICAgICBEZWJ1
-ZyA9ICI9PT09PVFVRVJZXzY1PT09PT0iDQo+ID4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiA+IEFs
-c28gdGhpcyBpcyB0aGUgY29kZSBmcm9tIERTRFQgZm9yIFFVRVJZIDY0IGFuZCA2NToNCj4gPiA+
-ID4gPiA+ID4NCj4gPiA+ID4gPiA+ID4gLi4uDQo+ID4gPiA+ID4gPiA+ICAgICAgICAgICAgIE1l
-dGhvZCAoX1E2NCwgMCwgTm90U2VyaWFsaXplZCkgIC8vIF9ReHg6IEVDIFF1ZXJ5DQo+ID4gPiA+
-ID4gPiA+ICAgICAgICAgICAgew0KPiA+ID4gPiA+ID4gPiAgICAgICAgICAgICAgICBEZWJ1ZyA9
-ICI9PT09PVFVRVJZXzY0PT09PT0iDQo+ID4gPiA+ID4gPiA+ICAgICAgICAgICAgICAgIElmICgo
-T1NZUyA9PSAweDA3RDkpKQ0KPiA+ID4gPiA+ID4gPiAgICAgICAgICAgICAgICB7DQo+ID4gPiA+
-ID4gPiA+ICAgICAgICAgICAgICAgICAgICBJZiAoKChXTEVYID09IE9uZSkgJiAoV0xBVCA9PSBP
-bmUpKSkNCj4gPiA+ID4gPiA+ID4gICAgICAgICAgICAgICAgICAgIHsNCj4gPiA+ID4gPiA+ID4g
-ICAgICAgICAgICAgICAgICAgICAgICBTR09WICgweDAyMDQwMDA1LCBPbmUpDQo+ID4gPiA+ID4g
-PiA+ICAgICAgICAgICAgICAgICAgICB9DQo+ID4gPiA+ID4gPiA+ICAgICAgICAgICAgICAgICAg
-ICBFbHNlDQo+ID4gPiA+ID4gPiA+ICAgICAgICAgICAgICAgICAgICB7DQo+ID4gPiA+ID4gPiA+
-ICAgICAgICAgICAgICAgICAgICAgICAgU0dPViAoMHgwMjA0MDAwNSwgWmVybykNCj4gPiA+ID4g
-PiA+ID4gICAgICAgICAgICAgICAgICAgIH0NCj4gPiA+ID4gPiA+ID4gICAgICAgICAgICAgICAg
-fQ0KPiA+ID4gPiA+ID4gPiAgICAgICAgICAgIH0NCj4gPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+
-ID4gICAgICAgICAgICBNZXRob2QgKF9RNjUsIDAsIE5vdFNlcmlhbGl6ZWQpICAvLyBfUXh4OiBF
-QyBRdWVyeQ0KPiA+ID4gPiA+ID4gPiAgICAgICAgICAgIHsNCj4gPiA+ID4gPiA+ID4gICAgICAg
-ICAgICAgICAgRGVidWcgPSAiPT09PT1RVUVSWV82NT09PT09Ig0KPiA+ID4gPiA+ID4gPiAgICAg
-ICAgICAgICAgICBJZiAoKE9TWVMgPT0gMHgwN0Q5KSkNCj4gPiA+ID4gPiA+ID4gICAgICAgICAg
-ICAgICAgew0KPiA+ID4gPiA+ID4gPiAgICAgICAgICAgICAgICAgICAgSWYgKCgoQlRFWCA9PSBP
-bmUpICYgKEJUQVQgPT0gT25lKSkpDQo+ID4gPiA+ID4gPiA+ICAgICAgICAgICAgICAgICAgICB7
-DQo+ID4gPiA+ID4gPiA+ICAgICAgICAgICAgICAgICAgICAgICAgU0dPViAoMHgwMjAyMDAwQiwg
-T25lKQ0KPiA+ID4gPiA+ID4gPiAgICAgICAgICAgICAgICAgICAgfQ0KPiA+ID4gPiA+ID4gPiAg
-ICAgICAgICAgICAgICAgICAgRWxzZQ0KPiA+ID4gPiA+ID4gPiAgICAgICAgICAgICAgICAgICAg
-ew0KPiA+ID4gPiA+ID4gPiAgICAgICAgICAgICAgICAgICAgICAgIFNHT1YgKDB4MDIwMjAwMEIs
-IFplcm8pDQo+ID4gPiA+ID4gPiA+ICAgICAgICAgICAgICAgICAgICB9DQo+ID4gPiA+ID4gPiA+
-ICAgICAgICAgICAgICAgIH0NCj4gPiA+ID4gPiA+ID4gICAgICAgICAgICB9DQo+ID4gPiA+ID4g
-PiA+DQo+ID4gPiA+ID4gPiA+IC4uLg0KPiA+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPg0KPiA+
-ID4gPiA+ID4gPiBBbnkgaWRlYSB3aGF0IHdvdWxkIGNhdXNlIHRoaXMgPw0KPiA+ID4gPiA+DQo+
-ID4gPiA+ID4gSSB0aGluayBJIGZvdW5kIHdoYXQgaXMgY2F1c2luZyB0aGF0Lg0KPiA+ID4gPiA+
-DQo+ID4gPiA+ID4gQ29tbWl0IGFhOWFhYTRkNjFjMDA0OGQzZmFhZDA1Njg5M2NkNzg2MGJiYzA4
-NGMgaXMgbW92aW5nDQo+ID4gPiBkZWZpbml0aW9uDQo+ID4gPiA+ID4gb2YgTGludXgncyAgQUNQ
-SV9ERUJVR19ERUZBVUxUIHRvIGluY3VkZS9hY3BpL3BsYXRmb3JtL2FjbGludXguaA0KPiA+ID4g
-PiA+ICwgaG93ZXZlciBpbmNsdWRlL2FjcGkvYWNwaS5oIGRpZG4ndCBnb3QgdXBkYXRlZCBhbmQN
-Cj4gPiA+ID4gPiBBQ1BJX0RFQlVHX0RFRkFVTFQgbm93IGJlaW5nIGFsd2F5cyBkZWZpbmVkIGFz
-ICAoQUNQSV9MVl9JTklUDQo+IHwNCj4gPiA+ID4gPiBBQ1BJX0xWX0RFQlVHX09CSkVDVCB8IEFD
-UElfTFZfRVZBTFVBVElPTiB8DQo+IEFDUElfTFZfUkVQQUlSKQ0KPiA+ID4gPg0KPiA+ID4gPiBJ
-J20gbm90IHN1cmUgd2hhdCB5b3UgbWVhbiBieSB0aGlzLg0KPiA+ID4gPg0KPiA+ID4gPiBpbmNs
-dWRlL2FjcGkvYWNwaS5oIHNob3VsZCBnZXQgdGhlIHJpZ2h0IGRlZmluaXRpb25zIHRocm91Z2gN
-Cj4gPiA+ID4gaW5jbHVkZS9hY3BpL3BsYXRmb3JtL2FjZW52LmggYW5kIGluY2x1ZGUvYWNwaS9h
-Y291dHB1dC5oIHRoYXQgYXJlDQo+ID4gPiA+IGluY2x1ZGVkIGJ5IGl0Lg0KPiA+ID4gPg0KPiA+
-ID4NCj4gPiA+IEhtbSB5ZXMgc2hvdWxkICwgSSBtaXNzZWQgdGhhdCBpbmNsdWRlLiBIb3dldmVy
-IGl0IGRvZXMgbm90IHdvcmsuDQo+ID4gPg0KPiA+ID4gSSd2ZSBqdXN0IHB1dCBiYWNrIG9sZCBj
-b2RlIGJhY2sgaW50byBkcml2ZXJzL2FjcGkvYnVzLmMgdG8gdGVzdCBhbmQNCj4gPiA+IGFsbCB3
-b3JraW5nIG5vdyBmaW5lIHdpdGhvdXQgYW55IG90aGVyIGNoYW5nZXMuDQo+ID4gPg0KPiA+ID4g
-PiBJdCBsb29rcyBsaWtlIGluY3VkZS9hY3BpL3BsYXRmb3JtL2FjbGludXguaCBoYXMgbm90IGJl
-ZW4gaW5jbHVkZWQNCj4gPiA+ID4gYnkgaW5jbHVkZS9hY3BpL3BsYXRmb3JtL2FjZW52LmggZm9y
-IHNvbWUgcmVhc29uIHdoZW4gYnVpbGRpbmcNCj4gPiA+ID4gdGhpcyBtb2R1bGUuDQo+ID4gPg0K
-PiA+ID4gSWYgdGhpcyBvbmUgZ2V0dGluZyBpdCB3cm9uZyBhbGwgd2lsbCBkbyBzbyAsIHRoZXkg
-YWxsIGp1c3QgaW5jbHVkZQ0KPiA8bGludXgvYWNwaS5oPi4NCj4gPiA+DQo+ID4gPiBQcm9iYWJs
-eSBub3Qgc28gbXVjaCB1c2VycyB3aWxsIG5vdGljZSB0aGF0ICwgSSBqdXN0IGRpZCBiZWNhdXNl
-IG15DQo+ID4gPiBCSU9TIHZlbmRvciBmb3Jnb3QgREVCVUcgYXJvdW5kLg0KPiA+DQo+ID4gRG8g
-eW91IHN0aWxsIGdldCB0aGlzIGlzc3VlIGFmdGVyIGRvaW5nIG1ha2UgY2xlYW4gYW5kIHJlYnVp
-bGRpbmcgeW91cg0KPiBrZXJuZWw/DQo+IA0KPiBBIGNsZWFuIGJ1aWxkIGZyb20gdGFyYmFsbCBo
-YXMgdGhpcyBpc3N1ZSBmb3IgbWUuIEkgZG9uJ3QgdGhpbmsgaXMgYSBidWlsZGluZw0KPiBwcm9i
-bGVtICwgYW55IDw1LjEga2VybmVsIGlzIGZpbmUgLCBrZXJuZWwgNS4xIHdpdGggeW91ciBjb21t
-aXQgcmV2ZXJ0ZWQgaXMgZmluZQ0KPiB0b28gLCBrZXJuZWwgNS4xIHdpdGggeW91ciBjb21taXQg
-aW4gYnV0IHRoZSByZW1vdmVkIGh1bmsgaW4gYnVzLmMgcmUtYWRkZWQNCj4gaXMgZmluZSBhbHNv
-Lg0KDQpJIHRvb2sgYSBjbG9zZXIgbG9vay4gVGhpcyB3YXMgYW4gb2J2aW91cyBtaXN0YWtlIG9u
-IG15IHBhcnQuIFRoYW5rcyBmb3IgY2F0Y2hpbmcgaXQuDQoNClRoZSBmb2xsb3dpbmcgc2hvdWxk
-IGZpeCBpdDoNCg0KZGlmZiAtLWdpdCBhL2luY2x1ZGUvYWNwaS9wbGF0Zm9ybS9hY2xpbnV4Lmgg
-Yi9pbmNsdWRlL2FjcGkvcGxhdGZvcm0vYWNsaW51eC5oDQppbmRleCA2MjRiOTBiMzQwODUuLjcw
-YjU1YjhmZTQ4YiAxMDA2NDQNCi0tLSBhL2luY2x1ZGUvYWNwaS9wbGF0Zm9ybS9hY2xpbnV4LmgN
-CisrKyBiL2luY2x1ZGUvYWNwaS9wbGF0Zm9ybS9hY2xpbnV4LmgNCkBAIC02Niw2ICs2NiwxMiBA
-QA0KDQogI2RlZmluZSBBQ1BJX0lOSVRfRlVOQ1RJT04gX19pbml0DQoNCisNCisvKiBVc2UgYSBz
-cGVjaWZpYyBidWdnaW5nIGRlZmF1bHQgc2VwYXJhdGUgZnJvbSBBQ1BJQ0EgKi8NCisNCisjdW5k
-ZWYgQUNQSV9ERUJVR19ERUZBVUxUDQorI2RlZmluZSBBQ1BJX0RFQlVHX0RFRkFVTFQgICAgICAg
-ICAgKEFDUElfTFZfSU5GTyB8IEFDUElfTFZfUkVQQUlSKQ0KKw0KICNpZm5kZWYgQ09ORklHX0FD
-UEkNCg0KIC8qIEV4dGVybmFsIGdsb2JhbHMgZm9yIF9fS0VSTkVMX18sIHN0dWJzIGlzIG5lZWRl
-ZCAqLw0KQEAgLTgyLDExICs4OCw2IEBADQogI2RlZmluZSBBQ1BJX05PX0VSUk9SX01FU1NBR0VT
-DQogI3VuZGVmIEFDUElfREVCVUdfT1VUUFVUDQoNCi0vKiBVc2UgYSBzcGVjaWZpYyBidWdnaW5n
-IGRlZmF1bHQgc2VwYXJhdGUgZnJvbSBBQ1BJQ0EgKi8NCi0NCi0jdW5kZWYgQUNQSV9ERUJVR19E
-RUZBVUxUDQotI2RlZmluZSBBQ1BJX0RFQlVHX0RFRkFVTFQgICAgICAgICAgKEFDUElfTFZfSU5G
-TyB8IEFDUElfTFZfUkVQQUlSKQ0KLQ0KIC8qIEV4dGVybmFsIGludGVyZmFjZSBmb3IgX19LRVJO
-RUxfXywgc3R1YiBpcyBuZWVkZWQgKi8NCg0KICNkZWZpbmUgQUNQSV9FWFRFUk5BTF9SRVRVUk5f
-U1RBVFVTKHByb3RvdHlwZSkgXA0K
+On 4/25/19 10:00 PM, Pankaj Gupta wrote:
+
+> +void host_ack(struct virtqueue *vq)
+> +{
+> +	unsigned int len;
+> +	unsigned long flags;
+> +	struct virtio_pmem_request *req, *req_buf;
+> +	struct virtio_pmem *vpmem = vq->vdev->priv;
+> +
+> +	spin_lock_irqsave(&vpmem->pmem_lock, flags);
+> +	while ((req = virtqueue_get_buf(vq, &len)) != NULL) {
+> +		req->done = true;
+> +		wake_up(&req->host_acked);
+> +
+> +		if (!list_empty(&vpmem->req_list)) {
+> +			req_buf = list_first_entry(&vpmem->req_list,
+> +					struct virtio_pmem_request, list);
+> +			list_del(&vpmem->req_list);
+
+Shouldn't it be rather `list_del(vpmem->req_list.next)`? We are trying to unlink
+first element of the list and `vpmem->req_list` is just the list head.
+
+> +int virtio_pmem_flush(struct nd_region *nd_region)
+> +{
+> +	int err;
+> +	unsigned long flags;
+> +	struct scatterlist *sgs[2], sg, ret;
+> +	struct virtio_device *vdev = nd_region->provider_data;
+> +	struct virtio_pmem *vpmem = vdev->priv;
+> +	struct virtio_pmem_request *req;
+> +
+> +	might_sleep();
+> +	req = kmalloc(sizeof(*req), GFP_KERNEL);
+> +	if (!req)
+> +		return -ENOMEM;
+> +
+> +	req->done = req->wq_buf_avail = false;
+> +	strcpy(req->name, "FLUSH");
+> +	init_waitqueue_head(&req->host_acked);
+> +	init_waitqueue_head(&req->wq_buf);
+> +	sg_init_one(&sg, req->name, strlen(req->name));
+> +	sgs[0] = &sg;
+> +	sg_init_one(&ret, &req->ret, sizeof(req->ret));
+> +	sgs[1] = &ret;
+> +
+> +	spin_lock_irqsave(&vpmem->pmem_lock, flags);
+> +	err = virtqueue_add_sgs(vpmem->req_vq, sgs, 1, 1, req, GFP_ATOMIC);
+> +	if (err) {
+> +		dev_err(&vdev->dev, "failed to send command to virtio pmem device\n");
+> +
+> +		list_add_tail(&vpmem->req_list, &req->list);
+> +		spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
+> +
+> +		/* When host has read buffer, this completes via host_ack */
+> +		wait_event(req->wq_buf, req->wq_buf_avail);
+> +		spin_lock_irqsave(&vpmem->pmem_lock, flags);
+> +	}
+
+Aren't the arguments in `list_add_tail` swapped? The element we are adding should
+be first, the list should be second. Also, shouldn't we resubmit the request after
+waking up from `wait_event(req->wq_buf, req->wq_buf_avail)`?
+
+I propose rewriting it like that:
+
+diff --git a/drivers/nvdimm/virtio_pmem.c b/drivers/nvdimm/virtio_pmem.c
+index 66b582f751a3..ff0556b04e86 100644
+--- a/drivers/nvdimm/virtio_pmem.c
++++ b/drivers/nvdimm/virtio_pmem.c
+@@ -25,7 +25,7 @@ void host_ack(struct virtqueue *vq)
+ 		if (!list_empty(&vpmem->req_list)) {
+ 			req_buf = list_first_entry(&vpmem->req_list,
+ 					struct virtio_pmem_request, list);
+-			list_del(&vpmem->req_list);
++			list_del(vpmem->req_list.next);
+ 			req_buf->wq_buf_avail = true;
+ 			wake_up(&req_buf->wq_buf);
+ 		}
+@@ -59,17 +59,33 @@ int virtio_pmem_flush(struct nd_region *nd_region)
+ 	sgs[1] = &ret;
+ 
+ 	spin_lock_irqsave(&vpmem->pmem_lock, flags);
+-	err = virtqueue_add_sgs(vpmem->req_vq, sgs, 1, 1, req, GFP_ATOMIC);
+-	if (err) {
+-		dev_err(&vdev->dev, "failed to send command to virtio pmem device\n");
++	/*
++	 * If virtqueue_add_sgs returns -ENOSPC then req_vq virtual queue does not
++	 * have free descriptor slots. We add the request to req_list and wait
++	 * for host_ack to wake us up when free slots are available.
++	 */
++	while ((err = virtqueue_add_sgs(vpmem->req_vq, sgs, 1, 1, req, GFP_ATOMIC)) == -ENOSPC) {
++		dev_err(&vdev->dev, "failed to send command to virtio pmem device, no free slots in the virtqueue, postponing request\n");
++		req->wq_buf_avail = false;
+ 
+-		list_add_tail(&vpmem->req_list, &req->list);
++		list_add_tail(&req->list, &vpmem->req_list);
+ 		spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
+ 
+ 		/* When host has read buffer, this completes via host_ack */
+ 		wait_event(req->wq_buf, req->wq_buf_avail);
+ 		spin_lock_irqsave(&vpmem->pmem_lock, flags);
+ 	}
++
++	/*
++	 * virtqueue_add_sgs failed with error different than -ENOSPC, we can't
++	 * do anything about that.
++	 */
++	if (err) {
++		dev_info(&vdev->dev, "failed to send command to virtio pmem device, error code %d\n", err);
++		spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
++		err = -EIO;
++		goto ret;
++	}
+ 	err = virtqueue_kick(vpmem->req_vq);
+ 	spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
+
+
+Let me know if it looks reasonable to you.
+
+Thank you,
+Jakub Staron
+
