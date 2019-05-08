@@ -2,24 +2,24 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D2EE176D4
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2019 13:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4246D17716
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2019 13:30:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726776AbfEHL2e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 May 2019 07:28:34 -0400
-Received: from mga03.intel.com ([134.134.136.65]:46980 "EHLO mga03.intel.com"
+        id S1727952AbfEHLaY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 May 2019 07:30:24 -0400
+Received: from mga09.intel.com ([134.134.136.24]:53036 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725778AbfEHL2e (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 8 May 2019 07:28:34 -0400
+        id S1727935AbfEHLaW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 8 May 2019 07:30:22 -0400
 X-Amp-Result: UNSCANNABLE
 X-Amp-File-Uploaded: False
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 May 2019 04:28:33 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 May 2019 04:30:21 -0700
 X-ExtLoop1: 1
 Received: from kuha.fi.intel.com ([10.237.72.189])
-  by fmsmga001.fm.intel.com with SMTP; 08 May 2019 04:28:29 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 08 May 2019 14:28:29 +0300
-Date:   Wed, 8 May 2019 14:28:29 +0300
+  by fmsmga001.fm.intel.com with SMTP; 08 May 2019 04:30:17 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 08 May 2019 14:30:17 +0300
+Date:   Wed, 8 May 2019 14:30:17 +0300
 From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
 To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
@@ -29,160 +29,115 @@ Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         platform-driver-x86@vger.kernel.org,
         Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v3 13/13] platform/x86: intel_cht_int33fe: Replacing the
- old connections with references
-Message-ID: <20190508112829.GB19816@kuha.fi.intel.com>
+Subject: Re: [PATCH v3 11/13] platform/x86: intel_cht_int33fe: Provide fwnode
+ for the USB connector
+Message-ID: <20190508113017.GC19816@kuha.fi.intel.com>
 References: <20190412134122.82903-1-heikki.krogerus@linux.intel.com>
- <20190412134122.82903-14-heikki.krogerus@linux.intel.com>
- <a91a1d75-f224-9c9d-873a-f80467d2fb0c@redhat.com>
- <20190417063918.GI1747@kuha.fi.intel.com>
- <76d9ab79-a1d0-f3cd-ba5d-2325740c72ff@redhat.com>
- <20190417093252.GO1747@kuha.fi.intel.com>
- <2fcb2e2c-c390-1b49-7228-197f23401271@redhat.com>
- <20190417104454.GQ1747@kuha.fi.intel.com>
- <cb7cf930-cf76-ef73-49de-222895b133ea@redhat.com>
+ <20190412134122.82903-12-heikki.krogerus@linux.intel.com>
+ <daed3557-7595-86c5-fde1-6ec048b0935d@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cb7cf930-cf76-ef73-49de-222895b133ea@redhat.com>
+In-Reply-To: <daed3557-7595-86c5-fde1-6ec048b0935d@redhat.com>
 User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Apr 17, 2019 at 06:03:03PM +0200, Hans de Goede wrote:
+On Wed, Apr 17, 2019 at 11:52:00AM +0200, Hans de Goede wrote:
 > Hi,
 > 
-> On 17-04-19 12:44, Heikki Krogerus wrote:
-> > On Wed, Apr 17, 2019 at 12:15:18PM +0200, Hans de Goede wrote:
-> > > Hi,
-> > > 
-> > > On 17-04-19 11:32, Heikki Krogerus wrote:
-> > > > On Wed, Apr 17, 2019 at 11:19:28AM +0200, Hans de Goede wrote:
-> > > 
-> > > <snip>
-> > > 
-> > > > > That is not going to work since the (virtual) mux / orientation-switch
-> > > > > devices are only registered once the driver binds to the piusb30532 i2c
-> > > > > device, so when creating the nodes we only have the piusb30532 i2c device.
-> > > > 
-> > > > It's not a problem, that's why we have the software nodes. The nodes
-> > > > can be created before the device entires. The node for pi3usb30532
-> > > > will just be the parent node for the new nodes we add for the mux and
-> > > > switch.
-> > > > 
-> > > > > I've been thinking some more about this and an easy fix is to have separate
-> > > > > fwnode_match functions for typec_switch_match and typec_mux_match and have
-> > > > > them check that the dev_name ends in "-mux" resp. "-switch" that requires
-> > > > > only a very minimal change to "usb: typec: Registering real device entries for the muxes"
-> > > > > and then everything should be fine.
-> > > > 
-> > > > I don't want to do anymore device name matching unless we have to, and
-> > > > here we don't have to. We can name the nodes for those virtual mux and
-> > > > switch, and then just do fwnode_find_named_child_node() in
-> > > > pi3usb30532.c for both of them.
-> > > 
-> > > Thinking more about this, I have a feeling that this makes things needlessly
-> > > complicated, checking the dev_name *ends* in "-mux" resp. "-switch" should be
-> > > 100% reliable since we call:
-> > > 
-> > >          dev_set_name(&sw->dev, "%s-switch", dev_name(parent));
-> > >          dev_set_name(&mux->dev, "%s-mux", dev_name(parent));
-> > > 
-> > > When registering the switch / mux, so I believe doing name (suffix) comparison
-> > > here is fine and much simpler. Anyways this is just my 2 cents on this, I'm
-> > > happy with either solution, your choice.
+> On 12-04-19 15:41, Heikki Krogerus wrote:
+> > In ACPI, and now also in DT, the USB connectors usually have
+> > their own device nodes. In case of USB Type-C, those
+> > connector (port) nodes are child nodes of the controller or
+> > PHY device, in our case the fusb302. The software fwnodes
+> > allow us to create a similar child node for fusb302 that
+> > represents the connector also on Intel CHT.
 > > 
-> > You do have a point. I'll take a look how the two options look like,
-> > but maybe your way is better after all.
+> > This makes it possible replace the fusb302 specific device
+> > properties which were deprecated with the common USB
+> > connector properties that tcpm.c is able to use directly.
+> > 
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> > ---
+> >   drivers/platform/x86/intel_cht_int33fe.c | 37 ++++++++++++++++++++++--
+> >   1 file changed, 34 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/platform/x86/intel_cht_int33fe.c b/drivers/platform/x86/intel_cht_int33fe.c
+> > index 863a792d9282..eff5990322ff 100644
+> > --- a/drivers/platform/x86/intel_cht_int33fe.c
+> > +++ b/drivers/platform/x86/intel_cht_int33fe.c
+> > @@ -24,6 +24,7 @@
+> >   #include <linux/platform_device.h>
+> >   #include <linux/regulator/consumer.h>
+> >   #include <linux/slab.h>
+> > +#include <linux/usb/pd.h>
+> >   #define EXPECTED_PTYPE		4
+> > @@ -31,6 +32,7 @@ enum {
+> >   	INT33FE_NODE_FUSB302,
+> >   	INT33FE_NODE_MAX17047,
+> >   	INT33FE_NODE_PI3USB30532,
+> > +	INT33FE_NODE_USB_CONNECTOR,
+> >   	INT33FE_NODE_MAX,
+> >   };
+> > @@ -111,9 +113,29 @@ cht_int33fe_register_max17047(struct device *dev, struct cht_int33fe_data *data)
+> >   static const struct property_entry fusb302_props[] = {
+> >   	PROPERTY_ENTRY_STRING("linux,extcon-name", "cht_wcove_pwrsrc"),
+> > -	PROPERTY_ENTRY_U32("fcs,max-sink-microvolt", 12000000),
+> > -	PROPERTY_ENTRY_U32("fcs,max-sink-microamp",   3000000),
+> > -	PROPERTY_ENTRY_U32("fcs,max-sink-microwatt", 36000000),
 > 
-> I whipped up a quick fix using my approach so that I can start working
-> on debugging the usb_role_switch_get call in tcpm.c returning NULL.
+> Note that the 36000000 value being removed here is max-sink-microwatt,
+> esp. the _max_ part is important. And recent versions of the fusb302
+> code ignore this entirely.
 > 
-> I've attached it, feel free to use this for v4 of the series if you
-> decide to go with this approach.
+> > +	{ }
+> > +};
+> > +
+> > +#define PDO_FIXED_FLAGS \
+> > +	(PDO_FIXED_DUAL_ROLE | PDO_FIXED_DATA_SWAP | PDO_FIXED_USB_COMM)
+> > +
+> > +static const u32 src_pdo[] = {
+> > +	PDO_FIXED(5000, 1500, PDO_FIXED_FLAGS),
+> > +};
+> > +
+> > +static const u32 snk_pdo[] = {
+> > +	PDO_FIXED(5000, 400, PDO_FIXED_FLAGS),
+> > +	PDO_VAR(5000, 12000, 3000),
+> > +};
+> > +
+> > +static const struct property_entry usb_connector_props[] = {
+> > +	PROPERTY_ENTRY_STRING("name", "connector"),
+> > +	PROPERTY_ENTRY_STRING("data-role", "dual"),
+> > +	PROPERTY_ENTRY_STRING("power-role", "dual"),
+> > +	PROPERTY_ENTRY_STRING("try-power-role", "sink"),
+> > +	PROPERTY_ENTRY_U32_ARRAY("source-pdos", src_pdo),
+> > +	PROPERTY_ENTRY_U32_ARRAY("sink-pdos", snk_pdo),
+> > +	PROPERTY_ENTRY_U32("op-sink-microwatt", 36000000),
+> 
+> Where as "op-sink-microwatt" is more interpreted as a minimum
+> value for non PPS supplies not being able to deliver this causes
+> the Capability Mismatch to get set. But for PPS supplies if I'm
+> reading the code correctly, the entire PPS negotiation is failed
+> by tcpm.c if this cannot be matched. I guess / hope that there
+> is a fallback to none PPS PDOs then but I'm not sure.
 
-Thanks. I'll probable use that as is.
+OK. I'll change that to the current default value, 2500000.
 
+> Anyways the charger the GPD-win ships with is a non PD capable
+> 5V/2A charger and the GPD-pocket ships with a charger which does
+> max 12V/2A. The device itself will work fine on around 10W and
+> even charge at that level (albeit slowly). So I believe that 10W
+> would be a better value for "op-sink-microwatt" (the dt-binding
+> says it is mandatory so we cannot just leave it out).
 
-> >From 47154195c05dc7c8b3373de9603b06c2f435588a Mon Sep 17 00:00:00 2001
-> From: Hans de Goede <hdegoede@redhat.com>
-> Date: Wed, 17 Apr 2019 17:58:17 +0200
-> Subject: [PATCH v2] FIXUP: "usb: typec: Registering real device entries for
->  the muxes"
-> 
-> Check the dev_name suffix so that we do not return the first registered
-> device when a mux and switch share the same parent and fwnode.
-> 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/usb/typec/mux.c | 25 +++++++++++++++++++++----
->  1 file changed, 21 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/mux.c b/drivers/usb/typec/mux.c
-> index c7d4a2dd454e..a28803544301 100644
-> --- a/drivers/usb/typec/mux.c
-> +++ b/drivers/usb/typec/mux.c
-> @@ -22,9 +22,21 @@ static int name_match(struct device *dev, const void *name)
->  	return !strcmp((const char *)name, dev_name(dev));
->  }
->  
-> -static int fwnode_match(struct device *dev, const void *fwnode)
-> +static bool dev_name_ends_with(struct device *dev, const char *suffix)
->  {
-> -	return dev_fwnode(dev) == fwnode;
-> +	const char *name = dev_name(dev);
-> +	const int name_len = strlen(name);
-> +	const int suffix_len = strlen(suffix);
-> +
-> +	if (suffix_len > name_len)
-> +		return false;
-> +
-> +	return strcmp(name + (name_len - suffix_len), suffix) == 0;
-> +}
-> +
-> +static int switch_fwnode_match(struct device *dev, const void *fwnode)
-> +{
-> +	return dev_fwnode(dev) == fwnode && dev_name_ends_with(dev, "-switch");
->  }
->  
->  static void *typec_switch_match(struct device_connection *con, int ep,
-> @@ -37,7 +49,7 @@ static void *typec_switch_match(struct device_connection *con, int ep,
->  			return NULL;
->  
->  		dev = class_find_device(&typec_mux_class, NULL, con->fwnode,
-> -					fwnode_match);
-> +					switch_fwnode_match);
->  	} else {
->  		dev = class_find_device(&typec_mux_class, NULL,
->  					con->endpoint[ep], name_match);
-> @@ -167,6 +179,11 @@ EXPORT_SYMBOL_GPL(typec_switch_get_drvdata);
->  
->  /* ------------------------------------------------------------------------- */
->  
-> +static int mux_fwnode_match(struct device *dev, const void *fwnode)
-> +{
-> +	return dev_fwnode(dev) == fwnode && dev_name_ends_with(dev, "-mux");
-> +}
-> +
->  static void *typec_mux_match(struct device_connection *con, int ep, void *data)
->  {
->  	const struct typec_altmode_desc *desc = data;
-> @@ -226,7 +243,7 @@ static void *typec_mux_match(struct device_connection *con, int ep, void *data)
->  
->  find_mux:
->  	dev = class_find_device(&typec_mux_class, NULL, con->fwnode,
-> -				fwnode_match);
-> +				mux_fwnode_match);
->  
->  	return dev ? to_typec_switch(dev) : ERR_PTR(-EPROBE_DEFER);
->  }
-> -- 
-> 2.21.0
-> 
+I have no objections. If you prefer, I can include a separate patch
+where I change the value to 10W.
 
-cheers,
+thanks,
 
 -- 
 heikki
