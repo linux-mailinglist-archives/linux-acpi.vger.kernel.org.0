@@ -2,119 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96F2216DA0
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2019 00:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6DCB1705B
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2019 07:31:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726256AbfEGWup (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 May 2019 18:50:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46362 "EHLO mail.kernel.org"
+        id S1725815AbfEHFbV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 May 2019 01:31:21 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:36314 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725843AbfEGWuo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 7 May 2019 18:50:44 -0400
-Received: from localhost (unknown [69.71.4.100])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1725778AbfEHFbV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 8 May 2019 01:31:21 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9F12C20825;
-        Tue,  7 May 2019 22:50:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557269443;
-        bh=ofR3gf9a2nJrY32VNWR52pwsavGPKy11KlcaF1ruQMg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=q8HzuDChdiOCMVNfo6MM2W2+skr7rZ7yqDAdrkY5qs9eIMnRp9/T266gImhjkjwOH
-         XGyOFGjN0XQBobQTOEpjMAbDqoANwEm/Livn+aRBsNBBgJQ2QxuleZvvEdB/6d3ZOA
-         RvQaju98/7G49oPyocYm9tfnBfnN6/JwMtxT5xao=
-Date:   Tue, 7 May 2019 17:50:40 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Mohan Kumar <mohankumar718@gmail.com>
-Cc:     rjw@rjwysocki.net, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] PCI: Cleanup printk logging
-Message-ID: <20190507225040.GF156478@google.com>
-References: <1555733026-19609-1-git-send-email-mohankumar718@gmail.com>
+        by mx1.redhat.com (Postfix) with ESMTPS id 1591930894F3;
+        Wed,  8 May 2019 05:31:21 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id B57C55DA38;
+        Wed,  8 May 2019 05:31:20 +0000 (UTC)
+Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
+        by colo-mx.corp.redhat.com (Postfix) with ESMTP id ABC7718089C8;
+        Wed,  8 May 2019 05:31:19 +0000 (UTC)
+Date:   Wed, 8 May 2019 01:31:18 -0400 (EDT)
+From:   Pankaj Gupta <pagupta@redhat.com>
+To:     Jakub =?utf-8?Q?Staro=C5=84?= <jstaron@google.com>
+Cc:     linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        qemu-devel@nongnu.org, linux-ext4@vger.kernel.org,
+        linux-xfs@vger.kernel.org, jack@suse.cz, mst@redhat.com,
+        jasowang@redhat.com, david@fromorbit.com, lcapitulino@redhat.com,
+        adilger kernel <adilger.kernel@dilger.ca>, zwisler@kernel.org,
+        aarcange@redhat.com, dave jiang <dave.jiang@intel.com>,
+        darrick wong <darrick.wong@oracle.com>,
+        vishal l verma <vishal.l.verma@intel.com>, david@redhat.com,
+        willy@infradead.org, hch@infradead.org, jmoyer@redhat.com,
+        nilal@redhat.com, lenb@kernel.org, kilobyte@angband.pl,
+        riel@surriel.com, yuval shaia <yuval.shaia@oracle.com>,
+        stefanha@redhat.com, pbonzini@redhat.com,
+        dan j williams <dan.j.williams@intel.com>, kwolf@redhat.com,
+        tytso@mit.edu, xiaoguangrong eric <xiaoguangrong.eric@gmail.com>,
+        cohuck@redhat.com, rjw@rjwysocki.net, imammedo@redhat.com,
+        Stephen Barber <smbarber@google.com>
+Message-ID: <1853101606.27182251.1557293478937.JavaMail.zimbra@redhat.com>
+In-Reply-To: <CA+nGSuOgCAoS4MkbuSL2q5Gyi4jG2oyJqLu_sDgexm5fSBmPLQ@mail.gmail.com>
+References: <20190426050039.17460-1-pagupta@redhat.com> <20190426050039.17460-5-pagupta@redhat.com> <CA+nGSuOgCAoS4MkbuSL2q5Gyi4jG2oyJqLu_sDgexm5fSBmPLQ@mail.gmail.com>
+Subject: Re: [Qemu-devel] [PATCH v7 4/6] dax: check synchronous mapping is
+ supported
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1555733026-19609-1-git-send-email-mohankumar718@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.65.16.19, 10.4.195.2]
+Thread-Topic: check synchronous mapping is supported
+Thread-Index: Xur19F6QrfsHdMS200ssdeInjhgH+Q==
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.47]); Wed, 08 May 2019 05:31:21 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mohan,
 
-On Sat, Apr 20, 2019 at 07:03:46AM +0300, Mohan Kumar wrote:
-> Replace printk with pr_* to avoid checkpatch warnings.
-
-This looks fine, and I applied it to pci/printk with the intent of
-putting it in v5.2.  I squashed in some pieces of your second patch,
-and I'll respond to that one with the details.
-
-When you post more than one patch in a series, it's nice to include a
-cover letter where I can respond to the series as a whole.
-
-> Signed-off-by: Mohan Kumar <mohankumar718@gmail.com>
-> ---
->  drivers/pci/pci-acpi.c | 11 ++++-------
->  drivers/pci/quirks.c   |  2 +-
->  2 files changed, 5 insertions(+), 8 deletions(-)
 > 
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index e1949f7..3ada026 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -140,8 +140,7 @@ static acpi_status decode_type0_hpx_record(union acpi_object *record,
->  		hpx->t0->enable_perr     = fields[5].integer.value;
->  		break;
->  	default:
-> -		printk(KERN_WARNING
-> -		       "%s: Type 0 Revision %d record not supported\n",
-> +		pr_warn("%s: Type 0 Revision %d record not supported\n",
->  		       __func__, revision);
->  		return AE_ERROR;
->  	}
-> @@ -169,8 +168,7 @@ static acpi_status decode_type1_hpx_record(union acpi_object *record,
->  		hpx->t1->tot_max_split = fields[4].integer.value;
->  		break;
->  	default:
-> -		printk(KERN_WARNING
-> -		       "%s: Type 1 Revision %d record not supported\n",
-> +		pr_warn("%s: Type 1 Revision %d record not supported\n",
->  		       __func__, revision);
->  		return AE_ERROR;
->  	}
-> @@ -211,8 +209,7 @@ static acpi_status decode_type2_hpx_record(union acpi_object *record,
->  		hpx->t2->sec_unc_err_mask_or   = fields[17].integer.value;
->  		break;
->  	default:
-> -		printk(KERN_WARNING
-> -		       "%s: Type 2 Revision %d record not supported\n",
-> +		pr_warn("%s: Type 2 Revision %d record not supported\n",
->  		       __func__, revision);
->  		return AE_ERROR;
->  	}
-> @@ -272,7 +269,7 @@ static acpi_status acpi_run_hpx(acpi_handle handle, struct hotplug_params *hpx)
->  				goto exit;
->  			break;
->  		default:
-> -			printk(KERN_ERR "%s: Type %d record not supported\n",
-> +			pr_err("%s: Type %d record not supported\n",
->  			       __func__, type);
->  			status = AE_ERROR;
->  			goto exit;
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index f9cd4d4..06af0c3 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -2613,7 +2613,7 @@ static void nvbridge_check_legacy_irq_routing(struct pci_dev *dev)
->  	pci_read_config_dword(dev, 0x74, &cfg);
->  
->  	if (cfg & ((1 << 2) | (1 << 15))) {
-> -		printk(KERN_INFO "Rewriting IRQ routing register on MCP55\n");
-> +		pr_info("Rewriting IRQ routing register on MCP55\n");
->  		cfg &= ~((1 << 2) | (1 << 15));
->  		pci_write_config_dword(dev, 0x74, cfg);
->  	}
-> -- 
-> 2.7.4
+> From: Pankaj Gupta <pagupta@redhat.com>
+> Date: Thu, Apr 25, 2019 at 10:00 PM
+> 
+> > +static inline bool daxdev_mapping_supported(struct vm_area_struct *vma,
+> > +                               struct dax_device *dax_dev)
+> > +{
+> > +       return !(vma->flags & VM_SYNC);
+> > +}
+> 
+> Shouldn't it be rather `return !(vma->vm_flags & VM_SYNC);`? There is
+> no field named `flags` in `struct vm_area_struct`.
+
+Thanks for catching. Sorry! for this. 
+
+Will correct in v8.
+
+Thank you,
+Pankaj 
+
+> 
+> Thank you,
+> Jakub
 > 
