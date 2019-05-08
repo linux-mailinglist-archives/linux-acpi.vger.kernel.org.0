@@ -2,24 +2,25 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4246D17716
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2019 13:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77C5E17890
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2019 13:45:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727952AbfEHLaY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 May 2019 07:30:24 -0400
-Received: from mga09.intel.com ([134.134.136.24]:53036 "EHLO mga09.intel.com"
+        id S1727646AbfEHLpQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 May 2019 07:45:16 -0400
+Received: from mga04.intel.com ([192.55.52.120]:49957 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727935AbfEHLaW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 8 May 2019 07:30:22 -0400
-X-Amp-Result: UNSCANNABLE
+        id S1726254AbfEHLpQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 8 May 2019 07:45:16 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 May 2019 04:30:21 -0700
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 May 2019 04:40:13 -0700
 X-ExtLoop1: 1
 Received: from kuha.fi.intel.com ([10.237.72.189])
-  by fmsmga001.fm.intel.com with SMTP; 08 May 2019 04:30:17 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 08 May 2019 14:30:17 +0300
-Date:   Wed, 8 May 2019 14:30:17 +0300
+  by fmsmga001.fm.intel.com with SMTP; 08 May 2019 04:40:10 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 08 May 2019 14:40:09 +0300
+Date:   Wed, 8 May 2019 14:40:09 +0300
 From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
 To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
@@ -29,113 +30,171 @@ Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         platform-driver-x86@vger.kernel.org,
         Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v3 11/13] platform/x86: intel_cht_int33fe: Provide fwnode
- for the USB connector
-Message-ID: <20190508113017.GC19816@kuha.fi.intel.com>
+Subject: Re: [PATCH v3 13/13] platform/x86: intel_cht_int33fe: Replacing the
+ old connections with references
+Message-ID: <20190508114009.GD19816@kuha.fi.intel.com>
 References: <20190412134122.82903-1-heikki.krogerus@linux.intel.com>
- <20190412134122.82903-12-heikki.krogerus@linux.intel.com>
- <daed3557-7595-86c5-fde1-6ec048b0935d@redhat.com>
+ <20190412134122.82903-14-heikki.krogerus@linux.intel.com>
+ <a91a1d75-f224-9c9d-873a-f80467d2fb0c@redhat.com>
+ <20190417063918.GI1747@kuha.fi.intel.com>
+ <76d9ab79-a1d0-f3cd-ba5d-2325740c72ff@redhat.com>
+ <6f08b4b6-8303-5dc9-eb9e-30196bd95692@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <daed3557-7595-86c5-fde1-6ec048b0935d@redhat.com>
+In-Reply-To: <6f08b4b6-8303-5dc9-eb9e-30196bd95692@redhat.com>
 User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Apr 17, 2019 at 11:52:00AM +0200, Hans de Goede wrote:
+On Wed, Apr 17, 2019 at 11:14:19PM +0200, Hans de Goede wrote:
 > Hi,
 > 
-> On 12-04-19 15:41, Heikki Krogerus wrote:
-> > In ACPI, and now also in DT, the USB connectors usually have
-> > their own device nodes. In case of USB Type-C, those
-> > connector (port) nodes are child nodes of the controller or
-> > PHY device, in our case the fusb302. The software fwnodes
-> > allow us to create a similar child node for fusb302 that
-> > represents the connector also on Intel CHT.
-> > 
-> > This makes it possible replace the fusb302 specific device
-> > properties which were deprecated with the common USB
-> > connector properties that tcpm.c is able to use directly.
-> > 
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> > ---
-> >   drivers/platform/x86/intel_cht_int33fe.c | 37 ++++++++++++++++++++++--
-> >   1 file changed, 34 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/platform/x86/intel_cht_int33fe.c b/drivers/platform/x86/intel_cht_int33fe.c
-> > index 863a792d9282..eff5990322ff 100644
-> > --- a/drivers/platform/x86/intel_cht_int33fe.c
-> > +++ b/drivers/platform/x86/intel_cht_int33fe.c
-> > @@ -24,6 +24,7 @@
-> >   #include <linux/platform_device.h>
-> >   #include <linux/regulator/consumer.h>
-> >   #include <linux/slab.h>
-> > +#include <linux/usb/pd.h>
-> >   #define EXPECTED_PTYPE		4
-> > @@ -31,6 +32,7 @@ enum {
-> >   	INT33FE_NODE_FUSB302,
-> >   	INT33FE_NODE_MAX17047,
-> >   	INT33FE_NODE_PI3USB30532,
-> > +	INT33FE_NODE_USB_CONNECTOR,
-> >   	INT33FE_NODE_MAX,
-> >   };
-> > @@ -111,9 +113,29 @@ cht_int33fe_register_max17047(struct device *dev, struct cht_int33fe_data *data)
-> >   static const struct property_entry fusb302_props[] = {
-> >   	PROPERTY_ENTRY_STRING("linux,extcon-name", "cht_wcove_pwrsrc"),
-> > -	PROPERTY_ENTRY_U32("fcs,max-sink-microvolt", 12000000),
-> > -	PROPERTY_ENTRY_U32("fcs,max-sink-microamp",   3000000),
-> > -	PROPERTY_ENTRY_U32("fcs,max-sink-microwatt", 36000000),
+> On 17-04-19 11:19, Hans de Goede wrote:
+> > Note that another problem with this series which I noticed while testing
+> > is that the usb-role-switch is not being found at all anymore after
+> > this ("Replacing the old connections with references") patch. I still need
+> > start debugging that.
 > 
-> Note that the 36000000 value being removed here is max-sink-microwatt,
-> esp. the _max_ part is important. And recent versions of the fusb302
-> code ignore this entirely.
+> Ok, I've just finished debugging this and I'm attaching 2 FIXUP
+> patches (to be squased) and a new patch, which those 3 small fixes
+> added the problem of tcpm.c being unable to get the role-switch
+> goes away.
 > 
-> > +	{ }
-> > +};
-> > +
-> > +#define PDO_FIXED_FLAGS \
-> > +	(PDO_FIXED_DUAL_ROLE | PDO_FIXED_DATA_SWAP | PDO_FIXED_USB_COMM)
-> > +
-> > +static const u32 src_pdo[] = {
-> > +	PDO_FIXED(5000, 1500, PDO_FIXED_FLAGS),
-> > +};
-> > +
-> > +static const u32 snk_pdo[] = {
-> > +	PDO_FIXED(5000, 400, PDO_FIXED_FLAGS),
-> > +	PDO_VAR(5000, 12000, 3000),
-> > +};
-> > +
-> > +static const struct property_entry usb_connector_props[] = {
-> > +	PROPERTY_ENTRY_STRING("name", "connector"),
-> > +	PROPERTY_ENTRY_STRING("data-role", "dual"),
-> > +	PROPERTY_ENTRY_STRING("power-role", "dual"),
-> > +	PROPERTY_ENTRY_STRING("try-power-role", "sink"),
-> > +	PROPERTY_ENTRY_U32_ARRAY("source-pdos", src_pdo),
-> > +	PROPERTY_ENTRY_U32_ARRAY("sink-pdos", snk_pdo),
-> > +	PROPERTY_ENTRY_U32("op-sink-microwatt", 36000000),
+> The second FIXUP patch might be a bit controversial; and we may
+> need another solution for the problem it fixes. I've tried to
+> explain it in more detail in the commit msg.
+
+Thanks. I'll go over those, and probable squash them in. I'll think
+about the second patch.
+
+I'm going to first split the series in two so that I'll first
+introduce all the other changes, and then in a separate series the
+node reference stuff. I think it makes sense, since there are really
+to major changes here: firstly starting to use the software nodes with
+the connector fwnode and others, and secondly introducing the software
+node references.
+
+I'll send you an RFC of the first patches soon. Hope you have time to
+check and test it.
+
+> >From 3a2e047608a53caaefe8364eceb7e315ec413698 Mon Sep 17 00:00:00 2001
+> From: Hans de Goede <hdegoede@redhat.com>
+> Date: Wed, 17 Apr 2019 22:54:47 +0200
+> Subject: [PATCH v2 1/3] FIXUP: "platform/x86: intel_cht_int33fe: Link with
+>  external dependencies using fwnodes"
 > 
-> Where as "op-sink-microwatt" is more interpreted as a minimum
-> value for non PPS supplies not being able to deliver this causes
-> the Capability Mismatch to get set. But for PPS supplies if I'm
-> reading the code correctly, the entire PPS negotiation is failed
-> by tcpm.c if this cannot be matched. I guess / hope that there
-> is a fallback to none PPS PDOs then but I'm not sure.
+> In the else path of: if (dev->fwnode) ... else ..., we should set
+> dev->fwnode to our own fwnode not to dev->fwnode, which is NULL as we
+> just tested.
+> 
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/platform/x86/intel_cht_int33fe.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/platform/x86/intel_cht_int33fe.c b/drivers/platform/x86/intel_cht_int33fe.c
+> index e6a1ea7f33af..07bf92ece6cd 100644
+> --- a/drivers/platform/x86/intel_cht_int33fe.c
+> +++ b/drivers/platform/x86/intel_cht_int33fe.c
+> @@ -189,7 +189,7 @@ static int cht_int33fe_setup_mux(struct cht_int33fe_data *data)
+>  		data->node[INT33FE_NODE_ROLE_SWITCH] = dev->fwnode;
+>  	} else {
+>  		/* The node can be tied to the lifetime of the device. */
+> -		dev->fwnode = fwnode_handle_get(dev->fwnode);
+> +		dev->fwnode = fwnode_handle_get(fwnode);
+>  	}
+>  
+>  	put_device(dev);
+> -- 
+> 2.21.0
+> 
 
-OK. I'll change that to the current default value, 2500000.
+> >From 5133467f116dff6e111d4bc0610ccbcedb397f1d Mon Sep 17 00:00:00 2001
+> From: Hans de Goede <hdegoede@redhat.com>
+> Date: Wed, 17 Apr 2019 23:00:59 +0200
+> Subject: [PATCH v2 2/3] FIXUP: "device connection: Find connections also by
+>  checking the references"
+> 
+> The reference we are looking for might be in a child node, rather then
+> directly in the device's own fwnode. A typical example of this is a
+> usb connector node with references to various muxes / switches.
+> 
+> Note that we do not hit this problem for the device_connection_find_match
+> calls in typec_switch_get and typec_mux_get because these get called
+> from typec_register_port and typec_register_port creates a new device
+> with its fwnode pointing to the usb-connector fwnode and that new
+> device (rather then the parent) is passed to typec_switch/mux_get and
+> thus to device_connection_find_match.
+> 
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/base/devcon.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/base/devcon.c b/drivers/base/devcon.c
+> index 4cdf95532b63..6f6f870c21eb 100644
+> --- a/drivers/base/devcon.c
+> +++ b/drivers/base/devcon.c
+> @@ -76,7 +76,7 @@ fwnode_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
+>  void *device_connection_find_match(struct device *dev, const char *con_id,
+>  				   void *data, devcon_match_fn_t match)
+>  {
+> -	struct fwnode_handle *fwnode = dev_fwnode(dev);
+> +	struct fwnode_handle *child, *fwnode = dev_fwnode(dev);
+>  	const char *devname = dev_name(dev);
+>  	struct device_connection *con;
+>  	void *ret = NULL;
+> @@ -93,6 +93,12 @@ void *device_connection_find_match(struct device *dev, const char *con_id,
+>  		ret = fwnode_devcon_match(fwnode, con_id, data, match);
+>  		if (ret)
+>  			return ret;
+> +
+> +		fwnode_for_each_child_node(fwnode, child) {
+> +			ret = fwnode_devcon_match(child, con_id, data, match);
+> +			if (ret)
+> +				return ret;
+> +		}
+>  	}
+>  
+>  	mutex_lock(&devcon_lock);
+> -- 
+> 2.21.0
+> 
 
-> Anyways the charger the GPD-win ships with is a non PD capable
-> 5V/2A charger and the GPD-pocket ships with a charger which does
-> max 12V/2A. The device itself will work fine on around 10W and
-> even charge at that level (albeit slowly). So I believe that 10W
-> would be a better value for "op-sink-microwatt" (the dt-binding
-> says it is mandatory so we cannot just leave it out).
-
-I have no objections. If you prefer, I can include a separate patch
-where I change the value to 10W.
+> >From a69f76993dfe5f43d3e6c4b2bcfbaacf2c247d6e Mon Sep 17 00:00:00 2001
+> From: Hans de Goede <hdegoede@redhat.com>
+> Date: Wed, 17 Apr 2019 22:57:00 +0200
+> Subject: [PATCH v2 3/3] usb: roles: Check for NULL con_id
+> 
+> When usb_role_switch_match gets called by device_connection_find_match
+> because of a fwnode_reference matching the con_id passed to
+> device_connection_find_match, then con->id will be NULL and in this
+> case we do not need to check it since our caller has already checked it.
+> 
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/usb/roles/class.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/roles/class.c b/drivers/usb/roles/class.c
+> index f45d8df5cfb8..86defca6623e 100644
+> --- a/drivers/usb/roles/class.c
+> +++ b/drivers/usb/roles/class.c
+> @@ -101,7 +101,7 @@ static void *usb_role_switch_match(struct device_connection *con, int ep,
+>  	struct device *dev;
+>  
+>  	if (con->fwnode) {
+> -		if (!fwnode_property_present(con->fwnode, con->id))
+> +		if (con->id && !fwnode_property_present(con->fwnode, con->id))
+>  			return NULL;
+>  
+>  		dev = class_find_device(role_class, NULL, con->fwnode,
+> -- 
+> 2.21.0
+> 
 
 thanks,
 
