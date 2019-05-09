@@ -2,216 +2,188 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A8B01864C
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2019 09:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54A6818709
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2019 10:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726617AbfEIHls (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 May 2019 03:41:48 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:35015 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725961AbfEIHls (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 May 2019 03:41:48 -0400
-Received: by mail-oi1-f196.google.com with SMTP id a132so1206805oib.2;
-        Thu, 09 May 2019 00:41:47 -0700 (PDT)
+        id S1725928AbfEIIuK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 May 2019 04:50:10 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:37430 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725821AbfEIIuK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 May 2019 04:50:10 -0400
+Received: by mail-ed1-f66.google.com with SMTP id w37so1310402edw.4
+        for <linux-acpi@vger.kernel.org>; Thu, 09 May 2019 01:50:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3KulEKizWIWmp7w/J6WXP00Agbtffv61w2wzB/s1EJA=;
-        b=c/bczytAdbCbHroPCVVFMW/CzLbxYECwIwdx4Rt1QFBjitJvRGIwdUHPPnfqE1+qi4
-         CVXL+vgY+AuEah8PVTANrFgquQQzSqyeZgeOzUa2vHKvy8EVXyvA8RHeOCYfFsHNAqOh
-         ZCS9NcYJZVlN+6fhvp6X1QtJrIFkaJyGBj/086WTXifB8CkYYQcZJKtegO8095a7ucrY
-         +dDp5Bs+YE+2XqfwV/vRCUmg17jY0u+suwu6eybhta70IVLFXKdT9jDDmfgDarXuxxy4
-         ytHg2gxPAcb0Mtuf22dOxxRfsdHeq2e6sf7mUnv30Aa8omaTReDGykFkeoMGBBrf+KVh
-         lSkA==
-X-Gm-Message-State: APjAAAVKdKyukCjbVP2qfjRkgWKP0566yKJebJnh55d5lQ2jPqWSExWj
-        qK6XzzwSacdA9LXF/NrtWIAwHN/hfkjNuO0203A=
-X-Google-Smtp-Source: APXvYqy8UbHR0TetuMPKUzgFolqlADKSIUxY1HI1z6VG4KO9XzUx91AMrAi8WJbhSGc8oVYNI2cA6noHBvMte/Q431s=
-X-Received: by 2002:aca:ba82:: with SMTP id k124mr642037oif.110.1557387706984;
- Thu, 09 May 2019 00:41:46 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=EynZfXFAHENXdId9UWac9+EIUrOg4ejj/igrSdFswKc=;
+        b=IImJvuxJLPLJKueV0aldZ+XE151rkl7VoUPqZAfo7FhT8vMzC+YcWQrmOyN4zdDAYC
+         itk5lNiVWsiz9y/QGgbFRymnjLGcs91BwWU7k42ePQ5HL5mkFwH6i+RYyUO5FkbNxi6k
+         xGQ5tFo8LQDN6hsK95IqyWMVAVwDwje5u+DiFb5ohNiCNwzlIcvhlgxnyURZQ2vuTnez
+         VMh1p+rXNyec3tsLLR24+b2LHEj2IRGXQM4bBQVII2Sq+MhlNQuIdxfcPITkBVazpMvB
+         Yzw3pAdlo7j0Itta6nMvYjEu3OO9HOTPGt/8pc5mQFliW4PKzZk8r2qJFWOLiDqbkktg
+         wVrA==
+X-Gm-Message-State: APjAAAVH+m8NXv/aI7Eo4CySoYXiXcsK82rU3MJQM5ToAtWX72i6vDfK
+        gsDQbX2eD4yI+JRwxSOwol16YQ==
+X-Google-Smtp-Source: APXvYqxJCweJPm3K7QH4oNFZhIGlW7cFmH94xQ3KxQMen+5K38osOWjUA6HIbC4Ac4zrLxKxXbHbzw==
+X-Received: by 2002:a17:906:2403:: with SMTP id z3mr2154692eja.278.1557391807921;
+        Thu, 09 May 2019 01:50:07 -0700 (PDT)
+Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
+        by smtp.gmail.com with ESMTPSA id e35sm423143eda.2.2019.05.09.01.50.06
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Thu, 09 May 2019 01:50:07 -0700 (PDT)
+Subject: Re: [PATCH] ACPI / LPSS: Don't skip late system PM ops for hibernate
+ on BYT/CHT
+To:     "Robert R. Howell" <RHowell@uwyo.edu>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20190403054352.30120-1-kai.heng.feng@canonical.com>
+ <eb1462c9-ebef-7bd6-c263-3f4f2e8ba63d@redhat.com>
+ <b6cd67d7-a4de-0fab-4512-25d732190d17@uwyo.edu>
+ <feb1808d-542c-83c2-5c70-9228473bb8d0@redhat.com>
+ <0a770539-dfe9-2eb6-a90a-82f065a23a3f@uwyo.edu>
+ <f6db39bc-b8d1-fda8-ad37-a8b050ef0027@redhat.com>
+ <37aee883-1253-adad-82b4-4a578cc72825@uwyo.edu>
+ <CAJZ5v0j9U20cFbRx6QKeQv6wyDg6nL71L0U_Rec5+W1JoD8-=w@mail.gmail.com>
+ <144b56d4-54e6-bccd-4652-22303bcd9168@uwyo.edu>
+ <CAJZ5v0jJEovXXiqs-tzPC7FsGjGL+qxfXCxbTrQZqAxSCv1oyQ@mail.gmail.com>
+ <beab21cb-9f89-b934-e0a4-2fd85c69f4e6@uwyo.edu>
+ <4fb5fc2e-e5af-6732-0228-8c73beed1afb@redhat.com>
+ <c3dadc9d-bf3b-c992-f256-94a25fea570a@uwyo.edu>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <1bb008bd-ae0d-d351-ef0c-303e23b0eca5@redhat.com>
+Date:   Thu, 9 May 2019 10:50:06 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <20190423233904.195842-1-furquan@google.com> <CAEGmHFEf4RTn5mrQ4pn+WPz=WnD5id9joEdGQnu==ibx+r1L8g@mail.gmail.com>
-In-Reply-To: <CAEGmHFEf4RTn5mrQ4pn+WPz=WnD5id9joEdGQnu==ibx+r1L8g@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 9 May 2019 09:41:33 +0200
-Message-ID: <CAJZ5v0ieonHdgFh_GQUSAEoUh3JyOj2rMp174Xvhsq_HHRNEHg@mail.gmail.com>
-Subject: Re: [PATCH] drivers/acpi: Turn off power resources while entering S5
-To:     Furquan Shaikh <furquan@google.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rajat Jain <rajatja@google.com>,
-        Duncan Laurie <dlaurie@google.com>,
-        Todd Broch <tbroch@google.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <c3dadc9d-bf3b-c992-f256-94a25fea570a@uwyo.edu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, May 9, 2019 at 8:12 AM Furquan Shaikh <furquan@google.com> wrote:
->
-> On Tue, Apr 23, 2019 at 4:39 PM Furquan Shaikh <furquan@google.com> wrote:
-> >
-> > During boot-up, ACPI bus scan enables all power resources so that
-> > respective device drivers can talk to their device. This causes acpi
-> > ref_count for the power resource to be incremented to 1. When system
-> > suspends (S3/S0ix) or hibernates(S4), DPM is responsible for calling
-> > power off on all power resources whose ref_count is 1 i.e. no other
-> > user of this power resource and thus resulting in _OFF routine being
-> > called for it.
-> >
-> > However, in case of poweroff, DPM is not involved and so the power
-> > resources are left on when the system is entering S5. This results in
-> > the violation of power down sequencing for certain devices
-> > e.g. touchscreen or digitizer I2C devices. In order to ensure that the
-> > power down sequencing does the right thing, it is necessary for ACPI
-> > to disable all power resources while preparing for S5.
-> >
-> > This change updates the function acpi_turn_off_unused_power_resources
-> > to accept a parameter acpi_system_state, This function turns off power
-> > resources according to the targeted system ACPI state:
-> > 1. For S0: Unused power resources are turned off i.e. power resources
-> > whose ref_count is already 0.
-> > 2. For S5: ref_count is decremented first to undo the increment
-> > performed during ACPI bus scan and then power resources with ref_count
-> > 0 are turned off.
-> > 3. All other suspend/hibernate states: No action is required since DPM
-> > takes care of turning off power resources.
-> >
-> > This change should not affect the wake capable devices since:
-> > 1. If wake capable devices are enabled before this call, their
-> > refcount should be greater than 1. Thus, they won't be turned off.
-> > 2. If wake capable devices are not enabled yet when this call is made,
-> > they would eventually get turned on by call to
-> > acpi_enable_wakeup_devices.
-> >
-> > Signed-off-by: Furquan Shaikh <furquan@google.com>
-> > ---
-> >  drivers/acpi/power.c | 47 ++++++++++++++++++++++++++++++++++++++------
-> >  drivers/acpi/sleep.c |  5 ++++-
-> >  drivers/acpi/sleep.h |  2 +-
-> >  3 files changed, 46 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
-> > index 665e93ca0b40f..945db762861a3 100644
-> > --- a/drivers/acpi/power.c
-> > +++ b/drivers/acpi/power.c
-> > @@ -889,10 +889,42 @@ void acpi_resume_power_resources(void)
-> >
-> >         mutex_unlock(&power_resource_list_lock);
-> >  }
-> > +#endif
-> >
-> > -void acpi_turn_off_unused_power_resources(void)
-> > +/**
-> > + * acpi_turn_off_power_resources: This function is used to turn off power
-> > + * resources in provided ACPI system state.
-> > + *
-> > + * Behavior differs based on the target system state:
-> > + * ACPI_STATE_S0: Turn off unused power resources i.e. turn off power resources
-> > + *                with ref_count zero.
-> > + * ACPI_STATE_S5: Decrement ref_count first and turn off power resources with
-> > + *                ref_count zero. This is done to ensure that the ref_count
-> > + *                incremented during ACPI bus scan is undone and any power
-> > + *                resources that are not required during S5 are turned off.
-> > + * ACPI_STATE_Sx: No action required. DPM is responsible for turning off power
-> > + *                resources while suspending/hibernating.
-> > + */
-> > +void acpi_turn_off_power_resources(int acpi_system_state)
-> >  {
-> >         struct acpi_power_resource *resource;
-> > +       int decrement;
-> > +
-> > +       if (acpi_system_state == ACPI_STATE_S0) {
-> > +               /*
-> > +                * In case of ACPI_STATE_S0, turn off only unused power
-> > +                * resources. So, no need to decrement ref_count.
-> > +                */
-> > +               decrement = 0;
-> > +       } else if (acpi_system_state == ACPI_STATE_S5) {
-> > +               /*
-> > +                * In case of ACPI_STATE_S5, ref_count needs to be decremented
-> > +                * first before checking if it is okay to power off the
-> > +                * resource.
-> > +                */
-> > +               decrement = 1;
-> > +       } else
-> > +               return;
-> >
-> >         mutex_lock(&power_resource_list_lock);
-> >
-> > @@ -907,10 +939,14 @@ void acpi_turn_off_unused_power_resources(void)
-> >                         continue;
-> >                 }
-> >
-> > -               if (state == ACPI_POWER_RESOURCE_STATE_ON
-> > -                   && !resource->ref_count) {
-> > -                       dev_info(&resource->device.dev, "Turning OFF\n");
-> > -                       __acpi_power_off(resource);
-> > +               if (state == ACPI_POWER_RESOURCE_STATE_ON) {
-> > +                       if (resource->ref_count)
-> > +                               resource->ref_count -= decrement;
-> > +
-> > +                       if (!resource->ref_count) {
-> > +                               dev_info(&resource->device.dev, "Turning OFF\n");
-> > +                               __acpi_power_off(resource);
-> > +                       }
-> >                 }
-> >
-> >                 mutex_unlock(&resource->resource_lock);
-> > @@ -918,4 +954,3 @@ void acpi_turn_off_unused_power_resources(void)
-> >
-> >         mutex_unlock(&power_resource_list_lock);
-> >  }
-> > -#endif
-> > diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-> > index 403c4ff153498..fb6b3ca0eeb91 100644
-> > --- a/drivers/acpi/sleep.c
-> > +++ b/drivers/acpi/sleep.c
-> > @@ -75,6 +75,9 @@ static int acpi_sleep_prepare(u32 acpi_state)
-> >         printk(KERN_INFO PREFIX "Preparing to enter system sleep state S%d\n",
-> >                 acpi_state);
-> >         acpi_enable_wakeup_devices(acpi_state);
-> > +
-> > +       acpi_turn_off_power_resources(acpi_state);
-> > +
-> >         acpi_enter_sleep_state_prep(acpi_state);
-> >         return 0;
-> >  }
-> > @@ -524,7 +527,7 @@ static void acpi_pm_start(u32 acpi_state)
-> >   */
-> >  static void acpi_pm_end(void)
-> >  {
-> > -       acpi_turn_off_unused_power_resources();
-> > +       acpi_turn_off_power_resources(ACPI_STATE_S0);
-> >         acpi_scan_lock_release();
-> >         /*
-> >          * This is necessary in case acpi_pm_finish() is not called during a
-> > diff --git a/drivers/acpi/sleep.h b/drivers/acpi/sleep.h
-> > index 41675d24a9bc0..a495c91e2bf3b 100644
-> > --- a/drivers/acpi/sleep.h
-> > +++ b/drivers/acpi/sleep.h
-> > @@ -7,7 +7,7 @@ extern struct list_head acpi_wakeup_device_list;
-> >  extern struct mutex acpi_device_lock;
-> >
-> >  extern void acpi_resume_power_resources(void);
-> > -extern void acpi_turn_off_unused_power_resources(void);
-> > +extern void acpi_turn_off_power_resources(int acpi_system_state);
-> >
-> >  static inline acpi_status acpi_set_waking_vector(u32 wakeup_address)
-> >  {
-> > --
-> > 2.21.0.593.g511ec345e18-goog
-> >
->
-> Hi Rafael,
->
-> Gentle ping. Just checking if you got a chance to look at this one. It
-> is actually causing problems in one of our devices since power off
-> sequencing is not honored when entering S5.
+Hi,
 
-I have looked at it and I didn't like it.
+On 09-05-19 06:24, Robert R. Howell wrote:
+> On 4/30/19 8:39 AM, Hans de Goede wrote:
+>>
+>> Hi,
+>>
+>> On 4/25/19 6:38 PM, Robert R. Howell wrote:
+>>> On 4/24/19 1:20 AM, Rafael J. Wysocki wrote:
+>>>
+>>>> On Tue, Apr 23, 2019 at 10:03 PM Robert R. Howell <RHowell@uwyo.edu> wrote:
+>>>>>
+>>>>> On 4/23/19 2:07 AM, Rafael J. Wysocki wrote:
+>>>>>>
+>>>>>> On Sat, Apr 20, 2019 at 12:44 AM Robert R. Howell <RHowell@uwyo.edu> wrote:
+>>>>>>>
+>>>>>>> On 4/18/19 5:42 AM, Hans de Goede wrote:
+>>>>>>>
+>>>>>>>>> On 4/8/19 2:16 AM, Hans de Goede wrote:>
+>>>>>>>>>>
+>>>>>>>>>> Hmm, interesting so you have hibernation working on a T100TA
+>>>>>>>>>> (with 5.0 + 02e45646d53b reverted), right ?
+>>>>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> I've managed to find a way around the i2c_designware timeout issues
+>>>>>>> on the T100TA's.  The key is to NOT set DPM_FLAG_SMART_SUSPEND,
+>>>>>>> which was added in the 02e45646d53b commit.
+>>>>>>>
+>>>>>>> To test that I've started with a 5.1-rc5 kernel, applied your recent patch
+>>>>>>> to acpi_lpss.c, then apply the following patch of mine, removing
+>>>>>>> DPM_FLAG_SMART_SUSPEND.  (For the T100 hardware I need to apply some
+>>>>>>> other patches as well but those are not related to the i2c-designware or
+>>>>>>> acpi issues addressed here.)
+>>>>>>>
+>>>>>>> On a resume from hibernation I still see one error:
+>>>>>>>     "i2c_designware 80860F41:00: Error i2c_dw_xfer called while suspended"
+>>>>>>> but I no longer get the i2c_designware timeouts, and audio does now work
+>>>>>>> after the resume.
+>>>>>>>
+>>>>>>> Removing DPM_FLAG_SMART_SUSPEND may not be what you want for other
+>>>>>>> hardware, but perhaps this will give you a clue as to what is going
+>>>>>>> wrong with hibernate/resume on the T100TA's.
+>>>>>>
+>>>>>> What if you drop DPM_FLAG_LEAVE_SUSPENDED alone instead?
+>>>>>>
+>>>>>
+>>>>> I did try dropping just DPM_FLAG_LEAVE_SUSPENDED, dropping just
+>>>>> DPM_FLAG_SMART_SUSPEND, and dropping both flags.  When I just drop
+>>>>> DPM_FLAG_LEAVE_SUSPENDED I still get the i2c_designware timeouts
+>>>>> after the resume.  If I drop just DPM_FLAG_SMART_SUSPEND or drop both,
+>>>>> then the timeouts go away.
+>>>>
+>>>> OK, thanks!
+>>>>
+>>>> Is non-hibernation system suspend affected too?
+>>>
+>>> I just ran some tests on a T100TA, using the 5.1-rc5 code with Hans' patch applied
+>>> but without any changes to i2c-designware-platdrv.c, so the
+>>> DPM_FLAG_SMART_PREPARE, DPM_FLAG_SMART_SUSPEND, and DPM_FLAG_LEAVE_SUSPENDED flags
+>>> are all set.
+>>>
+>>> Suspend does work OK, and after resume I do NOT get any of the crippling
+>>> i2c_designware timeout errors which cause sound to fail after hibernate.  I DO see one
+>>>     "i2c_designware 80860F41:00: Error i2c_dw_xfer call while suspended"
+>>> error on resume, just as I do on hibernate.  I've attached a portion of dmesg below.
+>>> The "asus_wmi:  Unknown key 79 pressed" error is a glitch which occurs
+>>> intermittently on these machines, but doesn't seem related to the other issues.
+>>> I had one test run when it was absent but the rest of the messages were the
+>>> same -- but then kept getting that unknown key error on all my later tries.
+>>
+>> I've just tried to reproduce the "Error i2c_dw_xfer call while suspended" error
+>> on suspend/resume on my own T100TA and I could not reproduce this.
+>>
+>> Can you try without the BT keyboard paired and waking up from suspend using the
+>> tablet part's power-button ?
+>>
+>> Also do you still have the scripts to rmmod some modules before suspend ?
+>>
+> 
+> The T100TA keyboard is actually a hardwired connection rather than Bluetooth but I
+> did physically disconnect the keyboard, and also unpaired all the actual Bluetooth
+> devices (such as the mouse) and then powered down the T100TA bluetooth adapter.
+> When I suspend, then resume using the tablet power button, I still get the
+> i2c_dw_xfererror error during the resume.  But whatever causes this error isn't fatal,
+> in the sense that after resume the sound and other i2c functions do still work OK.
+> 
+> While I always get this i2c_dw_xfer error on resume from suspend or hibernation on the T100TA,
+> I also have a T100TAM and curiously, it NEVER shows that error -- although all the
+> other suspend and hibernate behavior seems similar.  I'm not sure if the following could
+> be the difference, but the T100TA uses an i2c connected ATML1000 touchscreen controller
+> while the T100TAM uses an i2c connected SIS0817 touchscreen controller.  Other than that
+> the hardware seems almost identical.
 
-I'll post my comments on this patch later.
+I've been testing on an actual T100TA, with the ATML1000 touchscreen controller.
+
+Maybe it is a difference in BIOS version, my T100TA is running the latest BIOS, what
+is the output of:
+
+cat /sys/class/dmi/id/bios_version /sys/class/dmi/id/bios_date
+
+?
+
+Also do you perhaps have a microsd card inserted?  (I'm trying to figure out the
+different between our setups so that I can hopefully reproduce the issue myself).
+
+
+> Regarding scripts, while I do still need a systemd hibernate script which removes the
+> brcmfmac and the hci_uart (bluetooth related) drivers, I've found that I no longer need
+> any script for suspend.
+
+Ok, so you are not doing any rmmod-s on suspend, right?
+
+Regards,
+
+Hans
