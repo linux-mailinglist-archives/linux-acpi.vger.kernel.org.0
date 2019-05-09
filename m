@@ -2,107 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93A26189B0
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2019 14:24:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8C7A18B63
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2019 16:14:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726448AbfEIMY0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 May 2019 08:24:26 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:33290 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726438AbfEIMY0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 9 May 2019 08:24:26 -0400
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 2D91C307D98F;
-        Thu,  9 May 2019 12:24:26 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com (colo-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.21])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id AA6435C226;
-        Thu,  9 May 2019 12:24:25 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
-        by colo-mx.corp.redhat.com (Postfix) with ESMTP id 257BD41F58;
-        Thu,  9 May 2019 12:24:25 +0000 (UTC)
-Date:   Thu, 9 May 2019 08:24:24 -0400 (EDT)
-From:   Pankaj Gupta <pagupta@redhat.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        virtualization@lists.linux-foundation.org,
-        KVM list <kvm@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Qemu Developers <qemu-devel@nongnu.org>,
-        linux-ext4 <linux-ext4@vger.kernel.org>,
-        linux-xfs <linux-xfs@vger.kernel.org>,
-        Ross Zwisler <zwisler@kernel.org>,
-        Vishal L Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Christoph Hellwig <hch@infradead.org>,
-        Len Brown <lenb@kernel.org>, Jan Kara <jack@suse.cz>,
-        Theodore Ts'o <tytso@mit.edu>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        "Darrick J. Wong" <darrick.wong@oracle.com>,
-        lcapitulino@redhat.com, Kevin Wolf <kwolf@redhat.com>,
-        Igor Mammedov <imammedo@redhat.com>,
-        jmoyer <jmoyer@redhat.com>,
-        Nitesh Narayan Lal <nilal@redhat.com>,
-        Rik van Riel <riel@surriel.com>,
-        Stefan Hajnoczi <stefanha@redhat.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        David Hildenbrand <david@redhat.com>,
-        david <david@fromorbit.com>, cohuck@redhat.com,
-        Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, kilobyte@angband.pl,
-        yuval shaia <yuval.shaia@oracle.com>
-Message-ID: <511098535.27565704.1557404664499.JavaMail.zimbra@redhat.com>
-In-Reply-To: <CAPcyv4hRdvypEj4LBTMfUFm80BdpRYbOugrkkj-3Kk_LErXPqQ@mail.gmail.com>
-References: <20190426050039.17460-1-pagupta@redhat.com> <20190426050039.17460-4-pagupta@redhat.com> <CAPcyv4hRdvypEj4LBTMfUFm80BdpRYbOugrkkj-3Kk_LErXPqQ@mail.gmail.com>
-Subject: Re: [PATCH v7 3/6] libnvdimm: add dax_dev sync flag
+        id S1726682AbfEION7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 May 2019 10:13:59 -0400
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:42478 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726694AbfEIONz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 9 May 2019 10:13:55 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 189CF374;
+        Thu,  9 May 2019 07:13:55 -0700 (PDT)
+Received: from e107155-lin (e107155-lin.cambridge.arm.com [10.1.196.42])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8E5C13F238;
+        Thu,  9 May 2019 07:13:52 -0700 (PDT)
+Date:   Thu, 9 May 2019 15:13:50 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Will Deacon <will.deacon@arm.com>
+Cc:     Hanjun Guo <guohanjun@huawei.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        catalin.marinas@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
+        mark.rutland@arm.com, lorenzo.pieralisi@arm.com,
+        linuxarm@huawei.com, john.garry@huawei.com,
+        Hongbo Yao <yaohongbo@huawei.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH v3 0/5] arm64: SPE ACPI enablement
+Message-ID: <20190509141350.GF8239@e107155-lin>
+References: <20190503232407.37195-1-jeremy.linton@arm.com>
+ <5eaa1607-4bf0-a320-e9cf-2d51eca912c6@huawei.com>
+ <82032e5b-0cb5-e48f-ab51-ba5d5f9dceec@arm.com>
+ <819de863-92ff-51c5-9c35-880db4f6a922@huawei.com>
+ <20190508165149.GB21553@e107155-lin>
+ <20190509092810.GC2667@brain-police>
+ <20190509103559.GB8239@e107155-lin>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.116.88, 10.4.195.16]
-Thread-Topic: libnvdimm: add dax_dev sync flag
-Thread-Index: ojaRi4mgEPnvOvl3Gx+91mTiXiceZg==
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.48]); Thu, 09 May 2019 12:24:26 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190509103559.GB8239@e107155-lin>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Thu, May 09, 2019 at 11:35:59AM +0100, Sudeep Holla wrote:
+> On Thu, May 09, 2019 at 10:28:11AM +0100, Will Deacon wrote:
+
+[...]
 
 > >
-> > This patch adds 'DAXDEV_SYNC' flag which is set
-> > for nd_region doing synchronous flush. This later
-> > is used to disable MAP_SYNC functionality for
-> > ext4 & xfs filesystem for devices don't support
-> > synchronous flush.
+> > Since SPE uses virtual addressing, we don't really care about the underlying
+> > page layout so there's no need to use higher-order allocations. I suppose we
+> > could theoretically map them at the pmd level in some cases, but ignoring
+> > them should also be harmless and I suspect you can delete the check.
 > >
-> > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
-> [..]
-> > diff --git a/include/linux/dax.h b/include/linux/dax.h
-> > index 0dd316a74a29..c97fc0cc7167 100644
-> > --- a/include/linux/dax.h
-> > +++ b/include/linux/dax.h
-> > @@ -7,6 +7,9 @@
-> >  #include <linux/radix-tree.h>
-> >  #include <asm/pgtable.h>
-> >
-> > +/* Flag for synchronous flush */
-> > +#define DAXDEV_F_SYNC true
-> 
-> I'd feel better, i.e. it reads more canonically, if this was defined
-> as (1UL << 0) and the argument to alloc_dax() was changed to 'unsigned
-> long flags' rather than a bool.
+>
+> Yes, I did a quick look to see if we can do that, but couldn't find a clue.
+> Not sure if that's any optimisation, we can use order from page_private
+> and set the values accordingly ?
+>
+And I forgot to add the diff that I mentioned above, something like the
+patch below.
 
-Sure, Will send a v8 with suggested changes.
+Regards,
+Sudeep
 
-Thank You,
-Pankaj
+-->8
 
-> 
+diff --git i/drivers/perf/arm_spe_pmu.c w/drivers/perf/arm_spe_pmu.c
+index 7cb766dafe85..45cd62517080 100644
+--- i/drivers/perf/arm_spe_pmu.c
++++ w/drivers/perf/arm_spe_pmu.c
+@@ -827,7 +827,7 @@ static void arm_spe_pmu_read(struct perf_event *event)
+ static void *arm_spe_pmu_setup_aux(struct perf_event *event, void **pages,
+ 				   int nr_pages, bool snapshot)
+ {
+-	int i, cpu = event->cpu;
++	int i, j, cpu = event->cpu;
+ 	struct page **pglist;
+ 	struct arm_spe_pmu_buf *buf;
+ 
+@@ -859,11 +859,12 @@ static void *arm_spe_pmu_setup_aux(struct perf_event *event, void **pages,
+ 		struct page *page = virt_to_page(pages[i]);
+ 
+ 		if (PagePrivate(page)) {
+-			pr_warn("unexpected high-order page for auxbuf!");
+-			goto out_free_pglist;
++			for (j = 0; j < 1 << page_private(page); j++)
++				pglist[i + j] = page++;
++			i += j - 1;
++		} else {
++			pglist[i] = page;
+ 		}
+-
+-		pglist[i] = virt_to_page(pages[i]);
+ 	}
+ 
+ 	buf->base = vmap(pglist, nr_pages, VM_MAP, PAGE_KERNEL);
