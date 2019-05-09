@@ -2,188 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54A6818709
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2019 10:50:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EDDD187BC
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2019 11:28:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725928AbfEIIuK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 May 2019 04:50:10 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:37430 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725821AbfEIIuK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 May 2019 04:50:10 -0400
-Received: by mail-ed1-f66.google.com with SMTP id w37so1310402edw.4
-        for <linux-acpi@vger.kernel.org>; Thu, 09 May 2019 01:50:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=EynZfXFAHENXdId9UWac9+EIUrOg4ejj/igrSdFswKc=;
-        b=IImJvuxJLPLJKueV0aldZ+XE151rkl7VoUPqZAfo7FhT8vMzC+YcWQrmOyN4zdDAYC
-         itk5lNiVWsiz9y/QGgbFRymnjLGcs91BwWU7k42ePQ5HL5mkFwH6i+RYyUO5FkbNxi6k
-         xGQ5tFo8LQDN6hsK95IqyWMVAVwDwje5u+DiFb5ohNiCNwzlIcvhlgxnyURZQ2vuTnez
-         VMh1p+rXNyec3tsLLR24+b2LHEj2IRGXQM4bBQVII2Sq+MhlNQuIdxfcPITkBVazpMvB
-         Yzw3pAdlo7j0Itta6nMvYjEu3OO9HOTPGt/8pc5mQFliW4PKzZk8r2qJFWOLiDqbkktg
-         wVrA==
-X-Gm-Message-State: APjAAAVH+m8NXv/aI7Eo4CySoYXiXcsK82rU3MJQM5ToAtWX72i6vDfK
-        gsDQbX2eD4yI+JRwxSOwol16YQ==
-X-Google-Smtp-Source: APXvYqxJCweJPm3K7QH4oNFZhIGlW7cFmH94xQ3KxQMen+5K38osOWjUA6HIbC4Ac4zrLxKxXbHbzw==
-X-Received: by 2002:a17:906:2403:: with SMTP id z3mr2154692eja.278.1557391807921;
-        Thu, 09 May 2019 01:50:07 -0700 (PDT)
-Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
-        by smtp.gmail.com with ESMTPSA id e35sm423143eda.2.2019.05.09.01.50.06
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Thu, 09 May 2019 01:50:07 -0700 (PDT)
-Subject: Re: [PATCH] ACPI / LPSS: Don't skip late system PM ops for hibernate
- on BYT/CHT
-To:     "Robert R. Howell" <RHowell@uwyo.edu>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20190403054352.30120-1-kai.heng.feng@canonical.com>
- <eb1462c9-ebef-7bd6-c263-3f4f2e8ba63d@redhat.com>
- <b6cd67d7-a4de-0fab-4512-25d732190d17@uwyo.edu>
- <feb1808d-542c-83c2-5c70-9228473bb8d0@redhat.com>
- <0a770539-dfe9-2eb6-a90a-82f065a23a3f@uwyo.edu>
- <f6db39bc-b8d1-fda8-ad37-a8b050ef0027@redhat.com>
- <37aee883-1253-adad-82b4-4a578cc72825@uwyo.edu>
- <CAJZ5v0j9U20cFbRx6QKeQv6wyDg6nL71L0U_Rec5+W1JoD8-=w@mail.gmail.com>
- <144b56d4-54e6-bccd-4652-22303bcd9168@uwyo.edu>
- <CAJZ5v0jJEovXXiqs-tzPC7FsGjGL+qxfXCxbTrQZqAxSCv1oyQ@mail.gmail.com>
- <beab21cb-9f89-b934-e0a4-2fd85c69f4e6@uwyo.edu>
- <4fb5fc2e-e5af-6732-0228-8c73beed1afb@redhat.com>
- <c3dadc9d-bf3b-c992-f256-94a25fea570a@uwyo.edu>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <1bb008bd-ae0d-d351-ef0c-303e23b0eca5@redhat.com>
-Date:   Thu, 9 May 2019 10:50:06 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726590AbfEIJ2W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 May 2019 05:28:22 -0400
+Received: from foss.arm.com ([217.140.101.70]:35800 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725826AbfEIJ2W (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 9 May 2019 05:28:22 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 60260374;
+        Thu,  9 May 2019 02:28:21 -0700 (PDT)
+Received: from brain-police (usa-sjc-mx-foss1.foss.arm.com [217.140.101.70])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B72A3F575;
+        Thu,  9 May 2019 02:28:17 -0700 (PDT)
+Date:   Thu, 9 May 2019 10:28:11 +0100
+From:   Will Deacon <will.deacon@arm.com>
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     Hanjun Guo <guohanjun@huawei.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        catalin.marinas@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
+        mark.rutland@arm.com, lorenzo.pieralisi@arm.com,
+        linuxarm@huawei.com, john.garry@huawei.com,
+        Hongbo Yao <yaohongbo@huawei.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Subject: Re: [PATCH v3 0/5] arm64: SPE ACPI enablement
+Message-ID: <20190509092810.GC2667@brain-police>
+References: <20190503232407.37195-1-jeremy.linton@arm.com>
+ <5eaa1607-4bf0-a320-e9cf-2d51eca912c6@huawei.com>
+ <82032e5b-0cb5-e48f-ab51-ba5d5f9dceec@arm.com>
+ <819de863-92ff-51c5-9c35-880db4f6a922@huawei.com>
+ <20190508165149.GB21553@e107155-lin>
 MIME-Version: 1.0
-In-Reply-To: <c3dadc9d-bf3b-c992-f256-94a25fea570a@uwyo.edu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190508165149.GB21553@e107155-lin>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 09-05-19 06:24, Robert R. Howell wrote:
-> On 4/30/19 8:39 AM, Hans de Goede wrote:
->>
->> Hi,
->>
->> On 4/25/19 6:38 PM, Robert R. Howell wrote:
->>> On 4/24/19 1:20 AM, Rafael J. Wysocki wrote:
->>>
->>>> On Tue, Apr 23, 2019 at 10:03 PM Robert R. Howell <RHowell@uwyo.edu> wrote:
->>>>>
->>>>> On 4/23/19 2:07 AM, Rafael J. Wysocki wrote:
->>>>>>
->>>>>> On Sat, Apr 20, 2019 at 12:44 AM Robert R. Howell <RHowell@uwyo.edu> wrote:
->>>>>>>
->>>>>>> On 4/18/19 5:42 AM, Hans de Goede wrote:
->>>>>>>
->>>>>>>>> On 4/8/19 2:16 AM, Hans de Goede wrote:>
->>>>>>>>>>
->>>>>>>>>> Hmm, interesting so you have hibernation working on a T100TA
->>>>>>>>>> (with 5.0 + 02e45646d53b reverted), right ?
->>>>>>>>>>
->>>>>>>
->>>>>>>
->>>>>>> I've managed to find a way around the i2c_designware timeout issues
->>>>>>> on the T100TA's.  The key is to NOT set DPM_FLAG_SMART_SUSPEND,
->>>>>>> which was added in the 02e45646d53b commit.
->>>>>>>
->>>>>>> To test that I've started with a 5.1-rc5 kernel, applied your recent patch
->>>>>>> to acpi_lpss.c, then apply the following patch of mine, removing
->>>>>>> DPM_FLAG_SMART_SUSPEND.  (For the T100 hardware I need to apply some
->>>>>>> other patches as well but those are not related to the i2c-designware or
->>>>>>> acpi issues addressed here.)
->>>>>>>
->>>>>>> On a resume from hibernation I still see one error:
->>>>>>>     "i2c_designware 80860F41:00: Error i2c_dw_xfer called while suspended"
->>>>>>> but I no longer get the i2c_designware timeouts, and audio does now work
->>>>>>> after the resume.
->>>>>>>
->>>>>>> Removing DPM_FLAG_SMART_SUSPEND may not be what you want for other
->>>>>>> hardware, but perhaps this will give you a clue as to what is going
->>>>>>> wrong with hibernate/resume on the T100TA's.
->>>>>>
->>>>>> What if you drop DPM_FLAG_LEAVE_SUSPENDED alone instead?
->>>>>>
->>>>>
->>>>> I did try dropping just DPM_FLAG_LEAVE_SUSPENDED, dropping just
->>>>> DPM_FLAG_SMART_SUSPEND, and dropping both flags.  When I just drop
->>>>> DPM_FLAG_LEAVE_SUSPENDED I still get the i2c_designware timeouts
->>>>> after the resume.  If I drop just DPM_FLAG_SMART_SUSPEND or drop both,
->>>>> then the timeouts go away.
->>>>
->>>> OK, thanks!
->>>>
->>>> Is non-hibernation system suspend affected too?
->>>
->>> I just ran some tests on a T100TA, using the 5.1-rc5 code with Hans' patch applied
->>> but without any changes to i2c-designware-platdrv.c, so the
->>> DPM_FLAG_SMART_PREPARE, DPM_FLAG_SMART_SUSPEND, and DPM_FLAG_LEAVE_SUSPENDED flags
->>> are all set.
->>>
->>> Suspend does work OK, and after resume I do NOT get any of the crippling
->>> i2c_designware timeout errors which cause sound to fail after hibernate.  I DO see one
->>>     "i2c_designware 80860F41:00: Error i2c_dw_xfer call while suspended"
->>> error on resume, just as I do on hibernate.  I've attached a portion of dmesg below.
->>> The "asus_wmi:  Unknown key 79 pressed" error is a glitch which occurs
->>> intermittently on these machines, but doesn't seem related to the other issues.
->>> I had one test run when it was absent but the rest of the messages were the
->>> same -- but then kept getting that unknown key error on all my later tries.
->>
->> I've just tried to reproduce the "Error i2c_dw_xfer call while suspended" error
->> on suspend/resume on my own T100TA and I could not reproduce this.
->>
->> Can you try without the BT keyboard paired and waking up from suspend using the
->> tablet part's power-button ?
->>
->> Also do you still have the scripts to rmmod some modules before suspend ?
->>
+On Wed, May 08, 2019 at 05:51:49PM +0100, Sudeep Holla wrote:
+> On Wed, May 08, 2019 at 05:35:51PM +0800, Hanjun Guo wrote:
+> > +Cc Alexander.
+> >
+> > On 2019/5/8 1:58, Jeremy Linton wrote:
+> > > Hi,
+> > >
+> > > On 5/4/19 6:06 AM, Hanjun Guo wrote:
+> > >> Hi Jeremy, Mark,
+> > >>
+> > >> On 2019/5/4 7:24, Jeremy Linton wrote:
+> > >>> This patch series enables the Arm Statistical Profiling
+> > >>> Extension (SPE) on ACPI platforms.
+> > >>>
+> > >>> This is possible because ACPI 6.3 uses a previously
+> > >>> reserved field in the MADT to store the SPE interrupt
+> > >>> number, similarly to how the normal PMU is described.
+> > >>> If a consistent valid interrupt exists across all the
+> > >>> cores in the system, a platform device is registered.
+> > >>> That then triggers the SPE module, which runs as normal.
+> > >>>
+> > >>> We also add the ability to parse the PPTT for IDENTICAL
+> > >>> cores. We then use this to sanity check the single SPE
+> > >>> device we create. This creates a bit of a problem with
+> > >>> respect to the specification though. The specification
+> > >>> says that its legal for multiple tree's to exist in the
+> > >>> PPTT. We handle this fine, but what happens in the
+> > >>> case of multiple tree's is that the lack of a common
+> > >>> node with IDENTICAL set forces us to assume that there
+> > >>> are multiple non-IDENTICAL cores in the machine.
+> > >>
+> > >> Adding this patch set on top of latest mainline kernel,
+> > >> and tested on D06 which has the SPE feature, in boot message
+> > >> shows it was probed successfully:
+> > >>
+> > >> arm_spe_pmu arm,spe-v1: probed for CPUs 0-95 [max_record_sz 128, align 4, features 0x7]
+> > >>
+> > >> but when I test it with spe events such as
+> > >>
+> > >> perf record -c 1024 -e arm_spe_0/branch_filter=0/ -o spe ls
+> > >>
+> > >> it fails with:
+> > >> failed to mmap with 12 (Cannot allocate memory),
+> > >>
+> > >> Confirmed that patch [0] is merged and other perf events are working
+> > >> fine.
+> > >
+> > > Its pretty easy to get into the weeds with this driver, does it work with examples like:
+> > >
+> > > https://lkml.org/lkml/2018/1/14/122
+> >
+> > No, not work at all.
+> >
+> > SPE works on 5.0, but not work after 5.1-rc1, bisected to this commit:
+> >
+> > 5768402fd9c6 perf/ring_buffer: Use high order allocations for AUX buffers optimistically
+> >
 > 
-> The T100TA keyboard is actually a hardwired connection rather than Bluetooth but I
-> did physically disconnect the keyboard, and also unpaired all the actual Bluetooth
-> devices (such as the mouse) and then powered down the T100TA bluetooth adapter.
-> When I suspend, then resume using the tablet power button, I still get the
-> i2c_dw_xfererror error during the resume.  But whatever causes this error isn't fatal,
-> in the sense that after resume the sound and other i2c functions do still work OK.
+> Indeed this patch breaks SPE. As mentioned in the patch, it uses high
+> order allocations for AUX buffers and SPE PMU setup_aux explicitly
+> fails with the warning "unexpected high-order page for auxbuf!" if
+> it encounters one.
 > 
-> While I always get this i2c_dw_xfer error on resume from suspend or hibernation on the T100TA,
-> I also have a T100TAM and curiously, it NEVER shows that error -- although all the
-> other suspend and hibernate behavior seems similar.  I'm not sure if the following could
-> be the difference, but the T100TA uses an i2c connected ATML1000 touchscreen controller
-> while the T100TAM uses an i2c connected SIS0817 touchscreen controller.  Other than that
-> the hardware seems almost identical.
+> I don't know the intention of that check in SPE. Will ?
 
-I've been testing on an actual T100TA, with the ATML1000 touchscreen controller.
+Since SPE uses virtual addressing, we don't really care about the underlying
+page layout so there's no need to use higher-order allocations. I suppose we
+could theoretically map them at the pmd level in some cases, but ignoring
+them should also be harmless and I suspect you can delete the check.
 
-Maybe it is a difference in BIOS version, my T100TA is running the latest BIOS, what
-is the output of:
+Does the patch below fix the problem?
 
-cat /sys/class/dmi/id/bios_version /sys/class/dmi/id/bios_date
+Will
 
-?
+--->8
 
-Also do you perhaps have a microsd card inserted?  (I'm trying to figure out the
-different between our setups so that I can hopefully reproduce the issue myself).
-
-
-> Regarding scripts, while I do still need a systemd hibernate script which removes the
-> brcmfmac and the hci_uart (bluetooth related) drivers, I've found that I no longer need
-> any script for suspend.
-
-Ok, so you are not doing any rmmod-s on suspend, right?
-
-Regards,
-
-Hans
+diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
+index 7cb766dafe85..e120f933412a 100644
+--- a/drivers/perf/arm_spe_pmu.c
++++ b/drivers/perf/arm_spe_pmu.c
+@@ -855,16 +855,8 @@ static void *arm_spe_pmu_setup_aux(struct perf_event *event, void **pages,
+ 	if (!pglist)
+ 		goto out_free_buf;
+ 
+-	for (i = 0; i < nr_pages; ++i) {
+-		struct page *page = virt_to_page(pages[i]);
+-
+-		if (PagePrivate(page)) {
+-			pr_warn("unexpected high-order page for auxbuf!");
+-			goto out_free_pglist;
+-		}
+-
++	for (i = 0; i < nr_pages; ++i)
+ 		pglist[i] = virt_to_page(pages[i]);
+-	}
+ 
+ 	buf->base = vmap(pglist, nr_pages, VM_MAP, PAGE_KERNEL);
+ 	if (!buf->base)
