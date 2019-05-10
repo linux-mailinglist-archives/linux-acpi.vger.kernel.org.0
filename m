@@ -2,126 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6533D19B08
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2019 12:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D1F319FB4
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2019 17:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727351AbfEJKJb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 May 2019 06:09:31 -0400
-Received: from mga12.intel.com ([192.55.52.136]:53503 "EHLO mga12.intel.com"
+        id S1727346AbfEJPBX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 May 2019 11:01:23 -0400
+Received: from mga01.intel.com ([192.55.52.88]:13081 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727053AbfEJKJ3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 10 May 2019 06:09:29 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
+        id S1727402AbfEJPBX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 10 May 2019 11:01:23 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 May 2019 03:09:28 -0700
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 May 2019 08:01:22 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,453,1549958400"; 
-   d="scan'208";a="170275100"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga002.fm.intel.com with ESMTP; 10 May 2019 03:09:27 -0700
-Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTPS id A7B1F20800;
-        Fri, 10 May 2019 13:09:26 +0300 (EEST)
-Received: from sailus by punajuuri.localdomain with local (Exim 4.89)
-        (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1hP2T7-0003p9-Pv; Fri, 10 May 2019 13:09:33 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     rajmohan.mani@intel.com, linux-media@vger.kernel.org
-Subject: [PATCH 5/5] at24: Support probing while off
-Date:   Fri, 10 May 2019 13:09:30 +0300
-Message-Id: <20190510100930.14641-6-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20190510100930.14641-1-sakari.ailus@linux.intel.com>
-References: <20190510100930.14641-1-sakari.ailus@linux.intel.com>
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
+  by orsmga007.jf.intel.com with ESMTP; 10 May 2019 08:01:20 -0700
+Received: from andy by smile with local (Exim 4.92)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1hP71U-0004h0-3b; Fri, 10 May 2019 18:01:20 +0300
+Date:   Fri, 10 May 2019 18:01:20 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, Changbin Du <changbin.du@gmail.com>
+Subject: Re: [PATCH v2 2/2] Documentation: ACPI: Direct references are
+ allowed to devices only
+Message-ID: <20190510150120.GC9224@smile.fi.intel.com>
+References: <20190510094603.14345-1-sakari.ailus@linux.intel.com>
+ <20190510094603.14345-3-sakari.ailus@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190510094603.14345-3-sakari.ailus@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In certain use cases (where the chip is part of a camera module, and the
-camera module is wired together with a camera privacy LED), powering on
-the device during probe is undesirable. Add support for the at24 to
-execute probe while being powered off. For this to happen, a hint in form
-of a device property is required from the firmware.
+On Fri, May 10, 2019 at 12:46:03PM +0300, Sakari Ailus wrote:
+> In ACPI it is possible to make references to device objects only, not to
+> other objects inside a device. In practice this means that hierarchical
+> data extension targets must be in parentheses to make them strings.
+> 
+> Otherwise an acpica warning is produced.
+> 
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
----
- drivers/misc/eeprom/at24.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
-index 63aa541c96088..b9dbe5b6a97be 100644
---- a/drivers/misc/eeprom/at24.c
-+++ b/drivers/misc/eeprom/at24.c
-@@ -579,6 +579,7 @@ static int at24_probe(struct i2c_client *client)
- 	bool i2c_fn_i2c, i2c_fn_block;
- 	unsigned int i, num_addresses;
- 	struct at24_data *at24;
-+	bool powered_off;
- 	struct regmap *regmap;
- 	size_t at24_size;
- 	bool writable;
-@@ -701,19 +702,24 @@ static int at24_probe(struct i2c_client *client)
- 
- 	i2c_set_clientdata(client, at24);
- 
--	/* enable runtime pm */
--	pm_runtime_set_active(dev);
-+	powered_off = acpi_dev_powered_off_for_probe(&client->dev);
-+	if (!powered_off)
-+		pm_runtime_set_active(dev);
-+
- 	pm_runtime_enable(dev);
- 
- 	/*
--	 * Perform a one-byte test read to verify that the
--	 * chip is functional.
-+	 * Perform a one-byte test read to verify that the chip is functional,
-+	 * unless powering on the device is to be avoided during probe (i.e.
-+	 * it's powered off right now).
- 	 */
--	err = at24_read(at24, 0, &test_byte, 1);
--	pm_runtime_idle(dev);
--	if (err) {
--		err = -ENODEV;
--		goto err_clients;
-+	if (!powered_off) {
-+		err = at24_read(at24, 0, &test_byte, 1);
-+		pm_runtime_idle(dev);
-+		if (err) {
-+			err = -ENODEV;
-+			goto err_clients;
-+		}
- 	}
- 
- 	nvmem_config.name = dev_name(dev);
-@@ -752,12 +758,15 @@ static int at24_probe(struct i2c_client *client)
- static int at24_remove(struct i2c_client *client)
- {
- 	struct at24_data *at24;
-+	bool powered_off;
- 
- 	at24 = i2c_get_clientdata(client);
- 
- 	at24_remove_dummy_clients(at24);
- 	pm_runtime_disable(&client->dev);
--	pm_runtime_set_suspended(&client->dev);
-+	powered_off = acpi_dev_powered_off_for_probe(&client->dev);
-+	if (!powered_off)
-+		pm_runtime_set_suspended(&client->dev);
- 
- 	return 0;
- }
-@@ -765,6 +774,7 @@ static int at24_remove(struct i2c_client *client)
- static struct i2c_driver at24_driver = {
- 	.driver = {
- 		.name = "at24",
-+		.probe_powered_off = true,
- 		.of_match_table = at24_of_match,
- 		.acpi_match_table = ACPI_PTR(at24_acpi_ids),
- 	},
+> Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+>  .../firmware-guide/acpi/dsd/data-node-references.rst         |  6 +++---
+>  Documentation/firmware-guide/acpi/dsd/graph.rst              | 12 ++++++------
+>  2 files changed, 9 insertions(+), 9 deletions(-)
+> 
+> diff --git a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+> index 1351984e767c8..febccbc5689d0 100644
+> --- a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+> +++ b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+> @@ -45,8 +45,8 @@ the ANOD object which is also the final target node of the reference.
+>  	    Name (_DSD, Package () {
+>  		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
+>  		Package () {
+> -		    Package () { "node@0", NOD0 },
+> -		    Package () { "node@1", NOD1 },
+> +		    Package () { "node@0", "NOD0" },
+> +		    Package () { "node@1", "NOD1" },
+>  		}
+>  	    })
+>  	    Name (NOD0, Package() {
+> @@ -58,7 +58,7 @@ the ANOD object which is also the final target node of the reference.
+>  	    Name (NOD1, Package() {
+>  		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
+>  		Package () {
+> -		    Package () { "anothernode", ANOD },
+> +		    Package () { "anothernode", "ANOD" },
+>  		}
+>  	    })
+>  	    Name (ANOD, Package() {
+> diff --git a/Documentation/firmware-guide/acpi/dsd/graph.rst b/Documentation/firmware-guide/acpi/dsd/graph.rst
+> index 8a9019a38b66d..1a6ce7afba5ea 100644
+> --- a/Documentation/firmware-guide/acpi/dsd/graph.rst
+> +++ b/Documentation/firmware-guide/acpi/dsd/graph.rst
+> @@ -45,7 +45,7 @@ with "port" and must be followed by the "@" character and the number of the
+>  port as its key. The target object it refers to should be called "PRTX", where
+>  "X" is the number of the port. An example of such a package would be::
+>  
+> -    Package() { "port@4", PRT4 }
+> +    Package() { "port@4", "PRT4" }
+>  
+>  Further on, endpoints are located under the port nodes. The hierarchical
+>  data extension key of the endpoint nodes must begin with
+> @@ -54,7 +54,7 @@ endpoint. The object it refers to should be called "EPXY", where "X" is the
+>  number of the port and "Y" is the number of the endpoint. An example of such a
+>  package would be::
+>  
+> -    Package() { "endpoint@0", EP40 }
+> +    Package() { "endpoint@0", "EP40" }
+>  
+>  Each port node contains a property extension key "port", the value of which is
+>  the number of the port. Each endpoint is similarly numbered with a property
+> @@ -91,7 +91,7 @@ A simple example of this is show below::
+>  		},
+>  		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
+>  		Package () {
+> -		    Package () { "port@0", PRT0 },
+> +		    Package () { "port@0", "PRT0" },
+>  		}
+>  	    })
+>  	    Name (PRT0, Package() {
+> @@ -101,7 +101,7 @@ A simple example of this is show below::
+>  		},
+>  		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
+>  		Package () {
+> -		    Package () { "endpoint@0", EP00 },
+> +		    Package () { "endpoint@0", "EP00" },
+>  		}
+>  	    })
+>  	    Name (EP00, Package() {
+> @@ -121,7 +121,7 @@ A simple example of this is show below::
+>  	    Name (_DSD, Package () {
+>  		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
+>  		Package () {
+> -		    Package () { "port@4", PRT4 },
+> +		    Package () { "port@4", "PRT4" },
+>  		}
+>  	    })
+>  
+> @@ -132,7 +132,7 @@ A simple example of this is show below::
+>  		},
+>  		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
+>  		Package () {
+> -		    Package () { "endpoint@0", EP40 },
+> +		    Package () { "endpoint@0", "EP40" },
+>  		}
+>  	    })
+>  
+> -- 
+> 2.11.0
+> 
+
 -- 
-2.11.0
+With Best Regards,
+Andy Shevchenko
+
 
