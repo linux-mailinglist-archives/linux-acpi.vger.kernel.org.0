@@ -2,118 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55EC31B4EE
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 May 2019 13:31:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2FDA1BC02
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 May 2019 19:32:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727849AbfEMLbh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 May 2019 07:31:37 -0400
-Received: from foss.arm.com ([217.140.101.70]:53270 "EHLO foss.arm.com"
+        id S1729173AbfEMRcl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 May 2019 13:32:41 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:42674 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727598AbfEMLbh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 13 May 2019 07:31:37 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7EEAA374;
-        Mon, 13 May 2019 04:31:36 -0700 (PDT)
-Received: from e107155-lin (e107155-lin.cambridge.arm.com [10.1.196.42])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EDCB63F703;
-        Mon, 13 May 2019 04:31:33 -0700 (PDT)
-Date:   Mon, 13 May 2019 12:31:27 +0100
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Will Deacon <will.deacon@arm.com>
-Cc:     Hanjun Guo <guohanjun@huawei.com>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        catalin.marinas@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
-        mark.rutland@arm.com, lorenzo.pieralisi@arm.com,
-        linuxarm@huawei.com, john.garry@huawei.com,
-        Hongbo Yao <yaohongbo@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Subject: Re: [PATCH v3 0/5] arm64: SPE ACPI enablement
-Message-ID: <20190513113127.GA10384@e107155-lin>
-References: <20190503232407.37195-1-jeremy.linton@arm.com>
- <5eaa1607-4bf0-a320-e9cf-2d51eca912c6@huawei.com>
- <82032e5b-0cb5-e48f-ab51-ba5d5f9dceec@arm.com>
- <819de863-92ff-51c5-9c35-880db4f6a922@huawei.com>
- <20190508165149.GB21553@e107155-lin>
- <20190509092810.GC2667@brain-police>
- <20190509103559.GB8239@e107155-lin>
- <20190509141350.GF8239@e107155-lin>
- <20190513105631.GB6711@fuggles.cambridge.arm.com>
+        id S1728708AbfEMRck (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 13 May 2019 13:32:40 -0400
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 8EF1530832E3;
+        Mon, 13 May 2019 17:32:35 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 36EDE9CC8;
+        Mon, 13 May 2019 17:32:33 +0000 (UTC)
+Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
+        by colo-mx.corp.redhat.com (Postfix) with ESMTP id 7495018089CA;
+        Mon, 13 May 2019 17:32:28 +0000 (UTC)
+Date:   Mon, 13 May 2019 13:32:28 -0400 (EDT)
+From:   Pankaj Gupta <pagupta@redhat.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     cohuck@redhat.com, Jan Kara <jack@suse.cz>,
+        KVM list <kvm@vger.kernel.org>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>, david <david@fromorbit.com>,
+        Qemu Developers <qemu-devel@nongnu.org>,
+        virtualization@lists.linux-foundation.org,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        Ross Zwisler <zwisler@kernel.org>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Dave Jiang <dave.jiang@intel.com>, jstaron@google.com,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        jmoyer <jmoyer@redhat.com>,
+        linux-ext4 <linux-ext4@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Adam Borowski <kilobyte@angband.pl>,
+        Rik van Riel <riel@surriel.com>,
+        yuval shaia <yuval.shaia@oracle.com>,
+        Stefan Hajnoczi <stefanha@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, lcapitulino@redhat.com,
+        Kevin Wolf <kwolf@redhat.com>,
+        Nitesh Narayan Lal <nilal@redhat.com>,
+        Theodore Ts'o <tytso@mit.edu>,
+        Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+        "Darrick J. Wong" <darrick.wong@oracle.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-xfs <linux-xfs@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Igor Mammedov <imammedo@redhat.com>
+Message-ID: <116369545.28425569.1557768748009.JavaMail.zimbra@redhat.com>
+In-Reply-To: <2003480558.28042237.1557537797923.JavaMail.zimbra@redhat.com>
+References: <20190510155202.14737-1-pagupta@redhat.com> <20190510155202.14737-4-pagupta@redhat.com> <CAPcyv4hbVNRFSyS2CTbmO88uhnbeH4eiukAng2cxgbDzLfizwg@mail.gmail.com> <864186878.28040999.1557535549792.JavaMail.zimbra@redhat.com> <CAPcyv4gL3ODfOr52Ztgq7BM4gVf1cih6cj0271gcpVvpi9aFSA@mail.gmail.com> <2003480558.28042237.1557537797923.JavaMail.zimbra@redhat.com>
+Subject: Re: [Qemu-devel] [PATCH v8 3/6] libnvdimm: add dax_dev sync flag
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190513105631.GB6711@fuggles.cambridge.arm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.65.16.148, 10.4.196.23, 10.5.101.130, 10.4.195.13]
+Thread-Topic: libnvdimm: add dax_dev sync flag
+Thread-Index: ptJfczfofLn7Sapjrtn0VT/vVA1TgWbBtP+u
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.44]); Mon, 13 May 2019 17:32:40 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 13, 2019 at 11:56:31AM +0100, Will Deacon wrote:
-> Hi Sudeep,
-> 
-> On Thu, May 09, 2019 at 03:13:50PM +0100, Sudeep Holla wrote:
-> > On Thu, May 09, 2019 at 11:35:59AM +0100, Sudeep Holla wrote:
-> > > On Thu, May 09, 2019 at 10:28:11AM +0100, Will Deacon wrote:
-> > 
-> > [...]
-> > 
-> > > >
-> > > > Since SPE uses virtual addressing, we don't really care about the underlying
-> > > > page layout so there's no need to use higher-order allocations. I suppose we
-> > > > could theoretically map them at the pmd level in some cases, but ignoring
-> > > > them should also be harmless and I suspect you can delete the check.
-> > > >
-> > >
-> > > Yes, I did a quick look to see if we can do that, but couldn't find a clue.
-> > > Not sure if that's any optimisation, we can use order from page_private
-> > > and set the values accordingly ?
-> > >
-> > And I forgot to add the diff that I mentioned above, something like the
-> > patch below.
-> > 
-> > Regards,
-> > Sudeep
-> > 
-> > -->8
-> > 
-> > diff --git i/drivers/perf/arm_spe_pmu.c w/drivers/perf/arm_spe_pmu.c
-> > index 7cb766dafe85..45cd62517080 100644
-> > --- i/drivers/perf/arm_spe_pmu.c
-> > +++ w/drivers/perf/arm_spe_pmu.c
-> > @@ -827,7 +827,7 @@ static void arm_spe_pmu_read(struct perf_event *event)
-> >  static void *arm_spe_pmu_setup_aux(struct perf_event *event, void **pages,
-> >  				   int nr_pages, bool snapshot)
-> >  {
-> > -	int i, cpu = event->cpu;
-> > +	int i, j, cpu = event->cpu;
-> >  	struct page **pglist;
-> >  	struct arm_spe_pmu_buf *buf;
-> >  
-> > @@ -859,11 +859,12 @@ static void *arm_spe_pmu_setup_aux(struct perf_event *event, void **pages,
-> >  		struct page *page = virt_to_page(pages[i]);
-> >  
-> >  		if (PagePrivate(page)) {
-> > -			pr_warn("unexpected high-order page for auxbuf!");
-> > -			goto out_free_pglist;
-> > +			for (j = 0; j < 1 << page_private(page); j++)
-> > +				pglist[i + j] = page++;
-> > +			i += j - 1;
-> > +		} else {
-> > +			pglist[i] = page;
-> 
-> Hmm. Given that vmap() doesn't do anything special for high-order pages
-> and rb_alloc_aux()/rb_alloc_aux_page() already split the allocation up
-> for the page array, what does your change accomplish on top of that?
-> 
 
-Not much, instead of computing page ptr for each page using virt_to_page,
-we jump pointers automatically for all the pages that are private.
+Hi Dan,
 
-page_private(page) holds the order. i.e. for 2MB high order allocation
-we can skip calling virt_to_page for 511 pages that are contiguous.
+While testing device mapper with DAX, I faced a bug with the commit:
 
---
-Regards,
-Sudeep
+commit ad428cdb525a97d15c0349fdc80f3d58befb50df
+Author: Dan Williams <dan.j.williams@intel.com>
+Date:   Wed Feb 20 21:12:50 2019 -0800
+
+When I reverted the condition to old code[1] it worked for me. I 
+am thinking when we map two different devices (e.g with device mapper), will 
+start & end pfn still point to same pgmap? Or there is something else which
+I am missing here. 
+
+Note: I tested only EXT4.
+
+[1]
+
+-               if (pgmap && pgmap->type == MEMORY_DEVICE_FS_DAX)
++               end_pgmap = get_dev_pagemap(pfn_t_to_pfn(end_pfn), NULL);
++               if (pgmap && pgmap == end_pgmap && pgmap->type == MEMORY_DEVICE_FS_DAX
++                               && pfn_t_to_page(pfn)->pgmap == pgmap
++                               && pfn_t_to_page(end_pfn)->pgmap == pgmap
++                               && pfn_t_to_pfn(pfn) == PHYS_PFN(__pa(kaddr))
++                               && pfn_t_to_pfn(end_pfn) == PHYS_PFN(__pa(end_kaddr)))
+                        dax_enabled = true;
+                put_dev_pagemap(pgmap);
+
+Thanks,
+Pankaj
+
+
+
+
