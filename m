@@ -2,28 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B25C61D144
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 May 2019 23:28:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B104E1D149
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 May 2019 23:29:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726466AbfENV2D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 May 2019 17:28:03 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:60728 "EHLO
+        id S1726134AbfENV3W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 May 2019 17:29:22 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:42388 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726089AbfENV2D (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 May 2019 17:28:03 -0400
+        with ESMTP id S1726089AbfENV3V (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 May 2019 17:29:21 -0400
 Received: from 79.184.255.148.ipv4.supernova.orange.pl (79.184.255.148) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.213)
- id 5516b80e513c2c6a; Tue, 14 May 2019 23:28:01 +0200
+ id bc0f4377005ba3a1; Tue, 14 May 2019 23:29:19 +0200
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Rajat Jain <rajatja@google.com>
-Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rajatxjain@gmail.com,
-        furquan@google.com
-Subject: Re: [RFC PATCH] ACPI: PM: Enable wake-up device GPEs for suspend-to-idle
-Date:   Tue, 14 May 2019 23:28:00 +0200
-Message-ID: <17514687.kF9exGCLEa@kreacher>
-In-Reply-To: <20190513191708.87956-1-rajatja@google.com>
-References: <20190513191708.87956-1-rajatja@google.com>
+To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc:     Vinod Koul <vkoul@kernel.org>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Takashi Iwai <tiwai@suse.de>, Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        jank@cadence.com, Joe Perches <joe@perches.com>,
+        Srini Kandagatla <srinivas.kandagatla@linaro.org>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Schmauss <erik.schmauss@intel.com>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
+Subject: Re: [PATCH v2] ACPI / device_sysfs: change _ADR representation to 64 bits
+Date:   Tue, 14 May 2019 23:29:18 +0200
+Message-ID: <1683867.ro8ObbCUgW@kreacher>
+In-Reply-To: <CAJZ5v0i+M8y3ddr+Z5o5af8OatMXq3xqCF5CUg5PjnANrTOSHw@mail.gmail.com>
+References: <20190501125322.23791-1-pierre-louis.bossart@linux.intel.com> <20190502045817.GZ3845@vkoul-mobl.Dlink> <CAJZ5v0i+M8y3ddr+Z5o5af8OatMXq3xqCF5CUg5PjnANrTOSHw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -32,80 +43,61 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Monday, May 13, 2019 9:17:08 PM CEST Rajat Jain wrote:
-> I noticed that recently multiple systems (chromebooks) couldn't wake
-> from S0ix using LID or Keyboard after updating to a newer kernel, I
-> bisected and the issue is seen starting the following commit:
+On Monday, May 6, 2019 10:36:22 AM CEST Rafael J. Wysocki wrote:
+> On Thu, May 2, 2019 at 6:58 AM Vinod Koul <vkoul@kernel.org> wrote:
+> >
+> > On 01-05-19, 07:53, Pierre-Louis Bossart wrote:
+> > > Standards such as the MIPI DisCo for SoundWire 1.0 specification
+> > > assume the _ADR field is 64 bits.
+> > >
+> > > _ADR is defined as an "Integer" represented as 64 bits since ACPI 2.0
+> > > released in 2002. The low levels already use _ADR as 64 bits, e.g. in
+> > > struct acpi_device_info.
+> > >
+> > > This patch bumps the representation used for sysfs to 64 bits. To
+> > > avoid any compatibility/ABI issues, the printf format is only extended
+> > > to 16 characters when the actual _ADR value exceeds the 32 bit
+> > > maximum.
+> > >
+> > > Example with a SoundWire device, the results show the complete
+> > > vendorID and linkID which were omitted before:
+> > >
+> > > Before:
+> > > $ more /sys/bus/acpi/devices/device\:38/adr
+> > > 0x5d070000
+> > > After:
+> > > $ more /sys/bus/acpi/devices/device\:38/adr
+> > > 0x000010025d070000
+> > >
+> > > Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+> > > ---
+> > > v2: only use 64 bits when required to avoid compatibility issues
+> > > (feedback from Vinod and Rafael)
+> > >
+> > >  drivers/acpi/device_sysfs.c | 6 ++++--
+> > >  include/acpi/acpi_bus.h     | 2 +-
+> > >  2 files changed, 5 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+> > > index 8940054d6250..7dda0ee05cd1 100644
+> > > --- a/drivers/acpi/device_sysfs.c
+> > > +++ b/drivers/acpi/device_sysfs.c
+> > > @@ -428,8 +428,10 @@ static ssize_t acpi_device_adr_show(struct device *dev,
+> > >  {
+> > >       struct acpi_device *acpi_dev = to_acpi_device(dev);
+> > >
+> > > -     return sprintf(buf, "0x%08x\n",
+> > > -                    (unsigned int)(acpi_dev->pnp.bus_address));
+> > > +     if (acpi_dev->pnp.bus_address > 0xFFFFFFFF)
+> >
+> > Would prefer to use U32_MAX instead of 0xFFFFFFFF
 > 
-> commit f941d3e41da7 ("ACPI: EC / PM: Disable non-wakeup GPEs for
-> suspend-to-idle")
-> 
-> and found that the issue gets fixed if I revert it. I debugged and
-> found that although PNP0C0D:00 (representing the LID) is wake capable
-> and should wakeup the system per the code in acpi_wakeup_gpe_init()
-> and in drivers/acpi/button.c:
-> 
-> localhost /sys # cat /proc/acpi/wakeup
-> Device  S-state   Status   Sysfs node
-> LID0      S4    *enabled   platform:PNP0C0D:00
-> CREC      S5    *disabled  platform:GOOG0004:00
->                 *disabled  platform:cros-ec-dev.1.auto
->                 *disabled  platform:cros-ec-accel.0
->                 *disabled  platform:cros-ec-accel.1
->                 *disabled  platform:cros-ec-gyro.0
->                 *disabled  platform:cros-ec-ring.0
->                 *disabled  platform:cros-usbpd-charger.2.auto
->                 *disabled  platform:cros-usbpd-logger.3.auto
-> D015      S3    *enabled   i2c:i2c-ELAN0000:00
-> PENH      S3    *enabled   platform:PRP0001:00
-> XHCI      S3    *enabled   pci:0000:00:14.0
-> GLAN      S4    *disabled
-> WIFI      S3    *disabled  pci:0000:00:14.3
-> localhost /sys #
-> 
-> On debugging, I found that its corresponding GPE is not being enabled.
-> The particular GPE's "gpe_register_info->enable_for_wake" does not have any
-> bits set when acpi_enable_all_wakeup_gpes() comes around to use it. I
-> looked at code and could not find any other code path that should set the
-> bits in "enable_for_wake" bitmask for the wake enabled devices for s2idle
-> (I do see that it happens for S3 in acpi_sleep_prepare()).
-> 
-> Thus I used the same call to enable the GPEs for wake enabled devices,
-> and verified that this fixes the regression I was seeing on multiple of
-> my devices.
-> 
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=203579
-> Signed-off-by: Rajat Jain <rajatja@google.com>
-> ---
->  drivers/acpi/sleep.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-> index 403c4ff15349..e52f1238d2d6 100644
-> --- a/drivers/acpi/sleep.c
-> +++ b/drivers/acpi/sleep.c
-> @@ -977,6 +977,8 @@ static int acpi_s2idle_prepare(void)
->  	if (acpi_sci_irq_valid())
->  		enable_irq_wake(acpi_sci_irq);
->  
-> +	acpi_enable_wakeup_devices(ACPI_STATE_S0);
-> +
->  	/* Change the configuration of GPEs to avoid spurious wakeup. */
->  	acpi_enable_all_wakeup_gpes();
->  	acpi_os_wait_events_complete();
-> @@ -1027,6 +1029,8 @@ static void acpi_s2idle_restore(void)
->  {
->  	acpi_enable_all_runtime_gpes();
->  
-> +	acpi_disable_wakeup_devices(ACPI_STATE_S0);
-> +
->  	if (acpi_sci_irq_valid())
->  		disable_irq_wake(acpi_sci_irq);
->  
+> I would.
 > 
 
-Applied, thanks!
+I have made that change manually and applied the patch.
 
+Thanks!
 
 
 
