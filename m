@@ -2,142 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5398B1CF7E
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 May 2019 20:59:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B25C61D144
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 May 2019 23:28:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727714AbfENS7H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 May 2019 14:59:07 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:43155 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727262AbfENS7G (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 May 2019 14:59:06 -0400
-Received: by mail-wr1-f67.google.com with SMTP id r4so20375019wro.10;
-        Tue, 14 May 2019 11:59:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:from:cc:references:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=l9E2Hq9FLPs2R4k3v/109yiHwcmV7e1E97gP56BV7Ws=;
-        b=mMV13v3wYp7MeJP+JJbIIY9J6fwAq5WmMBPxNmmbBlBB6Gx3ZC8fn0Cmnri+Qjcxtm
-         EokZn6N8kNv7Qf7Kdul4pCvvg3/+Sp3BN6P+AAzp3cvdxVoYU8ZWsPK3kv+j55Taj7Cs
-         ZV9TFVy3CQEz4mUxB4WZmjSEtsu6U7OzTfHkdk3UJB0u8YnVw+mzcHk60MM4x3bFsgHs
-         ad2t43pqUV0H6qK2Y2xJlQqDlmYrGzZTLYf67VZt+4ALoQUfyWEb4/v1CkRSi1S9v+vp
-         q0xFR+SeYEl5DkZqLm60J1G0AD9QhtMpQFp6xGDH2IQearc0BqsxXTbPyzB2aH5V9H7r
-         VY8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=l9E2Hq9FLPs2R4k3v/109yiHwcmV7e1E97gP56BV7Ws=;
-        b=Vt+Rcr7fGjysIF5Lr8eeFipUMGepA+IOB+ua9QExwIR6P3Q/W0uJA+L3pTVv5D5uxB
-         lgNkW5kZ9zM5DTDscIBdV12SgAGAOXSSarsNECakMyoieP4W5+YvJFAs7FIMOhfqT22b
-         tIeJ2XG27B/81yPWOwjIgwiphOaVfGTGQVukG4keipanbh4Fizf3M02iS2Ia5gS6IRFf
-         N0Yg4IzZuRiD+kvFO7+HF2amhOcOJikmtKzqM6wKzXpnhO2dQk1Iqy35Pzvv38eCVJ+n
-         nIu6z2nd91a/fCu030QygOTC+dWEtUue+TcaB3TStKmBKyjAWYPmbIWrvKQkTgbHUxq5
-         88IQ==
-X-Gm-Message-State: APjAAAXrFR5iNb498+L7jJapN6AFc8i5vFO9SGcP5sSbqx+pZNoHNlEV
-        c0UEFDVAwktLqxnihdEHcpeqsrS41So=
-X-Google-Smtp-Source: APXvYqzIpS1v0F/fkPzu9k6g5HPhj2GoIeXfiNytHKhzM2h5jQ8M+SL7ngEBeIHCh1hOz0DT6t1diw==
-X-Received: by 2002:a5d:4f88:: with SMTP id d8mr4370508wru.34.1557860344753;
-        Tue, 14 May 2019 11:59:04 -0700 (PDT)
-Received: from [192.168.20.141] ([194.99.104.18])
-        by smtp.gmail.com with ESMTPSA id a15sm23035106wru.88.2019.05.14.11.59.02
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 14 May 2019 11:59:04 -0700 (PDT)
-Subject: [PATCH v4 04/13] platform/x86: wmi: Add function to get _UID of WMI
- device
-From:   Yurii Pavlovskyi <yurii.pavlovskyi@gmail.com>
-Cc:     Corentin Chary <corentin.chary@gmail.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Daniel Drake <drake@endlessm.com>,
-        Chris Chiu <chiu@endlessm.com>,
-        acpi4asus-user@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-References: <c8cdb347-e206-76b2-0d43-546ef660ffb7@gmail.com>
-Message-ID: <35811fe2-7aac-aa3c-46dc-2bef515b0f47@gmail.com>
-Date:   Tue, 14 May 2019 20:59:01 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726466AbfENV2D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 May 2019 17:28:03 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:60728 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726089AbfENV2D (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 May 2019 17:28:03 -0400
+Received: from 79.184.255.148.ipv4.supernova.orange.pl (79.184.255.148) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.213)
+ id 5516b80e513c2c6a; Tue, 14 May 2019 23:28:01 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Rajat Jain <rajatja@google.com>
+Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rajatxjain@gmail.com,
+        furquan@google.com
+Subject: Re: [RFC PATCH] ACPI: PM: Enable wake-up device GPEs for suspend-to-idle
+Date:   Tue, 14 May 2019 23:28:00 +0200
+Message-ID: <17514687.kF9exGCLEa@kreacher>
+In-Reply-To: <20190513191708.87956-1-rajatja@google.com>
+References: <20190513191708.87956-1-rajatja@google.com>
 MIME-Version: 1.0
-In-Reply-To: <c8cdb347-e206-76b2-0d43-546ef660ffb7@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add a new function to acpi.h / wmi.c that returns _UID of the ACPI WMI
-device. For example, it returns "ATK" for the following declaration in
-DSDT:
-Device (ATKD)
-{
-    Name (_HID, "PNP0C14" /* Windows Management Instrumentation Device */)
-      // _HID: Hardware ID
-    Name (_UID, "ATK")  // _UID: Unique ID
-    ..
+On Monday, May 13, 2019 9:17:08 PM CEST Rajat Jain wrote:
+> I noticed that recently multiple systems (chromebooks) couldn't wake
+> from S0ix using LID or Keyboard after updating to a newer kernel, I
+> bisected and the issue is seen starting the following commit:
+> 
+> commit f941d3e41da7 ("ACPI: EC / PM: Disable non-wakeup GPEs for
+> suspend-to-idle")
+> 
+> and found that the issue gets fixed if I revert it. I debugged and
+> found that although PNP0C0D:00 (representing the LID) is wake capable
+> and should wakeup the system per the code in acpi_wakeup_gpe_init()
+> and in drivers/acpi/button.c:
+> 
+> localhost /sys # cat /proc/acpi/wakeup
+> Device  S-state   Status   Sysfs node
+> LID0      S4    *enabled   platform:PNP0C0D:00
+> CREC      S5    *disabled  platform:GOOG0004:00
+>                 *disabled  platform:cros-ec-dev.1.auto
+>                 *disabled  platform:cros-ec-accel.0
+>                 *disabled  platform:cros-ec-accel.1
+>                 *disabled  platform:cros-ec-gyro.0
+>                 *disabled  platform:cros-ec-ring.0
+>                 *disabled  platform:cros-usbpd-charger.2.auto
+>                 *disabled  platform:cros-usbpd-logger.3.auto
+> D015      S3    *enabled   i2c:i2c-ELAN0000:00
+> PENH      S3    *enabled   platform:PRP0001:00
+> XHCI      S3    *enabled   pci:0000:00:14.0
+> GLAN      S4    *disabled
+> WIFI      S3    *disabled  pci:0000:00:14.3
+> localhost /sys #
+> 
+> On debugging, I found that its corresponding GPE is not being enabled.
+> The particular GPE's "gpe_register_info->enable_for_wake" does not have any
+> bits set when acpi_enable_all_wakeup_gpes() comes around to use it. I
+> looked at code and could not find any other code path that should set the
+> bits in "enable_for_wake" bitmask for the wake enabled devices for s2idle
+> (I do see that it happens for S3 in acpi_sleep_prepare()).
+> 
+> Thus I used the same call to enable the GPEs for wake enabled devices,
+> and verified that this fixes the regression I was seeing on multiple of
+> my devices.
+> 
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=203579
+> Signed-off-by: Rajat Jain <rajatja@google.com>
+> ---
+>  drivers/acpi/sleep.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+> index 403c4ff15349..e52f1238d2d6 100644
+> --- a/drivers/acpi/sleep.c
+> +++ b/drivers/acpi/sleep.c
+> @@ -977,6 +977,8 @@ static int acpi_s2idle_prepare(void)
+>  	if (acpi_sci_irq_valid())
+>  		enable_irq_wake(acpi_sci_irq);
+>  
+> +	acpi_enable_wakeup_devices(ACPI_STATE_S0);
+> +
+>  	/* Change the configuration of GPEs to avoid spurious wakeup. */
+>  	acpi_enable_all_wakeup_gpes();
+>  	acpi_os_wait_events_complete();
+> @@ -1027,6 +1029,8 @@ static void acpi_s2idle_restore(void)
+>  {
+>  	acpi_enable_all_runtime_gpes();
+>  
+> +	acpi_disable_wakeup_devices(ACPI_STATE_S0);
+> +
+>  	if (acpi_sci_irq_valid())
+>  		disable_irq_wake(acpi_sci_irq);
+>  
+> 
 
-Generally, it is possible that multiple PNP0C14 ACPI devices are present in
-the system as mentioned in the commit message of commit bff431e49ff5
-("ACPI: WMI: Add ACPI-WMI mapping driver").
+Applied, thanks!
 
-Therefore the _UID is returned for a specific ACPI device that declares the
-given GUID, to which it is also mapped by other methods of wmi module.
 
-Signed-off-by: Yurii Pavlovskyi <yurii.pavlovskyi@gmail.com>
----
- drivers/platform/x86/wmi.c | 19 +++++++++++++++++++
- include/linux/acpi.h       |  1 +
- 2 files changed, 20 insertions(+)
 
-diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
-index 7b26b6ccf1a0..b08ffb769cbe 100644
---- a/drivers/platform/x86/wmi.c
-+++ b/drivers/platform/x86/wmi.c
-@@ -635,6 +635,25 @@ bool wmi_has_guid(const char *guid_string)
- }
- EXPORT_SYMBOL_GPL(wmi_has_guid);
- 
-+/**
-+ * wmi_get_acpi_device_uid() - Get _UID name of ACPI device that defines GUID
-+ * @guid_string: 36 char string of the form fa50ff2b-f2e8-45de-83fa-65417f2f49ba
-+ *
-+ * Find the _UID of ACPI device associated with this WMI GUID.
-+ *
-+ * Return: The ACPI _UID field value or NULL if the WMI GUID was not found
-+ */
-+char *wmi_get_acpi_device_uid(const char *guid_string)
-+{
-+	struct wmi_block *wblock = NULL;
-+
-+	if (!find_guid(guid_string, &wblock))
-+		return NULL;
-+
-+	return acpi_device_uid(wblock->acpi_device);
-+}
-+EXPORT_SYMBOL_GPL(wmi_get_acpi_device_uid);
-+
- static struct wmi_block *dev_to_wblock(struct device *dev)
- {
- 	return container_of(dev, struct wmi_block, dev.dev);
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index d5dcebd7aad3..d31c7fd66f97 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -376,6 +376,7 @@ extern acpi_status wmi_install_notify_handler(const char *guid,
- extern acpi_status wmi_remove_notify_handler(const char *guid);
- extern acpi_status wmi_get_event_data(u32 event, struct acpi_buffer *out);
- extern bool wmi_has_guid(const char *guid);
-+extern char *wmi_get_acpi_device_uid(const char *guid);
- 
- #endif	/* CONFIG_ACPI_WMI */
- 
--- 
-2.17.1
 
