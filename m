@@ -2,32 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BBD791E71D
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 May 2019 05:25:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7F481E727
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 May 2019 05:33:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726218AbfEODZV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 May 2019 23:25:21 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:7647 "EHLO huawei.com"
+        id S1726254AbfEODd6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 May 2019 23:33:58 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:59604 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726201AbfEODZV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 14 May 2019 23:25:21 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id A980A42DC83E8B82F892;
-        Wed, 15 May 2019 11:25:06 +0800 (CST)
+        id S1726201AbfEODd5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 14 May 2019 23:33:57 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id CBFBD7F6CF26B9D058A2;
+        Wed, 15 May 2019 11:33:55 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 15 May 2019 11:24:58 +0800
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 15 May 2019 11:33:46 +0800
 From:   Kefeng Wang <wangkefeng.wang@huawei.com>
 To:     <linux-acpi@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>
 CC:     <guohanjun@huawei.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
         Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Will Deacon <will.deacon@arm.com>
-Subject: [PATCH] ACPI/IORT: Fix build error when IOMMU_SUPPORT disabled
-Date:   Wed, 15 May 2019 11:34:06 +0800
-Message-ID: <20190515033406.79020-1-wangkefeng.wang@huawei.com>
+        Will Deacon <will.deacon@arm.com>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH RESEND] ACPI/IORT: Fix build error when IOMMU_SUPPORT disabled
+Date:   Wed, 15 May 2019 11:42:53 +0800
+Message-ID: <20190515034253.79348-1-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190515033406.79020-1-wangkefeng.wang@huawei.com>
+References: <20190515033406.79020-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -48,9 +51,14 @@ undeclared (first use in this function)
                                 ^~~~~~~~~~~~~~~~~~~~~~~
 drivers/acpi/arm64/iort.c:1079:32: note: each undeclared identifier is reported only once for each function it appears in
 
+If IOMMU_SUPPORT not enabled, struct iommu_fwspec without members and
+IOMMU_FWSPEC_PCI_RC_ATS not defined, add new iommu_fwspec_set_ats_flags()
+to set IOMMU_FWSPEC_PCI_RC_ATS flags to solve build error.
+
 Cc: Jean-Philippe Brucker <jean-philippe.brucker@arm.com>
 Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
 Cc: Will Deacon <will.deacon@arm.com>
+Reported-by: Hulk Robot <hulkci@huawei.com>
 Fixes: 5702ee24182f ("ACPI/IORT: Check ATS capability in root complex nodes")
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
