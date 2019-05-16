@@ -2,235 +2,184 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 483721FE91
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 May 2019 06:43:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7233D1FF89
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 May 2019 08:28:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726247AbfEPEnT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 May 2019 00:43:19 -0400
-Received: from mail-pg1-f182.google.com ([209.85.215.182]:38857 "EHLO
-        mail-pg1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725975AbfEPEnT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 May 2019 00:43:19 -0400
-Received: by mail-pg1-f182.google.com with SMTP id j26so904310pgl.5;
-        Wed, 15 May 2019 21:43:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=wN34173xpf/6mtqZSpgPuozTnCy2fGMnh6ji7J9ET1Y=;
-        b=TKQjb330FOL2RQf5vMjT20pzorPLk8Tb5+r7NPZUjOrWakRLrilk9dQ31QT3Ergn4k
-         Gd7t8AzO0ybrgTwDZhLtwNYqTOs1CWoRxqjiOcdSTFSfAuW3iJ9QQN2gyZKxPD+6CsYb
-         dsjruKZmxbLM5v0c70ICed4S+eDc5xSZ6AL+V1nBflKzyr9SjLHJU+KSuHIEuWBjc5Vm
-         /qKEHIVY5FAuRI26uMfz2uuzI6Z6LesFBvdtRCGW28PF96GcVGrSXwG878RMQW0kha8u
-         LRogtxpRXh18aDOFBJbISXqqAqT96eUz4k59s4nYcnFnT+8yBYvNpsyoqboJVAo4By1A
-         rjkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=wN34173xpf/6mtqZSpgPuozTnCy2fGMnh6ji7J9ET1Y=;
-        b=SNR4UfrY8wZBHsdCUCATqZOzIB+lMBPvXoj2qE1/u+2ohioHu4+DQw+3Zo8GhGPROY
-         pzPEAXlGGzEk3+VoMwxUjBeZYjS+P8ivOYB5/9TMALABqyb6Cd2AN79MkQVoa7NHzTiK
-         LNF0KrcFJVsGqIb2Nlhn/Svs06FFDBdLfubGz8XL+wpSmyyXYane6b6SY0t7+we5x/PY
-         pZrIWvCYnE2NgKjtghx0BruEhi1+zKoyzHZhu873fgG3+at8BfQRJSJ7Pm2IUvsKZOSw
-         +qhW+tu6VetP0aA2qVYk98nRitzOC9Ex/OXTelG8d+5+GhOfsbCxP0qFlW/eW60ys79V
-         3xPw==
-X-Gm-Message-State: APjAAAVCrvaIGecjBMXyHYr5pFXhodHALl7JVGbSkggGIBF31s8OmCrn
-        gwFlh06VBsDMoYSRsOOXhjU=
-X-Google-Smtp-Source: APXvYqzhON08IhcpMOKp1b2wceuN+XNO7KkXMqXPwgiIfpSN4oRcNwitGNgmg3zRaosphPjylxR/yA==
-X-Received: by 2002:a65:5c8c:: with SMTP id a12mr48030291pgt.452.1557981798080;
-        Wed, 15 May 2019 21:43:18 -0700 (PDT)
-Received: from localhost.localdomain ([2601:644:8201:32e0:7256:81ff:febd:926d])
-        by smtp.gmail.com with ESMTPSA id l23sm3905562pgh.68.2019.05.15.21.43.16
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 15 May 2019 21:43:16 -0700 (PDT)
-Date:   Wed, 15 May 2019 21:43:14 -0700
-From:   Eduardo Valentin <edubezval@gmail.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Rui Zhang <rui.zhang@intel.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: [GIT PULL] Thermal-SoC management changes for v5.2-rc1
-Message-ID: <20190516044313.GA17751@localhost.localdomain>
+        id S1726545AbfEPG2Y convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 16 May 2019 02:28:24 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:34732 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726221AbfEPG2Y (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 16 May 2019 02:28:24 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 21F1B3DDBE;
+        Thu, 16 May 2019 06:28:23 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id F29145D9C3;
+        Thu, 16 May 2019 06:28:22 +0000 (UTC)
+Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
+        by colo-mx.corp.redhat.com (Postfix) with ESMTP id 973501806B11;
+        Thu, 16 May 2019 06:28:21 +0000 (UTC)
+Date:   Thu, 16 May 2019 02:28:20 -0400 (EDT)
+From:   Pankaj Gupta <pagupta@redhat.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        virtualization@lists.linux-foundation.org,
+        KVM list <kvm@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Qemu Developers <qemu-devel@nongnu.org>,
+        linux-ext4 <linux-ext4@vger.kernel.org>,
+        linux-xfs <linux-xfs@vger.kernel.org>,
+        Ross Zwisler <zwisler@kernel.org>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Christoph Hellwig <hch@infradead.org>,
+        Len Brown <lenb@kernel.org>, Jan Kara <jack@suse.cz>,
+        Theodore Ts'o <tytso@mit.edu>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        "Darrick J. Wong" <darrick.wong@oracle.com>,
+        lcapitulino@redhat.com, Kevin Wolf <kwolf@redhat.com>,
+        Igor Mammedov <imammedo@redhat.com>,
+        jmoyer <jmoyer@redhat.com>,
+        Nitesh Narayan Lal <nilal@redhat.com>,
+        Rik van Riel <riel@surriel.com>,
+        Stefan Hajnoczi <stefanha@redhat.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        David Hildenbrand <david@redhat.com>,
+        david <david@fromorbit.com>, cohuck@redhat.com,
+        Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Adam Borowski <kilobyte@angband.pl>,
+        yuval shaia <yuval.shaia@oracle.com>, jstaron@google.com
+Message-ID: <1906905099.29162562.1557988100975.JavaMail.zimbra@redhat.com>
+In-Reply-To: <CAPcyv4gEr_zPJEQp3k89v2UXfHp9PQwnJXY+W99HwXfxpvua_w@mail.gmail.com>
+References: <20190514145422.16923-1-pagupta@redhat.com> <20190514145422.16923-2-pagupta@redhat.com> <CAPcyv4gEr_zPJEQp3k89v2UXfHp9PQwnJXY+W99HwXfxpvua_w@mail.gmail.com>
+Subject: Re: [PATCH v9 1/7] libnvdimm: nd_region flush callback support
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.65.16.97, 10.4.195.4]
+Thread-Topic: libnvdimm: nd_region flush callback support
+Thread-Index: VrjlK3y+QUdLL94hHE7OyUkrop5Ojw==
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.29]); Thu, 16 May 2019 06:28:23 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello Linus,
 
-Please consider the following thermal soc changes for v5.2-rc1.
+> >
+> > This patch adds functionality to perform flush from guest
+> > to host over VIRTIO. We are registering a callback based
+> > on 'nd_region' type. virtio_pmem driver requires this special
+> > flush function. For rest of the region types we are registering
+> > existing flush function. Report error returned by host fsync
+> > failure to userspace.
+> >
+> > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
+> > ---
+> >  drivers/acpi/nfit/core.c     |  4 ++--
+> >  drivers/nvdimm/claim.c       |  6 ++++--
+> >  drivers/nvdimm/nd.h          |  1 +
+> >  drivers/nvdimm/pmem.c        | 13 ++++++++-----
+> >  drivers/nvdimm/region_devs.c | 26 ++++++++++++++++++++++++--
+> >  include/linux/libnvdimm.h    |  8 +++++++-
+> >  6 files changed, 46 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> > index 5a389a4f4f65..08dde76cf459 100644
+> > --- a/drivers/acpi/nfit/core.c
+> > +++ b/drivers/acpi/nfit/core.c
+> > @@ -2434,7 +2434,7 @@ static void write_blk_ctl(struct nfit_blk *nfit_blk,
+> > unsigned int bw,
+> >                 offset = to_interleave_offset(offset, mmio);
+> >
+> >         writeq(cmd, mmio->addr.base + offset);
+> > -       nvdimm_flush(nfit_blk->nd_region);
+> > +       nvdimm_flush(nfit_blk->nd_region, NULL);
+> >
+> >         if (nfit_blk->dimm_flags & NFIT_BLK_DCR_LATCH)
+> >                 readq(mmio->addr.base + offset);
+> > @@ -2483,7 +2483,7 @@ static int acpi_nfit_blk_single_io(struct nfit_blk
+> > *nfit_blk,
+> >         }
+> >
+> >         if (rw)
+> > -               nvdimm_flush(nfit_blk->nd_region);
+> > +               nvdimm_flush(nfit_blk->nd_region, NULL);
+> >
+> >         rc = read_blk_stat(nfit_blk, lane) ? -EIO : 0;
+> >         return rc;
+> > diff --git a/drivers/nvdimm/claim.c b/drivers/nvdimm/claim.c
+> > index fb667bf469c7..13510bae1e6f 100644
+> > --- a/drivers/nvdimm/claim.c
+> > +++ b/drivers/nvdimm/claim.c
+> > @@ -263,7 +263,7 @@ static int nsio_rw_bytes(struct nd_namespace_common
+> > *ndns,
+> >         struct nd_namespace_io *nsio = to_nd_namespace_io(&ndns->dev);
+> >         unsigned int sz_align = ALIGN(size + (offset & (512 - 1)), 512);
+> >         sector_t sector = offset >> 9;
+> > -       int rc = 0;
+> > +       int rc = 0, ret = 0;
+> >
+> >         if (unlikely(!size))
+> >                 return 0;
+> > @@ -301,7 +301,9 @@ static int nsio_rw_bytes(struct nd_namespace_common
+> > *ndns,
+> >         }
+> >
+> >         memcpy_flushcache(nsio->addr + offset, buf, size);
+> > -       nvdimm_flush(to_nd_region(ndns->dev.parent));
+> > +       ret = nvdimm_flush(to_nd_region(ndns->dev.parent), NULL);
+> > +       if (ret)
+> > +               rc = ret;
+> >
+> >         return rc;
+> >  }
+> > diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
+> > index a5ac3b240293..0c74d2428bd7 100644
+> > --- a/drivers/nvdimm/nd.h
+> > +++ b/drivers/nvdimm/nd.h
+> > @@ -159,6 +159,7 @@ struct nd_region {
+> >         struct badblocks bb;
+> >         struct nd_interleave_set *nd_set;
+> >         struct nd_percpu_lane __percpu *lane;
+> > +       int (*flush)(struct nd_region *nd_region, struct bio *bio);
+> 
+> So this triggers:
+> 
+> In file included from drivers/nvdimm/e820.c:7:
+> ./include/linux/libnvdimm.h:140:51: warning: ‘struct bio’ declared
+> inside parameter list will not be visible outside of this definition
+> or declaration
+>   int (*flush)(struct nd_region *nd_region, struct bio *bio);
+>                                                    ^~~
 
-The following changes since commit 37624b58542fb9f2d9a70e6ea006ef8a5f66c30b:
+Sorry! for this. Fixed now.
 
-  Linux 5.1-rc7 (2019-04-28 17:04:13 -0700)
+> I was already feeling uneasy about trying to squeeze this into v5.2,
+> but this warning and the continued drip of comments leads me to
+> conclude that this driver would do well to wait one more development
+> cycle. Lets close out the final fixups and let this driver soak in
+> -next. Then for the v5.3 cycle I'll redouble my efforts towards the
+> goal of closing patch acceptance at the -rc6 / -rc7 development
+> milestone.
 
-are available in the git repository at:
+o.k. Will wait for Mike's ACK on device mapper patch and send the v10
+with final fix-ups. Thank you for your help.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/evalenti/linux-soc-thermal linus
+Best regards,
+Pankaj
 
-for you to fetch changes up to 37bcec5d9f71bd13142a97d2196b293c9ac23823:
 
-  hwmon: (pwm-fan) Use devm_thermal_of_cooling_device_register (2019-05-14 07:00:47 -0700)
 
-Specifics:
-- thermal core has a new devm_* API for registering cooling devices, thanks to Guenter R.
-  I took the entire series, that is why you see changes on drivers/hwmon in this pull.
-- rockchip thermal driver gains support to PX30 SoC, thanks to Elaine Z.
-- the generic-adc thermal driver now considers the lookup table DT property as optional,
-  thanks to Jean-Francois D.
-- Refactoring of tsens thermal driver, thanks to Amit K.
-- Cleanups on cpu cooling driver, thanks to Daniel L.
-- broadcom thermal driver dropped support to ACPI, thanks to Srinath M.
-- tegra thermal driver gains support to OC hw throttle and GPU throtle, thanks to Wei Ni.
-- Fixes in several thermal drivers.
-
-BR,
-
-Eduardo Valentin
-
-----------------------------------------------------------------
-Amit Kucheria (21):
-      drivers: thermal: tsens: Document the data structures
-      drivers: thermal: tsens: Rename tsens_data
-      drivers: thermal: tsens: Rename tsens_device
-      drivers: thermal: tsens: Rename variable tmdev
-      drivers: thermal: tsens: Use consistent names for variables
-      drivers: thermal: tsens: Function prototypes should have argument names
-      drivers: thermal: tsens: Rename tsens-8916 to prepare to merge with tsens-8974
-      drivers: thermal: tsens: Rename constants to prepare to merge with tsens-8974
-      drivers: thermal: tsens: Merge tsens-8974 into tsens-v0_1
-      drivers: thermal: tsens: Introduce reg_fields to deal with register description
-      drivers: thermal: tsens: Save reference to the device pointer and use it
-      drivers: thermal: tsens: Don't print error message on -EPROBE_DEFER
-      drivers: thermal: tsens: Add new operation to check if a sensor is enabled
-      drivers: thermal: tsens: change data type for sensor IDs
-      drivers: thermal: tsens: Introduce IP-specific max_sensor count
-      drivers: thermal: tsens: simplify get_temp_tsens_v2 routine
-      drivers: thermal: tsens: Move get_temp_tsens_v2 to allow sharing
-      drivers: thermal: tsens: Common get_temp() learns to do ADC conversion
-      dt: thermal: tsens: Add bindings for qcs404
-      drivers: thermal: tsens: Add generic support for TSENS v1 IP
-      drivers: thermal: tsens: Move calibration constants to header file
-
-Andrey Smirnov (1):
-      thermal: qoriq: Remove unnecessary DT node is NULL check
-
-Daniel Lezcano (4):
-      thermal/drivers/cpu_cooling: Remove pointless test in power2state()
-      thermal/drivers/cpu_cooling: Fixup the header and copyright
-      thermal/drivers/cpu_cooling: Add Software Package Data Exchange (SPDX)
-      thermal/drivers/cpu_cooling: Remove pointless field
-
-Elaine Zhang (3):
-      thermal: rockchip: fix up the tsadc pinctrl setting error
-      dt-bindings: rockchip-thermal: Support the PX30 SoC compatible
-      thermal: rockchip: Support the PX30 SoC in thermal driver
-
-Enrico Weigelt, metux IT consult (1):
-      drivers: thermal: Kconfig: pedantic cleanups
-
-Guenter Roeck (6):
-      thermal: Introduce devm_thermal_of_cooling_device_register
-      hwmon: (aspeed-pwm-tacho) Use devm_thermal_of_cooling_device_register
-      hwmon: (gpio-fan) Use devm_thermal_of_cooling_device_register
-      hwmon: (mlxreg-fan) Use devm_thermal_of_cooling_device_register
-      hwmon: (npcm750-pwm-fan) Use devm_thermal_of_cooling_device_register
-      hwmon: (pwm-fan) Use devm_thermal_of_cooling_device_register
-
-Hoan Nguyen An (1):
-      thermal: rcar_gen3_thermal: Fix init value of IRQCTL register
-
-Jean-Francois Dagenais (2):
-      thermal: generic-adc: make lookup table optional
-      dt-bindings: thermal: generic-adc: make lookup-table optional
-
-Jiada Wang (3):
-      thermal: rcar_gen3_thermal: fix interrupt type
-      thermal: rcar_gen3_thermal: disable interrupt in .remove
-      thermal: rcar_gen3_thermal: Fix to show correct trip points number
-
-Matthias Kaehlcke (1):
-      thermal: cpu_cooling: Actually trace CPU load in thermal_power_cpu_get_power
-
-Srinath Mannam (1):
-      thermal: broadcom: Remove ACPI support
-
-Talel Shenhar (3):
-      dt-bindings: thermal: al-thermal: Add binding documentation
-      thermal: Introduce Amazon's Annapurna Labs Thermal Driver
-      thermal: Fix build error of missing devm_ioremap_resource on UM
-
-Wei Ni (9):
-      of: Add bindings of thermtrip for Tegra soctherm
-      thermal: tegra: support hw and sw shutdown
-      of: Add bindings of gpu hw throttle for Tegra soctherm
-      thermal: tegra: add support for gpu hw-throttle
-      thermal: tegra: add support for thermal IRQ
-      thermal: tegra: add set_trips functionality
-      thermal: tegra: add support for EDP IRQ
-      of: Add bindings of OC hw throttle for Tegra soctherm
-      thermal: tegra: enable OC hw throttle
-
-Wolfram Sang (1):
-      thermal: stm32: simplify getting .driver_data
-
-Yangtao Li (1):
-      of: thermal: Improve print information
-
-Yoshihiro Kaneko (1):
-      thermal: rcar_thermal: update calculation formula for R-Car Gen3 SoCs
-
- .../bindings/thermal/amazon,al-thermal.txt         |  33 +
- .../bindings/thermal/nvidia,tegra124-soctherm.txt  |  62 +-
- .../devicetree/bindings/thermal/qcom-tsens.txt     |  14 +
- .../bindings/thermal/rockchip-thermal.txt          |   1 +
- .../bindings/thermal/thermal-generic-adc.txt       |  10 +-
- MAINTAINERS                                        |   6 +
- drivers/hwmon/aspeed-pwm-tacho.c                   |   6 +-
- drivers/hwmon/gpio-fan.c                           |  25 +-
- drivers/hwmon/mlxreg-fan.c                         |  31 +-
- drivers/hwmon/npcm750-pwm-fan.c                    |   6 +-
- drivers/hwmon/pwm-fan.c                            |  73 +-
- drivers/thermal/Kconfig                            |  11 +
- drivers/thermal/Makefile                           |   1 +
- drivers/thermal/broadcom/sr-thermal.c              |   8 -
- drivers/thermal/cpu_cooling.c                      |  30 +-
- drivers/thermal/of-thermal.c                       |   3 +
- drivers/thermal/qcom/Makefile                      |   4 +-
- drivers/thermal/qcom/tsens-8916.c                  | 105 ---
- drivers/thermal/qcom/tsens-8960.c                  |  84 +-
- drivers/thermal/qcom/tsens-common.c                | 159 +++-
- .../thermal/qcom/{tsens-8974.c => tsens-v0_1.c}    | 166 +++-
- drivers/thermal/qcom/tsens-v1.c                    | 193 +++++
- drivers/thermal/qcom/tsens-v2.c                    | 111 +--
- drivers/thermal/qcom/tsens.c                       | 100 ++-
- drivers/thermal/qcom/tsens.h                       | 291 ++++++-
- drivers/thermal/qoriq_thermal.c                    |   5 -
- drivers/thermal/rcar_gen3_thermal.c                |  51 +-
- drivers/thermal/rcar_thermal.c                     |  11 +-
- drivers/thermal/rockchip_thermal.c                 |  74 +-
- drivers/thermal/st/Kconfig                         |  22 +-
- drivers/thermal/st/stm_thermal.c                   |   6 +-
- drivers/thermal/tegra/Kconfig                      |   4 +-
- drivers/thermal/tegra/soctherm.c                   | 961 +++++++++++++++++++--
- drivers/thermal/tegra/soctherm.h                   |  16 +
- drivers/thermal/tegra/tegra124-soctherm.c          |   7 +-
- drivers/thermal/tegra/tegra132-soctherm.c          |   7 +-
- drivers/thermal/tegra/tegra210-soctherm.c          |  15 +-
- drivers/thermal/thermal-generic-adc.c              |   9 +-
- drivers/thermal/thermal_core.c                     |  49 ++
- drivers/thermal/thermal_mmio.c                     | 129 +++
- include/dt-bindings/thermal/tegra124-soctherm.h    |   8 +-
- include/linux/thermal.h                            |  13 +
- 42 files changed, 2330 insertions(+), 590 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/thermal/amazon,al-thermal.txt
- delete mode 100644 drivers/thermal/qcom/tsens-8916.c
- rename drivers/thermal/qcom/{tsens-8974.c => tsens-v0_1.c} (56%)
- create mode 100644 drivers/thermal/qcom/tsens-v1.c
- create mode 100644 drivers/thermal/thermal_mmio.c
+> 
