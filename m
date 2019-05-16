@@ -2,206 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 421E0208CE
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 May 2019 16:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5AA920AB1
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 May 2019 17:08:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727590AbfEPN7V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 May 2019 09:59:21 -0400
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:41933 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727455AbfEPN7U (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 May 2019 09:59:20 -0400
-Received: by mail-qt1-f196.google.com with SMTP id y22so3950488qtn.8
-        for <linux-acpi@vger.kernel.org>; Thu, 16 May 2019 06:59:19 -0700 (PDT)
+        id S1726736AbfEPPIP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 May 2019 11:08:15 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:43198 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726857AbfEPPIP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 May 2019 11:08:15 -0400
+Received: by mail-lf1-f65.google.com with SMTP id u27so2900789lfg.10
+        for <linux-acpi@vger.kernel.org>; Thu, 16 May 2019 08:08:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=FGHxW899Amf7ZgHaxb24JsnGeNM4NZvWTEPA1jMV4y8=;
+        b=AtS0tP7u7iyJ1QEm//4O5HaN3+5kkE2tr9Yqtj73YWBv2pnZkSMIsKWKaScHGyv6fO
+         H8ljLoZWHA0lu28jqNo2CZO4sASGLxZBPHEQMwNQVDmIJ70k63fFucdxmDo8LHK54i46
+         +sia9Wr5owuEX/MqfRs/YVPWurP/Jf7wXvQDA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=4W8nxk4k4MVtLI1JLQcZmk+Bl22d4lanY5c6NY2cMcc=;
-        b=BNS9yZA7qSkD+GOZaWbTc+QqLKvcweFKMJ8OVj5CLXbYbl/k7quQPXcXdg9cuXTkzU
-         ROl1KMW5SdttOw9QdO0rYiL6hC7uazrLut+MfXnC61vGyqKVt5J2T98SW6T2VXri7Wxk
-         dwDoOEyIsxKtpPuAD4wM/+BKvCFMtTumjJILbWHulY9hBq5inIqoLwSuV+tkzsxN8NvO
-         ROYZXdJfEX5lyak8JvcDPk5XKiPPKWqRIVhr6aI7JhEIWcZof7xrUDm59AgjUShO71sM
-         e/TVuCe0Xz61YJiZOBsUeMbsXSkv3x+uvimPeY0iRECdiOdTQBqBx89BUr16Lz3vev5M
-         VDwg==
-X-Gm-Message-State: APjAAAWL8zULdmtwM7obljHq3WP9Bjvdu+HyvYOSf1tE+sw9WwrDm+RI
-        qVpgrKd6jeNtjtNH7R7zHa5QqQ==
-X-Google-Smtp-Source: APXvYqwNqjWbg9ip//OmA0nM3GR5PQZt9aCGRYqOitDJVOvfxjGNt2YWHJMFjse5jwjGBTbN3j6Jnw==
-X-Received: by 2002:a0c:fe48:: with SMTP id u8mr39012393qvs.234.1558015159428;
-        Thu, 16 May 2019 06:59:19 -0700 (PDT)
-Received: from redhat.com ([185.54.206.10])
-        by smtp.gmail.com with ESMTPSA id o37sm3676500qta.86.2019.05.16.06.59.12
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 16 May 2019 06:59:18 -0700 (PDT)
-Date:   Thu, 16 May 2019 09:59:09 -0400
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Pankaj Gupta <pagupta@redhat.com>, linux-nvdimm@lists.01.org,
-        linux-kernel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        qemu-devel@nongnu.org, linux-ext4@vger.kernel.org,
-        linux-xfs@vger.kernel.org, dan.j.williams@intel.com,
-        zwisler@kernel.org, vishal.l.verma@intel.com, dave.jiang@intel.com,
-        jasowang@redhat.com, willy@infradead.org, rjw@rjwysocki.net,
-        hch@infradead.org, lenb@kernel.org, jack@suse.cz, tytso@mit.edu,
-        adilger.kernel@dilger.ca, darrick.wong@oracle.com,
-        lcapitulino@redhat.com, kwolf@redhat.com, imammedo@redhat.com,
-        jmoyer@redhat.com, nilal@redhat.com, riel@surriel.com,
-        stefanha@redhat.com, aarcange@redhat.com, david@fromorbit.com,
-        cohuck@redhat.com, xiaoguangrong.eric@gmail.com,
-        pbonzini@redhat.com, kilobyte@angband.pl, yuval.shaia@oracle.com,
-        jstaron@google.com
-Subject: Re: [PATCH v9 2/7] virtio-pmem: Add virtio pmem driver
-Message-ID: <20190516095618-mutt-send-email-mst@kernel.org>
-References: <20190514145422.16923-1-pagupta@redhat.com>
- <20190514145422.16923-3-pagupta@redhat.com>
- <9f6b1d8e-ef90-7d8b-56da-61a426953ba3@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FGHxW899Amf7ZgHaxb24JsnGeNM4NZvWTEPA1jMV4y8=;
+        b=nkQPYr5iW73sAklDON2ZTatB7I1zjsPrbTAjxOo+HaQpLSJ/vDVM/FGinIPL6rwb1e
+         LNjxTGO65aDs0T7HMy7hYUaBRlQbVukvnQXMDcVNEMRFDK9Tr21mL7zyk0427vKLxWaO
+         FZoruDWhh28AJw3NMyQOkRkW0EjGWQWhNVjbS+Mngf7qIWztlhfPbPHtCNSCHcWcrBPi
+         VJZQXnCQVLEttB2mX0Wpc5upVpwWrsRXSfslInqZrvHba6D4UINZ3PU07mmbodbkTh4Z
+         +DnVQiqnqI+KEbpRjhZyhsqyMwRDBoC7HeyTtjeEcf3Jjd4zPrz8V8FtdzwWqvgMoUF3
+         twTg==
+X-Gm-Message-State: APjAAAUVGxfuu03Qrihwra5uKGlWNESjAQ95zyFIIECvL4uyc1k/D+Dj
+        5PDYUHXxt341Vv8ITMHmRlDNhb2KJaE=
+X-Google-Smtp-Source: APXvYqy6/IPvsYyJIvx5CVu3DH3I8YQ4tKEfMjLrM8lGqsGzkaQmxUQ6RtvoeLDxa3jU5zf36un+4Q==
+X-Received: by 2002:a19:fc04:: with SMTP id a4mr9969324lfi.39.1558019292952;
+        Thu, 16 May 2019 08:08:12 -0700 (PDT)
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com. [209.85.167.54])
+        by smtp.gmail.com with ESMTPSA id k18sm923873ljk.70.2019.05.16.08.08.11
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 16 May 2019 08:08:11 -0700 (PDT)
+Received: by mail-lf1-f54.google.com with SMTP id y10so2954489lfl.3
+        for <linux-acpi@vger.kernel.org>; Thu, 16 May 2019 08:08:11 -0700 (PDT)
+X-Received: by 2002:ac2:510b:: with SMTP id q11mr22478766lfb.11.1558019290857;
+ Thu, 16 May 2019 08:08:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9f6b1d8e-ef90-7d8b-56da-61a426953ba3@redhat.com>
+References: <20190516044313.GA17751@localhost.localdomain>
+In-Reply-To: <20190516044313.GA17751@localhost.localdomain>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu, 16 May 2019 08:07:54 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiaO_8SiEB9QM3vOTniiT67K6CBH0uHJ82-Dp_+6kxH3g@mail.gmail.com>
+Message-ID: <CAHk-=wiaO_8SiEB9QM3vOTniiT67K6CBH0uHJ82-Dp_+6kxH3g@mail.gmail.com>
+Subject: Re: [GIT PULL] Thermal-SoC management changes for v5.2-rc1
+To:     Eduardo Valentin <edubezval@gmail.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     Rui Zhang <rui.zhang@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 15, 2019 at 10:46:00PM +0200, David Hildenbrand wrote:
-> > +	vpmem->vdev = vdev;
-> > +	vdev->priv = vpmem;
-> > +	err = init_vq(vpmem);
-> > +	if (err) {
-> > +		dev_err(&vdev->dev, "failed to initialize virtio pmem vq's\n");
-> > +		goto out_err;
-> > +	}
-> > +
-> > +	virtio_cread(vpmem->vdev, struct virtio_pmem_config,
-> > +			start, &vpmem->start);
-> > +	virtio_cread(vpmem->vdev, struct virtio_pmem_config,
-> > +			size, &vpmem->size);
-> > +
-> > +	res.start = vpmem->start;
-> > +	res.end   = vpmem->start + vpmem->size-1;
-> 
-> nit: " - 1;"
-> 
-> > +	vpmem->nd_desc.provider_name = "virtio-pmem";
-> > +	vpmem->nd_desc.module = THIS_MODULE;
-> > +
-> > +	vpmem->nvdimm_bus = nvdimm_bus_register(&vdev->dev,
-> > +						&vpmem->nd_desc);
-> > +	if (!vpmem->nvdimm_bus) {
-> > +		dev_err(&vdev->dev, "failed to register device with nvdimm_bus\n");
-> > +		err = -ENXIO;
-> > +		goto out_vq;
-> > +	}
-> > +
-> > +	dev_set_drvdata(&vdev->dev, vpmem->nvdimm_bus);
-> > +
-> > +	ndr_desc.res = &res;
-> > +	ndr_desc.numa_node = nid;
-> > +	ndr_desc.flush = async_pmem_flush;
-> > +	set_bit(ND_REGION_PAGEMAP, &ndr_desc.flags);
-> > +	set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
-> > +	nd_region = nvdimm_pmem_region_create(vpmem->nvdimm_bus, &ndr_desc);
-> > +	if (!nd_region) {
-> > +		dev_err(&vdev->dev, "failed to create nvdimm region\n");
-> > +		err = -ENXIO;
-> > +		goto out_nd;
-> > +	}
-> > +	nd_region->provider_data = dev_to_virtio(nd_region->dev.parent->parent);
-> > +	return 0;
-> > +out_nd:
-> > +	nvdimm_bus_unregister(vpmem->nvdimm_bus);
-> > +out_vq:
-> > +	vdev->config->del_vqs(vdev);
-> > +out_err:
-> > +	return err;
-> > +}
-> > +
-> > +static void virtio_pmem_remove(struct virtio_device *vdev)
-> > +{
-> > +	struct nvdimm_bus *nvdimm_bus = dev_get_drvdata(&vdev->dev);
-> > +
-> > +	nvdimm_bus_unregister(nvdimm_bus);
-> > +	vdev->config->del_vqs(vdev);
-> > +	vdev->config->reset(vdev);
-> > +}
-> > +
-> > +static struct virtio_driver virtio_pmem_driver = {
-> > +	.driver.name		= KBUILD_MODNAME,
-> > +	.driver.owner		= THIS_MODULE,
-> > +	.id_table		= id_table,
-> > +	.probe			= virtio_pmem_probe,
-> > +	.remove			= virtio_pmem_remove,
-> > +};
-> > +
-> > +module_virtio_driver(virtio_pmem_driver);
-> > +MODULE_DEVICE_TABLE(virtio, id_table);
-> > +MODULE_DESCRIPTION("Virtio pmem driver");
-> > +MODULE_LICENSE("GPL");
-> > diff --git a/drivers/nvdimm/virtio_pmem.h b/drivers/nvdimm/virtio_pmem.h
-> > new file mode 100644
-> > index 000000000000..ab1da877575d
-> > --- /dev/null
-> > +++ b/drivers/nvdimm/virtio_pmem.h
-> > @@ -0,0 +1,60 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +/*
-> > + * virtio_pmem.h: virtio pmem Driver
-> > + *
-> > + * Discovers persistent memory range information
-> > + * from host and provides a virtio based flushing
-> > + * interface.
-> > + **/
-> > +
-> > +#ifndef _LINUX_VIRTIO_PMEM_H
-> > +#define _LINUX_VIRTIO_PMEM_H
-> > +
-> > +#include <linux/virtio_ids.h>
-> > +#include <linux/module.h>
-> > +#include <linux/virtio_config.h>
-> > +#include <uapi/linux/virtio_pmem.h>
-> > +#include <linux/libnvdimm.h>
-> > +#include <linux/spinlock.h>
-> > +
-> > +struct virtio_pmem_request {
-> > +	/* Host return status corresponding to flush request */
-> > +	int ret;
-> > +
-> > +	/* command name*/
-> > +	char name[16];
-> 
-> So ... why are we sending string commands and expect native-endianess
-> integers and don't define a proper request/response structure + request
-> types in include/uapi/linux/virtio_pmem.h like
+On Wed, May 15, 2019 at 9:43 PM Eduardo Valentin <edubezval@gmail.com> wrote:
+>
+> - thermal core has a new devm_* API for registering cooling devices, thanks to Guenter R.
+>   I took the entire series, that is why you see changes on drivers/hwmon in this pull.
 
-passing names could be ok.
-I missed the fact we return a native endian int.
-Pls fix that.
+This clashed badly with commit 6b1ec4789fb1 ("hwmon: (pwm-fan) Add RPM
+support via external interrupt"), which added a timer to the pwm-fan
+handling.
 
+In particular, that timer now needed the same kind of cleanup changes,
+and I'd like you guys (particularly Guenther, who was involved on both
+sides) to double-check my merge.
 
-> 
-> struct virtio_pmem_resp {
-> 	__virtio32 ret;
-> }
-> 
-> #define VIRTIO_PMEM_REQ_TYPE_FLUSH	1
-> struct virtio_pmem_req {
-> 	__virtio16 type;
-> }
-> 
-> ... and this way we also define a proper endianess format for exchange
-> and keep it extensible
-> 
-> @MST, what's your take on this?
+The way I solved it was to just make the pwm_fan_pwm_disable()
+callback do both the pwm_diable() _and_ the del_timer_sync() on the
+new timer. That seemed to be the simplest solution that meshed with
+the new devm cleanup model, but while I build-tested the result, I
+obviously did no actual use testing. And maybe there's some reason why
+that approach is flawed.
 
-Extensions can always use feature bits so I don't think
-it's a problem.
+Guenther?
 
-> 
-> -- 
-> 
-> Thanks,
-> 
-> David / dhildenb
+                    Linus
