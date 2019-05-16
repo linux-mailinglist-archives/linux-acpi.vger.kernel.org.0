@@ -2,343 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D35F20B9B
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 May 2019 17:53:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 955A220CA4
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 May 2019 18:12:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726400AbfEPPxS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 May 2019 11:53:18 -0400
-Received: from foss.arm.com ([217.140.101.70]:50166 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726339AbfEPPxS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 16 May 2019 11:53:18 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0FBED1715;
-        Thu, 16 May 2019 08:53:18 -0700 (PDT)
-Received: from redmoon.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 88C503F71E;
-        Thu, 16 May 2019 08:53:16 -0700 (PDT)
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>
-Subject: [PATCH v2] ACPI/IORT: Fix build error when IOMMU_SUPPORT is disabled
-Date:   Thu, 16 May 2019 16:52:58 +0100
-Message-Id: <20190516155258.5834-1-lorenzo.pieralisi@arm.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190515034253.79348-1-wangkefeng.wang@huawei.com>
-References: <20190515034253.79348-1-wangkefeng.wang@huawei.com>
+        id S1726584AbfEPQL7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 May 2019 12:11:59 -0400
+Received: from mout.kundenserver.de ([212.227.126.130]:51275 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726464AbfEPQL6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 May 2019 12:11:58 -0400
+Received: from [192.168.178.167] ([109.104.36.193]) by
+ mrelayeu.kundenserver.de (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis)
+ id 1MiJhW-1gn2TT1ffC-00fP2t; Thu, 16 May 2019 18:11:33 +0200
+Subject: Re: [GIT PULL] Thermal-SoC management changes for v5.2-rc1
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     Rui Zhang <rui.zhang@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+References: <20190516044313.GA17751@localhost.localdomain>
+ <CAHk-=wiaO_8SiEB9QM3vOTniiT67K6CBH0uHJ82-Dp_+6kxH3g@mail.gmail.com>
+From:   Stefan Wahren <stefan.wahren@i2se.com>
+Message-ID: <4803994d-f519-a6b6-f5bb-a2f50d91ecd7@i2se.com>
+Date:   Thu, 16 May 2019 18:11:32 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHk-=wiaO_8SiEB9QM3vOTniiT67K6CBH0uHJ82-Dp_+6kxH3g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Provags-ID: V03:K1:HfXg+VerHg3XpZ/wJRmyjEJyPoEOVangfVhRYd6re0+8tLoYnmn
+ oW1tto1qS1QQOe7GOCE7EoevUdRqBEDQ///1l974DU6oDx8+IabIbaeHwU/cfjP4DjKA6Br
+ iX868FUXz7c1nOxAIHoyQKpsGy9mRzS1My2eaC6up74sSVDaK/QmuAXrROr7bb8NTBl3wqX
+ WwVEm4CNLpPMKwjYQor6A==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:xkwv5xkBN+U=:bwfz0IV+WlLUs6KTbOUP5F
+ m86RxkHI2Kj0QzfcXKAjfZ5U5Tv7ptnKNtgLYdvqIaRk+mynEvOkxWqy/MzaMhk2DxJ8qmr1i
+ FBBq9iBvmcz6A0jmH8HHgyLkeFMI4b1ivawHRk9zA+MuopGSHO7SdkTaytpD95zlyhTHG7ZDQ
+ ucuLHN5pnxVV68A4Nmp9c0lUFiAVLgEK+i/F2C3PPpQ0XCvarGXzmUjPrxOHJqU2QX6PvWsGX
+ 7Q9b4MC3s9hQr7h6v0tAOK3o6Rmu+Uhgbp2eEQrGQ8hdzl6K99Bznt7mBbvxE1z2aXy5hPFUb
+ OV9sLFfI8Kx69V1noe0ltzTDcdPaH2a+ggeMHMgiSZZ9xquruK+FaGafE4VQTIudsJH48+EIl
+ rSt1kfKbUf/shkzxbsBa/sbVRmRUl1D+AK66qqyVbU/BiLoaN6Qynfy/xLAcuVSILSJOY4dbR
+ 7JdgG3YikQQCtVEL1l6/s9BDOO7LESCW0XUCY5LGG+iLrAm3N4R0kYfYfuwW78nhncv8jtp0m
+ sr0lIxldMQxoJvNbROex1vVUYSmoQEQq79zvls/eFyz56tPHv1DY/EovlT4wMNQR251Wjy0dG
+ T1UGNyfAZBE26//8UjJj16wsHH76ZeD17CE+X5ynrrYrtdL0Z6By2LMrwezH072eTf80EEZWU
+ rBOygeHEXUARE33jk7VUERqnLNl4Jm54LKIwbG4Djr1MUF7bzT0Q+/QXFtbrCrW1zLGjwZy74
+ f9Pte2LM5Iz96JyVVZepWzFQnZb4JJPFlHnxWCJVjG0cTnXW3KZNh+p2ZO8=
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-If IOMMU_SUPPORT is not enabled (and therefore IOMMU_API is not
-selected), struct iommu_fwspec is an empty struct and
-IOMMU_FWSPEC_PCI_RC_ATS is not defined, resulting in the following
-compilation errors:
+Hi Linus,
 
-drivers/acpi/arm64/iort.c: In function iort_iommu_configure:
-drivers/acpi/arm64/iort.c:1079:21: error: struct iommu_fwspec has no member named flag:
-    dev->iommu_fwspec->flags |= IOMMU_FWSPEC_PCI_RC_ATS;
-                     ^~
-drivers/acpi/arm64/iort.c:1079:32: error: IOMMU_FWSPEC_PCI_RC_ATS
-undeclared (first use in this function)
-    dev->iommu_fwspec->flags |= IOMMU_FWSPEC_PCI_RC_ATS;
-                                ^~~~~~~~~~~~~~~~~~~~~~~
-drivers/acpi/arm64/iort.c:1079:32: note: each undeclared identifier is reported only once for each function it appears in
+On 16.05.19 17:07, Linus Torvalds wrote:
+> On Wed, May 15, 2019 at 9:43 PM Eduardo Valentin <edubezval@gmail.com> wrote:
+>> - thermal core has a new devm_* API for registering cooling devices, thanks to Guenter R.
+>>   I took the entire series, that is why you see changes on drivers/hwmon in this pull.
+> This clashed badly with commit 6b1ec4789fb1 ("hwmon: (pwm-fan) Add RPM
+> support via external interrupt"), which added a timer to the pwm-fan
+> handling.
+>
+> In particular, that timer now needed the same kind of cleanup changes,
+> and I'd like you guys (particularly Guenther, who was involved on both
+> sides) to double-check my merge.
+>
+> The way I solved it was to just make the pwm_fan_pwm_disable()
+> callback do both the pwm_diable() _and_ the del_timer_sync() on the
+> new timer. That seemed to be the simplest solution that meshed with
+> the new devm cleanup model, but while I build-tested the result, I
+> obviously did no actual use testing. And maybe there's some reason why
+> that approach is flawed.
 
-Move iort_iommu_configure() (and the helpers functions it relies on)
-into CONFIG_IOMMU_API preprocessor guarded code so that when
-CONFIG_IOMMU_SUPPORT is not enabled we prevent compiling code that is
-basically equivalent to no-OP, fixing the build errors.
+i will try to test on our custom i.MX6 board. Unfortunately this take
+some time since it isn't mainline yet (at least until tomorrow).
 
-Link: https://lore.kernel.org/linux-arm-kernel/20190515034253.79348-1-wangkefeng.wang@huawei.com/
-Reported-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Fixes: 5702ee24182f ("ACPI/IORT: Check ATS capability in root complex nodes")
-Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc: Jean-Philippe Brucker <jean-philippe.brucker@arm.com>
-Cc: Will Deacon <will.deacon@arm.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
----
- drivers/acpi/arm64/iort.c | 238 +++++++++++++++++++-------------------
- 1 file changed, 120 insertions(+), 118 deletions(-)
+Stefan
 
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 9058cb084b91..b5390b4c9ade 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -753,31 +753,6 @@ static int __maybe_unused __get_pci_rid(struct pci_dev *pdev, u16 alias,
- 	return 0;
- }
- 
--static int arm_smmu_iort_xlate(struct device *dev, u32 streamid,
--			       struct fwnode_handle *fwnode,
--			       const struct iommu_ops *ops)
--{
--	int ret = iommu_fwspec_init(dev, fwnode, ops);
--
--	if (!ret)
--		ret = iommu_fwspec_add_ids(dev, &streamid, 1);
--
--	return ret;
--}
--
--static inline bool iort_iommu_driver_enabled(u8 type)
--{
--	switch (type) {
--	case ACPI_IORT_NODE_SMMU_V3:
--		return IS_BUILTIN(CONFIG_ARM_SMMU_V3);
--	case ACPI_IORT_NODE_SMMU:
--		return IS_BUILTIN(CONFIG_ARM_SMMU);
--	default:
--		pr_warn("IORT node type %u does not describe an SMMU\n", type);
--		return false;
--	}
--}
--
- #ifdef CONFIG_IOMMU_API
- static struct acpi_iort_node *iort_get_msi_resv_iommu(struct device *dev)
- {
-@@ -878,15 +853,39 @@ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
- 
- 	return (resv == its->its_count) ? resv : -ENODEV;
- }
--#else
--static inline const struct iommu_ops *iort_fwspec_iommu_ops(struct device *dev)
--{ return NULL; }
--static inline int iort_add_device_replay(const struct iommu_ops *ops,
--					 struct device *dev)
--{ return 0; }
--int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
--{ return 0; }
--#endif
-+
-+static inline bool iort_iommu_driver_enabled(u8 type)
-+{
-+	switch (type) {
-+	case ACPI_IORT_NODE_SMMU_V3:
-+		return IS_BUILTIN(CONFIG_ARM_SMMU_V3);
-+	case ACPI_IORT_NODE_SMMU:
-+		return IS_BUILTIN(CONFIG_ARM_SMMU);
-+	default:
-+		pr_warn("IORT node type %u does not describe an SMMU\n", type);
-+		return false;
-+	}
-+}
-+
-+static int arm_smmu_iort_xlate(struct device *dev, u32 streamid,
-+			       struct fwnode_handle *fwnode,
-+			       const struct iommu_ops *ops)
-+{
-+	int ret = iommu_fwspec_init(dev, fwnode, ops);
-+
-+	if (!ret)
-+		ret = iommu_fwspec_add_ids(dev, &streamid, 1);
-+
-+	return ret;
-+}
-+
-+static bool iort_pci_rc_supports_ats(struct acpi_iort_node *node)
-+{
-+	struct acpi_iort_root_complex *pci_rc;
-+
-+	pci_rc = (struct acpi_iort_root_complex *)node->node_data;
-+	return pci_rc->ats_attribute & ACPI_IORT_ATS_SUPPORTED;
-+}
- 
- static int iort_iommu_xlate(struct device *dev, struct acpi_iort_node *node,
- 			    u32 streamid)
-@@ -933,6 +932,93 @@ static int iort_pci_iommu_init(struct pci_dev *pdev, u16 alias, void *data)
- 	return iort_iommu_xlate(info->dev, parent, streamid);
- }
- 
-+/**
-+ * iort_iommu_configure - Set-up IOMMU configuration for a device.
-+ *
-+ * @dev: device to configure
-+ *
-+ * Returns: iommu_ops pointer on configuration success
-+ *          NULL on configuration failure
-+ */
-+const struct iommu_ops *iort_iommu_configure(struct device *dev)
-+{
-+	struct acpi_iort_node *node, *parent;
-+	const struct iommu_ops *ops;
-+	u32 streamid = 0;
-+	int err = -ENODEV;
-+
-+	/*
-+	 * If we already translated the fwspec there
-+	 * is nothing left to do, return the iommu_ops.
-+	 */
-+	ops = iort_fwspec_iommu_ops(dev);
-+	if (ops)
-+		return ops;
-+
-+	if (dev_is_pci(dev)) {
-+		struct pci_bus *bus = to_pci_dev(dev)->bus;
-+		struct iort_pci_alias_info info = { .dev = dev };
-+
-+		node = iort_scan_node(ACPI_IORT_NODE_PCI_ROOT_COMPLEX,
-+				      iort_match_node_callback, &bus->dev);
-+		if (!node)
-+			return NULL;
-+
-+		info.node = node;
-+		err = pci_for_each_dma_alias(to_pci_dev(dev),
-+					     iort_pci_iommu_init, &info);
-+
-+		if (!err && iort_pci_rc_supports_ats(node))
-+			dev->iommu_fwspec->flags |= IOMMU_FWSPEC_PCI_RC_ATS;
-+	} else {
-+		int i = 0;
-+
-+		node = iort_scan_node(ACPI_IORT_NODE_NAMED_COMPONENT,
-+				      iort_match_node_callback, dev);
-+		if (!node)
-+			return NULL;
-+
-+		do {
-+			parent = iort_node_map_platform_id(node, &streamid,
-+							   IORT_IOMMU_TYPE,
-+							   i++);
-+
-+			if (parent)
-+				err = iort_iommu_xlate(dev, parent, streamid);
-+		} while (parent && !err);
-+	}
-+
-+	/*
-+	 * If we have reason to believe the IOMMU driver missed the initial
-+	 * add_device callback for dev, replay it to get things in order.
-+	 */
-+	if (!err) {
-+		ops = iort_fwspec_iommu_ops(dev);
-+		err = iort_add_device_replay(ops, dev);
-+	}
-+
-+	/* Ignore all other errors apart from EPROBE_DEFER */
-+	if (err == -EPROBE_DEFER) {
-+		ops = ERR_PTR(err);
-+	} else if (err) {
-+		dev_dbg(dev, "Adding to IOMMU failed: %d\n", err);
-+		ops = NULL;
-+	}
-+
-+	return ops;
-+}
-+#else
-+static inline const struct iommu_ops *iort_fwspec_iommu_ops(struct device *dev)
-+{ return NULL; }
-+static inline int iort_add_device_replay(const struct iommu_ops *ops,
-+					 struct device *dev)
-+{ return 0; }
-+int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
-+{ return 0; }
-+const struct iommu_ops *iort_iommu_configure(struct device *dev)
-+{ return NULL; }
-+#endif
-+
- static int nc_dma_get_range(struct device *dev, u64 *size)
- {
- 	struct acpi_iort_node *node;
-@@ -1031,90 +1117,6 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
- 	dev_dbg(dev, "dma_pfn_offset(%#08llx)\n", offset);
- }
- 
--static bool iort_pci_rc_supports_ats(struct acpi_iort_node *node)
--{
--	struct acpi_iort_root_complex *pci_rc;
--
--	pci_rc = (struct acpi_iort_root_complex *)node->node_data;
--	return pci_rc->ats_attribute & ACPI_IORT_ATS_SUPPORTED;
--}
--
--/**
-- * iort_iommu_configure - Set-up IOMMU configuration for a device.
-- *
-- * @dev: device to configure
-- *
-- * Returns: iommu_ops pointer on configuration success
-- *          NULL on configuration failure
-- */
--const struct iommu_ops *iort_iommu_configure(struct device *dev)
--{
--	struct acpi_iort_node *node, *parent;
--	const struct iommu_ops *ops;
--	u32 streamid = 0;
--	int err = -ENODEV;
--
--	/*
--	 * If we already translated the fwspec there
--	 * is nothing left to do, return the iommu_ops.
--	 */
--	ops = iort_fwspec_iommu_ops(dev);
--	if (ops)
--		return ops;
--
--	if (dev_is_pci(dev)) {
--		struct pci_bus *bus = to_pci_dev(dev)->bus;
--		struct iort_pci_alias_info info = { .dev = dev };
--
--		node = iort_scan_node(ACPI_IORT_NODE_PCI_ROOT_COMPLEX,
--				      iort_match_node_callback, &bus->dev);
--		if (!node)
--			return NULL;
--
--		info.node = node;
--		err = pci_for_each_dma_alias(to_pci_dev(dev),
--					     iort_pci_iommu_init, &info);
--
--		if (!err && iort_pci_rc_supports_ats(node))
--			dev->iommu_fwspec->flags |= IOMMU_FWSPEC_PCI_RC_ATS;
--	} else {
--		int i = 0;
--
--		node = iort_scan_node(ACPI_IORT_NODE_NAMED_COMPONENT,
--				      iort_match_node_callback, dev);
--		if (!node)
--			return NULL;
--
--		do {
--			parent = iort_node_map_platform_id(node, &streamid,
--							   IORT_IOMMU_TYPE,
--							   i++);
--
--			if (parent)
--				err = iort_iommu_xlate(dev, parent, streamid);
--		} while (parent && !err);
--	}
--
--	/*
--	 * If we have reason to believe the IOMMU driver missed the initial
--	 * add_device callback for dev, replay it to get things in order.
--	 */
--	if (!err) {
--		ops = iort_fwspec_iommu_ops(dev);
--		err = iort_add_device_replay(ops, dev);
--	}
--
--	/* Ignore all other errors apart from EPROBE_DEFER */
--	if (err == -EPROBE_DEFER) {
--		ops = ERR_PTR(err);
--	} else if (err) {
--		dev_dbg(dev, "Adding to IOMMU failed: %d\n", err);
--		ops = NULL;
--	}
--
--	return ops;
--}
--
- static void __init acpi_iort_register_irq(int hwirq, const char *name,
- 					  int trigger,
- 					  struct resource *res)
--- 
-2.21.0
-
+>
+> Guenther?
+>
+>                     Linus
