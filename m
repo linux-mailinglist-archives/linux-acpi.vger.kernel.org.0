@@ -2,243 +2,133 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B7471FC79
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 May 2019 00:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEA891FD45
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 May 2019 03:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725977AbfEOWAT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 May 2019 18:00:19 -0400
-Received: from mga18.intel.com ([134.134.136.126]:39649 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726381AbfEOWAS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 15 May 2019 18:00:18 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 May 2019 15:00:17 -0700
-X-ExtLoop1: 1
-Received: from unknown (HELO localhost.lm.intel.com) ([10.232.112.69])
-  by fmsmga001.fm.intel.com with ESMTP; 15 May 2019 15:00:16 -0700
-From:   Keith Busch <keith.busch@intel.com>
-To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Rafael Wysocki <rafael@kernel.org>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Brice Goglin <Brice.Goglin@inria.fr>,
-        Keith Busch <keith.busch@intel.com>
-Subject: [PATCHv2 2/2] hmat: Register attributes for memory hot add
-Date:   Wed, 15 May 2019 15:54:44 -0600
-Message-Id: <20190515215444.22256-2-keith.busch@intel.com>
-X-Mailer: git-send-email 2.13.6
-In-Reply-To: <20190515215444.22256-1-keith.busch@intel.com>
-References: <20190515215444.22256-1-keith.busch@intel.com>
+        id S1726801AbfEPBqe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 May 2019 21:46:34 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:7650 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726277AbfEPBlx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 15 May 2019 21:41:53 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id E9099E131540A4194732;
+        Thu, 16 May 2019 09:41:51 +0800 (CST)
+Received: from [127.0.0.1] (10.177.19.180) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Thu, 16 May 2019
+ 09:41:43 +0800
+Subject: Re: [PATCH RESEND] ACPI/IORT: Fix build error when IOMMU_SUPPORT
+ disabled
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>
+CC:     Will Deacon <will.deacon@arm.com>, <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <guohanjun@huawei.com>,
+        "Jean-Philippe Brucker" <jean-philippe.brucker@arm.com>,
+        Hulk Robot <hulkci@huawei.com>, <joro@8bytes.org>
+References: <20190515033406.79020-1-wangkefeng.wang@huawei.com>
+ <20190515034253.79348-1-wangkefeng.wang@huawei.com>
+ <20190515101534.GF24357@fuggles.cambridge.arm.com>
+ <20190515120652.GA27269@e121166-lin.cambridge.arm.com>
+ <a7efd571-d82e-1d8f-147f-3bf8d1152d0d@arm.com>
+ <20190515164110.GA22536@e121166-lin.cambridge.arm.com>
+From:   Kefeng Wang <wangkefeng.wang@huawei.com>
+Message-ID: <15f19985-fb84-18ed-d5b8-e06079fb83ac@huawei.com>
+Date:   Thu, 16 May 2019 09:39:13 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.3.1
+MIME-Version: 1.0
+In-Reply-To: <20190515164110.GA22536@e121166-lin.cambridge.arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Originating-IP: [10.177.19.180]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Some of the memory nodes described in HMAT may not be online at the
-time the hmat subsystem parses their nodes' attributes. Should the node be
-set to online later, as can happen when using PMEM as RAM after boot, the
-nodes will be missing their initiator links and performance attributes.
 
-Regsiter a memory notifier callback and register the memory attributes
-the first time its node is brought online if it wasn't registered.
+On 2019/5/16 0:41, Lorenzo Pieralisi wrote:
+> On Wed, May 15, 2019 at 01:46:28PM +0100, Robin Murphy wrote:
+>> On 15/05/2019 13:06, Lorenzo Pieralisi wrote:
+>>> [+Joerg, Robin]
+>>>
+>>> On Wed, May 15, 2019 at 11:15:34AM +0100, Will Deacon wrote:
+>>>> On Wed, May 15, 2019 at 11:42:53AM +0800, Kefeng Wang wrote:
+>>>>> drivers/acpi/arm64/iort.c: In function iort_iommu_configure:
+>>>>> drivers/acpi/arm64/iort.c:1079:21: error: struct iommu_fwspec has no member named flags
+>>>>>      dev->iommu_fwspec->flags |= IOMMU_FWSPEC_PCI_RC_ATS;
+>>>>>                       ^~
+>>>>> drivers/acpi/arm64/iort.c:1079:32: error: IOMMU_FWSPEC_PCI_RC_ATS
+>>>>> undeclared (first use in this function)
+>>>>>      dev->iommu_fwspec->flags |= IOMMU_FWSPEC_PCI_RC_ATS;
+>>>>>                                  ^~~~~~~~~~~~~~~~~~~~~~~
+>>>>> drivers/acpi/arm64/iort.c:1079:32: note: each undeclared identifier is reported only once for each function it appears in
+>>>>>
+>>>>> If IOMMU_SUPPORT not enabled, struct iommu_fwspec without members and
+>>>>> IOMMU_FWSPEC_PCI_RC_ATS not defined, add new iommu_fwspec_set_ats_flags()
+>>>>> to set IOMMU_FWSPEC_PCI_RC_ATS flags to solve build error.
+>>>>>
+>>>>> Cc: Jean-Philippe Brucker <jean-philippe.brucker@arm.com>
+>>>>> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+>>>>> Cc: Will Deacon <will.deacon@arm.com>
+>>>>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>>>> What's this "Hulk Robot"? Does it report things publicly?
+>>> AFAIK it is Huawei CI system, I had some doubts about leaving
+>>> that tag for other patches I dealt with, I am not sure it is
+>>> really useful (other than giving Hulk some credit).
 
-Signed-off-by: Keith Busch <keith.busch@intel.com>
----
-v1 -> v2:
+As Lorenzo said, it is Huawei CI system to improve the robustness of
 
-  Fixed an unintended __init attribute that generated compiler warnings
-  (Brice).
+our inner Linux kernel version, we also use it to test the latest Linux kernel.
 
- drivers/acpi/hmat/hmat.c | 75 ++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 57 insertions(+), 18 deletions(-)
+The system is still being developed, and  still need to enhance and improve.
 
-diff --git a/drivers/acpi/hmat/hmat.c b/drivers/acpi/hmat/hmat.c
-index bf23c9a27958..f86fe7130736 100644
---- a/drivers/acpi/hmat/hmat.c
-+++ b/drivers/acpi/hmat/hmat.c
-@@ -14,14 +14,18 @@
- #include <linux/init.h>
- #include <linux/list.h>
- #include <linux/list_sort.h>
-+#include <linux/memory.h>
-+#include <linux/mutex.h>
- #include <linux/node.h>
- #include <linux/sysfs.h>
- 
--static __initdata u8 hmat_revision;
-+static u8 hmat_revision;
- 
--static __initdata LIST_HEAD(targets);
--static __initdata LIST_HEAD(initiators);
--static __initdata LIST_HEAD(localities);
-+static LIST_HEAD(targets);
-+static LIST_HEAD(initiators);
-+static LIST_HEAD(localities);
-+
-+static DEFINE_MUTEX(target_lock);
- 
- /*
-  * The defined enum order is used to prioritize attributes to break ties when
-@@ -47,6 +51,8 @@ struct memory_target {
- 	unsigned int processor_pxm;
- 	struct node_hmem_attrs hmem_attrs;
- 	struct list_head caches;
-+	struct node_cache_attrs cache_attrs;
-+	bool registered;
- };
- 
- struct memory_initiator {
-@@ -59,7 +65,7 @@ struct memory_locality {
- 	struct acpi_hmat_locality *hmat_loc;
- };
- 
--static __init struct memory_initiator *find_mem_initiator(unsigned int cpu_pxm)
-+static struct memory_initiator *find_mem_initiator(unsigned int cpu_pxm)
- {
- 	struct memory_initiator *initiator;
- 
-@@ -69,7 +75,7 @@ static __init struct memory_initiator *find_mem_initiator(unsigned int cpu_pxm)
- 	return NULL;
- }
- 
--static __init struct memory_target *find_mem_target(unsigned int mem_pxm)
-+static struct memory_target *find_mem_target(unsigned int mem_pxm)
- {
- 	struct memory_target *target;
- 
-@@ -155,7 +161,7 @@ static __init const char *hmat_data_type_suffix(u8 type)
- 	}
- }
- 
--static __init u32 hmat_normalize(u16 entry, u64 base, u8 type)
-+static u32 hmat_normalize(u16 entry, u64 base, u8 type)
- {
- 	u32 value;
- 
-@@ -190,7 +196,7 @@ static __init u32 hmat_normalize(u16 entry, u64 base, u8 type)
- 	return value;
- }
- 
--static __init void hmat_update_target_access(struct memory_target *target,
-+static void hmat_update_target_access(struct memory_target *target,
- 					     u8 type, u32 value)
- {
- 	switch (type) {
-@@ -453,7 +459,7 @@ static __init int srat_parse_mem_affinity(union acpi_subtable_headers *header,
- 	return 0;
- }
- 
--static __init u32 hmat_initiator_perf(struct memory_target *target,
-+static u32 hmat_initiator_perf(struct memory_target *target,
- 			       struct memory_initiator *initiator,
- 			       struct acpi_hmat_locality *hmat_loc)
- {
-@@ -491,7 +497,7 @@ static __init u32 hmat_initiator_perf(struct memory_target *target,
- 			      hmat_loc->data_type);
- }
- 
--static __init bool hmat_update_best(u8 type, u32 value, u32 *best)
-+static bool hmat_update_best(u8 type, u32 value, u32 *best)
- {
- 	bool updated = false;
- 
-@@ -535,7 +541,7 @@ static int initiator_cmp(void *priv, struct list_head *a, struct list_head *b)
- 	return ia->processor_pxm - ib->processor_pxm;
- }
- 
--static __init void hmat_register_target_initiators(struct memory_target *target)
-+static void hmat_register_target_initiators(struct memory_target *target)
- {
- 	static DECLARE_BITMAP(p_nodes, MAX_NUMNODES);
- 	struct memory_initiator *initiator;
-@@ -595,7 +601,7 @@ static __init void hmat_register_target_initiators(struct memory_target *target)
- 	}
- }
- 
--static __init void hmat_register_target_cache(struct memory_target *target)
-+static void hmat_register_target_cache(struct memory_target *target)
- {
- 	unsigned mem_nid = pxm_to_node(target->memory_pxm);
- 	struct target_cache *tcache;
-@@ -604,23 +610,28 @@ static __init void hmat_register_target_cache(struct memory_target *target)
- 		node_add_cache(mem_nid, &tcache->cache_attrs);
- }
- 
--static __init void hmat_register_target_perf(struct memory_target *target)
-+static void hmat_register_target_perf(struct memory_target *target)
- {
- 	unsigned mem_nid = pxm_to_node(target->memory_pxm);
- 	node_set_perf_attrs(mem_nid, &target->hmem_attrs, 0);
- }
- 
--static __init void hmat_register_target(struct memory_target *target)
-+static void hmat_register_target(struct memory_target *target)
- {
- 	if (!node_online(pxm_to_node(target->memory_pxm)))
- 		return;
- 
--	hmat_register_target_initiators(target);
--	hmat_register_target_cache(target);
--	hmat_register_target_perf(target);
-+	mutex_lock(&target_lock);
-+	if (!target->registered) {
-+		hmat_register_target_initiators(target);
-+		hmat_register_target_cache(target);
-+		hmat_register_target_perf(target);
-+		target->registered = true;
-+	}
-+	mutex_unlock(&target_lock);
- }
- 
--static __init void hmat_register_targets(void)
-+static void hmat_register_targets(void)
- {
- 	struct memory_target *target;
- 
-@@ -628,6 +639,30 @@ static __init void hmat_register_targets(void)
- 		hmat_register_target(target);
- }
- 
-+static int hmat_callback(struct notifier_block *self,
-+			 unsigned long action, void *arg)
-+{
-+	struct memory_target *target;
-+	struct memory_notify *mnb = arg;
-+	int pxm, nid = mnb->status_change_nid;
-+
-+	if (nid == NUMA_NO_NODE || action != MEM_ONLINE)
-+		return NOTIFY_OK;
-+
-+	pxm = node_to_pxm(nid);
-+	target = find_mem_target(pxm);
-+	if (!target)
-+		return NOTIFY_OK;
-+
-+	hmat_register_target(target);
-+	return NOTIFY_OK;
-+}
-+
-+static struct notifier_block hmat_callback_nb = {
-+	.notifier_call = hmat_callback,
-+	.priority = 2,
-+};
-+
- static __init void hmat_free_structures(void)
- {
- 	struct memory_target *target, *tnext;
-@@ -698,6 +733,10 @@ static __init int hmat_init(void)
- 		}
- 	}
- 	hmat_register_targets();
-+
-+	/* Keep the table and structures if the notifier may use them */
-+	if (!register_hotmemory_notifier(&hmat_callback_nb))
-+		return 0;
- out_put:
- 	hmat_free_structures();
- 	acpi_put_table(tbl);
--- 
-2.14.4
+>>>
+>>>> Anyway, I can pick this up if Lorenzo acks it.
+>>> Actually I think we should compile out iort_iommu_configure() for
+>>> !IOMMU_SUPPORT unless I am missing something, so that we are
+>>> removing this source of errors.
+>> Indeed, much as I like the compile coverage of not having things #ifdefed
+>> out in general, this particular case seems like a fairly atypical
+>> configuration so I'm not sure all the extra fluff of struct accessors is
+>> really worth it.
+This is founded by randconfig built, it seems that no one use this kind of configuration
+> Ok, I will send a patch shortly to address this issue, if Kefeng
+> does not object I will drop the CI bot as reporter and add him
+> instead.
+Either way is ok, thanks.
+>
+> Thanks,
+> Lorenzo
+>
+>> Robin.
+>>
+>>> If that does not cut it, for this patch:
+>>>
+>>> iommu_fwspec_set_ats_flags() should be iommu_fwspec_set_ats_flag()
+>>>
+>>> The commit log should be fixed (it is pretty weird to start with the
+>>> build error and then explain it):
+>>>
+>>> "If IOMMU_SUPPORT is not enabled, struct iommu_fwspec is an empty
+>>> struct and IOMMU_FWSPEC_PCI_RC_ATS is not defined, resulting in
+>>> the following build error:
+>>>
+>>> drivers/acpi/arm64/iort.c: In function iort_iommu_configure:
+>>> drivers/acpi/arm64/iort.c:1079:21: error: struct iommu_fwspec has no member named flags
+>>>      dev->iommu_fwspec->flags |= IOMMU_FWSPEC_PCI_RC_ATS;
+>>>                       ^~
+>>> drivers/acpi/arm64/iort.c:1079:32: error: IOMMU_FWSPEC_PCI_RC_ATS
+>>> undeclared (first use in this function)
+>>>      dev->iommu_fwspec->flags |= IOMMU_FWSPEC_PCI_RC_ATS;
+>>>                                  ^~~~~~~~~~~~~~~~~~~~~~~
+>>> drivers/acpi/arm64/iort.c:1079:32: note: each undeclared identifier is reported only once for each function it appears in
+>>>
+>>> Add a iommu_fwspec_set_ats_flag() helper function (that is an empty
+>>> stub on !IOMMU_SUPPORT) to fix it."
+>>>
+> .
+>
 
