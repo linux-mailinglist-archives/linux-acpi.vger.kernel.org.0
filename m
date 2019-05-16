@@ -2,197 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39FAE20424
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 May 2019 13:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAEC3206C7
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 May 2019 14:20:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726687AbfEPLL7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 May 2019 07:11:59 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:49040 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726383AbfEPLL7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 May 2019 07:11:59 -0400
-Received: from 79.184.255.148.ipv4.supernova.orange.pl (79.184.255.148) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.213)
- id b1a95bd50fccdae6; Thu, 16 May 2019 13:11:55 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     "Robert R. Howell" <RHowell@uwyo.edu>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ACPI / LPSS: Don't skip late system PM ops for hibernate on BYT/CHT
-Date:   Thu, 16 May 2019 13:11:54 +0200
-Message-ID: <1588383.bXYZMuyLB9@kreacher>
-In-Reply-To: <beab21cb-9f89-b934-e0a4-2fd85c69f4e6@uwyo.edu>
-References: <20190403054352.30120-1-kai.heng.feng@canonical.com> <CAJZ5v0jJEovXXiqs-tzPC7FsGjGL+qxfXCxbTrQZqAxSCv1oyQ@mail.gmail.com> <beab21cb-9f89-b934-e0a4-2fd85c69f4e6@uwyo.edu>
+        id S1726513AbfEPMU2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 May 2019 08:20:28 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:44704 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726528AbfEPMU2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 May 2019 08:20:28 -0400
+Received: by mail-lj1-f194.google.com with SMTP id e13so2860695ljl.11
+        for <linux-acpi@vger.kernel.org>; Thu, 16 May 2019 05:20:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=wr0yrITWiDgpTtW7hOhkZTXIfJ4eLHxYShx+ors7rts=;
+        b=Bv91VW9mbA/lrzvFPX4j+c3OhgAcDSfRzunT5DviBFTgoDJy1VXoMb6bjYHNgUba0h
+         iuTJ56lTMab3DfGAa800XyxOtYrQoW8W+8EZbMNrgx70FPAS9gni/Y2QEkyJ6/9BnwYp
+         yNUsXm6uUi0yhdWmLNPugsYACmutqAYkFzD9RfSo5KUe5LUPCq/Vhx+TyrMa7W33rvMk
+         rZATdE02XuJ52GYiOqe4BTvCu5RjHyY11uH3t9I9vZF3tdLAosTkiHu/nT2AEvCZ3Ujf
+         /F3Aaq8LpWQIPPDQcsweXzRUnoz1dtZBnIB1u6Q76qpmC6twBOf7G42QJ9M/M58eEga2
+         q4mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=wr0yrITWiDgpTtW7hOhkZTXIfJ4eLHxYShx+ors7rts=;
+        b=PxMA0yvos6Ke7Oc5zWY5xxxHpceI0JCRs8gBPcVDBMYVuURuoXbODqzqZWwpkACCU7
+         HkgQMdK0gqMbYJ+likGjlYhXMaekSHvkGO64EU/GRc8mpCwdrxKwqlhQxbgkGjDC0+8g
+         Of1x2Laqv2LQP2MINRFnxEanrUPbs0QEj3aGKWgPXGTx4Vqg1Dfi65Ip59Dx9/F813o1
+         RjDwXpBH67XkpDJkXQKyJnNVg0EG5yp7byuOaW76erhwoItHP92Di5FOloAIrxOLiYwF
+         goOjyhB7kqa24VdYFKh0eo9Xt/T0fg6Uz54OS7mWlHrxO/PITKDlaLnFTF8qOBaI282N
+         kwHw==
+X-Gm-Message-State: APjAAAWPmK6gc7gk0oCgduvsCRMaoba0eE7IV+v0c3vTSFvxyjdEgb91
+        TKAIJwU62VTG8vBsFOgAOh+huP31R4NiZC3z3FZfjQ==
+X-Google-Smtp-Source: APXvYqz3tKAivV8Dh7JbLsHVm95JkncbNhNajSVq3rYNN6TMvN6O2ZDg675uuDTUoVEOcB135K7WzRtiYKDdXgotPBY=
+X-Received: by 2002:a2e:8741:: with SMTP id q1mr2126359ljj.97.1558009226473;
+ Thu, 16 May 2019 05:20:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+References: <20190424081802.GV2654@lahna.fi.intel.com> <5a28f22c-22f7-760a-d076-68ff19800d44@siemens.com>
+ <20190424084259.GW2654@lahna.fi.intel.com> <7e328b7e-f4f0-851a-4152-a9ffd058201c@siemens.com>
+ <20190424094506.GA2654@lahna.fi.intel.com> <292e6eff-82cc-6e4d-925b-77a60399e2e0@siemens.com>
+ <20190424100130.GB2654@lahna.fi.intel.com> <1200464b-f969-ebc2-ae82-1f8ca98aaca1@siemens.com>
+ <20190424103306.GC2654@lahna.fi.intel.com> <9377620b-d74a-04d9-a51e-8590400b1c0f@siemens.com>
+ <20190426130615.GT9224@smile.fi.intel.com> <bd5453e1-0279-02ab-3304-edc6ebf509dc@siemens.com>
+ <bc856e19-470d-7655-5680-a031831ab513@metux.net> <2f3da791-4a10-c2c4-dc5a-22ad16ed7be6@siemens.com>
+ <ea29ee73-705b-7d13-0084-11274db02394@metux.net>
+In-Reply-To: <ea29ee73-705b-7d13-0084-11274db02394@metux.net>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 16 May 2019 14:20:14 +0200
+Message-ID: <CACRpkdZJSYFYuJYtubUHyPhSkiHi0eUX_hmbmmXqO2XPg6rJcw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] gpio: sch: Add interrupt support
+To:     "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Cc:     Jan Kiszka <jan.kiszka@siemens.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thursday, April 25, 2019 6:38:34 PM CEST Robert R. Howell wrote:
-> On 4/24/19 1:20 AM, Rafael J. Wysocki wrote:
-> 
-> > On Tue, Apr 23, 2019 at 10:03 PM Robert R. Howell <RHowell@uwyo.edu> wrote:
-> >>
-> >> On 4/23/19 2:07 AM, Rafael J. Wysocki wrote:
-> >>>
-> >>> On Sat, Apr 20, 2019 at 12:44 AM Robert R. Howell <RHowell@uwyo.edu> wrote:
-> >>>>
-> >>>> On 4/18/19 5:42 AM, Hans de Goede wrote:
-> >>>>
-> >>>>>> On 4/8/19 2:16 AM, Hans de Goede wrote:>
-> >>>>>>>
-> >>>>>>> Hmm, interesting so you have hibernation working on a T100TA
-> >>>>>>> (with 5.0 + 02e45646d53b reverted), right ?
-> >>>>>>>
-> >>>>
-> >>>>
-> >>>> I've managed to find a way around the i2c_designware timeout issues
-> >>>> on the T100TA's.  The key is to NOT set DPM_FLAG_SMART_SUSPEND,
-> >>>> which was added in the 02e45646d53b commit.
-> >>>>
-> >>>> To test that I've started with a 5.1-rc5 kernel, applied your recent patch
-> >>>> to acpi_lpss.c, then apply the following patch of mine, removing
-> >>>> DPM_FLAG_SMART_SUSPEND.  (For the T100 hardware I need to apply some
-> >>>> other patches as well but those are not related to the i2c-designware or
-> >>>> acpi issues addressed here.)
-> >>>>
-> >>>> On a resume from hibernation I still see one error:
-> >>>>   "i2c_designware 80860F41:00: Error i2c_dw_xfer called while suspended"
-> >>>> but I no longer get the i2c_designware timeouts, and audio does now work
-> >>>> after the resume.
-> >>>>
-> >>>> Removing DPM_FLAG_SMART_SUSPEND may not be what you want for other
-> >>>> hardware, but perhaps this will give you a clue as to what is going
-> >>>> wrong with hibernate/resume on the T100TA's.
-> >>>
-> >>> What if you drop DPM_FLAG_LEAVE_SUSPENDED alone instead?
-> >>>
-> >>
-> >> I did try dropping just DPM_FLAG_LEAVE_SUSPENDED, dropping just
-> >> DPM_FLAG_SMART_SUSPEND, and dropping both flags.  When I just drop
-> >> DPM_FLAG_LEAVE_SUSPENDED I still get the i2c_designware timeouts
-> >> after the resume.  If I drop just DPM_FLAG_SMART_SUSPEND or drop both,
-> >> then the timeouts go away.
-> > 
-> > OK, thanks!
-> > 
-> > Is non-hibernation system suspend affected too?
-> 
-> I just ran some tests on a T100TA, using the 5.1-rc5 code with Hans' patch applied 
-> but without any changes to i2c-designware-platdrv.c, so the 
-> DPM_FLAG_SMART_PREPARE, DPM_FLAG_SMART_SUSPEND, and DPM_FLAG_LEAVE_SUSPENDED flags 
-> are all set.  
-> 
-> Suspend does work OK, and after resume I do NOT get any of the crippling 
-> i2c_designware timeout errors which cause sound to fail after hibernate.  I DO see one 
->   "i2c_designware 80860F41:00: Error i2c_dw_xfer call while suspended"
-> error on resume, just as I do on hibernate.  I've attached a portion of dmesg below.
-> The "asus_wmi:  Unknown key 79 pressed" error is a glitch which occurs 
-> intermittently on these machines, but doesn't seem related to the other issues.  
-> I had one test run when it was absent but the rest of the messages were the 
-> same -- but then kept getting that unknown key error on all my later tries.
-> 
-> I did notice the "2sidle" in the following rather than "shallow" or "deep".  A
-> cat of /sys/power/state shows "freeze mem disk" but a
-> cat of /sys/power/mem_sleep" shows only "[s2idle] so it looks like shallow and deep 
-> are not enabled for this system.  I did check the input power (or really current) 
-> as it went into suspend and the micro-usb power input drops from about 
-> 0.5 amps to 0.05 amps.  But clearly a lot of devices are still active, as movement 
-> of a bluetooth mouse (the MX Anywhere 2) will wake it from suspend.  That presumably is 
-> why suspend doesn't trigger the same i2c_designware problems as hibernate.
-> 
-> Let me know if I can do any other tests.
+Hi folks,
 
-Can you please check if the appended patch makes the hibernate issue go away for you, without any other changes?
+this became an interesting thread and Manivannan made some nice
+changes to MRAA as a result.
 
----
- drivers/pci/pci-driver.c |   36 ++++++++++--------------------------
- 1 file changed, 10 insertions(+), 26 deletions(-)
+It appears the Raspberry Pi has become a victim of its own success
+and went from hobbyist toy system to a foundation for random industrial
+control hacks. I'm a bit scared about that for electronic reasons but when
+it comes to the software that is a board that get things right after
+we added line-names to everything on its connectors.
 
-Index: linux-pm/drivers/pci/pci-driver.c
-===================================================================
---- linux-pm.orig/drivers/pci/pci-driver.c
-+++ linux-pm/drivers/pci/pci-driver.c
-@@ -957,15 +957,14 @@ static int pci_pm_freeze(struct device *
- 	}
- 
- 	/*
--	 * This used to be done in pci_pm_prepare() for all devices and some
--	 * drivers may depend on it, so do it here.  Ideally, runtime-suspended
--	 * devices should not be touched during freeze/thaw transitions,
--	 * however.
-+	 * Resume all runtime-suspended devices before creating a snapshot
-+	 * image of system memory, because the restore kernel generally cannot
-+	 * be expected to always handle them consistently and pci_pm_restore()
-+	 * always leaves them as "active", so ensure that the state saved in the
-+	 * image will always be consistent with that.
- 	 */
--	if (!dev_pm_smart_suspend_and_suspended(dev)) {
--		pm_runtime_resume(dev);
--		pci_dev->state_saved = false;
--	}
-+	pm_runtime_resume(dev);
-+	pci_dev->state_saved = false;
- 
- 	if (pm->freeze) {
- 		int error;
-@@ -992,9 +991,6 @@ static int pci_pm_freeze_noirq(struct de
- 	struct pci_dev *pci_dev = to_pci_dev(dev);
- 	struct device_driver *drv = dev->driver;
- 
--	if (dev_pm_smart_suspend_and_suspended(dev))
--		return 0;
--
- 	if (pci_has_legacy_pm_support(pci_dev))
- 		return pci_legacy_suspend_late(dev, PMSG_FREEZE);
- 
-@@ -1024,16 +1020,6 @@ static int pci_pm_thaw_noirq(struct devi
- 	struct device_driver *drv = dev->driver;
- 	int error = 0;
- 
--	/*
--	 * If the device is in runtime suspend, the code below may not work
--	 * correctly with it, so skip that code and make the PM core skip all of
--	 * the subsequent "thaw" callbacks for the device.
--	 */
--	if (dev_pm_smart_suspend_and_suspended(dev)) {
--		dev_pm_skip_next_resume_phases(dev);
--		return 0;
--	}
--
- 	if (pcibios_pm_ops.thaw_noirq) {
- 		error = pcibios_pm_ops.thaw_noirq(dev);
- 		if (error)
-@@ -1093,8 +1079,10 @@ static int pci_pm_poweroff(struct device
- 
- 	/* The reason to do that is the same as in pci_pm_suspend(). */
- 	if (!dev_pm_test_driver_flags(dev, DPM_FLAG_SMART_SUSPEND) ||
--	    !pci_dev_keep_suspended(pci_dev))
-+	    !pci_dev_keep_suspended(pci_dev)) {
- 		pm_runtime_resume(dev);
-+		pci_dev->state_saved = false;
-+	}
- 
- 	pci_dev->state_saved = false;
- 	if (pm->poweroff) {
-@@ -1168,10 +1156,6 @@ static int pci_pm_restore_noirq(struct d
- 	struct device_driver *drv = dev->driver;
- 	int error = 0;
- 
--	/* This is analogous to the pci_pm_resume_noirq() case. */
--	if (dev_pm_smart_suspend_and_suspended(dev))
--		pm_runtime_set_active(dev);
--
- 	if (pcibios_pm_ops.restore_noirq) {
- 		error = pcibios_pm_ops.restore_noirq(dev);
- 		if (error)
+What I can add is that when designing the character device I tried to get some
+input from inductrial control (PLC) vendors and asked on the mailing list,
+and mailed directly to ABB at one point, I am sorry for not finding the right
+contact at Siemens (would have helped for sure).
 
+I have tried to talk to Liebherr in related matters but can't seem to find the
+right contact.
 
+We really want to do things right with industrial control boards because
+these seem to have very long life cycles and stay around forever in the
+kernel for that reason.
 
+Yours,
+Linus Walleij
