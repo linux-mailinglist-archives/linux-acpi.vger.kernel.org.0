@@ -2,124 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1668A21376
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 May 2019 07:36:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 843092145A
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 May 2019 09:32:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727909AbfEQFgA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 May 2019 01:36:00 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:51660 "EHLO mx1.redhat.com"
+        id S1728335AbfEQHcT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 May 2019 03:32:19 -0400
+Received: from mga07.intel.com ([134.134.136.100]:54642 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727317AbfEQFgA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 17 May 2019 01:36:00 -0400
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 7DB4D81DE6;
-        Fri, 17 May 2019 05:35:59 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 58AE01001DD2;
-        Fri, 17 May 2019 05:35:59 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
-        by colo-mx.corp.redhat.com (Postfix) with ESMTP id 0AB9A1806B10;
-        Fri, 17 May 2019 05:35:59 +0000 (UTC)
-Date:   Fri, 17 May 2019 01:35:58 -0400 (EDT)
-From:   Pankaj Gupta <pagupta@redhat.com>
-To:     Jakub =?utf-8?Q?Staro=C5=84?= <jstaron@google.com>
-Cc:     linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        qemu-devel@nongnu.org, linux-ext4@vger.kernel.org,
-        linux-xfs@vger.kernel.org, jack@suse.cz, mst@redhat.com,
-        jasowang@redhat.com, david@fromorbit.com, lcapitulino@redhat.com,
-        adilger kernel <adilger.kernel@dilger.ca>, smbarber@google.com,
-        zwisler@kernel.org, aarcange@redhat.com,
-        dave jiang <dave.jiang@intel.com>,
-        darrick wong <darrick.wong@oracle.com>,
-        vishal l verma <vishal.l.verma@intel.com>, david@redhat.com,
-        willy@infradead.org, hch@infradead.org, jmoyer@redhat.com,
-        nilal@redhat.com, lenb@kernel.org, kilobyte@angband.pl,
-        riel@surriel.com, yuval shaia <yuval.shaia@oracle.com>,
-        stefanha@redhat.com, pbonzini@redhat.com,
-        dan j williams <dan.j.williams@intel.com>, kwolf@redhat.com,
-        tytso@mit.edu, xiaoguangrong eric <xiaoguangrong.eric@gmail.com>,
-        cohuck@redhat.com, rjw@rjwysocki.net, imammedo@redhat.com
-Message-ID: <1954162775.29408078.1558071358974.JavaMail.zimbra@redhat.com>
-In-Reply-To: <c06514fd-8675-ba74-4b7b-ff0eb4a91605@google.com>
-References: <20190514145422.16923-1-pagupta@redhat.com> <20190514145422.16923-3-pagupta@redhat.com> <c06514fd-8675-ba74-4b7b-ff0eb4a91605@google.com>
-Subject: Re: [Qemu-devel] [PATCH v9 2/7] virtio-pmem: Add virtio pmem driver
+        id S1728207AbfEQHcT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 17 May 2019 03:32:19 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 May 2019 00:32:18 -0700
+X-ExtLoop1: 1
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 17 May 2019 00:32:15 -0700
+Received: by lahna (sSMTP sendmail emulation); Fri, 17 May 2019 10:32:14 +0300
+Date:   Fri, 17 May 2019 10:32:14 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH] ACPI/PCI: PM: Add missing wakeup.flags.valid checks
+Message-ID: <20190517073214.GA2781@lahna.fi.intel.com>
+References: <2091978.9z20bSIm3T@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.116.188, 10.4.195.1]
-Thread-Topic: virtio-pmem: Add virtio pmem driver
-Thread-Index: Jfq72a6Lppgn6G/na6kHvdhmTQkM6g==
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.25]); Fri, 17 May 2019 05:35:59 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2091978.9z20bSIm3T@kreacher>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-
-Hi Jakub,
-
+On Thu, May 16, 2019 at 12:42:20PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> On 5/14/19 7:54 AM, Pankaj Gupta wrote:
-> > +		if (!list_empty(&vpmem->req_list)) {
-> > +			req_buf = list_first_entry(&vpmem->req_list,
-> > +					struct virtio_pmem_request, list);
-> > +			req_buf->wq_buf_avail = true;
-> > +			wake_up(&req_buf->wq_buf);
-> > +			list_del(&req_buf->list);
-> Yes, this change is the right one, thank you!
-
-Thank you for the confirmation.
-
+> Both acpi_pci_need_resume() and acpi_dev_needs_resume() check if the
+> current ACPI wakeup configuration of the device matches what is
+> expected as far as system wakeup from sleep states is concerned, as
+> reflected by the device_may_wakeup() return value for the device.
 > 
-> > +	 /*
-> > +	  * If virtqueue_add_sgs returns -ENOSPC then req_vq virtual
-> > +	  * queue does not have free descriptor. We add the request
-> > +	  * to req_list and wait for host_ack to wake us up when free
-> > +	  * slots are available.
-> > +	  */
-> > +	while ((err = virtqueue_add_sgs(vpmem->req_vq, sgs, 1, 1, req,
-> > +					GFP_ATOMIC)) == -ENOSPC) {
-> > +
-> > +		dev_err(&vdev->dev, "failed to send command to virtio pmem" \
-> > +			"device, no free slots in the virtqueue\n");
-> > +		req->wq_buf_avail = false;
-> > +		list_add_tail(&req->list, &vpmem->req_list);
-> > +		spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
-> > +
-> > +		/* A host response results in "host_ack" getting called */
-> > +		wait_event(req->wq_buf, req->wq_buf_avail);
-> > +		spin_lock_irqsave(&vpmem->pmem_lock, flags);
-> > +	}
-> > +	err1 = virtqueue_kick(vpmem->req_vq);
-> > +	spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
-> > +
-> > +	/*
-> > +	 * virtqueue_add_sgs failed with error different than -ENOSPC, we can't
-> > +	 * do anything about that.
-> > +	 */
-> > +	if (err || !err1) {
-> > +		dev_info(&vdev->dev, "failed to send command to virtio pmem device\n");
-> > +		err = -EIO;
-> > +	} else {
-> > +		/* A host repsonse results in "host_ack" getting called */
-> > +		wait_event(req->host_acked, req->done);
-> > +		err = req->ret;
-> > +I confirm that the failures I was facing with the `-ENOSPC` error path are
-> > not present in v9.
-
-Can I take it your reviewed/acked-by? or tested-by tag? for the virtio patch :)
-
-Thank you,
-Pankaj
-
+> However, they only should do that if wakeup.flags.valid is set for
+> the device's ACPI companion, because otherwise the wakeup.prepare_count
+> value for it is meaningless.
 > 
-> Best,
-> Jakub Staron
+> Add the missing wakeup.flags.valid checks to these functions.
 > 
-> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
