@@ -2,127 +2,216 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F7AA21138
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 May 2019 02:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA6BF21367
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 May 2019 07:31:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726286AbfEQAUM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 May 2019 20:20:12 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:33169 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726216AbfEQAUM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 May 2019 20:20:12 -0400
-Received: by mail-pf1-f196.google.com with SMTP id z28so2722969pfk.0
-        for <linux-acpi@vger.kernel.org>; Thu, 16 May 2019 17:20:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=grI6nIUF/mMOBdv6LrPvHsdNVES0yai/LfFYIZ4bkWY=;
-        b=trB5X+v2CFHJR5/h5Ogo8pnGEbixSq/5SbMCfW0BvmcDG2zeRdzxHL4lknPMI8JsaG
-         91o9aNowjUtiTckfyBLWY/pZJBmRERl33EcI9dq0zR0lXd+XHl45wImJtwD6qTmBiD3C
-         YvIdILOfNr02D208IUOgX7xjB1B80gLQERVK/akSkqvFqS79gmXpU/duephS4OxkvMCj
-         iFkaZbcWb+04sJYfOvlYsPNWM7LK/oP8HkDOryS8f1XdKVoMLZUlQ8YVZMbBQiMDnraB
-         fYXacmGWn0btEdYeftIv0rPSsHpeCBXpkkAwnfL+k2zqdhfQJ6WS6TGQ7DeGxI98ZyT1
-         d5aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=grI6nIUF/mMOBdv6LrPvHsdNVES0yai/LfFYIZ4bkWY=;
-        b=L2n4wL9z3eZZ4bomlro55RwWg+nEXXxv28cLUvVo+G7DVaVW8cGgeRIpJThKDn1J2P
-         El9hRNkxXDEp7oUhelIIF6h+Rs0OC/Bg2NET2yjVn9MgTz5tIWKuhhx+2B946LkLInxo
-         vOvNUUKncPSM6kaf7ygFRgVeP0C8rpJLvuKb/eNilm47FUyTdtGCFvSNst8w+cTycBIz
-         2n1E43zqKxkewqvOGr+QYyXBpKudgsjmGkiWjPKF7v0/KVNlt5TivsruUsLhprXIenZi
-         WMAwe4eq1fstXzbR3FDrX0PuKw+dB5n5IjqNsGOrFFJ9VOIMRJaYV5E0+6xZbK5kudbV
-         Bu+Q==
-X-Gm-Message-State: APjAAAUgbaRqkmMV2PCIhhyRteRNvHLrD4bykptUe4Kg/peSYPb91NZ8
-        VueoNdHmr3vkQE8MASqyMUWnGw==
-X-Google-Smtp-Source: APXvYqyv1iVBQbL6jyOdYGu6UtPQiwVBUuqofcSXUoK/ck1DMyLzSDgzGJaT2Ro5WErOmsiHR9V/gQ==
-X-Received: by 2002:a63:d816:: with SMTP id b22mr52619479pgh.16.1558051959951;
-        Thu, 16 May 2019 17:12:39 -0700 (PDT)
-Received: from jstaron2.mtv.corp.google.com ([2620:15c:202:201:b94f:2527:c39f:ca2d])
-        by smtp.gmail.com with ESMTPSA id a6sm7245768pgd.67.2019.05.16.17.12.37
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Thu, 16 May 2019 17:12:39 -0700 (PDT)
-Subject: Re: [PATCH v9 2/7] virtio-pmem: Add virtio pmem driver
-To:     Pankaj Gupta <pagupta@redhat.com>, linux-nvdimm@lists.01.org,
-        linux-kernel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        qemu-devel@nongnu.org, linux-ext4@vger.kernel.org,
-        linux-xfs@vger.kernel.org
-Cc:     dan.j.williams@intel.com, zwisler@kernel.org,
-        vishal.l.verma@intel.com, dave.jiang@intel.com, mst@redhat.com,
-        jasowang@redhat.com, willy@infradead.org, rjw@rjwysocki.net,
-        hch@infradead.org, lenb@kernel.org, jack@suse.cz, tytso@mit.edu,
-        adilger.kernel@dilger.ca, darrick.wong@oracle.com,
-        lcapitulino@redhat.com, kwolf@redhat.com, imammedo@redhat.com,
-        jmoyer@redhat.com, nilal@redhat.com, riel@surriel.com,
-        stefanha@redhat.com, aarcange@redhat.com, david@redhat.com,
-        david@fromorbit.com, cohuck@redhat.com,
-        xiaoguangrong.eric@gmail.com, pbonzini@redhat.com,
-        kilobyte@angband.pl, yuval.shaia@oracle.com, smbarber@google.com
-References: <20190514145422.16923-1-pagupta@redhat.com>
- <20190514145422.16923-3-pagupta@redhat.com>
-From:   =?UTF-8?Q?Jakub_Staro=c5=84?= <jstaron@google.com>
-Message-ID: <c06514fd-8675-ba74-4b7b-ff0eb4a91605@google.com>
-Date:   Thu, 16 May 2019 17:12:36 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1727357AbfEQFbp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 May 2019 01:31:45 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:60624 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727089AbfEQFbp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 17 May 2019 01:31:45 -0400
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id C7FAE811DC;
+        Fri, 17 May 2019 05:31:43 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 7FC4660BE5;
+        Fri, 17 May 2019 05:31:43 +0000 (UTC)
+Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
+        by colo-mx.corp.redhat.com (Postfix) with ESMTP id 7045B1806B10;
+        Fri, 17 May 2019 05:31:41 +0000 (UTC)
+Date:   Fri, 17 May 2019 01:31:40 -0400 (EDT)
+From:   Pankaj Gupta <pagupta@redhat.com>
+To:     "Michael S. Tsirkin" <mst@redhat.com>,
+        David Hildenbrand <david@redhat.com>
+Cc:     cohuck@redhat.com, jack@suse.cz, kvm@vger.kernel.org,
+        jasowang@redhat.com, david@fromorbit.com, qemu-devel@nongnu.org,
+        virtualization@lists.linux-foundation.org,
+        adilger kernel <adilger.kernel@dilger.ca>, zwisler@kernel.org,
+        aarcange@redhat.com, dave jiang <dave.jiang@intel.com>,
+        jstaron@google.com, linux-nvdimm@lists.01.org,
+        vishal l verma <vishal.l.verma@intel.com>,
+        willy@infradead.org, hch@infradead.org, linux-acpi@vger.kernel.org,
+        jmoyer@redhat.com, linux-ext4@vger.kernel.org, lenb@kernel.org,
+        kilobyte@angband.pl, riel@surriel.com,
+        yuval shaia <yuval.shaia@oracle.com>, stefanha@redhat.com,
+        pbonzini@redhat.com, dan j williams <dan.j.williams@intel.com>,
+        lcapitulino@redhat.com, kwolf@redhat.com, nilal@redhat.com,
+        tytso@mit.edu, xiaoguangrong eric <xiaoguangrong.eric@gmail.com>,
+        darrick wong <darrick.wong@oracle.com>, rjw@rjwysocki.net,
+        linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, imammedo@redhat.com
+Message-ID: <1808083054.29407926.1558071100913.JavaMail.zimbra@redhat.com>
+In-Reply-To: <20190516095618-mutt-send-email-mst@kernel.org>
+References: <20190514145422.16923-1-pagupta@redhat.com> <20190514145422.16923-3-pagupta@redhat.com> <9f6b1d8e-ef90-7d8b-56da-61a426953ba3@redhat.com> <20190516095618-mutt-send-email-mst@kernel.org>
+Subject: Re: [Qemu-devel] [PATCH v9 2/7] virtio-pmem: Add virtio pmem driver
 MIME-Version: 1.0
-In-Reply-To: <20190514145422.16923-3-pagupta@redhat.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.116.188, 10.4.195.6]
+Thread-Topic: virtio-pmem: Add virtio pmem driver
+Thread-Index: FMi3zX+ydzvNE+LRIfWGkFwCXnTU+g==
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.27]); Fri, 17 May 2019 05:31:44 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 5/14/19 7:54 AM, Pankaj Gupta wrote:
-> +		if (!list_empty(&vpmem->req_list)) {
-> +			req_buf = list_first_entry(&vpmem->req_list,
-> +					struct virtio_pmem_request, list);
-> +			req_buf->wq_buf_avail = true;
-> +			wake_up(&req_buf->wq_buf);
-> +			list_del(&req_buf->list);
-Yes, this change is the right one, thank you!
 
-> +	 /*
-> +	  * If virtqueue_add_sgs returns -ENOSPC then req_vq virtual
-> +	  * queue does not have free descriptor. We add the request
-> +	  * to req_list and wait for host_ack to wake us up when free
-> +	  * slots are available.
-> +	  */
-> +	while ((err = virtqueue_add_sgs(vpmem->req_vq, sgs, 1, 1, req,
-> +					GFP_ATOMIC)) == -ENOSPC) {
-> +
-> +		dev_err(&vdev->dev, "failed to send command to virtio pmem" \
-> +			"device, no free slots in the virtqueue\n");
-> +		req->wq_buf_avail = false;
-> +		list_add_tail(&req->list, &vpmem->req_list);
-> +		spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
-> +
-> +		/* A host response results in "host_ack" getting called */
-> +		wait_event(req->wq_buf, req->wq_buf_avail);
-> +		spin_lock_irqsave(&vpmem->pmem_lock, flags);
-> +	}
-> +	err1 = virtqueue_kick(vpmem->req_vq);
-> +	spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
-> +
-> +	/*
-> +	 * virtqueue_add_sgs failed with error different than -ENOSPC, we can't
-> +	 * do anything about that.
-> +	 */
-> +	if (err || !err1) {
-> +		dev_info(&vdev->dev, "failed to send command to virtio pmem device\n");
-> +		err = -EIO;
-> +	} else {
-> +		/* A host repsonse results in "host_ack" getting called */
-> +		wait_event(req->host_acked, req->done);
-> +		err = req->ret;
-> +I confirm that the failures I was facing with the `-ENOSPC` error path are not present in v9.
+> 
+> On Wed, May 15, 2019 at 10:46:00PM +0200, David Hildenbrand wrote:
+> > > +	vpmem->vdev = vdev;
+> > > +	vdev->priv = vpmem;
+> > > +	err = init_vq(vpmem);
+> > > +	if (err) {
+> > > +		dev_err(&vdev->dev, "failed to initialize virtio pmem vq's\n");
+> > > +		goto out_err;
+> > > +	}
+> > > +
+> > > +	virtio_cread(vpmem->vdev, struct virtio_pmem_config,
+> > > +			start, &vpmem->start);
+> > > +	virtio_cread(vpmem->vdev, struct virtio_pmem_config,
+> > > +			size, &vpmem->size);
+> > > +
+> > > +	res.start = vpmem->start;
+> > > +	res.end   = vpmem->start + vpmem->size-1;
+> > 
+> > nit: " - 1;"
+> > 
+> > > +	vpmem->nd_desc.provider_name = "virtio-pmem";
+> > > +	vpmem->nd_desc.module = THIS_MODULE;
+> > > +
+> > > +	vpmem->nvdimm_bus = nvdimm_bus_register(&vdev->dev,
+> > > +						&vpmem->nd_desc);
+> > > +	if (!vpmem->nvdimm_bus) {
+> > > +		dev_err(&vdev->dev, "failed to register device with nvdimm_bus\n");
+> > > +		err = -ENXIO;
+> > > +		goto out_vq;
+> > > +	}
+> > > +
+> > > +	dev_set_drvdata(&vdev->dev, vpmem->nvdimm_bus);
+> > > +
+> > > +	ndr_desc.res = &res;
+> > > +	ndr_desc.numa_node = nid;
+> > > +	ndr_desc.flush = async_pmem_flush;
+> > > +	set_bit(ND_REGION_PAGEMAP, &ndr_desc.flags);
+> > > +	set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
+> > > +	nd_region = nvdimm_pmem_region_create(vpmem->nvdimm_bus, &ndr_desc);
+> > > +	if (!nd_region) {
+> > > +		dev_err(&vdev->dev, "failed to create nvdimm region\n");
+> > > +		err = -ENXIO;
+> > > +		goto out_nd;
+> > > +	}
+> > > +	nd_region->provider_data =
+> > > dev_to_virtio(nd_region->dev.parent->parent);
+> > > +	return 0;
+> > > +out_nd:
+> > > +	nvdimm_bus_unregister(vpmem->nvdimm_bus);
+> > > +out_vq:
+> > > +	vdev->config->del_vqs(vdev);
+> > > +out_err:
+> > > +	return err;
+> > > +}
+> > > +
+> > > +static void virtio_pmem_remove(struct virtio_device *vdev)
+> > > +{
+> > > +	struct nvdimm_bus *nvdimm_bus = dev_get_drvdata(&vdev->dev);
+> > > +
+> > > +	nvdimm_bus_unregister(nvdimm_bus);
+> > > +	vdev->config->del_vqs(vdev);
+> > > +	vdev->config->reset(vdev);
+> > > +}
+> > > +
+> > > +static struct virtio_driver virtio_pmem_driver = {
+> > > +	.driver.name		= KBUILD_MODNAME,
+> > > +	.driver.owner		= THIS_MODULE,
+> > > +	.id_table		= id_table,
+> > > +	.probe			= virtio_pmem_probe,
+> > > +	.remove			= virtio_pmem_remove,
+> > > +};
+> > > +
+> > > +module_virtio_driver(virtio_pmem_driver);
+> > > +MODULE_DEVICE_TABLE(virtio, id_table);
+> > > +MODULE_DESCRIPTION("Virtio pmem driver");
+> > > +MODULE_LICENSE("GPL");
+> > > diff --git a/drivers/nvdimm/virtio_pmem.h b/drivers/nvdimm/virtio_pmem.h
+> > > new file mode 100644
+> > > index 000000000000..ab1da877575d
+> > > --- /dev/null
+> > > +++ b/drivers/nvdimm/virtio_pmem.h
+> > > @@ -0,0 +1,60 @@
+> > > +/* SPDX-License-Identifier: GPL-2.0 */
+> > > +/*
+> > > + * virtio_pmem.h: virtio pmem Driver
+> > > + *
+> > > + * Discovers persistent memory range information
+> > > + * from host and provides a virtio based flushing
+> > > + * interface.
+> > > + **/
+> > > +
+> > > +#ifndef _LINUX_VIRTIO_PMEM_H
+> > > +#define _LINUX_VIRTIO_PMEM_H
+> > > +
+> > > +#include <linux/virtio_ids.h>
+> > > +#include <linux/module.h>
+> > > +#include <linux/virtio_config.h>
+> > > +#include <uapi/linux/virtio_pmem.h>
+> > > +#include <linux/libnvdimm.h>
+> > > +#include <linux/spinlock.h>
+> > > +
+> > > +struct virtio_pmem_request {
+> > > +	/* Host return status corresponding to flush request */
+> > > +	int ret;
+> > > +
+> > > +	/* command name*/
+> > > +	char name[16];
+> > 
+> > So ... why are we sending string commands and expect native-endianess
+> > integers and don't define a proper request/response structure + request
+> > types in include/uapi/linux/virtio_pmem.h like
+> 
+> passing names could be ok.
+> I missed the fact we return a native endian int.
+> Pls fix that.
 
-Best,
-Jakub Staron
+Sure. will fix this.
+
+> 
+> 
+> > 
+> > struct virtio_pmem_resp {
+> > 	__virtio32 ret;
+> > }
+> > 
+> > #define VIRTIO_PMEM_REQ_TYPE_FLUSH	1
+> > struct virtio_pmem_req {
+> > 	__virtio16 type;
+> > }
+> > 
+> > ... and this way we also define a proper endianess format for exchange
+> > and keep it extensible
+> > 
+> > @MST, what's your take on this?
+> 
+> Extensions can always use feature bits so I don't think
+> it's a problem.
+
+That was exactly my thought when I implemented this. Though I am
+fine with separate structures for request/response and I made the
+change. 
+
+Thank you for all the comments.
+
+Best regards,
+Pankaj 
+> > 
+> > --
+> > 
+> > Thanks,
+> > 
+> > David / dhildenb
+> 
+> 
