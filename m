@@ -2,91 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D5FD22A7B
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 May 2019 05:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0529B22C74
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 May 2019 08:58:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728819AbfETDrn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 19 May 2019 23:47:43 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:56734 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726014AbfETDrn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 19 May 2019 23:47:43 -0400
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id CC0F9308A963;
-        Mon, 20 May 2019 03:47:42 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id B0F8E611A1;
-        Mon, 20 May 2019 03:47:42 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
-        by colo-mx.corp.redhat.com (Postfix) with ESMTP id 786E518089C8;
-        Mon, 20 May 2019 03:47:42 +0000 (UTC)
-Date:   Sun, 19 May 2019 23:47:42 -0400 (EDT)
-From:   Pankaj Gupta <pagupta@redhat.com>
-To:     Jakub =?utf-8?Q?Staro=C5=84?= <jstaron@google.com>
-Cc:     cohuck@redhat.com, jack@suse.cz, kvm@vger.kernel.org,
-        mst@redhat.com, jasowang@redhat.com, david@fromorbit.com,
-        qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
-        adilger kernel <adilger.kernel@dilger.ca>, smbarber@google.com,
-        zwisler@kernel.org, aarcange@redhat.com,
-        dave jiang <dave.jiang@intel.com>, linux-nvdimm@lists.01.org,
-        vishal l verma <vishal.l.verma@intel.com>, david@redhat.com,
-        willy@infradead.org, hch@infradead.org, linux-acpi@vger.kernel.org,
-        jmoyer@redhat.com, linux-ext4@vger.kernel.org, lenb@kernel.org,
-        kilobyte@angband.pl, riel@surriel.com,
-        yuval shaia <yuval.shaia@oracle.com>, stefanha@redhat.com,
-        imammedo@redhat.com, dan j williams <dan.j.williams@intel.com>,
-        lcapitulino@redhat.com, kwolf@redhat.com, nilal@redhat.com,
-        tytso@mit.edu, xiaoguangrong eric <xiaoguangrong.eric@gmail.com>,
-        darrick wong <darrick.wong@oracle.com>, rjw@rjwysocki.net,
-        linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, pbonzini@redhat.com
-Message-ID: <68418388.29774907.1558324062441.JavaMail.zimbra@redhat.com>
-In-Reply-To: <1902045958.29774859.1558323977950.JavaMail.zimbra@redhat.com>
-References: <20190514145422.16923-1-pagupta@redhat.com> <20190514145422.16923-3-pagupta@redhat.com> <c06514fd-8675-ba74-4b7b-ff0eb4a91605@google.com> <1954162775.29408078.1558071358974.JavaMail.zimbra@redhat.com> <5e27fa73-53f5-007a-e0c1-f32f83e5764f@google.com> <1902045958.29774859.1558323977950.JavaMail.zimbra@redhat.com>
-Subject: Re: [Qemu-devel] [PATCH v9 2/7] virtio-pmem: Add virtio pmem driver
+        id S1726127AbfETG6k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 May 2019 02:58:40 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:53948 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726126AbfETG6j (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 May 2019 02:58:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=TjqTyf/kATJ8gNJlCjxVaaIrHquChWso/9puDre/evU=; b=sJWiX3EH4zQasg+oANpWkJZQh
+        F3a7GF2yhetYBwfh0nN0Cv14ArKWEx0nPUZ62CthyXrs7R6/yALOmIkcRreLuoYC1a7R3QV4kC0J+
+        f8EmoQDfPS//0/QSXQUyGCso97V8koScq81FDW3qrVY4aHvDBxhDXaRRZfR6QNjzBNu2A05SxnhfE
+        6lPXlZ94UfUHb72QPZRFwl/ekRivS8r5jEeUi3krkyWe2JngcERDX/1vlxPNWrXDkdl78h10KMMTM
+        Jh0GCyd727qx84zQGUr0EpkRVjOFKrx9Kso+nVxVfoifpknxpiwJiYIHyUsIr4tSheVIilsPH9HT/
+        lfM97/MQw==;
+Received: from 089144206147.atnat0015.highway.bob.at ([89.144.206.147] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hScFq-0007WP-MK; Mon, 20 May 2019 06:58:39 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     will.deacon@arm.com
+Cc:     jean-philippe.brucker@arm.com, lorenzo.pieralisi@arm.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI/IORT: Fix build without CONFIG_IOMMU_API
+Date:   Mon, 20 May 2019 08:57:46 +0200
+Message-Id: <20190520065746.17068-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.116.42, 10.4.195.12]
-Thread-Topic: virtio-pmem: Add virtio pmem driver
-Thread-Index: 4LLaKD2mAqtUZ1AopBm+Wwx4LVVjgdYM8BfX
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Mon, 20 May 2019 03:47:43 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+IOMMU_FWSPEC_PCI_RC_ATS is only defined if CONFIG_IOMMU_API is
+enabled.
 
-> 
-> 
-> > On 5/16/19 10:35 PM, Pankaj Gupta wrote:
-> > > Can I take it your reviewed/acked-by? or tested-by tag? for the virtio
-> > > patch :)I don't feel that I have enough expertise to give the reviewed-by
-> > > tag, but you can
-> > take my acked-by + tested-by.
-> > 
-> > Acked-by: Jakub Staron <jstaron@google.com>
-> > Tested-by: Jakub Staron <jstaron@google.com>
-> > 
-> > No kernel panics/stalls encountered during testing this patches (v9) with
-> > QEMU + xfstests.
-> 
-> Thank you for testing and confirming the results. I will add your tested &
-> acked-by in v10.
-> 
-> > Some CPU stalls encountered while testing with crosvm instead of QEMU with
-> > xfstests
-> > (test generic/464) but no repro for QEMU, so the fault may be on the side
-> > of
-> > crosvm.
-> 
-> yes, looks like crosvm related as we did not see any of this in my and your
-> testing with Qemu.
+Fixes: 5702ee24182f ("ACPI/IORT: Check ATS capability in root complex nodes")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ drivers/acpi/arm64/iort.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Also, they don't seem to be related with virtio-pmem.
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 9058cb084b91..3e542b5d2a2d 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -1074,9 +1074,10 @@ const struct iommu_ops *iort_iommu_configure(struct device *dev)
+ 		info.node = node;
+ 		err = pci_for_each_dma_alias(to_pci_dev(dev),
+ 					     iort_pci_iommu_init, &info);
+-
++#ifdef CONFIG_IOMMU_API
+ 		if (!err && iort_pci_rc_supports_ats(node))
+ 			dev->iommu_fwspec->flags |= IOMMU_FWSPEC_PCI_RC_ATS;
++#endif
+ 	} else {
+ 		int i = 0;
+ 
+-- 
+2.20.1
 
-Thanks,
-Pankaj
