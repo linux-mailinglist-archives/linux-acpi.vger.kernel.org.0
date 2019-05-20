@@ -2,72 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0529B22C74
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 May 2019 08:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E5322F51
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 May 2019 10:50:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726127AbfETG6k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 May 2019 02:58:40 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:53948 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726126AbfETG6j (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 May 2019 02:58:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=TjqTyf/kATJ8gNJlCjxVaaIrHquChWso/9puDre/evU=; b=sJWiX3EH4zQasg+oANpWkJZQh
-        F3a7GF2yhetYBwfh0nN0Cv14ArKWEx0nPUZ62CthyXrs7R6/yALOmIkcRreLuoYC1a7R3QV4kC0J+
-        f8EmoQDfPS//0/QSXQUyGCso97V8koScq81FDW3qrVY4aHvDBxhDXaRRZfR6QNjzBNu2A05SxnhfE
-        6lPXlZ94UfUHb72QPZRFwl/ekRivS8r5jEeUi3krkyWe2JngcERDX/1vlxPNWrXDkdl78h10KMMTM
-        Jh0GCyd727qx84zQGUr0EpkRVjOFKrx9Kso+nVxVfoifpknxpiwJiYIHyUsIr4tSheVIilsPH9HT/
-        lfM97/MQw==;
-Received: from 089144206147.atnat0015.highway.bob.at ([89.144.206.147] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hScFq-0007WP-MK; Mon, 20 May 2019 06:58:39 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     will.deacon@arm.com
-Cc:     jean-philippe.brucker@arm.com, lorenzo.pieralisi@arm.com,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPI/IORT: Fix build without CONFIG_IOMMU_API
-Date:   Mon, 20 May 2019 08:57:46 +0200
-Message-Id: <20190520065746.17068-1-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
+        id S1731559AbfETIuH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 May 2019 04:50:07 -0400
+Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:44188 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726053AbfETItp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 20 May 2019 04:49:45 -0400
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+        by mx0b-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4K8iBki030401;
+        Mon, 20 May 2019 03:49:37 -0500
+Authentication-Results: ppops.net;
+        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
+Received: from mail3.cirrus.com ([87.246.76.56])
+        by mx0b-001ae601.pphosted.com with ESMTP id 2sjefmt3eh-1;
+        Mon, 20 May 2019 03:49:37 -0500
+Received: from EDIEX01.ad.cirrus.com (ediex01.ad.cirrus.com [198.61.84.80])
+        by mail3.cirrus.com (Postfix) with ESMTP id 45397614E633;
+        Mon, 20 May 2019 03:50:16 -0500 (CDT)
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Mon, 20 May
+ 2019 09:49:36 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
+ Transport; Mon, 20 May 2019 09:49:36 +0100
+Received: from algalon.ad.cirrus.com (algalon.ad.cirrus.com [198.90.251.122])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 5FBAD44;
+        Mon, 20 May 2019 09:49:36 +0100 (BST)
+From:   Charles Keepax <ckeepax@opensource.cirrus.com>
+To:     <wsa@the-dreams.de>, <mika.westerberg@linux.intel.com>
+CC:     <linux-i2c@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <benjamin.tissoires@redhat.com>,
+        <jbroadus@gmail.com>, <patches@opensource.cirrus.com>
+Subject: [PATCH 0/5] I2C IRQ Probe Improvements
+Date:   Mon, 20 May 2019 09:49:31 +0100
+Message-ID: <20190520084936.10590-1-ckeepax@opensource.cirrus.com>
+X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=926 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905200064
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-IOMMU_FWSPEC_PCI_RC_ATS is only defined if CONFIG_IOMMU_API is
-enabled.
+This series attempts to align as much IRQ handling into the
+probe path as possible. Note that I don't have a great setup
+for testing these patches so they are mostly just build tested
+and need careful review and testing before any of them are
+merged.
 
-Fixes: 5702ee24182f ("ACPI/IORT: Check ATS capability in root complex nodes")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- drivers/acpi/arm64/iort.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+The series brings the ACPI path inline with the way the device
+tree path handles the IRQ entirely at probe time. However,
+it still leaves any IRQ specified through the board_info as
+being handled at device time. In that case we need to cache
+something from the board_info until probe time, which leaves
+any alternative solution with something basically the same as
+the current handling although perhaps caching more stuff.
 
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 9058cb084b91..3e542b5d2a2d 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -1074,9 +1074,10 @@ const struct iommu_ops *iort_iommu_configure(struct device *dev)
- 		info.node = node;
- 		err = pci_for_each_dma_alias(to_pci_dev(dev),
- 					     iort_pci_iommu_init, &info);
--
-+#ifdef CONFIG_IOMMU_API
- 		if (!err && iort_pci_rc_supports_ats(node))
- 			dev->iommu_fwspec->flags |= IOMMU_FWSPEC_PCI_RC_ATS;
-+#endif
- 	} else {
- 		int i = 0;
- 
+Thanks,
+Charles
+
+See previous discussions:
+ - https://lkml.org/lkml/2019/2/15/989
+ - https://www.spinics.net/lists/linux-i2c/msg39541.html
+
+Charles Keepax (5):
+  i2c: acpi: Factor out getting the IRQ from ACPI
+  i2c: acpi: Use available IRQ helper functions
+  i2c: core: Move ACPI IRQ handling to probe time
+  i2c: core: Move ACPI gpio IRQ handling into i2c_acpi_get_irq
+  i2c: core: Tidy up handling of init_irq
+
+ drivers/i2c/i2c-core-acpi.c | 50 ++++++++++++++++++++++++++++++---------------
+ drivers/i2c/i2c-core-base.c | 11 +++++-----
+ drivers/i2c/i2c-core.h      |  9 ++++++++
+ 3 files changed, 48 insertions(+), 22 deletions(-)
+
 -- 
-2.20.1
+2.11.0
 
