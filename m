@@ -2,39 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BCE0526B2C
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2019 21:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB4B626E38
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2019 21:47:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731360AbfEVTYk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 May 2019 15:24:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45838 "EHLO mail.kernel.org"
+        id S1731228AbfEVTre (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 May 2019 15:47:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49178 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731348AbfEVTYj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 22 May 2019 15:24:39 -0400
+        id S1731403AbfEVT1R (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 22 May 2019 15:27:17 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 076C7217F9;
-        Wed, 22 May 2019 19:24:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4DB7F21473;
+        Wed, 22 May 2019 19:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558553078;
-        bh=1d31qTszdi2fYP3Hw1CE8fO2rZYLUMSnRKtGironcDA=;
+        s=default; t=1558553237;
+        bh=QlT26YYdEtmMsKVxKZWrjZyW6VUPexf7iGv2hu9dQTA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N4ToFw9VguA99foO92wT/5vlP0czdnU4AnVUWKTeOsI8ZTOamExKvkukXpYEFzvIz
-         uUf2wDFwMDk/dt85sRoxBNhbUq71yhWaFwnQlCu7mES+ejBjwr1WwBPn1gCVUZcOSX
-         KwOBYstxrMwc+OiX2aInFmI71OLWv8nxU6UQX/3c=
+        b=EeGdPGUWPs6qnKB0TwLmMoi+UjRQ1ikyZEAzYmNSGdR4e39pA3fuChmpb1wrzr/Re
+         Q4zSJrd8ap9rMUk+D6BsWTv4api/uI3Bfluk5kZHYvXoGrGk+BFvQQ9ZpjjKbgbKLd
+         lBgWn3Oqu1M/DmnX6qBP/4roOb+wLyabeVA1dkYM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.0 036/317] ACPI / property: fix handling of data_nodes in acpi_get_next_subnode()
-Date:   Wed, 22 May 2019 15:18:57 -0400
-Message-Id: <20190522192338.23715-36-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 028/244] ACPI / property: fix handling of data_nodes in acpi_get_next_subnode()
+Date:   Wed, 22 May 2019 15:22:54 -0400
+Message-Id: <20190522192630.24917-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190522192338.23715-1-sashal@kernel.org>
-References: <20190522192338.23715-1-sashal@kernel.org>
+In-Reply-To: <20190522192630.24917-1-sashal@kernel.org>
+References: <20190522192630.24917-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -75,10 +75,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+)
 
 diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 77abe0ec40431..bd533f68b1dec 100644
+index 693cf05b0cc44..288673cff85ea 100644
 --- a/drivers/acpi/property.c
 +++ b/drivers/acpi/property.c
-@@ -1031,6 +1031,14 @@ struct fwnode_handle *acpi_get_next_subnode(const struct fwnode_handle *fwnode,
+@@ -975,6 +975,14 @@ struct fwnode_handle *acpi_get_next_subnode(const struct fwnode_handle *fwnode,
  		const struct acpi_data_node *data = to_acpi_data_node(fwnode);
  		struct acpi_data_node *dn;
  
