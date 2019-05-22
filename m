@@ -2,22 +2,22 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97FA726273
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2019 12:52:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16FD526274
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2019 12:52:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729332AbfEVKv1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 May 2019 06:51:27 -0400
+        id S1729355AbfEVKv3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 May 2019 06:51:29 -0400
 Received: from mga07.intel.com ([134.134.136.100]:32515 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729271AbfEVKv0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 22 May 2019 06:51:26 -0400
+        id S1729353AbfEVKv2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 22 May 2019 06:51:28 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 May 2019 03:51:26 -0700
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 May 2019 03:51:28 -0700
 X-ExtLoop1: 1
 Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 22 May 2019 03:51:24 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 22 May 2019 03:51:26 -0700
 From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Hans de Goede <hdegoede@redhat.com>
@@ -25,9 +25,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andy Shevchenko <andy@infradead.org>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         platform-driver-x86@vger.kernel.org
-Subject: [PATCH v4 05/16] software node: Add software_node_get_reference_args()
-Date:   Wed, 22 May 2019 13:51:02 +0300
-Message-Id: <20190522105113.11153-6-heikki.krogerus@linux.intel.com>
+Subject: [PATCH v4 06/16] driver core: Add helper device_find_child_by_name()
+Date:   Wed, 22 May 2019 13:51:03 +0300
+Message-Id: <20190522105113.11153-7-heikki.krogerus@linux.intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190522105113.11153-1-heikki.krogerus@linux.intel.com>
 References: <20190522105113.11153-1-heikki.krogerus@linux.intel.com>
@@ -38,129 +38,68 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This makes it possible to support drivers that use
-fwnode_property_get_reference_args() function.
+It looks like the child device is often matched with a name.
+This introduces a helper that does it automatically.
 
 Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/swnode.c    | 47 ++++++++++++++++++++++++++++++++++++++++
- include/linux/property.h | 28 ++++++++++++++++++++++++
- 2 files changed, 75 insertions(+)
+ drivers/base/core.c    | 28 ++++++++++++++++++++++++++++
+ include/linux/device.h |  2 ++
+ 2 files changed, 30 insertions(+)
 
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index 2d925fc2255f..e7b3aa3bd55a 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -560,6 +560,52 @@ software_node_get_named_child_node(const struct fwnode_handle *fwnode,
- 	return NULL;
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index fd7511e04e62..b4c64528f13c 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2474,6 +2474,34 @@ struct device *device_find_child(struct device *parent, void *data,
  }
+ EXPORT_SYMBOL_GPL(device_find_child);
  
-+static int
-+software_node_get_reference_args(const struct fwnode_handle *fwnode,
-+				 const char *propname, const char *nargs_prop,
-+				 unsigned int nargs, unsigned int index,
-+				 struct fwnode_reference_args *args)
++/**
++ * device_find_child_by_name - device iterator for locating a child device.
++ * @parent: parent struct device
++ * @name: name of the child device
++ *
++ * This is similar to the device_find_child() function above, but it
++ * returns a reference to a device that has the name @name.
++ *
++ * NOTE: you will need to drop the reference with put_device() after use.
++ */
++struct device *device_find_child_by_name(struct device *parent,
++					 const char *name)
 +{
-+	struct swnode *swnode = to_swnode(fwnode);
-+	const struct software_node_reference *ref;
-+	const struct property_entry *prop;
-+	struct fwnode_handle *refnode;
-+	int i;
++	struct klist_iter i;
++	struct device *child;
 +
-+	if (!swnode || !swnode->node->references)
-+		return -ENOENT;
++	if (!parent)
++		return NULL;
 +
-+	for (ref = swnode->node->references; ref->name; ref++)
-+		if (!strcmp(ref->name, propname))
++	klist_iter_init(&parent->p->klist_children, &i);
++	while ((child = next_device(&i)))
++		if (!strcmp(dev_name(child), name) && get_device(child))
 +			break;
-+
-+	if (!ref->name || index > (ref->nrefs - 1))
-+		return -ENOENT;
-+
-+	refnode = software_node_fwnode(ref->refs[index].node);
-+	if (!refnode)
-+		return -ENOENT;
-+
-+	if (nargs_prop) {
-+		prop = property_entry_get(swnode->node->properties, nargs_prop);
-+		if (!prop)
-+			return -EINVAL;
-+
-+		nargs = prop->value.u32_data;
-+	}
-+
-+	if (nargs > NR_FWNODE_REFERENCE_ARGS)
-+		return -EINVAL;
-+
-+	args->fwnode = software_node_get(refnode);
-+	args->nargs = nargs;
-+
-+	for (i = 0; i < nargs; i++)
-+		args->args[i] = ref->refs[index].args[i];
-+
-+	return 0;
++	klist_iter_exit(&i);
++	return child;
 +}
++EXPORT_SYMBOL_GPL(device_find_child_by_name);
 +
- static const struct fwnode_operations software_node_ops = {
- 	.get = software_node_get,
- 	.put = software_node_put,
-@@ -569,6 +615,7 @@ static const struct fwnode_operations software_node_ops = {
- 	.get_parent = software_node_get_parent,
- 	.get_next_child_node = software_node_get_next_child,
- 	.get_named_child_node = software_node_get_named_child_node,
-+	.get_reference_args = software_node_get_reference_args
- };
- 
- /* -------------------------------------------------------------------------- */
-diff --git a/include/linux/property.h b/include/linux/property.h
-index a3813ded52ea..abcde2f236a0 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -332,16 +332,44 @@ int fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
- /* -------------------------------------------------------------------------- */
- /* Software fwnode support - when HW description is incomplete or missing */
- 
-+struct software_node;
-+
-+/**
-+ * struct software_node_ref_args - Reference with additional arguments
-+ * @node: Reference to a software node
-+ * @nargs: Number of elements in @args array
-+ * @args: Integer arguments
-+ */
-+struct software_node_ref_args {
-+	const struct software_node *node;
-+	unsigned int nargs;
-+	u64 args[NR_FWNODE_REFERENCE_ARGS];
-+};
-+
-+/**
-+ * struct software_node_reference - Named software node reference property
-+ * @name: Name of the property
-+ * @nrefs: Number of elements in @refs array
-+ * @refs: Array of references with optional arguments
-+ */
-+struct software_node_reference {
-+	const char *name;
-+	unsigned int nrefs;
-+	const struct software_node_ref_args *refs;
-+};
-+
- /**
-  * struct software_node - Software node description
-  * @name: Name of the software node
-  * @parent: Parent of the software node
-  * @properties: Array of device properties
-+ * @references: Array of software node reference properties
-  */
- struct software_node {
- 	const char *name;
- 	const struct software_node *parent;
- 	const struct property_entry *properties;
-+	const struct software_node_reference *references;
- };
- 
- bool is_software_node(const struct fwnode_handle *fwnode);
+ int __init devices_init(void)
+ {
+ 	devices_kset = kset_create_and_add("devices", &device_uevent_ops, NULL);
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 72a6260f2b4d..a0da7d578257 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -1250,6 +1250,8 @@ extern int device_for_each_child_reverse(struct device *dev, void *data,
+ 		     int (*fn)(struct device *dev, void *data));
+ extern struct device *device_find_child(struct device *dev, void *data,
+ 				int (*match)(struct device *dev, void *data));
++extern struct device *device_find_child_by_name(struct device *parent,
++						const char *name);
+ extern int device_rename(struct device *dev, const char *new_name);
+ extern int device_move(struct device *dev, struct device *new_parent,
+ 		       enum dpm_order dpm_order);
 -- 
 2.20.1
 
