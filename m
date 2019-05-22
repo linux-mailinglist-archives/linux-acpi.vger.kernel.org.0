@@ -2,107 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83D5F25F4F
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2019 10:19:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E09B2623E
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2019 12:51:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728823AbfEVITr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 May 2019 04:19:47 -0400
-Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:49134 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728600AbfEVITq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 22 May 2019 04:19:46 -0400
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-        by mx0b-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4M8EmX0019931;
-        Wed, 22 May 2019 03:19:07 -0500
-Authentication-Results: ppops.net;
-        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
-Received: from mail2.cirrus.com (mail2.cirrus.com [141.131.128.20])
-        by mx0b-001ae601.pphosted.com with ESMTP id 2sjefmw4u6-1;
-        Wed, 22 May 2019 03:19:06 -0500
-Received: from EDIEX02.ad.cirrus.com (unknown [198.61.84.81])
-        by mail2.cirrus.com (Postfix) with ESMTP id 46BD2605A6A3;
-        Wed, 22 May 2019 03:19:06 -0500 (CDT)
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Wed, 22 May
- 2019 09:19:05 +0100
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
- Transport; Wed, 22 May 2019 09:19:05 +0100
-Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 9917245;
-        Wed, 22 May 2019 09:19:05 +0100 (BST)
-Date:   Wed, 22 May 2019 09:19:05 +0100
-From:   Charles Keepax <ckeepax@opensource.cirrus.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     <wsa@the-dreams.de>, <mika.westerberg@linux.intel.com>,
-        <jarkko.nikula@linux.intel.com>, <linux-i2c@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <benjamin.tissoires@redhat.com>, <jbroadus@gmail.com>,
-        <patches@opensource.cirrus.com>
-Subject: Re: [PATCH 4/5] i2c: core: Move ACPI gpio IRQ handling into
- i2c_acpi_get_irq
-Message-ID: <20190522081905.GC99937@ediswmail.ad.cirrus.com>
-References: <20190521150502.27305-1-ckeepax@opensource.cirrus.com>
- <20190521150502.27305-5-ckeepax@opensource.cirrus.com>
- <20190521172726.GO9224@smile.fi.intel.com>
+        id S1728743AbfEVKvR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 May 2019 06:51:17 -0400
+Received: from mga07.intel.com ([134.134.136.100]:32515 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727464AbfEVKvQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 22 May 2019 06:51:16 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 May 2019 03:51:15 -0700
+X-ExtLoop1: 1
+Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 22 May 2019 03:51:13 -0700
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: [PATCH v4 00/16] Software fwnode references
+Date:   Wed, 22 May 2019 13:50:57 +0300
+Message-Id: <20190522105113.11153-1-heikki.krogerus@linux.intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20190521172726.GO9224@smile.fi.intel.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=952 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905220061
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 21, 2019 at 08:27:26PM +0300, Andy Shevchenko wrote:
-> On Tue, May 21, 2019 at 04:05:01PM +0100, Charles Keepax wrote:
-> > It makes sense to contain all the ACPI IRQ handling in a single helper
-> > function.
-> 
-> > Note that this one is somewhat interesting, it seems the search
-> > through the resource list is done against the companion device
-> > of the adapter but the GPIO search is done against the companion
-> > device of the client. It feels to me like these really should
-> > be done on the same device, and certainly this is what SPI
-> > does (both against the equivalent of the adapter). Perhaps
-> > someone with more ACPI knowledge than myself could comment?
-> 
-> It would be interesting to see the path how you come to this conclusion.
-> 
+Hi,
 
-Apologies but I am not sure which conclusion you are referencing.
-Assuming it is them being called with different acpi_device's.
-It is perhaps me misunderstanding things but it looks like
-i2c_acpi_get_info implies the adev should correspond to the
-adapter. Where as acpi_dev_gpio_irq_get is called with the result
-of ACPI_COMPANION(dev) where dev is client->dev.
+I'm not splitting this series in two after all. After thinking about
+this for some time, I decided to add support for static software
+nodes. I did not want to support them because I don't want to make it
+easy to maintain board files, but in end they make the use of the
+software nodes so much more easier compared to if we always had to
+dynamically allocate them that it's a no-brainer. The references can
+now be also described statically. Actually, those can now only be
+described statically.
 
-> >  	acpi_dev_free_resource_list(&resource_list);
-> >  
-> > +	if (*irq < 0)
-> > +		*irq = acpi_dev_gpio_irq_get(ACPI_COMPANION(&client->dev), 0);
-> 
-> I think adev here is what we may use here.
-> 
+Hans! I applied (hopefully) all of the fixes you proposed in v3. I
+hope you have time to test these.
 
-Indeed that is what I would have expected as well, I will update
-the code to do so and hopefully any issues will come out in
-testing.
+Here's the cover letter from v3:
 
-> You may put assert here and see if it happens when you test your series.
-> 
+This is the third version of my proposal to add reference handling to
+the software node code. In this version I renamed ACPI_NAME_SIZE to
+ACPI_NAMESEG_SIZE in 6/13, and slit patch 9/13 in two separate patches
+(9/13 and 10/13) as suggested by Andy. Patch 9/13 will now only move
+the registration of max17047 out of probe, and 10/13 will introduce
+the software nodes.
 
-Alas I don't have a good way to test this series, they come out
-of some additional work Wolfram wanted based on some issues
-caused by a device tree fix I made a while back.
+v2 cover letter:
 
-Thanks,
-Charles
+This is the second version of this series. In this version I'm
+introducing a new helper device_find_child_by_name() as proposed
+by Andy. Andy requested also another helper that could be used for
+chaining the fwnodes, but I decided not to add that now. I would like
+to still think about how we should handle exceptions like if there
+already is a secondary node assigned for a node.
+
+v1 cover letter:
+
+This series adds support for software fwnode reference handling. In
+practice it means making fwnode_property_get_reference_args() function
+usable in the drivers also with software nodes. I send the series
+originally as RFC [1].
+
+As the first user for the software node references, I'm converting
+intel_cht_int33fe.c to use them as part of the series.
+
+[1] https://lkml.org/lkml/2019/3/15/457
+
+thanks,
+
+Heikki Krogerus (16):
+  software node: Allow node creation without properties
+  software node: Simplify software_node_release() function
+  software node: Add support for static node descriptors
+  software node: Use kobject name when finding child nodes by name
+  software node: Add software_node_get_reference_args()
+  driver core: Add helper device_find_child_by_name()
+  ACPI / property: Don't limit named child node matching to data nodes
+  device property: Introduce fwnode_find_reference()
+  device connection: Find connections also by checking the references
+  usb: typec: Registering real device entries for the muxes
+  platform/x86: intel_cht_int33fe: Register max17047 in its own function
+  platform/x86: intel_cht_int33fe: Remove unused fusb302 device property
+  platform/x86: intel_cht_int33fe: Provide software nodes for the
+    devices
+  platform/x86: intel_cht_int33fe: Provide fwnode for the USB connector
+  platform/x86: intel_cht_int33fe: Supply fwnodes for the external
+    dependencies
+  platform/x86: intel_cht_int33fe: Replacing the old connections with
+    references
+
+ drivers/acpi/property.c                  |  26 +-
+ drivers/base/core.c                      |  28 ++
+ drivers/base/devcon.c                    |  26 ++
+ drivers/base/property.c                  |  24 ++
+ drivers/base/swnode.c                    | 324 +++++++++++++++++------
+ drivers/platform/x86/intel_cht_int33fe.c | 290 ++++++++++++++++----
+ drivers/usb/roles/class.c                |   2 +-
+ drivers/usb/typec/bus.h                  |  15 ++
+ drivers/usb/typec/class.c                |  17 +-
+ drivers/usb/typec/mux.c                  | 238 ++++++++++++-----
+ drivers/usb/typec/mux/pi3usb30532.c      |  46 ++--
+ include/linux/device.h                   |   2 +
+ include/linux/property.h                 |  51 ++++
+ include/linux/usb/typec_mux.h            |  62 ++---
+ 14 files changed, 902 insertions(+), 249 deletions(-)
+
+-- 
+2.20.1
+
