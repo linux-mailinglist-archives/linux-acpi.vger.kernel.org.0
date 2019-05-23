@@ -2,156 +2,258 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF28B26D48
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2019 21:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB02F279A6
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2019 11:47:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731098AbfEVT3P (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 May 2019 15:29:15 -0400
-Received: from alln-iport-2.cisco.com ([173.37.142.89]:60596 "EHLO
-        alln-iport-2.cisco.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729466AbfEVT3N (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 May 2019 15:29:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=872; q=dns/txt; s=iport;
-  t=1558553353; x=1559762953;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=7SE77wYHwG03Jg767C9KD7YEVTpFF93beEhebDVXgsk=;
-  b=Pgc5nO/B5QduzV2bx2BYXK2YBG+Fca+iIqw9Ix47FzBg32YIIbTc63OG
-   pL05PgoJEr+3EeSFc1dJNYQMSVfp8xT6PMmkxgF9UG8sHjAMZlTrdNEqx
-   YHIoWxTt2QuRo6S3+tuLZFitWFSJyBgqtP0RTyISUewLkuRBVMQDBDepQ
-   Q=;
-IronPort-PHdr: =?us-ascii?q?9a23=3A91kOnh1nNqOGU1H3smDT+zVfbzU7u7jyIg8e44?=
- =?us-ascii?q?YmjLQLaKm44pD+JxGDt+51ggrPWoPWo7JfhuzavrqoeFRI4I3J8TgZdYBUER?=
- =?us-ascii?q?oMiMEYhQslVcCEA2XwLeXhaGoxG8ERHFI=3D?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0AGAACyoeVc/5FdJa1lGQEBAQEBAQE?=
- =?us-ascii?q?BAQEBAQcBAQEBAQGBUQQBAQEBAQsBgT1QA4E+IAQLKAqHUAOEUooigleJQI1?=
- =?us-ascii?q?pgS6BJANUCQEBAQwBAS0CAQGEQAKCMSM0CQ4BAwEBBAEBAgEEbRwMhUoBAQE?=
- =?us-ascii?q?DARIoBgEBNwEECwIBCBEEAQEfECERHQgCBAENBQgahGsDDg8BAp0dAoE1iF+?=
- =?us-ascii?q?CIIJ5AQEFhQUNC4IPCRSBIAGLUBeBf4ERRoJMPoIagioCgzqCJo1SjSqNADk?=
- =?us-ascii?q?JAoINjyWDfJYyjF2IS40KAgQCBAUCDgEBBYFPOIFXcBU7gmwTgXwMFxSDOIp?=
- =?us-ascii?q?TcoEpjCYBgSABAQ?=
-X-IronPort-AV: E=Sophos;i="5.60,500,1549929600"; 
-   d="scan'208";a="277582125"
-Received: from rcdn-core-9.cisco.com ([173.37.93.145])
-  by alln-iport-2.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 22 May 2019 19:29:10 +0000
-Received: from XCH-ALN-015.cisco.com (xch-aln-015.cisco.com [173.36.7.25])
-        by rcdn-core-9.cisco.com (8.15.2/8.15.2) with ESMTPS id x4MJTAuj015185
-        (version=TLSv1.2 cipher=AES256-SHA bits=256 verify=FAIL);
-        Wed, 22 May 2019 19:29:10 GMT
-Received: from xhs-aln-001.cisco.com (173.37.135.118) by XCH-ALN-015.cisco.com
- (173.36.7.25) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 22 May
- 2019 14:29:10 -0500
-Received: from xhs-rtp-002.cisco.com (64.101.210.229) by xhs-aln-001.cisco.com
- (173.37.135.118) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 22 May
- 2019 14:29:09 -0500
-Received: from NAM04-SN1-obe.outbound.protection.outlook.com (64.101.32.56) by
- xhs-rtp-002.cisco.com (64.101.210.229) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3 via Frontend Transport; Wed, 22 May 2019 15:29:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cisco.onmicrosoft.com;
- s=selector2-cisco-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UjOytL2SZyled10Jhx6GRQspP79SXFzPuQxJZJLshvw=;
- b=LKU3TDroV/PO4t2iA73ti+T1gDw9tl/ZKS4mlvVFKCR8Vd18y0/nMLunLE3ZfVPlcuuDfg0yG5zipXNOw4XwiQucLz/dTc+Ga6qQBBtARe9hgV6wuSpuocxiEwuWPu+QpA//5yR4/Kb6vZzmYTnO7m0PEBfdS/qJSZrdow7bEQ0=
-Received: from BYAPR11MB3383.namprd11.prod.outlook.com (20.177.186.96) by
- BYAPR11MB2999.namprd11.prod.outlook.com (20.177.224.160) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1922.15; Wed, 22 May 2019 19:29:06 +0000
-Received: from BYAPR11MB3383.namprd11.prod.outlook.com
- ([fe80::a116:fc59:1ebf:5843]) by BYAPR11MB3383.namprd11.prod.outlook.com
- ([fe80::a116:fc59:1ebf:5843%5]) with mapi id 15.20.1922.017; Wed, 22 May 2019
- 19:29:06 +0000
-From:   "Ruslan Babayev (fib)" <fib@cisco.com>
-To:     Andrew Lunn <andrew@lunn.ch>,
-        "20190505220524.37266-2-ruslan@babayev.com" 
-        <20190505220524.37266-2-ruslan@babayev.com>
-CC:     "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-        "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
-        "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-        "mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>,
-        "wsa@the-dreams.de" <wsa@the-dreams.de>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "xe-linux-external(mailer list)" <xe-linux-external@cisco.com>
-Subject: Re: [PATCH RFC v2 net-next 2/2] net: phy: sfp: enable i2c-bus
- detection on ACPI based systems
-Thread-Topic: [PATCH RFC v2 net-next 2/2] net: phy: sfp: enable i2c-bus
- detection on ACPI based systems
-Thread-Index: AQHVBG1FwjU1WTeEMUumoWKXpb9bbKZe8vkAgAAKMLqAGKLmaw==
-Date:   Wed, 22 May 2019 19:29:06 +0000
-Message-ID: <BYAPR11MB33837495646A3A0BB23AD1B4AD000@BYAPR11MB3383.namprd11.prod.outlook.com>
-References: <20190505220524.37266-2-ruslan@babayev.com>
- <20190507003557.40648-3-ruslan@babayev.com>,<20190507023812.GA12262@lunn.ch>,<BYAPR11MB3383B74F06254EDA7157D314AD310@BYAPR11MB3383.namprd11.prod.outlook.com>
-In-Reply-To: <BYAPR11MB3383B74F06254EDA7157D314AD310@BYAPR11MB3383.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-Auto-Response-Suppress: DR, OOF, AutoReply
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is ) smtp.mailfrom=fib@cisco.com; 
-x-originating-ip: [128.107.241.180]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 96dadade-eb8c-4153-f8fe-08d6deebc1b4
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:BYAPR11MB2999;
-x-ms-traffictypediagnostic: BYAPR11MB2999:
-x-ld-processed: 5ae1af62-9505-4097-a69a-c1553ef7840e,ExtAddr
-x-microsoft-antispam-prvs: <BYAPR11MB2999AE4E49B1EBD6A2A69F14AD000@BYAPR11MB2999.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-forefront-prvs: 0045236D47
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(136003)(376002)(346002)(396003)(39860400002)(366004)(199004)(189003)(2906002)(6116002)(3846002)(86362001)(2501003)(4326008)(25786009)(256004)(53936002)(107886003)(4744005)(71200400001)(71190400001)(478600001)(6246003)(476003)(446003)(11346002)(14454004)(486006)(99286004)(66066001)(76176011)(102836004)(26005)(54906003)(53546011)(186003)(7696005)(6506007)(33656002)(316002)(229853002)(68736007)(8676002)(5660300002)(81156014)(81166006)(76116006)(110136005)(66476007)(55016002)(66446008)(7736002)(8936002)(74316002)(66556008)(64756008)(9686003)(305945005)(7416002)(6436002)(66946007)(52536014)(73956011);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR11MB2999;H:BYAPR11MB3383.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: cisco.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: VhDXBxD8aPmjkSX3Du5aBnPtuYS5e5SsqABmO44W4ouq1+9mLk7Kc8gWNeEs5Wd9Wm8UN1d7cKxZECrld+/bPyh8jB1je+niLDkqXbJZsLuRV0Lvqv9LPkryxFvcZjueEIuZhY55LaWFrnqNzOtHBQ5+oc5JHkpS6a8w4nMZn2qLgngBqoVKmxwi/ubb74TlqoDK6hb1Ttqg7v+JtbXYqNLZ5hx4NG70rzV4r9s50Msz/Y56XYKQtpwAtE6WwcS210npMxdfGaZ0aUWXlRGriEpbGieh98hTd1aTs6o0q5uScw5GgZP9VaE8Igp3ORhmaV7wjQtvjpjTti4TAXKPTTDi49LSeDOnEhwPUy04GojvYWF+uOVaBxH998+dtbhpkHjAdST5nsp/dat1eeihSXaJZ+3HsEm5uZrxj2iqm4A=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1726363AbfEWJrG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 May 2019 05:47:06 -0400
+Received: from mail-it1-f196.google.com ([209.85.166.196]:52800 "EHLO
+        mail-it1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729902AbfEWJrD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 May 2019 05:47:03 -0400
+Received: by mail-it1-f196.google.com with SMTP id t184so8586361itf.2
+        for <linux-acpi@vger.kernel.org>; Thu, 23 May 2019 02:47:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tomeuvizoso-net.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=o9qGD0rptCcynbI2Mi951+wYe+LZmUVw5Jbzq7H7LuE=;
+        b=CYr4mNCVYoClhW3/8KzkrGw0dE/MQHcvxvP02Ix25c2AXtHjUi6HuS5n6lOmJLe3I+
+         MAwq6uwmjDrAW/w17OmU6Yn8bERVwkWmwN1qNuM098qBCB9hiGPEIhyB+IPgDHu1N0zq
+         xWYovIiVH+KrCA4ArtGgYjTG9YvGdVD3EcQ2Z2X4348OvmqTF0c7ZlWUtZd7tuwPHmUu
+         kfplabBQ/kUlvT0injsaYJCX6XlOSiyP5Zk7+qHQ6JgLT8p+pGwGTltGH3q4mXlAgUsx
+         OVJscuOEIGffRr+EB4W+jBtSL6cKQ2KjPxz2dhPXRjFZQO5XLKuoeGVm6r5LAL7JN5/b
+         y4lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=o9qGD0rptCcynbI2Mi951+wYe+LZmUVw5Jbzq7H7LuE=;
+        b=kdv8ee/qpUdleWCpc+fPAqmq1VnZwJAU07hDbeMQBUnL0NE2fCn5d5F1Znk82fj/zF
+         8CDR1DFfp84A9HTwyYuyEsSJzDSvBeumIMifvGllXfRcQvGnJRZUoFjaJKweSbpjzMQW
+         9DGotLn05k98Nl5A13JaBkxX5a26HeFv5K16KpJkaF4qP6P+2n8uqE0aQmZokoksdiHj
+         UhlHbn76lMG9NRZXlQKAztLstVwUana87n0BA+lyYAIHo3CnWAl+i/IR7yBlFFBHNQqp
+         PtACcG6lgsKZdl6NOFCY90gvVUCD+Twndt8GZxCjlkkby0RNOOKBlC4zs94JYNF8Epuv
+         VhqQ==
+X-Gm-Message-State: APjAAAU6wpI0/RfvX1hji5il0Vi4baIQRVX4EZ6aRPuQY+bXEoS9Gyny
+        s/UScspye7h1iAJ+dW1/9Uw5ywaspAs=
+X-Google-Smtp-Source: APXvYqw04EWOtc5PFMSYjltUREiEsqKv1Vo8bnTZ2SsqOP5C6NXP2cDsk+3tM0w5QwLnuvAU/dqBSg==
+X-Received: by 2002:a24:734c:: with SMTP id y73mr12377749itb.72.1558604821564;
+        Thu, 23 May 2019 02:47:01 -0700 (PDT)
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com. [209.85.166.41])
+        by smtp.gmail.com with ESMTPSA id j125sm2017635itb.27.2019.05.23.02.47.00
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 23 May 2019 02:47:00 -0700 (PDT)
+Received: by mail-io1-f41.google.com with SMTP id m7so4322977ioa.6;
+        Thu, 23 May 2019 02:47:00 -0700 (PDT)
+X-Received: by 2002:a6b:9257:: with SMTP id u84mr12698696iod.55.1558604820400;
+ Thu, 23 May 2019 02:47:00 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 96dadade-eb8c-4153-f8fe-08d6deebc1b4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 May 2019 19:29:06.6628
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5ae1af62-9505-4097-a69a-c1553ef7840e
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: fib@cisco.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB2999
-X-OriginatorOrg: cisco.com
-X-Outbound-SMTP-Client: 173.36.7.25, xch-aln-015.cisco.com
-X-Outbound-Node: rcdn-core-9.cisco.com
+References: <20190516044313.GA17751@localhost.localdomain>
+In-Reply-To: <20190516044313.GA17751@localhost.localdomain>
+From:   Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Date:   Thu, 23 May 2019 11:46:47 +0200
+X-Gmail-Original-Message-ID: <CAAObsKD0_+cJQW0YtF9AkWn8XYP9wSYHTi_UhRiba7tH5EWTdw@mail.gmail.com>
+Message-ID: <CAAObsKD0_+cJQW0YtF9AkWn8XYP9wSYHTi_UhRiba7tH5EWTdw@mail.gmail.com>
+Subject: Re: [GIT PULL] Thermal-SoC management changes for v5.2-rc1
+To:     Eduardo Valentin <edubezval@gmail.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Rui Zhang <rui.zhang@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andrew,
+Hi Eduardo,
 
-Just wanted to follow up on the patch. Does it look good? Do you have any o=
-ther feedback, concerns with this patch?
+I saw that for 5.1 [0] you included a kernelci boot report for your
+tree, but not for 5.2. Have you found anything that should be improved
+in KernelCI for it to be more useful to maintainers like you?
+
+[0] https://lore.kernel.org/lkml/20190306161207.GA7365@localhost.localdomain/
+
+I found about this when trying to understand why the boot on the
+veyron-jaq board has been broken in 5.2-rc1.
 
 Thanks,
-Ruslan
 
-________________________________________
-From: Ruslan Babayev (fib)
-Sent: Monday, May 6, 2019 8:15 PM
-To: Andrew Lunn; 20190505220524.37266-2-ruslan@babayev.com
-Cc: linux@armlinux.org.uk; f.fainelli@gmail.com; hkallweit1@gmail.com; mika=
-.westerberg@linux.intel.com; wsa@the-dreams.de; davem@davemloft.net; netdev=
-@vger.kernel.org; linux-kernel@vger.kernel.org; linux-i2c@vger.kernel.org; =
-linux-acpi@vger.kernel.org; xe-linux-external(mailer list)
-Subject: Re: [PATCH RFC v2 net-next 2/2] net: phy: sfp: enable i2c-bus dete=
-ction on ACPI based systems
+Tomeu
 
-
-> As i said before, i know ~0 about ACPI. Does devm_gpiod_get() just
-> work for ACPI?
-> Thanks
->        Andrew
-
-It does.
-
-Regards,
-Ruslan
+On Thu, 16 May 2019 at 06:43, Eduardo Valentin <edubezval@gmail.com> wrote:
+>
+> Hello Linus,
+>
+> Please consider the following thermal soc changes for v5.2-rc1.
+>
+> The following changes since commit 37624b58542fb9f2d9a70e6ea006ef8a5f66c30b:
+>
+>   Linux 5.1-rc7 (2019-04-28 17:04:13 -0700)
+>
+> are available in the git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/evalenti/linux-soc-thermal linus
+>
+> for you to fetch changes up to 37bcec5d9f71bd13142a97d2196b293c9ac23823:
+>
+>   hwmon: (pwm-fan) Use devm_thermal_of_cooling_device_register (2019-05-14 07:00:47 -0700)
+>
+> Specifics:
+> - thermal core has a new devm_* API for registering cooling devices, thanks to Guenter R.
+>   I took the entire series, that is why you see changes on drivers/hwmon in this pull.
+> - rockchip thermal driver gains support to PX30 SoC, thanks to Elaine Z.
+> - the generic-adc thermal driver now considers the lookup table DT property as optional,
+>   thanks to Jean-Francois D.
+> - Refactoring of tsens thermal driver, thanks to Amit K.
+> - Cleanups on cpu cooling driver, thanks to Daniel L.
+> - broadcom thermal driver dropped support to ACPI, thanks to Srinath M.
+> - tegra thermal driver gains support to OC hw throttle and GPU throtle, thanks to Wei Ni.
+> - Fixes in several thermal drivers.
+>
+> BR,
+>
+> Eduardo Valentin
+>
+> ----------------------------------------------------------------
+> Amit Kucheria (21):
+>       drivers: thermal: tsens: Document the data structures
+>       drivers: thermal: tsens: Rename tsens_data
+>       drivers: thermal: tsens: Rename tsens_device
+>       drivers: thermal: tsens: Rename variable tmdev
+>       drivers: thermal: tsens: Use consistent names for variables
+>       drivers: thermal: tsens: Function prototypes should have argument names
+>       drivers: thermal: tsens: Rename tsens-8916 to prepare to merge with tsens-8974
+>       drivers: thermal: tsens: Rename constants to prepare to merge with tsens-8974
+>       drivers: thermal: tsens: Merge tsens-8974 into tsens-v0_1
+>       drivers: thermal: tsens: Introduce reg_fields to deal with register description
+>       drivers: thermal: tsens: Save reference to the device pointer and use it
+>       drivers: thermal: tsens: Don't print error message on -EPROBE_DEFER
+>       drivers: thermal: tsens: Add new operation to check if a sensor is enabled
+>       drivers: thermal: tsens: change data type for sensor IDs
+>       drivers: thermal: tsens: Introduce IP-specific max_sensor count
+>       drivers: thermal: tsens: simplify get_temp_tsens_v2 routine
+>       drivers: thermal: tsens: Move get_temp_tsens_v2 to allow sharing
+>       drivers: thermal: tsens: Common get_temp() learns to do ADC conversion
+>       dt: thermal: tsens: Add bindings for qcs404
+>       drivers: thermal: tsens: Add generic support for TSENS v1 IP
+>       drivers: thermal: tsens: Move calibration constants to header file
+>
+> Andrey Smirnov (1):
+>       thermal: qoriq: Remove unnecessary DT node is NULL check
+>
+> Daniel Lezcano (4):
+>       thermal/drivers/cpu_cooling: Remove pointless test in power2state()
+>       thermal/drivers/cpu_cooling: Fixup the header and copyright
+>       thermal/drivers/cpu_cooling: Add Software Package Data Exchange (SPDX)
+>       thermal/drivers/cpu_cooling: Remove pointless field
+>
+> Elaine Zhang (3):
+>       thermal: rockchip: fix up the tsadc pinctrl setting error
+>       dt-bindings: rockchip-thermal: Support the PX30 SoC compatible
+>       thermal: rockchip: Support the PX30 SoC in thermal driver
+>
+> Enrico Weigelt, metux IT consult (1):
+>       drivers: thermal: Kconfig: pedantic cleanups
+>
+> Guenter Roeck (6):
+>       thermal: Introduce devm_thermal_of_cooling_device_register
+>       hwmon: (aspeed-pwm-tacho) Use devm_thermal_of_cooling_device_register
+>       hwmon: (gpio-fan) Use devm_thermal_of_cooling_device_register
+>       hwmon: (mlxreg-fan) Use devm_thermal_of_cooling_device_register
+>       hwmon: (npcm750-pwm-fan) Use devm_thermal_of_cooling_device_register
+>       hwmon: (pwm-fan) Use devm_thermal_of_cooling_device_register
+>
+> Hoan Nguyen An (1):
+>       thermal: rcar_gen3_thermal: Fix init value of IRQCTL register
+>
+> Jean-Francois Dagenais (2):
+>       thermal: generic-adc: make lookup table optional
+>       dt-bindings: thermal: generic-adc: make lookup-table optional
+>
+> Jiada Wang (3):
+>       thermal: rcar_gen3_thermal: fix interrupt type
+>       thermal: rcar_gen3_thermal: disable interrupt in .remove
+>       thermal: rcar_gen3_thermal: Fix to show correct trip points number
+>
+> Matthias Kaehlcke (1):
+>       thermal: cpu_cooling: Actually trace CPU load in thermal_power_cpu_get_power
+>
+> Srinath Mannam (1):
+>       thermal: broadcom: Remove ACPI support
+>
+> Talel Shenhar (3):
+>       dt-bindings: thermal: al-thermal: Add binding documentation
+>       thermal: Introduce Amazon's Annapurna Labs Thermal Driver
+>       thermal: Fix build error of missing devm_ioremap_resource on UM
+>
+> Wei Ni (9):
+>       of: Add bindings of thermtrip for Tegra soctherm
+>       thermal: tegra: support hw and sw shutdown
+>       of: Add bindings of gpu hw throttle for Tegra soctherm
+>       thermal: tegra: add support for gpu hw-throttle
+>       thermal: tegra: add support for thermal IRQ
+>       thermal: tegra: add set_trips functionality
+>       thermal: tegra: add support for EDP IRQ
+>       of: Add bindings of OC hw throttle for Tegra soctherm
+>       thermal: tegra: enable OC hw throttle
+>
+> Wolfram Sang (1):
+>       thermal: stm32: simplify getting .driver_data
+>
+> Yangtao Li (1):
+>       of: thermal: Improve print information
+>
+> Yoshihiro Kaneko (1):
+>       thermal: rcar_thermal: update calculation formula for R-Car Gen3 SoCs
+>
+>  .../bindings/thermal/amazon,al-thermal.txt         |  33 +
+>  .../bindings/thermal/nvidia,tegra124-soctherm.txt  |  62 +-
+>  .../devicetree/bindings/thermal/qcom-tsens.txt     |  14 +
+>  .../bindings/thermal/rockchip-thermal.txt          |   1 +
+>  .../bindings/thermal/thermal-generic-adc.txt       |  10 +-
+>  MAINTAINERS                                        |   6 +
+>  drivers/hwmon/aspeed-pwm-tacho.c                   |   6 +-
+>  drivers/hwmon/gpio-fan.c                           |  25 +-
+>  drivers/hwmon/mlxreg-fan.c                         |  31 +-
+>  drivers/hwmon/npcm750-pwm-fan.c                    |   6 +-
+>  drivers/hwmon/pwm-fan.c                            |  73 +-
+>  drivers/thermal/Kconfig                            |  11 +
+>  drivers/thermal/Makefile                           |   1 +
+>  drivers/thermal/broadcom/sr-thermal.c              |   8 -
+>  drivers/thermal/cpu_cooling.c                      |  30 +-
+>  drivers/thermal/of-thermal.c                       |   3 +
+>  drivers/thermal/qcom/Makefile                      |   4 +-
+>  drivers/thermal/qcom/tsens-8916.c                  | 105 ---
+>  drivers/thermal/qcom/tsens-8960.c                  |  84 +-
+>  drivers/thermal/qcom/tsens-common.c                | 159 +++-
+>  .../thermal/qcom/{tsens-8974.c => tsens-v0_1.c}    | 166 +++-
+>  drivers/thermal/qcom/tsens-v1.c                    | 193 +++++
+>  drivers/thermal/qcom/tsens-v2.c                    | 111 +--
+>  drivers/thermal/qcom/tsens.c                       | 100 ++-
+>  drivers/thermal/qcom/tsens.h                       | 291 ++++++-
+>  drivers/thermal/qoriq_thermal.c                    |   5 -
+>  drivers/thermal/rcar_gen3_thermal.c                |  51 +-
+>  drivers/thermal/rcar_thermal.c                     |  11 +-
+>  drivers/thermal/rockchip_thermal.c                 |  74 +-
+>  drivers/thermal/st/Kconfig                         |  22 +-
+>  drivers/thermal/st/stm_thermal.c                   |   6 +-
+>  drivers/thermal/tegra/Kconfig                      |   4 +-
+>  drivers/thermal/tegra/soctherm.c                   | 961 +++++++++++++++++++--
+>  drivers/thermal/tegra/soctherm.h                   |  16 +
+>  drivers/thermal/tegra/tegra124-soctherm.c          |   7 +-
+>  drivers/thermal/tegra/tegra132-soctherm.c          |   7 +-
+>  drivers/thermal/tegra/tegra210-soctherm.c          |  15 +-
+>  drivers/thermal/thermal-generic-adc.c              |   9 +-
+>  drivers/thermal/thermal_core.c                     |  49 ++
+>  drivers/thermal/thermal_mmio.c                     | 129 +++
+>  include/dt-bindings/thermal/tegra124-soctherm.h    |   8 +-
+>  include/linux/thermal.h                            |  13 +
+>  42 files changed, 2330 insertions(+), 590 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/thermal/amazon,al-thermal.txt
+>  delete mode 100644 drivers/thermal/qcom/tsens-8916.c
+>  rename drivers/thermal/qcom/{tsens-8974.c => tsens-v0_1.c} (56%)
+>  create mode 100644 drivers/thermal/qcom/tsens-v1.c
+>  create mode 100644 drivers/thermal/thermal_mmio.c
