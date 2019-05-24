@@ -2,295 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC3C3292FD
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 May 2019 10:23:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C856629552
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 May 2019 12:00:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389227AbfEXIXY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 May 2019 04:23:24 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:38056 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389254AbfEXIXX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 May 2019 04:23:23 -0400
-Received: by mail-io1-f65.google.com with SMTP id x24so7106311ion.5
-        for <linux-acpi@vger.kernel.org>; Fri, 24 May 2019 01:23:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tomeuvizoso-net.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yaxr5Qp4y1ujEYCaQc15H46hTzCNL4baQaP5nWAxNUs=;
-        b=HPwKGlKZN6QLE8qEmglDm/RWz6yKaajU8Vr/NZelCKVE7jR6lL+/BtXeFbq72ofo8Z
-         GY6jM5L/SQvTLfs6m17f3gF81hetp4hcyow6+tIQ0G3Qc0ksXfaR+c5Q2WTRc4Ynhg5U
-         dhR+t2/TuUuuQj7LJW4Z3+PyFY1C6auU/QoZH6aJ5b/9eKt4sbHRTmYjiaHaOhNzvfHv
-         pOleW5nLF/Py7ykYCGWhrvCL7EHB+ArHlA1s4GcRaafgM34sMNaLi1VwQxmun3+fpMTv
-         LA8sVgNXn9xuCTqjB4K8ITYhOjLwhiDbQm/gfe7UT47UCMwgDx7ZNF9I8Gc/ZYwlCZaW
-         6Xag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yaxr5Qp4y1ujEYCaQc15H46hTzCNL4baQaP5nWAxNUs=;
-        b=AsfwimChb7TDyshbdszCHJ/U3kRPLqFsuRSNgPCRZnGfnBjpJsQIiQsaoSByY5VvNP
-         E7/kS0ZnbTbIyfZmgj4YaRIhuKMlNlEAv7DJb93bKCVvbcl2vgd49V5oGEevTWJdY1PP
-         4wLiAa+dN9s7f2LoSb1SC8EkSaI807LzasuNYKEqnO6F57W1AEsRBmW6tSSWi2CdslWd
-         WfWYbWUFWQH5J892NzQW1E1IMuxW4oZV6LrPliFJL3p7WBCI42rXIXPpyvCUFBWO+jep
-         vTjRZzCu+jQM8aVCAZzpEtCQxzG6i6iX3wBZMSey5Qs14uHPUJFCCSjPjfZ3Pay7lFrY
-         +mRA==
-X-Gm-Message-State: APjAAAUnfstgLUKzQIOUcv5AkwwzkWEXNqmaJWdgkQHDfL2ZrpDm3iGp
-        mmYIv+NwnnLuPwSzLy1vy8kpZuT36DgUsQ==
-X-Google-Smtp-Source: APXvYqx7WVksBKtdOybu9SfbL/Cqq9sRkyuhpKsHeWvA99uui3qiNfgFsCEs9EWy2s/5Qi1c6Vwd0A==
-X-Received: by 2002:a6b:f719:: with SMTP id k25mr3169495iog.129.1558686202118;
-        Fri, 24 May 2019 01:23:22 -0700 (PDT)
-Received: from mail-it1-f180.google.com (mail-it1-f180.google.com. [209.85.166.180])
-        by smtp.gmail.com with ESMTPSA id 74sm1144929itk.3.2019.05.24.01.23.21
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 24 May 2019 01:23:21 -0700 (PDT)
-Received: by mail-it1-f180.google.com with SMTP id m141so14397598ita.3;
-        Fri, 24 May 2019 01:23:21 -0700 (PDT)
-X-Received: by 2002:a02:cb92:: with SMTP id u18mr6793520jap.102.1558686201280;
- Fri, 24 May 2019 01:23:21 -0700 (PDT)
+        id S2390342AbfEXKAP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 May 2019 06:00:15 -0400
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:38596 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390013AbfEXKAN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 24 May 2019 06:00:13 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2480415A2;
+        Fri, 24 May 2019 03:00:13 -0700 (PDT)
+Received: from redmoon (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3429E3F703;
+        Fri, 24 May 2019 03:00:11 -0700 (PDT)
+Date:   Fri, 24 May 2019 11:00:05 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Masahisa Kojima <masahisa.kojima@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Graeme Gregory <graeme.gregory@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v2 1/4] acpi/irq: implement getter for GSI irqdomain
+Message-ID: <20190524100005.GB16829@redmoon>
+References: <20190429131208.3620-1-ard.biesheuvel@linaro.org>
+ <20190429131208.3620-2-ard.biesheuvel@linaro.org>
 MIME-Version: 1.0
-References: <20190516044313.GA17751@localhost.localdomain> <CAAObsKD0_+cJQW0YtF9AkWn8XYP9wSYHTi_UhRiba7tH5EWTdw@mail.gmail.com>
- <20190524024047.GE1936@localhost.localdomain>
-In-Reply-To: <20190524024047.GE1936@localhost.localdomain>
-From:   Tomeu Vizoso <tomeu@tomeuvizoso.net>
-Date:   Fri, 24 May 2019 10:23:09 +0200
-X-Gmail-Original-Message-ID: <CAAObsKB_CsPk5uFCCsQs+UD3EYzAwEAWZCiH1_L4t2rXmymjTQ@mail.gmail.com>
-Message-ID: <CAAObsKB_CsPk5uFCCsQs+UD3EYzAwEAWZCiH1_L4t2rXmymjTQ@mail.gmail.com>
-Subject: Re: [GIT PULL] Thermal-SoC management changes for v5.2-rc1
-To:     Eduardo Valentin <edubezval@gmail.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Rui Zhang <rui.zhang@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190429131208.3620-2-ard.biesheuvel@linaro.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 24 May 2019 at 04:40, Eduardo Valentin <edubezval@gmail.com> wrote:
->
-> On Thu, May 23, 2019 at 11:46:47AM +0200, Tomeu Vizoso wrote:
-> > Hi Eduardo,
-> >
-> > I saw that for 5.1 [0] you included a kernelci boot report for your
-> > tree, but not for 5.2. Have you found anything that should be improved
-> > in KernelCI for it to be more useful to maintainers like you?
->
-> Honestly, I take a couple of automated testing as input before sending
-> my pulls to Linux: (a) my local test, (b) kernel-ci, and (c) 0-day.
->
-> There was really no reason specifically for me to not add the report
-> from kernelci, except..
-> >
-> > [0] https://lore.kernel.org/lkml/20190306161207.GA7365@localhost.localdomain/
-> >
-> > I found about this when trying to understand why the boot on the
-> > veyron-jaq board has been broken in 5.2-rc1.
-> >
->
-> I remember a report saying this failed, but from what I could tell from
-> the boot log, the board booted and hit terminal. But apparently, after
-> all reports from developers, the veyron-jaq boards were in a hang state.
->
-> That was hard for me to tell from your logs, as they looked like
-> a regular boot that hits terminal.
->
-> Maybe I should have looked for a specific output of a command you guys
-> run, saying "successful boot" somewhere?
+On Mon, Apr 29, 2019 at 03:12:05PM +0200, Ard Biesheuvel wrote:
+> ACPI permits arbitrary producer->consumer interrupt links to be
+> described in AML, which means a topology such as the following
+> is perfectly legal:
+> 
+>   Device (EXIU) {
+>     Name (_HID, "SCX0008")
+>     Name (_UID, Zero)
+>     Name (_CRS, ResourceTemplate () {
+>       ...
+>     })
+>   }
+> 
+>   Device (GPIO) {
+>     Name (_HID, "SCX0007")
+>     Name (_UID, Zero)
+>     Name (_CRS, ResourceTemplate () {
+>       Memory32Fixed (ReadWrite, SYNQUACER_GPIO_BASE, SYNQUACER_GPIO_SIZE)
+>       Interrupt (ResourceConsumer, Edge, ActiveHigh, ExclusiveAndWake, 0, "\\_SB.EXIU") {
+>         7,
+>       }
+>     })
+>     ...
+>   }
+> 
+> The EXIU in this example is the external interrupt unit as can be found
+> on Socionext SynQuacer based platforms, which converts a block of 32 SPIs
+> from arbitrary polarity/trigger into level-high, with a separate set
+> of config/mask/unmask/clear controls.
+> 
+> The existing DT based driver in drivers/irqchip/irq-sni-exiu.c models
+> this as a hierarchical domain stacked on top of the GIC's irqdomain.
+> Since the GIC is modeled as a DT node as well, obtaining a reference
+> to this irqdomain is easily done by going through the parent link.
+> 
+> On ACPI systems, however, the GIC is not modeled as an object in the
+> namespace, and so device objects cannot refer to it directly. So in
+> order to obtain the irqdomain reference when driving the EXIU in ACPI
+> mode, we need a helper that returns the default domain for unqualified
+> interrupts.
+> 
+> This is essentially what the ACPI GSI domain provides, so add a helper
+> that returns a reference to this domain.
 
-I think what is easiest and clearest is to consider the bisection
-reports as a very strong indication that something is quite wrong in
-the branch.
+Or we directly export a function in:
 
-Because if a board stopped booting and the bisection found a
-suspicious patch, and reverting it gets the board booting again, then
-chances are very high that the patch in question broke that boot.
+drivers/acpi/irq.c
 
-Do you think the wording could be improved to make it clearer? Or
-maybe some other changes to make all this more useful to maintainers
-like you?
+that creates a hierarchical domain with the default GSI domain as a
+parent, instead of exporting a function to get that domain from drivers,
+this should cut a bit of boilerplate and keep the default GSI domain
+handling in ACPI core.
 
-Thanks,
+IIUC, the concept is a bit identical to what we did for MBIgen
+except that there IORT sets-up the device->msi_domain pointer and
+therefore the MBIgen driver does not have to do anything.
 
-Tomeu
+Lorenzo
 
-> > Thanks,
-> >
-> > Tomeu
-> >
-> > On Thu, 16 May 2019 at 06:43, Eduardo Valentin <edubezval@gmail.com> wrote:
-> > >
-> > > Hello Linus,
-> > >
-> > > Please consider the following thermal soc changes for v5.2-rc1.
-> > >
-> > > The following changes since commit 37624b58542fb9f2d9a70e6ea006ef8a5f66c30b:
-> > >
-> > >   Linux 5.1-rc7 (2019-04-28 17:04:13 -0700)
-> > >
-> > > are available in the git repository at:
-> > >
-> > >   git://git.kernel.org/pub/scm/linux/kernel/git/evalenti/linux-soc-thermal linus
-> > >
-> > > for you to fetch changes up to 37bcec5d9f71bd13142a97d2196b293c9ac23823:
-> > >
-> > >   hwmon: (pwm-fan) Use devm_thermal_of_cooling_device_register (2019-05-14 07:00:47 -0700)
-> > >
-> > > Specifics:
-> > > - thermal core has a new devm_* API for registering cooling devices, thanks to Guenter R.
-> > >   I took the entire series, that is why you see changes on drivers/hwmon in this pull.
-> > > - rockchip thermal driver gains support to PX30 SoC, thanks to Elaine Z.
-> > > - the generic-adc thermal driver now considers the lookup table DT property as optional,
-> > >   thanks to Jean-Francois D.
-> > > - Refactoring of tsens thermal driver, thanks to Amit K.
-> > > - Cleanups on cpu cooling driver, thanks to Daniel L.
-> > > - broadcom thermal driver dropped support to ACPI, thanks to Srinath M.
-> > > - tegra thermal driver gains support to OC hw throttle and GPU throtle, thanks to Wei Ni.
-> > > - Fixes in several thermal drivers.
-> > >
-> > > BR,
-> > >
-> > > Eduardo Valentin
-> > >
-> > > ----------------------------------------------------------------
-> > > Amit Kucheria (21):
-> > >       drivers: thermal: tsens: Document the data structures
-> > >       drivers: thermal: tsens: Rename tsens_data
-> > >       drivers: thermal: tsens: Rename tsens_device
-> > >       drivers: thermal: tsens: Rename variable tmdev
-> > >       drivers: thermal: tsens: Use consistent names for variables
-> > >       drivers: thermal: tsens: Function prototypes should have argument names
-> > >       drivers: thermal: tsens: Rename tsens-8916 to prepare to merge with tsens-8974
-> > >       drivers: thermal: tsens: Rename constants to prepare to merge with tsens-8974
-> > >       drivers: thermal: tsens: Merge tsens-8974 into tsens-v0_1
-> > >       drivers: thermal: tsens: Introduce reg_fields to deal with register description
-> > >       drivers: thermal: tsens: Save reference to the device pointer and use it
-> > >       drivers: thermal: tsens: Don't print error message on -EPROBE_DEFER
-> > >       drivers: thermal: tsens: Add new operation to check if a sensor is enabled
-> > >       drivers: thermal: tsens: change data type for sensor IDs
-> > >       drivers: thermal: tsens: Introduce IP-specific max_sensor count
-> > >       drivers: thermal: tsens: simplify get_temp_tsens_v2 routine
-> > >       drivers: thermal: tsens: Move get_temp_tsens_v2 to allow sharing
-> > >       drivers: thermal: tsens: Common get_temp() learns to do ADC conversion
-> > >       dt: thermal: tsens: Add bindings for qcs404
-> > >       drivers: thermal: tsens: Add generic support for TSENS v1 IP
-> > >       drivers: thermal: tsens: Move calibration constants to header file
-> > >
-> > > Andrey Smirnov (1):
-> > >       thermal: qoriq: Remove unnecessary DT node is NULL check
-> > >
-> > > Daniel Lezcano (4):
-> > >       thermal/drivers/cpu_cooling: Remove pointless test in power2state()
-> > >       thermal/drivers/cpu_cooling: Fixup the header and copyright
-> > >       thermal/drivers/cpu_cooling: Add Software Package Data Exchange (SPDX)
-> > >       thermal/drivers/cpu_cooling: Remove pointless field
-> > >
-> > > Elaine Zhang (3):
-> > >       thermal: rockchip: fix up the tsadc pinctrl setting error
-> > >       dt-bindings: rockchip-thermal: Support the PX30 SoC compatible
-> > >       thermal: rockchip: Support the PX30 SoC in thermal driver
-> > >
-> > > Enrico Weigelt, metux IT consult (1):
-> > >       drivers: thermal: Kconfig: pedantic cleanups
-> > >
-> > > Guenter Roeck (6):
-> > >       thermal: Introduce devm_thermal_of_cooling_device_register
-> > >       hwmon: (aspeed-pwm-tacho) Use devm_thermal_of_cooling_device_register
-> > >       hwmon: (gpio-fan) Use devm_thermal_of_cooling_device_register
-> > >       hwmon: (mlxreg-fan) Use devm_thermal_of_cooling_device_register
-> > >       hwmon: (npcm750-pwm-fan) Use devm_thermal_of_cooling_device_register
-> > >       hwmon: (pwm-fan) Use devm_thermal_of_cooling_device_register
-> > >
-> > > Hoan Nguyen An (1):
-> > >       thermal: rcar_gen3_thermal: Fix init value of IRQCTL register
-> > >
-> > > Jean-Francois Dagenais (2):
-> > >       thermal: generic-adc: make lookup table optional
-> > >       dt-bindings: thermal: generic-adc: make lookup-table optional
-> > >
-> > > Jiada Wang (3):
-> > >       thermal: rcar_gen3_thermal: fix interrupt type
-> > >       thermal: rcar_gen3_thermal: disable interrupt in .remove
-> > >       thermal: rcar_gen3_thermal: Fix to show correct trip points number
-> > >
-> > > Matthias Kaehlcke (1):
-> > >       thermal: cpu_cooling: Actually trace CPU load in thermal_power_cpu_get_power
-> > >
-> > > Srinath Mannam (1):
-> > >       thermal: broadcom: Remove ACPI support
-> > >
-> > > Talel Shenhar (3):
-> > >       dt-bindings: thermal: al-thermal: Add binding documentation
-> > >       thermal: Introduce Amazon's Annapurna Labs Thermal Driver
-> > >       thermal: Fix build error of missing devm_ioremap_resource on UM
-> > >
-> > > Wei Ni (9):
-> > >       of: Add bindings of thermtrip for Tegra soctherm
-> > >       thermal: tegra: support hw and sw shutdown
-> > >       of: Add bindings of gpu hw throttle for Tegra soctherm
-> > >       thermal: tegra: add support for gpu hw-throttle
-> > >       thermal: tegra: add support for thermal IRQ
-> > >       thermal: tegra: add set_trips functionality
-> > >       thermal: tegra: add support for EDP IRQ
-> > >       of: Add bindings of OC hw throttle for Tegra soctherm
-> > >       thermal: tegra: enable OC hw throttle
-> > >
-> > > Wolfram Sang (1):
-> > >       thermal: stm32: simplify getting .driver_data
-> > >
-> > > Yangtao Li (1):
-> > >       of: thermal: Improve print information
-> > >
-> > > Yoshihiro Kaneko (1):
-> > >       thermal: rcar_thermal: update calculation formula for R-Car Gen3 SoCs
-> > >
-> > >  .../bindings/thermal/amazon,al-thermal.txt         |  33 +
-> > >  .../bindings/thermal/nvidia,tegra124-soctherm.txt  |  62 +-
-> > >  .../devicetree/bindings/thermal/qcom-tsens.txt     |  14 +
-> > >  .../bindings/thermal/rockchip-thermal.txt          |   1 +
-> > >  .../bindings/thermal/thermal-generic-adc.txt       |  10 +-
-> > >  MAINTAINERS                                        |   6 +
-> > >  drivers/hwmon/aspeed-pwm-tacho.c                   |   6 +-
-> > >  drivers/hwmon/gpio-fan.c                           |  25 +-
-> > >  drivers/hwmon/mlxreg-fan.c                         |  31 +-
-> > >  drivers/hwmon/npcm750-pwm-fan.c                    |   6 +-
-> > >  drivers/hwmon/pwm-fan.c                            |  73 +-
-> > >  drivers/thermal/Kconfig                            |  11 +
-> > >  drivers/thermal/Makefile                           |   1 +
-> > >  drivers/thermal/broadcom/sr-thermal.c              |   8 -
-> > >  drivers/thermal/cpu_cooling.c                      |  30 +-
-> > >  drivers/thermal/of-thermal.c                       |   3 +
-> > >  drivers/thermal/qcom/Makefile                      |   4 +-
-> > >  drivers/thermal/qcom/tsens-8916.c                  | 105 ---
-> > >  drivers/thermal/qcom/tsens-8960.c                  |  84 +-
-> > >  drivers/thermal/qcom/tsens-common.c                | 159 +++-
-> > >  .../thermal/qcom/{tsens-8974.c => tsens-v0_1.c}    | 166 +++-
-> > >  drivers/thermal/qcom/tsens-v1.c                    | 193 +++++
-> > >  drivers/thermal/qcom/tsens-v2.c                    | 111 +--
-> > >  drivers/thermal/qcom/tsens.c                       | 100 ++-
-> > >  drivers/thermal/qcom/tsens.h                       | 291 ++++++-
-> > >  drivers/thermal/qoriq_thermal.c                    |   5 -
-> > >  drivers/thermal/rcar_gen3_thermal.c                |  51 +-
-> > >  drivers/thermal/rcar_thermal.c                     |  11 +-
-> > >  drivers/thermal/rockchip_thermal.c                 |  74 +-
-> > >  drivers/thermal/st/Kconfig                         |  22 +-
-> > >  drivers/thermal/st/stm_thermal.c                   |   6 +-
-> > >  drivers/thermal/tegra/Kconfig                      |   4 +-
-> > >  drivers/thermal/tegra/soctherm.c                   | 961 +++++++++++++++++++--
-> > >  drivers/thermal/tegra/soctherm.h                   |  16 +
-> > >  drivers/thermal/tegra/tegra124-soctherm.c          |   7 +-
-> > >  drivers/thermal/tegra/tegra132-soctherm.c          |   7 +-
-> > >  drivers/thermal/tegra/tegra210-soctherm.c          |  15 +-
-> > >  drivers/thermal/thermal-generic-adc.c              |   9 +-
-> > >  drivers/thermal/thermal_core.c                     |  49 ++
-> > >  drivers/thermal/thermal_mmio.c                     | 129 +++
-> > >  include/dt-bindings/thermal/tegra124-soctherm.h    |   8 +-
-> > >  include/linux/thermal.h                            |  13 +
-> > >  42 files changed, 2330 insertions(+), 590 deletions(-)
-> > >  create mode 100644 Documentation/devicetree/bindings/thermal/amazon,al-thermal.txt
-> > >  delete mode 100644 drivers/thermal/qcom/tsens-8916.c
-> > >  rename drivers/thermal/qcom/{tsens-8974.c => tsens-v0_1.c} (56%)
-> > >  create mode 100644 drivers/thermal/qcom/tsens-v1.c
-> > >  create mode 100644 drivers/thermal/thermal_mmio.c
+> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> ---
+>  drivers/acpi/irq.c   | 14 ++++++++++----
+>  include/linux/acpi.h |  1 +
+>  2 files changed, 11 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
+> index c3b2222e2129..d47bbd54d4aa 100644
+> --- a/drivers/acpi/irq.c
+> +++ b/drivers/acpi/irq.c
+> @@ -17,6 +17,14 @@ enum acpi_irq_model_id acpi_irq_model;
+>  
+>  static struct fwnode_handle *acpi_gsi_domain_id;
+>  
+> +/**
+> + * acpi_get_gsi_irqdomain - Retrieve the irqdomain that owns the GSI space.
+> + */
+> +struct irq_domain *acpi_get_gsi_irqdomain(void)
+> +{
+> +	return irq_find_matching_fwnode(acpi_gsi_domain_id, DOMAIN_BUS_ANY);
+> +}
+> +
+>  /**
+>   * acpi_gsi_to_irq() - Retrieve the linux irq number for a given GSI
+>   * @gsi: GSI IRQ number to map
+> @@ -29,8 +37,7 @@ static struct fwnode_handle *acpi_gsi_domain_id;
+>   */
+>  int acpi_gsi_to_irq(u32 gsi, unsigned int *irq)
+>  {
+> -	struct irq_domain *d = irq_find_matching_fwnode(acpi_gsi_domain_id,
+> -							DOMAIN_BUS_ANY);
+> +	struct irq_domain *d = acpi_get_gsi_irqdomain();
+>  
+>  	*irq = irq_find_mapping(d, gsi);
+>  	/*
+> @@ -76,8 +83,7 @@ EXPORT_SYMBOL_GPL(acpi_register_gsi);
+>   */
+>  void acpi_unregister_gsi(u32 gsi)
+>  {
+> -	struct irq_domain *d = irq_find_matching_fwnode(acpi_gsi_domain_id,
+> -							DOMAIN_BUS_ANY);
+> +	struct irq_domain *d = acpi_get_gsi_irqdomain();
+>  	int irq = irq_find_mapping(d, gsi);
+>  
+>  	irq_dispose_mapping(irq);
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index d5dcebd7aad3..1016027dd626 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -316,6 +316,7 @@ static inline bool acpi_sci_irq_valid(void)
+>  extern int sbf_port;
+>  extern unsigned long acpi_realmode_flags;
+>  
+> +struct irq_domain *acpi_get_gsi_irqdomain(void);
+>  int acpi_register_gsi (struct device *dev, u32 gsi, int triggering, int polarity);
+>  int acpi_gsi_to_irq (u32 gsi, unsigned int *irq);
+>  int acpi_isa_irq_to_gsi (unsigned isa_irq, u32 *gsi);
+> -- 
+> 2.20.1
+> 
