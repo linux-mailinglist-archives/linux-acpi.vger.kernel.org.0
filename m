@@ -2,163 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C856629552
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 May 2019 12:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0ED629971
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 May 2019 15:54:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390342AbfEXKAP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 May 2019 06:00:15 -0400
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:38596 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390013AbfEXKAN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 24 May 2019 06:00:13 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2480415A2;
-        Fri, 24 May 2019 03:00:13 -0700 (PDT)
-Received: from redmoon (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3429E3F703;
-        Fri, 24 May 2019 03:00:11 -0700 (PDT)
-Date:   Fri, 24 May 2019 11:00:05 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Masahisa Kojima <masahisa.kojima@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Graeme Gregory <graeme.gregory@linaro.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v2 1/4] acpi/irq: implement getter for GSI irqdomain
-Message-ID: <20190524100005.GB16829@redmoon>
-References: <20190429131208.3620-1-ard.biesheuvel@linaro.org>
- <20190429131208.3620-2-ard.biesheuvel@linaro.org>
+        id S2403921AbfEXNyF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 May 2019 09:54:05 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:38592 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2403917AbfEXNyF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 May 2019 09:54:05 -0400
+Received: by mail-pl1-f193.google.com with SMTP id f97so4223384plb.5;
+        Fri, 24 May 2019 06:54:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=KAeJ4wUrvHpOLw7ye4R6Tb6Y50k1ZsjRygN64gReTaY=;
+        b=o3G4QU3iUKDI4Yn+sOyq2Wunya0S3SZMeAbdgf0jLfUS2IieDIk08IaeNje3CTh0Si
+         35Z2B1TTjBz2CUk8lM2ToK3ruzwuVNnGOzgProJV37jpfsvCHsZ+bS1M4V/qqyDeMTU6
+         diRb2qSpY/kIQhHXv02o5O0x77tf5Myj7NQQn2r7BcAyD48Vo6En/JzB806VJROR7OP3
+         +BKGjW1vAMfwcjNnoIjCmmA9uAxA7TT0aCL7MQ35HfVmtYVoa3mfUIAwe8AiJ8S3cjek
+         5XrE3luolet+3RPjAX6/MzgYAs4HFzEgLVyABl7JlpVI966fH4NA6JP+XCcBwGUwwv1V
+         4bVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=KAeJ4wUrvHpOLw7ye4R6Tb6Y50k1ZsjRygN64gReTaY=;
+        b=TsDg5VTQqYiHNzYtGBTD4N4qXy7+cN/PfuNu538W4nuydU3vdIMeJYwibnVMuiXuD9
+         kJysfg4OtKyVUuA8XaKaJTLo3SZ13hYi187wBakte44XwdUpJp2Hur8R66z6I2y7Y+z6
+         Wvvlc2RjGbVNelD2crtjq/wukdsp9mSzU+fOXLqGfG4q1608MiAhiChbWxZVRXY3b+Aj
+         BO/0UOPYzSF1hu95zzWS7xSVhKf570TbzEueyhDwW+81EmLF3BE6AQTkZy7fcezH9X4k
+         Po9ekVoSpBs82xeA6Fvzu7Q5CJGBgegWmvH//Jc7mThhzYHxjNLV4ufT9w7i+hTeyxqa
+         +GOA==
+X-Gm-Message-State: APjAAAXgiPjsnZ6a+JwrWd1SotyBIbqQq48dP1nFsC7eBequpEbShiPF
+        nP4aGwEVlBEFL86/8ZyMJQL13bdjWcs=
+X-Google-Smtp-Source: APXvYqxt0sBXbvNKCDDuFXzkLiwx1WjCENXPktOMxi3noMT4ujCq0YhAiiM5MtGU1DAS+zEj2ORk2Q==
+X-Received: by 2002:a17:902:7617:: with SMTP id k23mr63034749pll.175.1558706044369;
+        Fri, 24 May 2019 06:54:04 -0700 (PDT)
+Received: from localhost.localdomain ([2601:644:8201:32e0:7256:81ff:febd:926d])
+        by smtp.gmail.com with ESMTPSA id g8sm3556133pfk.83.2019.05.24.06.54.02
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 24 May 2019 06:54:03 -0700 (PDT)
+Date:   Fri, 24 May 2019 06:54:00 -0700
+From:   Eduardo Valentin <edubezval@gmail.com>
+To:     Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Rui Zhang <rui.zhang@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [GIT PULL] Thermal-SoC management changes for v5.2-rc1
+Message-ID: <20190524135358.GA2750@localhost.localdomain>
+References: <20190516044313.GA17751@localhost.localdomain>
+ <CAAObsKD0_+cJQW0YtF9AkWn8XYP9wSYHTi_UhRiba7tH5EWTdw@mail.gmail.com>
+ <20190524024047.GE1936@localhost.localdomain>
+ <CAAObsKB_CsPk5uFCCsQs+UD3EYzAwEAWZCiH1_L4t2rXmymjTQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190429131208.3620-2-ard.biesheuvel@linaro.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <CAAObsKB_CsPk5uFCCsQs+UD3EYzAwEAWZCiH1_L4t2rXmymjTQ@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Apr 29, 2019 at 03:12:05PM +0200, Ard Biesheuvel wrote:
-> ACPI permits arbitrary producer->consumer interrupt links to be
-> described in AML, which means a topology such as the following
-> is perfectly legal:
-> 
->   Device (EXIU) {
->     Name (_HID, "SCX0008")
->     Name (_UID, Zero)
->     Name (_CRS, ResourceTemplate () {
->       ...
->     })
->   }
-> 
->   Device (GPIO) {
->     Name (_HID, "SCX0007")
->     Name (_UID, Zero)
->     Name (_CRS, ResourceTemplate () {
->       Memory32Fixed (ReadWrite, SYNQUACER_GPIO_BASE, SYNQUACER_GPIO_SIZE)
->       Interrupt (ResourceConsumer, Edge, ActiveHigh, ExclusiveAndWake, 0, "\\_SB.EXIU") {
->         7,
->       }
->     })
->     ...
->   }
-> 
-> The EXIU in this example is the external interrupt unit as can be found
-> on Socionext SynQuacer based platforms, which converts a block of 32 SPIs
-> from arbitrary polarity/trigger into level-high, with a separate set
-> of config/mask/unmask/clear controls.
-> 
-> The existing DT based driver in drivers/irqchip/irq-sni-exiu.c models
-> this as a hierarchical domain stacked on top of the GIC's irqdomain.
-> Since the GIC is modeled as a DT node as well, obtaining a reference
-> to this irqdomain is easily done by going through the parent link.
-> 
-> On ACPI systems, however, the GIC is not modeled as an object in the
-> namespace, and so device objects cannot refer to it directly. So in
-> order to obtain the irqdomain reference when driving the EXIU in ACPI
-> mode, we need a helper that returns the default domain for unqualified
-> interrupts.
-> 
-> This is essentially what the ACPI GSI domain provides, so add a helper
-> that returns a reference to this domain.
+Hello,
 
-Or we directly export a function in:
-
-drivers/acpi/irq.c
-
-that creates a hierarchical domain with the default GSI domain as a
-parent, instead of exporting a function to get that domain from drivers,
-this should cut a bit of boilerplate and keep the default GSI domain
-handling in ACPI core.
-
-IIUC, the concept is a bit identical to what we did for MBIgen
-except that there IORT sets-up the device->msi_domain pointer and
-therefore the MBIgen driver does not have to do anything.
-
-Lorenzo
-
-> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> ---
->  drivers/acpi/irq.c   | 14 ++++++++++----
->  include/linux/acpi.h |  1 +
->  2 files changed, 11 insertions(+), 4 deletions(-)
+On Fri, May 24, 2019 at 10:23:09AM +0200, Tomeu Vizoso wrote:
+> On Fri, 24 May 2019 at 04:40, Eduardo Valentin <edubezval@gmail.com> wrote:
+> >
+> > On Thu, May 23, 2019 at 11:46:47AM +0200, Tomeu Vizoso wrote:
+> > > Hi Eduardo,
+> > >
+> > > I saw that for 5.1 [0] you included a kernelci boot report for your
+> > > tree, but not for 5.2. Have you found anything that should be improved
+> > > in KernelCI for it to be more useful to maintainers like you?
+> >
+> > Honestly, I take a couple of automated testing as input before sending
+> > my pulls to Linux: (a) my local test, (b) kernel-ci, and (c) 0-day.
+> >
+> > There was really no reason specifically for me to not add the report
+> > from kernelci, except..
+> > >
+> > > [0] https://lore.kernel.org/lkml/20190306161207.GA7365@localhost.localdomain/
+> > >
+> > > I found about this when trying to understand why the boot on the
+> > > veyron-jaq board has been broken in 5.2-rc1.
+> > >
+> >
+> > I remember a report saying this failed, but from what I could tell from
+> > the boot log, the board booted and hit terminal. But apparently, after
+> > all reports from developers, the veyron-jaq boards were in a hang state.
+> >
+> > That was hard for me to tell from your logs, as they looked like
+> > a regular boot that hits terminal.
+> >
+> > Maybe I should have looked for a specific output of a command you guys
+> > run, saying "successful boot" somewhere?
 > 
-> diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-> index c3b2222e2129..d47bbd54d4aa 100644
-> --- a/drivers/acpi/irq.c
-> +++ b/drivers/acpi/irq.c
-> @@ -17,6 +17,14 @@ enum acpi_irq_model_id acpi_irq_model;
->  
->  static struct fwnode_handle *acpi_gsi_domain_id;
->  
-> +/**
-> + * acpi_get_gsi_irqdomain - Retrieve the irqdomain that owns the GSI space.
-> + */
-> +struct irq_domain *acpi_get_gsi_irqdomain(void)
-> +{
-> +	return irq_find_matching_fwnode(acpi_gsi_domain_id, DOMAIN_BUS_ANY);
-> +}
-> +
->  /**
->   * acpi_gsi_to_irq() - Retrieve the linux irq number for a given GSI
->   * @gsi: GSI IRQ number to map
-> @@ -29,8 +37,7 @@ static struct fwnode_handle *acpi_gsi_domain_id;
->   */
->  int acpi_gsi_to_irq(u32 gsi, unsigned int *irq)
->  {
-> -	struct irq_domain *d = irq_find_matching_fwnode(acpi_gsi_domain_id,
-> -							DOMAIN_BUS_ANY);
-> +	struct irq_domain *d = acpi_get_gsi_irqdomain();
->  
->  	*irq = irq_find_mapping(d, gsi);
->  	/*
-> @@ -76,8 +83,7 @@ EXPORT_SYMBOL_GPL(acpi_register_gsi);
->   */
->  void acpi_unregister_gsi(u32 gsi)
->  {
-> -	struct irq_domain *d = irq_find_matching_fwnode(acpi_gsi_domain_id,
-> -							DOMAIN_BUS_ANY);
-> +	struct irq_domain *d = acpi_get_gsi_irqdomain();
->  	int irq = irq_find_mapping(d, gsi);
->  
->  	irq_dispose_mapping(irq);
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index d5dcebd7aad3..1016027dd626 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -316,6 +316,7 @@ static inline bool acpi_sci_irq_valid(void)
->  extern int sbf_port;
->  extern unsigned long acpi_realmode_flags;
->  
-> +struct irq_domain *acpi_get_gsi_irqdomain(void);
->  int acpi_register_gsi (struct device *dev, u32 gsi, int triggering, int polarity);
->  int acpi_gsi_to_irq (u32 gsi, unsigned int *irq);
->  int acpi_isa_irq_to_gsi (unsigned isa_irq, u32 *gsi);
-> -- 
-> 2.20.1
+> I think what is easiest and clearest is to consider the bisection
+> reports as a very strong indication that something is quite wrong in
+> the branch.
+
+OK. I hear you.
+
 > 
+> Because if a board stopped booting and the bisection found a
+> suspicious patch, and reverting it gets the board booting again, then
+> chances are very high that the patch in question broke that boot.
+> 
+
+
+Yeah, for sure If I had understood the report properly I could have
+nacked the patch.
+
+> Do you think the wording could be improved to make it clearer? Or
+> maybe some other changes to make all this more useful to maintainers
+> like you?
+> 
+
+Well, from my perspective, I need to judge if the failure on your report
+is really related to my changes. Many times, specially on build errors,
+we get failures that are unrelated. Build errors are more straight
+forward do judge. Similarly, we need to find out if a boot issue is
+caused by a change on the branch or something existing. On boot issues
+from kernelci reports, I think the false negatives I have been seeing
+is lab/boards failing to boot. Those can also be easy to spot as the
+in most cases the kernel wont even load. 
+
+For this particular case, as I described before, the kernel would
+load and hit the shell command line, but in fact it was in hang state
+IIRC. That is probably why it has not straight forward to understand
+from the log. Maybe a successful boot message somewhere would have
+helped to spot the problem (or the opposite of it, something
+saying, I was expecting to execute a command and board was
+unresponsive).
+
