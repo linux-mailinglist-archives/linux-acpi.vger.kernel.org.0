@@ -2,77 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFD3028D4C
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 May 2019 00:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63FE228F2A
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 May 2019 04:37:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387735AbfEWWkf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 May 2019 18:40:35 -0400
-Received: from foss.arm.com ([217.140.101.70]:57888 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387546AbfEWWkf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 23 May 2019 18:40:35 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CD31015A2;
-        Thu, 23 May 2019 15:40:34 -0700 (PDT)
-Received: from mammon-tx2.austin.arm.com (mammon-tx2.austin.arm.com [10.118.30.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5F1EA3F5AF;
-        Thu, 23 May 2019 15:40:34 -0700 (PDT)
-From:   Jeremy Linton <jeremy.linton@arm.com>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     linux-acpi@vger.kernel.org, catalin.marinas@arm.com,
-        will.deacon@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
-        sudeep.holla@arm.com, Jeremy Linton <jeremy.linton@arm.com>
-Subject: [PATCH 2/2] arm64: topology: Use PPTT to determine if PE is a thread
-Date:   Thu, 23 May 2019 17:40:15 -0500
-Message-Id: <20190523224015.56270-3-jeremy.linton@arm.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190523224015.56270-1-jeremy.linton@arm.com>
-References: <20190523224015.56270-1-jeremy.linton@arm.com>
+        id S1731754AbfEXChL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 May 2019 22:37:11 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:43524 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727037AbfEXChL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 May 2019 22:37:11 -0400
+Received: by mail-pf1-f194.google.com with SMTP id c6so4348516pfa.10;
+        Thu, 23 May 2019 19:37:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=VkIHxooMNHFA9OLZaAiTW2cThVgCM7r7P1MhM8qIu0w=;
+        b=qA07P64oWp4ssWXss0N7gOa09mR05BfmjwpoL8tSeaKLrgwqzDn8K1cTuj3YQvBGfz
+         515UA7eNgGYE6o/iJXi5PiK4vdARUDGa4FAXqVTlnt2G5u7aCNEitd1w+qx2rlpY5hw4
+         NMMf96D22RY20ivghoPIdD0YZnvSlobm00RS4TIiht9AjxSYHklzxTECb3u6i+7OGHAI
+         bIFqR3aPsXOOj45Djnq34UbIC0uzaUh9E5CVv7P7okI0FSt2ZHO4Epp/rOynjKK8Lrzo
+         NZdflIFh4NvuASfCgR7uzX22mtYJF/1uuDkMCOV/nzGESnm7ouhTdXcaK5XzGiXShO20
+         YkVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=VkIHxooMNHFA9OLZaAiTW2cThVgCM7r7P1MhM8qIu0w=;
+        b=fmD3R8KMVO0gYr1VMeqansWoJDmRvG1B+7bvrq/82ZC0HVz7Poqk4vO0Sni3w1xop2
+         OPYwmZH8UGBSQfezW7couwvfxaY/z8BORa2vqyU0aMz33j6pwMojReYlkTYOmgF6AnfK
+         7uwAQgHxc2jCyomo8Q8EoVbquhiFYvMkroGcqiS5eXGTKl8YPhsliFM3iuM7PrmSigqj
+         8fhVBzErMqNzxl1D3m8yewaiYE7a3cbDYSHjIPa5dQ4/gwshar7jpSvcwAFYQe9g+BdM
+         WcTHCNJPnVpGjtld4S8gf0OB/aZwMEs4DKmVG397C7U1sns/hBf/dCC6zsKgDRp64mpv
+         LTQA==
+X-Gm-Message-State: APjAAAVseU9uHGZbf9SF8xIDvuuOQpOz5xmnc06HE8fu7wnKAhdRjRXE
+        LTaYoZdbfFuN5+OI/5y5JdQ=
+X-Google-Smtp-Source: APXvYqz9SR9O0jgdDAlgbo1DH5ZmZpm0ICvWYwm3oRlMhsuWOshPN2VhUB7EWTmvaVVN7PUZKw5njA==
+X-Received: by 2002:a62:1885:: with SMTP id 127mr50701361pfy.48.1558665429895;
+        Thu, 23 May 2019 19:37:09 -0700 (PDT)
+Received: from localhost.localdomain ([2601:644:8201:32e0:7256:81ff:febd:926d])
+        by smtp.gmail.com with ESMTPSA id g8sm805937pfk.83.2019.05.23.19.37.08
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 23 May 2019 19:37:09 -0700 (PDT)
+Date:   Thu, 23 May 2019 19:37:07 -0700
+From:   Eduardo Valentin <edubezval@gmail.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Rui Zhang <rui.zhang@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [GIT PULL] Thermal-SoC management changes for v5.2-rc1
+Message-ID: <20190524023705.GD1936@localhost.localdomain>
+References: <20190516044313.GA17751@localhost.localdomain>
+ <CAHk-=wiaO_8SiEB9QM3vOTniiT67K6CBH0uHJ82-Dp_+6kxH3g@mail.gmail.com>
+ <cd06dc28-1076-259a-ba94-bad116771da8@roeck-us.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cd06dc28-1076-259a-ba94-bad116771da8@roeck-us.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-ACPI 6.3 adds a thread flag to represent if a CPU/PE is
-actually a thread. Given that the MPIDR_MT bit may not
-represent this information consistently on homogeneous machines
-we should prefer the PPTT flag if its available.
+On Thu, May 16, 2019 at 09:55:33AM -0700, Guenter Roeck wrote:
+> On 5/16/19 8:07 AM, Linus Torvalds wrote:
+> >On Wed, May 15, 2019 at 9:43 PM Eduardo Valentin <edubezval@gmail.com> wrote:
+> >>
+> >>- thermal core has a new devm_* API for registering cooling devices, thanks to Guenter R.
+> >>   I took the entire series, that is why you see changes on drivers/hwmon in this pull.
+> >
+> >This clashed badly with commit 6b1ec4789fb1 ("hwmon: (pwm-fan) Add RPM
+> >support via external interrupt"), which added a timer to the pwm-fan
+> >handling.
+> >
+> >In particular, that timer now needed the same kind of cleanup changes,
+> >and I'd like you guys (particularly Guenther, who was involved on both
+> >sides) to double-check my merge.
+> >
+> >The way I solved it was to just make the pwm_fan_pwm_disable()
+> >callback do both the pwm_diable() _and_ the del_timer_sync() on the
+> >new timer. That seemed to be the simplest solution that meshed with
+> >the new devm cleanup model, but while I build-tested the result, I
+> >obviously did no actual use testing. And maybe there's some reason why
+> >that approach is flawed.
+> >
+> >Guenther?
+> 
+> Sorry for the trouble. Looks like I did too much cleanup this time around.
+> 
+> Looks ok. I'll have to send a follow-up patch - we should check the
+> return value of devm_add_action_or_reset(). No idea why I didn't do that
+> in this series. I'll do that after the commit window closes (and after
+> I am back from vacation).
 
-Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
----
- arch/arm64/kernel/topology.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+OK... From what I could tell, looked fine from a thermal perspective.
 
-diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-index 0825c4a856e3..cbbedb53cf06 100644
---- a/arch/arm64/kernel/topology.c
-+++ b/arch/arm64/kernel/topology.c
-@@ -346,11 +346,9 @@ void remove_cpu_topology(unsigned int cpu)
-  */
- static int __init parse_acpi_topology(void)
- {
--	bool is_threaded;
-+	int is_threaded;
- 	int cpu, topology_id;
- 
--	is_threaded = read_cpuid_mpidr() & MPIDR_MT_BITMASK;
--
- 	for_each_possible_cpu(cpu) {
- 		int i, cache_id;
- 
-@@ -358,6 +356,10 @@ static int __init parse_acpi_topology(void)
- 		if (topology_id < 0)
- 			return topology_id;
- 
-+		is_threaded = acpi_pptt_cpu_is_thread(cpu);
-+		if (is_threaded < 0)
-+			is_threaded = read_cpuid_mpidr() & MPIDR_MT_BITMASK;
-+
- 		if (is_threaded) {
- 			cpu_topology[cpu].thread_id = topology_id;
- 			topology_id = find_acpi_cpu_topology(cpu, 1);
--- 
-2.21.0
-
+> 
+> Thanks a lot for sorting this out.
+> 
+> Guenter
