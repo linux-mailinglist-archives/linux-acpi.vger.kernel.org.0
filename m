@@ -2,107 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6D1C2B84C
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2019 17:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7FD12BA4E
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2019 20:47:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727018AbfE0PUC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 May 2019 11:20:02 -0400
-Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:57510 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726959AbfE0PUB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 27 May 2019 11:20:01 -0400
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-        by mx0b-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4RFJFZp030079;
-        Mon, 27 May 2019 10:19:33 -0500
-Authentication-Results: ppops.net;
-        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
-Received: from mail4.cirrus.com ([87.246.98.35])
-        by mx0b-001ae601.pphosted.com with ESMTP id 2sq24q28p2-1;
-        Mon, 27 May 2019 10:19:33 -0500
-Received: from EDIEX01.ad.cirrus.com (ediex01.ad.cirrus.com [198.61.84.80])
-        by mail4.cirrus.com (Postfix) with ESMTP id B1C92611C8B3;
-        Mon, 27 May 2019 10:20:24 -0500 (CDT)
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Mon, 27 May
- 2019 16:19:32 +0100
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
- Transport; Mon, 27 May 2019 16:19:32 +0100
-Received: from algalon.ad.cirrus.com (algalon.ad.cirrus.com [198.90.251.122])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id C1E70447;
-        Mon, 27 May 2019 16:19:32 +0100 (BST)
-From:   Charles Keepax <ckeepax@opensource.cirrus.com>
-To:     <wsa@the-dreams.de>, <mika.westerberg@linux.intel.com>
-CC:     <jarkko.nikula@linux.intel.com>,
-        <andriy.shevchenko@linux.intel.com>, <linux-i2c@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <benjamin.tissoires@redhat.com>, <jbroadus@gmail.com>,
-        <patches@opensource.cirrus.com>
-Subject: [PATCH v2 6/6] i2c: core: Tidy up handling of init_irq
-Date:   Mon, 27 May 2019 16:19:32 +0100
-Message-ID: <20190527151932.14310-6-ckeepax@opensource.cirrus.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20190527151932.14310-1-ckeepax@opensource.cirrus.com>
-References: <20190527151932.14310-1-ckeepax@opensource.cirrus.com>
+        id S1726801AbfE0Srr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 May 2019 14:47:47 -0400
+Received: from sauhun.de ([88.99.104.3]:35778 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726598AbfE0Srq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 27 May 2019 14:47:46 -0400
+Received: from localhost (p5486CF59.dip0.t-ipconnect.de [84.134.207.89])
+        by pokefinder.org (Postfix) with ESMTPSA id 5876B2C04C2;
+        Mon, 27 May 2019 20:47:44 +0200 (CEST)
+Date:   Mon, 27 May 2019 20:47:43 +0200
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Ruslan Babayev <ruslan@babayev.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        xe-linux-external@cisco.com, linux-i2c@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/2] i2c: acpi: export
+ i2c_acpi_find_adapter_by_handle
+Message-ID: <20190527184743.GA8808@kunai>
+References: <20190505193435.3248-1-ruslan@babayev.com>
+ <20190525005302.27164-1-ruslan@babayev.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905270108
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="+QahgC5+KEYLbs62"
+Content-Disposition: inline
+In-Reply-To: <20190525005302.27164-1-ruslan@babayev.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Only set init_irq during i2c_device_new and only handle client->irq on
-the probe/remove paths.
 
-Suggested-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
----
+--+QahgC5+KEYLbs62
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-No changes since v1.
+On Fri, May 24, 2019 at 05:53:01PM -0700, Ruslan Babayev wrote:
+> This allows drivers to lookup i2c adapters on ACPI based systems similar =
+to
+> of_get_i2c_adapter_by_node() with DT based systems.
+>=20
+> Signed-off-by: Ruslan Babayev <ruslan@babayev.com>
+> Cc: xe-linux-external@cisco.com
+
+Please have a look how your patches look in my inbox:
+
+May 05 Ruslan Babayev  ( 129) [PATCH] net: phy: sfp: enable i2c-bus detecti=
+on on ACPI based systems
+May 05 Ruslan Babayev  (  65) =E2=94=9C=E2=94=80>[PATCH 1/2] i2c: acpi: exp=
+ort i2c_acpi_find_adapter_by_handle
+May 24 Ruslan Babayev  (  65) =E2=94=94=E2=94=80>[PATCH net-next v2 1/2] i2=
+c: acpi: export i2c_acpi_find_adapter_by_handle
+May 05 Ruslan Babayev  (  65) [PATCH net-next 1/2] i2c: acpi: export i2c_ac=
+pi_find_adapter_by_handle
+May 06 Ruslan Babayev  (   3) =E2=94=9C=E2=94=80>[PATCH RFC v2 net-next] En=
+able SFP support on ACPI
+May 06 Ruslan Babayev  (  65) =E2=94=9C=E2=94=80>[PATCH RFC v2 net-next 1/2=
+] i2c: acpi: export i2c_acpi_find_adapter_by_handle
+May 06 Ruslan Babayev  ( 120) =E2=94=94=E2=94=80>[PATCH RFC v2 net-next 2/2=
+] net: phy: sfp: enable i2c-bus detection on ACPI based systems
+May 07 Ruslan Babayev  ( 154)   =E2=94=94=E2=94=80&=E2=94=80>
+May 07 Ruslan Babayev  (  10)     =E2=94=94=E2=94=80>
+May 22 Ruslan Babayev  (  29)       =E2=94=94=E2=94=80>
+May 05 Ruslan Babayev  (  93) [PATCH net-next 2/2] net: phy: sfp: enable i2=
+c-bus detection on ACPI based systems
+May 06 Ruslan Babayev  (  25) =E2=94=9C=E2=94=80&=E2=94=80>
+May 06 Ruslan Babayev  (  99) =E2=94=94=E2=94=80&=E2=94=80>
+
+This is highly confusing, and super hard to find out which patches belong
+together. v2 2/2 seems even missing. Please resend this as a new series wit=
+hout
+any in-reply-to, and a fresh cover-letter, so I know which one to apply to =
+my
+tree.
 
 Thanks,
-Charles
 
- drivers/i2c/i2c-core-base.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+   Wolfram
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 684ea2665d994..6d4904cdf58ac 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -322,6 +322,8 @@ static int i2c_device_probe(struct device *dev)
- 
- 	driver = to_i2c_driver(dev->driver);
- 
-+	client->irq = client->init_irq;
-+
- 	if (!client->irq && !driver->disable_i2c_core_irq_mapping) {
- 		int irq = -ENOENT;
- 
-@@ -432,7 +434,7 @@ static int i2c_device_remove(struct device *dev)
- 	dev_pm_clear_wake_irq(&client->dev);
- 	device_init_wakeup(&client->dev, false);
- 
--	client->irq = client->init_irq;
-+	client->irq = 0;
- 	if (client->flags & I2C_CLIENT_HOST_NOTIFY)
- 		pm_runtime_put(&client->adapter->dev);
- 
-@@ -749,7 +751,6 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
- 	if (!client->init_irq)
- 		client->init_irq = i2c_dev_irq_from_resources(info->resources,
- 							 info->num_resources);
--	client->irq = client->init_irq;
- 
- 	strlcpy(client->name, info->type, sizeof(client->name));
- 
--- 
-2.11.0
 
+--+QahgC5+KEYLbs62
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlzsMMsACgkQFA3kzBSg
+KbbJUw//ZjfgfbIi9s/dvsxSUH0zdiFzpTrxw/kK6vz8DoMVEvB7gZTQn+AGU9SX
+7rDxALpNLwpC6k6IYkDT1SW7FBxMHw3yMBVahyXTlZaTAIOW/iS2yctgCBLlVs+1
+zbGPIoEXobAY5kPgeb5ibpesN1UxmTBQOubp31RmOp87PInFCpo3czzvPhRxyCOs
+nWXSaTVGvkoLzBmLXcz1awje7FimsUHUPI3GITobxGXVl+6l2whN/a69hbgHRhpL
+5HbxaXt11oMTYI0QVBJ03Aqlu22nxZbW/YZV7P5cwrn7KaST04/8HTVxLhegPhog
+pQH3M9Gp/ANChZ3+EqFe3IVWakj6tkZRUluL3kp1qNagVJ+aGeOurJgtoubXRXVc
+hxOPPSrtHB90dWV+H/AieEIPwc7NFgbn6fOs4JLNGCvtc6ylEk/Yu6rFFIj9OuWN
+ndtK5RZLKXfjvuYptxnTX8hK1o74YAnrJ0YwmYiWi7gq14fSxQjcL6OHHJM8rVks
+zKHg2nA/2ikX9N6a+6TX3VkJkf9yPZb88S41onQuCfysW+tlmDYW9r4Nxp0U91bw
+vKs/uwsnzIY/ezGr3v8u82vqzyejMi3/ABqFiO+tlC4TNQj5wqZhiE/FXBZi30J5
+p/xcN6Pj8cNtAYWcPSd2kzBuLdqT9SF1XHRdMbtItkHYMJ3WIAo=
+=rpQu
+-----END PGP SIGNATURE-----
+
+--+QahgC5+KEYLbs62--
