@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0687F2B334
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2019 13:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C7A72B336
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2019 13:27:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726115AbfE0L1a (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 May 2019 07:27:30 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:35293 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726627AbfE0L1a (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 May 2019 07:27:30 -0400
-Received: by mail-wr1-f65.google.com with SMTP id m3so16592444wrv.2
-        for <linux-acpi@vger.kernel.org>; Mon, 27 May 2019 04:27:28 -0700 (PDT)
+        id S1726693AbfE0L1b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 May 2019 07:27:31 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:40212 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726678AbfE0L1b (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 May 2019 07:27:31 -0400
+Received: by mail-wr1-f66.google.com with SMTP id t4so8300702wrx.7
+        for <linux-acpi@vger.kernel.org>; Mon, 27 May 2019 04:27:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=pKi5I0CJ2X5BwXo9XUNw8Vf2df15TmcuH8E+kJajjPM=;
-        b=sim4f/+0M6hyPlAu9JEJF6ab6YBU9dpZnMdeKmnIMIkLoCJzRZqS+78KibKroDfuto
-         ebgvxg/PCgDh69ige4loWXKOwSc4TIdOZ+0rnNqGW3yCwrr5TirBVl/NgllyRrTD1Zp+
-         uq9dIjXKWfXQNWtEgrfb3Ac8vNOCgwRvrrIsMwGpQRXInQZm7lOQjJe8TvELVv7cYcGe
-         eMdadgQ2HizkBWsIYuyqEbKxjaku7BBqZLqU9J71DXn1TU5NbNJ6fqggyLfXuwBB5qT0
-         NQG0nhZEhUK+oQplf7r2ufho7xHk3Rkk4uBW2Xhp+YUaIuN2RJBWc7+zGmxFn5zfBdlj
-         0sBw==
+        bh=9EPMw9ZDt6r9OnVuoXUM9uuIE5EfX0cbi1r9IY8+97M=;
+        b=QwirmDGBiji1JuzbW6wei+YUkJRNV7UyseHQtII77EPKytrbdGHXVZVF5OqKoqqXR8
+         FcunUebz7zm7cad7SWqWjao8rKXcRbRL7lLb0YymFhJBvdwHRuEz6MNcp3/sFDchwtdX
+         b3hzKBrBeeqH1cSC39RhONf4Jo+xAIJXEnDVVuE/W6Vmjnm2NISvQ2K04Yk1uws/O/CA
+         a9MYK4Rvj2o/EYDvY/Usu2nn7U7SjpMVON931OxVcB1kfM/Zrt08+liOEFb3qPupgU7X
+         0HuIbbM4c08DaOq09GcdTASL6t1b8uoVK7uYJcTA3lDW4e9cG2M/y2iNDXNY4Sgq8mCs
+         G5Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=pKi5I0CJ2X5BwXo9XUNw8Vf2df15TmcuH8E+kJajjPM=;
-        b=apU0owNjU2RfxUrDywAFn/CHwsVdN/2xG6jPveUjbHtzdgCeAgrPtO0zRWTgfx2I5B
-         5xgia8Ik3m/6C/J43gY+moqsRQ+JzjHHrLibMVsItZQNs6tRtkULXsfoUYFKRpCKN6y9
-         jK3H5SW/xIOVyhRmBGpSpCc6N9Ib4OvhfMoo1t68qnKvDG5eAWALxOb0Jf3/C5qCmG5T
-         To6bksLHneVTsivDoqmaQdb3WhyDBxoFIrxYOP+tNR7bUH7vpO7GCTPeMTFLWGXpjWmj
-         37cH4OlJ02pqlOh7fkjTdKPYoSOEXE5gDL4PUEu+lEPZVGutsusa0WrJPiqIsW5TvqQd
-         X1wQ==
-X-Gm-Message-State: APjAAAVIrkVvad9L4myYoaGZF0OzHH0cDL0Lha9uaaA3bTU+nkKXVtFS
-        cOzfE+a0RO52CBN6VXTKJAD71g==
-X-Google-Smtp-Source: APXvYqw8SpCd+M4jJyq7zUwyAoqTgJjIobKM8rD3YiFtd56bz9HkfCXw5eBbjkgOO1RpXxVXLBy4pQ==
-X-Received: by 2002:adf:ef8d:: with SMTP id d13mr5588247wro.60.1558956448042;
-        Mon, 27 May 2019 04:27:28 -0700 (PDT)
+        bh=9EPMw9ZDt6r9OnVuoXUM9uuIE5EfX0cbi1r9IY8+97M=;
+        b=Bj03WDZ7/mnIXaUEhKUGs1CJJWKP1TyjJktytlMyFvj7tyTFo22ZmsPwKM5LVo26im
+         ugAgnd1kzypIGVfJj83vFUS2KtJqY7XKQxYht4J49HAbImIgXI+9LX7l5t2BAmQhL5Rg
+         8lFstYvbSDywvqXuXYh5HVq8LY1+loKZeZYU4QfdazzQ/wzmIRfeNcnCD3HUHLWgXKVM
+         hCwFcFQMyXP23gsOOSBmklVwT0EkndXmWO5nZssIwWSTxej4LxYjk9qHefmqlj4tH+Mh
+         D4SZWr6aQpiNyOmgQ6GwNbitl9gxdsv2rUmeafqOK82goEQ9l+lfKmVPe3B9PMu3qYvV
+         z5ww==
+X-Gm-Message-State: APjAAAX+lox18Nv3R6MQE3F24W0bzw4FBs4On7vyYnnpTr72QGMqOdHf
+        H24Mk6AyHcyBZO85mAnngJoE/Q==
+X-Google-Smtp-Source: APXvYqzTfClU/CiJaI98gbBQk9qFq+qk2vEqBO1yGu7b5coS9RX+IzQBWrCPVrrfSDCMo91F/Ygomg==
+X-Received: by 2002:a5d:6807:: with SMTP id w7mr7222991wru.336.1558956449254;
+        Mon, 27 May 2019 04:27:29 -0700 (PDT)
 Received: from sudo.home ([2a01:cb1d:112:6f00:ccdd:dadc:1517:f416])
-        by smtp.gmail.com with ESMTPSA id l6sm9677747wmi.24.2019.05.27.04.27.26
+        by smtp.gmail.com with ESMTPSA id l6sm9677747wmi.24.2019.05.27.04.27.28
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 27 May 2019 04:27:27 -0700 (PDT)
+        Mon, 27 May 2019 04:27:28 -0700 (PDT)
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
@@ -56,9 +56,9 @@ Cc:     linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>
-Subject: [PATCH v3 2/4] irqchip/exiu: preparatory refactor for ACPI support
-Date:   Mon, 27 May 2019 13:27:18 +0200
-Message-Id: <20190527112720.2266-3-ard.biesheuvel@linaro.org>
+Subject: [PATCH v3 3/4] irqchip/exiu: implement ACPI support
+Date:   Mon, 27 May 2019 13:27:19 +0200
+Message-Id: <20190527112720.2266-4-ard.biesheuvel@linaro.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190527112720.2266-1-ard.biesheuvel@linaro.org>
 References: <20190527112720.2266-1-ard.biesheuvel@linaro.org>
@@ -69,127 +69,126 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In preparation of adding support for EXIU controller devices described
-via ACPI, split the DT init function in a DT specific and a generic part,
-where the latter will be reused for ACPI support later.
+Expose the existing EXIU hierarchical irqchip domain code to permit
+the interrupt controller to be used as the irqchip component of a
+GPIO controller on ACPI systems, or as the target of ordinary
+interrupt resources.
 
 Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 ---
- drivers/irqchip/irq-sni-exiu.c | 66 +++++++++++++-------
- 1 file changed, 43 insertions(+), 23 deletions(-)
+ drivers/irqchip/irq-sni-exiu.c | 76 +++++++++++++++++---
+ 1 file changed, 68 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/irqchip/irq-sni-exiu.c b/drivers/irqchip/irq-sni-exiu.c
-index 1927b2f36ff6..fef7c2437dfb 100644
+index fef7c2437dfb..30a323a2b332 100644
 --- a/drivers/irqchip/irq-sni-exiu.c
 +++ b/drivers/irqchip/irq-sni-exiu.c
-@@ -1,7 +1,7 @@
- /*
-  * Driver for Socionext External Interrupt Unit (EXIU)
-  *
-- * Copyright (c) 2017 Linaro, Ltd. <ard.biesheuvel@linaro.org>
-+ * Copyright (c) 2017-2019 Linaro, Ltd. <ard.biesheuvel@linaro.org>
-  *
-  * Based on irq-tegra.c:
-  *   Copyright (C) 2011 Google, Inc.
-@@ -167,35 +167,23 @@ static const struct irq_domain_ops exiu_domain_ops = {
- 	.free		= irq_domain_free_irqs_common,
- };
+@@ -20,6 +20,7 @@
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
++#include <linux/platform_device.h>
  
--static int __init exiu_init(struct device_node *node,
--			    struct device_node *parent)
-+static struct exiu_irq_data *exiu_init(const struct fwnode_handle *fwnode,
-+				       struct resource *res)
- {
--	struct irq_domain *parent_domain, *domain;
- 	struct exiu_irq_data *data;
- 	int err;
+ #include <dt-bindings/interrupt-controller/arm-gic.h>
  
--	if (!parent) {
--		pr_err("%pOF: no parent, giving up\n", node);
--		return -ENODEV;
--	}
--
--	parent_domain = irq_find_host(parent);
--	if (!parent_domain) {
--		pr_err("%pOF: unable to obtain parent domain\n", node);
--		return -ENXIO;
--	}
--
- 	data = kzalloc(sizeof(*data), GFP_KERNEL);
- 	if (!data)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
+@@ -134,9 +135,13 @@ static int exiu_domain_translate(struct irq_domain *domain,
  
--	if (of_property_read_u32(node, "socionext,spi-base", &data->spi_base)) {
--		pr_err("%pOF: failed to parse 'spi-base' property\n", node);
-+	if (fwnode_property_read_u32_array(fwnode, "socionext,spi-base",
-+					   &data->spi_base, 1)) {
- 		err = -ENODEV;
- 		goto out_free;
+ 		*hwirq = fwspec->param[1] - info->spi_base;
+ 		*type = fwspec->param[2] & IRQ_TYPE_SENSE_MASK;
+-		return 0;
++	} else {
++		if (fwspec->param_count != 2)
++			return -EINVAL;
++		*hwirq = fwspec->param[0];
++		*type = fwspec->param[2] & IRQ_TYPE_SENSE_MASK;
  	}
+-	return -EINVAL;
++	return 0;
+ }
  
--	data->base = of_iomap(node, 0);
-+	data->base = ioremap(res->start, resource_size(res));
- 	if (!data->base) {
- 		err = -ENODEV;
- 		goto out_free;
-@@ -205,11 +193,44 @@ static int __init exiu_init(struct device_node *node,
- 	writel_relaxed(0xFFFFFFFF, data->base + EIREQCLR);
- 	writel_relaxed(0xFFFFFFFF, data->base + EIMASK);
+ static int exiu_domain_alloc(struct irq_domain *dom, unsigned int virq,
+@@ -147,16 +152,21 @@ static int exiu_domain_alloc(struct irq_domain *dom, unsigned int virq,
+ 	struct exiu_irq_data *info = dom->host_data;
+ 	irq_hw_number_t hwirq;
  
-+	return data;
+-	if (fwspec->param_count != 3)
+-		return -EINVAL;	/* Not GIC compliant */
+-	if (fwspec->param[0] != GIC_SPI)
+-		return -EINVAL;	/* No PPI should point to this domain */
++	parent_fwspec = *fwspec;
++	if (is_of_node(dom->parent->fwnode)) {
++		if (fwspec->param_count != 3)
++			return -EINVAL;	/* Not GIC compliant */
++		if (fwspec->param[0] != GIC_SPI)
++			return -EINVAL;	/* No PPI should point to this domain */
+ 
++		hwirq = fwspec->param[1] - info->spi_base;
++	} else {
++		hwirq = fwspec->param[0];
++		parent_fwspec.param[0] = hwirq + info->spi_base + 32;
++	}
+ 	WARN_ON(nr_irqs != 1);
+-	hwirq = fwspec->param[1] - info->spi_base;
+ 	irq_domain_set_hwirq_and_chip(dom, virq, hwirq, &exiu_irq_chip, info);
+ 
+-	parent_fwspec = *fwspec;
+ 	parent_fwspec.fwnode = dom->parent->fwnode;
+ 	return irq_domain_alloc_irqs_parent(dom, virq, nr_irqs, &parent_fwspec);
+ }
+@@ -245,3 +255,53 @@ static int __init exiu_dt_init(struct device_node *node,
+ 	return -ENOMEM;
+ }
+ IRQCHIP_DECLARE(exiu, "socionext,synquacer-exiu", exiu_dt_init);
 +
-+out_free:
-+	kfree(data);
-+	return ERR_PTR(err);
-+}
-+
-+static int __init exiu_dt_init(struct device_node *node,
-+			       struct device_node *parent)
++#ifdef CONFIG_ACPI
++static int exiu_acpi_probe(struct platform_device *pdev)
 +{
-+	struct irq_domain *parent_domain, *domain;
++	struct irq_domain *domain;
 +	struct exiu_irq_data *data;
-+	struct resource res;
++	struct resource *res;
 +
-+	if (!parent) {
-+		pr_err("%pOF: no parent, giving up\n", node);
-+		return -ENODEV;
-+	}
-+
-+	parent_domain = irq_find_host(parent);
-+	if (!parent_domain) {
-+		pr_err("%pOF: unable to obtain parent domain\n", node);
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res) {
++		dev_err(&pdev->dev, "failed to parse memory resource\n");
 +		return -ENXIO;
 +	}
 +
-+	if (of_address_to_resource(node, 0, &res)) {
-+		pr_err("%pOF: failed to parse memory resource\n", node);
-+		return -ENXIO;
-+	}
-+
-+	data = exiu_init(of_node_to_fwnode(node), &res);
++	data = exiu_init(dev_fwnode(&pdev->dev), res);
 +	if (IS_ERR(data))
 +		return PTR_ERR(data);
 +
- 	domain = irq_domain_add_hierarchy(parent_domain, 0, NUM_IRQS, node,
- 					  &exiu_domain_ops, data);
- 	if (!domain) {
- 		pr_err("%pOF: failed to allocate domain\n", node);
--		err = -ENOMEM;
- 		goto out_unmap;
- 	}
- 
-@@ -220,8 +241,7 @@ static int __init exiu_init(struct device_node *node,
- 
- out_unmap:
- 	iounmap(data->base);
--out_free:
- 	kfree(data);
--	return err;
++	domain = acpi_irq_create_hierarchy(0, NUM_IRQS, dev_fwnode(&pdev->dev),
++					   &exiu_domain_ops, data);
++	if (!domain) {
++		dev_err(&pdev->dev, "failed to create IRQ domain\n");
++		goto out_unmap;
++	}
++
++	dev_info(&pdev->dev, "%d interrupts forwarded\n", NUM_IRQS);
++
++	return 0;
++
++out_unmap:
++	iounmap(data->base);
++	kfree(data);
 +	return -ENOMEM;
- }
--IRQCHIP_DECLARE(exiu, "socionext,synquacer-exiu", exiu_init);
-+IRQCHIP_DECLARE(exiu, "socionext,synquacer-exiu", exiu_dt_init);
++}
++
++static const struct acpi_device_id exiu_acpi_ids[] = {
++	{ "SCX0008" },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(acpi, exiu_acpi_ids);
++
++static struct platform_driver exiu_driver = {
++	.driver = {
++		.name = "exiu",
++		.acpi_match_table = exiu_acpi_ids,
++	},
++	.probe = exiu_acpi_probe,
++};
++builtin_platform_driver(exiu_driver);
++#endif
 -- 
 2.20.1
 
