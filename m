@@ -2,60 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CC3B2C78B
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2019 15:12:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5AA32C78C
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2019 15:12:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726985AbfE1NMs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 May 2019 09:12:48 -0400
-Received: from mail-it1-f194.google.com ([209.85.166.194]:51914 "EHLO
+        id S1727054AbfE1NM5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 May 2019 09:12:57 -0400
+Received: from mail-it1-f194.google.com ([209.85.166.194]:37218 "EHLO
         mail-it1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726620AbfE1NMs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 May 2019 09:12:48 -0400
-Received: by mail-it1-f194.google.com with SMTP id m3so4235202itl.1
-        for <linux-acpi@vger.kernel.org>; Tue, 28 May 2019 06:12:47 -0700 (PDT)
+        with ESMTP id S1726620AbfE1NM5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 May 2019 09:12:57 -0400
+Received: by mail-it1-f194.google.com with SMTP id m140so3790763itg.2
+        for <linux-acpi@vger.kernel.org>; Tue, 28 May 2019 06:12:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ch6XsF4UkVDwbCtK10AE8N7qp77v0YkcnUzTiE/e8Wo=;
-        b=UDHPDd6eadbAHYaP04Cm1XVM2x1yZoC0tAY4rfUmppJ96IeB9CdtarAqp26BGa1wNm
-         EIIaAqWORDZNx/Eon9VS6GbvD4pOEXFnggl0fe1H9zbqLNEQvdv44lP7kwOqgjoBVqEN
-         g9k5/ha0yYhZdGCRp08+rNai+C+qISbz64aHwjZtFR+X+UbF2XArTc+0mJuVUr4rUMfg
-         suuEWe8fn6oKmbciozq2nCYcHcnMDIUTFH/1fkFuJ4b/DNY/ZoRVuxlWrAJMVpS2Cv18
-         1jCYgODJS/naqPgxQwREU6vqcws1Yfh78Hn6Qabwx1GpKYPF7Xm7HzK4f57BRLIyaGpQ
-         sPnA==
+        bh=LGidpikOk3gFKCEpFN2Vpze39VdGj7YWoOUOht53ZfY=;
+        b=oV86f4NqmhlHkcJh2rWNymzheFl8WV2TPMwq9FwNwZcPBEInGaL/uPUrCPKG/3KOhk
+         2L+nSHnGap6rGYFoTnt1r+ThdpkRjZcbrg8OfEJ8XsZaZPjH6c0KWRlF7A0ziu3S5zpO
+         XL1OwyFZHLBENGonYAc5AQ2cFXYOGMCE8WbvyVZfwot2KVjp/IOou112vdblLSdxxEox
+         8MLlZ8h4zs9K8rtuiPinav5hcX3a6Gkl5x8ZR5lOBg+K50V3yg9etiiuJhi/0ny3bOwt
+         9TzdVC9eYixxom6i85+fM4uRLAOD4BQ2PuFZ7uvCI60p43i8EM87ybRtbKBuZJN70p8H
+         1ppQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ch6XsF4UkVDwbCtK10AE8N7qp77v0YkcnUzTiE/e8Wo=;
-        b=T7xJfZJyz7titvtsHpbf7MpcIKSCn6Lzz2VNQe5JMY5XDTsFCvj68XuKiLC6ID4uFF
-         BDYBKneXXt7LnablCO05z0lD6+gUwtxcyqNSRg3vkHIZJ91Rj/NF0xFyF7lWM4yKxLe0
-         GAlMPvpDFraHqycuiamGl9xdl6SUWw4lX8Ka5EW0qITjwS5ZHMAmT3S254H60OTLYcEj
-         I+/r17avm7GYhzB28K166RZIfMRUPy7yfTusInuWDcSbVc3YC3FnW9m9b5yIkt7Sqtp2
-         g7JREb3uJn0OzZPLAt46SfchpdgOuGgNAB5C0nGjRBTIoGkclls32cuOAPSog31kmiLf
-         yhHA==
-X-Gm-Message-State: APjAAAULE9+1nilCiPUXtkHT3aGqgVRi8QOHYVYVLaFy+kSjCC7OjupA
-        6zLoBe9p/5VjcidIKkk1KOp/maCfremKHhHZYRJHV05oFuA=
-X-Google-Smtp-Source: APXvYqxLB1pPADB1FNuibHAgC0X75X9+avjoPthNYmISUQ4GARPimb8jbgaZz2VKax2H1f0/5DqrH9zrGOFDmB0KMxQ=
-X-Received: by 2002:a24:910b:: with SMTP id i11mr3270618ite.76.1559049166968;
- Tue, 28 May 2019 06:12:46 -0700 (PDT)
+        bh=LGidpikOk3gFKCEpFN2Vpze39VdGj7YWoOUOht53ZfY=;
+        b=qifOd4h3QwYvt/t6xdhCuORSFgOqR8beSxD6X1+MSzebyo6aTfXBMrAGZAMtSbuabR
+         wbNx938XWDZzcR1plIWt9F8CWA2ZHS49DwqmIIkgckQXaUDsd56O43OYJzyHnFPXxu8D
+         F2wGpdwtOH00SSEsHXxsZDXb5MP5ooYEfTznYtacGCQm0es+bJGP3+XI69wVefA0byyz
+         X6aDJTiiZ65IJjlkWAONVB1KjrWX9SPIPCiH4aYd4XaYoEZ9mbCdsJHuvCaQLqUdqm4l
+         7LVeYFhNb9Rs9o+eOYt6SnWqXKFW6ANkZW1KUTIoQrnZb32mrCSjR7KhABVQ305B5JLl
+         ekLg==
+X-Gm-Message-State: APjAAAXRjntmMOu8Bkf2hZkPLNTZ3V6EovQNs/6VTkocexORIm9ZcrJG
+        /qz6YtbQrm7ORJFYJoHgndvbkecysDFVSDVoLhj/3g==
+X-Google-Smtp-Source: APXvYqxh9xMHBYVyEjG0Z0MufOg7ad/5kV8XBfdSlA9dhu8netpmbxXVs3EleLkHkvEmdLU0lp0CSUw9JLEOfidkstg=
+X-Received: by 2002:a24:d00e:: with SMTP id m14mr2792618itg.153.1559049176014;
+ Tue, 28 May 2019 06:12:56 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190527112720.2266-1-ard.biesheuvel@linaro.org>
- <20190527112720.2266-2-ard.biesheuvel@linaro.org> <20190528130247.GA25151@redmoon>
-In-Reply-To: <20190528130247.GA25151@redmoon>
+ <20190527112720.2266-2-ard.biesheuvel@linaro.org> <1c3213ed-bdd6-755e-9cb9-693943410326@arm.com>
+In-Reply-To: <1c3213ed-bdd6-755e-9cb9-693943410326@arm.com>
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Tue, 28 May 2019 15:12:34 +0200
-Message-ID: <CAKv+Gu8ci4ksq0ZHi1Ngdejjx1dKsdfL3ruYjTwu+hyXigOHYQ@mail.gmail.com>
+Date:   Tue, 28 May 2019 15:12:42 +0200
+Message-ID: <CAKv+Gu898dbWjdE8a8_KrhcWfrDmOP81NxWwDpACMvER5LZ0=A@mail.gmail.com>
 Subject: Re: [PATCH v3 1/4] acpi/irq: implement helper to create hierachical domains
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Marc Zyngier <marc.zyngier@arm.com>
 Cc:     linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
         Masahisa Kojima <masahisa.kojima@linaro.org>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
         Graeme Gregory <graeme.gregory@linaro.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>
@@ -65,10 +65,11 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 28 May 2019 at 15:02, Lorenzo Pieralisi
-<lorenzo.pieralisi@arm.com> wrote:
+On Tue, 28 May 2019 at 14:54, Marc Zyngier <marc.zyngier@arm.com> wrote:
 >
-> On Mon, May 27, 2019 at 01:27:17PM +0200, Ard Biesheuvel wrote:
+> Hi Ard,
+>
+> On 27/05/2019 12:27, Ard Biesheuvel wrote:
 > > ACPI permits arbitrary producer->consumer interrupt links to be
 > > described in AML, which means a topology such as the following
 > > is perfectly legal:
@@ -108,23 +109,7 @@ On Tue, 28 May 2019 at 15:02, Lorenzo Pieralisi
 > > order to obtain the irqdomain reference when driving the EXIU in ACPI
 > > mode, we need a helper that implicitly grabs the default domain for
 > > unqualified interrupts as the parent of the hierarchy.
->
-> Nit: I do not think they are "unqualified".
->
-> ACPI 6.3, table 6-237, Extended Interrupt Descriptor Definition:
->
-> "Resource Source: (Optional) If present, the device that uses this
-> descriptor consumes its resources from the resources produces by the
-> named device object. If not present, the device consumes its resources
-> out of a global pool."
->
-> Where the global pool I _assume_ is the GSI domain, so it is the default
-> expected behaviour (for once :))
->
-
-By 'unqualified', I meant lacking an explicit description of the
-producer of the resource. But I can change the wording if you prefer.
-
+> >
 > > Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 > > ---
 > >  drivers/acpi/irq.c   | 20 ++++++++++++++++++++
@@ -143,10 +128,7 @@ producer of the resource. But I can change the wording if you prefer.
 > > +/**
 > > + * acpi_irq_create_hierarchy - Create a hierarchical IRQ domain with the default
 > > + *                             GSI domain as its parent.
->
-> Yes please comment parameters even if it is just a wrapper around
-> the IRQ domain API.
->
+> > + */
 > > +struct irq_domain *acpi_irq_create_hierarchy(unsigned int flags,
 > > +                                          unsigned int size,
 > > +                                          struct fwnode_handle *fwnode,
@@ -187,7 +169,18 @@ producer of the resource. But I can change the wording if you prefer.
 > >  #ifdef CONFIG_X86_IO_APIC
 > >  extern int acpi_get_override_irq(u32 gsi, int *trigger, int *polarity);
 > >  #else
+> >
 >
-> Reviewed-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> Should we consider exporting this function to modules?
+>
 
-Thanks,
+Good point, we probably should.
+
+
+> Otherwise (and with Mika's comments addressed), looks good to me.
+>
+> Thanks,
+>
+>         M.
+> --
+> Jazz is not dead. It just smells funny...
