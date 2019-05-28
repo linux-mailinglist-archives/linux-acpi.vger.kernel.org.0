@@ -2,197 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBD762C7D9
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2019 15:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60A4C2C8CE
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2019 16:29:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727467AbfE1NhD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 May 2019 09:37:03 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:37392 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727090AbfE1NhD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 May 2019 09:37:03 -0400
-Received: by mail-wm1-f68.google.com with SMTP id 7so2908200wmo.2
-        for <linux-acpi@vger.kernel.org>; Tue, 28 May 2019 06:37:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=bbidxiifh4zQbXF3+idClmgRZbbOXntRKLhQM+IruEA=;
-        b=g9r4++eHwLh867+bZIoekdLRqjajwptL/liJwhVXgwhBPKGDq91Utht30DkTs2rLA8
-         6XkZmrhQcku9bdDJTCKfx17EMKG6UICuzY5+k7bio0APavWFb1UXXUtuLP23415dIlJ5
-         1/qnuMXVHlchnfPwtC4zFsD+ggvXQb4K49gfJ78eW6fOT59rbcBOhhFX8ApU8uOxMamh
-         BBsA6HpW9Srs9QxHDkGywSvzGNL4W/T9PYNBhPl9B0otlG7uEaS1eNIOICTLyXVwZ1+j
-         STdHEgUqufGyFsqmmYUwtRq+5AcF9kTkB+83hQpFzdP/ZS4VF9RRE0DEMTMpkXTkn+ab
-         4/mA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=bbidxiifh4zQbXF3+idClmgRZbbOXntRKLhQM+IruEA=;
-        b=h3ojB/wSlZylQ5Pd8yMjvG2SywqsglTiqJEAj4aRQzw97jt+meU6tmE35NCFYSgUEi
-         kANx0LV0HtWLgFlUxyV46BBj9ddr7z17ucklc8TaYt+9MdwUbSGOHjwteyqgLn1kxtoR
-         vgcuJzb6YE1BKNXUaUq1bjgsiRoDabUfNqvJFa6IZ4fEAiSyOnZBkKeNgOWuc+tBMwjf
-         oT5vfFhUKZgSF0bURN6tkMlpyqikGgs/abz9iv2kKcC8Kk/+dEqpYa+oApM2QFNpTTTo
-         Wdq1uU0DZ5BF2ysAToQ3Rvan4GmWPr6DGwKih+aixaOc3OGzfZRyrpgakxQMi0BDBwro
-         k/ow==
-X-Gm-Message-State: APjAAAUXlWRt5TWRtMCE6LL1rqOo4IYXkLjVjmOiMUjiik3pZd7AdZ+4
-        Ttq7Lr0Ohn2iS/0/lz9vVudbLQ==
-X-Google-Smtp-Source: APXvYqyI5qyGpNcVWlsS5O2+hF8OV81599UKPoaPWKuP93JFnxAM6YxqxifnXuT1dQl9Oboy3wZUSw==
-X-Received: by 2002:a7b:cbd8:: with SMTP id n24mr3221074wmi.2.1559050621491;
-        Tue, 28 May 2019 06:37:01 -0700 (PDT)
-Received: from sudo.home ([2a01:cb1d:112:6f00:c8c7:f81b:b165:1aa7])
-        by smtp.gmail.com with ESMTPSA id 95sm8652668wrk.70.2019.05.28.06.37.00
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 28 May 2019 06:37:00 -0700 (PDT)
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahisa Kojima <masahisa.kojima@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Graeme Gregory <graeme.gregory@linaro.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Subject: [PATCH v4 4/4] gpio: mb86s7x: enable ACPI support
-Date:   Tue, 28 May 2019 15:36:47 +0200
-Message-Id: <20190528133647.3362-5-ard.biesheuvel@linaro.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190528133647.3362-1-ard.biesheuvel@linaro.org>
-References: <20190528133647.3362-1-ard.biesheuvel@linaro.org>
+        id S1726619AbfE1O32 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 May 2019 10:29:28 -0400
+Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:32818 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726313AbfE1O32 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 28 May 2019 10:29:28 -0400
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+        by mx0b-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4SEOQsU028564;
+        Tue, 28 May 2019 09:29:02 -0500
+Authentication-Results: ppops.net;
+        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
+Received: from mail4.cirrus.com ([87.246.98.35])
+        by mx0b-001ae601.pphosted.com with ESMTP id 2sq24q3d7p-1;
+        Tue, 28 May 2019 09:29:01 -0500
+Received: from EDIEX02.ad.cirrus.com (ediex02.ad.cirrus.com [198.61.84.81])
+        by mail4.cirrus.com (Postfix) with ESMTP id 2EF7D611C8AF;
+        Tue, 28 May 2019 09:29:50 -0500 (CDT)
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Tue, 28 May
+ 2019 15:29:00 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
+ Transport; Tue, 28 May 2019 15:29:00 +0100
+Received: from algalon.ad.cirrus.com (algalon.ad.cirrus.com [198.90.251.122])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 6179444;
+        Tue, 28 May 2019 15:29:00 +0100 (BST)
+From:   Charles Keepax <ckeepax@opensource.cirrus.com>
+To:     <wsa@the-dreams.de>, <mika.westerberg@linux.intel.com>
+CC:     <jarkko.nikula@linux.intel.com>,
+        <andriy.shevchenko@linux.intel.com>, <linux-i2c@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <benjamin.tissoires@redhat.com>, <jbroadus@gmail.com>,
+        <patches@opensource.cirrus.com>
+Subject: [PATCH v3 1/6] i2c: core: Allow whole core to use i2c_dev_irq_from_resources
+Date:   Tue, 28 May 2019 15:28:55 +0100
+Message-ID: <20190528142900.24147-1-ckeepax@opensource.cirrus.com>
+X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=592 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905280094
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Make the mb86s7x GPIO block discoverable via ACPI. In addition, add
-support for ACPI GPIO interrupts routed via platform interrupts, by
-wiring the two together via the to_irq() gpiochip callback.
+Remove the static from i2c_dev_irq_from _resources so that other parts
+of the core code can use this helper function.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 ---
- drivers/gpio/gpio-mb86s7x.c | 51 +++++++++++++++++---
- 1 file changed, 44 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpio/gpio-mb86s7x.c b/drivers/gpio/gpio-mb86s7x.c
-index 9308081e0a4a..64027f57a8aa 100644
---- a/drivers/gpio/gpio-mb86s7x.c
-+++ b/drivers/gpio/gpio-mb86s7x.c
-@@ -14,6 +14,7 @@
-  *  GNU General Public License for more details.
-  */
+No changes since v2.
+
+Thanks,
+Charles
+
+ drivers/i2c/i2c-core-base.c | 4 ++--
+ drivers/i2c/i2c-core.h      | 2 ++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index d389d4fb0623a..84bf11b25a120 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -687,8 +687,8 @@ static void i2c_dev_set_name(struct i2c_adapter *adap,
+ 		     i2c_encode_flags_to_addr(client));
+ }
  
-+#include <linux/acpi.h>
- #include <linux/io.h>
- #include <linux/init.h>
- #include <linux/clk.h>
-@@ -27,6 +28,8 @@
- #include <linux/spinlock.h>
- #include <linux/slab.h>
+-static int i2c_dev_irq_from_resources(const struct resource *resources,
+-				      unsigned int num_resources)
++int i2c_dev_irq_from_resources(const struct resource *resources,
++			       unsigned int num_resources)
+ {
+ 	struct irq_data *irqd;
+ 	int i;
+diff --git a/drivers/i2c/i2c-core.h b/drivers/i2c/i2c-core.h
+index c88cfef813431..8f3a08dc73a25 100644
+--- a/drivers/i2c/i2c-core.h
++++ b/drivers/i2c/i2c-core.h
+@@ -28,6 +28,8 @@ extern struct list_head	__i2c_board_list;
+ extern int		__i2c_first_dynamic_bus_num;
  
-+#include "gpiolib.h"
-+
+ int i2c_check_7bit_addr_validity_strict(unsigned short addr);
++int i2c_dev_irq_from_resources(const struct resource *resources,
++			       unsigned int num_resources);
+ 
  /*
-  * Only first 8bits of a register correspond to each pin,
-  * so there are 4 registers for 32 pins.
-@@ -143,6 +146,20 @@ static void mb86s70_gpio_set(struct gpio_chip *gc, unsigned gpio, int value)
- 	spin_unlock_irqrestore(&gchip->lock, flags);
- }
- 
-+static int mb86s70_gpio_to_irq(struct gpio_chip *gc, unsigned int offset)
-+{
-+	int irq, index;
-+
-+	for (index = 0;; index++) {
-+		irq = platform_get_irq(to_platform_device(gc->parent), index);
-+		if (irq <= 0)
-+			break;
-+		if (irq_get_irq_data(irq)->hwirq == offset)
-+			return irq;
-+	}
-+	return -EINVAL;
-+}
-+
- static int mb86s70_gpio_probe(struct platform_device *pdev)
- {
- 	struct mb86s70_gpio_chip *gchip;
-@@ -158,13 +175,15 @@ static int mb86s70_gpio_probe(struct platform_device *pdev)
- 	if (IS_ERR(gchip->base))
- 		return PTR_ERR(gchip->base);
- 
--	gchip->clk = devm_clk_get(&pdev->dev, NULL);
--	if (IS_ERR(gchip->clk))
--		return PTR_ERR(gchip->clk);
-+	if (!has_acpi_companion(&pdev->dev)) {
-+		gchip->clk = devm_clk_get(&pdev->dev, NULL);
-+		if (IS_ERR(gchip->clk))
-+			return PTR_ERR(gchip->clk);
- 
--	ret = clk_prepare_enable(gchip->clk);
--	if (ret)
--		return ret;
-+		ret = clk_prepare_enable(gchip->clk);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	spin_lock_init(&gchip->lock);
- 
-@@ -180,19 +199,28 @@ static int mb86s70_gpio_probe(struct platform_device *pdev)
- 	gchip->gc.parent = &pdev->dev;
- 	gchip->gc.base = -1;
- 
-+	if (has_acpi_companion(&pdev->dev))
-+		gchip->gc.to_irq = mb86s70_gpio_to_irq;
-+
- 	ret = gpiochip_add_data(&gchip->gc, gchip);
- 	if (ret) {
- 		dev_err(&pdev->dev, "couldn't register gpio driver\n");
- 		clk_disable_unprepare(gchip->clk);
-+		return ret;
- 	}
- 
--	return ret;
-+	if (has_acpi_companion(&pdev->dev))
-+		acpi_gpiochip_request_interrupts(&gchip->gc);
-+
-+	return 0;
- }
- 
- static int mb86s70_gpio_remove(struct platform_device *pdev)
- {
- 	struct mb86s70_gpio_chip *gchip = platform_get_drvdata(pdev);
- 
-+	if (has_acpi_companion(&pdev->dev))
-+		acpi_gpiochip_free_interrupts(&gchip->gc);
- 	gpiochip_remove(&gchip->gc);
- 	clk_disable_unprepare(gchip->clk);
- 
-@@ -205,10 +233,19 @@ static const struct of_device_id mb86s70_gpio_dt_ids[] = {
- };
- MODULE_DEVICE_TABLE(of, mb86s70_gpio_dt_ids);
- 
-+#ifdef CONFIG_ACPI
-+static const struct acpi_device_id mb86s70_gpio_acpi_ids[] = {
-+	{ "SCX0007" },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(acpi, mb86s70_gpio_acpi_ids);
-+#endif
-+
- static struct platform_driver mb86s70_gpio_driver = {
- 	.driver = {
- 		.name = "mb86s70-gpio",
- 		.of_match_table = mb86s70_gpio_dt_ids,
-+		.acpi_match_table = ACPI_PTR(mb86s70_gpio_acpi_ids),
- 	},
- 	.probe = mb86s70_gpio_probe,
- 	.remove = mb86s70_gpio_remove,
+  * We only allow atomic transfers for very late communication, e.g. to send
 -- 
-2.20.1
+2.11.0
 
