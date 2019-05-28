@@ -2,145 +2,204 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B17B2C56D
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2019 13:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBFD02C713
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2019 14:54:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726425AbfE1LcW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 May 2019 07:32:22 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:33632 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726234AbfE1LcW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 28 May 2019 07:32:22 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 66B21B82AD9FDEAAE061;
-        Tue, 28 May 2019 19:32:19 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.439.0; Tue, 28 May 2019
- 19:32:09 +0800
-Date:   Tue, 28 May 2019 12:31:58 +0100
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-CC:     =?ISO-8859-1?Q?J=E9r=F4me?= Glisse <jglisse@redhat.com>,
-        Keith Busch <keith.busch@intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>, <linuxarm@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 0/4 V3] ACPI: Support generic initiator proximity
+        id S1726973AbfE1Myk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 May 2019 08:54:40 -0400
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:56950 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726943AbfE1Myj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 28 May 2019 08:54:39 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 00C4480D;
+        Tue, 28 May 2019 05:54:39 -0700 (PDT)
+Received: from [10.1.197.61] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C48BB3F5AF;
+        Tue, 28 May 2019 05:54:33 -0700 (PDT)
+Subject: Re: [PATCH v3 1/4] acpi/irq: implement helper to create hierachical
  domains
-Message-ID: <20190528123158.0000167a@huawei.com>
-In-Reply-To: <20190415174907.102307-1-Jonathan.Cameron@huawei.com>
-References: <20190415174907.102307-1-Jonathan.Cameron@huawei.com>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Masahisa Kojima <masahisa.kojima@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Graeme Gregory <graeme.gregory@linaro.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+References: <20190527112720.2266-1-ard.biesheuvel@linaro.org>
+ <20190527112720.2266-2-ard.biesheuvel@linaro.org>
+From:   Marc Zyngier <marc.zyngier@arm.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=marc.zyngier@arm.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: ARM Ltd
+Message-ID: <1c3213ed-bdd6-755e-9cb9-693943410326@arm.com>
+Date:   Tue, 28 May 2019 13:54:31 +0100
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+In-Reply-To: <20190527112720.2266-2-ard.biesheuvel@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi All,
+Hi Ard,
 
-Anyone had a change to take a look at this?
+On 27/05/2019 12:27, Ard Biesheuvel wrote:
+> ACPI permits arbitrary producer->consumer interrupt links to be
+> described in AML, which means a topology such as the following
+> is perfectly legal:
+> 
+>   Device (EXIU) {
+>     Name (_HID, "SCX0008")
+>     Name (_UID, Zero)
+>     Name (_CRS, ResourceTemplate () {
+>       ...
+>     })
+>   }
+> 
+>   Device (GPIO) {
+>     Name (_HID, "SCX0007")
+>     Name (_UID, Zero)
+>     Name (_CRS, ResourceTemplate () {
+>       Memory32Fixed (ReadWrite, SYNQUACER_GPIO_BASE, SYNQUACER_GPIO_SIZE)
+>       Interrupt (ResourceConsumer, Edge, ActiveHigh, ExclusiveAndWake, 0, "\\_SB.EXIU") {
+>         7,
+>       }
+>     })
+>     ...
+>   }
+> 
+> The EXIU in this example is the external interrupt unit as can be found
+> on Socionext SynQuacer based platforms, which converts a block of 32 SPIs
+> from arbitrary polarity/trigger into level-high, with a separate set
+> of config/mask/unmask/clear controls.
+> 
+> The existing DT based driver in drivers/irqchip/irq-sni-exiu.c models
+> this as a hierarchical domain stacked on top of the GIC's irqdomain.
+> Since the GIC is modeled as a DT node as well, obtaining a reference
+> to this irqdomain is easily done by going through the parent link.
+> 
+> On ACPI systems, however, the GIC is not modeled as an object in the
+> namespace, and so device objects cannot refer to it directly. So in
+> order to obtain the irqdomain reference when driving the EXIU in ACPI
+> mode, we need a helper that implicitly grabs the default domain for
+> unqualified interrupts as the parent of the hierarchy.
+> 
+> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> ---
+>  drivers/acpi/irq.c   | 20 ++++++++++++++++++++
+>  include/linux/acpi.h |  7 +++++++
+>  2 files changed, 27 insertions(+)
+> 
+> diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
+> index c3b2222e2129..39824a6bbcd5 100644
+> --- a/drivers/acpi/irq.c
+> +++ b/drivers/acpi/irq.c
+> @@ -295,3 +295,23 @@ void __init acpi_set_irq_model(enum acpi_irq_model_id model,
+>  	acpi_irq_model = model;
+>  	acpi_gsi_domain_id = fwnode;
+>  }
+> +
+> +/**
+> + * acpi_irq_create_hierarchy - Create a hierarchical IRQ domain with the default
+> + *                             GSI domain as its parent.
+> + */
+> +struct irq_domain *acpi_irq_create_hierarchy(unsigned int flags,
+> +					     unsigned int size,
+> +					     struct fwnode_handle *fwnode,
+> +					     const struct irq_domain_ops *ops,
+> +					     void *host_data)
+> +{
+> +	struct irq_domain *d = irq_find_matching_fwnode(acpi_gsi_domain_id,
+> +							DOMAIN_BUS_ANY);
+> +
+> +	if (!d)
+> +		return NULL;
+> +
+> +	return irq_domain_create_hierarchy(d, flags, size, fwnode, ops,
+> +					   host_data);
+> +}
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 98440df7fe42..70de4bc30cea 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -23,6 +23,7 @@
+>  
+>  #include <linux/errno.h>
+>  #include <linux/ioport.h>	/* for struct resource */
+> +#include <linux/irqdomain.h>
+>  #include <linux/resource_ext.h>
+>  #include <linux/device.h>
+>  #include <linux/property.h>
+> @@ -327,6 +328,12 @@ int acpi_isa_irq_to_gsi (unsigned isa_irq, u32 *gsi);
+>  void acpi_set_irq_model(enum acpi_irq_model_id model,
+>  			struct fwnode_handle *fwnode);
+>  
+> +struct irq_domain *acpi_irq_create_hierarchy(unsigned int flags,
+> +					     unsigned int size,
+> +					     struct fwnode_handle *fwnode,
+> +					     const struct irq_domain_ops *ops,
+> +					     void *host_data);
+> +
+>  #ifdef CONFIG_X86_IO_APIC
+>  extern int acpi_get_override_irq(u32 gsi, int *trigger, int *polarity);
+>  #else
+> 
+
+Should we consider exporting this function to modules?
+
+Otherwise (and with Mika's comments addressed), looks good to me.
 
 Thanks,
 
-Jonathan
-
-On Tue, 16 Apr 2019 01:49:03 +0800
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
-
-> Changes since RFC V2.
-> * RFC dropped as now we have x86 support, so the lack of guards in in the
-> ACPI code etc should now be fine.
-> * Added x86 support.  Note this has only been tested on QEMU as I don't have
-> a convenient x86 NUMA machine to play with.  Note that this fitted together
-> rather differently form arm64 so I'm particularly interested in feedback
-> on the two solutions.
-> 
-> Since RFC V1.
-> * Fix incorrect interpretation of the ACPI entry noted by Keith Busch
-> * Use the acpica headers definitions that are now in mmotm.
-> 
-> It's worth noting that, to safely put a given device in a GI node, may
-> require changes to the existing drivers as it's not unusual to assume
-> you have local memory or processor core. There may be futher constraints
-> not yet covered by this patch.
-> 
-> Original cover letter...
-> 
-> ACPI 6.3 introduced a new entity that can be part of a NUMA proximity domain.
-> It may share such a domain with the existing options (memory, cpu etc) but it
-> may also exist on it's own.
-> 
-> The intent is to allow the description of the NUMA properties (particulary
-> via HMAT) of accelerators and other initiators of memory activity that are not
-> the host processor running the operating system.
-> 
-> This patch set introduces 'just enough' to make them work for arm64 and x86.
-> It should be trivial to support other architectures, I just don't suitable
-> NUMA systems readily available to test.
-> 
-> There are a few quirks that need to be considered.
-> 
-> 1. Fall back nodes
-> ******************
-> 
-> As pre ACPI 6.3 supporting operating systems do not have Generic Initiator
-> Proximity Domains it is possible to specify, via _PXM in DSDT that another
-> device is part of such a GI only node.  This currently blows up spectacularly.
-> 
-> Whilst we can obviously 'now' protect against such a situation (see the related
-> thread on PCI _PXM support and the  threadripper board identified there as
-> also falling into the  problem of using non existent nodes
-> https://patchwork.kernel.org/patch/10723311/ ), there is no way to  be sure
-> we will never have legacy OSes that are not protected  against this.  It would
-> also be 'non ideal' to fallback to  a default node as there may be a better
-> (non GI) node to pick  if GI nodes aren't available.
-> 
-> The work around is that we also have a new system wide OSC bit that allows
-> an operating system to 'annouce' that it supports Generic Initiators.  This
-> allows, the firmware to us DSDT magic to 'move' devices between the nodes
-> dependent on whether our new nodes are there or not.
-> 
-> 2. New ways of assigning a proximity domain for devices
-> *******************************************************
-> 
-> Until now, the only way firmware could indicate that a particular device
-> (outside the 'special' set of cpus etc) was to be found in a particular
-> Proximity Domain by the use of _PXM in DSDT.
-> 
-> That is equally valid with GI domains, but we have new options. The SRAT
-> affinity structure includes a handle (ACPI or PCI) to identify devices
-> with the system and specify their proximity domain that way.  If both _PXM
-> and this are provided, they should give the same answer.
-> 
-> For now this patch set completely ignores that feature as we don't need
-> it to start the discussion.  It will form a follow up set at some point
-> (if no one else fancies doing it).
-> 
-> Jonathan Cameron (4):
->   ACPI: Support Generic Initiator only domains
->   arm64: Support Generic Initiator only domains
->   x86: Support Generic Initiator only proximity domains
->   ACPI: Let ACPI know we support Generic Initiator Affinity Structures
-> 
->  arch/arm64/kernel/smp.c        |  8 +++++
->  arch/x86/include/asm/numa.h    |  2 ++
->  arch/x86/kernel/setup.c        |  1 +
->  arch/x86/mm/numa.c             | 14 ++++++++
->  drivers/acpi/bus.c             |  1 +
->  drivers/acpi/numa.c            | 62 +++++++++++++++++++++++++++++++++-
->  drivers/base/node.c            |  3 ++
->  include/asm-generic/topology.h |  3 ++
->  include/linux/acpi.h           |  1 +
->  include/linux/nodemask.h       |  1 +
->  include/linux/topology.h       |  7 ++++
->  11 files changed, 102 insertions(+), 1 deletion(-)
-> 
-
-
+	M.
+-- 
+Jazz is not dead. It just smells funny...
