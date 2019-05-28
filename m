@@ -2,85 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C7032C166
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2019 10:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A21A82C17B
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2019 10:38:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726614AbfE1IeO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 May 2019 04:34:14 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:32920 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726557AbfE1IeO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 May 2019 04:34:14 -0400
-Received: by mail-lf1-f68.google.com with SMTP id y17so6006782lfe.0
-        for <linux-acpi@vger.kernel.org>; Tue, 28 May 2019 01:34:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rQlVBElgqXAsDEjOxVj9oK5E1X6lwcA+b9Oa3dAIje4=;
-        b=udG6T27C4vdJ8zRIZhbkTWMPAJ+dtGnvQtSiuSdnq2ColNYCkE2PvnvMty+raYMKkH
-         79zqDkoEkMJF9R85zm4zDZKeR1iEwuZ1Rt2B+7EaLfrK3bS9lgX4yE9ilGZce6u7iY/f
-         /5zfPG8/NTnl9Di/S0ey7teztK73hy3mpScooR4aD5NS/9bOjXHjJ/SiVz9wVGIwqGft
-         i20oZVz4vT8ysrW4zdU3vX6l2KiyA4aHJQ4nuM69GH4ko2LsN8KqUlm77NE5fw8/4HDt
-         VMP57lwYrL2WWQqTCihljvptTWeMX9JPy/pgr/gUXnIqU/UewvjvBC6Pf0LBre7pVqZM
-         xgYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rQlVBElgqXAsDEjOxVj9oK5E1X6lwcA+b9Oa3dAIje4=;
-        b=pQpKvo3YSgV+9vHKyKynHr9dFjJ29gRGij34SOu5oT31Z5CzrdBdnKz5Q/zEk6EVRV
-         ItL9+iw/uRfKfQtbMRQMuGiJKNkFheTvSN3QMoKqJn+csw114w1aAaBdEgK2XH5dji/I
-         TyKJ+27f3p1/j3+MrbDBKl59N0XgzF9akwNlZxARaNO0tniSqgDho2fIv4su3uwdGUSi
-         SYdWOm3GQnrOk0M94HUJ89A0x7yGqepVbYn4H3DBsDYoTBsPzYCnydh0mc+eYiWZkQ4o
-         gqoQ+A1EjBPYD4gan8VIJCN054Hq+VpNaExbwM/na//dOeH8xFiwPL8qvhp2wNIeIEG6
-         Gk0w==
-X-Gm-Message-State: APjAAAX2Q1Ylc8Cqu8nkzbIhCT0DqjoZjx9rRF3u6m4RS/wUZd0hJWu4
-        1g3IrSU7hrl65eBTl6R0ZcffS1dvslmRw8g+QGzW0w==
-X-Google-Smtp-Source: APXvYqxEgjRjWENBkz7z95vx7w4Cpgl0m4NZZB0qQ+U9+mLZUVcLXmiPEJ9MA2A3h94RRT/FZGoGmDskw0N5eZFtLck=
-X-Received: by 2002:ac2:48a8:: with SMTP id u8mr11205394lfg.141.1559032452849;
- Tue, 28 May 2019 01:34:12 -0700 (PDT)
+        id S1726635AbfE1IiI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 May 2019 04:38:08 -0400
+Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:34852 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726557AbfE1IiI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 28 May 2019 04:38:08 -0400
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+        by mx0b-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4S8Ypex005799;
+        Tue, 28 May 2019 03:38:01 -0500
+Authentication-Results: ppops.net;
+        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
+Received: from mail1.cirrus.com (mail1.cirrus.com [141.131.3.20])
+        by mx0b-001ae601.pphosted.com with ESMTP id 2sq24q31hw-1;
+        Tue, 28 May 2019 03:38:01 -0500
+Received: from EDIEX02.ad.cirrus.com (unknown [198.61.84.81])
+        by mail1.cirrus.com (Postfix) with ESMTP id 995EB611C8B3;
+        Tue, 28 May 2019 03:38:00 -0500 (CDT)
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Tue, 28 May
+ 2019 09:38:00 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
+ Transport; Tue, 28 May 2019 09:38:00 +0100
+Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id EE3A22A1;
+        Tue, 28 May 2019 09:37:59 +0100 (BST)
+Date:   Tue, 28 May 2019 09:37:59 +0100
+From:   Charles Keepax <ckeepax@opensource.cirrus.com>
+To:     <wsa@the-dreams.de>, <mika.westerberg@linux.intel.com>
+CC:     <jarkko.nikula@linux.intel.com>,
+        <andriy.shevchenko@linux.intel.com>, <linux-i2c@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <benjamin.tissoires@redhat.com>, <jbroadus@gmail.com>,
+        <patches@opensource.cirrus.com>
+Subject: Re: [PATCH v2 3/6] i2c: acpi: Factor out getting the IRQ from ACPI
+Message-ID: <20190528083759.GE28362@ediswmail.ad.cirrus.com>
+References: <20190527151932.14310-1-ckeepax@opensource.cirrus.com>
+ <20190527151932.14310-3-ckeepax@opensource.cirrus.com>
 MIME-Version: 1.0
-References: <20190527112720.2266-1-ard.biesheuvel@linaro.org> <20190527112720.2266-5-ard.biesheuvel@linaro.org>
-In-Reply-To: <20190527112720.2266-5-ard.biesheuvel@linaro.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 28 May 2019 10:34:01 +0200
-Message-ID: <CACRpkdZt-AosWLPcwDQqi_2i4adDk-ioT3g3aTicyXiZpQOGGg@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] gpio: mb86s7x: enable ACPI support
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Masahisa Kojima <masahisa.kojima@linaro.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Graeme Gregory <graeme.gregory@linaro.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20190527151932.14310-3-ckeepax@opensource.cirrus.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=815 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905280058
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 27, 2019 at 1:27 PM Ard Biesheuvel
-<ard.biesheuvel@linaro.org> wrote:
+On Mon, May 27, 2019 at 04:19:29PM +0100, Charles Keepax wrote:
+> In preparation for future refactoring factor out the fetch of the IRQ
+> into its own helper function.
+> 
+> Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> ---
+>  
+> +static int i2c_acpi_get_irq(struct acpi_device *adev)
+> +{
+> +	struct list_head resource_list;
+> +	int irq = -ENOENT;
+> +	int ret;
+> +
+> +	INIT_LIST_HEAD(&resource_list);
+> +
+> +	ret = acpi_dev_get_resources(adev, &resource_list,
+> +				     i2c_acpi_add_resource, &irq);
+> +	if (ret < 0)
+> +		return -EINVAL;
+> +
+> +	acpi_dev_free_resource_list(&resource_list);
+> +
+> +	return irq;
+> +}
+> +
 
-> Make the mb86s7x GPIO block discoverable via ACPI. In addition, add
-> support for ACPI GPIO interrupts routed via platform interrupts, by
-> wiring the two together via the to_irq() gpiochip callback.
->
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Sorry just noticed I forgot to add the kernel doc. Will fix that
+up in the next spin, or do an incremental patch.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-
-I assume you want to merge this through the IRQ tree or the ACPI
-tree, so go ahead.
-
-If you want me to queue the whole thing in the GPIO tree just tell
-me (once we have the ACKs in place).
-
-Yours,
-Linus Walleij
+Thanks,
+Charles
