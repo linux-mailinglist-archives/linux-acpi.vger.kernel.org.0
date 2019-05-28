@@ -2,107 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 345412C8C7
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2019 16:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF1392D1E4
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2019 01:03:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726999AbfE1O3d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 May 2019 10:29:33 -0400
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:58700 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726789AbfE1O3d (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 28 May 2019 10:29:33 -0400
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4SEObVT014409;
-        Tue, 28 May 2019 09:29:02 -0500
-Authentication-Results: ppops.net;
-        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
-Received: from mail2.cirrus.com (mail2.cirrus.com [141.131.128.20])
-        by mx0a-001ae601.pphosted.com with ESMTP id 2sq340kgp2-1;
-        Tue, 28 May 2019 09:29:01 -0500
-Received: from EDIEX01.ad.cirrus.com (unknown [198.61.84.80])
-        by mail2.cirrus.com (Postfix) with ESMTP id 452A5605A6B0;
-        Tue, 28 May 2019 09:29:01 -0500 (CDT)
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Tue, 28 May
- 2019 15:29:00 +0100
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
- Transport; Tue, 28 May 2019 15:29:00 +0100
-Received: from algalon.ad.cirrus.com (algalon.ad.cirrus.com [198.90.251.122])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id A36DE2DA;
-        Tue, 28 May 2019 15:29:00 +0100 (BST)
-From:   Charles Keepax <ckeepax@opensource.cirrus.com>
-To:     <wsa@the-dreams.de>, <mika.westerberg@linux.intel.com>
-CC:     <jarkko.nikula@linux.intel.com>,
-        <andriy.shevchenko@linux.intel.com>, <linux-i2c@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <benjamin.tissoires@redhat.com>, <jbroadus@gmail.com>,
-        <patches@opensource.cirrus.com>
-Subject: [PATCH v3 6/6] i2c: core: Tidy up handling of init_irq
-Date:   Tue, 28 May 2019 15:29:00 +0100
-Message-ID: <20190528142900.24147-6-ckeepax@opensource.cirrus.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20190528142900.24147-1-ckeepax@opensource.cirrus.com>
-References: <20190528142900.24147-1-ckeepax@opensource.cirrus.com>
+        id S1727537AbfE1XCg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 May 2019 19:02:36 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:40845 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727768AbfE1XCf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 May 2019 19:02:35 -0400
+Received: by mail-pg1-f194.google.com with SMTP id d30so100393pgm.7
+        for <linux-acpi@vger.kernel.org>; Tue, 28 May 2019 16:02:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=babayev.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OsPnb68aqrZ2ZEL+Z6uQ/zgrptCfKlha02TX65CwO3k=;
+        b=ORAXNYMduQ2zCqLfbl+PxYq02uNrg1zkNt12Vxh3KYFmCaONYogJWuwMacCSmBUB3z
+         sUTcCbL2dIhxwLIWC8pm3Q1vlYhtC0pc+er+aNxdVUT0xOw1QAwpPv/mZHHGMeIglJmX
+         abhnqKEuJEkn7LnH0WEWffxTmLD/g8IBJZPio=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OsPnb68aqrZ2ZEL+Z6uQ/zgrptCfKlha02TX65CwO3k=;
+        b=RqYMzW3yzwWKFZEQLHrf40+7uEKmTFM5HHn6BgCMovA9RXc9DTlPdzi9+l48OfcQat
+         VacFQ1k9CNBOGRsTZcGe7Bli46WOGJD4CX/WPAdaSLWPo+vopEuRvVMfJ4tsyAodWW7e
+         QM9n/+RtTZckkBdIB3zzkPVuXHg2aSDSOd1R8ncFwYED2Hi3bUCbVGj40xcBkD5u0T7B
+         5QWkVGJxQAJFFgjCDjn61oAgYkr38p8JDt7g/oIDRyaWOmxte1pIM945y6ihaJVIzokZ
+         cbiRjWFDU+XEUFxcSX+b880o3feNU7XT4RvQRkddGPEd+wKthICQY8jXWgq9ML/HcWSz
+         3KZg==
+X-Gm-Message-State: APjAAAW6jm05Z8BUu6wWNd1RrFcRy4HZhzzHYXpqOgIHA2RKTc0Us75b
+        F8Qwc4W2Flzo4moArp7fWwywJQ==
+X-Google-Smtp-Source: APXvYqwoC/5IrkvcojJ1aNUdOQY1Rohcd2/rY0qY3WWwFrIz2yGjIqSW0v5fwGvlczNGaeU5LXG1cQ==
+X-Received: by 2002:a63:1e62:: with SMTP id p34mr49696657pgm.49.1559084554448;
+        Tue, 28 May 2019 16:02:34 -0700 (PDT)
+Received: from p50.cisco.com ([128.107.241.183])
+        by smtp.gmail.com with ESMTPSA id p16sm27028196pfq.153.2019.05.28.16.02.32
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 28 May 2019 16:02:33 -0700 (PDT)
+From:   Ruslan Babayev <ruslan@babayev.com>
+To:     mika.westerberg@linux.intel.com, wsa@the-dreams.de,
+        linux@armlinux.org.uk, andrew@lunn.ch, f.fainelli@gmail.com,
+        hkallweit1@gmail.com, davem@davemloft.net
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: [net-next,v4 0/2] Enable SFP on ACPI based systems
+Date:   Tue, 28 May 2019 16:02:31 -0700
+Message-Id: <20190528230233.26772-1-ruslan@babayev.com>
+X-Mailer: git-send-email 2.19.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905280094
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Only set init_irq during i2c_device_new and only handle client->irq on
-the probe/remove paths.
+Changes:
+v2:
+	- more descriptive commit body
+v3:
+	- made 'i2c_acpi_find_adapter_by_handle' static inline
+v4:
+	- don't initialize i2c_adapter to NULL. Instead see below...
+	- handle the case of neither DT nor ACPI present as invalid.
+	- alphabetical includes.
+	- use has_acpi_companion().
+	- use the same argument name in i2c_acpi_find_adapter_by_handle()
+	  in both stubbed and non-stubbed cases.
 
-Suggested-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
----
+Ruslan Babayev (2):
+  i2c: acpi: export i2c_acpi_find_adapter_by_handle
+  net: phy: sfp: enable i2c-bus detection on ACPI based systems
 
-No changes since v2.
+ drivers/i2c/i2c-core-acpi.c |  3 ++-
+ drivers/net/phy/sfp.c       | 35 +++++++++++++++++++++++++++--------
+ include/linux/i2c.h         |  6 ++++++
+ 3 files changed, 35 insertions(+), 9 deletions(-)
 
-Thanks,
-Charles
-
- drivers/i2c/i2c-core-base.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 684ea2665d994..6d4904cdf58ac 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -322,6 +322,8 @@ static int i2c_device_probe(struct device *dev)
- 
- 	driver = to_i2c_driver(dev->driver);
- 
-+	client->irq = client->init_irq;
-+
- 	if (!client->irq && !driver->disable_i2c_core_irq_mapping) {
- 		int irq = -ENOENT;
- 
-@@ -432,7 +434,7 @@ static int i2c_device_remove(struct device *dev)
- 	dev_pm_clear_wake_irq(&client->dev);
- 	device_init_wakeup(&client->dev, false);
- 
--	client->irq = client->init_irq;
-+	client->irq = 0;
- 	if (client->flags & I2C_CLIENT_HOST_NOTIFY)
- 		pm_runtime_put(&client->adapter->dev);
- 
-@@ -749,7 +751,6 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
- 	if (!client->init_irq)
- 		client->init_irq = i2c_dev_irq_from_resources(info->resources,
- 							 info->num_resources);
--	client->irq = client->init_irq;
- 
- 	strlcpy(client->name, info->type, sizeof(client->name));
- 
 -- 
-2.11.0
+2.19.2
 
