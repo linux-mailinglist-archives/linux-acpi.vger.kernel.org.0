@@ -2,110 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 484F62C535
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2019 13:14:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC8BA2C55D
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2019 13:26:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726400AbfE1LOX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 May 2019 07:14:23 -0400
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:44280 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726345AbfE1LOX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 28 May 2019 07:14:23 -0400
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4SB9FKR016551;
-        Tue, 28 May 2019 06:13:10 -0500
-Authentication-Results: ppops.net;
-        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
-Received: from mail1.cirrus.com (mail1.cirrus.com [141.131.3.20])
-        by mx0a-001ae601.pphosted.com with ESMTP id 2sq340k99g-1;
-        Tue, 28 May 2019 06:13:10 -0500
-Received: from EDIEX01.ad.cirrus.com (unknown [198.61.84.80])
-        by mail1.cirrus.com (Postfix) with ESMTP id 8C146611C8C0;
-        Tue, 28 May 2019 06:13:09 -0500 (CDT)
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Tue, 28 May
- 2019 12:13:08 +0100
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
- Transport; Tue, 28 May 2019 12:13:08 +0100
-Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id D534745;
-        Tue, 28 May 2019 12:13:08 +0100 (BST)
-Date:   Tue, 28 May 2019 12:13:08 +0100
-From:   Charles Keepax <ckeepax@opensource.cirrus.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-CC:     <wsa@the-dreams.de>, <jarkko.nikula@linux.intel.com>,
-        <andriy.shevchenko@linux.intel.com>, <linux-i2c@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <benjamin.tissoires@redhat.com>, <jbroadus@gmail.com>,
-        <patches@opensource.cirrus.com>
-Subject: Re: [PATCH v2 2/6] i2c: acpi: Use available IRQ helper functions
-Message-ID: <20190528111308.GF28362@ediswmail.ad.cirrus.com>
-References: <20190527151932.14310-1-ckeepax@opensource.cirrus.com>
- <20190527151932.14310-2-ckeepax@opensource.cirrus.com>
- <20190528103028.GA2781@lahna.fi.intel.com>
+        id S1726418AbfE1L0i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 May 2019 07:26:38 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:46573 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726400AbfE1L0i (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 May 2019 07:26:38 -0400
+Received: by mail-io1-f67.google.com with SMTP id q21so15364466iog.13
+        for <linux-acpi@vger.kernel.org>; Tue, 28 May 2019 04:26:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=f63H1f5vJ9qAhu7DFKNxQrE7HwrSDOZLpyEalUp3FmA=;
+        b=MoNcMVK+19rETeCSdS86WvUOF+QanmMuzgyz4USKjDCyqJy5ATxtytdNyWhLUhPzK7
+         3lLrA4eJp6EUT974Ua9jV0EW1h3qZbVDHKknvEVDD0yCnCqhV3q1+395Q30LTAn5kyK8
+         YJ/9sbJy+3/3jSrakrFSJGTunWBuqpSw9bTrYyQLBB2BB/1K8kUaCM1rOjXwFd8T1Kem
+         x5hrYzZwsa+/3J4oY99XIA70l/itoCfN5VdEhdJgMf5CBuZH+xrGEZNyswxjs+4JDpGK
+         x04m+SZ/gzISHQNxsntNIhWsx6Qp31qyqxvHeq1YNtXegLT6XWBd45+kOk48qErpubmi
+         DSjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=f63H1f5vJ9qAhu7DFKNxQrE7HwrSDOZLpyEalUp3FmA=;
+        b=s7fF7RPmxoM4gwfgBS6vQMFtimQuiQDVPS5EykYLC0k9qpWU/ECwpPPnqP1Uwlvdke
+         KZv0WTBTcxJOF9cmUefwFPlqxEf2t83oT0QbAmpmq6kVM3Ngey3PC8lX/5Bsa8W//xJD
+         BNMigQQ9F8yPKXKQE/LZBYrbEtPyGNk+o+nLGDwF06Xx5K8xL0M5H8kzD/43PUKwzsWJ
+         RdyIAGdDOHrQcw9wXgAF24SOPlakD+0zu6X33Kg9KGTrQ1YK12YiZ+0GQNT3VjjdVNiU
+         Fvs2clvAcQiffEZQX2RTqC4iZdKLIT+3hp79Nlf0ajnxcjgBfz/ZR8sx8xJYzp4UCO78
+         Abaw==
+X-Gm-Message-State: APjAAAU6EpB8fTlDSAgUvOyFZvj9UYRvERvA9fA9uryzpqU8PaJZAczo
+        eOFsjwCUzGbOO9V6aM3ysqBWDIhzWGNjXkiNMlzYYQ==
+X-Google-Smtp-Source: APXvYqxPxBqa6Q5trPqt6nLpEjrJvWagv+vXglYbTXmsfxK8aHVbZ7UlOoBk7J5fCcFuJ1NWlwPXJV7IrICxwnh16Ds=
+X-Received: by 2002:a05:6602:2109:: with SMTP id x9mr108496iox.128.1559042797766;
+ Tue, 28 May 2019 04:26:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20190528103028.GA2781@lahna.fi.intel.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=889 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905280073
+References: <20190527112720.2266-1-ard.biesheuvel@linaro.org>
+ <20190527112720.2266-5-ard.biesheuvel@linaro.org> <CACRpkdZt-AosWLPcwDQqi_2i4adDk-ioT3g3aTicyXiZpQOGGg@mail.gmail.com>
+In-Reply-To: <CACRpkdZt-AosWLPcwDQqi_2i4adDk-ioT3g3aTicyXiZpQOGGg@mail.gmail.com>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Tue, 28 May 2019 13:26:25 +0200
+Message-ID: <CAKv+Gu90dwSdLOwVFEuobSEAMYCS+ju8x-MDHVGng8OKG7taug@mail.gmail.com>
+Subject: Re: [PATCH v3 4/4] gpio: mb86s7x: enable ACPI support
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Masahisa Kojima <masahisa.kojima@linaro.org>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Graeme Gregory <graeme.gregory@linaro.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 28, 2019 at 01:30:28PM +0300, Mika Westerberg wrote:
-> On Mon, May 27, 2019 at 04:19:28PM +0100, Charles Keepax wrote:
-> >  static int i2c_acpi_get_info(struct acpi_device *adev,
-> >  			     struct i2c_board_info *info,
-> >  			     struct i2c_adapter *adapter,
-> >  			     acpi_handle *adapter_handle)
-> >  {
-> >  	struct list_head resource_list;
-> > -	struct resource_entry *entry;
-> >  	struct i2c_acpi_lookup lookup;
-> > +	int irq = -ENOENT;
-> >  	int ret;
-> >  
-> >  	memset(&lookup, 0, sizeof(lookup));
-> > @@ -176,16 +187,13 @@ static int i2c_acpi_get_info(struct acpi_device *adev,
-> >  
-> >  	/* Then fill IRQ number if any */
-> >  	INIT_LIST_HEAD(&resource_list);
-> > -	ret = acpi_dev_get_resources(adev, &resource_list, NULL, NULL);
-> > +	ret = acpi_dev_get_resources(adev, &resource_list,
-> > +				     i2c_acpi_add_resource, &irq);
-> >  	if (ret < 0)
-> >  		return -EINVAL;
-> >  
-> > -	resource_list_for_each_entry(entry, &resource_list) {
-> > -		if (resource_type(entry->res) == IORESOURCE_IRQ) {
-> > -			info->irq = entry->res->start;
-> > -			break;
-> > -		}
-> > -	}
-> > +	if (irq >= 0)
-> 
-> Since 0 is not valid IRQ, I think this should be written like:
-> 
-> 	if (irg > 0)
-> 
+On Tue, 28 May 2019 at 10:34, Linus Walleij <linus.walleij@linaro.org> wrote:
+>
+> On Mon, May 27, 2019 at 1:27 PM Ard Biesheuvel
+> <ard.biesheuvel@linaro.org> wrote:
+>
+> > Make the mb86s7x GPIO block discoverable via ACPI. In addition, add
+> > support for ACPI GPIO interrupts routed via platform interrupts, by
+> > wiring the two together via the to_irq() gpiochip callback.
+> >
+> > Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> > Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>
 
-Yeah sorry thought IRQs were like GPIOs where 0 is a valid
-number, will update the patches.
+Thanks.
 
-Thanks,
-Charles
-> > +		info->irq = irq;
-> >  
-> >  	acpi_dev_free_resource_list(&resource_list);
-> >  
-> > -- 
-> > 2.11.0
+> I assume you want to merge this through the IRQ tree or the ACPI
+> tree, so go ahead.
+>
+> If you want me to queue the whole thing in the GPIO tree just tell
+> me (once we have the ACKs in place).
+>
+
+Marc is willing to take the whole thing via the irqchip tree. I'll
+need to apply some tweaks though, so I'll send out a v4 shortly.
