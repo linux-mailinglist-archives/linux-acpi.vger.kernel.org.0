@@ -2,187 +2,190 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 140C02D97F
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2019 11:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A81762D9AF
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2019 11:55:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726080AbfE2Jvr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 May 2019 05:51:47 -0400
-Received: from pandora.armlinux.org.uk ([78.32.30.218]:52858 "EHLO
-        pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725914AbfE2Jvr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 May 2019 05:51:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=/f5EUi1XSNAC84dFYL879FX4cNgbBocAhTsspiFEMmM=; b=Mb/5bBw9hFyvPrY55boHa39rj
-        ib0qLtTMnflxzIhaiPSM+5tEWPJAvwnuevi6bjfDqdUykvTEJWa28IzySLFN4N+/qs/2DYEna8mFa
-        leqjBJ2EcRoFWRui0WuN+G62YwX1jGsH2PpMEKB1IwwwIM5/Co/LJjayb+13442iDMM2MW3UnRhcV
-        kueS+oGuk3VI2Ix1T1iwMHWjeIYAuaMu9aN9YU3+jcv6OQEQdtfgPK+DNn+JQTdskYue5UZSuOKhP
-        MTTVv5DkJCMgcwNd4DHKqWTboP511OfvEkUF9OO/bBIRaSWTcfWNwLxEx9NdETgWHOEiCtaL+ag5X
-        EgxjAOIhA==;
-Received: from shell.armlinux.org.uk ([2002:4e20:1eda:1:5054:ff:fe00:4ec]:38354)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.90_1)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1hVvFC-0003SV-LV; Wed, 29 May 2019 10:51:38 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.89)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1hVvF5-0004RQ-Gh; Wed, 29 May 2019 10:51:31 +0100
-Date:   Wed, 29 May 2019 10:51:31 +0100
-From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To:     Ruslan Babayev <ruslan@babayev.com>
-Cc:     mika.westerberg@linux.intel.com, wsa@the-dreams.de, andrew@lunn.ch,
-        f.fainelli@gmail.com, hkallweit1@gmail.com, davem@davemloft.net,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
-        xe-linux-external@cisco.com
-Subject: Re: [net-next,v4 2/2] net: phy: sfp: enable i2c-bus detection on
- ACPI based systems
-Message-ID: <20190529095131.ans67yioljyklqol@shell.armlinux.org.uk>
-References: <20190528230233.26772-1-ruslan@babayev.com>
- <20190528230233.26772-3-ruslan@babayev.com>
+        id S1725948AbfE2JzG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 May 2019 05:55:06 -0400
+Received: from mga17.intel.com ([192.55.52.151]:2229 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725861AbfE2JzF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 29 May 2019 05:55:05 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 May 2019 02:55:04 -0700
+X-ExtLoop1: 1
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 29 May 2019 02:55:01 -0700
+Received: by lahna (sSMTP sendmail emulation); Wed, 29 May 2019 12:55:00 +0300
+Date:   Wed, 29 May 2019 12:55:00 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     linux-spi@vger.kernel.org, broonie@kernel.org,
+        andy.shevchenko@gmail.com, masahisa.kojima@linaro.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: Re: [RFC PATCH] spi/acpi: enumerate all SPI slaves in the namespace
+Message-ID: <20190529095500.GG2781@lahna.fi.intel.com>
+References: <20190528164040.6781-1-ard.biesheuvel@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190528230233.26772-3-ruslan@babayev.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20190528164040.6781-1-ard.biesheuvel@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 28, 2019 at 04:02:33PM -0700, Ruslan Babayev wrote:
-> Lookup I2C adapter using the "i2c-bus" device property on ACPI based
-> systems similar to how it's done with DT.
-> 
-> An example DSD describing an SFP on an ACPI based system:
-> 
-> Device (SFP0)
-> {
->     Name (_HID, "PRP0001")
->     Name (_CRS, ResourceTemplate()
->     {
->         GpioIo(Exclusive, PullDefault, 0, 0, IoRestrictionNone,
->                "\\_SB.PCI0.RP01.GPIO", 0, ResourceConsumer)
->             { 0, 1, 2, 3, 4 }
->     })
->     Name (_DSD, Package ()
->     {
->         ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
->         Package () {
->             Package () { "compatible", "sff,sfp" },
->             Package () { "i2c-bus", \_SB.PCI0.RP01.I2C.MUX.CH0 },
->             Package () { "maximum-power-milliwatt", 1000 },
->             Package () { "tx-disable-gpios", Package () { ^SFP0, 0, 0, 1} },
->             Package () { "reset-gpio",       Package () { ^SFP0, 0, 1, 1} },
->             Package () { "mod-def0-gpios",   Package () { ^SFP0, 0, 2, 1} },
->             Package () { "tx-fault-gpios",   Package () { ^SFP0, 0, 3, 0} },
->             Package () { "los-gpios",        Package () { ^SFP0, 0, 4, 1} },
->         },
->     })
-> }
-> 
-> Device (PHY0)
-> {
->     Name (_HID, "PRP0001")
->     Name (_DSD, Package ()
->     {
->         ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
->         Package () {
->             Package () { "compatible", "ethernet-phy-ieee802.3-c45" },
->             Package () { "sfp", \_SB.PCI0.RP01.SFP0 },
->             Package () { "managed", "in-band-status" },
->             Package () { "phy-mode", "sgmii" },
->         },
->     })
-> }
-> 
-> Signed-off-by: Ruslan Babayev <ruslan@babayev.com>
-> Cc: xe-linux-external@cisco.com
++Rafael, Jarkko and linux-acpi.
 
-This looks fine now, thanks.
+On Tue, May 28, 2019 at 06:40:40PM +0200, Ard Biesheuvel wrote:
+> Currently, the ACPI enumeration that takes place when registering a
+> SPI master only considers immediate child devices in the ACPI namespace,
+> rather than checking the ResourceSource field in the SpiSerialBus()
+> resource descriptor.
+> 
+> This is incorrect: SPI slaves could reside anywhere in the ACPI
+> namespace, and so we should enumerate the entire namespace and look for
+> any device that refers to the newly registered SPI master in its
+> resource descriptor.
 
-Acked-by: Russell King <rmk+kernel@armlinux.org.uk>
+Yes, that's right.
 
+> In order to prevent potential regressions, retain the old code and run
+> it first. Only then, enumerate the entire namespace. Note that this
+> could result in child devices wrongly being associated with a SPI master
+> but this can only occur if a SPI master has a child device representing
+> a SPI slave that is connected to another master.
+
+I don't think we need to retain the old behavior here. We did the same
+already for I2C and I don't remember seeing any regressions. Also I have
+not seen too many real SPI slaves in ACPI based systems so most probably
+nobody even notices this change ;-)
+
+> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 > ---
->  drivers/net/phy/sfp.c | 35 +++++++++++++++++++++++++++--------
->  1 file changed, 27 insertions(+), 8 deletions(-)
+>  drivers/spi/spi.c | 75 ++++++++++++++++++--
+>  1 file changed, 69 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-> index d4635c2178d1..554acc869c25 100644
-> --- a/drivers/net/phy/sfp.c
-> +++ b/drivers/net/phy/sfp.c
-> @@ -1,4 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0
-> +#include <linux/acpi.h>
->  #include <linux/ctype.h>
->  #include <linux/delay.h>
->  #include <linux/gpio/consumer.h>
-> @@ -1782,6 +1783,7 @@ static void sfp_cleanup(void *data)
->  static int sfp_probe(struct platform_device *pdev)
->  {
->  	const struct sff_data *sff;
-> +	struct i2c_adapter *i2c;
->  	struct sfp *sfp;
->  	bool poll = false;
->  	int irq, err, i;
-> @@ -1801,7 +1803,6 @@ static int sfp_probe(struct platform_device *pdev)
->  	if (pdev->dev.of_node) {
->  		struct device_node *node = pdev->dev.of_node;
->  		const struct of_device_id *id;
-> -		struct i2c_adapter *i2c;
->  		struct device_node *np;
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 5e75944ad5d1..d2f4332d9cc3 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -1882,10 +1882,6 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+>  	struct spi_device *spi;
+>  	int ret;
 >  
->  		id = of_match_node(sfp_of_match, node);
-> @@ -1818,14 +1819,32 @@ static int sfp_probe(struct platform_device *pdev)
->  
->  		i2c = of_find_i2c_adapter_by_node(np);
->  		of_node_put(np);
-> -		if (!i2c)
-> -			return -EPROBE_DEFER;
+> -	if (acpi_bus_get_status(adev) || !adev->status.present ||
+> -	    acpi_device_enumerated(adev))
+> -		return AE_OK;
 > -
-> -		err = sfp_i2c_configure(sfp, i2c);
-> -		if (err < 0) {
-> -			i2c_put_adapter(i2c);
-> -			return err;
-> +	} else if (has_acpi_companion(&pdev->dev)) {
-> +		struct acpi_device *adev = ACPI_COMPANION(&pdev->dev);
-> +		struct fwnode_handle *fw = acpi_fwnode_handle(adev);
-> +		struct fwnode_reference_args args;
-> +		struct acpi_handle *acpi_handle;
-> +		int ret;
+>  	spi = spi_alloc_device(ctlr);
+>  	if (!spi) {
+>  		dev_err(&ctlr->dev, "failed to allocate SPI device for %s\n",
+> @@ -1927,18 +1923,64 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+>  	return AE_OK;
+>  }
+>  
+> +static acpi_status acpi_spi_add_child_device(acpi_handle handle, u32 level,
+> +					     void *data, void **return_value)
+> +{
+> +	struct spi_controller *ctlr = data;
+> +	struct acpi_device *adev;
 > +
-> +		ret = acpi_node_get_property_reference(fw, "i2c-bus", 0, &args);
-> +		if (ACPI_FAILURE(ret) || !is_acpi_device_node(args.fwnode)) {
-> +			dev_err(&pdev->dev, "missing 'i2c-bus' property\n");
-> +			return -ENODEV;
->  		}
+> +	if (acpi_bus_get_device(handle, &adev) ||
+> +	    acpi_bus_get_status(adev) ||
+> +	    !adev->status.present ||
+> +	    acpi_device_enumerated(adev))
+> +		return AE_OK;
 > +
-> +		acpi_handle = ACPI_HANDLE_FWNODE(args.fwnode);
-> +		i2c = i2c_acpi_find_adapter_by_handle(acpi_handle);
-> +	} else {
-> +		return -EINVAL;
+> +	return acpi_register_spi_device(ctlr, adev);
+> +}
+> +
+> +static int acpi_spi_check_parent(struct acpi_resource *ares, void *data)
+> +{
+> +	struct acpi_resource_spi_serialbus *sb;
+> +
+> +	if (ares->type != ACPI_RESOURCE_TYPE_SERIAL_BUS)
+> +		return 1;
+> +
+> +	sb = &ares->data.spi_serial_bus;
+> +
+> +	/* check whether this resource refers our controller */
+> +	acpi_get_handle(NULL, sb->resource_source.string_ptr, data);
+> +	return 1;
+> +}
+> +
+>  static acpi_status acpi_spi_add_device(acpi_handle handle, u32 level,
+>  				       void *data, void **return_value)
+>  {
+>  	struct spi_controller *ctlr = data;
+> +	acpi_handle parent_handle = NULL;
+> +	struct list_head resource_list;
+>  	struct acpi_device *adev;
+> +	int ret;
+>  
+> -	if (acpi_bus_get_device(handle, &adev))
+> +	if (acpi_bus_get_device(handle, &adev) ||
+> +	    acpi_bus_get_status(adev) ||
+> +	    !adev->status.present ||
+> +	    acpi_device_enumerated(adev))
+> +		return AE_OK;
+> +
+> +	INIT_LIST_HEAD(&resource_list);
+> +	ret = acpi_dev_get_resources(adev, &resource_list,
+> +				     acpi_spi_check_parent,
+> +				     &parent_handle);
+> +	acpi_dev_free_resource_list(&resource_list);
+> +
+> +	if (ret < 0 || ACPI_HANDLE(ctlr->dev.parent) != parent_handle)
+>  		return AE_OK;
+>  
+>  	return acpi_register_spi_device(ctlr, adev);
+>  }
+>  
+> +#define SPI_ACPI_ENUMERATE_MAX_DEPTH		32
+> +
+>  static void acpi_register_spi_devices(struct spi_controller *ctlr)
+>  {
+>  	acpi_status status;
+> @@ -1948,10 +1990,31 @@ static void acpi_register_spi_devices(struct spi_controller *ctlr)
+>  	if (!handle)
+>  		return;
+>  
+> +	/*
+> +	 * Enumerate child nodes of this controller. This logic is retained to
+> +	 * prevent potential regressions on systems where the ResourceSource of
+> +	 * a device's SpiSerialBus() resource does not refer to the parent SPI
+> +	 * controller device.
+> +	 */
+>  	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, 1,
+> +				     acpi_spi_add_child_device, NULL, ctlr,
+> +				     NULL);
+> +	if (ACPI_FAILURE(status)) {
+> +		dev_warn(&ctlr->dev, "failed to enumerate SPI children\n");
+> +		return;
 > +	}
 > +
-> +	if (!i2c)
-> +		return -EPROBE_DEFER;
-> +
-> +	err = sfp_i2c_configure(sfp, i2c);
-> +	if (err < 0) {
-> +		i2c_put_adapter(i2c);
-> +		return err;
->  	}
->  
->  	for (i = 0; i < GPIO_MAX; i++)
+> +	/*
+> +	 * Walk the entire namespace and enumerate all devices containing a
+> +	 * SpiSerialBus() resource whose ResourceSource argument refers to this
+> +	 * SPI controller device.
+> +	 */
+> +	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
+> +				     SPI_ACPI_ENUMERATE_MAX_DEPTH,
+>  				     acpi_spi_add_device, NULL, ctlr, NULL);
+>  	if (ACPI_FAILURE(status))
+> -		dev_warn(&ctlr->dev, "failed to enumerate SPI slaves\n");
+> +		dev_warn(&ctlr->dev,
+> +			 "failed to enumerate SPI slaves in the ACPI namespace\n");
+>  }
+>  #else
+>  static inline void acpi_register_spi_devices(struct spi_controller *ctlr) {}
 > -- 
-> 2.19.2
-> 
-> 
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
-According to speedtest.net: 11.9Mbps down 500kbps up
+> 2.20.1
