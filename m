@@ -2,173 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CB6F2DCA8
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2019 14:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42B982E189
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2019 17:49:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726949AbfE2MZg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 May 2019 08:25:36 -0400
-Received: from mail.steuer-voss.de ([85.183.69.95]:53058 "EHLO
-        mail.steuer-voss.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726842AbfE2MZf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 May 2019 08:25:35 -0400
-X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
-X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
-Received: from pc-niv.weinmann.com (localhost [127.0.0.1])
-        by mail.steuer-voss.de (Postfix) with ESMTP id 21B1A4CD87;
-        Wed, 29 May 2019 14:18:42 +0200 (CEST)
-From:   Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Schmauss <erik.schmauss@intel.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        Thierry Reding <thierry.reding@gmail.com>
-Cc:     Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-leds@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: [PATCH 3/3] leds-pwm.c: support ACPI via firmware-node framework
-Date:   Wed, 29 May 2019 14:18:22 +0200
-Message-Id: <4f89c4b91cc918302a9d5a7eedfa39259a5583bb.1559127603.git.nikolaus.voss@loewensteinmedical.de>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <cover.1559127603.git.nikolaus.voss@loewensteinmedical.de>
-References: <cover.1559127603.git.nikolaus.voss@loewensteinmedical.de>
-In-Reply-To: <cover.1559127603.git.nikolaus.voss@loewensteinmedical.de>
-References: <cover.1559127603.git.nikolaus.voss@loewensteinmedical.de>
+        id S1726012AbfE2PtU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 May 2019 11:49:20 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:39346 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725936AbfE2PtU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 29 May 2019 11:49:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=FSmVTVfY0fmsLVjAxB2ZUOOjOUzRYdgko89LUfDdwZ4=; b=Uk2Xn1lulr7crQVgIg/wiqa1Qr
+        PfbtwLmuLkpOvqM8lYWKlcWN/foi/tlU25F+qc/rdMJw2otunk9xuEhT87IzH7fIb7UqYxgRXgIqa
+        GXwb4AqEujzlrDmUPhur5CO75qQBqDA47y0rhS5h+34A40Gn4Iywq+fX5ZCYZKS9Q++I=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.89)
+        (envelope-from <andrew@lunn.ch>)
+        id 1hW0pA-0000fP-2F; Wed, 29 May 2019 17:49:08 +0200
+Date:   Wed, 29 May 2019 17:49:08 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Ruslan Babayev <ruslan@babayev.com>
+Cc:     mika.westerberg@linux.intel.com, wsa@the-dreams.de,
+        linux@armlinux.org.uk, f.fainelli@gmail.com, hkallweit1@gmail.com,
+        davem@davemloft.net, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-acpi@vger.kernel.org, xe-linux-external@cisco.com
+Subject: Re: [net-next,v4 1/2] i2c: acpi: export
+ i2c_acpi_find_adapter_by_handle
+Message-ID: <20190529154908.GX18059@lunn.ch>
+References: <20190528230233.26772-1-ruslan@babayev.com>
+ <20190528230233.26772-2-ruslan@babayev.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190528230233.26772-2-ruslan@babayev.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DT specific handling is replaced by firmware-node abstration to support
-ACPI specification of PWM LEDS.
+On Tue, May 28, 2019 at 04:02:32PM -0700, Ruslan Babayev wrote:
+> This allows drivers to lookup i2c adapters on ACPI based systems similar to
+> of_get_i2c_adapter_by_node() with DT based systems.
+> 
+> Signed-off-by: Ruslan Babayev <ruslan@babayev.com>
 
-Example ASL:
-Device (PWML)
-{
-    Name (_HID, "PRP0001")
-    Name (_DSD, Package () {
-          ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-          Package () { Package () {"compatible",
-                                    Package () {"pwm-leds"}}}})
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-    Device (PWL0)
-    {
-        Name (_HID, "PRP0001")
-        Name (_DSD, Package () {
-              ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-              Package () {
-                           Package () {"label", "alarm-led"},
-                           Package () {"pwms", Package ()
-                                       {\_SB_.PCI0.PWM, 0, 600000, 0}},
-                           Package () {"linux,default-state", "off"}}})
-    }
-}
-
-Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
----
- drivers/leds/leds-pwm.c | 44 ++++++++++++++++++++++++-----------------
- 1 file changed, 26 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/leds/leds-pwm.c b/drivers/leds/leds-pwm.c
-index af08bcdc4fd8..cc717dd6a12c 100644
---- a/drivers/leds/leds-pwm.c
-+++ b/drivers/leds/leds-pwm.c
-@@ -75,7 +75,7 @@ static inline size_t sizeof_pwm_leds_priv(int num_leds)
- }
- 
- static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
--		       struct led_pwm *led, struct device_node *child)
-+		       struct led_pwm *led, struct fwnode_handle *fwnode)
- {
- 	struct led_pwm_data *led_data = &priv->leds[priv->num_leds];
- 	struct pwm_args pargs;
-@@ -88,8 +88,8 @@ static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
- 	led_data->cdev.max_brightness = led->max_brightness;
- 	led_data->cdev.flags = LED_CORE_SUSPENDRESUME;
- 
--	if (child)
--		led_data->pwm = devm_of_pwm_get(dev, child, NULL);
-+	if (fwnode)
-+		led_data->pwm = devm_fwnode_pwm_get(dev, fwnode, NULL);
- 	else
- 		led_data->pwm = devm_pwm_get(dev, led->name);
- 	if (IS_ERR(led_data->pwm)) {
-@@ -114,7 +114,8 @@ static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
- 	if (!led_data->period && (led->pwm_period_ns > 0))
- 		led_data->period = led->pwm_period_ns;
- 
--	ret = devm_of_led_classdev_register(dev, child, &led_data->cdev);
-+	ret = devm_of_led_classdev_register(dev, to_of_node(fwnode),
-+					    &led_data->cdev);
- 	if (ret == 0) {
- 		priv->num_leds++;
- 		led_pwm_set(&led_data->cdev, led_data->cdev.brightness);
-@@ -126,27 +127,34 @@ static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
- 	return ret;
- }
- 
--static int led_pwm_create_of(struct device *dev, struct led_pwm_priv *priv)
-+static int led_pwm_create_fwnode(struct device *dev, struct led_pwm_priv *priv)
- {
--	struct device_node *child;
-+	struct fwnode_handle *fwnode;
- 	struct led_pwm led;
- 	int ret = 0;
- 
- 	memset(&led, 0, sizeof(led));
- 
--	for_each_child_of_node(dev->of_node, child) {
--		led.name = of_get_property(child, "label", NULL) ? :
--			   child->name;
-+	device_for_each_child_node(dev, fwnode) {
-+		ret = fwnode_property_read_string(fwnode, "label", &led.name);
-+		if (ret && is_of_node(fwnode))
-+			led.name = to_of_node(fwnode)->name;
-+		if (!led.name) {
-+			fwnode_handle_put(fwnode);
-+			return -EINVAL;
-+		}
- 
--		led.default_trigger = of_get_property(child,
--						"linux,default-trigger", NULL);
--		led.active_low = of_property_read_bool(child, "active-low");
--		of_property_read_u32(child, "max-brightness",
--				     &led.max_brightness);
-+		fwnode_property_read_string(fwnode, "linux,default-trigger",
-+					    &led.default_trigger);
- 
--		ret = led_pwm_add(dev, priv, &led, child);
-+		led.active_low = fwnode_property_read_bool(fwnode,
-+							   "active-low");
-+		fwnode_property_read_u32(fwnode, "max-brightness",
-+					 &led.max_brightness);
-+
-+		ret = led_pwm_add(dev, priv, &led, fwnode);
- 		if (ret) {
--			of_node_put(child);
-+			fwnode_handle_put(fwnode);
- 			break;
- 		}
- 	}
-@@ -164,7 +172,7 @@ static int led_pwm_probe(struct platform_device *pdev)
- 	if (pdata)
- 		count = pdata->num_leds;
- 	else
--		count = of_get_child_count(pdev->dev.of_node);
-+		count = device_get_child_node_count(&pdev->dev);
- 
- 	if (!count)
- 		return -EINVAL;
-@@ -182,7 +190,7 @@ static int led_pwm_probe(struct platform_device *pdev)
- 				break;
- 		}
- 	} else {
--		ret = led_pwm_create_of(&pdev->dev, priv);
-+		ret = led_pwm_create_fwnode(&pdev->dev, priv);
- 	}
- 
- 	if (ret)
--- 
-2.17.1
-
+    Andrew
