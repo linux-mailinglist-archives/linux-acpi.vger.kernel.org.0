@@ -2,93 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 233CD2DA29
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2019 12:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D3802DA48
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2019 12:20:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725990AbfE2KOE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 May 2019 06:14:04 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:35718 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725874AbfE2KOE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 May 2019 06:14:04 -0400
-Received: by mail-wr1-f65.google.com with SMTP id m3so1334609wrv.2
-        for <linux-acpi@vger.kernel.org>; Wed, 29 May 2019 03:14:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=l67SUiLhnHbZC+GGf53I8mLvwJKgD1LNbRPrFrC0N7s=;
-        b=DVai3SyHuj37o+9DQ9ge6eqxTqMJXJ1dPA/pexA/z3yFqx209mZbdR5Dv6CnhStwnX
-         BUGJltoZAKQtmmPSCvH6oSiM6/I3ag9LVeyOJ1sfCYHTtb6Z7wNPHdVOT+XS9lso6mFs
-         sG2Vl811ndRPbP8vtxe4BlAEMOx1lnv2wYE8SrLBX2G0ZwsSnM2nlpstISt9tbMdx82v
-         u8XEH70Jd/36jB+mavgmK/MAPGxOOX6uvkSclphdbZhoV+A7lWmAryOCF4GHH5GONHkV
-         8k9CbnKk76/fLlrvaDUQanuzAg3WWFaDnbb5fZe7c642o4dHDGiOfSfMUfdG1CW1umcp
-         5+9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=l67SUiLhnHbZC+GGf53I8mLvwJKgD1LNbRPrFrC0N7s=;
-        b=OmtQdZxVglA3gnSRTDl0BWKSQlC1g1axaLZclLdhbKA7oXJSwUiqWOAJWVCG23QB92
-         Lw7zerPc9T8vmHkjVPmZ/hVHy6KLBRZZb1BNMNnuNrg16EhIMLrH44Qm75/lO0ecm6k0
-         jSCO6RVOwyueH52GTcgkdOA10jFgG2R124OmsqvTCXYyR7s3576+FeXPeOeemlyofzV1
-         Fb1NAKuBDjEaB7zI7HTE8qT1IplIl81OZ/gdQxSMiapKbP7pONmmGaQPAkZUaGE673iy
-         ulYH+lHZpDSPngUWgayChq6e0U7T5Fsy35j5dS5Nhw0Dn5mGbCmvLnxttNvRneDhZvLQ
-         GVrw==
-X-Gm-Message-State: APjAAAW8kj01SkyLhfdD1Ls74HRS764ZKe4lh7wdV7onZphIAZIgJJe7
-        mDjyHv0QrsJLgtTIz8XakiZpxQ==
-X-Google-Smtp-Source: APXvYqwrOP3EZE28AyFzSuo4GcLTHFsGvn7K5QnexTH7EjOf0oJ/UD2EeyvLEC+ZRpersH/t52qM4A==
-X-Received: by 2002:adf:db8e:: with SMTP id u14mr43828118wri.190.1559124842396;
-        Wed, 29 May 2019 03:14:02 -0700 (PDT)
-Received: from sudo.home ([2a01:cb1d:112:6f00:c225:e9ff:fe2e:ea8])
-        by smtp.gmail.com with ESMTPSA id f18sm2028040wrt.21.2019.05.29.03.14.01
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 May 2019 03:14:01 -0700 (PDT)
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-To:     linux-gpio@vger.kernel.org
-Cc:     linux-acpi@vger.kernel.org, mika.westerberg@linux.intel.com,
-        andriy.shevchenko@linux.intel.com, linus.walleij@linaro.org,
-        rjw@rjwysocki.net, jarkko.nikula@linux.intel.com,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Subject: [RFC PATCH] gpio/acpi: set direction for ACPI OpRegion GPIOs
-Date:   Wed, 29 May 2019 12:13:42 +0200
-Message-Id: <20190529101342.30673-1-ard.biesheuvel@linaro.org>
-X-Mailer: git-send-email 2.20.1
+        id S1726694AbfE2KUU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 May 2019 06:20:20 -0400
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:53992 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726670AbfE2KUU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 29 May 2019 06:20:20 -0400
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+        by mx0a-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4TAGKrl009723;
+        Wed, 29 May 2019 05:19:55 -0500
+Authentication-Results: ppops.net;
+        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
+Received: from mail3.cirrus.com ([87.246.76.56])
+        by mx0a-001ae601.pphosted.com with ESMTP id 2sq340mnh0-1;
+        Wed, 29 May 2019 05:19:55 -0500
+Received: from EDIEX02.ad.cirrus.com (ediex02.ad.cirrus.com [198.61.84.81])
+        by mail3.cirrus.com (Postfix) with ESMTP id A52C9614447B;
+        Wed, 29 May 2019 05:20:36 -0500 (CDT)
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Wed, 29 May
+ 2019 11:19:54 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
+ Transport; Wed, 29 May 2019 11:19:54 +0100
+Received: from algalon.ad.cirrus.com (algalon.ad.cirrus.com [198.90.251.122])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 51FB444;
+        Wed, 29 May 2019 11:19:54 +0100 (BST)
+From:   Charles Keepax <ckeepax@opensource.cirrus.com>
+To:     <broonie@kernel.org>
+CC:     <lgirdwood@gmail.com>, <robh+dt@kernel.org>,
+        <mark.rutland@arm.com>, <lee.jones@linaro.org>,
+        <rafael@kernel.org>, <gregkh@linuxfoundation.org>,
+        <alsa-devel@alsa-project.org>, <devicetree@vger.kernel.org>,
+        <patches@opensource.cirrus.com>, <linux-acpi@vger.kernel.org>
+Subject: [PATCH 1/6] device property: Add new array helper
+Date:   Wed, 29 May 2019 11:19:49 +0100
+Message-ID: <20190529101954.10438-1-ckeepax@opensource.cirrus.com>
+X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905290069
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The ACPI GPIO OpRegion code never sets the direction for GPIOs that
-it configures from scratch, leaving unconfigured GPIOs to be left
-at the default direction, which is typically input not output.
+It is fairly common to want to read an integer array property
+that is composed of an unknown number of fixed size integer
+groups. For example, say each group consists of three values
+which correspond to the settings for one input on the device
+and the driver supports several chips with different numbers
+of inputs.
 
-So set the direction and default value explicitly.
+Add a new helper function to provide this functionality, it
+differs for the existing helpers in that it allows reading a
+smaller number of values than the full array size and checks
+that the number of values read is a multiple of the group size.
 
-Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 ---
- drivers/gpio/gpiolib-acpi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/base/property.c  | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/property.h |  2 ++
+ 2 files changed, 50 insertions(+)
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index c9fc9e232aaf..02a2bc7fe18b 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -966,6 +966,12 @@ acpi_gpio_adr_space_handler(u32 function, acpi_physical_address address,
- 				goto out;
- 			}
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 348b37e64944c..656d21e01a648 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -133,6 +133,54 @@ int device_property_read_u32_array(struct device *dev, const char *propname,
+ EXPORT_SYMBOL_GPL(device_property_read_u32_array);
  
-+			if (function == ACPI_WRITE)
-+				gpiod_direction_output(desc,
-+						       !!((1 << i) & *value));
-+			else
-+				gpiod_direction_input(desc);
+ /**
++ * device_property_read_u32_2darray - return a 2d u32 array property of a device
++ * @dev: Device to get the property of
++ * @propname: Name of the property
++ * @val: The values are stored here or %NULL to return the number of values
++ * @nval: Size of the @val array
++ * @multiple: Number of entries in each block of data
++ *
++ * Function reads an array of u32 properties split up into fixed size
++ * sub-groups, with @propname from the device firmware description and
++ * stores them to @val if found.
++ *
++ * Return: Number of values read
++ *	   %0 if the property was not found,
++ *	   %-EINVAL if given arguments are not valid,
++ *	   %-ENODATA if the property does not have a value,
++ *	   %-EPROTO if the property is not an array of numbers,
++ *	   %-EOVERFLOW if the size of the property is not as expected.
++ *	   %-ENXIO if no suitable firmware interface is present.
++ */
++int device_property_read_u32_2darray(struct device *dev, const char *propname,
++				     u32 *val, size_t nval, int multiple)
++{
++	int n, ret;
 +
- 			conn->pin = pin;
- 			conn->desc = desc;
- 			list_add_tail(&conn->node, &achip->conns);
++	n = device_property_read_u32_array(dev, propname, NULL, 0);
++	if (n == -EINVAL) {
++		return 0;	/* missing, ignore */
++	} else if (n < 0) {
++		dev_warn(dev, "%s malformed (%d)\n", propname, n);
++		return n;
++	} else if ((n % multiple) != 0) {
++		dev_warn(dev, "%s not a multiple of %d entries\n",
++			 propname, multiple);
++		return -EOVERFLOW;
++	}
++
++	if (n > nval)
++		n = nval;
++
++	ret = device_property_read_u32_array(dev, propname, val, n);
++	if (ret < 0)
++		return ret;
++	else
++		return n;
++}
++EXPORT_SYMBOL_GPL(device_property_read_u32_2darray);
++
++/**
+  * device_property_read_u64_array - return a u64 array property of a device
+  * @dev: Device to get the property of
+  * @propname: Name of the property
+diff --git a/include/linux/property.h b/include/linux/property.h
+index a29369c89e6ef..854867f0d139f 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -43,6 +43,8 @@ int device_property_read_u16_array(struct device *dev, const char *propname,
+ 				   u16 *val, size_t nval);
+ int device_property_read_u32_array(struct device *dev, const char *propname,
+ 				   u32 *val, size_t nval);
++int device_property_read_u32_2darray(struct device *dev, const char *propname,
++				   u32 *val, size_t nval, int multiple);
+ int device_property_read_u64_array(struct device *dev, const char *propname,
+ 				   u64 *val, size_t nval);
+ int device_property_read_string_array(struct device *dev, const char *propname,
 -- 
-2.20.1
+2.11.0
 
