@@ -2,288 +2,186 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 651912EA14
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 May 2019 03:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E4D22E926
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 May 2019 01:26:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726973AbfE3BHM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 May 2019 21:07:12 -0400
-Received: from mx0a-00154904.pphosted.com ([148.163.133.20]:47636 "EHLO
-        mx0a-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726884AbfE3BHM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 29 May 2019 21:07:12 -0400
-X-Greylist: delayed 21396 seconds by postgrey-1.27 at vger.kernel.org; Wed, 29 May 2019 21:07:12 EDT
-Received: from pps.filterd (m0170392.ppops.net [127.0.0.1])
-        by mx0a-00154904.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4TJAFc5004806
-        for <linux-acpi@vger.kernel.org>; Wed, 29 May 2019 15:10:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=smtpout1;
- bh=qVmkS7iq5LvUsgvqZyT30GT4rWjXJkd+2oTu15AyTJA=;
- b=hMx3aGy5ivI47shMQXceKaxxLe+F2Tmwn+cvQNDzdpX8t6TuBm9WeS0+ohdxnhG8v0Vq
- oQbP0q44+ZSTWlv25HYRV1rbZagLtN2JFmhNBk/2Ckt/l9KRZwYRxY/PEWGRcres+IoC
- XNWlUNBWB6foLVHLp7FJy6n9j12DKtfmaOs9AzrtfxUnXjEEEtzIdjP2DFJ2QPlqyyPn
- Pyd3+FII7HqohHzHHhUW42zrGmmLvAYPjBD3Xf85o3JfhUxxc24RtCg3bVsc3rX1W9bt
- Ic+OleOOjC7RoUHUeUajuu0Jc6k8S7M+6mbiTXmdbI8GAMOa9wRE6rpJ7n9kp96DuWh7 gA== 
-Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
-        by mx0a-00154904.pphosted.com with ESMTP id 2sspwpjksj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-acpi@vger.kernel.org>; Wed, 29 May 2019 15:10:35 -0400
-Received: from pps.filterd (m0133268.ppops.net [127.0.0.1])
-        by mx0a-00154901.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4TJ8LeF120417
-        for <linux-acpi@vger.kernel.org>; Wed, 29 May 2019 15:10:34 -0400
-Received: from ausxippc110.us.dell.com (AUSXIPPC110.us.dell.com [143.166.85.200])
-        by mx0a-00154901.pphosted.com with ESMTP id 2spyxvgk5e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-        for <linux-acpi@vger.kernel.org>; Wed, 29 May 2019 15:10:34 -0400
-X-LoopCount0: from 10.166.132.130
-X-PREM-Routing: D-Outbound
-X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
-   d="scan'208";a="802413538"
-From:   <Mario.Limonciello@dell.com>
-To:     <shaunak.saha@intel.com>, <linux-acpi@vger.kernel.org>
-CC:     <rafael.j.wysocki@intel.com>
-Subject: RE: drivers/acpi: Change the lpit function call flow
-Thread-Topic: drivers/acpi: Change the lpit function call flow
-Thread-Index: AQHVFAKKjgBVcnZ72kWZF+/9z/EG9qaCe3Hg
-Date:   Wed, 29 May 2019 19:10:32 +0000
-Message-ID: <e194fa374cb64106b7a34fff616734c2@AUSX13MPC105.AMER.DELL.COM>
-References: <20190526202750.4614-1-shaunak.saha@intel.com>
-In-Reply-To: <20190526202750.4614-1-shaunak.saha@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.143.242.75]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1726869AbfE2XY0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 May 2019 19:24:26 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:49236 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726689AbfE2XYD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 May 2019 19:24:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=StJ6LM8sQHkYI5UThzShneAjra5wi5bo/RYRsdxPQsA=; b=V2B9Vgs83dRLjIuQnd2C2vgYZ
+        +JgyOXeO1GKHOK9c4tRnNUqThik6tzysID2WPnKRr+36Nqy1H2ECRX9ShWnHkjcDarRRE36sMjLp8
+        rMBiNxdP14bOP1wi/jaweQN4P3parh4up8rfOPsYIJGMzClSMcNhqm2YUZ7FfQaCciCjPJlpLJJ9c
+        aeXT61eHnnOWKaxRn+HXRc3LwC2Y8Shpt7KozKcXuJxu6PITTqtbQgKa7rv4JBRtqJqIYr0SPtFcn
+        /5RDAzsKEfsB7oXgNPBlX7TDbPq/0Xg+hPhZkg4J+5oeanlc8QNxz2G9sF0j0yZAp7oTlogcPh66P
+        SAaTMxt+g==;
+Received: from 177.132.232.81.dynamic.adsl.gvt.net.br ([177.132.232.81] helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hW7vL-0005Rx-II; Wed, 29 May 2019 23:23:59 +0000
+Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
+        (envelope-from <mchehab@bombadil.infradead.org>)
+        id 1hW7vI-0007wg-Fn; Wed, 29 May 2019 20:23:56 -0300
+From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org,
+        linux-amlogic@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-pm@vger.kernel.org, devel@driverdev.osuosl.org,
+        keyrings@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-integrity@vger.kernel.org, linux-mtd@lists.infradead.org,
+        patches@opensource.cirrus.com, devicetree@vger.kernel.org,
+        netdev@vger.kernel.org, alsa-devel@alsa-project.org,
+        devel@acpica.org, virtualization@lists.linux-foundation.org,
+        linux-mm@kvack.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-security-module@vger.kernel.org, linux-i2c@vger.kernel.org,
+        kvm@vger.kernel.org, bpf@vger.kernel.org, x86@kernel.org
+Subject: [PATCH 00/22] Some documentation fixes
+Date:   Wed, 29 May 2019 20:23:31 -0300
+Message-Id: <cover.1559171394.git.mchehab+samsung@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-29_10:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=978 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905290124
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905290124
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Fix several warnings and broken links.
+
+This series was generated against linux-next, but was rebased to be applied at
+docs-next. It should apply cleanly on either tree.
+
+There's a git tree with all of them applied on the top of docs/docs-next
+at:
+
+https://git.linuxtv.org/mchehab/experimental.git/log/?h=fix_doc_links_v2
 
 
-> -----Original Message-----
-> From: Shaunak Saha <shaunak.saha@intel.com>
-> Sent: Sunday, May 26, 2019 3:28 PM
-> To: linux-acpi@vger.kernel.org
-> Cc: rafael.j.wysocki@intel.com; Limonciello, Mario; Shaunak Saha
-> Subject: drivers/acpi: Change the lpit function call flow
->=20
->=20
-> [EXTERNAL EMAIL]
->=20
-> In the present implementation sleep function was getting called in
-> acpi_s2idle_prepare and as all the devices may not have suspended
-> at that stage e.g. if we are telling ec about the S0ix then calling early
-> can cause ec reply wrongly interpreted as spurious wake events.
-> Here we call it at much later stage in acpi_s2idle_sync. As per the
-> specification the entry _DSM function may be invoked when the OS state ha=
-s
-> reached sufficient criteria for processor idle state entry matching
-> Entry Trigger defined in LPIT to be interpreted as a request for the
-> platform to enter a Low Power S0 Idle (LPI) state. Here we are checking i=
-f
-> the we reached the minimum D-State defined in the constraint function of
-> the LPIT _DSM method before calling the sleep entry function. Also not
-> checking for constraint in acpi_s2idle_wake anymore and also changed the
-> acpi info loglevel to debug in lpi_check_constraint.
->=20
-> Signed-off-by: Shaunak Saha <shaunak.saha@intel.com>
+Mauro Carvalho Chehab (21):
+  ABI: sysfs-devices-system-cpu: point to the right docs
+  isdn: mISDN: remove a bogus reference to a non-existing doc
+  dt: fix broken references to nand.txt
+  docs: zh_CN: get rid of basic_profiling.txt
+  doc: it_IT: fix reference to magic-number.rst
+  docs: mm: numaperf.rst: get rid of a build warning
+  docs: bpf: get rid of two warnings
+  docs: mark orphan documents as such
+  docs: amd-memory-encryption.rst get rid of warnings
+  gpu: amdgpu: fix broken amdgpu_dma_buf.c references
+  gpu: i915.rst: Fix references to renamed files
+  docs: zh_CN: avoid duplicate citation references
+  docs: vm: hmm.rst: fix some warnings
+  docs: it: license-rules.rst: get rid of warnings
+  docs: gpio: driver.rst: fix a bad tag
+  docs: soundwire: locking: fix tags for a code-block
+  docs: security: trusted-encrypted.rst: fix code-block tag
+  docs: security: core.rst: Fix several warnings
+  docs: net: dpio-driver.rst: fix two codeblock warnings
+  docs: net: sja1105.rst: fix table format
+  docs: fix broken documentation links
 
-I did test this patch on an XPS 9380 and can confirm that it prevents the d=
-evice from
-going in/out of S2I twice in a row.
+Otto Sabart (1):
+  mfd: madera: Fix bad reference to pinctrl.txt file
 
-I was not able to test the config option related to constraints blocking en=
-try because
-an I2C device was preventing this on this system.
+ .../ABI/testing/sysfs-devices-system-cpu      |  3 +-
+ Documentation/accelerators/ocxl.rst           |  2 +
+ Documentation/acpi/dsd/leds.txt               |  2 +-
+ .../admin-guide/kernel-parameters.rst         |  6 +-
+ .../admin-guide/kernel-parameters.txt         | 16 ++---
+ Documentation/admin-guide/mm/numaperf.rst     |  5 +-
+ Documentation/admin-guide/ras.rst             |  2 +-
+ Documentation/arm/stm32/overview.rst          |  2 +
+ .../arm/stm32/stm32f429-overview.rst          |  2 +
+ .../arm/stm32/stm32f746-overview.rst          |  2 +
+ .../arm/stm32/stm32f769-overview.rst          |  2 +
+ .../arm/stm32/stm32h743-overview.rst          |  2 +
+ .../arm/stm32/stm32mp157-overview.rst         |  2 +
+ Documentation/bpf/btf.rst                     |  2 +
+ .../bindings/mtd/amlogic,meson-nand.txt       |  2 +-
+ .../devicetree/bindings/mtd/gpmc-nand.txt     |  2 +-
+ .../devicetree/bindings/mtd/marvell-nand.txt  |  2 +-
+ .../devicetree/bindings/mtd/tango-nand.txt    |  2 +-
+ .../devicetree/bindings/net/fsl-enetc.txt     |  7 +-
+ .../bindings/pci/amlogic,meson-pcie.txt       |  2 +-
+ .../regulator/qcom,rpmh-regulator.txt         |  2 +-
+ .../devicetree/booting-without-of.txt         |  2 +-
+ Documentation/driver-api/gpio/board.rst       |  2 +-
+ Documentation/driver-api/gpio/consumer.rst    |  2 +-
+ Documentation/driver-api/gpio/driver.rst      |  2 +-
+ .../driver-api/soundwire/locking.rst          |  4 +-
+ .../firmware-guide/acpi/enumeration.rst       |  2 +-
+ .../firmware-guide/acpi/method-tracing.rst    |  2 +-
+ Documentation/gpu/amdgpu.rst                  |  4 +-
+ Documentation/gpu/i915.rst                    |  6 +-
+ Documentation/gpu/msm-crash-dump.rst          |  2 +
+ Documentation/i2c/instantiating-devices       |  2 +-
+ Documentation/interconnect/interconnect.rst   |  2 +
+ Documentation/laptops/lg-laptop.rst           |  2 +
+ .../freescale/dpaa2/dpio-driver.rst           |  4 +-
+ Documentation/networking/dsa/sja1105.rst      |  6 +-
+ Documentation/powerpc/isa-versions.rst        |  2 +
+ Documentation/security/keys/core.rst          | 16 +++--
+ .../security/keys/trusted-encrypted.rst       |  4 +-
+ Documentation/sysctl/kernel.txt               |  4 +-
+ .../translations/it_IT/process/howto.rst      |  2 +-
+ .../it_IT/process/license-rules.rst           | 28 ++++----
+ .../it_IT/process/magic-number.rst            |  2 +-
+ .../it_IT/process/stable-kernel-rules.rst     |  4 +-
+ .../translations/zh_CN/basic_profiling.txt    | 71 -------------------
+ .../translations/zh_CN/process/4.Coding.rst   |  2 +-
+ .../zh_CN/process/management-style.rst        |  4 +-
+ .../zh_CN/process/programming-language.rst    | 28 ++++----
+ .../virtual/kvm/amd-memory-encryption.rst     |  5 ++
+ Documentation/virtual/kvm/vcpu-requests.rst   |  2 +
+ Documentation/vm/hmm.rst                      |  9 ++-
+ Documentation/x86/x86_64/5level-paging.rst    |  2 +-
+ Documentation/x86/x86_64/boot-options.rst     |  4 +-
+ .../x86/x86_64/fake-numa-for-cpusets.rst      |  2 +-
+ MAINTAINERS                                   |  6 +-
+ arch/arm/Kconfig                              |  2 +-
+ arch/arm64/kernel/kexec_image.c               |  2 +-
+ arch/powerpc/Kconfig                          |  2 +-
+ arch/x86/Kconfig                              | 16 ++---
+ arch/x86/Kconfig.debug                        |  2 +-
+ arch/x86/boot/header.S                        |  2 +-
+ arch/x86/entry/entry_64.S                     |  2 +-
+ arch/x86/include/asm/bootparam_utils.h        |  2 +-
+ arch/x86/include/asm/page_64_types.h          |  2 +-
+ arch/x86/include/asm/pgtable_64_types.h       |  2 +-
+ arch/x86/kernel/cpu/microcode/amd.c           |  2 +-
+ arch/x86/kernel/kexec-bzimage64.c             |  2 +-
+ arch/x86/kernel/pci-dma.c                     |  2 +-
+ arch/x86/mm/tlb.c                             |  2 +-
+ arch/x86/platform/pvh/enlighten.c             |  2 +-
+ drivers/acpi/Kconfig                          | 10 +--
+ drivers/isdn/mISDN/dsp_core.c                 |  2 -
+ drivers/net/ethernet/faraday/ftgmac100.c      |  2 +-
+ .../fieldbus/Documentation/fieldbus_dev.txt   |  4 +-
+ drivers/vhost/vhost.c                         |  2 +-
+ include/acpi/acpi_drivers.h                   |  2 +-
+ include/linux/fs_context.h                    |  2 +-
+ include/linux/lsm_hooks.h                     |  2 +-
+ include/linux/mfd/madera/pdata.h              |  3 +-
+ mm/Kconfig                                    |  2 +-
+ security/Kconfig                              |  2 +-
+ tools/include/linux/err.h                     |  2 +-
+ .../Documentation/stack-validation.txt        |  4 +-
+ tools/testing/selftests/x86/protection_keys.c |  2 +-
+ 84 files changed, 183 insertions(+), 212 deletions(-)
+ delete mode 100644 Documentation/translations/zh_CN/basic_profiling.txt
 
-Tested-by: Mario Limonciello <mario.limonciello@dell.com>
-> ---
->  drivers/acpi/Kconfig | 13 +++++++++
->  drivers/acpi/sleep.c | 76 +++++++++++++++++++++++++++++++++++++++++++---=
------
-> -
->  2 files changed, 77 insertions(+), 12 deletions(-)
->=20
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index 283ee94..57a9b2e 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -93,6 +93,19 @@ config ACPI_LPIT
->  	depends on X86_64
->  	default y
->=20
-> +config LPIT_CONSTRAINTS_CHECK_FAILURE
-> +	bool
-> +	depends on X86_64
-> +	default n
-> +	help
-> +	  For platforms defining the device constraints _DSM function in the
-> +	  Low Power Idle table this option allows the platform to choose
-> +	  if they wants to fail or succeed in calling the Low Power Entry
-> +	  Notification _DSM function. If this config is defined by a
-> +	  platform then the Low Power S0 Entry Notification _DSM function
-> +	  is not called if the idle state has not achieved the Entry Trigger
-> +	  defined in LPIT.
-> +
->  config ACPI_SLEEP
->  	bool
->  	depends on SUSPEND || HIBERNATION
-> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-> index e52f123..9f2359c 100644
-> --- a/drivers/acpi/sleep.c
-> +++ b/drivers/acpi/sleep.c
-> @@ -860,11 +860,25 @@ static void lpi_device_get_constraints(void)
->=20
->  free_acpi_buffer:
->  	ACPI_FREE(out_obj);
-> +	/*
-> +	 * lpi_constraints_table_size only increments if we have proper package
-> +	 * definitions for the constraints, its done after parsing all the
-> +	 * fields for constraints. Memory is allocated for lpi_constraints_tabl=
-e
-> +	 * through kcalloc much before we start parsing the packages we need to
-> +	 * free the memory here in case of any failures.
-> +	 */
-> +	if (!lpi_constraints_table_size && lpi_constraints_table)
-> +		kfree(lpi_constraints_table);
->  }
->=20
-> -static void lpi_check_constraints(void)
-> +static int lpi_check_constraints(void)
->  {
->  	int i;
-> +	int lpi_error =3D 0;
-> +
-> +	/* We do not have any table so return from here */
-> +	if (!lpi_constraints_table_size)
-> +		return lpi_error;
->=20
->  	for (i =3D 0; i < lpi_constraints_table_size; ++i) {
->  		acpi_handle handle =3D lpi_constraints_table[i].handle;
-> @@ -879,17 +893,21 @@ static void lpi_check_constraints(void)
->  			acpi_power_state_string(adev->power.state));
->=20
->  		if (!adev->flags.power_manageable) {
-> -			acpi_handle_info(handle, "LPI: Device not power
-> manageable\n");
-> +			acpi_handle_debug(handle, "LPI: Device not power
-> manageable\n");
->  			lpi_constraints_table[i].handle =3D NULL;
->  			continue;
->  		}
->=20
-> -		if (adev->power.state < lpi_constraints_table[i].min_dstate)
-> -			acpi_handle_info(handle,
-> +		if (adev->power.state < lpi_constraints_table[i].min_dstate) {
-> +			acpi_handle_debug(handle,
->  				"LPI: Constraint not met; min power state:%s
-> current power state:%s\n",
->=20
-> 	acpi_power_state_string(lpi_constraints_table[i].min_dstate),
->  				acpi_power_state_string(adev->power.state));
-> +			/* Error is set here if any of the constraints fail */
-> +			lpi_error =3D 1;
-> +		}
->  	}
-> +	return lpi_error;
->  }
->=20
->  static void acpi_sleep_run_lps0_dsm(unsigned int func)
-> @@ -967,12 +985,8 @@ static int acpi_s2idle_begin(void)
->=20
->  static int acpi_s2idle_prepare(void)
->  {
-> -	if (lps0_device_handle) {
-> -		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
-> -		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
-> -
-> +	if (lps0_device_handle)
->  		acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
-> -	}
->=20
->  	if (acpi_sci_irq_valid())
->  		enable_irq_wake(acpi_sci_irq);
-> @@ -990,9 +1004,6 @@ static void acpi_s2idle_wake(void)
->  	if (!lps0_device_handle)
->  		return;
->=20
-> -	if (pm_debug_messages_on)
-> -		lpi_check_constraints();
-> -
->  	/*
->  	 * If IRQD_WAKEUP_ARMED is not set for the SCI at this point, it means
->  	 * that the SCI has triggered while suspended, so cancel the wakeup in
-> @@ -1013,6 +1024,7 @@ static void acpi_s2idle_wake(void)
->=20
->  static void acpi_s2idle_sync(void)
->  {
-> +	int lpi_check;
->  	/*
->  	 * Process all pending events in case there are any wakeup ones.
->  	 *
-> @@ -1023,6 +1035,46 @@ static void acpi_s2idle_sync(void)
->  	acpi_ec_flush_work();
->  	acpi_os_wait_events_complete();	/* synchronize Notify handling */
->  	s2idle_wakeup =3D false;
-> +
-> +	if (!lps0_device_handle)
-> +		return;
-> +
-> +	acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
-> +
-> +	/*
-> +	 * Check here if device constraints(Function 1) is defined.
-> +	 * If only the sleep functions are defined in lpit we run that here.
-> +	 */
-> +	if (!lpi_constraints_table_size)
-> +		goto lps0_entry;
-> +
-> +	lpi_check =3D lpi_check_constraints();
-> +
-> +	/*
-> +	 * _DSM function may be invoked when the OS state
-> +	 * has reached sufficient criteria for processor idle
-> +	 * state.
-> +	 */
-> +	if (lpi_check) {
-> +		/*
-> +		 * We check the config LPIT_CONSTRAINTS_FAILURE
-> +		 * here for the devices which defines the constraints
-> +		 * properly and LPIT_CONSTRAINTS_FAILURE config in kernel.
-> +		 * We fail here if constraints are not met. But we still run
-> +		 * the sleep function for the devices which do not define
-> +		 * the LPIT_CONSTRAINTS_FAILURE kernel config.
-> +		 */
-> +		if (!IS_ENABLED(CONFIG_LPIT_CONSTRAINTS_CHECK_FAILURE))
-> +			goto lps0_entry;
-> +
-> +		return;
-> +	}
-> +
-> +lps0_entry:
-> +	/*
-> +	 * If only the sleep functions are defined in lpit we run that here.
-> +	 */
-> +	acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
->  }
->=20
->  static void acpi_s2idle_restore(void)
+-- 
+2.21.0
+
 
