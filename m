@@ -2,210 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B993C2FF24
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 May 2019 17:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD4C830129
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 May 2019 19:45:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726461AbfE3POs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 May 2019 11:14:48 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:44372 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725961AbfE3POr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 May 2019 11:14:47 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x4UFEXeY070295;
-        Thu, 30 May 2019 10:14:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1559229273;
-        bh=ija2CP43k/HJ3UFzMPN6ji2dFsdMVgUAdQ28mpdCZSI=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=dZiT56ALKGxAUt4LMVTjbpfFl82LBXrROu/AttXlObJIQuVjD0SLgnato957Ydx8c
-         0b0gLty+XWKu/gjYgdt/UEGjdidC4IjIrkIInK35xSIrPuU0vOdEyPHU5IxtM6yBxJ
-         OgKa6l/6F8xtTig6o3GyOuZ7n3m4D4036zmAmIwg=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x4UFEXe0089410
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 30 May 2019 10:14:33 -0500
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 30
- May 2019 10:14:32 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Thu, 30 May 2019 10:14:32 -0500
-Received: from [10.250.65.13] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x4UFEWj1069622;
-        Thu, 30 May 2019 10:14:32 -0500
-Subject: Re: [PATCH 3/3] leds-pwm.c: support ACPI via firmware-node framework
-To:     Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
+        id S1726330AbfE3RpW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 May 2019 13:45:22 -0400
+Received: from mx0b-002e3701.pphosted.com ([148.163.143.35]:54164 "EHLO
+        mx0b-002e3701.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725961AbfE3RpW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 30 May 2019 13:45:22 -0400
+Received: from pps.filterd (m0148664.ppops.net [127.0.0.1])
+        by mx0b-002e3701.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4UHeuTG019753;
+        Thu, 30 May 2019 17:45:19 GMT
+Received: from g4t3426.houston.hpe.com (g4t3426.houston.hpe.com [15.241.140.75])
+        by mx0b-002e3701.pphosted.com with ESMTP id 2stjuw1jxv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 30 May 2019 17:45:19 +0000
+Received: from sarge.linuxathome.me (unknown [16.116.161.7])
+        by g4t3426.houston.hpe.com (Postfix) with ESMTP id 21D4263;
+        Thu, 30 May 2019 17:45:15 +0000 (UTC)
+From:   Hedi Berriche <hedi.berriche@hpe.com>
+To:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Hedi Berriche <hedi.berriche@hpe.com>, Russ Anderson <rja@hpe.com>,
+        Mike Travis <mike.travis@hpe.com>,
+        Frank Ramsay <frank.ramsay@hpe.com>,
         Robert Moore <robert.moore@intel.com>,
         Erik Schmauss <erik.schmauss@intel.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Thierry Reding <thierry.reding@gmail.com>
-CC:     <linux-acpi@vger.kernel.org>, <devel@acpica.org>,
-        <linux-leds@vger.kernel.org>, <linux-pwm@vger.kernel.org>
-References: <cover.1559127603.git.nikolaus.voss@loewensteinmedical.de>
- <4f89c4b91cc918302a9d5a7eedfa39259a5583bb.1559127603.git.nikolaus.voss@loewensteinmedical.de>
-From:   Dan Murphy <dmurphy@ti.com>
-Message-ID: <3c763c8f-985e-a292-1bd6-af20caab5239@ti.com>
-Date:   Thu, 30 May 2019 10:14:32 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [Patch] ACPICA: Increase AE_OWNER_ID_LIMIT to 2047
+Date:   Thu, 30 May 2019 18:45:04 +0100
+Message-Id: <20190530174504.17172-1-hedi.berriche@hpe.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <4f89c4b91cc918302a9d5a7eedfa39259a5583bb.1559127603.git.nikolaus.voss@loewensteinmedical.de>
-Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-30_10:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=910 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905300124
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+32 sockets systems with 192 NVDIMMs run into the ACPI_OWNER_ID_MAX limit
+which is currently set to 255, and nfit kernel module initialisation fails
+with the following representative error messages:
 
-On 5/29/19 7:18 AM, Nikolaus Voss wrote:
-> DT specific handling is replaced by firmware-node abstration to support
-> ACPI specification of PWM LEDS.
->
-> Example ASL:
-> Device (PWML)
-> {
->      Name (_HID, "PRP0001")
->      Name (_DSD, Package () {
->            ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
->            Package () { Package () {"compatible",
->                                      Package () {"pwm-leds"}}}})
->
->      Device (PWL0)
->      {
->          Name (_HID, "PRP0001")
->          Name (_DSD, Package () {
->                ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
->                Package () {
->                             Package () {"label", "alarm-led"},
->                             Package () {"pwms", Package ()
->                                         {\_SB_.PCI0.PWM, 0, 600000, 0}},
->                             Package () {"linux,default-state", "off"}}})
->      }
-> }
->
-> Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
-> ---
->   drivers/leds/leds-pwm.c | 44 ++++++++++++++++++++++++-----------------
->   1 file changed, 26 insertions(+), 18 deletions(-)
->
-> diff --git a/drivers/leds/leds-pwm.c b/drivers/leds/leds-pwm.c
-> index af08bcdc4fd8..cc717dd6a12c 100644
-> --- a/drivers/leds/leds-pwm.c
-> +++ b/drivers/leds/leds-pwm.c
-> @@ -75,7 +75,7 @@ static inline size_t sizeof_pwm_leds_priv(int num_leds)
->   }
->   
->   static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
-> -		       struct led_pwm *led, struct device_node *child)
-> +		       struct led_pwm *led, struct fwnode_handle *fwnode)
->   {
->   	struct led_pwm_data *led_data = &priv->leds[priv->num_leds];
->   	struct pwm_args pargs;
-> @@ -88,8 +88,8 @@ static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
->   	led_data->cdev.max_brightness = led->max_brightness;
->   	led_data->cdev.flags = LED_CORE_SUSPENDRESUME;
->   
-> -	if (child)
-> -		led_data->pwm = devm_of_pwm_get(dev, child, NULL);
-> +	if (fwnode)
-> +		led_data->pwm = devm_fwnode_pwm_get(dev, fwnode, NULL);
->   	else
->   		led_data->pwm = devm_pwm_get(dev, led->name);
->   	if (IS_ERR(led_data->pwm)) {
-> @@ -114,7 +114,8 @@ static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
->   	if (!led_data->period && (led->pwm_period_ns > 0))
->   		led_data->period = led->pwm_period_ns;
->   
-> -	ret = devm_of_led_classdev_register(dev, child, &led_data->cdev);
-> +	ret = devm_of_led_classdev_register(dev, to_of_node(fwnode),
-> +					    &led_data->cdev);
->   	if (ret == 0) {
->   		priv->num_leds++;
->   		led_pwm_set(&led_data->cdev, led_data->cdev.brightness);
-> @@ -126,27 +127,34 @@ static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
->   	return ret;
->   }
->   
-> -static int led_pwm_create_of(struct device *dev, struct led_pwm_priv *priv)
-> +static int led_pwm_create_fwnode(struct device *dev, struct led_pwm_priv *priv)
->   {
-> -	struct device_node *child;
-> +	struct fwnode_handle *fwnode;
->   	struct led_pwm led;
->   	int ret = 0;
->   
->   	memset(&led, 0, sizeof(led));
->   
-> -	for_each_child_of_node(dev->of_node, child) {
-> -		led.name = of_get_property(child, "label", NULL) ? :
-> -			   child->name;
-> +	device_for_each_child_node(dev, fwnode) {
-> +		ret = fwnode_property_read_string(fwnode, "label", &led.name);
-> +		if (ret && is_of_node(fwnode))
-> +			led.name = to_of_node(fwnode)->name;
+ACPI Error: Could not allocate new OwnerId (255 max), AE_OWNER_ID_LIMIT (20170303/utownerid-149
+ACPI Error: Method parse/execution failed [\_SB.NVDR.N031.PCDR] (Node ffff9e2fffd8e280), AE_OWNER_ID_LIMIT (20170303/psparse-543)
+ACPI Error: Method parse/execution failed [\_SB.NVDR.N031.CR05] (Node ffff9547ffd91bb8), AE_OWNER_ID_LIMIT (20170303/psparse-543)
+ACPI Error: Method parse/execution failed [\_SB.NVDR.N031.CRLD] (Node ffff8e99ffd92550), AE_OWNER_ID_LIMIT (20170303/psparse-543)
+ACPI Error: Method parse/execution failed [\_SB.NVDR.N031._DSM] (Node ffffadc5ffd90e88), AE_OWNER_ID_LIMIT (20170303/psparse-543)
+ACPI: \_SB_.NVDR.N031: failed to evaluate _DSM (0x1b)
 
-new line
+Further debugging shows that, on such a system, we end up using 1020 owner IDs,
+hence I'm suggesting that we bump ACPI_OWNER_ID_MAX up to 2047.
 
+Signed-off-by: Hedi Berriche <hedi.berriche@hpe.com>
+Cc: Russ Anderson <rja@hpe.com>
+Cc: Mike Travis <mike.travis@hpe.com>
+Cc: Frank Ramsay <frank.ramsay@hpe.com>
+Cc: Robert Moore <robert.moore@intel.com>
+Cc: Erik Schmauss <erik.schmauss@intel.com>
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/acpica/utownerid.c | 6 +++---
+ include/acpi/acconfig.h         | 4 ++--
+ include/acpi/actypes.h          | 4 ++--
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-> +		if (!led.name) {
-> +			fwnode_handle_put(fwnode);
-> +			return -EINVAL;
-> +		}
+diff --git a/drivers/acpi/acpica/utownerid.c b/drivers/acpi/acpica/utownerid.c
+index 5eb8b76ce9d8..c015a2c147d9 100644
+--- a/drivers/acpi/acpica/utownerid.c
++++ b/drivers/acpi/acpica/utownerid.c
+@@ -88,7 +88,7 @@ acpi_status acpi_ut_allocate_owner_id(acpi_owner_id *owner_id)
+ 				/*
+ 				 * Construct encoded ID from the index and bit position
+ 				 *
+-				 * Note: Last [j].k (bit 255) is never used and is marked
++				 * Note: Last [j].k (bit 2047) is never used and is marked
+ 				 * permanently allocated (prevents +1 overflow)
+ 				 */
+ 				*owner_id =
+@@ -116,7 +116,7 @@ acpi_status acpi_ut_allocate_owner_id(acpi_owner_id *owner_id)
+ 	 */
+ 	status = AE_OWNER_ID_LIMIT;
+ 	ACPI_ERROR((AE_INFO,
+-		    "Could not allocate new OwnerId (255 max), AE_OWNER_ID_LIMIT"));
++		    "Could not allocate new OwnerId (2047 max), AE_OWNER_ID_LIMIT"));
+ 
+ exit:
+ 	(void)acpi_ut_release_mutex(ACPI_MTX_CACHES);
+@@ -133,7 +133,7 @@ acpi_status acpi_ut_allocate_owner_id(acpi_owner_id *owner_id)
+  *              control method or unloading a table. Either way, we would
+  *              ignore any error anyway.
+  *
+- * DESCRIPTION: Release a table or method owner ID. Valid IDs are 1 - 255
++ * DESCRIPTION: Release a table or method owner ID. Valid IDs are 1 - 2047
+  *
+  ******************************************************************************/
+ 
+diff --git a/include/acpi/acconfig.h b/include/acpi/acconfig.h
+index 16a83959e616..536fe9a81cb7 100644
+--- a/include/acpi/acconfig.h
++++ b/include/acpi/acconfig.h
+@@ -95,9 +95,9 @@
+ 
+ #define ACPI_DEFAULT_PAGE_SIZE          4096	/* Must be power of 2 */
+ 
+-/* owner_id tracking. 8 entries allows for 255 owner_ids */
++/* owner_id tracking. 64 entries allow for 2047 owner_ids */
+ 
+-#define ACPI_NUM_OWNERID_MASKS          8
++#define ACPI_NUM_OWNERID_MASKS          64
+ 
+ /* Size of the root table array is increased by this increment */
+ 
+diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
+index ad6892a24015..f32a4d49ea13 100644
+--- a/include/acpi/actypes.h
++++ b/include/acpi/actypes.h
+@@ -442,8 +442,8 @@ typedef void *acpi_handle;	/* Actually a ptr to a NS Node */
+ 
+ /* Owner IDs are used to track namespace nodes for selective deletion */
+ 
+-typedef u8 acpi_owner_id;
+-#define ACPI_OWNER_ID_MAX               0xFF
++typedef u16 acpi_owner_id;
++#define ACPI_OWNER_ID_MAX               0x7FF
+ 
+ #define ACPI_INTEGER_BIT_SIZE           64
+ #define ACPI_MAX_DECIMAL_DIGITS         20	/* 2^64 = 18,446,744,073,709,551,616 */
+-- 
+2.20.1
 
-'label' is an optional parameter for device tree returning here makes it 
-required.
-
-Maybe derive a default name.  There is a patch series which is going to 
-modify how labels are created for LED class devices.
-
-https://lore.kernel.org/patchwork/project/lkml/list/?series=391005
-
->   
-> -		led.default_trigger = of_get_property(child,
-> -						"linux,default-trigger", NULL);
-> -		led.active_low = of_property_read_bool(child, "active-low");
-> -		of_property_read_u32(child, "max-brightness",
-> -				     &led.max_brightness);
-> +		fwnode_property_read_string(fwnode, "linux,default-trigger",
-> +					    &led.default_trigger);
->   
-> -		ret = led_pwm_add(dev, priv, &led, child);
-> +		led.active_low = fwnode_property_read_bool(fwnode,
-> +							   "active-low");
-> +		fwnode_property_read_u32(fwnode, "max-brightness",
-> +					 &led.max_brightness);
-> +
-> +		ret = led_pwm_add(dev, priv, &led, fwnode);
->   		if (ret) {
-> -			of_node_put(child);
-> +			fwnode_handle_put(fwnode);
->   			break;
->   		}
->   	}
-> @@ -164,7 +172,7 @@ static int led_pwm_probe(struct platform_device *pdev)
->   	if (pdata)
->   		count = pdata->num_leds;
->   	else
-> -		count = of_get_child_count(pdev->dev.of_node);
-> +		count = device_get_child_node_count(&pdev->dev);
->   
->   	if (!count)
->   		return -EINVAL;
-> @@ -182,7 +190,7 @@ static int led_pwm_probe(struct platform_device *pdev)
->   				break;
->   		}
->   	} else {
-> -		ret = led_pwm_create_of(&pdev->dev, priv);
-> +		ret = led_pwm_create_fwnode(&pdev->dev, priv);
->   	}
->   
->   	if (ret)
