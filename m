@@ -2,54 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E4D22E926
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 May 2019 01:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E4172FAC3
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 May 2019 13:16:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726869AbfE2XY0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 May 2019 19:24:26 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:49236 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726689AbfE2XYD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 May 2019 19:24:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=StJ6LM8sQHkYI5UThzShneAjra5wi5bo/RYRsdxPQsA=; b=V2B9Vgs83dRLjIuQnd2C2vgYZ
-        +JgyOXeO1GKHOK9c4tRnNUqThik6tzysID2WPnKRr+36Nqy1H2ECRX9ShWnHkjcDarRRE36sMjLp8
-        rMBiNxdP14bOP1wi/jaweQN4P3parh4up8rfOPsYIJGMzClSMcNhqm2YUZ7FfQaCciCjPJlpLJJ9c
-        aeXT61eHnnOWKaxRn+HXRc3LwC2Y8Shpt7KozKcXuJxu6PITTqtbQgKa7rv4JBRtqJqIYr0SPtFcn
-        /5RDAzsKEfsB7oXgNPBlX7TDbPq/0Xg+hPhZkg4J+5oeanlc8QNxz2G9sF0j0yZAp7oTlogcPh66P
-        SAaTMxt+g==;
-Received: from 177.132.232.81.dynamic.adsl.gvt.net.br ([177.132.232.81] helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hW7vL-0005Rx-II; Wed, 29 May 2019 23:23:59 +0000
-Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
-        (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1hW7vI-0007wg-Fn; Wed, 29 May 2019 20:23:56 -0300
-From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org,
-        linux-amlogic@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-pm@vger.kernel.org, devel@driverdev.osuosl.org,
-        keyrings@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-integrity@vger.kernel.org, linux-mtd@lists.infradead.org,
-        patches@opensource.cirrus.com, devicetree@vger.kernel.org,
-        netdev@vger.kernel.org, alsa-devel@alsa-project.org,
-        devel@acpica.org, virtualization@lists.linux-foundation.org,
-        linux-mm@kvack.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-security-module@vger.kernel.org, linux-i2c@vger.kernel.org,
-        kvm@vger.kernel.org, bpf@vger.kernel.org, x86@kernel.org
-Subject: [PATCH 00/22] Some documentation fixes
-Date:   Wed, 29 May 2019 20:23:31 -0300
-Message-Id: <cover.1559171394.git.mchehab+samsung@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        id S1726599AbfE3LQ5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 May 2019 07:16:57 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:42855 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725440AbfE3LQ5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 May 2019 07:16:57 -0400
+Received: by mail-wr1-f66.google.com with SMTP id l2so3933694wrb.9
+        for <linux-acpi@vger.kernel.org>; Thu, 30 May 2019 04:16:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xPPg1SCyHb64Fhr55IHPd5M7ZeQxhQTiEBH6THyaghI=;
+        b=rt3jAT9E+aS/pLbJBR6jccB06bJReZktWxsJpQQSpOAhpSMjOij7f9cPtX7U5PdSS4
+         Fs01nRwRVtHURRERGSIGy03+G0bE0HfKZ8mxG1BexzByLA1yAvm1voDXMS6c8+H5aZaT
+         jsgtrPfQ/dn3YLVyX3rGrnyuYo/t2gYuiGN7Jm+4g/HAoQUV2z7BE3d/siRYIXFmfWOS
+         d0itsFkNI97ncjX+Se94RSszYsUoAW5ouB7dde9MM+K6NY896VOMoOdR1ZsOVv5v5p0q
+         NmpT2Ot+x4Ows/7KhjP9N382udG4R5CWWkDbZXJIKfAfrjm8JZonkubSRdsEDzYMWpsv
+         1Bmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xPPg1SCyHb64Fhr55IHPd5M7ZeQxhQTiEBH6THyaghI=;
+        b=fbA5HzXCgtYJ8yeRdJihqM+AtTj71TDv6BdQY4fI3qpW7NAkgHtX1rY+/NLQI2Atqt
+         vnp5Zuzk+rJZ+Z2A9PHYRGmnbdZ9cdewtWh2gt9ArGs+f9C656TKAy/ltmRNmjfUNjvC
+         y2UqXaLIGqQ41Xs0M9fMXgl460p3/lb/JMfGfooH7Nmd99GkBBfBTOJQqcCvqJ5QyTF6
+         jIC/Tprj3PYrOM0FrtJTPEBCvyiNUSgUtI7f1EOFOcolw+xCQOg0VJClZQRWW54aBBjT
+         sCf8jrbO2q8FVPj2tIdEBBhuTCcBEESUud8Joln3fF4pJQBGh1p7Q/nf1frF0j9bRK0l
+         8oQA==
+X-Gm-Message-State: APjAAAVMyzk2RGsim67AXIOKCt4Yvpgr6JO96F6Z+KDMSjomcaS1Pu2g
+        KmZ7gXPghCbrMbgl1ivcj+aLLw==
+X-Google-Smtp-Source: APXvYqzQ5FrwLvBN/xB7X3um4IF6sE3DRNG/dXSXbLiz80G0B6joe2WRcKvDCpGfhQ/R+0mfQGDsHA==
+X-Received: by 2002:adf:c606:: with SMTP id n6mr2215648wrg.62.1559215014685;
+        Thu, 30 May 2019 04:16:54 -0700 (PDT)
+Received: from sudo.home ([2a01:cb1d:112:6f00:c225:e9ff:fe2e:ea8])
+        by smtp.gmail.com with ESMTPSA id z20sm2686421wmf.14.2019.05.30.04.16.53
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 30 May 2019 04:16:53 -0700 (PDT)
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-spi@vger.kernel.org, broonie@kernel.org,
+        andy.shevchenko@gmail.com, masahisa.kojima@linaro.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        linux-acpi@vger.kernel.org, Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH v2] spi/acpi: enumerate all SPI slaves in the namespace
+Date:   Thu, 30 May 2019 13:16:34 +0200
+Message-Id: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
@@ -57,131 +64,242 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Fix several warnings and broken links.
+Currently, the ACPI enumeration that takes place when registering a
+SPI master only considers immediate child devices in the ACPI namespace,
+rather than checking the ResourceSource field in the SpiSerialBus()
+resource descriptor.
 
-This series was generated against linux-next, but was rebased to be applied at
-docs-next. It should apply cleanly on either tree.
+This is incorrect: SPI slaves could reside anywhere in the ACPI
+namespace, and so we should enumerate the entire namespace and look for
+any device that refers to the newly registered SPI master in its
+resource descriptor.
 
-There's a git tree with all of them applied on the top of docs/docs-next
-at:
+So refactor the existing code and use a lookup structure so that
+allocating the SPI device structure is deferred until we have identified
+the device as an actual child of the controller. This approach is
+loosely based on the way the I2C subsystem handles ACPI enumeration.
 
-https://git.linuxtv.org/mchehab/experimental.git/log/?h=fix_doc_links_v2
+Note that Apple x86 hardware does not rely on SpiSerialBus() resources
+in _CRS but uses nested devices below the controller's device node in
+the ACPI namespace, with a special set of device properties. This means
+we have to take care to only parse those properties for device nodes
+that are direct children of the controller node.
 
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: linux-spi@vger.kernel.org
+Cc: broonie@kernel.org
+Cc: andy.shevchenko@gmail.com
+Cc: masahisa.kojima@linaro.org
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Cc: linux-acpi@vger.kernel.org
+Cc: Lukas Wunner <lukas@wunner.de>
 
-Mauro Carvalho Chehab (21):
-  ABI: sysfs-devices-system-cpu: point to the right docs
-  isdn: mISDN: remove a bogus reference to a non-existing doc
-  dt: fix broken references to nand.txt
-  docs: zh_CN: get rid of basic_profiling.txt
-  doc: it_IT: fix reference to magic-number.rst
-  docs: mm: numaperf.rst: get rid of a build warning
-  docs: bpf: get rid of two warnings
-  docs: mark orphan documents as such
-  docs: amd-memory-encryption.rst get rid of warnings
-  gpu: amdgpu: fix broken amdgpu_dma_buf.c references
-  gpu: i915.rst: Fix references to renamed files
-  docs: zh_CN: avoid duplicate citation references
-  docs: vm: hmm.rst: fix some warnings
-  docs: it: license-rules.rst: get rid of warnings
-  docs: gpio: driver.rst: fix a bad tag
-  docs: soundwire: locking: fix tags for a code-block
-  docs: security: trusted-encrypted.rst: fix code-block tag
-  docs: security: core.rst: Fix several warnings
-  docs: net: dpio-driver.rst: fix two codeblock warnings
-  docs: net: sja1105.rst: fix table format
-  docs: fix broken documentation links
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+---
+ drivers/spi/spi.c | 103 ++++++++++++++------
+ 1 file changed, 72 insertions(+), 31 deletions(-)
 
-Otto Sabart (1):
-  mfd: madera: Fix bad reference to pinctrl.txt file
-
- .../ABI/testing/sysfs-devices-system-cpu      |  3 +-
- Documentation/accelerators/ocxl.rst           |  2 +
- Documentation/acpi/dsd/leds.txt               |  2 +-
- .../admin-guide/kernel-parameters.rst         |  6 +-
- .../admin-guide/kernel-parameters.txt         | 16 ++---
- Documentation/admin-guide/mm/numaperf.rst     |  5 +-
- Documentation/admin-guide/ras.rst             |  2 +-
- Documentation/arm/stm32/overview.rst          |  2 +
- .../arm/stm32/stm32f429-overview.rst          |  2 +
- .../arm/stm32/stm32f746-overview.rst          |  2 +
- .../arm/stm32/stm32f769-overview.rst          |  2 +
- .../arm/stm32/stm32h743-overview.rst          |  2 +
- .../arm/stm32/stm32mp157-overview.rst         |  2 +
- Documentation/bpf/btf.rst                     |  2 +
- .../bindings/mtd/amlogic,meson-nand.txt       |  2 +-
- .../devicetree/bindings/mtd/gpmc-nand.txt     |  2 +-
- .../devicetree/bindings/mtd/marvell-nand.txt  |  2 +-
- .../devicetree/bindings/mtd/tango-nand.txt    |  2 +-
- .../devicetree/bindings/net/fsl-enetc.txt     |  7 +-
- .../bindings/pci/amlogic,meson-pcie.txt       |  2 +-
- .../regulator/qcom,rpmh-regulator.txt         |  2 +-
- .../devicetree/booting-without-of.txt         |  2 +-
- Documentation/driver-api/gpio/board.rst       |  2 +-
- Documentation/driver-api/gpio/consumer.rst    |  2 +-
- Documentation/driver-api/gpio/driver.rst      |  2 +-
- .../driver-api/soundwire/locking.rst          |  4 +-
- .../firmware-guide/acpi/enumeration.rst       |  2 +-
- .../firmware-guide/acpi/method-tracing.rst    |  2 +-
- Documentation/gpu/amdgpu.rst                  |  4 +-
- Documentation/gpu/i915.rst                    |  6 +-
- Documentation/gpu/msm-crash-dump.rst          |  2 +
- Documentation/i2c/instantiating-devices       |  2 +-
- Documentation/interconnect/interconnect.rst   |  2 +
- Documentation/laptops/lg-laptop.rst           |  2 +
- .../freescale/dpaa2/dpio-driver.rst           |  4 +-
- Documentation/networking/dsa/sja1105.rst      |  6 +-
- Documentation/powerpc/isa-versions.rst        |  2 +
- Documentation/security/keys/core.rst          | 16 +++--
- .../security/keys/trusted-encrypted.rst       |  4 +-
- Documentation/sysctl/kernel.txt               |  4 +-
- .../translations/it_IT/process/howto.rst      |  2 +-
- .../it_IT/process/license-rules.rst           | 28 ++++----
- .../it_IT/process/magic-number.rst            |  2 +-
- .../it_IT/process/stable-kernel-rules.rst     |  4 +-
- .../translations/zh_CN/basic_profiling.txt    | 71 -------------------
- .../translations/zh_CN/process/4.Coding.rst   |  2 +-
- .../zh_CN/process/management-style.rst        |  4 +-
- .../zh_CN/process/programming-language.rst    | 28 ++++----
- .../virtual/kvm/amd-memory-encryption.rst     |  5 ++
- Documentation/virtual/kvm/vcpu-requests.rst   |  2 +
- Documentation/vm/hmm.rst                      |  9 ++-
- Documentation/x86/x86_64/5level-paging.rst    |  2 +-
- Documentation/x86/x86_64/boot-options.rst     |  4 +-
- .../x86/x86_64/fake-numa-for-cpusets.rst      |  2 +-
- MAINTAINERS                                   |  6 +-
- arch/arm/Kconfig                              |  2 +-
- arch/arm64/kernel/kexec_image.c               |  2 +-
- arch/powerpc/Kconfig                          |  2 +-
- arch/x86/Kconfig                              | 16 ++---
- arch/x86/Kconfig.debug                        |  2 +-
- arch/x86/boot/header.S                        |  2 +-
- arch/x86/entry/entry_64.S                     |  2 +-
- arch/x86/include/asm/bootparam_utils.h        |  2 +-
- arch/x86/include/asm/page_64_types.h          |  2 +-
- arch/x86/include/asm/pgtable_64_types.h       |  2 +-
- arch/x86/kernel/cpu/microcode/amd.c           |  2 +-
- arch/x86/kernel/kexec-bzimage64.c             |  2 +-
- arch/x86/kernel/pci-dma.c                     |  2 +-
- arch/x86/mm/tlb.c                             |  2 +-
- arch/x86/platform/pvh/enlighten.c             |  2 +-
- drivers/acpi/Kconfig                          | 10 +--
- drivers/isdn/mISDN/dsp_core.c                 |  2 -
- drivers/net/ethernet/faraday/ftgmac100.c      |  2 +-
- .../fieldbus/Documentation/fieldbus_dev.txt   |  4 +-
- drivers/vhost/vhost.c                         |  2 +-
- include/acpi/acpi_drivers.h                   |  2 +-
- include/linux/fs_context.h                    |  2 +-
- include/linux/lsm_hooks.h                     |  2 +-
- include/linux/mfd/madera/pdata.h              |  3 +-
- mm/Kconfig                                    |  2 +-
- security/Kconfig                              |  2 +-
- tools/include/linux/err.h                     |  2 +-
- .../Documentation/stack-validation.txt        |  4 +-
- tools/testing/selftests/x86/protection_keys.c |  2 +-
- 84 files changed, 183 insertions(+), 212 deletions(-)
- delete mode 100644 Documentation/translations/zh_CN/basic_profiling.txt
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 5e75944ad5d1..4661b219a7e7 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1799,9 +1799,18 @@ static void of_register_spi_devices(struct spi_controller *ctlr) { }
+ #endif
+ 
+ #ifdef CONFIG_ACPI
+-static void acpi_spi_parse_apple_properties(struct spi_device *spi)
++struct acpi_spi_lookup {
++	struct spi_controller 	*ctlr;
++	u32			max_speed_hz;
++	u32			mode;
++	int			irq;
++	u8			bits_per_word;
++	u8			chip_select;
++};
++
++static void acpi_spi_parse_apple_properties(struct acpi_device *dev,
++					    struct acpi_spi_lookup *lookup)
+ {
+-	struct acpi_device *dev = ACPI_COMPANION(&spi->dev);
+ 	const union acpi_object *obj;
+ 
+ 	if (!x86_apple_machine)
+@@ -1809,35 +1818,46 @@ static void acpi_spi_parse_apple_properties(struct spi_device *spi)
+ 
+ 	if (!acpi_dev_get_property(dev, "spiSclkPeriod", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length >= 4)
+-		spi->max_speed_hz  = NSEC_PER_SEC / *(u32 *)obj->buffer.pointer;
++		lookup->max_speed_hz  = NSEC_PER_SEC / *(u32 *)obj->buffer.pointer;
+ 
+ 	if (!acpi_dev_get_property(dev, "spiWordSize", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length == 8)
+-		spi->bits_per_word = *(u64 *)obj->buffer.pointer;
++		lookup->bits_per_word = *(u64 *)obj->buffer.pointer;
+ 
+ 	if (!acpi_dev_get_property(dev, "spiBitOrder", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length == 8 && !*(u64 *)obj->buffer.pointer)
+-		spi->mode |= SPI_LSB_FIRST;
++		lookup->mode |= SPI_LSB_FIRST;
+ 
+ 	if (!acpi_dev_get_property(dev, "spiSPO", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length == 8 &&  *(u64 *)obj->buffer.pointer)
+-		spi->mode |= SPI_CPOL;
++		lookup->mode |= SPI_CPOL;
+ 
+ 	if (!acpi_dev_get_property(dev, "spiSPH", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length == 8 &&  *(u64 *)obj->buffer.pointer)
+-		spi->mode |= SPI_CPHA;
++		lookup->mode |= SPI_CPHA;
+ }
+ 
+ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ {
+-	struct spi_device *spi = data;
+-	struct spi_controller *ctlr = spi->controller;
++	struct acpi_spi_lookup *lookup = data;
++	struct spi_controller *ctlr = lookup->ctlr;
+ 
+ 	if (ares->type == ACPI_RESOURCE_TYPE_SERIAL_BUS) {
+ 		struct acpi_resource_spi_serialbus *sb;
++		acpi_handle parent_handle;
++		acpi_status status;
+ 
+ 		sb = &ares->data.spi_serial_bus;
+ 		if (sb->type == ACPI_RESOURCE_SERIAL_TYPE_SPI) {
++
++			status = acpi_get_handle(NULL,
++						 sb->resource_source.string_ptr,
++						 &parent_handle);
++
++			if (!status ||
++			    ACPI_HANDLE(ctlr->dev.parent) != parent_handle)
++				return -ENODEV;
++
+ 			/*
+ 			 * ACPI DeviceSelection numbering is handled by the
+ 			 * host controller driver in Windows and can vary
+@@ -1850,25 +1870,25 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ 						sb->device_selection);
+ 				if (cs < 0)
+ 					return cs;
+-				spi->chip_select = cs;
++				lookup->chip_select = cs;
+ 			} else {
+-				spi->chip_select = sb->device_selection;
++				lookup->chip_select = sb->device_selection;
+ 			}
+ 
+-			spi->max_speed_hz = sb->connection_speed;
++			lookup->max_speed_hz = sb->connection_speed;
+ 
+ 			if (sb->clock_phase == ACPI_SPI_SECOND_PHASE)
+-				spi->mode |= SPI_CPHA;
++				lookup->mode |= SPI_CPHA;
+ 			if (sb->clock_polarity == ACPI_SPI_START_HIGH)
+-				spi->mode |= SPI_CPOL;
++				lookup->mode |= SPI_CPOL;
+ 			if (sb->device_polarity == ACPI_SPI_ACTIVE_HIGH)
+-				spi->mode |= SPI_CS_HIGH;
++				lookup->mode |= SPI_CS_HIGH;
+ 		}
+-	} else if (spi->irq < 0) {
++	} else if (lookup->irq < 0) {
+ 		struct resource r;
+ 
+ 		if (acpi_dev_resource_interrupt(ares, 0, &r))
+-			spi->irq = r.start;
++			lookup->irq = r.start;
+ 	}
+ 
+ 	/* Always tell the ACPI core to skip this resource */
+@@ -1878,7 +1898,9 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 					    struct acpi_device *adev)
+ {
++	acpi_handle parent_handle = NULL;
+ 	struct list_head resource_list;
++	struct acpi_spi_lookup lookup;
+ 	struct spi_device *spi;
+ 	int ret;
+ 
+@@ -1886,28 +1908,44 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 	    acpi_device_enumerated(adev))
+ 		return AE_OK;
+ 
+-	spi = spi_alloc_device(ctlr);
+-	if (!spi) {
+-		dev_err(&ctlr->dev, "failed to allocate SPI device for %s\n",
+-			dev_name(&adev->dev));
+-		return AE_NO_MEMORY;
+-	}
+-
+-	ACPI_COMPANION_SET(&spi->dev, adev);
+-	spi->irq = -1;
++	lookup.ctlr		= ctlr;
++	lookup.mode		= 0;
++	lookup.bits_per_word	= 0;
++	lookup.irq		= -1;
+ 
+ 	INIT_LIST_HEAD(&resource_list);
+ 	ret = acpi_dev_get_resources(adev, &resource_list,
+-				     acpi_spi_add_resource, spi);
++				     acpi_spi_add_resource, &lookup);
+ 	acpi_dev_free_resource_list(&resource_list);
+ 
+-	acpi_spi_parse_apple_properties(spi);
++	if (ret < 0)
++		/* found SPI in _CRS but it points to another controller */
++		return AE_OK;
+ 
+-	if (ret < 0 || !spi->max_speed_hz) {
+-		spi_dev_put(spi);
++	if (!lookup.max_speed_hz &&
++	    !ACPI_FAILURE(acpi_get_parent(adev->handle, &parent_handle)) &&
++	    ACPI_HANDLE(ctlr->dev.parent) == parent_handle) {
++		/* Apple does not use _CRS but nested devices for SPI slaves */
++		acpi_spi_parse_apple_properties(adev, &lookup);
++	}
++
++	if (!lookup.max_speed_hz)
+ 		return AE_OK;
++
++	spi = spi_alloc_device(ctlr);
++	if (!spi) {
++		dev_err(&ctlr->dev, "failed to allocate SPI device for %s\n",
++			dev_name(&adev->dev));
++		return AE_NO_MEMORY;
+ 	}
+ 
++	ACPI_COMPANION_SET(&spi->dev, adev);
++	spi->max_speed_hz	= lookup.max_speed_hz;
++	spi->mode		= lookup.mode;
++	spi->irq		= lookup.irq;
++	spi->bits_per_word	= lookup.bits_per_word;
++	spi->chip_select	= lookup.chip_select;
++
+ 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
+ 			  sizeof(spi->modalias));
+ 
+@@ -1939,6 +1977,8 @@ static acpi_status acpi_spi_add_device(acpi_handle handle, u32 level,
+ 	return acpi_register_spi_device(ctlr, adev);
+ }
+ 
++#define SPI_ACPI_ENUMERATE_MAX_DEPTH		32
++
+ static void acpi_register_spi_devices(struct spi_controller *ctlr)
+ {
+ 	acpi_status status;
+@@ -1948,7 +1988,8 @@ static void acpi_register_spi_devices(struct spi_controller *ctlr)
+ 	if (!handle)
+ 		return;
+ 
+-	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, 1,
++	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
++				     SPI_ACPI_ENUMERATE_MAX_DEPTH,
+ 				     acpi_spi_add_device, NULL, ctlr, NULL);
+ 	if (ACPI_FAILURE(status))
+ 		dev_warn(&ctlr->dev, "failed to enumerate SPI slaves\n");
 -- 
-2.21.0
-
+2.20.1
 
