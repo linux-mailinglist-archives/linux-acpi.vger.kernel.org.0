@@ -2,126 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD1EB30E52
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 May 2019 14:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07EB630E6F
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 May 2019 14:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727255AbfEaMqc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 May 2019 08:46:32 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:46678 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726626AbfEaMqc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 May 2019 08:46:32 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x4VCkLmF120243;
-        Fri, 31 May 2019 07:46:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1559306781;
-        bh=3mnPV3T2GcEEK7hfjJaRX34/fY3geOiCoV4TEkYlC9c=;
-        h=Subject:From:To:CC:References:Date:In-Reply-To;
-        b=ZfURkIDkrQCU3I5j3XfaaRDiSTvmVEzeKoUJANiT8G/i5jc4PbY9iJXSuYggEdX46
-         ZH+Oe8HSW22Ikb67H+ypLaAiFgoI5/1viqkQpUrv/tOePRLL86xVhZRmCSPIYUfAQ7
-         1HmGhTzN0rePKu7Nj+kO6EsjqA4nLx12nR1HAk80=
-Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x4VCkLfx063198
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 31 May 2019 07:46:21 -0500
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 31
- May 2019 07:46:19 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Fri, 31 May 2019 07:46:19 -0500
-Received: from [10.250.65.13] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x4VCkJA1063192;
-        Fri, 31 May 2019 07:46:19 -0500
-Subject: Re: [PATCH 1/3] ACPI: Resolve objects on host-directed table loads
-From:   Dan Murphy <dmurphy@ti.com>
-To:     Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Schmauss <erik.schmauss@intel.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Thierry Reding <thierry.reding@gmail.com>
-CC:     <linux-acpi@vger.kernel.org>, <devel@acpica.org>,
-        <linux-leds@vger.kernel.org>, <linux-pwm@vger.kernel.org>
-References: <cover.1559127603.git.nikolaus.voss@loewensteinmedical.de>
- <8704391ae3004a6b4dd17975dbcc9e88bd28cf4b.1559127603.git.nikolaus.voss@loewensteinmedical.de>
- <2944848d-d004-6750-b95d-825b1758ff22@ti.com>
-Message-ID: <e5ed5715-2fc0-be77-0cb2-2cae57de4b98@ti.com>
-Date:   Fri, 31 May 2019 07:46:18 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1727207AbfEaM4c (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 May 2019 08:56:32 -0400
+Received: from sauhun.de ([88.99.104.3]:41340 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726518AbfEaM4b (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 31 May 2019 08:56:31 -0400
+Received: from localhost (ip5b40b67c.dynamic.kabel-deutschland.de [91.64.182.124])
+        by pokefinder.org (Postfix) with ESMTPSA id AAF692C2761;
+        Fri, 31 May 2019 14:56:28 +0200 (CEST)
+Date:   Fri, 31 May 2019 14:56:28 +0200
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Ruslan Babayev <ruslan@babayev.com>, linux@armlinux.org.uk,
+        f.fainelli@gmail.com, hkallweit1@gmail.com, davem@davemloft.net,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [net-next,v4 0/2] Enable SFP on ACPI based systems
+Message-ID: <20190531125628.GA951@kunai>
+References: <20190528230233.26772-1-ruslan@babayev.com>
+ <20190529094818.GF2781@lahna.fi.intel.com>
+ <20190529155132.GZ18059@lunn.ch>
+ <20190531062740.GQ2781@lahna.fi.intel.com>
+ <20190531064842.GA1058@kunai>
+ <20190531120513.GB18608@lunn.ch>
 MIME-Version: 1.0
-In-Reply-To: <2944848d-d004-6750-b95d-825b1758ff22@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="DocE+STaALJfprDB"
+Content-Disposition: inline
+In-Reply-To: <20190531120513.GB18608@lunn.ch>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Nikolaus
 
-On 5/30/19 9:42 AM, Dan Murphy wrote:
-> Nikolaus
->
-> On 5/29/19 7:18 AM, Nikolaus Voss wrote:
->> If an ACPI SSDT overlay is loaded after built-in tables
->> have been loaded e.g. via configfs or efivar_ssdt_load()
->> it is necessary to rewalk the namespace to resolve
->> references. Without this, relative and absolute paths
->> like ^PCI0.SBUS or \_SB.PCI0.SBUS are not resolved
->> correctly.
->>
->> Make configfs load use the same method as efivar_ssdt_load().
->>
->> Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
->> ---
->>   drivers/acpi/acpi_configfs.c   |  6 +-----
->>   drivers/acpi/acpica/tbxfload.c | 11 +++++++++++
->>   2 files changed, 12 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/acpi/acpi_configfs.c b/drivers/acpi/acpi_configfs.c
->> index f92033661239..663f0d88f912 100644
->> --- a/drivers/acpi/acpi_configfs.c
->> +++ b/drivers/acpi/acpi_configfs.c
->> @@ -56,11 +56,7 @@ static ssize_t acpi_table_aml_write(struct 
->> config_item *cfg,
->>       if (!table->header)
->>           return -ENOMEM;
->>   -    ACPI_INFO(("Host-directed Dynamic ACPI Table Load:"));
->> -    ret = acpi_tb_install_and_load_table(
->> -            ACPI_PTR_TO_PHYSADDR(table->header),
->> -            ACPI_TABLE_ORIGIN_EXTERNAL_VIRTUAL, FALSE,
->> -            &table->index);
->> +    ret = acpi_load_table(table->header);
->>       if (ret) {
->>           kfree(table->header);
->>           table->header = NULL;
->> diff --git a/drivers/acpi/acpica/tbxfload.c 
->> b/drivers/acpi/acpica/tbxfload.c
->> index 4f30f06a6f78..61f2d46e52ba 100644
->> --- a/drivers/acpi/acpica/tbxfload.c
->> +++ b/drivers/acpi/acpica/tbxfload.c
->> @@ -297,6 +297,17 @@ acpi_status acpi_load_table(struct 
->> acpi_table_header *table)
->>       status = 
->> acpi_tb_install_and_load_table(ACPI_PTR_TO_PHYSADDR(table),
->>                           ACPI_TABLE_ORIGIN_EXTERNAL_VIRTUAL,
->>                           FALSE, &table_index);
->> +
->> +    if (!ACPI_FAILURE(status)) {
-> Checkpatch should complain about putting brackets around single 
-> statement if's.
+--DocE+STaALJfprDB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Would ACPI_SUCCESS make more sense here?
 
-Dan
+> Maybe he can create a smaller immutable branch for you.
 
-<snip>
+Yeah, that's what I was basically asking for, but probably should reply
+to his mail.
+
+
+--DocE+STaALJfprDB
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlzxJHcACgkQFA3kzBSg
+KbZ/Zg/+N3b5FeN2MagU71YxoN8a9FgQsNW7Sy0U8X1de5MHBp+3lifh3mkDGf7j
+BnxWA8GzyHMhabtHy4N8GVhnb7f0jFTgTI3bvhsklvOkicG1k7O6IK4nUx7ddUqd
+/bb/PEFj0EEIACra2itO45dxh+mHhiPQPproTzJCoHJ9V68evyft9fxqMczLZlgL
+2BOOo0gPG4n4WEhpyXGp3ecaEqpTBZwjuZVSRdGajXkGFGVWsxFEqtLnGMoe7IOo
+YS4Wuz6fGch0F46TvYVf5sI2R8QuejUpJ5Op34kseinniCQ1JRoTOlLj6pueWVFp
+DWnw3U7bgPApwwkYIfdVWXMS8CYBHvrxqtavJNBxTcYrWfL/AAsCH0Lg4HkUKDjv
+ycnC66plq2BMk3KlmMftmCwaVbAlIUvKLQoLsLiEChTS2W7ctppq6A9oOonhuPzH
+3aWqS2oQwHm1FRus1uC1K2j/eWMOojiZUsFIL428BeJPZjPu0n2IK3qp0K28pktK
+hxyUiFt3YrC82mCO7VFX0dUvFHAJ2H5rniWlt5XbDv1kRQW/TpaTQfz9kPWfn0Ud
+50+duo5d5Qxxa5XnZuKwCNBf2qd8Qut+xVZjSv0jx/9bR6fqUb2Ko4MkeE7MShEO
+003MzY6cj/PRBBE1PBLh/EI8JFIT23s4EQYxkxxJkUs04atRPZc=
+=BnCX
+-----END PGP SIGNATURE-----
+
+--DocE+STaALJfprDB--
