@@ -2,55 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98D9F3142E
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 May 2019 19:50:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 625B631492
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 May 2019 20:22:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726550AbfEaRuP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 May 2019 13:50:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53612 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726559AbfEaRuP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 31 May 2019 13:50:15 -0400
-Subject: Re: [GIT PULL] Power management fixes for v5.2-rc3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559325014;
-        bh=1uNn4UV8s8gJqIbrHZ2bjVDwyLQo8Ul7KEirUnLw2H8=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=YYyPrUzpoXk1ovcrAaM0FczXF8G1paH2rGUNujfLMPHNXK7evfI9u/8VCK0OOrTbC
-         rKczvo3WAWU8eH9U7m2eQXxHd/j7Lz5TYBM2b38pQ5Y5Pag+seeetOar5RkbBKm2yz
-         +iLwYk9J+8ZRBzfwQsyCvYxvjZAODUFdZ4ecyQKY=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0j_uQxWZRjJ_=S1b=NRpLfyf_0KHfyPwSj30SRWr9RzHg@mail.gmail.com>
-References: <CAJZ5v0j_uQxWZRjJ_=S1b=NRpLfyf_0KHfyPwSj30SRWr9RzHg@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0j_uQxWZRjJ_=S1b=NRpLfyf_0KHfyPwSj30SRWr9RzHg@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-5.2-rc3
-X-PR-Tracked-Commit-Id: d491f2b75237ef37d8867830ab7fad8d9659e853
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 702c31e8564c386dd5e304e46cf22fcaa40b1a66
-Message-Id: <155932501464.32255.6800544085473144174.pr-tracker-bot@kernel.org>
-Date:   Fri, 31 May 2019 17:50:14 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        id S1726961AbfEaSWK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 May 2019 14:22:10 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:47648 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726896AbfEaSWJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 May 2019 14:22:09 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id B91F614FC92A0;
+        Fri, 31 May 2019 11:22:08 -0700 (PDT)
+Date:   Fri, 31 May 2019 11:22:08 -0700 (PDT)
+Message-Id: <20190531.112208.2148170988874389736.davem@davemloft.net>
+To:     wsa@the-dreams.de
+Cc:     ruslan@babayev.com, mika.westerberg@linux.intel.com,
+        linux@armlinux.org.uk, andrew@lunn.ch, f.fainelli@gmail.com,
+        hkallweit1@gmail.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [net-next,v4 0/2] Enable SFP on ACPI based systems
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190531125751.GB951@kunai>
+References: <20190528230233.26772-1-ruslan@babayev.com>
+        <20190530.112759.2023290429676344968.davem@davemloft.net>
+        <20190531125751.GB951@kunai>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 31 May 2019 11:22:09 -0700 (PDT)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Fri, 31 May 2019 11:21:57 +0200:
+From: Wolfram Sang <wsa@the-dreams.de>
+Date: Fri, 31 May 2019 14:57:52 +0200
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-5.2-rc3
+>> Series applied.
+> 
+> Could you make a small immutable branch for me to pull into my I2C tree?
+> I have some changes for i2c.h pending and want to minimize merge
+> conflicts.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/702c31e8564c386dd5e304e46cf22fcaa40b1a66
+I already put other changes into net-next and also just merged 'net'
+into 'net-next' and pushed that out to git.kernel.org, so I don't know
+how I can still do that for you.
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+If it's still possible I'm willing to learn just show me what to do :)
