@@ -2,109 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6315D30B38
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 May 2019 11:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D68230B58
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 May 2019 11:22:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726515AbfEaJRO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 May 2019 05:17:14 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:62375 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726158AbfEaJRO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 May 2019 05:17:14 -0400
-Received: from 79.184.255.225.ipv4.supernova.orange.pl (79.184.255.225) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.213)
- id 737bcbf278445b37; Fri, 31 May 2019 11:17:10 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, rajmohan.mani@intel.com,
-        linux-media@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH 1/5] ACPI: Enable driver and firmware hints to control power at probe time
-Date:   Fri, 31 May 2019 11:17:10 +0200
-Message-ID: <9700088.HJ6KcFTmRF@kreacher>
-In-Reply-To: <20190510100930.14641-2-sakari.ailus@linux.intel.com>
-References: <20190510100930.14641-1-sakari.ailus@linux.intel.com> <20190510100930.14641-2-sakari.ailus@linux.intel.com>
+        id S1726555AbfEaJWJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 May 2019 05:22:09 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:37781 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726158AbfEaJWJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 May 2019 05:22:09 -0400
+Received: by mail-ot1-f68.google.com with SMTP id r10so8520248otd.4;
+        Fri, 31 May 2019 02:22:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=ZmrjcTQQbB0JQZLmh1TVPDsN8UglFZ3+RMTJhU5OjIc=;
+        b=QS/DLuCASwSPZDty8XIYWQRqBRNHUOz9crdECIR7GqAcL3ApTSdp/nUyrid7aJsvb1
+         2F/FhjS82VQKHIJSHrXNkf/y2I6tF2Ijc+qwRzdVaa6JAyq2ZN9tVFioCGG06enmM2pF
+         /ebWRgoX0Xy//gaySdaqExgrXiNcCmyRRu78/wMDQ+IfpUlPpYjOEE/sD8wQyIUeVabt
+         5onxC9pXF2O8xkEd7L4fKLbm8bws5JeFc3WSGYHdRrwMiqHGVTSS/5bMav5QiUIuHjAy
+         yBTKOctmwCkU0LS6SklyPLzNL/pFjno1hPR97oDQdi6Hi/0/Q5Q0z66fxQAlYj7YcGwG
+         oWIQ==
+X-Gm-Message-State: APjAAAXj814XAp7dIYnRMeFM0otBNJbKGYXWvSFvril3BTf5uxQHHIZL
+        6kSHrmiBIdEh4cYuGZsqCc+E4saGJAtzFtZ8feAe57c1
+X-Google-Smtp-Source: APXvYqzqfwl9QjluHmd3fDEh8DMTSFn24beKN/U0UmB9vwHpTF6jfEYs6fPDtDfvsiuZobYbtmpwlolHi83/lykF9Wk=
+X-Received: by 2002:a9d:6b98:: with SMTP id b24mr971451otq.189.1559294528593;
+ Fri, 31 May 2019 02:22:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 31 May 2019 11:21:57 +0200
+Message-ID: <CAJZ5v0j_uQxWZRjJ_=S1b=NRpLfyf_0KHfyPwSj30SRWr9RzHg@mail.gmail.com>
+Subject: [GIT PULL] Power management fixes for v5.2-rc3
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Friday, May 10, 2019 12:09:26 PM CEST Sakari Ailus wrote:
-> Allow drivers and firmware tell ACPI that there's no need to power on a
-> device for probe. This requires both a hint from the firmware as well as
-> an indication from a driver to leave the device off.
-> 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
->  drivers/acpi/device_pm.c | 9 +++++++--
->  include/linux/device.h   | 6 ++++++
->  2 files changed, 13 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> index b859d75eaf9f6..ca2409a30d26d 100644
-> --- a/drivers/acpi/device_pm.c
-> +++ b/drivers/acpi/device_pm.c
-> @@ -1225,7 +1225,9 @@ static void acpi_dev_pm_detach(struct device *dev, bool power_off)
->  	if (adev && dev->pm_domain == &acpi_general_pm_domain) {
->  		dev_pm_domain_set(dev, NULL);
->  		acpi_remove_pm_notifier(adev);
-> -		if (power_off) {
-> +		if (power_off &&
-> +		    !(dev->driver->probe_powered_off &&
-> +		      device_property_present(dev, "avoid-power-probe"))) {
->  			/*
->  			 * If the device's PM QoS resume latency limit or flags
->  			 * have been exposed to user space, they have to be
-> @@ -1273,7 +1275,10 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
->  
->  	acpi_add_pm_notifier(adev, dev, acpi_pm_notify_work_func);
->  	dev_pm_domain_set(dev, &acpi_general_pm_domain);
-> -	if (power_on) {
-> +
-> +	if (power_on &&
-> +	    !(dev->driver->probe_powered_off &&
-> +	      device_property_present(dev, "avoid-power-probe"))) {
->  		acpi_dev_pm_full_power(adev);
->  		acpi_device_wakeup_disable(adev);
->  	}
-> diff --git a/include/linux/device.h b/include/linux/device.h
-> index e85264fb66161..2a459fd5b954a 100644
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -245,6 +245,11 @@ enum probe_type {
->   * @owner:	The module owner.
->   * @mod_name:	Used for built-in modules.
->   * @suppress_bind_attrs: Disables bind/unbind via sysfs.
-> + * @probe_powered_off: The driver supports its probe function being called while
-> + *		       the device is powered off, independently of the expected
-> + *		       behaviour on combination of a given bus and firmware
-> + *		       interface etc. The driver is responsible for powering the
-> + *		       device on using runtime PM in such case.
->   * @probe_type:	Type of the probe (synchronous or asynchronous) to use.
->   * @of_match_table: The open firmware table.
->   * @acpi_match_table: The ACPI match table.
-> @@ -282,6 +287,7 @@ struct device_driver {
->  	const char		*mod_name;	/* used for built-in modules */
->  
->  	bool suppress_bind_attrs;	/* disables bind/unbind via sysfs */
-> +	bool probe_powered_off;
+Hi Linus,
 
-This is a bit of a misnomer IMO, because it is not just about devices that are completely off.
-From the ACPI perspective that is about all devices not in D0, which may mean gated clocks
-etc.
+Please pull from the tag
 
-I would call it probe_low_power or similar and analogously in patch [2/5], and apart from this
-I have no objections against this series, but I would suggest to CC the next iteration of it
-to Greg K-H and the LKML as it touches the driver core.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-5.2-rc3
 
->  	enum probe_type probe_type;
->  
->  	const struct of_device_id	*of_match_table;
-> 
+with top-most commit d491f2b75237ef37d8867830ab7fad8d9659e853
+
+ PCI: PM: Avoid possible suspend-to-idle issue
+
+on top of commit cd6c84d8f0cdc911df435bb075ba22ce3c605b07
+
+ Linux 5.2-rc2
+
+to receive power management fixes for 5.2-rc3.
+
+These fix three issues in the system-wide suspend and hibernation
+area related to PCI device PM handling by suspend-to-idle, device
+wakeup optimizations and arbitrary differences between suspend and
+hiberantion.
+
+Specifics:
+
+ - Modify the PCI bus type's PM code to avoid putting devices left
+   by their drivers in D0 on purpose during suspend to idle into
+   low-power states as doing that may confuse the system resume
+   callbacks of the drivers in question (Rafael Wysocki).
+
+ - Avoid checking ACPI wakeup configuration during system-wide
+   suspend for suspended devices that do not use ACPI-based wakeup
+   to allow them to stay in suspend more often (Rafael Wysocki).
+
+ - The last phase of hibernation is analogous to system-wide suspend
+   also because on platforms with ACPI it passes control to the
+   platform firmware to complete the transision, so make it indicate
+   that by calling pm_set_suspend_via_firmware() to allow the drivers
+   that care about this to do the right thing (Rafael Wysocki).
+
+Thanks!
 
 
+---------------
 
+Rafael J. Wysocki (3):
+      ACPI/PCI: PM: Add missing wakeup.flags.valid checks
+      ACPI: PM: Call pm_set_suspend_via_firmware() during hibernation
+      PCI: PM: Avoid possible suspend-to-idle issue
 
+---------------
+
+ drivers/acpi/device_pm.c |  4 ++--
+ drivers/acpi/sleep.c     | 39 ++++++++++++++++++++++++---------------
+ drivers/pci/pci-acpi.c   |  3 ++-
+ drivers/pci/pci-driver.c | 17 ++++++++++++++++-
+ include/linux/pci.h      |  1 +
+ include/linux/suspend.h  |  2 +-
+ kernel/power/hibernate.c |  4 ++--
+ 7 files changed, 48 insertions(+), 22 deletions(-)
