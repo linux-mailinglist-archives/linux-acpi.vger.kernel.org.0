@@ -2,92 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 85C2A30EF8
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 May 2019 15:39:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 444DE30F22
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 May 2019 15:42:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726566AbfEaNjB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 May 2019 09:39:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59484 "EHLO mail.kernel.org"
+        id S1726683AbfEaNm0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 May 2019 09:42:26 -0400
+Received: from mga07.intel.com ([134.134.136.100]:24561 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726518AbfEaNjA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 31 May 2019 09:39:00 -0400
-Received: from localhost (ip67-88-213-2.z213-88-67.customer.algx.net [67.88.213.2])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EF37C2133D;
-        Fri, 31 May 2019 13:38:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559309940;
-        bh=QejsJpJ1Xnpne98lLX4jJknIWWCbhoxePOTvB7gNbik=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=2DpJfcg9pfYTbU/2GXZr+pVR6QrKcy/SxJT9K74RqSRcrUqiy0DouKcIURLcqTko1
-         7fuV4O9/u3a7R+tuQ+pocFsSHlNfHxWXThM8iAh6BxQ33YmqzQu0W7z0WcxZ1LPIB+
-         LG8OeYRqgUIOEDZwYU5HWB/R53uXTa0o3tq7Z++U=
-Date:   Fri, 31 May 2019 06:38:59 -0700
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Chester Lin <clin@suse.com>
-Cc:     rjw@rjwysocki.net, lenb@kernel.org, jlee@suse.com, mhocko@suse.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] ACPI / device_sysfs: Add eject show attr to monitor
- eject status
-Message-ID: <20190531133859.GA18231@kroah.com>
-References: <20190531065642.13254-1-clin@suse.com>
- <20190531065642.13254-4-clin@suse.com>
+        id S1726415AbfEaNm0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 31 May 2019 09:42:26 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 May 2019 06:42:25 -0700
+X-ExtLoop1: 1
+Received: from kuha.fi.intel.com ([10.237.72.189])
+  by fmsmga001.fm.intel.com with SMTP; 31 May 2019 06:42:22 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Fri, 31 May 2019 16:42:21 +0300
+Date:   Fri, 31 May 2019 16:42:21 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v4 00/16] Software fwnode references
+Message-ID: <20190531134221.GD7167@kuha.fi.intel.com>
+References: <20190522105113.11153-1-heikki.krogerus@linux.intel.com>
+ <eb63bdfe-e863-2041-9b90-81b423f92baa@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190531065642.13254-4-clin@suse.com>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+In-Reply-To: <eb63bdfe-e863-2041-9b90-81b423f92baa@redhat.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 31, 2019 at 02:56:42PM +0800, Chester Lin wrote:
-> An acpi_eject_show attribute for users to monitor current status because
-> sometimes it might take time to finish an ejection so we need to know
-> whether it is still in progress or not.
+On Wed, May 29, 2019 at 11:29:10AM +0200, Hans de Goede wrote:
+> Hi,
 > 
-> Signed-off-by: Chester Lin <clin@suse.com>
-> ---
->  drivers/acpi/device_sysfs.c | 20 +++++++++++++++++++-
->  drivers/acpi/internal.h     |  1 +
->  drivers/acpi/scan.c         | 27 +++++++++++++++++++++++++++
->  3 files changed, 47 insertions(+), 1 deletion(-)
+> On 5/22/19 12:50 PM, Heikki Krogerus wrote:
+> > Hi,
+> > 
+> > I'm not splitting this series in two after all. After thinking about
+> > this for some time, I decided to add support for static software
+> > nodes. I did not want to support them because I don't want to make it
+> > easy to maintain board files, but in end they make the use of the
+> > software nodes so much more easier compared to if we always had to
+> > dynamically allocate them that it's a no-brainer. The references can
+> > now be also described statically. Actually, those can now only be
+> > described statically.
+> > 
+> > Hans! I applied (hopefully) all of the fixes you proposed in v3. I
+> > hope you have time to test these.
 > 
-> diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-> index 78c2653bf020..70b22eec6bbc 100644
-> --- a/drivers/acpi/device_sysfs.c
-> +++ b/drivers/acpi/device_sysfs.c
-> @@ -403,7 +403,25 @@ acpi_eject_store(struct device *d, struct device_attribute *attr,
->  	return status == AE_NO_MEMORY ? -ENOMEM : -EAGAIN;
->  }
->  
-> -static DEVICE_ATTR(eject, 0200, NULL, acpi_eject_store);
-> +static ssize_t acpi_eject_show(struct device *d,
-> +				struct device_attribute *attr, char *buf)
-> +{
-> +	struct acpi_device *acpi_device = to_acpi_device(d);
-> +	acpi_object_type not_used;
-> +	acpi_status status;
-> +
-> +	if ((!acpi_device->handler || !acpi_device->handler->hotplug.enabled)
-> +	    && !acpi_device->driver)
-> +		return -ENODEV;
-> +
-> +	status = acpi_get_type(acpi_device->handle, &not_used);
-> +	if (ACPI_FAILURE(status) || !acpi_device->flags.ejectable)
-> +		return -ENODEV;
-> +
-> +	return sprintf(buf, "%s\n", acpi_eject_status_string(acpi_device));
-> +}
-> +
-> +static DEVICE_ATTR(eject, 0644, acpi_eject_show, acpi_eject_store);
+> I've just ran various tests with the entire series applied and
+> everything (superspeed host, superspeed device, DP over Type-C,
+> PD charging) seems to work fin, so you can add my:
+> 
+> Tested-by: Hans de Goede <hdegoede@redhat.com>
+> 
+> To the entire series.
+> 
+> I've 2 very minor nitpicks about the intel_cht_int33fe patches,
+> with those fixed, you can also add my:
+> 
+> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> 
+> To the intel_cht_int33fe patches. I will reply to the
+> 2 individual patches for which I've some remarks
+> separately.
 
-DEVICE_ATTR_RW()?
+Thanks Hans! I'll fix those.
 
-And you need to document the new sysfs file in Documentation/ABI/
+Cheers,
 
-thanks,
-
-greg k-h
+-- 
+heikki
