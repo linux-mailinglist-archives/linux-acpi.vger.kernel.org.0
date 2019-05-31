@@ -2,79 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B433A308F3
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 May 2019 08:48:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02D6E30906
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 May 2019 08:57:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726386AbfEaGsp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 May 2019 02:48:45 -0400
-Received: from sauhun.de ([88.99.104.3]:39252 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726330AbfEaGsp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 31 May 2019 02:48:45 -0400
-Received: from localhost (unknown [91.64.182.124])
-        by pokefinder.org (Postfix) with ESMTPSA id 3B15F2C2761;
-        Fri, 31 May 2019 08:48:43 +0200 (CEST)
-Date:   Fri, 31 May 2019 08:48:42 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>, Ruslan Babayev <ruslan@babayev.com>,
-        linux@armlinux.org.uk, f.fainelli@gmail.com, hkallweit1@gmail.com,
-        davem@davemloft.net, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [net-next,v4 0/2] Enable SFP on ACPI based systems
-Message-ID: <20190531064842.GA1058@kunai>
-References: <20190528230233.26772-1-ruslan@babayev.com>
- <20190529094818.GF2781@lahna.fi.intel.com>
- <20190529155132.GZ18059@lunn.ch>
- <20190531062740.GQ2781@lahna.fi.intel.com>
+        id S1726275AbfEaG53 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 May 2019 02:57:29 -0400
+Received: from smtp2.provo.novell.com ([137.65.250.81]:46203 "EHLO
+        smtp2.provo.novell.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726002AbfEaG53 (ORCPT
+        <rfc822;groupwise-linux-acpi@vger.kernel.org:0:0>);
+        Fri, 31 May 2019 02:57:29 -0400
+Received: from linux-8mug.suse.de (prva10-snat226-1.provo.novell.com [137.65.226.35])
+        by smtp2.provo.novell.com with ESMTP (TLS encrypted); Fri, 31 May 2019 00:57:24 -0600
+From:   Chester Lin <clin@suse.com>
+To:     rjw@rjwysocki.net, lenb@kernel.org, gregkh@linuxfoundation.org
+Cc:     jlee@suse.com, mhocko@suse.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Chester Lin <clin@suse.com>
+Subject: [PATCH 0/3] ACPI: New eject flow to remove devices cautiously
+Date:   Fri, 31 May 2019 14:56:39 +0800
+Message-Id: <20190531065642.13254-1-clin@suse.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="6c2NcOVqGQ03X4Wi"
-Content-Disposition: inline
-In-Reply-To: <20190531062740.GQ2781@lahna.fi.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Currently there are two ways to handle ACPI device ejection. When an eject
+event happens on a container, the kernel just sends KOBJ_CHANGE to
+userland and userland should handle offline operation. For other device
+types, acpi_scan_try_to_offline() is called and it tries to put target
+device(s) offline and then removes all nodes once they are all offline.
 
---6c2NcOVqGQ03X4Wi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+However we found that sometimes applications could intensively access
+resources on ejectable devices therefore they could have risk if ejection
+suddenly happens and removes devices without any notification. In stead
+of executing the offline callbakcs directly, we want to introduce a new
+approach, which sends change events to notify all target nodes beforehand
+and hands over offline handling to userland so that userland can have a
+chance to schedule an offline task based on current workload. The online
+function to recover from failure is also changed, it follows the same
+approach to send change events rather than putting devices online directly
+, which means userland will also need to take care of online handling.
 
+To ensure that eject function can work properly since normal users might
+not have their own offline/online handling, we will submit a generic udev
+rule to systemd upstream as default in order to deal with change events
+and take [offline/online] action accordingly. But the Hot-Removing part
+still remains so the hotplug function can run to it once target nodes are
+all offline.
 
-> > Are you happy for the i2c patch to be merged via net-next?
->=20
-> Yes, that's fine my me.
->=20
-> Wolfram do you have any objections?
+To easily monitor eject status and start over an eject process, there's a
+status trace mechanism in this eject flow, which helps to count current
+online devices under the ejectable target, and it can reschedule an eject
+event when all nodes within the device tree have been put offline.
 
-That's fine with me, I'd like an immutable branch, though. There are
-likely other changes to i2c.h coming and that would avoid merge
-conflicts.
+Chester Lin (3):
+  ACPI / hotplug: Send change events for offline/online requests when
+    eject is triggered
+  ACPI / hotplug: Eject status trace and auto-remove approach
+  ACPI / device_sysfs: Add eject show attr to monitor eject status
 
+ drivers/acpi/container.c    |   2 +-
+ drivers/acpi/device_sysfs.c |  20 ++-
+ drivers/acpi/glue.c         |  81 ++++++++++
+ drivers/acpi/internal.h     |  31 +++-
+ drivers/acpi/scan.c         | 298 ++++++++++++++++++++++++++----------
+ drivers/base/core.c         |   2 +
+ include/acpi/acpi_bus.h     |   3 +-
+ 7 files changed, 356 insertions(+), 81 deletions(-)
 
---6c2NcOVqGQ03X4Wi
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+2.20.1
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlzwzkYACgkQFA3kzBSg
-KbYLThAAj7STTMVCIs8F5pQc2CL/VG7m9jE8g45Y2UsC2GalXogsowIOtAJydg9l
-Ix5+g9neYnFPj6Kvct20SxzQPtjxZXhn+hStBHTx6AN30pXXywAA1QisHNp4LLSk
-6eSsE57svbMqOTtF7HGZeEheocvcDDr8NbTLWFuUOuHJnumSWWSOFtHFGIynZEa6
-agL05yQJ2mWQ33ydA6mq8JqB/kYaajsuAPmM4YxaxReshoRxOXOCduvkWk7q8QqI
-SlcJZCmccTypcIUxsp1gETxbBScYdcVtd/ZKR5sdxApbWW6OFJMq6DYfg2Cp1ZOw
-dSoQBesfighJL0cI0/M291OLRZeJFi4rzJW5ZT0zGadCFiSsGDoJVag5EWVsfl9L
-8dkW7eEusUeUk7rwMFNqEa/0ZZanN+DwgDEgEbQI2Si06neTiSflRBtwvWNjDF7i
-Wey4mpYZkl4Gem46VPzOk0PbVnnvy3jwXtuMMB61C8jX+sDfI/ESHNWBiADvDkgH
-TPdBhRheUUeJZnxDQc8rbqyeZU6URG+AO6gaDNBozJr/GNKRpGHz1iciPUl60rE+
-2tfFqWnEgEkWuEwUqFw9e+ZdayGV1bEiIt3r77g4UdzldwS/JzfubncU5XmZX04R
-7MrWtxJYl3zXkvlRh+K1xgdN+Ys8L/WJxPq3OdybHR3lBsaBEc4=
-=la6d
------END PGP SIGNATURE-----
-
---6c2NcOVqGQ03X4Wi--
