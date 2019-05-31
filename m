@@ -2,158 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42C4630A86
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 May 2019 10:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 483B630B09
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 May 2019 11:05:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726240AbfEaIqA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 May 2019 04:46:00 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:62478 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726002AbfEaIqA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 May 2019 04:46:00 -0400
-Received: from 79.184.255.225.ipv4.supernova.orange.pl (79.184.255.225) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.213)
- id f191c577164177af; Fri, 31 May 2019 10:45:58 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-gpio@vger.kernel.org,
-        Masahisa Kojima <masahisa.kojima@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Graeme Gregory <graeme.gregory@linaro.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v4 1/4] acpi/irq: implement helper to create hierachical domains
-Date:   Fri, 31 May 2019 10:45:57 +0200
-Message-ID: <1909675.6iIoxqmsXk@kreacher>
-In-Reply-To: <20190528133647.3362-2-ard.biesheuvel@linaro.org>
-References: <20190528133647.3362-1-ard.biesheuvel@linaro.org> <20190528133647.3362-2-ard.biesheuvel@linaro.org>
+        id S1727065AbfEaJFU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 May 2019 05:05:20 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:33060 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726240AbfEaJFU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 May 2019 05:05:20 -0400
+Received: by mail-lj1-f194.google.com with SMTP id w1so8904306ljw.0
+        for <linux-acpi@vger.kernel.org>; Fri, 31 May 2019 02:05:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=S0K5vF1TmvPR6y9n0+EfBalb63nXpcEz1r5n0JeJ+og=;
+        b=DG9YHhvk4ayYVsQmjKNwO/NhJ5gfFhdnvVUS8e+5EuiDdzWidbe2+ABHLKD7KU8AZ7
+         Fpwbqb5zi8isgWhOEHEkaRzyjRim6feyjz/BNZS8c2AaAJ1dbK65ArST7oWktH6poWHQ
+         aErfqAWxFpHi17h8JoyA1tTZnes431sEFBb+C3aG0IoNPym4fDJdbfLrmiKJm16EaE3m
+         A0LXAQZHUu1k5a7+AFWGORMyyHVRt5gtLWbkt7BvL5kkkXlQIcGBTMAbpJi0cX5NMLRo
+         xTHTbkwF+DaT24XK+EE0xrng/AYcurruXmD9r1TTt4aXqK76WH5m3yoGEor59bLHTR9P
+         nAGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=S0K5vF1TmvPR6y9n0+EfBalb63nXpcEz1r5n0JeJ+og=;
+        b=F81E82bitCgsLJQZ3EJJLLbdIUKQxqAnbQeABw7Mlr07Uz+ABJPu3qGCZS0ENU4v5u
+         H6rxOjBypN5Q3eWgZGf4W5vq/FkrfxqCv4KfjkzImoM8IPJU9lOrWPLAg1FAQPwJKZ6K
+         UZ5f/rSRz48B4+r4AFbln2z9X4DLlPnwLGLumdWifqtx3BOtLAAiH/C8V5vsF/egAZPV
+         vQyywL7Pau2SCrSZl97qUTCP7Jubg7NaC6YE5LI2SvuvxFqOu7Li/97wJUhddQzNYl2P
+         8Buj62EyLq4Z+al3poIHXwQ31HoZsP+UJbxOSPHzty2dQ4ji9OGtBd9Prgqc+GSM+May
+         gcMQ==
+X-Gm-Message-State: APjAAAV3kaWFTS5aVpM7H45uP/D2VaURdJv2kiS9I9D7o6bW6OK4OCFl
+        JdC7J3oYHPAvDiXoDs6g5jjyX18AN+kG792GuoY=
+X-Google-Smtp-Source: APXvYqz3PkghfV4huXNmZcH4pYmCgDbj4sNR+TUR6vG/tzK5YQkMU4c85OgTBPQIbW1GaAe9pI5WWNQpLekscQy2SfE=
+X-Received: by 2002:a2e:9ad1:: with SMTP id p17mr5178840ljj.147.1559293517891;
+ Fri, 31 May 2019 02:05:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Reply-To: evelynmarryedward@gmail.com
+Received: by 2002:ab3:7dc3:0:0:0:0:0 with HTTP; Fri, 31 May 2019 02:05:17
+ -0700 (PDT)
+From:   Evelyn Mary Edward <evelymaryedward@gmail.com>
+Date:   Fri, 31 May 2019 09:05:17 +0000
+X-Google-Sender-Auth: UaD4lWMG7k-yu7OoOSwwKuqYrUM
+Message-ID: <CAHidhB5HJ4L1a_vwqpCGj-Yk6QodBkakHbcOA7C+4RPWH36pAg@mail.gmail.com>
+Subject: URGENT REPLY ASAP !!!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tuesday, May 28, 2019 3:36:44 PM CEST Ard Biesheuvel wrote:
-> ACPI permits arbitrary producer->consumer interrupt links to be
-> described in AML, which means a topology such as the following
-> is perfectly legal:
-> 
->   Device (EXIU) {
->     Name (_HID, "SCX0008")
->     Name (_UID, Zero)
->     Name (_CRS, ResourceTemplate () {
->       ...
->     })
->   }
-> 
->   Device (GPIO) {
->     Name (_HID, "SCX0007")
->     Name (_UID, Zero)
->     Name (_CRS, ResourceTemplate () {
->       Memory32Fixed (ReadWrite, SYNQUACER_GPIO_BASE, SYNQUACER_GPIO_SIZE)
->       Interrupt (ResourceConsumer, Edge, ActiveHigh, ExclusiveAndWake, 0, "\\_SB.EXIU") {
->         7,
->       }
->     })
->     ...
->   }
-> 
-> The EXIU in this example is the external interrupt unit as can be found
-> on Socionext SynQuacer based platforms, which converts a block of 32 SPIs
-> from arbitrary polarity/trigger into level-high, with a separate set
-> of config/mask/unmask/clear controls.
-> 
-> The existing DT based driver in drivers/irqchip/irq-sni-exiu.c models
-> this as a hierarchical domain stacked on top of the GIC's irqdomain.
-> Since the GIC is modeled as a DT node as well, obtaining a reference
-> to this irqdomain is easily done by going through the parent link.
-> 
-> On ACPI systems, however, the GIC is not modeled as an object in the
-> namespace, and so device objects cannot refer to it directly. So in
-> order to obtain the irqdomain reference when driving the EXIU in ACPI
-> mode, we need a helper that implicitly grabs the default domain as the
-> parent of the hierarchy for interrupts allocated out of the global GSI
-> pool.
-> 
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Reviewed-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+--=20
+Greetings
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Please forgive me for stressing you with my predicaments as I know
+that this letter may come to you as big surprise. Actually, I came
+across your E-mail from my personal search afterward I decided to
+email you directly believing that you will be honest to fulfill my
+final wish before I die.
 
-if that matters.
+Meanwhile, I am Madam Evelyn Mary Edward, 73 years, from USA,
+childless and I am suffering from a long-time cancer and from all
+indication my condition is really   eriorating as my doctors have
+confirmed and courageously advised me that I may not live beyond two
+months from now for the reason that my tumor has reached a critical
+stage which has defiled all forms of medical treatment.
 
-> ---
->  drivers/acpi/irq.c   | 26 ++++++++++++++++++++
->  include/linux/acpi.h |  7 ++++++
->  2 files changed, 33 insertions(+)
-> 
-> diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-> index c3b2222e2129..ce6b25a3b7a7 100644
-> --- a/drivers/acpi/irq.c
-> +++ b/drivers/acpi/irq.c
-> @@ -295,3 +295,29 @@ void __init acpi_set_irq_model(enum acpi_irq_model_id model,
->  	acpi_irq_model = model;
->  	acpi_gsi_domain_id = fwnode;
->  }
-> +
-> +/**
-> + * acpi_irq_create_hierarchy - Create a hierarchical IRQ domain with the default
-> + *                             GSI domain as its parent.
-> + * @flags:      Irq domain flags associated with the domain
-> + * @size:       Size of the domain.
-> + * @fwnode:     Optional fwnode of the interrupt controller
-> + * @ops:        Pointer to the interrupt domain callbacks
-> + * @host_data:  Controller private data pointer
-> + */
-> +struct irq_domain *acpi_irq_create_hierarchy(unsigned int flags,
-> +					     unsigned int size,
-> +					     struct fwnode_handle *fwnode,
-> +					     const struct irq_domain_ops *ops,
-> +					     void *host_data)
-> +{
-> +	struct irq_domain *d = irq_find_matching_fwnode(acpi_gsi_domain_id,
-> +							DOMAIN_BUS_ANY);
-> +
-> +	if (!d)
-> +		return NULL;
-> +
-> +	return irq_domain_create_hierarchy(d, flags, size, fwnode, ops,
-> +					   host_data);
-> +}
-> +EXPORT_SYMBOL_GPL(acpi_irq_create_hierarchy);
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 98440df7fe42..70de4bc30cea 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -23,6 +23,7 @@
->  
->  #include <linux/errno.h>
->  #include <linux/ioport.h>	/* for struct resource */
-> +#include <linux/irqdomain.h>
->  #include <linux/resource_ext.h>
->  #include <linux/device.h>
->  #include <linux/property.h>
-> @@ -327,6 +328,12 @@ int acpi_isa_irq_to_gsi (unsigned isa_irq, u32 *gsi);
->  void acpi_set_irq_model(enum acpi_irq_model_id model,
->  			struct fwnode_handle *fwnode);
->  
-> +struct irq_domain *acpi_irq_create_hierarchy(unsigned int flags,
-> +					     unsigned int size,
-> +					     struct fwnode_handle *fwnode,
-> +					     const struct irq_domain_ops *ops,
-> +					     void *host_data);
-> +
->  #ifdef CONFIG_X86_IO_APIC
->  extern int acpi_get_override_irq(u32 gsi, int *trigger, int *polarity);
->  #else
-> 
+Since my days are numbered, I=E2=80=99ve decided willingly to fulfill my lo=
+ng-
+time promise to donate the sum of Ten million six hundred and twenty-
+five thousand dollars $10.625000 remaining in my foreign bank account
+over 9 years due to my health problem. This fund was obtained by me
+when I was dealing on Gold.
 
+My promise is to help the widows, handicapped, orphans,
+underprivileged, to build technical school and hospital for their
+well-being. If you will be obedient to assist me fulfill my promise as
+I said here kindly show me your first obedience by providing me your
+personal details to enable me introduce you to my bank management as
+the sole eneficiary and to enable them check whether it will be
+possible to transfer or deliver my fund to you.
 
+I have been trying to handle this project for the past 4 years by
+myself when I will get better, but I have seen that it won=E2=80=99t be
+possible anymore. Please get back to me if you can handle the project
+for more details. All details shall be sent to you once I hear from
+you
 
-
+God bless you
+Madam Evelyn Mary Edward.
