@@ -2,30 +2,28 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75E0030B21
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 May 2019 11:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6315D30B38
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 May 2019 11:17:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726483AbfEaJKe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 May 2019 05:10:34 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:48528 "EHLO
+        id S1726515AbfEaJRO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 May 2019 05:17:14 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:62375 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726002AbfEaJKe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 May 2019 05:10:34 -0400
+        with ESMTP id S1726158AbfEaJRO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 May 2019 05:17:14 -0400
 Received: from 79.184.255.225.ipv4.supernova.orange.pl (79.184.255.225) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.213)
- id c2b0c10174bd02aa; Fri, 31 May 2019 11:10:31 +0200
+ id 737bcbf278445b37; Fri, 31 May 2019 11:17:10 +0200
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v4 13/16] platform/x86: intel_cht_int33fe: Provide software nodes for the devices
-Date:   Fri, 31 May 2019 11:10:31 +0200
-Message-ID: <9821910.95WSKUoubE@kreacher>
-In-Reply-To: <7468b83c-3d75-b43f-559b-68b3140a89e9@redhat.com>
-References: <20190522105113.11153-1-heikki.krogerus@linux.intel.com> <20190522105113.11153-14-heikki.krogerus@linux.intel.com> <7468b83c-3d75-b43f-559b-68b3140a89e9@redhat.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, rajmohan.mani@intel.com,
+        linux-media@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH 1/5] ACPI: Enable driver and firmware hints to control power at probe time
+Date:   Fri, 31 May 2019 11:17:10 +0200
+Message-ID: <9700088.HJ6KcFTmRF@kreacher>
+In-Reply-To: <20190510100930.14641-2-sakari.ailus@linux.intel.com>
+References: <20190510100930.14641-1-sakari.ailus@linux.intel.com> <20190510100930.14641-2-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -34,80 +32,79 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wednesday, May 29, 2019 11:30:58 AM CEST Hans de Goede wrote:
-> Hi,
+On Friday, May 10, 2019 12:09:26 PM CEST Sakari Ailus wrote:
+> Allow drivers and firmware tell ACPI that there's no need to power on a
+> device for probe. This requires both a hint from the firmware as well as
+> an indication from a driver to leave the device off.
 > 
-> On 5/22/19 12:51 PM, Heikki Krogerus wrote:
-> > Software nodes provide two features that we will need later.
-> > 1) Software nodes can have references to other software nodes.
-> > 2) Software nodes can exist before a device entry is created.
-> > 
-> > Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> > ---
-> >   drivers/platform/x86/intel_cht_int33fe.c | 53 ++++++++++++++++++++----
-> >   1 file changed, 45 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/drivers/platform/x86/intel_cht_int33fe.c b/drivers/platform/x86/intel_cht_int33fe.c
-> > index 4ab47d6df413..a4ebd1d6b5b6 100644
-> > --- a/drivers/platform/x86/intel_cht_int33fe.c
-> > +++ b/drivers/platform/x86/intel_cht_int33fe.c
-> > @@ -27,6 +27,13 @@
-> >   
-> >   #define EXPECTED_PTYPE		4
-> >   
-> > +enum {
-> > +	INT33FE_NODE_FUSB302,
-> > +	INT33FE_NODE_MAX17047,
-> > +	INT33FE_NODE_PI3USB30532,
-> > +	INT33FE_NODE_MAX,
-> > +};
-> > +
-> >   struct cht_int33fe_data {
-> >   	struct i2c_client *max17047;
-> >   	struct i2c_client *fusb302;
-> > @@ -72,8 +79,13 @@ static const struct property_entry max17047_props[] = {
-> >   
-> >   static const struct property_entry fusb302_props[] = {
-> >   	PROPERTY_ENTRY_STRING("linux,extcon-name", "cht_wcove_pwrsrc"),
-> > -	PROPERTY_ENTRY_U32("fcs,max-sink-microvolt", 12000000),
-> > -	PROPERTY_ENTRY_U32("fcs,max-sink-microamp",   3000000),
-> > +	{ }
-> > +};
-> > +
-> > +static const struct software_node nodes[] = {
-> > +	{ "fusb302", NULL, fusb302_props },
-> > +	{ "max17047", NULL, max17047_props },
-> > +	{ "pi3usb30532" },
-> >   	{ }
-> >   };
-> >   
-> > @@ -82,14 +94,17 @@ cht_int33fe_register_max17047(struct device *dev, struct cht_int33fe_data *data)
-> >   {
-> >   	struct i2c_client *max17047 = NULL;
-> >   	struct i2c_board_info board_info;
-> > +	struct fwnode_handle *fwnode;
-> >   	int ret;
-> >   
-> > +	fwnode = software_node_fwnode(&nodes[INT33FE_NODE_MAX17047]);
-> > +	if (!fwnode)
-> > +		return -ENODEV;
-> > +
-> >   	i2c_for_each_dev(&max17047, cht_int33fe_check_for_max17047);
-> >   	if (max17047) {
-> >   		/* Pre-existing i2c-client for the max17047, add device-props */
-> > -		ret = device_add_properties(&max17047->dev, max17047_props);
-> > -		if (ret)
-> > -			return ret;
-> > +		max17047->dev.fwnode->secondary = fwnode;
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+>  drivers/acpi/device_pm.c | 9 +++++++--
+>  include/linux/device.h   | 6 ++++++
+>  2 files changed, 13 insertions(+), 2 deletions(-)
 > 
-> I believe that you should do:
-> 		fwnode->secondary = ERR_PTR(-ENODEV);
-> cht_int33fe_setup_dp
-> Before this call, as you are doing in the cht_int33fe_setup_dp function.
+> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+> index b859d75eaf9f6..ca2409a30d26d 100644
+> --- a/drivers/acpi/device_pm.c
+> +++ b/drivers/acpi/device_pm.c
+> @@ -1225,7 +1225,9 @@ static void acpi_dev_pm_detach(struct device *dev, bool power_off)
+>  	if (adev && dev->pm_domain == &acpi_general_pm_domain) {
+>  		dev_pm_domain_set(dev, NULL);
+>  		acpi_remove_pm_notifier(adev);
+> -		if (power_off) {
+> +		if (power_off &&
+> +		    !(dev->driver->probe_powered_off &&
+> +		      device_property_present(dev, "avoid-power-probe"))) {
+>  			/*
+>  			 * If the device's PM QoS resume latency limit or flags
+>  			 * have been exposed to user space, they have to be
+> @@ -1273,7 +1275,10 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
+>  
+>  	acpi_add_pm_notifier(adev, dev, acpi_pm_notify_work_func);
+>  	dev_pm_domain_set(dev, &acpi_general_pm_domain);
+> -	if (power_on) {
+> +
+> +	if (power_on &&
+> +	    !(dev->driver->probe_powered_off &&
+> +	      device_property_present(dev, "avoid-power-probe"))) {
+>  		acpi_dev_pm_full_power(adev);
+>  		acpi_device_wakeup_disable(adev);
+>  	}
+> diff --git a/include/linux/device.h b/include/linux/device.h
+> index e85264fb66161..2a459fd5b954a 100644
+> --- a/include/linux/device.h
+> +++ b/include/linux/device.h
+> @@ -245,6 +245,11 @@ enum probe_type {
+>   * @owner:	The module owner.
+>   * @mod_name:	Used for built-in modules.
+>   * @suppress_bind_attrs: Disables bind/unbind via sysfs.
+> + * @probe_powered_off: The driver supports its probe function being called while
+> + *		       the device is powered off, independently of the expected
+> + *		       behaviour on combination of a given bus and firmware
+> + *		       interface etc. The driver is responsible for powering the
+> + *		       device on using runtime PM in such case.
+>   * @probe_type:	Type of the probe (synchronous or asynchronous) to use.
+>   * @of_match_table: The open firmware table.
+>   * @acpi_match_table: The ACPI match table.
+> @@ -282,6 +287,7 @@ struct device_driver {
+>  	const char		*mod_name;	/* used for built-in modules */
+>  
+>  	bool suppress_bind_attrs;	/* disables bind/unbind via sysfs */
+> +	bool probe_powered_off;
 
-So I'm inclined to defer this patch until it is improved and queue up the rest of the series.
+This is a bit of a misnomer IMO, because it is not just about devices that are completely off.
+From the ACPI perspective that is about all devices not in D0, which may mean gated clocks
+etc.
 
-I can fix up the typo in the [15/16] while handling it.
+I would call it probe_low_power or similar and analogously in patch [2/5], and apart from this
+I have no objections against this series, but I would suggest to CC the next iteration of it
+to Greg K-H and the LKML as it touches the driver core.
+
+>  	enum probe_type probe_type;
+>  
+>  	const struct of_device_id	*of_match_table;
+> 
+
 
 
 
