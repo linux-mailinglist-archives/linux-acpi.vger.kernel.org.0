@@ -2,81 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B7CCA31FAA
-	for <lists+linux-acpi@lfdr.de>; Sat,  1 Jun 2019 16:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7CD3320DC
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jun 2019 00:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726174AbfFAOOM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 1 Jun 2019 10:14:12 -0400
-Received: from mout.kundenserver.de ([217.72.192.75]:39763 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726135AbfFAOOM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 1 Jun 2019 10:14:12 -0400
-Received: from [192.168.1.110] ([95.114.112.19]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1N7yz7-1gSn9l1PIx-014y7V; Sat, 01 Jun 2019 16:14:10 +0200
-To:     LKML <linux-kernel@vger.kernel.org>, linux-acpi@vger.kernel.org,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Subject: How to inject fwnode/oftree/acpi data by platform driver ?
-Organization: metux IT consult
-Message-ID: <c15a9872-4ad4-1b7e-e34f-14549b5b55eb@metux.net>
-Date:   Sat, 1 Jun 2019 16:14:09 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+        id S1726547AbfFAW1r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 1 Jun 2019 18:27:47 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:37605 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726149AbfFAW1q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 1 Jun 2019 18:27:46 -0400
+Received: by mail-pg1-f196.google.com with SMTP id 20so6054478pgr.4
+        for <linux-acpi@vger.kernel.org>; Sat, 01 Jun 2019 15:27:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=aBGnU4B8yz6TY7rs1ttpv6dYzM78JOOLHwHJBrwnlj0=;
+        b=CQwWpjN2M/JQgAh0nRmAFns5qtmUi/CfZMZrB2mQoTB9+Qo1tSEc1Kpz0C1BNh1MMF
+         Qoe6ipWnbmIlLMqdCsoERG9eceVDsizaAa+20vynwx8xh51jXlOaCvVKdu7AF8PI2hsW
+         7P7wjWs83oqjTUezNSxGTAR88321VMSmNnCfo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=aBGnU4B8yz6TY7rs1ttpv6dYzM78JOOLHwHJBrwnlj0=;
+        b=KK5s0CVSGZXmMnWbqbIa24p+G1rEOpGBOwrCCs/OLd2sDSaFpyAPkctr9gIvtEJFg0
+         V6Glal7WdKT2+fYk93UbPyBWbLwRnHG8W/elJPUpeGiTDXKMgKvUk8qUlofvLNuhX+nM
+         0A3cSjoT9CKyjuzKFyXVb4okN+GZkL/w7Yy2KfUk1iWGeHhGVUbOxzFF4qRtZKPAXscH
+         s86RXVOL2MqB34TyjZVKkJXja5P9rJ/TjjWhMTOWss0JS2P6lhOj9QgxezI9ZYxX14Mg
+         p6C59h+0PC3Yhick3GDpS6Wq4Zke5siuxlMaElRRPC8EfX18WngqpMXZqiL0rvpjKzLs
+         G+sw==
+X-Gm-Message-State: APjAAAW7fsVQnJ0QEN29Aw3nBgvnAZciqNswHcClJ5ReL69bX89JGvMF
+        z7C5NDuSq0jFXwPljQ4H2YwMHA==
+X-Google-Smtp-Source: APXvYqz+bu0xK6K2Pq1cv50i7dezdioX7vQ1voWVoSyrcm+9lGNu615sW37T90U6U6uGuDCkx76uoA==
+X-Received: by 2002:a63:6848:: with SMTP id d69mr18759474pgc.0.1559428065507;
+        Sat, 01 Jun 2019 15:27:45 -0700 (PDT)
+Received: from joelaf.cam.corp.google.com ([2620:15c:6:12:9c46:e0da:efbf:69cc])
+        by smtp.gmail.com with ESMTPSA id t33sm9908018pjb.1.2019.06.01.15.27.40
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Sat, 01 Jun 2019 15:27:44 -0700 (PDT)
+From:   "Joel Fernandes (Google)" <joel@joelfernandes.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Borislav Petkov <bp@alien8.de>,
+        "David S. Miller" <davem@davemloft.net>, edumazet@google.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Josh Triplett <josh@joshtriplett.org>, keescook@chromium.org,
+        kernel-hardening@lists.openwall.com,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        neilb@suse.com, netdev@vger.kernel.org, oleg@redhat.com,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        Pavel Machek <pavel@ucw.cz>, peterz@infradead.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, rcu@vger.kernel.org,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Tejun Heo <tj@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT))
+Subject: [RFC 0/6] Harden list_for_each_entry_rcu() and family
+Date:   Sat,  1 Jun 2019 18:27:32 -0400
+Message-Id: <20190601222738.6856-1-joel@joelfernandes.org>
+X-Mailer: git-send-email 2.22.0.rc1.311.g5d7573a151-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:vbfLWOD3UONPL5v9tYMNFKhO32hwAlv2T2wf51k08qhcDR7xnND
- 7nfiHZLcbks5p9X2mXYqddIGfRLmwmvBy+rg6ocRhZqy2JTQjiqtzTz95X8ly+j6tP0MIu2
- MPXIK+3tD1P8tL10q2QwVU0bi8UWYiw05foBx+u0BaflR+Ne03h9nrjOA4GmRjNJgO4MAxo
- HFpQ5gQ03IJSrmt2XZRYA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0C/Ji8CNAZk=:wNxJLB0sRHA5kdZOd6cYuA
- BFAXfqb26rtNHKbL4EaQuGdgEbRLzR/xPGZA7EdUvb2Yv4+b/MVqtTGl2A4wbjAaKEZEsCPQW
- SaJnqGNXIbheJVB43zL41BgNlmejzxGBGUr/0MyifjGR+hUIcwNy1XFSnYBNf8qIc6etOF/eZ
- BBJBOawe2S+HzScmkdkhZ+sSiuwtvj0CjvE+EBne4KTkqAChKuSJ7/IFbyxq2g6eHhByZzXCn
- YDIjGX15XaQ68et4OIiBWd5PEbXSt2cZLaYwg/mk0LZFnt43PnIF3Y97vJKxp7r0TwtLvsBJA
- nygu/A9rmUvKN1h7pSy3KA+Q+C46pZO2mnviEScIEsJU8Sh+DhB17jYZc3T/yS32QtEsTiwLg
- 4DauLHgaYI5gTSVpG3ejhi1vnlm/4ZNq/S/nl+gcvdZRDhf34A+lCCjtOjdGwPn99CCOedkn+
- OZ+yIKfuCGWPrIov5seHyyf0G5HGjnMNIe4eRUCfxpmmYsFhyDr5faABQqXrhYLH/6ukmkGLw
- siBpF0I8cVJay0BAFv9J14NJWYaKCj/K01baAgzhDsfjpy5/y01IPIMkamup7+ipGFFQ1yg3l
- KuhMh2TvCXL6/65gqdO8QmYze2QzoZNjnTvlCsxH8tLFoPobIWP7U1FEZ8enqt/7Ysel5+ld3
- RLeaUOJuaoiq31LlYGvl22dzofDYp5CYkQV8h+W3KAix1kg3E/vGIKq/Jhd1UWb4T74UvA+Dn
- Rg8JCp2lCdJ3mr/oTWyLcb1Go2jFSCMQMJzNg9bGFaq2AEhDaabOSeEyeKE=
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi folks,
+Hi,
+Please consider this as an RFC / proof-of-concept to gather some feedback. This
+series aims to provide lockdep checking to RCU list macros.
 
+RCU has a number of primitives for "consumption" of an RCU protected pointer.
+Most of the time, these consumers make sure that such accesses are under a RCU
+reader-section (such as rcu_dereference{,sched,bh} or under a lock, such as
+with rcu_dereference_protected()).
 
-I'm looking for a way to inject fwnode data from a platform driver,
-in order to initialize generic drivers w/ board specific configuration.
-The idea is getting rid of passing driver specific pdata structs
-(which, IIRC, seem to be deprecated).
+However, there are other ways to consume RCU pointers, such as by
+list_for_each_enry_rcu or hlist_for_each_enry_rcu. Unlike the rcu_dereference
+family, these consumers do no lockdep checking at all. And with the growing
+number of RCU list uses, it is possible for bugs to creep in and go unnoticed
+which lockdep checks can catch.
 
-An example usecase is the APUv2/3 board, which have things like gpios
-wired to buttons and LEDs. The board can only be detected via DMI
-string, no way to probe the platform devices - have to be initialized
-explicitly (that's how I'm already doing it now).
+Since RCU consolidation efforts last year, the different traditional RCU
+flavors (preempt, bh, sched) are all consolidated. In other words, any of these
+flavors can cause a reader section to occur and all of them must cease before
+the reader section is considered to be unlocked.
 
-The nicest way, IMHO, would be if I could just write some piece of DTS
-and some fancy magic all the rest under the hood. Such thing doesn't
-seem to exist yet. Does it make sense to implement that ? How could
-we do it ?
+Now, the list_for_each_entry_rcu and family are different from the
+rcu_dereference family in that, there is no _bh or _sched version of this
+macro. They are used under many different RCU reader flavors, and also SRCU.
+This series adds a new internal function rcu_read_lock_any_held() which checks
+if any reader section is active at all, when these macros are called. If no
+reader section exists, then the optional fourth argument to
+list_for_each_entry_rcu() can be a lockdep expression which is evaluated
+(similar to how rcu_dereference_check() works).
 
-Which other options do we have ?
+The optional argument trick to list_for_each_entry_rcu() can also be used in
+the future to possibly remove rcu_dereference_{,bh,sched}_protected() API and
+we can pass an optional lockdep expression to rcu_dereference() itself. Thus
+eliminating 3 more RCU APIs.
 
-Or should we just leave everything as it is and stick w/ pdata structs ?
+Note that some list macro wrappers already do their own lockdep checking in the
+caller side. These can be eliminated in favor of the built-in lockdep checking
+in the list macro that this series adds. For example, workqueue code has a
+assert_rcu_or_wq_mutex() function which is called in for_each_wq().  This
+series replaces that in favor of the built-in one.
 
+Also in the future, we can extend these checks to list_entry_rcu() and other
+list macros as well.
 
-thx
---mtx
+Joel Fernandes (Google) (6):
+rcu: Add support for consolidated-RCU reader checking
+ipv4: add lockdep condition to fix for_each_entry
+driver/core: Convert to use built-in RCU list checking
+workqueue: Convert for_each_wq to use built-in list check
+x86/pci: Pass lockdep condition to pcm_mmcfg_list iterator
+acpi: Use built-in RCU list checking for acpi_ioremaps list
 
--- 
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+arch/x86/pci/mmconfig-shared.c |  5 +++--
+drivers/acpi/osl.c             |  6 +++--
+drivers/base/base.h            |  1 +
+drivers/base/core.c            | 10 +++++++++
+drivers/base/power/runtime.c   | 15 ++++++++-----
+include/linux/rculist.h        | 40 ++++++++++++++++++++++++++++++----
+include/linux/rcupdate.h       |  7 ++++++
+kernel/rcu/update.c            | 26 ++++++++++++++++++++++
+kernel/workqueue.c             |  5 ++---
+net/ipv4/fib_frontend.c        |  3 ++-
+10 files changed, 101 insertions(+), 17 deletions(-)
+
+--
+2.22.0.rc1.311.g5d7573a151-goog
+
