@@ -2,128 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54783320F5
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jun 2019 00:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D435B32122
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jun 2019 01:22:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726911AbfFAW2V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 1 Jun 2019 18:28:21 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:43783 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726944AbfFAW2I (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 1 Jun 2019 18:28:08 -0400
-Received: by mail-pg1-f195.google.com with SMTP id f25so6042106pgv.10
-        for <linux-acpi@vger.kernel.org>; Sat, 01 Jun 2019 15:28:08 -0700 (PDT)
+        id S1726343AbfFAXWK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 1 Jun 2019 19:22:10 -0400
+Received: from mail-pf1-f176.google.com ([209.85.210.176]:41572 "EHLO
+        mail-pf1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726149AbfFAXWJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 1 Jun 2019 19:22:09 -0400
+Received: by mail-pf1-f176.google.com with SMTP id q17so8388624pfq.8;
+        Sat, 01 Jun 2019 16:22:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Z4Z5Q8yj6p64Y2o7Spib8gfVriUeNJkKQsEzc/+Hzz0=;
-        b=tn0zxaPZcEF0gzwva8HqnPjJia9DDhSQmHjOrC5LIgyWnnOofGPjmYj/hXfVZ8L0em
-         XP3bB8/bqiw1eHWRAsDs+Eo+KMd0muYlR7W1IGD9w2kQhutp6W3nJjVkUHo/gqw0gscT
-         hSNuQPr6j2Tn6vwct85U2AwqZoqgLSmSxBAAc=
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=bytKcnWl4DSJZnnGOOS5hiwowoQ6gtqAZ+8TrBMmas8=;
+        b=ZC4jPopia8riIAqC1pgw5kEc01ub5mspwVB4Wf3Lem5hJFgX7C2IaSVuItB4rkvBFT
+         O6vieJpn45PAjYgsVkhTXsMKKDo2TXq3kk78iOLbBE0Uqm41+kwIABYx4B6rQ7+4qx37
+         7XtcJL2CbMRfhODKsBOUCEH/nu1tCg9uwW9dAc9OeLSaMpy99vJlqVkujbmCHu1VbokQ
+         oHMlkjIEw7lQ4lHL6+IKQ9Q/lp42SEgQNjxiXPRZ+7oVVk4Tdj2jAEXnPq3dU1FpeC0G
+         crvBTnLRKHv9MDnYowazgTg2MzzIrp2y2bdYNwUruyuMaBmojPGJ30x75QsVYdZ5Tj4a
+         GrDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Z4Z5Q8yj6p64Y2o7Spib8gfVriUeNJkKQsEzc/+Hzz0=;
-        b=S8RSTGbEXHeMTNl2j+xGZmUC9osN6Bj/eT8EFHbFVy9GiRLIQBO2kgGJObpcVO9uYi
-         a/Re4eAIT12iQE++2r6qluf1QJ+OVEUraZkbScn2duCNBzboK2id1eOgLCLUNl0c9Sa+
-         CSu7ue03tpH9aoaFBr2DJMS9iVOJVtPpfzP8IIEN8H2d+hYPpb6ZN6V1mYvGFpJdO0IA
-         iR6QchPai9ya2wTCbMNQ9NwCK5cyT86lI98bF+SnxETR8eh6/WGTezd8Z+pSWBa29cQj
-         MCUx0uizw2BLN9zpqKpSGExSdanslRePzPmXParYydK0XqWmAiFIgOJmsUQFwdN8Jxtv
-         qPcg==
-X-Gm-Message-State: APjAAAWTeOCsiQfs/FQrS1HHKOAFe2IoWo86DqfPVii4AZbUpKK9Im1g
-        4RxD+SQSRY6DtXx3RgWdd+uNLQ==
-X-Google-Smtp-Source: APXvYqyQL17LnHVw1B3g7pCMzLSsO7wfuWCIia7ACIsUpOs3uzhXYItiAbtRvGIh4rUXLEb0jWXqzQ==
-X-Received: by 2002:a63:a34c:: with SMTP id v12mr17850914pgn.198.1559428087981;
-        Sat, 01 Jun 2019 15:28:07 -0700 (PDT)
-Received: from joelaf.cam.corp.google.com ([2620:15c:6:12:9c46:e0da:efbf:69cc])
-        by smtp.gmail.com with ESMTPSA id t33sm9908018pjb.1.2019.06.01.15.28.04
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sat, 01 Jun 2019 15:28:07 -0700 (PDT)
-From:   "Joel Fernandes (Google)" <joel@joelfernandes.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Borislav Petkov <bp@alien8.de>,
-        "David S. Miller" <davem@davemloft.net>, edumazet@google.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Josh Triplett <josh@joshtriplett.org>, keescook@chromium.org,
-        kernel-hardening@lists.openwall.com,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        neilb@suse.com, netdev@vger.kernel.org, oleg@redhat.com,
-        "Paul E. McKenney" <paulmck@linux.ibm.com>,
-        Pavel Machek <pavel@ucw.cz>, peterz@infradead.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>, rcu@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Tejun Heo <tj@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT))
-Subject: [RFC 6/6] acpi: Use built-in RCU list checking for acpi_ioremaps list
-Date:   Sat,  1 Jun 2019 18:27:38 -0400
-Message-Id: <20190601222738.6856-7-joel@joelfernandes.org>
-X-Mailer: git-send-email 2.22.0.rc1.311.g5d7573a151-goog
-In-Reply-To: <20190601222738.6856-1-joel@joelfernandes.org>
-References: <20190601222738.6856-1-joel@joelfernandes.org>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=bytKcnWl4DSJZnnGOOS5hiwowoQ6gtqAZ+8TrBMmas8=;
+        b=Xuy4eZabAAqnF76SgVnbLPHEci5TWqktboiGTNR9IC+9ChiTnPLmETnKgq/uF8Vy12
+         reG5i7UUMHaO6YO0c1H+IcLNaw2Bn3rGlg27PY/J/rpg2XsMqdfCvEYJsRKr65sH+GRc
+         bIV6OmDNrEv6IZM43PE3nV36jyHJ3NDneuaRRp+DCxF24Sb5DUJQXy7EQqKOPKY9yPJ4
+         Gjb9TSOwBnl0i57OR/ldPV2lFYEKNumoP3j65GvriwMx1zWRl7Ln639g490Yxa+OTiCN
+         EwlBRcMB0dP5cJjM9+Q/UL+hNx039KQZ6ivHvS328TBMdjKXiFNU45jTjXUpdx5Mq9hq
+         Ve4w==
+X-Gm-Message-State: APjAAAV8BfWZJvZziKU6AzdVK5yCdrZvo/TRhXu2tlmbHj16VntDngJt
+        6NsAYsWGIYtCTbjp8UukZiY=
+X-Google-Smtp-Source: APXvYqzoTrBsH3BR/eGzCZRW716vfkLIpcpbeen0ltSFQHkpgNlujb9zzby+KtzWvu1c+cEVCiMFbQ==
+X-Received: by 2002:a63:1e5b:: with SMTP id p27mr19021226pgm.213.1559431328871;
+        Sat, 01 Jun 2019 16:22:08 -0700 (PDT)
+Received: from localhost.localdomain ([2601:644:8201:32e0:7256:81ff:febd:926d])
+        by smtp.gmail.com with ESMTPSA id q10sm10112262pff.132.2019.06.01.16.22.07
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 01 Jun 2019 16:22:08 -0700 (PDT)
+Date:   Sat, 1 Jun 2019 16:22:06 -0700
+From:   Eduardo Valentin <edubezval@gmail.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Rui Zhang <rui.zhang@intel.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: [GIT PULL] Thermal-SoC management fixes for v5.2-rc3
+Message-ID: <20190601232205.GA7411@localhost.localdomain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-list_for_each_entry_rcu has built-in RCU and lock checking. Make use of
-it for acpi_ioremaps list traversal.
+Please consider the following thermal soc changes for v5.2-rc3. This is really
+a single revert, detected to cause issues on the tsens driver.
 
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
----
- drivers/acpi/osl.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+The following changes since commit cd6c84d8f0cdc911df435bb075ba22ce3c605b07:
 
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index f29e427d0d1d..c8b5d712c7ae 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -28,6 +28,7 @@
- #include <linux/slab.h>
- #include <linux/mm.h>
- #include <linux/highmem.h>
-+#include <linux/lockdep.h>
- #include <linux/pci.h>
- #include <linux/interrupt.h>
- #include <linux/kmod.h>
-@@ -94,6 +95,7 @@ struct acpi_ioremap {
- 
- static LIST_HEAD(acpi_ioremaps);
- static DEFINE_MUTEX(acpi_ioremap_lock);
-+#define acpi_ioremap_lock_held() lock_is_held(&acpi_ioremap_lock.dep_map)
- 
- static void __init acpi_request_region (struct acpi_generic_address *gas,
- 	unsigned int length, char *desc)
-@@ -220,7 +222,7 @@ acpi_map_lookup(acpi_physical_address phys, acpi_size size)
- {
- 	struct acpi_ioremap *map;
- 
--	list_for_each_entry_rcu(map, &acpi_ioremaps, list)
-+	list_for_each_entry_rcu(map, &acpi_ioremaps, list, acpi_ioremap_lock_held())
- 		if (map->phys <= phys &&
- 		    phys + size <= map->phys + map->size)
- 			return map;
-@@ -263,7 +265,7 @@ acpi_map_lookup_virt(void __iomem *virt, acpi_size size)
- {
- 	struct acpi_ioremap *map;
- 
--	list_for_each_entry_rcu(map, &acpi_ioremaps, list)
-+	list_for_each_entry_rcu(map, &acpi_ioremaps, list, acpi_ioremap_lock_held())
- 		if (map->virt <= virt &&
- 		    virt + size <= map->virt + map->size)
- 			return map;
--- 
-2.22.0.rc1.311.g5d7573a151-goog
+  Linux 5.2-rc2 (2019-05-26 16:49:19 -0700)
 
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/evalenti/linux-soc-thermal fixes
+
+for you to fetch changes up to ca657468a0d4bcc25445f6636485a19a525267bd:
+
+  Revert "drivers: thermal: tsens: Add new operation to check if a sensor is enabled" (2019-05-28 19:30:33 -0700)
+
+Specifics:
+- Revert tsens change that is reported to cause issues.
+
+BR,
+
+----------------------------------------------------------------
+Eduardo Valentin (1):
+      Revert "drivers: thermal: tsens: Add new operation to check if a sensor is enabled"
+
+ drivers/thermal/qcom/tsens-common.c | 14 --------------
+ drivers/thermal/qcom/tsens-v0_1.c   |  1 -
+ drivers/thermal/qcom/tsens-v2.c     |  1 -
+ drivers/thermal/qcom/tsens.c        |  5 -----
+ drivers/thermal/qcom/tsens.h        |  1 -
+ 5 files changed, 22 deletions(-)
