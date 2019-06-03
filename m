@@ -2,77 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A14B4324AE
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jun 2019 21:58:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC706326C6
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jun 2019 04:49:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726690AbfFBT6b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jun 2019 15:58:31 -0400
-Received: from sauhun.de ([88.99.104.3]:59736 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726656AbfFBT6a (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 2 Jun 2019 15:58:30 -0400
-Received: from localhost (dslb-188-102-100-163.188.102.pools.vodafone-ip.de [188.102.100.163])
-        by pokefinder.org (Postfix) with ESMTPSA id 3B0042C3559;
-        Sun,  2 Jun 2019 21:58:28 +0200 (CEST)
-Date:   Sun, 2 Jun 2019 21:58:27 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Ruslan Babayev <ruslan@babayev.com>
-Cc:     mika.westerberg@linux.intel.com, linux@armlinux.org.uk,
-        andrew@lunn.ch, f.fainelli@gmail.com, hkallweit1@gmail.com,
-        davem@davemloft.net, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-acpi@vger.kernel.org, xe-linux-external@cisco.com
-Subject: Re: [net-next,v4 1/2] i2c: acpi: export
- i2c_acpi_find_adapter_by_handle
-Message-ID: <20190602195827.GA911@kunai>
-References: <20190528230233.26772-1-ruslan@babayev.com>
- <20190528230233.26772-2-ruslan@babayev.com>
+        id S1726349AbfFCCtM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jun 2019 22:49:12 -0400
+Received: from smtp2.provo.novell.com ([137.65.250.81]:47830 "EHLO
+        smtp2.provo.novell.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726270AbfFCCtL (ORCPT
+        <rfc822;groupwise-linux-acpi@vger.kernel.org:0:0>);
+        Sun, 2 Jun 2019 22:49:11 -0400
+Received: from linux-8mug (prva10-snat226-2.provo.novell.com [137.65.226.36])
+        by smtp2.provo.novell.com with ESMTP (TLS encrypted); Sun, 02 Jun 2019 20:49:02 -0600
+Date:   Mon, 3 Jun 2019 10:48:50 +0800
+From:   Chester Lin <clin@suse.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, jlee@suse.com, mhocko@suse.com,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] ACPI / device_sysfs: Add eject show attr to monitor
+ eject status
+Message-ID: <20190603024850.GA664@linux-8mug>
+References: <20190531065642.13254-1-clin@suse.com>
+ <20190531065642.13254-4-clin@suse.com>
+ <20190531133859.GA18231@kroah.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="vkogqOf2sHV7VnPd"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190528230233.26772-2-ruslan@babayev.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190531133859.GA18231@kroah.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Fri, May 31, 2019 at 06:38:59AM -0700, Greg KH wrote:
+> On Fri, May 31, 2019 at 02:56:42PM +0800, Chester Lin wrote:
+> > An acpi_eject_show attribute for users to monitor current status because
+> > sometimes it might take time to finish an ejection so we need to know
+> > whether it is still in progress or not.
+> > 
+> > Signed-off-by: Chester Lin <clin@suse.com>
+> > ---
+> >  drivers/acpi/device_sysfs.c | 20 +++++++++++++++++++-
+> >  drivers/acpi/internal.h     |  1 +
+> >  drivers/acpi/scan.c         | 27 +++++++++++++++++++++++++++
+> >  3 files changed, 47 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+> > index 78c2653bf020..70b22eec6bbc 100644
+> > --- a/drivers/acpi/device_sysfs.c
+> > +++ b/drivers/acpi/device_sysfs.c
+> > @@ -403,7 +403,25 @@ acpi_eject_store(struct device *d, struct device_attribute *attr,
+> >  	return status == AE_NO_MEMORY ? -ENOMEM : -EAGAIN;
+> >  }
+> >  
+> > -static DEVICE_ATTR(eject, 0200, NULL, acpi_eject_store);
+> > +static ssize_t acpi_eject_show(struct device *d,
+> > +				struct device_attribute *attr, char *buf)
+> > +{
+> > +	struct acpi_device *acpi_device = to_acpi_device(d);
+> > +	acpi_object_type not_used;
+> > +	acpi_status status;
+> > +
+> > +	if ((!acpi_device->handler || !acpi_device->handler->hotplug.enabled)
+> > +	    && !acpi_device->driver)
+> > +		return -ENODEV;
+> > +
+> > +	status = acpi_get_type(acpi_device->handle, &not_used);
+> > +	if (ACPI_FAILURE(status) || !acpi_device->flags.ejectable)
+> > +		return -ENODEV;
+> > +
+> > +	return sprintf(buf, "%s\n", acpi_eject_status_string(acpi_device));
+> > +}
+> > +
+> > +static DEVICE_ATTR(eject, 0644, acpi_eject_show, acpi_eject_store);
+> 
+> DEVICE_ATTR_RW()?
+> 
+> And you need to document the new sysfs file in Documentation/ABI/
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
---vkogqOf2sHV7VnPd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi Greg,
 
-On Tue, May 28, 2019 at 04:02:32PM -0700, Ruslan Babayev wrote:
-> This allows drivers to lookup i2c adapters on ACPI based systems similar =
-to
-> of_get_i2c_adapter_by_node() with DT based systems.
->=20
-> Signed-off-by: Ruslan Babayev <ruslan@babayev.com>
-> Cc: xe-linux-external@cisco.com
+Thank you for the reminder and I will fix these two in v2.
 
-As mentioned elsewhere, applied to for-next, thanks!
-
-
---vkogqOf2sHV7VnPd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlz0Kl8ACgkQFA3kzBSg
-KbbiJw/+JNaPS29bW8rWcKmcxAwjO1Pp7csg4rUTOEwuD15TrUAyJjvwWFn856Vz
-5NiNS+mcjMs1yAWhLoqDyz8EyxwSCRBEqQR0uauprEdGJQ7cIb0PI3miHeX6VD0S
-ftj7Xp+F2eMZsezDd7/xxYSVp6tewpV64W1QjNDPaUTg35b9HFIc6J6sqKejcELv
-J6tgeVNnNxfFW+iTgq7TR5zxKB2pJEGLtXuiqrXPyItvHYtJQoviOhc9JvRqeDrG
-OnGMlaxMjY+fw94ocEL5ITM0Jucxu0HiJrGGo0HHItxR3kAZbyxzQG0yV+xjUSY3
-M4VApkKSgYskOOBNmDuPk2IBO/cS4Jr4WHAxbYzToxVcO1eDHRTxJjjeViv79Lk/
-6wAREaXsqKud7D8aVUMlrgFc9SeaAhseGiI/rIwoCWK7pHCZZZt08ixdQ0PANNNT
-NPwGjbf/fBvj1BQu60/QPsGprgJfV3kwIEO1SBvGkrVoizSe5BVlULrgsPvKMflO
-Xup4WzwYrxtOxFb8VQ5voYhP428YgptINPj0GXTiwznoG7ZoahaGzEgYQaWQgDRd
-UrkJS3e8T6uBo8W+owotjOhSJ+btT68qVqOz7A3ojem5WOirC6GkTeZ45TTfx7co
-GnUUxMGglcXCv3DNFIyXXJ3zxVmZUbfldwWpq2btUSsrxuJKAq4=
-=gPZj
------END PGP SIGNATURE-----
-
---vkogqOf2sHV7VnPd--
+Regards,
+Chester
