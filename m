@@ -2,86 +2,208 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D3D53344D
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jun 2019 17:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C7EB3392E
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jun 2019 21:42:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728570AbfFCP4M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Jun 2019 11:56:12 -0400
-Received: from mail-it1-f195.google.com ([209.85.166.195]:52981 "EHLO
-        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729246AbfFCP4M (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jun 2019 11:56:12 -0400
-Received: by mail-it1-f195.google.com with SMTP id l21so6381903ita.2
-        for <linux-acpi@vger.kernel.org>; Mon, 03 Jun 2019 08:56:11 -0700 (PDT)
+        id S1726463AbfFCTmO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Jun 2019 15:42:14 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:35588 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726261AbfFCTmO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jun 2019 15:42:14 -0400
+Received: by mail-pg1-f194.google.com with SMTP id s27so3252694pgl.2
+        for <linux-acpi@vger.kernel.org>; Mon, 03 Jun 2019 12:42:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=cbGQBnJeaRGv6ajJJGIzuBiVBbh+VlWtI63dl/Lnkko=;
-        b=Sh8raQlzVzdw4PULSC/mogzcqFkWKwBBgV6cLRMCwsJEYD850vyQys6ZgUR7Gm5J4W
-         mcCxIuhNZQBOUevcvwIuV2IehFqN8+LsfxW1BF8ziMs9i1oLjg25ncDcDXgrz6eMv5ym
-         LwZW9xQU/OgsCR3IPYqAY9Z55tKswE77JQshFFOJzEI5F71VrBNcbptKnbw7vcPkJ47X
-         Mictj4iCCWFVFmIdsZl5qNq2pEV87wuGAVAOE7jzOHBP/AEjX+mjIsLWxu0GvuLAoSCa
-         IgH2re+ZISlry2y/+p1DYlOse5xe7XARYaiXaIb+Y+Jx8GFuaSpnwFxaw002IrrcGRBQ
-         GSDQ==
+        d=joelfernandes.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=a+lhr9Q+24Qfza3c4uXpEdm8TyEjYoUavdn6rBgETA0=;
+        b=v57zkdukOzYOvhfiKNqk2b/GOjkFP1SHWP5I5eo7SiatQZoyLWIBR+84HSu7EA2L8f
+         /Txa/lSthx5I4+d0+ItNuTqwsJewXfi+56sABsg3JwRHrqq33I7sTzcN+0Twcbb6KpI7
+         +Pr2kvxYQLWF4bCfr03Db/6neBgFbrX8K2sXo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=cbGQBnJeaRGv6ajJJGIzuBiVBbh+VlWtI63dl/Lnkko=;
-        b=BlIG+fwVMgHxW9EXDDVyZt7rPDcBR0yxT/VeUu+rncf8BFebqsLiNqGAMoOiaJis6i
-         V4/E5z5c2ugyGYk7vhtPo9LDo32LH/3Fv3QmKj/xiV61G++wlpknTkSUVJIGRKhqHT+h
-         q8zROBFuTkg/vS+LyXH4Gzn7HBupiwVKmQgk8orXJrVW2J7Y0hh9xH0WGy8NzbtvWnKc
-         8ahzYateYE6FujYtVxdNqcb5EeqIHVxf9XDCwfDz55VOGGDp579cSxau8GMMdsIj4QR+
-         RfK/DF7IScrYqdKoxtlASsG6vOqftZUN50zk+KFt+0QaONoq7OVQ3d2ocvUMYu/N57/6
-         46AQ==
-X-Gm-Message-State: APjAAAU3AzBZZ9vUU+uWCFqFphKQYAjY2m78oz0d6I73k1SDrKVzRokD
-        dId/PCmkZ26jIB1uHD1RwL7PkWrE4Ci9dwD4ADuXvw==
-X-Google-Smtp-Source: APXvYqyNIUEIC4FJstcSw0ast50jY8Rc7M6z+5vxyipKpUnBdP9XGbW2up/SGXXWPzJQkN6LZK3sTc718Whw8rZYhVE=
-X-Received: by 2002:a24:740f:: with SMTP id o15mr1823315itc.76.1559577371376;
- Mon, 03 Jun 2019 08:56:11 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=a+lhr9Q+24Qfza3c4uXpEdm8TyEjYoUavdn6rBgETA0=;
+        b=G3Id1/V6ZAjYT1N5fuufHQ3XjfRk3hgiUZW1EwBQWCq+wXpqEP7B+HDYwYEnJfHvNr
+         vL9XUxqVVRTytBAJOZtrj49LJdvNNr4fr21RnT4eN6NKxPVUsCbUFTYSVHFJRAthWQvy
+         3Q1aa/OoK9P2HjbdSzfmdWVFGk95n8odaTcw8VNC2K839mvSBGkZ6WozyCqvYxaHdkA1
+         5tL9wWhiHSxSkhPeBky2t/R+tJgvF6gH7ZcRxqpYRniX9tnY3aUr2kvAN4BYyCNeAKqr
+         FGEgrf3f9lHfzm5NerMZGLMqIxNRjspdVJ0nKShMzr2Ccl57mDDAsPi/ZlqbGGgiR7sd
+         yEdg==
+X-Gm-Message-State: APjAAAUfwxwAAqtS/YNw3aZmFlxZ2LJJKdeRVIq/PtXcLKTe9jEeC2tx
+        Bs/pkHDDO0dcdogKw+c0TQsHDA==
+X-Google-Smtp-Source: APXvYqxWMwntCJiOP/Rg6qilGaE0r4tvP3xYpgRSB5zm6o29WMIRTYv7JT5/hpFHq7FY7Jh/PBhQ6A==
+X-Received: by 2002:a63:e10d:: with SMTP id z13mr9626011pgh.116.1559590933600;
+        Mon, 03 Jun 2019 12:42:13 -0700 (PDT)
+Received: from localhost ([2620:15c:6:12:9c46:e0da:efbf:69cc])
+        by smtp.gmail.com with ESMTPSA id o2sm13442018pgm.51.2019.06.03.12.42.12
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 03 Jun 2019 12:42:12 -0700 (PDT)
+Date:   Mon, 3 Jun 2019 15:42:11 -0400
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Borislav Petkov <bp@alien8.de>,
+        "David S. Miller" <davem@davemloft.net>, edumazet@google.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Josh Triplett <josh@joshtriplett.org>, keescook@chromium.org,
+        kernel-hardening@lists.openwall.com,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        neilb@suse.com, netdev@vger.kernel.org, oleg@redhat.com,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, rcu@vger.kernel.org,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Tejun Heo <tj@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
+Subject: Re: [RFC 1/6] rcu: Add support for consolidated-RCU reader checking
+Message-ID: <20190603194211.GA228607@google.com>
+References: <20190601222738.6856-1-joel@joelfernandes.org>
+ <20190601222738.6856-2-joel@joelfernandes.org>
+ <20190603080128.GA3436@hirez.programming.kicks-ass.net>
+ <20190603141847.GA94186@google.com>
 MIME-Version: 1.0
-References: <20190530111634.32209-1-ard.biesheuvel@linaro.org> <20190603110832.GA2781@lahna.fi.intel.com>
-In-Reply-To: <20190603110832.GA2781@lahna.fi.intel.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Mon, 3 Jun 2019 17:56:00 +0200
-Message-ID: <CAKv+Gu8rTernjct93rsWo0X3FTp6bsV=0JvNGQr8C8OaqB1S7A@mail.gmail.com>
-Subject: Re: [PATCH v2] spi/acpi: enumerate all SPI slaves in the namespace
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Masahisa Kojima <masahisa.kojima@linaro.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Lukas Wunner <lukas@wunner.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190603141847.GA94186@google.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 3 Jun 2019 at 13:08, Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
->
-> On Thu, May 30, 2019 at 01:16:34PM +0200, Ard Biesheuvel wrote:
-> > @@ -1948,7 +1988,8 @@ static void acpi_register_spi_devices(struct spi_controller *ctlr)
-> >       if (!handle)
-> >               return;
-> >
-> > -     status = acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, 1,
-> > +     status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
->
-> Would it be simpler to differentiate here between Apple and non-Apple
-> systems? Then we don't need all that special code and the above becomes:
->
->         depth = x86_apple_system ? 1 : SPI_ACPI_ENUMERATE_MAX_DEPTH;
->         status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT, depth,
->         ..
->
-> Probably requires a comment explaining why we do it like that, though.
+On Mon, Jun 03, 2019 at 10:18:47AM -0400, Joel Fernandes wrote:
+> On Mon, Jun 03, 2019 at 10:01:28AM +0200, Peter Zijlstra wrote:
+> > On Sat, Jun 01, 2019 at 06:27:33PM -0400, Joel Fernandes (Google) wrote:
+> > > +#define list_for_each_entry_rcu(pos, head, member, cond...)		\
+> > > +	if (COUNT_VARGS(cond) != 0) {					\
+> > > +		__list_check_rcu_cond(0, ## cond);			\
+> > > +	} else {							\
+> > > +		__list_check_rcu();					\
+> > > +	}								\
+> > > +	for (pos = list_entry_rcu((head)->next, typeof(*pos), member);	\
+> > > +		&pos->member != (head);					\
+> > >  		pos = list_entry_rcu(pos->member.next, typeof(*pos), member))
+> > >  
+> > >  /**
+> > > @@ -621,7 +648,12 @@ static inline void hlist_add_behind_rcu(struct hlist_node *n,
+> > >   * the _rcu list-mutation primitives such as hlist_add_head_rcu()
+> > >   * as long as the traversal is guarded by rcu_read_lock().
+> > >   */
+> > > +#define hlist_for_each_entry_rcu(pos, head, member, cond...)		\
+> > > +	if (COUNT_VARGS(cond) != 0) {					\
+> > > +		__list_check_rcu_cond(0, ## cond);			\
+> > > +	} else {							\
+> > > +		__list_check_rcu();					\
+> > > +	}								\
+> > >  	for (pos = hlist_entry_safe (rcu_dereference_raw(hlist_first_rcu(head)),\
+> > >  			typeof(*(pos)), member);			\
+> > >  		pos;							\
+> > 
+> > 
+> > This breaks code like:
+> > 
+> > 	if (...)
+> > 		list_for_each_entry_rcu(...);
+> > 
+> > as they are no longer a single statement. You'll have to frob it into
+> > the initializer part of the for statement.
+> 
+> Thanks a lot for that. I fixed it as below (diff is on top of the patch):
+> 
+> If not for that '##' , I could have abstracted the whole if/else
+> expression into its own macro and called it from list_for_each_entry_rcu() to
+> keep it more clean.
 
-Yes, but note that both the root and the depth are different in this case.
+Actually was able to roll the if/else into its own macro as well, thus
+keeping it clean. thanks!
 
-I'll play around with this idea, to see if it simplifies things.
+---8<-----------------------
+
+diff --git a/include/linux/rculist.h b/include/linux/rculist.h
+index b641fdd9f1a2..cc9c382b080c 100644
+--- a/include/linux/rculist.h
++++ b/include/linux/rculist.h
+@@ -43,7 +43,11 @@ static inline void INIT_LIST_HEAD_RCU(struct list_head *list)
+ /*
+  * Check during list traversal that we are within an RCU reader
+  */
+-#define __list_check_rcu()						\
++
++#define SIXTH_ARG(a1, a2, a3, a4, a5, a6, ...) a6
++#define COUNT_VARGS(...) SIXTH_ARG(dummy, ## __VA_ARGS__, 4, 3, 2, 1, 0)
++
++#define __list_check_rcu_nocond()					\
+ 	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),			\
+ 			 "RCU-list traversed in non-reader section!")
+ 
+@@ -59,6 +63,16 @@ static inline void __list_check_rcu_cond(int dummy, ...)
+ 	RCU_LOCKDEP_WARN(!cond && !rcu_read_lock_any_held(),
+ 			 "RCU-list traversed in non-reader section!");
+ }
++
++#define __list_check_rcu(cond...)				\
++     ({								\
++	if (COUNT_VARGS(cond) != 0) {				\
++		__list_check_rcu_cond(0, ## cond);		\
++	} else {						\
++		__list_check_rcu_nocond();			\
++	}							\
++      })
++
+ /*
+  * Insert a new entry between two known consecutive entries.
+  *
+@@ -357,9 +371,6 @@ static inline void list_splice_tail_init_rcu(struct list_head *list,
+ 						  member) : NULL; \
+ })
+ 
+-#define SIXTH_ARG(a1, a2, a3, a4, a5, a6, ...) a6
+-#define COUNT_VARGS(...) SIXTH_ARG(dummy, ## __VA_ARGS__, 4, 3, 2, 1, 0)
+-
+ /**
+  * list_for_each_entry_rcu	-	iterate over rcu list of given type
+  * @pos:	the type * to use as a loop cursor.
+@@ -371,12 +382,8 @@ static inline void list_splice_tail_init_rcu(struct list_head *list,
+  * as long as the traversal is guarded by rcu_read_lock().
+  */
+ #define list_for_each_entry_rcu(pos, head, member, cond...)		\
+-	if (COUNT_VARGS(cond) != 0) {					\
+-		__list_check_rcu_cond(0, ## cond);			\
+-	} else {							\
+-		__list_check_rcu();					\
+-	}								\
+-	for (pos = list_entry_rcu((head)->next, typeof(*pos), member);	\
++	for (__list_check_rcu(cond),					\
++	     pos = list_entry_rcu((head)->next, typeof(*pos), member);	\
+ 		&pos->member != (head);					\
+ 		pos = list_entry_rcu(pos->member.next, typeof(*pos), member))
+ 
+@@ -649,12 +656,8 @@ static inline void hlist_add_behind_rcu(struct hlist_node *n,
+  * as long as the traversal is guarded by rcu_read_lock().
+  */
+ #define hlist_for_each_entry_rcu(pos, head, member, cond...)		\
+-	if (COUNT_VARGS(cond) != 0) {					\
+-		__list_check_rcu_cond(0, ## cond);			\
+-	} else {							\
+-		__list_check_rcu();					\
+-	}								\
+-	for (pos = hlist_entry_safe (rcu_dereference_raw(hlist_first_rcu(head)),\
++	for (__list_check_rcu(cond),					\
++	     pos = hlist_entry_safe (rcu_dereference_raw(hlist_first_rcu(head)),\
+ 			typeof(*(pos)), member);			\
+ 		pos;							\
+ 		pos = hlist_entry_safe(rcu_dereference_raw(hlist_next_rcu(\
+-- 
+2.22.0.rc1.311.g5d7573a151-goog
+
