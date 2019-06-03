@@ -2,102 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D11932A53
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jun 2019 10:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15DB332C51
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jun 2019 11:17:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727416AbfFCIDh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Jun 2019 04:03:37 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:50138 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725856AbfFCIDg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jun 2019 04:03:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=YGw/VDsnOloIaXgrEbA/FOCyBbJYxl2QNc1vAYVXNY0=; b=Kh81Fh/GkYy+PcGkyTuRLYqJr
-        5d3meB8Iu/apofeU9LBaVTbdU34exlCBZ6/cvkSTsWYbCITa+85dcFdl1TuwCCRcbBbbBHcmz79tU
-        YNA75f//Beu0qWv4xrOjE3yCBU/h7Wpdldb8AXCdnFyE/xt6GG7X5SHHOhvkwxY2EDPpuVJ40I8NT
-        ZcmLp7vu3BxxYFbsJSX2sSX4rHSTxLEQ0MZogDpDfR8tMLBVyzA2HGhhcxPa3RuWryoN7hsbltCid
-        ApVADLC1Be6a9Xztz6ysLp/Pg3F0N3np5vQaItnOalc4ycKqr7JKLLA3Zs069bXnA/w4o4wPQqclC
-        BYeGsVrnQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hXhuM-0001Ln-LU; Mon, 03 Jun 2019 08:01:31 +0000
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 0FE772029F880; Mon,  3 Jun 2019 10:01:28 +0200 (CEST)
-Date:   Mon, 3 Jun 2019 10:01:28 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Borislav Petkov <bp@alien8.de>,
-        "David S. Miller" <davem@davemloft.net>, edumazet@google.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Josh Triplett <josh@joshtriplett.org>, keescook@chromium.org,
-        kernel-hardening@lists.openwall.com,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        neilb@suse.com, netdev@vger.kernel.org, oleg@redhat.com,
-        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        id S1728332AbfFCJNE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Jun 2019 05:13:04 -0400
+Received: from mail.steuer-voss.de ([85.183.69.95]:35866 "EHLO
+        mail.steuer-voss.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728291AbfFCJND (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jun 2019 05:13:03 -0400
+X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
+Received: by mail.steuer-voss.de (Postfix, from userid 1000)
+        id 0393B472C1; Mon,  3 Jun 2019 11:13:00 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.steuer-voss.de (Postfix) with ESMTP id 01EA74544D;
+        Mon,  3 Jun 2019 11:12:59 +0200 (CEST)
+Date:   Mon, 3 Jun 2019 11:12:59 +0200 (CEST)
+From:   Nikolaus Voss <nv@vosn.de>
+X-X-Sender: nv@fox.voss.local
+To:     Dan Murphy <dmurphy@ti.com>
+cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Schmauss <erik.schmauss@intel.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
         Pavel Machek <pavel@ucw.cz>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>, rcu@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Tejun Heo <tj@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
-Subject: Re: [RFC 1/6] rcu: Add support for consolidated-RCU reader checking
-Message-ID: <20190603080128.GA3436@hirez.programming.kicks-ass.net>
-References: <20190601222738.6856-1-joel@joelfernandes.org>
- <20190601222738.6856-2-joel@joelfernandes.org>
+        Thierry Reding <thierry.reding@gmail.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
+Subject: Re: [PATCH 1/3] ACPI: Resolve objects on host-directed table loads
+In-Reply-To: <e5ed5715-2fc0-be77-0cb2-2cae57de4b98@ti.com>
+Message-ID: <alpine.DEB.2.20.1906031111420.62985@fox.voss.local>
+References: <cover.1559127603.git.nikolaus.voss@loewensteinmedical.de> <8704391ae3004a6b4dd17975dbcc9e88bd28cf4b.1559127603.git.nikolaus.voss@loewensteinmedical.de> <2944848d-d004-6750-b95d-825b1758ff22@ti.com> <e5ed5715-2fc0-be77-0cb2-2cae57de4b98@ti.com>
+User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190601222738.6856-2-joel@joelfernandes.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: multipart/mixed; BOUNDARY="8323329-975137946-1559553180=:62985"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jun 01, 2019 at 06:27:33PM -0400, Joel Fernandes (Google) wrote:
-> +#define list_for_each_entry_rcu(pos, head, member, cond...)		\
-> +	if (COUNT_VARGS(cond) != 0) {					\
-> +		__list_check_rcu_cond(0, ## cond);			\
-> +	} else {							\
-> +		__list_check_rcu();					\
-> +	}								\
-> +	for (pos = list_entry_rcu((head)->next, typeof(*pos), member);	\
-> +		&pos->member != (head);					\
->  		pos = list_entry_rcu(pos->member.next, typeof(*pos), member))
->  
->  /**
-> @@ -621,7 +648,12 @@ static inline void hlist_add_behind_rcu(struct hlist_node *n,
->   * the _rcu list-mutation primitives such as hlist_add_head_rcu()
->   * as long as the traversal is guarded by rcu_read_lock().
->   */
-> +#define hlist_for_each_entry_rcu(pos, head, member, cond...)		\
-> +	if (COUNT_VARGS(cond) != 0) {					\
-> +		__list_check_rcu_cond(0, ## cond);			\
-> +	} else {							\
-> +		__list_check_rcu();					\
-> +	}								\
->  	for (pos = hlist_entry_safe (rcu_dereference_raw(hlist_first_rcu(head)),\
->  			typeof(*(pos)), member);			\
->  		pos;							\
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--8323329-975137946-1559553180=:62985
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-This breaks code like:
+Dan,
 
-	if (...)
-		list_for_each_entry_rcu(...);
+On Fri, 31 May 2019, Dan Murphy wrote:
+> Nikolaus
+>
+> On 5/30/19 9:42 AM, Dan Murphy wrote:
+>> Nikolaus
+>>
+>> On 5/29/19 7:18 AM, Nikolaus Voss wrote:
+>>> If an ACPI SSDT overlay is loaded after built-in tables
+>>> have been loaded e.g. via configfs or efivar_ssdt_load()
+>>> it is necessary to rewalk the namespace to resolve
+>>> references. Without this, relative and absolute paths
+>>> like ^PCI0.SBUS or \_SB.PCI0.SBUS are not resolved
+>>> correctly.
+>>>
+>>> Make configfs load use the same method as efivar_ssdt_load().
+>>>
+>>> Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
+>>> ---
+>>>   drivers/acpi/acpi_configfs.c   |  6 +-----
+>>>   drivers/acpi/acpica/tbxfload.c | 11 +++++++++++
+>>>   2 files changed, 12 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/drivers/acpi/acpi_configfs.c b/drivers/acpi/acpi_configfs.c
+>>> index f92033661239..663f0d88f912 100644
+>>> --- a/drivers/acpi/acpi_configfs.c
+>>> +++ b/drivers/acpi/acpi_configfs.c
+>>> @@ -56,11 +56,7 @@ static ssize_t acpi_table_aml_write(struct
+>>> config_item *cfg,
+>>>       if (!table->header)
+>>>           return -ENOMEM;
+>>>   -    ACPI_INFO(("Host-directed Dynamic ACPI Table Load:"));
+>>> -    ret = acpi_tb_install_and_load_table(
+>>> -            ACPI_PTR_TO_PHYSADDR(table->header),
+>>> -            ACPI_TABLE_ORIGIN_EXTERNAL_VIRTUAL, FALSE,
+>>> -            &table->index);
+>>> +    ret = acpi_load_table(table->header);
+>>>       if (ret) {
+>>>           kfree(table->header);
+>>>           table->header = NULL;
+>>> diff --git a/drivers/acpi/acpica/tbxfload.c
+>>> b/drivers/acpi/acpica/tbxfload.c
+>>> index 4f30f06a6f78..61f2d46e52ba 100644
+>>> --- a/drivers/acpi/acpica/tbxfload.c
+>>> +++ b/drivers/acpi/acpica/tbxfload.c
+>>> @@ -297,6 +297,17 @@ acpi_status acpi_load_table(struct
+>>> acpi_table_header *table)
+>>>       status =
+>>> acpi_tb_install_and_load_table(ACPI_PTR_TO_PHYSADDR(table),
+>>>                           ACPI_TABLE_ORIGIN_EXTERNAL_VIRTUAL,
+>>>                           FALSE, &table_index);
+>>> +
+>>> +    if (!ACPI_FAILURE(status)) {
+>> Checkpatch should complain about putting brackets around single
+>> statement if's.
+>
+> Would ACPI_SUCCESS make more sense here?
 
-as they are no longer a single statement. You'll have to frob it into
-the initializer part of the for statement.
+yes, changed.
+--8323329-975137946-1559553180=:62985--
