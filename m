@@ -2,171 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9329C32D0E
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jun 2019 11:44:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 638D732E38
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jun 2019 13:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727107AbfFCJoD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Jun 2019 05:44:03 -0400
-Received: from mail.steuer-voss.de ([85.183.69.95]:36318 "EHLO
-        mail.steuer-voss.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726609AbfFCJoD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jun 2019 05:44:03 -0400
-X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
-Received: by mail.steuer-voss.de (Postfix, from userid 1000)
-        id 759FF4CD5F; Mon,  3 Jun 2019 11:44:01 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.steuer-voss.de (Postfix) with ESMTP id 71BE04CD38;
-        Mon,  3 Jun 2019 11:44:01 +0200 (CEST)
-Date:   Mon, 3 Jun 2019 11:44:01 +0200 (CEST)
-From:   Nikolaus Voss <nv@vosn.de>
-X-X-Sender: nv@fox.voss.local
-To:     Dan Murphy <dmurphy@ti.com>
-cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Schmauss <erik.schmauss@intel.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
-Subject: Re: [PATCH 3/3] leds-pwm.c: support ACPI via firmware-node
- framework
-In-Reply-To: <3c763c8f-985e-a292-1bd6-af20caab5239@ti.com>
-Message-ID: <alpine.DEB.2.20.1906031129300.63281@fox.voss.local>
-References: <cover.1559127603.git.nikolaus.voss@loewensteinmedical.de> <4f89c4b91cc918302a9d5a7eedfa39259a5583bb.1559127603.git.nikolaus.voss@loewensteinmedical.de> <3c763c8f-985e-a292-1bd6-af20caab5239@ti.com>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+        id S1727833AbfFCLIh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Jun 2019 07:08:37 -0400
+Received: from mga17.intel.com ([192.55.52.151]:20226 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726587AbfFCLIh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 3 Jun 2019 07:08:37 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Jun 2019 04:08:36 -0700
+X-ExtLoop1: 1
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 03 Jun 2019 04:08:33 -0700
+Received: by lahna (sSMTP sendmail emulation); Mon, 03 Jun 2019 14:08:32 +0300
+Date:   Mon, 3 Jun 2019 14:08:32 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        broonie@kernel.org, andy.shevchenko@gmail.com,
+        masahisa.kojima@linaro.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        linux-acpi@vger.kernel.org, Lukas Wunner <lukas@wunner.de>
+Subject: Re: [PATCH v2] spi/acpi: enumerate all SPI slaves in the namespace
+Message-ID: <20190603110832.GA2781@lahna.fi.intel.com>
+References: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-1402635251-1559555041=:63281"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Thu, May 30, 2019 at 01:16:34PM +0200, Ard Biesheuvel wrote:
+> @@ -1948,7 +1988,8 @@ static void acpi_register_spi_devices(struct spi_controller *ctlr)
+>  	if (!handle)
+>  		return;
+>  
+> -	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, 1,
+> +	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
 
---8323329-1402635251-1559555041=:63281
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Would it be simpler to differentiate here between Apple and non-Apple
+systems? Then we don't need all that special code and the above becomes:
 
-Dan,
+	depth = x86_apple_system ? 1 : SPI_ACPI_ENUMERATE_MAX_DEPTH;
+	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT, depth,
+	..
 
-On Thu, 30 May 2019, Dan Murphy wrote:
->
-> On 5/29/19 7:18 AM, Nikolaus Voss wrote:
->> DT specific handling is replaced by firmware-node abstration to support
->> ACPI specification of PWM LEDS.
->>
->> Example ASL:
->> Device (PWML)
->> {
->>      Name (_HID, "PRP0001")
->>      Name (_DSD, Package () {
->>            ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
->>            Package () { Package () {"compatible",
->>                                      Package () {"pwm-leds"}}}})
->>
->>      Device (PWL0)
->>      {
->>          Name (_HID, "PRP0001")
->>          Name (_DSD, Package () {
->>                ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
->>                Package () {
->>                             Package () {"label", "alarm-led"},
->>                             Package () {"pwms", Package ()
->>                                         {\_SB_.PCI0.PWM, 0, 600000, 0}},
->>                             Package () {"linux,default-state", "off"}}})
->>      }
->> }
->>
->> Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
->> ---
->>   drivers/leds/leds-pwm.c | 44 ++++++++++++++++++++++++-----------------
->>   1 file changed, 26 insertions(+), 18 deletions(-)
->>
->> diff --git a/drivers/leds/leds-pwm.c b/drivers/leds/leds-pwm.c
->> index af08bcdc4fd8..cc717dd6a12c 100644
->> --- a/drivers/leds/leds-pwm.c
->> +++ b/drivers/leds/leds-pwm.c
->> @@ -75,7 +75,7 @@ static inline size_t sizeof_pwm_leds_priv(int num_leds)
->>   }
->>
->>   static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
->> -		       struct led_pwm *led, struct device_node *child)
->> +		       struct led_pwm *led, struct fwnode_handle *fwnode)
->>   {
->>   	struct led_pwm_data *led_data = &priv->leds[priv->num_leds];
->>   	struct pwm_args pargs;
->> @@ -88,8 +88,8 @@ static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
->>   	led_data->cdev.max_brightness = led->max_brightness;
->>   	led_data->cdev.flags = LED_CORE_SUSPENDRESUME;
->>
->> -	if (child)
->> -		led_data->pwm = devm_of_pwm_get(dev, child, NULL);
->> +	if (fwnode)
->> +		led_data->pwm = devm_fwnode_pwm_get(dev, fwnode, NULL);
->>   	else
->>   		led_data->pwm = devm_pwm_get(dev, led->name);
->>   	if (IS_ERR(led_data->pwm)) {
->> @@ -114,7 +114,8 @@ static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
->>   	if (!led_data->period && (led->pwm_period_ns > 0))
->>   		led_data->period = led->pwm_period_ns;
->>
->> -	ret = devm_of_led_classdev_register(dev, child, &led_data->cdev);
->> +	ret = devm_of_led_classdev_register(dev, to_of_node(fwnode),
->> +					    &led_data->cdev);
->>   	if (ret == 0) {
->>   		priv->num_leds++;
->>   		led_pwm_set(&led_data->cdev, led_data->cdev.brightness);
->> @@ -126,27 +127,34 @@ static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
->>   	return ret;
->>   }
->>
->> -static int led_pwm_create_of(struct device *dev, struct led_pwm_priv *priv)
->> +static int led_pwm_create_fwnode(struct device *dev, struct led_pwm_priv *priv)
->>   {
->> -	struct device_node *child;
->> +	struct fwnode_handle *fwnode;
->>   	struct led_pwm led;
->>   	int ret = 0;
->>
->>   	memset(&led, 0, sizeof(led));
->>
->> -	for_each_child_of_node(dev->of_node, child) {
->> -		led.name = of_get_property(child, "label", NULL) ? :
->> -			   child->name;
->> +	device_for_each_child_node(dev, fwnode) {
->> +		ret = fwnode_property_read_string(fwnode, "label", &led.name);
->> +		if (ret && is_of_node(fwnode))
->> +			led.name = to_of_node(fwnode)->name;
->
-> new line
-ok
-
->
->
->> +		if (!led.name) {
->> +			fwnode_handle_put(fwnode);
->> +			return -EINVAL;
->> +		}
->
-> 'label' is an optional parameter for device tree returning here makes it
-> required.
->
-> Maybe derive a default name.  There is a patch series which is going to
-> modify how labels are created for LED class devices.
->
-> https://lore.kernel.org/patchwork/project/lkml/list/?series=391005
-
-Looks interesting, thanks for the pointer. But that would be a second 
-step.
-
-My patch handles name derivation the same way as the leds-gpio driver 
-already does. I think it should be handled consistently among drivers of 
-the same sub-system.
-
-Nikolaus
---8323329-1402635251-1559555041=:63281--
+Probably requires a comment explaining why we do it like that, though.
