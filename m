@@ -2,50 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCCF234F4B
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jun 2019 19:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D45035490
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2019 01:57:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726373AbfFDRsG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Jun 2019 13:48:06 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:46492 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726295AbfFDRsG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jun 2019 13:48:06 -0400
-Received: by mail-pf1-f196.google.com with SMTP id y11so13104336pfm.13
-        for <linux-acpi@vger.kernel.org>; Tue, 04 Jun 2019 10:48:05 -0700 (PDT)
+        id S1726656AbfFDX5j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Jun 2019 19:57:39 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:37085 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726606AbfFDX5i (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jun 2019 19:57:38 -0400
+Received: by mail-pg1-f193.google.com with SMTP id 20so11307574pgr.4
+        for <linux-acpi@vger.kernel.org>; Tue, 04 Jun 2019 16:57:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=joelfernandes.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=WO/pU2tXKcWaOz/Mz8XljUSgZVyxjPQIhAnHQSTWhKk=;
-        b=xswXLDjNe6Jf8a386sadmYdZwL+QReS4MtQ+UfRYLrhTIRzkvqzQ03azY36uhAFiZ6
-         VUlZKPeFui2lSXPN/A1Ld5L6ikHcGCXM0hfmX2/Daawvc4dvYRdpTQNj2TB11YyjMros
-         4yJDUHelpg3r8bdjufBbLRnEpioOFwufDjlJU=
+        bh=1RoeYwTbHJ5uZrqzOkCL/eOap3xEJq8UUohxtmtls+0=;
+        b=Zj/4RsKSPEX80sxrowiW9yJRYHKyPgNTX80646pPhD24cF78L+/cbq0AbaGX9N2dlW
+         NbcaJdsi+uqQaXkEEuBCyBbDTXEvFRlnvVcH9GuGiMzwzkWU5HOPuyPDk8tLI4VkyyJv
+         /DfRIx8bv02qOCZ6ndDiCIPf3hcKSC8m4VzgQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=WO/pU2tXKcWaOz/Mz8XljUSgZVyxjPQIhAnHQSTWhKk=;
-        b=lmU/JGoBQ2NLpv0t19Qn+esvPBi16XF/VFeKrZetyKdLog4fDpw8Dwmo+SOIyzV7sa
-         PhK2ktuNAUAsaQZZeSd5wr8dISa7Kprj7eFxZTTI96ztGa4RDDAhAkoybIL+r87QK19/
-         M35KSMtBcbQXMxE4vLePtcqTUcNFII0/ohi9uy0Y5MZSgSLfr22bZDyH7H3R0cmGbnCo
-         23+eYYmtL4KsrKubLoHSQtVZ85eBTcmi/UUxreWQggDnG4+8qskkN+V8MdhX+kOpVHdK
-         pJFpn+dWmBFQfjf/WJfYe/Kg/x98xEsNtsniBFTZUGOfMqoHh5fc0ldcUI2L4LezWvCY
-         gYCw==
-X-Gm-Message-State: APjAAAUJmX4cIL2Vhylo1afoxaXDUIHAslzvFq9AQ8bQuvQnRuGdJTlZ
-        qiwRnR/dwoD164XAsFNj7mq43g==
-X-Google-Smtp-Source: APXvYqx8jMof6CsO9RKVykzVQR/GUv12PGEyjyOIN6xEEzRdygdf09yxJH05WCP0zIpQf4tWt1xQtQ==
-X-Received: by 2002:a62:5487:: with SMTP id i129mr38037550pfb.68.1559670484899;
-        Tue, 04 Jun 2019 10:48:04 -0700 (PDT)
+        bh=1RoeYwTbHJ5uZrqzOkCL/eOap3xEJq8UUohxtmtls+0=;
+        b=BHmjDpnrO6b+uln9gZ8C/IYx5DPdqRE6Mv5ANUMNK2HVTMCP5MnI93WhEed0GNkahw
+         OGfCZHV37gXZWbf2FK5uExoXgY0AkyvDhZkwQnJc0bISztf1+uS8lD9R8WFU7wsi5nvP
+         eWohX+6+UdmjtI81vvDoPVUf+z7RKSbX2Dqijlc3bvtxsBzwAl/siz2dw3YJWV16zMfh
+         BUPPm4Y9eCZ02AUhP841bKXY6gSEPztGMDh5oL784jw17lQjUhRtC7xtwA3Ey0JeNFiT
+         gCazPBXuB2/R7F1bAwwjSJD8Pdit5pcMIRZLeNPjf7gUdEWtOzbF63enmQMJmUs5TSFE
+         4kEA==
+X-Gm-Message-State: APjAAAVNN86zGf2vPL6YLTqVFov9vl4vrauHEbDh5n04AQwH72NDabOU
+        Lk0ijk+JVfw0xjtGS7CrXCzwxg==
+X-Google-Smtp-Source: APXvYqwkrc7X/bmQxCzpV30LpH7ErQ3xZfm3AlJzfVuoa5nXjkO6dIGfsOoh599VuAPN4rqorLCkOA==
+X-Received: by 2002:a17:90a:a790:: with SMTP id f16mr40544193pjq.27.1559692657614;
+        Tue, 04 Jun 2019 16:57:37 -0700 (PDT)
 Received: from localhost ([2620:15c:6:12:9c46:e0da:efbf:69cc])
-        by smtp.gmail.com with ESMTPSA id v4sm24304610pff.45.2019.06.04.10.48.03
+        by smtp.gmail.com with ESMTPSA id q13sm34687078pjc.1.2019.06.04.16.57.36
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 04 Jun 2019 10:48:03 -0700 (PDT)
-Date:   Tue, 4 Jun 2019 13:48:02 -0400
+        Tue, 04 Jun 2019 16:57:36 -0700 (PDT)
+Date:   Tue, 4 Jun 2019 19:57:35 -0400
 From:   Joel Fernandes <joel@joelfernandes.org>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        linux-kernel@vger.kernel.org,
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     linux-kernel@vger.kernel.org,
         Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
         Bjorn Helgaas <bhelgaas@google.com>,
         Borislav Petkov <bp@alien8.de>,
@@ -61,117 +60,120 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
         neilb@suse.com, netdev@vger.kernel.org, oleg@redhat.com,
         "Paul E. McKenney" <paulmck@linux.ibm.com>,
-        Pavel Machek <pavel@ucw.cz>,
+        Pavel Machek <pavel@ucw.cz>, peterz@infradead.org,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>, rcu@vger.kernel.org,
+        Steven Rostedt <rostedt@goodmis.org>,
         Tejun Heo <tj@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
 Subject: Re: [RFC 1/6] rcu: Add support for consolidated-RCU reader checking
-Message-ID: <20190604174802.GB228607@google.com>
+Message-ID: <20190604235735.GA254287@google.com>
 References: <20190601222738.6856-1-joel@joelfernandes.org>
  <20190601222738.6856-2-joel@joelfernandes.org>
- <20190603080128.GA3436@hirez.programming.kicks-ass.net>
- <20190603141847.GA94186@google.com>
- <20190604065358.73347ced@oasis.local.home>
+ <0ff9e0e3-b9fb-8953-1f76-807102f785ee@rasmusvillemoes.dk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190604065358.73347ced@oasis.local.home>
+In-Reply-To: <0ff9e0e3-b9fb-8953-1f76-807102f785ee@rasmusvillemoes.dk>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 04, 2019 at 06:53:58AM -0400, Steven Rostedt wrote:
-> On Mon, 3 Jun 2019 10:18:47 -0400
-> Joel Fernandes <joel@joelfernandes.org> wrote:
-> 
-> > On Mon, Jun 03, 2019 at 10:01:28AM +0200, Peter Zijlstra wrote:
-> > > On Sat, Jun 01, 2019 at 06:27:33PM -0400, Joel Fernandes (Google) wrote:  
-> > > > +#define list_for_each_entry_rcu(pos, head, member, cond...)		\
-> > > > +	if (COUNT_VARGS(cond) != 0) {					\
-> > > > +		__list_check_rcu_cond(0, ## cond);			\
-> > > > +	} else {							\
-> > > > +		__list_check_rcu();					\
-> > > > +	}								\
-> > > > +	for (pos = list_entry_rcu((head)->next, typeof(*pos), member);	\
-> > > > +		&pos->member != (head);					\
-> > > >  		pos = list_entry_rcu(pos->member.next, typeof(*pos), member))
-> > > >  
-> > > >  /**
-> > > > @@ -621,7 +648,12 @@ static inline void hlist_add_behind_rcu(struct hlist_node *n,
-> > > >   * the _rcu list-mutation primitives such as hlist_add_head_rcu()
-> > > >   * as long as the traversal is guarded by rcu_read_lock().
-> > > >   */
-> > > > +#define hlist_for_each_entry_rcu(pos, head, member, cond...)		\
-> > > > +	if (COUNT_VARGS(cond) != 0) {					\
-> > > > +		__list_check_rcu_cond(0, ## cond);			\
-> > > > +	} else {							\
-> > > > +		__list_check_rcu();					\
-> > > > +	}								\
-> > > >  	for (pos = hlist_entry_safe (rcu_dereference_raw(hlist_first_rcu(head)),\
-> > > >  			typeof(*(pos)), member);			\
-> > > >  		pos;							\  
-> > > 
-> > > 
-> > > This breaks code like:
-> > > 
-> > > 	if (...)
-> > > 		list_for_each_entry_rcu(...);
-> > > 
-> > > as they are no longer a single statement. You'll have to frob it into
-> > > the initializer part of the for statement.  
+On Tue, Jun 04, 2019 at 04:01:00PM +0200, Rasmus Villemoes wrote:
+> On 02/06/2019 00.27, Joel Fernandes (Google) wrote:
+> > This patch adds support for checking RCU reader sections in list
+> > traversal macros. Optionally, if the list macro is called under SRCU or
+> > other lock/mutex protection, then appropriate lockdep expressions can be
+> > passed to make the checks pass.
 > > 
-> > Thanks a lot for that. I fixed it as below (diff is on top of the patch):
+> > Existing list_for_each_entry_rcu() invocations don't need to pass the
+> > optional fourth argument (cond) unless they are under some non-RCU
+> > protection and needs to make lockdep check pass.
 > > 
-> > If not for that '##' , I could have abstracted the whole if/else
-> > expression into its own macro and called it from list_for_each_entry_rcu() to
-> > keep it more clean.
-> > 
-> > ---8<-----------------------
+> > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+> > ---
+> >  include/linux/rculist.h  | 40 ++++++++++++++++++++++++++++++++++++----
+> >  include/linux/rcupdate.h |  7 +++++++
+> >  kernel/rcu/update.c      | 26 ++++++++++++++++++++++++++
+> >  3 files changed, 69 insertions(+), 4 deletions(-)
 > > 
 > > diff --git a/include/linux/rculist.h b/include/linux/rculist.h
-> > index b641fdd9f1a2..cc742d294bb0 100644
+> > index e91ec9ddcd30..b641fdd9f1a2 100644
 > > --- a/include/linux/rculist.h
 > > +++ b/include/linux/rculist.h
-> > @@ -371,12 +372,15 @@ static inline void list_splice_tail_init_rcu(struct list_head *list,
+> > @@ -40,6 +40,25 @@ static inline void INIT_LIST_HEAD_RCU(struct list_head *list)
+> >   */
+> >  #define list_next_rcu(list)	(*((struct list_head __rcu **)(&(list)->next)))
+> >  
+> > +/*
+> > + * Check during list traversal that we are within an RCU reader
+> > + */
+> > +#define __list_check_rcu()						\
+> > +	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),			\
+> > +			 "RCU-list traversed in non-reader section!")
+> > +
+> > +static inline void __list_check_rcu_cond(int dummy, ...)
+> > +{
+> > +	va_list ap;
+> > +	int cond;
+> > +
+> > +	va_start(ap, dummy);
+> > +	cond = va_arg(ap, int);
+> > +	va_end(ap);
+> > +
+> > +	RCU_LOCKDEP_WARN(!cond && !rcu_read_lock_any_held(),
+> > +			 "RCU-list traversed in non-reader section!");
+> > +}
+> >  /*
+> >   * Insert a new entry between two known consecutive entries.
+> >   *
+> > @@ -338,6 +357,9 @@ static inline void list_splice_tail_init_rcu(struct list_head *list,
+> >  						  member) : NULL; \
+> >  })
+> >  
+> > +#define SIXTH_ARG(a1, a2, a3, a4, a5, a6, ...) a6
+> > +#define COUNT_VARGS(...) SIXTH_ARG(dummy, ## __VA_ARGS__, 4, 3, 2, 1, 0)
+> > +>  /**
+> >   * list_for_each_entry_rcu	-	iterate over rcu list of given type
+> >   * @pos:	the type * to use as a loop cursor.
+> > @@ -348,9 +370,14 @@ static inline void list_splice_tail_init_rcu(struct list_head *list,
+> >   * the _rcu list-mutation primitives such as list_add_rcu()
 > >   * as long as the traversal is guarded by rcu_read_lock().
 > >   */
-> >  #define list_for_each_entry_rcu(pos, head, member, cond...)		\
-> > -	if (COUNT_VARGS(cond) != 0) {					\
-> > -		__list_check_rcu_cond(0, ## cond);			\
-> > -	} else {							\
-> > -		__list_check_rcu();					\
-> > -	}								\
-> > -	for (pos = list_entry_rcu((head)->next, typeof(*pos), member);	\
-> > +	for (								\
-> > +	     ({								\
-> > +		if (COUNT_VARGS(cond) != 0) {				\
-> > +			__list_check_rcu_cond(0, ## cond);		\
-> > +		} else {						\
-> > +			__list_check_rcu_nocond();			\
-> > +		}							\
-> > +	      }),							\
+> > -#define list_for_each_entry_rcu(pos, head, member) \
+> > -	for (pos = list_entry_rcu((head)->next, typeof(*pos), member); \
+> > -		&pos->member != (head); \
+> > +#define list_for_each_entry_rcu(pos, head, member, cond...)		\
+> > +	if (COUNT_VARGS(cond) != 0) {					\
+> > +		__list_check_rcu_cond(0, ## cond);			\
+> > +	} else {							\
+> > +		__list_check_rcu();					\
+> > +	}								\
+> > +	for (pos = list_entry_rcu((head)->next, typeof(*pos), member);	\
+> > +		&pos->member != (head);					\
+> >  		pos = list_entry_rcu(pos->member.next, typeof(*pos), member))
 > 
-> For easier to read I would do something like this:
+> Wouldn't something as simple as
 > 
-> #define check_rcu_list(cond)						\
-> 	({								\
-> 		if (COUNT_VARGS(cond) != 0)				\
-> 			__list_check_rcu_cond(0, ## cond);		\
-> 		else							\
-> 			__list_check_rcu_nocond();			\
-> 	})
+> #define __list_check_rcu(dummy, cond, ...) \
+>        RCU_LOCKDEP_WARN(!cond && !rcu_read_lock_any_held(), \
+> 			 "RCU-list traversed in non-reader section!");
 > 
-> #define list_for_each_entry_rcu(pos, head, member, cond...)		\
-> 	for (check_rcu_list(cond),					\
+> for ( ({ __list_check_rcu(junk, ##cond, 0); }), pos = ... )
+> 
+> work just as well (i.e., no need for two list_check_rcu and
+> list_check_rcu_cond variants)? If there's an optional cond, we use that,
+> if not, we pick the trailing 0, so !cond disappears and it reduces to
+> your __list_check_rcu(). Moreover, this ensures the RCU_LOCKDEP_WARN
+> expansion actually picks up the __LINE__ and __FILE__ where the for loop
+> is used, and not the __FILE__ and __LINE__ of the static inline function
+> from the header file. It also makes it a bit more type safe/type generic
+> (if the cond expression happened to have type long or u64 something
+> rather odd could happen with the inline vararg function).
 
-Yes, already doing it this way as I replied to Peter here:
-https://lore.kernel.org/patchwork/patch/1082846/#1278489
-
-Thanks!
+This is much better. I will do it this way. Thank you!
 
  - Joel
-
 
