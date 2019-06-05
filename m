@@ -2,118 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0C88354F7
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2019 03:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D27413576E
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2019 09:07:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726510AbfFEB1U (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Jun 2019 21:27:20 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:40922 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726179AbfFEB1U (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jun 2019 21:27:20 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x551Nx57016864;
-        Wed, 5 Jun 2019 01:24:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=/nrlh7aFLVEP2ZCzsH4xixg65UQfaz0w/Ld25LSQ+5M=;
- b=d8pHV8b0MzIW0QpC7OGVMUbyJ6f9RYKEk7XaJt/sTQfGC18+eZC0CCriXiV0bngFicHe
- Y8/ufwDJDmMOOx9htlx53GWPPC7t9AvFZWIQ5A4sA8Lj2YSYkqQxnGZ8R+1x46jVmr2c
- xW8XsXgSBDDwTMWYP8GeBbTXDdU/JPdnkjHGONBc2f/tbmN+UfBJACK+Y+6RcniJsRoj
- bsK/6asrz17eoWZ2jmLrKon7QVLDM+aHXYrXqyA9ZzUJSaKasuH9W4BHxX3t7zyF4ApJ
- bUSIC+uBswNoV3vsWJsjRTezwHUl1iXaEVyodnEnqZpj1Xy3Qd/wZwAb2hp1XzbaJzMO dQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2130.oracle.com with ESMTP id 2suevdge4k-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 05 Jun 2019 01:24:48 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x551O3GH024720;
-        Wed, 5 Jun 2019 01:24:48 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2swnghnejm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 05 Jun 2019 01:24:48 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x551OTI7002675;
-        Wed, 5 Jun 2019 01:24:29 GMT
-Received: from ca-dmjordan1.us.oracle.com (/10.211.9.48)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 04 Jun 2019 18:24:28 -0700
-Date:   Tue, 4 Jun 2019 21:24:29 -0400
-From:   Daniel Jordan <daniel.m.jordan@oracle.com>
-To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Borislav Petkov <bp@alien8.de>,
-        "David S. Miller" <davem@davemloft.net>, edumazet@google.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Josh Triplett <josh@joshtriplett.org>, keescook@chromium.org,
-        kernel-hardening@lists.openwall.com,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        neilb@suse.com, netdev@vger.kernel.org, oleg@redhat.com,
-        "Paul E. McKenney" <paulmck@linux.ibm.com>,
-        Pavel Machek <pavel@ucw.cz>, peterz@infradead.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>, rcu@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Tejun Heo <tj@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
-Subject: Re: [RFC 4/6] workqueue: Convert for_each_wq to use built-in list
- check
-Message-ID: <20190605012429.wmlvlgn4mb4jkvua@ca-dmjordan1.us.oracle.com>
-References: <20190601222738.6856-1-joel@joelfernandes.org>
- <20190601222738.6856-5-joel@joelfernandes.org>
+        id S1726551AbfFEHH5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Jun 2019 03:07:57 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:40506 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726086AbfFEHH4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Jun 2019 03:07:56 -0400
+Received: by mail-pl1-f196.google.com with SMTP id g69so9358365plb.7
+        for <linux-acpi@vger.kernel.org>; Wed, 05 Jun 2019 00:07:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=G5DT3HSkNGcPA0+dfVoxLXiX+ckkiJmmC8Hx3I63JHY=;
+        b=gNR5LPmQnR+iaGYVj4CZkWZIgkFnzTrmOi9QoqaJa6kzwvTi4l+sYqtFT4iunqTaQA
+         0YEnLkwypWIHbTkf1wFlWT9ZwNFvKZ7RSz6CickyFFw7AO+S/LeIVfKO3Kch7x6rb//q
+         F+uGrZAyzJNayN4zGFJZudtjJtehiRcmFv+HI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=G5DT3HSkNGcPA0+dfVoxLXiX+ckkiJmmC8Hx3I63JHY=;
+        b=tZ7jvmoP2unnKowc1Cb9S9aXG2ilGJefqU+o48mhvfYHIGNzV0Krf71McVv+BX3Nph
+         jxpprCVyuoni29hYmlKKv1J9mZsXPj2TF/+IxbFSWnN9pmIN8e7vd6Ie5C64NpRuJFlG
+         p27RHTwDK670pz307eO9TFq7MSY+uozYniZcHdzeF/9DqnncnQcLGI6MU0KeTjH8guXS
+         IyZXw88FvRsVhZZJ+EFo/ui6DgyGhehFUGa+PaG2Q/YWUj+1ePyKX++rsUQLu32oasPv
+         TspmMTHxH3goFGt5PNgIS6mxGwevr23za2ousLJ824ZEFy3f/sqAXmGxQWcgnui95S43
+         nUcA==
+X-Gm-Message-State: APjAAAUDO5n9as/aq7RcFCvQzApZ7fhjeotnJrbEa7j17PmRoJ4R1IVa
+        hoZy2UqnBAC5Gym5IId5dvitew==
+X-Google-Smtp-Source: APXvYqzcz1ThSD30uSaDaWhLBJCiLOp6xkp6jmkaZ3blNklDtJmEZ5md6LyBbclcX1UZoIh1B9C+gg==
+X-Received: by 2002:a17:902:e582:: with SMTP id cl2mr26609826plb.60.1559718476180;
+        Wed, 05 Jun 2019 00:07:56 -0700 (PDT)
+Received: from chromium.org ([2401:fa00:4:4:6d27:f13:a0fa:d4b6])
+        by smtp.gmail.com with ESMTPSA id l3sm17947773pgl.3.2019.06.05.00.07.54
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 05 Jun 2019 00:07:55 -0700 (PDT)
+Date:   Wed, 5 Jun 2019 16:07:52 +0900
+From:   Tomasz Figa <tfiga@chromium.org>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, rajmohan.mani@intel.com,
+        linux-media@vger.kernel.org
+Subject: Re: [PATCH 3/5] ov5670: Support probe whilst the device is off
+Message-ID: <20190605070752.GA126683@chromium.org>
+References: <20190510100930.14641-1-sakari.ailus@linux.intel.com>
+ <20190510100930.14641-4-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190601222738.6856-5-joel@joelfernandes.org>
-User-Agent: NeoMutt/20180323-268-5a959c
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9278 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906050006
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9278 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906050006
+In-Reply-To: <20190510100930.14641-4-sakari.ailus@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jun 01, 2019 at 06:27:36PM -0400, Joel Fernandes (Google) wrote:
-> list_for_each_entry_rcu now has support to check for RCU reader sections
-> as well as lock. Just use the support in it, instead of explictly
-> checking in the caller.
-> 
-> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-> ---
->  kernel/workqueue.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-> index 9657315405de..91ed7aca16e5 100644
-> --- a/kernel/workqueue.c
-> +++ b/kernel/workqueue.c
-> @@ -424,9 +424,8 @@ static void workqueue_sysfs_unregister(struct workqueue_struct *wq);
->   * ignored.
->   */
->  #define for_each_pwq(pwq, wq)						\
-> -	list_for_each_entry_rcu((pwq), &(wq)->pwqs, pwqs_node)		\
-> -		if (({ assert_rcu_or_wq_mutex(wq); false; })) { }	\
-> -		else
-> +	list_for_each_entry_rcu((pwq), &(wq)->pwqs, pwqs_node,		\
-> +				 lock_is_held(&(wq->mutex).dep_map))
->  
+Hi Sakari,
 
-I think the definition of assert_rcu_or_wq_mutex can also be deleted.
+On Fri, May 10, 2019 at 01:09:28PM +0300, Sakari Ailus wrote:
+> Tell ACPI device PM code that the driver supports the device being powered
+> off when the driver's probe function is entered.
+> 
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+>  drivers/media/i2c/ov5670.c | 25 ++++++++++++++-----------
+>  1 file changed, 14 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/media/i2c/ov5670.c b/drivers/media/i2c/ov5670.c
+> index 041fcbb4eebdf..57e8b92f90e09 100644
+> --- a/drivers/media/i2c/ov5670.c
+> +++ b/drivers/media/i2c/ov5670.c
+> @@ -2444,6 +2444,7 @@ static int ov5670_probe(struct i2c_client *client)
+>  	struct ov5670 *ov5670;
+>  	const char *err_msg;
+>  	u32 input_clk = 0;
+> +	bool powered_off;
+>  	int ret;
+>  
+>  	device_property_read_u32(&client->dev, "clock-frequency", &input_clk);
+> @@ -2460,11 +2461,14 @@ static int ov5670_probe(struct i2c_client *client)
+>  	/* Initialize subdev */
+>  	v4l2_i2c_subdev_init(&ov5670->sd, client, &ov5670_subdev_ops);
+>  
+> -	/* Check module identity */
+> -	ret = ov5670_identify_module(ov5670);
+> -	if (ret) {
+> -		err_msg = "ov5670_identify_module() error";
+> -		goto error_print;
+> +	powered_off = acpi_dev_powered_off_for_probe(&client->dev);
+> +	if (!powered_off) {
+> +		/* Check module identity */
+> +		ret = ov5670_identify_module(ov5670);
+> +		if (ret) {
+> +			err_msg = "ov5670_identify_module() error";
+> +			goto error_print;
+> +		}
+>  	}
+
+I don't like the fact that we can't detect any hardware connection issue
+here anymore and we would actually get some obscure failure when we
+actually start streaming.
+
+Wouldn't it be possible to still keep this behavior of not powering on
+the device at boot-up if no driver is bound and then have this driver
+built as a module and loaded later when the camera is to be used for the
+first time after the system boots?
+
+Best regards,
+Tomasz
