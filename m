@@ -2,114 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D27413576E
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2019 09:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E96E35872
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2019 10:23:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726551AbfFEHH5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Jun 2019 03:07:57 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:40506 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726086AbfFEHH4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Jun 2019 03:07:56 -0400
-Received: by mail-pl1-f196.google.com with SMTP id g69so9358365plb.7
-        for <linux-acpi@vger.kernel.org>; Wed, 05 Jun 2019 00:07:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=G5DT3HSkNGcPA0+dfVoxLXiX+ckkiJmmC8Hx3I63JHY=;
-        b=gNR5LPmQnR+iaGYVj4CZkWZIgkFnzTrmOi9QoqaJa6kzwvTi4l+sYqtFT4iunqTaQA
-         0YEnLkwypWIHbTkf1wFlWT9ZwNFvKZ7RSz6CickyFFw7AO+S/LeIVfKO3Kch7x6rb//q
-         F+uGrZAyzJNayN4zGFJZudtjJtehiRcmFv+HI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=G5DT3HSkNGcPA0+dfVoxLXiX+ckkiJmmC8Hx3I63JHY=;
-        b=tZ7jvmoP2unnKowc1Cb9S9aXG2ilGJefqU+o48mhvfYHIGNzV0Krf71McVv+BX3Nph
-         jxpprCVyuoni29hYmlKKv1J9mZsXPj2TF/+IxbFSWnN9pmIN8e7vd6Ie5C64NpRuJFlG
-         p27RHTwDK670pz307eO9TFq7MSY+uozYniZcHdzeF/9DqnncnQcLGI6MU0KeTjH8guXS
-         IyZXw88FvRsVhZZJ+EFo/ui6DgyGhehFUGa+PaG2Q/YWUj+1ePyKX++rsUQLu32oasPv
-         TspmMTHxH3goFGt5PNgIS6mxGwevr23za2ousLJ824ZEFy3f/sqAXmGxQWcgnui95S43
-         nUcA==
-X-Gm-Message-State: APjAAAUDO5n9as/aq7RcFCvQzApZ7fhjeotnJrbEa7j17PmRoJ4R1IVa
-        hoZy2UqnBAC5Gym5IId5dvitew==
-X-Google-Smtp-Source: APXvYqzcz1ThSD30uSaDaWhLBJCiLOp6xkp6jmkaZ3blNklDtJmEZ5md6LyBbclcX1UZoIh1B9C+gg==
-X-Received: by 2002:a17:902:e582:: with SMTP id cl2mr26609826plb.60.1559718476180;
-        Wed, 05 Jun 2019 00:07:56 -0700 (PDT)
-Received: from chromium.org ([2401:fa00:4:4:6d27:f13:a0fa:d4b6])
-        by smtp.gmail.com with ESMTPSA id l3sm17947773pgl.3.2019.06.05.00.07.54
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Wed, 05 Jun 2019 00:07:55 -0700 (PDT)
-Date:   Wed, 5 Jun 2019 16:07:52 +0900
-From:   Tomasz Figa <tfiga@chromium.org>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, rajmohan.mani@intel.com,
-        linux-media@vger.kernel.org
-Subject: Re: [PATCH 3/5] ov5670: Support probe whilst the device is off
-Message-ID: <20190605070752.GA126683@chromium.org>
-References: <20190510100930.14641-1-sakari.ailus@linux.intel.com>
- <20190510100930.14641-4-sakari.ailus@linux.intel.com>
+        id S1726538AbfFEIX1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Jun 2019 04:23:27 -0400
+Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:58506 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725294AbfFEIX1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Jun 2019 04:23:27 -0400
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+        by mx0b-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x558JvZW018984;
+        Wed, 5 Jun 2019 03:22:51 -0500
+Authentication-Results: ppops.net;
+        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
+Received: from mail2.cirrus.com (mail2.cirrus.com [141.131.128.20])
+        by mx0b-001ae601.pphosted.com with ESMTP id 2sunsrckqj-1;
+        Wed, 05 Jun 2019 03:22:51 -0500
+Received: from EDIEX01.ad.cirrus.com (unknown [198.61.84.80])
+        by mail2.cirrus.com (Postfix) with ESMTP id 93DFA605A68C;
+        Wed,  5 Jun 2019 03:22:50 -0500 (CDT)
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Wed, 5 Jun
+ 2019 09:22:50 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
+ Transport; Wed, 5 Jun 2019 09:22:50 +0100
+Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id E1B602DA;
+        Wed,  5 Jun 2019 09:22:49 +0100 (BST)
+Date:   Wed, 5 Jun 2019 09:22:49 +0100
+From:   Charles Keepax <ckeepax@opensource.cirrus.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     <wsa@the-dreams.de>, <mika.westerberg@linux.intel.com>,
+        <jarkko.nikula@linux.intel.com>, <linux-i2c@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <benjamin.tissoires@redhat.com>, <jbroadus@gmail.com>,
+        <patches@opensource.cirrus.com>
+Subject: Re: [PATCH v3 4/6] i2c: core: Move ACPI IRQ handling to probe time
+Message-ID: <20190605082249.GL28362@ediswmail.ad.cirrus.com>
+References: <20190528142900.24147-1-ckeepax@opensource.cirrus.com>
+ <20190528142900.24147-4-ckeepax@opensource.cirrus.com>
+ <20190604170404.GR9224@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20190510100930.14641-4-sakari.ailus@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190604170404.GR9224@smile.fi.intel.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=902 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906050054
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Sakari,
-
-On Fri, May 10, 2019 at 01:09:28PM +0300, Sakari Ailus wrote:
-> Tell ACPI device PM code that the driver supports the device being powered
-> off when the driver's probe function is entered.
+On Tue, Jun 04, 2019 at 08:04:04PM +0300, Andy Shevchenko wrote:
+> On Tue, May 28, 2019 at 03:28:58PM +0100, Charles Keepax wrote:
+> > Bring the ACPI path in sync with the device tree path and handle all the
+> > IRQ fetching at probe time. This leaves the only IRQ handling at device
+> > registration time being that which is passed directly through the board
+> > info as either a resource or an actual IRQ number.
+> > 
 > 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
->  drivers/media/i2c/ov5670.c | 25 ++++++++++++++-----------
->  1 file changed, 14 insertions(+), 11 deletions(-)
+> It seems my comments weren't addressed by one or another reason.
+> This one I would rather to split with exporting function as a separate patch.
 > 
-> diff --git a/drivers/media/i2c/ov5670.c b/drivers/media/i2c/ov5670.c
-> index 041fcbb4eebdf..57e8b92f90e09 100644
-> --- a/drivers/media/i2c/ov5670.c
-> +++ b/drivers/media/i2c/ov5670.c
-> @@ -2444,6 +2444,7 @@ static int ov5670_probe(struct i2c_client *client)
->  	struct ov5670 *ov5670;
->  	const char *err_msg;
->  	u32 input_clk = 0;
-> +	bool powered_off;
->  	int ret;
->  
->  	device_property_read_u32(&client->dev, "clock-frequency", &input_clk);
-> @@ -2460,11 +2461,14 @@ static int ov5670_probe(struct i2c_client *client)
->  	/* Initialize subdev */
->  	v4l2_i2c_subdev_init(&ov5670->sd, client, &ov5670_subdev_ops);
->  
-> -	/* Check module identity */
-> -	ret = ov5670_identify_module(ov5670);
-> -	if (ret) {
-> -		err_msg = "ov5670_identify_module() error";
-> -		goto error_print;
-> +	powered_off = acpi_dev_powered_off_for_probe(&client->dev);
-> +	if (!powered_off) {
-> +		/* Check module identity */
-> +		ret = ov5670_identify_module(ov5670);
-> +		if (ret) {
-> +			err_msg = "ov5670_identify_module() error";
-> +			goto error_print;
-> +		}
->  	}
 
-I don't like the fact that we can't detect any hardware connection issue
-here anymore and we would actually get some obscure failure when we
-actually start streaming.
+With the switch to passing in i2c_client it makes for some fairly
+awkward gymnastics and "ping pong" programming to do so. I guess
+we could leave the function taking in an acpi_device but just
+felt like a slightly less user friendly interface. Any thoughts?
 
-Wouldn't it be possible to still keep this behavior of not powering on
-the device at boot-up if no driver is bound and then have this driver
-built as a module and loaded later when the camera is to be used for the
-first time after the system boots?
-
-Best regards,
-Tomasz
+Thanks,
+Charles
