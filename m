@@ -2,114 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CE5D363B8
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2019 21:06:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6336365B1
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2019 22:42:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725950AbfFETGB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Jun 2019 15:06:01 -0400
-Received: from bmailout1.hostsharing.net ([83.223.95.100]:40609 "EHLO
-        bmailout1.hostsharing.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726543AbfFETGA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Jun 2019 15:06:00 -0400
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
-        by bmailout1.hostsharing.net (Postfix) with ESMTPS id B11E23000BA08;
-        Wed,  5 Jun 2019 21:05:57 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id 7B9E64B204; Wed,  5 Jun 2019 21:05:57 +0200 (CEST)
-Date:   Wed, 5 Jun 2019 21:05:57 +0200
-From:   Lukas Wunner <lukas@wunner.de>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Keith Busch <keith.busch@intel.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH 2/3] PCI: Do not poll for PME if the device is in D3cold
-Message-ID: <20190605190557.mbklbuq4fgwbi3wp@wunner.de>
-References: <20190605145820.37169-1-mika.westerberg@linux.intel.com>
- <20190605145820.37169-3-mika.westerberg@linux.intel.com>
+        id S1726642AbfFEUla (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Jun 2019 16:41:30 -0400
+Received: from gateway33.websitewelcome.com ([192.185.146.80]:24443 "EHLO
+        gateway33.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726305AbfFEUla (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Jun 2019 16:41:30 -0400
+X-Greylist: delayed 1262 seconds by postgrey-1.27 at vger.kernel.org; Wed, 05 Jun 2019 16:41:29 EDT
+Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
+        by gateway33.websitewelcome.com (Postfix) with ESMTP id D2F3B52848
+        for <linux-acpi@vger.kernel.org>; Wed,  5 Jun 2019 15:20:26 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id YcOYhJCG3YTGMYcOYhHI7o; Wed, 05 Jun 2019 15:20:26 -0500
+X-Authority-Reason: nr=8
+Received: from [189.250.127.120] (port=33986 helo=embeddedor)
+        by gator4166.hostgator.com with esmtpa (Exim 4.91)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1hYcOW-003sAf-OK; Wed, 05 Jun 2019 15:20:25 -0500
+Date:   Wed, 5 Jun 2019 15:20:24 -0500
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To:     Robert Moore <robert.moore@intel.com>,
+        Erik Schmauss <erik.schmauss@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: [PATCH] ACPICA: utids: Use struct_size() helper
+Message-ID: <20190605202024.GA20848@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190605145820.37169-3-mika.westerberg@linux.intel.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 189.250.127.120
+X-Source-L: No
+X-Exim-ID: 1hYcOW-003sAf-OK
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (embeddedor) [189.250.127.120]:33986
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 9
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 05, 2019 at 05:58:19PM +0300, Mika Westerberg wrote:
-> PME polling does not take into account that a device that is directly
-> connected to the host bridge may go into D3cold as well. This leads to a
-> situation where the PME poll thread reads from a config space of a
-> device that is in D3cold and gets incorrect information because the
-> config space is not accessible.
-> 
-> Here is an example from Intel Ice Lake system where two PCIe root ports
-> are in D3cold (I've instrumented the kernel to log the PMCSR register
-> contents):
-> 
->   [   62.971442] pcieport 0000:00:07.1: Check PME status, PMCSR=0xffff
->   [   62.971504] pcieport 0000:00:07.0: Check PME status, PMCSR=0xffff
-> 
-> Since 0xffff is interpreted so that PME is pending, the root ports will
-> be runtime resumed. This repeats over and over again essentially
-> blocking all runtime power management.
-> 
-> Prevent this from happening by checking whether the device is in D3cold
-> before its PME status is read.
+One of the more common cases of allocation size calculations is finding
+the size of a structure that has a zero-sized array at the end, along
+with memory for some number of elements for that array. For example:
 
-There's more broken here.  The below patch fixes a PME polling race
-and should also fix the issue you're witnessing, could you verify that?
+struct acpi_pnp_device_id_list {
+	...
+        struct acpi_pnp_device_id ids[1];       /* ID array */
+};
 
-The patch has been rotting on my development branch for several months,
-I just didn't get around to posting it, my apologies.
+Make use of the struct_size() helper instead of an open-coded version
+in order to avoid any potential type mistakes.
 
--- >8 --
-Subject: [PATCH] PCI / PM: Fix race on PME polling
+So, replace the following form:
 
-Since commit df17e62e5bff ("PCI: Add support for polling PME state on
-suspended legacy PCI devices"), the work item pci_pme_list_scan() polls
-the PME status flag of devices and wakes them up if the bit is set.
+sizeof(struct acpi_pnp_device_id_list) + ((count - 1) * sizeof(struct acpi_pnp_device_id))
 
-The function performs a check whether a device's upstream bridge is in
-D0 for otherwise the device is inaccessible, rendering PME polling
-impossible.  However the check is racy because it is performed before
-polling the device.  If the upstream bridge runtime suspends to D3hot
-after pci_pme_list_scan() checks its power state and before it invokes
-pci_pme_wakeup(), the latter will read the PMCSR as "all ones" and
-mistake it for a set PME status flag.  I am seeing this race play out as
-a Thunderbolt controller going to D3cold and occasionally immediately
-going to D0 again because PM polling was performed at just the wrong
-time.
+with:
 
-Avoid by checking for an "all ones" PMCSR in pci_check_pme_status().
+struct_size(cid_list, ids, count - 1)
 
-Fixes: 58ff463396ad ("PCI PM: Add function for checking PME status of devices")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: stable@vger.kernel.org # v2.6.34+
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 ---
- drivers/pci/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+Notice that checkpatch reports the following warning:
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index b98a564..2e05348 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -1753,6 +1753,8 @@ bool pci_check_pme_status(struct pci_dev *dev)
- 	pci_read_config_word(dev, pmcsr_pos, &pmcsr);
- 	if (!(pmcsr & PCI_PM_CTRL_PME_STATUS))
- 		return false;
-+	if (pmcsr == ~0)
-+		return false;
- 
- 	/* Clear PME status. */
- 	pmcsr |= PCI_PM_CTRL_PME_STATUS;
+WARNING: line over 80 characters
+#54: FILE: drivers/acpi/acpica/utids.c:265:
++	cid_list_size = struct_size(cid_list, ids, count - 1) + string_area_size;
+
+The line above is 81-character long. So, I think we should be fine
+with that, instead of split it into two lines.
+
+Thanks
+
+ Gustavo
+
+ drivers/acpi/acpica/utids.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/acpi/acpica/utids.c b/drivers/acpi/acpica/utids.c
+index e805abdd95b8..737aa6a8f362 100644
+--- a/drivers/acpi/acpica/utids.c
++++ b/drivers/acpi/acpica/utids.c
+@@ -202,7 +202,7 @@ acpi_ut_execute_CID(struct acpi_namespace_node *device_node,
+ 	char *next_id_string;
+ 	u32 string_area_size;
+ 	u32 length;
+-	u32 cid_list_size;
++	size_t cid_list_size;
+ 	acpi_status status;
+ 	u32 count;
+ 	u32 i;
+@@ -262,10 +262,7 @@ acpi_ut_execute_CID(struct acpi_namespace_node *device_node,
+ 	 * 2) Size of the CID PNP_DEVICE_ID array +
+ 	 * 3) Size of the actual CID strings
+ 	 */
+-	cid_list_size = sizeof(struct acpi_pnp_device_id_list) +
+-	    ((count - 1) * sizeof(struct acpi_pnp_device_id)) +
+-	    string_area_size;
+-
++	cid_list_size = struct_size(cid_list, ids, count - 1) + string_area_size;
+ 	cid_list = ACPI_ALLOCATE_ZEROED(cid_list_size);
+ 	if (!cid_list) {
+ 		status = AE_NO_MEMORY;
 -- 
-2.20.1
+2.21.0
 
