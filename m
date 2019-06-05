@@ -2,39 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EB0835E4C
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2019 15:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C2FC35FB9
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2019 16:58:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728050AbfFENtN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 5 Jun 2019 09:49:13 -0400
-Received: from [89.46.223.232] ([89.46.223.232]:47277 "EHLO slot0.marketex.ga"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S1726442AbfFENtN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 5 Jun 2019 09:49:13 -0400
-X-Greylist: delayed 1806 seconds by postgrey-1.27 at vger.kernel.org; Wed, 05 Jun 2019 09:49:11 EDT
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1728486AbfFEO6Z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Jun 2019 10:58:25 -0400
+Received: from mga11.intel.com ([192.55.52.93]:16351 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728287AbfFEO6Z (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 5 Jun 2019 10:58:25 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Jun 2019 07:58:24 -0700
+X-ExtLoop1: 1
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga007.fm.intel.com with ESMTP; 05 Jun 2019 07:58:22 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id 37C8A2D4; Wed,  5 Jun 2019 17:58:20 +0300 (EEST)
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+        Keith Busch <keith.busch@intel.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Alexandru Gagniuc <mr.nuke.me@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: [PATCH 0/3] PCI: Power management improvements
+Date:   Wed,  5 Jun 2019 17:58:17 +0300
+Message-Id: <20190605145820.37169-1-mika.westerberg@linux.intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Quation needed For June Inquiry
-To:     Recipients <purchase@greattrades.ga>
-From:   "Jpexcc Salesi" <purchase@greattrades.ga>
-Date:   Wed, 05 Jun 2019 16:18:56 +0300
-Reply-To: jpexcc@aol.com
-Message-ID: <0.0.0.EDD.1D51BA12867547E.0@slot0.marketex.ga>
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello dear,
- 
-We are in the market for your products after meeting at your stand during last expo.
- 
-Please kindly send us your latest catalog and price list so as to start a new project/order as promised during the exhibition. 
- 
-I would appreciate your response about the above details required so we can revert back to you asap.
- 
-Kind regards
- 
-Rhema Zoeh
+Hi all,
+
+This series includes a couple of changes to the PCI power management that
+should make Linux follow the PCIe spec better and also support for sibling
+PCIe devices sharing ACPI power resources. The issues this series aims to
+solve came up with Intel Ice Lake Thunderbolt enabling where the controller
+is first time integrated into the SoC but I think these issues are generic
+to any platform having similar configuration.
+
+Mika Westerberg (3):
+  PCI: Add missing link delays required by the PCIe spec
+  PCI: Do not poll for PME if the device is in D3cold
+  PCI / ACPI: Handle sibling devices sharing power resources
+
+ drivers/acpi/power.c            |  32 ++++++++
+ drivers/pci/pci-acpi.c          |  32 ++++++--
+ drivers/pci/pci.c               | 138 ++++++++++++++++++++++++--------
+ drivers/pci/pci.h               |   6 ++
+ drivers/pci/pcie/portdrv_core.c |  62 ++++++++++++++
+ include/acpi/acpi_bus.h         |   3 +
+ 6 files changed, 233 insertions(+), 40 deletions(-)
+
+-- 
+2.20.1
+
