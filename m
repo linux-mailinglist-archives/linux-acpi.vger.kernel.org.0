@@ -2,51 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 703AD3607A
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2019 17:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CE5D363B8
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2019 21:06:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726581AbfFEPnh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Jun 2019 11:43:37 -0400
-Received: from mail.trigana-air.com ([117.54.2.131]:33961 "EHLO
-        mail.trigana-air.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726421AbfFEPnh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Jun 2019 11:43:37 -0400
-X-Greylist: delayed 499 seconds by postgrey-1.27 at vger.kernel.org; Wed, 05 Jun 2019 11:43:35 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.trigana-air.com (Postfix) with ESMTP id D6AF17610F8;
-        Wed,  5 Jun 2019 22:35:08 +0700 (WIB)
-Received: from mail.trigana-air.com ([127.0.0.1])
-        by localhost (mail.trigana-air.com [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id wRqw8NfgHN9Q; Wed,  5 Jun 2019 22:35:08 +0700 (WIB)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.trigana-air.com (Postfix) with ESMTP id E596A76145D;
-        Wed,  5 Jun 2019 22:35:07 +0700 (WIB)
-X-Virus-Scanned: amavisd-new at trigana-air.com
-Received: from mail.trigana-air.com ([127.0.0.1])
-        by localhost (mail.trigana-air.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 76MPSQRKWAaa; Wed,  5 Jun 2019 22:35:07 +0700 (WIB)
-Received: from mail.trigana-air.com (mail.trigana-air.com [117.54.2.131])
-        by mail.trigana-air.com (Postfix) with ESMTP id 7B96A760EA8;
-        Wed,  5 Jun 2019 22:35:03 +0700 (WIB)
-Date:   Wed, 5 Jun 2019 22:35:02 +0700 (WIB)
-From:   Tayeb Souami <tiketing.wmx@trigana-air.com>
-Reply-To: Tayeb Souami <tayeb.souami@hotmail.com>
-Message-ID: <669753987.2593182.1559748902313.JavaMail.zimbra@trigana-air.com>
-Subject: Ik heb gewonnen en zo heb je - Gefeliciteerd
+        id S1725950AbfFETGB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Jun 2019 15:06:01 -0400
+Received: from bmailout1.hostsharing.net ([83.223.95.100]:40609 "EHLO
+        bmailout1.hostsharing.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726543AbfFETGA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Jun 2019 15:06:00 -0400
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
+        by bmailout1.hostsharing.net (Postfix) with ESMTPS id B11E23000BA08;
+        Wed,  5 Jun 2019 21:05:57 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+        id 7B9E64B204; Wed,  5 Jun 2019 21:05:57 +0200 (CEST)
+Date:   Wed, 5 Jun 2019 21:05:57 +0200
+From:   Lukas Wunner <lukas@wunner.de>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Keith Busch <keith.busch@intel.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Alexandru Gagniuc <mr.nuke.me@gmail.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH 2/3] PCI: Do not poll for PME if the device is in D3cold
+Message-ID: <20190605190557.mbklbuq4fgwbi3wp@wunner.de>
+References: <20190605145820.37169-1-mika.westerberg@linux.intel.com>
+ <20190605145820.37169-3-mika.westerberg@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [194.36.111.59]
-X-Mailer: Zimbra 8.0.7_GA_6021 (ZimbraWebClient - GC74 (Mac)/8.0.7_GA_6021)
-Thread-Topic: Ik heb gewonnen en zo heb je - Gefeliciteerd
-Thread-Index: pVFzawDwEmsICPlnBrf4HUPr0e/LgQ==
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190605145820.37169-3-mika.westerberg@linux.intel.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Wed, Jun 05, 2019 at 05:58:19PM +0300, Mika Westerberg wrote:
+> PME polling does not take into account that a device that is directly
+> connected to the host bridge may go into D3cold as well. This leads to a
+> situation where the PME poll thread reads from a config space of a
+> device that is in D3cold and gets incorrect information because the
+> config space is not accessible.
+> 
+> Here is an example from Intel Ice Lake system where two PCIe root ports
+> are in D3cold (I've instrumented the kernel to log the PMCSR register
+> contents):
+> 
+>   [   62.971442] pcieport 0000:00:07.1: Check PME status, PMCSR=0xffff
+>   [   62.971504] pcieport 0000:00:07.0: Check PME status, PMCSR=0xffff
+> 
+> Since 0xffff is interpreted so that PME is pending, the root ports will
+> be runtime resumed. This repeats over and over again essentially
+> blocking all runtime power management.
+> 
+> Prevent this from happening by checking whether the device is in D3cold
+> before its PME status is read.
 
+There's more broken here.  The below patch fixes a PME polling race
+and should also fix the issue you're witnessing, could you verify that?
 
-Hallo, ik ben Tayeb Souami, heb je een donatie van $3.600.000. Ik won de Powerball loterij ter waarde van $315.300.000 op 19 mei 2018. Uw e-mail kwam uit Victorious van een willekeurige oogst. Contacteer me dringend via tayeb.souami@outlook.com voor claims.
+The patch has been rotting on my development branch for several months,
+I just didn't get around to posting it, my apologies.
+
+-- >8 --
+Subject: [PATCH] PCI / PM: Fix race on PME polling
+
+Since commit df17e62e5bff ("PCI: Add support for polling PME state on
+suspended legacy PCI devices"), the work item pci_pme_list_scan() polls
+the PME status flag of devices and wakes them up if the bit is set.
+
+The function performs a check whether a device's upstream bridge is in
+D0 for otherwise the device is inaccessible, rendering PME polling
+impossible.  However the check is racy because it is performed before
+polling the device.  If the upstream bridge runtime suspends to D3hot
+after pci_pme_list_scan() checks its power state and before it invokes
+pci_pme_wakeup(), the latter will read the PMCSR as "all ones" and
+mistake it for a set PME status flag.  I am seeing this race play out as
+a Thunderbolt controller going to D3cold and occasionally immediately
+going to D0 again because PM polling was performed at just the wrong
+time.
+
+Avoid by checking for an "all ones" PMCSR in pci_check_pme_status().
+
+Fixes: 58ff463396ad ("PCI PM: Add function for checking PME status of devices")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org # v2.6.34+
+---
+ drivers/pci/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index b98a564..2e05348 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1753,6 +1753,8 @@ bool pci_check_pme_status(struct pci_dev *dev)
+ 	pci_read_config_word(dev, pmcsr_pos, &pmcsr);
+ 	if (!(pmcsr & PCI_PM_CTRL_PME_STATUS))
+ 		return false;
++	if (pmcsr == ~0)
++		return false;
+ 
+ 	/* Clear PME status. */
+ 	pmcsr |= PCI_PM_CTRL_PME_STATUS;
+-- 
+2.20.1
 
