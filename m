@@ -2,95 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46ED13710D
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2019 11:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80472372AA
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2019 13:21:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727867AbfFFJ5q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jun 2019 05:57:46 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:41783 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727846AbfFFJ5p (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jun 2019 05:57:45 -0400
-Received: by mail-ot1-f66.google.com with SMTP id 107so1370732otj.8;
-        Thu, 06 Jun 2019 02:57:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XH+qyuLG3h1Zuv0+YbIDecMVGDK3Yf4lc2GyNXDmgCk=;
-        b=G7VrrbtpCxh/rN1JAhQrEvmREQYuCw3NR5KRlDQ7GRse0x1joem1ncsm764VVo2r9h
-         IwVIWi9AOseuQ5tqTkH0G4nQGZsolIMHZhW07QsrZjWsKaUi7/2L71LXExdv5XrWFyv8
-         VboxH9tM9U3k85DA8puxNAm85EaOUGbGLEQ+KoTLjuIhznA7uvC2WLyfEVPXgTnvAyPV
-         1duwsDrhlMYcXpmOhPoTifhX/L5JpOXVEOCyW0/D0ouXj4Xhn4iFRz4t6M4Wubautshl
-         aK82DCBJu/juTLxMdKKzxcWX9CgnbAcu41Ak6Qlp5Uk5inI8ZBJrK7ehwBvzLpsPcxym
-         r7Cw==
-X-Gm-Message-State: APjAAAWBWgKpnAbfrJ3xvUFEt2fDCCI/dTA/MzDKLHhtKzBe3pVYSGXh
-        DwrB1OfLeZIWU2H3FMRNCK5HyXc6JmipdmBIbQI=
-X-Google-Smtp-Source: APXvYqy5nqB0n3eU73l8b059KjjRZ1IWKzGCTX8XEy5gMjkUWBhjcYRq934pC1uevpc9TibD4eCiQLkvJ8Ih4I4t1Ik=
-X-Received: by 2002:a9d:6b98:: with SMTP id b24mr13628927otq.189.1559815065036;
- Thu, 06 Jun 2019 02:57:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <1559747630-28065-1-git-send-email-suzuki.poulose@arm.com>
- <1559747630-28065-8-git-send-email-suzuki.poulose@arm.com>
- <CAJZ5v0h+maPj-ijKV_vvQBpHD7N-VMiAqSeyztAkiUR9E2WdmQ@mail.gmail.com> <1f230eb7-f4e3-ed4e-960d-c3bbb60f0a18@arm.com>
-In-Reply-To: <1f230eb7-f4e3-ed4e-960d-c3bbb60f0a18@arm.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 6 Jun 2019 11:57:33 +0200
-Message-ID: <CAJZ5v0i0WP88+vTEheSTfAoSi5nEdjaLs4KOGxXK3_AoPhPrhg@mail.gmail.com>
-Subject: Re: [PATCH 07/13] drivers: Add generic match helper by ACPI_COMPANION device
-To:     Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1726732AbfFFLV1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jun 2019 07:21:27 -0400
+Received: from mga01.intel.com ([192.55.52.88]:37376 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726066AbfFFLV1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 6 Jun 2019 07:21:27 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Jun 2019 04:21:27 -0700
+X-ExtLoop1: 1
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 06 Jun 2019 04:21:23 -0700
+Received: by lahna (sSMTP sendmail emulation); Thu, 06 Jun 2019 14:21:23 +0300
+Date:   Thu, 6 Jun 2019 14:21:23 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Lukas Wunner <lukas@wunner.de>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Keith Busch <keith.busch@intel.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Alexandru Gagniuc <mr.nuke.me@gmail.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH 2/3] PCI: Do not poll for PME if the device is in D3cold
+Message-ID: <20190606112123.GX2781@lahna.fi.intel.com>
+References: <20190605145820.37169-1-mika.westerberg@linux.intel.com>
+ <20190605145820.37169-3-mika.westerberg@linux.intel.com>
+ <20190605190557.mbklbuq4fgwbi3wp@wunner.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190605190557.mbklbuq4fgwbi3wp@wunner.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 6, 2019 at 11:28 AM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->
->
->
-> On 06/06/2019 10:17, Rafael J. Wysocki wrote:
-> > On Wed, Jun 5, 2019 at 5:14 PM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
-> >>
-> >> Add a generic helper to match a device by the acpi device.
-> >
-> > "by its ACPI companion device object", please.
->
-> Sure.
->
-> >
-> > Also, it would be good to combine this patch with the patch(es) that
-> > cause device_match_acpi_dev() to be actually used.
-> >
-> > Helpers without any users are arguably not useful.
->
-> Sure, the helpers will be part of the part2 of the whole series,
-> which will actually have the individual subsystems consuming the
-> new helpers. For your reference, it is available here :
->
-> http://linux-arm.org/git?p=linux-skp.git;a=shortlog;h=refs/heads/driver-cleanup/v2
->
-> e.g:
-> http://linux-arm.org/git?p=linux-skp.git;a=commit;h=59534e843e2f214f1f29659993f6e423bef16b28
->
-> I could simply pull those patches into this part, if you prefer that.
+On Wed, Jun 05, 2019 at 09:05:57PM +0200, Lukas Wunner wrote:
+> On Wed, Jun 05, 2019 at 05:58:19PM +0300, Mika Westerberg wrote:
+> > PME polling does not take into account that a device that is directly
+> > connected to the host bridge may go into D3cold as well. This leads to a
+> > situation where the PME poll thread reads from a config space of a
+> > device that is in D3cold and gets incorrect information because the
+> > config space is not accessible.
+> > 
+> > Here is an example from Intel Ice Lake system where two PCIe root ports
+> > are in D3cold (I've instrumented the kernel to log the PMCSR register
+> > contents):
+> > 
+> >   [   62.971442] pcieport 0000:00:07.1: Check PME status, PMCSR=0xffff
+> >   [   62.971504] pcieport 0000:00:07.0: Check PME status, PMCSR=0xffff
+> > 
+> > Since 0xffff is interpreted so that PME is pending, the root ports will
+> > be runtime resumed. This repeats over and over again essentially
+> > blocking all runtime power management.
+> > 
+> > Prevent this from happening by checking whether the device is in D3cold
+> > before its PME status is read.
+> 
+> There's more broken here.  The below patch fixes a PME polling race
+> and should also fix the issue you're witnessing, could you verify that?
 
-Not really.
+It fixes the issue but I needed to tune it a bit ->
 
-I'd rather do it the other way around: push the introduction of the
-helpers to part 2.
+> The patch has been rotting on my development branch for several months,
+> I just didn't get around to posting it, my apologies.
 
-> However, that would be true for the other patches in the part2.
-> I am open to suggestions, on how to split the series.
+Better late than never :)
 
-You can introduce each helper along with its users in one patch.
+> -- >8 --
+> Subject: [PATCH] PCI / PM: Fix race on PME polling
+> 
+> Since commit df17e62e5bff ("PCI: Add support for polling PME state on
+> suspended legacy PCI devices"), the work item pci_pme_list_scan() polls
+> the PME status flag of devices and wakes them up if the bit is set.
+> 
+> The function performs a check whether a device's upstream bridge is in
+> D0 for otherwise the device is inaccessible, rendering PME polling
+> impossible.  However the check is racy because it is performed before
+> polling the device.  If the upstream bridge runtime suspends to D3hot
+> after pci_pme_list_scan() checks its power state and before it invokes
+> pci_pme_wakeup(), the latter will read the PMCSR as "all ones" and
+> mistake it for a set PME status flag.  I am seeing this race play out as
+> a Thunderbolt controller going to D3cold and occasionally immediately
+> going to D0 again because PM polling was performed at just the wrong
+> time.
+> 
+> Avoid by checking for an "all ones" PMCSR in pci_check_pme_status().
+> 
+> Fixes: 58ff463396ad ("PCI PM: Add function for checking PME status of devices")
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Cc: stable@vger.kernel.org # v2.6.34+
+> ---
+>  drivers/pci/pci.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index b98a564..2e05348 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -1753,6 +1753,8 @@ bool pci_check_pme_status(struct pci_dev *dev)
+>  	pci_read_config_word(dev, pmcsr_pos, &pmcsr);
+>  	if (!(pmcsr & PCI_PM_CTRL_PME_STATUS))
+>  		return false;
+> +	if (pmcsr == ~0)
 
-This way the total number of patches will be reduced and they will be
-easier to review IMO.
+<- Here I needed to do
+
+	if (pmcsr == (u16)~0)
+
+I think it is because pmcsr is u16 so we end up comparing:
+
+	0xffff == 0xffffffff
+
+> +		return false;
+>  
+>  	/* Clear PME status. */
+>  	pmcsr |= PCI_PM_CTRL_PME_STATUS;
+> -- 
+> 2.20.1
