@@ -2,97 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5347E372C5
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2019 13:26:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87F1637441
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2019 14:37:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727063AbfFFL0p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jun 2019 07:26:45 -0400
-Received: from mga17.intel.com ([192.55.52.151]:12062 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726961AbfFFL0p (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 6 Jun 2019 07:26:45 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Jun 2019 04:26:44 -0700
-X-ExtLoop1: 1
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
-  by fmsmga001.fm.intel.com with SMTP; 06 Jun 2019 04:26:41 -0700
-Received: by lahna (sSMTP sendmail emulation); Thu, 06 Jun 2019 14:26:40 +0300
-Date:   Thu, 6 Jun 2019 14:26:40 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-        Keith Busch <keith.busch@intel.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH 3/3] PCI / ACPI: Handle sibling devices sharing power
- resources
-Message-ID: <20190606112640.GA2781@lahna.fi.intel.com>
-References: <20190605145820.37169-1-mika.westerberg@linux.intel.com>
- <20190605145820.37169-4-mika.westerberg@linux.intel.com>
- <CAJZ5v0iGu8f6H68082RGDmDCQsmQZNTULLwnb5JzpKA7m1QvVA@mail.gmail.com>
+        id S1727477AbfFFMhX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jun 2019 08:37:23 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:18107 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726877AbfFFMhX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 6 Jun 2019 08:37:23 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id CD0E381C6E43ED1BC2B1;
+        Thu,  6 Jun 2019 20:37:17 +0800 (CST)
+Received: from lhrphicprd00229.huawei.com (10.123.41.22) by
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 6 Jun 2019 20:37:08 +0800
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>
+CC:     <linuxarm@huawei.com>, <rjw@rjwysocki.net>, <tony.luck@intel.com>,
+        <bp@alien8.de>, <james.morse@arm.com>, <ard.beisheuvel@linaro.org>,
+        <nariman.poushin@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [RFC PATCH 0/6] CCIX Protocol Error reporting
+Date:   Thu, 6 Jun 2019 20:36:48 +0800
+Message-ID: <20190606123654.78973-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0iGu8f6H68082RGDmDCQsmQZNTULLwnb5JzpKA7m1QvVA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.123.41.22]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 06, 2019 at 10:54:40AM +0200, Rafael J. Wysocki wrote:
-> On Wed, Jun 5, 2019 at 4:58 PM Mika Westerberg
-> <mika.westerberg@linux.intel.com> wrote:
-> >
-> > Intel Ice Lake has an interated Thunderbolt controller which means that
-> 
-> integrated
+UEFI 2.8 defines a new CPER record Appendix N for CCIX Protocol Error Records
+(PER). www.uefi.org
 
-Right :)
+These include Protocol Error Record logs which are defined in the
+CCIX 1.0 Base Specification www.ccixconsortium.com.
 
-> > the PCIe topology is extended directly from the two root ports (RP0 and
-> > RP1). Power management is handled by ACPI power resources that are
-> > shared between the root ports, Thunderbolt controller (NHI) and xHCI
-> > controller.
-> >
-> > The topology with the power resources (marked with []) looks like:
-> >
-> >   Host bridge
-> >       |
-> >       +- RP0 ---\
-> >       +- RP1 ---|--+--> [TBT]
-> >       +- NHI --/   |
-> >       |            |
-> >       |            v
-> >       +- xHCI --> [D3C]
-> >
-> > Here TBT and D3C are the shared ACPI power resources. ACPI _PR3() method
-> > returns either TBT or D3C or both.
-> >
-> > Say we runtime suspend first the root ports RP0 and RP1, then NHI. Now
-> > since the TBT power resource is still on when the root ports are runtime
-> > suspended their dev->current_state is set to D3hot. When NHI is runtime
-> > suspended TBT is finally turned off but state of the root ports remain
-> > to be D3hot.
-> 
-> It looks like this problem will affect all ACPI devices using power
-> resources and _PR3 in general, so fixing it just for PCI is not
-> sufficient IMO.
+Handling of coherency protocol errors is complex and how Linux does this
+will take some time to evolve.  For now, fatal errors are handled via the
+usual means and everything else is reported.
 
-Fair enough.
+There are 6 types of error defined, covering:
+* Memory errors
+* Cache errors
+* Address translation unit errors
+* CCIX port errors 
+* CCIX link errors
+* Agent internal errors.
 
-> An alternative approach may be to set the state of a device that
-> dropped its references to power resources listed in _PR3 to D3cold
-> even though those power resources may be physically "on" at that time.
-> Everything else (including this patch AFAICS) will be racy this way or
-> another.
+The set includes tracepoints to report the errors to RAS Daemon and a patch
+set for RAS Daemon will follow shortly.
 
-OK, thanks for the comment. I'll try to look into this approach then.
+There are several open questions for this RFC.
+1. Reporting of vendor data.  We have little choice but to do this via a
+   dynamic array as these blocks can take arbitrary size. I had hoped
+   no one would actually use these given the odd mismatch between a
+   standard error structure and non standard element, but there are
+   already designs out there that do use it.
+2. The trade off between explicit tracepoint fields, on which we might
+   want to filter, and the simplicity of a blob. I have gone for having
+   the whole of the block specific to the PER error type in an opaque blob.
+   Perhaps this is not the right balance?
+3. Whether defining 6 new tracepoints is sensible. I think it is:
+   * They are all defined by the CCIX specification as independant error
+     classes.
+   * Many of them can only be generated by particular types of agent.
+   * The handling required will vary widely depending on types.
+     In the kernel some map cleanly onto existing handling. Keeping the
+     whole flow separate will aide this. They vary by a similar amount
+     in scope to the RAS errors found on an existing system which have
+     independent tracepoints.
+   * Separating them out allows for filtering on the tracepoints by
+     elements that are not shared between them.
+   * Muxing the lot into one record type can lead to ugly code both in
+     kernel and in userspace.
+
+Rasdaemon patches will follow shortly.
+
+This patch is being distributed by the CCIX Consortium, Inc. (CCIX) to
+you and other parties that are paticipating (the "participants") in the
+Linux kernel with the understanding that the participants will use CCIX's
+name and trademark only when this patch is used in association with the
+Linux kernel and associated user space.
+
+CCIX is also distributing this patch to these participants with the
+understanding that if any portion of the CCIX specification will be
+used or referenced in the Linux kernel, the participants will not modify
+the cited portion of the CCIX specification and will give CCIX propery
+copyright attribution by including the following copyright notice with
+the cited part of the CCIX specification:
+"© 2019 CCIX CONSORTIUM, INC. ALL RIGHTS RESERVED."
+
+Jonathan Cameron (6):
+  efi / ras: CCIX Memory error reporting
+  efi / ras: CCIX Cache error reporting
+  efi / ras: CCIX Address Translation Cache error reporting
+  efi / ras: CCIX Port error reporting
+  efi / ras: CCIX Link error reporting
+  efi / ras: CCIX Agent internal error reporting
+
+ drivers/acpi/apei/Kconfig        |   8 +
+ drivers/acpi/apei/ghes.c         |  59 ++
+ drivers/firmware/efi/Kconfig     |   5 +
+ drivers/firmware/efi/Makefile    |   1 +
+ drivers/firmware/efi/cper-ccix.c | 916 +++++++++++++++++++++++++++++++
+ drivers/firmware/efi/cper.c      |   6 +
+ include/linux/cper.h             | 333 +++++++++++
+ include/ras/ras_event.h          | 405 ++++++++++++++
+ 8 files changed, 1733 insertions(+)
+ create mode 100644 drivers/firmware/efi/cper-ccix.c
+
+-- 
+2.20.1
+
