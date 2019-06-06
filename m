@@ -2,106 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92EF836F13
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2019 10:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C2E936F2E
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2019 10:54:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727034AbfFFItr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jun 2019 04:49:47 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:43132 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725267AbfFFItq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 6 Jun 2019 04:49:46 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 86D3DEE6FCD080AE8278;
-        Thu,  6 Jun 2019 16:49:44 +0800 (CST)
-Received: from [127.0.0.1] (10.202.227.238) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Thu, 6 Jun 2019
- 16:49:37 +0800
-Subject: Re: [PATCH 2/2] arm64: topology: Use PPTT to determine if PE is a
- thread
-To:     Jeremy Linton <jeremy.linton@arm.com>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20190523224015.56270-1-jeremy.linton@arm.com>
- <20190523224015.56270-3-jeremy.linton@arm.com>
-CC:     <linux-acpi@vger.kernel.org>, <catalin.marinas@arm.com>,
-        <will.deacon@arm.com>, <rjw@rjwysocki.net>, <lenb@kernel.org>,
-        <sudeep.holla@arm.com>, Linuxarm <linuxarm@huawei.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        wanghuiqiang <wanghuiqiang@huawei.com>, <yaohongbo@huawei.com>
-From:   John Garry <john.garry@huawei.com>
-Message-ID: <be03d428-b543-0233-a98b-233f367a6bd0@huawei.com>
-Date:   Thu, 6 Jun 2019 09:49:30 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.3.0
+        id S1727487AbfFFIyy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jun 2019 04:54:54 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:45105 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727471AbfFFIyy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jun 2019 04:54:54 -0400
+Received: by mail-oi1-f196.google.com with SMTP id m206so1000437oib.12;
+        Thu, 06 Jun 2019 01:54:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LnbnhMxsZs4dx92it5UfNw/Rc2l0benHICZRoQ84E/w=;
+        b=KkxgDbU3kFm3xFWPR1tfRcfGD4TAsx5rGfeyZRPdXmuc/meThpMpLglxVW9OiGTQ29
+         pIv+ZjrEtXM9jdz8f5qsvWb8C3eI9mvAEEm1oUaqarnWunvR0nB83mYeNVtfapeVg6ta
+         8l2aSmYuavZv3uGAt01vO9wv/Ei3AD8aGo9y5T95EQJS5fSBfxvrJqW7W6tgi3mcfcFM
+         XHlRckknrscxWVAC89efMCNG8tWIXeL2KkiUwQ4YNiRhvPMDg4iHafflSlAMzH9+NWzt
+         ZlzGu3Wj7tjfAaWA0Kak3pyBD8wgTTPKGOTPpLbTaydIXdSvA2uUA+rluQOOwKHwgFG2
+         Hbyw==
+X-Gm-Message-State: APjAAAWspXSoDKtmYjrzrJuG0UiI2jMM+FODZkp268K20RYgVZaN3yvT
+        fJtCCgza/UeD4soTU1gBApn3NkDDvANkTyIhxy8h3Q==
+X-Google-Smtp-Source: APXvYqzUP6KPESKe0BBP7i26M6tHRBWmHyRKvI03SDZ/5eli3BhHIvvDy2vNWqHe4fo2eqOp3T8aIz10/wCFEg/7okI=
+X-Received: by 2002:aca:5b43:: with SMTP id p64mr11113922oib.68.1559811293096;
+ Thu, 06 Jun 2019 01:54:53 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190523224015.56270-3-jeremy.linton@arm.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.238]
-X-CFilter-Loop: Reflected
+References: <20190605145820.37169-1-mika.westerberg@linux.intel.com> <20190605145820.37169-4-mika.westerberg@linux.intel.com>
+In-Reply-To: <20190605145820.37169-4-mika.westerberg@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 6 Jun 2019 10:54:40 +0200
+Message-ID: <CAJZ5v0iGu8f6H68082RGDmDCQsmQZNTULLwnb5JzpKA7m1QvVA@mail.gmail.com>
+Subject: Re: [PATCH 3/3] PCI / ACPI: Handle sibling devices sharing power resources
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+        Keith Busch <keith.busch@intel.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Alexandru Gagniuc <mr.nuke.me@gmail.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 23/05/2019 23:40, Jeremy Linton wrote:
-> ACPI 6.3 adds a thread flag to represent if a CPU/PE is
-> actually a thread. Given that the MPIDR_MT bit may not
-> represent this information consistently on homogeneous machines
-> we should prefer the PPTT flag if its available.
+On Wed, Jun 5, 2019 at 4:58 PM Mika Westerberg
+<mika.westerberg@linux.intel.com> wrote:
 >
+> Intel Ice Lake has an interated Thunderbolt controller which means that
 
-Hi Jeremy,
+integrated
 
-I was just wondering if we should look to get this support backported 
-(when merged)?
-
-I worry about the case of a system with the CPU having MT bit in the 
-MPIDR (while not actually threaded), i.e. the system for which these 
-PPTT flags were added (as I understand).
-
-> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-> ---
->  arch/arm64/kernel/topology.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+> the PCIe topology is extended directly from the two root ports (RP0 and
+> RP1). Power management is handled by ACPI power resources that are
+> shared between the root ports, Thunderbolt controller (NHI) and xHCI
+> controller.
 >
-> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-> index 0825c4a856e3..cbbedb53cf06 100644
-> --- a/arch/arm64/kernel/topology.c
-> +++ b/arch/arm64/kernel/topology.c
-> @@ -346,11 +346,9 @@ void remove_cpu_topology(unsigned int cpu)
->   */
->  static int __init parse_acpi_topology(void)
->  {
-> -	bool is_threaded;
-> +	int is_threaded;
->  	int cpu, topology_id;
+> The topology with the power resources (marked with []) looks like:
 >
-> -	is_threaded = read_cpuid_mpidr() & MPIDR_MT_BITMASK;
-> -
->  	for_each_possible_cpu(cpu) {
->  		int i, cache_id;
+>   Host bridge
+>       |
+>       +- RP0 ---\
+>       +- RP1 ---|--+--> [TBT]
+>       +- NHI --/   |
+>       |            |
+>       |            v
+>       +- xHCI --> [D3C]
 >
-> @@ -358,6 +356,10 @@ static int __init parse_acpi_topology(void)
->  		if (topology_id < 0)
->  			return topology_id;
+> Here TBT and D3C are the shared ACPI power resources. ACPI _PR3() method
+> returns either TBT or D3C or both.
 >
-> +		is_threaded = acpi_pptt_cpu_is_thread(cpu);
-> +		if (is_threaded < 0)
-> +			is_threaded = read_cpuid_mpidr() & MPIDR_MT_BITMASK;
-> +
->  		if (is_threaded) {
->  			cpu_topology[cpu].thread_id = topology_id;
+> Say we runtime suspend first the root ports RP0 and RP1, then NHI. Now
+> since the TBT power resource is still on when the root ports are runtime
+> suspended their dev->current_state is set to D3hot. When NHI is runtime
+> suspended TBT is finally turned off but state of the root ports remain
+> to be D3hot.
 
-For described above scenario, this seems wrong.
+It looks like this problem will affect all ACPI devices using power
+resources and _PR3 in general, so fixing it just for PCI is not
+sufficient IMO.
 
->  			topology_id = find_acpi_cpu_topology(cpu, 1);
->
-
-BTW, we did test an old kernel with 6.3 PPTT bios for this on D06 (some 
-versions have MT bit set), and it looked ok. But I am still a bit skeptical.
-
-Thanks,
-John
-
-
+An alternative approach may be to set the state of a device that
+dropped its references to power resources listed in _PR3 to D3cold
+even though those power resources may be physically "on" at that time.
+Everything else (including this patch AFAICS) will be racy this way or
+another.
