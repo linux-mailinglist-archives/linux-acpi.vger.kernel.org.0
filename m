@@ -2,153 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9101F385C3
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2019 09:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66BEE3877A
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2019 11:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726607AbfFGHyX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 Jun 2019 03:54:23 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:40486 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727158AbfFGHyW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Jun 2019 03:54:22 -0400
-Received: by mail-ed1-f66.google.com with SMTP id k8so550697eds.7
-        for <linux-acpi@vger.kernel.org>; Fri, 07 Jun 2019 00:54:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ArYYKIMOHCWSGh7ZEky8JCH+cH+neP3KWbv+59bI+28=;
-        b=Bq2TWJruDFYdyZULuzbY3hPJEj2zvv5gXoXPLGbzPuv0Pg0U1NDPxH/X3qaJ1YHC7Y
-         /MXlv48Cgef8tb+DGmKSI7kzSZGY5/foWVte1IKChKjP9n6WUOVQZc7ciz87hBjfTreD
-         o34AOo3A23IKDE/KlbW4UGPsFGQ1HBSHAf3I0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ArYYKIMOHCWSGh7ZEky8JCH+cH+neP3KWbv+59bI+28=;
-        b=eunGOYQulE68k/6W94Ltqt/is7XuWyPxaISZc58W7x5TAWt4OmN5XRJfyaG6gTkUyO
-         iHnnp53B9f+ynrnV1Z33GVEKmw62xPVnrRIJHnwY7t+tVNJlP7uAykcbCdKnhveRrP+x
-         b0eBuOHjLUbBjjUiLyLcwtotjp91p8MyqyUVaNOgNSJyz4VFU+mFlNC3KKVAH7EQFhx1
-         PPIfS6Bop+N+LpI+TVYkA5H/odsGpiRDHDlAS+EyshR3X418v0rsyzX4awQFkLme5FHd
-         RsTP3lZG8sysAqINKCbtduCYtKrvVNKhjt8VluByK7axOCmeLx+yw/StD7NHsRkxhQuD
-         0Gjw==
-X-Gm-Message-State: APjAAAVjnm8OmMbWOGoqg5Pe2Wem9OIvtfQLO/v4Y/Sl9k2o52cUCols
-        Fg/HxeLWinAiBQoVlpKrKFOnSmEAMadrIw==
-X-Google-Smtp-Source: APXvYqxx8J+sx9WvRlcQwWy5SR9WIdnVdGIpyolbdElcdKKR4ExxQiMWbUJIG593AHEDYjbt7izW1g==
-X-Received: by 2002:a17:906:6ac1:: with SMTP id q1mr1754799ejs.13.1559894060653;
-        Fri, 07 Jun 2019 00:54:20 -0700 (PDT)
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com. [209.85.128.42])
-        by smtp.gmail.com with ESMTPSA id m6sm327786ede.2.2019.06.07.00.54.19
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Fri, 07 Jun 2019 00:54:19 -0700 (PDT)
-Received: by mail-wm1-f42.google.com with SMTP id g135so965362wme.4
-        for <linux-acpi@vger.kernel.org>; Fri, 07 Jun 2019 00:54:19 -0700 (PDT)
-X-Received: by 2002:a7b:c7d8:: with SMTP id z24mr2676794wmk.10.1559894059267;
- Fri, 07 Jun 2019 00:54:19 -0700 (PDT)
+        id S1727754AbfFGJ65 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 Jun 2019 05:58:57 -0400
+Received: from foss.arm.com ([217.140.110.172]:37002 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727111AbfFGJ65 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 7 Jun 2019 05:58:57 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 84F99337;
+        Fri,  7 Jun 2019 02:49:11 -0700 (PDT)
+Received: from e107155-lin (e107155-lin.cambridge.arm.com [10.1.196.42])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 59F643F96A;
+        Fri,  7 Jun 2019 02:50:50 -0700 (PDT)
+Date:   Fri, 7 Jun 2019 10:49:07 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Jeremy Linton <jeremy.linton@arm.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        catalin.marinas@arm.com, will.deacon@arm.com, rjw@rjwysocki.net,
+        lenb@kernel.org, mark.rutland@arm.com, lorenzo.pieralisi@arm.com,
+        linuxarm@huawei.com, john.garry@huawei.com,
+        Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH v3 2/5] ACPI/PPTT: Add function to return ACPI 6.3
+ Identical tokens
+Message-ID: <20190607094907.GB2429@e107155-lin>
+References: <20190503232407.37195-1-jeremy.linton@arm.com>
+ <20190503232407.37195-3-jeremy.linton@arm.com>
 MIME-Version: 1.0
-References: <20190510100930.14641-1-sakari.ailus@linux.intel.com>
- <20190510100930.14641-4-sakari.ailus@linux.intel.com> <20190605070752.GA126683@chromium.org>
- <20190605101535.4sydewuv656x6c2g@kekkonen.localdomain>
-In-Reply-To: <20190605101535.4sydewuv656x6c2g@kekkonen.localdomain>
-From:   Tomasz Figa <tfiga@chromium.org>
-Date:   Fri, 7 Jun 2019 16:54:06 +0900
-X-Gmail-Original-Message-ID: <CAAFQd5D+RZS0E6xpZ3v8gC5zerj5fd6b6YxcAS_TeWei6vGvUA@mail.gmail.com>
-Message-ID: <CAAFQd5D+RZS0E6xpZ3v8gC5zerj5fd6b6YxcAS_TeWei6vGvUA@mail.gmail.com>
-Subject: Re: [PATCH 3/5] ov5670: Support probe whilst the device is off
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org,
-        "Mani, Rajmohan" <rajmohan.mani@intel.com>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190503232407.37195-3-jeremy.linton@arm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 5, 2019 at 7:15 PM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
+On Fri, May 03, 2019 at 06:24:04PM -0500, Jeremy Linton wrote:
+> ACPI 6.3 adds a flag to indicate that child nodes are all
+> identical cores. This is useful to authoritatively determine
+> if a set of (possibly offline) cores are identical or not.
+> 
+> Since the flag doesn't give us a unique id we can generate
+> one and use it to create bitmaps of sibling nodes, or simply
+> in a loop to determine if a subset of cores are identical.
 >
-> Hi Tomasz,
->
-> On Wed, Jun 05, 2019 at 04:07:52PM +0900, Tomasz Figa wrote:
-> > Hi Sakari,
-> >
-> > On Fri, May 10, 2019 at 01:09:28PM +0300, Sakari Ailus wrote:
-> > > Tell ACPI device PM code that the driver supports the device being po=
-wered
-> > > off when the driver's probe function is entered.
-> > >
-> > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > > ---
-> > >  drivers/media/i2c/ov5670.c | 25 ++++++++++++++-----------
-> > >  1 file changed, 14 insertions(+), 11 deletions(-)
-> > >
-> > > diff --git a/drivers/media/i2c/ov5670.c b/drivers/media/i2c/ov5670.c
-> > > index 041fcbb4eebdf..57e8b92f90e09 100644
-> > > --- a/drivers/media/i2c/ov5670.c
-> > > +++ b/drivers/media/i2c/ov5670.c
-> > > @@ -2444,6 +2444,7 @@ static int ov5670_probe(struct i2c_client *clie=
-nt)
-> > >     struct ov5670 *ov5670;
-> > >     const char *err_msg;
-> > >     u32 input_clk =3D 0;
-> > > +   bool powered_off;
-> > >     int ret;
-> > >
-> > >     device_property_read_u32(&client->dev, "clock-frequency", &input_=
-clk);
-> > > @@ -2460,11 +2461,14 @@ static int ov5670_probe(struct i2c_client *cl=
-ient)
-> > >     /* Initialize subdev */
-> > >     v4l2_i2c_subdev_init(&ov5670->sd, client, &ov5670_subdev_ops);
-> > >
-> > > -   /* Check module identity */
-> > > -   ret =3D ov5670_identify_module(ov5670);
-> > > -   if (ret) {
-> > > -           err_msg =3D "ov5670_identify_module() error";
-> > > -           goto error_print;
-> > > +   powered_off =3D acpi_dev_powered_off_for_probe(&client->dev);
-> > > +   if (!powered_off) {
-> > > +           /* Check module identity */
-> > > +           ret =3D ov5670_identify_module(ov5670);
-> > > +           if (ret) {
-> > > +                   err_msg =3D "ov5670_identify_module() error";
-> > > +                   goto error_print;
-> > > +           }
-> > >     }
-> >
-> > I don't like the fact that we can't detect any hardware connection issu=
-e
-> > here anymore and we would actually get some obscure failure when we
-> > actually start streaming.
-> >
-> > Wouldn't it be possible to still keep this behavior of not powering on
-> > the device at boot-up if no driver is bound and then have this driver
-> > built as a module and loaded later when the camera is to be used for th=
-e
-> > first time after the system boots?
->
-> That'd be a way to work around this, but the downside would be that the
-> user space would need to know not only which drivers to load, but also
-> which drivers _not_ to load. The user space could obtain the former from
-> the kernel but not the latter, it'd be system specific configuration.
->
-> Moving the responsibility of loading the driver to user space would also
-> not address figuring out whether the sensor is accessible through its
-> control bus: you have to power it on to do that. In fact, if you want to =
-be
-> sure that the hardware is all right, you have to start streaming on the
-> device first and that is not a part of a typical driver initialisation
-> sequence. Just checking the sensor is accessible over I=E6=B6=8E is not e=
-nough.
->
-> The proposed solution addresses the problem without user space changes.
 
-I guess that makes sense indeed. If going this way, why not just move
-all the hardware access from probe to streamon and avoid any
-conditional checks at all?
+If possible reorder this patch with next just to be sure.
+I know the user is not introduced until 4/5, but 3/5 kind of fixes
+the implementation.
 
-Best regards,
-Tomasz
+
+Apart from that, this looks fine to me.
+
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+
+> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+> ---
+>  drivers/acpi/pptt.c  | 26 ++++++++++++++++++++++++++
+>  include/linux/acpi.h |  5 +++++
+>  2 files changed, 31 insertions(+)
+> 
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index 83a026765faa..1865515297ca 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -660,3 +660,29 @@ int find_acpi_cpu_topology_package(unsigned int cpu)
+>  	return find_acpi_cpu_topology_tag(cpu, PPTT_ABORT_PACKAGE,
+>  					  ACPI_PPTT_PHYSICAL_PACKAGE);
+>  }
+> +
+> +/**
+> + * find_acpi_cpu_topology_hetero_id() - Get a core architecture tag
+> + * @cpu: Kernel logical CPU number
+> + *
+> + * Determine a unique heterogeneous tag for the given CPU. CPUs with the same
+> + * implementation should have matching tags.
+> + *
+> + * The returned tag can be used to group peers with identical implementation.
+> + *
+> + * The search terminates when a level is found with the identical implementation
+> + * flag set or we reach a root node.
+> + *
+> + * Due to limitations in the PPTT data structure, there may be rare situations
+> + * where two cores in a heterogeneous machine may be identical, but won't have
+> + * the same tag.
+> + *
+
+Indeed, it's unfortunate. I gave some thoughts if we can find ways to
+avoid this. Hope we don't have to see such weird combinations with ACPI
+based systems.
+
+--
+Regards,
+Sudeep
