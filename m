@@ -2,99 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66BEE3877A
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2019 11:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A70238769
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2019 11:52:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727754AbfFGJ65 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 Jun 2019 05:58:57 -0400
-Received: from foss.arm.com ([217.140.110.172]:37002 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727111AbfFGJ65 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 7 Jun 2019 05:58:57 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 84F99337;
-        Fri,  7 Jun 2019 02:49:11 -0700 (PDT)
-Received: from e107155-lin (e107155-lin.cambridge.arm.com [10.1.196.42])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 59F643F96A;
-        Fri,  7 Jun 2019 02:50:50 -0700 (PDT)
-Date:   Fri, 7 Jun 2019 10:49:07 +0100
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Jeremy Linton <jeremy.linton@arm.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        catalin.marinas@arm.com, will.deacon@arm.com, rjw@rjwysocki.net,
-        lenb@kernel.org, mark.rutland@arm.com, lorenzo.pieralisi@arm.com,
-        linuxarm@huawei.com, john.garry@huawei.com,
-        Sudeep Holla <sudeep.holla@arm.com>
-Subject: Re: [PATCH v3 2/5] ACPI/PPTT: Add function to return ACPI 6.3
- Identical tokens
-Message-ID: <20190607094907.GB2429@e107155-lin>
-References: <20190503232407.37195-1-jeremy.linton@arm.com>
- <20190503232407.37195-3-jeremy.linton@arm.com>
+        id S1726939AbfFGJwm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 Jun 2019 05:52:42 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:42886 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726996AbfFGJwm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 7 Jun 2019 05:52:42 -0400
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id AC461D2F7002C7D59082;
+        Fri,  7 Jun 2019 17:52:39 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Fri, 7 Jun 2019
+ 17:52:28 +0800
+Date:   Fri, 7 Jun 2019 10:52:20 +0100
+From:   Jonathan Cameron <jonathan.cameron@huawei.com>
+To:     <linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linuxarm@huawei.com>
+Subject: [RFC] NUMA Description Under ACPI 6.3 White Paper (v0.93)
+Message-ID: <20190607105220.0000134e@huawei.com>
+Organization: Huawei
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190503232407.37195-3-jeremy.linton@arm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.61]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 03, 2019 at 06:24:04PM -0500, Jeremy Linton wrote:
-> ACPI 6.3 adds a flag to indicate that child nodes are all
-> identical cores. This is useful to authoritatively determine
-> if a set of (possibly offline) cores are identical or not.
-> 
-> Since the flag doesn't give us a unique id we can generate
-> one and use it to create bitmaps of sibling nodes, or simply
-> in a loop to determine if a subset of cores are identical.
->
+Hi all,
 
-If possible reorder this patch with next just to be sure.
-I know the user is not introduced until 4/5, but 3/5 kind of fixes
-the implementation.
+This is a request for comment / review on a white paper, intended to
+provide an example lead guide on how to describe NUMA systems in ACPI 6.3.
+
+https://github.com/hisilicon/acpi-numa-whitepaper
+https://github.com/hisilicon/acpi-numa-whitepaper/releases/download/v0.93/NUMA_Description_Under_ACPI_6.3_v0.93.pdf
+
+It was prepared in conjunction with the Heterogeneous Memory Sub Team (HMST) of
+the UEFI forum which has a mix of firmware and OS people (Linux and others). 
+
+The original motivation for this was that we were writing some docs for a
+more specific project (to appear shortly) and realized that only reason
+some sections were necessary was because we couldn't find anything
+bridging the gap between the ACPI specification and docs like those in
+the kernel tree.  Hence this document targeting that hole which is hopefully
+of more general use.
+
+Exactly how this will be officially 'released' is yet to be resolved, but 
+however that happens we will be maintaining a public source repository,
+hopefully allowing this to be a living document, tracking future specs
+and also being updated to account for how OS usage of the provided information
+changes.
+
+The document is under Creative Commons Attribution 4.0 International License.
+It is a Sphinx document. Only output to pdf has been tested and
+the build scripts are a bit of a mess.
+
+Thanks to all those who have already given feedback on earlier drafts!
+Additional thanks to the members of HMST for some very interesting discussions,
+clarifying both my understanding and highlighting areas to focus on in this
+guide.
+
+I'm looking for all types of feedback including suggestions for
+missing content (as a patch is ideal of course - I'm more than happy
+to have some coauthors on this).
+
+Jonathan
+
+p.s. Please share with anyone you think may be interested!
 
 
-Apart from that, this looks fine to me.
-
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-
-> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-> ---
->  drivers/acpi/pptt.c  | 26 ++++++++++++++++++++++++++
->  include/linux/acpi.h |  5 +++++
->  2 files changed, 31 insertions(+)
-> 
-> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> index 83a026765faa..1865515297ca 100644
-> --- a/drivers/acpi/pptt.c
-> +++ b/drivers/acpi/pptt.c
-> @@ -660,3 +660,29 @@ int find_acpi_cpu_topology_package(unsigned int cpu)
->  	return find_acpi_cpu_topology_tag(cpu, PPTT_ABORT_PACKAGE,
->  					  ACPI_PPTT_PHYSICAL_PACKAGE);
->  }
-> +
-> +/**
-> + * find_acpi_cpu_topology_hetero_id() - Get a core architecture tag
-> + * @cpu: Kernel logical CPU number
-> + *
-> + * Determine a unique heterogeneous tag for the given CPU. CPUs with the same
-> + * implementation should have matching tags.
-> + *
-> + * The returned tag can be used to group peers with identical implementation.
-> + *
-> + * The search terminates when a level is found with the identical implementation
-> + * flag set or we reach a root node.
-> + *
-> + * Due to limitations in the PPTT data structure, there may be rare situations
-> + * where two cores in a heterogeneous machine may be identical, but won't have
-> + * the same tag.
-> + *
-
-Indeed, it's unfortunate. I gave some thoughts if we can find ways to
-avoid this. Hope we don't have to see such weird combinations with ACPI
-based systems.
-
---
-Regards,
-Sudeep
