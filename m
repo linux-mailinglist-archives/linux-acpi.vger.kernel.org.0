@@ -2,81 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A56493AB40
-	for <lists+linux-acpi@lfdr.de>; Sun,  9 Jun 2019 20:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B36243AC81
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jun 2019 01:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729264AbfFIS6j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 9 Jun 2019 14:58:39 -0400
-Received: from bmailout2.hostsharing.net ([83.223.90.240]:43575 "EHLO
-        bmailout2.hostsharing.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729082AbfFIS6i (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 9 Jun 2019 14:58:38 -0400
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
-        by bmailout2.hostsharing.net (Postfix) with ESMTPS id ED9DB2800B48A;
-        Sun,  9 Jun 2019 20:58:35 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id AB6064D0F9; Sun,  9 Jun 2019 20:58:35 +0200 (CEST)
-Date:   Sun, 9 Jun 2019 20:58:35 +0200
-From:   Lukas Wunner <lukas@wunner.de>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
+        id S1729306AbfFIXuK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 9 Jun 2019 19:50:10 -0400
+Received: from chill.innovation.ch ([216.218.245.220]:48998 "EHLO
+        chill.innovation.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725933AbfFIXuK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 9 Jun 2019 19:50:10 -0400
+X-Greylist: delayed 342 seconds by postgrey-1.27 at vger.kernel.org; Sun, 09 Jun 2019 19:50:10 EDT
+Date:   Sun, 9 Jun 2019 16:44:27 -0700
+DKIM-Filter: OpenDKIM Filter v2.10.3 chill.innovation.ch 9AE26640134
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=innovation.ch;
+        s=default; t=1560123867;
+        bh=ANHQkXMvHNXcU33vNeXl0bkJnCxtdn+016CmezBUMIk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=dDgP2GehsA5TCdzYC+SZQsOwxy0QkTU27vMqeUB62ipzo1alidjlf1i9tl55dZabi
+         KGPsKiYP3JoaNBW1iy+EKAKXMRkq+NtHeGIFI7qYkpPORJS8rsyef7fu8zmwTPJ4es
+         IToByZJmMiYsdnmSnTQvFixf4XUeR6UGA/f2DnI4MXAlsS7QuLbp/R2ba6xDrVUs4z
+         ++eSCviRnOoD7bDTPMNbobdebX4H/fKCvp45ux+bHV7ac0asnyH6EYRgswp9tYQVq9
+         dtY8hgXrkcGPuPUD9MREyIeKQZVz7M0fsikt9yDM0qdzEoPGF3YbqxVL7OGVIYJ8oB
+         U2c9NC/InOHMA==
+From:   "Life is hard, and then you die" <ronald@innovation.ch>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-spi@vger.kernel.org, broonie@kernel.org,
+        andy.shevchenko@gmail.com, masahisa.kojima@linaro.org,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Keith Busch <keith.busch@intel.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH 3/3] PCI / ACPI: Handle sibling devices sharing power
- resources
-Message-ID: <20190609185835.cqjbgzfwajbg4kks@wunner.de>
-References: <20190605145820.37169-1-mika.westerberg@linux.intel.com>
- <20190605145820.37169-4-mika.westerberg@linux.intel.com>
- <CAJZ5v0iGu8f6H68082RGDmDCQsmQZNTULLwnb5JzpKA7m1QvVA@mail.gmail.com>
- <20190606112640.GA2781@lahna.fi.intel.com>
- <20190606134419.GL2781@lahna.fi.intel.com>
- <CAJZ5v0gHTVPNc_LJzPCOLZpHU=wsbYQs__WabOQHmu8GPCChag@mail.gmail.com>
- <20190606141717.GM2781@lahna.fi.intel.com>
- <CAJZ5v0gwqMd0W43KQoU80=fdYooLkgPg1n0cbbAWjPqrOepYsg@mail.gmail.com>
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        linux-acpi@vger.kernel.org, Lukas Wunner <lukas@wunner.de>
+Subject: Re: [PATCH v2] spi/acpi: enumerate all SPI slaves in the namespace
+Message-ID: <20190609234427.GA16597@innovation.ch>
+References: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0gwqMd0W43KQoU80=fdYooLkgPg1n0cbbAWjPqrOepYsg@mail.gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 06, 2019 at 04:27:21PM +0200, Rafael J. Wysocki wrote:
-> On Thu, Jun 6, 2019 at 4:17 PM Mika Westerberg <mika.westerberg@linux.intel.com> wrote:
-> > On Thu, Jun 06, 2019 at 04:08:11PM +0200, Rafael J. Wysocki wrote:
-> > > That isn't necessary IMO as long as the device are not accessed.  If
-> > > the kernel thinks that a given device is in D3cold and doesn't access
-> > > it, then it really doesn't matter too much what state the device is in
-> > > physically.  On the first access the device should be reinitialized
-> > > anyway.
-> >
-> > But if the device is configured to wake. For example when it detects a
-> > hotplug that state is gone when it goes to D0unitialized.
+
+On Thu, May 30, 2019 at 01:16:34PM +0200, Ard Biesheuvel wrote:
+> Currently, the ACPI enumeration that takes place when registering a
+> SPI master only considers immediate child devices in the ACPI namespace,
+> rather than checking the ResourceSource field in the SpiSerialBus()
+> resource descriptor.
 > 
-> For this we'll need a pm_runtime_resume() of the dependent device on
-> the resource going "on".
+> This is incorrect: SPI slaves could reside anywhere in the ACPI
+> namespace, and so we should enumerate the entire namespace and look for
+> any device that refers to the newly registered SPI master in its
+> resource descriptor.
 > 
-> That means we need a list of devices to resume when the resource goes
-> "on" after being taken "off".
+> So refactor the existing code and use a lookup structure so that
+> allocating the SPI device structure is deferred until we have identified
+> the device as an actual child of the controller. This approach is
+> loosely based on the way the I2C subsystem handles ACPI enumeration.
+> 
+> Note that Apple x86 hardware does not rely on SpiSerialBus() resources
+> in _CRS but uses nested devices below the controller's device node in
+> the ACPI namespace, with a special set of device properties. This means
+> we have to take care to only parse those properties for device nodes
+> that are direct children of the controller node.
+> 
+> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Cc: linux-spi@vger.kernel.org
+> Cc: broonie@kernel.org
+> Cc: andy.shevchenko@gmail.com
+> Cc: masahisa.kojima@linaro.org
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: Lukas Wunner <lukas@wunner.de>
+> 
+> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> ---
+>  drivers/spi/spi.c | 103 ++++++++++++++------
+>  1 file changed, 72 insertions(+), 31 deletions(-)
+[snip]
 
-An idea would be to model every ACPI power resource as a struct device
-and automatically set up a device link from the devices using that
-power resource (consumers).  After all dependent devices runtime suspend,
-the power resource "device" runtime suspends by turning itself off
-(and updating the PCI current_state of dependent devices to D3cold).
-When the power resource runtime resumes, it schedules a runtime resume
-of all dependent devices.
+FYI, I tested this on a MacBook Pro where the (SPI) keyboard driver
+depends on those special device properties, and verified this patch
+doesn't break anything there.
 
-Thanks,
 
-Lukas
+  Cheers,
+
+  Ronald
+
