@@ -2,95 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B36243AC81
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jun 2019 01:50:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 741683AE76
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jun 2019 07:08:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729306AbfFIXuK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 9 Jun 2019 19:50:10 -0400
-Received: from chill.innovation.ch ([216.218.245.220]:48998 "EHLO
-        chill.innovation.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725933AbfFIXuK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 9 Jun 2019 19:50:10 -0400
-X-Greylist: delayed 342 seconds by postgrey-1.27 at vger.kernel.org; Sun, 09 Jun 2019 19:50:10 EDT
-Date:   Sun, 9 Jun 2019 16:44:27 -0700
-DKIM-Filter: OpenDKIM Filter v2.10.3 chill.innovation.ch 9AE26640134
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=innovation.ch;
-        s=default; t=1560123867;
-        bh=ANHQkXMvHNXcU33vNeXl0bkJnCxtdn+016CmezBUMIk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dDgP2GehsA5TCdzYC+SZQsOwxy0QkTU27vMqeUB62ipzo1alidjlf1i9tl55dZabi
-         KGPsKiYP3JoaNBW1iy+EKAKXMRkq+NtHeGIFI7qYkpPORJS8rsyef7fu8zmwTPJ4es
-         IToByZJmMiYsdnmSnTQvFixf4XUeR6UGA/f2DnI4MXAlsS7QuLbp/R2ba6xDrVUs4z
-         ++eSCviRnOoD7bDTPMNbobdebX4H/fKCvp45ux+bHV7ac0asnyH6EYRgswp9tYQVq9
-         dtY8hgXrkcGPuPUD9MREyIeKQZVz7M0fsikt9yDM0qdzEoPGF3YbqxVL7OGVIYJ8oB
-         U2c9NC/InOHMA==
-From:   "Life is hard, and then you die" <ronald@innovation.ch>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-spi@vger.kernel.org, broonie@kernel.org,
-        andy.shevchenko@gmail.com, masahisa.kojima@linaro.org,
+        id S1728090AbfFJFIY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jun 2019 01:08:24 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:40636 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726913AbfFJFIY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 10 Jun 2019 01:08:24 -0400
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 3A5623082E55;
+        Mon, 10 Jun 2019 05:08:23 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com (colo-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.21])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id E83C15B684;
+        Mon, 10 Jun 2019 05:08:22 +0000 (UTC)
+Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
+        by colo-mx.corp.redhat.com (Postfix) with ESMTP id 1D91C206D1;
+        Mon, 10 Jun 2019 05:08:21 +0000 (UTC)
+Date:   Mon, 10 Jun 2019 01:08:20 -0400 (EDT)
+From:   Pankaj Gupta <pagupta@redhat.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        virtualization@lists.linux-foundation.org,
+        KVM list <kvm@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Qemu Developers <qemu-devel@nongnu.org>,
+        linux-ext4 <linux-ext4@vger.kernel.org>,
+        linux-xfs <linux-xfs@vger.kernel.org>,
+        device-mapper development <dm-devel@redhat.com>,
+        Ross Zwisler <zwisler@kernel.org>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Matthew Wilcox <willy@infradead.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        linux-acpi@vger.kernel.org, Lukas Wunner <lukas@wunner.de>
-Subject: Re: [PATCH v2] spi/acpi: enumerate all SPI slaves in the namespace
-Message-ID: <20190609234427.GA16597@innovation.ch>
-References: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
+        Christoph Hellwig <hch@infradead.org>,
+        Len Brown <lenb@kernel.org>, Jan Kara <jack@suse.cz>,
+        Theodore Ts'o <tytso@mit.edu>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        "Darrick J. Wong" <darrick.wong@oracle.com>,
+        lcapitulino@redhat.com, Kevin Wolf <kwolf@redhat.com>,
+        Igor Mammedov <imammedo@redhat.com>,
+        jmoyer <jmoyer@redhat.com>,
+        Nitesh Narayan Lal <nilal@redhat.com>,
+        Rik van Riel <riel@surriel.com>,
+        Stefan Hajnoczi <stefanha@redhat.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        David Hildenbrand <david@redhat.com>,
+        david <david@fromorbit.com>, cohuck@redhat.com,
+        Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        yuval shaia <yuval.shaia@oracle.com>,
+        Adam Borowski <kilobyte@angband.pl>, jstaron@google.com,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Mike Snitzer <snitzer@redhat.com>
+Message-ID: <1533125860.33764157.1560143300908.JavaMail.zimbra@redhat.com>
+In-Reply-To: <CAPcyv4iW-UeHBs+qSii2Pk7Q2Nki6imGBTEORuxEAWgEMMp=nA@mail.gmail.com>
+References: <20190521133713.31653-1-pagupta@redhat.com> <20190521133713.31653-5-pagupta@redhat.com> <CAPcyv4iW-UeHBs+qSii2Pk7Q2Nki6imGBTEORuxEAWgEMMp=nA@mail.gmail.com>
+Subject: Re: [PATCH v10 4/7] dm: enable synchronous dax
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.116.16, 10.4.195.3]
+Thread-Topic: enable synchronous dax
+Thread-Index: bfiNCXycvh8K7TR5aXllhHNvtwio0w==
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.46]); Mon, 10 Jun 2019 05:08:24 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
-On Thu, May 30, 2019 at 01:16:34PM +0200, Ard Biesheuvel wrote:
-> Currently, the ACPI enumeration that takes place when registering a
-> SPI master only considers immediate child devices in the ACPI namespace,
-> rather than checking the ResourceSource field in the SpiSerialBus()
-> resource descriptor.
+> On Tue, May 21, 2019 at 6:43 AM Pankaj Gupta <pagupta@redhat.com> wrote:
+> >
+> >  This patch sets dax device 'DAXDEV_SYNC' flag if all the target
+> >  devices of device mapper support synchrononous DAX. If device
+> >  mapper consists of both synchronous and asynchronous dax devices,
+> >  we don't set 'DAXDEV_SYNC' flag.
+> >
+> > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
+> > ---
+> >  drivers/md/dm-table.c | 14 ++++++++++++++
+> >  1 file changed, 14 insertions(+)
+> >
+> > diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+> > index cde3b49b2a91..1cce626ff576 100644
+> > --- a/drivers/md/dm-table.c
+> > +++ b/drivers/md/dm-table.c
+> > @@ -886,10 +886,17 @@ static int device_supports_dax(struct dm_target *ti,
+> > struct dm_dev *dev,
+> >         return bdev_dax_supported(dev->bdev, PAGE_SIZE);
+> >  }
+> >
+> > +static int device_synchronous(struct dm_target *ti, struct dm_dev *dev,
+> > +                              sector_t start, sector_t len, void *data)
+> > +{
+> > +       return dax_synchronous(dev->dax_dev);
+> > +}
+> > +
+> >  static bool dm_table_supports_dax(struct dm_table *t)
+> >  {
+> >         struct dm_target *ti;
+> >         unsigned i;
+> > +       bool dax_sync = true;
+> >
+> >         /* Ensure that all targets support DAX. */
+> >         for (i = 0; i < dm_table_get_num_targets(t); i++) {
+> > @@ -901,7 +908,14 @@ static bool dm_table_supports_dax(struct dm_table *t)
+> >                 if (!ti->type->iterate_devices ||
+> >                     !ti->type->iterate_devices(ti, device_supports_dax,
+> >                     NULL))
+> >                         return false;
+> > +
+> > +               /* Check devices support synchronous DAX */
+> > +               if (dax_sync &&
+> > +                   !ti->type->iterate_devices(ti, device_synchronous,
+> > NULL))
+> > +                       dax_sync = false;
 > 
-> This is incorrect: SPI slaves could reside anywhere in the ACPI
-> namespace, and so we should enumerate the entire namespace and look for
-> any device that refers to the newly registered SPI master in its
-> resource descriptor.
+> Looks like this needs to be rebased on the current state of v5.2-rc,
+> and then we can nudge Mike for an ack.
+
+Sorry! for late reply due to vacations. I will rebase the series on v5.2-rc4 and
+send a v11.
+
+Thanks,
+Pankaj
+Yes, 
 > 
-> So refactor the existing code and use a lookup structure so that
-> allocating the SPI device structure is deferred until we have identified
-> the device as an actual child of the controller. This approach is
-> loosely based on the way the I2C subsystem handles ACPI enumeration.
-> 
-> Note that Apple x86 hardware does not rely on SpiSerialBus() resources
-> in _CRS but uses nested devices below the controller's device node in
-> the ACPI namespace, with a special set of device properties. This means
-> we have to take care to only parse those properties for device nodes
-> that are direct children of the controller node.
-> 
-> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Cc: linux-spi@vger.kernel.org
-> Cc: broonie@kernel.org
-> Cc: andy.shevchenko@gmail.com
-> Cc: masahisa.kojima@linaro.org
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-> Cc: linux-acpi@vger.kernel.org
-> Cc: Lukas Wunner <lukas@wunner.de>
-> 
-> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> ---
->  drivers/spi/spi.c | 103 ++++++++++++++------
->  1 file changed, 72 insertions(+), 31 deletions(-)
-[snip]
-
-FYI, I tested this on a MacBook Pro where the (SPI) keyboard driver
-depends on those special device properties, and verified this patch
-doesn't break anything there.
-
-
-  Cheers,
-
-  Ronald
-
