@@ -2,158 +2,278 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A38C3D237
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jun 2019 18:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6BA23D283
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jun 2019 18:39:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388445AbfFKQ1o (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Jun 2019 12:27:44 -0400
-Received: from mail-it1-f195.google.com ([209.85.166.195]:36813 "EHLO
-        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387423AbfFKQ1o (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Jun 2019 12:27:44 -0400
-Received: by mail-it1-f195.google.com with SMTP id r135so5772760ith.1
-        for <linux-acpi@vger.kernel.org>; Tue, 11 Jun 2019 09:27:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:reply-to:subject:to:cc:references:from
-         :organization:message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=m54vtFTLLc6L49HOxvhgOC5cZDmqGyAKOX7qrD66JJc=;
-        b=e5XBz/RdO4lSjxMhjTCl2Q2IdVOsew5v3gMohNzEM2OtMSQvIPoE1O+myjwdtrfBOg
-         XHacym3PjErv8/CkPF4NLgEVyW3JfDgqPgpzR6IapmwhQg6qIAowAFxErXTzVChMa3rf
-         fC6Im/UE+G1w/z3aYwiuf0Hw+Vvne1lCz3T4dllsuuyekDPe9FpgGRaHxGxGk3jEmmnT
-         VxrNQL9Kt1kWr0XmsDTkjXR+Ssruh2gfs+qWX3uNthEGRcNsPPDRGBn691uZfDhQLL0Q
-         TWgUlU/CEivdGX0ydlZ4tgIMS3PKQ3N+8hQK/9Q4leeYvcqBhxVmD8wLVlMQT4n+oCyO
-         R+ew==
-X-Gm-Message-State: APjAAAXI1L5wL/E9Qt0JR86GeoNLkTeC0Pu6zo3iyXG02WALBXGzbHa0
-        z6/IQ70L/MGPRrzsJgAd6DVqJQ==
-X-Google-Smtp-Source: APXvYqwhAqk3DHHOLEXBAt7xsQdBVFfnS5WyELVTG4mZC3jJqxDQC1PTMLKNBMCiSsOfVulfxT6V4w==
-X-Received: by 2002:a05:6638:38a:: with SMTP id y10mr52662186jap.104.1560270462995;
-        Tue, 11 Jun 2019 09:27:42 -0700 (PDT)
-Received: from masetto.ahs3 (c-67-165-232-89.hsd1.co.comcast.net. [67.165.232.89])
-        by smtp.gmail.com with ESMTPSA id r143sm2140499ita.0.2019.06.11.09.27.41
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Tue, 11 Jun 2019 09:27:42 -0700 (PDT)
-Reply-To: ahs3@redhat.com
-Subject: Re: [RFC PATCH] ACPI / processors: allow a processor device _UID to
- be a string
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190610200734.1182-1-ahs3@redhat.com>
- <20190611125258.GA16445@e107155-lin>
- <5ea4f403-853f-5067-4e9b-a8aabec5b1cd@redhat.com>
- <20190611160906.GA27548@e107155-lin>
-From:   Al Stone <ahs3@redhat.com>
-Organization: Red Hat, Inc.
-Message-ID: <0dfa99bf-7527-9dc3-201e-a482057fd51c@redhat.com>
-Date:   Tue, 11 Jun 2019 10:27:41 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S2405668AbfFKQi7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Jun 2019 12:38:59 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:46030 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404082AbfFKQi6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 11 Jun 2019 12:38:58 -0400
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id CD3597FDF9;
+        Tue, 11 Jun 2019 16:38:52 +0000 (UTC)
+Received: from dhcp201-121.englab.pnq.redhat.com (ovpn-116-60.sin2.redhat.com [10.67.116.60])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id CE3ED5D704;
+        Tue, 11 Jun 2019 16:38:08 +0000 (UTC)
+From:   Pankaj Gupta <pagupta@redhat.com>
+To:     dm-devel@redhat.com, linux-nvdimm@lists.01.org,
+        linux-kernel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        qemu-devel@nongnu.org, linux-ext4@vger.kernel.org,
+        linux-xfs@vger.kernel.org
+Cc:     dan.j.williams@intel.com, zwisler@kernel.org,
+        vishal.l.verma@intel.com, dave.jiang@intel.com, mst@redhat.com,
+        jasowang@redhat.com, willy@infradead.org, rjw@rjwysocki.net,
+        hch@infradead.org, lenb@kernel.org, jack@suse.cz, tytso@mit.edu,
+        adilger.kernel@dilger.ca, darrick.wong@oracle.com,
+        lcapitulino@redhat.com, kwolf@redhat.com, imammedo@redhat.com,
+        jmoyer@redhat.com, nilal@redhat.com, riel@surriel.com,
+        stefanha@redhat.com, aarcange@redhat.com, david@redhat.com,
+        david@fromorbit.com, cohuck@redhat.com,
+        xiaoguangrong.eric@gmail.com, pagupta@redhat.com,
+        pbonzini@redhat.com, yuval.shaia@oracle.com, kilobyte@angband.pl,
+        jstaron@google.com, rdunlap@infradead.org, snitzer@redhat.com
+Subject: [PATCH v12 0/7] virtio pmem driver 
+Date:   Tue, 11 Jun 2019 22:07:55 +0530
+Message-Id: <20190611163802.25352-1-pagupta@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20190611160906.GA27548@e107155-lin>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.27]); Tue, 11 Jun 2019 16:38:58 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 6/11/19 10:11 AM, Sudeep Holla wrote:
-> On Tue, Jun 11, 2019 at 10:03:15AM -0600, Al Stone wrote:
->> On 6/11/19 6:53 AM, Sudeep Holla wrote:
->>> On Mon, Jun 10, 2019 at 02:07:34PM -0600, Al Stone wrote:
->>>> In the ACPI specification, section 6.1.12, a _UID may be either an
->>>> integer or a string object.  Up until now, when defining processor
->>>> Device()s in ACPI (_HID ACPI0007), only integers were allowed even
->>>> though this ignored the specification.  As a practical matter, it
->>>> was not an issue.
->>>>
->>>> Recently, some DSDTs have shown up that look like this:
->>>>
->>>>   Device (XX00)
->>>>   {
->>>> 	Name (_HID, "ACPI0007" /* Processor Device */)
->>>>         Name (_UID, "XYZZY-XX00")
->>>>         .....
->>>>   }
->>>>
->>>> which is perfectly legal.  However, the kernel will report instead:
->>>>
->>>
->>> I am not sure how this can be perfectly legal from specification
->>> perspective. It's legal with respect to AML namespace but then the
->>> other condition of this matching with entries in static tables like
->>> MADT is not possible where there are declared to be simple 4 byte
->>> integer/word. Same is true for even ACPI0010, the processor container
->>> objects which need to match entries in PPTT,
->>>
->>> ACPI Processor UID(in MADT): The OS associates this GICC(applies even
->>> for APIC and family) Structure with a processor device object in
->>> the namespace when the _UID child object of the processor device
->>> evaluates to a numeric value that matches the numeric value in this
->>> field.
->>>
->>> So for me that indicates it can't be string unless you have some ways to
->>> match those _UID entries to ACPI Processor ID in MADT and PPTT.
->>>
->>> Let me know if I am missing to consider something here.
->>>
->>> --
->>> Regards,
->>> Sudeep
->>>
->>
->> Harumph.  I think what we have here is a big mess in the spec, but
->> that is exactly why this is an RFC.
->>
->> The MADT can have any of ~16 different subtables, as you note.  Of
->> those, only these require a numeric _UID:
->>
->>    -- Type 0x0: Processor Local APIC
->>    -- Type 0x4: Local APIC NMI [0]
->>    -- Type 0x7: Processor Local SAPIC [1]
->>    -- Type 0x9: Processor Local x2APIC
->>    -- Type 0xa: Local x2APIC NMI [0]
->>    -- Type 0xb: GICC
->>
->> Note [0]: a value of !0x0 is also allowed, indicating all processors
->>      [1]: this has two fields that could be interpreted as an ID when
->>           used together
->>
->> It does not appear that you could build a usable system without any
->> of these subtables -- but perhaps someone knows of incantations that
->> could -- which is why I thought a string _UID might be viable.
->>
-> 
-> I hope no one is shipping such device yet or am I wrong ?
-> We can ask them to fix as Linux simply can't boot on such system or
-> even if it boots, it may have issues with acpi_processor drivers.
+ This patch series is ready to be merged via nvdimm tree
+ as discussed with Dan. We have ack/review on XFS, EXT4
+ & VIRTIO patches. Device mapper change is also reviewed. 
 
-I don't think it's shipping, but even if it is, I'm going to have to
-insist they fix their tables, just as a practical matter.  I need to
-ask if it boots that other OS, too.
+ Mike, Can you please provide ack for device mapper change
+ i.e patch4. 
 
->> If we consider the PPTT too, then yeah, _UID must be an integer for
->> some devices.
->>
->> Thanks for the feedback; it forced me to double-check my thinking about
->> the MADT.  The root cause of the issue is not the kernel in this case,
->> but a lack of clarity in the spec -- or at least implied requirements
->> that probably need to be explicit.  I'll send in a spec change.
->>
-> 
-> Completely agreed. Even little more clarification on this is helpful.
-> Thanks for volunteering :) to take up spec change, much appreciated.
+ This version has changed implementation for patch 4 as
+ suggested by 'Mike'. Keeping all the existing r-o-bs. Jakob
+ CCed also tested the patch series and confirmed the working
+ of v9.
+ ---
 
-No problem, and glad to do it.
+ This patch series has implementation for "virtio pmem". 
+ "virtio pmem" is fake persistent memory(nvdimm) in guest 
+ which allows to bypass the guest page cache. This also
+ implements a VIRTIO based asynchronous flush mechanism.  
+ 
+ Sharing guest kernel driver in this patchset with the 
+ changes suggested in v4. Tested with Qemu side device 
+ emulation [5] for virtio-pmem. Documented the impact of
+ possible page cache side channel attacks with suggested
+ countermeasures.
 
--- 
-ciao,
-al
------------------------------------
-Al Stone
-Software Engineer
-Red Hat, Inc.
-ahs3@redhat.com
------------------------------------
+ Details of project idea for 'virtio pmem' flushing interface 
+ is shared [3] & [4].
+
+ Implementation is divided into two parts:
+ New virtio pmem guest driver and qemu code changes for new 
+ virtio pmem paravirtualized device.
+
+1. Guest virtio-pmem kernel driver
+---------------------------------
+   - Reads persistent memory range from paravirt device and 
+     registers with 'nvdimm_bus'.  
+   - 'nvdimm/pmem' driver uses this information to allocate 
+     persistent memory region and setup filesystem operations 
+     to the allocated memory. 
+   - virtio pmem driver implements asynchronous flushing 
+     interface to flush from guest to host.
+
+2. Qemu virtio-pmem device
+---------------------------------
+   - Creates virtio pmem device and exposes a memory range to 
+     KVM guest. 
+   - At host side this is file backed memory which acts as 
+     persistent memory. 
+   - Qemu side flush uses aio thread pool API's and virtio 
+     for asynchronous guest multi request handling. 
+
+ Virtio-pmem security implications and countermeasures:
+ -----------------------------------------------------
+
+ In previous posting of kernel driver, there was discussion [7]
+ on possible implications of page cache side channel attacks with 
+ virtio pmem. After thorough analysis of details of known side 
+ channel attacks, below are the suggestions:
+
+ - Depends entirely on how host backing image file is mapped 
+   into guest address space. 
+
+ - virtio-pmem device emulation, by default shared mapping is used
+   to map host backing file. It is recommended to use separate
+   backing file at host side for every guest. This will prevent
+   any possibility of executing common code from multiple guests
+   and any chance of inferring guest local data based based on 
+   execution time.
+
+ - If backing file is required to be shared among multiple guests 
+   it is recommended to don't support host page cache eviction 
+   commands from the guest driver. This will avoid any possibility
+   of inferring guest local data or host data from another guest. 
+
+ - Proposed device specification [6] for virtio-pmem device with 
+   details of possible security implications and suggested 
+   countermeasures for device emulation.
+
+ Virtio-pmem errors handling:
+ ----------------------------------------
+  Checked behaviour of virtio-pmem for below types of errors
+  Need suggestions on expected behaviour for handling these errors?
+
+  - Hardware Errors: Uncorrectable recoverable Errors: 
+  a] virtio-pmem: 
+    - As per current logic if error page belongs to Qemu process, 
+      host MCE handler isolates(hwpoison) that page and send SIGBUS. 
+      Qemu SIGBUS handler injects exception to KVM guest. 
+    - KVM guest then isolates the page and send SIGBUS to guest 
+      userspace process which has mapped the page. 
+  
+  b] Existing implementation for ACPI pmem driver: 
+    - Handles such errors with MCE notifier and creates a list 
+      of bad blocks. Read/direct access DAX operation return EIO 
+      if accessed memory page fall in bad block list.
+    - It also starts backgound scrubbing.  
+    - Similar functionality can be reused in virtio-pmem with MCE 
+      notifier but without scrubbing(no ACPI/ARS)? Need inputs to 
+      confirm if this behaviour is ok or needs any change?
+
+Changes from PATCH v11: [1] 
+ - Change implmentation for setting of synchronous DAX type
+   for device mapper - Mike 
+
+Changes from PATCH v10: [2] 
+ - Rebased on Linux-5.2-rc4
+
+Changes from PATCH v9:
+ - Kconfig help text add two spaces - Randy
+ - Fixed libnvdimm 'bio' include warning - Dan
+ - virtio-pmem, separate request/resp struct and 
+   move to uapi file with updated license - DavidH
+ - Use virtio32* type for req/resp endianess - DavidH
+ - Added tested-by & ack-by of Jakob
+ - Rebased to 5.2-rc1
+
+Changes from PATCH v8:
+ - Set device mapper synchronous if all target devices support - Dan
+ - Move virtio_pmem.h to nvdimm directory  - Dan
+ - Style, indentation & better error messages in patch 2 - DavidH
+ - Added MST's ack in patch 2.
+
+Changes from PATCH v7:
+ - Corrected pending request queue logic (patch 2) - Jakub Staroń
+ - Used unsigned long flags for passing DAXDEV_F_SYNC (patch 3) - Dan
+ - Fixed typo =>  vma 'flag' to 'vm_flag' (patch 4)
+ - Added rob in patch 6 & patch 2
+
+Changes from PATCH v6: 
+ - Corrected comment format in patch 5 & patch 6. [Dave]
+ - Changed variable declaration indentation in patch 6 [Darrick]
+ - Add Reviewed-by tag by 'Jan Kara' in patch 4 & patch 5
+
+Changes from PATCH v5: 
+  Changes suggested in by - [Cornelia, Yuval]
+- Remove assignment chaining in virtio driver
+- Better error message and remove not required free
+- Check nd_region before use
+
+  Changes suggested by - [Jan Kara]
+- dax_synchronous() for !CONFIG_DAX
+- Correct 'daxdev_mapping_supported' comment and non-dax implementation
+
+  Changes suggested by - [Dan Williams]
+- Pass meaningful flag 'DAXDEV_F_SYNC' to alloc_dax
+- Gate nvdimm_flush instead of additional async parameter
+- Move block chaining logic to flush callback than common nvdimm_flush
+- Use NULL flush callback for generic flush for better readability [Dan, Jan]
+
+- Use virtio device id 27 from 25(already used) - [MST]
+
+Changes from PATCH v4:
+- Factor out MAP_SYNC supported functionality to a common helper
+				[Dave, Darrick, Jan]
+- Comment, indentation and virtqueue_kick failure handle - Yuval Shaia
+
+Changes from PATCH v3: 
+- Use generic dax_synchronous() helper to check for DAXDEV_SYNC 
+  flag - [Dan, Darrick, Jan]
+- Add 'is_nvdimm_async' function
+- Document page cache side channel attacks implications & 
+  countermeasures - [Dave Chinner, Michael]
+
+Changes from PATCH v2: 
+- Disable MAP_SYNC for ext4 & XFS filesystems - [Dan] 
+- Use name 'virtio pmem' in place of 'fake dax' 
+
+Changes from PATCH v1: 
+- 0-day build test for build dependency on libnvdimm 
+
+ Changes suggested by - [Dan Williams]
+- Split the driver into two parts virtio & pmem  
+- Move queuing of async block request to block layer
+- Add "sync" parameter in nvdimm_flush function
+- Use indirect call for nvdimm_flush
+- Don’t move declarations to common global header e.g nd.h
+- nvdimm_flush() return 0 or -EIO if it fails
+- Teach nsio_rw_bytes() that the flush can fail
+- Rename nvdimm_flush() to generic_nvdimm_flush()
+- Use 'nd_region->provider_data' for long dereferencing
+- Remove virtio_pmem_freeze/restore functions
+- Remove BSD license text with SPDX license text
+
+- Add might_sleep() in virtio_pmem_flush - [Luiz]
+- Make spin_lock_irqsave() narrow
+
+Pankaj Gupta (7):
+   libnvdimm: nd_region flush callback support
+   virtio-pmem: Add virtio-pmem guest driver
+   libnvdimm: add nd_region buffered dax_dev flag
+   dax: check synchronous mapping is supported
+   dm: dm: Enable synchronous dax
+   ext4: disable map_sync for virtio pmem
+   xfs: disable map_sync for virtio pmem
+
+[1] https://lkml.org/lkml/2019/6/10/209
+[2] https://lkml.org/lkml/2019/5/21/569
+[3] https://www.spinics.net/lists/kvm/msg149761.html
+[4] https://www.spinics.net/lists/kvm/msg153095.html  
+[5] https://marc.info/?l=qemu-devel&m=155860751202202&w=2
+[6] https://lists.oasis-open.org/archives/virtio-dev/201903/msg00083.html
+[7] https://lkml.org/lkml/2019/1/9/1191
+
+ drivers/acpi/nfit/core.c         |    4 -
+ drivers/dax/bus.c                |    2 
+ drivers/dax/super.c              |   19 +++++
+ drivers/md/dm-table.c            |   24 +++++--
+ drivers/md/dm.c                  |    5 -
+ drivers/md/dm.h                  |    5 +
+ drivers/nvdimm/Makefile          |    1 
+ drivers/nvdimm/claim.c           |    6 +
+ drivers/nvdimm/nd.h              |    1 
+ drivers/nvdimm/nd_virtio.c       |  124 +++++++++++++++++++++++++++++++++++++++
+ drivers/nvdimm/pmem.c            |   18 +++--
+ drivers/nvdimm/region_devs.c     |   33 +++++++++-
+ drivers/nvdimm/virtio_pmem.c     |  122 ++++++++++++++++++++++++++++++++++++++
+ drivers/nvdimm/virtio_pmem.h     |   55 +++++++++++++++++
+ drivers/virtio/Kconfig           |   11 +++
+ fs/ext4/file.c                   |   10 +--
+ fs/xfs/xfs_file.c                |    9 +-
+ include/linux/dax.h              |   26 +++++++-
+ include/linux/libnvdimm.h        |   10 ++-
+ include/uapi/linux/virtio_ids.h  |    1 
+ include/uapi/linux/virtio_pmem.h |   35 +++++++++++
+ 21 files changed, 488 insertions(+), 33 deletions(-)
+
+
