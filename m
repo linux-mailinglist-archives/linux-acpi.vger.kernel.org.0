@@ -2,167 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5727C3D66F
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jun 2019 21:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6309A416EF
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jun 2019 23:34:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407438AbfFKTF7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Jun 2019 15:05:59 -0400
-Received: from foss.arm.com ([217.140.110.172]:40510 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2407439AbfFKTF7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 11 Jun 2019 15:05:59 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EDCE0344;
-        Tue, 11 Jun 2019 12:05:58 -0700 (PDT)
-Received: from [192.168.100.221] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CA3D83F73C;
-        Tue, 11 Jun 2019 12:05:57 -0700 (PDT)
-Subject: Re: [PATCH 2/2] arm64: topology: Use PPTT to determine if PE is a
- thread
-To:     John Garry <john.garry@huawei.com>,
-        linux-arm-kernel@lists.infradead.org
-Cc:     linux-acpi@vger.kernel.org, catalin.marinas@arm.com,
-        will.deacon@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
-        sudeep.holla@arm.com, Linuxarm <linuxarm@huawei.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        wanghuiqiang <wanghuiqiang@huawei.com>, yaohongbo@huawei.com
-References: <20190523224015.56270-1-jeremy.linton@arm.com>
- <20190523224015.56270-3-jeremy.linton@arm.com>
- <be03d428-b543-0233-a98b-233f367a6bd0@huawei.com>
- <24541261-f86d-0d19-6275-6e110144e761@arm.com>
- <4c8db8fa-de8e-d9b8-2de3-eda13651f223@huawei.com>
-From:   Jeremy Linton <jeremy.linton@arm.com>
-Message-ID: <cf0d9438-f2e9-493c-55e1-4a9ed27d1196@arm.com>
-Date:   Tue, 11 Jun 2019 14:02:59 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S2391141AbfFKVej (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Jun 2019 17:34:39 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:56100 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387764AbfFKVej (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Jun 2019 17:34:39 -0400
+Received: from 79.184.253.190.ipv4.supernova.orange.pl (79.184.253.190) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
+ id de0f10f62d208a7f; Tue, 11 Jun 2019 23:34:36 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Keith Busch <kbusch@kernel.org>
+Subject: Re: [PATCH] PCI: PM: Avoid possible suspend-to-idle issue
+Date:   Tue, 11 Jun 2019 23:34:36 +0200
+Message-ID: <1583084.Q78GrOSehU@kreacher>
+In-Reply-To: <527F9B70-68AC-4CD4-A3C2-576EA09187DD@canonical.com>
+References: <2315917.ZGeXE6pBFC@kreacher> <10983642.dUqMSvAAlD@kreacher> <527F9B70-68AC-4CD4-A3C2-576EA09187DD@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <4c8db8fa-de8e-d9b8-2de3-eda13651f223@huawei.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Tuesday, June 11, 2019 10:39:44 AM CEST Kai-Heng Feng wrote:
+> Hi Rafael,
+> 
+> at 19:02, Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+> 
+> > On Friday, May 17, 2019 11:08:50 AM CEST Rafael J. Wysocki wrote:
+> >> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >>
+> >> If a PCI driver leaves the device handled by it in D0 and calls
+> >> pci_save_state() on the device in its ->suspend() or ->suspend_late()
+> >> callback, it can expect the device to stay in D0 over the whole
+> >> s2idle cycle.  However, that may not be the case if there is a
+> >> spurious wakeup while the system is suspended, because in that case
+> >> pci_pm_suspend_noirq() will run again after pci_pm_resume_noirq()
+> >> which calls pci_restore_state(), via pci_pm_default_resume_early(),
+> >> so state_saved is cleared and the second iteration of
+> >> pci_pm_suspend_noirq() will invoke pci_prepare_to_sleep() which
+> >> may change the power state of the device.
+> >>
+> >> To avoid that, add a new internal flag, skip_bus_pm, that will be set
+> >> by pci_pm_suspend_noirq() when it runs for the first time during the
+> >> given system suspend-resume cycle if the state of the device has
+> >> been saved already and the device is still in D0.  Setting that flag
+> >> will cause the next iterations of pci_pm_suspend_noirq() to set
+> >> state_saved for pci_pm_resume_noirq(), so that it always restores the
+> >> device state from the originally saved data, and avoid calling
+> >> pci_prepare_to_sleep() for the device.
+> >>
+> >> Fixes: 33e4f80ee69b ("ACPI / PM: Ignore spurious SCI wakeups from  
+> >> suspend-to-idle")
+> >> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> I just found out this patch has a chance to freeze or reboot the system  
+> during suspend cycles.
+>
+> What information do you need to debug?
 
-On 6/10/19 3:30 AM, John Garry wrote:
-> On 07/06/2019 20:21, Jeremy Linton wrote:
->> Hi,
->>
->> Thanks for testing and looking at this.
->>
->> On 6/6/19 3:49 AM, John Garry wrote:
->>> On 23/05/2019 23:40, Jeremy Linton wrote:
->>>> ACPI 6.3 adds a thread flag to represent if a CPU/PE is
->>>> actually a thread. Given that the MPIDR_MT bit may not
->>>> represent this information consistently on homogeneous machines
->>>> we should prefer the PPTT flag if its available.
->>>>
->>>
-> 
-> Hi Jeremy,
-> 
->>>
->>> I was just wondering if we should look to get this support backported
->>> (when merged)?
->>
->> I imagine that will happen..
->>
->>>
->>> I worry about the case of a system with the CPU having MT bit in the
->>> MPIDR (while not actually threaded), i.e. the system for which these
->>> PPTT flags were added (as I understand).
->>
->> I have tested this patch on DAWN which happens to have the MT bit set,
->> but isn't threaded, and it appears to work.
-> 
-> Can you describe your test?
+A few things are missing from your report, like which kernel you have tested
+and how exactly you have arrived at the conclusion that this particular commit
+is the source of the problem.
 
-The positive test:
+Care to provide some details on the above?
 
-Boot machine with/without patch, compare the output of lscpu & lstopo. 
-Manually check/compare /sys/devices/system/cpu/cpuX/topology/* and 
-/proc/schedstat domain masks. On DAWN we go from a system reporting 2 
-cores with 2 thread per core to 4 cores.
+Anyway, there are a couple of things that can be done to improve the code
+on top of 5.2-rc4.  The appended patch is one of them, so can you please test
+it and let me know if it makes any difference?
 
-I've also built firmware or injected PPTT's with varying versions/etc to 
-sanity check cases that aren't representative of the hardware.
+The rationale here is that firmware in some devices may be confused by attempts
+to put the device into D0 if it already is in that power state, so it is better to avoid
+doing so.
+
+---
+ drivers/pci/pci-driver.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
+
+Index: linux-pm/drivers/pci/pci-driver.c
+===================================================================
+--- linux-pm.orig/drivers/pci/pci-driver.c
++++ linux-pm/drivers/pci/pci-driver.c
+@@ -524,7 +524,6 @@ static void pci_pm_default_resume_early(
+ 	pci_power_up(pci_dev);
+ 	pci_restore_state(pci_dev);
+ 	pci_pme_restore(pci_dev);
+-	pci_fixup_device(pci_fixup_resume_early, pci_dev);
+ }
+ 
+ /*
+@@ -844,14 +843,12 @@ static int pci_pm_suspend_noirq(struct d
+ 		/*
+ 		 * The function is running for the second time in a row without
+ 		 * going through full resume, which is possible only during
+-		 * suspend-to-idle in a spurious wakeup case.  Moreover, the
+-		 * device was originally left in D0, so its power state should
+-		 * not be changed here and the device register values saved
+-		 * originally should be restored on resume again.
++		 * suspend-to-idle in a spurious wakeup case.  The device should
++		 * be in D0 at this point.
+ 		 */
+-		pci_dev->state_saved = true;
++		;
+ 	} else if (pci_dev->state_saved) {
+-		if (pci_dev->current_state == PCI_D0)
++		if (pci_dev->current_state == PCI_D0 && !pm_suspend_via_firmware())
+ 			pci_dev->skip_bus_pm = true;
+ 	} else {
+ 		pci_save_state(pci_dev);
+@@ -862,6 +859,9 @@ static int pci_pm_suspend_noirq(struct d
+ 	dev_dbg(dev, "PCI PM: Suspend power state: %s\n",
+ 		pci_power_name(pci_dev->current_state));
+ 
++	if (pci_dev->skip_bus_pm)
++		goto Fixup;
++
+ 	pci_pm_set_unknown_state(pci_dev);
+ 
+ 	/*
+@@ -909,7 +909,10 @@ static int pci_pm_resume_noirq(struct de
+ 	if (dev_pm_smart_suspend_and_suspended(dev))
+ 		pm_runtime_set_active(dev);
+ 
+-	pci_pm_default_resume_early(pci_dev);
++	if (!pci_dev->skip_bus_pm)
++		pci_pm_default_resume_early(pci_dev);
++
++	pci_fixup_device(pci_fixup_resume_early, pci_dev);
+ 
+ 	if (pci_has_legacy_pm_support(pci_dev))
+ 		return pci_legacy_resume_early(dev);
+@@ -1200,6 +1203,7 @@ static int pci_pm_restore_noirq(struct d
+ 	}
+ 
+ 	pci_pm_default_resume_early(pci_dev);
++	pci_fixup_device(pci_fixup_resume_early, pci_dev);
+ 
+ 	if (pci_has_legacy_pm_support(pci_dev))
+ 		return pci_legacy_resume_early(dev);
 
 
-
-> 
->>
->>>
->>>> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
->>>> ---
->>>>  arch/arm64/kernel/topology.c | 8 +++++---
->>>>  1 file changed, 5 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/arch/arm64/kernel/topology.c 
->>>> b/arch/arm64/kernel/topology.c
->>>> index 0825c4a856e3..cbbedb53cf06 100644
->>>> --- a/arch/arm64/kernel/topology.c
->>>> +++ b/arch/arm64/kernel/topology.c
->>>> @@ -346,11 +346,9 @@ void remove_cpu_topology(unsigned int cpu)
->>>>   */
->>>>  static int __init parse_acpi_topology(void)
->>>>  {
->>>> -    bool is_threaded;
->>>> +    int is_threaded;
->>>>      int cpu, topology_id;
->>>>
->>>> -    is_threaded = read_cpuid_mpidr() & MPIDR_MT_BITMASK;
->>>> -
->>>>      for_each_possible_cpu(cpu) {
->>>>          int i, cache_id;
->>>>
->>>> @@ -358,6 +356,10 @@ static int __init parse_acpi_topology(void)
->>>>          if (topology_id < 0)
->>>>              return topology_id;
->>>>
->>>> +        is_threaded = acpi_pptt_cpu_is_thread(cpu);
->>>> +        if (is_threaded < 0)
->>>> +            is_threaded = read_cpuid_mpidr() & MPIDR_MT_BITMASK;
->>>> +
->>>>          if (is_threaded) {
->>>>              cpu_topology[cpu].thread_id = topology_id;
->>>
->>> For described above scenario, this seems wrong.
->>
->> I'm not sure I understand the concern.
-> 
-> Maybe I wasn't clear enough previously. I am saying that without this 
-> patch, then this info would not be correct. Hence the request to 
-> backport to stable.
-> 
-> cheers,
-> 
->>
->> This is going to ignore the MPIDR_MT bit on any machine with a PPTT
->> revision > 1. Are you worried about the topology_id assignment?
->>
->>
->>>
->>>>              topology_id = find_acpi_cpu_topology(cpu, 1);
->>>>
->>>
->>> BTW, we did test an old kernel with 6.3 PPTT bios for this on D06
->>> (some versions have MT bit set), and it looked ok. But I am still a
->>> bit skeptical.
->>>
->>> Thanks,
->>> John
->>>
->>>
->>
->>
->> Thanks,
->>
->> .
->>
-> 
-> 
 
