@@ -2,118 +2,139 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FE833D0C4
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jun 2019 17:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C72413D1A2
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jun 2019 18:03:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404282AbfFKP3E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Jun 2019 11:29:04 -0400
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:36414 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2387864AbfFKP3E (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 11 Jun 2019 11:29:04 -0400
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5BFNeLu029871;
-        Tue, 11 Jun 2019 10:28:34 -0500
-Authentication-Results: ppops.net;
-        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
-Received: from mail4.cirrus.com ([87.246.98.35])
-        by mx0a-001ae601.pphosted.com with ESMTP id 2t0ae2vet2-1;
-        Tue, 11 Jun 2019 10:28:34 -0500
-Received: from EDIEX02.ad.cirrus.com (ediex02.ad.cirrus.com [198.61.84.81])
-        by mail4.cirrus.com (Postfix) with ESMTP id 2AABD611C8A7;
-        Tue, 11 Jun 2019 10:28:51 -0500 (CDT)
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Tue, 11 Jun
- 2019 16:28:33 +0100
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
- Transport; Tue, 11 Jun 2019 16:28:33 +0100
-Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 2704B44;
-        Tue, 11 Jun 2019 16:28:33 +0100 (BST)
-Date:   Tue, 11 Jun 2019 16:28:33 +0100
-From:   Charles Keepax <ckeepax@opensource.cirrus.com>
-To:     Benjamin Tissoires <benjamin.tissoires@redhat.com>
-CC:     Wolfram Sang <wsa@the-dreams.de>,
-        <mika.westerberg@linux.intel.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, lkml <linux-kernel@vger.kernel.org>,
-        Jim Broadus <jbroadus@gmail.com>,
-        <patches@opensource.cirrus.com>
-Subject: Re: [PATCH v4 0/7] I2C IRQ Probe Improvements
-Message-ID: <20190611152833.GR28362@ediswmail.ad.cirrus.com>
-References: <20190611123101.25264-1-ckeepax@opensource.cirrus.com>
- <CAO-hwJ+qSXwZ-5sAiZ55-r_PXp9pvnE1XEaE_v3SBnxzQQNH4g@mail.gmail.com>
+        id S2405512AbfFKQDS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Jun 2019 12:03:18 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:34067 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405510AbfFKQDR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Jun 2019 12:03:17 -0400
+Received: by mail-io1-f67.google.com with SMTP id k8so10362428iot.1
+        for <linux-acpi@vger.kernel.org>; Tue, 11 Jun 2019 09:03:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:reply-to:subject:to:cc:references:from
+         :organization:message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=0mWSyTQJvoed04iwSAjNkm9jUTEiqeLoFtV8kHFixFA=;
+        b=i77wmHdAbIdKm8Ngoo5cTpQXGXm6N6wSQ8JEjszdISPV1dS0glZqv6uDLvA8W65TGi
+         CoDSt0XG8JtTwlwYygxq4Hsnlp0Rj15tHDYkx/liNfXBm3NVjvVhRGyhUoZdDWQn/T4p
+         79G0nIkEWIrysZebTIpYiGOA5w5v4FQp4dcYtWyAVzTrJy4q3EcGTxHYxFuq3GPoRT2R
+         4mI//mdGwsVrm79amgDWluaC55C4f4GArBvv35vOFYZUZ0hKf09PowGB7Bvmzt+1cVH6
+         cSozrTzwabnI2iBj7dmqcd4C6pw1jbQdN1p4L2rBws5FvN9TZDrTlnS36OTLuj063EPI
+         4TTg==
+X-Gm-Message-State: APjAAAV9mWKjL7pIOwthtFhEL4vZD/TqXqUuFYK0ZsrjhSTJzFjT0U8K
+        n9GNWBJKpKC+1lRz8WbAk8ygNA==
+X-Google-Smtp-Source: APXvYqw7vh3o407Y7teYmLsSLtYLUHcQTYDz1NEf5mJ53lbtx1grZJAj348tE76u5CSzFDgrrUb7Ig==
+X-Received: by 2002:a6b:c90c:: with SMTP id z12mr42308195iof.11.1560268996957;
+        Tue, 11 Jun 2019 09:03:16 -0700 (PDT)
+Received: from masetto.ahs3 (c-67-165-232-89.hsd1.co.comcast.net. [67.165.232.89])
+        by smtp.gmail.com with ESMTPSA id b8sm4968332ioj.16.2019.06.11.09.03.16
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Tue, 11 Jun 2019 09:03:16 -0700 (PDT)
+Reply-To: ahs3@redhat.com
+Subject: Re: [RFC PATCH] ACPI / processors: allow a processor device _UID to
+ be a string
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190610200734.1182-1-ahs3@redhat.com>
+ <20190611125258.GA16445@e107155-lin>
+From:   Al Stone <ahs3@redhat.com>
+Organization: Red Hat, Inc.
+Message-ID: <5ea4f403-853f-5067-4e9b-a8aabec5b1cd@redhat.com>
+Date:   Tue, 11 Jun 2019 10:03:15 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CAO-hwJ+qSXwZ-5sAiZ55-r_PXp9pvnE1XEaE_v3SBnxzQQNH4g@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906110101
+In-Reply-To: <20190611125258.GA16445@e107155-lin>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 11, 2019 at 05:16:58PM +0200, Benjamin Tissoires wrote:
-> On Tue, Jun 11, 2019 at 2:31 PM Charles Keepax
-> <ckeepax@opensource.cirrus.com> wrote:
-> >
-> > This series attempts to align as much IRQ handling into the
-> > probe path as possible. Note that I don't have a great setup
-> > for testing these patches so they are mostly just build tested
-> > and need careful review and testing before any of them are
-> > merged.
-> >
-> > The series brings the ACPI path inline with the way the device
-> > tree path handles the IRQ entirely at probe time. However,
-> > it still leaves any IRQ specified through the board_info as
-> > being handled at device time. In that case we need to cache
-> > something from the board_info until probe time, which leaves
-> > any alternative solution with something basically the same as
-> > the current handling although perhaps caching more stuff.
+On 6/11/19 6:53 AM, Sudeep Holla wrote:
+> On Mon, Jun 10, 2019 at 02:07:34PM -0600, Al Stone wrote:
+>> In the ACPI specification, section 6.1.12, a _UID may be either an
+>> integer or a string object.  Up until now, when defining processor
+>> Device()s in ACPI (_HID ACPI0007), only integers were allowed even
+>> though this ignored the specification.  As a practical matter, it
+>> was not an issue.
+>>
+>> Recently, some DSDTs have shown up that look like this:
+>>
+>>   Device (XX00)
+>>   {
+>> 	Name (_HID, "ACPI0007" /* Processor Device */)
+>>         Name (_UID, "XYZZY-XX00")
+>>         .....
+>>   }
+>>
+>> which is perfectly legal.  However, the kernel will report instead:
+>>
 > 
-> Hmm, I still haven't pinpointed the issue, but I wanted to give a test
-> of the series and I have:
-> [    5.511806] i2c_hid i2c-DLL075B:01: HID over i2c has not been
-> provided an Int IRQ
-> [    5.511825] i2c_hid: probe of i2c-DLL075B:01 failed with error -22
+> I am not sure how this can be perfectly legal from specification
+> perspective. It's legal with respect to AML namespace but then the
+> other condition of this matching with entries in static tables like
+> MADT is not possible where there are declared to be simple 4 byte
+> integer/word. Same is true for even ACPI0010, the processor container
+> objects which need to match entries in PPTT,
 > 
-> So it seems that there is something wrong happening when fetching the
-> IRQ and providing it to i2c-hid.
+> ACPI Processor UID(in MADT): The OS associates this GICC(applies even
+> for APIC and family) Structure with a processor device object in
+> the namespace when the _UID child object of the processor device
+> evaluates to a numeric value that matches the numeric value in this
+> field.
 > 
-> That was on a Dell XPS 9360.
+> So for me that indicates it can't be string unless you have some ways to
+> match those _UID entries to ACPI Processor ID in MADT and PPTT.
 > 
-> Bisecting is starting.
+> Let me know if I am missing to consider something here.
+> 
+> --
+> Regards,
+> Sudeep
 > 
 
-I have a sneaking suspision, does this diff fix it:
+Harumph.  I think what we have here is a big mess in the spec, but
+that is exactly why this is an RFC.
 
-diff --git a/drivers/i2c/i2c-core-acpi.c
-b/drivers/i2c/i2c-core-acpi.c
-index 57be6342ba508..a90b05a269c36 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -169,7 +169,7 @@ int i2c_acpi_get_irq(struct i2c_client *client)
-        acpi_dev_free_resource_list(&resource_list);
+The MADT can have any of ~16 different subtables, as you note.  Of
+those, only these require a numeric _UID:
 
-        if (irq == -ENOENT)
--           irq = acpi_dev_gpio_irq_get(adev, 0);
-+         irq = acpi_dev_gpio_irq_get(ACPI_COMPANION(&client->dev), 0);
+   -- Type 0x0: Processor Local APIC
+   -- Type 0x4: Local APIC NMI [0]
+   -- Type 0x7: Processor Local SAPIC [1]
+   -- Type 0x9: Processor Local x2APIC
+   -- Type 0xa: Local x2APIC NMI [0]
+   -- Type 0xb: GICC
 
-        return irq;
- }
+Note [0]: a value of !0x0 is also allowed, indicating all processors
+     [1]: this has two fields that could be interpreted as an ID when
+          used together
 
-There was some earlier discussion about which device was suitable
-for this call.
+It does not appear that you could build a usable system without any
+of these subtables -- but perhaps someone knows of incantations that
+could -- which is why I thought a string _UID might be viable.
 
-Thanks,
-Charles
+If we consider the PPTT too, then yeah, _UID must be an integer for
+some devices.
+
+Thanks for the feedback; it forced me to double-check my thinking about
+the MADT.  The root cause of the issue is not the kernel in this case,
+but a lack of clarity in the spec -- or at least implied requirements
+that probably need to be explicit.  I'll send in a spec change.
+
+-- 
+ciao,
+al
+-----------------------------------
+Al Stone
+Software Engineer
+Red Hat, Inc.
+ahs3@redhat.com
+-----------------------------------
