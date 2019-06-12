@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6786B42A70
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2019 17:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C76E942A86
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2019 17:14:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408129AbfFLPME (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jun 2019 11:12:04 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:46761 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2408641AbfFLPME (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jun 2019 11:12:04 -0400
-Received: by mail-qk1-f195.google.com with SMTP id a132so10467595qkb.13
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Jun 2019 08:12:03 -0700 (PDT)
+        id S2501881AbfFLPNn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jun 2019 11:13:43 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:42614 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2501887AbfFLPNm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jun 2019 11:13:42 -0400
+Received: by mail-qk1-f193.google.com with SMTP id b18so10495191qkc.9
+        for <linux-acpi@vger.kernel.org>; Wed, 12 Jun 2019 08:13:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=w6yEZrHOYLo+3p9iSZ2w8TKW5Sdr4j5I7ju6ZqEBMcc=;
-        b=Hy3uFgHQZPcSZ3UDu5lHteerAntIjHh8ql694n6v11uu1fRjL/nD9vmGSvgS8bsiJR
-         6f//zBIhjoa8J4YrF3dcfpJ0t+jou9mvSYB7xmWLiHUnsSIco+RGZl35uMRs64BMCsM5
-         vVSRKj1yZnS0MgKeVKeL6A7XElUimESHEMmJUx6aNdoeGAbHG2lWIvEj2dGZaSGVg654
-         Swz0bKPh5fMwomifaISi7fCYbQumH5ddInyI7kNS8jWyhsiDG4okRB4AFcmKP0y1UmZo
-         h+nK0gTD64G5Fj+6+iFz5HeNSY+p1o4pMx+Q3yd2eyRrmoQ6PTpPmfojnaWwTZTtTLG7
-         Xhrg==
-X-Gm-Message-State: APjAAAVrD4Gv56Ao4IDrs42AuJru4DX6keOqBwdaRrvqh8yaxXBRCe5d
-        fJMj/C4rv6148MnT1TasFZ/BQaDvtXY+fyDnjz/51Q==
-X-Google-Smtp-Source: APXvYqxKeBWTjJVI0i84baN2jdhQPmMHHmytl1Q8GlFj+zSh7Zf24ZUb6OAIY6TwL9A1Fmm77xJcFxV+24MQRLPaAXM=
-X-Received: by 2002:a05:620a:1497:: with SMTP id w23mr67415173qkj.49.1560352323294;
- Wed, 12 Jun 2019 08:12:03 -0700 (PDT)
+        bh=BwIDmOAGcEki3RdvfGMK1ES9aAPDYLop/FJjdHjbbH0=;
+        b=tVXUG3Ik4yI/0d7nY0cnTx6GqDu2GPiI4oRE1fhS6Cu5efAqxa4tLfWcaIY+Bquu42
+         dEASWmpyfNyzhjBjYJLOMu9CiekQD1tHRFOEsD7P4XnIBtOVZtWtMv2xe/uFzXGfrzlc
+         MRPQSelW8uH3KxH8jtoIkyma5X9nkLdtgC6KSKT1kWq6hKukzAE9VAyEo9hLb5qV8aTH
+         eGOSsDEdh7iJVaeEuBPdDmb5z6la4O3zMe4j3U2JWhpZxVTXpLO50lGbdn8rjCJHknw4
+         W+lRcTXqEoAcXmNc+qVrzKOU5YRpyH9VDDwJQbNpI3Mm1xlV/+5YKk4NecTUN4yya9wE
+         HiqQ==
+X-Gm-Message-State: APjAAAXahdZ2HkgVpU8hp7bEGifDoXfnhTmpv1VEKnZb/J7AT/vRjHDe
+        HQ6Nb6h+WkYQcC8VgYl9C0Q0uDvfVFWBh7G2nR3KQw==
+X-Google-Smtp-Source: APXvYqyuURPY4j2JOFu4hsedR0SBO7Tpt4TyJyufs9gmWqDZmLHo/p8lFdBRjG8oj/ETsABwFm/k9tSacoYc2LNbjeQ=
+X-Received: by 2002:a05:620a:16c1:: with SMTP id a1mr23929067qkn.269.1560352421153;
+ Wed, 12 Jun 2019 08:13:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190611123101.25264-1-ckeepax@opensource.cirrus.com> <20190611123101.25264-5-ckeepax@opensource.cirrus.com>
-In-Reply-To: <20190611123101.25264-5-ckeepax@opensource.cirrus.com>
+References: <20190611123101.25264-1-ckeepax@opensource.cirrus.com>
+ <CAO-hwJ+qSXwZ-5sAiZ55-r_PXp9pvnE1XEaE_v3SBnxzQQNH4g@mail.gmail.com> <20190611152833.GR28362@ediswmail.ad.cirrus.com>
+In-Reply-To: <20190611152833.GR28362@ediswmail.ad.cirrus.com>
 From:   Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Date:   Wed, 12 Jun 2019 17:11:51 +0200
-Message-ID: <CAO-hwJLz1TE5RcBJwVCxa9vWzNk9-mX=4quaWtrXv33kegqRrA@mail.gmail.com>
-Subject: Re: [PATCH v4 4/7] i2c: core: Make i2c_acpi_get_irq available to the
- rest of the I2C core
+Date:   Wed, 12 Jun 2019 17:13:29 +0200
+Message-ID: <CAO-hwJKvxWktLOH4cpmUZEWrm3aPsazGe4Oo3eGSMdvQXZV4-w@mail.gmail.com>
+Subject: Re: [PATCH v4 0/7] I2C IRQ Probe Improvements
 To:     Charles Keepax <ckeepax@opensource.cirrus.com>
 Cc:     Wolfram Sang <wsa@the-dreams.de>, mika.westerberg@linux.intel.com,
         Jarkko Nikula <jarkko.nikula@linux.intel.com>,
@@ -50,100 +50,70 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 11, 2019 at 2:31 PM Charles Keepax
+On Tue, Jun 11, 2019 at 5:29 PM Charles Keepax
 <ckeepax@opensource.cirrus.com> wrote:
 >
-> In preparation for more refactoring make i2c_acpi_get_irq available
-> outside i2c-core-acpi.c.
+> On Tue, Jun 11, 2019 at 05:16:58PM +0200, Benjamin Tissoires wrote:
+> > On Tue, Jun 11, 2019 at 2:31 PM Charles Keepax
+> > <ckeepax@opensource.cirrus.com> wrote:
+> > >
+> > > This series attempts to align as much IRQ handling into the
+> > > probe path as possible. Note that I don't have a great setup
+> > > for testing these patches so they are mostly just build tested
+> > > and need careful review and testing before any of them are
+> > > merged.
+> > >
+> > > The series brings the ACPI path inline with the way the device
+> > > tree path handles the IRQ entirely at probe time. However,
+> > > it still leaves any IRQ specified through the board_info as
+> > > being handled at device time. In that case we need to cache
+> > > something from the board_info until probe time, which leaves
+> > > any alternative solution with something basically the same as
+> > > the current handling although perhaps caching more stuff.
+> >
+> > Hmm, I still haven't pinpointed the issue, but I wanted to give a test
+> > of the series and I have:
+> > [    5.511806] i2c_hid i2c-DLL075B:01: HID over i2c has not been
+> > provided an Int IRQ
+> > [    5.511825] i2c_hid: probe of i2c-DLL075B:01 failed with error -22
+> >
+> > So it seems that there is something wrong happening when fetching the
+> > IRQ and providing it to i2c-hid.
+> >
+> > That was on a Dell XPS 9360.
+> >
+> > Bisecting is starting.
+> >
 >
-> Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-> ---
+> I have a sneaking suspision, does this diff fix it:
+>
+> diff --git a/drivers/i2c/i2c-core-acpi.c
+> b/drivers/i2c/i2c-core-acpi.c
+> index 57be6342ba508..a90b05a269c36 100644
+> --- a/drivers/i2c/i2c-core-acpi.c
+> +++ b/drivers/i2c/i2c-core-acpi.c
+> @@ -169,7 +169,7 @@ int i2c_acpi_get_irq(struct i2c_client *client)
+>         acpi_dev_free_resource_list(&resource_list);
+>
+>         if (irq == -ENOENT)
+> -           irq = acpi_dev_gpio_irq_get(adev, 0);
+> +         irq = acpi_dev_gpio_irq_get(ACPI_COMPANION(&client->dev), 0);
+>
+>         return irq;
+>  }
+>
 
-So, my bisect fails here: when I recompile the vmlinuz image, it fails
-after loading the initrd. There is no boot up message, so not sure,
-but the problem with the non working touchpad is either this one or
-the next one.
+Unfortunately, this doesn't solve the issue.
+
+The problem is either in 4/7 or 5/7 (4/7 doesn't boot AFAICT).
+
+(chasing multiple rabbits at the same time, so hard to get to the bottom of it)
 
 Cheers,
 Benjamin
 
->
-> Changes since v3:
->  - Move the change to use the helper function from i2c-core-base into its own patch.
+> There was some earlier discussion about which device was suitable
+> for this call.
 >
 > Thanks,
 > Charles
->
->  drivers/i2c/i2c-core-acpi.c | 15 +++++++++++++--
->  drivers/i2c/i2c-core.h      |  7 +++++++
->  2 files changed, 20 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-> index 7d4d66ba752d4..35966cc337dde 100644
-> --- a/drivers/i2c/i2c-core-acpi.c
-> +++ b/drivers/i2c/i2c-core-acpi.c
-> @@ -144,8 +144,17 @@ static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
->         return 1; /* No need to add resource to the list */
->  }
->
-> -static int i2c_acpi_get_irq(struct acpi_device *adev)
-> +/**
-> + * i2c_acpi_get_irq - get device IRQ number from ACPI
-> + * @client: Pointer to the I2C client device
-> + *
-> + * Find the IRQ number used by a specific client device.
-> + *
-> + * Return: The IRQ number or an error code.
-> + */
-> +int i2c_acpi_get_irq(struct i2c_client *client)
->  {
-> +       struct acpi_device *adev = ACPI_COMPANION(&client->adapter->dev);
->         struct list_head resource_list;
->         int irq = -ENOENT;
->         int ret;
-> @@ -162,6 +171,8 @@ static int i2c_acpi_get_irq(struct acpi_device *adev)
->         return irq;
->  }
->
-> +static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev);
-> +
->  static int i2c_acpi_get_info(struct acpi_device *adev,
->                              struct i2c_board_info *info,
->                              struct i2c_adapter *adapter,
-> @@ -198,7 +209,7 @@ static int i2c_acpi_get_info(struct acpi_device *adev,
->                 *adapter_handle = lookup.adapter_handle;
->
->         /* Then fill IRQ number if any */
-> -       ret = i2c_acpi_get_irq(adev);
-> +       ret = i2c_acpi_get_irq(i2c_acpi_find_client_by_adev(adev));
->         if (ret > 0)
->                 info->irq = ret;
->
-> diff --git a/drivers/i2c/i2c-core.h b/drivers/i2c/i2c-core.h
-> index 2a3b28bf826b1..517d98be68d25 100644
-> --- a/drivers/i2c/i2c-core.h
-> +++ b/drivers/i2c/i2c-core.h
-> @@ -63,6 +63,8 @@ const struct acpi_device_id *
->  i2c_acpi_match_device(const struct acpi_device_id *matches,
->                       struct i2c_client *client);
->  void i2c_acpi_register_devices(struct i2c_adapter *adap);
-> +
-> +int i2c_acpi_get_irq(struct i2c_client *client);
->  #else /* CONFIG_ACPI */
->  static inline void i2c_acpi_register_devices(struct i2c_adapter *adap) { }
->  static inline const struct acpi_device_id *
-> @@ -71,6 +73,11 @@ i2c_acpi_match_device(const struct acpi_device_id *matches,
->  {
->         return NULL;
->  }
-> +
-> +static inline int i2c_acpi_get_irq(struct i2c_client *client)
-> +{
-> +       return 0;
-> +}
->  #endif /* CONFIG_ACPI */
->  extern struct notifier_block i2c_acpi_notifier;
->
-> --
-> 2.11.0
->
