@@ -2,173 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10B6641F52
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2019 10:36:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D921B4213C
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2019 11:43:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726778AbfFLIgm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jun 2019 04:36:42 -0400
-Received: from mail.steuer-voss.de ([85.183.69.95]:43468 "EHLO
-        mail.steuer-voss.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727027AbfFLIgl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jun 2019 04:36:41 -0400
-Received: from pc-niv.weinmann.com (localhost [127.0.0.1])
-        by mail.steuer-voss.de (Postfix) with ESMTP id 22FC54D06D;
-        Wed, 12 Jun 2019 10:36:39 +0200 (CEST)
-From:   Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Schmauss <erik.schmauss@intel.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        Thierry Reding <thierry.reding@gmail.com>
-Cc:     Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-leds@vger.kernel.org, linux-pwm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, nv@vosn.de
-Subject: [PATCH v2 3/3] leds-pwm.c: support ACPI via firmware-node framework
-Date:   Wed, 12 Jun 2019 10:36:08 +0200
-Message-Id: <5df196d63671205d6722d21bec0ae5857a6b91eb.1560327219.git.nikolaus.voss@loewensteinmedical.de>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <cover.1560327219.git.nikolaus.voss@loewensteinmedical.de>
-References: <cover.1560327219.git.nikolaus.voss@loewensteinmedical.de>
-In-Reply-To: <cover.1560327219.git.nikolaus.voss@loewensteinmedical.de>
-References: <cover.1560327219.git.nikolaus.voss@loewensteinmedical.de>
+        id S1727409AbfFLJnm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jun 2019 05:43:42 -0400
+Received: from foss.arm.com ([217.140.110.172]:48800 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726636AbfFLJnm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Jun 2019 05:43:42 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6609C337;
+        Wed, 12 Jun 2019 02:43:41 -0700 (PDT)
+Received: from [10.1.196.93] (en101.cambridge.arm.com [10.1.196.93])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 574AB3F246;
+        Wed, 12 Jun 2019 02:45:23 -0700 (PDT)
+Subject: Re: [PATCH 07/13] drivers: Add generic match helper by ACPI_COMPANION
+ device
+To:     rafael@kernel.org
+Cc:     linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
+        lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-spi@vger.kernel.org, broonie@kernel.org
+References: <1559747630-28065-1-git-send-email-suzuki.poulose@arm.com>
+ <1559747630-28065-8-git-send-email-suzuki.poulose@arm.com>
+ <CAJZ5v0h+maPj-ijKV_vvQBpHD7N-VMiAqSeyztAkiUR9E2WdmQ@mail.gmail.com>
+ <1f230eb7-f4e3-ed4e-960d-c3bbb60f0a18@arm.com>
+ <CAJZ5v0i0WP88+vTEheSTfAoSi5nEdjaLs4KOGxXK3_AoPhPrhg@mail.gmail.com>
+From:   Suzuki K Poulose <suzuki.poulose@arm.com>
+Message-ID: <621f33db-d7d8-380e-fe50-effb27523068@arm.com>
+Date:   Wed, 12 Jun 2019 10:43:38 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <CAJZ5v0i0WP88+vTEheSTfAoSi5nEdjaLs4KOGxXK3_AoPhPrhg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DT specific handling is replaced by firmware-node abstration to support
-ACPI specification of PWM LEDS.
+Hi Rafael,
 
-Example ASL:
-Device (PWML)
-{
-    Name (_HID, "PRP0001")
-    Name (_DSD, Package () {
-          ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-          Package () { Package () {"compatible",
-                                    Package () {"pwm-leds"}}}})
+On 06/06/2019 10:57, Rafael J. Wysocki wrote:
+> On Thu, Jun 6, 2019 at 11:28 AM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>
+>>
+>>
+>> On 06/06/2019 10:17, Rafael J. Wysocki wrote:
+>>> On Wed, Jun 5, 2019 at 5:14 PM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>>>
+>>>> Add a generic helper to match a device by the acpi device.
+>>>
+>>> "by its ACPI companion device object", please.
+>>
+>> Sure.
+>>
+>>>
+>>> Also, it would be good to combine this patch with the patch(es) that
+>>> cause device_match_acpi_dev() to be actually used.
+>>>
+>>> Helpers without any users are arguably not useful.
+>>
+>> Sure, the helpers will be part of the part2 of the whole series,
+>> which will actually have the individual subsystems consuming the
+>> new helpers. For your reference, it is available here :
+>>
+>> http://linux-arm.org/git?p=linux-skp.git;a=shortlog;h=refs/heads/driver-cleanup/v2
+>>
+>> e.g:
+>> http://linux-arm.org/git?p=linux-skp.git;a=commit;h=59534e843e2f214f1f29659993f6e423bef16b28
+>>
+>> I could simply pull those patches into this part, if you prefer that.
+> 
+> Not really.
+> 
+> I'd rather do it the other way around: push the introduction of the
+> helpers to part 2.
 
-    Device (PWL0)
-    {
-        Name (_HID, "PRP0001")
-        Name (_DSD, Package () {
-              ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-              Package () {
-                           Package () {"label", "alarm-led"},
-                           Package () {"pwms", Package ()
-                                       {\_SB_.PCI0.PWM, 0, 600000, 0}},
-                           Package () {"linux,default-state", "off"}}})
-    }
-}
+Sure, I will do that.
 
-Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
----
- drivers/leds/leds-pwm.c | 45 ++++++++++++++++++++++++-----------------
- 1 file changed, 27 insertions(+), 18 deletions(-)
+> 
+>> However, that would be true for the other patches in the part2.
+>> I am open to suggestions, on how to split the series.
+> 
+> You can introduce each helper along with its users in one patch.
+> 
+> This way the total number of patches will be reduced and they will be
+> easier to review IMO.
+> 
 
-diff --git a/drivers/leds/leds-pwm.c b/drivers/leds/leds-pwm.c
-index af08bcdc4fd8..3ce4d53c0cc9 100644
---- a/drivers/leds/leds-pwm.c
-+++ b/drivers/leds/leds-pwm.c
-@@ -75,7 +75,7 @@ static inline size_t sizeof_pwm_leds_priv(int num_leds)
- }
- 
- static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
--		       struct led_pwm *led, struct device_node *child)
-+		       struct led_pwm *led, struct fwnode_handle *fwnode)
- {
- 	struct led_pwm_data *led_data = &priv->leds[priv->num_leds];
- 	struct pwm_args pargs;
-@@ -88,8 +88,8 @@ static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
- 	led_data->cdev.max_brightness = led->max_brightness;
- 	led_data->cdev.flags = LED_CORE_SUSPENDRESUME;
- 
--	if (child)
--		led_data->pwm = devm_of_pwm_get(dev, child, NULL);
-+	if (fwnode)
-+		led_data->pwm = devm_fwnode_pwm_get(dev, fwnode, NULL);
- 	else
- 		led_data->pwm = devm_pwm_get(dev, led->name);
- 	if (IS_ERR(led_data->pwm)) {
-@@ -114,7 +114,8 @@ static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
- 	if (!led_data->period && (led->pwm_period_ns > 0))
- 		led_data->period = led->pwm_period_ns;
- 
--	ret = devm_of_led_classdev_register(dev, child, &led_data->cdev);
-+	ret = devm_of_led_classdev_register(dev, to_of_node(fwnode),
-+					    &led_data->cdev);
- 	if (ret == 0) {
- 		priv->num_leds++;
- 		led_pwm_set(&led_data->cdev, led_data->cdev.brightness);
-@@ -126,27 +127,35 @@ static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
- 	return ret;
- }
- 
--static int led_pwm_create_of(struct device *dev, struct led_pwm_priv *priv)
-+static int led_pwm_create_fwnode(struct device *dev, struct led_pwm_priv *priv)
- {
--	struct device_node *child;
-+	struct fwnode_handle *fwnode;
- 	struct led_pwm led;
- 	int ret = 0;
- 
- 	memset(&led, 0, sizeof(led));
- 
--	for_each_child_of_node(dev->of_node, child) {
--		led.name = of_get_property(child, "label", NULL) ? :
--			   child->name;
-+	device_for_each_child_node(dev, fwnode) {
-+		ret = fwnode_property_read_string(fwnode, "label", &led.name);
-+		if (ret && is_of_node(fwnode))
-+			led.name = to_of_node(fwnode)->name;
- 
--		led.default_trigger = of_get_property(child,
--						"linux,default-trigger", NULL);
--		led.active_low = of_property_read_bool(child, "active-low");
--		of_property_read_u32(child, "max-brightness",
--				     &led.max_brightness);
-+		if (!led.name) {
-+			fwnode_handle_put(fwnode);
-+			return -EINVAL;
-+		}
- 
--		ret = led_pwm_add(dev, priv, &led, child);
-+		fwnode_property_read_string(fwnode, "linux,default-trigger",
-+					    &led.default_trigger);
-+
-+		led.active_low = fwnode_property_read_bool(fwnode,
-+							   "active-low");
-+		fwnode_property_read_u32(fwnode, "max-brightness",
-+					 &led.max_brightness);
-+
-+		ret = led_pwm_add(dev, priv, &led, fwnode);
- 		if (ret) {
--			of_node_put(child);
-+			fwnode_handle_put(fwnode);
- 			break;
- 		}
- 	}
-@@ -164,7 +173,7 @@ static int led_pwm_probe(struct platform_device *pdev)
- 	if (pdata)
- 		count = pdata->num_leds;
- 	else
--		count = of_get_child_count(pdev->dev.of_node);
-+		count = device_get_child_node_count(&pdev->dev);
- 
- 	if (!count)
- 		return -EINVAL;
-@@ -182,7 +191,7 @@ static int led_pwm_probe(struct platform_device *pdev)
- 				break;
- 		}
- 	} else {
--		ret = led_pwm_create_of(&pdev->dev, priv);
-+		ret = led_pwm_create_fwnode(&pdev->dev, priv);
- 	}
- 
- 	if (ret)
--- 
-2.17.1
+Wouldn't it make the merging complicated ? I am still not clear how we plan
+to merge the part 2 ?
 
+Cheers
+Suzuki
