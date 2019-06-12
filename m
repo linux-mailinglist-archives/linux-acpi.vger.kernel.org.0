@@ -2,78 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D6EA844940
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 19:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C440448F8
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 19:12:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728711AbfFMRQE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jun 2019 13:16:04 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:47002 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728698AbfFLVon (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jun 2019 17:44:43 -0400
-Received: by mail-ot1-f67.google.com with SMTP id z23so16924778ote.13;
-        Wed, 12 Jun 2019 14:44:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6/4G9x4zsQuQK8+ToSt6QVbv5k7TYmTi2yAsofevHsY=;
-        b=YpKmT0+C2griVMmGw+n8I8gmxAGOjAW393yFX50SzCt8ExJDah1r2ImJwJOnIyxpHH
-         z/enpeUDMhm3A1q80aj1qAJ+A1zWd0Uj3ZRQ2ltJz6LWbgAW1H9VaeRmcpq2Y0RdJ9nt
-         xNyQTrv+ICjrVYBkrAdGvLuvRfeEowzaMV1EcNyrGSnvUyId+g+S2PUIf7JSMlWZnDur
-         YXKN6b1gD6vceR//bU9kH3tmJLPeOTewGz4q8J+LdwMSHyoiqrgx4Uoguwt0JyCvKW2b
-         ZriYTfGZNiCjft+toKKp7HkSd7IKKDEPrK8Uo8wGGuBZmU7LhTm7mFr3wKnGSUvV30Ik
-         OQRA==
-X-Gm-Message-State: APjAAAWMxxdwGKVK6aCOc8sa8MFXbfr3IPYTvFMA32cqOavCZ4yGB3qd
-        VEejyqgoHm77v6FlCoCSKFFCoHnT/vyBoUnde/8=
-X-Google-Smtp-Source: APXvYqxN1bHJmkJ+vh40QbfdXCtjCs4vHEb7WPek5QJRj8zdUZWlSjKRNzigkiS5uP3LHGJ4wWz6y073BK1+jYoNW44=
-X-Received: by 2002:a9d:6959:: with SMTP id p25mr18511958oto.118.1560375882780;
- Wed, 12 Jun 2019 14:44:42 -0700 (PDT)
+        id S1729040AbfFMRMk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 13:12:40 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:51555 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729018AbfFLWHh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jun 2019 18:07:37 -0400
+Received: from 79.184.253.190.ipv4.supernova.orange.pl (79.184.253.190) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
+ id 6a7a66494343cf0e; Thu, 13 Jun 2019 00:07:34 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
+        gregkh@linuxfoundation.org, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-spi@vger.kernel.org,
+        broonie@kernel.org
+Subject: Re: [PATCH 07/13] drivers: Add generic match helper by ACPI_COMPANION device
+Date:   Thu, 13 Jun 2019 00:07:34 +0200
+Message-ID: <12403040.8iQv1AJh6Y@kreacher>
+In-Reply-To: <621f33db-d7d8-380e-fe50-effb27523068@arm.com>
+References: <1559747630-28065-1-git-send-email-suzuki.poulose@arm.com> <CAJZ5v0i0WP88+vTEheSTfAoSi5nEdjaLs4KOGxXK3_AoPhPrhg@mail.gmail.com> <621f33db-d7d8-380e-fe50-effb27523068@arm.com>
 MIME-Version: 1.0
-References: <20190609111732.GA2885@amd> <007701d520c7$c397bda0$4ac738e0$@net>
-In-Reply-To: <007701d520c7$c397bda0$4ac738e0$@net>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 12 Jun 2019 23:44:30 +0200
-Message-ID: <CAJZ5v0j2pb2WxSA+S44Mr-6bpOx-P9A_T2-sDG3CiWSqLMg3sA@mail.gmail.com>
-Subject: Re: 5.2-rc2: low framerate in flightgear, cpu not running at full
- speed, thermal related?
-To:     Doug Smythies <dsmythies@telus.net>, Pavel Machek <pavel@ucw.cz>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Zhang, Rui" <rui.zhang@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 12, 2019 at 4:45 AM Doug Smythies <dsmythies@telus.net> wrote:
->
-> Hi,
->
-> So, currently there seems to be 3 issues in this thread
-> (and I am guessing a little, without definitive data):
->
-> 1.) On your system Kernel 5.4-rc2 (or 4) defaults to the intel_pstate CPU frequency
-> scaling driver and the powersave governor, but kernel 4.6 defaults to the
-> acpi-cpufreq CPU frequency scaling driver and the ondemand governor.
+On Wednesday, June 12, 2019 11:43:38 AM CEST Suzuki K Poulose wrote:
+> Hi Rafael,
+> 
+> On 06/06/2019 10:57, Rafael J. Wysocki wrote:
+> > On Thu, Jun 6, 2019 at 11:28 AM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+> >>
+> >>
+> >>
+> >> On 06/06/2019 10:17, Rafael J. Wysocki wrote:
+> >>> On Wed, Jun 5, 2019 at 5:14 PM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+> >>>>
+> >>>> Add a generic helper to match a device by the acpi device.
+> >>>
+> >>> "by its ACPI companion device object", please.
+> >>
+> >> Sure.
+> >>
+> >>>
+> >>> Also, it would be good to combine this patch with the patch(es) that
+> >>> cause device_match_acpi_dev() to be actually used.
+> >>>
+> >>> Helpers without any users are arguably not useful.
+> >>
+> >> Sure, the helpers will be part of the part2 of the whole series,
+> >> which will actually have the individual subsystems consuming the
+> >> new helpers. For your reference, it is available here :
+> >>
+> >> http://linux-arm.org/git?p=linux-skp.git;a=shortlog;h=refs/heads/driver-cleanup/v2
+> >>
+> >> e.g:
+> >> http://linux-arm.org/git?p=linux-skp.git;a=commit;h=59534e843e2f214f1f29659993f6e423bef16b28
+> >>
+> >> I could simply pull those patches into this part, if you prefer that.
+> > 
+> > Not really.
+> > 
+> > I'd rather do it the other way around: push the introduction of the
+> > helpers to part 2.
+> 
+> Sure, I will do that.
+> 
+> > 
+> >> However, that would be true for the other patches in the part2.
+> >> I am open to suggestions, on how to split the series.
+> > 
+> > You can introduce each helper along with its users in one patch.
+> > 
+> > This way the total number of patches will be reduced and they will be
+> > easier to review IMO.
+> > 
+> 
+> Wouldn't it make the merging complicated ? I am still not clear how we plan
+> to merge the part 2 ?
 
-Which means that intel_pstate works in the active mode by default and
-so it uses its internal governor.
+I wouldn't worry about it that much.  Without review, you have nothing to merge anyway.
 
-That governor is more performance-oriented than ondemand and it very
-well may cause more power to be allocated for the processor - at the
-expense of the GPU.
+Technically, every patch with a new helper and its users can go in via the Greg's tree
+as long as it has been ACKed by the maintainers of the code touched by it.
 
-The lower-than-expected frame rate may result from that, in principle.
 
-One way to mitigate that might be to use intel_pstate in the passive
-mode (pass intel_pstate=passive to the kernel in the command line)
-along with either ondemand or schedutil as the governor.
+
