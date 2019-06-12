@@ -2,90 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38B1D42AE6
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2019 17:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 212AE42C72
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2019 18:37:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408070AbfFLP1Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jun 2019 11:27:24 -0400
-Received: from mga06.intel.com ([134.134.136.31]:62144 "EHLO mga06.intel.com"
+        id S2438250AbfFLQhK convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 12 Jun 2019 12:37:10 -0400
+Received: from mga03.intel.com ([134.134.136.65]:20710 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405706AbfFLP1Y (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 Jun 2019 11:27:24 -0400
-X-Amp-Result: UNSCANNABLE
+        id S2438245AbfFLQhK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Jun 2019 12:37:10 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jun 2019 08:27:23 -0700
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jun 2019 09:37:09 -0700
 X-ExtLoop1: 1
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
-  by fmsmga001.fm.intel.com with SMTP; 12 Jun 2019 08:27:19 -0700
-Received: by lahna (sSMTP sendmail emulation); Wed, 12 Jun 2019 18:27:18 +0300
-Date:   Wed, 12 Jun 2019 18:27:18 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Charles Keepax <ckeepax@opensource.cirrus.com>
-Cc:     wsa@the-dreams.de, jarkko.nikula@linux.intel.com,
-        andriy.shevchenko@linux.intel.com, linux-i2c@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        benjamin.tissoires@redhat.com, jbroadus@gmail.com,
-        patches@opensource.cirrus.com
-Subject: Re: [PATCH v4 4/7] i2c: core: Make i2c_acpi_get_irq available to the
- rest of the I2C core
-Message-ID: <20190612152718.GC2640@lahna.fi.intel.com>
-References: <20190611123101.25264-1-ckeepax@opensource.cirrus.com>
- <20190611123101.25264-5-ckeepax@opensource.cirrus.com>
+Received: from orsmsx106.amr.corp.intel.com ([10.22.225.133])
+  by orsmga005.jf.intel.com with ESMTP; 12 Jun 2019 09:37:09 -0700
+Received: from orsmsx122.amr.corp.intel.com ([169.254.11.228]) by
+ ORSMSX106.amr.corp.intel.com ([169.254.1.121]) with mapi id 14.03.0415.000;
+ Wed, 12 Jun 2019 09:37:09 -0700
+From:   "Schmauss, Erik" <erik.schmauss@intel.com>
+To:     Udit Kumar <udit.kumar@nxp.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+CC:     "lenb@kernel.org" <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: RE: Help on named object in kernel 
+Thread-Topic: Help on named object in kernel 
+Thread-Index: AdUhB80T6nszZCo6R5C7RlLTfZjWmQANR+Sw
+Date:   Wed, 12 Jun 2019 16:37:09 +0000
+Message-ID: <CF6A88132359CE47947DB4C6E1709ED53C5E95B1@ORSMSX122.amr.corp.intel.com>
+References: <VI1PR04MB4640134AAE394D8063D9F04991EC0@VI1PR04MB4640.eurprd04.prod.outlook.com>
+In-Reply-To: <VI1PR04MB4640134AAE394D8063D9F04991EC0@VI1PR04MB4640.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMzE5ZjY1YWItOGNhZC00ZWU5LTk0ZjMtODQ5M2MwYTAzYWRjIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiRmVFakVxd1hZTytiKzNtSG5SbjRrTjZBRU5mK0FlQW9BWTNhb05Ma0hERFJFcW5ldDRVeEFENGczak5HMVFuNSJ9
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.0.600.7
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.139]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190611123101.25264-5-ckeepax@opensource.cirrus.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 11, 2019 at 01:30:58PM +0100, Charles Keepax wrote:
-> In preparation for more refactoring make i2c_acpi_get_irq available
-> outside i2c-core-acpi.c.
-> 
-> Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-> ---
-> 
-> Changes since v3:
->  - Move the change to use the helper function from i2c-core-base into its own patch.
-> 
-> Thanks,
-> Charles
-> 
->  drivers/i2c/i2c-core-acpi.c | 15 +++++++++++++--
->  drivers/i2c/i2c-core.h      |  7 +++++++
->  2 files changed, 20 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-> index 7d4d66ba752d4..35966cc337dde 100644
-> --- a/drivers/i2c/i2c-core-acpi.c
-> +++ b/drivers/i2c/i2c-core-acpi.c
-> @@ -144,8 +144,17 @@ static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
->  	return 1; /* No need to add resource to the list */
->  }
->  
-> -static int i2c_acpi_get_irq(struct acpi_device *adev)
-> +/**
-> + * i2c_acpi_get_irq - get device IRQ number from ACPI
-> + * @client: Pointer to the I2C client device
-> + *
-> + * Find the IRQ number used by a specific client device.
-> + *
-> + * Return: The IRQ number or an error code.
-> + */
-> +int i2c_acpi_get_irq(struct i2c_client *client)
->  {
-> +	struct acpi_device *adev = ACPI_COMPANION(&client->adapter->dev);
 
-Is this adev checked for being NULL somewhere below before it is being
-dereferenced?
 
-It could explain the issue Benjamin is seeing.
+> -----Original Message-----
+> From: linux-acpi-owner@vger.kernel.org [mailto:linux-acpi-
+> owner@vger.kernel.org] On Behalf Of Udit Kumar
+> Sent: Wednesday, June 12, 2019 4:48 AM
+> To: ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+> Cc: lenb@kernel.org; Rafael J. Wysocki <rafael@kernel.org>
+> Subject: Help on named object in kernel
+> 
+> Dear ACPI experts,
+> I need your help on defining named objected in ACPI under _CRS.
+> In my firmware, I have defined two addresses for my device using
+> Memory32Fixed and QwordMemory under _CRS.
+> These  two addresses are 32-bit and 64-bit long respectively.
+> For Memory32Fixed, I gave DescriptorName name as REG0 and for
+> QwordMemory I gave DescriptorName as SATA.
 
->  	struct list_head resource_list;
->  	int irq = -ENOENT;
->  	int ret;
+Could you give us the ASL for the code snippet that you're talking about?
+
+Erik
+> 
+> In Linux, all of resource of this device is added under its name (NXP0003:00).
+> Reading r-> name for all resource of this device is giving name as NXP0003:00.
+> So I am not able to use existing OS driver using call
+> platform_get_resource_byname, I have to use platform_get_resource API
+> with index to get above addresses.
+> 
+> Could you help me, if there is way to use named resource in acpi.
+> Fyi, I am on kernel 4.14.122
+> 
+> Many Thanks
+> Udit
