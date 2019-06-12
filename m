@@ -2,81 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4863B42CE2
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2019 19:01:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6EA844940
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 19:16:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730581AbfFLRBH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jun 2019 13:01:07 -0400
-Received: from foss.arm.com ([217.140.110.172]:57206 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728377AbfFLRBH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 Jun 2019 13:01:07 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7D8962B;
-        Wed, 12 Jun 2019 10:01:06 -0700 (PDT)
-Received: from e107155-lin (e107155-lin.cambridge.arm.com [10.1.196.42])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 932E53F73C;
-        Wed, 12 Jun 2019 10:01:05 -0700 (PDT)
-Date:   Wed, 12 Jun 2019 18:00:59 +0100
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     "Schmauss, Erik" <erik.schmauss@intel.com>
-Cc:     Udit Kumar <udit.kumar@nxp.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: Help on named object in kernel
-Message-ID: <20190612170059.GA30299@e107155-lin>
-References: <VI1PR04MB4640134AAE394D8063D9F04991EC0@VI1PR04MB4640.eurprd04.prod.outlook.com>
- <CF6A88132359CE47947DB4C6E1709ED53C5E95B1@ORSMSX122.amr.corp.intel.com>
+        id S1728711AbfFMRQE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 13:16:04 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:47002 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728698AbfFLVon (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jun 2019 17:44:43 -0400
+Received: by mail-ot1-f67.google.com with SMTP id z23so16924778ote.13;
+        Wed, 12 Jun 2019 14:44:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6/4G9x4zsQuQK8+ToSt6QVbv5k7TYmTi2yAsofevHsY=;
+        b=YpKmT0+C2griVMmGw+n8I8gmxAGOjAW393yFX50SzCt8ExJDah1r2ImJwJOnIyxpHH
+         z/enpeUDMhm3A1q80aj1qAJ+A1zWd0Uj3ZRQ2ltJz6LWbgAW1H9VaeRmcpq2Y0RdJ9nt
+         xNyQTrv+ICjrVYBkrAdGvLuvRfeEowzaMV1EcNyrGSnvUyId+g+S2PUIf7JSMlWZnDur
+         YXKN6b1gD6vceR//bU9kH3tmJLPeOTewGz4q8J+LdwMSHyoiqrgx4Uoguwt0JyCvKW2b
+         ZriYTfGZNiCjft+toKKp7HkSd7IKKDEPrK8Uo8wGGuBZmU7LhTm7mFr3wKnGSUvV30Ik
+         OQRA==
+X-Gm-Message-State: APjAAAWMxxdwGKVK6aCOc8sa8MFXbfr3IPYTvFMA32cqOavCZ4yGB3qd
+        VEejyqgoHm77v6FlCoCSKFFCoHnT/vyBoUnde/8=
+X-Google-Smtp-Source: APXvYqxN1bHJmkJ+vh40QbfdXCtjCs4vHEb7WPek5QJRj8zdUZWlSjKRNzigkiS5uP3LHGJ4wWz6y073BK1+jYoNW44=
+X-Received: by 2002:a9d:6959:: with SMTP id p25mr18511958oto.118.1560375882780;
+ Wed, 12 Jun 2019 14:44:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CF6A88132359CE47947DB4C6E1709ED53C5E95B1@ORSMSX122.amr.corp.intel.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20190609111732.GA2885@amd> <007701d520c7$c397bda0$4ac738e0$@net>
+In-Reply-To: <007701d520c7$c397bda0$4ac738e0$@net>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 12 Jun 2019 23:44:30 +0200
+Message-ID: <CAJZ5v0j2pb2WxSA+S44Mr-6bpOx-P9A_T2-sDG3CiWSqLMg3sA@mail.gmail.com>
+Subject: Re: 5.2-rc2: low framerate in flightgear, cpu not running at full
+ speed, thermal related?
+To:     Doug Smythies <dsmythies@telus.net>, Pavel Machek <pavel@ucw.cz>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Zhang, Rui" <rui.zhang@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 12, 2019 at 04:37:09PM +0000, Schmauss, Erik wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: linux-acpi-owner@vger.kernel.org [mailto:linux-acpi-
-> > owner@vger.kernel.org] On Behalf Of Udit Kumar
-> > Sent: Wednesday, June 12, 2019 4:48 AM
-> > To: ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-> > Cc: lenb@kernel.org; Rafael J. Wysocki <rafael@kernel.org>
-> > Subject: Help on named object in kernel
-> > 
-> > Dear ACPI experts,
-> > I need your help on defining named objected in ACPI under _CRS.
-> > In my firmware, I have defined two addresses for my device using
-> > Memory32Fixed and QwordMemory under _CRS.
-> > These  two addresses are 32-bit and 64-bit long respectively.
-> > For Memory32Fixed, I gave DescriptorName name as REG0 and for
-> > QwordMemory I gave DescriptorName as SATA.
-> 
-> Could you give us the ASL for the code snippet that you're talking about?
+On Wed, Jun 12, 2019 at 4:45 AM Doug Smythies <dsmythies@telus.net> wrote:
 >
+> Hi,
+>
+> So, currently there seems to be 3 issues in this thread
+> (and I am guessing a little, without definitive data):
+>
+> 1.) On your system Kernel 5.4-rc2 (or 4) defaults to the intel_pstate CPU frequency
+> scaling driver and the powersave governor, but kernel 4.6 defaults to the
+> acpi-cpufreq CPU frequency scaling driver and the ondemand governor.
 
-IIUC, something like below(a very rough example based on the description
-above):
+Which means that intel_pstate works in the active mode by default and
+so it uses its internal governor.
 
-    Name (_CRS, ResourceTemplate (){
-      QwordMemory (
-        ResourceConsumer, PosDecode, MinFixed, MaxFixed, NonCacheable,
-        ReadWrite, 0x0, 0x700100520, 0x700100523, 0x0, 4, , , "SATA",)
-      Memory32Fixed(ReadWrite, 0x3200000, 0x10000, "REG0")
-    }
+That governor is more performance-oriented than ondemand and it very
+well may cause more power to be allocated for the processor - at the
+expense of the GPU.
 
-Basically 2 or more entries of Memory/Address Space Resource Descriptor
-which can be identified in OSPM by DescriptorName. IOW if a device has
-2 sets of registers/memory/address space associated with it, instead of
-relying on the order of declaration, identify them by the descriptor
-name provided in ASL namespace.
+The lower-than-expected frame rate may result from that, in principle.
 
---
-Regards,
-Sudeep
+One way to mitigate that might be to use intel_pstate in the passive
+mode (pass intel_pstate=passive to the kernel in the command line)
+along with either ondemand or schedutil as the governor.
