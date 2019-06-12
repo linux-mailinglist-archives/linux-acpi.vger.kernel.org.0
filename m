@@ -2,94 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB213428A3
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2019 16:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6786B42A70
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2019 17:13:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731457AbfFLOVF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jun 2019 10:21:05 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:35482 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726921AbfFLOVE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 Jun 2019 10:21:04 -0400
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 1648030C3195;
-        Wed, 12 Jun 2019 14:20:56 +0000 (UTC)
-Received: from gondolin (ovpn-116-169.ams2.redhat.com [10.36.116.169])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D885A79581;
-        Wed, 12 Jun 2019 14:20:14 +0000 (UTC)
-Date:   Wed, 12 Jun 2019 16:20:12 +0200
-From:   Cornelia Huck <cohuck@redhat.com>
-To:     Pankaj Gupta <pagupta@redhat.com>
-Cc:     dm-devel@redhat.com, linux-nvdimm@lists.01.org,
-        linux-kernel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        qemu-devel@nongnu.org, linux-ext4@vger.kernel.org,
-        linux-xfs@vger.kernel.org, dan.j.williams@intel.com,
-        zwisler@kernel.org, vishal.l.verma@intel.com, dave.jiang@intel.com,
-        mst@redhat.com, jasowang@redhat.com, willy@infradead.org,
-        rjw@rjwysocki.net, hch@infradead.org, lenb@kernel.org,
-        jack@suse.cz, tytso@mit.edu, adilger.kernel@dilger.ca,
-        darrick.wong@oracle.com, lcapitulino@redhat.com, kwolf@redhat.com,
-        imammedo@redhat.com, jmoyer@redhat.com, nilal@redhat.com,
-        riel@surriel.com, stefanha@redhat.com, aarcange@redhat.com,
-        david@redhat.com, david@fromorbit.com,
-        xiaoguangrong.eric@gmail.com, pbonzini@redhat.com,
-        yuval.shaia@oracle.com, kilobyte@angband.pl, jstaron@google.com,
-        rdunlap@infradead.org, snitzer@redhat.com
-Subject: Re: [PATCH v13 2/7] virtio-pmem: Add virtio pmem driver
-Message-ID: <20190612162012.06b4af7f.cohuck@redhat.com>
-In-Reply-To: <20190612124527.3763-3-pagupta@redhat.com>
-References: <20190612124527.3763-1-pagupta@redhat.com>
-        <20190612124527.3763-3-pagupta@redhat.com>
-Organization: Red Hat GmbH
+        id S2408129AbfFLPME (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jun 2019 11:12:04 -0400
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:46761 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2408641AbfFLPME (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jun 2019 11:12:04 -0400
+Received: by mail-qk1-f195.google.com with SMTP id a132so10467595qkb.13
+        for <linux-acpi@vger.kernel.org>; Wed, 12 Jun 2019 08:12:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=w6yEZrHOYLo+3p9iSZ2w8TKW5Sdr4j5I7ju6ZqEBMcc=;
+        b=Hy3uFgHQZPcSZ3UDu5lHteerAntIjHh8ql694n6v11uu1fRjL/nD9vmGSvgS8bsiJR
+         6f//zBIhjoa8J4YrF3dcfpJ0t+jou9mvSYB7xmWLiHUnsSIco+RGZl35uMRs64BMCsM5
+         vVSRKj1yZnS0MgKeVKeL6A7XElUimESHEMmJUx6aNdoeGAbHG2lWIvEj2dGZaSGVg654
+         Swz0bKPh5fMwomifaISi7fCYbQumH5ddInyI7kNS8jWyhsiDG4okRB4AFcmKP0y1UmZo
+         h+nK0gTD64G5Fj+6+iFz5HeNSY+p1o4pMx+Q3yd2eyRrmoQ6PTpPmfojnaWwTZTtTLG7
+         Xhrg==
+X-Gm-Message-State: APjAAAVrD4Gv56Ao4IDrs42AuJru4DX6keOqBwdaRrvqh8yaxXBRCe5d
+        fJMj/C4rv6148MnT1TasFZ/BQaDvtXY+fyDnjz/51Q==
+X-Google-Smtp-Source: APXvYqxKeBWTjJVI0i84baN2jdhQPmMHHmytl1Q8GlFj+zSh7Zf24ZUb6OAIY6TwL9A1Fmm77xJcFxV+24MQRLPaAXM=
+X-Received: by 2002:a05:620a:1497:: with SMTP id w23mr67415173qkj.49.1560352323294;
+ Wed, 12 Jun 2019 08:12:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.40]); Wed, 12 Jun 2019 14:21:04 +0000 (UTC)
+References: <20190611123101.25264-1-ckeepax@opensource.cirrus.com> <20190611123101.25264-5-ckeepax@opensource.cirrus.com>
+In-Reply-To: <20190611123101.25264-5-ckeepax@opensource.cirrus.com>
+From:   Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Date:   Wed, 12 Jun 2019 17:11:51 +0200
+Message-ID: <CAO-hwJLz1TE5RcBJwVCxa9vWzNk9-mX=4quaWtrXv33kegqRrA@mail.gmail.com>
+Subject: Re: [PATCH v4 4/7] i2c: core: Make i2c_acpi_get_irq available to the
+ rest of the I2C core
+To:     Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc:     Wolfram Sang <wsa@the-dreams.de>, mika.westerberg@linux.intel.com,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        linux-acpi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
+        Jim Broadus <jbroadus@gmail.com>, patches@opensource.cirrus.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 12 Jun 2019 18:15:22 +0530
-Pankaj Gupta <pagupta@redhat.com> wrote:
-
-> This patch adds virtio-pmem driver for KVM guest.
-> 
-> Guest reads the persistent memory range information from
-> Qemu over VIRTIO and registers it on nvdimm_bus. It also
-> creates a nd_region object with the persistent memory
-> range information so that existing 'nvdimm/pmem' driver
-> can reserve this into system memory map. This way
-> 'virtio-pmem' driver uses existing functionality of pmem
-> driver to register persistent memory compatible for DAX
-> capable filesystems.
-> 
-> This also provides function to perform guest flush over
-> VIRTIO from 'pmem' driver when userspace performs flush
-> on DAX memory range.
-> 
-> Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
-> Reviewed-by: Yuval Shaia <yuval.shaia@oracle.com>
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> Acked-by: Jakub Staron <jstaron@google.com>
-> Tested-by: Jakub Staron <jstaron@google.com>
+On Tue, Jun 11, 2019 at 2:31 PM Charles Keepax
+<ckeepax@opensource.cirrus.com> wrote:
+>
+> In preparation for more refactoring make i2c_acpi_get_irq available
+> outside i2c-core-acpi.c.
+>
+> Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 > ---
->  drivers/nvdimm/Makefile          |   1 +
->  drivers/nvdimm/nd_virtio.c       | 125 +++++++++++++++++++++++++++++++
->  drivers/nvdimm/virtio_pmem.c     | 122 ++++++++++++++++++++++++++++++
->  drivers/nvdimm/virtio_pmem.h     |  55 ++++++++++++++
->  drivers/virtio/Kconfig           |  11 +++
->  include/uapi/linux/virtio_ids.h  |   1 +
->  include/uapi/linux/virtio_pmem.h |  35 +++++++++
->  7 files changed, 350 insertions(+)
->  create mode 100644 drivers/nvdimm/nd_virtio.c
->  create mode 100644 drivers/nvdimm/virtio_pmem.c
->  create mode 100644 drivers/nvdimm/virtio_pmem.h
->  create mode 100644 include/uapi/linux/virtio_pmem.h
 
-Reviewed-by: Cornelia Huck <cohuck@redhat.com>
+So, my bisect fails here: when I recompile the vmlinuz image, it fails
+after loading the initrd. There is no boot up message, so not sure,
+but the problem with the non working touchpad is either this one or
+the next one.
+
+Cheers,
+Benjamin
+
+>
+> Changes since v3:
+>  - Move the change to use the helper function from i2c-core-base into its own patch.
+>
+> Thanks,
+> Charles
+>
+>  drivers/i2c/i2c-core-acpi.c | 15 +++++++++++++--
+>  drivers/i2c/i2c-core.h      |  7 +++++++
+>  2 files changed, 20 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+> index 7d4d66ba752d4..35966cc337dde 100644
+> --- a/drivers/i2c/i2c-core-acpi.c
+> +++ b/drivers/i2c/i2c-core-acpi.c
+> @@ -144,8 +144,17 @@ static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
+>         return 1; /* No need to add resource to the list */
+>  }
+>
+> -static int i2c_acpi_get_irq(struct acpi_device *adev)
+> +/**
+> + * i2c_acpi_get_irq - get device IRQ number from ACPI
+> + * @client: Pointer to the I2C client device
+> + *
+> + * Find the IRQ number used by a specific client device.
+> + *
+> + * Return: The IRQ number or an error code.
+> + */
+> +int i2c_acpi_get_irq(struct i2c_client *client)
+>  {
+> +       struct acpi_device *adev = ACPI_COMPANION(&client->adapter->dev);
+>         struct list_head resource_list;
+>         int irq = -ENOENT;
+>         int ret;
+> @@ -162,6 +171,8 @@ static int i2c_acpi_get_irq(struct acpi_device *adev)
+>         return irq;
+>  }
+>
+> +static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev);
+> +
+>  static int i2c_acpi_get_info(struct acpi_device *adev,
+>                              struct i2c_board_info *info,
+>                              struct i2c_adapter *adapter,
+> @@ -198,7 +209,7 @@ static int i2c_acpi_get_info(struct acpi_device *adev,
+>                 *adapter_handle = lookup.adapter_handle;
+>
+>         /* Then fill IRQ number if any */
+> -       ret = i2c_acpi_get_irq(adev);
+> +       ret = i2c_acpi_get_irq(i2c_acpi_find_client_by_adev(adev));
+>         if (ret > 0)
+>                 info->irq = ret;
+>
+> diff --git a/drivers/i2c/i2c-core.h b/drivers/i2c/i2c-core.h
+> index 2a3b28bf826b1..517d98be68d25 100644
+> --- a/drivers/i2c/i2c-core.h
+> +++ b/drivers/i2c/i2c-core.h
+> @@ -63,6 +63,8 @@ const struct acpi_device_id *
+>  i2c_acpi_match_device(const struct acpi_device_id *matches,
+>                       struct i2c_client *client);
+>  void i2c_acpi_register_devices(struct i2c_adapter *adap);
+> +
+> +int i2c_acpi_get_irq(struct i2c_client *client);
+>  #else /* CONFIG_ACPI */
+>  static inline void i2c_acpi_register_devices(struct i2c_adapter *adap) { }
+>  static inline const struct acpi_device_id *
+> @@ -71,6 +73,11 @@ i2c_acpi_match_device(const struct acpi_device_id *matches,
+>  {
+>         return NULL;
+>  }
+> +
+> +static inline int i2c_acpi_get_irq(struct i2c_client *client)
+> +{
+> +       return 0;
+> +}
+>  #endif /* CONFIG_ACPI */
+>  extern struct notifier_block i2c_acpi_notifier;
+>
+> --
+> 2.11.0
+>
