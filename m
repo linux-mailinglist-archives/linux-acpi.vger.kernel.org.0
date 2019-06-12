@@ -2,99 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D921B4213C
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2019 11:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAD35421FA
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2019 12:07:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727409AbfFLJnm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jun 2019 05:43:42 -0400
-Received: from foss.arm.com ([217.140.110.172]:48800 "EHLO foss.arm.com"
+        id S2406059AbfFLKHG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jun 2019 06:07:06 -0400
+Received: from mga02.intel.com ([134.134.136.20]:6365 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726636AbfFLJnm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 Jun 2019 05:43:42 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6609C337;
-        Wed, 12 Jun 2019 02:43:41 -0700 (PDT)
-Received: from [10.1.196.93] (en101.cambridge.arm.com [10.1.196.93])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 574AB3F246;
-        Wed, 12 Jun 2019 02:45:23 -0700 (PDT)
-Subject: Re: [PATCH 07/13] drivers: Add generic match helper by ACPI_COMPANION
- device
-To:     rafael@kernel.org
-Cc:     linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
-        lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-spi@vger.kernel.org, broonie@kernel.org
-References: <1559747630-28065-1-git-send-email-suzuki.poulose@arm.com>
- <1559747630-28065-8-git-send-email-suzuki.poulose@arm.com>
- <CAJZ5v0h+maPj-ijKV_vvQBpHD7N-VMiAqSeyztAkiUR9E2WdmQ@mail.gmail.com>
- <1f230eb7-f4e3-ed4e-960d-c3bbb60f0a18@arm.com>
- <CAJZ5v0i0WP88+vTEheSTfAoSi5nEdjaLs4KOGxXK3_AoPhPrhg@mail.gmail.com>
-From:   Suzuki K Poulose <suzuki.poulose@arm.com>
-Message-ID: <621f33db-d7d8-380e-fe50-effb27523068@arm.com>
-Date:   Wed, 12 Jun 2019 10:43:38 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S2405946AbfFLKHG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Jun 2019 06:07:06 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jun 2019 03:07:05 -0700
+X-ExtLoop1: 1
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga007.fm.intel.com with ESMTP; 12 Jun 2019 03:07:03 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id CFD81146; Wed, 12 Jun 2019 13:07:02 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-acpi@vger.kernel.org
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1] ACPI / sleep: Switch to use acpi_dev_get_first_match_dev()
+Date:   Wed, 12 Jun 2019 13:07:02 +0300
+Message-Id: <20190612100702.53736-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0i0WP88+vTEheSTfAoSi5nEdjaLs4KOGxXK3_AoPhPrhg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+Switch the acpi_pm_finish() to use acpi_dev_get_first_match_dev() instead of
+custom approach.
 
-On 06/06/2019 10:57, Rafael J. Wysocki wrote:
-> On Thu, Jun 6, 2019 at 11:28 AM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->>
->>
->>
->> On 06/06/2019 10:17, Rafael J. Wysocki wrote:
->>> On Wed, Jun 5, 2019 at 5:14 PM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->>>>
->>>> Add a generic helper to match a device by the acpi device.
->>>
->>> "by its ACPI companion device object", please.
->>
->> Sure.
->>
->>>
->>> Also, it would be good to combine this patch with the patch(es) that
->>> cause device_match_acpi_dev() to be actually used.
->>>
->>> Helpers without any users are arguably not useful.
->>
->> Sure, the helpers will be part of the part2 of the whole series,
->> which will actually have the individual subsystems consuming the
->> new helpers. For your reference, it is available here :
->>
->> http://linux-arm.org/git?p=linux-skp.git;a=shortlog;h=refs/heads/driver-cleanup/v2
->>
->> e.g:
->> http://linux-arm.org/git?p=linux-skp.git;a=commit;h=59534e843e2f214f1f29659993f6e423bef16b28
->>
->> I could simply pull those patches into this part, if you prefer that.
-> 
-> Not really.
-> 
-> I'd rather do it the other way around: push the introduction of the
-> helpers to part 2.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/acpi/sleep.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
-Sure, I will do that.
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index 8ff08e531443..a94519207dc8 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -452,14 +452,6 @@ static int acpi_pm_prepare(void)
+ 	return error;
+ }
+ 
+-static int find_powerf_dev(struct device *dev, void *data)
+-{
+-	struct acpi_device *device = to_acpi_device(dev);
+-	const char *hid = acpi_device_hid(device);
+-
+-	return !strcmp(hid, ACPI_BUTTON_HID_POWERF);
+-}
+-
+ /**
+  *	acpi_pm_finish - Instruct the platform to leave a sleep state.
+  *
+@@ -468,7 +460,7 @@ static int find_powerf_dev(struct device *dev, void *data)
+  */
+ static void acpi_pm_finish(void)
+ {
+-	struct device *pwr_btn_dev;
++	struct acpi_device *pwr_btn_adev;
+ 	u32 acpi_state = acpi_target_sleep_state;
+ 
+ 	acpi_ec_unblock_transactions();
+@@ -499,11 +491,11 @@ static void acpi_pm_finish(void)
+ 		return;
+ 
+ 	pwr_btn_event_pending = false;
+-	pwr_btn_dev = bus_find_device(&acpi_bus_type, NULL, NULL,
+-				      find_powerf_dev);
+-	if (pwr_btn_dev) {
+-		pm_wakeup_event(pwr_btn_dev, 0);
+-		put_device(pwr_btn_dev);
++	pwr_btn_adev = acpi_dev_get_first_match_dev(ACPI_BUTTON_HID_POWERF,
++						    NULL, -1);
++	if (pwr_btn_adev) {
++		pm_wakeup_event(&pwr_btn_adev->dev, 0);
++		acpi_dev_put(pwr_btn_adev);
+ 	}
+ }
+ 
+-- 
+2.20.1
 
-> 
->> However, that would be true for the other patches in the part2.
->> I am open to suggestions, on how to split the series.
-> 
-> You can introduce each helper along with its users in one patch.
-> 
-> This way the total number of patches will be reduced and they will be
-> easier to review IMO.
-> 
-
-Wouldn't it make the merging complicated ? I am still not clear how we plan
-to merge the part 2 ?
-
-Cheers
-Suzuki
