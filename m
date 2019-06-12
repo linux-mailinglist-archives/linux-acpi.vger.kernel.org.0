@@ -2,29 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C440448F8
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 19:12:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE486448E7
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 19:12:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729040AbfFMRMk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jun 2019 13:12:40 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:51555 "EHLO
+        id S1729941AbfFMRME (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 13:12:04 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:60540 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729018AbfFLWHh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jun 2019 18:07:37 -0400
+        with ESMTP id S1729076AbfFLWOG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jun 2019 18:14:06 -0400
 Received: from 79.184.253.190.ipv4.supernova.orange.pl (79.184.253.190) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
- id 6a7a66494343cf0e; Thu, 13 Jun 2019 00:07:34 +0200
+ id 991125ee90f9fcfa; Thu, 13 Jun 2019 00:14:02 +0200
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
-        gregkh@linuxfoundation.org, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, linux-spi@vger.kernel.org,
-        broonie@kernel.org
-Subject: Re: [PATCH 07/13] drivers: Add generic match helper by ACPI_COMPANION device
-Date:   Thu, 13 Jun 2019 00:07:34 +0200
-Message-ID: <12403040.8iQv1AJh6Y@kreacher>
-In-Reply-To: <621f33db-d7d8-380e-fe50-effb27523068@arm.com>
-References: <1559747630-28065-1-git-send-email-suzuki.poulose@arm.com> <CAJZ5v0i0WP88+vTEheSTfAoSi5nEdjaLs4KOGxXK3_AoPhPrhg@mail.gmail.com> <621f33db-d7d8-380e-fe50-effb27523068@arm.com>
+To:     Linux PCI <linux-pci@vger.kernel.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Keith Busch <kbusch@kernel.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>
+Subject: [PATCH] PCI: PM: Skip devices in D0 for suspend-to-idle
+Date:   Thu, 13 Jun 2019 00:14:02 +0200
+Message-ID: <2513600.jR9RdVMSR0@kreacher>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -33,64 +34,123 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wednesday, June 12, 2019 11:43:38 AM CEST Suzuki K Poulose wrote:
-> Hi Rafael,
-> 
-> On 06/06/2019 10:57, Rafael J. Wysocki wrote:
-> > On Thu, Jun 6, 2019 at 11:28 AM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
-> >>
-> >>
-> >>
-> >> On 06/06/2019 10:17, Rafael J. Wysocki wrote:
-> >>> On Wed, Jun 5, 2019 at 5:14 PM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
-> >>>>
-> >>>> Add a generic helper to match a device by the acpi device.
-> >>>
-> >>> "by its ACPI companion device object", please.
-> >>
-> >> Sure.
-> >>
-> >>>
-> >>> Also, it would be good to combine this patch with the patch(es) that
-> >>> cause device_match_acpi_dev() to be actually used.
-> >>>
-> >>> Helpers without any users are arguably not useful.
-> >>
-> >> Sure, the helpers will be part of the part2 of the whole series,
-> >> which will actually have the individual subsystems consuming the
-> >> new helpers. For your reference, it is available here :
-> >>
-> >> http://linux-arm.org/git?p=linux-skp.git;a=shortlog;h=refs/heads/driver-cleanup/v2
-> >>
-> >> e.g:
-> >> http://linux-arm.org/git?p=linux-skp.git;a=commit;h=59534e843e2f214f1f29659993f6e423bef16b28
-> >>
-> >> I could simply pull those patches into this part, if you prefer that.
-> > 
-> > Not really.
-> > 
-> > I'd rather do it the other way around: push the introduction of the
-> > helpers to part 2.
-> 
-> Sure, I will do that.
-> 
-> > 
-> >> However, that would be true for the other patches in the part2.
-> >> I am open to suggestions, on how to split the series.
-> > 
-> > You can introduce each helper along with its users in one patch.
-> > 
-> > This way the total number of patches will be reduced and they will be
-> > easier to review IMO.
-> > 
-> 
-> Wouldn't it make the merging complicated ? I am still not clear how we plan
-> to merge the part 2 ?
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-I wouldn't worry about it that much.  Without review, you have nothing to merge anyway.
+Commit d491f2b75237 ("PCI: PM: Avoid possible suspend-to-idle issue")
+attempted to avoid a problem with devices whose drivers want them to
+stay in D0 over suspend-to-idle and resume, but it did not go as far
+as it should with that.
 
-Technically, every patch with a new helper and its users can go in via the Greg's tree
-as long as it has been ACKed by the maintainers of the code touched by it.
+Namely, first of all, it is questionable to change the power state
+of a PCI bridge with a device in D0 under it, but that is not
+actively prevented from happening during system-wide PM transitions,
+so use the skip_bus_pm flag introduced by commit d491f2b75237 for
+that.
+
+Second, the configuration of devices left in D0 (whatever the reason)
+during suspend-to-idle need not be changed and attempting to put them
+into D0 again by force may confuse some firmware, so explicitly avoid
+doing that.
+
+Fixes: d491f2b75237 ("PCI: PM: Avoid possible suspend-to-idle issue")
+Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+
+Tested on Dell XPS13 9360 with no issues.
+
+---
+ drivers/pci/pci-driver.c |   47 +++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 35 insertions(+), 12 deletions(-)
+
+Index: linux-pm/drivers/pci/pci-driver.c
+===================================================================
+--- linux-pm.orig/drivers/pci/pci-driver.c
++++ linux-pm/drivers/pci/pci-driver.c
+@@ -524,7 +524,6 @@ static void pci_pm_default_resume_early(
+ 	pci_power_up(pci_dev);
+ 	pci_restore_state(pci_dev);
+ 	pci_pme_restore(pci_dev);
+-	pci_fixup_device(pci_fixup_resume_early, pci_dev);
+ }
+ 
+ /*
+@@ -842,18 +841,16 @@ static int pci_pm_suspend_noirq(struct d
+ 
+ 	if (pci_dev->skip_bus_pm) {
+ 		/*
+-		 * The function is running for the second time in a row without
++		 * Either the device is a bridge with a child in D0 below it, or
++		 * the function is running for the second time in a row without
+ 		 * going through full resume, which is possible only during
+-		 * suspend-to-idle in a spurious wakeup case.  Moreover, the
+-		 * device was originally left in D0, so its power state should
+-		 * not be changed here and the device register values saved
+-		 * originally should be restored on resume again.
++		 * suspend-to-idle in a spurious wakeup case.  The device should
++		 * be in D0 at this point, but if it is a bridge, it may be
++		 * necessary to save its state.
+ 		 */
+-		pci_dev->state_saved = true;
+-	} else if (pci_dev->state_saved) {
+-		if (pci_dev->current_state == PCI_D0)
+-			pci_dev->skip_bus_pm = true;
+-	} else {
++		if (!pci_dev->state_saved)
++			pci_save_state(pci_dev);
++	} else if (!pci_dev->state_saved) {
+ 		pci_save_state(pci_dev);
+ 		if (pci_power_manageable(pci_dev))
+ 			pci_prepare_to_sleep(pci_dev);
+@@ -862,6 +859,22 @@ static int pci_pm_suspend_noirq(struct d
+ 	dev_dbg(dev, "PCI PM: Suspend power state: %s\n",
+ 		pci_power_name(pci_dev->current_state));
+ 
++	if (pci_dev->current_state == PCI_D0) {
++		pci_dev->skip_bus_pm = true;
++		/*
++		 * Changing the power state of a PCI bridge with a device in D0
++		 * below it is questionable, so avoid doing that by setting the
++		 * skip_bus_pm flag for the parent bridge.
++		 */
++		if (pci_dev->bus->self)
++			pci_dev->bus->self->skip_bus_pm = true;
++	}
++
++	if (pci_dev->skip_bus_pm && !pm_suspend_via_firmware()) {
++		dev_dbg(dev, "PCI PM: Skipped\n");
++		goto Fixup;
++	}
++
+ 	pci_pm_set_unknown_state(pci_dev);
+ 
+ 	/*
+@@ -909,7 +922,16 @@ static int pci_pm_resume_noirq(struct de
+ 	if (dev_pm_smart_suspend_and_suspended(dev))
+ 		pm_runtime_set_active(dev);
+ 
+-	pci_pm_default_resume_early(pci_dev);
++	/*
++	 * In the suspend-to-idle case, devices left in D0 during suspend will
++	 * stay in D0, so it is not necessary to restore or update their
++	 * configuration here and attempting to put them into D0 again may
++	 * confuse some firmware, so avoid doing that.
++	 */
++	if (!pci_dev->skip_bus_pm || pm_suspend_via_firmware())
++		pci_pm_default_resume_early(pci_dev);
++
++	pci_fixup_device(pci_fixup_resume_early, pci_dev);
+ 
+ 	if (pci_has_legacy_pm_support(pci_dev))
+ 		return pci_legacy_resume_early(dev);
+@@ -1200,6 +1222,7 @@ static int pci_pm_restore_noirq(struct d
+ 	}
+ 
+ 	pci_pm_default_resume_early(pci_dev);
++	pci_fixup_device(pci_fixup_resume_early, pci_dev);
+ 
+ 	if (pci_has_legacy_pm_support(pci_dev))
+ 		return pci_legacy_resume_early(dev);
 
 
 
