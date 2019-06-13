@@ -2,114 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B7F7143FC0
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 18:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C731643F24
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 17:55:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731602AbfFMQAA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jun 2019 12:00:00 -0400
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:34226 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731469AbfFMItW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 13 Jun 2019 04:49:22 -0400
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5D8hupF013156;
-        Thu, 13 Jun 2019 03:49:00 -0500
-Authentication-Results: ppops.net;
-        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
-Received: from mail3.cirrus.com ([87.246.76.56])
-        by mx0a-001ae601.pphosted.com with ESMTP id 2t0ae2yd16-1;
-        Thu, 13 Jun 2019 03:49:00 -0500
-Received: from EDIEX02.ad.cirrus.com (ediex02.ad.cirrus.com [198.61.84.81])
-        by mail3.cirrus.com (Postfix) with ESMTP id 91AE2613139C;
-        Thu, 13 Jun 2019 03:49:44 -0500 (CDT)
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Thu, 13 Jun
- 2019 09:48:58 +0100
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
- Transport; Thu, 13 Jun 2019 09:48:58 +0100
-Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id C31072A1;
-        Thu, 13 Jun 2019 09:48:58 +0100 (BST)
-Date:   Thu, 13 Jun 2019 09:48:58 +0100
-From:   Charles Keepax <ckeepax@opensource.cirrus.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-CC:     <wsa@the-dreams.de>, <jarkko.nikula@linux.intel.com>,
-        <andriy.shevchenko@linux.intel.com>, <linux-i2c@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <benjamin.tissoires@redhat.com>, <jbroadus@gmail.com>,
-        <patches@opensource.cirrus.com>
-Subject: Re: [PATCH v4 4/7] i2c: core: Make i2c_acpi_get_irq available to the
- rest of the I2C core
-Message-ID: <20190613084858.GU28362@ediswmail.ad.cirrus.com>
-References: <20190611123101.25264-1-ckeepax@opensource.cirrus.com>
- <20190611123101.25264-5-ckeepax@opensource.cirrus.com>
- <20190612152718.GC2640@lahna.fi.intel.com>
+        id S1732092AbfFMPzL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 11:55:11 -0400
+Received: from mail-ot1-f44.google.com ([209.85.210.44]:40395 "EHLO
+        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731561AbfFMIxL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jun 2019 04:53:11 -0400
+Received: by mail-ot1-f44.google.com with SMTP id x24so18192548otp.7;
+        Thu, 13 Jun 2019 01:53:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FxA2TuQ76TdBmK7s0p6DMBbnrU5zVRKKjjHLZHr3Nrw=;
+        b=Yxz1PrfEwG+xwQfQrX5q9OYleNmlcuAsJPTmLfQ7gVKEvAR+96Fjki1WJPeX8bRYQl
+         HuR4VQZkg7hv4n6r23V00pi6LnVo5kXHsecCxBP5tGF79PKKtJ+fXOELR7U9Xt4GRTcn
+         9CibEfBsWSxilq23lhLLpqkO/T/ruOYn0f5G8II2BuQmEbATtOJRLLYf/F3ffTRGHZ3+
+         gEw4dPeWEqb5pqH2RXLQrDSD+JsZVYpGJfwbV+UDkfo69J3moMWNSLxkrqg0Q69sAM0Q
+         kSLwi60ID8UTSnBe7YcyTgv6x11TvRIeUGBcEvFsTOyq2cknIxdlMJhByhe54Hz5xD7r
+         Zk4Q==
+X-Gm-Message-State: APjAAAUi4EVEc8cS8f5ENKqe7SrlOIXGcr+dWSzNLyj01OZXWkDFETFk
+        1V3VZUet3YydJfMKSltr+DlIrJWwrHJHi+RAnHjviQ==
+X-Google-Smtp-Source: APXvYqyI1lj+Z+cGNfdobQgfAVNEbIpL2r7FCl8K1bHleKh5pVvYkSHmP3FF0kCptnpXUK5RHTkVoifYko+1nXHyn24=
+X-Received: by 2002:a9d:5f05:: with SMTP id f5mr36455415oti.167.1560415990521;
+ Thu, 13 Jun 2019 01:53:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20190612152718.GC2640@lahna.fi.intel.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906130070
+References: <20190609111732.GA2885@amd> <007701d520c7$c397bda0$4ac738e0$@net>
+ <CAJZ5v0j2pb2WxSA+S44Mr-6bpOx-P9A_T2-sDG3CiWSqLMg3sA@mail.gmail.com> <008f01d52178$07b3be70$171b3b50$@net>
+In-Reply-To: <008f01d52178$07b3be70$171b3b50$@net>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 13 Jun 2019 10:52:57 +0200
+Message-ID: <CAJZ5v0gRaDe6Fajdx3wqaLz9LQr6Z6iD+2yrrZeXJV+3HiAOZg@mail.gmail.com>
+Subject: Re: 5.2-rc2: low framerate in flightgear, cpu not running at full
+ speed, thermal related?
+To:     Doug Smythies <dsmythies@telus.net>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Zhang, Rui" <rui.zhang@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 12, 2019 at 06:27:18PM +0300, Mika Westerberg wrote:
-> On Tue, Jun 11, 2019 at 01:30:58PM +0100, Charles Keepax wrote:
-> > In preparation for more refactoring make i2c_acpi_get_irq available
-> > outside i2c-core-acpi.c.
-> > 
-> > Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-> > ---
-> > 
-> > Changes since v3:
-> >  - Move the change to use the helper function from i2c-core-base into its own patch.
-> > 
-> > Thanks,
-> > Charles
-> > 
-> >  drivers/i2c/i2c-core-acpi.c | 15 +++++++++++++--
-> >  drivers/i2c/i2c-core.h      |  7 +++++++
-> >  2 files changed, 20 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-> > index 7d4d66ba752d4..35966cc337dde 100644
-> > --- a/drivers/i2c/i2c-core-acpi.c
-> > +++ b/drivers/i2c/i2c-core-acpi.c
-> > @@ -144,8 +144,17 @@ static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
-> >  	return 1; /* No need to add resource to the list */
-> >  }
-> >  
-> > -static int i2c_acpi_get_irq(struct acpi_device *adev)
-> > +/**
-> > + * i2c_acpi_get_irq - get device IRQ number from ACPI
-> > + * @client: Pointer to the I2C client device
-> > + *
-> > + * Find the IRQ number used by a specific client device.
-> > + *
-> > + * Return: The IRQ number or an error code.
-> > + */
-> > +int i2c_acpi_get_irq(struct i2c_client *client)
-> >  {
-> > +	struct acpi_device *adev = ACPI_COMPANION(&client->adapter->dev);
-> 
-> Is this adev checked for being NULL somewhere below before it is being
-> dereferenced?
-> 
-> It could explain the issue Benjamin is seeing.
-> 
+On Thu, Jun 13, 2019 at 1:40 AM Doug Smythies <dsmythies@telus.net> wrote:
+>
+> On 2019.06.12 14:25 Rafael J. Wysocki wrote:
+> > On Wed, Jun 12, 2019 at 4:45 AM Doug Smythies <dsmythies@telus.net> wrote:
+> >>
+> >> So, currently there seems to be 3 issues in this thread
+> >> (and I am guessing a little, without definitive data):
+> >>
+> >> 1.) On your system Kernel 5.4-rc2 (or 4) defaults to the intel_pstate CPU frequency
+> >> scaling driver and the powersave governor, but kernel 4.6 defaults to the
+> >> acpi-cpufreq CPU frequency scaling driver and the ondemand governor.
+> >
+> > Which means that intel_pstate works in the active mode by default and
+> > so it uses its internal governor.
+>
+> Note sure what you mean by "internal governor"?
+> If you meant HWP (Hardware P-state), Pavel's processor doesn't have it.
+> If you meant the active powersave governor code within the driver, then agreed.
 
-Yeah could be that or just for some reason this isn't returning
-the same adev as we previously had. I will do some digging see if
-I can find any likely culprits.
+That's what I mean.
 
-Thanks,
-Charles
+> > That governor is more performance-oriented than ondemand and it very
+> > well may cause more power to be allocated for the processor - at the
+> > expense of the GPU.
+>
+> O.K. I mainly use servers and so have no experience with possible GPU
+> verses CPU tradeoffs.
+>
+> However, I did re-do my tests measuring energy instead of CPU frequency
+> and found very little difference between the acpi-cpufreq/ondemand verses
+> intel_pstate/powersave as a function of single threaded load. Actually,
+> I did the test twice, one at 20 hertz work/sleep frequency and also
+> at 67 hertz work/sleep frequency. (Of course, Pavel's processor might
+> well have a different curve, but it is a similar vintage to mine
+> i5-2520M verses i7-2600K.) The worst difference was approximately
+> 1.1 extra processor package watts (an extra 5.5%) in the 80% to 85%
+> single threaded load range at 67 hertz work/sleep frequency for
+> the intel-pstate/powersave driver/governor.
+
+I see.  Then this shouldn't matter.
+
+> What am I saying? For a fixed amount of work to do per work/sleep cycle
+> (i.e. maybe per video frame related type work) while the CPU frequency Verses load
+> curves might differ, the resulting processor energy curve differs much less.
+> (i.e. the extra power for higher CPU frequency is for less time because it gets
+> the job done faster.) So, myself, I don't yet understand why only the one method
+> would have hit thermal throttling, but not the other (if indeed it doesn't).
+> Other differences between kernel 4.6 and 5.2-rc? might explain it.
+
+Right.
+
+I personally doubt that any thermal throttling is involved here.
+
+> I did all my tests on kernel 5.2-rc3, except that one example from kernel 4.4 on my
+> earlier reply, so that were not other variables than CPU scaling driver and
+> governor changes.
+>
+> > The lower-than-expected frame rate may result from that, in principle.
+>
+> > One way to mitigate that might be to use intel_pstate in the passive
+> > mode (pass intel_pstate=passive to the kernel in the command line)
+> > along with either ondemand or schedutil as the governor.
+>
+> The CPU frequency verses load curves for this those two governors are very similar
+> for both the acpi_cpufreq and intel_cpufreq (which is the intel_pstate driver
+> in passive mode) drivers.
+
+That's what I would expect.
+
+Cheers!
