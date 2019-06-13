@@ -2,131 +2,145 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31C54447B7
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 19:01:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 938EE4470B
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 18:56:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728708AbfFMRB2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jun 2019 13:01:28 -0400
-Received: from cmta20.telus.net ([209.171.16.93]:56657 "EHLO cmta20.telus.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729676AbfFLXjM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 Jun 2019 19:39:12 -0400
-Received: from dougxps ([173.180.45.4])
-        by cmsmtp with SMTP
-        id bCpdho1tDmIDxbCpehR4ah; Wed, 12 Jun 2019 17:39:09 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telus.net; s=neo;
-        t=1560382749; bh=NkAlskxzscdeR1udzQK+9g7a0lj1WFYO+VNUmciFeO4=;
-        h=From:To:Cc:References:In-Reply-To:Subject:Date;
-        b=tHU6jHIt+tCyctkDgAHnArmS1uz4tVBejGFyZPfMGlqs9DqZuUjM1MrL9gm6D9R0/
-         bf5GIZizNGLn2SWaPC6bgClvtMsyTrdrnTqA012+jg7sWWWeHU7lEES0KPujAfTSmX
-         4yyG3pEeteDkKwCr45rBMmhxxiI8rKe8XmJujCOoqXB4MDMx5gwhN4z/u7sSj0Xyle
-         LZ2SKPIrbf8f+2ns+L/NviuKaxpOo2DZ0ih9VJADkE5MfgzZfElL84mWdjZRizg/dx
-         Sgmk3mT6Im7p19dxWTgynq0YNpxaI1SegIe+PciWzKICIre/U4zcKXyRPOLmLy8OIT
-         ZyhiCjIMmlvMQ==
-X-Telus-Authed: none
-X-Authority-Analysis: v=2.3 cv=Tq+Yewfh c=1 sm=1 tr=0
- a=zJWegnE7BH9C0Gl4FFgQyA==:117 a=zJWegnE7BH9C0Gl4FFgQyA==:17
- a=Pyq9K9CWowscuQLKlpiwfMBGOR0=:19 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19
- a=IkcTkHD0fZMA:10 a=aatUQebYAAAA:8 a=M5e_aTnQhfenkqaycmAA:9 a=QEXdDO2ut3YA:10
- a=7715FyvI7WU-l6oqrZBK:22
-From:   "Doug Smythies" <dsmythies@telus.net>
-To:     "'Rafael J. Wysocki'" <rafael@kernel.org>,
-        "'Pavel Machek'" <pavel@ucw.cz>
-Cc:     "'kernel list'" <linux-kernel@vger.kernel.org>,
-        "'ACPI Devel Maling List'" <linux-acpi@vger.kernel.org>,
-        "'Zhang, Rui'" <rui.zhang@intel.com>,
-        "'Rafael J. Wysocki'" <rjw@rjwysocki.net>,
-        "'Viresh Kumar'" <viresh.kumar@linaro.org>,
-        "'Linux PM'" <linux-pm@vger.kernel.org>,
-        "'Thomas Gleixner'" <tglx@linutronix.de>,
-        "'Ingo Molnar'" <mingo@redhat.com>,
-        "'Borislav Petkov'" <bp@alien8.de>,
-        "'H. Peter Anvin'" <hpa@zytor.com>,
-        "'the arch/x86 maintainers'" <x86@kernel.org>,
-        "Doug Smythies" <dsmythies@telus.net>
-References: <20190609111732.GA2885@amd> <007701d520c7$c397bda0$4ac738e0$@net> <CAJZ5v0j2pb2WxSA+S44Mr-6bpOx-P9A_T2-sDG3CiWSqLMg3sA@mail.gmail.com>
-In-Reply-To: <CAJZ5v0j2pb2WxSA+S44Mr-6bpOx-P9A_T2-sDG3CiWSqLMg3sA@mail.gmail.com>
-Subject: RE: 5.2-rc2: low framerate in flightgear, cpu not running at full speed, thermal related?
-Date:   Wed, 12 Jun 2019 16:39:04 -0700
-Message-ID: <008f01d52178$07b3be70$171b3b50$@net>
+        id S1730382AbfFMQ4p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 12:56:45 -0400
+Received: from mail-eopbgr40043.outbound.protection.outlook.com ([40.107.4.43]:12426
+        "EHLO EUR03-DB5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729958AbfFMBUg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Jun 2019 21:20:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XIMwPuMxjvdFYKCltTRO+0OJQY+jcG6AbvthDqfSWcE=;
+ b=Nb2178YicKIY70yqwKhSNxrKPTPYDMFUbXsvKRsVoyQw7QbwP6wMjpxtfDdq+a4RGp6FKxvkesFqoQFadXFo9vaj1G//3wpwy/Non+QP4Zcr/CxuDWjiwDvjC+5J3FMl904BFKT9m+oR3er2HLIlBmKEeuEt1VNtSRlZeX+IIeM=
+Received: from VI1PR04MB4640.eurprd04.prod.outlook.com (20.177.56.27) by
+ VI1PR04MB5550.eurprd04.prod.outlook.com (20.178.122.220) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1965.15; Thu, 13 Jun 2019 01:20:32 +0000
+Received: from VI1PR04MB4640.eurprd04.prod.outlook.com
+ ([fe80::9dfe:752d:9e88:fe86]) by VI1PR04MB4640.eurprd04.prod.outlook.com
+ ([fe80::9dfe:752d:9e88:fe86%7]) with mapi id 15.20.1987.010; Thu, 13 Jun 2019
+ 01:20:32 +0000
+From:   Udit Kumar <udit.kumar@nxp.com>
+To:     Sudeep Holla <sudeep.holla@arm.com>,
+        "Schmauss, Erik" <erik.schmauss@intel.com>
+CC:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: RE: [EXT] Re: Help on named object in kernel
+Thread-Topic: [EXT] Re: Help on named object in kernel
+Thread-Index: AdUhB80T6nszZCo6R5C7RlLTfZjWmQANR+SwAADe74AAEVBe0A==
+Date:   Thu, 13 Jun 2019 01:20:32 +0000
+Message-ID: <VI1PR04MB4640A3A1E8B369240C3FC72091EF0@VI1PR04MB4640.eurprd04.prod.outlook.com>
+References: <VI1PR04MB4640134AAE394D8063D9F04991EC0@VI1PR04MB4640.eurprd04.prod.outlook.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C5E95B1@ORSMSX122.amr.corp.intel.com>
+ <20190612170059.GA30299@e107155-lin>
+In-Reply-To: <20190612170059.GA30299@e107155-lin>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=udit.kumar@nxp.com; 
+x-originating-ip: [106.215.111.109]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 464aa7a1-89b9-4936-81e3-08d6ef9d5483
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:VI1PR04MB5550;
+x-ms-traffictypediagnostic: VI1PR04MB5550:
+x-microsoft-antispam-prvs: <VI1PR04MB55504377AD4240B3FE0B718691EF0@VI1PR04MB5550.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 0067A8BA2A
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(136003)(346002)(39860400002)(396003)(366004)(189003)(199004)(13464003)(66476007)(66556008)(6116002)(229853002)(68736007)(76116006)(6246003)(3846002)(99286004)(64756008)(86362001)(66946007)(9686003)(14454004)(53936002)(478600001)(5660300002)(446003)(476003)(6436002)(11346002)(2906002)(44832011)(73956011)(66446008)(486006)(8936002)(14444005)(110136005)(76176011)(305945005)(316002)(78486014)(55016002)(102836004)(4326008)(25786009)(7696005)(26005)(74316002)(6506007)(71190400001)(53546011)(256004)(8676002)(71200400001)(54906003)(81156014)(186003)(66066001)(7736002)(52536014)(81166006)(33656002);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR04MB5550;H:VI1PR04MB4640.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: I4wX8gj6778hqtfbb/m7/Ow3F+/t8QVjnw0qCB3MP4TANpJRFfOd5HRScA37I5SQGVQA3odzDl15yiRxKli1JV+Cbpzy6WhC9z6SQGOYJR3LI2ctiznWtnC+rhgZM/2IBSfTcC2Q3sCxGh0qHWJVfLQuRldQ2kcoNSbWU4TIZ4sbHk/Bek/MbiLKU/NqCbcJJO5JslFkx+cap2QlwLyAOF5lXdsufhbdWsgXl93padcjpFH/7DwTs7nsekOeCc9FBqnselHI+Y8kxA83FGuFIrDXtuPZjQC/r0A5SkSQuYS/AScDYsSxyHBPwASQoJnF7J1M8q73OoqvXXSgL6OkugCZqwPm69Ilj6Niy8V0L4BFZzl3KNWAJrD0TJojPu5GgXkycVeIqrvVXGonFOb+fZqvVLGdDoPFxZ8UHlXyMDU=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook 12.0
-Thread-Index: AdUhaAyoVaNrS0lJQFeu7feFwtatGwABXsmg
-Content-Language: en-ca
-X-CMAE-Envelope: MS4wfKWWA2PE6GCEhygvHrMKC5TKX76lYBBxCksFr6o5c317Qh9TFUY9Xd0FqOf0Muz+2eh0pg8epTL8td+N3EUJlV8I5UlZgoxHwHX5mwwiungH3c4N7ufj
- DlhTMMdkXIf8BS8tEwY+yYvKFNFyH1P6VZ6POpMqXHo/SpgKpEmoPDJbQA9LallEmq5kasHdpJ37sFl9L+dADFzRrmjA+7IBtFr/jyoYKALMiAscfRIKlscV
- G+Wu138uliJPRo0u4EeUs8uZlEekJ0LVyn/XAsW71YACasP3M+vmHl3szCD9E7KF5E1IMaBo8L7yoLi3dSOSS1O2Uaw6Q1VPanb3oEOAC2BKKwUOYzNsV2Y+
- pb2liYm2oqji1wiYWQhbeDgu2HcOEu5G1ECPSmioO5GO9aRbMZxlSI4L9sFS4iO+Jkzlr6kWzGgTsiWmdDhiXHOV7sL/oLNe6L3foJxYXnFq/Z0fcuY0W6gS
- 0qfQWEZnBQg6AtcwKTKCcn6i2Cov7N5du79o3tZXWAuxdPD/dsnwtRL3d7NdlwOLGRVk3adAdPRy8dIm
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 464aa7a1-89b9-4936-81e3-08d6ef9d5483
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jun 2019 01:20:32.4693
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: udit.kumar@nxp.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5550
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2019.06.12 14:25 Rafael J. Wysocki wrote:
-> On Wed, Jun 12, 2019 at 4:45 AM Doug Smythies <dsmythies@telus.net> wrote:
->>
->> So, currently there seems to be 3 issues in this thread
->> (and I am guessing a little, without definitive data):
->>
->> 1.) On your system Kernel 5.4-rc2 (or 4) defaults to the intel_pstate CPU frequency
->> scaling driver and the powersave governor, but kernel 4.6 defaults to the
->> acpi-cpufreq CPU frequency scaling driver and the ondemand governor.
->
-> Which means that intel_pstate works in the active mode by default and
-> so it uses its internal governor.
-
-Note sure what you mean by "internal governor"?
-If you meant HWP (Hardware P-state), Pavel's processor doesn't have it.
-If you meant the active powersave governor code within the driver, then agreed.
-
-> That governor is more performance-oriented than ondemand and it very
-> well may cause more power to be allocated for the processor - at the
-> expense of the GPU.
-
-O.K. I mainly use servers and so have no experience with possible GPU
-verses CPU tradeoffs.
-
-However, I did re-do my tests measuring energy instead of CPU frequency
-and found very little difference between the acpi-cpufreq/ondemand verses
-intel_pstate/powersave as a function of single threaded load. Actually,
-I did the test twice, one at 20 hertz work/sleep frequency and also
-at 67 hertz work/sleep frequency. (Of course, Pavel's processor might
-well have a different curve, but it is a similar vintage to mine
-i5-2520M verses i7-2600K.) The worst difference was approximately
-1.1 extra processor package watts (an extra 5.5%) in the 80% to 85%
-single threaded load range at 67 hertz work/sleep frequency for
-the intel-pstate/powersave driver/governor. 
-
-What am I saying? For a fixed amount of work to do per work/sleep cycle
-(i.e. maybe per video frame related type work) while the CPU frequency Verses load
-curves might differ, the resulting processor energy curve differs much less.
-(i.e. the extra power for higher CPU frequency is for less time because it gets
-the job done faster.) So, myself, I don't yet understand why only the one method
-would have hit thermal throttling, but not the other (if indeed it doesn't).
-Other differences between kernel 4.6 and 5.2-rc? might explain it. I did all
-my tests on kernel 5.2-rc3, except that one example from kernel 4.4 on my
-earlier reply, so that were not other variables than CPU scaling driver and
-governor changes.
-
-> The lower-than-expected frame rate may result from that, in principle.
-
-> One way to mitigate that might be to use intel_pstate in the passive
-> mode (pass intel_pstate=passive to the kernel in the command line)
-> along with either ondemand or schedutil as the governor.
-
-The CPU frequency verses load curves for this those two governors are very similar
-for both the acpi_cpufreq and intel_cpufreq (which is the intel_pstate driver
-in passive mode) drivers.
-
-Just for information: CPU frequency verses single threaded load curves
-for the conservative governor is quite different between the two drivers.
-(tests done in February, perhaps I should re-do and also look at energy
-at the same time, or instead of CPU frequency.)
-
-... Doug
 
 
+> -----Original Message-----
+> From: linux-acpi-owner@vger.kernel.org <linux-acpi-owner@vger.kernel.org>
+> On Behalf Of Sudeep Holla
+> Sent: Wednesday, June 12, 2019 10:31 PM
+> To: Schmauss, Erik <erik.schmauss@intel.com>
+> Cc: Udit Kumar <udit.kumar@nxp.com>; ACPI Devel Maling List <linux-
+> acpi@vger.kernel.org>; lenb@kernel.org; Sudeep Holla
+> <sudeep.holla@arm.com>; Rafael J. Wysocki <rafael@kernel.org>
+> Subject: [EXT] Re: Help on named object in kernel
+>=20
+> Caution: EXT Email
+>=20
+> On Wed, Jun 12, 2019 at 04:37:09PM +0000, Schmauss, Erik wrote:
+> >
+> >
+> > > -----Original Message-----
+> > > From: linux-acpi-owner@vger.kernel.org [mailto:linux-acpi-
+> > > owner@vger.kernel.org] On Behalf Of Udit Kumar
+> > > Sent: Wednesday, June 12, 2019 4:48 AM
+> > > To: ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+> > > Cc: lenb@kernel.org; Rafael J. Wysocki <rafael@kernel.org>
+> > > Subject: Help on named object in kernel
+> > >
+> > > Dear ACPI experts,
+> > > I need your help on defining named objected in ACPI under _CRS.
+> > > In my firmware, I have defined two addresses for my device using
+> > > Memory32Fixed and QwordMemory under _CRS.
+> > > These  two addresses are 32-bit and 64-bit long respectively.
+> > > For Memory32Fixed, I gave DescriptorName name as REG0 and for
+> > > QwordMemory I gave DescriptorName as SATA.
+> >
+> > Could you give us the ASL for the code snippet that you're talking abou=
+t?
+> >
+>=20
+> IIUC, something like below(a very rough example based on the description
+> above):
+>=20
+>     Name (_CRS, ResourceTemplate (){
+>       QwordMemory (
+>         ResourceConsumer, PosDecode, MinFixed, MaxFixed, NonCacheable,
+>         ReadWrite, 0x0, 0x700100520, 0x700100523, 0x0, 4, , , "SATA",)
+>       Memory32Fixed(ReadWrite, 0x3200000, 0x10000, "REG0")
+>     }
+>=20
+> Basically 2 or more entries of Memory/Address Space Resource Descriptor
+> which can be identified in OSPM by DescriptorName. IOW if a device has
+> 2 sets of registers/memory/address space associated with it, instead of r=
+elying
+> on the order of declaration, identify them by the descriptor name provide=
+d in
+> ASL namespace.
+
+Thanks Sudeep,=20
+Shouldn't acpi frame work encapsulate descriptor name  while adding resourc=
+e.
+So that driver can rely on platform_get_resource_byname .=20
+In such way, same driver could be used with device tree and acpi based syst=
+ems.=20
+
+I am not sure, if acpi_evaluate_xx sort of api would work for descriptor-na=
+me , even if this does it will be limited to acpi only.
+=20
+> --
+> Regards,
+> Sudeep
