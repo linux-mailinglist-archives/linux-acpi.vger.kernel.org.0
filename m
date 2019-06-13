@@ -2,145 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 938EE4470B
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 18:56:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFDB44465B
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 18:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730382AbfFMQ4p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jun 2019 12:56:45 -0400
-Received: from mail-eopbgr40043.outbound.protection.outlook.com ([40.107.4.43]:12426
-        "EHLO EUR03-DB5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729958AbfFMBUg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 Jun 2019 21:20:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XIMwPuMxjvdFYKCltTRO+0OJQY+jcG6AbvthDqfSWcE=;
- b=Nb2178YicKIY70yqwKhSNxrKPTPYDMFUbXsvKRsVoyQw7QbwP6wMjpxtfDdq+a4RGp6FKxvkesFqoQFadXFo9vaj1G//3wpwy/Non+QP4Zcr/CxuDWjiwDvjC+5J3FMl904BFKT9m+oR3er2HLIlBmKEeuEt1VNtSRlZeX+IIeM=
-Received: from VI1PR04MB4640.eurprd04.prod.outlook.com (20.177.56.27) by
- VI1PR04MB5550.eurprd04.prod.outlook.com (20.178.122.220) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1965.15; Thu, 13 Jun 2019 01:20:32 +0000
-Received: from VI1PR04MB4640.eurprd04.prod.outlook.com
- ([fe80::9dfe:752d:9e88:fe86]) by VI1PR04MB4640.eurprd04.prod.outlook.com
- ([fe80::9dfe:752d:9e88:fe86%7]) with mapi id 15.20.1987.010; Thu, 13 Jun 2019
- 01:20:32 +0000
-From:   Udit Kumar <udit.kumar@nxp.com>
-To:     Sudeep Holla <sudeep.holla@arm.com>,
-        "Schmauss, Erik" <erik.schmauss@intel.com>
-CC:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: RE: [EXT] Re: Help on named object in kernel
-Thread-Topic: [EXT] Re: Help on named object in kernel
-Thread-Index: AdUhB80T6nszZCo6R5C7RlLTfZjWmQANR+SwAADe74AAEVBe0A==
-Date:   Thu, 13 Jun 2019 01:20:32 +0000
-Message-ID: <VI1PR04MB4640A3A1E8B369240C3FC72091EF0@VI1PR04MB4640.eurprd04.prod.outlook.com>
-References: <VI1PR04MB4640134AAE394D8063D9F04991EC0@VI1PR04MB4640.eurprd04.prod.outlook.com>
- <CF6A88132359CE47947DB4C6E1709ED53C5E95B1@ORSMSX122.amr.corp.intel.com>
- <20190612170059.GA30299@e107155-lin>
-In-Reply-To: <20190612170059.GA30299@e107155-lin>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=udit.kumar@nxp.com; 
-x-originating-ip: [106.215.111.109]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 464aa7a1-89b9-4936-81e3-08d6ef9d5483
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:VI1PR04MB5550;
-x-ms-traffictypediagnostic: VI1PR04MB5550:
-x-microsoft-antispam-prvs: <VI1PR04MB55504377AD4240B3FE0B718691EF0@VI1PR04MB5550.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-forefront-prvs: 0067A8BA2A
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(136003)(346002)(39860400002)(396003)(366004)(189003)(199004)(13464003)(66476007)(66556008)(6116002)(229853002)(68736007)(76116006)(6246003)(3846002)(99286004)(64756008)(86362001)(66946007)(9686003)(14454004)(53936002)(478600001)(5660300002)(446003)(476003)(6436002)(11346002)(2906002)(44832011)(73956011)(66446008)(486006)(8936002)(14444005)(110136005)(76176011)(305945005)(316002)(78486014)(55016002)(102836004)(4326008)(25786009)(7696005)(26005)(74316002)(6506007)(71190400001)(53546011)(256004)(8676002)(71200400001)(54906003)(81156014)(186003)(66066001)(7736002)(52536014)(81166006)(33656002);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR04MB5550;H:VI1PR04MB4640.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: I4wX8gj6778hqtfbb/m7/Ow3F+/t8QVjnw0qCB3MP4TANpJRFfOd5HRScA37I5SQGVQA3odzDl15yiRxKli1JV+Cbpzy6WhC9z6SQGOYJR3LI2ctiznWtnC+rhgZM/2IBSfTcC2Q3sCxGh0qHWJVfLQuRldQ2kcoNSbWU4TIZ4sbHk/Bek/MbiLKU/NqCbcJJO5JslFkx+cap2QlwLyAOF5lXdsufhbdWsgXl93padcjpFH/7DwTs7nsekOeCc9FBqnselHI+Y8kxA83FGuFIrDXtuPZjQC/r0A5SkSQuYS/AScDYsSxyHBPwASQoJnF7J1M8q73OoqvXXSgL6OkugCZqwPm69Ilj6Niy8V0L4BFZzl3KNWAJrD0TJojPu5GgXkycVeIqrvVXGonFOb+fZqvVLGdDoPFxZ8UHlXyMDU=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1727637AbfFMQu6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 12:50:58 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:56558 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730157AbfFMDmZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Jun 2019 23:42:25 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 92B14B0ABB;
+        Thu, 13 Jun 2019 03:42:24 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 6CCCD5DA34;
+        Thu, 13 Jun 2019 03:42:24 +0000 (UTC)
+Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
+        by colo-mx.corp.redhat.com (Postfix) with ESMTP id 300A31806B16;
+        Thu, 13 Jun 2019 03:42:19 +0000 (UTC)
+Date:   Wed, 12 Jun 2019 23:42:18 -0400 (EDT)
+From:   Pankaj Gupta <pagupta@redhat.com>
+To:     Cornelia Huck <cohuck@redhat.com>
+Cc:     rdunlap@infradead.org, jack@suse.cz, kvm@vger.kernel.org,
+        mst@redhat.com, jasowang@redhat.com, david@fromorbit.com,
+        qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
+        dm-devel@redhat.com, adilger kernel <adilger.kernel@dilger.ca>,
+        zwisler@kernel.org, aarcange@redhat.com,
+        dave jiang <dave.jiang@intel.com>, jstaron@google.com,
+        linux-nvdimm@lists.01.org,
+        vishal l verma <vishal.l.verma@intel.com>, david@redhat.com,
+        willy@infradead.org, hch@infradead.org, linux-acpi@vger.kernel.org,
+        jmoyer@redhat.com, linux-ext4@vger.kernel.org, lenb@kernel.org,
+        kilobyte@angband.pl, riel@surriel.com,
+        yuval shaia <yuval.shaia@oracle.com>, stefanha@redhat.com,
+        pbonzini@redhat.com, dan j williams <dan.j.williams@intel.com>,
+        lcapitulino@redhat.com, kwolf@redhat.com, nilal@redhat.com,
+        tytso@mit.edu, xiaoguangrong eric <xiaoguangrong.eric@gmail.com>,
+        snitzer@redhat.com, darrick wong <darrick.wong@oracle.com>,
+        rjw@rjwysocki.net, linux-kernel@vger.kernel.org,
+        linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        imammedo@redhat.com
+Message-ID: <165204827.34945594.1560397338620.JavaMail.zimbra@redhat.com>
+In-Reply-To: <20190612162012.06b4af7f.cohuck@redhat.com>
+References: <20190612124527.3763-1-pagupta@redhat.com> <20190612124527.3763-3-pagupta@redhat.com> <20190612162012.06b4af7f.cohuck@redhat.com>
+Subject: Re: [Qemu-devel] [PATCH v13 2/7] virtio-pmem: Add virtio pmem
+ driver
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 464aa7a1-89b9-4936-81e3-08d6ef9d5483
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jun 2019 01:20:32.4693
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: udit.kumar@nxp.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5550
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.116.133, 10.4.195.21]
+Thread-Topic: virtio-pmem: Add virtio pmem driver
+Thread-Index: fhRQKNWPndesm/uRD8iV/XnY9gJKfQ==
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Thu, 13 Jun 2019 03:42:24 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
+> 
+> > This patch adds virtio-pmem driver for KVM guest.
+> > 
+> > Guest reads the persistent memory range information from
+> > Qemu over VIRTIO and registers it on nvdimm_bus. It also
+> > creates a nd_region object with the persistent memory
+> > range information so that existing 'nvdimm/pmem' driver
+> > can reserve this into system memory map. This way
+> > 'virtio-pmem' driver uses existing functionality of pmem
+> > driver to register persistent memory compatible for DAX
+> > capable filesystems.
+> > 
+> > This also provides function to perform guest flush over
+> > VIRTIO from 'pmem' driver when userspace performs flush
+> > on DAX memory range.
+> > 
+> > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
+> > Reviewed-by: Yuval Shaia <yuval.shaia@oracle.com>
+> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> > Acked-by: Jakub Staron <jstaron@google.com>
+> > Tested-by: Jakub Staron <jstaron@google.com>
+> > ---
+> >  drivers/nvdimm/Makefile          |   1 +
+> >  drivers/nvdimm/nd_virtio.c       | 125 +++++++++++++++++++++++++++++++
+> >  drivers/nvdimm/virtio_pmem.c     | 122 ++++++++++++++++++++++++++++++
+> >  drivers/nvdimm/virtio_pmem.h     |  55 ++++++++++++++
+> >  drivers/virtio/Kconfig           |  11 +++
+> >  include/uapi/linux/virtio_ids.h  |   1 +
+> >  include/uapi/linux/virtio_pmem.h |  35 +++++++++
+> >  7 files changed, 350 insertions(+)
+> >  create mode 100644 drivers/nvdimm/nd_virtio.c
+> >  create mode 100644 drivers/nvdimm/virtio_pmem.c
+> >  create mode 100644 drivers/nvdimm/virtio_pmem.h
+> >  create mode 100644 include/uapi/linux/virtio_pmem.h
+> 
+> Reviewed-by: Cornelia Huck <cohuck@redhat.com>
 
-> -----Original Message-----
-> From: linux-acpi-owner@vger.kernel.org <linux-acpi-owner@vger.kernel.org>
-> On Behalf Of Sudeep Holla
-> Sent: Wednesday, June 12, 2019 10:31 PM
-> To: Schmauss, Erik <erik.schmauss@intel.com>
-> Cc: Udit Kumar <udit.kumar@nxp.com>; ACPI Devel Maling List <linux-
-> acpi@vger.kernel.org>; lenb@kernel.org; Sudeep Holla
-> <sudeep.holla@arm.com>; Rafael J. Wysocki <rafael@kernel.org>
-> Subject: [EXT] Re: Help on named object in kernel
->=20
-> Caution: EXT Email
->=20
-> On Wed, Jun 12, 2019 at 04:37:09PM +0000, Schmauss, Erik wrote:
-> >
-> >
-> > > -----Original Message-----
-> > > From: linux-acpi-owner@vger.kernel.org [mailto:linux-acpi-
-> > > owner@vger.kernel.org] On Behalf Of Udit Kumar
-> > > Sent: Wednesday, June 12, 2019 4:48 AM
-> > > To: ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-> > > Cc: lenb@kernel.org; Rafael J. Wysocki <rafael@kernel.org>
-> > > Subject: Help on named object in kernel
-> > >
-> > > Dear ACPI experts,
-> > > I need your help on defining named objected in ACPI under _CRS.
-> > > In my firmware, I have defined two addresses for my device using
-> > > Memory32Fixed and QwordMemory under _CRS.
-> > > These  two addresses are 32-bit and 64-bit long respectively.
-> > > For Memory32Fixed, I gave DescriptorName name as REG0 and for
-> > > QwordMemory I gave DescriptorName as SATA.
-> >
-> > Could you give us the ASL for the code snippet that you're talking abou=
-t?
-> >
->=20
-> IIUC, something like below(a very rough example based on the description
-> above):
->=20
->     Name (_CRS, ResourceTemplate (){
->       QwordMemory (
->         ResourceConsumer, PosDecode, MinFixed, MaxFixed, NonCacheable,
->         ReadWrite, 0x0, 0x700100520, 0x700100523, 0x0, 4, , , "SATA",)
->       Memory32Fixed(ReadWrite, 0x3200000, 0x10000, "REG0")
->     }
->=20
-> Basically 2 or more entries of Memory/Address Space Resource Descriptor
-> which can be identified in OSPM by DescriptorName. IOW if a device has
-> 2 sets of registers/memory/address space associated with it, instead of r=
-elying
-> on the order of declaration, identify them by the descriptor name provide=
-d in
-> ASL namespace.
+Thank you Cornelia for the review.
 
-Thanks Sudeep,=20
-Shouldn't acpi frame work encapsulate descriptor name  while adding resourc=
-e.
-So that driver can rely on platform_get_resource_byname .=20
-In such way, same driver could be used with device tree and acpi based syst=
-ems.=20
-
-I am not sure, if acpi_evaluate_xx sort of api would work for descriptor-na=
-me , even if this does it will be limited to acpi only.
-=20
-> --
-> Regards,
-> Sudeep
+Best regards,
+Pankaj
+> 
+> 
