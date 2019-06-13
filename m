@@ -2,107 +2,195 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFDB44465B
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 18:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9BAE44595
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 18:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727637AbfFMQu6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jun 2019 12:50:58 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:56558 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730157AbfFMDmZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 Jun 2019 23:42:25 -0400
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 92B14B0ABB;
-        Thu, 13 Jun 2019 03:42:24 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 6CCCD5DA34;
-        Thu, 13 Jun 2019 03:42:24 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
-        by colo-mx.corp.redhat.com (Postfix) with ESMTP id 300A31806B16;
-        Thu, 13 Jun 2019 03:42:19 +0000 (UTC)
-Date:   Wed, 12 Jun 2019 23:42:18 -0400 (EDT)
-From:   Pankaj Gupta <pagupta@redhat.com>
-To:     Cornelia Huck <cohuck@redhat.com>
-Cc:     rdunlap@infradead.org, jack@suse.cz, kvm@vger.kernel.org,
-        mst@redhat.com, jasowang@redhat.com, david@fromorbit.com,
-        qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
-        dm-devel@redhat.com, adilger kernel <adilger.kernel@dilger.ca>,
-        zwisler@kernel.org, aarcange@redhat.com,
-        dave jiang <dave.jiang@intel.com>, jstaron@google.com,
-        linux-nvdimm@lists.01.org,
-        vishal l verma <vishal.l.verma@intel.com>, david@redhat.com,
-        willy@infradead.org, hch@infradead.org, linux-acpi@vger.kernel.org,
-        jmoyer@redhat.com, linux-ext4@vger.kernel.org, lenb@kernel.org,
-        kilobyte@angband.pl, riel@surriel.com,
-        yuval shaia <yuval.shaia@oracle.com>, stefanha@redhat.com,
-        pbonzini@redhat.com, dan j williams <dan.j.williams@intel.com>,
-        lcapitulino@redhat.com, kwolf@redhat.com, nilal@redhat.com,
-        tytso@mit.edu, xiaoguangrong eric <xiaoguangrong.eric@gmail.com>,
-        snitzer@redhat.com, darrick wong <darrick.wong@oracle.com>,
-        rjw@rjwysocki.net, linux-kernel@vger.kernel.org,
-        linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        imammedo@redhat.com
-Message-ID: <165204827.34945594.1560397338620.JavaMail.zimbra@redhat.com>
-In-Reply-To: <20190612162012.06b4af7f.cohuck@redhat.com>
-References: <20190612124527.3763-1-pagupta@redhat.com> <20190612124527.3763-3-pagupta@redhat.com> <20190612162012.06b4af7f.cohuck@redhat.com>
-Subject: Re: [Qemu-devel] [PATCH v13 2/7] virtio-pmem: Add virtio pmem
- driver
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        id S1730720AbfFMQpE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 12:45:04 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39087 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730398AbfFMGNf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jun 2019 02:13:35 -0400
+Received: from mail-pl1-f200.google.com ([209.85.214.200])
+        by youngberry.canonical.com with esmtps (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kai.heng.feng@canonical.com>)
+        id 1hbIzM-0005ZZ-Ua
+        for linux-acpi@vger.kernel.org; Thu, 13 Jun 2019 06:13:33 +0000
+Received: by mail-pl1-f200.google.com with SMTP id g65so11292138plb.9
+        for <linux-acpi@vger.kernel.org>; Wed, 12 Jun 2019 23:13:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=xZMnfNxiIJQHgk6DTR2b96lSjKM+Cv557iMAiHl0otE=;
+        b=XUeT/JcCHi4cKXDwtg5cC1yyepfd2qUFfLCMj15u1xaMTckYo9xKV197i3TlICXKJi
+         H8L0VLx7+sIK8nAMnNUJ4MkM5GhtKlFzuRbHxcfhgjwx9E3yXetIKpX/ULztxIkOUaDx
+         1sKM2/AIDElaFTHMeFlwFtMYDi88oICvR/zc4IDc2zXViGSgSN4C/mv1KAlCkJJEc7+p
+         BQfsxmVx88jfuoux2Ihl/nza8mMN8aphZdWcntiA0YSJ9qj5wfTtyxJOygTgt6oePm/a
+         D7iMOrBpjqcC5QtfrYg9iWydooBRdPDt64h0QVI4T4dMvwxfGseaw10Jgsi+IAzZG3U5
+         3Ahw==
+X-Gm-Message-State: APjAAAUrl+KeYpapqr6gnuSecfy7EzOj3DKpyTSbSqNmvbnzTESyKzgJ
+        Si+T3dRgGOZ6sgTDfSsi5626m0Iq0DT2URb0U6mu0dv9gSF+P6CsaGxWsIxVq7O0GLUgUuCI7Xz
+        U5Wlhuc9XJiGWa8qAfIZ6ldPQrOx0+SQR+OGqGbY=
+X-Received: by 2002:aa7:9407:: with SMTP id x7mr48714679pfo.163.1560406411622;
+        Wed, 12 Jun 2019 23:13:31 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqy/M4KOk8anUvleYe4Z0kHfP1YyeHtJEQFqJQMyjw20cPWdlOiaKzI0TiyHxZ0ofVL/cTvhMw==
+X-Received: by 2002:aa7:9407:: with SMTP id x7mr48714652pfo.163.1560406411293;
+        Wed, 12 Jun 2019 23:13:31 -0700 (PDT)
+Received: from [172.20.10.4] (223-136-183-91.emome-ip.hinet.net. [223.136.183.91])
+        by smtp.gmail.com with ESMTPSA id u123sm1554074pfu.67.2019.06.12.23.13.29
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 12 Jun 2019 23:13:30 -0700 (PDT)
+Content-Type: text/plain;
+        charset=us-ascii;
+        delsp=yes;
+        format=flowed
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: [PATCH] PCI: PM: Skip devices in D0 for suspend-to-idle
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+In-Reply-To: <2513600.jR9RdVMSR0@kreacher>
+Date:   Thu, 13 Jun 2019 14:13:26 +0800
+Cc:     Linux PCI <linux-pci@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Keith Busch <kbusch@kernel.org>
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.116.133, 10.4.195.21]
-Thread-Topic: virtio-pmem: Add virtio pmem driver
-Thread-Index: fhRQKNWPndesm/uRD8iV/XnY9gJKfQ==
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Thu, 13 Jun 2019 03:42:24 +0000 (UTC)
+Message-Id: <A0D09537-12D3-4466-945A-7D7F889A5472@canonical.com>
+References: <2513600.jR9RdVMSR0@kreacher>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+X-Mailer: Apple Mail (2.3445.104.11)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+at 06:14, Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
 
-> 
-> > This patch adds virtio-pmem driver for KVM guest.
-> > 
-> > Guest reads the persistent memory range information from
-> > Qemu over VIRTIO and registers it on nvdimm_bus. It also
-> > creates a nd_region object with the persistent memory
-> > range information so that existing 'nvdimm/pmem' driver
-> > can reserve this into system memory map. This way
-> > 'virtio-pmem' driver uses existing functionality of pmem
-> > driver to register persistent memory compatible for DAX
-> > capable filesystems.
-> > 
-> > This also provides function to perform guest flush over
-> > VIRTIO from 'pmem' driver when userspace performs flush
-> > on DAX memory range.
-> > 
-> > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
-> > Reviewed-by: Yuval Shaia <yuval.shaia@oracle.com>
-> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> > Acked-by: Jakub Staron <jstaron@google.com>
-> > Tested-by: Jakub Staron <jstaron@google.com>
-> > ---
-> >  drivers/nvdimm/Makefile          |   1 +
-> >  drivers/nvdimm/nd_virtio.c       | 125 +++++++++++++++++++++++++++++++
-> >  drivers/nvdimm/virtio_pmem.c     | 122 ++++++++++++++++++++++++++++++
-> >  drivers/nvdimm/virtio_pmem.h     |  55 ++++++++++++++
-> >  drivers/virtio/Kconfig           |  11 +++
-> >  include/uapi/linux/virtio_ids.h  |   1 +
-> >  include/uapi/linux/virtio_pmem.h |  35 +++++++++
-> >  7 files changed, 350 insertions(+)
-> >  create mode 100644 drivers/nvdimm/nd_virtio.c
-> >  create mode 100644 drivers/nvdimm/virtio_pmem.c
-> >  create mode 100644 drivers/nvdimm/virtio_pmem.h
-> >  create mode 100644 include/uapi/linux/virtio_pmem.h
-> 
-> Reviewed-by: Cornelia Huck <cohuck@redhat.com>
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> Commit d491f2b75237 ("PCI: PM: Avoid possible suspend-to-idle issue")
+> attempted to avoid a problem with devices whose drivers want them to
+> stay in D0 over suspend-to-idle and resume, but it did not go as far
+> as it should with that.
+>
+> Namely, first of all, it is questionable to change the power state
+> of a PCI bridge with a device in D0 under it, but that is not
+> actively prevented from happening during system-wide PM transitions,
+> so use the skip_bus_pm flag introduced by commit d491f2b75237 for
+> that.
+>
+> Second, the configuration of devices left in D0 (whatever the reason)
+> during suspend-to-idle need not be changed and attempting to put them
+> into D0 again by force may confuse some firmware, so explicitly avoid
+> doing that.
+>
+> Fixes: d491f2b75237 ("PCI: PM: Avoid possible suspend-to-idle issue")
+> Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Thank you Cornelia for the review.
+Thanks! This patch solves the issue I reported earlier.
 
-Best regards,
-Pankaj
-> 
-> 
+Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+
+> ---
+>
+> Tested on Dell XPS13 9360 with no issues.
+>
+> ---
+>  drivers/pci/pci-driver.c |   47 +++++++++++++++++++++++++++++++++++------------
+>  1 file changed, 35 insertions(+), 12 deletions(-)
+>
+> Index: linux-pm/drivers/pci/pci-driver.c
+> ===================================================================
+> --- linux-pm.orig/drivers/pci/pci-driver.c
+> +++ linux-pm/drivers/pci/pci-driver.c
+> @@ -524,7 +524,6 @@ static void pci_pm_default_resume_early(
+>  	pci_power_up(pci_dev);
+>  	pci_restore_state(pci_dev);
+>  	pci_pme_restore(pci_dev);
+> -	pci_fixup_device(pci_fixup_resume_early, pci_dev);
+>  }
+>
+>  /*
+> @@ -842,18 +841,16 @@ static int pci_pm_suspend_noirq(struct d
+>
+>  	if (pci_dev->skip_bus_pm) {
+>  		/*
+> -		 * The function is running for the second time in a row without
+> +		 * Either the device is a bridge with a child in D0 below it, or
+> +		 * the function is running for the second time in a row without
+>  		 * going through full resume, which is possible only during
+> -		 * suspend-to-idle in a spurious wakeup case.  Moreover, the
+> -		 * device was originally left in D0, so its power state should
+> -		 * not be changed here and the device register values saved
+> -		 * originally should be restored on resume again.
+> +		 * suspend-to-idle in a spurious wakeup case.  The device should
+> +		 * be in D0 at this point, but if it is a bridge, it may be
+> +		 * necessary to save its state.
+>  		 */
+> -		pci_dev->state_saved = true;
+> -	} else if (pci_dev->state_saved) {
+> -		if (pci_dev->current_state == PCI_D0)
+> -			pci_dev->skip_bus_pm = true;
+> -	} else {
+> +		if (!pci_dev->state_saved)
+> +			pci_save_state(pci_dev);
+> +	} else if (!pci_dev->state_saved) {
+>  		pci_save_state(pci_dev);
+>  		if (pci_power_manageable(pci_dev))
+>  			pci_prepare_to_sleep(pci_dev);
+> @@ -862,6 +859,22 @@ static int pci_pm_suspend_noirq(struct d
+>  	dev_dbg(dev, "PCI PM: Suspend power state: %s\n",
+>  		pci_power_name(pci_dev->current_state));
+>
+> +	if (pci_dev->current_state == PCI_D0) {
+> +		pci_dev->skip_bus_pm = true;
+> +		/*
+> +		 * Changing the power state of a PCI bridge with a device in D0
+> +		 * below it is questionable, so avoid doing that by setting the
+> +		 * skip_bus_pm flag for the parent bridge.
+> +		 */
+> +		if (pci_dev->bus->self)
+> +			pci_dev->bus->self->skip_bus_pm = true;
+> +	}
+> +
+> +	if (pci_dev->skip_bus_pm && !pm_suspend_via_firmware()) {
+> +		dev_dbg(dev, "PCI PM: Skipped\n");
+> +		goto Fixup;
+> +	}
+> +
+>  	pci_pm_set_unknown_state(pci_dev);
+>
+>  	/*
+> @@ -909,7 +922,16 @@ static int pci_pm_resume_noirq(struct de
+>  	if (dev_pm_smart_suspend_and_suspended(dev))
+>  		pm_runtime_set_active(dev);
+>
+> -	pci_pm_default_resume_early(pci_dev);
+> +	/*
+> +	 * In the suspend-to-idle case, devices left in D0 during suspend will
+> +	 * stay in D0, so it is not necessary to restore or update their
+> +	 * configuration here and attempting to put them into D0 again may
+> +	 * confuse some firmware, so avoid doing that.
+> +	 */
+> +	if (!pci_dev->skip_bus_pm || pm_suspend_via_firmware())
+> +		pci_pm_default_resume_early(pci_dev);
+> +
+> +	pci_fixup_device(pci_fixup_resume_early, pci_dev);
+>
+>  	if (pci_has_legacy_pm_support(pci_dev))
+>  		return pci_legacy_resume_early(dev);
+> @@ -1200,6 +1222,7 @@ static int pci_pm_restore_noirq(struct d
+>  	}
+>
+>  	pci_pm_default_resume_early(pci_dev);
+> +	pci_fixup_device(pci_fixup_resume_early, pci_dev);
+>
+>  	if (pci_has_legacy_pm_support(pci_dev))
+>  		return pci_legacy_resume_early(dev);
+
+
