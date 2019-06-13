@@ -2,28 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B03144D58
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 22:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4702144D63
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 22:27:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729823AbfFMUYp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jun 2019 16:24:45 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:41953 "EHLO
+        id S1729143AbfFMU1I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 16:27:08 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:56245 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726344AbfFMUYp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jun 2019 16:24:45 -0400
+        with ESMTP id S1727205AbfFMU1I (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jun 2019 16:27:08 -0400
 Received: from 79.184.253.190.ipv4.supernova.orange.pl (79.184.253.190) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
- id a46fe18529be701e; Thu, 13 Jun 2019 22:24:42 +0200
+ id 5c90e4d727746908; Thu, 13 Jun 2019 22:27:05 +0200
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Furquan Shaikh <furquan@google.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rajatja@google.com
-Subject: Re: [PATCH] ACPI: PM: Clear wake-up device GPEs before enabling
-Date:   Thu, 13 Jun 2019 22:24:41 +0200
-Message-ID: <13361760.nMXA0SR1Mq@kreacher>
-In-Reply-To: <20190516193616.252788-1-furquan@google.com>
-References: <20190516193616.252788-1-furquan@google.com>
+To:     Keith Busch <keith.busch@intel.com>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Rafael Wysocki <rafael@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Brice Goglin <Brice.Goglin@inria.fr>
+Subject: Re: [PATCHv2 1/2] hmat: Register memory-side cache after parsing
+Date:   Thu, 13 Jun 2019 22:27:05 +0200
+Message-ID: <2816033.6i9P6v0dDn@kreacher>
+In-Reply-To: <20190515215444.22256-1-keith.busch@intel.com>
+References: <20190515215444.22256-1-keith.busch@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -32,147 +34,184 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thursday, May 16, 2019 9:36:16 PM CEST Furquan Shaikh wrote:
-> This change clears GPE status for wake-up devices before enabling that
-> GPE. This is required to ensure that stale GPE status does
-> not result in pre-mature wake on enabling GPE for wake-up devices.
+On Wednesday, May 15, 2019 11:54:43 PM CEST Keith Busch wrote:
+> Instead of registering the hmat cache attributes in line with parsing
+> the table, save the attributes in the memory target and register them
+> after parsing completes. This will make it easier to register the
+> attributes later when hot add is supported.
 > 
-> Without this change, here is the sequence of events that is causing
-> suspend aborts on recent chrome books:
-> 
-> 1. System decides to enter sleep.
-> 2. All devices in the system are put into low power mode.
-> 3. This results in acpi_dev_suspend being called for each ACPI
-> device.
-> 4. If the device is wake capable, then acpi_dev_suspend calls
-> acpi_device_wakeup_enable to enable GPE for the device.
-> 5. If GPE status is already set, enabling GPE for the wakeup device
-> results in generating a SCI which is handled by acpi_ev_detect_gpe
-> ultimately calling wakeup_source_activate that increments wakeup
-> events, and thus aborting the suspend attempt.
-> 
-> Signed-off-by: Furquan Shaikh <furquan@google.com>
+> Signed-off-by: Keith Busch <keith.busch@intel.com>
 > ---
->  drivers/acpi/device_pm.c | 2 ++
->  1 file changed, 2 insertions(+)
+> v1 -> v2:
 > 
-> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> index b859d75eaf9f6..e05ee3ff45683 100644
-> --- a/drivers/acpi/device_pm.c
-> +++ b/drivers/acpi/device_pm.c
-> @@ -721,6 +721,8 @@ static int __acpi_device_wakeup_enable(struct acpi_device *adev,
->  	if (error)
->  		goto out;
+>   Fixed multi-level caches, and no caches. v1 incorrectly assumed only a level
+>   1 always existed (Brice).
+> 
+>  drivers/acpi/hmat/hmat.c | 70 +++++++++++++++++++++++++++++++++++++-----------
+>  1 file changed, 55 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/acpi/hmat/hmat.c b/drivers/acpi/hmat/hmat.c
+> index 96b7d39a97c6..bf23c9a27958 100644
+> --- a/drivers/acpi/hmat/hmat.c
+> +++ b/drivers/acpi/hmat/hmat.c
+> @@ -36,11 +36,17 @@ enum locality_types {
 >  
-> +	acpi_clear_gpe(wakeup->gpe_device, wakeup->gpe_number);
+>  static struct memory_locality *localities_types[4];
+>  
+> +struct target_cache {
+> +	struct list_head node;
+> +	struct node_cache_attrs cache_attrs;
+> +};
 > +
->  	status = acpi_enable_gpe(wakeup->gpe_device, wakeup->gpe_number);
->  	if (ACPI_FAILURE(status)) {
->  		acpi_disable_wakeup_device_power(adev);
+>  struct memory_target {
+>  	struct list_head node;
+>  	unsigned int memory_pxm;
+>  	unsigned int processor_pxm;
+>  	struct node_hmem_attrs hmem_attrs;
+> +	struct list_head caches;
+>  };
+>  
+>  struct memory_initiator {
+> @@ -110,6 +116,7 @@ static __init void alloc_memory_target(unsigned int mem_pxm)
+>  	target->memory_pxm = mem_pxm;
+>  	target->processor_pxm = PXM_INVAL;
+>  	list_add_tail(&target->node, &targets);
+> +	INIT_LIST_HEAD(&target->caches);
+>  }
+>  
+>  static __init const char *hmat_data_type(u8 type)
+> @@ -314,7 +321,8 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
+>  				   const unsigned long end)
+>  {
+>  	struct acpi_hmat_cache *cache = (void *)header;
+> -	struct node_cache_attrs cache_attrs;
+> +	struct memory_target *target;
+> +	struct target_cache *tcache;
+>  	u32 attrs;
+>  
+>  	if (cache->header.length < sizeof(*cache)) {
+> @@ -328,37 +336,47 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
+>  		cache->memory_PD, cache->cache_size, attrs,
+>  		cache->number_of_SMBIOShandles);
+>  
+> -	cache_attrs.size = cache->cache_size;
+> -	cache_attrs.level = (attrs & ACPI_HMAT_CACHE_LEVEL) >> 4;
+> -	cache_attrs.line_size = (attrs & ACPI_HMAT_CACHE_LINE_SIZE) >> 16;
+> +	target = find_mem_target(cache->memory_PD);
+> +	if (!target)
+> +		return 0;
+> +
+> +	tcache = kzalloc(sizeof(*tcache), GFP_KERNEL);
+> +	if (!tcache) {
+> +		pr_notice_once("Failed to allocate HMAT cache info\n");
+> +		return 0;
+> +	}
+> +
+> +	tcache->cache_attrs.size = cache->cache_size;
+> +	tcache->cache_attrs.level = (attrs & ACPI_HMAT_CACHE_LEVEL) >> 4;
+> +	tcache->cache_attrs.line_size = (attrs & ACPI_HMAT_CACHE_LINE_SIZE) >> 16;
+>  
+>  	switch ((attrs & ACPI_HMAT_CACHE_ASSOCIATIVITY) >> 8) {
+>  	case ACPI_HMAT_CA_DIRECT_MAPPED:
+> -		cache_attrs.indexing = NODE_CACHE_DIRECT_MAP;
+> +		tcache->cache_attrs.indexing = NODE_CACHE_DIRECT_MAP;
+>  		break;
+>  	case ACPI_HMAT_CA_COMPLEX_CACHE_INDEXING:
+> -		cache_attrs.indexing = NODE_CACHE_INDEXED;
+> +		tcache->cache_attrs.indexing = NODE_CACHE_INDEXED;
+>  		break;
+>  	case ACPI_HMAT_CA_NONE:
+>  	default:
+> -		cache_attrs.indexing = NODE_CACHE_OTHER;
+> +		tcache->cache_attrs.indexing = NODE_CACHE_OTHER;
+>  		break;
+>  	}
+>  
+>  	switch ((attrs & ACPI_HMAT_WRITE_POLICY) >> 12) {
+>  	case ACPI_HMAT_CP_WB:
+> -		cache_attrs.write_policy = NODE_CACHE_WRITE_BACK;
+> +		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_BACK;
+>  		break;
+>  	case ACPI_HMAT_CP_WT:
+> -		cache_attrs.write_policy = NODE_CACHE_WRITE_THROUGH;
+> +		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_THROUGH;
+>  		break;
+>  	case ACPI_HMAT_CP_NONE:
+>  	default:
+> -		cache_attrs.write_policy = NODE_CACHE_WRITE_OTHER;
+> +		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_OTHER;
+>  		break;
+>  	}
+> +	list_add_tail(&tcache->node, &target->caches);
+>  
+> -	node_add_cache(pxm_to_node(cache->memory_PD), &cache_attrs);
+>  	return 0;
+>  }
+>  
+> @@ -577,20 +595,37 @@ static __init void hmat_register_target_initiators(struct memory_target *target)
+>  	}
+>  }
+>  
+> +static __init void hmat_register_target_cache(struct memory_target *target)
+> +{
+> +	unsigned mem_nid = pxm_to_node(target->memory_pxm);
+> +	struct target_cache *tcache;
+> +
+> +	list_for_each_entry(tcache, &target->caches, node)
+> +		node_add_cache(mem_nid, &tcache->cache_attrs);
+> +}
+> +
+>  static __init void hmat_register_target_perf(struct memory_target *target)
+>  {
+>  	unsigned mem_nid = pxm_to_node(target->memory_pxm);
+>  	node_set_perf_attrs(mem_nid, &target->hmem_attrs, 0);
+>  }
+>  
+> +static __init void hmat_register_target(struct memory_target *target)
+> +{
+> +	if (!node_online(pxm_to_node(target->memory_pxm)))
+> +		return;
+> +
+> +	hmat_register_target_initiators(target);
+> +	hmat_register_target_cache(target);
+> +	hmat_register_target_perf(target);
+> +}
+> +
+>  static __init void hmat_register_targets(void)
+>  {
+>  	struct memory_target *target;
+>  
+> -	list_for_each_entry(target, &targets, node) {
+> -		hmat_register_target_initiators(target);
+> -		hmat_register_target_perf(target);
+> -	}
+> +	list_for_each_entry(target, &targets, node)
+> +		hmat_register_target(target);
+>  }
+>  
+>  static __init void hmat_free_structures(void)
+> @@ -598,8 +633,13 @@ static __init void hmat_free_structures(void)
+>  	struct memory_target *target, *tnext;
+>  	struct memory_locality *loc, *lnext;
+>  	struct memory_initiator *initiator, *inext;
+> +	struct target_cache *tcache, *cnext;
+>  
+>  	list_for_each_entry_safe(target, tnext, &targets, node) {
+> +		list_for_each_entry_safe(tcache, cnext, &target->caches, node) {
+> +			list_del(&tcache->node);
+> +			kfree(tcache);
+> +		}
+>  		list_del(&target->node);
+>  		kfree(target);
+>  	}
 > 
 
-This patch may cause events to be missed if the GPE.  I guess what you reall mean is
-something like the patch below.
+Not sure what to do with this patch and the next one in the series.
 
-This should allow the kernel to see the events generated before the GPEs are
-implicitly enabled, but it should clear them for the explicit users of acpi_enable_gpe().
+FWIW, they both are fine by me.
 
-Mika, what do you think?
+Also ISTR seeing them in a series from Dan. (?)
 
----
- drivers/acpi/acpica/acevents.h |    3 ++-
- drivers/acpi/acpica/evgpe.c    |    8 +++++++-
- drivers/acpi/acpica/evgpeblk.c |    2 +-
- drivers/acpi/acpica/evxface.c  |    2 +-
- drivers/acpi/acpica/evxfgpe.c  |    2 +-
- 5 files changed, 12 insertions(+), 5 deletions(-)
-
-Index: linux-pm/drivers/acpi/acpica/acevents.h
-===================================================================
---- linux-pm.orig/drivers/acpi/acpica/acevents.h
-+++ linux-pm/drivers/acpi/acpica/acevents.h
-@@ -69,7 +69,8 @@ acpi_status
- acpi_ev_mask_gpe(struct acpi_gpe_event_info *gpe_event_info, u8 is_masked);
- 
- acpi_status
--acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info);
-+acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info,
-+			  u8 clear_on_enable);
- 
- acpi_status
- acpi_ev_remove_gpe_reference(struct acpi_gpe_event_info *gpe_event_info);
-Index: linux-pm/drivers/acpi/acpica/evgpe.c
-===================================================================
---- linux-pm.orig/drivers/acpi/acpica/evgpe.c
-+++ linux-pm/drivers/acpi/acpica/evgpe.c
-@@ -146,6 +146,7 @@ acpi_ev_mask_gpe(struct acpi_gpe_event_i
-  * FUNCTION:    acpi_ev_add_gpe_reference
-  *
-  * PARAMETERS:  gpe_event_info          - Add a reference to this GPE
-+ *              clear_on_enable         - Clear GPE status before enabling it
-  *
-  * RETURN:      Status
-  *
-@@ -155,7 +156,8 @@ acpi_ev_mask_gpe(struct acpi_gpe_event_i
-  ******************************************************************************/
- 
- acpi_status
--acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info)
-+acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info,
-+			  u8 clear_on_enable)
- {
- 	acpi_status status = AE_OK;
- 
-@@ -170,6 +172,10 @@ acpi_ev_add_gpe_reference(struct acpi_gp
- 
- 		/* Enable on first reference */
- 
-+		if (clear_on_enable) {
-+			(void)acpi_hw_clear_gpe(gpe_event_info);
-+		}
-+
- 		status = acpi_ev_update_gpe_enable_mask(gpe_event_info);
- 		if (ACPI_SUCCESS(status)) {
- 			status = acpi_ev_enable_gpe(gpe_event_info);
-Index: linux-pm/drivers/acpi/acpica/evgpeblk.c
-===================================================================
---- linux-pm.orig/drivers/acpi/acpica/evgpeblk.c
-+++ linux-pm/drivers/acpi/acpica/evgpeblk.c
-@@ -453,7 +453,7 @@ acpi_ev_initialize_gpe_block(struct acpi
- 				continue;
- 			}
- 
--			status = acpi_ev_add_gpe_reference(gpe_event_info);
-+			status = acpi_ev_add_gpe_reference(gpe_event_info, FALSE);
- 			if (ACPI_FAILURE(status)) {
- 				ACPI_EXCEPTION((AE_INFO, status,
- 					"Could not enable GPE 0x%02X",
-Index: linux-pm/drivers/acpi/acpica/evxface.c
-===================================================================
---- linux-pm.orig/drivers/acpi/acpica/evxface.c
-+++ linux-pm/drivers/acpi/acpica/evxface.c
-@@ -971,7 +971,7 @@ acpi_remove_gpe_handler(acpi_handle gpe_
- 	      ACPI_GPE_DISPATCH_METHOD) ||
- 	     (ACPI_GPE_DISPATCH_TYPE(handler->original_flags) ==
- 	      ACPI_GPE_DISPATCH_NOTIFY)) && handler->originally_enabled) {
--		(void)acpi_ev_add_gpe_reference(gpe_event_info);
-+		(void)acpi_ev_add_gpe_reference(gpe_event_info, FALSE);
- 		if (ACPI_GPE_IS_POLLING_NEEDED(gpe_event_info)) {
- 
- 			/* Poll edge triggered GPEs to handle existing events */
-Index: linux-pm/drivers/acpi/acpica/evxfgpe.c
-===================================================================
---- linux-pm.orig/drivers/acpi/acpica/evxfgpe.c
-+++ linux-pm/drivers/acpi/acpica/evxfgpe.c
-@@ -108,7 +108,7 @@ acpi_status acpi_enable_gpe(acpi_handle
- 	if (gpe_event_info) {
- 		if (ACPI_GPE_DISPATCH_TYPE(gpe_event_info->flags) !=
- 		    ACPI_GPE_DISPATCH_NONE) {
--			status = acpi_ev_add_gpe_reference(gpe_event_info);
-+			status = acpi_ev_add_gpe_reference(gpe_event_info, TRUE);
- 			if (ACPI_SUCCESS(status) &&
- 			    ACPI_GPE_IS_POLLING_NEEDED(gpe_event_info)) {
- 
 
 
 
