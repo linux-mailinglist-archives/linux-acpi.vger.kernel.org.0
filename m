@@ -2,121 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1284444776
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 19:00:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE96B4488F
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 19:10:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393021AbfFMQ74 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jun 2019 12:59:56 -0400
-Received: from mga14.intel.com ([192.55.52.115]:1397 "EHLO mga14.intel.com"
+        id S1729593AbfFMRIs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 13:08:48 -0400
+Received: from foss.arm.com ([217.140.110.172]:47692 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729799AbfFMQ74 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 13 Jun 2019 12:59:56 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Jun 2019 09:59:54 -0700
-X-ExtLoop1: 1
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 13 Jun 2019 09:59:52 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id EE1EB141; Thu, 13 Jun 2019 19:59:51 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-kernel@vger.kernel.org,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v2, resend] device property: Add helpers to count items in an array
-Date:   Thu, 13 Jun 2019 19:59:51 +0300
-Message-Id: <20190613165951.64148-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.20.1
+        id S1729910AbfFMRIi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 13 Jun 2019 13:08:38 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E6C06367;
+        Thu, 13 Jun 2019 10:08:37 -0700 (PDT)
+Received: from e107155-lin (e107155-lin.cambridge.arm.com [10.1.196.42])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 07C4A3F694;
+        Thu, 13 Jun 2019 10:08:36 -0700 (PDT)
+Date:   Thu, 13 Jun 2019 18:08:31 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Udit Kumar <udit.kumar@nxp.com>
+Cc:     "Schmauss, Erik" <erik.schmauss@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [EXT] Re: Help on named object in kernel
+Message-ID: <20190613170831.GA27717@e107155-lin>
+References: <VI1PR04MB4640134AAE394D8063D9F04991EC0@VI1PR04MB4640.eurprd04.prod.outlook.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C5E95B1@ORSMSX122.amr.corp.intel.com>
+ <20190612170059.GA30299@e107155-lin>
+ <VI1PR04MB4640A3A1E8B369240C3FC72091EF0@VI1PR04MB4640.eurprd04.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <VI1PR04MB4640A3A1E8B369240C3FC72091EF0@VI1PR04MB4640.eurprd04.prod.outlook.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The usual pattern to allocate the necessary space for an array of properties is
-to count them first by calling:
+On Thu, Jun 13, 2019 at 01:20:32AM +0000, Udit Kumar wrote:
+>
+>
+> > -----Original Message-----
+> > From: linux-acpi-owner@vger.kernel.org <linux-acpi-owner@vger.kernel.org>
+> > On Behalf Of Sudeep Holla
+> > Sent: Wednesday, June 12, 2019 10:31 PM
+> > To: Schmauss, Erik <erik.schmauss@intel.com>
+> > Cc: Udit Kumar <udit.kumar@nxp.com>; ACPI Devel Maling List <linux-
+> > acpi@vger.kernel.org>; lenb@kernel.org; Sudeep Holla
+> > <sudeep.holla@arm.com>; Rafael J. Wysocki <rafael@kernel.org>
+> > Subject: [EXT] Re: Help on named object in kernel
+> >
+> > Caution: EXT Email
+> >
+> > On Wed, Jun 12, 2019 at 04:37:09PM +0000, Schmauss, Erik wrote:
+> > >
+> > >
+> > > > -----Original Message-----
+> > > > From: linux-acpi-owner@vger.kernel.org [mailto:linux-acpi-
+> > > > owner@vger.kernel.org] On Behalf Of Udit Kumar
+> > > > Sent: Wednesday, June 12, 2019 4:48 AM
+> > > > To: ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+> > > > Cc: lenb@kernel.org; Rafael J. Wysocki <rafael@kernel.org>
+> > > > Subject: Help on named object in kernel
+> > > >
+> > > > Dear ACPI experts,
+> > > > I need your help on defining named objected in ACPI under _CRS.
+> > > > In my firmware, I have defined two addresses for my device using
+> > > > Memory32Fixed and QwordMemory under _CRS.
+> > > > These  two addresses are 32-bit and 64-bit long respectively.
+> > > > For Memory32Fixed, I gave DescriptorName name as REG0 and for
+> > > > QwordMemory I gave DescriptorName as SATA.
+> > >
+> > > Could you give us the ASL for the code snippet that you're talking about?
+> > >
+> >
+> > IIUC, something like below(a very rough example based on the description
+> > above):
+> >
+> >     Name (_CRS, ResourceTemplate (){
+> >       QwordMemory (
+> >         ResourceConsumer, PosDecode, MinFixed, MaxFixed, NonCacheable,
+> >         ReadWrite, 0x0, 0x700100520, 0x700100523, 0x0, 4, , , "SATA",)
+> >       Memory32Fixed(ReadWrite, 0x3200000, 0x10000, "REG0")
+> >     }
+> >
+> > Basically 2 or more entries of Memory/Address Space Resource Descriptor
+> > which can be identified in OSPM by DescriptorName. IOW if a device has
+> > 2 sets of registers/memory/address space associated with it, instead of relying
+> > on the order of declaration, identify them by the descriptor name provided in
+> > ASL namespace.
+>
+> Thanks Sudeep,
+> Shouldn't acpi frame work encapsulate descriptor name  while adding resource.
+> So that driver can rely on platform_get_resource_byname .
+> In such way, same driver could be used with device tree and acpi based systems.
+>
+> I am not sure, if acpi_evaluate_xx sort of api would work for
+> descriptor-name , even if this does it will be limited to acpi only.
+>
 
-  count = device_property_read_uXX_array(dev, propname, NULL, 0);
-  if (count < 0)
-	return count;
+IIUC acpi_resource_source should have all the information, just not
+used for this purpose yet. I do see some uses of string_ptr in that
+elsewhere. I haven't tried it, but looking at the code I think the
+support is there already.
 
-Introduce helpers device_property_count_uXX() to count items by supplying hard
-coded last two parameters to device_property_readXX_array().
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
----
- include/linux/property.h | 44 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
-
-diff --git a/include/linux/property.h b/include/linux/property.h
-index 088d4db7e949..dbacf17fff2e 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -148,6 +148,26 @@ static inline int device_property_read_u64(struct device *dev,
- 	return device_property_read_u64_array(dev, propname, val, 1);
- }
- 
-+static inline int device_property_count_u8(struct device *dev, const char *propname)
-+{
-+	return device_property_read_u8_array(dev, propname, NULL, 0);
-+}
-+
-+static inline int device_property_count_u16(struct device *dev, const char *propname)
-+{
-+	return device_property_read_u16_array(dev, propname, NULL, 0);
-+}
-+
-+static inline int device_property_count_u32(struct device *dev, const char *propname)
-+{
-+	return device_property_read_u32_array(dev, propname, NULL, 0);
-+}
-+
-+static inline int device_property_count_u64(struct device *dev, const char *propname)
-+{
-+	return device_property_read_u64_array(dev, propname, NULL, 0);
-+}
-+
- static inline bool fwnode_property_read_bool(const struct fwnode_handle *fwnode,
- 					     const char *propname)
- {
-@@ -178,6 +198,30 @@ static inline int fwnode_property_read_u64(const struct fwnode_handle *fwnode,
- 	return fwnode_property_read_u64_array(fwnode, propname, val, 1);
- }
- 
-+static inline int fwnode_property_count_u8(const struct fwnode_handle *fwnode,
-+					   const char *propname)
-+{
-+	return fwnode_property_read_u8_array(fwnode, propname, NULL, 0);
-+}
-+
-+static inline int fwnode_property_count_u16(const struct fwnode_handle *fwnode,
-+					    const char *propname)
-+{
-+	return fwnode_property_read_u16_array(fwnode, propname, NULL, 0);
-+}
-+
-+static inline int fwnode_property_count_u32(const struct fwnode_handle *fwnode,
-+					    const char *propname)
-+{
-+	return fwnode_property_read_u32_array(fwnode, propname, NULL, 0);
-+}
-+
-+static inline int fwnode_property_count_u64(const struct fwnode_handle *fwnode,
-+					    const char *propname)
-+{
-+	return fwnode_property_read_u64_array(fwnode, propname, NULL, 0);
-+}
-+
- /**
-  * struct property_entry - "Built-in" device property representation.
-  * @name: Name of the property.
--- 
-2.20.1
-
+But the question is who/where will the list of names for such resource
+is listed for a given HID/CID/... ?
+--
+Regards,
+Sudeep
