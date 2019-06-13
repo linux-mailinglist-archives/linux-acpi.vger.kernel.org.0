@@ -2,165 +2,184 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C7EAB44E94
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 23:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B927B44E9D
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 23:38:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727075AbfFMVhe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jun 2019 17:37:34 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:49424 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725747AbfFMVhe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jun 2019 17:37:34 -0400
-Received: from 79.184.253.190.ipv4.supernova.orange.pl (79.184.253.190) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
- id 480796b137926e4f; Thu, 13 Jun 2019 23:37:31 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Shaunak Saha <shaunak.saha@intel.com>
-Cc:     linux-acpi@vger.kernel.org, mario_limonciello@dell.com
-Subject: Re: drivers/acpi: Change the lpit function call flow
-Date:   Thu, 13 Jun 2019 23:37:30 +0200
-Message-ID: <2151762.asltZFE8WJ@kreacher>
-In-Reply-To: <20190526202750.4614-1-shaunak.saha@intel.com>
-References: <20190526202750.4614-1-shaunak.saha@intel.com>
+        id S1726806AbfFMVi0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 17:38:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49820 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725747AbfFMVi0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 13 Jun 2019 17:38:26 -0400
+Received: from localhost (unknown [69.71.4.100])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E703721537;
+        Thu, 13 Jun 2019 21:38:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560461905;
+        bh=M6myfQdWWELGGbpAI4gL7Nt7LV9Ty3oKQkl8fFDTXBo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GiOEXmkQohC5GhiHicscoDbvsQnf1y6heSN7wKnwrYQrCz878j+fqKZhH5xjnDUtK
+         HhOJKhXv2jJryT0/NZONEpoeKAfuYHFAaB9cSSFQfosZn4xl0zVA4fUuKHkiM7ydu1
+         90kKhgggnzfRc1MHJRuCVCOy+GoZO/RJA7zEt05k=
+Date:   Thu, 13 Jun 2019 16:38:23 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux PCI <linux-pci@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Keith Busch <kbusch@kernel.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>
+Subject: Re: [PATCH] PCI: PM: Skip devices in D0 for suspend-to-idle
+Message-ID: <20190613213823.GM13533@google.com>
+References: <2513600.jR9RdVMSR0@kreacher>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2513600.jR9RdVMSR0@kreacher>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sunday, May 26, 2019 10:27:50 PM CEST Shaunak Saha wrote:
-> In the present implementation sleep function was getting called in
-> acpi_s2idle_prepare and as all the devices may not have suspended
-> at that stage e.g. if we are telling ec about the S0ix then calling early
-> can cause ec reply wrongly interpreted as spurious wake events.
-> Here we call it at much later stage in acpi_s2idle_sync. As per the
-> specification the entry _DSM function may be invoked when the OS state has
-> reached sufficient criteria for processor idle state entry matching
-> Entry Trigger defined in LPIT to be interpreted as a request for the
-> platform to enter a Low Power S0 Idle (LPI) state. Here we are checking if
-> the we reached the minimum D-State defined in the constraint function of
-> the LPIT _DSM method before calling the sleep entry function. Also not
-> checking for constraint in acpi_s2idle_wake anymore and also changed the
-> acpi info loglevel to debug in lpi_check_constraint.
+On Thu, Jun 13, 2019 at 12:14:02AM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Commit d491f2b75237 ("PCI: PM: Avoid possible suspend-to-idle issue")
+> attempted to avoid a problem with devices whose drivers want them to
+> stay in D0 over suspend-to-idle and resume, but it did not go as far
+> as it should with that.
+> 
+> Namely, first of all, it is questionable to change the power state
+> of a PCI bridge with a device in D0 under it, but that is not
+> actively prevented from happening during system-wide PM transitions,
+> so use the skip_bus_pm flag introduced by commit d491f2b75237 for
+> that.
 
-This patch does three different things, two of which are questionable and
-one is done incorrectly.
+I think it's more than questionable.  I think a bridge is *required*
+to be in D0 if any downstream device is in D0.  Based on the PCI PM
+spec r1.2, sec 6, table 6-1, if the bridge is not in D0, there can be
+no PCI transactions on its secondary bus.
 
-First off, aborting system suspend because S0ix constraints are not met is
-a non-starter.  The kernel really cannot refuse to suspend the system for
-that reason (and diagnostics can be done after resume anyway).
+> Second, the configuration of devices left in D0 (whatever the reason)
+> during suspend-to-idle need not be changed and attempting to put them
+> into D0 again by force may confuse some firmware, so explicitly avoid
+> doing that.
 
-Second, according to my knowledge, it is not a bug to invoke the
-ACPI_LPS0_ENTRY _DSM when the constraints are not met.  Do you
-actually know about any platforms where that may cause real problems
-to occur?
+I don't know what to do with "may confuse some firmware"; it doesn't
+say what firmware is affected or why, so it sort of leads to "we can
+never touch this code because we don't know what might break."
 
-Finally, it is too late to invoke that _DSM from acpi_s2idle_sync(), because
-that is called after leaving S0ix and resuming some devices.
+But IMO the first reason by itself is more than enough to keep a
+bridge in D0 if any downstream device is in D0.
 
-I can believe the claim that invoking the ACPI_LPS0_ENTRY _DSM in
-acpi_s2idle_prepare() may be too early and it may confuse the EC, say,
-but I'm not sure why the ACPI_LPS0_SCREEN_OFF _DSM would be
-affected by that too.
+> Fixes: d491f2b75237 ("PCI: PM: Avoid possible suspend-to-idle issue")
+> Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+> 
+> Tested on Dell XPS13 9360 with no issues.
+> 
+> ---
+>  drivers/pci/pci-driver.c |   47 +++++++++++++++++++++++++++++++++++------------
+>  1 file changed, 35 insertions(+), 12 deletions(-)
+> 
+> Index: linux-pm/drivers/pci/pci-driver.c
+> ===================================================================
+> --- linux-pm.orig/drivers/pci/pci-driver.c
+> +++ linux-pm/drivers/pci/pci-driver.c
+> @@ -524,7 +524,6 @@ static void pci_pm_default_resume_early(
+>  	pci_power_up(pci_dev);
+>  	pci_restore_state(pci_dev);
+>  	pci_pme_restore(pci_dev);
+> -	pci_fixup_device(pci_fixup_resume_early, pci_dev);
+>  }
+>  
+>  /*
+> @@ -842,18 +841,16 @@ static int pci_pm_suspend_noirq(struct d
+>  
+>  	if (pci_dev->skip_bus_pm) {
+>  		/*
+> -		 * The function is running for the second time in a row without
+> +		 * Either the device is a bridge with a child in D0 below it, or
+> +		 * the function is running for the second time in a row without
+>  		 * going through full resume, which is possible only during
+> -		 * suspend-to-idle in a spurious wakeup case.  Moreover, the
+> -		 * device was originally left in D0, so its power state should
+> -		 * not be changed here and the device register values saved
+> -		 * originally should be restored on resume again.
+> +		 * suspend-to-idle in a spurious wakeup case.  The device should
+> +		 * be in D0 at this point, but if it is a bridge, it may be
+> +		 * necessary to save its state.
+>  		 */
+> -		pci_dev->state_saved = true;
+> -	} else if (pci_dev->state_saved) {
+> -		if (pci_dev->current_state == PCI_D0)
+> -			pci_dev->skip_bus_pm = true;
+> -	} else {
+> +		if (!pci_dev->state_saved)
+> +			pci_save_state(pci_dev);
+> +	} else if (!pci_dev->state_saved) {
+>  		pci_save_state(pci_dev);
+>  		if (pci_power_manageable(pci_dev))
+>  			pci_prepare_to_sleep(pci_dev);
+> @@ -862,6 +859,22 @@ static int pci_pm_suspend_noirq(struct d
+>  	dev_dbg(dev, "PCI PM: Suspend power state: %s\n",
+>  		pci_power_name(pci_dev->current_state));
+>  
+> +	if (pci_dev->current_state == PCI_D0) {
+> +		pci_dev->skip_bus_pm = true;
+> +		/*
+> +		 * Changing the power state of a PCI bridge with a device in D0
+> +		 * below it is questionable, so avoid doing that by setting the
+> +		 * skip_bus_pm flag for the parent bridge.
 
-So overall, the patch below may actually work, but not the $subject one
-(if evaluating the ACPI_LPS0_ENTRY _DSM when the constraints are not
-met is *really* problematic, it may be necessary to add the check
-for that on top of it).
+Maybe "Per PCI PM r1.2, table 6-1, a bridge must be in D0 if any
+downstream device is in D0"?
 
----
- drivers/acpi/sleep.c    |   13 +++++++++----
- include/linux/suspend.h |    1 +
- kernel/power/suspend.c  |    8 ++++++--
- 3 files changed, 16 insertions(+), 6 deletions(-)
-
-Index: linux-pm/drivers/acpi/sleep.c
-===================================================================
---- linux-pm.orig/drivers/acpi/sleep.c
-+++ linux-pm/drivers/acpi/sleep.c
-@@ -967,8 +967,6 @@ static int acpi_s2idle_prepare(void)
- {
- 	if (lps0_device_handle) {
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
--		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
--
- 		acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
- 	}
- 
-@@ -983,6 +981,12 @@ static int acpi_s2idle_prepare(void)
- 	return 0;
- }
- 
-+static void acpi_s2idle_sleep(void)
-+{
-+	if (lps0_device_handle)
-+		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
-+}
-+
- static void acpi_s2idle_wake(void)
- {
- 	if (!lps0_device_handle)
-@@ -1007,6 +1011,8 @@ static void acpi_s2idle_wake(void)
- 		 */
- 		acpi_ec_dispatch_gpe();
- 	}
-+
-+	acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
- }
- 
- static void acpi_s2idle_sync(void)
-@@ -1034,8 +1040,6 @@ static void acpi_s2idle_restore(void)
- 
- 	if (lps0_device_handle) {
- 		acpi_ec_set_gpe_wake_mask(ACPI_GPE_DISABLE);
--
--		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON);
- 	}
- }
-@@ -1049,6 +1053,7 @@ static void acpi_s2idle_end(void)
- static const struct platform_s2idle_ops acpi_s2idle_ops = {
- 	.begin = acpi_s2idle_begin,
- 	.prepare = acpi_s2idle_prepare,
-+	.sleep = acpi_s2idle_sleep,
- 	.wake = acpi_s2idle_wake,
- 	.sync = acpi_s2idle_sync,
- 	.restore = acpi_s2idle_restore,
-Index: linux-pm/include/linux/suspend.h
-===================================================================
---- linux-pm.orig/include/linux/suspend.h
-+++ linux-pm/include/linux/suspend.h
-@@ -190,6 +190,7 @@ struct platform_suspend_ops {
- struct platform_s2idle_ops {
- 	int (*begin)(void);
- 	int (*prepare)(void);
-+	void (*sleep)(void);
- 	void (*wake)(void);
- 	void (*sync)(void);
- 	void (*restore)(void);
-Index: linux-pm/kernel/power/suspend.c
-===================================================================
---- linux-pm.orig/kernel/power/suspend.c
-+++ linux-pm/kernel/power/suspend.c
-@@ -136,10 +136,14 @@ static void s2idle_loop(void)
- 		 * so prevent them from terminating the loop right away.
- 		 */
- 		error = dpm_noirq_suspend_devices(PMSG_SUSPEND);
--		if (!error)
-+		if (!error) {
-+			if (s2idle_ops && s2idle_ops->sleep)
-+				s2idle_ops->sleep();
-+
- 			s2idle_enter();
--		else if (error == -EBUSY && pm_wakeup_pending())
-+		} else if (error == -EBUSY && pm_wakeup_pending()) {
- 			error = 0;
-+		}
- 
- 		if (!error && s2idle_ops && s2idle_ops->wake)
- 			s2idle_ops->wake();
-
-
-
+> +		 */
+> +		if (pci_dev->bus->self)
+> +			pci_dev->bus->self->skip_bus_pm = true;
+> +	}
+> +
+> +	if (pci_dev->skip_bus_pm && !pm_suspend_via_firmware()) {
+> +		dev_dbg(dev, "PCI PM: Skipped\n");
+> +		goto Fixup;
+> +	}
+> +
+>  	pci_pm_set_unknown_state(pci_dev);
+>  
+>  	/*
+> @@ -909,7 +922,16 @@ static int pci_pm_resume_noirq(struct de
+>  	if (dev_pm_smart_suspend_and_suspended(dev))
+>  		pm_runtime_set_active(dev);
+>  
+> -	pci_pm_default_resume_early(pci_dev);
+> +	/*
+> +	 * In the suspend-to-idle case, devices left in D0 during suspend will
+> +	 * stay in D0, so it is not necessary to restore or update their
+> +	 * configuration here and attempting to put them into D0 again may
+> +	 * confuse some firmware, so avoid doing that.
+> +	 */
+> +	if (!pci_dev->skip_bus_pm || pm_suspend_via_firmware())
+> +		pci_pm_default_resume_early(pci_dev);
+> +
+> +	pci_fixup_device(pci_fixup_resume_early, pci_dev);
+>  
+>  	if (pci_has_legacy_pm_support(pci_dev))
+>  		return pci_legacy_resume_early(dev);
+> @@ -1200,6 +1222,7 @@ static int pci_pm_restore_noirq(struct d
+>  	}
+>  
+>  	pci_pm_default_resume_early(pci_dev);
+> +	pci_fixup_device(pci_fixup_resume_early, pci_dev);
+>  
+>  	if (pci_has_legacy_pm_support(pci_dev))
+>  		return pci_legacy_resume_early(dev);
+> 
+> 
+> 
