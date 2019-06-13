@@ -2,101 +2,177 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD2A644BE9
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 21:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B03144D58
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 22:24:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726863AbfFMTOk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jun 2019 15:14:40 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:52008 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725842AbfFMTOk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jun 2019 15:14:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=XusiFTXNYQTgic9TVHl9vDobQTLjL/8WBaiJ9jHmCUY=; b=Jt3+wogChSwIBpsEwq/iDzoKv
-        UGb+V9EAy3x9o4QtWBFBYxZ1lzCA+zR8vcoMGFNFWfnLFb3c6DUQNS0IRCjnaOkRhbKrpd+xG1MwB
-        DzR+rXkwR9uyYk3Zju8wvpoEdyoTavBewahwpXVKwnkv6P84t5Zbmdaa46Do5g6tsWFqI=;
-Received: from [2001:470:1f1d:6b5:7e7a:91ff:fede:4a45] (helo=finisterre.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1hbVBE-0005UD-40; Thu, 13 Jun 2019 19:14:36 +0000
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-        id 8E4B4440046; Thu, 13 Jun 2019 20:14:35 +0100 (BST)
-Date:   Thu, 13 Jun 2019 20:14:35 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-spi@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Masahisa Kojima <masahisa.kojima@linaro.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Lukas Wunner <lukas@wunner.de>
-Subject: Re: [PATCH v2] spi/acpi: enumerate all SPI slaves in the namespace
-Message-ID: <20190613191435.GY5316@sirena.org.uk>
-References: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
- <20190603110832.GA2781@lahna.fi.intel.com>
- <CAKv+Gu8rTernjct93rsWo0X3FTp6bsV=0JvNGQr8C8OaqB1S7A@mail.gmail.com>
+        id S1729823AbfFMUYp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 16:24:45 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:41953 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726344AbfFMUYp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jun 2019 16:24:45 -0400
+Received: from 79.184.253.190.ipv4.supernova.orange.pl (79.184.253.190) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
+ id a46fe18529be701e; Thu, 13 Jun 2019 22:24:42 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Furquan Shaikh <furquan@google.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rajatja@google.com
+Subject: Re: [PATCH] ACPI: PM: Clear wake-up device GPEs before enabling
+Date:   Thu, 13 Jun 2019 22:24:41 +0200
+Message-ID: <13361760.nMXA0SR1Mq@kreacher>
+In-Reply-To: <20190516193616.252788-1-furquan@google.com>
+References: <20190516193616.252788-1-furquan@google.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="g3IWFuR7/O9KKcN6"
-Content-Disposition: inline
-In-Reply-To: <CAKv+Gu8rTernjct93rsWo0X3FTp6bsV=0JvNGQr8C8OaqB1S7A@mail.gmail.com>
-X-Cookie: Editing is a rewording activity.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Thursday, May 16, 2019 9:36:16 PM CEST Furquan Shaikh wrote:
+> This change clears GPE status for wake-up devices before enabling that
+> GPE. This is required to ensure that stale GPE status does
+> not result in pre-mature wake on enabling GPE for wake-up devices.
+> 
+> Without this change, here is the sequence of events that is causing
+> suspend aborts on recent chrome books:
+> 
+> 1. System decides to enter sleep.
+> 2. All devices in the system are put into low power mode.
+> 3. This results in acpi_dev_suspend being called for each ACPI
+> device.
+> 4. If the device is wake capable, then acpi_dev_suspend calls
+> acpi_device_wakeup_enable to enable GPE for the device.
+> 5. If GPE status is already set, enabling GPE for the wakeup device
+> results in generating a SCI which is handled by acpi_ev_detect_gpe
+> ultimately calling wakeup_source_activate that increments wakeup
+> events, and thus aborting the suspend attempt.
+> 
+> Signed-off-by: Furquan Shaikh <furquan@google.com>
+> ---
+>  drivers/acpi/device_pm.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+> index b859d75eaf9f6..e05ee3ff45683 100644
+> --- a/drivers/acpi/device_pm.c
+> +++ b/drivers/acpi/device_pm.c
+> @@ -721,6 +721,8 @@ static int __acpi_device_wakeup_enable(struct acpi_device *adev,
+>  	if (error)
+>  		goto out;
+>  
+> +	acpi_clear_gpe(wakeup->gpe_device, wakeup->gpe_number);
+> +
+>  	status = acpi_enable_gpe(wakeup->gpe_device, wakeup->gpe_number);
+>  	if (ACPI_FAILURE(status)) {
+>  		acpi_disable_wakeup_device_power(adev);
+> 
 
---g3IWFuR7/O9KKcN6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This patch may cause events to be missed if the GPE.  I guess what you reall mean is
+something like the patch below.
 
-On Mon, Jun 03, 2019 at 05:56:00PM +0200, Ard Biesheuvel wrote:
-> On Mon, 3 Jun 2019 at 13:08, Mika Westerberg
-> > On Thu, May 30, 2019 at 01:16:34PM +0200, Ard Biesheuvel wrote:
+This should allow the kernel to see the events generated before the GPEs are
+implicitly enabled, but it should clear them for the explicit users of acpi_enable_gpe().
 
-> > > -     status = acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, 1,
-> > > +     status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
+Mika, what do you think?
 
-> > Would it be simpler to differentiate here between Apple and non-Apple
-> > systems? Then we don't need all that special code and the above becomes:
+---
+ drivers/acpi/acpica/acevents.h |    3 ++-
+ drivers/acpi/acpica/evgpe.c    |    8 +++++++-
+ drivers/acpi/acpica/evgpeblk.c |    2 +-
+ drivers/acpi/acpica/evxface.c  |    2 +-
+ drivers/acpi/acpica/evxfgpe.c  |    2 +-
+ 5 files changed, 12 insertions(+), 5 deletions(-)
 
-> >         depth = x86_apple_system ? 1 : SPI_ACPI_ENUMERATE_MAX_DEPTH;
-> >         status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT, depth,
-> >         ..
+Index: linux-pm/drivers/acpi/acpica/acevents.h
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/acevents.h
++++ linux-pm/drivers/acpi/acpica/acevents.h
+@@ -69,7 +69,8 @@ acpi_status
+ acpi_ev_mask_gpe(struct acpi_gpe_event_info *gpe_event_info, u8 is_masked);
+ 
+ acpi_status
+-acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info);
++acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info,
++			  u8 clear_on_enable);
+ 
+ acpi_status
+ acpi_ev_remove_gpe_reference(struct acpi_gpe_event_info *gpe_event_info);
+Index: linux-pm/drivers/acpi/acpica/evgpe.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/evgpe.c
++++ linux-pm/drivers/acpi/acpica/evgpe.c
+@@ -146,6 +146,7 @@ acpi_ev_mask_gpe(struct acpi_gpe_event_i
+  * FUNCTION:    acpi_ev_add_gpe_reference
+  *
+  * PARAMETERS:  gpe_event_info          - Add a reference to this GPE
++ *              clear_on_enable         - Clear GPE status before enabling it
+  *
+  * RETURN:      Status
+  *
+@@ -155,7 +156,8 @@ acpi_ev_mask_gpe(struct acpi_gpe_event_i
+  ******************************************************************************/
+ 
+ acpi_status
+-acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info)
++acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info,
++			  u8 clear_on_enable)
+ {
+ 	acpi_status status = AE_OK;
+ 
+@@ -170,6 +172,10 @@ acpi_ev_add_gpe_reference(struct acpi_gp
+ 
+ 		/* Enable on first reference */
+ 
++		if (clear_on_enable) {
++			(void)acpi_hw_clear_gpe(gpe_event_info);
++		}
++
+ 		status = acpi_ev_update_gpe_enable_mask(gpe_event_info);
+ 		if (ACPI_SUCCESS(status)) {
+ 			status = acpi_ev_enable_gpe(gpe_event_info);
+Index: linux-pm/drivers/acpi/acpica/evgpeblk.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/evgpeblk.c
++++ linux-pm/drivers/acpi/acpica/evgpeblk.c
+@@ -453,7 +453,7 @@ acpi_ev_initialize_gpe_block(struct acpi
+ 				continue;
+ 			}
+ 
+-			status = acpi_ev_add_gpe_reference(gpe_event_info);
++			status = acpi_ev_add_gpe_reference(gpe_event_info, FALSE);
+ 			if (ACPI_FAILURE(status)) {
+ 				ACPI_EXCEPTION((AE_INFO, status,
+ 					"Could not enable GPE 0x%02X",
+Index: linux-pm/drivers/acpi/acpica/evxface.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/evxface.c
++++ linux-pm/drivers/acpi/acpica/evxface.c
+@@ -971,7 +971,7 @@ acpi_remove_gpe_handler(acpi_handle gpe_
+ 	      ACPI_GPE_DISPATCH_METHOD) ||
+ 	     (ACPI_GPE_DISPATCH_TYPE(handler->original_flags) ==
+ 	      ACPI_GPE_DISPATCH_NOTIFY)) && handler->originally_enabled) {
+-		(void)acpi_ev_add_gpe_reference(gpe_event_info);
++		(void)acpi_ev_add_gpe_reference(gpe_event_info, FALSE);
+ 		if (ACPI_GPE_IS_POLLING_NEEDED(gpe_event_info)) {
+ 
+ 			/* Poll edge triggered GPEs to handle existing events */
+Index: linux-pm/drivers/acpi/acpica/evxfgpe.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/evxfgpe.c
++++ linux-pm/drivers/acpi/acpica/evxfgpe.c
+@@ -108,7 +108,7 @@ acpi_status acpi_enable_gpe(acpi_handle
+ 	if (gpe_event_info) {
+ 		if (ACPI_GPE_DISPATCH_TYPE(gpe_event_info->flags) !=
+ 		    ACPI_GPE_DISPATCH_NONE) {
+-			status = acpi_ev_add_gpe_reference(gpe_event_info);
++			status = acpi_ev_add_gpe_reference(gpe_event_info, TRUE);
+ 			if (ACPI_SUCCESS(status) &&
+ 			    ACPI_GPE_IS_POLLING_NEEDED(gpe_event_info)) {
+ 
 
-> > Probably requires a comment explaining why we do it like that, though.
 
-> Yes, but note that both the root and the depth are different in this case.
 
-> I'll play around with this idea, to see if it simplifies things.
-
-Given that this works and got some testing I've applied this now, if
-there's a simplification it can always be done incrementally.
-
---g3IWFuR7/O9KKcN6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0CoJoACgkQJNaLcl1U
-h9CsSgf/ct5qv0UqPxaWfJKOm8GT3NBa0M/seyJphcRzfO/WQrlDOz8HC4iGV6AE
-v3NZWqcmzuQPtu477cXwOc5NqHqzUVHOOrWk+D7Pe5/urIS37xh8wSeY9mINlwim
-YZzzpPQCXVEcO8GeijfooBSsSSpuuCq6EmOowOLuO58WlY1yx0h9BvgCwWWO0Dlx
-B76uCITIixiZRoWME5PuucBDTMjFp7RrtCNvVt6xjBFHCrFEIC7UKCK931AbicTM
-G2tXuMYjxteIWeZ4jYLDHGu/OFzQg7bTOcdQrhU8sybBsdek+FhBYdVTukS55Hxd
-MMfuw861PELtqd3OW7oxpUQpQ/AcMg==
-=Gd1/
------END PGP SIGNATURE-----
-
---g3IWFuR7/O9KKcN6--
