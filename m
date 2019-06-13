@@ -2,166 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77CCA44B12
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 20:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD2A644BE9
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 21:14:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728386AbfFMStQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jun 2019 14:49:16 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:53714 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726626AbfFMStQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jun 2019 14:49:16 -0400
-Received: from 79.184.253.190.ipv4.supernova.orange.pl (79.184.253.190) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
- id 53b4723736121aee; Thu, 13 Jun 2019 20:49:12 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Linux PCI <linux-pci@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Keith Busch <kbusch@kernel.org>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>
-Subject: Re: [PATCH] PCI: PM: Skip devices in D0 for suspend-to-idle
-Date:   Thu, 13 Jun 2019 20:49:12 +0200
-Message-ID: <2649673.xutNDJ3zlI@kreacher>
-In-Reply-To: <2513600.jR9RdVMSR0@kreacher>
-References: <2513600.jR9RdVMSR0@kreacher>
+        id S1726863AbfFMTOk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 15:14:40 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:52008 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725842AbfFMTOk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jun 2019 15:14:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=XusiFTXNYQTgic9TVHl9vDobQTLjL/8WBaiJ9jHmCUY=; b=Jt3+wogChSwIBpsEwq/iDzoKv
+        UGb+V9EAy3x9o4QtWBFBYxZ1lzCA+zR8vcoMGFNFWfnLFb3c6DUQNS0IRCjnaOkRhbKrpd+xG1MwB
+        DzR+rXkwR9uyYk3Zju8wvpoEdyoTavBewahwpXVKwnkv6P84t5Zbmdaa46Do5g6tsWFqI=;
+Received: from [2001:470:1f1d:6b5:7e7a:91ff:fede:4a45] (helo=finisterre.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1hbVBE-0005UD-40; Thu, 13 Jun 2019 19:14:36 +0000
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+        id 8E4B4440046; Thu, 13 Jun 2019 20:14:35 +0100 (BST)
+Date:   Thu, 13 Jun 2019 20:14:35 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-spi@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Masahisa Kojima <masahisa.kojima@linaro.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Lukas Wunner <lukas@wunner.de>
+Subject: Re: [PATCH v2] spi/acpi: enumerate all SPI slaves in the namespace
+Message-ID: <20190613191435.GY5316@sirena.org.uk>
+References: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
+ <20190603110832.GA2781@lahna.fi.intel.com>
+ <CAKv+Gu8rTernjct93rsWo0X3FTp6bsV=0JvNGQr8C8OaqB1S7A@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="g3IWFuR7/O9KKcN6"
+Content-Disposition: inline
+In-Reply-To: <CAKv+Gu8rTernjct93rsWo0X3FTp6bsV=0JvNGQr8C8OaqB1S7A@mail.gmail.com>
+X-Cookie: Editing is a rewording activity.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thursday, June 13, 2019 12:14:02 AM CEST Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Commit d491f2b75237 ("PCI: PM: Avoid possible suspend-to-idle issue")
-> attempted to avoid a problem with devices whose drivers want them to
-> stay in D0 over suspend-to-idle and resume, but it did not go as far
-> as it should with that.
-> 
-> Namely, first of all, it is questionable to change the power state
-> of a PCI bridge with a device in D0 under it, but that is not
-> actively prevented from happening during system-wide PM transitions,
-> so use the skip_bus_pm flag introduced by commit d491f2b75237 for
-> that.
-> 
-> Second, the configuration of devices left in D0 (whatever the reason)
-> during suspend-to-idle need not be changed and attempting to put them
-> into D0 again by force may confuse some firmware, so explicitly avoid
-> doing that.
-> 
-> Fixes: d491f2b75237 ("PCI: PM: Avoid possible suspend-to-idle issue")
-> Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
-> 
-> Tested on Dell XPS13 9360 with no issues.
-> 
-> ---
->  drivers/pci/pci-driver.c |   47 +++++++++++++++++++++++++++++++++++------------
->  1 file changed, 35 insertions(+), 12 deletions(-)
-> 
-> Index: linux-pm/drivers/pci/pci-driver.c
-> ===================================================================
-> --- linux-pm.orig/drivers/pci/pci-driver.c
-> +++ linux-pm/drivers/pci/pci-driver.c
-> @@ -524,7 +524,6 @@ static void pci_pm_default_resume_early(
->  	pci_power_up(pci_dev);
->  	pci_restore_state(pci_dev);
->  	pci_pme_restore(pci_dev);
-> -	pci_fixup_device(pci_fixup_resume_early, pci_dev);
->  }
->  
->  /*
-> @@ -842,18 +841,16 @@ static int pci_pm_suspend_noirq(struct d
->  
->  	if (pci_dev->skip_bus_pm) {
->  		/*
-> -		 * The function is running for the second time in a row without
-> +		 * Either the device is a bridge with a child in D0 below it, or
-> +		 * the function is running for the second time in a row without
->  		 * going through full resume, which is possible only during
-> -		 * suspend-to-idle in a spurious wakeup case.  Moreover, the
-> -		 * device was originally left in D0, so its power state should
-> -		 * not be changed here and the device register values saved
-> -		 * originally should be restored on resume again.
-> +		 * suspend-to-idle in a spurious wakeup case.  The device should
-> +		 * be in D0 at this point, but if it is a bridge, it may be
-> +		 * necessary to save its state.
->  		 */
-> -		pci_dev->state_saved = true;
-> -	} else if (pci_dev->state_saved) {
-> -		if (pci_dev->current_state == PCI_D0)
-> -			pci_dev->skip_bus_pm = true;
-> -	} else {
-> +		if (!pci_dev->state_saved)
-> +			pci_save_state(pci_dev);
-> +	} else if (!pci_dev->state_saved) {
->  		pci_save_state(pci_dev);
->  		if (pci_power_manageable(pci_dev))
->  			pci_prepare_to_sleep(pci_dev);
-> @@ -862,6 +859,22 @@ static int pci_pm_suspend_noirq(struct d
->  	dev_dbg(dev, "PCI PM: Suspend power state: %s\n",
->  		pci_power_name(pci_dev->current_state));
->  
-> +	if (pci_dev->current_state == PCI_D0) {
-> +		pci_dev->skip_bus_pm = true;
-> +		/*
-> +		 * Changing the power state of a PCI bridge with a device in D0
-> +		 * below it is questionable, so avoid doing that by setting the
-> +		 * skip_bus_pm flag for the parent bridge.
-> +		 */
-> +		if (pci_dev->bus->self)
-> +			pci_dev->bus->self->skip_bus_pm = true;
-> +	}
-> +
-> +	if (pci_dev->skip_bus_pm && !pm_suspend_via_firmware()) {
-> +		dev_dbg(dev, "PCI PM: Skipped\n");
-> +		goto Fixup;
-> +	}
-> +
->  	pci_pm_set_unknown_state(pci_dev);
->  
->  	/*
-> @@ -909,7 +922,16 @@ static int pci_pm_resume_noirq(struct de
->  	if (dev_pm_smart_suspend_and_suspended(dev))
->  		pm_runtime_set_active(dev);
->  
-> -	pci_pm_default_resume_early(pci_dev);
-> +	/*
-> +	 * In the suspend-to-idle case, devices left in D0 during suspend will
-> +	 * stay in D0, so it is not necessary to restore or update their
-> +	 * configuration here and attempting to put them into D0 again may
-> +	 * confuse some firmware, so avoid doing that.
-> +	 */
-> +	if (!pci_dev->skip_bus_pm || pm_suspend_via_firmware())
-> +		pci_pm_default_resume_early(pci_dev);
-> +
-> +	pci_fixup_device(pci_fixup_resume_early, pci_dev);
->  
->  	if (pci_has_legacy_pm_support(pci_dev))
->  		return pci_legacy_resume_early(dev);
-> @@ -1200,6 +1222,7 @@ static int pci_pm_restore_noirq(struct d
->  	}
->  
->  	pci_pm_default_resume_early(pci_dev);
-> +	pci_fixup_device(pci_fixup_resume_early, pci_dev);
->  
->  	if (pci_has_legacy_pm_support(pci_dev))
->  		return pci_legacy_resume_early(dev);
-> 
 
-Bjorn, please let me know if you have any reservations here.
+--g3IWFuR7/O9KKcN6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Since this has been confirmed to fix a reported issue, I'm about to queue it up for 5.2-rc6.
+On Mon, Jun 03, 2019 at 05:56:00PM +0200, Ard Biesheuvel wrote:
+> On Mon, 3 Jun 2019 at 13:08, Mika Westerberg
+> > On Thu, May 30, 2019 at 01:16:34PM +0200, Ard Biesheuvel wrote:
 
-Cheers,
-Rafael
+> > > -     status = acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, 1,
+> > > +     status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
 
+> > Would it be simpler to differentiate here between Apple and non-Apple
+> > systems? Then we don't need all that special code and the above becomes:
 
+> >         depth = x86_apple_system ? 1 : SPI_ACPI_ENUMERATE_MAX_DEPTH;
+> >         status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT, depth,
+> >         ..
 
+> > Probably requires a comment explaining why we do it like that, though.
+
+> Yes, but note that both the root and the depth are different in this case.
+
+> I'll play around with this idea, to see if it simplifies things.
+
+Given that this works and got some testing I've applied this now, if
+there's a simplification it can always be done incrementally.
+
+--g3IWFuR7/O9KKcN6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0CoJoACgkQJNaLcl1U
+h9CsSgf/ct5qv0UqPxaWfJKOm8GT3NBa0M/seyJphcRzfO/WQrlDOz8HC4iGV6AE
+v3NZWqcmzuQPtu477cXwOc5NqHqzUVHOOrWk+D7Pe5/urIS37xh8wSeY9mINlwim
+YZzzpPQCXVEcO8GeijfooBSsSSpuuCq6EmOowOLuO58WlY1yx0h9BvgCwWWO0Dlx
+B76uCITIixiZRoWME5PuucBDTMjFp7RrtCNvVt6xjBFHCrFEIC7UKCK931AbicTM
+G2tXuMYjxteIWeZ4jYLDHGu/OFzQg7bTOcdQrhU8sybBsdek+FhBYdVTukS55Hxd
+MMfuw861PELtqd3OW7oxpUQpQ/AcMg==
+=Gd1/
+-----END PGP SIGNATURE-----
+
+--g3IWFuR7/O9KKcN6--
