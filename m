@@ -2,30 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4702144D63
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 22:27:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A41C44D68
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 22:28:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729143AbfFMU1I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jun 2019 16:27:08 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:56245 "EHLO
+        id S1726344AbfFMU2N (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 16:28:13 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:60351 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727205AbfFMU1I (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jun 2019 16:27:08 -0400
+        with ESMTP id S1726325AbfFMU2M (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jun 2019 16:28:12 -0400
 Received: from 79.184.253.190.ipv4.supernova.orange.pl (79.184.253.190) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
- id 5c90e4d727746908; Thu, 13 Jun 2019 22:27:05 +0200
+ id c5908a95db0f861a; Thu, 13 Jun 2019 22:28:09 +0200
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Keith Busch <keith.busch@intel.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Rafael Wysocki <rafael@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Brice Goglin <Brice.Goglin@inria.fr>
-Subject: Re: [PATCHv2 1/2] hmat: Register memory-side cache after parsing
-Date:   Thu, 13 Jun 2019 22:27:05 +0200
-Message-ID: <2816033.6i9P6v0dDn@kreacher>
-In-Reply-To: <20190515215444.22256-1-keith.busch@intel.com>
-References: <20190515215444.22256-1-keith.busch@intel.com>
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v5 00/16] Software fwnode references
+Date:   Thu, 13 Jun 2019 22:28:08 +0200
+Message-ID: <3636687.Nc99FdWIM2@kreacher>
+In-Reply-To: <20190531141547.22728-1-heikki.krogerus@linux.intel.com>
+References: <20190531141547.22728-1-heikki.krogerus@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -34,183 +34,103 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wednesday, May 15, 2019 11:54:43 PM CEST Keith Busch wrote:
-> Instead of registering the hmat cache attributes in line with parsing
-> the table, save the attributes in the memory target and register them
-> after parsing completes. This will make it easier to register the
-> attributes later when hot add is supported.
+On Friday, May 31, 2019 4:15:31 PM CEST Heikki Krogerus wrote:
+> Hi,
 > 
-> Signed-off-by: Keith Busch <keith.busch@intel.com>
-> ---
-> v1 -> v2:
+> This is the fourth, and hopefully the final version, of my proposal to
+> make it possible to use fwnode_property_get_reference_args() also with
+> software nodes. The two issues reported by Hans in v4 are now fixed,
+> which were a typo in a comment, and the fwnode->secondary->secondary
+> of max17074 needs to have value ERR_PTR(-ENODEV).
 > 
->   Fixed multi-level caches, and no caches. v1 incorrectly assumed only a level
->   1 always existed (Brice).
+> v4 cover letter:
 > 
->  drivers/acpi/hmat/hmat.c | 70 +++++++++++++++++++++++++++++++++++++-----------
->  1 file changed, 55 insertions(+), 15 deletions(-)
+> I'm not splitting this series in two after all. After thinking about
+> this for some time, I decided to add support for static software
+> nodes. I did not want to support them because I don't want to make it
+> easy to maintain board files, but in end they make the use of the
+> software nodes so much more easier compared to if we always had to
+> dynamically allocate them that it's a no-brainer. The references can
+> now be also described statically. Actually, those can now only be
+> described statically.
 > 
-> diff --git a/drivers/acpi/hmat/hmat.c b/drivers/acpi/hmat/hmat.c
-> index 96b7d39a97c6..bf23c9a27958 100644
-> --- a/drivers/acpi/hmat/hmat.c
-> +++ b/drivers/acpi/hmat/hmat.c
-> @@ -36,11 +36,17 @@ enum locality_types {
->  
->  static struct memory_locality *localities_types[4];
->  
-> +struct target_cache {
-> +	struct list_head node;
-> +	struct node_cache_attrs cache_attrs;
-> +};
-> +
->  struct memory_target {
->  	struct list_head node;
->  	unsigned int memory_pxm;
->  	unsigned int processor_pxm;
->  	struct node_hmem_attrs hmem_attrs;
-> +	struct list_head caches;
->  };
->  
->  struct memory_initiator {
-> @@ -110,6 +116,7 @@ static __init void alloc_memory_target(unsigned int mem_pxm)
->  	target->memory_pxm = mem_pxm;
->  	target->processor_pxm = PXM_INVAL;
->  	list_add_tail(&target->node, &targets);
-> +	INIT_LIST_HEAD(&target->caches);
->  }
->  
->  static __init const char *hmat_data_type(u8 type)
-> @@ -314,7 +321,8 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
->  				   const unsigned long end)
->  {
->  	struct acpi_hmat_cache *cache = (void *)header;
-> -	struct node_cache_attrs cache_attrs;
-> +	struct memory_target *target;
-> +	struct target_cache *tcache;
->  	u32 attrs;
->  
->  	if (cache->header.length < sizeof(*cache)) {
-> @@ -328,37 +336,47 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
->  		cache->memory_PD, cache->cache_size, attrs,
->  		cache->number_of_SMBIOShandles);
->  
-> -	cache_attrs.size = cache->cache_size;
-> -	cache_attrs.level = (attrs & ACPI_HMAT_CACHE_LEVEL) >> 4;
-> -	cache_attrs.line_size = (attrs & ACPI_HMAT_CACHE_LINE_SIZE) >> 16;
-> +	target = find_mem_target(cache->memory_PD);
-> +	if (!target)
-> +		return 0;
-> +
-> +	tcache = kzalloc(sizeof(*tcache), GFP_KERNEL);
-> +	if (!tcache) {
-> +		pr_notice_once("Failed to allocate HMAT cache info\n");
-> +		return 0;
-> +	}
-> +
-> +	tcache->cache_attrs.size = cache->cache_size;
-> +	tcache->cache_attrs.level = (attrs & ACPI_HMAT_CACHE_LEVEL) >> 4;
-> +	tcache->cache_attrs.line_size = (attrs & ACPI_HMAT_CACHE_LINE_SIZE) >> 16;
->  
->  	switch ((attrs & ACPI_HMAT_CACHE_ASSOCIATIVITY) >> 8) {
->  	case ACPI_HMAT_CA_DIRECT_MAPPED:
-> -		cache_attrs.indexing = NODE_CACHE_DIRECT_MAP;
-> +		tcache->cache_attrs.indexing = NODE_CACHE_DIRECT_MAP;
->  		break;
->  	case ACPI_HMAT_CA_COMPLEX_CACHE_INDEXING:
-> -		cache_attrs.indexing = NODE_CACHE_INDEXED;
-> +		tcache->cache_attrs.indexing = NODE_CACHE_INDEXED;
->  		break;
->  	case ACPI_HMAT_CA_NONE:
->  	default:
-> -		cache_attrs.indexing = NODE_CACHE_OTHER;
-> +		tcache->cache_attrs.indexing = NODE_CACHE_OTHER;
->  		break;
->  	}
->  
->  	switch ((attrs & ACPI_HMAT_WRITE_POLICY) >> 12) {
->  	case ACPI_HMAT_CP_WB:
-> -		cache_attrs.write_policy = NODE_CACHE_WRITE_BACK;
-> +		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_BACK;
->  		break;
->  	case ACPI_HMAT_CP_WT:
-> -		cache_attrs.write_policy = NODE_CACHE_WRITE_THROUGH;
-> +		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_THROUGH;
->  		break;
->  	case ACPI_HMAT_CP_NONE:
->  	default:
-> -		cache_attrs.write_policy = NODE_CACHE_WRITE_OTHER;
-> +		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_OTHER;
->  		break;
->  	}
-> +	list_add_tail(&tcache->node, &target->caches);
->  
-> -	node_add_cache(pxm_to_node(cache->memory_PD), &cache_attrs);
->  	return 0;
->  }
->  
-> @@ -577,20 +595,37 @@ static __init void hmat_register_target_initiators(struct memory_target *target)
->  	}
->  }
->  
-> +static __init void hmat_register_target_cache(struct memory_target *target)
-> +{
-> +	unsigned mem_nid = pxm_to_node(target->memory_pxm);
-> +	struct target_cache *tcache;
-> +
-> +	list_for_each_entry(tcache, &target->caches, node)
-> +		node_add_cache(mem_nid, &tcache->cache_attrs);
-> +}
-> +
->  static __init void hmat_register_target_perf(struct memory_target *target)
->  {
->  	unsigned mem_nid = pxm_to_node(target->memory_pxm);
->  	node_set_perf_attrs(mem_nid, &target->hmem_attrs, 0);
->  }
->  
-> +static __init void hmat_register_target(struct memory_target *target)
-> +{
-> +	if (!node_online(pxm_to_node(target->memory_pxm)))
-> +		return;
-> +
-> +	hmat_register_target_initiators(target);
-> +	hmat_register_target_cache(target);
-> +	hmat_register_target_perf(target);
-> +}
-> +
->  static __init void hmat_register_targets(void)
->  {
->  	struct memory_target *target;
->  
-> -	list_for_each_entry(target, &targets, node) {
-> -		hmat_register_target_initiators(target);
-> -		hmat_register_target_perf(target);
-> -	}
-> +	list_for_each_entry(target, &targets, node)
-> +		hmat_register_target(target);
->  }
->  
->  static __init void hmat_free_structures(void)
-> @@ -598,8 +633,13 @@ static __init void hmat_free_structures(void)
->  	struct memory_target *target, *tnext;
->  	struct memory_locality *loc, *lnext;
->  	struct memory_initiator *initiator, *inext;
-> +	struct target_cache *tcache, *cnext;
->  
->  	list_for_each_entry_safe(target, tnext, &targets, node) {
-> +		list_for_each_entry_safe(tcache, cnext, &target->caches, node) {
-> +			list_del(&tcache->node);
-> +			kfree(tcache);
-> +		}
->  		list_del(&target->node);
->  		kfree(target);
->  	}
+> Hans! I applied (hopefully) all of the fixes you proposed in v3. I
+> hope you have time to test these.
+> 
+> v3 cover letter:
+> 
+> This is the third version of my proposal to add reference handling to
+> the software node code. In this version I renamed ACPI_NAME_SIZE to
+> ACPI_NAMESEG_SIZE in 6/13, and slit patch 9/13 in two separate patches
+> (9/13 and 10/13) as suggested by Andy. Patch 9/13 will now only move
+> the registration of max17047 out of probe, and 10/13 will introduce
+> the software nodes.
+> 
+> v2 cover letter:
+> 
+> This is the second version of this series. In this version I'm
+> introducing a new helper device_find_child_by_name() as proposed
+> by Andy. Andy requested also another helper that could be used for
+> chaining the fwnodes, but I decided not to add that now. I would like
+> to still think about how we should handle exceptions like if there
+> already is a secondary node assigned for a node.
+> 
+> v1 cover letter:
+> 
+> This series adds support for software fwnode reference handling. In
+> practice it means making fwnode_property_get_reference_args() function
+> usable in the drivers also with software nodes. I send the series
+> originally as RFC [1].
+> 
+> As the first user for the software node references, I'm converting
+> intel_cht_int33fe.c to use them as part of the series.
+> 
+> [1] https://lkml.org/lkml/2019/3/15/457
+> 
+> thanks,
+> 
+> Heikki Krogerus (16):
+>   software node: Allow node creation without properties
+>   software node: Simplify software_node_release() function
+>   software node: Add support for static node descriptors
+>   software node: Use kobject name when finding child nodes by name
+>   software node: Add software_node_get_reference_args()
+>   driver core: Add helper device_find_child_by_name()
+>   ACPI / property: Don't limit named child node matching to data nodes
+>   device property: Introduce fwnode_find_reference()
+>   device connection: Find connections also by checking the references
+>   usb: typec: Registering real device entries for the muxes
+>   platform/x86: intel_cht_int33fe: Register max17047 in its own function
+>   platform/x86: intel_cht_int33fe: Remove unused fusb302 device property
+>   platform/x86: intel_cht_int33fe: Provide software nodes for the
+>     devices
+>   platform/x86: intel_cht_int33fe: Provide fwnode for the USB connector
+>   platform/x86: intel_cht_int33fe: Supply fwnodes for the external
+>     dependencies
+>   platform/x86: intel_cht_int33fe: Replacing the old connections with
+>     references
+> 
+>  drivers/acpi/property.c                  |  26 +-
+>  drivers/base/core.c                      |  28 ++
+>  drivers/base/devcon.c                    |  26 ++
+>  drivers/base/property.c                  |  24 ++
+>  drivers/base/swnode.c                    | 324 +++++++++++++++++------
+>  drivers/platform/x86/intel_cht_int33fe.c | 291 ++++++++++++++++----
+>  drivers/usb/roles/class.c                |   2 +-
+>  drivers/usb/typec/bus.h                  |  15 ++
+>  drivers/usb/typec/class.c                |  17 +-
+>  drivers/usb/typec/mux.c                  | 238 ++++++++++++-----
+>  drivers/usb/typec/mux/pi3usb30532.c      |  46 ++--
+>  include/linux/device.h                   |   2 +
+>  include/linux/property.h                 |  51 ++++
+>  include/linux/usb/typec_mux.h            |  62 ++---
+>  14 files changed, 903 insertions(+), 249 deletions(-)
+> 
 > 
 
-Not sure what to do with this patch and the next one in the series.
+All applied (but you know that already).
 
-FWIW, they both are fine by me.
-
-Also ISTR seeing them in a series from Dan. (?)
+Thanks!
 
 
 
