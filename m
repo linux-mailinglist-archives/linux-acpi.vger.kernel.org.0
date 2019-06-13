@@ -2,141 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2FC9443DD
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 18:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7F7143FC0
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2019 18:00:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732763AbfFMQdH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jun 2019 12:33:07 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:42736 "EHLO
-        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730836AbfFMIMC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jun 2019 04:12:02 -0400
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id 8539480343; Thu, 13 Jun 2019 10:11:48 +0200 (CEST)
-Date:   Thu, 13 Jun 2019 10:11:58 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Doug Smythies <dsmythies@telus.net>
-Cc:     "'Rafael J. Wysocki'" <rafael@kernel.org>,
-        'kernel list' <linux-kernel@vger.kernel.org>,
-        'ACPI Devel Maling List' <linux-acpi@vger.kernel.org>,
-        "'Zhang, Rui'" <rui.zhang@intel.com>,
-        "'Rafael J. Wysocki'" <rjw@rjwysocki.net>,
-        'Viresh Kumar' <viresh.kumar@linaro.org>,
-        'Linux PM' <linux-pm@vger.kernel.org>,
-        'Thomas Gleixner' <tglx@linutronix.de>,
-        'Ingo Molnar' <mingo@redhat.com>,
-        'Borislav Petkov' <bp@alien8.de>,
-        "'H. Peter Anvin'" <hpa@zytor.com>,
-        'the arch/x86 maintainers' <x86@kernel.org>
-Subject: Re: 5.2-rc2: low framerate in flightgear, cpu not running at full
- speed, thermal related?
-Message-ID: <20190613081158.GA6853@amd>
-References: <20190609111732.GA2885@amd>
- <007701d520c7$c397bda0$4ac738e0$@net>
- <CAJZ5v0j2pb2WxSA+S44Mr-6bpOx-P9A_T2-sDG3CiWSqLMg3sA@mail.gmail.com>
- <008f01d52178$07b3be70$171b3b50$@net>
+        id S1731602AbfFMQAA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 12:00:00 -0400
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:34226 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1731469AbfFMItW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 13 Jun 2019 04:49:22 -0400
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+        by mx0a-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5D8hupF013156;
+        Thu, 13 Jun 2019 03:49:00 -0500
+Authentication-Results: ppops.net;
+        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
+Received: from mail3.cirrus.com ([87.246.76.56])
+        by mx0a-001ae601.pphosted.com with ESMTP id 2t0ae2yd16-1;
+        Thu, 13 Jun 2019 03:49:00 -0500
+Received: from EDIEX02.ad.cirrus.com (ediex02.ad.cirrus.com [198.61.84.81])
+        by mail3.cirrus.com (Postfix) with ESMTP id 91AE2613139C;
+        Thu, 13 Jun 2019 03:49:44 -0500 (CDT)
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Thu, 13 Jun
+ 2019 09:48:58 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
+ Transport; Thu, 13 Jun 2019 09:48:58 +0100
+Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id C31072A1;
+        Thu, 13 Jun 2019 09:48:58 +0100 (BST)
+Date:   Thu, 13 Jun 2019 09:48:58 +0100
+From:   Charles Keepax <ckeepax@opensource.cirrus.com>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+CC:     <wsa@the-dreams.de>, <jarkko.nikula@linux.intel.com>,
+        <andriy.shevchenko@linux.intel.com>, <linux-i2c@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <benjamin.tissoires@redhat.com>, <jbroadus@gmail.com>,
+        <patches@opensource.cirrus.com>
+Subject: Re: [PATCH v4 4/7] i2c: core: Make i2c_acpi_get_irq available to the
+ rest of the I2C core
+Message-ID: <20190613084858.GU28362@ediswmail.ad.cirrus.com>
+References: <20190611123101.25264-1-ckeepax@opensource.cirrus.com>
+ <20190611123101.25264-5-ckeepax@opensource.cirrus.com>
+ <20190612152718.GC2640@lahna.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="PNTmBPCT7hxwcZjr"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <008f01d52178$07b3be70$171b3b50$@net>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20190612152718.GC2640@lahna.fi.intel.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906130070
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Wed, Jun 12, 2019 at 06:27:18PM +0300, Mika Westerberg wrote:
+> On Tue, Jun 11, 2019 at 01:30:58PM +0100, Charles Keepax wrote:
+> > In preparation for more refactoring make i2c_acpi_get_irq available
+> > outside i2c-core-acpi.c.
+> > 
+> > Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> > ---
+> > 
+> > Changes since v3:
+> >  - Move the change to use the helper function from i2c-core-base into its own patch.
+> > 
+> > Thanks,
+> > Charles
+> > 
+> >  drivers/i2c/i2c-core-acpi.c | 15 +++++++++++++--
+> >  drivers/i2c/i2c-core.h      |  7 +++++++
+> >  2 files changed, 20 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+> > index 7d4d66ba752d4..35966cc337dde 100644
+> > --- a/drivers/i2c/i2c-core-acpi.c
+> > +++ b/drivers/i2c/i2c-core-acpi.c
+> > @@ -144,8 +144,17 @@ static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
+> >  	return 1; /* No need to add resource to the list */
+> >  }
+> >  
+> > -static int i2c_acpi_get_irq(struct acpi_device *adev)
+> > +/**
+> > + * i2c_acpi_get_irq - get device IRQ number from ACPI
+> > + * @client: Pointer to the I2C client device
+> > + *
+> > + * Find the IRQ number used by a specific client device.
+> > + *
+> > + * Return: The IRQ number or an error code.
+> > + */
+> > +int i2c_acpi_get_irq(struct i2c_client *client)
+> >  {
+> > +	struct acpi_device *adev = ACPI_COMPANION(&client->adapter->dev);
+> 
+> Is this adev checked for being NULL somewhere below before it is being
+> dereferenced?
+> 
+> It could explain the issue Benjamin is seeing.
+> 
 
---PNTmBPCT7hxwcZjr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yeah could be that or just for some reason this isn't returning
+the same adev as we previously had. I will do some digging see if
+I can find any likely culprits.
 
-Hi!
-
-> On 2019.06.12 14:25 Rafael J. Wysocki wrote:
-> > On Wed, Jun 12, 2019 at 4:45 AM Doug Smythies <dsmythies@telus.net> wro=
-te:
-> >>
-> >> So, currently there seems to be 3 issues in this thread
-> >> (and I am guessing a little, without definitive data):
-> >>
-> >> 1.) On your system Kernel 5.4-rc2 (or 4) defaults to the intel_pstate =
-CPU frequency
-> >> scaling driver and the powersave governor, but kernel 4.6 defaults to =
-the
-> >> acpi-cpufreq CPU frequency scaling driver and the ondemand governor.
-> >
-> > Which means that intel_pstate works in the active mode by default and
-> > so it uses its internal governor.
->=20
-> Note sure what you mean by "internal governor"?
-> If you meant HWP (Hardware P-state), Pavel's processor doesn't have it.
-> If you meant the active powersave governor code within the driver, then a=
-greed.
->=20
-> > That governor is more performance-oriented than ondemand and it very
-> > well may cause more power to be allocated for the processor - at the
-> > expense of the GPU.
->=20
-> O.K. I mainly use servers and so have no experience with possible GPU
-> verses CPU tradeoffs.
->=20
-> However, I did re-do my tests measuring energy instead of CPU frequency
-> and found very little difference between the acpi-cpufreq/ondemand verses
-> intel_pstate/powersave as a function of single threaded load. Actually,
-> I did the test twice, one at 20 hertz work/sleep frequency and also
-> at 67 hertz work/sleep frequency. (Of course, Pavel's processor might
-> well have a different curve, but it is a similar vintage to mine
-> i5-2520M verses i7-2600K.) The worst difference was approximately
-> 1.1 extra processor package watts (an extra 5.5%) in the 80% to 85%
-> single threaded load range at 67 hertz work/sleep frequency for
-> the intel-pstate/powersave driver/governor.=20
->=20
-> What am I saying? For a fixed amount of work to do per work/sleep cycle
-> (i.e. maybe per video frame related type work) while the CPU frequency Ve=
-rses load
-> curves might differ, the resulting processor energy curve differs much le=
-ss.
-> (i.e. the extra power for higher CPU frequency is for less time because i=
-t gets
-> the job done faster.) So, myself, I don't yet understand why only the one=
- method
-> would have hit thermal throttling, but not the other (if indeed it
-> doesn't).
-
-It seems there are serious differences in reporting :-(. How do I
-determine which frequency CPU really runs at, in 4.6 kernel?
-
-But it seems that your assumptions are incorrect for my workload.
-
-flightgear is single-threaded, and in my configuration saturates the
-CPU, because it would like to achieve higher framerate than my system
-is capable of.
-
-> Just for information: CPU frequency verses single threaded load curves
-> for the conservative governor is quite different between the two drivers.
-> (tests done in February, perhaps I should re-do and also look at energy
-> at the same time, or instead of CPU frequency.)
-
-So this might be my problem?
-
-									Pavel
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
-
---PNTmBPCT7hxwcZjr
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl0CBU4ACgkQMOfwapXb+vIA2ACgosp1TsX5OkrWOaRWttdwzNPP
-S8EAoI+okCL2bRqt3AKPFbSPngilmwwC
-=fxjZ
------END PGP SIGNATURE-----
-
---PNTmBPCT7hxwcZjr--
+Thanks,
+Charles
