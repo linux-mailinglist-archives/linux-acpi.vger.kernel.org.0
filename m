@@ -2,222 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A2DB4682E
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jun 2019 21:35:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BC9546B3D
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jun 2019 22:48:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726083AbfFNTfG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Jun 2019 15:35:06 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:57866 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726030AbfFNTfG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Jun 2019 15:35:06 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id DF3793092645;
-        Fri, 14 Jun 2019 19:35:04 +0000 (UTC)
-Received: from [10.36.116.43] (ovpn-116-43.ams2.redhat.com [10.36.116.43])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 955E519C67;
-        Fri, 14 Jun 2019 19:35:00 +0000 (UTC)
-Subject: Re: [PATCH v1 1/6] mm: Section numbers use the type "unsigned long"
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
-        linux-mm@kvack.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Michal Hocko <mhocko@suse.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Wei Yang <richard.weiyang@gmail.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Arun KS <arunks@codeaurora.org>,
-        Pavel Tatashin <pasha.tatashin@oracle.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Baoquan He <bhe@redhat.com>
-References: <20190614100114.311-1-david@redhat.com>
- <20190614100114.311-2-david@redhat.com>
- <20190614120036.00ae392e3f210e7bc9ec6960@linux-foundation.org>
-From:   David Hildenbrand <david@redhat.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- SE+xAvmumFBY
-Organization: Red Hat GmbH
-Message-ID: <e07449fa-251f-51c7-9ee2-202635c4aef7@redhat.com>
-Date:   Fri, 14 Jun 2019 21:34:59 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
-MIME-Version: 1.0
-In-Reply-To: <20190614120036.00ae392e3f210e7bc9ec6960@linux-foundation.org>
-Content-Type: text/plain; charset=utf-8
+        id S1726344AbfFNUsL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Jun 2019 16:48:11 -0400
+Received: from mail-eopbgr810120.outbound.protection.outlook.com ([40.107.81.120]:25024
+        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726126AbfFNUsL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 14 Jun 2019 16:48:11 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=testarcselector01; d=microsoft.com; cv=none;
+ b=KjexmCFett09iHl/ebu6gjdsFNlKezoG9xwCgWD3k7qZi1aYQNbV7D6U3xVdFXiFb1Jq6sVTe7GQHMllzpV56V6sfmEPIbnGNzjY5OOctZrbf/FN7FXUdsPr8rjqCC+IwT9S7vgXUlEvKg9bHcP7FSb3+bnXp02Bf7xcwZdSU4Y=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=testarcselector01;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nZiI5ITJOuh0sqoAI6GtR3gCNsvdaW/G7ZqmWKVhEBI=;
+ b=ahaD/6XFkZfhkw6GA31wUJexngXKP3Youw2+cXLK/Ll5KYxGojtovU1V6i1jNyBoz2en6MKJPBeLd9s0GOcLtthgZlapeZrHGiThqRHG7Npa1TT8Gx5wwCWjXDDYz4AOHMJjUXkult7T/WFtIPXJ/ShiZ9JK/YWS3vXGPrcweyA=
+ARC-Authentication-Results: i=1; test.office365.com
+ 1;spf=none;dmarc=none;dkim=none;arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nZiI5ITJOuh0sqoAI6GtR3gCNsvdaW/G7ZqmWKVhEBI=;
+ b=kwFqAHP7TVPYiOsWjFSW7MTUc1XEA5V3rxjGsnmDS5xuKOVBZqks010XehyaXTJvYp/DPK0ZcNBLDnSahwowUthRTkeMSgVPm/uqn61OiWHtMWhoCIqdnF6aBi7vmJlhu+1+nJnH9Nzaz+39Dh9YHIo7+Kk+I5wBvRJgPTTIFBA=
+Received: from BL0PR2101MB1348.namprd21.prod.outlook.com
+ (2603:10b6:208:92::22) by BL0PR2101MB0980.namprd21.prod.outlook.com
+ (2603:10b6:207:36::26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2008.1; Fri, 14 Jun
+ 2019 20:48:06 +0000
+Received: from BL0PR2101MB1348.namprd21.prod.outlook.com
+ ([fe80::ec20:70a:433e:a052]) by BL0PR2101MB1348.namprd21.prod.outlook.com
+ ([fe80::ec20:70a:433e:a052%2]) with mapi id 15.20.2008.007; Fri, 14 Jun 2019
+ 20:48:06 +0000
+From:   Michael Kelley <mikelley@microsoft.com>
+To:     Dexuan Cui <decui@microsoft.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "robert.moore@intel.com" <robert.moore@intel.com>,
+        "erik.schmauss@intel.com" <erik.schmauss@intel.com>
+CC:     "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        KY Srinivasan <kys@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Sasha Levin <Alexander.Levin@microsoft.com>,
+        "olaf@aepfle.de" <olaf@aepfle.de>,
+        "apw@canonical.com" <apw@canonical.com>,
+        "jasowang@redhat.com" <jasowang@redhat.com>,
+        vkuznets <vkuznets@redhat.com>,
+        "marcelo.cerri@canonical.com" <marcelo.cerri@canonical.com>
+Subject: RE: [PATCH] ACPI: PM: Export the function
+ acpi_sleep_state_supported()
+Thread-Topic: [PATCH] ACPI: PM: Export the function
+ acpi_sleep_state_supported()
+Thread-Index: AQHVIt2lUviLbUjfZEmzRslUu7e03qabnRQg
+Date:   Fri, 14 Jun 2019 20:48:06 +0000
+Message-ID: <BL0PR2101MB134895BADA1D8E0FA631D532D7EE0@BL0PR2101MB1348.namprd21.prod.outlook.com>
+References: <1560536224-35338-1-git-send-email-decui@microsoft.com>
+In-Reply-To: <1560536224-35338-1-git-send-email-decui@microsoft.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.43]); Fri, 14 Jun 2019 19:35:05 +0000 (UTC)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=True;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Owner=mikelley@ntdev.microsoft.com;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2019-06-14T20:48:03.8463956Z;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=General;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Application=Microsoft Azure
+ Information Protection;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=1e15e098-66cc-41b5-9a88-268aec453091;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Extended_MSFT_Method=Automatic
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=mikelley@microsoft.com; 
+x-originating-ip: [24.22.167.197]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 97624ad9-ca1d-4975-36ae-08d6f1099a8b
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:BL0PR2101MB0980;
+x-ms-traffictypediagnostic: BL0PR2101MB0980:
+x-ld-processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
+x-microsoft-antispam-prvs: <BL0PR2101MB0980F6D284A8DD54A5458FCDD7EE0@BL0PR2101MB0980.namprd21.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:3513;
+x-forefront-prvs: 0068C7E410
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(376002)(136003)(366004)(396003)(39860400002)(199004)(189003)(11346002)(110136005)(25786009)(486006)(476003)(52536014)(446003)(66556008)(66946007)(10290500003)(76116006)(66446008)(66476007)(86362001)(73956011)(2201001)(64756008)(2501003)(1511001)(316002)(22452003)(4326008)(66066001)(54906003)(68736007)(305945005)(14444005)(256004)(3846002)(53936002)(6436002)(7416002)(6116002)(52396003)(33656002)(14454004)(2906002)(7696005)(7736002)(81156014)(81166006)(76176011)(229853002)(102836004)(10090500001)(5660300002)(6246003)(6506007)(8676002)(71190400001)(8990500004)(9686003)(99286004)(55016002)(71200400001)(8936002)(186003)(74316002)(26005)(478600001);DIR:OUT;SFP:1102;SCL:1;SRVR:BL0PR2101MB0980;H:BL0PR2101MB1348.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: microsoft.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: qI0OaEOA1MrpvyUPLShhhkY0B3v44ljoxgnr/8O9eRJAVOhhZRZzpLS/FDUxUj8SbJYh7nrw9L+APvLfdsWZ6wz+yRX+gqY6IgcpeZqbIakoEz6ySAePzVaJaV3AB9InnI+neSP59h14VEmx48v/zCbtOpTsbmDC7jLA2e2x2O90rP4TLKlwK9M97gJSq6NceuTIrqkqm8Nny9DTBWhaOqNLZbdQCY1Lu/AhIQxk8kbOwi+REFsW2wq65FSb3XXlsjWGu9vveV1MMkkNLQJ1ysGZ9cCIlGrsslVfnPVubWYcKNK0xL2jEtdhf88dH1UcHn1Ed3KeRtod3hXq5fWBTa+hQXWIQ1+9IYoAC5iXvfbEtJUkhy18fCaudpvLpUgCXBaG3EqEfZEbigvoesNUNVKnX64mUct3/8GO2AmMoqQ=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97624ad9-ca1d-4975-36ae-08d6f1099a8b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jun 2019 20:48:06.7396
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: mikelley@ntdev.microsoft.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR2101MB0980
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 14.06.19 21:00, Andrew Morton wrote:
-> On Fri, 14 Jun 2019 12:01:09 +0200 David Hildenbrand <david@redhat.com> wrote:
-> 
->> We are using a mixture of "int" and "unsigned long". Let's make this
->> consistent by using "unsigned long" everywhere. We'll do the same with
->> memory block ids next.
->>
->> ...
->>
->> -	int i, ret, section_count = 0;
->> +	unsigned long i;
->>
->> ...
->>
->> -	unsigned int i;
->> +	unsigned long i;
-> 
-> Maybe I did too much fortran back in the day, but I think the
-> expectation is that a variable called "i" has type "int".
-> 
-> This?
-
-t460s: ~/git/linux memory_block_devices2 $ git grep "unsigned long i;" |
-wc -l
-245
-t460s: ~/git/linux memory_block_devices2 $ git grep "int i;" | wc -l
-26827
-
-Yes ;)
-
-While it makes sense for the second and third occurrence, I think for
-the first one it could be confusing (it's not actually a section number
-but a counter for sections_per_block).
-
-I see just now that we can avoid converting the first occurrence
-completely. So maybe we should drop changing removable_show() from this
-patch.
-
-Cheers!
-
-> 
-> 
-> 
-> s/unsigned long i/unsigned long section_nr/
-> 
-> --- a/drivers/base/memory.c~mm-section-numbers-use-the-type-unsigned-long-fix
-> +++ a/drivers/base/memory.c
-> @@ -131,17 +131,17 @@ static ssize_t phys_index_show(struct de
->  static ssize_t removable_show(struct device *dev, struct device_attribute *attr,
->  			      char *buf)
->  {
-> -	unsigned long i, pfn;
-> +	unsigned long section_nr, pfn;
->  	int ret = 1;
->  	struct memory_block *mem = to_memory_block(dev);
->  
->  	if (mem->state != MEM_ONLINE)
->  		goto out;
->  
-> -	for (i = 0; i < sections_per_block; i++) {
-> -		if (!present_section_nr(mem->start_section_nr + i))
-> +	for (section_nr = 0; section_nr < sections_per_block; section_nr++) {
-> +		if (!present_section_nr(mem->start_section_nr + section_nr))
->  			continue;
-> -		pfn = section_nr_to_pfn(mem->start_section_nr + i);
-> +		pfn = section_nr_to_pfn(mem->start_section_nr + section_nr);
->  		ret &= is_mem_section_removable(pfn, PAGES_PER_SECTION);
->  	}
->  
-> @@ -695,12 +695,12 @@ static int add_memory_block(unsigned lon
->  {
->  	int ret, section_count = 0;
->  	struct memory_block *mem;
-> -	unsigned long i;
-> +	unsigned long section_nr;
->  
-> -	for (i = base_section_nr;
-> -	     i < base_section_nr + sections_per_block;
-> -	     i++)
-> -		if (present_section_nr(i))
-> +	for (section_nr = base_section_nr;
-> +	     section_nr < base_section_nr + sections_per_block;
-> +	     section_nr++)
-> +		if (present_section_nr(section_nr))
->  			section_count++;
->  
->  	if (section_count == 0)
-> @@ -823,7 +823,7 @@ static const struct attribute_group *mem
->   */
->  int __init memory_dev_init(void)
->  {
-> -	unsigned long i;
-> +	unsigned long section_nr;
->  	int ret;
->  	int err;
->  	unsigned long block_sz;
-> @@ -840,9 +840,9 @@ int __init memory_dev_init(void)
->  	 * during boot and have been initialized
->  	 */
->  	mutex_lock(&mem_sysfs_mutex);
-> -	for (i = 0; i <= __highest_present_section_nr;
-> -		i += sections_per_block) {
-> -		err = add_memory_block(i);
-> +	for (section_nr = 0; section_nr <= __highest_present_section_nr;
-> +		section_nr += sections_per_block) {
-> +		err = add_memory_block(section_nr);
->  		if (!ret)
->  			ret = err;
->  	}
-> _
-> 
-
-
--- 
-
-Thanks,
-
-David / dhildenb
+RnJvbTogRGV4dWFuIEN1aSA8ZGVjdWlAbWljcm9zb2Z0LmNvbT4gIFNlbnQ6IEZyaWRheSwgSnVu
+ZSAxNCwgMjAxOSAxMToxOSBBTQ0KPiANCj4gSW4gYSBMaW51eCBWTSBydW5uaW5nIG9uIEh5cGVy
+LVYsIHdoZW4gQUNQSSBTNCBpcyBlbmFibGVkLCB0aGUgYmFsbG9vbg0KPiBkcml2ZXIgKGRyaXZl
+cnMvaHYvaHZfYmFsbG9vbi5jKSBuZWVkcyB0byBhc2sgdGhlIGhvc3Qgbm90IHRvIGRvIG1lbW9y
+eQ0KPiBob3QtYWRkL3JlbW92ZS4NCj4gDQo+IFNvIGxldCdzIGV4cG9ydCBhY3BpX3NsZWVwX3N0
+YXRlX3N1cHBvcnRlZCgpIGZvciB0aGUgaHZfYmFsbG9vbiBkcml2ZXIuDQo+IFRoaXMgbWlnaHQg
+YWxzbyBiZSB1c2VmdWwgdG8gdGhlIG90aGVyIGRyaXZlcnMgaW4gdGhlIGZ1dHVyZS4NCj4gDQo+
+IFNpZ25lZC1vZmYtYnk6IERleHVhbiBDdWkgPGRlY3VpQG1pY3Jvc29mdC5jb20+DQo+IC0tLQ0K
+PiAgZHJpdmVycy9hY3BpL3NsZWVwLmMgICAgfCAzICsrLQ0KPiAgaW5jbHVkZS9hY3BpL2FjcGlf
+YnVzLmggfCAyICsrDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgMSBkZWxl
+dGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvYWNwaS9zbGVlcC5jIGIvZHJpdmVy
+cy9hY3BpL3NsZWVwLmMNCj4gaW5kZXggYTM0ZGVjY2Q3MzE3Li42OTc1NTQxMWUwMDggMTAwNjQ0
+DQo+IC0tLSBhL2RyaXZlcnMvYWNwaS9zbGVlcC5jDQo+ICsrKyBiL2RyaXZlcnMvYWNwaS9zbGVl
+cC5jDQo+IEBAIC03OSw3ICs3OSw3IEBAIHN0YXRpYyBpbnQgYWNwaV9zbGVlcF9wcmVwYXJlKHUz
+MiBhY3BpX3N0YXRlKQ0KPiAgCXJldHVybiAwOw0KPiAgfQ0KPiANCj4gLXN0YXRpYyBib29sIGFj
+cGlfc2xlZXBfc3RhdGVfc3VwcG9ydGVkKHU4IHNsZWVwX3N0YXRlKQ0KPiArYm9vbCBhY3BpX3Ns
+ZWVwX3N0YXRlX3N1cHBvcnRlZCh1OCBzbGVlcF9zdGF0ZSkNCj4gIHsNCj4gIAlhY3BpX3N0YXR1
+cyBzdGF0dXM7DQo+ICAJdTggdHlwZV9hLCB0eXBlX2I7DQo+IEBAIC04OSw2ICs4OSw3IEBAIHN0
+YXRpYyBib29sIGFjcGlfc2xlZXBfc3RhdGVfc3VwcG9ydGVkKHU4IHNsZWVwX3N0YXRlKQ0KPiAg
+CQl8fCAoYWNwaV9nYmxfRkFEVC5zbGVlcF9jb250cm9sLmFkZHJlc3MNCj4gIAkJCSYmIGFjcGlf
+Z2JsX0ZBRFQuc2xlZXBfc3RhdHVzLmFkZHJlc3MpKTsNCj4gIH0NCj4gK0VYUE9SVF9TWU1CT0xf
+R1BMKGFjcGlfc2xlZXBfc3RhdGVfc3VwcG9ydGVkKTsNCj4gDQo+ICAjaWZkZWYgQ09ORklHX0FD
+UElfU0xFRVANCj4gIHN0YXRpYyB1MzIgYWNwaV90YXJnZXRfc2xlZXBfc3RhdGUgPSBBQ1BJX1NU
+QVRFX1MwOw0KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9hY3BpL2FjcGlfYnVzLmggYi9pbmNsdWRl
+L2FjcGkvYWNwaV9idXMuaA0KPiBpbmRleCAzMWI2Yzg3ZDYyNDAuLjViMTAyZTdiYmYyNSAxMDA2
+NDQNCj4gLS0tIGEvaW5jbHVkZS9hY3BpL2FjcGlfYnVzLmgNCj4gKysrIGIvaW5jbHVkZS9hY3Bp
+L2FjcGlfYnVzLmgNCj4gQEAgLTY1MSw2ICs2NTEsOCBAQCBzdGF0aWMgaW5saW5lIGludCBhY3Bp
+X3BtX3NldF9icmlkZ2Vfd2FrZXVwKHN0cnVjdCBkZXZpY2UgKmRldiwNCj4gYm9vbCBlbmFibGUp
+DQo+ICB9DQo+ICAjZW5kaWYNCj4gDQo+ICtib29sIGFjcGlfc2xlZXBfc3RhdGVfc3VwcG9ydGVk
+KHU4IHNsZWVwX3N0YXRlKTsNCj4gKw0KPiAgI2lmZGVmIENPTkZJR19BQ1BJX1NMRUVQDQo+ICB1
+MzIgYWNwaV90YXJnZXRfc3lzdGVtX3N0YXRlKHZvaWQpOw0KPiAgI2Vsc2UNCj4gLS0NCj4gMi4x
+OS4xDQoNCkl0IHNlZW1zIHRoYXQgc2xlZXAuYyBpc24ndCBidWlsdCB3aGVuIG9uIHRoZSBBUk02
+NCBhcmNoaXRlY3R1cmUuICBVc2luZw0KYWNwaV9zbGVlcF9zdGF0ZV9zdXBwb3J0ZWQoKSBkaXJl
+Y3RseSBpbiBodl9iYWxsb29uLmMgd2lsbCBiZSBwcm9ibGVtYXRpYw0Kc2luY2UgaHZfYmFsbG9v
+bi5jIG5lZWRzIHRvIGJlIGFyY2hpdGVjdHVyZSBpbmRlcGVuZGVudCB3aGVuIHRoZQ0KSHlwZXIt
+ViBBUk02NCBzdXBwb3J0IGlzIGFkZGVkLiAgSWYgdGhhdCBkb2Vzbid0IGNoYW5nZSwgYSBwZXIt
+YXJjaGl0ZWN0dXJlDQp3cmFwcGVyIHdpbGwgYmUgbmVlZGVkIHRvIGdpdmUgaHZfYmFsbG9vbi5j
+IHRoZSBjb3JyZWN0IGluZm9ybWF0aW9uLiAgVGhpcw0KbWF5IGFmZmVjdCB3aGV0aGVyIGFjcGlf
+c2xlZXBfc3RhdGVfc3VwcG9ydGVkKCkgbmVlZHMgdG8gYmUgZXhwb3J0ZWQgdnMuDQpqdXN0IHJl
+bW92aW5nIHRoZSAic3RhdGljIi4gICBJJ20gbm90IHN1cmUgd2hhdCB0aGUgYmVzdCBhcHByb2Fj
+aCBpcy4NCg0KTWljaGFlbA0K
