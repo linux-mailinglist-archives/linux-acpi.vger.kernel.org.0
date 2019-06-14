@@ -2,66 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92FBC462F7
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jun 2019 17:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAF814661A
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jun 2019 19:48:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726193AbfFNPfk convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 14 Jun 2019 11:35:40 -0400
-Received: from mga01.intel.com ([192.55.52.88]:34880 "EHLO mga01.intel.com"
+        id S1726209AbfFNRsn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Jun 2019 13:48:43 -0400
+Received: from smtp1.ono.com ([62.42.230.162]:22480 "EHLO smtp1.ono.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725780AbfFNPfj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Jun 2019 11:35:39 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jun 2019 08:35:38 -0700
-X-ExtLoop1: 1
-Received: from orsmsx109.amr.corp.intel.com ([10.22.240.7])
-  by fmsmga004.fm.intel.com with ESMTP; 14 Jun 2019 08:35:38 -0700
-Received: from orsmsx116.amr.corp.intel.com (10.22.240.14) by
- ORSMSX109.amr.corp.intel.com (10.22.240.7) with Microsoft SMTP Server (TLS)
- id 14.3.408.0; Fri, 14 Jun 2019 08:35:38 -0700
-Received: from orsmsx110.amr.corp.intel.com ([169.254.10.60]) by
- ORSMSX116.amr.corp.intel.com ([169.254.7.166]) with mapi id 14.03.0415.000;
- Fri, 14 Jun 2019 08:35:37 -0700
-From:   "Moore, Robert" <robert.moore@intel.com>
-To:     Nikolaus Voss <nv@vosn.de>, "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "Schmauss, Erik" <erik.schmauss@intel.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table
- loads
-Thread-Topic: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table
- loads
-Thread-Index: AQHVIPn/qqDB5Bv4z0aSsleXlAnDw6abVhaAgAADpwD///G0sA==
-Date:   Fri, 14 Jun 2019 15:35:36 +0000
-Message-ID: <94F2FBAB4432B54E8AACC7DFDE6C92E3B95EFB26@ORSMSX110.amr.corp.intel.com>
-References: <cover.1560327219.git.nikolaus.voss@loewensteinmedical.de>
- <e2a4ddfd93a904b50b7ccc074e00e14dc4661963.1560327219.git.nikolaus.voss@loewensteinmedical.de>
- <CAJZ5v0jqxWs=PPik-TCDqQiyxCSyRP7HTue1WsdWP9e-nik2eA@mail.gmail.com>
- <alpine.DEB.2.20.1906141114490.6579@fox.voss.local>
-In-Reply-To: <alpine.DEB.2.20.1906141114490.6579@fox.voss.local>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMjNjOGUyNzEtODllMy00MDgxLWE0MmYtZTE5ZDRlOTBjZDFmIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoieHMzbXMwTW5xdTg0dUJueHJ5aWNNR0dQTDNaSWk1T0FNYlRldUk0TW0wMUlzWnp6cFwvN0dqNlAraXlyaTVweG0ifQ==
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.138]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1726082AbfFNRsn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 14 Jun 2019 13:48:43 -0400
+X-Junkmail-Premium-Raw: score=26/50,refid=2.7.2:2019.6.14.164816:17:26.894,ip=62.42.230.134,rules=__HAS_MSGID,
+ __SANE_MSGID, MSGID_JMAIL_DEFAULT, INVALID_MSGID_NO_FQDN, __HAS_FROM,
+ FROM_NAME_PHRASE, FROM_NAME_ALLCAPS, __HAS_REPLYTO, __FRAUD_WEBMAIL_REPLYTO,
+ BLANK_SUBJECT, __MIME_VERSION, __CT, __CT_TEXT_PLAIN, __CTE, MISSING_HEADERS,
+ __ANY_URI, __FRAUD_BODY_WEBMAIL, __URI_NO_WWW, __NO_HTML_TAG_RAW,
+ BODYTEXTP_SIZE_400_LESS, BODY_SIZE_200_299, BODYTEXTP_SIZE_3000_LESS,
+ __MIME_TEXT_P1, __MIME_TEXT_ONLY, __URI_NS, HTML_00_01, HTML_00_10,
+ BODY_SIZE_5000_LESS, __FRAUD_WEBMAIL, WEBMAIL_REPLYTO_NOT_FROM,
+ FRAUD_WEBMAIL_R_NOT_F, __MIME_TEXT_P, FRAUD_LITTLE_BODY,
+ __PHISH_SPEAR_STRUCTURE_1, BODY_SIZE_1000_LESS, BODY_SIZE_2000_LESS,
+ SMALL_BODY, __PHISH_SPEAR_STRUCTURE_2, REPLYTO_FROM_DIFF_ADDY, NO_URI_HTTPS,
+ BODY_SIZE_7000_LESS, TO_MALFORMED
+Received: from resprs04 (62.42.230.134) by smtp1.ono.com (9.0.019.09-1)
+        id 5C12554F097D47F5; Fri, 14 Jun 2019 19:48:05 +0200
+Received: from (149.126.75.1) by webmailcpr04n.ono.com;  Fri, 14 Jun 2019 19:48:04 +0200
+Message-ID: <20579232.262491560534484578.JavaMail.defaultUser@defaultHost>
+Date:   Fri, 14 Jun 2019 19:48:04 +0200 (CEST)
+From:   DR ALBERT ZONGO <rjpd@ono.com>
+Reply-To: dralbertddzongo@gmail.com
+Subject: 
 MIME-Version: 1.0
+Content-Type: text/plain;charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
@@ -69,42 +42,18 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 
 
------Original Message-----
-From: Nikolaus Voss [mailto:nv@vosn.de] 
-Sent: Friday, June 14, 2019 2:26 AM
-To: Rafael J. Wysocki <rafael@kernel.org>
-Cc: Rafael J. Wysocki <rjw@rjwysocki.net>; Len Brown <lenb@kernel.org>; Moore, Robert <robert.moore@intel.com>; Schmauss, Erik <erik.schmauss@intel.com>; Jacek Anaszewski <jacek.anaszewski@gmail.com>; Pavel Machek <pavel@ucw.cz>; Dan Murphy <dmurphy@ti.com>; Thierry Reding <thierry.reding@gmail.com>; ACPI Devel Maling List <linux-acpi@vger.kernel.org>; open list:ACPI COMPONENT ARCHITECTURE (ACPICA) <devel@acpica.org>; linux-leds@vger.kernel.org; Linux PWM List <linux-pwm@vger.kernel.org>; Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table loads
 
-Hi Rafael,
+--
+Greetings,
 
-On Fri, 14 Jun 2019, Rafael J. Wysocki wrote:
-> On Wed, Jun 12, 2019 at 10:36 AM Nikolaus Voss 
-> <nikolaus.voss@loewensteinmedical.de> wrote:
->>
->> If an ACPI SSDT overlay is loaded after built-in tables have been 
->> loaded e.g. via configfs or efivar_ssdt_load() it is necessary to 
->> rewalk the namespace to resolve references. Without this, relative 
->> and absolute paths like ^PCI0.SBUS or \_SB.PCI0.SBUS are not resolved 
->> correctly.
->>
->> Make configfs load use the same method as efivar_ssdt_load().
->>
->> Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
->
-> This is fine by me, so
->
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> Or if you want me to take this patch (without the other two in the 
-> series), please let me know.
+I have an intending proposal for you please i need you to contact my 
+private
 
-thanks. I think it would be the best if you take up this patch as it is an independent topic. In retrospect it wasn't a good idea to put it into this series.
+ E-mail (dralbertddzongo@gmail.com) for more updates,
 
-Kind regards,
-Niko
+Best Wishes.
 
-I would have to ask, why is additional code needed for package initialization/resolution? It already happens elsewhere in acpica.
-Bob
+DR ALBERT ZONGO
 
-[...]
+--
+
