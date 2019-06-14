@@ -2,58 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54BED45BDF
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jun 2019 13:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CEDE45E1F
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jun 2019 15:27:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727482AbfFNLy0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Jun 2019 07:54:26 -0400
-Received: from qf-corp.com ([43.252.215.172]:55373 "EHLO server1.qf-corp.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727164AbfFNLyZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Jun 2019 07:54:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=qf-corp.com
-        ; s=default; h=Message-ID:Reply-To:Subject:To:From:Date:
-        Content-Transfer-Encoding:Content-Type:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=x+wk2oDUMoo/hQHPqS9UCKstzOaLw+EthDvW07j7+BE=; b=ehInua14/JQjLeVGLg8kJL0HqP
-        nSTw7t4NE/HKwTSwyypclIimPDf48mLjsFd/Bf/a0UXWjX72OdBUIfXNAge0KcHGEQ12Uw6Flw59U
-        LGdGTEPOznmxm+sGF0+9DopQ1U2OlOJLtQKW0Ie+VTXhmxhwSOgr/FVEkyn4jFm1YuPN8E8ZVlgQ/
-        yt9wpVlL5lJ6B0T3dgwDjVVRYSG5GlDhng/QeKi5WoIYCzw80zV1vCDcpPMczEyIyCwc39+tOVAZX
-        npEcYtRm5JGR3dSWxjjEb31KExpkWKcuyxaf2M9TSuWomOdNidJSUUVPaIIYJWCb0VHYFLnWndscu
-        8l+7jsjg==;
-Received: from [::1] (port=59924 helo=server1.qf-corp.com)
-        by server1.qf-corp.com with esmtpa (Exim 4.92)
-        (envelope-from <admin@qf-corp.com>)
-        id 1hbkkX-0000vp-Vr; Fri, 14 Jun 2019 19:52:06 +0800
+        id S1727913AbfFNN1j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Jun 2019 09:27:39 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:46630 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727808AbfFNN1j (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Jun 2019 09:27:39 -0400
+Received: by mail-oi1-f195.google.com with SMTP id 65so1911654oid.13;
+        Fri, 14 Jun 2019 06:27:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Yo5M/62c1VWnHHchUf/18xtrzwn4K+cBzYArn3eS/wE=;
+        b=eCFUja2kL4Pf7Htd7G8UpROAD9wjSYBflg2I3xkLKgfUh5NJUWlDxOeMKK+JBJAWxh
+         12IL+B0zPVYWsdyIkFcBsUvQXH0XKWMToQxALALeVZ69vaZ/C3hvNJhF1veTmew6PIxs
+         dPD8ip9PBIq9lVvHayfb4WwxpAJVUVrPx0aoDP5ACptbqXt+anygn9Xo0eByOGrRkQR6
+         Qe7fqS+im3JT1s46v3irv2EASImbe1VuBbJTyzF4LguJ4IFxxCENEpWYvCAlwXB5C3Lw
+         UEJmdldpcHtCQsgpkpjfOYGeQBq5EsS8CICn4EbpJAmIUOhIBBhoTfXC5gPCmyNkNkln
+         c+KA==
+X-Gm-Message-State: APjAAAV9aReLyG2R4E2LeVIKLImNU6aCwKZOIl5NMFq4626mAP95FWsP
+        q7dyEj5G1WwzhFwaOiBzWe9ck0T02USDoXAh8RQ=
+X-Google-Smtp-Source: APXvYqyrbvXm6KAxzVwYxHfUU+xwcdonSMTGkAdKWJ2RtMICDSE2DmK9NZiMC0hTqufaz5rm60KelQOQlT9gG+xeKr4=
+X-Received: by 2002:aca:f089:: with SMTP id o131mr1890388oih.103.1560518858527;
+ Fri, 14 Jun 2019 06:27:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Fri, 14 Jun 2019 19:52:05 +0800
-From:   Herr David Williams <admin@qf-corp.com>
-To:     undisclosed-recipients:;
-Subject: dringender Kredit
-Reply-To: davidloaninvestment12@gmail.com
-Mail-Reply-To: davidloaninvestment12@gmail.com
-Message-ID: <ac394faa82315cb115e42296f024cede@qf-corp.com>
-X-Sender: admin@qf-corp.com
-User-Agent: Roundcube Webmail/1.3.8
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server1.qf-corp.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - qf-corp.com
-X-Get-Message-Sender-Via: server1.qf-corp.com: authenticated_id: admin@qf-corp.com
-X-Authenticated-Sender: server1.qf-corp.com: admin@qf-corp.com
+References: <20190516193616.252788-1-furquan@google.com> <13361760.nMXA0SR1Mq@kreacher>
+ <20190614104511.GC2640@lahna.fi.intel.com>
+In-Reply-To: <20190614104511.GC2640@lahna.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 14 Jun 2019 15:27:26 +0200
+Message-ID: <CAJZ5v0jRoajC=P9nGvi1bF8EwO5yShpeqtFSpdEm5aftFoLRqQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PM: Clear wake-up device GPEs before enabling
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Furquan Shaikh <furquan@google.com>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rajat Jain <rajatja@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Fri, Jun 14, 2019 at 12:45 PM Mika Westerberg
+<mika.westerberg@linux.intel.com> wrote:
+>
+> On Thu, Jun 13, 2019 at 10:24:41PM +0200, Rafael J. Wysocki wrote:
+> > This patch may cause events to be missed if the GPE.  I guess what you reall mean is
+> > something like the patch below.
+> >
+> > This should allow the kernel to see the events generated before the GPEs are
+> > implicitly enabled, but it should clear them for the explicit users of acpi_enable_gpe().
+> >
+> > Mika, what do you think?
+>
+> Looks good to me. I also tested this with two TBT systems (Skull Canyon
+> NUC and Dell XPS 9370) using ACPI hotplug and it did not cause any
+> problems if I boot the system with device connected.
 
+Awesome, thanks!
 
--- 
-Benötigen Sie dringend einen Kredit? Wenn ja, antworten Sie für weitere 
-Details
+I'll add a changelog to it and post a full version over the weekend or
+early next week.
