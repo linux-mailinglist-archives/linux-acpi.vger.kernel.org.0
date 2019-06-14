@@ -2,80 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2254E45936
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jun 2019 11:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4DA1459D4
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jun 2019 12:02:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727059AbfFNJtz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Jun 2019 05:49:55 -0400
-Received: from out30-44.freemail.mail.aliyun.com ([115.124.30.44]:33814 "EHLO
-        out30-44.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726900AbfFNJtz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Jun 2019 05:49:55 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01f04446;MF=zhangliguang@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0TU8e0w4_1560505783;
-Received: from localhost(mailfrom:zhangliguang@linux.alibaba.com fp:SMTPD_---0TU8e0w4_1560505783)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Fri, 14 Jun 2019 17:49:51 +0800
-From:   luanshi <zhangliguang@linux.alibaba.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>
-Subject: [PATCH] ACPI / APEI: release resources if gen_pool_add fails
-Date:   Fri, 14 Jun 2019 17:49:43 +0800
-Message-Id: <1560505783-130606-1-git-send-email-zhangliguang@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        id S1727289AbfFNKB5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Jun 2019 06:01:57 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:59120 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727447AbfFNKBy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 14 Jun 2019 06:01:54 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 7B670308FBB4;
+        Fri, 14 Jun 2019 10:01:33 +0000 (UTC)
+Received: from t460s.redhat.com (ovpn-116-252.ams2.redhat.com [10.36.116.252])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 22F6D5D9C3;
+        Fri, 14 Jun 2019 10:01:14 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+        linux-mm@kvack.org, David Hildenbrand <david@redhat.com>,
+        Andrew Banman <andrew.banman@hpe.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Arun KS <arunks@codeaurora.org>, Baoquan He <bhe@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Juergen Gross <jgross@suse.com>,
+        Keith Busch <keith.busch@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michael Neuling <mikey@neuling.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        "mike.travis@hpe.com" <mike.travis@hpe.com>,
+        Oscar Salvador <osalvador@suse.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Paul Mackerras <paulus@samba.org>,
+        Pavel Tatashin <pasha.tatashin@oracle.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        Pavel Tatashin <pavel.tatashin@microsoft.com>,
+        Qian Cai <cai@lca.pw>, "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Rashmica Gupta <rashmica.g@gmail.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Wei Yang <richard.weiyang@gmail.com>
+Subject: [PATCH v1 0/6] mm: Further memory block device cleanups
+Date:   Fri, 14 Jun 2019 12:01:08 +0200
+Message-Id: <20190614100114.311-1-david@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.43]); Fri, 14 Jun 2019 10:01:54 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-To avoid memory leaks, destroy ghes_estatus_pool and release memory
-allocated via vmalloc() on errors in ghes_estatus_pool_init().
+Some further cleanups around memory block devices. Especially, clean up
+and simplify walk_memory_range(). Including some other minor cleanups.
 
-Signed-off-by: liguang.zlg <zhangliguang@linux.alibaba.com>
----
- drivers/acpi/apei/ghes.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+Based on: linux-next
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 993940d..8472c96 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -153,6 +153,7 @@ static void ghes_unmap(void __iomem *vaddr, enum fixed_addresses fixmap_idx)
- int ghes_estatus_pool_init(int num_ghes)
- {
- 	unsigned long addr, len;
-+	int rc = 0;
- 
- 	ghes_estatus_pool = gen_pool_create(GHES_ESTATUS_POOL_MIN_ALLOC_ORDER, -1);
- 	if (!ghes_estatus_pool)
-@@ -163,8 +164,10 @@ int ghes_estatus_pool_init(int num_ghes)
- 
- 	ghes_estatus_pool_size_request = PAGE_ALIGN(len);
- 	addr = (unsigned long)vmalloc(PAGE_ALIGN(len));
--	if (!addr)
-+	if (!addr) {
-+		gen_pool_destroy(ghes_estatus_pool);
- 		return -ENOMEM;
-+	}
- 
- 	/*
- 	 * New allocation must be visible in all pgd before it can be found by
-@@ -172,7 +175,12 @@ int ghes_estatus_pool_init(int num_ghes)
- 	 */
- 	vmalloc_sync_all();
- 
--	return gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
-+	rc = gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
-+	if (rc) {
-+		vfree(addr);
-+		gen_pool_destroy(ghes_estatus_pool);
-+	}
-+	return rc;
- }
- 
- static int map_gen_v2(struct ghes *ghes)
+Minor conflict with Dan's subsection hot-add series.
+Compiled + tested on x86 with DIMMs under QEMU.
+
+David Hildenbrand (6):
+  mm: Section numbers use the type "unsigned long"
+  drivers/base/memory: Use "unsigned long" for block ids
+  mm: Make register_mem_sect_under_node() static
+  mm/memory_hotplug: Rename walk_memory_range() and pass start+size
+    instead of pfns
+  mm/memory_hotplug: Move and simplify walk_memory_blocks()
+  drivers/base/memory.c: Get rid of find_memory_block_hinted()
+
+ arch/powerpc/platforms/powernv/memtrace.c | 22 +++---
+ drivers/acpi/acpi_memhotplug.c            | 19 ++----
+ drivers/base/memory.c                     | 81 +++++++++++++++++------
+ drivers/base/node.c                       |  8 ++-
+ include/linux/memory.h                    |  5 +-
+ include/linux/memory_hotplug.h            |  2 -
+ include/linux/mmzone.h                    |  4 +-
+ include/linux/node.h                      |  7 --
+ mm/memory_hotplug.c                       | 57 +---------------
+ mm/sparse.c                               | 12 ++--
+ 10 files changed, 92 insertions(+), 125 deletions(-)
+
 -- 
-1.8.3.1
+2.21.0
 
