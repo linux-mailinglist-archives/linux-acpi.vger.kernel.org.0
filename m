@@ -2,211 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F83A450F7
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jun 2019 02:59:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6468A450FC
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jun 2019 03:03:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725863AbfFNA7M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jun 2019 20:59:12 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:38351 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725765AbfFNA7M (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jun 2019 20:59:12 -0400
-Received: by mail-lf1-f65.google.com with SMTP id b11so496309lfa.5
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Jun 2019 17:59:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=I98oqQdWH0Mw6Xky+e35CPphdJz8Kck/GJTzPjc3tTc=;
-        b=m86vUKlQ5YDSeLdsPSxt2prdHbQs2B+ZLCQyCjgTQ4XxEhaExIG4MVOtJZ2Rxv4BWB
-         OnqxPu2Zs0EBCiEM8yaicvi99+VuPs4kRUAsF+DOoMsNhBoJdhjG52b7gWT1OVqfprBD
-         bFTu53qvb0g8WsRqm2ycpLwX3/rFbOt4C8MuoNAYZkymmThu9YJvadbaThMdcIdPf3f2
-         TFC7SdjwKdj6SC/Q9Devf27OW1PXhhi61Cc4zoZMszqkk8dP1cgmXALP7M7RXuyNcPq2
-         fML/W6Dfr7kw97sKJygEzaN+5XCfmaYDNSjI1eyjc7IZ76XXTLVHwr7ClthlP9luANHI
-         qr/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=I98oqQdWH0Mw6Xky+e35CPphdJz8Kck/GJTzPjc3tTc=;
-        b=BXFWJjB5kmwfHALgL7i54bxyRw/XAXkFJP2GWNhao8irH09ajuuS2MzX8XMyAGQBLQ
-         kBZDIl1gX6QIvgi2R/qgA2GF7w5XC5qLI1tTWxW7mQyXkBKgJqWo+yizCyVxC288pNIo
-         njSSssBMDEUxvKQaC3irzzUVNGDu34Kt8mbm4+JcSl7QgdFSktPqzTJFpJ9I3e8f74eD
-         lvfSES7aLh9rITNeEZXeocPQZ2IohC9Y5HeFze4iV/FzQYwayhAM9JxXmjeTYhanSESv
-         Odzap6dQ47glvUjbEf418i9ai6inplozyFBsz6iVx33oAVpOmHGjPHQtMbWJdlHhv0Eq
-         0gPQ==
-X-Gm-Message-State: APjAAAVVKNqeDdP2fDYGXtG9swNVr1NDEQadYUSMPrmgEvLE3imJETli
-        5Eg/abujYLxWilzKt2u+YHArBCRD9Rv+SqpHRrOcYw==
-X-Google-Smtp-Source: APXvYqxa8i4seJt+9sQManfHUjpo6iIyu8cCnEkRp5QyNecroE6qCOITvQU8pCRJ3t73s2XvMb32/2GnFwaKqCjMXis=
-X-Received: by 2002:a19:488e:: with SMTP id v136mr44908837lfa.192.1560473948895;
- Thu, 13 Jun 2019 17:59:08 -0700 (PDT)
+        id S1727381AbfFNBDn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jun 2019 21:03:43 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:46152 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726959AbfFNBDn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 13 Jun 2019 21:03:43 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 2D40C8FC07ADAE7E2CF3;
+        Fri, 14 Jun 2019 09:03:40 +0800 (CST)
+Received: from [127.0.0.1] (10.177.223.23) by DGGEMS403-HUB.china.huawei.com
+ (10.3.19.203) with Microsoft SMTP Server id 14.3.439.0; Fri, 14 Jun 2019
+ 09:03:15 +0800
+Subject: Re: [bug report] ACPI: Add new IORT functions to support MSI domain
+ handling
+To:     Robin Murphy <robin.murphy@arm.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>, <tn@semihalf.com>
+CC:     <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Lorenzo Pieralisi <Lorenzo.Pieralisi@arm.com>
+References: <20190613065410.GB16334@mwanda>
+ <425b5d78-b38f-270b-94e2-7ece1e5498e5@arm.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <5f9fecb1-66de-b550-3f8e-097795a08efe@huawei.com>
+Date:   Fri, 14 Jun 2019 09:03:09 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
 MIME-Version: 1.0
-References: <20190516193616.252788-1-furquan@google.com> <13361760.nMXA0SR1Mq@kreacher>
-In-Reply-To: <13361760.nMXA0SR1Mq@kreacher>
-From:   Furquan Shaikh <furquan@google.com>
-Date:   Thu, 13 Jun 2019 17:58:54 -0700
-Message-ID: <CAEGmHFFmfyB=bEx_UMi4ZGeTR9Bxs2TdnscyzJMrv2fW1_fDMg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PM: Clear wake-up device GPEs before enabling
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rajat Jain <rajatja@google.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <425b5d78-b38f-270b-94e2-7ece1e5498e5@arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.177.223.23]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 13, 2019 at 1:24 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
->
-> On Thursday, May 16, 2019 9:36:16 PM CEST Furquan Shaikh wrote:
-> > This change clears GPE status for wake-up devices before enabling that
-> > GPE. This is required to ensure that stale GPE status does
-> > not result in pre-mature wake on enabling GPE for wake-up devices.
-> >
-> > Without this change, here is the sequence of events that is causing
-> > suspend aborts on recent chrome books:
-> >
-> > 1. System decides to enter sleep.
-> > 2. All devices in the system are put into low power mode.
-> > 3. This results in acpi_dev_suspend being called for each ACPI
-> > device.
-> > 4. If the device is wake capable, then acpi_dev_suspend calls
-> > acpi_device_wakeup_enable to enable GPE for the device.
-> > 5. If GPE status is already set, enabling GPE for the wakeup device
-> > results in generating a SCI which is handled by acpi_ev_detect_gpe
-> > ultimately calling wakeup_source_activate that increments wakeup
-> > events, and thus aborting the suspend attempt.
-> >
-> > Signed-off-by: Furquan Shaikh <furquan@google.com>
-> > ---
-> >  drivers/acpi/device_pm.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> > index b859d75eaf9f6..e05ee3ff45683 100644
-> > --- a/drivers/acpi/device_pm.c
-> > +++ b/drivers/acpi/device_pm.c
-> > @@ -721,6 +721,8 @@ static int __acpi_device_wakeup_enable(struct acpi_device *adev,
-> >       if (error)
-> >               goto out;
-> >
-> > +     acpi_clear_gpe(wakeup->gpe_device, wakeup->gpe_number);
-> > +
-> >       status = acpi_enable_gpe(wakeup->gpe_device, wakeup->gpe_number);
-> >       if (ACPI_FAILURE(status)) {
-> >               acpi_disable_wakeup_device_power(adev);
-> >
->
-> This patch may cause events to be missed if the GPE.  I guess what you reall mean is
-> something like the patch below.
+On 2019/6/13 17:30, Robin Murphy wrote:
+> On 13/06/2019 07:54, Dan Carpenter wrote:
+>> Hello Tomasz Nowicki,
+>>
+>> The patch 4bf2efd26d76: "ACPI: Add new IORT functions to support MSI
+>> domain handling" from Sep 12, 2016, leads to the following static
+>> checker warning:
+>>
+>>     drivers/acpi/arm64/iort.c:628 iort_dev_find_its_id()
+>>     warn: array off by one? 'its->identifiers[idx]'
+>>
+>> drivers/acpi/arm64/iort.c
+>>     589  /**
+>>     590   * iort_dev_find_its_id() - Find the ITS identifier for a device
+>>     591   * @dev: The device.
+>>     592   * @req_id: Device's requester ID
+>>     593   * @idx: Index of the ITS identifier list.
+>>     594   * @its_id: ITS identifier.
+>>     595   *
+>>     596   * Returns: 0 on success, appropriate error value otherwise
+>>     597   */
+>>     598  static int iort_dev_find_its_id(struct device *dev, u32 req_id,
+>>     599                                  unsigned int idx, int *its_id)
+>>     600  {
+>>     601          struct acpi_iort_its_group *its;
+>>     602          struct acpi_iort_node *node;
+>>     603
+>>     604          node = iort_find_dev_node(dev);
+>>     605          if (!node)
+>>     606                  return -ENXIO;
+>>     607
+>>     608          node = iort_node_map_id(node, req_id, NULL, IORT_MSI_TYPE);
+>>     609          if (!node)
+>>     610                  return -ENXIO;
+>>     611
+>>     612          /* Move to ITS specific data */
+>>     613          its = (struct acpi_iort_its_group *)node->node_data;
+>>     614          if (idx > its->its_count) {
+>>                      ^^^^^^^^^^^^^^^^^^^^
+>> I wasn't able to find any information about how its->its_count is set
+>> but it looks to me that is off by one.
+> 
+> its->count is read directly from the firmware table. Currently it seems this condition can never be hit anyway, since this is only ever called with idx == 0. TBH I can't really see how the code could evolve such that this check should ever be necessary (i.e. it makes no sense for callers to pull idx values out if thin air, so they'd presumably end up being derived from its->count in the first place), but if we are going to have it then I agree it should be ">=".
 
-Thanks for the patch Rafael! This indeed fixes the issue on my platform.
+For now seems we only got systems which map a device to a single
+ITS, but in the IORT spec, it assumes that maybe there is a ITS group
+for mapping, so I think we can just use ">=" as you suggested to
+align with the spec.
 
-FWIW, Tested-By: Furquan Shaikh <furquan@google.com>
+Thanks
+Hanjun
 
->
-> This should allow the kernel to see the events generated before the GPEs are
-> implicitly enabled, but it should clear them for the explicit users of acpi_enable_gpe().
->
-> Mika, what do you think?
->
-> ---
->  drivers/acpi/acpica/acevents.h |    3 ++-
->  drivers/acpi/acpica/evgpe.c    |    8 +++++++-
->  drivers/acpi/acpica/evgpeblk.c |    2 +-
->  drivers/acpi/acpica/evxface.c  |    2 +-
->  drivers/acpi/acpica/evxfgpe.c  |    2 +-
->  5 files changed, 12 insertions(+), 5 deletions(-)
->
-> Index: linux-pm/drivers/acpi/acpica/acevents.h
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/acpica/acevents.h
-> +++ linux-pm/drivers/acpi/acpica/acevents.h
-> @@ -69,7 +69,8 @@ acpi_status
->  acpi_ev_mask_gpe(struct acpi_gpe_event_info *gpe_event_info, u8 is_masked);
->
->  acpi_status
-> -acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info);
-> +acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info,
-> +                         u8 clear_on_enable);
->
->  acpi_status
->  acpi_ev_remove_gpe_reference(struct acpi_gpe_event_info *gpe_event_info);
-> Index: linux-pm/drivers/acpi/acpica/evgpe.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/acpica/evgpe.c
-> +++ linux-pm/drivers/acpi/acpica/evgpe.c
-> @@ -146,6 +146,7 @@ acpi_ev_mask_gpe(struct acpi_gpe_event_i
->   * FUNCTION:    acpi_ev_add_gpe_reference
->   *
->   * PARAMETERS:  gpe_event_info          - Add a reference to this GPE
-> + *              clear_on_enable         - Clear GPE status before enabling it
->   *
->   * RETURN:      Status
->   *
-> @@ -155,7 +156,8 @@ acpi_ev_mask_gpe(struct acpi_gpe_event_i
->   ******************************************************************************/
->
->  acpi_status
-> -acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info)
-> +acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info,
-> +                         u8 clear_on_enable)
->  {
->         acpi_status status = AE_OK;
->
-> @@ -170,6 +172,10 @@ acpi_ev_add_gpe_reference(struct acpi_gp
->
->                 /* Enable on first reference */
->
-> +               if (clear_on_enable) {
-> +                       (void)acpi_hw_clear_gpe(gpe_event_info);
-> +               }
-> +
->                 status = acpi_ev_update_gpe_enable_mask(gpe_event_info);
->                 if (ACPI_SUCCESS(status)) {
->                         status = acpi_ev_enable_gpe(gpe_event_info);
-> Index: linux-pm/drivers/acpi/acpica/evgpeblk.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/acpica/evgpeblk.c
-> +++ linux-pm/drivers/acpi/acpica/evgpeblk.c
-> @@ -453,7 +453,7 @@ acpi_ev_initialize_gpe_block(struct acpi
->                                 continue;
->                         }
->
-> -                       status = acpi_ev_add_gpe_reference(gpe_event_info);
-> +                       status = acpi_ev_add_gpe_reference(gpe_event_info, FALSE);
->                         if (ACPI_FAILURE(status)) {
->                                 ACPI_EXCEPTION((AE_INFO, status,
->                                         "Could not enable GPE 0x%02X",
-> Index: linux-pm/drivers/acpi/acpica/evxface.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/acpica/evxface.c
-> +++ linux-pm/drivers/acpi/acpica/evxface.c
-> @@ -971,7 +971,7 @@ acpi_remove_gpe_handler(acpi_handle gpe_
->               ACPI_GPE_DISPATCH_METHOD) ||
->              (ACPI_GPE_DISPATCH_TYPE(handler->original_flags) ==
->               ACPI_GPE_DISPATCH_NOTIFY)) && handler->originally_enabled) {
-> -               (void)acpi_ev_add_gpe_reference(gpe_event_info);
-> +               (void)acpi_ev_add_gpe_reference(gpe_event_info, FALSE);
->                 if (ACPI_GPE_IS_POLLING_NEEDED(gpe_event_info)) {
->
->                         /* Poll edge triggered GPEs to handle existing events */
-> Index: linux-pm/drivers/acpi/acpica/evxfgpe.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/acpica/evxfgpe.c
-> +++ linux-pm/drivers/acpi/acpica/evxfgpe.c
-> @@ -108,7 +108,7 @@ acpi_status acpi_enable_gpe(acpi_handle
->         if (gpe_event_info) {
->                 if (ACPI_GPE_DISPATCH_TYPE(gpe_event_info->flags) !=
->                     ACPI_GPE_DISPATCH_NONE) {
-> -                       status = acpi_ev_add_gpe_reference(gpe_event_info);
-> +                       status = acpi_ev_add_gpe_reference(gpe_event_info, TRUE);
->                         if (ACPI_SUCCESS(status) &&
->                             ACPI_GPE_IS_POLLING_NEEDED(gpe_event_info)) {
->
->
->
->
