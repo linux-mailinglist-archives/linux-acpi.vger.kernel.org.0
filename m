@@ -2,111 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E86F146D53
-	for <lists+linux-acpi@lfdr.de>; Sat, 15 Jun 2019 02:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E0BC46D5C
+	for <lists+linux-acpi@lfdr.de>; Sat, 15 Jun 2019 03:10:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725889AbfFOAzO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Jun 2019 20:55:14 -0400
-Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:41564 "EHLO
-        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725809AbfFOAzN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Jun 2019 20:55:13 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e07486;MF=zhangliguang@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0TUC3mSH_1560560109;
-Received: from 30.39.137.53(mailfrom:zhangliguang@linux.alibaba.com fp:SMTPD_---0TUC3mSH_1560560109)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Sat, 15 Jun 2019 08:55:10 +0800
-Subject: Re: [PATCH] ACPI / APEI: release resources if gen_pool_add fails
-To:     James Morse <james.morse@arm.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>
-References: <1560505783-130606-1-git-send-email-zhangliguang@linux.alibaba.com>
- <fbd31c48-e1e0-55a5-b341-46d25b2c2001@arm.com>
-From:   =?UTF-8?B?5Lmx55+z?= <zhangliguang@linux.alibaba.com>
-Message-ID: <0e774ff0-bf7b-808c-d403-c71588f7c3c2@linux.alibaba.com>
-Date:   Sat, 15 Jun 2019 08:55:09 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1725996AbfFOBK4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Jun 2019 21:10:56 -0400
+Received: from foss.arm.com ([217.140.110.172]:45064 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725809AbfFOBK4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 14 Jun 2019 21:10:56 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9A2082B;
+        Fri, 14 Jun 2019 18:10:55 -0700 (PDT)
+Received: from mammon-tx2.austin.arm.com (mammon-tx2.austin.arm.com [10.118.30.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 861A23F718;
+        Fri, 14 Jun 2019 18:10:55 -0700 (PDT)
+From:   Jeremy Linton <jeremy.linton@arm.com>
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        catalin.marinas@arm.com, will.deacon@arm.com, rjw@rjwysocki.net,
+        lenb@kernel.org, mark.rutland@arm.com, lorenzo.pieralisi@arm.com,
+        sudeep.holla@arm.com, Jeremy Linton <jeremy.linton@arm.com>
+Subject: [PATCH v4 0/4] arm64: SPE ACPI enablement
+Date:   Fri, 14 Jun 2019 20:09:06 -0500
+Message-Id: <20190615010910.33921-1-jeremy.linton@arm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <fbd31c48-e1e0-55a5-b341-46d25b2c2001@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+This patch series enables the Arm Statistical Profiling
+Extension (SPE) on ACPI platforms.
 
-在 2019/6/14 22:51, James Morse 写道:
-> Hi Liguang,
->
-> On 14/06/2019 10:49, luanshi wrote:
->> To avoid memory leaks, destroy ghes_estatus_pool and release memory
->> allocated via vmalloc() on errors in ghes_estatus_pool_init().
->>
->> Signed-off-by: liguang.zlg <zhangliguang@linux.alibaba.com>
-> (I'm surprised your name has a '.' in it!)
->
-> Nit: This is v2. Please add a version number in the subject, e.g.:
-> | [PATCH v2] ACPI / APEI: release resources if gen_pool_add fails
->
-> This makes it easy for reviewers to know which is the latest. git format-patch will do
-> this for you if you add '-v 2' to its command-line.
->
->
->> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->> index 993940d..8472c96 100644
->> --- a/drivers/acpi/apei/ghes.c
->> +++ b/drivers/acpi/apei/ghes.c
->> @@ -163,8 +164,10 @@ int ghes_estatus_pool_init(int num_ghes)
->>   
->>   	ghes_estatus_pool_size_request = PAGE_ALIGN(len);
->>   	addr = (unsigned long)vmalloc(PAGE_ALIGN(len));
->> -	if (!addr)
->> +	if (!addr) {
->> +		gen_pool_destroy(ghes_estatus_pool);
->>   		return -ENOMEM;
->> +	}
->>   
->>   	/*
->>   	 * New allocation must be visible in all pgd before it can be found by
->> @@ -172,7 +175,12 @@ int ghes_estatus_pool_init(int num_ghes)
->>   	 */
->>   	vmalloc_sync_all();
->>   
->> -	return gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
->> +	rc = gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
->> +	if (rc) {
->> +		vfree(addr);
-> addr here is unsigned long, but vfree() wants a void *.
->
-> vfree() first leaves us with a pool containing memory we've vfree()d, which doesn't feel
-> like a good state to step through.
-> Can we vfree() after gen_pool_destroy()?
+This is possible because ACPI 6.3 uses a previously
+reserved field in the MADT to store the SPE interrupt
+number, similarly to how the normal PMU is described.
+If a consistent valid interrupt exists across all the
+cores in the system, a platform device is registered.
+That then triggers the SPE module, which runs as normal.
 
-Hi James,
+We also add the ability to parse the PPTT for IDENTICAL
+cores. We then use this to sanity check the single SPE
+device we create. This creates a bit of a problem with
+respect to the specification though. The specification
+says that its legal for multiple tree's to exist in the
+PPTT. We handle this fine, but what happens in the
+case of multiple tree's is that the lack of a common
+node with IDENTICAL set forces us to assume that there
+are multiple non-IDENTICAL cores in the machine.
 
-  I will modify this patch by your suggestion and send the patch v3 for 
-review.
+v3->v4: Rebase to 5.2.
+	Minor formatting, patch rearrangement.
+	Add missing `inline` in static header definition.
+	Drop ARM_SPE_ACPI and just use ARM_SPE_PMU.
 
-Thanks,
+v2->v3: Previously a function pointer was being used
+	  to handle the more complex node checking
+	  required by the IDENTICAL flag. This version
+	  simply checks for the IDENTICAL flag and calls
+	  flag_identical() to preform the revision
+	  and next node checks. (I think after reading
+	  Raphael's comments for the Nth time, this is
+	  actually what he was suggesting, which I
+	  initially miss interpreted).
+	Modify subject of first patch so that its clear
+	  a that its a capitalization change rather,
+	  than a logical C 'case' change.
 
-Liguang
+v1->v2: Wrap the code which creates the SPE device in
+	    a new CONFIG_ARM_SPE_ACPI ifdef.
+	Move arm,spe-v1 device name into common header file
+	Some comment/case sensitivity/function name changes.
 
+Jeremy Linton (4):
+  ACPI/PPTT: Modify node flag detection to find last IDENTICAL
+  ACPI/PPTT: Add function to return ACPI 6.3 Identical tokens
+  arm_pmu: acpi: spe: Add initial MADT/SPE probing
+  perf: arm_spe: Enable ACPI/Platform automatic module loading
 
->
->
->> +		gen_pool_destroy(ghes_estatus_pool);
->> +	}
->> +	return rc;
->>   }
->
-> With that:
-> Reviewed-by: James Morse <james.morse@arm.com>
-> Tested-by: James Morse <james.morse@arm.com>
->
->
-> Thanks for cleaning this up!
->
-> James
+ arch/arm64/include/asm/acpi.h |  3 ++
+ drivers/acpi/pptt.c           | 61 +++++++++++++++++++++++++---
+ drivers/perf/arm_pmu_acpi.c   | 75 +++++++++++++++++++++++++++++++++++
+ drivers/perf/arm_spe_pmu.c    | 12 +++++-
+ include/linux/acpi.h          |  5 +++
+ include/linux/perf/arm_pmu.h  |  2 +
+ 6 files changed, 150 insertions(+), 8 deletions(-)
+
+-- 
+2.21.0
+
