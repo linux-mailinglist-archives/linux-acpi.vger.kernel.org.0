@@ -2,106 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61D35479FE
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2019 08:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 604DF47AE8
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2019 09:28:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725778AbfFQGYY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Jun 2019 02:24:24 -0400
-Received: from mail.steuer-voss.de ([85.183.69.95]:36734 "EHLO
-        mail.steuer-voss.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725372AbfFQGYX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jun 2019 02:24:23 -0400
-X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
-Received: by mail.steuer-voss.de (Postfix, from userid 1000)
-        id 824734CD6C; Mon, 17 Jun 2019 08:24:18 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.steuer-voss.de (Postfix) with ESMTP id 7E5FC4CD50;
-        Mon, 17 Jun 2019 08:24:18 +0200 (CEST)
-Date:   Mon, 17 Jun 2019 08:24:18 +0200 (CEST)
-From:   Nikolaus Voss <nv@vosn.de>
-X-X-Sender: nv@fox.voss.local
-To:     "Moore, Robert" <robert.moore@intel.com>
-cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "Schmauss, Erik" <erik.schmauss@intel.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        nikolaus.voss@loewensteinmedical.de
-Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table
- loads
-In-Reply-To: <94F2FBAB4432B54E8AACC7DFDE6C92E3B95EFB26@ORSMSX110.amr.corp.intel.com>
-Message-ID: <alpine.DEB.2.20.1906170746150.12344@fox.voss.local>
-References: <cover.1560327219.git.nikolaus.voss@loewensteinmedical.de> <e2a4ddfd93a904b50b7ccc074e00e14dc4661963.1560327219.git.nikolaus.voss@loewensteinmedical.de> <CAJZ5v0jqxWs=PPik-TCDqQiyxCSyRP7HTue1WsdWP9e-nik2eA@mail.gmail.com>
- <alpine.DEB.2.20.1906141114490.6579@fox.voss.local> <94F2FBAB4432B54E8AACC7DFDE6C92E3B95EFB26@ORSMSX110.amr.corp.intel.com>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+        id S1726591AbfFQH2s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Jun 2019 03:28:48 -0400
+Received: from slot0.nejknio.cf ([89.32.41.233]:44686 "EHLO slot0.nejknio.cf"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726557AbfFQH2s (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 17 Jun 2019 03:28:48 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=nejknio.cf;
+ h=Content-Type:MIME-Version:Content-Transfer-Encoding:Content-Description:Subject:To:From:Date:Reply-To:Message-ID; i=trade1@nejknio.cf;
+ bh=73Xs4LxjK+lP+h5mKCyFyWTpkoQ=;
+ b=Q1p2oV7pTSDEZkMlWY+UuXSeA8YSp+hoqCmbkYojBl4qmXORmx27pxGKCiXkWFwcmdAley3XRAQ+
+   bapUOwp0gKdSr5ojvnaALKkl6ax8oq7CJiV48uB0NX7Qtk/87nml5SY40s0pjZkS3OFKkCN9JAWW
+   HCyqoy72UNcgXVQLuyB8us0UHYZ1iOikR0kIFw8PS7t4Kv2HzcYsimEHWGVnzjoSfozIj/XCNpXe
+   gAPXBGgjhcnqISgQ/vYEJJBv3PykqWlMar0dddT99XkaAHbTdrSoqdoFD90iGLBUfOI0WgIZTyp/
+   A4Pw98CaPvNwaU3RAfqGsOZVMoL8D6ib0/uqPw==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=nejknio.cf;
+ b=Hs8gETmkLGnp/D7odQkF99gouR/P4UPp9e4MSaCC5Sd1qZ6t6Tu+tYJBJ5f9hPCEwdPYKYFTuvk8
+   n3KZ6me/PMx4AjqVRtur7vF5D4hq8wmLjC++dqq7gFYVBq8E5N7O3BxLV0DMFhtll+yIyOHoeXAK
+   4qPVkOP8W7c1A60ulCvP+vPI8zc8ACF/x9iT1FlSQkGF7tHhARoXONec2kUa0wxrx+z0aCOsKjb5
+   i0eVpp4/UMYRx2r/esGNoOdV/z1DiG8Vw78Yva04GRXR9HtxBc+OgjaDH1w3pOc0kMYreV+rClJs
+   2GQd56M7CWH9+MaTRs7Tp6pNLxcGr5XQ+Nz0Bg==;
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: PRODUCT INQUIRY FOR EXPORT SHIPMENT
+To:     Recipients <trade1@nejknio.cf>
+From:   "Mark Maths" <trade1@nejknio.cf>
+Date:   Mon, 17 Jun 2019 10:08:34 +0300
+Reply-To: purchase_m.maths@aol.com
+Message-ID: <0.0.1.D50.1D524DB6EE58518.0@slot0.nejknio.cf>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Bob,
+Dear Sales team,
+ =
 
-On Fri, 14 Jun 2019, Moore, Robert wrote:
->
->
-> -----Original Message-----
-> From: Nikolaus Voss [mailto:nv@vosn.de]
-> Sent: Friday, June 14, 2019 2:26 AM
-> To: Rafael J. Wysocki <rafael@kernel.org>
-> Cc: Rafael J. Wysocki <rjw@rjwysocki.net>; Len Brown <lenb@kernel.org>; Moore, Robert <robert.moore@intel.com>; Schmauss, Erik <erik.schmauss@intel.com>; Jacek Anaszewski <jacek.anaszewski@gmail.com>; Pavel Machek <pavel@ucw.cz>; Dan Murphy <dmurphy@ti.com>; Thierry Reding <thierry.reding@gmail.com>; ACPI Devel Maling List <linux-acpi@vger.kernel.org>; open list:ACPI COMPONENT ARCHITECTURE (ACPICA) <devel@acpica.org>; linux-leds@vger.kernel.org; Linux PWM List <linux-pwm@vger.kernel.org>; Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-> Subject: Re: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table loads
->
-> Hi Rafael,
->
-> On Fri, 14 Jun 2019, Rafael J. Wysocki wrote:
->> On Wed, Jun 12, 2019 at 10:36 AM Nikolaus Voss
->> <nikolaus.voss@loewensteinmedical.de> wrote:
->>>
->>> If an ACPI SSDT overlay is loaded after built-in tables have been
->>> loaded e.g. via configfs or efivar_ssdt_load() it is necessary to
->>> rewalk the namespace to resolve references. Without this, relative
->>> and absolute paths like ^PCI0.SBUS or \_SB.PCI0.SBUS are not resolved
->>> correctly.
->>>
->>> Make configfs load use the same method as efivar_ssdt_load().
->>>
->>> Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
->>
->> This is fine by me, so
->>
->> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>
->> Or if you want me to take this patch (without the other two in the
->> series), please let me know.
->
-> thanks. I think it would be the best if you take up this patch as it is 
-> an independent topic. In retrospect it wasn't a good idea to put it into 
-> this series.
->
-> Kind regards,
-> Niko
->
-> I would have to ask, why is additional code needed for package 
-> initialization/resolution? It already happens elsewhere in acpica. Bob
+In furtherance to our market research, we have reviewed all your products t=
+ypes and we have finally interested in your product for our market here in =
 
-for built-in tables loaded via acpi_ex_load_table_op() everything is fine, 
-because after acpi_tb_load_table() acpi_ns_walk_namespace() is called to 
-resolve references.
 
-My fix only affects tables loaded dynamically via either 
-acpi_configfs driver (for debugging purposes) or efivar_ssdt_load() (to 
-specify a table on the kernel's command line). They use acpi_load_table() 
-to load the table from a caller-owned buffer. To resolve the references, 
-it is again necessary to rewalk the namespace, which was simply missing in 
-acpi_load_table().
+United State for your production. We introduce ourselves as Emilxa Tram SRL=
+, A general group of company located in the United State. =
 
-Niko
+
+We are sourcing for new suppliers from your location =
+
+
+Kindly advice us if you accept new purchase orders, I will forward our PO f=
+or urgent order.
+
+Waiting for your response to send order. Reply to ( purchase_m.maths@aol.co=
+m)
+
+Best regards.
+Mark Maths
+Company Address:
+Emilxa Tram SRL Company Limited
+P.O. Box 978
+Road Town
+Tortola
+British Virgin Islands
+Contact information:
+Tel: +1 (284) 493 7235
+Email: purchase_m.maths@aol.com
+https://meridianbvi.com/contact-us/
