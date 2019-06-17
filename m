@@ -2,63 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4651D47022
-	for <lists+linux-acpi@lfdr.de>; Sat, 15 Jun 2019 15:11:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C30AB4779B
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2019 03:28:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726327AbfFONLw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 15 Jun 2019 09:11:52 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:42630 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725944AbfFONLw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 15 Jun 2019 09:11:52 -0400
-Received: by mail-pg1-f196.google.com with SMTP id l19so3132304pgh.9
-        for <linux-acpi@vger.kernel.org>; Sat, 15 Jun 2019 06:11:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=4/XQrQs3hsOb/l0r/7UOpRt774uH8BelSAtMEDNdeuA=;
-        b=SwJ1UBbDw2Z4YLOIBFQeloGjfT1Lb4y83FQ0K51yY8atDKJhlzQWeN+OOvEB2eMcxW
-         2JL3gRHVqkmrYi+dl6OGjNR3k6cxoSU0LeP1pYDvl5kmbEBX1EvTpliZ9/gIg3osBeiO
-         ox6K+aDh0aRElquDzlMsYg4VI7ljmaNLDDmHOf0n06GU9pqiPNU814kjZxSg78uQGkrG
-         tsXz6r/4GfkMM77a94i4+BQDUwA1PleY2BDzmzp4yTZlHUFZcAdH4jy1lM3zI7mwX9hS
-         MnWRYLzul66YtyreNSJQea77u5wV0iQY32EeijUk4AyZUvz8664RyeBKw8EHRsQUs1Xv
-         YX1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=4/XQrQs3hsOb/l0r/7UOpRt774uH8BelSAtMEDNdeuA=;
-        b=LoIjzwYy2Ez3rRLjDIM4/SU4f5wLgXgUrEO/2RUmr3SMEmZk6R2PearMELBgUgcexD
-         sIoROUIhBELw03olzCxeXnotVMdLBpxCq/QBPygS3m79PJJL5zoR/UUyTiXYHfTEPehr
-         hMJ8pv0P+JReGvQllK1C0WOkoP1LhK8dFY0/CJptKGm0/rufZbDgZLmE/GezBSMNG22K
-         Gdb0f+w1foqMd55Xiqu3kj+vraPoeC/Q9ygkFXhdxgNvLH51nKCxQ0q9M4oSRua9OMzl
-         HFlJPv+F88rei79iA40hP7mydic8Zhtqcd/4Q8NhCylRQnMX3Joe0o+xDH6LJC4zSyVt
-         Z88w==
-X-Gm-Message-State: APjAAAXUUQLPyxZ/dWrHfzxQ3F85D337tFFZ1xgB51RrD2EZUZpxtMU4
-        Gx9Jd0baN/dpEQCzpbz4nvLVwM50D6NpGLgFbkw=
-X-Google-Smtp-Source: APXvYqzt4zYkK0jEavg24TKUa1lPxvL8oM3MBxQq3wszF8Wm4DRAJWsJ6oXHytV7nL0XwW+Z+fnkWJxZvnjvHS79SUo=
-X-Received: by 2002:a17:90a:480d:: with SMTP id a13mr15763797pjh.40.1560604311578;
- Sat, 15 Jun 2019 06:11:51 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a17:90a:8e84:0:0:0:0 with HTTP; Sat, 15 Jun 2019 06:11:50
- -0700 (PDT)
-From:   "DR. OMAR KALIFA" <baradfufana@gmail.com>
-Date:   Sat, 15 Jun 2019 15:11:50 +0200
-Message-ID: <CADZD1FoR3sCSybo+Ev8Ce85h+u=7=RioC0C6xvQJv0d6ZBTRSQ@mail.gmail.com>
-Subject: CAN I TRUST YOU?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        id S1727481AbfFQB2A (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 16 Jun 2019 21:28:00 -0400
+Received: from out30-57.freemail.mail.aliyun.com ([115.124.30.57]:36375 "EHLO
+        out30-57.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727382AbfFQB2A (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 16 Jun 2019 21:28:00 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=zhangliguang@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0TUNARfg_1560734870;
+Received: from localhost(mailfrom:zhangliguang@linux.alibaba.com fp:SMTPD_---0TUNARfg_1560734870)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 17 Jun 2019 09:27:57 +0800
+From:   luanshi <zhangliguang@linux.alibaba.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>
+Subject: [PATCH v2] ACPI / APEI: release resources if gen_pool_add fails
+Date:   Mon, 17 Jun 2019 09:27:50 +0800
+Message-Id: <1560734870-27742-1-git-send-email-zhangliguang@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+To avoid memory leaks, destroy ghes_estatus_pool and release memory
+allocated via vmalloc() on errors in ghes_estatus_pool_init().
+
+Signed-off-by: Liguang Zhang <zhangliguang@linux.alibaba.com>
+Reviewed-by: James Morse <james.morse@arm.com>
+Tested-by: James Morse <james.morse@arm.com>
+---
+ drivers/acpi/apei/ghes.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 993940d..4e5de30 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -153,6 +153,7 @@ static void ghes_unmap(void __iomem *vaddr, enum fixed_addresses fixmap_idx)
+ int ghes_estatus_pool_init(int num_ghes)
+ {
+ 	unsigned long addr, len;
++	int rc = 0;
+ 
+ 	ghes_estatus_pool = gen_pool_create(GHES_ESTATUS_POOL_MIN_ALLOC_ORDER, -1);
+ 	if (!ghes_estatus_pool)
+@@ -163,8 +164,10 @@ int ghes_estatus_pool_init(int num_ghes)
+ 
+ 	ghes_estatus_pool_size_request = PAGE_ALIGN(len);
+ 	addr = (unsigned long)vmalloc(PAGE_ALIGN(len));
+-	if (!addr)
++	if (!addr) {
++		gen_pool_destroy(ghes_estatus_pool);
+ 		return -ENOMEM;
++	}
+ 
+ 	/*
+ 	 * New allocation must be visible in all pgd before it can be found by
+@@ -172,7 +175,12 @@ int ghes_estatus_pool_init(int num_ghes)
+ 	 */
+ 	vmalloc_sync_all();
+ 
+-	return gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
++	rc = gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
++	if (rc) {
++		gen_pool_destroy(ghes_estatus_pool);
++		vfree((void *)addr);
++	}
++	return rc;
+ }
+ 
+ static int map_gen_v2(struct ghes *ghes)
 -- 
-Hello,
+1.8.3.1
 
-Compliment of the season. My name is Dr. Omar Kalifa. i work with one
-of the reputable banks here in West Africa.I have a lucrative and
-profitable business to discuse with you. Reply if you are intersted
-for more details.
-
-Regards,
-Dr. Omar Kalifa
