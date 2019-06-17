@@ -2,98 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F67148045
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2019 13:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05746480B8
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2019 13:32:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726957AbfFQLLx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Jun 2019 07:11:53 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:39449 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726622AbfFQLLw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jun 2019 07:11:52 -0400
-Received: by mail-ot1-f67.google.com with SMTP id r21so5952392otq.6
-        for <linux-acpi@vger.kernel.org>; Mon, 17 Jun 2019 04:11:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=q2SYsxnd78Hvl13uSih8O+0r8/7xSAtk+oSusdBmKzw=;
-        b=XcFAvMy4p0UNBsUYhD3zy9k2j4KosOvgqtMA6WalIdHP2khuqKaVG/LnlJsk7VQsyd
-         0tqp1kCXsGGqnm56XxeChCLKQM2UhbTMz2qJrxZSZJYxz1saT6H88KRmwmB7zTtCElka
-         lshfYc8iva+4W0DOrmWXdH86DO212o5/3T0vWYI97UXOtn4kbZuNcQirAGEXRYkm5HX9
-         6dumXLE0lDnoen1yowCXdVNP93e4ZewPEe8/P5IJHwJUZBcMm/3o61OstjXb1D85eVAb
-         HzLOFcc+lBgb/m17t3u1cCeSM16QJGDku0W1n2AzHrIyWusDt448LOVBzk8bgk03J+XK
-         6I/A==
-X-Gm-Message-State: APjAAAXpaAMjJ+UNlYb5dSLpXCRFG2CpR9nGap8dF2VullGOG59uiBE7
-        t6FX2X32jwgqe9JkST3mRGpN3W7y39WZP+Vwe1M=
-X-Google-Smtp-Source: APXvYqxRnT1t79Bb9zvbYiWaR4EzAZj5+gI46fqqmMZC1qNnvAQIKISUOi7dVSxIDN2UVaSz5xQBKmCyBotsMBYBlCk=
-X-Received: by 2002:a05:6830:8a:: with SMTP id a10mr2033216oto.167.1560769911981;
- Mon, 17 Jun 2019 04:11:51 -0700 (PDT)
+        id S1727947AbfFQLbt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Jun 2019 07:31:49 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:59468 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725681AbfFQLbt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jun 2019 07:31:49 -0400
+Received: from 79.184.254.20.ipv4.supernova.orange.pl (79.184.254.20) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
+ id 4c77d97a5198814f; Mon, 17 Jun 2019 13:31:46 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Furquan Shaikh <furquan@google.com>,
+        Erik Schmauss <erik.schmauss@intel.com>,
+        Bob Moore <robert.moore@intel.com>
+Subject: [PATCH] ACPICA: Clear status of GPEs on first direct enable
+Date:   Mon, 17 Jun 2019 13:31:45 +0200
+Message-ID: <3650147.WZ2HLy2X9i@kreacher>
 MIME-Version: 1.0
-References: <1560769335-62944-1-git-send-email-guohanjun@huawei.com>
-In-Reply-To: <1560769335-62944-1-git-send-email-guohanjun@huawei.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 17 Jun 2019 13:11:40 +0200
-Message-ID: <CAJZ5v0jyi-ZkcDU=+GJm5LxMGX36ce=a_j169A_7Ph2AG8_C+w@mail.gmail.com>
-Subject: Re: [PATCH v2] MAINTAINERS: Update my email address
-To:     Hanjun Guo <guohanjun@huawei.com>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Will Deacon <will@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 17, 2019 at 1:04 PM Hanjun Guo <guohanjun@huawei.com> wrote:
->
-> The @linaro.org address is not working and bonucing, so update the
-> references.
->
-> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-How do you want this to go it, via ARM or ACPI?
+ACPI GPEs (other than the EC one) can be enabled in two situations.
+First, the GPEs with existing _Lxx and _Exx methods are enabled
+implicitly by ACPICA during system initialization.  Second, the
+GPEs without these methods (like GPEs listed by _PRW objects for
+wakeup devices) need to be enabled directly by the code that is
+going to use them (e.g. ACPI power management or device drivers).
 
-> ---
->
-> v2: update the .mailmap to redirect the older email address which
->     is suggested by Marc.
->
->  .mailmap    | 1 +
->  MAINTAINERS | 2 +-
->  2 files changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/.mailmap b/.mailmap
-> index 07a777f..fd9b497 100644
-> --- a/.mailmap
-> +++ b/.mailmap
-> @@ -81,6 +81,7 @@ Greg Kroah-Hartman <greg@echidna.(none)>
->  Greg Kroah-Hartman <gregkh@suse.de>
->  Greg Kroah-Hartman <greg@kroah.com>
->  Gregory CLEMENT <gregory.clement@bootlin.com> <gregory.clement@free-electrons.com>
-> +Hanjun Guo <guohanjun@huawei.com> <hanjun.guo@linaro.org>
->  Henk Vergonet <Henk.Vergonet@gmail.com>
->  Henrik Kretzschmar <henne@nachtwindheim.de>
->  Henrik Rydberg <rydberg@bitmath.org>
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 57f496c..2fed10f 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -364,7 +364,7 @@ F:  drivers/acpi/fan.c
->
->  ACPI FOR ARM64 (ACPI/arm64)
->  M:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> -M:     Hanjun Guo <hanjun.guo@linaro.org>
-> +M:     Hanjun Guo <guohanjun@huawei.com>
->  M:     Sudeep Holla <sudeep.holla@arm.com>
->  L:     linux-acpi@vger.kernel.org
->  L:     linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-> --
-> 1.7.12.4
->
+In the former case, if the status of a given GPE is set to start
+with, its handler method (either _Lxx or _Exx) needs to be invoked
+to take care of the events (possibly) signaled before the GPE was
+enabled.  In the latter case, however, the first caller of
+acpi_enable_gpe() for a given GPE should not be expected to care
+about any events that might be signaled through it earlier.  In
+that case, it is better to clear the status of the GPE before
+enabling it, to prevent stale events from triggering unwanted
+actions (like spurious system resume, for example).
+
+For this reason, modify acpi_ev_add_gpe_reference() to take an
+additional boolean argument indicating whether or not the GPE
+status needs to be cleared when its reference counter changes from
+zero to one and make acpi_enable_gpe() pass TRUE to it through
+that new argument.
+
+Fixes: 18996f2db918 ("ACPICA: Events: Stop unconditionally clearing ACPI IRQs during suspend/resume")
+Reported-by: Furquan Shaikh <furquan@google.com>
+Tested-by: Furquan Shaikh <furquan@google.com>
+Tested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/acpica/acevents.h |    3 ++-
+ drivers/acpi/acpica/evgpe.c    |    8 +++++++-
+ drivers/acpi/acpica/evgpeblk.c |    2 +-
+ drivers/acpi/acpica/evxface.c  |    2 +-
+ drivers/acpi/acpica/evxfgpe.c  |    2 +-
+ 5 files changed, 12 insertions(+), 5 deletions(-)
+
+Index: linux-pm/drivers/acpi/acpica/acevents.h
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/acevents.h
++++ linux-pm/drivers/acpi/acpica/acevents.h
+@@ -69,7 +69,8 @@ acpi_status
+ acpi_ev_mask_gpe(struct acpi_gpe_event_info *gpe_event_info, u8 is_masked);
+ 
+ acpi_status
+-acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info);
++acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info,
++			  u8 clear_on_enable);
+ 
+ acpi_status
+ acpi_ev_remove_gpe_reference(struct acpi_gpe_event_info *gpe_event_info);
+Index: linux-pm/drivers/acpi/acpica/evgpe.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/evgpe.c
++++ linux-pm/drivers/acpi/acpica/evgpe.c
+@@ -146,6 +146,7 @@ acpi_ev_mask_gpe(struct acpi_gpe_event_i
+  * FUNCTION:    acpi_ev_add_gpe_reference
+  *
+  * PARAMETERS:  gpe_event_info          - Add a reference to this GPE
++ *              clear_on_enable         - Clear GPE status before enabling it
+  *
+  * RETURN:      Status
+  *
+@@ -155,7 +156,8 @@ acpi_ev_mask_gpe(struct acpi_gpe_event_i
+  ******************************************************************************/
+ 
+ acpi_status
+-acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info)
++acpi_ev_add_gpe_reference(struct acpi_gpe_event_info *gpe_event_info,
++			  u8 clear_on_enable)
+ {
+ 	acpi_status status = AE_OK;
+ 
+@@ -170,6 +172,10 @@ acpi_ev_add_gpe_reference(struct acpi_gp
+ 
+ 		/* Enable on first reference */
+ 
++		if (clear_on_enable) {
++			(void)acpi_hw_clear_gpe(gpe_event_info);
++		}
++
+ 		status = acpi_ev_update_gpe_enable_mask(gpe_event_info);
+ 		if (ACPI_SUCCESS(status)) {
+ 			status = acpi_ev_enable_gpe(gpe_event_info);
+Index: linux-pm/drivers/acpi/acpica/evgpeblk.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/evgpeblk.c
++++ linux-pm/drivers/acpi/acpica/evgpeblk.c
+@@ -453,7 +453,7 @@ acpi_ev_initialize_gpe_block(struct acpi
+ 				continue;
+ 			}
+ 
+-			status = acpi_ev_add_gpe_reference(gpe_event_info);
++			status = acpi_ev_add_gpe_reference(gpe_event_info, FALSE);
+ 			if (ACPI_FAILURE(status)) {
+ 				ACPI_EXCEPTION((AE_INFO, status,
+ 					"Could not enable GPE 0x%02X",
+Index: linux-pm/drivers/acpi/acpica/evxface.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/evxface.c
++++ linux-pm/drivers/acpi/acpica/evxface.c
+@@ -971,7 +971,7 @@ acpi_remove_gpe_handler(acpi_handle gpe_
+ 	      ACPI_GPE_DISPATCH_METHOD) ||
+ 	     (ACPI_GPE_DISPATCH_TYPE(handler->original_flags) ==
+ 	      ACPI_GPE_DISPATCH_NOTIFY)) && handler->originally_enabled) {
+-		(void)acpi_ev_add_gpe_reference(gpe_event_info);
++		(void)acpi_ev_add_gpe_reference(gpe_event_info, FALSE);
+ 		if (ACPI_GPE_IS_POLLING_NEEDED(gpe_event_info)) {
+ 
+ 			/* Poll edge triggered GPEs to handle existing events */
+Index: linux-pm/drivers/acpi/acpica/evxfgpe.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/evxfgpe.c
++++ linux-pm/drivers/acpi/acpica/evxfgpe.c
+@@ -108,7 +108,7 @@ acpi_status acpi_enable_gpe(acpi_handle
+ 	if (gpe_event_info) {
+ 		if (ACPI_GPE_DISPATCH_TYPE(gpe_event_info->flags) !=
+ 		    ACPI_GPE_DISPATCH_NONE) {
+-			status = acpi_ev_add_gpe_reference(gpe_event_info);
++			status = acpi_ev_add_gpe_reference(gpe_event_info, TRUE);
+ 			if (ACPI_SUCCESS(status) &&
+ 			    ACPI_GPE_IS_POLLING_NEEDED(gpe_event_info)) {
+ 
+
+
+
