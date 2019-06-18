@@ -2,188 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 111A649C48
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2019 10:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6266949CFE
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2019 11:21:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729123AbfFRIoz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Jun 2019 04:44:55 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:45652 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726330AbfFRIoz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Jun 2019 04:44:55 -0400
-Received: by mail-ot1-f65.google.com with SMTP id x21so13195995otq.12
-        for <linux-acpi@vger.kernel.org>; Tue, 18 Jun 2019 01:44:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=s+eB30TpXEI+6me9NwAv3QSf3QTAU79iv/+7LAE+dMs=;
-        b=sDB8k0DNatKfHz2ex/wRhL6DPk47SdI8wuO6JaoD8B7Hh6cPBG3QarrTcduztC+kCa
-         XH2H0XxGuZD6D6+vD3AkzaTWCkCkSxRHDEHrL4Kbj48Wyy76veXxch7FIOt8FGwxMUcn
-         V3U/GJKME3Z82VbYcPsJns5lavjPci20CGmDAodn94BS+bd35LfTVBuMtJFAHMw+y5ZE
-         +OWsGciIcduoyOv3rC/slOAxf69NDep00i1vuaPe+e5wmUO054sgOwTLYTLgJ0sH+2ZU
-         exD1cH1D8DXEoY7vX+msillLeMUqCzAB4/3CX9S0xZGpSOB3GXpRH5DUczBOsZzN2S/2
-         Gqfw==
-X-Gm-Message-State: APjAAAVxJd6jXZwZZM8NSuCWD94/z5vqiyO1zjO/zzTlHh6VC35KaZyu
-        lXoPt28Myv1rLlYOCnvoWh1nJO2JpBBA3L7xo8o=
-X-Google-Smtp-Source: APXvYqzptE31oM13sXKOU1GHo3qZuF9QtSOffdlUy2wFo/0rlfS2uy1RSlcoj9Cr/ciSFLOafRPg7d6Q9x0RTsS+jQc=
-X-Received: by 2002:a9d:4b0b:: with SMTP id q11mr63606457otf.69.1560847493925;
- Tue, 18 Jun 2019 01:44:53 -0700 (PDT)
+        id S1729171AbfFRJVs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Jun 2019 05:21:48 -0400
+Received: from mail.steuer-voss.de ([85.183.69.95]:58172 "EHLO
+        mail.steuer-voss.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728810AbfFRJVs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Jun 2019 05:21:48 -0400
+X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
+Received: by mail.steuer-voss.de (Postfix, from userid 1000)
+        id C023A4CD7A; Tue, 18 Jun 2019 11:21:44 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.steuer-voss.de (Postfix) with ESMTP id BBDE9449CC;
+        Tue, 18 Jun 2019 11:21:44 +0200 (CEST)
+Date:   Tue, 18 Jun 2019 11:21:44 +0200 (CEST)
+From:   Nikolaus Voss <nv@vosn.de>
+X-X-Sender: nv@fox.voss.local
+To:     "Moore, Robert" <robert.moore@intel.com>
+cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        "Schmauss, Erik" <erik.schmauss@intel.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table
+ loads
+In-Reply-To: <94F2FBAB4432B54E8AACC7DFDE6C92E3B95F9EC6@ORSMSX110.amr.corp.intel.com>
+Message-ID: <alpine.DEB.2.20.1906181030240.24846@fox.voss.local>
+References: <cover.1560327219.git.nikolaus.voss@loewensteinmedical.de> <e2a4ddfd93a904b50b7ccc074e00e14dc4661963.1560327219.git.nikolaus.voss@loewensteinmedical.de> <CAJZ5v0jqxWs=PPik-TCDqQiyxCSyRP7HTue1WsdWP9e-nik2eA@mail.gmail.com>
+ <alpine.DEB.2.20.1906141114490.6579@fox.voss.local> <94F2FBAB4432B54E8AACC7DFDE6C92E3B95EFB26@ORSMSX110.amr.corp.intel.com> <alpine.DEB.2.20.1906170746150.12344@fox.voss.local> <94F2FBAB4432B54E8AACC7DFDE6C92E3B95F9EC6@ORSMSX110.amr.corp.intel.com>
+User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
 MIME-Version: 1.0
-References: <20190526202750.4614-1-shaunak.saha@intel.com> <2151762.asltZFE8WJ@kreacher>
-In-Reply-To: <2151762.asltZFE8WJ@kreacher>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 18 Jun 2019 10:44:43 +0200
-Message-ID: <CAJZ5v0iHRzC=ewqUTa_VUdJ2NOztnP+hDYBeJLtfDydArPkkeA@mail.gmail.com>
-Subject: Re: drivers/acpi: Change the lpit function call flow
-To:     Mario Limonciello <mario_limonciello@dell.com>
-Cc:     Shaunak Saha <shaunak.saha@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII; format=flowed
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 13, 2019 at 11:37 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+On Mon, 17 Jun 2019, Moore, Robert wrote:
+>> -----Original Message-----
+>> From: Nikolaus Voss [mailto:nv@vosn.de]
+>> Sent: Sunday, June 16, 2019 11:24 PM
+>> To: Moore, Robert <robert.moore@intel.com>
+>> Cc: Rafael J. Wysocki <rafael@kernel.org>; Rafael J. Wysocki
+>> <rjw@rjwysocki.net>; Len Brown <lenb@kernel.org>; Schmauss, Erik
+>> <erik.schmauss@intel.com>; Jacek Anaszewski
+>> <jacek.anaszewski@gmail.com>; Pavel Machek <pavel@ucw.cz>; Dan Murphy
+>> <dmurphy@ti.com>; Thierry Reding <thierry.reding@gmail.com>; ACPI Devel
+>> Maling List <linux-acpi@vger.kernel.org>; open list:ACPI COMPONENT
+>> ARCHITECTURE (ACPICA) <devel@acpica.org>; linux-leds@vger.kernel.org;
+>> Linux PWM List <linux-pwm@vger.kernel.org>; Linux Kernel Mailing List
+>> <linux-kernel@vger.kernel.org>; nikolaus.voss@loewensteinmedical.de
+>> Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table
+>> loads
+>>
+>> Bob,
+>>
+>> On Fri, 14 Jun 2019, Moore, Robert wrote:
+>>>
+>>>
+>>> -----Original Message-----
+>>> From: Nikolaus Voss [mailto:nv@vosn.de]
+>>> Sent: Friday, June 14, 2019 2:26 AM
+>>> To: Rafael J. Wysocki <rafael@kernel.org>
+>>> Cc: Rafael J. Wysocki <rjw@rjwysocki.net>; Len Brown
+>>> <lenb@kernel.org>; Moore, Robert <robert.moore@intel.com>; Schmauss,
+>>> Erik <erik.schmauss@intel.com>; Jacek Anaszewski
+>>> <jacek.anaszewski@gmail.com>; Pavel Machek <pavel@ucw.cz>; Dan Murphy
+>>> <dmurphy@ti.com>; Thierry Reding <thierry.reding@gmail.com>; ACPI
+>>> Devel Maling List <linux-acpi@vger.kernel.org>; open list:ACPI
+>>> COMPONENT ARCHITECTURE (ACPICA) <devel@acpica.org>;
+>>> linux-leds@vger.kernel.org; Linux PWM List
+>>> <linux-pwm@vger.kernel.org>; Linux Kernel Mailing List
+>>> <linux-kernel@vger.kernel.org>
+>>> Subject: Re: [PATCH v2 1/3] ACPI: Resolve objects on host-directed
+>>> table loads
+>>>
+>>> Hi Rafael,
+>>>
+>>> On Fri, 14 Jun 2019, Rafael J. Wysocki wrote:
+>>>> On Wed, Jun 12, 2019 at 10:36 AM Nikolaus Voss
+>>>> <nikolaus.voss@loewensteinmedical.de> wrote:
+>>>>>
+>>>>> If an ACPI SSDT overlay is loaded after built-in tables have been
+>>>>> loaded e.g. via configfs or efivar_ssdt_load() it is necessary to
+>>>>> rewalk the namespace to resolve references. Without this, relative
+>>>>> and absolute paths like ^PCI0.SBUS or \_SB.PCI0.SBUS are not
+>>>>> resolved correctly.
+>>>>>
+>>>>> Make configfs load use the same method as efivar_ssdt_load().
+>>>>>
+>>>>> Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
+>>>>
+>>>> This is fine by me, so
+>>>>
+>>>> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>>
+>>>> Or if you want me to take this patch (without the other two in the
+>>>> series), please let me know.
+>>>
+>>> thanks. I think it would be the best if you take up this patch as it
+>>> is an independent topic. In retrospect it wasn't a good idea to put it
+>>> into this series.
+>>>
+>>> Kind regards,
+>>> Niko
+>>>
+>>> I would have to ask, why is additional code needed for package
+>>> initialization/resolution? It already happens elsewhere in acpica. Bob
+>>
+>> for built-in tables loaded via acpi_ex_load_table_op() everything is
+>> fine, because after acpi_tb_load_table() acpi_ns_walk_namespace() is
+>> called to resolve references.
+>>
+>> My fix only affects tables loaded dynamically via either acpi_configfs
+>> driver (for debugging purposes) or efivar_ssdt_load() (to specify a
+>> table on the kernel's command line). They use acpi_load_table() to load
+>> the table from a caller-owned buffer. To resolve the references, it is
+>> again necessary to rewalk the namespace, which was simply missing in
+>> acpi_load_table().
+>>
+> [Moore, Robert]
 >
-> On Sunday, May 26, 2019 10:27:50 PM CEST Shaunak Saha wrote:
-> > In the present implementation sleep function was getting called in
-> > acpi_s2idle_prepare and as all the devices may not have suspended
-> > at that stage e.g. if we are telling ec about the S0ix then calling early
-> > can cause ec reply wrongly interpreted as spurious wake events.
-> > Here we call it at much later stage in acpi_s2idle_sync. As per the
-> > specification the entry _DSM function may be invoked when the OS state has
-> > reached sufficient criteria for processor idle state entry matching
-> > Entry Trigger defined in LPIT to be interpreted as a request for the
-> > platform to enter a Low Power S0 Idle (LPI) state. Here we are checking if
-> > the we reached the minimum D-State defined in the constraint function of
-> > the LPIT _DSM method before calling the sleep entry function. Also not
-> > checking for constraint in acpi_s2idle_wake anymore and also changed the
-> > acpi info loglevel to debug in lpi_check_constraint.
->
-> This patch does three different things, two of which are questionable and
-> one is done incorrectly.
->
-> First off, aborting system suspend because S0ix constraints are not met is
-> a non-starter.  The kernel really cannot refuse to suspend the system for
-> that reason (and diagnostics can be done after resume anyway).
->
-> Second, according to my knowledge, it is not a bug to invoke the
-> ACPI_LPS0_ENTRY _DSM when the constraints are not met.  Do you
-> actually know about any platforms where that may cause real problems
-> to occur?
->
-> Finally, it is too late to invoke that _DSM from acpi_s2idle_sync(), because
-> that is called after leaving S0ix and resuming some devices.
->
-> I can believe the claim that invoking the ACPI_LPS0_ENTRY _DSM in
-> acpi_s2idle_prepare() may be too early and it may confuse the EC, say,
-> but I'm not sure why the ACPI_LPS0_SCREEN_OFF _DSM would be
-> affected by that too.
->
-> So overall, the patch below may actually work,
+> Perhaps you should call AcpiInitializeObjects after the call to 
+> AcpiLoadTable, but I will check.
 
-On my Dell XPS13 9360 it clearly makes things worse by causing the EC
-to generate spurious wakeup events all the time, so I'm afraid that
-this like of reasoning is misguided overall.
+My usage of acpi_load_table() is to load a SSDT which is the intended use 
+of this method according to its description. And my expectation is that 
+the package objects of the loaded table are initialized when this function 
+successfully returns so it aligns with the behavior of 
+acpi_ex_load_table_op() for built-in SSDTs. Otherwise there would be no 
+point in having this function at all, because 
+acpi_tb_install_and_load_table() could be called directly without any 
+difference.
 
-> but not the $subject one
-> (if evaluating the ACPI_LPS0_ENTRY _DSM when the constraints are not
-> met is *really* problematic, it may be necessary to add the check
-> for that on top of it).
->
-> ---
->  drivers/acpi/sleep.c    |   13 +++++++++----
->  include/linux/suspend.h |    1 +
->  kernel/power/suspend.c  |    8 ++++++--
->  3 files changed, 16 insertions(+), 6 deletions(-)
->
-> Index: linux-pm/drivers/acpi/sleep.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/sleep.c
-> +++ linux-pm/drivers/acpi/sleep.c
-> @@ -967,8 +967,6 @@ static int acpi_s2idle_prepare(void)
->  {
->         if (lps0_device_handle) {
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
-> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
-> -
->                 acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
->         }
->
-> @@ -983,6 +981,12 @@ static int acpi_s2idle_prepare(void)
->         return 0;
->  }
->
-> +static void acpi_s2idle_sleep(void)
-> +{
-> +       if (lps0_device_handle)
-> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
-> +}
-> +
->  static void acpi_s2idle_wake(void)
->  {
->         if (!lps0_device_handle)
-> @@ -1007,6 +1011,8 @@ static void acpi_s2idle_wake(void)
->                  */
->                 acpi_ec_dispatch_gpe();
->         }
-> +
-> +       acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
->  }
->
->  static void acpi_s2idle_sync(void)
-> @@ -1034,8 +1040,6 @@ static void acpi_s2idle_restore(void)
->
->         if (lps0_device_handle) {
->                 acpi_ec_set_gpe_wake_mask(ACPI_GPE_DISABLE);
-> -
-> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON);
->         }
->  }
-> @@ -1049,6 +1053,7 @@ static void acpi_s2idle_end(void)
->  static const struct platform_s2idle_ops acpi_s2idle_ops = {
->         .begin = acpi_s2idle_begin,
->         .prepare = acpi_s2idle_prepare,
-> +       .sleep = acpi_s2idle_sleep,
->         .wake = acpi_s2idle_wake,
->         .sync = acpi_s2idle_sync,
->         .restore = acpi_s2idle_restore,
-> Index: linux-pm/include/linux/suspend.h
-> ===================================================================
-> --- linux-pm.orig/include/linux/suspend.h
-> +++ linux-pm/include/linux/suspend.h
-> @@ -190,6 +190,7 @@ struct platform_suspend_ops {
->  struct platform_s2idle_ops {
->         int (*begin)(void);
->         int (*prepare)(void);
-> +       void (*sleep)(void);
->         void (*wake)(void);
->         void (*sync)(void);
->         void (*restore)(void);
-> Index: linux-pm/kernel/power/suspend.c
-> ===================================================================
-> --- linux-pm.orig/kernel/power/suspend.c
-> +++ linux-pm/kernel/power/suspend.c
-> @@ -136,10 +136,14 @@ static void s2idle_loop(void)
->                  * so prevent them from terminating the loop right away.
->                  */
->                 error = dpm_noirq_suspend_devices(PMSG_SUSPEND);
-> -               if (!error)
-> +               if (!error) {
-> +                       if (s2idle_ops && s2idle_ops->sleep)
-> +                               s2idle_ops->sleep();
-> +
->                         s2idle_enter();
-> -               else if (error == -EBUSY && pm_wakeup_pending())
-> +               } else if (error == -EBUSY && pm_wakeup_pending()) {
->                         error = 0;
-> +               }
->
->                 if (!error && s2idle_ops && s2idle_ops->wake)
->                         s2idle_ops->wake();
->
->
->
+Niko
