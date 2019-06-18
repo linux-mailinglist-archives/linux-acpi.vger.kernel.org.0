@@ -2,169 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F28A44ABD6
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2019 22:31:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1A904AC7F
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2019 23:05:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730603AbfFRUby convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 18 Jun 2019 16:31:54 -0400
-Received: from mga12.intel.com ([192.55.52.136]:54755 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729961AbfFRUby (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 18 Jun 2019 16:31:54 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Jun 2019 13:31:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,390,1557212400"; 
-   d="scan'208";a="161848074"
-Received: from orsmsx107.amr.corp.intel.com ([10.22.240.5])
-  by fmsmga007.fm.intel.com with ESMTP; 18 Jun 2019 13:31:53 -0700
-Received: from orsmsx162.amr.corp.intel.com (10.22.240.85) by
- ORSMSX107.amr.corp.intel.com (10.22.240.5) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Tue, 18 Jun 2019 13:31:52 -0700
-Received: from orsmsx110.amr.corp.intel.com ([169.254.10.92]) by
- ORSMSX162.amr.corp.intel.com ([169.254.3.80]) with mapi id 14.03.0439.000;
- Tue, 18 Jun 2019 13:31:52 -0700
-From:   "Moore, Robert" <robert.moore@intel.com>
-To:     Nikolaus Voss <nv@vosn.de>
-CC:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        id S1730764AbfFRVFw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Jun 2019 17:05:52 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:34372 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730755AbfFRVFv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Jun 2019 17:05:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
+        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+        Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=QtAOSZpbxXOSMRds/InKAMA97jUuNyRQoI3TiAtqpG0=; b=Hxp8HlZxCL0r0RBpZtpnPfhJ07
+        MA2ajCjn8jMepM0CVyv7IpS7yRLjKgj7T/Bkv2hkQ5MKV1B0KKD5x496LKATfe9tTGtpXevb68uVC
+        nUfLV1KNGWiwtJzf6p6PuRNKxB5kQXsZP1K2PFQoECHXKdu8yRAx6HFzroDYVtRr/3dcQooV8wruO
+        4ag+iQ5ZXOUdbVWgfHr6eqqPUK4gN6PA/86heKmhGZhEgMCVUN63RJg3s3dsC5lhbfJxVJ9JyOexJ
+        KAb7gzNb1syryLjXbO+DOHbTjaze9I3sMgc9LAOMiX5VFpQ1LhBGdymgbaoPB7JJ85a3r/E/k2i9Q
+        nUuJ8pog==;
+Received: from 177.133.86.196.dynamic.adsl.gvt.net.br ([177.133.86.196] helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hdLIc-0006yv-82; Tue, 18 Jun 2019 21:05:50 +0000
+Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
+        (envelope-from <mchehab@bombadil.infradead.org>)
+        id 1hdLIa-0002D9-69; Tue, 18 Jun 2019 18:05:48 -0300
+From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "Schmauss, Erik" <erik.schmauss@intel.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table
- loads
-Thread-Topic: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table
- loads
-Thread-Index: AQHVIPn/qqDB5Bv4z0aSsleXlAnDw6abVhaAgAADpwD///G0sIAEkokAgACES6CAAT+dAIAANdnAgAALWnCAAAJ3oIAAAgmg
-Date:   Tue, 18 Jun 2019 20:31:52 +0000
-Message-ID: <94F2FBAB4432B54E8AACC7DFDE6C92E3B95FB0BA@ORSMSX110.amr.corp.intel.com>
-References: <cover.1560327219.git.nikolaus.voss@loewensteinmedical.de>
- <e2a4ddfd93a904b50b7ccc074e00e14dc4661963.1560327219.git.nikolaus.voss@loewensteinmedical.de>
- <CAJZ5v0jqxWs=PPik-TCDqQiyxCSyRP7HTue1WsdWP9e-nik2eA@mail.gmail.com>
- <alpine.DEB.2.20.1906141114490.6579@fox.voss.local>
- <94F2FBAB4432B54E8AACC7DFDE6C92E3B95EFB26@ORSMSX110.amr.corp.intel.com>
- <alpine.DEB.2.20.1906170746150.12344@fox.voss.local>
- <94F2FBAB4432B54E8AACC7DFDE6C92E3B95F9EC6@ORSMSX110.amr.corp.intel.com>
- <alpine.DEB.2.20.1906181030240.24846@fox.voss.local>   
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiYWYzNDM4MzQtOGVmNS00ZTRiLWJkZTktZDExNTM1YTg5ZDk3IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoialA3Y1d2Z3ZkMnZ2VUpzaXc3aDBTaWxGMFFmdEE4QUdvRCtYSHUrWWozN0g3cnRLckZMc1hwbEdXZkdmditHZiJ9
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.0.600.7
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.140]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH v1 20/22] docs: extcon: move it to acpi dir and convert it to ReST
+Date:   Tue, 18 Jun 2019 18:05:44 -0300
+Message-Id: <b6d199c3e7c8c868acbb313a1a516ea8aed042ee.1560891322.git.mchehab+samsung@kernel.org>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <cover.1560891322.git.mchehab+samsung@kernel.org>
+References: <cover.1560891322.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+The intel-int3496.txt file is a documentation for an ACPI driver.
 
+There's no reason to keep it on a separate directory.
 
-> -----Original Message-----
-> From: Moore, Robert
-> Sent: Tuesday, June 18, 2019 1:25 PM
-> To: 'Nikolaus Voss' <nv@vosn.de>
-> Cc: 'Rafael J. Wysocki' <rafael@kernel.org>; 'Rafael J. Wysocki'
-> <rjw@rjwysocki.net>; 'Len Brown' <lenb@kernel.org>; Schmauss, Erik
-> <erik.schmauss@intel.com>; 'Jacek Anaszewski'
-> <jacek.anaszewski@gmail.com>; 'Pavel Machek' <pavel@ucw.cz>; 'Dan
-> Murphy' <dmurphy@ti.com>; 'Thierry Reding' <thierry.reding@gmail.com>;
-> 'ACPI Devel Maling List' <linux-acpi@vger.kernel.org>; 'open list:ACPI
-> COMPONENT ARCHITECTURE (ACPICA)' <devel@acpica.org>; 'linux-
-> leds@vger.kernel.org' <linux-leds@vger.kernel.org>; 'Linux PWM List'
-> <linux-pwm@vger.kernel.org>; 'Linux Kernel Mailing List' <linux-
-> kernel@vger.kernel.org>
-> Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table
-> loads
-> 
-> If it is in fact the AcpiLoadTable interface that is incorrect, that of
-> course is different. I'll check that out next.
-> 
-[Moore, Robert] 
+So, instead of keeping it on some random location, move it
+to a sub-directory inside the ACPI documentation dir.
 
-Yes, this is the issue, not specifically the Load() operator, but the AcpiLoadTable interface only.
+For now, keep it with .txt extension, in order to avoid
+Sphinx build noise. A later patch should change it to .rst
+and movin it to be together with other acpi docs.
 
-> 
-> > -----Original Message-----
-> > From: Moore, Robert
-> > Sent: Tuesday, June 18, 2019 1:23 PM
-> > To: 'Nikolaus Voss' <nv@vosn.de>
-> > Cc: 'Rafael J. Wysocki' <rafael@kernel.org>; 'Rafael J. Wysocki'
-> > <rjw@rjwysocki.net>; 'Len Brown' <lenb@kernel.org>; Schmauss, Erik
-> > <erik.schmauss@intel.com>; 'Jacek Anaszewski'
-> > <jacek.anaszewski@gmail.com>; 'Pavel Machek' <pavel@ucw.cz>; 'Dan
-> > Murphy' <dmurphy@ti.com>; 'Thierry Reding' <thierry.reding@gmail.com>;
-> > 'ACPI Devel Maling List' <linux-acpi@vger.kernel.org>; 'open list:ACPI
-> > COMPONENT ARCHITECTURE (ACPICA)' <devel@acpica.org>; 'linux-
-> > leds@vger.kernel.org' <linux-leds@vger.kernel.org>; 'Linux PWM List'
-> > <linux-pwm@vger.kernel.org>; 'Linux Kernel Mailing List' <linux-
-> > kernel@vger.kernel.org>
-> > Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed
-> > table loads
-> >
-> > It looks to me that the package objects are being initialized properly
-> > already, unless I'm missing something. Please check the examples below
-> > and in the attached files.
-> >
-> > Attached is a small test case that dynamically loads an SSDT which
-> > contains a package object which in turn contains references to other
-> > objects.
-> >
-> >
-> > Main DSDT:
-> >     Method (LD1)
-> >     {
-> >         Load (BUF1, HNDL)      // SSDT is in BUF1
-> >         Store (HNDL, Debug)
-> >         Return
-> >     }
-> >
-> > Loaded table:
-> >     External (DEV1, DeviceObj)
-> >     Name (PKG1, Package() {
-> >         1,2, DEV2, DEV1, 4})
-> >     Device (DEV2) {}
-> >
-> >
-> > AcpiExec Output:
-> > - ev ld1
-> > Evaluating \LD1
-> > ACPI: Dynamic OEM Table Load:
-> > ACPI: SSDT 0x00000000006DEEB8 000051 (v02 Intel  Load     00000001
-> INTL
-> > 20190509)
-> > ACPI Exec: Table Event INSTALL, [SSDT] 006DEEB8
-> > Table [SSDT: Load    ] (id 06) -    5 Objects with   1 Devices,   0
-> > Regions,    1 Methods
-> > ACPI Exec: Table Event LOAD, [SSDT] 006DEEB8 ACPI Debug:  Reference
-> > [DdbHandle] Table Index 0x3
-> > 0x7 Outstanding allocations after evaluation of \LD1 Evaluation of
-> > \LD1 returned object 006D2FE8, external buffer length 18
-> >   [Integer] = 0000000000000000
-> >
-> > - ev pkg1
-> > Evaluating \PKG1
-> > Evaluation of \PKG1 returned object 006D2FE8, external buffer length
-> 90
-> >   [Package] Contains 5 Elements:
-> >     [Integer] = 0000000000000001
-> >     [Integer] = 0000000000000002
-> >     [Object Reference] = 006DDF88 <Node>            Name DEV2 Device
-> >     [Object Reference] = 006DD608 <Node>            Name DEV1 Device
-> >     [Integer] = 0000000000000004
+Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+---
+ .../acpi/extcon-intel-int3496.rst}                 | 14 ++++++++++----
+ Documentation/firmware-guide/acpi/index.rst        |  1 +
+ MAINTAINERS                                        |  6 +++---
+ 3 files changed, 14 insertions(+), 7 deletions(-)
+ rename Documentation/{extcon/intel-int3496.txt => firmware-guide/acpi/extcon-intel-int3496.rst} (66%)
+
+diff --git a/Documentation/extcon/intel-int3496.txt b/Documentation/firmware-guide/acpi/extcon-intel-int3496.rst
+similarity index 66%
+rename from Documentation/extcon/intel-int3496.txt
+rename to Documentation/firmware-guide/acpi/extcon-intel-int3496.rst
+index 8155dbc7fad3..5137ca834b54 100644
+--- a/Documentation/extcon/intel-int3496.txt
++++ b/Documentation/firmware-guide/acpi/extcon-intel-int3496.rst
+@@ -1,5 +1,6 @@
++=====================================================
+ Intel INT3496 ACPI device extcon driver documentation
+------------------------------------------------------
++=====================================================
+ 
+ The Intel INT3496 ACPI device extcon driver is a driver for ACPI
+ devices with an acpi-id of INT3496, such as found for example on
+@@ -13,15 +14,20 @@ between an USB host and an USB peripheral controller.
+ The ACPI devices exposes this functionality by returning an array with up
+ to 3 gpio descriptors from its ACPI _CRS (Current Resource Settings) call:
+ 
+-Index 0: The input gpio for the id-pin, this is always present and valid
+-Index 1: The output gpio for enabling Vbus output from the device to the otg
++=======  =====================================================================
++Index 0  The input gpio for the id-pin, this is always present and valid
++Index 1  The output gpio for enabling Vbus output from the device to the otg
+          port, write 1 to enable the Vbus output (this gpio descriptor may
+          be absent or invalid)
+-Index 2: The output gpio for muxing of the data pins between the USB host and
++Index 2  The output gpio for muxing of the data pins between the USB host and
+          the USB peripheral controller, write 1 to mux to the peripheral
+          controller
++=======  =====================================================================
+ 
+ There is a mapping between indices and GPIO connection IDs as follows
++
++	======= =======
+ 	id	index 0
+ 	vbus	index 1
+ 	mux	index 2
++	======= =======
+diff --git a/Documentation/firmware-guide/acpi/index.rst b/Documentation/firmware-guide/acpi/index.rst
+index ae609eec4679..90c90d42d9ad 100644
+--- a/Documentation/firmware-guide/acpi/index.rst
++++ b/Documentation/firmware-guide/acpi/index.rst
+@@ -24,3 +24,4 @@ ACPI Support
+    acpi-lid
+    lpit
+    video_extension
++   extcon-intel-int3496
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e07cbd44d48a..b7c81bd0f8e8 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -321,7 +321,7 @@ F:	drivers/pnp/pnpacpi/
+ F:	include/linux/acpi.h
+ F:	include/linux/fwnode.h
+ F:	include/acpi/
+-F:	Documentation/acpi/
++F:	Documentation/firmware-guide/acpi/
+ F:	Documentation/ABI/testing/sysfs-bus-acpi
+ F:	Documentation/ABI/testing/configfs-acpi
+ F:	drivers/pci/*acpi*
+@@ -4881,7 +4881,7 @@ S:	Maintained
+ F:	Documentation/
+ F:	scripts/kernel-doc
+ X:	Documentation/ABI/
+-X:	Documentation/acpi/
++X:	Documentation/firmware-guide/acpi/
+ X:	Documentation/devicetree/
+ X:	Documentation/i2c/
+ X:	Documentation/media/
+@@ -6057,7 +6057,7 @@ S:	Maintained
+ F:	drivers/extcon/
+ F:	include/linux/extcon/
+ F:	include/linux/extcon.h
+-F:	Documentation/extcon/
++F:	Documentation/firmware-guide/acpi/extcon-intel-int3496.rst
+ F:	Documentation/devicetree/bindings/extcon/
+ 
+ EXYNOS DP DRIVER
+-- 
+2.21.0
 
