@@ -2,113 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 09B3C494C5
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2019 00:08:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D641949689
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2019 03:06:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726733AbfFQWI6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Jun 2019 18:08:58 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:37982 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725870AbfFQWI6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jun 2019 18:08:58 -0400
-Received: by mail-ot1-f65.google.com with SMTP id d17so11424336oth.5;
-        Mon, 17 Jun 2019 15:08:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eVGovsCu3s9xFzYqs76/OOxU3RO0LqN3L2Me3A6QEbQ=;
-        b=Iez6Cho4OX3qJVGIHaiLwlHikZE+OBfgxoH3Aj+AeLQWuF5AvCL5ly9Hr3jDgAEJ9y
-         6j7/gN1qyHDmxKD0CJFwWfkqo/obn03ZiTTTQ+dqxOxG9Ir8h7oYQcXXOKDz6u/Xj7nv
-         zGOzTPHlHN/3R3s+e7pN4yKNGiBVdrFdwuJDMEDQnZ8widg6lAzaxcy9G4pVZ/xD/QPj
-         GtVpkoV2jozVvhyfJh020vj1J2HAnCvpAZxqHh7J/TRKlsCxVEhEJe66QTrK7f47o9Nw
-         0P0pU9RSJkaoUh111pRp8bZ/U+Bz5MO94hMCk8G7gyR7dmO0VZ5yXJE5MhlvzDtm4BV2
-         2xDw==
-X-Gm-Message-State: APjAAAX9D9qq/jJFCF1i7WsG4uhLa2jUvDq1fsndIZvACpys4RfcBNEM
-        q1RmTKHAeOvz4j1XhyO3zMG1SEhRIlMKBwDk5RNOvw==
-X-Google-Smtp-Source: APXvYqyUG5kdCBMqwHnpebHjBONA84oIsXKvQ35/wbQ7U81k8BKi3Bow7ZGeutN6gWFecLhz9R7A8bl/Ab+v1fA46Ls=
-X-Received: by 2002:a9d:5e99:: with SMTP id f25mr32700216otl.262.1560809337167;
- Mon, 17 Jun 2019 15:08:57 -0700 (PDT)
+        id S1726023AbfFRBGm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Jun 2019 21:06:42 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:43804 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725829AbfFRBGl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 17 Jun 2019 21:06:41 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id B733CBA4F5FFC2D66ED1;
+        Tue, 18 Jun 2019 09:06:38 +0800 (CST)
+Received: from [127.0.0.1] (10.177.223.23) by DGGEMS412-HUB.china.huawei.com
+ (10.3.19.212) with Microsoft SMTP Server id 14.3.439.0; Tue, 18 Jun 2019
+ 09:06:12 +0800
+Subject: Re: [PATCH v2] MAINTAINERS: Update my email address
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Will Deacon <will@kernel.org>
+CC:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+References: <1560769335-62944-1-git-send-email-guohanjun@huawei.com>
+ <CAJZ5v0jyi-ZkcDU=+GJm5LxMGX36ce=a_j169A_7Ph2AG8_C+w@mail.gmail.com>
+ <20190617173449.4vhgdvllwxo24ovj@willie-the-truck>
+ <CAJZ5v0gKWAWRTBmFh+9Pdwc85p4B571w2qia7T6BgF5B6s_KcA@mail.gmail.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <a100d53e-23d9-7774-daf6-f3b979437ce7@huawei.com>
+Date:   Tue, 18 Jun 2019 09:06:03 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
 MIME-Version: 1.0
-References: <1560534863-15115-1-git-send-email-suzuki.poulose@arm.com> <1560534863-15115-4-git-send-email-suzuki.poulose@arm.com>
-In-Reply-To: <1560534863-15115-4-git-send-email-suzuki.poulose@arm.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 18 Jun 2019 00:08:45 +0200
-Message-ID: <CAJZ5v0j-AwFkeK35xG-WnDq8_wrzfH-0jqv6hVW+7uZD3R2k8Q@mail.gmail.com>
-Subject: Re: [PATCH v2 03/28] acpi: utils: Cleanup acpi_dev_match_cb
-To:     Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAJZ5v0gKWAWRTBmFh+9Pdwc85p4B571w2qia7T6BgF5B6s_KcA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.223.23]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 7:54 PM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->
-> The prototype of bus_find_device() will be unified with that of
-> class_find_device() subsequently, but for this purpose the callback
-> functions passed to it need to take (const void *) as the second
-> argument.  Consequently, they cannot modify the memory pointed to by
-> that argument which currently is not the case for acpi_dev_match_cb().
-> However, acpi_dev_match_cb() really need not modify the "match" object
-> passed to it, because acpi_dev_get_first_match_dev() which uses it via
-> bus_find_device() can easily convert the result of bus_find_device()
-> into the pointer to return.
->
-> For this reason, update acpi_dev_match_cb() to avoid the redundant
-> memory updates.
->
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+On 2019/6/18 6:01, Rafael J. Wysocki wrote:
+> On Mon, Jun 17, 2019 at 7:34 PM Will Deacon <will@kernel.org> wrote:
+>>
+>> On Mon, Jun 17, 2019 at 01:11:40PM +0200, Rafael J. Wysocki wrote:
+>>> On Mon, Jun 17, 2019 at 1:04 PM Hanjun Guo <guohanjun@huawei.com> wrote:
+>>>>
+>>>> The @linaro.org address is not working and bonucing, so update the
+>>>> references.
+>>>>
+>>>> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
+>>>
+>>> How do you want this to go it, via ARM or ACPI?
+>>
+>> I've already got a MAINTAINERS update queued to send out later this week, so
+>> I can easily pick this up if you're ok with it?
+> 
+> Sure, please do!
 
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Thank you all for the kindly help!
 
-Or if you want me to take this patch, please let me know.
+Best regards
+Hanjun
 
-> ---
->  drivers/acpi/utils.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
->
-> diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
-> index 7def63a..1391b63 100644
-> --- a/drivers/acpi/utils.c
-> +++ b/drivers/acpi/utils.c
-> @@ -725,8 +725,6 @@ bool acpi_dev_found(const char *hid)
->  EXPORT_SYMBOL(acpi_dev_found);
->
->  struct acpi_dev_match_info {
-> -       const char *dev_name;
-> -       struct acpi_device *adev;
->         struct acpi_device_id hid[2];
->         const char *uid;
->         s64 hrv;
-> @@ -746,9 +744,6 @@ static int acpi_dev_match_cb(struct device *dev, void *data)
->             strcmp(adev->pnp.unique_id, match->uid)))
->                 return 0;
->
-> -       match->dev_name = acpi_dev_name(adev);
-> -       match->adev = adev;
-> -
->         if (match->hrv == -1)
->                 return 1;
->
-> @@ -818,7 +813,7 @@ acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv)
->         match.hrv = hrv;
->
->         dev = bus_find_device(&acpi_bus_type, NULL, &match, acpi_dev_match_cb);
-> -       return dev ? match.adev : NULL;
-> +       return dev ? to_acpi_device(dev) : NULL;
->  }
->  EXPORT_SYMBOL(acpi_dev_get_first_match_dev);
->
-> --
-> 2.7.4
->
