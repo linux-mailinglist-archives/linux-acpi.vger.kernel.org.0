@@ -2,71 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D641949689
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2019 03:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1351349733
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2019 03:58:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726023AbfFRBGm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Jun 2019 21:06:42 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:43804 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725829AbfFRBGl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 17 Jun 2019 21:06:41 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id B733CBA4F5FFC2D66ED1;
-        Tue, 18 Jun 2019 09:06:38 +0800 (CST)
-Received: from [127.0.0.1] (10.177.223.23) by DGGEMS412-HUB.china.huawei.com
- (10.3.19.212) with Microsoft SMTP Server id 14.3.439.0; Tue, 18 Jun 2019
- 09:06:12 +0800
-Subject: Re: [PATCH v2] MAINTAINERS: Update my email address
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Will Deacon <will@kernel.org>
-CC:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-References: <1560769335-62944-1-git-send-email-guohanjun@huawei.com>
- <CAJZ5v0jyi-ZkcDU=+GJm5LxMGX36ce=a_j169A_7Ph2AG8_C+w@mail.gmail.com>
- <20190617173449.4vhgdvllwxo24ovj@willie-the-truck>
- <CAJZ5v0gKWAWRTBmFh+9Pdwc85p4B571w2qia7T6BgF5B6s_KcA@mail.gmail.com>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <a100d53e-23d9-7774-daf6-f3b979437ce7@huawei.com>
-Date:   Tue, 18 Jun 2019 09:06:03 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.5.0
-MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0gKWAWRTBmFh+9Pdwc85p4B571w2qia7T6BgF5B6s_KcA@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.223.23]
-X-CFilter-Loop: Reflected
+        id S1726215AbfFRB6A (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Jun 2019 21:58:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34356 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726047AbfFRB57 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 17 Jun 2019 21:57:59 -0400
+Received: from localhost.localdomain (c-73-223-200-170.hsd1.ca.comcast.net [73.223.200.170])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 52D602080C;
+        Tue, 18 Jun 2019 01:57:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560823079;
+        bh=8eJzG0QkG+7iwVlI/t7yW6Fig5RNCmwWmykPQq2nGgA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=OE+XgpgtZhH0f75UQlTQL3rSRdRRP05S+vKJvMay+8BmyMAjkXZLwJC6z89WkLyWv
+         6xTZtwGGzs/c3VHzQzw94somd65KvS6zN7TbnwRgUQ+WTFBiYdGcHlHPlJeDB/vFEn
+         R7E5dmgyl20XVW7R8vwXalARxFtvIQNepfCrhC/4=
+Date:   Mon, 17 Jun 2019 18:57:57 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Christophe Leroy <christophe.leroy@c-s.fr>
+Cc:     David Hildenbrand <david@redhat.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Michal Hocko <mhocko@suse.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Baoquan He <bhe@redhat.com>, linux-mm@kvack.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-kernel@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>,
+        linux-acpi@vger.kernel.org,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Arun KS <arunks@codeaurora.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Pavel Tatashin <pasha.tatashin@oracle.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        linuxppc-dev@lists.ozlabs.org, Vlastimil Babka <vbabka@suse.cz>,
+        Oscar Salvador <osalvador@suse.de>
+Subject: Re: [PATCH v1 1/6] mm: Section numbers use the type "unsigned long"
+Message-Id: <20190617185757.b57402b465caff0cf6f85320@linux-foundation.org>
+In-Reply-To: <701e8feb-cbf8-04c1-758c-046da9394ac1@c-s.fr>
+References: <20190614100114.311-1-david@redhat.com>
+        <20190614100114.311-2-david@redhat.com>
+        <20190614120036.00ae392e3f210e7bc9ec6960@linux-foundation.org>
+        <701e8feb-cbf8-04c1-758c-046da9394ac1@c-s.fr>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2019/6/18 6:01, Rafael J. Wysocki wrote:
-> On Mon, Jun 17, 2019 at 7:34 PM Will Deacon <will@kernel.org> wrote:
->>
->> On Mon, Jun 17, 2019 at 01:11:40PM +0200, Rafael J. Wysocki wrote:
->>> On Mon, Jun 17, 2019 at 1:04 PM Hanjun Guo <guohanjun@huawei.com> wrote:
->>>>
->>>> The @linaro.org address is not working and bonucing, so update the
->>>> references.
->>>>
->>>> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
->>>
->>> How do you want this to go it, via ARM or ACPI?
->>
->> I've already got a MAINTAINERS update queued to send out later this week, so
->> I can easily pick this up if you're ok with it?
-> 
-> Sure, please do!
+On Sat, 15 Jun 2019 10:06:54 +0200 Christophe Leroy <christophe.leroy@c-s.f=
+r> wrote:
 
-Thank you all for the kindly help!
+>=20
+>=20
+> Le 14/06/2019 =E0 21:00, Andrew Morton a =E9crit=A0:
+> > On Fri, 14 Jun 2019 12:01:09 +0200 David Hildenbrand <david@redhat.com>=
+ wrote:
+> >=20
+> >> We are using a mixture of "int" and "unsigned long". Let's make this
+> >> consistent by using "unsigned long" everywhere. We'll do the same with
+> >> memory block ids next.
+> >>
+> >> ...
+> >>
+> >> -	int i, ret, section_count =3D 0;
+> >> +	unsigned long i;
+> >>
+> >> ...
+> >>
+> >> -	unsigned int i;
+> >> +	unsigned long i;
+> >=20
+> > Maybe I did too much fortran back in the day, but I think the
+> > expectation is that a variable called "i" has type "int".
+> >=20
+> > This?
+> >=20
+> >=20
+> >=20
+> > s/unsigned long i/unsigned long section_nr/
+>=20
+>  From my point of view you degrade readability by doing that.
+>=20
+> section_nr_to_pfn(mem->start_section_nr + section_nr);
+>=20
+> Three times the word 'section_nr' in one line, is that worth it ? Gives=20
+> me headache.
+>=20
+> Codying style says the following, which makes full sense in my opinion:
+>=20
+> LOCAL variable names should be short, and to the point.  If you have
+> some random integer loop counter, it should probably be called ``i``.
+> Calling it ``loop_counter`` is non-productive, if there is no chance of it
+> being mis-understood.
 
-Best regards
-Hanjun
+Well.  It did say "integer".  Calling an unsigned long `i' is flat out
+misleading.
+
+> What about just naming it 'nr' if we want to use something else than 'i' ?
+
+Sure, that works.
+
 
