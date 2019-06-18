@@ -2,153 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1A904AC7F
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2019 23:05:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 563B74AD59
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2019 23:28:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730764AbfFRVFw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Jun 2019 17:05:52 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:34372 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730755AbfFRVFv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Jun 2019 17:05:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=QtAOSZpbxXOSMRds/InKAMA97jUuNyRQoI3TiAtqpG0=; b=Hxp8HlZxCL0r0RBpZtpnPfhJ07
-        MA2ajCjn8jMepM0CVyv7IpS7yRLjKgj7T/Bkv2hkQ5MKV1B0KKD5x496LKATfe9tTGtpXevb68uVC
-        nUfLV1KNGWiwtJzf6p6PuRNKxB5kQXsZP1K2PFQoECHXKdu8yRAx6HFzroDYVtRr/3dcQooV8wruO
-        4ag+iQ5ZXOUdbVWgfHr6eqqPUK4gN6PA/86heKmhGZhEgMCVUN63RJg3s3dsC5lhbfJxVJ9JyOexJ
-        KAb7gzNb1syryLjXbO+DOHbTjaze9I3sMgc9LAOMiX5VFpQ1LhBGdymgbaoPB7JJ85a3r/E/k2i9Q
-        nUuJ8pog==;
-Received: from 177.133.86.196.dynamic.adsl.gvt.net.br ([177.133.86.196] helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hdLIc-0006yv-82; Tue, 18 Jun 2019 21:05:50 +0000
-Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
-        (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1hdLIa-0002D9-69; Tue, 18 Jun 2019 18:05:48 -0300
-From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH v1 20/22] docs: extcon: move it to acpi dir and convert it to ReST
-Date:   Tue, 18 Jun 2019 18:05:44 -0300
-Message-Id: <b6d199c3e7c8c868acbb313a1a516ea8aed042ee.1560891322.git.mchehab+samsung@kernel.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1560891322.git.mchehab+samsung@kernel.org>
-References: <cover.1560891322.git.mchehab+samsung@kernel.org>
+        id S1730267AbfFRV2e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Jun 2019 17:28:34 -0400
+Received: from foss.arm.com ([217.140.110.172]:33068 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730368AbfFRV2d (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 18 Jun 2019 17:28:33 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DAFCE360;
+        Tue, 18 Jun 2019 14:28:32 -0700 (PDT)
+Received: from [192.168.122.164] (u201426.austin.arm.com [10.118.28.29])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C84843F718;
+        Tue, 18 Jun 2019 14:28:32 -0700 (PDT)
+Subject: Re: [PATCH v2 1/2] ACPI/PPTT: Add support for ACPI 6.3 thread flag
+To:     John Garry <john.garry@huawei.com>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        catalin.marinas@arm.com, will.deacon@arm.com, rjw@rjwysocki.net,
+        sudeep.holla@arm.com, lenb@kernel.org
+References: <20190614223158.49575-1-jeremy.linton@arm.com>
+ <20190614223158.49575-2-jeremy.linton@arm.com>
+ <667f95c0-5aa9-f460-a49a-e6dfefc027d8@arm.com>
+ <2d1b547f-f9ee-391c-c4f3-0232a08a86bc@arm.com>
+ <718438d0-8648-897a-83e8-801146a0af86@arm.com>
+ <f6f7f9bb-547d-3fd3-f3f8-1d55181f63d7@huawei.com>
+From:   Jeremy Linton <jeremy.linton@arm.com>
+Message-ID: <11fb712f-b3c2-5491-89ee-ea7efb18ddd8@arm.com>
+Date:   Tue, 18 Jun 2019 16:28:32 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
+In-Reply-To: <f6f7f9bb-547d-3fd3-f3f8-1d55181f63d7@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The intel-int3496.txt file is a documentation for an ACPI driver.
+Hi,
 
-There's no reason to keep it on a separate directory.
+On 6/18/19 12:23 PM, John Garry wrote:
+> On 18/06/2019 15:40, Valentin Schneider wrote:
+>> On 18/06/2019 15:21, Jeremy Linton wrote:
+>> [...]
+>>>>> + * Return: -ENOENT if the PPTT doesn't exist, the CPU cannot be 
+>>>>> found or
+>>>>> + *       the table revision isn't new enough.
+>>>>> + * Otherwise returns flag value
+>>>>> + */
+>>>>
+>>>> Nit: strictly speaking we're not returning the flag value but its mask
+>>>> applied to the flags field. I don't think anyone will care about 
+>>>> getting
+>>>> the actual flag value, but it should be made obvious in the doc:
+>>>
+>>> Or I clarify the code to actually do what the comments says. Maybe 
+>>> that is what John G was also pointing out too?
+>>>
+> 
+> No, I was just saying that the kernel topology can be broken without 
+> this series.
+> 
+>>
+>> Mmm I didn't find any reply from John regarding this in v1, but I 
+>> wouldn't
+>> mind either way, as long as the doc & code are aligned.
+>>
+> 
+> BTW, to me, function acpi_pptt_cpu_is_thread() seems to try to do too 
+> much, i.e. check if the PPTT is new enough to support the thread flag 
+> and also check if it is set for a specific cpu. I'd consider separate 
+> functions here.
 
-So, instead of keeping it on some random location, move it
-to a sub-directory inside the ACPI documentation dir.
+? Your suggesting replacing the
 
-For now, keep it with .txt extension, in order to avoid
-Sphinx build noise. A later patch should change it to .rst
-and movin it to be together with other acpi docs.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
----
- .../acpi/extcon-intel-int3496.rst}                 | 14 ++++++++++----
- Documentation/firmware-guide/acpi/index.rst        |  1 +
- MAINTAINERS                                        |  6 +++---
- 3 files changed, 14 insertions(+), 7 deletions(-)
- rename Documentation/{extcon/intel-int3496.txt => firmware-guide/acpi/extcon-intel-int3496.rst} (66%)
+if (table->revision >= rev)
+	cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
 
-diff --git a/Documentation/extcon/intel-int3496.txt b/Documentation/firmware-guide/acpi/extcon-intel-int3496.rst
-similarity index 66%
-rename from Documentation/extcon/intel-int3496.txt
-rename to Documentation/firmware-guide/acpi/extcon-intel-int3496.rst
-index 8155dbc7fad3..5137ca834b54 100644
---- a/Documentation/extcon/intel-int3496.txt
-+++ b/Documentation/firmware-guide/acpi/extcon-intel-int3496.rst
-@@ -1,5 +1,6 @@
-+=====================================================
- Intel INT3496 ACPI device extcon driver documentation
-------------------------------------------------------
-+=====================================================
- 
- The Intel INT3496 ACPI device extcon driver is a driver for ACPI
- devices with an acpi-id of INT3496, such as found for example on
-@@ -13,15 +14,20 @@ between an USB host and an USB peripheral controller.
- The ACPI devices exposes this functionality by returning an array with up
- to 3 gpio descriptors from its ACPI _CRS (Current Resource Settings) call:
- 
--Index 0: The input gpio for the id-pin, this is always present and valid
--Index 1: The output gpio for enabling Vbus output from the device to the otg
-+=======  =====================================================================
-+Index 0  The input gpio for the id-pin, this is always present and valid
-+Index 1  The output gpio for enabling Vbus output from the device to the otg
-          port, write 1 to enable the Vbus output (this gpio descriptor may
-          be absent or invalid)
--Index 2: The output gpio for muxing of the data pins between the USB host and
-+Index 2  The output gpio for muxing of the data pins between the USB host and
-          the USB peripheral controller, write 1 to mux to the peripheral
-          controller
-+=======  =====================================================================
- 
- There is a mapping between indices and GPIO connection IDs as follows
-+
-+	======= =======
- 	id	index 0
- 	vbus	index 1
- 	mux	index 2
-+	======= =======
-diff --git a/Documentation/firmware-guide/acpi/index.rst b/Documentation/firmware-guide/acpi/index.rst
-index ae609eec4679..90c90d42d9ad 100644
---- a/Documentation/firmware-guide/acpi/index.rst
-+++ b/Documentation/firmware-guide/acpi/index.rst
-@@ -24,3 +24,4 @@ ACPI Support
-    acpi-lid
-    lpit
-    video_extension
-+   extcon-intel-int3496
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e07cbd44d48a..b7c81bd0f8e8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -321,7 +321,7 @@ F:	drivers/pnp/pnpacpi/
- F:	include/linux/acpi.h
- F:	include/linux/fwnode.h
- F:	include/acpi/
--F:	Documentation/acpi/
-+F:	Documentation/firmware-guide/acpi/
- F:	Documentation/ABI/testing/sysfs-bus-acpi
- F:	Documentation/ABI/testing/configfs-acpi
- F:	drivers/pci/*acpi*
-@@ -4881,7 +4881,7 @@ S:	Maintained
- F:	Documentation/
- F:	scripts/kernel-doc
- X:	Documentation/ABI/
--X:	Documentation/acpi/
-+X:	Documentation/firmware-guide/acpi/
- X:	Documentation/devicetree/
- X:	Documentation/i2c/
- X:	Documentation/media/
-@@ -6057,7 +6057,7 @@ S:	Maintained
- F:	drivers/extcon/
- F:	include/linux/extcon/
- F:	include/linux/extcon.h
--F:	Documentation/extcon/
-+F:	Documentation/firmware-guide/acpi/extcon-intel-int3496.rst
- F:	Documentation/devicetree/bindings/extcon/
- 
- EXYNOS DP DRIVER
--- 
-2.21.0
+check with
+
+if (revision_check(table, rev))
+	cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
+
+
+and a function like
+
+static int revision_check(acpixxxx *table, int rev)
+{
+	return (table->revision >= rev);
+}
+
+Although, frankly if one were to do this, it should probably be a macro 
+with the table type, and used in the dozen or so other places I found 
+doing similar checks (spcr, iort, etc).
+
+Or something else?
+
+
+
+
+> 
+> thanks,
+> John
+> 
+>> [...]
+>>
+>> .
+>>
+> 
+> 
 
