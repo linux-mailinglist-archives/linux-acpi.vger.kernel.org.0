@@ -2,154 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FDC64B78D
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2019 14:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 801994B7FA
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2019 14:18:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731427AbfFSMAM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Jun 2019 08:00:12 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:39194 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727244AbfFSMAL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jun 2019 08:00:11 -0400
-Received: by mail-io1-f68.google.com with SMTP id r185so31523900iod.6
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Jun 2019 05:00:11 -0700 (PDT)
+        id S1727076AbfFSMSt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Jun 2019 08:18:49 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:43966 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726246AbfFSMSt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jun 2019 08:18:49 -0400
+Received: by mail-wr1-f68.google.com with SMTP id p13so3125238wru.10
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Jun 2019 05:18:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yULoWsPxvpwhEKQeqlB3rwd0CyoBaZXR3zMq8ur6KTk=;
-        b=We8TA2TvglD2LggDUKTGR1uEQRExA/uA2y4sPO1bHLkEkJxr2WpvtbQeI5AIbAgwdy
-         KOGOcpEkmUZG/UYcSjOWymDTGudABT48FS0O50kMiyXX+5yTssrj2Mj1Qv+P2uzzjdia
-         1x3hA3gAsQASNMZjGIPFaSVrnlC7XenYiusHydcU/E4wvDshEVbBqaKRWY6J3AGxOxL9
-         xBiSg1XEUy7gnM5UJyQTtKLYrgp/w2zEqpZsbds3MA4H/cseF1JFmcnEiCCpZgWZPRNK
-         r8hQNYXfrd/lc1dQNTrh7zeUwfQoGNOFlW7M6bJE4SQ2ci27534QuFk/nvjIVuyYyThn
-         Wm6g==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7vQWMM04qjKoqvfboQwGxdL+4IwL/Af9mC5Qcpbu+To=;
+        b=j8h7hwqk/6xqaFEt6OOoRh7tpGPbjyYjJQ3Qb540gSRoOdA2c+HOIWbsBug6YKGtRj
+         K3G8XmS0qLhJw9wJZjBZ5m7t9CmnLs61UmAaN7apJq1WJ/WEyrqijL2z/XCJhn7OCNtY
+         wNf4d/xSw2Ux1cJDB3z+DoykyNzzJnxFSdxj2xgp4kYBalm5W4m9WkXQ7YPm8sM0hBBz
+         1N33eXUzFsDoHsnke7h5acQUiukL20gjlJ1vTn1wWCexatchAXJpkVIjwafa2KDB14Wc
+         +9BSSENlfxbg4S0RFD+raL7crb0iQ7xWlHMTxNGb7tuoAEF0BohDd44vqorWdnLD2pXH
+         VcCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yULoWsPxvpwhEKQeqlB3rwd0CyoBaZXR3zMq8ur6KTk=;
-        b=DxBC3ok+VsiBiir0H6ktA/OYVCgsr452/WrGW7493MKpcFY/VTNUXFmh30JDaintF8
-         tqyn3M6bs3XZsz13OGYZa0ofn/Ha8NEIxxm49/pahxNoEiW2VhQwYRen6U5UvxlOLBuQ
-         3fmbIIAHdr+lClIOsfBia21hn1DJBKAWDhvss/AxfyqBQi5BCVGjWIg2HBvC9iViCdq1
-         nxAc/RSF7t/Ru0VpaQT5qxIy1W9hHUhlfFGe7Zf2ghXnqAM5ga7EBoDfVgspHdQzh/4G
-         hqBeWkuni93lyl4D575MCs1vpzvByNWKjOcMty62y/AkNKePslqiXERq5IDquNHloAhm
-         0ExA==
-X-Gm-Message-State: APjAAAVttylvmlGbWFXD/op/VWr7IXtUX0UaTUJfSDMtUATjhLL9LvMs
-        43GNnzZkcEzqEMYJY9+UsIe3dyl6HfEKAkgA8P5mNA==
-X-Google-Smtp-Source: APXvYqyaPZ2TbevY59IpMTZWufpjvxPeZ1pKqAlhgVKAI9OzMw3Yl8ShN8mHzt6QIBw+P7/Lw5eLK7A8zQKgGt6A5Ys=
-X-Received: by 2002:a6b:7312:: with SMTP id e18mr4811346ioh.156.1560945610493;
- Wed, 19 Jun 2019 05:00:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190619095254.19559-1-ard.biesheuvel@linaro.org>
- <20190619101604.GR2640@lahna.fi.intel.com> <54ede1d8-0e6b-e7d9-5e61-a7d057abbd2b@linux.intel.com>
-In-Reply-To: <54ede1d8-0e6b-e7d9-5e61-a7d057abbd2b@linux.intel.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7vQWMM04qjKoqvfboQwGxdL+4IwL/Af9mC5Qcpbu+To=;
+        b=SrWFN/PDxnjvckyjwyJI89grokE8L1I+a9/7J1lPBrB1sRIHcZVn0k/zDl+x48nm57
+         3+kZnMASMEE+DXOWtdVRti8a6lBxbIk6EiQGas5OeW/3k0EMBczTXAL74d6oz5qVAcmI
+         CLaq4PbFRK0qvbRug2ZUWoW/XZB96fXH+68AS7Kw7I6JgfBCBXOy7Helso3kZM5uRZcu
+         THgmQ9obbemVyC+6vyqOSuJFTUxmFEbt6QCyYDr4T8eXAuVVYQsPv+4/qoTH5Nl89b8H
+         wYVvH+qbwVPg+11w+TiLzXaliGASabFnDxjz4COSfmPInmkqDXV8Q8EJPkP10cOmw656
+         Ry1Q==
+X-Gm-Message-State: APjAAAW0VcJ5BwXTCqdjfxmsMyva25O5yh6exWe/54SrRP+yHKTMMfup
+        A1KG8joawjh8Ihpmt8xhW2zTQNIZYH8=
+X-Google-Smtp-Source: APXvYqzHJaIzt42CI09p+2CTvyYHvJupQyZzEbBqSy9ydAsF+kbAr1BlDLVE1BEhXHSXE4VMY9UarQ==
+X-Received: by 2002:adf:ea92:: with SMTP id s18mr9348470wrm.257.1560946727177;
+        Wed, 19 Jun 2019 05:18:47 -0700 (PDT)
+Received: from localhost.localdomain (aaubervilliers-681-1-6-209.w90-88.abo.wanadoo.fr. [90.88.128.209])
+        by smtp.gmail.com with ESMTPSA id 5sm20419966wrc.76.2019.06.19.05.18.46
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 19 Jun 2019 05:18:46 -0700 (PDT)
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Wed, 19 Jun 2019 13:59:58 +0200
-Message-ID: <CAKv+Gu_Bw3aV-pUVYf8T1hLfL35X7ozEPtqL9oLcDvwcQ4qMiw@mail.gmail.com>
-Subject: Re: [PATCH] spi/acpi: fix incorrect ACPI parent check
-To:     Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        kbuild test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Masahisa Kojima <masahisa.kojima@linaro.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Lukas Wunner <lukas@wunner.de>
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     linux-acpi@vger.kernel.org, catalin.marinas@arm.com,
+        will.deacon@arm.com, lorenzo.pieralisi@arm.com,
+        lee.jones@linaro.org, leif.lindholm@linaro.org,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Subject: [RFC PATCH] acpi/arm64: ignore 5.1 FADTs that are reported as 5.0
+Date:   Wed, 19 Jun 2019 14:18:31 +0200
+Message-Id: <20190619121831.7614-1-ard.biesheuvel@linaro.org>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 19 Jun 2019 at 13:58, Jarkko Nikula
-<jarkko.nikula@linux.intel.com> wrote:
->
-> On 6/19/19 1:16 PM, Mika Westerberg wrote:
-> > On Wed, Jun 19, 2019 at 11:52:54AM +0200, Ard Biesheuvel wrote:
-> >> The ACPI device object parsing code for SPI slaves enumerates the
-> >> entire ACPI namespace to look for devices that refer to the master
-> >> in question via the 'resource_source' field in the 'SPISerialBus'
-> >> resource. If that field does not refer to a valid ACPI device or
-> >> if it refers to the wrong SPI master, we should disregard the
-> >> device.
-> >>
-> >> Current, the valid device check is wrong, since it gets the
-> >> polarity of 'status' wrong. This could cause issues if the
-> >> 'resource_source' field is bogus but parent_handle happens to
-> >> refer to the correct master (which is not entirely imaginary
-> >> since this code runs in a loop)
-> >>
-> >> So test for ACPI_FAILURE() instead, to make the code more
-> >> self explanatory.
-> >>
-> >> Fixes: 4c3c59544f33 ("spi/acpi: enumerate all SPI slaves in the namespace")
-> >> Reported-by: kbuild test robot <lkp@intel.com>
-> >> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> >> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-> >
-> > Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> >
-> I hit yesterday a regression caused by 4c3c59544f33. I've a custom ACPI
-> tables defining I2C gpio expanders (gpio-pca953x.c as INT3491) and a
-> spidev test device (SPT0001).
->
-> Both stopped enumerating after 4c3c59544f33. With this fix spidev device
-> enumerates but still get confused with I2C GPIO expanders (INT3491):
->
+Some Qualcomm Snapdragon based laptops built to run Microsoft Windows
+are clearly ACPI 5.1 based, given that that is the first ACPI revision
+that supports ARM, and introduced the FADT 'arm_boot_flags' field,
+which has a non-zero field on those systems.
 
-Could you share the decomplied D/SSDT please?
+So in these cases, infer from the ARM boot flags that the FADT must be
+5.1 or later, and treat it as 5.1.
 
-> [    5.629874][    T1] pxa2xx-spi pxa2xx-spi.3: registered master spi3
-> [    5.644447][    T1] pxa2xx-spi pxa2xx-spi.5: registered master spi5
-> [    5.653930][    T1] spi spi-SPT0001:00: in setup: DMA burst size set to 8
-> [    5.661300][    T1] spi spi-SPT0001:00: setup mode 0, 8 bits/w,
-> 1000000 Hz max --> 0
-> [    5.671360][    T1] spidev spi-SPT0001:00: do not use this driver in
-> production systems!
-> [    5.682325][    T1] pxa2xx-spi pxa2xx-spi.5: registered child
-> spi-SPT0001:00
-> [    5.690240][    T1] spi spi-PRP0001:00: in setup: DMA burst size set to 8
-> [    5.697492][    T1] spi spi-PRP0001:00: setup mode 0, 8 bits/w,
-> 20000000 Hz max --> 0
-> [    5.706928][    T1] pxa2xx-spi pxa2xx-spi.5: registered child
-> spi-PRP0001:00
-> [    5.715754][    T1] pxa2xx-spi pxa2xx-spi.5: cs104 >= max 4
-> [    5.721688][    T1] spi_master spi5: failed to add SPI device
-> INT3491:00 from ACPI
-> [    5.730648][    T1] pxa2xx-spi pxa2xx-spi.5: cs104 >= max 4
-> [    5.736657][    T1] spi_master spi5: failed to add SPI device
-> INT3491:01 from ACPI
-> [    5.745617][    T1] pxa2xx-spi pxa2xx-spi.5: cs104 >= max 4
-> [    5.751546][    T1] spi_master spi5: failed to add SPI device
-> INT3491:02 from ACPI
-> [    5.760628][    T1] pxa2xx-spi pxa2xx-spi.5: cs104 >= max 4
-> [    5.766549][    T1] spi_master spi5: failed to add SPI device
-> INT3491:03 from ACPI
-> [    5.777160][    T1] pxa2xx-spi pxa2xx-spi.5: cs104 >= max 4
-> [    5.783087][    T1] spi_master spi5: failed to add SPI device
-> BCM2E95:00 from ACPI
-> [    5.797008][    T1] pxa2xx-spi pxa2xx-spi.6: registered master spi6
->
-> Ok log with commit 4c3c59544f33 reverted:
->
-> [    5.633116][    T1] pxa2xx-spi pxa2xx-spi.3: registered master spi3
-> [    5.647701][    T1] pxa2xx-spi pxa2xx-spi.5: registered master spi5
-> [    5.655668][    T1] spi spi-SPT0001:00: in setup: DMA burst size set to 8
-> [    5.663066][    T1] spi spi-SPT0001:00: setup mode 0, 8 bits/w,
-> 1000000 Hz max --> 0
-> [    5.672758][    T1] pxa2xx-spi pxa2xx-spi.5: registered child
-> spi-SPT0001:00
-> [    5.680602][    T1] spi spi-PRP0001:00: in setup: DMA burst size set to 8
-> [    5.687820][    T1] spi spi-PRP0001:00: setup mode 0, 8 bits/w,
-> 20000000 Hz max --> 0
-> [    5.697366][    T1] pxa2xx-spi pxa2xx-spi.5: registered child
-> spi-PRP0001:00
-> [    5.709064][    T1] pxa2xx-spi pxa2xx-spi.6: registered master spi6
-> [   11.021760][   T84] spidev spi-SPT0001:00: do not use this driver in
-> production systems!
->
-> --
-> Jarkko
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+---
+ arch/arm64/kernel/acpi.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
+index 803f0494dd3e..7722e85fb69c 100644
+--- a/arch/arm64/kernel/acpi.c
++++ b/arch/arm64/kernel/acpi.c
+@@ -155,10 +155,14 @@ static int __init acpi_fadt_sanity_check(void)
+ 	 */
+ 	if (table->revision < 5 ||
+ 	   (table->revision == 5 && fadt->minor_revision < 1)) {
+-		pr_err("Unsupported FADT revision %d.%d, should be 5.1+\n",
++		pr_err(FW_BUG "Unsupported FADT revision %d.%d, should be 5.1+\n",
+ 		       table->revision, fadt->minor_revision);
+-		ret = -EINVAL;
+-		goto out;
++
++		if (!fadt->arm_boot_flags) {
++			ret = -EINVAL;
++			goto out;
++		}
++		pr_err("FADT has ARM boot flags set, assuming 5.1\n");
+ 	}
+ 
+ 	if (!(fadt->flags & ACPI_FADT_HW_REDUCED)) {
+-- 
+2.20.1
+
