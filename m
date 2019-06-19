@@ -2,120 +2,221 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 563B74AD59
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2019 23:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9EF24B170
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2019 07:33:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730267AbfFRV2e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Jun 2019 17:28:34 -0400
-Received: from foss.arm.com ([217.140.110.172]:33068 "EHLO foss.arm.com"
+        id S1725980AbfFSFd3 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 19 Jun 2019 01:33:29 -0400
+Received: from mga05.intel.com ([192.55.52.43]:2495 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730368AbfFRV2d (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 18 Jun 2019 17:28:33 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DAFCE360;
-        Tue, 18 Jun 2019 14:28:32 -0700 (PDT)
-Received: from [192.168.122.164] (u201426.austin.arm.com [10.118.28.29])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C84843F718;
-        Tue, 18 Jun 2019 14:28:32 -0700 (PDT)
-Subject: Re: [PATCH v2 1/2] ACPI/PPTT: Add support for ACPI 6.3 thread flag
-To:     John Garry <john.garry@huawei.com>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        linux-arm-kernel@lists.infradead.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        catalin.marinas@arm.com, will.deacon@arm.com, rjw@rjwysocki.net,
-        sudeep.holla@arm.com, lenb@kernel.org
-References: <20190614223158.49575-1-jeremy.linton@arm.com>
- <20190614223158.49575-2-jeremy.linton@arm.com>
- <667f95c0-5aa9-f460-a49a-e6dfefc027d8@arm.com>
- <2d1b547f-f9ee-391c-c4f3-0232a08a86bc@arm.com>
- <718438d0-8648-897a-83e8-801146a0af86@arm.com>
- <f6f7f9bb-547d-3fd3-f3f8-1d55181f63d7@huawei.com>
-From:   Jeremy Linton <jeremy.linton@arm.com>
-Message-ID: <11fb712f-b3c2-5491-89ee-ea7efb18ddd8@arm.com>
-Date:   Tue, 18 Jun 2019 16:28:32 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <f6f7f9bb-547d-3fd3-f3f8-1d55181f63d7@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+        id S1725854AbfFSFd3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 19 Jun 2019 01:33:29 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Jun 2019 22:33:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,392,1557212400"; 
+   d="scan'208";a="243210157"
+Received: from orsmsx108.amr.corp.intel.com ([10.22.240.6])
+  by orsmga001.jf.intel.com with ESMTP; 18 Jun 2019 22:33:27 -0700
+Received: from orsmsx112.amr.corp.intel.com (10.22.240.13) by
+ ORSMSX108.amr.corp.intel.com (10.22.240.6) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Tue, 18 Jun 2019 22:33:27 -0700
+Received: from orsmsx107.amr.corp.intel.com ([169.254.1.18]) by
+ ORSMSX112.amr.corp.intel.com ([169.254.3.232]) with mapi id 14.03.0439.000;
+ Tue, 18 Jun 2019 22:33:27 -0700
+From:   "Saha, Shaunak" <shaunak.saha@intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mario Limonciello <mario_limonciello@dell.com>
+CC:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Subject: RE: drivers/acpi: Change the lpit function call flow
+Thread-Topic: drivers/acpi: Change the lpit function call flow
+Thread-Index: AQHVFAKLmGZKFQG42U6YI0ymKhLSm6aarbsAgAcDvoD///8ipA==
+Date:   Wed, 19 Jun 2019 05:33:26 +0000
+Message-ID: <593AE8A18AD46543B92D8EF146E2AA9408C326BA@ORSMSX107.amr.corp.intel.com>
+References: <20190526202750.4614-1-shaunak.saha@intel.com>
+ <2151762.asltZFE8WJ@kreacher>,<CAJZ5v0iHRzC=ewqUTa_VUdJ2NOztnP+hDYBeJLtfDydArPkkeA@mail.gmail.com>
+In-Reply-To: <CAJZ5v0iHRzC=ewqUTa_VUdJ2NOztnP+hDYBeJLtfDydArPkkeA@mail.gmail.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-version: 11.0.600.7
+dlp-reaction: no-action
+x-ctpclassification: CTP_NT
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiZTI2YmRmYmEtMzA1OC00YTM5LWJlMGUtZmFmM2Y2NmJlMTZlIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoicHdXMUdQM1lhSDJPY3pGYzRUUTFBOUh2V1NKS3JIMTBNVW5ZZjdpelZGdmZCbUxvU0w5Y3hWUzNwNWtwUjJJbyJ9
+x-originating-ip: [10.22.254.140]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Rafael,
 
-On 6/18/19 12:23 PM, John Garry wrote:
-> On 18/06/2019 15:40, Valentin Schneider wrote:
->> On 18/06/2019 15:21, Jeremy Linton wrote:
->> [...]
->>>>> + * Return: -ENOENT if the PPTT doesn't exist, the CPU cannot be 
->>>>> found or
->>>>> + *       the table revision isn't new enough.
->>>>> + * Otherwise returns flag value
->>>>> + */
->>>>
->>>> Nit: strictly speaking we're not returning the flag value but its mask
->>>> applied to the flags field. I don't think anyone will care about 
->>>> getting
->>>> the actual flag value, but it should be made obvious in the doc:
->>>
->>> Or I clarify the code to actually do what the comments says. Maybe 
->>> that is what John G was also pointing out too?
->>>
-> 
-> No, I was just saying that the kernel topology can be broken without 
-> this series.
-> 
->>
->> Mmm I didn't find any reply from John regarding this in v1, but I 
->> wouldn't
->> mind either way, as long as the doc & code are aligned.
->>
-> 
-> BTW, to me, function acpi_pptt_cpu_is_thread() seems to try to do too 
-> much, i.e. check if the PPTT is new enough to support the thread flag 
-> and also check if it is set for a specific cpu. I'd consider separate 
-> functions here.
+Thanks for your review comments. Agreed that this patch needs to be fixed. I am working on it. 
+1.First off, aborting system suspend because S0ix constraints are not met is a non-starter.  The kernel really cannot refuse to suspend the system for  that reason (and diagnostics can be done after resume anyway).
 
-? Your suggesting replacing the
+For this as the LPIT specs says "_DSM function may be invoked when the OS state has reached sufficient criteria
+for processor idle state entry matching Entry Trigger defined in LPIT" then  to check that entry trigger from before calling the sleep function would be better approach. Will report an error if that is not met and still go to suspend. Is that a proper way to handle this? please suggest.
 
+2. Second, according to my knowledge, it is not a bug to invoke the ACPI_LPS0_ENTRY _DSM when the constraints are not met.  Do you actually know about any platforms where that may cause real problems to occur?
 
-if (table->revision >= rev)
-	cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
+Actually in the present platform i m working we are seeing the failure to go to suspend whenever this _DSM methods are called. But as you correctly mentioned i found that the bug was not because this function was called early but it's happening because in our case ec seems to be bit noisy and that's why it's coming out of suspend too early. Something is going wrong in the ec polling function it seems in this case.
 
-check with
+3. Finally, it is too late to invoke that _DSM from acpi_s2idle_sync(), because that is called after leaving S0ix and resuming some devices.
 
-if (revision_check(table, rev))
-	cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
+Agreed. I think moving the call of DSM from s2idle_enter is better if we decide to move it a later stage
+________________________________________
+From: Rafael J. Wysocki [rafael@kernel.org]
+Sent: Tuesday, June 18, 2019 1:44 AM
+To: Mario Limonciello
+Cc: Saha, Shaunak; ACPI Devel Maling List
+Subject: Re: drivers/acpi: Change the lpit function call flow
 
+On Thu, Jun 13, 2019 at 11:37 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+>
+> On Sunday, May 26, 2019 10:27:50 PM CEST Shaunak Saha wrote:
+> > In the present implementation sleep function was getting called in
+> > acpi_s2idle_prepare and as all the devices may not have suspended
+> > at that stage e.g. if we are telling ec about the S0ix then calling early
+> > can cause ec reply wrongly interpreted as spurious wake events.
+> > Here we call it at much later stage in acpi_s2idle_sync. As per the
+> > specification the entry _DSM function may be invoked when the OS state has
+> > reached sufficient criteria for processor idle state entry matching
+> > Entry Trigger defined in LPIT to be interpreted as a request for the
+> > platform to enter a Low Power S0 Idle (LPI) state. Here we are checking if
+> > the we reached the minimum D-State defined in the constraint function of
+> > the LPIT _DSM method before calling the sleep entry function. Also not
+> > checking for constraint in acpi_s2idle_wake anymore and also changed the
+> > acpi info loglevel to debug in lpi_check_constraint.
+>
+> This patch does three different things, two of which are questionable and
+> one is done incorrectly.
+>
+> First off, aborting system suspend because S0ix constraints are not met is
+> a non-starter.  The kernel really cannot refuse to suspend the system for
+> that reason (and diagnostics can be done after resume anyway).
+>
+> Second, according to my knowledge, it is not a bug to invoke the
+> ACPI_LPS0_ENTRY _DSM when the constraints are not met.  Do you
+> actually know about any platforms where that may cause real problems
+> to occur?
+>
+> Finally, it is too late to invoke that _DSM from acpi_s2idle_sync(), because
+> that is called after leaving S0ix and resuming some devices.
+>
+> I can believe the claim that invoking the ACPI_LPS0_ENTRY _DSM in
+> acpi_s2idle_prepare() may be too early and it may confuse the EC, say,
+> but I'm not sure why the ACPI_LPS0_SCREEN_OFF _DSM would be
+> affected by that too.
+>
+> So overall, the patch below may actually work,
 
-and a function like
+On my Dell XPS13 9360 it clearly makes things worse by causing the EC
+to generate spurious wakeup events all the time, so I'm afraid that
+this like of reasoning is misguided overall.
 
-static int revision_check(acpixxxx *table, int rev)
-{
-	return (table->revision >= rev);
-}
-
-Although, frankly if one were to do this, it should probably be a macro 
-with the table type, and used in the dozen or so other places I found 
-doing similar checks (spcr, iort, etc).
-
-Or something else?
-
-
-
-
-> 
-> thanks,
-> John
-> 
->> [...]
->>
->> .
->>
-> 
-> 
-
+> but not the $subject one
+> (if evaluating the ACPI_LPS0_ENTRY _DSM when the constraints are not
+> met is *really* problematic, it may be necessary to add the check
+> for that on top of it).
+>
+> ---
+>  drivers/acpi/sleep.c    |   13 +++++++++----
+>  include/linux/suspend.h |    1 +
+>  kernel/power/suspend.c  |    8 ++++++--
+>  3 files changed, 16 insertions(+), 6 deletions(-)
+>
+> Index: linux-pm/drivers/acpi/sleep.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/sleep.c
+> +++ linux-pm/drivers/acpi/sleep.c
+> @@ -967,8 +967,6 @@ static int acpi_s2idle_prepare(void)
+>  {
+>         if (lps0_device_handle) {
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
+> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
+> -
+>                 acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
+>         }
+>
+> @@ -983,6 +981,12 @@ static int acpi_s2idle_prepare(void)
+>         return 0;
+>  }
+>
+> +static void acpi_s2idle_sleep(void)
+> +{
+> +       if (lps0_device_handle)
+> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
+> +}
+> +
+>  static void acpi_s2idle_wake(void)
+>  {
+>         if (!lps0_device_handle)
+> @@ -1007,6 +1011,8 @@ static void acpi_s2idle_wake(void)
+>                  */
+>                 acpi_ec_dispatch_gpe();
+>         }
+> +
+> +       acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
+>  }
+>
+>  static void acpi_s2idle_sync(void)
+> @@ -1034,8 +1040,6 @@ static void acpi_s2idle_restore(void)
+>
+>         if (lps0_device_handle) {
+>                 acpi_ec_set_gpe_wake_mask(ACPI_GPE_DISABLE);
+> -
+> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON);
+>         }
+>  }
+> @@ -1049,6 +1053,7 @@ static void acpi_s2idle_end(void)
+>  static const struct platform_s2idle_ops acpi_s2idle_ops = {
+>         .begin = acpi_s2idle_begin,
+>         .prepare = acpi_s2idle_prepare,
+> +       .sleep = acpi_s2idle_sleep,
+>         .wake = acpi_s2idle_wake,
+>         .sync = acpi_s2idle_sync,
+>         .restore = acpi_s2idle_restore,
+> Index: linux-pm/include/linux/suspend.h
+> ===================================================================
+> --- linux-pm.orig/include/linux/suspend.h
+> +++ linux-pm/include/linux/suspend.h
+> @@ -190,6 +190,7 @@ struct platform_suspend_ops {
+>  struct platform_s2idle_ops {
+>         int (*begin)(void);
+>         int (*prepare)(void);
+> +       void (*sleep)(void);
+>         void (*wake)(void);
+>         void (*sync)(void);
+>         void (*restore)(void);
+> Index: linux-pm/kernel/power/suspend.c
+> ===================================================================
+> --- linux-pm.orig/kernel/power/suspend.c
+> +++ linux-pm/kernel/power/suspend.c
+> @@ -136,10 +136,14 @@ static void s2idle_loop(void)
+>                  * so prevent them from terminating the loop right away.
+>                  */
+>                 error = dpm_noirq_suspend_devices(PMSG_SUSPEND);
+> -               if (!error)
+> +               if (!error) {
+> +                       if (s2idle_ops && s2idle_ops->sleep)
+> +                               s2idle_ops->sleep();
+> +
+>                         s2idle_enter();
+> -               else if (error == -EBUSY && pm_wakeup_pending())
+> +               } else if (error == -EBUSY && pm_wakeup_pending()) {
+>                         error = 0;
+> +               }
+>
+>                 if (!error && s2idle_ops && s2idle_ops->wake)
+>                         s2idle_ops->wake();
+>
+>
+>
