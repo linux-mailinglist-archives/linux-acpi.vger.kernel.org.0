@@ -2,78 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11A2E4B660
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2019 12:44:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F3514B788
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2019 13:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726958AbfFSKoC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Jun 2019 06:44:02 -0400
-Received: from casper.infradead.org ([85.118.1.10]:45556 "EHLO
-        casper.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726751AbfFSKoC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jun 2019 06:44:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=WKW/0TRPIb29ZUwqdiEIWuQ61spuUdkZV5X/uIQH8S0=; b=t84WOhRQC7YxmEGug4+IeE6ZG2
-        f+hoPyDbMpZ1t1RdL04ORAisWEtnBm7TBzZCei4viOpDDvy0Bz37Dzse0a6sB91zznwDqLFIavFPZ
-        L2+aMBp0o3rBIpixd9Gbfy2CXTASqIiKw/0YX1jH4qmI2yIxEVvhclGLgH9oz2oQfnMjq5r3Ma7FH
-        VPBesNLK0jlZm/X+Azr5T27AVvWUO6/aNwXoUAVTdV9RvkWs8SrgtucdWogeS+Xl0RSaxeOX7X+4Y
-        bTSgdODUhdMY6pcuFbSLEtjyuA2CUsklO6h4/EoWuCbjvgnNaiwS5whTX9PyKRUDIjnU/OmVMIVdt
-        t6pOk19w==;
-Received: from 177.133.86.196.dynamic.adsl.gvt.net.br ([177.133.86.196] helo=coco.lan)
-        by casper.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hdY4M-0003f9-Vr; Wed, 19 Jun 2019 10:43:59 +0000
-Date:   Wed, 19 Jun 2019 07:43:52 -0300
-From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1 20/22] docs: extcon: move it to acpi dir and convert
- it to ReST
-Message-ID: <20190619074352.79993138@coco.lan>
-In-Reply-To: <4701210.Ilfu9VLqBR@kreacher>
-References: <cover.1560891322.git.mchehab+samsung@kernel.org>
-        <b6d199c3e7c8c868acbb313a1a516ea8aed042ee.1560891322.git.mchehab+samsung@kernel.org>
-        <4701210.Ilfu9VLqBR@kreacher>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        id S1731654AbfFSL6l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Jun 2019 07:58:41 -0400
+Received: from mga04.intel.com ([192.55.52.120]:1708 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727067AbfFSL6l (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 19 Jun 2019 07:58:41 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Jun 2019 04:58:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,392,1557212400"; 
+   d="scan'208";a="182722411"
+Received: from mylly.fi.intel.com (HELO [10.237.72.61]) ([10.237.72.61])
+  by fmsmga004.fm.intel.com with ESMTP; 19 Jun 2019 04:58:37 -0700
+Subject: Re: [PATCH] spi/acpi: fix incorrect ACPI parent check
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     linux-spi@vger.kernel.org, broonie@kernel.org,
+        kbuild test robot <lkp@intel.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        andy.shevchenko@gmail.com, masahisa.kojima@linaro.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi@vger.kernel.org, Lukas Wunner <lukas@wunner.de>
+References: <20190619095254.19559-1-ard.biesheuvel@linaro.org>
+ <20190619101604.GR2640@lahna.fi.intel.com>
+From:   Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Message-ID: <54ede1d8-0e6b-e7d9-5e61-a7d057abbd2b@linux.intel.com>
+Date:   Wed, 19 Jun 2019 14:58:36 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20190619101604.GR2640@lahna.fi.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Em Wed, 19 Jun 2019 11:59:18 +0200
-"Rafael J. Wysocki" <rjw@rjwysocki.net> escreveu:
-
-> On Tuesday, June 18, 2019 11:05:44 PM CEST Mauro Carvalho Chehab wrote:
-> > The intel-int3496.txt file is a documentation for an ACPI driver.
-> > 
-> > There's no reason to keep it on a separate directory.
-> > 
-> > So, instead of keeping it on some random location, move it
-> > to a sub-directory inside the ACPI documentation dir.
-> > 
-> > For now, keep it with .txt extension, in order to avoid
-> > Sphinx build noise. A later patch should change it to .rst
-> > and movin it to be together with other acpi docs.
-> > 
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>  
+On 6/19/19 1:16 PM, Mika Westerberg wrote:
+> On Wed, Jun 19, 2019 at 11:52:54AM +0200, Ard Biesheuvel wrote:
+>> The ACPI device object parsing code for SPI slaves enumerates the
+>> entire ACPI namespace to look for devices that refer to the master
+>> in question via the 'resource_source' field in the 'SPISerialBus'
+>> resource. If that field does not refer to a valid ACPI device or
+>> if it refers to the wrong SPI master, we should disregard the
+>> device.
+>>
+>> Current, the valid device check is wrong, since it gets the
+>> polarity of 'status' wrong. This could cause issues if the
+>> 'resource_source' field is bogus but parent_handle happens to
+>> refer to the correct master (which is not entirely imaginary
+>> since this code runs in a loop)
+>>
+>> So test for ACPI_FAILURE() instead, to make the code more
+>> self explanatory.
+>>
+>> Fixes: 4c3c59544f33 ("spi/acpi: enumerate all SPI slaves in the namespace")
+>> Reported-by: kbuild test robot <lkp@intel.com>
+>> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+>> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
 > 
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 > 
-> Or please let me know if you want me to pick up this one.
+I hit yesterday a regression caused by 4c3c59544f33. I've a custom ACPI 
+tables defining I2C gpio expanders (gpio-pca953x.c as INT3491) and a 
+spidev test device (SPT0001).
 
-Feel free to pick it.
+Both stopped enumerating after 4c3c59544f33. With this fix spidev device 
+enumerates but still get confused with I2C GPIO expanders (INT3491):
 
+[    5.629874][    T1] pxa2xx-spi pxa2xx-spi.3: registered master spi3
+[    5.644447][    T1] pxa2xx-spi pxa2xx-spi.5: registered master spi5
+[    5.653930][    T1] spi spi-SPT0001:00: in setup: DMA burst size set to 8
+[    5.661300][    T1] spi spi-SPT0001:00: setup mode 0, 8 bits/w, 
+1000000 Hz max --> 0
+[    5.671360][    T1] spidev spi-SPT0001:00: do not use this driver in 
+production systems!
+[    5.682325][    T1] pxa2xx-spi pxa2xx-spi.5: registered child 
+spi-SPT0001:00
+[    5.690240][    T1] spi spi-PRP0001:00: in setup: DMA burst size set to 8
+[    5.697492][    T1] spi spi-PRP0001:00: setup mode 0, 8 bits/w, 
+20000000 Hz max --> 0
+[    5.706928][    T1] pxa2xx-spi pxa2xx-spi.5: registered child 
+spi-PRP0001:00
+[    5.715754][    T1] pxa2xx-spi pxa2xx-spi.5: cs104 >= max 4
+[    5.721688][    T1] spi_master spi5: failed to add SPI device 
+INT3491:00 from ACPI
+[    5.730648][    T1] pxa2xx-spi pxa2xx-spi.5: cs104 >= max 4
+[    5.736657][    T1] spi_master spi5: failed to add SPI device 
+INT3491:01 from ACPI
+[    5.745617][    T1] pxa2xx-spi pxa2xx-spi.5: cs104 >= max 4
+[    5.751546][    T1] spi_master spi5: failed to add SPI device 
+INT3491:02 from ACPI
+[    5.760628][    T1] pxa2xx-spi pxa2xx-spi.5: cs104 >= max 4
+[    5.766549][    T1] spi_master spi5: failed to add SPI device 
+INT3491:03 from ACPI
+[    5.777160][    T1] pxa2xx-spi pxa2xx-spi.5: cs104 >= max 4
+[    5.783087][    T1] spi_master spi5: failed to add SPI device 
+BCM2E95:00 from ACPI
+[    5.797008][    T1] pxa2xx-spi pxa2xx-spi.6: registered master spi6
 
-Thanks,
-Mauro
+Ok log with commit 4c3c59544f33 reverted:
+
+[    5.633116][    T1] pxa2xx-spi pxa2xx-spi.3: registered master spi3
+[    5.647701][    T1] pxa2xx-spi pxa2xx-spi.5: registered master spi5
+[    5.655668][    T1] spi spi-SPT0001:00: in setup: DMA burst size set to 8
+[    5.663066][    T1] spi spi-SPT0001:00: setup mode 0, 8 bits/w, 
+1000000 Hz max --> 0
+[    5.672758][    T1] pxa2xx-spi pxa2xx-spi.5: registered child 
+spi-SPT0001:00
+[    5.680602][    T1] spi spi-PRP0001:00: in setup: DMA burst size set to 8
+[    5.687820][    T1] spi spi-PRP0001:00: setup mode 0, 8 bits/w, 
+20000000 Hz max --> 0
+[    5.697366][    T1] pxa2xx-spi pxa2xx-spi.5: registered child 
+spi-PRP0001:00
+[    5.709064][    T1] pxa2xx-spi pxa2xx-spi.6: registered master spi6
+[   11.021760][   T84] spidev spi-SPT0001:00: do not use this driver in 
+production systems!
+
+-- 
+Jarkko
