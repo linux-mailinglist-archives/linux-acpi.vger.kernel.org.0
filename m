@@ -2,161 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CF594C7AA
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 08:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 513494C86F
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 09:34:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726485AbfFTGtb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jun 2019 02:49:31 -0400
-Received: from mail.steuer-voss.de ([85.183.69.95]:60686 "EHLO
-        mail.steuer-voss.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726262AbfFTGtb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jun 2019 02:49:31 -0400
-X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
-Received: by mail.steuer-voss.de (Postfix, from userid 1000)
-        id 2BDDB4D00C; Thu, 20 Jun 2019 08:49:28 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.steuer-voss.de (Postfix) with ESMTP id 295AA4D000;
-        Thu, 20 Jun 2019 08:49:28 +0200 (CEST)
-Date:   Thu, 20 Jun 2019 08:49:28 +0200 (CEST)
-From:   Nikolaus Voss <nv@vosn.de>
-X-X-Sender: nv@fox.voss.local
-To:     "Moore, Robert" <robert.moore@intel.com>
-cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "Schmauss, Erik" <erik.schmauss@intel.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table
- loads
-In-Reply-To: <94F2FBAB4432B54E8AACC7DFDE6C92E3B95FC28D@ORSMSX110.amr.corp.intel.com>
-Message-ID: <alpine.DEB.2.20.1906200843320.9673@fox.voss.local>
-References: <cover.1560327219.git.nikolaus.voss@loewensteinmedical.de> <e2a4ddfd93a904b50b7ccc074e00e14dc4661963.1560327219.git.nikolaus.voss@loewensteinmedical.de> <CAJZ5v0jqxWs=PPik-TCDqQiyxCSyRP7HTue1WsdWP9e-nik2eA@mail.gmail.com>
- <alpine.DEB.2.20.1906141114490.6579@fox.voss.local> <94F2FBAB4432B54E8AACC7DFDE6C92E3B95EFB26@ORSMSX110.amr.corp.intel.com> <alpine.DEB.2.20.1906170746150.12344@fox.voss.local> <94F2FBAB4432B54E8AACC7DFDE6C92E3B95F9EC6@ORSMSX110.amr.corp.intel.com>
- <alpine.DEB.2.20.1906181030240.24846@fox.voss.local>    <94F2FBAB4432B54E8AACC7DFDE6C92E3B95FB0BA@ORSMSX110.amr.corp.intel.com> <alpine.DEB.2.20.1906191123400.34742@fox.voss.local> <94F2FBAB4432B54E8AACC7DFDE6C92E3B95FC28D@ORSMSX110.amr.corp.intel.com>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
+        id S1725875AbfFTHeI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jun 2019 03:34:08 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:54770 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725872AbfFTHeI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jun 2019 03:34:08 -0400
+Received: by mail-wm1-f68.google.com with SMTP id g135so1916069wme.4
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Jun 2019 00:34:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=4FqCiRm/R1y86qapH/9mGQH5c8EcuBpU48EvhhlV0Xo=;
+        b=znxrnhE1zn6897NXu7Ylb/PPmBkD1bHTVNiahykJsigkiAXochglTrE8rTxzxCgMhZ
+         VbTtDSBvvLdcwD73C7E71LtJf2AF3A4j+9VXt/49eQPd0os3vg9d6q8EQ1g5nR98KBq9
+         NmK4FNti4NGbO+P6JCbZ+g9bRpl6IVBU0zYKbBp7Ovt/2JZo1NqWBK1nBWKvoPe+IBSX
+         tnium+eClaXewTUoyeOxQ0Xyyfttx4wZIFChLJcZQXT3wjMu6pTQfGPD5rthYNNvZrtZ
+         xmoqXJ142pr0tBe2RKZaxpLNxLK9ckmauyujjtjS/UqA71HJqY5H/dBGNd/dwlCZKxP4
+         z5tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=4FqCiRm/R1y86qapH/9mGQH5c8EcuBpU48EvhhlV0Xo=;
+        b=tmGhGY1ik2zomRTYX3tj8tSKAVGSgeFPKbJ07AOtrMrzkqRIapuzXDk6YfLWCa9xie
+         RUwxKDDQNeivI74is3PTY+deeiMk+Bb74S+TolC4mFQvwWClrhrC5rbZcJP4qjvWTs9/
+         6vyXkHxdgXgPxq6rnxOa+u3gOOI4I9YBMvm4KK/BlfYdGYDevTloYc58Ru3KLzcZZBib
+         VnBc3PZspbucEzh7coGqaqJDOShnYGkaxdWhyibAQvw41L40BMyLq/tp3UXrR1wuzB2S
+         6pbxCa2MyGt3ieCfz9FiFBIvbxB4sS0SWzw8sPr2rcd7n3c10M8Nb1M/ANr4UhskN9oi
+         6J2g==
+X-Gm-Message-State: APjAAAVOMCH9nI/K1rtZP0ChgBe6KM9iv23kQei1xfoyEipB/CdLtzuf
+        lfCDRTij2GdF7C6MLda25cSiohKqZIcgUg==
+X-Google-Smtp-Source: APXvYqyhvbgPRSyh9mi2Cnbgo5E4w8ydYQCCsBmK+dsG2lpRj8XVop9CkYpBVmi9HZCZzGPoacM/0A==
+X-Received: by 2002:a1c:3dc1:: with SMTP id k184mr1536273wma.88.1561016046015;
+        Thu, 20 Jun 2019 00:34:06 -0700 (PDT)
+Received: from e111045-lin.arm.com (lfbn-nic-1-216-10.w2-15.abo.wanadoo.fr. [2.15.62.10])
+        by smtp.gmail.com with ESMTPSA id a7sm20023181wrs.94.2019.06.20.00.34.04
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 20 Jun 2019 00:34:05 -0700 (PDT)
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+To:     linux-acpi@vger.kernel.org
+Cc:     lenb@kernel.org, rjw@rjwysocki.net, lee.jones@linaro.org,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Subject: [PATCH] acpi: make AC and battery drivers available on !X86
+Date:   Thu, 20 Jun 2019 09:33:53 +0200
+Message-Id: <20190620073353.5770-1-ard.biesheuvel@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 19 Jun 2019, Moore, Robert wrote:
->
->
->> -----Original Message-----
->> From: Nikolaus Voss [mailto:nv@vosn.de]
->> Sent: Wednesday, June 19, 2019 2:31 AM
->> To: Moore, Robert <robert.moore@intel.com>
->> Cc: Rafael J. Wysocki <rafael@kernel.org>; Rafael J. Wysocki
->> <rjw@rjwysocki.net>; Len Brown <lenb@kernel.org>; Schmauss, Erik
->> <erik.schmauss@intel.com>; Jacek Anaszewski
->> <jacek.anaszewski@gmail.com>; Pavel Machek <pavel@ucw.cz>; Dan Murphy
->> <dmurphy@ti.com>; Thierry Reding <thierry.reding@gmail.com>; ACPI Devel
->> Maling List <linux-acpi@vger.kernel.org>; open list:ACPI COMPONENT
->> ARCHITECTURE (ACPICA) <devel@acpica.org>; linux-leds@vger.kernel.org;
->> Linux PWM List <linux-pwm@vger.kernel.org>; Linux Kernel Mailing List
->> <linux-kernel@vger.kernel.org>; nikolaus.voss@loewensteinmedical.de
->> Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table
->> loads
->>
->> Hi Bob,
->>
->> On Tue, 18 Jun 2019, Moore, Robert wrote:
->>>
->>>
->>>> -----Original Message-----
->>>> From: Moore, Robert
->>>> Sent: Tuesday, June 18, 2019 1:25 PM
->>>> To: 'Nikolaus Voss' <nv@vosn.de>
->>>> Cc: 'Rafael J. Wysocki' <rafael@kernel.org>; 'Rafael J. Wysocki'
->>>> <rjw@rjwysocki.net>; 'Len Brown' <lenb@kernel.org>; Schmauss, Erik
->>>> <erik.schmauss@intel.com>; 'Jacek Anaszewski'
->>>> <jacek.anaszewski@gmail.com>; 'Pavel Machek' <pavel@ucw.cz>; 'Dan
->>>> Murphy' <dmurphy@ti.com>; 'Thierry Reding'
->>>> <thierry.reding@gmail.com>; 'ACPI Devel Maling List'
->>>> <linux-acpi@vger.kernel.org>; 'open list:ACPI COMPONENT ARCHITECTURE
->>>> (ACPICA)' <devel@acpica.org>; 'linux- leds@vger.kernel.org' <linux-
->> leds@vger.kernel.org>; 'Linux PWM List'
->>>> <linux-pwm@vger.kernel.org>; 'Linux Kernel Mailing List' <linux-
->>>> kernel@vger.kernel.org>
->>>> Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed
->>>> table loads
->>>>
->>>> If it is in fact the AcpiLoadTable interface that is incorrect, that
->>>> of course is different. I'll check that out next.
->>>>
->>> [Moore, Robert]
->>>
->>> Yes, this is the issue, not specifically the Load() operator, but the
->>> AcpiLoadTable interface only.
->>
->> thanks for checking this out. So what is the conclusion? Is my fix of
->> AcpiLoadTable() sufficient or do we need a different solution?
->>
->> Niko
->>
->
->
-> Your change is in the correct area. We want to do something like this, however:
->
-> diff --git a/source/components/executer/exconfig.c b/source/components/executer/exconfig.c
-> index 84a058ada..eba1a6d28 100644
-> --- a/source/components/executer/exconfig.c
-> +++ b/source/components/executer/exconfig.c
-> @@ -342,10 +342,9 @@ AcpiExLoadTableOp (
->         return_ACPI_STATUS (Status);
->     }
->
-> -    /* Complete the initialization/resolution of package objects */
-> +    /* Complete the initialization/resolution of new objects */
->
-> -    Status = AcpiNsWalkNamespace (ACPI_TYPE_PACKAGE, ACPI_ROOT_OBJECT,
-> -        ACPI_UINT32_MAX, 0, AcpiNsInitOnePackage, NULL, NULL, NULL);
-> +    AcpiNsInitializeObjects ();
->
->     /* Parameter Data (optional) */
->
-> @@ -620,10 +619,11 @@ AcpiExLoadOp (
->         return_ACPI_STATUS (Status);
->     }
->
-> -    /* Complete the initialization/resolution of package objects */
-> +    /* Complete the initialization/resolution of new objects */
->
-> -    Status = AcpiNsWalkNamespace (ACPI_TYPE_PACKAGE, ACPI_ROOT_OBJECT,
-> -        ACPI_UINT32_MAX, 0, AcpiNsInitOnePackage, NULL, NULL, NULL);
-> +    AcpiExExitInterpreter ();
-> +    AcpiNsInitializeObjects ();
-> +    AcpiExEnterInterpreter ();
->
->     /* Store the DdbHandle into the Target operand */
->
-> diff --git a/source/components/tables/tbxfload.c b/source/components/tables/tbxfload.c
-> index 217d54bf0..1e17db6c8 100644
-> --- a/source/components/tables/tbxfload.c
-> +++ b/source/components/tables/tbxfload.c
-> @@ -479,6 +479,13 @@ AcpiLoadTable (
->     ACPI_INFO (("Host-directed Dynamic ACPI Table Load:"));
->     Status = AcpiTbInstallAndLoadTable (ACPI_PTR_TO_PHYSADDR (Table),
->         ACPI_TABLE_ORIGIN_EXTERNAL_VIRTUAL, FALSE, &TableIndex);
-> +    if (ACPI_SUCCESS (Status))
-> +    {
-> +        /* Complete the initialization/resolution of new objects */
-> +
-> +        AcpiNsInitializeObjects ();
-> +    }
-> +
->     return_ACPI_STATUS (Status);
-> }
+ACPI battery and AC devices can be found in arm64 laptops as well,
+so drop the Kconfig dependency on X86 for their drivers.
 
-Ok, I see your are taking this up (I was a bit unsure after your previous 
-post). Thanks,
-Niko
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+---
+ drivers/acpi/Kconfig | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index e016f7a6ed13..3c8011e7b0d7 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -155,7 +155,6 @@ config ACPI_EC_DEBUGFS
+ 
+ config ACPI_AC
+ 	tristate "AC Adapter"
+-	depends on X86
+ 	select POWER_SUPPLY
+ 	default y
+ 	help
+@@ -168,7 +167,6 @@ config ACPI_AC
+ 
+ config ACPI_BATTERY
+ 	tristate "Battery"
+-	depends on X86
+ 	select POWER_SUPPLY
+ 	default y
+ 	help
+-- 
+2.17.1
+
