@@ -2,85 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D958059312
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jun 2019 06:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B84F34D0E8
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 16:52:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726688AbfF1Ex5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Jun 2019 00:53:57 -0400
-Received: from mail-pf1-f230.google.com ([209.85.210.230]:42799 "EHLO
-        mail-pf1-f230.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726660AbfF1Ex5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Jun 2019 00:53:57 -0400
-Received: by mail-pf1-f230.google.com with SMTP id q10so2324115pff.9
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Jun 2019 21:53:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ctcd-edu.20150623.gappssmtp.com; s=20150623;
-        h=from:subject:thread-topic:thread-index:date:message-id
-         :accept-language:content-language:content-transfer-encoding
-         :mime-version;
-        bh=uja0RKLj8/ZClYB7/xee4WJU8BS3tEVS8HkeIEY1v6o=;
-        b=Pp6ugwMblAVk8EdSg2uZmnwCkjDnAeUEtYkyl/2pd63LjuHbk2LC1q+xge5CQIC/GH
-         pNJGwVNnOYcmjYXoYf2oan/rFHg6jNqjzfTJF61crDfC7ANiGAwRM8eGWxPOMRhAUQyg
-         lvdfAI0FfcjnvflgOXPvcA6EYs2cbKrmPfHb1o4wQKeSph2+crg4HdF4tb7L54XcZta/
-         /fnDZjiJQb5VzkHj3lI0XB3f129ALqpevx0mKDb5YpjTfAqrLwH+19+2nC7YgxGKaPst
-         vrV+q9eb+0yRY8GkmSrqDs/6aTIyTKO1scCH0BR7nb5KP/AyjnoZR+d5eS80Idxrzoet
-         bK/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:thread-topic:thread-index:date
-         :message-id:accept-language:content-language
-         :content-transfer-encoding:mime-version;
-        bh=uja0RKLj8/ZClYB7/xee4WJU8BS3tEVS8HkeIEY1v6o=;
-        b=iueFOO+fOWUYxuzbAD9TggFCtIsI2OIWPa8ZYEtf1FOaqUROwC8y3CaRetcVQHxynb
-         Umx6uScDjKzCqkbkj997DJKKn6pgJXk0ZDcsdpS0Rv23ULIizYqon40iOqt4oI/23XRG
-         +fMf4vPbexGq3yQn3k3Z88NMM893yYUMuP2IBVyGLKNjpWRDOSGXv4ogNetYlJTgQ3MV
-         IAHoPs+1uY2Ll143lmAN11nR3yjZF11ChfgcW4yQ/F7fhLLr4TxqYkuPJCr9Y7OZzrkR
-         PGGdWal133dngovoHsVfUag1pHSdkOZqtFYLrpYP7DBlC9xKWsBajQecvwcQyvmUsqAa
-         vmUA==
-X-Gm-Message-State: APjAAAWWBbXCXUZqfbdhfTuf/UzysNp3tLSah96oWxmMvgYsHJII0Ds6
-        WirGP1jiQkvHcZ69URU1OtCwVJawifwQ685z1qMsTKInRLZzCw==
-X-Google-Smtp-Source: APXvYqyDOfZDdbFJ4o/JaxBjQfLRRMqZEDtH+CcFi8WIpV2AIUfzPQ1HX/vVf+o0DsKm/s5gVaROJ/mA9eje
-X-Received: by 2002:a17:90a:cb18:: with SMTP id z24mr10369284pjt.108.1561697634618;
-        Thu, 27 Jun 2019 21:53:54 -0700 (PDT)
-Received: from mail.ctcd.edu (rrcs-67-79-90-89.sw.biz.rr.com. [67.79.90.89])
-        by smtp-relay.gmail.com with ESMTPS id n69sm110753pjb.9.2019.06.27.21.53.54
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 27 Jun 2019 21:53:54 -0700 (PDT)
-X-Relaying-Domain: ctcd.edu
-Received: from CTCEmail02.campus.ctcd.org (172.17.139.89) by
- CTCEmail01.campus.ctcd.org (172.17.139.87) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.845.34; Thu, 20 Jun 2019 09:18:40 -0500
-Received: from CTCEmail02.campus.ctcd.org ([fe80::a0bb:ad1f:8c21:8800]) by
- CTCEmail02.campus.ctcd.org ([fe80::a0bb:ad1f:8c21:8800%2]) with mapi id
- 15.01.0845.034; Thu, 20 Jun 2019 09:18:40 -0500
-From:   "Chambers, Marcine" <MChambers@ctcd.edu>
-Subject: GOOD DAY
-Thread-Topic: GOOD DAY
-Thread-Index: AQHVJ3MOz3fw4vybV0CezupQuoA3uw==
-Date:   Thu, 20 Jun 2019 14:18:40 +0000
-Message-ID: <6406a540a0c54cb4900afa0f5889c847@ctcd.edu>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.17.139.254]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1726758AbfFTOw0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jun 2019 10:52:26 -0400
+Received: from mga02.intel.com ([134.134.136.20]:38054 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726582AbfFTOw0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 20 Jun 2019 10:52:26 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Jun 2019 07:52:26 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,397,1557212400"; 
+   d="scan'208";a="243650599"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.145])
+  by orsmga001.jf.intel.com with ESMTP; 20 Jun 2019 07:52:23 -0700
+Received: from andy by smile with local (Exim 4.92)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1hdyQH-0001LG-V7; Thu, 20 Jun 2019 17:52:21 +0300
+Date:   Thu, 20 Jun 2019 17:52:21 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc:     wsa@the-dreams.de, mika.westerberg@linux.intel.com,
+        jarkko.nikula@linux.intel.com, linux-i2c@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        benjamin.tissoires@redhat.com, jbroadus@gmail.com,
+        patches@opensource.cirrus.com
+Subject: Re: [PATCH v5 2/7] i2c: acpi: Use available IRQ helper functions
+Message-ID: <20190620145221.GC9224@smile.fi.intel.com>
+References: <20190620133420.4632-1-ckeepax@opensource.cirrus.com>
+ <20190620133420.4632-3-ckeepax@opensource.cirrus.com>
 MIME-Version: 1.0
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190620133420.4632-3-ckeepax@opensource.cirrus.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-I am Vice Chairman of Hang Seng Bank, I have Important Matter to Discuss wi=
-th you concerning my late client, Died without a NEXT OF KIN. Send me your =
-private email for full details information. email me at (chienkraymond@outl=
-ook.com)
+On Thu, Jun 20, 2019 at 02:34:15PM +0100, Charles Keepax wrote:
+> Use the available IRQ helper functions, most of the functions have
+> additional helpful side affects like configuring the trigger type of the
+> IRQ.
+> 
+> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-Mail:infocarfer@aim.com
+Some last minute observations / questions.
 
-Regards
-Dr.Raymond Chien Kuo Fung
+> +	struct resource r;
+> +
+> +	if (*irq <= 0 && acpi_dev_resource_interrupt(ares, 0, &r))
+> +		*irq = i2c_dev_irq_from_resources(&r, 1);
+> +
+> +	return 1; /* No need to add resource to the list */
+
+If we don't add it to the list, do we still need to manage the empty
+resource_list below?
+
+>  	/* Then fill IRQ number if any */
+>  	INIT_LIST_HEAD(&resource_list);
+> -	ret = acpi_dev_get_resources(adev, &resource_list, NULL, NULL);
+> +	ret = acpi_dev_get_resources(adev, &resource_list,
+> +				     i2c_acpi_add_resource, &irq);
+>  	if (ret < 0)
+>  		return -EINVAL;
+>  
+> -	resource_list_for_each_entry(entry, &resource_list) {
+> -		if (resource_type(entry->res) == IORESOURCE_IRQ) {
+> -			info->irq = entry->res->start;
+> -			break;
+> -		}
+> -	}
+
+> +	if (irq > 0)
+> +		info->irq = irq;
+
+Hmm... can't we just assign it directly inside the _add_resource() call back as
+original code did?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
