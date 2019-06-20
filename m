@@ -2,95 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C96A4C2F6
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2019 23:28:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CF594C7AA
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 08:49:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730570AbfFSV2E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Jun 2019 17:28:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48174 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730561AbfFSV2E (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 19 Jun 2019 17:28:04 -0400
-Received: from localhost (unknown [69.71.4.100])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4F5E8208CB;
-        Wed, 19 Jun 2019 21:28:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560979683;
-        bh=EnbOo+7niy7TMd/jdqZILS6Oxp2WMWijP/ujZlHuINw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=D07847EoP6LEXPZjNDzK3KkHJJH7Hsd5X3KS9mZMrOUKDBSdSB6QMbwRmFvHx3+2B
-         O9UjBLVytHesxlPYKV4XjrxGISlMBEFCRjXaPk+KpsThhEYOaRREcR0PjHnaoU6rFd
-         D+kdd6totGApNkgiMx82BO6U7qC0CDNPB2mnMIds=
-Date:   Wed, 19 Jun 2019 16:28:01 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-        Keith Busch <keith.busch@intel.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] PCI / ACPI: Use cached ACPI device state to get
- PCI device power state
-Message-ID: <20190619212801.GC143205@google.com>
-References: <20190618161858.77834-1-mika.westerberg@linux.intel.com>
- <20190618161858.77834-2-mika.westerberg@linux.intel.com>
+        id S1726485AbfFTGtb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jun 2019 02:49:31 -0400
+Received: from mail.steuer-voss.de ([85.183.69.95]:60686 "EHLO
+        mail.steuer-voss.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726262AbfFTGtb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jun 2019 02:49:31 -0400
+X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
+Received: by mail.steuer-voss.de (Postfix, from userid 1000)
+        id 2BDDB4D00C; Thu, 20 Jun 2019 08:49:28 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.steuer-voss.de (Postfix) with ESMTP id 295AA4D000;
+        Thu, 20 Jun 2019 08:49:28 +0200 (CEST)
+Date:   Thu, 20 Jun 2019 08:49:28 +0200 (CEST)
+From:   Nikolaus Voss <nv@vosn.de>
+X-X-Sender: nv@fox.voss.local
+To:     "Moore, Robert" <robert.moore@intel.com>
+cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        "Schmauss, Erik" <erik.schmauss@intel.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table
+ loads
+In-Reply-To: <94F2FBAB4432B54E8AACC7DFDE6C92E3B95FC28D@ORSMSX110.amr.corp.intel.com>
+Message-ID: <alpine.DEB.2.20.1906200843320.9673@fox.voss.local>
+References: <cover.1560327219.git.nikolaus.voss@loewensteinmedical.de> <e2a4ddfd93a904b50b7ccc074e00e14dc4661963.1560327219.git.nikolaus.voss@loewensteinmedical.de> <CAJZ5v0jqxWs=PPik-TCDqQiyxCSyRP7HTue1WsdWP9e-nik2eA@mail.gmail.com>
+ <alpine.DEB.2.20.1906141114490.6579@fox.voss.local> <94F2FBAB4432B54E8AACC7DFDE6C92E3B95EFB26@ORSMSX110.amr.corp.intel.com> <alpine.DEB.2.20.1906170746150.12344@fox.voss.local> <94F2FBAB4432B54E8AACC7DFDE6C92E3B95F9EC6@ORSMSX110.amr.corp.intel.com>
+ <alpine.DEB.2.20.1906181030240.24846@fox.voss.local>    <94F2FBAB4432B54E8AACC7DFDE6C92E3B95FB0BA@ORSMSX110.amr.corp.intel.com> <alpine.DEB.2.20.1906191123400.34742@fox.voss.local> <94F2FBAB4432B54E8AACC7DFDE6C92E3B95FC28D@ORSMSX110.amr.corp.intel.com>
+User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190618161858.77834-2-mika.westerberg@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 18, 2019 at 07:18:56PM +0300, Mika Westerberg wrote:
-> Intel Ice Lake has an integrated Thunderbolt controller which means that
-> the PCIe topology is extended directly from the two root ports (RP0 and
-> RP1).
+On Wed, 19 Jun 2019, Moore, Robert wrote:
+>
+>
+>> -----Original Message-----
+>> From: Nikolaus Voss [mailto:nv@vosn.de]
+>> Sent: Wednesday, June 19, 2019 2:31 AM
+>> To: Moore, Robert <robert.moore@intel.com>
+>> Cc: Rafael J. Wysocki <rafael@kernel.org>; Rafael J. Wysocki
+>> <rjw@rjwysocki.net>; Len Brown <lenb@kernel.org>; Schmauss, Erik
+>> <erik.schmauss@intel.com>; Jacek Anaszewski
+>> <jacek.anaszewski@gmail.com>; Pavel Machek <pavel@ucw.cz>; Dan Murphy
+>> <dmurphy@ti.com>; Thierry Reding <thierry.reding@gmail.com>; ACPI Devel
+>> Maling List <linux-acpi@vger.kernel.org>; open list:ACPI COMPONENT
+>> ARCHITECTURE (ACPICA) <devel@acpica.org>; linux-leds@vger.kernel.org;
+>> Linux PWM List <linux-pwm@vger.kernel.org>; Linux Kernel Mailing List
+>> <linux-kernel@vger.kernel.org>; nikolaus.voss@loewensteinmedical.de
+>> Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table
+>> loads
+>>
+>> Hi Bob,
+>>
+>> On Tue, 18 Jun 2019, Moore, Robert wrote:
+>>>
+>>>
+>>>> -----Original Message-----
+>>>> From: Moore, Robert
+>>>> Sent: Tuesday, June 18, 2019 1:25 PM
+>>>> To: 'Nikolaus Voss' <nv@vosn.de>
+>>>> Cc: 'Rafael J. Wysocki' <rafael@kernel.org>; 'Rafael J. Wysocki'
+>>>> <rjw@rjwysocki.net>; 'Len Brown' <lenb@kernel.org>; Schmauss, Erik
+>>>> <erik.schmauss@intel.com>; 'Jacek Anaszewski'
+>>>> <jacek.anaszewski@gmail.com>; 'Pavel Machek' <pavel@ucw.cz>; 'Dan
+>>>> Murphy' <dmurphy@ti.com>; 'Thierry Reding'
+>>>> <thierry.reding@gmail.com>; 'ACPI Devel Maling List'
+>>>> <linux-acpi@vger.kernel.org>; 'open list:ACPI COMPONENT ARCHITECTURE
+>>>> (ACPICA)' <devel@acpica.org>; 'linux- leds@vger.kernel.org' <linux-
+>> leds@vger.kernel.org>; 'Linux PWM List'
+>>>> <linux-pwm@vger.kernel.org>; 'Linux Kernel Mailing List' <linux-
+>>>> kernel@vger.kernel.org>
+>>>> Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed
+>>>> table loads
+>>>>
+>>>> If it is in fact the AcpiLoadTable interface that is incorrect, that
+>>>> of course is different. I'll check that out next.
+>>>>
+>>> [Moore, Robert]
+>>>
+>>> Yes, this is the issue, not specifically the Load() operator, but the
+>>> AcpiLoadTable interface only.
+>>
+>> thanks for checking this out. So what is the conclusion? Is my fix of
+>> AcpiLoadTable() sufficient or do we need a different solution?
+>>
+>> Niko
+>>
+>
+>
+> Your change is in the correct area. We want to do something like this, however:
+>
+> diff --git a/source/components/executer/exconfig.c b/source/components/executer/exconfig.c
+> index 84a058ada..eba1a6d28 100644
+> --- a/source/components/executer/exconfig.c
+> +++ b/source/components/executer/exconfig.c
+> @@ -342,10 +342,9 @@ AcpiExLoadTableOp (
+>         return_ACPI_STATUS (Status);
+>     }
+>
+> -    /* Complete the initialization/resolution of package objects */
+> +    /* Complete the initialization/resolution of new objects */
+>
+> -    Status = AcpiNsWalkNamespace (ACPI_TYPE_PACKAGE, ACPI_ROOT_OBJECT,
+> -        ACPI_UINT32_MAX, 0, AcpiNsInitOnePackage, NULL, NULL, NULL);
+> +    AcpiNsInitializeObjects ();
+>
+>     /* Parameter Data (optional) */
+>
+> @@ -620,10 +619,11 @@ AcpiExLoadOp (
+>         return_ACPI_STATUS (Status);
+>     }
+>
+> -    /* Complete the initialization/resolution of package objects */
+> +    /* Complete the initialization/resolution of new objects */
+>
+> -    Status = AcpiNsWalkNamespace (ACPI_TYPE_PACKAGE, ACPI_ROOT_OBJECT,
+> -        ACPI_UINT32_MAX, 0, AcpiNsInitOnePackage, NULL, NULL, NULL);
+> +    AcpiExExitInterpreter ();
+> +    AcpiNsInitializeObjects ();
+> +    AcpiExEnterInterpreter ();
+>
+>     /* Store the DdbHandle into the Target operand */
+>
+> diff --git a/source/components/tables/tbxfload.c b/source/components/tables/tbxfload.c
+> index 217d54bf0..1e17db6c8 100644
+> --- a/source/components/tables/tbxfload.c
+> +++ b/source/components/tables/tbxfload.c
+> @@ -479,6 +479,13 @@ AcpiLoadTable (
+>     ACPI_INFO (("Host-directed Dynamic ACPI Table Load:"));
+>     Status = AcpiTbInstallAndLoadTable (ACPI_PTR_TO_PHYSADDR (Table),
+>         ACPI_TABLE_ORIGIN_EXTERNAL_VIRTUAL, FALSE, &TableIndex);
+> +    if (ACPI_SUCCESS (Status))
+> +    {
+> +        /* Complete the initialization/resolution of new objects */
+> +
+> +        AcpiNsInitializeObjects ();
+> +    }
+> +
+>     return_ACPI_STATUS (Status);
+> }
 
-A PCIe topology is always extended directly from root ports,
-regardless of whether a Thunderbolt controller is integrated, so I
-guess I'm missing the point you're making.  It doesn't sound like this
-is anything specific to Thunderbolt?
-
-> Power management is handled by ACPI power resources that are
-> shared between the root ports, Thunderbolt controller (NHI) and xHCI
-> controller.
-> 
-> The topology with the power resources (marked with []) looks like:
-> 
->   Host bridge
->     |
->     +- RP0 ---\
->     +- RP1 ---|--+--> [TBT]
->     +- NHI --/   |
->     |            |
->     |            v
->     +- xHCI --> [D3C]
-> 
-> Here TBT and D3C are the shared ACPI power resources. ACPI _PR3() method
-> returns either TBT or D3C or both.
-> 
-> Say we runtime suspend first the root ports RP0 and RP1, then NHI. Now
-> since the TBT power resource is still on when the root ports are runtime
-> suspended their dev->current_state is set to D3hot. When NHI is runtime
-> suspended TBT is finally turned off but state of the root ports remain
-> to be D3hot.
-> 
-> If the user now runs lspci for instance, the result is all 1's like in
-> the below output (07.0 is the first root port, RP0):
-> 
-> 00:07.0 PCI bridge: Intel Corporation Device 8a1d (rev ff) (prog-if ff)
->     !!! Unknown header type 7f
->     Kernel driver in use: pcieport
-> 
-> I short the hardware state is not in sync with the software state
-> anymore. The exact same thing happens with the PME polling thread which
-> ends up bringing the root ports back into D0 after they are runtime
-> suspended.
-
-s/I /In /
+Ok, I see your are taking this up (I was a bit unsure after your previous 
+post). Thanks,
+Niko
