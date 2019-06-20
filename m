@@ -2,100 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD48E4C8B6
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 09:55:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C00D4C8BD
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 09:57:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725966AbfFTHzs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jun 2019 03:55:48 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:37453 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725912AbfFTHzs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jun 2019 03:55:48 -0400
-Received: by mail-wr1-f65.google.com with SMTP id v14so1955982wrr.4
-        for <linux-acpi@vger.kernel.org>; Thu, 20 Jun 2019 00:55:46 -0700 (PDT)
+        id S1725953AbfFTH5g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jun 2019 03:57:36 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:33253 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725877AbfFTH5g (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jun 2019 03:57:36 -0400
+Received: by mail-wm1-f65.google.com with SMTP id h19so6306794wme.0
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Jun 2019 00:57:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to
          :user-agent;
-        bh=Gh9W5/GePIdJPYsbievPRqI2sEImz3p8nPrvCOdAnwE=;
-        b=wteyUX5W39y/ZucePY2SSaeNmQcPplgLBHmg+lOaDdDnUfclLPsHeb552zy8a0QR2O
-         eqg2VMFKxTrDYyxblUcaLPMnP0v4VyfYB5hI8RfjRGvCBcE77ny+s3G1ikEs+lKJzO4S
-         ZthC2I1SCuozsjmVanNqTV27Ss+gK7lgY0ZAYWp1ug464Q/dHZ3xA4NztOM4wTkEhfQa
-         ao4qKRiishLsJ5jbZe/7rkwy3zIKJfuCdLTm2yivFO1fYr8f74/SY0ckvgBvOJ9Ewq+t
-         Vn1+rUmcp8bIKrQ3vXta9Xjkqfc2jCrFMp7CA08X/3bQBqfDnfPcUel/KfoQCBrbVEvS
-         zMxA==
+        bh=YQGObdl7kH+wEvSqxa3FaWAQlmAcdn2aMFRJreWKZJ0=;
+        b=Xbqowj37eqV+b9k1NLVHC7JwZDta/+JDzrrS82yOXNGCstfgYJjW6mwRqSqrUWlS3L
+         1/8SQNYcmzWvXsmCzetHTO6JlLdz3Id/uddvH1551kLp+ptg+bQ1j50ILkH28rrlU0ZU
+         jmN/HIDMQsfJr48uD3R5FYWLPdRDLx9CEWMcCc0/fjCBi2EPF1aVLt5OwzxKvYAXNuJX
+         KshcHWrLBBHaXj/vr4PvVEkwDWNuzZB/F+QSnwDu5Is0r+N94SG1NiPuv7MwEILYddxF
+         78pmCuwckrZVmiiLLofI6l1GLKG8ruskdYQAGYTcG4DGJrf2tEkVmS2jzMcclNRLJsVm
+         oSKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to:user-agent;
-        bh=Gh9W5/GePIdJPYsbievPRqI2sEImz3p8nPrvCOdAnwE=;
-        b=Efl6+s2wCg2wwOxz331YpFzVxf0JEYevZYy436beVR9WMuWKoWF5X4dK4RKaFY+MtY
-         zLrSANL2EdWXDNSzNjTBw9AAx4jvDKsNC1k9Tn/26nOsYlm0xXg9xSUg9T+FJVn9mW3U
-         L3miaeypIV8GRl+Fnpe5wP5ADMzmXhK47YV/QRzUprj/Te5gXy4LFhY+cGxsV+k41+OG
-         8oDGj+PlXoG758B/+YBwoOC9+OJ7E24WOnnroWBpHWshK3CXEfkU9HRd8395DtxJ6YIq
-         heGff46P6+pvnRMJXQ5Zld8q+1QRn+Fv69+agmok8lC6lN+1KFQYJ74840zHlqqEdren
-         h0Ug==
-X-Gm-Message-State: APjAAAV3XTLNC+RZr5f2a947MThaNIDFEDHYOhsz+/PDW9N+39KT5TY4
-        gbnHhZLhshiVKvrNIJWTbAnwxw==
-X-Google-Smtp-Source: APXvYqzXkq8UWfb6q6eTvGiHjAYiqH3i7UiJ2xXe/b4xMgjhkQHEDFdKkx8mT5SYYayfcivhb/iUDg==
-X-Received: by 2002:adf:cc92:: with SMTP id p18mr44312025wrj.260.1561017345954;
-        Thu, 20 Jun 2019 00:55:45 -0700 (PDT)
+        bh=YQGObdl7kH+wEvSqxa3FaWAQlmAcdn2aMFRJreWKZJ0=;
+        b=rA/5YyvLbYHU/+Z+Hh63iNdWuigwo53UW99g62S2gqv4QoFAH2Hp6qmWb8yX8qe/Uh
+         gWm4hMtBtsBFISL9Ey/fuakTCDxyquyZ6qNUs+9ASXXbTGWQlfWu3EHsxzMSf5mcoXz6
+         FYHyYQAfbBHHcqGhRTB+b7cVT4TFwugBRxoMcURgMBsCtmzVdEuSNJxwNoZuNLiMu/79
+         i7ysRWziEIvX+nLE75gm2e8LWWMpZ9DFLf0/GwvEbcA/zna4SZO4RvU5qtbRcblFUrqB
+         qGAx0kfxUg4AqqrEK+Ie+opP7RuRa6qNtUDhlTDn/NaxxTFrhkgppVReDPBE4m0unB1O
+         BBaQ==
+X-Gm-Message-State: APjAAAWE5IiNrQ+M85Z9aoBeszs6Ug94tFJqBKGchvGe2dB6zjmAeCRH
+        H6jnc+GWhaUpd+vlD7TC421tgg==
+X-Google-Smtp-Source: APXvYqyVIG+SggD0Ywg3p6wX7nREHzj8RkzQTZNsXYDvoszka9op+STK5gM62OIDMaI2Pdh9fGFtxw==
+X-Received: by 2002:a1c:cf0b:: with SMTP id f11mr1671215wmg.138.1561017454297;
+        Thu, 20 Jun 2019 00:57:34 -0700 (PDT)
 Received: from dell ([2.27.35.243])
-        by smtp.gmail.com with ESMTPSA id b2sm26344792wrp.72.2019.06.20.00.55.45
+        by smtp.gmail.com with ESMTPSA id x8sm3646616wmc.5.2019.06.20.00.57.33
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 20 Jun 2019 00:55:45 -0700 (PDT)
-Date:   Thu, 20 Jun 2019 08:55:43 +0100
+        Thu, 20 Jun 2019 00:57:33 -0700 (PDT)
+Date:   Thu, 20 Jun 2019 08:57:32 +0100
 From:   Lee Jones <lee.jones@linaro.org>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     linux-acpi@vger.kernel.org, lenb@kernel.org, rjw@rjwysocki.net
-Subject: Re: [PATCH] acpi: make AC and battery drivers available on !X86
-Message-ID: <20190620075543.GA4699@dell>
-References: <20190620073353.5770-1-ard.biesheuvel@linaro.org>
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        catalin.marinas@arm.com, will.deacon@arm.com,
+        lorenzo.pieralisi@arm.com, leif.lindholm@linaro.org
+Subject: Re: [RFC PATCH] acpi/arm64: ignore 5.1 FADTs that are reported as 5.0
+Message-ID: <20190620075732.GB4699@dell>
+References: <20190619121831.7614-1-ard.biesheuvel@linaro.org>
+ <20190619122434.GA25656@e107155-lin>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190620073353.5770-1-ard.biesheuvel@linaro.org>
+In-Reply-To: <20190619122434.GA25656@e107155-lin>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 20 Jun 2019, Ard Biesheuvel wrote:
+On Wed, 19 Jun 2019, Sudeep Holla wrote:
 
-> ACPI battery and AC devices can be found in arm64 laptops as well,
-> so drop the Kconfig dependency on X86 for their drivers.
+> On Wed, Jun 19, 2019 at 02:18:31PM +0200, Ard Biesheuvel wrote:
+> > Some Qualcomm Snapdragon based laptops built to run Microsoft Windows
+> > are clearly ACPI 5.1 based, given that that is the first ACPI revision
+> > that supports ARM, and introduced the FADT 'arm_boot_flags' field,
+> > which has a non-zero field on those systems.
+> > 
+> > So in these cases, infer from the ARM boot flags that the FADT must be
+> > 5.1 or later, and treat it as 5.1.
+> > 
 > 
-> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> ---
->  drivers/acpi/Kconfig | 2 --
->  1 file changed, 2 deletions(-)
+> Makes sense and looks simple to me.
+> 
+> Acked-by: Sudeep Holla <sudeep.holla@arm.com>
 
-Tested-by: Lee Jones <lee.jones@linaro.org>
+Could we pleeeeease have this in for v5.3?
 
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index e016f7a6ed13..3c8011e7b0d7 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -155,7 +155,6 @@ config ACPI_EC_DEBUGFS
->  
->  config ACPI_AC
->  	tristate "AC Adapter"
-> -	depends on X86
->  	select POWER_SUPPLY
->  	default y
->  	help
-> @@ -168,7 +167,6 @@ config ACPI_AC
->  
->  config ACPI_BATTERY
->  	tristate "Battery"
-> -	depends on X86
->  	select POWER_SUPPLY
->  	default y
->  	help
+We have available, consumer-level platforms that rely on this change.
 
 -- 
 Lee Jones [李琼斯]
