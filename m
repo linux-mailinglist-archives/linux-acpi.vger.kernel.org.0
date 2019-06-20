@@ -2,109 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B39DB4C96F
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 10:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC5034CB3D
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 11:44:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725877AbfFTI1f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jun 2019 04:27:35 -0400
-Received: from mga02.intel.com ([134.134.136.20]:22482 "EHLO mga02.intel.com"
+        id S1726175AbfFTJoE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jun 2019 05:44:04 -0400
+Received: from foss.arm.com ([217.140.110.172]:56608 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725875AbfFTI1f (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 20 Jun 2019 04:27:35 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Jun 2019 01:27:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,396,1557212400"; 
-   d="scan'208";a="181815906"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
-  by fmsmga001.fm.intel.com with SMTP; 20 Jun 2019 01:27:32 -0700
-Received: by lahna (sSMTP sendmail emulation); Thu, 20 Jun 2019 11:27:30 +0300
-Date:   Thu, 20 Jun 2019 11:27:30 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-        Keith Busch <keith.busch@intel.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] PCI / ACPI: Use cached ACPI device state to get
- PCI device power state
-Message-ID: <20190620082730.GM2640@lahna.fi.intel.com>
-References: <20190618161858.77834-1-mika.westerberg@linux.intel.com>
- <20190618161858.77834-2-mika.westerberg@linux.intel.com>
- <20190619212801.GC143205@google.com>
+        id S1726071AbfFTJoD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 20 Jun 2019 05:44:03 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5BB59360;
+        Thu, 20 Jun 2019 02:44:03 -0700 (PDT)
+Received: from e121166-lin.cambridge.arm.com (unknown [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5548C3F246;
+        Thu, 20 Jun 2019 02:44:02 -0700 (PDT)
+Date:   Thu, 20 Jun 2019 10:43:57 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        catalin.marinas@arm.com, will.deacon@arm.com, lee.jones@linaro.org,
+        leif.lindholm@linaro.org
+Subject: Re: [RFC PATCH] acpi/arm64: ignore 5.1 FADTs that are reported as 5.0
+Message-ID: <20190620094357.GA20872@e121166-lin.cambridge.arm.com>
+References: <20190619121831.7614-1-ard.biesheuvel@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190619212801.GC143205@google.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <20190619121831.7614-1-ard.biesheuvel@linaro.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 19, 2019 at 04:28:01PM -0500, Bjorn Helgaas wrote:
-> On Tue, Jun 18, 2019 at 07:18:56PM +0300, Mika Westerberg wrote:
-> > Intel Ice Lake has an integrated Thunderbolt controller which means that
-> > the PCIe topology is extended directly from the two root ports (RP0 and
-> > RP1).
+On Wed, Jun 19, 2019 at 02:18:31PM +0200, Ard Biesheuvel wrote:
+> Some Qualcomm Snapdragon based laptops built to run Microsoft Windows
+> are clearly ACPI 5.1 based, given that that is the first ACPI revision
+> that supports ARM, and introduced the FADT 'arm_boot_flags' field,
+> which has a non-zero field on those systems.
 > 
-> A PCIe topology is always extended directly from root ports,
-> regardless of whether a Thunderbolt controller is integrated, so I
-> guess I'm missing the point you're making.  It doesn't sound like this
-> is anything specific to Thunderbolt?
-
-The point I'm trying to make here is to explain why this is problem now
-and not with the previous discrete controllers. With the previous there
-was only a single ACPI power resource for the root port and the
-Thunderbolt host router was connected to that root port. PCIe hierarchy
-was extended through downstream ports (not root ports) of that
-controller (which includes PCIe switch).
-
-Now the thing is part of the SoC so power management is different and
-causes problems in Linux.
-
-> > Power management is handled by ACPI power resources that are
-> > shared between the root ports, Thunderbolt controller (NHI) and xHCI
-> > controller.
-> > 
-> > The topology with the power resources (marked with []) looks like:
-> > 
-> >   Host bridge
-> >     |
-> >     +- RP0 ---\
-> >     +- RP1 ---|--+--> [TBT]
-> >     +- NHI --/   |
-> >     |            |
-> >     |            v
-> >     +- xHCI --> [D3C]
-> > 
-> > Here TBT and D3C are the shared ACPI power resources. ACPI _PR3() method
-> > returns either TBT or D3C or both.
-> > 
-> > Say we runtime suspend first the root ports RP0 and RP1, then NHI. Now
-> > since the TBT power resource is still on when the root ports are runtime
-> > suspended their dev->current_state is set to D3hot. When NHI is runtime
-> > suspended TBT is finally turned off but state of the root ports remain
-> > to be D3hot.
-> > 
-> > If the user now runs lspci for instance, the result is all 1's like in
-> > the below output (07.0 is the first root port, RP0):
-> > 
-> > 00:07.0 PCI bridge: Intel Corporation Device 8a1d (rev ff) (prog-if ff)
-> >     !!! Unknown header type 7f
-> >     Kernel driver in use: pcieport
-> > 
-> > I short the hardware state is not in sync with the software state
-> > anymore. The exact same thing happens with the PME polling thread which
-> > ends up bringing the root ports back into D0 after they are runtime
-> > suspended.
+> So in these cases, infer from the ARM boot flags that the FADT must be
+> 5.1 or later, and treat it as 5.1.
 > 
-> s/I /In /
+> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> ---
+>  arch/arm64/kernel/acpi.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
 
-Thanks, I'll fix it.
+AFAICS this should be harmless, so:
+
+Acked-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+
+> diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
+> index 803f0494dd3e..7722e85fb69c 100644
+> --- a/arch/arm64/kernel/acpi.c
+> +++ b/arch/arm64/kernel/acpi.c
+> @@ -155,10 +155,14 @@ static int __init acpi_fadt_sanity_check(void)
+>  	 */
+>  	if (table->revision < 5 ||
+>  	   (table->revision == 5 && fadt->minor_revision < 1)) {
+> -		pr_err("Unsupported FADT revision %d.%d, should be 5.1+\n",
+> +		pr_err(FW_BUG "Unsupported FADT revision %d.%d, should be 5.1+\n",
+>  		       table->revision, fadt->minor_revision);
+> -		ret = -EINVAL;
+> -		goto out;
+> +
+> +		if (!fadt->arm_boot_flags) {
+> +			ret = -EINVAL;
+> +			goto out;
+> +		}
+> +		pr_err("FADT has ARM boot flags set, assuming 5.1\n");
+>  	}
+>  
+>  	if (!(fadt->flags & ACPI_FADT_HW_REDUCED)) {
+> -- 
+> 2.20.1
+> 
