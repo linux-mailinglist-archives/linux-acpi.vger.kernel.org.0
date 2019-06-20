@@ -2,139 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B29334CE6E
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 15:16:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A24424CEE6
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 15:35:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731953AbfFTNQw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jun 2019 09:16:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35780 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726952AbfFTNQw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 20 Jun 2019 09:16:52 -0400
-Received: from localhost (173-25-83-245.client.mchsi.com [173.25.83.245])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4C27A206E0;
-        Thu, 20 Jun 2019 13:16:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561036611;
-        bh=Qo3z6N5WVyTNvA5VM1U24plWRT+DnbPtddbFCjt97l8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CE0uXHPAvlk5vq/ZN61+Q6tU5qzT49/b6jW4ojcIo7XMSr3CenTvZYcVK+ZYZmo+B
-         4x9tUqTDeR6bE9lXmEHWrSnMEIzIVF2B0jdH+0UNI4Oxmt8C+ph+AnKNTsT5GgPE8/
-         Xwn+56zBaKXebkzNrAJAj4dkjtdEouUglgQblI+0=
-Date:   Thu, 20 Jun 2019 08:16:49 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-        Keith Busch <keith.busch@intel.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] PCI / ACPI: Use cached ACPI device state to get
- PCI device power state
-Message-ID: <20190620131649.GG143205@google.com>
-References: <20190618161858.77834-1-mika.westerberg@linux.intel.com>
- <20190618161858.77834-2-mika.westerberg@linux.intel.com>
- <20190619212801.GC143205@google.com>
- <20190620082730.GM2640@lahna.fi.intel.com>
+        id S1727040AbfFTNe7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jun 2019 09:34:59 -0400
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:5868 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726562AbfFTNe7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 20 Jun 2019 09:34:59 -0400
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+        by mx0a-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5KDYLFw022021;
+        Thu, 20 Jun 2019 08:34:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type;
+ s=PODMain02222019; bh=lTma+isYmZ86XvEFPQ4p1OK4O8R26zPHPYXD3Zj9zxQ=;
+ b=hva258S0GWbBOIZp5KNgwXIUvCQWFxWrPf+Vp2RCEpVFmizBreL8hIsZh3XjUJjRUs1y
+ nyxEWGs9HSST7neF2/+udscaLpVBDidL+Hw700ron4Efr0wA7YQXb7SXHxeOWwfbcKdE
+ o3kvT4223uBtlTplkji5GWSCz+m1jhajsivI+W0upLZojFSU5j8coXh+9wXG3p0wzEOH
+ 7pHnVXMy4uB81NTMQOWX5K5LVSpY3VYL/x8GWQWaV/Z+MFI4Dv3nvmSLbEub+ghHRBGU
+ ySZl35fIfWDTLs3kPok1UhACuX6ARTl6ZOUVJuVNx3dxsG9FBOe1I07Pk6bQuJ4co0rD qQ== 
+Authentication-Results: ppops.net;
+        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
+Received: from mail1.cirrus.com (mail1.cirrus.com [141.131.3.20])
+        by mx0a-001ae601.pphosted.com with ESMTP id 2t780gjqht-1;
+        Thu, 20 Jun 2019 08:34:21 -0500
+Received: from EDIEX01.ad.cirrus.com (unknown [198.61.84.80])
+        by mail1.cirrus.com (Postfix) with ESMTP id F2BB3611C8C7;
+        Thu, 20 Jun 2019 08:34:20 -0500 (CDT)
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Thu, 20 Jun
+ 2019 14:34:20 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
+ Transport; Thu, 20 Jun 2019 14:34:20 +0100
+Received: from algalon.ad.cirrus.com (algalon.ad.cirrus.com [198.90.251.122])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 51E7445;
+        Thu, 20 Jun 2019 14:34:20 +0100 (BST)
+From:   Charles Keepax <ckeepax@opensource.cirrus.com>
+To:     <wsa@the-dreams.de>, <mika.westerberg@linux.intel.com>
+CC:     <jarkko.nikula@linux.intel.com>,
+        <andriy.shevchenko@linux.intel.com>, <linux-i2c@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <benjamin.tissoires@redhat.com>, <jbroadus@gmail.com>,
+        <patches@opensource.cirrus.com>
+Subject: [PATCH v5 0/7] I2C IRQ Probe Improvements
+Date:   Thu, 20 Jun 2019 14:34:13 +0100
+Message-ID: <20190620133420.4632-1-ckeepax@opensource.cirrus.com>
+X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190620082730.GM2640@lahna.fi.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=936 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906200102
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 20, 2019 at 11:27:30AM +0300, Mika Westerberg wrote:
-> On Wed, Jun 19, 2019 at 04:28:01PM -0500, Bjorn Helgaas wrote:
-> > On Tue, Jun 18, 2019 at 07:18:56PM +0300, Mika Westerberg wrote:
-> > > Intel Ice Lake has an integrated Thunderbolt controller which
-> > > means that the PCIe topology is extended directly from the two
-> > > root ports (RP0 and RP1).
-> > 
-> > A PCIe topology is always extended directly from root ports,
-> > regardless of whether a Thunderbolt controller is integrated, so I
-> > guess I'm missing the point you're making.  It doesn't sound like
-> > this is anything specific to Thunderbolt?
->
-> The point I'm trying to make here is to explain why this is problem
-> now and not with the previous discrete controllers. With the
-> previous there was only a single ACPI power resource for the root
-> port and the Thunderbolt host router was connected to that root
-> port. PCIe hierarchy was extended through downstream ports (not root
-> ports) of that controller (which includes PCIe switch).
+This series attempts to align as much IRQ handling into the
+probe path as possible. Note that I don't have a great setup
+for testing these patches so they are mostly just build tested
+and need careful review and testing before any of them are
+merged.
 
-Sounds like you're using "PCIe topology extension" to mean
-specifically something below a Thunderbolt controller, excluding a
-subtree below a root port.  I don't think the PCI core is aware of
-that distinction.
+The series brings the ACPI path inline with the way the device
+tree path handles the IRQ entirely at probe time. However,
+it still leaves any IRQ specified through the board_info as
+being handled at device time. In that case we need to cache
+something from the board_info until probe time, which leaves
+any alternative solution with something basically the same as
+the current handling although perhaps caching more stuff.
 
-> Now the thing is part of the SoC so power management is different
-> and causes problems in Linux.
+Thanks,
+Charles
 
-The SoC is a physical packaging issue that really doesn't enter into
-the specs directly.  I'm trying to get at the logical topology
-questions in terms of the PCIe and ACPI specs.
+See previous discussions:
+ - https://lkml.org/lkml/2019/2/15/989
+ - https://www.spinics.net/lists/linux-i2c/msg39541.html
 
-I assume we could dream up a non-Thunderbolt topology that would show
-the same problem?
+Charles Keepax (7):
+  i2c: core: Allow whole core to use i2c_dev_irq_from_resources
+  i2c: acpi: Use available IRQ helper functions
+  i2c: acpi: Factor out getting the IRQ from ACPI
+  i2c: core: Make i2c_acpi_get_irq available to the rest of the I2C core
+  i2c: core: Move ACPI IRQ handling to probe time
+  i2c: core: Move ACPI gpio IRQ handling into i2c_acpi_get_irq
+  i2c: core: Tidy up handling of init_irq
 
-> > > Power management is handled by ACPI power resources that are
-> > > shared between the root ports, Thunderbolt controller (NHI) and xHCI
-> > > controller.
-> > > 
-> > > The topology with the power resources (marked with []) looks like:
-> > > 
-> > >   Host bridge
-> > >     |
-> > >     +- RP0 ---\
-> > >     +- RP1 ---|--+--> [TBT]
-> > >     +- NHI --/   |
-> > >     |            |
-> > >     |            v
-> > >     +- xHCI --> [D3C]
-> > > 
-> > > Here TBT and D3C are the shared ACPI power resources. ACPI
-> > > _PR3() method returns either TBT or D3C or both.
+ drivers/i2c/i2c-core-acpi.c | 57 +++++++++++++++++++++++++++++++--------------
+ drivers/i2c/i2c-core-base.c | 11 +++++----
+ drivers/i2c/i2c-core.h      | 11 +++++++++
+ 3 files changed, 57 insertions(+), 22 deletions(-)
 
-I'm not very familiar with _PR3.  I guess this is under an ACPI object
-representing a PCI device, e.g., \_SB.PCI0.RP0._PR3?
+-- 
+2.11.0
 
-> > > Say we runtime suspend first the root ports RP0 and RP1, then
-> > > NHI. Now since the TBT power resource is still on when the root
-> > > ports are runtime suspended their dev->current_state is set to
-> > > D3hot. When NHI is runtime suspended TBT is finally turned off
-> > > but state of the root ports remain to be D3hot.
-
-So in this example we might have:
-
-  _SB.PCI0.RP0._PR3: TBT
-  _SB.PCI0.RP1._PR3: TBT
-  _SB.PCI0.NHI._PR3: TBT
-
-And when Linux figures out that everything depending on TBT is in
-D3hot, it evaluates TBT._OFF, which puts them all in D3cold?  And part
-of the problem is that they're now in D3cold (where config access
-doesn't work) but Linux still thinks they're in D3hot (where config
-access would work)?
-
-I feel like I'm missing something because I don't know how D3C is
-involved, since you didn't mention suspending xHCI.
-
-And I can't mentally match up the patch with the D3hot/D3cold state
-change (if indeed that's the problem).  If we were updating the path
-that evaluates _OFF so it changed the power state of all dependent
-devices, *that* would make a lot of sense to me because it sounds like
-that's where the physical change happens that makes things out of
-sync.
-
-> > > If the user now runs lspci for instance, the result is all 1's like in
-> > > the below output (07.0 is the first root port, RP0):
-> > > 
-> > > 00:07.0 PCI bridge: Intel Corporation Device 8a1d (rev ff) (prog-if ff)
-> > >     !!! Unknown header type 7f
-> > >     Kernel driver in use: pcieport
