@@ -2,106 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D35A24CDAD
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 14:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C72444CDD0
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 14:37:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726592AbfFTMZ4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jun 2019 08:25:56 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:37475 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726492AbfFTMZ4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jun 2019 08:25:56 -0400
-Received: by mail-wm1-f67.google.com with SMTP id f17so2970698wme.2
-        for <linux-acpi@vger.kernel.org>; Thu, 20 Jun 2019 05:25:54 -0700 (PDT)
+        id S1729569AbfFTMhI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jun 2019 08:37:08 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:54918 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726238AbfFTMhI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jun 2019 08:37:08 -0400
+Received: by mail-wm1-f65.google.com with SMTP id g135so2905653wme.4
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Jun 2019 05:37:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=nGbwT1fOo/WcjbkFQ3vvfod2lQownHb8jwDrl6e2Yzk=;
-        b=CoPiD8NXuY79eSws3YaYvFv5PqRMRItqh+Yea5nAQAhZwlCElCUngtM6Yt5DY0rkf1
-         oYiIsFQ5dFh1bKoP9oWtH3jQeEq9nzihwUW7FxVj9/D84o1ZYLTEeNk44akVaNP4ZPof
-         XIdOkl+JLPTNaMVtUCV+PYg0sDn8YE2Ok4ag/ZI4UVLZ4+IFcc1FbH+2BZP147R9UUqB
-         36p40GNpJbb0T9UOPjamUUuvHoCeM0jsuwUz2C7Rh4/P2GzyvUD+Yt+3QG9Nm5Tx7vqx
-         T4YWi58KKkGszAsVYNp8XLrfW/9JUVLK+gHQnf8UB32GOJqblFrDZXuu2uN6p6xwY6GY
-         SEqg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LPD6WWTjH8Ax5as56kI7pGVOzNQxzbf8W5J7T7qdeTE=;
+        b=IrOWw/txUNL/7P7EppxJz6xQNsJRwXbqls++G4DQzPLt3dTCu6TkT5S4EdYmzLpk2B
+         wPP/g0W+JWR6CrOeADQBM7XW3LKBJi5XgcY06juZoJv2N9TDLGT0uWX8OL+vcXU8g7v0
+         2ep8XbvM1a02LnkgsmtM4dLlKbk+BUKw/DU6ak65tojHDPLbznv7uOByzWYY/xDlF2FB
+         WBtsSA8G4goWWP7A1P8vIcv7YouPqhgNEGLH/vswXMXjzYvE/7gUtKKL7gZklhe1Z/4O
+         2d2jgHQBX5p70o6gCvS7148AXCJKTveFBIwNm8FU6/IfvtozFaERG7yrj+15tDjD+FGP
+         BmAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=nGbwT1fOo/WcjbkFQ3vvfod2lQownHb8jwDrl6e2Yzk=;
-        b=irDk5bUCB3ueXZIFZmXi/8oGuiMlXx226X1Y6DHI1uA/sksZrYjWBB/CY+491t/wm4
-         TQvoxa/HmAokUBzSxH93Wi+5CpV+SEG1lqfakAgcwJ2AikYjDGSy3VFcvyNtm41wGeE9
-         +2utbm44eGcS9zQjEXNwwG1vHPvuz4JnBA2SWrCG4MY0Qfr07W7RiVEPW0h1QUoHhXxU
-         we5wU9I42Ae5K1thlal2VFqMnHOeg/ZZJfb+Bx2SmefNBBYUeqnJ/iKY9VqHHXIK0N5t
-         IopBrQJ6J2C5EgnPDlGJp33pHeiaI0T9vLR6ZxHNuwF+lhNqcLA1tEge9q8O7OVruCVp
-         15eA==
-X-Gm-Message-State: APjAAAXdTtloqsJMLKYPly6jiv/kixKjTNCZ9bJOsoAnwRvKbK5wR1cP
-        32VtkKWfxMWd/f7LFUZiVSkN4A==
-X-Google-Smtp-Source: APXvYqz6jnLBVywer3zqPeTDaiXVrGtBx8wKm76F0MgDMf6oUh3M5VIM8YxAxe12Bk0fOIKqMpgUlA==
-X-Received: by 2002:a1c:a842:: with SMTP id r63mr2705755wme.117.1561033553765;
-        Thu, 20 Jun 2019 05:25:53 -0700 (PDT)
-Received: from dell ([2.27.35.243])
-        by smtp.gmail.com with ESMTPSA id p26sm21241456wrp.58.2019.06.20.05.25.52
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 20 Jun 2019 05:25:53 -0700 (PDT)
-Date:   Thu, 20 Jun 2019 13:25:51 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     Sudeep Holla <sudeep.holla@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        catalin.marinas@arm.com, will.deacon@arm.com,
-        leif.lindholm@linaro.org
-Subject: Re: [RFC PATCH] acpi/arm64: ignore 5.1 FADTs that are reported as 5.0
-Message-ID: <20190620122551.GC4699@dell>
-References: <20190619121831.7614-1-ard.biesheuvel@linaro.org>
- <20190619122434.GA25656@e107155-lin>
- <20190620075732.GB4699@dell>
- <20190620094937.GB20872@e121166-lin.cambridge.arm.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LPD6WWTjH8Ax5as56kI7pGVOzNQxzbf8W5J7T7qdeTE=;
+        b=AlFezBdmoS3AOv3om6iQnHJLlRBsHSTcdeJap7aq3DSx/qhX3H9dM6zLx9+nQmUUOW
+         CT6eViWczUt/YgSHePP/yy6BVJ9/1Qls48QJDhUqX5B9T25n3xXRRBR/N/Rg4keaRZ81
+         3YtBQbwcWLO9h5Db4zJf6Q2SUUZbsx1xWIj8CgwT5ZWCYCO5kbJl/LbYS2V6ChyMIRoP
+         ViSsACQe/+TPqRkRC+QauaOGuf8UYU2sXp0LBJQB/8+IgXldFW7zmuuOZnVByBtNZ8TK
+         qaWuQpZRzQ5gOdZCtidGAG13ltSAhgohaNeVLw3sfI4zueIBfe4tSe5VxQ60ZXRapx77
+         CRAw==
+X-Gm-Message-State: APjAAAWVS4a3LhCLmulydLv6TqP7DDYZe06rWJfLnuCVnuXc99uXi4Km
+        kGJOEG+pVR2S9butkGu+VG0xCw==
+X-Google-Smtp-Source: APXvYqz8OT58MV1J4Wz/9Q4OEKqqMOOd7xEqoNs/FAbmmGRR8u1YwfpI/+cFSd7ycw/zWBdN66Q+LA==
+X-Received: by 2002:a1c:5a56:: with SMTP id o83mr2705277wmb.103.1561034225942;
+        Thu, 20 Jun 2019 05:37:05 -0700 (PDT)
+Received: from localhost.localdomain (aaubervilliers-681-1-10-211.w90-88.abo.wanadoo.fr. [90.88.131.211])
+        by smtp.gmail.com with ESMTPSA id v2sm16633457wrn.30.2019.06.20.05.37.04
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 20 Jun 2019 05:37:05 -0700 (PDT)
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+To:     linux-spi@vger.kernel.org
+Cc:     broonie@kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        andy.shevchenko@gmail.com, masahisa.kojima@linaro.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        linux-acpi@vger.kernel.org, Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH] spi/acpi: avoid spurious matches during slave enumeration
+Date:   Thu, 20 Jun 2019 14:36:49 +0200
+Message-Id: <20190620123649.4492-1-ard.biesheuvel@linaro.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190620094937.GB20872@e121166-lin.cambridge.arm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 20 Jun 2019, Lorenzo Pieralisi wrote:
+In the new SPI ACPI slave enumeration code, we use the value of
+lookup.max_speed_khz as a flag to decide whether a match occurred.
+However, doing so only makes sense if we initialize its value to
+zero beforehand, or otherwise, random junk from the stack will
+cause spurious matches.
 
-> On Thu, Jun 20, 2019 at 08:57:32AM +0100, Lee Jones wrote:
-> > On Wed, 19 Jun 2019, Sudeep Holla wrote:
-> > 
-> > > On Wed, Jun 19, 2019 at 02:18:31PM +0200, Ard Biesheuvel wrote:
-> > > > Some Qualcomm Snapdragon based laptops built to run Microsoft Windows
-> > > > are clearly ACPI 5.1 based, given that that is the first ACPI revision
-> > > > that supports ARM, and introduced the FADT 'arm_boot_flags' field,
-> > > > which has a non-zero field on those systems.
-> > > > 
-> > > > So in these cases, infer from the ARM boot flags that the FADT must be
-> > > > 5.1 or later, and treat it as 5.1.
-> > > > 
-> > > 
-> > > Makes sense and looks simple to me.
-> > > 
-> > > Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-> > 
-> > Could we pleeeeease have this in for v5.3?
-> > 
-> > We have available, consumer-level platforms that rely on this change.
-> 
-> But we do not have the kernel infrastructure to support them so
-> I am fine with it but urgency is questionable as far as I am
-> concerned.
+So zero initialize the lookup struct fully, and only set the non-zero
+members explicitly.
 
-Yes we do.  At least, we will in v5.3.
+Fixes: 4c3c59544f33 ("spi/acpi: enumerate all SPI slaves in the namespace")
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: andy.shevchenko@gmail.com
+Cc: masahisa.kojima@linaro.org
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Cc: linux-acpi@vger.kernel.org
+Cc: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+---
+ drivers/spi/spi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a31e1e291335..4057f256ef76 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1953,7 +1953,7 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ {
+ 	acpi_handle parent_handle = NULL;
+ 	struct list_head resource_list;
+-	struct acpi_spi_lookup lookup;
++	struct acpi_spi_lookup lookup = {};
+ 	struct spi_device *spi;
+ 	int ret;
+ 
+@@ -1962,8 +1962,6 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 		return AE_OK;
+ 
+ 	lookup.ctlr		= ctlr;
+-	lookup.mode		= 0;
+-	lookup.bits_per_word	= 0;
+ 	lookup.irq		= -1;
+ 
+ 	INIT_LIST_HEAD(&resource_list);
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.20.1
+
