@@ -2,50 +2,37 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD4744D3E4
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 18:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A889E4D855
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 20:26:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726758AbfFTQht (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jun 2019 12:37:49 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:50414 "EHLO mx1.redhat.com"
+        id S1726155AbfFTSZn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jun 2019 14:25:43 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:57219 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726551AbfFTQht (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 20 Jun 2019 12:37:49 -0400
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        id S1726887AbfFTSZm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 20 Jun 2019 14:25:42 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 294E2307D8E3;
-        Thu, 20 Jun 2019 16:37:32 +0000 (UTC)
-Received: from [10.36.116.54] (ovpn-116-54.ams2.redhat.com [10.36.116.54])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 91D98100194A;
-        Thu, 20 Jun 2019 16:37:11 +0000 (UTC)
-Subject: Re: [PATCH v2 4/6] mm/memory_hotplug: Rename walk_memory_range() and
- pass start+size instead of pfns
-To:     Nathan Chancellor <natechancellor@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Dan Williams <dan.j.williams@intel.com>,
+        by mx1.redhat.com (Postfix) with ESMTPS id 5632DC058CA8;
+        Thu, 20 Jun 2019 18:25:37 +0000 (UTC)
+Received: from [10.36.116.71] (ovpn-116-71.ams2.redhat.com [10.36.116.71])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D711B5D9C6;
+        Thu, 20 Jun 2019 18:25:26 +0000 (UTC)
+Subject: Re: [PATCH v2 6/6] drivers/base/memory.c: Get rid of
+ find_memory_block_hinted()
+To:     linux-kernel@vger.kernel.org
+Cc:     Dan Williams <dan.j.williams@intel.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
         linux-mm@kvack.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rashmica Gupta <rashmica.g@gmail.com>,
-        Pavel Tatashin <pavel.tatashin@microsoft.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Michael Neuling <mikey@neuling.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Oscar Salvador <osalvador@suse.de>,
-        Michal Hocko <mhocko@suse.com>,
-        Wei Yang <richard.weiyang@gmail.com>,
-        Juergen Gross <jgross@suse.com>, Qian Cai <cai@lca.pw>,
-        Arun KS <arunks@codeaurora.org>
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        "mike.travis@hpe.com" <mike.travis@hpe.com>
 References: <20190620103520.23481-1-david@redhat.com>
- <20190620103520.23481-5-david@redhat.com>
- <20190620160507.GA34841@archlinux-epyc>
+ <20190620103520.23481-7-david@redhat.com>
 From:   David Hildenbrand <david@redhat.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
@@ -92,92 +79,48 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  +8Umfre0Xt4713VxMygW0PnQt5aSQdMD58jHFxTk092mU+yIHj5LeYgvwSgZN4airXk5yRXl
  SE+xAvmumFBY
 Organization: Red Hat GmbH
-Message-ID: <bffe90e6-81fa-e8d5-5fb2-b54539f45c5d@redhat.com>
-Date:   Thu, 20 Jun 2019 18:37:10 +0200
+Message-ID: <084161c8-713f-cf19-8bdc-b896e73f8d84@redhat.com>
+Date:   Thu, 20 Jun 2019 20:25:26 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190620160507.GA34841@archlinux-epyc>
+In-Reply-To: <20190620103520.23481-7-david@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.48]); Thu, 20 Jun 2019 16:37:48 +0000 (UTC)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Thu, 20 Jun 2019 18:25:41 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 20.06.19 18:05, Nathan Chancellor wrote:
-> On Thu, Jun 20, 2019 at 12:35:18PM +0200, David Hildenbrand wrote:
->> walk_memory_range() was once used to iterate over sections. Now, it
->> iterates over memory blocks. Rename the function, fixup the
->> documentation. Also, pass start+size instead of PFNs, which is what most
->> callers already have at hand. (we'll rework link_mem_sections() most
->> probably soon)
->>
->> Follow-up patches wil rework, simplify, and move walk_memory_blocks() to
->> drivers/base/memory.c.
->>
->> Note: walk_memory_blocks() only works correctly right now if the
->> start_pfn is aligned to a section start. This is the case right now,
->> but we'll generalize the function in a follow up patch so the semantics
->> match the documentation.
->>
->> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->> Cc: Paul Mackerras <paulus@samba.org>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
->> Cc: Len Brown <lenb@kernel.org>
->> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> Cc: David Hildenbrand <david@redhat.com>
->> Cc: Rashmica Gupta <rashmica.g@gmail.com>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: Pavel Tatashin <pavel.tatashin@microsoft.com>
->> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
->> Cc: Michael Neuling <mikey@neuling.org>
->> Cc: Thomas Gleixner <tglx@linutronix.de>
->> Cc: Oscar Salvador <osalvador@suse.de>
->> Cc: Michal Hocko <mhocko@suse.com>
->> Cc: Wei Yang <richard.weiyang@gmail.com>
->> Cc: Juergen Gross <jgross@suse.com>
->> Cc: Qian Cai <cai@lca.pw>
->> Cc: Arun KS <arunks@codeaurora.org>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
->> ---
->>  arch/powerpc/platforms/powernv/memtrace.c | 22 ++++++++++-----------
->>  drivers/acpi/acpi_memhotplug.c            | 19 ++++--------------
->>  drivers/base/node.c                       |  5 +++--
->>  include/linux/memory_hotplug.h            |  2 +-
->>  mm/memory_hotplug.c                       | 24 ++++++++++++-----------
->>  5 files changed, 32 insertions(+), 40 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
->> index 5e53c1392d3b..8c82c041afe6 100644
->> --- a/arch/powerpc/platforms/powernv/memtrace.c
->> +++ b/arch/powerpc/platforms/powernv/memtrace.c
->> @@ -70,23 +70,24 @@ static int change_memblock_state(struct memory_block *mem, void *arg)
->>  /* called with device_hotplug_lock held */
->>  static bool memtrace_offline_pages(u32 nid, u64 start_pfn, u64 nr_pages)
->>  {
->> +	const unsigned long start = PFN_PHYS(start_pfn);
->> +	const unsigned long size = PFN_PHYS(nr_pages);
->>  	u64 end_pfn = start_pfn + nr_pages - 1;
+On 20.06.19 12:35, David Hildenbrand wrote:
+> No longer needed, let's remove it. Also, drop the "hint" parameter
+> completely from "find_memory_block_by_id", as nobody needs it anymore.
 > 
-> This variable should be removed:
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+> Cc: "mike.travis@hpe.com" <mike.travis@hpe.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  drivers/base/memory.c  | 32 ++++++++++----------------------
+>  include/linux/memory.h |  2 --
+>  2 files changed, 10 insertions(+), 24 deletions(-)
 > 
-> arch/powerpc/platforms/powernv/memtrace.c:75:6: warning: unused variable 'end_pfn' [-Wunused-variable]
->         u64 end_pfn = start_pfn + nr_pages - 1;
->             ^
-> 1 warning generated.
-> 
-> https://travis-ci.com/ClangBuiltLinux/continuous-integration/jobs/209576737
-> 
-> Cheers,
-> Nathan
-> 
+> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> index 0204384b4d1d..fefb64d3588e 100644
+> --- a/drivers/base/memory.c
+> +++ b/drivers/base/memory.c
+> @@ -592,26 +592,12 @@ int __weak arch_get_memory_phys_device(unsigned long start_pfn)
+>   * A reference for the returned object is held and the reference for the
+>   * hinted object is released.
+>   */
 
-Indeed, thanks!
+I'll fixup this comment as well (yes, I desperately need vacation :) )
 
 
 -- 
