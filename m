@@ -2,157 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 030234CC0B
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 12:36:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84DE54CC1A
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 12:41:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730899AbfFTKgD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jun 2019 06:36:03 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:52822 "EHLO mx1.redhat.com"
+        id S1726318AbfFTKle (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jun 2019 06:41:34 -0400
+Received: from mga11.intel.com ([192.55.52.93]:42500 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731681AbfFTKgD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 20 Jun 2019 06:36:03 -0400
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 3AF3386663;
-        Thu, 20 Jun 2019 10:36:02 +0000 (UTC)
-Received: from t460s.redhat.com (ovpn-117-88.ams2.redhat.com [10.36.117.88])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 628215C66B;
-        Thu, 20 Jun 2019 10:35:59 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
-        linux-mm@kvack.org, David Hildenbrand <david@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        "mike.travis@hpe.com" <mike.travis@hpe.com>
-Subject: [PATCH v2 6/6] drivers/base/memory.c: Get rid of find_memory_block_hinted()
-Date:   Thu, 20 Jun 2019 12:35:20 +0200
-Message-Id: <20190620103520.23481-7-david@redhat.com>
-In-Reply-To: <20190620103520.23481-1-david@redhat.com>
-References: <20190620103520.23481-1-david@redhat.com>
+        id S1726222AbfFTKle (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 20 Jun 2019 06:41:34 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Jun 2019 03:41:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,396,1557212400"; 
+   d="scan'208";a="181837533"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 20 Jun 2019 03:41:29 -0700
+Received: by lahna (sSMTP sendmail emulation); Thu, 20 Jun 2019 13:41:28 +0300
+Date:   Thu, 20 Jun 2019 13:41:28 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        kbuild test robot <lkp@intel.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Masahisa Kojima <masahisa.kojima@linaro.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Lukas Wunner <lukas@wunner.de>
+Subject: Re: [PATCH] spi/acpi: fix incorrect ACPI parent check
+Message-ID: <20190620104128.GW2640@lahna.fi.intel.com>
+References: <20190619095254.19559-1-ard.biesheuvel@linaro.org>
+ <20190619101604.GR2640@lahna.fi.intel.com>
+ <54ede1d8-0e6b-e7d9-5e61-a7d057abbd2b@linux.intel.com>
+ <CAKv+Gu_Bw3aV-pUVYf8T1hLfL35X7ozEPtqL9oLcDvwcQ4qMiw@mail.gmail.com>
+ <c96afe71-c7bd-d30f-ef37-0c6eeb726f67@linux.intel.com>
+ <CAKv+Gu9fafXNrAYAgUuqMPVjZm2bWJmzg_aPz9WD1skemQme8A@mail.gmail.com>
+ <08e498d6-1ff8-771f-7d4f-6ea5f705d386@linux.intel.com>
+ <20190619144255.GG2640@lahna.fi.intel.com>
+ <CAKv+Gu82UcBcj_cjfEDpEyQyGzPvtGnVJN22hCroHKyudhk=8w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.26]); Thu, 20 Jun 2019 10:36:02 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKv+Gu82UcBcj_cjfEDpEyQyGzPvtGnVJN22hCroHKyudhk=8w@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-No longer needed, let's remove it. Also, drop the "hint" parameter
-completely from "find_memory_block_by_id", as nobody needs it anymore.
+On Thu, Jun 20, 2019 at 12:33:41PM +0200, Ard Biesheuvel wrote:
+> Jarkko, does this help?
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 50d230b33c42..d072efdd65ba 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -1914,6 +1914,7 @@ static acpi_status
+> acpi_register_spi_device(struct spi_controller *ctlr,
+>                 return AE_OK;
+> 
+>         lookup.ctlr             = ctlr;
+> +       lookup.max_speed_hz     = 0;
+>         lookup.mode             = 0;
+>         lookup.bits_per_word    = 0;
+>         lookup.irq              = -1;
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-Cc: "mike.travis@hpe.com" <mike.travis@hpe.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- drivers/base/memory.c  | 32 ++++++++++----------------------
- include/linux/memory.h |  2 --
- 2 files changed, 10 insertions(+), 24 deletions(-)
+IMHO it's better to do:
 
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index 0204384b4d1d..fefb64d3588e 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -592,26 +592,12 @@ int __weak arch_get_memory_phys_device(unsigned long start_pfn)
-  * A reference for the returned object is held and the reference for the
-  * hinted object is released.
-  */
--static struct memory_block *find_memory_block_by_id(unsigned long block_id,
--						    struct memory_block *hint)
-+static struct memory_block *find_memory_block_by_id(unsigned long block_id)
- {
--	struct device *hintdev = hint ? &hint->dev : NULL;
- 	struct device *dev;
- 
--	dev = subsys_find_device_by_id(&memory_subsys, block_id, hintdev);
--	if (hint)
--		put_device(&hint->dev);
--	if (!dev)
--		return NULL;
--	return to_memory_block(dev);
--}
--
--struct memory_block *find_memory_block_hinted(struct mem_section *section,
--					      struct memory_block *hint)
--{
--	unsigned long block_id = base_memory_block_id(__section_nr(section));
--
--	return find_memory_block_by_id(block_id, hint);
-+	dev = subsys_find_device_by_id(&memory_subsys, block_id, NULL);
-+	return dev ? to_memory_block(dev) : NULL;
- }
- 
- /*
-@@ -624,7 +610,9 @@ struct memory_block *find_memory_block_hinted(struct mem_section *section,
-  */
- struct memory_block *find_memory_block(struct mem_section *section)
- {
--	return find_memory_block_hinted(section, NULL);
-+	unsigned long block_id = base_memory_block_id(__section_nr(section));
-+
-+	return find_memory_block_by_id(block_id);
- }
- 
- static struct attribute *memory_memblk_attrs[] = {
-@@ -675,7 +663,7 @@ static int init_memory_block(struct memory_block **memory,
- 	unsigned long start_pfn;
- 	int ret = 0;
- 
--	mem = find_memory_block_by_id(block_id, NULL);
-+	mem = find_memory_block_by_id(block_id);
- 	if (mem) {
- 		put_device(&mem->dev);
- 		return -EEXIST;
-@@ -755,7 +743,7 @@ int create_memory_block_devices(unsigned long start, unsigned long size)
- 		end_block_id = block_id;
- 		for (block_id = start_block_id; block_id != end_block_id;
- 		     block_id++) {
--			mem = find_memory_block_by_id(block_id, NULL);
-+			mem = find_memory_block_by_id(block_id);
- 			mem->section_count = 0;
- 			unregister_memory(mem);
- 		}
-@@ -782,7 +770,7 @@ void remove_memory_block_devices(unsigned long start, unsigned long size)
- 
- 	mutex_lock(&mem_sysfs_mutex);
- 	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
--		mem = find_memory_block_by_id(block_id, NULL);
-+		mem = find_memory_block_by_id(block_id);
- 		if (WARN_ON_ONCE(!mem))
- 			continue;
- 		mem->section_count = 0;
-@@ -882,7 +870,7 @@ int walk_memory_blocks(unsigned long start, unsigned long size,
- 	int ret = 0;
- 
- 	for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
--		mem = find_memory_block_by_id(block_id, NULL);
-+		mem = find_memory_block_by_id(block_id);
- 		if (!mem)
- 			continue;
- 
-diff --git a/include/linux/memory.h b/include/linux/memory.h
-index b3b388775a30..02e633f3ede0 100644
---- a/include/linux/memory.h
-+++ b/include/linux/memory.h
-@@ -116,8 +116,6 @@ void remove_memory_block_devices(unsigned long start, unsigned long size);
- extern int memory_dev_init(void);
- extern int memory_notify(unsigned long val, void *v);
- extern int memory_isolate_notify(unsigned long val, void *v);
--extern struct memory_block *find_memory_block_hinted(struct mem_section *,
--							struct memory_block *);
- extern struct memory_block *find_memory_block(struct mem_section *);
- typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
- extern int walk_memory_blocks(unsigned long start, unsigned long size,
--- 
-2.21.0
+	memset(&lookup, 0, sizeof(lookup));
+	lookup.ctlr = ctlr;
+	lookup.irq = -1;
 
+this also initializes chip_select and possibly other fields that get
+added to the lookup structure later.
