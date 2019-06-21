@@ -2,162 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 803554D93A
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2019 20:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A30524DE89
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2019 03:23:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726856AbfFTScd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jun 2019 14:32:33 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:55440 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726755AbfFTScd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 20 Jun 2019 14:32:33 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id CFED74E90E;
-        Thu, 20 Jun 2019 18:32:31 +0000 (UTC)
-Received: from t460s.redhat.com (ovpn-116-71.ams2.redhat.com [10.36.116.71])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id EFF9419722;
-        Thu, 20 Jun 2019 18:32:25 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
-        linux-mm@kvack.org, David Hildenbrand <david@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        "mike.travis@hpe.com" <mike.travis@hpe.com>
-Subject: [PATCH v3 6/6] drivers/base/memory.c: Get rid of find_memory_block_hinted()
-Date:   Thu, 20 Jun 2019 20:31:39 +0200
-Message-Id: <20190620183139.4352-7-david@redhat.com>
-In-Reply-To: <20190620183139.4352-1-david@redhat.com>
-References: <20190620183139.4352-1-david@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Thu, 20 Jun 2019 18:32:32 +0000 (UTC)
+        id S1726668AbfFUBU1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jun 2019 21:20:27 -0400
+Received: from mail-pl1-f202.google.com ([209.85.214.202]:44579 "EHLO
+        mail-pl1-f202.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726672AbfFUBU0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jun 2019 21:20:26 -0400
+Received: by mail-pl1-f202.google.com with SMTP id n1so2662344plk.11
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Jun 2019 18:20:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
+         :cc;
+        bh=S9uK51Tt5kTkNleSSR/hMhgYxxujw1wxKeyqQuG6LR0=;
+        b=H5xvGNs3/JGGDuqCosXJWsRozrb5ppiKaTdNYWvS42z7Nm1KS0IDqLzZj7y5L747HS
+         LZ30WMLFKfEiTA9DmEQyGsStSLAeQDYtd8KjP8EeErMKxa1ixgm0YvXUBMGd277RaGIt
+         sHjAP7bA5KJmvuIk50IAlBoQoBZvyOqtsA35V+Ivo84S0hn5KcJPKZg/W3Ghjf/qBK23
+         cPTwV3p0MO+KBxmdRGAatKc4IhIJ0MSdAxDnJ42o8cUHOl7U+j7cJIvuwTfhjU5x6aZj
+         DrJHuE1edXR5UUMVvKGCWk8fR2wVKaYYeQZIW/HN0qH6jTY3yRrL50noU5MI5CX8cuvJ
+         0URw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
+         :references:subject:from:to:cc;
+        bh=S9uK51Tt5kTkNleSSR/hMhgYxxujw1wxKeyqQuG6LR0=;
+        b=aF8F80jlVUfN4Kn0AP0JVqhQBXTWNJjmCBMVecHunzcwN+Gjcqz0LK6Ie9wnYHeq5K
+         Y3oxHqsNvvdeyey9BbQcgT0lrR0jULqMoN0PzKJ53RhrKCzaTDr6GnwBDX9KfXmHxPIa
+         G1yr1NxrBt5I4xhL1LmkfsDoxIn8+78CwoV1wmR9tIbgHfCfUgAOW8boB7j9jerGFKvx
+         Cs2rGck7bJxEt7XlHmCNZGJhnq7IzIG6UCsxhJD8xAqHX5K9Uve6YAIJR3OwVvRWm7nE
+         aHm+igdCOl/2+Nu4UNBCnmX9cuayfCr/6mAtCsM5yAOzBmJIijDC6S0vnlMOVnwT9VQ2
+         64Mg==
+X-Gm-Message-State: APjAAAX8UXyOEJghhQtaAE05IYp6U24Kyy2qvYzGct+ZFAr5RYOTqD0+
+        IFwMw+bJsSK86+86epQWX2CVENUZiqaKlEpxPckkgg==
+X-Google-Smtp-Source: APXvYqwu/7e8Vq+i5eFYDNfYaCHNV6myTYb8Peic9ryWcCRijQmNJ86iOc+yP6VTDURQPWb+hiVa7wAYEZH4TGdWSwApEg==
+X-Received: by 2002:a63:1c09:: with SMTP id c9mr6048922pgc.63.1561080025466;
+ Thu, 20 Jun 2019 18:20:25 -0700 (PDT)
+Date:   Thu, 20 Jun 2019 18:19:26 -0700
+In-Reply-To: <20190621011941.186255-1-matthewgarrett@google.com>
+Message-Id: <20190621011941.186255-16-matthewgarrett@google.com>
+Mime-Version: 1.0
+References: <20190621011941.186255-1-matthewgarrett@google.com>
+X-Mailer: git-send-email 2.22.0.410.gd8fdbe21b5-goog
+Subject: [PATCH V33 15/30] ACPI: Limit access to custom_method when the kernel
+ is locked down
+From:   Matthew Garrett <matthewgarrett@google.com>
+To:     jmorris@namei.org
+Cc:     linux-security@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-api@vger.kernel.org, Matthew Garrett <mjg59@srcf.ucam.org>,
+        Matthew Garrett <mjg59@google.com>,
+        David Howells <dhowells@redhat.com>, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-No longer needed, let's remove it. Also, drop the "hint" parameter
-completely from "find_memory_block_by_id", as nobody needs it anymore.
+From: Matthew Garrett <mjg59@srcf.ucam.org>
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-Cc: "mike.travis@hpe.com" <mike.travis@hpe.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
+custom_method effectively allows arbitrary access to system memory, making
+it possible for an attacker to circumvent restrictions on module loading.
+Disable it if the kernel is locked down.
+
+Signed-off-by: Matthew Garrett <mjg59@google.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: linux-acpi@vger.kernel.org
 ---
- drivers/base/memory.c  | 37 +++++++++++--------------------------
- include/linux/memory.h |  2 --
- 2 files changed, 11 insertions(+), 28 deletions(-)
+ drivers/acpi/custom_method.c | 4 ++++
+ include/linux/security.h     | 1 +
+ security/lockdown/lockdown.c | 1 +
+ 3 files changed, 6 insertions(+)
 
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index 0204384b4d1d..195dbcb8e8a8 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -588,30 +588,13 @@ int __weak arch_get_memory_phys_device(unsigned long start_pfn)
- 	return 0;
- }
+diff --git a/drivers/acpi/custom_method.c b/drivers/acpi/custom_method.c
+index aa972dc5cb7e..5c684b09a2d1 100644
+--- a/drivers/acpi/custom_method.c
++++ b/drivers/acpi/custom_method.c
+@@ -8,6 +8,7 @@
+ #include <linux/uaccess.h>
+ #include <linux/debugfs.h>
+ #include <linux/acpi.h>
++#include <linux/security.h>
  
--/*
-- * A reference for the returned object is held and the reference for the
-- * hinted object is released.
-- */
--static struct memory_block *find_memory_block_by_id(unsigned long block_id,
--						    struct memory_block *hint)
-+/* A reference for the returned memory block device is acquired. */
-+static struct memory_block *find_memory_block_by_id(unsigned long block_id)
- {
--	struct device *hintdev = hint ? &hint->dev : NULL;
- 	struct device *dev;
+ #include "internal.h"
  
--	dev = subsys_find_device_by_id(&memory_subsys, block_id, hintdev);
--	if (hint)
--		put_device(&hint->dev);
--	if (!dev)
--		return NULL;
--	return to_memory_block(dev);
--}
--
--struct memory_block *find_memory_block_hinted(struct mem_section *section,
--					      struct memory_block *hint)
--{
--	unsigned long block_id = base_memory_block_id(__section_nr(section));
--
--	return find_memory_block_by_id(block_id, hint);
-+	dev = subsys_find_device_by_id(&memory_subsys, block_id, NULL);
-+	return dev ? to_memory_block(dev) : NULL;
- }
+@@ -29,6 +30,9 @@ static ssize_t cm_write(struct file *file, const char __user * user_buf,
+ 	struct acpi_table_header table;
+ 	acpi_status status;
  
- /*
-@@ -624,7 +607,9 @@ struct memory_block *find_memory_block_hinted(struct mem_section *section,
-  */
- struct memory_block *find_memory_block(struct mem_section *section)
- {
--	return find_memory_block_hinted(section, NULL);
-+	unsigned long block_id = base_memory_block_id(__section_nr(section));
++	if (security_is_locked_down(LOCKDOWN_ACPI_TABLES))
++		return -EPERM;
 +
-+	return find_memory_block_by_id(block_id);
- }
- 
- static struct attribute *memory_memblk_attrs[] = {
-@@ -675,7 +660,7 @@ static int init_memory_block(struct memory_block **memory,
- 	unsigned long start_pfn;
- 	int ret = 0;
- 
--	mem = find_memory_block_by_id(block_id, NULL);
-+	mem = find_memory_block_by_id(block_id);
- 	if (mem) {
- 		put_device(&mem->dev);
- 		return -EEXIST;
-@@ -755,7 +740,7 @@ int create_memory_block_devices(unsigned long start, unsigned long size)
- 		end_block_id = block_id;
- 		for (block_id = start_block_id; block_id != end_block_id;
- 		     block_id++) {
--			mem = find_memory_block_by_id(block_id, NULL);
-+			mem = find_memory_block_by_id(block_id);
- 			mem->section_count = 0;
- 			unregister_memory(mem);
- 		}
-@@ -782,7 +767,7 @@ void remove_memory_block_devices(unsigned long start, unsigned long size)
- 
- 	mutex_lock(&mem_sysfs_mutex);
- 	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
--		mem = find_memory_block_by_id(block_id, NULL);
-+		mem = find_memory_block_by_id(block_id);
- 		if (WARN_ON_ONCE(!mem))
- 			continue;
- 		mem->section_count = 0;
-@@ -882,7 +867,7 @@ int walk_memory_blocks(unsigned long start, unsigned long size,
- 	int ret = 0;
- 
- 	for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
--		mem = find_memory_block_by_id(block_id, NULL);
-+		mem = find_memory_block_by_id(block_id);
- 		if (!mem)
- 			continue;
- 
-diff --git a/include/linux/memory.h b/include/linux/memory.h
-index b3b388775a30..02e633f3ede0 100644
---- a/include/linux/memory.h
-+++ b/include/linux/memory.h
-@@ -116,8 +116,6 @@ void remove_memory_block_devices(unsigned long start, unsigned long size);
- extern int memory_dev_init(void);
- extern int memory_notify(unsigned long val, void *v);
- extern int memory_isolate_notify(unsigned long val, void *v);
--extern struct memory_block *find_memory_block_hinted(struct mem_section *,
--							struct memory_block *);
- extern struct memory_block *find_memory_block(struct mem_section *);
- typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
- extern int walk_memory_blocks(unsigned long start, unsigned long size,
+ 	if (!(*ppos)) {
+ 		/* parse the table header to get the table length */
+ 		if (count <= sizeof(struct acpi_table_header))
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 81c0968e485f..88d0f5d0cd87 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -89,6 +89,7 @@ enum lockdown_reason {
+ 	LOCKDOWN_PCI_ACCESS,
+ 	LOCKDOWN_IOPORT,
+ 	LOCKDOWN_MSR,
++	LOCKDOWN_ACPI_TABLES,
+ 	LOCKDOWN_INTEGRITY_MAX,
+ 	LOCKDOWN_CONFIDENTIALITY_MAX,
+ };
+diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
+index a01301972290..bfc0e088aa85 100644
+--- a/security/lockdown/lockdown.c
++++ b/security/lockdown/lockdown.c
+@@ -25,6 +25,7 @@ static char *lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX+1] = {
+ 	[LOCKDOWN_PCI_ACCESS] = "direct PCI access",
+ 	[LOCKDOWN_IOPORT] = "raw io port access",
+ 	[LOCKDOWN_MSR] = "raw MSR access",
++	[LOCKDOWN_ACPI_TABLES] = "modified ACPI tables",
+ 	[LOCKDOWN_INTEGRITY_MAX] = "integrity",
+ 	[LOCKDOWN_CONFIDENTIALITY_MAX] = "confidentiality",
+ };
 -- 
-2.21.0
+2.22.0.410.gd8fdbe21b5-goog
 
