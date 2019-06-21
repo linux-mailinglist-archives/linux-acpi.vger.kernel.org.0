@@ -2,87 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81F744E9A2
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2019 15:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE97A4E9FF
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2019 15:56:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726054AbfFUNlG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Jun 2019 09:41:06 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:24053 "EHLO mx1.redhat.com"
+        id S1726058AbfFUN4W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Jun 2019 09:56:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58322 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726010AbfFUNlG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 21 Jun 2019 09:41:06 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1725985AbfFUN4V (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 21 Jun 2019 09:56:21 -0400
+Received: from localhost (unknown [69.71.4.100])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id D5C503086208;
-        Fri, 21 Jun 2019 13:41:05 +0000 (UTC)
-Received: from dhcp201-121.englab.pnq.redhat.com (ovpn-116-60.sin2.redhat.com [10.67.116.60])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id CC28D5B690;
-        Fri, 21 Jun 2019 13:40:27 +0000 (UTC)
-From:   Pankaj Gupta <pagupta@redhat.com>
-To:     dm-devel@redhat.com, linux-nvdimm@lists.01.org,
-        linux-kernel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        qemu-devel@nongnu.org, linux-ext4@vger.kernel.org,
-        linux-xfs@vger.kernel.org
-Cc:     dan.j.williams@intel.com, zwisler@kernel.org,
-        vishal.l.verma@intel.com, dave.jiang@intel.com, mst@redhat.com,
-        jasowang@redhat.com, willy@infradead.org, rjw@rjwysocki.net,
-        hch@infradead.org, lenb@kernel.org, jack@suse.cz, tytso@mit.edu,
-        adilger.kernel@dilger.ca, darrick.wong@oracle.com,
-        lcapitulino@redhat.com, kwolf@redhat.com, imammedo@redhat.com,
-        jmoyer@redhat.com, nilal@redhat.com, riel@surriel.com,
-        stefanha@redhat.com, aarcange@redhat.com, david@redhat.com,
-        david@fromorbit.com, cohuck@redhat.com,
-        xiaoguangrong.eric@gmail.com, pagupta@redhat.com,
-        pbonzini@redhat.com, yuval.shaia@oracle.com, kilobyte@angband.pl,
-        jstaron@google.com, rdunlap@infradead.org, snitzer@redhat.com
-Subject: [PATCH v14 7/7] xfs: disable map_sync for async flush
-Date:   Fri, 21 Jun 2019 19:04:55 +0530
-Message-Id: <20190621133455.3303-8-pagupta@redhat.com>
-In-Reply-To: <20190621133455.3303-1-pagupta@redhat.com>
-References: <20190621133455.3303-1-pagupta@redhat.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.42]); Fri, 21 Jun 2019 13:41:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B206E2083B;
+        Fri, 21 Jun 2019 13:56:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561125381;
+        bh=BBRLV5HK4wojUuRwh0Rs7j6ma6H9sAhgSFIRNIQgDhg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UBkgFZ78v39DEfSXuGiLLocJ+jUu/9obvwtDpFnq9msQlxrPRQNKcqCS1tzCrzzu9
+         zcX6lYf5FN4xy5pbLwGx1vi+D/nXP3DNXAzTsefIFPkn7QSBaheUzxp4f51QG6Hs9d
+         rPFDb7MuSom/wFM61ziIx+4IyV1xEZWrPphXDgf8=
+Date:   Fri, 21 Jun 2019 08:56:19 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     John Garry <john.garry@huawei.com>
+Cc:     xuwei5@huawei.com, linuxarm@huawei.com, arm@kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        joe@perches.com, linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: Re: [PATCH 4/5] bus: hisi_lpc: Add .remove method to avoid driver
+ unbind crash
+Message-ID: <20190621135619.GE82584@google.com>
+References: <1561026716-140537-1-git-send-email-john.garry@huawei.com>
+ <1561026716-140537-5-git-send-email-john.garry@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1561026716-140537-5-git-send-email-john.garry@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dont support 'MAP_SYNC' with non-DAX files and DAX files
-with asynchronous dax_device. Virtio pmem provides
-asynchronous host page cache flush mechanism. We don't
-support 'MAP_SYNC' with virtio pmem and xfs.
+[+cc Rafael, linux-acpi]
 
-Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
-Reviewed-by: Darrick J. Wong <darrick.wong@oracle.com>
----
- fs/xfs/xfs_file.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+On Thu, Jun 20, 2019 at 06:31:55PM +0800, John Garry wrote:
+> The original driver author seemed to be under the impression that a driver
+> cannot be removed if it does not have a .remove method. Or maybe if it is
+> a built-in platform driver.
+> 
+> This is not true. This crash can be created:
+> 
+> root@ubuntu:/sys/bus/platform/drivers/hisi-lpc# echo HISI0191\:00 > unbind
+> root@ubuntu:/sys/bus/platform/drivers/hisi-lpc# ipmitool raw 6 1
+>  Unable to handle kernel paging request at virtual address ffff000010035010
+> ...
 
-diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
-index a7ceae90110e..f17652cca5ff 100644
---- a/fs/xfs/xfs_file.c
-+++ b/fs/xfs/xfs_file.c
-@@ -1203,11 +1203,14 @@ xfs_file_mmap(
- 	struct file	*filp,
- 	struct vm_area_struct *vma)
- {
-+	struct dax_device 	*dax_dev;
-+
-+	dax_dev = xfs_find_daxdev_for_inode(file_inode(filp));
- 	/*
--	 * We don't support synchronous mappings for non-DAX files. At least
--	 * until someone comes with a sensible use case.
-+	 * We don't support synchronous mappings for non-DAX files and
-+	 * for DAX files if underneath dax_device is not synchronous.
- 	 */
--	if (!IS_DAX(file_inode(filp)) && (vma->vm_flags & VM_SYNC))
-+	if (!daxdev_mapping_supported(vma, dax_dev))
- 		return -EOPNOTSUPP;
- 
- 	file_accessed(filp);
--- 
-2.20.1
+> The problem here is that the host goes away but the associated logical PIO
+> region remains registered, as do the child devices.
+> 
+> Fix by adding a .remove method to tidy-up by removing the child devices
+> and unregistering the logical PIO region.
+> 
+> Fixes: adf38bb0b595 ("HISI LPC: Support the LPC host on Hip06/Hip07 with DT bindings")
+> Signed-off-by: John Garry <john.garry@huawei.com>
+> ---
+>  drivers/bus/hisi_lpc.c | 34 ++++++++++++++++++++++++++++++++--
+>  1 file changed, 32 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/bus/hisi_lpc.c b/drivers/bus/hisi_lpc.c
+> index 6d301aafcad2..0e9f1f141c93 100644
+> --- a/drivers/bus/hisi_lpc.c
+> +++ b/drivers/bus/hisi_lpc.c
+> @@ -456,6 +456,17 @@ struct hisi_lpc_acpi_cell {
+>  	size_t pdata_size;
+>  };
+>  
+> +static void hisi_lpc_acpi_remove(struct device *hostdev)
+> +{
+> +	struct acpi_device *adev = ACPI_COMPANION(hostdev);
+> +	struct acpi_device *child;
+> +
+> +	device_for_each_child(hostdev, NULL, hisi_lpc_acpi_remove_subdev);
+> +
+> +	list_for_each_entry(child, &adev->children, node)
+> +		acpi_device_clear_enumerated(child);
 
+There are only two other non-ACPI core callers of
+acpi_device_clear_enumerated() (i2c and spi).  That always makes me
+wonder if we're getting too deep in ACPI internals.
+
+> +}
+> +
+>  /*
+>   * hisi_lpc_acpi_probe - probe children for ACPI FW
+>   * @hostdev: LPC host device pointer
+> @@ -555,8 +566,7 @@ static int hisi_lpc_acpi_probe(struct device *hostdev)
+>  	return 0;
+>  
+>  fail:
+> -	device_for_each_child(hostdev, NULL,
+> -			      hisi_lpc_acpi_remove_subdev);
+> +	hisi_lpc_acpi_remove(hostdev);
+>  	return ret;
+>  }
+>  
+> @@ -626,6 +636,8 @@ static int hisi_lpc_probe(struct platform_device *pdev)
+>  		return ret;
+>  	}
+>  
+> +	dev_set_drvdata(dev, lpcdev);
+> +
+>  	io_end = lpcdev->io_host->io_start + lpcdev->io_host->size;
+>  	dev_info(dev, "registered range [%pa - %pa]\n",
+>  		 &lpcdev->io_host->io_start, &io_end);
+> @@ -633,6 +645,23 @@ static int hisi_lpc_probe(struct platform_device *pdev)
+>  	return ret;
+>  }
+>  
+> +static int hisi_lpc_remove(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct acpi_device *acpi_device = ACPI_COMPANION(dev);
+> +	struct hisi_lpc_dev *lpcdev = dev_get_drvdata(dev);
+> +	struct logic_pio_hwaddr *range = lpcdev->io_host;
+> +
+> +	if (acpi_device)
+> +		hisi_lpc_acpi_remove(dev);
+> +	else
+> +		of_platform_depopulate(dev);
+> +
+> +	logic_pio_unregister_range(range);
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct of_device_id hisi_lpc_of_match[] = {
+>  	{ .compatible = "hisilicon,hip06-lpc", },
+>  	{ .compatible = "hisilicon,hip07-lpc", },
+> @@ -646,5 +675,6 @@ static struct platform_driver hisi_lpc_driver = {
+>  		.acpi_match_table = ACPI_PTR(hisi_lpc_acpi_match),
+>  	},
+>  	.probe = hisi_lpc_probe,
+> +	.remove = hisi_lpc_remove,
+>  };
+>  builtin_platform_driver(hisi_lpc_driver);
+> -- 
+> 2.17.1
+> 
