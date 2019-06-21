@@ -2,816 +2,340 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54DB34EDFD
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2019 19:41:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35F7C4EEC1
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2019 20:25:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726643AbfFURlN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Jun 2019 13:41:13 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:32952 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726587AbfFURlN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 21 Jun 2019 13:41:13 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 77E061CB05735784530A;
-        Sat, 22 Jun 2019 01:41:09 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Sat, 22 Jun 2019
- 01:41:01 +0800
-Date:   Fri, 21 Jun 2019 18:40:50 +0100
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>
-CC:     <linuxarm@huawei.com>, <rjw@rjwysocki.net>, <tony.luck@intel.com>,
-        <bp@alien8.de>, <james.morse@arm.com>, <ard.beisheuvel@linaro.org>,
-        <nariman.poushin@linaro.org>
-Subject: Re: [RFC PATCH 1/6] efi / ras: CCIX Memory error reporting
-Message-ID: <20190621184050.000006a2@huawei.com>
-In-Reply-To: <20190606123654.78973-2-Jonathan.Cameron@huawei.com>
-References: <20190606123654.78973-1-Jonathan.Cameron@huawei.com>
-        <20190606123654.78973-2-Jonathan.Cameron@huawei.com>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726043AbfFUSZR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Jun 2019 14:25:17 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:59058 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726032AbfFUSZR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 21 Jun 2019 14:25:17 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 9C6183083391;
+        Fri, 21 Jun 2019 18:25:14 +0000 (UTC)
+Received: from [10.36.116.107] (ovpn-116-107.ams2.redhat.com [10.36.116.107])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D07F85D9D2;
+        Fri, 21 Jun 2019 18:25:05 +0000 (UTC)
+Subject: Re: [PATCH v3 0/6] mm: Further memory block device cleanups
+To:     Qian Cai <cai@lca.pw>, linux-kernel@vger.kernel.org
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+        linux-mm@kvack.org, Andrew Banman <andrew.banman@hpe.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Arun KS <arunks@codeaurora.org>, Baoquan He <bhe@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Juergen Gross <jgross@suse.com>,
+        Keith Busch <keith.busch@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michael Neuling <mikey@neuling.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        "mike.travis@hpe.com" <mike.travis@hpe.com>,
+        Oscar Salvador <osalvador@suse.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Paul Mackerras <paulus@samba.org>,
+        Pavel Tatashin <pasha.tatashin@oracle.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        Pavel Tatashin <pavel.tatashin@microsoft.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Rashmica Gupta <rashmica.g@gmail.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Wei Yang <richard.weiyang@gmail.com>
+References: <20190620183139.4352-1-david@redhat.com>
+ <1561130120.5154.47.camel@lca.pw>
+From:   David Hildenbrand <david@redhat.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+ SE+xAvmumFBY
+Organization: Red Hat GmbH
+Message-ID: <1c2edc22-afd7-2211-c4c7-40e54e5007e8@redhat.com>
+Date:   Fri, 21 Jun 2019 20:24:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
+In-Reply-To: <1561130120.5154.47.camel@lca.pw>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.44]); Fri, 21 Jun 2019 18:25:16 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 6 Jun 2019 20:36:49 +0800
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+On 21.06.19 17:15, Qian Cai wrote:
+> On Thu, 2019-06-20 at 20:31 +0200, David Hildenbrand wrote:
+>> @Andrew: Only patch 1, 4 and 6 changed compared to v1.
+>>
+>> Some further cleanups around memory block devices. Especially, clean up
+>> and simplify walk_memory_range(). Including some other minor cleanups.
+>>
+>> Compiled + tested on x86 with DIMMs under QEMU. Compile-tested on ppc64.
+>>
+>> v2 -> v3:
+>> - "mm/memory_hotplug: Rename walk_memory_range() and pass start+size .."
+>> -- Avoid warning on ppc.
+>> - "drivers/base/memory.c: Get rid of find_memory_block_hinted()"
+>> -- Fixup a comment regarding hinted devices.
+>>
+>> v1 -> v2:
+>> - "mm: Section numbers use the type "unsigned long""
+>> -- "unsigned long i" -> "unsigned long nr", in one case -> "int i"
+>> - "drivers/base/memory.c: Get rid of find_memory_block_hinted("
+>> -- Fix compilation error
+>> -- Get rid of the "hint" parameter completely
+>>
+>> David Hildenbrand (6):
+>>   mm: Section numbers use the type "unsigned long"
+>>   drivers/base/memory: Use "unsigned long" for block ids
+>>   mm: Make register_mem_sect_under_node() static
+>>   mm/memory_hotplug: Rename walk_memory_range() and pass start+size
+>>     instead of pfns
+>>   mm/memory_hotplug: Move and simplify walk_memory_blocks()
+>>   drivers/base/memory.c: Get rid of find_memory_block_hinted()
+>>
+>>  arch/powerpc/platforms/powernv/memtrace.c |  23 ++---
+>>  drivers/acpi/acpi_memhotplug.c            |  19 +---
+>>  drivers/base/memory.c                     | 120 +++++++++++++---------
+>>  drivers/base/node.c                       |   8 +-
+>>  include/linux/memory.h                    |   5 +-
+>>  include/linux/memory_hotplug.h            |   2 -
+>>  include/linux/mmzone.h                    |   4 +-
+>>  include/linux/node.h                      |   7 --
+>>  mm/memory_hotplug.c                       |  57 +---------
+>>  mm/sparse.c                               |  12 +--
+>>  10 files changed, 106 insertions(+), 151 deletions(-)
+>>
+> 
+> This series causes a few machines are unable to boot triggering endless soft
+> lockups. Reverted those commits fixed the issue.
+> 
+> 97f4217d1da0 Revert "mm/memory_hotplug: rename walk_memory_range() and pass
+> start+size instead of pfns"
+> c608eebf33c6 Revert "mm-memory_hotplug-rename-walk_memory_range-and-pass-
+> startsize-instead-of-pfns-fix"
+> 34b5e4ab7558 Revert "mm/memory_hotplug: move and simplify walk_memory_blocks()"
+> 59a9f3eec5d1 Revert "drivers/base/memory.c: Get rid of
+> find_memory_block_hinted()"
+> 5cfcd52288b6 Revert "drivers-base-memoryc-get-rid-of-find_memory_block_hinted-
+> v3"
+> 
+> [    4.582081][    T1] ACPI FADT declares the system doesn't support PCIe ASPM,
+> so disable it
+> [    4.590405][    T1] ACPI: bus type PCI registered
+> [    4.592908][    T1] PCI: MMCONFIG for domain 0000 [bus 00-ff] at [mem
+> 0x80000000-0x8fffffff] (base 0x80000000)
+> [    4.601860][    T1] PCI: MMCONFIG at [mem 0x80000000-0x8fffffff] reserved in
+> E820
+> [    4.601860][    T1] PCI: Using configuration type 1 for base access
+> [   28.661336][   C16] watchdog: BUG: soft lockup - CPU#16 stuck for 22s!
+> [swapper/0:1]
+> [   28.671351][   C16] Modules linked in:
+> [   28.671354][   C16] CPU: 16 PID: 1 Comm: swapper/0 Not tainted 5.2.0-rc5-
+> next-20190621+ #1
+> [   28.681366][   C16] Hardware name: HPE ProLiant DL385 Gen10/ProLiant DL385
+> Gen10, BIOS A40 03/09/2018
+> [   28.691334][   C16] RIP: 0010:_raw_spin_unlock_irqrestore+0x2f/0x40
+> [   28.701334][   C16] Code: 55 48 89 e5 41 54 49 89 f4 be 01 00 00 00 53 48 8b
+> 55 08 48 89 fb 48 8d 7f 18 e8 4c 89 7d ff 48 89 df e8 94 f9 7d ff 41 54 9d <65>
+> ff 0d c2 44 8d 48 5b 41 5c 5d c3 0f 1f 44 00 00 0f 1f 44 00 00
+> [   28.711354][   C16] RSP: 0018:ffff888205b27bf8 EFLAGS: 00000246 ORIG_RAX:
+> ffffffffffffff13
+> [   28.721372][   C16] RAX: 0000000000000000 RBX: ffff8882053d6138 RCX:
+> ffffffffb6f2a3b8
+> [   28.731371][   C16] RDX: 1ffff11040a7ac27 RSI: dffffc0000000000 RDI:
+> ffff8882053d6138
+> [   28.741371][   C16] RBP: ffff888205b27c08 R08: ffffed1040a7ac28 R09:
+> ffffed1040a7ac27
+> [   28.751334][   C16] R10: ffffed1040a7ac27 R11: ffff8882053d613b R12:
+> 0000000000000246
+> [   28.751370][   C16] R13: ffff888205b27c98 R14: ffff8884504d0a20 R15:
+> 0000000000000000
+> [   28.761368][   C16] FS:  0000000000000000(0000) GS:ffff888454500000(0000)
+> knlGS:0000000000000000
+> [   28.771373][   C16] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   28.781334][   C16] CR2: 0000000000000000 CR3: 00000007c9012000 CR4:
+> 00000000001406a0
+> [   28.791333][   C16] Call Trace:
+> [   28.791374][   C16]  klist_next+0xd8/0x1c0
+> [   28.791374][   C16]  subsys_find_device_by_id+0x13b/0x1f0
+> [   28.801334][   C16]  ? bus_find_device_by_name+0x20/0x20
+> [   28.801370][   C16]  ? kobject_put+0x23/0x250
+> [   28.811333][   C16]  walk_memory_blocks+0x6c/0xb8
+> [   28.811353][   C16]  ? write_policy_show+0x40/0x40
+> [   28.821334][   C16]  link_mem_sections+0x7e/0xa0
+> [   28.821369][   C16]  ? unregister_memory_block_under_nodes+0x210/0x210
+> [   28.831353][   C16]  ? __register_one_node+0x3bd/0x600
+> [   28.831353][   C16]  topology_init+0xbf/0x126
+> [   28.841364][   C16]  ? enable_cpu0_hotplug+0x1a/0x1a
+> [   28.841368][   C16]  do_one_initcall+0xfe/0x45a
+> [   28.851334][   C16]  ? initcall_blacklisted+0x150/0x150
+> [   28.851353][   C16]  ? kasan_check_write+0x14/0x20
+> [   28.861333][   C16]  ? up_write+0x75/0x140
+> [   28.861369][   C16]  kernel_init_freeable+0x619/0x6ac
+> [   28.871333][   C16]  ? rest_init+0x188/0x188
+> [   28.871353][   C16]  kernel_init+0x11/0x138
+> [   28.881363][   C16]  ? rest_init+0x188/0x188
+> [   28.881363][   C16]  ret_from_fork+0x22/0x40
+> [   56.661336][   C16] watchdog: BUG: soft lockup - CPU#16 stuck for 22s!
+> [swapper/0:1]
+> [   56.671352][   C16] Modules linked in:
+> [   56.671354][   C16] CPU: 16 PID: 1 Comm: swapper/0 Tainted:
+> G             L    5.2.0-rc5-next-20190621+ #1
+> [   56.681357][   C16] Hardware name: HPE ProLiant DL385 Gen10/ProLiant DL385
+> Gen10, BIOS A40 03/09/2018
+> [   56.691356][   C16] RIP: 0010:subsys_find_device_by_id+0x168/0x1f0
+> [   56.701334][   C16] Code: 48 85 c0 74 3e 48 8d 78 58 e8 14 77 ca ff 4d 8b 7e
+> 58 4d 85 ff 74 2c 49 8d bf a0 03 00 00 e8 bf 75 ca ff 45 39 a7 a0 03 00 00 <75>
+> c9 4c 89 ff e8 0e 89 ff ff 48 85 c0 74 bc 48 89 df e8 21 3b 24
+> [   56.721333][   C16] RSP: 0018:ffff888205b27c68 EFLAGS: 00000287 ORIG_RAX:
+> ffffffffffffff13
+> [   56.721370][   C16] RAX: 0000000000000000 RBX: ffff888205b27c90 RCX:
+> ffffffffb74c9dc1
+> [   56.731370][   C16] RDX: 0000000000000003 RSI: dffffc0000000000 RDI:
+> ffff8888774ec3e0
+> [   56.741371][   C16] RBP: ffff888205b27cf8 R08: ffffed1040a7ac28 R09:
+> ffffed1040a7ac27
+> [   56.751335][   C16] R10: ffffed1040a7ac27 R11: ffff8882053d613b R12:
+> 0000000000085c1b
+> [   56.761334][   C16] R13: 1ffff11040b64f8e R14: ffff888450de4a20 R15:
+> ffff8888774ec040
+> [   56.761372][   C16] FS:  0000000000000000(0000) GS:ffff888454500000(0000)
+> knlGS:0000000000000000
+> [   56.771374][   C16] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   56.781370][   C16] CR2: 0000000000000000 CR3: 00000007c9012000 CR4:
+> 00000000001406a0
+> [   56.791373][   C16] Call Trace:
+> [   56.791373][   C16]  ? bus_find_device_by_name+0x20/0x20
+> [   56.801334][   C16]  ? kobject_put+0x23/0x250
+> [   56.801334][   C16]  walk_memory_blocks+0x6c/0xb8
+> [   56.811333][   C16]  ? write_policy_show+0x40/0x40
+> [   56.811353][   C16]  link_mem_sections+0x7e/0xa0
+> [   56.811353][   C16]  ? unregister_memory_block_under_nodes+0x210/0x210
+> [   56.821333][   C16]  ? __register_one_node+0x3bd/0x600
+> [   56.831333][   C16]  topology_init+0xbf/0x126
+> [   56.831355][   C16]  ? enable_cpu0_hotplug+0x1a/0x1a
+> [   56.841334][   C16]  do_one_initcall+0xfe/0x45a
+> [   56.841334][   C16]  ? initcall_blacklisted+0x150/0x150
+> [   56.851333][   C16]  ? kasan_check_write+0x14/0x20
+> [   56.851354][   C16]  ? up_write+0x75/0x140
+> [   56.861333][   C16]  kernel_init_freeable+0x619/0x6ac
+> [   56.861333][   C16]  ? rest_init+0x188/0x188
+> [   56.861369][   C16]  kernel_init+0x11/0x138
+> [   56.871333][   C16]  ? rest_init+0x188/0x188
+> [   56.871354][   C16]  ret_from_fork+0x22/0x40
+> [   64.601362][   C16] rcu: INFO: rcu_sched self-detected stall on CPU
+> [   64.611335][   C16] rcu: 	16-....: (5958 ticks this GP)
+> idle=37e/1/0x4000000000000002 softirq=27/27 fqs=3000 
+> [   64.621334][   C16] 	(t=6002 jiffies g=-1079 q=25)
+> [   64.621334][   C16] NMI backtrace for cpu 16
+> [   64.621374][   C16] CPU: 16 PID: 1 Comm: swapper/0 Tainted:
+> G             L    5.2.0-rc5-next-20190621+ #1
+> [   64.631372][   C16] Hardware name: HPE ProLiant DL385 Gen10/ProLiant DL385
+> Gen10, BIOS A40 03/09/2018
+> [   64.641371][   C16] Call Trace:
+> [   64.651337][   C16]  <IRQ>
+> [   64.651376][   C16]  dump_stack+0x62/0x9a
+> [   64.651376][   C16]  nmi_cpu_backtrace.cold.0+0x2e/0x33
+> [   64.661337][   C16]  ? nmi_cpu_backtrace_handler+0x20/0x20
+> [   64.661337][   C16]  nmi_trigger_cpumask_backtrace+0x1a6/0x1b9
+> [   64.671353][   C16]  arch_trigger_cpumask_backtrace+0x19/0x20
+> [   64.681366][   C16]  rcu_dump_cpu_stacks+0x18b/0x1d6
+> [   64.681366][   C16]  rcu_sched_clock_irq.cold.64+0x368/0x791
+> [   64.691336][   C16]  ? kasan_check_read+0x11/0x20
+> [   64.691354][   C16]  ? __raise_softirq_irqoff+0x66/0x150
+> [   64.701336][   C16]  update_process_times+0x2f/0x60
+> [   64.701362][   C16]  tick_periodic+0x38/0xe0
+> [   64.711334][   C16]  tick_handle_periodic+0x2e/0x80
+> [   64.711353][   C16]  smp_apic_timer_interrupt+0xfb/0x370
+> [   64.721367][   C16]  apic_timer_interrupt+0xf/0x20
+> [   64.721367][   C16]  </IRQ>
+> [   64.721367][   C16] RIP: 0010:_raw_spin_unlock_irqrestore+0x2f/0x40
+> [   64.731370][   C16] Code: 55 48 89 e5 41 54 49 89 f4 be 01 00 00 00 53 
+> 
 
-> CCIX defines a number of different error types
-> (See CCIX spec 1.0) and UEFI 2.8 defines a CPER record to allow
-> for them to be reported when firmware first handling is in use.
-> The last part of that record is a copy of the CCIX protocol
-> error record which can provide very detailed information.
-> 
-> This patch introduces infrastructure and support for one of those
-> error types, CCIX Memory Errors.  Later patches will supply
-> equivalent support for the other error types.
-> 
-> The variable length and content of the different messages makes
-> a single tracepoint impractical.  As such the current RAS
-> tracepoint only covers the memory error. Additional trace points
-> will be introduced for other error types along with their
-> cper handling in a follow up series.
-> 
-> RAS daemon support to follow shortly. qemu injection patches
-> also available but not currently planing to upstream those.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-As this is still and RFC I'm not going to spin a new version yet,
-but we need some ifdef fun in the event header as it's calling
-functions much like extlog_mem_event does.
+@Qian Cai, unfortunately I can't reproduce.
 
-I'll roll that fix into v2 once people have had time to look at
-this version.
+If you get the chance, it would be great if you could retry with
+
+diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+index 972c5336bebf..742f99ddd148 100644
+--- a/drivers/base/memory.c
++++ b/drivers/base/memory.c
+@@ -868,6 +868,9 @@ int walk_memory_blocks(unsigned long start, unsigned
+long size,
+        unsigned long block_id;
+        int ret = 0;
+
++       if (!size)
++               return;
++
+        for (block_id = start_block_id; block_id <= end_block_id;
+block_id++) {
+                mem = find_memory_block_by_id(block_id);
+                if (!mem)
+
+
+
+If both, start and size are 0, we would get a veeeery long loop. This
+would mean that we have an online node that does not span any pages at
+all (pgdat->node_start_pfn = 0, start_pfn + pgdat->node_spanned_pages = 0).
+
+-- 
 
 Thanks,
 
-Jonathan
-
-> ---
->  drivers/acpi/apei/Kconfig        |   8 +
->  drivers/acpi/apei/ghes.c         |  39 ++++
->  drivers/firmware/efi/Kconfig     |   5 +
->  drivers/firmware/efi/Makefile    |   1 +
->  drivers/firmware/efi/cper-ccix.c | 356 +++++++++++++++++++++++++++++++
->  drivers/firmware/efi/cper.c      |   6 +
->  include/linux/cper.h             | 118 ++++++++++
->  include/ras/ras_event.h          |  77 +++++++
->  8 files changed, 610 insertions(+)
-> 
-> diff --git a/drivers/acpi/apei/Kconfig b/drivers/acpi/apei/Kconfig
-> index 6b18f8bc7be35..e687b18dee344 100644
-> --- a/drivers/acpi/apei/Kconfig
-> +++ b/drivers/acpi/apei/Kconfig
-> @@ -68,3 +68,11 @@ config ACPI_APEI_ERST_DEBUG
->  	  error information to and from a persistent store. Enable this
->  	  if you want to debugging and testing the ERST kernel support
->  	  and firmware implementation.
-> +
-> +config ACPI_APEI_CCIX
-> +       bool "APEI CCIX error recovery support"
-> +       depends on ACPI_APEI && MEMORY_FAILURE
-> +       help
-> +	 CCIX has a number of defined error types. This option enables
-> +	 the handling of CPER records generated by a firmware performing
-> +	 firmware first error handling of these CCIX errors.
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 993940d582f50..cfc7dc31a9380 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -477,6 +477,42 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
->  #endif
->  }
->  
-> +static void ghes_handle_ccix_per(struct acpi_hest_generic_data *gdata, int sev)
-> +{
-> +#ifdef CONFIG_ACPI_APEI_CCIX
-> +	struct cper_sec_ccix_header *header = acpi_hest_get_payload(gdata);
-> +	__u32 *dw;
-> +	enum ccix_per_type per_type;
-> +	static u32 err_seq;
-> +	void *payload;
-> +
-> +	/* Check if space for CCIX CPER header and 8 DW of a PER log header */
-> +	if (gdata->error_data_length <
-> +	    sizeof(*header) + CCIX_PER_LOG_HEADER_DWS * sizeof(__u32))
-> +		return;
-> +
-> +	if ((header->validation_bits & CPER_CCIX_VALID_PER_LOG) == 0)
-> +		return;
-> +
-> +	dw = (__u32 *)(header + 1);
-> +
-> +	per_type = FIELD_GET(CCIX_PER_LOG_DW1_PER_TYPE_M, dw[1]);
-> +	payload = acpi_hest_get_payload(gdata);
-> +
-> +	switch (per_type) {
-> +	case CCIX_MEMORY_ERROR:
-> +		trace_ccix_memory_error_event(payload, err_seq, sev,
-> +					      ccix_mem_err_ven_len_get(payload));
-> +		break;
-> +	default:
-> +		/* Unknown error type */
-> +		pr_info("CCIX error of unknown or vendor defined type\n");
-> +		break;
-> +	}
-> +	err_seq++;
-> +#endif
-> +}
-> +
->  static void ghes_do_proc(struct ghes *ghes,
->  			 const struct acpi_hest_generic_status *estatus)
->  {
-> @@ -507,6 +543,9 @@ static void ghes_do_proc(struct ghes *ghes,
->  		else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
->  			ghes_handle_aer(gdata);
->  		}
-> +		else if (guid_equal(sec_type, &CPER_SEC_CCIX)) {
-> +			ghes_handle_ccix_per(gdata, estatus->error_severity);
-> +		}
->  		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
->  			struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
->  
-> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-> index d4ea929e8b344..9ea161f68da8d 100644
-> --- a/drivers/firmware/efi/Kconfig
-> +++ b/drivers/firmware/efi/Kconfig
-> @@ -195,6 +195,11 @@ config UEFI_CPER_X86
->  	depends on UEFI_CPER && X86
->  	default y
->  
-> +config UEFI_CPER_CCIX
-> +       bool
-> +       depends on UEFI_CPER
-> +       default y
-> +
->  config EFI_DEV_PATH_PARSER
->  	bool
->  	depends on ACPI
-> diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
-> index d2d0d20306200..69287da9664b6 100644
-> --- a/drivers/firmware/efi/Makefile
-> +++ b/drivers/firmware/efi/Makefile
-> @@ -33,3 +33,4 @@ obj-$(CONFIG_EFI_CAPSULE_LOADER)	+= capsule-loader.o
->  obj-$(CONFIG_EFI_EARLYCON)		+= earlycon.o
->  obj-$(CONFIG_UEFI_CPER_ARM)		+= cper-arm.o
->  obj-$(CONFIG_UEFI_CPER_X86)		+= cper-x86.o
-> +obj-$(CONFIG_UEFI_CPER_CCIX)		+= cper-ccix.o
-> diff --git a/drivers/firmware/efi/cper-ccix.c b/drivers/firmware/efi/cper-ccix.c
-> new file mode 100644
-> index 0000000000000..9856804bdca81
-> --- /dev/null
-> +++ b/drivers/firmware/efi/cper-ccix.c
-> @@ -0,0 +1,356 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * UEFI Common Platform Error Record (CPER) support for CCIX
-> + * protocol errors.
-> + *
-> + * Copyright (C) 2019, Huawei
-> + *	Author: Jonathan Cameron <jonathan.cameron@huawei.com>
-> + *
-> + * CPER is the format used to describe platform hardware error by
-> + * various tables, such as ERST, BERT and HEST etc.
-> + *
-> + * For more information about CPER, please refer to Appendix N of UEFI
-> + * Specification version 2.9.
-> + *
-> + * CCIX defines a number of Protocol Error Messages which for the
-> + * main body of the CCIX CPER records.  These are defined in the
-> + * CCIX Specification 1.0.
-> + */
-> +
-> +#include <acpi/ghes.h>
-> +#include <linux/acpi.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/cper.h>
-> +#include <linux/kernel.h>
-> +#include <linux/printk.h>
-> +#include <ras/ras_event.h>
-> +
-> +static char rcd_decode_str[CPER_REC_LEN];
-> +
-> +static const char * const ccix_comp_type_strs[] = {
-> +	"Request Agent",
-> +	"Home Agent",
-> +	"Slave Agent",
-> +	"Port",
-> +	"Link",
-> +};
-> +
-> +const char *cper_ccix_comp_type_str(u8 comp_type)
-> +{
-> +	return comp_type < ARRAY_SIZE(ccix_comp_type_strs) ?
-> +		ccix_comp_type_strs[comp_type] : "Reserved";
-> +}
-> +
-> +static const char * const ccix_per_type_strs[] = {
-> +	"Memory Error",
-> +	"Cache Error",
-> +	"ATC Error",
-> +	"Port Error",
-> +	"Link Error",
-> +	"Agent Internal",
-> +};
-> +
-> +static const char * const ccix_mem_pool_gen_type_strs[] = {
-> +	"Other, Non-specified",
-> +	"ROM",
-> +	"Volatile",
-> +	"Non-volatile",
-> +	"Device",
-> +};
-> +
-> +static const char *cper_ccix_mem_err_generic_type_str(u16 type)
-> +{
-> +	const char *gen_type_str;
-> +
-> +	if (type < ARRAY_SIZE(ccix_mem_pool_gen_type_strs))
-> +		gen_type_str = ccix_mem_pool_gen_type_strs[type];
-> +	else if (type >= 0x80)
-> +		gen_type_str = "Vendor";
-> +	else
-> +		gen_type_str = "Reserved";
-> +
-> +	return gen_type_str;
-> +}
-> +
-> +static const char * const ccix_mem_op_type_strs[] = {
-> +	"Generic",
-> +	"Read",
-> +	"Write",
-> +	"Reserved",
-> +	"Scrub",
-> +};
-> +
-> +static const char *cper_ccix_mem_err_op_str(u8 op_type)
-> +{
-> +	return op_type < ARRAY_SIZE(ccix_mem_op_type_strs) ?
-> +		ccix_mem_op_type_strs[op_type] :
-> +		"Reserved";
-> +}
-> +
-> +/* Sightly different from the generic version */
-> +static const char * const ccix_mem_err_type_strs[] = {
-> +	"Unknown",
-> +	"No Error",
-> +	"Single-bit ECC",
-> +	"Multi-bit ECC",
-> +	"Single-symbol ChipKill ECC",
-> +	"Multi-symbol ChipKill ECC",
-> +	"Master Abort",
-> +	"Target Abort",
-> +	"Parity Error",
-> +	"Watchdog Timeout",
-> +	"Invalid Address",
-> +	"Mirror Broken",
-> +	"Memory Sparing",
-> +	"Scrub",
-> +	"Physical Memory Map-out Event",
-> +};
-> +
-> +const char *cper_ccix_mem_err_type_str(unsigned int error_type)
-> +{
-> +	return error_type < ARRAY_SIZE(ccix_mem_err_type_strs) ?
-> +		ccix_mem_err_type_strs[error_type] : "Reserved";
-> +}
-> +
-> +static const char * const ccix_mem_spec_type_strs[] = {
-> +	"Other, Not-specified",
-> +	"SRAM",
-> +	"DDR",
-> +	"NVDIMM-F",
-> +	"NVDIMM-N",
-> +	"HBM",
-> +	"Flash"
-> +};
-> +
-> +static const char *cper_ccix_mem_err_spec_type_str(u8 specific_type)
-> +{
-> +	if (specific_type < ARRAY_SIZE(ccix_mem_spec_type_strs))
-> +		return ccix_mem_spec_type_strs[specific_type];
-> +	else if (specific_type >= 0x80)
-> +		return "Vendor";
-> +	else
-> +		return "Reserved";
-> +}
-> +
-> +/*
-> + * We pack up everything except those that are needed for software handling:
-> + * - error_type, physical_addr
-> + * and header values that would require additional validation bits:
-> + * - source, component, severity,
-> + * implicit: protocol error type (mem)
-> + */
-> +void cper_ccix_mem_err_pack(const struct cper_sec_ccix_mem_error *mem_record,
-> +			    struct cper_ccix_mem_err_compact *cmem_err,
-> +			    const u16 vendor_data_len,
-> +			    u8 *vendor_data)
-> +{
-> +	cmem_err->validation_bits = mem_record->validation_bits;
-> +	cmem_err->mem_err_type = mem_record->memory_error_type;
-> +	cmem_err->pool_generic_type = mem_record->pool_generic_type;
-> +	cmem_err->op_type = mem_record->op_type;
-> +	cmem_err->card = mem_record->card;
-> +	cmem_err->module = mem_record->module;
-> +	cmem_err->bank = mem_record->bank;
-> +	cmem_err->device = mem_record->device;
-> +	cmem_err->row = mem_record->row;
-> +	cmem_err->column = mem_record->column;
-> +	cmem_err->rank = mem_record->rank;
-> +	cmem_err->bit_pos = mem_record->bit_pos;
-> +	cmem_err->chip_id = mem_record->chip_id;
-> +	cmem_err->pool_specific_type = mem_record->pool_specific_type;
-> +	cmem_err->fru = mem_record->fru;
-> +	memcpy(vendor_data, &mem_record->vendor_data[1], vendor_data_len);
-> +}
-> +
-> +static int cper_ccix_err_location(struct cper_ccix_mem_err_compact *cmem_err,
-> +				  char *msg)
-> +{
-> +	u32 len = CPER_REC_LEN - 1;
-> +	u32 n = 0;
-> +
-> +	if (!msg)
-> +		return 0;
-> +
-> +	if (cmem_err->validation_bits & CCIX_MEM_ERR_GENERIC_MEM_VALID)
-> +		n += snprintf(msg + n, len, "Pool Generic Type: %s ",
-> +			      cper_ccix_mem_err_generic_type_str(cmem_err->pool_generic_type));
-> +
-> +	if (cmem_err->validation_bits & CCIX_MEM_ERR_MEM_ERR_TYPE_VALID)
-> +		n += snprintf(msg + n, len, "Err Type: %s ",
-> +			      cper_ccix_mem_err_type_str(cmem_err->mem_err_type));
-> +	if (cmem_err->validation_bits & CCIX_MEM_ERR_OP_VALID)
-> +		n += snprintf(msg + n, len, "Operation: %s ",
-> +			     cper_ccix_mem_err_op_str(cmem_err->op_type));
-> +
-> +	if (cmem_err->validation_bits & CCIX_MEM_ERR_CARD_VALID)
-> +		n += snprintf(msg + n, len, "Card: %d ", cmem_err->card);
-> +	if (cmem_err->validation_bits & CCIX_MEM_ERR_MOD_VALID)
-> +		n += snprintf(msg + n, len, "Mod: %d ", cmem_err->module);
-> +	if (cmem_err->validation_bits & CCIX_MEM_ERR_BANK_VALID)
-> +		n += snprintf(msg + n, len, "Bank: %d ", cmem_err->bank);
-> +	if (cmem_err->validation_bits & CCIX_MEM_ERR_DEVICE_VALID)
-> +		n += snprintf(msg + n, len, "Device: %d ", cmem_err->device);
-> +	if (cmem_err->validation_bits & CCIX_MEM_ERR_ROW_VALID)
-> +		n += snprintf(msg + n, len, "Row: %d ", cmem_err->row);
-> +	if (cmem_err->validation_bits & CCIX_MEM_ERR_COL_VALID)
-> +		n += snprintf(msg + n, len, "Col: %d ", cmem_err->column);
-> +	if (cmem_err->validation_bits & CCIX_MEM_ERR_RANK_VALID)
-> +		n += snprintf(msg + n, len, "Rank: %d ", cmem_err->rank);
-> +	if (cmem_err->validation_bits & CCIX_MEM_ERR_BIT_POS_VALID)
-> +		n += snprintf(msg + n, len, "BitPos: %d ", cmem_err->bit_pos);
-> +	if (cmem_err->validation_bits & CCIX_MEM_ERR_CHIP_ID_VALID)
-> +		n += snprintf(msg + n, len, "ChipID: %d ", cmem_err->chip_id);
-> +	if (cmem_err->validation_bits & CCIX_MEM_ERR_SPEC_TYPE_VALID)
-> +		n += snprintf(msg + n, len, "Pool Specific Type: %s ",
-> +			      cper_ccix_mem_err_spec_type_str(cmem_err->pool_specific_type));
-> +	n += snprintf(msg + n, len, "FRU: %d ", cmem_err->fru);
-> +
-> +	return n;
-> +}
-> +
-> +const char *cper_ccix_mem_err_unpack(struct trace_seq *p,
-> +				     struct cper_ccix_mem_err_compact *cmem_err)
-> +{
-> +	const char *ret = trace_seq_buffer_ptr(p);
-> +
-> +	if (cper_ccix_err_location(cmem_err, rcd_decode_str))
-> +		trace_seq_printf(p, "%s", rcd_decode_str);
-> +	trace_seq_putc(p, '\0');
-> +
-> +	return ret;
-> +}
-> +
-> +static int cper_ccix_mem_err_details(const char *pfx,
-> +				     struct acpi_hest_generic_data *gdata)
-> +{
-> +	struct cper_ccix_mem_error *full_mem_err;
-> +	struct cper_sec_ccix_mem_error *mem_err;
-> +	u16 vendor_data_len;
-> +	int i;
-> +
-> +	if (gdata->error_data_length < sizeof(*full_mem_err))
-> +		return -ENOSPC;
-> +
-> +	full_mem_err = acpi_hest_get_payload(gdata);
-> +
-> +	mem_err = &full_mem_err->mem_record;
-> +	printk("%s""FRU ID: %u, Length: %u\n", pfx,
-> +	       mem_err->fru, mem_err->length);
-> +	if (mem_err->validation_bits & CCIX_MEM_ERR_GENERIC_MEM_VALID)
-> +		printk("%s""Pool Generic Type: %s\n", pfx,
-> +		       cper_ccix_mem_err_generic_type_str(mem_err->pool_generic_type));
-> +
-> +	if (mem_err->validation_bits & CCIX_MEM_ERR_OP_VALID)
-> +		printk("%s""Operation: %s\n", pfx,
-> +		       cper_ccix_mem_err_op_str(mem_err->op_type));
-> +
-> +	if (mem_err->validation_bits & CCIX_MEM_ERR_MEM_ERR_TYPE_VALID) {
-> +		printk("%s""Mem Error Type: %s\n", pfx,
-> +		       cper_ccix_mem_err_type_str(mem_err->memory_error_type));
-> +	}
-> +	if (mem_err->validation_bits & CCIX_MEM_ERR_CARD_VALID)
-> +		printk("%s""Card: %u\n", pfx, mem_err->card);
-> +	if (mem_err->validation_bits & CCIX_MEM_ERR_MOD_VALID)
-> +		printk("%s""Module: %u\n", pfx, mem_err->module);
-> +	if (mem_err->validation_bits & CCIX_MEM_ERR_BANK_VALID)
-> +		printk("%s""Bank: %u\n", pfx, mem_err->bank);
-> +	if (mem_err->validation_bits & CCIX_MEM_ERR_DEVICE_VALID)
-> +		printk("%s""Device: %u\n", pfx, mem_err->device);
-> +	if (mem_err->validation_bits & CCIX_MEM_ERR_ROW_VALID)
-> +		printk("%s""Row: %u\n", pfx, mem_err->row);
-> +	if (mem_err->validation_bits & CCIX_MEM_ERR_COL_VALID)
-> +		printk("%s""Column: %u\n", pfx, mem_err->column);
-> +	if (mem_err->validation_bits & CCIX_MEM_ERR_RANK_VALID)
-> +		printk("%s""Rank: %u\n", pfx, mem_err->rank);
-> +	if (mem_err->validation_bits & CCIX_MEM_ERR_BIT_POS_VALID)
-> +		printk("%s""Bit Pos: %u\n", pfx, mem_err->bit_pos);
-> +	if (mem_err->validation_bits & CCIX_MEM_ERR_CHIP_ID_VALID)
-> +		printk("%s""Chip ID: %u\n", pfx, mem_err->chip_id);
-> +	if (mem_err->validation_bits & CCIX_MEM_ERR_SPEC_TYPE_VALID)
-> +		printk("%s""Specific Type: %s\n", pfx,
-> +		       cper_ccix_mem_err_spec_type_str(mem_err->pool_specific_type));
-> +
-> +	if (mem_err->validation_bits & CCIX_MEM_ERR_VENDOR_DATA_VALID) {
-> +		if (gdata->error_data_length < sizeof(*full_mem_err) + 4)
-> +			return -ENOSPC;
-> +
-> +		vendor_data_len = mem_err->vendor_data[0] & GENMASK(15, 0);
-> +		if (gdata->error_data_length <
-> +		    sizeof(*full_mem_err) + vendor_data_len)
-> +			return -ENOSPC;
-> +
-> +		for (i = 0; i < vendor_data_len / 4 - 1; i++)
-> +			printk("%s""Vendor%d: 0x%08x\n", pfx, i,
-> +			       mem_err->vendor_data[i + 1]);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +int cper_print_ccix_per(const char *pfx, struct acpi_hest_generic_data *gdata)
-> +{
-> +	struct cper_sec_ccix_header *header = acpi_hest_get_payload(gdata);
-> +	__u32 *dw;
-> +	__u32 comp_type;
-> +	enum ccix_per_type per_type;
-> +	bool vendor_per;
-> +
-> +	if (gdata->error_data_length < sizeof(*header))
-> +		return -ENOSPC;
-> +
-> +	printk("%s""CPER Length: %u\n", pfx, header->length);
-> +	if (header->validation_bits & CPER_CCIX_VALID_SOURCE_ID)
-> +		printk("%s""Source: %u\n", pfx, header->source_id);
-> +	if (header->validation_bits & CPER_CCIX_VALID_PORT_ID)
-> +		printk("%s""Port: %u\n", pfx, header->port_id);
-> +	/* Not much use if we don't have the per log, in theory it's optional */
-> +	if ((header->validation_bits & CPER_CCIX_VALID_PER_LOG) == 0)
-> +		return 0;
-> +
-> +	/* The per log header is a packed structure so needs breaking up */
-> +	if (gdata->error_data_length < sizeof(*header) + 8 * 4)
-> +		return -ENOSPC;
-> +
-> +	dw = (__u32 *)(header + 1);
-> +
-> +	printk("%s""PER Rev: %lu, Log Length: %lu\n", pfx,
-> +	       FIELD_GET(CCIX_PER_LOG_DW0_REV_M, dw[0]),
-> +	       FIELD_GET(CCIX_PER_LOG_DW0_LEN_M, dw[0]));
-> +	comp_type = FIELD_GET(CCIX_PER_LOG_DW1_COMP_TYPE_M, dw[1]);
-> +	printk("%s""Component: %s\n", pfx, cper_ccix_comp_type_str(comp_type));
-> +	printk("%s""ME: %lu, SevUE: %lu, SevNoComm: %lu, SevDegraded: %lu, SevDeferred %lu\n",
-> +	       pfx,
-> +	       FIELD_GET(CCIX_PER_LOG_DW0_ME_M, dw[0]),
-> +	       FIELD_GET(CCIX_PER_LOG_DW1_SEV_UE_M, dw[1]),
-> +	       FIELD_GET(CCIX_PER_LOG_DW1_SEV_NO_COMM_M, dw[1]),
-> +	       FIELD_GET(CCIX_PER_LOG_DW1_SEV_DEGRADED_M, dw[1]),
-> +	       FIELD_GET(CCIX_PER_LOG_DW1_SEV_DEFFERABLE_M, dw[1]));
-> +
-> +	/* per_type is vendor defined if VEN is set */
-> +	vendor_per = FIELD_GET(CCIX_PER_LOG_DW1_VEN_VAL_M, dw[1]) ?
-> +		true : false;
-> +	per_type = FIELD_GET(CCIX_PER_LOG_DW1_PER_TYPE_M, dw[1]);
-> +	if (vendor_per)
-> +		printk("%s""Protocol Error Type: Vendor%u", pfx, per_type);
-> +	else
-> +		printk("%s""Protocol Error Type: %s\n", pfx,
-> +		       per_type < ARRAY_SIZE(ccix_per_type_strs) ?
-> +		       ccix_per_type_strs[per_type] : "Reserved");
-> +
-> +	if (FIELD_GET(CCIX_PER_LOG_DW1_ADDR_VAL_M, dw[1]))
-> +		printk("%s""Address: 0x%llx\n", pfx,
-> +		       (((__u64)dw[2]) << 32) | (dw[3] & 0xFFFFFFFC));
-> +
-> +	/* Vendor defined PER message, perhaps we could print it out */
-> +	if (vendor_per)
-> +		return 0;
-> +
-> +	switch (per_type) {
-> +	case CCIX_MEMORY_ERROR:
-> +		return cper_ccix_mem_err_details(pfx, gdata);
-> +	default:
-> +		/* Vendor defined so no formatting be done */
-> +		break;
-> +	}
-> +	return 0;
-> +}
-> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-> index 8fa977c7861f9..52f0954a4577a 100644
-> --- a/drivers/firmware/efi/cper.c
-> +++ b/drivers/firmware/efi/cper.c
-> @@ -459,6 +459,12 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
->  			cper_print_pcie(newpfx, pcie, gdata);
->  		else
->  			goto err_section_too_small;
-> +	} else if (guid_equal(sec_type, &CPER_SEC_CCIX)) {
-> +		int ret;
-> +		/* CCIX CPER entries are variable length */
-> +		ret = cper_print_ccix_per(newpfx, gdata);
-> +		if (ret)
-> +			goto err_section_too_small;
->  #if defined(CONFIG_ARM64) || defined(CONFIG_ARM)
->  	} else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
->  		struct cper_sec_proc_arm *arm_err = acpi_hest_get_payload(gdata);
-> diff --git a/include/linux/cper.h b/include/linux/cper.h
-> index cc4980bb0f65a..a9a7ef56f4dc8 100644
-> --- a/include/linux/cper.h
-> +++ b/include/linux/cper.h
-> @@ -186,6 +186,9 @@ enum {
->  #define CPER_SEC_PCIE							\
->  	GUID_INIT(0xD995E954, 0xBBC1, 0x430F, 0xAD, 0x91, 0xB4, 0x4D,	\
->  		  0xCB, 0x3C, 0x6F, 0x35)
-> +#define CPER_SEC_CCIX							\
-> +	GUID_INIT(0x91335EF6, 0xEBFB, 0x4478, 0xA6, 0xA6, 0x88, 0xB7,	\
-> +		  0x28, 0xCF, 0x75, 0xD7)
->  /* Firmware Error Record Reference */
->  #define CPER_SEC_FW_ERR_REC_REF						\
->  	GUID_INIT(0x81212A96, 0x09ED, 0x4996, 0x94, 0x71, 0x8D, 0x72,	\
-> @@ -254,6 +257,10 @@ enum {
->  
->  #define CPER_PCIE_SLOT_SHIFT			3
->  
-> +#define CPER_CCIX_VALID_SOURCE_ID		BIT(0)
-> +#define CPER_CCIX_VALID_PORT_ID			BIT(1)
-> +#define CPER_CCIX_VALID_PER_LOG			BIT(2)
-> +
->  #define CPER_ARM_VALID_MPIDR			BIT(0)
->  #define CPER_ARM_VALID_AFFINITY_LEVEL		BIT(1)
->  #define CPER_ARM_VALID_RUNNING_STATE		BIT(2)
-> @@ -533,6 +540,105 @@ struct cper_sec_pcie {
->  	u8	aer_info[96];
->  };
->  
-> +struct cper_sec_ccix_header {
-> +	__u32	length;
-> +	__u64	validation_bits;
-> +	__u8	source_id;
-> +	__u8	port_id;
-> +	__u8	reserved[2];
-> +};
-> +
-> +#define CCIX_PER_LOG_DW0_REV_M			GENMASK(7, 0)
-> +#define CCIX_PER_LOG_DW0_LEN_M			GENMASK(14, 8)
-> +#define CCIX_PER_LOG_DW0_ME_M			BIT(15)
-> +#define CCIX_PER_LOG_DW1_COMP_TYPE_M		GENMASK(15, 12)
-> +#define CCIX_PER_LOG_DW1_SEV_UE_M		BIT(16)
-> +#define CCIX_PER_LOG_DW1_SEV_NO_COMM_M		BIT(17)
-> +#define CCIX_PER_LOG_DW1_SEV_DEGRADED_M		BIT(18)
-> +#define CCIX_PER_LOG_DW1_SEV_DEFFERABLE_M	BIT(19)
-> +#define CCIX_PER_LOG_DW1_PER_TYPE_M		GENMASK(27, 24)
-> +#define CCIX_PER_LOG_DW1_ADDR_VAL_M		BIT(30)
-> +#define CCIX_PER_LOG_DW1_VEN_VAL_M		BIT(31)
-> +enum ccix_per_type {
-> +	CCIX_MEMORY_ERROR = 0,
-> +	CCIX_CACHE_ERROR = 1,
-> +	CCIX_ATC_ERROR = 2,
-> +	CCIX_PORT_ERROR = 3,
-> +	CCIX_LINK_ERROR = 4,
-> +	CCIX_AGENT_INTERNAL_ERROR = 5,
-> +};
-> +
-> +#define CCIX_PER_LOG_HEADER_DWS 8
-> +
-> +struct cper_sec_ccix_mem_error {
-> +	__u32	validation_bits;
-> +#define CCIX_MEM_ERR_GENERIC_MEM_VALID		BIT(0)
-> +#define CCIX_MEM_ERR_OP_VALID			BIT(1)
-> +#define CCIX_MEM_ERR_MEM_ERR_TYPE_VALID		BIT(2)
-> +#define CCIX_MEM_ERR_CARD_VALID			BIT(3)
-> +#define CCIX_MEM_ERR_BANK_VALID			BIT(4)
-> +#define CCIX_MEM_ERR_DEVICE_VALID		BIT(5)
-> +#define CCIX_MEM_ERR_ROW_VALID			BIT(6)
-> +#define CCIX_MEM_ERR_COL_VALID			BIT(7)
-> +#define CCIX_MEM_ERR_RANK_VALID			BIT(8)
-> +#define CCIX_MEM_ERR_BIT_POS_VALID		BIT(9)
-> +#define CCIX_MEM_ERR_CHIP_ID_VALID		BIT(10)
-> +#define CCIX_MEM_ERR_VENDOR_DATA_VALID		BIT(11)
-> +#define CCIX_MEM_ERR_MOD_VALID			BIT(12)
-> +#define CCIX_MEM_ERR_SPEC_TYPE_VALID		BIT(13)
-> +
-> +	__u8	fru;
-> +	__u8	reserved;
-> +	__u16	length; /* Includes vendor specific log info */
-> +	__u8	pool_generic_type;
-> +	__u8	op_type;
-> +	__u8	memory_error_type;
-> +	__u8	card;
-> +	__u16	module;
-> +	__u16	bank;
-> +	__u32	device;
-> +	__u32	row;
-> +	__u32	column;
-> +	__u32	rank;
-> +	__u8	bit_pos;
-> +	__u8	chip_id;
-> +	__u8	pool_specific_type;
-> +	__u32	vendor_data[];
-> +};
-> +
-> +struct cper_ccix_mem_error {
-> +	struct cper_sec_ccix_header header;
-> +	__u32 ccix_header[CCIX_PER_LOG_HEADER_DWS];
-> +	struct cper_sec_ccix_mem_error mem_record;
-> +};
-> +
-> +static inline u16 ccix_mem_err_ven_len_get(struct cper_ccix_mem_error *mem_err)
-> +{
-> +	if (mem_err->mem_record.validation_bits &
-> +	    CCIX_MEM_ERR_VENDOR_DATA_VALID)
-> +		return mem_err->mem_record.vendor_data[0] & 0xFFFF;
-> +	else
-> +		return 0;
-> +}
-> +
-> +struct cper_ccix_mem_err_compact {
-> +	__u32	validation_bits;
-> +	__u8	mem_err_type;
-> +	__u8	pool_generic_type;
-> +	__u8	pool_specific_type;
-> +	__u8	op_type;
-> +	__u8	card;
-> +	__u16	module;
-> +	__u16	bank;
-> +	__u32	device;
-> +	__u32	row;
-> +	__u32	column;
-> +	__u32	rank;
-> +	__u8	bit_pos;
-> +	__u8	chip_id;
-> +	__u8	fru;
-> +};
-> +
->  /* Reset to default packing */
->  #pragma pack()
->  
-> @@ -547,6 +653,18 @@ void cper_mem_err_pack(const struct cper_sec_mem_err *,
->  		       struct cper_mem_err_compact *);
->  const char *cper_mem_err_unpack(struct trace_seq *,
->  				struct cper_mem_err_compact *);
-> +void cper_ccix_mem_err_pack(const struct cper_sec_ccix_mem_error *mem_record,
-> +			    struct cper_ccix_mem_err_compact *cmem_err,
-> +			    const u16 vendor_data_len,
-> +			    u8 *vendor_data);
-> +const char *cper_ccix_mem_err_unpack(struct trace_seq *p,
-> +				     struct cper_ccix_mem_err_compact *cmem_err);
-> +const char *cper_ccix_mem_err_type_str(unsigned int error_type);
-> +const char *cper_ccix_comp_type_str(u8 comp_type);
-> +struct acpi_hest_generic_data;
-> +int cper_print_ccix_per(const char *pfx,
-> +			struct acpi_hest_generic_data *gdata);
-> +
->  void cper_print_proc_arm(const char *pfx,
->  			 const struct cper_sec_proc_arm *proc);
->  void cper_print_proc_ia(const char *pfx,
-> diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
-> index 36c5c5e38c1d8..128728eaeef41 100644
-> --- a/include/ras/ras_event.h
-> +++ b/include/ras/ras_event.h
-> @@ -14,6 +14,7 @@
->  #include <linux/cper.h>
->  #include <linux/mm.h>
->  
-> +#include <linux/bitfield.h>
->  /*
->   * MCE Extended Error Log trace event
->   *
-> @@ -338,6 +339,82 @@ TRACE_EVENT(aer_event,
->  			"Not available")
->  );
->  
-> +/*
-> + * CCIX PER log memory error trace event
-> + *
-> + * These events are generated when hardware detects a corrected or
-> + * uncorrected event.
-> + *
-> + * Some elements of the record are not included
-> + * - PER version (tracepoint should remain compatible across versions)
-> + * - Multiple Error
-> + */
-> +TRACE_EVENT(ccix_memory_error_event,
-> +	TP_PROTO(struct cper_ccix_mem_error *mem,
-> +		 u32 err_seq,
-> +		 u8 sev,
-> +		 u16 ven_len),
-> +
-> +	TP_ARGS(mem, err_seq, sev, ven_len),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(u32, err_seq)
-> +		__field(u8, sev)
-> +		__field(u8, sevdetail)
-> +		__field(u8, source)
-> +		__field(u8, component)
-> +		__field(u64, pa)
-> +		__field(u8, pa_mask_lsb)
-> +		__field_struct(struct cper_ccix_mem_err_compact, data)
-> +		__field(u16, vendor_data_length)
-> +		__dynamic_array(u8, vendor_data, ven_len)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->err_seq = err_seq;
-> +		__entry->sev = sev;
-> +		__entry->sevdetail =
-> +			FIELD_GET(CCIX_PER_LOG_DW1_SEV_UE_M |
-> +				  CCIX_PER_LOG_DW1_SEV_NO_COMM_M |
-> +				  CCIX_PER_LOG_DW1_SEV_DEGRADED_M |
-> +				  CCIX_PER_LOG_DW1_SEV_DEFFERABLE_M,
-> +						   mem->ccix_header[1]);
-> +		if (mem->header.validation_bits & 0x1)
-> +			__entry->source = mem->header.source_id;
-> +		else
-> +			__entry->source = ~0;
-> +		__entry->component = FIELD_GET(CCIX_PER_LOG_DW1_COMP_TYPE_M,
-> +					       mem->ccix_header[1]);
-> +		if (mem->ccix_header[1] & CCIX_PER_LOG_DW1_ADDR_VAL_M) {
-> +			__entry->pa = (u64)mem->ccix_header[2] << 32 |
-> +				(mem->ccix_header[3] & 0xfffffffc);
-> +			__entry->pa_mask_lsb = mem->ccix_header[4] & 0xff;
-> +		} else {
-> +			__entry->pa = ~0ull;
-> +			__entry->pa_mask_lsb = ~0;
-> +		}
-> +		__entry->vendor_data_length = ven_len ? ven_len - 4 : 0;
-
-As the following may or may not be configured in a given kernel, we need
-to add some ifdef protections.  As with the extlog_mem_event the sensible option
-is probably to just protect the whole tracepoint definition.
-
-> +		cper_ccix_mem_err_pack(&mem->mem_record, &__entry->data,
-> +				       __entry->vendor_data_length,
-> +				       __get_dynamic_array(vendor_data));
-> +	),
-> +
-> +	TP_printk("{%d} %s CCIX PER Memory Error in %s SevUE:%d SevNoComm:%d SevDegraded:%d SevDeferred:%d physical addr: %016llx (mask: %x) %s vendor:%s",
-> +		__entry->err_seq,
-> +		cper_severity_str(__entry->sev),
-> +		cper_ccix_comp_type_str(__entry->component),
-> +		  __entry->sevdetail & BIT(0) ? 1 : 0,
-> +		  __entry->sevdetail & BIT(1) ? 1 : 0,
-> +		  __entry->sevdetail & BIT(2) ? 1 : 0,
-> +		  __entry->sevdetail & BIT(3) ? 1 : 0,
-> +		__entry->pa,
-> +		__entry->pa_mask_lsb,
-> +		cper_ccix_mem_err_unpack(p, &__entry->data),
-> +		__print_hex(__get_dynamic_array(vendor_data),
-> +			    __entry->vendor_data_length)
-> +	)
-> +);
-> +
->  /*
->   * memory-failure recovery action result event
->   *
-
-
+David / dhildenb
