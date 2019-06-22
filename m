@@ -2,102 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D87DF4F239
-	for <lists+linux-acpi@lfdr.de>; Sat, 22 Jun 2019 02:05:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D08084F289
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Jun 2019 02:07:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726689AbfFVAEl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Jun 2019 20:04:41 -0400
-Received: from mail-qk1-f202.google.com ([209.85.222.202]:51262 "EHLO
-        mail-qk1-f202.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726809AbfFVAEl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jun 2019 20:04:41 -0400
-Received: by mail-qk1-f202.google.com with SMTP id s25so9333540qkj.18
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Jun 2019 17:04:40 -0700 (PDT)
+        id S1726469AbfFVAGY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Jun 2019 20:06:24 -0400
+Received: from mail-vk1-f201.google.com ([209.85.221.201]:38176 "EHLO
+        mail-vk1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726819AbfFVAEn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jun 2019 20:04:43 -0400
+Received: by mail-vk1-f201.google.com with SMTP id u202so3060472vku.5
+        for <linux-acpi@vger.kernel.org>; Fri, 21 Jun 2019 17:04:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=kMkOq/TdZP2DxC+0jYMlNvaXt/K0jRyWoQ2RXLMuYi0=;
-        b=QRjJLKdNtZo8CP4nTH7hluG2qV1AXyHaeNhLgJ9dx1fDUKb4PKvKgsxZC9qD/JpyOc
-         nDlpqLlNjPK2Fr6/XPB9DFGktNMicEjN1U3rsUDXfXc0qt6uDJ4LiVqBRuB0IEYVTdqC
-         g9pw8gFOb/hrRGu3KsVlrmVHnvI6Fg2+fFpvLxGvsYk9kHFo5degfWEqDha7Y8eH/AMU
-         owop8HB8frx+BdG4M4kFYi15V93p/L6y8OBHHLti5WrGcp5xyaJuzKxcJQQIy7uVl5RI
-         bM63+qZ8cl4gZwKMeJroO8r+Eqm/Y9IaQqorCVln/XP6Sft3X+wUDeJFpOaUTuF1wRyz
-         uPNw==
+        bh=n33H2caFWJMziV8Vl9fEyuQPirYfKy2HcqzebAjjbEk=;
+        b=QWSAua9g9RwKP0uU2R678HQj1nTTQlk+ccuY/QK3BB9zuEyoAp2MVYhulrYkxknxtp
+         8CcguRHGvVDf5J0QYKG9GN2mG6EWCobGgzOL2HDjpsFhBVlDO71Hs+o0pLtXh/p3Ed4V
+         N5nM6O7m5g2LG2oUQZP1CsRN/M4x/GGJNW1x6vRcXwslO1ZZEosxSyRhL7850ntFt/Qr
+         0nB8h31WahXFNIUcWpZ86cgp6VcJyrAzNoEdvFqSnlqNyhwwQTw4mGjPAMnnSJ4bBY5N
+         uVnBjMN4HatYvmQyuAT2EkWPBDPyZag+Wolf4TT6MIZc1eWQtxhPUA57hp8Msm/MWMnW
+         KRIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=kMkOq/TdZP2DxC+0jYMlNvaXt/K0jRyWoQ2RXLMuYi0=;
-        b=QXdHgCWF8Np57JjgoWNsE8EDH72Tm7A7SBKDjXJA0ZRQuBh/4SlmU40WHQkoi9Plfn
-         Hl4NYWoUd2tB9mkcHWblF68uAK23bBCznT+eo8yghj26jst5PWTpTsyA7oHgohCzDHlM
-         Oa5yLByFYN6gMDWvCp+Vqa1pkW7FgR6WBHLW++2QFbxDTw+fMLyuV70vJafR7H515ZA/
-         9XX0utDidw6bL/fa7P5d5WuObmFdXdjhGtexZNsA+Syqjuc4NhGapfE9erVIDHGGycOl
-         E1/ni97PFu7+xVRc/l7ts+/nGL9niUFT8MDH41RpM19wjccsjL/5Spj03go9fdB+Eli5
-         pccw==
-X-Gm-Message-State: APjAAAX1yNEbWlFrtA5xA0el6MO/gy7/O0l27Y2IEKFNapq4lRDFKN80
-        zUyjElp5AMOK0jjQpKavF1WYCSDRs9Pg+d14EnI9xg==
-X-Google-Smtp-Source: APXvYqyfTelCSA7v0vPY8aBBSkh56jUJFjBxZnlm2jUkbBn4LGuF/pZ/ysDWTqqbVvj8Ybj3gU9B9i2a5Gg4/j2L/hPeGw==
-X-Received: by 2002:a37:a9c9:: with SMTP id s192mr111878928qke.335.1561161880192;
- Fri, 21 Jun 2019 17:04:40 -0700 (PDT)
-Date:   Fri, 21 Jun 2019 17:03:44 -0700
+        bh=n33H2caFWJMziV8Vl9fEyuQPirYfKy2HcqzebAjjbEk=;
+        b=RCH14mfP9AHvudT2mm4mVhs3P+i2EpOLl4DQL2jzCXG5mOKZouvc/48D+dPb4ZQOPq
+         76KYzKbiZiaQfbT3SB5roHzkGO5Ke/3/zMs4tP1NLVxZlMPr5PWJ9LhaCjiDMK18K6GI
+         bmQgtD2g3MIvn356naoXv329VIzRhC/luNWqztbgWSOJwT1KSGvwDpMpk65Lj2jAw7bH
+         Tq/JkuFFHTuEYhoGPwyMMKh/pMNreLUgwimE3/f/8uDPRWMlngki5CBIZzbASABQoygE
+         AmpUs8RquYW6nrg/WeNJHp+6leqyLU31V+8WJyDT5NS0l1w5uJwL6sXeIwcvpYzGK6vL
+         fLow==
+X-Gm-Message-State: APjAAAV70bf3f41PchBoHOkMQVq6ANu31ApF8NLIsKW7t6liZijBV7ps
+        X58JorFESLmt32uh0x9UB3p0w12XSN3AL5LRjAJJHA==
+X-Google-Smtp-Source: APXvYqz+aR99joPErIIEbc2OhbHDT9lUw4o9PwDXDXdQ9wGtV1PBN1Bun/Dpx72Xl1cgY14BcfWe++NbFFwjQPw4r6febw==
+X-Received: by 2002:a67:7fd8:: with SMTP id a207mr52544296vsd.85.1561161882682;
+ Fri, 21 Jun 2019 17:04:42 -0700 (PDT)
+Date:   Fri, 21 Jun 2019 17:03:45 -0700
 In-Reply-To: <20190622000358.19895-1-matthewgarrett@google.com>
-Message-Id: <20190622000358.19895-16-matthewgarrett@google.com>
+Message-Id: <20190622000358.19895-17-matthewgarrett@google.com>
 Mime-Version: 1.0
 References: <20190622000358.19895-1-matthewgarrett@google.com>
 X-Mailer: git-send-email 2.22.0.410.gd8fdbe21b5-goog
-Subject: [PATCH V34 15/29] acpi: Ignore acpi_rsdp kernel param when the kernel
- has been locked down
+Subject: [PATCH V34 16/29] acpi: Disable ACPI table override if the kernel is
+ locked down
 From:   Matthew Garrett <matthewgarrett@google.com>
 To:     jmorris@namei.org
 Cc:     linux-security-module@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-        Josh Boyer <jwboyer@redhat.com>,
+        Linn Crosetto <linn@hpe.com>,
         David Howells <dhowells@redhat.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Dave Young <dyoung@redhat.com>, linux-acpi@vger.kernel.org
+        Matthew Garrett <mjg59@google.com>, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Josh Boyer <jwboyer@redhat.com>
+From: Linn Crosetto <linn@hpe.com>
 
-This option allows userspace to pass the RSDP address to the kernel, which
-makes it possible for a user to modify the workings of hardware .  Reject
-the option when the kernel is locked down.
+From the kernel documentation (initrd_table_override.txt):
 
-Signed-off-by: Josh Boyer <jwboyer@redhat.com>
+  If the ACPI_INITRD_TABLE_OVERRIDE compile option is true, it is possible
+  to override nearly any ACPI table provided by the BIOS with an
+  instrumented, modified one.
+
+When lockdown is enabled, the kernel should disallow any unauthenticated
+changes to kernel space.  ACPI tables contain code invoked by the kernel,
+so do not allow ACPI tables to be overridden if the kernel is locked down.
+
+Signed-off-by: Linn Crosetto <linn@hpe.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Matthew Garrett <mjg59@google.com>
-cc: Dave Young <dyoung@redhat.com>
 cc: linux-acpi@vger.kernel.org
 ---
- drivers/acpi/osl.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/acpi/tables.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index f29e427d0d1d..60cda8a0f36b 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -40,6 +40,7 @@
- #include <linux/list.h>
- #include <linux/jiffies.h>
- #include <linux/semaphore.h>
+diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+index 8fccbe49612a..41d9ccd0e075 100644
+--- a/drivers/acpi/tables.c
++++ b/drivers/acpi/tables.c
+@@ -34,6 +34,7 @@
+ #include <linux/memblock.h>
+ #include <linux/earlycpio.h>
+ #include <linux/initrd.h>
 +#include <linux/security.h>
+ #include "internal.h"
  
- #include <asm/io.h>
- #include <linux/uaccess.h>
-@@ -194,7 +195,7 @@ acpi_physical_address __init acpi_os_get_root_pointer(void)
- 	acpi_physical_address pa;
+ #ifdef CONFIG_ACPI_CUSTOM_DSDT
+@@ -539,6 +540,11 @@ void __init acpi_table_upgrade(void)
+ 	if (table_nr == 0)
+ 		return;
  
- #ifdef CONFIG_KEXEC
--	if (acpi_rsdp)
-+	if (acpi_rsdp && !security_locked_down(LOCKDOWN_ACPI_TABLES))
- 		return acpi_rsdp;
- #endif
- 	pa = acpi_arch_get_root_pointer();
++	if (security_locked_down(LOCKDOWN_ACPI_TABLES)) {
++		pr_notice("kernel is locked down, ignoring table override\n");
++		return;
++	}
++
+ 	acpi_tables_addr =
+ 		memblock_find_in_range(0, ACPI_TABLE_UPGRADE_MAX_PHYS,
+ 				       all_tables_size, PAGE_SIZE);
 -- 
 2.22.0.410.gd8fdbe21b5-goog
 
