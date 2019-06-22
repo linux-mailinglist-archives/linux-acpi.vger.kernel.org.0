@@ -2,206 +2,180 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFFA64F485
-	for <lists+linux-acpi@lfdr.de>; Sat, 22 Jun 2019 10:51:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0073E4F498
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Jun 2019 11:04:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726469AbfFVIvc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 22 Jun 2019 04:51:32 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:46245 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726419AbfFVIvc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Jun 2019 04:51:32 -0400
-Received: from 79.184.254.216.ipv4.supernova.orange.pl (79.184.254.216) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
- id 4c8515d6eeb12da3; Sat, 22 Jun 2019 10:51:28 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-        Keith Busch <keith.busch@intel.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v2 1/3] PCI / ACPI: Use cached ACPI device state to get PCI device power state
-Date:   Sat, 22 Jun 2019 10:51:28 +0200
-Message-ID: <4163488.7S8HHuhOPg@kreacher>
-In-Reply-To: <20190621130920.GB82584@google.com>
-References: <20190618161858.77834-1-mika.westerberg@linux.intel.com> <CAJZ5v0hfCnyuAA7kC5-fXRo-Mf0jvGZQASV9T4iK8QxsqHMN_g@mail.gmail.com> <20190621130920.GB82584@google.com>
+        id S1726281AbfFVJEp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 22 Jun 2019 05:04:45 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:43267 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726276AbfFVJEo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Jun 2019 05:04:44 -0400
+Received: by mail-oi1-f196.google.com with SMTP id w79so6333877oif.10;
+        Sat, 22 Jun 2019 02:04:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=znnrmmd5ezgQQoLVi1c3W8tP7JtD4QP2MPjjSsJDXVU=;
+        b=J4puKHaedbCVC0VPDEv6DPwzuVD/6NLYgQURAXaVuj9/aPGV3lcvz2L/JpGMRehaOE
+         JzTqLFh4UVgXb2MSxJVFHy9+c8EsQdYqBrBfK3rbxgxIleboENJL+oL/ITOdXOhEtGzD
+         ZoLbSd5r7rJAzhqSDEmjcjBwwg5qPvC5yXSSxXdrEpz9QhjfqagRtUEqxudBFS54drle
+         vAic2Pv6HFtm/PDTOOhqVuqejUYs4fV3knL9SJpnVTCmKFO1ALGHX+F+96ua/+J8qm87
+         4C20oW/e6ZZMGz0ZfLtEZMoPQoTDi/3JDvcUrh9sMSAWoZIvmMt2KBKH61Ux4NXs9M4G
+         vcFQ==
+X-Gm-Message-State: APjAAAX/xEGXxiPNboakoJnifA3ebMXmN+YfdEMGNOE4FymakXBCLU0w
+        K5Xb7y5cmoOAzc7qpgmdMT/L1QnC7jQ/pJrZXxU=
+X-Google-Smtp-Source: APXvYqyrO8swJV7vX2S8SGUP+QsEI2mkcYtZ8Pxi8Q9z7YEX829B2FvfF+OUbjnxitwSAZE78Re+Rc1Pt8gdkXlN8ks=
+X-Received: by 2002:aca:4e89:: with SMTP id c131mr5281987oib.57.1561194283551;
+ Sat, 22 Jun 2019 02:04:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+References: <cover.1560327219.git.nikolaus.voss@loewensteinmedical.de>
+ <e2a4ddfd93a904b50b7ccc074e00e14dc4661963.1560327219.git.nikolaus.voss@loewensteinmedical.de>
+ <CAJZ5v0jqxWs=PPik-TCDqQiyxCSyRP7HTue1WsdWP9e-nik2eA@mail.gmail.com>
+ <alpine.DEB.2.20.1906141114490.6579@fox.voss.local> <94F2FBAB4432B54E8AACC7DFDE6C92E3B95EFB26@ORSMSX110.amr.corp.intel.com>
+ <alpine.DEB.2.20.1906170746150.12344@fox.voss.local> <94F2FBAB4432B54E8AACC7DFDE6C92E3B95F9EC6@ORSMSX110.amr.corp.intel.com>
+ <alpine.DEB.2.20.1906181030240.24846@fox.voss.local> <94F2FBAB4432B54E8AACC7DFDE6C92E3B95FB0BA@ORSMSX110.amr.corp.intel.com>
+ <alpine.DEB.2.20.1906191123400.34742@fox.voss.local> <94F2FBAB4432B54E8AACC7DFDE6C92E3B95FC28D@ORSMSX110.amr.corp.intel.com>
+ <alpine.DEB.2.20.1906200843320.9673@fox.voss.local>
+In-Reply-To: <alpine.DEB.2.20.1906200843320.9673@fox.voss.local>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Sat, 22 Jun 2019 11:04:32 +0200
+Message-ID: <CAJZ5v0gtG5mcBwMB7mZ2aooBnJmL7fmx=QpoeMTDpbbHrue6OA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table loads
+To:     Nikolaus Voss <nv@vosn.de>,
+        "Moore, Robert" <robert.moore@intel.com>
+Cc:     Len Brown <lenb@kernel.org>,
+        "Schmauss, Erik" <erik.schmauss@intel.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Friday, June 21, 2019 3:09:20 PM CEST Bjorn Helgaas wrote:
-> On Fri, Jun 21, 2019 at 12:32:22PM +0200, Rafael J. Wysocki wrote:
-> > On Thu, Jun 20, 2019 at 4:15 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > On Thu, Jun 20, 2019 at 04:37:10PM +0300, Mika Westerberg wrote:
-> > > > On Thu, Jun 20, 2019 at 08:16:49AM -0500, Bjorn Helgaas wrote:
-> > > > > On Thu, Jun 20, 2019 at 11:27:30AM +0300, Mika Westerberg wrote:
-> > > > > > On Wed, Jun 19, 2019 at 04:28:01PM -0500, Bjorn Helgaas wrote:
-> > > > > > > On Tue, Jun 18, 2019 at 07:18:56PM +0300, Mika Westerberg wrote:
-> > > > > > > > Intel Ice Lake has an integrated Thunderbolt controller which
-> > > > > > > > means that the PCIe topology is extended directly from the two
-> > > > > > > > root ports (RP0 and RP1).
-> > > > > > >
-> > > > > > > A PCIe topology is always extended directly from root ports,
-> > > > > > > regardless of whether a Thunderbolt controller is integrated, so I
-> > > > > > > guess I'm missing the point you're making.  It doesn't sound like
-> > > > > > > this is anything specific to Thunderbolt?
-> > > > > >
-> > > > > > The point I'm trying to make here is to explain why this is problem
-> > > > > > now and not with the previous discrete controllers. With the
-> > > > > > previous there was only a single ACPI power resource for the root
-> > > > > > port and the Thunderbolt host router was connected to that root
-> > > > > > port. PCIe hierarchy was extended through downstream ports (not root
-> > > > > > ports) of that controller (which includes PCIe switch).
-> > > > >
-> > > > > Sounds like you're using "PCIe topology extension" to mean
-> > > > > specifically something below a Thunderbolt controller, excluding a
-> > > > > subtree below a root port.  I don't think the PCI core is aware of
-> > > > > that distinction.
-> > > >
-> > > > Right it is not.
-> > > >
-> > > > > > Now the thing is part of the SoC so power management is different
-> > > > > > and causes problems in Linux.
-> > > > >
-> > > > > The SoC is a physical packaging issue that really doesn't enter into
-> > > > > the specs directly.  I'm trying to get at the logical topology
-> > > > > questions in terms of the PCIe and ACPI specs.
-> > > > >
-> > > > > I assume we could dream up a non-Thunderbolt topology that would show
-> > > > > the same problem?
-> > > >
-> > > > Yes.
-> > > >
-> > > > > > > > Power management is handled by ACPI power resources that are
-> > > > > > > > shared between the root ports, Thunderbolt controller (NHI) and xHCI
-> > > > > > > > controller.
-> > > > > > > >
-> > > > > > > > The topology with the power resources (marked with []) looks like:
-> > > > > > > >
-> > > > > > > >   Host bridge
-> > > > > > > >     |
-> > > > > > > >     +- RP0 ---\
-> > > > > > > >     +- RP1 ---|--+--> [TBT]
-> > > > > > > >     +- NHI --/   |
-> > > > > > > >     |            |
-> > > > > > > >     |            v
-> > > > > > > >     +- xHCI --> [D3C]
-> > > > > > > >
-> > > > > > > > Here TBT and D3C are the shared ACPI power resources. ACPI
-> > > > > > > > _PR3() method returns either TBT or D3C or both.
-> > > > >
-> > > > > I'm not very familiar with _PR3.  I guess this is under an ACPI object
-> > > > > representing a PCI device, e.g., \_SB.PCI0.RP0._PR3?
-> > > >
-> > > > Correct.
-> > > >
-> > > > > > > > Say we runtime suspend first the root ports RP0 and RP1, then
-> > > > > > > > NHI. Now since the TBT power resource is still on when the root
-> > > > > > > > ports are runtime suspended their dev->current_state is set to
-> > > > > > > > D3hot. When NHI is runtime suspended TBT is finally turned off
-> > > > > > > > but state of the root ports remain to be D3hot.
-> > > > >
-> > > > > So in this example we might have:
-> > > > >
-> > > > >   _SB.PCI0.RP0._PR3: TBT
-> > > > >   _SB.PCI0.RP1._PR3: TBT
-> > > > >   _SB.PCI0.NHI._PR3: TBT
-> > > >
-> > > > and also D3C.
-> > > >
-> > > > > And when Linux figures out that everything depending on TBT is in
-> > > > > D3hot, it evaluates TBT._OFF, which puts them all in D3cold?  And part
-> > > > > of the problem is that they're now in D3cold (where config access
-> > > > > doesn't work) but Linux still thinks they're in D3hot (where config
-> > > > > access would work)?
-> > > >
-> > > > Exactly.
-> > > >
-> > > > > I feel like I'm missing something because I don't know how D3C is
-> > > > > involved, since you didn't mention suspending xHCI.
-> > > >
-> > > > That's another power resource so we will also have D3C turned off when
-> > > > xHCI gets suspended but I did not want to complicate things too much in
-> > > > the changelog.
-> > >
-> > > If D3C isn't essential to seeing this problem, you could just omit it
-> > > altogether.  I think stripping out anything that's not essential will
-> > > make it easier to think about the underlying issues.
-> > >
-> > > > > And I can't mentally match up the patch with the D3hot/D3cold state
-> > > > > change (if indeed that's the problem).  If we were updating the path
-> > > > > that evaluates _OFF so it changed the power state of all dependent
-> > > > > devices, *that* would make a lot of sense to me because it sounds like
-> > > > > that's where the physical change happens that makes things out of
-> > > > > sync.
-> > > >
-> > > > I did that in the first version [1] but Rafael pointed out that it is
-> > > > racy one way or another [2].
-> > > >
-> > > > [1] https://www.spinics.net/lists/linux-pci/msg83583.html
-> > > > [2] https://www.spinics.net/lists/linux-pci/msg83600.html
-> > >
-> > > Yeah, interesting.  It was definitely a much larger patch.  I don't
-> > > know enough to comment on the races.
-> > 
-> > Say two power resources are listed by _PR3 for one device (because why
-> > not?) and you want to change the device's state to D3cold only if the
-> > two power resources are both "off".  Then, you need some locking (or
-> > equivalent) to synchronize two power resources with each other, so
-> > that you can change the devices state when the last of them goes _OFF.
-> > Currently, there is no such synchronization between power resources
-> > other then the "system_level" value which may not be reliable enough
-> > for this type of use.
-> > 
-> > Or you can say that the device is in D3cold if at least one of the
-> > power resources is _OFF, but IMO that may not really be consistent
-> > with the view that the "logical" power state of the device should
-> > reflect the physical reality accurately.
-> > 
-> > > I would wonder whether there's a way to get rid of the caches that become stale,
-> > 
-> > I guess what you mean is that the "cached" (or rather "logical" or
-> > "expected") power state value may become different from what is
-> > returned by acpi_device_get_power() for the device.
-> > 
-> > The problem here is that acpi_device_get_power() really only should be
-> > used for two purposes: (1) To initialize adev->power.state, or to
-> > update it via acpi_device_update_power(), and (2) by the
-> > "real_power_state" sysfs attribute (of ACPI device objects).  The
-> > adev->power.state value should be used anywhere else, in principle, so
-> > the Mika's patch is correct.
-> > 
-> > [Note that adev->power.state cannot be updated after calling
-> > acpi_device_get_power() to the value returned by it without updating
-> > the reference counters of the power resources that are "on" *exactly*
-> > because of the problem at hand here.]
-> > 
-> > > but that's just an idle thought, not a suggestion.
-> > 
-> > After the initialization of the ACPI subsystem, the authoritative
-> > source of the ACPI device power state information is
-> > adev->power.state.  The ACPI subsystem is expected to update this
-> > value as needed going forward (including system-wide transitions like
-> > resume from S3).
-> 
-> Thanks, this is all very helpful!  Do you by any chance add
-> lore.kernel.org links to commit logs when applying patches?  This is a
-> case where I think the discussion could be useful in the future.
-> 
-> Link: https://lore.kernel.org/r/20190618161858.77834-2-mika.westerberg@linux.intel.com
+On Thu, Jun 20, 2019 at 8:49 AM Nikolaus Voss <nv@vosn.de> wrote:
+>
+> On Wed, 19 Jun 2019, Moore, Robert wrote:
+> >
+> >
+> >> -----Original Message-----
+> >> From: Nikolaus Voss [mailto:nv@vosn.de]
+> >> Sent: Wednesday, June 19, 2019 2:31 AM
+> >> To: Moore, Robert <robert.moore@intel.com>
+> >> Cc: Rafael J. Wysocki <rafael@kernel.org>; Rafael J. Wysocki
+> >> <rjw@rjwysocki.net>; Len Brown <lenb@kernel.org>; Schmauss, Erik
+> >> <erik.schmauss@intel.com>; Jacek Anaszewski
+> >> <jacek.anaszewski@gmail.com>; Pavel Machek <pavel@ucw.cz>; Dan Murphy
+> >> <dmurphy@ti.com>; Thierry Reding <thierry.reding@gmail.com>; ACPI Devel
+> >> Maling List <linux-acpi@vger.kernel.org>; open list:ACPI COMPONENT
+> >> ARCHITECTURE (ACPICA) <devel@acpica.org>; linux-leds@vger.kernel.org;
+> >> Linux PWM List <linux-pwm@vger.kernel.org>; Linux Kernel Mailing List
+> >> <linux-kernel@vger.kernel.org>; nikolaus.voss@loewensteinmedical.de
+> >> Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed table
+> >> loads
+> >>
+> >> Hi Bob,
+> >>
+> >> On Tue, 18 Jun 2019, Moore, Robert wrote:
+> >>>
+> >>>
+> >>>> -----Original Message-----
+> >>>> From: Moore, Robert
+> >>>> Sent: Tuesday, June 18, 2019 1:25 PM
+> >>>> To: 'Nikolaus Voss' <nv@vosn.de>
+> >>>> Cc: 'Rafael J. Wysocki' <rafael@kernel.org>; 'Rafael J. Wysocki'
+> >>>> <rjw@rjwysocki.net>; 'Len Brown' <lenb@kernel.org>; Schmauss, Erik
+> >>>> <erik.schmauss@intel.com>; 'Jacek Anaszewski'
+> >>>> <jacek.anaszewski@gmail.com>; 'Pavel Machek' <pavel@ucw.cz>; 'Dan
+> >>>> Murphy' <dmurphy@ti.com>; 'Thierry Reding'
+> >>>> <thierry.reding@gmail.com>; 'ACPI Devel Maling List'
+> >>>> <linux-acpi@vger.kernel.org>; 'open list:ACPI COMPONENT ARCHITECTURE
+> >>>> (ACPICA)' <devel@acpica.org>; 'linux- leds@vger.kernel.org' <linux-
+> >> leds@vger.kernel.org>; 'Linux PWM List'
+> >>>> <linux-pwm@vger.kernel.org>; 'Linux Kernel Mailing List' <linux-
+> >>>> kernel@vger.kernel.org>
+> >>>> Subject: RE: [PATCH v2 1/3] ACPI: Resolve objects on host-directed
+> >>>> table loads
+> >>>>
+> >>>> If it is in fact the AcpiLoadTable interface that is incorrect, that
+> >>>> of course is different. I'll check that out next.
+> >>>>
+> >>> [Moore, Robert]
+> >>>
+> >>> Yes, this is the issue, not specifically the Load() operator, but the
+> >>> AcpiLoadTable interface only.
+> >>
+> >> thanks for checking this out. So what is the conclusion? Is my fix of
+> >> AcpiLoadTable() sufficient or do we need a different solution?
+> >>
+> >> Niko
+> >>
+> >
+> >
+> > Your change is in the correct area. We want to do something like this, however:
+> >
+> > diff --git a/source/components/executer/exconfig.c b/source/components/executer/exconfig.c
+> > index 84a058ada..eba1a6d28 100644
+> > --- a/source/components/executer/exconfig.c
+> > +++ b/source/components/executer/exconfig.c
+> > @@ -342,10 +342,9 @@ AcpiExLoadTableOp (
+> >         return_ACPI_STATUS (Status);
+> >     }
+> >
+> > -    /* Complete the initialization/resolution of package objects */
+> > +    /* Complete the initialization/resolution of new objects */
+> >
+> > -    Status = AcpiNsWalkNamespace (ACPI_TYPE_PACKAGE, ACPI_ROOT_OBJECT,
+> > -        ACPI_UINT32_MAX, 0, AcpiNsInitOnePackage, NULL, NULL, NULL);
+> > +    AcpiNsInitializeObjects ();
+> >
+> >     /* Parameter Data (optional) */
+> >
+> > @@ -620,10 +619,11 @@ AcpiExLoadOp (
+> >         return_ACPI_STATUS (Status);
+> >     }
+> >
+> > -    /* Complete the initialization/resolution of package objects */
+> > +    /* Complete the initialization/resolution of new objects */
+> >
+> > -    Status = AcpiNsWalkNamespace (ACPI_TYPE_PACKAGE, ACPI_ROOT_OBJECT,
+> > -        ACPI_UINT32_MAX, 0, AcpiNsInitOnePackage, NULL, NULL, NULL);
+> > +    AcpiExExitInterpreter ();
+> > +    AcpiNsInitializeObjects ();
+> > +    AcpiExEnterInterpreter ();
+> >
+> >     /* Store the DdbHandle into the Target operand */
+> >
+> > diff --git a/source/components/tables/tbxfload.c b/source/components/tables/tbxfload.c
+> > index 217d54bf0..1e17db6c8 100644
+> > --- a/source/components/tables/tbxfload.c
+> > +++ b/source/components/tables/tbxfload.c
+> > @@ -479,6 +479,13 @@ AcpiLoadTable (
+> >     ACPI_INFO (("Host-directed Dynamic ACPI Table Load:"));
+> >     Status = AcpiTbInstallAndLoadTable (ACPI_PTR_TO_PHYSADDR (Table),
+> >         ACPI_TABLE_ORIGIN_EXTERNAL_VIRTUAL, FALSE, &TableIndex);
+> > +    if (ACPI_SUCCESS (Status))
+> > +    {
+> > +        /* Complete the initialization/resolution of new objects */
+> > +
+> > +        AcpiNsInitializeObjects ();
+> > +    }
+> > +
+> >     return_ACPI_STATUS (Status);
+> > }
+>
+> Ok, I see your are taking this up (I was a bit unsure after your previous
+> post). Thanks,
 
-Agreed, and thanks for the URL.
+The $subject patch has been queued for 5.3.  If I should drop it,
+please let me know.
 
-I guess Mika can add this tag to the patch changelog.
-
-
-
-
+Thanks!
