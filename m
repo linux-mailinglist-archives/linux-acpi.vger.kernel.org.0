@@ -2,120 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C176A4F93D
-	for <lists+linux-acpi@lfdr.de>; Sun, 23 Jun 2019 02:00:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 648EE4F994
+	for <lists+linux-acpi@lfdr.de>; Sun, 23 Jun 2019 04:48:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726511AbfFWAAQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 22 Jun 2019 20:00:16 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:35995 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726342AbfFWAAP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Jun 2019 20:00:15 -0400
-Received: by mail-pf1-f194.google.com with SMTP id r7so5440396pfl.3
-        for <linux-acpi@vger.kernel.org>; Sat, 22 Jun 2019 17:00:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=l17kSA4cebdwaszrX4PylxVfM6zz9iSc9kiB9UHWgW8=;
-        b=aOU8uC4Ys2KdB/JtPKpjtGhmwAOIsOGljrGxasiCVO7n0QTwpHnA3sRlTfHGTRKIe9
-         tfUOHXZYpwfvhQErKfAwgaT6eeP+6My+2ksDjqwGFUPbQVtrDNSyycqeax2C8uI2IRqt
-         1+NaYESergzZE+e+wIDckd0BpScJsDfEq2jF0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=l17kSA4cebdwaszrX4PylxVfM6zz9iSc9kiB9UHWgW8=;
-        b=s9JgSEQHR48/oBzjCWNwJMuUlQp8bPu+esIRJMlo6zew9y49ZIo/DcsFJPmuaWXnVI
-         0YZrinrSlUPGUy/Bh+tWCePox6upVauPuIiOieBUUM08XNeQ1XyAIskNbZADQK5DAoWS
-         BxryyTv0tXKsxMdDSApvdQKA8Z78zx3wIQrSRJtVvJPOBuQlTJ6oD7obGVnFE2k92ShT
-         SV8+nsx+mhiCVzE4XTzAQHNDYzfw8DG5D/1NxaelwysM1nHcwfZDnIceeXzVesdz7gMh
-         HkG8jqM8XjoBlY7tPtgBPIThWwbjtpl1XuzNmzZ4EeSubMW2OzhPvP3UvtkXSd2CVB9N
-         BDRg==
-X-Gm-Message-State: APjAAAU4cYwRG05MDh2/hssaHOQtMKRET4iWNmPXPyCH2CazRzbEVTaL
-        +GUKoI+DvR7ecCZ5poEwruxQDQ==
-X-Google-Smtp-Source: APXvYqyMopfoqvZ+DwxtsFDy82siF7CcLHjXJYUDFIFaw6nsQZzCAQyGZOnOzRYufo2is/oZADjubA==
-X-Received: by 2002:a63:5a02:: with SMTP id o2mr24596077pgb.93.1561248015012;
-        Sat, 22 Jun 2019 17:00:15 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id e20sm6740048pfi.35.2019.06.22.17.00.13
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 22 Jun 2019 17:00:13 -0700 (PDT)
-Date:   Sat, 22 Jun 2019 17:00:12 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Matthew Garrett <matthewgarrett@google.com>
-Cc:     jmorris@namei.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-        Linn Crosetto <linn@hpe.com>,
-        David Howells <dhowells@redhat.com>,
-        Matthew Garrett <mjg59@google.com>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH V34 16/29] acpi: Disable ACPI table override if the
- kernel is locked down
-Message-ID: <201906221700.B1CA4EF77E@keescook>
-References: <20190622000358.19895-1-matthewgarrett@google.com>
- <20190622000358.19895-17-matthewgarrett@google.com>
+        id S1726286AbfFWCsm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 22 Jun 2019 22:48:42 -0400
+Received: from out30-54.freemail.mail.aliyun.com ([115.124.30.54]:44920 "EHLO
+        out30-54.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725844AbfFWCsl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 22 Jun 2019 22:48:41 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04395;MF=zhangliguang@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0TUwRVeg_1561258117;
+Received: from 30.38.59.190(mailfrom:zhangliguang@linux.alibaba.com fp:SMTPD_---0TUwRVeg_1561258117)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Sun, 23 Jun 2019 10:48:38 +0800
+Subject: Re: [PATCH v2] ACPI / APEI: release resources if gen_pool_add fails
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>
+References: <1560734870-27742-1-git-send-email-zhangliguang@linux.alibaba.com>
+ <20190621152951.GB19067@zn.tnic>
+From:   =?UTF-8?B?5Lmx55+z?= <zhangliguang@linux.alibaba.com>
+Message-ID: <f9d82879-07e9-1930-5f84-87c2f425b671@linux.alibaba.com>
+Date:   Sun, 23 Jun 2019 10:48:37 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190622000358.19895-17-matthewgarrett@google.com>
+In-Reply-To: <20190621152951.GB19067@zn.tnic>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 21, 2019 at 05:03:45PM -0700, Matthew Garrett wrote:
-> From: Linn Crosetto <linn@hpe.com>
-> 
-> From the kernel documentation (initrd_table_override.txt):
-> 
->   If the ACPI_INITRD_TABLE_OVERRIDE compile option is true, it is possible
->   to override nearly any ACPI table provided by the BIOS with an
->   instrumented, modified one.
-> 
-> When lockdown is enabled, the kernel should disallow any unauthenticated
-> changes to kernel space.  ACPI tables contain code invoked by the kernel,
-> so do not allow ACPI tables to be overridden if the kernel is locked down.
-> 
-> Signed-off-by: Linn Crosetto <linn@hpe.com>
+Hi Borislav,
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+在 2019/6/21 23:29, Borislav Petkov 写道:
+> On Mon, Jun 17, 2019 at 09:27:50AM +0800, luanshi wrote:
+>> To avoid memory leaks, destroy ghes_estatus_pool and release memory
+>> allocated via vmalloc() on errors in ghes_estatus_pool_init().
+>>
+>> Signed-off-by: Liguang Zhang <zhangliguang@linux.alibaba.com>
+>> Reviewed-by: James Morse <james.morse@arm.com>
+>> Tested-by: James Morse <james.morse@arm.com>
+>> ---
+>>   drivers/acpi/apei/ghes.c | 12 ++++++++++--
+>>   1 file changed, 10 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+>> index 993940d..4e5de30 100644
+>> --- a/drivers/acpi/apei/ghes.c
+>> +++ b/drivers/acpi/apei/ghes.c
+>> @@ -153,6 +153,7 @@ static void ghes_unmap(void __iomem *vaddr, enum fixed_addresses fixmap_idx)
+>>   int ghes_estatus_pool_init(int num_ghes)
+>>   {
+>>   	unsigned long addr, len;
+>> +	int rc = 0;
+>>   
+>>   	ghes_estatus_pool = gen_pool_create(GHES_ESTATUS_POOL_MIN_ALLOC_ORDER, -1);
+>>   	if (!ghes_estatus_pool)
+>> @@ -163,8 +164,10 @@ int ghes_estatus_pool_init(int num_ghes)
+>>   
+>>   	ghes_estatus_pool_size_request = PAGE_ALIGN(len);
+>>   	addr = (unsigned long)vmalloc(PAGE_ALIGN(len));
+>> -	if (!addr)
+>> +	if (!addr) {
+>> +		gen_pool_destroy(ghes_estatus_pool);
+>>   		return -ENOMEM;
+>> +	}
+>>   
+>>   	/*
+>>   	 * New allocation must be visible in all pgd before it can be found by
+>> @@ -172,7 +175,12 @@ int ghes_estatus_pool_init(int num_ghes)
+>>   	 */
+>>   	vmalloc_sync_all();
+>>   
+>> -	return gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
+>> +	rc = gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
+>> +	if (rc) {
+>> +		gen_pool_destroy(ghes_estatus_pool);
+>> +		vfree((void *)addr);
+>> +	}
+>> +	return rc;
+> Please put the error path in labels at the end of the function to which
+> you goto from each error case, like it is usually done in kernel code,
+> instead of repeating the free calls in each error handling path.
 
--Kees
+Thanks, I will modify this patch by your suggestion and send the patch 
+v3 for review.
 
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> Signed-off-by: Matthew Garrett <mjg59@google.com>
-> cc: linux-acpi@vger.kernel.org
-> ---
->  drivers/acpi/tables.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-> index 8fccbe49612a..41d9ccd0e075 100644
-> --- a/drivers/acpi/tables.c
-> +++ b/drivers/acpi/tables.c
-> @@ -34,6 +34,7 @@
->  #include <linux/memblock.h>
->  #include <linux/earlycpio.h>
->  #include <linux/initrd.h>
-> +#include <linux/security.h>
->  #include "internal.h"
->  
->  #ifdef CONFIG_ACPI_CUSTOM_DSDT
-> @@ -539,6 +540,11 @@ void __init acpi_table_upgrade(void)
->  	if (table_nr == 0)
->  		return;
->  
-> +	if (security_locked_down(LOCKDOWN_ACPI_TABLES)) {
-> +		pr_notice("kernel is locked down, ignoring table override\n");
-> +		return;
-> +	}
-> +
->  	acpi_tables_addr =
->  		memblock_find_in_range(0, ACPI_TABLE_UPGRADE_MAX_PHYS,
->  				       all_tables_size, PAGE_SIZE);
-> -- 
-> 2.22.0.410.gd8fdbe21b5-goog
-> 
+Thanks,
 
--- 
-Kees Cook
+Liguang
+
+>
+> Grep the tree for examples, if you need some.
+>
+> Thx.
+>
