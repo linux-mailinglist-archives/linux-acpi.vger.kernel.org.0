@@ -2,75 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 352625023F
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Jun 2019 08:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCE1850275
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Jun 2019 08:40:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726606AbfFXG0F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Jun 2019 02:26:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59646 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726548AbfFXG0F (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 24 Jun 2019 02:26:05 -0400
-Received: from localhost (unknown [116.247.127.123])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BDE2E21530;
-        Mon, 24 Jun 2019 06:26:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561357564;
-        bh=k59t1m8wsiRmS1GXcPU6ssPkedRk7do9n0WBaDvykoM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dHnYZQ1c0qzeZe0amKkYEc5WHqmoV9zMD4AD/MVGJWW/TCq+qv2J8LVzfAm9erTKD
-         cFaO4A7sv6a/0PTn+AfVwy/E814PajvGu1DtbW7ZtqVAB4V7M15vGyUdfFcc8lTI6x
-         L4IFN0eSrxH8wZLP8iSXkdullBfO4wCD8cpy+hy0=
-Date:   Mon, 24 Jun 2019 05:20:07 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v2 03/28] acpi: utils: Cleanup acpi_dev_match_cb
-Message-ID: <20190624032007.GA23457@kroah.com>
-References: <1560534863-15115-1-git-send-email-suzuki.poulose@arm.com>
- <1560534863-15115-4-git-send-email-suzuki.poulose@arm.com>
- <CAJZ5v0j-AwFkeK35xG-WnDq8_wrzfH-0jqv6hVW+7uZD3R2k8Q@mail.gmail.com>
+        id S1726340AbfFXGkP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Jun 2019 02:40:15 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:19100 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726216AbfFXGkP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 24 Jun 2019 02:40:15 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id EEAB5476A3D528FE57DF;
+        Mon, 24 Jun 2019 14:40:08 +0800 (CST)
+Received: from [127.0.0.1] (10.177.223.23) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Mon, 24 Jun 2019
+ 14:40:06 +0800
+Subject: Re: [RFC PATCH] acpi/arm64: ignore 5.1 FADTs that are reported as 5.0
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        <linux-arm-kernel@lists.infradead.org>
+CC:     <linux-acpi@vger.kernel.org>, <catalin.marinas@arm.com>,
+        <will.deacon@arm.com>, <lorenzo.pieralisi@arm.com>,
+        <lee.jones@linaro.org>, <leif.lindholm@linaro.org>
+References: <20190619121831.7614-1-ard.biesheuvel@linaro.org>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <fe0a8132-27bb-13d5-1753-873fc7bca636@huawei.com>
+Date:   Mon, 24 Jun 2019 14:39:52 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0j-AwFkeK35xG-WnDq8_wrzfH-0jqv6hVW+7uZD3R2k8Q@mail.gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20190619121831.7614-1-ard.biesheuvel@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.223.23]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 18, 2019 at 12:08:45AM +0200, Rafael J. Wysocki wrote:
-> On Fri, Jun 14, 2019 at 7:54 PM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
-> >
-> > The prototype of bus_find_device() will be unified with that of
-> > class_find_device() subsequently, but for this purpose the callback
-> > functions passed to it need to take (const void *) as the second
-> > argument.  Consequently, they cannot modify the memory pointed to by
-> > that argument which currently is not the case for acpi_dev_match_cb().
-> > However, acpi_dev_match_cb() really need not modify the "match" object
-> > passed to it, because acpi_dev_get_first_match_dev() which uses it via
-> > bus_find_device() can easily convert the result of bus_find_device()
-> > into the pointer to return.
-> >
-> > For this reason, update acpi_dev_match_cb() to avoid the redundant
-> > memory updates.
-> >
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > Cc: Len Brown <lenb@kernel.org>
-> > Cc: linux-acpi@vger.kernel.org
-> > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+On 2019/6/19 20:18, Ard Biesheuvel wrote:
+> Some Qualcomm Snapdragon based laptops built to run Microsoft Windows
+> are clearly ACPI 5.1 based, given that that is the first ACPI revision
+> that supports ARM, and introduced the FADT 'arm_boot_flags' field,
+> which has a non-zero field on those systems.
 > 
-> Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> So in these cases, infer from the ARM boot flags that the FADT must be
+> 5.1 or later, and treat it as 5.1.
 > 
-> Or if you want me to take this patch, please let me know.
+> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> ---
+>  arch/arm64/kernel/acpi.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
+> index 803f0494dd3e..7722e85fb69c 100644
+> --- a/arch/arm64/kernel/acpi.c
+> +++ b/arch/arm64/kernel/acpi.c
+> @@ -155,10 +155,14 @@ static int __init acpi_fadt_sanity_check(void)
+>  	 */
+>  	if (table->revision < 5 ||
+>  	   (table->revision == 5 && fadt->minor_revision < 1)) {
+> -		pr_err("Unsupported FADT revision %d.%d, should be 5.1+\n",
+> +		pr_err(FW_BUG "Unsupported FADT revision %d.%d, should be 5.1+\n",
+>  		       table->revision, fadt->minor_revision);
+> -		ret = -EINVAL;
+> -		goto out;
+> +
+> +		if (!fadt->arm_boot_flags) {
+> +			ret = -EINVAL;
+> +			goto out;
+> +		}
+> +		pr_err("FADT has ARM boot flags set, assuming 5.1\n");
 
-I'll take it now, thanks.
+Obviously it's a firmware bug, but should be harmless,
 
-greg k-h
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+
+Thanks
+Hanjun
+
