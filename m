@@ -2,140 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 13ED254DC0
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jun 2019 13:35:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 382FA54DF3
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jun 2019 13:50:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730866AbfFYLfN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 25 Jun 2019 07:35:13 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:19107 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730694AbfFYLfA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 25 Jun 2019 07:35:00 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id A38EFC9436F1CFDD5FDA;
-        Tue, 25 Jun 2019 19:34:54 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS414-HUB.china.huawei.com
- (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Tue, 25 Jun 2019
- 19:34:44 +0800
-Date:   Tue, 25 Jun 2019 12:34:34 +0100
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>
-CC:     <linuxarm@huawei.com>, <rjw@rjwysocki.net>, <tony.luck@intel.com>,
-        <bp@alien8.de>, <james.morse@arm.com>, <ard.beisheuvel@linaro.org>,
-        <nariman.poushin@linaro.org>
-Subject: Re: [RFC PATCH 0/6] CCIX Protocol Error reporting
-Message-ID: <20190625123434.00005d50@huawei.com>
-In-Reply-To: <20190606123654.78973-1-Jonathan.Cameron@huawei.com>
-References: <20190606123654.78973-1-Jonathan.Cameron@huawei.com>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1731292AbfFYLuS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Jun 2019 07:50:18 -0400
+Received: from mga18.intel.com ([134.134.136.126]:5186 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726931AbfFYLuS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 25 Jun 2019 07:50:18 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Jun 2019 04:50:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,415,1557212400"; 
+   d="scan'208";a="182871497"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 25 Jun 2019 04:50:12 -0700
+Received: by lahna (sSMTP sendmail emulation); Tue, 25 Jun 2019 14:50:11 +0300
+Date:   Tue, 25 Jun 2019 14:50:11 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc:     wsa@the-dreams.de, jarkko.nikula@linux.intel.com,
+        andriy.shevchenko@linux.intel.com, linux-i2c@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        benjamin.tissoires@redhat.com, jbroadus@gmail.com,
+        patches@opensource.cirrus.com
+Subject: Re: [PATCH v6 4/7] i2c: core: Make i2c_acpi_get_irq available to the
+ rest of the I2C core
+Message-ID: <20190625115011.GE2640@lahna.fi.intel.com>
+References: <20190621100815.12417-1-ckeepax@opensource.cirrus.com>
+ <20190621100815.12417-5-ckeepax@opensource.cirrus.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190621100815.12417-5-ckeepax@opensource.cirrus.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 6 Jun 2019 20:36:48 +0800
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+On Fri, Jun 21, 2019 at 11:08:12AM +0100, Charles Keepax wrote:
+> In preparation for more refactoring make i2c_acpi_get_irq available
+> outside i2c-core-acpi.c.
+> 
+> Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> ---
+> 
+> Changes since v5:
+>  - Pass a struct device rather than acpi_device to i2c_acpi_get_irq,
+>    note this is more awkward than I would have liked as I am very
+>    unconvinced that adev->dev can actually be passed to
+>    ACPI_COMPANION. If anyone can answer that for sure that would be
+>    very helpful.
 
-Hi All,
+I don't think you can do that.
 
-I'm looking for some reviews on this series if anyone has time to take
-a look.  Rasdaemon patches to match with this are on linux-edac but
-are waiting on the tracepoints merging.
+I probably missed some previous discussion but what's wrong passing
+struct i2c_client instead and use ACPI_COMPANION() for that?
 
-I'm not currently planning to upstream the qemu injection patches
-used to test this but anyone would like those I can certainly put
-a public branch up somewhere.
+> 
+> Thanks,
+> Charles
+> 
+>  drivers/i2c/i2c-core-acpi.c | 13 +++++++++++--
+>  drivers/i2c/i2c-core.h      |  7 +++++++
+>  2 files changed, 18 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+> index c91492eaacd93..37bf80b35365f 100644
+> --- a/drivers/i2c/i2c-core-acpi.c
+> +++ b/drivers/i2c/i2c-core-acpi.c
+> @@ -145,8 +145,17 @@ static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
+>  	return 1;
+>  }
+>  
+> -static int i2c_acpi_get_irq(struct acpi_device *adev)
+> +/**
+> + * i2c_acpi_get_irq - get device IRQ number from ACPI
+> + * @client: Pointer to the I2C client device
 
-Thanks,
+I think this should be @dev now.
 
-Jonathan
-
-> UEFI 2.8 defines a new CPER record Appendix N for CCIX Protocol Error Records
-> (PER). www.uefi.org
-> 
-> These include Protocol Error Record logs which are defined in the
-> CCIX 1.0 Base Specification www.ccixconsortium.com.
-> 
-> Handling of coherency protocol errors is complex and how Linux does this
-> will take some time to evolve.  For now, fatal errors are handled via the
-> usual means and everything else is reported.
-> 
-> There are 6 types of error defined, covering:
-> * Memory errors
-> * Cache errors
-> * Address translation unit errors
-> * CCIX port errors 
-> * CCIX link errors
-> * Agent internal errors.
-> 
-> The set includes tracepoints to report the errors to RAS Daemon and a patch
-> set for RAS Daemon will follow shortly.
-> 
-> There are several open questions for this RFC.
-> 1. Reporting of vendor data.  We have little choice but to do this via a
->    dynamic array as these blocks can take arbitrary size. I had hoped
->    no one would actually use these given the odd mismatch between a
->    standard error structure and non standard element, but there are
->    already designs out there that do use it.
-> 2. The trade off between explicit tracepoint fields, on which we might
->    want to filter, and the simplicity of a blob. I have gone for having
->    the whole of the block specific to the PER error type in an opaque blob.
->    Perhaps this is not the right balance?
-> 3. Whether defining 6 new tracepoints is sensible. I think it is:
->    * They are all defined by the CCIX specification as independant error
->      classes.
->    * Many of them can only be generated by particular types of agent.
->    * The handling required will vary widely depending on types.
->      In the kernel some map cleanly onto existing handling. Keeping the
->      whole flow separate will aide this. They vary by a similar amount
->      in scope to the RAS errors found on an existing system which have
->      independent tracepoints.
->    * Separating them out allows for filtering on the tracepoints by
->      elements that are not shared between them.
->    * Muxing the lot into one record type can lead to ugly code both in
->      kernel and in userspace.
-> 
-> Rasdaemon patches will follow shortly.
-> 
-> This patch is being distributed by the CCIX Consortium, Inc. (CCIX) to
-> you and other parties that are paticipating (the "participants") in the
-> Linux kernel with the understanding that the participants will use CCIX's
-> name and trademark only when this patch is used in association with the
-> Linux kernel and associated user space.
-> 
-> CCIX is also distributing this patch to these participants with the
-> understanding that if any portion of the CCIX specification will be
-> used or referenced in the Linux kernel, the participants will not modify
-> the cited portion of the CCIX specification and will give CCIX propery
-> copyright attribution by including the following copyright notice with
-> the cited part of the CCIX specification:
-> "© 2019 CCIX CONSORTIUM, INC. ALL RIGHTS RESERVED."
-> 
-> Jonathan Cameron (6):
->   efi / ras: CCIX Memory error reporting
->   efi / ras: CCIX Cache error reporting
->   efi / ras: CCIX Address Translation Cache error reporting
->   efi / ras: CCIX Port error reporting
->   efi / ras: CCIX Link error reporting
->   efi / ras: CCIX Agent internal error reporting
-> 
->  drivers/acpi/apei/Kconfig        |   8 +
->  drivers/acpi/apei/ghes.c         |  59 ++
->  drivers/firmware/efi/Kconfig     |   5 +
->  drivers/firmware/efi/Makefile    |   1 +
->  drivers/firmware/efi/cper-ccix.c | 916 +++++++++++++++++++++++++++++++
->  drivers/firmware/efi/cper.c      |   6 +
->  include/linux/cper.h             | 333 +++++++++++
->  include/ras/ras_event.h          | 405 ++++++++++++++
->  8 files changed, 1733 insertions(+)
->  create mode 100644 drivers/firmware/efi/cper-ccix.c
-> 
-
-
+> + *
+> + * Find the IRQ number used by a specific client device.
+> + *
+> + * Return: The IRQ number or an error code.
+> + */
+> +int i2c_acpi_get_irq(struct device *dev)
+>  {
+> +	struct acpi_device *adev = container_of(dev, struct acpi_device, dev);
+>  	struct list_head resource_list;
+>  	int irq = -ENOENT;
+>  	int ret;
+> @@ -199,7 +208,7 @@ static int i2c_acpi_get_info(struct acpi_device *adev,
+>  		*adapter_handle = lookup.adapter_handle;
+>  
+>  	/* Then fill IRQ number if any */
+> -	info->irq = i2c_acpi_get_irq(adev);
+> +	info->irq = i2c_acpi_get_irq(&adev->dev);
+>  	if (info->irq < 0)
+>  		return info->irq;
+>  
+> diff --git a/drivers/i2c/i2c-core.h b/drivers/i2c/i2c-core.h
+> index 2a3b28bf826b1..1735ac17a957a 100644
+> --- a/drivers/i2c/i2c-core.h
+> +++ b/drivers/i2c/i2c-core.h
+> @@ -63,6 +63,8 @@ const struct acpi_device_id *
+>  i2c_acpi_match_device(const struct acpi_device_id *matches,
+>  		      struct i2c_client *client);
+>  void i2c_acpi_register_devices(struct i2c_adapter *adap);
+> +
+> +int i2c_acpi_get_irq(struct device *dev);
+>  #else /* CONFIG_ACPI */
+>  static inline void i2c_acpi_register_devices(struct i2c_adapter *adap) { }
+>  static inline const struct acpi_device_id *
+> @@ -71,6 +73,11 @@ i2c_acpi_match_device(const struct acpi_device_id *matches,
+>  {
+>  	return NULL;
+>  }
+> +
+> +static inline int i2c_acpi_get_irq(struct device *dev)
+> +{
+> +	return 0;
+> +}
+>  #endif /* CONFIG_ACPI */
+>  extern struct notifier_block i2c_acpi_notifier;
+>  
+> -- 
+> 2.11.0
