@@ -2,142 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEDE454E97
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jun 2019 14:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83E8254F1D
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jun 2019 14:43:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728200AbfFYMPv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Jun 2019 08:15:51 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:39191 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727738AbfFYMPv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jun 2019 08:15:51 -0400
-Received: by mail-ot1-f66.google.com with SMTP id r21so17008854otq.6;
-        Tue, 25 Jun 2019 05:15:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FIbsH3hp6bu3RzFDqTmIuPsmLwewvALzYa+bQ8UjkUk=;
-        b=Gmblsfdjr12+MCQy8qdtztg7mbluhtuOhKqCgBvJBBB+Do8yWxHpuyF9CaDAiPxftK
-         ZaEEP8p2pc5Q8WEaMrhgys8SznNFLA+wWefqySKEMKlnPuArZSQVdDK42IQhNuaEaknm
-         Y2EKLajkAcAn9MdyPmdJxz2RD4bOTmR7+Pkec0604xQBCDLFJM9vlu94WgxJdeX9U5r2
-         2j3Qt0R/ti/YMypOaw5gWTOzYdknjqEpC+FJ8y0xcAQTWf6rszrNnVm1lJ169ebWD8BV
-         JpWTvyEw0na1vLiSen6Ef2/QdGH8LFbmLjLm86AkWw01akCyAilwGdE0k9CdFa2zHqTb
-         G/WA==
-X-Gm-Message-State: APjAAAXMCQJBAeshIaC9As4zIqNlsffSgXX3mns/b6D1zKKKINUbfPy3
-        ReZ6nQJc6KB+/7xKvEw7KOgFY52EAThgl+OxPJE=
-X-Google-Smtp-Source: APXvYqzFzcCDMo6ZW1+1hQo04s4KJozMrwxv5PnZsQRQ5UqOX2hK5qpnSe4PW7QhVQuWzXsk9nFF2/5WLEhUnNu5PMQ=
-X-Received: by 2002:a05:6830:1516:: with SMTP id k22mr28132910otp.189.1561464950932;
- Tue, 25 Jun 2019 05:15:50 -0700 (PDT)
+        id S1728078AbfFYMnT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Jun 2019 08:43:19 -0400
+Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:53860 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726414AbfFYMnT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 25 Jun 2019 08:43:19 -0400
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+        by mx0b-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5PCdVAc014779;
+        Tue, 25 Jun 2019 07:42:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=PODMain02222019;
+ bh=qJNJ0G7W0vE6s3OqOcOl2XdM6LMSlfN3u2FHbWa6UpQ=;
+ b=pY6wfuaFA0Y6b8kBsHQZ1LZ+exgjvHhgzPHMeIjAZZXPjX8okcreo5O9WEre2RwJgr6D
+ 1pNKdWyyczPHxNdS8iY1t+My/3+xJNsqQtRLyGvsHwKoS7nSdEkvzyeXhRwG+gWGiB9X
+ a34N0U9SMZxePtSApUiRF/2Ffh4O7YyrJGJgNhIcc32w+Mo8bZ6AYJ4+SAzW4hFG/a21
+ KQ03nLQ9JfZCKrPpq6W4cIYdAn0c8+zOVv3D7Lp/knGcJ299ZYeMdzmp7+8WIgmjjwTZ
+ OSkX8KRUIJjdCfOBoQxa1SQmYOApjx2cimL081N3s8eDl85HzQtsWxRd64dgJv5mBqgd mA== 
+Authentication-Results: ppops.net;
+        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
+Received: from mail3.cirrus.com ([87.246.76.56])
+        by mx0b-001ae601.pphosted.com with ESMTP id 2t9grnvmb0-1;
+        Tue, 25 Jun 2019 07:42:46 -0500
+Received: from EDIEX01.ad.cirrus.com (ediex01.ad.cirrus.com [198.61.84.80])
+        by mail3.cirrus.com (Postfix) with ESMTP id B52846143C13;
+        Tue, 25 Jun 2019 07:43:33 -0500 (CDT)
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Tue, 25 Jun
+ 2019 13:42:45 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
+ Transport; Tue, 25 Jun 2019 13:42:45 +0100
+Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 38F612A1;
+        Tue, 25 Jun 2019 13:42:45 +0100 (BST)
+Date:   Tue, 25 Jun 2019 13:42:45 +0100
+From:   Charles Keepax <ckeepax@opensource.cirrus.com>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+CC:     <wsa@the-dreams.de>, <jarkko.nikula@linux.intel.com>,
+        <andriy.shevchenko@linux.intel.com>, <linux-i2c@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <benjamin.tissoires@redhat.com>, <jbroadus@gmail.com>,
+        <patches@opensource.cirrus.com>
+Subject: Re: [PATCH v6 4/7] i2c: core: Make i2c_acpi_get_irq available to the
+ rest of the I2C core
+Message-ID: <20190625124245.GC54126@ediswmail.ad.cirrus.com>
+References: <20190621100815.12417-1-ckeepax@opensource.cirrus.com>
+ <20190621100815.12417-5-ckeepax@opensource.cirrus.com>
+ <20190625115011.GE2640@lahna.fi.intel.com>
 MIME-Version: 1.0
-References: <20190625102942.27740-1-mika.westerberg@linux.intel.com> <20190625102942.27740-2-mika.westerberg@linux.intel.com>
-In-Reply-To: <20190625102942.27740-2-mika.westerberg@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 25 Jun 2019 14:15:39 +0200
-Message-ID: <CAJZ5v0g5eZBdtuq94TDOu2Q-znLYczXswWq9cFwc_=iR5apKVQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] PCI / ACPI: Use cached ACPI device state to get
- PCI device power state
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-        Keith Busch <keith.busch@intel.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20190625115011.GE2640@lahna.fi.intel.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906250100
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 25, 2019 at 12:30 PM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
->
-> The ACPI power state returned by acpi_device_get_power() may depend on
-> the configuration of ACPI power resources in the system which may change
-> any time after acpi_device_get_power() has returned, unless the
-> reference counters of the ACPI power resources in question are set to
-> prevent that from happening. Thus it is invalid to use acpi_device_get_power()
-> in acpi_pci_get_power_state() the way it is done now and the value of
-> the ->power.state field in the corresponding struct acpi_device objects
-> (which reflects the ACPI power resources reference counting, among other
-> things) should be used instead.
->
-> As an example where this becomes an issue is Intel Ice Lake where the
-> Thunderbolt controller (NHI), two PCIe root ports (RP0 and RP1) and xHCI
-> all share the same power resources. The following picture with power
-> resources marked with [] shows the topology:
->
->   Host bridge
->     |
->     +- RP0 ---\
->     +- RP1 ---|--+--> [TBT]
->     +- NHI --/   |
->     |            |
->     |            v
->     +- xHCI --> [D3C]
->
-> Here TBT and D3C are the shared ACPI power resources. ACPI _PR3() method
-> of the devices in question returns either TBT or D3C or both.
->
-> Say we runtime suspend first the root ports RP0 and RP1, then NHI. Now
-> since the TBT power resource is still on when the root ports are runtime
-> suspended their dev->current_state is set to D3hot. When NHI is runtime
-> suspended TBT is finally turned off but state of the root ports remain
-> to be D3hot. Now when the xHCI is runtime suspended D3C gets also turned
-> off. PCI core thus has power states of these devices cached in their
-> dev->current_state as follows:
->
->   RP0 -> D3hot
->   RP1 -> D3hot
->   NHI -> D3cold
->   xHCI -> D3cold
->
-> If the user now runs lspci for instance, the result is all 1's like in
-> the below output (00:07.0 is the first root port, RP0):
->
-> 00:07.0 PCI bridge: Intel Corporation Device 8a1d (rev ff) (prog-if ff)
->     !!! Unknown header type 7f
->     Kernel driver in use: pcieport
->
-> In short the hardware state is not in sync with the software state
-> anymore. The exact same thing happens with the PME polling thread which
-> ends up bringing the root ports back into D0 after they are runtime
-> suspended.
->
-> For this reason, modify acpi_pci_get_power_state() so that it uses the
-> ACPI device power state that was cached by the ACPI core. This makes the
-> PCI device power state match the ACPI device power state regardless of
-> state of the shared power resources which may still be on at this point.
->
-> Link: https://lore.kernel.org/r/20190618161858.77834-2-mika.westerberg@linux.intel.com
-> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> ---
->  drivers/pci/pci-acpi.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index 1897847ceb0c..b782acac26c5 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -685,7 +685,8 @@ static pci_power_t acpi_pci_get_power_state(struct pci_dev *dev)
->         if (!adev || !acpi_device_power_manageable(adev))
->                 return PCI_UNKNOWN;
->
-> -       if (acpi_device_get_power(adev, &state) || state == ACPI_STATE_UNKNOWN)
-> +       state = adev->power.state;
-> +       if (state == ACPI_STATE_UNKNOWN)
->                 return PCI_UNKNOWN;
->
->         return state_conv[state];
-> --
+On Tue, Jun 25, 2019 at 02:50:11PM +0300, Mika Westerberg wrote:
+> On Fri, Jun 21, 2019 at 11:08:12AM +0100, Charles Keepax wrote:
+> > In preparation for more refactoring make i2c_acpi_get_irq available
+> > outside i2c-core-acpi.c.
+> > 
+> > Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> > ---
+> > 
+> > Changes since v5:
+> >  - Pass a struct device rather than acpi_device to i2c_acpi_get_irq,
+> >    note this is more awkward than I would have liked as I am very
+> >    unconvinced that adev->dev can actually be passed to
+> >    ACPI_COMPANION. If anyone can answer that for sure that would be
+> >    very helpful.
+> 
+> I don't think you can do that.
+> 
 
-Not that there are two additional issues related to the one fixed by
-this patch that need to be addressed differently.
+Yeah I think we are pretty sure that is not possible, although
+not what is done in the patch, was just responding to on an
+earlier comment.
 
-For details, see
+> I probably missed some previous discussion but what's wrong passing
+> struct i2c_client instead and use ACPI_COMPANION() for that?
+> 
 
-https://patchwork.kernel.org/patch/11015379/
-https://patchwork.kernel.org/patch/11015391/
+Really this is all about the splitting out the original patch
+into two patches, one to export the function and one to move its
+use to probe time. There isn't really any nice way to do it as two
+patches and still pass the i2c_client struct. Hence we ended up
+on this system with struct device.
+
+I would be happy to squash the two patches, and go back to the
+i2c_client approach, if that was preferred and  as long as Andy
+doesn't mind.
+
+> > 
+> > Thanks,
+> > Charles
+> > 
+> >  drivers/i2c/i2c-core-acpi.c | 13 +++++++++++--
+> >  drivers/i2c/i2c-core.h      |  7 +++++++
+> >  2 files changed, 18 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+> > index c91492eaacd93..37bf80b35365f 100644
+> > --- a/drivers/i2c/i2c-core-acpi.c
+> > +++ b/drivers/i2c/i2c-core-acpi.c
+> > @@ -145,8 +145,17 @@ static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
+> >  	return 1;
+> >  }
+> >  
+> > -static int i2c_acpi_get_irq(struct acpi_device *adev)
+> > +/**
+> > + * i2c_acpi_get_irq - get device IRQ number from ACPI
+> > + * @client: Pointer to the I2C client device
+> 
+> I think this should be @dev now.
+> 
+
+Yes it should, sorry will fix that.
+
+Thanks,
+Charles
