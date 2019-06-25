@@ -2,215 +2,222 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CDAD5545F
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jun 2019 18:23:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B09C955864
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jun 2019 22:07:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727644AbfFYQX6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Jun 2019 12:23:58 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:34545 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726740AbfFYQX6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jun 2019 12:23:58 -0400
-Received: by mail-ot1-f68.google.com with SMTP id n5so17900452otk.1;
-        Tue, 25 Jun 2019 09:23:57 -0700 (PDT)
+        id S1726414AbfFYUHx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Jun 2019 16:07:53 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:44667 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726053AbfFYUHx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jun 2019 16:07:53 -0400
+Received: by mail-ot1-f66.google.com with SMTP id b7so98036otl.11
+        for <linux-acpi@vger.kernel.org>; Tue, 25 Jun 2019 13:07:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7hz9yXC3QNEKUxR5NqsfjpYt0w2H6D1TiaLMOifo9FM=;
+        b=BHXCyOrnUPs1hcuNYqPdDyL0ToAMrbN9ViFj0sViQfWhcY+WaxbwLDLLsBRGcL1wDm
+         t3lfMFeGwI46lg1cwGJBaRgZw9p8SiIFDItqnan8ooR9XhrpNLCW896m7GwEWcvFFA3N
+         8GgaFhN9kYqm55WMYhO68qiG0wGUHkhzji2N90zT0ZrSW2OKsc6z3usXybjA10lpy30q
+         k5JO9cOEjomxiLzDLIsN9EolEnh8150XpLGrO0fDSV4cTg9oVMXRe2x8zmLVsbBe37CR
+         KjVPHMd7cocz3AklmLtGfxY6jxfNOxEHMtxVWpvZLY0Y1/dGn4fCKSgodlr/FlqYJQky
+         bcJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=uSdP7UKm4WLYMLtVhLBpxY7TViBn/YrfzYDpWCwidcM=;
-        b=OdxwhvVfCoFbWlhpErwJ6LSoeICrOtJDh2BwBvXnXQ6ym/4LJjiA1qZIea5W9Ocr68
-         +BxTfPRrtakB3Tv3PxX1hn+j+5YVofz3HqXwaQDcPj9zw1bg0SHlsKkNS8GV4kow+H+k
-         IlnqekOg9pnuUlaOjcL2W8aE/nj5zjxONN164S+Qr7o+52lKBAOYYLFgitMYkZu0aQPr
-         6XGN/dVr5x/ZmrTtHWnqCNylNe0RPGD+oVEFPqKl81fJSZubupoTH9/xoGb1VmUq4ukQ
-         LA9s1wT7l/vQ671RcQObMZlUrJsbaNMW97GNIl1z/8sSLOlyvU3Y3zQmlengrzaLsOzy
-         w7PQ==
-X-Gm-Message-State: APjAAAULED1QGrGgh+URAy6uDokucNmUovjg3g0O+KrI9hz0LyqM4QwU
-        X3Jgas6JNFMJ1MlBaHEke+2jAYUwTqe4RvNbkI8=
-X-Google-Smtp-Source: APXvYqwwUsY5xStaihgCfS3kxVuGmJgr1opwxgHBqNXcDzYTr9GEsLR5kWCakYY4KXAsFNz25LejwnwxCvkAc/7My14=
-X-Received: by 2002:a05:6830:8a:: with SMTP id a10mr5881905oto.167.1561479837395;
- Tue, 25 Jun 2019 09:23:57 -0700 (PDT)
+        bh=7hz9yXC3QNEKUxR5NqsfjpYt0w2H6D1TiaLMOifo9FM=;
+        b=mK1MiZ6fpdWqUijBagPIDYtQm275n7E3/f6aAaF1PQz68UKnm032Uxd8NXrk9vUrR+
+         MkDZBBoZnh1LIzAGU1Pi4qPULylPa+YzKQmuNHI1k4ICD39O8EM0RX3CymHwaL45TGWp
+         lVFsL+iY6NWshBgg2yB4t1+Ie5UqH56tTvXB7gZaELOFOoiXX7xnpRvX2QCpE5zeymyP
+         M92iU9j12n+3+xr8fKON2+2BO9hoWWF+fENtoG5Ozq7cOZLOndG+HPf2wOr2BxoMz54t
+         cinX6HvXI9NvOE3u7AU8wOM2CQPG0IShYKRCCjSGwEwx26zlHaoBtQHCKRGiber9SDPY
+         3qsw==
+X-Gm-Message-State: APjAAAVLTAHNFqOYDRr8cvc/AoYfWmMo8i1I5EmHGyz73Nf1F4ingb50
+        ewvIiPYMYqZjfO+aQs6UDDpM8KkpAq9EplV1v75DpA==
+X-Google-Smtp-Source: APXvYqxJ+5tJ19ECFTc2Qxizf7PywDomA0IWMoGVRvLQnJR3/+gCpyn7LCQ8KtbmtVITTBei/TRQEvldm8pdmv5LAEQ=
+X-Received: by 2002:a9d:7a8b:: with SMTP id l11mr102089otn.247.1561493272423;
+ Tue, 25 Jun 2019 13:07:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <1668247.RaJIPSxJUN@kreacher> <CAJZ5v0hdtXqoK84DpYtyMSCnkR9zOHFiUPAzWZDtkFmEjyWD1g@mail.gmail.com>
- <CAJZ5v0gGdXmgc_9r2rbiadq4e31hngpjYQ40QoC6C0z19da_hQ@mail.gmail.com> <2287147.DxjcvLeq6l@kreacher>
-In-Reply-To: <2287147.DxjcvLeq6l@kreacher>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 25 Jun 2019 18:23:46 +0200
-Message-ID: <CAJZ5v0gU9OedmZBNDGefG3GjS7FHRmgQ67eOcr2vXRrAg3zZbg@mail.gmail.com>
-Subject: Re: [PATCH v2] PCI: PM: Skip devices in D0 for suspend-to-idle
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Jon Hunter <jonathanh@nvidia.com>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
+References: <156140036490.2951909.1837804994781523185.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <156140041177.2951909.8582567579750505172.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20190625163756.00001a85@huawei.com>
+In-Reply-To: <20190625163756.00001a85@huawei.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Tue, 25 Jun 2019 13:07:41 -0700
+Message-ID: <CAPcyv4jXVroB3j6VQ2iCzjAhuL4wExHQvNqa4KMep2o2-2ihEQ@mail.gmail.com>
+Subject: Re: [PATCH v4 08/10] device-dax: Add a driver for "hmem" devices
+To:     Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc:     X86 ML <x86@kernel.org>, Vishal Verma <vishal.l.verma@intel.com>,
+        Keith Busch <keith.busch@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        kbuild test robot <lkp@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Keith Busch <kbusch@kernel.org>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        linux-tegra <linux-tegra@vger.kernel.org>
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 25, 2019 at 1:09 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+On Tue, Jun 25, 2019 at 8:39 AM Jonathan Cameron
+<jonathan.cameron@huawei.com> wrote:
 >
-> On Tuesday, June 25, 2019 12:20:26 AM CEST Rafael J. Wysocki wrote:
-> > On Mon, Jun 24, 2019 at 11:37 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > >
-> > > On Mon, Jun 24, 2019 at 2:43 PM Jon Hunter <jonathanh@nvidia.com> wrote:
-> > > >
-> > > > Hi Rafael,
-> > > >
-> > > > On 13/06/2019 22:59, Rafael J. Wysocki wrote:
-> > > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > >
-> > > > > Commit d491f2b75237 ("PCI: PM: Avoid possible suspend-to-idle issue")
-> > > > > attempted to avoid a problem with devices whose drivers want them to
-> > > > > stay in D0 over suspend-to-idle and resume, but it did not go as far
-> > > > > as it should with that.
-> > > > >
-> > > > > Namely, first of all, the power state of a PCI bridge with a
-> > > > > downstream device in D0 must be D0 (based on the PCI PM spec r1.2,
-> > > > > sec 6, table 6-1, if the bridge is not in D0, there can be no PCI
-> > > > > transactions on its secondary bus), but that is not actively enforced
-> > > > > during system-wide PM transitions, so use the skip_bus_pm flag
-> > > > > introduced by commit d491f2b75237 for that.
-> > > > >
-> > > > > Second, the configuration of devices left in D0 (whatever the reason)
-> > > > > during suspend-to-idle need not be changed and attempting to put them
-> > > > > into D0 again by force is pointless, so explicitly avoid doing that.
-> > > > >
-> > > > > Fixes: d491f2b75237 ("PCI: PM: Avoid possible suspend-to-idle issue")
-> > > > > Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > > > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > > Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > > > > Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > > >
-> > > > I have noticed a regression in both the mainline and -next branches on
-> > > > one of our boards when testing suspend. The bisect is point to this
-> > > > commit and reverting on top of mainline does fix the problem. So far I
-> > > > have not looked at this in close detail but kernel log is showing ...
-> > >
-> > > Can you please collect a log like that, but with dynamic debug in
-> > > pci-driver.c enabled?
-> > >
-> > > Note that reverting this commit is rather out of the question, so we
-> > > need to get to the bottom of the failure.
+> On Mon, 24 Jun 2019 11:20:16 -0700
+> Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> > Platform firmware like EFI/ACPI may publish "hmem" platform devices.
+> > Such a device is a performance differentiated memory range likely
+> > reserved for an application specific use case. The driver gives access
+> > to 100% of the capacity via a device-dax mmap instance by default.
 > >
-> > I suspect that there is a problem with the pm_suspend_via_firmware()
-> > check which returns 'false' on the affected board, but the platform
-> > actually removes power from devices left in D0 during suspend.
+> > However, if over-subscription and other kernel memory management is
+> > desired the resulting dax device can be assigned to the core-mm via the
+> > kmem driver.
 > >
-> > I guess it would be more appropriate to check something like
-> > pm_suspend_no_platform() which would return 'true' in the
-> > suspend-to-idle patch w/ ACPI.
+> > This consumes "hmem" devices the producer of "hmem" devices is saved for
+> > a follow-on patch so that it can reference the new CONFIG_DEV_DAX_HMEM
+> > symbol to gate performing the enumeration work.
+> >
+> > Cc: Vishal Verma <vishal.l.verma@intel.com>
+> > Cc: Keith Busch <keith.busch@intel.com>
+> > Cc: Dave Jiang <dave.jiang@intel.com>
+> > Reported-by: kbuild test robot <lkp@intel.com>
+> > Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> No need to have a remove function at all.  Otherwise this looks good to me.
 >
-> So I wonder if the patch below makes any difference?
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> > ---
+> >  drivers/dax/Kconfig    |   27 +++++++++++++++++++----
+> >  drivers/dax/Makefile   |    2 ++
+> >  drivers/dax/hmem.c     |   57 ++++++++++++++++++++++++++++++++++++++++++++++++
+> >  include/linux/ioport.h |    4 +++
+> >  4 files changed, 85 insertions(+), 5 deletions(-)
+> >  create mode 100644 drivers/dax/hmem.c
+> >
+> > diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
+> > index f33c73e4af41..1a59ef86f148 100644
+> > --- a/drivers/dax/Kconfig
+> > +++ b/drivers/dax/Kconfig
+> > @@ -32,19 +32,36 @@ config DEV_DAX_PMEM
+> >
+> >         Say M if unsure
+> >
+> > +config DEV_DAX_HMEM
+> > +     tristate "HMEM DAX: direct access to 'specific purpose' memory"
+> > +     depends on EFI_APPLICATION_RESERVED
+> > +     default DEV_DAX
+> > +     help
+> > +       EFI 2.8 platforms, and others, may advertise 'specific purpose'
+> > +       memory.  For example, a high bandwidth memory pool. The
+> > +       indication from platform firmware is meant to reserve the
+> > +       memory from typical usage by default.  This driver creates
+> > +       device-dax instances for these memory ranges, and that also
+> > +       enables the possibility to assign them to the DEV_DAX_KMEM
+> > +       driver to override the reservation and add them to kernel
+> > +       "System RAM" pool.
+> > +
+> > +       Say M if unsure.
+> > +
+> >  config DEV_DAX_KMEM
+> >       tristate "KMEM DAX: volatile-use of persistent memory"
+> >       default DEV_DAX
+> >       depends on DEV_DAX
+> >       depends on MEMORY_HOTPLUG # for add_memory() and friends
+> >       help
+> > -       Support access to persistent memory as if it were RAM.  This
+> > -       allows easier use of persistent memory by unmodified
+> > -       applications.
+> > +       Support access to persistent, or other performance
+> > +       differentiated memory as if it were System RAM. This allows
+> > +       easier use of persistent memory by unmodified applications, or
+> > +       adds core kernel memory services to heterogeneous memory types
+> > +       (HMEM) marked "reserved" by platform firmware.
+> >
+> >         To use this feature, a DAX device must be unbound from the
+> > -       device_dax driver (PMEM DAX) and bound to this kmem driver
+> > -       on each boot.
+> > +       device_dax driver and bound to this kmem driver on each boot.
+> >
+> >         Say N if unsure.
+> >
+> > diff --git a/drivers/dax/Makefile b/drivers/dax/Makefile
+> > index 81f7d54dadfb..80065b38b3c4 100644
+> > --- a/drivers/dax/Makefile
+> > +++ b/drivers/dax/Makefile
+> > @@ -2,9 +2,11 @@
+> >  obj-$(CONFIG_DAX) += dax.o
+> >  obj-$(CONFIG_DEV_DAX) += device_dax.o
+> >  obj-$(CONFIG_DEV_DAX_KMEM) += kmem.o
+> > +obj-$(CONFIG_DEV_DAX_HMEM) += dax_hmem.o
+> >
+> >  dax-y := super.o
+> >  dax-y += bus.o
+> >  device_dax-y := device.o
+> > +dax_hmem-y := hmem.o
+> >
+> >  obj-y += pmem/
+> > diff --git a/drivers/dax/hmem.c b/drivers/dax/hmem.c
+> > new file mode 100644
+> > index 000000000000..62f9e3c80e21
+> > --- /dev/null
+> > +++ b/drivers/dax/hmem.c
+> > @@ -0,0 +1,57 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +#include <linux/platform_device.h>
+> > +#include <linux/ioport.h>
+> > +#include <linux/module.h>
+> > +#include <linux/pfn_t.h>
+> > +#include "bus.h"
+> > +
+> > +static int dax_hmem_probe(struct platform_device *pdev)
+> > +{
+> > +     struct dev_pagemap pgmap = { NULL };
+> > +     struct device *dev = &pdev->dev;
+> > +     struct dax_region *dax_region;
+> > +     struct memregion_info *mri;
+> > +     struct dev_dax *dev_dax;
+> > +     struct resource *res;
+> > +
+> > +     res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> > +     if (!res)
+> > +             return -ENOMEM;
+> > +
+> > +     mri = dev->platform_data;
+> > +     pgmap.dev = dev;
+> > +     memcpy(&pgmap.res, res, sizeof(*res));
+> > +
+> > +     dax_region = alloc_dax_region(dev, pdev->id, res, mri->target_node,
+> > +                     PMD_SIZE, PFN_DEV|PFN_MAP);
+> > +     if (!dax_region)
+> > +             return -ENOMEM;
+> > +
+> > +     dev_dax = devm_create_dev_dax(dax_region, 0, &pgmap);
+> > +     if (IS_ERR(dev_dax))
+> > +             return PTR_ERR(dev_dax);
+> > +
+> > +     /* child dev_dax instances now own the lifetime of the dax_region */
+> > +     dax_region_put(dax_region);
+> > +     return 0;
+> > +}
+> > +
+> > +static int dax_hmem_remove(struct platform_device *pdev)
+> > +{
+> > +     /* devm handles teardown */
+> > +     return 0;
+>
+> Why have a remove at all?  driver/base/platform.c has
+> the appropriate protections to allow you to not provide one.
+> If you want the comment, just put it after .probe =
+> below.
 
-Mika, can you please test this one in combination with the other
-changes we've been working on?
-
-I really don't expect to see problems, but just to be sure ...
-
-> ---
->  drivers/pci/pci-driver.c |    8 ++++----
->  include/linux/suspend.h  |   26 ++++++++++++++++++++++++--
->  kernel/power/suspend.c   |    3 +++
->  3 files changed, 31 insertions(+), 6 deletions(-)
->
-> Index: linux-pm/include/linux/suspend.h
-> ===================================================================
-> --- linux-pm.orig/include/linux/suspend.h
-> +++ linux-pm/include/linux/suspend.h
-> @@ -209,8 +209,9 @@ extern int suspend_valid_only_mem(suspen
->
->  extern unsigned int pm_suspend_global_flags;
->
-> -#define PM_SUSPEND_FLAG_FW_SUSPEND     (1 << 0)
-> -#define PM_SUSPEND_FLAG_FW_RESUME      (1 << 1)
-> +#define PM_SUSPEND_FLAG_FW_SUSPEND     BIT(0)
-> +#define PM_SUSPEND_FLAG_FW_RESUME      BIT(1)
-> +#define PM_SUSPEND_FLAG_NO_PLATFORM    BIT(2)
->
->  static inline void pm_suspend_clear_flags(void)
->  {
-> @@ -227,6 +228,11 @@ static inline void pm_set_resume_via_fir
->         pm_suspend_global_flags |= PM_SUSPEND_FLAG_FW_RESUME;
->  }
->
-> +static inline void pm_set_suspend_no_platform(void)
-> +{
-> +       pm_suspend_global_flags |= PM_SUSPEND_FLAG_NO_PLATFORM;
-> +}
-> +
->  /**
->   * pm_suspend_via_firmware - Check if platform firmware will suspend the system.
->   *
-> @@ -268,6 +274,22 @@ static inline bool pm_resume_via_firmwar
->         return !!(pm_suspend_global_flags & PM_SUSPEND_FLAG_FW_RESUME);
->  }
->
-> +/**
-> + * pm_suspend_no_platform - Check if platform may change device power states.
-> + *
-> + * To be called during system-wide power management transitions to sleep states
-> + * or during the subsequent system-wide transitions back to the working state.
-> + *
-> + * Return 'true' if the power states of devices remain under full control of the
-> + * kernel throughout the system-wide suspend and resume cycle in progress (that
-> + * is, if a device is put into a certain power state during suspend, it can be
-> + * expected to remain in that state during resume).
-> + */
-> +static inline bool pm_suspend_no_platform(void)
-> +{
-> +       return !!(pm_suspend_global_flags & PM_SUSPEND_FLAG_NO_PLATFORM);
-> +}
-> +
->  /* Suspend-to-idle state machnine. */
->  enum s2idle_states {
->         S2IDLE_STATE_NONE,      /* Not suspended/suspending. */
-> Index: linux-pm/kernel/power/suspend.c
-> ===================================================================
-> --- linux-pm.orig/kernel/power/suspend.c
-> +++ linux-pm/kernel/power/suspend.c
-> @@ -493,6 +493,9 @@ int suspend_devices_and_enter(suspend_st
->
->         pm_suspend_target_state = state;
->
-> +       if (state == PM_SUSPEND_TO_IDLE)
-> +               pm_set_suspend_no_platform();
-> +
->         error = platform_suspend_begin(state);
->         if (error)
->                 goto Close;
-> Index: linux-pm/drivers/pci/pci-driver.c
-> ===================================================================
-> --- linux-pm.orig/drivers/pci/pci-driver.c
-> +++ linux-pm/drivers/pci/pci-driver.c
-> @@ -870,7 +870,7 @@ static int pci_pm_suspend_noirq(struct d
->                         pci_dev->bus->self->skip_bus_pm = true;
->         }
->
-> -       if (pci_dev->skip_bus_pm && !pm_suspend_via_firmware()) {
-> +       if (pci_dev->skip_bus_pm && pm_suspend_no_platform()) {
->                 dev_dbg(dev, "PCI PM: Skipped\n");
->                 goto Fixup;
->         }
-> @@ -925,10 +925,10 @@ static int pci_pm_resume_noirq(struct de
->         /*
->          * In the suspend-to-idle case, devices left in D0 during suspend will
->          * stay in D0, so it is not necessary to restore or update their
-> -        * configuration here and attempting to put them into D0 again may
-> -        * confuse some firmware, so avoid doing that.
-> +        * configuration here and attempting to put them into D0 again is
-> +        * pointless, so avoid doing that.
->          */
-> -       if (!pci_dev->skip_bus_pm || pm_suspend_via_firmware())
-> +       if (!(pci_dev->skip_bus_pm && pm_suspend_no_platform()))
->                 pci_pm_default_resume_early(pci_dev);
->
->         pci_fixup_device(pci_fixup_resume_early, pci_dev);
->
->
->
+True, that's a good cleanup.
