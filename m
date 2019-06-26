@@ -2,118 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D358456D1A
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2019 17:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EF4456DCC
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2019 17:36:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728292AbfFZPED (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Jun 2019 11:04:03 -0400
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:11476 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728191AbfFZPED (ORCPT
+        id S1727146AbfFZPgW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Jun 2019 11:36:22 -0400
+Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:11346 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726104AbfFZPgW (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 26 Jun 2019 11:04:03 -0400
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5QExKqq022685;
-        Wed, 26 Jun 2019 10:03:03 -0500
+        Wed, 26 Jun 2019 11:36:22 -0400
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+        by mx0b-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5QFXvHu023029;
+        Wed, 26 Jun 2019 10:36:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=PODMain02222019;
- bh=ntG1MCXS+tfiByA1X2VF8qfKEYO2bEbFmlc88KNzjuk=;
- b=VzbOT6dhinY1XaYRsUAkXgUNlCDY4gxcuYqBHCqxTQ2OoSDFPpWAT1hNaksGnV1aGr11
- SEpdN64Wh9OVc/8UZ7tBwqi/BieV+DX0Q6MR7XUevEB7sIVjZvX8eKMjz3bsOscCuVrX
- acBnfOyBPujmAiut1bz+MTDYPgJ5Abf/ETTQjsYXAOubA/zQVoOK0UYEiKGhbQAdlu90
- RsrH3Q455RYHgUsc/T4rWUPOe4KwfX1VbJYqzVWHuqO0688siX+G6PoaIiKfHGVmExA9
- 4X/VZQnoOmoMgjheIeHJM7nFStA/h9Djr0+Qzwbsp9nyL0TFUXNFtbXFijRw5OPj6otg 9Q== 
+ subject : date : message-id : mime-version : content-type;
+ s=PODMain02222019; bh=YkPGMEnbp9ZPpVKCFAiuojkCOY39vkCxr96wQWpIFss=;
+ b=AZVBIUfPkrJEJ3Fo7tfyE8Yr3k9p4acj+TR5IAqL5SBEQtM2TnuTwuAXc9sIfFKwDm22
+ hd4hVgQyz/XQcLlPokgzXpLkyDCJGVPWELexDS3S52sX7RU4TovtDryUElElaE6fFTpj
+ ngn5hoSdP+f4F/T6wVIg1aFMREZ5cK5VA6KxH6ImNCrZlzC8bAucFso8F4wmXhs3BLi9
+ 3F6x7UsjG+KagiJA1A/5ssQRw557dp/cVM/WyfdvhDz0a1tKEtHD5Q+P8RN+8HquQd9f
+ abwq4m2JQCYxib1uXaJbrvWyODfOenlZqaqvefWEPj6TE+013BGazRLQ5SqzUs+ZSPap 3A== 
 Authentication-Results: ppops.net;
         spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
 Received: from mail4.cirrus.com ([87.246.98.35])
-        by mx0a-001ae601.pphosted.com with ESMTP id 2t9hr2fcrh-1;
-        Wed, 26 Jun 2019 10:03:03 -0500
-Received: from EDIEX02.ad.cirrus.com (ediex02.ad.cirrus.com [198.61.84.81])
-        by mail4.cirrus.com (Postfix) with ESMTP id AAA3E611C8AF;
-        Wed, 26 Jun 2019 10:03:04 -0500 (CDT)
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+        by mx0b-001ae601.pphosted.com with ESMTP id 2tc7gt8cvy-1;
+        Wed, 26 Jun 2019 10:36:13 -0500
+Received: from EDIEX01.ad.cirrus.com (ediex01.ad.cirrus.com [198.61.84.80])
+        by mail4.cirrus.com (Postfix) with ESMTP id 36865611C8AF;
+        Wed, 26 Jun 2019 10:36:14 -0500 (CDT)
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Wed, 26 Jun
- 2019 16:03:02 +0100
+ 2019 16:36:11 +0100
 Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
- Transport; Wed, 26 Jun 2019 16:03:02 +0100
+ Transport; Wed, 26 Jun 2019 16:36:11 +0100
 Received: from algalon.ad.cirrus.com (algalon.ad.cirrus.com [198.90.251.122])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 59BA544;
-        Wed, 26 Jun 2019 16:03:02 +0100 (BST)
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id D91DD45;
+        Wed, 26 Jun 2019 16:36:11 +0100 (BST)
 From:   Charles Keepax <ckeepax@opensource.cirrus.com>
-To:     <wsa@the-dreams.de>, <mika.westerberg@linux.intel.com>
-CC:     <jarkko.nikula@linux.intel.com>,
-        <andriy.shevchenko@linux.intel.com>, <linux-i2c@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <benjamin.tissoires@redhat.com>, <jbroadus@gmail.com>,
-        <patches@opensource.cirrus.com>
-Subject: [PATCH v7 6/6] i2c: core: Tidy up handling of init_irq
-Date:   Wed, 26 Jun 2019 16:03:02 +0100
-Message-ID: <20190626150302.22703-7-ckeepax@opensource.cirrus.com>
+To:     <broonie@kernel.org>
+CC:     <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+        <linux-acpi@vger.kernel.org>, <lgirdwood@gmail.com>,
+        <alsa-devel@alsa-project.org>, <patches@opensource.cirrus.com>
+Subject: [PATCH 1/2] device property: Add new array helper
+Date:   Wed, 26 Jun 2019 16:36:10 +0100
+Message-ID: <20190626153611.10170-1-ckeepax@opensource.cirrus.com>
 X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20190626150302.22703-1-ckeepax@opensource.cirrus.com>
-References: <20190626150302.22703-1-ckeepax@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906260177
+ definitions=main-1906260182
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Only set init_irq during i2c_device_new and only handle client->irq on
-the probe/remove paths.
+It is fairly common to want to read an integer array property
+that is composed of an unknown number of fixed size integer
+groups. For example, say each group consists of three values
+which correspond to the settings for one input on the device
+and the driver supports several chips with different numbers
+of inputs.
 
-Suggested-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Add a new helper function to provide this functionality, it
+differs for the existing helpers in that it allows reading a
+smaller number of values than the full array size and checks
+that the number of values read is a multiple of the group size.
+
 Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 ---
+ drivers/base/property.c  | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/property.h |  2 ++
+ 2 files changed, 50 insertions(+)
 
-No change since v6.
-
-Thanks,
-Charles
-
- drivers/i2c/i2c-core-base.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 1bf7d8748de14..aeb3e0508186b 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -314,6 +314,8 @@ static int i2c_device_probe(struct device *dev)
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 348b37e64944c..656d21e01a648 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -133,6 +133,54 @@ int device_property_read_u32_array(struct device *dev, const char *propname,
+ EXPORT_SYMBOL_GPL(device_property_read_u32_array);
  
- 	driver = to_i2c_driver(dev->driver);
- 
-+	client->irq = client->init_irq;
+ /**
++ * device_property_read_u32_2darray - return a 2d u32 array property of a device
++ * @dev: Device to get the property of
++ * @propname: Name of the property
++ * @val: The values are stored here or %NULL to return the number of values
++ * @nval: Size of the @val array
++ * @multiple: Number of entries in each block of data
++ *
++ * Function reads an array of u32 properties split up into fixed size
++ * sub-groups, with @propname from the device firmware description and
++ * stores them to @val if found.
++ *
++ * Return: Number of values read
++ *	   %0 if the property was not found,
++ *	   %-EINVAL if given arguments are not valid,
++ *	   %-ENODATA if the property does not have a value,
++ *	   %-EPROTO if the property is not an array of numbers,
++ *	   %-EOVERFLOW if the size of the property is not as expected.
++ *	   %-ENXIO if no suitable firmware interface is present.
++ */
++int device_property_read_u32_2darray(struct device *dev, const char *propname,
++				     u32 *val, size_t nval, int multiple)
++{
++	int n, ret;
 +
- 	if (!client->irq && !driver->disable_i2c_core_irq_mapping) {
- 		int irq = -ENOENT;
- 
-@@ -424,7 +426,7 @@ static int i2c_device_remove(struct device *dev)
- 	dev_pm_clear_wake_irq(&client->dev);
- 	device_init_wakeup(&client->dev, false);
- 
--	client->irq = client->init_irq;
-+	client->irq = 0;
- 	if (client->flags & I2C_CLIENT_HOST_NOTIFY)
- 		pm_runtime_put(&client->adapter->dev);
- 
-@@ -741,7 +743,6 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
- 	if (!client->init_irq)
- 		client->init_irq = i2c_dev_irq_from_resources(info->resources,
- 							 info->num_resources);
--	client->irq = client->init_irq;
- 
- 	strlcpy(client->name, info->type, sizeof(client->name));
- 
++	n = device_property_read_u32_array(dev, propname, NULL, 0);
++	if (n == -EINVAL) {
++		return 0;	/* missing, ignore */
++	} else if (n < 0) {
++		dev_warn(dev, "%s malformed (%d)\n", propname, n);
++		return n;
++	} else if ((n % multiple) != 0) {
++		dev_warn(dev, "%s not a multiple of %d entries\n",
++			 propname, multiple);
++		return -EOVERFLOW;
++	}
++
++	if (n > nval)
++		n = nval;
++
++	ret = device_property_read_u32_array(dev, propname, val, n);
++	if (ret < 0)
++		return ret;
++	else
++		return n;
++}
++EXPORT_SYMBOL_GPL(device_property_read_u32_2darray);
++
++/**
+  * device_property_read_u64_array - return a u64 array property of a device
+  * @dev: Device to get the property of
+  * @propname: Name of the property
+diff --git a/include/linux/property.h b/include/linux/property.h
+index e9caa290cda52..5ab0b4a7d34a2 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -40,6 +40,8 @@ int device_property_read_u16_array(struct device *dev, const char *propname,
+ 				   u16 *val, size_t nval);
+ int device_property_read_u32_array(struct device *dev, const char *propname,
+ 				   u32 *val, size_t nval);
++int device_property_read_u32_2darray(struct device *dev, const char *propname,
++				     u32 *val, size_t nval, int multiple);
+ int device_property_read_u64_array(struct device *dev, const char *propname,
+ 				   u64 *val, size_t nval);
+ int device_property_read_string_array(struct device *dev, const char *propname,
 -- 
 2.11.0
 
