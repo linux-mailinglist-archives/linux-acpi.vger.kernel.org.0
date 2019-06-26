@@ -2,99 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D4D55715C
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2019 21:11:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 313F8573B4
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2019 23:37:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726341AbfFZTLP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Jun 2019 15:11:15 -0400
-Received: from mga05.intel.com ([192.55.52.43]:24809 "EHLO mga05.intel.com"
+        id S1726239AbfFZVhb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Jun 2019 17:37:31 -0400
+Received: from foss.arm.com ([217.140.110.172]:41418 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726227AbfFZTLP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 26 Jun 2019 15:11:15 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Jun 2019 12:11:14 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,420,1557212400"; 
-   d="scan'208";a="167141508"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.145])
-  by orsmga006.jf.intel.com with ESMTP; 26 Jun 2019 12:11:11 -0700
-Received: from andy by smile with local (Exim 4.92)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1hgDK2-0002SX-2f; Wed, 26 Jun 2019 22:11:10 +0300
-Date:   Wed, 26 Jun 2019 22:11:10 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Charles Keepax <ckeepax@opensource.cirrus.com>
-Cc:     wsa@the-dreams.de, mika.westerberg@linux.intel.com,
-        jarkko.nikula@linux.intel.com, linux-i2c@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        benjamin.tissoires@redhat.com, jbroadus@gmail.com,
-        patches@opensource.cirrus.com
-Subject: Re: [PATCH v7 0/6] I2C IRQ Probe Improvements
-Message-ID: <20190626191110.GB9224@smile.fi.intel.com>
-References: <20190626150302.22703-1-ckeepax@opensource.cirrus.com>
+        id S1726223AbfFZVhb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 26 Jun 2019 17:37:31 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4F6E12B;
+        Wed, 26 Jun 2019 14:37:30 -0700 (PDT)
+Received: from mammon-tx2.austin.arm.com (mammon-tx2.austin.arm.com [10.118.30.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 33EF13F246;
+        Wed, 26 Jun 2019 14:37:30 -0700 (PDT)
+From:   Jeremy Linton <jeremy.linton@arm.com>
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        catalin.marinas@arm.com, will.deacon@arm.com, rjw@rjwysocki.net,
+        lenb@kernel.org, mark.rutland@arm.com, lorenzo.pieralisi@arm.com,
+        sudeep.holla@arm.com, Jeremy Linton <jeremy.linton@arm.com>
+Subject: [PATCH v5 0/4] arm64: SPE ACPI enablement
+Date:   Wed, 26 Jun 2019 16:37:14 -0500
+Message-Id: <20190626213718.39423-1-jeremy.linton@arm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190626150302.22703-1-ckeepax@opensource.cirrus.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 26, 2019 at 04:02:56PM +0100, Charles Keepax wrote:
-> This series attempts to align as much IRQ handling into the
-> probe path as possible. Note that I don't have a great setup
-> for testing these patches so they are mostly just build tested
-> and need careful review and testing before any of them are
-> merged.
-> 
-> The series brings the ACPI path inline with the way the device
-> tree path handles the IRQ entirely at probe time. However,
-> it still leaves any IRQ specified through the board_info as
-> being handled at device time. In that case we need to cache
-> something from the board_info until probe time, which leaves
-> any alternative solution with something basically the same as
-> the current handling although perhaps caching more stuff.
-> 
+This patch series enables the Arm Statistical Profiling
+Extension (SPE) on ACPI platforms.
 
-Thanks!
-After addressing one comment, take my
+This is possible because ACPI 6.3 uses a previously
+reserved field in the MADT to store the SPE interrupt
+number, similarly to how the normal PMU is described.
+If a consistent valid interrupt exists across all the
+cores in the system, a platform device is registered.
+That then triggers the SPE module, which runs as normal.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+We also add the ability to parse the PPTT for IDENTICAL
+cores. We then use this to sanity check the single SPE
+device we create. This creates a bit of a problem with
+respect to the specification though. The specification
+says that its legal for multiple tree's to exist in the
+PPTT. We handle this fine, but what happens in the
+case of multiple tree's is that the lack of a common
+node with IDENTICAL set forces us to assume that there
+are multiple non-IDENTICAL cores in the machine.
 
-for all patches which lack it now.
+v4->v5: Remove error returns from arm_spe_acpi_register_device()
+	Add some review/test tags
 
-> Thanks,
-> Charles
-> 
-> See previous discussions:
->  - https://lkml.org/lkml/2019/2/15/989
->  - https://www.spinics.net/lists/linux-i2c/msg39541.html
-> 
-> Charles Keepax (6):
->   i2c: core: Allow whole core to use i2c_dev_irq_from_resources
->   i2c: acpi: Use available IRQ helper functions
->   i2c: acpi: Factor out getting the IRQ from ACPI
->   i2c: core: Move ACPI IRQ handling to probe time
->   i2c: core: Move ACPI gpio IRQ handling into i2c_acpi_get_irq
->   i2c: core: Tidy up handling of init_irq
-> 
->  drivers/i2c/i2c-core-acpi.c | 59 ++++++++++++++++++++++++++++++++-------------
->  drivers/i2c/i2c-core-base.c | 11 +++++----
->  drivers/i2c/i2c-core.h      |  9 +++++++
->  3 files changed, 57 insertions(+), 22 deletions(-)
-> 
-> -- 
-> 2.11.0
-> 
+v3->v4: Rebase to 5.2.
+	Minor formatting, patch rearrangement.
+	Add missing `inline` in static header definition.
+	Drop ARM_SPE_ACPI and just use ARM_SPE_PMU.
+
+v2->v3: Previously a function pointer was being used
+	  to handle the more complex node checking
+	  required by the IDENTICAL flag. This version
+	  simply checks for the IDENTICAL flag and calls
+	  flag_identical() to preform the revision
+	  and next node checks. (I think after reading
+	  Raphael's comments for the Nth time, this is
+	  actually what he was suggesting, which I
+	  initially miss interpreted).
+	Modify subject of first patch so that its clear
+	  a that its a capitalization change rather,
+	  than a logical C 'case' change.
+
+v1->v2: Wrap the code which creates the SPE device in
+	    a new CONFIG_ARM_SPE_ACPI ifdef.
+	Move arm,spe-v1 device name into common header file
+	Some comment/case sensitivity/function name changes.
+
+Jeremy Linton (4):
+  ACPI/PPTT: Modify node flag detection to find last IDENTICAL
+  ACPI/PPTT: Add function to return ACPI 6.3 Identical tokens
+  arm_pmu: acpi: spe: Add initial MADT/SPE probing
+  perf: arm_spe: Enable ACPI/Platform automatic module loading
+
+ arch/arm64/include/asm/acpi.h |  3 ++
+ drivers/acpi/pptt.c           | 61 ++++++++++++++++++++++++++---
+ drivers/perf/arm_pmu_acpi.c   | 72 +++++++++++++++++++++++++++++++++++
+ drivers/perf/arm_spe_pmu.c    | 12 +++++-
+ include/linux/acpi.h          |  5 +++
+ include/linux/perf/arm_pmu.h  |  2 +
+ 6 files changed, 147 insertions(+), 8 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.21.0
 
