@@ -2,21 +2,21 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89E0A573B7
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2019 23:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73DB7573B9
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2019 23:37:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726464AbfFZVhf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Jun 2019 17:37:35 -0400
-Received: from foss.arm.com ([217.140.110.172]:41452 "EHLO foss.arm.com"
+        id S1726476AbfFZVhh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Jun 2019 17:37:37 -0400
+Received: from foss.arm.com ([217.140.110.172]:41466 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726437AbfFZVhf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        id S1726223AbfFZVhf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
         Wed, 26 Jun 2019 17:37:35 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AAE4A139F;
-        Wed, 26 Jun 2019 14:37:34 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5E853142F;
+        Wed, 26 Jun 2019 14:37:35 -0700 (PDT)
 Received: from mammon-tx2.austin.arm.com (mammon-tx2.austin.arm.com [10.118.30.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A1F4F3F246;
-        Wed, 26 Jun 2019 14:37:34 -0700 (PDT)
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 563073F246;
+        Wed, 26 Jun 2019 14:37:35 -0700 (PDT)
 From:   Jeremy Linton <jeremy.linton@arm.com>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -24,9 +24,9 @@ Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         lenb@kernel.org, mark.rutland@arm.com, lorenzo.pieralisi@arm.com,
         sudeep.holla@arm.com, Jeremy Linton <jeremy.linton@arm.com>,
         Hanjun Gou <gouhanjun@huawei.com>
-Subject: [PATCH v5 3/4] arm_pmu: acpi: spe: Add initial MADT/SPE probing
-Date:   Wed, 26 Jun 2019 16:37:17 -0500
-Message-Id: <20190626213718.39423-4-jeremy.linton@arm.com>
+Subject: [PATCH v5 4/4] perf: arm_spe: Enable ACPI/Platform automatic module loading
+Date:   Wed, 26 Jun 2019 16:37:18 -0500
+Message-Id: <20190626213718.39423-5-jeremy.linton@arm.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190626213718.39423-1-jeremy.linton@arm.com>
 References: <20190626213718.39423-1-jeremy.linton@arm.com>
@@ -37,138 +37,58 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-ACPI 6.3 adds additional fields to the MADT GICC
-structure to describe SPE PPI's. We pick these out
-of the cached reference to the madt_gicc structure
-similarly to the core PMU code. We then create a platform
-device referring to the IRQ and let the user/module loader
-decide whether to load the SPE driver.
+Lets add the MODULE_TABLE and platform id_table entries so that
+the SPE driver can attach to the ACPI platform device created by
+the core pmu code.
 
 Tested-by: Hanjun Gou <gouhanjun@huawei.com>
 Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Reviewed-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
 Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
 ---
- arch/arm64/include/asm/acpi.h |  3 ++
- drivers/perf/arm_pmu_acpi.c   | 72 +++++++++++++++++++++++++++++++++++
- include/linux/perf/arm_pmu.h  |  2 +
- 3 files changed, 77 insertions(+)
+ drivers/perf/arm_spe_pmu.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index ada0bc480a1b..b263e239cb59 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -38,6 +38,9 @@
- 	(!(entry) || (entry)->header.length < ACPI_MADT_GICC_MIN_LENGTH || \
- 	(unsigned long)(entry) + (entry)->header.length > (end))
+diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
+index 49b490925255..4e4984a55cd1 100644
+--- a/drivers/perf/arm_spe_pmu.c
++++ b/drivers/perf/arm_spe_pmu.c
+@@ -27,6 +27,7 @@
+ #include <linux/of_address.h>
+ #include <linux/of_device.h>
+ #include <linux/perf_event.h>
++#include <linux/perf/arm_pmu.h>
+ #include <linux/platform_device.h>
+ #include <linux/printk.h>
+ #include <linux/slab.h>
+@@ -1157,7 +1158,13 @@ static const struct of_device_id arm_spe_pmu_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, arm_spe_pmu_of_match);
  
-+#define ACPI_MADT_GICC_SPE  (ACPI_OFFSET(struct acpi_madt_generic_interrupt, \
-+	spe_interrupt) + sizeof(u16))
+-static int arm_spe_pmu_device_dt_probe(struct platform_device *pdev)
++static const struct platform_device_id arm_spe_match[] = {
++	{ ARMV8_SPE_PDEV_NAME, 0},
++	{ }
++};
++MODULE_DEVICE_TABLE(platform, arm_spe_match);
 +
- /* Basic configuration for ACPI */
- #ifdef	CONFIG_ACPI
- pgprot_t __acpi_get_mem_attribute(phys_addr_t addr);
-diff --git a/drivers/perf/arm_pmu_acpi.c b/drivers/perf/arm_pmu_acpi.c
-index d2c2978409d2..acce8781c456 100644
---- a/drivers/perf/arm_pmu_acpi.c
-+++ b/drivers/perf/arm_pmu_acpi.c
-@@ -71,6 +71,76 @@ static void arm_pmu_acpi_unregister_irq(int cpu)
- 	acpi_unregister_gsi(gsi);
++static int arm_spe_pmu_device_probe(struct platform_device *pdev)
+ {
+ 	int ret;
+ 	struct arm_spe_pmu *spe_pmu;
+@@ -1217,11 +1224,12 @@ static int arm_spe_pmu_device_remove(struct platform_device *pdev)
  }
  
-+#if IS_ENABLED(CONFIG_ARM_SPE_PMU)
-+static struct resource spe_resources[] = {
-+	{
-+		/* irq */
-+		.flags          = IORESOURCE_IRQ,
-+	}
-+};
-+
-+static struct platform_device spe_dev = {
-+	.name = ARMV8_SPE_PDEV_NAME,
-+	.id = -1,
-+	.resource = spe_resources,
-+	.num_resources = ARRAY_SIZE(spe_resources)
-+};
-+
-+/*
-+ * For lack of a better place, hook the normal PMU MADT walk
-+ * and create a SPE device if we detect a recent MADT with
-+ * a homogeneous PPI mapping.
-+ */
-+static void arm_spe_acpi_register_device(void)
-+{
-+	int cpu, hetid, irq, ret;
-+	bool first = true;
-+	u16 gsi = 0;
-+
-+	/*
-+	 * Sanity check all the GICC tables for the same interrupt number.
-+	 * For now, we only support homogeneous ACPI/SPE machines.
-+	 */
-+	for_each_possible_cpu(cpu) {
-+		struct acpi_madt_generic_interrupt *gicc;
-+
-+		gicc = acpi_cpu_get_madt_gicc(cpu);
-+		if (gicc->header.length < ACPI_MADT_GICC_SPE)
-+			return;
-+
-+		if (first) {
-+			gsi = gicc->spe_interrupt;
-+			if (!gsi)
-+				return;
-+			hetid = find_acpi_cpu_topology_hetero_id(cpu);
-+			first = false;
-+		} else if ((gsi != gicc->spe_interrupt) ||
-+			   (hetid != find_acpi_cpu_topology_hetero_id(cpu))) {
-+			pr_warn("ACPI: SPE must be homogeneous\n");
-+			return;
-+		}
-+	}
-+
-+	irq = acpi_register_gsi(NULL, gsi, ACPI_LEVEL_SENSITIVE,
-+				ACPI_ACTIVE_HIGH);
-+	if (irq < 0) {
-+		pr_warn("ACPI: SPE Unable to register interrupt: %d\n", gsi);
-+		return;
-+	}
-+
-+	spe_resources[0].start = irq;
-+	ret = platform_device_register(&spe_dev);
-+	if (ret < 0) {
-+		pr_warn("ACPI: SPE: Unable to register device\n");
-+		acpi_unregister_gsi(gsi);
-+	}
-+}
-+#else
-+static inline void arm_spe_acpi_register_device(void)
-+{
-+}
-+#endif /* CONFIG_ARM_SPE_PMU */
-+
- static int arm_pmu_acpi_parse_irqs(void)
- {
- 	int irq, cpu, irq_cpu, err;
-@@ -276,6 +346,8 @@ static int arm_pmu_acpi_init(void)
- 	if (acpi_disabled)
- 		return 0;
+ static struct platform_driver arm_spe_pmu_driver = {
++	.id_table = arm_spe_match,
+ 	.driver	= {
+ 		.name		= DRVNAME,
+ 		.of_match_table	= of_match_ptr(arm_spe_pmu_of_match),
+ 	},
+-	.probe	= arm_spe_pmu_device_dt_probe,
++	.probe	= arm_spe_pmu_device_probe,
+ 	.remove	= arm_spe_pmu_device_remove,
+ };
  
-+	arm_spe_acpi_register_device();
-+
- 	ret = arm_pmu_acpi_parse_irqs();
- 	if (ret)
- 		return ret;
-diff --git a/include/linux/perf/arm_pmu.h b/include/linux/perf/arm_pmu.h
-index a9b0ee408fbd..71f525a35ac2 100644
---- a/include/linux/perf/arm_pmu.h
-+++ b/include/linux/perf/arm_pmu.h
-@@ -171,4 +171,6 @@ void armpmu_free_irq(int irq, int cpu);
- 
- #endif /* CONFIG_ARM_PMU */
- 
-+#define ARMV8_SPE_PDEV_NAME "arm,spe-v1"
-+
- #endif /* __ARM_PMU_H__ */
 -- 
 2.21.0
 
