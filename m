@@ -2,61 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CCA757C1C
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jun 2019 08:23:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B7B757E18
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jun 2019 10:19:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726408AbfF0GXS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Jun 2019 02:23:18 -0400
-Received: from server1.acenet.in ([93.104.210.119]:49962 "EHLO
-        server1.acenet.in" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726369AbfF0GXS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jun 2019 02:23:18 -0400
-X-Greylist: delayed 1045 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 Jun 2019 02:23:17 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=tremac-uae.com; s=default; h=Sender:Content-Type:Content-Transfer-Encoding:
-        MIME-Version:Message-ID:Reply-To:From:Date:Subject:To:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=+HtpOZf4EITw/82DOQ/RjYkTx9iHz3NUZUKffAm5B+U=; b=rnI3YHJikF0ynshp/5LuUssGQj
-        s9dHlM5EWMmpGfPvmVPnAP5w6MlWi7SKbfC7/UUZqBfxbJznsZDiA0UqEXxaCwtBILAoJjN6jMu25
-        2wzb6HfPI2mMhr4hiNG8V3nmP;
-Received: from tremacux by server1.acenet.in with local (Exim 4.92)
-        (envelope-from <info@tremac-uae.com>)
-        id 1hgNXa-00042f-2Z
-        for linux-acpi@vger.kernel.org; Thu, 27 Jun 2019 11:35:50 +0530
-To:     linux-acpi@vger.kernel.org
-Subject: Copy of: Miten investoida Kanadan oikeudelliseen kannabis-teollisuuteen
-X-PHP-Script: tremac-uae.com/index.php/contact-us for 185.130.184.222
-Date:   Thu, 27 Jun 2019 06:05:50 +0000
-From:   Tremac UAE <info@tremac-uae.com>
-Reply-To: Ismaelfow <linux-acpi@vger.kernel.org>
-Message-ID: <e102f682ed8aba91d36540a5e1102266@tremac-uae.com>
-X-Priority: 3
-X-Mailer: PHPMailer 5.2.1 (http://code.google.com/a/apache-extras.org/p/phpmailer/)
+        id S1726431AbfF0ITC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Jun 2019 04:19:02 -0400
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:38748 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726375AbfF0ITC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 27 Jun 2019 04:19:02 -0400
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+        by mx0a-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5R8EWH3001077;
+        Thu, 27 Jun 2019 03:18:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=PODMain02222019;
+ bh=SPMSdJWUdq28cBBokDIr/2PnNB0Q1pKbztAnSEHceO8=;
+ b=e3m2MG4RIvL7IAJHAnWX867w01y82a5PoyXHRMlVdhxf3zBazZvlJ+k5Y3GZjSGSKL+7
+ +D2vZzMNLQZUhRpk6CQw17jaevyKtq+BCpm2yozrxqES2VAwblsJiDlMYu0k9Wpzfz+1
+ O4L7SuJDtte5YcpfTLsz1byhet/A6VOKTTL6XVPS2As3TZmC7Q8PkzhIHkW7VngeRQ3n
+ PsVVQqifXLqPi6AUJGtIlknZ2YEZfu8PPdyCmkI4JzwZk7v6qOQI3gVbEDoMRQLmLZa9
+ TgX//CmjU4RuKKilMZ3uhgi/bOVZGyW7yXNrGDO5MAyJh6MBKxHXFR9n3QVa9wOSV9Cd rQ== 
+Authentication-Results: ppops.net;
+        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
+Received: from mail2.cirrus.com (mail2.cirrus.com [141.131.128.20])
+        by mx0a-001ae601.pphosted.com with ESMTP id 2t9hr2gnb7-1;
+        Thu, 27 Jun 2019 03:18:32 -0500
+Received: from EDIEX02.ad.cirrus.com (unknown [198.61.84.81])
+        by mail2.cirrus.com (Postfix) with ESMTP id 169CC605A6A7;
+        Thu, 27 Jun 2019 03:18:32 -0500 (CDT)
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Thu, 27 Jun
+ 2019 09:18:31 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
+ Transport; Thu, 27 Jun 2019 09:18:31 +0100
+Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 6715C45;
+        Thu, 27 Jun 2019 09:18:31 +0100 (BST)
+Date:   Thu, 27 Jun 2019 09:18:31 +0100
+From:   Charles Keepax <ckeepax@opensource.cirrus.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     <wsa@the-dreams.de>, <mika.westerberg@linux.intel.com>,
+        <jarkko.nikula@linux.intel.com>, <linux-i2c@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <benjamin.tissoires@redhat.com>, <jbroadus@gmail.com>,
+        <patches@opensource.cirrus.com>
+Subject: Re: [PATCH v7 2/6] i2c: acpi: Use available IRQ helper functions
+Message-ID: <20190627081831.GF54126@ediswmail.ad.cirrus.com>
+References: <20190626150302.22703-1-ckeepax@opensource.cirrus.com>
+ <20190626150302.22703-3-ckeepax@opensource.cirrus.com>
+ <20190626190906.GA9224@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server1.acenet.in
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [565 501] / [47 12]
-X-AntiAbuse: Sender Address Domain - tremac-uae.com
-X-Get-Message-Sender-Via: server1.acenet.in: authenticated_id: tremacux/from_h
-X-Authenticated-Sender: server1.acenet.in: info@tremac-uae.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-From-Rewrite: unmodified, already matched
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20190626190906.GA9224@smile.fi.intel.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=696 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906270096
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This is a copy of the following message you sent to TREMAC LUBRICANTS TRADING CO. LLC via Tremac UAE
+On Wed, Jun 26, 2019 at 10:09:06PM +0300, Andy Shevchenko wrote:
+> On Wed, Jun 26, 2019 at 04:02:58PM +0100, Charles Keepax wrote:
+> > Use the available IRQ helper functions, most of the functions have
+> > additional helpful side affects like configuring the trigger type of the
+> > IRQ.
+> 
+> > -	acpi_dev_free_resource_list(&resource_list);
+> 
+> I have thought that we can drop completely the resource_list, though ACPI
+> doesn't allow this. So, I would rather withdraw this change to be on the safe
+> (symmetrical) side.
+> 
 
-This is an enquiry email via http://tremac-uae.com/ from:
-Ismaelfow <linux-acpi@vger.kernel.org>
+Yeah would be my preference as well, will do another spin.
 
-Investoi kannabiksen varastoon 5 000 dollarista ja saat 1 350 000 dollaria vuodessa: https://hec.su/h5ZM
-
+Thanks,
+Charles
