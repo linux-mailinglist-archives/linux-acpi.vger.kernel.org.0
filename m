@@ -2,60 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B3F7557551
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jun 2019 02:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7212457952
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jun 2019 04:11:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726669AbfF0AQD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Jun 2019 20:16:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57020 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726631AbfF0AQD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 26 Jun 2019 20:16:03 -0400
-Received: from localhost (unknown [116.247.127.123])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A97EA216C8;
-        Thu, 27 Jun 2019 00:16:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561594562;
-        bh=pwwo17FOMovc2ZCr62QYydIQFeqS0+a7qC77QEGeZs0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KueqM+8mFbhLZA7B6gQxWwVA73OkVt+GigTsbWlhhXFHUHrbb1IkP6cBoMRkxAPyA
-         co8Jr2GuCtG2fWNPWzjY6TBV19Lmz/UGI/WJP2M+1pONtIzijrOzie6MMlqJ0MPmAF
-         HtYHmndZYBz+U1wTQzFd4VGELg9E8QZmvcNQRdZk=
-Date:   Thu, 27 Jun 2019 08:15:54 +0800
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Charles Keepax <ckeepax@opensource.cirrus.com>
-Cc:     broonie@kernel.org, rafael@kernel.org, linux-acpi@vger.kernel.org,
-        lgirdwood@gmail.com, alsa-devel@alsa-project.org,
-        patches@opensource.cirrus.com
-Subject: Re: [PATCH 2/2] ASoC: madera: Read device tree configuration
-Message-ID: <20190627001554.GH527@kroah.com>
-References: <20190626153611.10170-1-ckeepax@opensource.cirrus.com>
- <20190626153611.10170-2-ckeepax@opensource.cirrus.com>
+        id S1727007AbfF0CLA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Jun 2019 22:11:00 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:43104 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726884AbfF0CLA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 26 Jun 2019 22:11:00 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 7A5856FB3196203F8FEE;
+        Thu, 27 Jun 2019 10:10:58 +0800 (CST)
+Received: from [127.0.0.1] (10.177.223.23) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Thu, 27 Jun 2019
+ 10:10:55 +0800
+Subject: Re: [PATCH v5 1/4] ACPI/PPTT: Modify node flag detection to find last
+ IDENTICAL
+To:     Jeremy Linton <jeremy.linton@arm.com>,
+        <linux-arm-kernel@lists.infradead.org>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <catalin.marinas@arm.com>, <will.deacon@arm.com>,
+        <rjw@rjwysocki.net>, <lenb@kernel.org>, <mark.rutland@arm.com>,
+        <lorenzo.pieralisi@arm.com>, <sudeep.holla@arm.com>,
+        Hanjun Gou <gouhanjun@huawei.com>
+References: <20190626213718.39423-1-jeremy.linton@arm.com>
+ <20190626213718.39423-2-jeremy.linton@arm.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <c36d197b-9f85-4681-69b6-a573451b5ed6@huawei.com>
+Date:   Thu, 27 Jun 2019 10:10:42 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190626153611.10170-2-ckeepax@opensource.cirrus.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20190626213718.39423-2-jeremy.linton@arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.223.23]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 26, 2019 at 04:36:11PM +0100, Charles Keepax wrote:
-> Read the configuration of the Madera sound driver from device tree using
-> the new device tree helper function.
+On 2019/6/27 5:37, Jeremy Linton wrote:
+> The ACPI specification implies that the IDENTICAL flag should be
+> set on all non leaf nodes where the children are identical.
+> This means that we need to be searching for the last node with
+> the identical flag set rather than the first one.
 > 
-> Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-> ---
+> Since this flag is also dependent on the table revision, we
+> need to add a bit of extra code to verify the table revision,
+> and the next node's state in the traversal. Since we want to
+> avoid function pointers here, lets just special case
+> the IDENTICAL flag.
 > 
-> Note this patch depends on patches that are currently going through Mark's
-> tree so probably best if this one also goes through there.
+> Tested-by: Hanjun Gou <gouhanjun@huawei.com>
 
-No objection from me for him to take the previous one with this one in
-his tree.
+This is wrong, my family name is Guo, and please correct my
+email address as well (for all the 4 patches).
 
-thanks,
+Thanks
+Hanjun
 
-greg k-h
+
