@@ -2,88 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B7B757E18
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jun 2019 10:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6505957F15
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jun 2019 11:18:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726431AbfF0ITC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Jun 2019 04:19:02 -0400
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:38748 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726375AbfF0ITC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 27 Jun 2019 04:19:02 -0400
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5R8EWH3001077;
-        Thu, 27 Jun 2019 03:18:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=PODMain02222019;
- bh=SPMSdJWUdq28cBBokDIr/2PnNB0Q1pKbztAnSEHceO8=;
- b=e3m2MG4RIvL7IAJHAnWX867w01y82a5PoyXHRMlVdhxf3zBazZvlJ+k5Y3GZjSGSKL+7
- +D2vZzMNLQZUhRpk6CQw17jaevyKtq+BCpm2yozrxqES2VAwblsJiDlMYu0k9Wpzfz+1
- O4L7SuJDtte5YcpfTLsz1byhet/A6VOKTTL6XVPS2As3TZmC7Q8PkzhIHkW7VngeRQ3n
- PsVVQqifXLqPi6AUJGtIlknZ2YEZfu8PPdyCmkI4JzwZk7v6qOQI3gVbEDoMRQLmLZa9
- TgX//CmjU4RuKKilMZ3uhgi/bOVZGyW7yXNrGDO5MAyJh6MBKxHXFR9n3QVa9wOSV9Cd rQ== 
-Authentication-Results: ppops.net;
-        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
-Received: from mail2.cirrus.com (mail2.cirrus.com [141.131.128.20])
-        by mx0a-001ae601.pphosted.com with ESMTP id 2t9hr2gnb7-1;
-        Thu, 27 Jun 2019 03:18:32 -0500
-Received: from EDIEX02.ad.cirrus.com (unknown [198.61.84.81])
-        by mail2.cirrus.com (Postfix) with ESMTP id 169CC605A6A7;
-        Thu, 27 Jun 2019 03:18:32 -0500 (CDT)
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Thu, 27 Jun
- 2019 09:18:31 +0100
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
- Transport; Thu, 27 Jun 2019 09:18:31 +0100
-Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 6715C45;
-        Thu, 27 Jun 2019 09:18:31 +0100 (BST)
-Date:   Thu, 27 Jun 2019 09:18:31 +0100
-From:   Charles Keepax <ckeepax@opensource.cirrus.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     <wsa@the-dreams.de>, <mika.westerberg@linux.intel.com>,
-        <jarkko.nikula@linux.intel.com>, <linux-i2c@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <benjamin.tissoires@redhat.com>, <jbroadus@gmail.com>,
-        <patches@opensource.cirrus.com>
-Subject: Re: [PATCH v7 2/6] i2c: acpi: Use available IRQ helper functions
-Message-ID: <20190627081831.GF54126@ediswmail.ad.cirrus.com>
-References: <20190626150302.22703-1-ckeepax@opensource.cirrus.com>
- <20190626150302.22703-3-ckeepax@opensource.cirrus.com>
- <20190626190906.GA9224@smile.fi.intel.com>
+        id S1726295AbfF0JSH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Jun 2019 05:18:07 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:40125 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725385AbfF0JSH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jun 2019 05:18:07 -0400
+Received: by mail-ot1-f68.google.com with SMTP id e8so1538155otl.7
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Jun 2019 02:18:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RYlPTdc+nSbVejl57wVgudRwjNsy7DxeSFbXCfQXb/Y=;
+        b=loDkMPMFotVEAfQsOU8zapBytuqZo1X8Cy0wzX5UhYuedM1ce97kQUZfwXlr6LrX+Q
+         O7L2t5urgO3nRrPqTqN8X9Qn9Q5uwDKLr0DSTTwz8HSQ9zNY/rTK1vJO4+0zQo4P2tR4
+         Gn8RkSwgLa9Oq5bSEnvw8TdGbr77KiFrViQXI+fh6vbJfahsNwy0lzYRo0z5NB9Rs1R5
+         TdXN4F0Jvt3A0Rf4UmI7LqhwCOJ+Vs6Ivxo7lsqnABOQzkyh6AzGUtMiMDiCwjynyrY+
+         WX5FqgqT5s4IFHRl2XSC9sh2n4UFBDUeUVsR5V0Rf6km96V64kVAMf5absvinHf4gCsf
+         w3eg==
+X-Gm-Message-State: APjAAAXD+McHa4CLB3fUbu7C7auBEswvb38FQZBaSOc/too1on6VtcXj
+        yDdKtt0znX53KavxcUvqWODXeu5zbPQB4dqb6Bo=
+X-Google-Smtp-Source: APXvYqzrPV3cRJWCnDDd+ELRt78GEL9XyT/gQ4rbxjSThLFSFEzuf7U07F+wz0AhlBJcJNQJwPNp7QwOJKyhDSaQ0WI=
+X-Received: by 2002:a9d:6959:: with SMTP id p25mr2402578oto.118.1561627086878;
+ Thu, 27 Jun 2019 02:18:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20190626190906.GA9224@smile.fi.intel.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=696 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906270096
+References: <20190626153611.10170-1-ckeepax@opensource.cirrus.com> <20190627001530.GG527@kroah.com>
+In-Reply-To: <20190627001530.GG527@kroah.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 27 Jun 2019 11:17:55 +0200
+Message-ID: <CAJZ5v0g8or=OrEYBPE4K7k6P1ymAHOdwFaqZE9-Lr8eVp0hubg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] device property: Add new array helper
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>, patches@opensource.cirrus.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 26, 2019 at 10:09:06PM +0300, Andy Shevchenko wrote:
-> On Wed, Jun 26, 2019 at 04:02:58PM +0100, Charles Keepax wrote:
-> > Use the available IRQ helper functions, most of the functions have
-> > additional helpful side affects like configuring the trigger type of the
-> > IRQ.
-> 
-> > -	acpi_dev_free_resource_list(&resource_list);
-> 
-> I have thought that we can drop completely the resource_list, though ACPI
-> doesn't allow this. So, I would rather withdraw this change to be on the safe
-> (symmetrical) side.
-> 
+On Thu, Jun 27, 2019 at 2:15 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+>
+> On Wed, Jun 26, 2019 at 04:36:10PM +0100, Charles Keepax wrote:
+> > It is fairly common to want to read an integer array property
+> > that is composed of an unknown number of fixed size integer
+> > groups. For example, say each group consists of three values
+> > which correspond to the settings for one input on the device
+> > and the driver supports several chips with different numbers
+> > of inputs.
+> >
+> > Add a new helper function to provide this functionality, it
+> > differs for the existing helpers in that it allows reading a
+> > smaller number of values than the full array size and checks
+> > that the number of values read is a multiple of the group size.
+> >
+> > Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> > ---
+> >  drivers/base/property.c  | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+> >  include/linux/property.h |  2 ++
+> >  2 files changed, 50 insertions(+)
+>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Yeah would be my preference as well, will do another spin.
+Well, I'm kind of not convinced about this one.
 
-Thanks,
-Charles
+More comments in direct reply to the patch message.
