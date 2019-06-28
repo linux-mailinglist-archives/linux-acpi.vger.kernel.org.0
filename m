@@ -2,161 +2,373 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53BB259B36
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jun 2019 14:31:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 742EB59B8E
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jun 2019 14:34:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727108AbfF1Map (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Jun 2019 08:30:45 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:39490 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727086AbfF1Mao (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Jun 2019 08:30:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
-        To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=3U5YF3xQh+S36YR0v52vw6kYXLIHMHgDOgr+vXVq2+g=; b=dCsKIK9u+Ckb2ZK3dWXuawb317
-        vhUfkryiDkUDvvVgbPlo1ljfy3QC+8DgdmwFJ01Mskjwvd8nbcEXI4s7FtJl3LC+cMZ4knFdyHEtr
-        9uJhwh6aWt+jZjIG1M07LKYuHjtA0h8tKG4DlZLDYSxw77iO8SKrl1W2UVb93Syde95hkO8X15ZyR
-        Vws41hMk6idyjYqZEI11+LFHu1NC78F8b7Evst5mz20YZjriR2rhR5ZlSrNbnYobbDnsw9N2vVZU3
-        X5jwYMqx0LCMXOhGEeW09Ac1o0f+B1p+txh+WeEs79FQiTzp4cUC0l7SvSC+6SccXUHRqNHbm5D8L
-        rJ+e71/w==;
-Received: from [186.213.242.156] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hgq1W-00054q-0t; Fri, 28 Jun 2019 12:30:38 +0000
-Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
-        (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1hgq1S-0005U2-VA; Fri, 28 Jun 2019 09:30:34 -0300
-From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Harry Wei <harryxiyou@gmail.com>,
-        Alex Shi <alex.shi@linux.alibaba.com>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH 39/39] docs: gpio: add sysfs interface to the admin-guide
-Date:   Fri, 28 Jun 2019 09:30:32 -0300
-Message-Id: <1ecff14ec37c0c434f003d93c4b86b1cd3dac834.1561724493.git.mchehab+samsung@kernel.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1561724493.git.mchehab+samsung@kernel.org>
-References: <cover.1561724493.git.mchehab+samsung@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        id S1726618AbfF1Mei (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Jun 2019 08:34:38 -0400
+Received: from mail.steuer-voss.de ([85.183.69.95]:43384 "EHLO
+        mail.steuer-voss.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726578AbfF1Mei (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Jun 2019 08:34:38 -0400
+X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
+Received: from pc-niv.weinmann.com (localhost [127.0.0.1])
+        by mail.steuer-voss.de (Postfix) with ESMTP id 7C1514D3ED;
+        Fri, 28 Jun 2019 14:34:35 +0200 (CEST)
+From:   Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Andreas Dannenberg <dannenberg@ti.com>,
+        "Andrew F. Davis" <afd@ti.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>
+Cc:     Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>,
+        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, nv@vosn.de
+Subject: [PATCH] sound/soc/codecs/tas5720.c: add ACPI support
+Date:   Fri, 28 Jun 2019 14:34:16 +0200
+Message-Id: <20190628123416.16298-1-nikolaus.voss@loewensteinmedical.de>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-While this is stated as obsoleted, the sysfs interface described
-there is still valid, and belongs to the admin-guide.
+Add support for ACPI enumeration for tas5720 and tas5722.
+Use device_match API to unify access to driver data for DT and ACPI.
+Aggregate variant stuff into its own struct and directly reference
+it in variant data for i2c/of/acpi_device_id.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
 ---
- Documentation/ABI/obsolete/sysfs-gpio             | 2 +-
- Documentation/{ => admin-guide}/gpio/index.rst    | 2 +-
- Documentation/{ => admin-guide}/gpio/sysfs.rst    | 0
- Documentation/admin-guide/index.rst               | 1 +
- Documentation/firmware-guide/acpi/enumeration.rst | 2 +-
- Documentation/translations/zh_CN/gpio.txt         | 4 ++--
- MAINTAINERS                                       | 2 +-
- 7 files changed, 7 insertions(+), 6 deletions(-)
- rename Documentation/{ => admin-guide}/gpio/index.rst (78%)
- rename Documentation/{ => admin-guide}/gpio/sysfs.rst (100%)
+ sound/soc/codecs/tas5720.c | 215 +++++++++++++++++--------------------
+ 1 file changed, 99 insertions(+), 116 deletions(-)
 
-diff --git a/Documentation/ABI/obsolete/sysfs-gpio b/Documentation/ABI/obsolete/sysfs-gpio
-index 40d41ea1a3f5..e0d4e5e2dd90 100644
---- a/Documentation/ABI/obsolete/sysfs-gpio
-+++ b/Documentation/ABI/obsolete/sysfs-gpio
-@@ -11,7 +11,7 @@ Description:
-   Kernel code may export it for complete or partial access.
+diff --git a/sound/soc/codecs/tas5720.c b/sound/soc/codecs/tas5720.c
+index 37fab8f22800..ea973764c745 100644
+--- a/sound/soc/codecs/tas5720.c
++++ b/sound/soc/codecs/tas5720.c
+@@ -7,6 +7,7 @@
+  * Author: Andreas Dannenberg <dannenberg@ti.com>
+  */
  
-   GPIOs are identified as they are inside the kernel, using integers in
--  the range 0..INT_MAX.  See Documentation/gpio for more information.
-+  the range 0..INT_MAX.  See Documentation/admin-guide/gpio for more information.
++#include <linux/acpi.h>
+ #include <linux/module.h>
+ #include <linux/errno.h>
+ #include <linux/device.h>
+@@ -28,9 +29,10 @@
+ /* Define how often to check (and clear) the fault status register (in ms) */
+ #define TAS5720_FAULT_CHECK_INTERVAL		200
  
-     /sys/class/gpio
- 	/export ... asks the kernel to export a GPIO to userspace
-diff --git a/Documentation/gpio/index.rst b/Documentation/admin-guide/gpio/index.rst
-similarity index 78%
-rename from Documentation/gpio/index.rst
-rename to Documentation/admin-guide/gpio/index.rst
-index 09a4a553f434..a244ba4e87d5 100644
---- a/Documentation/gpio/index.rst
-+++ b/Documentation/admin-guide/gpio/index.rst
-@@ -1,4 +1,4 @@
--:orphan:
-+.. SPDX-License-Identifier: GPL-2.0
+-enum tas572x_type {
+-	TAS5720,
+-	TAS5722,
++struct tas5720_variant {
++	const int device_id;
++	const struct regmap_config reg_config;
++	const struct snd_soc_component_driver comp_drv;
+ };
  
- ====
- gpio
-diff --git a/Documentation/gpio/sysfs.rst b/Documentation/admin-guide/gpio/sysfs.rst
-similarity index 100%
-rename from Documentation/gpio/sysfs.rst
-rename to Documentation/admin-guide/gpio/sysfs.rst
-diff --git a/Documentation/admin-guide/index.rst b/Documentation/admin-guide/index.rst
-index 2c20607e90cd..367097abec78 100644
---- a/Documentation/admin-guide/index.rst
-+++ b/Documentation/admin-guide/index.rst
-@@ -90,6 +90,7 @@ configure specific aspects of kernel behavior to your liking.
-    cputopology
-    device-mapper/index
-    efi-stub
-+   gpio/index
-    highuid
-    hw_random
-    iostats
-diff --git a/Documentation/firmware-guide/acpi/enumeration.rst b/Documentation/firmware-guide/acpi/enumeration.rst
-index 1252617b520f..0a72b6321f5f 100644
---- a/Documentation/firmware-guide/acpi/enumeration.rst
-+++ b/Documentation/firmware-guide/acpi/enumeration.rst
-@@ -316,7 +316,7 @@ specifies the path to the controller. In order to use these GPIOs in Linux
- we need to translate them to the corresponding Linux GPIO descriptors.
+ static const char * const tas5720_supply_names[] = {
+@@ -44,7 +46,7 @@ struct tas5720_data {
+ 	struct snd_soc_component *component;
+ 	struct regmap *regmap;
+ 	struct i2c_client *tas5720_client;
+-	enum tas572x_type devtype;
++	const struct tas5720_variant *variant;
+ 	struct regulator_bulk_data supplies[TAS5720_NUM_SUPPLIES];
+ 	struct delayed_work fault_check_work;
+ 	unsigned int last_fault;
+@@ -179,17 +181,13 @@ static int tas5720_set_dai_tdm_slot(struct snd_soc_dai *dai,
+ 		goto error_snd_soc_component_update_bits;
  
- There is a standard GPIO API for that and is documented in
--Documentation/gpio/.
-+Documentation/admin-guide/gpio/.
+ 	/* Configure TDM slot width. This is only applicable to TAS5722. */
+-	switch (tas5720->devtype) {
+-	case TAS5722:
++	if (tas5720->variant->device_id == TAS5722_DEVICE_ID) {
+ 		ret = snd_soc_component_update_bits(component, TAS5722_DIGITAL_CTRL2_REG,
+ 						    TAS5722_TDM_SLOT_16B,
+ 						    slot_width == 16 ?
+ 						    TAS5722_TDM_SLOT_16B : 0);
+ 		if (ret < 0)
+ 			goto error_snd_soc_component_update_bits;
+-		break;
+-	default:
+-		break;
+ 	}
  
- In the above example we can get the corresponding two GPIO descriptors with
- a code like this::
-diff --git a/Documentation/translations/zh_CN/gpio.txt b/Documentation/translations/zh_CN/gpio.txt
-index 4cb1ba8b8fed..a23ee14fc927 100644
---- a/Documentation/translations/zh_CN/gpio.txt
-+++ b/Documentation/translations/zh_CN/gpio.txt
-@@ -1,4 +1,4 @@
--Chinese translated version of Documentation/gpio
-+Chinese translated version of Documentation/admin-guide/gpio
+ 	return 0;
+@@ -277,7 +275,7 @@ static void tas5720_fault_check_work(struct work_struct *work)
+ static int tas5720_codec_probe(struct snd_soc_component *component)
+ {
+ 	struct tas5720_data *tas5720 = snd_soc_component_get_drvdata(component);
+-	unsigned int device_id, expected_device_id;
++	unsigned int device_id;
+ 	int ret;
  
- If you have any comment or update to the content, please contact the
- original document maintainer directly.  However, if you have a problem
-@@ -10,7 +10,7 @@ Maintainer: Grant Likely <grant.likely@secretlab.ca>
- 		Linus Walleij <linus.walleij@linaro.org>
- Chinese maintainer: Fu Wei <tekkamanninja@gmail.com>
- ---------------------------------------------------------------------
--Documentation/gpio 的中文翻译
-+Documentation/admin-guide/gpio 的中文翻译
+ 	tas5720->component = component;
+@@ -301,21 +299,9 @@ static int tas5720_codec_probe(struct snd_soc_component *component)
+ 		goto probe_fail;
+ 	}
  
- 如果想评论或更新本文的内容，请直接联系原文档的维护者。如果你使用英文
- 交流有困难的话，也可以向中文版维护者求助。如果本翻译更新不及时或者翻
-diff --git a/MAINTAINERS b/MAINTAINERS
-index cda68bbd9d1c..a49698b3becd 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6812,7 +6812,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-gpio.git
- S:	Maintained
- F:	Documentation/devicetree/bindings/gpio/
- F:	Documentation/driver-api/gpio/
--F:	Documentation/gpio/
-+F:	Documentation/admin-guide/gpio/
- F:	Documentation/ABI/testing/gpio-cdev
- F:	Documentation/ABI/obsolete/sysfs-gpio
- F:	drivers/gpio/
+-	switch (tas5720->devtype) {
+-	case TAS5720:
+-		expected_device_id = TAS5720_DEVICE_ID;
+-		break;
+-	case TAS5722:
+-		expected_device_id = TAS5722_DEVICE_ID;
+-		break;
+-	default:
+-		dev_err(component->dev, "unexpected private driver data\n");
+-		return -EINVAL;
+-	}
+-
+-	if (device_id != expected_device_id)
++	if (device_id != tas5720->variant->device_id)
+ 		dev_warn(component->dev, "wrong device ID. expected: %u read: %u\n",
+-			 expected_device_id, device_id);
++			 tas5720->variant->device_id, device_id);
+ 
+ 	/* Set device to mute */
+ 	ret = snd_soc_component_update_bits(component, TAS5720_DIGITAL_CTRL2_REG,
+@@ -462,24 +448,6 @@ static bool tas5720_is_volatile_reg(struct device *dev, unsigned int reg)
+ 	}
+ }
+ 
+-static const struct regmap_config tas5720_regmap_config = {
+-	.reg_bits = 8,
+-	.val_bits = 8,
+-
+-	.max_register = TAS5720_MAX_REG,
+-	.cache_type = REGCACHE_RBTREE,
+-	.volatile_reg = tas5720_is_volatile_reg,
+-};
+-
+-static const struct regmap_config tas5722_regmap_config = {
+-	.reg_bits = 8,
+-	.val_bits = 8,
+-
+-	.max_register = TAS5722_MAX_REG,
+-	.cache_type = REGCACHE_RBTREE,
+-	.volatile_reg = tas5720_is_volatile_reg,
+-};
+-
+ /*
+  * DAC analog gain. There are four discrete values to select from, ranging
+  * from 19.2 dB to 26.3dB.
+@@ -558,40 +526,6 @@ static const struct snd_soc_dapm_route tas5720_audio_map[] = {
+ 	{ "OUT", NULL, "DAC" },
+ };
+ 
+-static const struct snd_soc_component_driver soc_component_dev_tas5720 = {
+-	.probe			= tas5720_codec_probe,
+-	.remove			= tas5720_codec_remove,
+-	.suspend		= tas5720_suspend,
+-	.resume			= tas5720_resume,
+-	.controls		= tas5720_snd_controls,
+-	.num_controls		= ARRAY_SIZE(tas5720_snd_controls),
+-	.dapm_widgets		= tas5720_dapm_widgets,
+-	.num_dapm_widgets	= ARRAY_SIZE(tas5720_dapm_widgets),
+-	.dapm_routes		= tas5720_audio_map,
+-	.num_dapm_routes	= ARRAY_SIZE(tas5720_audio_map),
+-	.idle_bias_on		= 1,
+-	.use_pmdown_time	= 1,
+-	.endianness		= 1,
+-	.non_legacy_dai_naming	= 1,
+-};
+-
+-static const struct snd_soc_component_driver soc_component_dev_tas5722 = {
+-	.probe = tas5720_codec_probe,
+-	.remove = tas5720_codec_remove,
+-	.suspend = tas5720_suspend,
+-	.resume = tas5720_resume,
+-	.controls = tas5722_snd_controls,
+-	.num_controls = ARRAY_SIZE(tas5722_snd_controls),
+-	.dapm_widgets = tas5720_dapm_widgets,
+-	.num_dapm_widgets = ARRAY_SIZE(tas5720_dapm_widgets),
+-	.dapm_routes = tas5720_audio_map,
+-	.num_dapm_routes = ARRAY_SIZE(tas5720_audio_map),
+-	.idle_bias_on		= 1,
+-	.use_pmdown_time	= 1,
+-	.endianness		= 1,
+-	.non_legacy_dai_naming	= 1,
+-};
+-
+ /* PCM rates supported by the TAS5720 driver */
+ #define TAS5720_RATES	(SNDRV_PCM_RATE_44100 | SNDRV_PCM_RATE_48000 |\
+ 			 SNDRV_PCM_RATE_88200 | SNDRV_PCM_RATE_96000)
+@@ -637,29 +571,25 @@ static int tas5720_probe(struct i2c_client *client,
+ {
+ 	struct device *dev = &client->dev;
+ 	struct tas5720_data *data;
+-	const struct regmap_config *regmap_config;
++	const struct tas5720_variant *type;
+ 	int ret;
+ 	int i;
+ 
++	type = device_get_match_data(&client->dev);
++	if (!type && id)
++		type = (const struct tas5720_variant *)id->driver_data;
++
++	if (!type)
++		return -EINVAL;
++
+ 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
+ 
+ 	data->tas5720_client = client;
+-	data->devtype = id->driver_data;
++	data->variant = type;
+ 
+-	switch (id->driver_data) {
+-	case TAS5720:
+-		regmap_config = &tas5720_regmap_config;
+-		break;
+-	case TAS5722:
+-		regmap_config = &tas5722_regmap_config;
+-		break;
+-	default:
+-		dev_err(dev, "unexpected private driver data\n");
+-		return -EINVAL;
+-	}
+-	data->regmap = devm_regmap_init_i2c(client, regmap_config);
++	data->regmap = devm_regmap_init_i2c(client, &type->reg_config);
+ 	if (IS_ERR(data->regmap)) {
+ 		ret = PTR_ERR(data->regmap);
+ 		dev_err(dev, "failed to allocate register map: %d\n", ret);
+@@ -678,51 +608,104 @@ static int tas5720_probe(struct i2c_client *client,
+ 
+ 	dev_set_drvdata(dev, data);
+ 
+-	switch (id->driver_data) {
+-	case TAS5720:
+-		ret = devm_snd_soc_register_component(&client->dev,
+-					&soc_component_dev_tas5720,
+-					tas5720_dai,
+-					ARRAY_SIZE(tas5720_dai));
+-		break;
+-	case TAS5722:
+-		ret = devm_snd_soc_register_component(&client->dev,
+-					&soc_component_dev_tas5722,
+-					tas5720_dai,
+-					ARRAY_SIZE(tas5720_dai));
+-		break;
+-	default:
+-		dev_err(dev, "unexpected private driver data\n");
+-		return -EINVAL;
+-	}
+-	if (ret < 0) {
+-		dev_err(dev, "failed to register component: %d\n", ret);
+-		return ret;
+-	}
++	ret = devm_snd_soc_register_component(&client->dev,
++					      &type->comp_drv,
++					      tas5720_dai,
++					      ARRAY_SIZE(tas5720_dai));
+ 
+-	return 0;
++	if (ret < 0)
++		dev_err(dev, "failed to register component: %d\n", ret);
++
++	return ret;
+ }
+ 
++static const struct tas5720_variant variant[] = {
++	{
++		.device_id = TAS5720_DEVICE_ID,
++		.reg_config = {
++			.reg_bits = 8,
++			.val_bits = 8,
++
++			.max_register = TAS5720_MAX_REG,
++			.cache_type = REGCACHE_RBTREE,
++			.volatile_reg = tas5720_is_volatile_reg,
++		},
++		.comp_drv = {
++			.probe = tas5720_codec_probe,
++			.remove = tas5720_codec_remove,
++			.suspend = tas5720_suspend,
++			.resume = tas5720_resume,
++			.controls = tas5720_snd_controls,
++			.num_controls = ARRAY_SIZE(tas5720_snd_controls),
++			.dapm_widgets = tas5720_dapm_widgets,
++			.num_dapm_widgets = ARRAY_SIZE(tas5720_dapm_widgets),
++			.dapm_routes = tas5720_audio_map,
++			.num_dapm_routes = ARRAY_SIZE(tas5720_audio_map),
++			.idle_bias_on = 1,
++			.use_pmdown_time = 1,
++			.endianness = 1,
++			.non_legacy_dai_naming = 1
++		},
++	},
++	{
++		.device_id = TAS5722_DEVICE_ID,
++		.reg_config = {
++			.reg_bits = 8,
++			.val_bits = 8,
++
++			.max_register = TAS5722_MAX_REG,
++			.cache_type = REGCACHE_RBTREE,
++			.volatile_reg = tas5720_is_volatile_reg,
++		},
++		.comp_drv = {
++			.probe = tas5720_codec_probe,
++			.remove = tas5720_codec_remove,
++			.suspend = tas5720_suspend,
++			.resume = tas5720_resume,
++			.controls = tas5722_snd_controls,
++			.num_controls = ARRAY_SIZE(tas5722_snd_controls),
++			.dapm_widgets = tas5720_dapm_widgets,
++			.num_dapm_widgets = ARRAY_SIZE(tas5720_dapm_widgets),
++			.dapm_routes = tas5720_audio_map,
++			.num_dapm_routes = ARRAY_SIZE(tas5720_audio_map),
++			.idle_bias_on = 1,
++			.use_pmdown_time = 1,
++			.endianness = 1,
++			.non_legacy_dai_naming = 1,
++		},
++	},
++};
++
+ static const struct i2c_device_id tas5720_id[] = {
+-	{ "tas5720", TAS5720 },
+-	{ "tas5722", TAS5722 },
++	{ "tas5720", (kernel_ulong_t)&variant[0] },
++	{ "tas5722", (kernel_ulong_t)&variant[1] },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(i2c, tas5720_id);
+ 
+ #if IS_ENABLED(CONFIG_OF)
+ static const struct of_device_id tas5720_of_match[] = {
+-	{ .compatible = "ti,tas5720", },
+-	{ .compatible = "ti,tas5722", },
++	{ .compatible = "ti,tas5720", .data = &variant[0], },
++	{ .compatible = "ti,tas5722", .data = &variant[1], },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(of, tas5720_of_match);
+ #endif
+ 
++#if IS_ENABLED(CONFIG_ACPI)
++static const struct acpi_device_id tas5720_acpi_match[] = {
++	{ "10TI5720", (kernel_ulong_t)&variant[0] },
++	{ "10TI5722", (kernel_ulong_t)&variant[1] },
++	{ }
++};
++MODULE_DEVICE_TABLE(acpi, tas5720_acpi_match);
++#endif
++
+ static struct i2c_driver tas5720_i2c_driver = {
+ 	.driver = {
+ 		.name = "tas5720",
+ 		.of_match_table = of_match_ptr(tas5720_of_match),
++		.acpi_match_table = ACPI_PTR(tas5720_acpi_match),
+ 	},
+ 	.probe = tas5720_probe,
+ 	.id_table = tas5720_id,
 -- 
-2.21.0
+2.17.1
 
