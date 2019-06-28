@@ -2,45 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5464458D5A
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jun 2019 23:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D4795990C
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jun 2019 13:15:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726445AbfF0Vsk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Jun 2019 17:48:40 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:41030 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726441AbfF0Vsk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jun 2019 17:48:40 -0400
-Received: from 79.184.254.216.ipv4.supernova.orange.pl (79.184.254.216) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
- id 253dea51c704b36a; Thu, 27 Jun 2019 23:48:39 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Andrea Oliveri <oliveriandrea@gmail.com>
-Cc:     linux-acpi@vger.kernel.org, lenb@kernel.org
-Subject: Re: [PATCH] ACPI: BGRT table overriding
-Date:   Thu, 27 Jun 2019 23:48:38 +0200
-Message-ID: <5244886.yFHjjlQzhF@kreacher>
-In-Reply-To: <CAN2kSaqhq1QfCQ1kM-tLr8Q0ptFQcdujgnQW-xYZKAzi_-pHAw@mail.gmail.com>
-References: <CAN2kSaqhq1QfCQ1kM-tLr8Q0ptFQcdujgnQW-xYZKAzi_-pHAw@mail.gmail.com>
+        id S1726564AbfF1LP6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Jun 2019 07:15:58 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:7670 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726543AbfF1LP6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 28 Jun 2019 07:15:58 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 061F98E3C0FF2DE709F3;
+        Fri, 28 Jun 2019 19:15:56 +0800 (CST)
+Received: from linux-ibm.site (10.175.102.37) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 28 Jun 2019 19:15:49 +0800
+From:   Xiongfeng Wang <wangxiongfeng2@huawei.com>
+To:     <rjw@rjwysocki.net>, <catalin.marinas@arm.com>,
+        <james.morse@arm.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <guohanjun@huawei.com>,
+        <xiexiuqi@huawei.com>, <huawei.libin@huawei.com>,
+        <john.garry@huawei.com>, <jonathan.cameron@huawei.com>,
+        <wangxiongfeng2@huawei.com>
+Subject: [PATCH RFC 0/3] Support CPU hotplug for ARM64
+Date:   Fri, 28 Jun 2019 19:13:09 +0800
+Message-ID: <1561720392-45907-1-git-send-email-wangxiongfeng2@huawei.com>
+X-Mailer: git-send-email 1.7.12.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain
+X-Originating-IP: [10.175.102.37]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Monday, June 10, 2019 2:45:41 PM CEST Andrea Oliveri wrote:
-> 
-> --0000000000007d8d9c058af78ff3
-> Content-Type: text/plain; charset="UTF-8"
-> 
-> Thinkpad T Series expose a malformed BGRT table with Version field set
-> to 0. This fact prevents bootsplashes (as Plymouth) to correctly show
-> the manufacturer logo. This patch permits to override malformed BGRT
-> table with a correct one defined by the user.
+This patchset mark all the GICC node in MADT as possible CPUs even though it
+is disabled. But only those enabled GICC node are marked as present CPUs.
+So that kernel will initialize some CPU related data structure in advance before
+the CPU is actually hot added into the system. This patchset also implement 
+'acpi_(un)map_cpu()' and 'arch_(un)register_cpu()' for ARM64. These functions are
+needed to enable CPU hotplug.
 
-Applied, thanks!
+To support CPU hotplug, we need to add all the possible GICC node in MADT
+including those CPUs that are not present but may be hot added later. Those
+CPUs are marked as disabled in GICC nodes.
 
+Xiongfeng Wang (3):
+  ACPI / scan: evaluate _STA for processors declared via ASL Device
+    statement
+  arm64: mark all the GICC nodes in MADT as possible cpu
+  arm64: Add CPU hotplug support
 
+ arch/arm64/kernel/acpi.c  | 22 ++++++++++++++++++++++
+ arch/arm64/kernel/setup.c | 19 ++++++++++++++++++-
+ arch/arm64/kernel/smp.c   | 11 +++++------
+ drivers/acpi/scan.c       | 12 ++++++++++++
+ 4 files changed, 57 insertions(+), 7 deletions(-)
+
+-- 
+1.7.12.4
 
