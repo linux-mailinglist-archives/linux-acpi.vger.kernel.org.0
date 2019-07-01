@@ -2,319 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFE185C0E4
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jul 2019 18:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11A425C0F5
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jul 2019 18:15:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727059AbfGAQKO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Jul 2019 12:10:14 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:36208 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726646AbfGAQKO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Jul 2019 12:10:14 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x61G9SnO015847;
-        Mon, 1 Jul 2019 11:09:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1561997368;
-        bh=ixfn7gQUtri7Y9CCAmDSFpwM7z7aSLkphJr5dTPDQxc=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=tGUDkh36ZBl89CZvXFFudsm4Grp7FslFPggpycdwvSZoNToDvSTA7X4w4vAAThrAG
-         kPCWoVKuYxRuTxai3KxdSPK20J7yS4lnAeUFiEGcdTmJ5mcls+4SH9EzF74z/mEDen
-         VhkGNqb6JrZ4qg+GDyrudeRCZNmchinnBtAs3npc=
-Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x61G9SuO045363
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 1 Jul 2019 11:09:28 -0500
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 1 Jul
- 2019 11:09:27 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Mon, 1 Jul 2019 11:09:27 -0500
-Received: from [10.250.68.219] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x61G9RrT021815;
-        Mon, 1 Jul 2019 11:09:27 -0500
-Subject: Re: [PATCH v2 1/2] ASoC: tas5720.c: cleanup variant management
-To:     Nikolaus Voss <nv@vosn.de>
-CC:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Andreas Dannenberg <dannenberg@ti.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>
-References: <20190628143037.GH5379@sirena.org.uk>
- <cover.1561988282.git.nikolaus.voss@loewensteinmedical.de>
- <c79df50175d59265a37c5e7c8a0cfbf8119bcf78.1561988282.git.nikolaus.voss@loewensteinmedical.de>
- <80af3fca-f71b-c118-e5d8-fde8b7d21705@ti.com>
- <alpine.DEB.2.20.1907011633310.4353@fox.voss.local>
-From:   "Andrew F. Davis" <afd@ti.com>
-Message-ID: <074d4df3-51d8-6e20-869d-5f88b46cc172@ti.com>
-Date:   Mon, 1 Jul 2019 12:09:26 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        id S1727692AbfGAQP4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Jul 2019 12:15:56 -0400
+Received: from mga06.intel.com ([134.134.136.31]:41527 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726863AbfGAQP4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 1 Jul 2019 12:15:56 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Jul 2019 09:15:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,440,1557212400"; 
+   d="scan'208";a="184279656"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 01 Jul 2019 09:15:50 -0700
+Received: by lahna (sSMTP sendmail emulation); Mon, 01 Jul 2019 19:15:50 +0300
+Date:   Mon, 1 Jul 2019 19:15:50 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Hans De Goede <hdegoede@redhat.com>,
+        "Robert R. Howell" <RHowell@uwyo.edu>
+Subject: Re: [PATCH v2 1/5] PM: ACPI/PCI: Resume all devices during
+ hibernation
+Message-ID: <20190701161550.GA2640@lahna.fi.intel.com>
+References: <4976412.ihyb9sT5jY@kreacher>
+ <6191578.xJk2HsE5MX@kreacher>
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.20.1907011633310.4353@fox.voss.local>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6191578.xJk2HsE5MX@kreacher>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 7/1/19 11:35 AM, Nikolaus Voss wrote:
-> On Mon, 1 Jul 2019, Andrew F. Davis wrote:
->> On 7/1/19 9:42 AM, Nikolaus Voss wrote:
->>> Replace enum tas572x_type with struct tas5720_variant which aggregates
->>> variant specific stuff and can be directly referenced from an id table.
->>>
->>> Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
->>> ---
->>>  sound/soc/codecs/tas5720.c | 98 +++++++++++++-------------------------
->>>  1 file changed, 33 insertions(+), 65 deletions(-)
->>>
->>> diff --git a/sound/soc/codecs/tas5720.c b/sound/soc/codecs/tas5720.c
->>> index 37fab8f22800..b2e897f094b4 100644
->>> --- a/sound/soc/codecs/tas5720.c
->>> +++ b/sound/soc/codecs/tas5720.c
->>> @@ -28,9 +28,10 @@
->>>  /* Define how often to check (and clear) the fault status register
->>> (in ms) */
->>>  #define TAS5720_FAULT_CHECK_INTERVAL        200
->>>
->>> -enum tas572x_type {
->>> -    TAS5720,
->>> -    TAS5722,
->>> +struct tas5720_variant {
->>> +    const int device_id;
->>> +    const struct regmap_config *reg_config;
->>> +    const struct snd_soc_component_driver *comp_drv;
->>>  };
->>>
->>>  static const char * const tas5720_supply_names[] = {
->>> @@ -44,7 +45,7 @@ struct tas5720_data {
->>>      struct snd_soc_component *component;
->>>      struct regmap *regmap;
->>>      struct i2c_client *tas5720_client;
->>> -    enum tas572x_type devtype;
->>> +    const struct tas5720_variant *variant;
->>
->> Why add a new struct? Actually I don't see the need for this patch at
->> all, the commit message only explains the 'what' not the 'why'. We can
->> and do already build this info from the tas572x_type.
+On Mon, Jul 01, 2019 at 12:44:25PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> As the commit message says, the purpose is to aggregate the variant
-> specifics and make it accessible via one pointer. This is a standard
-> approach for of/acpi_device_id tables and thus makes the code simpler
-> and improves readability. This is a maintenance patch to prepare using
-> the device match API in a proper way.
+> Both the PCI bus type and the ACPI PM domain avoid resuming
+> runtime-suspended devices with DPM_FLAG_SMART_SUSPEND set during
+> hibernation (before creating the snapshot image of system memory),
+> but that turns out to be a mistake.  It leads to functional issues
+> and adds complexity that's hard to justify.
 > 
-
-
-"make it accessible via one pointer" is again a "what", the "why" is:
-
-"This is a standard approach"
-"makes the code simpler and improves readability"
-
-Those are valid reasons and should be what you put in the commit message.
-
-
->>
->> Also below are several functional changes, the cover letter says this is
->> not a functional change, yet the driver behaves differently now.
+> For this reason, resume all runtime-suspended PCI devices and all
+> devices in the ACPI PM domains before creating a snapshot image of
+> system memory during hibernation.
 > 
-> Can you be a little bit more specific? The code should behave exactly as
-> before.
+> Fixes: 05087360fd7a (ACPI / PM: Take SMART_SUSPEND driver flag into account)
+> Fixes: c4b65157aeef (PCI / PM: Take SMART_SUSPEND driver flag into account)
+> Link: https://lore.kernel.org/linux-acpi/917d4399-2e22-67b1-9d54-808561f9083f@uwyo.edu/T/#maf065fe6e4974f2a9d79f332ab99dfaba635f64c
+> Reported-by: Robert R. Howell <RHowell@uwyo.edu>
+> Tested-by: Robert R. Howell <RHowell@uwyo.edu>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
 > 
-
-
-Sure, for instance the line "unexpected private driver data" is removed,
-this can now never happen, that is a functional change. The phrase "no
-functional change", should be reserved for only changes to spelling,
-formatting, code organizing, etc..
-
-
-> Niko
+> -> v2: No changes.
 > 
->>
->> Andrew
->>
->>>      struct regulator_bulk_data supplies[TAS5720_NUM_SUPPLIES];
->>>      struct delayed_work fault_check_work;
->>>      unsigned int last_fault;
->>> @@ -179,17 +180,13 @@ static int tas5720_set_dai_tdm_slot(struct
->>> snd_soc_dai *dai,
->>>          goto error_snd_soc_component_update_bits;
->>>
->>>      /* Configure TDM slot width. This is only applicable to TAS5722. */
->>> -    switch (tas5720->devtype) {
->>> -    case TAS5722:
->>> +    if (tas5720->variant->device_id == TAS5722_DEVICE_ID) {
+> ---
+>  drivers/acpi/device_pm.c |   13 +++++++------
+>  drivers/pci/pci-driver.c |   16 ++++++++--------
+>  2 files changed, 15 insertions(+), 14 deletions(-)
+> 
+> Index: linux-pm/drivers/acpi/device_pm.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/device_pm.c
+> +++ linux-pm/drivers/acpi/device_pm.c
+> @@ -1155,13 +1155,14 @@ EXPORT_SYMBOL_GPL(acpi_subsys_resume_ear
+>  int acpi_subsys_freeze(struct device *dev)
+>  {
+>  	/*
+> -	 * This used to be done in acpi_subsys_prepare() for all devices and
+> -	 * some drivers may depend on it, so do it here.  Ideally, however,
+> -	 * runtime-suspended devices should not be touched during freeze/thaw
+> -	 * transitions.
+> +	 * Resume all runtime-suspended devices before creating a snapshot
+> +	 * image of system memory, because the restore kernel generally cannot
+> +	 * be expected to always handle them consistently and they need to be
+> +	 * put into the runtime-active metastate during system resume anyway,
+> +	 * so it is better to ensure that the state saved in the image will be
+> +	 * alwyas consistent with that.
 
+alwyas -> always
 
-I also don't like this, TAS5722_DEVICE_ID is the expected contents of a
-register, you are using it like the enum tas572x_type that you removed.
-I'd leave that enum, the device ID register itself is not guaranteed to
-be correct or unique, which is why we warn about mismatches below but
-then continue to use the user provided device type anyway.
+>  	 */
+> -	if (!dev_pm_test_driver_flags(dev, DPM_FLAG_SMART_SUSPEND))
+> -		pm_runtime_resume(dev);
+> +	pm_runtime_resume(dev);
+>  
+>  	return pm_generic_freeze(dev);
+>  }
+> Index: linux-pm/drivers/pci/pci-driver.c
+> ===================================================================
+> --- linux-pm.orig/drivers/pci/pci-driver.c
+> +++ linux-pm/drivers/pci/pci-driver.c
+> @@ -1012,15 +1012,15 @@ static int pci_pm_freeze(struct device *
+>  	}
+>  
+>  	/*
+> -	 * This used to be done in pci_pm_prepare() for all devices and some
+> -	 * drivers may depend on it, so do it here.  Ideally, runtime-suspended
+> -	 * devices should not be touched during freeze/thaw transitions,
+> -	 * however.
+> +	 * Resume all runtime-suspended devices before creating a snapshot
+> +	 * image of system memory, because the restore kernel generally cannot
+> +	 * be expected to always handle them consistently and they need to be
+> +	 * put into the runtime-active metastate during system resume anyway,
+> +	 * so it is better to ensure that the state saved in the image will be
+> +	 * alwyas consistent with that.
 
-Andrew
+ditto
 
-
->>>          ret = snd_soc_component_update_bits(component,
->>> TAS5722_DIGITAL_CTRL2_REG,
->>>                              TAS5722_TDM_SLOT_16B,
->>>                              slot_width == 16 ?
->>>                              TAS5722_TDM_SLOT_16B : 0);
->>>          if (ret < 0)
->>>              goto error_snd_soc_component_update_bits;
->>> -        break;
->>> -    default:
->>> -        break;
->>>      }
->>>
->>>      return 0;
->>> @@ -277,7 +274,7 @@ static void tas5720_fault_check_work(struct
->>> work_struct *work)
->>>  static int tas5720_codec_probe(struct snd_soc_component *component)
->>>  {
->>>      struct tas5720_data *tas5720 =
->>> snd_soc_component_get_drvdata(component);
->>> -    unsigned int device_id, expected_device_id;
->>> +    unsigned int device_id;
->>>      int ret;
->>>
->>>      tas5720->component = component;
->>> @@ -301,21 +298,9 @@ static int tas5720_codec_probe(struct
->>> snd_soc_component *component)
->>>          goto probe_fail;
->>>      }
->>>
->>> -    switch (tas5720->devtype) {
->>> -    case TAS5720:
->>> -        expected_device_id = TAS5720_DEVICE_ID;
->>> -        break;
->>> -    case TAS5722:
->>> -        expected_device_id = TAS5722_DEVICE_ID;
->>> -        break;
->>> -    default:
->>> -        dev_err(component->dev, "unexpected private driver data\n");
->>> -        return -EINVAL;
->>> -    }
->>> -
->>> -    if (device_id != expected_device_id)
->>> +    if (device_id != tas5720->variant->device_id)
->>>          dev_warn(component->dev, "wrong device ID. expected: %u
->>> read: %u\n",
->>> -             expected_device_id, device_id);
->>> +             tas5720->variant->device_id, device_id);
->>>
->>>      /* Set device to mute */
->>>      ret = snd_soc_component_update_bits(component,
->>> TAS5720_DIGITAL_CTRL2_REG,
->>> @@ -637,7 +622,6 @@ static int tas5720_probe(struct i2c_client *client,
->>>  {
->>>      struct device *dev = &client->dev;
->>>      struct tas5720_data *data;
->>> -    const struct regmap_config *regmap_config;
->>>      int ret;
->>>      int i;
->>>
->>> @@ -646,20 +630,10 @@ static int tas5720_probe(struct i2c_client
->>> *client,
->>>          return -ENOMEM;
->>>
->>>      data->tas5720_client = client;
->>> -    data->devtype = id->driver_data;
->>>
->>> -    switch (id->driver_data) {
->>> -    case TAS5720:
->>> -        regmap_config = &tas5720_regmap_config;
->>> -        break;
->>> -    case TAS5722:
->>> -        regmap_config = &tas5722_regmap_config;
->>> -        break;
->>> -    default:
->>> -        dev_err(dev, "unexpected private driver data\n");
->>> -        return -EINVAL;
->>> -    }
->>> -    data->regmap = devm_regmap_init_i2c(client, regmap_config);
->>> +    data->variant = (const struct tas5720_variant *)id->driver_data;
->>> +
->>> +    data->regmap = devm_regmap_init_i2c(client,
->>> data->variant->reg_config);
->>>      if (IS_ERR(data->regmap)) {
->>>          ret = PTR_ERR(data->regmap);
->>>          dev_err(dev, "failed to allocate register map: %d\n", ret);
->>> @@ -678,42 +652,36 @@ static int tas5720_probe(struct i2c_client
->>> *client,
->>>
->>>      dev_set_drvdata(dev, data);
->>>
->>> -    switch (id->driver_data) {
->>> -    case TAS5720:
->>> -        ret = devm_snd_soc_register_component(&client->dev,
->>> -                    &soc_component_dev_tas5720,
->>> -                    tas5720_dai,
->>> -                    ARRAY_SIZE(tas5720_dai));
->>> -        break;
->>> -    case TAS5722:
->>> -        ret = devm_snd_soc_register_component(&client->dev,
->>> -                    &soc_component_dev_tas5722,
->>> -                    tas5720_dai,
->>> -                    ARRAY_SIZE(tas5720_dai));
->>> -        break;
->>> -    default:
->>> -        dev_err(dev, "unexpected private driver data\n");
->>> -        return -EINVAL;
->>> -    }
->>> -    if (ret < 0) {
->>> -        dev_err(dev, "failed to register component: %d\n", ret);
->>> -        return ret;
->>> -    }
->>> -
->>> -    return 0;
->>> +    ret = devm_snd_soc_register_component(&client->dev,
->>> +                          data->variant->comp_drv,
->>> +                          tas5720_dai,
->>> +                          ARRAY_SIZE(tas5720_dai));
->>> +    return ret;
->>>  }
->>>
->>> +static const struct tas5720_variant tas5720 = {
->>> +    .device_id = TAS5720_DEVICE_ID,
->>> +    .reg_config = &tas5720_regmap_config,
->>> +    .comp_drv = &soc_component_dev_tas5720,
->>> +};
->>> +
->>> +static const struct tas5720_variant tas5722 = {
->>> +    .device_id = TAS5722_DEVICE_ID,
->>> +    .reg_config = &tas5722_regmap_config,
->>> +    .comp_drv = &soc_component_dev_tas5722,
->>> +};
->>> +
->>>  static const struct i2c_device_id tas5720_id[] = {
->>> -    { "tas5720", TAS5720 },
->>> -    { "tas5722", TAS5722 },
->>> +    { "tas5720", (kernel_ulong_t)&tas5720 },
->>> +    { "tas5722", (kernel_ulong_t)&tas5722 },
->>>      { }
->>>  };
->>>  MODULE_DEVICE_TABLE(i2c, tas5720_id);
->>>
->>>  #if IS_ENABLED(CONFIG_OF)
->>>  static const struct of_device_id tas5720_of_match[] = {
->>> -    { .compatible = "ti,tas5720", },
->>> -    { .compatible = "ti,tas5722", },
->>> +    { .compatible = "ti,tas5720", .data = &tas5720, },
->>> +    { .compatible = "ti,tas5722", .data = &tas5722, },
->>>      { },
->>>  };
->>>  MODULE_DEVICE_TABLE(of, tas5720_of_match);
->>>
->>
+>  	 */
+> -	if (!dev_pm_smart_suspend_and_suspended(dev)) {
+> -		pm_runtime_resume(dev);
+> -		pci_dev->state_saved = false;
+> -	}
+> +	pm_runtime_resume(dev);
+> +	pci_dev->state_saved = false;
+>  
+>  	if (pm->freeze) {
+>  		int error;
+> 
+> 
+> 
