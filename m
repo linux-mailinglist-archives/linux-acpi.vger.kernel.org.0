@@ -2,61 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 141865D03C
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jul 2019 15:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C4945D23B
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jul 2019 16:59:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726695AbfGBNKc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Jul 2019 09:10:32 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:51481 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726636AbfGBNKc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Jul 2019 09:10:32 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hiIYH-0003QF-Iz; Tue, 02 Jul 2019 13:10:29 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPI: APD: remove redundant assignment to pointer clk
-Date:   Tue,  2 Jul 2019 14:10:29 +0100
-Message-Id: <20190702131029.9621-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726960AbfGBO7q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Jul 2019 10:59:46 -0400
+Received: from foss.arm.com ([217.140.110.172]:51348 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726765AbfGBO7q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 2 Jul 2019 10:59:46 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2A1821424;
+        Tue,  2 Jul 2019 07:59:45 -0700 (PDT)
+Received: from [10.1.196.129] (ostrya.cambridge.arm.com [10.1.196.129])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8FE533F703;
+        Tue,  2 Jul 2019 07:59:43 -0700 (PDT)
+Subject: Re: [PATCH v3 8/9] iommu/arm-smmu-v3: Add support for PCI ATS
+To:     Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <Will.Deacon@arm.com>,
+        Lorenzo Pieralisi <Lorenzo.Pieralisi@arm.com>,
+        "bhelgaas@google.com" <bhelgaas@google.com>
+Cc:     "zhongmiao@hisilicon.com" <zhongmiao@hisilicon.com>,
+        "okaya@kernel.org" <okaya@kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        Sudeep Holla <Sudeep.Holla@arm.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "lenb@kernel.org" <lenb@kernel.org>
+References: <20190417182448.12382-1-jean-philippe.brucker@arm.com>
+ <20190417182448.12382-9-jean-philippe.brucker@arm.com>
+ <7fcd5263-8a20-11cb-0c20-9fee35fe65c1@arm.com>
+From:   Jean-Philippe Brucker <jean-philippe.brucker@arm.com>
+Message-ID: <433038b1-048b-57ab-db0e-5f9f940d52ce@arm.com>
+Date:   Tue, 2 Jul 2019 15:59:09 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <7fcd5263-8a20-11cb-0c20-9fee35fe65c1@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 01/07/2019 18:41, Robin Murphy wrote:
+> Hi Jean-Philippe,
+> 
+> I realise it's a bit late for a "review", but digging up the original 
+> patch seemed as good a place as any to raise this...
+> 
+> On 17/04/2019 19:24, Jean-Philippe Brucker wrote:
+> [...]
+>> @@ -1740,6 +1906,9 @@ static void arm_smmu_detach_dev(struct arm_smmu_master *master)
+>>   
+>>   	master->domain = NULL;
+>>   	arm_smmu_install_ste_for_dev(master);
+>> +
+>> +	/* Disabling ATS invalidates all ATC entries */
+>> +	arm_smmu_disable_ats(master);
+>>   }
+> 
+> Is that actually true? I had initially overlooked this entirely while 
+> diagnosing something else and thought that we were missing any ATC 
+> invalidation on detach at all, but even having looked again I'm not 
+> entirely convinced it's bulletproof.
+> 
+> Firstly, the ATS spec only seems to say that *enabling* the ATS 
+> capability invalidates all ATC entries, although I think any corner 
+> cases that that alone opens up should be at best theoretical. More 
+> importantly though, pci_disable_ats() might not actually touch the 
+> capability - given that, it seems possible to move a VF to a new domain, 
+> and if it's not reset, end up preserving now-bogus ATC entries despite 
+> the old domain being torn down and freed. Do we need an explicit ATC 
+> invalidation here to be 100% safe, or is there something else I'm missing?
 
-The pointer clk is being initialized with a value that is never
-read and it is being updated later with a new value. The
-initialization is redundant and can be removed.
+Good points, yes the comment is wrong and it looks like we need an
+explicit invalidation given the current pci_disable_ats()
+implementation. I'll send a fix shortly.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/acpi/acpi_apd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
-index ff47317d8ef1..7cd0c9ac71ea 100644
---- a/drivers/acpi/acpi_apd.c
-+++ b/drivers/acpi/acpi_apd.c
-@@ -57,7 +57,7 @@ struct apd_private_data {
- static int acpi_apd_setup(struct apd_private_data *pdata)
- {
- 	const struct apd_device_desc *dev_desc = pdata->dev_desc;
--	struct clk *clk = ERR_PTR(-ENODEV);
-+	struct clk *clk;
- 
- 	if (dev_desc->fixed_clk_rate) {
- 		clk = clk_register_fixed_rate(&pdata->adev->dev,
--- 
-2.20.1
-
+Thanks,
+Jean
