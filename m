@@ -2,448 +2,363 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 254A55EA7C
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jul 2019 19:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B45175ECBB
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jul 2019 21:24:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726656AbfGCRbB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Jul 2019 13:31:01 -0400
-Received: from mail-eopbgr730110.outbound.protection.outlook.com ([40.107.73.110]:2135
-        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726430AbfGCRbB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 3 Jul 2019 13:31:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bRrUeuOpZfh+jwPjUR9o3dRGkv9uGaOzk48zS0qaGAo=;
- b=HNkwqEJ5rHHMge66sYMc7Ke4kAa1KM8JRsTtW9kQoSQvYNkihEMt3BwA/t+rXd8a0Bkvq0JQLAFEbpH25RPKQO0T4DtzdfJpFGnUCJh6yFJOyXyg+WlNvM8Yf4KGuwbJ2G+Ydn9oj25bScANU6Jh18jVWpwJIYUTviKWo4eQ2cw=
-Received: from DM5PR0102MB3383.prod.exchangelabs.com (52.132.128.150) by
- DM5PR0102MB3445.prod.exchangelabs.com (52.132.129.139) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2032.20; Wed, 3 Jul 2019 17:30:54 +0000
-Received: from DM5PR0102MB3383.prod.exchangelabs.com
- ([fe80::2560:7ba6:c491:dcce]) by DM5PR0102MB3383.prod.exchangelabs.com
- ([fe80::2560:7ba6:c491:dcce%7]) with mapi id 15.20.2032.019; Wed, 3 Jul 2019
- 17:30:53 +0000
-From:   Tyler Baicar OS <baicar@os.amperecomputing.com>
-To:     Andrew Murray <andrew.murray@arm.com>
-CC:     Open Source Submission <patches@amperecomputing.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "guohanjun@huawei.com" <guohanjun@huawei.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "Matteo.Carlini@arm.com" <Matteo.Carlini@arm.com>
-Subject: Re: [PATCH RFC 1/4] ACPI/AEST: Initial AEST driver
-Thread-Topic: [PATCH RFC 1/4] ACPI/AEST: Initial AEST driver
-Thread-Index: AQHVMPZqphfhRm1STkOzQdqBSPqI3aa4oK4AgABm5Mc=
-Date:   Wed, 3 Jul 2019 17:30:53 +0000
-Message-ID: <DM5PR0102MB33834E69835C641D7B167A82E3FB0@DM5PR0102MB3383.prod.exchangelabs.com>
-References: <1562086280-5351-1-git-send-email-baicar@os.amperecomputing.com>
- <1562086280-5351-2-git-send-email-baicar@os.amperecomputing.com>,<20190703092549.GA51483@e119886-lin.cambridge.arm.com>
-In-Reply-To: <20190703092549.GA51483@e119886-lin.cambridge.arm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=baicar@os.amperecomputing.com; 
-x-originating-ip: [174.109.142.144]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 35e4bc7c-22a1-44fe-54e0-08d6ffdc336c
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:DM5PR0102MB3445;
-x-ms-traffictypediagnostic: DM5PR0102MB3445:
-x-microsoft-antispam-prvs: <DM5PR0102MB344593F8FE0B7B72DCC09014E3FB0@DM5PR0102MB3445.prod.exchangelabs.com>
-x-ms-oob-tlc-oobclassifiers: OLM:1201;
-x-forefront-prvs: 00872B689F
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(346002)(376002)(396003)(366004)(39840400004)(136003)(189003)(199004)(256004)(30864003)(81166006)(81156014)(33656002)(3846002)(8936002)(53936002)(102836004)(14444005)(74316002)(7736002)(76176011)(55016002)(86362001)(7696005)(6436002)(186003)(9686003)(229853002)(11346002)(2906002)(446003)(26005)(6246003)(53546011)(8676002)(6506007)(305945005)(6116002)(486006)(68736007)(91956017)(66476007)(66556008)(64756008)(66446008)(73956011)(25786009)(14454004)(76116006)(66946007)(71190400001)(52536014)(6916009)(5660300002)(316002)(4326008)(54906003)(478600001)(476003)(66066001)(99286004)(71200400001)(7416002);DIR:OUT;SFP:1102;SCL:1;SRVR:DM5PR0102MB3445;H:DM5PR0102MB3383.prod.exchangelabs.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:0;
-received-spf: None (protection.outlook.com: os.amperecomputing.com does not
- designate permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 9K/71CZQpauB/pvhbyFC3ny0DYjMLrl6shGbzPxl8hlfwWPoC6MWftI2OuwmJH+PDFEFvuWDih7QkCjk7w9nkopKn3JX5iKs8ZCI9WGLKJ16WQPyYKbMQhHpSYf88pByI6Vx5WIGsT60Dn/d6erqNHe+j+PKJDKw27X3EpVqHvG0SOqrA1Q6Z+3tXR1xYpcPKrJrKM9PXONW3J+mtuU2Mw8b39ISHAt3oLRsN3LXIckVcO4gH6cTV4GhU670Eo9HljDWBY33hBZtITouTU5hNebS9WpWE8XTwYKzVnGAxtZo8xWjKDbiBLq0xDkd12FQeUJXYz2j57Cf7F23uAPSHCwVh2VIjtKm+pVkRIe8Vj4ARP87soeqQu4Z7iSAhixPyqIjni4WVC1kZJeWefMtbGwuZsSHUmIIGWvyNJomQnQ=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1726550AbfGCTYz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Jul 2019 15:24:55 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:41446 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726473AbfGCTYz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Jul 2019 15:24:55 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x63JO3Fc056323;
+        Wed, 3 Jul 2019 14:24:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1562181843;
+        bh=hdkWWlkE1Pov+QpahnmFk2wqv+OXG0rwblyu9V8WEVM=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=aT//gTj/zBqGhmJAbE6kYfTV+dbaKY8dG45gnAsszKDwl6pzFrbadyk/YdOUgn8Ot
+         JUJkMoHJQTYap8Ckiuild/L2fx1xuCW3wlKbqcrTiShVcsdN3WYPtNCoft0KbyCHnD
+         3zwbK0UZaiz+m/B2AFzBwsIYxwA+ZKYEQH0/PaGs=
+Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x63JO33J118481
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 3 Jul 2019 14:24:03 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 3 Jul
+ 2019 14:24:03 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Wed, 3 Jul 2019 14:24:03 -0500
+Received: from [10.250.81.153] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x63JO2PS107354;
+        Wed, 3 Jul 2019 14:24:02 -0500
+Subject: Re: [PATCH v2 1/2] ASoC: tas5720.c: cleanup variant management
+To:     Nikolaus Voss <nv@vosn.de>
+CC:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Andreas Dannenberg <dannenberg@ti.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>
+References: <20190628143037.GH5379@sirena.org.uk>
+ <cover.1561988282.git.nikolaus.voss@loewensteinmedical.de>
+ <c79df50175d59265a37c5e7c8a0cfbf8119bcf78.1561988282.git.nikolaus.voss@loewensteinmedical.de>
+ <80af3fca-f71b-c118-e5d8-fde8b7d21705@ti.com>
+ <alpine.DEB.2.20.1907011633310.4353@fox.voss.local>
+ <074d4df3-51d8-6e20-869d-5f88b46cc172@ti.com>
+ <alpine.DEB.2.20.1907020855240.10248@fox.voss.local>
+From:   "Andrew F. Davis" <afd@ti.com>
+Message-ID: <4897e119-28fa-aa2c-aa06-2534af6b4c62@ti.com>
+Date:   Wed, 3 Jul 2019 15:24:02 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 35e4bc7c-22a1-44fe-54e0-08d6ffdc336c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Jul 2019 17:30:53.7650
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Baicar@os.amperecomputing.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR0102MB3445
+In-Reply-To: <alpine.DEB.2.20.1907020855240.10248@fox.voss.local>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello Andrew,
+On 7/2/19 6:12 AM, Nikolaus Voss wrote:
+> On Mon, 1 Jul 2019, Andrew F. Davis wrote:
+>> On 7/1/19 11:35 AM, Nikolaus Voss wrote:
+>>> On Mon, 1 Jul 2019, Andrew F. Davis wrote:
+>>>> On 7/1/19 9:42 AM, Nikolaus Voss wrote:
+>>>>> Replace enum tas572x_type with struct tas5720_variant which aggregates
+>>>>> variant specific stuff and can be directly referenced from an id
+>>>>> table.
+>>>>>
+>>>>> Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
+>>>>> ---
+>>>>>  sound/soc/codecs/tas5720.c | 98
+>>>>> +++++++++++++-------------------------
+>>>>>  1 file changed, 33 insertions(+), 65 deletions(-)
+>>>>>
+>>>>> diff --git a/sound/soc/codecs/tas5720.c b/sound/soc/codecs/tas5720.c
+>>>>> index 37fab8f22800..b2e897f094b4 100644
+>>>>> --- a/sound/soc/codecs/tas5720.c
+>>>>> +++ b/sound/soc/codecs/tas5720.c
+>>>>> @@ -28,9 +28,10 @@
+>>>>>  /* Define how often to check (and clear) the fault status register
+>>>>> (in ms) */
+>>>>>  #define TAS5720_FAULT_CHECK_INTERVAL        200
+>>>>>
+>>>>> -enum tas572x_type {
+>>>>> -    TAS5720,
+>>>>> -    TAS5722,
+>>>>> +struct tas5720_variant {
+>>>>> +    const int device_id;
+>>>>> +    const struct regmap_config *reg_config;
+>>>>> +    const struct snd_soc_component_driver *comp_drv;
+>>>>>  };
+>>>>>
+>>>>>  static const char * const tas5720_supply_names[] = {
+>>>>> @@ -44,7 +45,7 @@ struct tas5720_data {
+>>>>>      struct snd_soc_component *component;
+>>>>>      struct regmap *regmap;
+>>>>>      struct i2c_client *tas5720_client;
+>>>>> -    enum tas572x_type devtype;
+>>>>> +    const struct tas5720_variant *variant;
+>>>>
+>>>> Why add a new struct? Actually I don't see the need for this patch at
+>>>> all, the commit message only explains the 'what' not the 'why'. We can
+>>>> and do already build this info from the tas572x_type.
+>>>
+>>> As the commit message says, the purpose is to aggregate the variant
+>>> specifics and make it accessible via one pointer. This is a standard
+>>> approach for of/acpi_device_id tables and thus makes the code simpler
+>>> and improves readability. This is a maintenance patch to prepare using
+>>> the device match API in a proper way.
+>>>
+>>
+>>
+>> "make it accessible via one pointer" is again a "what", the "why" is:
+>>
+>> "This is a standard approach"
+>> "makes the code simpler and improves readability"
+>>
+>> Those are valid reasons and should be what you put in the commit message.
+> 
+> ok
+> 
+>>
+>>
+>>>>
+>>>> Also below are several functional changes, the cover letter says
+>>>> this is
+>>>> not a functional change, yet the driver behaves differently now.
+>>>
+>>> Can you be a little bit more specific? The code should behave exactly as
+>>> before.
+>>>
+>>
+>>
+>> Sure, for instance the line "unexpected private driver data" is removed,
+>> this can now never happen, that is a functional change. The phrase "no
+>> functional change", should be reserved for only changes to spelling,
+>> formatting, code organizing, etc..
+> 
+> "unexpected private driver data" was unreachable code before, but you're
+> right, debug output has changed a little, but the functional part is
+> exactly the same.
+> 
+>>
+>>
+>>> Niko
+>>>
+>>>>
+>>>> Andrew
+>>>>
+>>>>>      struct regulator_bulk_data supplies[TAS5720_NUM_SUPPLIES];
+>>>>>      struct delayed_work fault_check_work;
+>>>>>      unsigned int last_fault;
+>>>>> @@ -179,17 +180,13 @@ static int tas5720_set_dai_tdm_slot(struct
+>>>>> snd_soc_dai *dai,
+>>>>>          goto error_snd_soc_component_update_bits;
+>>>>>
+>>>>>      /* Configure TDM slot width. This is only applicable to
+>>>>> TAS5722. */
+>>>>> -    switch (tas5720->devtype) {
+>>>>> -    case TAS5722:
+>>>>> +    if (tas5720->variant->device_id == TAS5722_DEVICE_ID) {
+>>
+>>
+>> I also don't like this, TAS5722_DEVICE_ID is the expected contents of a
+>> register, you are using it like the enum tas572x_type that you removed.
+>> I'd leave that enum, the device ID register itself is not guaranteed to
+>> be correct or unique, which is why we warn about mismatches below but
+>> then continue to use the user provided device type anyway.
+> 
+> Strange, with me it's the other way round, I don't like the enum. The
+> mismatch behavior hasn't changed a bit, the same warning is printed. If
+> the device ID is no longer unique in the future (apparently it is for
+> now) the driver should explicitly handle this instead of printing a
+> warning, because warnings should be reserved for an indication of any
+> kind of misconfiguration and not of expected behavior.
+> 
+> That said the variant struct can of course replace the enum in every
+> aspect, even for what you describe above. The enum was an ordinal
+> representation of the user-selected i2c_device_id, the variant struct* is
+> a pointer representation of the user-selected i2c/of/acpi_device_id. The
+> only difference is that it directly points to the variant specific parts
+> of the driver instead of resolving those via multiple switch/case
+> statements.
 
-Thank you for the=A0feedback!
+The enum identifies the device type, easy as that, if you want to
+instead do all the logic switching on some internal ID register value
+code then make a patch for just that and explain what is gained. Don't
+do that into this one.
 
-On Wed, Jul 3, 2019 at 5:26 AM Andrew Murray <andrew.murray@arm.com> wrote:
->
-> On Tue, Jul 02, 2019 at 04:51:38PM +0000, Tyler Baicar OS wrote:
-> > Add support for parsing the ARM Error Source Table and basic handling o=
-f
-> > errors reported through both memory mapped and system register interfac=
-es.
-> >
-> > Signed-off-by: Tyler Baicar <baicar@os.amperecomputing.com>
-> > ---
-> >  arch/arm64/include/asm/ras.h |  41 +++++
-> >  arch/arm64/kernel/Makefile   |   2 +-
-> >  arch/arm64/kernel/ras.c      |  67 ++++++++
-> >  drivers/acpi/arm64/Kconfig   |   3 +
-> >  drivers/acpi/arm64/Makefile  |   1 +
-> >  drivers/acpi/arm64/aest.c    | 362 +++++++++++++++++++++++++++++++++++=
-++++++++
-> >  include/linux/acpi_aest.h    |  94 +++++++++++
-> >  7 files changed, 569 insertions(+), 1 deletion(-)
-> >  create mode 100644 arch/arm64/include/asm/ras.h
-> >  create mode 100644 arch/arm64/kernel/ras.c
-> >  create mode 100644 drivers/acpi/arm64/aest.c
-> >  create mode 100644 include/linux/acpi_aest.h
-> >
-> > diff --git a/arch/arm64/include/asm/ras.h b/arch/arm64/include/asm/ras.=
-h
-> > new file mode 100644
-> > index 0000000..36bfff4
-> > --- /dev/null
-> > +++ b/arch/arm64/include/asm/ras.h
-> > @@ -0,0 +1,41 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +#ifndef __ASM_RAS_H
-> > +#define __ASM_RAS_H
-> > +
-> > +#define ERR_STATUS_AV                BIT(31)
-> > +#define ERR_STATUS_V         BIT(30)
-> > +#define ERR_STATUS_UE                BIT(29)
-> > +#define ERR_STATUS_ER                BIT(28)
-> > +#define ERR_STATUS_OF                BIT(27)
-> > +#define ERR_STATUS_MV                BIT(26)
-> > +#define ERR_STATUS_CE_SHIFT  24
-> > +#define ERR_STATUS_CE_MASK   0x3
-> > +#define ERR_STATUS_DE                BIT(23)
-> > +#define ERR_STATUS_PN                BIT(22)
-> > +#define ERR_STATUS_UET_SHIFT 20
-> > +#define ERR_STATUS_UET_MASK  0x3
-> > +#define ERR_STATUS_IERR_SHIFT        8
-> > +#define ERR_STATUS_IERR_MASK 0xff
-> > +#define ERR_STATUS_SERR_SHIFT        0
-> > +#define ERR_STATUS_SERR_MASK 0xff
->
-> Some of these (_ER, _OF, _CE*, _PN, _UET*) are not used anywhere in the s=
-eries,
-> I'd suggest you drop the unused ones.
+Andrew
 
-Yes, I'll remove them in the next version.
-
-> There may be some merit in renaming these to match the register names in =
-the
-> spec, e.g. ERXSTATUS_EL1 instead of ERR_STATUS.
-
-ERX* are the register names for the system registers, but these macros are =
-used
-for both system registers and memory mapped registers. The memory mapped
-registers have prefix ERR<n>*. Also, the spec definition of the ERX* system
-registers is "accesses ERR<n>* for the error record selected by
-ERRSELR_EL1.SEL." So really, the registers being accessed in all cases are
-ERR<n>*. Either way, if folks think these names should be changed I can cha=
-nge
-them.
-
-> > +
-> > +#define ERR_FR_CEC_SHIFT     12
-> > +#define ERR_FR_CEC_MASK              0x7
-> > +
-> > +#define ERR_FR_8B_CEC                BIT(1)
-> > +#define ERR_FR_16B_CEC               BIT(2)
->
-> All of these ERR_FR_ defines aren't used anywhere either.
-
-Will remove.
-
-> > +
-> > +struct ras_ext_regs {
-> > +     u64 err_fr;
-> > +     u64 err_ctlr;
-> > +     u64 err_status;
-> > +     u64 err_addr;
-> > +     u64 err_misc0;
-> > +     u64 err_misc1;
-> > +     u64 err_misc2;
-> > +     u64 err_misc3;
-> > +};
-> > +
-> > +void arch_arm_ras_report_error(void);
-> > +
-> > +#endif       /* __ASM_RAS_H */
-> > diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
-> > index 9e7dcb2..294f602 100644
-> > --- a/arch/arm64/kernel/Makefile
-> > +++ b/arch/arm64/kernel/Makefile
-> > @@ -19,7 +19,7 @@ obj-y                       :=3D debug-monitors.o ent=
-ry.o irq.o fpsimd.o              \
-> >                          return_address.o cpuinfo.o cpu_errata.o       =
-       \
-> >                          cpufeature.o alternative.o cacheinfo.o        =
-       \
-> >                          smp.o smp_spin_table.o topology.o smccc-call.o=
-       \
-> > -                        syscall.o
-> > +                        syscall.o ras.o
->
-> Given that arch_arm_ras_report_error depends on the ARM64_HAS_RAS_EXTN
-> capability, which in turn depends on CONFIG_ARM64_RAS_EXTN - you should
-> probably conditionally build ras.o only if CONFIG_ARM64_RAS_EXTN is defin=
-ed
-> (and provide a stub in the header for when it isn't defined).
-
-Yes, I can do that.
-
-> >=20
-> >  extra-$(CONFIG_EFI)                  :=3D efi-entry.o
-> >=20
-> > diff --git a/arch/arm64/kernel/ras.c b/arch/arm64/kernel/ras.c
-> > new file mode 100644
-> > index 0000000..ca47efa
-> > --- /dev/null
-> > +++ b/arch/arm64/kernel/ras.c
-> > @@ -0,0 +1,67 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +#include <linux/kernel.h>
-> > +#include <linux/cpu.h>
-> > +#include <linux/smp.h>
-> > +
-> > +#include <asm/ras.h>
-> > +
-> > +void arch_arm_ras_report_error(void)
-> > +{
-> > +     u64 num_records;
-> > +     unsigned int i, cpu_num;
-> > +     bool fatal =3D false;
-> > +     struct ras_ext_regs regs;
-> > +
-> > +     if (!this_cpu_has_cap(ARM64_HAS_RAS_EXTN))
-> > +             return;
-> > +
-> > +     cpu_num =3D get_cpu();
-> > +     num_records =3D read_sysreg_s(SYS_ERRIDR_EL1);
->
-> This value should be masked to exclude the reserved bits. This will
-> also prevent you writing to reserved bits in ERRSELR.
-
-True, I'll add that in the next version.
-
-> > +
-> > +     for (i =3D 0; i < num_records; i++) {
-> > +             write_sysreg_s(i, SYS_ERRSELR_EL1);
->
-> There should be an isb here, this will ensure the record selection has
-> happened before reading the record.
-
-I'll add that in the next version.
-
-> > +             regs.err_status =3D read_sysreg_s(SYS_ERXSTATUS_EL1);
-> > +
-> > +             if (!(regs.err_status & ERR_STATUS_V))
-> > +                     continue;
-> > +
-> > +             pr_err("CPU%u: ERR%uSTATUS: 0x%llx\n", cpu_num, i,
-> > +                    regs.err_status);
-> > +
-> > +             if (regs.err_status & ERR_STATUS_AV) {
-> > +                     regs.err_addr =3D read_sysreg_s(SYS_ERXSTATUS_EL1=
-);
->
-> This should be SYS_ERXADDR_EL1 not SYS_ERXSTATUS_EL1!
-
-Oops, good catch! I missed this in testing because none=A0of the errors inj=
-ected
-resulted in valid address info in the system registers.
-
-> > +                     pr_err("CPU%u: ERR%uADDR: 0x%llx\n", cpu_num, i,
-> > +                            regs.err_addr);
-> > +             } else
-> > +                     regs.err_addr =3D 0;
->
-> Or perhaps set "regs =3D { }" at the start of the function instead?
-
-Yes, I could do that.
-
-> > +
-> > +             regs.err_fr =3D read_sysreg_s(SYS_ERXFR_EL1);
-> > +             pr_err("CPU%u: ERR%uFR: 0x%llx\n", cpu_num, i, regs.err_f=
-r);
-> > +             regs.err_ctlr =3D read_sysreg_s(SYS_ERXCTLR_EL1);
-> > +             pr_err("CPU%u: ERR%uCTLR: 0x%llx\n", cpu_num, i, regs.err=
-_ctlr);
-> > +
-> > +             if (regs.err_status & ERR_STATUS_MV) {
-> > +                     regs.err_misc0 =3D read_sysreg_s(SYS_ERXMISC0_EL1=
-);
-> > +                     pr_err("CPU%u: ERR%uMISC0: 0x%llx\n", cpu_num, i,
-> > +                            regs.err_misc0);
-> > +                     regs.err_misc1 =3D read_sysreg_s(SYS_ERXMISC1_EL1=
-);
-> > +                     pr_err("CPU%u: ERR%uMISC1: 0x%llx\n", cpu_num, i,
-> > +                            regs.err_misc1);
-> > +             }
-> > +
-> > +             /*
-> > +              * In the future, we will treat UER conditions as potenti=
-ally
-> > +              * recoverable.
-> > +              */
-> > +             if (regs.err_status & ERR_STATUS_UE)
-> > +                     fatal =3D true;
-> > +
-> > +             write_sysreg_s(regs.err_status, SYS_ERXSTATUS_EL1);
-> > +     }
-> > +
-> > +     if (fatal)
-> > +             panic("uncorrectable error encountered");
->
-> On the do_serror path, we will already panic if arm64_is_fatal_ras_serror
-> indicates uncorrectable errors. Is this here for the other paths?
-
-This same function is called for the SEA path and also from AEST for errors
-that are reported through the system register interface.
-
-> > +
-> > +     put_cpu();
-> > +}
->
-> Finally, should we clear the errors when we see them?
-
-Each error is being cleared at the end of the loop above by writing the val=
-ue
-read from the status register back to the status register. The status regis=
-ter
-bits are write 1 to clear and writing back the same value that was read
-guarantees that a higher priority error that occurs between the read and wr=
-ite
-isn't cleared.
-
-> > diff --git a/drivers/acpi/arm64/Kconfig b/drivers/acpi/arm64/Kconfig
-> > index 6dba187..8d5cf99 100644
-> > --- a/drivers/acpi/arm64/Kconfig
-> > +++ b/drivers/acpi/arm64/Kconfig
-> > @@ -8,3 +8,6 @@ config ACPI_IORT
-> >=20
-> >  config ACPI_GTDT
-> >       bool
-> > +
-> > +config ACPI_AEST
-> > +     bool "ARM Error Source Table Support"
-> > diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
-> > index 6ff50f4..ea1ba28 100644
-> > --- a/drivers/acpi/arm64/Makefile
-> > +++ b/drivers/acpi/arm64/Makefile
-> > @@ -1,3 +1,4 @@
-> >  # SPDX-License-Identifier: GPL-2.0-only
-> >  obj-$(CONFIG_ACPI_IORT)      +=3D iort.o
-> >  obj-$(CONFIG_ACPI_GTDT)      +=3D gtdt.o
-> > +obj-$(CONFIG_ACPI_AEST)      +=3D aest.o
-> > diff --git a/drivers/acpi/arm64/aest.c b/drivers/acpi/arm64/aest.c
-> > new file mode 100644
-> > index 0000000..fd4f3b5
-> > --- /dev/null
-> > +++ b/drivers/acpi/arm64/aest.c
-> > @@ -0,0 +1,362 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +/* ARM Error Source Table Support */
-> > +
-> > +#include <linux/acpi.h>
-> > +#include <linux/acpi_aest.h>
-> > +#include <linux/init.h>
-> > +#include <linux/interrupt.h>
-> > +#include <linux/io.h>
-> > +#include <linux/irq.h>
-> > +#include <linux/kernel.h>
-> > +#include <linux/percpu.h>
-> > +#include <linux/ratelimit.h>
-> > +
-> > +#include <asm/ras.h>
-> > +
-> > +#undef pr_fmt
-> > +#define pr_fmt(fmt) "ACPI AEST: " fmt
-> > +
-> > +static struct acpi_table_header *aest_table;
-> > +
-> > +static struct aest_node_data __percpu **ppi_data;
-> > +static u8 num_ppi;
-> > +static u8 ppi_idx;
-> > +
-> > +static void aest_print(struct aest_node_data *data, struct ras_ext_reg=
-s regs,
-> > +                    int index)
-> > +{
-> > +     /* No more than 2 corrected messages every 5 seconds */
-> > +     static DEFINE_RATELIMIT_STATE(ratelimit_corrected, 5*HZ, 2);
-> > +
-> > +     if (regs.err_status & ERR_STATUS_UE ||
-> > +         regs.err_status & ERR_STATUS_DE ||
-> > +         __ratelimit(&ratelimit_corrected)) {
-> > +             switch (data->node_type) {
-> > +             case AEST_NODE_TYPE_PROC:
-> > +                     pr_err("error from processor 0x%x\n",
-> > +                            data->data.proc.id);
-> > +                     break;
-> > +             case AEST_NODE_TYPE_MEM:
-> > +                     pr_err("error from memory domain 0x%x\n",
-> > +                            data->data.mem.domain);
-> > +                     break;
-> > +             case AEST_NODE_TYPE_VENDOR:
-> > +                     pr_err("error from vendor specific source 0x%x\n"=
-,
-> > +                            data->data.vendor.id);
-> > +             }
-> > +
-> > +             pr_err("ERR%dSTATUS =3D 0x%llx\n", index, regs.err_status=
-);
-> > +             if (regs.err_status & ERR_STATUS_AV)
-> > +                     pr_err("ERR%dADDR =3D 0x%llx\n", index, regs.err_=
-addr);
-> > +
-> > +             pr_err("ERR%dFR =3D 0x%llx\n", index, regs.err_fr);
-> > +             pr_err("ERR%dCTLR =3D 0x%llx\n", index, regs.err_ctlr);
-> > +
-> > +             if (regs.err_status & ERR_STATUS_MV) {
-> > +                     pr_err("ERR%dMISC0 =3D 0x%llx\n", index, regs.err=
-_misc0);
-> > +                     pr_err("ERR%dMISC1 =3D 0x%llx\n", index, regs.err=
-_misc1);
-> > +             }
->
-> Given that we have a ras_ext_regs struct, can't we use a single function =
-to
-> print the error - rather than have duplicate pr_err's here and in
-> arch_arm_ras_report_error?
-
-That was an option I had thought about, but I left it as is to get other
-opinions. Right now the system register reporting prefixes everything with =
-the
-CPU number that the error occurred on...but now that I think about it more=
-=A0I
-could just have the print function take a prefix as a parameter. I'll unify=
- the
-printing into a single function in the next version.
-
-Thanks,
-Tyler
+> 
+> Niko
+> 
+>>
+>> Andrew
+>>
+>>
+>>>>>          ret = snd_soc_component_update_bits(component,
+>>>>> TAS5722_DIGITAL_CTRL2_REG,
+>>>>>                              TAS5722_TDM_SLOT_16B,
+>>>>>                              slot_width == 16 ?
+>>>>>                              TAS5722_TDM_SLOT_16B : 0);
+>>>>>          if (ret < 0)
+>>>>>              goto error_snd_soc_component_update_bits;
+>>>>> -        break;
+>>>>> -    default:
+>>>>> -        break;
+>>>>>      }
+>>>>>
+>>>>>      return 0;
+>>>>> @@ -277,7 +274,7 @@ static void tas5720_fault_check_work(struct
+>>>>> work_struct *work)
+>>>>>  static int tas5720_codec_probe(struct snd_soc_component *component)
+>>>>>  {
+>>>>>      struct tas5720_data *tas5720 =
+>>>>> snd_soc_component_get_drvdata(component);
+>>>>> -    unsigned int device_id, expected_device_id;
+>>>>> +    unsigned int device_id;
+>>>>>      int ret;
+>>>>>
+>>>>>      tas5720->component = component;
+>>>>> @@ -301,21 +298,9 @@ static int tas5720_codec_probe(struct
+>>>>> snd_soc_component *component)
+>>>>>          goto probe_fail;
+>>>>>      }
+>>>>>
+>>>>> -    switch (tas5720->devtype) {
+>>>>> -    case TAS5720:
+>>>>> -        expected_device_id = TAS5720_DEVICE_ID;
+>>>>> -        break;
+>>>>> -    case TAS5722:
+>>>>> -        expected_device_id = TAS5722_DEVICE_ID;
+>>>>> -        break;
+>>>>> -    default:
+>>>>> -        dev_err(component->dev, "unexpected private driver data\n");
+>>>>> -        return -EINVAL;
+>>>>> -    }
+>>>>> -
+>>>>> -    if (device_id != expected_device_id)
+>>>>> +    if (device_id != tas5720->variant->device_id)
+>>>>>          dev_warn(component->dev, "wrong device ID. expected: %u
+>>>>> read: %u\n",
+>>>>> -             expected_device_id, device_id);
+>>>>> +             tas5720->variant->device_id, device_id);
+>>>>>
+>>>>>      /* Set device to mute */
+>>>>>      ret = snd_soc_component_update_bits(component,
+>>>>> TAS5720_DIGITAL_CTRL2_REG,
+>>>>> @@ -637,7 +622,6 @@ static int tas5720_probe(struct i2c_client
+>>>>> *client,
+>>>>>  {
+>>>>>      struct device *dev = &client->dev;
+>>>>>      struct tas5720_data *data;
+>>>>> -    const struct regmap_config *regmap_config;
+>>>>>      int ret;
+>>>>>      int i;
+>>>>>
+>>>>> @@ -646,20 +630,10 @@ static int tas5720_probe(struct i2c_client
+>>>>> *client,
+>>>>>          return -ENOMEM;
+>>>>>
+>>>>>      data->tas5720_client = client;
+>>>>> -    data->devtype = id->driver_data;
+>>>>>
+>>>>> -    switch (id->driver_data) {
+>>>>> -    case TAS5720:
+>>>>> -        regmap_config = &tas5720_regmap_config;
+>>>>> -        break;
+>>>>> -    case TAS5722:
+>>>>> -        regmap_config = &tas5722_regmap_config;
+>>>>> -        break;
+>>>>> -    default:
+>>>>> -        dev_err(dev, "unexpected private driver data\n");
+>>>>> -        return -EINVAL;
+>>>>> -    }
+>>>>> -    data->regmap = devm_regmap_init_i2c(client, regmap_config);
+>>>>> +    data->variant = (const struct tas5720_variant *)id->driver_data;
+>>>>> +
+>>>>> +    data->regmap = devm_regmap_init_i2c(client,
+>>>>> data->variant->reg_config);
+>>>>>      if (IS_ERR(data->regmap)) {
+>>>>>          ret = PTR_ERR(data->regmap);
+>>>>>          dev_err(dev, "failed to allocate register map: %d\n", ret);
+>>>>> @@ -678,42 +652,36 @@ static int tas5720_probe(struct i2c_client
+>>>>> *client,
+>>>>>
+>>>>>      dev_set_drvdata(dev, data);
+>>>>>
+>>>>> -    switch (id->driver_data) {
+>>>>> -    case TAS5720:
+>>>>> -        ret = devm_snd_soc_register_component(&client->dev,
+>>>>> -                    &soc_component_dev_tas5720,
+>>>>> -                    tas5720_dai,
+>>>>> -                    ARRAY_SIZE(tas5720_dai));
+>>>>> -        break;
+>>>>> -    case TAS5722:
+>>>>> -        ret = devm_snd_soc_register_component(&client->dev,
+>>>>> -                    &soc_component_dev_tas5722,
+>>>>> -                    tas5720_dai,
+>>>>> -                    ARRAY_SIZE(tas5720_dai));
+>>>>> -        break;
+>>>>> -    default:
+>>>>> -        dev_err(dev, "unexpected private driver data\n");
+>>>>> -        return -EINVAL;
+>>>>> -    }
+>>>>> -    if (ret < 0) {
+>>>>> -        dev_err(dev, "failed to register component: %d\n", ret);
+>>>>> -        return ret;
+>>>>> -    }
+>>>>> -
+>>>>> -    return 0;
+>>>>> +    ret = devm_snd_soc_register_component(&client->dev,
+>>>>> +                          data->variant->comp_drv,
+>>>>> +                          tas5720_dai,
+>>>>> +                          ARRAY_SIZE(tas5720_dai));
+>>>>> +    return ret;
+>>>>>  }
+>>>>>
+>>>>> +static const struct tas5720_variant tas5720 = {
+>>>>> +    .device_id = TAS5720_DEVICE_ID,
+>>>>> +    .reg_config = &tas5720_regmap_config,
+>>>>> +    .comp_drv = &soc_component_dev_tas5720,
+>>>>> +};
+>>>>> +
+>>>>> +static const struct tas5720_variant tas5722 = {
+>>>>> +    .device_id = TAS5722_DEVICE_ID,
+>>>>> +    .reg_config = &tas5722_regmap_config,
+>>>>> +    .comp_drv = &soc_component_dev_tas5722,
+>>>>> +};
+>>>>> +
+>>>>>  static const struct i2c_device_id tas5720_id[] = {
+>>>>> -    { "tas5720", TAS5720 },
+>>>>> -    { "tas5722", TAS5722 },
+>>>>> +    { "tas5720", (kernel_ulong_t)&tas5720 },
+>>>>> +    { "tas5722", (kernel_ulong_t)&tas5722 },
+>>>>>      { }
+>>>>>  };
+>>>>>  MODULE_DEVICE_TABLE(i2c, tas5720_id);
+>>>>>
+>>>>>  #if IS_ENABLED(CONFIG_OF)
+>>>>>  static const struct of_device_id tas5720_of_match[] = {
+>>>>> -    { .compatible = "ti,tas5720", },
+>>>>> -    { .compatible = "ti,tas5722", },
+>>>>> +    { .compatible = "ti,tas5720", .data = &tas5720, },
+>>>>> +    { .compatible = "ti,tas5722", .data = &tas5722, },
+>>>>>      { },
+>>>>>  };
+>>>>>  MODULE_DEVICE_TABLE(of, tas5720_of_match);
+>>>>>
+>>>>
+>>
