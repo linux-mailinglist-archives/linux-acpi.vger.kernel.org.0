@@ -2,125 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC0245EEDA
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jul 2019 23:57:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CA1B5EF66
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2019 01:02:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727076AbfGCV50 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Jul 2019 17:57:26 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:41400 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726550AbfGCV5Z (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Jul 2019 17:57:25 -0400
-Received: by mail-oi1-f194.google.com with SMTP id g7so3332846oia.8
-        for <linux-acpi@vger.kernel.org>; Wed, 03 Jul 2019 14:57:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=facAcgFC+XTI+qNs39LIa4BXwWP87/6c178m8FLgQfQ=;
-        b=AB32uWCwt4WPQNu5JQek9A76lObdjQKNY7n0ps503qqKQC5PLKGKh/PNekZpL8r48L
-         2U6XJbhM5iJiqhNw3i9Ar6EzZbmVnkJDYRTYFFUBMV8oNd3MlbRonYwF9K6HXwUBkNYL
-         fr+Aancqdh8A9sozMtImplqOU8v2GgfRsFj2VdGet90BzfSX0rEjOhfMwGu5NlKXQ+A+
-         fDy13SqVBfVMvTjJ0vzxJ3VaMj8sk3aULPHGoT9I+Cgs6L/Zhi2z0kZwU78VU2gs5bFO
-         slzEUNHXEO0wBIbNsGmcPi5e1p0IojMht9XfyNubeVSEhXAmBiyAYSZqet+EZLtiFJx4
-         TCfw==
-X-Gm-Message-State: APjAAAWLpCjl5X1nODwZxKR77mgil7NBHfKUhDF0Nl4OPoAuYhg8vF3V
-        8Yz0q8TQo2ibGRyW9ibjiVxIycGDxxM5XAsTzjw=
-X-Google-Smtp-Source: APXvYqzbb/QOqIuPIhxbKWonTtHMaRerzldSRDFJhW+ynUsKgKiTuWJwzd94OrgPXubso2zMBpaspTzhRLIkfY2kyCo=
-X-Received: by 2002:aca:5a41:: with SMTP id o62mr446353oib.110.1562191044904;
- Wed, 03 Jul 2019 14:57:24 -0700 (PDT)
+        id S1727469AbfGCXCx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Jul 2019 19:02:53 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:61215 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727377AbfGCXCx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Jul 2019 19:02:53 -0400
+Received: from 79.184.254.216.ipv4.supernova.orange.pl (79.184.254.216) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
+ id 8010e3fd10758b8f; Thu, 4 Jul 2019 01:02:49 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH] ACPI: PM: Unexport acpi_device_get_power()
+Date:   Thu, 04 Jul 2019 01:02:49 +0200
+Message-ID: <1970901.ZntFDt4DbR@kreacher>
 MIME-Version: 1.0
-References: <20190628181457.6609-1-jeremy.linton@arm.com> <20190628181457.6609-2-jeremy.linton@arm.com>
- <CAJZ5v0jh0+WU5fpd9enq0UHrHzh+0Sgv-xoRiJM3jgu9dQFvdw@mail.gmail.com> <1745d9ee-a4e0-9a6f-138c-c0d5b42b5281@arm.com>
-In-Reply-To: <1745d9ee-a4e0-9a6f-138c-c0d5b42b5281@arm.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 3 Jul 2019 23:57:12 +0200
-Message-ID: <CAJZ5v0jM5VEuYuY7RdeXYs0S04uRYq5_01fKSBKOouS5DgBhww@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] ACPI/PPTT: Add support for ACPI 6.3 thread flag
-To:     Jeremy Linton <jeremy.linton@arm.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 3, 2019 at 5:11 PM Jeremy Linton <jeremy.linton@arm.com> wrote:
->
-> Hi,
->
-> Thanks for taking a look at this.
->
-> On 7/3/19 4:24 AM, Rafael J. Wysocki wrote:
-> > On Fri, Jun 28, 2019 at 8:15 PM Jeremy Linton <jeremy.linton@arm.com> wrote:
-> >>
-> >> ACPI 6.3 adds a flag to the CPU node to indicate whether
-> >> the given PE is a thread. Add a function to return that
-> >> information for a given linux logical CPU.
-> >>
-> >> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-> >> ---
-> >>   drivers/acpi/pptt.c  | 62 +++++++++++++++++++++++++++++++++++++++++++-
-> >>   include/linux/acpi.h |  5 ++++
-> >>   2 files changed, 66 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> >> index b72e6afaa8fb..bb6196422fad 100644
-> >> --- a/drivers/acpi/pptt.c
-> >> +++ b/drivers/acpi/pptt.c
-> >> @@ -517,6 +517,52 @@ static int find_acpi_cpu_topology_tag(unsigned int cpu, int level, int flag)
-> >>          return retval;
-> >>   }
-> >>
-> >> +/**
-> >> + * check_acpi_cpu_flag() - Determine if CPU node has a flag set
-> >> + * @cpu: Kernel logical CPU number
-> >> + * @rev: The PPTT revision defining the flag
-> >> + * @flag: The flag itself
-> >> + *
-> >> + * Check the node representing a CPU for a given flag.
-> >> + *
-> >> + * Return: -ENOENT if the PPTT doesn't exist, the CPU cannot be found or
-> >> + *        the table revision isn't new enough.
-> >> + *        1, any passed flag set
-> >> + *        0, flag unset
-> >> + */
-> >> +static int check_acpi_cpu_flag(unsigned int cpu, int rev, u32 flag)
-> >
-> > Why not bool?
->
-> At least for the thread flag we need the three states so that we can
-> fall back to the CPU's description of itself on machines without ACPI
-> 6.3 tables.
->
-> The ThunderX2 is threaded and without a firmware update a change like
-> this will break it.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Fair enough.
+Using acpi_device_get_power() outside of ACPI device initialization
+and ACPI sysfs is problematic due to the way in which power resources
+are handled by it, so unexport it and add a paragraph explaining the
+pitfalls to its kerneldoc comment.
 
-> >
-> >> +{
-> >> +       struct acpi_table_header *table;
-> >> +       acpi_status status;
-> >> +       u32 acpi_cpu_id = get_acpi_id_for_cpu(cpu);
-> >> +       struct acpi_pptt_processor *cpu_node = NULL;
-> >> +       int ret = -ENOENT;
-> >> +       static int saved_pptt_rev = -1;
-> >> +
-> >> +       /* Cache the PPTT revision to avoid repeat table get/put on failure */
-> >
-> > This is a rather questionable optimization.
-> >
-> > Does the extra table get/put really matter?
->
-> AFAIK, Probably not.
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
 
-Then why to optimize it?
+On top of the linux-next branch in the linux-pm.git tree.
+
+---
+ drivers/acpi/device_pm.c |    6 +++++-
+ drivers/acpi/internal.h  |    7 +++++++
+ include/acpi/acpi_bus.h  |    1 -
+ 3 files changed, 12 insertions(+), 2 deletions(-)
+
+Index: linux-pm/drivers/acpi/device_pm.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/device_pm.c
++++ linux-pm/drivers/acpi/device_pm.c
+@@ -66,6 +66,11 @@ static int acpi_dev_pm_explicit_get(stru
+  * This function does not update the device's power.state field, but it may
+  * update its parent's power.state field (when the parent's power state is
+  * unknown and the device's power state turns out to be D0).
++ *
++ * Also, it does not update power resource reference counters to ensure that
++ * the power state returned by it will be persistent and it may return a power
++ * state shallower than previously set by acpi_device_set_power() for @device
++ * (if that power state depends on any power resources).
+  */
+ int acpi_device_get_power(struct acpi_device *device, int *state)
+ {
+@@ -130,7 +135,6 @@ int acpi_device_get_power(struct acpi_de
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL(acpi_device_get_power);
+ 
+ static int acpi_dev_pm_explicit_set(struct acpi_device *adev, int state)
+ {
+Index: linux-pm/include/acpi/acpi_bus.h
+===================================================================
+--- linux-pm.orig/include/acpi/acpi_bus.h
++++ linux-pm/include/acpi/acpi_bus.h
+@@ -506,7 +506,6 @@ int acpi_bus_get_status(struct acpi_devi
+ 
+ int acpi_bus_set_power(acpi_handle handle, int state);
+ const char *acpi_power_state_string(int state);
+-int acpi_device_get_power(struct acpi_device *device, int *state);
+ int acpi_device_set_power(struct acpi_device *device, int state);
+ int acpi_bus_init_power(struct acpi_device *device);
+ int acpi_device_fix_up_power(struct acpi_device *device);
+Index: linux-pm/drivers/acpi/internal.h
+===================================================================
+--- linux-pm.orig/drivers/acpi/internal.h
++++ linux-pm/drivers/acpi/internal.h
+@@ -139,8 +139,15 @@ int acpi_power_get_inferred_state(struct
+ int acpi_power_on_resources(struct acpi_device *device, int state);
+ int acpi_power_transition(struct acpi_device *device, int state);
+ 
++/* --------------------------------------------------------------------------
++                              Device Power Management
++   -------------------------------------------------------------------------- */
++int acpi_device_get_power(struct acpi_device *device, int *state);
+ int acpi_wakeup_device_init(void);
+ 
++/* --------------------------------------------------------------------------
++                                  Processor
++   -------------------------------------------------------------------------- */
+ #ifdef CONFIG_ARCH_MIGHT_HAVE_ACPI_PDC
+ void acpi_early_processor_set_pdc(void);
+ #else
+
+
+
