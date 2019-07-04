@@ -2,110 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18F435F2B7
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2019 08:20:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8AAE5F30B
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2019 08:46:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725895AbfGDGUy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Jul 2019 02:20:54 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:59588 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725879AbfGDGUy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 4 Jul 2019 02:20:54 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 45670AA97B57D36471A2;
-        Thu,  4 Jul 2019 14:20:44 +0800 (CST)
-Received: from [127.0.0.1] (10.184.52.56) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Thu, 4 Jul 2019
- 14:20:36 +0800
-Subject: Re: [PATCH RFC 0/3] Support CPU hotplug for ARM64
-To:     Jia He <hejianet@gmail.com>, <rjw@rjwysocki.net>,
-        <catalin.marinas@arm.com>, <james.morse@arm.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <guohanjun@huawei.com>,
-        <xiexiuqi@huawei.com>, <huawei.libin@huawei.com>,
-        <john.garry@huawei.com>, <jonathan.cameron@huawei.com>
-References: <1561720392-45907-1-git-send-email-wangxiongfeng2@huawei.com>
- <2b22cf4d-9646-9f20-41ae-cceb83d9791b@gmail.com>
- <135ee490-a5a6-46c9-208e-81849b20d6b6@huawei.com>
- <7898e483-a8e4-39a2-358f-8fcf838c242f@gmail.com>
-From:   Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Message-ID: <e9acd13e-2501-4b62-496d-e8a5cb872191@huawei.com>
-Date:   Thu, 4 Jul 2019 14:17:46 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+        id S1726069AbfGDGqW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Jul 2019 02:46:22 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:41059 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725879AbfGDGqV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Jul 2019 02:46:21 -0400
+Received: by mail-pf1-f196.google.com with SMTP id m30so2457042pff.8;
+        Wed, 03 Jul 2019 23:46:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=7u3j/qlpuiMl7q0crcwHK5qvOp5dbyAVCcaxQlei5BY=;
+        b=d/u6QSi/W+Hep7xnLOkGy1zQzus/xm9kmEi9zJteGC+By7PW4KjgQWcSHcyR+Ga6ql
+         I8H3C5il13o4RAUqeRGoK6OzmIU63054kYPrcXXtpL7MbrWqdhKClhb5jCqiwIXAnKay
+         XKaHDrWkk/bpKY3G54zKktlypLL1MgPOfQyFt93BtOdisfS31RODJIyEVHuTDiyPKhlZ
+         xsrvAiVLNtXgqk767s8NWPBwfZxUgYq5fI0z+FEn+0ZyDskl7UbQM5AROxEpw+KH5Wc9
+         AjMtSRwBN+MCLdDP9DONVwz54+Sjj5YB5NJZh3//3UFZ7/ViVX8/BcYA4v54LWpZat3j
+         ZlPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-transfer-encoding;
+        bh=7u3j/qlpuiMl7q0crcwHK5qvOp5dbyAVCcaxQlei5BY=;
+        b=JjAOsTuy6i9iPhyFOYrEjufTHVwfr6Kn9hy3NImUnXngTVAvTIdCMFrqXTP/MGRlHJ
+         Xb9BtnrAesMI6l5WKEukPsGX+d7B1dadug/TeoxVzYXoLYeyG4wXg2ToDWKO8yU0kLly
+         Tn/3ZemZZ3DVOdG/EMAeChCIkPvafsLTznC4RjIkDVappS5vsVdsW6WFkbl9dlaazR78
+         uEokP6CDLtRuG/Fb1XR5R+S9bPhlpJqcjLEx9mjfLVdDhZ4xjn9CtVC2MVM+xll0BmPt
+         OJCKnPChdWOQMJdADbO4igYGSDaLZ7MHNCjT0Ql8G9c9qOd7cMrkd0nQ47Q0gxvKWnRB
+         wxpg==
+X-Gm-Message-State: APjAAAX5eDuH+7KAHbD7iwAhI0/pumb1uNUZSkPlg/erai10bpI1mQVn
+        mN2ByIDjCOm1WxdJRJoaU8A=
+X-Google-Smtp-Source: APXvYqy/s0Ljvqpnt4JWFhbvPuiQt4Q13IXhAAOtCo9uJyfuMIBmYhhpcuhs0o6/ztVpgX4DicG89w==
+X-Received: by 2002:a63:2b8e:: with SMTP id r136mr13258143pgr.216.1562222781277;
+        Wed, 03 Jul 2019 23:46:21 -0700 (PDT)
+Received: from [0.0.0.0] ([80.240.31.150])
+        by smtp.gmail.com with ESMTPSA id z20sm8169915pfk.72.2019.07.03.23.46.10
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 03 Jul 2019 23:46:20 -0700 (PDT)
+Subject: Re: [RFC PATCH v2 2/3] arm64: mark all the GICC nodes in MADT as
+ possible cpu
+To:     Xiongfeng Wang <wangxiongfeng2@huawei.com>, rjw@rjwysocki.net,
+        catalin.marinas@arm.com, james.morse@arm.com
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, guohanjun@huawei.com,
+        xiexiuqi@huawei.com, huawei.libin@huawei.com,
+        john.garry@huawei.com, jonathan.cameron@huawei.com
+References: <1561776155-38975-1-git-send-email-wangxiongfeng2@huawei.com>
+ <1561776155-38975-3-git-send-email-wangxiongfeng2@huawei.com>
+From:   Jia He <jiakernel2@gmail.com>
+Organization: ARM
+Message-ID: <762be90e-7629-ab5e-4c2d-6566b100f2e5@gmail.com>
+Date:   Thu, 4 Jul 2019 14:46:06 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <7898e483-a8e4-39a2-358f-8fcf838c242f@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.184.52.56]
-X-CFilter-Loop: Reflected
+In-Reply-To: <1561776155-38975-3-git-send-email-wangxiongfeng2@huawei.com>
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
-
-On 2019/7/4 14:04, Jia He wrote:
-> Hi Xiongfeng
-> 
-> Sorry, I missed your latter mail, you used a emulated SCI interrupt
-
-Yes, I only used a emulated SCI interrupt. My colleague is working on the qemu part.
-He used the GED device in qemu. But there is still some other issues with the qemu
-and he is working on it.
-
-> 
+On 2019/6/29 10:42, Xiongfeng Wang wrote:
+> We set 'cpu_possible_mask' based on the enabled GICC node in MADT. If
+> the GICC node is disabled, we will skip initializing the kernel data
+> structure for that CPU.
+>
+> To support CPU hotplug, we need to initialize some CPU related data
+> structure in advance. This patch mark all the GICC nodes as possible CPU
+> and only these enabled GICC nodes as present CPU.
+>
+> Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
 > ---
-> Cheers,
-> Justin (Jia He)
-> 
-> On 2019/7/4 11:26, Xiongfeng Wang wrote:
->> Hi Justin,
->>
->> On 2019/7/4 11:00, Jia He wrote:
->>> Hi Xiongfeng
->>>
->>> It is a little bit awkful that I am also  investigating acpi based cpu hotplug issue silimar with
->>>
->>> your idea. My question is your purpose to implement the vcpu hotplug in arm64 qemu?
->> Yes, my purpose is to implement the vcpu hotplug in arm64 qemu. So that I can add or remove vcpu
->> without shutting down the Guest OS.
->>
->> Thanks,
->> Xiongfeng
->>
->>> Thanks for the ellaboration
->>>
->>> ---
->>> Cheers,
->>> Justin (Jia He)
->>>
->>> On 2019/6/28 19:13, Xiongfeng Wang wrote:
->>>> This patchset mark all the GICC node in MADT as possible CPUs even though it
->>>> is disabled. But only those enabled GICC node are marked as present CPUs.
->>>> So that kernel will initialize some CPU related data structure in advance before
->>>> the CPU is actually hot added into the system. This patchset also implement
->>>> 'acpi_(un)map_cpu()' and 'arch_(un)register_cpu()' for ARM64. These functions are
->>>> needed to enable CPU hotplug.
->>>>
->>>> To support CPU hotplug, we need to add all the possible GICC node in MADT
->>>> including those CPUs that are not present but may be hot added later. Those
->>>> CPUs are marked as disabled in GICC nodes.
->>>>
->>>> Xiongfeng Wang (3):
->>>>     ACPI / scan: evaluate _STA for processors declared via ASL Device
->>>>       statement
->>>>     arm64: mark all the GICC nodes in MADT as possible cpu
->>>>     arm64: Add CPU hotplug support
->>>>
->>>>    arch/arm64/kernel/acpi.c  | 22 ++++++++++++++++++++++
->>>>    arch/arm64/kernel/setup.c | 19 ++++++++++++++++++-
->>>>    arch/arm64/kernel/smp.c   | 11 +++++------
->>>>    drivers/acpi/scan.c       | 12 ++++++++++++
->>>>    4 files changed, 57 insertions(+), 7 deletions(-)
->>>>
->>> .
->>>
+>   arch/arm64/kernel/setup.c |  2 +-
+>   arch/arm64/kernel/smp.c   | 11 +++++------
+>   2 files changed, 6 insertions(+), 7 deletions(-)
+>
+> diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
+> index 7e541f9..7f4d12a 100644
+> --- a/arch/arm64/kernel/setup.c
+> +++ b/arch/arm64/kernel/setup.c
+> @@ -359,7 +359,7 @@ static int __init topology_init(void)
+>   	for_each_online_node(i)
+>   		register_one_node(i);
+>   
+> -	for_each_possible_cpu(i) {
+> +	for_each_online_cpu(i) {
+
+Have you considered the case in non-acpi mode? and setting "maxcpus=n" in host 
+kernel boot
+
+parameters?
+
+---
+Cheers,
+Justin (Jia He)
+
+
+>   		struct cpu *cpu = &per_cpu(cpu_data.cpu, i);
+>   		cpu->hotpluggable = 1;
+>   		register_cpu(cpu, i);
+> diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+> index 6dcf960..6d9983c 100644
+> --- a/arch/arm64/kernel/smp.c
+> +++ b/arch/arm64/kernel/smp.c
+> @@ -525,16 +525,14 @@ struct acpi_madt_generic_interrupt *acpi_cpu_get_madt_gicc(int cpu)
+>   {
+>   	u64 hwid = processor->arm_mpidr;
+>   
+> -	if (!(processor->flags & ACPI_MADT_ENABLED)) {
+> -		pr_debug("skipping disabled CPU entry with 0x%llx MPIDR\n", hwid);
+> -		return;
+> -	}
+> -
+>   	if (hwid & ~MPIDR_HWID_BITMASK || hwid == INVALID_HWID) {
+>   		pr_err("skipping CPU entry with invalid MPIDR 0x%llx\n", hwid);
+>   		return;
+>   	}
+>   
+> +	if (!(processor->flags & ACPI_MADT_ENABLED))
+> +		pr_debug("disabled CPU entry with 0x%llx MPIDR\n", hwid);
+> +
+>   	if (is_mpidr_duplicate(cpu_count, hwid)) {
+>   		pr_err("duplicate CPU MPIDR 0x%llx in MADT\n", hwid);
+>   		return;
+> @@ -755,7 +753,8 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+>   		if (err)
+>   			continue;
+>   
+> -		set_cpu_present(cpu, true);
+> +		if ((cpu_madt_gicc[cpu].flags & ACPI_MADT_ENABLED))
+> +			set_cpu_present(cpu, true);
+>   		numa_store_cpu_info(cpu);
+>   	}
+>   }
+
+-- 
 
