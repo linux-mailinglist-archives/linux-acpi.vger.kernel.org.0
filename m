@@ -2,188 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D46D5F24E
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2019 07:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 044875F27D
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2019 07:55:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725879AbfGDFgx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Jul 2019 01:36:53 -0400
-Received: from mail.steuer-voss.de ([85.183.69.95]:33430 "EHLO
-        mail.steuer-voss.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725874AbfGDFgx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Jul 2019 01:36:53 -0400
-X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
-Received: by mail.steuer-voss.de (Postfix, from userid 1000)
-        id C9E644D456; Thu,  4 Jul 2019 07:36:48 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.steuer-voss.de (Postfix) with ESMTP id C6CB14D452;
-        Thu,  4 Jul 2019 07:36:48 +0200 (CEST)
-Date:   Thu, 4 Jul 2019 07:36:48 +0200 (CEST)
-From:   Nikolaus Voss <nv@vosn.de>
-X-X-Sender: nv@fox.voss.local
-To:     "Andrew F. Davis" <afd@ti.com>
-cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Andreas Dannenberg <dannenberg@ti.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] ASoC: tas5720.c: cleanup variant management
-In-Reply-To: <4897e119-28fa-aa2c-aa06-2534af6b4c62@ti.com>
-Message-ID: <alpine.DEB.2.20.1907040731270.27853@fox.voss.local>
-References: <20190628143037.GH5379@sirena.org.uk> <cover.1561988282.git.nikolaus.voss@loewensteinmedical.de> <c79df50175d59265a37c5e7c8a0cfbf8119bcf78.1561988282.git.nikolaus.voss@loewensteinmedical.de> <80af3fca-f71b-c118-e5d8-fde8b7d21705@ti.com>
- <alpine.DEB.2.20.1907011633310.4353@fox.voss.local> <074d4df3-51d8-6e20-869d-5f88b46cc172@ti.com> <alpine.DEB.2.20.1907020855240.10248@fox.voss.local> <4897e119-28fa-aa2c-aa06-2534af6b4c62@ti.com>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+        id S1726696AbfGDFzc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Jul 2019 01:55:32 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:36999 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725879AbfGDFzb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Jul 2019 01:55:31 -0400
+Received: by mail-pg1-f193.google.com with SMTP id g15so2374468pgi.4;
+        Wed, 03 Jul 2019 22:55:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=BX5JDaciana7ktLIahHDZ8Rm/ZU0HX0KyhCu3VI68A8=;
+        b=ES/LWPfND6i8EUl8ALV5oWggRPVLI7ruCB9fs/GvPzxHMIPoN81XcE8xKezsMra/y6
+         dSwtmhsVOcDEDLA3+63LTMxSlFWvNLIzPEdZZiYtQ3E0aqVn5T5Alw1PRyomomnXkJD6
+         8TSPx95eZ4q2HFnM+Y18aqUHNumIeDhdJuw7YW81gRweXQIH3ei5iN4365L5rHuTezoO
+         mbv+3O9cU982/pSlPyZrIJGuMZwxmgH2I//jRmEenMlfFtkEaW8stYKYUR7edjVF4Wln
+         rsVaLY8yfmeSuPwncUDuN/KSvjXMeRrokfWjIUtYnBY04EyiTl/bZoKHY9T/rp7ef961
+         F3RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-transfer-encoding;
+        bh=BX5JDaciana7ktLIahHDZ8Rm/ZU0HX0KyhCu3VI68A8=;
+        b=ciZYrl0euWR5Si7HQyo6rI5v/6Bol5RYJy1sxB2a+HxsMiAPmipm2U8xwOQ9Jc7er7
+         VgHa3r3H5CSRlmmUNsgJj73T35YgFyFuraDk3XCkbem4WpC4NewOfehBrNKvAZI6kTmX
+         zD67SgiDyUa+m7+8+uokdY/qSzIdBoqhFDOcXx//rs3Dxbz333vEPBknjR8cuffPTGeD
+         SkAHrS8/+nuyl2KWKrskoc9pPpxLHwl7Sz1ULrZSFDbwyrbnhO8ZnNK7Ga/KGbhxd7Dl
+         ekJCkHX64rbIL7ISv8yT50HG1vesZG5Yjyu3KvScpsNJqmBrWloYGdujvsAkr8puuikH
+         D8Ww==
+X-Gm-Message-State: APjAAAX160oIQ66L3ZBOSxrZJnRcPNbmFE7FyaBySe1Mzr7lVhykJtir
+        AggYfdmOoMG5F/Zop+Oh15wOcLht
+X-Google-Smtp-Source: APXvYqwDEIQv50OOSV4lqbB7mHxRneKKwMjQFsVni/kO8fTksoN52y09PuYbOrKCqczquTT9hKw8LQ==
+X-Received: by 2002:a63:c508:: with SMTP id f8mr10813454pgd.48.1562219731123;
+        Wed, 03 Jul 2019 22:55:31 -0700 (PDT)
+Received: from [0.0.0.0] ([80.240.31.150])
+        by smtp.gmail.com with ESMTPSA id j11sm5792476pfa.2.2019.07.03.22.55.20
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 03 Jul 2019 22:55:30 -0700 (PDT)
+Subject: Re: [PATCH RFC 0/3] Support CPU hotplug for ARM64
+To:     Xiongfeng Wang <wangxiongfeng2@huawei.com>, rjw@rjwysocki.net,
+        catalin.marinas@arm.com, james.morse@arm.com
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, guohanjun@huawei.com,
+        xiexiuqi@huawei.com, huawei.libin@huawei.com,
+        john.garry@huawei.com, jonathan.cameron@huawei.com
+References: <1561720392-45907-1-git-send-email-wangxiongfeng2@huawei.com>
+ <2b22cf4d-9646-9f20-41ae-cceb83d9791b@gmail.com>
+ <135ee490-a5a6-46c9-208e-81849b20d6b6@huawei.com>
+From:   Jia He <hejianet@gmail.com>
+Organization: ARM
+Message-ID: <adfea83d-fb86-f388-3409-eea9564b938a@gmail.com>
+Date:   Thu, 4 Jul 2019 13:55:16 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-1780306468-1562218608=:27853"
+In-Reply-To: <135ee490-a5a6-46c9-208e-81849b20d6b6@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi Xiongfeng
 
---8323329-1780306468-1562218608=:27853
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Wed, 3 Jul 2019, Andrew F. Davis wrote:
-> On 7/2/19 6:12 AM, Nikolaus Voss wrote:
->> On Mon, 1 Jul 2019, Andrew F. Davis wrote:
->>> On 7/1/19 11:35 AM, Nikolaus Voss wrote:
->>>> On Mon, 1 Jul 2019, Andrew F. Davis wrote:
->>>>> On 7/1/19 9:42 AM, Nikolaus Voss wrote:
->>>>>> Replace enum tas572x_type with struct tas5720_variant which aggregates
->>>>>> variant specific stuff and can be directly referenced from an id
->>>>>> table.
->>>>>>
->>>>>> Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
->>>>>> ---
->>>>>>  sound/soc/codecs/tas5720.c | 98
->>>>>> +++++++++++++-------------------------
->>>>>>  1 file changed, 33 insertions(+), 65 deletions(-)
->>>>>>
->>>>>> diff --git a/sound/soc/codecs/tas5720.c b/sound/soc/codecs/tas5720.c
->>>>>> index 37fab8f22800..b2e897f094b4 100644
->>>>>> --- a/sound/soc/codecs/tas5720.c
->>>>>> +++ b/sound/soc/codecs/tas5720.c
->>>>>> @@ -28,9 +28,10 @@
->>>>>>  /* Define how often to check (and clear) the fault status register
->>>>>> (in ms) */
->>>>>>  #define TAS5720_FAULT_CHECK_INTERVAL        200
->>>>>>
->>>>>> -enum tas572x_type {
->>>>>> -    TAS5720,
->>>>>> -    TAS5722,
->>>>>> +struct tas5720_variant {
->>>>>> +    const int device_id;
->>>>>> +    const struct regmap_config *reg_config;
->>>>>> +    const struct snd_soc_component_driver *comp_drv;
->>>>>>  };
->>>>>>
->>>>>>  static const char * const tas5720_supply_names[] = {
->>>>>> @@ -44,7 +45,7 @@ struct tas5720_data {
->>>>>>      struct snd_soc_component *component;
->>>>>>      struct regmap *regmap;
->>>>>>      struct i2c_client *tas5720_client;
->>>>>> -    enum tas572x_type devtype;
->>>>>> +    const struct tas5720_variant *variant;
->>>>>
->>>>> Why add a new struct? Actually I don't see the need for this patch at
->>>>> all, the commit message only explains the 'what' not the 'why'. We can
->>>>> and do already build this info from the tas572x_type.
->>>>
->>>> As the commit message says, the purpose is to aggregate the variant
->>>> specifics and make it accessible via one pointer. This is a standard
->>>> approach for of/acpi_device_id tables and thus makes the code simpler
->>>> and improves readability. This is a maintenance patch to prepare using
->>>> the device match API in a proper way.
->>>>
->>>
->>>
->>> "make it accessible via one pointer" is again a "what", the "why" is:
->>>
->>> "This is a standard approach"
->>> "makes the code simpler and improves readability"
->>>
->>> Those are valid reasons and should be what you put in the commit message.
->>
->> ok
->>
->>>
->>>
->>>>>
->>>>> Also below are several functional changes, the cover letter says
->>>>> this is
->>>>> not a functional change, yet the driver behaves differently now.
->>>>
->>>> Can you be a little bit more specific? The code should behave exactly as
->>>> before.
->>>>
->>>
->>>
->>> Sure, for instance the line "unexpected private driver data" is removed,
->>> this can now never happen, that is a functional change. The phrase "no
->>> functional change", should be reserved for only changes to spelling,
->>> formatting, code organizing, etc..
->>
->> "unexpected private driver data" was unreachable code before, but you're
->> right, debug output has changed a little, but the functional part is
->> exactly the same.
->>
->>>
->>>
->>>> Niko
->>>>
->>>>>
->>>>> Andrew
->>>>>
->>>>>>      struct regulator_bulk_data supplies[TAS5720_NUM_SUPPLIES];
->>>>>>      struct delayed_work fault_check_work;
->>>>>>      unsigned int last_fault;
->>>>>> @@ -179,17 +180,13 @@ static int tas5720_set_dai_tdm_slot(struct
->>>>>> snd_soc_dai *dai,
->>>>>>          goto error_snd_soc_component_update_bits;
->>>>>>
->>>>>>      /* Configure TDM slot width. This is only applicable to
->>>>>> TAS5722. */
->>>>>> -    switch (tas5720->devtype) {
->>>>>> -    case TAS5722:
->>>>>> +    if (tas5720->variant->device_id == TAS5722_DEVICE_ID) {
->>>
->>>
->>> I also don't like this, TAS5722_DEVICE_ID is the expected contents of a
->>> register, you are using it like the enum tas572x_type that you removed.
->>> I'd leave that enum, the device ID register itself is not guaranteed to
->>> be correct or unique, which is why we warn about mismatches below but
->>> then continue to use the user provided device type anyway.
->>
->> Strange, with me it's the other way round, I don't like the enum. The
->> mismatch behavior hasn't changed a bit, the same warning is printed. If
->> the device ID is no longer unique in the future (apparently it is for
->> now) the driver should explicitly handle this instead of printing a
->> warning, because warnings should be reserved for an indication of any
->> kind of misconfiguration and not of expected behavior.
->>
->> That said the variant struct can of course replace the enum in every
->> aspect, even for what you describe above. The enum was an ordinal
->> representation of the user-selected i2c_device_id, the variant struct* is
->> a pointer representation of the user-selected i2c/of/acpi_device_id. The
->> only difference is that it directly points to the variant specific parts
->> of the driver instead of resolving those via multiple switch/case
->> statements.
+On 2019/7/4 11:26, Xiongfeng Wang wrote:
+> Hi Justin,
 >
-> The enum identifies the device type, easy as that, if you want to
-> instead do all the logic switching on some internal ID register value
-> code then make a patch for just that and explain what is gained. Don't
-> do that into this one.
+> On 2019/7/4 11:00, Jia He wrote:
+>> Hi Xiongfeng
+>>
+>> It is a little bit awkful that I am alsoÂ  investigating acpi based cpu hotplug issue silimar with
+>>
+>> your idea. My question is your purpose to implement the vcpu hotplug in arm64 qemu?
+> Yes, my purpose is to implement the vcpu hotplug in arm64 qemu. So that I can add or remove vcpu
+> without shutting down the Guest OS.
 
-I don't do and I don't want to. The struct pointer identifies the device 
-type the same way as the enum does. I guess we better leave things as they 
-are. Anyway, thanks for your time and effort.
+Thanks for the infor, I guess you used GED device in qemu ;-)?
 
-Nikolaus
+---
+Cheers,
+Justin (Jia He)
 
---8323329-1780306468-1562218608=:27853--
