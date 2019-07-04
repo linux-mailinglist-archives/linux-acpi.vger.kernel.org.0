@@ -2,40 +2,40 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19EAB5F0D8
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2019 02:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C37C5F0DF
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2019 03:04:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726955AbfGDAwj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Jul 2019 20:52:39 -0400
-Received: from mga17.intel.com ([192.55.52.151]:15962 "EHLO mga17.intel.com"
+        id S1726652AbfGDBEi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Jul 2019 21:04:38 -0400
+Received: from mga12.intel.com ([192.55.52.136]:1759 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726656AbfGDAwj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 3 Jul 2019 20:52:39 -0400
+        id S1726656AbfGDBEi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 3 Jul 2019 21:04:38 -0400
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Jul 2019 17:52:36 -0700
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Jul 2019 18:04:35 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.63,449,1557212400"; 
-   d="gz'50?scan'50,208,50";a="169305743"
+   d="gz'50?scan'50,208,50";a="164504850"
 Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 03 Jul 2019 17:52:34 -0700
+  by fmsmga008.fm.intel.com with ESMTP; 03 Jul 2019 18:04:34 -0700
 Received: from kbuild by lkp-server01 with local (Exim 4.89)
         (envelope-from <lkp@intel.com>)
-        id 1hipzG-00068n-02; Thu, 04 Jul 2019 08:52:33 +0800
-Date:   Thu, 4 Jul 2019 08:52:22 +0800
+        id 1hiqAs-000Dvh-1u; Thu, 04 Jul 2019 09:04:34 +0800
+Date:   Thu, 4 Jul 2019 09:04:00 +0800
 From:   kbuild test robot <lkp@intel.com>
 To:     Viresh Kumar <viresh.kumar@linaro.org>
 Cc:     kbuild-all@01.org, linux-acpi@vger.kernel.org, devel@acpica.org,
         linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Matthias Kaehlcke <mka@chromium.org>,
         Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [pm:linux-next 89/102] include/linux/pm_qos.h:209:4: error: expected
- identifier or '(' before '{' token
-Message-ID: <201907040847.xfwo8JCv%lkp@intel.com>
+Subject: [pm:linux-next 91/102] include/linux/pm_qos.h:197:9: error: expected
+ '(' before 'type'
+Message-ID: <201907040956.ywZASIcA%lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="VbJkn9YxBvnuCH5J"
+Content-Type: multipart/mixed; boundary="uAKRQypu60I7Lcqm"
 Content-Disposition: inline
 X-Patchwork-Hint: ignore
 User-Agent: Mutt/1.5.23 (2014-03-12)
@@ -45,119 +45,85 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
---VbJkn9YxBvnuCH5J
+--uAKRQypu60I7Lcqm
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 tree:   https://kernel.googlesource.com/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
 head:   267eacd79cadd5e2d6307320497d66119907c411
-commit: 024a47a2732d5f9cd9c039c52074912c6982d786 [89/102] PM / QOS: Pass request type to dev_pm_qos_{add|remove}_notifier()
+commit: 57fa6137402b98327d1247c5aaf3d4f0595a73fe [91/102] PM / QOS: Pass request type to dev_pm_qos_read_value()
 config: riscv-allnoconfig (attached as .config)
 compiler: riscv64-linux-gcc (GCC) 7.4.0
 reproduce:
         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
         chmod +x ~/bin/make.cross
-        git checkout 024a47a2732d5f9cd9c039c52074912c6982d786
+        git checkout 57fa6137402b98327d1247c5aaf3d4f0595a73fe
         # save the attached .config to linux build tree
         GCC_VERSION=7.4.0 make.cross ARCH=riscv 
 
 If you fix the issue, kindly add following tag
 Reported-by: kbuild test robot <lkp@intel.com>
 
-All errors (new ones prefixed by >>):
+All error/warnings (new ones prefixed by >>):
 
    In file included from kernel//power/qos.c:33:0:
->> include/linux/pm_qos.h:209:4: error: expected identifier or '(' before '{' token
+   include/linux/pm_qos.h: In function 'dev_pm_qos_read_value':
+>> include/linux/pm_qos.h:197:9: error: expected '(' before 'type'
+     switch type {
+            ^~~~
+   include/linux/pm_qos.h:197:9: warning: statement with no effect [-Wunused-value]
+>> include/linux/pm_qos.h:204:1: warning: no return statement in function returning non-void [-Wreturn-type]
+    }
+    ^
+   include/linux/pm_qos.h: At top level:
+   include/linux/pm_qos.h:219:4: error: expected identifier or '(' before '{' token
        { return 0; }
        ^
-   include/linux/pm_qos.h:206:19: warning: 'dev_pm_qos_add_notifier' declared 'static' but never defined [-Wunused-function]
+   include/linux/pm_qos.h:216:19: warning: 'dev_pm_qos_add_notifier' declared 'static' but never defined [-Wunused-function]
     static inline int dev_pm_qos_add_notifier(struct device *dev,
                       ^~~~~~~~~~~~~~~~~~~~~~~
 
-vim +209 include/linux/pm_qos.h
+vim +197 include/linux/pm_qos.h
 
-6dbf5cea Rafael J. Wysocki 2017-02-24  178  
-6dbf5cea Rafael J. Wysocki 2017-02-24  179  static inline s32 dev_pm_qos_raw_read_value(struct device *dev)
-6dbf5cea Rafael J. Wysocki 2017-02-24  180  {
-6dbf5cea Rafael J. Wysocki 2017-02-24  181  	return IS_ERR_OR_NULL(dev->power.qos) ?
-0759e80b Rafael J. Wysocki 2017-11-07  182  		PM_QOS_RESUME_LATENCY_NO_CONSTRAINT :
-0759e80b Rafael J. Wysocki 2017-11-07  183  		pm_qos_read_value(&dev->power.qos->resume_latency);
-6dbf5cea Rafael J. Wysocki 2017-02-24  184  }
-e8db0be1 Jean Pihet        2011-08-25  185  #else
-ae0fb4b7 Rafael J. Wysocki 2012-10-23  186  static inline enum pm_qos_flags_status __dev_pm_qos_flags(struct device *dev,
-ae0fb4b7 Rafael J. Wysocki 2012-10-23  187  							  s32 mask)
-ae0fb4b7 Rafael J. Wysocki 2012-10-23  188  			{ return PM_QOS_FLAGS_UNDEFINED; }
-ae0fb4b7 Rafael J. Wysocki 2012-10-23  189  static inline enum pm_qos_flags_status dev_pm_qos_flags(struct device *dev,
-ae0fb4b7 Rafael J. Wysocki 2012-10-23  190  							s32 mask)
-ae0fb4b7 Rafael J. Wysocki 2012-10-23  191  			{ return PM_QOS_FLAGS_UNDEFINED; }
-00dc9ad1 Rafael J. Wysocki 2011-12-01  192  static inline s32 __dev_pm_qos_read_value(struct device *dev)
-0759e80b Rafael J. Wysocki 2017-11-07  193  			{ return PM_QOS_RESUME_LATENCY_NO_CONSTRAINT; }
-1a9a9152 Rafael J. Wysocki 2011-09-29  194  static inline s32 dev_pm_qos_read_value(struct device *dev)
-0759e80b Rafael J. Wysocki 2017-11-07  195  			{ return PM_QOS_RESUME_LATENCY_NO_CONSTRAINT; }
-91ff4cb8 Jean Pihet        2011-08-25  196  static inline int dev_pm_qos_add_request(struct device *dev,
-91ff4cb8 Jean Pihet        2011-08-25  197  					 struct dev_pm_qos_request *req,
-ae0fb4b7 Rafael J. Wysocki 2012-10-23  198  					 enum dev_pm_qos_req_type type,
-91ff4cb8 Jean Pihet        2011-08-25  199  					 s32 value)
-91ff4cb8 Jean Pihet        2011-08-25  200  			{ return 0; }
-91ff4cb8 Jean Pihet        2011-08-25  201  static inline int dev_pm_qos_update_request(struct dev_pm_qos_request *req,
-91ff4cb8 Jean Pihet        2011-08-25  202  					    s32 new_value)
-91ff4cb8 Jean Pihet        2011-08-25  203  			{ return 0; }
-91ff4cb8 Jean Pihet        2011-08-25  204  static inline int dev_pm_qos_remove_request(struct dev_pm_qos_request *req)
-91ff4cb8 Jean Pihet        2011-08-25  205  			{ return 0; }
-91ff4cb8 Jean Pihet        2011-08-25  206  static inline int dev_pm_qos_add_notifier(struct device *dev,
-024a47a2 Viresh Kumar      2019-07-01  207  					  struct notifier_block *notifier,
-024a47a2 Viresh Kumar      2019-07-01  208  					  enum dev_pm_qos_req_type type);
-91ff4cb8 Jean Pihet        2011-08-25 @209  			{ return 0; }
-91ff4cb8 Jean Pihet        2011-08-25  210  static inline int dev_pm_qos_remove_notifier(struct device *dev,
-024a47a2 Viresh Kumar      2019-07-01  211  					     struct notifier_block *notifier,
-024a47a2 Viresh Kumar      2019-07-01  212  					     enum dev_pm_qos_req_type type)
-91ff4cb8 Jean Pihet        2011-08-25  213  			{ return 0; }
-91ff4cb8 Jean Pihet        2011-08-25  214  static inline void dev_pm_qos_constraints_init(struct device *dev)
-1a9a9152 Rafael J. Wysocki 2011-09-29  215  {
-1a9a9152 Rafael J. Wysocki 2011-09-29  216  	dev->power.power_state = PMSG_ON;
-1a9a9152 Rafael J. Wysocki 2011-09-29  217  }
-91ff4cb8 Jean Pihet        2011-08-25  218  static inline void dev_pm_qos_constraints_destroy(struct device *dev)
-1a9a9152 Rafael J. Wysocki 2011-09-29  219  {
-1a9a9152 Rafael J. Wysocki 2011-09-29  220  	dev->power.power_state = PMSG_INVALID;
-1a9a9152 Rafael J. Wysocki 2011-09-29  221  }
-40a5f8be Rafael J. Wysocki 2011-12-23  222  static inline int dev_pm_qos_add_ancestor_request(struct device *dev,
-71d821fd Rafael J. Wysocki 2014-02-11  223  						  struct dev_pm_qos_request *req,
-71d821fd Rafael J. Wysocki 2014-02-11  224  						  enum dev_pm_qos_req_type type,
-71d821fd Rafael J. Wysocki 2014-02-11  225  						  s32 value)
-40a5f8be Rafael J. Wysocki 2011-12-23  226  			{ return 0; }
-85dc0b8a Rafael J. Wysocki 2012-03-13  227  static inline int dev_pm_qos_expose_latency_limit(struct device *dev, s32 value)
-85dc0b8a Rafael J. Wysocki 2012-03-13  228  			{ return 0; }
-85dc0b8a Rafael J. Wysocki 2012-03-13  229  static inline void dev_pm_qos_hide_latency_limit(struct device *dev) {}
-e39473d0 Rafael J. Wysocki 2012-10-24  230  static inline int dev_pm_qos_expose_flags(struct device *dev, s32 value)
-e39473d0 Rafael J. Wysocki 2012-10-24  231  			{ return 0; }
-e39473d0 Rafael J. Wysocki 2012-10-24  232  static inline void dev_pm_qos_hide_flags(struct device *dev) {}
-e39473d0 Rafael J. Wysocki 2012-10-24  233  static inline int dev_pm_qos_update_flags(struct device *dev, s32 m, bool set)
-e39473d0 Rafael J. Wysocki 2012-10-24  234  			{ return 0; }
-2d984ad1 Rafael J. Wysocki 2014-02-11  235  static inline s32 dev_pm_qos_get_user_latency_tolerance(struct device *dev)
-2d984ad1 Rafael J. Wysocki 2014-02-11  236  			{ return PM_QOS_LATENCY_TOLERANCE_NO_CONSTRAINT; }
-2d984ad1 Rafael J. Wysocki 2014-02-11  237  static inline int dev_pm_qos_update_user_latency_tolerance(struct device *dev, s32 val)
-2d984ad1 Rafael J. Wysocki 2014-02-11  238  			{ return 0; }
-13b2c4a0 Mika Westerberg   2015-07-27  239  static inline int dev_pm_qos_expose_latency_tolerance(struct device *dev)
-13b2c4a0 Mika Westerberg   2015-07-27  240  			{ return 0; }
-13b2c4a0 Mika Westerberg   2015-07-27  241  static inline void dev_pm_qos_hide_latency_tolerance(struct device *dev) {}
-e39473d0 Rafael J. Wysocki 2012-10-24  242  
-
-:::::: The code at line 209 was first introduced by commit
-:::::: 91ff4cb803df6de9114351b9f2f0f39f397ee03e PM QoS: Implement per-device PM QoS constraints
-
-:::::: TO: Jean Pihet <j-pihet@ti.com>
-:::::: CC: Rafael J. Wysocki <rjw@sisk.pl>
+   178	
+   179	static inline s32 dev_pm_qos_raw_resume_latency(struct device *dev)
+   180	{
+   181		return IS_ERR_OR_NULL(dev->power.qos) ?
+   182			PM_QOS_RESUME_LATENCY_NO_CONSTRAINT :
+   183			pm_qos_read_value(&dev->power.qos->resume_latency);
+   184	}
+   185	#else
+   186	static inline enum pm_qos_flags_status __dev_pm_qos_flags(struct device *dev,
+   187								  s32 mask)
+   188				{ return PM_QOS_FLAGS_UNDEFINED; }
+   189	static inline enum pm_qos_flags_status dev_pm_qos_flags(struct device *dev,
+   190								s32 mask)
+   191				{ return PM_QOS_FLAGS_UNDEFINED; }
+   192	static inline s32 __dev_pm_qos_resume_latency(struct device *dev)
+   193				{ return PM_QOS_RESUME_LATENCY_NO_CONSTRAINT; }
+   194	static inline s32 dev_pm_qos_read_value(struct device *dev,
+   195						enum dev_pm_qos_req_type type)
+   196	{
+ > 197		switch type {
+   198		case DEV_PM_QOS_RESUME_LATENCY:
+   199			return PM_QOS_RESUME_LATENCY_NO_CONSTRAINT;
+   200		default:
+   201			WARN_ON(1);
+   202			return 0;
+   203		}
+ > 204	}
+   205	
 
 ---
 0-DAY kernel test infrastructure                Open Source Technology Center
 https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 
---VbJkn9YxBvnuCH5J
+--uAKRQypu60I7Lcqm
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICAtMHV0AAy5jb25maWcAnTxtc9s2k9+fX8FJZ26SeZrUsZ00vRt/gEhQQkUQNAFKcr5w
+H4sICM5PHV0AAy5jb25maWcAnTxtc9s2k9+fX8FJZ26SeZrUsZ00vRt/gEhQQkUQNAFKcr5w
 VJl2NLEln17a5H79LQBSBMmFkrtO29jYxXKxWOwbFvnlX78E5HjYPi8P69Xy6el78Fhtqt3y
 UN0HD+un6r+CSASpUAGNmHoHyMl6c/z22269X/0dfHh3+e7i7W71IZhWu031FITbzcP68QjT
 19vNv375F/z7Cww+vwCl3X8GZtbH67dPmsbbx9UqeD0OwzfB7++u310AbijSmI3LMCyZLAFy
@@ -253,4 +219,4 @@ noscjOmfdPDmwan46KQXxXFT8rhIw/bZdt67kTxBxznJJjhOdJcSfbbi3sNvBFjOmdJ/K8K4
 /zSrBnP7fCmnOh/sodTPgC0PJlZwiOhBEwWfWhNaOZzZM/3mitst17P798PulYJXLYwLTcuI
 KP2ALM8LfwVPEp75HjUVI/BXyCaZcfuujduMY1gVsPH7/wILeuBnG0YAAA==
 
---VbJkn9YxBvnuCH5J--
+--uAKRQypu60I7Lcqm--
