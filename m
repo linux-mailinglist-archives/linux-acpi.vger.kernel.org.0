@@ -2,28 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5953860355
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jul 2019 11:47:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ABD160359
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jul 2019 11:48:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727590AbfGEJqz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Jul 2019 05:46:55 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:64049 "EHLO
+        id S1728123AbfGEJsG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Jul 2019 05:48:06 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:57011 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727477AbfGEJqz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Jul 2019 05:46:55 -0400
+        with ESMTP id S1727477AbfGEJsF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Jul 2019 05:48:05 -0400
 Received: from 79.184.254.216.ipv4.supernova.orange.pl (79.184.254.216) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
- id bb9bb51f507f0fb5; Fri, 5 Jul 2019 11:46:52 +0200
+ id e6098ef7f880b9e0; Fri, 5 Jul 2019 11:48:02 +0200
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+Cc:     Linux PCI <linux-pci@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
         Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ACPI: PM: Unexport acpi_device_get_power()
-Date:   Fri, 05 Jul 2019 11:46:52 +0200
-Message-ID: <2054223.OgheZKOciF@kreacher>
-In-Reply-To: <20190704074640.GF2640@lahna.fi.intel.com>
-References: <1970901.ZntFDt4DbR@kreacher> <20190704074640.GF2640@lahna.fi.intel.com>
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Lukas Wunner <lukas@wunner.de>
+Subject: Re: [PATCH] PCI: PM/ACPI: Refresh all stale power state data in pci_pm_complete()
+Date:   Fri, 05 Jul 2019 11:48:02 +0200
+Message-ID: <78143872.4kPcvaPlWD@kreacher>
+In-Reply-To: <20190625160918.GK2640@lahna.fi.intel.com>
+References: <6435024.1ODgWP2se3@kreacher> <20190625160918.GK2640@lahna.fi.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -32,26 +35,43 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thursday, July 4, 2019 9:46:40 AM CEST Mika Westerberg wrote:
-> On Thu, Jul 04, 2019 at 01:02:49AM +0200, Rafael J. Wysocki wrote:
+On Tuesday, June 25, 2019 6:09:18 PM CEST Mika Westerberg wrote:
+> On Tue, Jun 25, 2019 at 02:09:12PM +0200, Rafael J. Wysocki wrote:
 > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > > 
-> > Using acpi_device_get_power() outside of ACPI device initialization
-> > and ACPI sysfs is problematic due to the way in which power resources
-> > are handled by it, so unexport it and add a paragraph explaining the
-> > pitfalls to its kerneldoc comment.
+> > In pci_pm_complete() there are checks to decide whether or not to
+> > resume devices that were left in runtime-suspend during the preceding
+> > system-wide transition into a sleep state.  They involve checking the
+> > current power state of the device and comparing it with the power
+> > state of it set before the preceding system-wide transition, but the
+> > platform component of the device's power state is not handled
+> > correctly in there.
 > > 
+> > Namely, on platforms with ACPI, the device power state information
+> > needs to be updated with care, so that the reference counters of
+> > power resources used by the device (if any) are set to ensure that
+> > the refreshed power state of it will be maintained going forward.
+> > 
+> > To that end, introduce a new ->refresh_state() platform PM callback
+> > for PCI devices, for asking the platform to refresh the device power
+> > state data and ensure that the corresponding power state will be
+> > maintained going forward, make it invoke acpi_device_update_power()
+> > (for devices with ACPI PM) on platforms with ACPI and make
+> > pci_pm_complete() use it, through a new pci_refresh_power_state()
+> > wrapper function.
+> > 
+> > Fixes: a0d2a959d3da (PCI: Avoid unnecessary resume after direct-complete)
 > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> 
-> Makes perfect sense!
 > 
 > Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> 
+> I also tested this on Ice Lake system and did not see any issues over
+> several suspend-to-ram cycles.
 > 
 
 Thanks!
 
-I've queued this one for 5.3.
+Patch queued for 5.3.
 
 
 
