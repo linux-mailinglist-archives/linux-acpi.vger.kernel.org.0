@@ -2,76 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7202160395
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jul 2019 11:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFF0360438
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jul 2019 12:12:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728456AbfGEJ6I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Jul 2019 05:58:08 -0400
-Received: from mga07.intel.com ([134.134.136.100]:55406 "EHLO mga07.intel.com"
+        id S1728414AbfGEKML (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Jul 2019 06:12:11 -0400
+Received: from foss.arm.com ([217.140.110.172]:35052 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728402AbfGEJ6I (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 5 Jul 2019 05:58:08 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Jul 2019 02:58:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,454,1557212400"; 
-   d="scan'208";a="185144841"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 05 Jul 2019 02:58:04 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id 34385715; Fri,  5 Jul 2019 12:58:01 +0300 (EEST)
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-        Mario.Limonciello@dell.com,
-        Anthony Wong <anthony.wong@canonical.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH 8/8] ACPI / property: Add two new Thunderbolt property GUIDs to the list
-Date:   Fri,  5 Jul 2019 12:58:00 +0300
-Message-Id: <20190705095800.43534-9-mika.westerberg@linux.intel.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190705095800.43534-1-mika.westerberg@linux.intel.com>
-References: <20190705095800.43534-1-mika.westerberg@linux.intel.com>
+        id S1726005AbfGEKML (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 5 Jul 2019 06:12:11 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9EC872B;
+        Fri,  5 Jul 2019 03:12:10 -0700 (PDT)
+Received: from [10.1.196.105] (eglon.cambridge.arm.com [10.1.196.105])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 779B73F703;
+        Fri,  5 Jul 2019 03:12:08 -0700 (PDT)
+Subject: Re: [RFC PATCH v2 0/3] Support CPU hotplug for ARM64
+To:     Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Cc:     rjw@rjwysocki.net, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        guohanjun@huawei.com, xiexiuqi@huawei.com, huawei.libin@huawei.com,
+        john.garry@huawei.com, jonathan.cameron@huawei.com,
+        kvmarm@lists.cs.columbia.edu
+References: <1561776155-38975-1-git-send-email-wangxiongfeng2@huawei.com>
+From:   James Morse <james.morse@arm.com>
+Message-ID: <82879258-46a7-a6e9-ee54-fc3692c1cdc3@arm.com>
+Date:   Fri, 5 Jul 2019 11:12:07 +0100
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <1561776155-38975-1-git-send-email-wangxiongfeng2@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Ice Lake Thunderbolt controller includes two new device property
-compatible properties that we need to be able to extract in the driver
-so add them to the growing array of GUIDs.
+Hi guys,
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
----
- drivers/acpi/property.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+(CC: +kvmarm list)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index da3ced297f19..07cbacbab861 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -39,6 +39,12 @@ static const guid_t prp_guids[] = {
- 	/* External facing port GUID: efcc06cc-73ac-4bc3-bff0-76143807c389 */
- 	GUID_INIT(0xefcc06cc, 0x73ac, 0x4bc3,
- 		  0xbf, 0xf0, 0x76, 0x14, 0x38, 0x07, 0xc3, 0x89),
-+	/* TBT GUID for IMR_VALID: c44d002f-69f9-4e7d-a904-a7baabdf43f7 */
-+	GUID_INIT(0xc44d002f, 0x69f9, 0x4e7d,
-+		  0xa9, 0x04, 0xa7, 0xba, 0xab, 0xdf, 0x43, 0xf7),
-+	/* TBT GUID for WAKE_SUPPORTED: 6c501103-c189-4296-ba72-9bf5a26ebe5d */
-+	GUID_INIT(0x6c501103, 0xc189, 0x4296,
-+		  0xba, 0x72, 0x9b, 0xf5, 0xa2, 0x6e, 0xbe, 0x5d),
- };
- 
- /* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
--- 
-2.20.1
+On 29/06/2019 03:42, Xiongfeng Wang wrote:
+> This patchset mark all the GICC node in MADT as possible CPUs even though it
+> is disabled. But only those enabled GICC node are marked as present CPUs.
+> So that kernel will initialize some CPU related data structure in advance before
+> the CPU is actually hot added into the system. This patchset also implement 
+> 'acpi_(un)map_cpu()' and 'arch_(un)register_cpu()' for ARM64. These functions are
+> needed to enable CPU hotplug.
+> 
+> To support CPU hotplug, we need to add all the possible GICC node in MADT
+> including those CPUs that are not present but may be hot added later. Those
+> CPUs are marked as disabled in GICC nodes.
 
+... what do you need this for?
+
+(The term cpu-hotplug in the arm world almost never means hot-adding a new package/die to
+the platform, we usually mean taking CPUs online/offline for power management. e.g.
+cpuhp_offline_cpu_device())
+
+It looks like you're adding support for hot-adding a new package/die to the platform ...
+but only for virtualisation.
+
+I don't see why this is needed for virtualisation. The in-kernel irqchip needs to know
+these vcpu exist before you can enter the guest for the first time. You can't create them
+late. At best you're saving the host scheduling a vcpu that is offline. Is this really a
+problem?
+
+If we moved PSCI support to user-space, you could avoid creating host vcpu threads until
+the guest brings the vcpu online, which would solve that problem, and save the host
+resources for the thread too. (and its acpi/dt agnostic)
+
+I don't see the difference here between booting the guest with 'maxcpus=1', and bringing
+the vcpu online later. The only real difference seems to be moving the can-be-online
+policy into the hypervisor/VMM...
+
+
+I think physical package/die hotadd is a much bigger, uglier problem than doing the same
+under virtualisation. Its best to do this on real hardware first so we don't miss
+something. (cpu-topology, numa, memory, errata, timers?)
+I'm worried that doing virtualisation first means the firmware-requirements for physical
+hotadd stuff is "whatever Qemu does".
+
+
+Thanks,
+
+James
