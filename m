@@ -2,26 +2,26 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 741BF6037E
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jul 2019 11:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14C30603B2
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jul 2019 11:59:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728415AbfGEJ6F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        id S1728412AbfGEJ6F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
         Fri, 5 Jul 2019 05:58:05 -0400
-Received: from mga07.intel.com ([134.134.136.100]:55406 "EHLO mga07.intel.com"
+Received: from mga18.intel.com ([134.134.136.126]:42367 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728402AbfGEJ6F (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        id S1728167AbfGEJ6F (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
         Fri, 5 Jul 2019 05:58:05 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Jul 2019 02:58:04 -0700
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Jul 2019 02:58:04 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.63,454,1557212400"; 
-   d="scan'208";a="164830667"
+   d="scan'208";a="166448204"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga008.fm.intel.com with ESMTP; 05 Jul 2019 02:58:01 -0700
+  by fmsmga007.fm.intel.com with ESMTP; 05 Jul 2019 02:58:01 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id CAF9681; Fri,  5 Jul 2019 12:58:00 +0300 (EEST)
+        id D7768361; Fri,  5 Jul 2019 12:58:00 +0300 (EEST)
 From:   Mika Westerberg <mika.westerberg@linux.intel.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Andreas Noever <andreas.noever@gmail.com>,
@@ -33,9 +33,9 @@ Cc:     Andreas Noever <andreas.noever@gmail.com>,
         Anthony Wong <anthony.wong@canonical.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         linux-acpi@vger.kernel.org
-Subject: [PATCH 1/8] thunderbolt: Correct path indices for PCIe tunnel
-Date:   Fri,  5 Jul 2019 12:57:53 +0300
-Message-Id: <20190705095800.43534-2-mika.westerberg@linux.intel.com>
+Subject: [PATCH 2/8] thunderbolt: Move NVM upgrade support flag to struct icm
+Date:   Fri,  5 Jul 2019 12:57:54 +0300
+Message-Id: <20190705095800.43534-3-mika.westerberg@linux.intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190705095800.43534-1-mika.westerberg@linux.intel.com>
 References: <20190705095800.43534-1-mika.westerberg@linux.intel.com>
@@ -46,40 +46,78 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-PCIe tunnel path indices got mixed up when we added support for tunnels
-between switches that are not adjacent. This did not affect the
-functionality as it is just an index but fix it now nevertheless to make
-the code easier to understand.
+This is depends on the controller and on the platform/CPU we are
+running. Move it to struct icm so we can set it per controller.
 
-Reported-by: Rajmohan Mani <rajmohan.mani@intel.com>
-Fixes: 8c7acaaf020f ("thunderbolt: Extend tunnel creation to more than 2 adjacent switches")
 Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 ---
- drivers/thunderbolt/tunnel.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/thunderbolt/icm.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/thunderbolt/tunnel.c b/drivers/thunderbolt/tunnel.c
-index 31d0234837e4..5a99234826e7 100644
---- a/drivers/thunderbolt/tunnel.c
-+++ b/drivers/thunderbolt/tunnel.c
-@@ -211,7 +211,7 @@ struct tb_tunnel *tb_tunnel_alloc_pci(struct tb *tb, struct tb_port *up,
- 		return NULL;
- 	}
- 	tb_pci_init_path(path);
--	tunnel->paths[TB_PCI_PATH_UP] = path;
-+	tunnel->paths[TB_PCI_PATH_DOWN] = path;
+diff --git a/drivers/thunderbolt/icm.c b/drivers/thunderbolt/icm.c
+index fbdcef56a676..2a56d9478b34 100644
+--- a/drivers/thunderbolt/icm.c
++++ b/drivers/thunderbolt/icm.c
+@@ -55,6 +55,7 @@
+  * @safe_mode: ICM is in safe mode
+  * @max_boot_acl: Maximum number of preboot ACL entries (%0 if not supported)
+  * @rpm: Does the controller support runtime PM (RTD3)
++ * @can_upgrade_nvm: Can the NVM firmware be upgrade on this controller
+  * @is_supported: Checks if we can support ICM on this controller
+  * @cio_reset: Trigger CIO reset
+  * @get_mode: Read and return the ICM firmware mode (optional)
+@@ -74,6 +75,7 @@ struct icm {
+ 	int vnd_cap;
+ 	bool safe_mode;
+ 	bool rpm;
++	bool can_upgrade_nvm;
+ 	bool (*is_supported)(struct tb *tb);
+ 	int (*cio_reset)(struct tb *tb);
+ 	int (*get_mode)(struct tb *tb);
+@@ -1913,12 +1915,7 @@ static int icm_start(struct tb *tb)
+ 	if (IS_ERR(tb->root_switch))
+ 		return PTR_ERR(tb->root_switch);
  
- 	path = tb_path_alloc(tb, up, TB_PCI_HOPID, down, TB_PCI_HOPID, 0,
- 			     "PCIe Up");
-@@ -220,7 +220,7 @@ struct tb_tunnel *tb_tunnel_alloc_pci(struct tb *tb, struct tb_port *up,
- 		return NULL;
- 	}
- 	tb_pci_init_path(path);
--	tunnel->paths[TB_PCI_PATH_DOWN] = path;
-+	tunnel->paths[TB_PCI_PATH_UP] = path;
+-	/*
+-	 * NVM upgrade has not been tested on Apple systems and they
+-	 * don't provide images publicly either. To be on the safe side
+-	 * prevent root switch NVM upgrade on Macs for now.
+-	 */
+-	tb->root_switch->no_nvm_upgrade = x86_apple_machine;
++	tb->root_switch->no_nvm_upgrade = !icm->can_upgrade_nvm;
+ 	tb->root_switch->rpm = icm->rpm;
  
- 	return tunnel;
- }
+ 	ret = tb_switch_add(tb->root_switch);
+@@ -2021,6 +2018,7 @@ struct tb *icm_probe(struct tb_nhi *nhi)
+ 	switch (nhi->pdev->device) {
+ 	case PCI_DEVICE_ID_INTEL_FALCON_RIDGE_2C_NHI:
+ 	case PCI_DEVICE_ID_INTEL_FALCON_RIDGE_4C_NHI:
++		icm->can_upgrade_nvm = true;
+ 		icm->is_supported = icm_fr_is_supported;
+ 		icm->get_route = icm_fr_get_route;
+ 		icm->save_devices = icm_fr_save_devices;
+@@ -2038,6 +2036,13 @@ struct tb *icm_probe(struct tb_nhi *nhi)
+ 	case PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_C_4C_NHI:
+ 	case PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_C_2C_NHI:
+ 		icm->max_boot_acl = ICM_AR_PREBOOT_ACL_ENTRIES;
++		/*
++		 * NVM upgrade has not been tested on Apple systems and
++		 * they don't provide images publicly either. To be on
++		 * the safe side prevent root switch NVM upgrade on Macs
++		 * for now.
++		 */
++		icm->can_upgrade_nvm = !x86_apple_machine;
+ 		icm->is_supported = icm_ar_is_supported;
+ 		icm->cio_reset = icm_ar_cio_reset;
+ 		icm->get_mode = icm_ar_get_mode;
+@@ -2054,6 +2059,7 @@ struct tb *icm_probe(struct tb_nhi *nhi)
+ 	case PCI_DEVICE_ID_INTEL_TITAN_RIDGE_2C_NHI:
+ 	case PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_NHI:
+ 		icm->max_boot_acl = ICM_AR_PREBOOT_ACL_ENTRIES;
++		icm->can_upgrade_nvm = true;
+ 		icm->is_supported = icm_ar_is_supported;
+ 		icm->cio_reset = icm_tr_cio_reset;
+ 		icm->get_mode = icm_ar_get_mode;
 -- 
 2.20.1
 
