@@ -2,90 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFF0360438
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jul 2019 12:12:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 713C560486
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jul 2019 12:33:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728414AbfGEKML (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Jul 2019 06:12:11 -0400
-Received: from foss.arm.com ([217.140.110.172]:35052 "EHLO foss.arm.com"
+        id S1727677AbfGEKdT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Jul 2019 06:33:19 -0400
+Received: from mga14.intel.com ([192.55.52.115]:62640 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726005AbfGEKML (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 5 Jul 2019 06:12:11 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9EC872B;
-        Fri,  5 Jul 2019 03:12:10 -0700 (PDT)
-Received: from [10.1.196.105] (eglon.cambridge.arm.com [10.1.196.105])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 779B73F703;
-        Fri,  5 Jul 2019 03:12:08 -0700 (PDT)
-Subject: Re: [RFC PATCH v2 0/3] Support CPU hotplug for ARM64
-To:     Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Cc:     rjw@rjwysocki.net, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        guohanjun@huawei.com, xiexiuqi@huawei.com, huawei.libin@huawei.com,
-        john.garry@huawei.com, jonathan.cameron@huawei.com,
-        kvmarm@lists.cs.columbia.edu
-References: <1561776155-38975-1-git-send-email-wangxiongfeng2@huawei.com>
-From:   James Morse <james.morse@arm.com>
-Message-ID: <82879258-46a7-a6e9-ee54-fc3692c1cdc3@arm.com>
-Date:   Fri, 5 Jul 2019 11:12:07 +0100
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1726568AbfGEKdT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 5 Jul 2019 06:33:19 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Jul 2019 03:33:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,454,1557212400"; 
+   d="scan'208";a="185148881"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 05 Jul 2019 03:33:15 -0700
+Received: by lahna (sSMTP sendmail emulation); Fri, 05 Jul 2019 13:33:14 +0300
+Date:   Fri, 5 Jul 2019 13:33:14 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+        Mario.Limonciello@dell.com,
+        Anthony Wong <anthony.wong@canonical.com>,
+        linux-acpi@vger.kernel.org,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        Raanan Avargil <raanan.avargil@intel.com>
+Subject: Re: [PATCH 0/8] thunderbolt: Intel Ice Lake support
+Message-ID: <20190705103314.GS2640@lahna.fi.intel.com>
+References: <20190705095800.43534-1-mika.westerberg@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <1561776155-38975-1-git-send-email-wangxiongfeng2@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190705095800.43534-1-mika.westerberg@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi guys,
-
-(CC: +kvmarm list)
-
-On 29/06/2019 03:42, Xiongfeng Wang wrote:
-> This patchset mark all the GICC node in MADT as possible CPUs even though it
-> is disabled. But only those enabled GICC node are marked as present CPUs.
-> So that kernel will initialize some CPU related data structure in advance before
-> the CPU is actually hot added into the system. This patchset also implement 
-> 'acpi_(un)map_cpu()' and 'arch_(un)register_cpu()' for ARM64. These functions are
-> needed to enable CPU hotplug.
+On Fri, Jul 05, 2019 at 12:57:52PM +0300, Mika Westerberg wrote:
+> Hi all,
 > 
-> To support CPU hotplug, we need to add all the possible GICC node in MADT
-> including those CPUs that are not present but may be hot added later. Those
-> CPUs are marked as disabled in GICC nodes.
+> With the exception of the first patch which is fix, this series enables
+> Thunderbolt on Intel Ice Lake. Biggest difference from the previous
+> controllers is that the Thunderbolt controller is now integrated as part of
+> the SoC. The firmware messages pretty much follow Titan Ridge but there are
+> some differences as well (such as the new RTD3 veto notification). Also Ice
+> Lake does not implement security levels so DMA protection is handled by IOMMU.
+> 
+> This is v5.4 material but I'm sending it out now because I will be on
+> vacation next 4 weeks mostly without internet access. When I get back I'll
+> gather all the comments and update the series accordingly.
+> 
+> Thanks!
+> 
+> Mika Westerberg (8):
+>   thunderbolt: Correct path indices for PCIe tunnel
+>   thunderbolt: Move NVM upgrade support flag to struct icm
+>   thunderbolt: Use 32-bit writes when writing ring producer/consumer
+>   thunderbolt: Do not fail adding switch if some port is not implemented
+>   thunderbolt: Hide switch attributes that are not set
+>   thunderbolt: Expose active parts of NVM even if upgrade is not supported
+>   thunderbolt: Add support for Intel Ice Lake
+>   ACPI / property: Add two new Thunderbolt property GUIDs to the list
 
-... what do you need this for?
+Forgot to Cc Raanan and Raj, now added. Sorry about that. The patch
+series can also be viewed here:
 
-(The term cpu-hotplug in the arm world almost never means hot-adding a new package/die to
-the platform, we usually mean taking CPUs online/offline for power management. e.g.
-cpuhp_offline_cpu_device())
-
-It looks like you're adding support for hot-adding a new package/die to the platform ...
-but only for virtualisation.
-
-I don't see why this is needed for virtualisation. The in-kernel irqchip needs to know
-these vcpu exist before you can enter the guest for the first time. You can't create them
-late. At best you're saving the host scheduling a vcpu that is offline. Is this really a
-problem?
-
-If we moved PSCI support to user-space, you could avoid creating host vcpu threads until
-the guest brings the vcpu online, which would solve that problem, and save the host
-resources for the thread too. (and its acpi/dt agnostic)
-
-I don't see the difference here between booting the guest with 'maxcpus=1', and bringing
-the vcpu online later. The only real difference seems to be moving the can-be-online
-policy into the hypervisor/VMM...
-
-
-I think physical package/die hotadd is a much bigger, uglier problem than doing the same
-under virtualisation. Its best to do this on real hardware first so we don't miss
-something. (cpu-topology, numa, memory, errata, timers?)
-I'm worried that doing virtualisation first means the firmware-requirements for physical
-hotadd stuff is "whatever Qemu does".
-
-
-Thanks,
-
-James
+  https://lore.kernel.org/lkml/20190705095800.43534-1-mika.westerberg@linux.intel.com/T/#m9cb5a393dfc79f1c2212d0787b6bad5b689db6bd
