@@ -2,105 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 959676036B
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jul 2019 11:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5150F6039B
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jul 2019 11:58:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728369AbfGEJvm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Jul 2019 05:51:42 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:57530 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728188AbfGEJvm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Jul 2019 05:51:42 -0400
-Received: from 79.184.254.216.ipv4.supernova.orange.pl (79.184.254.216) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
- id 3ded838a44778bef; Fri, 5 Jul 2019 11:51:39 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>, Len Brown <lenb@kernel.org>,
-        Lukas Wunner <lukas@wunner.de>,
-        Keith Busch <keith.busch@intel.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v3 0/3] PCI / ACPI: Handle sibling devices sharing power resources
-Date:   Fri, 05 Jul 2019 11:51:39 +0200
-Message-ID: <3373307.rzzEvYTkqQ@kreacher>
-In-Reply-To: <CAJZ5v0he36SF+q_0J5D_UCdhUPkKh6S3e94gqB=5XKcT=eum1A@mail.gmail.com>
-References: <20190625102942.27740-1-mika.westerberg@linux.intel.com> <CAJZ5v0he36SF+q_0J5D_UCdhUPkKh6S3e94gqB=5XKcT=eum1A@mail.gmail.com>
+        id S1728317AbfGEJ6p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Jul 2019 05:58:45 -0400
+Received: from mga01.intel.com ([192.55.52.88]:16861 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728431AbfGEJ6H (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 5 Jul 2019 05:58:07 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Jul 2019 02:58:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,454,1557212400"; 
+   d="scan'208";a="316054682"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga004.jf.intel.com with ESMTP; 05 Jul 2019 02:58:01 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id BE499254; Fri,  5 Jul 2019 12:58:00 +0300 (EEST)
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+        Mario.Limonciello@dell.com,
+        Anthony Wong <anthony.wong@canonical.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH 0/8] thunderbolt: Intel Ice Lake support
+Date:   Fri,  5 Jul 2019 12:57:52 +0300
+Message-Id: <20190705095800.43534-1-mika.westerberg@linux.intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tuesday, June 25, 2019 12:35:12 PM CEST Rafael J. Wysocki wrote:
-> On Tue, Jun 25, 2019 at 12:30 PM Mika Westerberg
-> <mika.westerberg@linux.intel.com> wrote:
-> >
-> > Hi all,
-> >
-> > This is third iteration of the patch series addressing issues around
-> > sibling PCI devices sharing ACPI power resources.
-> >
-> > As a concrete example in Intel Ice Lake the Thunderbolt controller, PCIe
-> > root ports and xHCI all share the same ACPI power resources. When they are
-> > all in D3hot power resources (returned by _PR3) can be turned off powering
-> > off the whole block. However, there are two issues around this.
-> >
-> > Firstly the PCI core sets the device power state by asking what the real
-> > ACPI power state is. This results that all but last device sharing the
-> > power resources are in D3hot when the power resources are turned off. This
-> > causes issues if user runs for example 'lspci' because the device is really
-> > in D3cold so what user gets back is all ones (0xffffffff).
-> >
-> > Secondly if any of the device is runtime resumed the power resources are
-> > turned on bringing all other devices sharing the resources to
-> > D0uninitialized losing their wakeup configuration.
-> >
-> > This series aims to fix the two issues by:
-> >
-> >   1. Using the ACPI cached power state when PCI devices are transitioned
-> >      into low power states instead of reading back the "real" power state.
-> >
-> >   2. Introducing concept of "_PR0 dependent devices" that get runtime
-> >      resumed whenever their power resource (which they might share with
-> >      other sibling devices) gets turned on.
-> >
-> > The series is based on the idea of Rafael J. Wysocki <rafael@kernel.org>.
-> >
-> > Previous version of the series can be found here:
-> >
-> >   v2: https://lore.kernel.org/linux-pci/20190618161858.77834-1-mika.westerberg@linux.intel.com/T/#m7a41d0b745400054543324ce84125040dbfed912
-> >   v1: https://www.spinics.net/lists/linux-pci/msg83583.html
-> >
-> > Changes from v2:
-> >
-> >   * Updated changelog of patch [1/3] according to comments I got. I left
-> >     the D3C power resource and xHCI there because it shows that we can have
-> >     multiple shared power resources.
-> >
-> >   * Added link to the discussion around v2.
-> >
-> >   * Use adev->flags.power_manageable in patch [2/3].
-> >
-> > Mika Westerberg (3):
-> >   PCI / ACPI: Use cached ACPI device state to get PCI device power state
-> >   ACPI / PM: Introduce concept of a _PR0 dependent device
-> >   PCI / ACPI: Add _PR0 dependent devices
-> >
-> >  drivers/acpi/power.c    | 135 ++++++++++++++++++++++++++++++++++++++++
-> >  drivers/pci/pci-acpi.c  |   5 +-
-> >  include/acpi/acpi_bus.h |   4 ++
-> >  3 files changed, 143 insertions(+), 1 deletion(-)
-> >
-> 
-> The whole series looks good to me, thank you!
-> 
+Hi all,
 
-And so it has been applied and queued for 5.3, thanks!
+With the exception of the first patch which is fix, this series enables
+Thunderbolt on Intel Ice Lake. Biggest difference from the previous
+controllers is that the Thunderbolt controller is now integrated as part of
+the SoC. The firmware messages pretty much follow Titan Ridge but there are
+some differences as well (such as the new RTD3 veto notification). Also Ice
+Lake does not implement security levels so DMA protection is handled by IOMMU.
 
+This is v5.4 material but I'm sending it out now because I will be on
+vacation next 4 weeks mostly without internet access. When I get back I'll
+gather all the comments and update the series accordingly.
 
+Thanks!
+
+Mika Westerberg (8):
+  thunderbolt: Correct path indices for PCIe tunnel
+  thunderbolt: Move NVM upgrade support flag to struct icm
+  thunderbolt: Use 32-bit writes when writing ring producer/consumer
+  thunderbolt: Do not fail adding switch if some port is not implemented
+  thunderbolt: Hide switch attributes that are not set
+  thunderbolt: Expose active parts of NVM even if upgrade is not supported
+  thunderbolt: Add support for Intel Ice Lake
+  ACPI / property: Add two new Thunderbolt property GUIDs to the list
+
+ drivers/acpi/property.c        |   6 +
+ drivers/thunderbolt/ctl.c      |  23 ++-
+ drivers/thunderbolt/icm.c      | 169 +++++++++++++++++--
+ drivers/thunderbolt/nhi.c      | 300 ++++++++++++++++++++++++++++++++-
+ drivers/thunderbolt/nhi.h      |   2 +
+ drivers/thunderbolt/nhi_regs.h |  25 +++
+ drivers/thunderbolt/switch.c   |  52 ++++--
+ drivers/thunderbolt/tb_msgs.h  |  16 +-
+ drivers/thunderbolt/tunnel.c   |   4 +-
+ include/linux/thunderbolt.h    |   2 +
+ 10 files changed, 553 insertions(+), 46 deletions(-)
+
+-- 
+2.20.1
 
