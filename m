@@ -2,28 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1F6D60857
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jul 2019 16:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D389160880
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jul 2019 16:56:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727092AbfGEOvM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Jul 2019 10:51:12 -0400
-Received: from mga18.intel.com ([134.134.136.126]:25617 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725865AbfGEOvL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 5 Jul 2019 10:51:11 -0400
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Jul 2019 07:51:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,455,1557212400"; 
-   d="scan'208";a="185201897"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
-  by fmsmga001.fm.intel.com with SMTP; 05 Jul 2019 07:51:07 -0700
-Received: by lahna (sSMTP sendmail emulation); Fri, 05 Jul 2019 17:51:06 +0300
-Date:   Fri, 5 Jul 2019 17:51:06 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Yehezkel Bernat <yehezkelshb@gmail.com>
+        id S1725813AbfGEO4e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Jul 2019 10:56:34 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:46086 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725730AbfGEO4d (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Jul 2019 10:56:33 -0400
+Received: by mail-lf1-f66.google.com with SMTP id z15so6491510lfh.13;
+        Fri, 05 Jul 2019 07:56:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zpw4LgWQl3djVQ004uCiznSAE3f2lS3lt+2VhGBgUdM=;
+        b=K2RTEoHWrkysJOEr8bRg39piVLUBiEwgZmyaDLiNcAoFoS7hFr1DUiw7+TjeoWI13M
+         SWzay62c5nkIPTR7tjhpRtDbmikzkcjcPmFr139zY4uI8p/Car0kUx6daJ1Ut/ES9se3
+         yjmqUum/Z4D7Xj8O+prZzkJj11uR/xO3Vu66JfTP4+CG4D1LXEKM5UcpnoYhoVFb4zcS
+         uZNYC+HY9Eyp4NdE43/yULha9sMWLx0oLNrm89Riy95vlN485/OG1S9wy4DEpQnhujrO
+         v3VKJ1KueIvt+3md+es1oqTif2TzVR6DRYr2P1eju3HdBVgNy1VN7GXy1htNi8iS9+Cz
+         s22Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zpw4LgWQl3djVQ004uCiznSAE3f2lS3lt+2VhGBgUdM=;
+        b=ovM9liesw69qoiJnIOvBv01vC203gMpnebCSqGex7IMOVq1FJXvgEeqXf5h8Xy1mAH
+         WWBDUJFL4UvyX5cqDvUlAXl7PX9mjP8gi6/lw8xfylJC1kV3Zb4rDv+/nxEz3Vi3qPTi
+         z6mezmo7Q2DSXz4f0K+uIFvW6H/ZMnp6g+b5v2lPCHKdJG00dbGNbS6toQ2qbpzuDAPg
+         FUODyqF7kdDyxaSN2pfa3Lf9MU/Iga1henqGdpISv6RYWSpTAAVtEVLFw2jrpDUfW/KL
+         aPTt3as/sAw6e1sL0xRp/FqueOrhTJUWycdstMMvhiemuXKohFBj66wzw8/qa9/KyMlX
+         RviQ==
+X-Gm-Message-State: APjAAAVURBODjI3TBcZFRXTj8Cvl3mP5MyVtevgiqTQKpz3LBmbxWf/C
+        hn7mRzrngEKoR29zMqbKZMEKi7dmbb09AmU1qE0=
+X-Google-Smtp-Source: APXvYqyNSqy5Xj1GQHiytKh7BGJ72lnNUhK9BSvrm53RpANaw+wUHPvfD4Lq7KetpxgyRB9gb5T59LFa+sfv/cehRko=
+X-Received: by 2002:ac2:4c84:: with SMTP id d4mr2213498lfl.1.1562338591550;
+ Fri, 05 Jul 2019 07:56:31 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190705095800.43534-1-mika.westerberg@linux.intel.com> <20190705103314.GS2640@lahna.fi.intel.com>
+In-Reply-To: <20190705103314.GS2640@lahna.fi.intel.com>
+From:   Yehezkel Bernat <yehezkelshb@gmail.com>
+Date:   Fri, 5 Jul 2019 17:56:15 +0300
+Message-ID: <CA+CmpXsfSQ3hVW4cAM2ixOm4C8yVLOzxXMM2ow1GVwkQpgAbWw@mail.gmail.com>
+Subject: Re: [PATCH 0/8] thunderbolt: Intel Ice Lake support
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Andreas Noever <andreas.noever@gmail.com>,
         Michael Jamet <michael.jamet@intel.com>,
@@ -31,104 +55,50 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
         Mario Limonciello <Mario.Limonciello@dell.com>,
         Anthony Wong <anthony.wong@canonical.com>,
-        linux-acpi@vger.kernel.org, raanan.avargil@intel.com
-Subject: Re: [PATCH 7/8] thunderbolt: Add support for Intel Ice Lake
-Message-ID: <20190705145106.GA2640@lahna.fi.intel.com>
-References: <20190705095800.43534-1-mika.westerberg@linux.intel.com>
- <20190705095800.43534-8-mika.westerberg@linux.intel.com>
- <CA+CmpXsak9Rvkq_RNzoxRecMercUPKqdK+KzbHv_fJC59inaHA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+CmpXsak9Rvkq_RNzoxRecMercUPKqdK+KzbHv_fJC59inaHA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.11.4 (2019-03-13)
+        linux-acpi@vger.kernel.org,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        Raanan Avargil <raanan.avargil@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 05, 2019 at 05:44:01PM +0300, Yehezkel Bernat wrote:
-> On Fri, Jul 5, 2019 at 12:58 PM Mika Westerberg
-> <mika.westerberg@linux.intel.com> wrote:
+On Fri, Jul 5, 2019 at 1:33 PM Mika Westerberg
+<mika.westerberg@linux.intel.com> wrote:
+>
+> On Fri, Jul 05, 2019 at 12:57:52PM +0300, Mika Westerberg wrote:
+> > Hi all,
 > >
-> > +static void icm_icl_rtd3_veto(struct tb *tb, const struct icm_pkg_header *hdr)
-> > +{
-> > +       const struct icm_icl_event_rtd3_veto *pkg =
-> > +               (const struct icm_icl_event_rtd3_veto *)hdr;
-> > +       struct icm *icm = tb_priv(tb);
-> > +
-> > +       tb_dbg(tb, "ICM rtd3 veto=0x%08x\n", pkg->veto_reason);
-> > +
-> > +       if (pkg->veto_reason) {
-> > +               if (!icm->veto) {
-> > +                       icm->veto = true;
-> > +                       /* Keep the domain powered while veto is in effect */
-> > +                       pm_runtime_get(&tb->dev);
-> > +               }
-> > +       } else {
-> > +               if (icm->veto) {
-> > +                       icm->veto = false;
-> > +                       /* Allow the domain suspend now */
-> > +                       pm_runtime_mark_last_busy(&tb->dev);
-> > +                       pm_runtime_put_autosuspend(&tb->dev);
-> 
-> Handling the removal of the veto is duplicated below. Worth introducing as a
-> helper function?
-> 
-> > +               }
-> > +       }
-> > +}
-> > +
-> 
-> ...
-> 
-> > @@ -1853,6 +1943,18 @@ static void icm_complete(struct tb *tb)
-> >         if (tb->nhi->going_away)
-> >                 return;
+> > With the exception of the first patch which is fix, this series enables
+> > Thunderbolt on Intel Ice Lake. Biggest difference from the previous
+> > controllers is that the Thunderbolt controller is now integrated as part of
+> > the SoC. The firmware messages pretty much follow Titan Ridge but there are
+> > some differences as well (such as the new RTD3 veto notification). Also Ice
+> > Lake does not implement security levels so DMA protection is handled by IOMMU.
 > >
-> > +       /*
-> > +        * If RTD3 was vetoed before we entered system suspend allow it
-> > +        * again now before driver ready is sent. Firmware sends a new RTD3
-> > +        * veto if it is still the case after we have sent it driver ready
-> > +        * command.
-> > +        */
-> > +       if (icm->veto) {
-> > +               icm->veto = false;
-> > +               pm_runtime_mark_last_busy(&tb->dev);
-> > +               pm_runtime_put_autosuspend(&tb->dev);
-> > +       }
-> > +
-> 
-> Here is the duplication.
+> > This is v5.4 material but I'm sending it out now because I will be on
+> > vacation next 4 weeks mostly without internet access. When I get back I'll
+> > gather all the comments and update the series accordingly.
+> >
+> > Thanks!
+> >
+> > Mika Westerberg (8):
+> >   thunderbolt: Correct path indices for PCIe tunnel
+> >   thunderbolt: Move NVM upgrade support flag to struct icm
+> >   thunderbolt: Use 32-bit writes when writing ring producer/consumer
+> >   thunderbolt: Do not fail adding switch if some port is not implemented
+> >   thunderbolt: Hide switch attributes that are not set
+> >   thunderbolt: Expose active parts of NVM even if upgrade is not supported
+> >   thunderbolt: Add support for Intel Ice Lake
+> >   ACPI / property: Add two new Thunderbolt property GUIDs to the list
+>
+> Forgot to Cc Raanan and Raj, now added. Sorry about that. The patch
+> series can also be viewed here:
+>
+>   https://lore.kernel.org/lkml/20190705095800.43534-1-mika.westerberg@linux.intel.com/T/#m9cb5a393dfc79f1c2212d0787b6bad5b689db6bd
 
-Indeed, I'll put it to a helper function.
+Besides a few comments, LGTM.
 
-> > +static int nhi_suspend_power_down(struct tb *tb)
-> > +{
-> > +       int ret;
-> > +
-> > +       /*
-> > +        * If there is no device connected we need to perform an additional
-> > +        * handshake through LC mailbox and force power down before
-> > +        * entering D3.
-> > +        */
-> > +       ret = device_for_each_child(&tb->root_switch->dev, NULL,
-> > +                                   nhi_device_connected);
-> > +       if (!ret) {
-> > +               lc_mailbox_cmd(tb->nhi, LC_PREPARE_FOR_RESET);
-> > +               ret = lc_mailbox_cmd_complete(tb->nhi,
-> > +                                             LC_MAILBOX_TIMEOUT);
-> > +               if (ret)
-> > +                       return ret;
-> > +
-> > +               return nhi_power_down(tb->nhi);
-> 
-> Just to be sure: unforce power is done only if no device is connected?
-> My understanding of the comment above was that unforce power should be done
-> anyway (so it should be outside of this if block), and the difference between
-> the cases is only about the additional LC mailbox message. I guess I misread it.
-
-nhi_power_down() should be only called if no device was connected so it
-should be in correct place. I can try to clarify the comment a bit,
-though.
+For Thunderbolt patches,
+Reviewed-by: Yehezkel Bernat <YehezkelShB@gmail.com>
