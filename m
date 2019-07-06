@@ -2,87 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B2D8B6108F
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 Jul 2019 13:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4187F61277
+	for <lists+linux-acpi@lfdr.de>; Sat,  6 Jul 2019 19:49:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726158AbfGFLnN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 6 Jul 2019 07:43:13 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:43394 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726023AbfGFLnN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 6 Jul 2019 07:43:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
-        From:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=h4V3ZBI0FoiW9U4A7MoCEA3P8Nxtu03FgBYGvwN2wds=; b=dZWNuWG7t17scVwtDp0hcELzP
-        7FuWeX0o1hkpcP8DTnZBpv6YgADHytOoYFCbz5md5XR9RmiXkUI4P+Ur1+qi3wFffcM5UQMx0UZG7
-        zZ0IK5/xT9VlTU8+3hBxHv7AXatlkDMxvIFy25hDjxYn9z+AIDXp0Uhl3iOIEk7gdiHqneLCYhF3q
-        5NPHERrSRvyvWG0EtDfVqWp6EGbshR6kyMgzZfMNkNHfK5VjfEREeDJg5Gvb62k1knnCwhuqXUAF+
-        8mfU036WJ8o369L4yDJ5h6OBCT7Q9krOnXb+u+02wq5SpvFTqYhGmdc39Amo4PdvibPDujGEI6w5U
-        OmnRQnm+g==;
-Received: from 177.205.70.5.dynamic.adsl.gvt.net.br ([177.205.70.5] helo=coco.lan)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hjj5y-0000yv-Uf; Sat, 06 Jul 2019 11:43:11 +0000
-Date:   Sat, 6 Jul 2019 08:43:05 -0300
-From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Harry Wei <harryxiyou@gmail.com>,
-        Alex Shi <alex.shi@linux.alibaba.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH 39/39] docs: gpio: add sysfs interface to the
- admin-guide
-Message-ID: <20190706084305.010f2d77@coco.lan>
-In-Reply-To: <CACRpkdbBA612W0x6Y-dwe3E4dhH2ospmn+m2YJ8Sh_Um6XGYhA@mail.gmail.com>
-References: <cover.1561724493.git.mchehab+samsung@kernel.org>
-        <1ecff14ec37c0c434f003d93c4b86b1cd3dac834.1561724493.git.mchehab+samsung@kernel.org>
-        <CACRpkdbBA612W0x6Y-dwe3E4dhH2ospmn+m2YJ8Sh_Um6XGYhA@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        id S1726877AbfGFRtH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 6 Jul 2019 13:49:07 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:34898 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726743AbfGFRtH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 6 Jul 2019 13:49:07 -0400
+Received: by mail-io1-f66.google.com with SMTP id m24so16336330ioo.2;
+        Sat, 06 Jul 2019 10:49:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1N+ORYkUAXiG8XtCiY3phbUyj5YEJ/P62m0Q4FBLNUw=;
+        b=IQEGFDSF6JZgGfJot1/SB3CFvBcNiSYtXyU1Wvuf4gHhXnhvhfJyFGpjLXgF2EzgNx
+         tFKSo3odCaLmEDyblizh0d+hPCSTrZ75c7B0SdggxGNpQwgLG+Uidz2T01tvYVo5HnKH
+         KPsYOpQAxzaReaO4ffPmm8sy6EyTadq+vIIppDDIPg2JCZCMfiF0sP33NuAuiTUJEJUv
+         xPpvZ3ssPq1f7AGpMo0BrzJji/JtgHYMlyP0iznLjdduikW87nCM4aQ2L6zi6uOAW7Ki
+         1Ve8QfQ0+qo0aoG2EXZhs1gnCAbDRd81QtcAy+nFVWk95B3oiSlfnJI2B6AJuuP6MjRZ
+         vOyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1N+ORYkUAXiG8XtCiY3phbUyj5YEJ/P62m0Q4FBLNUw=;
+        b=PrKZIBDyKDA7XBU3ydDJ8xsUgnnY7mTb9iofVwrGU/UP++AZrNc30Lg/aF8op+buAC
+         qKUQHKVGLGcAG8yuhKdjTYzeTL08KJWTBMHGzNu3lL/gSys0xFHK7RkOPZkgr0MEZXOB
+         ETJrzl0ldd4bFyv3UnJpSIDQW7vQN+adbVDQKhR3nJ5SqJUa40x2LSdYzxh5iDmh1RBt
+         aF93Zba9mOt5TrWRQgZcsTJcC1O9KPtSq2+GbtYMPoGLOjlO3dMm3EXhEv38napL5Pxv
+         3dkpUnxOq5Te2GZcR2ZhwJWunXSXuAJFU3SCWi/FxIBT3ZBysR37YwwsNRxdV3/fB9gg
+         EZdA==
+X-Gm-Message-State: APjAAAWOfyv09LhoP0OX8kfnj3eVRMr1T7df77ENwakhkYOq4kVOF4Bl
+        6c0yfF0vikEoeD+82JFySBHMYCL2MhI8wF3ZkIOf9i24
+X-Google-Smtp-Source: APXvYqy5L8aQNCtiln6FAVslu6YPVHug8M2aYQsbLQwGtje3bprjiC2mWmQtxIF4BsZJ3xM1Gwwh8RNTVY3Jd91DMGU=
+X-Received: by 2002:a6b:f90f:: with SMTP id j15mr10070868iog.43.1562435346410;
+ Sat, 06 Jul 2019 10:49:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20181109142138.54770-1-heikki.krogerus@linux.intel.com> <20181109142138.54770-7-heikki.krogerus@linux.intel.com>
+In-Reply-To: <20181109142138.54770-7-heikki.krogerus@linux.intel.com>
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Date:   Sat, 6 Jul 2019 10:48:55 -0700
+Message-ID: <CAKdAkRTCV5Jk2PDtRTs7OcRoN0sHx-WFXt0i5aHDFDTQY=yaEA@mail.gmail.com>
+Subject: Re: [PATCH v2 6/6] device property: Remove struct property_set
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        lkml <linux-kernel@vger.kernel.org>,
+        linux-acpi <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Em Wed, 3 Jul 2019 10:44:38 +0200
-Linus Walleij <linus.walleij@linaro.org> escreveu:
+Hi Heikki,
 
-> On Fri, Jun 28, 2019 at 2:30 PM Mauro Carvalho Chehab
-> <mchehab+samsung@kernel.org> wrote:
-> 
-> > While this is stated as obsoleted, the sysfs interface described
-> > there is still valid, and belongs to the admin-guide.
-> >
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>  
-> 
-> This doesn't apply to my tree because of dependencies in the
-> index 
+On Fri, Nov 9, 2018 at 6:22 AM Heikki Krogerus
+<heikki.krogerus@linux.intel.com> wrote:
+>
+> Replacing struct property_set with the software nodes that
+> were just introduced.
+>
+> The API and functionality for adding properties to devices
+> remains the same, however, the goal is to convert the
+> drivers to use the API for software nodes when the device
+> has no real firmware node, and use the old API only when
+> "extra" build-in properties are needed.
 
-Yeah, this /39 patch series heavily touch the index files.
-Better to merge them altogether.
+Why do we want to do that though?
 
-> so I guess it's best if you merge it:
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
+If I am reading the code correctly, the change as it is implemented
+broke some of the current users of device_add_properties() (i.e. in
+i2c core when we instantiate a new i2c-client from a static board
+info) because it will fail to remove the properties (as the software
+node will be set up as primary and device_remove_properties explicitly
+looks at the secondary) on device removal.
 
-Thanks!
-Mauro
+What is wrong with having device_add_properties() and
+device_remove_properties() to continue properly handling both cases
+(swnode only vs mix)?
 
-> 
-> Yours,
-> Linus Walleij
+Thanks.
 
-
-
-Thanks,
-Mauro
+-- 
+Dmitry
