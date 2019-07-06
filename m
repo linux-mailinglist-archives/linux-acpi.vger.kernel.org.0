@@ -2,110 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC23860F5E
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 Jul 2019 09:54:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2D8B6108F
+	for <lists+linux-acpi@lfdr.de>; Sat,  6 Jul 2019 13:43:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725962AbfGFHx7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 6 Jul 2019 03:53:59 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:46739 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725900AbfGFHx7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 6 Jul 2019 03:53:59 -0400
-Received: by mail-ot1-f67.google.com with SMTP id z23so11158285ote.13;
-        Sat, 06 Jul 2019 00:53:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=q6mY2CfnJn0z6m6PWk92q2rVFU6R3KZLNmdBvZJpNLg=;
-        b=ku79V/Ehw34nV+rjPJO6dhAGasHYEKvhJvCw1tvprS4gXx56MVlnJVWEcDK8jG9X31
-         /8QymLli6PIfj/m86a+79Q36C4n16lWDBcx46zTeXF4w+YzH8NBxkNb2fn4T8xJ0hgGK
-         jLwqo52oVPClNsWMyqqIH7s+5GsldO1LyzSCp6oe/28GrjBz0Fma4QGVoEgvDtpVYUAf
-         EjA1FFfbrxvldiqTL/FRz/fLZj4prU51DJS+/CPs7hmEHH2O9nfK7uqmgigvouDPXXmr
-         ZYLnCCJigpKd0Y8AcSVD4Osh8NbDPmlcDw6AZQrwDQ+8TlVWCkAe5SHqlYjsWV8AckFx
-         wAYA==
-X-Gm-Message-State: APjAAAWNLYERqI1RvxN/Xr8hbddUIC1U9vTHbzLAXMdYMUY3tVVHB/31
-        u5fojnUCU9RC3z70SorzmAMYWnPLb4mNkrot994=
-X-Google-Smtp-Source: APXvYqwTSqbL/OKY4+prlMpOtaJSQmc+yPsHR+RTeokBw6aGC5mz5ZwTCZPuKAOApRdbIvPNxY6ovXXaFeRXTpBKGyE=
-X-Received: by 2002:a9d:6a4b:: with SMTP id h11mr3981699otn.266.1562399638756;
- Sat, 06 Jul 2019 00:53:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <PU1P153MB0169731042EFE4D6B08F04A5BFF50@PU1P153MB0169.APCP153.PROD.OUTLOOK.COM>
-In-Reply-To: <PU1P153MB0169731042EFE4D6B08F04A5BFF50@PU1P153MB0169.APCP153.PROD.OUTLOOK.COM>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 6 Jul 2019 09:53:45 +0200
-Message-ID: <CAJZ5v0i+UL7kVPWp_fLOKpLJtHTyy6NccU0JMxcaRnuSHoQALg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PM: Fix "multiple definition of acpi_sleep_state_supported"
- for ARM64
-To:     Dexuan Cui <decui@microsoft.com>
-Cc:     Pavel Machek <pavel@ucw.cz>,
-        Michael Kelley <mikelley@microsoft.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "robert.moore@intel.com" <robert.moore@intel.com>,
-        "erik.schmauss@intel.com" <erik.schmauss@intel.com>,
-        Russell King <rmk+kernel@arm.linux.org.uk>,
-        Russ Dill <Russ.Dill@ti.com>,
-        Sebastian Capella <sebastian.capella@linaro.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        id S1726158AbfGFLnN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 6 Jul 2019 07:43:13 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:43394 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726023AbfGFLnN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 6 Jul 2019 07:43:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
+        From:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=h4V3ZBI0FoiW9U4A7MoCEA3P8Nxtu03FgBYGvwN2wds=; b=dZWNuWG7t17scVwtDp0hcELzP
+        7FuWeX0o1hkpcP8DTnZBpv6YgADHytOoYFCbz5md5XR9RmiXkUI4P+Ur1+qi3wFffcM5UQMx0UZG7
+        zZ0IK5/xT9VlTU8+3hBxHv7AXatlkDMxvIFy25hDjxYn9z+AIDXp0Uhl3iOIEk7gdiHqneLCYhF3q
+        5NPHERrSRvyvWG0EtDfVqWp6EGbshR6kyMgzZfMNkNHfK5VjfEREeDJg5Gvb62k1knnCwhuqXUAF+
+        8mfU036WJ8o369L4yDJ5h6OBCT7Q9krOnXb+u+02wq5SpvFTqYhGmdc39Amo4PdvibPDujGEI6w5U
+        OmnRQnm+g==;
+Received: from 177.205.70.5.dynamic.adsl.gvt.net.br ([177.205.70.5] helo=coco.lan)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hjj5y-0000yv-Uf; Sat, 06 Jul 2019 11:43:11 +0000
+Date:   Sat, 6 Jul 2019 08:43:05 -0300
+From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        KY Srinivasan <kys@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Sasha Levin <Alexander.Levin@microsoft.com>,
-        "olaf@aepfle.de" <olaf@aepfle.de>,
-        "apw@canonical.com" <apw@canonical.com>,
-        "jasowang@redhat.com" <jasowang@redhat.com>,
-        vkuznets <vkuznets@redhat.com>,
-        "marcelo.cerri@canonical.com" <marcelo.cerri@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
+        Jonathan Corbet <corbet@lwn.net>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Harry Wei <harryxiyou@gmail.com>,
+        Alex Shi <alex.shi@linux.alibaba.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH 39/39] docs: gpio: add sysfs interface to the
+ admin-guide
+Message-ID: <20190706084305.010f2d77@coco.lan>
+In-Reply-To: <CACRpkdbBA612W0x6Y-dwe3E4dhH2ospmn+m2YJ8Sh_Um6XGYhA@mail.gmail.com>
+References: <cover.1561724493.git.mchehab+samsung@kernel.org>
+        <1ecff14ec37c0c434f003d93c4b86b1cd3dac834.1561724493.git.mchehab+samsung@kernel.org>
+        <CACRpkdbBA612W0x6Y-dwe3E4dhH2ospmn+m2YJ8Sh_Um6XGYhA@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 5, 2019 at 10:18 PM Dexuan Cui <decui@microsoft.com> wrote:
->
->
-> If CONFIG_ACPI_SYSTEM_POWER_STATES_SUPPORT is not set, the dummy version of
-> the function should be static.
->
-> Fixes: 1e2c3f0f1e93 ("ACPI: PM: Make acpi_sleep_state_supported() non-static")
-> Signed-off-by: Dexuan Cui <decui@microsoft.com>
-> Reported-by: kbuild test robot <lkp@intel.com>
-> ---
->
-> Sorry for not doing it right in the previous patch!
->
-> The patch fixes the build errors on ARM64:
->
->    drivers/net/ethernet/qualcomm/emac/emac-phy.o: In function `acpi_sleep_state_supported':
-> >> emac-phy.c:(.text+0x1d8): multiple definition of `acpi_sleep_state_supported'
->    drivers/net/ethernet/qualcomm/emac/emac.o:emac.c:(.text+0xbf8): first defined here
->    drivers/net/ethernet/qualcomm/emac/emac-sgmii.o: In function `acpi_sleep_state_supported':
->    emac-sgmii.c:(.text+0x548): multiple definition of `acpi_sleep_state_supported'
->    drivers/net/ethernet/qualcomm/emac/emac.o:emac.c:(.text+0xbf8): first defined here
->
->
->  include/acpi/acpi_bus.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index 4ce59bdc852e..8ffc4acf2b56 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -657,7 +657,7 @@ static inline int acpi_pm_set_bridge_wakeup(struct device *dev, bool enable)
->  #ifdef CONFIG_ACPI_SYSTEM_POWER_STATES_SUPPORT
->  bool acpi_sleep_state_supported(u8 sleep_state);
->  #else
-> -bool acpi_sleep_state_supported(u8 sleep_state) { return false; }
-> +static bool acpi_sleep_state_supported(u8 sleep_state) { return false; }
+Em Wed, 3 Jul 2019 10:44:38 +0200
+Linus Walleij <linus.walleij@linaro.org> escreveu:
 
-This should be static inline even.
+> On Fri, Jun 28, 2019 at 2:30 PM Mauro Carvalho Chehab
+> <mchehab+samsung@kernel.org> wrote:
+> 
+> > While this is stated as obsoleted, the sysfs interface described
+> > there is still valid, and belongs to the admin-guide.
+> >
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>  
+> 
+> This doesn't apply to my tree because of dependencies in the
+> index 
 
-I've reapplied the original patch with this change folded in.
+Yeah, this /39 patch series heavily touch the index files.
+Better to merge them altogether.
+
+> so I guess it's best if you merge it:
+> Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
 Thanks!
+Mauro
+
+> 
+> Yours,
+> Linus Walleij
+
+
+
+Thanks,
+Mauro
