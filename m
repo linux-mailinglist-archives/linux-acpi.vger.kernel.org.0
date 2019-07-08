@@ -2,45 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B2662B1D
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jul 2019 23:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9297762B23
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jul 2019 23:38:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732295AbfGHVgk convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 8 Jul 2019 17:36:40 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:37667 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732087AbfGHVgk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Jul 2019 17:36:40 -0400
-Received: by mail-ot1-f66.google.com with SMTP id s20so17749651otp.4;
-        Mon, 08 Jul 2019 14:36:38 -0700 (PDT)
+        id S1732087AbfGHViL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Jul 2019 17:38:11 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:33215 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730630AbfGHViL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Jul 2019 17:38:11 -0400
+Received: by mail-ot1-f67.google.com with SMTP id q20so17771136otl.0;
+        Mon, 08 Jul 2019 14:38:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=eMUSKo6iEe8G01P776LcpFMuJ7VQceevTGt23xb94tA=;
-        b=CplHVk7yD68U89ylzP+KsJ0AjhqPaNEcDcKQKH9HjJ84QOn0bRhdFLXSRt9Nw4t3oz
-         eH2lTlilLYF/2FDtegfgCTkQA2xEyFwju+rnNJ/6XWPZy+QhkDlRNDnB4mpYDuBvAnpS
-         V4zo4d5HoDr73M2fwmb1Rku853bfmppvflC+GlyDPDWfmiwGVQqPFEeoVLAr3R+xoXzF
-         YEN45rPH0ZeQtoE+Pwrm22+RYDx6s0pfvsQxX+BFZrNovUGRV1EgchG8XZ0eIT2rLKPW
-         Uv4iCVY8kRdIUePkml1hgNwshkB/PlyfCXhzodlFosF8Lcc/gVGDv+woKnptDZKu6NaC
-         Grhg==
-X-Gm-Message-State: APjAAAXtoDG4PUwV8fvbtu8b57D8wHEtDtjzp4nidoC/J2DZUrYwJ3qp
-        9gDFA5Obd6Sn0EtyFuzdsAT9vfgXPRSBTAEvee+CG63c
-X-Google-Smtp-Source: APXvYqwPgpD//Rh4nEEkHTfVcFnuPpe+M8/PQSIAWA+yyF9sjiFaIcFgD9mz95D/ILFolo5QGWvkOTa55UsUmt3HY+4=
-X-Received: by 2002:a05:6830:1516:: with SMTP id k22mr15574374otp.189.1562621798432;
- Mon, 08 Jul 2019 14:36:38 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=vZ/t7rbdOPKcsM8PmAfHvKdGH2fc+Rnq6ySUamyqiuw=;
+        b=g9SoGg4MPWfEyc7CusibUL58PqKjCybMzMyjb0MVHlHFcj3ETAPWV+BMXE4lUHUsge
+         C+DayohhR0FF0UMqShzdNuw1idJoDJOmhMnlkFP9DuSSw3RH0xkItoHBD5RVzU9IuSFL
+         3Hb1HAvptVZXXaBTdsMAQXkDe7wnSFzinbLXhN8skJg+qTH2o2yxwwxqD93VUuq99xci
+         q/DpMjumhjOlzfdnXb7cv7+1vCYf656YbzUZY28VVwAGXRXxghPVtXeiVOe9Vrnkfx2B
+         nnkHc9YXANdWQUVfMb02JuVt0HFb0Qcna0g2JB+xBbJO3X6pG+4X0hZDTzScZq2GFJCk
+         Iqsg==
+X-Gm-Message-State: APjAAAV6JYhdWKoR2VGgzVlv1i5SXy3hO8+zfueIICgt+FCOexSJAQIc
+        gE+4f/gxzUoTCEJkZpgdZbqwLeVfZvDqHWQrDeryrzKI
+X-Google-Smtp-Source: APXvYqyftAyxiOcH796wgu4YRcIDE60dFcJqAX+1UOd4+3mXYCgkZJxEdaiZjqW4L9r7EF4OdH3Hj76NE7fs5ktvilE=
+X-Received: by 2002:a9d:6959:: with SMTP id p25mr15356458oto.118.1562621890348;
+ Mon, 08 Jul 2019 14:38:10 -0700 (PDT)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 8 Jul 2019 23:36:26 +0200
-Message-ID: <CAJZ5v0jfQX=QmX9NFRu7M98=WjeVhSW4X0nTW93-MeB3FR1uWw@mail.gmail.com>
-Subject: [GIT PULL] Power management updates for v5.3-rc1
+Date:   Mon, 8 Jul 2019 23:37:58 +0200
+Message-ID: <CAJZ5v0gSbQy-GFz2Bo4bGGj7WemDvS21TW6=VHVvivDZCvEKWg@mail.gmail.com>
+Subject: [GIT PULL] ACPI updates for v5.3-rc1
 To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
@@ -51,242 +48,128 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pm-5.3-rc1
+ acpi-5.3-rc1
 
-with top-most commit 586a07dca8c51b966960d1f0d8be9c27d7e0a95c
+with top-most commit 64372c0b7dcbc9ad08b1bad877ae8d8cddb62e45
 
- Merge branch 'pm-cpufreq'
+ Merge branches 'acpi-apei', 'acpi-doc' and 'acpi-soc'
 
 on top of commit 6fbc7275c7a9ba97877050335f290341a1fd8dbf
 
  Linux 5.2-rc7
 
-to receive power management updates for 5.3-rc1.
+to receive ACPI updates for 5.3-rc1.
 
-These update PCI and ACPI power management (improved handling of
-ACPI power resources and PCIe link delays, fixes related to corner
-cases, hibernation handling rework), fix and extend the operating
-performance points (OPP) framework, add new cpufreq drivers for
-Raspberry Pi and imx8m chips, update some other cpufreq drivers,
-clean up assorted pieces of PM code and documentation and update
-tools.
+These update the ACPICA code in the kernel to upstream revision
+20190703, fix up the handling of GPEs in ACPICA, allow some more ACPI
+code to be built on ARM64 platforms, allow BGRT to be overridden, fix
+minor issues and clean up assorted pieces of ACPI code.
 
 Specifics:
 
- - Improve the handling of shared ACPI power resources in the PCI
-   bus type layer (Mika Westerberg).
+ - Update the ACPICA code in the kernel to upstream revision 20190703
+   including:
+   * Initial/defalut namespace creation simplification (Bob Moore).
+   * Object initialization sequence update (Bob Moore).
+   * Removal of legacy module-level (dead) code (Erik Schmauss).
+   * Table load object initialization update (Erik Schmauss, Nikolaus
+     Voss).
 
- - Make the PCI layer take link delays required by the PCIe spec
-   into account as appropriate and avoid polling devices in D3cold
-   for PME (Mika Westerberg).
+ - Fix GPE enabling issue in ACPICA causing premature wakeups from
+   suspend-to-idle to occur (Rafael Wysocki).
 
- - Fix some corner case issues in ACPI device power management and
-   in the PCI bus type layer, optimiza and clean up the handling of
-   runtime-suspended PCI devices during system-wide transitions to
-   sleep states (Rafael Wysocki).
+ - Allow ACPI AC and battery drivers to be built on non-X86 (Ard
+   Biesheuvel).
 
- - Rework hibernation handling in the ACPI core and the PCI bus type
-   to resume runtime-suspended devices before hibernation (which
-   allows some functional problems to be avoided) and fix some ACPI
-   power management issues related to hiberation (Rafael Wysocki).
+ - Fix address space handler removal in the ACPI PMIC driver for
+   Intel platforms (Andy Shevchenko).
 
- - Extend the operating performance points (OPP) framework to support
-   a wider range of devices (Rajendra Nayak, Stehpen Boyd).
+ - Allow BGRT to be overridden via initrd or configfs (Andrea Oliveri).
 
- - Fix issues related to genpd_virt_devs and issues with platforms
-   using the set_opp() callback in the OPP framework (Viresh Kumar,
-   Dmitry Osipenko).
+ - Fix object resolution on table loads via configfs (Nikolaus Voss).
 
- - Add new cpufreq driver for Raspberry Pi (Nicolas Saenz Julienne).
+ - Clean up assorted pieces of ACPI code and tools (Colin Ian King,
+   Liguang Zhang, Masahiro Yamada).
 
- - Add new cpufreq driver for imx8m and imx7d chips (Leonard Crestez).
-
- - Fix and clean up the pcc-cpufreq, brcmstb-avs-cpufreq, s5pv210,
-   and armada-37xx cpufreq drivers (David Arcari, Florian Fainelli,
-   Paweł Chmiel, YueHaibing).
-
- - Clean up and fix the cpufreq core (Viresh Kumar, Daniel Lezcano).
-
- - Fix minor issue in the ACPI system sleep support code and export
-   one function from it (Lenny Szubowicz, Dexuan Cui).
-
- - Clean up assorted pieces of PM code and documentation (Kefeng Wang,
-   Andy Shevchenko, Bart Van Assche, Greg Kroah-Hartman, Fuqian Huang,
-   Geert Uytterhoeven, Mathieu Malaterre, Rafael Wysocki).
-
- - Update the pm-graph utility to v5.4 (Todd Brandt).
-
- - Fix and clean up the cpupower utility (Abhishek Goel, Nick Black).
+ - Fix documentation build warning, convert the extcon document to
+   ReST and add it to the ACPI documentation (Mauro Carvalho Chehab,
+   Qian Cai).
 
 Thanks!
 
 
 ---------------
 
-Abhishek Goel (1):
-      cpupower : frequency-set -r option misses the last cpu in related cpu list
+Andrea Oliveri (1):
+      ACPI: tables: Allow BGRT to be overridden
 
 Andy Shevchenko (1):
-      ACPI / sleep: Switch to use acpi_dev_get_first_match_dev()
+      ACPI / PMIC: intel: Drop double removal of address space handler
 
-Bart Van Assche (1):
-      PM: sleep: Show how long dpm_suspend_start() and dpm_suspend_end() take
+Ard Biesheuvel (1):
+      ACPI: Make AC and battery drivers available on !X86
 
-Daniel Lezcano (1):
-      cpufreq: Move the IS_ENABLED(CPU_THERMAL) macro into a stub
+Bob Moore (3):
+      ACPICA: Namespace: simplify creation of the initial/default namespace
+      ACPICA: Update for object initialization sequence
+      ACPICA: Update version to 20190703
 
-David Arcari (1):
-      cpufreq: pcc-cpufreq: Fail initialization if driver cannot be registered
+Colin Ian King (1):
+      ACPI: APD: remove redundant assignment to pointer clk
 
-Dexuan Cui (1):
-      ACPI: PM: Make acpi_sleep_state_supported() non-static
+Erik Schmauss (2):
+      ACPICA: remove legacy module-level code due to deprecation
+      ACPICA: Update table load object initialization
 
-Dmitry Osipenko (1):
-      opp: Don't use IS_ERR on invalid supplies
+Liguang Zhang (1):
+      ACPI / APEI: Remove needless __ghes_check_estatus() calls
 
-Florian Fainelli (2):
-      cpufreq: brcmstb-avs-cpufreq: Fix initial command check
-      cpufreq: brcmstb-avs-cpufreq: Fix types for voltage/frequency
+Masahiro Yamada (1):
+      ACPI: tools: Exclude tools/* from .gitignore patterns
 
-Fuqian Huang (1):
-      kernel: power: swap: use kzalloc() instead of kmalloc() followed
-by memset()
+Mauro Carvalho Chehab (1):
+      docs: extcon: convert it to ReST and move to ACPI dir
 
-Geert Uytterhoeven (2):
-      PM / clk: Remove error message on out-of-memory condition
-      Documentation: ABI: power: Add missing newline at end of file
+Nikolaus Voss (1):
+      ACPI: configfs: Resolve objects on host-directed table loads
 
-Greg Kroah-Hartman (2):
-      power: avs: smartreflex: no need to check return value of
-debugfs_create functions
-      drivers: base: power: remove wakeup_sources_stats_dentry variable
+Qian Cai (1):
+      ACPI: OSL: Make a W=1 kernel-doc warning go away
 
-Kefeng Wang (1):
-      drivers: base: power: clock_ops: Use of_clk_get_parent_count()
-
-Lenny Szubowicz (1):
-      ACPI / LPIT: Correct LPIT end address for lpit_process()
-
-Leonard Crestez (5):
-      cpufreq: Add imx-cpufreq-dt driver
-      dt-bindings: imx-cpufreq-dt: Document opp-supported-hw usage
-      cpufreq: imx-cpufreq-dt: Fix no OPPs available on unfused parts
-      cpufreq: imx-cpufreq-dt: Remove global platform match list
-      cpufreq: Switch imx7d to imx-cpufreq-dt for speed grading
-
-Mathieu Malaterre (1):
-      PM: hibernate: powerpc: Expose pfn_is_nosave() prototype
-
-Mika Westerberg (5):
-      PCI: Add missing link delays required by the PCIe spec
-      PCI: Do not poll for PME if the device is in D3cold
-      PCI / ACPI: Use cached ACPI device state to get PCI device power state
-      ACPI / PM: Introduce concept of a _PR0 dependent device
-      PCI / ACPI: Add _PR0 dependent devices
-
-Nick Black (1):
-      cpupower: correct spelling of interval
-
-Nicolas Saenz Julienne (1):
-      cpufreq: add driver for Raspberry Pi
-
-Paweł Chmiel (1):
-      cpufreq: s5pv210: Don't flood kernel log after cpufreq change
-
-Rafael J. Wysocki (14):
-      PCI: PM: Avoid resuming devices in D3hot during system suspend
-      PCI: PM: Replace pci_dev_keep_suspended() with two functions
-      PM: suspend: Rename pm_suspend_via_s2idle()
-      PM: sleep: Update struct wakeup_source documentation
-      ACPI: PM: Avoid evaluating _PS3 on transitions from D3hot to D3cold
-      ACPI: PM: Allow transitions to D0 to occur in special cases
-      PCI: PM/ACPI: Refresh all stale power state data in pci_pm_complete()
-      PM: ACPI/PCI: Resume all devices during hibernation
-      PCI: PM: Simplify bus-level hibernation callbacks
-      ACPI: PM: Simplify and fix PM domain hibernation callbacks
-      ACPI: PM: Introduce "poweroff" callbacks for ACPI PM domain and LPSS
-      ACPI: PM: Drop unused function and function header
-      ACPI: PM: Unexport acpi_device_get_power()
-      PM: sleep: Drop dev_pm_skip_next_resume_phases()
-
-Rajendra Nayak (1):
-      opp: Make dev_pm_opp_set_rate() handle freq = 0 to drop performance votes
-
-Stephen Boyd (1):
-      opp: Don't overwrite rounded clk rate
-
-Todd Brandt (3):
-      Update to pm-graph 5.3
-      Update to pm-graph 5.4
-      Add README and update pm-graph and sleepgraph docs
-
-Viresh Kumar (7):
-      opp: Attach genpds to devices from within OPP core
-      opp: Allocate genpd_virt_devs from dev_pm_opp_attach_genpd()
-      cpufreq: Remove redundant !setpolicy check
-      cpufreq: Use has_target() instead of !setpolicy
-      cpufreq: Don't skip frequency validation for has_target() drivers
-      cpufreq: Consolidate cpufreq_update_current_freq() and __cpufreq_get()
-      cpufreq: Avoid calling cpufreq_verify_current_freq() from handle_update()
-
-YueHaibing (1):
-      cpufreq: armada-37xx: Remove set but not used variable 'freq'
+Rafael J. Wysocki (1):
+      ACPICA: Clear status of GPEs on first direct enable
 
 ---------------
 
- Documentation/ABI/testing/sysfs-power              |   2 +-
- .../devicetree/bindings/cpufreq/imx-cpufreq-dt.txt |  37 +
- arch/powerpc/kernel/suspend.c                      |   1 +
- arch/s390/kernel/entry.h                           |   1 -
- drivers/acpi/acpi_lpit.c                           |   7 +-
- drivers/acpi/acpi_lpss.c                           | 111 ++-
- drivers/acpi/device_pm.c                           | 165 ++--
- drivers/acpi/internal.h                            |   7 +
- drivers/acpi/power.c                               | 135 ++++
- drivers/acpi/sleep.c                               |  22 +-
- drivers/base/power/clock_ops.c                     |   6 +-
- drivers/base/power/main.c                          |  36 +-
- drivers/base/power/wakeup.c                        |   6 +-
- drivers/cpufreq/Kconfig.arm                        |  17 +
- drivers/cpufreq/Makefile                           |   2 +
- drivers/cpufreq/armada-37xx-cpufreq.c              |   4 +-
- drivers/cpufreq/brcmstb-avs-cpufreq.c              |  12 +-
- drivers/cpufreq/cpufreq-dt-platdev.c               |   5 +-
- drivers/cpufreq/cpufreq.c                          | 121 ++-
- drivers/cpufreq/imx-cpufreq-dt.c                   |  97 +++
- drivers/cpufreq/pcc-cpufreq.c                      |   4 +-
- drivers/cpufreq/raspberrypi-cpufreq.c              |  97 +++
- drivers/cpufreq/s5pv210-cpufreq.c                  |   2 +-
- drivers/input/serio/i8042.c                        |   2 +-
- drivers/opp/core.c                                 | 174 +++--
- drivers/opp/of.c                                   |  30 +-
- drivers/pci/pci-acpi.c                             |  14 +-
- drivers/pci/pci-driver.c                           |  74 +-
- drivers/pci/pci.c                                  | 116 ++-
- drivers/pci/pci.h                                  |   8 +-
- drivers/pci/pcie/portdrv_core.c                    |  66 ++
- drivers/power/avs/smartreflex.c                    |  41 +-
- drivers/soc/imx/soc-imx8.c                         |   3 +
- include/acpi/acpi_bus.h                            |  11 +-
- include/linux/acpi.h                               |  14 +-
- include/linux/cpufreq.h                            |   6 +
- include/linux/pm.h                                 |   1 -
- include/linux/pm_opp.h                             |   8 +-
- include/linux/pm_wakeup.h                          |   2 +-
- include/linux/suspend.h                            |   5 +-
- kernel/power/power.h                               |   2 -
- kernel/power/suspend.c                             |   6 +-
- kernel/power/swap.c                                |   3 +-
- tools/power/cpupower/man/cpupower-monitor.1        |   2 +-
- tools/power/cpupower/po/cs.po                      |   2 +-
- tools/power/cpupower/po/de.po                      |   2 +-
- tools/power/cpupower/po/fr.po                      |   2 +-
- tools/power/cpupower/po/it.po                      |   2 +-
- tools/power/cpupower/po/pt.po                      |   2 +-
- tools/power/cpupower/utils/cpufreq-set.c           |   2 +
- tools/power/pm-graph/README                        | 552 +++++++++++++
- tools/power/pm-graph/bootgraph.py                  |   8 +-
- tools/power/pm-graph/config/example.cfg            |  26 +
- tools/power/pm-graph/sleepgraph.8                  |  16 +-
- tools/power/pm-graph/sleepgraph.py                 | 857 ++++++++++++++++-----
- 55 files changed, 2325 insertions(+), 631 deletions(-)
+ .../acpi/extcon-intel-int3496.rst}                 |  14 +-
+ Documentation/firmware-guide/acpi/index.rst        |   1 +
+ MAINTAINERS                                        |   6 +-
+ drivers/acpi/Kconfig                               |   2 -
+ drivers/acpi/acpi_apd.c                            |   2 +-
+ drivers/acpi/acpi_configfs.c                       |   6 +-
+ drivers/acpi/acpica/acevents.h                     |   3 +-
+ drivers/acpi/acpica/acglobal.h                     |   1 -
+ drivers/acpi/acpica/acnamesp.h                     |   2 -
+ drivers/acpi/acpica/dsinit.c                       |   2 +-
+ drivers/acpi/acpica/evgpe.c                        |   8 +-
+ drivers/acpi/acpica/evgpeblk.c                     |   2 +-
+ drivers/acpi/acpica/evxface.c                      |   2 +-
+ drivers/acpi/acpica/evxfgpe.c                      |   2 +-
+ drivers/acpi/acpica/exconfig.c                     |  16 +-
+ drivers/acpi/acpica/nsaccess.c                     |  54 ++++--
+ drivers/acpi/acpica/nseval.c                       | 190 ---------------------
+ drivers/acpi/acpica/nsinit.c                       |  49 +++---
+ drivers/acpi/acpica/nsload.c                       |  12 --
+ drivers/acpi/acpica/nsutils.c                      |  12 --
+ drivers/acpi/acpica/tbdata.c                       |  13 --
+ drivers/acpi/acpica/tbxfload.c                     |   7 +
+ drivers/acpi/acpica/utinit.c                       |   1 -
+ drivers/acpi/acpica/utxfinit.c                     |  18 +-
+ drivers/acpi/apei/ghes.c                           |   2 +-
+ drivers/acpi/osl.c                                 |   4 +-
+ drivers/acpi/pmic/intel_pmic.c                     |   2 -
+ drivers/acpi/tables.c                              |  21 +--
+ include/acpi/acpi_io.h                             |   4 +-
+ include/acpi/acpixf.h                              |   2 +-
+ tools/power/acpi/.gitignore                        |   8 +-
+ 31 files changed, 131 insertions(+), 337 deletions(-)
