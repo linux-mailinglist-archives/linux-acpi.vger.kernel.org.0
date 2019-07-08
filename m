@@ -2,83 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78F0661B85
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jul 2019 10:02:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B21E61CA9
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jul 2019 12:00:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727411AbfGHICQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Jul 2019 04:02:16 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:39821 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726692AbfGHICQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Jul 2019 04:02:16 -0400
-Received: by mail-ot1-f65.google.com with SMTP id r21so10552374otq.6
-        for <linux-acpi@vger.kernel.org>; Mon, 08 Jul 2019 01:02:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lmbbLSArViQwG0sO0uk+gTmND3rXNTtlb7Kjl+P6xLA=;
-        b=JZ3b9gzyGebM+XN7eRkBa6lsj1icAJH6WqZHEot826ENaSLzXXtpp41nOOa6ER4hCN
-         WnSm/kpYu9GOKD8hP55iw/cn275tonIr6hy0R1L/UPFP4vNOTy/R8oDw/UBwGZ/aRdC/
-         sbqJosQwWddRP5J1h69EbLfJgIonpxtlwFoGlGtCr9jcSKRWbvci7D7vbRHYHVV+mqJK
-         oezOUEDUCHRwD3SfrD/+JZTypA2264vEFMjlS4pGJpcJS4E1Ie5Dzv1DrCbKnjDVZiuX
-         COp55zSC9w4kZAdTSV00lu5am6y9NWMunX57Xg9enaMvYTU42p8kU5D+bj+sCxXg+qm8
-         /Lug==
-X-Gm-Message-State: APjAAAUivfJUKoKptH+gdD0hBpbJCQZ2+eE29Yxw7+rPt551sFzJMHP5
-        ZHxGbvu8N1aahnWAFuB/rW8QohnlW3Ie6wU2t68Ylw==
-X-Google-Smtp-Source: APXvYqweVEnzj2BdIFYdRGVfL1wc7jf68rjPb7H0o28u6goBC8WJJSheudYNiN03nBwDanJmKTxkB/a33uesf1s6mgI=
-X-Received: by 2002:a9d:6959:: with SMTP id p25mr12682294oto.118.1562572935699;
- Mon, 08 Jul 2019 01:02:15 -0700 (PDT)
+        id S1728764AbfGHKAZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Jul 2019 06:00:25 -0400
+Received: from foss.arm.com ([217.140.110.172]:43594 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728596AbfGHKAY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 8 Jul 2019 06:00:24 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF6CF360;
+        Mon,  8 Jul 2019 03:00:23 -0700 (PDT)
+Received: from [10.1.196.105] (eglon.cambridge.arm.com [10.1.196.105])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D6CEA3F246;
+        Mon,  8 Jul 2019 03:00:20 -0700 (PDT)
+Subject: Re: [PATCH RFC 2/4] arm64: mm: Add RAS extension system register
+ check to SEA handling
+To:     Tyler Baicar OS <baicar@os.amperecomputing.com>
+References: <1562086280-5351-1-git-send-email-baicar@os.amperecomputing.com>
+ <1562086280-5351-3-git-send-email-baicar@os.amperecomputing.com>
+From:   James Morse <james.morse@arm.com>
+Cc:     Open Source Submission <patches@amperecomputing.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "guohanjun@huawei.com" <guohanjun@huawei.com>,
+        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "Matteo.Carlini@arm.com" <Matteo.Carlini@arm.com>,
+        "Andrew.Murray@arm.com" <Andrew.Murray@arm.com>
+Message-ID: <df262b97-eda2-0556-d6ef-532a0d697131@arm.com>
+Date:   Mon, 8 Jul 2019 11:00:19 +0100
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-References: <ks54ieh5iu58i8ig1ear1tp2ev4n57r4u4@markspace.org.uk>
-In-Reply-To: <ks54ieh5iu58i8ig1ear1tp2ev4n57r4u4@markspace.org.uk>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 8 Jul 2019 10:01:59 +0200
-Message-ID: <CAJZ5v0i2Jjzi9JfXWF-6f6Ys4kFyW6+Q5W5RaHTX6CtxurEeJg@mail.gmail.com>
-Subject: Re: Kernel panic and ACPI errors with recent update to 4.15.53 (
- Ubuntu 18.04 LTS distro )
-To:     mark@markspace.org.uk
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1562086280-5351-3-git-send-email-baicar@os.amperecomputing.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Jul 7, 2019 at 6:33 PM Mark de Roussier <mark@markspace.org.uk> wrote:
->
->
-> Hi folk,
->
-> I'm running a HP Z800 dual processor workstation which has just stopped
-> being able to boot properly due to a recent update. The machine has the
-> latest BIOS available from HP ( this was not changed by the update ). The
-> problem appears to relate to ACPI, and I've been referred here from a post
-> I made to StackExchange.
->
-> Attempting to boot the machine using any of the available 4.15 kernels (
-> 4.15.43, 4.15.45, 4.15.47, 4.15.53 ) now gives the following ACPI errors :
->
-> ---
-> ACPI Error: [CAPD] Namespace lookup failure, AE_ALREADY_EXISTS
-> (20170831/dsfield-212)
-> ACPI Error: Method parse/execution failed \_SB.PCIO._OSC, AE_ALREADY_EXISTS
-> (20170831/psparse-550)
-> ---
->
-> I usually end up dumped into what I believe is an 'emergency shell'.
->
-> I have tried a large number of acpi related kernel switches, including
-> 'acpi=ht' and 'acpi_serialize'. The only thing which appears to affect
-> behaviour is 'acpi=off'. This causes a kernel panic, in which case I am not
-> given an emergency shell. I don't know how to grab that info to post here
-> except for taking a screenshot, and not all the info is actually on the
-> screen.
->
-> So if anyone can suggest a way to further this investigation, I'd be very
-> grateful. What information would be useful to know, and are there any
-> particular experiments I should try, anyone else it would be useful to talk
-> to ?
+Hey Tyler,
 
-First off, it would be useful to try a newer kernel, preferably 5.2.
-That should be available from Ubuntu shortly in some form.
+On 02/07/2019 17:51, Tyler Baicar OS wrote:
+> On systems that support the ARM RAS extension, synchronous external
+> abort syndrome information could be captured in the core's RAS extension
+> system registers. So, when handling SEAs check the RAS system registers
+> for error syndrome information.
+
+> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> index 2d11501..76b42ca 100644
+> --- a/arch/arm64/mm/fault.c
+> +++ b/arch/arm64/mm/fault.c
+> @@ -37,6 +37,7 @@
+>  #include <asm/pgtable.h>
+>  #include <asm/tlbflush.h>
+>  #include <asm/traps.h>
+> +#include <asm/ras.h>
+>  
+>  struct fault_info {
+>  	int	(*fn)(unsigned long addr, unsigned int esr,
+> @@ -632,6 +633,8 @@ static int do_sea(unsigned long addr, unsigned int esr, struct pt_regs *regs)
+>  
+>  	inf = esr_to_fault_info(esr);
+>  
+> +	arch_arm_ras_report_error();
+> +
+>  	/*
+>  	 * Return value ignored as we rely on signal merging.
+>  	 * Future patches will make this more robust.
+> 
+
+If we interrupted a preemptible context, do_sea() is preemptible too... This means we
+can't know if we're still running on the same CPU as the one that took the external-abort.
+(until this series, it hasn't mattered).
+
+Fixing this means cramming something into entry.S's el1_da, as this may unmask interrupts
+before calling do_mem_abort(). But its going to be ugly because some of do_mem_abort()s
+ESR values need to be preemptible because they sleep, e.g. page-faults calling
+handle_mm_fault().
+For do_sea(), do_exit() will 'fix' the preempt count if we kill the thread, but if we
+don't, it still needs to be balanced. Doing all this in assembly is going to be unreadable!
+
+Mark Rutland has a series to move the entry assembly into C [0]. Based on that that it
+should be possible for the new el1_abort() to spot a Synchronous-External-Abort ESR, and
+wrap the do_mem_abort() with preempt enable/disable, before inheriting the flags. (which
+for synchronous exceptions, I think we should always do)
+
+
+Thanks,
+
+James
+
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/log/?h=arm64/entry-deasm
