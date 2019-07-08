@@ -2,308 +2,291 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 105E6629D7
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jul 2019 21:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11B2662B1D
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jul 2019 23:36:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404188AbfGHToy convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 8 Jul 2019 15:44:54 -0400
-Received: from mga05.intel.com ([192.55.52.43]:7529 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729234AbfGHTox (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 8 Jul 2019 15:44:53 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Jul 2019 12:44:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,466,1557212400"; 
-   d="scan'208";a="248923840"
-Received: from orsmsx103.amr.corp.intel.com ([10.22.225.130])
-  by orsmga001.jf.intel.com with ESMTP; 08 Jul 2019 12:44:52 -0700
-Received: from orsmsx152.amr.corp.intel.com (10.22.226.39) by
- ORSMSX103.amr.corp.intel.com (10.22.225.130) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Mon, 8 Jul 2019 12:44:52 -0700
-Received: from orsmsx107.amr.corp.intel.com ([169.254.1.186]) by
- ORSMSX152.amr.corp.intel.com ([169.254.8.114]) with mapi id 14.03.0439.000;
- Mon, 8 Jul 2019 12:44:51 -0700
-From:   "Saha, Shaunak" <shaunak.saha@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     Mario Limonciello <mario_limonciello@dell.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Subject: RE: drivers/acpi: Change the lpit function call flow
-Thread-Topic: drivers/acpi: Change the lpit function call flow
-Thread-Index: AQHVFAKLmGZKFQG42U6YI0ymKhLSm6aarbsAgAcDvoD///8ipIABjtKAgB4jZrg=
-Date:   Mon, 8 Jul 2019 19:44:51 +0000
-Message-ID: <593AE8A18AD46543B92D8EF146E2AA9408C4CDC1@ORSMSX107.amr.corp.intel.com>
-References: <20190526202750.4614-1-shaunak.saha@intel.com>
- <2151762.asltZFE8WJ@kreacher>
- <CAJZ5v0iHRzC=ewqUTa_VUdJ2NOztnP+hDYBeJLtfDydArPkkeA@mail.gmail.com>
- <593AE8A18AD46543B92D8EF146E2AA9408C326BA@ORSMSX107.amr.corp.intel.com>,<CAJZ5v0i7AT5Abkpudk+t-aid6wiCMkrBYE2y8xVY1XS9Ggqf-A@mail.gmail.com>
-In-Reply-To: <CAJZ5v0i7AT5Abkpudk+t-aid6wiCMkrBYE2y8xVY1XS9Ggqf-A@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.3.86.137]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1732295AbfGHVgk convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 8 Jul 2019 17:36:40 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:37667 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732087AbfGHVgk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Jul 2019 17:36:40 -0400
+Received: by mail-ot1-f66.google.com with SMTP id s20so17749651otp.4;
+        Mon, 08 Jul 2019 14:36:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
+         :content-transfer-encoding;
+        bh=eMUSKo6iEe8G01P776LcpFMuJ7VQceevTGt23xb94tA=;
+        b=CplHVk7yD68U89ylzP+KsJ0AjhqPaNEcDcKQKH9HjJ84QOn0bRhdFLXSRt9Nw4t3oz
+         eH2lTlilLYF/2FDtegfgCTkQA2xEyFwju+rnNJ/6XWPZy+QhkDlRNDnB4mpYDuBvAnpS
+         V4zo4d5HoDr73M2fwmb1Rku853bfmppvflC+GlyDPDWfmiwGVQqPFEeoVLAr3R+xoXzF
+         YEN45rPH0ZeQtoE+Pwrm22+RYDx6s0pfvsQxX+BFZrNovUGRV1EgchG8XZ0eIT2rLKPW
+         Uv4iCVY8kRdIUePkml1hgNwshkB/PlyfCXhzodlFosF8Lcc/gVGDv+woKnptDZKu6NaC
+         Grhg==
+X-Gm-Message-State: APjAAAXtoDG4PUwV8fvbtu8b57D8wHEtDtjzp4nidoC/J2DZUrYwJ3qp
+        9gDFA5Obd6Sn0EtyFuzdsAT9vfgXPRSBTAEvee+CG63c
+X-Google-Smtp-Source: APXvYqwPgpD//Rh4nEEkHTfVcFnuPpe+M8/PQSIAWA+yyF9sjiFaIcFgD9mz95D/ILFolo5QGWvkOTa55UsUmt3HY+4=
+X-Received: by 2002:a05:6830:1516:: with SMTP id k22mr15574374otp.189.1562621798432;
+ Mon, 08 Jul 2019 14:36:38 -0700 (PDT)
 MIME-Version: 1.0
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 8 Jul 2019 23:36:26 +0200
+Message-ID: <CAJZ5v0jfQX=QmX9NFRu7M98=WjeVhSW4X0nTW93-MeB3FR1uWw@mail.gmail.com>
+Subject: [GIT PULL] Power management updates for v5.3-rc1
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Thanks a lot for your time to review and test this patch. Here are some explanation why we started to look into the LPIT call flow and the outcome.
+Hi Linus,
 
-Problem statement:
---------------------
-We are working on a chrome book using wilco ec. For this ec we have the _DSM implemented in the asl code for the s0ix entry/exit. We are seeing that while going to suspend in the suspend path system resumes and then goes back to suspend again. In mosys eventlog which shows the smbios info we see 2 entries for suspend entry/exit. Also when sdcard is inserted s0ix fails. 
+Please pull from the tag
 
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-5.3-rc1
 
-Debug:
------------
-Initially I suspected that executing the DSM calls too early in suspend path is causing this. But as you reviewed the patch and mentioned that early call cannot really casue the issue. On further debug i found that In the ec polling from the ec transaction we check the guarding period before polling ec status. In the guarding period ec does busy/wait polling. Before entering the noirq stage always wait polling is done and noirq is called by PM after the LPIT dsm is executed. In the scenerio where ec is noisy and we try
-to execute the LPIT dsm call ec does wait polling and calls wait_event_timeout till transaction is completed which results in wake up events. 
-Here in our scenerio We are seeing an EC interrupt after setting the EC RAM offset that indicates that the EC should transition to S0ix mode and this is preventing the kernel from going into S0ix on the first try. In the kernel code for advance_transaction adding some extra condition/debug i saw that it is doing some extra loop based on what it reads from the ec ram.
+with top-most commit 586a07dca8c51b966960d1f0d8be9c27d7e0a95c
 
-Solution:
-----------
-As a workaround if we read back from the EC RAM while still in the _DSM handler it seems to prevent this problem. 
-Also i tried the below patch where i made ec to enter the busy polling stage for the entire LPIT dsm transaction.
+ Merge branch 'pm-cpufreq'
 
- drivers/acpi/ec.c       | 6 ++++++
- drivers/acpi/internal.h | 1 +
- drivers/acpi/sleep.c    | 2 ++
- 3 files changed, 9 insertions(+)
+on top of commit 6fbc7275c7a9ba97877050335f290341a1fd8dbf
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 49e16f0..cda1b58 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1070,6 +1070,12 @@ void acpi_ec_set_gpe_wake_mask(u8 action)
-        if (first_ec && !ec_no_wakeup)
-                acpi_set_gpe_wake_mask(NULL, first_ec->gpe, action);
- }
-+void acpi_ec_set_busy_polling(bool polling_state)
-+{
-+       struct acpi_ec *ec = first_ec;
-+       /* When set to true ec does not perform the wait polling */
-+       ec->busy_polling = polling_state;
-+}
+ Linux 5.2-rc7
 
- void acpi_ec_dispatch_gpe(void)
- {
-diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-index f59d0b9..9aee878 100644
---- a/drivers/acpi/internal.h
-+++ b/drivers/acpi/internal.h
-@@ -190,6 +190,7 @@ void acpi_ec_block_transactions(void);
- void acpi_ec_unblock_transactions(void);
- void acpi_ec_mark_gpe_for_wake(void);
- void acpi_ec_set_gpe_wake_mask(u8 action);
-+void acpi_ec_set_busy_polling(bool polling_state);
- void acpi_ec_dispatch_gpe(void);
- int acpi_ec_add_query_handler(struct acpi_ec *ec, u8 query_bit,
-                              acpi_handle handle, acpi_ec_query_func func,
-diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index 6bd58d7..8599c33 100644
---- a/drivers/acpi/sleep.c
-+++ b/drivers/acpi/sleep.c
-@@ -903,11 +903,13 @@ static void acpi_sleep_run_lps0_dsm(unsigned int func)
-        if (!(lps0_dsm_func_mask & (1 << func)))
-                return;
+to receive power management updates for 5.3-rc1.
 
-+       acpi_ec_set_busy_polling(true);
-        out_obj = acpi_evaluate_dsm(lps0_device_handle, &lps0_dsm_guid, 1, func, NULL);
-        ACPI_FREE(out_obj);
+These update PCI and ACPI power management (improved handling of
+ACPI power resources and PCIe link delays, fixes related to corner
+cases, hibernation handling rework), fix and extend the operating
+performance points (OPP) framework, add new cpufreq drivers for
+Raspberry Pi and imx8m chips, update some other cpufreq drivers,
+clean up assorted pieces of PM code and documentation and update
+tools.
 
-        acpi_handle_debug(lps0_device_handle, "_DSM function %u evaluation %s\n",
-                          func, out_obj ? "successful" : "failed");
-+       acpi_ec_set_busy_polling(false);
- }
+Specifics:
 
-Please review and suggest if this kernel change can be an acceptable solution.
+ - Improve the handling of shared ACPI power resources in the PCI
+   bus type layer (Mika Westerberg).
 
-________________________________________
-From: Rafael J. Wysocki [rafael@kernel.org]
-Sent: Wednesday, June 19, 2019 1:29 AM
-To: Saha, Shaunak
-Cc: Rafael J. Wysocki; Mario Limonciello; ACPI Devel Maling List
-Subject: Re: drivers/acpi: Change the lpit function call flow
+ - Make the PCI layer take link delays required by the PCIe spec
+   into account as appropriate and avoid polling devices in D3cold
+   for PME (Mika Westerberg).
 
-On Wed, Jun 19, 2019 at 7:33 AM Saha, Shaunak <shaunak.saha@intel.com> wrote:
->
-> Hi Rafael,
->
-> Thanks for your review comments. Agreed that this patch needs to be fixed. I am working on it.
-> 1.First off, aborting system suspend because S0ix constraints are not met is a non-starter.  The kernel really cannot refuse to suspend the system for  that reason (and diagnostics can be done after resume anyway).
->
-> For this as the LPIT specs says "_DSM function may be invoked when the OS state has reached sufficient criteria
-> for processor idle state entry matching Entry Trigger defined in LPIT" then  to check that entry trigger from before calling the sleep function would be better approach. Will report an error if that is not met and still go to suspend. Is that a proper way to handle this? please suggest.
->
-> 2. Second, according to my knowledge, it is not a bug to invoke the ACPI_LPS0_ENTRY _DSM when the constraints are not met.  Do you actually know about any platforms where that may cause real problems to occur?
->
-> Actually in the present platform i m working we are seeing the failure to go to suspend whenever this _DSM methods are called. But as you correctly mentioned i found that the bug was not because this function was called early but it's happening because in our case ec seems to be bit noisy and that's why it's coming out of suspend too early. Something is going wrong in the ec polling function it seems in this case.
->
-> 3. Finally, it is too late to invoke that _DSM from acpi_s2idle_sync(), because that is called after leaving S0ix and resuming some devices.
->
-> Agreed. I think moving the call of DSM from s2idle_enter is better if we decide to move it a later stage
+ - Fix some corner case issues in ACPI device power management and
+   in the PCI bus type layer, optimiza and clean up the handling of
+   runtime-suspended PCI devices during system-wide transitions to
+   sleep states (Rafael Wysocki).
 
-As I have just tested on one of my systems, moving the invocation of
-the ACPI_LPS0_ENTRY _DSM to a later stage causes problems to happen
-(spurious wakeups generated by the EC), so this generally doesn't
-work.
+ - Rework hibernation handling in the ACPI core and the PCI bus type
+   to resume runtime-suspended devices before hibernation (which
+   allows some functional problems to be avoided) and fix some ACPI
+   power management issues related to hiberation (Rafael Wysocki).
 
-I thus don't see a reason to change the code in the area at hand.
+ - Extend the operating performance points (OPP) framework to support
+   a wider range of devices (Rajendra Nayak, Stehpen Boyd).
+
+ - Fix issues related to genpd_virt_devs and issues with platforms
+   using the set_opp() callback in the OPP framework (Viresh Kumar,
+   Dmitry Osipenko).
+
+ - Add new cpufreq driver for Raspberry Pi (Nicolas Saenz Julienne).
+
+ - Add new cpufreq driver for imx8m and imx7d chips (Leonard Crestez).
+
+ - Fix and clean up the pcc-cpufreq, brcmstb-avs-cpufreq, s5pv210,
+   and armada-37xx cpufreq drivers (David Arcari, Florian Fainelli,
+   Paweł Chmiel, YueHaibing).
+
+ - Clean up and fix the cpufreq core (Viresh Kumar, Daniel Lezcano).
+
+ - Fix minor issue in the ACPI system sleep support code and export
+   one function from it (Lenny Szubowicz, Dexuan Cui).
+
+ - Clean up assorted pieces of PM code and documentation (Kefeng Wang,
+   Andy Shevchenko, Bart Van Assche, Greg Kroah-Hartman, Fuqian Huang,
+   Geert Uytterhoeven, Mathieu Malaterre, Rafael Wysocki).
+
+ - Update the pm-graph utility to v5.4 (Todd Brandt).
+
+ - Fix and clean up the cpupower utility (Abhishek Goel, Nick Black).
+
+Thanks!
 
 
+---------------
 
-> ________________________________________
-> From: Rafael J. Wysocki [rafael@kernel.org]
-> Sent: Tuesday, June 18, 2019 1:44 AM
-> To: Mario Limonciello
-> Cc: Saha, Shaunak; ACPI Devel Maling List
-> Subject: Re: drivers/acpi: Change the lpit function call flow
->
-> On Thu, Jun 13, 2019 at 11:37 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
-> >
-> > On Sunday, May 26, 2019 10:27:50 PM CEST Shaunak Saha wrote:
-> > > In the present implementation sleep function was getting called in
-> > > acpi_s2idle_prepare and as all the devices may not have suspended
-> > > at that stage e.g. if we are telling ec about the S0ix then calling early
-> > > can cause ec reply wrongly interpreted as spurious wake events.
-> > > Here we call it at much later stage in acpi_s2idle_sync. As per the
-> > > specification the entry _DSM function may be invoked when the OS state has
-> > > reached sufficient criteria for processor idle state entry matching
-> > > Entry Trigger defined in LPIT to be interpreted as a request for the
-> > > platform to enter a Low Power S0 Idle (LPI) state. Here we are checking if
-> > > the we reached the minimum D-State defined in the constraint function of
-> > > the LPIT _DSM method before calling the sleep entry function. Also not
-> > > checking for constraint in acpi_s2idle_wake anymore and also changed the
-> > > acpi info loglevel to debug in lpi_check_constraint.
-> >
-> > This patch does three different things, two of which are questionable and
-> > one is done incorrectly.
-> >
-> > First off, aborting system suspend because S0ix constraints are not met is
-> > a non-starter.  The kernel really cannot refuse to suspend the system for
-> > that reason (and diagnostics can be done after resume anyway).
-> >
-> > Second, according to my knowledge, it is not a bug to invoke the
-> > ACPI_LPS0_ENTRY _DSM when the constraints are not met.  Do you
-> > actually know about any platforms where that may cause real problems
-> > to occur?
-> >
-> > Finally, it is too late to invoke that _DSM from acpi_s2idle_sync(), because
-> > that is called after leaving S0ix and resuming some devices.
-> >
-> > I can believe the claim that invoking the ACPI_LPS0_ENTRY _DSM in
-> > acpi_s2idle_prepare() may be too early and it may confuse the EC, say,
-> > but I'm not sure why the ACPI_LPS0_SCREEN_OFF _DSM would be
-> > affected by that too.
-> >
-> > So overall, the patch below may actually work,
->
-> On my Dell XPS13 9360 it clearly makes things worse by causing the EC
-> to generate spurious wakeup events all the time, so I'm afraid that
-> this like of reasoning is misguided overall.
->
-> > but not the $subject one
-> > (if evaluating the ACPI_LPS0_ENTRY _DSM when the constraints are not
-> > met is *really* problematic, it may be necessary to add the check
-> > for that on top of it).
-> >
-> > ---
-> >  drivers/acpi/sleep.c    |   13 +++++++++----
-> >  include/linux/suspend.h |    1 +
-> >  kernel/power/suspend.c  |    8 ++++++--
-> >  3 files changed, 16 insertions(+), 6 deletions(-)
-> >
-> > Index: linux-pm/drivers/acpi/sleep.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/acpi/sleep.c
-> > +++ linux-pm/drivers/acpi/sleep.c
-> > @@ -967,8 +967,6 @@ static int acpi_s2idle_prepare(void)
-> >  {
-> >         if (lps0_device_handle) {
-> >                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
-> > -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
-> > -
-> >                 acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
-> >         }
-> >
-> > @@ -983,6 +981,12 @@ static int acpi_s2idle_prepare(void)
-> >         return 0;
-> >  }
-> >
-> > +static void acpi_s2idle_sleep(void)
-> > +{
-> > +       if (lps0_device_handle)
-> > +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
-> > +}
-> > +
-> >  static void acpi_s2idle_wake(void)
-> >  {
-> >         if (!lps0_device_handle)
-> > @@ -1007,6 +1011,8 @@ static void acpi_s2idle_wake(void)
-> >                  */
-> >                 acpi_ec_dispatch_gpe();
-> >         }
-> > +
-> > +       acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
-> >  }
-> >
-> >  static void acpi_s2idle_sync(void)
-> > @@ -1034,8 +1040,6 @@ static void acpi_s2idle_restore(void)
-> >
-> >         if (lps0_device_handle) {
-> >                 acpi_ec_set_gpe_wake_mask(ACPI_GPE_DISABLE);
-> > -
-> > -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
-> >                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON);
-> >         }
-> >  }
-> > @@ -1049,6 +1053,7 @@ static void acpi_s2idle_end(void)
-> >  static const struct platform_s2idle_ops acpi_s2idle_ops = {
-> >         .begin = acpi_s2idle_begin,
-> >         .prepare = acpi_s2idle_prepare,
-> > +       .sleep = acpi_s2idle_sleep,
-> >         .wake = acpi_s2idle_wake,
-> >         .sync = acpi_s2idle_sync,
-> >         .restore = acpi_s2idle_restore,
-> > Index: linux-pm/include/linux/suspend.h
-> > ===================================================================
-> > --- linux-pm.orig/include/linux/suspend.h
-> > +++ linux-pm/include/linux/suspend.h
-> > @@ -190,6 +190,7 @@ struct platform_suspend_ops {
-> >  struct platform_s2idle_ops {
-> >         int (*begin)(void);
-> >         int (*prepare)(void);
-> > +       void (*sleep)(void);
-> >         void (*wake)(void);
-> >         void (*sync)(void);
-> >         void (*restore)(void);
-> > Index: linux-pm/kernel/power/suspend.c
-> > ===================================================================
-> > --- linux-pm.orig/kernel/power/suspend.c
-> > +++ linux-pm/kernel/power/suspend.c
-> > @@ -136,10 +136,14 @@ static void s2idle_loop(void)
-> >                  * so prevent them from terminating the loop right away.
-> >                  */
-> >                 error = dpm_noirq_suspend_devices(PMSG_SUSPEND);
-> > -               if (!error)
-> > +               if (!error) {
-> > +                       if (s2idle_ops && s2idle_ops->sleep)
-> > +                               s2idle_ops->sleep();
-> > +
-> >                         s2idle_enter();
-> > -               else if (error == -EBUSY && pm_wakeup_pending())
-> > +               } else if (error == -EBUSY && pm_wakeup_pending()) {
-> >                         error = 0;
-> > +               }
-> >
-> >                 if (!error && s2idle_ops && s2idle_ops->wake)
-> >                         s2idle_ops->wake();
-> >
-> >
-> >
+Abhishek Goel (1):
+      cpupower : frequency-set -r option misses the last cpu in related cpu list
+
+Andy Shevchenko (1):
+      ACPI / sleep: Switch to use acpi_dev_get_first_match_dev()
+
+Bart Van Assche (1):
+      PM: sleep: Show how long dpm_suspend_start() and dpm_suspend_end() take
+
+Daniel Lezcano (1):
+      cpufreq: Move the IS_ENABLED(CPU_THERMAL) macro into a stub
+
+David Arcari (1):
+      cpufreq: pcc-cpufreq: Fail initialization if driver cannot be registered
+
+Dexuan Cui (1):
+      ACPI: PM: Make acpi_sleep_state_supported() non-static
+
+Dmitry Osipenko (1):
+      opp: Don't use IS_ERR on invalid supplies
+
+Florian Fainelli (2):
+      cpufreq: brcmstb-avs-cpufreq: Fix initial command check
+      cpufreq: brcmstb-avs-cpufreq: Fix types for voltage/frequency
+
+Fuqian Huang (1):
+      kernel: power: swap: use kzalloc() instead of kmalloc() followed
+by memset()
+
+Geert Uytterhoeven (2):
+      PM / clk: Remove error message on out-of-memory condition
+      Documentation: ABI: power: Add missing newline at end of file
+
+Greg Kroah-Hartman (2):
+      power: avs: smartreflex: no need to check return value of
+debugfs_create functions
+      drivers: base: power: remove wakeup_sources_stats_dentry variable
+
+Kefeng Wang (1):
+      drivers: base: power: clock_ops: Use of_clk_get_parent_count()
+
+Lenny Szubowicz (1):
+      ACPI / LPIT: Correct LPIT end address for lpit_process()
+
+Leonard Crestez (5):
+      cpufreq: Add imx-cpufreq-dt driver
+      dt-bindings: imx-cpufreq-dt: Document opp-supported-hw usage
+      cpufreq: imx-cpufreq-dt: Fix no OPPs available on unfused parts
+      cpufreq: imx-cpufreq-dt: Remove global platform match list
+      cpufreq: Switch imx7d to imx-cpufreq-dt for speed grading
+
+Mathieu Malaterre (1):
+      PM: hibernate: powerpc: Expose pfn_is_nosave() prototype
+
+Mika Westerberg (5):
+      PCI: Add missing link delays required by the PCIe spec
+      PCI: Do not poll for PME if the device is in D3cold
+      PCI / ACPI: Use cached ACPI device state to get PCI device power state
+      ACPI / PM: Introduce concept of a _PR0 dependent device
+      PCI / ACPI: Add _PR0 dependent devices
+
+Nick Black (1):
+      cpupower: correct spelling of interval
+
+Nicolas Saenz Julienne (1):
+      cpufreq: add driver for Raspberry Pi
+
+Paweł Chmiel (1):
+      cpufreq: s5pv210: Don't flood kernel log after cpufreq change
+
+Rafael J. Wysocki (14):
+      PCI: PM: Avoid resuming devices in D3hot during system suspend
+      PCI: PM: Replace pci_dev_keep_suspended() with two functions
+      PM: suspend: Rename pm_suspend_via_s2idle()
+      PM: sleep: Update struct wakeup_source documentation
+      ACPI: PM: Avoid evaluating _PS3 on transitions from D3hot to D3cold
+      ACPI: PM: Allow transitions to D0 to occur in special cases
+      PCI: PM/ACPI: Refresh all stale power state data in pci_pm_complete()
+      PM: ACPI/PCI: Resume all devices during hibernation
+      PCI: PM: Simplify bus-level hibernation callbacks
+      ACPI: PM: Simplify and fix PM domain hibernation callbacks
+      ACPI: PM: Introduce "poweroff" callbacks for ACPI PM domain and LPSS
+      ACPI: PM: Drop unused function and function header
+      ACPI: PM: Unexport acpi_device_get_power()
+      PM: sleep: Drop dev_pm_skip_next_resume_phases()
+
+Rajendra Nayak (1):
+      opp: Make dev_pm_opp_set_rate() handle freq = 0 to drop performance votes
+
+Stephen Boyd (1):
+      opp: Don't overwrite rounded clk rate
+
+Todd Brandt (3):
+      Update to pm-graph 5.3
+      Update to pm-graph 5.4
+      Add README and update pm-graph and sleepgraph docs
+
+Viresh Kumar (7):
+      opp: Attach genpds to devices from within OPP core
+      opp: Allocate genpd_virt_devs from dev_pm_opp_attach_genpd()
+      cpufreq: Remove redundant !setpolicy check
+      cpufreq: Use has_target() instead of !setpolicy
+      cpufreq: Don't skip frequency validation for has_target() drivers
+      cpufreq: Consolidate cpufreq_update_current_freq() and __cpufreq_get()
+      cpufreq: Avoid calling cpufreq_verify_current_freq() from handle_update()
+
+YueHaibing (1):
+      cpufreq: armada-37xx: Remove set but not used variable 'freq'
+
+---------------
+
+ Documentation/ABI/testing/sysfs-power              |   2 +-
+ .../devicetree/bindings/cpufreq/imx-cpufreq-dt.txt |  37 +
+ arch/powerpc/kernel/suspend.c                      |   1 +
+ arch/s390/kernel/entry.h                           |   1 -
+ drivers/acpi/acpi_lpit.c                           |   7 +-
+ drivers/acpi/acpi_lpss.c                           | 111 ++-
+ drivers/acpi/device_pm.c                           | 165 ++--
+ drivers/acpi/internal.h                            |   7 +
+ drivers/acpi/power.c                               | 135 ++++
+ drivers/acpi/sleep.c                               |  22 +-
+ drivers/base/power/clock_ops.c                     |   6 +-
+ drivers/base/power/main.c                          |  36 +-
+ drivers/base/power/wakeup.c                        |   6 +-
+ drivers/cpufreq/Kconfig.arm                        |  17 +
+ drivers/cpufreq/Makefile                           |   2 +
+ drivers/cpufreq/armada-37xx-cpufreq.c              |   4 +-
+ drivers/cpufreq/brcmstb-avs-cpufreq.c              |  12 +-
+ drivers/cpufreq/cpufreq-dt-platdev.c               |   5 +-
+ drivers/cpufreq/cpufreq.c                          | 121 ++-
+ drivers/cpufreq/imx-cpufreq-dt.c                   |  97 +++
+ drivers/cpufreq/pcc-cpufreq.c                      |   4 +-
+ drivers/cpufreq/raspberrypi-cpufreq.c              |  97 +++
+ drivers/cpufreq/s5pv210-cpufreq.c                  |   2 +-
+ drivers/input/serio/i8042.c                        |   2 +-
+ drivers/opp/core.c                                 | 174 +++--
+ drivers/opp/of.c                                   |  30 +-
+ drivers/pci/pci-acpi.c                             |  14 +-
+ drivers/pci/pci-driver.c                           |  74 +-
+ drivers/pci/pci.c                                  | 116 ++-
+ drivers/pci/pci.h                                  |   8 +-
+ drivers/pci/pcie/portdrv_core.c                    |  66 ++
+ drivers/power/avs/smartreflex.c                    |  41 +-
+ drivers/soc/imx/soc-imx8.c                         |   3 +
+ include/acpi/acpi_bus.h                            |  11 +-
+ include/linux/acpi.h                               |  14 +-
+ include/linux/cpufreq.h                            |   6 +
+ include/linux/pm.h                                 |   1 -
+ include/linux/pm_opp.h                             |   8 +-
+ include/linux/pm_wakeup.h                          |   2 +-
+ include/linux/suspend.h                            |   5 +-
+ kernel/power/power.h                               |   2 -
+ kernel/power/suspend.c                             |   6 +-
+ kernel/power/swap.c                                |   3 +-
+ tools/power/cpupower/man/cpupower-monitor.1        |   2 +-
+ tools/power/cpupower/po/cs.po                      |   2 +-
+ tools/power/cpupower/po/de.po                      |   2 +-
+ tools/power/cpupower/po/fr.po                      |   2 +-
+ tools/power/cpupower/po/it.po                      |   2 +-
+ tools/power/cpupower/po/pt.po                      |   2 +-
+ tools/power/cpupower/utils/cpufreq-set.c           |   2 +
+ tools/power/pm-graph/README                        | 552 +++++++++++++
+ tools/power/pm-graph/bootgraph.py                  |   8 +-
+ tools/power/pm-graph/config/example.cfg            |  26 +
+ tools/power/pm-graph/sleepgraph.8                  |  16 +-
+ tools/power/pm-graph/sleepgraph.py                 | 857 ++++++++++++++++-----
+ 55 files changed, 2325 insertions(+), 631 deletions(-)
