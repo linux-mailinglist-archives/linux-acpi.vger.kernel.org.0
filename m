@@ -2,142 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A851631BC
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jul 2019 09:20:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F7E7632CB
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jul 2019 10:18:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725911AbfGIHUL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Jul 2019 03:20:11 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:37667 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725886AbfGIHUL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Jul 2019 03:20:11 -0400
-Received: by mail-ot1-f66.google.com with SMTP id s20so18916164otp.4
-        for <linux-acpi@vger.kernel.org>; Tue, 09 Jul 2019 00:20:11 -0700 (PDT)
+        id S1725911AbfGIIS4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 Jul 2019 04:18:56 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:44779 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725886AbfGIIS4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Jul 2019 04:18:56 -0400
+Received: by mail-ot1-f67.google.com with SMTP id b7so19017882otl.11;
+        Tue, 09 Jul 2019 01:18:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=jN2HTBbGVnb2PEAaaQgYC49W0HWjdbr8AlkujX6bfm4=;
-        b=iTIoYWN7wZNdxtwQDFZycc6bxdVDsSuifooM24YsJ6daAFD01PPkqON5Z77l26RuYl
-         UmdZTH+kq1/8FqNfPehv3dMn4VvQDYm6Y4YrXALVJp/2oqVge0RF2Xfj0u+BtW5CMLdU
-         0b3BAUgxx9iKMqTg6lXBV2tlX4XgpCgmcwgKZytrcu2OLE90SiLWBX9+HUttIH40X3iQ
-         9q1KT0Vm9b6WvypFg/uekwdRVEh6SFf6DsWJy/DfajwIsyZQ6OxITv+pxHPZhfqXyy1X
-         H9Mk4iCuxpmIWbp7vrexHAjJAyCEx61oWn697AXstOwJUiHeDFe7LlcS9V829oAOylVU
-         JCBg==
-X-Gm-Message-State: APjAAAXNIKtaQ2Ig8vb6VdH2QA44YpOtzjWZYS7QDx4g2mSuqoB+FRKd
-        4rSIpGUXAh47/lDVjtd+Cqv7L211diudfBLlXDU=
-X-Google-Smtp-Source: APXvYqxE7Rzx/ReyPW+HyS+6YOcssLdrIsl9ixHsPj57iPeLp8P8putvByylsYNjEpte51ZzGGHNNy/7tsynQP7KbCQ=
-X-Received: by 2002:a05:6830:8a:: with SMTP id a10mr17152013oto.167.1562656810767;
- Tue, 09 Jul 2019 00:20:10 -0700 (PDT)
+        bh=tbzistLccCjhRUbVguErBlGFRjJHeoe5cXWmH1bR0NI=;
+        b=qy9/17YQq2oH39jVwUWi2mtoA+fK35CiCphlgRCaOCWHQUegmjK9qBcu4ZoiDq9qWl
+         IEtvvymIRjxDIrFTLnWzgE9esBH9R5TpqjBKymVI1kXcjvz7lkiNKKuyUIR89ngq2CCu
+         Wo0dFf7mkKlURTcJkPozj3463gg/hp95Ww+Smaj+32HinCKX4HT2XH2op50pTwTQcnlp
+         cqGFsRSvITIwnqmwkyG+7P1/mYUjoTn/P2ErdEGdzCc2WdqfS7uj+WolsjXZTlwBswZG
+         ryeo+mvwDhUi1jwWExYQu9sgpMtS4LJze2CVtXObu7gS0xkp1zy+Cr7Wak1XDjlwV1fq
+         biIw==
+X-Gm-Message-State: APjAAAWWdP5IyPx6Vvty+sKfi52XJKNRq4yjYJwNpVJ7JMVKqmsv2HoT
+        BFX4Wuw035t5bE4uimTzHcRGCKQyPwBDGuz9d1U=
+X-Google-Smtp-Source: APXvYqxEEyCFSpF7JA4EpZYh/eKtKlRvpiQwISy5x0/RiximZPGzhceoUn4kcqYIYlIjwB8Rje3GQ2fLOegT458kOsU=
+X-Received: by 2002:a9d:6a4b:: with SMTP id h11mr16536792otn.266.1562660335425;
+ Tue, 09 Jul 2019 01:18:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190628181457.6609-1-jeremy.linton@arm.com> <20190628181457.6609-2-jeremy.linton@arm.com>
- <CAJZ5v0jh0+WU5fpd9enq0UHrHzh+0Sgv-xoRiJM3jgu9dQFvdw@mail.gmail.com>
- <1745d9ee-a4e0-9a6f-138c-c0d5b42b5281@arm.com> <CAJZ5v0jM5VEuYuY7RdeXYs0S04uRYq5_01fKSBKOouS5DgBhww@mail.gmail.com>
- <3882f986-54b6-ce7c-5e52-9ad6159b7e6f@arm.com>
-In-Reply-To: <3882f986-54b6-ce7c-5e52-9ad6159b7e6f@arm.com>
+References: <20190705095800.43534-1-mika.westerberg@linux.intel.com> <20190705095800.43534-9-mika.westerberg@linux.intel.com>
+In-Reply-To: <20190705095800.43534-9-mika.westerberg@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 9 Jul 2019 09:19:59 +0200
-Message-ID: <CAJZ5v0gvFApZ1+CsKtGbqZgt+nA64Wywq6PBXELbPXSDsD2WZg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] ACPI/PPTT: Add support for ACPI 6.3 thread flag
-To:     Jeremy Linton <jeremy.linton@arm.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
+Date:   Tue, 9 Jul 2019 10:18:44 +0200
+Message-ID: <CAJZ5v0g1JKQxw=Rr-BYE6hgcbBXat24tK8s78k+ghmBhr=avLg@mail.gmail.com>
+Subject: Re: [PATCH 8/8] ACPI / property: Add two new Thunderbolt property
+ GUIDs to the list
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+        Mario Limonciello <Mario.Limonciello@dell.com>,
+        Anthony Wong <anthony.wong@canonical.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 4, 2019 at 4:41 AM Jeremy Linton <jeremy.linton@arm.com> wrote:
+On Fri, Jul 5, 2019 at 11:58 AM Mika Westerberg
+<mika.westerberg@linux.intel.com> wrote:
 >
-> Hi,
+> Ice Lake Thunderbolt controller includes two new device property
+> compatible properties that we need to be able to extract in the driver
+> so add them to the growing array of GUIDs.
 >
-> On 7/3/19 4:57 PM, Rafael J. Wysocki wrote:
-> > On Wed, Jul 3, 2019 at 5:11 PM Jeremy Linton <jeremy.linton@arm.com> wrote:
-> >>
-> >> Hi,
-> >>
-> >> Thanks for taking a look at this.
-> >>
-> >> On 7/3/19 4:24 AM, Rafael J. Wysocki wrote:
-> >>> On Fri, Jun 28, 2019 at 8:15 PM Jeremy Linton <jeremy.linton@arm.com> wrote:
-> >>>>
-> >>>> ACPI 6.3 adds a flag to the CPU node to indicate whether
-> >>>> the given PE is a thread. Add a function to return that
-> >>>> information for a given linux logical CPU.
-> >>>>
-> >>>> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-> >>>> ---
-> >>>>    drivers/acpi/pptt.c  | 62 +++++++++++++++++++++++++++++++++++++++++++-
-> >>>>    include/linux/acpi.h |  5 ++++
-> >>>>    2 files changed, 66 insertions(+), 1 deletion(-)
-> >>>>
-> >>>> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> >>>> index b72e6afaa8fb..bb6196422fad 100644
-> >>>> --- a/drivers/acpi/pptt.c
-> >>>> +++ b/drivers/acpi/pptt.c
-> >>>> @@ -517,6 +517,52 @@ static int find_acpi_cpu_topology_tag(unsigned int cpu, int level, int flag)
-> >>>>           return retval;
-> >>>>    }
-> >>>>
-> >>>> +/**
-> >>>> + * check_acpi_cpu_flag() - Determine if CPU node has a flag set
-> >>>> + * @cpu: Kernel logical CPU number
-> >>>> + * @rev: The PPTT revision defining the flag
-> >>>> + * @flag: The flag itself
-> >>>> + *
-> >>>> + * Check the node representing a CPU for a given flag.
-> >>>> + *
-> >>>> + * Return: -ENOENT if the PPTT doesn't exist, the CPU cannot be found or
-> >>>> + *        the table revision isn't new enough.
-> >>>> + *        1, any passed flag set
-> >>>> + *        0, flag unset
-> >>>> + */
-> >>>> +static int check_acpi_cpu_flag(unsigned int cpu, int rev, u32 flag)
-> >>>
-> >>> Why not bool?
-> >>
-> >> At least for the thread flag we need the three states so that we can
-> >> fall back to the CPU's description of itself on machines without ACPI
-> >> 6.3 tables.
-> >>
-> >> The ThunderX2 is threaded and without a firmware update a change like
-> >> this will break it.
-> >
-> > Fair enough.
-> >
-> >>>
-> >>>> +{
-> >>>> +       struct acpi_table_header *table;
-> >>>> +       acpi_status status;
-> >>>> +       u32 acpi_cpu_id = get_acpi_id_for_cpu(cpu);
-> >>>> +       struct acpi_pptt_processor *cpu_node = NULL;
-> >>>> +       int ret = -ENOENT;
-> >>>> +       static int saved_pptt_rev = -1;
-> >>>> +
-> >>>> +       /* Cache the PPTT revision to avoid repeat table get/put on failure */
-> >>>
-> >>> This is a rather questionable optimization.
-> >>>
-> >>> Does the extra table get/put really matter?
-> >>
-> >> AFAIK, Probably not.
-> >
-> > Then why to optimize it?
+> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> ---
+>  drivers/acpi/property.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >
-> There was some discussion in the v2 review thread about all the get/put
-> operations which only existed to return failure for each core in the
-> machine.
->
-> https://www.spinics.net/lists/arm-kernel/msg735948.html
->
-> I guess I should drop it, until we have some proof that there is a problem.
+> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> index da3ced297f19..07cbacbab861 100644
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -39,6 +39,12 @@ static const guid_t prp_guids[] = {
+>         /* External facing port GUID: efcc06cc-73ac-4bc3-bff0-76143807c389 */
+>         GUID_INIT(0xefcc06cc, 0x73ac, 0x4bc3,
+>                   0xbf, 0xf0, 0x76, 0x14, 0x38, 0x07, 0xc3, 0x89),
+> +       /* TBT GUID for IMR_VALID: c44d002f-69f9-4e7d-a904-a7baabdf43f7 */
 
-Yes, please.
+I'd prefer Thunderbolt to be spelled in full here (and below).
+
+LGTM otherwise.
+
+> +       GUID_INIT(0xc44d002f, 0x69f9, 0x4e7d,
+> +                 0xa9, 0x04, 0xa7, 0xba, 0xab, 0xdf, 0x43, 0xf7),
+> +       /* TBT GUID for WAKE_SUPPORTED: 6c501103-c189-4296-ba72-9bf5a26ebe5d */
+> +       GUID_INIT(0x6c501103, 0xc189, 0x4296,
+> +                 0xba, 0x72, 0x9b, 0xf5, 0xa2, 0x6e, 0xbe, 0x5d),
+>  };
+>
+>  /* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
+> --
+> 2.20.1
+>
