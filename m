@@ -2,91 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F7E7632CB
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jul 2019 10:18:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FFB263864
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jul 2019 17:11:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725911AbfGIIS4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Jul 2019 04:18:56 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:44779 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725886AbfGIIS4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Jul 2019 04:18:56 -0400
-Received: by mail-ot1-f67.google.com with SMTP id b7so19017882otl.11;
-        Tue, 09 Jul 2019 01:18:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tbzistLccCjhRUbVguErBlGFRjJHeoe5cXWmH1bR0NI=;
-        b=qy9/17YQq2oH39jVwUWi2mtoA+fK35CiCphlgRCaOCWHQUegmjK9qBcu4ZoiDq9qWl
-         IEtvvymIRjxDIrFTLnWzgE9esBH9R5TpqjBKymVI1kXcjvz7lkiNKKuyUIR89ngq2CCu
-         Wo0dFf7mkKlURTcJkPozj3463gg/hp95Ww+Smaj+32HinCKX4HT2XH2op50pTwTQcnlp
-         cqGFsRSvITIwnqmwkyG+7P1/mYUjoTn/P2ErdEGdzCc2WdqfS7uj+WolsjXZTlwBswZG
-         ryeo+mvwDhUi1jwWExYQu9sgpMtS4LJze2CVtXObu7gS0xkp1zy+Cr7Wak1XDjlwV1fq
-         biIw==
-X-Gm-Message-State: APjAAAWWdP5IyPx6Vvty+sKfi52XJKNRq4yjYJwNpVJ7JMVKqmsv2HoT
-        BFX4Wuw035t5bE4uimTzHcRGCKQyPwBDGuz9d1U=
-X-Google-Smtp-Source: APXvYqxEEyCFSpF7JA4EpZYh/eKtKlRvpiQwISy5x0/RiximZPGzhceoUn4kcqYIYlIjwB8Rje3GQ2fLOegT458kOsU=
-X-Received: by 2002:a9d:6a4b:: with SMTP id h11mr16536792otn.266.1562660335425;
- Tue, 09 Jul 2019 01:18:55 -0700 (PDT)
+        id S1726609AbfGIPLU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 Jul 2019 11:11:20 -0400
+Received: from mx0a-00154904.pphosted.com ([148.163.133.20]:7044 "EHLO
+        mx0a-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726115AbfGIPLU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Jul 2019 11:11:20 -0400
+Received: from pps.filterd (m0170392.ppops.net [127.0.0.1])
+        by mx0a-00154904.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x69FAGw0004437;
+        Tue, 9 Jul 2019 11:11:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=smtpout1;
+ bh=TBZk+yNP+qC/18ws2gniZavlYQC4RNmmueO8uKxargU=;
+ b=bWMSVZHr1Mo9mgSdsfe06Z2aeZFtLiWrAxC0f6DbWqMbKFEAzP9TjvEj80QWb/Qzqcxo
+ xfaVrVMoSSKOpT9P2tlr37qgGNQukb8KkKghdUvfaa5G3aa7+51QSeWX0KbEulwWkyuz
+ FfZ//m9RgCurJsQ6mfNoSpTf1xmrC+ELorPl0WXLObA8/atDZFaCvWwD468Ni/zEkBp9
+ 01AhaQgl2/dOwcsW3xnkCdmyVIELvXcWAwHXhOiJWXDfs0bA5YIeHV4RsT50ASh3DPeO
+ zdTbvWrwns9llJZ4gDNtlANe29jqeWuweXd4zDv4BF50sFOQPe55hXw/UTk3CmQ9NdjV kw== 
+Received: from mx0b-00154901.pphosted.com (mx0b-00154901.pphosted.com [67.231.157.37])
+        by mx0a-00154904.pphosted.com with ESMTP id 2tmnwgj1s8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 09 Jul 2019 11:11:19 -0400
+Received: from pps.filterd (m0134318.ppops.net [127.0.0.1])
+        by mx0a-00154901.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x69EvqDk190682;
+        Tue, 9 Jul 2019 11:11:18 -0400
+Received: from ausxippc101.us.dell.com (ausxippc101.us.dell.com [143.166.85.207])
+        by mx0a-00154901.pphosted.com with ESMTP id 2tjp9g00fu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 09 Jul 2019 11:11:18 -0400
+X-LoopCount0: from 10.166.132.132
+X-PREM-Routing: D-Outbound
+X-IronPort-AV: E=Sophos;i="5.60,346,1549951200"; 
+   d="scan'208";a="1268810633"
+From:   <Mario.Limonciello@dell.com>
+To:     <mika.westerberg@linux.intel.com>, <yehezkelshb@gmail.com>
+CC:     <linux-kernel@vger.kernel.org>, <andreas.noever@gmail.com>,
+        <michael.jamet@intel.com>, <rjw@rjwysocki.net>, <lenb@kernel.org>,
+        <lukas@wunner.de>, <anthony.wong@canonical.com>,
+        <linux-acpi@vger.kernel.org>
+Subject: RE: [PATCH 2/8] thunderbolt: Move NVM upgrade support flag to struct
+ icm
+Thread-Topic: [PATCH 2/8] thunderbolt: Move NVM upgrade support flag to struct
+ icm
+Thread-Index: AQHVMxgohJgdbkcrxkC2VFkyEZprd6a8LTOAgAABhYCABjudQA==
+Date:   Tue, 9 Jul 2019 15:11:15 +0000
+Message-ID: <23cca57934d24eb6b897ebf00f852128@AUSX13MPC105.AMER.DELL.COM>
+References: <20190705095800.43534-1-mika.westerberg@linux.intel.com>
+ <20190705095800.43534-3-mika.westerberg@linux.intel.com>
+ <CA+CmpXt5q93e2TQJzfY4afSEMPWijPU+Ks+cgrVDVqUM4=y3Cw@mail.gmail.com>
+ <20190705105815.GT2640@lahna.fi.intel.com>
+In-Reply-To: <20190705105815.GT2640@lahna.fi.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Enabled=True;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Owner=Mario_Limonciello@Dell.com;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SetDate=2019-07-09T15:11:14.3744530Z;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Name=External Public;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Application=Microsoft Azure
+ Information Protection;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Extended_MSFT_Method=Manual;
+ aiplabel=External Public
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.143.18.86]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20190705095800.43534-1-mika.westerberg@linux.intel.com> <20190705095800.43534-9-mika.westerberg@linux.intel.com>
-In-Reply-To: <20190705095800.43534-9-mika.westerberg@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 9 Jul 2019 10:18:44 +0200
-Message-ID: <CAJZ5v0g1JKQxw=Rr-BYE6hgcbBXat24tK8s78k+ghmBhr=avLg@mail.gmail.com>
-Subject: Re: [PATCH 8/8] ACPI / property: Add two new Thunderbolt property
- GUIDs to the list
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-        Mario Limonciello <Mario.Limonciello@dell.com>,
-        Anthony Wong <anthony.wong@canonical.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-09_06:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=787 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907090179
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=866 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1907090180
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 5, 2019 at 11:58 AM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
->
-> Ice Lake Thunderbolt controller includes two new device property
-> compatible properties that we need to be able to extract in the driver
-> so add them to the growing array of GUIDs.
->
-> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> ---
->  drivers/acpi/property.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> index da3ced297f19..07cbacbab861 100644
-> --- a/drivers/acpi/property.c
-> +++ b/drivers/acpi/property.c
-> @@ -39,6 +39,12 @@ static const guid_t prp_guids[] = {
->         /* External facing port GUID: efcc06cc-73ac-4bc3-bff0-76143807c389 */
->         GUID_INIT(0xefcc06cc, 0x73ac, 0x4bc3,
->                   0xbf, 0xf0, 0x76, 0x14, 0x38, 0x07, 0xc3, 0x89),
-> +       /* TBT GUID for IMR_VALID: c44d002f-69f9-4e7d-a904-a7baabdf43f7 */
+> -----Original Message-----
+> From: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Sent: Friday, July 5, 2019 5:58 AM
+> To: Yehezkel Bernat
+> Cc: LKML; Andreas Noever; Michael Jamet; Rafael J . Wysocki; Len Brown; L=
+ukas
+> Wunner; Limonciello, Mario; Anthony Wong; linux-acpi@vger.kernel.org
+> Subject: Re: [PATCH 2/8] thunderbolt: Move NVM upgrade support flag to st=
+ruct
+> icm
+>=20
+>=20
+> [EXTERNAL EMAIL]
+>=20
+> On Fri, Jul 05, 2019 at 01:52:49PM +0300, Yehezkel Bernat wrote:
+> > > @@ -2054,6 +2059,7 @@ struct tb *icm_probe(struct tb_nhi *nhi)
+> > >         case PCI_DEVICE_ID_INTEL_TITAN_RIDGE_2C_NHI:
+> > >         case PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_NHI:
+> > >                 icm->max_boot_acl =3D ICM_AR_PREBOOT_ACL_ENTRIES;
+> > > +               icm->can_upgrade_nvm =3D true;
+> >
+> > Shouldn't this be also !x86_apple_machine just like AR?
+> > (For FR, we don't use ICM on Apple machines, as much as I remember, so =
+it's fine
+> > to enable it there unconditionally for ICM code path.)
+>=20
+> Yes, good point. I'll fix it up.
 
-I'd prefer Thunderbolt to be spelled in full here (and below).
-
-LGTM otherwise.
-
-> +       GUID_INIT(0xc44d002f, 0x69f9, 0x4e7d,
-> +                 0xa9, 0x04, 0xa7, 0xba, 0xab, 0xdf, 0x43, 0xf7),
-> +       /* TBT GUID for WAKE_SUPPORTED: 6c501103-c189-4296-ba72-9bf5a26ebe5d */
-> +       GUID_INIT(0x6c501103, 0xc189, 0x4296,
-> +                 0xba, 0x72, 0x9b, 0xf5, 0xa2, 0x6e, 0xbe, 0x5d),
->  };
->
->  /* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
-> --
-> 2.20.1
->
+Another thought - does the TR or AR ID's setting can_upgrade_nvm to !x86_ap=
+ple_machine
+show up in anything like a dock or is it only host controllers?  If it's in=
+ docks, then it might be worth
+only blocking on apple if it's a host.
