@@ -2,145 +2,160 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ED2863BAD
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jul 2019 21:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32E9C63EAE
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jul 2019 02:50:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729059AbfGITHN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Jul 2019 15:07:13 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:47996 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726957AbfGITHN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Jul 2019 15:07:13 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x69J46u1188721;
-        Tue, 9 Jul 2019 19:06:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2018-07-02;
- bh=Yv+yrBeYqVkGCt6LLOk5beU+S3/T8S7t8pToxYNFrvA=;
- b=4yCSg4XWjehbQ+4vOWcfPZ8mTO11RReysfIntOl88QF69DGa5deUYpF9+QgwBEwJ34EI
- gocSLnUM0idJqrKQOjf9egsxG00NemUDBqrkIuFhJNefyMAaN5TRSSPnrA7FjspzSkWn
- BPZJDO/V6dcyf79+yEgzcZo3A2yyaSPKkHzkR9RAaWcilWXtupRah7XberXC5nNvQ40b
- 3+Sh3WNOLn0SH/cXQ6kh4EzeubRnu7ylogU2nlYPrJm18OmQL/IyHw66ZJ1hZPqYlJs4
- MIQCnAlADG2JrhpwoegQ4WUvijFEFvtX+0pRHuRLDr7YiSrBs9S0FlczRyFpH0vJQnPs Kg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 2tjm9qp3q2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 09 Jul 2019 19:06:51 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x69IvwWt190370;
-        Tue, 9 Jul 2019 19:06:51 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 2tjgru9d9c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 09 Jul 2019 19:06:51 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x69J6lep030169;
-        Tue, 9 Jul 2019 19:06:48 GMT
-Received: from [10.159.233.89] (/10.159.233.89)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 09 Jul 2019 12:06:47 -0700
-Subject: Re: [RFC PATCH v2 0/3] Support CPU hotplug for ARM64
-To:     James Morse <james.morse@arm.com>,
-        Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Cc:     jonathan.cameron@huawei.com, john.garry@huawei.com,
-        rjw@rjwysocki.net, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, huawei.libin@huawei.com,
-        guohanjun@huawei.com, kvmarm@lists.cs.columbia.edu,
-        linux-arm-kernel@lists.infradead.org
-References: <1561776155-38975-1-git-send-email-wangxiongfeng2@huawei.com>
- <82879258-46a7-a6e9-ee54-fc3692c1cdc3@arm.com>
-From:   Maran Wilson <maran.wilson@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <51cc9a5c-9968-c4b1-0bc7-870f44a3a761@oracle.com>
-Date:   Tue, 9 Jul 2019 12:06:45 -0700
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
-MIME-Version: 1.0
-In-Reply-To: <82879258-46a7-a6e9-ee54-fc3692c1cdc3@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        id S1726518AbfGJAuj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 Jul 2019 20:50:39 -0400
+Received: from mail-eopbgr690092.outbound.protection.outlook.com ([40.107.69.92]:63959
+        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726444AbfGJAuj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 9 Jul 2019 20:50:39 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MkTsn+pSgj1a7EQpft2Z7awkvRruTaRO2U2EWqLzpst12leHdty4qPg3ICNTXNx8zzgLHDmcYCuXwiQVdZTtVQBij+99hiisPBBNkGRUaxJ4uw/HV6RkQaC9GMTFq3LS2/xU6sTy2xL7vykHicQkczCTB+FDsIzzglYZeQLlgBekZPjW84skTgOOrEPlEmi7xKTWzL4c1k+Uzt/6diyvVNxFQPB51LK56rCiVqHvdM0Nlxj46lbUBoUN3ZNhS/OcI5HUL/j9VHcEgqDpJEzI6q5mF1usIqwF9J0qP+E2llyFhTet7S5SpE/8ivgar7zX6hjOF9fW8Bc6pdCFu44YUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=C/MEdO4xKVJ/7QlENAs5nmXgKFkZBw/t9X5CO5f5ZqE=;
+ b=U19wBf6pcLdRCyRCvQl7Uk7LJuVNnAfRy6xin9R1Xp5qfNHh+OVmOUeJwb7B0Z3NqVx8pqwwWIA3zIO70rKoXYQ7Gdk8Ae44CSAs+yvzB2ma6yf1BHDVTE9T78W5yQ4Z9IwVyI20V3yjk+sRm7mYz0gVa4eL2hnvlLn89nhOhfqtVTdcacK9PLKuSi852lCYvEVwL3OOjsQVwFbbZcfyPaTx9DEu1E9o3//iFjQrJQppdcwkCYZCnLkiaAODkjY2rqg2gZirHKQqykMc/Hcm821BRmmlkQFH+tTcCYutcv0ZxzDbbN+uDGsjzytgi/esF95/GftUXy7I7Plv2uaznA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
+ smtp.mailfrom=os.amperecomputing.com;dmarc=pass action=none
+ header.from=os.amperecomputing.com;dkim=pass
+ header.d=os.amperecomputing.com;arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=C/MEdO4xKVJ/7QlENAs5nmXgKFkZBw/t9X5CO5f5ZqE=;
+ b=VeOxePKJuyAz88ECWJi5OkUm2UxW1qiQT6oKZq8iWisz+Y+ouOkFPSq26ZDxn0bh/ax77Vifm8swvczJM1qN867zzjdNg+M3wAuIrk5ZOxvqoXpnk6rJXp2evVJh/dQNbAFNi3e5UBPjxT6GDQAL8y9ma21OOr0MgV/G/2FGACg=
+Received: from BYAPR01MB3975.prod.exchangelabs.com (52.135.201.14) by
+ BYAPR01MB5335.prod.exchangelabs.com (20.179.61.202) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2073.10; Wed, 10 Jul 2019 00:49:56 +0000
+Received: from BYAPR01MB3975.prod.exchangelabs.com
+ ([fe80::a81b:f1e7:a31f:d464]) by BYAPR01MB3975.prod.exchangelabs.com
+ ([fe80::a81b:f1e7:a31f:d464%6]) with mapi id 15.20.2052.020; Wed, 10 Jul 2019
+ 00:49:56 +0000
+From:   Tyler Baicar OS <baicar@os.amperecomputing.com>
+To:     Shiju Jose <shiju.jose@huawei.com>,
+        Open Source Submission <patches@amperecomputing.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "Matteo.Carlini@arm.com" <Matteo.Carlini@arm.com>,
+        "Andrew.Murray@arm.com" <andrew.murray@arm.com>
+Subject: Re: [PATCH RFC 1/4] ACPI/AEST: Initial AEST driver
+Thread-Topic: [PATCH RFC 1/4] ACPI/AEST: Initial AEST driver
+Thread-Index: AQHVMPZqphfhRm1STkOzQdqBSPqI3aa6dWVQgAibBEg=
+Date:   Wed, 10 Jul 2019 00:49:56 +0000
+Message-ID: <BYAPR01MB39758AB5AF4A67AF8278E361E3F00@BYAPR01MB3975.prod.exchangelabs.com>
+References: <1562086280-5351-1-git-send-email-baicar@os.amperecomputing.com>
+ <1562086280-5351-2-git-send-email-baicar@os.amperecomputing.com>,<86258A5CC0A3704780874CF6004BA8A6584514BF@lhreml523-mbs.china.huawei.com>
+In-Reply-To: <86258A5CC0A3704780874CF6004BA8A6584514BF@lhreml523-mbs.china.huawei.com>
+Accept-Language: en-US
 Content-Language: en-US
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9313 signatures=668688
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1907090224
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9313 signatures=668688
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1907090225
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=baicar@os.amperecomputing.com; 
+x-originating-ip: [107.15.51.194]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 11b7165e-72d5-4b61-4309-08d704d08744
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:BYAPR01MB5335;
+x-ms-traffictypediagnostic: BYAPR01MB5335:
+x-microsoft-antispam-prvs: <BYAPR01MB53356766A75F2327AD31CA2DE3F00@BYAPR01MB5335.prod.exchangelabs.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-forefront-prvs: 0094E3478A
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(366004)(376002)(346002)(39850400004)(396003)(136003)(189003)(199004)(71200400001)(64756008)(53546011)(110136005)(52536014)(66476007)(66446008)(7696005)(5660300002)(14454004)(99286004)(66946007)(71190400001)(68736007)(91956017)(186003)(66066001)(6506007)(2906002)(76176011)(76116006)(74316002)(66556008)(26005)(305945005)(102836004)(8676002)(86362001)(446003)(229853002)(55016002)(33656002)(478600001)(2201001)(256004)(11346002)(486006)(7736002)(2501003)(6436002)(9686003)(3846002)(6116002)(81166006)(7416002)(81156014)(53936002)(8936002)(25786009)(6246003)(316002)(476003)(921003)(1121003);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR01MB5335;H:BYAPR01MB3975.prod.exchangelabs.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:0;
+received-spf: None (protection.outlook.com: os.amperecomputing.com does not
+ designate permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: NkfRPx5jW4m7iSKtG8mQFOGOt2LRr9M239mIYZjFCU8F+nRWpM6Hpz+HwVp83d5x/M4+7jvfPm0mXCOE/em7qCdDeYZ0dMlLtzDS5gqOGg8haeSVTnhhxBXsTRLsaYR7cXnaNwQdFv+G8jy1cEH/MfGx8Es10ZRpNCkXZeoEiUYJobAV+wFxbZufhp/PdkEiPn7hcXcMvJEXM71J9FUSu8F05+Ngh8+8pyya++5EKXr4kXW331rNK1Z9JoSC0vP05c6OroTzHCqhKiS+q+NFwGtQfNNaS/xGWxR60Cfd1xeUJBebWI5fgjU8IFvOnSr+tn1Ii0jAZPoAXZrb69RxJ+/HASpD9ovI3uZ50rIPe/25uEbYMPH39KEX9eQN4f0UWiMiAZchD+yy5FGN++V/NSVa1FwL616SlA7QELwMGRI=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11b7165e-72d5-4b61-4309-08d704d08744
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jul 2019 00:49:56.3561
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Baicar@os.amperecomputing.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR01MB5335
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 7/5/2019 3:12 AM, James Morse wrote:
-> Hi guys,
->
-> (CC: +kvmarm list)
->
-> On 29/06/2019 03:42, Xiongfeng Wang wrote:
->> This patchset mark all the GICC node in MADT as possible CPUs even though it
->> is disabled. But only those enabled GICC node are marked as present CPUs.
->> So that kernel will initialize some CPU related data structure in advance before
->> the CPU is actually hot added into the system. This patchset also implement
->> 'acpi_(un)map_cpu()' and 'arch_(un)register_cpu()' for ARM64. These functions are
->> needed to enable CPU hotplug.
->>
->> To support CPU hotplug, we need to add all the possible GICC node in MADT
->> including those CPUs that are not present but may be hot added later. Those
->> CPUs are marked as disabled in GICC nodes.
-> ... what do you need this for?
->
-> (The term cpu-hotplug in the arm world almost never means hot-adding a new package/die to
-> the platform, we usually mean taking CPUs online/offline for power management. e.g.
-> cpuhp_offline_cpu_device())
->
-> It looks like you're adding support for hot-adding a new package/die to the platform ...
-> but only for virtualisation.
->
-> I don't see why this is needed for virtualisation. The in-kernel irqchip needs to know
-> these vcpu exist before you can enter the guest for the first time. You can't create them
-> late. At best you're saving the host scheduling a vcpu that is offline. Is this really a
-> problem?
->
-> If we moved PSCI support to user-space, you could avoid creating host vcpu threads until
-> the guest brings the vcpu online, which would solve that problem, and save the host
-> resources for the thread too. (and its acpi/dt agnostic)
->
-> I don't see the difference here between booting the guest with 'maxcpus=1', and bringing
-> the vcpu online later. The only real difference seems to be moving the can-be-online
-> policy into the hypervisor/VMM...
+Hello Shiju,
 
-Isn't that an important distinction from a cloud service provider's 
-perspective?
+Thank you for the feedback!
 
-As far as I understand it, you also need CPU hotplug capabilities to 
-support things like Kata runtime under Kubernetes. i.e. when 
-implementing your containers in the form of light weight VMs for the 
-additional security ... and the orchestration layer cannot determine 
-ahead of time how much CPU/memory resources are going to be needed to 
-run the pod(s).
+On Thu, Jul 4, 2019 at 12:03 PM Shiju Jose <shiju.jose@huawei.com> wrote:
+> >+struct ras_ext_regs {
+> >+      u64 err_fr;
+> >+      u64 err_ctlr;
+> >+      u64 err_status;
+> >+      u64 err_addr;
+> >+      u64 err_misc0;
+> >+      u64 err_misc1;
+> >+      u64 err_misc2;
+> >+      u64 err_misc3;
+> err_misc2 and err_misc3 are not used. Are they for the future purpose?
+
+Yes, these will be for future purpose once ARMv8.4 support is added. I'd li=
+ke
+to keep them in this structure define since that makes iterating through th=
+e
+memory mapped error records easier. Regardless of ARMv8.2 or ARMv8.4 suppor=
+t,
+each error record in memory mapped nodes are 64 bytes apart. Having these i=
+n
+the structure make the structure 64 bytes long making it possible for me to
+increment through error records with the increment ++ operation.
+
+If folks don't agree with that, I can change this structure to just have a
+reserved field at the end such as:
+
++ u64 res0[2];
+
+or
+
++ u8 res0[8];
+
+
+> >+      ppi_data =3D kcalloc(num_ppi, sizeof(struct aest_node_data *),
+> >+                         GFP_KERNEL);
+> >+
+> >+      for (i =3D 0; i < num_ppi; i++) {
+> >+              ppi_data[i] =3D alloc_percpu(struct aest_node_data);
+> >+              if (!ppi_data[i]) {
+> >+                      ret =3D -ENOMEM;
+> >+                      break;
+> >+              }
+> >+      }
+> >+
+> >+      if (ret) {
+> >+              pr_err("Failed percpu allocation\n");
+> >+              for (i =3D 0; i < num_ppi; i++)
+> >+                      free_percpu(ppi_data[i]);
+> I think 'ppi_data' to be freed here?
+
+Yes it should be! I'll add that in the next version.
 
 Thanks,
--Maran
-
->
-> I think physical package/die hotadd is a much bigger, uglier problem than doing the same
-> under virtualisation. Its best to do this on real hardware first so we don't miss
-> something. (cpu-topology, numa, memory, errata, timers?)
-> I'm worried that doing virtualisation first means the firmware-requirements for physical
-> hotadd stuff is "whatever Qemu does".
->
->
-> Thanks,
->
-> James
-> _______________________________________________
-> kvmarm mailing list
-> kvmarm@lists.cs.columbia.edu
-> https://lists.cs.columbia.edu/mailman/listinfo/kvmarm
-
+Tyler=
