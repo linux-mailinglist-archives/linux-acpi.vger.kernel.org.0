@@ -2,199 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24B7A63EB1
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jul 2019 02:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1151164432
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jul 2019 11:15:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726922AbfGJAwE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Jul 2019 20:52:04 -0400
-Received: from mail-eopbgr790134.outbound.protection.outlook.com ([40.107.79.134]:38912
-        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726444AbfGJAwE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 9 Jul 2019 20:52:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W/V8qq8PcUyUzN3oeR2AWvs2EVdqbpns6QTeyy8uaYE=;
- b=m4VommuXZD5Rp01D0G52i2O2rj7Mbg8qObWTHtYMilXfs0l6InlbGrVHzkrb6TT9taWVUD8FOOHtF1vN56M+mOw1y7wcOozl7hRxPq+Sb80FyYe+phWlytziopwMeMXU7GW08bfm8XqSDfqRKYX8sIeXdH60SJGOSd/VcbmCAhU=
-Received: from BYAPR01MB3975.prod.exchangelabs.com (52.135.201.14) by
- BYAPR01MB4790.prod.exchangelabs.com (20.177.226.83) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2052.18; Wed, 10 Jul 2019 00:51:47 +0000
-Received: from BYAPR01MB3975.prod.exchangelabs.com
- ([fe80::a81b:f1e7:a31f:d464]) by BYAPR01MB3975.prod.exchangelabs.com
- ([fe80::a81b:f1e7:a31f:d464%6]) with mapi id 15.20.2052.020; Wed, 10 Jul 2019
- 00:51:46 +0000
-From:   Tyler Baicar OS <baicar@os.amperecomputing.com>
-To:     James Morse <james.morse@arm.com>
-CC:     Open Source Submission <patches@amperecomputing.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "guohanjun@huawei.com" <guohanjun@huawei.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "Matteo.Carlini@arm.com" <Matteo.Carlini@arm.com>,
-        "Andrew.Murray@arm.com" <Andrew.Murray@arm.com>
-Subject: Re: [PATCH RFC 2/4] arm64: mm: Add RAS extension system register
- check to SEA handling
-Thread-Topic: [PATCH RFC 2/4] arm64: mm: Add RAS extension system register
- check to SEA handling
-Thread-Index: AQHVMPZvV84yhcAYOk+DNBn1Cdw2C6bAhfiAgAKLP64=
-Date:   Wed, 10 Jul 2019 00:51:46 +0000
-Message-ID: <BYAPR01MB39754DFAF8130743448FDEC6E3F00@BYAPR01MB3975.prod.exchangelabs.com>
-References: <1562086280-5351-1-git-send-email-baicar@os.amperecomputing.com>
- <1562086280-5351-3-git-send-email-baicar@os.amperecomputing.com>,<df262b97-eda2-0556-d6ef-532a0d697131@arm.com>
-In-Reply-To: <df262b97-eda2-0556-d6ef-532a0d697131@arm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=baicar@os.amperecomputing.com; 
-x-originating-ip: [107.15.51.194]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 25ea764d-2bad-4627-5263-08d704d0c91b
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:BYAPR01MB4790;
-x-ms-traffictypediagnostic: BYAPR01MB4790:
-x-ms-exchange-purlcount: 1
-x-microsoft-antispam-prvs: <BYAPR01MB4790376A84B638F1C85378B7E3F00@BYAPR01MB4790.prod.exchangelabs.com>
-x-ms-oob-tlc-oobclassifiers: OLM:5516;
-x-forefront-prvs: 0094E3478A
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(136003)(39830400003)(346002)(376002)(366004)(396003)(189003)(199004)(8676002)(7736002)(54906003)(81166006)(25786009)(8936002)(14454004)(14444005)(486006)(478600001)(186003)(102836004)(81156014)(11346002)(4326008)(966005)(3846002)(305945005)(446003)(68736007)(53546011)(99286004)(76176011)(6916009)(6436002)(6246003)(476003)(26005)(2906002)(7696005)(256004)(6116002)(316002)(66946007)(74316002)(91956017)(86362001)(52536014)(64756008)(71200400001)(9686003)(71190400001)(76116006)(66476007)(66446008)(33656002)(66066001)(7416002)(55016002)(53936002)(229853002)(6506007)(6306002)(5660300002)(66556008);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR01MB4790;H:BYAPR01MB3975.prod.exchangelabs.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:0;
-received-spf: None (protection.outlook.com: os.amperecomputing.com does not
- designate permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: fuXocvV0pWjEYBY40KX1ca3xre+GTKWzh4K20ho3PAsOCf1w6at7aBxLrmQBp7S+HPzCVIQcHj5LeMYT6jyg9Ow2ohYr0Z6FPYF4EpSAd3LquHO526RPojFh2SisZKdpONGjabaPuVF5zgi0Kb29y9wrTZyfLjxleQmtPCu7J9RZAmb+cP0SDY32fihTDglAPRBZitSFgQcyUk/7Icwwf8KFD8w7eYJHLKp8vaiSUrdZStVP1jkKIux4PuM4OQfyHiG4QrRi3+s2NqlQD40KQYotqyj+XlFJLUWXhG3TYCJ85IYodm53TP/1GquvuScuLo683t4+RwH05HXDXuLscFJ8q2nXUpN6WcKB1DL926DtQpVokkQjFjiX3NSW3EwxT72YBG7Z7bYHWftDvZI215IOx44tKQPT2eEzvQppKuw=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1727645AbfGJJPK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Jul 2019 05:15:10 -0400
+Received: from foss.arm.com ([217.140.110.172]:58178 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726580AbfGJJPK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 10 Jul 2019 05:15:10 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CA65A344;
+        Wed, 10 Jul 2019 02:15:08 -0700 (PDT)
+Received: from [10.1.197.61] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 49BF13F246;
+        Wed, 10 Jul 2019 02:15:07 -0700 (PDT)
+Subject: Re: [RFC PATCH v2 0/3] Support CPU hotplug for ARM64
+To:     Maran Wilson <maran.wilson@oracle.com>,
+        James Morse <james.morse@arm.com>,
+        Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Cc:     guohanjun@huawei.com, john.garry@huawei.com, rjw@rjwysocki.net,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        huawei.libin@huawei.com, jonathan.cameron@huawei.com,
+        kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org
+References: <1561776155-38975-1-git-send-email-wangxiongfeng2@huawei.com>
+ <82879258-46a7-a6e9-ee54-fc3692c1cdc3@arm.com>
+ <51cc9a5c-9968-c4b1-0bc7-870f44a3a761@oracle.com>
+From:   Marc Zyngier <marc.zyngier@arm.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=marc.zyngier@arm.com; prefer-encrypt=mutual; keydata=
+ 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
+ Z46HaNmN2hZS/oJ69c1DI5Rcww==
+Organization: ARM Ltd
+Message-ID: <06ef13e1-fffe-d4a2-721e-f666f331fb3c@arm.com>
+Date:   Wed, 10 Jul 2019 10:15:05 +0100
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25ea764d-2bad-4627-5263-08d704d0c91b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jul 2019 00:51:46.8664
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Baicar@os.amperecomputing.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR01MB4790
+In-Reply-To: <51cc9a5c-9968-c4b1-0bc7-870f44a3a761@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 8, 2019 at 10:10 AM James Morse <james.morse@arm.com> wrote:
-> On 02/07/2019 17:51, Tyler Baicar OS wrote:
-> > On systems that support the ARM RAS extension, synchronous external
-> > abort syndrome information could be captured in the core's RAS extensio=
-n
-> > system registers. So, when handling SEAs check the RAS system registers
-> > for error syndrome information.
->
-> > diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> > index 2d11501..76b42ca 100644
-> > --- a/arch/arm64/mm/fault.c
-> > +++ b/arch/arm64/mm/fault.c
-> > @@ -37,6 +37,7 @@
-> >  #include <asm/pgtable.h>
-> >  #include <asm/tlbflush.h>
-> >  #include <asm/traps.h>
-> > +#include <asm/ras.h>
-> >=20
-> >  struct fault_info {
-> >       int     (*fn)(unsigned long addr, unsigned int esr,
-> > @@ -632,6 +633,8 @@ static int do_sea(unsigned long addr, unsigned int =
-esr, struct pt_regs *regs)
-> >=20
-> >       inf =3D esr_to_fault_info(esr);
-> >=20
-> > +     arch_arm_ras_report_error();
-> > +
-> >       /*
-> >        * Return value ignored as we rely on signal merging.
-> >        * Future patches will make this more robust.
-> >
->
-> If we interrupted a preemptible context, do_sea() is preemptible too... T=
-his means we
-> can't know if we're still running on the same CPU as the one that took th=
-e external-abort.
-> (until this series, it hasn't mattered).
->
-> Fixing this means cramming something into entry.S's el1_da, as this may u=
-nmask interrupts
-> before calling do_mem_abort(). But its going to be ugly because some of d=
-o_mem_abort()s
-> ESR values need to be preemptible because they sleep, e.g. page-faults ca=
-lling
-> handle_mm_fault().
-> For do_sea(), do_exit() will 'fix' the preempt count if we kill the threa=
-d, but if we
-> don't, it still needs to be balanced. Doing all this in assembly is going=
- to be unreadable!
->
-> Mark Rutland has a series to move the entry assembly into C [0]. Based on=
- that that it
-> should be possible for the new el1_abort() to spot a Synchronous-External=
--Abort ESR, and
-> wrap the do_mem_abort() with preempt enable/disable, before inheriting th=
-e flags. (which
-> for synchronous exceptions, I think we should always do)
->
-> [0] https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/log/?h=
-=3Darm64/entry-deasm
+On 09/07/2019 20:06, Maran Wilson wrote:
+> On 7/5/2019 3:12 AM, James Morse wrote:
+>> Hi guys,
+>>
+>> (CC: +kvmarm list)
+>>
+>> On 29/06/2019 03:42, Xiongfeng Wang wrote:
+>>> This patchset mark all the GICC node in MADT as possible CPUs even though it
+>>> is disabled. But only those enabled GICC node are marked as present CPUs.
+>>> So that kernel will initialize some CPU related data structure in advance before
+>>> the CPU is actually hot added into the system. This patchset also implement
+>>> 'acpi_(un)map_cpu()' and 'arch_(un)register_cpu()' for ARM64. These functions are
+>>> needed to enable CPU hotplug.
+>>>
+>>> To support CPU hotplug, we need to add all the possible GICC node in MADT
+>>> including those CPUs that are not present but may be hot added later. Those
+>>> CPUs are marked as disabled in GICC nodes.
+>> ... what do you need this for?
+>>
+>> (The term cpu-hotplug in the arm world almost never means hot-adding a new package/die to
+>> the platform, we usually mean taking CPUs online/offline for power management. e.g.
+>> cpuhp_offline_cpu_device())
+>>
+>> It looks like you're adding support for hot-adding a new package/die to the platform ...
+>> but only for virtualisation.
+>>
+>> I don't see why this is needed for virtualisation. The in-kernel irqchip needs to know
+>> these vcpu exist before you can enter the guest for the first time. You can't create them
+>> late. At best you're saving the host scheduling a vcpu that is offline. Is this really a
+>> problem?
+>>
+>> If we moved PSCI support to user-space, you could avoid creating host vcpu threads until
+>> the guest brings the vcpu online, which would solve that problem, and save the host
+>> resources for the thread too. (and its acpi/dt agnostic)
+>>
+>> I don't see the difference here between booting the guest with 'maxcpus=1', and bringing
+>> the vcpu online later. The only real difference seems to be moving the can-be-online
+>> policy into the hypervisor/VMM...
+> 
+> Isn't that an important distinction from a cloud service provider's 
+> perspective?
+> 
+> As far as I understand it, you also need CPU hotplug capabilities to 
+> support things like Kata runtime under Kubernetes. i.e. when 
+> implementing your containers in the form of light weight VMs for the 
+> additional security ... and the orchestration layer cannot determine 
+> ahead of time how much CPU/memory resources are going to be needed to 
+> run the pod(s).
 
-Hey James,
+Why would it be any different? You can pre-allocate your vcpus, leave
+them parked until some external agent decides to signal the container
+that it it can use another bunch of CPUs. At that point, the container
+must actively boot these vcpus (they aren't going to come up by magic).
 
-Good catch! I didn't think the synchronous route was preemptible.
+Given that you must have sized your virtual platform to deal with the
+maximum set of resources you anticipate (think of the GIC
+redistributors, for example), I really wonder what you gain here.
 
-I wasn't seeing this issue when testing this on emulation, but I was able t=
-o
-test and prove the issue on a Neoverse N1 SDP:
+> 
+> Thanks,
+> -Maran
+> 
+>>
+>> I think physical package/die hotadd is a much bigger, uglier problem than doing the same
+>> under virtualisation. Its best to do this on real hardware first so we don't miss
+>> something. (cpu-topology, numa, memory, errata, timers?)
+>> I'm worried that doing virtualisation first means the firmware-requirements for physical
+>> hotadd stuff is "whatever Qemu does".
 
-root@genericarmv8:~# echo 0x100000000 > /proc/cached_read
-[   42.985622] Reading from address 0x100000000
-[   42.989893] WARNING: CPU: 0 PID: 2812 at /home/tyler/neoverse/arm-refere=
-nce-
-platforms/linux/arch/arm64/kernel/cpufeature.c:1940 this_cpu_has_cap+0x68/0=
-x78
-[..]
-[   43.119083] Call trace:
-[   43.121515]  this_cpu_has_cap+0x68/0x78
-[   43.125338]  do_sea+0x34/0x70
-[   43.128292]  do_mem_abort+0x3c/0x98
-[   43.131765]  el1_da+0x20/0x94
-[   43.134722]  cached_read+0x30/0x68
-[   43.138112]  simple_attr_write+0xbc/0x128
-[   43.142109]  proc_reg_write+0x60/0xa8
-[   43.145757]  __vfs_write+0x18/0x40
-[   43.149145]  vfs_write+0xa4/0x1b8
-[   43.152445]  ksys_write+0x64/0xe0
-[   43.155746]  __arm64_sys_write+0x14/0x20
-[   43.159654]  el0_svc_common.constprop.0+0xa8/0x100
-[   43.164430]  el0_svc_handler+0x28/0x78
-[   43.168165]  el0_svc+0x8/0xc
-[   43.171031] ---[ end trace 2c27619659261a1d ]---
-[   43.175647] Internal error: synchronous external abort: 96000410 [#1]
-PREEMPT SMP
-[..]
-
-That warning is because it's preemptible:
-
-if (!WARN_ON(preemptible()) && n < ARM64_NCAPS) {
-
-I'll pull Mark's series in and add the preempt enable/disable around the ca=
-ll
-to do_mem_abort() in el1_abort() and test that out!
+For sure, I want to model the virtualization side after the actual HW,
+and not the other way around. Live reconfiguration of the interrupt
+topology (and thus the whole memory map) will certainly be challenging.
 
 Thanks,
-Tyler=
+
+	M.
+-- 
+Jazz is not dead. It just smells funny...
