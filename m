@@ -2,116 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D6FC165E43
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2019 19:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9499565F84
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2019 20:35:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728764AbfGKRMt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 11 Jul 2019 13:12:49 -0400
-Received: from mga12.intel.com ([192.55.52.136]:20635 "EHLO mga12.intel.com"
+        id S1729072AbfGKSfU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 Jul 2019 14:35:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44258 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728555AbfGKRMs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 11 Jul 2019 13:12:48 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Jul 2019 10:12:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,479,1557212400"; 
-   d="scan'208";a="249848570"
-Received: from bartok.jf.intel.com ([10.54.75.137])
-  by orsmga001.jf.intel.com with ESMTP; 11 Jul 2019 10:12:48 -0700
-From:   Erik Schmauss <erik.schmauss@intel.com>
-To:     rjw@rjwysocki.net, linux-acpi@vger.kernel.org
-Cc:     Erik Schmauss <erik.schmauss@intel.com>,
-        Bob Moore <robert.moore@intel.com>
-Subject: [PATCH v2 1/2] ACPICA: Update table load object initialization
-Date:   Thu, 11 Jul 2019 09:58:21 -0700
-Message-Id: <20190711165821.16372-1-erik.schmauss@intel.com>
-X-Mailer: git-send-email 2.17.2
+        id S1729071AbfGKSfJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 11 Jul 2019 14:35:09 -0400
+Subject: Re: [GIT PULL] ACPI fix for v5.3-rc1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1562870108;
+        bh=uLI8XsUrsMivjpRt4GLRCsqFss+e5wuvCE81sVyzSXQ=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=pjWk15XfEhaAZYrI0Le8Nv+09mX0zlWVsLN/FsmHAIBfxYmFkI5PPJ9VDvgjYor7C
+         d6+Gq+q0dCh9rtU8NrRx80tKrFT/cMBoUxIh0InrrKLiuh4jh/ePFkW6k1xjLLrVze
+         01sNQqPWhjy2VIpjP3iiJHwjFnMtRt/rBGliXWDw=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0jTMK6rMomux6JfmRX_nRxZ+JqA_V8WKt-UJTGus6TfOQ@mail.gmail.com>
+References: <CAJZ5v0jTMK6rMomux6JfmRX_nRxZ+JqA_V8WKt-UJTGus6TfOQ@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0jTMK6rMomux6JfmRX_nRxZ+JqA_V8WKt-UJTGus6TfOQ@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
+ acpi-5.3-rc1-2
+X-PR-Tracked-Commit-Id: 6cf7fb5a95dec9743f4bfd96f9ece580a355cdd1
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: a131c2bf165684315f606fdd88cf80be22ba32f3
+Message-Id: <156287010892.13847.8485955181846012272.pr-tracker-bot@kernel.org>
+Date:   Thu, 11 Jul 2019 18:35:08 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-ACPICA commit c7ef9f3526765bed8930825dda1eed1a274b9668
+The pull request you sent on Thu, 11 Jul 2019 14:40:40 +0200:
 
-Use the common internal "initialize objects" interface
-Affects:
-Load()
-load_table()
-acpi_load_table
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.3-rc1-2
 
-Link: https://github.com/acpica/acpica/commit/c7ef9f35
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/a131c2bf165684315f606fdd88cf80be22ba32f3
 
-Tested-by: Rong Chen <rong.a.chen@intel.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Erik Schmauss <erik.schmauss@intel.com>
----
- drivers/acpi/acpica/exconfig.c | 18 ++++++++----------
- drivers/acpi/acpica/tbxfload.c | 10 +++-------
- 2 files changed, 11 insertions(+), 17 deletions(-)
+Thank you!
 
-diff --git a/drivers/acpi/acpica/exconfig.c b/drivers/acpi/acpica/exconfig.c
-index 587aeeeb5070..46a8baf28bd0 100644
---- a/drivers/acpi/acpica/exconfig.c
-+++ b/drivers/acpi/acpica/exconfig.c
-@@ -174,12 +174,11 @@ acpi_ex_load_table_op(struct acpi_walk_state *walk_state,
- 		return_ACPI_STATUS(status);
- 	}
- 
--	/* Complete the initialization/resolution of package objects */
-+	/* Complete the initialization/resolution of new objects */
- 
--	status = acpi_ns_walk_namespace(ACPI_TYPE_PACKAGE, ACPI_ROOT_OBJECT,
--					ACPI_UINT32_MAX, 0,
--					acpi_ns_init_one_package, NULL, NULL,
--					NULL);
-+	acpi_ex_exit_interpreter();
-+	acpi_ns_initialize_objects();
-+	acpi_ex_enter_interpreter();
- 
- 	/* Parameter Data (optional) */
- 
-@@ -437,12 +436,11 @@ acpi_ex_load_op(union acpi_operand_object *obj_desc,
- 		return_ACPI_STATUS(status);
- 	}
- 
--	/* Complete the initialization/resolution of package objects */
-+	/* Complete the initialization/resolution of new objects */
- 
--	status = acpi_ns_walk_namespace(ACPI_TYPE_PACKAGE, ACPI_ROOT_OBJECT,
--					ACPI_UINT32_MAX, 0,
--					acpi_ns_init_one_package, NULL, NULL,
--					NULL);
-+	acpi_ex_exit_interpreter();
-+	acpi_ns_initialize_objects();
-+	acpi_ex_enter_interpreter();
- 
- 	/* Store the ddb_handle into the Target operand */
- 
-diff --git a/drivers/acpi/acpica/tbxfload.c b/drivers/acpi/acpica/tbxfload.c
-index ef8f8a9f3c9c..86f1693f6d29 100644
---- a/drivers/acpi/acpica/tbxfload.c
-+++ b/drivers/acpi/acpica/tbxfload.c
-@@ -297,15 +297,11 @@ acpi_status acpi_load_table(struct acpi_table_header *table)
- 	status = acpi_tb_install_and_load_table(ACPI_PTR_TO_PHYSADDR(table),
- 						ACPI_TABLE_ORIGIN_EXTERNAL_VIRTUAL,
- 						FALSE, &table_index);
--
- 	if (ACPI_SUCCESS(status)) {
--		/* Complete the initialization/resolution of package objects */
- 
--		status = acpi_ns_walk_namespace(ACPI_TYPE_PACKAGE,
--						ACPI_ROOT_OBJECT,
--						ACPI_UINT32_MAX, 0,
--						acpi_ns_init_one_package,
--						NULL, NULL, NULL);
-+		/* Complete the initialization/resolution of new objects */
-+
-+		acpi_ns_initialize_objects();
- 	}
- 
- 	return_ACPI_STATUS(status);
 -- 
-2.17.2
-
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
