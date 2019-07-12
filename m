@@ -2,123 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73B3A66B64
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2019 13:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8DDA66BC4
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2019 13:47:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726428AbfGLLMG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Jul 2019 07:12:06 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:53624 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726050AbfGLLMG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Jul 2019 07:12:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=It5jdfKhVmYVEt2Nrxa1ZDUn89wu3dnyJAHiP9qsY30=; b=XoGg2KePmkIpdC3B0kUZ7Tb2m
-        LEO73lBhtob0kk2Q+fMch7o8KyW9XW5SW2zZJWtMeVgjr9uXT5sKGe9pYAEStu/imSHtwcWIH+jwR
-        2rDlu/g7t9u/RxPTY7615E6o1hot1C/f4wmZwyUUwMGknaszEbF/uzPXj4AymDscDt6IVHRH6qMoc
-        AYZl06xEbp6NonVv3HkCwoDaur1zxjcYG1U2ESixlaTWZ4TelqBbDltIxaqydkDJZJmMs7UdVKWCr
-        XMqNArDoslHHDK1HxePnjZAzl98OtiiqECmG2gP+kMQuX5/oUHkDlZqfWTqmlYrxNWNArkVkw1WCt
-        rEwBDifEw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hltSZ-0003PS-2W; Fri, 12 Jul 2019 11:11:27 +0000
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 78D742080B963; Fri, 12 Jul 2019 13:11:25 +0200 (CEST)
-Date:   Fri, 12 Jul 2019 13:11:25 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Borislav Petkov <bp@alien8.de>, c0d1n61at3@gmail.com,
-        "David S. Miller" <davem@davemloft.net>, edumazet@google.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Josh Triplett <josh@joshtriplett.org>, keescook@chromium.org,
-        kernel-hardening@lists.openwall.com,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        neilb@suse.com, netdev@vger.kernel.org, oleg@redhat.com,
-        "Paul E. McKenney" <paulmck@linux.ibm.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
-        rcu@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
-        Tejun Heo <tj@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, will@kernel.org,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
-Subject: Re: [PATCH v1 1/6] rcu: Add support for consolidated-RCU reader
- checking
-Message-ID: <20190712111125.GT3402@hirez.programming.kicks-ass.net>
-References: <20190711234401.220336-1-joel@joelfernandes.org>
- <20190711234401.220336-2-joel@joelfernandes.org>
+        id S1726525AbfGLLrq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Jul 2019 07:47:46 -0400
+Received: from mga18.intel.com ([134.134.136.126]:20311 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726250AbfGLLrq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 12 Jul 2019 07:47:46 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jul 2019 04:47:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,482,1557212400"; 
+   d="scan'208";a="157116847"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.145])
+  by orsmga007.jf.intel.com with ESMTP; 12 Jul 2019 04:47:42 -0700
+Received: from andy by smile with local (Exim 4.92)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1hlu1c-0006I1-3T; Fri, 12 Jul 2019 14:47:40 +0300
+Date:   Fri, 12 Jul 2019 14:47:40 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Keith Busch <keith.busch@intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        clang-built-linux@googlegroups.com
+Subject: Re: [PATCH] acpi: fix false-positive -Wuninitialized warning
+Message-ID: <20190712114740.GX9224@smile.fi.intel.com>
+References: <20190712090148.36582-1-arnd@arndb.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190711234401.220336-2-joel@joelfernandes.org>
+In-Reply-To: <20190712090148.36582-1-arnd@arndb.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 11, 2019 at 07:43:56PM -0400, Joel Fernandes (Google) wrote:
-> +int rcu_read_lock_any_held(void)
+On Fri, Jul 12, 2019 at 11:01:21AM +0200, Arnd Bergmann wrote:
+> clang gets confused by an uninitialized variable in what looks
+> to it like a never executed code path:
+> 
+> arch/x86/kernel/acpi/boot.c:618:13: error: variable 'polarity' is uninitialized when used here [-Werror,-Wuninitialized]
+>         polarity = polarity ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
+>                    ^~~~~~~~
+> arch/x86/kernel/acpi/boot.c:606:32: note: initialize the variable 'polarity' to silence this warning
+>         int rc, irq, trigger, polarity;
+>                                       ^
+>                                        = 0
+> arch/x86/kernel/acpi/boot.c:617:12: error: variable 'trigger' is uninitialized when used here [-Werror,-Wuninitialized]
+>         trigger = trigger ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
+>                   ^~~~~~~
+> arch/x86/kernel/acpi/boot.c:606:22: note: initialize the variable 'trigger' to silence this warning
+>         int rc, irq, trigger, polarity;
+>                             ^
+>                              = 0
+> 
+> This is unfortunately a design decision in clang and won't be fixed.
+> 
+> Changing the acpi_get_override_irq() macro to an inline function
+> reliably avoids the issue.
+
+In this particular case it looks fine (perhaps in the future -1 shall be
+replaced with proper error code).
+
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+But in general it looks like clang obscures use of pretty well working macros.
+
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  include/linux/acpi.h | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index a95cce5e82e7..9426b9aaed86 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -324,7 +324,10 @@ struct irq_domain *acpi_irq_create_hierarchy(unsigned int flags,
+>  #ifdef CONFIG_X86_IO_APIC
+>  extern int acpi_get_override_irq(u32 gsi, int *trigger, int *polarity);
+>  #else
+> -#define acpi_get_override_irq(gsi, trigger, polarity) (-1)
+> +static inline int acpi_get_override_irq(u32 gsi, int *trigger, int *polarity)
 > +{
-> +	int lockdep_opinion = 0;
-> +
-> +	if (!debug_lockdep_rcu_enabled())
-> +		return 1;
-> +	if (!rcu_is_watching())
-> +		return 0;
-> +	if (!rcu_lockdep_current_cpu_online())
-> +		return 0;
-> +
-> +	/* Preemptible RCU flavor */
-> +	if (lock_is_held(&rcu_lock_map))
-
-you forgot debug_locks here.
-
-> +		return 1;
-> +
-> +	/* BH flavor */
-> +	if (in_softirq() || irqs_disabled())
-
-I'm not sure I'd put irqs_disabled() under BH, also this entire
-condition is superfluous, see below.
-
-> +		return 1;
-> +
-> +	/* Sched flavor */
-> +	if (debug_locks)
-> +		lockdep_opinion = lock_is_held(&rcu_sched_lock_map);
-> +	return lockdep_opinion || !preemptible();
-
-that !preemptible() turns into:
-
-  !(preempt_count()==0 && !irqs_disabled())
-
-which is:
-
-  preempt_count() != 0 || irqs_disabled()
-
-and already includes irqs_disabled() and in_softirq().
-
+> +	return -1;
 > +}
+>  #endif
+>  /*
+>   * This function undoes the effect of one call to acpi_register_gsi().
+> -- 
+> 2.20.0
+> 
 
-So maybe something lke:
-
-	if (debug_locks && (lock_is_held(&rcu_lock_map) ||
-			    lock_is_held(&rcu_sched_lock_map)))
-		return true;
-
-	return !preemptible();
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
