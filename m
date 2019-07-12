@@ -2,136 +2,202 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F7DC67385
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2019 18:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DCF16738C
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2019 18:47:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726602AbfGLQoe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Jul 2019 12:44:34 -0400
-Received: from mail-eopbgr790052.outbound.protection.outlook.com ([40.107.79.52]:35680
-        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726449AbfGLQoe (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 12 Jul 2019 12:44:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector1-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DJh2QdKyRDeI+h1cLj/I3dSJssXGfixlPTxQkwmnFlI=;
- b=fK2Lw2bxeMym8IXms4CqzOPrZhg/nOKBZaOM0MWrglqJ+2gNKO4N+BwC27YbXMlVYrCgPRwD/WtqsQhSRMd7vHnfCtbP0EwGzTueAY/HYjILSCYhaPnvD++/25r3D3viBGGb/0Fg/EK0P1rnmt5v/qEO4czDls0Ya9llgLtiVOY=
-Received: from SN6PR12MB2736.namprd12.prod.outlook.com (52.135.107.27) by
- SN6PR12MB2749.namprd12.prod.outlook.com (52.135.107.28) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2052.19; Fri, 12 Jul 2019 16:44:26 +0000
-Received: from SN6PR12MB2736.namprd12.prod.outlook.com
- ([fe80::a475:e612:8e1e:ed28]) by SN6PR12MB2736.namprd12.prod.outlook.com
- ([fe80::a475:e612:8e1e:ed28%3]) with mapi id 15.20.2073.012; Fri, 12 Jul 2019
- 16:44:26 +0000
-From:   Janakarajan Natarajan <jnataraj@amd.com>
-To:     Viresh Kumar <viresh.kumar@linaro.org>
-CC:     "Natarajan, Janakarajan" <Janakarajan.Natarajan@amd.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Schmauss <erik.schmauss@intel.com>,
-        "Ghannam, Yazen" <Yazen.Ghannam@amd.com>
-Subject: Re: [PATCHv3 6/6] drivers/cpufreq: Add a CPUFreq driver for AMD
- processors (Fam17h and later)
-Thread-Topic: [PATCHv3 6/6] drivers/cpufreq: Add a CPUFreq driver for AMD
- processors (Fam17h and later)
-Thread-Index: AQHVN06AuI3rG5PgEkGK1o9FtbMXtabE8IYAgABg2ICAAP63gIAA42sA
-Date:   Fri, 12 Jul 2019 16:44:25 +0000
-Message-ID: <3199bd27-68d6-3cda-7c03-fca6eeda96b9@amd.com>
-References: <cover.1562781484.git.Janakarajan.Natarajan@amd.com>
- <e48c6b836f996a16472c777612f1e3343c542077.1562781484.git.Janakarajan.Natarajan@amd.com>
- <20190711061208.yqxt4ps67vmsy7sp@vireshk-i7>
- <eb208b15-d6b5-192d-b600-1f791c91eb4c@amd.com>
- <20190712031025.mylhtzehv3vs6db3@vireshk-i7>
-In-Reply-To: <20190712031025.mylhtzehv3vs6db3@vireshk-i7>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: SN6PR04CA0061.namprd04.prod.outlook.com
- (2603:10b6:805:2a::38) To SN6PR12MB2736.namprd12.prod.outlook.com
- (2603:10b6:805:77::27)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Janakarajan.Natarajan@amd.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [165.204.77.1]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: fd67e51f-25fd-4415-a162-08d706e83315
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:SN6PR12MB2749;
-x-ms-traffictypediagnostic: SN6PR12MB2749:
-x-microsoft-antispam-prvs: <SN6PR12MB274900989DEB629C66B0486BE7F20@SN6PR12MB2749.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 00963989E5
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(376002)(396003)(366004)(346002)(136003)(39860400002)(189003)(199004)(6512007)(186003)(6916009)(486006)(99286004)(53936002)(6116002)(3846002)(5660300002)(386003)(6506007)(4326008)(305945005)(8676002)(26005)(229853002)(102836004)(52116002)(76176011)(53546011)(81156014)(31686004)(81166006)(71190400001)(71200400001)(66066001)(6486002)(54906003)(316002)(8936002)(7736002)(6436002)(14454004)(2906002)(6246003)(36756003)(66946007)(66556008)(66446008)(256004)(14444005)(2616005)(64756008)(66476007)(68736007)(25786009)(446003)(476003)(31696002)(478600001)(11346002);DIR:OUT;SFP:1101;SCL:1;SRVR:SN6PR12MB2749;H:SN6PR12MB2736.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: BPWCYajQeLONG/40WMoyQeys6yqff+/lLDXoZMLhYwnOGxg+w15A4/iQ2DQ3UwrOkl86e8i//wYXd6pgT0CbLmWFhUTvWr64L8vbkGgm2P7mOdXd3dGH7Xjvn8t7LyR2l+D126YnQzrQBqcAakT204wWBs3QdZWPlBAG80uPJUMVln7UKZ8s7/5KpCUDYxz5VbqapkrJcpEMlBJlEd0mMmudYipO6ckhQbok4WCmgoLYw1DVVxLR2BoIv0O4hiZWboNlts87zh70O9Ltbvv5DoAuHqw1/zy5xPbc2Tu+qfSw5mTuBfbGUHQC6xmmGjjafJNMAzGNmaNNAAq10W4WGk2eYhVbMM1UCH6cTLaZpEwzYmnNiA+Nl0NBsfS821coIYQq0jHLBiPaAgBdsy8dptfSa9wNu6AxU7soEj+/AuY=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <38782C1E0788974C9CB662384F315DA5@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1726930AbfGLQrh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Jul 2019 12:47:37 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:35344 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726907AbfGLQrh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 12 Jul 2019 12:47:37 -0400
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6CGbNjc009064;
+        Fri, 12 Jul 2019 12:45:34 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2tpwg69bjw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 12 Jul 2019 12:45:34 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x6CGc9J3011494;
+        Fri, 12 Jul 2019 12:45:33 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2tpwg69bj9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 12 Jul 2019 12:45:33 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+        by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x6CGZk3u012632;
+        Fri, 12 Jul 2019 16:45:32 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
+        by ppma01wdc.us.ibm.com with ESMTP id 2tjk974y8k-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 12 Jul 2019 16:45:32 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
+        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x6CGjWjN49938828
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 12 Jul 2019 16:45:32 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 023ACB2064;
+        Fri, 12 Jul 2019 16:45:32 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A010DB2067;
+        Fri, 12 Jul 2019 16:45:31 +0000 (GMT)
+Received: from paulmck-ThinkPad-W541 (unknown [9.85.195.235])
+        by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+        Fri, 12 Jul 2019 16:45:31 +0000 (GMT)
+Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
+        id 9973216C99E6; Fri, 12 Jul 2019 09:45:31 -0700 (PDT)
+Date:   Fri, 12 Jul 2019 09:45:31 -0700
+From:   "Paul E. McKenney" <paulmck@linux.ibm.com>
+To:     Joel Fernandes <joel@joelfernandes.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        linux-kernel@vger.kernel.org,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Borislav Petkov <bp@alien8.de>, c0d1n61at3@gmail.com,
+        "David S. Miller" <davem@davemloft.net>, edumazet@google.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Josh Triplett <josh@joshtriplett.org>, keescook@chromium.org,
+        kernel-hardening@lists.openwall.com,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        neilb@suse.com, netdev@vger.kernel.org, oleg@redhat.com,
+        Pavel Machek <pavel@ucw.cz>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
+        rcu@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+        Tejun Heo <tj@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, will@kernel.org,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
+Subject: Re: [PATCH v1 1/6] rcu: Add support for consolidated-RCU reader
+ checking
+Message-ID: <20190712164531.GW26519@linux.ibm.com>
+Reply-To: paulmck@linux.ibm.com
+References: <20190711234401.220336-1-joel@joelfernandes.org>
+ <20190711234401.220336-2-joel@joelfernandes.org>
+ <20190712111125.GT3402@hirez.programming.kicks-ass.net>
+ <20190712151051.GB235410@google.com>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd67e51f-25fd-4415-a162-08d706e83315
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jul 2019 16:44:25.8497
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jnataraj@amd.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2749
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190712151051.GB235410@google.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-12_04:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907120171
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-T24gNy8xMS8yMDE5IDEwOjEwIFBNLCBWaXJlc2ggS3VtYXIgd3JvdGU6DQo+IE9uIDExLTA3LTE5
-LCAxNjo1OCwgSmFuYWthcmFqYW4gTmF0YXJhamFuIHdyb3RlOg0KPj4gT24gNy8xMS8yMDE5IDE6
-MTIgQU0sIFZpcmVzaCBLdW1hciB3cm90ZToNCj4+PiBPbiAxMC0wNy0xOSwgMTg6MzcsIE5hdGFy
-YWphbiwgSmFuYWthcmFqYW4gd3JvdGU6DQo+Pj4+ICtzdGF0aWMgaW50IGFtZF9jcHVmcmVxX2Nw
-dV9pbml0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5KQ0KPj4+PiArew0KPj4+PiArCXJl
-dHVybiAwOw0KPj4+PiArfQ0KPj4+PiArDQo+Pj4+ICtzdGF0aWMgaW50IGFtZF9jcHVmcmVxX2Nw
-dV9leGl0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5KQ0KPj4+PiArew0KPj4+PiArCXJl
-dHVybiAwOw0KPj4+PiArfQ0KPj4+PiArDQo+Pj4+ICtzdGF0aWMgaW50IGFtZF9jcHVmcmVxX2Nw
-dV92ZXJpZnkoc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3kpDQo+Pj4+ICt7DQo+Pj4+ICsJ
-cmV0dXJuIDA7DQo+Pj4+ICt9DQo+Pj4+ICsNCj4+Pj4gK3N0YXRpYyBpbnQgYW1kX2NwdWZyZXFf
-Y3B1X3RhcmdldF9pbmRleChzdHJ1Y3QgY3B1ZnJlcV9wb2xpY3kgKnBvbGljeSwNCj4+Pj4gKwkJ
-CQkJdW5zaWduZWQgaW50IGluZGV4KQ0KPj4+PiArew0KPj4+PiArCXJldHVybiAwOw0KPj4+PiAr
-fQ0KPj4+IEFsbCBlbXB0eSBoZWxwZXJzID8gVGhlcmUgaXMgbm90aGluZyB5b3UgbmVlZCB0byBk
-byA/DQo+Pg0KPj4gV2hlbiB3ZSBwb3N0ZWQgdjIgb2YgdGhpcyBwYXRjaHNldCwgUmFmYWVsIGxl
-dCB1cyBrbm93IHRoYXQgaGUgd2FzDQo+PiB1bmNvbWZvcnRhYmxlDQo+Pg0KPj4gZ29pbmcgYmVo
-aW5kIHRoZSAoYWNwaS1jcHVmcmVxKSBkcml2ZXJzIGJhY2sgYnkgbGV0dGluZyB0aGUgdXNlcg0K
-Pj4gY29tbXVuaWNhdGUgZGlyZWN0bHkNCj4+DQo+PiB3aXRoIHRoZSBwbGF0Zm9ybS4gVGhhdCdz
-IHRoZSByZWFzb24gd2UgaGF2ZSBhbiBlbXB0eSBkcml2ZXIgd2hvc2UNCj4+IHByaW1hcnkgcHVy
-cG9zZQ0KPj4NCj4+IGlzIHRvIGV4cG9zZSBzeXNmcyBlbnRyaWVzIGZvciB0aGUgdXNlci4NCj4g
-SSByZWFkIGhpcyBjb21tZW50cyBub3cgYW5kIHdoYXQgaGUgc3VnZ2VzdGVkIGlzOg0KPg0KPiAi
-V2hhdCBhYm91dCBoYW5kbGluZyB0aGlzIGxpa2UgdGhlIG90aGVycyBkbywgdGhyb3VnaCBhIHBy
-b3BlciBjcHVmcmVxDQo+IGRyaXZlcj8iDQo+DQo+IEkgYW0gbm90IHN1cmUgaWYgaGUgbWVhbnQg
-c29tZXRoaW5nIGxpa2UgdGhhdCB5b3UgaGF2ZSBoZXJlLiBPbmx5IG9uZQ0KPiBjcHVmcmVxIGRy
-aXZlciBjYW4gYmUgcmVnaXN0ZXJlZCBhdCBhbnkgcG9pbnQgb2YgdGltZSB3aXRoIHRoZSBrZXJu
-ZWwsDQo+IGFuZCBzbyBpZiB0aGlzIG9uZSBpcyB0aGVyZSB0aGVuIGFjcGktY3B1ZnJlcSBvciBp
-bnRlbC1wc3RhdGUgY2FuJ3QgYmUNCj4gdGhlcmUuIFdobyB3aWxsIGRvIERWRlMgPw0KDQoNCkJ5
-IGRlZmF1bHQsIHRoZSBkcml2ZXIgaXMgZGlzYWJsZWQgYW5kIGNwdWZyZXEgZmFsbHMgYmFjayB0
-byB1c2luZyANCmFjcGktY3B1ZnJlcS4gVG8gZW5hYmxlIHRoZSBkcml2ZXIsDQoNCmEgcGFyYW1l
-dGVyIGkuZS4gYW1kX2NwdWZyZXEuY3BwY19lbmFibGU9MSBuZWVkcyB0byBiZSB1c2VkLiBUaGVu
-IHRoZSANCnVzZXIgd2lsbCBnYWluIGFjY2VzcyB0bw0KDQovc3lzL2RldmljZXMvc3lzdGVtL2Nw
-dS9jcHU8bnVtPi9hbWRfY3B1ZnJlcS97ZW5hYmxlLCBtYXhfcGVyZiwgDQptaW5fcGVyZiwgZGVz
-aXJlZF9wZXJmLCBhdXRvX3NlbF9lbmFibGV9Lg0KDQoNCm1heF9wZXJmLCBtaW5fcGVyZiBhbGxv
-d3MgdGhlIHVzZXIgdG8gaW5kaWNhdGUgdG8gdGhlIHBsYXRmb3JtIHRoZSANCnBlcmZvcm1hbmNl
-IHRoZXkgZXhwZWN0DQoNCmluIGFuIGFic3RyYWN0IHNjYWxlIFttaW5fcGVyZiB0byBtYXhfcGVy
-Zl0gaW5jbHVzaXZlLiBkZXNpcmVkX3BlcmYgaXMgDQp0aGUgcGVyZm9ybWFuY2UgdGhlIHVzZXIN
-Cg0Kd291bGQgbGlrZSB0byBpZGVhbGx5IGFjaGlldmUuIGRlc2lyZWRfcGVyZiB3aWxsIGZhbGwg
-d2l0aGluZyBtYXggYW5kIA0KbWluIHBlcmYuIEJhc2VkIG9uIHRoZSB2YWx1ZSBvZiB0aGVzZQ0K
-DQpyZWdpc3RlcnMsIHRoZSBwbGF0Zm9ybSB3aWxsIGFkanVzdCBhIG51bWJlciBvZiB2YXJpYWJs
-ZXMsIHZvbHRhZ2UgYW5kIA0KZnJlcXVlbmN5IGJlaW5nIG9uZSBvZiB0aGVtLg0KDQoNCklmIHRo
-ZSB1c2VyIHdvdWxkIHJhdGhlciBoYXZlIHRoZSBzeXN0ZW0gaGFuZGxlIGFsbCBwb3dlci9wZXJm
-b3JtYW5jZSANCmFkanVzdG1lbnRzIGJ5DQoNCml0c2VsZiwgdGhlbiB0aGV5IGNhbiBzZXQgdGhl
-IGF1dG9fc2VsX2VuYWJsZSByZWdpc3Rlci4NCg0KDQpUaGFua3MsDQoNCkphbmFrYXJhamFuDQoN
-Cg==
+On Fri, Jul 12, 2019 at 11:10:51AM -0400, Joel Fernandes wrote:
+> On Fri, Jul 12, 2019 at 01:11:25PM +0200, Peter Zijlstra wrote:
+> > On Thu, Jul 11, 2019 at 07:43:56PM -0400, Joel Fernandes (Google) wrote:
+> > > +int rcu_read_lock_any_held(void)
+> > > +{
+> > > +	int lockdep_opinion = 0;
+> > > +
+> > > +	if (!debug_lockdep_rcu_enabled())
+> > > +		return 1;
+> > > +	if (!rcu_is_watching())
+> > > +		return 0;
+> > > +	if (!rcu_lockdep_current_cpu_online())
+> > > +		return 0;
+> > > +
+> > > +	/* Preemptible RCU flavor */
+> > > +	if (lock_is_held(&rcu_lock_map))
+> > 
+> > you forgot debug_locks here.
+> 
+> Actually, it turns out debug_locks checking is not even needed. If
+> debug_locks == 0, then debug_lockdep_rcu_enabled() returns 0 and we would not
+> get to this point.
+> 
+> > > +		return 1;
+> > > +
+> > > +	/* BH flavor */
+> > > +	if (in_softirq() || irqs_disabled())
+> > 
+> > I'm not sure I'd put irqs_disabled() under BH, also this entire
+> > condition is superfluous, see below.
+> > 
+> > > +		return 1;
+> > > +
+> > > +	/* Sched flavor */
+> > > +	if (debug_locks)
+> > > +		lockdep_opinion = lock_is_held(&rcu_sched_lock_map);
+> > > +	return lockdep_opinion || !preemptible();
+> > 
+> > that !preemptible() turns into:
+> > 
+> >   !(preempt_count()==0 && !irqs_disabled())
+> > 
+> > which is:
+> > 
+> >   preempt_count() != 0 || irqs_disabled()
+> > 
+> > and already includes irqs_disabled() and in_softirq().
+> > 
+> > > +}
+> > 
+> > So maybe something lke:
+> > 
+> > 	if (debug_locks && (lock_is_held(&rcu_lock_map) ||
+> > 			    lock_is_held(&rcu_sched_lock_map)))
+> > 		return true;
+> 
+> Agreed, I will do it this way (without the debug_locks) like:
+> 
+> ---8<-----------------------
+> 
+> diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
+> index ba861d1716d3..339aebc330db 100644
+> --- a/kernel/rcu/update.c
+> +++ b/kernel/rcu/update.c
+> @@ -296,27 +296,15 @@ EXPORT_SYMBOL_GPL(rcu_read_lock_bh_held);
+>  
+>  int rcu_read_lock_any_held(void)
+>  {
+> -	int lockdep_opinion = 0;
+> -
+>  	if (!debug_lockdep_rcu_enabled())
+>  		return 1;
+>  	if (!rcu_is_watching())
+>  		return 0;
+>  	if (!rcu_lockdep_current_cpu_online())
+>  		return 0;
+> -
+> -	/* Preemptible RCU flavor */
+> -	if (lock_is_held(&rcu_lock_map))
+> -		return 1;
+> -
+> -	/* BH flavor */
+> -	if (in_softirq() || irqs_disabled())
+> -		return 1;
+> -
+> -	/* Sched flavor */
+> -	if (debug_locks)
+> -		lockdep_opinion = lock_is_held(&rcu_sched_lock_map);
+> -	return lockdep_opinion || !preemptible();
+> +	if (lock_is_held(&rcu_lock_map) || lock_is_held(&rcu_sched_lock_map))
+
+OK, I will bite...  Why not also lock_is_held(&rcu_bh_lock_map)?
+
+							Thanx, Paul
+
+> +		return 1;
+> +	return !preemptible();
+>  }
+>  EXPORT_SYMBOL_GPL(rcu_read_lock_any_held);
+>  
+> 
