@@ -2,114 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8DDA66BC4
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2019 13:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9011166C39
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2019 14:12:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726525AbfGLLrq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Jul 2019 07:47:46 -0400
-Received: from mga18.intel.com ([134.134.136.126]:20311 "EHLO mga18.intel.com"
+        id S1726986AbfGLMML (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Jul 2019 08:12:11 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:34386 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726250AbfGLLrq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 12 Jul 2019 07:47:46 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jul 2019 04:47:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,482,1557212400"; 
-   d="scan'208";a="157116847"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.145])
-  by orsmga007.jf.intel.com with ESMTP; 12 Jul 2019 04:47:42 -0700
-Received: from andy by smile with local (Exim 4.92)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1hlu1c-0006I1-3T; Fri, 12 Jul 2019 14:47:40 +0300
-Date:   Fri, 12 Jul 2019 14:47:40 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Keith Busch <keith.busch@intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-Subject: Re: [PATCH] acpi: fix false-positive -Wuninitialized warning
-Message-ID: <20190712114740.GX9224@smile.fi.intel.com>
-References: <20190712090148.36582-1-arnd@arndb.de>
+        id S1726449AbfGLMML (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 12 Jul 2019 08:12:11 -0400
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 54B4230C2534;
+        Fri, 12 Jul 2019 12:12:09 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.43.17.136])
+        by smtp.corp.redhat.com (Postfix) with SMTP id 9F9E3600CD;
+        Fri, 12 Jul 2019 12:12:01 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+        oleg@redhat.com; Fri, 12 Jul 2019 14:12:09 +0200 (CEST)
+Date:   Fri, 12 Jul 2019 14:12:00 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Borislav Petkov <bp@alien8.de>, c0d1n61at3@gmail.com,
+        "David S. Miller" <davem@davemloft.net>, edumazet@google.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Josh Triplett <josh@joshtriplett.org>, keescook@chromium.org,
+        kernel-hardening@lists.openwall.com,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        neilb@suse.com, netdev@vger.kernel.org,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        Pavel Machek <pavel@ucw.cz>, peterz@infradead.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
+        rcu@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+        Tejun Heo <tj@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, will@kernel.org,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
+Subject: Re: [PATCH v1 1/6] rcu: Add support for consolidated-RCU reader
+ checking
+Message-ID: <20190712121200.GC21989@redhat.com>
+References: <20190711234401.220336-1-joel@joelfernandes.org>
+ <20190711234401.220336-2-joel@joelfernandes.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190712090148.36582-1-arnd@arndb.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190711234401.220336-2-joel@joelfernandes.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.40]); Fri, 12 Jul 2019 12:12:11 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 12, 2019 at 11:01:21AM +0200, Arnd Bergmann wrote:
-> clang gets confused by an uninitialized variable in what looks
-> to it like a never executed code path:
-> 
-> arch/x86/kernel/acpi/boot.c:618:13: error: variable 'polarity' is uninitialized when used here [-Werror,-Wuninitialized]
->         polarity = polarity ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
->                    ^~~~~~~~
-> arch/x86/kernel/acpi/boot.c:606:32: note: initialize the variable 'polarity' to silence this warning
->         int rc, irq, trigger, polarity;
->                                       ^
->                                        = 0
-> arch/x86/kernel/acpi/boot.c:617:12: error: variable 'trigger' is uninitialized when used here [-Werror,-Wuninitialized]
->         trigger = trigger ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
->                   ^~~~~~~
-> arch/x86/kernel/acpi/boot.c:606:22: note: initialize the variable 'trigger' to silence this warning
->         int rc, irq, trigger, polarity;
->                             ^
->                              = 0
-> 
-> This is unfortunately a design decision in clang and won't be fixed.
-> 
-> Changing the acpi_get_override_irq() macro to an inline function
-> reliably avoids the issue.
+On 07/11, Joel Fernandes (Google) wrote:
+>
+> +int rcu_read_lock_any_held(void)
 
-In this particular case it looks fine (perhaps in the future -1 shall be
-replaced with proper error code).
+rcu_sync_is_idle() wants it. You have my ack in advance ;)
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-But in general it looks like clang obscures use of pretty well working macros.
-
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  include/linux/acpi.h | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index a95cce5e82e7..9426b9aaed86 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -324,7 +324,10 @@ struct irq_domain *acpi_irq_create_hierarchy(unsigned int flags,
->  #ifdef CONFIG_X86_IO_APIC
->  extern int acpi_get_override_irq(u32 gsi, int *trigger, int *polarity);
->  #else
-> -#define acpi_get_override_irq(gsi, trigger, polarity) (-1)
-> +static inline int acpi_get_override_irq(u32 gsi, int *trigger, int *polarity)
-> +{
-> +	return -1;
-> +}
->  #endif
->  /*
->   * This function undoes the effect of one call to acpi_register_gsi().
-> -- 
-> 2.20.0
-> 
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Oleg.
 
