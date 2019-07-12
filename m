@@ -2,50 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EF2D67575
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2019 21:40:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEA5A6763A
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2019 23:36:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727401AbfGLTko (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Jul 2019 15:40:44 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:36815 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727370AbfGLTko (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Jul 2019 15:40:44 -0400
-Received: by mail-pf1-f196.google.com with SMTP id r7so4737218pfl.3
-        for <linux-acpi@vger.kernel.org>; Fri, 12 Jul 2019 12:40:44 -0700 (PDT)
+        id S1726811AbfGLVgD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Jul 2019 17:36:03 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:37453 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728066AbfGLVgD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Jul 2019 17:36:03 -0400
+Received: by mail-pf1-f193.google.com with SMTP id 19so4850538pfa.4
+        for <linux-acpi@vger.kernel.org>; Fri, 12 Jul 2019 14:36:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=joelfernandes.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=nAJsR7QXwSJc647spM+sQunAoBzpCrSmQsX27huBu+o=;
-        b=bmxPnZXFh5gOCfuOus2gHM6f6oGNgMKP/ji63JlI+bwUXl3Gpe3vjP96TTAKXaJCZC
-         zj7Y8eFA2XvcXUe8SUv1NKdUvs12xq4vmo946+SPEoJfJYl3KKJWKjnEQtWp8b/06x77
-         32gH3YSvwVXKePdbdirKmPWfh8K3q8ksM+3uI=
+        bh=f1OhDpjzDD7S0+COFpFd965N8mxlYpQZP4b4JR0VTV8=;
+        b=lZCvyn5n8owKQ3JyeYzt9+z6iXWkLSpYG3eAl8ccauBAjpAsmohxfuQbcSnqrAuKVo
+         EhJuv2vWWbTPd0eO0fNUhuM6JbViOUOUf/4BwXkUGXtZsJcQX4/U66ACGCFiWUk//WdV
+         Q8H3IUlKRvwTyqp0yyd7gnCEfVZU4qo6+E1Lc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=nAJsR7QXwSJc647spM+sQunAoBzpCrSmQsX27huBu+o=;
-        b=XL6nIdphfPmd653FkEa9Da5F7BDlkF7+Iy9vFMYDxIUJDQQY33nvsafUslmGWzGmaj
-         FmVeLDyWkSiwWjcs30QCr71GA5/iCKOnBk0HOhZXnuxK/O/feFnZOA3IocYWtW1KD6cQ
-         5BqcCNOeB5XGfcfyopFxWpJFZC6Oyutr3481VcIbfI3JX96jkmDr4Xwo1ArayfsgBpoe
-         8IZ9O4lUEdynzvr0xNpxSyENW8x4M5g8pemO/SWs2MeOvXOCSY/BkYGOno7Z5JUBf/Ea
-         yU5pgL0Fi1EUu+fnQjqolixDXuDl+lAuRJU/+cfv4Gd6Q0vXVzALcrewSRdNlws/5IG0
-         kB5A==
-X-Gm-Message-State: APjAAAVKer7naBJYfcSBBilsk4ex1fL+SY33UrDcz++h4Eni1YnhFTuF
-        3WfRwRwMhoxhgg/pk1HEV/s=
-X-Google-Smtp-Source: APXvYqxvgkL0vpDAZ6Hy5r4mm056ssuxGSXpd+iPIILPiTDSys89aOnq2iGFem/k4lcJZbyW+r6SIQ==
-X-Received: by 2002:a63:2246:: with SMTP id t6mr12863936pgm.209.1562960443485;
-        Fri, 12 Jul 2019 12:40:43 -0700 (PDT)
+        bh=f1OhDpjzDD7S0+COFpFd965N8mxlYpQZP4b4JR0VTV8=;
+        b=dgK/NQNAhdk8rQn4DH8R7ISRhDpKtF7Kn+eLdY7VOTJerhiCBHdsYvs7ZSdx7v99+7
+         oCrnaxGNO7D8zQmeekoLc29QzMSgnBjwMpRjES+ro8QGY7mn8e8pOpI86JENdCMal8I6
+         HnsdwgU25VT15HS3Hei6RcOdc1g4RLrckT3zYAvvDeiayMvB79L1uq1y4FW4dlar9BJ6
+         8wedl8eH7+UUlMr3v3+JW4JZUh4nw7ui8dgZGRnpggwHnL/iDskwEWbUWJhnqcqLo2vl
+         nJvY8kfI/tJtInLa3ZfBSTffH/RMSPyU/Ysj/6GmqZLXlLMdqLOcZ3B3Pb8hUW8SON+7
+         EVJw==
+X-Gm-Message-State: APjAAAVoWM+TLTBAUSqWrslgNMUFwaBkEAqAkuiJLVgJyxQI3OukpfJG
+        iF7vzaui5g8QSI/ftK6xiM0=
+X-Google-Smtp-Source: APXvYqx3LWL3QaQQ5ksHJJX+2CaAAhVLBJ5JupxNkJ3WyB6ER0uWKW+WGxkHpK2VFCITfOz69qvV7g==
+X-Received: by 2002:a63:fb4b:: with SMTP id w11mr13352876pgj.415.1562967362076;
+        Fri, 12 Jul 2019 14:36:02 -0700 (PDT)
 Received: from localhost ([2620:15c:6:12:9c46:e0da:efbf:69cc])
-        by smtp.gmail.com with ESMTPSA id bo20sm7308552pjb.23.2019.07.12.12.40.41
+        by smtp.gmail.com with ESMTPSA id o32sm9047532pje.9.2019.07.12.14.36.00
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 12 Jul 2019 12:40:42 -0700 (PDT)
-Date:   Fri, 12 Jul 2019 15:40:40 -0400
+        Fri, 12 Jul 2019 14:36:01 -0700 (PDT)
+Date:   Fri, 12 Jul 2019 17:35:59 -0400
 From:   Joel Fernandes <joel@joelfernandes.org>
-To:     "Paul E. McKenney" <paulmck@linux.ibm.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        linux-kernel@vger.kernel.org,
+To:     linux-kernel@vger.kernel.org
+Cc:     Oleg Nesterov <oleg@redhat.com>,
         Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
         Bjorn Helgaas <bhelgaas@google.com>,
         Borislav Petkov <bp@alien8.de>, c0d1n61at3@gmail.com,
@@ -53,168 +52,159 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
         "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
         Josh Triplett <josh@joshtriplett.org>, keescook@chromium.org,
-        kernel-hardening@lists.openwall.com,
+        kernel-hardening@lists.openwall.com, kernel-team@android.com,
         Lai Jiangshan <jiangshanlai@gmail.com>,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-pm@vger.kernel.org,
         Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        neilb@suse.com, netdev@vger.kernel.org, oleg@redhat.com,
-        Pavel Machek <pavel@ucw.cz>,
+        neilb@suse.com, netdev@vger.kernel.org,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        Pavel Machek <pavel@ucw.cz>, peterz@infradead.org,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
         rcu@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
         Tejun Heo <tj@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>, will@kernel.org,
         "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
-Subject: Re: [PATCH v1 1/6] rcu: Add support for consolidated-RCU reader
- checking
-Message-ID: <20190712194040.GA150253@google.com>
-References: <20190711234401.220336-1-joel@joelfernandes.org>
- <20190711234401.220336-2-joel@joelfernandes.org>
- <20190712111125.GT3402@hirez.programming.kicks-ass.net>
- <20190712151051.GB235410@google.com>
- <20190712164531.GW26519@linux.ibm.com>
- <20190712170631.GA111598@google.com>
- <20190712174630.GX26519@linux.ibm.com>
+Subject: Re: [PATCH v2 3/9] rcu/sync: Remove custom check for reader-section
+Message-ID: <20190712213559.GA175138@google.com>
+References: <20190712170024.111093-1-joel@joelfernandes.org>
+ <20190712170024.111093-4-joel@joelfernandes.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190712174630.GX26519@linux.ibm.com>
+In-Reply-To: <20190712170024.111093-4-joel@joelfernandes.org>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 12, 2019 at 10:46:30AM -0700, Paul E. McKenney wrote:
-> On Fri, Jul 12, 2019 at 01:06:31PM -0400, Joel Fernandes wrote:
-> > On Fri, Jul 12, 2019 at 09:45:31AM -0700, Paul E. McKenney wrote:
-> > > On Fri, Jul 12, 2019 at 11:10:51AM -0400, Joel Fernandes wrote:
-> > > > On Fri, Jul 12, 2019 at 01:11:25PM +0200, Peter Zijlstra wrote:
-> > > > > On Thu, Jul 11, 2019 at 07:43:56PM -0400, Joel Fernandes (Google) wrote:
-> > > > > > +int rcu_read_lock_any_held(void)
-> > > > > > +{
-> > > > > > +	int lockdep_opinion = 0;
-> > > > > > +
-> > > > > > +	if (!debug_lockdep_rcu_enabled())
-> > > > > > +		return 1;
-> > > > > > +	if (!rcu_is_watching())
-> > > > > > +		return 0;
-> > > > > > +	if (!rcu_lockdep_current_cpu_online())
-> > > > > > +		return 0;
-> > > > > > +
-> > > > > > +	/* Preemptible RCU flavor */
-> > > > > > +	if (lock_is_held(&rcu_lock_map))
-> > > > > 
-> > > > > you forgot debug_locks here.
-> > > > 
-> > > > Actually, it turns out debug_locks checking is not even needed. If
-> > > > debug_locks == 0, then debug_lockdep_rcu_enabled() returns 0 and we would not
-> > > > get to this point.
-> > > > 
-> > > > > > +		return 1;
-> > > > > > +
-> > > > > > +	/* BH flavor */
-> > > > > > +	if (in_softirq() || irqs_disabled())
-> > > > > 
-> > > > > I'm not sure I'd put irqs_disabled() under BH, also this entire
-> > > > > condition is superfluous, see below.
-> > > > > 
-> > > > > > +		return 1;
-> > > > > > +
-> > > > > > +	/* Sched flavor */
-> > > > > > +	if (debug_locks)
-> > > > > > +		lockdep_opinion = lock_is_held(&rcu_sched_lock_map);
-> > > > > > +	return lockdep_opinion || !preemptible();
-> > > > > 
-> > > > > that !preemptible() turns into:
-> > > > > 
-> > > > >   !(preempt_count()==0 && !irqs_disabled())
-> > > > > 
-> > > > > which is:
-> > > > > 
-> > > > >   preempt_count() != 0 || irqs_disabled()
-> > > > > 
-> > > > > and already includes irqs_disabled() and in_softirq().
-> > > > > 
-> > > > > > +}
-> > > > > 
-> > > > > So maybe something lke:
-> > > > > 
-> > > > > 	if (debug_locks && (lock_is_held(&rcu_lock_map) ||
-> > > > > 			    lock_is_held(&rcu_sched_lock_map)))
-> > > > > 		return true;
-> > > > 
-> > > > Agreed, I will do it this way (without the debug_locks) like:
-> > > > 
-> > > > ---8<-----------------------
-> > > > 
-> > > > diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
-> > > > index ba861d1716d3..339aebc330db 100644
-> > > > --- a/kernel/rcu/update.c
-> > > > +++ b/kernel/rcu/update.c
-> > > > @@ -296,27 +296,15 @@ EXPORT_SYMBOL_GPL(rcu_read_lock_bh_held);
-> > > >  
-> > > >  int rcu_read_lock_any_held(void)
-> > > >  {
-> > > > -	int lockdep_opinion = 0;
-> > > > -
-> > > >  	if (!debug_lockdep_rcu_enabled())
-> > > >  		return 1;
-> > > >  	if (!rcu_is_watching())
-> > > >  		return 0;
-> > > >  	if (!rcu_lockdep_current_cpu_online())
-> > > >  		return 0;
-> > > > -
-> > > > -	/* Preemptible RCU flavor */
-> > > > -	if (lock_is_held(&rcu_lock_map))
-> > > > -		return 1;
-> > > > -
-> > > > -	/* BH flavor */
-> > > > -	if (in_softirq() || irqs_disabled())
-> > > > -		return 1;
-> > > > -
-> > > > -	/* Sched flavor */
-> > > > -	if (debug_locks)
-> > > > -		lockdep_opinion = lock_is_held(&rcu_sched_lock_map);
-> > > > -	return lockdep_opinion || !preemptible();
-> > > > +	if (lock_is_held(&rcu_lock_map) || lock_is_held(&rcu_sched_lock_map))
-> > > 
-> > > OK, I will bite...  Why not also lock_is_held(&rcu_bh_lock_map)?
-> > 
-> > Hmm, I was borrowing the strategy from rcu_read_lock_bh_held() which does not
-> > check for a lock held in this map.
-> > 
-> > Honestly, even  lock_is_held(&rcu_sched_lock_map) seems unnecessary per-se
-> > since !preemptible() will catch that? rcu_read_lock_sched() disables
-> > preemption already, so lockdep's opinion of the matter seems redundant there.
+On Fri, Jul 12, 2019 at 01:00:18PM -0400, Joel Fernandes (Google) wrote:
+> The rcu/sync code was doing its own check whether we are in a reader
+> section. With RCU consolidating flavors and the generic helper added in
+> this series, this is no longer need. We can just use the generic helper
+> and it results in a nice cleanup.
 > 
-> Good point!  At least as long as the lockdep splats list RCU-bh among
-> the locks held, which they did last I checked.
-> 
-> Of course, you could make the same argument for getting rid of
-> rcu_sched_lock_map.  Does it make sense to have the one without
-> the other?
+> Cc: Oleg Nesterov <oleg@redhat.com>
+> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 
-It probably makes it inconsistent in the least. I will add the check for
-the rcu_bh_lock_map in a separate patch, if that's Ok with you - since I also
-want to update the rcu_read_lock_bh_held() logic in the same patch.
+Hi Oleg,
+Slightly unrelated to the patch,
+I tried hard to understand this comment below in percpu_down_read() but no dice.
 
-That rcu_read_lock_bh_held() could also just return !preemptible as Peter
-suggested for the bh case.
+I do understand how rcu sync and percpu rwsem works, however the comment
+below didn't make much sense to me. For one, there's no readers_fast anymore
+so I did not follow what readers_fast means. Could the comment be updated to
+reflect latest changes?
+Also could you help understand how is a writer not able to change
+sem->state and count the per-cpu read counters at the same time as the
+comment tries to say?
 
-> > Sorry I already sent out patches again before seeing your comment but I can
-> > rework and resend them based on any other suggestions.
-> 
-> Not a problem!
+	/*
+	 * We are in an RCU-sched read-side critical section, so the writer
+	 * cannot both change sem->state from readers_fast and start checking
+	 * counters while we are here. So if we see !sem->state, we know that
+	 * the writer won't be checking until we're past the preempt_enable()
+	 * and that once the synchronize_rcu() is done, the writer will see
+	 * anything we did within this RCU-sched read-size critical section.
+	 */
 
-Thanks. Depending on whether there is any other feedback, I will work on the
-bh_ stuff as a separate patch on top of this series, or work it into the next
-series revision if I'm reposting. Hopefully that sounds Ok to you.
+Also,
+I guess we could get rid of all of the gp_ops struct stuff now that since all
+the callbacks are the same now. I will post that as a follow-up patch to this
+series.
 
-thanks,
+thanks!
 
  - Joel
 
 
+> ---
+> Please note: Only build and boot tested this particular patch so far.
+> 
+>  include/linux/rcu_sync.h |  5 ++---
+>  kernel/rcu/sync.c        | 22 ----------------------
+>  2 files changed, 2 insertions(+), 25 deletions(-)
+> 
+> diff --git a/include/linux/rcu_sync.h b/include/linux/rcu_sync.h
+> index 6fc53a1345b3..c954f1efc919 100644
+> --- a/include/linux/rcu_sync.h
+> +++ b/include/linux/rcu_sync.h
+> @@ -39,9 +39,8 @@ extern void rcu_sync_lockdep_assert(struct rcu_sync *);
+>   */
+>  static inline bool rcu_sync_is_idle(struct rcu_sync *rsp)
+>  {
+> -#ifdef CONFIG_PROVE_RCU
+> -	rcu_sync_lockdep_assert(rsp);
+> -#endif
+> +	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),
+> +			 "suspicious rcu_sync_is_idle() usage");
+>  	return !rsp->gp_state; /* GP_IDLE */
+>  }
+>  
+> diff --git a/kernel/rcu/sync.c b/kernel/rcu/sync.c
+> index a8304d90573f..535e02601f56 100644
+> --- a/kernel/rcu/sync.c
+> +++ b/kernel/rcu/sync.c
+> @@ -10,37 +10,25 @@
+>  #include <linux/rcu_sync.h>
+>  #include <linux/sched.h>
+>  
+> -#ifdef CONFIG_PROVE_RCU
+> -#define __INIT_HELD(func)	.held = func,
+> -#else
+> -#define __INIT_HELD(func)
+> -#endif
+> -
+>  static const struct {
+>  	void (*sync)(void);
+>  	void (*call)(struct rcu_head *, void (*)(struct rcu_head *));
+>  	void (*wait)(void);
+> -#ifdef CONFIG_PROVE_RCU
+> -	int  (*held)(void);
+> -#endif
+>  } gp_ops[] = {
+>  	[RCU_SYNC] = {
+>  		.sync = synchronize_rcu,
+>  		.call = call_rcu,
+>  		.wait = rcu_barrier,
+> -		__INIT_HELD(rcu_read_lock_held)
+>  	},
+>  	[RCU_SCHED_SYNC] = {
+>  		.sync = synchronize_rcu,
+>  		.call = call_rcu,
+>  		.wait = rcu_barrier,
+> -		__INIT_HELD(rcu_read_lock_sched_held)
+>  	},
+>  	[RCU_BH_SYNC] = {
+>  		.sync = synchronize_rcu,
+>  		.call = call_rcu,
+>  		.wait = rcu_barrier,
+> -		__INIT_HELD(rcu_read_lock_bh_held)
+>  	},
+>  };
+>  
+> @@ -49,16 +37,6 @@ enum { CB_IDLE = 0, CB_PENDING, CB_REPLAY };
+>  
+>  #define	rss_lock	gp_wait.lock
+>  
+> -#ifdef CONFIG_PROVE_RCU
+> -void rcu_sync_lockdep_assert(struct rcu_sync *rsp)
+> -{
+> -	RCU_LOCKDEP_WARN(!gp_ops[rsp->gp_type].held(),
+> -			 "suspicious rcu_sync_is_idle() usage");
+> -}
+> -
+> -EXPORT_SYMBOL_GPL(rcu_sync_lockdep_assert);
+> -#endif
+> -
+>  /**
+>   * rcu_sync_init() - Initialize an rcu_sync structure
+>   * @rsp: Pointer to rcu_sync structure to be initialized
+> -- 
+> 2.22.0.510.g264f2c817a-goog
+> 
