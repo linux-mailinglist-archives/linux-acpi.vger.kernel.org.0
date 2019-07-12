@@ -2,99 +2,219 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA087674D6
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2019 20:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EF2D67575
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2019 21:40:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727079AbfGLSA3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Jul 2019 14:00:29 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:45911 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726628AbfGLSA3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Jul 2019 14:00:29 -0400
-Received: by mail-wr1-f66.google.com with SMTP id f9so10782952wre.12;
-        Fri, 12 Jul 2019 11:00:27 -0700 (PDT)
+        id S1727401AbfGLTko (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Jul 2019 15:40:44 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:36815 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727370AbfGLTko (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Jul 2019 15:40:44 -0400
+Received: by mail-pf1-f196.google.com with SMTP id r7so4737218pfl.3
+        for <linux-acpi@vger.kernel.org>; Fri, 12 Jul 2019 12:40:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=joelfernandes.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=jSLflZiZITnN+LWl1xVscHlJHNXtKI7cPwZYoo7JveE=;
-        b=WGLyidCEeOzK+/lZEInF9f5d4dS2hTMttPJ3PdxHiqizfszjheSaWM5sarrGicoCQx
-         S/JEbVsLwK6DjB6bxOyVsH+FopUgT9zP5JW9r+h/t8ONPcjpFIfkp2y4tFAelWjunYso
-         bVc4vokhkEQIB7T6HnfRGCi17kFI1Zh2qosBccXw17acpzm07srUVnQyrUILeMm0jmEf
-         KUKac6MPFCJTV2KmyYDYLvXFV3YCNTGHCmpu0yR1LxSIMxr4OAKJPrGtuFnyHJ9Wrrdq
-         hBTLD7o1YI99Ig6bAy4/GKhdUn4qEeawrRCYDek7I+MQp5JkpVUl5wWeuBM5tn63KaWa
-         cQvw==
+        bh=nAJsR7QXwSJc647spM+sQunAoBzpCrSmQsX27huBu+o=;
+        b=bmxPnZXFh5gOCfuOus2gHM6f6oGNgMKP/ji63JlI+bwUXl3Gpe3vjP96TTAKXaJCZC
+         zj7Y8eFA2XvcXUe8SUv1NKdUvs12xq4vmo946+SPEoJfJYl3KKJWKjnEQtWp8b/06x77
+         32gH3YSvwVXKePdbdirKmPWfh8K3q8ksM+3uI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=jSLflZiZITnN+LWl1xVscHlJHNXtKI7cPwZYoo7JveE=;
-        b=p/IvhcYeEiniMgcq261fMTuJbrxKvnul473JzqBrrcXG+dywAnQtBFHOZsNJtHBsH1
-         oAbD9+O6dc+QGGPQ77S1ZLflq4KnEPqPwXaeba3qLkTUKIa9r9TMQJFOi6I96vBQ6b9S
-         LxeLvs966Sqdvn4JEf9kUTvwpM6ZVs9ZuEbwyH1sRMW2C8Np54OdZSP7ZqWxIzl5GoyJ
-         5+ZR2q1whKbGZc++VUzxPRs7KOrSa+MZORrMmMrRXb1butuGCj4iGzctv+2HyLlgOIIz
-         hzv3Vfr98DXcothvq+jA6LoLxRF2v3ylroznjDEkkilwOB5Jewg9HlivRU5JYt3stB0r
-         ufzQ==
-X-Gm-Message-State: APjAAAUrWSUjrCCGMtjEzgmpg+XoQoKf0vLqXkCfguydxejhpzv0sJYH
-        YJO+HOj1j2BgM4KmL/TyDN4=
-X-Google-Smtp-Source: APXvYqyYSBDpfiNbvOCc3Tq1Cngt99gUJ9KSnwXK1+CWFQ2tu4DN5ubh8tUfH2eiItrpYFlFhWsBxA==
-X-Received: by 2002:adf:f591:: with SMTP id f17mr3250076wro.119.1562954426638;
-        Fri, 12 Jul 2019 11:00:26 -0700 (PDT)
-Received: from archlinux-threadripper ([2a01:4f8:222:2f1b::2])
-        by smtp.gmail.com with ESMTPSA id a6sm6755054wmj.15.2019.07.12.11.00.25
+        bh=nAJsR7QXwSJc647spM+sQunAoBzpCrSmQsX27huBu+o=;
+        b=XL6nIdphfPmd653FkEa9Da5F7BDlkF7+Iy9vFMYDxIUJDQQY33nvsafUslmGWzGmaj
+         FmVeLDyWkSiwWjcs30QCr71GA5/iCKOnBk0HOhZXnuxK/O/feFnZOA3IocYWtW1KD6cQ
+         5BqcCNOeB5XGfcfyopFxWpJFZC6Oyutr3481VcIbfI3JX96jkmDr4Xwo1ArayfsgBpoe
+         8IZ9O4lUEdynzvr0xNpxSyENW8x4M5g8pemO/SWs2MeOvXOCSY/BkYGOno7Z5JUBf/Ea
+         yU5pgL0Fi1EUu+fnQjqolixDXuDl+lAuRJU/+cfv4Gd6Q0vXVzALcrewSRdNlws/5IG0
+         kB5A==
+X-Gm-Message-State: APjAAAVKer7naBJYfcSBBilsk4ex1fL+SY33UrDcz++h4Eni1YnhFTuF
+        3WfRwRwMhoxhgg/pk1HEV/s=
+X-Google-Smtp-Source: APXvYqxvgkL0vpDAZ6Hy5r4mm056ssuxGSXpd+iPIILPiTDSys89aOnq2iGFem/k4lcJZbyW+r6SIQ==
+X-Received: by 2002:a63:2246:: with SMTP id t6mr12863936pgm.209.1562960443485;
+        Fri, 12 Jul 2019 12:40:43 -0700 (PDT)
+Received: from localhost ([2620:15c:6:12:9c46:e0da:efbf:69cc])
+        by smtp.gmail.com with ESMTPSA id bo20sm7308552pjb.23.2019.07.12.12.40.41
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 12 Jul 2019 11:00:26 -0700 (PDT)
-Date:   Fri, 12 Jul 2019 11:00:24 -0700
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Keith Busch <keith.busch@intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-Subject: Re: [PATCH] acpi: fix false-positive -Wuninitialized warning
-Message-ID: <20190712180024.GA21382@archlinux-threadripper>
-References: <20190712090148.36582-1-arnd@arndb.de>
+        Fri, 12 Jul 2019 12:40:42 -0700 (PDT)
+Date:   Fri, 12 Jul 2019 15:40:40 -0400
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     "Paul E. McKenney" <paulmck@linux.ibm.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        linux-kernel@vger.kernel.org,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Borislav Petkov <bp@alien8.de>, c0d1n61at3@gmail.com,
+        "David S. Miller" <davem@davemloft.net>, edumazet@google.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Josh Triplett <josh@joshtriplett.org>, keescook@chromium.org,
+        kernel-hardening@lists.openwall.com,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        neilb@suse.com, netdev@vger.kernel.org, oleg@redhat.com,
+        Pavel Machek <pavel@ucw.cz>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
+        rcu@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+        Tejun Heo <tj@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, will@kernel.org,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
+Subject: Re: [PATCH v1 1/6] rcu: Add support for consolidated-RCU reader
+ checking
+Message-ID: <20190712194040.GA150253@google.com>
+References: <20190711234401.220336-1-joel@joelfernandes.org>
+ <20190711234401.220336-2-joel@joelfernandes.org>
+ <20190712111125.GT3402@hirez.programming.kicks-ass.net>
+ <20190712151051.GB235410@google.com>
+ <20190712164531.GW26519@linux.ibm.com>
+ <20190712170631.GA111598@google.com>
+ <20190712174630.GX26519@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190712090148.36582-1-arnd@arndb.de>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20190712174630.GX26519@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 12, 2019 at 11:01:21AM +0200, Arnd Bergmann wrote:
-> clang gets confused by an uninitialized variable in what looks
-> to it like a never executed code path:
+On Fri, Jul 12, 2019 at 10:46:30AM -0700, Paul E. McKenney wrote:
+> On Fri, Jul 12, 2019 at 01:06:31PM -0400, Joel Fernandes wrote:
+> > On Fri, Jul 12, 2019 at 09:45:31AM -0700, Paul E. McKenney wrote:
+> > > On Fri, Jul 12, 2019 at 11:10:51AM -0400, Joel Fernandes wrote:
+> > > > On Fri, Jul 12, 2019 at 01:11:25PM +0200, Peter Zijlstra wrote:
+> > > > > On Thu, Jul 11, 2019 at 07:43:56PM -0400, Joel Fernandes (Google) wrote:
+> > > > > > +int rcu_read_lock_any_held(void)
+> > > > > > +{
+> > > > > > +	int lockdep_opinion = 0;
+> > > > > > +
+> > > > > > +	if (!debug_lockdep_rcu_enabled())
+> > > > > > +		return 1;
+> > > > > > +	if (!rcu_is_watching())
+> > > > > > +		return 0;
+> > > > > > +	if (!rcu_lockdep_current_cpu_online())
+> > > > > > +		return 0;
+> > > > > > +
+> > > > > > +	/* Preemptible RCU flavor */
+> > > > > > +	if (lock_is_held(&rcu_lock_map))
+> > > > > 
+> > > > > you forgot debug_locks here.
+> > > > 
+> > > > Actually, it turns out debug_locks checking is not even needed. If
+> > > > debug_locks == 0, then debug_lockdep_rcu_enabled() returns 0 and we would not
+> > > > get to this point.
+> > > > 
+> > > > > > +		return 1;
+> > > > > > +
+> > > > > > +	/* BH flavor */
+> > > > > > +	if (in_softirq() || irqs_disabled())
+> > > > > 
+> > > > > I'm not sure I'd put irqs_disabled() under BH, also this entire
+> > > > > condition is superfluous, see below.
+> > > > > 
+> > > > > > +		return 1;
+> > > > > > +
+> > > > > > +	/* Sched flavor */
+> > > > > > +	if (debug_locks)
+> > > > > > +		lockdep_opinion = lock_is_held(&rcu_sched_lock_map);
+> > > > > > +	return lockdep_opinion || !preemptible();
+> > > > > 
+> > > > > that !preemptible() turns into:
+> > > > > 
+> > > > >   !(preempt_count()==0 && !irqs_disabled())
+> > > > > 
+> > > > > which is:
+> > > > > 
+> > > > >   preempt_count() != 0 || irqs_disabled()
+> > > > > 
+> > > > > and already includes irqs_disabled() and in_softirq().
+> > > > > 
+> > > > > > +}
+> > > > > 
+> > > > > So maybe something lke:
+> > > > > 
+> > > > > 	if (debug_locks && (lock_is_held(&rcu_lock_map) ||
+> > > > > 			    lock_is_held(&rcu_sched_lock_map)))
+> > > > > 		return true;
+> > > > 
+> > > > Agreed, I will do it this way (without the debug_locks) like:
+> > > > 
+> > > > ---8<-----------------------
+> > > > 
+> > > > diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
+> > > > index ba861d1716d3..339aebc330db 100644
+> > > > --- a/kernel/rcu/update.c
+> > > > +++ b/kernel/rcu/update.c
+> > > > @@ -296,27 +296,15 @@ EXPORT_SYMBOL_GPL(rcu_read_lock_bh_held);
+> > > >  
+> > > >  int rcu_read_lock_any_held(void)
+> > > >  {
+> > > > -	int lockdep_opinion = 0;
+> > > > -
+> > > >  	if (!debug_lockdep_rcu_enabled())
+> > > >  		return 1;
+> > > >  	if (!rcu_is_watching())
+> > > >  		return 0;
+> > > >  	if (!rcu_lockdep_current_cpu_online())
+> > > >  		return 0;
+> > > > -
+> > > > -	/* Preemptible RCU flavor */
+> > > > -	if (lock_is_held(&rcu_lock_map))
+> > > > -		return 1;
+> > > > -
+> > > > -	/* BH flavor */
+> > > > -	if (in_softirq() || irqs_disabled())
+> > > > -		return 1;
+> > > > -
+> > > > -	/* Sched flavor */
+> > > > -	if (debug_locks)
+> > > > -		lockdep_opinion = lock_is_held(&rcu_sched_lock_map);
+> > > > -	return lockdep_opinion || !preemptible();
+> > > > +	if (lock_is_held(&rcu_lock_map) || lock_is_held(&rcu_sched_lock_map))
+> > > 
+> > > OK, I will bite...  Why not also lock_is_held(&rcu_bh_lock_map)?
+> > 
+> > Hmm, I was borrowing the strategy from rcu_read_lock_bh_held() which does not
+> > check for a lock held in this map.
+> > 
+> > Honestly, even  lock_is_held(&rcu_sched_lock_map) seems unnecessary per-se
+> > since !preemptible() will catch that? rcu_read_lock_sched() disables
+> > preemption already, so lockdep's opinion of the matter seems redundant there.
 > 
-> arch/x86/kernel/acpi/boot.c:618:13: error: variable 'polarity' is uninitialized when used here [-Werror,-Wuninitialized]
->         polarity = polarity ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
->                    ^~~~~~~~
-> arch/x86/kernel/acpi/boot.c:606:32: note: initialize the variable 'polarity' to silence this warning
->         int rc, irq, trigger, polarity;
->                                       ^
->                                        = 0
-> arch/x86/kernel/acpi/boot.c:617:12: error: variable 'trigger' is uninitialized when used here [-Werror,-Wuninitialized]
->         trigger = trigger ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
->                   ^~~~~~~
-> arch/x86/kernel/acpi/boot.c:606:22: note: initialize the variable 'trigger' to silence this warning
->         int rc, irq, trigger, polarity;
->                             ^
->                              = 0
+> Good point!  At least as long as the lockdep splats list RCU-bh among
+> the locks held, which they did last I checked.
 > 
-> This is unfortunately a design decision in clang and won't be fixed.
-> 
-> Changing the acpi_get_override_irq() macro to an inline function
-> reliably avoids the issue.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Of course, you could make the same argument for getting rid of
+> rcu_sched_lock_map.  Does it make sense to have the one without
+> the other?
 
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+It probably makes it inconsistent in the least. I will add the check for
+the rcu_bh_lock_map in a separate patch, if that's Ok with you - since I also
+want to update the rcu_read_lock_bh_held() logic in the same patch.
+
+That rcu_read_lock_bh_held() could also just return !preemptible as Peter
+suggested for the bh case.
+
+> > Sorry I already sent out patches again before seeing your comment but I can
+> > rework and resend them based on any other suggestions.
+> 
+> Not a problem!
+
+Thanks. Depending on whether there is any other feedback, I will work on the
+bh_ stuff as a separate patch on top of this series, or work it into the next
+series revision if I'm reposting. Hopefully that sounds Ok to you.
+
+thanks,
+
+ - Joel
+
+
