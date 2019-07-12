@@ -2,129 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DAA0066A8C
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2019 12:00:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA61966B4D
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2019 13:03:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726050AbfGLKAh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Jul 2019 06:00:37 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:43554 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725294AbfGLKAg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 12 Jul 2019 06:00:36 -0400
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 16B41308AA11;
-        Fri, 12 Jul 2019 10:00:36 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-117-233.ams2.redhat.com [10.36.117.233])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C9D285FC17;
-        Fri, 12 Jul 2019 10:00:34 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Zhang Rui <rui.zhang@intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
-        =?UTF-8?q?Kacper=20Piwi=C5=84ski?= <cosiekvfj@o2.pl>
-Subject: [PATCH] ACPI / video: Add new hw_changes_brightness quirk, set it on PB Easynote MZ35
-Date:   Fri, 12 Jul 2019 12:00:33 +0200
-Message-Id: <20190712100033.4087-1-hdegoede@redhat.com>
+        id S1726196AbfGLLDK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Jul 2019 07:03:10 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:53308 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726138AbfGLLDJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Jul 2019 07:03:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=PD94wZRNXHIjHblu3nIrY4xxlHZYXkLegGZyayPXJPA=; b=LdoVKmUIYMMAH0RwU1/sb66Wt
+        PDIews2/h6sozwC0zDIT4qd9SogFPE8J/64yxNOntCL5i28uDH3ABs3F9LZSk85qfeMr/Kt5nyaA0
+        Cquj6eo1chq4GUCT+inbwuTEOZh4AnYQaFsOhi8FkO0DtOhKIzr0rtXPOKgkX6CORU7N63f/cN0uw
+        RjxLEuZUDL5JKAbluFeI8rfg2CtCfW/UhC0HK1DmeRDhd5H/GtQxVwWuSOT7jSZQcaa0WwNsGbKui
+        Rv7WZunOPBMTk/6IuVd+sc9fV0N25106/kjObkCTCppnjgcs0hF8Cp2YAaEfufGieuJllqDsFPGMV
+        wcgMqYSaA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hltJA-0000LI-PF; Fri, 12 Jul 2019 11:01:44 +0000
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 1B88C2080B963; Fri, 12 Jul 2019 13:01:42 +0200 (CEST)
+Date:   Fri, 12 Jul 2019 13:01:42 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Borislav Petkov <bp@alien8.de>, c0d1n61at3@gmail.com,
+        "David S. Miller" <davem@davemloft.net>, edumazet@google.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Josh Triplett <josh@joshtriplett.org>, keescook@chromium.org,
+        kernel-hardening@lists.openwall.com,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        neilb@suse.com, netdev@vger.kernel.org, oleg@redhat.com,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
+        rcu@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+        Tejun Heo <tj@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, will@kernel.org,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
+Subject: Re: [PATCH v1 1/6] rcu: Add support for consolidated-RCU reader
+ checking
+Message-ID: <20190712110142.GS3402@hirez.programming.kicks-ass.net>
+References: <20190711234401.220336-1-joel@joelfernandes.org>
+ <20190711234401.220336-2-joel@joelfernandes.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Fri, 12 Jul 2019 10:00:36 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190711234401.220336-2-joel@joelfernandes.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Some machines change the brightness themselves when a brightness hotkey
-gets pressed, despite us telling them not to. This causes the brightness to
-go two steps up / down when the hotkey is pressed. This is esp. a problem
-on older machines with only a few brightness levels.
+On Thu, Jul 11, 2019 at 07:43:56PM -0400, Joel Fernandes (Google) wrote:
+> This patch adds support for checking RCU reader sections in list
+> traversal macros. Optionally, if the list macro is called under SRCU or
+> other lock/mutex protection, then appropriate lockdep expressions can be
+> passed to make the checks pass.
+> 
+> Existing list_for_each_entry_rcu() invocations don't need to pass the
+> optional fourth argument (cond) unless they are under some non-RCU
+> protection and needs to make lockdep check pass.
+> 
+> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+> ---
+>  include/linux/rculist.h  | 29 ++++++++++++++++++++++++-----
+>  include/linux/rcupdate.h |  7 +++++++
+>  kernel/rcu/Kconfig.debug | 11 +++++++++++
+>  kernel/rcu/update.c      | 26 ++++++++++++++++++++++++++
+>  4 files changed, 68 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/linux/rculist.h b/include/linux/rculist.h
+> index e91ec9ddcd30..78c15ec6b2c9 100644
+> --- a/include/linux/rculist.h
+> +++ b/include/linux/rculist.h
+> @@ -40,6 +40,23 @@ static inline void INIT_LIST_HEAD_RCU(struct list_head *list)
+>   */
+>  #define list_next_rcu(list)	(*((struct list_head __rcu **)(&(list)->next)))
+>  
+> +/*
+> + * Check during list traversal that we are within an RCU reader
+> + */
+> +
+> +#define SIXTH_ARG(a1, a2, a3, a4, a5, a6, ...) a6
+> +#define COUNT_VARGS(...) SIXTH_ARG(dummy, ## __VA_ARGS__, 4, 3, 2, 1, 0)
 
-This commit adds a new hw_changes_brightness quirk which makes
-acpi_video_device_notify() only call backlight_force_update(...,
-BACKLIGHT_UPDATE_HOTKEY) and not do anything else, notifying userspace that
-the brightness was changed and leaving it at that fixing the dual step
-problem.
-
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=204077
-Cc: Kacper Piwiński <cosiekvfj@o2.pl>
-Reported-and-tested-by: Kacper Piwiński <cosiekvfj@o2.pl>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/acpi_video.c | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
-
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index 9489ffc06411..4f325e47519f 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -60,6 +60,12 @@ module_param(report_key_events, int, 0644);
- MODULE_PARM_DESC(report_key_events,
- 	"0: none, 1: output changes, 2: brightness changes, 3: all");
- 
-+static int hw_changes_brightness = -1;
-+module_param(hw_changes_brightness, int, 0644);
-+MODULE_PARM_DESC(hw_changes_brightness,
-+	"Set this to 1 on buggy hw which changes the brightness itself when "
-+	"a hotkey is pressed: -1: auto, 0: normal 1: hw-changes-brightness");
-+
- /*
-  * Whether the struct acpi_video_device_attrib::device_id_scheme bit should be
-  * assumed even if not actually set.
-@@ -405,6 +411,14 @@ static int video_set_report_key_events(const struct dmi_system_id *id)
- 	return 0;
- }
- 
-+static int video_hw_changes_brightness(
-+	const struct dmi_system_id *d)
-+{
-+	if (hw_changes_brightness == -1)
-+		hw_changes_brightness = 1;
-+	return 0;
-+}
-+
- static const struct dmi_system_id video_dmi_table[] = {
- 	/*
- 	 * Broken _BQC workaround http://bugzilla.kernel.org/show_bug.cgi?id=13121
-@@ -529,6 +543,21 @@ static const struct dmi_system_id video_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro V131"),
- 		},
- 	},
-+	/*
-+	 * Some machines change the brightness themselves when a brightness
-+	 * hotkey gets pressed, despite us telling them not to. In this case
-+	 * acpi_video_device_notify() should only call backlight_force_update(
-+	 * BACKLIGHT_UPDATE_HOTKEY) and not do anything else.
-+	 */
-+	{
-+	 /* https://bugzilla.kernel.org/show_bug.cgi?id=204077 */
-+	 .callback = video_hw_changes_brightness,
-+	 .ident = "Packard Bell EasyNote MZ35",
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Packard Bell"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "EasyNote MZ35"),
-+		},
-+	},
- 	{}
- };
- 
-@@ -1612,6 +1641,14 @@ static void acpi_video_device_notify(acpi_handle handle, u32 event, void *data)
- 	bus = video_device->video;
- 	input = bus->input;
- 
-+	if (hw_changes_brightness > 0) {
-+		if (video_device->backlight)
-+			backlight_force_update(video_device->backlight,
-+					       BACKLIGHT_UPDATE_HOTKEY);
-+		acpi_notifier_call_chain(device, event, 0);
-+		return;
-+	}
-+
- 	switch (event) {
- 	case ACPI_VIDEO_NOTIFY_CYCLE_BRIGHTNESS:	/* Cycle brightness */
- 		brightness_switch_event(video_device, event);
--- 
-2.21.0
-
+You don't seem to actually use it in this patch; also linux/kernel.h has
+COUNT_ARGS().
