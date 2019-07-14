@@ -2,48 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31C21680BC
-	for <lists+linux-acpi@lfdr.de>; Sun, 14 Jul 2019 20:38:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DA18680DE
+	for <lists+linux-acpi@lfdr.de>; Sun, 14 Jul 2019 20:53:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728307AbfGNSi1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 14 Jul 2019 14:38:27 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:34753 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728442AbfGNSiZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 14 Jul 2019 14:38:25 -0400
-Received: by mail-pf1-f195.google.com with SMTP id b13so6407429pfo.1
-        for <linux-acpi@vger.kernel.org>; Sun, 14 Jul 2019 11:38:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=sox1qbAuMnPUwD0CgD0KdMKVv1SxdSpzlx78UgprX+8=;
-        b=uvIXjc6RpIBKGJKLMswZL0zKOIbGCOqwZVMZfzv8f0e56iW5Xw+d175Iewh7O0m4QG
-         PTQTK9CSolsfpH5eZHkNSyajv9VLH/1qzdWEVarVoP4ce8ZjKCT1LdIuWT1W9Ypl4naJ
-         p98jtynPImVVZsE4/RPF3Jp7vxXCaWrM0dr5E=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=sox1qbAuMnPUwD0CgD0KdMKVv1SxdSpzlx78UgprX+8=;
-        b=HrtXotwEyCSt9eZ5twpV5rUIeJ8KNB9U++7Er2f9fyvYBE6FnoNrApBYsN1k6y4xGs
-         VuftoT8gf/UBGy5ujvGoTnPuUCHc5CsdF0IyxI1IqmnVwvVtr6l7EHpX1HNjdVj1qK36
-         1GDCG+gNbhgI0E65iN3s/+k+DwI5wEPZ1z+8HmHeEWoGrQySMTeh2SM3auONltE212Wr
-         +ojqBQN7AnazoGVUp/ciHPB0cgSbHiRgJL/KSzAuM6brAuJC9d8Saplw7sO+vUAlDR+s
-         gQwoyEU4SalRv0NPcgFbG/aLXLBhgy0oD8RRRAnyB1e/IhtCN40HYEGUBhGdYL6R3rK5
-         ADEw==
-X-Gm-Message-State: APjAAAW/YmDKBiYBG24A9Za2bMpeFqBhjKHpt6xBUdjOw8UHelYc34Ma
-        820aEAXyLUbRAx2GNe0P3rM=
-X-Google-Smtp-Source: APXvYqzbkYP46GwBSD0mDA1ULApcyNEVrg5o30ItZY+eSVKxrnZ68GFxhMKl90asFkD9mHvD6qzZOw==
-X-Received: by 2002:a65:4507:: with SMTP id n7mr21968240pgq.86.1563129503349;
-        Sun, 14 Jul 2019 11:38:23 -0700 (PDT)
-Received: from localhost ([2620:15c:6:12:9c46:e0da:efbf:69cc])
-        by smtp.gmail.com with ESMTPSA id g2sm22630976pfq.88.2019.07.14.11.38.21
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sun, 14 Jul 2019 11:38:22 -0700 (PDT)
-Date:   Sun, 14 Jul 2019 14:38:20 -0400
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     "Paul E. McKenney" <paulmck@linux.ibm.com>
+        id S1728701AbfGNSxC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 14 Jul 2019 14:53:02 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:6002 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728125AbfGNSxC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 14 Jul 2019 14:53:02 -0400
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6EIlCEJ106075;
+        Sun, 14 Jul 2019 14:50:30 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2tqvuf5gts-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 14 Jul 2019 14:50:30 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x6EIoUZH135521;
+        Sun, 14 Jul 2019 14:50:30 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2tqvuf5gta-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 14 Jul 2019 14:50:29 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+        by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x6EInRHA026321;
+        Sun, 14 Jul 2019 18:50:28 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com [9.57.198.23])
+        by ppma03dal.us.ibm.com with ESMTP id 2tq6x6tdsf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 14 Jul 2019 18:50:28 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
+        by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x6EIoSV749414412
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 14 Jul 2019 18:50:28 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id F3E19B205F;
+        Sun, 14 Jul 2019 18:50:27 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 88499B2065;
+        Sun, 14 Jul 2019 18:50:27 +0000 (GMT)
+Received: from paulmck-ThinkPad-W541 (unknown [9.85.203.247])
+        by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+        Sun, 14 Jul 2019 18:50:27 +0000 (GMT)
+Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
+        id 7A5C116C8FBA; Sun, 14 Jul 2019 11:50:27 -0700 (PDT)
+Date:   Sun, 14 Jul 2019 11:50:27 -0700
+From:   "Paul E. McKenney" <paulmck@linux.ibm.com>
+To:     Joel Fernandes <joel@joelfernandes.org>
 Cc:     linux-kernel@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>,
         Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
         Bjorn Helgaas <bhelgaas@google.com>,
@@ -69,9 +76,9 @@ Cc:     linux-kernel@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>, will@kernel.org,
         "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
 Subject: Re: [PATCH v2 3/9] rcu/sync: Remove custom check for reader-section
-Message-ID: <20190714183820.GD34501@google.com>
-References: <20190713030150.GA246587@google.com>
- <20190713031008.GA248225@google.com>
+Message-ID: <20190714185027.GL26519@linux.ibm.com>
+Reply-To: paulmck@linux.ibm.com
+References: <20190713031008.GA248225@google.com>
  <20190713082114.GA26519@linux.ibm.com>
  <20190713133049.GA133650@google.com>
  <20190713144108.GD26519@linux.ibm.com>
@@ -80,94 +87,103 @@ References: <20190713030150.GA246587@google.com>
  <20190713161316.GA39321@google.com>
  <20190713212812.GH26519@linux.ibm.com>
  <20190714181053.GB34501@google.com>
+ <20190714183820.GD34501@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190714181053.GB34501@google.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190714183820.GD34501@google.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-14_06:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907140234
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Jul 14, 2019 at 02:10:53PM -0400, Joel Fernandes wrote:
-> On Sat, Jul 13, 2019 at 02:28:12PM -0700, Paul E. McKenney wrote:
-[snip]
+On Sun, Jul 14, 2019 at 02:38:20PM -0400, Joel Fernandes wrote:
+> On Sun, Jul 14, 2019 at 02:10:53PM -0400, Joel Fernandes wrote:
+> > On Sat, Jul 13, 2019 at 02:28:12PM -0700, Paul E. McKenney wrote:
+> [snip]
+> > > > > > > > > > 
+> > > > > > > > > > Cc: Oleg Nesterov <oleg@redhat.com>
+> > > > > > > > > > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+> > > > > > > > > > ---
+> > > > > > > > > >  include/linux/rcu_sync.h | 4 +---
+> > > > > > > > > >  1 file changed, 1 insertion(+), 3 deletions(-)
+> > > > > > > > > > 
+> > > > > > > > > > diff --git a/include/linux/rcu_sync.h b/include/linux/rcu_sync.h
+> > > > > > > > > > index 9b83865d24f9..0027d4c8087c 100644
+> > > > > > > > > > --- a/include/linux/rcu_sync.h
+> > > > > > > > > > +++ b/include/linux/rcu_sync.h
+> > > > > > > > > > @@ -31,9 +31,7 @@ struct rcu_sync {
+> > > > > > > > > >   */
+> > > > > > > > > >  static inline bool rcu_sync_is_idle(struct rcu_sync *rsp)
+> > > > > > > > > >  {
+> > > > > > > > > > -	RCU_LOCKDEP_WARN(!rcu_read_lock_held() &&
+> > > > > > > > > > -			 !rcu_read_lock_bh_held() &&
+> > > > > > > > > > -			 !rcu_read_lock_sched_held(),
+> > > > > > > > > > +	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),
 > > > > > > > > > 
-> > > > > > > > > Cc: Oleg Nesterov <oleg@redhat.com>
-> > > > > > > > > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-> > > > > > > > > ---
-> > > > > > > > >  include/linux/rcu_sync.h | 4 +---
-> > > > > > > > >  1 file changed, 1 insertion(+), 3 deletions(-)
-> > > > > > > > > 
-> > > > > > > > > diff --git a/include/linux/rcu_sync.h b/include/linux/rcu_sync.h
-> > > > > > > > > index 9b83865d24f9..0027d4c8087c 100644
-> > > > > > > > > --- a/include/linux/rcu_sync.h
-> > > > > > > > > +++ b/include/linux/rcu_sync.h
-> > > > > > > > > @@ -31,9 +31,7 @@ struct rcu_sync {
-> > > > > > > > >   */
-> > > > > > > > >  static inline bool rcu_sync_is_idle(struct rcu_sync *rsp)
-> > > > > > > > >  {
-> > > > > > > > > -	RCU_LOCKDEP_WARN(!rcu_read_lock_held() &&
-> > > > > > > > > -			 !rcu_read_lock_bh_held() &&
-> > > > > > > > > -			 !rcu_read_lock_sched_held(),
-> > > > > > > > > +	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),
+> > > > > > > > > I believe that replacing rcu_read_lock_sched_held() with preemptible()
+> > > > > > > > > in a CONFIG_PREEMPT=n kernel will give you false-positive splats here.
+> > > > > > > > > If you have not already done so, could you please give it a try?
 > > > > > > > > 
-> > > > > > > > I believe that replacing rcu_read_lock_sched_held() with preemptible()
-> > > > > > > > in a CONFIG_PREEMPT=n kernel will give you false-positive splats here.
-> > > > > > > > If you have not already done so, could you please give it a try?
+> > > > > > > > Hi Paul,
+> > > > > > > > I don't think it will cause splats for !CONFIG_PREEMPT.
+> > > > > > > > 
+> > > > > > > > Currently, rcu_read_lock_any_held() introduced in this patch returns true if
+> > > > > > > > !preemptible(). This means that:
+> > > > > > > > 
+> > > > > > > > The following expression above:
+> > > > > > > > RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),...)
+> > > > > > > > 
+> > > > > > > > Becomes:
+> > > > > > > > RCU_LOCKDEP_WARN(preemptible(), ...)
+> > > > > > > > 
+> > > > > > > > For, CONFIG_PREEMPT=n kernels, this means:
+> > > > > > > > RCU_LOCKDEP_WARN(0, ...)
+> > > > > > > > 
+> > > > > > > > Which would mean no splats. Or, did I miss the point?
 > > > > > > > 
-> > > > > > > Hi Paul,
-> > > > > > > I don't think it will cause splats for !CONFIG_PREEMPT.
-> > > > > > > 
-> > > > > > > Currently, rcu_read_lock_any_held() introduced in this patch returns true if
-> > > > > > > !preemptible(). This means that:
-> > > > > > > 
-> > > > > > > The following expression above:
-> > > > > > > RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),...)
-> > > > > > > 
-> > > > > > > Becomes:
-> > > > > > > RCU_LOCKDEP_WARN(preemptible(), ...)
-> > > > > > > 
-> > > > > > > For, CONFIG_PREEMPT=n kernels, this means:
-> > > > > > > RCU_LOCKDEP_WARN(0, ...)
-> > > > > > > 
-> > > > > > > Which would mean no splats. Or, did I miss the point?
+> > > > > > > I suggest trying it out on a CONFIG_PREEMPT=n kernel.
 > > > > > > 
-> > > > > > I suggest trying it out on a CONFIG_PREEMPT=n kernel.
+> > > > > > Sure, will do, sorry did not try it out yet because was busy with weekend
+> > > > > > chores but will do soon, thanks!
 > > > > > 
-> > > > > Sure, will do, sorry did not try it out yet because was busy with weekend
-> > > > > chores but will do soon, thanks!
+> > > > > I am not faulting you for taking the weekend off, actually.  ;-)
 > > > > 
-> > > > I am not faulting you for taking the weekend off, actually.  ;-)
+> > > > ;-) 
+> > > > 
+> > > > I tried doing RCU_LOCKDEP_WARN(preemptible(), ...) in this code path and I
+> > > > don't get any splats. I also disassembled the code and it seems to me
+> > > > RCU_LOCKDEP_WARN() becomes a NOOP which also the above reasoning confirms.
 > > > 
-> > > ;-) 
+> > > OK, very good.  Could you do the same thing for the RCU_LOCKDEP_WARN()
+> > > in synchronize_rcu()?  Why or why not?
 > > > 
-> > > I tried doing RCU_LOCKDEP_WARN(preemptible(), ...) in this code path and I
-> > > don't get any splats. I also disassembled the code and it seems to me
-> > > RCU_LOCKDEP_WARN() becomes a NOOP which also the above reasoning confirms.
 > > 
-> > OK, very good.  Could you do the same thing for the RCU_LOCKDEP_WARN()
-> > in synchronize_rcu()?  Why or why not?
+> > Hi Paul,
 > > 
+> > Yes synchronize_rcu() can also make use of this technique since it is
+> > strictly illegal to call synchronize_rcu() within a reader section.
+> > 
+> > I will add this to the set of my patches as well and send them all out next
+> > week, along with the rcu-sync and bh clean ups we discussed.
 > 
-> Hi Paul,
+> After sending this email, it occurs to me it wont work in synchronize_rcu()
+> for !CONFIG_PREEMPT kernels. This is because in a !CONFIG_PREEMPT kernel,
+> executing in kernel mode itself looks like being in an RCU reader. So we
+> should leave that as is. However it will work fine for rcu_sync_is_idle (for
+> CONFIG_PREEMPT=n kernels) as I mentioned earlier.
 > 
-> Yes synchronize_rcu() can also make use of this technique since it is
-> strictly illegal to call synchronize_rcu() within a reader section.
-> 
-> I will add this to the set of my patches as well and send them all out next
-> week, along with the rcu-sync and bh clean ups we discussed.
+> Were trying to throw me a Quick-Quiz ? ;-) In that case, hope I passed!
 
-After sending this email, it occurs to me it wont work in synchronize_rcu()
-for !CONFIG_PREEMPT kernels. This is because in a !CONFIG_PREEMPT kernel,
-executing in kernel mode itself looks like being in an RCU reader. So we
-should leave that as is. However it will work fine for rcu_sync_is_idle (for
-CONFIG_PREEMPT=n kernels) as I mentioned earlier.
+You did pass.  This time.  ;-)
 
-Were trying to throw me a Quick-Quiz ? ;-) In that case, hope I passed!
-
-thanks,
-
- - Joel
-
+							Thanx, Paul
