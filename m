@@ -2,123 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50E6868BBC
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2019 15:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12F8B68D5F
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2019 15:59:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730281AbfGONnV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Jul 2019 09:43:21 -0400
-Received: from foss.arm.com ([217.140.110.172]:49374 "EHLO foss.arm.com"
+        id S1732245AbfGON6F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Jul 2019 09:58:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37098 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730286AbfGONnV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 15 Jul 2019 09:43:21 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 720C228;
-        Mon, 15 Jul 2019 06:43:20 -0700 (PDT)
-Received: from [10.1.196.105] (eglon.cambridge.arm.com [10.1.196.105])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E77153F71F;
-        Mon, 15 Jul 2019 06:43:17 -0700 (PDT)
-Subject: Re: [RFC PATCH v2 0/3] Support CPU hotplug for ARM64
-To:     Maran Wilson <maran.wilson@oracle.com>
-Cc:     Marc Zyngier <marc.zyngier@arm.com>,
-        Xiongfeng Wang <wangxiongfeng2@huawei.com>,
-        guohanjun@huawei.com, john.garry@huawei.com, rjw@rjwysocki.net,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        huawei.libin@huawei.com, jonathan.cameron@huawei.com,
-        kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org
-References: <1561776155-38975-1-git-send-email-wangxiongfeng2@huawei.com>
- <82879258-46a7-a6e9-ee54-fc3692c1cdc3@arm.com>
- <51cc9a5c-9968-c4b1-0bc7-870f44a3a761@oracle.com>
- <06ef13e1-fffe-d4a2-721e-f666f331fb3c@arm.com>
- <d65c2aca-470f-177d-57cf-6375c989054c@oracle.com>
-From:   James Morse <james.morse@arm.com>
-Message-ID: <5f1cba3d-d9aa-b17c-8e10-721ac69b921f@arm.com>
-Date:   Mon, 15 Jul 2019 14:43:16 +0100
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1733060AbfGON6E (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 15 Jul 2019 09:58:04 -0400
+Received: from sasha-vm.mshome.net (unknown [73.61.17.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 19694212F5;
+        Mon, 15 Jul 2019 13:58:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563199083;
+        bh=ZS55mG+paP+L29yblX7J5SeVoO5OrFk/y/5CPeKCzEA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Jtgoz4blmGQd9F8M3Jr2xH5MSu/uvveAlxgzsmjvnFXOW2Cjw4h2hiIGjYZhQVrc7
+         Xi556+EWnaW/GyBhfdvN9Iu/ULdODDs1wuzoL4+1f28TVbGPmB0EoI2yeQ10y91kFj
+         6L8/vkFIHGfFj0+Yk4mC6isWtKmhS7MLRvj7kldw=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.2 185/249] PCI / ACPI: Use cached ACPI device state to get PCI device power state
+Date:   Mon, 15 Jul 2019 09:45:50 -0400
+Message-Id: <20190715134655.4076-185-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190715134655.4076-1-sashal@kernel.org>
+References: <20190715134655.4076-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <d65c2aca-470f-177d-57cf-6375c989054c@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Maran,
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-On 10/07/2019 17:05, Maran Wilson wrote:
-> On 7/10/2019 2:15 AM, Marc Zyngier wrote:
->> On 09/07/2019 20:06, Maran Wilson wrote:
->>> On 7/5/2019 3:12 AM, James Morse wrote:
->>>> On 29/06/2019 03:42, Xiongfeng Wang wrote:
->>>>> This patchset mark all the GICC node in MADT as possible CPUs even though it
->>>>> is disabled. But only those enabled GICC node are marked as present CPUs.
->>>>> So that kernel will initialize some CPU related data structure in advance before
->>>>> the CPU is actually hot added into the system. This patchset also implement
->>>>> 'acpi_(un)map_cpu()' and 'arch_(un)register_cpu()' for ARM64. These functions are
->>>>> needed to enable CPU hotplug.
->>>>>
->>>>> To support CPU hotplug, we need to add all the possible GICC node in MADT
->>>>> including those CPUs that are not present but may be hot added later. Those
->>>>> CPUs are marked as disabled in GICC nodes.
->>>> ... what do you need this for?
->>>>
->>>> (The term cpu-hotplug in the arm world almost never means hot-adding a new package/die to
->>>> the platform, we usually mean taking CPUs online/offline for power management. e.g.
->>>> cpuhp_offline_cpu_device())
->>>>
->>>> It looks like you're adding support for hot-adding a new package/die to the platform ...
->>>> but only for virtualisation.
->>>>
->>>> I don't see why this is needed for virtualisation. The in-kernel irqchip needs to know
->>>> these vcpu exist before you can enter the guest for the first time. You can't create them
->>>> late. At best you're saving the host scheduling a vcpu that is offline. Is this really a
->>>> problem?
->>>>
->>>> If we moved PSCI support to user-space, you could avoid creating host vcpu threads until
->>>> the guest brings the vcpu online, which would solve that problem, and save the host
->>>> resources for the thread too. (and its acpi/dt agnostic)
->>>>
->>>> I don't see the difference here between booting the guest with 'maxcpus=1', and bringing
->>>> the vcpu online later. The only real difference seems to be moving the can-be-online
->>>> policy into the hypervisor/VMM...
+[ Upstream commit 83a16e3f6d70da99896c7a2639c0b60fff13afb8 ]
 
->>> Isn't that an important distinction from a cloud service provider's
->>> perspective?
+The ACPI power state returned by acpi_device_get_power() may depend on
+the configuration of ACPI power resources in the system which may change
+any time after acpi_device_get_power() has returned, unless the
+reference counters of the ACPI power resources in question are set to
+prevent that from happening. Thus it is invalid to use acpi_device_get_power()
+in acpi_pci_get_power_state() the way it is done now and the value of
+the ->power.state field in the corresponding struct acpi_device objects
+(which reflects the ACPI power resources reference counting, among other
+things) should be used instead.
 
-Host cpu-time is. Describing this as guest vcpu's is a bit weird.
+As an example where this becomes an issue is Intel Ice Lake where the
+Thunderbolt controller (NHI), two PCIe root ports (RP0 and RP1) and xHCI
+all share the same power resources. The following picture with power
+resources marked with [] shows the topology:
 
-I'd expect the statement be something like "you're paying for 50% of one Xeon v-whatever".
-It shouldn't make a difference if I run 8 vcpus or 2, the amount of cpu-time would still
-be constrained by the cloud provider.
+  Host bridge
+    |
+    +- RP0 ---\
+    +- RP1 ---|--+--> [TBT]
+    +- NHI --/   |
+    |            |
+    |            v
+    +- xHCI --> [D3C]
 
+Here TBT and D3C are the shared ACPI power resources. ACPI _PR3() method
+of the devices in question returns either TBT or D3C or both.
 
->>> As far as I understand it, you also need CPU hotplug capabilities to
->>> support things like Kata runtime under Kubernetes. i.e. when
->>> implementing your containers in the form of light weight VMs for the
->>> additional security ... and the orchestration layer cannot determine
->>> ahead of time how much CPU/memory resources are going to be needed to
->>> run the pod(s).
+Say we runtime suspend first the root ports RP0 and RP1, then NHI. Now
+since the TBT power resource is still on when the root ports are runtime
+suspended their dev->current_state is set to D3hot. When NHI is runtime
+suspended TBT is finally turned off but state of the root ports remain
+to be D3hot. Now when the xHCI is runtime suspended D3C gets also turned
+off. PCI core thus has power states of these devices cached in their
+dev->current_state as follows:
 
->> Why would it be any different? You can pre-allocate your vcpus, leave
->> them parked until some external agent decides to signal the container
->> that it it can use another bunch of CPUs. At that point, the container
->> must actively boot these vcpus (they aren't going to come up by magic).
->>
->> Given that you must have sized your virtual platform to deal with the
->> maximum set of resources you anticipate (think of the GIC
->> redistributors, for example), I really wonder what you gain here.
+  RP0 -> D3hot
+  RP1 -> D3hot
+  NHI -> D3cold
+  xHCI -> D3cold
 
-> Maybe I'm not following the alternative proposal completely, but wouldn't a guest VM (who
-> happens to be in control of its OS) be able to add/online vCPU resources without approval
-> from the VMM this way?
+If the user now runs lspci for instance, the result is all 1's like in
+the below output (00:07.0 is the first root port, RP0):
 
-The in-kernel PSCI implementation will allow all CPUs to be online/offline. If we moved
-that support to the VMM, it could apply some policy as to whether a cpu-online call
-succeeds or fails.
+00:07.0 PCI bridge: Intel Corporation Device 8a1d (rev ff) (prog-if ff)
+    !!! Unknown header type 7f
+    Kernel driver in use: pcieport
 
+In short the hardware state is not in sync with the software state
+anymore. The exact same thing happens with the PME polling thread which
+ends up bringing the root ports back into D0 after they are runtime
+suspended.
 
-Thanks,
+For this reason, modify acpi_pci_get_power_state() so that it uses the
+ACPI device power state that was cached by the ACPI core. This makes the
+PCI device power state match the ACPI device power state regardless of
+state of the shared power resources which may still be on at this point.
 
-James
+Link: https://lore.kernel.org/r/20190618161858.77834-2-mika.westerberg@linux.intel.com
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/pci/pci-acpi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index 1897847ceb0c..b782acac26c5 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -685,7 +685,8 @@ static pci_power_t acpi_pci_get_power_state(struct pci_dev *dev)
+ 	if (!adev || !acpi_device_power_manageable(adev))
+ 		return PCI_UNKNOWN;
+ 
+-	if (acpi_device_get_power(adev, &state) || state == ACPI_STATE_UNKNOWN)
++	state = adev->power.state;
++	if (state == ACPI_STATE_UNKNOWN)
+ 		return PCI_UNKNOWN;
+ 
+ 	return state_conv[state];
+-- 
+2.20.1
+
