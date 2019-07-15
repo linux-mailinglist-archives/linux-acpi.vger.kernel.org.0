@@ -2,66 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D73F687A8
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2019 13:04:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50E6868BBC
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2019 15:43:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729896AbfGOLDh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Jul 2019 07:03:37 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:46836 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729842AbfGOLDh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Jul 2019 07:03:37 -0400
-Received: by mail-pg1-f196.google.com with SMTP id i8so7524425pgm.13
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Jul 2019 04:03:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
-        b=QRb1GBodFoBhFvJPBdxPE4VAqCl+I+T1SKUDc8YhKIcP8qXLNKmtBmeLwjLs/FO9lZ
-         75gCGAxY+YSs9c6HnUneWVQ5Kuc7cIu7HA1ZwTW36nCFWmVeEdZxTARPq/JJ6pFyLQCC
-         i5F57UJ0HSPfhhGiuIoSnyQ2CEuZZYzSvF/92SwjNSSKKvpKVbRgR8KxSyIf95yOdirX
-         vUpU9SAkZRrnMLlykrQni0TuHswl2ZAFQk4VFvbGPWK0ElKuMbgEj9smyMqgESRQW96Z
-         0AILN2JphlyIDpV3m3PpFXakYu3MGnxotH6bOcGMyGpkv5udFQwKTslRRPJv+1YEgJFw
-         GLhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
-        b=Kh8LuEuaQUSGARYLPHQ3TbPdEYSX1ueB423LHfOE2FDSDC0fUzE2Vd5/VAM7hqF/gi
-         F0PhvPd5s3gBYXCOodrFy1kJbZCpG8/yG9uZzDWZ3KG2BNSZtWLV8GiTiqPFHBz2dZ1/
-         tripvTJdUdAJqYrPa6pSB2dPqkUYOPQzBgkJduPvvHHRgozttk1sEJU6LShE39TqmvHp
-         j72R5TkYULqm5msXDe2JgNVe8h2roaS9K38GpBS5Hl8bNdxtAIOV4CT5ikegoJHOcHsn
-         x08poL3fjiwe2nZ/melN6uxgvT9GV9IQn/ji535U2GKTdLBIp1TZPAJ06qON+nM2YQcl
-         dPCw==
-X-Gm-Message-State: APjAAAWAcQeXA+LjVVg068Op7Tf9xFzqjBcJeH124Zpo82bAyGvRXNZO
-        xRMOIx2tvhCX1OTFg4eMBRZfNaNR7IybWvKCkTA=
-X-Google-Smtp-Source: APXvYqzZtOEA+O4p1z4qZpCetbNMVF7GlYWpoUrGzFqj2Xbxoz/rNpVURYzRILo4We5FvCDz7WNaWyJleYBMiLbsRiY=
-X-Received: by 2002:a17:90a:9903:: with SMTP id b3mr28453816pjp.80.1563188616818;
- Mon, 15 Jul 2019 04:03:36 -0700 (PDT)
+        id S1730281AbfGONnV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Jul 2019 09:43:21 -0400
+Received: from foss.arm.com ([217.140.110.172]:49374 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730286AbfGONnV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 15 Jul 2019 09:43:21 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 720C228;
+        Mon, 15 Jul 2019 06:43:20 -0700 (PDT)
+Received: from [10.1.196.105] (eglon.cambridge.arm.com [10.1.196.105])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E77153F71F;
+        Mon, 15 Jul 2019 06:43:17 -0700 (PDT)
+Subject: Re: [RFC PATCH v2 0/3] Support CPU hotplug for ARM64
+To:     Maran Wilson <maran.wilson@oracle.com>
+Cc:     Marc Zyngier <marc.zyngier@arm.com>,
+        Xiongfeng Wang <wangxiongfeng2@huawei.com>,
+        guohanjun@huawei.com, john.garry@huawei.com, rjw@rjwysocki.net,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        huawei.libin@huawei.com, jonathan.cameron@huawei.com,
+        kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org
+References: <1561776155-38975-1-git-send-email-wangxiongfeng2@huawei.com>
+ <82879258-46a7-a6e9-ee54-fc3692c1cdc3@arm.com>
+ <51cc9a5c-9968-c4b1-0bc7-870f44a3a761@oracle.com>
+ <06ef13e1-fffe-d4a2-721e-f666f331fb3c@arm.com>
+ <d65c2aca-470f-177d-57cf-6375c989054c@oracle.com>
+From:   James Morse <james.morse@arm.com>
+Message-ID: <5f1cba3d-d9aa-b17c-8e10-721ac69b921f@arm.com>
+Date:   Mon, 15 Jul 2019 14:43:16 +0100
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Received: by 2002:a17:90a:b78d:0:0:0:0 with HTTP; Mon, 15 Jul 2019 04:03:36
- -0700 (PDT)
-From:   Donald Douglas <ddouglasng@gmail.com>
-Date:   Mon, 15 Jul 2019 04:03:36 -0700
-Message-ID: <CALVR28EtFZG5M72gg5535c6GQgjUkrOmnToQem=_bwo5pu8tgQ@mail.gmail.com>
-Subject: Kindly Respond
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <d65c2aca-470f-177d-57cf-6375c989054c@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello,
-I am Barr Fredrick Mbogo a business consultant i have a lucrative
-business to discuss with you from the Eastern part of Africa Uganda to
-be precise aimed at agreed percentage upon your acceptance of my hand
-in business and friendship. Kindly respond to me if you are interested
-to partner with me for an update. Very important.
+Hi Maran,
 
-Yours Sincerely,
-Donald Douglas,
-For,
-Barr Frederick Mbogo
-Legal Consultant.
-Reply to: barrfredmbogo@consultant.com
+On 10/07/2019 17:05, Maran Wilson wrote:
+> On 7/10/2019 2:15 AM, Marc Zyngier wrote:
+>> On 09/07/2019 20:06, Maran Wilson wrote:
+>>> On 7/5/2019 3:12 AM, James Morse wrote:
+>>>> On 29/06/2019 03:42, Xiongfeng Wang wrote:
+>>>>> This patchset mark all the GICC node in MADT as possible CPUs even though it
+>>>>> is disabled. But only those enabled GICC node are marked as present CPUs.
+>>>>> So that kernel will initialize some CPU related data structure in advance before
+>>>>> the CPU is actually hot added into the system. This patchset also implement
+>>>>> 'acpi_(un)map_cpu()' and 'arch_(un)register_cpu()' for ARM64. These functions are
+>>>>> needed to enable CPU hotplug.
+>>>>>
+>>>>> To support CPU hotplug, we need to add all the possible GICC node in MADT
+>>>>> including those CPUs that are not present but may be hot added later. Those
+>>>>> CPUs are marked as disabled in GICC nodes.
+>>>> ... what do you need this for?
+>>>>
+>>>> (The term cpu-hotplug in the arm world almost never means hot-adding a new package/die to
+>>>> the platform, we usually mean taking CPUs online/offline for power management. e.g.
+>>>> cpuhp_offline_cpu_device())
+>>>>
+>>>> It looks like you're adding support for hot-adding a new package/die to the platform ...
+>>>> but only for virtualisation.
+>>>>
+>>>> I don't see why this is needed for virtualisation. The in-kernel irqchip needs to know
+>>>> these vcpu exist before you can enter the guest for the first time. You can't create them
+>>>> late. At best you're saving the host scheduling a vcpu that is offline. Is this really a
+>>>> problem?
+>>>>
+>>>> If we moved PSCI support to user-space, you could avoid creating host vcpu threads until
+>>>> the guest brings the vcpu online, which would solve that problem, and save the host
+>>>> resources for the thread too. (and its acpi/dt agnostic)
+>>>>
+>>>> I don't see the difference here between booting the guest with 'maxcpus=1', and bringing
+>>>> the vcpu online later. The only real difference seems to be moving the can-be-online
+>>>> policy into the hypervisor/VMM...
+
+>>> Isn't that an important distinction from a cloud service provider's
+>>> perspective?
+
+Host cpu-time is. Describing this as guest vcpu's is a bit weird.
+
+I'd expect the statement be something like "you're paying for 50% of one Xeon v-whatever".
+It shouldn't make a difference if I run 8 vcpus or 2, the amount of cpu-time would still
+be constrained by the cloud provider.
+
+
+>>> As far as I understand it, you also need CPU hotplug capabilities to
+>>> support things like Kata runtime under Kubernetes. i.e. when
+>>> implementing your containers in the form of light weight VMs for the
+>>> additional security ... and the orchestration layer cannot determine
+>>> ahead of time how much CPU/memory resources are going to be needed to
+>>> run the pod(s).
+
+>> Why would it be any different? You can pre-allocate your vcpus, leave
+>> them parked until some external agent decides to signal the container
+>> that it it can use another bunch of CPUs. At that point, the container
+>> must actively boot these vcpus (they aren't going to come up by magic).
+>>
+>> Given that you must have sized your virtual platform to deal with the
+>> maximum set of resources you anticipate (think of the GIC
+>> redistributors, for example), I really wonder what you gain here.
+
+> Maybe I'm not following the alternative proposal completely, but wouldn't a guest VM (who
+> happens to be in control of its OS) be able to add/online vCPU resources without approval
+> from the VMM this way?
+
+The in-kernel PSCI implementation will allow all CPUs to be online/offline. If we moved
+that support to the VMM, it could apply some policy as to whether a cpu-online call
+succeeds or fails.
+
+
+Thanks,
+
+James
