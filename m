@@ -2,132 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27A4969E78
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2019 23:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92F1F6A0A3
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2019 04:59:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732099AbfGOVop (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Jul 2019 17:44:45 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:41953 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731858AbfGOVop (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Jul 2019 17:44:45 -0400
-Received: by mail-ot1-f68.google.com with SMTP id o101so18695714ota.8;
-        Mon, 15 Jul 2019 14:44:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hO2lc5/RCrOfroO8+pzsn6ZrqRVw3tFQDoLgNfzmBUQ=;
-        b=QxXDGZ3v64gyAMTDqUN0aDnOZUEUriuNBjPSYo18FhopZ8P0hjPzAG+ZIKn7zH4gUi
-         QQfKwc35vqrWxz9Pdos45CbPkxluZAY+xJxiCUnS/c8V3irYv3sVlFOGVsI03FOmIaXv
-         1EW+EKfby2IgVifnLuY8yMlV3B9g9zSRWk+MkjD42FojhmDrPbL1Gj05OvCQfmBMrtVC
-         H2sgMK8MwEiq61UuGNkJPV+VQ+plnLtUXI5O8yARGzjtU/JH3OxAdhS+CBaJnz7jEarF
-         rKc52Lygct/0tLMNo/N1pP0Qx0Vim/zzGg889XPO1TWBw/bRbhAqCy7vbi3fogYK9Wkn
-         2OSA==
-X-Gm-Message-State: APjAAAUsAOkRYO87kbLMCwaOxid9BCDbmnB2OvJG6nh20Bt2jxK632To
-        Re3Z9R3uMSLoWgU/fV0rp3nL8QXeSGq3NMcP2Ik=
-X-Google-Smtp-Source: APXvYqxeBU+lL3PSYmxhb7JppIVz9aT6KKyGzUIDEJ8gGEzipFV4PQx8sL/9KU3ERl8XEJvsrjqZy4/vHGyUSxfUvR0=
-X-Received: by 2002:a05:6830:1516:: with SMTP id k22mr18941426otp.189.1563227084317;
- Mon, 15 Jul 2019 14:44:44 -0700 (PDT)
+        id S1729635AbfGPC7f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Jul 2019 22:59:35 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:47084 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729145AbfGPC7f (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 15 Jul 2019 22:59:35 -0400
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 26AB5309178C;
+        Tue, 16 Jul 2019 02:59:35 +0000 (UTC)
+Received: from dhcp-128-65.nay.redhat.com (ovpn-12-64.pek2.redhat.com [10.72.12.64])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id B7F1D1001B04;
+        Tue, 16 Jul 2019 02:59:27 +0000 (UTC)
+Date:   Tue, 16 Jul 2019 10:59:23 +0800
+From:   Dave Young <dyoung@redhat.com>
+To:     Matthew Garrett <matthewgarrett@google.com>
+Cc:     jmorris@namei.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+        Josh Boyer <jwboyer@redhat.com>,
+        David Howells <dhowells@redhat.com>,
+        Matthew Garrett <mjg59@google.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Kees Cook <keescook@chromium.org>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH V35 15/29] acpi: Ignore acpi_rsdp kernel param when the
+ kernel has been locked down
+Message-ID: <20190716025923.GA5793@dhcp-128-65.nay.redhat.com>
+References: <20190715195946.223443-1-matthewgarrett@google.com>
+ <20190715195946.223443-16-matthewgarrett@google.com>
 MIME-Version: 1.0
-References: <20190715143705.117908-1-joel@joelfernandes.org> <20190715143705.117908-9-joel@joelfernandes.org>
-In-Reply-To: <20190715143705.117908-9-joel@joelfernandes.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 15 Jul 2019 23:44:31 +0200
-Message-ID: <CAJZ5v0jdx1dgBZLyH_Loj1XVuLCV+HMHjk8r_n8xG7qmoH_z3A@mail.gmail.com>
-Subject: Re: [PATCH 8/9] acpi: Use built-in RCU list checking for
- acpi_ioremaps list (v1)
-To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Borislav Petkov <bp@alien8.de>, c0d1n61at3@gmail.com,
-        "David S. Miller" <davem@davemloft.net>, edumazet@google.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Kees Cook <keescook@chromium.org>,
-        Kernel Hardening <kernel-hardening@lists.openwall.com>,
-        "Cc: Android Kernel" <kernel-team@android.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        NeilBrown <neilb@suse.com>, netdev <netdev@vger.kernel.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        "Paul E. McKenney" <paulmck@linux.ibm.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
-        rcu@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
-        Tejun Heo <tj@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190715195946.223443-16-matthewgarrett@google.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Tue, 16 Jul 2019 02:59:35 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 15, 2019 at 4:43 PM Joel Fernandes (Google)
-<joel@joelfernandes.org> wrote:
->
-> list_for_each_entry_rcu has built-in RCU and lock checking. Make use of
-> it for acpi_ioremaps list traversal.
->
-> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
+Hi,
+On 07/15/19 at 12:59pm, Matthew Garrett wrote:
+> From: Josh Boyer <jwboyer@redhat.com>
+> 
+> This option allows userspace to pass the RSDP address to the kernel, which
+> makes it possible for a user to modify the workings of hardware .  Reject
+> the option when the kernel is locked down.
+> 
+> Signed-off-by: Josh Boyer <jwboyer@redhat.com>
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> Signed-off-by: Matthew Garrett <mjg59@google.com>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> cc: Dave Young <dyoung@redhat.com>
+> cc: linux-acpi@vger.kernel.org
 > ---
->  drivers/acpi/osl.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
+>  drivers/acpi/osl.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
 > diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-> index 9c0edf2fc0dd..2f9d0d20b836 100644
+> index 9c0edf2fc0dd..06e7cffc4386 100644
 > --- a/drivers/acpi/osl.c
 > +++ b/drivers/acpi/osl.c
-> @@ -14,6 +14,7 @@
->  #include <linux/slab.h>
->  #include <linux/mm.h>
->  #include <linux/highmem.h>
-> +#include <linux/lockdep.h>
->  #include <linux/pci.h>
->  #include <linux/interrupt.h>
->  #include <linux/kmod.h>
-> @@ -80,6 +81,7 @@ struct acpi_ioremap {
->
->  static LIST_HEAD(acpi_ioremaps);
->  static DEFINE_MUTEX(acpi_ioremap_lock);
-> +#define acpi_ioremap_lock_held() lock_is_held(&acpi_ioremap_lock.dep_map)
->
->  static void __init acpi_request_region (struct acpi_generic_address *gas,
->         unsigned int length, char *desc)
-> @@ -206,7 +208,7 @@ acpi_map_lookup(acpi_physical_address phys, acpi_size size)
->  {
->         struct acpi_ioremap *map;
->
-> -       list_for_each_entry_rcu(map, &acpi_ioremaps, list)
-> +       list_for_each_entry_rcu(map, &acpi_ioremaps, list, acpi_ioremap_lock_held())
->                 if (map->phys <= phys &&
->                     phys + size <= map->phys + map->size)
->                         return map;
-> @@ -249,7 +251,7 @@ acpi_map_lookup_virt(void __iomem *virt, acpi_size size)
->  {
->         struct acpi_ioremap *map;
->
-> -       list_for_each_entry_rcu(map, &acpi_ioremaps, list)
-> +       list_for_each_entry_rcu(map, &acpi_ioremaps, list, acpi_ioremap_lock_held())
->                 if (map->virt <= virt &&
->                     virt + size <= map->virt + map->size)
->                         return map;
-> --
+> @@ -26,6 +26,7 @@
+>  #include <linux/list.h>
+>  #include <linux/jiffies.h>
+>  #include <linux/semaphore.h>
+> +#include <linux/security.h>
+>  
+>  #include <asm/io.h>
+>  #include <linux/uaccess.h>
+> @@ -180,7 +181,7 @@ acpi_physical_address __init acpi_os_get_root_pointer(void)
+>  	acpi_physical_address pa;
+>  
+>  #ifdef CONFIG_KEXEC
+> -	if (acpi_rsdp)
+> +	if (acpi_rsdp && !security_locked_down(LOCKDOWN_ACPI_TABLES))
+>  		return acpi_rsdp;
+
+I'm very sorry I noticed this late, but have to say this will not work for
+X86 with latest kernel code.
+
+acpi_physical_address __init acpi_os_get_root_pointer(void)
+{
+        acpi_physical_address pa;
+
+#ifdef CONFIG_KEXEC
+        if (acpi_rsdp)
+                return acpi_rsdp;
+#endif
+        pa = acpi_arch_get_root_pointer();
+        if (pa)
+                return pa;
+[snip]
+
+In above code, the later acpi_arch_get_root_pointer still get acpi_rsdp
+from cmdline param if provided.
+
+You can check the arch/x86/boot/compressed/acpi.c, and
+arch/x86/kernel/acpi/boot.c
+
+In X86 early code, cmdline provided acpi_rsdp pointer will be saved in boot_params.acpi_rsdp_addr;
+and the used in x86_default_get_root_pointer
+ 
+>  #endif
+>  	pa = acpi_arch_get_root_pointer();
+> -- 
 > 2.22.0.510.g264f2c817a-goog
->
+> 
+
+Thanks
+Dave
