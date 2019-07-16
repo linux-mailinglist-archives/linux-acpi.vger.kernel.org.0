@@ -2,78 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 537726A729
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2019 13:16:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E74B6ACAF
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2019 18:29:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387553AbfGPLQb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Jul 2019 07:16:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47542 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733200AbfGPLQa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 16 Jul 2019 07:16:30 -0400
-Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 914DA2173B;
-        Tue, 16 Jul 2019 11:16:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563275789;
-        bh=cN2YWLRC4s7HqVcjkwb1qbS93xC53QlrYyzApl46WQY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fN2ZJSMKqcmdmKc0QGJ3lMxe98jrFW3RcAvT1o8V3Zx6VySokBYxZyqlAJHyVHMTr
-         P4h8cQBkE2b7uR2KHP5b/MA7uto9Mm/CRyNivfEx+3f6kMERI8JSzOkGe3oU/SC7pE
-         6CA3s19YptajttSQaXKI1OvrCZj7xRo6mrsVrKTM=
-Date:   Tue, 16 Jul 2019 07:16:28 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Sinan Kaya <Okaya@kernel.org>
-Cc:     marc.zyngier@arm.com, will.deacon@arm.com, julien.thierry@arm.com,
-        catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
-        linux-kernel@microsoft.com, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, stable@kernel.org
-Subject: Re: [PATCH] ARM64/irqchip: Make ACPI_IORT depend on PCI again
-Message-ID: <20190716111628.GB1943@sasha-vm>
-References: <20190716040441.12101-1-sashal@kernel.org>
- <a688793b-f7e8-18a4-3eb2-877f1522d8f3@kernel.org>
+        id S2388131AbfGPQ1V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Jul 2019 12:27:21 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:52586 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387977AbfGPQ1U (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Jul 2019 12:27:20 -0400
+Received: from 79.184.255.39.ipv4.supernova.orange.pl (79.184.255.39) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
+ id 1116abc0f6e4ed4e; Tue, 16 Jul 2019 18:27:18 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux PM <linux-pm@vger.kernel.org>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Len Brown <len.brown@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Rajneesh Bhardwaj <rajneesh.bhardwaj@linux.intel.com>,
+        "David E. Box" <david.e.box@linux.intel.com>
+Subject: [PATCH 0/8] PM / ACPI: sleep: Simplify the suspend-to-idle control flow
+Date:   Tue, 16 Jul 2019 18:08:29 +0200
+Message-ID: <71085220.z6FKkvYQPX@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <a688793b-f7e8-18a4-3eb2-877f1522d8f3@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jul 16, 2019 at 12:13:23AM -0400, Sinan Kaya wrote:
->On 7/16/2019 12:04 AM, Sasha Levin wrote:
->> ACPI_IORT lost it's explicit dependency on PCI in c6bb8f89fa6df
->> ("ARM64/irqchip: Update ACPI_IORT symbol selection logic") where the
->> author has relied on the general dependency of ACPI on PCI.
->>
->> However, that dependency was finally removed in 5d32a66541c4 ("PCI/ACPI:
->> Allow ACPI to be built without CONFIG_PCI set") and now ACPI_IORT breaks
->> when we try and build it without PCI support.
->>
->> This patch brings back the explicit dependency of ACPI_IORT on PCI.
->>
->> Fixes: 5d32a66541c4 ("PCI/ACPI: Allow ACPI to be built without CONFIG_PCI set")
->> Cc: stable@kernel.org
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->
->Do you have more detail on what really is broken without this patch?
->
->It should be possible to build IORT table without PCI.
+Hi All,
 
-For the record, the errors look like this:
+The rationale for these changes is explained in the changelog of patch [6/8] as follows:
 
-	drivers/acpi/arm64/iort.o: In function `acpi_iort_init':
-	iort.c:(.init.text+0x47c): undefined reference to `pci_request_acs'
+"After commit 33e4f80ee69b ("ACPI / PM: Ignore spurious SCI wakeups
+from suspend-to-idle") the "noirq" phases of device suspend and
+resume may run for multiple times during suspend-to-idle, if there
+are spurious system wakeup events while suspended.  However, this
+is complicated and fragile and actually unnecessary.
 
-Sinan pointed me to an earlier patch he wrote that would fix it
-(https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/drivers/acpi/arm64/iort.c?id=43554cebba50e709b9207c55ceca6bc281748586).
+The main reason for doing this is that on some systems the EC may
+signal system wakeup events (power button events, for example) as
+well as events that should not cause the system to resume (spurious
+system wakeup events).  Thus, in order to determine whether or not
+a given event signaled by the EC while suspended is a proper system
+wakeup one, the EC GPE needs to be dispatched and to start with that
+was achieved by allowing the ACPI SCI action handler to run, which
+was only possible after calling resume_device_irqs().
 
-Please disregard this patch.
+However, dispatching the EC GPE this way turned out to take too much
+time in some cases and some EC events might be missed due to that, so
+commit 68e22011856f ("ACPI: EC: Dispatch the EC GPE directly on
+s2idle wake") started to dispatch the EC GPE right after a wakeup
+event has been detected, so in fact the full ACPI SCI action handler
+doesn't need to run any more to deal with the wakeups coming from the
+EC.
 
---
+Use this observation to simplify the suspend-to-idle control flow
+so that the "noirq" phases of device suspend and resume are each
+run only once in every suspend-to-idle cycle, which is reported to
+significantly reduce power drawn by some systems when suspended to
+idle (by allowing them to reach a deep platform-wide low-power state
+through the suspend-to-idle flow)."
+
+A bonus is that after the essential changes the s2idle flow can be
+integrated back into the generic suspend/resume one (patch [7/8])
+and some simplifications can be made in drivers/base/power/main.c
+after that (patch [8/8]).
+
+Patches [1-5/8] are pre-requisite and the changes made by the first
+three of them really take effect after applying patch [6/8].  Patch
+[4/8], in turn, is a fix and patch [5/8] is an extra simplification.
+
+Please refer to the changelogs for details.
+
+For easier testing, this series is available from the git branch at:
+
+git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-s2idle-rework
+
 Thanks,
-Sasha
+Rafael
+
+
+
