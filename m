@@ -2,54 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2101B6B1A7
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2019 00:14:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE4256B1A8
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2019 00:15:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728566AbfGPWOV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Jul 2019 18:14:21 -0400
-Received: from mail-qt1-f202.google.com ([209.85.160.202]:51069 "EHLO
-        mail-qt1-f202.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728235AbfGPWOV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Jul 2019 18:14:21 -0400
-Received: by mail-qt1-f202.google.com with SMTP id g30so19388784qtm.17
-        for <linux-acpi@vger.kernel.org>; Tue, 16 Jul 2019 15:14:20 -0700 (PDT)
+        id S1728699AbfGPWPb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Jul 2019 18:15:31 -0400
+Received: from mail-vk1-f201.google.com ([209.85.221.201]:52215 "EHLO
+        mail-vk1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728601AbfGPWPb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Jul 2019 18:15:31 -0400
+Received: by mail-vk1-f201.google.com with SMTP id s145so10387041vke.18
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Jul 2019 15:15:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
         bh=MvZvD71NFoDIg+SfvI+3kyXWKLTiQPbfbya7b91g9Tg=;
-        b=Vlxe04qWSQw9kKODOYEqas5zAQ8m7LJiLOKfM7SjcH8tfi3iFM19fuZ/7ool+wvUL0
-         QcGniWwkijvVWm23Jam7xHpeEcmhxp121hovlLE8YmwPV30N4+nEVrnJE8jql2bopSW+
-         PyI4zh6gkUPQmrR0xEUfGez8UUDTDws6GF07fiXskCO83u1XR0lAGorCB/ydEoKwZMbU
-         Ha/5R9gmGsGwrzOWPviZB14X4P/GGYC2i5maLbcne673s4IaxiN5YK8BH3u8h3CIXcQM
-         S8XkUly/N+M7epB95gNXFaCfgD4YjZqdBYbQIJFEnfEqJFAcaG7ew693O18wKm266wx2
-         mreA==
+        b=X3051l97q7WdCLQBVjol9cBje+bAR7tZU5T/uQTI1F/FjcmptyxJ/DI0gN43DQmodK
+         8PEmfGnt+6WTgIQGJPEbknwewiWMDNysfB7S8WaG+ibS5pZNpcozNsImHcmT+N20/e9z
+         14wyFoPxFqvojcSD28sj3c1kFpIlrj7UGtA2t/eQ7/DxeDCdKBxemvOLhB52W2Hiv3ye
+         UvdvJCen5gHJc1hFcA+uE73xnhnwVj7H+guYZpN7p1+Fz8SCU4A0lyWm+0hsyQH/Y7mz
+         Y2iq5jBkBXwbXUKRCyMItOv05b+n1Pd3w4skLHg/xSOCndPI6loxC1d6ym5c4tgYAZuV
+         /0jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
         bh=MvZvD71NFoDIg+SfvI+3kyXWKLTiQPbfbya7b91g9Tg=;
-        b=H6+HMOAfPqkyHus0msabX4WDEml8VUsONuCSpMazVFRWmHVvAxB5qmu9ZtXlMteowO
-         unOJFPylPHdo5vg1TsSLed4oJ/otKdHIVblf4Gr7SHLq+PX5KlixF3kIWMgysBurVtoY
-         DuTrhDC1nM8ztTag5NSugQr5DJJqFRbZqojbalQxjQLL/eEoizo1m9GXgJ41JlcIyNVS
-         W6tidnpXTTppvFb3YBjugnJ4U7k82LcuIJGpUaXcTd8+3SdzGeQbMwTHSH8+pVa/9vdC
-         zrLo7hD73SO/v5BFJ0amuoWba73cAH2r/oU7viXuXq8HGD6ePllRv/YFraYjT07Y0Xjv
-         8EsA==
-X-Gm-Message-State: APjAAAWohRIEuC9r6Bp5YVsLELbUCgUdoT7o+K0btohDxviN0ICTUFAN
-        ftxY62rgA6mdgi+wDEzoREAPUca2CrSI9cOD9RYc0Q==
-X-Google-Smtp-Source: APXvYqwUFsVfJER0QY3oLjXQS7KQ4bfgk5rYOFaBHWIyHi+b6Hip3xtc+k1QNwbOhns7a0yeNJVfhA8pkDlRGg+uSr/CbQ==
-X-Received: by 2002:ac8:1a7d:: with SMTP id q58mr24303860qtk.310.1563315259787;
- Tue, 16 Jul 2019 15:14:19 -0700 (PDT)
-Date:   Tue, 16 Jul 2019 15:14:05 -0700
+        b=dGkRckl+CjeVf7Cjui+9Q44hE0w709s562OO/zxx/nn4ej/UaAwJsg0fq9EaWEXmZf
+         hT856KO0EBABctYvovnzfQL7ETsdbEbEihbH8tfbGksu4UcSOKmsxJLmiSHGjiMtViLT
+         R9/sD7bpyu0O+QFg3DPFETZAClD93Mgw6wMqarpB2LCD8md/aFPJy7BemEWnuQ7CepMp
+         cuPrN7CgrfClxpCqg7AZ1FtsGPFYy8iOSbRfjTnXl61oBGVO7viV4lonydakD0W2hzEF
+         AkqhJ7FZcF39zIPmJ86/V2Dc3GaCc1dVvdCTIHvUrw7q8YVNoeuyuML9HauCSwrx/ivU
+         7HZw==
+X-Gm-Message-State: APjAAAVXXtlQL/A4Lx5mFxSu/OKUb1FVTxI1WoUFf2vFbZbTAPW2zk+P
+        1OjN4OQLn4aJP+yB/9WqBKcaroIjpl1hg22PP3eTmg==
+X-Google-Smtp-Source: APXvYqw6McX1xHGssSeVCoIHR48jVhR7fZmFdqKqp5rprhARgbmWL/d86S4HD2lpgnw54uo5A4VlM/yzWLW0xCmQoSPvog==
+X-Received: by 2002:a1f:8513:: with SMTP id h19mr13430748vkd.92.1563315329685;
+ Tue, 16 Jul 2019 15:15:29 -0700 (PDT)
+Date:   Tue, 16 Jul 2019 15:15:26 -0700
 In-Reply-To: <937ce9400ed86ad089d743dcca7b5926a7172566>
-Message-Id: <20190716221405.61804-1-matthewgarrett@google.com>
+Message-Id: <20190716221526.63422-1-matthewgarrett@google.com>
 Mime-Version: 1.0
 References: <937ce9400ed86ad089d743dcca7b5926a7172566>
 X-Mailer: git-send-email 2.22.0.510.g264f2c817a-goog
 Subject: [RFC] acpi: Ignore acpi_rsdp kernel param when the kernel has been
  locked down
 From:   Matthew Garrett <matthewgarrett@google.com>
-To:     linux-security-module@google.com
+To:     linux-security-module@vger.kernel.org
 Cc:     Matthew Garrett <mjg59@google.com>,
         Josh Boyer <jwboyer@redhat.com>,
         David Howells <dhowells@redhat.com>,
