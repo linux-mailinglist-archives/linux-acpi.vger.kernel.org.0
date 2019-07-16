@@ -2,118 +2,165 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92F1F6A0A3
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2019 04:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C71666A11A
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2019 06:03:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729635AbfGPC7f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Jul 2019 22:59:35 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:47084 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729145AbfGPC7f (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 15 Jul 2019 22:59:35 -0400
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 26AB5309178C;
-        Tue, 16 Jul 2019 02:59:35 +0000 (UTC)
-Received: from dhcp-128-65.nay.redhat.com (ovpn-12-64.pek2.redhat.com [10.72.12.64])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id B7F1D1001B04;
-        Tue, 16 Jul 2019 02:59:27 +0000 (UTC)
-Date:   Tue, 16 Jul 2019 10:59:23 +0800
-From:   Dave Young <dyoung@redhat.com>
-To:     Matthew Garrett <matthewgarrett@google.com>
-Cc:     jmorris@namei.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-        Josh Boyer <jwboyer@redhat.com>,
-        David Howells <dhowells@redhat.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Kees Cook <keescook@chromium.org>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH V35 15/29] acpi: Ignore acpi_rsdp kernel param when the
- kernel has been locked down
-Message-ID: <20190716025923.GA5793@dhcp-128-65.nay.redhat.com>
-References: <20190715195946.223443-1-matthewgarrett@google.com>
- <20190715195946.223443-16-matthewgarrett@google.com>
+        id S1725792AbfGPEDH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Jul 2019 00:03:07 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:33484 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726420AbfGPEDH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Jul 2019 00:03:07 -0400
+Received: by mail-pf1-f195.google.com with SMTP id g2so8432057pfq.0
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Jul 2019 21:03:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=emWs4O8hlB2TIuNtkX4TCZFbfAkCg1SZuUU8yDd2sEA=;
+        b=EUayzWAAPKzWkqzvEU0EkCIPVbFaXgTPLnhPDPXNEGqZowkwVyB0fuRja+ukvx2jRx
+         /JsAJvv2ngG4+HyMb/ksTKGTTuCNw6tiK8jigG3DyiGHLTshKdgdlpd3cg/yvXQ34IXh
+         LxYQ1MLKK8X//mQ7Xm/s6D4lgquYO/nzn6BMw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=emWs4O8hlB2TIuNtkX4TCZFbfAkCg1SZuUU8yDd2sEA=;
+        b=coXVOVHSH3Zx88bNLA+eo30/MjOwqkbOgksTtc6OZKN/+/js/PAwrjKnJqrww9sgDO
+         XwbK4hWcZn9aw6TKNUUkIr2pcT0Gha5JhYMV0+6d7lzilX7nKCB78h7jeKpoA/MBuw1O
+         MVUFf76bbFmgwIT2I2HZ9trJPq+i36eLk2YcNfXdYqmvRIlme82whqoZIzCpQzkFVo3+
+         Qh45IZpYzR9n71qs+SopBTwnVT2MPtgM0VuV1aWLBWFfZgOgmRSHLCgX80+aL3HMCYMk
+         4S7Yoxm9vPdXePcA6M08cTS7WZesjXK5rcHM1VP8rAs3RX2NfK2mRHTFWTnwyryEo/fb
+         7BjA==
+X-Gm-Message-State: APjAAAUAIdaGdwe+1iLklUp1NQdRPVufLn4bWJwqRk1FksoialLQ8bWC
+        /ctMQYifE1xIHofaYftv4LU=
+X-Google-Smtp-Source: APXvYqxyHJD5IpHHcJaM1ojDiiimToJpqwPzyUOe3rbN2WwHYdOcsvYOosL3yD4qnxS7tzykZLERPg==
+X-Received: by 2002:a17:90a:374a:: with SMTP id u68mr33288835pjb.4.1563249786384;
+        Mon, 15 Jul 2019 21:03:06 -0700 (PDT)
+Received: from localhost ([2620:15c:6:12:9c46:e0da:efbf:69cc])
+        by smtp.gmail.com with ESMTPSA id y133sm21032895pfb.28.2019.07.15.21.03.04
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 15 Jul 2019 21:03:05 -0700 (PDT)
+Date:   Tue, 16 Jul 2019 00:03:03 -0400
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Borislav Petkov <bp@alien8.de>, c0d1n61at3@gmail.com,
+        "David S. Miller" <davem@davemloft.net>, edumazet@google.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Josh Triplett <josh@joshtriplett.org>, keescook@chromium.org,
+        kernel-hardening@lists.openwall.com, kernel-team@android.com,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-pm@vger.kernel.org,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        neilb@suse.com, netdev@vger.kernel.org,
+        Oleg Nesterov <oleg@redhat.com>,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        Pavel Machek <pavel@ucw.cz>, peterz@infradead.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
+        rcu@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+        Tejun Heo <tj@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, will@kernel.org,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
+Subject: Re: [PATCH 7/9] x86/pci: Pass lockdep condition to pcm_mmcfg_list
+ iterator (v1)
+Message-ID: <20190716040303.GA73383@google.com>
+References: <20190715143705.117908-1-joel@joelfernandes.org>
+ <20190715143705.117908-8-joel@joelfernandes.org>
+ <20190715200235.GG46935@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190715195946.223443-16-matthewgarrett@google.com>
-User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Tue, 16 Jul 2019 02:59:35 +0000 (UTC)
+In-Reply-To: <20190715200235.GG46935@google.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-On 07/15/19 at 12:59pm, Matthew Garrett wrote:
-> From: Josh Boyer <jwboyer@redhat.com>
+On Mon, Jul 15, 2019 at 03:02:35PM -0500, Bjorn Helgaas wrote:
+> On Mon, Jul 15, 2019 at 10:37:03AM -0400, Joel Fernandes (Google) wrote:
+> > The pcm_mmcfg_list is traversed with list_for_each_entry_rcu without a
+> > reader-lock held, because the pci_mmcfg_lock is already held. Make this
+> > known to the list macro so that it fixes new lockdep warnings that
+> > trigger due to lockdep checks added to list_for_each_entry_rcu().
+> > 
+> > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 > 
-> This option allows userspace to pass the RSDP address to the kernel, which
-> makes it possible for a user to modify the workings of hardware .  Reject
-> the option when the kernel is locked down.
+> Ingo takes care of most patches to this file, but FWIW,
 > 
-> Signed-off-by: Josh Boyer <jwboyer@redhat.com>
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> Signed-off-by: Matthew Garrett <mjg59@google.com>
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> cc: Dave Young <dyoung@redhat.com>
-> cc: linux-acpi@vger.kernel.org
-> ---
->  drivers/acpi/osl.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+
+Thanks.
+
+> I would personally prefer if you capitalized the subject to match the
+> "x86/PCI:" convention that's used fairly consistently in
+> arch/x86/pci/.
 > 
-> diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-> index 9c0edf2fc0dd..06e7cffc4386 100644
-> --- a/drivers/acpi/osl.c
-> +++ b/drivers/acpi/osl.c
-> @@ -26,6 +26,7 @@
->  #include <linux/list.h>
->  #include <linux/jiffies.h>
->  #include <linux/semaphore.h>
-> +#include <linux/security.h>
->  
->  #include <asm/io.h>
->  #include <linux/uaccess.h>
-> @@ -180,7 +181,7 @@ acpi_physical_address __init acpi_os_get_root_pointer(void)
->  	acpi_physical_address pa;
->  
->  #ifdef CONFIG_KEXEC
-> -	if (acpi_rsdp)
-> +	if (acpi_rsdp && !security_locked_down(LOCKDOWN_ACPI_TABLES))
->  		return acpi_rsdp;
+> Also, I didn't apply this to be sure, but it looks like this might
+> make a line or two wider than 80 columns, which I would rewrap if I
+> were applying this.
 
-I'm very sorry I noticed this late, but have to say this will not work for
-X86 with latest kernel code.
+Updated below is the patch with the nits corrected:
 
-acpi_physical_address __init acpi_os_get_root_pointer(void)
-{
-        acpi_physical_address pa;
+---8<-----------------------
 
-#ifdef CONFIG_KEXEC
-        if (acpi_rsdp)
-                return acpi_rsdp;
-#endif
-        pa = acpi_arch_get_root_pointer();
-        if (pa)
-                return pa;
-[snip]
+From 73fab09d7e33ca2110c24215f8ed428c12625dbe Mon Sep 17 00:00:00 2001
+From: "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Date: Sat, 1 Jun 2019 15:05:49 -0400
+Subject: [PATCH] x86/PCI: Pass lockdep condition to pcm_mmcfg_list iterator
+ (v1)
 
-In above code, the later acpi_arch_get_root_pointer still get acpi_rsdp
-from cmdline param if provided.
+The pcm_mmcfg_list is traversed with list_for_each_entry_rcu without a
+reader-lock held, because the pci_mmcfg_lock is already held. Make this
+known to the list macro so that it fixes new lockdep warnings that
+trigger due to lockdep checks added to list_for_each_entry_rcu().
 
-You can check the arch/x86/boot/compressed/acpi.c, and
-arch/x86/kernel/acpi/boot.c
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+---
+ arch/x86/pci/mmconfig-shared.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-In X86 early code, cmdline provided acpi_rsdp pointer will be saved in boot_params.acpi_rsdp_addr;
-and the used in x86_default_get_root_pointer
+diff --git a/arch/x86/pci/mmconfig-shared.c b/arch/x86/pci/mmconfig-shared.c
+index 7389db538c30..9e3250ec5a37 100644
+--- a/arch/x86/pci/mmconfig-shared.c
++++ b/arch/x86/pci/mmconfig-shared.c
+@@ -29,6 +29,7 @@
+ static bool pci_mmcfg_running_state;
+ static bool pci_mmcfg_arch_init_failed;
+ static DEFINE_MUTEX(pci_mmcfg_lock);
++#define pci_mmcfg_lock_held() lock_is_held(&(pci_mmcfg_lock).dep_map)
  
->  #endif
->  	pa = acpi_arch_get_root_pointer();
-> -- 
-> 2.22.0.510.g264f2c817a-goog
-> 
+ LIST_HEAD(pci_mmcfg_list);
+ 
+@@ -54,7 +55,8 @@ static void list_add_sorted(struct pci_mmcfg_region *new)
+ 	struct pci_mmcfg_region *cfg;
+ 
+ 	/* keep list sorted by segment and starting bus number */
+-	list_for_each_entry_rcu(cfg, &pci_mmcfg_list, list) {
++	list_for_each_entry_rcu(cfg, &pci_mmcfg_list, list,
++				pci_mmcfg_lock_held()) {
+ 		if (cfg->segment > new->segment ||
+ 		    (cfg->segment == new->segment &&
+ 		     cfg->start_bus >= new->start_bus)) {
+@@ -118,7 +120,8 @@ struct pci_mmcfg_region *pci_mmconfig_lookup(int segment, int bus)
+ {
+ 	struct pci_mmcfg_region *cfg;
+ 
+-	list_for_each_entry_rcu(cfg, &pci_mmcfg_list, list)
++	list_for_each_entry_rcu(cfg, &pci_mmcfg_list, list
++				pci_mmcfg_lock_held())
+ 		if (cfg->segment == segment &&
+ 		    cfg->start_bus <= bus && bus <= cfg->end_bus)
+ 			return cfg;
+-- 
+2.22.0.510.g264f2c817a-goog
 
-Thanks
-Dave
