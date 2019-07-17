@@ -2,184 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39F396C08B
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2019 19:42:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74AA66C2EC
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Jul 2019 00:01:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387618AbfGQRlv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 Jul 2019 13:41:51 -0400
-Received: from foss.arm.com ([217.140.110.172]:49536 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725948AbfGQRlv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 17 Jul 2019 13:41:51 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3C29328;
-        Wed, 17 Jul 2019 10:41:50 -0700 (PDT)
-Received: from [10.1.196.105] (eglon.cambridge.arm.com [10.1.196.105])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A26D43F71F;
-        Wed, 17 Jul 2019 10:41:47 -0700 (PDT)
-Subject: Re: [PATCH RFC 2/4] arm64: mm: Add RAS extension system register
- check to SEA handling
-To:     Tyler Baicar OS <baicar@os.amperecomputing.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>
-Cc:     "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Matteo.Carlini@arm.com" <Matteo.Carlini@arm.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "guohanjun@huawei.com" <guohanjun@huawei.com>,
-        "Andrew.Murray@arm.com" <Andrew.Murray@arm.com>,
-        Open Source Submission <patches@amperecomputing.com>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "will@kernel.org" <will@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>
-References: <1562086280-5351-1-git-send-email-baicar@os.amperecomputing.com>
- <1562086280-5351-3-git-send-email-baicar@os.amperecomputing.com>
- <df262b97-eda2-0556-d6ef-532a0d697131@arm.com>
- <BYAPR01MB39754DFAF8130743448FDEC6E3F00@BYAPR01MB3975.prod.exchangelabs.com>
- <BYAPR01MB3975FB635454503D3BFBBD53E3F30@BYAPR01MB3975.prod.exchangelabs.com>
-From:   James Morse <james.morse@arm.com>
-Message-ID: <80d7ad43-5426-3117-0445-0add5bc008f5@arm.com>
-Date:   Wed, 17 Jul 2019 18:41:44 +0100
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1727657AbfGQWBb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 17 Jul 2019 18:01:31 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:34322 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727606AbfGQWBb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 Jul 2019 18:01:31 -0400
+Received: by mail-pg1-f193.google.com with SMTP id n9so5589217pgc.1
+        for <linux-acpi@vger.kernel.org>; Wed, 17 Jul 2019 15:01:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fTLcLaPhVwoKKpKMc1I9xT0INE94L4TgQfexrydY+cA=;
+        b=Z8mzWEN0CeWUNvwKhn1qfilBTBRC7WxTjomnVsKPHQU0ElCU8F0S+0b6hmIm7/nhch
+         +DifBmtphlUm+XiggXkiUNvdXglwFDqpqRYwxBJ1aOOituDUlQ5cPcH9WfCGseEHOFw8
+         dDQZwj8eABofHwsXh91agobn7fLXtduOSolkjgIHCQv/JlOq7DmttmbAYWr2vOlJHh/X
+         phhszvm1zTiHpZUGPBawQGRzDFNXcee7ET2hvB3e81ksWT88LZYlNsbh3x47Hm/XlI/B
+         u/OFwzWhaWgaDyCoNr42/zXR8ZJo1XWCYRP7jHIEVOQDhNfXPOTXnrdvEzUwqf+8fBHz
+         lHxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fTLcLaPhVwoKKpKMc1I9xT0INE94L4TgQfexrydY+cA=;
+        b=pMGiHaYiRArNeqoE/iqGFOBsr8y7HNMb5dp/Azi6aw4ePG0tFw0EN4mh7eL+LrWm4X
+         nICz+dwnwUw+xqJpmXfwS+8JsMyACcOhA4v3ZsPm8Npm8HPyCsC37QFOfMHUHLvo3q+0
+         Zjp3HGoN8HyLbnKGAB+YEo9cqrsvZSVqNEUSLMZeDYxI+BKYAaQrQd+ub1zO3LIJ/0VX
+         z5pb63v28d/Y74xtPBxQFq4aD3jkj8281sR8Mgl5PzuAqjFpdiWt+POstUcO0vuS4PnR
+         YVSifoJ1ZyKBSoynNUaes7WbILFaMZybAJ9tWnTc6rZRDSqjyMCdCEkLBg26RmCy8BIH
+         U1mw==
+X-Gm-Message-State: APjAAAX2wwk3g9YcMh63NP+s7xeo+/VgBwqI8Tq2T+/ewVfwZZKPCaW2
+        GdeqmfpkcEL6/LdV44TiBHy5snKter4h2S9UccipyA==
+X-Google-Smtp-Source: APXvYqyNMgmaBD93cLMzjr2ceMGWNdB2nEoU4SUn3C4KPY9rINU9MjXlmnh0tT2J3vMVKPOps1R5xEFcGQ55emc7qr0=
+X-Received: by 2002:a17:90a:2488:: with SMTP id i8mr45895718pje.123.1563400889995;
+ Wed, 17 Jul 2019 15:01:29 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <BYAPR01MB3975FB635454503D3BFBBD53E3F30@BYAPR01MB3975.prod.exchangelabs.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+References: <20190717033807.1207-1-cai@lca.pw>
+In-Reply-To: <20190717033807.1207-1-cai@lca.pw>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Wed, 17 Jul 2019 15:01:18 -0700
+Message-ID: <CAKwvOdmPX2DsUawcA0SzaFacjz==ACcfD8yDsbaS4eP4Es=Wzw@mail.gmail.com>
+Subject: Re: [PATCH] acpica: fix -Wnull-pointer-arithmetic warnings
+To:     Qian Cai <cai@lca.pw>
+Cc:     rafael.j.wysocki@intel.com, robert.moore@intel.com,
+        erik.schmauss@intel.com, jkim@freebsd.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        devel@acpica.org,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Tyler,
+On Tue, Jul 16, 2019 at 8:38 PM Qian Cai <cai@lca.pw> wrote:
+>
+> Clang generate quite a few of those warnings.
+>
+> drivers/acpi/scan.c:759:28: warning: arithmetic on a null pointer
+> treated as a cast from integer to pointer is a GNU extension
+> [-Wnull-pointer-arithmetic]
+>                 status = acpi_get_handle(ACPI_ROOT_OBJECT,
+> obj->string.pointer,
+>                                          ^~~~~~~~~~~~~~~~
+> ./include/acpi/actypes.h:458:56: note: expanded from macro
+> 'ACPI_ROOT_OBJECT'
+>  #define ACPI_ROOT_OBJECT                ((acpi_handle) ACPI_TO_POINTER
+> (ACPI_MAX_PTR))
+>                                                         ^~~~~~~~~~~~~~~
+> ./include/acpi/actypes.h:509:41: note: expanded from macro
+> 'ACPI_TO_POINTER'
+>  #define ACPI_TO_POINTER(i)              ACPI_ADD_PTR (void, (void *) 0,
+> (acpi_size) (i))
+>                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> ./include/acpi/actypes.h:503:84: note: expanded from macro
+> 'ACPI_ADD_PTR'
+>  #define ACPI_ADD_PTR(t, a, b)           ACPI_CAST_PTR (t,
+> (ACPI_CAST_PTR (u8, (a)) + (acpi_size)(b)))
+>                                          ^~~~~~~~~~~~~~~~~
+> ./include/acpi/actypes.h:501:66: note: expanded from macro
+> 'ACPI_CAST_PTR'
+>  #define ACPI_CAST_PTR(t, p)             ((t *) (acpi_uintptr_t) (p))
+>                                                                   ^
+> This is because pointer arithmetic on a pointer not pointing to an array
+> is an undefined behavior. Fix it by doing an integer arithmetic
+> instead.
 
-On 11/07/2019 05:14, Tyler Baicar OS wrote:
-> On Tue, Jul 9, 2019 at 8:52 PM Tyler Baicar OS <baicar@os.amperecomputing.com> wrote:
->> On Mon, Jul 8, 2019 at 10:10 AM James Morse <james.morse@arm.com> wrote:
->>> On 02/07/2019 17:51, Tyler Baicar OS wrote:
->>>> @@ -632,6 +633,8 @@ static int do_sea(unsigned long addr, unsigned int esr, struct pt_regs *regs)
->>>>
->>>>       inf = esr_to_fault_info(esr);
->>>>
->>>> +     arch_arm_ras_report_error();
->>>> +
->>>>       /*
->>>>        * Return value ignored as we rely on signal merging.
->>>>        * Future patches will make this more robust.
->>>>
->>>
->>> If we interrupted a preemptible context, do_sea() is preemptible too... This means we
->>> can't know if we're still running on the same CPU as the one that took the external-abort.
->>> (until this series, it hasn't mattered).
->>>
->>> Fixing this means cramming something into entry.S's el1_da, as this may unmask interrupts
->>> before calling do_mem_abort(). But its going to be ugly because some of do_mem_abort()s
->>> ESR values need to be preemptible because they sleep, e.g. page-faults calling
->>> handle_mm_fault().
->>> For do_sea(), do_exit() will 'fix' the preempt count if we kill the thread, but if we
->>> don't, it still needs to be balanced. Doing all this in assembly is going to be unreadable!
->>>
->>> Mark Rutland has a series to move the entry assembly into C [0]. Based on that that it
->>> should be possible for the new el1_abort() to spot a Synchronous-External-Abort ESR, and
->>> wrap the do_mem_abort() with preempt enable/disable, before inheriting the flags. (which
->>> for synchronous exceptions, I think we should always do)
->>>
->>> [0] https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/log/?h=arm64/entry-deasm
+Hi Qian, thanks for the patch.  How do I reproduce this issue,
+precisely?  I just tried:
+$ make CC=clang -j71 drivers/acpi/scan.o
+on linux-next today and don't observe the warning.  My clang is ToT
+built sometime this week.  It looks like drivers/acpi/scan.o when
+CONFIG_ACPI=y, which is set in the defconfig.  Is there another set of
+configs to enable to observe the warning?
 
->> Good catch! I didn't think the synchronous route was preemptible.
+Also, the fix is curious.  Arithmetic on pointers to different
+"objects" (with one element passed the end) may lead to provence
+issues due to undefined behavior, but I would have expected some cases
+to uintptr_t, then arithmetic on that type, as the solution (which is
+what I suspect ACPI_CAST_PTR is doing).
 
->> I wasn't seeing this issue when testing this on emulation, but I was able to
->> test and prove the issue on a Neoverse N1 SDP:
->>
->> root@genericarmv8:~# echo 0x100000000 > /proc/cached_read
->> [   42.985622] Reading from address 0x100000000
->> [   42.989893] WARNING: CPU: 0 PID: 2812 at /home/tyler/neoverse/arm-reference-
->> platforms/linux/arch/arm64/kernel/cpufeature.c:1940 this_cpu_has_cap+0x68/0x78
+Further, you seem to have modified ACPI_ADD_PTR but not ACPI_SUB_PTR;
+I would have expected both to be afflicted together or not at all
+based on their existing implementations.
 
-[...]
+>
+> Signed-off-by: Qian Cai <cai@lca.pw>
+> ---
+>  include/acpi/actypes.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
+> index ad6892a24015..25b4a32da177 100644
+> --- a/include/acpi/actypes.h
+> +++ b/include/acpi/actypes.h
+> @@ -500,13 +500,13 @@ typedef u64 acpi_integer;
+>
+>  #define ACPI_CAST_PTR(t, p)             ((t *) (acpi_uintptr_t) (p))
+>  #define ACPI_CAST_INDIRECT_PTR(t, p)    ((t **) (acpi_uintptr_t) (p))
+> -#define ACPI_ADD_PTR(t, a, b)           ACPI_CAST_PTR (t, (ACPI_CAST_PTR (u8, (a)) + (acpi_size)(b)))
+> +#define ACPI_ADD_PTR(t, a, b)           ACPI_CAST_PTR (t, (a) + (acpi_size)(b))
+>  #define ACPI_SUB_PTR(t, a, b)           ACPI_CAST_PTR (t, (ACPI_CAST_PTR (u8, (a)) - (acpi_size)(b)))
+>  #define ACPI_PTR_DIFF(a, b)             ((acpi_size) (ACPI_CAST_PTR (u8, (a)) - ACPI_CAST_PTR (u8, (b))))
+>
+>  /* Pointer/Integer type conversions */
+>
+> -#define ACPI_TO_POINTER(i)              ACPI_ADD_PTR (void, (void *) 0, (acpi_size) (i))
+> +#define ACPI_TO_POINTER(i)              ACPI_ADD_PTR (void, 0, (acpi_size) (i))
 
->> [   43.175647] Internal error: synchronous external abort: 96000410 [#1]
->> PREEMPT SMP
-
-[...]
-
->> I'll pull Mark's series in and add the preempt enable/disable around the call
->> to do_mem_abort() in el1_abort() and test that out!
-> 
-> I was able to pull in the series mentioned [0] and add a patch to wrap
-> do_mem_abort with preempt disable/enable and the warning has gone away.
-
-Great.
-
-I spoke to Mark who commented he hadn't had the time to finish rebasing it onto
-for-next/core. (which I guess is why it didn't get posted!).
-
-I've taken a stab at picking out the 'synchronous' parts and rebasing it onto arm64's
-for-next/core. That tree is here:
-http://www.linux-arm.org/git?p=linux-jm.git;a=shortlog;h=refs/heads/deasm_sync_only/v0
-
-(this should save you doing the rebase)
-
-I'll aim to rebase/retest and post it next week.
-
-
-> diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
-> index 43aa78331e72..26cdf7db511a 100644
-> --- a/arch/arm64/kernel/entry-common.c
-> +++ b/arch/arm64/kernel/entry-common.c
-> @@ -118,7 +118,25 @@ static void el1_abort(struct pt_regs *regs, unsigned long esr)
-
-el0_ia/da will have the same problem.
-
-
->  	unsigned long far = read_sysreg(far_el1);
->  	local_daif_inherit(regs);
->  	far = untagged_addr(far);
-> -	do_mem_abort(far, esr, regs);
-> +
-> +	switch (esr & ESR_ELx_FSC) {
-> +	case ESR_ELx_FSC_EXTABT:	// Synchronous External Abort
-> +	case 0x14:			// SEA level 0 translation table walk
-> +	case 0x15:			// SEA level 1 translation table walk
-> +	case 0x16:			// SEA level 2 translation table walk
-> +	case 0x17:			// SEA level 3 translation table walk
-> +	case 0x18:			// Synchronous ECC error
-> +	case 0x1c:			// SECC level 0 translation table walk
-> +	case 0x1d:			// SECC level 1 translation table walk
-> +	case 0x1e:			// SECC level 2 translation table walk
-> +	case 0x1f:			// SECC level 3 translation table walk
-
-Hex numbers, lovely. KVM has a helper for this, can we move/clean that so we can use it here?
-
-
-> +		preempt_disable();
-
-This is still too late. You can take an interrupt between local_daif_inherit() and be
-migrated, before you call preempt_disable() here.
-
-The local_daif_inherit() may need to move into the switch() too.
-
-It may be simpler to fold the 'is_extabt(esr)' check into el1_sync, so that these bypass
-el1_abort() and call do_sea() directly, which could then handle the far-read,
-preempt-count and daif-inherit itself. I prefer ... whichever looks cleanest!
-
-
-> +		do_mem_abort(far, esr, regs);
-> +		preempt_enable();
-> +		break;
-> +	default:
-> +		do_mem_abort(far, esr, regs);
-> +	};
->  }
-
-
+IIUC, these are adding `i` to NULL (or (void*)0)? X + 0 == X ?
+-- 
 Thanks,
-
-James
+~Nick Desaulniers
