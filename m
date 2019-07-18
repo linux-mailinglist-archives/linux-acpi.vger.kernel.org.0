@@ -2,179 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BE126C3E4
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Jul 2019 02:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 495F96CB13
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Jul 2019 10:43:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731985AbfGRAtr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 Jul 2019 20:49:47 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:41359 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727557AbfGRAtr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 Jul 2019 20:49:47 -0400
-Received: by mail-qk1-f193.google.com with SMTP id v22so19049882qkj.8
-        for <linux-acpi@vger.kernel.org>; Wed, 17 Jul 2019 17:49:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lca.pw; s=google;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=7K9LFXNQszPVt9oolCuthJEpelngJlWY3awPIGBoIrc=;
-        b=GZjJVzEiaTVbs3gP0mhVx/ascqRuKFftBg0qG8OjLCs9Uet45jCXXHASsA+I78EcEM
-         hnXVwAzXuOMkmmeiVNSMXOz6qQ6PQrO13L850mZrPiDOmrEl4+tmsaJATgsPDLzvCuHX
-         pKtA0WAL6PfYZ732t/8Hn7t/mcLhGq8mgFBmgAyj3C3f4w6pLEclhG2GZnZyY2pwiyIv
-         PbfEpwmggZ6X+dlw2lyCk8k5yM+HeTs5ukcAG8TCaHwMNf5XhyNs1uxa8lhpwmCm/N4j
-         arlVs+uOoN4ASTWBLtHsXFZOsmspHBc7JksnLpoBGrrHRb1mDJi7fsHLqiyUCUtZWwqy
-         SVTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=7K9LFXNQszPVt9oolCuthJEpelngJlWY3awPIGBoIrc=;
-        b=HzUagjnngZOFscIIBeYf/mMTEanV4hKk0U3I/qPIRZuE3HurgDA1fPfOIh0AXXtYjG
-         1ieb9Qss+r1PQVvOJW7pl4c0SOgeyFhYfBmLeu32dGAIj0RPEiu2ErR052rEAIZHV9hJ
-         C+INvav0XiP51TNx87h5YNQmQdseyDZ1JziROJSPZUkFoytn7ornHZrqwQXtQmtgKPpd
-         dnKgx+fDNLzc0cNU61JflEIcP7VC4vJLEyxS2OlhHfl3vJqH6HoacX6bG9NwUVnjcJtz
-         B3YjIcZrmyR0M2W8lf+dpJfPY/p1JlwNJ3aVwiPtYZYOpG4pvz/nuWyaw+zxWW0jA77k
-         eK4g==
-X-Gm-Message-State: APjAAAVyY/SyomSvyiEoagAoo0msbCjr1HIYpEhPp6MIHyn28CWxLYUl
-        6UWDZH8nFUgcY8P9NScVLs/eXg==
-X-Google-Smtp-Source: APXvYqyFZ9N+j7zVEUuW7E/oqpo5oR1MZH84slnFKyHkQq0UmXesigIoFoR8pMXjjDLELyRq2Ou6vA==
-X-Received: by 2002:ae9:f101:: with SMTP id k1mr28781291qkg.337.1563410986046;
-        Wed, 17 Jul 2019 17:49:46 -0700 (PDT)
-Received: from qians-mbp.fios-router.home (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
-        by smtp.gmail.com with ESMTPSA id v84sm11985703qkb.0.2019.07.17.17.49.44
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 17 Jul 2019 17:49:45 -0700 (PDT)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
-Subject: Re: [PATCH] acpica: fix -Wnull-pointer-arithmetic warnings
-From:   Qian Cai <cai@lca.pw>
-In-Reply-To: <CAKwvOdmPX2DsUawcA0SzaFacjz==ACcfD8yDsbaS4eP4Es=Wzw@mail.gmail.com>
-Date:   Wed, 17 Jul 2019 20:49:43 -0400
-Cc:     rafael.j.wysocki@intel.com, robert.moore@intel.com,
-        erik.schmauss@intel.com, jkim@freebsd.org,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <73A4565B-837B-4E13-8B72-63F69BF408E7@lca.pw>
-References: <20190717033807.1207-1-cai@lca.pw>
- <CAKwvOdmPX2DsUawcA0SzaFacjz==ACcfD8yDsbaS4eP4Es=Wzw@mail.gmail.com>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-X-Mailer: Apple Mail (2.3445.104.11)
+        id S1726000AbfGRIme convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 18 Jul 2019 04:42:34 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:53604 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726386AbfGRImd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Jul 2019 04:42:33 -0400
+Received: from 79.184.255.39.ipv4.supernova.orange.pl (79.184.255.39) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
+ id 7b95f5cc5e7aeb8f; Thu, 18 Jul 2019 10:42:30 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Len Brown <lenb@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+        linux-acpi@vger.kernel.org,
+        Kacper =?utf-8?B?UGl3acWEc2tp?= <cosiekvfj@o2.pl>
+Subject: Re: [PATCH] ACPI / video: Add new hw_changes_brightness quirk, set it on PB Easynote MZ35
+Date:   Thu, 18 Jul 2019 10:42:30 +0200
+Message-ID: <5150566.QdWsabkNQC@kreacher>
+In-Reply-To: <20190712100033.4087-1-hdegoede@redhat.com>
+References: <20190712100033.4087-1-hdegoede@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Friday, July 12, 2019 12:00:33 PM CEST Hans de Goede wrote:
+> Some machines change the brightness themselves when a brightness hotkey
+> gets pressed, despite us telling them not to. This causes the brightness to
+> go two steps up / down when the hotkey is pressed. This is esp. a problem
+> on older machines with only a few brightness levels.
+> 
+> This commit adds a new hw_changes_brightness quirk which makes
+> acpi_video_device_notify() only call backlight_force_update(...,
+> BACKLIGHT_UPDATE_HOTKEY) and not do anything else, notifying userspace that
+> the brightness was changed and leaving it at that fixing the dual step
+> problem.
+> 
+> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=204077
+> Cc: Kacper Piwiński <cosiekvfj@o2.pl>
+> Reported-and-tested-by: Kacper Piwiński <cosiekvfj@o2.pl>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/acpi/acpi_video.c | 37 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 37 insertions(+)
+> 
+> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+> index 9489ffc06411..4f325e47519f 100644
+> --- a/drivers/acpi/acpi_video.c
+> +++ b/drivers/acpi/acpi_video.c
+> @@ -60,6 +60,12 @@ module_param(report_key_events, int, 0644);
+>  MODULE_PARM_DESC(report_key_events,
+>  	"0: none, 1: output changes, 2: brightness changes, 3: all");
+>  
+> +static int hw_changes_brightness = -1;
+> +module_param(hw_changes_brightness, int, 0644);
+> +MODULE_PARM_DESC(hw_changes_brightness,
+> +	"Set this to 1 on buggy hw which changes the brightness itself when "
+> +	"a hotkey is pressed: -1: auto, 0: normal 1: hw-changes-brightness");
+> +
+>  /*
+>   * Whether the struct acpi_video_device_attrib::device_id_scheme bit should be
+>   * assumed even if not actually set.
+> @@ -405,6 +411,14 @@ static int video_set_report_key_events(const struct dmi_system_id *id)
+>  	return 0;
+>  }
+>  
+> +static int video_hw_changes_brightness(
+> +	const struct dmi_system_id *d)
+> +{
+> +	if (hw_changes_brightness == -1)
+> +		hw_changes_brightness = 1;
+> +	return 0;
+> +}
+> +
+>  static const struct dmi_system_id video_dmi_table[] = {
+>  	/*
+>  	 * Broken _BQC workaround http://bugzilla.kernel.org/show_bug.cgi?id=13121
+> @@ -529,6 +543,21 @@ static const struct dmi_system_id video_dmi_table[] = {
+>  		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro V131"),
+>  		},
+>  	},
+> +	/*
+> +	 * Some machines change the brightness themselves when a brightness
+> +	 * hotkey gets pressed, despite us telling them not to. In this case
+> +	 * acpi_video_device_notify() should only call backlight_force_update(
+> +	 * BACKLIGHT_UPDATE_HOTKEY) and not do anything else.
+> +	 */
+> +	{
+> +	 /* https://bugzilla.kernel.org/show_bug.cgi?id=204077 */
+> +	 .callback = video_hw_changes_brightness,
+> +	 .ident = "Packard Bell EasyNote MZ35",
+> +	 .matches = {
+> +		DMI_MATCH(DMI_SYS_VENDOR, "Packard Bell"),
+> +		DMI_MATCH(DMI_PRODUCT_NAME, "EasyNote MZ35"),
+> +		},
+> +	},
+>  	{}
+>  };
+>  
+> @@ -1612,6 +1641,14 @@ static void acpi_video_device_notify(acpi_handle handle, u32 event, void *data)
+>  	bus = video_device->video;
+>  	input = bus->input;
+>  
+> +	if (hw_changes_brightness > 0) {
+> +		if (video_device->backlight)
+> +			backlight_force_update(video_device->backlight,
+> +					       BACKLIGHT_UPDATE_HOTKEY);
+> +		acpi_notifier_call_chain(device, event, 0);
+> +		return;
+> +	}
+> +
+>  	switch (event) {
+>  	case ACPI_VIDEO_NOTIFY_CYCLE_BRIGHTNESS:	/* Cycle brightness */
+>  		brightness_switch_event(video_device, event);
+> 
+
+Applied, thanks!
 
 
-> On Jul 17, 2019, at 6:01 PM, Nick Desaulniers =
-<ndesaulniers@google.com> wrote:
->=20
-> On Tue, Jul 16, 2019 at 8:38 PM Qian Cai <cai@lca.pw> wrote:
->>=20
->> Clang generate quite a few of those warnings.
->>=20
->> drivers/acpi/scan.c:759:28: warning: arithmetic on a null pointer
->> treated as a cast from integer to pointer is a GNU extension
->> [-Wnull-pointer-arithmetic]
->>                status =3D acpi_get_handle(ACPI_ROOT_OBJECT,
->> obj->string.pointer,
->>                                         ^~~~~~~~~~~~~~~~
->> ./include/acpi/actypes.h:458:56: note: expanded from macro
->> 'ACPI_ROOT_OBJECT'
->> #define ACPI_ROOT_OBJECT                ((acpi_handle) =
-ACPI_TO_POINTER
->> (ACPI_MAX_PTR))
->>                                                        =
-^~~~~~~~~~~~~~~
->> ./include/acpi/actypes.h:509:41: note: expanded from macro
->> 'ACPI_TO_POINTER'
->> #define ACPI_TO_POINTER(i)              ACPI_ADD_PTR (void, (void *) =
-0,
->> (acpi_size) (i))
->>                                         =
-^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> ./include/acpi/actypes.h:503:84: note: expanded from macro
->> 'ACPI_ADD_PTR'
->> #define ACPI_ADD_PTR(t, a, b)           ACPI_CAST_PTR (t,
->> (ACPI_CAST_PTR (u8, (a)) + (acpi_size)(b)))
->>                                         ^~~~~~~~~~~~~~~~~
->> ./include/acpi/actypes.h:501:66: note: expanded from macro
->> 'ACPI_CAST_PTR'
->> #define ACPI_CAST_PTR(t, p)             ((t *) (acpi_uintptr_t) (p))
->>                                                                  ^
->> This is because pointer arithmetic on a pointer not pointing to an =
-array
->> is an undefined behavior. Fix it by doing an integer arithmetic
->> instead.
->=20
-> Hi Qian, thanks for the patch.  How do I reproduce this issue,
-> precisely?  I just tried:
-> $ make CC=3Dclang -j71 drivers/acpi/scan.o
-> on linux-next today and don't observe the warning.  My clang is ToT
-> built sometime this week.  It looks like drivers/acpi/scan.o when
-> CONFIG_ACPI=3Dy, which is set in the defconfig.  Is there another set =
-of
-> configs to enable to observe the warning?
 
-# make W=3D1 -j 256
-
-With the config,
-
-https://raw.githubusercontent.com/cailca/linux-mm/master/arm64.config=20
-
->=20
-> Also, the fix is curious.  Arithmetic on pointers to different
-> "objects" (with one element passed the end) may lead to provence
-> issues due to undefined behavior, but I would have expected some cases
-> to uintptr_t, then arithmetic on that type, as the solution (which is
-> what I suspect ACPI_CAST_PTR is doing).
->=20
-> Further, you seem to have modified ACPI_ADD_PTR but not ACPI_SUB_PTR;
-> I would have expected both to be afflicted together or not at all
-> based on their existing implementations.
-
-Yes, I thought about that, but ACPI_SUB_PTR does not seem used anywhere, =
-so I thought maybe just start a new discussion to remove it all together =
-later.
-
-
->=20
->>=20
->> Signed-off-by: Qian Cai <cai@lca.pw>
->> ---
->> include/acpi/actypes.h | 4 ++--
->> 1 file changed, 2 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
->> index ad6892a24015..25b4a32da177 100644
->> --- a/include/acpi/actypes.h
->> +++ b/include/acpi/actypes.h
->> @@ -500,13 +500,13 @@ typedef u64 acpi_integer;
->>=20
->> #define ACPI_CAST_PTR(t, p)             ((t *) (acpi_uintptr_t) (p))
->> #define ACPI_CAST_INDIRECT_PTR(t, p)    ((t **) (acpi_uintptr_t) (p))
->> -#define ACPI_ADD_PTR(t, a, b)           ACPI_CAST_PTR (t, =
-(ACPI_CAST_PTR (u8, (a)) + (acpi_size)(b)))
->> +#define ACPI_ADD_PTR(t, a, b)           ACPI_CAST_PTR (t, (a) + =
-(acpi_size)(b))
->> #define ACPI_SUB_PTR(t, a, b)           ACPI_CAST_PTR (t, =
-(ACPI_CAST_PTR (u8, (a)) - (acpi_size)(b)))
->> #define ACPI_PTR_DIFF(a, b)             ((acpi_size) (ACPI_CAST_PTR =
-(u8, (a)) - ACPI_CAST_PTR (u8, (b))))
->>=20
->> /* Pointer/Integer type conversions */
->>=20
->> -#define ACPI_TO_POINTER(i)              ACPI_ADD_PTR (void, (void *) =
-0, (acpi_size) (i))
->> +#define ACPI_TO_POINTER(i)              ACPI_ADD_PTR (void, 0, =
-(acpi_size) (i))
->=20
-> IIUC, these are adding `i` to NULL (or (void*)0)? X + 0 =3D=3D X ?
-> --=20
-> Thanks,
-> ~Nick Desaulniers
 
