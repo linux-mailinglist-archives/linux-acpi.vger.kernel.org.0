@@ -2,57 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2193C6F735
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2019 04:36:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 967A86F733
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2019 04:36:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728677AbfGVCgE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 21 Jul 2019 22:36:04 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:41610 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728662AbfGVCgE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 21 Jul 2019 22:36:04 -0400
-Received: by mail-io1-f67.google.com with SMTP id j5so66450003ioj.8;
-        Sun, 21 Jul 2019 19:36:04 -0700 (PDT)
+        id S1728702AbfGVCgG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 21 Jul 2019 22:36:06 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:38597 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728686AbfGVCgG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 21 Jul 2019 22:36:06 -0400
+Received: by mail-io1-f66.google.com with SMTP id j6so38333870ioa.5;
+        Sun, 21 Jul 2019 19:36:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=7CEzcbOz71poU4j3yG0xg7J69W88eLOvN2k9jJzfLm8=;
-        b=TuMIIfdyVwz4Q4mMVyjhYAoVVOOlk8i5e8EZkE9fcs7lDwW5SdfEr9lk98yIFg4XXx
-         +wKvt9Z2MahPIR4l5fTkxUlqEeM8TSZz3zvMw4Cr+7PftPkDGE4TI+7GQFXKtMoQtpn+
-         pHpt+nYxea1gFZ3TOyrOq4TdV2Crrv9VJ8gulOTFyYLy7q4OnJjBE8Wfb8GvC6nj0QA6
-         31k+z+nMdhq7YYYIlov/FUYp387m+9JLfQLfXO9tHZRyrBfE1shZbsoOwh1mzY3K2yHn
-         5xTxNxl6P+jNkq5jQfzT/tVZGkwU8Cq/NKmrVqCK6LvW+LUpqTAInC+EOjBaZElc4XLP
-         JXkA==
+        bh=MI5pP/95cljpGBtp/V+zUfk7+WS9iXpcoTov/fza3VQ=;
+        b=WqsZZUdgKSWyoWKGonBa2yNXkffaLLoPf8vielAdO/brV5Dxzos32yFbS22tNXe3EQ
+         o4qZLTLhYVkI/P/um8VToODECzHjfCQvVy63E/mlYqhXgLsO3AQw+NIP5xBETlFEsAE7
+         eskK4ne3pyMZdKCk3sEw2XRCi04JprsbCeNbaG8REVCqzfmpX4DuY5TjDkocVGX+QWZl
+         BqbSABPJ12QsZteMch3GW1XctVWANQwUqEsG+ZWoH+0IhGFgOfBcpqv0CbPDYuWxWchw
+         gtrxeVHE5WSc9aoZ/wZZrvNT3SIVaqSpOiGHw+ZlafdsFSA+Yhu9fuwvYArRvCKCa1WH
+         zgYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=7CEzcbOz71poU4j3yG0xg7J69W88eLOvN2k9jJzfLm8=;
-        b=r6CWsPc1KF+jspFQ1i+9m+NTVR8J2zUm5S/wP5OMsuFRdLvXc3vwwY5fUsSPA58tS9
-         rycDWsuGmgD/De51qcK0LEWFhQmceyaqTvEiTviyzo8kbfDkc390p3Z9deOun3OO7npY
-         tbJcXkTVSbWBGQrhuiXmiEZTw/ShxY2fMp8nIB3bvWlJM8omDVdCScUui3+pKv1weihW
-         86LnNSj/lHU9RGr4vEW15Kk12bVNlP50QmAhYxMp+JOvRoG6nsrBFwUrZDovaG1IxRT9
-         aVbu5sfBiIdforb+TNbNgWY3e6G66o2V+oc+bCy+9mH+vSfafkAqNZiSWHPTQ2TKgccb
-         z50Q==
-X-Gm-Message-State: APjAAAX+y0VU56/Iliq7QvEUY+XdSyw55LCAYtg+vgepNImu/LBl9KW/
-        ctwcLvBesyvoPIndkBELF7IbYHCWSpM39Q==
-X-Google-Smtp-Source: APXvYqyjvt9UTlCFXQ7qZs1+LlnjSsv7L3fhmjibyDHfbnTDGc6qaCUdt1d3Hl/Bjpgz/FqWPQP+0w==
-X-Received: by 2002:a5e:8412:: with SMTP id h18mr63668858ioj.268.1563762963997;
-        Sun, 21 Jul 2019 19:36:03 -0700 (PDT)
+        bh=MI5pP/95cljpGBtp/V+zUfk7+WS9iXpcoTov/fza3VQ=;
+        b=cb3FE2GApnlK1h5t8Bq+wEsUmrkeDVfuVU7GS6WXEjqZnXMPZNd02J+RgGM6IFiKcB
+         9q6ec1VLU0Ljh02gP2UqQQMMK/cf0AGM9LvPiSEinNdkMA/RAhA/QW0PRFeiAnomzCEP
+         MgGvSAqMK0I+5/qA/JsseYL8GiRk9LGDn9lWC10HKx1DgoydBA/+aBH7KYKTy/kHH0KI
+         RUNU7QFVh6N6iyryxV7637vUVD83b2cvc5ofAKyTITXUJPwoCvSUPOAmfpkJ1mY6eu6G
+         AqThFT+ybVnhj9CaYIXd+9R5K8Vive9py+q9hjIJl5CZtiAmW2CowXABd2Qr2edjOFw9
+         ew8g==
+X-Gm-Message-State: APjAAAUV23p8FrPPH3ynsMQwhjfdyHRGqIJ8jA8c+Rk7HbOTKhdpxpEr
+        SfonKw/Nr/45TU4UfczkkpQ=
+X-Google-Smtp-Source: APXvYqyTOouutc91U2WNFG9MMczhWty7SVKMwuK87LZPlNkjDtGbeieUTQjIitnhIdCehXWun/S6rg==
+X-Received: by 2002:a6b:7401:: with SMTP id s1mr59037561iog.67.1563762965239;
+        Sun, 21 Jul 2019 19:36:05 -0700 (PDT)
 Received: from localhost.localdomain (c-73-243-191-173.hsd1.co.comcast.net. [73.243.191.173])
-        by smtp.gmail.com with ESMTPSA id e188sm32816577ioa.3.2019.07.21.19.36.02
+        by smtp.gmail.com with ESMTPSA id e188sm32816577ioa.3.2019.07.21.19.36.04
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sun, 21 Jul 2019 19:36:03 -0700 (PDT)
+        Sun, 21 Jul 2019 19:36:04 -0700 (PDT)
 From:   Kelsey Skunberg <skunberg.kelsey@gmail.com>
 To:     rjw@rjwysocki.net, lenb@kernel.org, linux-acpi@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Cc:     skhan@linuxfoundation.org,
         linux-kernel-mentees@lists.linuxfoundation.org, bjorn@helgaas.com,
         skunberg.kelsey@gmail.com
-Subject: [PATCH 2/3] ACPI: Remove acpi_has_method() call from scan.c
-Date:   Sun, 21 Jul 2019 20:35:29 -0600
-Message-Id: <20190722023530.67676-3-skunberg.kelsey@gmail.com>
+Subject: [PATCH 3/3] ACPI: Remove acpi_has_method() calls from thermal.c
+Date:   Sun, 21 Jul 2019 20:35:30 -0600
+Message-Id: <20190722023530.67676-4-skunberg.kelsey@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190722023530.67676-1-skunberg.kelsey@gmail.com>
 References: <20190722023530.67676-1-skunberg.kelsey@gmail.com>
@@ -63,30 +63,46 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-acpi_evaluate_reference() will return an error if the DEP method
-does not exist. Checking if the DEP method exists before the
-acpi_evaluate_reference() call is not needed. Remove acpi_has_method()
-call to avoid additional work.
+The following acpi_has_method() calls are unnecessary since
+acpi_execute_simple_method() and acpi_evaluate_reference() will return an
+error if the given method does not exist. Remove acpi_has_method() calls
+to avoid additional work.
 
 Signed-off-by: Kelsey Skunberg <skunberg.kelsey@gmail.com>
 ---
- drivers/acpi/scan.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/acpi/thermal.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 0e28270b0fd8..4f2b0b481cee 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1803,9 +1803,6 @@ static void acpi_device_dep_initialize(struct acpi_device *adev)
+diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+index 00f12a86ecbd..d831a61e0010 100644
+--- a/drivers/acpi/thermal.c
++++ b/drivers/acpi/thermal.c
+@@ -225,13 +225,9 @@ static int acpi_thermal_set_cooling_mode(struct acpi_thermal *tz, int mode)
+ 	if (!tz)
+ 		return -EINVAL;
  
- 	adev->dep_unmet = 0;
+-	if (!acpi_has_method(tz->device->handle, "_SCP")) {
+-		ACPI_DEBUG_PRINT((ACPI_DB_INFO, "_SCP not present\n"));
++	if (ACPI_FAILURE(acpi_execute_simple_method(tz->device->handle,
++						    "_SCP", mode)))
+ 		return -ENODEV;
+-	} else if (ACPI_FAILURE(acpi_execute_simple_method(tz->device->handle,
+-							   "_SCP", mode))) {
+-		return -ENODEV;
+-	}
  
--	if (!acpi_has_method(adev->handle, "_DEP"))
--		return;
--
- 	status = acpi_evaluate_reference(adev->handle, "_DEP", NULL,
- 					&dep_devices);
- 	if (ACPI_FAILURE(status)) {
+ 	return 0;
+ }
+@@ -463,8 +459,7 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+ 			break;
+ 	}
+ 
+-	if ((flag & ACPI_TRIPS_DEVICES)
+-	    && acpi_has_method(tz->device->handle, "_TZD")) {
++	if (flag & ACPI_TRIPS_DEVICES) {
+ 		memset(&devices, 0, sizeof(devices));
+ 		status = acpi_evaluate_reference(tz->device->handle, "_TZD",
+ 						NULL, &devices);
 -- 
 2.20.1
 
