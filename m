@@ -2,90 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C047D6F0B2
-	for <lists+linux-acpi@lfdr.de>; Sat, 20 Jul 2019 22:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6B306F6CE
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2019 02:41:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725801AbfGTUpL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 20 Jul 2019 16:45:11 -0400
-Received: from mail-wm1-f46.google.com ([209.85.128.46]:55259 "EHLO
-        mail-wm1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725789AbfGTUpL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 20 Jul 2019 16:45:11 -0400
-Received: by mail-wm1-f46.google.com with SMTP id p74so31639598wme.4
-        for <linux-acpi@vger.kernel.org>; Sat, 20 Jul 2019 13:45:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=sn31xa1Rk0JJs6T66RPNXZxvBRj8Q+uES2N2f4iqY88=;
-        b=O5qcZFEGhBZZE/9M2NwPcAo+J2lCc+EGDacEKd/nFCfGYRFooKe5Yh7m35zmniAN/0
-         nOelkINJEQbH5i+G6zRStLLFC47IDFAp5GkayF5bmqBgCw/K8Rwg/ZGTsPQP2zMV1R1g
-         Wo8HWW90gnCADlBTSMoI4ONjLV1obC1ARpEwniGT1jkrpRlHFV3Q8N/TMQyofWrRAkNj
-         a10I9VdRx+am3tTe7iWrPwEuGQ82c49tcJnobNo38noWeEVEUuueyNPbjwRqlUuJ0mHC
-         piapLoU73OKmzWMJPFropcnp8SxSsXNj17D/q4HoibhRSwMZ3znS5mPlATZNv6/tF3yS
-         0lpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=sn31xa1Rk0JJs6T66RPNXZxvBRj8Q+uES2N2f4iqY88=;
-        b=KO8jTORlIaHNvJROI46HixwWhSKoa6fVKi5hkEt6ZnYiTilxihfTB3LKgluutM5m7T
-         tEl8ARrYcsiQfoPxJmpU8R/YvE7qC9wwf8dlqoCKrL8YZqj9OD+x7scS8hkAzArmCFzy
-         ZiPuYYZIrzw/UIqWi5rTGxuOIZh27ygUFXFCxJ6GYRdhCnqVI6eNZpP82rUj6qloWZNq
-         JTkvBK3dfAxmBX0Qvzb7IC2gnhWJL1NjRec5pDApb1mK+GdpZjMX7L82+xEGNyKnajht
-         jpNTJkbshps8xOxEL1kannz+F1tGEgMMtSeWpne0v00aIa5FL4rXYxay02sasxLWSvHC
-         5s0A==
-X-Gm-Message-State: APjAAAVlPG0oYUI5Kp2AHfgVjy74/Ae1KUYZUR0yHPfsC+ahZWFWWtUc
-        HjPKckvNnXNFhCXw8+/ySTg=
-X-Google-Smtp-Source: APXvYqyK5Uc0PW3qtUG3gXQqIgH1OllkXyOUEF4+jDiBgVXLhl0WP5Y2zhCpCUReCC/kYJEC5qrfEQ==
-X-Received: by 2002:a1c:dc07:: with SMTP id t7mr56765953wmg.164.1563655509236;
-        Sat, 20 Jul 2019 13:45:09 -0700 (PDT)
-Received: from [192.168.2.202] (pD9EA3BA8.dip0.t-ipconnect.de. [217.234.59.168])
-        by smtp.gmail.com with ESMTPSA id a81sm33058542wmh.3.2019.07.20.13.45.07
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Sat, 20 Jul 2019 13:45:08 -0700 (PDT)
-Subject: Re: PROBLEM: Calling ObjectType on buffer field reports type integer
-To:     "Schmauss, Erik" <erik.schmauss@intel.com>,
-        "Moore, Robert" <robert.moore@intel.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>
-Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>
-References: <3ef42aa1-196d-f3db-0e5d-2fd84c198242@gmail.com>
- <CF6A88132359CE47947DB4C6E1709ED53C592D47@ORSMSX122.amr.corp.intel.com>
- <CF6A88132359CE47947DB4C6E1709ED53C59405C@ORSMSX122.amr.corp.intel.com>
- <fe4bcc1c-5c15-caa6-ce01-a5df962ff008@gmail.com>
- <CF6A88132359CE47947DB4C6E1709ED53C5942CA@ORSMSX122.amr.corp.intel.com>
- <51e156ec-c2ed-84be-13c0-99a213e1d4b7@gmail.com>
- <CF6A88132359CE47947DB4C6E1709ED53C595C50@ORSMSX122.amr.corp.intel.com>
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-Message-ID: <88077d9c-b2b7-5fc6-37e9-fa12d6aebe73@gmail.com>
-Date:   Sat, 20 Jul 2019 22:45:06 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726831AbfGVAkz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 21 Jul 2019 20:40:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50776 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725989AbfGVAkz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 21 Jul 2019 20:40:55 -0400
+Received: from localhost (unknown [216.243.17.14])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 82EA0206BF;
+        Mon, 22 Jul 2019 00:40:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563756054;
+        bh=KHFAVDQTHGzw2Ct6ufGOLuan923qz4afL8qI13NMWpc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=z8YS4lPfN+19t/r2Z7TOa4ZDa2SHUEO0bkVyRWJeulhLZRqhg13QtqPc8x8ZMkSQq
+         7ZWv6fTss358QAUBFkGclinbsMBi4jq+TXCU8c0/iCyIQrhPaspDB5TgDdtZf47al3
+         vLG6zPfWvmxDfiH+FCBawLBY+W+JT6e80NmO+c/w=
+Date:   Sun, 21 Jul 2019 20:40:54 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 4.14 086/105] PCI / ACPI: Use cached ACPI device
+ state to get PCI device power state
+Message-ID: <20190722004054.GF1607@sasha-vm>
+References: <20190715142839.9896-1-sashal@kernel.org>
+ <20190715142839.9896-86-sashal@kernel.org>
+ <01d729e3-9778-9e4f-84d2-16b7353eeee1@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <CF6A88132359CE47947DB4C6E1709ED53C595C50@ORSMSX122.amr.corp.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <01d729e3-9778-9e4f-84d2-16b7353eeee1@intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 3/22/19 10:28 PM, Schmauss, Erik wrote:
-> I've been discussing this with Bob. I've decided to file a bug against Microsoft
-> internally. I would like to wait and see what they say... I've never done such
-> things so I don't know how long the process takes to get a response form them.
-> 
-> I'll post updates when I get them but feel free to ping us again in a few
-> weeks if you don't hear back. We're still investigating their operation region
-> behavior as well...
-> 	
-> Erik
+On Tue, Jul 16, 2019 at 11:22:44AM +0200, Rafael J. Wysocki wrote:
+>On 7/15/2019 4:28 PM, Sasha Levin wrote:
+>>From: Mika Westerberg <mika.westerberg@linux.intel.com>
+>>
+>>[ Upstream commit 83a16e3f6d70da99896c7a2639c0b60fff13afb8 ]
+>>
+>>The ACPI power state returned by acpi_device_get_power() may depend on
+>>the configuration of ACPI power resources in the system which may change
+>>any time after acpi_device_get_power() has returned, unless the
+>>reference counters of the ACPI power resources in question are set to
+>>prevent that from happening. Thus it is invalid to use acpi_device_get_power()
+>>in acpi_pci_get_power_state() the way it is done now and the value of
+>>the ->power.state field in the corresponding struct acpi_device objects
+>>(which reflects the ACPI power resources reference counting, among other
+>>things) should be used instead.
+>>
+>>As an example where this becomes an issue is Intel Ice Lake where the
+>>Thunderbolt controller (NHI), two PCIe root ports (RP0 and RP1) and xHCI
+>>all share the same power resources. The following picture with power
+>>resources marked with [] shows the topology:
+>>
+>>   Host bridge
+>>     |
+>>     +- RP0 ---\
+>>     +- RP1 ---|--+--> [TBT]
+>>     +- NHI --/   |
+>>     |            |
+>>     |            v
+>>     +- xHCI --> [D3C]
+>>
+>>Here TBT and D3C are the shared ACPI power resources. ACPI _PR3() method
+>>of the devices in question returns either TBT or D3C or both.
+>>
+>>Say we runtime suspend first the root ports RP0 and RP1, then NHI. Now
+>>since the TBT power resource is still on when the root ports are runtime
+>>suspended their dev->current_state is set to D3hot. When NHI is runtime
+>>suspended TBT is finally turned off but state of the root ports remain
+>>to be D3hot. Now when the xHCI is runtime suspended D3C gets also turned
+>>off. PCI core thus has power states of these devices cached in their
+>>dev->current_state as follows:
+>>
+>>   RP0 -> D3hot
+>>   RP1 -> D3hot
+>>   NHI -> D3cold
+>>   xHCI -> D3cold
+>>
+>>If the user now runs lspci for instance, the result is all 1's like in
+>>the below output (00:07.0 is the first root port, RP0):
+>>
+>>00:07.0 PCI bridge: Intel Corporation Device 8a1d (rev ff) (prog-if ff)
+>>     !!! Unknown header type 7f
+>>     Kernel driver in use: pcieport
+>>
+>>In short the hardware state is not in sync with the software state
+>>anymore. The exact same thing happens with the PME polling thread which
+>>ends up bringing the root ports back into D0 after they are runtime
+>>suspended.
+>>
+>>For this reason, modify acpi_pci_get_power_state() so that it uses the
+>>ACPI device power state that was cached by the ACPI core. This makes the
+>>PCI device power state match the ACPI device power state regardless of
+>>state of the shared power resources which may still be on at this point.
+>>
+>>Link: https://lore.kernel.org/r/20190618161858.77834-2-mika.westerberg@linux.intel.com
+>>Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+>>Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>---
+>>  drivers/pci/pci-acpi.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>>diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+>>index a3cedf8de863..688e195e85b4 100644
+>>--- a/drivers/pci/pci-acpi.c
+>>+++ b/drivers/pci/pci-acpi.c
+>>@@ -563,7 +563,8 @@ static pci_power_t acpi_pci_get_power_state(struct pci_dev *dev)
+>>  	if (!adev || !acpi_device_power_manageable(adev))
+>>  		return PCI_UNKNOWN;
+>>-	if (acpi_device_get_power(adev, &state) || state == ACPI_STATE_UNKNOWN)
+>>+	state = adev->power.state;
+>>+	if (state == ACPI_STATE_UNKNOWN)
+>>  		return PCI_UNKNOWN;
+>>  	return state_conv[state];
+>
+>This requires additional changes to really work in all cases, please 
+>do not include it alone into -stable.
 
-Hi,
+I've dropped it, thanks!
 
-I assume there hasn't been any response from Microsoft?
-
-Maximilian
+--
+Thanks,
+Sasha
