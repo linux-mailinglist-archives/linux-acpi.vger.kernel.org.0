@@ -2,84 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A3276FB53
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2019 10:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B47276FC86
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2019 11:46:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728151AbfGVIbY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 Jul 2019 04:31:24 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:35256 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727304AbfGVIbY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Jul 2019 04:31:24 -0400
-Received: by mail-ot1-f68.google.com with SMTP id j19so906159otq.2;
-        Mon, 22 Jul 2019 01:31:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qH9X5iNUAvdfUeKpd2p6uIpK5xHWBxmzhoraupHL3oQ=;
-        b=sMenGcp3OTQN/G7+T0j7duv8w8jRGa3Tzbw72xbmVz5KMxSYNxv5IMVATO0rP+7F1C
-         bK9IQwtWZeaGOcXyReF3FSpk7ZLVQuGK1ffQzMX92dYAVpEH6MHwcWwN5NhRu3QJLKkS
-         wrQIOxrlJ2E7bNC2sL8/aEF5HHt223MZqS6oLG4zxSF3eR+wrwJrXFQcWErB6eWzeX5l
-         qY6PWhuPw+Oiqrrdfgrk+7XLmbnpmljzAGg/hKFk0BvkvLyqKwLXFHHI8FzrysK3G3dW
-         l9+zaDndADHJXSlFbJcjsrhOzEmxiAhqTc2ZZSiADLeTIsVlKZHKEn8qNg/+KgRucgXs
-         MRFw==
-X-Gm-Message-State: APjAAAXpq/wQmLtl2WjomEAXZS5kglXRed+pooCtnnaxU7X26WUGK4mI
-        0mltvOaDgTFjvgzLZNeFzd7g1HDWpebeWF5QLwI=
-X-Google-Smtp-Source: APXvYqwVqSP5V8Tus+6+2dAP0uhrF6qtZQqEUYrU6BBe3c5Fb5++tjEKA8b6i/rttuFeFAwAF1qfTViUfKgP2vgQwfw=
-X-Received: by 2002:a05:6830:8a:: with SMTP id a10mr21838380oto.167.1563784283215;
- Mon, 22 Jul 2019 01:31:23 -0700 (PDT)
+        id S1727628AbfGVJqh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 Jul 2019 05:46:37 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:36144 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727541AbfGVJqh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Jul 2019 05:46:37 -0400
+Received: from pd9ef1cb8.dip0.t-ipconnect.de ([217.239.28.184] helo=nanos)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1hpUtp-0003O3-V0; Mon, 22 Jul 2019 11:46:30 +0200
+Date:   Mon, 22 Jul 2019 11:46:29 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+cc:     Linux PM <linux-pm@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Len Brown <len.brown@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Rajneesh Bhardwaj <rajneesh.bhardwaj@linux.intel.com>,
+        "David E. Box" <david.e.box@linux.intel.com>
+Subject: Re: [PATCH 0/8] PM / ACPI: sleep: Simplify the suspend-to-idle
+ control flow
+In-Reply-To: <71085220.z6FKkvYQPX@kreacher>
+Message-ID: <alpine.DEB.2.21.1907221145440.1782@nanos.tec.linutronix.de>
+References: <71085220.z6FKkvYQPX@kreacher>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-References: <20190722023530.67676-1-skunberg.kelsey@gmail.com> <20190722023530.67676-2-skunberg.kelsey@gmail.com>
-In-Reply-To: <20190722023530.67676-2-skunberg.kelsey@gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 22 Jul 2019 10:31:11 +0200
-Message-ID: <CAJZ5v0gRzu0bVL+7L9NhbWu5OxveEP8H8v5qpiW-FeOtoOepiw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ACPI: Remove acpi_has_method() call from acpi_adxl.c
-To:     Kelsey Skunberg <skunberg.kelsey@gmail.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        skhan@linuxfoundation.org,
-        linux-kernel-mentees@lists.linuxfoundation.org, bjorn@helgaas.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 22, 2019 at 4:36 AM Kelsey Skunberg
-<skunberg.kelsey@gmail.com> wrote:
->
-> acpi_check_dsm() will already return an error if the DSM method does not
-> exist. Checking if the DSM method exists before the acpi_check_dsm() call
-> is not needed. Remove acpi_has_method() call to avoid additional work.
->
-> Signed-off-by: Kelsey Skunberg <skunberg.kelsey@gmail.com>
-> ---
->  drivers/acpi/acpi_adxl.c | 5 -----
->  1 file changed, 5 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_adxl.c b/drivers/acpi/acpi_adxl.c
-> index 13c8f7b50c46..89aac15663fd 100644
-> --- a/drivers/acpi/acpi_adxl.c
-> +++ b/drivers/acpi/acpi_adxl.c
-> @@ -148,11 +148,6 @@ static int __init adxl_init(void)
->                 return -ENODEV;
->         }
->
-> -       if (!acpi_has_method(handle, "_DSM")) {
-> -               pr_info("No DSM method\n");
+On Tue, 16 Jul 2019, Rafael J. Wysocki wrote:
 
-And why is printing the message not useful?
+> Hi All,
+> 
+> The rationale for these changes is explained in the changelog of patch [6/8] as follows:
+> 
+> "After commit 33e4f80ee69b ("ACPI / PM: Ignore spurious SCI wakeups
+> from suspend-to-idle") the "noirq" phases of device suspend and
+> resume may run for multiple times during suspend-to-idle, if there
+> are spurious system wakeup events while suspended.  However, this
+> is complicated and fragile and actually unnecessary.
+> 
+> The main reason for doing this is that on some systems the EC may
+> signal system wakeup events (power button events, for example) as
+> well as events that should not cause the system to resume (spurious
+> system wakeup events).  Thus, in order to determine whether or not
+> a given event signaled by the EC while suspended is a proper system
+> wakeup one, the EC GPE needs to be dispatched and to start with that
+> was achieved by allowing the ACPI SCI action handler to run, which
+> was only possible after calling resume_device_irqs().
+> 
+> However, dispatching the EC GPE this way turned out to take too much
+> time in some cases and some EC events might be missed due to that, so
+> commit 68e22011856f ("ACPI: EC: Dispatch the EC GPE directly on
+> s2idle wake") started to dispatch the EC GPE right after a wakeup
+> event has been detected, so in fact the full ACPI SCI action handler
+> doesn't need to run any more to deal with the wakeups coming from the
+> EC.
+> 
+> Use this observation to simplify the suspend-to-idle control flow
+> so that the "noirq" phases of device suspend and resume are each
+> run only once in every suspend-to-idle cycle, which is reported to
+> significantly reduce power drawn by some systems when suspended to
+> idle (by allowing them to reach a deep platform-wide low-power state
+> through the suspend-to-idle flow)."
+> 
+> A bonus is that after the essential changes the s2idle flow can be
+> integrated back into the generic suspend/resume one (patch [7/8])
+> and some simplifications can be made in drivers/base/power/main.c
+> after that (patch [8/8]).
 
-> -               return -ENODEV;
-> -       }
-> -
->         if (!acpi_check_dsm(handle, &adxl_guid, ADXL_REVISION,
->                             ADXL_IDX_GET_ADDR_PARAMS |
->                             ADXL_IDX_FORWARD_TRANSLATE)) {
-> --
-> 2.20.1
->
+Nice work!
+
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+
