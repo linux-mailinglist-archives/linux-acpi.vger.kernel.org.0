@@ -2,174 +2,234 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 544AC72113
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jul 2019 22:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC3E97222A
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jul 2019 00:19:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732614AbfGWUty convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 23 Jul 2019 16:49:54 -0400
-Received: from mga02.intel.com ([134.134.136.20]:40768 "EHLO mga02.intel.com"
+        id S2392443AbfGWWTW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Jul 2019 18:19:22 -0400
+Received: from foss.arm.com ([217.140.110.172]:60776 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730760AbfGWUty (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 23 Jul 2019 16:49:54 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Jul 2019 13:49:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,300,1559545200"; 
-   d="scan'208";a="174659991"
-Received: from orsmsx101.amr.corp.intel.com ([10.22.225.128])
-  by orsmga006.jf.intel.com with ESMTP; 23 Jul 2019 13:49:53 -0700
-Received: from orsmsx126.amr.corp.intel.com (10.22.240.126) by
- ORSMSX101.amr.corp.intel.com (10.22.225.128) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Tue, 23 Jul 2019 13:49:53 -0700
-Received: from orsmsx110.amr.corp.intel.com ([169.254.10.211]) by
- ORSMSX126.amr.corp.intel.com ([169.254.4.77]) with mapi id 14.03.0439.000;
- Tue, 23 Jul 2019 13:49:53 -0700
-From:   "Moore, Robert" <robert.moore@intel.com>
-To:     Qian Cai <cai@lca.pw>, Nick Desaulniers <ndesaulniers@google.com>
-CC:     "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        "Schmauss, Erik" <erik.schmauss@intel.com>,
-        "jkim@freebsd.org" <jkim@freebsd.org>, Len Brown <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] acpica: fix -Wnull-pointer-arithmetic warnings
-Thread-Topic: [PATCH] acpica: fix -Wnull-pointer-arithmetic warnings
-Thread-Index: AQHVPFEYIycQ0k5IUUyXy4NqYzTqpqbP0wgAgAAvDoCACLPGAA==
-Date:   Tue, 23 Jul 2019 20:49:52 +0000
-Message-ID: <94F2FBAB4432B54E8AACC7DFDE6C92E3B9661869@ORSMSX110.amr.corp.intel.com>
-References: <20190717033807.1207-1-cai@lca.pw>
- <CAKwvOdmPX2DsUawcA0SzaFacjz==ACcfD8yDsbaS4eP4Es=Wzw@mail.gmail.com>
- <73A4565B-837B-4E13-8B72-63F69BF408E7@lca.pw>
-In-Reply-To: <73A4565B-837B-4E13-8B72-63F69BF408E7@lca.pw>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiYWEwZGI5NTgtYTE0NC00ZWFjLWJjMDYtYjIyYWY5MmFhOTQ1IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiY2pvUjE2Mm1qbUl2ejllMmdwQVwvejNWcEJib1RyQ2JUb2Q3R2dnRk14VXo0QVhuUUMrdjJmZUtiSjhJM2dTVTIifQ==
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.140]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S2392434AbfGWWTV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 23 Jul 2019 18:19:21 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5E61F1684;
+        Tue, 23 Jul 2019 15:19:20 -0700 (PDT)
+Received: from dawn-kernel.cambridge.arm.com (unknown [10.1.197.116])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C7DCB3F694;
+        Tue, 23 Jul 2019 15:19:18 -0700 (PDT)
+From:   Suzuki K Poulose <suzuki.poulose@arm.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     gregkh@linuxfoundation.org, rafael@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org
+Subject: [PATCH v3 5/7] drivers: Introduce device lookup variants by ACPI_COMPANION device
+Date:   Tue, 23 Jul 2019 23:18:36 +0100
+Message-Id: <20190723221838.12024-6-suzuki.poulose@arm.com>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190723221838.12024-1-suzuki.poulose@arm.com>
+References: <20190723221838.12024-1-suzuki.poulose@arm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Add a generic helper to match a device by the ACPI_COMPANION device
+and provide wrappers for the device lookup APIs.
 
+Cc: Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-spi@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Wolfram Sang <wsa@the-dreams.de>
+Cc: linux-i2c@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+---
+ drivers/base/core.c         |  6 ++++
+ drivers/i2c/i2c-core-acpi.c | 11 ++-----
+ drivers/spi/spi.c           |  8 +----
+ include/linux/device.h      | 65 +++++++++++++++++++++++++++++++++++++
+ 4 files changed, 74 insertions(+), 16 deletions(-)
 
------Original Message-----
-From: Qian Cai [mailto:cai@lca.pw] 
-Sent: Wednesday, July 17, 2019 5:50 PM
-To: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Wysocki, Rafael J <rafael.j.wysocki@intel.com>; Moore, Robert <robert.moore@intel.com>; Schmauss, Erik <erik.schmauss@intel.com>; jkim@freebsd.org; Len Brown <lenb@kernel.org>; linux-acpi@vger.kernel.org; devel@acpica.org; clang-built-linux <clang-built-linux@googlegroups.com>; LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] acpica: fix -Wnull-pointer-arithmetic warnings
-
-
-
-> On Jul 17, 2019, at 6:01 PM, Nick Desaulniers <ndesaulniers@google.com> wrote:
-> 
-> On Tue, Jul 16, 2019 at 8:38 PM Qian Cai <cai@lca.pw> wrote:
->> 
->> Clang generate quite a few of those warnings.
->> 
->> drivers/acpi/scan.c:759:28: warning: arithmetic on a null pointer 
->> treated as a cast from integer to pointer is a GNU extension 
->> [-Wnull-pointer-arithmetic]
->>                status = acpi_get_handle(ACPI_ROOT_OBJECT,
->> obj->string.pointer,
->>                                         ^~~~~~~~~~~~~~~~
->> ./include/acpi/actypes.h:458:56: note: expanded from macro 
->> 'ACPI_ROOT_OBJECT'
->> #define ACPI_ROOT_OBJECT                ((acpi_handle) ACPI_TO_POINTER
->> (ACPI_MAX_PTR))
->>                                                        
->> ^~~~~~~~~~~~~~~
->> ./include/acpi/actypes.h:509:41: note: expanded from macro 
->> 'ACPI_TO_POINTER'
->> #define ACPI_TO_POINTER(i)              ACPI_ADD_PTR (void, (void *) 0,
->> (acpi_size) (i))
->>                                         
->> ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> ./include/acpi/actypes.h:503:84: note: expanded from macro 
->> 'ACPI_ADD_PTR'
->> #define ACPI_ADD_PTR(t, a, b)           ACPI_CAST_PTR (t,
->> (ACPI_CAST_PTR (u8, (a)) + (acpi_size)(b)))
->>                                         ^~~~~~~~~~~~~~~~~
->> ./include/acpi/actypes.h:501:66: note: expanded from macro 
->> 'ACPI_CAST_PTR'
->> #define ACPI_CAST_PTR(t, p)             ((t *) (acpi_uintptr_t) (p))
->>                                                                  ^ 
->> This is because pointer arithmetic on a pointer not pointing to an 
->> array is an undefined behavior. Fix it by doing an integer arithmetic 
->> instead.
-> 
-> Hi Qian, thanks for the patch.  How do I reproduce this issue, 
-> precisely?  I just tried:
-> $ make CC=clang -j71 drivers/acpi/scan.o on linux-next today and don't 
-> observe the warning.  My clang is ToT built sometime this week.  It 
-> looks like drivers/acpi/scan.o when CONFIG_ACPI=y, which is set in the 
-> defconfig.  Is there another set of configs to enable to observe the 
-> warning?
-
-# make W=1 -j 256
-
-With the config,
-
-https://raw.githubusercontent.com/cailca/linux-mm/master/arm64.config 
-
-> 
-> Also, the fix is curious.  Arithmetic on pointers to different 
-> "objects" (with one element passed the end) may lead to provence 
-> issues due to undefined behavior, but I would have expected some cases 
-> to uintptr_t, then arithmetic on that type, as the solution (which is 
-> what I suspect ACPI_CAST_PTR is doing).
-> 
-> Further, you seem to have modified ACPI_ADD_PTR but not ACPI_SUB_PTR; 
-> I would have expected both to be afflicted together or not at all 
-> based on their existing implementations.
-
-Yes, I thought about that, but ACPI_SUB_PTR does not seem used anywhere, so I thought maybe just start a new discussion to remove it all together later.
-
-ACPI_SUB_PTR is used in the iasl data table compiler.
-
-
-> 
->> 
->> Signed-off-by: Qian Cai <cai@lca.pw>
->> ---
->> include/acpi/actypes.h | 4 ++--
->> 1 file changed, 2 insertions(+), 2 deletions(-)
->> 
->> diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h index 
->> ad6892a24015..25b4a32da177 100644
->> --- a/include/acpi/actypes.h
->> +++ b/include/acpi/actypes.h
->> @@ -500,13 +500,13 @@ typedef u64 acpi_integer;
->> 
->> #define ACPI_CAST_PTR(t, p)             ((t *) (acpi_uintptr_t) (p))
->> #define ACPI_CAST_INDIRECT_PTR(t, p)    ((t **) (acpi_uintptr_t) (p))
->> -#define ACPI_ADD_PTR(t, a, b)           ACPI_CAST_PTR (t, (ACPI_CAST_PTR (u8, (a)) + (acpi_size)(b)))
->> +#define ACPI_ADD_PTR(t, a, b)           ACPI_CAST_PTR (t, (a) + (acpi_size)(b))
-
-We have some questions concerning this change. If (a) is not cast to a u8, the addition will be in whatever units are appropriate for (a) i.e., the type of (a). However, we want ACPI_ADD_PTR (And ACPI_SUB_PTR) to simply perform a byte addition or subtraction - thus the cast to u8. I believe that is the original thinking behind the macros.
-
->> #define ACPI_SUB_PTR(t, a, b)           ACPI_CAST_PTR (t, (ACPI_CAST_PTR (u8, (a)) - (acpi_size)(b)))
->> #define ACPI_PTR_DIFF(a, b)             ((acpi_size) (ACPI_CAST_PTR (u8, (a)) - ACPI_CAST_PTR (u8, (b))))
->> 
->> /* Pointer/Integer type conversions */
->> 
->> -#define ACPI_TO_POINTER(i)              ACPI_ADD_PTR (void, (void *) 0, (acpi_size) (i))
->> +#define ACPI_TO_POINTER(i)              ACPI_ADD_PTR (void, 0, (acpi_size) (i))
-> 
-> IIUC, these are adding `i` to NULL (or (void*)0)? X + 0 == X ?
-> --
-> Thanks,
-> ~Nick Desaulniers
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 3abc32b60c0a..57d71bc2c559 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3373,3 +3373,9 @@ int device_match_devt(struct device *dev, const void *pdevt)
+ 	return dev->devt == *(dev_t *)pdevt;
+ }
+ EXPORT_SYMBOL_GPL(device_match_devt);
++
++int device_match_acpi_dev(struct device *dev, const void *adev)
++{
++	return ACPI_COMPANION(dev) == adev;
++}
++EXPORT_SYMBOL(device_match_acpi_dev);
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index 4dbbc9a35f65..bc80aafb521f 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -354,17 +354,11 @@ static int i2c_acpi_find_match_adapter(struct device *dev, const void *data)
+ 	return ACPI_HANDLE(dev) == (acpi_handle)data;
+ }
+ 
+-static int i2c_acpi_find_match_device(struct device *dev, const void *data)
+-{
+-	return ACPI_COMPANION(dev) == data;
+-}
+ 
+ struct i2c_adapter *i2c_acpi_find_adapter_by_handle(acpi_handle handle)
+ {
+-	struct device *dev;
++	struct device *dev = bus_find_device_by_acpi_dev(&i2c_bus_type, handle);
+ 
+-	dev = bus_find_device(&i2c_bus_type, NULL, handle,
+-			      i2c_acpi_find_match_adapter);
+ 	return dev ? i2c_verify_adapter(dev) : NULL;
+ }
+ EXPORT_SYMBOL_GPL(i2c_acpi_find_adapter_by_handle);
+@@ -373,8 +367,7 @@ static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev)
+ {
+ 	struct device *dev;
+ 
+-	dev = bus_find_device(&i2c_bus_type, NULL, adev,
+-			      i2c_acpi_find_match_device);
++	dev = bus_find_device_by_acpi_dev(&i2c_bus_type, adev);
+ 	return dev ? i2c_verify_client(dev) : NULL;
+ }
+ 
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a591da87981a..c486a6f84c2c 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -3741,11 +3741,6 @@ static int spi_acpi_controller_match(struct device *dev, const void *data)
+ 	return ACPI_COMPANION(dev->parent) == data;
+ }
+ 
+-static int spi_acpi_device_match(struct device *dev, const void *data)
+-{
+-	return ACPI_COMPANION(dev) == data;
+-}
+-
+ static struct spi_controller *acpi_spi_find_controller_by_adev(struct acpi_device *adev)
+ {
+ 	struct device *dev;
+@@ -3765,8 +3760,7 @@ static struct spi_device *acpi_spi_find_device_by_adev(struct acpi_device *adev)
+ {
+ 	struct device *dev;
+ 
+-	dev = bus_find_device(&spi_bus_type, NULL, adev, spi_acpi_device_match);
+-
++	dev = bus_find_device_by_acpi_dev(&spi_bus_type, adev);
+ 	return dev ? to_spi_device(dev) : NULL;
+ }
+ 
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 93b2f55ef44e..7514ef3d3f1a 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -168,6 +168,7 @@ int device_match_name(struct device *dev, const void *name);
+ int device_match_of_node(struct device *dev, const void *np);
+ int device_match_fwnode(struct device *dev, const void *fwnode);
+ int device_match_devt(struct device *dev, const void *pdevt);
++int device_match_acpi_dev(struct device *dev, const void *adev);
+ 
+ int bus_for_each_dev(struct bus_type *bus, struct device *start, void *data,
+ 		     int (*fn)(struct device *dev, void *data));
+@@ -224,6 +225,28 @@ static inline struct device *bus_find_device_by_devt(struct bus_type *bus,
+ 	return bus_find_device(bus, NULL, &devt, device_match_devt);
+ }
+ 
++#ifdef CONFIG_ACPI
++struct acpi_device;
++
++/**
++ * bus_find_device_by_acpi_dev : device iterator for locating a particular device
++ * matching the ACPI COMPANION device.
++ * @bus: bus type
++ * @adev: ACPI COMPANION device to match.
++ */
++static inline struct device *
++bus_find_device_by_acpi_dev(struct bus_type *bus, const struct acpi_device *adev)
++{
++	return bus_find_device(bus, NULL, adev, device_match_acpi_dev);
++}
++#else
++static inline struct device *
++bus_find_device_by_acpi_dev(struct bus_type *bus, const void *adev)
++{
++	return NULL;
++}
++#endif
++
+ struct device *subsys_find_device_by_id(struct bus_type *bus, unsigned int id,
+ 					struct device *hint);
+ int bus_for_each_drv(struct bus_type *bus, struct device_driver *start,
+@@ -442,6 +465,27 @@ static inline struct device *driver_find_device_by_devt(struct device_driver *dr
+ 	return driver_find_device(drv, NULL, &devt, device_match_devt);
+ }
+ 
++#ifdef CONFIG_ACPI
++/**
++ * driver_find_device_by_acpi_dev : device iterator for locating a particular
++ * device matching the ACPI_COMPANION device.
++ * @driver: the driver we're iterating
++ * @adev: ACPI_COMPANION device to match.
++ */
++static inline struct device *
++driver_find_device_by_acpi_dev(struct device_driver *drv,
++			       const struct acpi_device *adev)
++{
++	return driver_find_device(drv, NULL, adev, device_match_acpi_dev);
++}
++#else
++static inline struct device *
++driver_find_device_by_acpi_dev(struct device_driver *drv, const void *adev)
++{
++	return NULL;
++}
++#endif
++
+ void driver_deferred_probe_add(struct device *dev);
+ int driver_deferred_probe_check_state(struct device *dev);
+ int driver_deferred_probe_check_state_continue(struct device *dev);
+@@ -620,6 +664,27 @@ static inline struct device *class_find_device_by_devt(struct class *class,
+ 	return class_find_device(class, NULL, &devt, device_match_devt);
+ }
+ 
++#ifdef CONFIG_ACPI
++struct acpi_device;
++/**
++ * class_find_device_by_acpi_dev : device iterator for locating a particular
++ * device matching the ACPI_COMPANION device.
++ * @class: class type
++ * @adev: ACPI_COMPANION device to match.
++ */
++static inline struct device *
++class_find_device_by_acpi_dev(struct class *class, const struct acpi_device *adev)
++{
++	return class_find_device(class, NULL, adev, device_match_acpi_dev);
++}
++#else
++static inline struct device *
++class_find_device_by_acpi_dev(struct class *class, const void *adev)
++{
++	return NULL;
++}
++#endif
++
+ struct class_attribute {
+ 	struct attribute attr;
+ 	ssize_t (*show)(struct class *class, struct class_attribute *attr,
+-- 
+2.21.0
 
