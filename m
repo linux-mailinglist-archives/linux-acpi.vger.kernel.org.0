@@ -2,104 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EB1B712ED
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jul 2019 09:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 160DD71742
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jul 2019 13:38:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732760AbfGWHc4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Jul 2019 03:32:56 -0400
-Received: from mga05.intel.com ([192.55.52.43]:11117 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732747AbfGWHc4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 23 Jul 2019 03:32:56 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Jul 2019 00:32:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,298,1559545200"; 
-   d="scan'208";a="188783936"
-Received: from jiajial1-mobl1.ccr.corp.intel.com ([10.255.30.115])
-  by fmsmga001.fm.intel.com with ESMTP; 23 Jul 2019 00:32:54 -0700
-Message-ID: <1563867173.2455.50.camel@intel.com>
-Subject: Re: [PATCH] int340X/processor_thermal_device: Fix
- proc_thermal_rapl_remove()
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Cc:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Date:   Tue, 23 Jul 2019 15:32:53 +0800
-In-Reply-To: <CAJZ5v0ik4b0LZ_WwscvZ_WibaN89DWCy-J1KZCJCCkh5TiGXAg@mail.gmail.com>
-References: <3270289.QqOHTbhTGK@kreacher>
-         <CAJZ5v0ik4b0LZ_WwscvZ_WibaN89DWCy-J1KZCJCCkh5TiGXAg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.18.5.2-0ubuntu3.2 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1728290AbfGWLif (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Jul 2019 07:38:35 -0400
+Received: from mail-wr1-f49.google.com ([209.85.221.49]:45693 "EHLO
+        mail-wr1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726575AbfGWLif (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Jul 2019 07:38:35 -0400
+Received: by mail-wr1-f49.google.com with SMTP id f9so42771997wre.12
+        for <linux-acpi@vger.kernel.org>; Tue, 23 Jul 2019 04:38:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=bo6Pg3X5Aw/dLqsvKdZ7JqMOS8iWBZzwB07NtyVy4Q0=;
+        b=O7xAVrLHIyYEthzgmcjgK5j5j31fac9bjPiyzx5RZUXCJDQFGQtIQJFYKX4vt6dx5G
+         /E8Jzm+vueyQ04KYueUmKchpG0Dodm3kWL1dBTVnRlg2q/FrByNFToeYT4jJE+YkfXK1
+         2yRAxm4nYWquZZ68xtxvK96r85x6Rb4HS1pmvi71EhcwpEimmb9/sS0/3VDbVG5HdXNk
+         QqxKH+MmN28vUqtthKaFhD7PMutpB0d1JeX/jWIFh727QMWyyD02JbESyCid7usEkjTF
+         dswdsyH3WIloYzfhXhdzlYGsWMBH62Psxn61G2Yxi2pNDlva2y3NG5BW7tmQmh9HlCyx
+         a6Qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=bo6Pg3X5Aw/dLqsvKdZ7JqMOS8iWBZzwB07NtyVy4Q0=;
+        b=NPECT+VcR172+QKXP2SSrqxHgkj36Khq0SaigqYkiWcZwZBJkJptVP1IFK4chlykPC
+         InqNfmslcnBuGO36yDgnoENDsnYgRX35BPRZldFWDrXy1l1amuJldykc6O0gkXcbvS8V
+         MO9qm1cGWJ9qDXE2D2wX+tzywXjvNgSvznyyj02Z63+4OpUEppL6oKTgSpfqTNuRUiN4
+         xfygKX5+AfrWgS8a8Rf32z8Fw5PgQMfOGyTB4UndBAs4N4SUQM0TDShkyZAgnqt53h3P
+         b6qkJoFr3hVkCa7IiApPn1NgI7My4Fzkb/wk8NMWxpdtwlLoaGG/OstGbHff2s1AqLAm
+         w7ug==
+X-Gm-Message-State: APjAAAXXlVUfTkD+sejkTQ+oxrmKif9b+WhL1mNmLDobXzy9f+VuuoSw
+        3I0DZH8lhslzsskyIHUOT2Y=
+X-Google-Smtp-Source: APXvYqzwYDp+yqQlfr5Z3TWx7sgLs/25YWtBRjREkB1J5c42O2hZctA7LYsYKDHGfrMmdIf7U1cRrg==
+X-Received: by 2002:a5d:680d:: with SMTP id w13mr82429489wru.141.1563881913309;
+        Tue, 23 Jul 2019 04:38:33 -0700 (PDT)
+Received: from [192.168.2.202] (pD9E5A8B2.dip0.t-ipconnect.de. [217.229.168.178])
+        by smtp.gmail.com with ESMTPSA id o7sm14922315wru.58.2019.07.23.04.38.32
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Tue, 23 Jul 2019 04:38:32 -0700 (PDT)
+Subject: Re: PROBLEM: Calling ObjectType on buffer field reports type integer
+To:     "Schmauss, Erik" <erik.schmauss@intel.com>,
+        "Moore, Robert" <robert.moore@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>
+Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>
+References: <3ef42aa1-196d-f3db-0e5d-2fd84c198242@gmail.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C592D47@ORSMSX122.amr.corp.intel.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C59405C@ORSMSX122.amr.corp.intel.com>
+ <fe4bcc1c-5c15-caa6-ce01-a5df962ff008@gmail.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C5942CA@ORSMSX122.amr.corp.intel.com>
+ <51e156ec-c2ed-84be-13c0-99a213e1d4b7@gmail.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C595C50@ORSMSX122.amr.corp.intel.com>
+ <88077d9c-b2b7-5fc6-37e9-fa12d6aebe73@gmail.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C614AA8@ORSMSX122.amr.corp.intel.com>
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+Message-ID: <5a6f7a66-035c-eab0-6cdf-e10411e30cef@gmail.com>
+Date:   Tue, 23 Jul 2019 13:38:31 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <CF6A88132359CE47947DB4C6E1709ED53C614AA8@ORSMSX122.amr.corp.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 二, 2019-07-23 at 09:30 +0200, Rafael J. Wysocki wrote:
-> On Mon, Jul 22, 2019 at 12:23 PM Rafael J. Wysocki <rjw@rjwysocki.net
-> > wrote:
-> > 
-> > 
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > 
-> > Passing 0 to cpuhp_remove_state() triggers the BUG_ON() in
-> > __cpuhp_remove_state_cpuslocked() and the argument passed to
-> > powercap_unregister_control_type() is expected to be a valid
-> > pointer, so avoid calling these functions with incorrect
-> > arguments from proc_thermal_rapl_remove().
-> > 
-> > Fixes: 555c45fe0d04 ("int340X/processor_thermal_device: add support
-> > for MMIO RAPL")
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Zhang Rui <rui.zhang@intel.com>
+On 7/23/19 1:01 AM, Schmauss, Erik wrote:
+> Sorry about the late response. This slipped through the cracks.
+> I've sent them an email just now and I'll keep you informed
 
-> Any comments?
-> 
-> If not, I'll queue this up along with the other RAPL-related fix
-> (https://patchwork.kernel.org/patch/11050999/).
-> 
-> > 
-> > ---
-> >  drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
-> > |    4 ++++
-> >  1 file changed, 4 insertions(+)
-> > 
-> > Index: linux-
-> > pm/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
-> > ===================================================================
-> > --- linux-
-> > pm.orig/drivers/thermal/intel/int340x_thermal/processor_thermal_dev
-> > ice.c
-> > +++ linux-
-> > pm/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
-> > @@ -487,6 +487,7 @@ static int proc_thermal_rapl_add(struct
-> >                                 rapl_mmio_cpu_online,
-> > rapl_mmio_cpu_down_prep);
-> >         if (ret < 0) {
-> >                 powercap_unregister_control_type(rapl_mmio_priv.con
-> > trol_type);
-> > +               rapl_mmio_priv.control_type = NULL;
-> >                 return ret;
-> >         }
-> >         rapl_mmio_priv.pcap_rapl_online = ret;
-> > @@ -496,6 +497,9 @@ static int proc_thermal_rapl_add(struct
-> > 
-> >  static void proc_thermal_rapl_remove(void)
-> >  {
-> > +       if (IS_ERR_OR_NULL(rapl_mmio_priv.control_type))
-> > +               return;
-> > +
-> >         cpuhp_remove_state(rapl_mmio_priv.pcap_rapl_online);
-> >         powercap_unregister_control_type(rapl_mmio_priv.control_typ
-> > e);
-> >  }
-> > 
-> > 
-> > 
+No worries. Thank you.
+
+Maximilian
