@@ -2,142 +2,229 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB7EC731E2
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jul 2019 16:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70D72732D7
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jul 2019 17:35:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727337AbfGXOkA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Jul 2019 10:40:00 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:33507 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726593AbfGXOkA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Jul 2019 10:40:00 -0400
-Received: by mail-qk1-f193.google.com with SMTP id r6so33950538qkc.0
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Jul 2019 07:39:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lca.pw; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=U2Vjt/ngoWwRTHJ/HnXQ3A5kSE9G176ORXuJs7Iic5c=;
-        b=c/JyPMzwHZygBTC3mWa6rTYaWyQuO3bxyVlM+XuwF+yUAYgtIFu0TMUvtqVhCP3dnM
-         EP2Kp3JAC2nBUlzAmzRYQFtKsqYcAkyfMhn+Kmcdu0QWBxHblRMwWoBWuNoSEXt720Q2
-         ZFmL4IuyWEHYnVkPYFkmLm/bDYGV820xfI3Cuw+Eont5+V7HAJx1lTNibQsdrHAH2AtB
-         sLQGF71NqzVdqOqNx0BGh4eIMC4o2D82asu2ne9nvIcgOVY/v7NwaPe7lqwQwKgjPouC
-         CAvDDyWt+2axBFYQTNtGswDLH3LiXn0xVL4LfevY0DWbUqbcV3FChH7+M0gPEfdo2YfJ
-         MMlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=U2Vjt/ngoWwRTHJ/HnXQ3A5kSE9G176ORXuJs7Iic5c=;
-        b=NlKR+RwyE7DJ4oUCBqewo7nboEjH9uhJrCO0hzvVdqDrGNiYQtGVs5Z8NOGGsZhfuw
-         ydY6ULAmwSx28zLOOkPpoA4FQ3aK2UrVFxLnOfCbfV8ogm2hBU77Zuw/FPHtTw9DKjuy
-         LOgHv1MRLMtrxM7EmTeCzYio3AQGHLdPZWK2Czqp7kO5bAl/dNAfelxdy3J3tQ/kSlJt
-         ekrBIh6cG1AYAt8ivLtulq0cpouR+iEY+ZtdAvWcdsMmP8f8Fyq5fcd7bRJuMTCtk0b7
-         ea62L7XyxRzIuRMu8nMTzRO2I772wEw1Fc7WVWiirko5A6BTPP30JPzmV6awZyqtYOpt
-         gDIA==
-X-Gm-Message-State: APjAAAUYWD2/1m0yHMFj5yMAromIOvApnr2Y4prVFZA/vmApd+Pm/66c
-        eKZWeDkFy6hUYlxfHOKfTU6tww==
-X-Google-Smtp-Source: APXvYqwf4BmGuxpej+hiJipFUX2lSUMntbGtB+6M1IebjkBK9UhvMa2Di7AUYtTWOVvfSZSTGvy5DA==
-X-Received: by 2002:a37:dc1:: with SMTP id 184mr54711685qkn.10.1563979199355;
-        Wed, 24 Jul 2019 07:39:59 -0700 (PDT)
-Received: from dhcp-41-57.bos.redhat.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
-        by smtp.gmail.com with ESMTPSA id l6sm19603999qkc.89.2019.07.24.07.39.58
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 24 Jul 2019 07:39:58 -0700 (PDT)
-Message-ID: <1563979197.11067.11.camel@lca.pw>
-Subject: Re: [PATCH] acpica: fix -Wnull-pointer-arithmetic warnings
-From:   Qian Cai <cai@lca.pw>
-To:     "Moore, Robert" <robert.moore@intel.com>,
-        Nick Desaulniers <ndesaulniers@google.com>
-Cc:     "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        "Schmauss, Erik" <erik.schmauss@intel.com>,
-        "jkim@freebsd.org" <jkim@freebsd.org>, Len Brown <lenb@kernel.org>,
+        id S1727686AbfGXPfZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Jul 2019 11:35:25 -0400
+Received: from mga12.intel.com ([192.55.52.136]:24911 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726591AbfGXPfZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 24 Jul 2019 11:35:25 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Jul 2019 08:35:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,303,1559545200"; 
+   d="scan'208";a="345136302"
+Received: from unknown (HELO localhost.localdomain) ([10.232.112.69])
+  by orsmga005.jf.intel.com with ESMTP; 24 Jul 2019 08:35:23 -0700
+Date:   Wed, 24 Jul 2019 09:32:28 -0600
+From:   Keith Busch <kbusch@kernel.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     "Busch, Keith" <keith.busch@intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Date:   Wed, 24 Jul 2019 10:39:57 -0400
-In-Reply-To: <94F2FBAB4432B54E8AACC7DFDE6C92E3B96618DB@ORSMSX110.amr.corp.intel.com>
-References: <20190717033807.1207-1-cai@lca.pw>
-         <CAKwvOdmPX2DsUawcA0SzaFacjz==ACcfD8yDsbaS4eP4Es=Wzw@mail.gmail.com>
-         <73A4565B-837B-4E13-8B72-63F69BF408E7@lca.pw>
-         <94F2FBAB4432B54E8AACC7DFDE6C92E3B9661869@ORSMSX110.amr.corp.intel.com>
-         <1563975605.11067.8.camel@lca.pw>
-         <94F2FBAB4432B54E8AACC7DFDE6C92E3B96618DB@ORSMSX110.amr.corp.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6 (3.22.6-10.el7) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Rafael Wysocki <rafael@kernel.org>,
+        "Williams, Dan J" <dan.j.williams@intel.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        Brice Goglin <Brice.Goglin@inria.fr>
+Subject: Re: [PATCHv2 1/2] hmat: Register memory-side cache after parsing
+Message-ID: <20190724153228.GB5379@localhost.localdomain>
+References: <20190515215444.22256-1-keith.busch@intel.com>
+ <2816033.6i9P6v0dDn@kreacher>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2816033.6i9P6v0dDn@kreacher>
+User-Agent: Mutt/1.9.1 (2017-09-22)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 2019-07-24 at 14:17 +0000, Moore, Robert wrote:
-> 
-> -----Original Message-----
-> From: Qian Cai [mailto:cai@lca.pw] 
-> Sent: Wednesday, July 24, 2019 6:40 AM
-> To: Moore, Robert <robert.moore@intel.com>; Nick Desaulniers <ndesaulniers@goo
-> gle.com>
-> Cc: Wysocki, Rafael J <rafael.j.wysocki@intel.com>; Schmauss, Erik <erik.schma
-> uss@intel.com>; jkim@freebsd.org; Len Brown <lenb@kernel.org>; linux-acpi@vger
-> .kernel.org; devel@acpica.org; clang-built-linux <clang-built-linux@googlegrou
-> ps.com>; LKML <linux-kernel@vger.kernel.org>
-> Subject: Re: [PATCH] acpica: fix -Wnull-pointer-arithmetic warnings
-> 
-> On Tue, 2019-07-23 at 20:49 +0000, Moore, Robert wrote:
-> > > > Signed-off-by: Qian Cai <cai@lca.pw>
-> > > > ---
-> > > > include/acpi/actypes.h | 4 ++--
-> > > > 1 file changed, 2 insertions(+), 2 deletions(-)
-> > > > 
-> > > > diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h index
-> > > > ad6892a24015..25b4a32da177 100644
-> > > > --- a/include/acpi/actypes.h
-> > > > +++ b/include/acpi/actypes.h
-> > > > @@ -500,13 +500,13 @@ typedef u64 acpi_integer;
-> > > > 
-> > > > #define ACPI_CAST_PTR(t, p)             ((t *) (acpi_uintptr_t) 
-> > > > (p)) #define ACPI_CAST_INDIRECT_PTR(t, p)    ((t **) 
-> > > > (acpi_uintptr_t) (p)) -#define ACPI_ADD_PTR(t, a, b)           
-> > > > ACPI_CAST_PTR (t, (ACPI_CAST_PTR (u8, (a)) + (acpi_size)(b)))
-> > > > +#define ACPI_ADD_PTR(t, a, b)           ACPI_CAST_PTR (t, (a) +
-> > > > (acpi_size)(b))
+On Thu, Jun 13, 2019 at 01:27:05PM -0700, Rafael J. Wysocki wrote:
+> On Wednesday, May 15, 2019 11:54:43 PM CEST Keith Busch wrote:
+> > Instead of registering the hmat cache attributes in line with parsing
+> > the table, save the attributes in the memory target and register them
+> > after parsing completes. This will make it easier to register the
+> > attributes later when hot add is supported.
 > > 
-> > We have some questions concerning this change. If (a) is not cast to a 
-> > u8, the addition will be in whatever units are appropriate for (a) 
-> > i.e., the type of (a). However, we want ACPI_ADD_PTR (And 
-> > ACPI_SUB_PTR) to simply perform a byte addition or subtraction - thus 
-> > the cast to u8. I believe that is the original thinking behind the macros.
+> > Signed-off-by: Keith Busch <keith.busch@intel.com>
+> > ---
+> > v1 -> v2:
+> > 
+> >   Fixed multi-level caches, and no caches. v1 incorrectly assumed only a level
+> >   1 always existed (Brice).
+> > 
+> >  drivers/acpi/hmat/hmat.c | 70 +++++++++++++++++++++++++++++++++++++-----------
+> >  1 file changed, 55 insertions(+), 15 deletions(-)
+> > 
+> > diff --git a/drivers/acpi/hmat/hmat.c b/drivers/acpi/hmat/hmat.c
+> > index 96b7d39a97c6..bf23c9a27958 100644
+> > --- a/drivers/acpi/hmat/hmat.c
+> > +++ b/drivers/acpi/hmat/hmat.c
+> > @@ -36,11 +36,17 @@ enum locality_types {
+> >  
+> >  static struct memory_locality *localities_types[4];
+> >  
+> > +struct target_cache {
+> > +	struct list_head node;
+> > +	struct node_cache_attrs cache_attrs;
+> > +};
+> > +
+> >  struct memory_target {
+> >  	struct list_head node;
+> >  	unsigned int memory_pxm;
+> >  	unsigned int processor_pxm;
+> >  	struct node_hmem_attrs hmem_attrs;
+> > +	struct list_head caches;
+> >  };
+> >  
+> >  struct memory_initiator {
+> > @@ -110,6 +116,7 @@ static __init void alloc_memory_target(unsigned int mem_pxm)
+> >  	target->memory_pxm = mem_pxm;
+> >  	target->processor_pxm = PXM_INVAL;
+> >  	list_add_tail(&target->node, &targets);
+> > +	INIT_LIST_HEAD(&target->caches);
+> >  }
+> >  
+> >  static __init const char *hmat_data_type(u8 type)
+> > @@ -314,7 +321,8 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
+> >  				   const unsigned long end)
+> >  {
+> >  	struct acpi_hmat_cache *cache = (void *)header;
+> > -	struct node_cache_attrs cache_attrs;
+> > +	struct memory_target *target;
+> > +	struct target_cache *tcache;
+> >  	u32 attrs;
+> >  
+> >  	if (cache->header.length < sizeof(*cache)) {
+> > @@ -328,37 +336,47 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
+> >  		cache->memory_PD, cache->cache_size, attrs,
+> >  		cache->number_of_SMBIOShandles);
+> >  
+> > -	cache_attrs.size = cache->cache_size;
+> > -	cache_attrs.level = (attrs & ACPI_HMAT_CACHE_LEVEL) >> 4;
+> > -	cache_attrs.line_size = (attrs & ACPI_HMAT_CACHE_LINE_SIZE) >> 16;
+> > +	target = find_mem_target(cache->memory_PD);
+> > +	if (!target)
+> > +		return 0;
+> > +
+> > +	tcache = kzalloc(sizeof(*tcache), GFP_KERNEL);
+> > +	if (!tcache) {
+> > +		pr_notice_once("Failed to allocate HMAT cache info\n");
+> > +		return 0;
+> > +	}
+> > +
+> > +	tcache->cache_attrs.size = cache->cache_size;
+> > +	tcache->cache_attrs.level = (attrs & ACPI_HMAT_CACHE_LEVEL) >> 4;
+> > +	tcache->cache_attrs.line_size = (attrs & ACPI_HMAT_CACHE_LINE_SIZE) >> 16;
+> >  
+> >  	switch ((attrs & ACPI_HMAT_CACHE_ASSOCIATIVITY) >> 8) {
+> >  	case ACPI_HMAT_CA_DIRECT_MAPPED:
+> > -		cache_attrs.indexing = NODE_CACHE_DIRECT_MAP;
+> > +		tcache->cache_attrs.indexing = NODE_CACHE_DIRECT_MAP;
+> >  		break;
+> >  	case ACPI_HMAT_CA_COMPLEX_CACHE_INDEXING:
+> > -		cache_attrs.indexing = NODE_CACHE_INDEXED;
+> > +		tcache->cache_attrs.indexing = NODE_CACHE_INDEXED;
+> >  		break;
+> >  	case ACPI_HMAT_CA_NONE:
+> >  	default:
+> > -		cache_attrs.indexing = NODE_CACHE_OTHER;
+> > +		tcache->cache_attrs.indexing = NODE_CACHE_OTHER;
+> >  		break;
+> >  	}
+> >  
+> >  	switch ((attrs & ACPI_HMAT_WRITE_POLICY) >> 12) {
+> >  	case ACPI_HMAT_CP_WB:
+> > -		cache_attrs.write_policy = NODE_CACHE_WRITE_BACK;
+> > +		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_BACK;
+> >  		break;
+> >  	case ACPI_HMAT_CP_WT:
+> > -		cache_attrs.write_policy = NODE_CACHE_WRITE_THROUGH;
+> > +		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_THROUGH;
+> >  		break;
+> >  	case ACPI_HMAT_CP_NONE:
+> >  	default:
+> > -		cache_attrs.write_policy = NODE_CACHE_WRITE_OTHER;
+> > +		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_OTHER;
+> >  		break;
+> >  	}
+> > +	list_add_tail(&tcache->node, &target->caches);
+> >  
+> > -	node_add_cache(pxm_to_node(cache->memory_PD), &cache_attrs);
+> >  	return 0;
+> >  }
+> >  
+> > @@ -577,20 +595,37 @@ static __init void hmat_register_target_initiators(struct memory_target *target)
+> >  	}
+> >  }
+> >  
+> > +static __init void hmat_register_target_cache(struct memory_target *target)
+> > +{
+> > +	unsigned mem_nid = pxm_to_node(target->memory_pxm);
+> > +	struct target_cache *tcache;
+> > +
+> > +	list_for_each_entry(tcache, &target->caches, node)
+> > +		node_add_cache(mem_nid, &tcache->cache_attrs);
+> > +}
+> > +
+> >  static __init void hmat_register_target_perf(struct memory_target *target)
+> >  {
+> >  	unsigned mem_nid = pxm_to_node(target->memory_pxm);
+> >  	node_set_perf_attrs(mem_nid, &target->hmem_attrs, 0);
+> >  }
+> >  
+> > +static __init void hmat_register_target(struct memory_target *target)
+> > +{
+> > +	if (!node_online(pxm_to_node(target->memory_pxm)))
+> > +		return;
+> > +
+> > +	hmat_register_target_initiators(target);
+> > +	hmat_register_target_cache(target);
+> > +	hmat_register_target_perf(target);
+> > +}
+> > +
+> >  static __init void hmat_register_targets(void)
+> >  {
+> >  	struct memory_target *target;
+> >  
+> > -	list_for_each_entry(target, &targets, node) {
+> > -		hmat_register_target_initiators(target);
+> > -		hmat_register_target_perf(target);
+> > -	}
+> > +	list_for_each_entry(target, &targets, node)
+> > +		hmat_register_target(target);
+> >  }
+> >  
+> >  static __init void hmat_free_structures(void)
+> > @@ -598,8 +633,13 @@ static __init void hmat_free_structures(void)
+> >  	struct memory_target *target, *tnext;
+> >  	struct memory_locality *loc, *lnext;
+> >  	struct memory_initiator *initiator, *inext;
+> > +	struct target_cache *tcache, *cnext;
+> >  
+> >  	list_for_each_entry_safe(target, tnext, &targets, node) {
+> > +		list_for_each_entry_safe(tcache, cnext, &target->caches, node) {
+> > +			list_del(&tcache->node);
+> > +			kfree(tcache);
+> > +		}
+> >  		list_del(&target->node);
+> >  		kfree(target);
+> >  	}
+> > 
 > 
-> I posted a v2 a while ago, and should clear this concern.
+> Not sure what to do with this patch and the next one in the series.
 > 
-> OK then this change only affects ACPI_TO_POINTER?
+> FWIW, they both are fine by me.
 > 
-> +#define ACPI_TO_POINTER(i)              ACPI_CAST_PTR (void, i)
+> Also ISTR seeing them in a series from Dan. (?)
 
-Yes.
-
-> 
-> 
-> > 
-> > > > #define ACPI_SUB_PTR(t, a, b)           ACPI_CAST_PTR (t, 
-> > > > (ACPI_CAST_PTR (u8, (a)) - (acpi_size)(b))) #define 
-> > > > ACPI_PTR_DIFF(a, b)             ((acpi_size) (ACPI_CAST_PTR (u8,
-> > > > (a)) - ACPI_CAST_PTR (u8, (b))))
-> > > > 
-> > > > /* Pointer/Integer type conversions */
-> > > > 
-> > > > -#define ACPI_TO_POINTER(i)              ACPI_ADD_PTR (void, (void 
-> > > > *) 0,
-> > > > (acpi_size) (i))
-> > > > +#define ACPI_TO_POINTER(i)              ACPI_ADD_PTR (void, 0,
-> > > > (acpi_size) (i))
-> > > 
-> > > IIUC, these are adding `i` to NULL (or (void*)0)? X + 0 == X ?
-> > > --
-> > > Thanks,
-> > > ~Nick Desaulniers
-> > 
-> > 
+I see Dan provided a series for EFI specific purpose support, but I
+didn't find anything else touching this part of the code. FWIW, Dan's
+EFI series looks goot to me, and I can rebase the hot-add support this
+series provides on top of that.
