@@ -2,96 +2,158 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A65917504F
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jul 2019 15:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 907C275075
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jul 2019 16:00:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726894AbfGYN5t (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Jul 2019 09:57:49 -0400
-Received: from mx2.suse.de ([195.135.220.15]:39800 "EHLO mx1.suse.de"
+        id S2390987AbfGYN7n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Jul 2019 09:59:43 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2727 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727498AbfGYN5t (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 25 Jul 2019 09:57:49 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id A79ACAFCE;
-        Thu, 25 Jul 2019 13:57:47 +0000 (UTC)
-Date:   Thu, 25 Jul 2019 15:57:47 +0200
-From:   Michal Hocko <mhocko@kernel.org>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Oscar Salvador <osalvador@suse.de>
-Subject: Re: [PATCH v1] ACPI / scan: Acquire device_hotplug_lock in
- acpi_scan_init()
-Message-ID: <20190725135747.GB3582@dhcp22.suse.cz>
-References: <20190724143017.12841-1-david@redhat.com>
- <20190725125636.GA3582@dhcp22.suse.cz>
- <6dc566c2-faf6-565d-4ef1-2ac3a366bc76@redhat.com>
+        id S2391013AbfGYN7m (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 25 Jul 2019 09:59:42 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id EE0BFC6FEE3286AEA0B4;
+        Thu, 25 Jul 2019 21:59:32 +0800 (CST)
+Received: from [127.0.0.1] (10.74.184.86) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Thu, 25 Jul 2019
+ 21:59:32 +0800
+Subject: Re: [PATCH 1/1] efi: cper: print AER info of PCIe fatal error
+To:     James Morse <james.morse@arm.com>
+References: <1562898017-27166-1-git-send-email-tanxiaofei@huawei.com>
+ <e596aec8-1239-0a46-39cf-e682fada9945@arm.com>
+CC:     <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, <rjw@rjwysocki.net>,
+        <lenb@kernel.org>, <tony.luck@intel.com>, <bp@alien8.de>,
+        <ying.huang@intel.com>, <ross.lagerwall@citrix.com>,
+        <ard.biesheuvel@linaro.org>, <lance.ortiz@hp.com>
+From:   tanxiaofei <tanxiaofei@huawei.com>
+Message-ID: <5D39B5C1.6040707@huawei.com>
+Date:   Thu, 25 Jul 2019 21:59:29 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6dc566c2-faf6-565d-4ef1-2ac3a366bc76@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <e596aec8-1239-0a46-39cf-e682fada9945@arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.74.184.86]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu 25-07-19 15:05:02, David Hildenbrand wrote:
-> On 25.07.19 14:56, Michal Hocko wrote:
-> > On Wed 24-07-19 16:30:17, David Hildenbrand wrote:
-> >> We end up calling __add_memory() without the device hotplug lock held.
-> >> (I used a local patch to assert in __add_memory() that the
-> >>  device_hotplug_lock is held - I might upstream that as well soon)
-> >>
-> >> [   26.771684]        create_memory_block_devices+0xa4/0x140
-> >> [   26.772952]        add_memory_resource+0xde/0x200
-> >> [   26.773987]        __add_memory+0x6e/0xa0
-> >> [   26.775161]        acpi_memory_device_add+0x149/0x2b0
-> >> [   26.776263]        acpi_bus_attach+0xf1/0x1f0
-> >> [   26.777247]        acpi_bus_attach+0x66/0x1f0
-> >> [   26.778268]        acpi_bus_attach+0x66/0x1f0
-> >> [   26.779073]        acpi_bus_attach+0x66/0x1f0
-> >> [   26.780143]        acpi_bus_scan+0x3e/0x90
-> >> [   26.780844]        acpi_scan_init+0x109/0x257
-> >> [   26.781638]        acpi_init+0x2ab/0x30d
-> >> [   26.782248]        do_one_initcall+0x58/0x2cf
-> >> [   26.783181]        kernel_init_freeable+0x1bd/0x247
-> >> [   26.784345]        kernel_init+0x5/0xf1
-> >> [   26.785314]        ret_from_fork+0x3a/0x50
-> >>
-> >> So perform the locking just like in acpi_device_hotplug().
-> > 
-> > While playing with the device_hotplug_lock, can we actually document
-> > what it is protecting please? I have a bad feeling that we are adding
-> > this lock just because some other code path does rather than with a good
-> > idea why it is needed. This patch just confirms that. What exactly does
-> > the lock protect from here in an early boot stage.
-> 
-> We have plenty of documentation already
-> 
-> mm/memory_hotplug.c
-> 
-> git grep -C5 device_hotplug mm/memory_hotplug.c
-> 
-> Also see
-> 
-> Documentation/core-api/memory-hotplug.rst
+Hi James,
+Thanks for the review.
 
-OK, fair enough. I was more pointing to a documentation right there
-where the lock is declared because that is the place where people
-usually check for documentation. The core-api documentation looks quite
-nice. And based on that doc it seems that this patch is actually not
-needed because neither the online/offline or cpu hotplug should be
-possible that early unless I am missing something.
+On 2019/7/25 20:44, James Morse wrote:
+> Hi,
+> 
+> On 12/07/2019 03:20, Xiaofei Tan wrote:
+>> AER info of PCIe fatal error is not printed in the current driver.
+>> Because APEI driver will panic directly for fatal error, and can't
+>> run to the place of printing AER info.
+>>
+>> An example log is as following:
+>> [ 3157.655028] {763}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 11
+>> [ 3157.663610] {763}[Hardware Error]: event severity: fatal
+>> [ 3157.663612] {763}[Hardware Error]:  Error 0, type: fatal
+>> [ 3157.663614] {763}[Hardware Error]:   section_type: PCIe error
+>> [ 3157.680328] {763}[Hardware Error]:   port_type: 0, PCIe end point
+>> [ 3157.680329] {763}[Hardware Error]:   version: 4.0
+>> [ 3157.680332] {763}[Hardware Error]:   command: 0x0000, status: 0x0010
+>> [ 3157.698757] {763}[Hardware Error]:   device_id: 0000:82:00.0
+>> [ 3157.698758] {763}[Hardware Error]:   slot: 0
+>> [ 3157.698759] {763}[Hardware Error]:   secondary_bus: 0x00
+>> [ 3157.698760] {763}[Hardware Error]:   vendor_id: 0x8086, device_id: 0x10fb
+>> [ 3157.698761] {763}[Hardware Error]:   class_code: 000002
+>> [ 3157.698825] Kernel panic - not syncing: Fatal hardware error!
+>>
+>> This issue was imported by the patch, '37448adfc7ce ("aerdrv: Move
+>> cper_print_aer() call out of interrupt context")'. To fix this issue,
+>> this patch adds print of AER info in cper_print_pcie() for fatal error.
+>>
+>> Here is the example log after this patch applied:
+>> [ 7032.893566] {24}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 10
+>> [ 7032.901965] {24}[Hardware Error]: event severity: fatal
+>> [ 7032.907166] {24}[Hardware Error]:  Error 0, type: fatal
+>> [ 7032.912366] {24}[Hardware Error]:   section_type: PCIe error
+>> [ 7032.917998] {24}[Hardware Error]:   port_type: 0, PCIe end point
+>> [ 7032.923974] {24}[Hardware Error]:   version: 4.0
+>> [ 7032.928569] {24}[Hardware Error]:   command: 0x0546, status: 0x4010
+>> [ 7032.934806] {24}[Hardware Error]:   device_id: 0000:01:00.0
+>> [ 7032.940352] {24}[Hardware Error]:   slot: 0
+>> [ 7032.944514] {24}[Hardware Error]:   secondary_bus: 0x00
+>> [ 7032.949714] {24}[Hardware Error]:   vendor_id: 0x15b3, device_id: 0x1019
+>> [ 7032.956381] {24}[Hardware Error]:   class_code: 000002
+>> [ 7032.961495] {24}[Hardware Error]:   aer_uncor_status: 0x00040000, aer_uncor_mask: 0x00000000
+>> [ 7032.969891] {24}[Hardware Error]:   aer_uncor_severity: 0x00062010
+>> [ 7032.976042] {24}[Hardware Error]:   TLP Header: 000000c0 01010000 00000001 00000000
+>> [ 7032.983663] Kernel panic - not syncing: Fatal hardware error!
+> 
+>> Fixes: 37448adfc7ce ("aerdrv: Move cper_print_aer() call out of
+>> interrupt context")
+> 
+> (Please put this all on one line)
+> 
 
-> Regarding the early stage: primarily lockdep as I mentioned.
+OK.
 
-Could you add a lockdep splat that would be fixed by this patch to the
-changelog for reference?
+>> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+>> index 8fa977c..bf8600d 100644
+>> --- a/drivers/firmware/efi/cper.c
+>> +++ b/drivers/firmware/efi/cper.c
+>> @@ -390,6 +390,19 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
+>>  		printk(
+>>  	"%s""bridge: secondary_status: 0x%04x, control: 0x%04x\n",
+>>  	pfx, pcie->bridge.secondary_status, pcie->bridge.control);
+> 
+> It may be worth a comment explaining why we only do this for fatal errors. Something like:
+> | /* Fatal errors call __ghes_panic() before the AER handler gets to print this */
+> 
+
+OK. I will add this comment.
+
+> 
+>> +	if (pcie->validation_bits & CPER_PCIE_VALID_AER_INFO &&
+>> +	    gdata->error_severity & CPER_SEV_FATAL) {
+>> +		struct aer_capability_regs *aer;
+>> +
+>> +		aer = (struct aer_capability_regs *)pcie->aer_info;
+>> +		printk("%saer_uncor_status: 0x%08x, aer_uncor_mask: 0x%08x\n",
+> 
+> The convention in the rest of the file is for the prefix format string to be separate. i.e:
+> | "%s""aer_uncor_status: ..."
+> 
+> Could it be the same for consistency?
+>
+
+That way is not accepted by checkpatch.pl anymore, and was not used in some new commit.
+Such as :
+printk("%ssection_type: ARM processor error\n", newpfx);
+and
+printk("%ssection_type: IA32/X64 processor error\n", newpfx);
+
+>> +		       pfx, aer->uncor_status, aer->uncor_mask);
+>> +		printk("%saer_uncor_severity: 0x%08x\n",
+>> +		       pfx, aer->uncor_severity);
+>> +		printk("%sTLP Header: %08x %08x %08x %08x\n", pfx,
+>> +		       aer->header_log.dw0, aer->header_log.dw1,
+>> +		       aer->header_log.dw2, aer->header_log.dw3);
+>> +	}
+>>  }
+> 
+> Regardless,
+> Reviewed-by; James Morse <james.morse@arm.com>
+> 
+> 
+> Thanks,
+> 
+> James
+> 
+> .
+> 
 
 -- 
-Michal Hocko
-SUSE Labs
+ thanks
+tanxiaofei
+
