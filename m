@@ -2,39 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6E247499C
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jul 2019 11:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADC17749AE
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jul 2019 11:18:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390246AbfGYJLI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Jul 2019 05:11:08 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:62047 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389193AbfGYJLI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Jul 2019 05:11:08 -0400
-Received: from 79.184.253.188.ipv4.supernova.orange.pl (79.184.253.188) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
- id 487a086af6bce042; Thu, 25 Jul 2019 11:11:05 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+        id S2390329AbfGYJS6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Jul 2019 05:18:58 -0400
+Received: from mx2.suse.de ([195.135.220.15]:46850 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2390290AbfGYJS6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 25 Jul 2019 05:18:58 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id D7FBBADC4;
+        Thu, 25 Jul 2019 09:18:56 +0000 (UTC)
+Date:   Thu, 25 Jul 2019 11:18:54 +0200
+From:   Oscar Salvador <osalvador@suse.de>
 To:     David Hildenbrand <david@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Oscar Salvador <osalvador@suse.de>,
         Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v1] ACPI / scan: Acquire device_hotplug_lock in acpi_scan_init()
-Date:   Thu, 25 Jul 2019 11:11:05 +0200
-Message-ID: <2247325.5bJu2Pzk7V@kreacher>
-In-Reply-To: <20190724143017.12841-1-david@redhat.com>
+Subject: Re: [PATCH v1] ACPI / scan: Acquire device_hotplug_lock in
+ acpi_scan_init()
+Message-ID: <20190725091625.GA15848@linux>
 References: <20190724143017.12841-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190724143017.12841-1-david@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wednesday, July 24, 2019 4:30:17 PM CEST David Hildenbrand wrote:
+On Wed, Jul 24, 2019 at 04:30:17PM +0200, David Hildenbrand wrote:
 > We end up calling __add_memory() without the device hotplug lock held.
 > (I used a local patch to assert in __add_memory() that the
 >  device_hotplug_lock is held - I might upstream that as well soon)
@@ -64,7 +67,12 @@ On Wednesday, July 24, 2019 4:30:17 PM CEST David Hildenbrand wrote:
 > Cc: Michal Hocko <mhocko@suse.com>
 > Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Given that that call comes from a __init function, so while booting, I wonder
+how bad it is.
+Anyway, let us be consistent:
+
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+
 
 > ---
 >  drivers/acpi/scan.c | 3 +++
@@ -92,8 +100,10 @@ Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 >  	return result;
 >  }
 >  
+> -- 
+> 2.21.0
 > 
 
-
-
-
+-- 
+Oscar Salvador
+SUSE L3
