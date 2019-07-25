@@ -2,97 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA301749D3
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jul 2019 11:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED3BB74E63
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jul 2019 14:44:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389491AbfGYJ0l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Jul 2019 05:26:41 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:32923 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388704AbfGYJ0k (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Jul 2019 05:26:40 -0400
-Received: by mail-oi1-f194.google.com with SMTP id u15so37216431oiv.0;
-        Thu, 25 Jul 2019 02:26:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=w38Ou4OJOlMG5lDoxJ8ldT1Y+XC1NV6l4c49/2DKWfI=;
-        b=aPjTa6lZ3dPRvLfbSX7weGuh1z1fvuG/Bc++iPDQ9yMAdpzJRUuzeMVpef52Dywzsj
-         nwGWBviRQecrmVql63lNNaNOUtfAyVl/PG+UOAyB5oy7tJ2djRGxK8nWKEk4ygLlMyKL
-         mbor11aYv+n70rwETMehWtnyY7v8gx78Uwxr3NNg4ShqEa9Woxabw8Ku+Q57vXc6MHOA
-         HuGEPLjDSv/yF1AG766/JjHNDMc+cQh/ciC+ezGmG/BjIavWK72FkN+SCy9yYBJBdz9Q
-         qcF10j4lzjZmNcH0PhN/lU52JXrP18H84tsD7l1HJgryRZjz1AT9AkeDhZUOrMuBvgYw
-         4htg==
-X-Gm-Message-State: APjAAAVERIgtPHV/tnciieUTdfzA4Hnh5N41DunGGz9oHnWAglUDmQlT
-        dg1+S0OXeInxBCIr8eFVSSIeT9uN8dlKBwDfzR3+QQOL
-X-Google-Smtp-Source: APXvYqydXzzzbK+sslefknnxfPouRbypTTltL5e7dCGlIuW+utt4we8xB7FdEFttPQhKU/MffPLNOP7QQ6ufX5hD2Fc=
-X-Received: by 2002:aca:cdd3:: with SMTP id d202mr38571220oig.115.1564046799855;
- Thu, 25 Jul 2019 02:26:39 -0700 (PDT)
+        id S2388884AbfGYMoP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Jul 2019 08:44:15 -0400
+Received: from foss.arm.com ([217.140.110.172]:56502 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387824AbfGYMoP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 25 Jul 2019 08:44:15 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7ACC728;
+        Thu, 25 Jul 2019 05:44:14 -0700 (PDT)
+Received: from [10.1.196.105] (eglon.cambridge.arm.com [10.1.196.105])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BAE2E3F71F;
+        Thu, 25 Jul 2019 05:44:12 -0700 (PDT)
+Subject: Re: [PATCH 1/1] efi: cper: print AER info of PCIe fatal error
+To:     Xiaofei Tan <tanxiaofei@huawei.com>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-efi@vger.kernel.org, rjw@rjwysocki.net, lenb@kernel.org,
+        tony.luck@intel.com, bp@alien8.de, ying.huang@intel.com,
+        ross.lagerwall@citrix.com, ard.biesheuvel@linaro.org,
+        lance.ortiz@hp.com
+References: <1562898017-27166-1-git-send-email-tanxiaofei@huawei.com>
+From:   James Morse <james.morse@arm.com>
+Message-ID: <e596aec8-1239-0a46-39cf-e682fada9945@arm.com>
+Date:   Thu, 25 Jul 2019 13:44:10 +0100
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 25 Jul 2019 11:26:29 +0200
-Message-ID: <CAJZ5v0h5ZR9EhER_J1Qn9PJL-OAWbFvUb1rjTJkBg22p+Db6Kg@mail.gmail.com>
-Subject: [GIT PULL] Power management fixes for v5.3-rc2
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1562898017-27166-1-git-send-email-tanxiaofei@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+Hi,
 
-Please pull from the tag
+On 12/07/2019 03:20, Xiaofei Tan wrote:
+> AER info of PCIe fatal error is not printed in the current driver.
+> Because APEI driver will panic directly for fatal error, and can't
+> run to the place of printing AER info.
+> 
+> An example log is as following:
+> [ 3157.655028] {763}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 11
+> [ 3157.663610] {763}[Hardware Error]: event severity: fatal
+> [ 3157.663612] {763}[Hardware Error]:  Error 0, type: fatal
+> [ 3157.663614] {763}[Hardware Error]:   section_type: PCIe error
+> [ 3157.680328] {763}[Hardware Error]:   port_type: 0, PCIe end point
+> [ 3157.680329] {763}[Hardware Error]:   version: 4.0
+> [ 3157.680332] {763}[Hardware Error]:   command: 0x0000, status: 0x0010
+> [ 3157.698757] {763}[Hardware Error]:   device_id: 0000:82:00.0
+> [ 3157.698758] {763}[Hardware Error]:   slot: 0
+> [ 3157.698759] {763}[Hardware Error]:   secondary_bus: 0x00
+> [ 3157.698760] {763}[Hardware Error]:   vendor_id: 0x8086, device_id: 0x10fb
+> [ 3157.698761] {763}[Hardware Error]:   class_code: 000002
+> [ 3157.698825] Kernel panic - not syncing: Fatal hardware error!
+> 
+> This issue was imported by the patch, '37448adfc7ce ("aerdrv: Move
+> cper_print_aer() call out of interrupt context")'. To fix this issue,
+> this patch adds print of AER info in cper_print_pcie() for fatal error.
+> 
+> Here is the example log after this patch applied:
+> [ 7032.893566] {24}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 10
+> [ 7032.901965] {24}[Hardware Error]: event severity: fatal
+> [ 7032.907166] {24}[Hardware Error]:  Error 0, type: fatal
+> [ 7032.912366] {24}[Hardware Error]:   section_type: PCIe error
+> [ 7032.917998] {24}[Hardware Error]:   port_type: 0, PCIe end point
+> [ 7032.923974] {24}[Hardware Error]:   version: 4.0
+> [ 7032.928569] {24}[Hardware Error]:   command: 0x0546, status: 0x4010
+> [ 7032.934806] {24}[Hardware Error]:   device_id: 0000:01:00.0
+> [ 7032.940352] {24}[Hardware Error]:   slot: 0
+> [ 7032.944514] {24}[Hardware Error]:   secondary_bus: 0x00
+> [ 7032.949714] {24}[Hardware Error]:   vendor_id: 0x15b3, device_id: 0x1019
+> [ 7032.956381] {24}[Hardware Error]:   class_code: 000002
+> [ 7032.961495] {24}[Hardware Error]:   aer_uncor_status: 0x00040000, aer_uncor_mask: 0x00000000
+> [ 7032.969891] {24}[Hardware Error]:   aer_uncor_severity: 0x00062010
+> [ 7032.976042] {24}[Hardware Error]:   TLP Header: 000000c0 01010000 00000001 00000000
+> [ 7032.983663] Kernel panic - not syncing: Fatal hardware error!
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pm-5.3-rc2
+> Fixes: 37448adfc7ce ("aerdrv: Move cper_print_aer() call out of
+> interrupt context")
 
-with top-most commit fdc75701578269f6931975aebf4069d9d8c77d34
-
- Merge branch 'pm-cpufreq'
-
-on top of commit 5f9e832c137075045d15cd6899ab0505cfb2ca4b
-
- Linus 5.3-rc1
-
-to receive power management fixes for 5.3-rc2.
-
-These fix two issues related to the RAPL MMIO interface support
-added recently and one cpufreq driver issue.
-
-Specifics:
-
- - Initialize the power capping subsystem and the RAPL driver earlier
-   in case the int340X thermal driver is built-in and attempts to
-   register an MMIO interface for RAPL which must not happen before
-   the requisite infrastructure is ready (Zhang Rui).
-
- - Fix the int340X thermal driver's RAPL MMIO interface registration
-   error path (Rafael Wysocki).
-
- - Fix possible use-after-free in the pasemi cpufreq driver (Wen Yang).
-
-Thanks!
+(Please put this all on one line)
 
 
----------------
+> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+> index 8fa977c..bf8600d 100644
+> --- a/drivers/firmware/efi/cper.c
+> +++ b/drivers/firmware/efi/cper.c
+> @@ -390,6 +390,19 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
+>  		printk(
+>  	"%s""bridge: secondary_status: 0x%04x, control: 0x%04x\n",
+>  	pfx, pcie->bridge.secondary_status, pcie->bridge.control);
 
-Rafael J. Wysocki (1):
-      int340X/processor_thermal_device: Fix proc_thermal_rapl_remove()
+It may be worth a comment explaining why we only do this for fatal errors. Something like:
+| /* Fatal errors call __ghes_panic() before the AER handler gets to print this */
 
-Wen Yang (1):
-      cpufreq/pasemi: fix use-after-free in pas_cpufreq_cpu_init()
 
-Zhang Rui (1):
-      powercap: Invoke powercap_init() and rapl_init() earlier
+> +	if (pcie->validation_bits & CPER_PCIE_VALID_AER_INFO &&
+> +	    gdata->error_severity & CPER_SEV_FATAL) {
+> +		struct aer_capability_regs *aer;
+> +
+> +		aer = (struct aer_capability_regs *)pcie->aer_info;
+> +		printk("%saer_uncor_status: 0x%08x, aer_uncor_mask: 0x%08x\n",
 
----------------
+The convention in the rest of the file is for the prefix format string to be separate. i.e:
+| "%s""aer_uncor_status: ..."
 
- drivers/cpufreq/pasemi-cpufreq.c                   | 23 +++++++++-------------
- drivers/powercap/intel_rapl_common.c               |  2 +-
- drivers/powercap/powercap_sys.c                    |  2 +-
- .../int340x_thermal/processor_thermal_device.c     |  4 ++++
- 4 files changed, 15 insertions(+), 16 deletions(-)
+Could it be the same for consistency?
+
+> +		       pfx, aer->uncor_status, aer->uncor_mask);
+> +		printk("%saer_uncor_severity: 0x%08x\n",
+> +		       pfx, aer->uncor_severity);
+> +		printk("%sTLP Header: %08x %08x %08x %08x\n", pfx,
+> +		       aer->header_log.dw0, aer->header_log.dw1,
+> +		       aer->header_log.dw2, aer->header_log.dw3);
+> +	}
+>  }
+
+Regardless,
+Reviewed-by; James Morse <james.morse@arm.com>
+
+
+Thanks,
+
+James
