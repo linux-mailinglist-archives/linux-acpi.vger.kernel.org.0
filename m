@@ -2,196 +2,310 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2E9E763A4
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jul 2019 12:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA650763B0
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jul 2019 12:40:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726252AbfGZKhO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 Jul 2019 06:37:14 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:57622 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726203AbfGZKhN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 26 Jul 2019 06:37:13 -0400
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 6A82E5AFE3;
-        Fri, 26 Jul 2019 10:37:13 +0000 (UTC)
-Received: from [10.36.116.244] (ovpn-116-244.ams2.redhat.com [10.36.116.244])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id CD75D608D0;
-        Fri, 26 Jul 2019 10:37:11 +0000 (UTC)
-Subject: Re: [PATCH v1] ACPI / scan: Acquire device_hotplug_lock in
- acpi_scan_init()
-To:     Michal Hocko <mhocko@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Oscar Salvador <osalvador@suse.de>
-References: <20190725135747.GB3582@dhcp22.suse.cz>
- <447b74ca-f7c7-0835-fd50-a9f7191fe47c@redhat.com>
- <20190725191943.GA6142@dhcp22.suse.cz>
- <e31882cf-3290-ea36-77d6-637eaf66fe77@redhat.com>
- <20190726075729.GG6142@dhcp22.suse.cz>
- <fd9e8495-1a93-ac47-442f-081d392ed09b@redhat.com>
- <20190726083117.GJ6142@dhcp22.suse.cz>
- <38d76051-504e-c81a-293a-0b0839e829d3@redhat.com>
- <20190726084408.GK6142@dhcp22.suse.cz>
- <45c9f942-fe67-fa60-b62f-31867f9c6e53@redhat.com>
- <20190726103112.GL6142@dhcp22.suse.cz>
-From:   David Hildenbrand <david@redhat.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwX4EEwECACgFAljj9eoCGwMFCQlmAYAGCwkI
- BwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEE3eEPcA/4Na5IIP/3T/FIQMxIfNzZshIq687qgG
- 8UbspuE/YSUDdv7r5szYTK6KPTlqN8NAcSfheywbuYD9A4ZeSBWD3/NAVUdrCaRP2IvFyELj
- xoMvfJccbq45BxzgEspg/bVahNbyuBpLBVjVWwRtFCUEXkyazksSv8pdTMAs9IucChvFmmq3
- jJ2vlaz9lYt/lxN246fIVceckPMiUveimngvXZw21VOAhfQ+/sofXF8JCFv2mFcBDoa7eYob
- s0FLpmqFaeNRHAlzMWgSsP80qx5nWWEvRLdKWi533N2vC/EyunN3HcBwVrXH4hxRBMco3jvM
- m8VKLKao9wKj82qSivUnkPIwsAGNPdFoPbgghCQiBjBe6A75Z2xHFrzo7t1jg7nQfIyNC7ez
- MZBJ59sqA9EDMEJPlLNIeJmqslXPjmMFnE7Mby/+335WJYDulsRybN+W5rLT5aMvhC6x6POK
- z55fMNKrMASCzBJum2Fwjf/VnuGRYkhKCqqZ8gJ3OvmR50tInDV2jZ1DQgc3i550T5JDpToh
- dPBxZocIhzg+MBSRDXcJmHOx/7nQm3iQ6iLuwmXsRC6f5FbFefk9EjuTKcLMvBsEx+2DEx0E
- UnmJ4hVg7u1PQ+2Oy+Lh/opK/BDiqlQ8Pz2jiXv5xkECvr/3Sv59hlOCZMOaiLTTjtOIU7Tq
- 7ut6OL64oAq+zsFNBFXLn5EBEADn1959INH2cwYJv0tsxf5MUCghCj/CA/lc/LMthqQ773ga
- uB9mN+F1rE9cyyXb6jyOGn+GUjMbnq1o121Vm0+neKHUCBtHyseBfDXHA6m4B3mUTWo13nid
- 0e4AM71r0DS8+KYh6zvweLX/LL5kQS9GQeT+QNroXcC1NzWbitts6TZ+IrPOwT1hfB4WNC+X
- 2n4AzDqp3+ILiVST2DT4VBc11Gz6jijpC/KI5Al8ZDhRwG47LUiuQmt3yqrmN63V9wzaPhC+
- xbwIsNZlLUvuRnmBPkTJwwrFRZvwu5GPHNndBjVpAfaSTOfppyKBTccu2AXJXWAE1Xjh6GOC
- 8mlFjZwLxWFqdPHR1n2aPVgoiTLk34LR/bXO+e0GpzFXT7enwyvFFFyAS0Nk1q/7EChPcbRb
- hJqEBpRNZemxmg55zC3GLvgLKd5A09MOM2BrMea+l0FUR+PuTenh2YmnmLRTro6eZ/qYwWkC
- u8FFIw4pT0OUDMyLgi+GI1aMpVogTZJ70FgV0pUAlpmrzk/bLbRkF3TwgucpyPtcpmQtTkWS
- gDS50QG9DR/1As3LLLcNkwJBZzBG6PWbvcOyrwMQUF1nl4SSPV0LLH63+BrrHasfJzxKXzqg
- rW28CTAE2x8qi7e/6M/+XXhrsMYG+uaViM7n2je3qKe7ofum3s4vq7oFCPsOgwARAQABwsFl
- BBgBAgAPBQJVy5+RAhsMBQkJZgGAAAoJEE3eEPcA/4NagOsP/jPoIBb/iXVbM+fmSHOjEshl
- KMwEl/m5iLj3iHnHPVLBUWrXPdS7iQijJA/VLxjnFknhaS60hkUNWexDMxVVP/6lbOrs4bDZ
- NEWDMktAeqJaFtxackPszlcpRVkAs6Msn9tu8hlvB517pyUgvuD7ZS9gGOMmYwFQDyytpepo
- YApVV00P0u3AaE0Cj/o71STqGJKZxcVhPaZ+LR+UCBZOyKfEyq+ZN311VpOJZ1IvTExf+S/5
- lqnciDtbO3I4Wq0ArLX1gs1q1XlXLaVaA3yVqeC8E7kOchDNinD3hJS4OX0e1gdsx/e6COvy
- qNg5aL5n0Kl4fcVqM0LdIhsubVs4eiNCa5XMSYpXmVi3HAuFyg9dN+x8thSwI836FoMASwOl
- C7tHsTjnSGufB+D7F7ZBT61BffNBBIm1KdMxcxqLUVXpBQHHlGkbwI+3Ye+nE6HmZH7IwLwV
- W+Ajl7oYF+jeKaH4DZFtgLYGLtZ1LDwKPjX7VAsa4Yx7S5+EBAaZGxK510MjIx6SGrZWBrrV
- TEvdV00F2MnQoeXKzD7O4WFbL55hhyGgfWTHwZ457iN9SgYi1JLPqWkZB0JRXIEtjd4JEQcx
- +8Umfre0Xt4713VxMygW0PnQt5aSQdMD58jHFxTk092mU+yIHj5LeYgvwSgZN4airXk5yRXl
- SE+xAvmumFBY
-Organization: Red Hat GmbH
-Message-ID: <7dcfb097-0090-e60f-7d14-9a60dae9a474@redhat.com>
-Date:   Fri, 26 Jul 2019 12:37:11 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        id S1726252AbfGZKk3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 Jul 2019 06:40:29 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:33393 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726000AbfGZKk2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Jul 2019 06:40:28 -0400
+Received: by mail-pf1-f196.google.com with SMTP id g2so24335706pfq.0;
+        Fri, 26 Jul 2019 03:40:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6xe2gGXqYDfrudhhkFUeEtI5AY9hgJvX9l2+WUlDdTI=;
+        b=iwl1/iwtL919NfOuB2DLdfkiWTAYvKA9nyZOxdz9JMjtfdC1kjdi8SLMlR1g46Zu7p
+         dHOQCmf0ChAYEImgXYkG+HZfJSc4R35GRsBBWSk/oBYWQq54Ih+zRdgFq+gA42/2YTkG
+         Bf5DbIzMAn8zCdq5KvnLKRzBp/iWg4XgpDSCbjuOULrt9yR9aYUL7OrIfw/12CktqIR1
+         XBMZqhq1UqGaoCE8+HY5aJP2gmdhqRpNgEF1c1nTl5r4JROyoMGllfIoN2FHUrkj634N
+         Mr7VKIOUUy3QiXoqtkh2tyZHSWpjqThAuqoA0bJmNGzWWS+WdE11e8AwgcZcHV1v3yrw
+         5NNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6xe2gGXqYDfrudhhkFUeEtI5AY9hgJvX9l2+WUlDdTI=;
+        b=PLAyN+WTkbQNFZar+5YfDXxLLJnlWuC3NQnsQ3N7sjEmMlyrcHlE+SX7C2H6h5nhzb
+         w9AEStKEpnBnWXc0nmSMnDnJJAAMYVbL7I4LDygo5FWdCdLgJzkHzautYdp2L43B7ytr
+         nCOsjqzdpAm0YOqxy1yJd2Wn+SaTxsx94cE7eVDjRsKoZOlHqBeZvVbuDGf69xDnrjW9
+         WfKg3nVEfZYPTE3Ll5Ddgys+jBglEpqTTx0PArSDtmir7gku8UgdcuA5FSGqTC5+yEdU
+         K9LG0mHK1zStsj5GnHljeQyy+PkkIWBCcXK9+W/379tinAhCBETiL3jRLxt9BaEkflDb
+         z29g==
+X-Gm-Message-State: APjAAAW7akxxm+177HYNiYb5EwGLz14V+Ae5CDQ2oJfxyq4QrEzgg8L9
+        wsk9V31xPoV8NiZBLAHdiGgNuV9vL1IUXx6RqPIV1RXp164=
+X-Google-Smtp-Source: APXvYqzvMKSrLI4v0QBf2VimeBDcUacZGLDSDUsOf7o5lFoc4NBFHC49x6bT8NOI+TBOdg+MrSenH6JY5SHjxhiL0os=
+X-Received: by 2002:a17:90b:d8b:: with SMTP id bg11mr97529130pjb.30.1564137627571;
+ Fri, 26 Jul 2019 03:40:27 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190726103112.GL6142@dhcp22.suse.cz>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.39]); Fri, 26 Jul 2019 10:37:13 +0000 (UTC)
+References: <3471485.I2vrcDHEeC@kreacher> <3163213.d4HCi86EAO@kreacher>
+In-Reply-To: <3163213.d4HCi86EAO@kreacher>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 26 Jul 2019 13:40:16 +0300
+Message-ID: <CAHp75VdV-PTfG8Cy673W4r1fFn5h=DQzZe2kHH5_y+HfrA8j6A@mail.gmail.com>
+Subject: Re: [PATCH 1/4] ACPI: PM: Set up EC GPE for system wakeup from
+ drivers that need it
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Rajneesh Bhardwaj <rajneesh.bhardwaj@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 26.07.19 12:31, Michal Hocko wrote:
-> On Fri 26-07-19 10:57:52, David Hildenbrand wrote:
->> On 26.07.19 10:44, Michal Hocko wrote:
->>> On Fri 26-07-19 10:36:42, David Hildenbrand wrote:
->>>> On 26.07.19 10:31, Michal Hocko wrote:
->>> [...]
->>>>> Anyway, my dislike of the device_hotplug_lock persists. I would really
->>>>> love to see it go rather than grow even more to the hotplug code. We
->>>>> should be really striving for mem hotplug internal and ideally range
->>>>> defined locking longterm. 
->>>>
->>>> Yes, and that is a different story, because it will require major
->>>> changes to all add_memory() users. (esp, due to the documented race
->>>> conditions). Having that said, memory hotplug locking is not ideal yet.
->>>
->>> I am really happy to hear that we are on the same page here. Do we have
->>> any document (I am sorry but I am lacking behind recent development in
->>> this area) that describes roadblocks to remove device_hotplug_lock?
->>
->> Only the core-api document I mentioned (I documented there quite some
->> current conditions I identified back then).
-> 
-> That document doesn't describe which _data structures_ are protected by
-> the lock though. It documents only the current state of locking.
+On Fri, Jul 26, 2019 at 1:57 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+>
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> The EC GPE needs to be set up for system wakeup only if there is a
+> driver depending on it, either intel-hid or intel-vbtn, bound to a
+> button device that is expected to wake up the system from sleep (such
+> as the power button on some Dell systems, like the XPS13 9360).  It
+> doesn't need to be set up for waking up the system from sleep in any
+> other cases and whether or not it is expected to wake up the system
+> from sleep doesn't depend on whether or not the LPS0 device is
+> present in the ACPI namespace.
+>
+> For this reason, rearrange the ACPI suspend-to-idle code to make the
+> drivers depending on the EC GPE wakeup take care of setting it up and
+> decouple that from the LPS0 device handling.
+>
+> While at it, make intel-hid and intel-vbtn prepare for system wakeup
+> only if they are allowed to wake up the system from sleep by user
+> space (via sysfs).
+>
+> [Note that acpi_ec_mark_gpe_for_wake() and acpi_ec_set_gpe_wake_mask()
+>  are there to prevent the EC GPE from being disabled by the
+>  acpi_enable_all_wakeup_gpes() call in acpi_s2idle_prepare(), so on
+>  systems with either intel-hid or intel-vbtn this change doesn't
+>  affect any interactions with the hardware or platform firmware.]
+>
 
-Yeah, I also thing we should find out more and document it.
-Unfortunately, optimize the locking is not very high on my priority list
-(there are more critical things to figure out than optimizing locking
-that at least seems to work :) ). It is on my list, though.
+Thank you!
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-> 
->> I am not sure if we can remove it completely from
->> add_memory()/remove_memory(): We actually create/delete devices which
->> can otherwise create races with user space.
-> 
-> More details would be really appreciated.
-> 
->> Besides that:
->> - try_offline_node() needs the lock to synchronize against cpu hotplug
->> - I *assume* try_online_node() needs it as well
-> 
-> more details on why would be great.
-> 
->> Then, there is the possible race condition with user space onlining
->> memory avoided by the lock. Also, currently the lock protects the
->> "online_type" when onlining memory.
-> 
-> I do not see the race, if the user API triggered online/offline takes a
-> range lock on the affected physical memory range
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>  drivers/acpi/ec.c                 |    5 ++++-
+>  drivers/acpi/internal.h           |    2 --
+>  drivers/acpi/sleep.c              |   11 +----------
+>  drivers/platform/x86/intel-hid.c  |   20 ++++++++++++++++----
+>  drivers/platform/x86/intel-vbtn.c |   20 ++++++++++++++++----
+>  include/linux/acpi.h              |    4 ++++
+>  6 files changed, 41 insertions(+), 21 deletions(-)
+>
+> Index: linux-pm/drivers/acpi/internal.h
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/internal.h
+> +++ linux-pm/drivers/acpi/internal.h
+> @@ -194,8 +194,6 @@ void acpi_ec_ecdt_probe(void);
+>  void acpi_ec_dsdt_probe(void);
+>  void acpi_ec_block_transactions(void);
+>  void acpi_ec_unblock_transactions(void);
+> -void acpi_ec_mark_gpe_for_wake(void);
+> -void acpi_ec_set_gpe_wake_mask(u8 action);
+>  bool acpi_ec_dispatch_gpe(void);
+>  int acpi_ec_add_query_handler(struct acpi_ec *ec, u8 query_bit,
+>                               acpi_handle handle, acpi_ec_query_func func,
+> Index: linux-pm/drivers/platform/x86/intel-hid.c
+> ===================================================================
+> --- linux-pm.orig/drivers/platform/x86/intel-hid.c
+> +++ linux-pm/drivers/platform/x86/intel-hid.c
+> @@ -253,9 +253,12 @@ static void intel_button_array_enable(st
+>
+>  static int intel_hid_pm_prepare(struct device *device)
+>  {
+> -       struct intel_hid_priv *priv = dev_get_drvdata(device);
+> +       if (device_may_wakeup(device)) {
+> +               struct intel_hid_priv *priv = dev_get_drvdata(device);
+>
+> -       priv->wakeup_mode = true;
+> +               priv->wakeup_mode = true;
+> +               acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
+> +       }
+>         return 0;
+>  }
+>
+> @@ -270,9 +273,12 @@ static int intel_hid_pl_suspend_handler(
+>
+>  static int intel_hid_pl_resume_handler(struct device *device)
+>  {
+> -       struct intel_hid_priv *priv = dev_get_drvdata(device);
+> +       if (device_may_wakeup(device)) {
+> +               struct intel_hid_priv *priv = dev_get_drvdata(device);
+>
+> -       priv->wakeup_mode = false;
+> +               acpi_ec_set_gpe_wake_mask(ACPI_GPE_DISABLE);
+> +               priv->wakeup_mode = false;
+> +       }
+>         if (pm_resume_via_firmware()) {
+>                 intel_hid_set_enable(device, true);
+>                 intel_button_array_enable(device, true);
+> @@ -491,6 +497,12 @@ static int intel_hid_probe(struct platfo
+>         }
+>
+>         device_init_wakeup(&device->dev, true);
+> +       /*
+> +        * In order for system wakeup to work, the EC GPE has to be marked as
+> +        * a wakeup one, so do that here (this setting will persist, but it has
+> +        * no effect until the wakeup mask is set for the EC GPE).
+> +        */
+> +       acpi_ec_mark_gpe_for_wake();
+>         return 0;
+>
+>  err_remove_notify:
+> Index: linux-pm/drivers/platform/x86/intel-vbtn.c
+> ===================================================================
+> --- linux-pm.orig/drivers/platform/x86/intel-vbtn.c
+> +++ linux-pm/drivers/platform/x86/intel-vbtn.c
+> @@ -176,6 +176,12 @@ static int intel_vbtn_probe(struct platf
+>                 return -EBUSY;
+>
+>         device_init_wakeup(&device->dev, true);
+> +       /*
+> +        * In order for system wakeup to work, the EC GPE has to be marked as
+> +        * a wakeup one, so do that here (this setting will persist, but it has
+> +        * no effect until the wakeup mask is set for the EC GPE).
+> +        */
+> +       acpi_ec_mark_gpe_for_wake();
+>         return 0;
+>  }
+>
+> @@ -195,17 +201,23 @@ static int intel_vbtn_remove(struct plat
+>
+>  static int intel_vbtn_pm_prepare(struct device *dev)
+>  {
+> -       struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
+> +       if (device_may_wakeup(dev)) {
+> +               struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
+>
+> -       priv->wakeup_mode = true;
+> +               priv->wakeup_mode = true;
+> +               acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
+> +       }
+>         return 0;
+>  }
+>
+>  static int intel_vbtn_pm_resume(struct device *dev)
+>  {
+> -       struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
+> +       if (device_may_wakeup(dev)) {
+> +               struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
+>
+> -       priv->wakeup_mode = false;
+> +               acpi_ec_set_gpe_wake_mask(ACPI_GPE_DISABLE);
+> +               priv->wakeup_mode = false;
+> +       }
+>         return 0;
+>  }
+>
+> Index: linux-pm/include/linux/acpi.h
+> ===================================================================
+> --- linux-pm.orig/include/linux/acpi.h
+> +++ linux-pm/include/linux/acpi.h
+> @@ -931,6 +931,8 @@ int acpi_subsys_suspend_noirq(struct dev
+>  int acpi_subsys_suspend(struct device *dev);
+>  int acpi_subsys_freeze(struct device *dev);
+>  int acpi_subsys_poweroff(struct device *dev);
+> +void acpi_ec_mark_gpe_for_wake(void);
+> +void acpi_ec_set_gpe_wake_mask(u8 action);
+>  #else
+>  static inline int acpi_subsys_prepare(struct device *dev) { return 0; }
+>  static inline void acpi_subsys_complete(struct device *dev) {}
+> @@ -939,6 +941,8 @@ static inline int acpi_subsys_suspend_no
+>  static inline int acpi_subsys_suspend(struct device *dev) { return 0; }
+>  static inline int acpi_subsys_freeze(struct device *dev) { return 0; }
+>  static inline int acpi_subsys_poweroff(struct device *dev) { return 0; }
+> +static inline void acpi_ec_mark_gpe_for_wake(void) {}
+> +static inline void acpi_ec_set_gpe_wake_mask(u8 action) {}
+>  #endif
+>
+>  #ifdef CONFIG_ACPI
+> Index: linux-pm/drivers/acpi/ec.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/ec.c
+> +++ linux-pm/drivers/acpi/ec.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/list.h>
+>  #include <linux/spinlock.h>
+>  #include <linux/slab.h>
+> +#include <linux/suspend.h>
+>  #include <linux/acpi.h>
+>  #include <linux/dmi.h>
+>  #include <asm/io.h>
+> @@ -1053,12 +1054,14 @@ void acpi_ec_mark_gpe_for_wake(void)
+>         if (first_ec && !ec_no_wakeup)
+>                 acpi_mark_gpe_for_wake(NULL, first_ec->gpe);
+>  }
+> +EXPORT_SYMBOL_GPL(acpi_ec_mark_gpe_for_wake);
+>
+>  void acpi_ec_set_gpe_wake_mask(u8 action)
+>  {
+> -       if (first_ec && !ec_no_wakeup)
+> +       if (pm_suspend_no_platform() && first_ec && !ec_no_wakeup)
+>                 acpi_set_gpe_wake_mask(NULL, first_ec->gpe, action);
+>  }
+> +EXPORT_SYMBOL_GPL(acpi_ec_set_gpe_wake_mask);
+>
+>  bool acpi_ec_dispatch_gpe(void)
+>  {
+> Index: linux-pm/drivers/acpi/sleep.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/sleep.c
+> +++ linux-pm/drivers/acpi/sleep.c
+> @@ -930,8 +930,6 @@ static int lps0_device_attach(struct acp
+>
+>                 acpi_handle_debug(adev->handle, "_DSM function mask: 0x%x\n",
+>                                   bitmask);
+> -
+> -               acpi_ec_mark_gpe_for_wake();
+>         } else {
+>                 acpi_handle_debug(adev->handle,
+>                                   "_DSM function 0 evaluation failed\n");
+> @@ -960,8 +958,6 @@ static int acpi_s2idle_prepare(void)
+>         if (lps0_device_handle) {
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
+> -
+> -               acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
+>         }
+>
+>         if (acpi_sci_irq_valid())
+> @@ -979,10 +975,7 @@ static int acpi_s2idle_prepare(void)
+>
+>  static void acpi_s2idle_wake(void)
+>  {
+> -       if (!lps0_device_handle)
+> -               return;
+> -
+> -       if (pm_debug_messages_on)
+> +       if (lps0_device_handle && pm_debug_messages_on)
+>                 lpi_check_constraints();
+>
+>         /*
+> @@ -1031,8 +1024,6 @@ static void acpi_s2idle_restore(void)
+>                 disable_irq_wake(acpi_sci_irq);
+>
+>         if (lps0_device_handle) {
+> -               acpi_ec_set_gpe_wake_mask(ACPI_GPE_DISABLE);
+> -
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON);
+>         }
+>
+>
+>
 
-Yeah, and that's still future work. Another item on the list.
-
-> 
->> Then, there might be other global variables (eventually
->> zone/node/section related) that might need this lock right now - no
->> details known.
-> 
-> zones/nodes have their own locking for spans. Sections should be using
-> a low level locking but I am not really sure this is needed if there is
-> a mem hotplug lock in place (range or global)
-> 
->> IOW, we have to be very carefully and it is more involved than it might
->> seem.
-> 
-> I am not questioning that. And that is why I am asking about a todo list
-> for that transition.
-
-I think somebody will have to invest quite some effort to create that
-todo list first :) (I'd love to provide more information right now, but
-I don't really have more)
-
-> 
->> Locking is definitely better (and more reliably!) than one year ago, but
->> there is definitely a lot to do. (unfortunately, just like in many areas
->> in memory hotplug code :( - say zone handling when offlining/failing to
->> online memory).
-> 
-> Yeah, the code is shaping up. And I am happy to see that happening. But
-> please try to understand that I really do not like to see some ad-hoc
-> locking enforcement without a clear locking model in place. This patch
-> is an example of it. Whoever would like to rationalize locking further
-> will have to stumble over this and scratch head why the hack the locking
-> is there and my experience tells me that people usually go along with
-> existing code and make further assumptions based on that so we are
-> unlikely to get rid of the locking...
-
-I do understand, but we really have to rethink locking in a more broad
-sense and document it. Here, I am going to add a comment as requested by
-Rafael.
 
 -- 
-
-Thanks,
-
-David / dhildenb
+With Best Regards,
+Andy Shevchenko
