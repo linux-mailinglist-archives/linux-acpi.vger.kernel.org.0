@@ -2,102 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 277FC76956
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jul 2019 15:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7728076B1F
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jul 2019 16:10:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727899AbfGZNn5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 Jul 2019 09:43:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51924 "EHLO mail.kernel.org"
+        id S1727532AbfGZOKC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 Jul 2019 10:10:02 -0400
+Received: from foss.arm.com ([217.140.110.172]:45350 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727843AbfGZNn5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 26 Jul 2019 09:43:57 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6863E22CD0;
-        Fri, 26 Jul 2019 13:43:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564148636;
-        bh=1AVau6OS7KbbPQQyhbzslb1LdomSaJEX2zijuFlllXg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aEiCCJAK2K8VYFGFrHMK9iQoCZlG+7vwm3aRuCJh8gPrtua4+PZy7js8hDdw5Ndih
-         kmvfzwXlOM8xajmbzDtcX901Tzc7JOMHA8ig9Avhn2v1NQ3HUkK17g1YjN+gBN6ye5
-         T4Sl9JOkbNzhQ+hyc0gtnGwpXx1D5SUO/mA4Zc7U=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-Subject: [PATCH AUTOSEL 4.14 18/37] ACPI: fix false-positive -Wuninitialized warning
-Date:   Fri, 26 Jul 2019 09:43:13 -0400
-Message-Id: <20190726134332.12626-18-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190726134332.12626-1-sashal@kernel.org>
-References: <20190726134332.12626-1-sashal@kernel.org>
+        id S1726902AbfGZOKB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 26 Jul 2019 10:10:01 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0628B337;
+        Fri, 26 Jul 2019 07:10:01 -0700 (PDT)
+Received: from [10.1.196.105] (eglon.cambridge.arm.com [10.1.196.105])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 22AFF3F71F;
+        Fri, 26 Jul 2019 07:10:00 -0700 (PDT)
+Subject: Re: [PATCH v4] ACPI / APEI: release resources if gen_pool_add fails
+To:     =?UTF-8?B?5Lmx55+z?= <zhangliguang@linux.alibaba.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>, linux-acpi@vger.kernel.org
+References: <1563173924-47479-1-git-send-email-zhangliguang@linux.alibaba.com>
+ <3c4ce1be-f873-8acd-0e9b-061f1c079717@arm.com>
+ <794d2bd0-af4f-8935-296f-b4cedd542800@linux.alibaba.com>
+From:   James Morse <james.morse@arm.com>
+Message-ID: <4d523cd0-cb09-3706-b417-bc118e821908@arm.com>
+Date:   Fri, 26 Jul 2019 15:09:59 +0100
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+In-Reply-To: <794d2bd0-af4f-8935-296f-b4cedd542800@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+Hi Liguang,
 
-[ Upstream commit dfd6f9ad36368b8dbd5f5a2b2f0a4705ae69a323 ]
+On 26/07/2019 10:29, 乱石 wrote:
+> 在 2019/7/25 20:46, James Morse 写道:
+>> On 15/07/2019 07:58, luanshi wrote:
+>>> To avoid memory leaks, destroy ghes_estatus_pool and release memory
+>>> allocated via vmalloc() on errors in ghes_estatus_pool_init().
+>>>
+>>> Signed-off-by: Liguang Zhang <zhangliguang@linux.alibaba.com>
+>>> ---
+>> Playing spot-the-difference with [v3], you've moved an empty line.
+>>
+>> Please include a change log in this space below the '---' tearoff. This helps reviewers
+>> know what you changed between versions, and git knows not to add stuff in here to the log.
+>>
+>> This is still:
+>> Reviewed-by: James Morse <james.morse@arm.com>
+> 
+> Thanks for your review. Because your reviewed-by was given ealier, and the code is
+> reconstructed,
+> 
+> so I remove the reviewed-by. I will send v5 by your suggestions.
 
-clang gets confused by an uninitialized variable in what looks
-to it like a never executed code path:
+There is no need to post a new version just to pick up the tags.
 
-arch/x86/kernel/acpi/boot.c:618:13: error: variable 'polarity' is uninitialized when used here [-Werror,-Wuninitialized]
-        polarity = polarity ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
-                   ^~~~~~~~
-arch/x86/kernel/acpi/boot.c:606:32: note: initialize the variable 'polarity' to silence this warning
-        int rc, irq, trigger, polarity;
-                                      ^
-                                       = 0
-arch/x86/kernel/acpi/boot.c:617:12: error: variable 'trigger' is uninitialized when used here [-Werror,-Wuninitialized]
-        trigger = trigger ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
-                  ^~~~~~~
-arch/x86/kernel/acpi/boot.c:606:22: note: initialize the variable 'trigger' to silence this warning
-        int rc, irq, trigger, polarity;
-                            ^
-                             = 0
+Having a versioned changelog on your future work makes it easier for reviewers to know
+what changed between versions.
 
-This is unfortunately a design decision in clang and won't be fixed.
 
-Changing the acpi_get_override_irq() macro to an inline function
-reliably avoids the issue.
+Thanks,
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/linux/acpi.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 13c105121a18..d7a9700b9333 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -324,7 +324,10 @@ void acpi_set_irq_model(enum acpi_irq_model_id model,
- #ifdef CONFIG_X86_IO_APIC
- extern int acpi_get_override_irq(u32 gsi, int *trigger, int *polarity);
- #else
--#define acpi_get_override_irq(gsi, trigger, polarity) (-1)
-+static inline int acpi_get_override_irq(u32 gsi, int *trigger, int *polarity)
-+{
-+	return -1;
-+}
- #endif
- /*
-  * This function undoes the effect of one call to acpi_register_gsi().
--- 
-2.20.1
-
+James
