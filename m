@@ -2,37 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D517F76A6C
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jul 2019 15:58:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7BF776A53
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jul 2019 15:58:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387516AbfGZNkh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 Jul 2019 09:40:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46722 "EHLO mail.kernel.org"
+        id S1727727AbfGZNkv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 Jul 2019 09:40:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46996 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387507AbfGZNkg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 26 Jul 2019 09:40:36 -0400
+        id S2387567AbfGZNkr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 26 Jul 2019 09:40:47 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 90E2C22BF5;
-        Fri, 26 Jul 2019 13:40:34 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E659622CBD;
+        Fri, 26 Jul 2019 13:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564148435;
-        bh=fMIlE96iPeuJpA5NvQKZPass3MD+QVHBbBgG4YrBypA=;
+        s=default; t=1564148446;
+        bh=iwQDFSN7zjXide0iIrgB2USrYsqXeWDcsDEBy8CQEoM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uUH8bzv1cXOQ/Nf9kr1FxlpkZChwmhJYclCAVPT+KRQOB2azvZ5sgH9suRfnqa7Rz
-         Js9xgHjT76gkrlWFtY3eWy+KlJgzofDTjn8yPhu7hSdwl0EDjLJRvyjWw3Zc8ZeXhc
-         c0n+YN3M0pH/an4nS1fCgalOQMa+WS5L0RWLa3mM=
+        b=BcIAIJzYsfw4zArWmwqg2xoB04Isf2ePeWyfNkwUd2NDjEBBPLqQdFttj0O00611q
+         L/p5W5UyX5ON3pVAF3CuaPs/kVX5xn5BuYV9vcw+tEhaRdqg7QwEzhe+9yqGrEjx2a
+         D0DsbOM/kL/5SjgHMQjgv/WBt2Irrc/qz2k0tZ/U=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Nathan Chancellor <natechancellor@gmail.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
         clang-built-linux@googlegroups.com
-Subject: [PATCH AUTOSEL 5.2 37/85] ACPI: blacklist: fix clang warning for unused DMI table
-Date:   Fri, 26 Jul 2019 09:38:47 -0400
-Message-Id: <20190726133936.11177-37-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 44/85] ACPI: fix false-positive -Wuninitialized warning
+Date:   Fri, 26 Jul 2019 09:38:54 -0400
+Message-Id: <20190726133936.11177-44-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190726133936.11177-1-sashal@kernel.org>
 References: <20190726133936.11177-1-sashal@kernel.org>
@@ -47,49 +48,56 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit b80d6a42bdc97bdb6139107d6034222e9843c6e2 ]
+[ Upstream commit dfd6f9ad36368b8dbd5f5a2b2f0a4705ae69a323 ]
 
-When CONFIG_DMI is disabled, we only have a tentative declaration,
-which causes a warning from clang:
+clang gets confused by an uninitialized variable in what looks
+to it like a never executed code path:
 
-drivers/acpi/blacklist.c:20:35: error: tentative array definition assumed to have one element [-Werror]
-static const struct dmi_system_id acpi_rev_dmi_table[] __initconst;
+arch/x86/kernel/acpi/boot.c:618:13: error: variable 'polarity' is uninitialized when used here [-Werror,-Wuninitialized]
+        polarity = polarity ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
+                   ^~~~~~~~
+arch/x86/kernel/acpi/boot.c:606:32: note: initialize the variable 'polarity' to silence this warning
+        int rc, irq, trigger, polarity;
+                                      ^
+                                       = 0
+arch/x86/kernel/acpi/boot.c:617:12: error: variable 'trigger' is uninitialized when used here [-Werror,-Wuninitialized]
+        trigger = trigger ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
+                  ^~~~~~~
+arch/x86/kernel/acpi/boot.c:606:22: note: initialize the variable 'trigger' to silence this warning
+        int rc, irq, trigger, polarity;
+                            ^
+                             = 0
 
-As the variable is not actually used here, hide it entirely
-in an #ifdef to shut up the warning.
+This is unfortunately a design decision in clang and won't be fixed.
+
+Changing the acpi_get_override_irq() macro to an inline function
+reliably avoids the issue.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/blacklist.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/acpi.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/blacklist.c b/drivers/acpi/blacklist.c
-index ad2c565f5cbe..a86a770c9b79 100644
---- a/drivers/acpi/blacklist.c
-+++ b/drivers/acpi/blacklist.c
-@@ -17,7 +17,9 @@
- 
- #include "internal.h"
- 
-+#ifdef CONFIG_DMI
- static const struct dmi_system_id acpi_rev_dmi_table[] __initconst;
-+#endif
- 
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index d315d86844e4..872ab208c8ad 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -317,7 +317,10 @@ void acpi_set_irq_model(enum acpi_irq_model_id model,
+ #ifdef CONFIG_X86_IO_APIC
+ extern int acpi_get_override_irq(u32 gsi, int *trigger, int *polarity);
+ #else
+-#define acpi_get_override_irq(gsi, trigger, polarity) (-1)
++static inline int acpi_get_override_irq(u32 gsi, int *trigger, int *polarity)
++{
++	return -1;
++}
+ #endif
  /*
-  * POLICY: If *anything* doesn't work, put it on the blacklist.
-@@ -61,7 +63,9 @@ int __init acpi_blacklisted(void)
- 	}
- 
- 	(void)early_acpi_osi_init();
-+#ifdef CONFIG_DMI
- 	dmi_check_system(acpi_rev_dmi_table);
-+#endif
- 
- 	return blacklisted;
- }
+  * This function undoes the effect of one call to acpi_register_gsi().
 -- 
 2.20.1
 
