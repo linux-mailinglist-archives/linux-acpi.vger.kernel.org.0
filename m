@@ -2,58 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD7127B5F4
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2019 00:58:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D9C97B5FF
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2019 01:02:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728708AbfG3W6C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Jul 2019 18:58:02 -0400
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:35654 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728522AbfG3W6C (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jul 2019 18:58:02 -0400
-Received: by mail-lf1-f67.google.com with SMTP id p197so45917911lfa.2
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Jul 2019 15:58:00 -0700 (PDT)
+        id S1726738AbfG3XC2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Jul 2019 19:02:28 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:36635 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726689AbfG3XC2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jul 2019 19:02:28 -0400
+Received: by mail-lf1-f68.google.com with SMTP id q26so45980735lfc.3
+        for <linux-acpi@vger.kernel.org>; Tue, 30 Jul 2019 16:02:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yOa/eOdf8nGVianCf7QdDXN00Pv7cigGpgKKYde9+74=;
-        b=azFlaHoj2pnGJQTSpeaxBoinHQBeFIZ2FvXvaION9nXWkwMXA2oNzk+eyR97IT18yk
-         nyap42nFYXbUMLK20A8LXm+bGk4DZkFd8U5LN1CkSiJxKxvnW9O4Fvw10fA1Y4MG+3tU
-         tWC/MstUroCJ83KKchgf1ll4xxr1qF9OOWHfTsSmQPgl9rFm4UsETKzl5bu0hF8zw1OH
-         uaS+ryPlQLmL3uq7AQtcDXexLvcehy5XYmOj2xXsX8lk5LgKcF2HO9feIfJbU9dX0hWp
-         ksfAGA8DaJI4EbmXtT1ZkUiHkxjQq2iLk1gw/x8SBjb4ObsJEXteWXH9BaDRgCqezihQ
-         bc0Q==
+         :cc:content-transfer-encoding;
+        bh=T9/kCG+kgWmWyocQ8aukdYNszqXmy4B/FV1srsKD6M4=;
+        b=M/KBtxYZd/o/LS6luyddmmyRKh1YviRHkFXBh42UtAD70mFwuVs9cxNvFwMQlv41Nb
+         4p3l0XJlEMHCvqPlJkCLQDsNABMaHVe3sB5QYn8iK5QRyPK7OI3wVfnnsWk3GZcKf4Mc
+         C4dn4WbtHT2LTe56EX03vkrH6oZ6t3hbPPxoVVNjARNgIDXcgpSEB5Sb5CGhaJN2P39K
+         2B1tC9ujDP50NBBbl3vyrodHmjFR5tE+8E/S6tKJbCFzVLy8ce+XVxeYX/ZS2f7rN+na
+         /ETirSjISrdNXcGtjeOWBNwrs5D5UVqhJIMJamtGQ/7auBkUnU3MSvS0keMMdbpv5Yfu
+         hWMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yOa/eOdf8nGVianCf7QdDXN00Pv7cigGpgKKYde9+74=;
-        b=O6sa+JSuVmzmMNOXVcFNdT4nbAc5PhIMOPgxXzmE5j7ILpq9oOTrkip0uWJtO1mu3S
-         ehVOrr4cBTm38RiZU3AxrXQUquFEKFZh1F3OhjAV6bOezAznILlvMJWk13wM36F8OjzO
-         kuyRD5gHfKtv5FKuCABMnMwgnYmuY5JofCyl4oMAJqq1nhaI+Mk/+mcJ71vQJ13KDWSK
-         RO8UQIJEu+GUjW+r5uRIPO8pghiOrDLKwWX22Uu7qiKP38e/qdIXcCMB48Guu6U3+nzk
-         0NB3vnjhJ0GpUxrJUrcynjLjlqdr1Tg1vYmsEkOcwEah6o3KeRH1oV+ju9v5rGv2zB7R
-         QOgA==
-X-Gm-Message-State: APjAAAVgheNtnoj/vDlwGC/IaVKkP3QgVIS2f6pzFEiBqxgkGBFn/oIi
-        zrFbzHH9oTMbIzf+Hcx6FyzAuZ6D37XJYKpE5609Rw==
-X-Google-Smtp-Source: APXvYqyyaioH5ibhGa0A9YuOGsu2iiA9QyUZjoRMMmH+vmXo09C9Rg+meEIGopvuvfiXrdyRL2XRdreSHa+rhC6OW4A=
-X-Received: by 2002:ac2:5c42:: with SMTP id s2mr45567407lfp.61.1564527480182;
- Tue, 30 Jul 2019 15:58:00 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=T9/kCG+kgWmWyocQ8aukdYNszqXmy4B/FV1srsKD6M4=;
+        b=awmceZCfCs5OZCfKdFh2KpJp6KLyQDm2E/Saj0+4rNkE3rQZv2y03xCmFy8ISVJC/q
+         X8gVWslJjAHtima78hknfj3wDPoIw4CnSiXh4CarfqMC9jn9YQPpnF8zZamN7j6tu2mV
+         8YxcCWy9z+6JvtIdnjyvymlVfKYZ6/PuV/mptRIPOq/Zqvs4QPms9wvXKNP6SOetLzo5
+         1hdP9eaQ7cXuKz6vdHlNvQouO2MG7dpMNWUIBoIT+vnvmAFdz3Gfwfc66lrMP6UQ8FCv
+         ls6BLFp6vbf/5EqXQHrRCtk5/XLX3GoA+uKfrTYAgOGnffZuKaHmx8Eu5Egjv4LDMcZN
+         uXRg==
+X-Gm-Message-State: APjAAAWaR239/xmc3begs5gyJyPg7RCWdpQaCkWbYprZtP098UDJW4XC
+        vTOCGRBk55VnCMjkdy6CkhI5DTT566/iNlX5EXpH6g==
+X-Google-Smtp-Source: APXvYqyUifC+ugNDNCn76iknQT/jAoMfy5FjFx/PMiUhBnzuvz04jorFGrHiYe2Ue694maiy7sSl8MZcm9C0DMRdmew=
+X-Received: by 2002:ac2:5382:: with SMTP id g2mr54299529lfh.92.1564527746494;
+ Tue, 30 Jul 2019 16:02:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190730104337.21235-1-andriy.shevchenko@linux.intel.com> <20190730104337.21235-2-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20190730104337.21235-2-andriy.shevchenko@linux.intel.com>
+References: <20190730104337.21235-1-andriy.shevchenko@linux.intel.com> <20190730104337.21235-3-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20190730104337.21235-3-andriy.shevchenko@linux.intel.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 31 Jul 2019 00:57:48 +0200
-Message-ID: <CACRpkdbbxiP_Me8S_9ajEvRQ4OL8vGuT8n2H-Fv=BrEcAV=GGQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] gpiolib: acpi: Split ACPI stuff to gpiolib-acpi.h
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date:   Wed, 31 Jul 2019 01:02:14 +0200
+Message-ID: <CACRpkdZXTRENogogOxrB6F5aXQSd5qehXFP1R3ax0um1XU93Aw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] gpiolib-acpi: Move acpi_dev_add_driver_gpios() et
+ al to consumer.h
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>
 Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
@@ -62,17 +71,30 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 On Tue, Jul 30, 2019 at 12:43 PM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 
-> This is a follow up to the commit
+> The API, which belongs to GPIO library, is foreign to ACPI headers. Earli=
+er
+> we moved out I=C2=B2C out of the latter, and now it's time for
+> acpi_dev_add_driver_gpios() et al.
 >
->   f626d6dfb709 ("gpio: of: Break out OF-only code")
+> For time being the acpi_gpio_get_irq_resource() and acpi_dev_gpio_irq_get=
+()
+> are left untouched as they need more thought about.
 >
-> which broke down OF parts of GPIO library. Here we do the similar to ACPI.
+> Note, it requires uninline acpi_dev_remove_driver_gpios() to keep purity =
+of
+> consumer.h.
 >
+> Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+> Cc: Liam Girdwood <liam.r.girdwood@linux.intel.com>
+> Cc: Jie Yang <yang.jie@linux.intel.com>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: alsa-devel@alsa-project.org (moderated list:INTEL ASoC DRIVERS)
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
-> v2: Cc to ACPI people
 
-Patch applied.
+Patch applied!
+
+Just a bit worried that this will collide with Masahiro's #ifdef-reduction,
+but I wanted to keep your series together.
 
 Yours,
 Linus Walleij
