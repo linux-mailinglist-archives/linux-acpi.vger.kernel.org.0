@@ -2,35 +2,34 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 645817A69F
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2019 13:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 056C57A735
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2019 13:46:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729315AbfG3LHn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Jul 2019 07:07:43 -0400
-Received: from mga11.intel.com ([192.55.52.93]:57603 "EHLO mga11.intel.com"
+        id S1728664AbfG3LqB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Jul 2019 07:46:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39920 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730639AbfG3LHg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 30 Jul 2019 07:07:36 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Jul 2019 04:07:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,326,1559545200"; 
-   d="scan'208";a="371502145"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.145])
-  by fmsmga006.fm.intel.com with ESMTP; 30 Jul 2019 04:07:32 -0700
-Received: from andy by smile with local (Exim 4.92)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1hsPyc-000293-LK; Tue, 30 Jul 2019 14:07:30 +0300
-Date:   Tue, 30 Jul 2019 14:07:30 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        id S1728590AbfG3LqA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 30 Jul 2019 07:46:00 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D767D206E0;
+        Tue, 30 Jul 2019 11:45:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564487159;
+        bh=MdCmTq2/62GOla3xYdR1q+U30DvmMzx9ilbakjTfbuY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hNRILnIGpwN0IQ17UgUT9sNy5oW3a2JqVMfOgkS1x5zDIp+bnrnOA5gUA3vFMnckT
+         ImalFhGvGWcRgYOH4oWtJGoEErv0Hg16NWumKADitrYbYxaF5WUPl3I9wt65hcy2D5
+         UpEcc6XDJDwSe5h8nvuSvpKdK1R8vJAO2KCAu+Nk=
+Date:   Tue, 30 Jul 2019 13:45:56 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     Brian Norris <briannorris@chromium.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-kernel@vger.kernel.org,
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-kernel@vger.kernel.org, andriy.shevchenko@linux.intel.com,
         Salvatore Bellizzi <salvatore.bellizzi@linux.seppia.net>,
+        andy.shevchenko@gmail.com,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         egranata@chromium.org, egranata@google.com,
         Enric Balletbo i Serra <enric.balletbo@collabora.com>,
@@ -38,14 +37,13 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-acpi@vger.kernel.org, Benson Leung <bleung@chromium.org>,
         stable@vger.kernel.org
 Subject: Re: [PATCH] driver core: platform: return -ENXIO for missing GpioInt
-Message-ID: <20190730110730.GK23480@smile.fi.intel.com>
+Message-ID: <20190730114556.GA10673@kroah.com>
 References: <20190729204954.25510-1-briannorris@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20190729204954.25510-1-briannorris@chromium.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
@@ -79,10 +77,6 @@ On Mon, Jul 29, 2019 at 01:49:54PM -0700, Brian Norris wrote:
 >    documents (and enforces) that 0 is not a valid return value (noted on
 >    the v3 review)
 >  * adding a small comment
-
-Thank you for fixing this.
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
 > 
 > Reported-by: Brian Norris <briannorris@chromium.org>
 > Reported-by: Salvatore Bellizzi <salvatore.bellizzi@linux.seppia.net>
@@ -90,6 +84,8 @@ Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > Cc: <stable@vger.kernel.org>
 > Fixes: daaef255dc96 ("driver: platform: Support parsing GpioInt 0 in platform_get_irq()")
 > Signed-off-by: Brian Norris <briannorris@chromium.org>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Acked-by: Enrico Granata <egranata@google.com>
 > ---
 > Side note: it might have helped alleviate some of this pain if there
 > were email notifications to the mailing list when a patch gets applied.
@@ -98,36 +94,14 @@ Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > suggested a follow-up patch, not a v3.
 > 
 > I know some maintainers' "tip bots" do this, but not all apparently.
-> 
->  drivers/base/platform.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 506a0175a5a7..ec974ba9c0c4 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -157,8 +157,13 @@ int platform_get_irq(struct platform_device *dev, unsigned int num)
->  	 * the device will only expose one IRQ, and this fallback
->  	 * allows a common code path across either kind of resource.
->  	 */
-> -	if (num == 0 && has_acpi_companion(&dev->dev))
-> -		return acpi_dev_gpio_irq_get(ACPI_COMPANION(&dev->dev), num);
-> +	if (num == 0 && has_acpi_companion(&dev->dev)) {
-> +		int ret = acpi_dev_gpio_irq_get(ACPI_COMPANION(&dev->dev), num);
-> +
-> +		/* Our callers expect -ENXIO for missing IRQs. */
-> +		if (ret >= 0 || ret == -EPROBE_DEFER)
-> +			return ret;
-> +	}
->  
->  	return -ENXIO;
->  #endif
-> -- 
-> 2.22.0.709.g102302147b-goog
-> 
 
--- 
-With Best Regards,
-Andy Shevchenko
+We can't drown out mailing list traffic with a ton of "this patch was
+applied" emails.  We send them directly to the people involved in it.
 
+Note, you can always set up your own "watch" for stuff like this by
+pulling linux-next every day and sending yourself any new patches that
+get applied for any specific files/directories you are concerned about.
 
+thanks,
+
+greg k-h
