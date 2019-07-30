@@ -2,106 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 056C57A735
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2019 13:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77B2B7ACB1
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2019 17:48:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728664AbfG3LqB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Jul 2019 07:46:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39920 "EHLO mail.kernel.org"
+        id S1728128AbfG3Psx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Jul 2019 11:48:53 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:34090 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728590AbfG3LqA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 30 Jul 2019 07:46:00 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1725974AbfG3Psw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 30 Jul 2019 11:48:52 -0400
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D767D206E0;
-        Tue, 30 Jul 2019 11:45:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564487159;
-        bh=MdCmTq2/62GOla3xYdR1q+U30DvmMzx9ilbakjTfbuY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hNRILnIGpwN0IQ17UgUT9sNy5oW3a2JqVMfOgkS1x5zDIp+bnrnOA5gUA3vFMnckT
-         ImalFhGvGWcRgYOH4oWtJGoEErv0Hg16NWumKADitrYbYxaF5WUPl3I9wt65hcy2D5
-         UpEcc6XDJDwSe5h8nvuSvpKdK1R8vJAO2KCAu+Nk=
-Date:   Tue, 30 Jul 2019 13:45:56 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-kernel@vger.kernel.org, andriy.shevchenko@linux.intel.com,
-        Salvatore Bellizzi <salvatore.bellizzi@linux.seppia.net>,
-        andy.shevchenko@gmail.com,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        egranata@chromium.org, egranata@google.com,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-acpi@vger.kernel.org, Benson Leung <bleung@chromium.org>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] driver core: platform: return -ENXIO for missing GpioInt
-Message-ID: <20190730114556.GA10673@kroah.com>
-References: <20190729204954.25510-1-briannorris@chromium.org>
+        by mx1.redhat.com (Postfix) with ESMTPS id 7D0CD300194A;
+        Tue, 30 Jul 2019 15:48:52 +0000 (UTC)
+Received: from shalem.localdomain.com (unknown [10.36.118.84])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C48AD600CC;
+        Tue, 30 Jul 2019 15:48:50 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-pwm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        youling257@gmail.com,
+        Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
+Subject: [PATCH 5.3 regression fix] pwm: Fallback to the static lookup-list when acpi_pwm_get fails
+Date:   Tue, 30 Jul 2019 17:48:48 +0200
+Message-Id: <20190730154848.5164-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190729204954.25510-1-briannorris@chromium.org>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.40]); Tue, 30 Jul 2019 15:48:52 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 29, 2019 at 01:49:54PM -0700, Brian Norris wrote:
-> Commit daaef255dc96 ("driver: platform: Support parsing GpioInt 0 in
-> platform_get_irq()") broke the Embedded Controller driver on most LPC
-> Chromebooks (i.e., most x86 Chromebooks), because cros_ec_lpc expects
-> platform_get_irq() to return -ENXIO for non-existent IRQs.
-> Unfortunately, acpi_dev_gpio_irq_get() doesn't follow this convention
-> and returns -ENOENT instead. So we get this error from cros_ec_lpc:
-> 
->    couldn't retrieve IRQ number (-2)
-> 
-> I see a variety of drivers that treat -ENXIO specially, so rather than
-> fix all of them, let's fix up the API to restore its previous behavior.
-> 
-> I reported this on v2 of this patch:
-> 
-> https://lore.kernel.org/lkml/20190220180538.GA42642@google.com/
-> 
-> but apparently the patch had already been merged before v3 got sent out:
-> 
-> https://lore.kernel.org/lkml/20190221193429.161300-1-egranata@chromium.org/
-> 
-> and the result is that the bug landed and remains unfixed.
-> 
-> I differ from the v3 patch by:
->  * allowing for ret==0, even though acpi_dev_gpio_irq_get() specifically
->    documents (and enforces) that 0 is not a valid return value (noted on
->    the v3 review)
->  * adding a small comment
-> 
-> Reported-by: Brian Norris <briannorris@chromium.org>
-> Reported-by: Salvatore Bellizzi <salvatore.bellizzi@linux.seppia.net>
-> Cc: Enrico Granata <egranata@chromium.org>
-> Cc: <stable@vger.kernel.org>
-> Fixes: daaef255dc96 ("driver: platform: Support parsing GpioInt 0 in platform_get_irq()")
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Acked-by: Enrico Granata <egranata@google.com>
-> ---
-> Side note: it might have helped alleviate some of this pain if there
-> were email notifications to the mailing list when a patch gets applied.
-> I didn't realize (and I'm not sure if Enrico did) that v2 was already
-> merged by the time I noted its mistakes. If I had known, I would have
-> suggested a follow-up patch, not a v3.
-> 
-> I know some maintainers' "tip bots" do this, but not all apparently.
+Commit 4a6ef8e37c4d ("pwm: Add support referencing PWMs from ACPI")
+made pwm_get unconditionally return the acpi_pwm_get return value if
+the device passed to pwm_get has an ACPI fwnode.
 
-We can't drown out mailing list traffic with a ton of "this patch was
-applied" emails.  We send them directly to the people involved in it.
+But even if the passed in device has an ACPI fwnode, it does not
+necessarily have the necessary ACPI package defining its pwm bindings,
+especially since the binding / API of this ACPI package has only been
+introduced very recently.
 
-Note, you can always set up your own "watch" for stuff like this by
-pulling linux-next every day and sending yourself any new patches that
-get applied for any specific files/directories you are concerned about.
+Up until now X86/ACPI devices which use a separate pwm controller for
+controlling their LCD screen's backlight brightness have been relying
+on the static lookup-list to get their pwm.
 
-thanks,
+pwm_get unconditionally returning the acpi_pwm_get return value breaks
+this, breaking backlight control on these devices.
 
-greg k-h
+This commit fixes this by making pwm_get fall back to the static
+lookup-list if acpi_pwm_get returns -ENOENT.
+
+BugLink: https://bugs.freedesktop.org/show_bug.cgi?id=96571
+Reported-by: youling257@gmail.com
+Fixes: 4a6ef8e37c4d ("pwm: Add support referencing PWMs from ACPI")
+Cc: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/pwm/core.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index c3ab07ab31a9..8edfac17364e 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -882,8 +882,11 @@ struct pwm_device *pwm_get(struct device *dev, const char *con_id)
+ 		return of_pwm_get(dev, dev->of_node, con_id);
+ 
+ 	/* then lookup via ACPI */
+-	if (dev && is_acpi_node(dev->fwnode))
+-		return acpi_pwm_get(dev->fwnode);
++	if (dev && is_acpi_node(dev->fwnode)) {
++		pwm = acpi_pwm_get(dev->fwnode);
++		if (!IS_ERR(pwm) || PTR_ERR(pwm) != -ENOENT)
++			return pwm;
++	}
+ 
+ 	/*
+ 	 * We look up the provider in the static table typically provided by
+-- 
+2.21.0
+
