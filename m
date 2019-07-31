@@ -2,99 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D9C97B5FF
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2019 01:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 323667BEB9
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2019 12:56:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726738AbfG3XC2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Jul 2019 19:02:28 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:36635 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726689AbfG3XC2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jul 2019 19:02:28 -0400
-Received: by mail-lf1-f68.google.com with SMTP id q26so45980735lfc.3
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Jul 2019 16:02:27 -0700 (PDT)
+        id S1726073AbfGaK4x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 31 Jul 2019 06:56:53 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:38878 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726751AbfGaK4w (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 31 Jul 2019 06:56:52 -0400
+Received: by mail-lj1-f193.google.com with SMTP id r9so65138695ljg.5
+        for <linux-acpi@vger.kernel.org>; Wed, 31 Jul 2019 03:56:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=T9/kCG+kgWmWyocQ8aukdYNszqXmy4B/FV1srsKD6M4=;
-        b=M/KBtxYZd/o/LS6luyddmmyRKh1YviRHkFXBh42UtAD70mFwuVs9cxNvFwMQlv41Nb
-         4p3l0XJlEMHCvqPlJkCLQDsNABMaHVe3sB5QYn8iK5QRyPK7OI3wVfnnsWk3GZcKf4Mc
-         C4dn4WbtHT2LTe56EX03vkrH6oZ6t3hbPPxoVVNjARNgIDXcgpSEB5Sb5CGhaJN2P39K
-         2B1tC9ujDP50NBBbl3vyrodHmjFR5tE+8E/S6tKJbCFzVLy8ce+XVxeYX/ZS2f7rN+na
-         /ETirSjISrdNXcGtjeOWBNwrs5D5UVqhJIMJamtGQ/7auBkUnU3MSvS0keMMdbpv5Yfu
-         hWMw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lWUtb7zcpjriA4PXCl0a7ByZXS09QukiEbZhHIw2Fjk=;
+        b=jH3yCYNA8+Yew2LxOI67IHkIjKIsIvFHYzr03cz0THjJFGu0OSsiDwfWUan3chbQpm
+         mZEmEi3yMQkW1v4HReuKE3j4j9p/8Wx1FKkBKXDmoKkeeNOzFy1e48b9yGjieDjSvsLl
+         q6eJ0Q3q7/4RU5n4aXwx1Il4o8xewvLD3mclXDsKyWQwmw6bds/boYFyVWwpAL1NV7N6
+         P3d9H0F6jh2iWh6vDuzyv9gWB6jawLP/p5I8bS9gfxJ4IGJzLQUx1/wwy2IxRGylUo9x
+         Mqx/a4sZNY16xHx/NQ2Se9O54+kiXJrC7MQtmbgVdCRhev9A/ltJvrS1pJnXqlQhKfwl
+         xyXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=T9/kCG+kgWmWyocQ8aukdYNszqXmy4B/FV1srsKD6M4=;
-        b=awmceZCfCs5OZCfKdFh2KpJp6KLyQDm2E/Saj0+4rNkE3rQZv2y03xCmFy8ISVJC/q
-         X8gVWslJjAHtima78hknfj3wDPoIw4CnSiXh4CarfqMC9jn9YQPpnF8zZamN7j6tu2mV
-         8YxcCWy9z+6JvtIdnjyvymlVfKYZ6/PuV/mptRIPOq/Zqvs4QPms9wvXKNP6SOetLzo5
-         1hdP9eaQ7cXuKz6vdHlNvQouO2MG7dpMNWUIBoIT+vnvmAFdz3Gfwfc66lrMP6UQ8FCv
-         ls6BLFp6vbf/5EqXQHrRCtk5/XLX3GoA+uKfrTYAgOGnffZuKaHmx8Eu5Egjv4LDMcZN
-         uXRg==
-X-Gm-Message-State: APjAAAWaR239/xmc3begs5gyJyPg7RCWdpQaCkWbYprZtP098UDJW4XC
-        vTOCGRBk55VnCMjkdy6CkhI5DTT566/iNlX5EXpH6g==
-X-Google-Smtp-Source: APXvYqyUifC+ugNDNCn76iknQT/jAoMfy5FjFx/PMiUhBnzuvz04jorFGrHiYe2Ue694maiy7sSl8MZcm9C0DMRdmew=
-X-Received: by 2002:ac2:5382:: with SMTP id g2mr54299529lfh.92.1564527746494;
- Tue, 30 Jul 2019 16:02:26 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lWUtb7zcpjriA4PXCl0a7ByZXS09QukiEbZhHIw2Fjk=;
+        b=Zm8xavyknGZVNpt39EtUFDydUen+HgQZmidRJcC7d0nesZfiCD1/C1a4wLzdsLUJOg
+         q24b4lnJI53QKDIYmfEJkzU+WS9zzRRO4DG1VN0E5SeXNb8v0NP5Se33TVzBduJc8Wd7
+         0KLDwZf3ixQEadOT5lVO4VefDkDAd6Q/CaVBWqhE57KTSmJH30TUePuny7qR50VVxnyD
+         AbUt+54ljHex5Wq2EfP8pGveKoetdjjfHURtY7Lbzdb/Eb2OpbQ42VnU8phHfEEefcmg
+         8IMr0grojyJe+VzW/x/aorfBS5IpdY0iD7asXEgvwlOQAbIhjXNE4XEv22ga0QilmAyS
+         rctw==
+X-Gm-Message-State: APjAAAUvTIMB+d6AqBo5efMNbEaLH6GCnyQxQYFlFHljLQw1xcbr/7bi
+        wovapSDX3MMzWNZPb7wtRgd0wQ==
+X-Google-Smtp-Source: APXvYqxyeEQO8uE5Fdhzw9ds+s0/2GTAh6VgDFeXsuRN/l7VM3timHKnAv7SQw94o9XSRrHPLEphKA==
+X-Received: by 2002:a2e:b0e6:: with SMTP id h6mr12041708ljl.18.1564570610667;
+        Wed, 31 Jul 2019 03:56:50 -0700 (PDT)
+Received: from localhost (c-243c70d5.07-21-73746f28.bbcust.telenor.se. [213.112.60.36])
+        by smtp.gmail.com with ESMTPSA id l11sm13191843lfc.18.2019.07.31.03.56.49
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 31 Jul 2019 03:56:50 -0700 (PDT)
+From:   Anders Roxell <anders.roxell@linaro.org>
+To:     mika.westerberg@linux.intel.com, wsa@the-dreams.de
+Cc:     linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Anders Roxell <anders.roxell@linaro.org>
+Subject: [PATCH] i2c: core: remove unused function
+Date:   Wed, 31 Jul 2019 12:56:42 +0200
+Message-Id: <20190731105642.29664-1-anders.roxell@linaro.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20190730104337.21235-1-andriy.shevchenko@linux.intel.com> <20190730104337.21235-3-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20190730104337.21235-3-andriy.shevchenko@linux.intel.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 31 Jul 2019 01:02:14 +0200
-Message-ID: <CACRpkdZXTRENogogOxrB6F5aXQSd5qehXFP1R3ax0um1XU93Aw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] gpiolib-acpi: Move acpi_dev_add_driver_gpios() et
- al to consumer.h
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jul 30, 2019 at 12:43 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+GCC warns taht function 'i2c_acpi_find_match_adapter()' is not used.
 
-> The API, which belongs to GPIO library, is foreign to ACPI headers. Earli=
-er
-> we moved out I=C2=B2C out of the latter, and now it's time for
-> acpi_dev_add_driver_gpios() et al.
->
-> For time being the acpi_gpio_get_irq_resource() and acpi_dev_gpio_irq_get=
-()
-> are left untouched as they need more thought about.
->
-> Note, it requires uninline acpi_dev_remove_driver_gpios() to keep purity =
-of
-> consumer.h.
->
-> Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-> Cc: Liam Girdwood <liam.r.girdwood@linux.intel.com>
-> Cc: Jie Yang <yang.jie@linux.intel.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: alsa-devel@alsa-project.org (moderated list:INTEL ASoC DRIVERS)
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+../drivers/i2c/i2c-core-acpi.c:347:12: warning:
+  ‘i2c_acpi_find_match_adapter’ defined but not used [-Wunused-function]
+ static int i2c_acpi_find_match_adapter(struct device *dev, const void *data)
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Patch applied!
+Rework to remove the function 'i2c_acpi_find_match_adapter()'.
 
-Just a bit worried that this will collide with Masahiro's #ifdef-reduction,
-but I wanted to keep your series together.
+Fixes: 00500147cbd3 ("drivers: Introduce device lookup variants by ACPI_COMPANION device")
+Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
+---
+ drivers/i2c/i2c-core-acpi.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-Yours,
-Linus Walleij
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index bc80aafb521f..bb6b39fe343a 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -344,17 +344,6 @@ u32 i2c_acpi_find_bus_speed(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(i2c_acpi_find_bus_speed);
+ 
+-static int i2c_acpi_find_match_adapter(struct device *dev, const void *data)
+-{
+-	struct i2c_adapter *adapter = i2c_verify_adapter(dev);
+-
+-	if (!adapter)
+-		return 0;
+-
+-	return ACPI_HANDLE(dev) == (acpi_handle)data;
+-}
+-
+-
+ struct i2c_adapter *i2c_acpi_find_adapter_by_handle(acpi_handle handle)
+ {
+ 	struct device *dev = bus_find_device_by_acpi_dev(&i2c_bus_type, handle);
+-- 
+2.20.1
+
