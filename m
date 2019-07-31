@@ -2,83 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E40757C847
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2019 18:13:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 213747D013
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2019 23:30:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728816AbfGaQM6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 31 Jul 2019 12:12:58 -0400
-Received: from mx0a-00154904.pphosted.com ([148.163.133.20]:30086 "EHLO
-        mx0a-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725209AbfGaQM6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 31 Jul 2019 12:12:58 -0400
-Received: from pps.filterd (m0170390.ppops.net [127.0.0.1])
-        by mx0a-00154904.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6VG9bon026232;
-        Wed, 31 Jul 2019 12:12:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=smtpout1;
- bh=bvuyEyYL0dYLQuXorPs3yeHCIRdNISCr/Vk2kCK/8jo=;
- b=Xr7DSeFBHEySVZFjVcTuWQtiLeyfzDjbO5EXS03DYvA7PdiZCpggN1d6+4qpJw3+emjp
- uhWstbziepwlfgLW+kHtXg6QDYloWA5UQ4EZH7xR0uhA9Yy9+KW8l9HDYurUABtMEUyS
- 743o7tOVzmL74EQgdDfIjXtiNduiusFi2aE63LPiAkgzTMehIS3KnplyA9XtuTYBALFg
- 56cIThISVUyZJY1CVXTpDLo9KXEH8WJkK4bAsry6bjPfVtlmFSWWKpp05ipCms1iC55A
- 75dCUM7gH597K1tAntWsdl11kkmLwhcF+6fbYHno2To/1mSn9Xln694TQvLItxTczpUa rw== 
-Received: from mx0b-00154901.pphosted.com (mx0b-00154901.pphosted.com [67.231.157.37])
-        by mx0a-00154904.pphosted.com with ESMTP id 2u2twectvf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 31 Jul 2019 12:12:57 -0400
-Received: from pps.filterd (m0144103.ppops.net [127.0.0.1])
-        by mx0b-00154901.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6VG7rLi052078;
-        Wed, 31 Jul 2019 12:12:56 -0400
-Received: from ausxippc110.us.dell.com (AUSXIPPC110.us.dell.com [143.166.85.200])
-        by mx0b-00154901.pphosted.com with ESMTP id 2u3c0t2ntd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 31 Jul 2019 12:12:56 -0400
-X-LoopCount0: from 10.166.132.131
-X-PREM-Routing: D-Outbound
-X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
-   d="scan'208";a="838363177"
-From:   <Mario.Limonciello@dell.com>
-To:     <kai.heng.feng@canonical.com>, <rjw@rjwysocki.net>
-CC:     <mika.westerberg@linux.intel.com>, <anthony.wong@canonical.com>,
-        <linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+        id S1729188AbfGaVaK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 31 Jul 2019 17:30:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39904 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726096AbfGaVaJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 31 Jul 2019 17:30:09 -0400
+Received: from localhost (unknown [69.71.4.100])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1EF1E20679;
+        Wed, 31 Jul 2019 21:30:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564608608;
+        bh=oGnVpX4dVrD+Qozo8zDA1ZPwnhAHqFMVwK0fzQ1mFIQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GsHIIfWm8iROi366bFleIDVx8TuDAQ/JvQk8TqpznFLhj3NbKvFq927w/uQR2pA3g
+         sANKPraFKMDiKLp4beYs+dKfgz8KDH+fTcPkhcND/J2vzdUQvyjMX5aDm7P7yyi6M5
+         RwsVnvuqMelMzMi9+Y4CwkZO5lIAcdnIF+lCJBfY=
+Date:   Wed, 31 Jul 2019 16:30:01 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        Anthony Wong <anthony.wong@canonical.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>
 Subject: Re: [Regression] Commit "ACPI: PM: Allow transitions to D0 to occur
  in special cases"
-Thread-Topic: [Regression] Commit "ACPI: PM: Allow transitions to D0 to occur
- in special cases"
-Thread-Index: AQHVR7mqkcvT3R0NfUWTXYuokpN3/6bk5bx4
-Date:   Wed, 31 Jul 2019 16:12:54 +0000
-Message-ID: <1564589574204.11850@Dell.com>
+Message-ID: <20190731213001.GC151852@google.com>
 References: <578BD3F1-B185-471B-A3EB-FF71BA34B822@canonical.com>
-In-Reply-To: <578BD3F1-B185-471B-A3EB-FF71BA34B822@canonical.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.177.49.166]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-31_08:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=603 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1907310160
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=715 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1907310161
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <578BD3F1-B185-471B-A3EB-FF71BA34B822@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-I've actually been seeing worse behavior, in that I can't get Thunderbolt t=
-o work at all with 5.3rc1 or 5.3rc2 on the 9380 system I have on hand, simi=
-lar messages related to link timeouts. =
+[+cc Thunderbolt folks, see
+https://lore.kernel.org/r/578BD3F1-B185-471B-A3EB-FF71BA34B822@canonical.com
+for beginning of thread]
+
+On Thu, Aug 01, 2019 at 12:04:29AM +0800, Kai-Heng Feng wrote:
+> Hi,
+> 
+> After commit "ACPI: PM: Allow transitions to D0 to occur in special cases”,
+
+This is f850a48a0799 ("ACPI: PM: Allow transitions to D0 to occur in
+special cases").
+
+> Thunderbolt on XPS 9380 spews the following when it runtime resumes:
+> [   36.136554] pci_raw_set_power_state: 25 callbacks suppressed
+> [   36.136558] pcieport 0000:03:00.0: Refused to change power state,
+> currently in D3
+
+We really should be smarter about what we print here, maybe something
+like the patch below?
+
+pci_raw_set_power_state() prints "Refused to change power state" if
+(in this case) the value of (PCI_PM_CTRL & PCI_PM_CTRL_STATE_MASK) is
+0x3.  Most likely we got 0xffff from PCI_PM_CTRL because the device is
+in D3cold.  If the device is in D3cold, pci_raw_set_power_state() has
+no hope of doing anything because it only uses PCI PM config
+registers, and they're inaccessible in D3cold.
+
+Presumably there's some platform PM method that is supposed to take
+the device out of D3cold, and maybe we're missing that somehow?
+
+Based on an lspci I found at [1], I suspect 03:00.0 is a Thunderbolt
+switch leading to [bus 04-6d].  From your log, it looks like these
+devices don't work:
+
+  03:00.0 Thunderbolt Upstream Port
+  04:00.0 Thunderbolt Downstream Port
+  04:01.0 Thunderbolt Downstream Port (Slot 1)
+  04:02.0 Thunderbolt Downstream Port
+  04:04.0 Thunderbolt Downstream Port (Slot 4)
+  05:00.0 Thunderbolt NHI
+  39:00.0 XHCI USB
+
+If 03:00.0 is stuck in D3cold, that would explain why none of these
+things work.
+
+[1] https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1826125
+
+
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 29ed5ec1ac27..63ca963ebff9 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -851,6 +852,11 @@ static int pci_raw_set_power_state(struct pci_dev *dev, pci_power_t state)
+ 		return -EIO;
+ 
+ 	pci_read_config_word(dev, dev->pm_cap + PCI_PM_CTRL, &pmcsr);
++	if (pmcsr == (u16) ~0) {
++		pci_err(dev, "device not responding; can't change to power state D%d\n",
++			state);
++		return -EIO;
++	}
+ 
+ 	/*
+ 	 * If we're (effectively) in D3, force entire word to 0.
