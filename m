@@ -2,62 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30DF17C3DC
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2019 15:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E617D7C411
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2019 15:53:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728211AbfGaNoY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 31 Jul 2019 09:44:24 -0400
-Received: from mx2.suse.de ([195.135.220.15]:40070 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726907AbfGaNoY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 31 Jul 2019 09:44:24 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id B8AA4ABD0;
-        Wed, 31 Jul 2019 13:44:22 +0000 (UTC)
-Date:   Wed, 31 Jul 2019 15:44:22 +0200
-From:   Michal Hocko <mhocko@kernel.org>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org,
+        id S1727512AbfGaNxJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 31 Jul 2019 09:53:09 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:20003 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726592AbfGaNxI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 31 Jul 2019 09:53:08 -0400
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id CCEAB3079B62;
+        Wed, 31 Jul 2019 13:53:08 +0000 (UTC)
+Received: from t460s.redhat.com (ovpn-117-240.ams2.redhat.com [10.36.117.240])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2C5081001959;
+        Wed, 31 Jul 2019 13:53:07 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, linux-acpi@vger.kernel.org,
+        David Hildenbrand <david@redhat.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Michal Hocko <mhocko@suse.com>,
         Oscar Salvador <osalvador@suse.de>,
         Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v1] drivers/acpi/scan.c: Fixup "acquire
- device_hotplug_lock in acpi_scan_init()"
-Message-ID: <20190731134422.GS9330@dhcp22.suse.cz>
-References: <20190731123201.13893-1-david@redhat.com>
- <20190731125334.GM9330@dhcp22.suse.cz>
- <d3cc595d-7e6f-ef6f-044c-b20bd1de3fb0@redhat.com>
- <20190731131408.GP9330@dhcp22.suse.cz>
- <23f28590-7765-bcd9-15f2-94e985b64218@redhat.com>
- <20190731133344.GR9330@dhcp22.suse.cz>
- <b135e167-a0e1-0772-559b-6375ea40c9c4@redhat.com>
+Subject: [PATCH v1] drivers/acpi/scan.c: Document why we don't need the device_hotplug_lock
+Date:   Wed, 31 Jul 2019 15:53:06 +0200
+Message-Id: <20190731135306.31524-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b135e167-a0e1-0772-559b-6375ea40c9c4@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Wed, 31 Jul 2019 13:53:08 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed 31-07-19 15:37:56, David Hildenbrand wrote:
-[...]
-> The other extreme I saw: People dropping locks because they think they
-> can be smart but end up making developers debug crashes for months (I am
-> not lying).
+Let's document why the lock is not needed in acpi_scan_init(), right now
+this is not really obvious.
 
-Any lock removal should be accompanied with an explanation that is to be
-a subject of the review. Sure people can make mistakes but there is no
-way to around it I can see.
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+
+@Andrew, can you drop "drivers/acpi/scan.c: acquire device_hotplug_lock in
+acpi_scan_init()" and add this patch instead? Thanks
+
+---
+ drivers/acpi/scan.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 0e28270b0fd8..8444af6cd514 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -2204,6 +2204,12 @@ int __init acpi_scan_init(void)
+ 	acpi_gpe_apply_masked_gpes();
+ 	acpi_update_all_gpes();
  
-> As I want to move on with this patch and have other stuff to work on, I
-> will adjust the comment you gave and add that instead of the lock.
-
-Thanks!
-
++	/*
++	 * Although we call__add_memory() that is documented to require the
++	 * device_hotplug_lock, it is not necessary here because this is an
++	 * early code when userspace or any other code path cannot trigger
++	 * hotplug/hotunplug operations.
++	 */
+ 	mutex_lock(&acpi_scan_lock);
+ 	/*
+ 	 * Enumerate devices in the ACPI namespace.
 -- 
-Michal Hocko
-SUSE Labs
+2.21.0
+
