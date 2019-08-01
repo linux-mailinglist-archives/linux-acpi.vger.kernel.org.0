@@ -2,81 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C8C8F7DB6F
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Aug 2019 14:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64A057DF8E
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Aug 2019 17:59:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729128AbfHAM1i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Aug 2019 08:27:38 -0400
-Received: from sauhun.de ([88.99.104.3]:52378 "EHLO pokefinder.org"
+        id S1732376AbfHAP6m (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Aug 2019 11:58:42 -0400
+Received: from foss.arm.com ([217.140.110.172]:38322 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728903AbfHAM1i (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 1 Aug 2019 08:27:38 -0400
-Received: from localhost (p54B333D2.dip0.t-ipconnect.de [84.179.51.210])
-        by pokefinder.org (Postfix) with ESMTPSA id 026C62C2817;
-        Thu,  1 Aug 2019 14:27:35 +0200 (CEST)
-Date:   Thu, 1 Aug 2019 14:27:35 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
-        rafael@kernel.org, linux-arm-kernel@lists.infradead.org,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        linux-i2c@vger.kernel.org
-Subject: Re: [PATCH v3 5/7] drivers: Introduce device lookup variants by
- ACPI_COMPANION device
-Message-ID: <20190801122735.GD1659@ninjato>
-References: <20190723221838.12024-1-suzuki.poulose@arm.com>
- <20190723221838.12024-6-suzuki.poulose@arm.com>
- <20190726202353.GA963@kunai>
- <20190801115856.GS23480@smile.fi.intel.com>
- <20190801120830.GA1659@ninjato>
- <20190801122106.GU23480@smile.fi.intel.com>
+        id S1732364AbfHAP6l (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 1 Aug 2019 11:58:41 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 63AE61597;
+        Thu,  1 Aug 2019 08:58:41 -0700 (PDT)
+Received: from e107155-lin (e107155-lin.cambridge.arm.com [10.1.196.42])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B3393F694;
+        Thu,  1 Aug 2019 08:58:40 -0700 (PDT)
+Date:   Thu, 1 Aug 2019 16:58:38 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Jeremy Linton <jeremy.linton@arm.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        catalin.marinas@arm.com, will@kernel.org, rjw@rjwysocki.net,
+        lenb@kernel.org, lorenzo.pieralisi@arm.com,
+        Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH v4 2/2] arm64: topology: Use PPTT to determine if PE is a
+ thread
+Message-ID: <20190801155838.GE23424@e107155-lin>
+References: <20190801034634.26913-1-jeremy.linton@arm.com>
+ <20190801034634.26913-3-jeremy.linton@arm.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="n2Pv11Ogg/Ox8ay5"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190801122106.GU23480@smile.fi.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190801034634.26913-3-jeremy.linton@arm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Wed, Jul 31, 2019 at 10:46:34PM -0500, Jeremy Linton wrote:
+> ACPI 6.3 adds a thread flag to represent if a CPU/PE is
+> actually a thread. Given that the MPIDR_MT bit may not
+> represent this information consistently on homogeneous machines
+> we should prefer the PPTT flag if its available.
+>
 
---n2Pv11Ogg/Ox8ay5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 
-
-> It's again not Cc'ed to all parties.
-> But OK, looks good to me.
-> Tough may be Jarkko can test all this.
-
-To be fair, only Mika is listed as I2C ACPI maintainer. Feel free to add
-more :) I assume Mika doesn't mind.
-
-
---n2Pv11Ogg/Ox8ay5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl1C2rcACgkQFA3kzBSg
-KbbC7g/+JDJ/wQtaEgLwko1svAEbCfU6wxRadTwM0jWd4adQgIpPuwceKEDRV5ap
-sdqUoIDjY4UInI7HeUYLRTY/VUIaOmQ4C0VkWvgYFnAsZoAU/GWKrGVnJ74C34oK
-L1n76meYZVFj1+kuOPce8PKPbZ1N6t2N0H5VHChczypiPldel2s/UiW5Myk18T5v
-ZBt/xDU/C+vn2IPRKu5ybKFWzsSGIeAq0D/LvrnsO6q7z3bu8nmOL8rNTQCOVVwl
-vG1B3arBO1jwtT5kVA3/1hQZDoDucaXlFNw/8oL/jSHCajH2kKf/Ux0D4gAjK18y
-XWexgt84CLU9Q1MIwuYoJ+yuB8jyeJVdWAEkDSBVS6qUSZRx+00arhni5AJKWKGG
-aXe/UHiDv1FAgyqekJDwerz3pRRULCqtiGTZ3H3IOlLc1FtTibJ5VJeDZ8dH/+4z
-+TeZiW+iLpNDufs3x8Sf6I+StIUB0bDWlvWyY2rdcL0YqozlUMYlQLvRfjOJLf9t
-3C1S9F4JB8pf9XOxPHKMIUgXpruGuWSLKm2m+rX7X49kQ3Ey4YRAhhVGT8PT9e3B
-1YtgOqFwsdaexAc3Y1LoVutgoLEARcqZ4q30pao5uIVzy7reLFmM/u3NRJDTKurR
-UxJH+EIkqg6UzLXABaZ5mTPYOFeiNDbjRAvLF7yBFENM9bBw2ZY=
-=K7Ly
------END PGP SIGNATURE-----
-
---n2Pv11Ogg/Ox8ay5--
+--
+Regards,
+Sudeep
