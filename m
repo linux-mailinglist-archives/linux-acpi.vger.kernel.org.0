@@ -2,80 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B8DB7D1EE
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Aug 2019 01:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8F4A7D405
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Aug 2019 05:46:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730720AbfGaXbL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 31 Jul 2019 19:31:11 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:48065 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730691AbfGaXbL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 31 Jul 2019 19:31:11 -0400
-Received: from 79.184.255.110.ipv4.supernova.orange.pl (79.184.255.110) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.275)
- id 962226490afa9733; Thu, 1 Aug 2019 01:31:08 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>
-Subject: [PATCH] ACPI: PM: Fix regression in acpi_device_set_power()
-Date:   Thu, 01 Aug 2019 01:31:08 +0200
-Message-ID: <4199592.UtrPOv3ZmA@kreacher>
+        id S1728974AbfHADqm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 31 Jul 2019 23:46:42 -0400
+Received: from foss.arm.com ([217.140.110.172]:57772 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727948AbfHADql (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 31 Jul 2019 23:46:41 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4E5A2344;
+        Wed, 31 Jul 2019 20:46:41 -0700 (PDT)
+Received: from mammon-tx2.austin.arm.com (mammon-tx2.austin.arm.com [10.118.30.64])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3D7BA3F575;
+        Wed, 31 Jul 2019 20:46:41 -0700 (PDT)
+From:   Jeremy Linton <jeremy.linton@arm.com>
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     linux-acpi@vger.kernel.org, catalin.marinas@arm.com,
+        will@kernel.org, rjw@rjwysocki.net, lenb@kernel.org,
+        lorenzo.pieralisi@arm.com, sudeep.holla@arm.com,
+        Jeremy Linton <jeremy.linton@arm.com>
+Subject: [PATCH v4 0/2] arm64/PPTT ACPI 6.3 thread flag support
+Date:   Wed, 31 Jul 2019 22:46:32 -0500
+Message-Id: <20190801034634.26913-1-jeremy.linton@arm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+ACPI 6.3 adds a flag to the CPU node to indicate whether
+the given CPU is a thread. Add a function to return that
+information for a given linux logical CPU and then utilize
+it while building the arm64 topology.
 
-Commit f850a48a0799 ("ACPI: PM: Allow transitions to D0 to occur in
-special cases") overlooked the fact that acpi_power_transition() may
-change the power.state value for the target device and if that
-happens, it may confuse acpi_device_set_power() and cause it to
-omit the _PS0 evaluation which on some systems is necessary to
-change power states of devices from low-power to D0.
+v3->v4: Remove table revision cache as this code path is only
+	       called during boot and there aren't any
+	       indications that it presents a perf issue.
+	Rebase to 5.3
 
-Fix that by saving the current value of power.state for the
-target device before passing it to acpi_power_transition() and
-using the saved value in a subsequent check.
+v2->v3: Clarify and tweak the return from check_acpi_cpu_flag()
+	Cache the PPTT table revision to avoid repeat
+	      acpi_table_get/put calls in the case of
+	      missing or old PPTT tables.
 
-Fixes: f850a48a0799 ("ACPI: PM: Allow transitions to D0 to occur in special cases")
-Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Reported-by: Mario Limonciello <mario.limonciello@dell.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/device_pm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+v1->v2:
+	Return ENOENT instead on ENONET.
 
-Index: linux-pm/drivers/acpi/device_pm.c
-===================================================================
---- linux-pm.orig/drivers/acpi/device_pm.c
-+++ linux-pm/drivers/acpi/device_pm.c
-@@ -236,13 +236,15 @@ int acpi_device_set_power(struct acpi_de
- 		if (device->power.flags.power_resources)
- 			result = acpi_power_transition(device, target_state);
- 	} else {
-+		int cur_state = device->power.state;
-+
- 		if (device->power.flags.power_resources) {
- 			result = acpi_power_transition(device, ACPI_STATE_D0);
- 			if (result)
- 				goto end;
- 		}
- 
--		if (device->power.state == ACPI_STATE_D0) {
-+		if (cur_state == ACPI_STATE_D0) {
- 			int psc;
- 
- 			/* Nothing to do here if _PSC is not present. */
+Jeremy Linton (2):
+  ACPI/PPTT: Add support for ACPI 6.3 thread flag
+  arm64: topology: Use PPTT to determine if PE is a thread
 
+ arch/arm64/kernel/topology.c |  8 ++++--
+ drivers/acpi/pptt.c          | 54 +++++++++++++++++++++++++++++++++++-
+ include/linux/acpi.h         |  5 ++++
+ 3 files changed, 63 insertions(+), 4 deletions(-)
 
+-- 
+2.21.0
 
