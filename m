@@ -2,18 +2,18 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E26087F551
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2019 12:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 064F07F54E
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2019 12:45:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730866AbfHBKpv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Aug 2019 06:45:51 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:61369 "EHLO
+        id S1730682AbfHBKpt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Aug 2019 06:45:49 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:62497 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730642AbfHBKpu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Aug 2019 06:45:50 -0400
+        with ESMTP id S1730424AbfHBKpt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Aug 2019 06:45:49 -0400
 Received: from 79.184.255.110.ipv4.supernova.orange.pl (79.184.255.110) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.275)
- id 1df5efcae0810c49; Fri, 2 Aug 2019 12:45:47 +0200
+ id 6d0e2bb3b2824af2; Fri, 2 Aug 2019 12:45:47 +0200
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     Linux PM <linux-pm@vger.kernel.org>,
@@ -23,9 +23,9 @@ Cc:     Linux PM <linux-pm@vger.kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Mario Limonciello <mario.limonciello@dell.com>,
         Kai-Heng Feng <kai.heng.feng@canonical.com>
-Subject: [PATCH v3 6/8] ACPI: EC: PM: Consolidate some code depending on PM_SLEEP
-Date:   Fri, 02 Aug 2019 12:43:08 +0200
-Message-ID: <2097262.dE6Kv6hMgP@kreacher>
+Subject: [PATCH v3 7/8] ACPI: EC: PM: Make acpi_ec_dispatch_gpe() print debug message
+Date:   Fri, 02 Aug 2019 12:44:17 +0200
+Message-ID: <1822028.vPQc0PzIAM@kreacher>
 In-Reply-To: <5997740.FPbUVk04hV@kreacher>
 References: <5997740.FPbUVk04hV@kreacher>
 MIME-Version: 1.0
@@ -38,116 +38,36 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Move some routines, including acpi_ec_dispatch_gpe(), that are only
-used if CONFIG_PM_SLEEP is set to the #ifdef block containing the EC
-suspend and resume callbacks, to make the "full EC PM picture" easier
-to follow.
-
-While at it, move the header of acpi_ec_dispatch_gpe() in the
-header file to a CONFIG_PM_SLEEP #ifdef block.
+Add a pm_pr_dbg() debug statement to acpi_ec_dispatch_gpe() to print
+a message when the EC GPE has been dispatched (because its status
+was set).
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
 
-In v2 this was patch 7.
+In v2 this was patch 8.
 
 ---
- drivers/acpi/ec.c       |   54 +++++++++++++++++++++++-------------------------
- drivers/acpi/internal.h |    2 -
- 2 files changed, 27 insertions(+), 29 deletions(-)
+ drivers/acpi/ec.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Index: linux-pm/drivers/acpi/internal.h
-===================================================================
---- linux-pm.orig/drivers/acpi/internal.h
-+++ linux-pm/drivers/acpi/internal.h
-@@ -194,7 +194,6 @@ void acpi_ec_ecdt_probe(void);
- void acpi_ec_dsdt_probe(void);
- void acpi_ec_block_transactions(void);
- void acpi_ec_unblock_transactions(void);
--bool acpi_ec_dispatch_gpe(void);
- int acpi_ec_add_query_handler(struct acpi_ec *ec, u8 query_bit,
- 			      acpi_handle handle, acpi_ec_query_func func,
- 			      void *data);
-@@ -202,6 +201,7 @@ void acpi_ec_remove_query_handler(struct
- 
- #ifdef CONFIG_PM_SLEEP
- void acpi_ec_flush_work(void);
-+bool acpi_ec_dispatch_gpe(void);
- #endif
- 
- 
 Index: linux-pm/drivers/acpi/ec.c
 ===================================================================
 --- linux-pm.orig/drivers/acpi/ec.c
 +++ linux-pm/drivers/acpi/ec.c
-@@ -1049,33 +1049,6 @@ void acpi_ec_unblock_transactions(void)
- 		acpi_ec_start(first_ec, true);
- }
+@@ -1980,7 +1980,11 @@ bool acpi_ec_dispatch_gpe(void)
+ 		return false;
  
--#ifdef CONFIG_PM_SLEEP
--void acpi_ec_mark_gpe_for_wake(void)
--{
--	if (first_ec && !ec_no_wakeup)
--		acpi_mark_gpe_for_wake(NULL, first_ec->gpe);
--}
--EXPORT_SYMBOL_GPL(acpi_ec_mark_gpe_for_wake);
--
--void acpi_ec_set_gpe_wake_mask(u8 action)
--{
--	if (pm_suspend_no_platform() && first_ec && !ec_no_wakeup)
--		acpi_set_gpe_wake_mask(NULL, first_ec->gpe, action);
--}
--EXPORT_SYMBOL_GPL(acpi_ec_set_gpe_wake_mask);
--#endif
--
--bool acpi_ec_dispatch_gpe(void)
--{
--	u32 ret;
--
--	if (!first_ec)
--		return false;
--
--	ret = acpi_dispatch_gpe(NULL, first_ec->gpe);
+ 	ret = acpi_dispatch_gpe(NULL, first_ec->gpe);
 -	return ret == ACPI_INTERRUPT_HANDLED;
--}
--
- /* --------------------------------------------------------------------------
-                                 Event Management
-    -------------------------------------------------------------------------- */
-@@ -1984,7 +1957,32 @@ static int acpi_ec_resume(struct device
- 	acpi_ec_enable_event(ec);
- 	return 0;
++	if (ret == ACPI_INTERRUPT_HANDLED) {
++		pm_pr_dbg("EC GPE dispatched\n");
++		return true;
++	}
++	return false;
  }
--#endif
-+
-+void acpi_ec_mark_gpe_for_wake(void)
-+{
-+	if (first_ec && !ec_no_wakeup)
-+		acpi_mark_gpe_for_wake(NULL, first_ec->gpe);
-+}
-+EXPORT_SYMBOL_GPL(acpi_ec_mark_gpe_for_wake);
-+
-+void acpi_ec_set_gpe_wake_mask(u8 action)
-+{
-+	if (pm_suspend_no_platform() && first_ec && !ec_no_wakeup)
-+		acpi_set_gpe_wake_mask(NULL, first_ec->gpe, action);
-+}
-+EXPORT_SYMBOL_GPL(acpi_ec_set_gpe_wake_mask);
-+
-+bool acpi_ec_dispatch_gpe(void)
-+{
-+	u32 ret;
-+
-+	if (!first_ec)
-+		return false;
-+
-+	ret = acpi_dispatch_gpe(NULL, first_ec->gpe);
-+	return ret == ACPI_INTERRUPT_HANDLED;
-+}
-+#endif /* CONFIG_PM_SLEEP */
+ #endif /* CONFIG_PM_SLEEP */
  
- static const struct dev_pm_ops acpi_ec_pm = {
- 	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(acpi_ec_suspend_noirq, acpi_ec_resume_noirq)
 
 
 
