@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24BEC7FADD
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2019 15:36:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68DB07FA54
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2019 15:32:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405938AbfHBNfF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Aug 2019 09:35:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60956 "EHLO mail.kernel.org"
+        id S2394085AbfHBNYB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Aug 2019 09:24:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34616 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2393735AbfHBNWV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 2 Aug 2019 09:22:21 -0400
+        id S2387815AbfHBNX7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 2 Aug 2019 09:23:59 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 93D0E21851;
-        Fri,  2 Aug 2019 13:22:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AE81421841;
+        Fri,  2 Aug 2019 13:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564752140;
-        bh=uNA+mGTVxaUDqpL+jM1PMaWa2FEDc+RSUb4fLqVBUik=;
+        s=default; t=1564752238;
+        bh=cQ4YFOPWd1i82SUJHXreOaNEm9giRU++l8pbQgG8OeA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NPyiYNqNZlU0zJ5Eandd+7PW6VL9ROPe9RKaHPqo0YRwqJ7+iKf2tUTKRhl/N+F59
-         /PZBhhlES6awu2txp6oUnvsRIkzAg9RhUyXOyV7XMIMJMGAz5xe9riYPBcnaO1NrXu
-         gpnWvVNmA9yGet6IPPyvRaJhFTmhGoXIEzKi2wjE=
+        b=yud4L8zaSANh3Rt+iNP+9Xyqecy+a5aOaIzbj8QH9qkuO+U/xeJZxlmS0gyikB7yO
+         KZV8rkDUUJZsf6G1H+Df4GudqYP8awZiuiP2zPIg/Z9c9AmNBiMetOrTx+DS9N0oiu
+         ELbbxZRhqbtpPR7VpE2VnkQsenoSS92/tSJsMas0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
@@ -33,12 +33,12 @@ Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Robin Murphy <robin.murphy@arm.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 58/76] ACPI/IORT: Fix off-by-one check in iort_dev_find_its_id()
-Date:   Fri,  2 Aug 2019 09:19:32 -0400
-Message-Id: <20190802131951.11600-58-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 30/42] ACPI/IORT: Fix off-by-one check in iort_dev_find_its_id()
+Date:   Fri,  2 Aug 2019 09:22:50 -0400
+Message-Id: <20190802132302.13537-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190802131951.11600-1-sashal@kernel.org>
-References: <20190802131951.11600-1-sashal@kernel.org>
+In-Reply-To: <20190802132302.13537-1-sashal@kernel.org>
+References: <20190802132302.13537-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -76,10 +76,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index d4551e33fa716..8569b79e8b581 100644
+index 43c2615434b48..e11b5da6f828f 100644
 --- a/drivers/acpi/arm64/iort.c
 +++ b/drivers/acpi/arm64/iort.c
-@@ -611,8 +611,8 @@ static int iort_dev_find_its_id(struct device *dev, u32 req_id,
+@@ -616,8 +616,8 @@ static int iort_dev_find_its_id(struct device *dev, u32 req_id,
  
  	/* Move to ITS specific data */
  	its = (struct acpi_iort_its_group *)node->node_data;
