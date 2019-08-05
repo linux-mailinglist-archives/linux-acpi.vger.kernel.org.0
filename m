@@ -2,138 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 066AF8168F
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2019 12:11:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72F2981B89
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2019 15:15:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726454AbfHEKL3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Aug 2019 06:11:29 -0400
-Received: from mail.steuer-voss.de ([85.183.69.95]:50888 "EHLO
-        mail.steuer-voss.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727868AbfHEKL3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Aug 2019 06:11:29 -0400
-X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
-Received: by mail.steuer-voss.de (Postfix, from userid 1000)
-        id 333A1466FE; Mon,  5 Aug 2019 12:11:27 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.steuer-voss.de (Postfix) with ESMTP id 2F33C46510;
-        Mon,  5 Aug 2019 12:11:27 +0200 (CEST)
-Date:   Mon, 5 Aug 2019 12:11:27 +0200 (CEST)
-From:   Nikolaus Voss <nv@vosn.de>
-X-X-Sender: nv@fox.voss.local
-To:     Hans de Goede <hdegoede@redhat.com>
-cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "youling257@gmail.com" <youling257@gmail.com>
-Subject: Re: [PATCH 5.3 regression fix] pwm: Fallback to the static lookup-list
- when acpi_pwm_get fails
-In-Reply-To: <4e2afae5-ce42-9f32-e3df-cdf222690af2@redhat.com>
-Message-ID: <alpine.DEB.2.20.1908051159370.64037@fox.voss.local>
-References: <20190730154848.5164-1-hdegoede@redhat.com> <alpine.DEB.2.20.1908050935570.62587@fox.voss.local> <4e2afae5-ce42-9f32-e3df-cdf222690af2@redhat.com>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+        id S1729469AbfHENPM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 5 Aug 2019 09:15:12 -0400
+Received: from mga04.intel.com ([192.55.52.120]:34149 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729839AbfHENPM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 5 Aug 2019 09:15:12 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Aug 2019 06:15:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,350,1559545200"; 
+   d="scan'208";a="192418160"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 05 Aug 2019 06:15:08 -0700
+Received: by lahna (sSMTP sendmail emulation); Mon, 05 Aug 2019 16:15:07 +0300
+Date:   Mon, 5 Aug 2019 16:15:07 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Mario.Limonciello@dell.com
+Cc:     yehezkelshb@gmail.com, linux-kernel@vger.kernel.org,
+        andreas.noever@gmail.com, michael.jamet@intel.com,
+        rjw@rjwysocki.net, lenb@kernel.org, lukas@wunner.de,
+        anthony.wong@canonical.com, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 2/8] thunderbolt: Move NVM upgrade support flag to struct
+ icm
+Message-ID: <20190805131507.GR2640@lahna.fi.intel.com>
+References: <20190705095800.43534-1-mika.westerberg@linux.intel.com>
+ <20190705095800.43534-3-mika.westerberg@linux.intel.com>
+ <CA+CmpXt5q93e2TQJzfY4afSEMPWijPU+Ks+cgrVDVqUM4=y3Cw@mail.gmail.com>
+ <20190705105815.GT2640@lahna.fi.intel.com>
+ <23cca57934d24eb6b897ebf00f852128@AUSX13MPC105.AMER.DELL.COM>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-630655690-1564999887=:64037"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <23cca57934d24eb6b897ebf00f852128@AUSX13MPC105.AMER.DELL.COM>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Tue, Jul 09, 2019 at 03:11:15PM +0000, Mario.Limonciello@dell.com wrote:
+> > -----Original Message-----
+> > From: Mika Westerberg <mika.westerberg@linux.intel.com>
+> > Sent: Friday, July 5, 2019 5:58 AM
+> > To: Yehezkel Bernat
+> > Cc: LKML; Andreas Noever; Michael Jamet; Rafael J . Wysocki; Len Brown; Lukas
+> > Wunner; Limonciello, Mario; Anthony Wong; linux-acpi@vger.kernel.org
+> > Subject: Re: [PATCH 2/8] thunderbolt: Move NVM upgrade support flag to struct
+> > icm
+> > 
+> > 
+> > [EXTERNAL EMAIL]
+> > 
+> > On Fri, Jul 05, 2019 at 01:52:49PM +0300, Yehezkel Bernat wrote:
+> > > > @@ -2054,6 +2059,7 @@ struct tb *icm_probe(struct tb_nhi *nhi)
+> > > >         case PCI_DEVICE_ID_INTEL_TITAN_RIDGE_2C_NHI:
+> > > >         case PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_NHI:
+> > > >                 icm->max_boot_acl = ICM_AR_PREBOOT_ACL_ENTRIES;
+> > > > +               icm->can_upgrade_nvm = true;
+> > >
+> > > Shouldn't this be also !x86_apple_machine just like AR?
+> > > (For FR, we don't use ICM on Apple machines, as much as I remember, so it's fine
+> > > to enable it there unconditionally for ICM code path.)
+> > 
+> > Yes, good point. I'll fix it up.
+> 
+> Another thought - does the TR or AR ID's setting can_upgrade_nvm to !x86_apple_machine
+> show up in anything like a dock or is it only host controllers?  If it's in docks, then it might be worth
+> only blocking on apple if it's a host.
 
---8323329-630655690-1564999887=:64037
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Mon, 5 Aug 2019, Hans de Goede wrote:
-> Hi,
->
-> On 05-08-19 11:31, Nikolaus Voss wrote:
->> Hi Hans,
->> 
->> On Tue, 30 Jul 2019, Hans de Goede wrote:
->>> Commit 4a6ef8e37c4d ("pwm: Add support referencing PWMs from ACPI")
->>> made pwm_get unconditionally return the acpi_pwm_get return value if
->>> the device passed to pwm_get has an ACPI fwnode.
->>> 
->>> But even if the passed in device has an ACPI fwnode, it does not
->>> necessarily have the necessary ACPI package defining its pwm bindings,
->>> especially since the binding / API of this ACPI package has only been
->>> introduced very recently.
->>> 
->>> Up until now X86/ACPI devices which use a separate pwm controller for
->>> controlling their LCD screen's backlight brightness have been relying
->>> on the static lookup-list to get their pwm.
->>> 
->>> pwm_get unconditionally returning the acpi_pwm_get return value breaks
->>> this, breaking backlight control on these devices.
->>> 
->>> This commit fixes this by making pwm_get fall back to the static
->>> lookup-list if acpi_pwm_get returns -ENOENT.
->> 
->> Ok, I didn't find any pwm_add_table() calls in the x86 directory, so I 
->> thought the fallback matching is only for non-DT/non-ACPI systems.
->
-> AFAIK only Bay Trail and Cherry Trail X86 systems use a separate
-> (not integrated into the GPU) PWM controller, but there are a lot of
-> these systems out there. I got a bug report for this pretty much the
-> day rc1 was out :)
->
-> The pwm_add_table calls are done in drivers/acpi/acpi_lpss.c.
->
->> If it is used for ACPI nodes without PWM controller binding, it maybe 
->> should apply to DT nodes without PWM controller binding, too?
->> 
->> It would be structurally cleaner as DT and ACPI handling was symmetrical.
->
-> I'm fine with someone doing a follow up patch along this lines, but
-> given that this is a serious regression in 5.3 I would like to move
-> forward with my tested patch as is to fix the regression in 5.3.
-
-Makes sense, thank you for the explanation.
-
-Acked-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
-
->
-> Regards,
->
-> Hans
->
->
->
->>> BugLink: https://bugs.freedesktop.org/show_bug.cgi?id=96571
->>> Reported-by: youling257@gmail.com
->>> Fixes: 4a6ef8e37c4d ("pwm: Add support referencing PWMs from ACPI")
->>> Cc: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
->>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>> ---
->>> drivers/pwm/core.c | 7 +++++--
->>> 1 file changed, 5 insertions(+), 2 deletions(-)
->>> 
->>> diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
->>> index c3ab07ab31a9..8edfac17364e 100644
->>> --- a/drivers/pwm/core.c
->>> +++ b/drivers/pwm/core.c
->>> @@ -882,8 +882,11 @@ struct pwm_device *pwm_get(struct device *dev, const 
->>> char *con_id)
->>>                return of_pwm_get(dev, dev->of_node, con_id);
->>> 
->>>        /* then lookup via ACPI */
->>> -       if (dev && is_acpi_node(dev->fwnode))
->>> -               return acpi_pwm_get(dev->fwnode);
->>> +       if (dev && is_acpi_node(dev->fwnode)) {
->>> +               pwm = acpi_pwm_get(dev->fwnode);
->>> +               if (!IS_ERR(pwm) || PTR_ERR(pwm) != -ENOENT)
->>> +                       return pwm;
->>> +       }
->>> 
->>>        /*
->>>         * We look up the provider in the static table typically provided 
->>> by
->>> -- 
->>> 2.21.0
->>> 
->>> 
->
---8323329-630655690-1564999887=:64037--
+It affects only hosts so on Apple system you can't upgrade host NVM but
+docks and other devices you can.
