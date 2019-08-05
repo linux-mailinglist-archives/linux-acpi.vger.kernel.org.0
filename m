@@ -2,98 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B02B481F1D
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2019 16:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 141FC821A6
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2019 18:26:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729542AbfHEOaC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Aug 2019 10:30:02 -0400
-Received: from mga06.intel.com ([134.134.136.31]:21116 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728863AbfHEOaC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 5 Aug 2019 10:30:02 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Aug 2019 07:30:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,350,1559545200"; 
-   d="scan'208";a="185333627"
-Received: from unknown (HELO localhost.lm.intel.com) ([10.232.112.69])
-  by orsmga002.jf.intel.com with ESMTP; 05 Aug 2019 07:30:00 -0700
-From:   Keith Busch <keith.busch@intel.com>
-To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Rafael Wysocki <rafael@kernel.org>
-Cc:     Dave Hansen <dave.hansen@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 3/3] acpi/hmat: Skip publishing target info for nodes with no online memory
-Date:   Mon,  5 Aug 2019 08:27:06 -0600
-Message-Id: <20190805142706.22520-4-keith.busch@intel.com>
-X-Mailer: git-send-email 2.13.6
-In-Reply-To: <20190805142706.22520-1-keith.busch@intel.com>
-References: <20190805142706.22520-1-keith.busch@intel.com>
+        id S1728871AbfHEQZy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 5 Aug 2019 12:25:54 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:41099 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727460AbfHEQZy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Aug 2019 12:25:54 -0400
+Received: from mail-pl1-f197.google.com ([209.85.214.197])
+        by youngberry.canonical.com with esmtps (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kai.heng.feng@canonical.com>)
+        id 1hufnz-0007xk-3E
+        for linux-acpi@vger.kernel.org; Mon, 05 Aug 2019 16:25:51 +0000
+Received: by mail-pl1-f197.google.com with SMTP id f2so46533511plr.0
+        for <linux-acpi@vger.kernel.org>; Mon, 05 Aug 2019 09:25:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=ahDv1JQ0w2AsFEFKjWvYewqWbx39Q78We1s4PnzLIHE=;
+        b=GHEgqQXSfD5GADxY/JKbwv0mHFqr2wx8SrSdwBJ/WZpd68+zF9Kh8PoUgYEkSIKau3
+         iCaPSvDKircQvcgViv8TArwy9F34l8xcWV8J34tkaERltHvBol2xElhCWDbeAOMTV7HH
+         eeXX5YWydDx70dPActcW0sPtI97rTl3uN7gtmRdOdLB0pzEphEHg8S5MroaN9VrSWQ12
+         epmT5cO7VmC5s8ivtw31SFgLLyGYCeDH0DVDxXuqYTtZWCZyb9B3xu3JlglMWWgNU1aq
+         JjQ0dZSkA7ztFfatWRq9uD81lTDWX07ry8sGeS3LmhyUtHoA+jdhVt4ITare6W9kdY7a
+         h9YQ==
+X-Gm-Message-State: APjAAAXA8itLiJntIihrQGjxXe3hEYNOzN/6vs3rhjBo0ScQL0pAVvZ9
+        Uoxkxe9TLIa0fQyW/x61Zxq1j+pLVCwIEKjO2uf6NbDHFKmUF2zE15STmnBpCykuOissU4swTRa
+        R87oDqLMQCU16vvZCdZXQOoGTBgseBIF8XwpcBf0=
+X-Received: by 2002:a63:1c22:: with SMTP id c34mr30357131pgc.56.1565022349743;
+        Mon, 05 Aug 2019 09:25:49 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqyGlZdsZ6bGXay0VR9+yR4cNcswW8S4n0UbagMs6pMa5uYImce0UHWrQvcHTxX+l+t8F0knuA==
+X-Received: by 2002:a63:1c22:: with SMTP id c34mr30357110pgc.56.1565022349363;
+        Mon, 05 Aug 2019 09:25:49 -0700 (PDT)
+Received: from 2001-b011-380f-37d3-6851-7bc4-3469-2fa7.dynamic-ip6.hinet.net (2001-b011-380f-37d3-6851-7bc4-3469-2fa7.dynamic-ip6.hinet.net. [2001:b011:380f:37d3:6851:7bc4:3469:2fa7])
+        by smtp.gmail.com with ESMTPSA id u134sm82343207pfc.19.2019.08.05.09.25.47
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 05 Aug 2019 09:25:48 -0700 (PDT)
+Content-Type: text/plain;
+        charset=utf-8;
+        delsp=yes;
+        format=flowed
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: [PATCH v3 0/8] PM / ACPI: sleep: Additional changes related to
+ suspend-to-idle
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+In-Reply-To: <5997740.FPbUVk04hV@kreacher>
+Date:   Tue, 6 Aug 2019 00:25:41 +0800
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Rajneesh Bhardwaj <rajneesh.bhardwaj@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mario Limonciello <mario.limonciello@dell.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <63E89FFF-9471-4F65-B05D-E99EC5C9EFD6@canonical.com>
+References: <5997740.FPbUVk04hV@kreacher>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+X-Mailer: Apple Mail (2.3445.104.11)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Dan Williams <dan.j.williams@intel.com>
+at 18:33, Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
 
-There are multiple scenarios where the HMAT may contain information
-about proximity domains that are not currently online. Rather than fail
-to report any HMAT data just elide those offline domains.
+> Hi All,
+>
+>>> On top of the "Simplify the suspend-to-idle control flow" patch series
+>>> posted previously:
+>>>
+>>> https://lore.kernel.org/lkml/71085220.z6FKkvYQPX@kreacher/
+>>>
+>>> sanitize the suspend-to-idle flow even further.
+>>>
+>>> First off, decouple EC wakeup from the LPS0 _DSM processing (patch 1).
+>>>
+>>> Next, reorder the code to invoke LPS0 _DSM Functions 5 and 6 in the
+>>> specification-compliant order with respect to suspending and resuming
+>>> devices (patch 2).
+>>>
+>>> Finally, rearrange lps0_device_attach() (patch 3) and add a command line
+>>> switch to prevent the LPS0 _DSM from being used.
+>>
+>> The v2 is because I found a (minor) bug in patch 1, decided to use a  
+>> module
+>> parameter instead of a kernel command line option in patch 4.  Also, there
+>> are 4 new patches:
+>>
+>> Patch 5: Switch the EC over to polling during "noirq" suspend and back
+>> during "noirq" resume.
+>>
+>> Patch 6: Eliminate acpi_sleep_no_ec_events().
+>>
+>> Patch 7: Consolidate some EC code depending on PM_SLEEP.
+>>
+>> Patch 8: Add EC GPE dispatching debug message.
+>
+> The v3 is just a rearranged v2 so as to move the post sensitive patch  
+> (previous patch 2)
+> to the end of the series.   [After applying the full series the code is  
+> the same as before.]
+>
+> For easier testing, the series (along with some previous patches depended  
+> on by it)
+> is available in the pm-s2idle-testing branch of the linux-pm.git tree at  
+> kernel.org:
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/log/?h=pm-s2idle-testing
 
-If and when those domains are later onlined they can be added to the
-HMEM reporting at that point.
+I’ve just tested the full series on Latitude 5300, and the additional  
+spurious wake up is gone.
 
-This was found while testing EFI_MEMORY_SP support which reserves
-"specific purpose" memory from the general allocation pool. If that
-reservation results in an empty numa-node then the node is not marked
-online leading a spurious:
+Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-    "acpi/hmat: Ignoring HMAT: Invalid table"
+>
+> Please refer to the changelogs for details.
+>
+> Thanks,
+> Rafael
 
-...result for HMAT parsing.
-
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Keith Busch <keith.busch@intel.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/acpi/hmat/hmat.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/acpi/hmat/hmat.c b/drivers/acpi/hmat/hmat.c
-index f86fe7130736..8f9a28a870b0 100644
---- a/drivers/acpi/hmat/hmat.c
-+++ b/drivers/acpi/hmat/hmat.c
-@@ -108,9 +108,6 @@ static __init void alloc_memory_target(unsigned int mem_pxm)
- {
- 	struct memory_target *target;
- 
--	if (pxm_to_node(mem_pxm) == NUMA_NO_NODE)
--		return;
--
- 	target = find_mem_target(mem_pxm);
- 	if (target)
- 		return;
-@@ -618,7 +615,16 @@ static void hmat_register_target_perf(struct memory_target *target)
- 
- static void hmat_register_target(struct memory_target *target)
- {
--	if (!node_online(pxm_to_node(target->memory_pxm)))
-+	int nid = pxm_to_node(target->memory_pxm);
-+
-+	/*
-+	 * Skip offline nodes. This can happen when memory
-+	 * marked EFI_MEMORY_SP, "specific purpose", is applied
-+	 * to all the memory in a promixity domain leading to
-+	 * the node being marked offline / unplugged, or if
-+	 * memory-only "hotplug" node is offline.
-+	 */
-+	if (nid == NUMA_NO_NODE || !node_online(nid))
- 		return;
- 
- 	mutex_lock(&target_lock);
--- 
-2.14.4
 
