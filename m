@@ -2,519 +2,329 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C110182E08
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2019 10:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEBA483069
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2019 13:15:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732142AbfHFIry (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 6 Aug 2019 04:47:54 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:40328 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731922AbfHFIrx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Aug 2019 04:47:53 -0400
-Received: by mail-pf1-f194.google.com with SMTP id p184so41124277pfp.7
-        for <linux-acpi@vger.kernel.org>; Tue, 06 Aug 2019 01:47:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=t8WMB3YdV8P+UZ+k+Q8HS5IzyVa6fcb7CMVp6E06D5U=;
-        b=nyCa5GOe0Y+Dzd2jznGmsFoetcVOzXd6VtnMo6azOPszcnmlCIJedO4FtABbOZ86Um
-         5rW0b/0EO636Zwt9UgGShZ5WcrMV8keRwgjsiKS9nA6MxzWkJwENSg+yTIcoekja1MJ2
-         haxU6AbSJEJWhJLcSf4ERXPd0ENHApRVfUN1t3FHt5Y8U+ViQzVQcrGGoCignsvywf1G
-         Uok5UOQVYX80yeAKOrLil0THU5AGeNdP6N1Wpz9cldDaRoBfqlqJqDNTJlrFU0/pVTbd
-         Of2+zxLSsH3qaOZg98PLsKdg0V5/bbGIsNGGMKCDkrVZEKWMmIAR1Q2beJWrIFntfhbh
-         Tlxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=t8WMB3YdV8P+UZ+k+Q8HS5IzyVa6fcb7CMVp6E06D5U=;
-        b=gM7SPxZY7aDIcnxx2ayVjjfroffvT+G9ecGCHFDQPIg1lc3oO/X0X+Kv0o+OiFZOh/
-         5bu+DH1O9q68CvDTq+HcVm1jefJPkyYm6MnRoNJahRLjMfSswebPp5ODEXzbNKuRqPtl
-         15Arff8cMUVZgR90gfRlKdHVrusO71twSGygqF5bMLFeHXdjq04SMGvpilDAV8J6ckTg
-         JGzACfqEfAM4VvUbj29lUUpbAl9Y3WPMqlerL3BS5tuQ8Jdp2Ttl1x5blYhgyLwLyoZ7
-         aqpFUPh9eRInJs5Wn3Ef+nODJF1/f2z59uTHplhQHe8VwqxYh6UUktobW4J2oE2p+Ah6
-         fPuw==
-X-Gm-Message-State: APjAAAUPNeci6iSCsqQFL8aj3D1OaUaRbRPKU1dOZegdv8+dUyD0YBDq
-        Zfb+hjP4bvhSb0jEOym2avkLvA==
-X-Google-Smtp-Source: APXvYqyD41/Jj6yJ4QZXDojsAMaExJ46RP1Zz+Jm1F4Dcpwg0EymJr3wOdoi15Jls9x49+OY8vbEwQ==
-X-Received: by 2002:a17:90a:8a91:: with SMTP id x17mr2045097pjn.95.1565081272622;
-        Tue, 06 Aug 2019 01:47:52 -0700 (PDT)
-Received: from localhost ([122.172.146.3])
-        by smtp.gmail.com with ESMTPSA id l4sm88247076pff.50.2019.08.06.01.47.51
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 06 Aug 2019 01:47:51 -0700 (PDT)
-Date:   Tue, 6 Aug 2019 14:17:50 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Schmauss <erik.schmauss@intel.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
-Subject: Re: [PATCH V2 05/10] ACPI: cpufreq: Switch to QoS requests instead
- of cpufreq notifier
-Message-ID: <20190806084750.rlhjt2cirttdek2v@vireshk-i7>
-References: <cover.1563862014.git.viresh.kumar@linaro.org>
- <86dc4a082ea00c278c0e1d7f3fcbdc4ab9af2eec.1563862014.git.viresh.kumar@linaro.org>
- <1782403.O7LH3UnqfR@kreacher>
- <20190806043904.dbpon4qf3mfsm4vz@vireshk-i7>
- <CAJZ5v0iqwc4mvqHoTHwoNS-T1zueS07S2e-1STEsKhFhoOh0dA@mail.gmail.com>
+        id S1732713AbfHFLPH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 6 Aug 2019 07:15:07 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:37660 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730071AbfHFLPH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 6 Aug 2019 07:15:07 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 18099CFF7B89D876E46A;
+        Tue,  6 Aug 2019 19:15:05 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS403-HUB.china.huawei.com
+ (10.3.19.203) with Microsoft SMTP Server id 14.3.439.0; Tue, 6 Aug 2019
+ 19:14:55 +0800
+Date:   Tue, 6 Aug 2019 12:14:43 +0100
+From:   Jonathan Cameron <jonathan.cameron@huawei.com>
+To:     James Morse <james.morse@arm.com>
+CC:     <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, <linuxarm@huawei.com>,
+        <rjw@rjwysocki.net>, <tony.luck@intel.com>, <bp@alien8.de>,
+        <ard.beisheuvel@arm.com>, <nariman.poushin@linaro.org>,
+        <jcm@redhat.com>,
+        Charles Garcia-Tobin <Charles.Garcia-Tobin@arm.com>
+Subject: Re: [RFC PATCH 0/6] CCIX Protocol Error reporting
+Message-ID: <20190806121443.00006211@huawei.com>
+In-Reply-To: <20190703140849.000018d6@huawei.com>
+References: <20190606123654.78973-1-Jonathan.Cameron@huawei.com>
+        <728c7959-b5b3-5b59-fe79-e774c3b89465@arm.com>
+        <20190703140849.000018d6@huawei.com>
+Organization: Huawei
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0iqwc4mvqHoTHwoNS-T1zueS07S2e-1STEsKhFhoOh0dA@mail.gmail.com>
-User-Agent: NeoMutt/20180716-391-311a52
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.226.61]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 06-08-19, 10:01, Rafael J. Wysocki wrote:
-> Yes, it does, thanks!
+On Wed, 3 Jul 2019 14:08:49 +0100
+Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
+
+> On Wed, 3 Jul 2019 10:28:08 +0100
+> James Morse <james.morse@arm.com> wrote:
 > 
-> [No need to resend, I'll take it from this message.]
+> > Hi Jonathan,
+> > 
+> > (Beware: this CCIX thing is new to me, some of this will be questions on the scope of CCIX)  
+> 
+> Sure and welcome to our crazy world.
+> 
+> > 
+> > On 06/06/2019 13:36, Jonathan Cameron wrote:  
+> > > UEFI 2.8 defines a new CPER record Appendix N for CCIX Protocol Error Records
+> > > (PER). www.uefi.org    
+> >   
+> > > These include Protocol Error Record logs which are defined in the
+> > > CCIX 1.0 Base Specification www.ccixconsortium.com.    
+> > 
+> > I can't find a public version of this spec, and I don't have an account to look at the
+> > private one. (It looks like I could get one but I'm guessing there is an NDA between me
+> > and the document text!)
+> > 
+> > Will it ever be public?  
+> 
+> +cc A few people who might be able to help.
 
-Forgot to write CPU in caps in print messages, updated now.
+Evaluation version of the CCIX 1.0a base specification now available,
+(though there is a form to complete and license agreement)..
 
--- 
-viresh
+https://www.ccixconsortium.com/ccix-library/download-form/
 
--------------------------8<-------------------------
-From 5761009323fde6bbbef90f9ecdd3bf7c191672cb Mon Sep 17 00:00:00 2001
-Message-Id: <5761009323fde6bbbef90f9ecdd3bf7c191672cb.1565081202.git.viresh.kumar@linaro.org>
-From: Viresh Kumar <viresh.kumar@linaro.org>
-Date: Mon, 15 Jul 2019 15:06:02 +0530
-Subject: [PATCH] ACPI: cpufreq: Switch to QoS requests instead of cpufreq
- notifier
 
-The cpufreq core now takes the min/max frequency constraints via QoS
-requests and the CPUFREQ_ADJUST notifier shall get removed later on.
+> 
+> > 
+> >   
+> > > Handling of coherency protocol errors is complex and how Linux does this
+> > > will take some time to evolve.  For now, fatal errors are handled via the
+> > > usual means and everything else is reported.    
+> >   
+> > > There are 6 types of error defined, covering:
+> > > * Memory errors    
+> > 
+> > How does this interact with the vanilla Memory-Error CPER records? Do we always get them
+> > as a pair? (that struct definition looks familiar...)  
+> 
+> The snag is that the standard memory error doesn't provide quite enough information to
+> actually identify a component once you have buses involved.
+> The actual memory specific bit is nearly identical, but the header section isn't
+> as it gives the CCIX agent ID (see below given you asked a more specific question
+> on that).
+> 
+> We did discuss this in a lot of detail and currently the answer is that the
+> UEFI spec + ccix allows you to report only the ccix error if you want to.
+> 
+> Note that I believe there is an OSC bit that I'm not currently setting so
+> right now no firmware compliant with the CCIX SW Guide (information available
+> from your local Charles) should actually be generating these anyway because
+> the OS hasn't said it can handle them.  I took the view I wanted to get
+> round 2 which actually hooks up handling rather than just reporting before
+> setting that bit.
+> 
+> > Is memory described like this never present in the UEFI memory map? (so we never
+> > accidentally use it as host memory, for processes etc)  
+> Yes it definitely can.  If you want to you can have all your RAM attached by CCIX.
+> (probably not a good idea performance wise :)
+> 
+> More likely in the short term is SCM using something like the hmem patches
+> to hotplug it as if it were RAM.
+> https://patchwork.kernel.org/cover/10982677/
+> 
+> In order to support legacy OS, it wouldn't be unusual to have a bios switch
+> to make SCM on CCIX just appear as normal memory in the first place
+> (if that was true though it is highly unlikely you'd use the CCIX
+> PER messages.)
+> 
+> > 
+> > ~
+> > 
+> > include/linux/memremap.h has:
+> > |  * Device memory that is cache coherent from device and CPU point of view. This
+> > |  * is use on platform that have an advance system bus (like CAPI or CCIX). A
+> > |  * driver can hotplug the device memory using ZONE_DEVICE and with that memory
+> > |  * type. Any page of a process can be migrated to such memory. However no one
+> > |  * should be allow to pin such memory so that it can always be evicted.
+> > 
+> > Is this the same CCIX?  
+> 
+> Not always, but sometimes.  Typically if it's on an accelerator (GPU etc) then
+> one software model is to do that.  There are others though. Until we have
+> more devices out there, its not even clear that model with dominate.
+> 
+> It's a much argued about topic. My personal thoughts are you either have:
+> 1. An accelerator that was designed from the ground up assuming that it had
+>    tight control of its own memory layout etc - someone bolted on coherency
+>    later.  This is the current GPU model and fits with ZONE_DEVICE etc. GPUs
+>    can and do require shuffling memory.
+> 
+> 2. An accelerator designed to run without it's own memory.  We just decided
+>    to move some of the host memory to it's end of the bus for size or
+>    efficiency reasons.  As it's reasonably happy with fragmentation and
+>    the assumption that someone else is doing it's memory management for it
+>    (the OS) you can run in an SVM type mode, with a bit of hinting by
+>    a userspace app on where it would prefer the accelerator accessed memory
+>    comes from.  Those have no more constraints than any other memory.  If
+>    you want to pin for RDMA for example, its fine.
+> 
+> More importantly, it can just be normal DDR on a card with no extra functions.
+> In those cases it's just a memory only NUMA node.
+> 
+> > 
+> > If process memory can be migrated onto this stuff we need to kick off memory_failure() in
+> > response to memory errors, otherwise we don't mark the pages as poison, signal user-space etc.  
+> 
+> Agreed.  That was in the follow up patch set (which I haven't written yet)
+> that actually does some error handling.  I need to do some work on the
+> emulation side to actually be able to generate sensible errors of that type.
+> 
+> I'll stick some mention of that in the v2 cover letter.
+> > 
+> >   
+> > > * Cache errors
+> > > * Address translation unit errors    
+> >   
+> > > * CCIX port errors 
+> > > * CCIX link errors    
+> > 
+> > It looks like this stuff operates 'over' PCIe[0]. How does this interact with AER?
+> > Will we always get a vanilla PCIE-AER CPER in addition to these two?  
+> 
+> Nope. You'll get an AER for PCIe protocol, transport and data link layers and
+> PER error for CCIX protocol layer.  We'll ignore the horrible abuse of
+> Internal Error in AER that people do (pointing no fingers but the spec makes
+> it clear what this is for and it's not what most people use it for).
+> 
+> So depends on what went wrong.  Some types of error (ripping out a board perhaps)
+> might cause a cascade but in general they are independent systems.  For extra
+> fun they aren't even routed over the same physical links in some topologies.
+> CCIX per is CCIX ID routed (and we have meshes), AER has to follow the PCIe
+> tree.  In theory the CCIX Error Agent doesn't actually to be in the host,
+> and it certainly doesn't have to be via the same root port.
+> 
+> > 
+> > (I see 'CHECK THE AER EQUIVALENT' comments in your series, are these TODO:?)  
+> Oops.  That was a formatting question that I'd forgotten about.
+> 
+> Both PCIe AER and CCIX PER have error cases in which part of the TLP
+> (at different layers) is captured in the error record.  I just wanted
+> to sanity check if I'd used similar formatting.
+> 
+> In some CCIX errors you get 32 bytes of the message that was in flight
+> when the problem occurred.
+> 
+> I'll actually check the formatting and scrub the comment or adjust it for v2.
+> Sorry about that - these were kicking around internally for far too long
+> so they have gone in out of my head several times.
+> 
+> >
+> >   
+> > > * Agent internal errors.
+> > > 
+> > > The set includes tracepoints to report the errors to RAS Daemon and a patch
+> > > set for RAS Daemon will follow shortly.
+> > > 
+> > > There are several open questions for this RFC.
+> > > 1. Reporting of vendor data.  We have little choice but to do this via a
+> > >    dynamic array as these blocks can take arbitrary size. I had hoped
+> > >    no one would actually use these given the odd mismatch between a
+> > >    standard error structure and non standard element, but there are
+> > >    already designs out there that do use it.    
+> > 
+> > I think its okay to spit these blobs out of the trace points, but could we avoid printing
+> > them in the kernel log?  
+> 
+> Seems like a reasonable compromise.  Leave them in the tp_printk
+> and if anyone really wants to fill their kernel logs then they can.
+> 
+> > 
+> >   
+> > > 2. The trade off between explicit tracepoint fields, on which we might
+> > >    want to filter, and the simplicity of a blob. I have gone for having
+> > >    the whole of the block specific to the PER error type in an opaque blob.
+> > >    Perhaps this is not the right balance?    
+> > 
+> > (I suspect I don't understand this).
+> > 
+> > The filtering can be done by user-space. Isn't that enough?  
+> 
+> It can, but then you have already logged them.  As I understand it you can
+> apply the filters at the logging stage. Will take another look at this.
+> Still I'm happy with the current balance, and there it'll be done in
+> userspace anyway.
+> 
+> > 
+> > I see the memory-error event format file has 'pa', which is all anyone is likely to care
+> > about.
+> > Do 'source/component' indicate the device? (what do I pull out of the machine to stop
+> > these happening?)  
+> 
+> The answer to that is a qualified yes.  If you know the source ID and
+> the configuration then it gets you to the actual device.
+> For the various 'agents' Request Agent, Home Agent and Slave Agent,
+> the sourceID is the globally unique (per type of agent) ID assigned during
+> the topology configuration bit of firmware enumeration (it ends up as a field
+> you can read from PCI config space).  For other things sourceID is the device ID
+> which is assigned at an earlier phase of enumeration.  You may then need the
+> portID to figure out exactly where it's broken (those are fixed for a given
+> device).
+> 
+> Ultimately you use these to find out what the BDF is and hopefully figure out
+> which board to pull and throw out of the window.
+> 
+> > 
+> >   
+> > > 3. Whether defining 6 new tracepoints is sensible. I think it is:
+> > >    * They are all defined by the CCIX specification as independant error
+> > >      classes.
+> > >    * Many of them can only be generated by particular types of agent.
+> > >    * The handling required will vary widely depending on types.
+> > >      In the kernel some map cleanly onto existing handling. Keeping the
+> > >      whole flow separate will aide this. They vary by a similar amount
+> > >      in scope to the RAS errors found on an existing system which have
+> > >      independent tracepoints.
+> > >    * Separating them out allows for filtering on the tracepoints by
+> > >      elements that are not shared between them.
+> > >    * Muxing the lot into one record type can lead to ugly code both in
+> > >      kernel and in userspace.    
+> > 
+> > Sold!
+> > 
+> >   
+> > > This patch is being distributed by the CCIX Consortium, Inc. (CCIX) to
+> > > you and other parties that are paticipating (the "participants") in the
+> > > Linux kernel with the understanding that the participants will use CCIX's
+> > > name and trademark only when this patch is used in association with the
+> > > Linux kernel and associated user space.
+> > > 
+> > > CCIX is also distributing this patch to these participants with the
+> > > understanding that if any portion of the CCIX specification will be
+> > > used or referenced in the Linux kernel, the participants will not modify
+> > > the cited portion of the CCIX specification and will give CCIX propery
+> > > copyright attribution by including the following copyright notice with
+> > > the cited part of the CCIX specification:
+> > > "© 2019 CCIX CONSORTIUM, INC. ALL RIGHTS RESERVED."    
+> > 
+> > Is this text permission from the CCIX-Consortium to reproduce bits of their spec in the
+> > kernel?  
+> <standard I'm not a lawyer disclaimer>
+> 
+> Hmm. The answer to that is 'sort of'.  It technically says anything in this
+> patch is fine if it used that statement.  I believe it is kind of a catch all
+> that just says quote under fair use terms, but as normal give clear copyright
+> acknowledgment.  Some of the answers that others are hopefully going to give
+> to earlier questions should clarify why this matters.
+> 
+> The main point of the whole statement being there at all is to give an explicit
+> trademark grant to the kernel so that we can use CCIX(tm) without worrying about it.
+> If you want to get scared, google the PCI-SIG(tm) trademark policy and think where
+> we might be pushing the limits.
+> 
+> We asked the CCIX legal advisors to come up with a clear statement
+> that meant open source projects could get in trouble for sensible trademark use.
+> This grant is apparently the best way to do it.
+>  
+> > 
+> > I'm guessing any one who can hold of the spec is also prevented from publishing it.
+> > 
+> > (Nits: participating, proper)  
+> Yup. I copy typed this from my windows laptop to the linux machine because
+> I was too lazy to navigate Huawei security zones and did a really bad job.
+> Sorry Frank! (hope Frank never see this)
+> 
+> > 
+> > 
+> > Thanks,
+> > 
+> > James
+> > 
+> > [0] https://en.wikichip.org/wiki/ccix  
+> 
+> 
 
-Switch over to using the QoS request for maximum frequency constraint
-for acpi driver.
 
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
----
- drivers/acpi/processor_driver.c  | 37 ++++++++++--
- drivers/acpi/processor_perflib.c | 96 +++++++++++---------------------
- drivers/acpi/processor_thermal.c | 81 +++++++++++++--------------
- include/acpi/processor.h         | 21 ++++---
- 4 files changed, 118 insertions(+), 117 deletions(-)
-
-diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
-index aea8d674a33d..2c911fcaa4b4 100644
---- a/drivers/acpi/processor_driver.c
-+++ b/drivers/acpi/processor_driver.c
-@@ -284,6 +284,29 @@ static int acpi_processor_stop(struct device *dev)
- 	return 0;
- }
- 
-+bool acpi_processor_cpufreq_init;
-+
-+static int acpi_processor_notifier(struct notifier_block *nb,
-+				   unsigned long event, void *data)
-+{
-+	struct cpufreq_policy *policy = data;
-+	int cpu = policy->cpu;
-+
-+	if (event == CPUFREQ_CREATE_POLICY) {
-+		acpi_thermal_cpufreq_init(cpu);
-+		acpi_processor_ppc_init(cpu);
-+	} else if (event == CPUFREQ_REMOVE_POLICY) {
-+		acpi_processor_ppc_exit(cpu);
-+		acpi_thermal_cpufreq_exit(cpu);
-+	}
-+
-+	return 0;
-+}
-+
-+static struct notifier_block acpi_processor_notifier_block = {
-+	.notifier_call = acpi_processor_notifier,
-+};
-+
- /*
-  * We keep the driver loaded even when ACPI is not running.
-  * This is needed for the powernow-k8 driver, that works even without
-@@ -310,8 +333,10 @@ static int __init acpi_processor_driver_init(void)
- 	cpuhp_setup_state_nocalls(CPUHP_ACPI_CPUDRV_DEAD, "acpi/cpu-drv:dead",
- 				  NULL, acpi_soft_cpu_dead);
- 
--	acpi_thermal_cpufreq_init();
--	acpi_processor_ppc_init();
-+	if (!cpufreq_register_notifier(&acpi_processor_notifier_block,
-+				       CPUFREQ_POLICY_NOTIFIER))
-+		acpi_processor_cpufreq_init = true;
-+
- 	acpi_processor_throttling_init();
- 	return 0;
- err:
-@@ -324,8 +349,12 @@ static void __exit acpi_processor_driver_exit(void)
- 	if (acpi_disabled)
- 		return;
- 
--	acpi_processor_ppc_exit();
--	acpi_thermal_cpufreq_exit();
-+	if (acpi_processor_cpufreq_init) {
-+		cpufreq_unregister_notifier(&acpi_processor_notifier_block,
-+					    CPUFREQ_POLICY_NOTIFIER);
-+		acpi_processor_cpufreq_init = false;
-+	}
-+
- 	cpuhp_remove_state_nocalls(hp_online);
- 	cpuhp_remove_state_nocalls(CPUHP_ACPI_CPUDRV_DEAD);
- 	driver_unregister(&acpi_processor_driver);
-diff --git a/drivers/acpi/processor_perflib.c b/drivers/acpi/processor_perflib.c
-index ee87cb6f6e59..fc74b8075c36 100644
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -50,57 +50,13 @@ module_param(ignore_ppc, int, 0644);
- MODULE_PARM_DESC(ignore_ppc, "If the frequency of your machine gets wrongly" \
- 		 "limited by BIOS, this should help");
- 
--#define PPC_REGISTERED   1
--#define PPC_IN_USE       2
--
--static int acpi_processor_ppc_status;
--
--static int acpi_processor_ppc_notifier(struct notifier_block *nb,
--				       unsigned long event, void *data)
--{
--	struct cpufreq_policy *policy = data;
--	struct acpi_processor *pr;
--	unsigned int ppc = 0;
--
--	if (ignore_ppc < 0)
--		ignore_ppc = 0;
--
--	if (ignore_ppc)
--		return 0;
--
--	if (event != CPUFREQ_ADJUST)
--		return 0;
--
--	mutex_lock(&performance_mutex);
--
--	pr = per_cpu(processors, policy->cpu);
--	if (!pr || !pr->performance)
--		goto out;
--
--	ppc = (unsigned int)pr->performance_platform_limit;
--
--	if (ppc >= pr->performance->state_count)
--		goto out;
--
--	cpufreq_verify_within_limits(policy, 0,
--				     pr->performance->states[ppc].
--				     core_frequency * 1000);
--
--      out:
--	mutex_unlock(&performance_mutex);
--
--	return 0;
--}
--
--static struct notifier_block acpi_ppc_notifier_block = {
--	.notifier_call = acpi_processor_ppc_notifier,
--};
-+static bool acpi_processor_ppc_in_use;
- 
- static int acpi_processor_get_platform_limit(struct acpi_processor *pr)
- {
- 	acpi_status status = 0;
- 	unsigned long long ppc = 0;
--
-+	int ret;
- 
- 	if (!pr)
- 		return -EINVAL;
-@@ -112,7 +68,7 @@ static int acpi_processor_get_platform_limit(struct acpi_processor *pr)
- 	status = acpi_evaluate_integer(pr->handle, "_PPC", NULL, &ppc);
- 
- 	if (status != AE_NOT_FOUND)
--		acpi_processor_ppc_status |= PPC_IN_USE;
-+		acpi_processor_ppc_in_use = true;
- 
- 	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
- 		ACPI_EXCEPTION((AE_INFO, status, "Evaluating _PPC"));
-@@ -124,6 +80,16 @@ static int acpi_processor_get_platform_limit(struct acpi_processor *pr)
- 
- 	pr->performance_platform_limit = (int)ppc;
- 
-+	if (ignore_ppc || ppc >= pr->performance->state_count)
-+		return 0;
-+
-+	ret = dev_pm_qos_update_request(&pr->perflib_req,
-+			pr->performance->states[ppc].core_frequency * 1000);
-+	if (ret) {
-+		pr_warn("Failed to update perflib freq constraint: CPU%d (%d)\n",
-+			pr->id, ret);
-+	}
-+
- 	return 0;
- }
- 
-@@ -184,23 +150,29 @@ int acpi_processor_get_bios_limit(int cpu, unsigned int *limit)
- }
- EXPORT_SYMBOL(acpi_processor_get_bios_limit);
- 
--void acpi_processor_ppc_init(void)
-+void acpi_processor_ppc_init(int cpu)
- {
--	if (!cpufreq_register_notifier
--	    (&acpi_ppc_notifier_block, CPUFREQ_POLICY_NOTIFIER))
--		acpi_processor_ppc_status |= PPC_REGISTERED;
--	else
--		printk(KERN_DEBUG
--		       "Warning: Processor Platform Limit not supported.\n");
-+	struct acpi_processor *pr = per_cpu(processors, cpu);
-+	int ret;
-+
-+	ret = dev_pm_qos_add_request(get_cpu_device(cpu),
-+				     &pr->perflib_req, DEV_PM_QOS_MAX_FREQUENCY,
-+				     INT_MAX);
-+	if (ret < 0) {
-+		pr_err("Failed to add freq constraint for CPU%d (%d)\n", cpu,
-+		       ret);
-+		return;
-+	}
-+
-+	if (ignore_ppc < 0)
-+		ignore_ppc = 0;
- }
- 
--void acpi_processor_ppc_exit(void)
-+void acpi_processor_ppc_exit(int cpu)
- {
--	if (acpi_processor_ppc_status & PPC_REGISTERED)
--		cpufreq_unregister_notifier(&acpi_ppc_notifier_block,
--					    CPUFREQ_POLICY_NOTIFIER);
-+	struct acpi_processor *pr = per_cpu(processors, cpu);
- 
--	acpi_processor_ppc_status &= ~PPC_REGISTERED;
-+	dev_pm_qos_remove_request(&pr->perflib_req);
- }
- 
- static int acpi_processor_get_performance_control(struct acpi_processor *pr)
-@@ -477,7 +449,7 @@ int acpi_processor_notify_smm(struct module *calling_module)
- 	static int is_done = 0;
- 	int result;
- 
--	if (!(acpi_processor_ppc_status & PPC_REGISTERED))
-+	if (!acpi_processor_cpufreq_init)
- 		return -EBUSY;
- 
- 	if (!try_module_get(calling_module))
-@@ -513,7 +485,7 @@ int acpi_processor_notify_smm(struct module *calling_module)
- 	 * we can allow the cpufreq driver to be rmmod'ed. */
- 	is_done = 1;
- 
--	if (!(acpi_processor_ppc_status & PPC_IN_USE))
-+	if (!acpi_processor_ppc_in_use)
- 		module_put(calling_module);
- 
- 	return 0;
-@@ -742,7 +714,7 @@ acpi_processor_register_performance(struct acpi_processor_performance
- {
- 	struct acpi_processor *pr;
- 
--	if (!(acpi_processor_ppc_status & PPC_REGISTERED))
-+	if (!acpi_processor_cpufreq_init)
- 		return -EINVAL;
- 
- 	mutex_lock(&performance_mutex);
-diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
-index 50fb0107375e..1483e24fdea9 100644
---- a/drivers/acpi/processor_thermal.c
-+++ b/drivers/acpi/processor_thermal.c
-@@ -35,7 +35,6 @@ ACPI_MODULE_NAME("processor_thermal");
- #define CPUFREQ_THERMAL_MAX_STEP 3
- 
- static DEFINE_PER_CPU(unsigned int, cpufreq_thermal_reduction_pctg);
--static unsigned int acpi_thermal_cpufreq_is_init = 0;
- 
- #define reduction_pctg(cpu) \
- 	per_cpu(cpufreq_thermal_reduction_pctg, phys_package_first_cpu(cpu))
-@@ -61,35 +60,11 @@ static int phys_package_first_cpu(int cpu)
- static int cpu_has_cpufreq(unsigned int cpu)
- {
- 	struct cpufreq_policy policy;
--	if (!acpi_thermal_cpufreq_is_init || cpufreq_get_policy(&policy, cpu))
-+	if (!acpi_processor_cpufreq_init || cpufreq_get_policy(&policy, cpu))
- 		return 0;
- 	return 1;
- }
- 
--static int acpi_thermal_cpufreq_notifier(struct notifier_block *nb,
--					 unsigned long event, void *data)
--{
--	struct cpufreq_policy *policy = data;
--	unsigned long max_freq = 0;
--
--	if (event != CPUFREQ_ADJUST)
--		goto out;
--
--	max_freq = (
--	    policy->cpuinfo.max_freq *
--	    (100 - reduction_pctg(policy->cpu) * 20)
--	) / 100;
--
--	cpufreq_verify_within_limits(policy, 0, max_freq);
--
--      out:
--	return 0;
--}
--
--static struct notifier_block acpi_thermal_cpufreq_notifier_block = {
--	.notifier_call = acpi_thermal_cpufreq_notifier,
--};
--
- static int cpufreq_get_max_state(unsigned int cpu)
- {
- 	if (!cpu_has_cpufreq(cpu))
-@@ -108,7 +83,10 @@ static int cpufreq_get_cur_state(unsigned int cpu)
- 
- static int cpufreq_set_cur_state(unsigned int cpu, int state)
- {
--	int i;
-+	struct cpufreq_policy *policy;
-+	struct acpi_processor *pr;
-+	unsigned long max_freq;
-+	int i, ret;
- 
- 	if (!cpu_has_cpufreq(cpu))
- 		return 0;
-@@ -121,33 +99,50 @@ static int cpufreq_set_cur_state(unsigned int cpu, int state)
- 	 * frequency.
- 	 */
- 	for_each_online_cpu(i) {
--		if (topology_physical_package_id(i) ==
-+		if (topology_physical_package_id(i) !=
- 		    topology_physical_package_id(cpu))
--			cpufreq_update_policy(i);
-+			continue;
-+
-+		pr = per_cpu(processors, i);
-+
-+		policy = cpufreq_cpu_get(i);
-+		if (!policy)
-+			return -EINVAL;
-+
-+		max_freq = (policy->cpuinfo.max_freq * (100 - reduction_pctg(i) * 20)) / 100;
-+
-+		cpufreq_cpu_put(policy);
-+
-+		ret = dev_pm_qos_update_request(&pr->thermal_req, max_freq);
-+		if (ret) {
-+			pr_warn("Failed to update thermal freq constraint: CPU%d (%d)\n",
-+				pr->id, ret);
-+		}
- 	}
- 	return 0;
- }
- 
--void acpi_thermal_cpufreq_init(void)
-+void acpi_thermal_cpufreq_init(int cpu)
- {
--	int i;
--
--	i = cpufreq_register_notifier(&acpi_thermal_cpufreq_notifier_block,
--				      CPUFREQ_POLICY_NOTIFIER);
--	if (!i)
--		acpi_thermal_cpufreq_is_init = 1;
-+	struct acpi_processor *pr = per_cpu(processors, cpu);
-+	int ret;
-+
-+	ret = dev_pm_qos_add_request(get_cpu_device(cpu),
-+				     &pr->thermal_req, DEV_PM_QOS_MAX_FREQUENCY,
-+				     INT_MAX);
-+	if (ret < 0) {
-+		pr_err("Failed to add freq constraint for CPU%d (%d)\n", cpu,
-+		       ret);
-+		return;
-+	}
- }
- 
--void acpi_thermal_cpufreq_exit(void)
-+void acpi_thermal_cpufreq_exit(int cpu)
- {
--	if (acpi_thermal_cpufreq_is_init)
--		cpufreq_unregister_notifier
--		    (&acpi_thermal_cpufreq_notifier_block,
--		     CPUFREQ_POLICY_NOTIFIER);
-+	struct acpi_processor *pr = per_cpu(processors, cpu);
- 
--	acpi_thermal_cpufreq_is_init = 0;
-+	dev_pm_qos_remove_request(&pr->thermal_req);
- }
--
- #else				/* ! CONFIG_CPU_FREQ */
- static int cpufreq_get_max_state(unsigned int cpu)
- {
-diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-index 1194a4c78d55..ea21a6d20da7 100644
---- a/include/acpi/processor.h
-+++ b/include/acpi/processor.h
-@@ -4,6 +4,8 @@
- 
- #include <linux/kernel.h>
- #include <linux/cpu.h>
-+#include <linux/cpufreq.h>
-+#include <linux/pm_qos.h>
- #include <linux/thermal.h>
- #include <asm/acpi.h>
- 
-@@ -230,6 +232,8 @@ struct acpi_processor {
- 	struct acpi_processor_limit limit;
- 	struct thermal_cooling_device *cdev;
- 	struct device *dev; /* Processor device. */
-+	struct dev_pm_qos_request perflib_req;
-+	struct dev_pm_qos_request thermal_req;
- };
- 
- struct acpi_processor_errata {
-@@ -296,16 +300,17 @@ static inline void acpi_processor_ffh_cstate_enter(struct acpi_processor_cx
- /* in processor_perflib.c */
- 
- #ifdef CONFIG_CPU_FREQ
--void acpi_processor_ppc_init(void);
--void acpi_processor_ppc_exit(void);
-+extern bool acpi_processor_cpufreq_init;
-+void acpi_processor_ppc_init(int cpu);
-+void acpi_processor_ppc_exit(int cpu);
- void acpi_processor_ppc_has_changed(struct acpi_processor *pr, int event_flag);
- extern int acpi_processor_get_bios_limit(int cpu, unsigned int *limit);
- #else
--static inline void acpi_processor_ppc_init(void)
-+static inline void acpi_processor_ppc_init(int cpu)
- {
- 	return;
- }
--static inline void acpi_processor_ppc_exit(void)
-+static inline void acpi_processor_ppc_exit(int cpu)
- {
- 	return;
- }
-@@ -421,14 +426,14 @@ static inline int acpi_processor_hotplug(struct acpi_processor *pr)
- int acpi_processor_get_limit_info(struct acpi_processor *pr);
- extern const struct thermal_cooling_device_ops processor_cooling_ops;
- #if defined(CONFIG_ACPI_CPU_FREQ_PSS) & defined(CONFIG_CPU_FREQ)
--void acpi_thermal_cpufreq_init(void);
--void acpi_thermal_cpufreq_exit(void);
-+void acpi_thermal_cpufreq_init(int cpu);
-+void acpi_thermal_cpufreq_exit(int cpu);
- #else
--static inline void acpi_thermal_cpufreq_init(void)
-+static inline void acpi_thermal_cpufreq_init(int cpu)
- {
- 	return;
- }
--static inline void acpi_thermal_cpufreq_exit(void)
-+static inline void acpi_thermal_cpufreq_exit(int cpu)
- {
- 	return;
- }
