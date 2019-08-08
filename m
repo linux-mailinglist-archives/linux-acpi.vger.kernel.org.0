@@ -2,92 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A41DC85E0A
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Aug 2019 11:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05FF585F15
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Aug 2019 11:57:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732011AbfHHJSa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 8 Aug 2019 05:18:30 -0400
-Received: from mout.kundenserver.de ([217.72.192.74]:47895 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731038AbfHHJSa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Aug 2019 05:18:30 -0400
-Received: from [192.168.1.110] ([77.4.95.67]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MNtny-1hgC4p2pVQ-00ODOZ; Thu, 08 Aug 2019 11:17:55 +0200
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Subject: Re: [PATCH v5 0/3] Enable ACPI-defined peripherals on i2c-piix4 SMBus
-To:     Jean Delvare <jdelvare@suse.de>,
-        Linux I2C <linux-i2c@vger.kernel.org>
-Cc:     Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org,
-        Andrew Cooks <acooks@rationali.st>, linux-acpi@vger.kernel.org,
-        platypus-sw@opengear.com, "Tobin C . Harding" <me@tobin.cc>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Will Wagner <willw@carallon.com>
-References: <20190802145109.38dd4045@endymion>
-Organization: metux IT consult
-Message-ID: <b013c33b-da11-ce5e-08d4-0b24a8575109@metux.net>
-Date:   Thu, 8 Aug 2019 11:17:53 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1730747AbfHHJ54 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 8 Aug 2019 05:57:56 -0400
+Received: from mga05.intel.com ([192.55.52.43]:50931 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728289AbfHHJ54 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 8 Aug 2019 05:57:56 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Aug 2019 02:57:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,360,1559545200"; 
+   d="scan'208";a="193122144"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 08 Aug 2019 02:57:51 -0700
+Received: by lahna (sSMTP sendmail emulation); Thu, 08 Aug 2019 12:57:51 +0300
+Date:   Thu, 8 Aug 2019 12:57:51 +0300
+From:   'Mika Westerberg' <mika.westerberg@linux.intel.com>
+To:     David Laight <David.Laight@aculab.com>
+Cc:     'Yehezkel Bernat' <yehezkelshb@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+        Mario Limonciello <Mario.Limonciello@dell.com>,
+        Anthony Wong <anthony.wong@canonical.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH 3/8] thunderbolt: Use 32-bit writes when writing ring
+ producer/consumer
+Message-ID: <20190808095751.GA2716@lahna.fi.intel.com>
+References: <20190705095800.43534-1-mika.westerberg@linux.intel.com>
+ <20190705095800.43534-4-mika.westerberg@linux.intel.com>
+ <CA+CmpXtMBEtyh77fcrhX2BU8esiit56CWfZmey6LYEHZVUxf8A@mail.gmail.com>
+ <0f3a47d8133945b181d623ea6e0d53f2@AcuMS.aculab.com>
+ <20190807161359.GT2716@lahna.fi.intel.com>
+ <79616dd147864771b0b74901e77f2607@AcuMS.aculab.com>
+ <20190807163629.GV2716@lahna.fi.intel.com>
+ <91a579eb2f614739a9a1177bdde5513e@AcuMS.aculab.com>
 MIME-Version: 1.0
-In-Reply-To: <20190802145109.38dd4045@endymion>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:fDJyaJZtVxYv99ekvBH+6b0TBe7TOwbHfnLSolHa2Jg3X6OYlah
- Us+9njVqv4Npt6CbAvSUMzJKv6321IqRYHUJ0p6VKGQ7omN23XDrkZF9fIv2VQE1Fr4qVcb
- Hcl2XMTfAdOD8VjItWugPh3tMpNy14L1M3AjJCFHmJU0GEMAtjpoM0XZ5idlNtiYhnbLYKD
- IvBjYYirMJ6V3ABaSkipw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:rzdJUnUhmGE=:dR0Vz8X/m0DWewyWZSxygA
- +oDC7DzsJ2NdrDS+ChQ8U5ZZFiVbCVaHqe7aWYqqG8rZr/0tUgbv/QwBQXxvjHzjqW8g5bvdQ
- +N/7phO9Yus8GCdN+5pNPU0IhNyew2uqR2LkKG1Tuby6n/2Ixj6j4kVkjWsw8ecy1aCcAc5/S
- eSqD9TyLcUk4M+GLnVfJxNBvhX/gLIUu4lRICqgDA1bXxs+IQzl97LUwJKhs3r0vqhoOPNEtl
- sD4zQnxjw5kQRtd32ivoS7A0OdpWzw85Cv8n3ipV/3OIYiJVz/PoTmDFDEzcEMHbOereHbm46
- LnUfYMAYAl+Ahi5q76r2kuy+67goi0kncXnOlrxIgkjwaGMbdISx/5lZbb7fM7UKFMWBmsPmO
- g3DYc7Etev5D4Ix+HE/gI69ZqWXMObqYrS6zCEbgVEIZScUAJsfOnEolX2F+JyB9CcF1o4hbN
- HdRY6sPJyrbz2FHUiPs9ohArmEkW+g1TW5qCx7TowTuwQQsGo0eUEWyYEzYjs5/QqDVDQcv2r
- bPtZDHHJI0NAzzlNVTOmLlulZdFZnrF1pu7OT6vhYMOoddUc6Hdfxob59Lraoa4Jo9glmqPxT
- qXl65kwtlR0gI8E6F3cSWVnoU1QSUVpPhW/sJIvK0d51EFlw/v5bMzDCkSKV5ys5mHyFrzAoY
- h4o967Ty/ipFP/MM6Hwy49J41CFqJAyOWy3Op5VZQmnEwFQZAgJmtEz8SRxgmDmFpoNoDS4Qp
- LuvL03KLpDOA5u/zl+F1wUud9vj9WLGGeqxlU1q9ft4CRkGnF1Fw2zK69uM=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <91a579eb2f614739a9a1177bdde5513e@AcuMS.aculab.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 02.08.19 14:51, Jean Delvare wrote:
+On Wed, Aug 07, 2019 at 04:41:30PM +0000, David Laight wrote:
+> From: 'Mika Westerberg' [mailto:mika.westerberg@linux.intel.com]
+> > Sent: 07 August 2019 17:36
+> > 
+> > On Wed, Aug 07, 2019 at 04:22:26PM +0000, David Laight wrote:
+> > > From: Mika Westerberg
+> > > > Sent: 07 August 2019 17:14
+> > > > To: David Laight
+> > > >
+> > > > On Fri, Jul 05, 2019 at 04:04:19PM +0000, David Laight wrote:
+> > > > > > Really a matter of taste, but maybe you want to consider having a single
+> > > > > > function, with a 3rd parameter, bool is_tx.
+> > > > > > The calls here will be unified to:
+> > > > > >         ring_iowrite(ring, ring->head, ring->is_tx);
+> > > > > > (No condition is needed here).
+> > > > > >
+> > > > > > The implementation uses the new parameter to decide which part of the register
+> > > > > > to mask, reducing the code duplication (in my eyes):
+> > > > > >
+> > > > > >         val = ioread32(ring_desc_base(ring) + 8);
+> > > > > >         if (is_tx) {
+> > > > > >                 val &= 0x0000ffff;
+> > > > > >                 val |= value << 16;
+> > > > > >         } else {
+> > > > > >                 val &= 0xffff0000;
+> > > > > >                 val |= value;
+> > > > > >         }
+> > > > > >         iowrite32(val, ring_desc_base(ring) + 8);
+> > > > > >
+> > > > > > I'm not sure if it improves the readability or makes it worse. Your call.
+> > > > >
+> > > > > Gah, that is all horrid beyond belief.
+> > > > > If a 32bit write is valid then the hardware must not be updating
+> > > > > the other 16 bits.
+> > > > > In which case the driver knows what they should be.
+> > > > > So it can do a single 32bit write of the required value.
+> > > >
+> > > > I'm not entirely sure I understand what you say above. Can you shed some
+> > > > light on this by a concrete example how it should look like? :-)
+> > >
+> > > The driver must know both the tx and rx ring values, so:
+> > > 	iowrite32(tx_val << 16 | rx_val, ring_desc_base(ring) + 8);
+> > >
+> > 
+> > I see. However, prod or cons side gets updated by the hardware as it
+> > processes buffers and other side is only updated by the driver. I'm not
+> > sure the above works here.
+> 
+> If the hardware updates the other half of the 32bit word it doesn't ever work.
+>
+> In that case you must do 16bit writes.
+> If the hardware is ignoring the byte-enables it is broken and unusable.
 
-Hi,
+It is quite usable as I'm running this code on real hardware ;-) but
+32-bit access is needed.
 
-> These patches fix a couple of issues with the i2c-piix4 driver on
-> AMD Family 16h Model 30h SoCs and add ACPI-based enumeration to the
-> i2c-piix4 driver.
+The low or high 16-bits are read-only depending on the ring (Tx or Rx)
+and updated by the hardware. It ignores writes to that part so we could
+do this for Tx ring:
 
-Can you tell a little bit more about what devices are behind the smbus ?
-I recall the G-412 SoCs (such as on apu2+ boards) have an Hudson inside
-and fall into this category. (I'll have to check when back in office),
-so (as the apu2 platform driver maintainer) I'm very interested in this.
+	iowrite32(prod << 16, ring_desc_base(ring) + 8);
 
-Does the probing need some special BIOS support (or do the necessary
-table entries already come from aegesa) ?
+and this for Rx ring:
 
-I have to admit, I'm still confused by the AMD documentation - haven't
-found a clear documentation on what peripherals exactly are in the
-G-412 SoC, just puzzled together that the FCH seems to be an Hudson,
-probably v2. There also seems to be some relation between smbus and
-gpio, but the gpio's are directly memory-mapped - no idea whether they
-just share the same base address register or the gpios are really behind
-smbus and some hw logic directy maps them into mmio space ...
-Do you happen to have some more information on that ?
+	iowrite32(cons, ring_desc_base(ring) + 8);
 
-By the way: I'm considering collecting some hw documentation in the
-kernel tree (maybe Documentation/hardware/...) - do you folks think
-that's a good idea ?
-
---mtx
-
--- 
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+Do you see any issues with this?
