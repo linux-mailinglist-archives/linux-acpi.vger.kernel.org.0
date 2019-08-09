@@ -2,69 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5912B873DC
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Aug 2019 10:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 668F98742C
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Aug 2019 10:33:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405922AbfHIIPd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Aug 2019 04:15:33 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:37793 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726054AbfHIIPd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Aug 2019 04:15:33 -0400
-Received: by mail-ot1-f66.google.com with SMTP id s20so63989493otp.4;
-        Fri, 09 Aug 2019 01:15:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vnY7oAsY1586ACxhjBeo4HzooGDvWg/bO7dlEEDQ6lw=;
-        b=W4xi6YfwcjwWKsSEIGkzW3famA2I1TNwh6HCniGiDvW077yhXA4k6xl9h8/mQaKcsL
-         3mmzgR+TOJ0dXpZXR6rt0zfIMfEGlWcSqXbU/kjHNqhtAFnW5O8bvvjEPOAQeHQ4Bu2m
-         UeNzXSW2cJ0REzRndKE3/ytB4zBH9ONmm3OAIHd0ZpbRUVE7UfuVQM6Efu25Im6U8M0F
-         VHI+TTmGyuciNeYowtyBKREtz75ZZUfCMBGXVCuLDIEYE4Web8LWYCOUxqIhdd+JVpsT
-         VKrvTng3y4SU1B4IlJmFMcXOMu2bh9t49zeUfWB2GBOgkNW/KRccPIgzhvvgdNFEqwEn
-         RT6w==
-X-Gm-Message-State: APjAAAWxtF5kuat+woIuTVcB3meuf0kCe4mey5yiHQfY/CwlC+fb5kft
-        xCk0wO08LGSOq9etxcLGHAhUmmB9uimVO8tLRoA=
-X-Google-Smtp-Source: APXvYqxD5CZq8T4kQd204KLi1aG86Z1J38p4cBHVivVKXkMRm7iLcJLySC1n4t0d2NHxSE2hatpOs10CBonmjZQMous=
-X-Received: by 2002:a05:6830:8a:: with SMTP id a10mr15636164oto.167.1565338532516;
- Fri, 09 Aug 2019 01:15:32 -0700 (PDT)
+        id S2405726AbfHIIdn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Aug 2019 04:33:43 -0400
+Received: from mx2.suse.de ([195.135.220.15]:37894 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726054AbfHIIdn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 9 Aug 2019 04:33:43 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id CF469AFBB;
+        Fri,  9 Aug 2019 08:33:41 +0000 (UTC)
+Date:   Fri, 9 Aug 2019 10:33:40 +0200
+From:   Jean Delvare <jdelvare@suse.de>
+To:     "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Cc:     Linux I2C <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org,
+        Andrew Cooks <acooks@rationali.st>, linux-acpi@vger.kernel.org,
+        platypus-sw@opengear.com, "Tobin C . Harding" <me@tobin.cc>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Will Wagner <willw@carallon.com>
+Subject: Re: [PATCH v5 0/3] Enable ACPI-defined peripherals on i2c-piix4
+ SMBus
+Message-ID: <20190809103340.2ef24523@endymion>
+In-Reply-To: <b013c33b-da11-ce5e-08d4-0b24a8575109@metux.net>
+References: <20190802145109.38dd4045@endymion>
+        <b013c33b-da11-ce5e-08d4-0b24a8575109@metux.net>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-References: <1717835.1Yz4jNODO2@kreacher> <20190808111941.GJ30120@smile.fi.intel.com>
-In-Reply-To: <20190808111941.GJ30120@smile.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 9 Aug 2019 10:15:21 +0200
-Message-ID: <CAJZ5v0h+iHWMkS-vVHUHwd6AmYE2UR_CCoUjhBJH_-ik_jbVQQ@mail.gmail.com>
-Subject: Re: [PATCH 0/2] intel-hid: intel-vbtn: Suspend-related fix and update
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 8, 2019 at 1:19 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Thu, Aug 08, 2019 at 10:40:19AM +0200, Rafael J. Wysocki wrote:
-> > Hi,
-> >
-> > These two patches fix a minor issue related to system suspend in the intel-hid
-> > and intel-vbtn drivers and update the suspend/resume handling in intel-hid to
-> > reduce special-casing in it somewhat.
-> >
->
-> AFAIR the original patches go via other than PDx86 tree.
+Hi Enrico,
 
-That's correct.
+On Thu, 8 Aug 2019 11:17:53 +0200, Enrico Weigelt, metux IT consult wrote:
+> On 02.08.19 14:51, Jean Delvare wrote:
+> > These patches fix a couple of issues with the i2c-piix4 driver on
+> > AMD Family 16h Model 30h SoCs and add ACPI-based enumeration to the
+> > i2c-piix4 driver.  
+> 
+> Can you tell a little bit more about what devices are behind the smbus ?
+> I recall the G-412 SoCs (such as on apu2+ boards) have an Hudson inside
+> and fall into this category. (I'll have to check when back in office),
+> so (as the apu2 platform driver maintainer) I'm very interested in this.
 
-> Thus, while patches are looking good to me,
->
-> Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Unfortunately not. I only picked up from where Andrew Cooks left, due
+to me being way too slow to review his patches. I did not want his work
+to be lost. I was able to test the first 2 patches which fix bugs, but
+not the 3rd one which deals with ACPI devices. There does not seem to
+be any such device on the 2 test machines I have remotely access to.
 
-Thanks!
+> Does the probing need some special BIOS support (or do the necessary
+> table entries already come from aegesa) ?
+
+I assume that ACPI devices are declared in one of the ACPI tables, so
+it comes from the "BIOS", yes, whatever form it takes these days.
+
+> I have to admit, I'm still confused by the AMD documentation - haven't
+> found a clear documentation on what peripherals exactly are in the
+> G-412 SoC, just puzzled together that the FCH seems to be an Hudson,
+> probably v2. There also seems to be some relation between smbus and
+> gpio, but the gpio's are directly memory-mapped - no idea whether they
+> just share the same base address register or the gpios are really behind
+> smbus and some hw logic directy maps them into mmio space ...
+> Do you happen to have some more information on that ?
+
+I remember noticing long ago that SMBus ports were using GPIO pins, so
+these pins could be used for SMBus or for any other purpose. I could
+not find any way to figure out from the registers if a given pin pair
+was used for SMBus or not, which is pretty bad because it means we are
+blindly instantiating ALL possible SMBus ports even if some of the pins
+are used for a completely different purpose. It was over 1 year ago
+though, so I don't remember the details, and my findings then may not
+apply to the most recent hardware.
+
+> By the way: I'm considering collecting some hw documentation in the
+> kernel tree (maybe Documentation/hardware/...) - do you folks think
+> that's a good idea ?
+
+No. Only documentation specifically related to the Linux kernel should
+live in the kernel tree. OS-neutral documentation must go somewhere
+else.
+
+-- 
+Jean Delvare
+SUSE L3 Support
