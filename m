@@ -2,216 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88A1687992
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Aug 2019 14:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D417E87EAA
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Aug 2019 17:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726309AbfHIMPR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Aug 2019 08:15:17 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:42570 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726157AbfHIMPR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Aug 2019 08:15:17 -0400
-Received: by mail-ot1-f65.google.com with SMTP id l15so131744057otn.9;
-        Fri, 09 Aug 2019 05:15:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CPhQEfpz2L9VudZCV93fBfsiwCxuI7FC2IEWQ3k3cwk=;
-        b=bu9o1lxop2dB53R9PaxhTZb0axc1le/joJNESDWnIh+/6kOvvya3BVVtT9xjy8/7LS
-         lKe3qmqO7kCy5YMkYDx0UPICb+Y27//RuWt3ww8LuydVGdwi3zXbKuojrfalmVaS5opP
-         dvBxkt/hn1a+A27ChN/G1g43wKA5xa4TBxRbL9CymNXE9X2CyOeW2kptbjqwJXPTLIo3
-         GTdCHiIbobI3xKt4FwVWyGmAkeJEpw9MuVzDI6R0zBhMsH8Wbszl3Z0RE+2J6Px66r3j
-         79w8892bMoThOw8pEvzTw3MIVgj9/GRmCGb9uXfzh6Njyg1q1gwnuWbNWmpvLDkhegpK
-         0YyA==
-X-Gm-Message-State: APjAAAXNX4MeOr+QZRjCr4E2uMsihkSKokDnK3zP9Lts/Zefi4Ib/SGD
-        o2Wd8fYFRLKTU5p1O93HZXMbscK7f/QTCOWwRXI=
-X-Google-Smtp-Source: APXvYqxNJ013eLC09yGsgapHlLqfUe7REnVobb2QQ0Zm5fWHeXii/Qw7Uj++14PuKNVdHPErOsjLrF24st3nrgHmFx4=
-X-Received: by 2002:aca:d907:: with SMTP id q7mr5752039oig.68.1565352915951;
- Fri, 09 Aug 2019 05:15:15 -0700 (PDT)
+        id S2436846AbfHIPxm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Aug 2019 11:53:42 -0400
+Received: from mout.kundenserver.de ([212.227.17.10]:58587 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2436833AbfHIPxl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Aug 2019 11:53:41 -0400
+Received: from [192.168.1.110] ([77.4.36.189]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1M4aEC-1hvYhd08OM-001iYZ; Fri, 09 Aug 2019 17:53:11 +0200
+Subject: Re: [PATCH v5 0/3] Enable ACPI-defined peripherals on i2c-piix4 SMBus
+To:     Jean Delvare <jdelvare@suse.de>
+Cc:     Linux I2C <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org,
+        Andrew Cooks <acooks@rationali.st>, linux-acpi@vger.kernel.org,
+        platypus-sw@opengear.com, "Tobin C . Harding" <me@tobin.cc>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Will Wagner <willw@carallon.com>
+References: <20190802145109.38dd4045@endymion>
+ <b013c33b-da11-ce5e-08d4-0b24a8575109@metux.net>
+ <20190809103340.2ef24523@endymion>
+From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Organization: metux IT consult
+Message-ID: <01de7b0c-7579-048b-312c-122dddc23c64@metux.net>
+Date:   Fri, 9 Aug 2019 17:53:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <5997740.FPbUVk04hV@kreacher> <CGME20190809120052eucas1p11b56806662ef4f4efb82a152ad651481@eucas1p1.samsung.com>
- <74514118.QN1Ey1fWSL@kreacher> <1b181f35-29c3-c6ce-6c42-ae55e890579e@samsung.com>
-In-Reply-To: <1b181f35-29c3-c6ce-6c42-ae55e890579e@samsung.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 9 Aug 2019 14:15:04 +0200
-Message-ID: <CAJZ5v0h_Bem4U46tgJyE7k+uHFN7viqUo10Vgh+UWZf_C1qD2g@mail.gmail.com>
-Subject: Re: [PATCH v3 8/8] ACPI: PM: s2idle: Execute LPS0 _DSM functions with
- suspended devices
-To:     Marek Szyprowski <m.szyprowski@samsung.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Rajneesh Bhardwaj <rajneesh.bhardwaj@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190809103340.2ef24523@endymion>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:Ol+j9g3GSr/B3uX/7Axtmz0D6ZvfPeyZ7Cu9g9P+ouAEulPh0il
+ aWfCstzGyGaVzurKRFqBsD6VR7QYbpPCDX7giqDfc3ce8u4RwMOdEa7z4lg3K5NnUGNdMBB
+ Ev1syf68tYfOvie5+OYX4wp7rTxIrhJmIOp2aU6FQleS2yZE4Gwoc3aoBQjVYNSiQi7txvJ
+ H62TORHN8AIZn8tABGurg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:rHCh1NfESDU=:JQ30SsuGrRDQ2yRw2GquHl
+ raiNV7eHfwnzLzvmtvOnJiICHqN6W3/rHzGp5Qws7RclCKYmYNxxf+Y5mDqrTenBaven3dtWe
+ jeJ3lRrRJJiZum48FfSdazYZaJqfl2NTL4TQ1igGeG5X6x2hJbJZ+Do05xCwroLTIOBQLadaq
+ q8mrvhk1rYfwrUTthE4Qigw1EGbpfiI5sQQvoGu9BuORKsK5YWGea27fueP/GhROfzT8Y3WJA
+ va8nwYKIyAmxAni0a+Q7BFn8IWob5BN8fVOCX/Gc0OiHZDmJFLwMzt2/5N92Wa16x5oDOQ6vx
+ 7MCo6zTI/8ufy+sW+g0/JJUzoduty41PL5UkCkvkgGaZmzGceQLBPvjikjYRbU/NRqtQ8Zmx5
+ 0NErt14OJJYaSKWoRrPKHBHQnaWsmw9arNR6OiMonu5gO+/Sy05IKC2+oqFEh6X34851RD3yA
+ ayXSqh8PGwuFIRfp3uCANr6PyvJfnVEs0ztJOS1UPXuc1A3xmjU1xQh1W4H3+e8I3zIWFBwQZ
+ zUE5fzGYrQ4aZKnMUu7s2YQcRlDN3rnvTNCeylaYo6fLtHDg2i9vkBRfHcIjYQM29NzrDcMgv
+ wcO68qxVhnS3DEzq1eEX1TBQLNAGgnEgHoemikHuTZlaua+lyrsXLxUBb5R/MXOWLkgr/38m+
+ m9xyk7ARDb0EpQcJLV/AKug80GV03Y5iUQyi3LBdR4/fb6YrqEZzRP6e/BnitZym43s2D+30+
+ mwWkIYY0/JVQw5qkS/wQ8/nR3cC0btYvPZ/5qvdJRW7KgCwHMAX9jo70WqM=
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 9, 2019 at 2:00 PM Marek Szyprowski
-<m.szyprowski@samsung.com> wrote:
->
-> Hi Rafael,
->
-> On 2019-08-02 12:45, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > According to Section 3.5 of the "Intel Low Power S0 Idle" document [1],
-> > Function 5 of the LPS0 _DSM is expected to be invoked when the system
-> > configuration matches the criteria for entering the target low-power
-> > state of the platform.  In particular, this means that all devices
-> > should be suspended and in low-power states already when that function
-> > is invoked.
-> >
-> > This is not the case currently, however, because Function 5 of the
-> > LPS0 _DSM is invoked by it before the "noirq" phase of device suspend,
-> > which means that some devices may not have been put into low-power
-> > states yet at that point.  That is a consequence of the previous
-> > design of the suspend-to-idle flow that allowed the "noirq" phase of
-> > device suspend and the "noirq" phase of device resume to be carried
-> > out for multiple times while "suspended" (if any spurious wakeup
-> > events were detected) and the point of the LPS0 _DSM Function 5
-> > invocation was chosen so as to call it (and LPS0 _DSM Function 6
-> > analogously) once per suspend-resume cycle (regardless of how many
-> > times the "noirq" phases of device suspend and resume were carried
-> > out while "suspended").
-> >
-> > Now that the suspend-to-idle flow has been redesigned to carry out
-> > the "noirq" phases of device suspend and resume once in each cycle,
-> > the code can be reordered to follow the specification that it is
-> > based on more closely.
-> >
-> > For this purpose, add ->prepare_late and ->restore_early platform
-> > callbacks for suspend-to-idle, to be executed, respectively, after
-> > the "noirq" phase of suspending devices and before the "noirq"
-> > phase of resuming them and make ACPI use them for the invocation
-> > of LPS0 _DSM functions as appropriate.
-> >
-> > While at it, move the LPS0 entry requirements check to be made
-> > before invoking Functions 3 and 5 of the LPS0 _DSM (also once
-> > per cycle) as follows from the specification [1].
-> >
-> > Link: https://uefi.org/sites/default/files/resources/Intel_ACPI_Low_Power_S0_Idle.pdf # [1]
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >
-> > In v2 this was patch 2.
-> >
-> > ---
-> >   drivers/acpi/sleep.c    |   36 ++++++++++++++++++++++++------------
-> >   include/linux/suspend.h |    2 ++
-> >   kernel/power/suspend.c  |   12 +++++++++---
-> >   3 files changed, 35 insertions(+), 15 deletions(-)
-> >
-> > Index: linux-pm/drivers/acpi/sleep.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/acpi/sleep.c
-> > +++ linux-pm/drivers/acpi/sleep.c
-> > @@ -954,11 +954,6 @@ static int acpi_s2idle_begin(void)
-> >
-> >   static int acpi_s2idle_prepare(void)
-> >   {
-> > -     if (lps0_device_handle && !sleep_no_lps0) {
-> > -             acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
-> > -             acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
-> > -     }
-> > -
-> >       if (acpi_sci_irq_valid())
-> >               enable_irq_wake(acpi_sci_irq);
-> >
-> > @@ -972,11 +967,22 @@ static int acpi_s2idle_prepare(void)
-> >       return 0;
-> >   }
-> >
-> > -static void acpi_s2idle_wake(void)
-> > +static int acpi_s2idle_prepare_late(void)
-> >   {
-> > -     if (lps0_device_handle && !sleep_no_lps0 && pm_debug_messages_on)
-> > +     if (!lps0_device_handle || sleep_no_lps0)
-> > +             return 0;
-> > +
-> > +     if (pm_debug_messages_on)
-> >               lpi_check_constraints();
-> >
-> > +     acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
-> > +     acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static void acpi_s2idle_wake(void)
-> > +{
-> >       /*
-> >        * If IRQD_WAKEUP_ARMED is set for the SCI at this point, the SCI has
-> >        * not triggered while suspended, so bail out.
-> > @@ -1011,6 +1017,15 @@ static void acpi_s2idle_wake(void)
-> >       rearm_wake_irq(acpi_sci_irq);
-> >   }
-> >
-> > +static void acpi_s2idle_restore_early(void)
-> > +{
-> > +     if (!lps0_device_handle || sleep_no_lps0)
-> > +             return;
-> > +
-> > +     acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
-> > +     acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON);
-> > +}
-> > +
-> >   static void acpi_s2idle_restore(void)
-> >   {
-> >       s2idle_wakeup = false;
-> > @@ -1021,11 +1036,6 @@ static void acpi_s2idle_restore(void)
-> >
-> >       if (acpi_sci_irq_valid())
-> >               disable_irq_wake(acpi_sci_irq);
-> > -
-> > -     if (lps0_device_handle && !sleep_no_lps0) {
-> > -             acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
-> > -             acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON);
-> > -     }
-> >   }
-> >
-> >   static void acpi_s2idle_end(void)
-> > @@ -1036,7 +1046,9 @@ static void acpi_s2idle_end(void)
-> >   static const struct platform_s2idle_ops acpi_s2idle_ops = {
-> >       .begin = acpi_s2idle_begin,
-> >       .prepare = acpi_s2idle_prepare,
-> > +     .prepare_late = acpi_s2idle_prepare_late,
-> >       .wake = acpi_s2idle_wake,
-> > +     .restore_early = acpi_s2idle_restore_early,
-> >       .restore = acpi_s2idle_restore,
-> >       .end = acpi_s2idle_end,
-> >   };
-> > Index: linux-pm/kernel/power/suspend.c
-> > ===================================================================
-> > --- linux-pm.orig/kernel/power/suspend.c
-> > +++ linux-pm/kernel/power/suspend.c
-> > @@ -253,13 +253,19 @@ static int platform_suspend_prepare_late
-> >
-> >   static int platform_suspend_prepare_noirq(suspend_state_t state)
-> >   {
-> > -     return state != PM_SUSPEND_TO_IDLE && suspend_ops->prepare_late ?
-> > -             suspend_ops->prepare_late() : 0;
-> > +     if (state == PM_SUSPEND_TO_IDLE) {
-> > +             if (s2idle_ops && s2idle_ops->prepare_late)
-> > +                     return s2idle_ops->prepare_late();
+On 09.08.19 10:33, Jean Delvare wrote:
 
-This should be
+Hi,
 
-return s2idle_ops && s2idle_ops->prepare_late ? s2idle_ops->prepare_late() : 0;
+> Unfortunately not. I only picked up from where Andrew Cooks left, due
+> to me being way too slow to review his patches. 
 
-> > +     }
-> > +     return suspend_ops->prepare_late ? suspend_ops->prepare_late() : 0;
->
-> This unconditionally references suspend_ops here, what wasn't done
-> earlier. On one of my test boards (OdroidXU) it causes following NULL
-> pointer dereference since Linux next-20190809 (the first -next, which
-> contains this patch):
+@Andrew: can you tell us more about this ?
 
-Sorry about this, will fix early next week.
+> I was able to test the first 2 patches which fix bugs, but
+> not the 3rd one which deals with ACPI devices. There does not seem to
+> be any such device on the 2 test machines I have remotely access to.
+
+Did you already test on apu2/apu3 ?
+If not, maybe you could prepare a queue that I could test.
+
+>> Does the probing need some special BIOS support (or do the necessary
+>> table entries already come from aegesa) ?
+> 
+> I assume that ACPI devices are declared in one of the ACPI tables, so
+> it comes from the "BIOS", yes, whatever form it takes these days.
+
+hmm, so we'll yet have to find out whether these entries are actually
+present on actual machines in the field and potentially stick w/
+board specific platform drivers.
+
+I had hoped I could do all the probing of things like gpio, etc, from
+firmware (grmpf, w/ oftree all of that would be pretty trivial :o),
+but I doubt that it will work. Even w/ fairly recent gpio support in
+ACPI (IIRC my apu's dont have this yet), we're still lacking the
+actual assignment of the gpios (LEDs, Keys, ...).
+
+> I remember noticing long ago that SMBus ports were using GPIO pins, so
+> these pins could be used for SMBus or for any other purpose. 
+
+You mean via bit banging ? Or smbus and gpio shared behind a pinmux ?
+
+That might explain the strange holes in the register set (actually,
+never tried using anything undocumented as gpio).
+
+Did you find some documents you could send over ?
+
+> I could
+> not find any way to figure out from the registers if a given pin pair
+> was used for SMBus or not, which is pretty bad because it means we are
+> blindly instantiating ALL possible SMBus ports even if some of the pins
+> are used for a completely different purpose. 
+
+Do you know the addresses of the smbus port registers ?
+
+These are the gpio registers I've found out - relative to fch base
+(0xFED80000) plus gpio offset (0x1500):
+
+/*
+  * gpio register index definitions
+  */
+#define AMD_FCH_GPIO_REG_GPIO49         0x40
+#define AMD_FCH_GPIO_REG_GPIO50         0x41
+#define AMD_FCH_GPIO_REG_GPIO51         0x42
+#define AMD_FCH_GPIO_REG_GPIO59_DEVSLP0 0x43
+#define AMD_FCH_GPIO_REG_GPIO57         0x44
+#define AMD_FCH_GPIO_REG_GPIO58         0x45
+#define AMD_FCH_GPIO_REG_GPIO59_DEVSLP1 0x46
+#define AMD_FCH_GPIO_REG_GPIO64         0x47
+#define AMD_FCH_GPIO_REG_GPIO68         0x48
+#define AMD_FCH_GPIO_REG_GPIO66_SPKR    0x5B
+#define AMD_FCH_GPIO_REG_GPIO71         0x4D
+#define AMD_FCH_GPIO_REG_GPIO32_GE1     0x59
+#define AMD_FCH_GPIO_REG_GPIO33_GE2     0x5A
+#define AMT_FCH_GPIO_REG_GEVT22         0x09
+
+(see: include/linux/platform_data/gpio/gpio-amd-fch.h)
+
+>> By the way: I'm considering collecting some hw documentation in the
+>> kernel tree (maybe Documentation/hardware/...) - do you folks think
+>> that's a good idea ?
+> 
+> No. Only documentation specifically related to the Linux kernel should
+> live in the kernel tree. OS-neutral documentation must go somewhere
+> else.
+
+hmm, but dts is also kinda documentation, isn't it ? ;-)
+
+Well, I'll probably start a separate project for that.
+
+
+--mtx
+
+-- 
+Enrico Weigelt, metux IT consult
+Free software and Linux embedded engineering
+info@metux.net -- +49-151-27565287
