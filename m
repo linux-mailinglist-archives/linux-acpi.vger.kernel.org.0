@@ -2,105 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4678F88C78
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Aug 2019 19:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E23C88F2C
+	for <lists+linux-acpi@lfdr.de>; Sun, 11 Aug 2019 05:10:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726147AbfHJRZz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 10 Aug 2019 13:25:55 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:41679 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726024AbfHJRZz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 10 Aug 2019 13:25:55 -0400
-Received: by mail-ot1-f65.google.com with SMTP id o101so9883339ota.8
-        for <linux-acpi@vger.kernel.org>; Sat, 10 Aug 2019 10:25:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:reply-to:subject:to:cc:references:from
-         :organization:message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=dmrs5pFCBj9On+SbjBpOAPXKaVn0DvMCZgTb4mfkLts=;
-        b=AwPcdpf/hJOXkhb8eMwWFbwSC/qFbc5QJ/+3F0OdWLhZqcNbOvUFUoI+PV5L1akCU8
-         lPF/CuAG7kd0PKKRZvBAS/+q2q/2iJvkB4s4S0DdyVLgXPynDz5Jnl0fX42nffjApdXV
-         r678nc2Z2v0P3SfjQmfQcfoMg6pVGVaouF+P5Vru8fx0zjEpP9GoTqBECRDELH6IoNl6
-         D+dRXvy5xk2x53Nj70c7As9NbqiNS/YSsrzIaw2+aarMAdZIg20ljVBWVF9ePfyhyLSB
-         frUXLdoGgsS7H9HvI9bLDbTZw26IhECyQN4SfvjHy7l5hFImlzWlAUQrwvSd1aDE0p/L
-         ipGQ==
-X-Gm-Message-State: APjAAAX5JQR6Y6syceLa2K/yUA+4TTQrGhklHMyJD5TTrN4qFLkmbQEK
-        jOEyINkYSY4ULQy4B22/FY3Jew==
-X-Google-Smtp-Source: APXvYqxzNa3AT+XtXWSe12rwllYzVp6a5m/K3d0vXyVaEBlsvIRPrdQWFY2OazBw2Glf8Ldnx0zU+w==
-X-Received: by 2002:a05:6638:c8:: with SMTP id w8mr3295587jao.52.1565457954493;
-        Sat, 10 Aug 2019 10:25:54 -0700 (PDT)
-Received: from masetto.ahs3 (c-67-165-232-89.hsd1.co.comcast.net. [67.165.232.89])
-        by smtp.gmail.com with ESMTPSA id x23sm8466137iob.36.2019.08.10.10.25.53
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Sat, 10 Aug 2019 10:25:53 -0700 (PDT)
-Reply-To: ahs3@redhat.com
-Subject: Re: [PATCH] ACPI / CPPC: do not require the _PSD method when using
- CPPC
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-References: <20190805170338.29493-1-ahs3@redhat.com>
- <20190807114118.GJ16546@e107155-lin>
-From:   Al Stone <ahs3@redhat.com>
-Organization: Red Hat, Inc.
-Message-ID: <b873db68-a130-ed7f-83e0-4491b1c0ff53@redhat.com>
-Date:   Sat, 10 Aug 2019 11:25:53 -0600
+        id S1726424AbfHKDKZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 10 Aug 2019 23:10:25 -0400
+Received: from mail.rationali.st ([13.54.121.199]:44512 "EHLO
+        mail.rationali.st" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726084AbfHKDKZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 10 Aug 2019 23:10:25 -0400
+X-Greylist: delayed 1014 seconds by postgrey-1.27 at vger.kernel.org; Sat, 10 Aug 2019 23:10:23 EDT
+Received: from ppp167-208-210.static.internode.on.net ([59.167.208.210] helo=t460s.rationali.st)
+        by mail.rationali.st with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <acooks@rationali.st>)
+        id 1hweF7-0000pI-Fk; Sun, 11 Aug 2019 03:10:07 +0000
+Reply-To: acooks@rationali.st
+Subject: Re: [PATCH v5 0/3] Enable ACPI-defined peripherals on i2c-piix4 SMBus
+To:     Jean Delvare <jdelvare@suse.de>,
+        "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Cc:     Linux I2C <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, platypus-sw@opengear.com,
+        "Tobin C . Harding" <me@tobin.cc>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Will Wagner <willw@carallon.com>
+References: <20190802145109.38dd4045@endymion>
+ <b013c33b-da11-ce5e-08d4-0b24a8575109@metux.net>
+ <20190809103340.2ef24523@endymion>
+From:   Andrew Cooks <acooks@rationali.st>
+Message-ID: <87e83cd9-e9a9-ee58-9ea3-7549ae3b0838@rationali.st>
+Date:   Sun, 11 Aug 2019 13:09:59 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190807114118.GJ16546@e107155-lin>
+In-Reply-To: <20190809103340.2ef24523@endymion>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Spam-Score: -2.9 (--)
+X-Spam-Report: Spam detection software, running on the system "mail.rationali.st",
+ has NOT identified this incoming email as spam.  The original
+ message has been attached to this so you can view it or label
+ similar future email.  If you have any questions, see
+ the administrator of that system for details.
+ Content preview:  On 8/9/19 6:33 PM, Jean Delvare wrote: > Hi Enrico, > > On
+    Thu, 8 Aug 2019 11:17:53 +0200, Enrico Weigelt, metux IT consult wrote: >>
+    On 02.08.19 14:51, Jean Delvare wrote: >>> These patches fix a cou [...] 
+ Content analysis details:   (-2.9 points, 5.0 required)
+  pts rule name              description
+ ---- ---------------------- --------------------------------------------------
+ -1.0 ALL_TRUSTED            Passed through trusted hosts only via SMTP
+ -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
+                             [score: 0.0000]
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 8/7/19 5:41 AM, Sudeep Holla wrote:
-> On Mon, Aug 05, 2019 at 11:03:38AM -0600, Al Stone wrote:
->> According to the ACPI 6.3 specification, the _PSD method is optional
->> when using CPPC.  The underlying assumption appears to be that each CPU
->> can change frequency independently from all other CPUs; _PSD is provided
->> to tell the OS that some processors can NOT do that.
->>
->> However, the acpi_get_psd() function returns -ENODEV if there is no _PSD
->> method present, or an ACPI error status if an error occurs when evaluating
->> _PSD, if present.  This essentially makes _PSD mandatory when using CPPC,
->> in violation of the specification, and only on Linux.
->>
->> This has forced some firmware writers to provide a dummy _PSD, even though
->> it is irrelevant, but only because Linux requires it; other OSPMs follow
->> the spec.  We really do not want to have OS specific ACPI tables, though.
->>
->> So, correct acpi_get_psd() so that it does not return an error if there
->> is no _PSD method present, but does return a failure when the method can
->> not be executed properly.  This allows _PSD to be optional as it should
->> be.
->>
-> 
-> Makes sense to me. FWIW,
-> 
-> Reviewed-by: Sudeep Holla < sudeep.holla@arm.com>
-> 
-> --
-> Regards,
-> Sudeep
-> 
 
-Thanks for the review, Sudeep.  All the ARM systems I've seen seem to
-have a _PSD so this hasn't been an issue there.  Some newer platforms
-coming out are starting to use CPPC, though, and took the spec at face
-value :).
+On 8/9/19 6:33 PM, Jean Delvare wrote:
+> Hi Enrico,
+>
+> On Thu, 8 Aug 2019 11:17:53 +0200, Enrico Weigelt, metux IT consult wrote:
+>> On 02.08.19 14:51, Jean Delvare wrote:
+>>> These patches fix a couple of issues with the i2c-piix4 driver on
+>>> AMD Family 16h Model 30h SoCs and add ACPI-based enumeration to the
+>>> i2c-piix4 driver.  
+>> Can you tell a little bit more about what devices are behind the smbus ?
+>> I recall the G-412 SoCs (such as on apu2+ boards) have an Hudson inside
+>> and fall into this category. (I'll have to check when back in office),
+>> so (as the apu2 platform driver maintainer) I'm very interested in this.
+> Unfortunately not. I only picked up from where Andrew Cooks left, due
+> to me being way too slow to review his patches. I did not want his work
+> to be lost. I was able to test the first 2 patches which fix bugs, but
+> not the 3rd one which deals with ACPI devices. There does not seem to
+> be any such device on the 2 test machines I have remotely access to.
 
--- 
-ciao,
-al
------------------------------------
-Al Stone
-Software Engineer
-Red Hat, Inc.
-ahs3@redhat.com
------------------------------------
+Thanks for taking a look at these patches and thanks for your many years of support and maintenance.
+
+The patches I submitted were developed for an commercial product, but I am not with the company anymore and do not have access to the hardware. This is the device: https://opengear.com/products/om2200-operations-manager/
+
+The specific peripheral that required ACPI support is the NCT7491, and a driver is available at https://github.com/opengear/nct7491-driver
+
+>> Does the probing need some special BIOS support (or do the necessary
+>> table entries already come from aegesa) ?
+> I assume that ACPI devices are declared in one of the ACPI tables, so
+> it comes from the "BIOS", yes, whatever form it takes these days.
+Yes, though unfortunately I didn't get a chance to submit this to the coreboot project and no longer have access to the source.
+>
+>> I have to admit, I'm still confused by the AMD documentation - haven't
+>> found a clear documentation on what peripherals exactly are in the
+>> G-412 SoC, just puzzled together that the FCH seems to be an Hudson,
+>> probably v2. There also seems to be some relation between smbus and
+>> gpio, but the gpio's are directly memory-mapped - no idea whether they
+>> just share the same base address register or the gpios are really behind
+>> smbus and some hw logic directy maps them into mmio space ...
+>> Do you happen to have some more information on that ?
+> I remember noticing long ago that SMBus ports were using GPIO pins, so
+> these pins could be used for SMBus or for any other purpose. I could
+> not find any way to figure out from the registers if a given pin pair
+> was used for SMBus or not, which is pretty bad because it means we are
+> blindly instantiating ALL possible SMBus ports even if some of the pins
+> are used for a completely different purpose. It was over 1 year ago
+> though, so I don't remember the details, and my findings then may not
+> apply to the most recent hardware.
+>
+>> By the way: I'm considering collecting some hw documentation in the
+>> kernel tree (maybe Documentation/hardware/...) - do you folks think
+>> that's a good idea ?
+> No. Only documentation specifically related to the Linux kernel should
+> live in the kernel tree. OS-neutral documentation must go somewhere
+> else.
+>
+Thanks,
+
+Andrew
+
