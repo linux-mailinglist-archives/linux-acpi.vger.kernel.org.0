@@ -2,109 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DB2D88F35
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 Aug 2019 05:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A20F89755
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Aug 2019 08:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726417AbfHKDZ3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 10 Aug 2019 23:25:29 -0400
-Received: from mail.rationali.st ([13.54.121.199]:44530 "EHLO
-        mail.rationali.st" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726084AbfHKDZ3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 10 Aug 2019 23:25:29 -0400
-Received: from ppp167-208-210.static.internode.on.net ([59.167.208.210] helo=t460s.rationali.st)
-        by mail.rationali.st with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.92)
-        (envelope-from <acooks@rationali.st>)
-        id 1hwdyJ-0000m7-9g; Sun, 11 Aug 2019 02:53:10 +0000
-Reply-To: acooks@rationali.st
-Subject: Re: [PATCH v5 0/3] Enable ACPI-defined peripherals on i2c-piix4 SMBus
-To:     "Enrico Weigelt, metux IT consult" <lkml@metux.net>,
-        Jean Delvare <jdelvare@suse.de>,
-        Linux I2C <linux-i2c@vger.kernel.org>
-Cc:     Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, platypus-sw@opengear.com,
-        "Tobin C . Harding" <me@tobin.cc>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Will Wagner <willw@carallon.com>
-References: <20190802145109.38dd4045@endymion>
- <b013c33b-da11-ce5e-08d4-0b24a8575109@metux.net>
-From:   Andrew Cooks <acooks@rationali.st>
-Message-ID: <db725a3b-7b6e-ac79-ef1c-e601ff45c0f2@rationali.st>
-Date:   Sun, 11 Aug 2019 12:52:37 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1725923AbfHLGv7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Aug 2019 02:51:59 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:4231 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725843AbfHLGv6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 12 Aug 2019 02:51:58 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 5D421518EAA4334DA815;
+        Mon, 12 Aug 2019 14:51:54 +0800 (CST)
+Received: from [127.0.0.1] (10.74.184.86) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Mon, 12 Aug 2019
+ 14:51:50 +0800
+Subject: Re: [PATCH v2 1/1] efi: cper: print AER info of PCIe fatal error
+To:     <linux-kernel@vger.kernel.org>
+References: <1564105417-232048-1-git-send-email-tanxiaofei@huawei.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-efi@vger.kernel.org>,
+        <rjw@rjwysocki.net>, <lenb@kernel.org>, <tony.luck@intel.com>,
+        <bp@alien8.de>, <ying.huang@intel.com>,
+        <ross.lagerwall@citrix.com>, <ard.biesheuvel@linaro.org>,
+        <james.morse@arm.com>
+From:   tanxiaofei <tanxiaofei@huawei.com>
+Message-ID: <5D510C86.5040000@huawei.com>
+Date:   Mon, 12 Aug 2019 14:51:50 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.1
 MIME-Version: 1.0
-In-Reply-To: <b013c33b-da11-ce5e-08d4-0b24a8575109@metux.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Spam-Score: -2.9 (--)
-X-Spam-Report: Spam detection software, running on the system "mail.rationali.st",
- has NOT identified this incoming email as spam.  The original
- message has been attached to this so you can view it or label
- similar future email.  If you have any questions, see
- the administrator of that system for details.
- Content preview:  Hi Enrico On 8/8/19 7:17 PM, Enrico Weigelt, metux IT consult
-    wrote: > On 02.08.19 14:51, Jean Delvare wrote: > > Hi, > >> These patches
-    fix a couple of issues with the i2c-piix4 driver on >> AMD Family 16h Mod
-    [...] 
- Content analysis details:   (-2.9 points, 5.0 required)
-  pts rule name              description
- ---- ---------------------- --------------------------------------------------
- -1.0 ALL_TRUSTED            Passed through trusted hosts only via SMTP
- -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
-                             [score: 0.0000]
+In-Reply-To: <1564105417-232048-1-git-send-email-tanxiaofei@huawei.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.74.184.86]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Enrico
 
-On 8/8/19 7:17 PM, Enrico Weigelt, metux IT consult wrote:
-> On 02.08.19 14:51, Jean Delvare wrote:
->
-> Hi,
->
->> These patches fix a couple of issues with the i2c-piix4 driver on
->> AMD Family 16h Model 30h SoCs and add ACPI-based enumeration to the
->> i2c-piix4 driver.
-> Can you tell a little bit more about what devices are behind the smbus ?
-> I recall the G-412 SoCs (such as on apu2+ boards) have an Hudson inside
-> and fall into this category. (I'll have to check when back in office),
-> so (as the apu2 platform driver maintainer) I'm very interested in this.
-My initial work is based on a board that is similar to the APU2, but has additional peripherals connected to the smbus, including a NCT7491 thermal monitor/fan controller and PCA6524 GPIO controller. These are simply peripherals on a board variant, not 'platform' devices, so I didn't want to follow the platform driver approach that the APU2 GPIO driver uses.
->
-> Does the probing need some special BIOS support (or do the necessary
-> table entries already come from aegesa) ?
+ping...
 
-SMBus (and I2C) peripherals can generally not be enumerated without some firmware support. It is possible to probe for specific devices on the bus (eg sensors-detect) but in general it is not feasible to let every supported device driver probe the bus for its device. ACPI and Devicetree provides the kernel with metadata for the device: type, address, calibrated set points for temperature, etc.
+On 2019/7/26 9:43, Xiaofei Tan wrote:
+> AER info of PCIe fatal error is not printed in the current driver.
+> Because APEI driver will panic directly for fatal error, and can't
+> run to the place of printing AER info.
+> 
+> An example log is as following:
+> {763}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 11
+> {763}[Hardware Error]: event severity: fatal
+> {763}[Hardware Error]:  Error 0, type: fatal
+> {763}[Hardware Error]:   section_type: PCIe error
+> {763}[Hardware Error]:   port_type: 0, PCIe end point
+> {763}[Hardware Error]:   version: 4.0
+> {763}[Hardware Error]:   command: 0x0000, status: 0x0010
+> {763}[Hardware Error]:   device_id: 0000:82:00.0
+> {763}[Hardware Error]:   slot: 0
+> {763}[Hardware Error]:   secondary_bus: 0x00
+> {763}[Hardware Error]:   vendor_id: 0x8086, device_id: 0x10fb
+> {763}[Hardware Error]:   class_code: 000002
+> Kernel panic - not syncing: Fatal hardware error!
+> 
+> This issue was imported by the patch, '37448adfc7ce ("aerdrv: Move
+> cper_print_aer() call out of interrupt context")'. To fix this issue,
+> this patch adds print of AER info in cper_print_pcie() for fatal error.
+> 
+> Here is the example log after this patch applied:
+> {24}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 10
+> {24}[Hardware Error]: event severity: fatal
+> {24}[Hardware Error]:  Error 0, type: fatal
+> {24}[Hardware Error]:   section_type: PCIe error
+> {24}[Hardware Error]:   port_type: 0, PCIe end point
+> {24}[Hardware Error]:   version: 4.0
+> {24}[Hardware Error]:   command: 0x0546, status: 0x4010
+> {24}[Hardware Error]:   device_id: 0000:01:00.0
+> {24}[Hardware Error]:   slot: 0
+> {24}[Hardware Error]:   secondary_bus: 0x00
+> {24}[Hardware Error]:   vendor_id: 0x15b3, device_id: 0x1019
+> {24}[Hardware Error]:   class_code: 000002
+> {24}[Hardware Error]:   aer_uncor_status: 0x00040000, aer_uncor_mask: 0x00000000
+> {24}[Hardware Error]:   aer_uncor_severity: 0x00062010
+> {24}[Hardware Error]:   TLP Header: 000000c0 01010000 00000001 00000000
+> Kernel panic - not syncing: Fatal hardware error!
+> 
+> Fixes: 37448adfc7ce ("aerdrv: Move cper_print_aer() call out of interrupt context")
+> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+> Reviewed-by: James Morse <james.morse@arm.com>
+> ---
+>  drivers/firmware/efi/cper.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+> index 8fa977c..78b8922 100644
+> --- a/drivers/firmware/efi/cper.c
+> +++ b/drivers/firmware/efi/cper.c
+> @@ -390,6 +390,21 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
+>  		printk(
+>  	"%s""bridge: secondary_status: 0x%04x, control: 0x%04x\n",
+>  	pfx, pcie->bridge.secondary_status, pcie->bridge.control);
+> +
+> +	/* Fatal errors call __ghes_panic() before AER handler prints this */
+> +	if (pcie->validation_bits & CPER_PCIE_VALID_AER_INFO &&
+> +	    gdata->error_severity & CPER_SEV_FATAL) {
+> +		struct aer_capability_regs *aer;
+> +
+> +		aer = (struct aer_capability_regs *)pcie->aer_info;
+> +		printk("%saer_uncor_status: 0x%08x, aer_uncor_mask: 0x%08x\n",
+> +		       pfx, aer->uncor_status, aer->uncor_mask);
+> +		printk("%saer_uncor_severity: 0x%08x\n",
+> +		       pfx, aer->uncor_severity);
+> +		printk("%sTLP Header: %08x %08x %08x %08x\n", pfx,
+> +		       aer->header_log.dw0, aer->header_log.dw1,
+> +		       aer->header_log.dw2, aer->header_log.dw3);
+> +	}
+>  }
+>  
+>  static void cper_print_tstamp(const char *pfx,
+> 
 
-Since the peripherals are not standard platform devices, they are not described by the ACPI tables provided by Coreboot or AMD, but it's not too difficult to create supplementary device description tables (ACPI) for non-standard devices. These can be added to coreboot, supplied to qemu as additional firmware files (see -acpitable arg), or built into the kernel (see https://www.kernel.org/doc/Documentation/acpi/ssdt-overlays.txt)
+-- 
+ thanks
+tanxiaofei
 
-ACPI may be an ugly abomination, but it's what we're stuck with on x86 and it can only improve when more people get their hands on it.
-
->
-> I have to admit, I'm still confused by the AMD documentation - haven't
-> found a clear documentation on what peripherals exactly are in the
-> G-412 SoC, just puzzled together that the FCH seems to be an Hudson,
-> probably v2. There also seems to be some relation between smbus and
-> gpio, but the gpio's are directly memory-mapped - no idea whether they
-> just share the same base address register or the gpios are really behind
-> smbus and some hw logic directy maps them into mmio space ...
-> Do you happen to have some more information on that ?
-You might find it helpful to look at the coreboot source for the APU2 (src/mainboard/pcengines/apu2/gpio_ftns.h)
->
-> By the way: I'm considering collecting some hw documentation in the
-> kernel tree (maybe Documentation/hardware/...) - do you folks think
-> that's a good idea ?
-
-Would it be awesome if specs were available for every device supported by the kernel? Absolutely, what a dream! Perhaps a separate repo, like the linux-firmware repo, would be better for binary objects that don't change. Unfortunately, copyright makes this hard. NDAs make this hard. Hardware companies just don't seem to work like that.
-
->
-> --mtx
-
-Regards,
- 
-
-Andrew
