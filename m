@@ -2,78 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CA4789922
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Aug 2019 11:00:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 876BD89928
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Aug 2019 11:01:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727199AbfHLJAN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Aug 2019 05:00:13 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:44270 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727170AbfHLJAN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Aug 2019 05:00:13 -0400
-Received: by mail-ot1-f65.google.com with SMTP id b7so105890999otl.11;
-        Mon, 12 Aug 2019 02:00:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9SfdkC+EgmsQaj7NNjroDPg/hus6U7Ms5CG+oO9tyUU=;
-        b=efpMf5eqw2R010PUm3rOTyCTi1TyYzUtAzR21xW0YZfguL3O8a5Zt/4IRjLvGl4Ynp
-         f7RREoo5LmOJqCCwLrkoMw5StV2s7w7RqA92jaP/7HnhEkYgFJ1RjtAoqW8P9Ura0RLD
-         zWWXXHELnQfPpZ7wKSJl5g8od7xNNPs4yjlrAreNdvE2sMTt7heXrJvH6l0iB8qPP1bI
-         TgzSwbw+vRIapZ0zTZRT9igCOf6qF0leIrHbHIzdWl85LhPaM4juFLVZgmY4qHMNNRLJ
-         NuG9q/X+v8gWE2OZzH4fw4f3NTCSA0ha83QQCGDaPgB26xr7o9mskjXlAQcYNxYaUxuC
-         xkyA==
-X-Gm-Message-State: APjAAAUvssi09h1AuDWpDNHt+3Se2GJZwq4WCZXzsK9laEh9jy8Y1otT
-        gzUE7akfAEt0kWX4/Dmh/LgdIaWQHbNDrGok+D4=
-X-Google-Smtp-Source: APXvYqwXAkIlGfUoamy7KSLglTrn5vbwOWBEQTUqx7ej3O7a/v77b1NEyOivr1YHqaK+/R2qvF0MR2YOPgvp0o9peHU=
-X-Received: by 2002:aca:d907:: with SMTP id q7mr13371583oig.68.1565600412611;
- Mon, 12 Aug 2019 02:00:12 -0700 (PDT)
+        id S1727276AbfHLJBc convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 12 Aug 2019 05:01:32 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([146.101.78.151]:27820 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727261AbfHLJBc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 12 Aug 2019 05:01:32 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-167-o1ho9AClPlujEPqzHyiv3g-1; Mon, 12 Aug 2019 10:01:29 +0100
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b::d117) by AcuMS.aculab.com
+ (fd9f:af1c:a25b::d117) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Mon,
+ 12 Aug 2019 10:01:28 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Mon, 12 Aug 2019 10:01:28 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Mika Westerberg' <mika.westerberg@linux.intel.com>
+CC:     'Yehezkel Bernat' <yehezkelshb@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+        Mario Limonciello <Mario.Limonciello@dell.com>,
+        "Anthony Wong" <anthony.wong@canonical.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: RE: [PATCH 3/8] thunderbolt: Use 32-bit writes when writing ring
+ producer/consumer
+Thread-Topic: [PATCH 3/8] thunderbolt: Use 32-bit writes when writing ring
+ producer/consumer
+Thread-Index: AQHVMyIznn3HI+p3CEuvWWeqi0Ulhqa8L0swgDPP6oCAABFywP//9NeAgAAR0ICAARElgIAGSXbA
+Date:   Mon, 12 Aug 2019 09:01:28 +0000
+Message-ID: <60b8b8d8ff14405bb86b9bd30addb94f@AcuMS.aculab.com>
+References: <20190705095800.43534-1-mika.westerberg@linux.intel.com>
+ <20190705095800.43534-4-mika.westerberg@linux.intel.com>
+ <CA+CmpXtMBEtyh77fcrhX2BU8esiit56CWfZmey6LYEHZVUxf8A@mail.gmail.com>
+ <0f3a47d8133945b181d623ea6e0d53f2@AcuMS.aculab.com>
+ <20190807161359.GT2716@lahna.fi.intel.com>
+ <79616dd147864771b0b74901e77f2607@AcuMS.aculab.com>
+ <20190807163629.GV2716@lahna.fi.intel.com>
+ <91a579eb2f614739a9a1177bdde5513e@AcuMS.aculab.com>
+ <20190808095751.GA2716@lahna.fi.intel.com>
+In-Reply-To: <20190808095751.GA2716@lahna.fi.intel.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-References: <20190805142706.22520-1-keith.busch@intel.com> <20190805142706.22520-4-keith.busch@intel.com>
-In-Reply-To: <20190805142706.22520-4-keith.busch@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 12 Aug 2019 10:59:58 +0200
-Message-ID: <CAJZ5v0hCkibcbiYdPmBXdnDHZbGP2q0uNRi01oU0NMz5o3WwGA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] acpi/hmat: Skip publishing target info for nodes with
- no online memory
-To:     Keith Busch <keith.busch@intel.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Rafael Wysocki <rafael@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+X-MC-Unique: o1ho9AClPlujEPqzHyiv3g-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 5, 2019 at 4:30 PM Keith Busch <keith.busch@intel.com> wrote:
->
-> From: Dan Williams <dan.j.williams@intel.com>
->
-> There are multiple scenarios where the HMAT may contain information
-> about proximity domains that are not currently online. Rather than fail
-> to report any HMAT data just elide those offline domains.
->
-> If and when those domains are later onlined they can be added to the
-> HMEM reporting at that point.
->
-> This was found while testing EFI_MEMORY_SP support which reserves
-> "specific purpose" memory from the general allocation pool. If that
-> reservation results in an empty numa-node then the node is not marked
-> online leading a spurious:
->
->     "acpi/hmat: Ignoring HMAT: Invalid table"
->
-> ...result for HMAT parsing.
->
-> Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Reviewed-by: Keith Busch <keith.busch@intel.com>
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+From: 'Mika Westerberg'
+> Sent: 08 August 2019 10:58
+> On Wed, Aug 07, 2019 at 04:41:30PM +0000, David Laight wrote:
+> > From: 'Mika Westerberg' [mailto:mika.westerberg@linux.intel.com]
+> > > Sent: 07 August 2019 17:36
+> > >
+> > > On Wed, Aug 07, 2019 at 04:22:26PM +0000, David Laight wrote:
+> > > > From: Mika Westerberg
+> > > > > Sent: 07 August 2019 17:14
+> > > > > To: David Laight
+> > > > >
+> > > > > On Fri, Jul 05, 2019 at 04:04:19PM +0000, David Laight wrote:
+> > > > > > > Really a matter of taste, but maybe you want to consider having a single
+> > > > > > > function, with a 3rd parameter, bool is_tx.
+> > > > > > > The calls here will be unified to:
+> > > > > > >         ring_iowrite(ring, ring->head, ring->is_tx);
+> > > > > > > (No condition is needed here).
+> > > > > > >
+> > > > > > > The implementation uses the new parameter to decide which part of the register
+> > > > > > > to mask, reducing the code duplication (in my eyes):
+> > > > > > >
+> > > > > > >         val = ioread32(ring_desc_base(ring) + 8);
+> > > > > > >         if (is_tx) {
+> > > > > > >                 val &= 0x0000ffff;
+> > > > > > >                 val |= value << 16;
+> > > > > > >         } else {
+> > > > > > >                 val &= 0xffff0000;
+> > > > > > >                 val |= value;
+> > > > > > >         }
+> > > > > > >         iowrite32(val, ring_desc_base(ring) + 8);
+> > > > > > >
+> > > > > > > I'm not sure if it improves the readability or makes it worse. Your call.
+> > > > > >
+> > > > > > Gah, that is all horrid beyond belief.
+> > > > > > If a 32bit write is valid then the hardware must not be updating
+> > > > > > the other 16 bits.
+> > > > > > In which case the driver knows what they should be.
+> > > > > > So it can do a single 32bit write of the required value.
+> > > > >
+> > > > > I'm not entirely sure I understand what you say above. Can you shed some
+> > > > > light on this by a concrete example how it should look like? :-)
+> > > >
+> > > > The driver must know both the tx and rx ring values, so:
+> > > > 	iowrite32(tx_val << 16 | rx_val, ring_desc_base(ring) + 8);
+> > > >
+> > >
+> > > I see. However, prod or cons side gets updated by the hardware as it
+> > > processes buffers and other side is only updated by the driver. I'm not
+> > > sure the above works here.
+> >
+> > If the hardware updates the other half of the 32bit word it doesn't ever work.
+> >
+> > In that case you must do 16bit writes.
+> > If the hardware is ignoring the byte-enables it is broken and unusable.
+> 
+> It is quite usable as I'm running this code on real hardware ;-) but
+> 32-bit access is needed.
+> 
+> The low or high 16-bits are read-only depending on the ring (Tx or Rx)
+> and updated by the hardware. It ignores writes to that part so we could
+> do this for Tx ring:
+> 
+> 	iowrite32(prod << 16, ring_desc_base(ring) + 8);
+> 
+> and this for Rx ring:
+> 
+> 	iowrite32(cons, ring_desc_base(ring) + 8);
+> 
+> Do you see any issues with this?
 
-When you send somebody else's patches, you should sign them off as a
-rule, but since you sent this one with your own R-by, I converted that
-to a S-o-b.
+No, just comment that the hardware ignores the write to the other bytes.
+
+You probably want separate functions - to remove the mispredicted branch.
+
+	David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
