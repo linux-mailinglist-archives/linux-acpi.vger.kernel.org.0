@@ -2,173 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 671EA89B13
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Aug 2019 12:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EBAD89D70
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Aug 2019 13:59:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727930AbfHLKMk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Aug 2019 06:12:40 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:35576 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727703AbfHLKMh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 12 Aug 2019 06:12:37 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 2AF2EF66CD59304F08B0;
-        Mon, 12 Aug 2019 18:12:35 +0800 (CST)
-Received: from DESKTOP-6T4S3DQ.china.huawei.com (10.202.226.45) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 12 Aug 2019 18:12:26 +0800
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     <linux-acpi@vger.kernel.org>, <linux-edac@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <rjw@rjwysocki.net>,
-        <lenb@kernel.org>, <james.morse@arm.com>, <tony.luck@intel.com>,
-        <bp@alien8.de>, <baicar@os.amperecomputing.com>
-CC:     <linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
-        <tanxiaofei@huawei.com>, Shiju Jose <shiju.jose@huawei.com>
-Subject: [PATCH RFC 4/4] ACPI: APEI: Add log_arm_hw_error to the new notification method
-Date:   Mon, 12 Aug 2019 11:11:49 +0100
-Message-ID: <20190812101149.26036-5-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.19.2.windows.1
-In-Reply-To: <20190812101149.26036-1-shiju.jose@huawei.com>
-References: <Shiju Jose>
- <20190812101149.26036-1-shiju.jose@huawei.com>
+        id S1728224AbfHLL7O (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Aug 2019 07:59:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39118 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728179AbfHLL7O (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 12 Aug 2019 07:59:14 -0400
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 119E3206DF;
+        Mon, 12 Aug 2019 11:59:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1565611152;
+        bh=vBt+QSKBMMCiqKR4EJbOKmSTXRlZV73GsGzL2FwUFJ0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fNg4o/1DEJKQAm6uBrNHwHIN+mT16FEFUIdmxoWSh26piY5b/OFu3/R6KVvSGZyVE
+         LBmqq11G1+mi2FqfDTde3aOME9v4BE4eoQl+JtsT9nCU4AnoXyK+r1BLkCwUIX3zq/
+         nIZfbgFk7V6RTyvRIDL0O3KVu3itpDSJYE/adOOA=
+Date:   Mon, 12 Aug 2019 12:59:07 +0100
+From:   Will Deacon <will@kernel.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Robert Richter <rrichter@marvell.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
+        "rric@kernel.org" <rric@kernel.org>
+Subject: Re: [PATCH v4 1/2] ACPI/PPTT: Add support for ACPI 6.3 thread flag
+Message-ID: <20190812115907.kugk57jvv3g2r66a@willie-the-truck>
+References: <20190808204007.30110-1-jeremy.linton@arm.com>
+ <20190808204007.30110-2-jeremy.linton@arm.com>
+ <20190808222518.5q4fhd2tvs4lb6aw@rric.localdomain>
+ <CAJZ5v0imn0X=M38LJcwe76gfLafWGU+MgyGd=NuKAeDtNZ+1DQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.202.226.45]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0imn0X=M38LJcwe76gfLafWGU+MgyGd=NuKAeDtNZ+1DQ@mail.gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This patch adds log_arm_hw_error to the new error notification
-method.
+On Mon, Aug 12, 2019 at 11:06:07AM +0200, Rafael J. Wysocki wrote:
+> On Fri, Aug 9, 2019 at 12:25 AM Robert Richter <rrichter@marvell.com> wrote:
+> >
+> > On 08.08.19 15:40:06, Jeremy Linton wrote:
+> > > ACPI 6.3 adds a flag to the CPU node to indicate whether
+> > > the given PE is a thread. Add a function to return that
+> > > information for a given linux logical CPU.
+> > >
+> > > Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+> > > Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> > > ---
+> > >  drivers/acpi/pptt.c  | 53 +++++++++++++++++++++++++++++++++++++++++++-
+> > >  include/linux/acpi.h |  5 +++++
+> > >  2 files changed, 57 insertions(+), 1 deletion(-)
+> >
+> > Reviewed-by: Robert Richter <rrichter@marvell.com>
+> 
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> and please push it through ARM64 along with the second patch.
 
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
----
- drivers/acpi/apei/ghes.c | 47 ++++++++++++++++++++++-------------------------
- drivers/ras/ras.c        |  5 ++++-
- include/linux/ras.h      |  7 +++++--
- 3 files changed, 31 insertions(+), 28 deletions(-)
+Thanks. I'll push these into -next shortly.
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index ffc309c..013fea0 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -574,34 +574,27 @@ static void ghes_do_proc(struct ghes *ghes,
- 		if (gdata->validation_bits & CPER_SEC_VALID_FRU_TEXT)
- 			fru_text = gdata->fru_text;
- 
--		if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
--			struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
--
--			log_arm_hw_error(err);
--		} else {
--			rcu_read_lock();
--			list_for_each_entry_rcu(err_notify,
--						&ghes_error_notify_list, list) {
--				if (guid_equal(&err_notify->sec_type,
--					       sec_type)) {
--					/* The notification is called in the
--					 * interrupt context, thus the handler
--					 * functions should be take care of it.
--					 */
--					err_notify->handle(gdata, sev,
--							   err_notify->data);
--					is_notify = 1;
--				}
-+		rcu_read_lock();
-+		list_for_each_entry_rcu(err_notify, &ghes_error_notify_list,
-+					list) {
-+			if (guid_equal(&err_notify->sec_type, sec_type)) {
-+				/* The notification is called in the
-+				 * interrupt context, thus the handler
-+				 * functions should be take care of it.
-+				 */
-+				err_notify->handle(gdata, sev,
-+						   err_notify->data);
-+				is_notify = 1;
- 			}
--			rcu_read_unlock();
-+		}
-+		rcu_read_unlock();
- 
--			if (!is_notify) {
--				void *err = acpi_hest_get_payload(gdata);
-+		if (!is_notify) {
-+			void *err = acpi_hest_get_payload(gdata);
- 
--				log_non_standard_event(sec_type, fru_id,
--						       fru_text, sec_sev, err,
--						       gdata->error_data_length);
--			}
-+			log_non_standard_event(sec_type, fru_id,
-+					       fru_text, sec_sev, err,
-+					       gdata->error_data_length);
- 		}
- 	}
- }
-@@ -1198,6 +1191,10 @@ struct ghes_err_handler_tab {
- 		.sec_type = CPER_SEC_PCIE,
- 		.handle = ghes_handle_aer,
- 	},
-+	{
-+		.sec_type = CPER_SEC_PROC_ARM,
-+		.handle = log_arm_hw_error,
-+	},
- 	{ /* sentinel */ }
- };
- 
-diff --git a/drivers/ras/ras.c b/drivers/ras/ras.c
-index 95540ea..7ec3eeb 100644
---- a/drivers/ras/ras.c
-+++ b/drivers/ras/ras.c
-@@ -21,8 +21,11 @@ void log_non_standard_event(const guid_t *sec_type, const guid_t *fru_id,
- 	trace_non_standard_event(sec_type, fru_id, fru_text, sev, err, len);
- }
- 
--void log_arm_hw_error(struct cper_sec_proc_arm *err)
-+void log_arm_hw_error(struct acpi_hest_generic_data *gdata,
-+		      int sev, void *data)
- {
-+	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
-+
- 	trace_arm_event(err);
- }
- 
-diff --git a/include/linux/ras.h b/include/linux/ras.h
-index 7c3debb..05b662d 100644
---- a/include/linux/ras.h
-+++ b/include/linux/ras.h
-@@ -5,6 +5,7 @@
- #include <asm/errno.h>
- #include <linux/uuid.h>
- #include <linux/cper.h>
-+#include <acpi/ghes.h>
- 
- #ifdef CONFIG_DEBUG_FS
- int ras_userspace_consumers(void);
-@@ -29,7 +30,8 @@ static inline void __init cec_init(void)	{ }
- void log_non_standard_event(const guid_t *sec_type,
- 			    const guid_t *fru_id, const char *fru_text,
- 			    const u8 sev, const u8 *err, const u32 len);
--void log_arm_hw_error(struct cper_sec_proc_arm *err);
-+void log_arm_hw_error(struct acpi_hest_generic_data *gdata,
-+		      int sev, void *data);
- #else
- static inline void
- log_non_standard_event(const guid_t *sec_type,
-@@ -37,7 +39,8 @@ void log_non_standard_event(const guid_t *sec_type,
- 		       const u8 sev, const u8 *err, const u32 len)
- { return; }
- static inline void
--log_arm_hw_error(struct cper_sec_proc_arm *err) { return; }
-+log_arm_hw_error(struct acpi_hest_generic_data *gdata,
-+		 int sev, void *data) { return; }
- #endif
- 
- #endif /* __RAS_H__ */
--- 
-1.9.1
-
-
+Will
