@@ -2,125 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61B328BF7B
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Aug 2019 19:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94A458C3FC
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Aug 2019 23:57:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726155AbfHMRPg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Aug 2019 13:15:36 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:47358 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726029AbfHMRPg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 13 Aug 2019 13:15:36 -0400
-Received: from zn.tnic (p200300EC2F0D2400C42B856AF2D9BBDA.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:2400:c42b:856a:f2d9:bbda])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 49F971EC0716;
-        Tue, 13 Aug 2019 19:15:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1565716535;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=MKvPtw39k4N+Zo5QrzcqmJCmYa89E6ty+9O3MiOg9Ak=;
-        b=os+6Yx7mfVvvbD3vz96XGojt+UlOedAh80BEC277yi4t5QHIpvWaAk9RljyVjdfTMf+BaJ
-        Tw0cUi+Qnm1PXYP5WQrewkSI+jrMejlzpZcv+K7M0+tgGV0WIDbkhmSqYVCNwJsK7ZIZMp
-        WDokZfmoRPq5o5F41lwQj2ep0LHtz5M=
-Date:   Tue, 13 Aug 2019 19:16:19 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     luanshi <zhangliguang@linux.alibaba.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>, linux-acpi@vger.kernel.org
-Subject: [PATCH v4.1] ACPI / APEI: release resources if gen_pool_add fails
-Message-ID: <20190813171619.GH16770@zn.tnic>
-References: <1563173924-47479-1-git-send-email-zhangliguang@linux.alibaba.com>
+        id S1725903AbfHMV5C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Aug 2019 17:57:02 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:44096 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726155AbfHMV5C (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Aug 2019 17:57:02 -0400
+Received: from 79.184.255.155.ipv4.supernova.orange.pl (79.184.255.155) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.275)
+ id 792c27eccea206a6; Tue, 13 Aug 2019 23:57:00 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     ahs3@redhat.com
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH] ACPI / CPPC: do not require the _PSD method when using CPPC
+Date:   Tue, 13 Aug 2019 23:57:00 +0200
+Message-ID: <3154828.dzdK0YMts5@kreacher>
+In-Reply-To: <d60f5bed-ca91-fc72-2e4d-309fb8f42960@redhat.com>
+References: <20190805170338.29493-1-ahs3@redhat.com> <d60f5bed-ca91-fc72-2e4d-309fb8f42960@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1563173924-47479-1-git-send-email-zhangliguang@linux.alibaba.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Tuesday, August 13, 2019 4:00:56 PM CEST Al Stone wrote:
+> On 8/5/19 11:03 AM, Al Stone wrote:
+> > According to the ACPI 6.3 specification, the _PSD method is optional
+> > when using CPPC.  The underlying assumption appears to be that each CPU
+> > can change frequency independently from all other CPUs; _PSD is provided
+> > to tell the OS that some processors can NOT do that.
+> > 
+> > However, the acpi_get_psd() function returns -ENODEV if there is no _PSD
+> > method present, or an ACPI error status if an error occurs when evaluating
+> > _PSD, if present.  This essentially makes _PSD mandatory when using CPPC,
+> > in violation of the specification, and only on Linux.
+> > 
+> > This has forced some firmware writers to provide a dummy _PSD, even though
+> > it is irrelevant, but only because Linux requires it; other OSPMs follow
+> > the spec.  We really do not want to have OS specific ACPI tables, though.
+> > 
+> > So, correct acpi_get_psd() so that it does not return an error if there
+> > is no _PSD method present, but does return a failure when the method can
+> > not be executed properly.  This allows _PSD to be optional as it should
+> > be.
+> > 
+> > Signed-off-by: Al Stone <ahs3@redhat.com>
+> > Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+> > Cc: Len Brown <lenb@kernel.org>
+> > ---
+> >  drivers/acpi/cppc_acpi.c | 11 +++++++----
+> >  1 file changed, 7 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> > index 15f103d7532b..e9ecfa13e997 100644
+> > --- a/drivers/acpi/cppc_acpi.c
+> > +++ b/drivers/acpi/cppc_acpi.c
+> > @@ -365,10 +365,13 @@ static int acpi_get_psd(struct cpc_desc *cpc_ptr, acpi_handle handle)
+> >  	union acpi_object  *psd = NULL;
+> >  	struct acpi_psd_package *pdomain;
+> >  
+> > -	status = acpi_evaluate_object_typed(handle, "_PSD", NULL, &buffer,
+> > -			ACPI_TYPE_PACKAGE);
+> > -	if (ACPI_FAILURE(status))
+> > -		return -ENODEV;
+> > +	if (acpi_has_method(handle, "_PSD")) {
+> > +		status = acpi_evaluate_object_typed(handle, "_PSD", NULL,
+> > +						    &buffer, ACPI_TYPE_PACKAGE);
+> > +		if (ACPI_FAILURE(status))
+> > +			return -ENODEV;
+> > +	} else
+> > +		return 0;		/* _PSD is optional */
+> >  
+> >  	psd = buffer.pointer;
+> >  	if (!psd || psd->package.count != 1) {
+> > 
+> 
+> Rafael,
+> 
+> Any other comments?
 
-here's v4.1 with the labels properly balanced.
+Yes (they will be sent separately).
 
-Thx.
+> Would it be possible to pull this into an -rc?
+> I'd really like to avoid anyone else having to ship Linux-specific
+> DSDTs and SSDTs.
 
----
-From: Liguang Zhang <zhangliguang@linux.alibaba.com>
-Date: Mon, 15 Jul 2019 14:58:44 +0800
-Subject: [PATCH] ACPI / APEI: Release resources if gen_pool_add() fails
+You won't achieve that through this patch alone, because they will
+also want older kernels that don't include it to run on their platforms.
 
-Destroy ghes_estatus_pool and release memory allocated via vmalloc() on
-errors in ghes_estatus_pool_init() in order to avoid memory leaks.
-
- [ bp: do the labels properly and with descriptive names and massage. ]
-
-Signed-off-by: Liguang Zhang <zhangliguang@linux.alibaba.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: James Morse <james.morse@arm.com>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Cc: Tony Luck <tony.luck@intel.com>
-Link: https://lkml.kernel.org/r/1563173924-47479-1-git-send-email-zhangliguang@linux.alibaba.com
----
- drivers/acpi/apei/ghes.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index a66e00fe31fe..66205ec54555 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -153,6 +153,7 @@ static void ghes_unmap(void __iomem *vaddr, enum fixed_addresses fixmap_idx)
- int ghes_estatus_pool_init(int num_ghes)
- {
- 	unsigned long addr, len;
-+	int rc;
- 
- 	ghes_estatus_pool = gen_pool_create(GHES_ESTATUS_POOL_MIN_ALLOC_ORDER, -1);
- 	if (!ghes_estatus_pool)
-@@ -164,7 +165,7 @@ int ghes_estatus_pool_init(int num_ghes)
- 	ghes_estatus_pool_size_request = PAGE_ALIGN(len);
- 	addr = (unsigned long)vmalloc(PAGE_ALIGN(len));
- 	if (!addr)
--		return -ENOMEM;
-+		goto err_pool_alloc;
- 
- 	/*
- 	 * New allocation must be visible in all pgd before it can be found by
-@@ -172,7 +173,19 @@ int ghes_estatus_pool_init(int num_ghes)
- 	 */
- 	vmalloc_sync_all();
- 
--	return gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
-+	rc = gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
-+	if (rc)
-+		goto err_pool_add;
-+
-+	return 0;
-+
-+err_pool_add:
-+	vfree((void *)addr);
-+
-+err_pool_alloc:
-+	gen_pool_destroy(ghes_estatus_pool);
-+
-+	return -ENOMEM;
- }
- 
- static int map_gen_v2(struct ghes *ghes)
--- 
-2.21.0
+Thanks,
+Rafael
 
 
--- 
-Regards/Gruss,
-    Boris.
 
-Good mailing practices for 400: avoid top-posting and trim the reply.
