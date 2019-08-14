@@ -2,114 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F42A8E022
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Aug 2019 23:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87A168E046
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Aug 2019 00:04:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728819AbfHNVtr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Aug 2019 17:49:47 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:51451 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728750AbfHNVtr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Aug 2019 17:49:47 -0400
-Received: from mail-qk1-f198.google.com ([209.85.222.198])
-        by youngberry.canonical.com with esmtps (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <alex.hung@canonical.com>)
-        id 1hy19M-0002li-CQ
-        for linux-acpi@vger.kernel.org; Wed, 14 Aug 2019 21:49:44 +0000
-Received: by mail-qk1-f198.google.com with SMTP id e18so241595qkl.17
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Aug 2019 14:49:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=w1D8Zv52DMVI+1tJMrYZUNsEQ+/Ls5xmkyTop5o1js0=;
-        b=Jdh8y9DouHyOeryjOK/spLKSrv7fhFhQKoxV6Qf8iA5sSFkilyxSimYz/UnQf2rCN7
-         zdaPoHVApORqW0Yt86SJ0Rp6VakgA2dKJsvSwikC459WYEgcvUZ25szRz2Ca0tHItJEx
-         gwVa2nZ00+FtAsNTUoOXLnyleYoucb9QFv29rUJbTF+eWty7RH8VJGB4wvLd2ZYcah0r
-         1YZBWTd25WcJxnVc/1+y31masKg108LTK7rIEhsxizSUQrW6n6ZoIAFc5E3Enyvwv/0K
-         PBf//afEAyX/LVuFcqIhJKcZ7VHKTEa53Qp7b63nwoxDpoXTQRefHN9RCJmpkKEKwQoX
-         k8yA==
-X-Gm-Message-State: APjAAAV0aY0zFwGPLWLuhzJ6NUVLTZmncZu6lbmVfsc813J1cVNcoqJf
-        C3ZKagPJE2zJqMri/kVnHZxVA9+Lg6OLcp1iFqzMoKdkRaT3+N4eWT1Re8PRgf7KA0AOHeiEx2J
-        S77XsDtOxlKWBWOnrbeQuvxEeubgpQ5c6yjMOu3EpgPBF/mBBiRxRT1I=
-X-Received: by 2002:a0c:f706:: with SMTP id w6mr1203596qvn.98.1565819383592;
-        Wed, 14 Aug 2019 14:49:43 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqzcGzXZYUfIv5JuhgEy8csgt/G/+sxp+oSBTO1E+31KuR6LKUls9RsfxiIM2IRCFHVyk/GRcm+GmCe9i0bILN4=
-X-Received: by 2002:a0c:f706:: with SMTP id w6mr1203573qvn.98.1565819383322;
- Wed, 14 Aug 2019 14:49:43 -0700 (PDT)
+        id S1728742AbfHNWE7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Aug 2019 18:04:59 -0400
+Received: from pandora.armlinux.org.uk ([78.32.30.218]:59414 "EHLO
+        pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728583AbfHNWE6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Aug 2019 18:04:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=yZJZc6bPnymXOyRmv25X7N9D2emSqLB8ZfiOEQ7nToU=; b=ddv6iy3IQteNIqV/iXD9158oZ
+        LroheE2bDRFtnRZGMGvT+ILxG1FnK+z2Y8o9E22Jy9CPSoFq5oWWWsrb50iCXzt9yVVVJhobjV6aw
+        i0pZ7OO825u8L0btv0Orsvl5X79891J+4KPyJaaYdziN3zk1WapKJuwARQL7ZjfgO/4mO+tR09iEa
+        tMw4KBGQcsq8WmX4Mqn9Ib0nluWlvsXBzW9FA9BlKDoFfMhRgYqCwSw2Oalg0c6EGyWEIrVg5BkY5
+        Jk6GMTFgfuRf1+fLAT+n0kEHmhlFG0FONX9aPwbqiAJixkpRma6Y7WavtJqzRAV4n+Zr3cJCEKN9+
+        JpLMnFeCQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56662)
+        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.90_1)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1hy1Nu-0000L9-Jm; Wed, 14 Aug 2019 23:04:46 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1hy1Nl-0000Lf-AN; Wed, 14 Aug 2019 23:04:37 +0100
+Date:   Wed, 14 Aug 2019 23:04:37 +0100
+From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To:     Steve Longerbeam <slongerbeam@gmail.com>
+Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Len Brown <lenb@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        "moderated list:ARM/ZYNQ ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Enrico Weigelt <info@metux.net>,
+        Hyun Kwon <hyun.kwon@xilinx.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH 04/22] media: Move v4l2_fwnode_parse_link from v4l2 to
+ driver base
+Message-ID: <20190814220437.GJ13294@shell.armlinux.org.uk>
+References: <20190805233505.21167-1-slongerbeam@gmail.com>
+ <20190805233505.21167-5-slongerbeam@gmail.com>
+ <CAHp75VcOh8bOf_s6t0ehwGtcYn64QFGj303SVvpHrztEOhTRgg@mail.gmail.com>
+ <4750b347-b421-6569-600f-0ced8406460e@gmail.com>
+ <20190814103054.GI13294@shell.armlinux.org.uk>
+ <e0a19469-af9d-d9de-499f-4ffbf04542b3@gmail.com>
 MIME-Version: 1.0
-References: <20190814213118.28473-1-kherbst@redhat.com> <20190814213118.28473-2-kherbst@redhat.com>
-In-Reply-To: <20190814213118.28473-2-kherbst@redhat.com>
-From:   Alex Hung <alex.hung@canonical.com>
-Date:   Wed, 14 Aug 2019 15:49:32 -0600
-Message-ID: <CAJ=jquaoA+_WmTJtcGq4b0A_Sb=Aw_3_TsUR-8nxJ+rJTdoFPA@mail.gmail.com>
-Subject: Re: [PATCH 1/7] Revert "ACPI / OSI: Add OEM _OSI string to enable
- dGPU direct output"
-To:     Karol Herbst <kherbst@redhat.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI Mailing List <linux-acpi@vger.kernel.org>,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Dave Airlie <airlied@redhat.com>,
-        Lyude Paul <lyude@redhat.com>, Ben Skeggs <bskeggs@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e0a19469-af9d-d9de-499f-4ffbf04542b3@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Thanks for the series of fixes. I will check whether these fixes work
-on the original intended systems.
+On Wed, Aug 14, 2019 at 12:04:41PM -0700, Steve Longerbeam wrote:
+> 
+> 
+> On 8/14/19 3:30 AM, Russell King - ARM Linux admin wrote:
+> > On Tue, Aug 06, 2019 at 09:53:41AM -0700, Steve Longerbeam wrote:
+> > > The full patchset doesn't seem to be up yet, but see [1] for the cover
+> > > letter.
+> > Was the entire series copied to the mailing lists, or just selected
+> > patches?  I only saw 4, 9, 11 and 13-22 via lakml.
+> 
+> The whole series was posted to the linux-media ML, see [1]. At the time,
+> none of the linux-media ML archives had the whole series.
+> 
+> > In the absence of the other patches, will this solve imx-media binding
+> > the internal subdevs of sensor devices to the CSI2 interface?
+> 
+> "internal subdevs of sensor devices" ?? That doesn't make any sense.
 
-On Wed, Aug 14, 2019 at 3:31 PM Karol Herbst <kherbst@redhat.com> wrote:
->
-> This reverts commit 28586a51eea666d5531bcaef2f68e4abbd87242c.
->
-> The original commit message didn't even make sense. AMD _does_ support it and
-> it works with Nouveau as well.
->
-> Also what was the issue being solved here? No references to any bugs and not
-> even explaining any issue at all isn't the way we do things.
->
-> And even if it means a muxed design, then the fix is to make it work inside the
-> driver, not adding some hacky workaround through ACPI tricks.
->
-> And what out of tree drivers do or do not support we don't care one bit anyway.
->
-> Signed-off-by: Karol Herbst <kherbst@redhat.com>
-> CC: Alex Hung <alex.hung@canonical.com>
-> CC: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> CC: Dave Airlie <airlied@redhat.com>
-> CC: Lyude Paul <lyude@redhat.com>
-> CC: Ben Skeggs <bskeggs@redhat.com>
-> ---
->  drivers/acpi/osi.c | 7 -------
->  1 file changed, 7 deletions(-)
->
-> diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
-> index bec0bebc7f52..9b20ac4d79a0 100644
-> --- a/drivers/acpi/osi.c
-> +++ b/drivers/acpi/osi.c
-> @@ -61,13 +61,6 @@ osi_setup_entries[OSI_STRING_ENTRIES_MAX] __initdata = {
->          * a BIOS workaround.
->          */
->         {"Linux-Lenovo-NV-HDMI-Audio", true},
-> -       /*
-> -        * Linux-HPI-Hybrid-Graphics is used by BIOS to enable dGPU to
-> -        * output video directly to external monitors on HP Inc. mobile
-> -        * workstations as Nvidia and AMD VGA drivers provide limited
-> -        * hybrid graphics supports.
-> -        */
-> -       {"Linux-HPI-Hybrid-Graphics", true},
->  };
->
->  static u32 acpi_osi_handler(acpi_string interface, u32 supported)
-> --
-> 2.21.0
->
+Sorry, but it makes complete sense when you consider that sensor
+devices may have more than one subdev, but there should be only one
+that is the "output" to whatever the camera is attached to.  The
+other subdevs are internal to the sensor.
 
+subdevs are not purely the remit of SoC drivers.
 
 -- 
-Cheers,
-Alex Hung
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
+According to speedtest.net: 11.9Mbps down 500kbps up
