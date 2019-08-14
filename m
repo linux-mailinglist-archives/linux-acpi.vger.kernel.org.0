@@ -2,93 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF87F8D7A7
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Aug 2019 18:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 667288DA27
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Aug 2019 19:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727791AbfHNQHO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Aug 2019 12:07:14 -0400
-Received: from sauhun.de ([88.99.104.3]:50418 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726047AbfHNQHN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 14 Aug 2019 12:07:13 -0400
-Received: from localhost (p54B33326.dip0.t-ipconnect.de [84.179.51.38])
-        by pokefinder.org (Postfix) with ESMTPSA id 9C6BA2C311C;
-        Wed, 14 Aug 2019 18:07:11 +0200 (CEST)
-Date:   Wed, 14 Aug 2019 18:07:11 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Cc:     Jean Delvare <jdelvare@suse.de>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, Andrew Cooks <acooks@rationali.st>,
-        linux-acpi@vger.kernel.org, platypus-sw@opengear.com,
-        "Tobin C . Harding" <me@tobin.cc>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Will Wagner <willw@carallon.com>
-Subject: Re: [PATCH v5 0/3] Enable ACPI-defined peripherals on i2c-piix4 SMBus
-Message-ID: <20190814160711.GA5816@kunai>
-References: <20190802145109.38dd4045@endymion>
- <b013c33b-da11-ce5e-08d4-0b24a8575109@metux.net>
- <20190809103340.2ef24523@endymion>
- <01de7b0c-7579-048b-312c-122dddc23c64@metux.net>
+        id S1730979AbfHNRPl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Aug 2019 13:15:41 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:44551 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731157AbfHNRPH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Aug 2019 13:15:07 -0400
+Received: by mail-ot1-f67.google.com with SMTP id w4so9078659ote.11
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Aug 2019 10:15:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=01Ayf9LgEcMv7V+WI2AsTnek5WUaEhOAgw1TLPT5Lg8=;
+        b=cUY4bV8z98fFrOSFWWEdErQVDghtf844gc08EquK79TWPwgrs8cts9QORhUbmj84w6
+         f6m4/lvh33jikA+ZGM+tRxQ7toWhgXNf/hwvBLPgnKwiBbxG/hNFcYj9+6y8trNIYobL
+         ilhTnpmaW/fEejmEK013Y8FFlYqMK/zF/v1CwFP79IdFl+ufYbogIYsXzDf8W3I4UxKF
+         r8v0YXlyRRhd1ggXnCn4S6QZLyTNrwzaOdCaJg1+ES5vnUy0kZjxLEi49f9BB2aexwxP
+         eHVzRfwa+CreiMnCsgeyIj4Uq36gE0EIt5XlCqU8y22UxzWojnwOuHQRKsdXe9SxFPNa
+         DIWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=01Ayf9LgEcMv7V+WI2AsTnek5WUaEhOAgw1TLPT5Lg8=;
+        b=Ojx796Fm8cZz4f1fjvYPx/wii6xvBXYCDQIuBL6qvZ7XZ+wawpqQBqBHTkOzEx3Iff
+         vHMajGQuJThe5bso/4dmh+4HBfNf5CVc/eVMi7CaorrZwqOR9EtBD8Autgfowfer78XY
+         1t0ci3OawzO7IzcW1BGweTefImoZJnotfLuYg74NpIH1JE8XSP60O8b9lhUlbm1FH3jS
+         /Qu6cZwkapHCyEcfCXJbX6xip1vk30b1d9PWoubxtlLjdphRek/faz/p68W4RdL4bOVn
+         T5kreD59woXaSRYplhC2u7jOy9n9b3x4Tq+IiRzeekW5sKrCCbzxaAtUFCh0TwtgovoG
+         ZVtg==
+X-Gm-Message-State: APjAAAUT553U3HWXaK5BA8fOX9+qkSgIvPps8LQ5rEaZqJrhy/243ub9
+        q5zuy1syMr7UPhFTdcO+PY4V0umylbJ+W8Mj6s+kzA==
+X-Google-Smtp-Source: APXvYqx0J+BLly1ZtoTkIyMRX0f+EWksHL1efdejnhvFvA6o4jTrFb7cWvdHrOwDDKU8F7aJNPtUW/N21twPL0yxhHI=
+X-Received: by 2002:a6b:8f47:: with SMTP id r68mr1046835iod.204.1565802905873;
+ Wed, 14 Aug 2019 10:15:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="LZvS9be/3tNcYl/X"
-Content-Disposition: inline
-In-Reply-To: <01de7b0c-7579-048b-312c-122dddc23c64@metux.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20190808000721.124691-1-matthewgarrett@google.com>
+ <20190808000721.124691-16-matthewgarrett@google.com> <20190814072602.GA27836@zn.tnic>
+In-Reply-To: <20190814072602.GA27836@zn.tnic>
+From:   Matthew Garrett <mjg59@google.com>
+Date:   Wed, 14 Aug 2019 10:14:54 -0700
+Message-ID: <CACdnJuuOhuw71GDwQOrPQxUexpvpZNJocr6m0dYzJw+MMaVKWQ@mail.gmail.com>
+Subject: Re: [PATCH V38 15/29] acpi: Ignore acpi_rsdp kernel param when the
+ kernel has been locked down
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     James Morris <jmorris@namei.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Josh Boyer <jwboyer@redhat.com>,
+        David Howells <dhowells@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Dave Young <dyoung@redhat.com>, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Wed, Aug 14, 2019 at 12:25 AM Borislav Petkov <bp@alien8.de> wrote:
+> #if defined(CONFIG_RANDOMIZE_BASE) && defined(CONFIG_MEMORY_HOTREMOVE)
+>
+> false and thus not available to early code anymore.
 
---LZvS9be/3tNcYl/X
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+We explicitly don't want to pay attention to the acpi_rsdp kernel
+parameter in early boot except for the case of finding the SRAT table,
+and we only need that if CONFIG_RANDOMIZE_BASE and
+CONFIG_MEMORY_HOTREMOVE are set. However, we *do* want to tell the
+actual kernel where the RSDP is if we found it via some other means,
+so we can't just clear the boot parameters value. The kernel proper
+will parse the command line again and will then (if lockdown isn't
+enabled) override the actual value we passed up in boot params. So I
+think this is ok?
 
-
-> > Unfortunately not. I only picked up from where Andrew Cooks left, due
-> > to me being way too slow to review his patches.
->=20
-> @Andrew: can you tell us more about this ?
-
-Was the info Andrew supplied helpful to you?
-
->=20
-> > I was able to test the first 2 patches which fix bugs, but
-> > not the 3rd one which deals with ACPI devices. There does not seem to
-> > be any such device on the 2 test machines I have remotely access to.
->=20
-> Did you already test on apu2/apu3 ?
-> If not, maybe you could prepare a queue that I could test.
-
-Maybe I am missing something but can't you just apply these patches on a
-recent kernel?
-
-So, the discussion stalled, but I think the series is fine as is? If
-someone disagrees, please speak up. I want to apply patch 1 to
-for-current soon and the others to for-next, too.
-
-
---LZvS9be/3tNcYl/X
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl1UMaoACgkQFA3kzBSg
-KbZfHg/+PtVFnMuKKJxRrrr+D7Xz5UzKEh38nshbA37TJVz+nIbzDVVD7c+OoZav
-sAGEgKPEskjpmZUlC823T18Z25hOY3PCysPNs+3yr0QlfXk1G2rdvnDzfJQYyV1O
-QEhVeDqpGf92XKcX3dhshkev7CE524uAZtNs7fhUoz97ckcb+CMN+CrJnFVhA4lj
-HdDRQ2os8ys82wAbxkRhcif+SP6Qvb/rzMHHEaUhbFjAXs/awy5cLVEHhdNgDabB
-gnGPyXmg0F668DB5B0ZAMbWup8CJbVuUxg37usl4VsDN2HpTmUkfwWYqtdycDRUz
-B2S2CPv39PYQQyhTzXqTUctg/g3hYd+HfKXLwEh2+da7UWK7OjEFpnVmhNc4dCcH
-+0nEkBUfMox8t4G5/lRZrt9m1TiHPEbdMP+ZdeHYpoPMdmkZKb9vwiz6dZRa554I
-Qyjquwg6IOmeGrbEeqPLu0ypeoS76sOJJ/pNQa2cePyqP53BC953Qpqo1cKGfSzJ
-NjU5qQJiTivAxE9g7I5A3cIXq0SqwjW68keNWSphMY/9cboeDabzprP4eqqCWjXj
-eR/AQcocWeQtyApSxzA1kmAF0oEcwQ4dwX04AvmKnQEpQSVEO7lQTif9Zh+Y6C3M
-81PFi6pjHFsaIaw2oehutcitFwHGefowMlMSYFdmciY9/ZMwbsE=
-=ebsn
------END PGP SIGNATURE-----
-
---LZvS9be/3tNcYl/X--
+(Sorry for not Cc:ing x86, clear oversight on my part)
