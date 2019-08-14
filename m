@@ -2,108 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FFEC8E014
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Aug 2019 23:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F42A8E022
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Aug 2019 23:49:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727913AbfHNVoV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Aug 2019 17:44:21 -0400
-Received: from mga01.intel.com ([192.55.52.88]:38219 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726126AbfHNVoV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 14 Aug 2019 17:44:21 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Aug 2019 14:44:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,386,1559545200"; 
-   d="scan'208";a="376182235"
-Received: from orsmsx105.amr.corp.intel.com ([10.22.225.132])
-  by fmsmga005.fm.intel.com with ESMTP; 14 Aug 2019 14:44:20 -0700
-Received: from orsmsx111.amr.corp.intel.com (10.22.240.12) by
- ORSMSX105.amr.corp.intel.com (10.22.225.132) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Wed, 14 Aug 2019 14:44:19 -0700
-Received: from orsmsx122.amr.corp.intel.com ([169.254.11.68]) by
- ORSMSX111.amr.corp.intel.com ([169.254.12.226]) with mapi id 14.03.0439.000;
- Wed, 14 Aug 2019 14:44:20 -0700
-From:   "Schmauss, Erik" <erik.schmauss@intel.com>
-To:     "Duran, Leo" <leo.duran@amd.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Subject: RE: Parsing PXM from ACPI (DSDT)
-Thread-Topic: Parsing PXM from ACPI (DSDT)
-Thread-Index: AdVSCEGThmsUNGQZSm2XEI5B9E2GMQA3cq8AAAA9gMAAAAlkEAAAd9EA
-Date:   Wed, 14 Aug 2019 21:44:19 +0000
-Message-ID: <CF6A88132359CE47947DB4C6E1709ED53C61A2BC@ORSMSX122.amr.corp.intel.com>
-References: <CY4PR12MB1815927E36A8A9A0E5B18734F9D20@CY4PR12MB1815.namprd12.prod.outlook.com>
- <CY4PR12MB18156AA493BA8F3C28F0377FF9AD0@CY4PR12MB1815.namprd12.prod.outlook.com>
- <CY4PR12MB1815E6208E334CE4EA8F2670F9AD0@CY4PR12MB1815.namprd12.prod.outlook.com>
- <CY4PR12MB1815251BBCB062AAA8EEB39CF9AD0@CY4PR12MB1815.namprd12.prod.outlook.com>
-In-Reply-To: <CY4PR12MB1815251BBCB062AAA8EEB39CF9AD0@CY4PR12MB1815.namprd12.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMWE4ZTM1NTQtNzkzMi00NzdhLTgyZDUtOWI3Y2JhYTcxNWI3IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiZG1wRnF0MUtxQVpJdGNadVlpK2RJNDNlMml3YmF5Y1huOVY1bEhuNnBMVEF2bGMyRTZFTG8yMzJ0S3NtbVwvbjEifQ==
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.139]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1728819AbfHNVtr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Aug 2019 17:49:47 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:51451 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728750AbfHNVtr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Aug 2019 17:49:47 -0400
+Received: from mail-qk1-f198.google.com ([209.85.222.198])
+        by youngberry.canonical.com with esmtps (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <alex.hung@canonical.com>)
+        id 1hy19M-0002li-CQ
+        for linux-acpi@vger.kernel.org; Wed, 14 Aug 2019 21:49:44 +0000
+Received: by mail-qk1-f198.google.com with SMTP id e18so241595qkl.17
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Aug 2019 14:49:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=w1D8Zv52DMVI+1tJMrYZUNsEQ+/Ls5xmkyTop5o1js0=;
+        b=Jdh8y9DouHyOeryjOK/spLKSrv7fhFhQKoxV6Qf8iA5sSFkilyxSimYz/UnQf2rCN7
+         zdaPoHVApORqW0Yt86SJ0Rp6VakgA2dKJsvSwikC459WYEgcvUZ25szRz2Ca0tHItJEx
+         gwVa2nZ00+FtAsNTUoOXLnyleYoucb9QFv29rUJbTF+eWty7RH8VJGB4wvLd2ZYcah0r
+         1YZBWTd25WcJxnVc/1+y31masKg108LTK7rIEhsxizSUQrW6n6ZoIAFc5E3Enyvwv/0K
+         PBf//afEAyX/LVuFcqIhJKcZ7VHKTEa53Qp7b63nwoxDpoXTQRefHN9RCJmpkKEKwQoX
+         k8yA==
+X-Gm-Message-State: APjAAAV0aY0zFwGPLWLuhzJ6NUVLTZmncZu6lbmVfsc813J1cVNcoqJf
+        C3ZKagPJE2zJqMri/kVnHZxVA9+Lg6OLcp1iFqzMoKdkRaT3+N4eWT1Re8PRgf7KA0AOHeiEx2J
+        S77XsDtOxlKWBWOnrbeQuvxEeubgpQ5c6yjMOu3EpgPBF/mBBiRxRT1I=
+X-Received: by 2002:a0c:f706:: with SMTP id w6mr1203596qvn.98.1565819383592;
+        Wed, 14 Aug 2019 14:49:43 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqzcGzXZYUfIv5JuhgEy8csgt/G/+sxp+oSBTO1E+31KuR6LKUls9RsfxiIM2IRCFHVyk/GRcm+GmCe9i0bILN4=
+X-Received: by 2002:a0c:f706:: with SMTP id w6mr1203573qvn.98.1565819383322;
+ Wed, 14 Aug 2019 14:49:43 -0700 (PDT)
 MIME-Version: 1.0
+References: <20190814213118.28473-1-kherbst@redhat.com> <20190814213118.28473-2-kherbst@redhat.com>
+In-Reply-To: <20190814213118.28473-2-kherbst@redhat.com>
+From:   Alex Hung <alex.hung@canonical.com>
+Date:   Wed, 14 Aug 2019 15:49:32 -0600
+Message-ID: <CAJ=jquaoA+_WmTJtcGq4b0A_Sb=Aw_3_TsUR-8nxJ+rJTdoFPA@mail.gmail.com>
+Subject: Re: [PATCH 1/7] Revert "ACPI / OSI: Add OEM _OSI string to enable
+ dGPU direct output"
+To:     Karol Herbst <kherbst@redhat.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI Mailing List <linux-acpi@vger.kernel.org>,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Dave Airlie <airlied@redhat.com>,
+        Lyude Paul <lyude@redhat.com>, Ben Skeggs <bskeggs@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogbGludXgtYWNwaS1vd25l
-ckB2Z2VyLmtlcm5lbC5vcmcgW21haWx0bzpsaW51eC1hY3BpLQ0KPiBvd25lckB2Z2VyLmtlcm5l
-bC5vcmddIE9uIEJlaGFsZiBPZiBEdXJhbiwgTGVvDQo+IFNlbnQ6IFdlZG5lc2RheSwgQXVndXN0
-IDE0LCAyMDE5IDI6MzAgUE0NCj4gVG86IGxpbnV4LWFjcGlAdmdlci5rZXJuZWwub3JnOyBsaW51
-eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+IENjOiBSYWZhZWwgSi4gV3lzb2NraSA8cmp3QHJq
-d3lzb2NraS5uZXQ+OyBMZW4gQnJvd24gPGxlbmJAa2VybmVsLm9yZz4NCj4gU3ViamVjdDogUGFy
-c2luZyBQWE0gZnJvbSBBQ1BJIChEU0RUKQ0KPiANCkhpIExlbywNCg0KPiBIZWxsbywNCj4gSXMg
-bm90IGNsZWFyIG9yIGV2aWRlbnQgdG8gbWUgaWYgdGhlIGtlcm5lbCBwYXJzZXMgX1BYTSB2YWx1
-ZXMgYmVsb3cgKG9yIHVuZGVyKQ0KPiB0aGUgcm9vdC1jb21wbGV4Lg0KDQpCdWlsZCB3aXRoIENP
-TkZJR19BQ1BJX0RFQlVHPXkgYW5kIGJvb3Qgd2l0aCBhY3BpLmRlYnVnX2xheWVyPTB4ZmZmZmZm
-ZmYgYWNwaS5kZWJ1Z19sZXZlbD0weDgwMDAwDQoNClRoaXMgd2lsbCBwcmludCBhbGwgb2YgdGhl
-IEFjcGlFdmFsdWF0ZU9iamVjdCBxdWVyaWVzIHRvIHRoZSBkbWVzZy4NCg0KPiANCj4gRm9yIGV4
-YW1wbGUsIGluIG15IGV4cGVyaWVuY2U6DQo+IFRoaXMgQVNMIHNhbXBsZSBmb3IgUFhNIGF0IHRo
-ZSByb290LWNvbXBsZXggbGV2ZWwgcHJvZHVjZXMgdGhlIGV4cGVjdGVkDQo+IE5VTUEgYXNzaWdu
-bWVudCBmcm9tIOKAnGxzdG9wb+KAnToNCj4gU2NvcGUgKFxfU0IpIHsNCj4gICAvLyAuLi4NCj4g
-ICBEZXZpY2UgKFBDSTApIHsgLy8gUm9vdCBQQ0kgQnVzIChIb3N0LUJyaWRnZSkNCj4gICAgIE5h
-bWUgKF9ISUQsIEVJU0FJRCgiUE5QMEEwOCIpKQ0KPiAgICAgTmFtZSAoX0NJRCwgRUlTQUlEKCJQ
-TlAwQTAzIikpDQo+ICAgICBOYW1lIChfQkJOLCAwKQ0KPiAgICAgTWV0aG9kIChfQ1JTLDApIHsN
-Cj4gICAgICAgLy8gUmV0dXJuIGN1cnJlbnQgcmVzb3VyY2VzIGZvciBob3N0IGJyaWRnZSAwDQo+
-ICAgICB9DQo+ICAgICBOYW1lIChfUFJULCBQYWNrYWdlKCkgew0KPiAgICAgIC8vIFBhY2thZ2Ug
-d2l0aCBQQ0kgSVJRIHJvdXRpbmcgdGFibGUgaW5mb3JtYXRpb24NCj4gICAgIH0pDQo+ICAgICBN
-ZXRob2QgKF9QWE0sIDAsIE5vdFNlcmlhbGl6ZWQpIHsNCj4gICAgICAgUmV0dXJuICgwKQ0KPiAg
-ICAgfQ0KPiAgIH0NCj4gICAvLyAuLi4NCj4gfQ0KPiANCj4gSG93ZXZlciwNCj4gVGhpcyBBU0wg
-c2FtcGxlIGZvciBQWE0gYXQgdGhlIFAyUCByb290LWJyaWRnZSBsZXZlbCBkb2VzIG5vdCBwcm9k
-dWNlIHRoZQ0KPiBleHBlY3RlZCBOVU1BIGFzc2lnbm1lbnQgZnJvbSDigJxsc3RvcG/igJ06DQo+
-ICAoT2YgY291cnNlLCB0aGUgYXNzdW1wdGlvbiBpcyB0aGF0IG11bHRpcGxlIE5VTUEgbm9kZXMg
-YWN0dWFsbHkgZXhpc3Qgb24gdGhlDQo+IHN5c3RlbSkNCj4gDQo+ICBTY29wZSAoXF9TQikgew0K
-PiAgIC8vIC4uLg0KPiAgIERldmljZSAoUENJMCkgeyAvLyBSb290IFBDSSBCdXMgKEhvc3QtQnJp
-ZGdlKQ0KPiAgICAgTmFtZSAoX0hJRCwgRUlTQUlEICgiUE5QMEEwOCIpKQ0KPiAgICAgTmFtZSAo
-X0NJRCwgRUlTQUlEICgiUE5QMEEwMyIpKQ0KPiAgICAgTmFtZSAoX0JCTiwgMCkNCj4gICAgIE1l
-dGhvZCAoX0NSUywwKSB7DQo+ICAgICAgIC8vIFJldHVybiBjdXJyZW50IHJlc291cmNlcyBmb3Ig
-aG9zdCBicmlkZ2UgMA0KPiAgICAgfQ0KPiAgICAgTmFtZSAoX1BSVCwgUGFja2FnZSgpIHsNCj4g
-ICAgICAgLy8gUGFja2FnZSB3aXRoIFBDSSBJUlEgcm91dGluZyB0YWJsZSBpbmZvcm1hdGlvbg0K
-PiAgICAgfSkNCj4gDQo+IMKgwqDCoCBEZXZpY2UgKFAyUDApIHsgLy8gRmlyc3QgUENJLXRvLVBD
-SSBicmlkZ2UgKFBvcnQwKQ0KPiDCoMKgwqDCoMKgIE5hbWUgKF9BRFIsIDB4MDAwNzAwMDEpIC8v
-IERldmljZSM3aCwgRnVuYyMxIG9uIGJ1cyBQQ0kwDQo+IMKgwqDCoMKgwqAgTmFtZSAoX1BSVCwg
-UGFja2FnZSgpIHsNCj4gwqDCoMKgwqDCoCAgIC8vIFBhY2thZ2Ugd2l0aCBQQ0kgSVJRIHJvdXRp
-bmcgdGFibGUgaW5mb3JtYXRpb24NCj4gwqDCoMKgwqDCoCB9KQ0KPiAgICAgICBNZXRob2QgKF9Q
-WE0sIDAsIE5vdFNlcmlhbGl6ZWQpIHsNCj4gICAgICAgICBSZXR1cm4gKDApDQo+ICAgICAgIH0N
-Cj4gwqDCoMKgIH0NCj4gDQo+IMKgwqDCoCBEZXZpY2UgKFAyUDEpIHsgLy8gU2Vjb25kIFBDSS10
-by1QQ0kgYnJpZGdlIChQb3J0MSkNCj4gwqDCoMKgwqDCoCBOYW1lIChfQURSICwweDAwMDgwMDAx
-KSAvLyBEZXZpY2UjOGgsIEZ1bmMjMSBvbiBidXMgUENJMA0KPiDCoMKgwqDCoMKgIE5hbWUgKF9Q
-UlQsIFBhY2thZ2UoKSB7DQo+IMKgwqDCoMKgwqAgICAvLyBQYWNrYWdlIHdpdGggUENJIElSUSBy
-b3V0aW5nIHRhYmxlIGluZm9ybWF0aW9uDQo+IMKgICAgwqAgfSkNCj4gICAgICAgTWV0aG9kIChf
-UFhNLCAwLCBOb3RTZXJpYWxpemVkKSB7DQo+ICAgICAgICAgIFJldHVybiAoMSkNCj4gICAgICAg
-fQ0KPiDCoMKgwqAgfQ0KPiAgIH0NCj4gICAvLyAuLi4NCj4gfQ0KPiANCj4gVGhhbmtzLA0KPiBM
-ZW8uDQoNCg==
+Thanks for the series of fixes. I will check whether these fixes work
+on the original intended systems.
+
+On Wed, Aug 14, 2019 at 3:31 PM Karol Herbst <kherbst@redhat.com> wrote:
+>
+> This reverts commit 28586a51eea666d5531bcaef2f68e4abbd87242c.
+>
+> The original commit message didn't even make sense. AMD _does_ support it and
+> it works with Nouveau as well.
+>
+> Also what was the issue being solved here? No references to any bugs and not
+> even explaining any issue at all isn't the way we do things.
+>
+> And even if it means a muxed design, then the fix is to make it work inside the
+> driver, not adding some hacky workaround through ACPI tricks.
+>
+> And what out of tree drivers do or do not support we don't care one bit anyway.
+>
+> Signed-off-by: Karol Herbst <kherbst@redhat.com>
+> CC: Alex Hung <alex.hung@canonical.com>
+> CC: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> CC: Dave Airlie <airlied@redhat.com>
+> CC: Lyude Paul <lyude@redhat.com>
+> CC: Ben Skeggs <bskeggs@redhat.com>
+> ---
+>  drivers/acpi/osi.c | 7 -------
+>  1 file changed, 7 deletions(-)
+>
+> diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
+> index bec0bebc7f52..9b20ac4d79a0 100644
+> --- a/drivers/acpi/osi.c
+> +++ b/drivers/acpi/osi.c
+> @@ -61,13 +61,6 @@ osi_setup_entries[OSI_STRING_ENTRIES_MAX] __initdata = {
+>          * a BIOS workaround.
+>          */
+>         {"Linux-Lenovo-NV-HDMI-Audio", true},
+> -       /*
+> -        * Linux-HPI-Hybrid-Graphics is used by BIOS to enable dGPU to
+> -        * output video directly to external monitors on HP Inc. mobile
+> -        * workstations as Nvidia and AMD VGA drivers provide limited
+> -        * hybrid graphics supports.
+> -        */
+> -       {"Linux-HPI-Hybrid-Graphics", true},
+>  };
+>
+>  static u32 acpi_osi_handler(acpi_string interface, u32 supported)
+> --
+> 2.21.0
+>
+
+
+-- 
+Cheers,
+Alex Hung
