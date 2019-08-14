@@ -2,109 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 849AF8DD8D
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Aug 2019 20:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 803D48DDA2
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Aug 2019 21:04:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727814AbfHNSvC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Aug 2019 14:51:02 -0400
-Received: from mga12.intel.com ([192.55.52.136]:26665 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726722AbfHNSvC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 14 Aug 2019 14:51:02 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Aug 2019 11:51:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,386,1559545200"; 
-   d="scan'208";a="179144901"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.145])
-  by orsmga003.jf.intel.com with ESMTP; 14 Aug 2019 11:50:57 -0700
-Received: from andy by smile with local (Exim 4.92.1)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1hxyMJ-0000P8-Lh; Wed, 14 Aug 2019 21:50:55 +0300
-Date:   Wed, 14 Aug 2019 21:50:55 +0300
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        id S1728467AbfHNTE4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Aug 2019 15:04:56 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:47101 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728283AbfHNTE4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Aug 2019 15:04:56 -0400
+Received: by mail-pg1-f195.google.com with SMTP id w3so19185pgt.13;
+        Wed, 14 Aug 2019 12:04:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=vseqSnSbN0/CqanKomWBzaCIiF5jTd1dDC+ZOTFJoRU=;
+        b=NIUd46jprVTVWb3fgGd29jnISTwMC3sQLMBzqbzBx5/C/GbBaRyCyZuIZG4f8Uch80
+         XGuLIqfmPvQ6z82mGFrCsuSFrROVu1t9z3XyMwxTEMjTlKIV5FkXdjanZh7Dd0POtN+S
+         BwA9JU2VOATUXFcUNJCTHbhzp1EW/NnqqUw7VjKYbTpSAYfCV4lvoYfL37oM4x5RCCMG
+         dgbSOh5K2P9x6Kw3+5rYztkqapb02op3DEUgrh3ZanrRGjq8F7MZomVPda30Ty7lY3/N
+         Cl3ePLIn0U+V3+NOqwAJ1FHRAHOL21IJvANqGqrKfbgscg2sJCL035S3EbBpdmHZQxNX
+         8NFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=vseqSnSbN0/CqanKomWBzaCIiF5jTd1dDC+ZOTFJoRU=;
+        b=kBaaWnSuMBAkP4iBSxWC/2x419kfy356vwy7Js0ke8F5eC3+S0x5PIRzaQGqFhnN9v
+         5SaDNOFgyc3cRTyc7PMsljMrH2bBBgs/7Y27vlEeH2lEET7F1dkxXw9CzfJ8ZzZ3xRwT
+         kNUeuK29pz2l4z4GKwlCLPhxqtYElvU/hfDfM5qKOfM0Vnk1wP4MSUjYrE/Tpg2BnEbZ
+         fauEEbV2cwMKGKQM6U61y+fK9+fzKleseYKFZZ9fKCKnlVxQ26qbMn71QvIuOIOAboOY
+         sZWioBxHI2KOpAfvERcFSvC2gZ/SjXymdImc1lpe5adf/P1nbOzksVsgh03fTkXhXnq6
+         TSyg==
+X-Gm-Message-State: APjAAAVgOaG1JWFnANpcCLeWsfb1/R7oQ0J06VgmjO9nK/+FlQV52xsT
+        neCmtB3FA4NVpIGTkbIoij0=
+X-Google-Smtp-Source: APXvYqxPvTpGzpOkdo/g/K4RNLCTrEvQmHU4pCu/ZH1U09LHKXfy4gAnJ648mZN9j/inAzh8Er9WwQ==
+X-Received: by 2002:a17:90a:cc13:: with SMTP id b19mr1108603pju.117.1565809495303;
+        Wed, 14 Aug 2019 12:04:55 -0700 (PDT)
+Received: from [172.30.88.90] (sjewanfw1-nat.mentorg.com. [139.181.7.34])
+        by smtp.gmail.com with ESMTPSA id t15sm702679pfc.47.2019.08.14.12.04.44
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 14 Aug 2019 12:04:54 -0700 (PDT)
+Subject: Re: [PATCH 04/22] media: Move v4l2_fwnode_parse_link from v4l2 to
+ driver base
+To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
         Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Schmauss <erik.schmauss@intel.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-leds@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH 1/3] ACPI: Resolve objects on host-directed table loads
-Message-ID: <20190814185055.GZ30120@smile.fi.intel.com>
-References: <cover.1559127603.git.nikolaus.voss@loewensteinmedical.de>
- <8704391ae3004a6b4dd17975dbcc9e88bd28cf4b.1559127603.git.nikolaus.voss@loewensteinmedical.de>
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "moderated list:ARM/ZYNQ ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Hyun Kwon <hyun.kwon@xilinx.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Enrico Weigelt <info@metux.net>
+References: <20190805233505.21167-1-slongerbeam@gmail.com>
+ <20190805233505.21167-5-slongerbeam@gmail.com>
+ <CAHp75VcOh8bOf_s6t0ehwGtcYn64QFGj303SVvpHrztEOhTRgg@mail.gmail.com>
+ <4750b347-b421-6569-600f-0ced8406460e@gmail.com>
+ <20190814103054.GI13294@shell.armlinux.org.uk>
+From:   Steve Longerbeam <slongerbeam@gmail.com>
+Message-ID: <e0a19469-af9d-d9de-499f-4ffbf04542b3@gmail.com>
+Date:   Wed, 14 Aug 2019 12:04:41 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8704391ae3004a6b4dd17975dbcc9e88bd28cf4b.1559127603.git.nikolaus.voss@loewensteinmedical.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190814103054.GI13294@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 29, 2019 at 02:18:20PM +0200, Nikolaus Voss wrote:
-> If an ACPI SSDT overlay is loaded after built-in tables
-> have been loaded e.g. via configfs or efivar_ssdt_load()
-> it is necessary to rewalk the namespace to resolve
-> references. Without this, relative and absolute paths
-> like ^PCI0.SBUS or \_SB.PCI0.SBUS are not resolved
-> correctly.
-> 
-> Make configfs load use the same method as efivar_ssdt_load().
-
-This patch brought a regression (bisect log below).
-Now I'm unable to unload the table which was working before.
-
-Reverting (manual, due to ACPICA changes) helps.
-
-Please, consider to revert for this cycle, or fix. I will be glad to test any
-proposed fix.
 
 
-git bisect start
-# good: [0ecfebd2b52404ae0c54a878c872bb93363ada36] Linux 5.2
-git bisect good 0ecfebd2b52404ae0c54a878c872bb93363ada36
-# bad: [5f9e832c137075045d15cd6899ab0505cfb2ca4b] Linus 5.3-rc1
-git bisect bad 5f9e832c137075045d15cd6899ab0505cfb2ca4b
-# bad: [e786741ff1b52769b044b7f4407f39cd13ee5d2d] Merge tag 'staging-5.3-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging
-git bisect bad e786741ff1b52769b044b7f4407f39cd13ee5d2d
-# bad: [8f6ccf6159aed1f04c6d179f61f6fb2691261e84] Merge tag 'clone3-v5.3' of git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux
-git bisect bad 8f6ccf6159aed1f04c6d179f61f6fb2691261e84
-# good: [ed63b9c873601ca113da5c7b1745e3946493e9f3] Merge tag 'media/v5.3-1' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media
-git bisect good ed63b9c873601ca113da5c7b1745e3946493e9f3
-# bad: [4b4704520d97b74e045154fc3b844b73ae4e7ebd] Merge tag 'acpi-5.3-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-git bisect bad 4b4704520d97b74e045154fc3b844b73ae4e7ebd
-# good: [e3303268f9cfa4eb7c2217df471417d4327109fd] ASoC: soc-core: don't use soc_find_component() at snd_soc_find_dai()
-git bisect good e3303268f9cfa4eb7c2217df471417d4327109fd
-# good: [3c53c6255d598db7084c5c3d7553d7200e857818] Merge tag 'asoc-v5.3' of https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound into for-linus
-git bisect good 3c53c6255d598db7084c5c3d7553d7200e857818
-# good: [4cdd5f9186bbe80306e76f11da7ecb0b9720433c] Merge tag 'sound-5.3-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound
-git bisect good 4cdd5f9186bbe80306e76f11da7ecb0b9720433c
-# good: [13b06b78c772d64e2207e4a5a5329856fe2bf241] Merge branches 'pm-opp', 'pm-misc', 'pm-avs' and 'pm-tools'
-git bisect good 13b06b78c772d64e2207e4a5a5329856fe2bf241
-# good: [cf2d213e49fdf47e4c10dc629a3659e0026a54b8] Merge tag 'pm-5.3-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-git bisect good cf2d213e49fdf47e4c10dc629a3659e0026a54b8
-# bad: [02a93f35f57fe5d4d1bac0ac8496884235e2fd2e] ACPICA: Update version to 20190703
-git bisect bad 02a93f35f57fe5d4d1bac0ac8496884235e2fd2e
-# bad: [d4ca763eed3bcc227f220beb11ff4eb2fa548755] Merge ACPI tables handling changes for v5.3.
-git bisect bad d4ca763eed3bcc227f220beb11ff4eb2fa548755
-# bad: [d06c47e3dd07fdf3f07e8fc45f2ce655e9b295c5] ACPI: configfs: Resolve objects on host-directed table loads
-git bisect bad d06c47e3dd07fdf3f07e8fc45f2ce655e9b295c5
-# good: [c78fea61f0c1f8568fbbb36ac3d1e1c85a903ae4] ACPI: tables: Allow BGRT to be overridden
-git bisect good c78fea61f0c1f8568fbbb36ac3d1e1c85a903ae4
-# first bad commit: [d06c47e3dd07fdf3f07e8fc45f2ce655e9b295c5] ACPI: configfs: Resolve objects on host-directed table loads
+On 8/14/19 3:30 AM, Russell King - ARM Linux admin wrote:
+> On Tue, Aug 06, 2019 at 09:53:41AM -0700, Steve Longerbeam wrote:
+>> The full patchset doesn't seem to be up yet, but see [1] for the cover
+>> letter.
+> Was the entire series copied to the mailing lists, or just selected
+> patches?  I only saw 4, 9, 11 and 13-22 via lakml.
 
--- 
-With Best Regards,
-Andy Shevchenko
+The whole series was posted to the linux-media ML, see [1]. At the time, 
+none of the linux-media ML archives had the whole series.
 
+> In the absence of the other patches, will this solve imx-media binding
+> the internal subdevs of sensor devices to the CSI2 interface?
 
+"internal subdevs of sensor devices" ?? That doesn't make any sense.
+
+Sensors are external to the SoC, there are no "internal" sensor devices.
+
+Not sure what you mean by "binding" either in this context, but external 
+sensors can connect via fwnode endpoint, and later translated to media 
+link, to the receiver CSI-2 sink.
+
+Steve
+
+[1] https://www.spinics.net/lists/linux-media/msg155160.html
