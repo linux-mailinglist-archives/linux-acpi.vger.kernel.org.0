@@ -2,156 +2,182 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 394D98F37A
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Aug 2019 20:34:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C4D38F52C
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Aug 2019 21:56:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732187AbfHOSeX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Aug 2019 14:34:23 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:38982 "EHLO
+        id S1731379AbfHOT43 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Aug 2019 15:56:29 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:40847 "EHLO
         mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730867AbfHOSeX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Aug 2019 14:34:23 -0400
-Received: by mail-wr1-f68.google.com with SMTP id t16so3062137wra.6;
-        Thu, 15 Aug 2019 11:34:21 -0700 (PDT)
+        with ESMTP id S1731366AbfHOT42 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Aug 2019 15:56:28 -0400
+Received: by mail-wr1-f68.google.com with SMTP id c3so3250145wrd.7;
+        Thu, 15 Aug 2019 12:56:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rlVguU9XpgwsYUA+9hxlWvJwepLXZJiyhWUMhPLxtJU=;
-        b=nFJj2RJysrbujouemgWcvH+rthi9Gn3IReFReTGfCZ7pkcyb8fVOcEZaV3NpXxBRfo
-         3IvIKtwf26fF96Gr0SANwOcGwnKLF7CiOUiYs3kVIQ/2K8iGwHXLlJD1NPqz9mlzPHpi
-         U+t5c2qQsGDELMj0ARpQlNcAAjNTmKFY6BwzGiToVX5+Q2Yh8UpCUQT5ejpcpZg2+bci
-         SRCfOJSvCUTE1iijQRQ8dxFBIb1asehXC5g+ii3NZm77FxjHQp5wAWPmRPV++RUgHc7G
-         mF0WyAtDnAlST0LrJPbec4Jp7Q0PTm4gGUZe0iCGzWkfisDZ0HhfHQ32rV6snu+aFqGh
-         qPbw==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=g9gYXoDI8x/e6fYrmXGn/1ayuYBgMKowuhsSXyNfgGk=;
+        b=BxFVHZYKa5FJrzI4dPgxhphpWrPJX2/swt830QW256gBUwXxM+yJC5IcwYLsVK7nDX
+         YJfjPvRIeaA5/1BBNJXoqsgHTewr/PGetGNR+nY8LcUb106z3sVc1BGnzwC66iGgyvBi
+         +mZLEhnELdlHg5W9w2aWb5ElMS7FgSEkhszGxlzux9iKt0MowKuNOJLEMUsF+38EitOx
+         aWGA01aulScsS+DFbHrtKj7iyTuIPYhoHtdzLh8PvOBthQUYT/SsM7uXPDDj4Q1D9eSV
+         8Sy3e80DmLJG96aLV8uckZ39ffojhwRHHccpX8EVLTaFDo7W+D2mPyxmub0qfUW0foGm
+         Ocvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rlVguU9XpgwsYUA+9hxlWvJwepLXZJiyhWUMhPLxtJU=;
-        b=t1+u4DQFtNMZywjkeHeW62nLwiS1neIl+vd0AoWKZ1zD1pkFL7KPg0xzwAbyHKCm4u
-         5i2o2ydlKTurI/StCBVSojqEF5b7bDUbiDtQ3Zyi2tso8iFTyo/LFC3ACfoQDH3fOuS1
-         Oo7exdMdqT7vjxUIvwC29tdVFt0jUmfTswmhacheARRY3rsCbaukD7M6qCwj950QIXIX
-         7yW/K8x5seOS2cRu1Lf8kSSS/FF4K4eJGNkA2y8O0ChBcrt8ta/lUMtCyNC1ZmKomd8J
-         6QmOys41GhtT83y6hLZiVgqqyz3U0+34THMNc/zLJmvTiDkQZKAL1Qe+1BKvvmMGWbeJ
-         b4Wg==
-X-Gm-Message-State: APjAAAVkWFIg8mlSiz+hYAxGZwZk9Y/fgFVbTtBYC6fC6Oru/5iPcC8x
-        KmUrG7FxxeSiNLV4g9zNkZCWW3sevADlWecm8/8=
-X-Google-Smtp-Source: APXvYqyEYQ3MDWckUx7xMxV4vAgWCFUTxdu/OBl8PZlVVNfOq+IDthemb8Lkhb3bespAR/hO1pGNxfGZ4U16NcUBy8U=
-X-Received: by 2002:a5d:6b11:: with SMTP id v17mr6707303wrw.323.1565894061188;
- Thu, 15 Aug 2019 11:34:21 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=g9gYXoDI8x/e6fYrmXGn/1ayuYBgMKowuhsSXyNfgGk=;
+        b=WY0uWMNmoDVdt4uHTPD+laP/aIjuylqU5Ax1x0NP7ay7htP9BMKUcRFlnanla1JHsw
+         DAUqBfuB9FnNbhasprLYVcJunzW30ZWiZfcAWnKeTKTEAaysLNHt+PXuPHUqVHkU2ly8
+         +vxUyJaKQIASIX6Mdt51JqULA3TlEnzcO2vdWLocDiDgxibcW/xon4ixq/xaGCZwJWLH
+         sXZS2k+s7KN9HD3k6S+y6dt447bo8eA9KyRfwAFCIN8/9vvCDbDrdQVkhqEiZO3ciGf7
+         Vc6qMZY/PVZBDTWDsM5psQWHQEl8J9f1BowefIkUWdM7ZjcEu7ZdkVGL0yo/INWi8wO/
+         mD4Q==
+X-Gm-Message-State: APjAAAUSWkWan8Fjk9aOrIoc9gGePmQotfJxP2zAyLVuDTOcFccgOovP
+        yRZSY4HaSZqritDT9jRGsY8=
+X-Google-Smtp-Source: APXvYqxCRww3HZkI3tRakEQwmbHT9qSGZgIG7df34SLn3B0yW2ltqN9deIrgqnjQ87uU/8wJDAOtvQ==
+X-Received: by 2002:adf:ffc2:: with SMTP id x2mr3219310wrs.338.1565898984599;
+        Thu, 15 Aug 2019 12:56:24 -0700 (PDT)
+Received: from [172.30.88.191] (sjewanfw1-nat.mentorg.com. [139.181.7.34])
+        by smtp.gmail.com with ESMTPSA id h2sm1762739wmb.28.2019.08.15.12.56.17
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 15 Aug 2019 12:56:23 -0700 (PDT)
+Subject: Re: [PATCH 04/22] media: Move v4l2_fwnode_parse_link from v4l2 to
+ driver base
+To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
+Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Len Brown <lenb@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        "moderated list:ARM/ZYNQ ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Enrico Weigelt <info@metux.net>,
+        Hyun Kwon <hyun.kwon@xilinx.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>
+References: <20190805233505.21167-1-slongerbeam@gmail.com>
+ <20190805233505.21167-5-slongerbeam@gmail.com>
+ <CAHp75VcOh8bOf_s6t0ehwGtcYn64QFGj303SVvpHrztEOhTRgg@mail.gmail.com>
+ <4750b347-b421-6569-600f-0ced8406460e@gmail.com>
+ <20190814103054.GI13294@shell.armlinux.org.uk>
+ <e0a19469-af9d-d9de-499f-4ffbf04542b3@gmail.com>
+ <20190814220437.GJ13294@shell.armlinux.org.uk>
+ <1842bf8f-4f97-6294-41db-74f9f8e2befd@gmail.com>
+ <20190814231509.GK13294@shell.armlinux.org.uk>
+From:   Steve Longerbeam <slongerbeam@gmail.com>
+Message-ID: <9b9ca684-9309-cadd-2e58-9ae73162a807@gmail.com>
+Date:   Thu, 15 Aug 2019 12:56:15 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <20190814213118.28473-1-kherbst@redhat.com> <20190814213118.28473-2-kherbst@redhat.com>
- <CAPM=9ty7yEUqKrcixV1tTuWCpyh6UikA3rxX8BF1E3fDb6WLQQ@mail.gmail.com>
- <5e05532328324d01bc554c573f6298f8@AUSX13MPC101.AMER.DELL.COM>
- <CACO55tsDA1WpMGtAPqUJpWt0AmPDnv9LuC09g2KB5GXB-VSCew@mail.gmail.com>
- <3fc22fe8bcaf4304bb07534b61c4de90@AUSX13MPC101.AMER.DELL.COM>
- <CACO55tvDfxYMZr0BGv2ROSNEVB4GvXZnBnWBy=RDPOG5hnk7OA@mail.gmail.com>
- <CADnq5_Nv6tsW0J20td5rQSLq048HtTcw1b4c25jP6ZR6XWZ-eA@mail.gmail.com>
- <s5ho90qa34m.wl-tiwai@suse.de> <8724585e50004bc8b6f310587555f4a1@AUSX13MPC101.AMER.DELL.COM>
-In-Reply-To: <8724585e50004bc8b6f310587555f4a1@AUSX13MPC101.AMER.DELL.COM>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Thu, 15 Aug 2019 14:34:08 -0400
-Message-ID: <CADnq5_NKyK7=C+j+yvxME4u1eN3XEB7n2QnVPEn2QqvwAhquDA@mail.gmail.com>
-Subject: Re: [Nouveau] [PATCH 1/7] Revert "ACPI / OSI: Add OEM _OSI string to
- enable dGPU direct output"
-To:     Mario.Limonciello@dell.com
-Cc:     Takashi Iwai <tiwai@suse.de>, Karol Herbst <kherbst@redhat.com>,
-        nouveau <nouveau@lists.freedesktop.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Alex Hung <alex.hung@canonical.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Dave Airlie <airlied@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190814231509.GK13294@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 15, 2019 at 12:19 PM <Mario.Limonciello@dell.com> wrote:
->
-> > -----Original Message-----
-> > From: Takashi Iwai <tiwai@suse.de>
-> > Sent: Thursday, August 15, 2019 9:57 AM
-> > To: Alex Deucher
-> > Cc: Karol Herbst; Limonciello, Mario; nouveau; Rafael J . Wysocki; LKML; dri-devel;
-> > Linux ACPI Mailing List; Alex Hung; Ben Skeggs; David Airlie
-> > Subject: Re: [Nouveau] [PATCH 1/7] Revert "ACPI / OSI: Add OEM _OSI string to
-> > enable dGPU direct output"
-> >
-> >
-> > [EXTERNAL EMAIL]
-> >
-> > On Thu, 15 Aug 2019 16:37:05 +0200,
-> > Alex Deucher wrote:
-> > >
-> > > On Thu, Aug 15, 2019 at 10:25 AM Karol Herbst <kherbst@redhat.com> wrote:
-> > > >
-> > > > On Thu, Aug 15, 2019 at 4:20 PM <Mario.Limonciello@dell.com> wrote:
-> > > > >
-> > > > > > > There are definitely going to be regressions on machines in the field
-> > with the
-> > > > > > > in tree drivers by reverting this.  I think we should have an answer for all
-> > of
-> > > > > > those
-> > > > > > > before this revert is accepted.
-> > > > > > >
-> > > > > > > Regarding systems with Intel+NVIDIA, we'll have to work with partners
-> > to
-> > > > > > collect
-> > > > > > > some information on the impact of reverting this.
-> > > > > > >
-> > > > > > > When this is used on a system with Intel+AMD the ASL configures AMD
-> > GPU to
-> > > > > > use
-> > > > > > > "Hybrid Graphics" when on Windows and "Power Express" and
-> > "Switchable
-> > > > > > Graphics"
-> > > > > > > when on Linux.
-> > > > > >
-> > > > > > and what's exactly the difference between those? And what's the actual
-> > > > > > issue here?
-> > > > >
-> > > > > DP/HDMI is not detected unless plugged in at bootup.  It's due to missing
-> > HPD
-> > > > > events.
-> > > > >
-> > > >
-> > > > afaik Lyude was working on fixing all that, at least for some drivers.
-> > > > If there is something wrong, we still should fix the drivers, not
-> > > > adding ACPI workarounds.
-> > > >
-> > > > Alex: do you know if there are remaining issues regarding that with amdgpu?
-> > >
-> > > There was an issue with hpd events not making it to the audio side
-> > > when things were powered down that was fixed with this patch set:
-> > > https://patchwork.freedesktop.org/patch/316793/
-> > > Those patches depended on a bunch of alsa changes as well which may
-> > > have not been available in the distro used for a particular OEM
-> > > program.
-> >
-> > FYI, the corresponding commit for ALSA part is destined for 5.4
-> > kernel:
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git/commit/?id=ade
-> > 49db337a9d44ac5835cfce1ee873549011b27
-> >
-> > BTW, Nouveau should suffer from the same problem.  The patch to add
-> > the audio component support is found at:
-> >   https://patchwork.freedesktop.org/patch/319131/
-> >
-> >
->
-> It sounds like 5.3rcX won't be a useful check then.
->
-> So am I correct to understand that everything related to the AMD failures
-> described in this thread should be in linux-next at this point?
->
 
-Assuming you mean the missing audio hotplug events, then yes.
 
-Alex
+On 8/14/19 4:15 PM, Russell King - ARM Linux admin wrote:
+> On Wed, Aug 14, 2019 at 04:00:30PM -0700, Steve Longerbeam wrote:
+>>
+>> On 8/14/19 3:04 PM, Russell King - ARM Linux admin wrote:
+>>> On Wed, Aug 14, 2019 at 12:04:41PM -0700, Steve Longerbeam wrote:
+>>>> On 8/14/19 3:30 AM, Russell King - ARM Linux admin wrote:
+>>>>> On Tue, Aug 06, 2019 at 09:53:41AM -0700, Steve Longerbeam wrote:
+>>>>>> The full patchset doesn't seem to be up yet, but see [1] for the cover
+>>>>>> letter.
+>>>>> Was the entire series copied to the mailing lists, or just selected
+>>>>> patches?  I only saw 4, 9, 11 and 13-22 via lakml.
+>>>> The whole series was posted to the linux-media ML, see [1]. At the time,
+>>>> none of the linux-media ML archives had the whole series.
+>>>>
+>>>>> In the absence of the other patches, will this solve imx-media binding
+>>>>> the internal subdevs of sensor devices to the CSI2 interface?
+>>>> "internal subdevs of sensor devices" ?? That doesn't make any sense.
+>>> Sorry, but it makes complete sense when you consider that sensor
+>>> devices may have more than one subdev, but there should be only one
+>>> that is the "output" to whatever the camera is attached to.  The
+>>> other subdevs are internal to the sensor.
+>> Ah, thanks for the clarification. Yes, by "internal subdevs" I understand
+>> what you mean now. The adv748x and smiapp are examples.
+>>
+>>> subdevs are not purely the remit of SoC drivers.
+>> So there is no binding of internal subdevs to the receiver CSI-2. The
+>> receiver CSI-2 subdev will create media links to the subdev that has an
+>> externally exposed fwnode endpoint that connects with the CSI-2 sink pad.
+> Maybe - with 5.2, I get:
+>
+> - entity 15: imx6-mipi-csi2 (5 pads, 6 links)
+>               type V4L2 subdev subtype Unknown flags 0
+>               device node name /dev/v4l-subdev2
+>          pad0: Sink
+> ...
+>                  <- "imx219 0-0010":0 []
+>                  <- "imx219 pixel 0-0010":0 []
+>
+> Adding some debug in gives:
+>
+> [   11.963362] imx-media: imx_media_create_of_links() for imx6-mipi-csi2
+> [   11.963396] imx-media: create_of_link(): /soc/aips-bus@2000000/iomuxc-gpr@20e0000/ipu1_csi0_mux
+> [   11.963422] imx-media: create_of_link(): /soc/ipu@2400000
+> [   11.963450] imx-media: create_of_link(): /soc/ipu@2800000
+> [   11.963478] imx-media: create_of_link(): /soc/aips-bus@2000000/iomuxc-gpr@20e0000/ipu2_csi1_mux
+> [   11.963489] imx-media: imx6-mipi-csi2:4 -> ipu2_csi1_mux:0
+> [   11.963522] imx-media: create_of_link(): /soc/aips-bus@2100000/i2c@21a0000/camera@10
+> [   11.963533] imx-media: imx219 0-0010:0 -> imx6-mipi-csi2:0
+> [   11.963549] imx-media: imx_media_create_of_links() for imx219 pixel 0-0010
+> [   11.963577] imx-media: create_of_link(): /soc/aips-bus@2100000/mipi@21dc000
+> [   11.963587] imx-media: imx219 pixel 0-0010:0 -> imx6-mipi-csi2:0
+> [   11.963602] imx-media: imx_media_create_of_links() for imx219 0-0010
+>
+> Note that it's not created by imx6-mipi-csi2, but by imx-media delving
+> around in the imx219 subdevs.
+>
+>  From what I can see, smiapp does the same thing that I do in imx219 -
+> sets the subdev->dev member to point at the struct device, which then
+> means that v4l2_device_register_subdev() will associate the same fwnode
+> with both "imx219 pixel 0-0010" and "imx219 0-0010".
+
+Ok, understood.
+
+I realize imx_media_create_of_link() is a bit intrusive, and that's one 
+of the things I'm trying to get rid of in this patchset. Unfortunately 
+it's there for a reason which is described in patch 0021. But to explain 
+here, the imx6-mipi-csi2 receiver outputs its four virtual channels on 
+four separate source pads, and those connect to four different 
+subdevices (video mux's and CSI's), and the problem is that only the 
+first subdev that adds imx6-mipi-csi2 to its notifier asd list will get 
+a notifier bind() callback (where links can be created to 
+imx6-mipi-csi2) -- the other subdevs don't contain it in their asd lists 
+so they never create the links to imx6-mipi-csi2. So until the 
+requirement in v4l2-async that no notifiers can contain the same asd in 
+its list is relaxed, this function will have to remain, but I can make 
+it less intrusive (only create the missing links from imx6-mipi-csi2). 
+I'm not able to find a cleaner workaround at the moment.
+
+Steve
+
