@@ -2,149 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61A648EE4E
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Aug 2019 16:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28B2C8EE52
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Aug 2019 16:35:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730768AbfHOOe2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Aug 2019 10:34:28 -0400
-Received: from mx0a-00154904.pphosted.com ([148.163.133.20]:59800 "EHLO
-        mx0a-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730064AbfHOOe2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 15 Aug 2019 10:34:28 -0400
-Received: from pps.filterd (m0170393.ppops.net [127.0.0.1])
-        by mx0a-00154904.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7FEXu86006583;
-        Thu, 15 Aug 2019 10:34:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=smtpout1;
- bh=UpYxGwpBDDOYwILNOGHgjaERhXWVQgZr+JCy/gi4Q+A=;
- b=c3fBTIgPEdW384TiMe3/TyhtBuJnTiJcc4E4HHJy6UH4cOo54IsULRe7vOeY++d8FA8o
- igxO9kzSqcf0kWl7MzNN6nmFNmYEsE56xCym/tvXxeTB6i4ff9PTCyzCCvDRSJTnIZ+u
- SF91Cpxz7GBTlvPgt//bLOYTeuP36GZsT8fau3iHC7Wp1Uz8DOMPSXX0dZ39Q2AjsAkG
- uGqVfX4RUxhB13i7Nqoz8vIhRsaIzkbMlVsvrX0kVpM3MdJObpBGDgAKKf3nEsYZx7j9
- XwZUKlMD3DhbZZ8W+xn9vFZyL2aQPYtV4U9LehxvLGu7YA5zlhklIAajiDcDKV9JLVOw dg== 
-Received: from mx0b-00154901.pphosted.com (mx0b-00154901.pphosted.com [67.231.157.37])
-        by mx0a-00154904.pphosted.com with ESMTP id 2ucytb2367-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 15 Aug 2019 10:34:26 -0400
-Received: from pps.filterd (m0089483.ppops.net [127.0.0.1])
-        by mx0b-00154901.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7FEX3Z2009712;
-        Thu, 15 Aug 2019 10:34:13 -0400
-Received: from ausxippc101.us.dell.com (ausxippc101.us.dell.com [143.166.85.207])
-        by mx0b-00154901.pphosted.com with ESMTP id 2ud80w19hb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 15 Aug 2019 10:34:13 -0400
-X-LoopCount0: from 10.166.132.131
-X-PREM-Routing: D-Outbound
-X-IronPort-AV: E=Sophos;i="5.60,346,1549951200"; 
-   d="scan'208";a="1285794537"
-From:   <Mario.Limonciello@dell.com>
-To:     <kherbst@redhat.com>
-CC:     <airlied@gmail.com>, <linux-kernel@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <nouveau@lists.freedesktop.org>, <rafael.j.wysocki@intel.com>,
-        <alex.hung@canonical.com>, <bskeggs@redhat.com>,
-        <airlied@redhat.com>
-Subject: RE: [Nouveau] [PATCH 1/7] Revert "ACPI / OSI: Add OEM _OSI string to
- enable dGPU direct output"
-Thread-Topic: [Nouveau] [PATCH 1/7] Revert "ACPI / OSI: Add OEM _OSI string to
- enable dGPU direct output"
-Thread-Index: AQGgd6rdZMP3IawUTGaO286TGix+WwEoseSWASaOw1KnU3bBEIAAWGiA//+vQECAAFaFAP//rUBg
-Date:   Thu, 15 Aug 2019 14:34:02 +0000
-Message-ID: <54add026bb6f45fd94a2dc2bae4adf9f@AUSX13MPC101.AMER.DELL.COM>
-References: <20190814213118.28473-1-kherbst@redhat.com>
- <20190814213118.28473-2-kherbst@redhat.com>
+        id S1731564AbfHOOfh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Aug 2019 10:35:37 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:37960 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730915AbfHOOff (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Aug 2019 10:35:35 -0400
+Received: by mail-ot1-f65.google.com with SMTP id r20so6334072ota.5
+        for <linux-acpi@vger.kernel.org>; Thu, 15 Aug 2019 07:35:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BtTSn2uMyyP8QHhCiI6vaNdIzu8IHEHZhZ5nwC+nMAU=;
+        b=SKCgJPMtqGWaAgPyBegFRU6EEdONVbu0j61P5gtoRE4UErFe+R7Ub66HzTc61+kbgV
+         D8q9Sl+m1g/U+avBtVEQNUXF53Iz6r8GiwAkhR1E/qau580gcInBFwJYtEYscx/83qpw
+         86ijLE0oe3fq+5KonS9l7lSylfNEOs6TxOoQREuDk8Uc6adQOx3d6ul8W82jpykYxADV
+         hcEPPbVYwXzkmvmoSIHrR+x9c95azEBuiHlrqD3TTcR4XsiD3zy4PBLOaS9jHsEcIJHT
+         YyKjsgoZeTy6IwPXE6vWBHrXcCqaEGudpC/PXkqC+f5s2/EyvT2oDPT4BvDrQcKPoSxq
+         V8kw==
+X-Gm-Message-State: APjAAAXYCTInSVxejmgvcanekOtL1RbnoEuELtDDVz6tp0aOVJbvqRVo
+        PY46N2Hz1W9Gbq00V24O8iS6BIwwxTnXPntQqPy4kQ==
+X-Google-Smtp-Source: APXvYqzKOnt+7f9VOL89+ec428aBeZSnl2atgboE0ieQNu4BQtWa3L1DeSUe5NY6fj6Fh4lzcbXWphwAs3uyRC9CmKY=
+X-Received: by 2002:a6b:f906:: with SMTP id j6mr5800892iog.26.1565879733515;
+ Thu, 15 Aug 2019 07:35:33 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190814213118.28473-1-kherbst@redhat.com> <20190814213118.28473-2-kherbst@redhat.com>
  <CAPM=9ty7yEUqKrcixV1tTuWCpyh6UikA3rxX8BF1E3fDb6WLQQ@mail.gmail.com>
  <5e05532328324d01bc554c573f6298f8@AUSX13MPC101.AMER.DELL.COM>
  <CACO55tsDA1WpMGtAPqUJpWt0AmPDnv9LuC09g2KB5GXB-VSCew@mail.gmail.com>
- <3fc22fe8bcaf4304bb07534b61c4de90@AUSX13MPC101.AMER.DELL.COM>
- <CACO55tvDfxYMZr0BGv2ROSNEVB4GvXZnBnWBy=RDPOG5hnk7OA@mail.gmail.com>
-In-Reply-To: <CACO55tvDfxYMZr0BGv2ROSNEVB4GvXZnBnWBy=RDPOG5hnk7OA@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Enabled=True;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Owner=Mario_Limonciello@Dell.com;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SetDate=2019-08-15T14:34:00.8636496Z;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Name=External Public;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Extended_MSFT_Method=Manual;
- aiplabel=External Public
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.143.242.75]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-15_05:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908150148
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908150148
+ <CADnq5_NUox3vvg6Mt3i9erA+AL2MfotpNBZQnWWknn4j+j-F=Q@mail.gmail.com>
+ <CACO55tty6TqEo4UBkX5YckLuP-XhHXKVs0ew+Q8__sKMi1BCbA@mail.gmail.com>
+ <CADnq5_PWuLU0pcG549-xThMHy3W0P2+fAO_Ledk6FP2TVG3+gQ@mail.gmail.com> <6ed1c393ffeb4c24ab5875927d6a37ac@AUSX13MPC101.AMER.DELL.COM>
+In-Reply-To: <6ed1c393ffeb4c24ab5875927d6a37ac@AUSX13MPC101.AMER.DELL.COM>
+From:   Karol Herbst <kherbst@redhat.com>
+Date:   Thu, 15 Aug 2019 16:35:22 +0200
+Message-ID: <CACO55ttUKCGJq66czgsgWSR5VE6VmQFs6Syr0R2CenXomU2O-w@mail.gmail.com>
+Subject: Re: [Nouveau] [PATCH 1/7] Revert "ACPI / OSI: Add OEM _OSI string to
+ enable dGPU direct output"
+To:     Mario.Limonciello@dell.com
+Cc:     Alex Deucher <alexdeucher@gmail.com>,
+        nouveau <nouveau@lists.freedesktop.org>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux ACPI Mailing List <linux-acpi@vger.kernel.org>,
+        Alex Hung <alex.hung@canonical.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        David Airlie <airlied@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBLYXJvbCBIZXJic3QgPGtoZXJi
-c3RAcmVkaGF0LmNvbT4NCj4gU2VudDogVGh1cnNkYXksIEF1Z3VzdCAxNSwgMjAxOSA5OjI1IEFN
-DQo+IFRvOiBMaW1vbmNpZWxsbywgTWFyaW8NCj4gQ2M6IERhdmUgQWlybGllOyBMS01MOyBMaW51
-eCBBQ1BJIE1haWxpbmcgTGlzdDsgZHJpLWRldmVsOyBub3V2ZWF1OyBSYWZhZWwgSiAuDQo+IFd5
-c29ja2k7IEFsZXggSHVuZzsgQmVuIFNrZWdnczsgRGF2aWQgQWlybGllDQo+IFN1YmplY3Q6IFJl
-OiBbTm91dmVhdV0gW1BBVENIIDEvN10gUmV2ZXJ0ICJBQ1BJIC8gT1NJOiBBZGQgT0VNIF9PU0kg
-c3RyaW5nIHRvDQo+IGVuYWJsZSBkR1BVIGRpcmVjdCBvdXRwdXQiDQo+IA0KPiANCj4gW0VYVEVS
-TkFMIEVNQUlMXQ0KPiANCj4gT24gVGh1LCBBdWcgMTUsIDIwMTkgYXQgNDoyMCBQTSA8TWFyaW8u
-TGltb25jaWVsbG9AZGVsbC5jb20+IHdyb3RlOg0KPiA+DQo+ID4gPiA+IFRoZXJlIGFyZSBkZWZp
-bml0ZWx5IGdvaW5nIHRvIGJlIHJlZ3Jlc3Npb25zIG9uIG1hY2hpbmVzIGluIHRoZSBmaWVsZCB3
-aXRoDQo+IHRoZQ0KPiA+ID4gPiBpbiB0cmVlIGRyaXZlcnMgYnkgcmV2ZXJ0aW5nIHRoaXMuICBJ
-IHRoaW5rIHdlIHNob3VsZCBoYXZlIGFuIGFuc3dlciBmb3IgYWxsIG9mDQo+ID4gPiB0aG9zZQ0K
-PiA+ID4gPiBiZWZvcmUgdGhpcyByZXZlcnQgaXMgYWNjZXB0ZWQuDQo+ID4gPiA+DQo+ID4gPiA+
-IFJlZ2FyZGluZyBzeXN0ZW1zIHdpdGggSW50ZWwrTlZJRElBLCB3ZSdsbCBoYXZlIHRvIHdvcmsg
-d2l0aCBwYXJ0bmVycyB0bw0KPiA+ID4gY29sbGVjdA0KPiA+ID4gPiBzb21lIGluZm9ybWF0aW9u
-IG9uIHRoZSBpbXBhY3Qgb2YgcmV2ZXJ0aW5nIHRoaXMuDQo+ID4gPiA+DQo+ID4gPiA+IFdoZW4g
-dGhpcyBpcyB1c2VkIG9uIGEgc3lzdGVtIHdpdGggSW50ZWwrQU1EIHRoZSBBU0wgY29uZmlndXJl
-cyBBTUQNCj4gR1BVIHRvDQo+ID4gPiB1c2UNCj4gPiA+ID4gIkh5YnJpZCBHcmFwaGljcyIgd2hl
-biBvbiBXaW5kb3dzIGFuZCAiUG93ZXIgRXhwcmVzcyIgYW5kICJTd2l0Y2hhYmxlDQo+ID4gPiBH
-cmFwaGljcyINCj4gPiA+ID4gd2hlbiBvbiBMaW51eC4NCj4gPiA+DQo+ID4gPiBhbmQgd2hhdCdz
-IGV4YWN0bHkgdGhlIGRpZmZlcmVuY2UgYmV0d2VlbiB0aG9zZT8gQW5kIHdoYXQncyB0aGUgYWN0
-dWFsDQo+ID4gPiBpc3N1ZSBoZXJlPw0KPiA+DQo+ID4gRFAvSERNSSBpcyBub3QgZGV0ZWN0ZWQg
-dW5sZXNzIHBsdWdnZWQgaW4gYXQgYm9vdHVwLiAgSXQncyBkdWUgdG8gbWlzc2luZyBIUEQNCj4g
-PiBldmVudHMuDQo+ID4NCj4gDQo+IGFmYWlrIEx5dWRlIHdhcyB3b3JraW5nIG9uIGZpeGluZyBh
-bGwgdGhhdCwgYXQgbGVhc3QgZm9yIHNvbWUgZHJpdmVycy4NCj4gSWYgdGhlcmUgaXMgc29tZXRo
-aW5nIHdyb25nLCB3ZSBzdGlsbCBzaG91bGQgZml4IHRoZSBkcml2ZXJzLCBub3QNCj4gYWRkaW5n
-IEFDUEkgd29ya2Fyb3VuZHMuDQoNCkkgZG9uJ3QgZGlzYWdyZWUsIGJ1dCB0aW1pbmcgaXMgZnJl
-cXVlbnRseSBhIGxpbWl0YXRpb24gaWYgeW91IHdhbnQgdGhlIGhhcmR3YXJlIHRvDQp3b3JrIHdo
-ZW4geW91IHB1dCBpdCBvbiB0aGUgbWFya2V0Lg0KDQpUaGUgd2hvbGUgaWRlYSBiZWhpbmQgdGhl
-IE9TSSBzdHJpbmcgd2FzIHRoYXQgaXQgY291bGQgYmUgcmV2ZXJ0ZWQgd2hlbiB0aGUgdGltZQ0K
-d2FzIHJpZ2h0LiAgRnJvbSB0aGlzIGRpc2N1c3Npb24gaXQgdmVyeSB3ZWxsIG1heSBiZSBmb3Ig
-c3lzdGVtcyB3aXRoIEFNRCBHUFUsIGJ1dA0KaXQgbmVlZHMgdG8gYmUgY2hlY2tlZCBhZ2Fpbi4N
-Cg0KPiANCj4gQWxleDogZG8geW91IGtub3cgaWYgdGhlcmUgYXJlIHJlbWFpbmluZyBpc3N1ZXMg
-cmVnYXJkaW5nIHRoYXQgd2l0aCBhbWRncHU/DQo+IA0KPiA+ID4NCj4gPiA+IFdlIGFscmVhZHkg
-aGF2ZSB0aGUgUFJJTUUgb2ZmbG9hZGluZyBpbiBwbGFjZSBhbmQgaWYgdGhhdCdzIG5vdA0KPiA+
-ID4gZW5vdWdoLCB3ZSBzaG91bGQgd29yayBvbiBleHRlbmRpbmcgaXQsIG5vdCBhZGRpbmcgc29t
-ZSBBQ1BJIGJhc2VkDQo+ID4gPiB3b3JrYXJvdW5kcywgYmVjYXVzZSB0aGF0J3MgZXhhY3RseSBo
-b3cgdGhhdCBsb29rcyBsaWtlLg0KPiA+ID4NCj4gPiA+IEFsc28sIHdhcyB0aGlzIGRpc2N1c3Nl
-ZCB3aXRoIGFueWJvZHkgaW52b2x2ZWQgaW4gdGhlIGRybSBzdWJzeXN0ZW0/DQo+ID4gPg0KPiA+
-ID4gPg0KPiA+ID4gPiBJIGZlZWwgd2UgbmVlZCBhIGtub2IgYW5kL29yIERNSSBkZXRlY3Rpb24g
-dG8gYWZmZWN0IHRoZSBjaGFuZ2VzIHRoYXQgdGhlDQo+IEFTTA0KPiA+ID4gPiBub3JtYWxseSBw
-ZXJmb3Jtcy4NCj4gPiA+DQo+ID4gPiBXaHkgZG8gd2UgaGF2ZSB0byBkbyB0aGF0IG9uIGEgZmly
-bXdhcmUgbGV2ZWwgYXQgYWxsPw0KPiA+DQo+ID4gRm9sa3MgZnJvbSBBTUQgR3JhcGhpY3MgdGVh
-bSByZWNvbW1lbmRlZCB0aGlzIGFwcHJvYWNoLiAgDQoNCkkgc2hvdWxkIGNsYXJpZnkgdGhpcyBp
-cyBmcm9tIHRoZSBmb2xrcyBvbiBBTUQgZ3JhcGhpY3MgdGVhbSB0aGF0IGludGVyYWN0IHRvIE9F
-TXMNCmxpa2UgRGVsbCB3aGljaCBhcmUgbm90IG5lY2Vzc2FyaWx5IHRoZSBzYW1lIGZvbGtzIHdo
-byB3b3JrIG9uIHRoZSBkcml2ZXJzIGRpcmVjdGx5Lg0KDQo+IEZyb20gdGhlaXIgcGVyc3BlY3Rp
-dmUNCj4gPiBpdCdzIG5vdCBhIHdvcmthcm91bmQuICBUaGV5IHZpZXcgdGhpcyBhcyBhIGRpZmZl
-cmVudCBhcmNoaXRlY3R1cmUgZm9yIEFNRA0KPiBncmFwaGljcyBkcml2ZXIgb24NCj4gPiBXaW5k
-b3dzIGFuZCBBTUQgZ3JhcGhpY3Mgdy8gYW1kZ3B1IGRyaXZlci4gIFRoZXkgaGF2ZSBkaWZmZXJl
-bnQgQVNMIHBhdGhzDQo+IHVzZWQgZm9yDQo+ID4gZWFjaC4NCj4gDQo+IEBhbGV4OiBpcyB0aGlz
-IHRydWU/DQo=
+On Thu, Aug 15, 2019 at 4:30 PM <Mario.Limonciello@dell.com> wrote:
+>
+> > On Thu, Aug 15, 2019 at 10:15 AM Karol Herbst <kherbst@redhat.com> wrote:
+> > >
+> > > On Thu, Aug 15, 2019 at 4:13 PM Alex Deucher <alexdeucher@gmail.com>
+> > wrote:
+> > > >
+> > > > On Thu, Aug 15, 2019 at 10:04 AM Karol Herbst <kherbst@redhat.com> wrote:
+> > > > >
+> > > > > On Thu, Aug 15, 2019 at 3:56 PM <Mario.Limonciello@dell.com> wrote:
+> > > > > >
+> > > > > > > -----Original Message-----
+> > > > > > > From: linux-acpi-owner@vger.kernel.org <linux-acpi-
+> > owner@vger.kernel.org> On
+> > > > > > > Behalf Of Dave Airlie
+> > > > > > > Sent: Wednesday, August 14, 2019 5:48 PM
+> > > > > > > To: Karol Herbst
+> > > > > > > Cc: LKML; Linux ACPI; dri-devel; nouveau; Rafael J . Wysocki; Alex Hung;
+> > Ben
+> > > > > > > Skeggs; Dave Airlie
+> > > > > > > Subject: Re: [Nouveau] [PATCH 1/7] Revert "ACPI / OSI: Add OEM _OSI
+> > string to
+> > > > > > > enable dGPU direct output"
+> > > > > > >
+> > > > > > > On Thu, 15 Aug 2019 at 07:31, Karol Herbst <kherbst@redhat.com>
+> > wrote:
+> > > > > > > >
+> > > > > > > > This reverts commit 28586a51eea666d5531bcaef2f68e4abbd87242c.
+> > > > > > > >
+> > > > > > > > The original commit message didn't even make sense. AMD _does_
+> > support it and
+> > > > > > > > it works with Nouveau as well.
+> > > > > > > >
+> > > > > > > > Also what was the issue being solved here? No references to any bugs
+> > and not
+> > > > > > > > even explaining any issue at all isn't the way we do things.
+> > > > > > > >
+> > > > > > > > And even if it means a muxed design, then the fix is to make it work
+> > inside the
+> > > > > > > > driver, not adding some hacky workaround through ACPI tricks.
+> > > > > > > >
+> > > > > > > > And what out of tree drivers do or do not support we don't care one
+> > bit anyway.
+> > > > > > > >
+> > > > > > >
+> > > > > > > I think the reverts should be merged via Rafael's tree as the original
+> > > > > > > patches went in via there, and we should get them in asap.
+> > > > > > >
+> > > > > > > Acked-by: Dave Airlie <airlied@redhat.com>
+> > > > > > > Dave.
+> > > > > >
+> > > > > > There are definitely going to be regressions on machines in the field with
+> > the
+> > > > > > in tree drivers by reverting this.  I think we should have an answer for all
+> > of those
+> > > > > > before this revert is accepted.
+> > > > > >
+> > > > > > Regarding systems with Intel+NVIDIA, we'll have to work with partners to
+> > collect
+> > > > > > some information on the impact of reverting this.
+> > > > > >
+> > > > > > When this is used on a system with Intel+AMD the ASL configures AMD
+> > GPU to use
+> > > > > > "Hybrid Graphics" when on Windows and "Power Express" and
+> > "Switchable Graphics"
+> > > > > > when on Linux.
+> > > > >
+> > > > > and what's exactly the difference between those? And what's the actual
+> > > > > issue here?
+> > > >
+> > > > Hybrid Graphics is the new "standard" way of handling these laptops.
+> > > > It uses the standard _PR3 APCI method to handle dGPU power.  Support
+> > > > for this was added to Linux relatively later compared to when the
+> > > > laptops were launched.  "Power Express" used the other AMD specific
+> > > > ATPX ACPI method to handle dGPU power.  The driver supports both so
+> > > > either method will work.
+> > > >
+> > > > Alex
+> > > >
+> > >
+> > > thanks for clarifying. But that still means that we won't need such
+> > > workarounds for AMD users, right? amdgpu handles hybrid graphics just
+> > > fine, right?
+> >
+> > Yeah it should, assuming you have a new enough kernel which supports
+> > HG, which has been several years at this point IIRC.
+> >
+> > Alex
+> >
+>
+> Can you define how new of a kernel is a new enough kernel?
+>
+> Looking on my side these problems were on new hardware (Precision 7740) and
+> are checked as recently as start of this summer, w/ kernel 4.15.
+
+That's not even a long term one. And it shouldn't get any fixes. I
+just checked, last update was 16 months ago.
+
+>
+> We can arrange to have it checked again on 5.3rcX w/ the OSI disabled.
+
+yeah, please do. If there are any issues, we (as in drm developers)
+are happy to fix the issues inside the drivers.
