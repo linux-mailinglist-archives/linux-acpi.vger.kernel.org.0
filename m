@@ -2,252 +2,322 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D92B948E7
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2019 17:47:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF529949DF
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2019 18:29:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727942AbfHSPrR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Aug 2019 11:47:17 -0400
-Received: from mail.klausen.dk ([174.138.9.187]:43656 "EHLO mail.klausen.dk"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727910AbfHSPpt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 19 Aug 2019 11:45:49 -0400
-Subject: Re: [PATCH v3 0/8] PM / ACPI: sleep: Additional changes related to
- suspend-to-idle
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=klausen.dk; s=dkim;
-        t=1566229545;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=VHPVcICGJOxJGFNuKHwnQFj41i8YywgMjCbyckw+LBo=;
-        b=aGWQLCf4A3BSvopyQWBEAVrbaVx9JBwYGnDY2mx+LjfJzEKebv9PjBiApdXzjL+YydwzCU
-        KLO0sGc7zBCXis7ve+/cPbo0sGqPl1rSp4Enh2J/nWFIYTrj4+rznQ6tCb4rUaGs1+Epde
-        TPuAh/Pf9y9fMl1JU8I3ipKJwbZpv+A=
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Rajneesh Bhardwaj <rajneesh.bhardwaj@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>
-References: <5997740.FPbUVk04hV@kreacher>
- <800186a2-e912-3498-f08b-47469bbe8b0d@klausen.dk>
- <CAJZ5v0hfMS6aJP9G=dhZZ+3WTzM8=DzQkdJ7s9W3m5m9Dat5=g@mail.gmail.com>
- <1585707.yWhsc4YUgi@kreacher>
-From:   Kristian Klausen <kristian@klausen.dk>
-Message-ID: <6bf51526-edf3-6698-b251-ef0c94b766fc@klausen.dk>
-Date:   Mon, 19 Aug 2019 17:45:44 +0200
-MIME-Version: 1.0
-In-Reply-To: <1585707.yWhsc4YUgi@kreacher>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        id S1727813AbfHSQ3k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Aug 2019 12:29:40 -0400
+Received: from mx0a-00154904.pphosted.com ([148.163.133.20]:28514 "EHLO
+        mx0a-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726893AbfHSQ3k (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 19 Aug 2019 12:29:40 -0400
+Received: from pps.filterd (m0170392.ppops.net [127.0.0.1])
+        by mx0a-00154904.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7JGKb3b015429;
+        Mon, 19 Aug 2019 12:29:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=smtpout1;
+ bh=f/Q76X3Wx0Ozv2B7EfqZzEfoM/L61sfN+6R9rviNTko=;
+ b=sV7WD+Tvs2ebjZlbUt9rhIvegAxvvG6EW0bHM8I5DIK3D2CiwoLIW61Quz9ZTuiyxugF
+ 4d9nAT/+bD7ijv5+btcUb/2QLFqblkKhTB0gQzKHsZ0GISMwA1ML5q/vbxcIButNqrAI
+ +cYKXWcyXTbenPh2qxqoKTFlnWI93+cFDU3Aq8q4uQb/qK6F18IqrWLjhbAEjHwW8MwW
+ dhSiaKlIo/AuPER5TwtUxpOZf6HhKKUsr4VWVSDshOwxb8LaI2TNLpWnSthNX2WNyYCk
+ CZemomWl6KpmGmwDNkP3qQe9/sGkYaSKMbMnRRlgHLc2VNGLUcL2lf+/5zlWixGjjCs+ Bw== 
+Received: from mx0b-00154901.pphosted.com (mx0b-00154901.pphosted.com [67.231.157.37])
+        by mx0a-00154904.pphosted.com with ESMTP id 2uecrcyh44-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 19 Aug 2019 12:29:38 -0400
+Received: from pps.filterd (m0089483.ppops.net [127.0.0.1])
+        by mx0b-00154901.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7JGRsHY013169;
+        Mon, 19 Aug 2019 12:29:37 -0400
+Received: from ausxippc106.us.dell.com (AUSXIPPC106.us.dell.com [143.166.85.156])
+        by mx0b-00154901.pphosted.com with ESMTP id 2ufvb6k702-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 19 Aug 2019 12:29:37 -0400
+X-LoopCount0: from 10.166.132.130
+X-PREM-Routing: D-Outbound
+X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
+   d="scan'208";a="449695724"
+From:   <Mario.Limonciello@dell.com>
+To:     <mika.westerberg@linux.intel.com>, <linux-kernel@vger.kernel.org>
+CC:     <andreas.noever@gmail.com>, <michael.jamet@intel.com>,
+        <YehezkelShB@gmail.com>, <rjw@rjwysocki.net>, <lenb@kernel.org>,
+        <lukas@wunner.de>, <anthony.wong@canonical.com>,
+        <rajmohan.mani@intel.com>, <raanan.avargil@intel.com>,
+        <David.Laight@ACULAB.COM>, <linux-acpi@vger.kernel.org>
+Subject: RE: [PATCH v3 0/8] thunderbolt: Intel Ice Lake support
+Thread-Topic: [PATCH v3 0/8] thunderbolt: Intel Ice Lake support
+Thread-Index: AQHVVoBozBrF8LXinkuY9L30yxdXE6cCqCcg
+Date:   Mon, 19 Aug 2019 16:29:35 +0000
+Message-ID: <5486107424db48f2a06ed4c8a81f75b0@AUSX13MPC101.AMER.DELL.COM>
+References: <20190819112223.15359-1-mika.westerberg@linux.intel.com>
+In-Reply-To: <20190819112223.15359-1-mika.westerberg@linux.intel.com>
+Accept-Language: en-US
 Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Enabled=True;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Owner=Mario_Limonciello@Dell.com;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SetDate=2019-08-19T16:29:30.5094469Z;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Name=External Public;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Application=Microsoft Azure
+ Information Protection;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Extended_MSFT_Method=Manual;
+ aiplabel=External Public
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.143.18.86]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-19_03:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908190176
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908190175
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 19.08.2019 11.05, Rafael J. Wysocki wrote:
-> On Monday, August 19, 2019 9:59:02 AM CEST Rafael J. Wysocki wrote:
->> On Fri, Aug 16, 2019 at 10:26 PM Kristian Klausen <kristian@klausen.dk> wrote:
->>> On 02.08.2019 12.33, Rafael J. Wysocki wrote:
->>>> Hi All,
->>>>
->>>>>> On top of the "Simplify the suspend-to-idle control flow" patch series
->>>>>> posted previously:
->>>>>>
->>>>>> https://lore.kernel.org/lkml/71085220.z6FKkvYQPX@kreacher/
->>>>>>
->>>>>> sanitize the suspend-to-idle flow even further.
->>>>>>
->>>>>> First off, decouple EC wakeup from the LPS0 _DSM processing (patch 1).
->>>>>>
->>>>>> Next, reorder the code to invoke LPS0 _DSM Functions 5 and 6 in the
->>>>>> specification-compliant order with respect to suspending and resuming
->>>>>> devices (patch 2).
->>>>>>
->>>>>> Finally, rearrange lps0_device_attach() (patch 3) and add a command line
->>>>>> switch to prevent the LPS0 _DSM from being used.
->>>>> The v2 is because I found a (minor) bug in patch 1, decided to use a module
->>>>> parameter instead of a kernel command line option in patch 4.  Also, there
->>>>> are 4 new patches:
->>>>>
->>>>> Patch 5: Switch the EC over to polling during "noirq" suspend and back
->>>>> during "noirq" resume.
->>>>>
->>>>> Patch 6: Eliminate acpi_sleep_no_ec_events().
->>>>>
->>>>> Patch 7: Consolidate some EC code depending on PM_SLEEP.
->>>>>
->>>>> Patch 8: Add EC GPE dispatching debug message.
->>>> The v3 is just a rearranged v2 so as to move the post sensitive patch (previous patch 2)
->>>> to the end of the series.   [After applying the full series the code is the same as before.]
->>>>
->>>> For easier testing, the series (along with some previous patches depended on by it)
->>>> is available in the pm-s2idle-testing branch of the linux-pm.git tree at kernel.org:
->>>>
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/log/?h=pm-s2idle-testing
->>> It was just testing this patch series(461fc1caed55), to see if it would
->>> fix my charging issue
->>> (https://bugzilla.kernel.org/show_bug.cgi?id=201307), which it didn't.
->> It is unlikely to help in that case.
-Do you have any idea what the issue could be?
->>
->>> I did however notice that my laptop (ASUS Zenbook UX430UNR/i7-8550U)
->>> won't wake when opening the lid or pressing a key, the only way to wake
->>> the laptop is pressing the power button.
->>>
->>> I also tested mainline (5.3.0-rc4 b7e7c85dc7b0) and 5.2.8 and the laptop
->>> wakes without issue when the lid is opened or a key is presed.
->>>> Please refer to the changelogs for details.
->> Thanks for your report.
->>
->> I seem to see a similar issue with respect to the lid on one of my
->> test machines, looking into it right now.
-> Well, my lid issue seems to be unrelated as it doesn't result from any patches in the
-> series in question.
->
-> First off, please clone 5.3-rc5 from kernel.org and double check if the issue is not
-> present in that one.
->
-> If that's not the case, merge the pm-s2idle-rework branch from my tree on top of it
-> and retest.
->
-> If you still see the issue then, apply the appended patch (on top of the pm-s2idle-reqork
-> branch ) and, after starting the kernel, do
->
-> # echo 1 > /sys/power/pm_debug_messages
->
-> suspend the system and try to wake it up through all of the ways that stopped working.
->
-> Then, wake it up with the power button, save the output of dmesg and send it to me.
->
-> Thanks!
+> -----Original Message-----
+> From: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Sent: Monday, August 19, 2019 6:22 AM
+> To: linux-kernel@vger.kernel.org
+> Cc: Andreas Noever; Michael Jamet; Yehezkel Bernat; Rafael J. Wysocki; Le=
+n
+> Brown; Lukas Wunner; Limonciello, Mario; Anthony Wong; Rajmohan Mani;
+> Raanan Avargil; David Laight; Mika Westerberg; linux-acpi@vger.kernel.org
+> Subject: [PATCH v3 0/8] thunderbolt: Intel Ice Lake support
+>=20
+>=20
+> [EXTERNAL EMAIL]
+>=20
+> Hi all,
+>=20
+> This is third iteration of the patch series adding support for the Intel
+> Ice Lake integrated Thunderbolt controller. The biggest difference from t=
+he
+> previous discrete controllers is that the Ice Lake Thunderbolt controller
+> is now integrated as part of the SoC. The firmware messages pretty much
+> follow Titan Ridge but there are some differences as well (such as the ne=
+w
+> RTD3 veto notification). Also Ice Lake does not implement security levels
+> so DMA protection is handled by IOMMU.
+>=20
+> The previous versions of the series can be found here:
+>=20
+>   v2: https://lwn.net/Articles/795979/
+>   v1: https://lwn.net/Articles/793066/
+>=20
+> Changes from v2:
+>=20
+>   * Moved ICL specific NHI ops into a separate file (nhi_ops.c)
+>=20
+>   * Postpone rescan thread during resume when if get device connected
+>     notification from the firmware. This fixes an issue that happened
+>     occasionally when resuming with full chain of devices. The driver
+>     started to remove last devices in the chain even if they are still
+>     connected.
+>=20
+>   * Move call to nhi->ops->init() before CM specific probe happens.
+>=20
+>   * Added ack from Rafael
+>=20
+> Changes from v1:
+>=20
+>   * Check !x86_apple_machine for Titan Ridge also.
+>=20
+>   * Drop ioread32() when updating prod/cons because hardware ignores writ=
+es
+>     to the read-only parts of the register this allows us to save one rea=
+d.
+>=20
+>   * Remove Light Ridge specific handling in eeprom.c as it is not necessa=
+ry
+>     after patch 4/8.
+>=20
+>   * Moved RTD3 veto handling into separate functions to avoid code
+>     duplication.
+>=20
+>   * Reworked struct nhi_ops so that it provides hooks such as
+>     runtime_suspend and so on. The NHI implementation then can use those
+>     hooks to implement whatever additional logic is needed. This should
+>     allow us to move those bits into a separate files in future if needed=
+.
+>=20
+>     I also looked whether we could replace
+>     quirk_apple_poweroff_thunderbolt() using struct nhi_ops as well but i=
+t
+>     turns out to be unsuitable. The reason is that the ACPI magic sequenc=
+e
+>     needs to be done after PCI core has moved the device into D3. The NHI
+>     driver does not have easy means to do so.
+>=20
+>   * Clarified comment in icl_nhi_suspend()
+>=20
+>   * Added clarification comment to icl_nhi_force_power()
+>=20
+>   * Use "Thunderbolt" instead of "TBT" in new GUID entries
+>=20
+>   * Added reviewed tag from Yehezkel
+>=20
+> Mika Westerberg (8):
+>   thunderbolt: Correct path indices for PCIe tunnel
+>   thunderbolt: Move NVM upgrade support flag to struct icm
+>   thunderbolt: Use 32-bit writes when writing ring producer/consumer
+>   thunderbolt: Do not fail adding switch if some port is not implemented
+>   thunderbolt: Hide switch attributes that are not set
+>   thunderbolt: Expose active parts of NVM even if upgrade is not supporte=
+d
+>   thunderbolt: Add support for Intel Ice Lake
+>   ACPI / property: Add two new Thunderbolt property GUIDs to the list
+>=20
+>  drivers/acpi/property.c        |   6 +
+>  drivers/thunderbolt/Makefile   |   2 +-
+>  drivers/thunderbolt/ctl.c      |  23 +++-
+>  drivers/thunderbolt/eeprom.c   |   4 -
+>  drivers/thunderbolt/icm.c      | 194 ++++++++++++++++++++++++++++++---
+>  drivers/thunderbolt/nhi.c      | 134 +++++++++++++++++++++--
+>  drivers/thunderbolt/nhi.h      |  22 ++++
+>  drivers/thunderbolt/nhi_ops.c  | 179 ++++++++++++++++++++++++++++++
+>  drivers/thunderbolt/nhi_regs.h |  37 +++++++
+>  drivers/thunderbolt/switch.c   |  52 +++++++--
+>  drivers/thunderbolt/tb_msgs.h  |  16 ++-
+>  drivers/thunderbolt/tunnel.c   |   4 +-
+>  include/linux/thunderbolt.h    |   2 +
+>  13 files changed, 622 insertions(+), 53 deletions(-)
+>  create mode 100644 drivers/thunderbolt/nhi_ops.c
+>=20
+> --
+> 2.23.0.rc1
 
-With 5.3-rc5 the laptops wakes up without any issue when pressing a key 
-or opening the lid.
-With v5.3-rc5+pm-s2idle-testing I can only wake the laptop by pressing 
-the power button.
+I've tested this on a pre-production ICL platform.  This was on top of 5.3-=
+rc5, both of
+your patches from -next and this series.
 
-dmesg with pm_debug_messages=1 and your patch:
-[   55.646109] PM: suspend entry (s2idle)
-[   55.698559] Filesystems sync: 0.052 seconds
-[   55.698561] PM: Preparing system for sleep (s2idle)
-[   55.700661] Freezing user space processes ... (elapsed 0.210 seconds) 
-done.
-[   55.911494] OOM killer disabled.
-[   55.911495] Freezing remaining freezable tasks ... (elapsed 0.001 
-seconds) done.
-[   55.913192] PM: Suspending system (s2idle)
-[   55.913195] printk: Suspending console(s) (use no_console_suspend to 
-debug)
-[   55.914778] [drm] CT: disabled
-[   55.916057] wlan0: deauthenticating from 64:70:02:a5:fd:02 by local 
-choice (Reason: 3=DEAUTH_LEAVING)
-[   56.045634] sd 2:0:0:0: [sda] Synchronizing SCSI cache
-[   56.046650] sd 2:0:0:0: [sda] Stopping disk
-[   56.287622] PM: suspend of devices complete after 371.285 msecs
-[   56.287627] PM: start suspend of devices complete after 373.684 msecs
-[   56.307155] PM: late suspend of devices complete after 19.477 msecs
-[   56.312479] ACPI: EC: interrupt blocked
-[   56.352761] PM: noirq suspend of devices complete after 45.205 msecs
-[   56.352770] ACPI: \_PR_.PR00: LPI: Device not power manageable
-[   56.352774] ACPI: \_PR_.PR01: LPI: Device not power manageable
-[   56.352776] ACPI: \_PR_.PR02: LPI: Device not power manageable
-[   56.352779] ACPI: \_PR_.PR03: LPI: Device not power manageable
-[   56.352782] ACPI: \_PR_.PR04: LPI: Device not power manageable
-[   56.352785] ACPI: \_PR_.PR05: LPI: Device not power manageable
-[   56.352788] ACPI: \_PR_.PR06: LPI: Device not power manageable
-[   56.352790] ACPI: \_PR_.PR07: LPI: Device not power manageable
-[   56.352793] ACPI: \_SB_.PCI0.GFX0: LPI: Device not power manageable
-[   56.352800] ACPI: \_SB_.PCI0.RP06.PXSX: LPI: Device not power manageable
-[   56.357057] PM: suspend-to-idle
-[   69.338656] PM: Timekeeping suspended for 12.178 seconds
-[   69.338701] PM: irq_pm_check_wakeup: IRQ 9
-[   69.338704] PM: IRQ wakeup: IRQ 9
-[   69.338879] PM: resume from suspend-to-idle
-[   69.371406] ACPI: EC: interrupt unblocked
-[   69.514126] PM: noirq resume of devices complete after 142.668 msecs
-[   69.516007] PM: early resume of devices complete after 1.773 msecs
-[   69.517579] [drm] HuC: Loaded firmware i915/kbl_huc_ver02_00_1810.bin 
-(version 2.0)
-[   69.521691] [drm] GuC: Loaded firmware i915/kbl_guc_32.0.3.bin 
-(version 32.0)
-[   69.521764] [drm] CT: enabled
-[   69.521850] i915 0000:00:02.0: GuC firmware version 32.0
-[   69.521853] i915 0000:00:02.0: GuC submission disabled
-[   69.521855] i915 0000:00:02.0: HuC enabled
-[   69.527165] sd 2:0:0:0: [sda] Starting disk
-[   69.528076] iwlwifi 0000:02:00.0: Applying debug destination 
-EXTERNAL_DRAM
-[   69.661997] iwlwifi 0000:02:00.0: Applying debug destination 
-EXTERNAL_DRAM
-[   69.729645] iwlwifi 0000:02:00.0: FW already configured (0) - 
-re-configuring
-[   69.842657] ata3: SATA link up 6.0 Gbps (SStatus 133 SControl 300)
-[   69.844600] ata3.00: configured for UDMA/133
-[   69.949032] PM: resume of devices complete after 432.157 msecs
-[   69.949770] PM: Finishing wakeup.
-[   69.949771] OOM killer enabled.
-[   69.949772] Restarting tasks ...
-[   69.953029] mei_hdcp mei::b638ab7e-94e2-4ea2-a552-d1c54b627f04:01: 
-bound 0000:00:02.0 (ops i915_hdcp_component_ops [i915])
-[   69.953521] done.
-[   70.012592] PM: suspend exit
->
-> ---
->   drivers/acpi/sleep.c        |    4 ++--
->   drivers/base/power/wakeup.c |    2 ++
->   kernel/irq/pm.c             |    2 ++
->   3 files changed, 6 insertions(+), 2 deletions(-)
->
-> Index: linux-pm/drivers/acpi/sleep.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/sleep.c
-> +++ linux-pm/drivers/acpi/sleep.c
-> @@ -1012,9 +1012,9 @@ static void acpi_s2idle_wake(void)
->   		acpi_os_wait_events_complete(); /* synchronize EC GPE processing */
->   		acpi_ec_flush_work();
->   		acpi_os_wait_events_complete(); /* synchronize Notify handling */
-> -	}
->   
-> -	rearm_wake_irq(acpi_sci_irq);
-> +		rearm_wake_irq(acpi_sci_irq);
-> +	}
->   }
->   
->   static void acpi_s2idle_restore_early(void)
-> Index: linux-pm/drivers/base/power/wakeup.c
-> ===================================================================
-> --- linux-pm.orig/drivers/base/power/wakeup.c
-> +++ linux-pm/drivers/base/power/wakeup.c
-> @@ -871,6 +871,8 @@ void pm_wakeup_clear(bool reset)
->   
->   void pm_system_irq_wakeup(unsigned int irq_number)
->   {
-> +	pm_pr_dbg("IRQ wakeup: IRQ %u\n", irq_number);
-> +
->   	if (pm_wakeup_irq == 0) {
->   		pm_wakeup_irq = irq_number;
->   		pm_system_wakeup();
-> Index: linux-pm/kernel/irq/pm.c
-> ===================================================================
-> --- linux-pm.orig/kernel/irq/pm.c
-> +++ linux-pm/kernel/irq/pm.c
-> @@ -15,6 +15,8 @@
->   
->   bool irq_pm_check_wakeup(struct irq_desc *desc)
->   {
-> +	pm_pr_dbg("%s: IRQ %u\n", __func__, irq_desc_get_irq(desc));
-> +
->   	if (irqd_is_wakeup_armed(&desc->irq_data)) {
->   		irqd_clear(&desc->irq_data, IRQD_WAKEUP_ARMED);
->   		desc->istate |= IRQS_SUSPENDED | IRQS_PENDING;
->
->
->
->
->
+I've run into a problem when using
+a WD19TB that after unplugging it will cause the following to spew in dmesg=
+:
+
+[ 2198.017003] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+[ 2198.017005] WARNING: possible recursive locking detected
+[ 2198.017008] 5.3.0-rc5+ #75 Not tainted
+[ 2198.017009] --------------------------------------------
+[ 2198.017012] irq/122-pciehp/121 is trying to acquire lock:
+[ 2198.017015] 00000000801d4de8 (&ctrl->reset_lock){.+.+}, at: pciehp_check=
+_presence+0x1b/0x80
+[ 2198.017026]=20
+               but task is already holding lock:
+[ 2198.017028] 000000000899e2eb (&ctrl->reset_lock){.+.+}, at: pciehp_ist+0=
+xaf/0x1c0
+[ 2198.017033]=20
+               other info that might help us debug this:
+[ 2198.017035]  Possible unsafe locking scenario:
+
+[ 2198.017037]        CPU0
+[ 2198.017038]        ----
+[ 2198.017041]   lock(&ctrl->reset_lock);
+[ 2198.017044]   lock(&ctrl->reset_lock);
+[ 2198.017046]=20
+                *** DEADLOCK ***
+
+[ 2198.017048]  May be due to missing lock nesting notation
+
+[ 2198.017051] 3 locks held by irq/122-pciehp/121:
+[ 2198.017052]  #0: 000000000899e2eb (&ctrl->reset_lock){.+.+}, at: pciehp_=
+ist+0xaf/0x1c0
+[ 2198.017057]  #1: 0000000069e1fd47 (pci_rescan_remove_lock){+.+.}, at: pc=
+iehp_unconfigure_device+0x41/0x130
+[ 2198.017064]  #2: 0000000046a5bfbf (&dev->mutex){....}, at: device_releas=
+e_driver_internal+0x1c/0x1a0
+[ 2198.017071]=20
+               stack backtrace:
+[ 2198.017075] CPU: 3 PID: 121 Comm: irq/122-pciehp Not tainted 5.3.0-rc5+ =
+#75
+[ 2198.017077] Hardware name: Dell Inc. XPS 13 7300/, BIOS 0.1.16 08/06/201=
+9
+[ 2198.017079] Call Trace:
+[ 2198.017089]  dump_stack+0x5e/0x8b
+[ 2198.017096]  __lock_acquire+0x12fe/0x1520
+[ 2198.017102]  lock_acquire+0x9d/0x1a0
+[ 2198.017105]  ? pciehp_check_presence+0x1b/0x80
+[ 2198.017113]  ? pci_restore_standard_config+0x40/0x40
+[ 2198.017118]  down_read+0x3b/0x160
+[ 2198.017121]  ? pciehp_check_presence+0x1b/0x80
+[ 2198.017123]  pciehp_check_presence+0x1b/0x80
+[ 2198.017128]  ? quirk_disable_msi.part.29+0x31/0x31
+[ 2198.017131]  pciehp_resume+0x27/0x30
+[ 2198.017136]  device_for_each_child+0x47/0x90
+[ 2198.017140]  ? pci_restore_standard_config+0x40/0x40
+[ 2198.017145]  pcie_port_device_runtime_resume+0x30/0x50
+[ 2198.017150]  pci_pm_runtime_resume+0x6e/0xc0
+[ 2198.017156]  __rpm_callback+0xb0/0x110
+[ 2198.017161]  ? pci_restore_standard_config+0x40/0x40
+[ 2198.017165]  rpm_callback+0x1f/0x70
+[ 2198.017169]  ? pci_restore_standard_config+0x40/0x40
+[ 2198.017173]  rpm_resume+0x4fe/0x690
+[ 2198.017179]  ? irq_forced_thread_fn+0x70/0x70
+[ 2198.017183]  __pm_runtime_resume+0x47/0x80
+[ 2198.017187]  device_release_driver_internal+0x7c/0x1a0
+[ 2198.017191]  pci_stop_bus_device+0x5d/0x80
+[ 2198.017195]  pci_stop_bus_device+0x2b/0x80
+[ 2198.017198]  pci_stop_and_remove_bus_device+0xe/0x20
+[ 2198.017202]  pciehp_unconfigure_device+0x7c/0x130
+[ 2198.017206]  pciehp_disable_slot+0x69/0x120
+[ 2198.017211]  pciehp_handle_presence_or_link_change+0x7d/0x4b0
+[ 2198.017215]  pciehp_ist+0x12a/0x1c0
+[ 2198.017219]  irq_thread_fn+0x1b/0x60
+[ 2198.017222]  irq_thread+0x15b/0x1c0
+[ 2198.017226]  ? lockdep_hardirqs_on+0x115/0x180
+[ 2198.017229]  ? wake_threads_waitq+0x30/0x30
+[ 2198.017233]  ? irq_thread_dtor+0x90/0x90
+[ 2198.017237]  kthread+0x101/0x140
+[ 2198.017241]  ? kthread_cancel_delayed_work_sync+0x10/0x10
+[ 2198.017245]  ret_from_fork+0x24/0x30
+[ 2198.017897] xhci_hcd 0000:03:00.0: remove, state 1
+[ 2198.017917] usb usb6: USB disconnect, device number 1
+[ 2198.017925] usb 6-2: USB disconnect, device number 2
+[ 2198.017932] usb 6-2.3: USB disconnect, device number 3
+[ 2198.017939] usb 6-2.3.1: USB disconnect, device number 5
+[ 2198.019565] sd 0:0:0:0: [sda] Synchronizing SCSI cache
+[ 2198.019671] sd 0:0:0:0: [sda] Synchronize Cache(10) failed: Result: host=
+byte=3DDID_NO_CONNECT driverbyte=3DDRIVER_OK
+[ 2198.057200] xhci_hcd 0000:03:00.0: xHCI host controller not responding, =
+assume dead
+[ 2198.057227] r8152 6-2.4:1.0 enxd8d090034dcb: Stop submitting intr, statu=
+s -108
+[ 2198.057574] usb 6-2.4: USB disconnect, device number 4
+[ 2198.074541] xhci_hcd 0000:03:00.0: USB bus 6 deregistered
+[ 2198.074558] xhci_hcd 0000:03:00.0: remove, state 1
+[ 2198.074564] usb usb5: USB disconnect, device number 1
+[ 2198.074566] usb 5-2: USB disconnect, device number 2
+[ 2198.074569] usb 5-2.3: USB disconnect, device number 3
+[ 2198.074571] usb 5-2.3.4: USB disconnect, device number 5
+[ 2198.077367] usb 5-2.3.5: USB disconnect, device number 6
+[ 2198.078488] usb 5-2.5: USB disconnect, device number 4
+[ 2198.080340] xhci_hcd 0000:03:00.0: Host halt failed, -19
+[ 2198.080344] xhci_hcd 0000:03:00.0: Host not accessible, reset failed.
+[ 2198.080770] xhci_hcd 0000:03:00.0: USB bus 5 deregistered
+[ 2198.081153] pci 0000:03:00.0: Removing from iommu group 3
+[ 2198.081180] pci_bus 0000:03: busn_res: [bus 03] is released
+[ 2198.081287] pci 0000:02:02.0: Removing from iommu group 3
+[ 2198.081396] pci_bus 0000:04: busn_res: [bus 04-2d] is released
+[ 2198.081509] pci 0000:02:04.0: Removing from iommu group 3
+[ 2198.082273] pci_bus 0000:02: busn_res: [bus 02-2d] is released
+[ 2198.085759] pci 0000:01:00.0: Removing from iommu group 3
+[ 2198.630098] thunderbolt 0-1: device disconnected
+
+Additionally I've found after this I can't get the dock to work by hotplugg=
+ing again
+until I reboot the system.
 
