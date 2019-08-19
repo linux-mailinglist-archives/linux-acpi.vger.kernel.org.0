@@ -2,80 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF5E29221F
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2019 13:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E67DD92248
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2019 13:27:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727500AbfHSLWc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Aug 2019 07:22:32 -0400
-Received: from mga09.intel.com ([134.134.136.24]:16206 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727492AbfHSLWc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 19 Aug 2019 07:22:32 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Aug 2019 04:22:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,403,1559545200"; 
-   d="scan'208";a="353213692"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga005.jf.intel.com with ESMTP; 19 Aug 2019 04:22:28 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id 0AF4F32D; Mon, 19 Aug 2019 14:22:24 +0300 (EEST)
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-        Mario.Limonciello@dell.com,
-        Anthony Wong <anthony.wong@canonical.com>,
-        Rajmohan Mani <rajmohan.mani@intel.com>,
-        Raanan Avargil <raanan.avargil@intel.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH v3 8/8] ACPI / property: Add two new Thunderbolt property GUIDs to the list
-Date:   Mon, 19 Aug 2019 14:22:23 +0300
-Message-Id: <20190819112223.15359-9-mika.westerberg@linux.intel.com>
-X-Mailer: git-send-email 2.23.0.rc1
-In-Reply-To: <20190819112223.15359-1-mika.westerberg@linux.intel.com>
-References: <20190819112223.15359-1-mika.westerberg@linux.intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1727410AbfHSL07 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Aug 2019 07:26:59 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:39659 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727308AbfHSL07 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Aug 2019 07:26:59 -0400
+Received: by mail-pg1-f193.google.com with SMTP id u17so1053607pgi.6;
+        Mon, 19 Aug 2019 04:26:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=vRVye6B8XFgwGVUEF0GcA194DZPYgp0SHGUoR6zegFI=;
+        b=eoOeXs46jigQlSjUrPijc/oAUBkYCMh5h7wy7K5rCwFMCI6NX5c67Ftrq7DQTgNEYA
+         rhi6pWmJ5wOab8uC9xZ60knm73pwug1ubUJMCgbe7BdN4k1fXliPgHEnzR4mUFSkWLJD
+         NOmdvihYR1oLgfDoHKMYrzC3xG6cacVYOabtrv8imr9G2I0nK57rf0i3nh2WEr2/wTOn
+         sF5SSNdCz1QC0wihKUP46q7IailDx74HUxS6VDxAJp9SmWLSChgz73DEkX153UQyAeIa
+         fwRkZwhx/JOA4l0QMpZ4n7p018JBE6g9pJmPelQXbDKwAD/2U0eObhWrL7T1LNy9k1Vh
+         Mb4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=vRVye6B8XFgwGVUEF0GcA194DZPYgp0SHGUoR6zegFI=;
+        b=PHhZKsenuZ8VDfaRm4iwVLt+8Qn5qJF8ULrcYeSczlstt0ChQ+eQRh7nezoNZG1abm
+         Ty+8WaiUWmWkwWzCkHNe9QKlaaeka68N0Q+JVKBKfpuw88+1z3EvsZ8n3LM8gm7gYU1f
+         6nyuZv8CDwC4j8I3ASjvhMs3Q91KlQiIMFLSJCbI04pISYL6BkTEAQKZ6drGGetN9OE3
+         iqlUKeQjP/NL+WNZmjBlgcG7gxtQt+fsEaQucMZFz+nX/J03vrToXLHxaktF5TAd7i3s
+         JiJPm8+Tj2OkrgDIPKTs+a2p4/wgGVQnl1bleHCy9HVo01iX8znW5H0rFiZC7dF7wXif
+         9IoQ==
+X-Gm-Message-State: APjAAAV/noRaT2NJnyl9cfnPhJSqa7OtZQ59831L910ommbrKK6naZOm
+        yDPEll/sk1aXhOFJKap82cI=
+X-Google-Smtp-Source: APXvYqx0jyZSkUJc+ccc4cDOsChOkIyUbxMIWJOpwE3D6Rdphhg/hGR2Jsau1+7LWRECYdHdPsbsbA==
+X-Received: by 2002:a63:194f:: with SMTP id 15mr19939402pgz.382.1566214018788;
+        Mon, 19 Aug 2019 04:26:58 -0700 (PDT)
+Received: from localhost.localdomain ([58.173.144.54])
+        by smtp.googlemail.com with ESMTPSA id br18sm13826091pjb.20.2019.08.19.04.26.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Aug 2019 04:26:58 -0700 (PDT)
+From:   Ian W MORRISON <ianwmorrison@gmail.com>
+To:     benjamin.tissoires@redhat.com, hdegoede@redhat.com,
+        mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com,
+        linus.walleij@linaro.org, bgolaszewski@baylibre.com
+Cc:     linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Ian W MORRISON <ianwmorrison@gmail.com>
+Subject: [PATCH v2] Skip deferred request irqs for devices known to fail
+Date:   Mon, 19 Aug 2019 21:26:37 +1000
+Message-Id: <20190819112637.29943-1-ianwmorrison@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Ice Lake Thunderbolt controller includes two new device property
-compatible properties that we need to be able to extract in the driver
-so add them to the growing array of GUIDs.
+Patch ca876c7483b6 "gpiolib-acpi: make sure we trigger edge events at
+least once on boot" causes the MINIX family of mini PCs to fail to boot
+resulting in a "black screen". 
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+This patch excludes MINIX devices from executing this trigger in order
+to successfully boot.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ian W MORRISON <ianwmorrison@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/acpi/property.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpio/gpiolib-acpi.c | 33 +++++++++++++++++++++++++++------
+ 1 file changed, 27 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index ea3d700da3ca..e095334eaec9 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -39,6 +39,12 @@ static const guid_t prp_guids[] = {
- 	/* External facing port GUID: efcc06cc-73ac-4bc3-bff0-76143807c389 */
- 	GUID_INIT(0xefcc06cc, 0x73ac, 0x4bc3,
- 		  0xbf, 0xf0, 0x76, 0x14, 0x38, 0x07, 0xc3, 0x89),
-+	/* Thunderbolt GUID for IMR_VALID: c44d002f-69f9-4e7d-a904-a7baabdf43f7 */
-+	GUID_INIT(0xc44d002f, 0x69f9, 0x4e7d,
-+		  0xa9, 0x04, 0xa7, 0xba, 0xab, 0xdf, 0x43, 0xf7),
-+	/* Thunderbolt GUID for WAKE_SUPPORTED: 6c501103-c189-4296-ba72-9bf5a26ebe5d */
-+	GUID_INIT(0x6c501103, 0xc189, 0x4296,
-+		  0xba, 0x72, 0x9b, 0xf5, 0xa2, 0x6e, 0xbe, 0x5d),
- };
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index fdee8afa5339..f6c3dcdc91c9 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -13,6 +13,7 @@
+ #include <linux/gpio/machine.h>
+ #include <linux/export.h>
+ #include <linux/acpi.h>
++#include <linux/dmi.h>
+ #include <linux/interrupt.h>
+ #include <linux/mutex.h>
+ #include <linux/pinctrl/pinctrl.h>
+@@ -20,6 +21,17 @@
+ #include "gpiolib.h"
+ #include "gpiolib-acpi.h"
  
- /* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
++static const struct dmi_system_id skip_deferred_request_irqs_table[] = {
++	{
++		.ident = "MINIX Z83-4",
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "MINIX"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Z83-4"),
++		},
++	},
++	{}
++};
++
+ /**
+  * struct acpi_gpio_event - ACPI GPIO event handler data
+  *
+@@ -1273,19 +1285,28 @@ bool acpi_can_fallback_to_crs(struct acpi_device *adev, const char *con_id)
+ 	return con_id == NULL;
+ }
+ 
+-/* Run deferred acpi_gpiochip_request_irqs() */
++/*
++ * Run deferred acpi_gpiochip_request_irqs()
++ * but exclude devices known to fail
++*/
+ static int acpi_gpio_handle_deferred_request_irqs(void)
+ {
+ 	struct acpi_gpio_chip *acpi_gpio, *tmp;
++	const struct dmi_system_id *dmi_id;
+ 
+-	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
+-	list_for_each_entry_safe(acpi_gpio, tmp,
++	dmi_id = dmi_first_match(skip_deferred_request_irqs_table);
++	if (dmi_id)
++		return 0;
++	else {
++		mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
++		list_for_each_entry_safe(acpi_gpio, tmp,
+ 				 &acpi_gpio_deferred_req_irqs_list,
+ 				 deferred_req_irqs_list_entry)
+-		acpi_gpiochip_request_irqs(acpi_gpio);
++			acpi_gpiochip_request_irqs(acpi_gpio);
+ 
+-	acpi_gpio_deferred_req_irqs_done = true;
+-	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
++		acpi_gpio_deferred_req_irqs_done = true;
++		mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
++	}
+ 
+ 	return 0;
+ }
 -- 
-2.23.0.rc1
+2.17.1
 
