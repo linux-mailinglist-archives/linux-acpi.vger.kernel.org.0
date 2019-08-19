@@ -2,210 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 90FE094F38
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2019 22:41:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9EB294FD3
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2019 23:23:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728341AbfHSUlW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Aug 2019 16:41:22 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:37528 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728287AbfHSUlW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Aug 2019 16:41:22 -0400
-Received: by mail-ot1-f65.google.com with SMTP id f17so2959263otq.4;
-        Mon, 19 Aug 2019 13:41:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tJdZNnplVegzt+TgRTqlzFyXprTlOmI4DpqvsRrDvYQ=;
-        b=l2OPHveQ6xDKzBAh87FZInvkowDwOMrjr0yo+BfAB8s+5Sm2WKTzsSeENgsJd69Bw+
-         WDOLogrTzar2KNQUQ0ODhPa4+ntmPVIcDPLKK3jhkYv+2sJXhz9Uup8a2UARdEOvPp39
-         dFSmNGfGK5wBldtdlU8rEOSit3ZqKmULI8C2eMui2C893zYePtNZKqJMuwJ7b6yGHhzG
-         sqBQj0L49eqojX2INr75MevpfZ+GS8ed4RSbRdaOrzhhkyRh5qK6tqEJ6uurDM1vV7k0
-         ndP8U0DvVNzrspdgvxEvW1EOoaeWL/fJoJ1J2z0tGNr2hX8GNc5N/APXkr4wXaGSMOa1
-         TErw==
-X-Gm-Message-State: APjAAAUlHSO+ozOm3C2iXE7K4eBbU1JrFuf+wBB700EVzFQo9mIeeMoD
-        KGhhmXnJh5VgeWGtADt/SwA88Rn4TmSaa9NoUlE=
-X-Google-Smtp-Source: APXvYqzlNkB2CXycQGwvCMQTD54KCcW0ivmSeyzaOsS0aBHWF90MFmq7Ki0D6IHaZGSMEW6akYBiWbNUuTYhsOCQsBE=
-X-Received: by 2002:a9d:65ca:: with SMTP id z10mr18716347oth.167.1566247280754;
- Mon, 19 Aug 2019 13:41:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <5997740.FPbUVk04hV@kreacher> <800186a2-e912-3498-f08b-47469bbe8b0d@klausen.dk>
- <CAJZ5v0hfMS6aJP9G=dhZZ+3WTzM8=DzQkdJ7s9W3m5m9Dat5=g@mail.gmail.com>
- <1585707.yWhsc4YUgi@kreacher> <6bf51526-edf3-6698-b251-ef0c94b766fc@klausen.dk>
-In-Reply-To: <6bf51526-edf3-6698-b251-ef0c94b766fc@klausen.dk>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 19 Aug 2019 22:41:09 +0200
-Message-ID: <CAJZ5v0gw1Dw8FUgKmkeq5TCa=OqvFUVTq6aHgFw-D9O4YiiCKw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/8] PM / ACPI: sleep: Additional changes related to suspend-to-idle
-To:     Kristian Klausen <kristian@klausen.dk>
+        id S1728500AbfHSVXU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Aug 2019 17:23:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49238 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728018AbfHSVXU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 19 Aug 2019 17:23:20 -0400
+Received: from localhost (unknown [69.71.4.100])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F2C9922CE8;
+        Mon, 19 Aug 2019 21:23:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1566249799;
+        bh=3Wg6NFHKKpBSbK1JQfpV0Z+KzBTBs501plCy+K3XQBA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QFM/RQBD3NheayW2hoVztJW9PKN5YydTgSEs0J4apIjMwxmAFdhpMSDDx84SYHHeN
+         LCAEWiDHsWe8huixtSjEhqxlohwG5CiqRnmRJ4DCCf2iIzXYkytT6UhlSOlfuQ4ioH
+         6n84pUKllbGMl0XFxx5cXRd8T4j2FsRxFMuBlQ3M=
+Date:   Mon, 19 Aug 2019 16:23:17 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Wenwen Wang <wenwen@cs.uga.edu>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Rajneesh Bhardwaj <rajneesh.bhardwaj@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
+        Len Brown <lenb@kernel.org>,
+        "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ACPI / PCI: fix a memory leak bug
+Message-ID: <20190819212317.GU253360@google.com>
+References: <1565930002-5524-1-git-send-email-wenwen@cs.uga.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1565930002-5524-1-git-send-email-wenwen@cs.uga.edu>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 19, 2019 at 5:47 PM Kristian Klausen <kristian@klausen.dk> wrote:
->
-> On 19.08.2019 11.05, Rafael J. Wysocki wrote:
-> > On Monday, August 19, 2019 9:59:02 AM CEST Rafael J. Wysocki wrote:
-> >> On Fri, Aug 16, 2019 at 10:26 PM Kristian Klausen <kristian@klausen.dk> wrote:
-> >>> On 02.08.2019 12.33, Rafael J. Wysocki wrote:
-> >>>> Hi All,
-> >>>>
-> >>>>>> On top of the "Simplify the suspend-to-idle control flow" patch series
-> >>>>>> posted previously:
-> >>>>>>
-> >>>>>> https://lore.kernel.org/lkml/71085220.z6FKkvYQPX@kreacher/
-> >>>>>>
-> >>>>>> sanitize the suspend-to-idle flow even further.
-> >>>>>>
-> >>>>>> First off, decouple EC wakeup from the LPS0 _DSM processing (patch 1).
-> >>>>>>
-> >>>>>> Next, reorder the code to invoke LPS0 _DSM Functions 5 and 6 in the
-> >>>>>> specification-compliant order with respect to suspending and resuming
-> >>>>>> devices (patch 2).
-> >>>>>>
-> >>>>>> Finally, rearrange lps0_device_attach() (patch 3) and add a command line
-> >>>>>> switch to prevent the LPS0 _DSM from being used.
-> >>>>> The v2 is because I found a (minor) bug in patch 1, decided to use a module
-> >>>>> parameter instead of a kernel command line option in patch 4.  Also, there
-> >>>>> are 4 new patches:
-> >>>>>
-> >>>>> Patch 5: Switch the EC over to polling during "noirq" suspend and back
-> >>>>> during "noirq" resume.
-> >>>>>
-> >>>>> Patch 6: Eliminate acpi_sleep_no_ec_events().
-> >>>>>
-> >>>>> Patch 7: Consolidate some EC code depending on PM_SLEEP.
-> >>>>>
-> >>>>> Patch 8: Add EC GPE dispatching debug message.
-> >>>> The v3 is just a rearranged v2 so as to move the post sensitive patch (previous patch 2)
-> >>>> to the end of the series.   [After applying the full series the code is the same as before.]
-> >>>>
-> >>>> For easier testing, the series (along with some previous patches depended on by it)
-> >>>> is available in the pm-s2idle-testing branch of the linux-pm.git tree at kernel.org:
-> >>>>
-> >>>> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/log/?h=pm-s2idle-testing
-> >>> It was just testing this patch series(461fc1caed55), to see if it would
-> >>> fix my charging issue
-> >>> (https://bugzilla.kernel.org/show_bug.cgi?id=201307), which it didn't.
-> >> It is unlikely to help in that case.
-> Do you have any idea what the issue could be?
+The subject line should give a clue about where the leak is, e.g.,
 
-Basically, there are two possibilities: either the OS is expected to
-handle the AC/battery switching events, or the platform firmware
-should take care of them.  In the former case, the EC should generate
-events to be handled by the OS and in the latter one there needs to be
-a way to let the platform firmware that it needs to take care of those
-events going forward.
+  ACPI / PCI: fix acpi_pci_irq_enable() memory leak
 
-In either case there may be a platform-specific action to be carried
-out during suspend and resume to set this up as expected which may be
-missing.
+On Thu, Aug 15, 2019 at 11:33:22PM -0500, Wenwen Wang wrote:
+> In acpi_pci_irq_enable(), 'entry' is allocated by invoking
+> acpi_pci_irq_lookup(). However, it is not deallocated if
+> acpi_pci_irq_valid() returns false, leading to a memory leak. To fix this
+> issue, free 'entry' before returning 0.
 
-> >>
-> >>> I did however notice that my laptop (ASUS Zenbook UX430UNR/i7-8550U)
-> >>> won't wake when opening the lid or pressing a key, the only way to wake
-> >>> the laptop is pressing the power button.
-> >>>
-> >>> I also tested mainline (5.3.0-rc4 b7e7c85dc7b0) and 5.2.8 and the laptop
-> >>> wakes without issue when the lid is opened or a key is presed.
-> >>>> Please refer to the changelogs for details.
-> >> Thanks for your report.
-> >>
-> >> I seem to see a similar issue with respect to the lid on one of my
-> >> test machines, looking into it right now.
-> > Well, my lid issue seems to be unrelated as it doesn't result from any patches in the
-> > series in question.
-> >
-> > First off, please clone 5.3-rc5 from kernel.org and double check if the issue is not
-> > present in that one.
-> >
-> > If that's not the case, merge the pm-s2idle-rework branch from my tree on top of it
-> > and retest.
-> >
-> > If you still see the issue then, apply the appended patch (on top of the pm-s2idle-reqork
-> > branch ) and, after starting the kernel, do
-> >
-> > # echo 1 > /sys/power/pm_debug_messages
-> >
-> > suspend the system and try to wake it up through all of the ways that stopped working.
-> >
-> > Then, wake it up with the power button, save the output of dmesg and send it to me.
-> >
-> > Thanks!
->
-> With 5.3-rc5 the laptops wakes up without any issue when pressing a key
-> or opening the lid.
-> With v5.3-rc5+pm-s2idle-testing I can only wake the laptop by pressing
-> the power button.
+I think the corresponding kzalloc() is the one in
+acpi_pci_irq_check_entry().
 
-OK, thanks for verifying.
+> Signed-off-by: Wenwen Wang <wenwen@cs.uga.edu>
+> ---
+>  drivers/acpi/pci_irq.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
+> index d2549ae..dea8a60 100644
+> --- a/drivers/acpi/pci_irq.c
+> +++ b/drivers/acpi/pci_irq.c
+> @@ -449,8 +449,10 @@ int acpi_pci_irq_enable(struct pci_dev *dev)
+>  		 * No IRQ known to the ACPI subsystem - maybe the BIOS /
+>  		 * driver reported one, then use it. Exit in any case.
+>  		 */
+> -		if (!acpi_pci_irq_valid(dev, pin))
+> +		if (!acpi_pci_irq_valid(dev, pin)) {
+> +			kfree(entry);
+>  			return 0;
+> +		}
 
-So it is unclear to me how the series can cause an issue like that to appear.
+Looks like we missed this when e237a5518425 ("x86/ACPI/PCI: Recognize
+that Interrupt Line 255 means "not connected"") was merged.
 
-> dmesg with pm_debug_messages=1 and your patch:
-> [   55.646109] PM: suspend entry (s2idle)
-> [   55.698559] Filesystems sync: 0.052 seconds
-> [   55.698561] PM: Preparing system for sleep (s2idle)
-> [   55.700661] Freezing user space processes ... (elapsed 0.210 seconds)
-> done.
-> [   55.911494] OOM killer disabled.
-> [   55.911495] Freezing remaining freezable tasks ... (elapsed 0.001
-> seconds) done.
-> [   55.913192] PM: Suspending system (s2idle)
-> [   55.913195] printk: Suspending console(s) (use no_console_suspend to
-> debug)
-> [   55.914778] [drm] CT: disabled
-> [   55.916057] wlan0: deauthenticating from 64:70:02:a5:fd:02 by local
-> choice (Reason: 3=DEAUTH_LEAVING)
-> [   56.045634] sd 2:0:0:0: [sda] Synchronizing SCSI cache
-> [   56.046650] sd 2:0:0:0: [sda] Stopping disk
-> [   56.287622] PM: suspend of devices complete after 371.285 msecs
-> [   56.287627] PM: start suspend of devices complete after 373.684 msecs
-> [   56.307155] PM: late suspend of devices complete after 19.477 msecs
-> [   56.312479] ACPI: EC: interrupt blocked
-> [   56.352761] PM: noirq suspend of devices complete after 45.205 msecs
-> [   56.352770] ACPI: \_PR_.PR00: LPI: Device not power manageable
-> [   56.352774] ACPI: \_PR_.PR01: LPI: Device not power manageable
-> [   56.352776] ACPI: \_PR_.PR02: LPI: Device not power manageable
-> [   56.352779] ACPI: \_PR_.PR03: LPI: Device not power manageable
-> [   56.352782] ACPI: \_PR_.PR04: LPI: Device not power manageable
-> [   56.352785] ACPI: \_PR_.PR05: LPI: Device not power manageable
-> [   56.352788] ACPI: \_PR_.PR06: LPI: Device not power manageable
-> [   56.352790] ACPI: \_PR_.PR07: LPI: Device not power manageable
-> [   56.352793] ACPI: \_SB_.PCI0.GFX0: LPI: Device not power manageable
-> [   56.352800] ACPI: \_SB_.PCI0.RP06.PXSX: LPI: Device not power manageable
-> [   56.357057] PM: suspend-to-idle
-> [   69.338656] PM: Timekeeping suspended for 12.178 seconds
-> [   69.338701] PM: irq_pm_check_wakeup: IRQ 9
-> [   69.338704] PM: IRQ wakeup: IRQ 9
+You could add:
 
-This clearly is the power button event causing the system to wake up.
-The other actions, whatever they were, didn't cause any interrupts to
-be triggered.
+Fixes: e237a5518425 ("x86/ACPI/PCI: Recognize that Interrupt Line 255 means "not connected"")
 
-I suspect that the issue is related to the EC, so please try to revert commit
-
-fcd0a04267ac ACPI: PM: s2idle: Switch EC over to polling during "noirq" suspend
-
-and see if that makes any difference (should revert cleanly).
-
-If that doesn't make any difference, please also try to revert commits
-(on top of the above revert)
-
-11f26633cccb PM: suspend: Fix platform_suspend_prepare_noirq()
-ac9eafbe930a ACPI: PM: s2idle: Execute LPS0 _DSM functions with
-suspended devices
-
-(in this order) and retest.
+>  		if (acpi_isa_register_gsi(dev))
+>  			dev_warn(&dev->dev, "PCI INT %c: no GSI\n",
+> -- 
+> 2.7.4
+> 
