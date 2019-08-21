@@ -2,301 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CE629812A
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Aug 2019 19:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29890987F0
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Aug 2019 01:38:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728490AbfHURXx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Aug 2019 13:23:53 -0400
-Received: from foss.arm.com ([217.140.110.172]:33894 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727037AbfHURXx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 21 Aug 2019 13:23:53 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8C72A344;
-        Wed, 21 Aug 2019 10:23:52 -0700 (PDT)
-Received: from [10.1.196.105] (eglon.cambridge.arm.com [10.1.196.105])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1C2863F718;
-        Wed, 21 Aug 2019 10:23:51 -0700 (PDT)
-Subject: Re: [PATCH RFC 1/4] ACPI: APEI: Add support to notify the vendor
- specific HW errors
-To:     Shiju Jose <shiju.jose@huawei.com>
-Cc:     linux-acpi@vger.kernel.org, linux-edac@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rjw@rjwysocki.net, lenb@kernel.org,
-        tony.luck@intel.com, bp@alien8.de, baicar@os.amperecomputing.com,
-        linuxarm@huawei.com, jonathan.cameron@huawei.com,
-        tanxiaofei@huawei.com
-References: <Shiju Jose> <20190812101149.26036-1-shiju.jose@huawei.com>
- <20190812101149.26036-2-shiju.jose@huawei.com>
-From:   James Morse <james.morse@arm.com>
-Message-ID: <12a7f2f7-3a81-b0c3-fb8e-96db0cd626c5@arm.com>
-Date:   Wed, 21 Aug 2019 18:23:49 +0100
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        id S1729132AbfHUXfM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Aug 2019 19:35:12 -0400
+Received: from mx0b-00154904.pphosted.com ([148.163.137.20]:57510 "EHLO
+        mx0b-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727401AbfHUXfL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 21 Aug 2019 19:35:11 -0400
+Received: from pps.filterd (m0170398.ppops.net [127.0.0.1])
+        by mx0b-00154904.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7LNZ4aP025860;
+        Wed, 21 Aug 2019 19:35:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dellteam.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=smtpout1;
+ bh=q4aCXQK8l7fOP39/+RDgOcLee9mLAu3DsxxDmf9VKE0=;
+ b=t5aQ4g8wAunVH5pWWy2Nv/K1+dP82rMeRNowXAt4iQDrzVnWEj9cmRJB8Em4QoVKEog6
+ KUQQgQyEACgPMUNtA7ie9soGruCZJwjuQwroa+cPQ1RKg0v2OXYcm9yCvm8x0ygWaKQy
+ vxk2/R8iKUaF9QjbUmHkdxJfQUBK731uegeJMr5Uuq6c0EI+tetO9GL0buQtGQfpcDG8
+ axba1sZFp5RKhVZnmkFNoL0FlyxNeArV+adkIJ2VLlOVo82jqJvfH6o+1sRZ7JzMZGw9
+ QrNkoSfXjO6C1mSw1B3sJYN6nw5B79hmApJNTv6BspWsDIls1gseLQbGM6wxxZUJAeIF 1A== 
+Received: from mx0b-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
+        by mx0b-00154904.pphosted.com with ESMTP id 2ugn6kq2se-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 21 Aug 2019 19:35:09 -0400
+Received: from pps.filterd (m0090350.ppops.net [127.0.0.1])
+        by mx0b-00154901.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7LNYhLx078661;
+        Wed, 21 Aug 2019 19:35:08 -0400
+Received: from ausxipps306.us.dell.com (AUSXIPPS306.us.dell.com [143.166.148.156])
+        by mx0b-00154901.pphosted.com with ESMTP id 2uh9vbmx1t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 21 Aug 2019 19:35:08 -0400
+X-LoopCount0: from 10.166.132.134
+X-PREM-Routing: D-Outbound
+X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
+   d="scan'208";a="363526694"
+From:   <Charles.Hyde@dellteam.com>
+To:     <gregkh@linuxfoundation.org>
+CC:     <linux-usb@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <Mario.Limonciello@dell.com>, <oliver@neukum.org>,
+        <netdev@vger.kernel.org>, <nic_swsd@realtek.com>
+Subject: Re: [RFC 1/4] Add usb_get_address and usb_set_address support
+Thread-Topic: [RFC 1/4] Add usb_get_address and usb_set_address support
+Thread-Index: AQHVV6TlN6JhPmp8+EufEIlfFi8+LKcE8QcAgAFHO1A=
+Date:   Wed, 21 Aug 2019 23:35:06 +0000
+Message-ID: <1566430506442.20925@Dellteam.com>
+References: <1566339522507.45056@Dellteam.com>,<20190820222602.GC8120@kroah.com>
+In-Reply-To: <20190820222602.GC8120@kroah.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.177.90.69]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <20190812101149.26036-2-shiju.jose@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-21_08:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=747 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908210231
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=847 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908210232
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 12/08/2019 11:11, Shiju Jose wrote:
-> Presently the vendor specific HW errors, in the non-standard format,
-> are not reported to the vendor drivers for the recovery.
-> 
-> This patch adds support to notify the vendor specific HW errors to the
-> registered kernel drivers.
-
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index a66e00f..374d197 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -477,6 +477,77 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
->  #endif
->  }
->  
-> +struct ghes_error_notify {
-> +	struct list_head list;> +	struct rcu_head	rcu_head;
-> +	guid_t sec_type; /* guid of the error record */
-
-> +	error_handle handle; /* error handler function */
-
-ghes_error_handler_t error_handler; ?
-
-
-> +	void *data; /* handler driver's private data if any */
-> +};
-> +
-> +/* List to store the registered error handling functions */
-> +static DEFINE_MUTEX(ghes_error_notify_mutex);
-> +static LIST_HEAD(ghes_error_notify_list);
-
-> +static refcount_t ghes_ref_count;
-
-I don't think this refcount is needed.
-
-
-> +/**
-> + * ghes_error_notify_register - register an error handling function
-> + * for the hw errors.
-> + * @sec_type: sec_type of the corresponding CPER to be notified.
-> + * @handle: pointer to the error handling function.
-> + * @data: handler driver's private data.
-> + *
-> + * return 0 : SUCCESS, non-zero : FAIL
-> + */
-> +int ghes_error_notify_register(guid_t sec_type, error_handle handle, void *data)
-> +{
-> +	struct ghes_error_notify *err_notify;
-> +
-> +	mutex_lock(&ghes_error_notify_mutex);
-> +	err_notify = kzalloc(sizeof(*err_notify), GFP_KERNEL);
-> +	if (!err_notify)
-> +		return -ENOMEM;
-
-Leaving the mutex locked.
-You may as well allocate the memory before taking the lock.
-
-
-> +
-> +	err_notify->handle = handle;
-> +	guid_copy(&err_notify->sec_type, &sec_type);
-> +	err_notify->data = data;
-> +	list_add_rcu(&err_notify->list, &ghes_error_notify_list);
-> +	mutex_unlock(&ghes_error_notify_mutex);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(ghes_error_notify_register);
-
-Could we leave exporting this to modules until there is a user?
-
-
-> +/**
-> + * ghes_error_notify_unregister - unregister an error handling function.
-> + * @sec_type: sec_type of the corresponding CPER.
-> + * @handle: pointer to the error handling function.
-> + *
-> + * return none.
-> + */
-> +void ghes_error_notify_unregister(guid_t sec_type, error_handle handle)
-
-Why do we need the handle(r) a second time? Surely there can only be one callback for a
-given guid.
-
-
-> +{
-> +	struct ghes_error_notify *err_notify;
-> +	bool found = 0;
-> +
-> +	mutex_lock(&ghes_error_notify_mutex);
-> +	rcu_read_lock();
-> +	list_for_each_entry_rcu(err_notify, &ghes_error_notify_list, list) {
-> +		if (guid_equal(&err_notify->sec_type, &sec_type) &&
-> +		    err_notify->handle == handle) {
-> +			list_del_rcu(&err_notify->list);
-> +			found = 1;
-> +			break;
-> +		}
-> +	}
-> +	rcu_read_unlock();
-
-> +	synchronize_rcu();
-
-Is this for the kfree()? Please keep them together so its obvious what its for.
-Putting it outside the mutex will also save any contended waiter some time.
-
-
-> +	mutex_unlock(&ghes_error_notify_mutex);
-> +	if (found)
-> +		kfree(err_notify);
-> +}
-> +EXPORT_SYMBOL_GPL(ghes_error_notify_unregister);
-> +
-
->  static void ghes_do_proc(struct ghes *ghes,
->  			 const struct acpi_hest_generic_status *estatus)
->  {> @@ -512,11 +585,29 @@ static void ghes_do_proc(struct ghes *ghes,
->  
->  			log_arm_hw_error(err);
->  		} else {
-> -			void *err = acpi_hest_get_payload(gdata);
-> -
-> -			log_non_standard_event(sec_type, fru_id, fru_text,
-> -					       sec_sev, err,
-> -					       gdata->error_data_length);
-
-> +			rcu_read_lock();
-> +			list_for_each_entry_rcu(err_notify,
-> +						&ghes_error_notify_list, list) {
-> +				if (guid_equal(&err_notify->sec_type,
-> +					       sec_type)) {
-
-> +					/* The notification is called in the
-> +					 * interrupt context, thus the handler
-> +					 * functions should be take care of it.
-> +					 */
-
-I read this as "the handler will be called", which doesn't seem to be a useful comment.
-
-
-> +					err_notify->handle(gdata, sev,
-> +							   err_notify->data);
-> +					is_notify = 1;
-
-					break;
-
-> +				}
-> +			}
-> +			rcu_read_unlock();
-
-> +			if (!is_notify) {
-
-if (!found) Seems more natural.
-
-
-> +				void *err = acpi_hest_get_payload(gdata);
-> +
-> +				log_non_standard_event(sec_type, fru_id,
-> +						       fru_text, sec_sev, err,
-> +						       gdata->error_data_length);
-> +			}
-
-This is tricky to read as its so bunched up. Please pull it out into a separate function.
-ghes_handle_non_standard_event() ?
-
-
-Because you skip log_non_standard_event(), rasdaemon will no longer see these in
-user-space. For any kernel consumer of these, we need to know we aren't breaking the
-user-space component.
-
-
->  		}
->  	}
->  }
-> @@ -1217,6 +1308,11 @@ static int ghes_probe(struct platform_device *ghes_dev)
->  
->  	ghes_edac_register(ghes, &ghes_dev->dev);
->  
-> +	if (!refcount_read(&ghes_ref_count))
-> +		refcount_set(&ghes_ref_count, 1);
-
-What stops this from racing with itself if two ghes platform devices are probed at the
-same time?
-
-If the refcount needs initialising, please do it in ghes_init()....
-
-> +	else
-> +		refcount_inc(&ghes_ref_count);
-
-.. but I don't think this refcount is needed.
-
-
->  	/* Handle any pending errors right away */
->  	spin_lock_irqsave(&ghes_notify_lock_irq, flags);
->  	ghes_proc(ghes);
-
-> @@ -1279,6 +1376,17 @@ static int ghes_remove(struct platform_device *ghes_dev)
->  
->  	ghes_fini(ghes);
->  
-> +	if (refcount_dec_and_test(&ghes_ref_count) &&
-> +	    !list_empty(&ghes_error_notify_list)) {
-> +		mutex_lock(&ghes_error_notify_mutex);> +		list_for_each_entry_safe(err_notify, tmp,
-> +					 &ghes_error_notify_list, list) {
-> +			list_del_rcu(&err_notify->list);
-> +			kfree_rcu(err_notify, rcu_head);
-> +		}
-> +		mutex_unlock(&ghes_error_notify_mutex);
-> +	}
-
-... If someone unregisters, and re-registers all the GHES platform devices, the last one
-out flushes the vendor-specific error handlers away. Then we re-probe the devices again,
-but this time the vendor-specific error handlers don't work.
-
-As you have an add/remove API for drivers, its up to drivers to cleanup when they are
-removed. The comings and goings of GHES platform devices isn't relevant.
-
-
->  	ghes_edac_unregister(ghes);
->  
->  	kfree(ghes);
-> diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-> index e3f1cdd..d480537 100644
-> --- a/include/acpi/ghes.h
-> +++ b/include/acpi/ghes.h
-> @@ -50,6 +50,53 @@ enum {
->  	GHES_SEV_PANIC = 0x3,
->  };
->  
-> +/**
-> + * error_handle - error handling function for the hw errors.
-
-Fatal errors get dealt with earlier, so drivers will never see them.
-| error handling function for non-fatal hardware errors.
-
-
-> + * This handle function is called in the interrupt context.
-
-As this overrides ghes's logging of the error, we should mention:
-| The handler is responsible for any logging of the error.
-
-
-> + * @gdata: acpi_hest_generic_data.
-> + * @sev: error severity of the entire error event defined in the
-> + * ACPI spec table generic error status block.
-> + * @data: handler driver's private data.
-> + *
-> + * return : none.
-> + */
-> +typedef void (*error_handle)(struct acpi_hest_generic_data *gdata, int sev,
-> +			     void *data);
-
-
-Thanks,
-
-James
+<snipped>=0A=
+>=0A=
+> This is a VERY cdc-net-specific function.  It is not a "generic" USB=0A=
+> function at all.  Why does it belong in the USB core?  Shouldn't it live=
+=0A=
+> in the code that handles the other cdc-net-specific logic?=0A=
+>=0A=
+> thanks,=0A=
+>=0A=
+> greg k-h=0A=
+=0A=
+=0A=
+Thank you for this feedback, Greg.  I was not sure about adding this to mes=
+sage.c, because of the USB_CDC_GET_NET_ADDRESS.  I had found references to =
+SET_ADDRESS in the USB protocol at https://wiki.osdev.org/Universal_Serial_=
+Bus#USB_Protocol.  If one wanted a generic USB function for SET_ADDRESS, to=
+ be used for both sending a MAC address and receiving one, how would you su=
+ggest this be implemented?  This is a legit question because I am curious.=
+=0A=
+=0A=
+Your feedback led to moving the functionality into cdc_ncm.c for today's te=
+sting, and removing all changes from messages.c, usb.h, usbnet.c, and usbne=
+t.h.  This may be where I end up long term, but I would like to learn if th=
+ere is a possible solution that could live in message.c and be callable fro=
+m other USB-to-Ethernet aware drivers.=0A=
+=0A=
+Thank you again,=0A=
+Charles Hyde=0A=
+=0A=
