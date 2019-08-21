@@ -2,171 +2,164 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 238789764F
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Aug 2019 11:40:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C36C97670
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Aug 2019 11:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727409AbfHUJkX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Aug 2019 05:40:23 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:57281 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727367AbfHUJkX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Aug 2019 05:40:23 -0400
-Received: from 79.184.254.79.ipv4.supernova.orange.pl (79.184.254.79) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.275)
- id 0cb5c8d852e9250f; Wed, 21 Aug 2019 11:40:19 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kristian Klausen <kristian@klausen.dk>,
-        platform-driver-x86@vger.kernel.org
-Subject: [PATCH v2] ACPI: PM: s2idle: Always set up EC GPE for system wakeup
-Date:   Wed, 21 Aug 2019 11:40:19 +0200
-Message-ID: <1717512.f1h81AZNnc@kreacher>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+        id S1727485AbfHUJyV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Aug 2019 05:54:21 -0400
+Received: from mx2.suse.de ([195.135.220.15]:44022 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725268AbfHUJyV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 21 Aug 2019 05:54:21 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 192C4ADBB;
+        Wed, 21 Aug 2019 09:54:19 +0000 (UTC)
+Message-ID: <1566380375.8347.11.camel@suse.com>
+Subject: Re: [RFC 2/4] Allow cdc_ncm to set MAC address in hardware
+From:   Oliver Neukum <oneukum@suse.com>
+To:     Charles.Hyde@dellteam.com, linux-acpi@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Cc:     Mario.Limonciello@dell.com, gregkh@linuxfoundation.org,
+        nic_swsd@realtek.com, netdev@vger.kernel.org
+Date:   Wed, 21 Aug 2019 11:39:35 +0200
+In-Reply-To: <1566339663476.54366@Dellteam.com>
+References: <1566339663476.54366@Dellteam.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Am Dienstag, den 20.08.2019, 22:21 +0000 schrieb
+Charles.Hyde@dellteam.com:
+> This patch adds support for pushing a MAC address out to USB based
+> ethernet controllers driven by cdc_ncm.  With this change, ifconfig can
+> now set the device's MAC address.  For example, the Dell Universal Dock
+> D6000 is driven by cdc_ncm.  The D6000 can now have its MAC address set
+> by ifconfig, as it can be done in Windows.  This was tested with a D6000
+> using ifconfig.
 
-Commit 10a08fd65ec1 ("ACPI: PM: Set up EC GPE for system wakeup from
-drivers that need it") assumed that the EC GPE would only need to be
-set up for system wakeup if either the intel-hid or the intel-vbtn
-driver was in use, but that turns out to be incorrect.  In particular,
-on ASUS Zenbook UX430UNR/i7-8550U, if the EC GPE is not enabled while
-suspended, the system cannot be woken up by opening the lid or
-pressing a key, and that machine doesn't use any of the drivers
-mentioned above.
+On a design note, it looks like you broke S4 with the driver.
+Suspend To Disk will cut power and hence reset the MAC to default.
+You need to reset it to the user's setting in reset_resume().
+Please add that to usbnet.
 
-For this reason, always set up the EC GPE for system wakeup from
-suspend-to-idle by setting and clearing its wake mask in the ACPI
-suspend-to-idle callbacks.
+> 
+> Signed-off-by: Charles Hyde <charles.hyde@dellteam.com>
+> Cc: Mario Limonciello <mario.limonciello@dell.com>
+> Cc: Oliver Neukum <oliver@neukum.org>
+> Cc: netdev@vger.kernel.org
+> Cc: linux-usb@vger.kernel.org
+> ---
+>  drivers/net/usb/cdc_ncm.c  | 20 +++++++++++++++++++-
+>  drivers/net/usb/usbnet.c   | 37 ++++++++++++++++++++++++++++---------
+>  include/linux/usb/usbnet.h |  1 +
+>  3 files changed, 48 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+> index 50c05d0f44cb..f77c8672f972 100644
+> --- a/drivers/net/usb/cdc_ncm.c
+> +++ b/drivers/net/usb/cdc_ncm.c
+> @@ -750,6 +750,24 @@ int cdc_ncm_change_mtu(struct net_device *net, int new_mtu)
+>  }
+>  EXPORT_SYMBOL_GPL(cdc_ncm_change_mtu);
+>  
+> +/* Provide method to push MAC address to the USB device's ethernet controller.
+> + */
+> +int cdc_ncm_set_mac_addr(struct net_device *net, void *p)
+> +{
+> +	struct usbnet *dev = netdev_priv(net);
+> +	struct sockaddr *addr = p;
+> +
+> +	memcpy(dev->net->dev_addr, addr->sa_data, ETH_ALEN);
+> +	/*
+> +	 * Try to push the MAC address out to the device.  Ignore any errors,
+> +	 * to be compatible with prior versions of this source.
+> +	 */
+> +	usbnet_set_ethernet_addr(dev);
+> +
+> +	return eth_mac_addr(net, p);
+> +}
+> +EXPORT_SYMBOL_GPL(cdc_ncm_set_mac_addr);
+> +
+>  static const struct net_device_ops cdc_ncm_netdev_ops = {
+>  	.ndo_open	     = usbnet_open,
+>  	.ndo_stop	     = usbnet_stop,
+> @@ -757,7 +775,7 @@ static const struct net_device_ops cdc_ncm_netdev_ops = {
+>  	.ndo_tx_timeout	     = usbnet_tx_timeout,
+>  	.ndo_get_stats64     = usbnet_get_stats64,
+>  	.ndo_change_mtu	     = cdc_ncm_change_mtu,
+> -	.ndo_set_mac_address = eth_mac_addr,
+> +	.ndo_set_mac_address = cdc_ncm_set_mac_addr,
 
-Fixes: 10a08fd65ec1 ("ACPI: PM: Set up EC GPE for system wakeup from drivers that need it")
-Reported-by: Kristian Klausen <kristian@klausen.dk>
-Tested-by: Kristian Klausen <kristian@klausen.dk>
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
+Why can't this fully go into usbnet?
 
--> v2:
-  * Drop redundant wakeup_mode checks from the intel-* drivers (Andy).
-  * Add the Andy;'s ACK.
+>  	.ndo_validate_addr   = eth_validate_addr,
+>  };
+>  
+> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+> index 72514c46b478..72bdac34b0ee 100644
+> --- a/drivers/net/usb/usbnet.c
+> +++ b/drivers/net/usb/usbnet.c
+> @@ -149,20 +149,39 @@ int usbnet_get_ethernet_addr(struct usbnet *dev, int iMACAddress)
+>  	int 		tmp = -1, ret;
+>  	unsigned char	buf [13];
+>  
+> -	ret = usb_string(dev->udev, iMACAddress, buf, sizeof buf);
+> -	if (ret == 12)
+> -		tmp = hex2bin(dev->net->dev_addr, buf, 6);
+> -	if (tmp < 0) {
+> -		dev_dbg(&dev->udev->dev,
+> -			"bad MAC string %d fetch, %d\n", iMACAddress, tmp);
+> -		if (ret >= 0)
+> -			ret = -EINVAL;
+> -		return ret;
+> +	ret = usb_get_address(dev->udev, buf);
+> +	if (ret == 6)
 
----
- drivers/acpi/ec.c                 |    1 -
- drivers/acpi/sleep.c              |   15 +++++++++++++--
- drivers/platform/x86/intel-hid.c  |    6 +-----
- drivers/platform/x86/intel-vbtn.c |    6 +-----
- 4 files changed, 15 insertions(+), 13 deletions(-)
+If you mean ETH_ALEN, you should use it.
 
-Index: linux-pm/drivers/acpi/sleep.c
-===================================================================
---- linux-pm.orig/drivers/acpi/sleep.c
-+++ linux-pm/drivers/acpi/sleep.c
-@@ -938,6 +938,13 @@ static int lps0_device_attach(struct acp
- 	if (mem_sleep_default > PM_SUSPEND_MEM && !acpi_sleep_default_s3)
- 		mem_sleep_current = PM_SUSPEND_TO_IDLE;
- 
-+	/*
-+	 * Some LPS0 systems, like ASUS Zenbook UX430UNR/i7-8550U, require the
-+	 * EC GPE to be enabled while suspended for certain wakeup devices to
-+	 * work, so mark it as wakeup-capable.
-+	 */
-+	acpi_ec_mark_gpe_for_wake();
-+
- 	return 0;
- }
- 
-@@ -954,8 +961,10 @@ static int acpi_s2idle_begin(void)
- 
- static int acpi_s2idle_prepare(void)
- {
--	if (acpi_sci_irq_valid())
-+	if (acpi_sci_irq_valid()) {
- 		enable_irq_wake(acpi_sci_irq);
-+		acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
-+	}
- 
- 	acpi_enable_wakeup_devices(ACPI_STATE_S0);
- 
-@@ -1034,8 +1043,10 @@ static void acpi_s2idle_restore(void)
- 
- 	acpi_disable_wakeup_devices(ACPI_STATE_S0);
- 
--	if (acpi_sci_irq_valid())
-+	if (acpi_sci_irq_valid()) {
-+		acpi_ec_set_gpe_wake_mask(ACPI_GPE_DISABLE);
- 		disable_irq_wake(acpi_sci_irq);
-+	}
- }
- 
- static void acpi_s2idle_end(void)
-Index: linux-pm/drivers/platform/x86/intel-hid.c
-===================================================================
---- linux-pm.orig/drivers/platform/x86/intel-hid.c
-+++ linux-pm/drivers/platform/x86/intel-hid.c
-@@ -257,7 +257,6 @@ static int intel_hid_pm_prepare(struct d
- 		struct intel_hid_priv *priv = dev_get_drvdata(device);
- 
- 		priv->wakeup_mode = true;
--		acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
- 	}
- 	return 0;
- }
-@@ -266,10 +265,7 @@ static void intel_hid_pm_complete(struct
- {
- 	struct intel_hid_priv *priv = dev_get_drvdata(device);
- 
--	if (priv->wakeup_mode) {
--		acpi_ec_set_gpe_wake_mask(ACPI_GPE_DISABLE);
--		priv->wakeup_mode = false;
--	}
-+	priv->wakeup_mode = false;
- }
- 
- static int intel_hid_pl_suspend_handler(struct device *device)
-Index: linux-pm/drivers/platform/x86/intel-vbtn.c
-===================================================================
---- linux-pm.orig/drivers/platform/x86/intel-vbtn.c
-+++ linux-pm/drivers/platform/x86/intel-vbtn.c
-@@ -205,7 +205,6 @@ static int intel_vbtn_pm_prepare(struct
- 		struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
- 
- 		priv->wakeup_mode = true;
--		acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
- 	}
- 	return 0;
- }
-@@ -214,10 +213,7 @@ static void intel_vbtn_pm_complete(struc
- {
- 	struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
- 
--	if (priv->wakeup_mode) {
--		acpi_ec_set_gpe_wake_mask(ACPI_GPE_DISABLE);
--		priv->wakeup_mode = false;
--	}
-+	priv->wakeup_mode = false;
- }
- 
- static int intel_vbtn_pm_resume(struct device *dev)
-Index: linux-pm/drivers/acpi/ec.c
-===================================================================
---- linux-pm.orig/drivers/acpi/ec.c
-+++ linux-pm/drivers/acpi/ec.c
-@@ -1970,7 +1970,6 @@ void acpi_ec_set_gpe_wake_mask(u8 action
- 	if (pm_suspend_no_platform() && first_ec && !ec_no_wakeup)
- 		acpi_set_gpe_wake_mask(NULL, first_ec->gpe, action);
- }
--EXPORT_SYMBOL_GPL(acpi_ec_set_gpe_wake_mask);
- 
- bool acpi_ec_dispatch_gpe(void)
- {
+> +		memcpy(dev->net->dev_addr, buf, 6);
+> +	else if (ret < 0) {
+> +		ret = usb_string(dev->udev, iMACAddress, buf, sizeof buf);
+> +		if (ret == 12)
+> +			tmp = hex2bin(dev->net->dev_addr, buf, 6);
+> +		if (tmp < 0) {
+> +			dev_dbg(&dev->udev->dev,
+> +				"bad MAC string %d fetch, %d\n", iMACAddress,
+> +				tmp);
+> +			if (ret >= 0)
+> +				ret = -EINVAL;
+> +			return ret;
 
+Again, you cannot ignore the possibility of getting fewer or more than
+6 bytes.
 
+> +		}
+>  	}
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(usbnet_get_ethernet_addr);
+>  
+> +int usbnet_set_ethernet_addr(struct usbnet *dev)
+> +{
+> +	int ret;
+> +
+> +	ret = usb_set_address(dev->udev, dev->net->dev_addr);
+> +	if (ret < 0) {
+> +		dev_dbg(&dev->udev->dev,
+> +			"bad MAC address put, %d\n", ret);
+> +	}
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(usbnet_set_ethernet_addr);
+
+What is the purpose of this wrapper?
+
+	Regards
+		Oliver
 
