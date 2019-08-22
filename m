@@ -2,98 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52A179880F
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Aug 2019 01:46:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B42298D03
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Aug 2019 10:10:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728126AbfHUXqA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Aug 2019 19:46:00 -0400
-Received: from mx0b-00154904.pphosted.com ([148.163.137.20]:17252 "EHLO
-        mx0b-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728124AbfHUXqA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 21 Aug 2019 19:46:00 -0400
-Received: from pps.filterd (m0170396.ppops.net [127.0.0.1])
-        by mx0b-00154904.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7LNjVZl027329;
-        Wed, 21 Aug 2019 19:45:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dellteam.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=smtpout1;
- bh=DU7oEIheIrhsvTByl+kSdcIol9+8ctzdpkcB7ValqPI=;
- b=DZRXRjuESZY8/2PQ3jalsCZO/cs3TuFQ20pdXvw2f18W/kASUpjw3Phou/yKq6qBM4HL
- 1e9OT657mn8s2x98hQjsBTtQbmcyo27SCiHMKp79SogCRbeNrzXSoUD/xiK9HcLvNpim
- r9nHnwQQazsDJzYnmJpeIF/kdvHwmbToj59qg1i9M4RSdh4APQaNqgLIiC0IPnbzUWgV
- MXhgJah8x7HtGfSM62R4OXNnSFMV2flDyNA9/j1f+Mjv4ebL0jLbKTwK1ejR4jfKLsmN
- j/1F5DnoWibnQmM4nJwpFal+j36dY2cQxI6+3TsAY1bxo3sz/LS1zTZ0PF8bRkvsV4fB UQ== 
-Received: from mx0b-00154901.pphosted.com (mx0b-00154901.pphosted.com [67.231.157.37])
-        by mx0b-00154904.pphosted.com with ESMTP id 2ugh2s0hfd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 21 Aug 2019 19:45:58 -0400
-Received: from pps.filterd (m0144102.ppops.net [127.0.0.1])
-        by mx0b-00154901.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7LNiDj6141354;
-        Wed, 21 Aug 2019 19:45:58 -0400
-Received: from ausxipps310.us.dell.com (AUSXIPPS310.us.dell.com [143.166.148.211])
-        by mx0b-00154901.pphosted.com with ESMTP id 2uhdktsh99-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 21 Aug 2019 19:45:58 -0400
-X-LoopCount0: from 10.166.132.131
-X-PREM-Routing: D-Outbound
-X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
-   d="scan'208";a="411265551"
-From:   <Charles.Hyde@dellteam.com>
-To:     <andrew@lunn.ch>
-CC:     <linux-usb@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <gregkh@linuxfoundation.org>, <Mario.Limonciello@dell.com>,
-        <oliver@neukum.org>, <netdev@vger.kernel.org>,
-        <nic_swsd@realtek.com>
+        id S1728870AbfHVIIS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Aug 2019 04:08:18 -0400
+Received: from mx2.suse.de ([195.135.220.15]:45826 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725987AbfHVIIS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 22 Aug 2019 04:08:18 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 0BDBFAF18;
+        Thu, 22 Aug 2019 08:08:17 +0000 (UTC)
+Message-ID: <1566461295.8347.19.camel@suse.com>
 Subject: Re: [RFC 1/4] Add usb_get_address and usb_set_address support
-Thread-Topic: [RFC 1/4] Add usb_get_address and usb_set_address support
-Thread-Index: AQHVV6TlN6JhPmp8+EufEIlfFi8+LKcFInYAgAEhuRk=
-Date:   Wed, 21 Aug 2019 23:45:55 +0000
-Message-ID: <1566431155587.57889@Dellteam.com>
-References: <1566339522507.45056@Dellteam.com>,<20190821012258.GB4285@lunn.ch>
-In-Reply-To: <20190821012258.GB4285@lunn.ch>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.177.90.69]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-21_08:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=438 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908210233
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=541 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908210234
+From:   Oliver Neukum <oneukum@suse.com>
+To:     Charles.Hyde@dellteam.com, gregkh@linuxfoundation.org
+Cc:     Mario.Limonciello@dell.com, nic_swsd@realtek.com,
+        linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org,
+        netdev@vger.kernel.org
+Date:   Thu, 22 Aug 2019 10:08:15 +0200
+In-Reply-To: <1566430506442.20925@Dellteam.com>
+References: <1566339522507.45056@Dellteam.com>
+        ,<20190820222602.GC8120@kroah.com> <1566430506442.20925@Dellteam.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
->> The core USB driver message.c is missing get/set address functionality=
-=0A=
->> that stops ifconfig from being able to push MAC addresses out to USB=0A=
->> based ethernet devices.  Without this functionality, some USB devices=0A=
->> stop responding to ethernet packets when using ifconfig to change MAC=0A=
->> addresses.=0A=
->=0A=
-> Hi Charles=0A=
->=0A=
-> ifconfig has been deprecated for years, maybe a decade. Please=0A=
-> reference the current tools, iproute2.=0A=
->=0A=
->           Andrew=0A=
-=0A=
-=0A=
-Thank you.  I would, but that is not available on the system under test, wh=
-ile ifconfig is.=0A=
-=0A=
-Charles Hyde=
+Am Mittwoch, den 21.08.2019, 23:35 +0000 schrieb
+Charles.Hyde@dellteam.com:
+> <snipped>
+> > 
+> > This is a VERY cdc-net-specific function.  It is not a "generic" USB
+> > function at all.  Why does it belong in the USB core?  Shouldn't it live
+> > in the code that handles the other cdc-net-specific logic?
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> 
+> Thank you for this feedback, Greg.  I was not sure about adding this to message.c, because of the USB_CDC_GET_NET_ADDRESS.  I had found references to SET_ADDRESS in the USB protocol at https://wiki.osdev.org/Universal_Serial_Bus#USB_Protocol.  If one wanted a generic USB function for SET_ADDRESS, to be used for both sending a MAC address and receiving one, how would you suggest this be implemented?  This is a legit question because I am curious.
+
+Your implementation was, except for missing error handling, usable.
+The problem is where you put it. CDC messages exist only for CDC
+devices. Now it is true that there is no generic CDC driver.
+Creating a module just for that would cost more memory than it saves
+in most cases.
+But MACs are confined to network devices. Hence the functionality
+can be put into usbnet. It should not be put into any individual
+driver, so that every network driver can use it without duplication.
+
+> Your feedback led to moving the functionality into cdc_ncm.c for today's testing, and removing all changes from messages.c, usb.h, usbnet.c, and usbnet.h.  This may be where I end up long term, but I would like to learn if there is a possible solution that could live in message.c and be callable from other USB-to-Ethernet aware drivers.
+
+All those drivers use usbnet. Hence there it should be.
+
+	Regards
+		Oliver
+
