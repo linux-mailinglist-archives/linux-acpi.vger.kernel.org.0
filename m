@@ -2,67 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B42298D03
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Aug 2019 10:10:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5164A98DBA
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Aug 2019 10:32:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728870AbfHVIIS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Aug 2019 04:08:18 -0400
-Received: from mx2.suse.de ([195.135.220.15]:45826 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725987AbfHVIIS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 22 Aug 2019 04:08:18 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 0BDBFAF18;
-        Thu, 22 Aug 2019 08:08:17 +0000 (UTC)
-Message-ID: <1566461295.8347.19.camel@suse.com>
-Subject: Re: [RFC 1/4] Add usb_get_address and usb_set_address support
-From:   Oliver Neukum <oneukum@suse.com>
-To:     Charles.Hyde@dellteam.com, gregkh@linuxfoundation.org
-Cc:     Mario.Limonciello@dell.com, nic_swsd@realtek.com,
-        linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org,
-        netdev@vger.kernel.org
-Date:   Thu, 22 Aug 2019 10:08:15 +0200
-In-Reply-To: <1566430506442.20925@Dellteam.com>
-References: <1566339522507.45056@Dellteam.com>
-        ,<20190820222602.GC8120@kroah.com> <1566430506442.20925@Dellteam.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1730564AbfHVIcF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Aug 2019 04:32:05 -0400
+Received: from mga07.intel.com ([134.134.136.100]:64504 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727484AbfHVIcF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 22 Aug 2019 04:32:05 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Aug 2019 01:32:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,416,1559545200"; 
+   d="scan'208";a="186485892"
+Received: from mylly.fi.intel.com (HELO mylly.fi.intel.com.) ([10.237.72.169])
+  by FMSMGA003.fm.intel.com with ESMTP; 22 Aug 2019 01:32:02 -0700
+From:   Jarkko Nikula <jarkko.nikula@linux.intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Curtis Malainey <cujomalainey@chromium.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] ACPI / LPSS: Save/restore LPSS private registers also on Lynxpoint
+Date:   Thu, 22 Aug 2019 11:32:00 +0300
+Message-Id: <20190822083200.18150-1-jarkko.nikula@linux.intel.com>
+X-Mailer: git-send-email 2.23.0.rc1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Am Mittwoch, den 21.08.2019, 23:35 +0000 schrieb
-Charles.Hyde@dellteam.com:
-> <snipped>
-> > 
-> > This is a VERY cdc-net-specific function.  It is not a "generic" USB
-> > function at all.  Why does it belong in the USB core?  Shouldn't it live
-> > in the code that handles the other cdc-net-specific logic?
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> 
-> Thank you for this feedback, Greg.  I was not sure about adding this to message.c, because of the USB_CDC_GET_NET_ADDRESS.  I had found references to SET_ADDRESS in the USB protocol at https://wiki.osdev.org/Universal_Serial_Bus#USB_Protocol.  If one wanted a generic USB function for SET_ADDRESS, to be used for both sending a MAC address and receiving one, how would you suggest this be implemented?  This is a legit question because I am curious.
+My assumption in the commit b53548f9d9e4 ("spi: pxa2xx: Remove LPSS private
+register restoring during resume") that Intel Lynxpoint and compatible
+based chipsets may not need LPSS private registers saving and restoring
+over suspend/resume cycle turned out to be false on Intel Broadwell.
 
-Your implementation was, except for missing error handling, usable.
-The problem is where you put it. CDC messages exist only for CDC
-devices. Now it is true that there is no generic CDC driver.
-Creating a module just for that would cost more memory than it saves
-in most cases.
-But MACs are confined to network devices. Hence the functionality
-can be put into usbnet. It should not be put into any individual
-driver, so that every network driver can use it without duplication.
+Curtis Malainey sent a patch bringing above change back and reported the
+LPSS SPI Chip Select control was lost over suspend/resume cycle on
+Broadwell machine.
 
-> Your feedback led to moving the functionality into cdc_ncm.c for today's testing, and removing all changes from messages.c, usb.h, usbnet.c, and usbnet.h.  This may be where I end up long term, but I would like to learn if there is a possible solution that could live in message.c and be callable from other USB-to-Ethernet aware drivers.
+Instead of reverting above commit lets add LPSS private register
+saving/restoring also for all LPSS SPI, I2C and UART controllers on
+Lynxpoint and compatible chipset to make sure context is not lost in
+case nothing else preserves it like firmware or if LPSS is always on.
 
-All those drivers use usbnet. Hence there it should be.
+Fixes: b53548f9d9e4 ("spi: pxa2xx: Remove LPSS private register restoring during resume")
+Reported-by: Curtis Malainey <cujomalainey@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+---
+ drivers/acpi/acpi_lpss.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-	Regards
-		Oliver
+diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+index d696f165a50e..60bbc5090abe 100644
+--- a/drivers/acpi/acpi_lpss.c
++++ b/drivers/acpi/acpi_lpss.c
+@@ -219,12 +219,13 @@ static void bsw_pwm_setup(struct lpss_private_data *pdata)
+ }
+ 
+ static const struct lpss_device_desc lpt_dev_desc = {
+-	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_CLK_DIVIDER | LPSS_LTR,
++	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_CLK_DIVIDER | LPSS_LTR
++			| LPSS_SAVE_CTX,
+ 	.prv_offset = 0x800,
+ };
+ 
+ static const struct lpss_device_desc lpt_i2c_dev_desc = {
+-	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_LTR,
++	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_LTR | LPSS_SAVE_CTX,
+ 	.prv_offset = 0x800,
+ };
+ 
+@@ -236,7 +237,8 @@ static struct property_entry uart_properties[] = {
+ };
+ 
+ static const struct lpss_device_desc lpt_uart_dev_desc = {
+-	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_CLK_DIVIDER | LPSS_LTR,
++	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_CLK_DIVIDER | LPSS_LTR
++			| LPSS_SAVE_CTX,
+ 	.clk_con_id = "baudclk",
+ 	.prv_offset = 0x800,
+ 	.setup = lpss_uart_setup,
+-- 
+2.23.0.rc1
 
