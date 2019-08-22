@@ -2,114 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB78098EAF
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Aug 2019 11:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D4E39937D
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Aug 2019 14:30:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732914AbfHVJFO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Aug 2019 05:05:14 -0400
-Received: from mga05.intel.com ([192.55.52.43]:6194 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732115AbfHVJFO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 22 Aug 2019 05:05:14 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Aug 2019 02:05:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,416,1559545200"; 
-   d="scan'208";a="190504668"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.145])
-  by orsmga002.jf.intel.com with ESMTP; 22 Aug 2019 02:05:11 -0700
-Received: from andy by smile with local (Exim 4.92.1)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1i0j1p-0006Vi-8G; Thu, 22 Aug 2019 12:05:09 +0300
-Date:   Thu, 22 Aug 2019 12:05:09 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Curtis Malainey <cujomalainey@chromium.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] ACPI / LPSS: Save/restore LPSS private registers also on
- Lynxpoint
-Message-ID: <20190822090509.GK30120@smile.fi.intel.com>
-References: <20190822083200.18150-1-jarkko.nikula@linux.intel.com>
+        id S1732798AbfHVMaB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Aug 2019 08:30:01 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:47039 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729746AbfHVMaB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Aug 2019 08:30:01 -0400
+Received: by mail-lj1-f194.google.com with SMTP id f9so5329444ljc.13
+        for <linux-acpi@vger.kernel.org>; Thu, 22 Aug 2019 05:30:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
+        b=gE70CB6Tkq3bClPuHhtwnmCaH80OICLWg4/vQflhg3iVWHefE2agEbQW+EU7qrWj/8
+         lhelub5BbYtpKhplGxjkKiKA6oLE7Yc7W9tuR1azHFf/48D/IyB81vpAkstEAu4pmetM
+         t5tpv0Z22Jmh9PFZYKJaciwyLq5v+92hHqPevEzsG4n6j2M74W5fbS/ERijITqFBLdmr
+         OvKbV1WivHjDFbEJpeIIZWNZKtVuUS/DfcT84tMBSx21qd5DkIvw5p/su/qugPb52fNF
+         2oU7raztDLqfFf0j1ckIH4+pcaJNKDeZLRb4Viow4/ToVCLY5qmt6tvNcVmuQMt/pXA/
+         eVmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
+        b=V5Cj5iL9Lh6DHkxDr0eEwe1qSlpG7qkvJaHQq8TUTPjgrtHdjc6r1O10e7upv5bLc/
+         BsBz/TS/Sc9WNcT90c+OVt5MwZA5b4YrbShT58nSU2yMgJ9wvCRouxzlY2TfZAl4nPu6
+         CLTflRcMCqRtkHlqgg2aoojGtzq3Va5rUHtZsRWwTaaZHDgG2G4/TA/yz5SM6vGw2Vo/
+         9CS3u5Ha4hrE0N/DVYJ9tz7vi/VL3Zj1sGY1+kOIO2VNsEG5FTaIROPaQQaSNfvmDUbE
+         xiWZ4yn/irVvie6v5qHlv12qots2k3ez3rGhEsEnYmXDbw3uJcnD2j7WN2v8UOmRKPAs
+         SyHQ==
+X-Gm-Message-State: APjAAAX8vswnc4tK8s4OWiVGObKLrR5Mzd5RvPT5tUyrbIdryeb7X8Ar
+        1IA7/UlylwRoXeMvMrSxMNYXEj9RjzH0defneIc=
+X-Google-Smtp-Source: APXvYqyQDbAERqizD/fiPgWPSryj2DSi56X7aYFgH8qSvyGKDetfRn5xno1Zm/pei35T/G14EEvuq14bNK/E6+iPEmE=
+X-Received: by 2002:a2e:9a50:: with SMTP id k16mr15265763ljj.75.1566476999717;
+ Thu, 22 Aug 2019 05:29:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190822083200.18150-1-jarkko.nikula@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Received: by 2002:a19:dc4f:0:0:0:0:0 with HTTP; Thu, 22 Aug 2019 05:29:58
+ -0700 (PDT)
+Reply-To: eku.lawfirm@gmail.com
+From:   "Law firm(Eku and Associates)" <elenabaltach66@gmail.com>
+Date:   Thu, 22 Aug 2019 12:29:58 +0000
+Message-ID: <CAOGpsp6s7VJ4Oi32We4K-+udN3s8NOH4EZRnX6q2WKSWZKXEZQ@mail.gmail.com>
+Subject: MY $25,000,000.00 INVESTMENT PROPOSAL WITH YOU AND IN YOUR COUNTRY.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 22, 2019 at 11:32:00AM +0300, Jarkko Nikula wrote:
-> My assumption in the commit b53548f9d9e4 ("spi: pxa2xx: Remove LPSS private
-> register restoring during resume") that Intel Lynxpoint and compatible
-> based chipsets may not need LPSS private registers saving and restoring
-> over suspend/resume cycle turned out to be false on Intel Broadwell.
-> 
-> Curtis Malainey sent a patch bringing above change back and reported the
-> LPSS SPI Chip Select control was lost over suspend/resume cycle on
-> Broadwell machine.
-> 
-> Instead of reverting above commit lets add LPSS private register
-> saving/restoring also for all LPSS SPI, I2C and UART controllers on
-> Lynxpoint and compatible chipset to make sure context is not lost in
-> case nothing else preserves it like firmware or if LPSS is always on.
-> 
+--=20
+Dear,
+With due respect this is not spam or Scam mail, because I have
+contacted you before and there was no response from you,I apologise if
+the contents of this mail are contrary to your moral ethics, which I
+feel may be of great disturbance to your person, but please treat this
+with absolute confidentiality, believing that this email reaches you
+in good faith. My contacting you is not a mistake or a coincidence
+because God can use any person known or unknown to accomplish great
+things.
+I am a lawyer and I have an investment business proposal to offer you.
+It is not official but should be considered as legal and confidential
+business. I have a customer's deposit of $US25 million dollars ready
+to be moved for investment if you can partner with us. We are ready to
+offer you 10% of this total amount as your compensation for supporting
+the transaction to completion. If you are interested to help me please
+reply me with your full details as stated below:
+(1) Your full names:
+(2) Your address:
+(3) Your occupation:
+(4) Your mobile telephone number:
+(5) Your nationality:
+(6) Your present location:
+(7) Your age:
+So that I will provide you more details on what to do and what is
+required for successful completion.
+Note: DO NOT REPLY ME IF YOU ARE NOT INTERESTED AND WITHOUT THE ABOVE
+MENTIONED DETAILS
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-> Fixes: b53548f9d9e4 ("spi: pxa2xx: Remove LPSS private register restoring during resume")
-> Reported-by: Curtis Malainey <cujomalainey@chromium.org>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-> ---
->  drivers/acpi/acpi_lpss.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-> index d696f165a50e..60bbc5090abe 100644
-> --- a/drivers/acpi/acpi_lpss.c
-> +++ b/drivers/acpi/acpi_lpss.c
-> @@ -219,12 +219,13 @@ static void bsw_pwm_setup(struct lpss_private_data *pdata)
->  }
->  
->  static const struct lpss_device_desc lpt_dev_desc = {
-> -	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_CLK_DIVIDER | LPSS_LTR,
-> +	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_CLK_DIVIDER | LPSS_LTR
-> +			| LPSS_SAVE_CTX,
->  	.prv_offset = 0x800,
->  };
->  
->  static const struct lpss_device_desc lpt_i2c_dev_desc = {
-> -	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_LTR,
-> +	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_LTR | LPSS_SAVE_CTX,
->  	.prv_offset = 0x800,
->  };
->  
-> @@ -236,7 +237,8 @@ static struct property_entry uart_properties[] = {
->  };
->  
->  static const struct lpss_device_desc lpt_uart_dev_desc = {
-> -	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_CLK_DIVIDER | LPSS_LTR,
-> +	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_CLK_DIVIDER | LPSS_LTR
-> +			| LPSS_SAVE_CTX,
->  	.clk_con_id = "baudclk",
->  	.prv_offset = 0x800,
->  	.setup = lpss_uart_setup,
-> -- 
-> 2.23.0.rc1
-> 
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Sinc=C3=A8rement v=C3=B4tre,
+Avocat Etienne Eku Esq.(Lawfirm)
+Procureur principal. De Cabinet d=E2=80=99avocats de l=E2=80=99Afrique de l=
+=E2=80=99ouest.
+Skype:westafricalawfirm
