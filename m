@@ -2,128 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0268299AA1
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Aug 2019 19:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 651EC9A5DA
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Aug 2019 04:59:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389416AbfHVROi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Aug 2019 13:14:38 -0400
-Received: from mx0a-00154904.pphosted.com ([148.163.133.20]:17688 "EHLO
-        mx0a-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2391125AbfHVROf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 22 Aug 2019 13:14:35 -0400
-Received: from pps.filterd (m0170393.ppops.net [127.0.0.1])
-        by mx0a-00154904.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7MGtSkM005894;
-        Thu, 22 Aug 2019 13:14:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dellteam.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=smtpout1;
- bh=pSPlsJFML3BPeq/21ZQFMi902QsechRDqUNGAYwS7Pk=;
- b=UANCy6whT4s4Jys4elafzzxHviWk+sVcvbDUgD6Q7+DoN7nIZDBiwdGfcxKNX5U8bbPo
- oZHKNhw8eGY7Fy5TCfRqr0FxNQX9HmG6z0JajwqrAQ29YKk6XTsfhJoo15HXyewipla6
- c4DtKeaZOJMlm0maJW6s7WmlZxiF8GcxN9lWjx3sCx+3og5bHISjHSdfKkAiCa4GUvqp
- oiKHxB8CvYGnwVa4x9QF8wB7GStXZc8PawmCH6ORxiwDcdg+Kxj0jzBeU6sS71l/rTdo
- z2bwp0f7IP0SnOwukcUYEbSV+v26o+9kTKRqYtfFkx06JIBe3yUoXzJklUNgNHxNqxOq Bg== 
-Received: from mx0b-00154901.pphosted.com (mx0b-00154901.pphosted.com [67.231.157.37])
-        by mx0a-00154904.pphosted.com with ESMTP id 2uhubq1bh6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 22 Aug 2019 13:14:34 -0400
-Received: from pps.filterd (m0134318.ppops.net [127.0.0.1])
-        by mx0a-00154901.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7MGwPIG097699;
-        Thu, 22 Aug 2019 13:14:33 -0400
-Received: from ausxippc101.us.dell.com (ausxippc101.us.dell.com [143.166.85.207])
-        by mx0a-00154901.pphosted.com with ESMTP id 2uec7ej842-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 22 Aug 2019 13:14:32 -0400
-X-LoopCount0: from 10.166.132.132
-X-PREM-Routing: D-Outbound
-X-IronPort-AV: E=Sophos;i="5.60,346,1549951200"; 
-   d="scan'208";a="1288603742"
-From:   <Charles.Hyde@dellteam.com>
-To:     <oneukum@suse.com>, <gregkh@linuxfoundation.org>
-CC:     <Mario.Limonciello@dell.com>, <nic_swsd@realtek.com>,
-        <linux-acpi@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-Subject: RE: [RFC 1/4] Add usb_get_address and usb_set_address support
-Thread-Topic: [RFC 1/4] Add usb_get_address and usb_set_address support
-Thread-Index: AQHVV6TlN6JhPmp8+EufEIlfFi8+LKcE8QcAgAFHO1CAAO3FgIAANWIw
-Date:   Thu, 22 Aug 2019 17:14:30 +0000
-Message-ID: <8014f932039c4e01bd513148f20ca0e4@AUSX13MPS303.AMER.DELL.COM>
-References: <1566339522507.45056@Dellteam.com>
-        ,<20190820222602.GC8120@kroah.com> <1566430506442.20925@Dellteam.com>
- <1566461295.8347.19.camel@suse.com>
-In-Reply-To: <1566461295.8347.19.camel@suse.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Enabled=True;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Owner=Charles_Hyde@Dellteam.com;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SetDate=2019-08-22T17:14:29.2453990Z;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Name=External Public;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Extended_MSFT_Method=Manual;
- aiplabel=External Public
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.143.242.75]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S2403980AbfHWC7b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Aug 2019 22:59:31 -0400
+Received: from mail-qk1-f170.google.com ([209.85.222.170]:39370 "EHLO
+        mail-qk1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2403921AbfHWC7b (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Aug 2019 22:59:31 -0400
+Received: by mail-qk1-f170.google.com with SMTP id 125so7054445qkl.6
+        for <linux-acpi@vger.kernel.org>; Thu, 22 Aug 2019 19:59:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=/8CxqwsRkdRi8cJc2K8PmSBN30m7zHwz61/cmkT2+Po=;
+        b=Uxfw2yiXSiDsnIveILok2gx0jbvBwTSM+0WZPvd3pcVrlDReiOJDh55yh+LKKTfVpR
+         l3hX0IANtA5XhVhcIE0JN29I71SHbiheZUdV9TsvotSpXO+ViogL6/PfV3LfKpGPjxMA
+         P8uDzBhvIetkz1DPCd8YCnCYIeMQ+fcu6anHtGBNXNzkWm3A0byBoRxfICVLrIGJfWRv
+         wO4iCD/6QMgm9hksYH5kSbZN9y+C2Jvay2rWsOG+oVYQ4WoNC9cDYfvQyPIcM3FiYnr5
+         krGaenjhMl4br+rpLlVawy9GIlxoKmtwDyAShPiSPsh+mlLGFJB4rR8BeIFJAKikBpoF
+         Q/QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=/8CxqwsRkdRi8cJc2K8PmSBN30m7zHwz61/cmkT2+Po=;
+        b=NpVy5XcVfQRqS+XbYzWGkKu0VwiUxu9aazPEh0iyv1zFdKq5j17rG04/j2mBEF55N0
+         iv8CenfQMJf6eqk61dNDzgbalqzdhZ6owSIhStC1YlHs8u/EsYE3NOInho0TLxxieqkI
+         nT6sXL/YVp2Jqy77AVVI/MCpLfYziAIMsaR7OIQaRLm65yYZqrp/cvJfdVRujqPVydb3
+         k4mdeH9fWeph7fw27qVT0JQfVJht4VnzlusDQl3QExmR1IBA0Ju+8IzqAOjOUhvxGIy7
+         kmxGCxQJAQrMZcvIgBmZdtI4beS3rMemvIk1cdYKNf6BQFBltUhsTVH2xLmrBsZb7Olt
+         V3cA==
+X-Gm-Message-State: APjAAAWgKqz1EhF60++wicj3Co7OVL343xQHMDZKVx5PYu1ErmP7szIo
+        WLLis2rP07+EQTTEQpBO6Ww0SdqtJoFKp7y//FqGgQ==
+X-Google-Smtp-Source: APXvYqyjJ3CuKhqN3ivirNwwxZRKN/iqJkeWR1LtdJFop8szzHnkUvptg4ODcCLcVoQkCY+mcIDA2Q+5waLS+s6JLV4=
+X-Received: by 2002:a05:620a:1467:: with SMTP id j7mr2007429qkl.445.1566529170056;
+ Thu, 22 Aug 2019 19:59:30 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-22_11:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=725 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908220156
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=822 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908220156
+From:   Daniel Drake <drake@endlessm.com>
+Date:   Fri, 23 Aug 2019 10:59:19 +0800
+Message-ID: <CAD8Lp47Le8CBkc3HN4_8+x6ZqR5eiwbVh+VbnfFysKgPgErptQ@mail.gmail.com>
+Subject: gpiolib-acpi problematic trigger of edge events during boot
+To:     Hans de Goede <hdegoede@redhat.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc:     Endless Linux Upstreaming Team <linux@endlessm.com>,
+        "open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-PiA+IDxzbmlwcGVkPg0KPiA+ID4NCj4gPiA+IFRoaXMgaXMgYSBWRVJZIGNkYy1uZXQtc3BlY2lm
-aWMgZnVuY3Rpb24uICBJdCBpcyBub3QgYSAiZ2VuZXJpYyIgVVNCDQo+ID4gPiBmdW5jdGlvbiBh
-dCBhbGwuICBXaHkgZG9lcyBpdCBiZWxvbmcgaW4gdGhlIFVTQiBjb3JlPyAgU2hvdWxkbid0IGl0
-DQo+ID4gPiBsaXZlIGluIHRoZSBjb2RlIHRoYXQgaGFuZGxlcyB0aGUgb3RoZXIgY2RjLW5ldC1z
-cGVjaWZpYyBsb2dpYz8NCj4gPiA+DQo+ID4gPiB0aGFua3MsDQo+ID4gPg0KPiA+ID4gZ3JlZyBr
-LWgNCj4gPg0KPiA+DQo+ID4gVGhhbmsgeW91IGZvciB0aGlzIGZlZWRiYWNrLCBHcmVnLiAgSSB3
-YXMgbm90IHN1cmUgYWJvdXQgYWRkaW5nIHRoaXMgdG8NCj4gbWVzc2FnZS5jLCBiZWNhdXNlIG9m
-IHRoZSBVU0JfQ0RDX0dFVF9ORVRfQUREUkVTUy4gIEkgaGFkIGZvdW5kDQo+IHJlZmVyZW5jZXMg
-dG8gU0VUX0FERFJFU1MgaW4gdGhlIFVTQiBwcm90b2NvbCBhdA0KPiBodHRwczovL3dpa2kub3Nk
-ZXYub3JnL1VuaXZlcnNhbF9TZXJpYWxfQnVzI1VTQl9Qcm90b2NvbC4gIElmIG9uZSB3YW50ZWQg
-YQ0KPiBnZW5lcmljIFVTQiBmdW5jdGlvbiBmb3IgU0VUX0FERFJFU1MsIHRvIGJlIHVzZWQgZm9y
-IGJvdGggc2VuZGluZyBhIE1BQw0KPiBhZGRyZXNzIGFuZCByZWNlaXZpbmcgb25lLCBob3cgd291
-bGQgeW91IHN1Z2dlc3QgdGhpcyBiZSBpbXBsZW1lbnRlZD8gIFRoaXMNCj4gaXMgYSBsZWdpdCBx
-dWVzdGlvbiBiZWNhdXNlIEkgYW0gY3VyaW91cy4NCj4gDQo+IFlvdXIgaW1wbGVtZW50YXRpb24g
-d2FzLCBleGNlcHQgZm9yIG1pc3NpbmcgZXJyb3IgaGFuZGxpbmcsIHVzYWJsZS4NCj4gVGhlIHBy
-b2JsZW0gaXMgd2hlcmUgeW91IHB1dCBpdC4gQ0RDIG1lc3NhZ2VzIGV4aXN0IG9ubHkgZm9yIENE
-QyBkZXZpY2VzLiBOb3cNCj4gaXQgaXMgdHJ1ZSB0aGF0IHRoZXJlIGlzIG5vIGdlbmVyaWMgQ0RD
-IGRyaXZlci4NCj4gQ3JlYXRpbmcgYSBtb2R1bGUganVzdCBmb3IgdGhhdCB3b3VsZCBjb3N0IG1v
-cmUgbWVtb3J5IHRoYW4gaXQgc2F2ZXMgaW4gbW9zdA0KPiBjYXNlcy4NCj4gQnV0IE1BQ3MgYXJl
-IGNvbmZpbmVkIHRvIG5ldHdvcmsgZGV2aWNlcy4gSGVuY2UgdGhlIGZ1bmN0aW9uYWxpdHkgY2Fu
-IGJlIHB1dA0KPiBpbnRvIHVzYm5ldC4gSXQgc2hvdWxkIG5vdCBiZSBwdXQgaW50byBhbnkgaW5k
-aXZpZHVhbCBkcml2ZXIsIHNvIHRoYXQgZXZlcnkNCj4gbmV0d29yayBkcml2ZXIgY2FuIHVzZSBp
-dCB3aXRob3V0IGR1cGxpY2F0aW9uLg0KPiANCj4gPiBZb3VyIGZlZWRiYWNrIGxlZCB0byBtb3Zp
-bmcgdGhlIGZ1bmN0aW9uYWxpdHkgaW50byBjZGNfbmNtLmMgZm9yIHRvZGF5J3MNCj4gdGVzdGlu
-ZywgYW5kIHJlbW92aW5nIGFsbCBjaGFuZ2VzIGZyb20gbWVzc2FnZXMuYywgdXNiLmgsIHVzYm5l
-dC5jLCBhbmQNCj4gdXNibmV0LmguICBUaGlzIG1heSBiZSB3aGVyZSBJIGVuZCB1cCBsb25nIHRl
-cm0sIGJ1dCBJIHdvdWxkIGxpa2UgdG8gbGVhcm4gaWYNCj4gdGhlcmUgaXMgYSBwb3NzaWJsZSBz
-b2x1dGlvbiB0aGF0IGNvdWxkIGxpdmUgaW4gbWVzc2FnZS5jIGFuZCBiZSBjYWxsYWJsZSBmcm9t
-DQo+IG90aGVyIFVTQi10by1FdGhlcm5ldCBhd2FyZSBkcml2ZXJzLg0KPiANCj4gQWxsIHRob3Nl
-IGRyaXZlcnMgdXNlIHVzYm5ldC4gSGVuY2UgdGhlcmUgaXQgc2hvdWxkIGJlLg0KPiANCj4gCVJl
-Z2FyZHMNCj4gCQlPbGl2ZXINCg0KDQpTb21lIG9mIHRoZSBkcml2ZXJzIGluIGRyaXZlcnMvbmV0
-L3VzYi8gZG8gY2FsbCBmdW5jdGlvbnMgaW4gZHJpdmVycy9uZXQvdXNiL3VzYm5ldCwgYnV0IG5v
-dCBhbGwuICBBcyBHcmVnIHBvaW50ZWQgb3V0LCB0aGUgVVNCIGNoYW5nZSBJIGRldmVsb3BlZCBp
-cyBjZGMgc3BlY2lmaWMsIHNvIHB1dHRpbmcgaXQgaW50byB1c2JuZXQgd291bGQgcmFpc2UgdGhl
-IHNhbWUgY29uY2VybnMgR3JlZyBtZW50aW9uZWQuICBMZWF2aW5nIG15IG5ld2VzdCBpbXBsZW1l
-bnRhdGlvbiBpbiBjZGNfbmNtLmMgd2lsbCBiZSBtb3N0IGFwcHJvcHJpYXRlLCBhcyBpdCBhbHNv
-IGZpdHMgd2l0aCB3aGF0IG90aGVyIGRyaXZlcnMgaW4gdGhpcyBmb2xkZXIgaGF2ZSBkb25lLiAg
-TXkgb3JpZ2luYWwgY29kZSB3YXMgcmF0aGVyIHNob3J0IHNpZ2h0ZWQsIGF0IGJlc3QuDQoNCkNo
-YXJsZXMNCg==
+Hi,
+
+acpi_gpiochip_request_irq() has this code:
+
+    /* Make sure we trigger the initial state of edge-triggered IRQs */
+    value = gpiod_get_raw_value_cansleep(event->desc);
+    if (((event->irqflags & IRQF_TRIGGER_RISING) && value == 1) ||
+        ((event->irqflags & IRQF_TRIGGER_FALLING) && value == 0))
+        event->handler(event->irq, event);
+
+Originally introduced in:
+commit ca876c7483b697b498868b1f575997191b077885
+Author: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Date:   Thu Jul 12 17:25:06 2018 +0200
+
+    gpiolib-acpi: make sure we trigger edge events at least once on boot
+
+This code is causing a problem on a new consumer laptop, which is
+based on the new ACPI reduced hardware standard. Under this design,
+the power button is now just an ordinary GPIO that should be handled
+by software: ACPI's _AEI method lists this GPIO as one that the OS
+should monitor for changes, and the OS is expected to call the
+corresponding _EVT method when that happens, which will in turn raise
+a Notify event on the power button device.
+
+Here, the GpioInt defined in _AEI is Edge-triggered, ActiveHigh. The
+GPIO level is ordinarily high, but goes low when the button is
+pressed. We checked this definition and behaviour with the vendor,
+even suggesting that it should maybe be ActiveLow instead, but they
+responded that this is correct and by-design.
+
+These conditions set the IRQF_TRIGGER_RISING flag and cause the _EVT
+event handler to be called by the code above as soon as the pinctrl
+module is loaded. In other words, loading the pinctrl driver causes
+the system to incorrectly believe the power button has been pressed so
+it will immediately go into suspend or shutdown.
+
+Fortunately this is perhaps not a serious issue, as at least Ubuntu
+and Endless build the corresponding pinctrl drivers directly into the
+kernel image. They are then loaded in early boot, and despite a power
+button event being reported, it's so early that userspace doesn't
+notice and no action is taken.
+
+But I raise this anyway as a potential problem should that ever
+change, it may also become a more widespead issue as the ACPI reduced
+hardware standard becomes more and more common in consumer devices.
+
+Any ideas for how we can better deal with this issue?
+
+I can see the rationale for handling the specific cases mentioned in
+the original commit message, but at the same time this code seems to
+be assuming that an edge transition has happened, which is not true in
+this case.
+
+Thanks,
+Daniel
