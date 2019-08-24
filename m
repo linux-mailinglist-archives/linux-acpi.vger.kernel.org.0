@@ -2,83 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD4DC9BD18
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Aug 2019 12:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A47619BD2A
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Aug 2019 12:56:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727034AbfHXKny (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 24 Aug 2019 06:43:54 -0400
-Received: from canardo.mork.no ([148.122.252.1]:59953 "EHLO canardo.mork.no"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727010AbfHXKnx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 24 Aug 2019 06:43:53 -0400
-Received: from miraculix.mork.no (miraculix.mork.no [IPv6:2001:4641:0:2:7627:374e:db74:e353])
-        (authenticated bits=0)
-        by canardo.mork.no (8.15.2/8.15.2) with ESMTPSA id x7OAhcvW030437
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Sat, 24 Aug 2019 12:43:38 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-        t=1566643419; bh=AMwa+4lqRda9qfSOd4FninOupvCyii6oU4nIgEvSd2Q=;
-        h=From:To:Cc:Subject:References:Date:Message-ID:From;
-        b=cF4t8i7U0tasiBs/jRjX696hF7FjmWYIv1aH71tou+qt9X0jHkWuH3OBk4dPD+mXp
-         cfPd5qBMWPenw15XIC663dUC/moDFpf/GEQQOFISxSnFt/81vHuUCJ9nLDDASIv+lK
-         Y2C+S4F0vWAhNsxI9PAK783Y185FnlJDpcin3wGs=
-Received: from bjorn by miraculix.mork.no with local (Exim 4.92)
-        (envelope-from <bjorn@mork.no>)
-        id 1i1TWE-0002I4-2L; Sat, 24 Aug 2019 12:43:38 +0200
-From:   =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-To:     <Charles.Hyde@dellteam.com>
-Cc:     <linux-usb@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <gregkh@linuxfoundation.org>, <Mario.Limonciello@dell.com>,
-        <oliver@neukum.org>, <netdev@vger.kernel.org>,
-        <nic_swsd@realtek.com>
-Subject: Re: [RFC 4/4] net: cdc_ncm: Add ACPI MAC address pass through functionality
-Organization: m
-References: <ec7435e0529243a99f6949ee9efbede5@AUSX13MPS303.AMER.DELL.COM>
-Date:   Sat, 24 Aug 2019 12:43:38 +0200
-In-Reply-To: <ec7435e0529243a99f6949ee9efbede5@AUSX13MPS303.AMER.DELL.COM>
-        (Charles Hyde's message of "Tue, 20 Aug 2019 22:23:15 +0000")
-Message-ID: <877e722691.fsf@miraculix.mork.no>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S1727602AbfHXKxs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 24 Aug 2019 06:53:48 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:45947 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727593AbfHXKxs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 24 Aug 2019 06:53:48 -0400
+Received: by mail-qk1-f193.google.com with SMTP id m2so10432376qki.12;
+        Sat, 24 Aug 2019 03:53:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TbxzA8gVsCSK3z+t0mDil0in4W6ri8b3PO8br9bfWts=;
+        b=M7QNvw9jRmfvcOSyb8HQd6yZAix34IZXdI4XbQzYW3owMZbo9a/T2Ng1Qj9wJ2PEti
+         3AxQXMAz009wgw9nzXSga/VvSi7rYe/2vkvL0DkR03hl7moxNFipctcLoeqlOQiYmToS
+         6qmDQyTltS6HgbLmT916vnpxBlT4m8BVju6Mq1zxFEYefIhn+dL+ySm8a6mLuHtzTTIa
+         6gCzrx0+WmzJlOsrq2Tti/H5BDyKY85gKW/0JevFRJLUiXXZCK8QDCTQsiwddk4XP7Bt
+         JB2NePG+bqMftxT00mWG+RSE9bK/IvmFzrRlwW5uXjJ/PAfJqu3TDytWmb4cJs7vVCeG
+         R4DQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TbxzA8gVsCSK3z+t0mDil0in4W6ri8b3PO8br9bfWts=;
+        b=sdoLEtDVSwWVASWerexwmWm8MHAAMQzAB9QKiErmV2MZV/NYBdlhJsqDO305+zivWt
+         XhM0/WGSCO7TWVJLwXE+YzOd9c8PZuw+fUZ//xazi2zUQKhEgI03KzeAVb1nIZZrcCOT
+         mVReffdjgHz5JcrFKK1UQ+qJrTMLuwuzPprs6ct9l3EkIUsEN4D1XqwbzlTIHe2QQ9Gi
+         2zk6JDkTTXc/ES4DNMzy3CmQHgEmgP2cU9+REdgkKffA+2aYfqpEdX5cGFsN6pQY9wZh
+         OAnG7UHshQwI3LXEykGj6caTD5irD4rxfOI4xZvdJfrSVeGu5udmTTewpCgSEWPZAdwY
+         Jm4w==
+X-Gm-Message-State: APjAAAWZmB0O7kE5+IyFRQgXAFnGsCnWg+S6J73T+BjV+M/CD5NYUB8X
+        +BJtzu2QQVKTQMjo0pggQkHZHGiZD6uGVpLCJd4=
+X-Google-Smtp-Source: APXvYqxkG4NMxhycjdYiSIFcFIz9H1LlGWXbJH1IPkZl7HlwlKbsxAsC0YE39DrKJayiIL7rFQNCSgF5GI8IfuMEraY=
+X-Received: by 2002:a05:620a:16c3:: with SMTP id a3mr7827421qkn.315.1566644026718;
+ Sat, 24 Aug 2019 03:53:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 0.101.2 at canardo
-X-Virus-Status: Clean
+References: <20190823215255.7631-1-hdegoede@redhat.com>
+In-Reply-To: <20190823215255.7631-1-hdegoede@redhat.com>
+From:   Ian W MORRISON <ianwmorrison@gmail.com>
+Date:   Sat, 24 Aug 2019 20:53:35 +1000
+Message-ID: <CAFXWsS9q5-Ny_Lz4H51+UU0eRv5DJgRHy5XFi4_hxNCFTMb=dg@mail.gmail.com>
+Subject: Re: [PATCH] gpiolib: acpi: Add gpiolib_acpi_run_edge_events_on_boot
+ option and blacklist
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Daniel Drake <drake@endlessm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-<Charles.Hyde@dellteam.com> writes:
+On Sat, 24 Aug 2019 at 07:53, Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> To avoid problems like this, this commit adds a new
+> gpiolib_acpi_run_edge_events_on_boot kernel commandline option which
+> can be "on", "off", or "auto" (default).
+>
+> In auto mode the default is on and a DMI based blacklist is used,
+> the initial version of this blacklist contains the Minix Neo Z83-4
+> fixing the HDMI being broken on this device.
+>
 
-> @@ -930,11 +931,18 @@ int cdc_ncm_bind_common(struct usbnet *dev, struct =
-usb_interface *intf, u8 data_
->  	usb_set_intfdata(ctx->control, dev);
->=20=20
->  	if (ctx->ether_desc) {
-> +		struct sockaddr sa;
-> +
->  		temp =3D usbnet_get_ethernet_addr(dev, ctx->ether_desc->iMACAddress);
->  		if (temp) {
->  			dev_dbg(&intf->dev, "failed to get mac address\n");
->  			goto error2;
->  		}
-> +		if (get_acpi_mac_passthru(&intf->dev, &sa) =3D=3D 0) {
-> +			memcpy(dev->net->dev_addr, sa.sa_data, ETH_ALEN);
-> +			if (usbnet_set_ethernet_addr(dev) < 0)
-> +				usbnet_get_ethernet_addr(dev, ctx->ether_desc->iMACAddress);
-> +		}
->  		dev_info(&intf->dev, "MAC-Address: %pM\n", dev->net->dev_addr);
->  	}
+Many thanks Hans. I've tested the patch including the command line
+option with both v5.3-rc5 and linux-next on a Minix Neo Z83-4 and it
+works fine.
 
-So you want to run a Dell specific ACPI method every time anyone plugs
-some NCM class device into a host supporing ACPI?  That's going to annoy
-the hell out of 99.9997% of the x86, ia64 and arm64 users of this
-driver.
-
-Call ACPI once when the driver loads, and only if running on an actual
-Dell system where this method is supported.  There must be some ACPI
-device ID you can match on to know if this method is supported or not?
-
-
-Bj=C3=B8rn
+Best regards,
+Ian
