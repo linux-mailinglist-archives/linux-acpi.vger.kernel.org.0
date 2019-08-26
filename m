@@ -2,136 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D89DF9CBB8
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2019 10:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D17E59CBD5
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2019 10:43:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730738AbfHZIiT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Aug 2019 04:38:19 -0400
-Received: from mga03.intel.com ([134.134.136.65]:19956 "EHLO mga03.intel.com"
+        id S1729343AbfHZIns (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Aug 2019 04:43:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54262 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730705AbfHZIiS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 26 Aug 2019 04:38:18 -0400
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Aug 2019 01:38:17 -0700
-X-IronPort-AV: E=Sophos;i="5.64,431,1559545200"; 
-   d="scan'208";a="170789779"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Aug 2019 01:38:16 -0700
-Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id 1DCBB20B47; Mon, 26 Aug 2019 11:38:14 +0300 (EEST)
-Date:   Mon, 26 Aug 2019 11:38:14 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Tomasz Figa <tfiga@chromium.org>
-Cc:     linux-acpi@vger.kernel.org,
-        "Mani, Rajmohan" <rajmohan.mani@intel.com>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>
-Subject: Re: [PATCH 3/5] ov5670: Support probe whilst the device is off
-Message-ID: <20190826083813.GK31967@paasikivi.fi.intel.com>
-References: <20190510100930.14641-1-sakari.ailus@linux.intel.com>
- <20190510100930.14641-4-sakari.ailus@linux.intel.com>
- <20190605070752.GA126683@chromium.org>
- <20190605101535.4sydewuv656x6c2g@kekkonen.localdomain>
- <CAAFQd5D+RZS0E6xpZ3v8gC5zerj5fd6b6YxcAS_TeWei6vGvUA@mail.gmail.com>
+        id S1727228AbfHZIns (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 26 Aug 2019 04:43:48 -0400
+Received: from localhost (unknown [89.205.128.246])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8116420874;
+        Mon, 26 Aug 2019 08:43:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1566809027;
+        bh=SoiCkhhy2BGTuClWuO0Uof9RYEZj6b5kuPpkfAIcEvs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Y4tmtlxmrs8D7VYSFvh5o/EBRUMgQ5zi3opE78smeRO1cQJXr+j+scwLjoduZodLa
+         N3JjlG021XGeSdN4zIBZOQeBl73gX026ElPOtCSevkZjWH+oHztsihEM5RJZkReH79
+         vIoO3EurUERF9mMN6qRggOTofkbSl4UdBMd5kE6I=
+Date:   Mon, 26 Aug 2019 10:43:43 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] ACPI: Enable driver and firmware hints to control
+ power at probe time
+Message-ID: <20190826084343.GA1095@kroah.com>
+References: <20190826083112.8888-1-sakari.ailus@linux.intel.com>
+ <20190826083112.8888-2-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAFQd5D+RZS0E6xpZ3v8gC5zerj5fd6b6YxcAS_TeWei6vGvUA@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190826083112.8888-2-sakari.ailus@linux.intel.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Tomasz,
-
-On Fri, Jun 07, 2019 at 04:54:06PM +0900, Tomasz Figa wrote:
-> On Wed, Jun 5, 2019 at 7:15 PM Sakari Ailus
-> <sakari.ailus@linux.intel.com> wrote:
-> >
-> > Hi Tomasz,
-> >
-> > On Wed, Jun 05, 2019 at 04:07:52PM +0900, Tomasz Figa wrote:
-> > > Hi Sakari,
-> > >
-> > > On Fri, May 10, 2019 at 01:09:28PM +0300, Sakari Ailus wrote:
-> > > > Tell ACPI device PM code that the driver supports the device being powered
-> > > > off when the driver's probe function is entered.
-> > > >
-> > > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > > > ---
-> > > >  drivers/media/i2c/ov5670.c | 25 ++++++++++++++-----------
-> > > >  1 file changed, 14 insertions(+), 11 deletions(-)
-> > > >
-> > > > diff --git a/drivers/media/i2c/ov5670.c b/drivers/media/i2c/ov5670.c
-> > > > index 041fcbb4eebdf..57e8b92f90e09 100644
-> > > > --- a/drivers/media/i2c/ov5670.c
-> > > > +++ b/drivers/media/i2c/ov5670.c
-> > > > @@ -2444,6 +2444,7 @@ static int ov5670_probe(struct i2c_client *client)
-> > > >     struct ov5670 *ov5670;
-> > > >     const char *err_msg;
-> > > >     u32 input_clk = 0;
-> > > > +   bool powered_off;
-> > > >     int ret;
-> > > >
-> > > >     device_property_read_u32(&client->dev, "clock-frequency", &input_clk);
-> > > > @@ -2460,11 +2461,14 @@ static int ov5670_probe(struct i2c_client *client)
-> > > >     /* Initialize subdev */
-> > > >     v4l2_i2c_subdev_init(&ov5670->sd, client, &ov5670_subdev_ops);
-> > > >
-> > > > -   /* Check module identity */
-> > > > -   ret = ov5670_identify_module(ov5670);
-> > > > -   if (ret) {
-> > > > -           err_msg = "ov5670_identify_module() error";
-> > > > -           goto error_print;
-> > > > +   powered_off = acpi_dev_powered_off_for_probe(&client->dev);
-> > > > +   if (!powered_off) {
-> > > > +           /* Check module identity */
-> > > > +           ret = ov5670_identify_module(ov5670);
-> > > > +           if (ret) {
-> > > > +                   err_msg = "ov5670_identify_module() error";
-> > > > +                   goto error_print;
-> > > > +           }
-> > > >     }
-> > >
-> > > I don't like the fact that we can't detect any hardware connection issue
-> > > here anymore and we would actually get some obscure failure when we
-> > > actually start streaming.
-> > >
-> > > Wouldn't it be possible to still keep this behavior of not powering on
-> > > the device at boot-up if no driver is bound and then have this driver
-> > > built as a module and loaded later when the camera is to be used for the
-> > > first time after the system boots?
-> >
-> > That'd be a way to work around this, but the downside would be that the
-> > user space would need to know not only which drivers to load, but also
-> > which drivers _not_ to load. The user space could obtain the former from
-> > the kernel but not the latter, it'd be system specific configuration.
-> >
-> > Moving the responsibility of loading the driver to user space would also
-> > not address figuring out whether the sensor is accessible through its
-> > control bus: you have to power it on to do that. In fact, if you want to be
-> > sure that the hardware is all right, you have to start streaming on the
-> > device first and that is not a part of a typical driver initialisation
-> > sequence. Just checking the sensor is accessible over I涎 is not enough.
-> >
-> > The proposed solution addresses the problem without user space changes.
+On Mon, Aug 26, 2019 at 11:31:08AM +0300, Sakari Ailus wrote:
+> Allow drivers and firmware tell ACPI that there's no need to power on a
+> device for probe. This requires both a hint from the firmware as well as
+> an indication from a driver to leave the device off.
 > 
-> I guess that makes sense indeed. If going this way, why not just move
-> all the hardware access from probe to streamon and avoid any
-> conditional checks at all?
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+>  drivers/acpi/device_pm.c | 15 +++++++++++++--
+>  include/linux/device.h   |  7 +++++++
+>  2 files changed, 20 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+> index f616b16c1f0be..adcdf78ce4de8 100644
+> --- a/drivers/acpi/device_pm.c
+> +++ b/drivers/acpi/device_pm.c
+> @@ -1276,7 +1276,12 @@ static void acpi_dev_pm_detach(struct device *dev, bool power_off)
+>  	if (adev && dev->pm_domain == &acpi_general_pm_domain) {
+>  		dev_pm_domain_set(dev, NULL);
+>  		acpi_remove_pm_notifier(adev);
+> -		if (power_off) {
+> +		if (power_off
+> +#ifdef CONFIG_PM
+> +		    && !(dev->driver->probe_low_power &&
+> +			 device_property_present(dev, "probe-low-power"))
+> +#endif
+> +			) {
+>  			/*
+>  			 * If the device's PM QoS resume latency limit or flags
+>  			 * have been exposed to user space, they have to be
+> @@ -1324,7 +1329,13 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
+>  
+>  	acpi_add_pm_notifier(adev, dev, acpi_pm_notify_work_func);
+>  	dev_pm_domain_set(dev, &acpi_general_pm_domain);
+> -	if (power_on) {
+> +
+> +	if (power_on
+> +#ifdef CONFIG_PM
+> +	    && !(dev->driver->probe_low_power &&
+> +		 device_property_present(dev, "probe-low-power"))
+> +#endif
+> +		) {
+>  		acpi_dev_pm_full_power(adev);
+>  		acpi_device_wakeup_disable(adev);
+>  	}
+> diff --git a/include/linux/device.h b/include/linux/device.h
+> index 6717adee33f01..4bc0ea4a3201a 100644
+> --- a/include/linux/device.h
+> +++ b/include/linux/device.h
+> @@ -248,6 +248,12 @@ enum probe_type {
+>   * @owner:	The module owner.
+>   * @mod_name:	Used for built-in modules.
+>   * @suppress_bind_attrs: Disables bind/unbind via sysfs.
+> + * @probe_low_power: The driver supports its probe function being called while
+> + *		     the device is in a low power state, independently of the
+> + *		     expected behaviour on combination of a given bus and
+> + *		     firmware interface etc. The driver is responsible for
+> + *		     powering the device on using runtime PM in such case.
+> + *		     This configuration has no effect if CONFIG_PM is disabled.
+>   * @probe_type:	Type of the probe (synchronous or asynchronous) to use.
+>   * @of_match_table: The open firmware table.
+>   * @acpi_match_table: The ACPI match table.
+> @@ -285,6 +291,7 @@ struct device_driver {
+>  	const char		*mod_name;	/* used for built-in modules */
+>  
+>  	bool suppress_bind_attrs;	/* disables bind/unbind via sysfs */
+> +	bool probe_low_power;
 
-My apologies for the late answer.
+Ick, no, this should be a bus-specific thing to handle such messed up
+hardware.  Why polute this in the driver core?
 
-In that case there would be no way to verify the hardware actually is
-there, even on systems where there is no adverse effect from doing that.
-For a sensor driver this could be just fine, but I have doubts it'd be
-appropriate for e.g. the at24 driver.
+thanks,
 
--- 
-Regards,
-
-Sakari Ailus
-sakari.ailus@linux.intel.com
+greg k-h
