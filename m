@@ -2,136 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 949C69CC4B
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2019 11:11:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E2DD9CC77
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2019 11:20:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730687AbfHZJLQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Aug 2019 05:11:16 -0400
-Received: from mga01.intel.com ([192.55.52.88]:58104 "EHLO mga01.intel.com"
+        id S1730701AbfHZJU7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Aug 2019 05:20:59 -0400
+Received: from mga12.intel.com ([192.55.52.136]:55011 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729753AbfHZJLP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 26 Aug 2019 05:11:15 -0400
+        id S1730679AbfHZJU6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 26 Aug 2019 05:20:58 -0400
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Aug 2019 02:11:15 -0700
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Aug 2019 02:20:58 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.64,431,1559545200"; 
-   d="scan'208";a="380471920"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.145])
-  by fmsmga006.fm.intel.com with ESMTP; 26 Aug 2019 02:11:12 -0700
-Received: from andy by smile with local (Exim 4.92.1)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1i2B1q-0000Le-2U; Mon, 26 Aug 2019 12:11:10 +0300
-Date:   Mon, 26 Aug 2019 12:11:10 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Daniel Drake <drake@endlessm.com>,
-        Ian W MORRISON <ianwmorrison@gmail.com>
-Subject: Re: [PATCH] gpiolib: acpi: Add gpiolib_acpi_run_edge_events_on_boot
- option and blacklist
-Message-ID: <20190826091110.GY30120@smile.fi.intel.com>
-References: <20190823215255.7631-1-hdegoede@redhat.com>
+   d="scan'208";a="197013981"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 26 Aug 2019 02:20:54 -0700
+Received: by lahna (sSMTP sendmail emulation); Mon, 26 Aug 2019 12:20:53 +0300
+Date:   Mon, 26 Aug 2019 12:20:53 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+        Mario.Limonciello@dell.com,
+        Anthony Wong <anthony.wong@canonical.com>,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        Raanan Avargil <raanan.avargil@intel.com>,
+        David Laight <David.Laight@aculab.com>,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v3 0/8] thunderbolt: Intel Ice Lake support
+Message-ID: <20190826092053.GC19908@lahna.fi.intel.com>
+References: <20190819112223.15359-1-mika.westerberg@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190823215255.7631-1-hdegoede@redhat.com>
+In-Reply-To: <20190819112223.15359-1-mika.westerberg@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 23, 2019 at 11:52:55PM +0200, Hans de Goede wrote:
-> Another day; another DSDT bug we need to workaround...
+On Mon, Aug 19, 2019 at 02:22:15PM +0300, Mika Westerberg wrote:
+> Hi all,
 > 
-> Since commit ca876c7483b6 ("gpiolib-acpi: make sure we trigger edge events
-> at least once on boot") we call _AEI edge handlers at boot.
-> 
-> In some rare cases this causes problems. One example of this is the Minix
-> Neo Z83-4 mini PC, this device has a clear DSDT bug where it has some copy
-> and pasted code for dealing with Micro USB-B connector host/device role
-> switching, while the mini PC does not even have a micro-USB connector.
-> This code, which should not be there, messes with the DDC data pin from
-> the HDMI connector (switching it to GPIO mode) breaking HDMI support.
-> 
-> To avoid problems like this, this commit adds a new
-> gpiolib_acpi_run_edge_events_on_boot kernel commandline option which
-> can be "on", "off", or "auto" (default).
-> 
-> In auto mode the default is on and a DMI based blacklist is used,
-> the initial version of this blacklist contains the Minix Neo Z83-4
-> fixing the HDMI being broken on this device.
+> This is third iteration of the patch series adding support for the Intel
+> Ice Lake integrated Thunderbolt controller. The biggest difference from the
+> previous discrete controllers is that the Ice Lake Thunderbolt controller
+> is now integrated as part of the SoC. The firmware messages pretty much
+> follow Titan Ridge but there are some differences as well (such as the new
+> RTD3 veto notification). Also Ice Lake does not implement security levels
+> so DMA protection is handled by IOMMU.
 
-> +static int gpiolib_acpi_run_edge_events_on_boot = -1;
-> +
-> +static int __init gpiolib_acpi_run_edge_events_on_boot_setup(char *arg)
-> +{
-
-> +	if (!strcmp(arg, "on"))
-> +		gpiolib_acpi_run_edge_events_on_boot = 1;
-> +	else if (!strcmp(arg, "off"))
-> +		gpiolib_acpi_run_edge_events_on_boot = 0;
-
-kstrtobool() ?
-
-> +	else if (!strcmp(arg, "auto"))
-> +		gpiolib_acpi_run_edge_events_on_boot = -1;
-> +
-> +	return 1;
-> +}
-
-> +
-> +__setup("gpiolib_acpi_run_edge_events_on_boot=",
-> +        gpiolib_acpi_run_edge_events_on_boot_setup);
-
-Can't we use module_param() ?
-The resulting option would be 'gpiolib_acpi.foo=...'
-
-> +{
-
-> +	if (gpiolib_acpi_run_edge_events_on_boot == -1) {
-> +		if (dmi_check_system(run_edge_events_on_boot_blacklist))
-> +			gpiolib_acpi_run_edge_events_on_boot = 0;
-> +		else
-> +			gpiolib_acpi_run_edge_events_on_boot = 1;
-> +	}
-
-Can we run this at an initcall once and use variable instead of calling a
-method below?
-
-> +	return gpiolib_acpi_run_edge_events_on_boot;
-> +}
-> +
->  static void acpi_gpiochip_request_irq(struct acpi_gpio_chip *acpi_gpio,
->  				      struct acpi_gpio_event *event)
->  {
-> @@ -170,10 +211,13 @@ static void acpi_gpiochip_request_irq(struct acpi_gpio_chip *acpi_gpio,
->  	event->irq_requested = true;
->  
->  	/* Make sure we trigger the initial state of edge-triggered IRQs */
-> -	value = gpiod_get_raw_value_cansleep(event->desc);
-> -	if (((event->irqflags & IRQF_TRIGGER_RISING) && value == 1) ||
-> -	    ((event->irqflags & IRQF_TRIGGER_FALLING) && value == 0))
-> -		event->handler(event->irq, event);
-> +	if (acpi_gpiochip_run_edge_events_on_boot() &&
-> +	    (event->irqflags & (IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING))) {
-> +		value = gpiod_get_raw_value_cansleep(event->desc);
-> +		if (((event->irqflags & IRQF_TRIGGER_RISING) && value == 1) ||
-> +		    ((event->irqflags & IRQF_TRIGGER_FALLING) && value == 0))
-> +			event->handler(event->irq, event);
-> +	}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Series applied to thunderbolt.git/next.
