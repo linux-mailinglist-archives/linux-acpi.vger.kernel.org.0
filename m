@@ -2,66 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A51BC9CC39
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2019 11:09:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA4069CC5A
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2019 11:14:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730579AbfHZJJC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Aug 2019 05:09:02 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:50884 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730398AbfHZJJC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Aug 2019 05:09:02 -0400
-Received: from 79.184.255.249.ipv4.supernova.orange.pl (79.184.255.249) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.275)
- id 3eeff57f6b629e63; Mon, 26 Aug 2019 11:09:00 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH -next] ACPI: SBS: remove unused variable 'SMBUS_PEC'
-Date:   Mon, 26 Aug 2019 11:08:59 +0200
-Message-ID: <174115399.5Pdya9bJQt@kreacher>
-In-Reply-To: <20190822144346.12028-1-yuehaibing@huawei.com>
-References: <20190822144346.12028-1-yuehaibing@huawei.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+        id S1730556AbfHZJOe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Aug 2019 05:14:34 -0400
+Received: from mx2.suse.de ([195.135.220.15]:60016 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726354AbfHZJOe (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 26 Aug 2019 05:14:34 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 4718CAC7F;
+        Mon, 26 Aug 2019 09:14:33 +0000 (UTC)
+Message-ID: <1566809983.2612.2.camel@suse.com>
+Subject: Re: [RFC 1/3] net: cdc_ncm: add get/set ethernet address functions
+From:   Oliver Neukum <oneukum@suse.com>
+To:     Charles.Hyde@dellteam.com, linux-usb@vger.kernel.org
+Cc:     Mario.Limonciello@dell.com, nic_swsd@realtek.com,
+        linux-acpi@vger.kernel.org
+Date:   Mon, 26 Aug 2019 10:59:43 +0200
+In-Reply-To: <d3971424f9ee4b689b762721f671746a@AUSX13MPS303.AMER.DELL.COM>
+References: <d3971424f9ee4b689b762721f671746a@AUSX13MPS303.AMER.DELL.COM>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thursday, August 22, 2019 4:43:46 PM CEST YueHaibing wrote:
-> drivers/acpi/sbshc.h:18:17: warning:
->  SMBUS_PEC defined but not used [-Wunused-const-variable=]
-> 
-> SMBUS_PEC is never used since introduction in
-> commit 91087dfa51a2 ("ACPI: SBS: Split host
-> controller (ACPI0001) from SBS driver (ACPI0002)"),
-> so just remove it.
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> ---
->  drivers/acpi/sbshc.h | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/acpi/sbshc.h b/drivers/acpi/sbshc.h
-> index 06372a3..c3522bb 100644
-> --- a/drivers/acpi/sbshc.h
-> +++ b/drivers/acpi/sbshc.h
-> @@ -15,8 +15,6 @@ enum acpi_smb_protocol {
->  	SMBUS_BLOCK_PROCESS_CALL = 0xd,
->  };
->  
-> -static const u8 SMBUS_PEC = 0x80;
-> -
->  enum acpi_sbs_device_addr {
->  	ACPI_SBS_CHARGER = 0x9,
->  	ACPI_SBS_MANAGER = 0xa,
-> 
+Am Freitag, den 23.08.2019, 22:26 +0000 schrieb
+Charles.Hyde@dellteam.com:
+> This patch adds support for pushing a MAC address out to USB based
+> ethernet controllers driven by cdc_ncm.  With this change, ifconfig can
+> now set the device's MAC address.  For example, the Dell Universal Dock
+> D6000 is driven by cdc_ncm.  The D6000 can now have its MAC address set
+> by ifconfig, as it can be done in Windows.  This was tested with a D6000
+> using ifconfig on an x86 based chromebook, where iproute2 is not
+> available.
 
-Applied, thanks!
+The code is good. But placing it into cdc_ncm means that cdc_ether
+or other drivers cannot use it.
 
-
+	Regards
+		Oliver
 
