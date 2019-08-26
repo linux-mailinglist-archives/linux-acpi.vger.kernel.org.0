@@ -2,107 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F1CF9D25C
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2019 17:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B99C9D91E
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2019 00:30:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730464AbfHZPMB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Aug 2019 11:12:01 -0400
-Received: from mx0a-00154904.pphosted.com ([148.163.133.20]:24640 "EHLO
-        mx0a-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730379AbfHZPMB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 26 Aug 2019 11:12:01 -0400
-Received: from pps.filterd (m0170390.ppops.net [127.0.0.1])
-        by mx0a-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x7QFAZWK012848;
-        Mon, 26 Aug 2019 11:12:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=smtpout1;
- bh=GKC4YeZw79OgH/tBdyKtcyUL82OgDdgx1vnibhrrnvY=;
- b=ivyPuO9U5w9cRQV4o21mnU47QnqlD4dnwZl3A8qD1lebVTeETLnX21oEeehd5VD2+i+9
- Nu9lSq9NojpCQpYqvHF7n1bjTSEMUgnmFOwjLm+5tA3ftWD3x71rp+xdyGrmZqeYXmXy
- u5OsgErLvUYuEIWJ0hXLp1Wfu4mRobwHQ/ngJbuwcnPUc470+LkPLHiS54rSbOSRcACC
- ZbzGEE7xRjkYZxSS8Fye0gwh6HGEEVR0sXRQwL/r/lwH1bFQUKhNC6QT4qSPSre3EgHe
- 9FuY2BHORvjhrSIrLdY+w/EaYZpUsxIHd+6+OXcNkZuMEIn8O+LhG1P8o4r01DQuXHHR kQ== 
-Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
-        by mx0a-00154904.pphosted.com with ESMTP id 2uk2xc6vfs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 26 Aug 2019 11:12:00 -0400
-Received: from pps.filterd (m0090351.ppops.net [127.0.0.1])
-        by mx0b-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x7QFBvcq065931;
-        Mon, 26 Aug 2019 11:11:59 -0400
-Received: from ausc60pc101.us.dell.com (ausc60pc101.us.dell.com [143.166.85.206])
-        by mx0b-00154901.pphosted.com with ESMTP id 2ukjtpcgth-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 26 Aug 2019 11:11:59 -0400
-X-LoopCount0: from 10.166.135.97
-X-PREM-Routing: D-Outbound
-X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
-   d="scan'208";a="1458070271"
-From:   <Mario.Limonciello@dell.com>
-To:     <oneukum@suse.com>, <Charles.Hyde@dellteam.com>,
-        <linux-usb@vger.kernel.org>
-CC:     <nic_swsd@realtek.com>, <linux-acpi@vger.kernel.org>
-Subject: RE: [RFC 1/3] net: cdc_ncm: add get/set ethernet address functions
-Thread-Topic: [RFC 1/3] net: cdc_ncm: add get/set ethernet address functions
-Thread-Index: AQHVWgHa61WkHsDV5EiVn1+4CW4xcqcNeQGAgAAUCKA=
-Date:   Mon, 26 Aug 2019 15:11:57 +0000
-Message-ID: <bcdf2209ea3c482e980c0f3e64b87bca@AUSX13MPC101.AMER.DELL.COM>
-References: <d3971424f9ee4b689b762721f671746a@AUSX13MPS303.AMER.DELL.COM>
- <1566809983.2612.2.camel@suse.com>
-In-Reply-To: <1566809983.2612.2.camel@suse.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Enabled=True;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Owner=Mario_Limonciello@Dell.com;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SetDate=2019-08-26T15:11:55.8694762Z;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Name=External Public;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Extended_MSFT_Method=Manual;
- aiplabel=External Public
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.143.242.75]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726441AbfHZWaz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Aug 2019 18:30:55 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:39374 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726281AbfHZWaz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 26 Aug 2019 18:30:55 -0400
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 33325300C22F;
+        Mon, 26 Aug 2019 22:30:55 +0000 (UTC)
+Received: from masetto.com (ovpn-116-56.phx2.redhat.com [10.3.116.56])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3A9655C1B2;
+        Mon, 26 Aug 2019 22:30:52 +0000 (UTC)
+From:   Al Stone <ahs3@redhat.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     Al Stone <ahs3@redhat.com>, linux-kernel@vger.kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Subject: [PATCH v2] ACPI / CPPC: do not require the _PSD method when using CPPC
+Date:   Mon, 26 Aug 2019 16:30:47 -0600
+Message-Id: <20190826223047.13146-1-ahs3@redhat.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:5.22.84,1.0.8
- definitions=2019-08-26_08:2019-08-26,2019-08-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- priorityscore=1501 lowpriorityscore=0 bulkscore=0 spamscore=0
- impostorscore=0 adultscore=0 phishscore=0 mlxlogscore=900 clxscore=1015
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1906280000 definitions=main-1908260158
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0 spamscore=0
- impostorscore=0 clxscore=1015 mlxscore=0 malwarescore=0 suspectscore=0
- bulkscore=0 mlxlogscore=993 priorityscore=1501 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1906280000
- definitions=main-1908260158
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.46]); Mon, 26 Aug 2019 22:30:55 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBPbGl2ZXIgTmV1a3VtIDxvbmV1
-a3VtQHN1c2UuY29tPg0KPiBTZW50OiBNb25kYXksIEF1Z3VzdCAyNiwgMjAxOSA0OjAwIEFNDQo+
-IFRvOiBIeWRlLCBDaGFybGVzIC0gRGVsbCBUZWFtOyBsaW51eC11c2JAdmdlci5rZXJuZWwub3Jn
-DQo+IENjOiBMaW1vbmNpZWxsbywgTWFyaW87IG5pY19zd3NkQHJlYWx0ZWsuY29tOyBsaW51eC1h
-Y3BpQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1JGQyAxLzNdIG5ldDogY2RjX25j
-bTogYWRkIGdldC9zZXQgZXRoZXJuZXQgYWRkcmVzcyBmdW5jdGlvbnMNCj4gDQo+IA0KPiBbRVhU
-RVJOQUwgRU1BSUxdDQo+IA0KPiBBbSBGcmVpdGFnLCBkZW4gMjMuMDguMjAxOSwgMjI6MjYgKzAw
-MDAgc2NocmllYg0KPiBDaGFybGVzLkh5ZGVAZGVsbHRlYW0uY29tOg0KPiA+IFRoaXMgcGF0Y2gg
-YWRkcyBzdXBwb3J0IGZvciBwdXNoaW5nIGEgTUFDIGFkZHJlc3Mgb3V0IHRvIFVTQiBiYXNlZA0K
-PiA+IGV0aGVybmV0IGNvbnRyb2xsZXJzIGRyaXZlbiBieSBjZGNfbmNtLiAgV2l0aCB0aGlzIGNo
-YW5nZSwgaWZjb25maWcgY2FuDQo+ID4gbm93IHNldCB0aGUgZGV2aWNlJ3MgTUFDIGFkZHJlc3Mu
-ICBGb3IgZXhhbXBsZSwgdGhlIERlbGwgVW5pdmVyc2FsIERvY2sNCj4gPiBENjAwMCBpcyBkcml2
-ZW4gYnkgY2RjX25jbS4gIFRoZSBENjAwMCBjYW4gbm93IGhhdmUgaXRzIE1BQyBhZGRyZXNzIHNl
-dA0KPiA+IGJ5IGlmY29uZmlnLCBhcyBpdCBjYW4gYmUgZG9uZSBpbiBXaW5kb3dzLiAgVGhpcyB3
-YXMgdGVzdGVkIHdpdGggYSBENjAwMA0KPiA+IHVzaW5nIGlmY29uZmlnIG9uIGFuIHg4NiBiYXNl
-ZCBjaHJvbWVib29rLCB3aGVyZSBpcHJvdXRlMiBpcyBub3QNCj4gPiBhdmFpbGFibGUuDQo+IA0K
-PiBUaGUgY29kZSBpcyBnb29kLiBCdXQgcGxhY2luZyBpdCBpbnRvIGNkY19uY20gbWVhbnMgdGhh
-dCBjZGNfZXRoZXINCj4gb3Igb3RoZXIgZHJpdmVycyBjYW5ub3QgdXNlIGl0Lg0KPiANCj4gCVJl
-Z2FyZHMNCj4gCQlPbGl2ZXINCg0KSXMgdGhpcyBtYXliZSBiZXR0ZXIgaW50ZW5kZWQgZm9yIHVz
-Ym5ldCB0aGVuPw0K
+According to the ACPI 6.3 specification, the _PSD method is optional
+when using CPPC.  The underlying assumption is that each CPU can change
+frequency independently from all other CPUs; _PSD is provided to tell
+the OS that some processors can NOT do that.
+
+However, the acpi_get_psd() function returns ENODEV if there is no _PSD
+method present, or an ACPI error status if an error occurs when evaluating
+_PSD, if present.  This makes _PSD mandatory when using CPPC, in violation
+of the specification, and only on Linux.
+
+This has forced some firmware writers to provide a dummy _PSD, even though
+it is irrelevant, but only because Linux requires it; other OSPMs follow
+the spec.  We really do not want to have OS specific ACPI tables, though.
+
+So, correct acpi_get_psd() so that it does not return an error if there
+is no _PSD method present, but does return a failure when the method can
+not be executed properly.  This allows _PSD to be optional as it should
+be.
+
+v2:
+   -- verified simple check for AE_NOT_FOUND was sufficient
+   -- simplified return status check per Rafael's suggestion
+
+Signed-off-by: Al Stone <ahs3@redhat.com>
+Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+Cc: Len Brown <lenb@kernel.org>
+---
+ drivers/acpi/cppc_acpi.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 15f103d7532b..7a946f1944ab 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -365,10 +365,12 @@ static int acpi_get_psd(struct cpc_desc *cpc_ptr, acpi_handle handle)
+ 	union acpi_object  *psd = NULL;
+ 	struct acpi_psd_package *pdomain;
+ 
+-	status = acpi_evaluate_object_typed(handle, "_PSD", NULL, &buffer,
+-			ACPI_TYPE_PACKAGE);
+-	if (ACPI_FAILURE(status))
+-		return -ENODEV;
++	if (acpi_has_method(handle, "_PSD")) {
++		status = acpi_evaluate_object_typed(handle, "_PSD", NULL,
++						    &buffer, ACPI_TYPE_PACKAGE);
++		if (status == AE_NOT_FOUND)	/* _PSD is optional */
++			return 0;
++	}
+ 
+ 	psd = buffer.pointer;
+ 	if (!psd || psd->package.count != 1) {
+-- 
+2.21.0
+
