@@ -2,114 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98F499CB9C
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2019 10:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE57D9CB9F
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2019 10:32:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730630AbfHZIcc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Aug 2019 04:32:32 -0400
-Received: from mga14.intel.com ([192.55.52.115]:42753 "EHLO mga14.intel.com"
+        id S1730614AbfHZIco (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Aug 2019 04:32:44 -0400
+Received: from mga06.intel.com ([134.134.136.31]:55345 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729841AbfHZIc2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 26 Aug 2019 04:32:28 -0400
+        id S1726401AbfHZIc1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 26 Aug 2019 04:32:27 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Aug 2019 01:32:27 -0700
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Aug 2019 01:32:26 -0700
 X-IronPort-AV: E=Sophos;i="5.64,431,1559545200"; 
-   d="scan'208";a="263867644"
+   d="scan'208";a="204502153"
 Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Aug 2019 01:32:25 -0700
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Aug 2019 01:32:25 -0700
 Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id 95CE220B47;
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id 9F1F820B48;
         Mon, 26 Aug 2019 11:32:23 +0300 (EEST)
 Received: from sailus by punajuuri.localdomain with local (Exim 4.92)
         (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1i2APB-0002KB-3y; Mon, 26 Aug 2019 11:31:13 +0300
+        id 1i2APB-0002KE-5R; Mon, 26 Aug 2019 11:31:13 +0300
 From:   Sakari Ailus <sakari.ailus@linux.intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v2 1/5] ACPI: Enable driver and firmware hints to control power at probe time
-Date:   Mon, 26 Aug 2019 11:31:08 +0300
-Message-Id: <20190826083112.8888-2-sakari.ailus@linux.intel.com>
+Subject: [PATCH v2 2/5] ACPI: Add a convenience function to tell a device is suspended in probe
+Date:   Mon, 26 Aug 2019 11:31:09 +0300
+Message-Id: <20190826083112.8888-3-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190826083112.8888-1-sakari.ailus@linux.intel.com>
 References: <20190826083112.8888-1-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Allow drivers and firmware tell ACPI that there's no need to power on a
-device for probe. This requires both a hint from the firmware as well as
-an indication from a driver to leave the device off.
+Add a convenience function to tell whether a device is suspended for probe
+or remove, for busses where the custom is that drivers don't need to
+resume devices in probe, or suspend them in their remove handlers.
 
+Returns false on non-ACPI systems.
+
+Suggested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 ---
- drivers/acpi/device_pm.c | 15 +++++++++++++--
- include/linux/device.h   |  7 +++++++
- 2 files changed, 20 insertions(+), 2 deletions(-)
+ drivers/acpi/device_pm.c | 35 +++++++++++++++++++++++++++++++++++
+ include/linux/acpi.h     |  5 +++++
+ 2 files changed, 40 insertions(+)
 
 diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-index f616b16c1f0be..adcdf78ce4de8 100644
+index adcdf78ce4de8..7d6b40396ea71 100644
 --- a/drivers/acpi/device_pm.c
 +++ b/drivers/acpi/device_pm.c
-@@ -1276,7 +1276,12 @@ static void acpi_dev_pm_detach(struct device *dev, bool power_off)
- 	if (adev && dev->pm_domain == &acpi_general_pm_domain) {
- 		dev_pm_domain_set(dev, NULL);
- 		acpi_remove_pm_notifier(adev);
--		if (power_off) {
-+		if (power_off
-+#ifdef CONFIG_PM
-+		    && !(dev->driver->probe_low_power &&
-+			 device_property_present(dev, "probe-low-power"))
-+#endif
-+			) {
- 			/*
- 			 * If the device's PM QoS resume latency limit or flags
- 			 * have been exposed to user space, they have to be
-@@ -1324,7 +1329,13 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
- 
- 	acpi_add_pm_notifier(adev, dev, acpi_pm_notify_work_func);
- 	dev_pm_domain_set(dev, &acpi_general_pm_domain);
--	if (power_on) {
+@@ -1344,4 +1344,39 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
+ 	return 1;
+ }
+ EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
 +
-+	if (power_on
-+#ifdef CONFIG_PM
-+	    && !(dev->driver->probe_low_power &&
-+		 device_property_present(dev, "probe-low-power"))
-+#endif
-+		) {
- 		acpi_dev_pm_full_power(adev);
- 		acpi_device_wakeup_disable(adev);
- 	}
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 6717adee33f01..4bc0ea4a3201a 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -248,6 +248,12 @@ enum probe_type {
-  * @owner:	The module owner.
-  * @mod_name:	Used for built-in modules.
-  * @suppress_bind_attrs: Disables bind/unbind via sysfs.
-+ * @probe_low_power: The driver supports its probe function being called while
-+ *		     the device is in a low power state, independently of the
-+ *		     expected behaviour on combination of a given bus and
-+ *		     firmware interface etc. The driver is responsible for
-+ *		     powering the device on using runtime PM in such case.
-+ *		     This configuration has no effect if CONFIG_PM is disabled.
-  * @probe_type:	Type of the probe (synchronous or asynchronous) to use.
-  * @of_match_table: The open firmware table.
-  * @acpi_match_table: The ACPI match table.
-@@ -285,6 +291,7 @@ struct device_driver {
- 	const char		*mod_name;	/* used for built-in modules */
++/**
++ * acpi_dev_low_power_state_probe - Tell if a device is in a low power state
++ *				    during probe
++ * @dev: The device
++ *
++ * Tell whether a given device is in a low power state during the driver's probe
++ * or remove operation.
++ *
++ * Drivers of devices on certain busses such as I²C can generally assume (on
++ * ACPI based systems) that the devices they control are powered on without
++ * driver having to do anything about it. Using struct
++ * device_driver.probe_low_power and "probe-low-power" property, this can be
++ * negated and the driver has full control of the device power management.
++ * Always returns false on non-ACPI based systems. True is returned on ACPI
++ * based systems iff the device is in a low power state during probe or remove.
++ */
++bool acpi_dev_low_power_state_probe(struct device *dev)
++{
++	int power_state;
++	int ret;
++
++	if (!is_acpi_device_node(dev_fwnode(dev)))
++		return false;
++
++	ret = acpi_device_get_power(ACPI_COMPANION(dev), &power_state);
++	if (ret) {
++		dev_warn(dev, "Cannot obtain power state (%d)\n", ret);
++		return false;
++	}
++
++	return power_state != ACPI_STATE_D0;
++}
++EXPORT_SYMBOL_GPL(acpi_dev_low_power_state_probe);
++
+ #endif /* CONFIG_PM */
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 9426b9aaed86f..a20b4246107ac 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -912,6 +912,7 @@ int acpi_dev_resume(struct device *dev);
+ int acpi_subsys_runtime_suspend(struct device *dev);
+ int acpi_subsys_runtime_resume(struct device *dev);
+ int acpi_dev_pm_attach(struct device *dev, bool power_on);
++bool acpi_dev_low_power_state_probe(struct device *dev);
+ #else
+ static inline int acpi_dev_runtime_suspend(struct device *dev) { return 0; }
+ static inline int acpi_dev_runtime_resume(struct device *dev) { return 0; }
+@@ -921,6 +922,10 @@ static inline int acpi_dev_pm_attach(struct device *dev, bool power_on)
+ {
+ 	return 0;
+ }
++static inline bool acpi_dev_low_power_state_probe(struct device *dev)
++{
++	return false;
++}
+ #endif
  
- 	bool suppress_bind_attrs;	/* disables bind/unbind via sysfs */
-+	bool probe_low_power;
- 	enum probe_type probe_type;
- 
- 	const struct of_device_id	*of_match_table;
+ #if defined(CONFIG_ACPI) && defined(CONFIG_PM_SLEEP)
 -- 
 2.20.1
 
