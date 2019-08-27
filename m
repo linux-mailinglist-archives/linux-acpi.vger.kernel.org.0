@@ -2,148 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A8289DBA2
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2019 04:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 572CB9E4C2
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2019 11:49:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728550AbfH0Cb1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Aug 2019 22:31:27 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:37382 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728406AbfH0Cb0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 26 Aug 2019 22:31:26 -0400
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 109A2C0021D7
-        for <linux-acpi@vger.kernel.org>; Tue, 27 Aug 2019 02:31:26 +0000 (UTC)
-Received: by mail-io1-f72.google.com with SMTP id e17so25261738ioh.13
-        for <linux-acpi@vger.kernel.org>; Mon, 26 Aug 2019 19:31:26 -0700 (PDT)
+        id S1729031AbfH0Jtz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Aug 2019 05:49:55 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:33990 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726972AbfH0Jtz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Aug 2019 05:49:55 -0400
+Received: by mail-wm1-f65.google.com with SMTP id e8so1999955wme.1;
+        Tue, 27 Aug 2019 02:49:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XSocX2YkAd3hERDytZMXxQV7vxeYgbpxXlORSGyl3Lk=;
+        b=Pb4G0Ex4dRDrrYJEg/DhfqLtnGMA9FM7KA531lU4D7V26XQVGl54eL0Ye1Fi8N1PUA
+         UpF2oZSZqC38KcdTiCGA/TKYpXx1wtSMYlkQpLSvDNKRMhSybqLg1WG0w5lP61Bh9gK9
+         Kl35gf47Q/2Nr82BOMtFvmO/l6I66Ac0q8KSZD+4xZeKUuNmiP+VRvB+4uMXi9jyFjje
+         uvMhJkAH1yS1U7fIKJFflexFeWSdbfy15N/0PH1cq6EwZ2XI4MU7HdSpgwuFySZd0S+a
+         ASFgDthEln4RnnSGsimysA5o5w+tMd99Ub9coMEBYVbCV2JxNPM/pkMzs0JnJT+kYhIg
+         wX+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:reply-to:subject:to:cc:references:from
-         :organization:message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=ySf8YTYMsVP8iamqAEphzE0BR0aETXvL0kY9WW3W6kY=;
-        b=cdFZV9X6maPKgN+a4zgbaQUrseCCBok+moPYCPnBoFun8aHff3y7djq46DxaktGYNI
-         GnMnDmA1ZHNw5xGntfw/EOiZuuUQb5zV2BRDVzeOwVD8S8USXtHcjpd1Rrm5WAiJAeEg
-         98Y9rtD6dVB0iIGDe1jDsqkjZEYvejGrrXr4oO6o/gB9QLwY5vrvx6Arl1nT9CGMmrkY
-         JAkWNOkW2L7uzueUxwj51Mwgo9sbILkFlHMqy0TycE/mEJ2ERsxmTtZDRFN+4T9Dx7HF
-         8zOJ5XZVIto1bGPRDTir3yq/+/iBeDIdn540n9VJ8oVUkOY/8+E4HJ08/IX1qpAUMDvP
-         S4hg==
-X-Gm-Message-State: APjAAAX2vfJWMhUYmG+prY9LiKOqGUxQiGxDb/C2ejmzYwCw2LvQnVpz
-        NBUvj+xeXKe0saFgGRifVBuNxzbd2R89LL6xhpmoA2QLI7CLKiQxnQ3wSHIHQTOYsfwXuFehkxT
-        Tayy9tr7fzpQry4cvFR1PdQ==
-X-Received: by 2002:a5e:c101:: with SMTP id v1mr13090738iol.231.1566873085458;
-        Mon, 26 Aug 2019 19:31:25 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqzzoafTXhIdip+uTwFS7HgjaZ5P2T1bEX1t7ELjzkEe1CjYbFKzZkGpqR4VR89aap48to/uHw==
-X-Received: by 2002:a5e:c101:: with SMTP id v1mr13090725iol.231.1566873085224;
-        Mon, 26 Aug 2019 19:31:25 -0700 (PDT)
-Received: from masetto.ahs3 (c-67-165-232-89.hsd1.co.comcast.net. [67.165.232.89])
-        by smtp.gmail.com with ESMTPSA id z9sm19383904ior.79.2019.08.26.19.31.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Aug 2019 19:31:24 -0700 (PDT)
-Reply-To: ahs3@redhat.com
-Subject: Re: [PATCH v2] ACPI / CPPC: do not require the _PSD method when using
- CPPC
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-References: <20190826223047.13146-1-ahs3@redhat.com>
- <CAJZ5v0hXJNa3Z14MQgvNcVF8YxH+M46mMyC5U6vZqrpBZUjOgw@mail.gmail.com>
-From:   Al Stone <ahs3@redhat.com>
-Organization: Red Hat, Inc.
-Message-ID: <38f21587-f5c9-c831-d7ff-707974178d7f@redhat.com>
-Date:   Mon, 26 Aug 2019 20:31:23 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=XSocX2YkAd3hERDytZMXxQV7vxeYgbpxXlORSGyl3Lk=;
+        b=sukgmoxVBI0xQLVv6lx6i4L0NGJKXu0NStZAoHfXEo87PRmcYTpvCseowaUEBvqgXq
+         0EYFWAIBxpETB3MUB2RgCrEOLbah/uOxBMgJOnzEurVMMtm/IfsRUsnQNh3MVFLmEw8j
+         ENqeTI+KOBO4l7rugR2J5gIC8zxGba212LlnwCKuqTwQZwZ75em3fikY3hlnIJjM1wOU
+         JDb+ibt2/5OBWElSkyshrVMZ5Xd6c3xncRaAb5SZBFVRR66R28omr4AnsOINJZnOnon2
+         2hYtlrussjNJT0Df1KIDkdmIi8WxGU2JAp/zGPguFDk88w2s0gm9BoMbeYhCxa1DYM4a
+         hTmQ==
+X-Gm-Message-State: APjAAAUmu6dpEBUA1Cxg2MP7YXOHlHYVN6xgMYHQcdaaGHi/5GlMEGQX
+        s7XLbqJyIyeQnkDz8ib4q2jNGitfazTN3Q==
+X-Google-Smtp-Source: APXvYqwDJPdifkxz2KNrIC9cDrjhz0X2Vigjh0xpdyM8QZ6pCw159Fq5dNQl02ufWjZLZSrz9GZNQA==
+X-Received: by 2002:a1c:f101:: with SMTP id p1mr26719185wmh.62.1566899393269;
+        Tue, 27 Aug 2019 02:49:53 -0700 (PDT)
+Received: from localhost.localdomain (ip5b4096c3.dynamic.kabel-deutschland.de. [91.64.150.195])
+        by smtp.gmail.com with ESMTPSA id p10sm2450087wma.8.2019.08.27.02.49.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Aug 2019 02:49:52 -0700 (PDT)
+From:   Krzysztof Wilczynski <kw@linux.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] PCI/ACPI: Rename _HPP to _HPX and move of ACPI-specific code from probe.c
+Date:   Tue, 27 Aug 2019 11:49:48 +0200
+Message-Id: <20190827094951.10613-1-kw@linux.com>
+X-Mailer: git-send-email 2.22.1
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0hXJNa3Z14MQgvNcVF8YxH+M46mMyC5U6vZqrpBZUjOgw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 8/26/19 5:02 PM, Rafael J. Wysocki wrote:
-> On Tue, Aug 27, 2019 at 12:30 AM Al Stone <ahs3@redhat.com> wrote:
->>
->> According to the ACPI 6.3 specification, the _PSD method is optional
->> when using CPPC.  The underlying assumption is that each CPU can change
->> frequency independently from all other CPUs; _PSD is provided to tell
->> the OS that some processors can NOT do that.
->>
->> However, the acpi_get_psd() function returns ENODEV if there is no _PSD
->> method present, or an ACPI error status if an error occurs when evaluating
->> _PSD, if present.  This makes _PSD mandatory when using CPPC, in violation
->> of the specification, and only on Linux.
->>
->> This has forced some firmware writers to provide a dummy _PSD, even though
->> it is irrelevant, but only because Linux requires it; other OSPMs follow
->> the spec.  We really do not want to have OS specific ACPI tables, though.
->>
->> So, correct acpi_get_psd() so that it does not return an error if there
->> is no _PSD method present, but does return a failure when the method can
->> not be executed properly.  This allows _PSD to be optional as it should
->> be.
->>
->> v2:
->>    -- verified simple check for AE_NOT_FOUND was sufficient
->>    -- simplified return status check per Rafael's suggestion
->>
->> Signed-off-by: Al Stone <ahs3@redhat.com>
->> Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
->> Cc: Len Brown <lenb@kernel.org>
->> ---
->>  drivers/acpi/cppc_acpi.c | 10 ++++++----
->>  1 file changed, 6 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
->> index 15f103d7532b..7a946f1944ab 100644
->> --- a/drivers/acpi/cppc_acpi.c
->> +++ b/drivers/acpi/cppc_acpi.c
->> @@ -365,10 +365,12 @@ static int acpi_get_psd(struct cpc_desc *cpc_ptr, acpi_handle handle)
->>         union acpi_object  *psd = NULL;
->>         struct acpi_psd_package *pdomain;
->>
->> -       status = acpi_evaluate_object_typed(handle, "_PSD", NULL, &buffer,
->> -                       ACPI_TYPE_PACKAGE);
->> -       if (ACPI_FAILURE(status))
->> -               return -ENODEV;
->> +       if (acpi_has_method(handle, "_PSD")) {
-> 
-> This doesn't look necessary any more.
+This series of patches moves the ACPI-specific code currently included
+as part of the drivers/pci/probe.c. First, the ACPI Hot Plug structs
+for Type 0, 1 and 2, and any relevant variable names, structs, function
+names, etc., will have their names changed to reflect that these are
+related to _HPX rather than _HPP.  Second, all of the ACPI-specific
+code will be moved to drivers/pci/pci-acpi.c for better organisation
+and to keep ACPI-related code base together.  Third, remove the
+now obsolete struct hotplug_program_ops from drivers/pci/pci-acpi.c.
 
-Probably true.  I'll look back through acpi_evaluate_object_typed().
+Patches should be preferably merged in order as they build upon
+one-another.
 
->> +               status = acpi_evaluate_object_typed(handle, "_PSD", NULL,
->> +                                                   &buffer, ACPI_TYPE_PACKAGE);
->> +               if (status == AE_NOT_FOUND)     /* _PSD is optional */
->> +                       return 0;
-> 
-> And what about the other possible errors?
+Related:
+  https://lore.kernel.org/lkml/20190419220220.GI173520@google.com
+  https://lore.kernel.org/lkml/20190307213834.5914-3-mr.nuke.me@gmail.com
+  https://lore.kernel.org/lkml/20190307213834.5914-2-mr.nuke.me@gmail.com
 
-Argh.  My apologies.  I was not paying attention.  I'll correct
-this and send proper code tomorrow.  Really sorry for the noise :(...
+Krzysztof Wilczynski (3):
+  PCI/ACPI: Rename ACPI Hot Plug structs for Type 0, 1 and 2 from _HPP
+    to _HPX
+  PCI/ACPI: Move ACPI-specific Hot Plug programming functions to
+    pci-acpi.c
+  PCI/ACPI: Remove unnecessary struct hotplug_program_ops from
+    pci-acpi.c
 
->> +       }
->>
->>         psd = buffer.pointer;
->>         if (!psd || psd->package.count != 1) {
->> --
->> 2.21.0
->>
-
+ drivers/pci/pci-acpi.c      | 410 +++++++++++++++++++++++++++++++++---
+ drivers/pci/pci.h           |   9 +
+ drivers/pci/probe.c         | 278 +-----------------------
+ include/linux/pci_hotplug.h | 100 ---------
+ 4 files changed, 389 insertions(+), 408 deletions(-)
 
 -- 
-ciao,
-al
------------------------------------
-Al Stone
-Software Engineer
-Red Hat, Inc.
-ahs3@redhat.com
------------------------------------
+2.22.1
+
