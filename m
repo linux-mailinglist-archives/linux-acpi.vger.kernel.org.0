@@ -2,147 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5E77A01DB
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2019 14:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93EC2A0301
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2019 15:17:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726339AbfH1MgA convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 28 Aug 2019 08:36:00 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:40235 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726300AbfH1Mf7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Aug 2019 08:35:59 -0400
-Received: by mail-ot1-f66.google.com with SMTP id c34so2565098otb.7;
-        Wed, 28 Aug 2019 05:35:58 -0700 (PDT)
+        id S1726400AbfH1NQ4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Aug 2019 09:16:56 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:35281 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726326AbfH1NQ4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Aug 2019 09:16:56 -0400
+Received: by mail-wr1-f67.google.com with SMTP id g7so1281005wrx.2;
+        Wed, 28 Aug 2019 06:16:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=25zohd2xh+pzvcsnF+tzTNE+YPLY6vqdzQiEP9XHnm0=;
+        b=FCSq5sySqnbCfb9b3ZwBlAzVnCcWmxbxqpWcUe3qXQvRjpYBSvwOE2frxKcJG/ULGO
+         OUYtBOPm8f/PflCS44QQusrdQdTL9X2u7V8AjsbelGBEtRTMBQLrC2LvUbIXD8xdMC96
+         RFDh27PmVX6/JsZzstRwypDOZEdEedI5Vxz/J3R1N0I/VanlVhoBYuFvGp/kMKzn3kk9
+         4h2PAw4BBCronL3MeGuBGAdipkXDWeO1QA1j7FGuP7N9z9Zt+ZAUPkpCzCe3Nlr3WUvl
+         9Ado6CpOzmxiVzIbSt0O19lmyp6q0ivdd02sWeEZS9oiVlevmLYFwjayLAlr8Yayyud9
+         51SA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=8QDH9jpinSuXfS+ZOI90wcZgvUUIjZNcFdkdHit9RCY=;
-        b=MGVqp5aRVR8oKT+Yo25Ujqb64JrB5PcCJ7FnHBQajzIrdYNIIE8N4+dhxYUIiumsPl
-         pDVwBJmRnxfLO3X/1eQ6biwPeUjUN6DWITI+mGDc6Dsim4Xe+bcVzFgp4YcQxbEfQxiK
-         XJGuN0kGOU0RhElDBp1JeE/OB0OQIaxkYOhgAF6BSHlVKmq7j56lqMB+eBLALpSfyqoD
-         RYiYYKDWh3vz+fyu7xeBs1i3yArf+Mhy6hD2TkF0POG21Dk50C+I6YOvbWph0T/dX5B9
-         N8mMwRKge3mw6VQOwkYo7mDAUeR7jfqEcS0vnvMey9/5L98Y6OKxHtcJpll94pwCHM/L
-         xuyw==
-X-Gm-Message-State: APjAAAWRcnAAEAk+rzeWiqchhIMXM2r+C3BxM3kI+fg+wifucTbljMi3
-        zbw0bLsHAaTz8jcxoZtFBNzzN/FYyd7xRU7V4UbFYA==
-X-Google-Smtp-Source: APXvYqykwnj9n9QqtXyldmv4OqFTxHAgh7E3a+SF0O/1IY+hlXF/oXNDosKbW38kWtSu6Dhda2kbUI8M3d2WCe9UBOQ=
-X-Received: by 2002:a9d:12d1:: with SMTP id g75mr2946048otg.189.1566995758287;
- Wed, 28 Aug 2019 05:35:58 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=25zohd2xh+pzvcsnF+tzTNE+YPLY6vqdzQiEP9XHnm0=;
+        b=Vck6YBbE9JnmvvhQS1qRDOW8iG+C1uC7Kf9lZV9Az81FLPvsYrrm6yGBj5R0fYlPOS
+         4RP88lr5ltiDdWbAQZaCGnq5G8C8FAi227lvwitBiTnwYcLOPKMub+PeHUEgkx9cixRR
+         zwUPc6KNaWB5xzQquKTppTvvpC4uuYlZKyyK+FlRqKLKHUwVNWEB02AsYrgW59h7OWR2
+         RL8vmW5awQ5J2wHaj75S+65GuR+9P4d7KZ9hYMJrLaHvP+zGCQSBgVwLtBSEVxe1fEWg
+         cOXFyCCwbFLOEv7FXhrb1DW52HRa+YRz0LQZztOWMl/CwL0o4WAznq6JAh9uRCHDJFDZ
+         poyQ==
+X-Gm-Message-State: APjAAAV19dnyQhqjtF31kMWukel2OP+6t856QyjCFSElJKHeslImkaj2
+        ecE1/AJd/zBMbHF/1XtcmhOxCEYaXjVny4eQ1kI=
+X-Google-Smtp-Source: APXvYqzQG9O/DS/fNOUx9hGjL+6UhlcM/boVbNLCBZF0aFCbmz31KRICTsYsRNEHfJ+Zpn8t7Glc8r1eemBqCbaZEIo=
+X-Received: by 2002:a05:6000:152:: with SMTP id r18mr4883090wrx.41.1566998213954;
+ Wed, 28 Aug 2019 06:16:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190826083112.8888-1-sakari.ailus@linux.intel.com>
- <20190826083112.8888-2-sakari.ailus@linux.intel.com> <20190826084343.GA1095@kroah.com>
- <20190826103200.GQ31967@paasikivi.fi.intel.com> <20190826133439.GA13275@kroah.com>
- <CAJZ5v0jmsPO5m2zBV3_j8LgqQ2Uj6euXUCJgT74L93hZP9nP_A@mail.gmail.com> <20190828095701.GC7657@paasikivi.fi.intel.com>
-In-Reply-To: <20190828095701.GC7657@paasikivi.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 28 Aug 2019 14:35:46 +0200
-Message-ID: <CAJZ5v0gLPyJ7zDGTCLsv94fn4JJSmPEEpxwNJQyfU+RyveEspQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] ACPI: Enable driver and firmware hints to control
- power at probe time
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20190827202835.213456-1-hdegoede@redhat.com> <20190828113748.GK2680@smile.fi.intel.com>
+ <005b954d-46ad-5e45-6a9c-0b1efe020b92@redhat.com> <c07a8e2e-61a7-7ce7-4f73-48978be98d27@redhat.com>
+In-Reply-To: <c07a8e2e-61a7-7ce7-4f73-48978be98d27@redhat.com>
+From:   Ian W MORRISON <ianwmorrison@gmail.com>
+Date:   Wed, 28 Aug 2019 23:16:42 +1000
+Message-ID: <CAFXWsS89-fB=LGLRpeSrH8Y97=fqhZ7d77WORjXdS1YU5Xbfsg@mail.gmail.com>
+Subject: Re: [PATCH v2] gpiolib: acpi: Add gpiolib_acpi_run_edge_events_on_boot
+ option and blacklist
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        stable@vger.kernel.org, Daniel Drake <drake@endlessm.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 28, 2019 at 11:57 AM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
+On Wed, 28 Aug 2019 at 22:21, Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> Hi Rafael,
+> Hi,
 >
-> On Wed, Aug 28, 2019 at 10:55:42AM +0200, Rafael J. Wysocki wrote:
-> > On Mon, Aug 26, 2019 at 3:34 PM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Mon, Aug 26, 2019 at 01:32:00PM +0300, Sakari Ailus wrote:
-> > > > Hi Greg,
-> > > >
-> > > > On Mon, Aug 26, 2019 at 10:43:43AM +0200, Greg Kroah-Hartman wrote:
-> > > >
-> > > > ...
-> > > >
-> > > > > > diff --git a/include/linux/device.h b/include/linux/device.h
-> > > > > > index 6717adee33f01..4bc0ea4a3201a 100644
-> > > > > > --- a/include/linux/device.h
-> > > > > > +++ b/include/linux/device.h
-> > > > > > @@ -248,6 +248,12 @@ enum probe_type {
-> > > > > >   * @owner:       The module owner.
-> > > > > >   * @mod_name:    Used for built-in modules.
-> > > > > >   * @suppress_bind_attrs: Disables bind/unbind via sysfs.
-> > > > > > + * @probe_low_power: The driver supports its probe function being called while
-> > > > > > + *                    the device is in a low power state, independently of the
-> > > > > > + *                    expected behaviour on combination of a given bus and
-> > > > > > + *                    firmware interface etc. The driver is responsible for
-> > > > > > + *                    powering the device on using runtime PM in such case.
-> > > > > > + *                    This configuration has no effect if CONFIG_PM is disabled.
-> > > > > >   * @probe_type:  Type of the probe (synchronous or asynchronous) to use.
-> > > > > >   * @of_match_table: The open firmware table.
-> > > > > >   * @acpi_match_table: The ACPI match table.
-> > > > > > @@ -285,6 +291,7 @@ struct device_driver {
-> > > > > >   const char              *mod_name;      /* used for built-in modules */
-> > > > > >
-> > > > > >   bool suppress_bind_attrs;       /* disables bind/unbind via sysfs */
-> > > > > > + bool probe_low_power;
-> > > > >
-> > > > > Ick, no, this should be a bus-specific thing to handle such messed up
-> > > > > hardware.  Why polute this in the driver core?
-> > > >
-> > > > The alternative could be to make it I²C specific indeed; the vast majority
-> > > > of camera sensors are I²C devices these days.
-> > >
-> > > Why is this even needed to be a bus/device attribute at all?  You are
-> > > checking the firmware property in the probe function, just do the logic
-> > > there as you are, what needs to be saved to the bus's logic?
+> On 28-08-19 14:20, Hans de Goede wrote:
+> > Hi,
 > >
-> > The situation today is that all devices are put into D0 by the ACPI
-> > layer before driver probing since drivers generally expect devices to
-> > be in D0 when their probe routines run.  If the driver is prepared to
-> > cope with devices in low-power states, though, powering them up before
-> > probing for a driver may not be necessary, but still the core (or
-> > generally the code invoking the driver probe) needs to know that the
-> > driver really is prepared for that.  Hence the driver flag AFAICS.
+> > On 28-08-19 13:37, Andy Shevchenko wrote:
+> >> On Tue, Aug 27, 2019 at 10:28:35PM +0200, Hans de Goede wrote:
+> >>> Another day; another DSDT bug we need to workaround...
+> >>>
+> >>> Since commit ca876c7483b6 ("gpiolib-acpi: make sure we trigger edge events
+> >>> at least once on boot") we call _AEI edge handlers at boot.
+> >>>
+> >>> In some rare cases this causes problems. One example of this is the Minix
+> >>> Neo Z83-4 mini PC, this device has a clear DSDT bug where it has some copy
+> >>> and pasted code for dealing with Micro USB-B connector host/device role
+> >>> switching, while the mini PC does not even have a micro-USB connector.
+> >>> This code, which should not be there, messes with the DDC data pin from
+> >>> the HDMI connector (switching it to GPIO mode) breaking HDMI support.
+> >>>
+> >>> To avoid problems like this, this commit adds a new
+> >>> gpiolib_acpi.run_edge_events_on_boot kernel commandline option, which
+> >>> allows disabling the running of _AEI edge event handlers at boot.
+> >>>
+> >>> The default value is -1/auto which uses a DMI based blacklist, the initial
+> >>> version of this blacklist contains the Neo Z83-4 fixing the HDMI breakage.
+> >>
+> >> Thank you!
+> >>
+> >> Assuming it works for Ian,
+> >> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > >
-> > Now, in theory there may be some platform requirements regarding the
-> > power states of devices during driver probe, although admittedly it is
-> > not entirely clear to me why that would be the case) and hence the
+> > Note I have access to a Minix Neo Z83-4 myself now and I did test that
+> > this fixes it and that passing gpiolib_acpi.run_edge_events_on_boot=0
+> > breaks HDMI again (so the option works).
 >
-> Please see the cover page of the set (also here):
+> Erm that should be gpiolib_acpi.run_edge_events_on_boot=1 (not 0) breaks
+> HDMI.
 >
-> <URL:https://lkml.org/lkml/2019/8/26/175>
->
-> > property.  I would think that if the driver could cope with devices in
-> > low-power states during probe, the platform wouldn't need to worry
-> > about that.
->
-> I understand this as driver deciding whether it'd power on the device
-> during probe.
->
-> That way there's no way to judge whether the device is accessible, and
-> probe would succeed without an error, which then manifests itself on the
-> first access of the device.
 
-OK, so the property really represents the platform preference in that
-respect and the presence of it by no means guarantees that there won't
-be any problems on the first device access.
+Many thanks again Hans. I've also tested the patch including the various command
+line options on my MINIX Z83-4 and they work fine.
 
-> Such as on the at24 EEPROM driver, the error
-> would take place on first read of the contents, not in probe.
->
-> Somebody might consider that as a driver bug.
-
-Well, I guess you can argue that the safer thing, which therefore
-should be the default, is to power up the device before probing and to
-check whether or not it is accessible at that time.  However, in some
-cases it may be desirable to avoid powering up the device at that
-point, whatever the reason, and the property provides a hint about
-that.
-
-Fair enough to me, but honestly I'm not sure about the example in the
-cover letter. :-)
+Best regards,
+Ian
