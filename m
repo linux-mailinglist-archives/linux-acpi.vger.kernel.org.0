@@ -2,199 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BADF5A0180
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2019 14:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5E77A01DB
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2019 14:36:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726253AbfH1MV3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Aug 2019 08:21:29 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:57166 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726270AbfH1MV3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 28 Aug 2019 08:21:29 -0400
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id AA8A85859E
-        for <linux-acpi@vger.kernel.org>; Wed, 28 Aug 2019 12:21:28 +0000 (UTC)
-Received: by mail-ed1-f71.google.com with SMTP id r25so1561313edp.20
-        for <linux-acpi@vger.kernel.org>; Wed, 28 Aug 2019 05:21:28 -0700 (PDT)
+        id S1726339AbfH1MgA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 28 Aug 2019 08:36:00 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:40235 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726300AbfH1Mf7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Aug 2019 08:35:59 -0400
+Received: by mail-ot1-f66.google.com with SMTP id c34so2565098otb.7;
+        Wed, 28 Aug 2019 05:35:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=pFwT3MczVz0uzEr5z1eNeQGMrxBuPaHwi2jIUSF3DYw=;
-        b=jG7DxHc6UPcODuG0XmdDM1q2pqEsVbVY2OiSLtNxmQZ8ENa85NNdo+xQ6mifJFRx97
-         j1EiqJBa6dCw4T/31b8FRPf/YCodLdzfWcZnpduhpSpAjrwK6SpVAYEjsj6oviRGsu+c
-         4fEu54mwNvMZHLbOcZ65DvYLqYA/QWxEjpVQZxpyTkk1HXn5vmB0pFAdMqs0/M/PFtXa
-         mXqbYuc2Dl/5A4jKBKgRxeu9o2YfkvZa0m7yaFvbEGJhueKyynIu3gPUoA/kLoDAELhe
-         I1QFMrrzZYo9lqhxqfAA4nEl3T5odozclFkfjygLI0vJ5GxL3yVQpxpssRWhK64dWpmZ
-         Zkgg==
-X-Gm-Message-State: APjAAAW+tQyoZYqEgGU0RfSnNGaGKPY/kOBmYpeIA8hBBuSbeGmxVLTo
-        qCAfsnBkPf3HqStfX3HNAWPHcyDwprUMcuyw2uHigoyRN65rVjf6PLiaiwCE5Js0W1YS9Pc6YS+
-        Ed7r3hBSMnw9FB6PuReVJbQ==
-X-Received: by 2002:a50:b165:: with SMTP id l34mr3669773edd.179.1566994887265;
-        Wed, 28 Aug 2019 05:21:27 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqxluKTYQWj67XWD8VFMLEPjzWhXpX6fsNT/j5tTVmlbY2uAsI4n2i4ld3hTVQwF28OBuxOQtw==
-X-Received: by 2002:a50:b165:: with SMTP id l34mr3669749edd.179.1566994887097;
-        Wed, 28 Aug 2019 05:21:27 -0700 (PDT)
-Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
-        by smtp.gmail.com with ESMTPSA id k15sm359958ejk.46.2019.08.28.05.21.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Aug 2019 05:21:26 -0700 (PDT)
-Subject: Re: [PATCH v2] gpiolib: acpi: Add
- gpiolib_acpi_run_edge_events_on_boot option and blacklist
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        stable@vger.kernel.org, Daniel Drake <drake@endlessm.com>,
-        Ian W MORRISON <ianwmorrison@gmail.com>
-References: <20190827202835.213456-1-hdegoede@redhat.com>
- <20190828113748.GK2680@smile.fi.intel.com>
- <005b954d-46ad-5e45-6a9c-0b1efe020b92@redhat.com>
-Message-ID: <c07a8e2e-61a7-7ce7-4f73-48978be98d27@redhat.com>
-Date:   Wed, 28 Aug 2019 14:21:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=8QDH9jpinSuXfS+ZOI90wcZgvUUIjZNcFdkdHit9RCY=;
+        b=MGVqp5aRVR8oKT+Yo25Ujqb64JrB5PcCJ7FnHBQajzIrdYNIIE8N4+dhxYUIiumsPl
+         pDVwBJmRnxfLO3X/1eQ6biwPeUjUN6DWITI+mGDc6Dsim4Xe+bcVzFgp4YcQxbEfQxiK
+         XJGuN0kGOU0RhElDBp1JeE/OB0OQIaxkYOhgAF6BSHlVKmq7j56lqMB+eBLALpSfyqoD
+         RYiYYKDWh3vz+fyu7xeBs1i3yArf+Mhy6hD2TkF0POG21Dk50C+I6YOvbWph0T/dX5B9
+         N8mMwRKge3mw6VQOwkYo7mDAUeR7jfqEcS0vnvMey9/5L98Y6OKxHtcJpll94pwCHM/L
+         xuyw==
+X-Gm-Message-State: APjAAAWRcnAAEAk+rzeWiqchhIMXM2r+C3BxM3kI+fg+wifucTbljMi3
+        zbw0bLsHAaTz8jcxoZtFBNzzN/FYyd7xRU7V4UbFYA==
+X-Google-Smtp-Source: APXvYqykwnj9n9QqtXyldmv4OqFTxHAgh7E3a+SF0O/1IY+hlXF/oXNDosKbW38kWtSu6Dhda2kbUI8M3d2WCe9UBOQ=
+X-Received: by 2002:a9d:12d1:: with SMTP id g75mr2946048otg.189.1566995758287;
+ Wed, 28 Aug 2019 05:35:58 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <005b954d-46ad-5e45-6a9c-0b1efe020b92@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20190826083112.8888-1-sakari.ailus@linux.intel.com>
+ <20190826083112.8888-2-sakari.ailus@linux.intel.com> <20190826084343.GA1095@kroah.com>
+ <20190826103200.GQ31967@paasikivi.fi.intel.com> <20190826133439.GA13275@kroah.com>
+ <CAJZ5v0jmsPO5m2zBV3_j8LgqQ2Uj6euXUCJgT74L93hZP9nP_A@mail.gmail.com> <20190828095701.GC7657@paasikivi.fi.intel.com>
+In-Reply-To: <20190828095701.GC7657@paasikivi.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 28 Aug 2019 14:35:46 +0200
+Message-ID: <CAJZ5v0gLPyJ7zDGTCLsv94fn4JJSmPEEpxwNJQyfU+RyveEspQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] ACPI: Enable driver and firmware hints to control
+ power at probe time
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Wed, Aug 28, 2019 at 11:57 AM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> Hi Rafael,
+>
+> On Wed, Aug 28, 2019 at 10:55:42AM +0200, Rafael J. Wysocki wrote:
+> > On Mon, Aug 26, 2019 at 3:34 PM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > On Mon, Aug 26, 2019 at 01:32:00PM +0300, Sakari Ailus wrote:
+> > > > Hi Greg,
+> > > >
+> > > > On Mon, Aug 26, 2019 at 10:43:43AM +0200, Greg Kroah-Hartman wrote:
+> > > >
+> > > > ...
+> > > >
+> > > > > > diff --git a/include/linux/device.h b/include/linux/device.h
+> > > > > > index 6717adee33f01..4bc0ea4a3201a 100644
+> > > > > > --- a/include/linux/device.h
+> > > > > > +++ b/include/linux/device.h
+> > > > > > @@ -248,6 +248,12 @@ enum probe_type {
+> > > > > >   * @owner:       The module owner.
+> > > > > >   * @mod_name:    Used for built-in modules.
+> > > > > >   * @suppress_bind_attrs: Disables bind/unbind via sysfs.
+> > > > > > + * @probe_low_power: The driver supports its probe function being called while
+> > > > > > + *                    the device is in a low power state, independently of the
+> > > > > > + *                    expected behaviour on combination of a given bus and
+> > > > > > + *                    firmware interface etc. The driver is responsible for
+> > > > > > + *                    powering the device on using runtime PM in such case.
+> > > > > > + *                    This configuration has no effect if CONFIG_PM is disabled.
+> > > > > >   * @probe_type:  Type of the probe (synchronous or asynchronous) to use.
+> > > > > >   * @of_match_table: The open firmware table.
+> > > > > >   * @acpi_match_table: The ACPI match table.
+> > > > > > @@ -285,6 +291,7 @@ struct device_driver {
+> > > > > >   const char              *mod_name;      /* used for built-in modules */
+> > > > > >
+> > > > > >   bool suppress_bind_attrs;       /* disables bind/unbind via sysfs */
+> > > > > > + bool probe_low_power;
+> > > > >
+> > > > > Ick, no, this should be a bus-specific thing to handle such messed up
+> > > > > hardware.  Why polute this in the driver core?
+> > > >
+> > > > The alternative could be to make it I²C specific indeed; the vast majority
+> > > > of camera sensors are I²C devices these days.
+> > >
+> > > Why is this even needed to be a bus/device attribute at all?  You are
+> > > checking the firmware property in the probe function, just do the logic
+> > > there as you are, what needs to be saved to the bus's logic?
+> >
+> > The situation today is that all devices are put into D0 by the ACPI
+> > layer before driver probing since drivers generally expect devices to
+> > be in D0 when their probe routines run.  If the driver is prepared to
+> > cope with devices in low-power states, though, powering them up before
+> > probing for a driver may not be necessary, but still the core (or
+> > generally the code invoking the driver probe) needs to know that the
+> > driver really is prepared for that.  Hence the driver flag AFAICS.
+> >
+> > Now, in theory there may be some platform requirements regarding the
+> > power states of devices during driver probe, although admittedly it is
+> > not entirely clear to me why that would be the case) and hence the
+>
+> Please see the cover page of the set (also here):
+>
+> <URL:https://lkml.org/lkml/2019/8/26/175>
+>
+> > property.  I would think that if the driver could cope with devices in
+> > low-power states during probe, the platform wouldn't need to worry
+> > about that.
+>
+> I understand this as driver deciding whether it'd power on the device
+> during probe.
+>
+> That way there's no way to judge whether the device is accessible, and
+> probe would succeed without an error, which then manifests itself on the
+> first access of the device.
 
-On 28-08-19 14:20, Hans de Goede wrote:
-> Hi,
-> 
-> On 28-08-19 13:37, Andy Shevchenko wrote:
->> On Tue, Aug 27, 2019 at 10:28:35PM +0200, Hans de Goede wrote:
->>> Another day; another DSDT bug we need to workaround...
->>>
->>> Since commit ca876c7483b6 ("gpiolib-acpi: make sure we trigger edge events
->>> at least once on boot") we call _AEI edge handlers at boot.
->>>
->>> In some rare cases this causes problems. One example of this is the Minix
->>> Neo Z83-4 mini PC, this device has a clear DSDT bug where it has some copy
->>> and pasted code for dealing with Micro USB-B connector host/device role
->>> switching, while the mini PC does not even have a micro-USB connector.
->>> This code, which should not be there, messes with the DDC data pin from
->>> the HDMI connector (switching it to GPIO mode) breaking HDMI support.
->>>
->>> To avoid problems like this, this commit adds a new
->>> gpiolib_acpi.run_edge_events_on_boot kernel commandline option, which
->>> allows disabling the running of _AEI edge event handlers at boot.
->>>
->>> The default value is -1/auto which uses a DMI based blacklist, the initial
->>> version of this blacklist contains the Neo Z83-4 fixing the HDMI breakage.
->>
->> Thank you!
->>
->> Assuming it works for Ian,
->> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> 
-> Note I have access to a Minix Neo Z83-4 myself now and I did test that
-> this fixes it and that passing gpiolib_acpi.run_edge_events_on_boot=0
-> breaks HDMI again (so the option works).
+OK, so the property really represents the platform preference in that
+respect and the presence of it by no means guarantees that there won't
+be any problems on the first device access.
 
-Erm that should be gpiolib_acpi.run_edge_events_on_boot=1 (not 0) breaks
-HDMI.
+> Such as on the at24 EEPROM driver, the error
+> would take place on first read of the contents, not in probe.
+>
+> Somebody might consider that as a driver bug.
 
-Regards,
+Well, I guess you can argue that the safer thing, which therefore
+should be the default, is to power up the device before probing and to
+check whether or not it is accessible at that time.  However, in some
+cases it may be desirable to avoid powering up the device at that
+point, whatever the reason, and the property provides a hint about
+that.
 
-Hans
-
-
-
->>> Cc: stable@vger.kernel.org
->>> Cc: Daniel Drake <drake@endlessm.com>
->>> Cc: Ian W MORRISON <ianwmorrison@gmail.com>
->>> Reported-by: Ian W MORRISON <ianwmorrison@gmail.com>
->>> Suggested-by: Ian W MORRISON <ianwmorrison@gmail.com>
->>> Fixes: ca876c7483b6 ("gpiolib-acpi: make sure we trigger edge events at least once on boot")
->>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>> ---
->>> Changes in v2:
->>> - Use a module_param instead of __setup
->>> - Do DMI check only once from a postcore_initcall
->>> ---
->>>   drivers/gpio/gpiolib-acpi.c | 42 +++++++++++++++++++++++++++++++++----
->>>   1 file changed, 38 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
->>> index 39f2f9035c11..bda28eb82c3f 100644
->>> --- a/drivers/gpio/gpiolib-acpi.c
->>> +++ b/drivers/gpio/gpiolib-acpi.c
->>> @@ -7,6 +7,7 @@
->>>    *          Mika Westerberg <mika.westerberg@linux.intel.com>
->>>    */
->>> +#include <linux/dmi.h>
->>>   #include <linux/errno.h>
->>>   #include <linux/gpio/consumer.h>
->>>   #include <linux/gpio/driver.h>
->>> @@ -19,6 +20,11 @@
->>>   #include "gpiolib.h"
->>> +static int run_edge_events_on_boot = -1;
->>> +module_param(run_edge_events_on_boot, int, 0444);
->>> +MODULE_PARM_DESC(run_edge_events_on_boot,
->>> +         "Run edge _AEI event-handlers at boot: 0=no, 1=yes, -1=auto");
->>> +
->>>   /**
->>>    * struct acpi_gpio_event - ACPI GPIO event handler data
->>>    *
->>> @@ -170,10 +176,13 @@ static void acpi_gpiochip_request_irq(struct acpi_gpio_chip *acpi_gpio,
->>>       event->irq_requested = true;
->>>       /* Make sure we trigger the initial state of edge-triggered IRQs */
->>> -    value = gpiod_get_raw_value_cansleep(event->desc);
->>> -    if (((event->irqflags & IRQF_TRIGGER_RISING) && value == 1) ||
->>> -        ((event->irqflags & IRQF_TRIGGER_FALLING) && value == 0))
->>> -        event->handler(event->irq, event);
->>> +    if (run_edge_events_on_boot &&
->>> +        (event->irqflags & (IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING))) {
->>> +        value = gpiod_get_raw_value_cansleep(event->desc);
->>> +        if (((event->irqflags & IRQF_TRIGGER_RISING) && value == 1) ||
->>> +            ((event->irqflags & IRQF_TRIGGER_FALLING) && value == 0))
->>> +            event->handler(event->irq, event);
->>> +    }
->>>   }
->>>   static void acpi_gpiochip_request_irqs(struct acpi_gpio_chip *acpi_gpio)
->>> @@ -1283,3 +1292,28 @@ static int acpi_gpio_handle_deferred_request_irqs(void)
->>>   }
->>>   /* We must use _sync so that this runs after the first deferred_probe run */
->>>   late_initcall_sync(acpi_gpio_handle_deferred_request_irqs);
->>> +
->>> +static const struct dmi_system_id run_edge_events_on_boot_blacklist[] = {
->>> +    {
->>> +        .matches = {
->>> +            DMI_MATCH(DMI_SYS_VENDOR, "MINIX"),
->>> +            DMI_MATCH(DMI_PRODUCT_NAME, "Z83-4"),
->>> +        }
->>> +    },
->>> +    {} /* Terminating entry */
->>> +};
->>> +
->>> +static int acpi_gpio_setup_params(void)
->>> +{
->>> +    if (run_edge_events_on_boot < 0) {
->>> +        if (dmi_check_system(run_edge_events_on_boot_blacklist))
->>> +            run_edge_events_on_boot = 0;
->>> +        else
->>> +            run_edge_events_on_boot = 1;
->>> +    }
->>> +
->>> +    return 0;
->>> +}
->>> +
->>> +/* Directly after dmi_setup() which runs as core_initcall() */
->>> +postcore_initcall(acpi_gpio_setup_params);
->>> -- 
->>> 2.23.0
->>>
->>
+Fair enough to me, but honestly I'm not sure about the example in the
+cover letter. :-)
