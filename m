@@ -2,352 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 872A5A0341
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2019 15:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 466CEA079A
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2019 18:42:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726706AbfH1NbO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Aug 2019 09:31:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43014 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726397AbfH1NbG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 28 Aug 2019 09:31:06 -0400
-Received: from localhost (173-25-83-245.client.mchsi.com [173.25.83.245])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0783322DA7;
-        Wed, 28 Aug 2019 13:31:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566999065;
-        bh=8tL/BwaMTgaHn8IHnFMvKIx3ug7jMnEVbHbcYLAdxW4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=g+LTaOFEVrs4cfjga+T9CcPJG0KwVRlkDWGhI+aoFYodkIKUkQgLTVWay5WFUPKM4
-         N2wxfgzW4kLHghyA/FASQ7WaBAvlVa25efCoEydHchkZMfLQSFkf7dR1dVM8r33ASn
-         cK5lgQHVdUAjQTLRxoIjPs5flyjifhqrV3r6buso=
-Date:   Wed, 28 Aug 2019 08:31:03 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Krzysztof Wilczynski <kw@linux.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] PCI: Move PCI Express ASPM function prototypes and
- definitions to pci.h
-Message-ID: <20190828133103.GC4550@google.com>
-References: <20190827095620.11213-1-kw@linux.com>
+        id S1726315AbfH1Ql7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Aug 2019 12:41:59 -0400
+Received: from mx0b-00154904.pphosted.com ([148.163.137.20]:31170 "EHLO
+        mx0b-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726592AbfH1Ql7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 28 Aug 2019 12:41:59 -0400
+Received: from pps.filterd (m0170398.ppops.net [127.0.0.1])
+        by mx0b-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x7SGTvZM028221;
+        Wed, 28 Aug 2019 12:41:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dellteam.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=smtpout1;
+ bh=a3BoWxj1Az0X+1n8Sjnmh+YLv+LJl807q9sAANHRtRo=;
+ b=NdCCoXSCXcREB+knnvpihhv0F5PtxfBmtmeedh7+wgbvWzcE3s+jHMQgHAzts6fNVNZL
+ w04Ym3OuzRvR+wWIB8Sz5R/JfCqdDpPB35I2rRZxT0O13lCfOk2dvouj74r784y6arbU
+ jRxIg0esoYHEqfdY9nK099fYegY+DpItpdhdVyFg2X/B0Kiao1g8oA1cfMJm/pCYzmiV
+ mV+JyYnwJLORc0Nk78cmZsLN0DwR4/phlv+kAfIsKmgc559o9g0sttK+1Ln02MaIjMoQ
+ WvtsucTCDXfxvLQVaKbNCRcTUCtrOSlrgDjBIGCTlig02hUf8PNxyx89tLjenp5ujikq Fw== 
+Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
+        by mx0b-00154904.pphosted.com with ESMTP id 2uk2pessu2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 28 Aug 2019 12:41:57 -0400
+Received: from pps.filterd (m0133268.ppops.net [127.0.0.1])
+        by mx0a-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x7SGX9x4191166;
+        Wed, 28 Aug 2019 12:41:56 -0400
+Received: from ausxippc106.us.dell.com (AUSXIPPC106.us.dell.com [143.166.85.156])
+        by mx0a-00154901.pphosted.com with ESMTP id 2ukjakn9te-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 28 Aug 2019 12:41:56 -0400
+X-LoopCount0: from 10.166.132.133
+X-PREM-Routing: D-Outbound
+X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
+   d="scan'208";a="453337468"
+From:   <Charles.Hyde@dellteam.com>
+To:     <Mario.Limonciello@dell.com>, <bjorn@mork.no>
+CC:     <linux-acpi@vger.kernel.org>, <oliver@neukum.org>,
+        <nic_swsd@realtek.com>, <linux-usb@vger.kernel.org>
+Subject: RE: [RFC 2/3] ACPI: move ACPI functionality out of r8152 driver
+Thread-Topic: [RFC 2/3] ACPI: move ACPI functionality out of r8152 driver
+Thread-Index: AQHVWgITZZ4dwXs8CES9WUAD0zcVmKcKGJhogACFrgCABPPFAIAAWKMA//+tuqA=
+Date:   Wed, 28 Aug 2019 16:41:53 +0000
+Message-ID: <d800fe75f26b4bd2aa59e5c176eae15a@AUSX13MPS307.AMER.DELL.COM>
+References: <b84b32cb144f4ba8918ee2406e69275a@AUSX13MPS303.AMER.DELL.COM>
+ <87blwe272v.fsf@miraculix.mork.no>
+ <b3062089954f43259f8dfce9076b78ad@AUSX13MPC101.AMER.DELL.COM>
+ <6e404c3d3c344342b09b475e64b4ff3e@AUSX13MPS303.AMER.DELL.COM>
+ <ae55e4a85d594e27a46cab32ad675208@AUSX13MPC101.AMER.DELL.COM>
+In-Reply-To: <ae55e4a85d594e27a46cab32ad675208@AUSX13MPC101.AMER.DELL.COM>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Enabled=True;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Owner=Charles_Hyde@Dellteam.com;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SetDate=2019-08-27T22:08:23.8411868Z;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Name=External Public;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Application=Microsoft Azure
+ Information Protection;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Extended_MSFT_Method=Manual;
+ aiplabel=External Public
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.143.242.75]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190827095620.11213-1-kw@linux.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
+ definitions=2019-08-28_08:2019-08-28,2019-08-28 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 clxscore=1015 mlxscore=0 suspectscore=0 priorityscore=1501
+ phishscore=0 bulkscore=0 impostorscore=0 adultscore=0 spamscore=0
+ mlxlogscore=729 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1906280000 definitions=main-1908280166
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 clxscore=1015
+ suspectscore=0 priorityscore=1501 bulkscore=0 malwarescore=0
+ lowpriorityscore=0 mlxscore=0 mlxlogscore=827 spamscore=0 adultscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1906280000 definitions=main-1908280166
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 27, 2019 at 11:56:20AM +0200, Krzysztof Wilczynski wrote:
-> Merge PCI Express ASPM function prototypes and definitions
-> from include/linux/pci-aspm.h into include/linux/pci.h.
-> 
-> Function prototypes to move are pci_disable_link_state(),
-> pci_disable_link_state_locked(), pcie_no_aspm() and
-> pcie_aspm_support_enabled(), and definitions to move
-> are PCIE_LINK_STATE_L0S, PCIE_LINK_STATE_L1 and
-> PCIE_LINK_STATE_CLKPM.
-> 
-> There are no functional changes.
-> 
-> Signed-off-by: Krzysztof Wilczynski <kw@linux.com>
-
-I replaced the leading spaces in the copyright lines with tabs to
-match the others and applied to pci/aspm for v5.4, thanks!
-
-> ---
->  drivers/acpi/pci_root.c                       |  1 -
->  drivers/char/xillybus/xillybus_pcie.c         |  1 -
->  drivers/net/ethernet/intel/e1000e/e1000.h     |  1 -
->  drivers/net/ethernet/jme.c                    |  1 -
->  drivers/net/ethernet/realtek/r8169_main.c     |  1 -
->  drivers/net/wireless/ath/ath5k/pci.c          |  1 -
->  .../net/wireless/intel/iwlegacy/3945-mac.c    |  1 -
->  .../net/wireless/intel/iwlegacy/4965-mac.c    |  1 -
->  .../net/wireless/intel/iwlwifi/pcie/trans.c   |  1 -
->  drivers/pci/pci-acpi.c                        |  1 -
->  drivers/pci/pcie/aspm.c                       |  1 -
->  drivers/pci/quirks.c                          |  1 -
->  drivers/scsi/aacraid/linit.c                  |  1 -
->  drivers/scsi/hpsa.c                           |  1 -
->  drivers/scsi/mpt3sas/mpt3sas_scsih.c          |  1 -
->  include/linux/pci-aspm.h                      | 36 -------------------
->  include/linux/pci.h                           | 18 ++++++++++
->  17 files changed, 18 insertions(+), 51 deletions(-)
->  delete mode 100644 include/linux/pci-aspm.h
-> 
-> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> index 314a187ed572..d1e666ef3fcc 100644
-> --- a/drivers/acpi/pci_root.c
-> +++ b/drivers/acpi/pci_root.c
-> @@ -15,7 +15,6 @@
->  #include <linux/pm_runtime.h>
->  #include <linux/pci.h>
->  #include <linux/pci-acpi.h>
-> -#include <linux/pci-aspm.h>
->  #include <linux/dmar.h>
->  #include <linux/acpi.h>
->  #include <linux/slab.h>
-> diff --git a/drivers/char/xillybus/xillybus_pcie.c b/drivers/char/xillybus/xillybus_pcie.c
-> index 02c15952b103..18b0c392bc93 100644
-> --- a/drivers/char/xillybus/xillybus_pcie.c
-> +++ b/drivers/char/xillybus/xillybus_pcie.c
-> @@ -9,7 +9,6 @@
->  
->  #include <linux/module.h>
->  #include <linux/pci.h>
-> -#include <linux/pci-aspm.h>
->  #include <linux/slab.h>
->  #include "xillybus.h"
->  
-> diff --git a/drivers/net/ethernet/intel/e1000e/e1000.h b/drivers/net/ethernet/intel/e1000e/e1000.h
-> index 34cd67951aec..6c51b1bad8c4 100644
-> --- a/drivers/net/ethernet/intel/e1000e/e1000.h
-> +++ b/drivers/net/ethernet/intel/e1000e/e1000.h
-> @@ -13,7 +13,6 @@
->  #include <linux/io.h>
->  #include <linux/netdevice.h>
->  #include <linux/pci.h>
-> -#include <linux/pci-aspm.h>
->  #include <linux/crc32.h>
->  #include <linux/if_vlan.h>
->  #include <linux/timecounter.h>
-> diff --git a/drivers/net/ethernet/jme.c b/drivers/net/ethernet/jme.c
-> index 0b668357db4d..57e8aea98969 100644
-> --- a/drivers/net/ethernet/jme.c
-> +++ b/drivers/net/ethernet/jme.c
-> @@ -14,7 +14,6 @@
->  #include <linux/module.h>
->  #include <linux/kernel.h>
->  #include <linux/pci.h>
-> -#include <linux/pci-aspm.h>
->  #include <linux/netdevice.h>
->  #include <linux/etherdevice.h>
->  #include <linux/ethtool.h>
-> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-> index e1dd6ea60d67..a8f373e49505 100644
-> --- a/drivers/net/ethernet/realtek/r8169_main.c
-> +++ b/drivers/net/ethernet/realtek/r8169_main.c
-> @@ -28,7 +28,6 @@
->  #include <linux/dma-mapping.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/prefetch.h>
-> -#include <linux/pci-aspm.h>
->  #include <linux/ipv6.h>
->  #include <net/ip6_checksum.h>
->  
-> diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
-> index c6156cc38940..d5ee32ce9eb3 100644
-> --- a/drivers/net/wireless/ath/ath5k/pci.c
-> +++ b/drivers/net/wireless/ath/ath5k/pci.c
-> @@ -18,7 +18,6 @@
->  
->  #include <linux/nl80211.h>
->  #include <linux/pci.h>
-> -#include <linux/pci-aspm.h>
->  #include <linux/etherdevice.h>
->  #include <linux/module.h>
->  #include "../ath.h"
-> diff --git a/drivers/net/wireless/intel/iwlegacy/3945-mac.c b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-> index b82da75a9ae3..4fbcc7fba3cc 100644
-> --- a/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-> +++ b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-> @@ -18,7 +18,6 @@
->  #include <linux/module.h>
->  #include <linux/init.h>
->  #include <linux/pci.h>
-> -#include <linux/pci-aspm.h>
->  #include <linux/slab.h>
->  #include <linux/dma-mapping.h>
->  #include <linux/delay.h>
-> diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> index fa2c02881939..ffb705b18fb1 100644
-> --- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> +++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> @@ -18,7 +18,6 @@
->  #include <linux/module.h>
->  #include <linux/init.h>
->  #include <linux/pci.h>
-> -#include <linux/pci-aspm.h>
->  #include <linux/slab.h>
->  #include <linux/dma-mapping.h>
->  #include <linux/delay.h>
-> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-> index f5df5b370d78..4c308e33ee21 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-> @@ -62,7 +62,6 @@
->   *
->   *****************************************************************************/
->  #include <linux/pci.h>
-> -#include <linux/pci-aspm.h>
->  #include <linux/interrupt.h>
->  #include <linux/debugfs.h>
->  #include <linux/sched.h>
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index 45049f558860..dd520fe927db 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -14,7 +14,6 @@
->  #include <linux/msi.h>
->  #include <linux/pci_hotplug.h>
->  #include <linux/module.h>
-> -#include <linux/pci-aspm.h>
->  #include <linux/pci-acpi.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/pm_qos.h>
-> diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-> index e44af7f4d37f..ad6259ec51a6 100644
-> --- a/drivers/pci/pcie/aspm.c
-> +++ b/drivers/pci/pcie/aspm.c
-> @@ -18,7 +18,6 @@
->  #include <linux/slab.h>
->  #include <linux/jiffies.h>
->  #include <linux/delay.h>
-> -#include <linux/pci-aspm.h>
->  #include "../pci.h"
->  
->  #ifdef MODULE_PARAM_PREFIX
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index 208aacf39329..9ac1a7564c9e 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -20,7 +20,6 @@
->  #include <linux/delay.h>
->  #include <linux/acpi.h>
->  #include <linux/dmi.h>
-> -#include <linux/pci-aspm.h>
->  #include <linux/ioport.h>
->  #include <linux/sched.h>
->  #include <linux/ktime.h>
-> diff --git a/drivers/scsi/aacraid/linit.c b/drivers/scsi/aacraid/linit.c
-> index 644f7f5c61a2..4a858789e6c5 100644
-> --- a/drivers/scsi/aacraid/linit.c
-> +++ b/drivers/scsi/aacraid/linit.c
-> @@ -27,7 +27,6 @@
->  #include <linux/moduleparam.h>
->  #include <linux/pci.h>
->  #include <linux/aer.h>
-> -#include <linux/pci-aspm.h>
->  #include <linux/slab.h>
->  #include <linux/mutex.h>
->  #include <linux/spinlock.h>
-> diff --git a/drivers/scsi/hpsa.c b/drivers/scsi/hpsa.c
-> index 1bb6aada93fa..ac39ed79ccaa 100644
-> --- a/drivers/scsi/hpsa.c
-> +++ b/drivers/scsi/hpsa.c
-> @@ -21,7 +21,6 @@
->  #include <linux/interrupt.h>
->  #include <linux/types.h>
->  #include <linux/pci.h>
-> -#include <linux/pci-aspm.h>
->  #include <linux/kernel.h>
->  #include <linux/slab.h>
->  #include <linux/delay.h>
-> diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-> index 717ba0845a2a..27fdbc165446 100644
-> --- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-> +++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-> @@ -51,7 +51,6 @@
->  #include <linux/workqueue.h>
->  #include <linux/delay.h>
->  #include <linux/pci.h>
-> -#include <linux/pci-aspm.h>
->  #include <linux/interrupt.h>
->  #include <linux/aer.h>
->  #include <linux/raid_class.h>
-> diff --git a/include/linux/pci-aspm.h b/include/linux/pci-aspm.h
-> deleted file mode 100644
-> index 67064145d76e..000000000000
-> --- a/include/linux/pci-aspm.h
-> +++ /dev/null
-> @@ -1,36 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0 */
-> -/*
-> - *	aspm.h
-> - *
-> - *	PCI Express ASPM defines and function prototypes
-> - *
-> - *	Copyright (C) 2007 Intel Corp.
-> - *		Zhang Yanmin (yanmin.zhang@intel.com)
-> - *		Shaohua Li (shaohua.li@intel.com)
-> - *
-> - *	For more information, please consult the following manuals (look at
-> - *	http://www.pcisig.com/ for how to get them):
-> - *
-> - *	PCI Express Specification
-> - */
-> -
-> -#ifndef LINUX_ASPM_H
-> -#define LINUX_ASPM_H
-> -
-> -#include <linux/pci.h>
-> -
-> -#define PCIE_LINK_STATE_L0S	1
-> -#define PCIE_LINK_STATE_L1	2
-> -#define PCIE_LINK_STATE_CLKPM	4
-> -
-> -#ifdef CONFIG_PCIEASPM
-> -int pci_disable_link_state(struct pci_dev *pdev, int state);
-> -int pci_disable_link_state_locked(struct pci_dev *pdev, int state);
-> -void pcie_no_aspm(void);
-> -#else
-> -static inline int pci_disable_link_state(struct pci_dev *pdev, int state)
-> -{ return 0; }
-> -static inline void pcie_no_aspm(void) { }
-> -#endif
-> -
-> -#endif /* LINUX_ASPM_H */
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 9e700d9f9f28..f07f52175606 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -6,12 +6,18 @@
->   *	Copyright 1994, Drew Eckhardt
->   *	Copyright 1997--1999 Martin Mares <mj@ucw.cz>
->   *
-> + *      PCI Express ASPM defines and function prototypes
-> + *      Copyright (c) 2007 Intel Corp.
-> + *              Zhang Yanmin (yanmin.zhang@intel.com)
-> + *              Shaohua Li (shaohua.li@intel.com)
-> + *
->   *	For more information, please consult the following manuals (look at
->   *	http://www.pcisig.com/ for how to get them):
->   *
->   *	PCI BIOS Specification
->   *	PCI Local Bus Specification
->   *	PCI to PCI Bridge Specification
-> + *	PCI Express Specification
->   *	PCI System Design Guide
->   */
->  #ifndef LINUX_PCI_H
-> @@ -1565,9 +1571,21 @@ extern bool pcie_ports_native;
->  #define pcie_ports_native	false
->  #endif
->  
-> +#define PCIE_LINK_STATE_L0S	1
-> +#define PCIE_LINK_STATE_L1	2
-> +#define PCIE_LINK_STATE_CLKPM	4
-> +
->  #ifdef CONFIG_PCIEASPM
-> +int pci_disable_link_state(struct pci_dev *pdev, int state);
-> +int pci_disable_link_state_locked(struct pci_dev *pdev, int state);
-> +void pcie_no_aspm(void);
->  bool pcie_aspm_support_enabled(void);
->  #else
-> +static inline int pci_disable_link_state(struct pci_dev *pdev, int state)
-> +{ return 0; }
-> +static inline int pci_disable_link_state_locked(struct pci_dev *pdev, int state)
-> +{ return 0; }
-> +static inline void pcie_no_aspm(void) { }
->  static inline bool pcie_aspm_support_enabled(void) { return false; }
->  #endif
->  
-> -- 
-> 2.22.1
-> 
+PHNuaXBwZWQ+DQoNCj4gPiA+ID4NCj4gPiA+ID4gSWYgeW91IHJlYWxseSB3YW50IHRvIGhhdmUg
+dGhpcyBwb2xpY3kgaW4gdGhlIGRyaXZlcihzKSwgdGhlbg0KPiA+ID4gPiBwbGVhc2UgY29uc2lk
+ZXIgZXh0ZW5kaW5nIGV0aF9wbGF0Zm9ybV9nZXRfbWFjX2FkZHJlc3MoKSB3aXRoIGFuDQo+ID4g
+PiA+IHg4Ni9hY3BpIG1ldGhvZC4gIFRoaXMgd2lsbCBtYWtlIHRoZSBkZXZpY2UgZHJpdmVyIGNv
+ZGUgc3VwcG9ydA0KPiA+ID4gPiBmZXRjaGluZyB0aGUgbWFjIGFkZHJlc3MgZnJvbSBkZXZpY2Ug
+dHJlZSBhbmQgU3BhcmMgaWRwcm9tcyB0b28uDQo+ID4gPiA+IFByb3ZpZGVkIHRoZSBuZXRkZXYN
+Cj4gPiA+IGZvbGtzIHRoaW5ncyB0aGlzIGlzIE9LLCBvZiBjb3Vyc2UuDQo+ID4gPiA+IFRoaXMg
+bmVlZHMgdG8gYmUgZGlzY3Vzc2VkIHRoZXJlLCBsaWtlIGdldF9tYWludGFpbmVyLnBsIHdvdWxk
+IGhhdmUgdG9sZA0KPiB5b3UuDQo+ID4gPiA+DQo+ID4gPiA+IE1ha2luZyBzdXJlIHdlIGNhbiBt
+b2RpZnkgdGhlIE1BQyBhZGRyZXNzIG9mIFVTQiBldGhlcm5ldCBkZXZpY2VzDQo+ID4gPiA+IGlz
+IG9idmlvdXNseSBhIGdvb2QgdGhpbmcgcmVnYXJkbGVzcyBvZiBob3cvd2hlcmUgeW91IGZldGNo
+IGl0Lg0KPiA+ID4gPg0KPiA+ID4gPg0KPiA+ID4gPg0KPiA+ID4gPg0KPiA+ID4gPg0KPiA+ID4g
+PiBCasO4cm4NCj4gPg0KPiA+IEJ5IG1vdmluZyBhY3BpX21hY19wYXNzdGhydS5jIGludG8gZHJp
+dmVycy9hY3BpLywgd2hhdCBpcyB0aGUNCj4gPiBzdWdnZXN0ZWQgZWRpdCB0byBNYWtlZmlsZSBm
+b3IgdGhpcz8gIEkgYW0gdGhpbmtpbmcgaXQgY291bGQgYmUgYWRkZWQNCj4gPiBpbW1lZGlhdGVs
+eSBmb2xsb3dpbmcgdGhlIGNvbW1lbnQgIlRoZXNlIGFyZSAocG90ZW50aWFsbHkpIHNlcGFyYXRl
+DQo+IG1vZHVsZXMiIHdpdGg6DQo+ID4NCj4gPiBhcGljLXkgKz0gYWNwaV9tYWNfcGFzc3RocnUu
+bw0KPiA+DQo+ID4gSSByZW1vdmVkIGV4dHJhIHNwYWNpbmcgYWJvdmUgZm9yIHBvc3RpbmcgaGVy
+ZS4NCj4gPg0KPiANCj4gSSBiZWxpZXZlIHRoYXQgQmrDuHJuIHNwZWNpZmljYWxseSByZWNvbW1l
+bmRlZCB0byBwdXQgaXQgaW4gZHJpdmVycy9hY3BpL3g4Ni4NCj4gDQo+IFdoaWNoIHRoYXQgd291
+bGQgbWVhbiBpdCdzOg0KPiBhY3BpLSQoQ09ORklHX1g4NikgICAgICAgICAgICAgICs9IHg4Ni9h
+Y3BpX21hY19wYXNzdGhyb3VnaC5vDQoNCg0KVGhlcmUgaXMgbm90aGluZyBpbiB0aGlzIG1ldGhv
+ZCB0aGF0IG5lZWRzIHRvIGJlIHg4NiBvbmx5LiAgSWYgdGhpcyBtZXRob2QgaXMgbWFkZSBhdmFp
+bGFibGUgdG8gb3RoZXIgYXJjaGl0ZWN0dXJlcywgdGhlbiBpdCBpcyBwb3NzaWJsZSBmb3Igc3lz
+dGVtcyBiYXNlZCBvbiBvdGhlciBhcmNoaXRlY3R1cmVzIHRvIGJlbmVmaXQgYW5kIG1ha2UgaW5y
+b2FkcyBpbnRvIHRoZSBlbnRlcnByaXNlIHNwYWNlLiAgRGVsbCBtaWdodCBiZSB0aGUgb25seSBj
+b21wYW55IHVzaW5nIHRoaXMgbWV0aG9kLCBidXQgaXQgY291bGQgYmUgYWRvcHRlZCBieSBvdGhl
+cnMgZm9yIHRoZSBzYW1lIHJlYXNvbnMgRGVsbCBjcmVhdGVkIGl0IGluIHRoZSBmaXJzdCBwbGFj
+ZS4NCg0KSSBsb29rZWQgYXQgZXRoX3BsYXRmb3JtX2dldF9tYWNfYWRkcmVzcygpIHBlciBCasO4
+cm4ncyBzdWdnZXN0aW9uLCBhbmQgYWRkZWQgYSBkZXZfaW5mbygpIHN0YXRlbWVudCB0byBsZXQg
+bWUga25vdyBpZiBhbmQgd2hlbiB0aGlzIGRyaXZlciBmdW5jdGlvbiBpcyBleGVjdXRlZCB3aGVu
+IEkgYm9vdGVkIG15IGNocm9tZWJvb2sgYW5kIHBsdWdnZWQgaW4gYSBEZWxsIFVuaXZlcnNhbCBE
+b2NrIEQ2MDAwLiAgVW5mb3J0dW5hdGVseSBmb3IgbXkgZXhwZXJpbWVudCwgdGhpcyBmdW5jdGlv
+biBpcyBub3QgY2FsbGVkLiAgVGhlcmVmb3JlLCBpdCBtYWtlcyBubyBzZW5zZSB0byBhZGQgY29k
+ZSBoZXJlIGZvciBEZWxsJ3MgbmVlZHMgYXQgdGhpcyB0aW1lLiAgRnVydGhlcm1vcmUsIEkgYmVs
+aWV2ZSB0aGF0IGl0IGlzIG5vdCBub3csIG5vciB3YXMgaXQgZXZlciwgRGVsbCdzIGludGVudGlv
+biB0byBoYXZlIG9uLWJvYXJkIGV0aGVybmV0IE1BQyBhZGRyZXNzZXMgYmUgcmVwcm9ncmFtbWVk
+IGJ5IHRoaXMgbWV0aG9kLi4gSSBiZWxpZXZlIGl0IHdhcyBEZWxsJ3MgaW50ZW50aW9uIHRvIGFw
+cGx5IHRoaXMgdG8gb25seSBVU0IgVHlwZS1DIGJhc2VkIGV0aGVybmV0IGRldmljZXMsIGhlbmNl
+IHRoZSBvcmlnaW5hbCBjb2RlIHdhcyBhcHBsaWVkIHRvIG9ubHkgZHJpdmVycy9uZXQvdXNiL3I4
+MTUyLmMuICBUaGF0IGlzIG5vdCB0byBzYXkgdGhpcyBtZXRob2QgaXMgbGltaXRlZCB0byBvbmx5
+IFVTQiBUeXBlLUMgZGV2aWNlcywgaXQgY2FuIGJlIHVzZWQgYnkgd2hvbWV2ZXIgZm9yIHdoaWNo
+ZXZlciBkcml2ZXJzIGRlZW0gaXQgYWR2YW50YWdlb3VzLCByZWdhcmRsZXNzIG9mIHVuZGVybHlp
+bmcgQ1BVIGFyY2hpdGVjdHVyZS4NCg0KLS0gDQpDaGFybGVzDQo=
