@@ -2,38 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05ADAA158C
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2019 12:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6E8EA1582
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2019 12:11:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727481AbfH2KLL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Aug 2019 06:11:11 -0400
+        id S1727244AbfH2KKu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Aug 2019 06:10:50 -0400
 Received: from mga02.intel.com ([134.134.136.20]:26910 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727195AbfH2KKt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 29 Aug 2019 06:10:49 -0400
+        id S1727230AbfH2KKu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 29 Aug 2019 06:10:50 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
   by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2019 03:10:48 -0700
 X-IronPort-AV: E=Sophos;i="5.64,442,1559545200"; 
-   d="scan'208";a="180835442"
+   d="scan'208";a="192909487"
 Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2019 03:10:46 -0700
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2019 03:10:46 -0700
 Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id 7DAC320D41;
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id 86E9020D6F;
         Thu, 29 Aug 2019 13:10:40 +0300 (EEST)
 Received: from sailus by punajuuri.localdomain with local (Exim 4.92)
         (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1i3HO7-0006Vu-Hu; Thu, 29 Aug 2019 13:10:43 +0300
+        id 1i3HO7-0006Vx-J9; Thu, 29 Aug 2019 13:10:43 +0300
 From:   Sakari Ailus <sakari.ailus@linux.intel.com>
 To:     Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
         rafael@kernel.org
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
         Rob Herring <robh@kernel.org>
-Subject: [PATCH v3 08/10] lib/vsprintf: OF nodes are first and foremost, struct device_nodes
-Date:   Thu, 29 Aug 2019 13:10:41 +0300
-Message-Id: <20190829101043.24963-9-sakari.ailus@linux.intel.com>
+Subject: [PATCH v3 09/10] lib/vsprintf: Add %pfw conversion specifier for printing fwnode names
+Date:   Thu, 29 Aug 2019 13:10:42 +0300
+Message-Id: <20190829101043.24963-10-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190829101043.24963-1-sakari.ailus@linux.intel.com>
 References: <20190829101043.24963-1-sakari.ailus@linux.intel.com>
@@ -44,55 +44,138 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Factor out static kobject_string() function that simply calls
-device_node_string(), and thus remove references to kobjects (as these are
-struct device_node).
+Add support for %pfw conversion specifier (with "f" and "P" modifiers) to
+support printing full path of the node, including its name ("f") and only
+the node's name ("P") in the printk family of functions. The two flags
+have equivalent functionality to existing %pOF with the same two modifiers
+("f" and "P") on OF based systems. The ability to do the same on ACPI
+based systems is added by this patch.
+
+On ACPI based systems the resulting strings look like
+
+	\_SB.PCI0.CIO2.port@1.endpoint@0
+
+where the nodes are separated by a dot (".") and the first three are
+ACPI device nodes and the latter two ACPI data nodes.
 
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 ---
- lib/vsprintf.c | 15 ++-------------
- 1 file changed, 2 insertions(+), 13 deletions(-)
+ Documentation/core-api/printk-formats.rst | 24 +++++++++++++++
+ lib/vsprintf.c                            | 37 +++++++++++++++++++++++
+ scripts/checkpatch.pl                     |  3 +-
+ 3 files changed, 63 insertions(+), 1 deletion(-)
 
+diff --git a/Documentation/core-api/printk-formats.rst b/Documentation/core-api/printk-formats.rst
+index 922a29eb70e6c..abba210f67567 100644
+--- a/Documentation/core-api/printk-formats.rst
++++ b/Documentation/core-api/printk-formats.rst
+@@ -418,6 +418,30 @@ Examples::
+ 
+ Passed by reference.
+ 
++Fwnode handles
++--------------
++
++::
++
++	%pfw[fP]
++
++For printing information on fwnode handles. The default is to print the full
++node name, including the path. The modifiers are functionally equivalent to
++%pOF above.
++
++	- f - full name of the node, including the path
++	- P - the name of the node including an address (if there is one)
++
++Examples (ACPI):
++
++	%pfwf	\_SB.PCI0.CIO2.port@1.endpoint@0	- Full node name
++	%pfwP	endpoint@0				- Node name
++
++Examples (OF):
++
++	%pfwf	/ocp@68000000/i2c@48072000/camera@10/port/endpoint - Full name
++	%pfwP	endpoint				- Node name
++
+ Time and date (struct rtc_time)
+ -------------------------------
+ 
 diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index a04a2167101ef..19f9b3f30623e 100644
+index 19f9b3f30623e..79dacd0b9e124 100644
 --- a/lib/vsprintf.c
 +++ b/lib/vsprintf.c
-@@ -1905,7 +1905,7 @@ char *device_node_string(char *buf, char *end, struct device_node *dn,
- 	struct printf_spec str_spec = spec;
- 	str_spec.field_width = -1;
- 
--	if (!IS_ENABLED(CONFIG_OF))
-+	if (!IS_ENABLED(CONFIG_OF) || fmt[0] != 'F')
- 		return error_string(buf, end, "(%pOF?)", spec);
- 
- 	if (check_pointer(&buf, end, dn, spec))
-@@ -1978,17 +1978,6 @@ char *device_node_string(char *buf, char *end, struct device_node *dn,
+@@ -1978,6 +1978,37 @@ char *device_node_string(char *buf, char *end, struct device_node *dn,
  	return widen_string(buf, buf - buf_start, end, spec);
  }
  
--static char *kobject_string(char *buf, char *end, void *ptr,
--			    struct printf_spec spec, const char *fmt)
--{
--	switch (fmt[1]) {
--	case 'F':
--		return device_node_string(buf, end, ptr, spec, fmt + 1);
--	}
--
--	return error_string(buf, end, "(%pO?)", spec);
--}
--
++static noinline_for_stack
++char *fwnode_string(char *buf, char *end, struct fwnode_handle *fwnode,
++		    struct printf_spec spec, const char *fmt)
++{
++	struct printf_spec str_spec = spec;
++	char *buf_start = buf;
++
++	str_spec.field_width = -1;
++
++	if (*fmt != 'w')
++		return error_string(buf, end, "(%pfw?)", spec);
++
++	if (check_pointer(&buf, end, fwnode, spec))
++		return buf;
++
++	fmt++;
++
++	switch (*fmt) {
++	case 'f':	/* full_name */
++	default:
++		buf = fwnode_full_name_string(fwnode, buf, end);
++		break;
++	case 'P':	/* name */
++		buf = string(buf, end, fwnode_get_name(fwnode),
++			     str_spec);
++		break;
++	}
++
++	return widen_string(buf, buf - buf_start, end, spec);
++}
++
  /*
   * Show a '%p' thing.  A kernel extension is that the '%p' is followed
   * by an extra set of alphanumeric characters that are extended format
-@@ -2167,7 +2156,7 @@ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
- 	case 'G':
+@@ -2080,6 +2111,10 @@ char *device_node_string(char *buf, char *end, struct device_node *dn,
+  *                  F device node flags
+  *                  c major compatible string
+  *                  C full compatible string
++ * - 'fw[fP]'	For a firmware node (struct fwnode_handle) pointer
++ *		Without an option prints the full name of the node
++ *		f full name
++ *		P node name, including a possible unit address
+  * - 'x' For printing the address. Equivalent to "%lx".
+  *
+  * ** When making changes please also update:
+@@ -2157,6 +2192,8 @@ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
  		return flags_string(buf, end, ptr, spec, fmt);
  	case 'O':
--		return kobject_string(buf, end, ptr, spec, fmt);
-+		return device_node_string(buf, end, ptr, spec, fmt + 1);
+ 		return device_node_string(buf, end, ptr, spec, fmt + 1);
++	case 'f':
++		return fwnode_string(buf, end, ptr, spec, fmt + 1);
  	case 'x':
  		return pointer_string(buf, end, ptr, spec);
  	}
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index a60c241112cd4..8df50911ff4e9 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -5995,7 +5995,8 @@ sub process {
+ 				while ($fmt =~ /(\%[\*\d\.]*p(\w))/g) {
+ 					$specifier = $1;
+ 					$extension = $2;
+-					if ($extension !~ /[SsBKRraEhMmIiUDdgVCbGNOxt]/) {
++					if ($extension !~ /[SsBKRraEhMmIiUDdgVCbGNOxtf]/ ||
++					    $extension =~ /^f[^w]/) {
+ 						$bad_specifier = $specifier;
+ 						last;
+ 					}
 -- 
 2.20.1
 
