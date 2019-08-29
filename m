@@ -2,51 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4219CA12E9
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2019 09:46:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F753A12E0
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2019 09:46:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727956AbfH2HqX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Aug 2019 03:46:23 -0400
-Received: from mail-pl1-f201.google.com ([209.85.214.201]:40399 "EHLO
-        mail-pl1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727939AbfH2HqW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Aug 2019 03:46:22 -0400
-Received: by mail-pl1-f201.google.com with SMTP id k7so1540786plt.7
-        for <linux-acpi@vger.kernel.org>; Thu, 29 Aug 2019 00:46:22 -0700 (PDT)
+        id S1727993AbfH2Hq0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Aug 2019 03:46:26 -0400
+Received: from mail-pf1-f201.google.com ([209.85.210.201]:51616 "EHLO
+        mail-pf1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727991AbfH2HqZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Aug 2019 03:46:25 -0400
+Received: by mail-pf1-f201.google.com with SMTP id v134so1832103pfc.18
+        for <linux-acpi@vger.kernel.org>; Thu, 29 Aug 2019 00:46:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=BNYZzlx9aTQ+LCgQZ8IG6mRelU0sVitbFkM6D5hbnnk=;
-        b=LBG2uKzUyf+lgCiiz1TCYPvqtTg8O75lmZkz3K9OnVAOegYlB2t8YC0L5P2YU6zU5j
-         hMLIBnxwaAnmCIb3RjfHdxwX7hzF4AwQL0ymNEJ9RIhELNDRGn3q76ImBKR/jtT7JmW4
-         G9BDxC3L/EXqCFj/8/eY75Qu3105luXea9dY4/owBiGMk9pp5/WKeuwdONwXpWGBHqTK
-         Np6bsfEOV0Foi+N5sRYmp0kxzgoRgRlGXKpiZDsH9DCcL97pi0t1okzaQsuNnHPjgobv
-         SemQ2cAXS+wRtE4/D4FAZMMtN5x1ekLi9jOXnbZRtdybxOFMNEFGLiaqcuWZJPzHYFna
-         1zVQ==
+        bh=2WQfeka9QBJ0u6SuW6w6DrBJqjwEt58/QtmjRSQZxGs=;
+        b=Uawm/Ct9U0N5DQ5wL+c4cXY7A15ODdjLSpWbtecf7+bVuGrvVT8yhcn0nHza1nYE22
+         nlfeGgnpm7skSgEmECryCHA+Qkf+BLESDY0MmQ1S05nkBC2F9qXVejgFxY3hdmY01WFP
+         ZBJHWOt2BU0KO1KxZBdrVp+dViuWjW1grr7wNcw8+PvOHYH6O2NhMtIK8HAfYno4cUxv
+         3+dL8MMGXmiWrBEzFvEAcBKU5KC9riYNb4/pXhvajgW8wWve63HI3peOzrJepZONSDpj
+         1LDrxdoOMPTFGJo52Ki1v510UgLOMSrNcm4QS8N0lhbixIwWYCkmw+nLbw3oZ8NAcXXF
+         r14A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=BNYZzlx9aTQ+LCgQZ8IG6mRelU0sVitbFkM6D5hbnnk=;
-        b=XIJZxOuOv0s9YhOsTY5TRFKpwowr2d0NsPsUufsdTXxavmirE7EoHIkQthqJfgSihF
-         VoGRQWDc57ck3Tj+ZIz2VeOS7xcrlqInDeLwvKaYhtWJZR152ZmyIGXiBNKe4z/fSDZi
-         Jtk5bmX7SU9i/U5mFJU4N5IiPW6YSFbP7c5IyZ9NR1l69Nxw+t3Mroo+RCqPkeg72K4O
-         qM41n2HWKvlmhF/xUmDd5ukX9K3A4Zb2JM/DRbfoqJAvOve7O/9SLOeEx+wQgWnlAsr/
-         ksjdvapHl2VLlKqNTcrUBEpPDGCvte9uTD4h7+LdzcZpHoMBHqElR1eJMUCLBoZesDmt
-         aCZw==
-X-Gm-Message-State: APjAAAUr9VKbs8UmNGwOQwgdk1csLRshd/hK8uygOQ8Vk6+lJEP/r/bW
-        Go2PVvazrwKjkiUXC6DmVO0zHv4dbKUTHIQ=
-X-Google-Smtp-Source: APXvYqx+RvJoMMYz7ltcPQy/uFdoUYJU6ahjc36Dl7f/s2wwI7J6sQL8aP+UHuzb8PASIQh6oHx8vPGvic4jh1k=
-X-Received: by 2002:a65:4243:: with SMTP id d3mr7249704pgq.119.1567064781369;
- Thu, 29 Aug 2019 00:46:21 -0700 (PDT)
-Date:   Thu, 29 Aug 2019 00:46:00 -0700
+        bh=2WQfeka9QBJ0u6SuW6w6DrBJqjwEt58/QtmjRSQZxGs=;
+        b=ktNp8ZJw4pbmYhoQ0ty6RezftsBUwMq/xbwfSIU8mcFCSKFhagykv7o3DIoRJNJuLV
+         spuHcyZSjEfvp/rYAjETDRp+IotkstLiaXpCI7tKrqDM6WXy31i3Xe7+/SiDPjpcPnWx
+         nyvlBu95t9kw9ssGwK5kkei0DCDjJvWs6B5rO8mwichziHFrSC7oR6R+RmunM97xehV0
+         h99e6gRL2TOb4LqzExZ9By3qkhMs4kfSAWViNzQyOvLvKhp1c8+w8xmoy7L/HGsIqr7y
+         B7i5cTXLMTM7y9mUaPF+Gppvx7pPLXCJeQDPwKXe8Wgd0RPMyl10YsKvsKgCvDjYixuk
+         7M9A==
+X-Gm-Message-State: APjAAAV4EwhbxoEzM8VPQBME0xZQ7RqB56kOAv3HhDoy6M8DgFd2/cPT
+        Dufm3AFxtPb19Mqlh3vWgArOCSIF0OLwkpI=
+X-Google-Smtp-Source: APXvYqwZzrFjjrO3w9B/Hx1N3gqqdyIyM5Foq9bn18J8PpxtA1ZufCbOQOb/BhQ1ntceTWa9Kc3liGPAH+ydJyM=
+X-Received: by 2002:a65:52c5:: with SMTP id z5mr7120687pgp.118.1567064784480;
+ Thu, 29 Aug 2019 00:46:24 -0700 (PDT)
+Date:   Thu, 29 Aug 2019 00:46:01 -0700
 In-Reply-To: <20190829074603.70424-1-saravanak@google.com>
-Message-Id: <20190829074603.70424-5-saravanak@google.com>
+Message-Id: <20190829074603.70424-6-saravanak@google.com>
 Mime-Version: 1.0
 References: <20190829074603.70424-1-saravanak@google.com>
 X-Mailer: git-send-email 2.23.0.187.g17f5b7556c-goog
-Subject: [PATCH v10 4/7] of/platform: Pause/resume sync state during init and of_platform_populate()
+Subject: [PATCH v10 5/7] of: property: Create device links for all
+ child-supplier depencencies
 From:   Saravana Kannan <saravanak@google.com>
 To:     Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -65,68 +66,82 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When all the top level devices are populated from DT during kernel
-init, the supplier devices could be added and probed before the
-consumer devices are added and linked to the suppliers. To avoid the
-sync_state() callback from being called prematurely, pause the
-sync_state() callbacks before populating the devices and resume them
-at late_initcall_sync().
+A parent device can have child devices that it adds when it probes. But
+this probing of the parent device can happen way after kernel init is done
+-- for example, when the parent device's driver is loaded as a module.
 
-Similarly, when children devices are populated from a module using
-of_platform_populate(), there could be supplier-consumer dependencies
-between the children devices that are populated. To avoid the same
-problem with sync_state() being called prematurely, pause and resume
-sync_state() callbacks across of_platform_populate().
+In such cases, if the child devices depend on a supplier in the system, we
+need to make sure the supplier gets the sync_state() callback only after
+these child devices are added and probed.
+
+To achieve this, when creating device links for a device by looking at its
+DT node, don't just look at DT references at the top node level. Look at DT
+references in all the descendant nodes too and create device links from the
+ancestor device to all these supplier devices.
+
+This way, when the parent device probes and adds child devices, the child
+devices can then create their own device links to the suppliers and further
+delay the supplier's sync_state() callback to after the child devices are
+probed.
+
+Example:
+In this illustration, -> denotes DT references and indentation
+represents child status.
+
+Device node A
+	Device node B -> D
+	Device node C -> B, D
+
+Device node D
+
+Assume all these devices have their drivers loaded as modules.
+
+Without this patch, this is the sequence of events:
+1. D is added.
+2. A is added.
+3. Device D probes.
+4. Device D gets its sync_state() callback.
+5. Device B and C might malfunction because their resources got
+   altered/turned off before they can make active requests for them.
+
+With this patch, this is the sequence of events:
+1. D is added.
+2. A is added and creates device links to D.
+3. Device link from A to B is not added because A is a parent of B.
+4. Device D probes.
+5. Device D does not get it's sync_state() callback because consumer A
+   hasn't probed yet.
+5. Device A probes.
+5. a. Devices B and C are added.
+5. b. Device links from B and C to D are added.
+5. c. Device A's probe completes.
+6. Device D does not get it's sync_state() callback because consumer A
+   has probed but consumers B and C haven't probed yet.
+7. Device B and C probe.
+8. Device D gets it's sync_state() callback because all its consumers
+   have probed.
+9. None of the devices malfunction.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 ---
- drivers/of/platform.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/of/property.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index b47a2292fe8e..d93891a05f60 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -480,6 +480,7 @@ int of_platform_populate(struct device_node *root,
- 	pr_debug("%s()\n", __func__);
- 	pr_debug(" starting at: %pOF\n", root);
+diff --git a/drivers/of/property.c b/drivers/of/property.c
+index 82052172f508..420c2d428184 100644
+--- a/drivers/of/property.c
++++ b/drivers/of/property.c
+@@ -1207,6 +1207,10 @@ static int __of_link_to_suppliers(struct device *dev,
+ 		if (of_link_property(dev, con_np, p->name))
+ 			ret = -EAGAIN;
  
-+	device_links_supplier_sync_state_pause();
- 	for_each_child_of_node(root, child) {
- 		rc = of_platform_bus_create(child, matches, lookup, parent, true);
- 		if (rc) {
-@@ -487,6 +488,8 @@ int of_platform_populate(struct device_node *root,
- 			break;
- 		}
- 	}
-+	device_links_supplier_sync_state_resume();
++	for_each_child_of_node(con_np, child)
++		if (__of_link_to_suppliers(dev, child))
++			ret = -EAGAIN;
 +
- 	of_node_set_flag(root, OF_POPULATED_BUS);
- 
- 	of_node_put(root);
-@@ -518,6 +521,7 @@ static int __init of_platform_default_populate_init(void)
- 	if (!of_have_populated_dt())
- 		return -ENODEV;
- 
-+	device_links_supplier_sync_state_pause();
- 	/*
- 	 * Handle certain compatibles explicitly, since we don't want to create
- 	 * platform_devices for every node in /reserved-memory with a
-@@ -538,6 +542,14 @@ static int __init of_platform_default_populate_init(void)
- 	return 0;
+ 	return ret;
  }
- arch_initcall_sync(of_platform_default_populate_init);
-+
-+static int __init of_platform_sync_state_init(void)
-+{
-+	if (of_have_populated_dt())
-+		device_links_supplier_sync_state_resume();
-+	return 0;
-+}
-+late_initcall_sync(of_platform_sync_state_init);
- #endif
  
- int of_platform_device_destroy(struct device *dev, void *data)
 -- 
 2.23.0.187.g17f5b7556c-goog
 
