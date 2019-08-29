@@ -2,38 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D764BA1592
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2019 12:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 487F6A158E
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2019 12:11:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727205AbfH2KLY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Aug 2019 06:11:24 -0400
-Received: from mga12.intel.com ([192.55.52.136]:20183 "EHLO mga12.intel.com"
+        id S1727109AbfH2KKr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Aug 2019 06:10:47 -0400
+Received: from mga01.intel.com ([192.55.52.88]:24387 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726330AbfH2KKo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 29 Aug 2019 06:10:44 -0400
+        id S1726839AbfH2KKp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 29 Aug 2019 06:10:45 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2019 03:10:44 -0700
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2019 03:10:44 -0700
 X-IronPort-AV: E=Sophos;i="5.64,442,1559545200"; 
-   d="scan'208";a="210487297"
+   d="scan'208";a="197773285"
 Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2019 03:10:42 -0700
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2019 03:10:42 -0700
 Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id 47AFC208A7;
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id 500A020ABC;
         Thu, 29 Aug 2019 13:10:40 +0300 (EEST)
 Received: from sailus by punajuuri.localdomain with local (Exim 4.92)
         (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1i3HO7-0006Vb-AX; Thu, 29 Aug 2019 13:10:43 +0300
+        id 1i3HO7-0006Ve-Bd; Thu, 29 Aug 2019 13:10:43 +0300
 From:   Sakari Ailus <sakari.ailus@linux.intel.com>
 To:     Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
         rafael@kernel.org
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
         Rob Herring <robh@kernel.org>
-Subject: [PATCH v3 02/10] software node: Make argument to to_software_node const
-Date:   Thu, 29 Aug 2019 13:10:35 +0300
-Message-Id: <20190829101043.24963-3-sakari.ailus@linux.intel.com>
+Subject: [PATCH v3 03/10] device property: Add functions for accessing node's parents
+Date:   Thu, 29 Aug 2019 13:10:36 +0300
+Message-Id: <20190829101043.24963-4-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190829101043.24963-1-sakari.ailus@linux.intel.com>
 References: <20190829101043.24963-1-sakari.ailus@linux.intel.com>
@@ -44,46 +44,117 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-to_software_node() does not need to modify the fwnode_handle it operates
-on; therefore make it const. This allows passing a const fwnode_handle to
-to_software_node().
+Add two convenience functions for accessing node's parents:
+
+fwnode_count_parents() returns the number of parent nodes a given node
+has. fwnode_get_nth_parent() returns node's parent at a given distance
+from the node itself.
+
+Also reorder fwnode_get_parent() in property.c according to the same order
+as in property.h.
 
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 ---
- drivers/base/swnode.c    | 4 ++--
- include/linux/property.h | 3 ++-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/base/property.c  | 60 +++++++++++++++++++++++++++++++++++-----
+ include/linux/property.h |  3 ++
+ 2 files changed, 56 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index a7cb41812cfda..951e7efd47c23 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -71,9 +71,9 @@ software_node_to_swnode(const struct software_node *node)
- 	return swnode;
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 81bd01ed40427..006d631e1824d 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -556,6 +556,19 @@ int device_add_properties(struct device *dev,
  }
+ EXPORT_SYMBOL_GPL(device_add_properties);
  
--const struct software_node *to_software_node(struct fwnode_handle *fwnode)
-+const struct software_node *to_software_node(const struct fwnode_handle *fwnode)
++/**
++ * fwnode_get_parent - Return parent firwmare node
++ * @fwnode: Firmware whose parent is retrieved
++ *
++ * Return parent firmware node of the given node if possible or %NULL if no
++ * parent was available.
++ */
++struct fwnode_handle *fwnode_get_parent(const struct fwnode_handle *fwnode)
++{
++	return fwnode_call_ptr_op(fwnode, get_parent);
++}
++EXPORT_SYMBOL_GPL(fwnode_get_parent);
++
+ /**
+  * fwnode_get_next_parent - Iterate to the node's parent
+  * @fwnode: Firmware whose parent is retrieved
+@@ -578,17 +591,50 @@ struct fwnode_handle *fwnode_get_next_parent(struct fwnode_handle *fwnode)
+ EXPORT_SYMBOL_GPL(fwnode_get_next_parent);
+ 
+ /**
+- * fwnode_get_parent - Return parent firwmare node
+- * @fwnode: Firmware whose parent is retrieved
++ * fwnode_count_parents - Return the number of parents a node has
++ * @fwnode: The node the parents of which are to be counted
+  *
+- * Return parent firmware node of the given node if possible or %NULL if no
+- * parent was available.
++ * Returns the number of parents a node has.
+  */
+-struct fwnode_handle *fwnode_get_parent(const struct fwnode_handle *fwnode)
++unsigned int fwnode_count_parents(const struct fwnode_handle *__fwnode)
  {
--	struct swnode *swnode = to_swnode(fwnode);
-+	const struct swnode *swnode = to_swnode(fwnode);
- 
- 	return swnode ? swnode->node : NULL;
+-	return fwnode_call_ptr_op(fwnode, get_parent);
++	struct fwnode_handle *fwnode;
++	unsigned int count;
++
++	fwnode = fwnode_get_parent(__fwnode);
++
++	for (count = 0; fwnode; count++)
++		fwnode = fwnode_get_next_parent(fwnode);
++
++	return count;
  }
+-EXPORT_SYMBOL_GPL(fwnode_get_parent);
++EXPORT_SYMBOL_GPL(fwnode_count_parents);
++
++/**
++ * fwnode_get_nth_parent - Return an nth parent of a node
++ * @fwnode: The node the parent of which is requested
++ * @depth: Distance of the parent from the node
++ *
++ * Returns the nth parent of a node. If @depth is 0, the functionality is
++ * equivalent to fwnode_handle_get(). For @depth == 1, it is fwnode_get_parent()
++ * and so on.
++ *
++ * The caller is responsible for calling fwnode_handle_put() for the returned
++ * node.
++ */
++struct fwnode_handle *fwnode_get_nth_parent(struct fwnode_handle *fwnode,
++					    unsigned int depth)
++{
++	unsigned int i;
++
++	fwnode_handle_get(fwnode);
++
++	for (i = 0; i < depth && fwnode; i++)
++		fwnode = fwnode_get_next_parent(fwnode);
++
++	return fwnode;
++}
++EXPORT_SYMBOL_GPL(fwnode_get_nth_parent);
+ 
+ /**
+  * fwnode_get_next_child_node - Return the next child node handle for a node
 diff --git a/include/linux/property.h b/include/linux/property.h
-index 5a910ad795910..421c76e53708d 100644
+index 421c76e53708d..5450e7ec219ac 100644
 --- a/include/linux/property.h
 +++ b/include/linux/property.h
-@@ -418,7 +418,8 @@ struct software_node {
- };
- 
- bool is_software_node(const struct fwnode_handle *fwnode);
--const struct software_node *to_software_node(struct fwnode_handle *fwnode);
-+const struct software_node *
-+to_software_node(const struct fwnode_handle *fwnode);
- struct fwnode_handle *software_node_fwnode(const struct software_node *node);
- 
- int software_node_register_nodes(const struct software_node *nodes);
+@@ -83,6 +83,9 @@ struct fwnode_handle *fwnode_find_reference(const struct fwnode_handle *fwnode,
+ struct fwnode_handle *fwnode_get_parent(const struct fwnode_handle *fwnode);
+ struct fwnode_handle *fwnode_get_next_parent(
+ 	struct fwnode_handle *fwnode);
++unsigned int fwnode_count_parents(const struct fwnode_handle *fwn);
++struct fwnode_handle *fwnode_get_nth_parent(struct fwnode_handle *fwn,
++					    unsigned int depth);
+ struct fwnode_handle *fwnode_get_next_child_node(
+ 	const struct fwnode_handle *fwnode, struct fwnode_handle *child);
+ struct fwnode_handle *fwnode_get_next_available_child_node(
 -- 
 2.20.1
 
