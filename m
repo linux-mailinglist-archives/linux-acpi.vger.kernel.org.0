@@ -2,121 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BBBCA12ED
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2019 09:46:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85835A154F
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2019 12:01:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728046AbfH2Hqg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Aug 2019 03:46:36 -0400
-Received: from mail-pl1-f201.google.com ([209.85.214.201]:49315 "EHLO
-        mail-pl1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728051AbfH2Hqc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Aug 2019 03:46:32 -0400
-Received: by mail-pl1-f201.google.com with SMTP id b30so1527049pla.16
-        for <linux-acpi@vger.kernel.org>; Thu, 29 Aug 2019 00:46:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=nhjHwCHt3mcz+mHDiVxN7s8L1KuUZ7MDwDAfLe16I50=;
-        b=G+4eBBbE8eR+JweFO/MTbU/JiiK//ZmQj8k/LyrXbCGTThb38w/Z2lUm+J9+GnNM0R
-         ILZAbYqpRKL7TOIZvfQiUJ2cF39/iD9rfGRzN/JPmUP0imOiTAzvaNMocnkNuQkRpez1
-         TeFD7m5SShMLKZ99sCn6+3Jk0GWByzZ/IZjTTkJhmHdk/U8KSb8jext129vtnUphdVPK
-         3Og8DoR1JhhS8QHP8PSei9z2OIoEIJgw7WByG4I5s8EIdtWDrfnC1s2xxQI7P6I0R2oo
-         vZCWREqieybOCkNKb7WgvgWuO6NUQORyGlcpSxF+myfSq3RilEg/tbt3CAbeESXosLmc
-         vLfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=nhjHwCHt3mcz+mHDiVxN7s8L1KuUZ7MDwDAfLe16I50=;
-        b=rHl59/Yd+1jHGzt1W4kJ8NhYpeeBDtSRsN88DgUdFBghjJ2HU3/aoFa0eFLOtWHjXR
-         rPV4gnBajjzFj59PIDpJT5TUCoWTQ1RtmML9FRu0Vlk5hyMluc9QgvsC95mSbJiqaSgk
-         MBcpXvFEznKeYKEjz2+wv10PCqeHsDgR9zEhiDax1HeovozR+u9QCsjD0FSpHvlWgLEZ
-         IMR/lfbo0WMpB98pK8M0w8h8k1AoLKaAbRHbGibprUAXHw3HL25TzO1unrKtTdc5NdBz
-         L9tUkSWsYtrODYrk4bAUs5G6YjYtvlG9eo7pbs+uqKwkoURAmuwcUFThRyPq5CV5vsNa
-         Iupg==
-X-Gm-Message-State: APjAAAW7DpPNBnh/uEEjf+TuPczH+9IYMi69canqrUBbpdAVpsX+m5tT
-        ruWgUxazVTq/kOVvpvqZOQ30hnlHNQIZYR8=
-X-Google-Smtp-Source: APXvYqxjRrI7v0tAcH4lDhIBqUhl0wBMcJY40NePOKQ5MWBcbB/tbpokA1E16lgkYG8HCTLquA1Ns3qi+HNbWZE=
-X-Received: by 2002:a65:690f:: with SMTP id s15mr6855732pgq.432.1567064791199;
- Thu, 29 Aug 2019 00:46:31 -0700 (PDT)
-Date:   Thu, 29 Aug 2019 00:46:03 -0700
-In-Reply-To: <20190829074603.70424-1-saravanak@google.com>
-Message-Id: <20190829074603.70424-8-saravanak@google.com>
-Mime-Version: 1.0
-References: <20190829074603.70424-1-saravanak@google.com>
-X-Mailer: git-send-email 2.23.0.187.g17f5b7556c-goog
-Subject: [PATCH v10 7/7] of: property: Add "depends-on" parsing support to of_fwnode_add_links()
-From:   Saravana Kannan <saravanak@google.com>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>, Len Brown <lenb@kernel.org>
-Cc:     Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-acpi@vger.kernel.org, clang-built-linux@googlegroups.com,
-        David Collins <collinsd@codeaurora.org>,
-        kernel-team@android.com
-Content-Type: text/plain; charset="UTF-8"
+        id S1726214AbfH2KBp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Aug 2019 06:01:45 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:57458 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725990AbfH2KBo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Aug 2019 06:01:44 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7T9xONa068680;
+        Thu, 29 Aug 2019 10:01:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=zkvRpa/K3WJumV596fyuMKitaSxsrbHTsqVmSpQPotM=;
+ b=c2bCkBgyoOtkVK/xIGPXM8PHo5Oh6WAT+PNms/EV79b0VHRR+5vf4AndEcKgHBc5MB2o
+ OdF2EGM31n4yBFMosUp8VbPoEVNII1FPTcufiy8V+vQFacdC60X3siO1vxsxXrNtAgpC
+ RJQdVdfGFhDSMSQAgIQ7ABcP3xRpX0n1I0PJ2rxWfzUAO+Lbgc4envxmnUN4nRqXsOa5
+ I6KCeOMAdC2cvfkbRfprCXyTN4KLzgmvjlYgscK1Zpsfufvmh1GIkYt2MmAN8oRy0wXj
+ VMur2KlvnD/G/Q2qsZkFQaGtfkHpWFP47hQz9dfk7aBLQbh2JHNDpqbADBtO3eTgADYq 1A== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2upcfwg27h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 29 Aug 2019 10:01:25 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7T9rZ08022150;
+        Thu, 29 Aug 2019 09:56:25 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 2unteurs3p-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 29 Aug 2019 09:56:24 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7T9uMwa022689;
+        Thu, 29 Aug 2019 09:56:23 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 29 Aug 2019 02:56:22 -0700
+Date:   Thu, 29 Aug 2019 12:56:14 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     kbuild@01.org, Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     kbuild-all@01.org, linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: [pm:devprop 1/4] drivers/base/swnode.c:656
+ software_node_find_by_name() error: uninitialized symbol 'swnode'.
+Message-ID: <20190829095613.GD8372@kadam>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9363 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908290108
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9363 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908290110
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-If dependencies inferred by of_fwnode_add_links() result in a cycle, it
-can prevent the probing of all the devices in the cycle. The depends-on
-property has been added to explicitly override inferred dependencies
-when they create a cycle.
+tree:   https://kernel.googlesource.com/pub/scm/linux/kernel/git/rafael/linux-pm.git devprop
+head:   149f3b87840e7d292ad059f5fc23f1fa2fc98b9e
+commit: 1666faedb567d03cde1d656ae24c6cc253e67373 [1/4] software node: Add software_node_find_by_name()
 
-Add depends-on parsing support to of_fwnode_add_links() so that
-platforms with cyclic dependencies can use "depends-on" to break the
-cycle and continue successfully probing devices.
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Signed-off-by: Saravana Kannan <saravanak@google.com>
+New smatch warnings:
+drivers/base/swnode.c:656 software_node_find_by_name() error: uninitialized symbol 'swnode'.
+
+Old smatch warnings:
+drivers/base/swnode.c:71 software_node_to_swnode() error: uninitialized symbol 'swnode'.
+
+git remote add pm https://kernel.googlesource.com/pub/scm/linux/kernel/git/rafael/linux-pm.git
+git remote update pm
+git checkout 1666faedb567d03cde1d656ae24c6cc253e67373
+vim +/swnode +656 drivers/base/swnode.c
+
+59abd83672f70c Heikki Krogerus 2018-11-09  622  
+1666faedb567d0 Heikki Krogerus 2019-08-19  623  /**
+1666faedb567d0 Heikki Krogerus 2019-08-19  624   * software_node_find_by_name - Find software node by name
+1666faedb567d0 Heikki Krogerus 2019-08-19  625   * @parent: Parent of the software node
+1666faedb567d0 Heikki Krogerus 2019-08-19  626   * @name: Name of the software node
+1666faedb567d0 Heikki Krogerus 2019-08-19  627   *
+1666faedb567d0 Heikki Krogerus 2019-08-19  628   * The function will find a node that is child of @parent and that is named
+1666faedb567d0 Heikki Krogerus 2019-08-19  629   * @name. If no node is found, the function returns NULL.
+1666faedb567d0 Heikki Krogerus 2019-08-19  630   *
+1666faedb567d0 Heikki Krogerus 2019-08-19  631   * NOTE: you will need to drop the reference with fwnode_handle_put() after use.
+1666faedb567d0 Heikki Krogerus 2019-08-19  632   */
+1666faedb567d0 Heikki Krogerus 2019-08-19  633  const struct software_node *
+1666faedb567d0 Heikki Krogerus 2019-08-19  634  software_node_find_by_name(const struct software_node *parent, const char *name)
+1666faedb567d0 Heikki Krogerus 2019-08-19  635  {
+1666faedb567d0 Heikki Krogerus 2019-08-19  636  	struct swnode *swnode;
+1666faedb567d0 Heikki Krogerus 2019-08-19  637  	struct kobject *k;
+1666faedb567d0 Heikki Krogerus 2019-08-19  638  
+1666faedb567d0 Heikki Krogerus 2019-08-19  639  	if (!name)
+1666faedb567d0 Heikki Krogerus 2019-08-19  640  		return NULL;
+1666faedb567d0 Heikki Krogerus 2019-08-19  641  
+1666faedb567d0 Heikki Krogerus 2019-08-19  642  	spin_lock(&swnode_kset->list_lock);
+1666faedb567d0 Heikki Krogerus 2019-08-19  643  
+1666faedb567d0 Heikki Krogerus 2019-08-19  644  	list_for_each_entry(k, &swnode_kset->list, entry) {
+
+Can this list be empty?  Probably not, but if so then "swnode" could
+be uninitialized.
+
+1666faedb567d0 Heikki Krogerus 2019-08-19  645  		swnode = kobj_to_swnode(k);
+1666faedb567d0 Heikki Krogerus 2019-08-19  646  		if (parent == swnode->node->parent && swnode->node->name &&
+1666faedb567d0 Heikki Krogerus 2019-08-19  647  		    !strcmp(name, swnode->node->name)) {
+1666faedb567d0 Heikki Krogerus 2019-08-19  648  			kobject_get(&swnode->kobj);
+1666faedb567d0 Heikki Krogerus 2019-08-19  649  			break;
+1666faedb567d0 Heikki Krogerus 2019-08-19  650  		}
+1666faedb567d0 Heikki Krogerus 2019-08-19  651  		swnode = NULL;
+1666faedb567d0 Heikki Krogerus 2019-08-19  652  	}
+1666faedb567d0 Heikki Krogerus 2019-08-19  653  
+1666faedb567d0 Heikki Krogerus 2019-08-19  654  	spin_unlock(&swnode_kset->list_lock);
+1666faedb567d0 Heikki Krogerus 2019-08-19  655  
+1666faedb567d0 Heikki Krogerus 2019-08-19 @656  	return swnode ? swnode->node : NULL;
+1666faedb567d0 Heikki Krogerus 2019-08-19  657  }
+1666faedb567d0 Heikki Krogerus 2019-08-19  658  EXPORT_SYMBOL_GPL(software_node_find_by_name);
+1666faedb567d0 Heikki Krogerus 2019-08-19  659  
+
 ---
- drivers/of/property.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/drivers/of/property.c b/drivers/of/property.c
-index 420c2d428184..78a262e24686 100644
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1106,6 +1106,12 @@ static struct device_node *parse_interconnects(struct device_node *np,
- 				"#interconnect-cells");
- }
- 
-+static struct device_node *parse_depends_on(struct device_node *np,
-+					    const char *prop_name, int index)
-+{
-+	return parse_prop_cells(np, prop_name, index, "depends-on", NULL);
-+}
-+
- static int strcmp_suffix(const char *str, const char *suffix)
- {
- 	unsigned int len, suffix_len;
-@@ -1151,6 +1157,7 @@ static const struct supplier_bindings bindings[] = {
- 	{ .parse_prop = parse_clocks, },
- 	{ .parse_prop = parse_interconnects, },
- 	{ .parse_prop = parse_regulators, },
-+	{ .parse_prop = parse_depends_on, },
- 	{},
- };
- 
-@@ -1203,6 +1210,12 @@ static int __of_link_to_suppliers(struct device *dev,
- 	struct property *p;
- 	int ret = 0;
- 
-+	if (of_find_property(con_np, "depends-on", NULL)) {
-+		if (of_link_property(dev, con_np, "depends-on"))
-+			ret = -EAGAIN;
-+		return ret;
-+	}
-+
- 	for_each_property_of_node(con_np, p)
- 		if (of_link_property(dev, con_np, p->name))
- 			ret = -EAGAIN;
--- 
-2.23.0.187.g17f5b7556c-goog
-
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
