@@ -2,135 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 85835A154F
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2019 12:01:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ABEAA1576
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2019 12:10:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726214AbfH2KBp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Aug 2019 06:01:45 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:57458 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725990AbfH2KBo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Aug 2019 06:01:44 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7T9xONa068680;
-        Thu, 29 Aug 2019 10:01:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=zkvRpa/K3WJumV596fyuMKitaSxsrbHTsqVmSpQPotM=;
- b=c2bCkBgyoOtkVK/xIGPXM8PHo5Oh6WAT+PNms/EV79b0VHRR+5vf4AndEcKgHBc5MB2o
- OdF2EGM31n4yBFMosUp8VbPoEVNII1FPTcufiy8V+vQFacdC60X3siO1vxsxXrNtAgpC
- RJQdVdfGFhDSMSQAgIQ7ABcP3xRpX0n1I0PJ2rxWfzUAO+Lbgc4envxmnUN4nRqXsOa5
- I6KCeOMAdC2cvfkbRfprCXyTN4KLzgmvjlYgscK1Zpsfufvmh1GIkYt2MmAN8oRy0wXj
- VMur2KlvnD/G/Q2qsZkFQaGtfkHpWFP47hQz9dfk7aBLQbh2JHNDpqbADBtO3eTgADYq 1A== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2upcfwg27h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 29 Aug 2019 10:01:25 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7T9rZ08022150;
-        Thu, 29 Aug 2019 09:56:25 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 2unteurs3p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 29 Aug 2019 09:56:24 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7T9uMwa022689;
-        Thu, 29 Aug 2019 09:56:23 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 29 Aug 2019 02:56:22 -0700
-Date:   Thu, 29 Aug 2019 12:56:14 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     kbuild@01.org, Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     kbuild-all@01.org, linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [pm:devprop 1/4] drivers/base/swnode.c:656
- software_node_find_by_name() error: uninitialized symbol 'swnode'.
-Message-ID: <20190829095613.GD8372@kadam>
+        id S1727072AbfH2KKr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Aug 2019 06:10:47 -0400
+Received: from mga18.intel.com ([134.134.136.126]:15405 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726283AbfH2KKp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 29 Aug 2019 06:10:45 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2019 03:10:44 -0700
+X-IronPort-AV: E=Sophos;i="5.64,442,1559545200"; 
+   d="scan'208";a="185923657"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Aug 2019 03:10:42 -0700
+Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id 443E5203A8;
+        Thu, 29 Aug 2019 13:10:40 +0300 (EEST)
+Received: from sailus by punajuuri.localdomain with local (Exim 4.92)
+        (envelope-from <sakari.ailus@linux.intel.com>)
+        id 1i3HO7-0006VW-7V; Thu, 29 Aug 2019 13:10:43 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
+        rafael@kernel.org
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v3 00/10] Device property improvements, add %pfw format specifier
+Date:   Thu, 29 Aug 2019 13:10:33 +0300
+Message-Id: <20190829101043.24963-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9363 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908290108
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9363 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908290110
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree:   https://kernel.googlesource.com/pub/scm/linux/kernel/git/rafael/linux-pm.git devprop
-head:   149f3b87840e7d292ad059f5fc23f1fa2fc98b9e
-commit: 1666faedb567d03cde1d656ae24c6cc253e67373 [1/4] software node: Add software_node_find_by_name()
+Hi all,
 
-If you fix the issue, kindly add following tag
-Reported-by: kbuild test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+This set adds functionality into the device property API (counting a
+node's parents as well as obtaining its name) in order to support printing
+fwnode names using a new conversion specifier "%pfw". The names that are
+produced are equivalent to its OF counterpart "%pOF" on OF systems for the
+two supported modifiers ("f" and "P").
 
-New smatch warnings:
-drivers/base/swnode.c:656 software_node_find_by_name() error: uninitialized symbol 'swnode'.
+Printing a node's name is something that's been available on OF for a long
+time and if something is converted to device property API (such as the
+V4L2 fwnode framework) it always got removed of a nice feature that was
+sometimes essential in debugging. With this set, that no longer is the
+case.
 
-Old smatch warnings:
-drivers/base/swnode.c:71 software_node_to_swnode() error: uninitialized symbol 'swnode'.
+since v2:
 
-git remote add pm https://kernel.googlesource.com/pub/scm/linux/kernel/git/rafael/linux-pm.git
-git remote update pm
-git checkout 1666faedb567d03cde1d656ae24c6cc253e67373
-vim +/swnode +656 drivers/base/swnode.c
+- Better comments in acpi_fwnode_get_name_prefix().
 
-59abd83672f70c Heikki Krogerus 2018-11-09  622  
-1666faedb567d0 Heikki Krogerus 2019-08-19  623  /**
-1666faedb567d0 Heikki Krogerus 2019-08-19  624   * software_node_find_by_name - Find software node by name
-1666faedb567d0 Heikki Krogerus 2019-08-19  625   * @parent: Parent of the software node
-1666faedb567d0 Heikki Krogerus 2019-08-19  626   * @name: Name of the software node
-1666faedb567d0 Heikki Krogerus 2019-08-19  627   *
-1666faedb567d0 Heikki Krogerus 2019-08-19  628   * The function will find a node that is child of @parent and that is named
-1666faedb567d0 Heikki Krogerus 2019-08-19  629   * @name. If no node is found, the function returns NULL.
-1666faedb567d0 Heikki Krogerus 2019-08-19  630   *
-1666faedb567d0 Heikki Krogerus 2019-08-19  631   * NOTE: you will need to drop the reference with fwnode_handle_put() after use.
-1666faedb567d0 Heikki Krogerus 2019-08-19  632   */
-1666faedb567d0 Heikki Krogerus 2019-08-19  633  const struct software_node *
-1666faedb567d0 Heikki Krogerus 2019-08-19  634  software_node_find_by_name(const struct software_node *parent, const char *name)
-1666faedb567d0 Heikki Krogerus 2019-08-19  635  {
-1666faedb567d0 Heikki Krogerus 2019-08-19  636  	struct swnode *swnode;
-1666faedb567d0 Heikki Krogerus 2019-08-19  637  	struct kobject *k;
-1666faedb567d0 Heikki Krogerus 2019-08-19  638  
-1666faedb567d0 Heikki Krogerus 2019-08-19  639  	if (!name)
-1666faedb567d0 Heikki Krogerus 2019-08-19  640  		return NULL;
-1666faedb567d0 Heikki Krogerus 2019-08-19  641  
-1666faedb567d0 Heikki Krogerus 2019-08-19  642  	spin_lock(&swnode_kset->list_lock);
-1666faedb567d0 Heikki Krogerus 2019-08-19  643  
-1666faedb567d0 Heikki Krogerus 2019-08-19  644  	list_for_each_entry(k, &swnode_kset->list, entry) {
+- Added swnode implementation.
 
-Can this list be empty?  Probably not, but if so then "swnode" could
-be uninitialized.
+- Fixed swnode refcounting in get_parent() ("swnode: Get reference to
+  parent swnode in get_parent op")
 
-1666faedb567d0 Heikki Krogerus 2019-08-19  645  		swnode = kobj_to_swnode(k);
-1666faedb567d0 Heikki Krogerus 2019-08-19  646  		if (parent == swnode->node->parent && swnode->node->name &&
-1666faedb567d0 Heikki Krogerus 2019-08-19  647  		    !strcmp(name, swnode->node->name)) {
-1666faedb567d0 Heikki Krogerus 2019-08-19  648  			kobject_get(&swnode->kobj);
-1666faedb567d0 Heikki Krogerus 2019-08-19  649  			break;
-1666faedb567d0 Heikki Krogerus 2019-08-19  650  		}
-1666faedb567d0 Heikki Krogerus 2019-08-19  651  		swnode = NULL;
-1666faedb567d0 Heikki Krogerus 2019-08-19  652  	}
-1666faedb567d0 Heikki Krogerus 2019-08-19  653  
-1666faedb567d0 Heikki Krogerus 2019-08-19  654  	spin_unlock(&swnode_kset->list_lock);
-1666faedb567d0 Heikki Krogerus 2019-08-19  655  
-1666faedb567d0 Heikki Krogerus 2019-08-19 @656  	return swnode ? swnode->node : NULL;
-1666faedb567d0 Heikki Krogerus 2019-08-19  657  }
-1666faedb567d0 Heikki Krogerus 2019-08-19  658  EXPORT_SYMBOL_GPL(software_node_find_by_name);
-1666faedb567d0 Heikki Krogerus 2019-08-19  659  
+- Make argument to to_software_node() const (a new patch)
 
----
-0-DAY kernel test infrastructure                Open Source Technology Center
-https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
+- Factored out confusingly named kobject_string() that had a single
+  caller.
+
+- Cleaner fwnode_count_parents() implementation (as discussed in review).
+
+- Made fwnode_count_parents() argument const.
+
+- Added tests (last patch in the set).
+
+since v1:
+
+- Add patch to remove support for %pf and %pF (depends on another patch
+  removing all use of %pf and %pF) (now 4th patch)
+
+- Fix kerneldoc argument documentation for fwnode_get_name (2nd patch)
+
+- Align kerneldoc style with the rest of drivers/base/property.c (no extra
+  newline after function name)
+
+- Make checkpatch.pl complain about "%pf" not followed by "w" (6th patch)
+
+- WARN_ONCE() on use of invalid conversion specifiers ("%pf" not followed
+  by "w")
+
+Sakari Ailus (10):
+  software node: Get reference to parent swnode in get_parent op
+  software node: Make argument to to_software_node const
+  device property: Add functions for accessing node's parents
+  device property: Add fwnode_get_name for returning the name of a node
+  device property: Add a function to obtain a node's prefix
+  lib/vsprintf: Remove support for %pF and %pf in favour of %pS and %ps
+  lib/vsprintf: Make use of fwnode API to obtain node names and
+    separators
+  lib/vsprintf: OF nodes are first and foremost, struct device_nodes
+  lib/vsprintf: Add %pfw conversion specifier for printing fwnode names
+  lib/test_printf: Add tests for %pfw printk modifier
+
+ Documentation/core-api/printk-formats.rst | 34 ++++++---
+ drivers/acpi/property.c                   | 48 +++++++++++++
+ drivers/base/property.c                   | 83 +++++++++++++++++++--
+ drivers/base/swnode.c                     | 55 +++++++++++++-
+ drivers/of/property.c                     | 16 +++++
+ include/linux/fwnode.h                    |  4 ++
+ include/linux/property.h                  |  8 ++-
+ lib/test_printf.c                         | 37 ++++++++++
+ lib/vsprintf.c                            | 88 +++++++++++++----------
+ scripts/checkpatch.pl                     |  4 +-
+ 10 files changed, 318 insertions(+), 59 deletions(-)
+
+-- 
+2.20.1
