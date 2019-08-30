@@ -2,92 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BBCDA27D6
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2019 22:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CE48A2B3A
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2019 02:01:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727995AbfH2UVE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Aug 2019 16:21:04 -0400
-Received: from sauhun.de ([88.99.104.3]:43256 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726935AbfH2UVE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 29 Aug 2019 16:21:04 -0400
-Received: from localhost (p54B33070.dip0.t-ipconnect.de [84.179.48.112])
-        by pokefinder.org (Postfix) with ESMTPSA id 841632C0021;
-        Thu, 29 Aug 2019 22:21:02 +0200 (CEST)
-Date:   Thu, 29 Aug 2019 22:21:02 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Jean Delvare <jdelvare@suse.de>
-Cc:     Linux I2C <linux-i2c@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, Andrew Cooks <acooks@rationali.st>,
-        linux-acpi@vger.kernel.org, platypus-sw@opengear.com,
-        "Tobin C . Harding" <me@tobin.cc>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Will Wagner <willw@carallon.com>
-Subject: Re: [PATCH v5 3/3] i2c: piix4: Add ACPI support
-Message-ID: <20190829202102.GS3740@ninjato>
-References: <20190802145109.38dd4045@endymion>
- <20190802145526.6edba0a6@endymion>
+        id S1726983AbfH3ABy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Aug 2019 20:01:54 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:39124 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726739AbfH3ABy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Aug 2019 20:01:54 -0400
+Received: by mail-pf1-f196.google.com with SMTP id y200so3241928pfb.6
+        for <linux-acpi@vger.kernel.org>; Thu, 29 Aug 2019 17:01:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=typeblog-net.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=r4FdmecES1mXuhQRWO8rMFn+Nx420CRXp9hbw5E4DeY=;
+        b=C+rwRawAYjEQMmq1XlJqg/oPcrd9+huDhBB/ffgbwV2euRm53zIQKEzHOR/2TGOJgM
+         nKzl3Z6sSCW9v4ByjBtXDP49ANg3dw8ayKkt3IUigIB9aT6LV3nd2GzEzE3rPEHYljfB
+         G6JF1BsruhNFBDg4UiAiSlMS5ip7KyygC3mi2v2BA0gj8gh0/GRqgAaaZfvDovCpsL4j
+         55uEAummxO8+6zhQKMmUH17J2FFfXWiN+7ifJaBaQ4WGuNd08im5K56a9drKA8GdYr8b
+         fFpZDpz7NRdcKw3Th+tSyYgctrqBYF3pHK8l3x38pGo3t7RNIJFGjdj7LwUUFiLVvdug
+         Pwpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=r4FdmecES1mXuhQRWO8rMFn+Nx420CRXp9hbw5E4DeY=;
+        b=WL4c1f09DxUPPkm9Xqne+jRa2FtHsoK7HjJWqufJCjzcMMP/oNhbZVmPhnYJdp2NCT
+         GOmohc+/UKxM6/fsp9VCsztY3prWQtoPLbdI5HJujq7NuVI8JMjOOzxHRrZYjCq5PU6j
+         fZV8EEH9Wbd7WCn0Nu9LzhET8N62ZJQQzDKtEkUrEaPUsuf6LKFwVU9ZnZT0h7aS/8fM
+         QiMxR1/YlJbdRAi01jCA9LihQlpg7ji0d4K0QNnJmcOSvRVqpbKel+EJ2y6YmB+kFDLB
+         BooZF/tbJ9T62EUQsVzypi+EEnVpcc1b+PoeP4zSs794g0Wctw9LxADxGAqDDWFQ1RUL
+         DOQQ==
+X-Gm-Message-State: APjAAAX6nsmHhzfCnPdvBNBw8WX7nI74N8QxQ238NAiYcqeyz+g+u3y9
+        JolcE9ueHLspqHVEjbEbCBlyRw==
+X-Google-Smtp-Source: APXvYqzqeat554HkNrmzQW+v4uxeKH2ucYkRnvGkc20nQ9CzJSLXTHeAVgx+oRGALg9emAc734pNzA==
+X-Received: by 2002:a17:90a:e505:: with SMTP id t5mr359288pjy.68.1567123313781;
+        Thu, 29 Aug 2019 17:01:53 -0700 (PDT)
+Received: from peter-pc.home ([91.207.174.229])
+        by smtp.gmail.com with ESMTPSA id g2sm4369819pfm.32.2019.08.29.17.01.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Aug 2019 17:01:52 -0700 (PDT)
+From:   Peter Cai <peter@typeblog.net>
+Cc:     Peter Cai <peter@typeblog.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bastien Nocera <hadess@hadess.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-input@vger.kernel.org
+Subject: [PATCH 1/2] gpio: acpi: add quirk to override GpioInt polarity
+Date:   Fri, 30 Aug 2019 08:00:23 +0800
+Message-Id: <20190830000024.20384-1-peter@typeblog.net>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="UFRfxei4j9xfgtfb"
-Content-Disposition: inline
-In-Reply-To: <20190802145526.6edba0a6@endymion>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On GPD P2 Max, the firmware could not reset the touch panel correctly.
+The kernel needs to take on the job instead, but the GpioInt definition
+in DSDT specifies ActiveHigh while the GPIO pin should actually be
+ActiveLow.
 
---UFRfxei4j9xfgtfb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+We need to override the polarity defined by DSDT. The GPIO driver
+already allows defining polarity in acpi_gpio_params, but the option is
+not applied to GpioInt.
 
-On Fri, Aug 02, 2019 at 02:55:26PM +0200, Jean Delvare wrote:
-> Enable the i2c-piix4 SMBus controller driver to enumerate I2C slave
-> devices using ACPI. It builds on the related I2C mux device work
-> in commit 8eb5c87a92c0 ("i2c: add ACPI support for I2C mux ports")
->=20
-> In the i2c-piix4 driver the adapters are enumerated as:
->  Main SMBus adapter Port 0, Port 2, ..., aux port (i.e., ASF adapter)
->=20
-> However, in the AMD BKDG documentation[1], the implied order of ports is:
->  Main SMBus adapter Port 0, ASF adapter, Port 2, Port 3, ...
->=20
-> This ordering difference is unfortunate. We assume that ACPI
-> developers will use the AMD documentation ordering, so we have to
-> pass an extra parameter to piix4_add_adapter().
->=20
-> [1] 52740 BIOS and Kernel Developer's Guide (BKDG) for AMD Family 16h
-> Models 30h-3Fh Processors
->=20
-> Based on earlier work by Andrew Cooks.
->=20
-> Reported-by: Andrew Cooks <andrew.cooks@opengear.com>
-> Signed-off-by: Jean Delvare <jdelvare@suse.de>
+This patch adds a new quirk that enables the polarity specified in
+acpi_gpio_params to also be applied to GpioInt.
 
-Applied to for-next, thanks!
+Signed-off-by: Peter Cai <peter@typeblog.net>
+---
+ drivers/gpio/gpiolib-acpi.c | 10 +++++++++-
+ include/linux/acpi.h        |  6 ++++++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index 39f2f9035c11..1a07c79ca2de 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -583,13 +583,21 @@ static int acpi_populate_gpio_lookup(struct acpi_resource *ares, void *data)
+ 		/*
+ 		 * Polarity and triggering are only specified for GpioInt
+ 		 * resource.
++		 * Polarity specified by GpioInt may be ignored if
++		 * ACPI_GPIO_QUIRK_OVERRIDE_POLARITY is set.
+ 		 * Note: we expect here:
+ 		 * - ACPI_ACTIVE_LOW == GPIO_ACTIVE_LOW
+ 		 * - ACPI_ACTIVE_HIGH == GPIO_ACTIVE_HIGH
+ 		 */
+ 		if (lookup->info.gpioint) {
+ 			lookup->info.flags = GPIOD_IN;
+-			lookup->info.polarity = agpio->polarity;
++			if (lookup->info.quirks &
++					ACPI_GPIO_QUIRK_OVERRIDE_POLARITY) {
++				dev_warn(&lookup->info.adev->dev, FW_BUG "Incorrect polarity specified by GpioInt, overriding.\n");
++				lookup->info.polarity = lookup->active_low;
++			} else {
++				lookup->info.polarity = agpio->polarity;
++			}
+ 			lookup->info.triggering = agpio->triggering;
+ 		} else {
+ 			lookup->info.flags = acpi_gpio_to_gpiod_flags(agpio);
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 9426b9aaed86..6569773ceffd 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -1014,6 +1014,12 @@ struct acpi_gpio_mapping {
+  * get GpioIo type explicitly, this quirk may be used.
+  */
+ #define ACPI_GPIO_QUIRK_ONLY_GPIOIO		BIT(1)
++/*
++ * Use the GPIO polarity (ActiveHigh / ActiveLow) from acpi_gpio_params
++ * for GpioInt as well. The default behavior is to use the one specified
++ * by GpioInt, which can be incorrect on some devices.
++ */
++#define ACPI_GPIO_QUIRK_OVERRIDE_POLARITY	BIT(2)
+ 
+ 	unsigned int quirks;
+ };
+-- 
+2.23.0
 
---UFRfxei4j9xfgtfb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl1oM64ACgkQFA3kzBSg
-KbaMRg/+OOl8TdOzxtR2FewvdqEPOl2p/SvaK9SEFqYndD4QYq2+gIOG3ROK4ovQ
-P19jHsbob6OQm8BrSEO3wFNq1kqQRRNKev7235NGeK5pYbj5trTdKIUmGbysxFwO
-oHwEdxsuX76ofm26XU/mlAuxfUWLPbK9u9ASJdUNMU+gcG0UHlAWwvaanBeGoUGR
-icOaIe5DC475rZh6tDyGvYJGFx0De9NQm/TtNAdGzvZTamK/K04q0viqoaBtRcjA
-fvG7uBT/eaTa2bHwK7RzvcKCXUL8HfgyHJ0eQemaa5KeKsJ4AlXjgFdl55cipQlM
-gai3FXMFrp9Dme5XhxWFDibjvq57I4Mb45xYfOq9r0xtIKuSlHicRQVnvM7njc8E
-aTy5aRrPw7a5K5sSxz6DBMf8MThWuX5TLEwsYJPLjYCgC/0Ek7Kg9USqU8oAWZPr
-0LiNvJ/Z46RXyqkrSBrmEzwKtdZ5/CX+T6HailqLhNbACgUuMafKCTAW6FZYqIaU
-cSiXwqlvjEk2pSoy9l9FThZVSBGE194hhol4HH4Dajzz9NWMiP4IPOylm0o1Ssgh
-8d5HHCNT5+8keWqaiWLGhUkO+0Oe+DMwtdsyJTLIMlQ8jTqUHt5h3+cOK2x0E1mN
-3G4szoUEaR6DnQ2T2juQicbquyiqAK4AxXjCqT6tOigP2nBgjR4=
-=mybI
------END PGP SIGNATURE-----
-
---UFRfxei4j9xfgtfb--
