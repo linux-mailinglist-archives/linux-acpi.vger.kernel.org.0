@@ -2,60 +2,32 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14957A3A65
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2019 17:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1085A3D92
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2019 20:17:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728209AbfH3Pc7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Aug 2019 11:32:59 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:46660 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727751AbfH3Pc7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Aug 2019 11:32:59 -0400
-Received: by mail-pf1-f196.google.com with SMTP id q139so4847634pfc.13
-        for <linux-acpi@vger.kernel.org>; Fri, 30 Aug 2019 08:32:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=typeblog-net.20150623.gappssmtp.com; s=20150623;
-        h=date:user-agent:in-reply-to:references:mime-version
-         :content-transfer-encoding:subject:to:cc:from:message-id;
-        bh=akL/vzGq+lNV9YkALeJQ4aXXX3G8w5n79bs7dYEdyvc=;
-        b=jA2jg3EMAc+Z03EJefu2AjTGWyurMgUv5WPaiMUdJetx9G66cfmRCPao9YkhUXW5n9
-         n2XKm2WJJbb97jOllhEGi7VRlR7QnwJ1xq37V9tFvUZx4fdikRK9fPInZWbh9G7Vo6C3
-         xWkaoZyMRnrop1UzkWtTJi2icL4lA7W/HlkCHVZ1NaKVVgwdyLUE1k683xiNtTOW8sCu
-         LCHVIQ7wJRWo0enwCii8AJSZn/OmXumOkwFLbmfhc9pJJgivF6tCRiapM5rbB3vpwkkY
-         O+PnsETVQc9vtlYmmgqdUTogb3AWHgj+Ol9L6TdOaDaJme/1KvKrzSsREjcIzMqDMOaB
-         pRAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:user-agent:in-reply-to:references
-         :mime-version:content-transfer-encoding:subject:to:cc:from
-         :message-id;
-        bh=akL/vzGq+lNV9YkALeJQ4aXXX3G8w5n79bs7dYEdyvc=;
-        b=ObEwNXN0qXkHGkoJcduqBj/c6b6UA0ulNTLK4hNPHqB0HJDyS/CyR8mwSgIPz+dKtM
-         SFRFeugKgliwPZoG8uWAPke+3T5FIccaH5Bb3sP8ZH/v1aROwPJO7Zz/WYZwgeKvKt/1
-         vbkzcY8s4fL9viQIga618dcElH/H9+HrEdGQEzDAkTUGWmvqXxMCX7ArXxxN5NqSk1+D
-         ogAtfEJGrj85GlEzIw66trg4TMzEqLN3cGObTA0yQ4wg4DXzHdMS76na4wVYr+Ns1pQi
-         773ZBtYdCwENKxm7K8+CPmW+Q6DDQRoZlCt1pXQhzQ196OJFTNYsfnzBU3fu2ni7o7G4
-         IE0w==
-X-Gm-Message-State: APjAAAVMW2hBGYwIE5ooMsl08zPfX72DvEZQguBoEMwWAo8uHtpjjDNP
-        dMCi9R2LcESO5rm2vkQ5CPvmOw==
-X-Google-Smtp-Source: APXvYqwCk3b/JUPn4IzgflSH3AD53+n85ervNpkFp1wYSX70ki280dLNL7xph+UzpG0nQUx7mcn6Yg==
-X-Received: by 2002:a62:640e:: with SMTP id y14mr18441295pfb.222.1567179178862;
-        Fri, 30 Aug 2019 08:32:58 -0700 (PDT)
-Received: from [172.19.0.1] ([91.207.174.229])
-        by smtp.gmail.com with ESMTPSA id a13sm6572268pfn.104.2019.08.30.08.32.57
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 30 Aug 2019 08:32:58 -0700 (PDT)
-Date:   Fri, 30 Aug 2019 23:32:53 +0800
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20190830115505.GX2680@smile.fi.intel.com>
-References: <20190830000024.20384-1-peter@typeblog.net> <20190830000024.20384-2-peter@typeblog.net> <20190830115505.GX2680@smile.fi.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 2/2] touchscreen: goodix: define GPIO mapping for GPD P2 Max
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        id S1727791AbfH3SRE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Aug 2019 14:17:04 -0400
+Received: from mga05.intel.com ([192.55.52.43]:7946 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727246AbfH3SRD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 30 Aug 2019 14:17:03 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Aug 2019 11:17:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,447,1559545200"; 
+   d="scan'208";a="382093729"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga006.fm.intel.com with ESMTP; 30 Aug 2019 11:17:00 -0700
+Received: from andy by smile with local (Exim 4.92.1)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1i3lSF-0002tl-7k; Fri, 30 Aug 2019 21:16:59 +0300
+Date:   Fri, 30 Aug 2019 21:16:59 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Peter Cai <peter@typeblog.net>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         Bastien Nocera <hadess@hadess.net>,
@@ -64,72 +36,61 @@ CC:     Mika Westerberg <mika.westerberg@linux.intel.com>,
         Len Brown <lenb@kernel.org>, linux-gpio@vger.kernel.org,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-input@vger.kernel.org
-From:   Peter Cai <peter@typeblog.net>
-Message-ID: <D5227099-6120-446B-A39D-6AE437F5E11E@typeblog.net>
+Subject: Re: [PATCH 2/2] touchscreen: goodix: define GPIO mapping for GPD P2
+ Max
+Message-ID: <20190830181659.GO2680@smile.fi.intel.com>
+References: <20190830000024.20384-1-peter@typeblog.net>
+ <20190830000024.20384-2-peter@typeblog.net>
+ <20190830115505.GX2680@smile.fi.intel.com>
+ <CA+Zf_0etfu7282TQ4wYE8tOrhh2Je4aV4Dz5tgC_wt7=FMAidA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+Zf_0etfu7282TQ4wYE8tOrhh2Je4aV4Dz5tgC_wt7=FMAidA@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On August 30, 2019 7:55:05 PM GMT+08:00, Andy Shevchenko <andriy=2Eshevchen=
-ko@linux=2Eintel=2Ecom> wrote:
->On Fri, Aug 30, 2019 at 08:00:24AM +0800, Peter Cai wrote:
->> The firmware of GPD P2 Max could not handle panel resets although
->code
->> is present in DSDT=2E The kernel needs to take on this job instead, but
->> the DSDT does not provide _DSD, rendering kernel helpless when trying
->to
->> find the respective GPIO pins=2E
->>=20
->> Fortunately, this time GPD has proper DMI vendor / product strings
->that
->> we could match against=2E We simply apply an acpi_gpio_mapping table
->when
->> GPD P2 Max is matched=2E
->>=20
->> Additionally, the DSDT definition of the irq pin specifies a wrong
->> polarity=2E The new quirk introduced in the previous patch
->> (ACPI_GPIO_QUIRK_OVERRIDE_POLARITY) is applied to correct this=2E
->
->> +#ifdef CONFIG_ACPI
->
->I guess most of these #ifdef:s makes code less readable for exchange of
->saving
->few bytes in the module footprint=2E
->
->> +	{ "irq-gpios", &irq_gpios_default, 1,
->> +		ACPI_GPIO_QUIRK_OVERRIDE_POLARITY },
->
->One line?
->
->> +		=2Ematches =3D {
->> +			DMI_MATCH(DMI_SYS_VENDOR, "GPD"),
->> +			DMI_MATCH(DMI_PRODUCT_NAME, "P2 MAX")
->
->Comma at the end?
->
->> +		},
->> +		=2Edriver_data =3D &gpio_mapping_force_irq_active_high
->
->Ditto=2E
+On Fri, Aug 30, 2019 at 11:15:27PM +0800, Peter Cai wrote:
+> On Fri, Aug 30, 2019, 7:55 PM Andy Shevchenko <
+> andriy.shevchenko@linux.intel.com> wrote:
 
-> I guess most of these #ifdef:s makes code less readable for exchange of =
-saving
-few bytes in the module footprint=2E
+> > I guess most of these #ifdef:s makes code less readable for exchange of
+> saving
+> few bytes in the module footprint.
+> 
+> Well since they can only be used when ACPI is supported
 
-Since they can only be used when ACPI is supported (devm_acpi_dev_add_driv=
-er_gpios does not exist without ACPI defined, thus the last guard must exis=
-t), if they were not guarded then we would be left with a bunch of unused v=
-ariables warnings when building without ACPI which doesn't seem good=2E
+> (devm_acpi_dev_add_driver_gpios does not exist without ACPI defined, thus
+> the last guard must exist),
 
-Should we use __maybe_unused here instead of #ifdef guards?
+This is not correct.
 
-> Comma at the end?
+> if they were not guarded then we would be left
+> with a bunch of unused variables warnings when building without ACPI which
+> doesn't seem good.
 
-I was trying to follow the style of this driver but it doesn't seem to be =
-really consistent within itself=2E Another dmi_system_id definition in the =
-same file mixed both styles so I was kind of confused=2E
+Good / no-good is only matter of few dozens of bytes here and there to be saved.
 
---=20
-Regards,
-Xiyu Cai
+> Should we use __maybe_unused here instead of #ifdef guards?
+
+No, it won't make sense, because the structures will be part of
+_add_driver_gpio() call, due to which compiler likely can't recognize unused
+structures. However, you may try with warnings enabled `make W=1`.
+
+> > Comma at the end?
+> 
+> I was trying to follow the style of this driver but it doesn't seem to be
+> really consistent within itself. Another dmi_system_id definition in the
+> same file mixed both styles so I was kind of confused.
+
+I see. So, this is for Dmitry's preferences.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
