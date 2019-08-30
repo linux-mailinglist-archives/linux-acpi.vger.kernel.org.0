@@ -2,51 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1508FA3E83
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2019 21:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FDCCA3E85
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2019 21:38:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727963AbfH3TiQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Aug 2019 15:38:16 -0400
-Received: from mx0b-00154904.pphosted.com ([148.163.137.20]:23674 "EHLO
+        id S1728093AbfH3Ti6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Aug 2019 15:38:58 -0400
+Received: from mx0b-00154904.pphosted.com ([148.163.137.20]:37112 "EHLO
         mx0b-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727246AbfH3TiQ (ORCPT
+        by vger.kernel.org with ESMTP id S1727246AbfH3Ti6 (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 30 Aug 2019 15:38:16 -0400
+        Fri, 30 Aug 2019 15:38:58 -0400
 Received: from pps.filterd (m0170396.ppops.net [127.0.0.1])
-        by mx0b-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x7UJYnM5011547;
-        Fri, 30 Aug 2019 15:38:14 -0400
+        by mx0b-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x7UJYttx011662;
+        Fri, 30 Aug 2019 15:38:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dellteam.com; h=from : to : cc :
  subject : date : message-id : content-type : content-transfer-encoding :
- mime-version; s=smtpout1; bh=oCR3uKLh7OJgs1eCBjb4l8GF+Hdcyevl5fSZCEHPJlE=;
- b=uAn6WqtTReyYyLn7rg8nLNZ3oZlPl3qphlVskj0SJSEFS/0lROaWb8XVgmZj96DHy90g
- bc4GD6HGcCvM1SfEVskWN0qJvYFNzat00EJKqiKhS1+4YJNcYGIxkA+uTBri+imGXVAJ
- LKuKwvJI3PF2z7zIoUk1hBfOGbYmw58wcxlHH9E5fCml+fk1wCgj3wSAt0u6LKGMw9WG
- NriSmJVs1zT1QIGpUYNQ4AFeSpcGoYYBqhwh4ppCMZDyr+LNFIeCKhF1PINt9xRZ8qgQ
- Z4S3IvOG2xz6zQuzYagwJ7JvIUtXCVaXdV1MB957/fd2sJlSdk8Ps9D68TYyieKACfvj 8Q== 
-Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
-        by mx0b-00154904.pphosted.com with ESMTP id 2uk2xjcygh-1
+ mime-version; s=smtpout1; bh=44wTjuXSWMXNrwjFUFwYXstyHmykGsnhGtwggTvTdew=;
+ b=s6XPNWvMcNQRT/oIaPDEEBApTKsWhkkkITSG3SJLMIRtO8VU13/ecXdr13kzM7dheUqw
+ t/BkAz+GKsJvNVviJ2tGZIq2PUwng04Po2kpNMISA7EVwyHsFydBZ+eyPifSoLRxoQfb
+ lX0vuny05bJ60JozjkM3PonenN+awy7ZSYsMNJM1duD5/OLTdYLkYf6U/4GtQbUTO3AG
+ fGJ5sLNT40gzwnHNUsXlc1jmSwNuxU5lrET+aOZTNkLloWgx4QQb8g5nx/lhxqqV7u+O
+ a37nNGniybJlgT/TZTyV4iyN54RyoTnnNjLnmFLotI3RN39l6Xsgjy0ZuRGhUKou8n8P eA== 
+Received: from mx0b-00154901.pphosted.com (mx0b-00154901.pphosted.com [67.231.157.37])
+        by mx0b-00154904.pphosted.com with ESMTP id 2uk2xjcyjx-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 30 Aug 2019 15:38:13 -0400
-Received: from pps.filterd (m0142699.ppops.net [127.0.0.1])
-        by mx0a-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x7UJbhec098149;
-        Fri, 30 Aug 2019 15:38:13 -0400
-Received: from ausxippc101.us.dell.com (ausxippc101.us.dell.com [143.166.85.207])
-        by mx0a-00154901.pphosted.com with ESMTP id 2uq6k5k6ds-1
+        Fri, 30 Aug 2019 15:38:56 -0400
+Received: from pps.filterd (m0089483.ppops.net [127.0.0.1])
+        by mx0b-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x7UJbhaS076744;
+        Fri, 30 Aug 2019 15:38:56 -0400
+Received: from ausxippc110.us.dell.com (AUSXIPPC110.us.dell.com [143.166.85.200])
+        by mx0b-00154901.pphosted.com with ESMTP id 2up6pcxvh1-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 30 Aug 2019 15:38:12 -0400
-X-LoopCount0: from 10.166.132.132
+        Fri, 30 Aug 2019 15:38:56 -0400
+X-LoopCount0: from 10.166.132.128
 X-PREM-Routing: D-Outbound
-X-IronPort-AV: E=Sophos;i="5.60,346,1549951200"; 
-   d="scan'208";a="1292047321"
+X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
+   d="scan'208";a="850370706"
 From:   <Charles.Hyde@dellteam.com>
 To:     <oliver@neukum.org>, <rjw@rjwysocki.net>, <lenb@kernel.org>
 CC:     <linux-usb@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
         <nic_swsd@realtek.com>, <Mario.Limonciello@dell.com>
-Subject: [PATCH 2/3] ACPI: move ACPI functionality out of r8152 driver
-Thread-Topic: [PATCH 2/3] ACPI: move ACPI functionality out of r8152 driver
-Thread-Index: AQHVX2p0618F58/JikuMcbZqKJSvFA==
-Date:   Fri, 30 Aug 2019 19:38:10 +0000
-Message-ID: <1763d249345445ada4240eeeb522fc14@AUSX13MPS307.AMER.DELL.COM>
+Subject: [PATCH 3/3] net: cdc_ncm: Add ACPI MAC address pass through
+ functionality
+Thread-Topic: [PATCH 3/3] net: cdc_ncm: Add ACPI MAC address pass through
+ functionality
+Thread-Index: AQHVX2qOXZfzpNrp7kuN2ddtBmn+Zg==
+Date:   Fri, 30 Aug 2019 19:38:54 +0000
+Message-ID: <b24465a706744d99a7c1682f05a24784@AUSX13MPS307.AMER.DELL.COM>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -58,10 +60,10 @@ Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
  definitions=2019-08-30_07:2019-08-29,2019-08-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
- bulkscore=0 impostorscore=0 spamscore=0 malwarescore=0 adultscore=0
- clxscore=1015 suspectscore=0 mlxlogscore=999 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ impostorscore=0 suspectscore=0 bulkscore=0 priorityscore=1501 phishscore=0
+ clxscore=1015 lowpriorityscore=0 malwarescore=0 adultscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-1906280000 definitions=main-1908300185
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
  adultscore=0 clxscore=1015 impostorscore=0 priorityscore=1501 spamscore=0
@@ -73,238 +75,127 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This change moves ACPI functionality out of the Realtek r8152 driver to=0A=
-its own source and header file, making it available to other drivers as=0A=
-needed now and into the future.  At the time this ACPI snippet was=0A=
-introduced in 2016, only the Realtek driver made use of it in support of=0A=
-Dell's enterprise IT policy efforts.  There comes now a need for this=0A=
-same support in a different driver, also in support of Dell's enterprise=0A=
-IT policy efforts.=0A=
+This change adds support to cdc_ncm for ACPI MAC address pass through=0A=
+functionality that also exists in the Realtek r8152 driver.  This is in=0A=
+support of Dell's Universal Dock D6000, to give it the same feature=0A=
+capability as is currently available in Windows and advertized on Dell's=0A=
+product web site.=0A=
 =0A=
 Signed-off-by: Charles Hyde <charles.hyde@dellteam.com>=0A=
 Cc: Mario Limonciello <mario.limonciello@dell.com>=0A=
-Cc: Realtek linux nic maintainers <nic_swsd@realtek.com>=0A=
+Cc: Oliver Neukum <oliver@neukum.org>=0A=
 Cc: Rafael J. Wysocki <rjw@rjwysocki.net>=0A=
 Cc: Len Brown <lenb@kernel.org>=0A=
 Cc: linux-usb@vger.kernel.org=0A=
 Cc: linux-acpi@vger.kernel.org=0A=
 ---=0A=
- drivers/acpi/Makefile            |  1 +=0A=
- drivers/acpi/acpi_mac_passthru.c | 63 ++++++++++++++++++++++++++++++++=0A=
- drivers/net/usb/r8152.c          | 44 ++--------------------=0A=
- include/acpi/acpi_mac_passthru.h | 29 +++++++++++++++=0A=
- 4 files changed, 97 insertions(+), 40 deletions(-)=0A=
- create mode 100644 drivers/acpi/acpi_mac_passthru.c=0A=
- create mode 100644 include/acpi/acpi_mac_passthru.h=0A=
+ drivers/net/usb/cdc_ncm.c | 67 +++++++++++++++++++++++++++++++++++++--=0A=
+ 1 file changed, 64 insertions(+), 3 deletions(-)=0A=
 =0A=
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile=0A=
-index 5d361e4e3405..6bc2748f0e00 100644=0A=
---- a/drivers/acpi/Makefile=0A=
-+++ b/drivers/acpi/Makefile=0A=
-@@ -66,6 +66,7 @@ acpi-$(CONFIG_ACPI_WATCHDOG)	+=3D acpi_watchdog.o=0A=
- acpi-$(CONFIG_ACPI_ADXL)	+=3D acpi_adxl.o=0A=
- =0A=
- # These are (potentially) separate modules=0A=
-+acpi-y				+=3D acpi_mac_passthru.o=0A=
- =0A=
- # IPMI may be used by other drivers, so it has to initialise before them=
-=0A=
- obj-$(CONFIG_ACPI_IPMI)		+=3D acpi_ipmi.o=0A=
-diff --git a/drivers/acpi/acpi_mac_passthru.c b/drivers/acpi/acpi_mac_passt=
-hru.c=0A=
-new file mode 100644=0A=
-index 000000000000..37d7e2388c0b=0A=
---- /dev/null=0A=
-+++ b/drivers/acpi/acpi_mac_passthru.c=0A=
-@@ -0,0 +1,63 @@=0A=
-+// SPDX-License-Identifier: GPL-2.0-or-later=0A=
-+/*=0A=
-+ * acpi_mac_passthru.c - ACPI MAC address pass through driver=0A=
-+ *=0A=
-+ *  Copyright (c) 2019 Dell Technology. All rights reserved.=0A=
-+ *=0A=
-+ * Search for MAC Address Pass Through information, and return the MAC add=
-ress=0A=
-+ * found.  This is set through enterprise policy settings, and expected to=
- be=0A=
-+ * read by ethernet drivers that have software programmable MAC addresses.=
-=0A=
-+ * Failure to find the needed information results in -ENODEV.=0A=
-+ */=0A=
-+=0A=
-+#include <linux/kernel.h>=0A=
-+#include <linux/module.h>=0A=
-+#include <linux/acpi.h>=0A=
-+#include <acpi/acpi_mac_passthru.h>=0A=
-+#include <linux/etherdevice.h>=0A=
-+=0A=
-+ACPI_MODULE_NAME("mapt");=0A=
-+=0A=
-+MODULE_AUTHOR("Charles Hyde");=0A=
-+MODULE_DESCRIPTION("ACPI MAPT Driver");=0A=
-+MODULE_LICENSE("GPL");=0A=
-+=0A=
-+int get_acpi_mac_passthru(char *macAddress)=0A=
-+{=0A=
-+	acpi_status status;=0A=
-+	struct acpi_buffer buffer =3D { ACPI_ALLOCATE_BUFFER, NULL };=0A=
-+	union acpi_object *obj;=0A=
-+	int ret =3D -EINVAL;=0A=
-+	unsigned char buf[6];=0A=
-+=0A=
-+	/* returns _AUXMAC_#AABBCCDDEEFF# */=0A=
-+	status =3D acpi_evaluate_object(NULL, "\\_SB.AMAC", NULL, &buffer);=0A=
-+	obj =3D (union acpi_object *)buffer.pointer;=0A=
-+	if (!ACPI_SUCCESS(status))=0A=
-+		return -ENODEV;=0A=
-+	if (obj->type !=3D ACPI_TYPE_BUFFER || obj->string.length !=3D 0x17) {=0A=
-+		acpi_info("Invalid buffer for pass-thru MAC addr: (%d, %d)\n",=0A=
-+			  obj->type, obj->string.length);=0A=
-+		goto amacout;=0A=
-+	}=0A=
-+	if (strncmp(obj->string.pointer, "_AUXMAC_#", 9) !=3D 0 ||=0A=
-+	    strncmp(obj->string.pointer + 0x15, "#", 1) !=3D 0) {=0A=
-+		acpi_info("Invalid header when reading pass-thru MAC addr\n");=0A=
-+		goto amacout;=0A=
-+	}=0A=
-+	ret =3D hex2bin(buf, obj->string.pointer + 9, 6);=0A=
-+	if (!(ret =3D=3D 0 && is_valid_ether_addr(buf))) {=0A=
-+		acpi_info("Invalid MAC for pass-thru MAC addr: %d, %pM\n",=0A=
-+			  ret, buf);=0A=
-+		ret =3D -EINVAL;=0A=
-+		goto amacout;=0A=
-+	}=0A=
-+	memcpy(macAddress, buf, 6);=0A=
-+	acpi_info("Pass-thru MAC addr %pM\n", macAddress);=0A=
-+=0A=
-+amacout:=0A=
-+	kfree(obj);=0A=
-+	return ret;=0A=
-+=0A=
-+}=0A=
-+EXPORT_SYMBOL_GPL(get_acpi_mac_passthru);=0A=
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c=0A=
-index eee0f5007ee3..5336c96006cf 100644=0A=
---- a/drivers/net/usb/r8152.c=0A=
-+++ b/drivers/net/usb/r8152.c=0A=
-@@ -23,6 +23,7 @@=0A=
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c=0A=
+index 85093579612f..11a04dc2298d 100644=0A=
+--- a/drivers/net/usb/cdc_ncm.c=0A=
++++ b/drivers/net/usb/cdc_ncm.c=0A=
+@@ -52,6 +52,7 @@=0A=
+ #include <linux/usb/usbnet.h>=0A=
  #include <linux/usb/cdc.h>=0A=
- #include <linux/suspend.h>=0A=
- #include <linux/acpi.h>=0A=
+ #include <linux/usb/cdc_ncm.h>=0A=
 +#include <acpi/acpi_mac_passthru.h>=0A=
  =0A=
- /* Information for net-next */=0A=
- #define NETNEXT_VERSION		"09"=0A=
-@@ -1178,12 +1179,7 @@ static int rtl8152_set_mac_address(struct net_device=
- *netdev, void *p)=0A=
-  */=0A=
- static int vendor_mac_passthru_addr_read(struct r8152 *tp, struct sockaddr=
- *sa)=0A=
- {=0A=
--	acpi_status status;=0A=
--	struct acpi_buffer buffer =3D { ACPI_ALLOCATE_BUFFER, NULL };=0A=
--	union acpi_object *obj;=0A=
--	int ret =3D -EINVAL;=0A=
- 	u32 ocp_data;=0A=
--	unsigned char buf[6];=0A=
+ #if IS_ENABLED(CONFIG_USB_NET_CDC_MBIM)=0A=
+ static bool prefer_mbim =3D true;=0A=
+@@ -984,11 +985,30 @@ int cdc_ncm_bind_common(struct usbnet *dev, struct us=
+b_interface *intf, u8 data_=0A=
+ 	usb_set_intfdata(ctx->control, dev);=0A=
  =0A=
- 	/* test for -AD variant of RTL8153 */=0A=
- 	ocp_data =3D ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0);=0A=
-@@ -1204,39 +1200,7 @@ static int vendor_mac_passthru_addr_read(struct r815=
-2 *tp, struct sockaddr *sa)=0A=
- 			return -ENODEV;=0A=
+ 	if (ctx->ether_desc) {=0A=
+-		temp =3D usbnet_get_ethernet_addr(dev, ctx->ether_desc->iMACAddress);=0A=
++		struct sockaddr sa;=0A=
++=0A=
++		temp =3D cdc_ncm_get_ethernet_address(dev, ctx);=0A=
+ 		if (temp) {=0A=
+ 			dev_dbg(&intf->dev, "failed to get mac address\n");=0A=
+ 			goto error2;=0A=
  		}=0A=
++=0A=
++		/* Check for a Dell Universal Dock D6000 before checking if=0A=
++		 * ACPI supports MAC address pass through.=0A=
++		 */=0A=
++		if (!strstr(dev->udev->product, "D6000"))=0A=
++			goto skip_acpi_mapt_in_bind;=0A=
++=0A=
++		if (get_acpi_mac_passthru(sa.sa_data) !=3D 0)=0A=
++			goto skip_acpi_mapt_in_bind;=0A=
++=0A=
++		if (memcmp(dev->net->dev_addr, sa.sa_data, ETH_ALEN) =3D=3D 0)=0A=
++			goto skip_acpi_mapt_in_bind;=0A=
++=0A=
++		if (cdc_ncm_set_ethernet_address(dev, &sa) =3D=3D 0)=0A=
++			memcpy(dev->net->dev_addr, sa.sa_data, ETH_ALEN);=0A=
++=0A=
++skip_acpi_mapt_in_bind:=0A=
+ 		dev_info(&intf->dev, "MAC-Address: %pM\n", dev->net->dev_addr);=0A=
  	}=0A=
--=0A=
--	/* returns _AUXMAC_#AABBCCDDEEFF# */=0A=
--	status =3D acpi_evaluate_object(NULL, "\\_SB.AMAC", NULL, &buffer);=0A=
--	obj =3D (union acpi_object *)buffer.pointer;=0A=
--	if (!ACPI_SUCCESS(status))=0A=
--		return -ENODEV;=0A=
--	if (obj->type !=3D ACPI_TYPE_BUFFER || obj->string.length !=3D 0x17) {=0A=
--		netif_warn(tp, probe, tp->netdev,=0A=
--			   "Invalid buffer for pass-thru MAC addr: (%d, %d)\n",=0A=
--			   obj->type, obj->string.length);=0A=
--		goto amacout;=0A=
--	}=0A=
--	if (strncmp(obj->string.pointer, "_AUXMAC_#", 9) !=3D 0 ||=0A=
--	    strncmp(obj->string.pointer + 0x15, "#", 1) !=3D 0) {=0A=
--		netif_warn(tp, probe, tp->netdev,=0A=
--			   "Invalid header when reading pass-thru MAC addr\n");=0A=
--		goto amacout;=0A=
--	}=0A=
--	ret =3D hex2bin(buf, obj->string.pointer + 9, 6);=0A=
--	if (!(ret =3D=3D 0 && is_valid_ether_addr(buf))) {=0A=
--		netif_warn(tp, probe, tp->netdev,=0A=
--			   "Invalid MAC for pass-thru MAC addr: %d, %pM\n",=0A=
--			   ret, buf);=0A=
--		ret =3D -EINVAL;=0A=
--		goto amacout;=0A=
--	}=0A=
--	memcpy(sa->sa_data, buf, 6);=0A=
--	netif_info(tp, probe, tp->netdev,=0A=
--		   "Using pass-thru MAC addr %pM\n", sa->sa_data);=0A=
--=0A=
--amacout:=0A=
--	kfree(obj);=0A=
--	return ret;=0A=
-+	return get_acpi_mac_passthru(sa->sa_data);=0A=
+ =0A=
+@@ -1716,6 +1736,47 @@ static void cdc_ncm_status(struct usbnet *dev, struc=
+t urb *urb)=0A=
+ 	}=0A=
  }=0A=
  =0A=
- static int determine_ethernet_addr(struct r8152 *tp, struct sockaddr *sa)=
-=0A=
-@@ -4312,10 +4276,10 @@ static int rtl8152_post_reset(struct usb_interface =
-*intf)=0A=
- 	if (!tp)=0A=
- 		return 0;=0A=
- =0A=
--	/* reset the MAC adddress in case of policy change */=0A=
-+	/* reset the MAC address in case of policy change */=0A=
- 	if (determine_ethernet_addr(tp, &sa) >=3D 0) {=0A=
- 		rtnl_lock();=0A=
--		dev_set_mac_address (tp->netdev, &sa, NULL);=0A=
-+		dev_set_mac_address(tp->netdev, &sa, NULL);=0A=
- 		rtnl_unlock();=0A=
- 	}=0A=
- =0A=
-diff --git a/include/acpi/acpi_mac_passthru.h b/include/acpi/acpi_mac_passt=
-hru.h=0A=
-new file mode 100644=0A=
-index 000000000000..9da3d5b399ac=0A=
---- /dev/null=0A=
-+++ b/include/acpi/acpi_mac_passthru.h=0A=
-@@ -0,0 +1,29 @@=0A=
-+/* SPDX-License-Identifier: GPL-2.0-or-later */=0A=
-+/*=0A=
-+ * acpi_mac_passthru.h - ACPI MAC address pass through driver=0A=
-+ *=0A=
-+ *  Copyright (c) 2019 Dell Technology. All rights reserved.=0A=
-+ *=0A=
-+ * Search for MAC Address Pass Through information, and return the MAC add=
-ress=0A=
-+ * found.  This is set through enterprise policy settings, and expected to=
- be=0A=
-+ * read by ethernet drivers that have software programmable MAC addresses.=
-=0A=
-+ * Failure to find the needed information results in -ENODEV.=0A=
-+ */=0A=
-+=0A=
-+#include <linux/module.h>=0A=
-+#include <linux/acpi.h>=0A=
-+//#include <linux/device.h>=0A=
-+//#include <linux/socket.h>=0A=
-+=0A=
-+#ifdef CONFIG_ACPI=0A=
-+=0A=
-+int get_acpi_mac_passthru(char *macAddress);=0A=
-+=0A=
-+#else=0A=
-+=0A=
-+static inline int get_acpi_mac_passthru(char *macAddress)=0A=
++static int cdc_ncm_resume(struct usb_interface *intf)=0A=
 +{=0A=
-+	return -ENODEV;=0A=
++	struct usbnet *dev =3D usb_get_intfdata(intf);=0A=
++	struct cdc_ncm_ctx *ctx =3D (struct cdc_ncm_ctx *)dev->data[0];=0A=
++	int ret;=0A=
++=0A=
++	ret =3D usbnet_resume(intf);=0A=
++	if (ret !=3D 0)=0A=
++		goto error2;=0A=
++=0A=
++	if (ctx->ether_desc) {=0A=
++		struct sockaddr sa;=0A=
++=0A=
++		if (cdc_ncm_get_ethernet_address(dev, ctx)) {=0A=
++			dev_dbg(&intf->dev, "failed to get mac address\n");=0A=
++			goto error2;=0A=
++		}=0A=
++=0A=
++		/* Check for a Dell Universal Dock D6000 before checking if=0A=
++		 * ACPI supports MAC address pass through.=0A=
++		 */=0A=
++		if (!strstr(dev->udev->product, "D6000"))=0A=
++			goto skip_acpi_mapt_in_resume;=0A=
++=0A=
++		if (get_acpi_mac_passthru(sa.sa_data) !=3D 0)=0A=
++			goto skip_acpi_mapt_in_resume;=0A=
++=0A=
++		if (memcmp(dev->net->dev_addr, sa.sa_data, ETH_ALEN) =3D=3D 0)=0A=
++			goto skip_acpi_mapt_in_resume;=0A=
++=0A=
++		if (cdc_ncm_set_ethernet_address(dev, &sa) =3D=3D 0)=0A=
++			memcpy(dev->net->dev_addr, sa.sa_data, ETH_ALEN);=0A=
++=0A=
++skip_acpi_mapt_in_resume:=0A=
++		dev_info(&intf->dev, "MAC-Address: %pM\n", dev->net->dev_addr);=0A=
++	}=0A=
++=0A=
++error2:=0A=
++	return ret;=0A=
 +}=0A=
 +=0A=
-+#endif=0A=
+ static const struct driver_info cdc_ncm_info =3D {=0A=
+ 	.description =3D "CDC NCM",=0A=
+ 	.flags =3D FLAG_POINTTOPOINT | FLAG_NO_SETINT | FLAG_MULTI_PACKET=0A=
+@@ -1848,8 +1909,8 @@ static struct usb_driver cdc_ncm_driver =3D {=0A=
+ 	.probe =3D usbnet_probe,=0A=
+ 	.disconnect =3D usbnet_disconnect,=0A=
+ 	.suspend =3D usbnet_suspend,=0A=
+-	.resume =3D usbnet_resume,=0A=
+-	.reset_resume =3D	usbnet_resume,=0A=
++	.resume =3D cdc_ncm_resume,=0A=
++	.reset_resume =3D	cdc_ncm_resume,=0A=
+ 	.supports_autosuspend =3D 1,=0A=
+ 	.disable_hub_initiated_lpm =3D 1,=0A=
+ };=0A=
 -- =0A=
 2.20.1=0A=
