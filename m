@@ -2,95 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1085A3D92
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2019 20:17:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93B1EA3E7A
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2019 21:36:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727791AbfH3SRE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Aug 2019 14:17:04 -0400
-Received: from mga05.intel.com ([192.55.52.43]:7946 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727246AbfH3SRD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 30 Aug 2019 14:17:03 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Aug 2019 11:17:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,447,1559545200"; 
-   d="scan'208";a="382093729"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga006.fm.intel.com with ESMTP; 30 Aug 2019 11:17:00 -0700
-Received: from andy by smile with local (Exim 4.92.1)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1i3lSF-0002tl-7k; Fri, 30 Aug 2019 21:16:59 +0300
-Date:   Fri, 30 Aug 2019 21:16:59 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Peter Cai <peter@typeblog.net>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bastien Nocera <hadess@hadess.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-input@vger.kernel.org
-Subject: Re: [PATCH 2/2] touchscreen: goodix: define GPIO mapping for GPD P2
- Max
-Message-ID: <20190830181659.GO2680@smile.fi.intel.com>
-References: <20190830000024.20384-1-peter@typeblog.net>
- <20190830000024.20384-2-peter@typeblog.net>
- <20190830115505.GX2680@smile.fi.intel.com>
- <CA+Zf_0etfu7282TQ4wYE8tOrhh2Je4aV4Dz5tgC_wt7=FMAidA@mail.gmail.com>
+        id S1728107AbfH3Tg0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Aug 2019 15:36:26 -0400
+Received: from mx0b-00154904.pphosted.com ([148.163.137.20]:53460 "EHLO
+        mx0b-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727888AbfH3Tg0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 30 Aug 2019 15:36:26 -0400
+Received: from pps.filterd (m0170396.ppops.net [127.0.0.1])
+        by mx0b-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x7UJYnZv011538;
+        Fri, 30 Aug 2019 15:36:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dellteam.com; h=from : to : cc :
+ subject : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=smtpout1; bh=KiixhnD1Pq4dIXmN0767lQIU72s1aBJLx/6cjCEliac=;
+ b=YwGSkHchj4MXreruFMPgy91cE2yM4x6sTVUrmIR5J/EmWoKB1Sy03xEF959NIwZAtLGW
+ p1yevMrGAiDX/X+xT6GOJoimRt9BNym6lzeyKmyPqUhpia98WuKtsvTmPabN3G4/5e6E
+ lBBEVhflvklNN9uBDGsIvVDTloHijVLwQVMfTPGuy8FFkXw/9Q+Eu70QAVKG3m1P/l5n
+ EeK2J8Ml6Meo85Im8T7m/ZPfMyx3yS8uPT6OpXqgcxV0z/KwEmJf4EM1NoGoZh3VUa4n
+ H8u+XJx+BYzslBa3iI1S/yl9qujTNGKMGSTQRKMfsV4k4dSbgC5dOZfYjRD9abaOuIqd YQ== 
+Received: from mx0a-00154901.pphosted.com (mx0b-00154901.pphosted.com [67.231.157.37])
+        by mx0b-00154904.pphosted.com with ESMTP id 2uk2xjcybn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Aug 2019 15:36:24 -0400
+Received: from pps.filterd (m0089484.ppops.net [127.0.0.1])
+        by mx0b-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x7UJX8jg030741;
+        Fri, 30 Aug 2019 15:36:24 -0400
+Received: from ausxippc101.us.dell.com (ausxippc101.us.dell.com [143.166.85.207])
+        by mx0b-00154901.pphosted.com with ESMTP id 2up8vpcs84-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 30 Aug 2019 15:36:24 -0400
+X-LoopCount0: from 10.166.132.133
+X-PREM-Routing: D-Outbound
+X-IronPort-AV: E=Sophos;i="5.60,346,1549951200"; 
+   d="scan'208";a="1292046787"
+From:   <Charles.Hyde@dellteam.com>
+To:     <oliver@neukum.org>, <rjw@rjwysocki.net>, <lenb@kernel.org>
+CC:     <linux-acpi@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        <nic_swsd@realtek.com>, <Mario.Limonciello@dell.com>
+Subject: [PATCH 0/3] Add get/set ethernet address functions and ACPI MAC
+ address pass through functionality to cdc_ncm driver
+Thread-Topic: [PATCH 0/3] Add get/set ethernet address functions and ACPI MAC
+ address pass through functionality to cdc_ncm driver
+Thread-Index: AQHVX2iIRQPrhZWsvkKRPPIO0hmaNA==
+Date:   Fri, 30 Aug 2019 19:36:22 +0000
+Message-ID: <1567193782174.28980@Dellteam.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.177.90.68]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+Zf_0etfu7282TQ4wYE8tOrhh2Je4aV4Dz5tgC_wt7=FMAidA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
+ definitions=2019-08-30_07:2019-08-29,2019-08-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ adultscore=0 bulkscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0
+ suspectscore=0 mlxlogscore=511 priorityscore=1501 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1906280000 definitions=main-1908300184
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
+ adultscore=0 clxscore=1015 impostorscore=0 priorityscore=1501 spamscore=0
+ bulkscore=0 mlxlogscore=608 mlxscore=0 phishscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1906280000
+ definitions=main-1908300184
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 30, 2019 at 11:15:27PM +0800, Peter Cai wrote:
-> On Fri, Aug 30, 2019, 7:55 PM Andy Shevchenko <
-> andriy.shevchenko@linux.intel.com> wrote:
-
-> > I guess most of these #ifdef:s makes code less readable for exchange of
-> saving
-> few bytes in the module footprint.
-> 
-> Well since they can only be used when ACPI is supported
-
-> (devm_acpi_dev_add_driver_gpios does not exist without ACPI defined, thus
-> the last guard must exist),
-
-This is not correct.
-
-> if they were not guarded then we would be left
-> with a bunch of unused variables warnings when building without ACPI which
-> doesn't seem good.
-
-Good / no-good is only matter of few dozens of bytes here and there to be saved.
-
-> Should we use __maybe_unused here instead of #ifdef guards?
-
-No, it won't make sense, because the structures will be part of
-_add_driver_gpio() call, due to which compiler likely can't recognize unused
-structures. However, you may try with warnings enabled `make W=1`.
-
-> > Comma at the end?
-> 
-> I was trying to follow the style of this driver but it doesn't seem to be
-> really consistent within itself. Another dmi_system_id definition in the
-> same file mixed both styles so I was kind of confused.
-
-I see. So, this is for Dmitry's preferences.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+In recent testing of a Dell Universal Dock D6000, I found that MAC =0A=
+address pass through is not supported in the Linux drivers.  However, =0A=
+this same device is supported in Windows 10 (Pro) on my personal =0A=
+computer, in as much as I was able to tell Windows to assign a new MAC =0A=
+address of my choosing, and I saw through wireshark the new MAC address =0A=
+was pushed out to the device.  Afterward, Windows reported a new IP =0A=
+address and I was able to view web pages.=0A=
+=0A=
+This series of patches give support to cdc_ncm USB based Ethernet =0A=
+controllers for programming a MAC address to the device, and also to =0A=
+retrieve the device's MAC address.  This patch series further adds ACPI =0A=
+MAC address pass through support specifically for the cdc_ncm driver, and =
+=0A=
+generally for any other driver that may need or want it, in furtherance of =
+=0A=
+Dell's enterprise IT policy efforts.  It was this latter that I initially =
+=0A=
+found lacking when testing a D6000 with a Dell laptop, and then I found =0A=
+ifconfig was unable to set a MAC address into the device.  These patches =
+=0A=
+bring a similar level of functionality to cdc_ncm driver as is available =
+=0A=
+with the Realtek r8152 driver, and is available with Windows.=0A=
+=0A=
+The cdc_ncm driver limits the ACPI MAC address pass through support to =0A=
+only the Dell Universal Dock D6000, so no other cdc_ncm device will be=0A=
+impacted.=0A=
+=0A=
+Charles Hyde (3):=0A=
+  net: cdc_ncm: add get/set ethernet address functions=0A=
+  ACPI: move ACPI functionality out of r8152 driver=0A=
+  net: cdc_ncm: Add ACPI MAC address pass through functionality=0A=
+=0A=
+ drivers/acpi/Makefile            |   1 +=0A=
+ drivers/acpi/acpi_mac_passthru.c |  63 ++++++++++++++=0A=
+ drivers/net/usb/cdc_ncm.c        | 141 ++++++++++++++++++++++++++++++-=0A=
+ drivers/net/usb/r8152.c          |  44 +---------=0A=
+ include/acpi/acpi_mac_passthru.h |  29 +++++++=0A=
+ 5 files changed, 234 insertions(+), 44 deletions(-)=0A=
+ create mode 100644 drivers/acpi/acpi_mac_passthru.c=0A=
+ create mode 100644 include/acpi/acpi_mac_passthru.h=0A=
+=0A=
+-- =0A=
+2.20.1=0A=
