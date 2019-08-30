@@ -2,130 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBB83A377C
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2019 15:04:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09323A3950
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2019 16:34:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727792AbfH3NEd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Aug 2019 09:04:33 -0400
-Received: from mga04.intel.com ([192.55.52.120]:58636 "EHLO mga04.intel.com"
+        id S1727812AbfH3Oeh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Aug 2019 10:34:37 -0400
+Received: from mga14.intel.com ([192.55.52.115]:31790 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727417AbfH3NEd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 30 Aug 2019 09:04:33 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
+        id S1727780AbfH3Oeh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 30 Aug 2019 10:34:37 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Aug 2019 06:04:32 -0700
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Aug 2019 07:34:36 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.64,447,1559545200"; 
-   d="scan'208";a="182646301"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga007.fm.intel.com with ESMTP; 30 Aug 2019 06:04:31 -0700
-Received: from andy by smile with local (Exim 4.92.1)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1i3gZq-0007iM-4Q; Fri, 30 Aug 2019 16:04:30 +0300
-Date:   Fri, 30 Aug 2019 16:04:30 +0300
+   d="scan'208";a="356805018"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga005.jf.intel.com with ESMTP; 30 Aug 2019 07:34:34 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 9A0F610B; Fri, 30 Aug 2019 17:34:33 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
-        rafael@kernel.org, linux-acpi@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v3 10/10] lib/test_printf: Add tests for %pfw printk
- modifier
-Message-ID: <20190830130430.GK2680@smile.fi.intel.com>
-References: <20190829101043.24963-1-sakari.ailus@linux.intel.com>
- <20190829101043.24963-11-sakari.ailus@linux.intel.com>
+To:     "Rafael J . Wysocki " <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Ferry Toth <fntoth@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH v1] ACPI / platform: Unregister stale platform devices
+Date:   Fri, 30 Aug 2019 17:34:32 +0300
+Message-Id: <20190830143432.21695-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.23.0.rc1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190829101043.24963-11-sakari.ailus@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 29, 2019 at 01:10:43PM +0300, Sakari Ailus wrote:
-> Add a test for the %pfw printk modifier using software nodes.
-> 
+When the commit 68bdb6773289
 
-Having tests is always a good thing!
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+  ("ACPI: add support for ACPI reconfiguration notifiers")
 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
->  lib/test_printf.c | 37 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 37 insertions(+)
-> 
-> diff --git a/lib/test_printf.c b/lib/test_printf.c
-> index 944eb50f38625..9c6d716979fb1 100644
-> --- a/lib/test_printf.c
-> +++ b/lib/test_printf.c
-> @@ -22,6 +22,8 @@
->  #include <linux/gfp.h>
->  #include <linux/mm.h>
->  
-> +#include <linux/property.h>
-> +
->  #include "../tools/testing/selftests/kselftest_module.h"
->  
->  #define BUF_SIZE 256
-> @@ -588,6 +590,40 @@ flags(void)
->  	kfree(cmp_buffer);
->  }
->  
-> +static void __init fwnode_pointer(void)
-> +{
-> +	const struct software_node softnodes[] = {
-> +		{ .name = "first", },
-> +		{ .name = "second", .parent = &softnodes[0], },
-> +		{ .name = "third", .parent = &softnodes[1], },
-> +		{ NULL /* Guardian */ },
-> +	};
-> +	const char * const full_name = "/second/third";
-> +	const char * const full_name_second = "/second";
-> +	const char * const second_name = "second";
-> +	const char * const third_name = "third";
-> +	int rval;
-> +
-> +	rval = software_node_register_nodes(softnodes);
-> +	if (rval) {
-> +		pr_warn("cannot register softnodes; rval %d\n", rval);
-> +		return;
-> +	}
-> +
-> +	test(full_name_second, "%pfw",
-> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 3]));
-> +	test(full_name, "%pfw",
-> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 2]));
-> +	test(full_name, "%pfwf",
-> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 2]));
-> +	test(second_name, "%pfwP",
-> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 3]));
-> +	test(third_name, "%pfwP",
-> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 2]));
-> +
-> +	software_node_unregister_nodes(softnodes);
-> +}
-> +
->  static void __init
->  test_pointer(void)
->  {
-> @@ -610,6 +646,7 @@ test_pointer(void)
->  	bitmap();
->  	netdev_features();
->  	flags();
-> +	fwnode_pointer();
->  }
->  
->  static void __init selftest(void)
-> -- 
-> 2.20.1
-> 
+introduced reconfiguration notifiers it misses the point that the ACPI table,
+which may be loaded and then unloaded via ConfigFS, can contain devices that are
+not enumerated by their parents.
 
+In such case the stale platform device is dangling in the system while the rest
+of the devices from the same table are already gone.
+
+Introduce acpi_platform_device_remove_notify() notifier that, in similar way to
+I²C or SPI buses, unregisters the platform devices on table removal event.
+
+Depends-on: 00500147cbd3 ("drivers: Introduce device lookup variants by ACPI_COMPANION device")
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/acpi/acpi_platform.c | 43 ++++++++++++++++++++++++++++++++++++
+ drivers/acpi/scan.c          |  1 +
+ 2 files changed, 44 insertions(+)
+
+diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+index 00ec4f2bf015..dfcd6210828e 100644
+--- a/drivers/acpi/acpi_platform.c
++++ b/drivers/acpi/acpi_platform.c
+@@ -31,6 +31,44 @@ static const struct acpi_device_id forbidden_id_list[] = {
+ 	{"", 0},
+ };
+ 
++static struct platform_device *acpi_platform_device_find_by_adev(struct acpi_device *adev)
++{
++	struct device *dev;
++
++	dev = bus_find_device_by_acpi_dev(&platform_bus_type, adev);
++	return dev ? to_platform_device(dev) : NULL;
++}
++
++static int acpi_platform_device_remove_notify(struct notifier_block *nb,
++					      unsigned long value, void *arg)
++{
++	struct acpi_device *adev = arg;
++	struct platform_device *pdev;
++
++	switch (value) {
++	case ACPI_RECONFIG_DEVICE_ADD:
++		/* Nothing to do here */
++		break;
++	case ACPI_RECONFIG_DEVICE_REMOVE:
++		if (!acpi_device_enumerated(adev))
++			break;
++
++		pdev = acpi_platform_device_find_by_adev(adev);
++		if (!pdev)
++			break;
++
++		platform_device_unregister(pdev);
++		put_device(&pdev->dev);
++		break;
++	}
++
++	return NOTIFY_OK;
++}
++
++static struct notifier_block acpi_platform_notifier = {
++	.notifier_call = acpi_platform_device_remove_notify,
++};
++
+ static void acpi_platform_fill_resource(struct acpi_device *adev,
+ 	const struct resource *src, struct resource *dest)
+ {
+@@ -130,3 +168,8 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+ 	return pdev;
+ }
+ EXPORT_SYMBOL_GPL(acpi_create_platform_device);
++
++void __init acpi_platform_init(void)
++{
++	acpi_reconfig_notifier_register(&acpi_platform_notifier);
++}
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index aad6be5c0af0..915650bf519f 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -2174,6 +2174,7 @@ int __init acpi_scan_init(void)
+ 	acpi_pci_root_init();
+ 	acpi_pci_link_init();
+ 	acpi_processor_init();
++	acpi_platform_init();
+ 	acpi_lpss_init();
+ 	acpi_apd_init();
+ 	acpi_cmos_rtc_init();
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.23.0.rc1
 
