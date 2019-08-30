@@ -2,111 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CEDEA39A2
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2019 16:53:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E0B3A39F0
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2019 17:09:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727926AbfH3Oxx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Aug 2019 10:53:53 -0400
-Received: from mga05.intel.com ([192.55.52.43]:55256 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727857AbfH3Oxx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 30 Aug 2019 10:53:53 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Aug 2019 07:53:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,447,1559545200"; 
-   d="scan'208";a="198051411"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga001.fm.intel.com with ESMTP; 30 Aug 2019 07:53:49 -0700
-Received: from andy by smile with local (Exim 4.92.1)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1i3iHc-0008QV-0c; Fri, 30 Aug 2019 17:53:48 +0300
-Date:   Fri, 30 Aug 2019 17:53:48 +0300
-From:   "Shevchenko, Andriy" <andriy.shevchenko@intel.com>
-To:     Nikolaus Voss <nv@vosn.de>
-Cc:     "Schmauss, Erik" <erik.schmauss@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "Moore, Robert" <robert.moore@intel.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        nikolaus.voss@loewensteinmedical.de
-Subject: Re: [PATCH 1/3] ACPI: Resolve objects on host-directed table loads
-Message-ID: <20190830145348.GM2680@smile.fi.intel.com>
-References: <cover.1559127603.git.nikolaus.voss@loewensteinmedical.de>
- <8704391ae3004a6b4dd17975dbcc9e88bd28cf4b.1559127603.git.nikolaus.voss@loewensteinmedical.de>
- <20190814185055.GZ30120@smile.fi.intel.com>
- <CF6A88132359CE47947DB4C6E1709ED53C61A211@ORSMSX122.amr.corp.intel.com>
- <alpine.DEB.2.20.1908161345590.41303@fox.voss.local>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.20.1908161345590.41303@fox.voss.local>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1728337AbfH3PJb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Aug 2019 11:09:31 -0400
+Received: from michel.telenet-ops.be ([195.130.137.88]:54182 "EHLO
+        michel.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727791AbfH3PJ3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Aug 2019 11:09:29 -0400
+Received: from ramsan ([84.194.98.4])
+        by michel.telenet-ops.be with bizsmtp
+        id vT9T2000605gfCL06T9TG2; Fri, 30 Aug 2019 17:09:27 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1i3iWl-0003jQ-1L; Fri, 30 Aug 2019 17:09:27 +0200
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1i3iWk-0005d4-VO; Fri, 30 Aug 2019 17:09:26 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] ACPI / property: Fix acpi_graph_get_remote_endpoint() name in kerneldoc
+Date:   Fri, 30 Aug 2019 17:09:23 +0200
+Message-Id: <20190830150923.21588-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 16, 2019 at 01:57:26PM +0200, Nikolaus Voss wrote:
-> On Wed, 14 Aug 2019, Schmauss, Erik wrote:
-> > > -----Original Message-----
-> > > From: Shevchenko, Andriy
-> > > Sent: Wednesday, August 14, 2019 11:51 AM
-> > > To: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
-> > > Cc: Rafael J. Wysocki <rjw@rjwysocki.net>; Len Brown <lenb@kernel.org>;
-> > > Moore, Robert <robert.moore@intel.com>; Schmauss, Erik
-> > > <erik.schmauss@intel.com>; Jacek Anaszewski <jacek.anaszewski@gmail.com>;
-> > > Pavel Machek <pavel@ucw.cz>; Dan Murphy <dmurphy@ti.com>; Thierry
-> > > Reding <thierry.reding@gmail.com>; linux-acpi@vger.kernel.org;
-> > > devel@acpica.org; linux-leds@vger.kernel.org; linux-pwm@vger.kernel.org
-> > > Subject: Re: [PATCH 1/3] ACPI: Resolve objects on host-directed table loads
-> > > 
-> > > On Wed, May 29, 2019 at 02:18:20PM +0200, Nikolaus Voss wrote:
-> > > > If an ACPI SSDT overlay is loaded after built-in tables have been
-> > > > loaded e.g. via configfs or efivar_ssdt_load() it is necessary to
-> > > > rewalk the namespace to resolve references. Without this, relative and
-> > > > absolute paths like ^PCI0.SBUS or \_SB.PCI0.SBUS are not resolved
-> > > > correctly.
-> > > > 
-> > > > Make configfs load use the same method as efivar_ssdt_load().
-> > > 
-> > > This patch brought a regression (bisect log below).
-> > > Now I'm unable to unload the table which was working before.
-> > > 
-> > > Reverting (manual, due to ACPICA changes) helps.
-> > > 
-> > > Please, consider to revert for this cycle, or fix. I will be glad to test any
-> > > proposed fix.
-> > 
-> > We submitted a patch (d1fb5b2f623b1af5a0d2a83d205df1b61f430dc6)
-> > in response to this suggestion and I was not aware that this had been applied.
-> > 
-> > Rafael, please revert at least the ACPICA portion of this patch.
-> 
-> As I see it, my ACPICA change is not part of 5.3-rc1 any more. Reverting my
-> fix is part of the patch above (d1fb5b2f623b1af5a0d2a83d205df1b61f430dc6)
-> which is already applied.
-> 
-> Nevertheless, what is new, is that acpi_ns_initialize_objects() is called in
-> acpi_load_table(). This is necessary to resolve the references in the newly
-> loaded table. Maybe this prevents the table from being unloaded?
+The function is called acpi_graph_get_remote_endpoint(), not
+acpi_graph_get_remote_enpoint().
 
-So, can we do something about it? It's a regression.
+Fixes: 79389a83bc3888a9 ("ACPI / property: Add support for remote endpoints")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ drivers/acpi/property.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Rafael, Nikolaus?
-
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index ea3d700da3ca6bdb..2cb35d30cb140750 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1210,7 +1210,7 @@ static struct fwnode_handle *acpi_graph_get_child_prop_value(
+ 
+ 
+ /**
+- * acpi_graph_get_remote_enpoint - Parses and returns remote end of an endpoint
++ * acpi_graph_get_remote_endpoint - Parses and returns remote end of an endpoint
+  * @fwnode: Endpoint firmware node pointing to a remote device
+  * @endpoint: Firmware node of remote endpoint is filled here if not %NULL
+  *
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.17.1
 
