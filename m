@@ -2,119 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A404A5D53
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2019 23:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D94AEA5D65
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2019 23:16:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726979AbfIBVIV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Sep 2019 17:08:21 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:35669 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726964AbfIBVIU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 Sep 2019 17:08:20 -0400
-Received: by mail-ot1-f67.google.com with SMTP id 100so14719013otn.2;
-        Mon, 02 Sep 2019 14:08:20 -0700 (PDT)
+        id S1727376AbfIBVQ0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 Sep 2019 17:16:26 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:34216 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726979AbfIBVQZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 Sep 2019 17:16:25 -0400
+Received: by mail-pf1-f194.google.com with SMTP id b24so9537181pfp.1;
+        Mon, 02 Sep 2019 14:16:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=UzPPEolNh35wWErUe2k2fZkCpaurwJuZg/+ELGsiOFk=;
+        b=Yw0hv6WPGdzg89CqQgm2pjeaLxqK1SCjR9n0FGD5Y3r2LiFeW+G9UtCLiznr5RxuhI
+         7tE3P5Li0aUEBa2fZHPoHoot/SSNCoFmsbvAnqNg9aZX2mbt5QhkqpDML4MSTi/QpcpM
+         lxoK1qzZaPS5EA4osYjqQ2CDcDD+DBrRlxvXe3RImogXOtyntEvvi2ecDgvwyaHy84XK
+         RitqIfgPXhoh1+oroTx4tktLbK5Kqc/1Le9S3MJUcn/vj85LdAkINB8xrvuPRrvcF1wt
+         XG1FcNeH0sAxpcl72s4C6ov/yEFMMPgQchAya1U+z4GvOBJqX/jHRkG2XgpuDvMlv4Jh
+         ZY6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=huTQD+G6wSs8hXbu4stIdO9xW+9jjAIMQ/j2IBKOSLs=;
-        b=kGdy5a6AxvT29kVSZ2Kida0dWzlyvLm2AgBkZrYN9pf7HnDv9MfF345a+0CKCigvWF
-         CL1bNb8UEGH3t3ws7yGOul2dULhL3pS7ar+AiP3+x0p4oDRTngpwPOv5IVz+/CYiJOAx
-         fY2Z2JUgCvs7HiQLDLSzMlBEBK95cG2gt3OnQMP7a+8sKU3vnvPuHS3UgzW9c1X/vNSd
-         Bi39o+TKfx1+fltm4JGm3yZ7OzMo0B9K8L5AKm2mgYZ3AA2+IH2BYHP7Xz7Jk+eax+dK
-         0w6g7FSG38HxRssA7lEMRA4o6cpBpZs28wKiYpZO/wM787ILchCaQJ805OuTghwHzvMn
-         wacw==
-X-Gm-Message-State: APjAAAXLxzdB5swd05MTJqInq8SQCSgIM3hFSrkFATmawv8Ny7j+qTog
-        UhN1UZ2SdtbwqCCK9ZGINA4xg6364tcjiaMojAI=
-X-Google-Smtp-Source: APXvYqyI27hb2RWcNRadfCbRlDtIXktARg70zP5FAIcXUKIjdX66KnAXJFj+Kt7ssn8uG1C93zycuqAbTk3HFoTJ7d8=
-X-Received: by 2002:a05:6830:154:: with SMTP id j20mr26200025otp.266.1567458499533;
- Mon, 02 Sep 2019 14:08:19 -0700 (PDT)
+        bh=UzPPEolNh35wWErUe2k2fZkCpaurwJuZg/+ELGsiOFk=;
+        b=ARQ3o811yRXmggLTx8OkI3mbSVpG6KMzb1MGHaWrZAin8K/IqLuEP+5qGwCiuzjIqb
+         y/jnvglpTn2SDYI7QXVQBX787+BExjxoa3nYf4/0vFGkgJaiUax0WLu0iDm/Ue6Ynkco
+         sej8Y+FNVMAuIcPfT1mNtoI99Djpc11iLnJs25W8YkB7rmbqkJcpwETVAYHzrKrsmV+6
+         pS5IyNtuSpkoiPFmFO9tzXiltihAdtXVreYrZIj/gAI6OaDrkQWlaEgrxVJZrc0zK0x0
+         U37tMxh7e9msNjuHqRvBqFnV3U8BS8KaSTSQVvmFDMLiSyduCqIQIj1jf74ODbiBoFb9
+         idhg==
+X-Gm-Message-State: APjAAAXLlRdE0X02u4waistTfWei/DwEUpv5/ng/4mimR9VfveE9aywx
+        wmlSp1F5CIeIU9aYD0G8NbYlY5dJfLVVSEPwcf8=
+X-Google-Smtp-Source: APXvYqyg9Tkgzp+liZd++CYTKTIbIPE7/kBlL+HXD5OkDBg82HGev2/K71w5cyXBHT4FgJomex2UHjw/TsfC1ly8MEY=
+X-Received: by 2002:a63:6eca:: with SMTP id j193mr26308059pgc.74.1567458984928;
+ Mon, 02 Sep 2019 14:16:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190722023530.67676-1-skunberg.kelsey@gmail.com>
- <20190722023530.67676-2-skunberg.kelsey@gmail.com> <CAJZ5v0gRzu0bVL+7L9NhbWu5OxveEP8H8v5qpiW-FeOtoOepiw@mail.gmail.com>
- <20190722182929.GA203187@google.com>
-In-Reply-To: <20190722182929.GA203187@google.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 2 Sep 2019 23:08:08 +0200
-Message-ID: <CAJZ5v0iF=TxxD_gCJfaZzORTrcu+2StJE1_vhthB70jxqCkHuw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ACPI: Remove acpi_has_method() call from acpi_adxl.c
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Kelsey Skunberg <skunberg.kelsey@gmail.com>,
+References: <20190711102601.20582-1-chuanhua.han@nxp.com> <CAJZ5v0hY2sL+XfN_4v07_hjvoxgCAt+Q89+wNg5Pky6XKP-mqA@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hY2sL+XfN_4v07_hjvoxgCAt+Q89+wNg5Pky6XKP-mqA@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 3 Sep 2019 00:16:12 +0300
+Message-ID: <CAHp75VfFtMMQhetRFHrx=Ft7OWwyMqLrwP3sPjT6YVtr8xCHoQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: support for NXP i2c controller
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Chuanhua Han <chuanhua.han@nxp.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Mailing List <linux-acpi@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        skhan@linuxfoundation.org,
-        linux-kernel-mentees@lists.linuxfoundation.org, bjorn@helgaas.com,
-        Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Leo Li <leoyang.li@nxp.com>,
+        Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>,
+        Udit Kumar <udit.kumar@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Sorry for the delayed reply.
-
-On Mon, Jul 22, 2019 at 8:29 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+On Mon, Sep 2, 2019 at 11:58 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> [+cc Tony (original author), Borislav (merged original patch)]
->
-> On Mon, Jul 22, 2019 at 10:31:11AM +0200, Rafael J. Wysocki wrote:
-> > On Mon, Jul 22, 2019 at 4:36 AM Kelsey Skunberg
-> > <skunberg.kelsey@gmail.com> wrote:
-> > >
-> > > acpi_check_dsm() will already return an error if the DSM method does not
-> > > exist. Checking if the DSM method exists before the acpi_check_dsm() call
-> > > is not needed. Remove acpi_has_method() call to avoid additional work.
-> > >
-> > > Signed-off-by: Kelsey Skunberg <skunberg.kelsey@gmail.com>
-> > > ---
-> > >  drivers/acpi/acpi_adxl.c | 5 -----
-> > >  1 file changed, 5 deletions(-)
-> > >
-> > > diff --git a/drivers/acpi/acpi_adxl.c b/drivers/acpi/acpi_adxl.c
-> > > index 13c8f7b50c46..89aac15663fd 100644
-> > > --- a/drivers/acpi/acpi_adxl.c
-> > > +++ b/drivers/acpi/acpi_adxl.c
-> > > @@ -148,11 +148,6 @@ static int __init adxl_init(void)
-> > >                 return -ENODEV;
-> > >         }
-> > >
-> > > -       if (!acpi_has_method(handle, "_DSM")) {
-> > > -               pr_info("No DSM method\n");
+> On Thu, Jul 11, 2019 at 12:35 PM Chuanhua Han <chuanhua.han@nxp.com> wrote:
 > >
-> > And why is printing the message not useful?
+> > Enable NXP i2c controller to boot with ACPI
 > >
-> > > -               return -ENODEV;
-> > > -       }
-> > > -
-> > >         if (!acpi_check_dsm(handle, &adxl_guid, ADXL_REVISION,
-> > >                             ADXL_IDX_GET_ADDR_PARAMS |
-> > >                             ADXL_IDX_FORWARD_TRANSLATE)) {
+> > Signed-off-by: Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>
+> > Signed-off-by: Udit Kumar <udit.kumar@nxp.com>
+> > Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
 >
-> The next line of context (not included in the patch):
->
->                pr_info("DSM method does not support forward translate\n");
->
-> IMHO kernel messages that are just a constant string, with no context
-> or variable part (device ID, path, error code, etc) are questionable
-> in general.  Is there any dev_printk()-like thing that takes an
-> acpi_handle?  Seems like that would be useful for cases like this.
->
-> This message *does* include an "ADXL: " prefix (from the pr_fmt
-> definition), and from reading the code you can see that the only
-> possible method is "\_SB.ADXL._DSM".
->
-> There's nothing an end user can do with these messages, so I suspect
-> their value is for debugging during platform bringup, and it would be
-> sufficient to drop the first one (as Kelsey's patch does) and change
-> the second one like this:
->
-> -              pr_info("DSM method does not support forward translate\n");
-> +              pr_info("%s DSM missing or does not support forward translate\n",
-> +                      path);
+> Wolfram, any objections to this from the i2c side?
 
-You have a point, but then I would expect the changelog to mention that.
+May I propose amendment(s)?
 
-As it stands, the patch does more than the changelog says, which isn't nice.
+> > @@ -44,6 +44,7 @@
+> >  #include <linux/pm_runtime.h>
+> >  #include <linux/sched.h>
+> >  #include <linux/slab.h>
+
+> > +#include <linux/acpi.h>
+
+If it's kept in order, better to go with it. (Yes, it is as I have checked)
+However, property.h should be included instead, see below.
+
+> >         const struct of_device_id *of_id = of_match_device(i2c_imx_dt_ids,
+> >                                                            &pdev->dev);
+> > +       const struct acpi_device_id *acpi_id =
+> > +                       acpi_match_device(i2c_imx_acpi_ids,
+> > +                                         &pdev->dev);
+
+
+> >         if (of_id)
+> >                 i2c_imx->hwdata = of_id->data;
+> > +       else if (acpi_id)
+> > +               i2c_imx->hwdata = (struct imx_i2c_hwdata *)
+> > +                               acpi_id->driver_data;
+
+
+The above altogher may be replaced with
+
+const struct imx_i2c_hwdata *match;
+...
+match = device_get_match_data(&pdev->dev);
+if (match)
+ i2c_imx->hwdata = match;
+else
+...
+
+> > +               .acpi_match_table = ACPI_PTR(i2c_imx_acpi_ids),
+
+Since there is no #ifdef guard no need to use ACPI_PTR().
+
+-- 
+With Best Regards,
+Andy Shevchenko
