@@ -2,95 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4296DA57BE
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2019 15:37:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B49CA5882
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2019 15:57:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730209AbfIBNgk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Sep 2019 09:36:40 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:34337 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730362AbfIBNgh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 Sep 2019 09:36:37 -0400
-Received: by mail-lj1-f195.google.com with SMTP id x18so12940022ljh.1
-        for <linux-acpi@vger.kernel.org>; Mon, 02 Sep 2019 06:36:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8LhD/sF/NTN0NjoFAgiiHQ7UUs0ybG0eLJoGIh+N4ts=;
-        b=yt5Kk70QvcaLMsgSVuGuAG4SWM+BIcLIE5gou9GHOehJB4r9b6weJu+L7oHTmKWf1G
-         fX/yXW2q6/k6BNw8YAh51Jz1YplyVXmpWkzRX/rbuKi1zIv8GcZA3hbylkT11Dc7iaf2
-         UGWvbJ0bU+abLpXT6JPE+sKYsFDh14BO9haw58yB5Jesu632ftsPtb7jEp+yQsLtBeua
-         h6bewrNUmYJldinBXbVXilFKl05GC6gWO8jL+Ees9sIZ+roT2Xq6s4iZF1aIs4QqX4Va
-         fNgWF6FpKWU72uZOR1YsWCa5OnA/ZEmxIr5AAA9nCB5JlphyvX/FIT4W0Oxgn0gPqATz
-         CsuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8LhD/sF/NTN0NjoFAgiiHQ7UUs0ybG0eLJoGIh+N4ts=;
-        b=Pty6+DJ/DTRab8m93AB+v+ZVdZMkxAYAjUPKq67zKkYFfgVE3nc67vkdJUwZQ9gxyW
-         bE37VvFbUroPiIDYCdflwCVIyBhw5e61ZK42YSKJ4cOqaorejM19hW0VdjaeBfednGVR
-         f5/UUkX10UmWKBXc+GOXKTIZ4vouoGQSpK3owj3z9KlUSzErFadrLO5Gc5UX1AQ0+kWi
-         sX0eveeY3V4UeboiwlTTPKmyFxmNv75SReMKpUWXDHBsbaBEzu/oQKhFf41bVlwcnlpE
-         K5SyXatuClUwvDruf5xUCeNz/pSLfq3vSXkE+HvRkQRreuk9fBWi4MNJcdrMpinIE9AJ
-         rESQ==
-X-Gm-Message-State: APjAAAUwkF62DybYH6pwOqTHa7/HEAIuMwEDMDLvjlEaA9+jcyTJvs1/
-        KAFG73fbllz/GO2fQPzEaF3gQU7bK48jkr0f9IcIrx+p/2U=
-X-Google-Smtp-Source: APXvYqy/56/JZhH9u5h/dgz83LrB1WA4WlE3a52G84UNe7DNmvw7eo78678HYTfzEBqzkAB8w0uR5xAG6bAC2llAAJg=
-X-Received: by 2002:a2e:3a0e:: with SMTP id h14mr16425420lja.180.1567431395793;
- Mon, 02 Sep 2019 06:36:35 -0700 (PDT)
+        id S1730912AbfIBN5a (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 Sep 2019 09:57:30 -0400
+Received: from mga11.intel.com ([192.55.52.93]:52288 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730136AbfIBN5a (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 2 Sep 2019 09:57:30 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Sep 2019 06:57:29 -0700
+X-IronPort-AV: E=Sophos;i="5.64,459,1559545200"; 
+   d="scan'208";a="183314992"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Sep 2019 06:57:27 -0700
+Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id 9E27A20B48;
+        Mon,  2 Sep 2019 16:57:25 +0300 (EEST)
+Received: from sailus by punajuuri.localdomain with local (Exim 4.92)
+        (envelope-from <sakari.ailus@linux.intel.com>)
+        id 1i4mpo-00067D-GN; Mon, 02 Sep 2019 16:57:32 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
+        rafael@kernel.org
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH v5 00/11] Device property improvements, add %pfw format specifier
+Date:   Mon,  2 Sep 2019 16:57:21 +0300
+Message-Id: <20190902135732.23455-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20190831030916.13172-1-peter@typeblog.net> <20190902100141.GW2680@smile.fi.intel.com>
-In-Reply-To: <20190902100141.GW2680@smile.fi.intel.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 2 Sep 2019 15:36:24 +0200
-Message-ID: <CACRpkdaY_TT_m3XEh_J9TqMQijzUieQDBn+t4=uGUyfP+V0Hzg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] gpio: acpi: add quirk to override GpioInt polarity
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Peter Cai <peter@typeblog.net>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bastien Nocera <hadess@hadess.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux Input <linux-input@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Sep 2, 2019 at 12:01 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
-> On Sat, Aug 31, 2019 at 11:09:14AM +0800, Peter Cai wrote:
-> > On GPD P2 Max, the firmware could not reset the touch panel correctly.
-> > The kernel needs to take on the job instead, but the GpioInt definition
-> > in DSDT specifies ActiveHigh while the GPIO pin should actually be
-> > ActiveLow.
-> >
-> > We need to override the polarity defined by DSDT. The GPIO driver
-> > already allows defining polarity in acpi_gpio_params, but the option is
-> > not applied to GpioInt.
-> >
-> > This patch adds a new quirk that enables the polarity specified in
-> > acpi_gpio_params to also be applied to GpioInt.
->
-> Thank you for an update!
->
-> Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->
-> on the condition that Dmitry and other input / Goodix developers are okay with
-> the approach in general.
+Hi all,
 
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-In case Dmitry needs to merge this.
+This set adds functionality into the device property API (counting a
+node's parents as well as obtaining its name) in order to support printing
+fwnode names using a new conversion specifier "%pfw". The names that are
+produced are equivalent to its OF counterpart "%pOF" on OF systems for the
+two supported modifiers ("f" and "P").
 
-Or should I simply merge this patch to the GPIO tree?
+Printing a node's name is something that's been available on OF for a long
+time and if something is converted to device property API (such as the
+V4L2 fwnode framework) it always got removed of a nice feature that was
+sometimes essential in debugging. With this set, that no longer is the
+case.
 
-Yours,
-Linus Walleij
+since v4:
+
+- Improved documentation for fwnode_get_nth_parent().
+
+- Removed comma from the guardian entry in fwnode_pointer() testcase.
+
+since v3:
+
+- Remove underscores in argument name of fwnode_count_parents().
+
+- Re-introduce "%pO?" error string.
+
+- Unwrap a call to string() in fwnode_string().
+
+- Removed a useless Depends-on: on a patch that was merged long ago.
+
+- Unwrap a Fixes: line.
+
+- Added a patch to move fwnode_get_parent() up to make the review of the
+  following patch easier.
+
+since v2:
+
+- Better comments in acpi_fwnode_get_name_prefix().
+
+- Added swnode implementation.
+
+- Fixed swnode refcounting in get_parent() ("swnode: Get reference to
+  parent swnode in get_parent op")
+
+- Make argument to to_software_node() const (a new patch)
+
+- Factored out confusingly named kobject_string() that had a single
+  caller.
+
+- Cleaner fwnode_count_parents() implementation (as discussed in review).
+
+- Made fwnode_count_parents() argument const.
+
+- Added tests (last patch in the set).
+
+since v1:
+
+- Add patch to remove support for %pf and %pF (depends on another patch
+  removing all use of %pf and %pF) (now 4th patch)
+
+- Fix kerneldoc argument documentation for fwnode_get_name (2nd patch)
+
+- Align kerneldoc style with the rest of drivers/base/property.c (no extra
+  newline after function name)
+
+- Make checkpatch.pl complain about "%pf" not followed by "w" (6th patch)
+
+- WARN_ONCE() on use of invalid conversion specifiers ("%pf" not followed
+  by "w")
+
+Sakari Ailus (11):
+  software node: Get reference to parent swnode in get_parent op
+  software node: Make argument to to_software_node const
+  device property: Move fwnode_get_parent() up
+  device property: Add functions for accessing node's parents
+  device property: Add fwnode_get_name for returning the name of a node
+  device property: Add a function to obtain a node's prefix
+  lib/vsprintf: Remove support for %pF and %pf in favour of %pS and %ps
+  lib/vsprintf: Make use of fwnode API to obtain node names and
+    separators
+  lib/vsprintf: OF nodes are first and foremost, struct device_nodes
+  lib/vsprintf: Add %pfw conversion specifier for printing fwnode names
+  lib/test_printf: Add tests for %pfw printk modifier
+
+ Documentation/core-api/printk-formats.rst | 34 ++++++---
+ drivers/acpi/property.c                   | 48 +++++++++++++
+ drivers/base/property.c                   | 83 +++++++++++++++++++--
+ drivers/base/swnode.c                     | 55 +++++++++++++-
+ drivers/of/property.c                     | 16 +++++
+ include/linux/fwnode.h                    |  4 ++
+ include/linux/property.h                  |  8 ++-
+ lib/test_printf.c                         | 37 ++++++++++
+ lib/vsprintf.c                            | 88 ++++++++++++++---------
+ scripts/checkpatch.pl                     |  4 +-
+ 10 files changed, 319 insertions(+), 58 deletions(-)
+
+-- 
+2.20.1
+
