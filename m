@@ -2,152 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A45BEA5982
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2019 16:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7154A5A5B
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2019 17:18:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730930AbfIBOji (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Sep 2019 10:39:38 -0400
-Received: from mx2.suse.de ([195.135.220.15]:39580 "EHLO mx1.suse.de"
+        id S1729744AbfIBPSF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 Sep 2019 11:18:05 -0400
+Received: from mx2.suse.de ([195.135.220.15]:41588 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727393AbfIBOji (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 2 Sep 2019 10:39:38 -0400
+        id S1729656AbfIBPSF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 2 Sep 2019 11:18:05 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id ED046B65E;
-        Mon,  2 Sep 2019 14:39:35 +0000 (UTC)
-Date:   Mon, 2 Sep 2019 16:39:35 +0200
+        by mx1.suse.de (Postfix) with ESMTP id A1BC1AE89;
+        Mon,  2 Sep 2019 15:18:03 +0000 (UTC)
+Date:   Mon, 2 Sep 2019 17:18:03 +0200
 From:   Petr Mladek <pmladek@suse.com>
 To:     Sakari Ailus <sakari.ailus@linux.intel.com>
 Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
         Rob Herring <robh@kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
-        linux-trace-devel@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>
-Subject: Re: [PATCH v4 07/11] lib/vsprintf: Remove support for %pF and %pf in
- favour of %pS and %ps
-Message-ID: <20190902143935.xtd44jdvhjuc2wxe@pathway.suse.cz>
+        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 08/11] lib/vsprintf: Make use of fwnode API to obtain
+ node names and separators
+Message-ID: <20190902151803.wgt2x5rtpziggtgx@pathway.suse.cz>
 References: <20190902083240.20367-1-sakari.ailus@linux.intel.com>
- <20190902083240.20367-8-sakari.ailus@linux.intel.com>
+ <20190902083240.20367-9-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190902083240.20367-8-sakari.ailus@linux.intel.com>
+In-Reply-To: <20190902083240.20367-9-sakari.ailus@linux.intel.com>
 User-Agent: NeoMutt/20170912 (1.9.0)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon 2019-09-02 11:32:36, Sakari Ailus wrote:
-> %pS and %ps are now the preferred conversion specifiers to print function
-> names. The functionality is equivalent; remove the old, deprecated %pF
-> and %pf support.
-
-Hmm, I see the following in master:
-
-$> git grep %pF
-tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt:or events have "%pF" or "%pS" parameter in its format string. It is common to
-
-$> git grep %pf
-tools/lib/traceevent/event-parse.c:             if (asprintf(&format, "%%pf: (NO FORMAT FOUND at %llx)\n", addr) < 0)
-tools/lib/traceevent/event-parse.c:     if (asprintf(&format, "%s: %s", "%pf", printk->printk) < 0)
-
-I wonder how this is related to printk(). In each case, it seems
-that libtraceevent somehow implements the non-standard kernel
-%p mofifiers. It looks error-prone to keep another %pf user
-with the old semantic around.
-
-I am adding some tracing people into CC.
-
-Best Regards,
-Petr
-
+On Mon 2019-09-02 11:32:37, Sakari Ailus wrote:
+> Instead of implementing our own means of discovering parent nodes, node
+> names or counting how many parents a node has, use the newly added
+> functions in the fwnode API to obtain that information.
+> 
 > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
->  Documentation/core-api/printk-formats.rst | 10 ----------
->  lib/vsprintf.c                            |  8 ++------
->  scripts/checkpatch.pl                     |  1 -
->  3 files changed, 2 insertions(+), 17 deletions(-)
+>  lib/vsprintf.c | 38 ++++++++++++++++----------------------
+>  1 file changed, 16 insertions(+), 22 deletions(-)
 > 
-> diff --git a/Documentation/core-api/printk-formats.rst b/Documentation/core-api/printk-formats.rst
-> index c6224d039bcbe..922a29eb70e6c 100644
-> --- a/Documentation/core-api/printk-formats.rst
-> +++ b/Documentation/core-api/printk-formats.rst
-> @@ -86,8 +86,6 @@ Symbols/Function Pointers
->  
->  	%pS	versatile_init+0x0/0x110
->  	%ps	versatile_init
-> -	%pF	versatile_init+0x0/0x110
-> -	%pf	versatile_init
->  	%pSR	versatile_init+0x9/0x110
->  		(with __builtin_extract_return_addr() translation)
->  	%pB	prev_fn_of_versatile_init+0x88/0x88
-> @@ -97,14 +95,6 @@ The ``S`` and ``s`` specifiers are used for printing a pointer in symbolic
->  format. They result in the symbol name with (S) or without (s)
->  offsets. If KALLSYMS are disabled then the symbol address is printed instead.
->  
-> -Note, that the ``F`` and ``f`` specifiers are identical to ``S`` (``s``)
-> -and thus deprecated. We have ``F`` and ``f`` because on ia64, ppc64 and
-> -parisc64 function pointers are indirect and, in fact, are function
-> -descriptors, which require additional dereferencing before we can lookup
-> -the symbol. As of now, ``S`` and ``s`` perform dereferencing on those
-> -platforms (when needed), so ``F`` and ``f`` exist for compatibility
-> -reasons only.
-> -
->  The ``B`` specifier results in the symbol name with offsets and should be
->  used when printing stack backtraces. The specifier takes into
->  consideration the effect of compiler optimisations which may occur
 > diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> index b0967cf17137d..b00b57f9f911f 100644
+> index b00b57f9f911f..a04a2167101ef 100644
 > --- a/lib/vsprintf.c
 > +++ b/lib/vsprintf.c
-> @@ -909,7 +909,7 @@ char *symbol_string(char *buf, char *end, void *ptr,
->  #ifdef CONFIG_KALLSYMS
->  	if (*fmt == 'B')
->  		sprint_backtrace(sym, value);
-> -	else if (*fmt != 'f' && *fmt != 's')
-> +	else if (*fmt != 's')
->  		sprint_symbol(sym, value);
->  	else
->  		sprint_symbol_no_offset(sym, value);
-> @@ -2007,9 +2007,7 @@ static char *kobject_string(char *buf, char *end, void *ptr,
->   *
->   * - 'S' For symbolic direct pointers (or function descriptors) with offset
->   * - 's' For symbolic direct pointers (or function descriptors) without offset
-> - * - 'F' Same as 'S'
-> - * - 'f' Same as 's'
-> - * - '[FfSs]R' as above with __builtin_extract_return_addr() translation
-> + * - '[Ss]R' as above with __builtin_extract_return_addr() translation
->   * - 'B' For backtraced symbolic direct pointers with offset
->   * - 'R' For decoded struct resource, e.g., [mem 0x0-0x1f 64bit pref]
->   * - 'r' For raw struct resource, e.g., [mem 0x0-0x1f flags 0x201]
-> @@ -2112,8 +2110,6 @@ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
->  	      struct printf_spec spec)
+> @@ -1863,32 +1864,24 @@ char *flags_string(char *buf, char *end, void *flags_ptr,
+>  	return format_flags(buf, end, flags, names);
+>  }
+>  
+> -static const char *device_node_name_for_depth(const struct device_node *np, int depth)
+> -{
+> -	for ( ; np && depth; depth--)
+> -		np = np->parent;
+> -
+> -	return kbasename(np->full_name);
+> -}
+> -
+>  static noinline_for_stack
+> -char *device_node_gen_full_name(const struct device_node *np, char *buf, char *end)
+> +char *fwnode_full_name_string(struct fwnode_handle *fwnode, char *buf,
+> +			      char *end)
 >  {
->  	switch (*fmt) {
-> -	case 'F':
-> -	case 'f':
->  	case 'S':
->  	case 's':
->  		ptr = dereference_symbol_descriptor(ptr);
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index 93a7edfe0f059..a60c241112cd4 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -6012,7 +6012,6 @@ sub process {
->  					my $ext_type = "Invalid";
->  					my $use = "";
->  					if ($bad_specifier =~ /p[Ff]/) {
-> -						$ext_type = "Deprecated";
->  						$use = " - use %pS instead";
->  						$use =~ s/pS/ps/ if ($bad_specifier =~ /pf/);
->  					}
-> -- 
-> 2.20.1
-> 
+>  	int depth;
+> -	const struct device_node *parent = np->parent;
+>  
+> -	/* special case for root node */
+> -	if (!parent)
+> -		return string_nocheck(buf, end, "/", default_str_spec);
+> +	for (depth = fwnode_count_parents(fwnode); depth >= 0; depth--) {
+
+It looked suspicious that it iterated "depth + 1" times. It might be
+obvious for people traversing paths every day but not for me ;-)
+Please, add a comment, for example:
+
+	/* Iterate over parents and current node. */
+
+With the above comment:
+
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+
+Best Regards,
+Petr
