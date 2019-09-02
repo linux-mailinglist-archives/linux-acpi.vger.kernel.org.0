@@ -2,29 +2,29 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B321A51BF
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2019 10:33:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C857DA51A4
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2019 10:32:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730341AbfIBIcl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Sep 2019 04:32:41 -0400
-Received: from mga03.intel.com ([134.134.136.65]:14620 "EHLO mga03.intel.com"
+        id S1730314AbfIBIck (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 Sep 2019 04:32:40 -0400
+Received: from mga01.intel.com ([192.55.52.88]:25919 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730223AbfIBIcj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 2 Sep 2019 04:32:39 -0400
+        id S1729680AbfIBIck (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 2 Sep 2019 04:32:40 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Sep 2019 01:32:38 -0700
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Sep 2019 01:32:39 -0700
 X-IronPort-AV: E=Sophos;i="5.64,457,1559545200"; 
-   d="scan'208";a="183255380"
+   d="scan'208";a="357428010"
 Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Sep 2019 01:32:35 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Sep 2019 01:32:36 -0700
 Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id BB43E20B04;
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id BD3CA20B09;
         Mon,  2 Sep 2019 11:32:33 +0300 (EEST)
 Received: from sailus by punajuuri.localdomain with local (Exim 4.92)
         (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1i4hlQ-0005JP-4K; Mon, 02 Sep 2019 11:32:40 +0300
+        id 1i4hlQ-0005JS-5d; Mon, 02 Sep 2019 11:32:40 +0300
 From:   Sakari Ailus <sakari.ailus@linux.intel.com>
 To:     Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
         rafael@kernel.org
@@ -32,10 +32,12 @@ Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
         Rob Herring <robh@kernel.org>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH v4 00/11] Device property improvements, add %pfw format specifier
-Date:   Mon,  2 Sep 2019 11:32:29 +0300
-Message-Id: <20190902083240.20367-1-sakari.ailus@linux.intel.com>
+Subject: [PATCH v4 01/11] software node: Get reference to parent swnode in get_parent op
+Date:   Mon,  2 Sep 2019 11:32:30 +0300
+Message-Id: <20190902083240.20367-2-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190902083240.20367-1-sakari.ailus@linux.intel.com>
+References: <20190902083240.20367-1-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
@@ -43,96 +45,33 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi all,
+The software_node_get_parent() returned a pointer to the parent swnode,
+but did not take a reference to it, leading the caller to put a reference
+that was not taken. Take that reference now.
 
-This set adds functionality into the device property API (counting a
-node's parents as well as obtaining its name) in order to support printing
-fwnode names using a new conversion specifier "%pfw". The names that are
-produced are equivalent to its OF counterpart "%pOF" on OF systems for the
-two supported modifiers ("f" and "P").
+Fixes: 59abd83672f7 ("drivers: base: Introducing software nodes to the firmware node framework")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+---
+ drivers/base/swnode.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Printing a node's name is something that's been available on OF for a long
-time and if something is converted to device property API (such as the
-V4L2 fwnode framework) it always got removed of a nice feature that was
-sometimes essential in debugging. With this set, that no longer is the
-case.
-
-since v3:
-
-- Remove underscores in argument name of fwnode_count_parents().
-
-- Re-introduce "%pO?" error string.
-
-- Unwrap a call to string() in fwnode_string().
-
-- Removed a useless Depends-on: on a patch that was merged long ago.
-
-- Unwrap a Fixes: line.
-
-- Added a patch to move fwnode_get_parent() up to make the review of the
-  following patch easier.
-
-since v2:
-
-- Better comments in acpi_fwnode_get_name_prefix().
-
-- Added swnode implementation.
-
-- Fixed swnode refcounting in get_parent() ("swnode: Get reference to
-  parent swnode in get_parent op")
-
-- Make argument to to_software_node() const (a new patch)
-
-- Factored out confusingly named kobject_string() that had a single
-  caller.
-
-- Cleaner fwnode_count_parents() implementation (as discussed in review).
-
-- Made fwnode_count_parents() argument const.
-
-- Added tests (last patch in the set).
-
-since v1:
-
-- Add patch to remove support for %pf and %pF (depends on another patch
-  removing all use of %pf and %pF) (now 4th patch)
-
-- Fix kerneldoc argument documentation for fwnode_get_name (2nd patch)
-
-- Align kerneldoc style with the rest of drivers/base/property.c (no extra
-  newline after function name)
-
-- Make checkpatch.pl complain about "%pf" not followed by "w" (6th patch)
-
-- WARN_ONCE() on use of invalid conversion specifiers ("%pf" not followed
-  by "w")
-
-Sakari Ailus (11):
-  software node: Get reference to parent swnode in get_parent op
-  software node: Make argument to to_software_node const
-  device property: Move fwnode_get_parent() up
-  device property: Add functions for accessing node's parents
-  device property: Add fwnode_get_name for returning the name of a node
-  device property: Add a function to obtain a node's prefix
-  lib/vsprintf: Remove support for %pF and %pf in favour of %pS and %ps
-  lib/vsprintf: Make use of fwnode API to obtain node names and
-    separators
-  lib/vsprintf: OF nodes are first and foremost, struct device_nodes
-  lib/vsprintf: Add %pfw conversion specifier for printing fwnode names
-  lib/test_printf: Add tests for %pfw printk modifier
-
- Documentation/core-api/printk-formats.rst | 34 ++++++---
- drivers/acpi/property.c                   | 48 +++++++++++++
- drivers/base/property.c                   | 83 +++++++++++++++++++--
- drivers/base/swnode.c                     | 55 +++++++++++++-
- drivers/of/property.c                     | 16 +++++
- include/linux/fwnode.h                    |  4 ++
- include/linux/property.h                  |  8 ++-
- lib/test_printf.c                         | 37 ++++++++++
- lib/vsprintf.c                            | 88 ++++++++++++++---------
- scripts/checkpatch.pl                     |  4 +-
- 10 files changed, 319 insertions(+), 58 deletions(-)
-
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index e7b3aa3bd55ad..a7cb41812cfda 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -520,7 +520,10 @@ software_node_get_parent(const struct fwnode_handle *fwnode)
+ {
+ 	struct swnode *swnode = to_swnode(fwnode);
+ 
+-	return swnode ? (swnode->parent ? &swnode->parent->fwnode : NULL) : NULL;
++	if (!swnode || !swnode->parent)
++		return NULL;
++
++	return fwnode_handle_get(&swnode->parent->fwnode);
+ }
+ 
+ static struct fwnode_handle *
 -- 
 2.20.1
 
