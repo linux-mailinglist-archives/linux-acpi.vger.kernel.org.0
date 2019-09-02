@@ -2,29 +2,29 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BCEB5A51A6
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2019 10:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3FC5A51B3
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2019 10:33:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730452AbfIBIco (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Sep 2019 04:32:44 -0400
-Received: from mga12.intel.com ([192.55.52.136]:64395 "EHLO mga12.intel.com"
+        id S1729668AbfIBIdB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 Sep 2019 04:33:01 -0400
+Received: from mga18.intel.com ([134.134.136.126]:28818 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730407AbfIBIco (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 2 Sep 2019 04:32:44 -0400
+        id S1730495AbfIBIcp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 2 Sep 2019 04:32:45 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Sep 2019 01:32:43 -0700
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Sep 2019 01:32:42 -0700
 X-IronPort-AV: E=Sophos;i="5.64,457,1559545200"; 
-   d="scan'208";a="333504270"
+   d="scan'208";a="211625735"
 Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Sep 2019 01:32:40 -0700
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Sep 2019 01:32:40 -0700
 Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id 0480820E0E;
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id 28ACA2102C;
         Mon,  2 Sep 2019 11:32:34 +0300 (EEST)
 Received: from sailus by punajuuri.localdomain with local (Exim 4.92)
         (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1i4hlQ-0005Jn-E8; Mon, 02 Sep 2019 11:32:40 +0300
+        id 1i4hlQ-0005Jq-FL; Mon, 02 Sep 2019 11:32:40 +0300
 From:   Sakari Ailus <sakari.ailus@linux.intel.com>
 To:     Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
         rafael@kernel.org
@@ -32,9 +32,9 @@ Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
         Rob Herring <robh@kernel.org>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH v4 08/11] lib/vsprintf: Make use of fwnode API to obtain node names and separators
-Date:   Mon,  2 Sep 2019 11:32:37 +0300
-Message-Id: <20190902083240.20367-9-sakari.ailus@linux.intel.com>
+Subject: [PATCH v4 09/11] lib/vsprintf: OF nodes are first and foremost, struct device_nodes
+Date:   Mon,  2 Sep 2019 11:32:38 +0300
+Message-Id: <20190902083240.20367-10-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190902083240.20367-1-sakari.ailus@linux.intel.com>
 References: <20190902083240.20367-1-sakari.ailus@linux.intel.com>
@@ -45,95 +45,56 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Instead of implementing our own means of discovering parent nodes, node
-names or counting how many parents a node has, use the newly added
-functions in the fwnode API to obtain that information.
+Factor out static kobject_string() function that simply calls
+device_node_string(), and thus remove references to kobjects (as these are
+struct device_node).
 
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- lib/vsprintf.c | 38 ++++++++++++++++----------------------
- 1 file changed, 16 insertions(+), 22 deletions(-)
+ lib/vsprintf.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
 diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index b00b57f9f911f..a04a2167101ef 100644
+index a04a2167101ef..4ad9332d54ba6 100644
 --- a/lib/vsprintf.c
 +++ b/lib/vsprintf.c
-@@ -38,6 +38,7 @@
- #include <net/addrconf.h>
- #include <linux/siphash.h>
- #include <linux/compiler.h>
-+#include <linux/property.h>
- #ifdef CONFIG_BLOCK
- #include <linux/blkdev.h>
- #endif
-@@ -1863,32 +1864,24 @@ char *flags_string(char *buf, char *end, void *flags_ptr,
- 	return format_flags(buf, end, flags, names);
+@@ -1905,6 +1905,9 @@ char *device_node_string(char *buf, char *end, struct device_node *dn,
+ 	struct printf_spec str_spec = spec;
+ 	str_spec.field_width = -1;
+ 
++	if (fmt[0] != 'F')
++		return error_string(buf, end, "(%pO?)", spec);
++
+ 	if (!IS_ENABLED(CONFIG_OF))
+ 		return error_string(buf, end, "(%pOF?)", spec);
+ 
+@@ -1978,17 +1981,6 @@ char *device_node_string(char *buf, char *end, struct device_node *dn,
+ 	return widen_string(buf, buf - buf_start, end, spec);
  }
  
--static const char *device_node_name_for_depth(const struct device_node *np, int depth)
+-static char *kobject_string(char *buf, char *end, void *ptr,
+-			    struct printf_spec spec, const char *fmt)
 -{
--	for ( ; np && depth; depth--)
--		np = np->parent;
+-	switch (fmt[1]) {
+-	case 'F':
+-		return device_node_string(buf, end, ptr, spec, fmt + 1);
+-	}
 -
--	return kbasename(np->full_name);
+-	return error_string(buf, end, "(%pO?)", spec);
 -}
 -
- static noinline_for_stack
--char *device_node_gen_full_name(const struct device_node *np, char *buf, char *end)
-+char *fwnode_full_name_string(struct fwnode_handle *fwnode, char *buf,
-+			      char *end)
- {
- 	int depth;
--	const struct device_node *parent = np->parent;
- 
--	/* special case for root node */
--	if (!parent)
--		return string_nocheck(buf, end, "/", default_str_spec);
-+	for (depth = fwnode_count_parents(fwnode); depth >= 0; depth--) {
-+		struct fwnode_handle *__fwnode =
-+			fwnode_get_nth_parent(fwnode, depth);
- 
--	for (depth = 0; parent->parent; depth++)
--		parent = parent->parent;
--
--	for ( ; depth >= 0; depth--) {
--		buf = string_nocheck(buf, end, "/", default_str_spec);
--		buf = string(buf, end, device_node_name_for_depth(np, depth),
-+		buf = string(buf, end, fwnode_get_name_prefix(__fwnode),
-+			     default_str_spec);
-+		buf = string(buf, end, fwnode_get_name(__fwnode),
- 			     default_str_spec);
-+
-+		fwnode_handle_put(__fwnode);
+ /*
+  * Show a '%p' thing.  A kernel extension is that the '%p' is followed
+  * by an extra set of alphanumeric characters that are extended format
+@@ -2167,7 +2159,7 @@ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
+ 	case 'G':
+ 		return flags_string(buf, end, ptr, spec, fmt);
+ 	case 'O':
+-		return kobject_string(buf, end, ptr, spec, fmt);
++		return device_node_string(buf, end, ptr, spec, fmt + 1);
+ 	case 'x':
+ 		return pointer_string(buf, end, ptr, spec);
  	}
-+
- 	return buf;
- }
- 
-@@ -1933,10 +1926,11 @@ char *device_node_string(char *buf, char *end, struct device_node *dn,
- 
- 		switch (*fmt) {
- 		case 'f':	/* full_name */
--			buf = device_node_gen_full_name(dn, buf, end);
-+			buf = fwnode_full_name_string(of_fwnode_handle(dn), buf,
-+						      end);
- 			break;
- 		case 'n':	/* name */
--			p = kbasename(of_node_full_name(dn));
-+			p = fwnode_get_name(of_fwnode_handle(dn));
- 			precision = str_spec.precision;
- 			str_spec.precision = strchrnul(p, '@') - p;
- 			buf = string(buf, end, p, str_spec);
-@@ -1946,7 +1940,7 @@ char *device_node_string(char *buf, char *end, struct device_node *dn,
- 			buf = number(buf, end, (unsigned int)dn->phandle, num_spec);
- 			break;
- 		case 'P':	/* path-spec */
--			p = kbasename(of_node_full_name(dn));
-+			p = fwnode_get_name(of_fwnode_handle(dn));
- 			if (!p[1])
- 				p = "/";
- 			buf = string(buf, end, p, str_spec);
 -- 
 2.20.1
 
