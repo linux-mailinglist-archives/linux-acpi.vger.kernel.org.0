@@ -2,109 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D73CA6A14
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2019 15:38:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBAFDA6AB7
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2019 16:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729079AbfICNin (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Sep 2019 09:38:43 -0400
-Received: from mx2.suse.de ([195.135.220.15]:45138 "EHLO mx1.suse.de"
+        id S1728967AbfICOEY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Sep 2019 10:04:24 -0400
+Received: from mx2.suse.de ([195.135.220.15]:43958 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725782AbfICNin (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 3 Sep 2019 09:38:43 -0400
+        id S1725782AbfICOEX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 3 Sep 2019 10:04:23 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 8EBF5B633;
-        Tue,  3 Sep 2019 13:38:41 +0000 (UTC)
-Date:   Tue, 3 Sep 2019 15:38:41 +0200
+        by mx1.suse.de (Postfix) with ESMTP id 034A1B117;
+        Tue,  3 Sep 2019 14:04:21 +0000 (UTC)
+Date:   Tue, 3 Sep 2019 16:04:20 +0200
 From:   Petr Mladek <pmladek@suse.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Namhyung Kim <namhyung@kernel.org>, rafael@kernel.org,
         Rob Herring <robh@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 11/11] lib/test_printf: Add tests for %pfw printk
- modifier
-Message-ID: <20190903133841.dhb6k2lwx2gglyjs@pathway.suse.cz>
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Jiri Olsa <jolsa@redhat.com>, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-trace-devel@vger.kernel.org,
+        Tzvetomir Stoyanov <tstoyanov@vmware.com>
+Subject: Re: [PATCH v4 07/11] lib/vsprintf: Remove support for %pF and %pf in
+ favour of %pS and %ps
+Message-ID: <20190903140420.kmb42cwr3scrfd3e@pathway.suse.cz>
 References: <20190902083240.20367-1-sakari.ailus@linux.intel.com>
- <20190902083240.20367-12-sakari.ailus@linux.intel.com>
+ <20190902083240.20367-8-sakari.ailus@linux.intel.com>
+ <20190902143935.xtd44jdvhjuc2wxe@pathway.suse.cz>
+ <20190902160139.GQ2680@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190902083240.20367-12-sakari.ailus@linux.intel.com>
+In-Reply-To: <20190902160139.GQ2680@smile.fi.intel.com>
 User-Agent: NeoMutt/20170912 (1.9.0)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon 2019-09-02 11:32:40, Sakari Ailus wrote:
-> Add a test for the %pfw printk modifier using software nodes.
+On Mon 2019-09-02 19:01:39, Andy Shevchenko wrote:
+> On Mon, Sep 02, 2019 at 04:39:35PM +0200, Petr Mladek wrote:
+> > On Mon 2019-09-02 11:32:36, Sakari Ailus wrote:
+> > > %pS and %ps are now the preferred conversion specifiers to print function
+> > > names. The functionality is equivalent; remove the old, deprecated %pF
+> > > and %pf support.
+> > 
+> > Hmm, I see the following in master:
+> > 
+> > $> git grep %pF
+> > tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt:or events have "%pF" or "%pS" parameter in its format string. It is common to
+> > 
+> > $> git grep %pf
+> > tools/lib/traceevent/event-parse.c:             if (asprintf(&format, "%%pf: (NO FORMAT FOUND at %llx)\n", addr) < 0)
+> > tools/lib/traceevent/event-parse.c:     if (asprintf(&format, "%s: %s", "%pf", printk->printk) < 0)
+> > 
+> > I wonder how this is related to printk(). In each case, it seems
 > 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  lib/test_printf.c | 37 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 37 insertions(+)
-> 
-> diff --git a/lib/test_printf.c b/lib/test_printf.c
-> index 944eb50f38625..9c6d716979fb1 100644
-> --- a/lib/test_printf.c
-> +++ b/lib/test_printf.c
-> @@ -22,6 +22,8 @@
->  #include <linux/gfp.h>
->  #include <linux/mm.h>
->  
-> +#include <linux/property.h>
-> +
->  #include "../tools/testing/selftests/kselftest_module.h"
->  
->  #define BUF_SIZE 256
-> @@ -588,6 +590,40 @@ flags(void)
->  	kfree(cmp_buffer);
->  }
->  
-> +static void __init fwnode_pointer(void)
-> +{
-> +	const struct software_node softnodes[] = {
-> +		{ .name = "first", },
-> +		{ .name = "second", .parent = &softnodes[0], },
-> +		{ .name = "third", .parent = &softnodes[1], },
-> +		{ NULL /* Guardian */ },
-> +	};
-> +	const char * const full_name = "/second/third";
-> +	const char * const full_name_second = "/second";
-> +	const char * const second_name = "second";
-> +	const char * const third_name = "third";
-> +	int rval;
-> +
-> +	rval = software_node_register_nodes(softnodes);
-> +	if (rval) {
-> +		pr_warn("cannot register softnodes; rval %d\n", rval);
-> +		return;
-> +	}
-> +
-> +	test(full_name_second, "%pfw",
-> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 3]));
+> It's going thru binary printf() I suppose. The fist stage just saves the format
+> string and argument addresses or so and prints in later on when user is looking
+> for human-readable output.
 
-"ARRAY_SIZE(softnodes) - 3" is quite cryptic.
-Is there any particular reason to use it instead of &softnodes[1] ?
+It seems that vbin_printf() still thinks that %pf and %pF
+handle function pointers. If I get it correctly, it just
+stores the binary data and the formating is done when
+tracing log is read. The idea is the function pointers
+will stay the same.
 
-And is it expected that it does not print the "/first" parent?
-
-> +	test(full_name, "%pfw",
-> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 2]));
-> +	test(full_name, "%pfwf",
-> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 2]));
-> +	test(second_name, "%pfwP",
-> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 3]));
-> +	test(third_name, "%pfwP",
-> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 2]));
-> +
-> +	software_node_unregister_nodes(softnodes);
-> +}
-
-Anyway, thanks for the tests.
+We need to fix/obsolete this path as well.
 
 Best Regards,
 Petr
