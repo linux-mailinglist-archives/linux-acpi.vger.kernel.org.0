@@ -2,105 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1553EA5EBB
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2019 03:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27827A60C5
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2019 07:41:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725955AbfICBD7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Sep 2019 21:03:59 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:5164 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726133AbfICBD6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 Sep 2019 21:03:58 -0400
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x8311cqi048534
-        for <linux-acpi@vger.kernel.org>; Mon, 2 Sep 2019 21:03:57 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2uqmhtk1f7-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-acpi@vger.kernel.org>; Mon, 02 Sep 2019 21:03:57 -0400
-Received: from localhost
-        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-acpi@vger.kernel.org> from <daniel@linux.ibm.com>;
-        Tue, 3 Sep 2019 02:03:55 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 3 Sep 2019 02:03:50 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x8313oMa50724980
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 3 Sep 2019 01:03:50 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E52D8A4053;
-        Tue,  3 Sep 2019 01:03:49 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9248FA4040;
-        Tue,  3 Sep 2019 01:03:49 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue,  3 Sep 2019 01:03:49 +0000 (GMT)
-Received: from volution.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
-        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 1AF7DA00EC;
-        Tue,  3 Sep 2019 11:03:48 +1000 (AEST)
-Date:   Tue, 3 Sep 2019 11:03:45 +1000
-From:   Daniel Black <daniel@linux.ibm.com>
-To:     Keith Busch <keith.busch@intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        id S1726555AbfICFly (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Sep 2019 01:41:54 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:44809 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725854AbfICFlw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Sep 2019 01:41:52 -0400
+Received: from soja.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:13da])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <o.rempel@pengutronix.de>)
+        id 1i51Za-0005vB-Fx; Tue, 03 Sep 2019 07:41:46 +0200
+Subject: Re: [PATCH] ACPI: support for NXP i2c controller
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Chuanhua Han <chuanhua.han@nxp.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Tao Xu <tao3.xu@intel.com>
-Subject: Re: [PATCH] acpi/hmat: ACPI_HMAT_MEMORY_PD_VALID is deprecated in
- ACPI-6.3
-In-Reply-To: <CAJZ5v0jXiuA3HGPCY3vbH8_53WP-6G=bVJ8SPprCDDg9MoyAsQ@mail.gmail.com>
-References: <20190806042440.16445-1-daniel@linux.ibm.com>
-        <CAJZ5v0jXiuA3HGPCY3vbH8_53WP-6G=bVJ8SPprCDDg9MoyAsQ@mail.gmail.com>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        Len Brown <lenb@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Leo Li <leoyang.li@nxp.com>,
+        Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>,
+        Udit Kumar <udit.kumar@nxp.com>
+References: <20190711102601.20582-1-chuanhua.han@nxp.com>
+ <CAJZ5v0hY2sL+XfN_4v07_hjvoxgCAt+Q89+wNg5Pky6XKP-mqA@mail.gmail.com>
+ <CAHp75VfFtMMQhetRFHrx=Ft7OWwyMqLrwP3sPjT6YVtr8xCHoQ@mail.gmail.com>
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+Message-ID: <896b88d4-9d1b-922b-1784-55ef9a1a1830@pengutronix.de>
+Date:   Tue, 3 Sep 2019 07:41:45 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <CAHp75VfFtMMQhetRFHrx=Ft7OWwyMqLrwP3sPjT6YVtr8xCHoQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19090301-0008-0000-0000-000003103BF1
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090301-0009-0000-0000-00004A2E8B1A
-Message-Id: <20190903110345.4ee753c3@volution.ozlabs.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-09-02_10:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=827 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909030008
+X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:13da
+X-SA-Exim-Mail-From: o.rempel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 2 Sep 2019 23:28:50 +0200
-"Rafael J. Wysocki" <rafael@kernel.org> wrote:
+Hi,
 
-> On Tue, Aug 6, 2019 at 6:24 AM Daniel Black <daniel@linux.ibm.com> wrote:
-> >
-> > ACPI-6.3 corresponds to when hmat revision was bumped from
-> > 1 to 2. In this version ACPI_HMAT_MEMORY_PD_VALID was
-> > deprecated and made reserved.
-> >
-> > As such in revision 2+ we shouldn't be testing this flag.
-> >
-> > This is as per ACPI-6.3, 5.2.27.3, Table 5-145
-> > "Memory Proximity Domain Attributes Structure"
-> > for Flags.
-> >
-> > Signed-off-by: Daniel Black <daniel@linux.ibm.com>  
+On 02.09.19 23:16, Andy Shevchenko wrote:
+> On Mon, Sep 2, 2019 at 11:58 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>>
+>> On Thu, Jul 11, 2019 at 12:35 PM Chuanhua Han <chuanhua.han@nxp.com> wrote:
+>>>
+>>> Enable NXP i2c controller to boot with ACPI
+>>>
+>>> Signed-off-by: Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>
+>>> Signed-off-by: Udit Kumar <udit.kumar@nxp.com>
+>>> Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+>>
+>> Wolfram, any objections to this from the i2c side?
 > 
-> Keith, any comments?
+> May I propose amendment(s)?
+> 
+>>> @@ -44,6 +44,7 @@
+>>>   #include <linux/pm_runtime.h>
+>>>   #include <linux/sched.h>
+>>>   #include <linux/slab.h>
+> 
+>>> +#include <linux/acpi.h>
+> 
+> If it's kept in order, better to go with it. (Yes, it is as I have checked)
+> However, property.h should be included instead, see below.
+> 
+>>>          const struct of_device_id *of_id = of_match_device(i2c_imx_dt_ids,
+>>>                                                             &pdev->dev);
+>>> +       const struct acpi_device_id *acpi_id =
+>>> +                       acpi_match_device(i2c_imx_acpi_ids,
+>>> +                                         &pdev->dev);
+> 
+> 
+>>>          if (of_id)
+>>>                  i2c_imx->hwdata = of_id->data;
+>>> +       else if (acpi_id)
+>>> +               i2c_imx->hwdata = (struct imx_i2c_hwdata *)
+>>> +                               acpi_id->driver_data;
+> 
+> 
+> The above altogher may be replaced with
+> 
+> const struct imx_i2c_hwdata *match;
+> ...
+> match = device_get_match_data(&pdev->dev);
+> if (match)
+>   i2c_imx->hwdata = match;
+> else
+> ...
 
-FYI this was found when I was testing Tao Xu's qemu implementation of HMAT ACPI-6.3 which has no implementation of  ACPI_HMAT_MEMORY_PD_VALID.
+Instead of "may be replaced", I would say: it should be replaced :)
 
-Current patch implementing Memory Proximity Domain Attributes Structure:
-https://patchwork.kernel.org/patch/11125301/
+>>> +               .acpi_match_table = ACPI_PTR(i2c_imx_acpi_ids),
+> 
+> Since there is no #ifdef guard no need to use ACPI_PTR().
+> 
 
+What iMX/(other NXP?) SoCs are with ACPI support?  Where I can get one? I would like to 
+know more about it.
+
+Kind regards,
+Oleksij Rempel
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
