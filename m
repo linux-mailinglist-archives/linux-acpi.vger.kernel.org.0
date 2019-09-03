@@ -2,20 +2,20 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E47C8A693F
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2019 15:06:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D73CA6A14
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2019 15:38:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729169AbfICNGK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Sep 2019 09:06:10 -0400
-Received: from mx2.suse.de ([195.135.220.15]:50322 "EHLO mx1.suse.de"
+        id S1729079AbfICNin (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Sep 2019 09:38:43 -0400
+Received: from mx2.suse.de ([195.135.220.15]:45138 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728576AbfICNGJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 3 Sep 2019 09:06:09 -0400
+        id S1725782AbfICNin (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 3 Sep 2019 09:38:43 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 9C87DB60E;
-        Tue,  3 Sep 2019 13:06:07 +0000 (UTC)
-Date:   Tue, 3 Sep 2019 15:06:07 +0200
+        by mx1.suse.de (Postfix) with ESMTP id 8EBF5B633;
+        Tue,  3 Sep 2019 13:38:41 +0000 (UTC)
+Date:   Tue, 3 Sep 2019 15:38:41 +0200
 From:   Petr Mladek <pmladek@suse.com>
 To:     Sakari Ailus <sakari.ailus@linux.intel.com>
 Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
@@ -23,139 +23,88 @@ Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 10/11] lib/vsprintf: Add %pfw conversion specifier for
- printing fwnode names
-Message-ID: <20190903130607.cf2qv3s3evobbd5g@pathway.suse.cz>
+Subject: Re: [PATCH v4 11/11] lib/test_printf: Add tests for %pfw printk
+ modifier
+Message-ID: <20190903133841.dhb6k2lwx2gglyjs@pathway.suse.cz>
 References: <20190902083240.20367-1-sakari.ailus@linux.intel.com>
- <20190902083240.20367-11-sakari.ailus@linux.intel.com>
+ <20190902083240.20367-12-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190902083240.20367-11-sakari.ailus@linux.intel.com>
+In-Reply-To: <20190902083240.20367-12-sakari.ailus@linux.intel.com>
 User-Agent: NeoMutt/20170912 (1.9.0)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon 2019-09-02 11:32:39, Sakari Ailus wrote:
-> Add support for %pfw conversion specifier (with "f" and "P" modifiers) to
-> support printing full path of the node, including its name ("f") and only
-> the node's name ("P") in the printk family of functions. The two flags
-> have equivalent functionality to existing %pOF with the same two modifiers
-> ("f" and "P") on OF based systems. The ability to do the same on ACPI
-> based systems is added by this patch.
-> diff --git a/Documentation/core-api/printk-formats.rst b/Documentation/core-api/printk-formats.rst
-> index 922a29eb70e6c..abba210f67567 100644
-> --- a/Documentation/core-api/printk-formats.rst
-> +++ b/Documentation/core-api/printk-formats.rst
-> @@ -418,6 +418,30 @@ Examples::
+On Mon 2019-09-02 11:32:40, Sakari Ailus wrote:
+> Add a test for the %pfw printk modifier using software nodes.
+> 
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  lib/test_printf.c | 37 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 37 insertions(+)
+> 
+> diff --git a/lib/test_printf.c b/lib/test_printf.c
+> index 944eb50f38625..9c6d716979fb1 100644
+> --- a/lib/test_printf.c
+> +++ b/lib/test_printf.c
+> @@ -22,6 +22,8 @@
+>  #include <linux/gfp.h>
+>  #include <linux/mm.h>
 >  
->  Passed by reference.
+> +#include <linux/property.h>
+> +
+>  #include "../tools/testing/selftests/kselftest_module.h"
 >  
-> +Fwnode handles
-> +--------------
-> +
-> +::
-> +
-> +	%pfw[fP]
-> +
-> +For printing information on fwnode handles. The default is to print the full
-> +node name, including the path. The modifiers are functionally equivalent to
-> +%pOF above.
-> +
-> +	- f - full name of the node, including the path
-> +	- P - the name of the node including an address (if there is one)
-> +
-> +Examples (ACPI):
-
-s/:/::/ for the .rst formar.
-
-> +
-> +	%pfwf	\_SB.PCI0.CIO2.port@1.endpoint@0	- Full node name
-> +	%pfwP	endpoint@0				- Node name
-> +
-> +Examples (OF):
-
-Same here.
-
-> +
-> +	%pfwf	/ocp@68000000/i2c@48072000/camera@10/port/endpoint - Full name
-> +	%pfwP	endpoint				- Node name
-> +
->  Time and date (struct rtc_time)
->  -------------------------------
->  
-> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> index 4ad9332d54ba6..b9b4c835db063 100644
-> --- a/lib/vsprintf.c
-> +++ b/lib/vsprintf.c
-> @@ -1981,6 +1981,36 @@ char *device_node_string(char *buf, char *end, struct device_node *dn,
->  	return widen_string(buf, buf - buf_start, end, spec);
+>  #define BUF_SIZE 256
+> @@ -588,6 +590,40 @@ flags(void)
+>  	kfree(cmp_buffer);
 >  }
 >  
-> +static noinline_for_stack
-> +char *fwnode_string(char *buf, char *end, struct fwnode_handle *fwnode,
-> +		    struct printf_spec spec, const char *fmt)
+> +static void __init fwnode_pointer(void)
 > +{
-> +	struct printf_spec str_spec = spec;
-> +	char *buf_start = buf;
+> +	const struct software_node softnodes[] = {
+> +		{ .name = "first", },
+> +		{ .name = "second", .parent = &softnodes[0], },
+> +		{ .name = "third", .parent = &softnodes[1], },
+> +		{ NULL /* Guardian */ },
+> +	};
+> +	const char * const full_name = "/second/third";
+> +	const char * const full_name_second = "/second";
+> +	const char * const second_name = "second";
+> +	const char * const third_name = "third";
+> +	int rval;
 > +
-> +	str_spec.field_width = -1;
-> +
-> +	if (*fmt != 'w')
-> +		return error_string(buf, end, "(%pfw?)", spec);
-
-This means that only "%pfw" will dereference the pointer by
-fwnode_full_name_string() or fwnode_get_name(). All the other
-eventual misuses of the obsolete %pf format will result in this
-error message.
-
-OK, it is hard to imagine using "%pf" to get symbol name and always add
-'w' suffix. Therefore it looks that reusing the obsolete %pf format
-modifier is pretty safe after all.
-
-
-> +	if (check_pointer(&buf, end, fwnode, spec))
-> +		return buf;
-> +
-> +	fmt++;
-> +
-> +	switch (*fmt) {
-> +	case 'f':	/* full_name */
-> +	default:
-
-Using default: in the middle of switch might cause a lot of confusion.
-Please, make it the last label.
-
-
-> +		buf = fwnode_full_name_string(fwnode, buf, end);
-> +		break;
-> +	case 'P':	/* name */
-> +		buf = string(buf, end, fwnode_get_name(fwnode), str_spec);
-> +		break;
+> +	rval = software_node_register_nodes(softnodes);
+> +	if (rval) {
+> +		pr_warn("cannot register softnodes; rval %d\n", rval);
+> +		return;
 > +	}
 > +
-> +	return widen_string(buf, buf - buf_start, end, spec);
-> +}
-> +
->  /*
->   * Show a '%p' thing.  A kernel extension is that the '%p' is followed
->   * by an extra set of alphanumeric characters that are extended format
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index a60c241112cd4..8df50911ff4e9 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -5995,7 +5995,8 @@ sub process {
->  				while ($fmt =~ /(\%[\*\d\.]*p(\w))/g) {
->  					$specifier = $1;
->  					$extension = $2;
-> -					if ($extension !~ /[SsBKRraEhMmIiUDdgVCbGNOxt]/) {
-> +					if ($extension !~ /[SsBKRraEhMmIiUDdgVCbGNOxtf]/ ||
-> +					    $extension =~ /^f[^w]/) {
+> +	test(full_name_second, "%pfw",
+> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 3]));
 
-This does not work. $extension seems to have only one character.
+"ARRAY_SIZE(softnodes) - 3" is quite cryptic.
+Is there any particular reason to use it instead of &softnodes[1] ?
+
+And is it expected that it does not print the "/first" parent?
+
+> +	test(full_name, "%pfw",
+> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 2]));
+> +	test(full_name, "%pfwf",
+> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 2]));
+> +	test(second_name, "%pfwP",
+> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 3]));
+> +	test(third_name, "%pfwP",
+> +	     software_node_fwnode(&softnodes[ARRAY_SIZE(softnodes) - 2]));
+> +
+> +	software_node_unregister_nodes(softnodes);
+> +}
+
+Anyway, thanks for the tests.
 
 Best Regards,
 Petr
-
