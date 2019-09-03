@@ -2,100 +2,190 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6530A6644
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2019 12:10:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D89ACA66C6
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2019 12:50:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726946AbfICKKS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Sep 2019 06:10:18 -0400
-Received: from mga18.intel.com ([134.134.136.126]:13332 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726840AbfICKKR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 3 Sep 2019 06:10:17 -0400
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Sep 2019 03:10:17 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,462,1559545200"; 
-   d="scan'208";a="198739312"
-Received: from kuha.fi.intel.com ([10.237.72.53])
-  by fmsmga001.fm.intel.com with SMTP; 03 Sep 2019 03:10:14 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 03 Sep 2019 13:10:13 +0300
-Date:   Tue, 3 Sep 2019 13:10:13 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
-        rafael@kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v5 05/11] device property: Add fwnode_get_name for
- returning the name of a node
-Message-ID: <20190903101013.GA23603@kuha.fi.intel.com>
-References: <20190902135732.23455-1-sakari.ailus@linux.intel.com>
- <20190902135732.23455-6-sakari.ailus@linux.intel.com>
+        id S1728679AbfICKuV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Sep 2019 06:50:21 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:48665 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728678AbfICKuV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Sep 2019 06:50:21 -0400
+Received: from soja.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:13da])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <o.rempel@pengutronix.de>)
+        id 1i56O5-0005Th-MY; Tue, 03 Sep 2019 12:50:13 +0200
+Subject: Re: [PATCH] ACPI: support for NXP i2c controller
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Chuanhua Han <chuanhua.han@nxp.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Leo Li <leoyang.li@nxp.com>,
+        Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>,
+        Udit Kumar <udit.kumar@nxp.com>
+References: <20190711102601.20582-1-chuanhua.han@nxp.com>
+ <CAJZ5v0hY2sL+XfN_4v07_hjvoxgCAt+Q89+wNg5Pky6XKP-mqA@mail.gmail.com>
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+Message-ID: <31e7c1bb-d153-5feb-0b86-946caca5206c@pengutronix.de>
+Date:   Tue, 3 Sep 2019 12:50:03 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190902135732.23455-6-sakari.ailus@linux.intel.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <CAJZ5v0hY2sL+XfN_4v07_hjvoxgCAt+Q89+wNg5Pky6XKP-mqA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:13da
+X-SA-Exim-Mail-From: o.rempel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Sakari,
+One more question,
 
-On Mon, Sep 02, 2019 at 04:57:26PM +0300, Sakari Ailus wrote:
-> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-> index 951e7efd47c23..a4a0f5b80bad3 100644
-> --- a/drivers/base/swnode.c
-> +++ b/drivers/base/swnode.c
-> @@ -515,6 +515,25 @@ static int software_node_read_string_array(const struct fwnode_handle *fwnode,
->  						propname, val, nval);
->  }
->  
-> +static const char *
-> +software_node_get_name(const struct fwnode_handle *fwnode)
-> +{
-> +	const struct software_node *softnode = to_software_node(fwnode);
-> +	const struct swnode *swnode = software_node_to_swnode(softnode);
+On 02.09.19 22:56, Rafael J. Wysocki wrote:
+> On Thu, Jul 11, 2019 at 12:35 PM Chuanhua Han <chuanhua.han@nxp.com> wrote:
+>>
+>> Enable NXP i2c controller to boot with ACPI
+>>
+>> Signed-off-by: Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>
+>> Signed-off-by: Udit Kumar <udit.kumar@nxp.com>
+>> Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+> 
+> Wolfram, any objections to this from the i2c side?
+> 
+>> ---
+>>   drivers/acpi/acpi_apd.c      |  6 ++++++
+>>   drivers/i2c/busses/i2c-imx.c | 15 +++++++++++++++
+>>   2 files changed, 21 insertions(+)
+>>
+>> diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+>> index ff47317..cf8566c 100644
+>> --- a/drivers/acpi/acpi_apd.c
+>> +++ b/drivers/acpi/acpi_apd.c
+>> @@ -165,6 +165,11 @@ static const struct apd_device_desc thunderx2_i2c_desc = {
+>>          .fixed_clk_rate = 125000000,
+>>   };
+>>
+>> +static const struct apd_device_desc nxp_i2c_desc = {
+>> +       .setup = acpi_apd_setup,
+>> +       .fixed_clk_rate = 350000000,
+>> +};
 
-Why not just:
+I'm not ACPI expert, so need here some help for understanding. Here is ACPI table for 
+NXP0001 id (found on the internet):
++  Device(I2C0) {
++    Name(_HID, "NXP0001")
++    Name(_UID, 0)
++    Name(_CRS, ResourceTemplate() {
++      Memory32Fixed(ReadWrite, I2C0_BASE, I2C_LEN)
++      Interrupt(ResourceConsumer, Level, ActiveHigh, Shared) { I2C0_IT }
++    }) // end of _CRS for i2c0 device
++    Name (_DSD, Package () {
++      ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
++      Package () {
++         Package () {"clock-frequency", DEFAULT_PLAT_FREQ}, //This is device specific 
+data, Need to see how to pass clk stuff
++      }
++    })
 
-        struct swnode *swnode = to_swnode(fwnode);
+Should kernel some how get proper clock-frequency from the ACPI? Or we still need to use 
+hard coded .fixed_clk_rate in the kernel?
 
-> +	struct fwnode_handle *parent;
-> +
-> +	if (!swnode)
-> +		return "(null)";
-> +
-> +	parent = fwnode_get_parent(&swnode->fwnode);
-> +	if (!parent)
-> +		return "";
 
-Please note that there is no root software node object (the kset is
-the root), so you will get "" with most nodes. I'm assuming that is
-not the intention, or is it?
+>>   static const struct apd_device_desc hip08_spi_desc = {
+>>          .setup = acpi_apd_setup,
+>>          .fixed_clk_rate = 250000000,
+>> @@ -238,6 +243,7 @@ static const struct acpi_device_id acpi_apd_device_ids[] = {
+>>          { "HISI02A1", APD_ADDR(hip07_i2c_desc) },
+>>          { "HISI02A2", APD_ADDR(hip08_i2c_desc) },
+>>          { "HISI0173", APD_ADDR(hip08_spi_desc) },
+>> +       { "NXP0001", APD_ADDR(nxp_i2c_desc) },
+>>   #endif
+>>          { }
+>>   };
+>> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+>> index b1b8b93..99f9b96 100644
+>> --- a/drivers/i2c/busses/i2c-imx.c
+>> +++ b/drivers/i2c/busses/i2c-imx.c
+>> @@ -44,6 +44,7 @@
+>>   #include <linux/pm_runtime.h>
+>>   #include <linux/sched.h>
+>>   #include <linux/slab.h>
+>> +#include <linux/acpi.h>
+>>
+>>   /* This will be the driver name the kernel reports */
+>>   #define DRIVER_NAME "imx-i2c"
+>> @@ -255,6 +256,12 @@ static const struct of_device_id i2c_imx_dt_ids[] = {
+>>   };
+>>   MODULE_DEVICE_TABLE(of, i2c_imx_dt_ids);
+>>
+>> +static const struct acpi_device_id i2c_imx_acpi_ids[] = {
+>> +       {"NXP0001", .driver_data = (kernel_ulong_t)&vf610_i2c_hwdata},
+>> +       { }
+>> +};
+>> +MODULE_DEVICE_TABLE(acpi, i2c_imx_acpi_ids);
+>> +
+>>   static inline int is_imx1_i2c(struct imx_i2c_struct *i2c_imx)
+>>   {
+>>          return i2c_imx->hwdata->devtype == IMX1_I2C;
+>> @@ -1052,6 +1059,9 @@ static int i2c_imx_probe(struct platform_device *pdev)
+>>   {
+>>          const struct of_device_id *of_id = of_match_device(i2c_imx_dt_ids,
+>>                                                             &pdev->dev);
+>> +       const struct acpi_device_id *acpi_id =
+>> +                       acpi_match_device(i2c_imx_acpi_ids,
+>> +                                         &pdev->dev);
+>>          struct imx_i2c_struct *i2c_imx;
+>>          struct resource *res;
+>>          struct imxi2c_platform_data *pdata = dev_get_platdata(&pdev->dev);
+>> @@ -1079,6 +1089,9 @@ static int i2c_imx_probe(struct platform_device *pdev)
+>>
+>>          if (of_id)
+>>                  i2c_imx->hwdata = of_id->data;
+>> +       else if (acpi_id)
+>> +               i2c_imx->hwdata = (struct imx_i2c_hwdata *)
+>> +                               acpi_id->driver_data;
+>>          else
+>>                  i2c_imx->hwdata = (struct imx_i2c_hwdata *)
+>>                                  platform_get_device_id(pdev)->driver_data;
+>> @@ -1091,6 +1104,7 @@ static int i2c_imx_probe(struct platform_device *pdev)
+>>          i2c_imx->adapter.nr             = pdev->id;
+>>          i2c_imx->adapter.dev.of_node    = pdev->dev.of_node;
+>>          i2c_imx->base                   = base;
+>> +       ACPI_COMPANION_SET(&i2c_imx->adapter.dev, ACPI_COMPANION(&pdev->dev));
+>>
+>>          /* Get I2C clock */
+>>          i2c_imx->clk = devm_clk_get(&pdev->dev, NULL);
+>> @@ -1253,6 +1267,7 @@ static struct platform_driver i2c_imx_driver = {
+>>                  .name = DRIVER_NAME,
+>>                  .pm = &i2c_imx_pm_ops,
+>>                  .of_match_table = i2c_imx_dt_ids,
+>> +               .acpi_match_table = ACPI_PTR(i2c_imx_acpi_ids),
+>>          },
+>>          .id_table = imx_i2c_devtype,
+>>   };
+>> --
+>> 2.9.5
+>>
+> 
 
-> +	fwnode_handle_put(parent);
-> +
-> +	return kobject_name(&swnode->kobj);
-> +}
-> +
->  static struct fwnode_handle *
->  software_node_get_parent(const struct fwnode_handle *fwnode)
->  {
-> @@ -615,6 +634,7 @@ static const struct fwnode_operations software_node_ops = {
->  	.property_present = software_node_property_present,
->  	.property_read_int_array = software_node_read_int_array,
->  	.property_read_string_array = software_node_read_string_array,
-> +	.get_name = software_node_get_name,
->  	.get_parent = software_node_get_parent,
->  	.get_next_child_node = software_node_get_next_child,
->  	.get_named_child_node = software_node_get_named_child_node,
-
-thanks,
+Kind regards,
+Oleksij Rempel
 
 -- 
-heikki
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
