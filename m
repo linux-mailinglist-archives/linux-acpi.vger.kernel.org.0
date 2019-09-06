@@ -2,86 +2,187 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B53FBAB932
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Sep 2019 15:25:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B008ABB24
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Sep 2019 16:39:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727914AbfIFNZb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Sep 2019 09:25:31 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:35774 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726949AbfIFNZb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Sep 2019 09:25:31 -0400
-Received: by mail-ot1-f67.google.com with SMTP id 100so5728074otn.2;
-        Fri, 06 Sep 2019 06:25:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:from:to:cc:references:in-reply-to:subject:date
-         :mime-version:content-transfer-encoding:importance;
-        bh=3plW1l6912WWdE/yvCMMT+DGRz02GchL5U8Ixz8OSJc=;
-        b=dH3mZeInNYg6vWgBgKZ7bMBS6VXeji19fIpgylTv+jzM/XGHkAAXpj6xnfDCpxReak
-         nBszE/KpU/0YW6hiRfCXG4f7EIv4NCnnO0beCbFIdFhWKwjjd+v+mdHobi8af41qeNyU
-         joH6B++dAiDN3UjyYT8fIw4BVVN5XavmeEm/4HjupykmSWNRMrGUhlzXqa9ccd0X40uA
-         IhidZTRW+nAsiL30Fc2U3tbL+vy4a9kVNYIxHYrzYCiD/smgOGizBFfc78Cd3ok6KI4N
-         FqNvpaG/H3peNb1gRwfUl8LsaPj3wFbEsU44Ptfl9+ug7iJgrzcr50iEUR3LKluv2jOk
-         0C2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:from:to:cc:references:in-reply-to
-         :subject:date:mime-version:content-transfer-encoding:importance;
-        bh=3plW1l6912WWdE/yvCMMT+DGRz02GchL5U8Ixz8OSJc=;
-        b=oG+rds/HQIgTjRK6s5ZXTD306W6lJPWwChHTTVUIPR/8uBAwkCtbYLyh/pCpHKa1rc
-         59mVaUf42/qG2r/eZeLf/ddjc+JikR3P53gY0zyXIpdFDXry25VRJkMycixo05qyprCK
-         KNOq4g4/t1ydcCScPqz9f4O9ck+4DbAiqn10mriflaKfuJvug+pkxVALjIx2f8DOFk1Z
-         u2lDb7H+4IBe79KB56KYRMpGNU94KXptuDD/Z1BKAWsQyyHu92nefChtK0P0rfvzn2DY
-         Jdz5mbVJnquid+gVH7IedDLHnqEcTLtryIhE4m4FjzwrNX/HndvSSp23x0liaA1FL3cL
-         hfgA==
-X-Gm-Message-State: APjAAAXSiiL+FQuU5KHU+xTJ9Q4vW3vCMC2EwOcOqJfLKheKUy23sByh
-        lipZ31nWDZ65aAk8KGLhRBI=
-X-Google-Smtp-Source: APXvYqyYVybcVpGualf4IbZ+OjnNF65FSuShTUyaI2lCW+yA7IyWU4DSBGMbSZyW51YCs4y2lSr+nw==
-X-Received: by 2002:a9d:618c:: with SMTP id g12mr6881158otk.136.1567776330863;
-        Fri, 06 Sep 2019 06:25:30 -0700 (PDT)
-Received: from chip ([2605:6000:f350:3e00:1997:696d:15b8:ee93])
-        by smtp.gmail.com with ESMTPSA id s9sm1875028oth.70.2019.09.06.06.25.29
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 06 Sep 2019 06:25:30 -0700 (PDT)
-Message-ID: <5A2ADDC81DB5421290EB97D1178C0BBE@chip>
-From:   <chip.programmer@gmail.com>
-To:     "Chunfeng Yun" <chunfeng.yun@mediatek.com>,
-        <Charles.Hyde@dellteam.com>
-Cc:     <oliver@neukum.org>, <rjw@rjwysocki.net>, <lenb@kernel.org>,
-        <Mario.Limonciello@dell.com>, <nic_swsd@realtek.com>,
-        <linux-usb@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-References: <1567717304186.90134@Dellteam.com> <1567736007.7317.71.camel@mhfsdcap03>
-In-Reply-To: <1567736007.7317.71.camel@mhfsdcap03>
-Subject: Re: [PATCH 3/3] net: cdc_ncm: Add ACPI MAC address pass through functionality
-Date:   Fri, 6 Sep 2019 08:25:23 -0500
+        id S2394504AbfIFOjv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Sep 2019 10:39:51 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:46065 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389288AbfIFOjs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Sep 2019 10:39:48 -0400
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1i6FOm-0005ih-UF; Fri, 06 Sep 2019 16:39:40 +0200
+Received: from ore by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ore@pengutronix.de>)
+        id 1i6FOk-0008Ns-3e; Fri, 06 Sep 2019 16:39:38 +0200
+Date:   Fri, 6 Sep 2019 16:39:38 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Biwen Li <biwen.li@nxp.com>
+Cc:     andy.shevchenko@gmail.com, rafael@kernel.org, leoyang.li@nxp.com,
+        meenakshi.aggarwal@nxp.com, udit.kumar@nxp.com, wsa@the-dreams.de,
+        rjw@rjwysocki.net, chuanhua.han@nxp.com, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [v2] ACPI: support for NXP i2c controller
+Message-ID: <20190906143938.weqs6rvdvlnrzpau@pengutronix.de>
+References: <20190906075319.21244-1-biwen.li@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        format=flowed;
-        charset="UTF-8";
-        reply-type=original
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-Importance: Normal
-X-Mailer: Microsoft Windows Live Mail 16.4.3528.331
-X-MimeOLE: Produced By Microsoft MimeOLE V16.4.3528.331
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190906075319.21244-1-biwen.li@nxp.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 16:09:03 up 111 days, 20:27, 66 users,  load average: 0.07, 0.06,
+ 0.01
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
->> + if (strstr(dev->udev->product, "D6000")) {
->> + sa.sa_family = dev->net->type;
->> + if (get_acpi_mac_passthru(sa.sa_data)) {
->> + if (!memcmp(dev->net->dev_addr, sa.sa_data,
->> +     ETH_ALEN)) {
->> + if (!cdc_ncm_set_ethernet_address(dev, &sa))
+On Fri, Sep 06, 2019 at 03:53:19PM +0800, Biwen Li wrote:
+> From: Chuanhua Han <chuanhua.han@nxp.com>
+> 
+> Enable NXP i2c controller to boot with ACPI
+> 
+> Signed-off-by: Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>
+> Signed-off-by: Udit Kumar <udit.kumar@nxp.com>
+> Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+> Signed-off-by: Biwen Li <biwen.li@nxp.com>
 
-> How about use one if-statement instead of these three if-statement?
+for i2c-imx.c:
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Tested on iMX6Q SabreSD
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
-While using a single compound if statement is possible, my experience is 
-that using multiple if statements will make the code easier to debug and 
-maintain by others who come after me.  What is possible to do with code is 
-not necessarily what should be done.
+> ---
+> Change in v2:
+> 	- Simplify code
+> 	- Adjust header file order
+> 	- Not use ACPI_PTR()
+> 
+>  drivers/acpi/acpi_apd.c      |  7 +++++++
+>  drivers/i2c/busses/i2c-imx.c | 17 +++++++++++++----
+>  2 files changed, 20 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+> index 7cd0c9ac71ea..71511ae2dfcd 100644
+> --- a/drivers/acpi/acpi_apd.c
+> +++ b/drivers/acpi/acpi_apd.c
+> @@ -160,11 +160,17 @@ static const struct apd_device_desc hip08_i2c_desc = {
+>  	.setup = acpi_apd_setup,
+>  	.fixed_clk_rate = 250000000,
+>  };
+> +
+>  static const struct apd_device_desc thunderx2_i2c_desc = {
+>  	.setup = acpi_apd_setup,
+>  	.fixed_clk_rate = 125000000,
+>  };
+>  
+> +static const struct apd_device_desc nxp_i2c_desc = {
+> +	.setup = acpi_apd_setup,
+> +	.fixed_clk_rate = 350000000,
+> +};
+> +
+>  static const struct apd_device_desc hip08_spi_desc = {
+>  	.setup = acpi_apd_setup,
+>  	.fixed_clk_rate = 250000000,
+> @@ -238,6 +244,7 @@ static const struct acpi_device_id acpi_apd_device_ids[] = {
+>  	{ "HISI02A1", APD_ADDR(hip07_i2c_desc) },
+>  	{ "HISI02A2", APD_ADDR(hip08_i2c_desc) },
+>  	{ "HISI0173", APD_ADDR(hip08_spi_desc) },
+> +	{ "NXP0001", APD_ADDR(nxp_i2c_desc) },
+>  #endif
+>  	{ }
+>  };
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index 15f6cde6452f..a3b61336fe55 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -20,6 +20,7 @@
+>   *
+>   */
+>  
+> +#include <linux/acpi.h>
+>  #include <linux/clk.h>
+>  #include <linux/completion.h>
+>  #include <linux/delay.h>
+> @@ -255,6 +256,12 @@ static const struct of_device_id i2c_imx_dt_ids[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, i2c_imx_dt_ids);
+>  
+> +static const struct acpi_device_id i2c_imx_acpi_ids[] = {
+> +	{"NXP0001", .driver_data = (kernel_ulong_t)&vf610_i2c_hwdata},
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(acpi, i2c_imx_acpi_ids);
+> +
+>  static inline int is_imx1_i2c(struct imx_i2c_struct *i2c_imx)
+>  {
+>  	return i2c_imx->hwdata->devtype == IMX1_I2C;
+> @@ -1048,14 +1055,13 @@ static const struct i2c_algorithm i2c_imx_algo = {
+>  
+>  static int i2c_imx_probe(struct platform_device *pdev)
+>  {
+> -	const struct of_device_id *of_id = of_match_device(i2c_imx_dt_ids,
+> -							   &pdev->dev);
+>  	struct imx_i2c_struct *i2c_imx;
+>  	struct resource *res;
+>  	struct imxi2c_platform_data *pdata = dev_get_platdata(&pdev->dev);
+>  	void __iomem *base;
+>  	int irq, ret;
+>  	dma_addr_t phy_addr;
+> +	const struct imx_i2c_hwdata *match;
+>  
+>  	dev_dbg(&pdev->dev, "<%s>\n", __func__);
+>  
+> @@ -1075,8 +1081,9 @@ static int i2c_imx_probe(struct platform_device *pdev)
+>  	if (!i2c_imx)
+>  		return -ENOMEM;
+>  
+> -	if (of_id)
+> -		i2c_imx->hwdata = of_id->data;
+> +	match = device_get_match_data(&pdev->dev);
+> +	if (match)
+> +		i2c_imx->hwdata = match;
+>  	else
+>  		i2c_imx->hwdata = (struct imx_i2c_hwdata *)
+>  				platform_get_device_id(pdev)->driver_data;
+> @@ -1089,6 +1096,7 @@ static int i2c_imx_probe(struct platform_device *pdev)
+>  	i2c_imx->adapter.nr		= pdev->id;
+>  	i2c_imx->adapter.dev.of_node	= pdev->dev.of_node;
+>  	i2c_imx->base			= base;
+> +	ACPI_COMPANION_SET(&i2c_imx->adapter.dev, ACPI_COMPANION(&pdev->dev));
+>  
+>  	/* Get I2C clock */
+>  	i2c_imx->clk = devm_clk_get(&pdev->dev, NULL);
+> @@ -1247,6 +1255,7 @@ static struct platform_driver i2c_imx_driver = {
+>  		.name = DRIVER_NAME,
+>  		.pm = &i2c_imx_pm_ops,
+>  		.of_match_table = i2c_imx_dt_ids,
+> +		.acpi_match_table = i2c_imx_acpi_ids,
+>  	},
+>  	.id_table = imx_i2c_devtype,
+>  };
+> -- 
+> 2.17.1
+> 
+> 
 
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
