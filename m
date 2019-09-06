@@ -2,169 +2,208 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6558AB4CD
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Sep 2019 11:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83275AB5D1
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Sep 2019 12:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731471AbfIFJWF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Sep 2019 05:22:05 -0400
-Received: from out2-smtp.messagingengine.com ([66.111.4.26]:51209 "EHLO
-        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728356AbfIFJWE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Sep 2019 05:22:04 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id 5BDA320FBE;
-        Fri,  6 Sep 2019 05:22:03 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Fri, 06 Sep 2019 05:22:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm1; bh=BPvuWYNA+G8sZz2Nil7DPB4BngH
-        FT5qJQJJYiYcW98o=; b=ADKzolOT8/sapcyd3E1FYIcGQVmuabSqmv0dt77iwxK
-        2rQ6z5HdXcZc7OzE0903ufw/Jjw8in8+0bzgf+TxtEPBhocACOi1qzD8sMwgGLcG
-        JrjuUYcF/u5mJYfOfmYS0i/F3ePPzVJrSjhcrfBeyBYECmeKhKpBuBOwmb7H7WAY
-        fwnPEZ5EAZ2KD3jvMYQG3kxpshFzNp9glCuXFYuLuEN4iVVsuphQzM7vZcxgyhVV
-        z+jIEc4OMmpvDvNXn0P++E//TZf9psQM+0WCcxhandQ/UEQsKG08KS9s4oDK+OZV
-        sbQuO6pqVuqent3EyBTnHni8iZWIZ/rJ3dxfbvreHuQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=BPvuWY
-        NA+G8sZz2Nil7DPB4BngHFT5qJQJJYiYcW98o=; b=RFsvcXsHXMJPE5b48930fw
-        zNCtoPFNemKtkrmrIHT5zDEEH9jAP6cXVdGjUVMvNh/Tequ061xMG4hzN/c28ENv
-        iJs8ghXt0duxnfWoDPpwYiBIpUjDNz8LOogFc7CaM0G24byAkR4zLkxYeRICDW0/
-        +ndd73ZNiQmD9p1qAZZxrSByZ2BvvnoGjSZB8EAKvYo57ZL8GTGb7r8IKwsOpGFm
-        qimTX2cKJiSGrOQNcfShTkfR/VX5XDPuEGsLmq3Xv2rjUAPsfpZCFdlwwD4vBBkk
-        0JmTkVMDhfieqvxaMQYRzLH5RwaMABVH4wZZbzqhpS6LfLPV9O7pwXGxO1utcYDA
-        ==
-X-ME-Sender: <xms:OSVyXTgtcDt1ANI4fkLwm6x1BNuE1XeAW5SYv0LO_Ug_FnSbMWQxdA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrudejledgtdeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjfgesthdtredttdervdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecukfhppeekfedrkeeirdekledrud
-    dtjeenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhmnecu
-    vehluhhsthgvrhfuihiivgeptd
-X-ME-Proxy: <xmx:OSVyXSzdTX9SvVlZQwsuxNbXN7Z0Lz5xYNkcOLTdEm3Rbsx7G69i0w>
-    <xmx:OSVyXf9OycgIWPOHtrD6uWi7IP7_kAYkB6myvjobU0ARVbsbePWY0A>
-    <xmx:OSVyXXxtwkwB-O2Pu1QzCS4rhgLdPVRhpHaZL8PVp_1lYeouRi7-6g>
-    <xmx:OyVyXfmqKXW5QtSaNYom57F26OE-BQO89kc7qJaPEoYm_NHipkFkyw>
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 9EC66D6005D;
-        Fri,  6 Sep 2019 05:22:01 -0400 (EDT)
-Date:   Fri, 6 Sep 2019 11:22:00 +0200
-From:   Greg KH <greg@kroah.com>
-To:     Charles Hyde <chip.programmer@gmail.com>
-Cc:     Oliver Neukum <oliver@neukum.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Charles Hyde <charles.hyde@dellteam.com>,
-        Realtek linux nic maintainers <nic_swsd@realtek.com>,
-        linux-usb@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] net: cdc_ncm: Add ACPI MAC address pass through
- functionality
-Message-ID: <20190906092200.GA31500@kroah.com>
-References: <20190906015115.12796-1-chip.programmer@gmail.com>
- <20190906015115.12796-4-chip.programmer@gmail.com>
+        id S2391203AbfIFKcJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Sep 2019 06:32:09 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:36554 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729053AbfIFKcJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Sep 2019 06:32:09 -0400
+Received: by mail-pg1-f196.google.com with SMTP id l21so3263677pgm.3;
+        Fri, 06 Sep 2019 03:32:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5rKq84QHOcAdoXtjiTtFTy93eGC6R/AyPPtgsMCU2W8=;
+        b=oFy2Rsd4PPunJebqhYLKX+0hn+GiXdKIR3YsUvL0TG7apYKiHrbFSuXztFNnf64OE6
+         SImRJTpwz9xAXIxE4dijI+7q77g025fCPPz2xNDIeemvXI9B7ZLMPm61JRlqpl08NEkQ
+         DhCp4tp683IfgnaG+/0Vq7YvVaJVI6QtJKmP5fbuz+USY8RoVzijWb/ihrF5g0UWU6L5
+         HdFs/dBGpT5Tt0G+JK9phbo3/w+elLztFPNzuUzgvzhCKNQK+IPM6MYDawAcH3lM8x1Z
+         nYAaH+EuCw+coTkHZRV9y1SsSWqSyZYI6LaPqy0b2zs1lZU0WMsqUZf3TIUq2OEG4dEt
+         VzSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5rKq84QHOcAdoXtjiTtFTy93eGC6R/AyPPtgsMCU2W8=;
+        b=eNT1+Ea/l6DCGuD18Eh1XpOPmjxtuoX5kpnf1pLAllLkIa7f/RUtWJqJrNMoDWxacs
+         1oPzQdibPLLpvJeJi6WrleEMtV2VzX2mXc8FvHPeCOWzzPe+9lfGKTNS97a29HWnaDXH
+         ua4Fj9OWbic6J7WJezZF9R76nJD7jUBoD99+gFa12LsVE2Txdr71IVfseeTSQXrOsfM0
+         YpE44e8gMUB9lOTZsu+uiLFkqN4jOetPFGz3ZS8wpnKOQ85rA0eJkgec7RZSR2oZZNlQ
+         dUGMtlLda0otL0of3rNsMl4cHbWIc9CEKeDt9VfwZ6HxCwgtJSi1DMBwePLsVlTH/n+O
+         Knhg==
+X-Gm-Message-State: APjAAAWiWITqfES19P4KNxy/PF3GsuEvuj8VyD92UE0kozR15okKwLmT
+        cK9c+WOwmtGzaPQpaKEew5f7SyrHkk/n216KM6k=
+X-Google-Smtp-Source: APXvYqwbBBttnyh2bmwK1C0I0C/xnOFUNqudsNLuzR88C4OtaQ8iSHw56xP7zh2lS2h8Lgk+c7DlEGy+U7SGFtgMPbk=
+X-Received: by 2002:a17:90a:7f96:: with SMTP id m22mr1422911pjl.30.1567765927768;
+ Fri, 06 Sep 2019 03:32:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190906015115.12796-4-chip.programmer@gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <20190906075319.21244-1-biwen.li@nxp.com>
+In-Reply-To: <20190906075319.21244-1-biwen.li@nxp.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 6 Sep 2019 13:31:56 +0300
+Message-ID: <CAHp75Vcz+ruwvq_yu6Oj69XTezsdnne049Ma=oTRPjRXJKnhPQ@mail.gmail.com>
+Subject: Re: [v2] ACPI: support for NXP i2c controller
+To:     Biwen Li <biwen.li@nxp.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Leo Li <leoyang.li@nxp.com>,
+        Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>,
+        Udit Kumar <udit.kumar@nxp.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Chuanhua Han <chuanhua.han@nxp.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 05, 2019 at 08:51:15PM -0500, Charles Hyde wrote:
-> This change adds support to cdc_ncm for ACPI MAC address pass through
-> functionality that also exists in the Realtek r8152 driver.  This is in
-> support of Dell's Universal Dock D6000, to give it the same feature
-> capability as is currently available in Windows and advertized on Dell's
-> product web site.
-> 
-> Today's v3 patch series includes a function named get_ethernet_addr()
-> which replaces two instances where the same code snippet was located in
-> teh previous patch series.  I also created a post reset function to set
-> the MAC address, if there exists an ACPI MAC address pass through (MAPT)
-> method.  Oliver Neukum had requested a post reset function for this
-> purpose.
-> 
-> Signed-off-by: Charles Hyde <charles.hyde@dellteam.com>
-> Cc: Mario Limonciello <mario.limonciello@dell.com>
-> Cc: chip.programmer@gmail.com
-> Cc: Oliver Neukum <oliver@neukum.org>
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: linux-usb@vger.kernel.org
-> Cc: linux-acpi@vger.kernel.org
+On Fri, Sep 6, 2019 at 11:03 AM Biwen Li <biwen.li@nxp.com> wrote:
+>
+> From: Chuanhua Han <chuanhua.han@nxp.com>
+>
+> Enable NXP i2c controller to boot with ACPI
+>
+
+Thanks, the code looks good to me,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+though...
+
+> Signed-off-by: Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>
+> Signed-off-by: Udit Kumar <udit.kumar@nxp.com>
+> Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+
+This SoB chain is a bit odd. Who is the author of this? The first SoB
+in the chain usually points to the first (main) author. There is also
+possible to change that, though in that case for the rest we now use
+Co-developed-by tag rather than SoB.
+In any case, if Rafael and Wolfram are okay with this, I have no objections.
+
+> Signed-off-by: Biwen Li <biwen.li@nxp.com>
 > ---
->  drivers/net/usb/cdc_ncm.c | 74 +++++++++++++++++++++++++++++++++------
->  1 file changed, 64 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-> index 85093579612f..e0152d44f5af 100644
-> --- a/drivers/net/usb/cdc_ncm.c
-> +++ b/drivers/net/usb/cdc_ncm.c
-> @@ -52,6 +52,7 @@
->  #include <linux/usb/usbnet.h>
->  #include <linux/usb/cdc.h>
->  #include <linux/usb/cdc_ncm.h>
-> +#include <acpi/acpi_mac_passthru.h>
->  
->  #if IS_ENABLED(CONFIG_USB_NET_CDC_MBIM)
->  static bool prefer_mbim = true;
-> @@ -833,6 +834,45 @@ static const struct net_device_ops cdc_ncm_netdev_ops = {
->  	.ndo_validate_addr   = eth_validate_addr,
+> Change in v2:
+>         - Simplify code
+>         - Adjust header file order
+>         - Not use ACPI_PTR()
+>
+>  drivers/acpi/acpi_apd.c      |  7 +++++++
+>  drivers/i2c/busses/i2c-imx.c | 17 +++++++++++++----
+>  2 files changed, 20 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+> index 7cd0c9ac71ea..71511ae2dfcd 100644
+> --- a/drivers/acpi/acpi_apd.c
+> +++ b/drivers/acpi/acpi_apd.c
+> @@ -160,11 +160,17 @@ static const struct apd_device_desc hip08_i2c_desc = {
+>         .setup = acpi_apd_setup,
+>         .fixed_clk_rate = 250000000,
 >  };
->  
-> +static int get_ethernet_addr(struct usb_interface *intf)
-> +{
-> +	struct sockaddr sa;
-> +	struct usbnet *dev = usb_get_intfdata(intf);
-> +	struct cdc_ncm_ctx *ctx;
-> +	int ret = 0;
 > +
-> +	if (!dev)
-> +		return 0;
+>  static const struct apd_device_desc thunderx2_i2c_desc = {
+>         .setup = acpi_apd_setup,
+>         .fixed_clk_rate = 125000000,
+>  };
+>
+> +static const struct apd_device_desc nxp_i2c_desc = {
+> +       .setup = acpi_apd_setup,
+> +       .fixed_clk_rate = 350000000,
+> +};
 > +
-> +	ctx = (struct cdc_ncm_ctx *)dev->data[0];
-> +	if (!ctx->ether_desc)
-> +		return 0;
+>  static const struct apd_device_desc hip08_spi_desc = {
+>         .setup = acpi_apd_setup,
+>         .fixed_clk_rate = 250000000,
+> @@ -238,6 +244,7 @@ static const struct acpi_device_id acpi_apd_device_ids[] = {
+>         { "HISI02A1", APD_ADDR(hip07_i2c_desc) },
+>         { "HISI02A2", APD_ADDR(hip08_i2c_desc) },
+>         { "HISI0173", APD_ADDR(hip08_spi_desc) },
+> +       { "NXP0001", APD_ADDR(nxp_i2c_desc) },
+>  #endif
+>         { }
+>  };
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index 15f6cde6452f..a3b61336fe55 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -20,6 +20,7 @@
+>   *
+>   */
+>
+> +#include <linux/acpi.h>
+>  #include <linux/clk.h>
+>  #include <linux/completion.h>
+>  #include <linux/delay.h>
+> @@ -255,6 +256,12 @@ static const struct of_device_id i2c_imx_dt_ids[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, i2c_imx_dt_ids);
+>
+> +static const struct acpi_device_id i2c_imx_acpi_ids[] = {
+> +       {"NXP0001", .driver_data = (kernel_ulong_t)&vf610_i2c_hwdata},
+> +       { }
+> +};
+> +MODULE_DEVICE_TABLE(acpi, i2c_imx_acpi_ids);
 > +
-> +	ret = cdc_ncm_get_ethernet_address(dev, ctx);
-> +	if (ret) {
-> +		dev_dbg(&intf->dev, "failed to get mac address\n");
-> +		return ret;
-> +	}
-> +
-> +	/* Check for a Dell Universal Dock D6000 before checking if ACPI
-> +	 * supports MAC address pass through.
-> +	 */
-> +	if (strstr(dev->udev->product, "D6000")) {
+>  static inline int is_imx1_i2c(struct imx_i2c_struct *i2c_imx)
+>  {
+>         return i2c_imx->hwdata->devtype == IMX1_I2C;
+> @@ -1048,14 +1055,13 @@ static const struct i2c_algorithm i2c_imx_algo = {
+>
+>  static int i2c_imx_probe(struct platform_device *pdev)
+>  {
+> -       const struct of_device_id *of_id = of_match_device(i2c_imx_dt_ids,
+> -                                                          &pdev->dev);
+>         struct imx_i2c_struct *i2c_imx;
+>         struct resource *res;
+>         struct imxi2c_platform_data *pdata = dev_get_platdata(&pdev->dev);
+>         void __iomem *base;
+>         int irq, ret;
+>         dma_addr_t phy_addr;
+> +       const struct imx_i2c_hwdata *match;
+>
+>         dev_dbg(&pdev->dev, "<%s>\n", __func__);
+>
+> @@ -1075,8 +1081,9 @@ static int i2c_imx_probe(struct platform_device *pdev)
+>         if (!i2c_imx)
+>                 return -ENOMEM;
+>
+> -       if (of_id)
+> -               i2c_imx->hwdata = of_id->data;
+> +       match = device_get_match_data(&pdev->dev);
+> +       if (match)
+> +               i2c_imx->hwdata = match;
+>         else
+>                 i2c_imx->hwdata = (struct imx_i2c_hwdata *)
+>                                 platform_get_device_id(pdev)->driver_data;
+> @@ -1089,6 +1096,7 @@ static int i2c_imx_probe(struct platform_device *pdev)
+>         i2c_imx->adapter.nr             = pdev->id;
+>         i2c_imx->adapter.dev.of_node    = pdev->dev.of_node;
+>         i2c_imx->base                   = base;
+> +       ACPI_COMPANION_SET(&i2c_imx->adapter.dev, ACPI_COMPANION(&pdev->dev));
+>
+>         /* Get I2C clock */
+>         i2c_imx->clk = devm_clk_get(&pdev->dev, NULL);
+> @@ -1247,6 +1255,7 @@ static struct platform_driver i2c_imx_driver = {
+>                 .name = DRIVER_NAME,
+>                 .pm = &i2c_imx_pm_ops,
+>                 .of_match_table = i2c_imx_dt_ids,
+> +               .acpi_match_table = i2c_imx_acpi_ids,
+>         },
+>         .id_table = imx_i2c_devtype,
+>  };
+> --
+> 2.17.1
+>
 
-As other people have pointed out, that's funny.
 
-No, this is explicitly what the USB vendor/product ids are for, don't
-try to make up something that will be guaranteed to not work
-correctly...
-
-> +		sa.sa_family = dev->net->type;
-> +		if (get_acpi_mac_passthru(sa.sa_data)) {
-> +			if (!memcmp(dev->net->dev_addr, sa.sa_data,
-> +				    ETH_ALEN)) {
-> +				if (!cdc_ncm_set_ethernet_address(dev, &sa))
-> +					memcpy(dev->net->dev_addr, sa.sa_data,
-> +					       ETH_ALEN);
-> +			}
-> +		}
-> +	}
-> +	dev_info(&intf->dev, "MAC-Address: %pM\n", dev->net->dev_addr);
-
-If a driver is working properly, it should not spit out any kernel log
-messages.  Make this dev_dbg() if you need it for your own debugging
-logic.
-
-thanks,
-
-greg k-h
+-- 
+With Best Regards,
+Andy Shevchenko
