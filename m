@@ -2,78 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B835AB2FA
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Sep 2019 09:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFEA8AB3A5
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Sep 2019 10:04:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732650AbfIFHEb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Sep 2019 03:04:31 -0400
-Received: from mga11.intel.com ([192.55.52.93]:16950 "EHLO mga11.intel.com"
+        id S1728020AbfIFIEC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Sep 2019 04:04:02 -0400
+Received: from inva021.nxp.com ([92.121.34.21]:55324 "EHLO inva021.nxp.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729391AbfIFHEb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 6 Sep 2019 03:04:31 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Sep 2019 00:04:31 -0700
-X-IronPort-AV: E=Sophos;i="5.64,472,1559545200"; 
-   d="scan'208";a="267279240"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Sep 2019 00:04:28 -0700
-Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id 8B7272051A; Fri,  6 Sep 2019 10:04:26 +0300 (EEST)
-Date:   Fri, 6 Sep 2019 10:04:26 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Petr Mladek <pmladek@suse.com>, rafael@kernel.org,
-        linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v5 09/11] lib/vsprintf: OF nodes are first and foremost,
- struct device_nodes
-Message-ID: <20190906070426.GJ5475@paasikivi.fi.intel.com>
-References: <20190902135732.23455-1-sakari.ailus@linux.intel.com>
- <20190902135732.23455-10-sakari.ailus@linux.intel.com>
- <20190903085233.oksjcwqwdxb53eig@pathway.suse.cz>
- <20190903092816.qutqnjba7okcauim@pathway.suse.cz>
- <20190903112800.GW2680@smile.fi.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190903112800.GW2680@smile.fi.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1728742AbfIFIEC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 6 Sep 2019 04:04:02 -0400
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 042B8200589;
+        Fri,  6 Sep 2019 10:03:59 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 321242000EC;
+        Fri,  6 Sep 2019 10:03:52 +0200 (CEST)
+Received: from titan.ap.freescale.net (TITAN.ap.freescale.net [10.192.208.233])
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id E4747402A5;
+        Fri,  6 Sep 2019 16:03:43 +0800 (SGT)
+From:   Biwen Li <biwen.li@nxp.com>
+To:     andy.shevchenko@gmail.com, rafael@kernel.org, leoyang.li@nxp.com,
+        meenakshi.aggarwal@nxp.com, udit.kumar@nxp.com, wsa@the-dreams.de,
+        rjw@rjwysocki.net
+Cc:     chuanhua.han@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Biwen Li <biwen.li@nxp.com>
+Subject: [v2] ACPI: support for NXP i2c controller
+Date:   Fri,  6 Sep 2019 15:53:19 +0800
+Message-Id: <20190906075319.21244-1-biwen.li@nxp.com>
+X-Mailer: git-send-email 2.9.5
+X-Virus-Scanned: ClamAV using ClamSMTP
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 03, 2019 at 02:28:00PM +0300, Andy Shevchenko wrote:
-> On Tue, Sep 03, 2019 at 11:28:16AM +0200, Petr Mladek wrote:
-> > On Tue 2019-09-03 10:52:33, Petr Mladek wrote:
-> > > On Mon 2019-09-02 16:57:30, Sakari Ailus wrote:
-> > > > Factor out static kobject_string() function that simply calls
-> > > > device_node_string(), and thus remove references to kobjects (as these are
-> > > > struct device_node).
-> 
-> > > > -		return kobject_string(buf, end, ptr, spec, fmt);
-> > > > +		return device_node_string(buf, end, ptr, spec, fmt + 1);
-> > > 
-> > > I know that this come from from kobject_string(). But please, modify
-> > > it to follow the style used by other %p modifiers. I mean to pass
-> > > "fmt" as is and then use:
-> > > 
-> > > 	if (fmt[1] != 'F')
-> > 
-> > Ah, I see that it would need more changes in device_node_string().
-> > OK, let's leave the patch as is. I am sorry for the noise.
-> 
-> I came to the same conclusions, though can we consider to drop this patch?
+From: Chuanhua Han <chuanhua.han@nxp.com>
 
-It's a cleanup. I'd prefer to keep the patch.
+Enable NXP i2c controller to boot with ACPI
 
-Albeit fmt++; in device_node_string() would do the trick of avoiding fmt +
-1 in the caller. That said, I'd prefer to keep the original patch as-is.
+Signed-off-by: Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>
+Signed-off-by: Udit Kumar <udit.kumar@nxp.com>
+Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+Signed-off-by: Biwen Li <biwen.li@nxp.com>
+---
+Change in v2:
+	- Simplify code
+	- Adjust header file order
+	- Not use ACPI_PTR()
 
+ drivers/acpi/acpi_apd.c      |  7 +++++++
+ drivers/i2c/busses/i2c-imx.c | 17 +++++++++++++----
+ 2 files changed, 20 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+index 7cd0c9ac71ea..71511ae2dfcd 100644
+--- a/drivers/acpi/acpi_apd.c
++++ b/drivers/acpi/acpi_apd.c
+@@ -160,11 +160,17 @@ static const struct apd_device_desc hip08_i2c_desc = {
+ 	.setup = acpi_apd_setup,
+ 	.fixed_clk_rate = 250000000,
+ };
++
+ static const struct apd_device_desc thunderx2_i2c_desc = {
+ 	.setup = acpi_apd_setup,
+ 	.fixed_clk_rate = 125000000,
+ };
+ 
++static const struct apd_device_desc nxp_i2c_desc = {
++	.setup = acpi_apd_setup,
++	.fixed_clk_rate = 350000000,
++};
++
+ static const struct apd_device_desc hip08_spi_desc = {
+ 	.setup = acpi_apd_setup,
+ 	.fixed_clk_rate = 250000000,
+@@ -238,6 +244,7 @@ static const struct acpi_device_id acpi_apd_device_ids[] = {
+ 	{ "HISI02A1", APD_ADDR(hip07_i2c_desc) },
+ 	{ "HISI02A2", APD_ADDR(hip08_i2c_desc) },
+ 	{ "HISI0173", APD_ADDR(hip08_spi_desc) },
++	{ "NXP0001", APD_ADDR(nxp_i2c_desc) },
+ #endif
+ 	{ }
+ };
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 15f6cde6452f..a3b61336fe55 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -20,6 +20,7 @@
+  *
+  */
+ 
++#include <linux/acpi.h>
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+ #include <linux/delay.h>
+@@ -255,6 +256,12 @@ static const struct of_device_id i2c_imx_dt_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(of, i2c_imx_dt_ids);
+ 
++static const struct acpi_device_id i2c_imx_acpi_ids[] = {
++	{"NXP0001", .driver_data = (kernel_ulong_t)&vf610_i2c_hwdata},
++	{ }
++};
++MODULE_DEVICE_TABLE(acpi, i2c_imx_acpi_ids);
++
+ static inline int is_imx1_i2c(struct imx_i2c_struct *i2c_imx)
+ {
+ 	return i2c_imx->hwdata->devtype == IMX1_I2C;
+@@ -1048,14 +1055,13 @@ static const struct i2c_algorithm i2c_imx_algo = {
+ 
+ static int i2c_imx_probe(struct platform_device *pdev)
+ {
+-	const struct of_device_id *of_id = of_match_device(i2c_imx_dt_ids,
+-							   &pdev->dev);
+ 	struct imx_i2c_struct *i2c_imx;
+ 	struct resource *res;
+ 	struct imxi2c_platform_data *pdata = dev_get_platdata(&pdev->dev);
+ 	void __iomem *base;
+ 	int irq, ret;
+ 	dma_addr_t phy_addr;
++	const struct imx_i2c_hwdata *match;
+ 
+ 	dev_dbg(&pdev->dev, "<%s>\n", __func__);
+ 
+@@ -1075,8 +1081,9 @@ static int i2c_imx_probe(struct platform_device *pdev)
+ 	if (!i2c_imx)
+ 		return -ENOMEM;
+ 
+-	if (of_id)
+-		i2c_imx->hwdata = of_id->data;
++	match = device_get_match_data(&pdev->dev);
++	if (match)
++		i2c_imx->hwdata = match;
+ 	else
+ 		i2c_imx->hwdata = (struct imx_i2c_hwdata *)
+ 				platform_get_device_id(pdev)->driver_data;
+@@ -1089,6 +1096,7 @@ static int i2c_imx_probe(struct platform_device *pdev)
+ 	i2c_imx->adapter.nr		= pdev->id;
+ 	i2c_imx->adapter.dev.of_node	= pdev->dev.of_node;
+ 	i2c_imx->base			= base;
++	ACPI_COMPANION_SET(&i2c_imx->adapter.dev, ACPI_COMPANION(&pdev->dev));
+ 
+ 	/* Get I2C clock */
+ 	i2c_imx->clk = devm_clk_get(&pdev->dev, NULL);
+@@ -1247,6 +1255,7 @@ static struct platform_driver i2c_imx_driver = {
+ 		.name = DRIVER_NAME,
+ 		.pm = &i2c_imx_pm_ops,
+ 		.of_match_table = i2c_imx_dt_ids,
++		.acpi_match_table = i2c_imx_acpi_ids,
+ 	},
+ 	.id_table = imx_i2c_devtype,
+ };
 -- 
-Sakari Ailus
-sakari.ailus@linux.intel.com
+2.17.1
+
