@@ -2,126 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5343BABF47
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Sep 2019 20:19:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BB57AC0FC
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Sep 2019 21:53:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731840AbfIFSTr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Sep 2019 14:19:47 -0400
-Received: from mx0b-00154904.pphosted.com ([148.163.137.20]:5890 "EHLO
-        mx0b-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730881AbfIFSTr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Sep 2019 14:19:47 -0400
-Received: from pps.filterd (m0170396.ppops.net [127.0.0.1])
-        by mx0b-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x86IA1Tq000810;
-        Fri, 6 Sep 2019 14:19:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dellteam.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=smtpout1;
- bh=YB/kOC8ZWJlrYMhzEovQRsZUGkZZfBOjO9qedOnCFGA=;
- b=Abdy0jqmSGTPKvJlzjpEfT04aLjBZ3xIJ9k/d4zISCF9ZEBq1uaCo9pgcR3T2Uf8vGum
- wLZALxgCYCnLEt/Ca+L3NVNPA0aVBYVEf6LoCa/CA3UJPtnpA4y3Lqe4b9rd/1gw3xIC
- 4zYSCyEmAACGxTt2q99/65RRxG/4eW8MKoVV1r2J9SCC7rO4/0kGJlKSlhCjaqomcn6r
- xGtR4Isi/NrV/NEiB0xI3cTexFFKL8bdRhLCJMSz83GwMaVBGDx4+qLglm+5TpHAR2qn
- 6lMZCFryQOOl5zsWG50wWiZJWTswbsaVY6RWUKrMl0l5u6raI1tO+v1cTlF7midfPkmq 2w== 
-Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
-        by mx0b-00154904.pphosted.com with ESMTP id 2uqmr0v0j2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 06 Sep 2019 14:19:45 -0400
-Received: from pps.filterd (m0142693.ppops.net [127.0.0.1])
-        by mx0a-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x86IDZVS042249;
-        Fri, 6 Sep 2019 14:19:44 -0400
-Received: from ausxipps301.us.dell.com (ausxipps301.us.dell.com [143.166.148.223])
-        by mx0a-00154901.pphosted.com with ESMTP id 2uu3x28mv7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 06 Sep 2019 14:19:44 -0400
-X-LoopCount0: from 10.166.132.127
-X-PREM-Routing: D-Outbound
-X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
-   d="scan'208";a="393526737"
-From:   <Charles.Hyde@dellteam.com>
-To:     <stern@rowland.harvard.edu>
-CC:     <bjorn@mork.no>, <oliver@neukum.org>, <rjw@rjwysocki.net>,
-        <lenb@kernel.org>, <Mario.Limonciello@dell.com>,
-        <chip.programmer@gmail.com>, <nic_swsd@realtek.com>,
-        <linux-usb@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-Subject: RE: [PATCH 1/3] net: cdc_ncm: add get/set ethernet address functions
-Thread-Topic: [PATCH 1/3] net: cdc_ncm: add get/set ethernet address functions
-Thread-Index: AQHVZCzhVbpOtOy+DEKwLQ92ABp4yKceW3ikgACI4XCAAGUoAP//rQLA
-Date:   Fri, 6 Sep 2019 18:19:37 +0000
-Message-ID: <a9999ed336ba4f2a8cb93c57f0b3d2f4@AUSX13MPS307.AMER.DELL.COM>
-References: <43fa8b0a974d426faccf5e6d486af18a@AUSX13MPS307.AMER.DELL.COM>
- <Pine.LNX.4.44L0.1909061412350.1627-100000@iolanthe.rowland.org>
-In-Reply-To: <Pine.LNX.4.44L0.1909061412350.1627-100000@iolanthe.rowland.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Enabled=True;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Owner=Charles_Hyde@Dellteam.com;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SetDate=2019-09-06T18:19:36.2181054Z;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Name=External Public;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Extended_MSFT_Method=Manual;
- aiplabel=External Public
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.143.18.86]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S2393611AbfIFTxv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Sep 2019 15:53:51 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:39280 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727004AbfIFTxv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Sep 2019 15:53:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
+        From:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=Ew6/0qVAdmZqdoKuB0ftq6YKxojcd2lW86roVTM6SN0=; b=HaDIZREUU4sYgn/JzFNf6E0OZ
+        wUV/Zha1HrvFqpRxD1keIy+llfbiYbyO54VUM5f14UIi3JBAs86JzzzA99a3oqAbsCfWCa3j9D5Il
+        Ul9csN2rC3lOfxHUkE3Nur3f17cxxoyo+NJZbmQO4IV/gC95JSVPhjhYrajx+qvRluFGsRuG3eKC+
+        pMchkuAKJ3LpEIkBkmTDw/+ai08Rk50M18mwfnNfCYsLlXEEJ2sGNmfiC8w2cnmml6WGjhnENKE2b
+        9y1CdcuQbB8qsi9RgytnVvp8W/fRwJ7e+YwUOwQi5K+8dKgAeN99bYl3lucqlkPTQ/g1iRzoJLnGQ
+        MBaqbwQkA==;
+Received: from [177.159.253.249] (helo=coco.lan)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1i6KIn-0006S3-1u; Fri, 06 Sep 2019 19:53:49 +0000
+Date:   Fri, 6 Sep 2019 16:53:41 -0300
+From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Jessica Yu <jeyu@kernel.org>,
+        Federico Vaga <federico.vaga@vaga.pv.it>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-doc@vger.kernel.org, Robert Moore <robert.moore@intel.com>,
+        Erik Schmauss <erik.schmauss@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, Thomas Renninger <trenn@suse.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Valentina Manea <valentina.manea.m@gmail.com>,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org, linux-usb <linux-usb@vger.kernel.org>
+Subject: Re: [RFC PATCH] tools: Add SPDX license to man pages
+Message-ID: <20190906164959.288ab3d5@coco.lan>
+In-Reply-To: <1b1cfc9c8c13b58c47d1d123763c8bc412abf9d4.camel@perches.com>
+References: <20190905055614.7958918b@coco.lan>
+        <88e638eb959095ab6657d295f9f8c27169569bf2.1567675272.git.mchehab+samsung@kernel.org>
+        <20190905092703.GA30899@kroah.com>
+        <20190905090701.37dcf75e@coco.lan>
+        <b32c2e46b91e7bcda2a9bd140673f06d71b2487a.camel@perches.com>
+        <20190906083457.7e7934ec@coco.lan>
+        <1b1cfc9c8c13b58c47d1d123763c8bc412abf9d4.camel@perches.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
- definitions=2019-09-06_07:2019-09-04,2019-09-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
- impostorscore=0 bulkscore=0 suspectscore=0 adultscore=0 malwarescore=0
- lowpriorityscore=0 mlxscore=0 priorityscore=1501 clxscore=1015 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1906280000
- definitions=main-1909060193
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0
- mlxlogscore=999 suspectscore=0 impostorscore=0 mlxscore=0 clxscore=1015
- phishscore=0 priorityscore=1501 bulkscore=0 spamscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1906280000
- definitions=main-1909060193
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> > <snipped>
-> > > > +	ret =3D usbnet_read_cmd(dev, USB_CDC_GET_NET_ADDRESS,
-> > > > +			      USB_DIR_IN | USB_TYPE_CLASS
-> > > > +			      | USB_RECIP_INTERFACE, 0,
-> > > > +			      USB_REQ_SET_ADDRESS, buf, ETH_ALEN);
-> > >
-> > > Where did that USB_REQ_SET_ADDRESS come from? Did you just look up
-> > > an arbutrary macro that happened to match your device config?  How
-> > > do you expect this to work with a generic NCM device?  Or even your
-> > > own device, when the next firmware revision moves the function to a
-> different interface?
-> > <snipped>
-> >
-> > https://wiki.osdev.org/Universal_Serial_Bus#SET_ADDRESS
-> >
-> > https://www.usb.org/document-library/network-control-model-devices-spe
-> > cification-v10-and-errata-and-adopters-agreement
-> > Download and view the NCM specification v1.0 (Errata 1), dated November
-> 24, 2010.  See table 6.2 on page 30.  Also see sections 6.2.2 and 6.2.3 o=
-n page
-> 32.
-> >
-> > USB_REQ_SET_ADDRESS came from include/uapi/linux/usb/ch9.h.  This
-> matches the SET_ADDRESS definition from the osdev wiki page, so I used it
-> because the name and numeric values both matched.  It further matches wha=
-t
-> the Windows driver issues.
->=20
-> The names and values may match, but the meanings do not.
-> USB_REQ_SET_ADDRESS refers to a USB bus address, not a MAC address.
->=20
-> Alan Stern
+Em Fri, 06 Sep 2019 11:12:58 -0700
+Joe Perches <joe@perches.com> escreveu:
+
+> On Fri, 2019-09-06 at 08:34 -0300, Mauro Carvalho Chehab wrote:
+> > Warning: SPDX header for file tools/thermal/tmon/tmon.8 is at line 2  
+> []
+> > The last one is interesting... what's the "very first line" where a
+> > SPDX header tag should be on a man page?  
+> 
+> just fyi:
+> 
+> It looks like .man pages could use a comment form
+> using '.\"' like this example on the first line:
+> 
+> $ head -5 tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.8
+> .\"  This page Copyright (C) 2010 - 2015 Len Brown <len.brown@intel.com>
+> .\"  Distributed under the GPL, Copyleft 1994.
+> .TH X86_ENERGY_PERF_POLICY 8
+> .SH NAME
+> x86_energy_perf_policy \- Manage Energy vs. Performance Policy via x86 Model Specific Registers
+> 
+> So maybe:
+> ---
+>  tools/power/acpi/man/acpidump.8                                 | 1 +
+>  tools/power/cpupower/man/cpupower-frequency-info.1              | 1 +
+>  tools/power/cpupower/man/cpupower-frequency-set.1               | 1 +
+>  tools/power/cpupower/man/cpupower-idle-info.1                   | 1 +
+>  tools/power/cpupower/man/cpupower-idle-set.1                    | 1 +
+>  tools/power/cpupower/man/cpupower-info.1                        | 1 +
+>  tools/power/cpupower/man/cpupower-monitor.1                     | 1 +
+>  tools/power/cpupower/man/cpupower-set.1                         | 1 +
+>  tools/power/cpupower/man/cpupower.1                             | 1 +
+>  tools/power/pm-graph/bootgraph.8                                | 1 +
+>  tools/power/pm-graph/sleepgraph.8                               | 1 +
+>  tools/power/x86/turbostat/turbostat.8                           | 1 +
+>  tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.8 | 1 +
+>  tools/thermal/tmon/tmon.8                                       | 1 +
+>  tools/usb/usbip/doc/usbip.8                                     | 1 +
+>  tools/usb/usbip/doc/usbipd.8                                    | 1 +
+>  16 files changed, 16 insertions(+)
+
+Makes sense. I would also patch license-rules.txt with something like:
+
+diff --git a/Documentation/process/license-rules.rst b/Documentation/process/license-rules.rst
+index 5d23e3498b1c..6224421ee120 100644
+--- a/Documentation/process/license-rules.rst
++++ b/Documentation/process/license-rules.rst
+@@ -76,12 +76,13 @@ License identifier syntax
+    The SPDX license identifier is added in form of a comment.  The comment
+    style depends on the file type::
+ 
+-      C source:	// SPDX-License-Identifier: <SPDX License Expression>
+-      C header:	/* SPDX-License-Identifier: <SPDX License Expression> */
+-      ASM:	/* SPDX-License-Identifier: <SPDX License Expression> */
+-      scripts:	# SPDX-License-Identifier: <SPDX License Expression>
+-      .rst:	.. SPDX-License-Identifier: <SPDX License Expression>
+-      .dts{i}:	// SPDX-License-Identifier: <SPDX License Expression>
++      C source:  // SPDX-License-Identifier: <SPDX License Expression>
++      C header:  /* SPDX-License-Identifier: <SPDX License Expression> */
++      ASM:       /* SPDX-License-Identifier: <SPDX License Expression> */
++      scripts:   # SPDX-License-Identifier: <SPDX License Expression>
++      .rst:      .. SPDX-License-Identifier: <SPDX License Expression>
++      .dts{i}:	  // SPDX-License-Identifier: <SPDX License Expression>
++      man pages: .\" SPDX-License-Identifier: <SPDX License Expression>
+ 
+    If a specific tool cannot handle the standard comment style, then the
+    appropriate comment mechanism which the tool accepts shall be used. This
+
+> diff --git a/tools/thermal/tmon/tmon.8 b/tools/thermal/tmon/tmon.8
+> index 2f122de5841b..cffaa0d65478 100644
+> --- a/tools/thermal/tmon/tmon.8
+> +++ b/tools/thermal/tmon/tmon.8
+> @@ -1,3 +1,4 @@
+> +.\" SPDX-License-Identifier: GPL-2.0-only
+>  .TH TMON 8
+>  # SPDX-License-Identifier: GPL-2.0
+>  .SH NAME
+
+Hmm... here, you should probably keep the same license as defined at
+the existing tag (GPL-2.0) and remove the comment one.
 
 
-What better suggestion do folks have, instead of using USB_REQ_SET_ADDRESS?
-
-Thank you,
-Charles
+Thanks,
+Mauro
