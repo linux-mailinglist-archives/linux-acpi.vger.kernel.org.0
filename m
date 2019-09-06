@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A2C2AB065
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Sep 2019 03:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E628AB067
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Sep 2019 03:51:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391953AbfIFBvT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Sep 2019 21:51:19 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:38270 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732602AbfIFBvS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Sep 2019 21:51:18 -0400
-Received: by mail-oi1-f194.google.com with SMTP id 7so3663191oip.5;
-        Thu, 05 Sep 2019 18:51:18 -0700 (PDT)
+        id S2391957AbfIFBvU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Sep 2019 21:51:20 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:35512 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732602AbfIFBvU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Sep 2019 21:51:20 -0400
+Received: by mail-oi1-f193.google.com with SMTP id a127so3677195oii.2;
+        Thu, 05 Sep 2019 18:51:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=26NmWxoSiKiaWbVOpt4jWAHx5xteNn77h0vhjItrDwY=;
-        b=ok9kYFE7zKccBGuLRmP6PpsmxMY2zFXvsw5yEeaEtRTxGzItpBNduNmXiuox+antxH
-         E+obq0pphDHbQwBacAG/8YfQ9BdmvKU76k41wjAAMr6Vc8fktf3uFPPi1WNq7yk3xO9S
-         fSlR/nX3Z50IiAqKnEFAuyZkkOBblvRZj9JC7KIP/w61wIOtbkU/vtDJ2eGId551sFpN
-         1xaZrPu4vtU2VGea1Fnvy24p9LUoEJiYco6XrzGhepYumZ01WTrhjvRDRFrPio5+loOR
-         Dwd9bYhF6/saMLnfaBbyv+22zB53GWQgyTDG3z9q7vNZ9S95kYgfxLpQSUt886dq+HbK
-         5rTw==
+        bh=Blz0RsqZUJGPnoU5SLMqR+GSHgrZhAdK1utmIqTpw3k=;
+        b=P6mEvECwpni7oWvOJiUXPy7LfC1HtqxRYKAsFsGgCFxKGgk1ldbSkIvqF/QmWAWHbT
+         T5qmIt3GfQ5p+oU+ZqvkVdv0z10d3QiiGEeidKav9eJwaSBlHCBoaj36ftolyIJjp9bA
+         nGg7hNH8udQOMUUXlUy8F2tF+LQv2frl2Kg3Y5Aed5ncJrtcDNW390YNwMGfRGor5YvH
+         vHGNf5RqiIuk8Ah6UhZMvPk98jx3OIUbu1rJL1sE6FSe2StBI/aeGeJaOuEht91LHN1E
+         ZuLx5hWrlcEdFHnzVLFfmjjZVRAyV7xwddr7w17MIq1eZo3uVvllWwHlcIHrGWhcoWEU
+         FM5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=26NmWxoSiKiaWbVOpt4jWAHx5xteNn77h0vhjItrDwY=;
-        b=ZpYqnouSk41//wXznyFhW9RD7Kjix25cJzQ0e3Ly3icv/TOTo1Ly1m/DnV5cIT21bX
-         5V0ucswlHEBKVK/0aLk5nu6uNVXLgul+8eeKR646/AmHdMk9qYKXKeIRywviZxpXkxcI
-         kP051YKBTy0CnT05V/D8x1BDLyeeGR+vjy7qTu2Rinx8JsqydecjyO+pCIkr56qec3Wi
-         bUrwXyRp0S/NvFOlj3rx25Rj8CcKTJTn3k2Xr5fz4AqHh1E2em3/2l11WVXNyKCHf03P
-         JHT8sETOJU6tM+0WMNfOsfltk5nACfZBGj8EKBvwRpaGZl3YXkfet7jTRtG6nSrDP/+5
-         nbEA==
-X-Gm-Message-State: APjAAAW6ICjCsWpCUQl/2oEyIfSzUbTAKhZIeRRGzkhTZYvYFRTpnzqn
-        3H5sJQDkSzoE5BURiDNPCpI=
-X-Google-Smtp-Source: APXvYqwq9M6jAkuAegB6jm1+EJoarGebXUdSfpVRNZb+bsBUQg0zXw/xb0ZZATSyml+omaA0TDae6Q==
-X-Received: by 2002:aca:30c1:: with SMTP id w184mr5256322oiw.61.1567734678019;
+        bh=Blz0RsqZUJGPnoU5SLMqR+GSHgrZhAdK1utmIqTpw3k=;
+        b=JlFA0A2xDRD4nayjHXeo9MvJxMijG2VN1RzmNQ48WnZfhBLqNSyqpfEYFrkoT2sEhJ
+         Y/nD5umGTEFfX8ORT8m3agoXzc1t4KQ/eixgIJExwTdy9GsiZlG2tf+yzdAwNMf+Cw4d
+         20z62/i6WACA9Z6QPSebdeEDQHU/3PnSUF18xrO53Fiws8ywdcj+I0DffWHcYqHEt3Ur
+         d5uGNjEw4Qm1H+6JtI+o75A/3lATwRM5HntbYPIGZ6LdSD2VLXQc3YyRT+rrEqxgLfh6
+         o5gNxmsGfg1tQ7+GB89uwKw2k2lmYNxWtcvl3UdgFF9hQ5Ui1OKmCd41q0RcNUjgCTk5
+         FVqg==
+X-Gm-Message-State: APjAAAUvgQ6N4073CbDqkbq2vO2W1pbie852UnkXj6e8euFqJwIVU0ha
+        vNF8lqN19WG5tOugNyP/hEAhHwAM1kc=
+X-Google-Smtp-Source: APXvYqyqTVS0rxUPkCy3L5eSnfqnu4WkNXzRftrk30U4w6EH2gNQO7KtqzuJmpYdgfjWKfZlisL4Vg==
+X-Received: by 2002:aca:b70b:: with SMTP id h11mr5338236oif.107.1567734678928;
         Thu, 05 Sep 2019 18:51:18 -0700 (PDT)
 Received: from chip-MS-7B92.austin.rr.com ([2605:6000:f350:3e00:fc3b:b63b:919f:ceef])
-        by smtp.gmail.com with ESMTPSA id e1sm1324097otj.48.2019.09.05.18.51.17
+        by smtp.gmail.com with ESMTPSA id e1sm1324097otj.48.2019.09.05.18.51.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Sep 2019 18:51:17 -0700 (PDT)
+        Thu, 05 Sep 2019 18:51:18 -0700 (PDT)
 From:   Charles Hyde <chip.programmer@gmail.com>
 To:     Oliver Neukum <oliver@neukum.org>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
@@ -53,9 +53,9 @@ Cc:     Mario Limonciello <mario.limonciello@dell.com>,
         Realtek linux nic maintainers <nic_swsd@realtek.com>,
         linux-usb@vger.kernel.org, linux-acpi@vger.kernel.org,
         chip.programmer@gmail.com
-Subject: [PATCH v3 1/3] net: cdc_ncm: add get/set ethernet address functions
-Date:   Thu,  5 Sep 2019 20:51:13 -0500
-Message-Id: <20190906015115.12796-2-chip.programmer@gmail.com>
+Subject: [PATCH v3 2/3] ACPI: move ACPI functionality out of r8152 driver
+Date:   Thu,  5 Sep 2019 20:51:14 -0500
+Message-Id: <20190906015115.12796-3-chip.programmer@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190906015115.12796-1-chip.programmer@gmail.com>
 References: <20190906015115.12796-1-chip.programmer@gmail.com>
@@ -66,115 +66,224 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This patch adds support for pushing a MAC address out to USB based
-ethernet controllers driven by cdc_ncm.  With this change, ifconfig can
-now set the device's MAC address.  For example, the Dell Universal Dock
-D6000 is driven by cdc_ncm.  The D6000 can now have its MAC address set
-by ifconfig, as it can be done in Windows.  This was tested with a D6000
-using ifconfig on an x86 based chromebook, where iproute2 is not
-available.
+This change moves ACPI functionality out of the Realtek r8152 driver to
+its own source and header file, making it available to other drivers as
+needed now and into the future.  At the time this ACPI snippet was
+introduced in 2016, only the Realtek driver made use of it in support of
+Dell's enterprise IT policy efforts.  There comes now a need for this
+same support in a different driver, also in support of Dell's enterprise
+IT policy efforts.
 
 Signed-off-by: Charles Hyde <charles.hyde@dellteam.com>
 Cc: Mario Limonciello <mario.limonciello@dell.com>
 Cc: chip.programmer@gmail.com
-Cc: Oliver Neukum <oliver@neukum.org>
+Cc: Realtek linux nic maintainers <nic_swsd@realtek.com>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Len Brown <lenb@kernel.org>
 Cc: linux-usb@vger.kernel.org
+Cc: linux-acpi@vger.kernel.org
 ---
- drivers/net/usb/cdc_ncm.c | 74 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 73 insertions(+), 1 deletion(-)
+ drivers/acpi/Makefile            |  1 +
+ drivers/acpi/acpi_mac_passthru.c | 63 ++++++++++++++++++++++++++++++++
+ drivers/net/usb/r8152.c          | 44 ++--------------------
+ include/acpi/acpi_mac_passthru.h | 27 ++++++++++++++
+ 4 files changed, 95 insertions(+), 40 deletions(-)
+ create mode 100644 drivers/acpi/acpi_mac_passthru.c
+ create mode 100644 include/acpi/acpi_mac_passthru.h
 
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index 50c05d0f44cb..85093579612f 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -750,6 +750,78 @@ int cdc_ncm_change_mtu(struct net_device *net, int new_mtu)
- }
- EXPORT_SYMBOL_GPL(cdc_ncm_change_mtu);
+diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+index 5d361e4e3405..6bc2748f0e00 100644
+--- a/drivers/acpi/Makefile
++++ b/drivers/acpi/Makefile
+@@ -66,6 +66,7 @@ acpi-$(CONFIG_ACPI_WATCHDOG)	+= acpi_watchdog.o
+ acpi-$(CONFIG_ACPI_ADXL)	+= acpi_adxl.o
  
-+/* Provide method to get MAC address from the USB device's ethernet controller.
-+ * If the device supports CDC_GET_ADDRESS, we should receive just six bytes.
-+ * Otherwise, use the prior method by asking for the descriptor.
+ # These are (potentially) separate modules
++acpi-y				+= acpi_mac_passthru.o
+ 
+ # IPMI may be used by other drivers, so it has to initialise before them
+ obj-$(CONFIG_ACPI_IPMI)		+= acpi_ipmi.o
+diff --git a/drivers/acpi/acpi_mac_passthru.c b/drivers/acpi/acpi_mac_passthru.c
+new file mode 100644
+index 000000000000..37d7e2388c0b
+--- /dev/null
++++ b/drivers/acpi/acpi_mac_passthru.c
+@@ -0,0 +1,63 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * acpi_mac_passthru.c - ACPI MAC address pass through driver
++ *
++ *  Copyright (c) 2019 Dell Technology. All rights reserved.
++ *
++ * Search for MAC Address Pass Through information, and return the MAC address
++ * found.  This is set through enterprise policy settings, and expected to be
++ * read by ethernet drivers that have software programmable MAC addresses.
++ * Failure to find the needed information results in -ENODEV.
 + */
-+static int cdc_ncm_get_ethernet_address(struct usbnet *dev,
-+					struct cdc_ncm_ctx *ctx)
++
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/acpi.h>
++#include <acpi/acpi_mac_passthru.h>
++#include <linux/etherdevice.h>
++
++ACPI_MODULE_NAME("mapt");
++
++MODULE_AUTHOR("Charles Hyde");
++MODULE_DESCRIPTION("ACPI MAPT Driver");
++MODULE_LICENSE("GPL");
++
++int get_acpi_mac_passthru(char *macAddress)
 +{
-+	int ret;
-+	char *buf;
++	acpi_status status;
++	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
++	union acpi_object *obj;
++	int ret = -EINVAL;
++	unsigned char buf[6];
 +
-+	buf = kmalloc(ETH_ALEN, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	ret = usbnet_read_cmd(dev, USB_CDC_GET_NET_ADDRESS,
-+			      USB_DIR_IN | USB_TYPE_CLASS
-+			      | USB_RECIP_INTERFACE, 0,
-+			      USB_REQ_SET_ADDRESS, buf, ETH_ALEN);
-+	if (ret == ETH_ALEN) {
-+		memcpy(dev->net->dev_addr, buf, ETH_ALEN);
-+		ret = 0;	/* success */
-+	} else {
-+		ret = usbnet_get_ethernet_addr(dev,
-+					       ctx->ether_desc->iMACAddress);
++	/* returns _AUXMAC_#AABBCCDDEEFF# */
++	status = acpi_evaluate_object(NULL, "\\_SB.AMAC", NULL, &buffer);
++	obj = (union acpi_object *)buffer.pointer;
++	if (!ACPI_SUCCESS(status))
++		return -ENODEV;
++	if (obj->type != ACPI_TYPE_BUFFER || obj->string.length != 0x17) {
++		acpi_info("Invalid buffer for pass-thru MAC addr: (%d, %d)\n",
++			  obj->type, obj->string.length);
++		goto amacout;
 +	}
-+	kfree(buf);
++	if (strncmp(obj->string.pointer, "_AUXMAC_#", 9) != 0 ||
++	    strncmp(obj->string.pointer + 0x15, "#", 1) != 0) {
++		acpi_info("Invalid header when reading pass-thru MAC addr\n");
++		goto amacout;
++	}
++	ret = hex2bin(buf, obj->string.pointer + 9, 6);
++	if (!(ret == 0 && is_valid_ether_addr(buf))) {
++		acpi_info("Invalid MAC for pass-thru MAC addr: %d, %pM\n",
++			  ret, buf);
++		ret = -EINVAL;
++		goto amacout;
++	}
++	memcpy(macAddress, buf, 6);
++	acpi_info("Pass-thru MAC addr %pM\n", macAddress);
++
++amacout:
++	kfree(obj);
 +	return ret;
++
 +}
-+
-+/* Provide method to push MAC address to the USB device's ethernet controller.
-+ * If the device does not support CDC_SET_ADDRESS, there is no harm and we
-+ * proceed as before.
-+ */
-+static int cdc_ncm_set_ethernet_address(struct usbnet *dev,
-+					struct sockaddr *addr)
-+{
-+	int ret;
-+	char *buf;
-+
-+	buf = kmalloc(ETH_ALEN, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	memcpy(buf, addr->sa_data, ETH_ALEN);
-+	ret = usbnet_write_cmd(dev, USB_CDC_SET_NET_ADDRESS,
-+			       USB_DIR_OUT | USB_TYPE_CLASS
-+			       | USB_RECIP_INTERFACE, 0,
-+			       USB_REQ_SET_ADDRESS, buf, ETH_ALEN);
-+	if (ret == ETH_ALEN)
-+		ret = 0;	/* success */
-+	else if (ret < 0)
-+		dev_dbg(&dev->udev->dev, "bad MAC address put, %d\n", ret);
-+
-+	kfree(buf);
-+	return ret;
-+}
-+
-+/* Provide method to push MAC address to the USB device's ethernet controller.
-+ */
-+int cdc_ncm_set_mac_addr(struct net_device *net, void *p)
-+{
-+	struct usbnet *dev = netdev_priv(net);
-+
-+	/* Try to push the MAC address out to the device.  Ignore any errors,
-+	 * to be compatible with prior versions of this source.
-+	 */
-+	cdc_ncm_set_ethernet_address(dev, (struct sockaddr *)p);
-+
-+	return eth_mac_addr(net, p);
-+}
-+EXPORT_SYMBOL_GPL(cdc_ncm_set_mac_addr);
-+
- static const struct net_device_ops cdc_ncm_netdev_ops = {
- 	.ndo_open	     = usbnet_open,
- 	.ndo_stop	     = usbnet_stop,
-@@ -757,7 +829,7 @@ static const struct net_device_ops cdc_ncm_netdev_ops = {
- 	.ndo_tx_timeout	     = usbnet_tx_timeout,
- 	.ndo_get_stats64     = usbnet_get_stats64,
- 	.ndo_change_mtu	     = cdc_ncm_change_mtu,
--	.ndo_set_mac_address = eth_mac_addr,
-+	.ndo_set_mac_address = cdc_ncm_set_mac_addr,
- 	.ndo_validate_addr   = eth_validate_addr,
- };
++EXPORT_SYMBOL_GPL(get_acpi_mac_passthru);
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 04137ac373b0..6b9de6ae6524 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -23,6 +23,7 @@
+ #include <linux/usb/cdc.h>
+ #include <linux/suspend.h>
+ #include <linux/acpi.h>
++#include <acpi/acpi_mac_passthru.h>
  
+ /* Information for net-next */
+ #define NETNEXT_VERSION		"09"
+@@ -1178,12 +1179,7 @@ static int rtl8152_set_mac_address(struct net_device *netdev, void *p)
+  */
+ static int vendor_mac_passthru_addr_read(struct r8152 *tp, struct sockaddr *sa)
+ {
+-	acpi_status status;
+-	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+-	union acpi_object *obj;
+-	int ret = -EINVAL;
+ 	u32 ocp_data;
+-	unsigned char buf[6];
+ 
+ 	/* test for -AD variant of RTL8153 */
+ 	ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0);
+@@ -1204,39 +1200,7 @@ static int vendor_mac_passthru_addr_read(struct r8152 *tp, struct sockaddr *sa)
+ 			return -ENODEV;
+ 		}
+ 	}
+-
+-	/* returns _AUXMAC_#AABBCCDDEEFF# */
+-	status = acpi_evaluate_object(NULL, "\\_SB.AMAC", NULL, &buffer);
+-	obj = (union acpi_object *)buffer.pointer;
+-	if (!ACPI_SUCCESS(status))
+-		return -ENODEV;
+-	if (obj->type != ACPI_TYPE_BUFFER || obj->string.length != 0x17) {
+-		netif_warn(tp, probe, tp->netdev,
+-			   "Invalid buffer for pass-thru MAC addr: (%d, %d)\n",
+-			   obj->type, obj->string.length);
+-		goto amacout;
+-	}
+-	if (strncmp(obj->string.pointer, "_AUXMAC_#", 9) != 0 ||
+-	    strncmp(obj->string.pointer + 0x15, "#", 1) != 0) {
+-		netif_warn(tp, probe, tp->netdev,
+-			   "Invalid header when reading pass-thru MAC addr\n");
+-		goto amacout;
+-	}
+-	ret = hex2bin(buf, obj->string.pointer + 9, 6);
+-	if (!(ret == 0 && is_valid_ether_addr(buf))) {
+-		netif_warn(tp, probe, tp->netdev,
+-			   "Invalid MAC for pass-thru MAC addr: %d, %pM\n",
+-			   ret, buf);
+-		ret = -EINVAL;
+-		goto amacout;
+-	}
+-	memcpy(sa->sa_data, buf, 6);
+-	netif_info(tp, probe, tp->netdev,
+-		   "Using pass-thru MAC addr %pM\n", sa->sa_data);
+-
+-amacout:
+-	kfree(obj);
+-	return ret;
++	return get_acpi_mac_passthru(sa->sa_data);
+ }
+ 
+ static int determine_ethernet_addr(struct r8152 *tp, struct sockaddr *sa)
+@@ -4311,10 +4275,10 @@ static int rtl8152_post_reset(struct usb_interface *intf)
+ 	if (!tp)
+ 		return 0;
+ 
+-	/* reset the MAC adddress in case of policy change */
++	/* reset the MAC address in case of policy change */
+ 	if (determine_ethernet_addr(tp, &sa) >= 0) {
+ 		rtnl_lock();
+-		dev_set_mac_address (tp->netdev, &sa, NULL);
++		dev_set_mac_address(tp->netdev, &sa, NULL);
+ 		rtnl_unlock();
+ 	}
+ 
+diff --git a/include/acpi/acpi_mac_passthru.h b/include/acpi/acpi_mac_passthru.h
+new file mode 100644
+index 000000000000..79c7a2d1062e
+--- /dev/null
++++ b/include/acpi/acpi_mac_passthru.h
+@@ -0,0 +1,27 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * acpi_mac_passthru.h - ACPI MAC address pass through driver
++ *
++ *  Copyright (c) 2019 Dell Technology. All rights reserved.
++ *
++ * Search for MAC Address Pass Through information, and return the MAC address
++ * found.  This is set through enterprise policy settings, and expected to be
++ * read by ethernet drivers that have software programmable MAC addresses.
++ * Failure to find the needed information results in -ENODEV.
++ */
++
++#include <linux/module.h>
++#include <linux/acpi.h>
++
++#ifdef CONFIG_ACPI
++
++int get_acpi_mac_passthru(char *macAddress);
++
++#else
++
++static inline int get_acpi_mac_passthru(char *macAddress)
++{
++	return -ENODEV;
++}
++
++#endif
 -- 
 2.20.1
 
