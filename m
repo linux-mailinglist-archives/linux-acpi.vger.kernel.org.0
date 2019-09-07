@@ -2,142 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3656AC1C0
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Sep 2019 23:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE2B9AC3E8
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Sep 2019 03:35:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726179AbfIFVAm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Sep 2019 17:00:42 -0400
-Received: from mx0a-00154904.pphosted.com ([148.163.133.20]:3190 "EHLO
-        mx0a-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725872AbfIFVAm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Sep 2019 17:00:42 -0400
-Received: from pps.filterd (m0170393.ppops.net [127.0.0.1])
-        by mx0a-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x86KxgDF008666;
-        Fri, 6 Sep 2019 17:00:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dellteam.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=smtpout1;
- bh=z/wuUxYwWGUvcFR+u6a/mG0Roowqz6Ua+5JEJbN/d0c=;
- b=ZGbjb0g9SkoY8fb8MrezRDrW9FHewuPuv3M7iVWIysB4Hkf0Es3I563nOnHuMAzjYBEv
- sdDIBnL/L5TttSgAIjQLzP8uRlnNkVfMKHff3tdVWwWXU4YOcb8UyTxxw7gTlBW0VTnw
- WQTpRb5TMrgu7kpjAAgVjvQ9/ABKV1sD7CpK1acF0wAxFyF5Ou42+Smp61rH3MXPYlgt
- R1h5SutJAt/CjoGzAitNssdEPDrKM3l0KQ47oH/Kkoo7idowgHOeUucDT/8FZG+tDRWG
- a9JJQEkfM1LyogicfW0rMI3De1cBevm1zxwTnthIMkNR6Z1qnb4LmAV/EYPFLS1yJfHO AQ== 
-Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
-        by mx0a-00154904.pphosted.com with ESMTP id 2uqm7jv942-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 06 Sep 2019 17:00:41 -0400
-Received: from pps.filterd (m0142693.ppops.net [127.0.0.1])
-        by mx0a-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x86KwZvu141196;
-        Fri, 6 Sep 2019 17:00:40 -0400
-Received: from ausc60pc101.us.dell.com (ausc60pc101.us.dell.com [143.166.85.206])
-        by mx0a-00154901.pphosted.com with ESMTP id 2uu3x2b24c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 06 Sep 2019 17:00:40 -0400
-X-LoopCount0: from 10.166.132.134
-X-PREM-Routing: D-Outbound
-X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
-   d="scan'208";a="1462907422"
-From:   <Charles.Hyde@dellteam.com>
-To:     <bjorn@mork.no>
-CC:     <stern@rowland.harvard.edu>, <oliver@neukum.org>,
-        <rjw@rjwysocki.net>, <lenb@kernel.org>,
-        <Mario.Limonciello@dell.com>, <chip.programmer@gmail.com>,
-        <nic_swsd@realtek.com>, <linux-usb@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>
-Subject: RE: [PATCH 1/3] net: cdc_ncm: add get/set ethernet address functions
-Thread-Topic: [PATCH 1/3] net: cdc_ncm: add get/set ethernet address functions
-Thread-Index: AQHVZPM2VbpOtOy+DEKwLQ92ABp4yKcfIR3A
-Date:   Fri, 6 Sep 2019 21:00:38 +0000
-Message-ID: <83c59bc63a8042d5afa622bda542864f@AUSX13MPS307.AMER.DELL.COM>
-References: <43fa8b0a974d426faccf5e6d486af18a@AUSX13MPS307.AMER.DELL.COM>
-        <Pine.LNX.4.44L0.1909061412350.1627-100000@iolanthe.rowland.org>
-        <a9999ed336ba4f2a8cb93c57f0b3d2f4@AUSX13MPS307.AMER.DELL.COM>
-        <87mufhqjdb.fsf@miraculix.mork.no>
-        <d8cdacc63ddd4da4a88d3712b2b53d32@AUSX13MPS307.AMER.DELL.COM>
- <87ftl9qhv4.fsf@miraculix.mork.no>
-In-Reply-To: <87ftl9qhv4.fsf@miraculix.mork.no>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Enabled=True;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Owner=Charles_Hyde@Dellteam.com;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SetDate=2019-09-06T21:00:37.5781424Z;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Name=External Public;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Extended_MSFT_Method=Manual;
- aiplabel=External Public
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.143.18.86]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S2406420AbfIGBfN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Sep 2019 21:35:13 -0400
+Received: from mail-ua1-f68.google.com ([209.85.222.68]:39614 "EHLO
+        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406418AbfIGBfN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Sep 2019 21:35:13 -0400
+Received: by mail-ua1-f68.google.com with SMTP id s15so2656006uaq.6
+        for <linux-acpi@vger.kernel.org>; Fri, 06 Sep 2019 18:35:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=C+0rVi6PzTMFYTcbcIBgVtgcdKuod3fbgGTlJ3s1Cbc=;
+        b=LDeLoKrgQnhTkRoGE0qHkNXA77KSUk6LqEq23v4a+InO+HdoYRAa0tuV1WhlJaOduo
+         I3Pd55j4aiR8h9Ura1I9gi5apYG8aoprP1KWJ1bsR6Nq6NsrJJMv0EoAJjRwIKEDMuqN
+         QLX4QjLNLFDgzPRH00kQ0su0FDMNY0cjW5wJED82HjNqcOxVFQWjFjL1arpanoFhJIj8
+         8W1C79/WdydgdyiFzQjGp2fy5D+JzJV9RoSsGpw8tgFG2+RccwvP3dkbp23+MKXMpXG1
+         2n+ghMYlH7q4JMGO9Qx81QyIUn7evwhtm8tpfMs/5KZmzhx0NPpo9AWYsGub2zlLag34
+         dx3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=C+0rVi6PzTMFYTcbcIBgVtgcdKuod3fbgGTlJ3s1Cbc=;
+        b=GpK2zV7s3htRFbVCRevJkf4E6E+Tokaclv/7mHvDZQX8DxVQ7evqa/4bnmybThsK0k
+         O8cvq3e1NnECkPoA4+l8s5zv1NdLTJORV6ZzHB98Tj8+IHxA7tPRLHGVFnWWEI1GqrZA
+         JMG05rMvogSjgCA9/U+VsBlLozm3ly+PSn1Q3KCwbeAicbG5NplDorfbDuwdkcIFEX5B
+         03DNZoSADev0k7MeV312Z5HgmCxWrKsz82W5Rmd8oSUnDTsf6U/V3lsi6AZeswsEcTtx
+         QKeTnXnaLgiw4oMx/LjdJzIu6yvMGuPy9Db+j4hcieSCxH5vjjGiSOvdFduAd0QmmUUo
+         fHOw==
+X-Gm-Message-State: APjAAAWq9QdsMiwvdm+mhIMWJsKcD+TdKfUYxf6iq+DVuJLB8PQBzUnt
+        hgIO/tv/X92i3eP8/qX4kmHDvOahwz2Fk2C1n38=
+X-Google-Smtp-Source: APXvYqzIxIMwMyRCdkgO6FHpzJDn+KCJvm1DeQX+OomspEdZOmJGFau2SVPHiJ3fDRYvRmAdV0kRwG1eq44EUYIUEm0=
+X-Received: by 2002:a9f:309a:: with SMTP id j26mr5722816uab.60.1567820111785;
+ Fri, 06 Sep 2019 18:35:11 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
- definitions=2019-09-06_09:2019-09-04,2019-09-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=870
- impostorscore=0 bulkscore=0 suspectscore=0 adultscore=0 malwarescore=0
- lowpriorityscore=0 mlxscore=0 priorityscore=1501 clxscore=1015 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1906280000
- definitions=main-1909060214
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 suspectscore=0 adultscore=0
- lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
- spamscore=0 impostorscore=0 bulkscore=0 mlxlogscore=968 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1906280000
- definitions=main-1909060214
+Received: by 2002:a1f:c545:0:0:0:0:0 with HTTP; Fri, 6 Sep 2019 18:35:11 -0700 (PDT)
+Reply-To: waltonalice41@gmail.com
+From:   Alice Walton <saraharmony501@gmail.com>
+Date:   Sat, 7 Sep 2019 02:35:11 +0100
+Message-ID: <CAHoQAbXwSKX9aVsDZz8aqqzPygpAEXmzYtiu5ogDXC9xJMf55w@mail.gmail.com>
+Subject: Please forgive me
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-<snipped>=20
-> static int cdc_ncm_init(struct usbnet *dev) {
-> 	struct cdc_ncm_ctx *ctx =3D (struct cdc_ncm_ctx *)dev->data[0];
-> 	u8 iface_no =3D ctx->control->cur_altsetting->desc.bInterfaceNumber;
-> 	int err;
->=20
-> 	err =3D usbnet_read_cmd(dev, USB_CDC_GET_NTB_PARAMETERS,
-> 			      USB_TYPE_CLASS | USB_DIR_IN
-> 			      |USB_RECIP_INTERFACE,
-> 			      0, iface_no, &ctx->ncm_parm,
-> 			      sizeof(ctx->ncm_parm));
-> ,,
->=20
-> You'll obviously have to replace USB_CDC_GET_NTB_PARAMETERS with
-> USB_CDC_GET_NET_ADDRESS, &ctx->ncm_parm with buf, and
-> sizeof(ctx->ncm_parm) with ETH_ALEN.
->=20
->=20
-> Bj=F8rn
+My Dearest,
 
-Not everything is obvious to those who do not live and breathe USB.  This h=
-as been an experience.
+Please forgive me for stressing you with my predicaments as I know
+that this letter may come to you as a big surprise.
 
-Is this snippet what you have in mind?  Will iface_no be correct?  If not, =
-then what do you suggest?
+Actually, I came across your E-mail from my personal search afterward
+I decided to email you directly believing that you will be honest to
+fulfil my final wish before anything happens to me. Meanwhile, I am
+Madam Alice Walton, 71 years old childless widow from France but i
+reside and doing Gold mining business in Africa before i fall sick.
 
-/* Provide method to push MAC address to the USB device's ethernet controll=
-er.
- * If the device does not support CDC_SET_ADDRESS, there is no harm and we
- * proceed as before.
- */
-static int cdc_ncm_set_ethernet_address(struct usbnet *dev,
-					struct sockaddr *addr)
-{
-	int ret;
-	struct cdc_ncm_ctx *ctx =3D (struct cdc_ncm_ctx *)dev->data[0];
-	u8 iface_no =3D ctx->control->cur_altsetting->desc.bInterfaceNumber;
+I am suffering from Adenocarcinoma Cancer of the lungs for the past 8
+years and from all indication my condition is really deteriorating as
+my doctors have confirmed and courageously advised me that I may not
+live beyond 3 weeks from now for the reason that my tumor has reached
+a critical stage which has defiled all forms of medical treatment.
 
-	ret =3D usbnet_write_cmd(dev, USB_CDC_SET_NET_ADDRESS,
-			       USB_DIR_OUT | USB_TYPE_CLASS
-			       | USB_RECIP_INTERFACE, 0, iface_no,
-			       addr->sa_data, ETH_ALEN);
-	if (ret =3D=3D ETH_ALEN)
-		ret =3D 0;	/* success */
-	else if (ret < 0)
-		dev_dbg(&dev->udev->dev, "bad MAC address put, %d\n", ret);
+Since my days are numbered, I=E2=80=99ve decided willingly to fulfil my
+long-time vow to donate to the less privileges the sum of($18.5
+million dollars) I deposited in my offshore account over 7 years now
+because I have tried to handle this project by myself but I have seen
+that my health could not allow me to do so anymore.
 
-	return ret;
-}
+My promise to God includes building of well-equipped charity
+foundation/hospital and a technical school for the orphans and less
+privileges.
+
+Since i am not capable to handle this again myself due to my critical
+health condition,please i need your consent to help me receive my
+money from the bank and use it to do this divine works of God in your
+country in my name so that my soul can be at rest if anything happens
+to me.
+
+If you will be honest, kind and willing to assist me handle this
+charity project as I=E2=80=99ve mentioned here, I will like you to provide =
+me
+your personal data like,
+
+(1) Your full name:
+(2) country:
+(3) Occupation:
+(4) phone number:
+(5) Age:
+
+Let me have this data so that i can link you up with my bank as my
+representative and receiver of the funds now that i am still alive.
+
+Warmest Regards!
+Mrs. Alice Walton
