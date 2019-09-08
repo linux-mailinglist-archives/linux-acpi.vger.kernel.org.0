@@ -2,88 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DA7EAC956
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Sep 2019 23:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90399AD0AD
+	for <lists+linux-acpi@lfdr.de>; Sun,  8 Sep 2019 23:00:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406211AbfIGVHz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 7 Sep 2019 17:07:55 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:39597 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727467AbfIGVHz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 7 Sep 2019 17:07:55 -0400
-Received: by mail-oi1-f194.google.com with SMTP id w144so7789101oia.6;
-        Sat, 07 Sep 2019 14:07:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lxihL36gTuIiKNJx4Op/WHeQVZ11JcB3rmyLaJHmdCo=;
-        b=sf/6BHf5PSn//m9LZMozqeRG/rdCZ6T1PataFU6dEOJA5v4ZEJgwAnr7CNxM8JMawg
-         oQcLaMhOzWwt91dw8IZhbWbnrE2kPx6ikqUv/6BaKRNAkT1o/UJe1czqBGMf7A4hwjIR
-         Uz4Ptl+nFKElMznt1AXspTcuFaKQPABPKEoGOSiDU+m26AvcWSD19BZYpmejF1oaIE7A
-         SFygmwRHDJg/185nmXJfvrx+dbRHlUcejElRECrmhCc0kaPU8FJwCkSmM5DUOloo10EE
-         QAc1oLyFwGa1biEcC8G7MBrFf6OqsodGN4poZL3Gjx14p+K/gLt+mEI0xMkgHnzaEdHM
-         usGg==
-X-Gm-Message-State: APjAAAXuOTlKpU5nq9PW/cwOfsViCPtWRpMfDCLfbp+2SBn6oNipr/gF
-        sjJ6vOlRvhMWMLJpA6TcnsQ+eouZoSMnjk/eYsc=
-X-Google-Smtp-Source: APXvYqxw6Q7ZI39fbj1Yg06z2Zfw+1ml3g9QHcrVcWjLu638sWzxbHZQyQ71pyD0sHmJVs/hoPWxndejKSyVjZ8RsHk=
-X-Received: by 2002:aca:da86:: with SMTP id r128mr12570871oig.103.1567890473848;
- Sat, 07 Sep 2019 14:07:53 -0700 (PDT)
+        id S1730340AbfIHVAV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 8 Sep 2019 17:00:21 -0400
+Received: from smtp.giganet.hu ([193.138.125.44]:54534 "EHLO smtp.giganet.hu"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727235AbfIHVAV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 8 Sep 2019 17:00:21 -0400
+X-Greylist: delayed 595 seconds by postgrey-1.27 at vger.kernel.org; Sun, 08 Sep 2019 17:00:19 EDT
+Received: from localhost (unknown [127.0.0.1])
+        by smtp.giganet.hu (Postfix) with ESMTP id EB7FD114D;
+        Sun,  8 Sep 2019 20:50:19 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at smtp.giganet.hu
+X-Spam-Flag: NO
+X-Spam-Score: 0.465
+X-Spam-Level: 
+X-Spam-Status: No, score=0.465 tagged_above=-1 required=6.2
+        tests=[ALL_TRUSTED=-1, BAYES_00=-1.9, DEAR_SOMETHING=1.973,
+        PYZOR_CHECK=1.392] autolearn=no autolearn_force=no
+Received: from smtp.giganet.hu ([127.0.0.1])
+        by localhost (smtp.giganet.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id nPvPRCQ3OezY; Sun,  8 Sep 2019 22:50:19 +0200 (CEST)
+Received: from webmail.giganet.hu (unknown [192.168.200.105])
+        by smtp.giganet.hu (Postfix) with ESMTP id E5C711159;
+        Sun,  8 Sep 2019 22:50:18 +0200 (CEST)
 MIME-Version: 1.0
-References: <201909070020.yR8k4sTf%lkp@intel.com> <847405da-8a45-653b-d544-25b58ea48db1@oracle.com>
-In-Reply-To: <847405da-8a45-653b-d544-25b58ea48db1@oracle.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 7 Sep 2019 23:07:39 +0200
-Message-ID: <CAJZ5v0i7Y6DSuYzh0H4n+S8Pd2YAqVZTM+0VCamzW9CBcqFs0g@mail.gmail.com>
-Subject: Re: [pm:bleeding-edge 175/181] drivers/cpuidle/driver.c:270:4: error:
- 'cpuidle_prev_governor' undeclared; did you mean 'cpuidle_find_governor'?
-To:     Joao Martins <joao.m.martins@oracle.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        kbuild test robot <lkp@intel.com>, kbuild-all@01.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Sun, 08 Sep 2019 20:50:18 +0000
+From:   SELFRIDGES RETAIL LIMITED <robot@ukeess.net>
+To:     undisclosed-recipients:;
+Subject: interested in your products
+Reply-To: info@selfridges-purchasing.co.uk
+Mail-Reply-To: info@selfridges-purchasing.co.uk
+Message-ID: <9bde2b770e623aa6619bd2bd820d3f45@ukeess.net>
+X-Sender: robot@ukeess.net
+User-Agent: Roundcube Webmail/1.3.8
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Sep 6, 2019 at 7:39 PM Joao Martins <joao.m.martins@oracle.com> wrote:
->
-> On 9/6/19 5:44 PM, kbuild test robot wrote:
-> > tree:   https://kernel.googlesource.com/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-> > head:   79f0d67a241f0583b994c73437caa54a4e942737
-> > commit: 73d2bcced00671c2b724a31c3a4b3401c3e278d0 [175/181] cpuidle: allow governor switch on cpuidle_register_driver()
-> > config: arm-defconfig (attached as .config)
-> > compiler: arm-linux-gnueabi-gcc (GCC) 7.4.0
-> > reproduce:
-> >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-> >         chmod +x ~/bin/make.cross
-> >         git checkout 73d2bcced00671c2b724a31c3a4b3401c3e278d0
-> >         # save the attached .config to linux build tree
-> >         GCC_VERSION=7.4.0 make.cross ARCH=arm
-> >
-> > If you fix the issue, kindly add following tag
-> > Reported-by: kbuild test robot <lkp@intel.com>
-> >
-> > All errors (new ones prefixed by >>):
-> >
-> >    drivers/cpuidle/driver.c: In function 'cpuidle_register_driver':
-> >>> drivers/cpuidle/driver.c:270:4: error: 'cpuidle_prev_governor' undeclared (first use in this function); did you mean 'cpuidle_find_governor'?
-> >        cpuidle_prev_governor = cpuidle_curr_governor;
-> >        ^~~~~~~~~~~~~~~~~~~~~
-> >        cpuidle_find_governor
-> >    drivers/cpuidle/driver.c:270:4: note: each undeclared identifier is reported only once for each function it appears in
-> >    drivers/cpuidle/driver.c: In function 'cpuidle_unregister_driver':
-> >    drivers/cpuidle/driver.c:301:6: error: 'cpuidle_prev_governor' undeclared (first use in this function); did you mean 'cpuidle_find_governor'?
-> >      if (cpuidle_prev_governor) {
-> >          ^~~~~~~~~~~~~~~~~~~~~
-> >          cpuidle_find_governor
-> >
-> Sorry, didn't build-test with CONFIG_CPU_IDLE_MULTIPLE_DRIVERS=y
->
-> Rafael, should I take this message that you queued the series (and thus I submit
-> a follow up fixing this), or I can just submit a v3 of this particular series?
 
-Please submit a v3.  Thanks!
+Dear Sir/Madam,
+
+We are looking to buy your products and partner with your company, can 
+you please send us your Catalog or your website to learn more about your 
+products or prices list by email and if we can make some order with you 
+and start a long-term partnership. Can your company supply us? and give 
+us more information about the possibility to become one of your regular 
+Wholesale?
+
+Our Payment terms is by swift within 15 days net.
+
+Waiting for your response.
+
+Best regards.
+
+Sebastian Manes
+buying and merchandising director
+Selfridges & Co.
+www.selfridges.com
