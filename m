@@ -2,197 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E9295CC6A5
-	for <lists+linux-acpi@lfdr.de>; Sat,  5 Oct 2019 01:47:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F67FCDA11
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2019 03:12:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731618AbfJDXrZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Oct 2019 19:47:25 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:36627 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731234AbfJDXrY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Oct 2019 19:47:24 -0400
-Received: by mail-oi1-f194.google.com with SMTP id k20so7231088oih.3
-        for <linux-acpi@vger.kernel.org>; Fri, 04 Oct 2019 16:47:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3hvzIJAwdUIDj60PRswdy4jtQ7pq65dmvuMEDrZAxmY=;
-        b=sByyKd4dF7wI4oDmjRslrGtLmmRydXZiFQq1Jujk/HqPa81MECMvjff4PRTpIrLM1T
-         FtLi6/h2ZbRbvBRXdT6WETrB/ZO8N5CI4HzDQn5YxSPO8hu0y1aCRWAmC7qi8Qm8rLvn
-         iQS80cCwjcGnf1mF69Ga/IeY8Ca+re5cJH+xiP5vf//YhD1uxWudUffkfsP2NWIKRS1T
-         k9IBszQIRfGPzU18tOeIXFNyApc6D4VwLg0pKtZdq2KYHIrG66Re9wIqbWrEjoNOrCX2
-         fJ8CXcYv+khgS7KxwG1LhMPBM7UFAJA83B+9mP+9I+lTIWgRrGjRG/Kbbpv0P/QT72fT
-         eNlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3hvzIJAwdUIDj60PRswdy4jtQ7pq65dmvuMEDrZAxmY=;
-        b=EA5oI9lxSKxj4DMCfFZcedZGOjLpd1U37zC/p9fkKLYPy0g7DwJgf/dgCo1S57AGg3
-         t4O99c50+bwoTNLVYygQomDoeGNz1+DVJgrrifHeWdzAaDDRT1hAqGJ1wSabph791huc
-         a+OWsZBoCNiCkg8NatFVuxJp2z/s5bzVmJyxwX+DD5+ms773cV8NHEdJPRL2BnD1sXOm
-         ZdchXZET08eG4piwscxyaFAxyxi9n4ww5PGNrQT9Hhtxq6L2CvvdzypFC879+CYJI+OE
-         MpwCmudz2q8sT3bE+yuOhQsUUHWso4VBhtkaPKA/t/c8lQtcyuPjqN73Px5nd2CamYC5
-         eveg==
-X-Gm-Message-State: APjAAAU+VBCz1k3d1CbVznf/kspDLEbOIL2SUbvrgtudB7W53MOFB+F5
-        fusRMzH9KK78gyX5H1fPIK46Cf7yO2CFE4Le9RbRmQ==
-X-Google-Smtp-Source: APXvYqyQuIwtgG5lkzf5p8L7oWSkX7l/6aAhPD0T8bNKplxUKfl+D7zNAdO+WZSNpxhAwm2aZQ2M3v/hP61zb0kEqCg=
-X-Received: by 2002:aca:a88e:: with SMTP id r136mr9366466oie.30.1570232843672;
- Fri, 04 Oct 2019 16:47:23 -0700 (PDT)
+        id S1726661AbfJGBMI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 6 Oct 2019 21:12:08 -0400
+Received: from smtprelay0037.hostedemail.com ([216.40.44.37]:33720 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726605AbfJGBMI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 6 Oct 2019 21:12:08 -0400
+X-Greylist: delayed 377 seconds by postgrey-1.27 at vger.kernel.org; Sun, 06 Oct 2019 21:12:07 EDT
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave05.hostedemail.com (Postfix) with ESMTP id 53DE81828A454;
+        Mon,  7 Oct 2019 01:05:51 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 4AF3A100E86C8;
+        Mon,  7 Oct 2019 01:05:49 +0000 (UTC)
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Spam-Summary: 86,0,0,,d41d8cd98f00b204,rostedt@goodmis.org,:::::::::::::::::::::::::::::,RULES_HIT:41:355:379:541:599:800:960:967:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2525:2553:2559:2564:2682:2685:2692:2859:2892:2902:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4362:5007:6261:6742:7875:9025:10004:10400:10903:10967:11232:11658:11914:12043:12297:12555:12740:12760:12895:12986:13069:13161:13229:13255:13311:13357:13439:14096:14097:14181:14659:14721:14819:21080:21627:21811:21939:30029:30034:30054:30070:30075:30090:30091,0,RBL:66.24.58.225:@goodmis.org:.lbl8.mailshell.net-62.8.0.186 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:172,LUA_SUMMARY:none
+X-HE-Tag: swim51_328f856470b47
+X-Filterd-Recvd-Size: 3389
+Received: from grimm.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
+        (Authenticated sender: rostedt@goodmis.org)
+        by omf14.hostedemail.com (Postfix) with ESMTPA;
+        Mon,  7 Oct 2019 01:05:47 +0000 (UTC)
+Date:   Tue, 10 Sep 2019 15:03:03 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
+        rafael@kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
+        linux-trace-devel@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>
+Subject: Re: [PATCH v6 01/12] tools lib traceevent: Convert remaining %p[fF]
+ users to %p[sS]
+Message-ID: <20190910150303.5a0d3904@oasis.local.home>
+In-Reply-To: <c458e734f5777561138b87228384808398547762.camel@perches.com>
+References: <20190910084707.18380-1-sakari.ailus@linux.intel.com>
+        <20190910084707.18380-2-sakari.ailus@linux.intel.com>
+        <20190910071837.2e9110f8@oasis.local.home>
+        <61a2b2ab4693535850306f396aac2a328e1d5a21.camel@perches.com>
+        <20190910142621.0bec208d@oasis.local.home>
+        <c458e734f5777561138b87228384808398547762.camel@perches.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20190904211126.47518-1-saravanak@google.com> <20190904211126.47518-4-saravanak@google.com>
- <20190911102926.A9F8D2082C@mail.kernel.org> <20191004153750.GB823823@kroah.com>
-In-Reply-To: <20191004153750.GB823823@kroah.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Fri, 4 Oct 2019 16:46:47 -0700
-Message-ID: <CAGETcx-TFL3OAtPvU9_Sjovz4zk+YU+S7yAC7T0Vo7aRuQdWAA@mail.gmail.com>
-Subject: Re: [PATCH v11 3/6] of: property: Add functional dependency link from
- DT bindings
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Stephen Boyd <sboyd@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>, Len Brown <lenb@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-acpi@vger.kernel.org,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        David Collins <collinsd@codeaurora.org>,
-        Android Kernel Team <kernel-team@android.com>,
-        kbuild test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 4, 2019 at 8:37 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Wed, Sep 11, 2019 at 03:29:25AM -0700, Stephen Boyd wrote:
-> > Quoting Saravana Kannan (2019-09-04 14:11:22)
-> > > Add device links after the devices are created (but before they are
-> > > probed) by looking at common DT bindings like clocks and
-> > > interconnects.
-> > >
-> > > Automatically adding device links for functional dependencies at the
-> > > framework level provides the following benefits:
-> > >
-> > > - Optimizes device probe order and avoids the useless work of
-> > >   attempting probes of devices that will not probe successfully
-> > >   (because their suppliers aren't present or haven't probed yet).
-> > >
-> > >   For example, in a commonly available mobile SoC, registering just
-> > >   one consumer device's driver at an initcall level earlier than the
-> > >   supplier device's driver causes 11 failed probe attempts before the
-> > >   consumer device probes successfully. This was with a kernel with all
-> > >   the drivers statically compiled in. This problem gets a lot worse if
-> > >   all the drivers are loaded as modules without direct symbol
-> > >   dependencies.
-> > >
-> > > - Supplier devices like clock providers, interconnect providers, etc
-> > >   need to keep the resources they provide active and at a particular
-> > >   state(s) during boot up even if their current set of consumers don't
-> > >   request the resource to be active. This is because the rest of the
-> > >   consumers might not have probed yet and turning off the resource
-> > >   before all the consumers have probed could lead to a hang or
-> > >   undesired user experience.
-> > >
-> > >   Some frameworks (Eg: regulator) handle this today by turning off
-> > >   "unused" resources at late_initcall_sync and hoping all the devices
-> > >   have probed by then. This is not a valid assumption for systems with
-> > >   loadable modules. Other frameworks (Eg: clock) just don't handle
-> > >   this due to the lack of a clear signal for when they can turn off
-> > >   resources.
-> >
-> > The clk framework disables unused clks at late_initcall_sync. What do
-> > you mean clk framework doesn't turn them off because of a clear signal?
->
-> There's a number of minor things you pointed out in this review.
->
-> Saravana, can you send a follow-on patch for the minor code cleanups
-> like formatting and the like that was found here?
+On Tue, 10 Sep 2019 11:42:06 -0700
+Joe Perches <joe@perches.com> wrote:
 
-Will do next week.
+> On Tue, 2019-09-10 at 14:26 -0400, Steven Rostedt wrote:
+> > On Tue, 10 Sep 2019 10:18:44 -0700
+> > Joe Perches <joe@perches.com> wrote:
+> >   
+> > > > It's not just for the lastest kernel. We must maintain backward
+> > > > compatibility here too. If there use to be a usage of this, then we
+> > > > must keep it until the kernels are no longer used (perhaps 7 years?)    
+> > > 
+> > > That argues for not using "%pfw" at all for some number of years.
+> > > 
+> > > Perhaps the '%pfw' should be '%pnfw' for 'name' and 'fwnode'  
+> >
+> >   -ENOCOMPREHENSION  
+> 
+> Perhaps you were not copied on the whole series.
+> 
+> https://lore.kernel.org/lkml/20190910084707.18380-1-sakari.ailus@linux.intel.com/
 
-Thanks,
-Saravana
+Thanks for the link.
 
->
-> > > +static int of_link_to_phandle(struct device *dev, struct device_node *sup_np)
-> > > +{
-> > > +       struct device *sup_dev;
-> > > +       u32 dl_flags = DL_FLAG_AUTOPROBE_CONSUMER;
-> >
-> > Is it really a u32 instead of an unsigned int or unsigned long?
-> >
-> > > +       int ret = 0;
-> > > +       struct device_node *tmp_np = sup_np;
-> > > +
-> > > +       of_node_get(sup_np);
-> > > +       /*
-> > > +        * Find the device node that contains the supplier phandle.  It may be
-> > > +        * @sup_np or it may be an ancestor of @sup_np.
-> > > +        */
-> > > +       while (sup_np && !of_find_property(sup_np, "compatible", NULL))
-> > > +               sup_np = of_get_next_parent(sup_np);
-> >
-> > I don't get this. This is assuming that drivers are only probed for
-> > device nodes that have a compatible string? What about drivers that make
-> > sub-devices for clk support that have drivers in drivers/clk/ that then
-> > attach at runtime later? This happens sometimes for MFDs that want to
-> > split the functionality across the driver tree to the respective
-> > subsystems.
->
-> For that, the link would not be there, correct?
->
-> > > +static int of_link_property(struct device *dev, struct device_node *con_np,
-> > > +                            const char *prop_name)
-> > > +{
-> > > +       struct device_node *phandle;
-> > > +       const struct supplier_bindings *s = bindings;
-> > > +       unsigned int i = 0;
-> > > +       bool matched = false;
-> > > +       int ret = 0;
-> > > +
-> > > +       /* Do not stop at first failed link, link all available suppliers. */
-> > > +       while (!matched && s->parse_prop) {
-> > > +               while ((phandle = s->parse_prop(con_np, prop_name, i))) {
-> > > +                       matched = true;
-> > > +                       i++;
-> > > +                       if (of_link_to_phandle(dev, phandle) == -EAGAIN)
-> > > +                               ret = -EAGAIN;
-> >
-> > And don't break?
->
-> There was comments before about how this is not needed.  Frank asked
-> that the comment be removed.  And now you point it out again :)
->
-> Look at the comment a few lines up, we have to go through all of the
-> suppliers.
->
-> > > +static int __of_link_to_suppliers(struct device *dev,
-> >
-> > Why the double underscore?
-> >
-> > > +                                 struct device_node *con_np)
-> > > +{
-> > > +       struct device_node *child;
-> > > +       struct property *p;
-> > > +       int ret = 0;
-> > > +
-> > > +       for_each_property_of_node(con_np, p)
-> > > +               if (of_link_property(dev, con_np, p->name))
-> > > +                       ret = -EAGAIN;
-> >
-> > Same comment.
->
-> Same response as above :)
->
-> thanks,
->
-> greg k-h
+> 
+> As I understand it, Sakair Ailus is proposing to
+> obsolete the current vsprintf "%p[Ff]" extension
+> and replace the usage with a new "%pfw" extension
+> which would emit the name of a pointer to "struct fwnode {}".
+> 
+> https://lore.kernel.org/lkml/20190910084707.18380-10-sakari.ailus@linux.intel.com/
+> 
+> If reusing "%pf<foo>" is a problem, then instead
+> it might be reasonable to have a new "%pn<foo>" for
+> that use instead.
+> 
+> btw:
+> 
+> Is there kernel version information available in
+> trace output files?
+
+Not really. This is just a library that parses the trace event formats,
+there's not kernel versions passed in, but we do use variations in
+formats and such to determine what is supported.
+
+> 
+> If so, it might be reasonable to change the tooling
+> there instead.
+> 
+
+Actually, I think we could just look to see if "%pfw" is used and fall
+to that, otherwise consider it an older kernel and do it the original
+way.
+
+-- Steve
+
