@@ -2,72 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 557D4AE841
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2019 12:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B74A9AE8FA
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2019 13:18:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389308AbfIJKfk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Sep 2019 06:35:40 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:45597 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388481AbfIJKfk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Sep 2019 06:35:40 -0400
-Received: by mail-lj1-f194.google.com with SMTP id q64so5335254ljb.12
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Sep 2019 03:35:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=E17t9nsKObBUkkD0LBm1VvJsFUJUtomTh2F3C0pWBBg=;
-        b=PxhAh1UA8/oxprqJ7vDTf4uNmw227REjjRYuMyrolLKKSoSEgnh4cKGRvvpCuVjjZb
-         nTf7VTzl9FGS0WkPSHPqToRkOt3u2EibIaVFUW8xSBHs1O7BFylaxXmkkalSa4Dcv3kv
-         GeRRA1HkVQnhC57raCgO4fm2Q0GBaeVgUUDJN6J4gkSDMaK8RRJOGehAOe2aP/7eT+CY
-         yIh+DdshLaahOo1WDyvWvwyUT/vIZ4HZKeqFUhnDxTUBD7VRITghxXud1IRCNRvZTWwk
-         fAzO9tOPqPBORXMLoL5lreJqxy3KytBYbFw+u4cND0CPJF1jE9kZyw01WLVi/pq0YY7G
-         e8pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=E17t9nsKObBUkkD0LBm1VvJsFUJUtomTh2F3C0pWBBg=;
-        b=KA5vIK87WcX5qz2HUJOlI+ZRrn71LGh8M70D7WmdpGj0885mgCXNXGY3ktXnT9pRdP
-         JlQki1TnzRs12LfylgQH7N5J5ffY9VBoHWkPzHh5cGGRtnSFgD0OE6F5vmYnp/i+1wC2
-         r6NiR43sTdgAngQzZUDXe1jdBjnnAOGa+XzXpZ3kWtPHhS91A1MMHe3OORk86O6PRTsQ
-         wSmiPx1003zZeET3Jg4OJIoboEYGLgVK6Uu7qhb/bBaRaQpewBrG0r4M+/jl7zl/cdIw
-         feA1uxeloWHJbyX8N8zp6t/CPKy9ual0g+0b7s32rapCpbRmViL375iFnJn4/M3tv5jG
-         KKGg==
-X-Gm-Message-State: APjAAAWG9/dWIOhrJHJg7nzbUYaKV4x2+CJIX61Wo+YsEetXIptOsS13
-        YJ0/yoXAdItYhez7l9rEIGOTd4dvhGhMwl11+gwR8Q==
-X-Google-Smtp-Source: APXvYqwqbMlISNGBlmWQOwOUdX589aFpzFerGxuMZYnIj10DzE+NZDz4XIlI/VUYIt+UMAnE5LjH+X7ugc3++ZUFV/o=
-X-Received: by 2002:a05:651c:1108:: with SMTP id d8mr11399051ljo.180.1568111737980;
- Tue, 10 Sep 2019 03:35:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190904172624.GA76617@dtor-ws>
-In-Reply-To: <20190904172624.GA76617@dtor-ws>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 10 Sep 2019 11:35:26 +0100
-Message-ID: <CACRpkdbc70pp=SwvxGTDq=-K3ofinQJuVVymFf8ere3_f_+qqA@mail.gmail.com>
-Subject: Re: [PATCH] gpiolib: acpi: make acpi_can_fallback_to_crs() static
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        id S2403994AbfIJLSn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Sep 2019 07:18:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53482 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2403952AbfIJLSn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 10 Sep 2019 07:18:43 -0400
+Received: from oasis.local.home (unknown [148.69.85.38])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9723520872;
+        Tue, 10 Sep 2019 11:18:38 +0000 (UTC)
+Date:   Tue, 10 Sep 2019 07:18:37 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
+        rafael@kernel.org,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Joe Perches <joe@perches.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
+        linux-trace-devel@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>
+Subject: Re: [PATCH v6 01/12] tools lib traceevent: Convert remaining %p[fF]
+ users to %p[sS]
+Message-ID: <20190910071837.2e9110f8@oasis.local.home>
+In-Reply-To: <20190910084707.18380-2-sakari.ailus@linux.intel.com>
+References: <20190910084707.18380-1-sakari.ailus@linux.intel.com>
+        <20190910084707.18380-2-sakari.ailus@linux.intel.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 4, 2019 at 6:26 PM Dmitry Torokhov
-<dmitry.torokhov@gmail.com> wrote:
+On Tue, 10 Sep 2019 11:46:56 +0300
+Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
 
-> It is not used outside gpiolib-acpi.c module, so there is no need to
-> export it.
->
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> There are no in-kernel %p[fF] users left. Convert the traceevent tool,
+> too, to align with the kernel.
+> 
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+> Cc: Tzvetomir Stoyanov <tstoyanov@vmware.com>
+> Cc: linux-trace-devel@vger.kernel.org
+> Cc: Jiri Olsa <jolsa@redhat.com>
+> Cc: Namhyung Kim <namhyung@kernel.org>
+> ---
+>  .../Documentation/libtraceevent-func_apis.txt          | 10 +++++-----
+>  tools/lib/traceevent/event-parse.c                     |  7 +++----
+>  2 files changed, 8 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt b/tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt
+> index 38bfea30a5f64..f6aca0df2151a 100644
+> --- a/tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt
+> +++ b/tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt
+> @@ -59,12 +59,12 @@ parser context.
+>  
+>  The _tep_register_function()_ function registers a function name mapped to an
+>  address and (optional) module. This mapping is used in case the function tracer
+> -or events have "%pF" or "%pS" parameter in its format string. It is common to
+> -pass in the kallsyms function names with their corresponding addresses with this
+> +or events have "%pS" parameter in its format string. It is common to pass in
+> +the kallsyms function names with their corresponding addresses with this
+>  function. The _tep_ argument is the trace event parser context. The _name_ is
+> -the name of the function, the string is copied internally. The _addr_ is
+> -the start address of the function. The _mod_ is the kernel module
+> -the function may be in (NULL for none).
+> +the name of the function, the string is copied internally. The _addr_ is the
+> +start address of the function. The _mod_ is the kernel module the function may
+> +be in (NULL for none).
+>  
+>  The _tep_register_print_string()_ function  registers a string by the address
+>  it was stored in the kernel. Some strings internal to the kernel with static
+> diff --git a/tools/lib/traceevent/event-parse.c b/tools/lib/traceevent/event-parse.c
+> index b36b536a9fcba..1d7927ff32660 100644
+> --- a/tools/lib/traceevent/event-parse.c
+> +++ b/tools/lib/traceevent/event-parse.c
+> @@ -4335,8 +4335,6 @@ static struct tep_print_arg *make_bprint_args(char *fmt, void *data, int size, s
+>  					switch (*ptr) {
+>  					case 's':
+>  					case 'S':
+> -					case 'f':
+> -					case 'F':
 
-Patch applied with the ACKs.
+This file is used to parse output from older kernels, so remove this hunk.
 
-Yours,
-Linus Walleij
+It's not just for the lastest kernel. We must maintain backward
+compatibility here too. If there use to be a usage of this, then we
+must keep it until the kernels are no longer used (perhaps 7 years?)
+
+
+>  					case 'x':
+>  						break;
+>  					default:
+> @@ -4455,12 +4453,13 @@ get_bprint_format(void *data, int size
+> __maybe_unused, 
+>  	printk = find_printk(tep, addr);
+>  	if (!printk) {
+> -		if (asprintf(&format, "%%pf: (NO FORMAT FOUND at
+> %llx)\n", addr) < 0)
+> +		if (asprintf(&format, "%%ps: (NO FORMAT FOUND at
+> %llx)\n",
+> +			     addr) < 0)
+
+Remove the line break. I hate the 80 character limit especially when it
+makes the code look worse. Like it does here.
+
+-- Steve
+
+>  			return NULL;
+>  		return format;
+>  	}
+>  
+> -	if (asprintf(&format, "%s: %s", "%pf", printk->printk) < 0)
+> +	if (asprintf(&format, "%s: %s", "%ps", printk->printk) < 0)
+>  		return NULL;
+>  
+>  	return format;
+
