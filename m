@@ -2,141 +2,172 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0247CAE029
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Sep 2019 23:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CFADAE601
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2019 10:48:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731320AbfIIVH5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Sep 2019 17:07:57 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:43903 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728400AbfIIVH4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Sep 2019 17:07:56 -0400
-Received: from mail-io1-f69.google.com ([209.85.166.69])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <alex.hung@canonical.com>)
-        id 1i7Qt9-0000hT-Eg
-        for linux-acpi@vger.kernel.org; Mon, 09 Sep 2019 21:07:55 +0000
-Received: by mail-io1-f69.google.com with SMTP id o3so19935510iom.13
-        for <linux-acpi@vger.kernel.org>; Mon, 09 Sep 2019 14:07:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LH+uWheH+pNq+IGQq8MSCBunzHNQ2Gt4vqh/uMjSZaM=;
-        b=GXnvPV+MU2WwevEYqqYnFGqv3WNiTrfKW2MyvJBPG4L2bvvINd60Dus4quV1jvL68/
-         SPJBa5OMJxkwMtE/IUYK6/EzQsSfFK+0FjE8rhy2yyuM4kDFxMsMgpqaq/ECqbOLNPx5
-         mucAMYbZO0d6/jTnz0MKARgWKkC/MKZuIhd1eoQuLUFaYO1bQM0LNK1RjaUxLVGFfwmz
-         a0D+O0hqgz/00NGr8vQtE/UXt6EFInQ7IBKn+O1gj1ykUbW807nhHLIxu7F+aOQBzAMU
-         UdUuUL1dcdXt2g+qBQXKBIg+m5evZ/1LvqrObWZpePseQIdF+qw0OxeOVIhCYZ7zSso5
-         UlCw==
-X-Gm-Message-State: APjAAAUA5vEkVyUxX+AHL1GTTLEz17fjRQxiDGRlszgTsAwk0MUYEm57
-        C2u1MPc+CEZUywy92s4xpqa4lJlshTXudqkqwZ38Nn7ybH0hrdALpMARjpugG4caDdi088+VYqP
-        Ew/OzpC0oVGwwB74LSE/wns9oyP+Ih3+4YtEafv/I4iq1hEQl8tqVKyA=
-X-Received: by 2002:a6b:c903:: with SMTP id z3mr16805273iof.204.1568063274537;
-        Mon, 09 Sep 2019 14:07:54 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqxKNWzQ0qeqd46TPzcljhuQDj1lX4oa7QzaJ3YBpbWvIApG/65YcNAjmq5SCNk2sgQ90kAmSPWN8hgTzP4YqYw=
-X-Received: by 2002:a6b:c903:: with SMTP id z3mr16805248iof.204.1568063274320;
- Mon, 09 Sep 2019 14:07:54 -0700 (PDT)
+        id S1729418AbfIJIsB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Sep 2019 04:48:01 -0400
+Received: from mga14.intel.com ([192.55.52.115]:8059 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726819AbfIJIrK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 10 Sep 2019 04:47:10 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Sep 2019 01:47:09 -0700
+X-IronPort-AV: E=Sophos;i="5.64,489,1559545200"; 
+   d="scan'208";a="185446491"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Sep 2019 01:47:07 -0700
+Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id 8A5F820365;
+        Tue, 10 Sep 2019 11:47:05 +0300 (EEST)
+Received: from sailus by punajuuri.localdomain with local (Exim 4.92)
+        (envelope-from <sakari.ailus@linux.intel.com>)
+        id 1i7bnn-0004nL-5B; Tue, 10 Sep 2019 11:47:07 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
+        rafael@kernel.org
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Joe Perches <joe@perches.com>
+Subject: [PATCH v6 00/12] Device property improvements, add %pfw format specifier
+Date:   Tue, 10 Sep 2019 11:46:55 +0300
+Message-Id: <20190910084707.18380-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20190814213118.28473-1-kherbst@redhat.com> <2215840.qs0dBhReda@kreacher>
- <CACO55ttC-o9bKU7nHNcfjm2YnffiupQ7UHUt7BYL3fu+yEyTbw@mail.gmail.com> <5228680.jBuKzensJx@kreacher>
-In-Reply-To: <5228680.jBuKzensJx@kreacher>
-From:   Alex Hung <alex.hung@canonical.com>
-Date:   Mon, 9 Sep 2019 22:07:42 +0100
-Message-ID: <CAJ=jquaLthK556Lqk-zc3GCOus90HoGs66tA=d9a1aju7iNpPw@mail.gmail.com>
-Subject: Re: [Nouveau] [PATCH 1/7] Revert "ACPI / OSI: Add OEM _OSI string to
- enable dGPU direct output"
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Karol Herbst <kherbst@redhat.com>, Dave Airlie <airlied@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        nouveau <nouveau@lists.freedesktop.org>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Dave Airlie <airlied@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 5, 2019 at 5:26 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
->
-> On Thursday, September 5, 2019 5:51:23 PM CEST Karol Herbst wrote:
-> > is there any update on the testing with my patches? On the hardware I
-> > had access to those patches helped, but I can't know if it also helped
-> > on the hardware for which those workarounds where actually added.
->
-> Alex Hung and Mario need to answer this question I think.
+Hi all,
 
-Sorry for taking a long time. I don't have full testing results yet
-but we found at least a regression occurred with _OSI string removed -
-it is not on nVidia hardware but on AMD PX one.
+This set adds functionality into the device property API (counting a
+node's parents as well as obtaining its name) in order to support printing
+fwnode names using a new conversion specifier "%pfw". The names that are
+produced are equivalent to its OF counterpart "%pOF" on OF systems for the
+two supported modifiers ("f" and "P").
 
-I will try to collect and share more details.
+Printing a node's name is something that's been available on OF for a long
+time and if something is converted to device property API (such as the
+V4L2 fwnode framework) it always got removed of a nice feature that was
+sometimes essential in debugging. With this set, that no longer is the
+case.
 
->
-> > On Mon, Aug 19, 2019 at 11:52 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
-> > >
-> > > On Thursday, August 15, 2019 12:47:35 AM CEST Dave Airlie wrote:
-> > > > On Thu, 15 Aug 2019 at 07:31, Karol Herbst <kherbst@redhat.com> wrote:
-> > > > >
-> > > > > This reverts commit 28586a51eea666d5531bcaef2f68e4abbd87242c.
-> > > > >
-> > > > > The original commit message didn't even make sense. AMD _does_ support it and
-> > > > > it works with Nouveau as well.
-> > > > >
-> > > > > Also what was the issue being solved here? No references to any bugs and not
-> > > > > even explaining any issue at all isn't the way we do things.
-> > > > >
-> > > > > And even if it means a muxed design, then the fix is to make it work inside the
-> > > > > driver, not adding some hacky workaround through ACPI tricks.
-> > > > >
-> > > > > And what out of tree drivers do or do not support we don't care one bit anyway.
-> > > > >
-> > > >
-> > > > I think the reverts should be merged via Rafael's tree as the original
-> > > > patches went in via there, and we should get them in asap.
-> > > >
-> > > > Acked-by: Dave Airlie <airlied@redhat.com>
-> > >
-> > > The _OSI strings are to be dropped when all of the needed support is there in
-> > > drivers, so they should go away along with the requisite driver changes.
-> > >
-> >
-> > that goes beside the point. firmware level workarounds for GPU driver
-> > issues were pushed without consulting with upstream GPU developers.
-> > That's something which shouldn't have happened in the first place. And
-> > yes, I am personally annoyed by the fact, that people know about
-> > issues, but instead of contacting the proper persons and working on a
-> > proper fix, we end up with stupid firmware level workarounds. I can't
-> > see why we ever would have wanted such workarounds in the first place.
-> >
-> > And I would be much happier if the next time something like that comes
-> > up, that the drm mailing list will be contacted as well or somebody
-> > involved.
-> >
-> > We could have also just disable the feature inside the driver (and
-> > probably we should have done that a long time ago, so that is
-> > essentially our fault, but still....)
-> >
-> > > I'm all for dropping then when that's the case, so please feel free to add ACKs
-> > > from me to the patches in question at that point.
-> > >
-> > > Cheers,
-> > > Rafael
-> > >
-> > >
-> > >
-> >
->
->
->
->
+Note: the set now depends on 2d44d165e939 ("scsi: lpfc: Convert existing
+%pf users to %ps") that is expected from the linux-scsi tree.
 
+since v5:
+
+- Added a patch to convert %pf to %ps in tools/lib/traceevent.c (first in
+  the set).
+
+- Fix ReST syntax in Documentation/core-api/printk-formats.rst.
+
+- Fix returning root swnode name in patch "device property: Add
+  fwnode_get_name for returning the name of a node". Use to_swnode()
+  directly as well in the same patch.
+
+- Tests: take root node name into account, use direct indices and remove
+  the comma from the guardian entry.
+
+- Add a comment on how fwnode_full_name_string() enumerates the nodes.
+
+- Fix error string in fwnode_string().
+
+- Move 'f' + default case as last in the switch in fwnode_string().
+
+- Fix %pfw validation in checkpatch.pl.
+
+since v4:
+
+- Improved documentation for fwnode_get_nth_parent().
+
+- Removed comma from the guardian entry in fwnode_pointer() testcase.
+
+since v3:
+
+- Remove underscores in argument name of fwnode_count_parents().
+
+- Re-introduce "%pO?" error string.
+
+- Unwrap a call to string() in fwnode_string().
+
+- Removed a useless Depends-on: on a patch that was merged long ago.
+
+- Unwrap a Fixes: line.
+
+- Added a patch to move fwnode_get_parent() up to make the review of the
+  following patch easier.
+
+since v2:
+
+- Better comments in acpi_fwnode_get_name_prefix().
+
+- Added swnode implementation.
+
+- Fixed swnode refcounting in get_parent() ("swnode: Get reference to
+  parent swnode in get_parent op")
+
+- Make argument to to_software_node() const (a new patch)
+
+- Factored out confusingly named kobject_string() that had a single
+  caller.
+
+- Cleaner fwnode_count_parents() implementation (as discussed in review).
+
+- Made fwnode_count_parents() argument const.
+
+- Added tests (last patch in the set).
+
+since v1:
+
+- Add patch to remove support for %pf and %pF (depends on another patch
+  removing all use of %pf and %pF) (now 4th patch)
+
+- Fix kerneldoc argument documentation for fwnode_get_name (2nd patch)
+
+- Align kerneldoc style with the rest of drivers/base/property.c (no extra
+  newline after function name)
+
+- Make checkpatch.pl complain about "%pf" not followed by "w" (6th patch)
+
+- WARN_ONCE() on use of invalid conversion specifiers ("%pf" not followed
+  by "w")
+
+Sakari Ailus (12):
+  tools lib traceevent: Convert remaining %p[fF] users to %p[sS]
+  software node: Get reference to parent swnode in get_parent op
+  software node: Make argument to to_software_node const
+  device property: Move fwnode_get_parent() up
+  device property: Add functions for accessing node's parents
+  device property: Add fwnode_get_name for returning the name of a node
+  device property: Add a function to obtain a node's prefix
+  lib/vsprintf: Remove support for %pF and %pf in favour of %pS and %ps
+  lib/vsprintf: Make use of fwnode API to obtain node names and
+    separators
+  lib/vsprintf: OF nodes are first and foremost, struct device_nodes
+  lib/vsprintf: Add %pfw conversion specifier for printing fwnode names
+  lib/test_printf: Add tests for %pfw printk modifier
+
+ Documentation/core-api/printk-formats.rst     | 34 ++++---
+ drivers/acpi/property.c                       | 48 ++++++++++
+ drivers/base/property.c                       | 83 +++++++++++++++--
+ drivers/base/swnode.c                         | 43 ++++++++-
+ drivers/of/property.c                         | 16 ++++
+ include/linux/fwnode.h                        |  4 +
+ include/linux/property.h                      |  8 +-
+ lib/test_printf.c                             | 32 +++++++
+ lib/vsprintf.c                                | 89 +++++++++++--------
+ scripts/checkpatch.pl                         |  8 +-
+ .../Documentation/libtraceevent-func_apis.txt | 10 +--
+ tools/lib/traceevent/event-parse.c            |  7 +-
+ 12 files changed, 314 insertions(+), 68 deletions(-)
 
 -- 
-Cheers,
-Alex Hung
+2.20.1
+
