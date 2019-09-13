@@ -2,86 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97DB3B191E
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2019 09:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88DD0B21A3
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2019 16:13:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728863AbfIMHoE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Sep 2019 03:44:04 -0400
-Received: from mail.steuer-voss.de ([85.183.69.95]:58042 "EHLO
-        mail.steuer-voss.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728355AbfIMHoE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Sep 2019 03:44:04 -0400
-X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
-Received: by mail.steuer-voss.de (Postfix, from userid 1000)
-        id 1F5CF46A74; Fri, 13 Sep 2019 09:44:02 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.steuer-voss.de (Postfix) with ESMTP id 1BA5446776;
-        Fri, 13 Sep 2019 09:44:02 +0200 (CEST)
-Date:   Fri, 13 Sep 2019 09:44:02 +0200 (CEST)
-From:   Nikolaus Voss <nv@vosn.de>
-X-X-Sender: nv@fox.voss.local
-To:     "Moore, Robert" <robert.moore@intel.com>
-cc:     "Shevchenko, Andriy" <andriy.shevchenko@intel.com>,
-        "Schmauss, Erik" <erik.schmauss@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ferry Toth <ftoth@telfort.nl>,
-        nikolaus.voss@loewensteinmedical.de
-Subject: RE: [PATCH] ACPICA: make acpi_load_table() return table index
-In-Reply-To: <94F2FBAB4432B54E8AACC7DFDE6C92E3B9679CE8@ORSMSX110.amr.corp.intel.com>
-Message-ID: <alpine.DEB.2.20.1909130911180.20316@fox.voss.local>
-References: <20190906174605.GY2680@smile.fi.intel.com> <20190912080742.24642-1-nikolaus.voss@loewensteinmedical.de> <94F2FBAB4432B54E8AACC7DFDE6C92E3B9679CE8@ORSMSX110.amr.corp.intel.com>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+        id S2388524AbfIMONr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Sep 2019 10:13:47 -0400
+Received: from sauhun.de ([88.99.104.3]:35910 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388349AbfIMONr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 13 Sep 2019 10:13:47 -0400
+Received: from localhost (234.77.63.94.rev.vodafone.pt [94.63.77.234])
+        by pokefinder.org (Postfix) with ESMTPSA id 8BC042C3115;
+        Fri, 13 Sep 2019 16:13:45 +0200 (CEST)
+Date:   Fri, 13 Sep 2019 15:13:45 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Biwen Li <biwen.li@nxp.com>
+Cc:     andy.shevchenko@gmail.com, rafael@kernel.org, leoyang.li@nxp.com,
+        meenakshi.aggarwal@nxp.com, udit.kumar@nxp.com, rjw@rjwysocki.net,
+        chuanhua.han@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [v2] ACPI: support for NXP i2c controller
+Message-ID: <20190913141344.GB1022@kunai>
+References: <20190906075319.21244-1-biwen.li@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset=US-ASCII
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="i9LlY+UWpKt15+FH"
+Content-Disposition: inline
+In-Reply-To: <20190906075319.21244-1-biwen.li@nxp.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Bob,
 
-On Thu, 12 Sep 2019, Moore, Robert wrote:
-> The ability to unload an ACPI table (especially AML tables such as 
-> SSDTs) is in the process of being deprecated in ACPICA -- since it is 
-> also deprecated in the current ACPI specification. This is being done 
-> because of the difficulty of deleting the namespace entries for the 
-> table.  FYI, Windows does not properly support this function either.
+--i9LlY+UWpKt15+FH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-ok, I see it can be a problem to unload an AML table with all it's 
-consequences e.g. with respect to driver unregistering in setups with 
-complex dependencies. It will only work properly under certain conditions 
-- nevertheless acpi_tb_unload_table() is still exported in ACPICA and we 
-should get this working as it worked before.
+On Fri, Sep 06, 2019 at 03:53:19PM +0800, Biwen Li wrote:
+> From: Chuanhua Han <chuanhua.han@nxp.com>
+>=20
+> Enable NXP i2c controller to boot with ACPI
+>=20
+> Signed-off-by: Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>
+> Signed-off-by: Udit Kumar <udit.kumar@nxp.com>
+> Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+> Signed-off-by: Biwen Li <biwen.li@nxp.com>
 
-The API change I request is not directly related to table unloading, it's 
-just that the index of the loaded table is returned for future reference:
+Added Rafael's tag from v1 and applied to for-next, thanks!
 
-[...]
 
->> diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h index 3845c8fcc94e5..c90bbdc4146a6 100644
->> --- a/include/acpi/acpixf.h
->> +++ b/include/acpi/acpixf.h
->> @@ -452,7 +452,8 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status ACPI_INIT_FUNCTION
->> 					       u8 physical))
->>
->> ACPI_EXTERNAL_RETURN_STATUS(acpi_status
->> -			    acpi_load_table(struct acpi_table_header *table))
->> +			    acpi_load_table(struct acpi_table_header *table,
->> +					    u32 *table_idx))
->>
->> ACPI_EXTERNAL_RETURN_STATUS(acpi_status
->> 			    acpi_unload_parent_table(acpi_handle object))
->> --
->> 2.17.1
->>
+--i9LlY+UWpKt15+FH
+Content-Type: application/pgp-signature; name="signature.asc"
 
-This allows for a simple fix of the regression and doesn't imply future 
-support for table unloading. Would this be acceptable?
+-----BEGIN PGP SIGNATURE-----
 
-Niko
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl17pBgACgkQFA3kzBSg
+Kba+Cg//Q9SHjSTH13UGRUp2U0vv+JXhqpjqwDHNLtrcgLy5K1XTRpVp+HFwE/kt
+RWOBpIHo4UHOwHLpxX9TcHYdKNPg/ZZx0lfoyIP4M50aznEXoDXxYeXTvtM+2RId
+gaTu/w6OHA2wIDty+8cCuJMzxiYeS+AEwgVn82WcF19ZFzFehCpUs6j0w1aqBi2k
+NunT4wQUO4AUlI9TdMUwY5/xm5/DZPKLYHtH3P6GKQTGkR0t3gyFTeVfNWtg8INJ
+Ih3bPh0bFO5IZXkUC46mRxuLaAM7q/WbfZ5kj8UyQz/3VZq0td+mGWnRfVix5P7v
+8if1Ay8jrv5bsiCcpfFmZMZteR4qseNNW+l9JL3yd3hjeH0pljaC8TiDxjIfEqYm
+O3kvmj7T0ZEGmrgFppq/81jH5+xFK5zShpCT6ijTubt8Pr/FTGSGzGX28jBQ240V
+ftguvv8FLZUBmHH8990eLIgHn1xHdETs2u1yutwlJxWN+UyJMeOBuwc6d2nwkNXR
+gixUEQOcQxdGjBAXZg6fmeuJpUvg2izKadNmkPDXILzp1VupbyqotIMlHPLHOD4X
+ky5v2eFbZfriCe4CbZqqV98pxIZFskzdHjZkXCNqzjGUpSz5Fgq8W6SWgzOJ40n6
+VA2OMoXrj72XfReZE7k+1IKRg6ZhAZXAv5tXsmuxs2W5VmGsBRg=
+=Jmts
+-----END PGP SIGNATURE-----
+
+--i9LlY+UWpKt15+FH--
