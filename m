@@ -2,95 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3950B3CB2
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Sep 2019 16:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 944B3B44DB
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Sep 2019 02:22:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726821AbfIPOh6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Sep 2019 10:37:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35512 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726657AbfIPOh6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 16 Sep 2019 10:37:58 -0400
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9888720830;
-        Mon, 16 Sep 2019 14:37:56 +0000 (UTC)
-Date:   Mon, 16 Sep 2019 10:37:55 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     Joe Perches <joe@perches.com>, Petr Mladek <pmladek@suse.com>,
-        linux-kernel@vger.kernel.org, rafael@kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        Rob Herring <robh@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
-        linux-trace-devel@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>
-Subject: Re: [PATCH v6 01/12] tools lib traceevent: Convert remaining %p[fF]
- users to %p[sS]
-Message-ID: <20190916103755.4c19eda9@gandalf.local.home>
-In-Reply-To: <20190916114158.GN5781@paasikivi.fi.intel.com>
-References: <20190910084707.18380-1-sakari.ailus@linux.intel.com>
-        <20190910084707.18380-2-sakari.ailus@linux.intel.com>
-        <20190910071837.2e9110f8@oasis.local.home>
-        <61a2b2ab4693535850306f396aac2a328e1d5a21.camel@perches.com>
-        <20190910142621.0bec208d@oasis.local.home>
-        <c458e734f5777561138b87228384808398547762.camel@perches.com>
-        <20190910150303.5a0d3904@oasis.local.home>
-        <c90c33b421c0fa0db5182d0f58c6ba6e86cf1622.camel@perches.com>
-        <20190916114158.GN5781@paasikivi.fi.intel.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1729756AbfIQAWM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Sep 2019 20:22:12 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:36505 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726118AbfIQAWM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Sep 2019 20:22:12 -0400
+Received: by mail-pg1-f194.google.com with SMTP id m29so970995pgc.3;
+        Mon, 16 Sep 2019 17:22:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=gHvCS0WVH6nxYtiVa7cmozt6ck7gFLQffDaRFaPUffg=;
+        b=JVYTowaLIzs55a08OwW7+1LUrzAWD08aN31/PaXOCbf6VJrKyRw4oxkO/HMDjDR2Ss
+         VHJccL1WXw1Ard7nTI5inozA2xt6smVM7TWC0xWkmOUizHgkmg2IxsTHXbmBRn7U9MaG
+         sqC8VPO3gCq40qVaeqVxB9vl67T+JNzolQGp7v86oNyTji1s6fXImtuUNR6vP0yVQA/q
+         y+PxowdPxsSw0cY2njZ6lrxTEd1a7SFUHK63b5NDecQDSzmdrsIjn9QcIhvEGPJ30yko
+         udvbDp0GzntKTVqq5pmxkwTz0ePE4jzL9WXbpT3+yprF7IQfOcPDo1gaMVWn/LyZKt1B
+         OikA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=gHvCS0WVH6nxYtiVa7cmozt6ck7gFLQffDaRFaPUffg=;
+        b=mWHu0eLdfb/F0z61wTshFvLlkd+8e3oo0L2k3qCS8oCF37BpahDRSiTj+of/UfWTq8
+         3NaUHcr3UhBrubwHFR1XdCWG9CcO8sRj2fhkmpxLtSeOSDMgFpHIk23APkuK6t/03t0c
+         UkyfuQOsArdXV6sVk8FUjr9oTyAE+1fCI87tGxYArb9ORAFyyWbNA0yo2WLsRRlUL8Y/
+         Z2M1VdCGRMEdjc+XmSnhNlQACV5vEEZzIQs+NzoHb6niDyrULOfB5/G+eF/d8scb0Bxh
+         35/nYR+krQyvSh4VNzoHy5RUrN06eBOF1BMO0KmkIZQIhpSZF+sKLcxVBDHKkYPuGH2w
+         X8Hw==
+X-Gm-Message-State: APjAAAVJyPuRra5x3c7C1xWo4nrpCG/382wIsD421RQq9o62jZWH/ZhY
+        dw8hNcc8C6PH825hB1/hNAo=
+X-Google-Smtp-Source: APXvYqzJ6FqLP4djoh9LqAiR2iEtYD5Kkz7MksbyKf2l/vz2NaL/A51k9HEdd9SWkQezPbEFKC3CUg==
+X-Received: by 2002:a17:90b:f15:: with SMTP id br21mr2033808pjb.101.1568679730699;
+        Mon, 16 Sep 2019 17:22:10 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
+        by smtp.gmail.com with ESMTPSA id q204sm288345pfq.176.2019.09.16.17.22.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Sep 2019 17:22:09 -0700 (PDT)
+Date:   Mon, 16 Sep 2019 17:22:07 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andrzej Hajda <a.hajda@samsung.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        "David S. Miller" <davem@davemloft.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>
+Subject: Re: [PATCH 00/11] Add support for software nodes to gpiolib
+Message-ID: <20190917002207.GJ237523@dtor-ws>
+References: <20190911075215.78047-1-dmitry.torokhov@gmail.com>
+ <CACRpkdb=s67w2DCGubhbLQTtxpWtiW8S1MECMO4cvec=bF6OdA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACRpkdb=s67w2DCGubhbLQTtxpWtiW8S1MECMO4cvec=bF6OdA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 16 Sep 2019 14:41:59 +0300
-Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
-
-> > Well, if you think that works, OK great.
-> > 
-> > But could that work?
-> > How would an individual trace record know if
-> > another trace record used %pfw?
-> > 
-> > Perhaps not reusing %pf, marking it reserved
-> > for a period of years, and using another unused
-> > prefix %p<type> like %pnfw may be simpler.  
+On Thu, Sep 12, 2019 at 10:55:47AM +0100, Linus Walleij wrote:
+> On Wed, Sep 11, 2019 at 8:52 AM Dmitry Torokhov
+> <dmitry.torokhov@gmail.com> wrote:
 > 
-> %p[Ff]w does not exist (I grepped for it) in older kernels since v3.0. So
-> kernel support for %p[fF] and %pfw are mutually exclusive. If you're ok
-> with that, I could change the patch to check %pf isn't followed by 'w',
-> in order to support %pf on older kernels.
-
-I think that's what I suggested to do.
-
+> > If we agree in principle, I would like to have the very first 3 patches
+> > in an immutable branch off maybe -rc8 so that it can be pulled into
+> > individual subsystems so that patches switching various drivers to
+> > fwnode_gpiod_get_index() could be applied.
 > 
-> Although that still does not address using older tooling on newer kernels
-> with support for %pfw.
-
-That should be fine. I don't think it will crash those tools, they will
-just give out wrong information, and if people complain, we can try to
-get them to use the newer version of those tools ;-) (hopefully they
-don't complain to Linus).
-
+> I think it seems a bit enthusiastic to have non-GPIO subsystems
+> pick up these changes this close to the merge window so my plan
+> is to merge patches 1.2.3 (1 already merged) and then you could
+> massage the other subsystems in v5.4-rc1.
 > 
-> If you think that's an issue, I'll opt for another extension than %pfw,
-> which I chose originally since it's memorable --- fw for fwnode (names,
-> paths, and probably more in the future).
-> 
+> But if other subsystems say "hey we want do fix this in like 3 days"
+> then I'm game for an immutable branch as well.
 
-I'm fine with the switch, as long as newer tools know how to handle it.
+No, if it is still has a chance for -rc1 then I'm good. I was thinking
+if it does not go into -rc1 I could convince some of them merge a
+targeted immutable branch off -rc8 or 5.3 final and then apply patches
+relevant to their subsystems so we do not have to wait till 5.6 to land
+everything.
 
-Make sure we also add a comment in the Linux kernel code that states
-that older kernels use to have 'f' and 'F' and that new tools look for
-'fw' to denote that this isn't an older kernel. This way, people will
-hopefully not add another 'fX' pointer name.
+Thanks.
 
--- Steve
+-- 
+Dmitry
