@@ -2,41 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89D7BB4BE9
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Sep 2019 12:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71520B4BEF
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Sep 2019 12:27:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726805AbfIQKZR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Sep 2019 06:25:17 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:41318 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726292AbfIQKZR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Sep 2019 06:25:17 -0400
-Received: by mail-ot1-f68.google.com with SMTP id g13so2540143otp.8;
-        Tue, 17 Sep 2019 03:25:16 -0700 (PDT)
+        id S1726830AbfIQK12 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Sep 2019 06:27:28 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:44314 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726244AbfIQK12 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Sep 2019 06:27:28 -0400
+Received: by mail-oi1-f195.google.com with SMTP id w6so2335168oie.11;
+        Tue, 17 Sep 2019 03:27:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=U8AK8lep52zI4AFbsmkmWfoZZHVuoR54siydWKVCQfk=;
-        b=jRB+VendOOO3zqzMBwDpUbBRFaqu8U68JlQXrRuTDfWoMXw6pPlh7ziCDe6MraafOm
-         f9GX3XeXckwL/l9a3+H5FfxOGQb09m4Ezqic2l/rqHTN1oiAqfHqPXECbHJjg1PoEQEr
-         bq2qD10LejiOm4Ye0o/tiBVzJxYeUXIbAZnHa8AuCVYpVUXDDt9c0yjpxOMFQBIHQrYb
-         GKfh/Dp+QeX6UUke1nlvDh+nWKdP95hzBvakK61DUjveR/pLzgC5i43THm2SPgYGrYpN
-         cKb29ZbdmmlruAwfQVuoarNvoR4GjF8WKQVLkCILxaY0IwddEuqaC805SbwbJmyqH7LN
-         639A==
-X-Gm-Message-State: APjAAAUN6yAB941Jn0nw9dmhurqMR3RIBQPBV5wu58Kj3Ztjy7jcAvSm
-        HNkMPRX2gitatLMo5QrdGouoj7lVSPc2k/Fe6wI=
-X-Google-Smtp-Source: APXvYqxU2RKcbkpQZ8/6Op1mnYhZjI6D3bJFaVBF50pFi/ORMWkDWOVzeZQvGuVCZ6z8U9odIwxV0sOsGx2hxkJAgLE=
-X-Received: by 2002:a05:6830:9:: with SMTP id c9mr2135163otp.262.1568715915953;
- Tue, 17 Sep 2019 03:25:15 -0700 (PDT)
+        bh=Jw020uvO5W1dQB83HITZVbJ4+r2ZGjWj7Xyy0Bpkz/A=;
+        b=pWZdQumj+lQlUIBL5TQRsUiyyQpOByhRs4rxcfAijA18wPGiXvWDe2JKAg1FRpRWs3
+         JNM13bGpRc/PVk5SvU1/p2C8rm9OMSeOMOxh474S//52FfFB0Qa5vzKj6RguCqSWipFm
+         /2WX6ghVOkZVwzZ23Knm8pIi+81NpYpjDwciV4MB0ZyxZ902ZOQhlaHSG1F6OmehmR4y
+         c57cJxI4TdjcHoiNuUbD+/NcvMyobe+/nNBiM+aOdl/2fBMmTVYYHhUkXVgjK4Ul8Bbr
+         zTSCrA31ZaH36dvN9rK3ospDwZzSfGxTZWoycIHO6USwP5zoHweKpPNAqAI5soV3ki8J
+         e10A==
+X-Gm-Message-State: APjAAAVeYt6q/Ae3Tt1r4KhwEkkbqwT1CHTD51snsiIKLOo8+pmdjW62
+        ty0E/WQTGB90gMQujMI6ag+wUq5TtKavmPzEwoX9ZEtx
+X-Google-Smtp-Source: APXvYqwazB3v6V1RsjC4YgX0kgioA/H9C3tRozSeoJq3Agt6TGjJtqCyKk1J+MAOyvJmC4bNzH/00mI+LIRfkSZw7Nw=
+X-Received: by 2002:aca:ab84:: with SMTP id u126mr2824699oie.115.1568716047201;
+ Tue, 17 Sep 2019 03:27:27 -0700 (PDT)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 17 Sep 2019 12:25:05 +0200
-Message-ID: <CAJZ5v0jHzVKJiLzMxC6eqqCkpeKA-UD_9fhy1KpVp6fM=XwiSQ@mail.gmail.com>
-Subject: [GIT PULL] ACPI updates for v5.4-rc1
+Date:   Tue, 17 Sep 2019 12:27:16 +0200
+Message-ID: <CAJZ5v0iJupxXBYRDeV4_V14je-uZYRf7d_CZ7WRUw7++n_575Q@mail.gmail.com>
+Subject: [GIT PULL] Device properties framework updates for v5.4-rc1
 To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>
+        Linux USB <linux-usb@vger.kernel.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
@@ -48,142 +49,94 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-5.4-rc1
+ devprop-5.4-rc1
 
-with top-most commit 0b3e7973128528e804b05dd7f79d54c2792318d6
+with top-most commit 016049a816774edc9c3cd81afa7724d7ab001585
 
- Merge branches 'acpi-misc' and 'acpi-doc'
+ software node: Initialize the return value in software_node_find_by_name()
 
 on top of commit a55aa89aab90fae7c815b0551b07be37db359d76
 
  Linux 5.3-rc6
 
-to receive ACPI updates for 5.4-rc1.
+to receive device properties framework updates for 5.4-rc1.
 
-These include an ACPICA update (to upstream revision 20190816),
-improvements of support for memory hot-add in the HMAT handling code
-and some assorted fixes and cleanups.
+These include software node support improvements (Heikki Krogerus)
+and two assorted cleanups (Andy Shevchenko, Geert Uytterhoeven).
 
-Specifics:
-
- - Update the ACPICA code in the kernel to upstream revision 20190816
-   including:
-   * Internal limits change to support larger systems (Bob Moore).
-   * Macros clean up (Bob Moore).
-   * printf format string fixes (Bob Moore).
-   * Full deployment of the ACPI_PRINTF_LIKE macro (Bob Moore).
-   * Tools improvements (Bob Moore, Colin Ian King).
-   * Windows _OSI support fixes (Jung-uk Kim).
-
- - Improve memory hot-add support in the ACPI HMAT handling code (Dan
-   Williams, Keith Busch).
-
- - Fix the ACPI LPSS (Low-Power Subsystem) driver for Intel SoCs to
-   save and restore private registers during system-wide suspend and
-   resume on systems with the Lynxpoint PCH (Jarkko Nikula).
-
- - Convert the ACPI documentation related to LEDs to ReST (Sakari
-   Ailus).
-
- - Fix assorted issues and make assorted minor improvements in the
-   ACPI-related code (Al Stone, Andy Shevchenko, Jiri Slaby, Kelsey
-   Skunberg, Krzysztof Wilczynski, Liguang Zhang, Wenwen Wang,
-   YueHaibing).
+There was a conflict between this and the USB tree in linux-next
+which was resolved by Stephen by applying the appended diff.
 
 Thanks!
 
 
 ---------------
 
-Al Stone (1):
-      ACPI / CPPC: do not require the _PSD method
-
 Andy Shevchenko (1):
-      ACPI / APEI: Get rid of NULL_UUID_LE constant
+      device property: Remove duplicate test for NULL
 
-Bob Moore (6):
-      ACPICA: Increase total number of possible Owner IDs
-      ACPICA: Macros: remove pointer math on a null pointer
-      ACPICA: Fix issues with arg types within printf format strings
-      ACPICA: iASL,acpi_dump: Improve y/n query
-      ACPICA: Fully deploy ACPI_PRINTF_LIKE macro
-      ACPICA: Update version to 20190816.
+Geert Uytterhoeven (1):
+      ACPI / property: Fix acpi_graph_get_remote_endpoint() name in kerneldoc
 
-Colin Ian King (1):
-      ACPICA: Debugger: remove redundant assignment on obj_desc
-
-Dan Williams (1):
-      HMAT: Skip publishing target info for nodes with no online memory
-
-Jarkko Nikula (1):
-      ACPI / LPSS: Save/restore LPSS private registers also on Lynxpoint
-
-Jiri Slaby (1):
-      ACPI / processor: don't print errors for processorIDs == 0xff
-
-Jung-uk Kim (2):
-      ACPICA: Differentiate Windows 8.1 from Windows 8.
-      ACPICA: Add "Windows 2019" string to _OSI support.
-
-Keith Busch (2):
-      HMAT: Register memory-side cache after parsing
-      HMAT: Register attributes for memory hot add
-
-Kelsey Skunberg (1):
-      ACPI: thermal: Remove redundant acpi_has_method() calls
-
-Krzysztof Wilczynski (1):
-      ACPI/PCI: Remove surplus parentheses from a return statement
-
-Liguang Zhang (1):
-      ACPI / APEI: Release resources if gen_pool_add() fails
-
-Sakari Ailus (1):
-      Documentation: ACPI: DSD: Convert LED documentation to ReST
-
-Wenwen Wang (2):
-      ACPI: custom_method: fix memory leaks
-      ACPI / PCI: fix acpi_pci_irq_enable() memory leak
-
-YueHaibing (1):
-      ACPI: SBS: remove unused const variable 'SMBUS_PEC'
+Heikki Krogerus (5):
+      software node: Add software_node_find_by_name()
+      usb: roles: intel_xhci: Supplying software node for the role mux
+      platform/x86: intel_cht_int33fe: Use new API to gain access to
+the role switch
+      software node: Initialize the return value in software_node_to_swnode()
+      software node: Initialize the return value in software_node_find_by_name()
 
 ---------------
 
- .../leds.txt => firmware-guide/acpi/dsd/leds.rst}  |  20 ++-
- Documentation/firmware-guide/acpi/index.rst        |   1 +
- drivers/acpi/acpi_lpss.c                           |   8 +-
- drivers/acpi/acpi_processor.c                      |  10 +-
- drivers/acpi/acpica/aclocal.h                      |   4 +-
- drivers/acpi/acpica/acobject.h                     |   2 +-
- drivers/acpi/acpica/acstruct.h                     |   2 +-
- drivers/acpi/acpica/acutils.h                      |  10 +-
- drivers/acpi/acpica/dbhistry.c                     |   2 +-
- drivers/acpi/acpica/dbinput.c                      |  10 +-
- drivers/acpi/acpica/dbmethod.c                     |   4 +
- drivers/acpi/acpica/dbobject.c                     |   1 -
- drivers/acpi/acpica/dbstats.c                      |  92 +++++++------
- drivers/acpi/acpica/exdump.c                       |   6 +-
- drivers/acpi/acpica/nsaccess.c                     |   2 +-
- drivers/acpi/acpica/nsalloc.c                      |   2 +-
- drivers/acpi/acpica/nsdump.c                       |   2 +-
- drivers/acpi/acpica/nsrepair2.c                    |   2 +-
- drivers/acpi/acpica/tbdata.c                       |   1 +
- drivers/acpi/acpica/utdebug.c                      |   4 +-
- drivers/acpi/acpica/uterror.c                      |   6 +-
- drivers/acpi/acpica/utosi.c                        |   3 +-
- drivers/acpi/acpica/utownerid.c                    |  12 +-
- drivers/acpi/apei/ghes.c                           |  19 ++-
- drivers/acpi/cppc_acpi.c                           |   6 +-
- drivers/acpi/custom_method.c                       |   5 +-
- drivers/acpi/hmat/hmat.c                           | 143 ++++++++++++++++-----
- drivers/acpi/pci_irq.c                             |   4 +-
- drivers/acpi/pci_link.c                            |   4 +-
- drivers/acpi/sbshc.h                               |   2 -
- drivers/acpi/thermal.c                             |  11 +-
- include/acpi/acconfig.h                            |   4 +-
- include/acpi/acpiosxf.h                            |   1 +
- include/acpi/acpixf.h                              |   2 +-
- include/acpi/actypes.h                             |  20 +--
- tools/power/acpi/tools/acpidump/apfiles.c          |  10 +-
- 36 files changed, 285 insertions(+), 152 deletions(-)
+ drivers/acpi/property.c                        |  2 +-
+ drivers/base/swnode.c                          | 39 +++++++++++++++++-
+ drivers/platform/x86/intel_cht_int33fe.c       | 57 +++++---------------------
+ drivers/usb/roles/intel-xhci-usb-role-switch.c | 27 ++++++++----
+ include/linux/fwnode.h                         |  9 ++--
+ include/linux/property.h                       |  4 ++
+ 6 files changed, 78 insertions(+), 60 deletions(-)
+
+---------------
+
+diff --cc drivers/usb/roles/intel-xhci-usb-role-switch.c
+index 7325a84dd1c8,88d041601c51..000000000000
+--- a/drivers/usb/roles/intel-xhci-usb-role-switch.c
++++ b/drivers/usb/roles/intel-xhci-usb-role-switch.c
+@@@ -37,12 -44,9 +44,13 @@@
+  struct intel_xhci_usb_data {
+      struct usb_role_switch *role_sw;
+      void __iomem *base;
++     bool enable_sw_switch;
+  };
+
+ +static const struct software_node intel_xhci_usb_node = {
+ +    "intel-xhci-usb-sw",
+ +};
+ +
+  static int intel_xhci_usb_set_role(struct device *dev, enum usb_role role)
+  {
+      struct intel_xhci_usb_data *data = dev_get_drvdata(dev);
+@@@ -147,20 -167,12 +167,22 @@@ static int intel_xhci_usb_probe(struct
+
+      platform_set_drvdata(pdev, data);
+
++     data->enable_sw_switch = !device_property_read_bool(dev,
++                         "sw_switch_disable");
+ +    ret = software_node_register(&intel_xhci_usb_node);
+ +    if (ret)
+ +        return ret;
+ +
+ +    sw_desc.set = intel_xhci_usb_set_role,
+ +    sw_desc.get = intel_xhci_usb_get_role,
+ +    sw_desc.allow_userspace_control = true,
+ +    sw_desc.fwnode = software_node_fwnode(&intel_xhci_usb_node);
+
+      data->role_sw = usb_role_switch_register(dev, &sw_desc);
+ -    if (IS_ERR(data->role_sw))
+ +    if (IS_ERR(data->role_sw)) {
+ +        fwnode_handle_put(sw_desc.fwnode);
+          return PTR_ERR(data->role_sw);
+ +    }
+
+      pm_runtime_set_active(dev);
+      pm_runtime_enable(dev);
