@@ -2,79 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F19C4B6411
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Sep 2019 15:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 516B6B641A
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Sep 2019 15:11:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729435AbfIRNIo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Sep 2019 09:08:44 -0400
-Received: from mga02.intel.com ([134.134.136.20]:17819 "EHLO mga02.intel.com"
+        id S1727905AbfIRNLN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Sep 2019 09:11:13 -0400
+Received: from mga14.intel.com ([192.55.52.115]:19830 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727001AbfIRNIn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 18 Sep 2019 09:08:43 -0400
+        id S1727001AbfIRNLN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 18 Sep 2019 09:11:13 -0400
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Sep 2019 06:08:42 -0700
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Sep 2019 06:11:12 -0700
 X-IronPort-AV: E=Sophos;i="5.64,520,1559545200"; 
-   d="scan'208";a="187761706"
+   d="scan'208";a="181117768"
 Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Sep 2019 06:08:39 -0700
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Sep 2019 06:11:09 -0700
 Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id 38DF22075A; Wed, 18 Sep 2019 16:08:37 +0300 (EEST)
-Date:   Wed, 18 Sep 2019 16:08:37 +0300
+        id A55462075A; Wed, 18 Sep 2019 16:11:07 +0300 (EEST)
+Date:   Wed, 18 Sep 2019 16:11:07 +0300
 From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Joe Perches <joe@perches.com>, Petr Mladek <pmladek@suse.com>,
-        linux-kernel@vger.kernel.org, rafael@kernel.org,
+To:     Joe Perches <joe@perches.com>
+Cc:     Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
+        rafael@kernel.org,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
         Rob Herring <robh@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
-        linux-trace-devel@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>
-Subject: Re: [PATCH v6 01/12] tools lib traceevent: Convert remaining %p[fF]
- users to %p[sS]
-Message-ID: <20190918130837.GQ5781@paasikivi.fi.intel.com>
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: Re: [PATCH v6 11/12] lib/vsprintf: Add %pfw conversion specifier for
+ printing fwnode names
+Message-ID: <20190918131107.GR5781@paasikivi.fi.intel.com>
 References: <20190910084707.18380-1-sakari.ailus@linux.intel.com>
- <20190910084707.18380-2-sakari.ailus@linux.intel.com>
- <20190910071837.2e9110f8@oasis.local.home>
- <61a2b2ab4693535850306f396aac2a328e1d5a21.camel@perches.com>
- <20190910142621.0bec208d@oasis.local.home>
- <c458e734f5777561138b87228384808398547762.camel@perches.com>
- <20190910150303.5a0d3904@oasis.local.home>
- <c90c33b421c0fa0db5182d0f58c6ba6e86cf1622.camel@perches.com>
- <20190916114158.GN5781@paasikivi.fi.intel.com>
- <20190916103755.4c19eda9@gandalf.local.home>
+ <20190910084707.18380-12-sakari.ailus@linux.intel.com>
+ <ef57a3fc72b548b7daf9257aacc596d57004199d.camel@perches.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190916103755.4c19eda9@gandalf.local.home>
+In-Reply-To: <ef57a3fc72b548b7daf9257aacc596d57004199d.camel@perches.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Steven,
+Hi Joe,
 
-On Mon, Sep 16, 2019 at 10:37:55AM -0400, Steven Rostedt wrote:
-> > If you think that's an issue, I'll opt for another extension than %pfw,
-> > which I chose originally since it's memorable --- fw for fwnode (names,
-> > paths, and probably more in the future).
-> > 
+On Tue, Sep 10, 2019 at 03:21:26AM -0700, Joe Perches wrote:
+> > @@ -5988,14 +5988,17 @@ sub process {
+> >  		        for (my $count = $linenr; $count <= $lc; $count++) {
+> >  				my $specifier;
+> >  				my $extension;
+> > +				my $qualifier;
+> >  				my $bad_specifier = "";
+> >  				my $fmt = get_quoted_string($lines[$count - 1], raw_line($count, 0));
+> >  				$fmt =~ s/%%//g;
+> >  
+> > -				while ($fmt =~ /(\%[\*\d\.]*p(\w))/g) {
+> > +				while ($fmt =~ /(\%[\*\d\.]*p(\w)(\w?))/g) {
 > 
-> I'm fine with the switch, as long as newer tools know how to handle it.
+> This is not generic enough to allow all possible qualifiers
+> to be captured.
 > 
-> Make sure we also add a comment in the Linux kernel code that states
-> that older kernels use to have 'f' and 'F' and that new tools look for
-> 'fw' to denote that this isn't an older kernel. This way, people will
-> hopefully not add another 'fX' pointer name.
+> This should be something like:
+> 
+> 			while ($fmt =~ /(\%[\*\d\.]*p(\w)(\w*))/g) {
+> 	
+> >  					$specifier = $1;
+> >  					$extension = $2;
+> > -					if ($extension !~ /[SsBKRraEhMmIiUDdgVCbGNOxt]/) {
+> > +					$qualifier = $3;
+> > +					if ($extension !~ /[SsBKRraEhMmIiUDdgVCbGNOxtf]/ ||
+> > +					    ($extension eq "f" && $qualifier ne "w")) {
+> 
+> 
+> And this should likely test
+> 					    (defined $qualifier &&
+> 					     $extension eq 'f' && $qualifier =~ /^w/))
+> 
+> >  						$bad_specifier = $specifier;
+> >  						last;
+> >  					}
+> 
+> And here the 'f' isn't really a bad $specifier,
+> it does not have the correct 'w' $extension.
+> 
+> The valid extensions may change in the future and
+> this code isn't particularly manageable, so I
+> think the $specifier/$extension pair should likely
+> have some additional testing after validating
+> the $specifier.
 
-Good point. I'll add a comment on this to make_bprint_args() in
-tools/lib/traceevent/event-parse.c as well as in vsprintf.c.
+There are certainly possibilities of having qualifiers that aren't
+supported but extensions are also allowed to be followed by any other
+characters, so this is a bit grey area.
+
+I'll make the qualifier one or more letters for v7 as you suggested.
 
 -- 
 Regards,
