@@ -2,75 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8067B66F5
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Sep 2019 17:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A748BB726E
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Sep 2019 07:05:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729084AbfIRPWY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Sep 2019 11:22:24 -0400
-Received: from mga18.intel.com ([134.134.136.126]:41972 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726982AbfIRPWY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 18 Sep 2019 11:22:24 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Sep 2019 08:22:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,521,1559545200"; 
-   d="scan'208";a="186494395"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga008.fm.intel.com with ESMTP; 18 Sep 2019 08:22:19 -0700
-Received: from andy by smile with local (Exim 4.92.1)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iAbmb-0001OA-Nd; Wed, 18 Sep 2019 18:22:17 +0300
-Date:   Wed, 18 Sep 2019 18:22:17 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
-        rafael@kernel.org, linux-acpi@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Joe Perches <joe@perches.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
-        linux-trace-devel@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>
-Subject: Re: [PATCH v7 01/13] tools lib traceevent: Convert remaining %p[fF]
- users to %p[sS]
-Message-ID: <20190918152217.GR2680@smile.fi.intel.com>
-References: <20190918133419.7969-1-sakari.ailus@linux.intel.com>
- <20190918133419.7969-2-sakari.ailus@linux.intel.com>
+        id S1731475AbfISFFx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Sep 2019 01:05:53 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:37312 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726142AbfISFFx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Sep 2019 01:05:53 -0400
+Received: by mail-io1-f68.google.com with SMTP id b19so4738622iob.4
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Sep 2019 22:05:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=RyOFMhPxWsGfG+Nb3DOKo9PI7GG1DXIkbdGBFl4xhxY=;
+        b=YRsg+wOw2oSgb8b1UkfhrlsrwFLbta9wpLmQJk7w1E85Fn8y7NNbGJ7KnBDNCag4UV
+         7t2ytFygGYSSDNA9PzIN/vaUG0mIYYKBssFupog7iZdOvhIia0svsjVhvt8qfb9TYjUC
+         4cTLuEBFU9CAp3LB7jBLy9oq4i9RjTUbYb95bQ8CxYDvUaXG1+w+YjV3WMcD+JX6/Tle
+         vG68osA6kcfOhAvedvE1hbIqzKwcxIPdcBrQdECoEDEopL1kJQBxRc9fhlwQS6XWy8CI
+         FNfZ5Bv720tVqAguRyxi1BDGWBPEjUP+rEy74YfuFiPkR+jzJWefuXTl+46b4/gRw7D/
+         auxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=RyOFMhPxWsGfG+Nb3DOKo9PI7GG1DXIkbdGBFl4xhxY=;
+        b=uYwmOCHj+BikyPUp7nhFIsiB1ZjrnINLzP0j3V3lvw6Iraf+DZNuP6KrPinhZSxezD
+         icHCQVqkqINCVLfqRFMG4jB+KOlXnGuD0thgAuklGxJkrRcXBqRMuFR3xZ/74fAZL68h
+         KGPVPegNrN5n2f0q6phidrhLzxsCUEVR1oRCtWQ22UswpVdTbCpP5kn9sWx3XZBafBSP
+         t5ZQ6QYmzn0Lw9t0tvPxSlfoor1mjLYHA2EgkPRxNewvAj1ZuEh9hhVOb+k+uCA/bp/E
+         JlJt6MWe+YvNbfrowmO4TqtMczNV/smjsihRBaVwK00zVr0Vg5X7uoV76yTz3KJ4z5p2
+         I/eA==
+X-Gm-Message-State: APjAAAXQeY4Z9Midsvz5ma0pJ5mpOsU/JgqZyq8Nmd6p4K3QaGO/ivcB
+        /UiuxvOt5IlUnxlSbJoa2oEqnxmZGJtLj/uh7Lg=
+X-Google-Smtp-Source: APXvYqxDeXtR5Vag/K0gp6xFycdkh79K+B6eeDfnU163uvt0tRjKp+LQ+lpXmi9ecemuHB+FOOI2M+beSON5iYhKiSQ=
+X-Received: by 2002:a05:6638:1f5:: with SMTP id t21mr9241003jaq.119.1568869551122;
+ Wed, 18 Sep 2019 22:05:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190918133419.7969-2-sakari.ailus@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Reply-To: mrahmedmuzashah@gmail.com
+Received: by 2002:a05:6638:501:0:0:0:0 with HTTP; Wed, 18 Sep 2019 22:05:50
+ -0700 (PDT)
+From:   "Mr.Ahmed Muzashah" <ahmedmuzashah@gmail.com>
+Date:   Wed, 18 Sep 2019 22:05:50 -0700
+X-Google-Sender-Auth: pzaN8pXbpqbr-YDQyIMGy15A3bI
+Message-ID: <CAPKNVY6n-4eKCokgG_ThoxrtwKthqbYxxH52cMH_5pi8ExxhPQ@mail.gmail.com>
+Subject: From: Mr.Ahmed Muzashah
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 18, 2019 at 04:34:07PM +0300, Sakari Ailus wrote:
-> There are no in-kernel %p[fF] users left. Convert the traceevent tool,
-> too, to align with the kernel.
+Good Day,
 
->  function. The _tep_ argument is the trace event parser context. The _name_ is
-> -the name of the function, the string is copied internally. The _addr_ is
-> -the start address of the function. The _mod_ is the kernel module
-> -the function may be in (NULL for none).
-> +the name of the function, the string is copied internally. The _addr_ is the
-> +start address of the function. The _mod_ is the kernel module the function may
-> +be in (NULL for none).
+Please accept my apologies for writing you a surprise letter.I am
+Mr.Ahmed Muzashah, account Manager with an investment bank here in
+Burkina Faso.I have a very important business I want to discuss with
+you.There is a draft account opened in my firm by a long-time client
+of our bank.I have the opportunity of transferring the left over fund
+(15.8 Million UsDollars)Fiftheen Million Eight Hundred Thousand United
+States of American Dollars of one of my Bank clients who died at the
+collapsing of the world trade center at the United States on September
+11th 2001.
 
-I think this is unneeded churn (reformating string). But since maintainer Acked
-this, I don't care much. But think about burden to the Git index in million of
-instances around the world.
+I want to invest this funds and introduce you to our bank for this
+deal.All I require is your honest co-operation and I guarantee you
+that this will be executed under a legitimate arrangement that will
+protect us from any breach of the law.I agree that 40% of this money
+will be for you as my foreign partner,50% for me while 10% is for
+establishing of foundation for the less privilleges in your country.If
+you are really interested in my proposal further details of the
+Transfer will be forwarded unto you as soon as I receive your
+willingness mail for a successful transfer.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Yours Sincerely,
+Mr.Ahmed Muzashah,
