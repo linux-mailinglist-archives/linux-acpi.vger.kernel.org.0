@@ -2,157 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4FACB953C
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Sep 2019 18:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D38A6B9852
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Sep 2019 22:15:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405507AbfITQVy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Sep 2019 12:21:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:52895 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405374AbfITQVk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Sep 2019 12:21:40 -0400
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iBLeV-00040t-1S; Fri, 20 Sep 2019 18:20:59 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id CE4B71C0E2D;
-        Fri, 20 Sep 2019 18:20:57 +0200 (CEST)
-Date:   Fri, 20 Sep 2019 16:20:57 -0000
-From:   "tip-bot2 for Sakari Ailus" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] tools lib traceevent: Convert remaining %p[fF]
- users to %p[sS]
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        devicetree@vger.kernel.org,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>, Joe Perches <joe@perches.com>,
-        linux-acpi@vger.kernel.org, linux-trace-devel@vger.kernel.org,
-        Namhyung Kim <namhyung@kernel.org>,
-        Petr Mladek <pmladek@suse.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20190918133419.7969-2-sakari.ailus@linux.intel.com>
-References: <20190918133419.7969-2-sakari.ailus@linux.intel.com>
+        id S1727941AbfITUPP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Sep 2019 16:15:15 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:35946 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725842AbfITUPP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Sep 2019 16:15:15 -0400
+Received: by mail-wr1-f65.google.com with SMTP id y19so8030093wrd.3;
+        Fri, 20 Sep 2019 13:15:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=YmwvldoBPWC/WT/RXbjQtuTjZqYBNPW2mhbUP/g7mkk=;
+        b=KXKI5iR+QlI/KdDF+TIMTQSlIAEIU2NwdpjFNc77gTncHwCvgnKDhePDMeIjIZE21o
+         fk7io/Zq82vh7JgzlX7ZEaben9WMf+nAuHjT3Kcf5JbG8OeNxKDLguEe/SForVK9sxJN
+         eKjU2vhPKI14DwZoFCvVEEfjdKrB0Al82TRTLedoaxeFX9V9S5he7TT7P5/HEpcX8hhI
+         3FPCkC75lqUP/F06P9hAFD+dMVV2J38iSSaGjASUVGzZx4LMax+pjJWk8FmWBIUMlXDN
+         zwyumFFjA/Of7xc3IQnBgohzEsoEh1RwmIKet7Xwdp+c2+BRqZbMle2gp17fMmw8HC/2
+         D+uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=YmwvldoBPWC/WT/RXbjQtuTjZqYBNPW2mhbUP/g7mkk=;
+        b=M5Tv3HC6LRQo+eFHrSNhtIyFbmEzfN0IFYWWxAhW0jmjcursKm/ZUjzFlSBCby4r9J
+         7VFD8iBU23vsuiyoZj0cWXKMZhtXKQ4Tv+4X2N2GmqomFhnMDn/Moloz4QrRRZlFJT9k
+         8AIoAQysTI18AXkEoi9qU/JGyW3zF/jO6Xio+3SAQMmJpI1XatHIAjRDbdwsng3uxrOx
+         93xSiX03SJWHdYOzIOPK9GBCk/qbX0jvLfNngK4IykXBiZ21tsjnLlAmJb3bK+xM5Cxl
+         tmeUqc8HvXgvERmc8AzaAk3RgECVEsAp0DJkTxoTEKg9pvp6N68foKaZrDDFu25zRxMP
+         kI8A==
+X-Gm-Message-State: APjAAAXSE9OIGN0I7fcGZXe7iauv8fX7/eFjQZNBdt8ITrX1Do9Ntifl
+        0pFSP7NwaKDO0BNc5Z5SNn1jy/wr
+X-Google-Smtp-Source: APXvYqx6+sdaU70hXxlIPqhW+U3FE2jByAg2cQMt0HBe9NU57j4N0yDakGpC6HOgeDCGa0SnXE2Ouw==
+X-Received: by 2002:adf:f406:: with SMTP id g6mr12752046wro.325.1569010512960;
+        Fri, 20 Sep 2019 13:15:12 -0700 (PDT)
+Received: from [192.168.2.202] (pD9E5A855.dip0.t-ipconnect.de. [217.229.168.85])
+        by smtp.gmail.com with ESMTPSA id w22sm2121846wmc.16.2019.09.20.13.15.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Sep 2019 13:15:12 -0700 (PDT)
+Subject: Re: [PATCH] serdev: Add ACPI devices by ResourceSource field
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Rob Herring <robh@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>, Johan Hovold <johan@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-serial@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190919195624.1140941-1-luzmaximilian@gmail.com>
+ <79c9533f-882d-f2b2-b6f3-b94fa49b4367@redhat.com>
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+Message-ID: <d5e07b37-c295-91d0-30b4-b12065d2d302@gmail.com>
+Date:   Fri, 20 Sep 2019 22:15:10 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-Message-ID: <156899645777.24167.16043877590667740321.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <79c9533f-882d-f2b2-b6f3-b94fa49b4367@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+Hi,
 
-Commit-ID:     b295c3e39c1383e06ba1db4dd836018502e2ff3a
-Gitweb:        https://git.kernel.org/tip/b295c3e39c1383e06ba1db4dd836018502e2ff3a
-Author:        Sakari Ailus <sakari.ailus@linux.intel.com>
-AuthorDate:    Wed, 18 Sep 2019 16:34:07 +03:00
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 20 Sep 2019 10:28:26 -03:00
+On 9/20/19 10:50 AM, Hans de Goede wrote:
+> Also I will give this a test-run on some of the existing devices
+> which rely on the instantiation of serdev devices for ACPI
+> devices which are childs of the uart device.
 
-tools lib traceevent: Convert remaining %p[fF] users to %p[sS]
+Thank you for testing! Will get to your other mail shortly.
 
-There are no in-kernel %p[fF] users left. Convert the traceevent tool,
-too, to align with the kernel.
+> Given the above I think you may want to also limit your patch to
+> only instantiate a "struct device" for the first UARTSerialBusV2
+> in an ACPI "Device()"'s  .
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: devicetree@vger.kernel.org
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Joe Perches <joe@perches.com>
-Cc: linux-acpi@vger.kernel.org
-Cc: linux-trace-devel@vger.kernel.org
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Cc: Tzvetomir Stoyanov <tstoyanov@vmware.com>
-Link: http://lore.kernel.org/lkml/20190918133419.7969-2-sakari.ailus@linux.intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
----
- tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt | 10 ++--
- tools/lib/traceevent/event-parse.c                             | 18 +++++--
- 2 files changed, 19 insertions(+), 9 deletions(-)
+Right, I will change this for a v2 once the issue revealed by your
+testing has been resolved.
 
-diff --git a/tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt b/tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt
-index 38bfea3..f6aca0d 100644
---- a/tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt
-+++ b/tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt
-@@ -59,12 +59,12 @@ parser context.
- 
- The _tep_register_function()_ function registers a function name mapped to an
- address and (optional) module. This mapping is used in case the function tracer
--or events have "%pF" or "%pS" parameter in its format string. It is common to
--pass in the kallsyms function names with their corresponding addresses with this
-+or events have "%pS" parameter in its format string. It is common to pass in
-+the kallsyms function names with their corresponding addresses with this
- function. The _tep_ argument is the trace event parser context. The _name_ is
--the name of the function, the string is copied internally. The _addr_ is
--the start address of the function. The _mod_ is the kernel module
--the function may be in (NULL for none).
-+the name of the function, the string is copied internally. The _addr_ is the
-+start address of the function. The _mod_ is the kernel module the function may
-+be in (NULL for none).
- 
- The _tep_register_print_string()_ function  registers a string by the address
- it was stored in the kernel. Some strings internal to the kernel with static
-diff --git a/tools/lib/traceevent/event-parse.c b/tools/lib/traceevent/event-parse.c
-index bb22238..6f842af 100644
---- a/tools/lib/traceevent/event-parse.c
-+++ b/tools/lib/traceevent/event-parse.c
-@@ -4367,10 +4367,20 @@ static struct tep_print_arg *make_bprint_args(char *fmt, void *data, int size, s
- 					switch (*ptr) {
- 					case 's':
- 					case 'S':
--					case 'f':
--					case 'F':
- 					case 'x':
- 						break;
-+					case 'f':
-+					case 'F':
-+						/*
-+						 * Pre-5.5 kernels use %pf and
-+						 * %pF for printing symbols
-+						 * while kernels since 5.5 use
-+						 * %pfw for fwnodes. So check
-+						 * %p[fF] isn't followed by 'w'.
-+						 */
-+						if (ptr[1] != 'w')
-+							break;
-+						/* fall through */
- 					default:
- 						/*
- 						 * Older kernels do not process
-@@ -4487,12 +4497,12 @@ get_bprint_format(void *data, int size __maybe_unused,
- 
- 	printk = find_printk(tep, addr);
- 	if (!printk) {
--		if (asprintf(&format, "%%pf: (NO FORMAT FOUND at %llx)\n", addr) < 0)
-+		if (asprintf(&format, "%%ps: (NO FORMAT FOUND at %llx)\n", addr) < 0)
- 			return NULL;
- 		return format;
- 	}
- 
--	if (asprintf(&format, "%s: %s", "%pf", printk->printk) < 0)
-+	if (asprintf(&format, "%s: %s", "%ps", printk->printk) < 0)
- 		return NULL;
- 
- 	return format;
+> I hope this sheds some clarity on the (muddy) situation wrt
+> I2cSerialBusV2 handling.
+
+Thank you again, this has definitely helped clear things up for me and
+your write-up is much appreciated!
+
+Maximilian
