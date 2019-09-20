@@ -2,49 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D38A6B9852
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Sep 2019 22:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B00B1B9898
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Sep 2019 22:43:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727941AbfITUPP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Sep 2019 16:15:15 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:35946 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725842AbfITUPP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Sep 2019 16:15:15 -0400
-Received: by mail-wr1-f65.google.com with SMTP id y19so8030093wrd.3;
-        Fri, 20 Sep 2019 13:15:13 -0700 (PDT)
+        id S1730096AbfITUnr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Sep 2019 16:43:47 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:54177 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730071AbfITUnr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Sep 2019 16:43:47 -0400
+Received: by mail-wm1-f67.google.com with SMTP id i16so3844357wmd.3;
+        Fri, 20 Sep 2019 13:43:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=YmwvldoBPWC/WT/RXbjQtuTjZqYBNPW2mhbUP/g7mkk=;
-        b=KXKI5iR+QlI/KdDF+TIMTQSlIAEIU2NwdpjFNc77gTncHwCvgnKDhePDMeIjIZE21o
-         fk7io/Zq82vh7JgzlX7ZEaben9WMf+nAuHjT3Kcf5JbG8OeNxKDLguEe/SForVK9sxJN
-         eKjU2vhPKI14DwZoFCvVEEfjdKrB0Al82TRTLedoaxeFX9V9S5he7TT7P5/HEpcX8hhI
-         3FPCkC75lqUP/F06P9hAFD+dMVV2J38iSSaGjASUVGzZx4LMax+pjJWk8FmWBIUMlXDN
-         zwyumFFjA/Of7xc3IQnBgohzEsoEh1RwmIKet7Xwdp+c2+BRqZbMle2gp17fMmw8HC/2
-         D+uw==
+        bh=lJRjCM+MHGrkfk6BQUd45RS2LvGotJKtsd5H7I/2Cv4=;
+        b=V5B9TQ5qdvMobLTSBJrbyM69mHlXh+3cZeHCR9zPBSa1zvhkycKe8w0McIhcu+rlCN
+         om8/34+D8gYk03IAjsQEpT2MyGnSIqyMoGlLI+noYkeQDERgqqGQFAnHJyM7l+Hy1Ca+
+         QIGAeT9TuoPXezzOXpYovjL6YT5XOEq+AHT++6W1g8H7JaA/I6j2l/BirEjF31QIrVeA
+         Hgdij+Dg2FKBh2qJEkHNrOsyHhYNV0ofDL55KScvLePBvguOLwrg8YrJksmVrEnKr2fm
+         i+hQ0z0gXwWcR6Sbey1m33ycVV7cfWa9oBb7E0rtz9DjKEJzeFDjl5uRaxK5GnovYsZn
+         3B2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=YmwvldoBPWC/WT/RXbjQtuTjZqYBNPW2mhbUP/g7mkk=;
-        b=M5Tv3HC6LRQo+eFHrSNhtIyFbmEzfN0IFYWWxAhW0jmjcursKm/ZUjzFlSBCby4r9J
-         7VFD8iBU23vsuiyoZj0cWXKMZhtXKQ4Tv+4X2N2GmqomFhnMDn/Moloz4QrRRZlFJT9k
-         8AIoAQysTI18AXkEoi9qU/JGyW3zF/jO6Xio+3SAQMmJpI1XatHIAjRDbdwsng3uxrOx
-         93xSiX03SJWHdYOzIOPK9GBCk/qbX0jvLfNngK4IykXBiZ21tsjnLlAmJb3bK+xM5Cxl
-         tmeUqc8HvXgvERmc8AzaAk3RgECVEsAp0DJkTxoTEKg9pvp6N68foKaZrDDFu25zRxMP
-         kI8A==
-X-Gm-Message-State: APjAAAXSE9OIGN0I7fcGZXe7iauv8fX7/eFjQZNBdt8ITrX1Do9Ntifl
-        0pFSP7NwaKDO0BNc5Z5SNn1jy/wr
-X-Google-Smtp-Source: APXvYqx6+sdaU70hXxlIPqhW+U3FE2jByAg2cQMt0HBe9NU57j4N0yDakGpC6HOgeDCGa0SnXE2Ouw==
-X-Received: by 2002:adf:f406:: with SMTP id g6mr12752046wro.325.1569010512960;
-        Fri, 20 Sep 2019 13:15:12 -0700 (PDT)
+        bh=lJRjCM+MHGrkfk6BQUd45RS2LvGotJKtsd5H7I/2Cv4=;
+        b=eouy+geloG6DBdn8uKMdfZzyNrJ3shYED9M0lTTChK8URy1W3L2XU9c2qgc/UKpKXe
+         IkAdYBIJJAMjuYTFC4Dm9CPzgtFpoEcyc/qflWYEc2mLvBn5cc99nM2kKWgWNGuoewFc
+         mkjHSdbUFC40HvNW+Y7Nj7MX5V25UTFfC878RABsOxJpL9+5XrHZBCUu3hmksjjl3XSc
+         pBkghoQAg3F9PFal2H5YHtsr/rOpJL873FfLTfQS/39SRFhh3AIkxxWOIyknJUa0E9gk
+         1il9bRn8lasy0of09FUU0Uz/hIphvkQO4spIjZD5NdqujwuWMKzCqXBMaFzrv7yeIbZR
+         b5zw==
+X-Gm-Message-State: APjAAAUnH3KyKWQLfObxKkEE3jXYUhc9QXqwBAlNWKOgEEetiP3hPsOC
+        UXYzYGi1uFwsgvNK8CfIah7Rk2ic
+X-Google-Smtp-Source: APXvYqxTc3R4l2jC2KuQqqMchy9puDwilHSoT9NsHY7Xs5Ri37HjK5x7wnP71Xt2PgsrVYgDgZx0Ow==
+X-Received: by 2002:a1c:f30d:: with SMTP id q13mr4423497wmq.60.1569012225084;
+        Fri, 20 Sep 2019 13:43:45 -0700 (PDT)
 Received: from [192.168.2.202] (pD9E5A855.dip0.t-ipconnect.de. [217.229.168.85])
-        by smtp.gmail.com with ESMTPSA id w22sm2121846wmc.16.2019.09.20.13.15.11
+        by smtp.gmail.com with ESMTPSA id z13sm2266965wrq.51.2019.09.20.13.43.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Sep 2019 13:15:12 -0700 (PDT)
+        Fri, 20 Sep 2019 13:43:44 -0700 (PDT)
 Subject: Re: [PATCH] serdev: Add ACPI devices by ResourceSource field
 To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     Rob Herring <robh@kernel.org>,
@@ -54,14 +54,14 @@ Cc:     Rob Herring <robh@kernel.org>,
         Len Brown <lenb@kernel.org>, linux-serial@vger.kernel.org,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20190919195624.1140941-1-luzmaximilian@gmail.com>
- <79c9533f-882d-f2b2-b6f3-b94fa49b4367@redhat.com>
+ <50b016a1-ed4a-b848-4658-a05731727d7e@redhat.com>
 From:   Maximilian Luz <luzmaximilian@gmail.com>
-Message-ID: <d5e07b37-c295-91d0-30b4-b12065d2d302@gmail.com>
-Date:   Fri, 20 Sep 2019 22:15:10 +0200
+Message-ID: <ff0588a9-d395-3101-ba01-802e736e86a3@gmail.com>
+Date:   Fri, 20 Sep 2019 22:43:42 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
-In-Reply-To: <79c9533f-882d-f2b2-b6f3-b94fa49b4367@redhat.com>
+In-Reply-To: <50b016a1-ed4a-b848-4658-a05731727d7e@redhat.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -72,24 +72,28 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-On 9/20/19 10:50 AM, Hans de Goede wrote:
-> Also I will give this a test-run on some of the existing devices
-> which rely on the instantiation of serdev devices for ACPI
-> devices which are childs of the uart device.
+> So as promised I've given this patch a try, unfortunately it breaks
+> existing users of ACPI serdev device instantation.
 
-Thank you for testing! Will get to your other mail shortly.
+I've only had a short look at it so far. As far as I can tell, there are
+two options: Either the device does not match/is being skipped, or there
+are errors (which are currently only reported with dev_dbg, based on the
+pre-patch implementation) causing the search to terminate early. I'll
+keep investigating this and report back once I've got a better
+understanding of the possible sources for this.
 
-> Given the above I think you may want to also limit your patch to
-> only instantiate a "struct device" for the first UARTSerialBusV2
-> in an ACPI "Device()"'s  .
+> I haven't looked why your patch is breakig things, I have a large backlog
+> so I do not have time for that.
 
-Right, I will change this for a v2 once the issue revealed by your
-testing has been resolved.
+No worries, I'll try to figure this out.
 
-> I hope this sheds some clarity on the (muddy) situation wrt
-> I2cSerialBusV2 handling.
+> But if you can provide me with a version of the patch with a bunch of
+> debug printk-s added I'm happy to run that for you.
 
-Thank you again, this has definitely helped clear things up for me and
-your write-up is much appreciated!
+Thank you for this offer, I will probably come back to it once I have
+more of an idea what could cause the breakage.
+
+Regards,
 
 Maximilian
+
