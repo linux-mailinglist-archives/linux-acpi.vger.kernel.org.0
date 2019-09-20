@@ -2,155 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 287F5B8D30
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Sep 2019 10:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 381A6B920C
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Sep 2019 16:29:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405475AbfITIub (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Sep 2019 04:50:31 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:43084 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2405396AbfITIub (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 20 Sep 2019 04:50:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1568969429;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bMQmh6bt7SEPSQlVPTv16Vvaa2lPPh/g7BO6VdZsR2I=;
-        b=VxAHyfmTJDhX1mMjkc9zcOdtdeiOR0aEtguSEV5XJrD+tWR5UELnRsB/A02oZzKqfEnzLD
-        23Y3mmLJTd988Abb3Qu/bGPCsMgINwhsphfFbjs4WadTcEou2YWPvA6bf8SXjVF862kXYM
-        AmcMcRnxq2LUyvKwaxhgVG9jGhU28ao=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-264-YGGhnYVQPriGMu0czvbDvw-1; Fri, 20 Sep 2019 04:50:28 -0400
-Received: by mail-ed1-f72.google.com with SMTP id l9so946320edi.8
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Sep 2019 01:50:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=uphOpbAgrdy43BfB/41YtawX2S+90uCA4NiyJq9P2Bw=;
-        b=bR4hhEQWLtkjlCbI5AZsQKXo7NdkHEdj96AFYt765MfOZq6LZzqNgvGQHfkbjZSW8p
-         UehggZZLkAO3GqdH50qTgNkg9rdji56JgApYD2IsZqNvwHojZx9qjygADXGJmNtf9c2B
-         L6ZkmhbFkVQAMhpfoHNsMr91OSVnjQFveNEvTBTB5kar3Ku+omKiOkYEqePW2ykqquhi
-         h8RLzdC25hem/rQLduHRuZH+ZtND1BGXLa+dNZ42NkqtejM8g0UwgRBkeHZbVBlI+cCT
-         cEnGnyT7AuI4GTjJjR1SQhZGmX30Xxhb9tabu/p4cp1wv8wCp/V90enARpmkZrMA4LiU
-         /xfQ==
-X-Gm-Message-State: APjAAAVLDyE6iu3sQ3vNBKLQC2d7xUszo6iemITA0eCg6OgdhhW32viK
-        WB7BbrXmHQZ0fFvOki3BXfnMYm8apb+heQgXbVbektqoxWGSGHYNS3q8EXXHEOg6shTrjKLt7MQ
-        Kw3OYznQj1iQ7aV2dWqGsbA==
-X-Received: by 2002:a17:906:e290:: with SMTP id gg16mr7984101ejb.176.1568969426870;
-        Fri, 20 Sep 2019 01:50:26 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqxm86r4nDmfGip9Js8Gt2Qa8FhAg8sYxIqzoTYIfqodB2gnkK5U+MAWev/tBSho/seaeE31pg==
-X-Received: by 2002:a17:906:e290:: with SMTP id gg16mr7984089ejb.176.1568969426677;
-        Fri, 20 Sep 2019 01:50:26 -0700 (PDT)
-Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
-        by smtp.gmail.com with ESMTPSA id z39sm210440edd.46.2019.09.20.01.50.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Sep 2019 01:50:25 -0700 (PDT)
-Subject: Re: [PATCH] serdev: Add ACPI devices by ResourceSource field
-To:     Maximilian Luz <luzmaximilian@gmail.com>
-Cc:     Rob Herring <robh@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, Johan Hovold <johan@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-serial@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190919195624.1140941-1-luzmaximilian@gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <79c9533f-882d-f2b2-b6f3-b94fa49b4367@redhat.com>
-Date:   Fri, 20 Sep 2019 10:50:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        id S2390142AbfITO2Z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Sep 2019 10:28:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39964 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389512AbfITO1D (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 20 Sep 2019 10:27:03 -0400
+Received: from quaco.ghostprotocols.net (unknown [179.97.35.50])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8516920C01;
+        Fri, 20 Sep 2019 14:26:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568989621;
+        bh=Kp0F9xN2DY9KI2mFHvBUHu7JeaG+dR9flgRLbMMsFb8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=1lSu7XTlBVMrUGwrNJPF4Yo0VlQiHn6c3t/fp8gHGWeFTRgN6STBo/62eT6oHpd1M
+         PbV/gcUXgJ3n/nH/yj5N4zUzfuklV6gJ2+GhauH/X8P6ti73rOSJpaTCanS5NTWjAA
+         3JYqJC7UBv+it6c8rTlzyHNUNO6evNCz6FDzFoYY=
+From:   Arnaldo Carvalho de Melo <acme@kernel.org>
+To:     Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
+        Clark Williams <williams@redhat.com>,
+        linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        devicetree@vger.kernel.org,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>, Joe Perches <joe@perches.com>,
+        linux-acpi@vger.kernel.org, linux-trace-devel@vger.kernel.org,
+        Petr Mladek <pmladek@suse.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 25/31] tools lib traceevent: Convert remaining %p[fF] users to %p[sS]
+Date:   Fri, 20 Sep 2019 11:25:36 -0300
+Message-Id: <20190920142542.12047-26-acme@kernel.org>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190920142542.12047-1-acme@kernel.org>
+References: <20190920142542.12047-1-acme@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20190919195624.1140941-1-luzmaximilian@gmail.com>
-Content-Language: en-US
-X-MC-Unique: YGGhnYVQPriGMu0czvbDvw-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Maximilian,
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-Interesting patch. Some comments about the i2c situation below.
+There are no in-kernel %p[fF] users left. Convert the traceevent tool,
+too, to align with the kernel.
 
-Also I will give this a test-run on some of the existing devices
-which rely on the instantiation of serdev devices for ACPI
-devices which are childs of the uart device.
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: devicetree@vger.kernel.org
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Joe Perches <joe@perches.com>
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-trace-devel@vger.kernel.org
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Cc: Tzvetomir Stoyanov <tstoyanov@vmware.com>
+Link: http://lore.kernel.org/lkml/20190918133419.7969-2-sakari.ailus@linux.intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+---
+ .../Documentation/libtraceevent-func_apis.txt  | 10 +++++-----
+ tools/lib/traceevent/event-parse.c             | 18 ++++++++++++++----
+ 2 files changed, 19 insertions(+), 9 deletions(-)
 
-On 19-09-2019 21:56, Maximilian Luz wrote:
-> When registering a serdev controller, ACPI needs to be checked for
-> devices attached to it. Currently, all immediate children of the ACPI
-> node of the controller are assumed to be UART client devices for this
-> controller. Furthermore, these devices are not searched elsewhere.
->=20
-> This is incorrect: Similar to SPI and I2C devices, the UART client
-> device definition (via UARTSerialBusV2) can reside anywhere in the ACPI
-> namespace as resource definition inside the _CRS method and points to
-> the controller via its ResourceSource field. This field may either
-> contain a fully qualified or relative path, indicating the controller
-> device. To address this, we need to walk over the whole ACPI namespace,
-> looking at each resource definition, and match the client device to the
-> controller via this field.
->=20
-> Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
-> ---
-> This patch is similar to the the implementations in drivers/spi/spi.c
-> (see commit 4c3c59544f33e97cf8557f27e05a9904ead16363) and
-> drivers/i2c/i2c-core-acpi.c. However, I think that there may be an
-> issues with these two implementations: Both walk over the whole ACPI
-> namespace, but only match the first SPI or I2C resource (respectively),
-> so I think there may be problems when multiple SPI or I2C resources are
-> defined under the same ACPI device node (as in second or third SPI/I2C
-> resource definitions being ignored).
-
-Right, so from the i2c side of things, the story with multiple
-I2cSerialBusV2 resources is that normally we want to instantiate
-only 1 kernel "struct device" for 1 ACPI "Device()" definition.
-
-If a single I2C chip/device listens on multiple addresses then
-usually the other addresses can be derived from the first one and
-the device-driver can get a handle to access the other addresses by
-using e.g. i2c_new_dummy or i2c_new_secondary_device.
-
-With that said of course there are exceptions where vendors get
-creative and put multiple I2cSerialBusV2 resources in a single
-ACPI "Device()" even though they point to separate chips.
-
-For this we have some special handling in:
-drivers/platform/x86/i2c-multi-instantiate.c
-
-Also note how drivers/platform/x86/i2c-multi-instantiate.c maps the
-original ACPI HID as e.g. "BSG1160" to per device match strings,
-because if there are multiple I2cSerialBusV2 resources and they
-point to separate chips, then we need something to get the right
-driver to bind to each I2cSerialBusV2 address, so the normal
-modalias of e.g. acpi:BSG1160 is no good, we need a different modalias
-for each I2cSerialBusV2 address.
-
-Another way of looking at this is a typical _CRS for a device with
-*SerialBusV2 resources will also have 1 or more Interrupt resources
-and 1 or more GPIO resources. We are not instantiating separate
-"struct device"-s in the kernel for each of those, since all the
-resources together describe a single device, so we instantiate e.g.
-an i2c_client and then the i2c_driver's probe method calls e.g.
-platform_get_irq() to get the IRQ(s).
-
-Given the above I think you may want to also limit your patch to
-only instantiate a "struct device" for the first UARTSerialBusV2
-in an ACPI "Device()"'s  .
-
-I hope this sheds some clarity on the (muddy) situation wrt
-I2cSerialBusV2 handling.
-
-Regards,
-
-Hans
+diff --git a/tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt b/tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt
+index 38bfea30a5f6..f6aca0df2151 100644
+--- a/tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt
++++ b/tools/lib/traceevent/Documentation/libtraceevent-func_apis.txt
+@@ -59,12 +59,12 @@ parser context.
+ 
+ The _tep_register_function()_ function registers a function name mapped to an
+ address and (optional) module. This mapping is used in case the function tracer
+-or events have "%pF" or "%pS" parameter in its format string. It is common to
+-pass in the kallsyms function names with their corresponding addresses with this
++or events have "%pS" parameter in its format string. It is common to pass in
++the kallsyms function names with their corresponding addresses with this
+ function. The _tep_ argument is the trace event parser context. The _name_ is
+-the name of the function, the string is copied internally. The _addr_ is
+-the start address of the function. The _mod_ is the kernel module
+-the function may be in (NULL for none).
++the name of the function, the string is copied internally. The _addr_ is the
++start address of the function. The _mod_ is the kernel module the function may
++be in (NULL for none).
+ 
+ The _tep_register_print_string()_ function  registers a string by the address
+ it was stored in the kernel. Some strings internal to the kernel with static
+diff --git a/tools/lib/traceevent/event-parse.c b/tools/lib/traceevent/event-parse.c
+index bb22238debfe..6f842af4550b 100644
+--- a/tools/lib/traceevent/event-parse.c
++++ b/tools/lib/traceevent/event-parse.c
+@@ -4367,10 +4367,20 @@ static struct tep_print_arg *make_bprint_args(char *fmt, void *data, int size, s
+ 					switch (*ptr) {
+ 					case 's':
+ 					case 'S':
+-					case 'f':
+-					case 'F':
+ 					case 'x':
+ 						break;
++					case 'f':
++					case 'F':
++						/*
++						 * Pre-5.5 kernels use %pf and
++						 * %pF for printing symbols
++						 * while kernels since 5.5 use
++						 * %pfw for fwnodes. So check
++						 * %p[fF] isn't followed by 'w'.
++						 */
++						if (ptr[1] != 'w')
++							break;
++						/* fall through */
+ 					default:
+ 						/*
+ 						 * Older kernels do not process
+@@ -4487,12 +4497,12 @@ get_bprint_format(void *data, int size __maybe_unused,
+ 
+ 	printk = find_printk(tep, addr);
+ 	if (!printk) {
+-		if (asprintf(&format, "%%pf: (NO FORMAT FOUND at %llx)\n", addr) < 0)
++		if (asprintf(&format, "%%ps: (NO FORMAT FOUND at %llx)\n", addr) < 0)
+ 			return NULL;
+ 		return format;
+ 	}
+ 
+-	if (asprintf(&format, "%s: %s", "%pf", printk->printk) < 0)
++	if (asprintf(&format, "%s: %s", "%ps", printk->printk) < 0)
+ 		return NULL;
+ 
+ 	return format;
+-- 
+2.21.0
 
