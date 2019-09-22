@@ -2,35 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68FA7BA9BB
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 Sep 2019 21:52:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED9B5BA976
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Sep 2019 21:52:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437175AbfIVTSp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 22 Sep 2019 15:18:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56002 "EHLO mail.kernel.org"
+        id S1728195AbfIVTP1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 22 Sep 2019 15:15:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58754 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405645AbfIVSzF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:55:05 -0400
+        id S2408207AbfIVS4g (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:56:36 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DD69B21479;
-        Sun, 22 Sep 2019 18:55:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0D12C2184D;
+        Sun, 22 Sep 2019 18:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178504;
-        bh=2ZDyCA/W82QMIcVj4QKv0dW3+M4TLs0nbEMoSYY3yjc=;
+        s=default; t=1569178595;
+        bh=eAjUJp1E2xHVDiwJ3NWPs36uLgMPOkY1v8U/SjReQOY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kdyzX8gYyZAg6DdE0zIRNsPeJ9niog/fSUlmtf8OaW2kochFEAMddhbdLI2LBVR/b
-         1n6t/Cddt3nk0z1KyFnKBXCm5oW1EOr6y0IRfcpacD8IR4uuWMkoXCRMXAy/uMqrDS
-         cVvVnleoRGQphDBFohVrL46I49lS0PsoM0gsz0eg=
+        b=rIpfXKYl5vineCSTWa8eq4NNAKZaSRu0liNk1HPqB7x/A6h4U1KYOgVVjV7rb3PrY
+         t1camPsaQxu0aBDTRvqo5+kNLp+ddgq1FrB6YYTS4wQsGDq+PHZMtfvxosGwGD/zII
+         A2YRZVhLKYexqf5lV53ttVqywl7+Ul4SJhCcu+HA=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Jiri Slaby <jslaby@suse.cz>,
+Cc:     Wenwen Wang <wenwen@cs.uga.edu>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 036/128] ACPI / processor: don't print errors for processorIDs == 0xff
-Date:   Sun, 22 Sep 2019 14:52:46 -0400
-Message-Id: <20190922185418.2158-36-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 100/128] ACPI: custom_method: fix memory leaks
+Date:   Sun, 22 Sep 2019 14:53:50 -0400
+Message-Id: <20190922185418.2158-100-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190922185418.2158-1-sashal@kernel.org>
 References: <20190922185418.2158-1-sashal@kernel.org>
@@ -43,65 +43,45 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Jiri Slaby <jslaby@suse.cz>
+From: Wenwen Wang <wenwen@cs.uga.edu>
 
-[ Upstream commit 2c2b005f549544c13ef4cfb0e4842949066889bc ]
+[ Upstream commit 03d1571d9513369c17e6848476763ebbd10ec2cb ]
 
-Some platforms define their processors in this manner:
-    Device (SCK0)
-    {
-	Name (_HID, "ACPI0004" /* Module Device */)  // _HID: Hardware ID
-	Name (_UID, "CPUSCK0")  // _UID: Unique ID
-	Processor (CP00, 0x00, 0x00000410, 0x06){}
-	Processor (CP01, 0x02, 0x00000410, 0x06){}
-	Processor (CP02, 0x04, 0x00000410, 0x06){}
-	Processor (CP03, 0x06, 0x00000410, 0x06){}
-	Processor (CP04, 0x01, 0x00000410, 0x06){}
-	Processor (CP05, 0x03, 0x00000410, 0x06){}
-	Processor (CP06, 0x05, 0x00000410, 0x06){}
-	Processor (CP07, 0x07, 0x00000410, 0x06){}
-	Processor (CP08, 0xFF, 0x00000410, 0x06){}
-	Processor (CP09, 0xFF, 0x00000410, 0x06){}
-	Processor (CP0A, 0xFF, 0x00000410, 0x06){}
-	Processor (CP0B, 0xFF, 0x00000410, 0x06){}
-...
+In cm_write(), 'buf' is allocated through kzalloc(). In the following
+execution, if an error occurs, 'buf' is not deallocated, leading to memory
+leaks. To fix this issue, free 'buf' before returning the error.
 
-The processors marked as 0xff are invalid, there are only 8 of them in
-this case.
-
-So do not print an error on ids == 0xff, just print an info message.
-Actually, we could return ENODEV even on the first CPU with ID 0xff, but
-ACPI spec does not forbid the 0xff value to be a processor ID. Given
-0xff could be a correct one, we would break working systems if we
-returned ENODEV.
-
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Fixes: 526b4af47f44 ("ACPI: Split out custom_method functionality into an own driver")
+Signed-off-by: Wenwen Wang <wenwen@cs.uga.edu>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_processor.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/acpi/custom_method.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index fc447410ae4d1..a448cdf567188 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -282,9 +282,13 @@ static int acpi_processor_get_info(struct acpi_device *device)
+diff --git a/drivers/acpi/custom_method.c b/drivers/acpi/custom_method.c
+index e967c1173ba32..222ea3f12f41e 100644
+--- a/drivers/acpi/custom_method.c
++++ b/drivers/acpi/custom_method.c
+@@ -48,8 +48,10 @@ static ssize_t cm_write(struct file *file, const char __user * user_buf,
+ 	if ((*ppos > max_size) ||
+ 	    (*ppos + count > max_size) ||
+ 	    (*ppos + count < count) ||
+-	    (count > uncopied_bytes))
++	    (count > uncopied_bytes)) {
++		kfree(buf);
+ 		return -EINVAL;
++	}
+ 
+ 	if (copy_from_user(buf + (*ppos), user_buf, count)) {
+ 		kfree(buf);
+@@ -69,6 +71,7 @@ static ssize_t cm_write(struct file *file, const char __user * user_buf,
+ 		add_taint(TAINT_OVERRIDDEN_ACPI_TABLE, LOCKDEP_NOW_UNRELIABLE);
  	}
  
- 	if (acpi_duplicate_processor_id(pr->acpi_id)) {
--		dev_err(&device->dev,
--			"Failed to get unique processor _UID (0x%x)\n",
--			pr->acpi_id);
-+		if (pr->acpi_id == 0xff)
-+			dev_info_once(&device->dev,
-+				"Entry not well-defined, consider updating BIOS\n");
-+		else
-+			dev_err(&device->dev,
-+				"Failed to get unique processor _UID (0x%x)\n",
-+				pr->acpi_id);
- 		return -ENODEV;
- 	}
++	kfree(buf);
+ 	return count;
+ }
  
 -- 
 2.20.1
