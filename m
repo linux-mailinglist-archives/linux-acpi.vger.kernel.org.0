@@ -2,39 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2D73BA4D2
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 Sep 2019 20:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF6A3BA5FF
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Sep 2019 21:45:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389072AbfIVSwM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 22 Sep 2019 14:52:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50818 "EHLO mail.kernel.org"
+        id S2390451AbfIVSq7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 22 Sep 2019 14:46:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43306 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2407206AbfIVSwL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:52:11 -0400
+        id S2390447AbfIVSq7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:46:59 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 63BCF21479;
-        Sun, 22 Sep 2019 18:52:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8C474206C2;
+        Sun, 22 Sep 2019 18:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178330;
-        bh=XUmmIth62BR1fhxQkpaj7JH5ZHWo0kcvwHPpfRdMUzc=;
+        s=default; t=1569178018;
+        bh=/1Doc4+p/q9z3gLW6wxPhUbWI8u6hlwl8Sqo2S/AsAA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QcGM+efBIc8m555gN8D+XCZ7+WzynqF0bQ3qzWN+OCG67rl1mI3NjZXIVeT6xjhBg
-         f9FvwPdbgoUsnylz808NddhHEe+wPt4TrijvgSc22AprFm++SRsdntaDNitaevUnyE
-         K0MywES+oY03S+mLEEt3sEgrhJpi2SHx4/GzRx+s=
+        b=kvq2TLNnwkj4Fu27nigvSEuBnsYImFMRq7/AFkHlvpAdkiS1JyffbzDW60x1Doh21
+         HsRBl6wh/I+KfgjkaoXmtRLm5F4oxPWEoG13GGw4IJOpPAe8w432snnVxBEqH4d5I3
+         nWuaPUm/CxbvbuIQqcgCN+OmAWIDTByQuZdLoNjI=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Liguang Zhang <zhangliguang@linux.alibaba.com>,
         Borislav Petkov <bp@suse.de>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 094/185] ACPI / APEI: Release resources if gen_pool_add() fails
-Date:   Sun, 22 Sep 2019 14:47:52 -0400
-Message-Id: <20190922184924.32534-94-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.3 104/203] ACPI / APEI: Release resources if gen_pool_add() fails
+Date:   Sun, 22 Sep 2019 14:42:10 -0400
+Message-Id: <20190922184350.30563-104-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922184924.32534-1-sashal@kernel.org>
-References: <20190922184924.32534-1-sashal@kernel.org>
+In-Reply-To: <20190922184350.30563-1-sashal@kernel.org>
+References: <20190922184350.30563-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -63,7 +63,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 15 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 993940d582f50..6875bf629f16e 100644
+index a66e00fe31fec..66205ec545553 100644
 --- a/drivers/acpi/apei/ghes.c
 +++ b/drivers/acpi/apei/ghes.c
 @@ -153,6 +153,7 @@ static void ghes_unmap(void __iomem *vaddr, enum fixed_addresses fixmap_idx)
