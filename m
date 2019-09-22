@@ -2,36 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF6A3BA5FF
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 Sep 2019 21:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0FCBA631
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Sep 2019 21:46:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390451AbfIVSq7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 22 Sep 2019 14:46:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43306 "EHLO mail.kernel.org"
+        id S2391466AbfIVSsN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 22 Sep 2019 14:48:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44934 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390447AbfIVSq7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:46:59 -0400
+        id S2391457AbfIVSsM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:48:12 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8C474206C2;
-        Sun, 22 Sep 2019 18:46:57 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 62CED214D9;
+        Sun, 22 Sep 2019 18:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178018;
-        bh=/1Doc4+p/q9z3gLW6wxPhUbWI8u6hlwl8Sqo2S/AsAA=;
+        s=default; t=1569178092;
+        bh=almqlEgrShZjlwAf+YmnkiSQmi+dQpvSMs4EOo+e5No=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kvq2TLNnwkj4Fu27nigvSEuBnsYImFMRq7/AFkHlvpAdkiS1JyffbzDW60x1Doh21
-         HsRBl6wh/I+KfgjkaoXmtRLm5F4oxPWEoG13GGw4IJOpPAe8w432snnVxBEqH4d5I3
-         nWuaPUm/CxbvbuIQqcgCN+OmAWIDTByQuZdLoNjI=
+        b=QkRy1uRaR94eQnmAMR5IVLLqDYmcInUxGH0x03M2YeYtQm9PGEVuAaNIyweFtfVi0
+         ajGvoFtdhS2hHNcH82MoFx3JB1WBhjIFo16pCNwLfeP63QMZEHq9EuVCJ2foTqIYNP
+         vfnWor40iwiM/k7E1QWKr2Ug5eKyUAVNSOeVb4xk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Liguang Zhang <zhangliguang@linux.alibaba.com>,
-        Borislav Petkov <bp@suse.de>,
+Cc:     Wenwen Wang <wenwen@cs.uga.edu>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 104/203] ACPI / APEI: Release resources if gen_pool_add() fails
-Date:   Sun, 22 Sep 2019 14:42:10 -0400
-Message-Id: <20190922184350.30563-104-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.3 157/203] ACPI: custom_method: fix memory leaks
+Date:   Sun, 22 Sep 2019 14:43:03 -0400
+Message-Id: <20190922184350.30563-157-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190922184350.30563-1-sashal@kernel.org>
 References: <20190922184350.30563-1-sashal@kernel.org>
@@ -44,66 +43,46 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Liguang Zhang <zhangliguang@linux.alibaba.com>
+From: Wenwen Wang <wenwen@cs.uga.edu>
 
-[ Upstream commit 6abc7622271dc520f241462e2474c71723638851 ]
+[ Upstream commit 03d1571d9513369c17e6848476763ebbd10ec2cb ]
 
-Destroy ghes_estatus_pool and release memory allocated via vmalloc() on
-errors in ghes_estatus_pool_init() in order to avoid memory leaks.
+In cm_write(), 'buf' is allocated through kzalloc(). In the following
+execution, if an error occurs, 'buf' is not deallocated, leading to memory
+leaks. To fix this issue, free 'buf' before returning the error.
 
- [ bp: do the labels properly and with descriptive names and massage. ]
-
-Signed-off-by: Liguang Zhang <zhangliguang@linux.alibaba.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/1563173924-47479-1-git-send-email-zhangliguang@linux.alibaba.com
+Fixes: 526b4af47f44 ("ACPI: Split out custom_method functionality into an own driver")
+Signed-off-by: Wenwen Wang <wenwen@cs.uga.edu>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/ghes.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/acpi/custom_method.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index a66e00fe31fec..66205ec545553 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -153,6 +153,7 @@ static void ghes_unmap(void __iomem *vaddr, enum fixed_addresses fixmap_idx)
- int ghes_estatus_pool_init(int num_ghes)
- {
- 	unsigned long addr, len;
-+	int rc;
+diff --git a/drivers/acpi/custom_method.c b/drivers/acpi/custom_method.c
+index b2ef4c2ec955d..fd66a736621cf 100644
+--- a/drivers/acpi/custom_method.c
++++ b/drivers/acpi/custom_method.c
+@@ -49,8 +49,10 @@ static ssize_t cm_write(struct file *file, const char __user * user_buf,
+ 	if ((*ppos > max_size) ||
+ 	    (*ppos + count > max_size) ||
+ 	    (*ppos + count < count) ||
+-	    (count > uncopied_bytes))
++	    (count > uncopied_bytes)) {
++		kfree(buf);
+ 		return -EINVAL;
++	}
  
- 	ghes_estatus_pool = gen_pool_create(GHES_ESTATUS_POOL_MIN_ALLOC_ORDER, -1);
- 	if (!ghes_estatus_pool)
-@@ -164,7 +165,7 @@ int ghes_estatus_pool_init(int num_ghes)
- 	ghes_estatus_pool_size_request = PAGE_ALIGN(len);
- 	addr = (unsigned long)vmalloc(PAGE_ALIGN(len));
- 	if (!addr)
--		return -ENOMEM;
-+		goto err_pool_alloc;
+ 	if (copy_from_user(buf + (*ppos), user_buf, count)) {
+ 		kfree(buf);
+@@ -70,6 +72,7 @@ static ssize_t cm_write(struct file *file, const char __user * user_buf,
+ 		add_taint(TAINT_OVERRIDDEN_ACPI_TABLE, LOCKDEP_NOW_UNRELIABLE);
+ 	}
  
- 	/*
- 	 * New allocation must be visible in all pgd before it can be found by
-@@ -172,7 +173,19 @@ int ghes_estatus_pool_init(int num_ghes)
- 	 */
- 	vmalloc_sync_all();
- 
--	return gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
-+	rc = gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
-+	if (rc)
-+		goto err_pool_add;
-+
-+	return 0;
-+
-+err_pool_add:
-+	vfree((void *)addr);
-+
-+err_pool_alloc:
-+	gen_pool_destroy(ghes_estatus_pool);
-+
-+	return -ENOMEM;
++	kfree(buf);
+ 	return count;
  }
  
- static int map_gen_v2(struct ghes *ghes)
 -- 
 2.20.1
 
