@@ -2,38 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FE32BA728
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 Sep 2019 21:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6BF1BA781
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Sep 2019 21:48:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438543AbfIVS4Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 22 Sep 2019 14:56:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58142 "EHLO mail.kernel.org"
+        id S2394959AbfIVS64 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 22 Sep 2019 14:58:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33704 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2438524AbfIVS4N (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:56:13 -0400
+        id S2394938AbfIVS6w (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:58:52 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0D5962186A;
-        Sun, 22 Sep 2019 18:56:11 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5EA7021BE5;
+        Sun, 22 Sep 2019 18:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178572;
-        bh=K0AEGtS3ru3m5o3GBWv+/gtrDrzTVL4cNuryvWAlht0=;
+        s=default; t=1569178732;
+        bh=a2nwVqqc8EXzF104rsu8lIS0cR7c6+55UGrR7SNgc6w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AmwN/FvrzgPHBqOlpcdsld10hKwS7yU5dZ2+Th+HModSqeuYRD0ofCe93R4/wtR2O
-         H/UWYHtAioZl9JuHX2J+fF9HCNWn2wAbpB163k80z0acNSR7Zsh66qc+qSHMYch+1+
-         11WaFqjIjNVmRk2NC7dOrazBp7LNOybLJ945PBzc=
+        b=QWf5g3Jorvz5o+mjKobnH6eImj/uahIJxP3Nwh521pzRqSDL7DD/wA3qB2ZajEodW
+         HPJ4L5VfQk/B+SFA20b5+zeTkOrnT9eD5W14PDcgJ6BoxknQjifzvCHz4oQteHlQuM
+         h0d3csEUj7C+1RzvMiBBjvAzAuayLgPCehOu04kY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Al Stone <ahs3@redhat.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 084/128] ACPI / CPPC: do not require the _PSD method
-Date:   Sun, 22 Sep 2019 14:53:34 -0400
-Message-Id: <20190922185418.2158-84-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 61/89] ACPI / CPPC: do not require the _PSD method
+Date:   Sun, 22 Sep 2019 14:56:49 -0400
+Message-Id: <20190922185717.3412-61-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922185418.2158-1-sashal@kernel.org>
-References: <20190922185418.2158-1-sashal@kernel.org>
+In-Reply-To: <20190922185717.3412-1-sashal@kernel.org>
+References: <20190922185717.3412-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -74,10 +74,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index d9ce4b162e2ce..a1aa59849b964 100644
+index e5b47f032d9af..7bf1948b1223b 100644
 --- a/drivers/acpi/cppc_acpi.c
 +++ b/drivers/acpi/cppc_acpi.c
-@@ -369,8 +369,10 @@ static int acpi_get_psd(struct cpc_desc *cpc_ptr, acpi_handle handle)
+@@ -365,8 +365,10 @@ static int acpi_get_psd(struct cpc_desc *cpc_ptr, acpi_handle handle)
  	union acpi_object  *psd = NULL;
  	struct acpi_psd_package *pdomain;
  
