@@ -2,39 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF00CBA788
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 Sep 2019 21:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50A2FBA7E8
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Sep 2019 21:49:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393006AbfIVS7F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 22 Sep 2019 14:59:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33996 "EHLO mail.kernel.org"
+        id S2395195AbfIVTA2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 22 Sep 2019 15:00:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36136 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2394995AbfIVS7E (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:59:04 -0400
+        id S2395181AbfIVTA0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 22 Sep 2019 15:00:26 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7E60721A4A;
-        Sun, 22 Sep 2019 18:59:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 75743206C2;
+        Sun, 22 Sep 2019 19:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178743;
-        bh=QJorBsuu7/I+O7IoyuxkA/c3Do8nJw9lZYvwg/ZsupQ=;
+        s=default; t=1569178826;
+        bh=4VoAc1yvZwRE0X8+pm99fjf3hGnKk12dJhyILIPYcAQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Iy8aPvtIrGda+wsjP88cHox83Di/2LkIcSFGqbBDEeyUzz8QKKncK7Bn58KYkiBK0
-         +TmLfykpSIQilQxQsnR/66JrPi+eVRZ0G8vK7rOZWpyZyJJbiG5HekUnwD1DXeS21f
-         ZOhOBlqzOVd+b9gWW/AbZnB9bL7PSr0g+xIJqBOE=
+        b=r2zK8c2rFNt6KWmngc8UUpwGmC2pixsPWh5nCrFCAy+py8CbR4MQTjAzfzB79cb9w
+         lvbikyPcB0YiinoLFUO7NDM7xhGMW1nJqd3LWrl3nxt1c1j0Q1VVsP+9WaWxQnWNhj
+         DAYSRY2XSUiqbmmb6J04X6DzWYQzolIoP8jAqCL8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wenwen Wang <wenwen@cs.uga.edu>,
+Cc:     Al Stone <ahs3@redhat.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 69/89] ACPI / PCI: fix acpi_pci_irq_enable() memory leak
-Date:   Sun, 22 Sep 2019 14:56:57 -0400
-Message-Id: <20190922185717.3412-69-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.9 37/60] ACPI / CPPC: do not require the _PSD method
+Date:   Sun, 22 Sep 2019 14:59:10 -0400
+Message-Id: <20190922185934.4305-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922185717.3412-1-sashal@kernel.org>
-References: <20190922185717.3412-1-sashal@kernel.org>
+In-Reply-To: <20190922185934.4305-1-sashal@kernel.org>
+References: <20190922185934.4305-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,39 +43,53 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Wenwen Wang <wenwen@cs.uga.edu>
+From: Al Stone <ahs3@redhat.com>
 
-[ Upstream commit 29b49958cf73b439b17fa29e9a25210809a6c01c ]
+[ Upstream commit 4c4cdc4c63853fee48c02e25c8605fb65a6c9924 ]
 
-In acpi_pci_irq_enable(), 'entry' is allocated by kzalloc() in
-acpi_pci_irq_check_entry() (invoked from acpi_pci_irq_lookup()). However,
-it is not deallocated if acpi_pci_irq_valid() returns false, leading to a
-memory leak. To fix this issue, free 'entry' before returning 0.
+According to the ACPI 6.3 specification, the _PSD method is optional
+when using CPPC.  The underlying assumption is that each CPU can change
+frequency independently from all other CPUs; _PSD is provided to tell
+the OS that some processors can NOT do that.
 
-Fixes: e237a5518425 ("x86/ACPI/PCI: Recognize that Interrupt Line 255 means "not connected"")
-Signed-off-by: Wenwen Wang <wenwen@cs.uga.edu>
+However, the acpi_get_psd() function returns ENODEV if there is no _PSD
+method present, or an ACPI error status if an error occurs when evaluating
+_PSD, if present.  This makes _PSD mandatory when using CPPC, in violation
+of the specification, and only on Linux.
+
+This has forced some firmware writers to provide a dummy _PSD, even though
+it is irrelevant, but only because Linux requires it; other OSPMs follow
+the spec.  We really do not want to have OS specific ACPI tables, though.
+
+So, correct acpi_get_psd() so that it does not return an error if there
+is no _PSD method present, but does return a failure when the method can
+not be executed properly.  This allows _PSD to be optional as it should
+be.
+
+Signed-off-by: Al Stone <ahs3@redhat.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/pci_irq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/acpi/cppc_acpi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
-index c576a6fe4ebb3..94ded9513c73b 100644
---- a/drivers/acpi/pci_irq.c
-+++ b/drivers/acpi/pci_irq.c
-@@ -462,8 +462,10 @@ int acpi_pci_irq_enable(struct pci_dev *dev)
- 		 * No IRQ known to the ACPI subsystem - maybe the BIOS /
- 		 * driver reported one, then use it. Exit in any case.
- 		 */
--		if (!acpi_pci_irq_valid(dev, pin))
-+		if (!acpi_pci_irq_valid(dev, pin)) {
-+			kfree(entry);
- 			return 0;
-+		}
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index e0ea8f56d2bfd..9ec4618df5338 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -360,8 +360,10 @@ static int acpi_get_psd(struct cpc_desc *cpc_ptr, acpi_handle handle)
+ 	union acpi_object  *psd = NULL;
+ 	struct acpi_psd_package *pdomain;
  
- 		if (acpi_isa_register_gsi(dev))
- 			dev_warn(&dev->dev, "PCI INT %c: no GSI\n",
+-	status = acpi_evaluate_object_typed(handle, "_PSD", NULL, &buffer,
+-			ACPI_TYPE_PACKAGE);
++	status = acpi_evaluate_object_typed(handle, "_PSD", NULL,
++					    &buffer, ACPI_TYPE_PACKAGE);
++	if (status == AE_NOT_FOUND)	/* _PSD is optional */
++		return 0;
+ 	if (ACPI_FAILURE(status))
+ 		return -ENODEV;
+ 
 -- 
 2.20.1
 
