@@ -2,144 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77AAFBB19B
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Sep 2019 11:47:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87685BB1FC
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Sep 2019 12:13:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392716AbfIWJrV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Sep 2019 05:47:21 -0400
-Received: from mail.steuer-voss.de ([85.183.69.95]:40840 "EHLO
-        mail.steuer-voss.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390596AbfIWJrV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Sep 2019 05:47:21 -0400
-X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
-Received: from pc-niv.weinmann.com (localhost [127.0.0.1])
-        by mail.steuer-voss.de (Postfix) with ESMTP id 7C9944D1BF;
-        Mon, 23 Sep 2019 11:47:18 +0200 (CEST)
-From:   Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
-To:     "Shevchenko, Andriy" <andriy.shevchenko@intel.com>,
-        "Schmauss, Erik" <erik.schmauss@intel.com>,
+        id S1728748AbfIWKNQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Sep 2019 06:13:16 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:51020 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727141AbfIWKNP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 23 Sep 2019 06:13:15 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id E3D6681DE8;
+        Mon, 23 Sep 2019 10:13:14 +0000 (UTC)
+Received: from [10.36.116.207] (ovpn-116-207.ams2.redhat.com [10.36.116.207])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id DDA765D9CA;
+        Mon, 23 Sep 2019 10:13:12 +0000 (UTC)
+Subject: Re: [PATCH RFC v3 1/9] ACPI: NUMA: export pxm_to_node
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, virtualization@lists.linux-foundation.org,
+        Andrea Arcangeli <aarcange@redhat.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Moore, Robert" <robert.moore@intel.com>
-Cc:     Len Brown <lenb@kernel.org>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org, nv@vosn.de,
-        Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
-Subject: [PATCH] ACPICA: Introduce acpi_load_table_with_index()
-Date:   Mon, 23 Sep 2019 11:47:01 +0200
-Message-Id: <20190923094701.24950-1-nikolaus.voss@loewensteinmedical.de>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <6851700.HULMXZj6Ep@kreacher>
-References: <6851700.HULMXZj6Ep@kreacher>
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+References: <20190919142228.5483-1-david@redhat.com>
+ <20190919142228.5483-2-david@redhat.com>
+From:   David Hildenbrand <david@redhat.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+ SE+xAvmumFBY
+Organization: Red Hat GmbH
+Message-ID: <f4d8204e-71a1-855e-3992-35f7ec90440c@redhat.com>
+Date:   Mon, 23 Sep 2019 12:13:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20190919142228.5483-2-david@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.25]); Mon, 23 Sep 2019 10:13:15 +0000 (UTC)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-For unloading an ACPI table, it is necessary to provide the
-index of the table. The method intended for dynamically
-loading or hotplug addition of tables, acpi_load_table(),
-does not provide this information, so a new function
-acpi_load_table_with_index() with the same functionality,
-but an optional pointer to the loaded table index is introduced.
+On 19.09.19 16:22, David Hildenbrand wrote:
+> Will be needed by virtio-mem to identify the node from a pxm.
+> 
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  drivers/acpi/numa.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/acpi/numa.c b/drivers/acpi/numa.c
+> index eadbf90e65d1..d5847fa7ac69 100644
+> --- a/drivers/acpi/numa.c
+> +++ b/drivers/acpi/numa.c
+> @@ -35,6 +35,7 @@ int pxm_to_node(int pxm)
+>  		return NUMA_NO_NODE;
+>  	return pxm_to_node_map[pxm];
+>  }
+> +EXPORT_SYMBOL(pxm_to_node);
 
-The new function is used in the acpi_configfs driver to save the
-index of the newly loaded table in order to unload it later.
+FWIW, this is a fairly old patch I dragged along and I think I'll
+convert this to EXPORT_SYMBOL_GPL now that I know better :)
 
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Fixes: d06c47e3dd07f ("ACPI: configfs: Resolve objects on host-directed table loads")
-Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
----
- drivers/acpi/acpi_configfs.c   |  2 +-
- drivers/acpi/acpica/tbxfload.c | 43 ++++++++++++++++++++++++++++++++++
- include/acpi/acpixf.h          |  6 +++++
- 3 files changed, 50 insertions(+), 1 deletion(-)
+>  
+>  int node_to_pxm(int node)
+>  {
+> 
 
-diff --git a/drivers/acpi/acpi_configfs.c b/drivers/acpi/acpi_configfs.c
-index 57d9d574d4dd..9e77d5a266c0 100644
---- a/drivers/acpi/acpi_configfs.c
-+++ b/drivers/acpi/acpi_configfs.c
-@@ -53,7 +53,7 @@ static ssize_t acpi_table_aml_write(struct config_item *cfg,
- 	if (!table->header)
- 		return -ENOMEM;
- 
--	ret = acpi_load_table(table->header);
-+	ret = acpi_load_table_with_index(table->header, &table->index);
- 	if (ret) {
- 		kfree(table->header);
- 		table->header = NULL;
-diff --git a/drivers/acpi/acpica/tbxfload.c b/drivers/acpi/acpica/tbxfload.c
-index 86f1693f6d29..7ea4fc879cb6 100644
---- a/drivers/acpi/acpica/tbxfload.c
-+++ b/drivers/acpi/acpica/tbxfload.c
-@@ -309,6 +309,49 @@ acpi_status acpi_load_table(struct acpi_table_header *table)
- 
- ACPI_EXPORT_SYMBOL(acpi_load_table)
- 
-+/*******************************************************************************
-+ *
-+ * FUNCTION:    acpi_load_table_with_index
-+ *
-+ * PARAMETERS:  table               - Pointer to a buffer containing the ACPI
-+ *                                    table to be loaded.
-+ *              table_idx           - Pointer to a u32 for storing the table
-+ *                                    index, might be NULL
-+ * RETURN:      Status
-+ *
-+ * DESCRIPTION: see acpi_load_table() above. Additionally returns the index
-+ *              of the newly created table in table_idx.
-+ *
-+ ******************************************************************************/
-+acpi_status acpi_load_table_with_index(struct acpi_table_header *table,
-+				       u32 *table_idx)
-+{
-+	acpi_status status;
-+	u32 table_index;
-+
-+	ACPI_FUNCTION_TRACE(acpi_load_table_with_index);
-+
-+	/* Parameter validation */
-+	if (!table)
-+		return_ACPI_STATUS(AE_BAD_PARAMETER);
-+
-+	/* Install the table and load it into the namespace */
-+	ACPI_INFO(("Host-directed Dynamic ACPI Table Load:"));
-+	status = acpi_tb_install_and_load_table(
-+		ACPI_PTR_TO_PHYSADDR(table), ACPI_TABLE_ORIGIN_EXTERNAL_VIRTUAL,
-+		FALSE, &table_index);
-+	if (table_idx)
-+		*table_idx = table_index;
-+
-+	if (ACPI_SUCCESS(status)) {
-+		/* Complete the initialization/resolution of new objects */
-+		acpi_ns_initialize_objects();
-+	}
-+
-+	return_ACPI_STATUS(status);
-+}
-+ACPI_EXPORT_SYMBOL(acpi_load_table_with_index)
-+
- /*******************************************************************************
-  *
-  * FUNCTION:    acpi_unload_parent_table
-diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
-index e5e041413581..af375ab318de 100644
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -460,6 +460,12 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status ACPI_INIT_FUNCTION
- ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 			    acpi_load_table(struct acpi_table_header *table))
- 
-+
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_load_table_with_index(
-+				    struct acpi_table_header *table,
-+				    u32 *table_idx))
-+
- ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 			    acpi_unload_parent_table(acpi_handle object))
- 
+
 -- 
-2.17.1
 
+Thanks,
+
+David / dhildenb
