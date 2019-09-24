@@ -2,99 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BDC38BC7BE
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Sep 2019 14:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFA32BC825
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Sep 2019 14:47:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729918AbfIXMRC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Sep 2019 08:17:02 -0400
-Received: from mga18.intel.com ([134.134.136.126]:31404 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726923AbfIXMRB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 24 Sep 2019 08:17:01 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Sep 2019 05:17:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,544,1559545200"; 
-   d="scan'208";a="203368825"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga001.fm.intel.com with ESMTP; 24 Sep 2019 05:16:58 -0700
-Received: from andy by smile with local (Exim 4.92.1)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iCjkW-0001ct-P5; Tue, 24 Sep 2019 15:16:56 +0300
-Date:   Tue, 24 Sep 2019 15:16:56 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Joerg Roedel <joro@8bytes.org>, iommu@lists.linux-foundation.org,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        id S2504979AbfIXMrp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Sep 2019 08:47:45 -0400
+Received: from mx2.suse.de ([195.135.220.15]:60080 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2504978AbfIXMro (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 24 Sep 2019 08:47:44 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id C4148AAB0;
+        Tue, 24 Sep 2019 12:47:41 +0000 (UTC)
+Date:   Tue, 24 Sep 2019 14:47:41 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Joe Perches <joe@perches.com>, devicetree@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1 5/5] iommu/amd: Switch to use acpi_dev_hid_uid_match()
-Message-ID: <20190924121656.GV2680@smile.fi.intel.com>
-References: <20190924120153.8382-1-andriy.shevchenko@linux.intel.com>
- <20190924120153.8382-5-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v7 12/13] lib/vsprintf: Add %pfw conversion specifier for
+ printing fwnode names
+Message-ID: <20190924124741.tuqks52bpwheqbwj@pathway.suse.cz>
+References: <20190918133419.7969-1-sakari.ailus@linux.intel.com>
+ <20190918133419.7969-13-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190924120153.8382-5-andriy.shevchenko@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190918133419.7969-13-sakari.ailus@linux.intel.com>
+User-Agent: NeoMutt/20170912 (1.9.0)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 24, 2019 at 03:01:53PM +0300, Andy Shevchenko wrote:
-> Since we have a generic helper, drop custom implementation in the driver.
-
-Actually we may get rid of match_hid_uid() completely and thus slightly speed
-up get_acpihid_device_id().
-
-I'll wait for other comments and then send v2.
-
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/iommu/amd_iommu.c | 15 +--------------
->  1 file changed, 1 insertion(+), 14 deletions(-)
+On Wed 2019-09-18 16:34:18, Sakari Ailus wrote:
+> Add support for %pfw conversion specifier (with "f" and "P" modifiers) to
+> support printing full path of the node, including its name ("f") and only
+> the node's name ("P") in the printk family of functions. The two flags
+> have equivalent functionality to existing %pOF with the same two modifiers
+> ("f" and "P") on OF based systems. The ability to do the same on ACPI
+> based systems is added by this patch.
 > 
-> diff --git a/drivers/iommu/amd_iommu.c b/drivers/iommu/amd_iommu.c
-> index 61de81965c44..bad1bcea4ea1 100644
-> --- a/drivers/iommu/amd_iommu.c
-> +++ b/drivers/iommu/amd_iommu.c
-> @@ -129,24 +129,11 @@ static inline int match_hid_uid(struct device *dev,
->  				struct acpihid_map_entry *entry)
->  {
->  	struct acpi_device *adev = ACPI_COMPANION(dev);
-> -	const char *hid, *uid;
->  
->  	if (!adev)
->  		return -ENODEV;
->  
-> -	hid = acpi_device_hid(adev);
-> -	uid = acpi_device_uid(adev);
-> -
-> -	if (!hid || !(*hid))
-> -		return -ENODEV;
-> -
-> -	if (!uid || !(*uid))
-> -		return strcmp(hid, entry->hid);
-> -
-> -	if (!(*entry->uid))
-> -		return strcmp(hid, entry->hid);
-> -
-> -	return (strcmp(hid, entry->hid) || strcmp(uid, entry->uid));
-> +	return acpi_dev_hid_uid_match(adev, entry->hid, entry->uid) ? 0 : -ENODEV;
->  }
->  
->  static inline u16 get_pci_device_id(struct device *dev)
-> -- 
-> 2.23.0
+> On ACPI based systems the resulting strings look like
 > 
+> 	\_SB.PCI0.CIO2.port@1.endpoint@0
+> 
+> where the nodes are separated by a dot (".") and the first three are
+> ACPI device nodes and the latter two ACPI data nodes.
+> 
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
--- 
-With Best Regards,
-Andy Shevchenko
+Reviewed-by: Petr Mladek <pmladek@suse.com>
 
-
+Best Regards,
+Petr
