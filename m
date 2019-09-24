@@ -2,71 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 382FBBC5C9
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Sep 2019 12:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39F74BC76F
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Sep 2019 14:02:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409527AbfIXKpw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Sep 2019 06:45:52 -0400
-Received: from mx2.suse.de ([195.135.220.15]:57638 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2409506AbfIXKpw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 24 Sep 2019 06:45:52 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 52C51AF26;
-        Tue, 24 Sep 2019 10:45:50 +0000 (UTC)
-Date:   Tue, 24 Sep 2019 12:45:49 +0200
-From:   Petr Mladek <pmladek@suse.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Rob Herring <robh@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Joe Perches <joe@perches.com>, devicetree@vger.kernel.org,
+        id S2504823AbfIXMB7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Sep 2019 08:01:59 -0400
+Received: from mga02.intel.com ([134.134.136.20]:50789 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2504819AbfIXMB7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 24 Sep 2019 08:01:59 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Sep 2019 05:01:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,544,1559545200"; 
+   d="scan'208";a="179460795"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 24 Sep 2019 05:01:55 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 3CD28228; Tue, 24 Sep 2019 15:01:54 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Joerg Roedel <joro@8bytes.org>, iommu@lists.linux-foundation.org,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v7 09/13] lib/vsprintf: Add a note on re-using %pf or %pF
-Message-ID: <20190924104549.qiayzhr7zikja7sp@pathway.suse.cz>
-References: <20190918133419.7969-1-sakari.ailus@linux.intel.com>
- <20190918133419.7969-10-sakari.ailus@linux.intel.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/5] ACPI / utils: Describe function parameters in kernel-doc
+Date:   Tue, 24 Sep 2019 15:01:49 +0300
+Message-Id: <20190924120153.8382-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190918133419.7969-10-sakari.ailus@linux.intel.com>
-User-Agent: NeoMutt/20170912 (1.9.0)
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed 2019-09-18 16:34:15, Sakari Ailus wrote:
-> Add a note warning of re-use of obsolete %pf or %pF extensions.
-> 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> ---
->  lib/vsprintf.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> index b00b57f9f911f..df59818537b52 100644
-> --- a/lib/vsprintf.c
-> +++ b/lib/vsprintf.c
-> @@ -2008,6 +2008,8 @@ static char *kobject_string(char *buf, char *end, void *ptr,
->   * - 'S' For symbolic direct pointers (or function descriptors) with offset
->   * - 's' For symbolic direct pointers (or function descriptors) without offset
->   * - '[Ss]R' as above with __builtin_extract_return_addr() translation
-> + * - '[Ff]' Obsolete an now unsupported extension for printing direct pointers
-> + *	    or function descriptors. Be careful when re-using %pf or %pF!
+Kernel documentation script complains that some of the function parameters
+are not described:
 
-I am not a native speaker but the sentence is hard to parse to me.
-Also I miss the word 'symbolic'. IMHO, it described that the output
-was a symbol name.
+drivers/acpi/utils.c:462: warning: Function parameter or member 'handle' not described in 'acpi_handle_path'
+drivers/acpi/utils.c:484: warning: Function parameter or member 'level' not described in 'acpi_handle_printk'
+drivers/acpi/utils.c:484: warning: Function parameter or member 'handle' not described in 'acpi_handle_printk'
+drivers/acpi/utils.c:484: warning: Function parameter or member 'fmt' not described in 'acpi_handle_printk'
+drivers/acpi/utils.c:513: warning: Function parameter or member 'descriptor' not described in '__acpi_handle_debug'
+drivers/acpi/utils.c:513: warning: Function parameter or member 'handle' not described in '__acpi_handle_debug'
+drivers/acpi/utils.c:513: warning: Function parameter or member 'fmt' not described in '__acpi_handle_debug'
 
-What about something like?
+Describe function parameters where it's appropriate.
 
-  * - '[Ff]' %pf and %pF were obsoleted and later removed in favor of
-  *	    %ps and %pS. Be careful when re-using these specifiers.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/acpi/utils.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Best Regards,
-Petr
+diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
+index e3974a8f8fd4..dbd1c4cfd7d1 100644
+--- a/drivers/acpi/utils.c
++++ b/drivers/acpi/utils.c
+@@ -455,6 +455,7 @@ EXPORT_SYMBOL(acpi_evaluate_ost);
+ 
+ /**
+  * acpi_handle_path: Return the object path of handle
++ * @handle: ACPI device handle
+  *
+  * Caller must free the returned buffer
+  */
+@@ -473,6 +474,9 @@ static char *acpi_handle_path(acpi_handle handle)
+ 
+ /**
+  * acpi_handle_printk: Print message with ACPI prefix and object path
++ * @level: log level
++ * @handle: ACPI device handle
++ * @fmt: format string
+  *
+  * This function is called through acpi_handle_<level> macros and prints
+  * a message with ACPI prefix and object path.  This function acquires
+@@ -501,6 +505,9 @@ EXPORT_SYMBOL(acpi_handle_printk);
+ #if defined(CONFIG_DYNAMIC_DEBUG)
+ /**
+  * __acpi_handle_debug: pr_debug with ACPI prefix and object path
++ * @descriptor: Dynamic Debug descriptor
++ * @handle: ACPI device handle
++ * @fmt: format string
+  *
+  * This function is called through acpi_handle_debug macro and debug
+  * prints a message with ACPI prefix and object path. This function
+-- 
+2.23.0
+
