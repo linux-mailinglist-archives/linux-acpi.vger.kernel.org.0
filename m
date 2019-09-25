@@ -2,160 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E914BDC15
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Sep 2019 12:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76CC5BDC6B
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Sep 2019 12:53:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729967AbfIYKWX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Sep 2019 06:22:23 -0400
-Received: from mail.steuer-voss.de ([85.183.69.95]:41174 "EHLO
-        mail.steuer-voss.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727698AbfIYKWX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Sep 2019 06:22:23 -0400
-X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
-Received: by mail.steuer-voss.de (Postfix, from userid 1000)
-        id 8983C4D436; Wed, 25 Sep 2019 12:22:21 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.steuer-voss.de (Postfix) with ESMTP id 856FE4D253;
-        Wed, 25 Sep 2019 12:22:21 +0200 (CEST)
-Date:   Wed, 25 Sep 2019 12:22:21 +0200 (CEST)
-From:   Nikolaus Voss <nv@vosn.de>
-X-X-Sender: nv@fox.voss.local
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-cc:     "Schmauss, Erik" <erik.schmauss@intel.com>,
+        id S2390562AbfIYKxr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Sep 2019 06:53:47 -0400
+Received: from mga07.intel.com ([134.134.136.100]:32595 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390412AbfIYKxr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 25 Sep 2019 06:53:47 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Sep 2019 03:53:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,547,1559545200"; 
+   d="scan'208";a="340374263"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga004.jf.intel.com with ESMTP; 25 Sep 2019 03:53:43 -0700
+Received: from andy by smile with local (Exim 4.92.1)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1iD4vV-00034Z-VE; Wed, 25 Sep 2019 13:53:41 +0300
+Date:   Wed, 25 Sep 2019 13:53:41 +0300
+From:   "Shevchenko, Andriy" <andriy.shevchenko@intel.com>
+To:     Nikolaus Voss <nv@vosn.de>
+Cc:     "Moore, Robert" <robert.moore@intel.com>,
+        Ferry Toth <fntoth@gmail.com>,
+        "Schmauss, Erik" <erik.schmauss@intel.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Moore, Robert" <robert.moore@intel.com>,
         Len Brown <lenb@kernel.org>,
         Jacek Anaszewski <jacek.anaszewski@gmail.com>,
         Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ACPICA: Introduce acpi_load_table_with_index()
-In-Reply-To: <20190924151146.GW2680@smile.fi.intel.com>
-Message-ID: <alpine.DEB.2.20.1909251221570.582@fox.voss.local>
-References: <6851700.HULMXZj6Ep@kreacher> <20190923094701.24950-1-nikolaus.voss@loewensteinmedical.de> <20190924151146.GW2680@smile.fi.intel.com>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Jan Kiszka <jan.kiszka@siemens.com>
+Subject: Re: [PATCH] ACPICA: make acpi_load_table() return table index
+Message-ID: <20190925105341.GD5933@smile.fi.intel.com>
+References: <20190913151228.GT2680@smile.fi.intel.com>
+ <7625fe37-1710-056d-fb9e-39c33fd962a1@gmail.com>
+ <94F2FBAB4432B54E8AACC7DFDE6C92E3B967AEC9@ORSMSX110.amr.corp.intel.com>
+ <alpine.DEB.2.20.1909161134070.2910@fox.voss.local>
+ <94F2FBAB4432B54E8AACC7DFDE6C92E3B968327D@ORSMSX110.amr.corp.intel.com>
+ <alpine.DEB.2.20.1909181624550.3925@fox.voss.local>
+ <94F2FBAB4432B54E8AACC7DFDE6C92E3B9686438@ORSMSX110.amr.corp.intel.com>
+ <alpine.DEB.2.20.1909231100190.16390@fox.voss.local>
+ <94F2FBAB4432B54E8AACC7DFDE6C92E3B968B639@ORSMSX110.amr.corp.intel.com>
+ <alpine.DEB.2.20.1909251131060.65328@fox.voss.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.20.1909251131060.65328@fox.voss.local>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 24 Sep 2019, Andy Shevchenko wrote:
-> On Mon, Sep 23, 2019 at 11:47:01AM +0200, Nikolaus Voss wrote:
->> For unloading an ACPI table, it is necessary to provide the
->> index of the table. The method intended for dynamically
->> loading or hotplug addition of tables, acpi_load_table(),
->> does not provide this information, so a new function
->> acpi_load_table_with_index() with the same functionality,
->> but an optional pointer to the loaded table index is introduced.
->>
->> The new function is used in the acpi_configfs driver to save the
->> index of the newly loaded table in order to unload it later.
->>
->
-> Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+On Wed, Sep 25, 2019 at 12:18:11PM +0200, Nikolaus Voss wrote:
+> On Tue, 24 Sep 2019, Moore, Robert wrote:
+> > How about this:
+> > Go back to using acpi_tb_install_and_load_table(), but then call acpi_ns_initialize_objects afterwards This is what acpi_load_table does.
+> > 
+> > 
+> >    ACPI_INFO (("Host-directed Dynamic ACPI Table Load:"));
+> >    Status = AcpiTbInstallAndLoadTable (ACPI_PTR_TO_PHYSADDR (Table),
+> >        ACPI_TABLE_ORIGIN_EXTERNAL_VIRTUAL, FALSE, &TableIndex);
+> >    if (ACPI_SUCCESS (Status))
+> >    {
+> >        /* Complete the initialization/resolution of new objects */
+> > 
+> >        AcpiNsInitializeObjects ();
+> >    }
+> 
+> The idea was to have all drivers use the same interface for dynamically
+> loading ACPI tables, i.e. efivar_ssdt_load() (which already used
+> acpi_load_table()) and the acpi_configfs driver. The efivar driver doesn't
+> provide a possibility to unload the table, so acpi_load_table() is okay for
+> this purpose. 
 
-Thanks!
+> According to Bob, acpi_tb_install_and_load_table() is not part
+> of the external ACPICA API declared under include/acpi (though it is
+> exported).
 
->
-> But consider addressing my comments in one of previous mails.
->
->> Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->> Fixes: d06c47e3dd07f ("ACPI: configfs: Resolve objects on host-directed table loads")
->> Signed-off-by: Nikolaus Voss <nikolaus.voss@loewensteinmedical.de>
->> ---
->>  drivers/acpi/acpi_configfs.c   |  2 +-
->>  drivers/acpi/acpica/tbxfload.c | 43 ++++++++++++++++++++++++++++++++++
->>  include/acpi/acpixf.h          |  6 +++++
->>  3 files changed, 50 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/acpi/acpi_configfs.c b/drivers/acpi/acpi_configfs.c
->> index 57d9d574d4dd..9e77d5a266c0 100644
->> --- a/drivers/acpi/acpi_configfs.c
->> +++ b/drivers/acpi/acpi_configfs.c
->> @@ -53,7 +53,7 @@ static ssize_t acpi_table_aml_write(struct config_item *cfg,
->>  	if (!table->header)
->>  		return -ENOMEM;
->>
->> -	ret = acpi_load_table(table->header);
->> +	ret = acpi_load_table_with_index(table->header, &table->index);
->>  	if (ret) {
->>  		kfree(table->header);
->>  		table->header = NULL;
->> diff --git a/drivers/acpi/acpica/tbxfload.c b/drivers/acpi/acpica/tbxfload.c
->> index 86f1693f6d29..7ea4fc879cb6 100644
->> --- a/drivers/acpi/acpica/tbxfload.c
->> +++ b/drivers/acpi/acpica/tbxfload.c
->> @@ -309,6 +309,49 @@ acpi_status acpi_load_table(struct acpi_table_header *table)
->>
->>  ACPI_EXPORT_SYMBOL(acpi_load_table)
->>
->> +/*******************************************************************************
->> + *
->> + * FUNCTION:    acpi_load_table_with_index
->> + *
->> + * PARAMETERS:  table               - Pointer to a buffer containing the ACPI
->> + *                                    table to be loaded.
->> + *              table_idx           - Pointer to a u32 for storing the table
->> + *                                    index, might be NULL
->> + * RETURN:      Status
->> + *
->> + * DESCRIPTION: see acpi_load_table() above. Additionally returns the index
->> + *              of the newly created table in table_idx.
->> + *
->> + ******************************************************************************/
->> +acpi_status acpi_load_table_with_index(struct acpi_table_header *table,
->> +				       u32 *table_idx)
->> +{
->> +	acpi_status status;
->> +	u32 table_index;
->> +
->> +	ACPI_FUNCTION_TRACE(acpi_load_table_with_index);
->> +
->> +	/* Parameter validation */
->> +	if (!table)
->> +		return_ACPI_STATUS(AE_BAD_PARAMETER);
->> +
->> +	/* Install the table and load it into the namespace */
->> +	ACPI_INFO(("Host-directed Dynamic ACPI Table Load:"));
->> +	status = acpi_tb_install_and_load_table(
->> +		ACPI_PTR_TO_PHYSADDR(table), ACPI_TABLE_ORIGIN_EXTERNAL_VIRTUAL,
->> +		FALSE, &table_index);
->> +	if (table_idx)
->> +		*table_idx = table_index;
->> +
->> +	if (ACPI_SUCCESS(status)) {
->> +		/* Complete the initialization/resolution of new objects */
->> +		acpi_ns_initialize_objects();
->> +	}
->> +
->> +	return_ACPI_STATUS(status);
->> +}
->> +ACPI_EXPORT_SYMBOL(acpi_load_table_with_index)
->> +
->>  /*******************************************************************************
->>   *
->>   * FUNCTION:    acpi_unload_parent_table
->> diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
->> index e5e041413581..af375ab318de 100644
->> --- a/include/acpi/acpixf.h
->> +++ b/include/acpi/acpixf.h
->> @@ -460,6 +460,12 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status ACPI_INIT_FUNCTION
->>  ACPI_EXTERNAL_RETURN_STATUS(acpi_status
->>  			    acpi_load_table(struct acpi_table_header *table))
->>
->> +
->> +ACPI_EXTERNAL_RETURN_STATUS(acpi_status
->> +			    acpi_load_table_with_index(
->> +				    struct acpi_table_header *table,
->> +				    u32 *table_idx))
->> +
->>  ACPI_EXTERNAL_RETURN_STATUS(acpi_status
->>  			    acpi_unload_parent_table(acpi_handle object))
->>
->> --
->> 2.17.1
->>
->
+You are answering to Bob himself :-)
+
+So, above is another proposal and we can create a common symmetric APIs in ACPI
+glue layer for all users even if some of them don't care about unloading.
+
+> The counterpart of acpi_load_table() - inline comment "Note1: Mainly
+> intended to support hotplug addition of SSDTs" - seems to be
+> acpi_unload_parent_table() - inline comment "Note: Mainly intended to
+> support hotplug removal of SSDTs" - but it doesn't expect a table index but
+> an acpi_handle as argument, and it is only used within ACPICA, so IMO the
+> API can't be properly used in our case and should be improved even though
+> unloading tables is deprecated.
+> 
+> If changing the API is not an option, we can choose between Rafael's way
+> (extending the API instead of changing it) or Bob's proposal (doing the same
+> thing - hotplug-loading a SSDT - in different ways, in case of acpi_configfs
+> using ACPICA internal API). I don't have a clear favorite, but I'm tending
+> to Rafael's solution my favorite being the API change.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
