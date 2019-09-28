@@ -2,139 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BEE2BFA35
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2019 21:41:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E715DC1267
+	for <lists+linux-acpi@lfdr.de>; Sun, 29 Sep 2019 01:12:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728519AbfIZTlk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 26 Sep 2019 15:41:40 -0400
-Received: from mga12.intel.com ([192.55.52.136]:6984 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728487AbfIZTlk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 26 Sep 2019 15:41:40 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Sep 2019 12:41:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,553,1559545200"; 
-   d="scan'208";a="273576520"
-Received: from orsmsx107.amr.corp.intel.com ([10.22.240.5])
-  by orsmga001.jf.intel.com with ESMTP; 26 Sep 2019 12:41:37 -0700
-Received: from orsmsx111.amr.corp.intel.com (10.22.240.12) by
- ORSMSX107.amr.corp.intel.com (10.22.240.5) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Thu, 26 Sep 2019 12:41:37 -0700
-Received: from orsmsx122.amr.corp.intel.com ([169.254.11.236]) by
- ORSMSX111.amr.corp.intel.com ([169.254.12.70]) with mapi id 14.03.0439.000;
- Thu, 26 Sep 2019 12:41:37 -0700
-From:   "Schmauss, Erik" <erik.schmauss@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>, Nikolaus Voss <nv@vosn.de>
-CC:     "Shevchenko, Andriy" <andriy.shevchenko@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Moore, Robert" <robert.moore@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        "Pavel Machek" <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] ACPICA: make acpi_load_table() return table index
-Thread-Topic: [PATCH] ACPICA: make acpi_load_table() return table index
-Thread-Index: AQHVaUE6PwWyj3qAlUyiJ16YhgOwE6c+NeMQgAB9wgD//42XEIAAlnqAgAALqgD//41KEA==
-Date:   Thu, 26 Sep 2019 19:41:36 +0000
-Message-ID: <CF6A88132359CE47947DB4C6E1709ED53C6492CB@ORSMSX122.amr.corp.intel.com>
-References: <20190906174605.GY2680@smile.fi.intel.com>
- <20190912080742.24642-1-nikolaus.voss@loewensteinmedical.de>
- <CF6A88132359CE47947DB4C6E1709ED53C6481B1@ORSMSX122.amr.corp.intel.com>
- <20190926163528.GH32742@smile.fi.intel.com>
- <CF6A88132359CE47947DB4C6E1709ED53C6481F2@ORSMSX122.amr.corp.intel.com>
- <alpine.DEB.2.20.1909262043380.13592@fox.voss.local>
- <CAJZ5v0g=onKCidHMLNWuYFCuhcQGmtDDp5QSGiHu1jhoDRuhWQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0g=onKCidHMLNWuYFCuhcQGmtDDp5QSGiHu1jhoDRuhWQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiOGM4MzNjMGMtOTQ1Ny00NGJiLWE2M2QtNzYwZWRmMzVhNmQ0IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoieitrM0hWejN6XC9MNWF4OGkwUjFFTWFkcHMyUTQ3dzFzUXEwRnpoS1J0MXhTVXlHUXczUk82S0lnTjcrN2FmNmEifQ==
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.138]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1728880AbfI1XMk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 28 Sep 2019 19:12:40 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:41608 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728666AbfI1XMj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 28 Sep 2019 19:12:39 -0400
+Received: by mail-pf1-f195.google.com with SMTP id q7so3468445pfh.8;
+        Sat, 28 Sep 2019 16:12:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=lNZrzq4ZFFPrX0MTl+M498nYJtUFl4tpzfGqtmJqwcI=;
+        b=I9UDzWtG5ZUny0q4yWYmOR4H8K7qYtcnS7BEFTS7vaeVBSKCGtM+qrPgWEtugKT1mh
+         SwiW15+gci+ED9BjD1M75oWaIzW6N/c4WYwmn9M/+VQxtO5OKq2la7k+kXVA4rkuN0oI
+         PxMAr/z3t/IXwdjUmjr+3IR8nMt8ac3Cmhxh1qkWp1JXd3lfdQ2NuX7X+XFuyqtXSoih
+         KL4/0VCuoC80ALHHCRshcZkMqm2SVSF4rTakNY8aNwRVLE0a9ERlEdA68bWgUL/1Jg3f
+         OBV4L8y3iyUNTECFiwQzuqdOD2i/PNsY0PhS1bEG+gh1mALjWZj3cMQXS2Kn5vldAJP+
+         krCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=lNZrzq4ZFFPrX0MTl+M498nYJtUFl4tpzfGqtmJqwcI=;
+        b=ckCW7t4xj4DgjyOhV41LLxaB6anQz8E7s4Tzp2LzE/AAn8U2NB8w8WdLqerTW7xCAg
+         YvNMlHisp+rLT2zZupqW0HwCxfB1MlKawMDo7sfnyQRDNcWTVhxQiZE9tGQhCWVJfKoz
+         U2XlWIV603ROONNe9eBHuTwLvKp5/4IvCOdy9NbZijmglaSXFez/9uHRnbxLHcKPJ0b6
+         rP50WbVtBm6RYq6X0z28Sj+wVdn85JWU0sbC/fkAeo6x9h+y3dA/kRKiRbTzGT26A5jw
+         9ZhTHgH8WsIqrISTLa65Me49xlyA0OURrNNdQHY9R4oegPy//zcqSfqYMe9NMVDuZb3m
+         HyAw==
+X-Gm-Message-State: APjAAAWvYVDlafhQzD2bwxwU4FvMTkQxGa9wOTe8sXhZMT0ek+jXa+S6
+        UyCkDshBHFzir7lO1pia2EY=
+X-Google-Smtp-Source: APXvYqytmRo7xCnVrcWcE5cZXb/tDBqsxGrous6RdG6Jj7jkX/YY7EFEN1bkHopa4BbpOuqRv0qTCw==
+X-Received: by 2002:a63:4381:: with SMTP id q123mr16706745pga.169.1569712358821;
+        Sat, 28 Sep 2019 16:12:38 -0700 (PDT)
+Received: from localhost.localdomain ([2601:644:8201:32e0:7256:81ff:febd:926d])
+        by smtp.gmail.com with ESMTPSA id s17sm14607186pgg.77.2019.09.28.16.12.38
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 28 Sep 2019 16:12:38 -0700 (PDT)
+Date:   Sat, 28 Sep 2019 16:12:36 -0700
+From:   Eduardo Valentin <edubezval@gmail.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Rui Zhang <rui.zhang@intel.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: [GIT PULL] Thermal-SoC management changes for v5.4-rc1
+Message-ID: <20190928231236.GD7360@localhost.localdomain>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUmFmYWVsIEouIFd5c29j
-a2kgPHJhZmFlbEBrZXJuZWwub3JnPg0KPiBTZW50OiBUaHVyc2RheSwgU2VwdGVtYmVyIDI2LCAy
-MDE5IDEyOjI2IFBNDQo+IFRvOiBOaWtvbGF1cyBWb3NzIDxudkB2b3NuLmRlPg0KPiBDYzogU2No
-bWF1c3MsIEVyaWsgPGVyaWsuc2NobWF1c3NAaW50ZWwuY29tPjsgU2hldmNoZW5rbywgQW5kcml5
-DQo+IDxhbmRyaXkuc2hldmNoZW5rb0BpbnRlbC5jb20+OyBSYWZhZWwgSi4gV3lzb2NraSA8cmp3
-QHJqd3lzb2NraS5uZXQ+Ow0KPiBNb29yZSwgUm9iZXJ0IDxyb2JlcnQubW9vcmVAaW50ZWwuY29t
-PjsgTGVuIEJyb3duIDxsZW5iQGtlcm5lbC5vcmc+Ow0KPiBKYWNlayBBbmFzemV3c2tpIDxqYWNl
-ay5hbmFzemV3c2tpQGdtYWlsLmNvbT47IFBhdmVsIE1hY2hlaw0KPiA8cGF2ZWxAdWN3LmN6Pjsg
-RGFuIE11cnBoeSA8ZG11cnBoeUB0aS5jb20+OyBsaW51eC1hY3BpQHZnZXIua2VybmVsLm9yZzsN
-Cj4gZGV2ZWxAYWNwaWNhLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJq
-ZWN0OiBSZTogW1BBVENIXSBBQ1BJQ0E6IG1ha2UgYWNwaV9sb2FkX3RhYmxlKCkgcmV0dXJuIHRh
-YmxlIGluZGV4DQo+IA0KPiBPbiBUaHUsIFNlcCAyNiwgMjAxOSBhdCA4OjQ0IFBNIE5pa29sYXVz
-IFZvc3MgPG52QHZvc24uZGU+IHdyb3RlOg0KPiA+DQo+ID4gT24gVGh1LCAyNiBTZXAgMjAxOSwg
-U2NobWF1c3MsIEVyaWsgd3JvdGU6DQo+ID4gPj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0N
-Cj4gPiA+PiBGcm9tOiBsaW51eC1hY3BpLW93bmVyQHZnZXIua2VybmVsLm9yZw0KPiA+ID4+IDxs
-aW51eC1hY3BpLW93bmVyQHZnZXIua2VybmVsLm9yZz4NCj4gPiA+PiBPbiBCZWhhbGYgT2YgU2hl
-dmNoZW5rbywgQW5kcml5DQo+ID4gPj4gU2VudDogVGh1cnNkYXksIFNlcHRlbWJlciAyNiwgMjAx
-OSA5OjM1IEFNDQo+ID4gPj4gVG86IFNjaG1hdXNzLCBFcmlrIDxlcmlrLnNjaG1hdXNzQGludGVs
-LmNvbT4NCj4gPiA+PiBDYzogTmlrb2xhdXMgVm9zcyA8bmlrb2xhdXMudm9zc0Bsb2V3ZW5zdGVp
-bm1lZGljYWwuZGU+OyBSYWZhZWwgSi4NCj4gPiA+PiBXeXNvY2tpIDxyandAcmp3eXNvY2tpLm5l
-dD47IE1vb3JlLCBSb2JlcnQNCj4gPiA+PiA8cm9iZXJ0Lm1vb3JlQGludGVsLmNvbT47IExlbiBC
-cm93biA8bGVuYkBrZXJuZWwub3JnPjsgSmFjZWsNCj4gPiA+PiBBbmFzemV3c2tpIDxqYWNlay5h
-bmFzemV3c2tpQGdtYWlsLmNvbT47IFBhdmVsIE1hY2hlaw0KPiA+ID4+IDxwYXZlbEB1Y3cuY3o+
-OyBEYW4gTXVycGh5IDxkbXVycGh5QHRpLmNvbT47IGxpbnV4LQ0KPiA+ID4+IGFjcGlAdmdlci5r
-ZXJuZWwub3JnOyBkZXZlbEBhY3BpY2Eub3JnOw0KPiA+ID4+IGxpbnV4LWtlcm5lbEB2Z2VyLmtl
-cm5lbC5vcmc7IG52QHZvc24uZGUNCj4gPiA+PiBTdWJqZWN0OiBSZTogW1BBVENIXSBBQ1BJQ0E6
-IG1ha2UgYWNwaV9sb2FkX3RhYmxlKCkgcmV0dXJuIHRhYmxlDQo+ID4gPj4gaW5kZXgNCj4gPiA+
-Pg0KPiA+ID4+IE9uIFRodSwgU2VwIDI2LCAyMDE5IGF0IDA3OjA5OjA1UE0gKzAzMDAsIFNjaG1h
-dXNzLCBFcmlrIHdyb3RlOg0KPiA+ID4+Pj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4g
-PiA+Pj4+IEZyb206IE5pa29sYXVzIFZvc3MgPG5pa29sYXVzLnZvc3NAbG9ld2Vuc3RlaW5tZWRp
-Y2FsLmRlPg0KPiA+ID4+Pj4gU2VudDogVGh1cnNkYXksIFNlcHRlbWJlciAxMiwgMjAxOSAxOjA4
-IEFNDQo+ID4gPj4+PiBUbzogU2hldmNoZW5rbywgQW5kcml5IDxhbmRyaXkuc2hldmNoZW5rb0Bp
-bnRlbC5jb20+OyBTY2htYXVzcywNCj4gPiA+Pj4+IEVyaWsgPGVyaWsuc2NobWF1c3NAaW50ZWwu
-Y29tPjsgUmFmYWVsIEouIFd5c29ja2kNCj4gPiA+Pj4+IDxyandAcmp3eXNvY2tpLm5ldD47IE1v
-b3JlLCBSb2JlcnQgPHJvYmVydC5tb29yZUBpbnRlbC5jb20+DQo+ID4gPj4+PiBDYzogTGVuIEJy
-b3duIDxsZW5iQGtlcm5lbC5vcmc+OyBKYWNlayBBbmFzemV3c2tpDQo+ID4gPj4+PiA8amFjZWsu
-YW5hc3pld3NraUBnbWFpbC5jb20+OyBQYXZlbCBNYWNoZWsgPHBhdmVsQHVjdy5jej47IERhbg0K
-PiA+ID4+Pj4gTXVycGh5IDxkbXVycGh5QHRpLmNvbT47IGxpbnV4LWFjcGlAdmdlci5rZXJuZWwu
-b3JnOw0KPiA+ID4+Pj4gZGV2ZWxAYWNwaWNhLm9yZzsgbGludXgtIGtlcm5lbEB2Z2VyLmtlcm5l
-bC5vcmc7IG52QHZvc24uZGU7DQo+ID4gPj4+PiBOaWtvbGF1cyBWb3NzIDxuaWtvbGF1cy52b3Nz
-QGxvZXdlbnN0ZWlubWVkaWNhbC5kZT4NCj4gPiA+Pj4+IFN1YmplY3Q6IFtQQVRDSF0gQUNQSUNB
-OiBtYWtlIGFjcGlfbG9hZF90YWJsZSgpIHJldHVybiB0YWJsZQ0KPiA+ID4+Pj4gaW5kZXgNCj4g
-PiA+Pj4+DQo+ID4gPj4+IEhpIE5pa29sYXVzLA0KPiA+ID4+Pg0KPiA+ID4+Pj4gRm9yIHVubG9h
-ZGluZyBhbiBBQ1BJIHRhYmxlLCBpdCBpcyBuZWNlc3NhcnkgdG8gcHJvdmlkZSB0aGUgaW5kZXgg
-b2YgdGhlDQo+IHRhYmxlLg0KPiA+ID4+Pj4gVGhlIG1ldGhvZCBpbnRlbmRlZCBmb3IgZHluYW1p
-Y2FsbHkgbG9hZGluZyBvciBob3RwbHVnIGFkZGl0aW9uDQo+ID4gPj4+PiBvZiB0YWJsZXMsIGFj
-cGlfbG9hZF90YWJsZSgpLCBzaG91bGQgcHJvdmlkZSB0aGlzIGluZm9ybWF0aW9uIHZpYQ0KPiA+
-ID4+Pj4gYW4gb3B0aW9uYWwgcG9pbnRlciB0byB0aGUgbG9hZGVkIHRhYmxlIGluZGV4Lg0KPiA+
-ID4+Pg0KPiA+ID4+PiBXZSdsbCB0YWtlIHRoaXMgcGF0Y2ggZm9yIEFDUElDQSB1cHN0cmVhbQ0K
-PiA+ID4+DQo+ID4gPj4gRXJpaywNCj4gPiA+Pg0KPiA+ID4gSGkgQW5keSwNCj4gPiA+DQo+ID4g
-Pj4gaG93IGFib3V0IHRvIGhhdmUgYWxzbyBjb3VudGVycGFydCB0byBhY3BpX2xvYWRfdGFibGUo
-KSB3aGljaCB3aWxsDQo+ID4gPj4gZG8gd2hhdCBpdCdzIGRvbmUgbm93IGluIGFjcGlfY29uZmln
-ZnMuYyB2aWEgYWNwaV90Yl8qKCkgQVBJPw0KPiA+ID4NCj4gPiA+IEkgc2hvdWxkIGhhdmUgZ2l2
-ZW4gbW9yZSBkZXRhaWxzLiBXZSBkZWNpZGVkIHRvIGFkZCB0aGlzIGV4dHJhDQo+ID4gPiBwYXJh
-bWV0ZXIgaW4gQWNwaUxvYWRUYWJsZSBhbmQgd2UncmUgZ29pbmcgdG8gY3JlYXRlIGFuDQo+ID4g
-PiBBY3BpVW5sb2FkVGFibGUgZnVuY3Rpb24gdGhhdCB3aWxsIHRha2UgdGFibGUgaW5kZXggdG8g
-dW5sb2FkIHRoZQ0KPiA+ID4gdGFibGUgKGJhc2ljYWxseSB0aGUgYWNwaV90Yl91bmxvYWQuLiku
-IE9uY2Ugd2UgZG8gdGhpcywgeW91IGNhbiB1c2UNCj4gPiA+IHRhYmxlIGluZGljZXMgd2l0aCBB
-Y3BpVW5sb2FkVGFibGUgYW5kIEFjcGlMb2FkVGFibGUuDQo+ID4NCj4gPiB0aGF0J3MgZXZlbiBi
-ZXR0ZXIgbmV3cy4NCj4gPg0KPiA+IFJhZmFlbCwgc2hhbGwgSSBwcmVwYXJlIGFueXRoaW5nPw0K
-SGkgZXZlcnlvbmUsDQoNCj4gSSBkb24ndCB0aGluayBzby4gIEknbSBleHBlY3RpbmcgdG8gZ2V0
-IGEgcHJvcGVyIGZpeCBmcm9tIHRoZSB1cHN0cmVhbSB0aHJvdWdoDQo+IHRoZSBub3JtYWwgcHJv
-Y2Vzcy4NCkp1c3Qgc28gdGhhdCB3ZSBhcmUgb24gdGhlIHNhbWUgcGFnZToNCg0KSSd2ZSBiYWNr
-cG9ydGVkIE5pa29sYXVzJ3MgcGF0Y2ggZm9yIHVwc3RyZWFtIGhlcmUgaHR0cHM6Ly9naXRodWIu
-Y29tL2FjcGljYS9hY3BpY2EvcHVsbC81MDYNCmFuZCBCb2IgaGFzIGltcGxlbWVudGVkIHRoZSBu
-ZXcgQVBJIGhlcmU6IGh0dHBzOi8vZ2l0aHViLmNvbS9hY3BpY2EvYWNwaWNhL2NvbW1pdC9jNjkz
-NjljZDljZjAxMzRlMWFhYzUxNmU5N2Q2MTI5NDdkYWE4ZGMyDQoNCk9uY2Ugd2UgZG8gYSByZWxl
-YXNlLCBJIHdpbGwgc2VuZCBCb2IncyBjaGFuZ2UgdG8gdGhlIGxpbnV4IEFDUEkgbWFpbGluZyBs
-aXN0Lg0KRmVlbCBmcmVlIHRvIHVzZSB0aGlzIG5ldyBBUEkgd2hlcmUgeW91IHNlZSBmaXQuDQoN
-ClRoYW5rcywNCkVyaWsNCg0KPiANCj4gVGhhbmtzLA0KPiBSYWZhZWwNCg==
+Hello Linus,
+
+Please consider the following thermal soc changes for v5.4-rc1. This is a really
+small pull in the midst of a lot of pending patches. We are in the middle
+of restructuring how we are maintaining the thermal subsystem, as per
+discussion in our last LPC. For now, I am sending just some changes
+that were pending in my tree. Looking forward to get a more streamlined
+process in the next merge window.
+
+The following changes since commit 56037cadf60461b4a2996b4d8f0057c4d343c17c:
+
+  Merge tag 'regulator-fix-v5.3-rc8' of git://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator (2019-09-09 10:58:57 -0700)
+
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/evalenti/linux-soc-thermal linus
+
+for you to fetch changes up to 6c375eccded41df8033ed55a1b785531b304fc67:
+
+  thermal: db8500: Rewrite to be a pure OF sensor (2019-09-24 22:59:22 -0700)
+
+----------------------------------------------------------------
+Dan Carpenter (1):
+      thermal: thermal_mmio: remove some dead code
+
+Linus Walleij (3):
+      thermal: db8500: Finalize device tree conversion
+      thermal: db8500: Use dev helper variable
+      thermal: db8500: Rewrite to be a pure OF sensor
+
+ drivers/mfd/db8500-prcmu.c                   |  53 +--
+ drivers/thermal/Kconfig                      |   2 +-
+ drivers/thermal/db8500_thermal.c             | 486 ++++++---------------------
+ drivers/thermal/thermal_mmio.c               |   7 -
+ include/linux/platform_data/db8500_thermal.h |  29 --
+ 5 files changed, 114 insertions(+), 463 deletions(-)
+ delete mode 100644 include/linux/platform_data/db8500_thermal.h
