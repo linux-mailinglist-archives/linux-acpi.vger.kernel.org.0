@@ -2,74 +2,220 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DA7BC30C3
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Oct 2019 12:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F12C4C346B
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Oct 2019 14:38:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726800AbfJAJ7J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Oct 2019 05:59:09 -0400
-Received: from mga03.intel.com ([134.134.136.65]:50248 "EHLO mga03.intel.com"
+        id S2387645AbfJAMia (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Oct 2019 08:38:30 -0400
+Received: from mga07.intel.com ([134.134.136.100]:54249 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725765AbfJAJ7J (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 1 Oct 2019 05:59:09 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
+        id S1732783AbfJAMia (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 1 Oct 2019 08:38:30 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Oct 2019 02:59:08 -0700
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Oct 2019 05:38:29 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,570,1559545200"; 
-   d="scan'208";a="197813099"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by FMSMGA003.fm.intel.com with ESMTP; 01 Oct 2019 02:59:06 -0700
-Received: from andy by smile with local (Exim 4.92.2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iFEvx-0007HE-2b; Tue, 01 Oct 2019 12:59:05 +0300
-Date:   Tue, 1 Oct 2019 12:59:05 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Joerg Roedel <joro@8bytes.org>, iommu@lists.linux-foundation.org,
-        Adrian Hunter <adrian.hunter@intel.com>,
+X-IronPort-AV: E=Sophos;i="5.64,571,1559545200"; 
+   d="scan'208";a="220983878"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.66]) ([10.237.72.66])
+  by fmsmga002.fm.intel.com with ESMTP; 01 Oct 2019 05:38:27 -0700
+Subject: Re: [PATCH v2 5/6] mmc: sdhci-acpi: Switch to use
+ acpi_dev_hid_uid_match()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        iommu@lists.linux-foundation.org,
         Ulf Hansson <ulf.hansson@linaro.org>,
         linux-mmc@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 3/6] ACPI / utils: Introduce acpi_dev_hid_uid_match()
- helper
-Message-ID: <20191001095905.GG32742@smile.fi.intel.com>
 References: <20190924193739.86133-1-andriy.shevchenko@linux.intel.com>
- <20190924193739.86133-4-andriy.shevchenko@linux.intel.com>
- <20191001093854.GH2714@lahna.fi.intel.com>
+ <20190924193739.86133-6-andriy.shevchenko@linux.intel.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <77ce4e34-6692-e54e-0f2f-6b8829d1e9f5@intel.com>
+Date:   Tue, 1 Oct 2019 15:37:08 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191001093854.GH2714@lahna.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190924193739.86133-6-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 01, 2019 at 12:38:54PM +0300, Mika Westerberg wrote:
-> On Tue, Sep 24, 2019 at 10:37:36PM +0300, Andy Shevchenko wrote:
-> > There are users outside of ACPI realm which reimplementing the comparator
-> > function to check if the given device matches to given HID and UID.
-> > 
-> > For better utilization, introduce a helper for everyone to use.
-
-> > +EXPORT_SYMBOL(acpi_dev_hid_uid_match);
+On 24/09/19 10:37 PM, Andy Shevchenko wrote:
+> Since we have a generic helper, drop custom implementation in the driver.
 > 
-> Should this be _GPL?
-
-No, the rest of the acpi_dev_*() are marked without it.
-
-> In any case looks good,
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/mmc/host/sdhci-acpi.c | 49 ++++++++++++-----------------------
+>  1 file changed, 16 insertions(+), 33 deletions(-)
 > 
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
+> index 1604f512c7bd..f913c3f57bbf 100644
+> --- a/drivers/mmc/host/sdhci-acpi.c
+> +++ b/drivers/mmc/host/sdhci-acpi.c
+> @@ -61,7 +61,7 @@ struct sdhci_acpi_slot {
+>  	mmc_pm_flag_t	pm_caps;
+>  	unsigned int	flags;
+>  	size_t		priv_size;
+> -	int (*probe_slot)(struct platform_device *, const char *, const char *);
+> +	int (*probe_slot)(struct platform_device *, struct acpi_device *);
+>  	int (*remove_slot)(struct platform_device *);
+>  	int (*free_slot)(struct platform_device *pdev);
+>  	int (*setup_host)(struct platform_device *pdev);
+> @@ -325,12 +325,10 @@ static bool sdhci_acpi_cht_pci_wifi(unsigned int vendor, unsigned int device,
+>   * wifi card in the expected slot with an ACPI companion node, is used to
+>   * indicate that acpi_device_fix_up_power() should be avoided.
+>   */
+> -static inline bool sdhci_acpi_no_fixup_child_power(const char *hid,
+> -						   const char *uid)
+> +static inline bool sdhci_acpi_no_fixup_child_power(struct acpi_device *adev)
+>  {
+>  	return sdhci_acpi_cht() &&
+> -	       !strcmp(hid, "80860F14") &&
+> -	       !strcmp(uid, "2") &&
+> +	       acpi_dev_hid_uid_match(adev, "80860F14", "2") &&
+>  	       sdhci_acpi_cht_pci_wifi(0x14e4, 0x43ec, 0, 28);
+>  }
+>  
+> @@ -345,8 +343,7 @@ static inline bool sdhci_acpi_byt_defer(struct device *dev)
+>  	return false;
+>  }
+>  
+> -static inline bool sdhci_acpi_no_fixup_child_power(const char *hid,
+> -						   const char *uid)
+> +static inline bool sdhci_acpi_no_fixup_child_power(struct acpi_device *adev)
+>  {
+>  	return false;
+>  }
+> @@ -375,19 +372,18 @@ static int bxt_get_cd(struct mmc_host *mmc)
+>  	return ret;
+>  }
+>  
+> -static int intel_probe_slot(struct platform_device *pdev, const char *hid,
+> -			    const char *uid)
+> +static int intel_probe_slot(struct platform_device *pdev, struct acpi_device *adev)
+>  {
+>  	struct sdhci_acpi_host *c = platform_get_drvdata(pdev);
+>  	struct intel_host *intel_host = sdhci_acpi_priv(c);
+>  	struct sdhci_host *host = c->host;
+>  
+> -	if (hid && uid && !strcmp(hid, "80860F14") && !strcmp(uid, "1") &&
+> +	if (acpi_dev_hid_uid_match(adev, "80860F14", "1") &&
+>  	    sdhci_readl(host, SDHCI_CAPABILITIES) == 0x446cc8b2 &&
+>  	    sdhci_readl(host, SDHCI_CAPABILITIES_1) == 0x00000807)
+>  		host->timeout_clk = 1000; /* 1000 kHz i.e. 1 MHz */
+>  
+> -	if (hid && !strcmp(hid, "80865ACA"))
+> +	if (acpi_dev_hid_uid_match(adev, "80865ACA", NULL))
+>  		host->mmc_host_ops.get_cd = bxt_get_cd;
+>  
+>  	intel_dsm_init(intel_host, &pdev->dev, host->mmc);
+> @@ -473,8 +469,7 @@ static irqreturn_t sdhci_acpi_qcom_handler(int irq, void *ptr)
+>  	return IRQ_HANDLED;
+>  }
+>  
+> -static int qcom_probe_slot(struct platform_device *pdev, const char *hid,
+> -			   const char *uid)
+> +static int qcom_probe_slot(struct platform_device *pdev, struct acpi_device *adev)
+>  {
+>  	struct sdhci_acpi_host *c = platform_get_drvdata(pdev);
+>  	struct sdhci_host *host = c->host;
+> @@ -482,7 +477,7 @@ static int qcom_probe_slot(struct platform_device *pdev, const char *hid,
+>  
+>  	*irq = -EINVAL;
+>  
+> -	if (strcmp(hid, "QCOM8051"))
+> +	if (acpi_dev_hid_uid_match(adev, "QCOM8051", NULL))
 
-Thanks!
+Logic is inverted
 
--- 
-With Best Regards,
-Andy Shevchenko
-
+>  		return 0;
+>  
+>  	*irq = platform_get_irq(pdev, 1);
+> @@ -501,14 +496,12 @@ static int qcom_free_slot(struct platform_device *pdev)
+>  	struct sdhci_host *host = c->host;
+>  	struct acpi_device *adev;
+>  	int *irq = sdhci_acpi_priv(c);
+> -	const char *hid;
+>  
+>  	adev = ACPI_COMPANION(dev);
+>  	if (!adev)
+>  		return -ENODEV;
+>  
+> -	hid = acpi_device_hid(adev);
+> -	if (strcmp(hid, "QCOM8051"))
+> +	if (!acpi_dev_hid_uid_match(adev, "QCOM8051", NULL))
+>  		return 0;
+>  
+>  	if (*irq < 0)
+> @@ -583,7 +576,7 @@ static const struct sdhci_acpi_chip sdhci_acpi_chip_amd = {
+>  };
+>  
+>  static int sdhci_acpi_emmc_amd_probe_slot(struct platform_device *pdev,
+> -					  const char *hid, const char *uid)
+> +					  struct acpi_device *adev)
+>  {
+>  	struct sdhci_acpi_host *c = platform_get_drvdata(pdev);
+>  	struct sdhci_host *host   = c->host;
+> @@ -654,17 +647,12 @@ static const struct acpi_device_id sdhci_acpi_ids[] = {
+>  };
+>  MODULE_DEVICE_TABLE(acpi, sdhci_acpi_ids);
+>  
+> -static const struct sdhci_acpi_slot *sdhci_acpi_get_slot(const char *hid,
+> -							 const char *uid)
+> +static const struct sdhci_acpi_slot *sdhci_acpi_get_slot(struct acpi_device *adev)
+>  {
+>  	const struct sdhci_acpi_uid_slot *u;
+>  
+>  	for (u = sdhci_acpi_uids; u->hid; u++) {
+> -		if (strcmp(u->hid, hid))
+> -			continue;
+> -		if (!u->uid)
+> -			return u->slot;
+> -		if (uid && !strcmp(u->uid, uid))
+> +		if (acpi_dev_hid_uid_match(adev, u->hid, u->uid))
+>  			return u->slot;
+>  	}
+>  	return NULL;
+> @@ -680,22 +668,17 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
+>  	struct resource *iomem;
+>  	resource_size_t len;
+>  	size_t priv_size;
+> -	const char *hid;
+> -	const char *uid;
+>  	int err;
+>  
+>  	device = ACPI_COMPANION(dev);
+>  	if (!device)
+>  		return -ENODEV;
+>  
+> -	hid = acpi_device_hid(device);
+> -	uid = acpi_device_uid(device);
+> -
+> -	slot = sdhci_acpi_get_slot(hid, uid);
+> +	slot = sdhci_acpi_get_slot(device);
+>  
+>  	/* Power on the SDHCI controller and its children */
+>  	acpi_device_fix_up_power(device);
+> -	if (!sdhci_acpi_no_fixup_child_power(hid, uid)) {
+> +	if (!sdhci_acpi_no_fixup_child_power(device)) {
+>  		list_for_each_entry(child, &device->children, node)
+>  			if (child->status.present && child->status.enabled)
+>  				acpi_device_fix_up_power(child);
+> @@ -745,7 +728,7 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
+>  
+>  	if (c->slot) {
+>  		if (c->slot->probe_slot) {
+> -			err = c->slot->probe_slot(pdev, hid, uid);
+> +			err = c->slot->probe_slot(pdev, device);
+>  			if (err)
+>  				goto err_free;
+>  		}
+> 
 
