@@ -2,98 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0AC4C3059
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Oct 2019 11:38:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D525CC3061
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Oct 2019 11:39:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727375AbfJAJi7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Oct 2019 05:38:59 -0400
-Received: from mga11.intel.com ([192.55.52.93]:55225 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726461AbfJAJi6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 1 Oct 2019 05:38:58 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Oct 2019 02:38:58 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,570,1559545200"; 
-   d="scan'208";a="205032539"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
-  by fmsmga001.fm.intel.com with SMTP; 01 Oct 2019 02:38:55 -0700
-Received: by lahna (sSMTP sendmail emulation); Tue, 01 Oct 2019 12:38:54 +0300
-Date:   Tue, 1 Oct 2019 12:38:54 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Joerg Roedel <joro@8bytes.org>, iommu@lists.linux-foundation.org,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 3/6] ACPI / utils: Introduce acpi_dev_hid_uid_match()
- helper
-Message-ID: <20191001093854.GH2714@lahna.fi.intel.com>
-References: <20190924193739.86133-1-andriy.shevchenko@linux.intel.com>
- <20190924193739.86133-4-andriy.shevchenko@linux.intel.com>
+        id S1729560AbfJAJjX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Oct 2019 05:39:23 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:36630 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729548AbfJAJjX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Oct 2019 05:39:23 -0400
+Received: by mail-qk1-f193.google.com with SMTP id y189so10568214qkc.3
+        for <linux-acpi@vger.kernel.org>; Tue, 01 Oct 2019 02:39:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=x6ZXQQxzoml14NVErNzUyQEmyrBF8ArDdBNS8Uodmbo=;
+        b=SNcTNKZusPIzT0tNaFTT+SZ1TrMDHINPTd8e+aQyod3iJpDxo3qGgHuvlUnKSnTRBj
+         dYkTR+UBgfnQmqZrSFT5H8QS+E6Rb1wOW3Qzai4hZ1WNCW4ts2Ifr/PycGZEAfYyrwXS
+         ZkJeUgXcswH+4mm0B6KrmGZPR4JiuUXsLQL+ppQ9HCouEpH143PQx8b2oVLH1EJYT0+s
+         0A1bQpHEtel5gLFvCfRxGxK8FQ3YmkX+a4HSbUKg9BFwZx2XrrvBblfhB2WFh8QV8KR3
+         /MMm/U3Qz7k97zF0iWRQO/V4Qn8JzN7Ww8ZT+8YQ8aGTx3KX4galjQQMctRf6iPkJJeO
+         KMPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=x6ZXQQxzoml14NVErNzUyQEmyrBF8ArDdBNS8Uodmbo=;
+        b=nyomuJGxy5R5e4a4Mjaww67+tMXRntNbHMz24pJXFeOrobMQu0ivxxk7a4/Qx0s22l
+         4WuCZA4+flNN84OxGFoYgoxtnHCDOV3rdD4E7ALCxzRKbLlrE3ve4buWjLa69FQC3KUl
+         vNdQgEgkDldW53zN2juH5IE9aSAz//6/SRVfgI8SKj0E0Rrtr3MFPtO2IeykHjB3DkTF
+         T15iB3l84hUdsn0nsfboAwZrb1XbKI6hGN/tMj7JEQEXXLfQACy1MSFdMLTrvDIjRmtF
+         pX2f8KtQ799jO3TxWVBF+cUCJ7f6S2RU4lRB78QQwnWQ4R1epX5xhfMR/FoM5GUJEnF2
+         AA4A==
+X-Gm-Message-State: APjAAAVbrZMqIeX2Q4yR7jPNL00yLvRYrc721/LLYpBeyrIb9U8Cu9C+
+        p5uEKzIePlD08HbCJO7EURPIDw8AXVygfALnTw==
+X-Google-Smtp-Source: APXvYqzd+ZTVQMAeQwVao4ff//LPPCqU4fLp6Hz70jEz/mbUEnuaOFv71zqc3/7AfAp1YSrASLbThvP2zxlJrniNeoE=
+X-Received: by 2002:a05:620a:140b:: with SMTP id d11mr4979696qkj.22.1569922762727;
+ Tue, 01 Oct 2019 02:39:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190924193739.86133-4-andriy.shevchenko@linux.intel.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Received: by 2002:ac8:5205:0:0:0:0:0 with HTTP; Tue, 1 Oct 2019 02:39:21 -0700 (PDT)
+Reply-To: eddywilliam0003@gmail.com
+From:   eddy william <smithhason13@gmail.com>
+Date:   Tue, 1 Oct 2019 11:39:21 +0200
+Message-ID: <CAE9dMzbxxdWyqEQya_tittjwHQwQo37scoM17g+XLkx0YwWWag@mail.gmail.com>
+Subject: hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 24, 2019 at 10:37:36PM +0300, Andy Shevchenko wrote:
-> There are users outside of ACPI realm which reimplementing the comparator
-> function to check if the given device matches to given HID and UID.
-> 
-> For better utilization, introduce a helper for everyone to use.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->
-> ---
->  drivers/acpi/utils.c    | 25 +++++++++++++++++++++++++
->  include/acpi/acpi_bus.h |  2 ++
->  include/linux/acpi.h    |  6 ++++++
->  3 files changed, 33 insertions(+)
-> 
-> diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
-> index dbd1c4cfd7d1..804ac0df58ec 100644
-> --- a/drivers/acpi/utils.c
-> +++ b/drivers/acpi/utils.c
-> @@ -701,6 +701,31 @@ bool acpi_check_dsm(acpi_handle handle, const guid_t *guid, u64 rev, u64 funcs)
->  }
->  EXPORT_SYMBOL(acpi_check_dsm);
->  
-> +/**
-> + * acpi_dev_hid_uid_match - Match device by supplied HID and UID
-> + * @adev: ACPI device to match.
-> + * @hid2: Hardware ID of the device.
-> + * @uid2: Unique ID of the device, pass NULL to not check _UID.
-> + *
-> + * Matches HID and UID in @adev with given @hid2 and @uid2.
-> + * Returns true if matches.
-> + */
-> +bool acpi_dev_hid_uid_match(struct acpi_device *adev,
-> +			    const char *hid2, const char *uid2)
-> +{
-> +	const char *hid1 = acpi_device_hid(adev);
-> +	const char *uid1 = acpi_device_uid(adev);
-> +
-> +	if (strcmp(hid1, hid2))
-> +		return false;
-> +
-> +	if (!uid2)
-> +		return true;
-> +
-> +	return uid1 && !strcmp(uid1, uid2);
-> +}
-> +EXPORT_SYMBOL(acpi_dev_hid_uid_match);
+Hello
 
-Should this be _GPL?
+My name is Eddy William I am a lawyer by profession. I wish to offer you
+the next of kin to my client. You will inherit the sum of ($14.2 Million)
+dollars my client left in the bank before his death.
 
-In any case looks good,
+My client is a citizen of your country who died in auto crash with his wife
+and only son. I will be entitled with 50% of the total fund while 50% will
+be for you.
+Please contact my private email here for more details:eddywilliam0003@gmail=
+.com
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Many thanks in advance,
+Mr.Eddy William
+
+
+Hallo
+
+Mein Name ist Eddy William . Ich bin von Beruf Rechtsanwalt. Ich m=C3=B6cht=
+e
+Ihnen anbieten
+die n=C3=A4chsten Verwandten zu meinem Klienten. Sie erben die Summe von
+($14.2 Millionen US-Dollar)
+Dollar, die mein Kunde vor seinem Tod in der Bank gelassen hat.
+
+Mein Mandant ist ein Staatsb=C3=BCrger Ihres Landes, der mit seiner Frau
+bei einem Autounfall ums Leben gekommen ist
+und nur Sohn. Ich werde mit 50% des Gesamtfonds berechtigt sein, w=C3=A4hre=
+nd 50%
+sein f=C3=BCr dich.
+Bitte kontaktieren Sie meine private E-Mail hier f=C3=BCr weitere
+Informationen: eddywilliam0003@gmail.com
+
+Vielen Dank im Voraus,
+Mr.Eddy William
