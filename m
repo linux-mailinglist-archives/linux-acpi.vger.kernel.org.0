@@ -2,119 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20AE4C44F8
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Oct 2019 02:25:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D27FBC48D1
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Oct 2019 09:51:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726653AbfJBAZw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Oct 2019 20:25:52 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:42824 "EHLO
-        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725765AbfJBAZw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Oct 2019 20:25:52 -0400
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x920MK03066917
-        for <linux-acpi@vger.kernel.org>; Tue, 1 Oct 2019 20:25:50 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2vc71qtb2g-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-acpi@vger.kernel.org>; Tue, 01 Oct 2019 20:25:50 -0400
-Received: from localhost
-        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-acpi@vger.kernel.org> from <daniel@linux.ibm.com>;
-        Wed, 2 Oct 2019 01:25:48 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
-        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 2 Oct 2019 01:25:45 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x920Pi3659375742
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 2 Oct 2019 00:25:45 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id B3DFDAE053;
-        Wed,  2 Oct 2019 00:25:44 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 61872AE056;
-        Wed,  2 Oct 2019 00:25:44 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Wed,  2 Oct 2019 00:25:44 +0000 (GMT)
-Received: from volution.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
-        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ozlabs.au.ibm.com (Postfix) with ESMTPSA id D5C51A00F3;
-        Wed,  2 Oct 2019 10:25:42 +1000 (AEST)
-Date:   Wed, 2 Oct 2019 10:25:40 +1000
-From:   Daniel Black <daniel@linux.ibm.com>
-To:     Keith Busch <keith.busch@intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Tao Xu <tao3.xu@intel.com>
-Subject: Re: [PATCH] acpi/hmat: ACPI_HMAT_MEMORY_PD_VALID is deprecated in
- ACPI-6.3
-In-Reply-To: <20190903110345.4ee753c3@volution.ozlabs.ibm.com>
-References: <20190806042440.16445-1-daniel@linux.ibm.com>
-        <CAJZ5v0jXiuA3HGPCY3vbH8_53WP-6G=bVJ8SPprCDDg9MoyAsQ@mail.gmail.com>
-        <20190903110345.4ee753c3@volution.ozlabs.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        id S1726282AbfJBHvY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Oct 2019 03:51:24 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:37358 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725988AbfJBHvY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Oct 2019 03:51:24 -0400
+Received: by mail-ot1-f65.google.com with SMTP id k32so13896575otc.4;
+        Wed, 02 Oct 2019 00:51:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=nicjUzK1aCzTPXfkiTszftUB1bSootFU4r9Af2VZdd4=;
+        b=pI8tMAzhuWe1DDEcfpzJhos0mKr4QoiPl3GM4TPtsGGoOsFWc/ZYNPvnNK7HgO4qMV
+         czkhBZXxLv7EYUNU3uKl/1dn9E6qDIB1Nb9k1BJp5yk7LMkPM9iNJvaklyuDKi5ZmAns
+         uznao+HE6dx67UcSxLF4/2QGDiuntb39OuD3rNGdLWDlP7KyQ4cWECwtEWESa/TL5rvW
+         dWi0VOpkamIgKh1f9xgZ10tNUyozw/TKzE9g+l1Vlk+5WjBsiMrUsd3Mxw+upzscf7Kg
+         ZWHiePNiwZUt1PW60PQXX5BDDuWrrBjtKwzqUj1HDDHJ9oJwL1NZy7RXVnBM1LIvTx9g
+         9kUw==
+X-Gm-Message-State: APjAAAWXHZCuU1YlIojzPJIrZVBJCywKa+RyeC9AZuQyIqwbdaigWAMy
+        QKcaTwlpUJN5CXoCtk4UAYgCkhZ7MhkdgBwpSRc=
+X-Google-Smtp-Source: APXvYqz71nTjSqBxRr4QDswp1ob5aZ+KAvXvpMiCwA5SDyyXDIdUmYP20t6SgsKoFSgzFPZdmYYH4mgWrEHkD4h0TFc=
+X-Received: by 2002:a9d:6a16:: with SMTP id g22mr1570217otn.118.1570002682809;
+ Wed, 02 Oct 2019 00:51:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19100200-4275-0000-0000-0000036D258A
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19100200-4276-0000-0000-000038802679
-Message-Id: <20191002102540.40492b0c@volution.ozlabs.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-01_10:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=793 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910020000
+References: <CACO55tvjFPAMgz6DMGmJQ3adtJBX6yYnFRO9gVBEpMVTEBu0og@mail.gmail.com>
+ <20191001193427.GA59137@google.com>
+In-Reply-To: <20191001193427.GA59137@google.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 2 Oct 2019 09:51:10 +0200
+Message-ID: <CAJZ5v0gUddEhOPqNvTboO9mL6vcxu5HeCEC+-pJMzippTiAy9Q@mail.gmail.com>
+Subject: Re: [RFC PATCH] pci: prevent putting pcie devices into lower device
+ states on certain intel bridges
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Karol Herbst <kherbst@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Lyude Paul <lyude@redhat.com>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        nouveau <nouveau@lists.freedesktop.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Schmauss, Erik" <erik.schmauss@intel.com>,
+        Robert Moore <robert.moore@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 3 Sep 2019 11:03:45 +1000
-Daniel Black <daniel@linux.ibm.com> wrote:
-
-> On Mon, 2 Sep 2019 23:28:50 +0200
-> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
-> 
-> > On Tue, Aug 6, 2019 at 6:24 AM Daniel Black <daniel@linux.ibm.com> wrote:  
+On Tue, Oct 1, 2019 at 9:34 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> On Tue, Oct 01, 2019 at 06:21:28PM +0200, Karol Herbst wrote:
+> > On Tue, Oct 1, 2019 at 3:27 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > On Mon, Sep 30, 2019 at 06:36:12PM +0200, Karol Herbst wrote:
+> > > > On Mon, Sep 30, 2019 at 6:30 PM Mika Westerberg
+> > > > <mika.westerberg@linux.intel.com> wrote:
+> > > > >
+> > > > > On Mon, Sep 30, 2019 at 06:05:14PM +0200, Karol Herbst wrote:
+> > > > > > still happens with your patch applied. The machine simply gets shut down.
+> > > > > >
+> > > > > > dmesg can be found here:
+> > > > > > https://gist.githubusercontent.com/karolherbst/40eb091c7b7b33ef993525de660f1a3b/raw/2380e31f566e93e5ba7c87ef545420965d4c492c/gistfile1.txt
+> > > > >
+> > > > > Looking your dmesg:
+> > > > >
+> > > > > Sep 30 17:24:27 kernel: nouveau 0000:01:00.0: DRM: DCB version 4.1
+> > > > > Sep 30 17:24:27 kernel: nouveau 0000:01:00.0: DRM: MM: using COPY for buffer copies
+> > > > > Sep 30 17:24:27 kernel: [drm] Initialized nouveau 1.3.1 20120801 for 0000:01:00.0 on minor 1
+> > > > >
+> > > > > I would assume it runtime suspends here. Then it wakes up because of PCI
+> > > > > access from userspace:
+> > > > >
+> > > > > Sep 30 17:24:42 kernel: pci_raw_set_power_state: 56 callbacks suppressed
+> > > > >
+> > > > > and for some reason it does not get resumed properly. There are also few
+> > > > > warnings from ACPI that might be relevant:
+> > > > >
+> > > > > Sep 30 17:24:27 kernel: ACPI Warning: \_SB.PCI0.GFX0._DSM: Argument #4 type mismatch - Found [Buffer], ACPI requires [Package] (20190509/nsarguments-59)
+> > > > > Sep 30 17:24:27 kernel: ACPI Warning: \_SB.PCI0.PEG0.PEGP._DSM: Argument #4 type mismatch - Found [Buffer], ACPI requires [Package] (20190509/nsarguments-59)
+> > > >
+> > > > afaik this is the case for essentially every laptop out there.
 > > >
-> > > ACPI-6.3 corresponds to when hmat revision was bumped from
-> > > 1 to 2. In this version ACPI_HMAT_MEMORY_PD_VALID was
-> > > deprecated and made reserved.
-> > >
-> > > As such in revision 2+ we shouldn't be testing this flag.
-> > >
-> > > This is as per ACPI-6.3, 5.2.27.3, Table 5-145
-> > > "Memory Proximity Domain Attributes Structure"
-> > > for Flags.
-> > >
-> > > Signed-off-by: Daniel Black <daniel@linux.ibm.com>    
-> > 
-> > Keith, any comments?  
-> 
-> FYI this was found when I was testing Tao Xu's qemu implementation of HMAT ACPI-6.3 which has no implementation of  ACPI_HMAT_MEMORY_PD_VALID.
-> 
-> Current patch implementing Memory Proximity Domain Attributes Structure:
-> https://patchwork.kernel.org/patch/11125301/
+> > > I think we should look into this a little bit.
+> > > acpi_ns_check_argument_types() checks the argument type and prints
+> > > this message, but AFAICT it doesn't actually fix anything or prevent
+> > > execution of the method, so I have no idea what happens when we
+> > > actually execute the _DSM.
+> >
+> > I can assure you that this warning happens on every single laptop out
+> > there with dual Nvidia graphics and it's essentially just a firmware
+> > bug. And it never caused any issues on any of the older laptops (or
+> > newest one for that matter).
+>
+> Rafael, do you know anything about this?
 
+IIRC ACPICA will simply run the method with the assumption that the
+AML in there will deal with the arguments properly anyway.
 
-On Mon, 12 Aug 2019 16:03:15 +0800
-Tao Xu <tao3.xu@intel.com> wrote:
-> 
-> Looks good to me.
-> 
-> Reviewed-by: Tao Xu <tao3.xu@intel.com>
+> If ACPI has some sort of workaround so it can execute the method correctly
+> anyway, maybe we should remove or reword the warning?
 
-Ping. Any comments?
+I can agree that printing these warnings on a user system by default
+is not very useful, at least as long as no visible functional issues
+are present, but if there are such issues, it is good to know that
+something fishy is going on.  For instance, while the method may
+execute successfully, the result of that may not be as expected.
 
+So maybe they should be debug level or similar.
+
+> Or if this does prevent execution of the method, maybe we need to add
+> a workaround since the problem is so prevalent in the field?
+
+As par the above, no workarounds should be needed, but I'll let Bob
+and Erik (CCed now) confirm or deny this.
+
+A side note: please CC all discussions regarding general ACPI issues
+to linux-acpi, so they can get the attention of all of the right
+people (who may not subscribe linux-pci, for example).
