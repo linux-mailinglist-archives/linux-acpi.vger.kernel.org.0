@@ -2,146 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E333ECA14F
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Oct 2019 17:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1E99CACBA
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Oct 2019 19:47:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729355AbfJCPsR convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 3 Oct 2019 11:48:17 -0400
-Received: from steelseal.servers.prgn.misp.co.uk ([31.170.121.175]:59398 "EHLO
-        steelseal.servers.prgn.misp.co.uk" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727024AbfJCPsR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Oct 2019 11:48:17 -0400
-X-Greylist: delayed 163271 seconds by postgrey-1.27 at vger.kernel.org; Thu, 03 Oct 2019 11:48:15 EDT
-Received: from [196.75.67.150] (port=39056 helo=steelseal.es)
-        by steelseal.servers.prgn.misp.co.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.92)
-        (envelope-from <info@steelseal.es>)
-        id 1iFMrW-00011L-J2; Tue, 01 Oct 2019 19:27:02 +0100
-From:   Brian Hutsell <info@steelseal.es>
-Content-Type: text/plain;
-        charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Mime-Version: 1.0 (1.0)
-Subject: re 
-Message-Id: <F546A191-B040-45B8-B223-417B6221BDFB@steelseal.es>
-Date:   Tue, 1 Oct 2019 23:33:38 -1000
-To:     "Emmy" <emmy.im.chen@citigroup.com>, "Herb" <herb.l@verizon.net>,
-        "Huang" <jane_hc_huang@hotmail.com>, "Iliese" <iliese@yahoo.com>,
-        "J" <ja122375@yahoo.com>, "Joel" <jwh99a@suddenlink.net>,
-        "John" <jlinfoo@yahoo.com>, "Jon" <jonathw@yahoo.com>,
-        "Josh" <josh@thatcherphotography.com>,
-        "Karen" <ksanderson@esc11.net>,
-        "Kevin" <kevin_icheng_chen@yahoo.com>,
-        "linux acpi" <linux-acpi@vger.kernel.org>,
-        "Macklyn" <padfootmagic@yahoo.com>, "Mary" <mary_kung@hotmail.com>,
-        "Michael" <gold@berkelium.com>, "Mike" <mhutchison@ntta.org>
-X-Mailer: iPhone Mail 16G102
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - steelseal.servers.prgn.misp.co.uk
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - steelseal.es
-X-Get-Message-Sender-Via: steelseal.servers.prgn.misp.co.uk: authenticated_id: info@steelseal.es
-X-Authenticated-Sender: steelseal.servers.prgn.misp.co.uk: info@steelseal.es
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+        id S1729199AbfJCR2R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Oct 2019 13:28:17 -0400
+Received: from foss.arm.com ([217.140.110.172]:51898 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727254AbfJCR2Q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 3 Oct 2019 13:28:16 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9425F1000;
+        Thu,  3 Oct 2019 10:21:59 -0700 (PDT)
+Received: from [10.1.196.105] (eglon.cambridge.arm.com [10.1.196.105])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 180473F739;
+        Thu,  3 Oct 2019 10:21:57 -0700 (PDT)
+Subject: Re: [PATCH RFC 0/4] ACPI: APEI: Add support to notify the vendor
+ specific HW errors
+To:     Shiju Jose <shiju.jose@huawei.com>
+Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "baicar@os.amperecomputing.com" <baicar@os.amperecomputing.com>,
+        Linuxarm <linuxarm@huawei.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        tanxiaofei <tanxiaofei@huawei.com>
+References: <Shiju Jose> <20190812101149.26036-1-shiju.jose@huawei.com>
+ <72f44e4d-a20b-df1c-ddfe-55219e0ed429@arm.com>
+ <86258A5CC0A3704780874CF6004BA8A6584C6BA0@lhreml523-mbx.china.huawei.com>
+From:   James Morse <james.morse@arm.com>
+Message-ID: <baa9760b-248e-e90f-68ed-1f94e128ef29@arm.com>
+Date:   Thu, 3 Oct 2019 18:21:55 +0100
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <86258A5CC0A3704780874CF6004BA8A6584C6BA0@lhreml523-mbx.china.huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello 
+Hi Shiju,
 
-http://adalens-stuveri.se/scream.php?zmgay=aqby1001
-Brian
+On 22/08/2019 17:56, Shiju Jose wrote:
+> James Morse wrote:
+>> On 12/08/2019 11:11, Shiju Jose wrote:
+>>> Presently kernel does not support reporting the vendor specific HW
+>>> errors, in the non-standard format, to the vendor drivers for the recovery.
+>>
+>> 'non standard' here is probably a little jarring to the casual reader. You're
+>> referring to the UEFI spec's "N.2.3 Non-standard Section Body", which refers to
+>> any section type published somewhere other than the UEFI spec.
 
+>>> This patch set add this support and also move the existing handler
+>>> functions for the standard errors to the new callback method.
+>>
+>> Could you give an example of where this would be useful? You're adding an API
+>> with no caller to justify its existence.
 
+> One such example is handling the local errors occurred in a device controller, such as PCIe.
 
+Could we have the example in the form of patches? (sorry, I wasn't clear)
 
+I don't think its realistic that a PCIe device driver would want to know about errors on
+other devices in the system. (SAS-HBA meet the GPU).
 
+PCIe's has AER for handling errors that (may have) occurred on a PCIe link, and this has
+its own CPER records.
 
 
+>> GUIDs should only belong to one driver.
 
+> UEFI spec's N.2.3 Non-standard Section Body mentioned,  "The type (e.g. format) of a
+> non-standard section is identified by the GUID populated in the Section Descriptor's
+> Section Type field." 
+> There is a possibility to define common non-standard error section format
 
+I agree the GUID describes the format of the error record,
 
 
+> which will
+> be used for more than one driver if the error data to be reported is in the same format.
+> Then can the same GUID belong to multiple drivers?
 
+... but here we disagree.
 
+CPER has a component/block-diagram view of the system. It describes a Memory error or an
+error with a PCIe endpoint. An error record affects one component.
 
+If you wanted to describe an error caused by a failed transaction between a PCIe device
+and memory, you would need two of these records, and its guesswork as to what happened
+between them.
 
+But the PCIe device has no business poking around in the memory error. Even if it did APEI
+would be the wrong place to do this as its not the only caller of memory_failure().
 
 
+>>> Also the CCIX RAS patches could be move to the proposed callback method.
+>>
+>> Presumably for any vendor-specific stuff?
 
+> This information was related to the proposal to replace the  number of if(guid_equal(...)) else
+> if(guid_equal(...)) checks in the ghes_do_proc() for the existing UEFI spec defined error 
+> sections(such as PCIe,  Memory, ARM HW error)
 
+'the standard ones'
 
+> by registering the corresponding handler functions to the proposed notification method.
 
+I really don't like this. Registering a handler for 'memory corruption' would require
+walking a list of dynamically allocated pointers. Can there be more than one entry? Can
+random drivers block memory_failure() while they allocate more memory to send packets over
+USB? What if it loops?
 
-nvxdd hsjan So if you’ve been pacing your house, waiting impatiently for April 14, pick it up for $48 today to pass the time. That’s not the best price ever, and in fact, it was all the way down to $32 around Black Friday for one day, but it’s about $7 less than we’ve been seeing over the last several months. You could definitely wait for a more a more favorable deal so you don’t have to take out a loan from the Iron Bank, but with the final season set to premiere in a few weeks, this timing is too perfect. pkgdierjz slfliiuit See that sharp peak? That happened in November 2012, when two magical words entered the American vernacular that sent us Googling to find out what the hell it was. jlxqjbtt zkdtzbt But if you are hired and your boss one day discovers that you were dishonest, that will likely be another firing you have to explain at the next interview. Honesty is always the best policy. lilgyaph zxlzqnekol punplhqmqd dbykuecg zdzubh
+For the standard error sources the kernel needs to run 'the' handler as quickly as
+possible, with a minimum of code/memory-access in the meantime. It already takes too long.
 
 
+Thanks,
 
+James
 
 
+> The same apply to the CCIX error sections and any other
+> error sections defined by the UEFI spec in the future.  
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-zrtonlpx dfthyd qngssybvhp xrzzenxtd ejxhi fxcbi vthqbidb aogzdmds
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-ryoemhwdt yaill rkzuvosak dbbgeqyh euxllhop Click and Grow’s indoor herb garden has been described as “ idiot-proof indoor farming,” and you can get the mini starter kit for $90 today from Huckberry, or the full-sized indoor garden for $180, both 10% less than usual. irvwe kmscdhwh zjmzalfp ufbqca zwocaikrs
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-zarhyr For a limited time, you can save 25% at checkout on a variety of tumblers, bottles, coolers, and slings in Flamingo, Blueberry, Mint, Lava, and Storm. I’m pretty partial to Lava myself, Blueberry looks as effervescent as a game of Splatoon, and Storm is a very understated blue gray that’ll never be out of fashion. bdljg nmngzcdnrg jdzqkxiffl zbyimxntmz
