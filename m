@@ -2,112 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50C7AC87EA
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Oct 2019 14:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0501C9B5B
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Oct 2019 12:01:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726462AbfJBMGp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Oct 2019 08:06:45 -0400
-Received: from mga11.intel.com ([192.55.52.93]:20322 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725852AbfJBMGp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 2 Oct 2019 08:06:45 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Oct 2019 05:06:45 -0700
-X-IronPort-AV: E=Sophos;i="5.64,574,1559545200"; 
-   d="scan'208";a="275338254"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Oct 2019 05:06:42 -0700
-Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id 6496020976; Wed,  2 Oct 2019 15:06:40 +0300 (EEST)
-Date:   Wed, 2 Oct 2019 15:06:40 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Petr Mladek <pmladek@suse.com>
-Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
-        Rob Herring <robh@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Joe Perches <joe@perches.com>, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v7 08/13] lib/vsprintf: Remove support for %pF and %pf in
- favour of %pS and %ps
-Message-ID: <20191002120640.GG972@paasikivi.fi.intel.com>
-References: <20190918133419.7969-1-sakari.ailus@linux.intel.com>
- <20190918133419.7969-9-sakari.ailus@linux.intel.com>
- <20190924103829.uk4mr3z23hwhqdpe@pathway.suse.cz>
+        id S1729287AbfJCKBH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Oct 2019 06:01:07 -0400
+Received: from mail-ua1-f65.google.com ([209.85.222.65]:36856 "EHLO
+        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729155AbfJCKBG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Oct 2019 06:01:06 -0400
+Received: by mail-ua1-f65.google.com with SMTP id r25so698718uam.3
+        for <linux-acpi@vger.kernel.org>; Thu, 03 Oct 2019 03:01:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ML7iGjCkdk3T2RUYqxLIiWX6QK9V+cTAyo+lZTGYhEg=;
+        b=k2WgVKBMUG6BnJ7WwXT6WneVf49y81sfCSZmPfn4mNlx3geInIen0RP3hPUbg/jkXm
+         epQR2qrp2xxsefUoDIQx0BIsoTQSx1xF8K6pwuCU2c1EuO+oj9oEnidz3dFC+VBQiAZl
+         aI3o8KTvSSY4rBGL0vRHcaeBVAGFJvxRjkE4XaDcYcQY+spQepqqgLhBsdGOay95Jv+L
+         /a7aiJFJJvZxf2Wtj5WsgPLsmo06HHbLfQs7Q+fAnVNxDh0Yb8kBeK9jVAIqZrBVYTjQ
+         JevdRziG3ApzhBJ/oTGw35uFFzHKk6Mz7Ui0nPUgahL3ZOUPwx95+jf3h7Bw2zj95+Dp
+         4wzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ML7iGjCkdk3T2RUYqxLIiWX6QK9V+cTAyo+lZTGYhEg=;
+        b=ZDKE99FpCV4zQeq2BlG4AZgM5f9u0p8RwL5Crrjsjxo36vHxIX3pG31G4feyzGdvLq
+         zwfN+0XVbJ7EWJYtrsVImrwj3licTIeljC/ar/VAP/c7/x/y+sOVnNNKBPhQQA6bqC4i
+         SaLI2ABuNMsjgOkKl7ezsVb65LH9y3hwPgah42vRdHvLGh/ojh6pfItfZwUX6+FCahZ5
+         MA6rRsOwe9wvdRAFVCx7EmXkoMLPEBIAt9mVSkQGy1/oxbFSkScwKAZbddlWveUcjMt4
+         KTZFjDWLkaCAh7SZtzn4G9Qt0se7Q7yPhgBK8YjaXf/ufMefvYlJTBDfnPwr0WLs79LJ
+         I2CA==
+X-Gm-Message-State: APjAAAWvCElVSiy/Sj+paDu00xiOtHW4pFZbxQufh0D58iydJOnveEEO
+        nQzZIUIRcS2AaPBaRO1O8hmQeBL6zuWEpy1IHa+cew==
+X-Google-Smtp-Source: APXvYqxdtcpDHsTAYowYb9631c0RBuYsoH8cHEL10avvjnLuGotCXrQZLi8185Qxw90DxHswtjDxgdlZmu0frmN+y+M=
+X-Received: by 2002:ab0:1856:: with SMTP id j22mr4554523uag.19.1570096865564;
+ Thu, 03 Oct 2019 03:01:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190924103829.uk4mr3z23hwhqdpe@pathway.suse.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20191001142725.30857-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20191001142725.30857-1-andriy.shevchenko@linux.intel.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 3 Oct 2019 12:00:29 +0200
+Message-ID: <CAPDyKFq_HPDW5i5ND_df4GJsnaOowHWbFTkgCCOP6w9ar2uo6w@mail.gmail.com>
+Subject: Re: [PATCH v3 0/6] ACPI / utils: add new helper for HID/UID match
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Joerg Roedel <joro@8bytes.org>,
+        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
+        Roedel <joro@8bytes.org>," <iommu@lists.linux-foundation.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Petr,
+On Tue, 1 Oct 2019 at 16:27, Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> There are few users outside of ACPI realm that re-introduce a custom
+> solution to match ACPI device against HID/UID. Add a generic helper for
+> them.
+>
+> The series is supposed to go via linux-pm tree.
+>
+> In v3:
+> - correct logic in sdhci-acpi for qcom devices (Adrian)
+> - add Mika's Ack
+>
+> In v2:
+> - add patch 2 due to latent issue in the header (lkp)
+> - get rid of match_hid_uid() completely in patch 6
+>
+> Andy Shevchenko (6):
+>   ACPI / utils: Describe function parameters in kernel-doc
+>   ACPI / utils: Move acpi_dev_get_first_match_dev() under CONFIG_ACPI
+>   ACPI / utils: Introduce acpi_dev_hid_uid_match() helper
+>   ACPI / LPSS: Switch to use acpi_dev_hid_uid_match()
+>   mmc: sdhci-acpi: Switch to use acpi_dev_hid_uid_match()
+>   iommu/amd: Switch to use acpi_dev_hid_uid_match()
+>
+>  drivers/acpi/acpi_lpss.c      | 21 +++------------
+>  drivers/acpi/utils.c          | 32 +++++++++++++++++++++++
+>  drivers/iommu/amd_iommu.c     | 30 ++++-----------------
+>  drivers/mmc/host/sdhci-acpi.c | 49 ++++++++++++-----------------------
+>  include/acpi/acpi_bus.h       |  8 +++---
+>  include/linux/acpi.h          |  6 +++++
+>  6 files changed, 67 insertions(+), 79 deletions(-)
+>
+> --
+> 2.23.0
+>
 
-Thank you for the review.
+I guess Rafael intend to pick this up for v5.5?
 
-On Tue, Sep 24, 2019 at 12:38:29PM +0200, Petr Mladek wrote:
-> On Wed 2019-09-18 16:34:14, Sakari Ailus wrote:
-> > %pS and %ps are now the preferred conversion specifiers to print function
-> > names. The functionality is equivalent; remove the old, deprecated %pF
-> > and %pf support.
-> > 
-> > --- a/lib/vsprintf.c
-> > +++ b/lib/vsprintf.c
-> > @@ -909,7 +909,7 @@ char *symbol_string(char *buf, char *end, void *ptr,
-> >  #ifdef CONFIG_KALLSYMS
-> >  	if (*fmt == 'B')
-> >  		sprint_backtrace(sym, value);
-> > -	else if (*fmt != 'f' && *fmt != 's')
-> > +	else if (*fmt != 's')
-> >  		sprint_symbol(sym, value);
-> >  	else
-> >  		sprint_symbol_no_offset(sym, value);
-> > @@ -2007,9 +2007,7 @@ static char *kobject_string(char *buf, char *end, void *ptr,
-> >   *
-> >   * - 'S' For symbolic direct pointers (or function descriptors) with offset
-> >   * - 's' For symbolic direct pointers (or function descriptors) without offset
-> > - * - 'F' Same as 'S'
-> > - * - 'f' Same as 's'
-> > - * - '[FfSs]R' as above with __builtin_extract_return_addr() translation
-> > + * - '[Ss]R' as above with __builtin_extract_return_addr() translation
-> >   * - 'B' For backtraced symbolic direct pointers with offset
-> >   * - 'R' For decoded struct resource, e.g., [mem 0x0-0x1f 64bit pref]
-> >   * - 'r' For raw struct resource, e.g., [mem 0x0-0x1f flags 0x201]
-> > @@ -2112,8 +2110,6 @@ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
-> >  	      struct printf_spec spec)
-> >  {
-> >  	switch (*fmt) {
-> > -	case 'F':
-> > -	case 'f':
-> >  	case 'S':
-> >  	case 's':
-> >  		ptr = dereference_symbol_descriptor(ptr);
-> 
-> IMHO, we should do the same also in vbin_printf().
-> 
-> The compatibility with traceevent tools was discussed in the thread
-> https://lkml.kernel.org/r/20190910084707.18380-2-sakari.ailus@linux.intel.com
-> 
-> If I understand it correctly the tools should be able to handle stored
-> 'f' and 'F' modifiers because they might be produced by
-> older kernels. But new kernels should not longer produce them.
+In any case, for the mmc patch, feel free to add:
 
-Agreed.
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-> 
-> Otherwise the patch looks good to me. I am getting used to the fact
-> that we will remove the obsolete specifiers completely.
-
-I'll address this in v8 soon.
-
--- 
-Regards,
-
-Sakari Ailus
-sakari.ailus@linux.intel.com
+Kind regards
+Uffe
