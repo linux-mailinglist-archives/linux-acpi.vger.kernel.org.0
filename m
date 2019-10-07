@@ -2,115 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F67FCDA11
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2019 03:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5F3DCE620
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2019 16:55:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726661AbfJGBMI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 6 Oct 2019 21:12:08 -0400
-Received: from smtprelay0037.hostedemail.com ([216.40.44.37]:33720 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726605AbfJGBMI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 6 Oct 2019 21:12:08 -0400
-X-Greylist: delayed 377 seconds by postgrey-1.27 at vger.kernel.org; Sun, 06 Oct 2019 21:12:07 EDT
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave05.hostedemail.com (Postfix) with ESMTP id 53DE81828A454;
-        Mon,  7 Oct 2019 01:05:51 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 4AF3A100E86C8;
-        Mon,  7 Oct 2019 01:05:49 +0000 (UTC)
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Spam-Summary: 86,0,0,,d41d8cd98f00b204,rostedt@goodmis.org,:::::::::::::::::::::::::::::,RULES_HIT:41:355:379:541:599:800:960:967:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2525:2553:2559:2564:2682:2685:2692:2859:2892:2902:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4362:5007:6261:6742:7875:9025:10004:10400:10903:10967:11232:11658:11914:12043:12297:12555:12740:12760:12895:12986:13069:13161:13229:13255:13311:13357:13439:14096:14097:14181:14659:14721:14819:21080:21627:21811:21939:30029:30034:30054:30070:30075:30090:30091,0,RBL:66.24.58.225:@goodmis.org:.lbl8.mailshell.net-62.8.0.186 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:172,LUA_SUMMARY:none
-X-HE-Tag: swim51_328f856470b47
-X-Filterd-Recvd-Size: 3389
-Received: from grimm.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (Authenticated sender: rostedt@goodmis.org)
-        by omf14.hostedemail.com (Postfix) with ESMTPA;
-        Mon,  7 Oct 2019 01:05:47 +0000 (UTC)
-Date:   Tue, 10 Sep 2019 15:03:03 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Joe Perches <joe@perches.com>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
-        rafael@kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        Rob Herring <robh@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
-        linux-trace-devel@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>
-Subject: Re: [PATCH v6 01/12] tools lib traceevent: Convert remaining %p[fF]
- users to %p[sS]
-Message-ID: <20190910150303.5a0d3904@oasis.local.home>
-In-Reply-To: <c458e734f5777561138b87228384808398547762.camel@perches.com>
-References: <20190910084707.18380-1-sakari.ailus@linux.intel.com>
-        <20190910084707.18380-2-sakari.ailus@linux.intel.com>
-        <20190910071837.2e9110f8@oasis.local.home>
-        <61a2b2ab4693535850306f396aac2a328e1d5a21.camel@perches.com>
-        <20190910142621.0bec208d@oasis.local.home>
-        <c458e734f5777561138b87228384808398547762.camel@perches.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1727711AbfJGOzM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Oct 2019 10:55:12 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:44735 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727490AbfJGOzL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Oct 2019 10:55:11 -0400
+Received: by mail-wr1-f67.google.com with SMTP id z9so15652577wrl.11;
+        Mon, 07 Oct 2019 07:55:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=zyoLjL42jHZiwxAXIV2/XDf7QRXhcD/Qv0lwPPBYTCw=;
+        b=B3otWI4U0GSNrjqwP6usJ0QsQXw4reQk8JjX63gKbNmDqAXYg4VYGfTbWUjktkuzGX
+         +xaCfb5w2mNmI+cZOUkZOU2oHYUZaeDacr7lOFz0b6bpbtHDBxwDlGimM2pweeUoUckb
+         v71aW6da+G0WmrKWP7WjLNZbCZDKxBxv68vuIk2coAyjeKrN0uLlkMoQjeEjUizhgWhB
+         81cL91Uw1tAqjPAg4Q1xObpfA9FCGncyUd+XXhjU/zpBiTAHru93glYwQ6hFXRh0jU+c
+         o0lQx8rf0p+RmPNf5M6kyseZ00wCTEeZa7k7f3nPTm7LwKAffx8C99poDTbS0a5pit/4
+         HeBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=zyoLjL42jHZiwxAXIV2/XDf7QRXhcD/Qv0lwPPBYTCw=;
+        b=MlW0ojwhToYlPfCDYVsgL6bxsaI8PSKD9se19pgLFkzBC1di8Ame4yu0n9sLxvTZ7N
+         LPNA36+M3umUPsZ7V2k7g3Twuq8cZjm4608xYvuW/lcmVDq92A2P7IVJxn6PNQWuMH2h
+         oladtQ9b0xd2HvtC+BMR7OZlxEMDEDJ4Xd1TCHVmqHfW4rWnlz2iQuknzjliGqlkiMUb
+         2A2r3/6j7B2GLSc33m4MYmWMaywqU86jYXpnEg9o/hbmhHrIJO5Xt5SADzGSB64euEQe
+         aXky1pvmOyBdrV+zCPu8KqY2xaaUIaKp1oTfVoINAVUgRe7rqhLR9tc5CZcLLteyAGpa
+         wu2A==
+X-Gm-Message-State: APjAAAU0Xt0ESDp0yqiD8NSZa11U4LHGDxea7S9ezVYEbJZ6UOOySJYK
+        51paO4IydqjJnfi69XJRqZeB28+x
+X-Google-Smtp-Source: APXvYqwE7b8tg9jRbFJHNexgtg4+8TZ17/nub3x5etgIlxbBApsOnGRJD+30XW12FT483Q+wyoX9kg==
+X-Received: by 2002:a5d:4689:: with SMTP id u9mr22942357wrq.78.1570460108023;
+        Mon, 07 Oct 2019 07:55:08 -0700 (PDT)
+Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
+        by smtp.gmail.com with ESMTPSA id s1sm26307592wrg.80.2019.10.07.07.55.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Oct 2019 07:55:07 -0700 (PDT)
+Date:   Mon, 7 Oct 2019 16:55:05 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     linux-mm@kvack.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        x86@kernel.org, Keith Busch <keith.busch@intel.com>,
+        jglisse@redhat.com, "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        linuxarm@huawei.com, Andrew Morton <akpm@linux-foundation.org>,
+        Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH V5 3/4] x86: Support Generic Initiator only proximity
+ domains
+Message-ID: <20191007145505.GB88143@gmail.com>
+References: <20191004114330.104746-1-Jonathan.Cameron@huawei.com>
+ <20191004114330.104746-4-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191004114330.104746-4-Jonathan.Cameron@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 10 Sep 2019 11:42:06 -0700
-Joe Perches <joe@perches.com> wrote:
 
-> On Tue, 2019-09-10 at 14:26 -0400, Steven Rostedt wrote:
-> > On Tue, 10 Sep 2019 10:18:44 -0700
-> > Joe Perches <joe@perches.com> wrote:
-> >   
-> > > > It's not just for the lastest kernel. We must maintain backward
-> > > > compatibility here too. If there use to be a usage of this, then we
-> > > > must keep it until the kernels are no longer used (perhaps 7 years?)    
-> > > 
-> > > That argues for not using "%pfw" at all for some number of years.
-> > > 
-> > > Perhaps the '%pfw' should be '%pnfw' for 'name' and 'fwnode'  
-> >
-> >   -ENOCOMPREHENSION  
-> 
-> Perhaps you were not copied on the whole series.
-> 
-> https://lore.kernel.org/lkml/20190910084707.18380-1-sakari.ailus@linux.intel.com/
+* Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-Thanks for the link.
+> Done in a somewhat different fashion to arm64.
+> Here the infrastructure for memoryless domains was already
+> in place.  That infrastruture applies just as well to
+> domains that also don't have a CPU, hence it works for
+> Generic Initiator Domains.
+> 
+> In common with memoryless domains we only register GI domains
+> if the proximity node is not online. If a domain is already
+> a memory containing domain, or a memoryless domain there is
+> nothing to do just because it also contains a Generic Initiator.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  arch/x86/include/asm/numa.h |  2 ++
+>  arch/x86/kernel/setup.c     |  1 +
+>  arch/x86/mm/numa.c          | 14 ++++++++++++++
+>  3 files changed, 17 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
+> index bbfde3d2662f..f631467272a3 100644
+> --- a/arch/x86/include/asm/numa.h
+> +++ b/arch/x86/include/asm/numa.h
+> @@ -62,12 +62,14 @@ extern void numa_clear_node(int cpu);
+>  extern void __init init_cpu_to_node(void);
+>  extern void numa_add_cpu(int cpu);
+>  extern void numa_remove_cpu(int cpu);
+> +extern void init_gi_nodes(void);
+>  #else	/* CONFIG_NUMA */
+>  static inline void numa_set_node(int cpu, int node)	{ }
+>  static inline void numa_clear_node(int cpu)		{ }
+>  static inline void init_cpu_to_node(void)		{ }
+>  static inline void numa_add_cpu(int cpu)		{ }
+>  static inline void numa_remove_cpu(int cpu)		{ }
+> +static inline void init_gi_nodes(void)			{ }
+>  #endif	/* CONFIG_NUMA */
+>  
+>  #ifdef CONFIG_DEBUG_PER_CPU_MAPS
+> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+> index cfb533d42371..b6c977907ea5 100644
+> --- a/arch/x86/kernel/setup.c
+> +++ b/arch/x86/kernel/setup.c
+> @@ -1264,6 +1264,7 @@ void __init setup_arch(char **cmdline_p)
+>  	prefill_possible_map();
+>  
+>  	init_cpu_to_node();
+> +	init_gi_nodes();
+>  
+>  	io_apic_init_mappings();
+>  
+> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> index 4123100e0eaf..50bf724a425e 100644
+> --- a/arch/x86/mm/numa.c
+> +++ b/arch/x86/mm/numa.c
+> @@ -733,6 +733,20 @@ static void __init init_memory_less_node(int nid)
+>  	 */
+>  }
+>  
+> +/*
+> + * Generic Initiator Nodes may have neither CPU nor Memory.
+> + * At this stage if either of the others were present we would
+> + * already be online.
+> + */
+> +void __init init_gi_nodes(void)
+> +{
+> +	int nid;
+> +
+> +	for_each_node_state(nid, N_GENERIC_INITIATOR)
+> +		if (!node_online(nid))
+> +			init_memory_less_node(nid);
+> +}
 
-> 
-> As I understand it, Sakair Ailus is proposing to
-> obsolete the current vsprintf "%p[Ff]" extension
-> and replace the usage with a new "%pfw" extension
-> which would emit the name of a pointer to "struct fwnode {}".
-> 
-> https://lore.kernel.org/lkml/20190910084707.18380-10-sakari.ailus@linux.intel.com/
-> 
-> If reusing "%pf<foo>" is a problem, then instead
-> it might be reasonable to have a new "%pn<foo>" for
-> that use instead.
-> 
-> btw:
-> 
-> Is there kernel version information available in
-> trace output files?
+Nit: missing curly braces.
 
-Not really. This is just a library that parses the trace event formats,
-there's not kernel versions passed in, but we do use variations in
-formats and such to determine what is supported.
+How do these work in practice, will a system that only had nodes 0-1 
+today grow a third node '2' that won't have any CPUs on memory on them?
 
-> 
-> If so, it might be reasonable to change the tooling
-> there instead.
-> 
+Thanks,
 
-Actually, I think we could just look to see if "%pfw" is used and fall
-to that, otherwise consider it an older kernel and do it the original
-way.
-
--- Steve
-
+	Ingo
