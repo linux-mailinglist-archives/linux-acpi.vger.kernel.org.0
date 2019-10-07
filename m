@@ -2,89 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81D27CE83D
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2019 17:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1939CEBB3
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2019 20:24:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727947AbfJGPs6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Oct 2019 11:48:58 -0400
-Received: from mx2.suse.de ([195.135.220.15]:59422 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727814AbfJGPs5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 7 Oct 2019 11:48:57 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 7889CAFBE;
-        Mon,  7 Oct 2019 15:48:56 +0000 (UTC)
-Date:   Mon, 7 Oct 2019 17:48:52 +0200
-From:   Joerg Roedel <jroedel@suse.de>
-To:     Dave Hansen <dave.hansen@intel.com>
-Cc:     Joerg Roedel <joro@8bytes.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        hpa@zytor.com, x86@kernel.org, rjw@rjwysocki.net, lenb@kernel.org,
-        james.morse@arm.com, tony.luck@intel.com,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCH] x86/mm: Split vmalloc_sync_all()
-Message-ID: <20191007154852.GE4636@suse.de>
-References: <20191007151618.11785-1-joro@8bytes.org>
- <02e99987-10d2-203f-e6ba-e2568fa1af28@intel.com>
+        id S1728459AbfJGSYW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Oct 2019 14:24:22 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:27698 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728079AbfJGSYV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Oct 2019 14:24:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1570472660;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=eCQBbH69Pg1ZkWDiANjXEs7D77CgeYE54SQ2IQO4wnE=;
+        b=as1shgEVyfW80E+FyuBBhml/4IPmzY6C1o7qN1rq0In3bsYU25sO1Liv3HUEeSN8opYVI6
+        3xuxGUGqo9raOeWICrhvgwMbOV6VYsxZ/NBg5NEyjDw8CbiXp8kHY4mnYEsr4KjdVxp3bc
+        EI9XkLsHSaKtxv3JK+Z1NLULpw3mjNQ=
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
+ [209.85.166.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-128-mMkw9j3_MMe2-3gTTqxIdw-1; Mon, 07 Oct 2019 14:24:19 -0400
+Received: by mail-io1-f71.google.com with SMTP id u18so28186180ioc.4
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Oct 2019 11:24:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=eCQBbH69Pg1ZkWDiANjXEs7D77CgeYE54SQ2IQO4wnE=;
+        b=D28hgKtVEN5SfTIzaBPtfL9gNYTA5L/VvcCZTemOwCjhGNS1nRYlPmq08YCRvCr1VR
+         QSoERHnTscb3MhhQ4dPIlu4Qn9tAZ0/5GEUfVu+B3bA4FRfgVCERrQs8DvLP4fiOJgLt
+         Iv27GHAfj4My8Fn7DYBVUosE2NHlkE6n9/cK5faRY3VbOXBEtUzdTBwR0hwJbPoWN1nl
+         syjQTg20IwAlyAC544aFyfvSn3pzcbh26cNLKLVtbhgGOL/Rn0UyyJV/BmI6ZfXE4DdK
+         145ueeAAFBibE1vXujEa1lgrNj2BDMyJQzQewKYpTrFLVbJGF7d/cjkPXiFr+73a9+hu
+         hGeA==
+X-Gm-Message-State: APjAAAUkfwqXXbKTuhXNTh3hnw28fTem6KnzxOSsHBQlKSW81OHqnRtN
+        FMityJyB0Zw3whF6NzLH/FHtoxsLekcb5wdqqy7mClZi4jvhJRlLLcf2BwSN5iVvr1qVbbYUDZ7
+        cWJZGj4/bESIiwPHzeYxE7Q==
+X-Received: by 2002:a92:9cca:: with SMTP id x71mr15879282ill.245.1570472658214;
+        Mon, 07 Oct 2019 11:24:18 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqyRjcepKCt0gHU4J1fh/VS38XxOBSx6x1eDJ//ttvcWAF97bQNybglqC62SyFGnxx6CS0fwfw==
+X-Received: by 2002:a92:9cca:: with SMTP id x71mr15879262ill.245.1570472657939;
+        Mon, 07 Oct 2019 11:24:17 -0700 (PDT)
+Received: from localhost (ip70-163-223-149.ph.ph.cox.net. [70.163.223.149])
+        by smtp.gmail.com with ESMTPSA id l13sm7026832ilq.56.2019.10.07.11.24.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Oct 2019 11:24:16 -0700 (PDT)
+Date:   Mon, 7 Oct 2019 11:24:15 -0700
+From:   Jerry Snitselaar <jsnitsel@redhat.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Joerg Roedel <joro@8bytes.org>, iommu@lists.linux-foundation.org,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 6/6] iommu/amd: Switch to use acpi_dev_hid_uid_match()
+Message-ID: <20191007182415.ftpojfdluoun34xm@cantor>
+Reply-To: Jerry Snitselaar <jsnitsel@redhat.com>
+References: <20190924193739.86133-1-andriy.shevchenko@linux.intel.com>
+ <20190924193739.86133-7-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <20190924193739.86133-7-andriy.shevchenko@linux.intel.com>
+User-Agent: NeoMutt/20180716
+X-MC-Unique: mMkw9j3_MMe2-3gTTqxIdw-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Content-Disposition: inline
-In-Reply-To: <02e99987-10d2-203f-e6ba-e2568fa1af28@intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Dave,
+On Tue Sep 24 19, Andy Shevchenko wrote:
+>Since we have a generic helper, drop custom implementation in the driver.
+>
+>Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>---
 
-thanks for your review!
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
 
-On Mon, Oct 07, 2019 at 08:30:51AM -0700, Dave Hansen wrote:
-> On 10/7/19 8:16 AM, Joerg Roedel wrote:
-> > @@ -318,7 +328,7 @@ static void dump_pagetable(unsigned long address)
-> >  
-> >  #else /* CONFIG_X86_64: */
-> >  
-> > -void vmalloc_sync_all(void)
-> > +void vmalloc_sync_mappings(void)
-> >  {
-> >  	sync_global_pgds(VMALLOC_START & PGDIR_MASK, VMALLOC_END);
-> >  }
-> 
-> FWIW, I generally detest the use of __weak. :)
-
-Yeah, I don't like it either, but in this case it is probably better
-than empty stubs in all architectures besides x86 :)
-
-> In this case, it ends up letting us gloss over the fact that we have a
-> 32/64-bit asymmetry.  It would probably be nice to actually have a
-> 64-bit implementation that comes along with a nice comment.  Maybe this
-> in vmalloc_sync_mappings():
-> 
-> 	/*
-> 	 * 64-bit mappings might allocate new p4d/pud pages
-> 	 * that need to be propagated to all tasks' PGDs.
-> 	 */
-> 
-> which would pair nicely with:
-> 
-> void vmalloc_sync_unmappings(void)
-> {
-> 	/*
-> 	 * Unmappings never allocate or free p4d/pud pages.
-> 	 * No work is required here.
-> 	 */
-> }
-
-Yes, that makes, I will add these comments in V2.
-
-Thanks,
-
-	Joerg
