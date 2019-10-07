@@ -2,126 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8885423BE7F
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Aug 2020 19:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B9F223C268
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Aug 2020 01:52:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726925AbgHDRDn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Aug 2020 13:03:43 -0400
-Received: from mail-eopbgr70074.outbound.protection.outlook.com ([40.107.7.74]:17300
-        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729131AbgHDRDh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 4 Aug 2020 13:03:37 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FbmOvc1yqLDC0CEmZ+SJ0+bxokjsuPSWaksneOHlX9MvfZ+tHQT//RfE7VkTTsudo5Xo3if9RD8JO6/xbVt3PcOYROkL+iBvuuCyd3bOzfOh2wqEbHyK90TJukvdfhHDGGOFVO/w8NmdmyCeA45/8MbeXiZ2G/DZtmN5cHK5/r1lbFJaWY7BKkraCak2ughQiIQ9q+bwlOPgHp+h8bTNlixNtQsSly2lOiMHARvyu6iSJQ8GfC9tPGth6INQ56/JG0x0kUk7rVSrbwaxKBJRn1S3s+wTvjo5y1LXuRUDAmkQvQqbrTZdboJPq/XmJyrqOhFSmLu2p8TE0vBS6TcTgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7wLHGsl2C6BI5j1457dAed07dHoa/4CliwDGpeWowms=;
- b=EihtR8bw1bvL1BFx20M+abDXu/yIggTyWRTokAumOcge+DMlMN/VbDQEcL5dJSlBtGVzXE63eqcFWVSAlqGHFdam5D0LIeULt3TRCxCs3AcSHtaHDqxWZ/VPbiIJUW3pOWnYpaV7fBVGHoR3wL6dyOjDLXzZn0HGR8MtMZx7pmvQx4AP7Zjcw22UGkHya9fBX2S5krHuixegVoHXvkHz3eAenTcjpFl3+dUKHF7r5Hr1ge2xucRZCCtaBjm/j4YBBBXjOvwkkyqgCX2YkKv9GkBADqtCsrE7rvDbiulzQqtwuXPyQVxSbHkFZmaaLSy2fG5gF4q0XgpzEOKOcXgX8Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
- dkim=pass header.d=mellanox.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7wLHGsl2C6BI5j1457dAed07dHoa/4CliwDGpeWowms=;
- b=CiW6z32ZyxRj7D3q9bT8Iuoev15rOBsjdgw96aRA7g53EYm03m8CrI31YTQCdPWQMtCMJXpoq4VI5R1O3/dnKbDAsA27t1cJwbMwMLcTaOKIZZUBihtMqJWH9mfl9eNAzGE9M7eS/H9xIkKpBbte+cIHGKZjoPHXrAxFVKwWkJ4=
-Authentication-Results: intel.com; dkim=none (message not signed)
- header.d=none;intel.com; dmarc=none action=none header.from=mellanox.com;
-Received: from DB7PR05MB4138.eurprd05.prod.outlook.com (2603:10a6:5:23::16) by
- DB8PR05MB6698.eurprd05.prod.outlook.com (2603:10a6:10:132::12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3239.16; Tue, 4 Aug 2020 17:03:02 +0000
-Received: from DB7PR05MB4138.eurprd05.prod.outlook.com
- ([fe80::4025:1579:1d10:fd4d]) by DB7PR05MB4138.eurprd05.prod.outlook.com
- ([fe80::4025:1579:1d10:fd4d%7]) with mapi id 15.20.3239.021; Tue, 4 Aug 2020
- 17:03:02 +0000
-Date:   Tue, 4 Aug 2020 14:02:58 -0300
-From:   Jason Gunthorpe <jgg@mellanox.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     akpm@linux-foundation.org, David Hildenbrand <david@redhat.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        David Airlie <airlied@linux.ie>, Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Joao Martins <joao.m.martins@oracle.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Wei Yang <richardw.yang@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Jia He <justin.he@arm.com>, Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Paul Mackerras <paulus@ozlabs.org>,
-        Brice Goglin <Brice.Goglin@inria.fr>,
-        Jeff Moyer <jmoyer@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Andy Lutomirski <luto@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, linux-mm@kvack.org,
-        linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v3 00/23] device-dax: Support sub-dividing soft-reserved
- ranges
-Message-ID: <20200804170258.GV19097@mellanox.com>
-References: <159625229779.3040297.11363509688097221416.stgit@dwillia2-desk3.amr.corp.intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <159625229779.3040297.11363509688097221416.stgit@dwillia2-desk3.amr.corp.intel.com>
-X-ClientProxiedBy: BL0PR0102CA0061.prod.exchangelabs.com
- (2603:10b6:208:25::38) To DB7PR05MB4138.eurprd05.prod.outlook.com
- (2603:10a6:5:23::16)
+        id S1726899AbgHDXw2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Aug 2020 19:52:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59272 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726011AbgHDXw2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Aug 2020 19:52:28 -0400
+X-Greylist: delayed 86248 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 04 Aug 2020 16:52:27 PDT
+Received: from dockerbox (unknown [IPv6:2001:4800:7817:101:be76:4eff:fe04:a215])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BC72FC061756;
+        Tue,  4 Aug 2020 16:52:27 -0700 (PDT)
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+        by dockerbox (Postfix) with SMTP id 6F4DA5EC5A;
+        Mon,  7 Oct 2019 19:30:12 -0500 (CDT)
+Received: from [32.188.209.113] by 127.0.0.1 with SMTP; Mon, 07 Oct 2019 18:22:17 -0600
+Message-ID: <80v-q$4-o4pqyq0@6eeih174.p55>
+From:   "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
+Reply-To: "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
+To:     linkos@binet.lv
+Subject: RE:PERSONAL LETTER FROM MRS RASHIA AMIRA
+Date:   Mon, 07 Oct 19 18:22:17 GMT
+X-Mailer: Microsoft Outlook Express 5.00.2615.200
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from mlx.ziepe.ca (156.34.48.30) by BL0PR0102CA0061.prod.exchangelabs.com (2603:10b6:208:25::38) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3239.17 via Frontend Transport; Tue, 4 Aug 2020 17:03:02 +0000
-Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@mellanox.com>)      id 1k30L5-003QOA-0S; Tue, 04 Aug 2020 14:02:59 -0300
-X-Originating-IP: [156.34.48.30]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: c561fd81-bafb-45b2-6a16-08d838983f6d
-X-MS-TrafficTypeDiagnostic: DB8PR05MB6698:
-X-Microsoft-Antispam-PRVS: <DB8PR05MB6698AF9564BCD10DFACEFDA7CF4A0@DB8PR05MB6698.eurprd05.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2803;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: H3oLK4DQy34IthsePWj+m2eUxKMWw32fALHR08cTHhfC1YCjn6Sbke6O516IPeZqLXEyscPRgrEen+KMQcwOw4Y5xgJKYfWIZDyV+YAlYCMfYxwtgq5x6Ykx9AN7xSn8fT+iyV/GLKCK7BvizYrwIP/dmFazcxTkjjrOeuIKT5YHGhOEbaV0gVzEXegvxcH1GX3OyCBHZCEJCJBps+DPwUGVTNzB9DlcLt1GjRHqsMF8aPEdtm395gy5DGNQBIbMtVkPkqqKIa8A5KNVdYyvrLbCr8PujbWJfrdbH3E71DYtsloEUahjdAnJK5hrOovT
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR05MB4138.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(376002)(346002)(136003)(396003)(39860400002)(366004)(2616005)(4326008)(9746002)(9786002)(558084003)(5660300002)(36756003)(7406005)(7416002)(426003)(26005)(186003)(66556008)(66946007)(66476007)(316002)(54906003)(1076003)(2906002)(478600001)(33656002)(8676002)(8936002)(86362001)(6916009);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: ooX1gXy+Unzj5ZgWTuhCl4+QjUgNuUDYr9BP99YBYYIwDbW0L34SzMiYI6uEiXDQilu2h4J5VoM3a6Y0TlcU5sJ8jbajC8YH/uyPiabwBEfCcx2Wya1ZBZA1YacFGJ9fx6NXtWNaPJYzj5uWKuk5uOd2zMaN/1M11nUFFOZ7l0YqL68evnuiixtmiUqb9Z8kkBW7zFeB/3XmlDMlcDN3nsSYlCzwbwfKZONOVw6HcX5qRWZ1aq4440wXsnP7utp6cv4kgrtioNapuEyvYk0NSnqd50UMDZaYre9ulBqUJVF+wnpIdUyIz/dakZ03r8EDtQWwRtC8dnWWdYAJqCM63W1jleZab2sauVr0t6kA4xeIbUCn6H4ePLQlbA9Ba8ztvlgm4EZD4gfe2+tpuT/oGvsKcIl+Kz/5FdxF/1Cr2hX6nw2C4I55PeId69/PU6lwXihyorHTG1YhlckZMrkKZUJn586A9uVutI8WCSVL11h/yh3XJaFLpXDLc73b67ilGGCEZrdkatkv6lNHjwn1o6ew6kAz9JRQsemGeI9GEmn6keBEXQx5c8d0f1GJNvbREqWLFasT12ssbx8sM5hc11xS5UVkl/BWCDePa4c5TPVQW4DHdEFI7X+1pWStkOMX+fd+Bt3cfD8ohqDJzkun5g==
-X-OriginatorOrg: Mellanox.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c561fd81-bafb-45b2-6a16-08d838983f6d
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR05MB4138.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2020 17:03:02.7362
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: a652971c-7d2e-4d9b-a6a4-d149256f461b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VzQLuCw32OZmSzSwbCewJA0UXR68m5N9rn3ogeA9QLUAW5V9CZrohYyFDBqtZ6XcFe+t/qXXq1QexO7CjF4HdQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR05MB6698
+Content-Type: multipart/alternative;
+        boundary="_.A4476ECDD73A3"
+X-Priority: 3
+X-MSMail-Priority: Normal
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 31, 2020 at 08:24:58PM -0700, Dan Williams wrote:
 
-> - Fix test_hmm and other compilation fixups (Ralph)
+--_.A4476ECDD73A3
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-The hmm parts look OK
+Greetings
 
-Acked-by: Jason Gunthorpe <jgg@nvidia.com>
+My name is Barrister Hans Erich.
 
-Jason
+I have a client who is interested to invest in your country, she is a well=
+ known politician in her country and deserve a lucrative investment partne=
+rship with you outside her country without any delay   Please can you mana=
+ge such investment please Kindly reply for further details.
+
+Your full names --------
+
+
+Your urgent response will be appreciated
+
+Thank you and God bless you.
+
+Barrister Hans Erich
+
+Yours sincerely,
+Barrister Hans Erich
+CONTACT: hanserich9helmut@gmail.com
+
+--_.A4476ECDD73A3--
+
