@@ -2,124 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25310CE784
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2019 17:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9AC9CE83C
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2019 17:48:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727711AbfJGPbB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Oct 2019 11:31:01 -0400
-Received: from mga02.intel.com ([134.134.136.20]:65135 "EHLO mga02.intel.com"
+        id S1727791AbfJGPsj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Oct 2019 11:48:39 -0400
+Received: from mx-out.tlen.pl ([193.222.135.148]:14155 "EHLO mx-out.tlen.pl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726334AbfJGPbB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 7 Oct 2019 11:31:01 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Oct 2019 08:31:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,268,1566889200"; 
-   d="scan'208";a="197423117"
-Received: from jpoconno-mobl2.amr.corp.intel.com (HELO [10.251.1.116]) ([10.251.1.116])
-  by orsmga006.jf.intel.com with ESMTP; 07 Oct 2019 08:30:51 -0700
-Subject: Re: [PATCH] x86/mm: Split vmalloc_sync_all()
-To:     Joerg Roedel <joro@8bytes.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>
-Cc:     hpa@zytor.com, x86@kernel.org, rjw@rjwysocki.net, lenb@kernel.org,
-        james.morse@arm.com, tony.luck@intel.com,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-mm@kvack.org, Joerg Roedel <jroedel@suse.de>
-References: <20191007151618.11785-1-joro@8bytes.org>
-From:   Dave Hansen <dave.hansen@intel.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-Message-ID: <02e99987-10d2-203f-e6ba-e2568fa1af28@intel.com>
-Date:   Mon, 7 Oct 2019 08:30:51 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727814AbfJGPsj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 7 Oct 2019 11:48:39 -0400
+Received: (wp-smtpd smtp.tlen.pl 22843 invoked from network); 7 Oct 2019 17:48:33 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
+          t=1570463313; bh=o3vwmCdN0pZu9+76pn352/XMaPJsw346ZXswcDLn5cw=;
+          h=From:To:Cc:Subject;
+          b=F0toWhB4rIsfG8DA2wqCZocPDuEqZ/8G/J+/kZJw3fKahu8S03HV4DZ2l3CyNZOdW
+           WUFLNhvvt9ZsKqLLjO8gq88SupZciBYcPEf1cSAKoyliTEnlEekFFSOyBr/KOjqz85
+           m6NJCKgogX/7bcaI/200TtJ2cH6wMdMDvT10tcLc=
+Received: from public-gprs408404.centertel.pl (HELO localhost.localdomain) (cosiekvfj@o2.pl@[37.47.226.149])
+          (envelope-sender <cosiekvfj@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <rui.zhang@intel.com>; 7 Oct 2019 17:48:33 +0200
+From:   =?UTF-8?q?Kacper=20Piwi=C5=84ski?= <cosiekvfj@o2.pl>
+To:     rui.zhang@intel.com, rjw@rjwysocki.net, lenb@kernel.org
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        =?UTF-8?q?Kacper=20Piwi=C5=84ski?= <cosiekvfj@o2.pl>
+Subject: [PATCH] ACPI: acpi_video: update doc for acpi_video_bus_DOS
+Date:   Mon,  7 Oct 2019 17:48:18 +0200
+Message-Id: <20191007154818.7416-1-cosiekvfj@o2.pl>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20191007151618.11785-1-joro@8bytes.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-WP-DKIM-Status: good (id: o2.pl)                                      
+X-WP-MailID: cc6d1bf059268021cbf44213ee77d9e7
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000001 [0SLx]                               
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 10/7/19 8:16 AM, Joerg Roedel wrote:
-> @@ -318,7 +328,7 @@ static void dump_pagetable(unsigned long address)
->  
->  #else /* CONFIG_X86_64: */
->  
-> -void vmalloc_sync_all(void)
-> +void vmalloc_sync_mappings(void)
->  {
->  	sync_global_pgds(VMALLOC_START & PGDIR_MASK, VMALLOC_END);
->  }
+commit:
+efaa14c
 
-FWIW, I generally detest the use of __weak. :)
+"Starting from win8, MS backlight control driver will set bit 2 of the
+parameter of control method _DOS, to inform firmware it should not
+perform any automatic brightness changes. This mostly affects hotkey
+notification deliver - if we do not set this bit, on hotkey press,
+firmware may choose to adjust brightness level instead of sending out
+notification and doing nothing."
 
-In this case, it ends up letting us gloss over the fact that we have a
-32/64-bit asymmetry.  It would probably be nice to actually have a
-64-bit implementation that comes along with a nice comment.  Maybe this
-in vmalloc_sync_mappings():
+win7:
+https://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/BrightnessCtrl.docx
 
-	/*
-	 * 64-bit mappings might allocate new p4d/pud pages
-	 * that need to be propagated to all tasks' PGDs.
-	 */
+"To avoid problems that might occur if both the system firmware and
+the monitor driver control the brightness of the display, the display
+miniport driver should set bit 2 of the argument to the _DOS method.
+Setting this bit notifies the system firmware that it should not
+perform any automatic display brightness changes. The WDDM
+driver must set this particular bit because it controls the _DOS
+method. The other bits in the _DOS method control the behavior of
+the firmware in response to the display switch hot keys."
 
-which would pair nicely with:
+win8:
+http://read.pudn.com/downloads193/doc/907411/Brightness.doc
 
-void vmalloc_sync_unmappings(void)
-{
-	/*
-	 * Unmappings never allocate or free p4d/pud pages.
-	 * No work is required here.
-	 */
-}
+Signed-off-by: Kacper Piwiński <cosiekvfj@o2.pl>
+---
+ drivers/acpi/acpi_video.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+index 4f325e47519f..2f380e7381d6 100644
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -699,9 +699,13 @@ acpi_video_device_EDID(struct acpi_video_device *device,
+  *			event notify code.
+  *	lcd_flag	:
+  *		0.	The system BIOS should automatically control the brightness level
+- *			of the LCD when the power changes from AC to DC
++ *			of the LCD when:
++ *			- the power changes from AC to DC (ACPI appendix B)
++ *			- a brightness hotkey gets pressed (implied by Win7/8 backlight docs)
+  *		1.	The system BIOS should NOT automatically control the brightness
+- *			level of the LCD when the power changes from AC to DC.
++ *			level of the LCD when:
++ *			- the power changes from AC to DC (ACPI appendix B)
++ *			- a brightness hotkey gets pressed (implied by Win7/8 backlight docs)
+  *  Return Value:
+  *		-EINVAL	wrong arg.
+  */
+-- 
+2.23.0
+
