@@ -2,87 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B18CCFBD3
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Oct 2019 16:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D568ACFCD6
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Oct 2019 16:53:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725834AbfJHODJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Oct 2019 10:03:09 -0400
-Received: from mga17.intel.com ([192.55.52.151]:7522 "EHLO mga17.intel.com"
+        id S1725939AbfJHOxF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Oct 2019 10:53:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34792 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726245AbfJHODJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 8 Oct 2019 10:03:09 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Oct 2019 07:03:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,270,1566889200"; 
-   d="scan'208";a="193387191"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga007.fm.intel.com with ESMTP; 08 Oct 2019 07:03:07 -0700
-Received: from andy by smile with local (Exim 4.92.2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iHq4w-0002Gy-Sk; Tue, 08 Oct 2019 17:03:06 +0300
-Date:   Tue, 8 Oct 2019 17:03:06 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] device property: Fix the description of struct
- fwnode_operations
-Message-ID: <20191008140306.GN32742@smile.fi.intel.com>
-References: <20191008132606.56434-1-heikki.krogerus@linux.intel.com>
+        id S1725839AbfJHOxF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 8 Oct 2019 10:53:05 -0400
+Received: from kernel.org (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2BD54205F4;
+        Tue,  8 Oct 2019 14:53:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1570546384;
+        bh=HOwqEJnzYDjyfyw62/mg9zQ47IpabGqcr9GPShPewjw=;
+        h=In-Reply-To:References:From:To:Cc:Subject:Date:From;
+        b=mP2igvVtEnU1PgLtbmQACDyWbD4aoBpJBBrrLBjxggACvfraDKHi4zZDk79r5IIN1
+         Zm+YM6bz23bgxX4MH4LMGQ73emCqM/L3TQI0QOgO5qIfGflaeDpamPjMRNbfbYUWQB
+         bGsUAMhvMc+Yny1vE6Oo9fWzD78hxwR50oplwcvk=
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191008132606.56434-1-heikki.krogerus@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20191004153750.GB823823@kroah.com>
+References: <20190904211126.47518-1-saravanak@google.com> <20190904211126.47518-4-saravanak@google.com> <20190911102926.A9F8D2082C@mail.kernel.org> <20191004153750.GB823823@kroah.com>
+From:   Stephen Boyd <sboyd@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>, Len Brown <lenb@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Saravana Kannan <saravanak@google.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-acpi@vger.kernel.org,
+        clang-built-linux@googlegroups.com,
+        David Collins <collinsd@codeaurora.org>,
+        kernel-team@android.com, kbuild test robot <lkp@intel.com>
+Subject: Re: [PATCH v11 3/6] of: property: Add functional dependency link from DT bindings
+User-Agent: alot/0.8.1
+Date:   Tue, 08 Oct 2019 07:53:02 -0700
+Message-Id: <20191008145304.2BD54205F4@mail.kernel.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 08, 2019 at 04:26:06PM +0300, Heikki Krogerus wrote:
-> Adding description for the device_is_available member which
-> was missing, and fixing the description of the member
-> property_read_int_array.
+Quoting Greg Kroah-Hartman (2019-10-04 08:37:50)
+> On Wed, Sep 11, 2019 at 03:29:25AM -0700, Stephen Boyd wrote:
+> > Quoting Saravana Kannan (2019-09-04 14:11:22)
+> > > +       int ret =3D 0;
+> > > +       struct device_node *tmp_np =3D sup_np;
+> > > +
+> > > +       of_node_get(sup_np);
+> > > +       /*
+> > > +        * Find the device node that contains the supplier phandle.  =
+It may be
+> > > +        * @sup_np or it may be an ancestor of @sup_np.
+> > > +        */
+> > > +       while (sup_np && !of_find_property(sup_np, "compatible", NULL=
+))
+> > > +               sup_np =3D of_get_next_parent(sup_np);
+> >=20
+> > I don't get this. This is assuming that drivers are only probed for
+> > device nodes that have a compatible string? What about drivers that make
+> > sub-devices for clk support that have drivers in drivers/clk/ that then
+> > attach at runtime later? This happens sometimes for MFDs that want to
+> > split the functionality across the driver tree to the respective
+> > subsystems.
+>=20
+> For that, the link would not be there, correct?
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+The parent device (MFD) would have the links because that is the device
+node with the provider property like '#clock-cells'. The child clk
+device that's populated by the MFD would be the one actually providing
+the clk via a driver that may probe any time later, or never, depending
+on if the clk driver is configured as a module or not. I fail to see how
+this will work for these cases.
 
-> 
-> Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> ---
->  include/linux/fwnode.h | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-> index 6ae05b9ce359..fc002aacae8d 100644
-> --- a/include/linux/fwnode.h
-> +++ b/include/linux/fwnode.h
-> @@ -50,11 +50,11 @@ struct fwnode_reference_args {
->   * struct fwnode_operations - Operations for fwnode interface
->   * @get: Get a reference to an fwnode.
->   * @put: Put a reference to an fwnode.
-> + * @device_is_available: Return true if the device is available.
->   * @device_get_match_data: Return the device driver match data.
->   * @property_present: Return true if a property is present.
-> - * @property_read_integer_array: Read an array of integer properties. Return
-> - *				 zero on success, a negative error code
-> - *				 otherwise.
-> + * @property_read_int_array: Read an array of integer properties. Return zero on
-> + *			     success, a negative error code otherwise.
->   * @property_read_string_array: Read an array of string properties. Return zero
->   *				on success, a negative error code otherwise.
->   * @get_parent: Return the parent of an fwnode.
-> -- 
-> 2.23.0
-> 
+Is this logic there to find the parent of a regulator phandle and match
+that to some driver? It looks like it.
 
--- 
-With Best Regards,
-Andy Shevchenko
+>=20
+> > > +static int of_link_property(struct device *dev, struct device_node *=
+con_np,
+> > > +                            const char *prop_name)
+> > > +{
+> > > +       struct device_node *phandle;
+> > > +       const struct supplier_bindings *s =3D bindings;
+> > > +       unsigned int i =3D 0;
+> > > +       bool matched =3D false;
+> > > +       int ret =3D 0;
+> > > +
+> > > +       /* Do not stop at first failed link, link all available suppl=
+iers. */
+> > > +       while (!matched && s->parse_prop) {
+> > > +               while ((phandle =3D s->parse_prop(con_np, prop_name, =
+i))) {
+> > > +                       matched =3D true;
+> > > +                       i++;
+> > > +                       if (of_link_to_phandle(dev, phandle) =3D=3D -=
+EAGAIN)
+> > > +                               ret =3D -EAGAIN;
+> >=20
+> > And don't break?
+>=20
+> There was comments before about how this is not needed.  Frank asked
+> that the comment be removed.  And now you point it out again :)
+>=20
+> Look at the comment a few lines up, we have to go through all of the
+> suppliers.
+>=20
 
+Ok. The comment tells me what is happening but it misses the essential
+part which is _why_ we must make links to each supplier and return
+-EAGAIN.
 
