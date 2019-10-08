@@ -2,108 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05189CF099
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Oct 2019 03:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77E60CF7F6
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Oct 2019 13:18:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729212AbfJHBoZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Oct 2019 21:44:25 -0400
-Received: from mx0b-00154904.pphosted.com ([148.163.137.20]:10042 "EHLO
-        mx0b-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726917AbfJHBoZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Oct 2019 21:44:25 -0400
-Received: from pps.filterd (m0170397.ppops.net [127.0.0.1])
-        by mx0b-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x981e6An011903;
-        Mon, 7 Oct 2019 21:44:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=smtpout1;
- bh=yCKdzxuAI15HqQkGoQIkK3L6z/InOYNfvaU8ZRq3CIQ=;
- b=hCzosoDzxt8GWMsLE6dI+YPFcXsRr6lotBZaMVgS956b2QJkePDWjC9i54KkIM9x7VMs
- W9i+ICPnso4G46yFcT3wcz5UZuBuNKrs9mnuwTVcFYD4IGCYjq6fCjthPLT6CxH4uvQP
- kLf30FXL77ZtWQB4Uio+67Tj6UIavyx8cO/K7oaATY668K9EOfah31AQeqGdFHAdV4HP
- KIa8DhIwMTXGhkU70oUDc+nu+ZbpPfxpylz9tFB24MYGFozHtH8t4h6wRH2s7cL0Q7wd
- sU9fIBMpY9lgLr2CWK1UY/Hzi6l84kqt3oY/QE9CaVs4mEKi/dDYyINCaamsjNVNUWXP uw== 
-Received: from mx0b-00154901.pphosted.com (mx0b-00154901.pphosted.com [67.231.157.37])
-        by mx0b-00154904.pphosted.com with ESMTP id 2vem8vkg54-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 07 Oct 2019 21:44:22 -0400
-Received: from pps.filterd (m0144104.ppops.net [127.0.0.1])
-        by mx0b-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x981cMWo078962;
-        Mon, 7 Oct 2019 21:44:21 -0400
-Received: from ausc60ps301.us.dell.com (ausc60ps301.us.dell.com [143.166.148.206])
-        by mx0b-00154901.pphosted.com with ESMTP id 2vemenrr8q-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 07 Oct 2019 21:44:21 -0400
-X-LoopCount0: from 10.166.132.133
-X-PREM-Routing: D-Outbound
-X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
-   d="scan'208";a="1360428870"
-From:   <Mario.Limonciello@dell.com>
-To:     <pmenzel@molgen.mpg.de>, <rjw@rjwysocki.net>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] ACPI: PM: Revert "ACPI / PM: Blacklist Low Power S0 Idle
- _DSM for Dell XPS13 9360"
-Thread-Topic: [PATCH] ACPI: PM: Revert "ACPI / PM: Blacklist Low Power S0 Idle
- _DSM for Dell XPS13 9360"
-Thread-Index: AQHVdIS2zGdNRDUjQk2wDaptzH3FCKdQLGgA///crxA=
-Date:   Tue, 8 Oct 2019 01:44:17 +0000
-Message-ID: <541d9bfa3ccf45b5b07e35e3eebb72ed@AUSX13MPC105.AMER.DELL.COM>
-References: <1569514137-2307-1-git-send-email-mario.limonciello@dell.com>
- <97e66464-8407-fd58-21a6-aeb7736dec7b@molgen.mpg.de>
-In-Reply-To: <97e66464-8407-fd58-21a6-aeb7736dec7b@molgen.mpg.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.143.242.75]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1729876AbfJHLR7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Oct 2019 07:17:59 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3222 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729790AbfJHLR7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 8 Oct 2019 07:17:59 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 440B2A04CF488C9331FE;
+        Tue,  8 Oct 2019 19:17:56 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Tue, 8 Oct 2019
+ 19:17:47 +0800
+Date:   Tue, 8 Oct 2019 12:17:29 +0100
+From:   Jonathan Cameron <jonathan.cameron@huawei.com>
+To:     Ingo Molnar <mingo@kernel.org>
+CC:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>,
+        Keith Busch <keith.busch@intel.com>, <jglisse@redhat.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>, <linuxarm@huawei.com>,
+        "Andrew Morton" <akpm@linux-foundation.org>,
+        Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH V5 3/4] x86: Support Generic Initiator only proximity
+ domains
+Message-ID: <20191008121729.00005ee9@huawei.com>
+In-Reply-To: <20191007145505.GB88143@gmail.com>
+References: <20191004114330.104746-1-Jonathan.Cameron@huawei.com>
+        <20191004114330.104746-4-Jonathan.Cameron@huawei.com>
+        <20191007145505.GB88143@gmail.com>
+Organization: Huawei
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
- definitions=2019-10-07_05:2019-10-07,2019-10-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- impostorscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
- phishscore=0 bulkscore=0 suspectscore=0 adultscore=0 spamscore=0
- mlxlogscore=999 clxscore=1011 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-1908290000 definitions=main-1910080016
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 clxscore=1015
- suspectscore=0 mlxscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999
- impostorscore=0 phishscore=0 adultscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1908290000 definitions=main-1910080016
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.61]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-PiBPbiAyNi4wOS4xOSAxODowOCwgTWFyaW8gTGltb25jaWVsbG8gd3JvdGU6DQo+ID4gVGhpcyBy
-ZXZlcnRzIHBhcnQgb2YNCj4gPiBjb21taXQgNzE2MzBiN2E4MzJmICgiQUNQSSAvIFBNOiBCbGFj
-a2xpc3QgTG93IFBvd2VyIFMwIElkbGUgX0RTTSBmb3INCj4gPiBEZWxsIFhQUzEzIDkzNjAiKSB0
-byByZW1vdmUgdGhlIFMwaXggYmxhY2tsaXN0IGZvciB0aGUgWFBTIDkzNjAuDQo+ID4NCj4gPiBU
-aGUgcHJvYmxlbXMgd2l0aCB0aGlzIHN5c3RlbSBvY2N1cnJlZCBpbiBvbmUgcG9zc2libGUgTlZN
-RSBTU0Qgd2hlbg0KPiA+IHB1dHRpbmcgc3lzdGVtIGludG8gczBpeC4gIEFzIHRoZSBOVk1FIHNs
-ZWVwIGJlaGF2aW9yIGhhcyBiZWVuDQo+ID4gYWRqdXN0ZWQgaW4gZDkxNmIxYmUgdGhpcyBpcyBl
-eHBlY3RlZCB0byBiZSBub3cgcmVzb2x2ZWQuDQo+IA0KPiAxLiAgUGxlYXNlIGFkZCwgdGhhdCBp
-dCB3YXMgdGhlIEh5bml4KD8pIFNTRC4NCj4gMi4gIFBsZWFzZSBhZGQgdGhlIGNvbW1pdCBtZXNz
-YWdlIHN1bW1hcnkgb2YgZDkxNmIxYmUuDQo+IA0KPiAgICAgIG52bWUtcGNpOiB1c2UgaG9zdCBt
-YW5hZ2VkIHBvd2VyIHN0YXRlIGZvciBzdXNwZW5kDQo+IA0KDQpSYWZhZWwsIGxldCBtZSBrbm93
-IGlmIHlvdSB3YW50IG1lIHRvIGFkanVzdCB0aGUgY29tbWl0IG1lc3NhZ2UgYW5kIHJlc3VibWl0
-DQpvciBpZiB5b3Ugd291bGQganVzdCBoYW5kbGUgdGhpcyB0YXNrLg0KDQo+ID4gQ2M6ICdQYXVs
-IE1lbnplbCA8cG1lbnplbEBtb2xnZW4ubXBnLmRlPicNCj4gPiBCdWdMaW5rOiBodHRwczovL2J1
-Z3ppbGxhLmtlcm5lbC5vcmcvc2hvd19idWcuY2dpP2lkPTE5NjkwNw0KPiA+IFNpZ25lZC1vZmYt
-Ynk6IE1hcmlvIExpbW9uY2llbGxvIDxtYXJpby5saW1vbmNpZWxsb0BkZWxsLmNvbT4NCj4gDQo+
-IFRhZyBpdCBmb3IgdGhlIHN0YWJsZSBzZXJpZXM/IGQ5MTZiMWJlIChmaXJzdCB0YWcgdjUuMy1y
-YzEpIGlzIG5vdCB0YWdnZWQgZm9yIHN0YWJsZS4NCj4gDQoNCkFsdGhvdWdoIERlbGwgYXJyYW5n
-ZWQgYSBsb3Qgb2YgdGVzdGluZyB3aXRoIHBhcnRuZXJzIEkgZG9uJ3QgZmVlbCBkOTE2YjFiZSBp
-cyBhIHN0YWJsZQ0KY2FuZGlkYXRlLiAgUmFmYWVsIGZvdW5kIGEgY29ybmVyIGNhc2Ugd2l0aCBy
-ZWdhcmRzIHRvIEFTUE0gY29uZmlndXJhdGlvbiBsYXN0IG1pbnV0ZQ0KaW4gNS4zcmNYLCBJIGZv
-dW5kIGEgYW5vdGhlciBjb3JuZXIgY2FzZSByZWxhdGVkIHRvIG9yZGVyIG9mIGV2ZW50cyBhbmQg
-dGltaW5nIGFyb3VuZA0KUEMxMCBlbnRyeSB0aGF0J3MgZ2V0dGluZyBmaXhlZCBpbiA1LjQuDQoN
-Cj4gPiAtLS0NCj4gPiBUaGUgcGFydGljdWxhciBmYWlsaW5nIGNvbmZpZ3VyYXRpb24gd2FzIHJl
-cG9ydGVkIGJ5IG9ubHkgZXZlciBmYWlsZWQNCj4gPiBmb3IgUGF1bCBNZW56ZWwsIHNvIGhvcGVm
-dWxseSBoZSBjYW4gdGVzdCBvbiBoaXMgZmFpbGluZyBzeXN0ZW0uDQo+IA0KPiBJIHN1Y2Nlc3Nm
-dWxseSB0ZXN0ZWQgTGludXggNS40LXJjMSsgd2l0aCB0aGlzIGNvbW1pdCBsYXN0IEZyaWRheSBv
-biB0aGUgRGVsbCBYUFMNCj4gMTMgOTM2MC4NCj4gDQo+IFRlc3RlZC1ieTogUGF1bCBNZW56ZWwg
-PHBtZW56ZWxAbW9sZ2VuLm1wZy5kZT4NCj4gDQoNCldlbGwgdGhhdCdzIGdyZWF0LCBhcHByZWNp
-YXRlIHlvdXIgdGVzdGluZyBhbmQgY29uZmlybWF0aW9uLg0KDQo=
+On Mon, 7 Oct 2019 16:55:05 +0200
+Ingo Molnar <mingo@kernel.org> wrote:
+
+> * Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+> 
+> > Done in a somewhat different fashion to arm64.
+> > Here the infrastructure for memoryless domains was already
+> > in place.  That infrastruture applies just as well to
+> > domains that also don't have a CPU, hence it works for
+> > Generic Initiator Domains.
+> > 
+> > In common with memoryless domains we only register GI domains
+> > if the proximity node is not online. If a domain is already
+> > a memory containing domain, or a memoryless domain there is
+> > nothing to do just because it also contains a Generic Initiator.
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> >  arch/x86/include/asm/numa.h |  2 ++
+> >  arch/x86/kernel/setup.c     |  1 +
+> >  arch/x86/mm/numa.c          | 14 ++++++++++++++
+> >  3 files changed, 17 insertions(+)
+> > 
+> > diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
+> > index bbfde3d2662f..f631467272a3 100644
+> > --- a/arch/x86/include/asm/numa.h
+> > +++ b/arch/x86/include/asm/numa.h
+> > @@ -62,12 +62,14 @@ extern void numa_clear_node(int cpu);
+> >  extern void __init init_cpu_to_node(void);
+> >  extern void numa_add_cpu(int cpu);
+> >  extern void numa_remove_cpu(int cpu);
+> > +extern void init_gi_nodes(void);
+> >  #else	/* CONFIG_NUMA */
+> >  static inline void numa_set_node(int cpu, int node)	{ }
+> >  static inline void numa_clear_node(int cpu)		{ }
+> >  static inline void init_cpu_to_node(void)		{ }
+> >  static inline void numa_add_cpu(int cpu)		{ }
+> >  static inline void numa_remove_cpu(int cpu)		{ }
+> > +static inline void init_gi_nodes(void)			{ }
+> >  #endif	/* CONFIG_NUMA */
+> >  
+> >  #ifdef CONFIG_DEBUG_PER_CPU_MAPS
+> > diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+> > index cfb533d42371..b6c977907ea5 100644
+> > --- a/arch/x86/kernel/setup.c
+> > +++ b/arch/x86/kernel/setup.c
+> > @@ -1264,6 +1264,7 @@ void __init setup_arch(char **cmdline_p)
+> >  	prefill_possible_map();
+> >  
+> >  	init_cpu_to_node();
+> > +	init_gi_nodes();
+> >  
+> >  	io_apic_init_mappings();
+> >  
+> > diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> > index 4123100e0eaf..50bf724a425e 100644
+> > --- a/arch/x86/mm/numa.c
+> > +++ b/arch/x86/mm/numa.c
+> > @@ -733,6 +733,20 @@ static void __init init_memory_less_node(int nid)
+> >  	 */
+> >  }
+> >  
+> > +/*
+> > + * Generic Initiator Nodes may have neither CPU nor Memory.
+> > + * At this stage if either of the others were present we would
+> > + * already be online.
+> > + */
+> > +void __init init_gi_nodes(void)
+> > +{
+> > +	int nid;
+> > +
+> > +	for_each_node_state(nid, N_GENERIC_INITIATOR)
+> > +		if (!node_online(nid))
+> > +			init_memory_less_node(nid);
+> > +}  
+> 
+> Nit: missing curly braces.
+
+Good point.
+
+> 
+> How do these work in practice, will a system that only had nodes 0-1 
+> today grow a third node '2' that won't have any CPUs on memory on them?
+
+Yes. Exactly that.  The result is that fallback lists etc work when
+_PXM is used to assign a device into that new node.  The interesting
+bit comes when a driver does something more interesting and queries
+the numa distances from SLIT.  At that point the driver can elect to
+do load balancing across multiple nodes at similar distances.
+
+In theory you can also specify a device you wish to put into the node
+via the SRAT entry (IIRC using segment + BDF for PCI devices), but
+for now I haven't implemented that method.
+
+> 
+> Thanks,
+> 
+> 	Ingo
+
+Thanks,
+
+Jonathan
+
