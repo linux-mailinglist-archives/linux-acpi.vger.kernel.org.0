@@ -2,113 +2,195 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 623D5D1011
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Oct 2019 15:28:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 357FFD1C90
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2019 01:18:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731212AbfJIN2i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Oct 2019 09:28:38 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2048 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731180AbfJIN2h (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 9 Oct 2019 09:28:37 -0400
-Received: from LHREML712-CAH.china.huawei.com (unknown [172.18.7.106])
-        by Forcepoint Email with ESMTP id E1200349D8330F22641A;
-        Wed,  9 Oct 2019 14:28:35 +0100 (IST)
-Received: from LHREML524-MBS.china.huawei.com ([169.254.2.39]) by
- LHREML712-CAH.china.huawei.com ([10.201.108.35]) with mapi id 14.03.0415.000;
- Wed, 9 Oct 2019 14:28:27 +0100
-From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To:     James Morse <james.morse@arm.com>
-CC:     Vijaya Kumar K <vkilari@codeaurora.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Tomasz Nowicki <Tomasz.Nowicki@cavium.com>,
-        Jeffrey Hugo <jhugo@codeaurora.org>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        Linuxarm <linuxarm@huawei.com>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>,
-        Richard Ruigrok <rruigrok@qti.qualcomm.com>,
-        "Wangshaobo (bobo)" <bobo.shaobowang@huawei.com>
-Subject: RE: MPAM branch verification (was RE: [RFC PATCH 2/2] ACPI / PPTT:
- cacheinfo: Label caches based on fw_token)
-Thread-Topic: MPAM branch verification (was RE: [RFC PATCH 2/2] ACPI / PPTT:
- cacheinfo: Label caches based on fw_token)
-Thread-Index: AdUoR6JBXCmGfD+rTvOGseVrKJ7QIACYz8KAAbik43ADLDuVgAVDqs8gCtWWFiA=
-Date:   Wed, 9 Oct 2019 13:28:26 +0000
-Message-ID: <5FC3163CFD30C246ABAA99954A238FA83F43EE52@lhreml524-mbs.china.huawei.com>
-References: <5FC3163CFD30C246ABAA99954A238FA83F2B38FD@lhreml524-mbs.china.huawei.com>
- <d3341796-d7ce-8b1b-3575-333eda7e6d07@arm.com>
- <5FC3163CFD30C246ABAA99954A238FA83F2DBB39@lhreml524-mbs.china.huawei.com>
- <6b863739-fc6d-424c-6b70-21e2e3775b78@arm.com> 
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.202.227.237]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1732333AbfJIXSy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Oct 2019 19:18:54 -0400
+Received: from mga09.intel.com ([134.134.136.24]:52773 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731145AbfJIXSx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 9 Oct 2019 19:18:53 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Oct 2019 16:18:52 -0700
+X-IronPort-AV: E=Sophos;i="5.67,277,1566889200"; 
+   d="scan'208";a="395182803"
+Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Oct 2019 16:18:51 -0700
+Subject: [PATCH v6 00/12] EFI Specific Purpose Memory Support
+From:   Dan Williams <dan.j.williams@intel.com>
+To:     mingo@redhat.com
+Cc:     Andy Shevchenko <andy@infradead.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Keith Busch <kbusch@kernel.org>, Len Brown <lenb@kernel.org>,
+        Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kbuild test robot <lkp@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Andy Lutomirski <luto@kernel.org>, x86@kernel.org,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Date:   Wed, 09 Oct 2019 16:04:33 -0700
+Message-ID: <157066227329.1059972.5659620631541203458.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-2-gc94f
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGkgSmFtZXMsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU2hhbWVl
-cmFsaSBLb2xvdGh1bSBUaG9kaQ0KPiBTZW50OiAxNSBBdWd1c3QgMjAxOSAxMTozOA0KPiBUbzog
-J0phbWVzIE1vcnNlJyA8amFtZXMubW9yc2VAYXJtLmNvbT4NCj4gQ2M6IFZpamF5YSBLdW1hciBL
-IDx2a2lsYXJpQGNvZGVhdXJvcmEub3JnPjsgTG9yZW56byBQaWVyYWxpc2kNCj4gPGxvcmVuem8u
-cGllcmFsaXNpQGFybS5jb20+OyBUb21hc3ogTm93aWNraQ0KPiA8VG9tYXN6Lk5vd2lja2lAY2F2
-aXVtLmNvbT47IEplZmZyZXkgSHVnbyA8amh1Z29AY29kZWF1cm9yYS5vcmc+Ow0KPiBHdW9oYW5q
-dW4gKEhhbmp1biBHdW8pIDxndW9oYW5qdW5AaHVhd2VpLmNvbT47IExpbnV4YXJtDQo+IDxsaW51
-eGFybUBodWF3ZWkuY29tPjsgSmVyZW15IExpbnRvbiA8amVyZW15LmxpbnRvbkBhcm0uY29tPjsN
-Cj4gbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5m
-cmFkZWFkLm9yZzsgU3VkZWVwIEhvbGxhDQo+IDxzdWRlZXAuaG9sbGFAYXJtLmNvbT47IHdhbmd4
-aW9uZ2ZlbmcgKEMpDQo+IDx3YW5neGlvbmdmZW5nMkBodWF3ZWkuY29tPjsgUmljaGFyZCBSdWln
-cm9rDQo+IDxycnVpZ3Jva0BxdGkucXVhbGNvbW0uY29tPjsgJ2JvYm8uc2hhb2Jvd2FuZ0BodWF3
-ZWkuY29tJw0KPiA8Ym9iby5zaGFvYm93YW5nQGh1YXdlaS5jb20+DQo+IFN1YmplY3Q6IFJFOiBN
-UEFNIGJyYW5jaCB2ZXJpZmljYXRpb24gKHdhcyBSRTogW1JGQyBQQVRDSCAyLzJdIEFDUEkgLyBQ
-UFRUOg0KPiBjYWNoZWluZm86IExhYmVsIGNhY2hlcyBiYXNlZCBvbiBmd190b2tlbikNCiANClsu
-Li5dDQoNCj4gDQo+IEkgdGhpbmsgd2hhdCBoYXBwZW5zIG9uIG91ciBoYXJkd2FyZSBpcywgdGhl
-IE1CQSByZXBvcnRzIFBNR19NQVggPSAwIGFuZA0KPiB0aGF0DQo+IHVwc2V0cyBtcGFtX3BtZ19i
-aXRzKCkgLS0+aWxvZzIoKS4gSSBhbSBub3QgZW50aXJlbHkgc3VyZSB3aGV0aGVyIFBNR19NQVg9
-DQo+IDAgaXMNCj4gYWxsb3dlZCBhcyBwZXIgc3BlYyB3aGVuIHRoZSByZXNvdXJjZSByZXBvcnRz
-IEhBU19NU01PTiA9MS4gQnV0IGhhc24ndA0KPiBmb3VuZA0KPiBhbnl0aGluZyBpbiBzcGVjIHRo
-YXQgZm9yYmlkcyB0aGlzIGFzIHRoZSBmaWx0ZXIgaXMgYSBjb21iaW5hdGlvbiBvZiBQUkFUSUQ6
-UE1HLg0KPiANCj4gSSBoYXZlIGEgdGVtcCBoYWNrIGhlcmUgdG8ga2VlcCBpdCBnb2luZywNCj4g
-DQo+IGh0dHBzOi8vZ2l0aHViLmNvbS9oaXNpbGljb24va2VybmVsLWRldi9jb21taXQvNWUwODgx
-YzRjZGRlZDQwNjZkZmFjNzYwMw0KPiBjNTMyNDIzODU0MTdhM2ENCj4gDQo+ID4NCj4gPiA+IEkg
-d2lsbCBkZWJ1ZyBhbmQgdXBkYXRlIGlmIGl0IHJlYWxseSBpcyBhIHByb2JsZW0uIFBsZWFzZQ0K
-PiA+ID4gbGV0IG1lIGtub3cgaWYgeW91IGhhdmUgYW55IHBsYW5zIHRvIHVwZGF0ZSB0aGUgYnJh
-bmNoIHNvIHRoYXQgSSBjYW4gdHJ5IHRoZQ0KPiA+IGxhdGVzdC4NCj4gPg0KPiA+IEkgaG9wZSB0
-byBwdXNoIGEgbmV3IHZlcnNpb24gYnkgdGhlIGVuZCBvZiBKdW5lLiAod2hvb3NoISBUaGVyZSBn
-b2VzIEp1bmUpLg0KPiA+DQo+IGh0dHA6Ly93d3cubGludXgtYXJtLm9yZy9naXQ/cD1saW51eC1q
-bS5naXQ7YT1zaG9ydGxvZztoPXJlZnMvaGVhZHMvbXBhbS9zDQo+ID4gbmFwc2hvdC9qdW4NCj4g
-DQo+IFRoYW5rcyBmb3IgdGhhdC4gSSBhbSB1c2luZyB0aGlzIG5vdy4gKEFuZCBJIHNlZSBhIG1v
-cmUgcmVjZW50IG9uZQ0KPiBtcGFtLzUuMy10bXANCj4gbm93LiBIYXMgYW55dGhpbmcgY2hhbmdl
-ZCBvdGhlciB0aGFuIHJlYmFzZT8pDQo+IA0KPiA+DQo+ID4gVGhlIGNoYW5nZXMgaW4gdGhlcmUg
-YXJlIHRvIGF2b2lkIHRoZSBrbm93bi1pc3N1ZXMgd2hlbiB0aGUgc2FtZSAndGhpbmcnIGlzDQo+
-ID4gcGlja2VkIGFzIGJvdGgNCj4gPiBMMyByZXNvdXJjZSBhbmQgdGhlIE1CQSByZXNvdXJjZS4N
-Cj4gDQo+IE5vdyB3aXRoIHRoZSBhYm92ZSBmaXggZm9yIFBNR19NQVg9MCwgSSBhbSBoaXR0aW5n
-IGFub3RoZXIgaXNzdWUuDQo+IG1vdW50IC10IHJlc2N0cmwgcmVzY3RybCAvc3lzL2ZzL3Jlc2N0
-cmwgZmFpbHMgd2l0aCAiRmlsZSBleGlzdHMiIGVycm9yLg0KPiANCj4gRGVidWdnaW5nIHBvaW50
-cyB0bywNCj4gcmR0X2dldF90cmVlKCkNCj4gICBta2Rpcl9tb25kYXRhX2FsbCgpDQo+ICAgICBt
-a2Rpcl9tb25kYXRhX3N1YmRpcl9hbGxkb20oKQ0KPiAgICAgICBta2Rpcl9tb25kYXRhX3N1YmRp
-cigpDQo+ICAgICAgICAgbW9uX2FkZGZpbGUoKQ0KPiANCj4gSXQgbG9va3MgbGlrZSByLT5ldnRf
-bGlzdCBnZXRzIGNvcnJ1cHRlZCBzb21laG93IGFuZCBoYXMgZHVwbGljYXRlIGVudHJpZXMuIEkN
-Cj4gaGF2ZW7igJl0DQo+IGdvbmUgaW50byB0aGUgYm90dG9tIG9mIHRoaXMgaXNzdWUsIGJ1dCBw
-bGVhc2UgbGV0IG1lIGtub3cgaWYgeW91IGhhdmUgYW55IGlkZWEuDQoNCkkgaGFkIGZldyBkaXJ0
-eSBoYWNrc1sxXSB0byBmaXggdGhlIGFib3ZlIGFuZCBzb21lIG90aGVyIGlzc3VlcyBmb3VuZCwg
-c28gdGhhdCBpdA0KZGV0ZWN0cyBib3RoIEwzIGFuZCBNQiBvbiBvdXIgcGxhdGZvcm1zLiBOb3cg
-YWJsZSB0byBtb3VudCB0aGUgcmVzY3RybCBmcw0Kd2l0aCBib3RoIEwzIGFuZCBNQkEgcmVzb3Vy
-Y2UuIEJ1dCBmdWxsIHZlcmlmaWNhdGlvbiBpcyBzdGlsbCBwZW5kaW5nLg0KDQpCZXR3ZWVuLCBq
-dXN0IHRob3VnaHQgb2YgY2hlY2tpbmcgd2l0aCB5b3UsIGlzIHRoZXJlIGFueSBwbGFuIHRvIHJl
-c3VtZS9yZXZpdmUgdGhlDQpNUEFNIHN1cHBvcnQgdXBzdHJlYW1bMl0gYW55dGltZSBzb29uPyBB
-cHByZWNpYXRlIGlmIHlvdSBjb3VsZCBzaGFyZSB5b3VyIHBsYW4NCm9uIHRoaXMuDQoNClRoYW5r
-cywNClNoYW1lZXINCg0KWzFdIGh0dHBzOi8vZ2l0aHViLmNvbS9oaXNpbGljb24va2VybmVsLWRl
-di9jb21taXRzL3ByaXZhdGUtbXBhbS1kYmctc25hcHNob3QtanVuDQpbMl0gaHR0cHM6Ly9sa21s
-Lm9yZy9sa21sLzIwMTgvOC8yNC8yNjENCg0KDQoNCg==
+Changes since v5 [1]:
+
+- Move efi=nosoftreserve infrastructure to a common location. (Ard)
+
+- Define a common efi_soft_reserve_enabled() helper for efi
+  stub code and runtime core efi. (Ard)
+
+- Add ARM support for honoring soft reservations (Ard)
+
+- Rename x86-fake_mem.c to x86_fake_mem.c. (Ard)
+
+- Rebase on v5.4-rc2
+
+[1]: http://lkml.kernel.org/r/156712993795.1616117.3781864460118989466.stgit@dwillia2-desk3.amr.corp.intel.com
+
+---
+Merge notes:
+
+Hi Ingo,
+
+I'm targeting you since you piped on v5, and tip.git in general since
+the deepest changes are in x86 init code. The entanglements between
+tip.git and acpi.git that v5 hit have been resolved with what went
+upstream during the 5.4 merge window. This all still needs an ack from
+Ard to make sure he's on board with all the current changes, or
+otherwise spots some more fixups. The ARM changes have only been compile
+tested (0day-robot). The x86 changes, as mentioned below, have been boot
+tested with efi_fake_mem= on a QEMU config that produces an HMAT.
+
+---
+
+The EFI 2.8 Specification [2] introduces the EFI_MEMORY_SP ("specific
+purpose") memory attribute. This attribute bit replaces the deprecated
+ACPI HMAT "reservation hint" that was introduced in ACPI 6.2 and removed
+in ACPI 6.3.
+
+Given the increasing diversity of memory types that might be advertised
+to the operating system, there is a need for platform firmware to hint
+which memory ranges are free for the OS to use as general purpose memory
+and which ranges are intended for application specific usage. For
+example, an application with prior knowledge of the platform may expect
+to be able to exclusively allocate a precious / limited pool of high
+bandwidth memory. Alternatively, for the general purpose case, the
+operating system may want to make the memory available on a best effort
+basis as a unique numa-node with performance properties by the new
+CONFIG_HMEM_REPORTING [3] facility.
+
+In support of optionally allowing either application-exclusive and
+core-kernel-mm managed access to differentiated memory, claim
+EFI_MEMORY_SP ranges for exposure as "soft reserved" and assigned to a
+device-dax instance by default. Such instances can be directly owned /
+mapped by a platform-topology-aware application. Alternatively, with the
+new kmem facility [4], the administrator has the option to instead
+designate that those memory ranges be hot-added to the core-kernel-mm as
+a unique memory numa-node. In short, allow for the decision about what
+software agent manages soft-reserved memory to be made at runtime.
+
+The patches build on the new HMAT+HMEM_REPORTING facilities merged
+for v5.2-rc1. The implementation is tested with qemu emulation of HMAT
+[5] plus the efi_fake_mem facility for applying the EFI_MEMORY_SP
+attribute. Specific details on reproducing the test configuration are in
+patch 12.
+
+[2]: https://uefi.org/sites/default/files/resources/UEFI_Spec_2_8_final.pdf
+[3]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e1cf33aafb84
+[4]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c221c0b0308f
+[5]: http://patchwork.ozlabs.org/cover/1096737/
+
+---
+
+Dan Williams (12):
+      acpi/numa: Establish a new drivers/acpi/numa/ directory
+      efi: Enumerate EFI_MEMORY_SP
+      x86/efi: Push EFI_MEMMAP check into leaf routines
+      efi: Common enable/disable infrastructure for EFI soft reservation
+      x86/efi: EFI soft reservation to E820 enumeration
+      arm/efi: EFI soft reservation to memblock
+      x86/efi: Add efi_fake_mem support for EFI_MEMORY_SP
+      lib: Uplevel the pmem "region" ida to a global allocator
+      dax: Fix alloc_dax_region() compile warning
+      device-dax: Add a driver for "hmem" devices
+      acpi/numa/hmat: Register HMAT at device_initcall level
+      acpi/numa/hmat: Register "soft reserved" memory as an "hmem" device
+
+
+ Documentation/admin-guide/kernel-parameters.txt |   19 +++
+ arch/arm64/mm/mmu.c                             |    2 
+ arch/x86/boot/compressed/eboot.c                |    6 +
+ arch/x86/boot/compressed/kaslr.c                |   46 +++++++-
+ arch/x86/include/asm/e820/types.h               |    8 +
+ arch/x86/include/asm/efi.h                      |   17 +++
+ arch/x86/kernel/e820.c                          |   12 ++
+ arch/x86/kernel/setup.c                         |   18 +--
+ arch/x86/platform/efi/efi.c                     |   53 ++++++++-
+ arch/x86/platform/efi/quirks.c                  |    3 +
+ drivers/acpi/Kconfig                            |    9 --
+ drivers/acpi/Makefile                           |    3 -
+ drivers/acpi/hmat/Makefile                      |    2 
+ drivers/acpi/numa/Kconfig                       |    7 +
+ drivers/acpi/numa/Makefile                      |    3 +
+ drivers/acpi/numa/hmat.c                        |  138 +++++++++++++++++++++--
+ drivers/acpi/numa/srat.c                        |    0 
+ drivers/dax/Kconfig                             |   27 ++++-
+ drivers/dax/Makefile                            |    2 
+ drivers/dax/bus.c                               |    2 
+ drivers/dax/bus.h                               |    2 
+ drivers/dax/dax-private.h                       |    2 
+ drivers/dax/hmem.c                              |   56 +++++++++
+ drivers/firmware/efi/Kconfig                    |   21 ++++
+ drivers/firmware/efi/Makefile                   |    5 +
+ drivers/firmware/efi/arm-init.c                 |    9 ++
+ drivers/firmware/efi/arm-runtime.c              |   24 ++++
+ drivers/firmware/efi/efi.c                      |   14 ++
+ drivers/firmware/efi/esrt.c                     |    3 +
+ drivers/firmware/efi/fake_mem.c                 |   26 ++--
+ drivers/firmware/efi/fake_mem.h                 |   10 ++
+ drivers/firmware/efi/libstub/arm32-stub.c       |    5 +
+ drivers/firmware/efi/libstub/efi-stub-helper.c  |   19 +++
+ drivers/firmware/efi/libstub/random.c           |    4 +
+ drivers/firmware/efi/x86_fake_mem.c             |   69 ++++++++++++
+ drivers/nvdimm/Kconfig                          |    1 
+ drivers/nvdimm/core.c                           |    1 
+ drivers/nvdimm/nd-core.h                        |    1 
+ drivers/nvdimm/region_devs.c                    |   13 +-
+ include/linux/efi.h                             |   10 ++
+ include/linux/ioport.h                          |    1 
+ include/linux/memregion.h                       |   23 ++++
+ lib/Kconfig                                     |    3 +
+ lib/Makefile                                    |    1 
+ lib/memregion.c                                 |   18 +++
+ 45 files changed, 627 insertions(+), 91 deletions(-)
+ delete mode 100644 drivers/acpi/hmat/Makefile
+ rename drivers/acpi/{hmat/Kconfig => numa/Kconfig} (75%)
+ create mode 100644 drivers/acpi/numa/Makefile
+ rename drivers/acpi/{hmat/hmat.c => numa/hmat.c} (85%)
+ rename drivers/acpi/{numa.c => numa/srat.c} (100%)
+ create mode 100644 drivers/dax/hmem.c
+ create mode 100644 drivers/firmware/efi/fake_mem.h
+ create mode 100644 drivers/firmware/efi/x86_fake_mem.c
+ create mode 100644 include/linux/memregion.h
+ create mode 100644 lib/memregion.c
