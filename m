@@ -2,150 +2,232 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC1A8D0304
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Oct 2019 23:46:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90DA8D0F0A
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Oct 2019 14:44:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726353AbfJHVqR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Oct 2019 17:46:17 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:27516 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725935AbfJHVqQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Oct 2019 17:46:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1570571174;
-        h=from:from:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=L+eZJJqrlbPqVzOZaO5qNFGym7u5qYSToEyvJ0eC7yw=;
-        b=Lg/Xuh+kz9tHluSSkVod1pJsysK5iilKFhf44z+hB0fHEDHqKYC/3xocRk03SoqAFzaNlk
-        04dMv1OsEwtUPnV0okT1Aj5K0taXUpq0auQDIK3p/Q2kCA4ioxuwOYRr8+UZUswQcYb5Eo
-        s8N3l656zgauAO8MHxJmJq62BHEa8uw=
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
- [209.85.166.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-129-fbFszj3IOWijUUdaBxAK6w-1; Tue, 08 Oct 2019 17:46:12 -0400
-Received: by mail-io1-f72.google.com with SMTP id a22so522782ioq.23
-        for <linux-acpi@vger.kernel.org>; Tue, 08 Oct 2019 14:46:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=R2PLCpCGC+X0FsCVNcoIrm/LGH7IA7bRES0qF3Fhu7k=;
-        b=OgPemI9hlVZFgiwSlm/y+21PZEE/Fj6k58bN1ebzTpXNew1IAO1IowiC8BJ8BHHnOP
-         Ye1/PSS9raFw3DT2GhO9MM9+v5vgUtgBKkdN7lXogbWDXPk9Ghej9uzdUJsPVSO2a06f
-         iSRozJqVh1yt+VJPXl6yRKl2jDQtJfg0lS9DQVGBy1NDslQWo1FodcoIqZyHL6fbpHd+
-         1lRtDAOXvi/TXbRgAuiYe632x5vhp/gsjzi6WED2NQRHZQC9iZG9uznEaQ2zWoeEAqRr
-         Yzpxr1uy2ftyyMMHbOL5ggko2vxpcYQzVYZMiaWR2ZvT8gdAiaImXbzzmEaf48rVN4cb
-         iYOA==
-X-Gm-Message-State: APjAAAWbKRsgi0X+bLRI1A3HjpmWO6XNxm7QOSWqLjD3LaJsX5WNYv4f
-        e9lQ7nosRK9OWf0woQ0gRoQDsM39sVk8BfY7HtdE+HURZafYiYX/QzfbY3FaThBi2ziWzT8ThHH
-        JW99Z5sDfvHqcBWBpfWe93w==
-X-Received: by 2002:a02:ac8e:: with SMTP id x14mr158796jan.11.1570571172226;
-        Tue, 08 Oct 2019 14:46:12 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqzRjkZNUFsMLmBAav/k9nqbRyvIxfGbTW0hIWLHgfdTSVeQ7myWycO2xJSmj0J/txoJdC1z/Q==
-X-Received: by 2002:a02:ac8e:: with SMTP id x14mr158772jan.11.1570571171801;
-        Tue, 08 Oct 2019 14:46:11 -0700 (PDT)
-Received: from localhost (ip70-163-223-149.ph.ph.cox.net. [70.163.223.149])
-        by smtp.gmail.com with ESMTPSA id v69sm174162ila.6.2019.10.08.14.46.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Oct 2019 14:46:11 -0700 (PDT)
-Date:   Tue, 8 Oct 2019 14:46:09 -0700
-From:   Jerry Snitselaar <jsnitsel@redhat.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Joerg Roedel <joro@8bytes.org>, iommu@lists.linux-foundation.org,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH v3 6/6] iommu/amd: Switch to use acpi_dev_hid_uid_match()
-Message-ID: <20191008214609.wk2imvejk2h2pvil@cantor>
-Reply-To: Jerry Snitselaar <jsnitsel@redhat.com>
-References: <20191001142725.30857-1-andriy.shevchenko@linux.intel.com>
- <20191001142725.30857-7-andriy.shevchenko@linux.intel.com>
-MIME-Version: 1.0
-In-Reply-To: <20191001142725.30857-7-andriy.shevchenko@linux.intel.com>
-User-Agent: NeoMutt/20180716
-X-MC-Unique: fbFszj3IOWijUUdaBxAK6w-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252; format=flowed
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+        id S1729854AbfJIMoW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Oct 2019 08:44:22 -0400
+Received: from 8bytes.org ([81.169.241.247]:46702 "EHLO theia.8bytes.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727878AbfJIMoW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 9 Oct 2019 08:44:22 -0400
+Received: by theia.8bytes.org (Postfix, from userid 1000)
+        id 46814401; Wed,  9 Oct 2019 14:44:20 +0200 (CEST)
+From:   Joerg Roedel <joro@8bytes.org>
+To:     Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>
+Cc:     hpa@zytor.com, x86@kernel.org, rjw@rjwysocki.net, lenb@kernel.org,
+        james.morse@arm.com, tony.luck@intel.com,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-mm@kvack.org, Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH V2] x86/mm: Split vmalloc_sync_all()
+Date:   Wed,  9 Oct 2019 14:44:18 +0200
+Message-Id: <20191009124418.8286-1-joro@8bytes.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue Oct 01 19, Andy Shevchenko wrote:
->Since we have a generic helper, drop custom implementation in the driver.
->
->Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
->---
-> drivers/iommu/amd_iommu.c | 30 +++++-------------------------
-> 1 file changed, 5 insertions(+), 25 deletions(-)
->
->diff --git a/drivers/iommu/amd_iommu.c b/drivers/iommu/amd_iommu.c
->index 2369b8af81f3..40f3cf44aa98 100644
->--- a/drivers/iommu/amd_iommu.c
->+++ b/drivers/iommu/amd_iommu.c
->@@ -124,30 +124,6 @@ static struct lock_class_key reserved_rbtree_key;
->  *
->  ************************************************************************=
-****/
->
->-static inline int match_hid_uid(struct device *dev,
->-=09=09=09=09struct acpihid_map_entry *entry)
->-{
->-=09struct acpi_device *adev =3D ACPI_COMPANION(dev);
->-=09const char *hid, *uid;
->-
->-=09if (!adev)
->-=09=09return -ENODEV;
->-
->-=09hid =3D acpi_device_hid(adev);
->-=09uid =3D acpi_device_uid(adev);
->-
->-=09if (!hid || !(*hid))
->-=09=09return -ENODEV;
->-
->-=09if (!uid || !(*uid))
->-=09=09return strcmp(hid, entry->hid);
->-
->-=09if (!(*entry->uid))
->-=09=09return strcmp(hid, entry->hid);
->-
->-=09return (strcmp(hid, entry->hid) || strcmp(uid, entry->uid));
->-}
->-
-> static inline u16 get_pci_device_id(struct device *dev)
-> {
-> =09struct pci_dev *pdev =3D to_pci_dev(dev);
->@@ -158,10 +134,14 @@ static inline u16 get_pci_device_id(struct device *d=
-ev)
-> static inline int get_acpihid_device_id(struct device *dev,
-> =09=09=09=09=09struct acpihid_map_entry **entry)
-> {
->+=09struct acpi_device *adev =3D ACPI_COMPANION(dev);
-> =09struct acpihid_map_entry *p;
->
->+=09if (!adev)
->+=09=09return -ENODEV;
->+
-> =09list_for_each_entry(p, &acpihid_map, list) {
->-=09=09if (!match_hid_uid(dev, p)) {
->+=09=09if (acpi_dev_hid_uid_match(adev, p->hid, p->uid)) {
-> =09=09=09if (entry)
-> =09=09=09=09*entry =3D p;
-> =09=09=09return p->devid;
->--=20
->2.23.0
->
->_______________________________________________
->iommu mailing list
->iommu@lists.linux-foundation.org
->https://lists.linuxfoundation.org/mailman/listinfo/iommu
+From: Joerg Roedel <jroedel@suse.de>
 
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Git commit 3f8fd02b1bf1 ("mm/vmalloc: Sync unmappings in
+__purge_vmap_area_lazy()") introduced a call to vmalloc_sync_all() in
+the vunmap() code-path.  While this change was necessary to maintain
+correctness on x86-32-pae kernels, it also adds additional cycles for
+architectures that don't need it.
+
+Specifically on x86-64 with CONFIG_VMAP_STACK=y some people reported
+severe performance regressions in micro-benchmarks because it now also
+calls the x86-64 implementation of vmalloc_sync_all() on vunmap(). But
+the vmalloc_sync_all() implementation on x86-64 is only needed for
+newly created mappings.
+
+To avoid the unnecessary work on x86-64 and to gain the performance
+back, split up vmalloc_sync_all() into two functions:
+
+	* vmalloc_sync_mappings(), and
+	* vmalloc_sync_unmappings()
+
+Most call-sites to vmalloc_sync_all() only care about new mappings
+being synchronized. The only exception is the new call-site
+added in the above mentioned commit.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Fixes: 3f8fd02b1bf1 ("mm/vmalloc: Sync unmappings in __purge_vmap_area_lazy()")
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+---
+Changes to initial post:
+	- Added comments to x86-64 version of
+	  vmalloc_sync_[un]mappings() as suggested by Dave
+	  Hansen.
+
+ arch/x86/mm/fault.c      | 26 ++++++++++++++++++++++++--
+ drivers/acpi/apei/ghes.c |  2 +-
+ include/linux/vmalloc.h  |  5 +++--
+ kernel/notifier.c        |  2 +-
+ mm/nommu.c               | 10 +++++++---
+ mm/vmalloc.c             | 11 +++++++----
+ 6 files changed, 43 insertions(+), 13 deletions(-)
+
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 9ceacd1156db..94174361f524 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -189,7 +189,7 @@ static inline pmd_t *vmalloc_sync_one(pgd_t *pgd, unsigned long address)
+ 	return pmd_k;
+ }
+ 
+-void vmalloc_sync_all(void)
++static void vmalloc_sync(void)
+ {
+ 	unsigned long address;
+ 
+@@ -216,6 +216,16 @@ void vmalloc_sync_all(void)
+ 	}
+ }
+ 
++void vmalloc_sync_mappings(void)
++{
++	vmalloc_sync();
++}
++
++void vmalloc_sync_unmappings(void)
++{
++	vmalloc_sync();
++}
++
+ /*
+  * 32-bit:
+  *
+@@ -318,11 +328,23 @@ static void dump_pagetable(unsigned long address)
+ 
+ #else /* CONFIG_X86_64: */
+ 
+-void vmalloc_sync_all(void)
++void vmalloc_sync_mappings(void)
+ {
++	/*
++	 * 64-bit mappings might allocate new p4d/pud pages
++	 * that need to be propagated to all tasks' PGDs.
++	 */
+ 	sync_global_pgds(VMALLOC_START & PGDIR_MASK, VMALLOC_END);
+ }
+ 
++void vmalloc_sync_unmappings(void)
++{
++	/*
++	 * Unmappings never allocate or free p4d/pud pages.
++	 * No work is required here.
++	 */
++}
++
+ /*
+  * 64-bit:
+  *
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 777f6f7122b4..e0d82fab1f44 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -171,7 +171,7 @@ int ghes_estatus_pool_init(int num_ghes)
+ 	 * New allocation must be visible in all pgd before it can be found by
+ 	 * an NMI allocating from the pool.
+ 	 */
+-	vmalloc_sync_all();
++	vmalloc_sync_mappings();
+ 
+ 	rc = gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
+ 	if (rc)
+diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+index 4e7809408073..decac0790fc1 100644
+--- a/include/linux/vmalloc.h
++++ b/include/linux/vmalloc.h
+@@ -126,8 +126,9 @@ extern int remap_vmalloc_range_partial(struct vm_area_struct *vma,
+ 
+ extern int remap_vmalloc_range(struct vm_area_struct *vma, void *addr,
+ 							unsigned long pgoff);
+-void vmalloc_sync_all(void);
+- 
++void vmalloc_sync_mappings(void);
++void vmalloc_sync_unmappings(void);
++
+ /*
+  *	Lowlevel-APIs (not for driver use!)
+  */
+diff --git a/kernel/notifier.c b/kernel/notifier.c
+index d9f5081d578d..157d7c29f720 100644
+--- a/kernel/notifier.c
++++ b/kernel/notifier.c
+@@ -554,7 +554,7 @@ NOKPROBE_SYMBOL(notify_die);
+ 
+ int register_die_notifier(struct notifier_block *nb)
+ {
+-	vmalloc_sync_all();
++	vmalloc_sync_mappings();
+ 	return atomic_notifier_chain_register(&die_chain, nb);
+ }
+ EXPORT_SYMBOL_GPL(register_die_notifier);
+diff --git a/mm/nommu.c b/mm/nommu.c
+index 99b7ec318824..3b67bd20c2af 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -359,10 +359,14 @@ void vm_unmap_aliases(void)
+ EXPORT_SYMBOL_GPL(vm_unmap_aliases);
+ 
+ /*
+- * Implement a stub for vmalloc_sync_all() if the architecture chose not to
+- * have one.
++ * Implement a stub for vmalloc_sync_[un]mapping() if the architecture
++ * chose not to have one.
+  */
+-void __weak vmalloc_sync_all(void)
++void __weak vmalloc_sync_mappings(void)
++{
++}
++
++void __weak vmalloc_sync_unmappings(void)
+ {
+ }
+ 
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index a3c70e275f4e..c0be707db434 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -1259,7 +1259,7 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end)
+ 	 * First make sure the mappings are removed from all page-tables
+ 	 * before they are freed.
+ 	 */
+-	vmalloc_sync_all();
++	vmalloc_sync_unmappings();
+ 
+ 	/*
+ 	 * TODO: to calculate a flush range without looping.
+@@ -3050,16 +3050,19 @@ int remap_vmalloc_range(struct vm_area_struct *vma, void *addr,
+ EXPORT_SYMBOL(remap_vmalloc_range);
+ 
+ /*
+- * Implement a stub for vmalloc_sync_all() if the architecture chose not to
+- * have one.
++ * Implement stubs for vmalloc_sync_[un]mappings () if the architecture chose
++ * not to have one.
+  *
+  * The purpose of this function is to make sure the vmalloc area
+  * mappings are identical in all page-tables in the system.
+  */
+-void __weak vmalloc_sync_all(void)
++void __weak vmalloc_sync_mappings(void)
+ {
+ }
+ 
++void __weak vmalloc_sync_unmappings(void)
++{
++}
+ 
+ static int f(pte_t *pte, unsigned long addr, void *data)
+ {
+-- 
+2.16.4
 
