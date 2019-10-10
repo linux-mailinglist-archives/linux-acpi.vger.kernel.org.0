@@ -2,121 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42E99D2C8A
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2019 16:30:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ED38D2DCA
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2019 17:32:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726409AbfJJO3B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Oct 2019 10:29:01 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3690 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725923AbfJJO3B (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 10 Oct 2019 10:29:01 -0400
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id B0170D9F904E22620CC3;
-        Thu, 10 Oct 2019 22:28:52 +0800 (CST)
-Received: from [127.0.0.1] (10.202.227.179) by DGGEMS403-HUB.china.huawei.com
- (10.3.19.203) with Microsoft SMTP Server id 14.3.439.0; Thu, 10 Oct 2019
- 22:28:43 +0800
-Subject: Re: [RFC PATCH 1/3] ACPICA: ACPI 6.3: PPTT add additional fields in
- Processor Structure Flags
-To:     "Moore, Robert" <robert.moore@intel.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "Schmauss, Erik" <erik.schmauss@intel.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "rrichter@marvell.com" <rrichter@marvell.com>,
-        "jeremy.linton@arm.com" <jeremy.linton@arm.com>
-References: <1570714192-236724-1-git-send-email-john.garry@huawei.com>
- <1570714192-236724-2-git-send-email-john.garry@huawei.com>
- <94F2FBAB4432B54E8AACC7DFDE6C92E3B9691ADA@ORSMSX110.amr.corp.intel.com>
-CC:     "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linuxarm@huawei.com" <linuxarm@huawei.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "guohanjun@huawei.com" <guohanjun@huawei.com>,
-        "wanghuiqiang@huawei.com" <wanghuiqiang@huawei.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>
-From:   John Garry <john.garry@huawei.com>
-Message-ID: <efd1203b-ef81-a27e-8681-6eeabab75f8e@huawei.com>
-Date:   Thu, 10 Oct 2019 15:28:34 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.3.0
+        id S1726476AbfJJPcs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Oct 2019 11:32:48 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:40634 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726461AbfJJPcr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Oct 2019 11:32:47 -0400
+Received: by mail-wm1-f68.google.com with SMTP id b24so7262358wmj.5
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Oct 2019 08:32:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=sfUJysz1yNc32MDCXj7042wwWEQgx+uTrfo2ctnNrK4=;
+        b=c1PWJnZ7eWpUG7qw5t+IYwnnpWDMtRVGzO19FTGvWubqtyNfI6wONApHfnX4doOymB
+         Af2ipPh/CKgnzw810mOuibk0HuogSzVAQT6K/7nN7h80c3ioeGfmrGlRgQAEjUJkcAwP
+         Cow6KrGV5Px1rozY7JrRyXBrT4paK6ZlbaLJ9fRa4T7p6Q5vhJNIA/wS5k3ghpunKP9i
+         Qv12qCq8TQT19KZiQoukeYT17pLMR+fkxea0kZCdNAmzBYP60p9M5eDGum6Y5WwBwIEM
+         IcM51lTsgYpOB/tPu9pMRZJNor+WApKCUs49+gOofdqpNKQ+pM7IMr2OtPfrdRW5pXxV
+         FHTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=sfUJysz1yNc32MDCXj7042wwWEQgx+uTrfo2ctnNrK4=;
+        b=CMXS9N1Xs5H2ywrkLBiAoZB98BwKMhz8AkDcxh7K6tMI+zJIZ8WdbW5zXickh3DOIR
+         XCzhMZ6MXFDZ9YkRZWeMusqjEZytQZ+wWWn17mB/qmEMIw/cbzPh8uOS1FMuISmjeQNP
+         EtiycClBoOGIRXTlLXHy30IycEikLc+TF01Ga5ARFF6WX5EkOPRYWcEmCnrruIpXWsGs
+         3DVOSWt2hAtp+mBYqM4qwBwWATgl1Y8btdPCC7xTCMtZWul6RkUTZbQ3m/YA26Krd3yH
+         cR0YdkfZP6q2DJg9D8CFOFQ0a4irrma7QvNSYV/XOE4OCAyAE8Xu8xYVAO1wIiMnf52M
+         gUeQ==
+X-Gm-Message-State: APjAAAVffgqobQ+8mNe88kAxQhBrXCKK7e8UaglAGjHmi+4WBZQCsUVD
+        S0evpoJfJg5h2e2niRY5aTaQTNOJjADzeWarZGg=
+X-Google-Smtp-Source: APXvYqyP+lx/O3Vgw50pDWe8qSBYfVZLqPdZjSaq5Zx3hTJ5MpxHN01eGRQYQC8L/Z7+AjZSf88ma08Q8yFs4j6Q8Ho=
+X-Received: by 2002:a1c:99cd:: with SMTP id b196mr8233601wme.105.1570721566075;
+ Thu, 10 Oct 2019 08:32:46 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <94F2FBAB4432B54E8AACC7DFDE6C92E3B9691ADA@ORSMSX110.amr.corp.intel.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.179]
-X-CFilter-Loop: Reflected
+Received: by 2002:a5d:6b87:0:0:0:0:0 with HTTP; Thu, 10 Oct 2019 08:32:45
+ -0700 (PDT)
+Reply-To: talabmohamud@outlook.com
+From:   Talab Muhamudu <talabmohamud@gmail.com>
+Date:   Thu, 10 Oct 2019 16:32:45 +0100
+Message-ID: <CAEZ8=RHYnAB0JRg81oZ_ukQJQBmP6LRH91r+5ypq5aP95omV9Q@mail.gmail.com>
+Subject: hope
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 10/10/2019 15:22, Moore, Robert wrote:
-> John,
-> These #defines are all already in actbl2.h. Perhaps they didn't make it into Linux.
-> Bob
+Good day , i write to inform you as auditor onbehalf of ORABANK.
 
-Hi Bob,
+Transaction number 000399577OBK have been approved for release
+through VISA ELECTRON ATM Card.
 
-Yes, they are in the latest linux mainline release.
+Note that you are required to reconfirm your complete mailing address
+for delivery.
 
-But this patch is just a preview to backport them to an earlier kernel 
-version.
+Reconfirm code 000399577OBK to the Director Mr. Patrick Masrellet on ( (
+atm.orabank@iname.com )) for further action.
 
-Thanks,
-John
-
->
->
-> -----Original Message-----
-> From: John Garry <john.garry@huawei.com>
-> Sent: Thursday, October 10, 2019 6:30 AM
-> To: catalin.marinas@arm.com; will@kernel.org; rjw@rjwysocki.net; lenb@kernel.org; Moore, Robert <robert.moore@intel.com>; Schmauss, Erik <erik.schmauss@intel.com>; sudeep.holla@arm.com; rrichter@marvell.com; jeremy.linton@arm.com
-> Cc: linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; linux-acpi@vger.kernel.org; linuxarm@huawei.com; gregkh@linuxfoundation.org; guohanjun@huawei.com; wanghuiqiang@huawei.com; Wysocki, Rafael J <rafael.j.wysocki@intel.com>; John Garry <john.garry@huawei.com>
-> Subject: [RFC PATCH 1/3] ACPICA: ACPI 6.3: PPTT add additional fields in Processor Structure Flags
->
-> From: Erik Schmauss <erik.schmauss@intel.com>
->
-> Commit b5eab512e7cffb2bb37c4b342b5594e9e75fd486 upstream.
->
-> ACPICA commit c736ea34add19a3a07e0e398711847cd6b95affd
->
-> Link: https://github.com/acpica/acpica/commit/c736ea34
-> Signed-off-by: Erik Schmauss <erik.schmauss@intel.com>
-> Signed-off-by: Bob Moore <robert.moore@intel.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: John Garry <john.garry@huawei.com>
-> ---
->  include/acpi/actbl2.h | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
->
-> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h index c50ef7e6b942..1d4ef0621174 100644
-> --- a/include/acpi/actbl2.h
-> +++ b/include/acpi/actbl2.h
-> @@ -1472,8 +1472,11 @@ struct acpi_pptt_processor {
->
->  /* Flags */
->
-> -#define ACPI_PPTT_PHYSICAL_PACKAGE          (1)	/* Physical package */
-> -#define ACPI_PPTT_ACPI_PROCESSOR_ID_VALID   (2)	/* ACPI Processor ID valid */
-> +#define ACPI_PPTT_PHYSICAL_PACKAGE          (1)
-> +#define ACPI_PPTT_ACPI_PROCESSOR_ID_VALID   (1<<1)
-> +#define ACPI_PPTT_ACPI_PROCESSOR_IS_THREAD  (1<<2)	/* ACPI 6.3 */
-> +#define ACPI_PPTT_ACPI_LEAF_NODE            (1<<3)	/* ACPI 6.3 */
-> +#define ACPI_PPTT_ACPI_IDENTICAL            (1<<4)	/* ACPI 6.3 */
->
->  /* 1: Cache Type Structure */
->
-> --
-> 2.17.1
->
->
-> .
->
-
-
+Regards.
+Talab Mohamud( Esq)
