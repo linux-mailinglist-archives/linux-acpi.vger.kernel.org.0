@@ -2,368 +2,280 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9618D1CBF
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2019 01:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08761D20D3
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2019 08:37:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732711AbfJIXUA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Oct 2019 19:20:00 -0400
-Received: from mga04.intel.com ([192.55.52.120]:52591 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732715AbfJIXT7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 9 Oct 2019 19:19:59 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Oct 2019 16:19:58 -0700
-X-IronPort-AV: E=Sophos;i="5.67,277,1566889200"; 
-   d="scan'208";a="205905207"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Oct 2019 16:19:57 -0700
-Subject: [PATCH v6 12/12] acpi/numa/hmat: Register "soft reserved" memory as
- an "hmem" device
-From:   Dan Williams <dan.j.williams@intel.com>
-To:     mingo@redhat.com
-Cc:     Len Brown <lenb@kernel.org>, Keith Busch <kbusch@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        peterz@infradead.org, ard.biesheuvel@linaro.org, x86@kernel.org,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Date:   Wed, 09 Oct 2019 16:05:40 -0700
-Message-ID: <157066234020.1059972.12129030288710665734.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <157066227329.1059972.5659620631541203458.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <157066227329.1059972.5659620631541203458.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-2-gc94f
+        id S1732832AbfJJGhE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Oct 2019 02:37:04 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:46108 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727041AbfJJGhD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Oct 2019 02:37:03 -0400
+Received: by mail-wr1-f67.google.com with SMTP id o18so6217935wrv.13
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Oct 2019 23:37:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=39vL/RjFbpzLu5bkAOs1K86XiNbeAZ4i2GoTlfcf4x4=;
+        b=LG6OY8Ifh2UAofGEue5rrXE+63Iw2DQ4XcKKST6nHpnkTIm+Xi7vYiN9h7p7DhgdGo
+         MetSI9e8ryaSLrYm2j+3toTnDUM1XufXB1rRQ8hzX+ChgU5atdy0v2XTIZy+v+j7N1pT
+         BBRAWQEBjW3nGG4K4RyfL8QaQX7p5UzcdC3kvK50siY0lf6ezCXhioUy7fVNkM7WFsig
+         U1tqB8Ddnvt66XzEbIJ9K9dQCeJKk4AoHEn64Qk3ITT9CWHpiZYThN/hAWwrdfx6K2Rk
+         R5Aj4Ll6e71WIf6oJ0g5fO3DESV3CHMUzmY00XS8Q/9auLi/LY8nOI+llMdnHbVqiWSD
+         DIRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=39vL/RjFbpzLu5bkAOs1K86XiNbeAZ4i2GoTlfcf4x4=;
+        b=VscagPrqGTXXu1DJX9D9M+fDqiuUNcA7gaIZ+nmqlCDqgErE5wxAij1G4JnMCffk5z
+         cgDAjzsUQDzCQFkIQA6ODzIe7TK5Tj15ZNjIb9342ulDZ/hYOsoT5fw7CQCqU5RTZq7o
+         jhgaoD0oID09DPQFbQFBDrgDj7FHfpH3W345TzyXG5OX3TjtHV04lZBkirmYKYP6L+E5
+         on3EbOmZgtlONnvRHcsTjr3xS7tvFJ/gQOUgjWJwgTk4fXloISkEO9jlwx07gA64uiNX
+         mMvpZuA8qvx4DVdOT7tLt5sAVxIbdjkzmJqfgmqOigNaGCp86XkyWr+DJSozF94/FXAe
+         PeZA==
+X-Gm-Message-State: APjAAAU9TJtMSO9v3hUFvaTPWJlt+jf+6mv55xJLgnvnYtX33pm4x+7h
+        6MQFRcTTUzmPMBbT2iGbdeFeTOwEK09qolIjGCHYDQ==
+X-Google-Smtp-Source: APXvYqz2UpiOk7Jsv91cVM9s0b5LHK+kyw4OAekcJw3qQGAv+2SCCXQz/+vZSOLup3set0dvqH15r8Bymf/YQRUCBkU=
+X-Received: by 2002:adf:f5c2:: with SMTP id k2mr7212983wrp.0.1570689420029;
+ Wed, 09 Oct 2019 23:37:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <157066227329.1059972.5659620631541203458.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <157066229757.1059972.16873416956816693344.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <157066229757.1059972.16873416956816693344.stgit@dwillia2-desk3.amr.corp.intel.com>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Thu, 10 Oct 2019 08:36:48 +0200
+Message-ID: <CAKv+Gu89w+HCR2LVnFL5yBQbpy3Gi-rr_0ffrJ9N3fjpY4Jh5w@mail.gmail.com>
+Subject: Re: [PATCH v6 04/12] efi: Common enable/disable infrastructure for
+ EFI soft reservation
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Memory that has been tagged EFI_MEMORY_SP, and has performance
-properties described by the ACPI HMAT is expected to have an application
-specific consumer.
+On Thu, 10 Oct 2019 at 01:19, Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> UEFI 2.8 defines an EFI_MEMORY_SP attribute bit to augment the
+> interpretation of the EFI Memory Types as "reserved for a specific
+> purpose".
+>
+> The proposed Linux behavior for specific purpose memory is that it is
+> reserved for direct-access (device-dax) by default and not available for
+> any kernel usage, not even as an OOM fallback.  Later, through udev
+> scripts or another init mechanism, these device-dax claimed ranges can
+> be reconfigured and hot-added to the available System-RAM with a unique
+> node identifier. This device-dax management scheme implements "soft" in
+> the "soft reserved" designation by allowing some or all of the
+> reservation to be recovered as typical memory. This policy can be
+> disabled at compile-time with CONFIG_EFI_SOFT_RESERVE=n, or runtime with
+> efi=nosoftreserve.
+>
+> As for this patch, define the common helpers to determine if the
+> EFI_MEMORY_SP attribute should be honored. The determination needs to be
+> made early to prevent the kernel from being loaded into soft-reserved
+> memory, or otherwise allowing early allocations to land there. Follow-on
+> changes are needed per architecture to leverage these helpers in their
+> respective mem-init paths.
+>
+> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-Those consumers may want 100% of the memory capacity to be reserved from
-any usage by the kernel. By default, with this enabling, a platform
-device is created to represent this differentiated resource.
+Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 
-The device-dax "hmem" driver claims these devices by default and
-provides an mmap interface for the target application.  If the
-administrator prefers, the hmem resource range can be made available to
-the core-mm via the device-dax hotplug facility, kmem, to online the
-memory with its own numa node.
-
-This was tested with an emulated HMAT produced by qemu (with the pending
-HMAT enabling patches), and "efi_fake_mem=8G@9G:0x40000" on the kernel
-command line to mark the memory ranges associated with node2 and node3
-as EFI_MEMORY_SP.
-
-qemu numa configuration options:
-
--numa node,mem=4G,cpus=0-19,nodeid=0
--numa node,mem=4G,cpus=20-39,nodeid=1
--numa node,mem=4G,nodeid=2
--numa node,mem=4G,nodeid=3
--numa dist,src=0,dst=0,val=10
--numa dist,src=0,dst=1,val=21
--numa dist,src=0,dst=2,val=21
--numa dist,src=0,dst=3,val=21
--numa dist,src=1,dst=0,val=21
--numa dist,src=1,dst=1,val=10
--numa dist,src=1,dst=2,val=21
--numa dist,src=1,dst=3,val=21
--numa dist,src=2,dst=0,val=21
--numa dist,src=2,dst=1,val=21
--numa dist,src=2,dst=2,val=10
--numa dist,src=2,dst=3,val=21
--numa dist,src=3,dst=0,val=21
--numa dist,src=3,dst=1,val=21
--numa dist,src=3,dst=2,val=21
--numa dist,src=3,dst=3,val=10
--numa hmat-lb,initiator=0,target=0,hierarchy=memory,data-type=access-latency,base-lat=10,latency=5
--numa hmat-lb,initiator=0,target=0,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=5
--numa hmat-lb,initiator=0,target=1,hierarchy=memory,data-type=access-latency,base-lat=10,latency=10
--numa hmat-lb,initiator=0,target=1,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=10
--numa hmat-lb,initiator=0,target=2,hierarchy=memory,data-type=access-latency,base-lat=10,latency=15
--numa hmat-lb,initiator=0,target=2,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=15
--numa hmat-lb,initiator=0,target=3,hierarchy=memory,data-type=access-latency,base-lat=10,latency=20
--numa hmat-lb,initiator=0,target=3,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=20
--numa hmat-lb,initiator=1,target=0,hierarchy=memory,data-type=access-latency,base-lat=10,latency=10
--numa hmat-lb,initiator=1,target=0,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=10
--numa hmat-lb,initiator=1,target=1,hierarchy=memory,data-type=access-latency,base-lat=10,latency=5
--numa hmat-lb,initiator=1,target=1,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=5
--numa hmat-lb,initiator=1,target=2,hierarchy=memory,data-type=access-latency,base-lat=10,latency=15
--numa hmat-lb,initiator=1,target=2,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=15
--numa hmat-lb,initiator=1,target=3,hierarchy=memory,data-type=access-latency,base-lat=10,latency=20
--numa hmat-lb,initiator=1,target=3,hierarchy=memory,data-type=access-bandwidth,base-bw=20,bandwidth=20
-
-Result:
-
-# daxctl list -RDu
-[
-  {
-    "path":"\/platform\/hmem.1",
-    "id":1,
-    "size":"4.00 GiB (4.29 GB)",
-    "align":2097152,
-    "devices":[
-      {
-        "chardev":"dax1.0",
-        "size":"4.00 GiB (4.29 GB)"
-      }
-    ]
-  },
-  {
-    "path":"\/platform\/hmem.0",
-    "id":0,
-    "size":"4.00 GiB (4.29 GB)",
-    "align":2097152,
-    "devices":[
-      {
-        "chardev":"dax0.0",
-        "size":"4.00 GiB (4.29 GB)"
-      }
-    ]
-  }
-]
-
-# cat /proc/iomem
-[..]
-240000000-43fffffff : Soft Reserved
-  240000000-33fffffff : hmem.0
-    240000000-33fffffff : dax0.0
-  340000000-43fffffff : hmem.1
-    340000000-43fffffff : dax1.0
-
-Cc: Len Brown <lenb@kernel.org>
-Cc: Keith Busch <kbusch@kernel.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/acpi/numa/Kconfig |    1 
- drivers/acpi/numa/hmat.c  |  136 +++++++++++++++++++++++++++++++++++++++++----
- 2 files changed, 125 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/acpi/numa/Kconfig b/drivers/acpi/numa/Kconfig
-index acbd5aa76e40..fcf2e556d69d 100644
---- a/drivers/acpi/numa/Kconfig
-+++ b/drivers/acpi/numa/Kconfig
-@@ -9,6 +9,7 @@ config ACPI_HMAT
- 	bool "ACPI Heterogeneous Memory Attribute Table Support"
- 	depends on ACPI_NUMA
- 	select HMEM_REPORTING
-+	select MEMREGION
- 	help
- 	 If set, this option has the kernel parse and report the
- 	 platform's ACPI HMAT (Heterogeneous Memory Attributes Table),
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index 4707eb9dd07b..eaa5a0f93dec 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -8,12 +8,18 @@
-  * the applicable attributes with the node's interfaces.
-  */
- 
-+#define pr_fmt(fmt) "acpi/hmat: " fmt
-+#define dev_fmt(fmt) "acpi/hmat: " fmt
-+
- #include <linux/acpi.h>
- #include <linux/bitops.h>
- #include <linux/device.h>
- #include <linux/init.h>
- #include <linux/list.h>
-+#include <linux/mm.h>
-+#include <linux/platform_device.h>
- #include <linux/list_sort.h>
-+#include <linux/memregion.h>
- #include <linux/memory.h>
- #include <linux/mutex.h>
- #include <linux/node.h>
-@@ -49,6 +55,7 @@ struct memory_target {
- 	struct list_head node;
- 	unsigned int memory_pxm;
- 	unsigned int processor_pxm;
-+	struct resource memregions;
- 	struct node_hmem_attrs hmem_attrs;
- 	struct list_head caches;
- 	struct node_cache_attrs cache_attrs;
-@@ -104,22 +111,36 @@ static __init void alloc_memory_initiator(unsigned int cpu_pxm)
- 	list_add_tail(&initiator->node, &initiators);
- }
- 
--static __init void alloc_memory_target(unsigned int mem_pxm)
-+static __init void alloc_memory_target(unsigned int mem_pxm,
-+		resource_size_t start, resource_size_t len)
- {
- 	struct memory_target *target;
- 
- 	target = find_mem_target(mem_pxm);
--	if (target)
--		return;
--
--	target = kzalloc(sizeof(*target), GFP_KERNEL);
--	if (!target)
--		return;
-+	if (!target) {
-+		target = kzalloc(sizeof(*target), GFP_KERNEL);
-+		if (!target)
-+			return;
-+		target->memory_pxm = mem_pxm;
-+		target->processor_pxm = PXM_INVAL;
-+		target->memregions = (struct resource) {
-+			.name	= "ACPI mem",
-+			.start	= 0,
-+			.end	= -1,
-+			.flags	= IORESOURCE_MEM,
-+		};
-+		list_add_tail(&target->node, &targets);
-+		INIT_LIST_HEAD(&target->caches);
-+	}
- 
--	target->memory_pxm = mem_pxm;
--	target->processor_pxm = PXM_INVAL;
--	list_add_tail(&target->node, &targets);
--	INIT_LIST_HEAD(&target->caches);
-+	/*
-+	 * There are potentially multiple ranges per PXM, so record each
-+	 * in the per-target memregions resource tree.
-+	 */
-+	if (!__request_region(&target->memregions, start, len, "memory target",
-+				IORESOURCE_MEM))
-+		pr_warn("failed to reserve %#llx - %#llx in pxm: %d\n",
-+				start, start + len, mem_pxm);
- }
- 
- static __init const char *hmat_data_type(u8 type)
-@@ -452,7 +473,7 @@ static __init int srat_parse_mem_affinity(union acpi_subtable_headers *header,
- 		return -EINVAL;
- 	if (!(ma->flags & ACPI_SRAT_MEM_ENABLED))
- 		return 0;
--	alloc_memory_target(ma->proximity_domain);
-+	alloc_memory_target(ma->proximity_domain, ma->base_address, ma->length);
- 	return 0;
- }
- 
-@@ -613,10 +634,91 @@ static void hmat_register_target_perf(struct memory_target *target)
- 	node_set_perf_attrs(mem_nid, &target->hmem_attrs, 0);
- }
- 
-+static void hmat_register_target_device(struct memory_target *target,
-+		struct resource *r)
-+{
-+	/* define a clean / non-busy resource for the platform device */
-+	struct resource res = {
-+		.start = r->start,
-+		.end = r->end,
-+		.flags = IORESOURCE_MEM,
-+	};
-+	struct platform_device *pdev;
-+	struct memregion_info info;
-+	int rc, id;
-+
-+	rc = region_intersects(res.start, resource_size(&res), IORESOURCE_MEM,
-+			IORES_DESC_SOFT_RESERVED);
-+	if (rc != REGION_INTERSECTS)
-+		return;
-+
-+	id = memregion_alloc(GFP_KERNEL);
-+	if (id < 0) {
-+		pr_err("memregion allocation failure for %pr\n", &res);
-+		return;
-+	}
-+
-+	pdev = platform_device_alloc("hmem", id);
-+	if (!pdev) {
-+		pr_err("hmem device allocation failure for %pr\n", &res);
-+		goto out_pdev;
-+	}
-+
-+	pdev->dev.numa_node = acpi_map_pxm_to_online_node(target->memory_pxm);
-+	info = (struct memregion_info) {
-+		.target_node = acpi_map_pxm_to_node(target->memory_pxm),
-+	};
-+	rc = platform_device_add_data(pdev, &info, sizeof(info));
-+	if (rc < 0) {
-+		pr_err("hmem memregion_info allocation failure for %pr\n", &res);
-+		goto out_pdev;
-+	}
-+
-+	rc = platform_device_add_resources(pdev, &res, 1);
-+	if (rc < 0) {
-+		pr_err("hmem resource allocation failure for %pr\n", &res);
-+		goto out_resource;
-+	}
-+
-+	rc = platform_device_add(pdev);
-+	if (rc < 0) {
-+		dev_err(&pdev->dev, "device add failed for %pr\n", &res);
-+		goto out_resource;
-+	}
-+
-+	return;
-+
-+out_resource:
-+	put_device(&pdev->dev);
-+out_pdev:
-+	memregion_free(id);
-+}
-+
-+static __init void hmat_register_target_devices(struct memory_target *target)
-+{
-+	struct resource *res;
-+
-+	/*
-+	 * Do not bother creating devices if no driver is available to
-+	 * consume them.
-+	 */
-+	if (!IS_ENABLED(CONFIG_DEV_DAX_HMEM))
-+		return;
-+
-+	for (res = target->memregions.child; res; res = res->sibling)
-+		hmat_register_target_device(target, res);
-+}
-+
- static void hmat_register_target(struct memory_target *target)
- {
- 	int nid = pxm_to_node(target->memory_pxm);
- 
-+	/*
-+	 * Devices may belong to either an offline or online
-+	 * node, so unconditionally add them.
-+	 */
-+	hmat_register_target_devices(target);
-+
- 	/*
- 	 * Skip offline nodes. This can happen when memory
- 	 * marked EFI_MEMORY_SP, "specific purpose", is applied
-@@ -677,11 +779,21 @@ static __init void hmat_free_structures(void)
- 	struct target_cache *tcache, *cnext;
- 
- 	list_for_each_entry_safe(target, tnext, &targets, node) {
-+		struct resource *res, *res_next;
-+
- 		list_for_each_entry_safe(tcache, cnext, &target->caches, node) {
- 			list_del(&tcache->node);
- 			kfree(tcache);
- 		}
-+
- 		list_del(&target->node);
-+		res = target->memregions.child;
-+		while (res) {
-+			res_next = res->sibling;
-+			__release_region(&target->memregions, res->start,
-+					resource_size(res));
-+			res = res_next;
-+		}
- 		kfree(target);
- 	}
- 
-
+> ---
+>  Documentation/admin-guide/kernel-parameters.txt |    9 ++++++++-
+>  drivers/firmware/efi/Kconfig                    |   21 +++++++++++++++++++++
+>  drivers/firmware/efi/efi.c                      |    9 +++++++++
+>  drivers/firmware/efi/libstub/efi-stub-helper.c  |   19 +++++++++++++++++++
+>  include/linux/efi.h                             |    8 ++++++++
+>  5 files changed, 65 insertions(+), 1 deletion(-)
+>
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index c7ac2f3ac99f..47478a730011 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -1168,7 +1168,8 @@
+>                         Format: {"off" | "on" | "skip[mbr]"}
+>
+>         efi=            [EFI]
+> -                       Format: { "old_map", "nochunk", "noruntime", "debug" }
+> +                       Format: { "old_map", "nochunk", "noruntime", "debug",
+> +                                 "nosoftreserve" }
+>                         old_map [X86-64]: switch to the old ioremap-based EFI
+>                         runtime services mapping. 32-bit still uses this one by
+>                         default.
+> @@ -1177,6 +1178,12 @@
+>                         firmware implementations.
+>                         noruntime : disable EFI runtime services support
+>                         debug: enable misc debug output
+> +                       nosoftreserve: The EFI_MEMORY_SP (Specific Purpose)
+> +                       attribute may cause the kernel to reserve the
+> +                       memory range for a memory mapping driver to
+> +                       claim. Specify efi=nosoftreserve to disable this
+> +                       reservation and treat the memory by its base type
+> +                       (i.e. EFI_CONVENTIONAL_MEMORY / "System RAM").
+>
+>         efi_no_storage_paranoia [EFI; X86]
+>                         Using this parameter you can use more than 50% of
+> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+> index 178ee8106828..9fa79f9fa0af 100644
+> --- a/drivers/firmware/efi/Kconfig
+> +++ b/drivers/firmware/efi/Kconfig
+> @@ -75,6 +75,27 @@ config EFI_MAX_FAKE_MEM
+>           Ranges can be set up to this value using comma-separated list.
+>           The default value is 8.
+>
+> +config EFI_SOFT_RESERVE
+> +       bool "Reserve EFI Specific Purpose Memory"
+> +       depends on EFI && ACPI_HMAT
+> +       default ACPI_HMAT
+> +       help
+> +         On systems that have mixed performance classes of memory EFI
+> +         may indicate specific purpose memory with an attribute (See
+> +         EFI_MEMORY_SP in UEFI 2.8). A memory range tagged with this
+> +         attribute may have unique performance characteristics compared
+> +         to the system's general purpose "System RAM" pool. On the
+> +         expectation that such memory has application specific usage,
+> +         and its base EFI memory type is "conventional" answer Y to
+> +         arrange for the kernel to reserve it as a "Soft Reserved"
+> +         resource, and set aside for direct-access (device-dax) by
+> +         default. The memory range can later be optionally assigned to
+> +         the page allocator by system administrator policy via the
+> +         device-dax kmem facility. Say N to have the kernel treat this
+> +         memory as "System RAM" by default.
+> +
+> +         If unsure, say Y.
+> +
+>  config EFI_PARAMS_FROM_FDT
+>         bool
+>         help
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 68a4ec24b823..911a58be4a36 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -81,6 +81,12 @@ bool efi_runtime_disabled(void)
+>         return disable_runtime;
+>  }
+>
+> +bool __pure efi_soft_reserve_enabled(void)
+> +{
+> +       return IS_ENABLED(CONFIG_EFI_SOFT_RESERVE) &&
+> +              !efi_enabled(EFI_MEM_NO_SOFT_RESERVE);
+> +}
+> +
+>  static int __init parse_efi_cmdline(char *str)
+>  {
+>         if (!str) {
+> @@ -94,6 +100,9 @@ static int __init parse_efi_cmdline(char *str)
+>         if (parse_option_str(str, "noruntime"))
+>                 disable_runtime = true;
+>
+> +       if (parse_option_str(str, "nosoftreserve"))
+> +               set_bit(EFI_MEM_NO_SOFT_RESERVE, &efi.flags);
+> +
+>         return 0;
+>  }
+>  early_param("efi", parse_efi_cmdline);
+> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> index 3caae7f2cf56..5d901c56ac5f 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> @@ -32,6 +32,7 @@ static unsigned long __chunk_size = EFI_READ_CHUNK_SIZE;
+>  static int __section(.data) __nokaslr;
+>  static int __section(.data) __quiet;
+>  static int __section(.data) __novamap;
+> +static bool __section(.data) efi_nosoftreserve;
+>
+>  int __pure nokaslr(void)
+>  {
+> @@ -45,6 +46,10 @@ int __pure novamap(void)
+>  {
+>         return __novamap;
+>  }
+> +bool __pure efi_soft_reserve_enabled(void)
+> +{
+> +       return IS_ENABLED(CONFIG_EFI_SOFT_RESERVE) && !efi_nosoftreserve;
+> +}
+>
+>  #define EFI_MMAP_NR_SLACK_SLOTS        8
+>
+> @@ -211,6 +216,10 @@ efi_status_t efi_high_alloc(efi_system_table_t *sys_table_arg,
+>                 if (desc->type != EFI_CONVENTIONAL_MEMORY)
+>                         continue;
+>
+> +               if (efi_soft_reserve_enabled() &&
+> +                   (desc->attribute & EFI_MEMORY_SP))
+> +                       continue;
+> +
+>                 if (desc->num_pages < nr_pages)
+>                         continue;
+>
+> @@ -305,6 +314,10 @@ efi_status_t efi_low_alloc(efi_system_table_t *sys_table_arg,
+>                 if (desc->type != EFI_CONVENTIONAL_MEMORY)
+>                         continue;
+>
+> +               if (efi_soft_reserve_enabled() &&
+> +                   (desc->attribute & EFI_MEMORY_SP))
+> +                       continue;
+> +
+>                 if (desc->num_pages < nr_pages)
+>                         continue;
+>
+> @@ -489,6 +502,12 @@ efi_status_t efi_parse_options(char const *cmdline)
+>                         __novamap = 1;
+>                 }
+>
+> +               if (IS_ENABLED(CONFIG_EFI_SOFT_RESERVE) &&
+> +                   !strncmp(str, "nosoftreserve", 7)) {
+> +                       str += strlen("nosoftreserve");
+> +                       efi_nosoftreserve = 1;
+> +               }
+> +
+>                 /* Group words together, delimited by "," */
+>                 while (*str && *str != ' ' && *str != ',')
+>                         str++;
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index baa275c56401..959c9650018f 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -1202,6 +1202,7 @@ extern int __init efi_setup_pcdp_console(char *);
+>  #define EFI_DBG                        8       /* Print additional debug info at runtime */
+>  #define EFI_NX_PE_DATA         9       /* Can runtime data regions be mapped non-executable? */
+>  #define EFI_MEM_ATTR           10      /* Did firmware publish an EFI_MEMORY_ATTRIBUTES table? */
+> +#define EFI_MEM_NO_SOFT_RESERVE        11      /* Is the kernel configured to ignore soft reservations? */
+>
+>  #ifdef CONFIG_EFI
+>  /*
+> @@ -1212,6 +1213,8 @@ static inline bool efi_enabled(int feature)
+>         return test_bit(feature, &efi.flags) != 0;
+>  }
+>  extern void efi_reboot(enum reboot_mode reboot_mode, const char *__unused);
+> +
+> +bool __pure efi_soft_reserve_enabled(void);
+>  #else
+>  static inline bool efi_enabled(int feature)
+>  {
+> @@ -1225,6 +1228,11 @@ efi_capsule_pending(int *reset_type)
+>  {
+>         return false;
+>  }
+> +
+> +static inline bool efi_soft_reserve_enabled(void)
+> +{
+> +       return false;
+> +}
+>  #endif
+>
+>  extern int efi_status_to_err(efi_status_t status);
+>
