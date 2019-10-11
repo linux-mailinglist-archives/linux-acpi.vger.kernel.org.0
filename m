@@ -2,183 +2,186 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 788AFD4141
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2019 15:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C332BD430E
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2019 16:38:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728232AbfJKNao (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Oct 2019 09:30:44 -0400
-Received: from mga14.intel.com ([192.55.52.115]:25839 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728002AbfJKNao (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 11 Oct 2019 09:30:44 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Oct 2019 06:30:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,284,1566889200"; 
-   d="scan'208";a="346027002"
-Received: from fyin-mobl.ccr.corp.intel.com (HELO [10.254.209.213]) ([10.254.209.213])
-  by orsmga004.jf.intel.com with ESMTP; 11 Oct 2019 06:30:42 -0700
-Subject: Re: [RESEND] ACPI / processor_idle: use dead loop instead of io port
- access for wait
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Len Brown <lenb@kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-References: <20190909073937.31554-1-fengwei.yin@intel.com>
- <12278756.3dKznOqol2@kreacher>
-From:   "Yin, Fengwei" <fengwei.yin@intel.com>
-Message-ID: <8a65bf97-c066-8e5e-ba82-75e2a6fd5b45@intel.com>
-Date:   Fri, 11 Oct 2019 21:30:41 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726800AbfJKOiV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Oct 2019 10:38:21 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:36762 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726631AbfJKOiV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Oct 2019 10:38:21 -0400
+Received: by mail-wr1-f65.google.com with SMTP id y19so12225979wrd.3
+        for <linux-acpi@vger.kernel.org>; Fri, 11 Oct 2019 07:38:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=S3EXoewC8ZPtCv9nLggU0Zj9HWKeOk6ECJdLQvDSMxo=;
+        b=UTdlK9x/vx8fveM4Ymm5qY3K5Zb9V6o6M4vzALGQPrWOzHaFr6hvnm1jwW8LrcgH7J
+         dpkccxBxhP9m8hDIRPMZin+5PXvypVS8n97J3rneeBef1ZG1+KubdkC7TXVXeICgWVvk
+         cTMHpkLRKWNC633al8dBhpTAazgDabazAr51o+/FiidGXKR4Z1J7yUtbfCZCBkiJWB79
+         +33riSqX4ipriuOycPRBzA9fb+hzoUYV6oLVEFaRmAS3cB5pOy9PrmWv/AkKWW75+qqX
+         p1nUobztl20ad++WMJf+rmyLxzoG4qfMXgOJTv4PalN8qrL+5aTzco5Wu6Ss2XSvpY7o
+         63gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=S3EXoewC8ZPtCv9nLggU0Zj9HWKeOk6ECJdLQvDSMxo=;
+        b=UZl4BIXJFQvKRQhU1lIVedBfx5yRJlH4VRD97I/vm0Xt+f8zBpGlXfU9zodQgHvePd
+         Vtl2auXmd6etdSJcTxymHxVaVQcS/pU/KJzmDwn3DxtcpNvUx0lIUTIvTMhHG/Ht644H
+         s/4XMEHi48CCjvUmDcxP6hgPBQyu/D8ohXkR9mQt3t8FZEqtVsfDHbSIhk4o6Cs9evhf
+         fxOjJ/LCxvUlyRuhYjECUJ3ZwXP8IODeb+sB+bILD5GmfQt9AkBpveWNkMpGwpaHkoL1
+         uLLXQ1YvVsaDn9tY5H5vWriV9AMEA1AJGN/N5FDCkJyAkK56Gi3HCBWVntBARYlxQWjT
+         z1iA==
+X-Gm-Message-State: APjAAAUvwJrJ9Tn0ATNPIFUOURExaVHxicsbDdZOJgUUXoZfAFYfLUms
+        oq0hORdPJoMqgy0m3o3cnL5t1ylRPBBaFHQWiEd3Gg==
+X-Google-Smtp-Source: APXvYqxsxEzAf/2w0nVbCqmd0KII4ILHESmIMwZwa+BBIHCY8a/Dd5SoqYe5uWe55StmwOKEHhwCbkAbdrk1X0NHzh8=
+X-Received: by 2002:a5d:6b0a:: with SMTP id v10mr12774249wrw.32.1570804698063;
+ Fri, 11 Oct 2019 07:38:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <12278756.3dKznOqol2@kreacher>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <157066227329.1059972.5659620631541203458.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <157066230358.1059972.1736585303527133478.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAKv+Gu8ih2RffZHdwAnHZicL_v8CxV9WnCy+uA1jSSyh58xapA@mail.gmail.com>
+ <CAPcyv4iQ5Np3dDH=-a_7gPnWKBCHXGit2PN-h=Jw_eqj7Lb2BQ@mail.gmail.com>
+ <CAKv+Gu9co_FTVYWNZsXF0H+fV1K76pZX4Yv11ANE6NwDBT3pBQ@mail.gmail.com>
+ <CAPcyv4iCpA_a7272HXVwBY3NqR1RbyuoXbQOPWG2xFHgqN8-iA@mail.gmail.com>
+ <CAKv+Gu-EOaEmiT_ZA8RBatWAWNVXnNgv-wLJSp5b-zhvof3D6g@mail.gmail.com> <CAPcyv4jHTrrfNnBNw_H_4wGWGsg1QF1582BcN-078K5KCBhNBA@mail.gmail.com>
+In-Reply-To: <CAPcyv4jHTrrfNnBNw_H_4wGWGsg1QF1582BcN-078K5KCBhNBA@mail.gmail.com>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Fri, 11 Oct 2019 16:38:05 +0200
+Message-ID: <CAKv+Gu-Y+0KjUj91N1WFZK=vR6CUKCtiNbQtYMxn2vY1Wh-_dg@mail.gmail.com>
+Subject: Re: [PATCH v6 05/12] x86/efi: EFI soft reservation to E820 enumeration
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     Ingo Molnar <mingo@redhat.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kbuild test robot <lkp@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Fri, 11 Oct 2019 at 16:35, Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> On Thu, Oct 10, 2019 at 10:52 PM Ard Biesheuvel
+> <ard.biesheuvel@linaro.org> wrote:
+> >
+> > On Fri, 11 Oct 2019 at 04:39, Dan Williams <dan.j.williams@intel.com> wrote:
+> > >
+> > > On Thu, Oct 10, 2019 at 11:41 AM Ard Biesheuvel
+> > > <ard.biesheuvel@linaro.org> wrote:
+> > > >
+> > > > On Thu, 10 Oct 2019 at 20:31, Dan Williams <dan.j.williams@intel.com> wrote:
+> > > > >
+> > > > > On Wed, Oct 9, 2019 at 11:45 PM Ard Biesheuvel
+> > > > > <ard.biesheuvel@linaro.org> wrote:
+> > > > > >
+> > > > > > On Thu, 10 Oct 2019 at 01:19, Dan Williams <dan.j.williams@intel.com> wrote:
+> > > > > > >
+> > > > > > > UEFI 2.8 defines an EFI_MEMORY_SP attribute bit to augment the
+> > > > > > > interpretation of the EFI Memory Types as "reserved for a specific
+> > > > > > > purpose".
+> > > > > > >
+> > > > > > > The proposed Linux behavior for specific purpose memory is that it is
+> > > > > > > reserved for direct-access (device-dax) by default and not available for
+> > > > > > > any kernel usage, not even as an OOM fallback.  Later, through udev
+> > > > > > > scripts or another init mechanism, these device-dax claimed ranges can
+> > > > > > > be reconfigured and hot-added to the available System-RAM with a unique
+> > > > > > > node identifier. This device-dax management scheme implements "soft" in
+> > > > > > > the "soft reserved" designation by allowing some or all of the
+> > > > > > > reservation to be recovered as typical memory. This policy can be
+> > > > > > > disabled at compile-time with CONFIG_EFI_SOFT_RESERVE=n, or runtime with
+> > > > > > > efi=nosoftreserve.
+> > > > > > >
+> > > > > > > This patch introduces 2 new concepts at once given the entanglement
+> > > > > > > between early boot enumeration relative to memory that can optionally be
+> > > > > > > reserved from the kernel page allocator by default. The new concepts
+> > > > > > > are:
+> > > > > > >
+> > > > > > > - E820_TYPE_SOFT_RESERVED: Upon detecting the EFI_MEMORY_SP
+> > > > > > >   attribute on EFI_CONVENTIONAL memory, update the E820 map with this
+> > > > > > >   new type. Only perform this classification if the
+> > > > > > >   CONFIG_EFI_SOFT_RESERVE=y policy is enabled, otherwise treat it as
+> > > > > > >   typical ram.
+> > > > > > >
+> > > > > > > - IORES_DESC_SOFT_RESERVED: Add a new I/O resource descriptor for
+> > > > > > >   a device driver to search iomem resources for application specific
+> > > > > > >   memory. Teach the iomem code to identify such ranges as "Soft Reserved".
+> > > > > > >
+> > > > > > > A follow-on change integrates parsing of the ACPI HMAT to identify the
+> > > > > > > node and sub-range boundaries of EFI_MEMORY_SP designated memory. For
+> > > > > > > now, just identify and reserve memory of this type.
+> > > > > > >
+> > > > > > > Cc: <x86@kernel.org>
+> > > > > > > Cc: Borislav Petkov <bp@alien8.de>
+> > > > > > > Cc: Ingo Molnar <mingo@redhat.com>
+> > > > > > > Cc: "H. Peter Anvin" <hpa@zytor.com>
+> > > > > > > Cc: Darren Hart <dvhart@infradead.org>
+> > > > > > > Cc: Andy Shevchenko <andy@infradead.org>
+> > > > > > > Cc: Andy Lutomirski <luto@kernel.org>
+> > > > > > > Cc: Peter Zijlstra <peterz@infradead.org>
+> > > > > > > Cc: Thomas Gleixner <tglx@linutronix.de>
+> > > > > > > Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> > > > > > > Reported-by: kbuild test robot <lkp@intel.com>
+> > > > > > > Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > > > > > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > > > > >
+> > > > > > For the EFI changes
+> > > > > >
+> > > > > > Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> > > > > >
+> > > > > > although I must admit I don't follow the enum add_efi_mode logic 100%
+> > > > >
+> > > > > I'm open to suggestions as I'm not sure it's the best possible
+> > > > > organization. The do_add_efi_memmap() routine has the logic to
+> > > > > translate EFI to E820, but unless "add_efi_memmap" is specified on the
+> > > > > kernel command line the EFI memory map is ignored. For
+> > > > > soft-reservation support I want to reuse do_add_efi_memmap(), but
+> > > > > otherwise avoid any other side effects of considering the EFI map.
+> > > > > What I'm missing is the rationale for why "add_efi_memmap" is required
+> > > > > before considering the EFI memory map.
+> > > > >
+> > > > > If there is a negative side effect to always using the EFI map then
+> > > > > the new "add_efi_mode" designation constrains it to just the
+> > > > > soft-reservation case.
+> > > > >
+> > > >
+> > > > Could we make the presence of any EFI_MEMORY_SP regions imply
+> > > > add_efi_memmap? That way, it is guaranteed that we don't regress
+> > > > existing systems, while establishing clear and unambiguous semantics
+> > > > for new systems that rely on these changes in order to be able to use
+> > > > the special purpose memory as intended.
+> > >
+> > > In fact that's how it works. EFI_MEMORY_SP is unconditionally added.
+> > > Other EFI memory types are optionally added with the add_efi_memmap
+> > > option.
+> >
+> > That is not what I meant.
+> >
+> > Why not behave as if 'add_efi_memmap' was passed if any EFI_MEMORY_SP
+> > regions exist?
+>
+> Hmm, ok, on the assumption that any platform that is modern enough to
+> specify EFI_MEMORY_SP likely does not need the opt-in?
 
-On 10/11/2019 5:05 PM, Rafael J. Wysocki wrote:
-> Sorry for the delay.
-No problem.
+Indeed.
 
-> 
-> On Monday, September 9, 2019 9:39:37 AM CEST Yin Fengwei wrote:
->> In function acpi_idle_do_entry(), we do an io port access to guarantee
->> hardware behavior. But it could trigger unnecessary vmexit for
->> virtualization environemnt.
-> 
-> Is this a theoretical problem, or do you actually see it?
-> 
-> If you see it, I'd like to have a pointer to a bug report regarding it
-> or similar.
-We did see this issue when we run linux as guest with ACRN hypervisor
-instead of kvm or xen. In our case, we export all native C states to
-guest and let guest choose which C state it will enter.
+> I can get on
+> board with that. It's also simple enough to undo if it causes problems
+> in practice.
 
-And we observed many pm timer port access when guest tried to enter
-deeper C state (Yes, we emulate pm timer so pm timer access will trigger
-vmexit).
-
-
-> 
->>  From the comments of this part of code, we could use busy wait instead
->> of io port access to guarantee hardware behavior and avoid unnecessary
->> vmexit.
->>
->> Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
->> ---
->>   drivers/acpi/processor_idle.c | 33 ++++++++++++++++++++++++++++++---
->>   1 file changed, 30 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
->> index ed56c6d20b08..676553228e8f 100644
->> --- a/drivers/acpi/processor_idle.c
->> +++ b/drivers/acpi/processor_idle.c
->> @@ -55,6 +55,8 @@ struct cpuidle_driver acpi_idle_driver = {
->>   };
->>   
->>   #ifdef CONFIG_ACPI_PROCESSOR_CSTATE
->> +static struct timespec64 dummy_delta = {0L, 0L};
->> +
->>   static
->>   DEFINE_PER_CPU(struct acpi_processor_cx * [CPUIDLE_STATE_MAX], acpi_cstate);
->>   
->> @@ -64,6 +66,18 @@ static int disabled_by_idle_boot_param(void)
->>   		boot_option_idle_override == IDLE_HALT;
->>   }
->>   
->> +static void dummy_wait(void)
->> +{
->> +	struct timespec64 now, target;
->> +
->> +	ktime_get_real_ts64(&now);
->> +	target = timespec64_add(now, dummy_delta);
->> +
->> +	do {
->> +		ktime_get_real_ts64(&now);
->> +	} while (timespec64_compare(&now, &target) < 0);
->> +}
-> 
-> Why not to use ndelay() instead of this? ->
-Yes. ndelay should work also.
-
-> 
->> +
->>   /*
->>    * IBM ThinkPad R40e crashes mysteriously when going into C2 or C3.
->>    * For now disable this. Probably a bug somewhere else.
->> @@ -660,8 +674,12 @@ static void __cpuidle acpi_idle_do_entry(struct acpi_processor_cx *cx)
->>   		inb(cx->address);
->>   		/* Dummy wait op - must do something useless after P_LVL2 read
->>   		   because chipsets cannot guarantee that STPCLK# signal
->> -		   gets asserted in time to freeze execution properly. */
->> -		inl(acpi_gbl_FADT.xpm_timer_block.address);
->> +		   gets asserted in time to freeze execution properly.
->> +
->> +		   Previously, we do io port access here which could trigger
->> +		   unnecessary trap to HV for virtualization env. We use dead
->> +		   loop here to avoid the impact to virtualization env. */
->> +		dummy_wait();
->>   	}
->>   }
->>   
->> @@ -683,7 +701,7 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
->>   		else if (cx->entry_method == ACPI_CSTATE_SYSTEMIO) {
->>   			inb(cx->address);
->>   			/* See comment in acpi_idle_do_entry() */
->> -			inl(acpi_gbl_FADT.xpm_timer_block.address);
->> +			dummy_wait();
->>   		} else
->>   			return -ENODEV;
->>   	}
->> @@ -902,6 +920,7 @@ static inline void acpi_processor_cstate_first_run_checks(void)
->>   {
->>   	acpi_status status;
->>   	static int first_run;
->> +	struct timespec64 ts0, ts1;
->>   
->>   	if (first_run)
->>   		return;
->> @@ -912,6 +931,13 @@ static inline void acpi_processor_cstate_first_run_checks(void)
->>   			  max_cstate);
->>   	first_run++;
->>   
->> +	/* profiling the time used for dummy wait op */
->> +	ktime_get_real_ts64(&ts0);
->> +	inl(acpi_gbl_FADT.xpm_timer_block.address);
->> +	ktime_get_real_ts64(&ts1);
-> 
-> -> And simply measure the number of nsecs this takes?
-Yes. nsecs is fine here. and use udelay in dummy_wait.
-
-Regards
-Yin, Fengwei
-
-> 
->> +
->> +	dummy_delta = timespec64_sub(ts1, ts0);
->> +
->>   	if (acpi_gbl_FADT.cst_control && !nocst) {
->>   		status = acpi_os_write_port(acpi_gbl_FADT.smi_command,
->>   					    acpi_gbl_FADT.cst_control, 8);
->> @@ -920,6 +946,7 @@ static inline void acpi_processor_cstate_first_run_checks(void)
->>   					"Notifying BIOS of _CST ability failed"));
->>   	}
->>   }
->> +
->>   #else
->>   
->>   static inline int disabled_by_idle_boot_param(void) { return 0; }
->>
-> 
-> 
-> 
-> 
-
+Yes, and we'll only have one code path to reason about here.
