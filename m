@@ -2,90 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46B2AD3C8E
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2019 11:41:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0DAED3D8A
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2019 12:39:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727646AbfJKJlU convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 11 Oct 2019 05:41:20 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:46846 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726585AbfJKJlU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Oct 2019 05:41:20 -0400
-Received: from 79.184.255.36.ipv4.supernova.orange.pl (79.184.255.36) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.292)
- id b8f52977fd553eb6; Fri, 11 Oct 2019 11:41:18 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Kacper =?utf-8?B?UGl3acWEc2tp?= <cosiekvfj@o2.pl>
-Cc:     rui.zhang@intel.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ACPI: acpi_video: update doc for acpi_video_bus_DOS
-Date:   Fri, 11 Oct 2019 11:41:17 +0200
-Message-ID: <3045273.zdn4mdtSDm@kreacher>
-In-Reply-To: <20191007154818.7416-1-cosiekvfj@o2.pl>
-References: <20191007154818.7416-1-cosiekvfj@o2.pl>
+        id S1727149AbfJKKjC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Oct 2019 06:39:02 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:37009 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726290AbfJKKjB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Oct 2019 06:39:01 -0400
+Received: by mail-oi1-f195.google.com with SMTP id i16so7600364oie.4;
+        Fri, 11 Oct 2019 03:39:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+tb4OyPeBvddVVgZ3mAAcmtLcYtmURpW+oNgkhTLycc=;
+        b=gNx6TnFWJfQv4bwHZ8QhYfn3NI44sWyxs+AlLC/iYVLn9kCof/sIpkbzLl2agu+OpV
+         ikkc6zhLez+OYL/RMw0GLgJ2z3xKcxA39w8ZlUVM1v2+oodD+lTbCFhd49P3DEkiKDLv
+         N45TqpTui2t7xJycakrao246LPqNVvJ4N/SxVKGK59tdheRWn7ZuSBBOa/hx3buJMs/B
+         VU8QQ62Z/BkXQOs9oi4xuOQAhGwTVZfTwMlTQO+oZp/K8QUbU1RJXVaV72fORMxoGooI
+         lDSp7UyqKtPMjvG6dEreS4o10As5HfKJPYWOmh/vkD5ee2uRv6IMRTGO+SD6TRV70YNN
+         I4wg==
+X-Gm-Message-State: APjAAAVPe1bOQnBvPPC8Y1eiTJX50/BhuuBXFrp7M+KAklvP38/pkp8d
+        hekB1lltxsvwRarVFu2Od4IQcilBPqMe201UumzB8A==
+X-Google-Smtp-Source: APXvYqxQJUnKRLLcrN7dm7Pyw1dBZn5rts9p263jE4FizkPGHP2kBVS1voppc6S+ATQ1vRGvdZx6uZtLUGnDOLoVDvY=
+X-Received: by 2002:aca:5885:: with SMTP id m127mr11800131oib.110.1570790340768;
+ Fri, 11 Oct 2019 03:39:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
+References: <20191009130433.29134-1-sameo@linux.intel.com> <20191009130433.29134-2-sameo@linux.intel.com>
+In-Reply-To: <20191009130433.29134-2-sameo@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 11 Oct 2019 12:38:49 +0200
+Message-ID: <CAJZ5v0ioC6XnC+sFpRJmm40T+YCnqoaHhJ+_Pmk7rvvC8UPT9w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] acpi: Fail GED probe when not on hardware-reduced
+To:     Samuel Ortiz <sameo@linux.intel.com>
+Cc:     Len Brown <lenb@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Monday, October 7, 2019 5:48:18 PM CEST Kacper Piwiński wrote:
-> commit:
-> efaa14c
-> 
-> "Starting from win8, MS backlight control driver will set bit 2 of the
-> parameter of control method _DOS, to inform firmware it should not
-> perform any automatic brightness changes. This mostly affects hotkey
-> notification deliver - if we do not set this bit, on hotkey press,
-> firmware may choose to adjust brightness level instead of sending out
-> notification and doing nothing."
-> 
-> win7:
-> https://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/BrightnessCtrl.docx
-> 
-> "To avoid problems that might occur if both the system firmware and
-> the monitor driver control the brightness of the display, the display
-> miniport driver should set bit 2 of the argument to the _DOS method.
-> Setting this bit notifies the system firmware that it should not
-> perform any automatic display brightness changes. The WDDM
-> driver must set this particular bit because it controls the _DOS
-> method. The other bits in the _DOS method control the behavior of
-> the firmware in response to the display switch hot keys."
-> 
-> win8:
-> http://read.pudn.com/downloads193/doc/907411/Brightness.doc
-> 
-> Signed-off-by: Kacper Piwiński <cosiekvfj@o2.pl>
+On Wed, Oct 9, 2019 at 3:04 PM Samuel Ortiz <sameo@linux.intel.com> wrote:
+>
+> The Generic Event Device (GED) is a hardware-reduced platform device.
+
+No, it is not AFAICS.
+
+The spec doesn't say that GED cannot be used on platforms that aren't
+HW-reduced and if evged.c is going to be built in unconditionally, the
+kernel will be able to handle GED regardless.
+
+> Probing this driver on fixed platforms should fail.
+>
+> Signed-off-by: Samuel Ortiz <sameo@linux.intel.com>
 > ---
->  drivers/acpi/acpi_video.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-> index 4f325e47519f..2f380e7381d6 100644
-> --- a/drivers/acpi/acpi_video.c
-> +++ b/drivers/acpi/acpi_video.c
-> @@ -699,9 +699,13 @@ acpi_video_device_EDID(struct acpi_video_device *device,
->   *			event notify code.
->   *	lcd_flag	:
->   *		0.	The system BIOS should automatically control the brightness level
-> - *			of the LCD when the power changes from AC to DC
-> + *			of the LCD when:
-> + *			- the power changes from AC to DC (ACPI appendix B)
-> + *			- a brightness hotkey gets pressed (implied by Win7/8 backlight docs)
->   *		1.	The system BIOS should NOT automatically control the brightness
-> - *			level of the LCD when the power changes from AC to DC.
-> + *			level of the LCD when:
-> + *			- the power changes from AC to DC (ACPI appendix B)
-> + *			- a brightness hotkey gets pressed (implied by Win7/8 backlight docs)
->   *  Return Value:
->   *		-EINVAL	wrong arg.
->   */
-> 
-
-Applying as 5.5 material, thanks!
-
-
-
-
+>  drivers/acpi/evged.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/acpi/evged.c b/drivers/acpi/evged.c
+> index aba0d0027586..55de4b2d2fee 100644
+> --- a/drivers/acpi/evged.c
+> +++ b/drivers/acpi/evged.c
+> @@ -127,6 +127,9 @@ static int ged_probe(struct platform_device *pdev)
+>         struct acpi_ged_device *geddev;
+>         acpi_status acpi_ret;
+>
+> +       if (!acpi_gbl_reduced_hardware)
+> +               return -ENODEV;
+> +
+>         geddev = devm_kzalloc(&pdev->dev, sizeof(*geddev), GFP_KERNEL);
+>         if (!geddev)
+>                 return -ENOMEM;
+> --
+> 2.21.0
+>
