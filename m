@@ -2,129 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C33BD484C
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2019 21:15:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF2ABD4A86
+	for <lists+linux-acpi@lfdr.de>; Sat, 12 Oct 2019 01:07:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728865AbfJKTPl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Oct 2019 15:15:41 -0400
-Received: from mail-vk1-f202.google.com ([209.85.221.202]:45794 "EHLO
-        mail-vk1-f202.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728895AbfJKTPi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Oct 2019 15:15:38 -0400
-Received: by mail-vk1-f202.google.com with SMTP id q84so3785422vkb.12
-        for <linux-acpi@vger.kernel.org>; Fri, 11 Oct 2019 12:15:36 -0700 (PDT)
+        id S1726827AbfJKXH0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Oct 2019 19:07:26 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:44841 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726781AbfJKXH0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Oct 2019 19:07:26 -0400
+Received: by mail-pg1-f196.google.com with SMTP id e10so2614219pgd.11;
+        Fri, 11 Oct 2019 16:07:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=fuET3qNc4z015mh4xj4NLz17joYOgUCh9UCVZC00VJQ=;
-        b=KtQ7RuQAgEe2d9wcSmFDcLBsRoaaxGnpESOpf/q6dteBQqfkJ6FlI7FsfVyrTIxA5z
-         xwZTZVQZlDQ7S/gzwJjZus5nZx3GJjO6hkhrkgUqORg8jTVxIt+s0y88CkAOFOTUIpRI
-         0Pzt39RFgrUq2XIP4cHJaFu8U0+NpHeQM7pfJw6eTNiKtASKlEgUMTfTY9F2RVJtnEFn
-         QFT/ef3CgPcb9DsR5oYYhAAL8hYt4W/XFs81+D/zCGDiiNyfGHoL54m7RQCMwlIb7DXR
-         P/W0KYOmCkgg16488maeLjzDGxalw2QDxZWb880tI/rMhZWrR+NypPxIgCWcm2dDL2uj
-         qDPA==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=oK3PBeetvr3vm8ZcG9YWRtzBHe8gB8wA9dfQ/fHXlfE=;
+        b=jwIIyplbVvKCLEeeYP9DswqD71cfGjDM1KlGsu261MGqPdtjUxjGitJ+Z5F6NekInf
+         1t6C5h3Ly+QIawO/7VTrDa0N0jqF3duYKTHALJgIuiIE79g6Gzhsv6hWA4j36lYJFhXB
+         F+DXFCBvHWeCpPsJzJfMHvXg407krb98rmyqgN/MGa9kRSehbe4L8pa8mepSZJfzWoGp
+         BBxF0NO9MD+j3OF20xIULwXuuHQdXUyS3OONu3XIAbcvMUd/rY8MP4GAfL0i8oitKNYi
+         xHdp2dq/EPn0vafcD/l0UWvjJ0uqkrK74e7nLpn7hsnbizg3hFD7i18SddDeuB4qHY1e
+         5fYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=fuET3qNc4z015mh4xj4NLz17joYOgUCh9UCVZC00VJQ=;
-        b=fgQGruYGOJROiDKrtMfopSJ2GDqe8ueXN684ysUxZjByBDr2oGlG/AQ/X0JgGhV4rC
-         Y0Wzh2613XI15ZnPJlg41FMhb6nTCbCHX0ZOsTg8Uc0y8t3hW8FqiB4jnIrF3HkTCIs9
-         vCRDi/s0tAS5rTdmLAVpcFmVhRKsvhQufM8c2WgGXF2CqlsYWEK9g954kJ1+EHhGlUDC
-         59bMPrKV87C3+33372SkDEBpZlVKKycRYhy12oJyDmBw3/Cwj87dPQC09//f/OH1E8lx
-         LPq7MCyJpu2zIGOJeic4b/jpLQNBb5722/iWZ3ITULvJWlBPj2s9jkWYYzbvDwTGbncW
-         dzdg==
-X-Gm-Message-State: APjAAAWPTib4IWJ5iSec1bkBDziuQ6yzaWuufsO/hyqCh6Z03wrLt/+p
-        IROy95x8XucHosP5kx6PRz6DqUReN00wNMU=
-X-Google-Smtp-Source: APXvYqyKbyMInaL/TiLznxFZpaDnmd4A+1ivZ+irQgGm2Xkw+CFqTG49xHbf8Z1vqOMgRdvb2xnG1jQBb3eetEU=
-X-Received: by 2002:a1f:f445:: with SMTP id s66mr9324346vkh.62.1570821335385;
- Fri, 11 Oct 2019 12:15:35 -0700 (PDT)
-Date:   Fri, 11 Oct 2019 12:15:21 -0700
-In-Reply-To: <20191011191521.179614-1-saravanak@google.com>
-Message-Id: <20191011191521.179614-4-saravanak@google.com>
-Mime-Version: 1.0
-References: <20191011191521.179614-1-saravanak@google.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=oK3PBeetvr3vm8ZcG9YWRtzBHe8gB8wA9dfQ/fHXlfE=;
+        b=IDPxC56H5XDpcdvteaBk4tm2rvpgm0XnO1SgbnS8Sy3fsdCuAsLy6SpbZzae53gOsm
+         NIrU/FiDweoAxVeUR0bLbshqXxeBGsVZaIy9L2cat0AL0x3LiF8NprESfwczgOohY8HA
+         Qs8UrourhB4ii61Aqb+n33P522OdUCOlDdGdgXYhYuhS9rlgM//gcHtgSr5TPOzUaOpY
+         Jrs5kllc6iHeeFEZ4V1uFb6joJXeaLwqXuI1faAWFUJuJqaXW54/VYv3wFnx9fnFxV+W
+         v7NBZrLBaUOPDLSt7umllaE9443HrrVEB5trc1WdHlzdKT9ZnCEjCcty3BBSVLWVdWpf
+         DgiA==
+X-Gm-Message-State: APjAAAUxo2ShAvkC5e0znCcMFjo5CyNFcasprolSCLuZdoGrXLdLYcAi
+        CpJ/jA33H/PHjdrV/kaOayH7tLjN
+X-Google-Smtp-Source: APXvYqxA4xf9RehMosGcnsfqsnfDuOyco1oZUHNPm6LuZWHmbT+7QAZHLR5bgzPrEYJianzZQ8W6Ww==
+X-Received: by 2002:a65:6817:: with SMTP id l23mr19166281pgt.338.1570835245387;
+        Fri, 11 Oct 2019 16:07:25 -0700 (PDT)
+Received: from dtor-ws.mtv.corp.google.com ([2620:15c:202:201:3adc:b08c:7acc:b325])
+        by smtp.gmail.com with ESMTPSA id w2sm11529251pfn.57.2019.10.11.16.07.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Oct 2019 16:07:24 -0700 (PDT)
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: [PATCH v5 00/14] software node: add support for reference properties
+Date:   Fri, 11 Oct 2019 16:07:07 -0700
+Message-Id: <20191011230721.206646-1-dmitry.torokhov@gmail.com>
 X-Mailer: git-send-email 2.23.0.700.g56cf767bdb-goog
-Subject: [PATCH v1 3/3] docs: driver-model: Add documentation for sync_state
-From:   Saravana Kannan <saravanak@google.com>
-To:     Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Saravana Kannan <saravanak@google.com>,
-        Stephen Boyd <sboyd@kernel.org>, kernel-team@android.com,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The sync_state() driver callback was added recently, but the
-documentation was missing.  Adding it now.
+These series implement "references" properties for software nodes as true
+properties, instead of managing them completely separately.
 
-Signed-off-by: Saravana Kannan <saravanak@google.com>
----
- .../driver-api/driver-model/driver.rst        | 43 +++++++++++++++++++
- 1 file changed, 43 insertions(+)
+The first 10 patches are generic cleanups and consolidation and
+unification of the existing code; patch #11 implements moving of small
+properties inline when copying property entries; patch #12 implements
+PROPERTY_ENTRY_REF() and friends; patch #13 converts the user of
+references to the property syntax, and patch #14 removes the remains of
+references as entities that are managed separately.
 
-diff --git a/Documentation/driver-api/driver-model/driver.rst b/Documentation/driver-api/driver-model/driver.rst
-index 11d281506a04..baa6a85c8287 100644
---- a/Documentation/driver-api/driver-model/driver.rst
-+++ b/Documentation/driver-api/driver-model/driver.rst
-@@ -169,6 +169,49 @@ A driver's probe() may return a negative errno value to indicate that
- the driver did not bind to this device, in which case it should have
- released all resources it allocated::
- 
-+	void (*sync_state)(struct device *dev);
-+
-+sync_state is called only once for a device. It's called when all the consumer
-+devices of the device have successfully probed. The list of consumers of the
-+device is obtained by looking at the device links connecting that device to its
-+consumer devices.
-+
-+The first attempt to call sync_state() is made during late_initcall_sync() to
-+give firmware and drivers time to link devices to each other. During the first
-+attempt at calling sync_state(), if all the consumers of the device at that
-+point in time have already probed successfully, sync_state() is called right
-+away. If there are no consumers of the device during the first attempt, that
-+too is considered as "all consumers of the device have probed" and sync_state()
-+is called right away.
-+
-+If during the first attempt at calling sync_state() for a device, there are
-+still consumers that haven't probed successfully, the sync_state() call is
-+postponed and reattempted in the future only when one or more consumers of the
-+device probe successfully. If during the reattempt, the driver core finds that
-+there are one or more consumers of the device that haven't probed yet, then
-+sync_state() call is postponed again.
-+
-+A typical use case for sync_state() is to have the kernel cleanly take over
-+management of devices from the bootloader. For example, if a device is left on
-+and at a particular hardware configuration by the bootloader, the device's
-+driver might need to keep the device in the boot configuration until all the
-+consumers of the device have probed. Once all the consumers of the device have
-+probed, the device's driver can synchronize the hardware state of the device to
-+match the aggregated software state requested by all the consumers. Hence the
-+name sync_state().
-+
-+While obvious examples of resources that can benefit from sync_state() include
-+resources such as regulator, sync_state() can also be useful for complex
-+resources like IOMMUs. For example, IOMMUs with multiple consumers (devices
-+whose addresses are remapped by the IOMMU) might need to keep their mappings
-+fixed at (or additive to) the boot configuration until all its consumers have
-+probed.
-+
-+While the typical use case for sync_state() is to have the kernel cleanly take
-+over management of devices from the bootloader, the usage of sync_state() is
-+not restricted to that. Use it whenever it makes sense to take an action after
-+all the consumers of a device have probed.
-+
- 	int 	(*remove)	(struct device *dev);
- 
- remove is called to unbind a driver from a device. This may be
+Changes in v5:
+- rebased onto next-20191011
+
+Changes in v4:
+- dealt with union aliasing concerns
+- inline small properties on copy
+
+Changes in v3:
+- added various cleanups before implementing reference properties
+
+Changes in v2:
+- reworked code so that even single-entry reference properties are
+  stored as arrays (i.e. the software_node_ref_args instances are
+  not part of property_entry structure) to avoid size increase.
+  From user's POV nothing is changed, one can still use PROPERTY_ENTRY_REF
+  macro to define reference "inline".
+- dropped unused DEV_PROP_MAX
+- rebased on linux-next
+
+
+Dmitry Torokhov (14):
+  software node: remove DEV_PROP_MAX
+  software node: introduce PROPERTY_ENTRY_ARRAY_XXX_LEN()
+  efi/apple-properties: use PROPERTY_ENTRY_U8_ARRAY_LEN
+  software node: mark internal macros with double underscores
+  software node: clean up property_copy_string_array()
+  software node: get rid of property_set_pointer()
+  software node: remove property_entry_read_uNN_array functions
+  software node: unify PROPERTY_ENTRY_XXX macros
+  software node: simplify property_entry_read_string_array()
+  software node: rename is_array to is_inline
+  software node: move small properties inline when copying
+  software node: implement reference properties
+  platform/x86: intel_cht_int33fe: use inline reference properties
+  software node: remove separate handling of references
+
+ drivers/base/swnode.c                    | 266 ++++++++---------------
+ drivers/firmware/efi/apple-properties.c  |  18 +-
+ drivers/platform/x86/intel_cht_int33fe.c |  81 +++----
+ include/linux/property.h                 | 177 +++++++--------
+ 4 files changed, 230 insertions(+), 312 deletions(-)
+
 -- 
 2.23.0.700.g56cf767bdb-goog
 
