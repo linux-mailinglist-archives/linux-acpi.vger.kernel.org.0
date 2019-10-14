@@ -2,103 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B561AD5F59
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2019 11:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50D0FD5F72
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2019 11:54:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731126AbfJNJvD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Oct 2019 05:51:03 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:55368 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730872AbfJNJvB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Oct 2019 05:51:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=3rjVtCZLgsilEpkgOnYIzDjjtZ2Kp11iwIF4i8XF3A8=; b=nac7UknEctDLA9sc4gOIH979e
-        nULCKrIjMf9CbbLUdLNoMbDBE0mr6s1/DovqlcygDZu7Xzl8gihBDK2b+kSb1KzE2IgaqU6eyOhVj
-        M45eKskAz2svxNJUvPYZMZBXUUMG4IHedszWllhdYyqP6PkfV1ssGyok384LEqu3jBctIrZMg4gRs
-        QK9XCaccrPOP3B6fIDDognLit2HFlE2QRQxLjvlTNoPsNZuwLCNv1rFQaR5u5lbyNW6n7/UtYY4UJ
-        sF/067U/08kPkzB/j54E7VGtoZ9W5cTqB97zx/TIf07va6Of7cYzeIZqeC2G/9xNW5hjW74k6FNx2
-        6EMbnPzWw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iJwya-0005S5-Ji; Mon, 14 Oct 2019 09:49:16 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E6D0F305BD3;
-        Mon, 14 Oct 2019 11:48:18 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id D48F820238A9A; Mon, 14 Oct 2019 11:49:12 +0200 (CEST)
-Date:   Mon, 14 Oct 2019 11:49:12 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Yunsheng Lin <linyunsheng@huawei.com>,
-        Michal Hocko <mhocko@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>, catalin.marinas@arm.com,
-        will@kernel.org, mingo@redhat.com, bp@alien8.de, rth@twiddle.net,
-        ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
-        heiko.carstens@de.ibm.com, gor@linux.ibm.com,
-        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
-        dalias@libc.org, davem@davemloft.net, ralf@linux-mips.org,
-        paul.burton@mips.com, jhogan@kernel.org, jiaxun.yang@flygoat.com,
-        chenhc@lemote.com, akpm@linux-foundation.org, rppt@linux.ibm.com,
-        anshuman.khandual@arm.com, tglx@linutronix.de, cai@lca.pw,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        hpa@zytor.com, x86@kernel.org, dave.hansen@linux.intel.com,
-        luto@kernel.org, len.brown@intel.com, axboe@kernel.dk,
-        dledford@redhat.com, jeffrey.t.kirsher@intel.com,
-        linux-alpha@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com,
-        mwb@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, tbogendoerfer@suse.de,
-        linux-mips@vger.kernel.org, rafael@kernel.org, bhelgaas@google.com,
-        linux-pci@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        lenb@kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-Message-ID: <20191014094912.GY2311@hirez.programming.kicks-ass.net>
-References: <20191010073212.GB18412@dhcp22.suse.cz>
- <6cc94f9b-0d79-93a8-5ec2-4f6c21639268@huawei.com>
- <20191011111539.GX2311@hirez.programming.kicks-ass.net>
- <7fad58d6-5126-e8b8-a7d8-a91814da53ba@huawei.com>
- <20191012074014.GA2037204@kroah.com>
- <1e1ec851-b5e7-8f35-a627-4c12ca9c2d3c@huawei.com>
- <20191012104001.GA2052933@kroah.com>
- <20191012104742.GA2053473@kroah.com>
- <82000bc8-6912-205b-0251-25b9cc430973@huawei.com>
- <20191014092509.GA3050088@kroah.com>
+        id S1730740AbfJNJyu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Oct 2019 05:54:50 -0400
+Received: from mga11.intel.com ([192.55.52.93]:5360 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731057AbfJNJyu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 14 Oct 2019 05:54:50 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Oct 2019 02:54:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,295,1566889200"; 
+   d="scan'208";a="188981570"
+Received: from fyin-mobl.ccr.corp.intel.com (HELO [10.239.205.86]) ([10.239.205.86])
+  by orsmga008.jf.intel.com with ESMTP; 14 Oct 2019 02:54:48 -0700
+Subject: Re: [RESEND] ACPI / processor_idle: use dead loop instead of io port
+ access for wait
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Len Brown <lenb@kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20190909073937.31554-1-fengwei.yin@intel.com>
+ <12278756.3dKznOqol2@kreacher>
+ <8a65bf97-c066-8e5e-ba82-75e2a6fd5b45@intel.com>
+ <3727681.FYoUZqeJdN@kreacher>
+From:   "Yin, Fengwei" <fengwei.yin@intel.com>
+Message-ID: <6b8a0f55-67f7-98b1-c252-301628f9d5e2@intel.com>
+Date:   Mon, 14 Oct 2019 17:54:47 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191014092509.GA3050088@kroah.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <3727681.FYoUZqeJdN@kreacher>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Oct 14, 2019 at 11:25:09AM +0200, Greg KH wrote:
-> Good luck, I don't really think that most, if any, of this is needed,
-> but hey, it's nice to clean it up where it can be :)
+On 10/14/2019 5:38 PM, Rafael J. Wysocki wrote:
+> On Friday, October 11, 2019 3:30:41 PM CEST Yin, Fengwei wrote:
+>>
+>> On 10/11/2019 5:05 PM, Rafael J. Wysocki wrote:
+>>> Sorry for the delay.
+>> No problem.
+>>
+>>>
+>>> On Monday, September 9, 2019 9:39:37 AM CEST Yin Fengwei wrote:
+>>>> In function acpi_idle_do_entry(), we do an io port access to guarantee
+>>>> hardware behavior. But it could trigger unnecessary vmexit for
+>>>> virtualization environemnt.
+>>>
+>>> Is this a theoretical problem, or do you actually see it?
+>>>
+>>> If you see it, I'd like to have a pointer to a bug report regarding it
+>>> or similar.
+>> We did see this issue when we run linux as guest with ACRN hypervisor
+>> instead of kvm or xen. In our case, we export all native C states to
+>> guest and let guest choose which C state it will enter.
+>>
+>> And we observed many pm timer port access when guest tried to enter
+>> deeper C state (Yes, we emulate pm timer so pm timer access will trigger
+>> vmexit).
+> 
+> Can you please put this information into the changelog of your patch?
+Sure. Just want to double confirm into changelog or commit message?
 
-Some of the virtual devices we have (that use devm) really ought to set
-the node too, like drivers/base/cpu.c and driver/base/node.c and
-arguably the cooling devices too (they create a device per cpu).
+Regards
+Yin, Fengwei
 
-The patch I had here:
+> 
+> It works very well as a rationale for me. :-)
+> 
+> 
+> 
 
-  https://lkml.kernel.org/r/20190925214526.GA4643@worktop.programming.kicks-ass.net
-
-takes the more radical approach of requiring a node, except when
-explicitly marked not (the fake devices that don't use devm for
-example).
-
-But yes, PCI and other physical busses really should be having a node
-set, no excuses.
-
-Anyway, I don't think non-physical devices actually use
-cpumask_of_node() much, a quick grep didn't show any.
