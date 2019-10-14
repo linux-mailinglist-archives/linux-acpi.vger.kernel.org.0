@@ -2,94 +2,176 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBFA7D6C13
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2019 01:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 154F3D6C44
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2019 01:57:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726566AbfJNXfu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Oct 2019 19:35:50 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:33381 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726524AbfJNXfu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Oct 2019 19:35:50 -0400
-Received: by mail-ot1-f66.google.com with SMTP id 60so15290855otu.0
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Oct 2019 16:35:49 -0700 (PDT)
+        id S1726814AbfJNX5x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Oct 2019 19:57:53 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:44226 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726812AbfJNX5w (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Oct 2019 19:57:52 -0400
+Received: by mail-pl1-f196.google.com with SMTP id q15so8668585pll.11;
+        Mon, 14 Oct 2019 16:57:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NwUiRmL5zHRuSpoZacB+KbqGLwUbPV8zfP2jjwTQZ40=;
-        b=TKlYMgY6BIO0a2BCP9NIZ0RDFSDCMHEJtY2x9DKJYW3dkv4cc3dMdfoEXPfq7nao1A
-         FB8isuIUIz37YiDdrnt6tj2rZPqxphRoRXt7DnRZ9IRAcs5kglsAJ0mmTwG9hxcsL0bX
-         eb0MFM9vaJmNbvXkyarJwKDErv8tEnSOvMvyg4JE7a8MGMig61jXeS76iRZsnKC2L146
-         kFdCa9XX3huj52KblSP/OsgJS7fEJJD+2W4wxnDz9el2/wmnB6wInAj4eZtqdJW4Cno0
-         lEyXvrUNPoUnOLU3oA01VMyMsvwUSEJW4ECh+yngbOn7WGb14cG6u4SCGTI79ftXco6x
-         5ZaQ==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=PvXicvKODDLIBrrmqaNFFvvMmJzFOFLga8h9y3ZgZGc=;
+        b=IxuAc88QtjB+R1hTHXCTLux1d9f6r1BsDQ5Cbfit9zZ5g5PKFdHOoc1N7Hoghz+zvB
+         hrbzn9MYAxffJvXXRzkiFE0en0cir+eBsQ82qbaX12xegOYP5kdFENTxBR1TmxTPloru
+         /fwWhtQr52rqIefsqSYphEyLClfmYN3IgCtbOdYMOx2hzJHah3NUAlztMfaltRVihCRK
+         Q2y7UyiSI+2Wo3TUu1upsqn0emTa5udSO906FvxYFwqlSvIldo/nL+H0BECy/ghcyQos
+         /XfPZMF0gb4LYMYrcY2ijnXJ1lbWxxUlFO0Adm9jNZsMiK/F6rZy4kF0df6UMKPqst77
+         qFSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NwUiRmL5zHRuSpoZacB+KbqGLwUbPV8zfP2jjwTQZ40=;
-        b=Sd6/emrnc0GC1838gN9NZyjtLoGf0XTISdiaGdSspRTxGyQ2+HN15Xj+htL9lWENR2
-         VU76A5bPQ6+vwM5Aq2bewDnHEsTXroxO9reiGp57a305bpl8B9xaQNj+i7gjZbanpDYA
-         nwImzkaWNh42nUcWOmweg2SxOZIK50fMWKc7EYKvaapyyn414Rg7ykur3PwyhHFLV1GD
-         xYjZbHEwnFqU4ullkIAxll8sYyX2yHt8bGuiGntJvxzvwvfMcthRUEp2JrGH5f/FX2Kh
-         6sp9b1UFnzJTnpdLETBmeh0882ZTsRhsJIoUsmZ+LqGAex8rD/43KVfLuJ3sBq5CI389
-         7new==
-X-Gm-Message-State: APjAAAWHEDw5nkrRwUFuLSMtXRWbgjVVB+7j0FiYUIihsukfFbuhSFHb
-        nXtMyQtAhtEsV1PVZ4VfGajB+qakIwPGc0u1Sc6qwQ==
-X-Google-Smtp-Source: APXvYqzEMn4iiEvRoFnPWid2cqOI3VZG7sGt2CV0SkehdxGAGwKggzD4OaekfLnZ7//zX1O/DAxwc3wOaYMFld0l4Fk=
-X-Received: by 2002:a9d:66c5:: with SMTP id t5mr26275692otm.225.1571096148769;
- Mon, 14 Oct 2019 16:35:48 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=PvXicvKODDLIBrrmqaNFFvvMmJzFOFLga8h9y3ZgZGc=;
+        b=j47E/XtL7IlPMi4xilOe9odDXR5Tg16c8ZTLVlElz6uIheKmmMJivuVbaXl0erj7dZ
+         UFoo9fCrqd/XKagg4IOUsstJq2VflQbKMIbWDz62QIHd6fms5Me1valN2c4rUr38UdTj
+         EL7lWoz2Wq5HfHteHQ7LNGPs9hjYPBpJtXW644nwnF5b3dsyCtJIg/O5H6rVhwWIvpdX
+         SUdAhs02RWM82qGVtJoPmqEbeiGB9G2p5sKFfslpJTGovwIVNegUL7fnh3GtN4Qc+7WR
+         KkevG6cRYxNjpwFoMOJgvApfkHxt7/MuEXHZ/UjpuSeNfcEUZElu8x0yz/xDvwClsOwP
+         Ec3A==
+X-Gm-Message-State: APjAAAVG4PkR7MiO5wQUVHZ1LWw+o7HOHxmdNw744BI5FzFvGCdbGyzQ
+        dXiXX+3Pi/AQF0gWpuKQt6k=
+X-Google-Smtp-Source: APXvYqwMpDhZmsbOwgQ61I4KBxC7rbT1HjnTGoHHSJFP+sCgNEt7Uw3duYXbb1+UcEXxmo1MbaF/HQ==
+X-Received: by 2002:a17:902:9008:: with SMTP id a8mr33076756plp.218.1571097471651;
+        Mon, 14 Oct 2019 16:57:51 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
+        by smtp.gmail.com with ESMTPSA id h6sm24862693pfg.123.2019.10.14.16.57.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Oct 2019 16:57:50 -0700 (PDT)
+Date:   Mon, 14 Oct 2019 16:57:47 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v5 00/14] software node: add support for reference
+ properties
+Message-ID: <20191014235747.GA105649@dtor-ws>
+References: <20191011230721.206646-1-dmitry.torokhov@gmail.com>
+ <20191014073837.GI32742@smile.fi.intel.com>
 MIME-Version: 1.0
-References: <20191011191521.179614-1-saravanak@google.com> <20191011191521.179614-4-saravanak@google.com>
- <20191014232828.DA62E217F9@mail.kernel.org>
-In-Reply-To: <20191014232828.DA62E217F9@mail.kernel.org>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Mon, 14 Oct 2019 16:35:12 -0700
-Message-ID: <CAGETcx9ke3+nGS+dBDOE9EhFhd=w6o5N+P5F7R-xNSi5fRLz_w@mail.gmail.com>
-Subject: Re: [PATCH v1 3/3] docs: driver-model: Add documentation for sync_state
-To:     Stephen Boyd <sboyd@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Corbet <corbet@lwn.net>, Len Brown <lenb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Android Kernel Team <kernel-team@android.com>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191014073837.GI32742@smile.fi.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Oct 14, 2019 at 4:28 PM Stephen Boyd <sboyd@kernel.org> wrote:
->
-> Quoting Saravana Kannan (2019-10-11 12:15:21)
-> > The sync_state() driver callback was added recently, but the
-> > documentation was missing.  Adding it now.
-> >
-> > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > ---
-> >  .../driver-api/driver-model/driver.rst        | 43 +++++++++++++++++++
-> >  1 file changed, 43 insertions(+)
-> >
-> > diff --git a/Documentation/driver-api/driver-model/driver.rst b/Documentation/driver-api/driver-model/driver.rst
-> > index 11d281506a04..baa6a85c8287 100644
-> > --- a/Documentation/driver-api/driver-model/driver.rst
-> > +++ b/Documentation/driver-api/driver-model/driver.rst
-> > @@ -169,6 +169,49 @@ A driver's probe() may return a negative errno value to indicate that
-> >  the driver did not bind to this device, in which case it should have
-> >  released all resources it allocated::
-> >
-> > +       void (*sync_state)(struct device *dev);
->
-> This is only in -next as far as I can tell. Will this be combined with a
-> resend of the patch series that introduces this hook?
+On Mon, Oct 14, 2019 at 10:38:37AM +0300, Andy Shevchenko wrote:
+> On Fri, Oct 11, 2019 at 04:07:07PM -0700, Dmitry Torokhov wrote:
+> > These series implement "references" properties for software nodes as true
+> > properties, instead of managing them completely separately.
+> > 
+> > The first 10 patches are generic cleanups and consolidation and
+> > unification of the existing code; patch #11 implements moving of small
+> > properties inline when copying property entries; patch #12 implements
+> > PROPERTY_ENTRY_REF() and friends; patch #13 converts the user of
+> > references to the property syntax, and patch #14 removes the remains of
+> > references as entities that are managed separately.
+> 
+> Can we get some test cases?
 
-Based on what Greg said in the other email, I think he's going to pick
-this up for driver-core-next.
+Something like this? (I'll beef it up if we decide KUnit is OK for
+this).
 
--Saravana
+From 0b8256ceed44760e63becb5b9636099d9fc17a4c Mon Sep 17 00:00:00 2001
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Date: Mon, 14 Oct 2019 16:55:12 -0700
+Subject: [PATCH] software node: add basic init tests
+
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+---
+ drivers/base/test/Makefile              |  2 +
+ drivers/base/test/property-entry-test.c | 56 +++++++++++++++++++++++++
+ 2 files changed, 58 insertions(+)
+ create mode 100644 drivers/base/test/property-entry-test.c
+
+diff --git a/drivers/base/test/Makefile b/drivers/base/test/Makefile
+index 0f1f7277a013..22143102e5d2 100644
+--- a/drivers/base/test/Makefile
++++ b/drivers/base/test/Makefile
+@@ -1,2 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_TEST_ASYNC_DRIVER_PROBE)	+= test_async_driver_probe.o
++
++obj-$(CONFIG_KUNIT) += property-entry-test.o
+diff --git a/drivers/base/test/property-entry-test.c b/drivers/base/test/property-entry-test.c
+new file mode 100644
+index 000000000000..cd6a405734a0
+--- /dev/null
++++ b/drivers/base/test/property-entry-test.c
+@@ -0,0 +1,56 @@
++// SPDX-License-Identifier: GPL-2.0
++// Unit tests for property entries API
++//
++// Copyright 2019 Google LLC.
++
++#include <kunit/test.h>
++#include <linux/property.h>
++#include <linux/types.h>
++
++static void pe_test_move_inline_u8(struct kunit *test)
++{
++	u8 u8_array_small[8] = { 0 };
++	u8 u8_array_big[128] = { 0 };
++	struct property_entry entries[] = {
++		PROPERTY_ENTRY_U8_ARRAY("small", u8_array_small),
++		PROPERTY_ENTRY_U8_ARRAY("big", u8_array_big),
++		{ }
++	};
++	struct property_entry *copy;
++
++	copy = property_entries_dup(entries);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, copy);
++	KUNIT_EXPECT_TRUE(test, copy[0].is_inline);
++	KUNIT_EXPECT_FALSE(test, copy[1].is_inline);
++}
++
++static void pe_test_move_inline_str(struct kunit *test)
++{
++	char *str_array_small[] = { "a" };
++	char *str_array_big[] = { "a", "b", "c", "d" };
++	struct property_entry entries[] = {
++		PROPERTY_ENTRY_STRING_ARRAY("small", str_array_small),
++		PROPERTY_ENTRY_STRING_ARRAY("big", str_array_big),
++		{ }
++	};
++	struct property_entry *copy;
++
++	copy = property_entries_dup(entries);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, copy);
++	KUNIT_EXPECT_TRUE(test, copy[0].is_inline);
++	KUNIT_EXPECT_FALSE(test, copy[1].is_inline);
++}
++
++
++static struct kunit_case property_entry_test_cases[] = {
++	KUNIT_CASE(pe_test_move_inline_u8),
++	KUNIT_CASE(pe_test_move_inline_str),
++	{ }
++};
++
++static struct kunit_suite property_entry_test_suite = {
++	.name = "property-entry",
++	.test_cases = property_entry_test_cases,
++};
++
++kunit_test_suite(property_entry_test_suite);
+-- 
+2.23.0.700.g56cf767bdb-goog
+
+
+-- 
+Dmitry
