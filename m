@@ -2,109 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F38E9D61D6
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2019 13:59:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F3ECD64C9
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2019 16:10:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730810AbfJNL7R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Oct 2019 07:59:17 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3709 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730314AbfJNL7O (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 14 Oct 2019 07:59:14 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 7505F171767C03AD8FE1;
-        Mon, 14 Oct 2019 19:59:10 +0800 (CST)
-Received: from localhost.localdomain (10.67.212.75) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 14 Oct 2019 19:59:00 +0800
-From:   John Garry <john.garry@huawei.com>
-To:     <stable@vger.kernel.org>
-CC:     <catalin.marinas@arm.com>, <will@kernel.org>, <rjw@rjwysocki.net>,
-        <lenb@kernel.org>, <sudeep.holla@arm.com>, <rrichter@marvell.com>,
-        <jeremy.linton@arm.com>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linuxarm@huawei.com>, <gregkh@linuxfoundation.org>,
-        <guohanjun@huawei.com>, <wanghuiqiang@huawei.com>,
-        John Garry <john.garry@huawei.com>
-Subject: [PATCH for-stable-5.3 2/2] arm64: topology: Use PPTT to determine if PE is a thread
-Date:   Mon, 14 Oct 2019 19:56:02 +0800
-Message-ID: <1571054162-71090-3-git-send-email-john.garry@huawei.com>
-X-Mailer: git-send-email 2.8.1
-In-Reply-To: <1571054162-71090-1-git-send-email-john.garry@huawei.com>
-References: <1571054162-71090-1-git-send-email-john.garry@huawei.com>
+        id S1732370AbfJNOKT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Oct 2019 10:10:19 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38796 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732349AbfJNOKS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Oct 2019 10:10:18 -0400
+Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1iK139-0001Ft-NS; Mon, 14 Oct 2019 16:10:15 +0200
+Date:   Mon, 14 Oct 2019 16:10:15 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     "Guilherme G. Piccoli" <gpiccoli@canonical.com>
+cc:     kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-mm@kvack.org, platform-driver-x86@vger.kernel.org,
+        x86@kernel.org, iommu@lists.linux-foundation.org,
+        "Guilherme G. Piccoli" <kernel@gpiccoli.net>,
+        gavin.guo@canonical.com, halves@canonical.com,
+        ioanna-maria.alifieraki@canonical.com, jay.vosburgh@canonical.com,
+        mfo@canonical.com
+Subject: Re: Advice on oops - memory trap on non-memory access instruction
+ (invalid CR2?)
+In-Reply-To: <66eeae28-bfd3-c7a0-011c-801981b74243@canonical.com>
+Message-ID: <alpine.DEB.2.21.1910141602270.2531@nanos.tec.linutronix.de>
+References: <66eeae28-bfd3-c7a0-011c-801981b74243@canonical.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.212.75]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Jeremy Linton <jeremy.linton@arm.com>
+On Mon, 14 Oct 2019, Guilherme G. Piccoli wrote:
+> Modules linked in: <...>
+> CPU: 40 PID: 78274 Comm: qemu-system-x86 Tainted: P W  OE
 
-Commit 98dc19902a0b2e5348e43d6a2c39a0a7d0fc639e upstream.
+Tainted: P     - Proprietary module loaded ...
 
-ACPI 6.3 adds a thread flag to represent if a CPU/PE is
-actually a thread. Given that the MPIDR_MT bit may not
-represent this information consistently on homogeneous machines
-we should prefer the PPTT flag if its available.
+Try again without that module
 
-Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Reviewed-by: Robert Richter <rrichter@marvell.com>
-[will: made acpi_cpu_is_threaded() return 'bool']
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: John Garry <john.garry@huawei.com>
----
- arch/arm64/kernel/topology.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+Tainted: W     - Warning issued before
 
-diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-index 0825c4a856e3..6106c49f84bc 100644
---- a/arch/arm64/kernel/topology.c
-+++ b/arch/arm64/kernel/topology.c
-@@ -340,17 +340,28 @@ void remove_cpu_topology(unsigned int cpu)
- }
- 
- #ifdef CONFIG_ACPI
-+static bool __init acpi_cpu_is_threaded(int cpu)
-+{
-+	int is_threaded = acpi_pptt_cpu_is_thread(cpu);
-+
-+	/*
-+	 * if the PPTT doesn't have thread information, assume a homogeneous
-+	 * machine and return the current CPU's thread state.
-+	 */
-+	if (is_threaded < 0)
-+		is_threaded = read_cpuid_mpidr() & MPIDR_MT_BITMASK;
-+
-+	return !!is_threaded;
-+}
-+
- /*
-  * Propagate the topology information of the processor_topology_node tree to the
-  * cpu_topology array.
-  */
- static int __init parse_acpi_topology(void)
- {
--	bool is_threaded;
- 	int cpu, topology_id;
- 
--	is_threaded = read_cpuid_mpidr() & MPIDR_MT_BITMASK;
--
- 	for_each_possible_cpu(cpu) {
- 		int i, cache_id;
- 
-@@ -358,7 +369,7 @@ static int __init parse_acpi_topology(void)
- 		if (topology_id < 0)
- 			return topology_id;
- 
--		if (is_threaded) {
-+		if (acpi_cpu_is_threaded(cpu)) {
- 			cpu_topology[cpu].thread_id = topology_id;
- 			topology_id = find_acpi_cpu_topology(cpu, 1);
- 			cpu_topology[cpu].core_id   = topology_id;
--- 
-2.17.1
+Are you sure that that warning is harmless and unrelated?
+
+> 4.4.0-45-generic #66~14.04.1-Ubuntu
+
+Does the same problem happen with a not so dead kernel? CR2 handling got
+quite some updates/fixes since then.
+
+Thanks,
+
+	tglx
+
 
