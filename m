@@ -2,73 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77F7AD5ED8
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2019 11:29:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71239D5F15
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2019 11:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730676AbfJNJ3R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Oct 2019 05:29:17 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:34950 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730667AbfJNJ3R (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Oct 2019 05:29:17 -0400
-Received: by mail-oi1-f193.google.com with SMTP id x3so13200515oig.2;
-        Mon, 14 Oct 2019 02:29:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WsNTcuXws2GkYhReW0QEL4QdQI7fzEajZVNN3skykrE=;
-        b=V/CNaT/vzXxLWM5/lK8YIIrguJQKraHVUvHNTSoHUZNUQdysSxg1UpHtDDLJXYF7Ad
-         hYzInXDsSW0cT9s2z+o3mvPuwhlOOFaD8DSaivRF1v3fpqBioDpk5fEqTMjV5uyry/PU
-         At3Z2W90XssVqK4st091LDenJ/3pSYgXVPt1VycVWwYX9VEiWjZmZ+zGTvypWY6Y65+e
-         kmHdffm4Xb/GvXW6hnM3cqsOFqDHwVjsot/puBaPrPYXpmYyKteJOomq1FPKkbtt5RbW
-         KZQQPBUcyxdS/z41GN1lbxsYIg2enMBy01TpQUrlLjv4Jap+4DDdK/NCEK1w2Lwe94kB
-         4i1w==
-X-Gm-Message-State: APjAAAWCfZBvl+yOE7kY2LwG34jVUqdRlHV2L1RAVnhsUDsauFiRJemP
-        /0kPzWNSgSg133XPsm7cDB8oqGV1HoGD8+yY4Cr48A==
-X-Google-Smtp-Source: APXvYqwg6Om3eg/KoHpqe9l2WGVS21Mw5/J40648F7V+7Bx3F4+pQ7e007L6NJrS0ISBEAabdJZtUenqCG025PJdQKY=
-X-Received: by 2002:aca:5885:: with SMTP id m127mr24294219oib.110.1571045355051;
- Mon, 14 Oct 2019 02:29:15 -0700 (PDT)
+        id S1730972AbfJNJiS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Oct 2019 05:38:18 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:64170 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730778AbfJNJiQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Oct 2019 05:38:16 -0400
+Received: from 79.184.254.38.ipv4.supernova.orange.pl (79.184.254.38) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.292)
+ id 4db2488d3af89f8f; Mon, 14 Oct 2019 11:38:14 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     "Yin, Fengwei" <fengwei.yin@intel.com>
+Cc:     Len Brown <lenb@kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [RESEND] ACPI / processor_idle: use dead loop instead of io port access for wait
+Date:   Mon, 14 Oct 2019 11:38:13 +0200
+Message-ID: <3727681.FYoUZqeJdN@kreacher>
+In-Reply-To: <8a65bf97-c066-8e5e-ba82-75e2a6fd5b45@intel.com>
+References: <20190909073937.31554-1-fengwei.yin@intel.com> <12278756.3dKznOqol2@kreacher> <8a65bf97-c066-8e5e-ba82-75e2a6fd5b45@intel.com>
 MIME-Version: 1.0
-References: <20191013030723.31391-1-jpack61108@gmail.com>
-In-Reply-To: <20191013030723.31391-1-jpack61108@gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 14 Oct 2019 11:29:03 +0200
-Message-ID: <CAJZ5v0gBngPbSqLnNqt000s+9qQet1EZoD=cg6SCEhQ3ET6cdw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI Documentation: Minor Spelling Fix
-To:     James Pack <jpack61108@gmail.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Jiri Kosina <trivial@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Oct 13, 2019 at 5:07 AM James Pack <jpack61108@gmail.com> wrote:
->
-> Very minor spelling fix in ACPI documentation
->
-> Signed-off-by: James Pack <jpack61108@gmail.com>
-> ---
->  Documentation/firmware-guide/acpi/namespace.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/Documentation/firmware-guide/acpi/namespace.rst b/Documentation/firmware-guide/acpi/namespace.rst
-> index 835521baeb89..3eb763d6656d 100644
-> --- a/Documentation/firmware-guide/acpi/namespace.rst
-> +++ b/Documentation/firmware-guide/acpi/namespace.rst
-> @@ -261,7 +261,7 @@ Description Tables contain information used for the creation of the
->  struct acpi_device objects represented by the given row (xSDT means DSDT
->  or SSDT).
->
-> -The forth column of the above table indicates the 'bus_id' generation
-> +The fourth column of the above table indicates the 'bus_id' generation
->  rule of the struct acpi_device object:
->
->     _HID:
-> --
+On Friday, October 11, 2019 3:30:41 PM CEST Yin, Fengwei wrote:
+> 
+> On 10/11/2019 5:05 PM, Rafael J. Wysocki wrote:
+> > Sorry for the delay.
+> No problem.
+> 
+> > 
+> > On Monday, September 9, 2019 9:39:37 AM CEST Yin Fengwei wrote:
+> >> In function acpi_idle_do_entry(), we do an io port access to guarantee
+> >> hardware behavior. But it could trigger unnecessary vmexit for
+> >> virtualization environemnt.
+> > 
+> > Is this a theoretical problem, or do you actually see it?
+> > 
+> > If you see it, I'd like to have a pointer to a bug report regarding it
+> > or similar.
+> We did see this issue when we run linux as guest with ACRN hypervisor
+> instead of kvm or xen. In our case, we export all native C states to
+> guest and let guest choose which C state it will enter.
+> 
+> And we observed many pm timer port access when guest tried to enter
+> deeper C state (Yes, we emulate pm timer so pm timer access will trigger
+> vmexit).
 
-Applying as 5.5 material, thanks!
+Can you please put this information into the changelog of your patch?
+
+It works very well as a rationale for me. :-)
+
+
+
