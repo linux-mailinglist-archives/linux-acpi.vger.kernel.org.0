@@ -2,62 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3ECD64C9
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2019 16:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08E6ED6C03
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2019 01:28:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732370AbfJNOKT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Oct 2019 10:10:19 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38796 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732349AbfJNOKS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Oct 2019 10:10:18 -0400
-Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1iK139-0001Ft-NS; Mon, 14 Oct 2019 16:10:15 +0200
-Date:   Mon, 14 Oct 2019 16:10:15 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     "Guilherme G. Piccoli" <gpiccoli@canonical.com>
-cc:     kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-mm@kvack.org, platform-driver-x86@vger.kernel.org,
-        x86@kernel.org, iommu@lists.linux-foundation.org,
-        "Guilherme G. Piccoli" <kernel@gpiccoli.net>,
-        gavin.guo@canonical.com, halves@canonical.com,
-        ioanna-maria.alifieraki@canonical.com, jay.vosburgh@canonical.com,
-        mfo@canonical.com
-Subject: Re: Advice on oops - memory trap on non-memory access instruction
- (invalid CR2?)
-In-Reply-To: <66eeae28-bfd3-c7a0-011c-801981b74243@canonical.com>
-Message-ID: <alpine.DEB.2.21.1910141602270.2531@nanos.tec.linutronix.de>
-References: <66eeae28-bfd3-c7a0-011c-801981b74243@canonical.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        id S1726506AbfJNX23 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Oct 2019 19:28:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56636 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726438AbfJNX23 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 14 Oct 2019 19:28:29 -0400
+Received: from kernel.org (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DA62E217F9;
+        Mon, 14 Oct 2019 23:28:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571095709;
+        bh=/T9FxcxpIR4sdkUijVa3Y0FNoBc6Tptc8qvATswzwJ0=;
+        h=In-Reply-To:References:From:To:Cc:Subject:Date:From;
+        b=w9AsmgxOwKFvr2df+N4+IZcU/xMRmyRtJYEGMokBf0bZDs47+2rCRZ9IoG1IRnjS6
+         glrFxA+AwdKLg2qwPdKBxrl1ApITMqTyZsKoL5sEqSWamWVIwL4IE1BRfOwSTVmY3B
+         WeD0fYgZ1mgdAoJqa4YBA+QhNvtbJ2RI7cNBlsKg=
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20191011191521.179614-4-saravanak@google.com>
+References: <20191011191521.179614-1-saravanak@google.com> <20191011191521.179614-4-saravanak@google.com>
+From:   Stephen Boyd <sboyd@kernel.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Corbet <corbet@lwn.net>, Len Brown <lenb@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Saravana Kannan <saravanak@google.com>
+Cc:     Saravana Kannan <saravanak@google.com>, kernel-team@android.com,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v1 3/3] docs: driver-model: Add documentation for sync_state
+User-Agent: alot/0.8.1
+Date:   Mon, 14 Oct 2019 16:28:28 -0700
+Message-Id: <20191014232828.DA62E217F9@mail.kernel.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 14 Oct 2019, Guilherme G. Piccoli wrote:
-> Modules linked in: <...>
-> CPU: 40 PID: 78274 Comm: qemu-system-x86 Tainted: P W  OE
+Quoting Saravana Kannan (2019-10-11 12:15:21)
+> The sync_state() driver callback was added recently, but the
+> documentation was missing.  Adding it now.
+>=20
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  .../driver-api/driver-model/driver.rst        | 43 +++++++++++++++++++
+>  1 file changed, 43 insertions(+)
+>=20
+> diff --git a/Documentation/driver-api/driver-model/driver.rst b/Documenta=
+tion/driver-api/driver-model/driver.rst
+> index 11d281506a04..baa6a85c8287 100644
+> --- a/Documentation/driver-api/driver-model/driver.rst
+> +++ b/Documentation/driver-api/driver-model/driver.rst
+> @@ -169,6 +169,49 @@ A driver's probe() may return a negative errno value=
+ to indicate that
+>  the driver did not bind to this device, in which case it should have
+>  released all resources it allocated::
+> =20
+> +       void (*sync_state)(struct device *dev);
 
-Tainted: P     - Proprietary module loaded ...
-
-Try again without that module
-
-Tainted: W     - Warning issued before
-
-Are you sure that that warning is harmless and unrelated?
-
-> 4.4.0-45-generic #66~14.04.1-Ubuntu
-
-Does the same problem happen with a not so dead kernel? CR2 handling got
-quite some updates/fixes since then.
-
-Thanks,
-
-	tglx
-
+This is only in -next as far as I can tell. Will this be combined with a
+resend of the patch series that introduces this hook?
 
