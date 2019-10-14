@@ -2,111 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EB2BD5F89
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2019 12:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70A89D5FAB
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2019 12:04:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731244AbfJNJ7z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Oct 2019 05:59:55 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:3746 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731119AbfJNJ7y (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 14 Oct 2019 05:59:54 -0400
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id ED61E115E732E4B2A4FA;
-        Mon, 14 Oct 2019 17:59:50 +0800 (CST)
-Received: from localhost.localdomain (10.67.212.75) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 14 Oct 2019 17:59:43 +0800
-From:   John Garry <john.garry@huawei.com>
-To:     <stable@vger.kernel.org>
-CC:     <catalin.marinas@arm.com>, <will@kernel.org>, <rjw@rjwysocki.net>,
-        <lenb@kernel.org>, <robert.moore@intel.com>,
-        <erik.schmauss@intel.com>, <sudeep.holla@arm.com>,
-        <rrichter@marvell.com>, <jeremy.linton@arm.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linuxarm@huawei.com>, <gregkh@linuxfoundation.org>,
-        <guohanjun@huawei.com>, <wanghuiqiang@huawei.com>,
-        John Garry <john.garry@huawei.com>
-Subject: [PATCH for-stable-4.19 3/3] arm64: topology: Use PPTT to determine if PE is a thread
-Date:   Mon, 14 Oct 2019 17:56:26 +0800
-Message-ID: <1571046986-231263-4-git-send-email-john.garry@huawei.com>
-X-Mailer: git-send-email 2.8.1
-In-Reply-To: <1571046986-231263-1-git-send-email-john.garry@huawei.com>
-References: <1571046986-231263-1-git-send-email-john.garry@huawei.com>
+        id S1730941AbfJNKEc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Oct 2019 06:04:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49088 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730880AbfJNKEc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 14 Oct 2019 06:04:32 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 93474207FF;
+        Mon, 14 Oct 2019 10:04:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571047470;
+        bh=1L6BHHyZGzdbxZWv4acGRnc0Va1vbCVjc4KDhtWjTqM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=TWTxU8aaHNdrVeedNaAfxRnATKwQqldi45eCabLzrJUjucHv6x6k8odH8CVoEQbPR
+         w4oWGHOb3hLuaMuJ2jSTXq/ppPzZIjrhbS4OaxKJeinja9bxujNH+7bHo+Z4BvD0Vx
+         z3dLPHIeCCsbnOLqYk6lsozxHfWvVXR06RTUURHI=
+Date:   Mon, 14 Oct 2019 12:04:27 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Yunsheng Lin <linyunsheng@huawei.com>,
+        Michal Hocko <mhocko@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>, catalin.marinas@arm.com,
+        will@kernel.org, mingo@redhat.com, bp@alien8.de, rth@twiddle.net,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+        heiko.carstens@de.ibm.com, gor@linux.ibm.com,
+        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, jiaxun.yang@flygoat.com,
+        chenhc@lemote.com, akpm@linux-foundation.org, rppt@linux.ibm.com,
+        anshuman.khandual@arm.com, tglx@linutronix.de, cai@lca.pw,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        hpa@zytor.com, x86@kernel.org, dave.hansen@linux.intel.com,
+        luto@kernel.org, len.brown@intel.com, axboe@kernel.dk,
+        dledford@redhat.com, jeffrey.t.kirsher@intel.com,
+        linux-alpha@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com,
+        mwb@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, tbogendoerfer@suse.de,
+        linux-mips@vger.kernel.org, rafael@kernel.org, bhelgaas@google.com,
+        linux-pci@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        lenb@kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Message-ID: <20191014100427.GA6307@kroah.com>
+References: <6cc94f9b-0d79-93a8-5ec2-4f6c21639268@huawei.com>
+ <20191011111539.GX2311@hirez.programming.kicks-ass.net>
+ <7fad58d6-5126-e8b8-a7d8-a91814da53ba@huawei.com>
+ <20191012074014.GA2037204@kroah.com>
+ <1e1ec851-b5e7-8f35-a627-4c12ca9c2d3c@huawei.com>
+ <20191012104001.GA2052933@kroah.com>
+ <20191012104742.GA2053473@kroah.com>
+ <82000bc8-6912-205b-0251-25b9cc430973@huawei.com>
+ <20191014092509.GA3050088@kroah.com>
+ <20191014094912.GY2311@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.212.75]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191014094912.GY2311@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Jeremy Linton <jeremy.linton@arm.com>
+On Mon, Oct 14, 2019 at 11:49:12AM +0200, Peter Zijlstra wrote:
+> On Mon, Oct 14, 2019 at 11:25:09AM +0200, Greg KH wrote:
+> > Good luck, I don't really think that most, if any, of this is needed,
+> > but hey, it's nice to clean it up where it can be :)
+> 
+> Some of the virtual devices we have (that use devm) really ought to set
+> the node too, like drivers/base/cpu.c and driver/base/node.c and
+> arguably the cooling devices too (they create a device per cpu).
+> 
+> The patch I had here:
+> 
+>   https://lkml.kernel.org/r/20190925214526.GA4643@worktop.programming.kicks-ass.net
+> 
+> takes the more radical approach of requiring a node, except when
+> explicitly marked not (the fake devices that don't use devm for
+> example).
 
-Commit 98dc19902a0b2e5348e43d6a2c39a0a7d0fc639e upstream.
+I like that patch :)
 
-ACPI 6.3 adds a thread flag to represent if a CPU/PE is
-actually a thread. Given that the MPIDR_MT bit may not
-represent this information consistently on homogeneous machines
-we should prefer the PPTT flag if its available.
+> But yes, PCI and other physical busses really should be having a node
+> set, no excuses.
 
-Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Reviewed-by: Robert Richter <rrichter@marvell.com>
-[will: made acpi_cpu_is_threaded() return 'bool']
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: John Garry <john.garry@huawei.com>
----
- arch/arm64/kernel/topology.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+Agreed, at least just warning on the bus creation will make it a bit
+less "noisy", in contrast to your patch.  But the messages in your patch
+show people just how broken their bioses really are.  Which is always
+fun...
 
-diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-index 0825c4a856e3..6106c49f84bc 100644
---- a/arch/arm64/kernel/topology.c
-+++ b/arch/arm64/kernel/topology.c
-@@ -340,17 +340,28 @@ void remove_cpu_topology(unsigned int cpu)
- }
- 
- #ifdef CONFIG_ACPI
-+static bool __init acpi_cpu_is_threaded(int cpu)
-+{
-+	int is_threaded = acpi_pptt_cpu_is_thread(cpu);
-+
-+	/*
-+	 * if the PPTT doesn't have thread information, assume a homogeneous
-+	 * machine and return the current CPU's thread state.
-+	 */
-+	if (is_threaded < 0)
-+		is_threaded = read_cpuid_mpidr() & MPIDR_MT_BITMASK;
-+
-+	return !!is_threaded;
-+}
-+
- /*
-  * Propagate the topology information of the processor_topology_node tree to the
-  * cpu_topology array.
-  */
- static int __init parse_acpi_topology(void)
- {
--	bool is_threaded;
- 	int cpu, topology_id;
- 
--	is_threaded = read_cpuid_mpidr() & MPIDR_MT_BITMASK;
--
- 	for_each_possible_cpu(cpu) {
- 		int i, cache_id;
- 
-@@ -358,7 +369,7 @@ static int __init parse_acpi_topology(void)
- 		if (topology_id < 0)
- 			return topology_id;
- 
--		if (is_threaded) {
-+		if (acpi_cpu_is_threaded(cpu)) {
- 			cpu_topology[cpu].thread_id = topology_id;
- 			topology_id = find_acpi_cpu_topology(cpu, 1);
- 			cpu_topology[cpu].core_id   = topology_id;
--- 
-2.17.1
+> Anyway, I don't think non-physical devices actually use
+> cpumask_of_node() much, a quick grep didn't show any.
 
+That's good.
+
+thanks,
+
+greg k-h
