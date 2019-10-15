@@ -2,67 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36A0ED75C0
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2019 14:04:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8826CD75C7
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2019 14:07:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730051AbfJOMEw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Oct 2019 08:04:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39936 "EHLO mail.kernel.org"
+        id S1730131AbfJOMHa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Oct 2019 08:07:30 -0400
+Received: from mga11.intel.com ([192.55.52.93]:25440 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726540AbfJOMEw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 15 Oct 2019 08:04:52 -0400
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8771921D7E;
-        Tue, 15 Oct 2019 12:04:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571141091;
-        bh=Af6D4mZ/pAOp+0vxSjhgtzL8DdJ7w/JcKlLEB64bg40=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=vbUfGVlHWGmDXNlB+xK0XO0bQJ0Zil7F2AT3RwASF6CrCmzbfpxKjVH7hkv7zqWrt
-         TsaJKjJAc3h+oKPBPdJooYP9SyRBdX3GlamtjLvEOndPEi+Xyy0OzKzi4dy84sgT97
-         rU25VTT1baoFL9eMGBo4xJ7uzH1oULgaa+icytkc=
-Received: by mail-qk1-f170.google.com with SMTP id 201so18853182qkd.13;
-        Tue, 15 Oct 2019 05:04:51 -0700 (PDT)
-X-Gm-Message-State: APjAAAU4hWzb+KumagBOW0IJizP5g3e1erjXYhola8pRlbs+BSkrIqod
-        fr1/UDBXc2/UFp90hZgMxpqSCM0VL2MZXTEWoQ==
-X-Google-Smtp-Source: APXvYqz9VdxmwoAHoBVcG9POQFt15AQvDXliJoTvoymJwUK2yJYHzGHFF68s8mYbG89XcQYTMs3JdOvwQioW54ma03E=
-X-Received: by 2002:a05:620a:12f1:: with SMTP id f17mr3721782qkl.152.1571141090652;
- Tue, 15 Oct 2019 05:04:50 -0700 (PDT)
+        id S1726540AbfJOMHa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 15 Oct 2019 08:07:30 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Oct 2019 05:07:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,299,1566889200"; 
+   d="scan'208";a="347055145"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga004.jf.intel.com with ESMTP; 15 Oct 2019 05:07:27 -0700
+Received: from andy by smile with local (Exim 4.92.2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1iKLbq-0007Un-7c; Tue, 15 Oct 2019 15:07:26 +0300
+Date:   Tue, 15 Oct 2019 15:07:26 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v5 05/14] software node: clean up
+ property_copy_string_array()
+Message-ID: <20191015120726.GG32742@smile.fi.intel.com>
+References: <20191011230721.206646-1-dmitry.torokhov@gmail.com>
+ <20191011230721.206646-6-dmitry.torokhov@gmail.com>
 MIME-Version: 1.0
-References: <20191011191521.179614-1-saravanak@google.com> <20191011191521.179614-2-saravanak@google.com>
-In-Reply-To: <20191011191521.179614-2-saravanak@google.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Tue, 15 Oct 2019 07:04:39 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKCLnmLDCC3UKqpKDTysiM=w78wTCwbrsmQ39oQUg=+ww@mail.gmail.com>
-Message-ID: <CAL_JsqKCLnmLDCC3UKqpKDTysiM=w78wTCwbrsmQ39oQUg=+ww@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] of: property: Minor code formatting/style clean ups
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Frank Rowand <frowand.list@gmail.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Android Kernel Team <kernel-team@android.com>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191011230721.206646-6-dmitry.torokhov@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 11, 2019 at 2:15 PM Saravana Kannan <saravanak@google.com> wrote:
->
-> Better variable and function names. Remove "," after the sentinel in an
-> array initialization list.
->
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> ---
->  drivers/of/property.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+On Fri, Oct 11, 2019 at 04:07:12PM -0700, Dmitry Torokhov wrote:
+> Because property_copy_string_array() stores the newly allocated pointer in the
+> destination property, we have an awkward code in property_entry_copy_data()
+> where we fetch the new pointer from dst.
 
-Acked-by: Rob Herring <robh@kernel.org>
+I don't see a problem in this function.
+
+Rather 'awkward code' is a result of use property_set_pointer() which relies on
+data type.
+
+> Let's change property_copy_string_array() to return pointer and rely on the
+> common path in property_entry_copy_data() to store it in destination structure.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
