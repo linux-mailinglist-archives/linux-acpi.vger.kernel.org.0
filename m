@@ -2,298 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFAE7D7372
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2019 12:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9032D7580
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2019 13:48:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730890AbfJOKke (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Oct 2019 06:40:34 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:3762 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730857AbfJOKke (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 15 Oct 2019 06:40:34 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id F33D75FC1EDD4D735964;
-        Tue, 15 Oct 2019 18:40:30 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Tue, 15 Oct 2019
- 18:40:29 +0800
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To:     Greg KH <gregkh@linuxfoundation.org>
-CC:     Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-        <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
-        <mattst88@gmail.com>, <benh@kernel.crashing.org>,
-        <paulus@samba.org>, <mpe@ellerman.id.au>,
-        <heiko.carstens@de.ibm.com>, <gor@linux.ibm.com>,
-        <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>,
-        <dalias@libc.org>, <davem@davemloft.net>, <ralf@linux-mips.org>,
-        <paul.burton@mips.com>, <jhogan@kernel.org>,
-        <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>,
-        <akpm@linux-foundation.org>, <rppt@linux.ibm.com>,
-        <anshuman.khandual@arm.com>, <tglx@linutronix.de>, <cai@lca.pw>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <hpa@zytor.com>, <x86@kernel.org>,
-        <dave.hansen@linux.intel.com>, <luto@kernel.org>,
-        <len.brown@intel.com>, <axboe@kernel.dk>, <dledford@redhat.com>,
-        <jeffrey.t.kirsher@intel.com>, <linux-alpha@vger.kernel.org>,
-        <naveen.n.rao@linux.vnet.ibm.com>, <mwb@linux.vnet.ibm.com>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
-        <linux-sh@vger.kernel.org>, <sparclinux@vger.kernel.org>,
-        <tbogendoerfer@suse.de>, <linux-mips@vger.kernel.org>,
-        <rafael@kernel.org>, <bhelgaas@google.com>,
-        <linux-pci@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>, <lenb@kernel.org>,
-        <linux-acpi@vger.kernel.org>
-References: <a5f0fc80-8e88-b781-77ce-1213e5d62125@huawei.com>
- <20191010073212.GB18412@dhcp22.suse.cz>
- <6cc94f9b-0d79-93a8-5ec2-4f6c21639268@huawei.com>
- <20191011111539.GX2311@hirez.programming.kicks-ass.net>
- <7fad58d6-5126-e8b8-a7d8-a91814da53ba@huawei.com>
- <20191012074014.GA2037204@kroah.com>
- <1e1ec851-b5e7-8f35-a627-4c12ca9c2d3c@huawei.com>
- <20191012104001.GA2052933@kroah.com> <20191012104742.GA2053473@kroah.com>
- <82000bc8-6912-205b-0251-25b9cc430973@huawei.com>
- <20191014092509.GA3050088@kroah.com>
-From:   Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <34450edf-2249-ee7a-fc83-f4a923f75989@huawei.com>
-Date:   Tue, 15 Oct 2019 18:40:29 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
-MIME-Version: 1.0
-In-Reply-To: <20191014092509.GA3050088@kroah.com>
-Content-Type: text/plain; charset="utf-8"
+        id S1729532AbfJOLsU convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 15 Oct 2019 07:48:20 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([146.101.78.151]:29691 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729531AbfJOLsT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 15 Oct 2019 07:48:19 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-235-E9r2Iy20MAWay1Auj4hFhA-1; Tue, 15 Oct 2019 12:48:16 +0100
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Tue, 15 Oct 2019 12:48:16 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Tue, 15 Oct 2019 12:48:16 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Yin Fengwei' <fengwei.yin@intel.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2] ACPI / processor_idle: use ndelay instead of io port
+ access for wait
+Thread-Topic: [PATCH v2] ACPI / processor_idle: use ndelay instead of io port
+ access for wait
+Thread-Index: AQHVgy8hI4gW7D6kAEmU4JIecWCIJ6dblHkg
+Date:   Tue, 15 Oct 2019 11:48:15 +0000
+Message-ID: <c9f3f4f93bb946f790fce4709253b359@AcuMS.aculab.com>
+References: <20191015080404.6013-1-fengwei.yin@intel.com>
+In-Reply-To: <20191015080404.6013-1-fengwei.yin@intel.com>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+X-MC-Unique: E9r2Iy20MAWay1Auj4hFhA-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2019/10/14 17:25, Greg KH wrote:
-> On Mon, Oct 14, 2019 at 04:00:46PM +0800, Yunsheng Lin wrote:
->> On 2019/10/12 18:47, Greg KH wrote:
->>> On Sat, Oct 12, 2019 at 12:40:01PM +0200, Greg KH wrote:
->>>> On Sat, Oct 12, 2019 at 05:47:56PM +0800, Yunsheng Lin wrote:
->>>>> On 2019/10/12 15:40, Greg KH wrote:
->>>>>> On Sat, Oct 12, 2019 at 02:17:26PM +0800, Yunsheng Lin wrote:
->>>>>>> add pci and acpi maintainer
->>>>>>> cc linux-pci@vger.kernel.org and linux-acpi@vger.kernel.org
->>>>>>>
->>>>>>> On 2019/10/11 19:15, Peter Zijlstra wrote:
->>>>>>>> On Fri, Oct 11, 2019 at 11:27:54AM +0800, Yunsheng Lin wrote:
->>>>>>>>> But I failed to see why the above is related to making node_to_cpumask_map()
->>>>>>>>> NUMA_NO_NODE aware?
->>>>>>>>
->>>>>>>> Your initial bug is for hns3, which is a PCI device, which really _MUST_
->>>>>>>> have a node assigned.
->>>>>>>>
->>>>>>>> It not having one, is a straight up bug. We must not silently accept
->>>>>>>> NO_NODE there, ever.
->>>>>>>>
->>>>>>>
->>>>>>> I suppose you mean reporting a lack of affinity when the node of a pcie
->>>>>>> device is not set by "not silently accept NO_NODE".
->>>>>>
->>>>>> If the firmware of a pci device does not provide the node information,
->>>>>> then yes, warn about that.
->>>>>>
->>>>>>> As Greg has asked about in [1]:
->>>>>>> what is a user to do when the user sees the kernel reporting that?
->>>>>>>
->>>>>>> We may tell user to contact their vendor for info or updates about
->>>>>>> that when they do not know about their system well enough, but their
->>>>>>> vendor may get away with this by quoting ACPI spec as the spec
->>>>>>> considering this optional. Should the user believe this is indeed a
->>>>>>> fw bug or a misreport from the kernel?
->>>>>>
->>>>>> Say it is a firmware bug, if it is a firmware bug, that's simple.
->>>>>>
->>>>>>> If this kind of reporting is common pratice and will not cause any
->>>>>>> misunderstanding, then maybe we can report that.
->>>>>>
->>>>>> Yes, please do so, that's the only way those boxes are ever going to get
->>>>>> fixed.  And go add the test to the "firmware testing" tool that is based
->>>>>> on Linux that Intel has somewhere, to give vendors a chance to fix this
->>>>>> before they ship hardware.
->>>>>>
->>>>>> This shouldn't be a big deal, we warn of other hardware bugs all the
->>>>>> time.
->>>>>
->>>>> Ok, thanks for clarifying.
->>>>>
->>>>> Will send a patch to catch the case when a pcie device without numa node
->>>>> being set and warn about it.
->>>>>
->>>>> Maybe use dev->bus to verify if it is a pci device?
->>>>
->>>> No, do that in the pci bus core code itself, when creating the devices
->>>> as that is when you know, or do not know, the numa node, right?
->>>>
->>>> This can't be in the driver core only, as each bus type will have a
->>>> different way of determining what the node the device is on.  For some
->>>> reason, I thought the PCI core code already does this, right?
->>>
->>> Yes, pci_irq_get_node(), which NO ONE CALLS!  I should go delete that
->>> thing...
->>>
->>> Anyway, it looks like the pci core code does call set_dev_node() based
->>> on the PCI bridge, so if that is set up properly, all should be fine.
->>>
->>> If not, well, you have buggy firmware and you need to warn about that at
->>> the time you are creating the bridge.  Look at the call to
->>> pcibus_to_node() in pci_register_host_bridge().
->>
->> Thanks for pointing out the specific function.
->> Maybe we do not need to warn about the case when the device has a parent,
->> because we must have warned about the parent if the device has a parent
->> and the parent also has a node of NO_NODE, so do not need to warn the child
->> device anymore? like blew:
->>
->> @@ -932,6 +932,10 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
->>         list_add_tail(&bus->node, &pci_root_buses);
->>         up_write(&pci_bus_sem);
->>
->> +       if (nr_node_ids > 1 && !parent &&
+From: Yin Fengwei
+> Sent: 15 October 2019 09:04
+> In function acpi_idle_do_entry(), an ioport access is used for dummy
+> wait to guarantee hardware behavior. But it could trigger unnecessary
+> vmexit in virtualization environment.
 > 
-> Why do you need to check this?  If you have a parent, it's your node
-> should be set, if not, that's an error, right?
-
-If the device has parent and the parent device also has a node of
-NUMA_NO_NODE, then maybe we have warned about the parent device, so
-we do not have to warn about the child device?
-
-In pci_register_host_bridge():
-
-	if (!parent)
-		set_dev_node(bus->bridge, pcibus_to_node(bus));
-
-The above only set the node of the bridge device to the node of bus if
-the bridge device does not have a parent.
-
-	bus->dev.parent = bus->bridge;
-
-	dev_set_name(&bus->dev, "%04x:%02x", pci_domain_nr(bus), bus->number);
-	name = dev_name(&bus->dev);
-
-	err = device_register(&bus->dev);
-
-The above then set the bus device's parent to bridge device, and then
-call device_register(), which will set the bus device's node according to
-bridge device' node.
-
+> If we run linux as guest and export all available native C state to
+> guest, we did see many PM timer access triggered VMexit when guest
+> enter deeper C state in our environment (We used ACRN hypervisor
+> instead of kvm or xen which has PM timer emulated and exports all
+> native C state to guest).
 > 
->> +           dev_to_node(bus->bridge) == NUMA_NO_NODE)
->> +               dev_err(bus->bridge, FW_BUG "No node assigned on NUMA capable HW. Please contact your vendor for updates.\n");
->> +
->>         return 0;
-> 
-> Who set that bus->bridge node to NUMA_NO_NODE?
+> According to the original comments of this part of code, io port
+> access is only for dummy wait. We could use busy wait instead of io
+> port access to guarantee hardware behavior and avoid unnecessary
+> VMexit.
 
-It seems x86 and arm64 may have different implemention of
-pcibus_to_node():
+You need some hard synchronisation instruction(s) after the inb()
+and before any kind of delay to ensure your delay code is executed
+after the inb() completes.
 
-For arm64:
-int pcibus_to_node(struct pci_bus *bus)
-{
-	return dev_to_node(&bus->dev);
-}
+I'm pretty sure that inb() is only synchronised with memory reads.
 
-And the node of bus is set in:
-int pcibios_root_bridge_prepare(struct pci_host_bridge *bridge)
-{
-	if (!acpi_disabled) {
-		struct pci_config_window *cfg = bridge->bus->sysdata;
-		struct acpi_device *adev = to_acpi_device(cfg->parent);
-		struct device *bus_dev = &bridge->bus->dev;
+...
+> +	/* profiling the time used for dummy wait op */
+> +	ktime_get_real_ts64(&ts0);
+> +	inl(acpi_gbl_FADT.xpm_timer_block.address);
+> +	ktime_get_real_ts64(&ts1);
 
-		ACPI_COMPANION_SET(&bridge->dev, adev);
-		set_dev_node(bus_dev, acpi_get_node(acpi_device_handle(adev)));
-	}
+That could be dominated by the cost of ktime_get_real_ts64().
+It also need synchronising instructions.
 
-	return 0;
-}
+	David
 
-acpi_get_node() may return NUMA_NO_NODE in pcibios_root_bridge_prepare(),
-which will set the node of bus_dev to NUMA_NO_NODE
-
-
-x86:
-static inline int __pcibus_to_node(const struct pci_bus *bus)
-{
-	const struct pci_sysdata *sd = bus->sysdata;
-
-	return sd->node;
-}
-
-And the node of bus is set in pci_acpi_scan_root(), which uses
-pci_acpi_root_get_node() get the node of a bus. And it also may return
-NUMA_NO_NODE.
-
-
-> If that is set, the firmware is broken, as you say, but you need to tell
-> the user what firmware is broken.
-
-Maybe mentioning the BIOS in log?
-dev_err(bus->bridge, FW_BUG "No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.\n");
-
-
-> 
-> Try something like this out and see what happens on your machine that
-> had things "broken".  What does it say?
-
-Does not have a older bios right now.
-But always returning NUMA_NO_NODE by below patch:
-
---- a/drivers/acpi/numa.c
-+++ b/drivers/acpi/numa.c
-@@ -484,6 +484,7 @@ int acpi_get_node(acpi_handle handle)
-
-        pxm = acpi_get_pxm(handle);
-
--       return acpi_map_pxm_to_node(pxm);
-+       return -1;
-+       //return acpi_map_pxm_to_node(pxm);
-
-it gives the blow warning in my machine:
-
-[   16.126136]  pci0000:00: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
-[   17.733831]  pci0000:7b: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
-[   18.020924]  pci0000:7a: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
-[   18.552832]  pci0000:78: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
-[   19.514948]  pci0000:7c: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
-[   20.652990]  pci0000:74: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
-[   22.573200]  pci0000:80: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
-[   23.225355]  pci0000:bb: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
-[   23.514040]  pci0000:ba: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
-[   24.050107]  pci0000:b8: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
-[   25.017491]  pci0000:bc: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
-[   25.557974]  pci0000:b4: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
-
-> 
->> Also, we do not need to warn about that in pci_device_add(), Right?
->> Because we must have warned about the pci host bridge of the pci device.
-> 
-> That should be true, yes.
-> 
->> I may be wrong about above because I am not so familiar with the pci.
->>
->>>
->>> And yes, you need to do this all on a per-bus-type basis, as has been
->>> pointed out.  It's up to the bus to create the device and set this up
->>> properly.
->>
->> Thanks.
->> Will do that on per-bus-type basis.
-> 
-> Good luck, I don't really think that most, if any, of this is needed,
-> but hey, it's nice to clean it up where it can be :)
-> 
-> greg k-h
-> 
-> .
-> 
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
