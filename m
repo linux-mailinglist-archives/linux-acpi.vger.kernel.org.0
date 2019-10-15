@@ -2,153 +2,149 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79E6FD780D
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2019 16:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D8FFD79AC
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2019 17:23:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732233AbfJOOKl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Oct 2019 10:10:41 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:57270 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730697AbfJOOKl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 15 Oct 2019 10:10:41 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 4B2BBFBE7F5AD66F0DC8;
-        Tue, 15 Oct 2019 22:10:37 +0800 (CST)
-Received: from localhost.localdomain (10.67.212.75) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 15 Oct 2019 22:10:27 +0800
-From:   John Garry <john.garry@huawei.com>
-To:     <rjw@rjwysocki.net>, <lenb@kernel.org>
-CC:     <linux-acpi@vger.kernel.org>, <linuxarm@huawei.com>,
-        <linux-kernel@vger.kernel.org>, John Garry <john.garry@huawei.com>
-Subject: [PATCH] ACPI / CPPC: Set pcc_data[pcc_ss_id] to NULL in acpi_cppc_processor_exit()
-Date:   Tue, 15 Oct 2019 22:07:31 +0800
-Message-ID: <1571148451-91114-1-git-send-email-john.garry@huawei.com>
-X-Mailer: git-send-email 2.8.1
+        id S2387417AbfJOPWF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Oct 2019 11:22:05 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:42629 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387419AbfJOPWF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Oct 2019 11:22:05 -0400
+Received: from mail-pl1-f200.google.com ([209.85.214.200])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <gpiccoli@canonical.com>)
+        id 1iKOeA-0001Ez-I2
+        for linux-acpi@vger.kernel.org; Tue, 15 Oct 2019 15:22:02 +0000
+Received: by mail-pl1-f200.google.com with SMTP id f10so12269080plr.7
+        for <linux-acpi@vger.kernel.org>; Tue, 15 Oct 2019 08:22:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=4uWEMUtO+/0Vvy5QnKlN0NMPVmJvd5IxagN1D1K9RuM=;
+        b=pW0QNpVBV1TBU2F0k89iE2saFMuasR5pIu/UW06WF0EZeqbBGU7R4er+Y9bg/iCe/l
+         ERTo93mf+oXUU7vaRnZcNGObkzaoSLDF88C22BK1nwFBw1fQWUyGYeHZut9WKK+hIWS0
+         LRn45ayDcV8ntNzqsor5rHvveowqIjJEAfRr0jcn+rfEoRo8VLYjuYxPY0BVvvZZmLEs
+         +voe9ZgkxfanyR8zPFCeAFndQ5cgZS4vM3keEAV/W478dMxeZ6ZXXiivHjuJzfw2I4Q+
+         uIyOey9k+Sz3D5jnbdzj+WZGRE0xA49SoYCUucn4VcqokgOGXbonjMv/xkcWg5NjwY/Q
+         ivmg==
+X-Gm-Message-State: APjAAAWXfTJQtzSN9cJA7tRtzAX4jV2A8dwfO0SNn0IVBXz0wUmV2qa3
+        ZElIXryBOJ4Or6w/uPlM2qXmqxniosR68FLlJzE+O0LpNwJ7Znh+iIAShhFt6HTo8vj08fMQGtM
+        JS93S+MaH9BfLduCnue3UO+/4zP0juF/p77+B3vo=
+X-Received: by 2002:a63:3c41:: with SMTP id i1mr4452932pgn.287.1571152920610;
+        Tue, 15 Oct 2019 08:22:00 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqzqIwZ8/hi+1TI04wvVCUT6kOctE1TYvzNEHURTZj+QItUndJsJWTqG0o6Iq6T0rUfS9prSFw==
+X-Received: by 2002:a63:3c41:: with SMTP id i1mr4452910pgn.287.1571152920254;
+        Tue, 15 Oct 2019 08:22:00 -0700 (PDT)
+Received: from [192.168.1.200] (201-92-249-168.dsl.telesp.net.br. [201.92.249.168])
+        by smtp.gmail.com with ESMTPSA id r21sm28603670pfc.27.2019.10.15.08.21.51
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 15 Oct 2019 08:21:59 -0700 (PDT)
+Subject: Re: Advice on oops - memory trap on non-memory access instruction
+ (invalid CR2?)
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-mm@kvack.org, platform-driver-x86@vger.kernel.org,
+        x86@kernel.org, iommu@lists.linux-foundation.org,
+        "Guilherme G. Piccoli" <kernel@gpiccoli.net>,
+        gavin.guo@canonical.com, halves@canonical.com,
+        ioanna-maria.alifieraki@canonical.com, jay.vosburgh@canonical.com,
+        mfo@canonical.com
+References: <66eeae28-bfd3-c7a0-011c-801981b74243@canonical.com>
+ <alpine.DEB.2.21.1910141602270.2531@nanos.tec.linutronix.de>
+From:   "Guilherme G. Piccoli" <gpiccoli@canonical.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=gpiccoli@canonical.com; prefer-encrypt=mutual; keydata=
+ mQENBFpVBxcBCADPNKmu2iNKLepiv8+Ssx7+fVR8lrL7cvakMNFPXsXk+f0Bgq9NazNKWJIn
+ Qxpa1iEWTZcLS8ikjatHMECJJqWlt2YcjU5MGbH1mZh+bT3RxrJRhxONz5e5YILyNp7jX+Vh
+ 30rhj3J0vdrlIhPS8/bAt5tvTb3ceWEic9mWZMsosPavsKVcLIO6iZFlzXVu2WJ9cov8eQM/
+ irIgzvmFEcRyiQ4K+XUhuA0ccGwgvoJv4/GWVPJFHfMX9+dat0Ev8HQEbN/mko/bUS4Wprdv
+ 7HR5tP9efSLucnsVzay0O6niZ61e5c97oUa9bdqHyApkCnGgKCpg7OZqLMM9Y3EcdMIJABEB
+ AAG0LUd1aWxoZXJtZSBHLiBQaWNjb2xpIDxncGljY29saUBjYW5vbmljYWwuY29tPokBNwQT
+ AQgAIQUCWmClvQIbAwULCQgHAgYVCAkKCwIEFgIDAQIeAQIXgAAKCRDOR5EF9K/7Gza3B/9d
+ 5yczvEwvlh6ksYq+juyuElLvNwMFuyMPsvMfP38UslU8S3lf+ETukN1S8XVdeq9yscwtsRW/
+ 4YoUwHinJGRovqy8gFlm3SAtjfdqysgJqUJwBmOtcsHkmvFXJmPPGVoH9rMCUr9s6VDPox8f
+ q2W5M7XE9YpsfchS/0fMn+DenhQpV3W6pbLtuDvH/81GKrhxO8whSEkByZbbc+mqRhUSTdN3
+ iMpRL0sULKPVYbVMbQEAnfJJ1LDkPqlTikAgt3peP7AaSpGs1e3pFzSEEW1VD2jIUmmDku0D
+ LmTHRl4t9KpbU/H2/OPZkrm7809QovJGRAxjLLPcYOAP7DUeltveuQENBFpVBxcBCADbxD6J
+ aNw/KgiSsbx5Sv8nNqO1ObTjhDR1wJw+02Bar9DGuFvx5/qs3ArSZkl8qX0X9Vhptk8rYnkn
+ pfcrtPBYLoux8zmrGPA5vRgK2ItvSc0WN31YR/6nqnMfeC4CumFa/yLl26uzHJa5RYYQ47jg
+ kZPehpc7IqEQ5IKy6cCKjgAkuvM1rDP1kWQ9noVhTUFr2SYVTT/WBHqUWorjhu57/OREo+Tl
+ nxI1KrnmW0DbF52tYoHLt85dK10HQrV35OEFXuz0QPSNrYJT0CZHpUprkUxrupDgkM+2F5LI
+ bIcaIQ4uDMWRyHpDbczQtmTke0x41AeIND3GUc+PQ4hWGp9XABEBAAGJAR8EGAEIAAkFAlpV
+ BxcCGwwACgkQzkeRBfSv+xv1wwgAj39/45O3eHN5pK0XMyiRF4ihH9p1+8JVfBoSQw7AJ6oU
+ 1Hoa+sZnlag/l2GTjC8dfEGNoZd3aRxqfkTrpu2TcfT6jIAsxGjnu+fUCoRNZzmjvRziw3T8
+ egSPz+GbNXrTXB8g/nc9mqHPPprOiVHDSK8aGoBqkQAPZDjUtRwVx112wtaQwArT2+bDbb/Y
+ Yh6gTrYoRYHo6FuQl5YsHop/fmTahpTx11IMjuh6IJQ+lvdpdfYJ6hmAZ9kiVszDF6pGFVkY
+ kHWtnE2Aa5qkxnA2HoFpqFifNWn5TyvJFpyqwVhVI8XYtXyVHub/WbXLWQwSJA4OHmqU8gDl
+ X18zwLgdiQ==
+Message-ID: <331f83c2-1d52-dfdb-1006-e910ff20c3a5@canonical.com>
+Date:   Tue, 15 Oct 2019 12:21:45 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.212.75]
-X-CFilter-Loop: Reflected
+In-Reply-To: <alpine.DEB.2.21.1910141602270.2531@nanos.tec.linutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When enabling KASAN and DEBUG_TEST_DRIVER_REMOVE, I find this KASAN
-warning:
+On 14/10/2019 11:10, Thomas Gleixner wrote:
+> On Mon, 14 Oct 2019, Guilherme G. Piccoli wrote:
+>> Modules linked in: <...>
+>> CPU: 40 PID: 78274 Comm: qemu-system-x86 Tainted: P W  OE
+> 
+> Tainted: P     - Proprietary module loaded ...
+> 
+> Try again without that module
 
-[   20.872057] BUG: KASAN: use-after-free in pcc_data_alloc+0x40/0xb8
-[   20.878226] Read of size 4 at addr ffff00236cdeb684 by task swapper/0/1
-[   20.884826]
-[   20.886309] CPU: 19 PID: 1 Comm: swapper/0 Not tainted 5.4.0-rc1-00009-ge7f7df3db5bf-dirty #289
-[   20.894994] Hardware name: Huawei D06 /D06, BIOS Hisilicon D06 UEFI RC0 - V1.16.01 03/15/2019
-[   20.903505] Call trace:
-[   20.905942]  dump_backtrace+0x0/0x200
-[   20.909593]  show_stack+0x14/0x20
-[   20.912899]  dump_stack+0xd4/0x130
-[   20.916291]  print_address_description.isra.9+0x6c/0x3b8
-[   20.921592]  __kasan_report+0x12c/0x23c
-[   20.925417]  kasan_report+0xc/0x18
-[   20.928808]  __asan_load4+0x94/0xb8
-[   20.932286]  pcc_data_alloc+0x40/0xb8
-[   20.935938]  acpi_cppc_processor_probe+0x4e8/0xb08
-[   20.940717]  __acpi_processor_start+0x48/0xb0
-[   20.945062]  acpi_processor_start+0x40/0x60
-[   20.949235]  really_probe+0x118/0x548
-[   20.952887]  driver_probe_device+0x7c/0x148
-[   20.957059]  device_driver_attach+0x94/0xa0
-[   20.961231]  __driver_attach+0xa4/0x110
-[   20.965055]  bus_for_each_dev+0xe8/0x158
-[   20.968966]  driver_attach+0x30/0x40
-[   20.972531]  bus_add_driver+0x234/0x2f0
-[   20.976356]  driver_register+0xbc/0x1d0
-[   20.980182]  acpi_processor_driver_init+0x40/0xe4
-[   20.984875]  do_one_initcall+0xb4/0x254
-[   20.988700]  kernel_init_freeable+0x24c/0x2f8
-[   20.993047]  kernel_init+0x10/0x118
-[   20.996524]  ret_from_fork+0x10/0x18
-[   21.000087]
-[   21.001567] Allocated by task 1:
-[   21.004785]  save_stack+0x28/0xc8
-[   21.008089]  __kasan_kmalloc.isra.9+0xbc/0xd8
-[   21.012435]  kasan_kmalloc+0xc/0x18
-[   21.015913]  pcc_data_alloc+0x94/0xb8
-[   21.019564]  acpi_cppc_processor_probe+0x4e8/0xb08
-[   21.024343]  __acpi_processor_start+0x48/0xb0
-[   21.028689]  acpi_processor_start+0x40/0x60
-[   21.032860]  really_probe+0x118/0x548
-[   21.036512]  driver_probe_device+0x7c/0x148
-[   21.040684]  device_driver_attach+0x94/0xa0
-[   21.044855]  __driver_attach+0xa4/0x110
-[   21.048680]  bus_for_each_dev+0xe8/0x158
-[   21.052591]  driver_attach+0x30/0x40
-[   21.056155]  bus_add_driver+0x234/0x2f0
-[   21.059980]  driver_register+0xbc/0x1d0
-[   21.063805]  acpi_processor_driver_init+0x40/0xe4
-[   21.068497]  do_one_initcall+0xb4/0x254
-[   21.072322]  kernel_init_freeable+0x24c/0x2f8
-[   21.076667]  kernel_init+0x10/0x118
-[   21.080144]  ret_from_fork+0x10/0x18
-[   21.083707]
-[   21.085186] Freed by task 1:
-[   21.088056]  save_stack+0x28/0xc8
-[   21.091360]  __kasan_slab_free+0x118/0x180
-[   21.095445]  kasan_slab_free+0x10/0x18
-[   21.099183]  kfree+0x80/0x268
-[   21.102139]  acpi_cppc_processor_exit+0x1a8/0x1b8
-[   21.106832]  acpi_processor_stop+0x70/0x80
-[   21.110917]  really_probe+0x174/0x548
-[   21.114568]  driver_probe_device+0x7c/0x148
-[   21.118740]  device_driver_attach+0x94/0xa0
-[   21.122912]  __driver_attach+0xa4/0x110
-[   21.126736]  bus_for_each_dev+0xe8/0x158
-[   21.130648]  driver_attach+0x30/0x40
-[   21.134212]  bus_add_driver+0x234/0x2f0
-[   21.0x10/0x18
-[   21.161764]
-[   21.163244] The buggy address belongs to the object at ffff00236cdeb600
-[   21.163244]  which belongs to the cache kmalloc-256 of size 256
-[   21.175750] The buggy address is located 132 bytes inside of
-[   21.175750]  256-byte region [ffff00236cdeb600, ffff00236cdeb700)
-[   21.187473] The buggy address belongs to the page:
-[   21.192254] page:fffffe008d937a00 refcount:1 mapcount:0 mapping:ffff002370c0fa00 index:0x0 compound_mapcount: 0
-[   21.202331] flags: 0x1ffff00000010200(slab|head)
-[   21.206940] raw: 1ffff00000010200 dead000000000100 dead000000000122 ffff002370c0fa00
-[   21.214671] raw: 0000000000000000 00000000802a002a 00000001ffffffff 0000000000000000
-[   21.222400] page dumped because: kasan: bad access detected
-[   21.227959]
-[   21.229438] Memory state around the buggy address:
-[   21.234218]  ffff00236cdeb580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   21.241427]  ffff00236cdeb600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   21.248637] >ffff00236cdeb680: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   21.255845]                    ^
-[   21.259062]  ffff00236cdeb700: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   21.266272]  ffff00236cdeb780: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   21.273480] ==================================================================
+Thanks Thomas, for the prompt response. This is some ScaleIO stuff, I
+guess it's part of customer setup, and I agree would be better to not
+have this kind of module loaded. Anyway, the analysis of oops show a
+quite odd situation that we'd like to at least have a strong clue before
+saying the scaleio stuff is the culprit.
 
-It seems that global pcc_data[pcc_ss_id] can be freed in
-acpi_cppc_processor_exit(), but we may later reference this value, so
-NULLify it when freed.
+> 
+> Tainted: W     - Warning issued before
+> 
+> Are you sure that that warning is harmless and unrelated?
+> 
 
-Also remove the useless setting of data "pcc_channel_acquired", which
-we're about to free.
+Sorry I didn't mention that before, the warn is:
 
-Signed-off-by: John Garry <john.garry@huawei.com>
+[5946866.593060] WARNING: CPU: 42 PID: 173056 at
+/build/linux-lts-xenial-80t3lB/linux-lts-xenial-4.4.0/arch/x86/events/intel/core.c:1868
+intel_pmu_handle_irq+0x2d4/0x470()
+[5946866.593061] perfevents: irq loop stuck!
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 3b2525908dd8..a1a858ad4d18 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -905,8 +905,8 @@ void acpi_cppc_processor_exit(struct acpi_processor *pr)
- 			pcc_data[pcc_ss_id]->refcount--;
- 			if (!pcc_data[pcc_ss_id]->refcount) {
- 				pcc_mbox_free_channel(pcc_data[pcc_ss_id]->pcc_channel);
--				pcc_data[pcc_ss_id]->pcc_channel_acquired = 0;
- 				kfree(pcc_data[pcc_ss_id]);
-+				pcc_data[pcc_ss_id] = NULL;
- 			}
- 		}
- 	}
--- 
-2.17.1
+It happened ~700 days before the oops (yeah, the uptime is quite large,
+about 900 days when the oops happened heh).
 
+
+>> 4.4.0-45-generic #66~14.04.1-Ubuntu
+> 
+> Does the same problem happen with a not so dead kernel? CR2 handling got
+> quite some updates/fixes since then.
+
+Unfortunately we don't have ways to test that for now, but your comment
+is quite interesting - we can take a look in the CR2 fixes since v4.4.
+
+But what do you think about having a #PF while the instruction pointed
+in the oops Code section (and the RIP address) is not a memory-related insn?
+
+Thanks,
+
+
+Guilherme
+> 
+> Thanks,
+> 
+> 	tglx
+> 
+> 
