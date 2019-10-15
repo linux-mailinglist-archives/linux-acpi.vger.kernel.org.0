@@ -2,149 +2,279 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D8FFD79AC
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2019 17:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01A7AD7D21
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2019 19:16:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387417AbfJOPWF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Oct 2019 11:22:05 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42629 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387419AbfJOPWF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Oct 2019 11:22:05 -0400
-Received: from mail-pl1-f200.google.com ([209.85.214.200])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <gpiccoli@canonical.com>)
-        id 1iKOeA-0001Ez-I2
-        for linux-acpi@vger.kernel.org; Tue, 15 Oct 2019 15:22:02 +0000
-Received: by mail-pl1-f200.google.com with SMTP id f10so12269080plr.7
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Oct 2019 08:22:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=4uWEMUtO+/0Vvy5QnKlN0NMPVmJvd5IxagN1D1K9RuM=;
-        b=pW0QNpVBV1TBU2F0k89iE2saFMuasR5pIu/UW06WF0EZeqbBGU7R4er+Y9bg/iCe/l
-         ERTo93mf+oXUU7vaRnZcNGObkzaoSLDF88C22BK1nwFBw1fQWUyGYeHZut9WKK+hIWS0
-         LRn45ayDcV8ntNzqsor5rHvveowqIjJEAfRr0jcn+rfEoRo8VLYjuYxPY0BVvvZZmLEs
-         +voe9ZgkxfanyR8zPFCeAFndQ5cgZS4vM3keEAV/W478dMxeZ6ZXXiivHjuJzfw2I4Q+
-         uIyOey9k+Sz3D5jnbdzj+WZGRE0xA49SoYCUucn4VcqokgOGXbonjMv/xkcWg5NjwY/Q
-         ivmg==
-X-Gm-Message-State: APjAAAWXfTJQtzSN9cJA7tRtzAX4jV2A8dwfO0SNn0IVBXz0wUmV2qa3
-        ZElIXryBOJ4Or6w/uPlM2qXmqxniosR68FLlJzE+O0LpNwJ7Znh+iIAShhFt6HTo8vj08fMQGtM
-        JS93S+MaH9BfLduCnue3UO+/4zP0juF/p77+B3vo=
-X-Received: by 2002:a63:3c41:: with SMTP id i1mr4452932pgn.287.1571152920610;
-        Tue, 15 Oct 2019 08:22:00 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqzqIwZ8/hi+1TI04wvVCUT6kOctE1TYvzNEHURTZj+QItUndJsJWTqG0o6Iq6T0rUfS9prSFw==
-X-Received: by 2002:a63:3c41:: with SMTP id i1mr4452910pgn.287.1571152920254;
-        Tue, 15 Oct 2019 08:22:00 -0700 (PDT)
-Received: from [192.168.1.200] (201-92-249-168.dsl.telesp.net.br. [201.92.249.168])
-        by smtp.gmail.com with ESMTPSA id r21sm28603670pfc.27.2019.10.15.08.21.51
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 15 Oct 2019 08:21:59 -0700 (PDT)
-Subject: Re: Advice on oops - memory trap on non-memory access instruction
- (invalid CR2?)
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-mm@kvack.org, platform-driver-x86@vger.kernel.org,
-        x86@kernel.org, iommu@lists.linux-foundation.org,
-        "Guilherme G. Piccoli" <kernel@gpiccoli.net>,
-        gavin.guo@canonical.com, halves@canonical.com,
-        ioanna-maria.alifieraki@canonical.com, jay.vosburgh@canonical.com,
-        mfo@canonical.com
-References: <66eeae28-bfd3-c7a0-011c-801981b74243@canonical.com>
- <alpine.DEB.2.21.1910141602270.2531@nanos.tec.linutronix.de>
-From:   "Guilherme G. Piccoli" <gpiccoli@canonical.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=gpiccoli@canonical.com; prefer-encrypt=mutual; keydata=
- mQENBFpVBxcBCADPNKmu2iNKLepiv8+Ssx7+fVR8lrL7cvakMNFPXsXk+f0Bgq9NazNKWJIn
- Qxpa1iEWTZcLS8ikjatHMECJJqWlt2YcjU5MGbH1mZh+bT3RxrJRhxONz5e5YILyNp7jX+Vh
- 30rhj3J0vdrlIhPS8/bAt5tvTb3ceWEic9mWZMsosPavsKVcLIO6iZFlzXVu2WJ9cov8eQM/
- irIgzvmFEcRyiQ4K+XUhuA0ccGwgvoJv4/GWVPJFHfMX9+dat0Ev8HQEbN/mko/bUS4Wprdv
- 7HR5tP9efSLucnsVzay0O6niZ61e5c97oUa9bdqHyApkCnGgKCpg7OZqLMM9Y3EcdMIJABEB
- AAG0LUd1aWxoZXJtZSBHLiBQaWNjb2xpIDxncGljY29saUBjYW5vbmljYWwuY29tPokBNwQT
- AQgAIQUCWmClvQIbAwULCQgHAgYVCAkKCwIEFgIDAQIeAQIXgAAKCRDOR5EF9K/7Gza3B/9d
- 5yczvEwvlh6ksYq+juyuElLvNwMFuyMPsvMfP38UslU8S3lf+ETukN1S8XVdeq9yscwtsRW/
- 4YoUwHinJGRovqy8gFlm3SAtjfdqysgJqUJwBmOtcsHkmvFXJmPPGVoH9rMCUr9s6VDPox8f
- q2W5M7XE9YpsfchS/0fMn+DenhQpV3W6pbLtuDvH/81GKrhxO8whSEkByZbbc+mqRhUSTdN3
- iMpRL0sULKPVYbVMbQEAnfJJ1LDkPqlTikAgt3peP7AaSpGs1e3pFzSEEW1VD2jIUmmDku0D
- LmTHRl4t9KpbU/H2/OPZkrm7809QovJGRAxjLLPcYOAP7DUeltveuQENBFpVBxcBCADbxD6J
- aNw/KgiSsbx5Sv8nNqO1ObTjhDR1wJw+02Bar9DGuFvx5/qs3ArSZkl8qX0X9Vhptk8rYnkn
- pfcrtPBYLoux8zmrGPA5vRgK2ItvSc0WN31YR/6nqnMfeC4CumFa/yLl26uzHJa5RYYQ47jg
- kZPehpc7IqEQ5IKy6cCKjgAkuvM1rDP1kWQ9noVhTUFr2SYVTT/WBHqUWorjhu57/OREo+Tl
- nxI1KrnmW0DbF52tYoHLt85dK10HQrV35OEFXuz0QPSNrYJT0CZHpUprkUxrupDgkM+2F5LI
- bIcaIQ4uDMWRyHpDbczQtmTke0x41AeIND3GUc+PQ4hWGp9XABEBAAGJAR8EGAEIAAkFAlpV
- BxcCGwwACgkQzkeRBfSv+xv1wwgAj39/45O3eHN5pK0XMyiRF4ihH9p1+8JVfBoSQw7AJ6oU
- 1Hoa+sZnlag/l2GTjC8dfEGNoZd3aRxqfkTrpu2TcfT6jIAsxGjnu+fUCoRNZzmjvRziw3T8
- egSPz+GbNXrTXB8g/nc9mqHPPprOiVHDSK8aGoBqkQAPZDjUtRwVx112wtaQwArT2+bDbb/Y
- Yh6gTrYoRYHo6FuQl5YsHop/fmTahpTx11IMjuh6IJQ+lvdpdfYJ6hmAZ9kiVszDF6pGFVkY
- kHWtnE2Aa5qkxnA2HoFpqFifNWn5TyvJFpyqwVhVI8XYtXyVHub/WbXLWQwSJA4OHmqU8gDl
- X18zwLgdiQ==
-Message-ID: <331f83c2-1d52-dfdb-1006-e910ff20c3a5@canonical.com>
-Date:   Tue, 15 Oct 2019 12:21:45 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1728152AbfJORQL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Oct 2019 13:16:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45138 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726277AbfJORQL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 15 Oct 2019 13:16:11 -0400
+Received: from localhost (unknown [38.98.37.135])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2F4582086A;
+        Tue, 15 Oct 2019 17:16:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571159769;
+        bh=WAR2gwanRkglRgJ33wk2slqYTUIdiOqopLY7+jPOZzY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mB+ir6sP0IpA3smBmT3xKeYTEe+9GQ8J/og8iqCS7fTiQOggWfn5N8gD+h9JG4BMG
+         UJAWS4SeSuOBn9uTlv7kGaKXUmby5IZZkW3NXX+Leqx9fqy61C4z9qnHM4lzeyS3vp
+         7uLj51/XBjgXCdL3TCaTR3GsHPq7U9gviwv5SX9U=
+Date:   Tue, 15 Oct 2019 18:58:33 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Yunsheng Lin <linyunsheng@huawei.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>, catalin.marinas@arm.com,
+        will@kernel.org, mingo@redhat.com, bp@alien8.de, rth@twiddle.net,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+        heiko.carstens@de.ibm.com, gor@linux.ibm.com,
+        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, jiaxun.yang@flygoat.com,
+        chenhc@lemote.com, akpm@linux-foundation.org, rppt@linux.ibm.com,
+        anshuman.khandual@arm.com, tglx@linutronix.de, cai@lca.pw,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        hpa@zytor.com, x86@kernel.org, dave.hansen@linux.intel.com,
+        luto@kernel.org, len.brown@intel.com, axboe@kernel.dk,
+        dledford@redhat.com, jeffrey.t.kirsher@intel.com,
+        linux-alpha@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com,
+        mwb@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, tbogendoerfer@suse.de,
+        linux-mips@vger.kernel.org, rafael@kernel.org, bhelgaas@google.com,
+        linux-pci@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        lenb@kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Message-ID: <20191015165833.GB1067208@kroah.com>
+References: <6cc94f9b-0d79-93a8-5ec2-4f6c21639268@huawei.com>
+ <20191011111539.GX2311@hirez.programming.kicks-ass.net>
+ <7fad58d6-5126-e8b8-a7d8-a91814da53ba@huawei.com>
+ <20191012074014.GA2037204@kroah.com>
+ <1e1ec851-b5e7-8f35-a627-4c12ca9c2d3c@huawei.com>
+ <20191012104001.GA2052933@kroah.com>
+ <20191012104742.GA2053473@kroah.com>
+ <82000bc8-6912-205b-0251-25b9cc430973@huawei.com>
+ <20191014092509.GA3050088@kroah.com>
+ <34450edf-2249-ee7a-fc83-f4a923f75989@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.21.1910141602270.2531@nanos.tec.linutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <34450edf-2249-ee7a-fc83-f4a923f75989@huawei.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 14/10/2019 11:10, Thomas Gleixner wrote:
-> On Mon, 14 Oct 2019, Guilherme G. Piccoli wrote:
->> Modules linked in: <...>
->> CPU: 40 PID: 78274 Comm: qemu-system-x86 Tainted: P W  OE
+On Tue, Oct 15, 2019 at 06:40:29PM +0800, Yunsheng Lin wrote:
+> On 2019/10/14 17:25, Greg KH wrote:
+> > On Mon, Oct 14, 2019 at 04:00:46PM +0800, Yunsheng Lin wrote:
+> >> On 2019/10/12 18:47, Greg KH wrote:
+> >>> On Sat, Oct 12, 2019 at 12:40:01PM +0200, Greg KH wrote:
+> >>>> On Sat, Oct 12, 2019 at 05:47:56PM +0800, Yunsheng Lin wrote:
+> >>>>> On 2019/10/12 15:40, Greg KH wrote:
+> >>>>>> On Sat, Oct 12, 2019 at 02:17:26PM +0800, Yunsheng Lin wrote:
+> >>>>>>> add pci and acpi maintainer
+> >>>>>>> cc linux-pci@vger.kernel.org and linux-acpi@vger.kernel.org
+> >>>>>>>
+> >>>>>>> On 2019/10/11 19:15, Peter Zijlstra wrote:
+> >>>>>>>> On Fri, Oct 11, 2019 at 11:27:54AM +0800, Yunsheng Lin wrote:
+> >>>>>>>>> But I failed to see why the above is related to making node_to_cpumask_map()
+> >>>>>>>>> NUMA_NO_NODE aware?
+> >>>>>>>>
+> >>>>>>>> Your initial bug is for hns3, which is a PCI device, which really _MUST_
+> >>>>>>>> have a node assigned.
+> >>>>>>>>
+> >>>>>>>> It not having one, is a straight up bug. We must not silently accept
+> >>>>>>>> NO_NODE there, ever.
+> >>>>>>>>
+> >>>>>>>
+> >>>>>>> I suppose you mean reporting a lack of affinity when the node of a pcie
+> >>>>>>> device is not set by "not silently accept NO_NODE".
+> >>>>>>
+> >>>>>> If the firmware of a pci device does not provide the node information,
+> >>>>>> then yes, warn about that.
+> >>>>>>
+> >>>>>>> As Greg has asked about in [1]:
+> >>>>>>> what is a user to do when the user sees the kernel reporting that?
+> >>>>>>>
+> >>>>>>> We may tell user to contact their vendor for info or updates about
+> >>>>>>> that when they do not know about their system well enough, but their
+> >>>>>>> vendor may get away with this by quoting ACPI spec as the spec
+> >>>>>>> considering this optional. Should the user believe this is indeed a
+> >>>>>>> fw bug or a misreport from the kernel?
+> >>>>>>
+> >>>>>> Say it is a firmware bug, if it is a firmware bug, that's simple.
+> >>>>>>
+> >>>>>>> If this kind of reporting is common pratice and will not cause any
+> >>>>>>> misunderstanding, then maybe we can report that.
+> >>>>>>
+> >>>>>> Yes, please do so, that's the only way those boxes are ever going to get
+> >>>>>> fixed.  And go add the test to the "firmware testing" tool that is based
+> >>>>>> on Linux that Intel has somewhere, to give vendors a chance to fix this
+> >>>>>> before they ship hardware.
+> >>>>>>
+> >>>>>> This shouldn't be a big deal, we warn of other hardware bugs all the
+> >>>>>> time.
+> >>>>>
+> >>>>> Ok, thanks for clarifying.
+> >>>>>
+> >>>>> Will send a patch to catch the case when a pcie device without numa node
+> >>>>> being set and warn about it.
+> >>>>>
+> >>>>> Maybe use dev->bus to verify if it is a pci device?
+> >>>>
+> >>>> No, do that in the pci bus core code itself, when creating the devices
+> >>>> as that is when you know, or do not know, the numa node, right?
+> >>>>
+> >>>> This can't be in the driver core only, as each bus type will have a
+> >>>> different way of determining what the node the device is on.  For some
+> >>>> reason, I thought the PCI core code already does this, right?
+> >>>
+> >>> Yes, pci_irq_get_node(), which NO ONE CALLS!  I should go delete that
+> >>> thing...
+> >>>
+> >>> Anyway, it looks like the pci core code does call set_dev_node() based
+> >>> on the PCI bridge, so if that is set up properly, all should be fine.
+> >>>
+> >>> If not, well, you have buggy firmware and you need to warn about that at
+> >>> the time you are creating the bridge.  Look at the call to
+> >>> pcibus_to_node() in pci_register_host_bridge().
+> >>
+> >> Thanks for pointing out the specific function.
+> >> Maybe we do not need to warn about the case when the device has a parent,
+> >> because we must have warned about the parent if the device has a parent
+> >> and the parent also has a node of NO_NODE, so do not need to warn the child
+> >> device anymore? like blew:
+> >>
+> >> @@ -932,6 +932,10 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
+> >>         list_add_tail(&bus->node, &pci_root_buses);
+> >>         up_write(&pci_bus_sem);
+> >>
+> >> +       if (nr_node_ids > 1 && !parent &&
+> > 
+> > Why do you need to check this?  If you have a parent, it's your node
+> > should be set, if not, that's an error, right?
 > 
-> Tainted: P     - Proprietary module loaded ...
+> If the device has parent and the parent device also has a node of
+> NUMA_NO_NODE, then maybe we have warned about the parent device, so
+> we do not have to warn about the child device?
+
+But it's a PCI bridge, if it is not set properly, that needs to be fixed
+otherwise the PCI devices attached to it have no hope of working
+properly.
+
+> In pci_register_host_bridge():
 > 
-> Try again without that module
-
-Thanks Thomas, for the prompt response. This is some ScaleIO stuff, I
-guess it's part of customer setup, and I agree would be better to not
-have this kind of module loaded. Anyway, the analysis of oops show a
-quite odd situation that we'd like to at least have a strong clue before
-saying the scaleio stuff is the culprit.
-
+> 	if (!parent)
+> 		set_dev_node(bus->bridge, pcibus_to_node(bus));
 > 
-> Tainted: W     - Warning issued before
+> The above only set the node of the bridge device to the node of bus if
+> the bridge device does not have a parent.
+
+Odd, what happens to devices behind another bridge today?  Are their
+nodes set properly today?  Is the node supposed to be the same as the
+parent bridge?
+
+> >> +           dev_to_node(bus->bridge) == NUMA_NO_NODE)
+> >> +               dev_err(bus->bridge, FW_BUG "No node assigned on NUMA capable HW. Please contact your vendor for updates.\n");
+> >> +
+> >>         return 0;
+> > 
+> > Who set that bus->bridge node to NUMA_NO_NODE?
 > 
-> Are you sure that that warning is harmless and unrelated?
+> It seems x86 and arm64 may have different implemention of
+> pcibus_to_node():
 > 
-
-Sorry I didn't mention that before, the warn is:
-
-[5946866.593060] WARNING: CPU: 42 PID: 173056 at
-/build/linux-lts-xenial-80t3lB/linux-lts-xenial-4.4.0/arch/x86/events/intel/core.c:1868
-intel_pmu_handle_irq+0x2d4/0x470()
-[5946866.593061] perfevents: irq loop stuck!
-
-It happened ~700 days before the oops (yeah, the uptime is quite large,
-about 900 days when the oops happened heh).
-
-
->> 4.4.0-45-generic #66~14.04.1-Ubuntu
+> For arm64:
+> int pcibus_to_node(struct pci_bus *bus)
+> {
+> 	return dev_to_node(&bus->dev);
+> }
 > 
-> Does the same problem happen with a not so dead kernel? CR2 handling got
-> quite some updates/fixes since then.
-
-Unfortunately we don't have ways to test that for now, but your comment
-is quite interesting - we can take a look in the CR2 fixes since v4.4.
-
-But what do you think about having a #PF while the instruction pointed
-in the oops Code section (and the RIP address) is not a memory-related insn?
-
-Thanks,
-
-
-Guilherme
+> And the node of bus is set in:
+> int pcibios_root_bridge_prepare(struct pci_host_bridge *bridge)
+> {
+> 	if (!acpi_disabled) {
+> 		struct pci_config_window *cfg = bridge->bus->sysdata;
+> 		struct acpi_device *adev = to_acpi_device(cfg->parent);
+> 		struct device *bus_dev = &bridge->bus->dev;
 > 
-> Thanks,
+> 		ACPI_COMPANION_SET(&bridge->dev, adev);
+> 		set_dev_node(bus_dev, acpi_get_node(acpi_device_handle(adev)));
+> 	}
 > 
-> 	tglx
+> 	return 0;
+> }
+> 
+> acpi_get_node() may return NUMA_NO_NODE in pcibios_root_bridge_prepare(),
+> which will set the node of bus_dev to NUMA_NO_NODE
 > 
 > 
+> x86:
+> static inline int __pcibus_to_node(const struct pci_bus *bus)
+> {
+> 	const struct pci_sysdata *sd = bus->sysdata;
+> 
+> 	return sd->node;
+> }
+> 
+> And the node of bus is set in pci_acpi_scan_root(), which uses
+> pci_acpi_root_get_node() get the node of a bus. And it also may return
+> NUMA_NO_NODE.
+
+Fixing that will be good :)
+
+> > If that is set, the firmware is broken, as you say, but you need to tell
+> > the user what firmware is broken.
+> 
+> Maybe mentioning the BIOS in log?
+> dev_err(bus->bridge, FW_BUG "No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.\n");
+
+That's a good start.  Try running it on your machines (big and small)
+and see what happens.
+
+> > Try something like this out and see what happens on your machine that
+> > had things "broken".  What does it say?
+> 
+> Does not have a older bios right now.
+> But always returning NUMA_NO_NODE by below patch:
+> 
+> --- a/drivers/acpi/numa.c
+> +++ b/drivers/acpi/numa.c
+> @@ -484,6 +484,7 @@ int acpi_get_node(acpi_handle handle)
+> 
+>         pxm = acpi_get_pxm(handle);
+> 
+> -       return acpi_map_pxm_to_node(pxm);
+> +       return -1;
+> +       //return acpi_map_pxm_to_node(pxm);
+> 
+> it gives the blow warning in my machine:
+> 
+> [   16.126136]  pci0000:00: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+> [   17.733831]  pci0000:7b: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+> [   18.020924]  pci0000:7a: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+> [   18.552832]  pci0000:78: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+> [   19.514948]  pci0000:7c: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+> [   20.652990]  pci0000:74: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+> [   22.573200]  pci0000:80: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+> [   23.225355]  pci0000:bb: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+> [   23.514040]  pci0000:ba: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+> [   24.050107]  pci0000:b8: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+> [   25.017491]  pci0000:bc: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+> [   25.557974]  pci0000:b4: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+
+And can you fix your bios?  If you can't then why are we going to warn
+about this?
+
+:)
+
+thanks,
+
+greg k-h
