@@ -2,114 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C58DD7EE3
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2019 20:25:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B58AD8333
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Oct 2019 00:04:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389040AbfJOSZ5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Oct 2019 14:25:57 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:47099 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389041AbfJOSZ5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Oct 2019 14:25:57 -0400
-Received: by mail-pg1-f196.google.com with SMTP id e15so4628221pgu.13;
-        Tue, 15 Oct 2019 11:25:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Tg5G4EHdsp8D34zYrPgeEgWJ5a4qkrRxOx3WVGEN8fU=;
-        b=A/DfNiIAQ8QBffPYPPJMcaxcV45QnhvBYZo4nESjZbh6rfCiOeL3pi/64O9xKEj8Qf
-         gZRKaMLVnthymX6g936JU+wlSRjRlk4UoTDRzgDPcYDVwowjeYb9HnKkZ+Am8zgc9dqa
-         5lIw8D5xpswKe+RrLP+gQSmf1Y9kTT5aw44Cmh0uqE58epfrR/Lt/ekwQ7xZuWwDMPI+
-         4GE9H23R1c6cRCELyWMfIFbvYH+vjPNm8SXbHYHgO0zWmVm3sJEfH6kLQpJPkX/Rl1yX
-         0efRf7fMHx2MjxDPUWZg+EZL9azdY/e184Mh/pTbRwEcHiK4CZG77E+7tmXcCltRdSej
-         QhcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Tg5G4EHdsp8D34zYrPgeEgWJ5a4qkrRxOx3WVGEN8fU=;
-        b=ncdaJE3M5Klq+LCq45UZStF6I4zreo8hU2Aj4YZXf/lG6LZTCM3mW++Ddsw58wFCcY
-         +ngN83R5VC5zMpxLJjyCEQeTBQzocEtn/69Xt1zK/go75b04zaM4Ss+g5eLQDtdQsytW
-         5BViVACn3w1ccUDwgW3VM/yWzmcTovLMC8KuCVa1wK9qTA/nyqmOIL2IFwXhHvHfpW51
-         J5TVPHeE0h9nLFj6OzuKT9HsrHZPHKz8glwvRfaaTfrt4i9Yv00tthXiWgKJQdLIWSWr
-         82KMern+vhmC7I/W6SYjbg7N6Ocz1S8zHvYhHSD5sCgEaiiwaNNyTi/u2188Yy2jWG2g
-         +/bw==
-X-Gm-Message-State: APjAAAX9zG+JphPKrokzLvh2O3937V5DtBMkmLAPI60IrK052xvMLEI7
-        0NDiuZFx3jQ3X2e3AwSS7uo=
-X-Google-Smtp-Source: APXvYqzN5EU2k8674nLx996z8n1uZTUDKTn8VhT3YOXFc6lb7g90HIQpJyLvBgwgJImjiPmdvNdh5A==
-X-Received: by 2002:a17:90a:db43:: with SMTP id u3mr42468747pjx.54.1571163956306;
-        Tue, 15 Oct 2019 11:25:56 -0700 (PDT)
-Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
-        by smtp.gmail.com with ESMTPSA id e14sm24254pjt.8.2019.10.15.11.25.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Oct 2019 11:25:55 -0700 (PDT)
-Date:   Tue, 15 Oct 2019 11:25:53 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v5 11/14] software node: move small properties inline
- when copying
-Message-ID: <20191015182553.GG105649@dtor-ws>
-References: <20191011230721.206646-1-dmitry.torokhov@gmail.com>
- <20191011230721.206646-12-dmitry.torokhov@gmail.com>
- <20191015122028.GI32742@smile.fi.intel.com>
+        id S2388821AbfJOWEl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Oct 2019 18:04:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38398 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387411AbfJOWEl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 15 Oct 2019 18:04:41 -0400
+Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 32B3F21A49;
+        Tue, 15 Oct 2019 22:04:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571177080;
+        bh=bEz6VCO4JTI+Xylf3IoX+njYEaKlxKQAsOEkVTvjUNE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=e1xOJVfWV9ix0vZr4g+UcrmKP4/FNC6MKcH8FDdA/I5R3HIFxIYH2YeuXEgpaxUkC
+         uaRVTzg8A/NYCb+zGNG1CgFiD6dzRlLj9y7QwNE++a3RWzzsXIZZq7hDJEXkQ1wJ1O
+         mHHnBfUhy9zlgXC0SbhsSnKToKFyJAWmOPnAit4c=
+Date:   Tue, 15 Oct 2019 18:04:39 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     John Garry <john.garry@huawei.com>
+Cc:     stable@vger.kernel.org, catalin.marinas@arm.com, will@kernel.org,
+        rjw@rjwysocki.net, lenb@kernel.org, sudeep.holla@arm.com,
+        rrichter@marvell.com, jeremy.linton@arm.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linuxarm@huawei.com,
+        gregkh@linuxfoundation.org, guohanjun@huawei.com,
+        wanghuiqiang@huawei.com
+Subject: Re: [PATCH for-stable-5.3 1/2] ACPI/PPTT: Add support for ACPI 6.3
+ thread flag
+Message-ID: <20191015220439.GQ31224@sasha-vm>
+References: <1571054162-71090-1-git-send-email-john.garry@huawei.com>
+ <1571054162-71090-2-git-send-email-john.garry@huawei.com>
+ <20191014232958.GC31224@sasha-vm>
+ <635a839b-bc1e-37ab-bd47-a554acc9b282@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20191015122028.GI32742@smile.fi.intel.com>
+In-Reply-To: <635a839b-bc1e-37ab-bd47-a554acc9b282@huawei.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 15, 2019 at 03:20:28PM +0300, Andy Shevchenko wrote:
-> On Fri, Oct 11, 2019 at 04:07:18PM -0700, Dmitry Torokhov wrote:
-> > When copying/duplicating set of properties, move smaller properties that
-> > were stored separately directly inside property entry structures. We can
-> > move:
-> > 
-> > - up to 8 bytes from U8 arrays
-> > - up to 4 words
-> > - up to 2 double words
-> > - one U64 value
-> > - one or 2 strings.
-> 
-> Can you show where you extract such values?
+On Tue, Oct 15, 2019 at 09:16:13AM +0100, John Garry wrote:
+>On 15/10/2019 00:29, Sasha Levin wrote:
+>>On Mon, Oct 14, 2019 at 07:56:01PM +0800, John Garry wrote:
+>>>From: Jeremy Linton <jeremy.linton@arm.com>
+>>>
+>>>Commit bbd1b70639f785a970d998f35155c713f975e3ac upstream.
+>>>
+>>>ACPI 6.3 adds a flag to the CPU node to indicate whether
+>>>the given PE is a thread. Add a function to return that
+>>>information for a given linux logical CPU.
+>>>
+>>>Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+>>>Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+>>>Reviewed-by: Robert Richter <rrichter@marvell.com>
+>>>Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>Signed-off-by: Will Deacon <will@kernel.org>
+>>>Signed-off-by: John Garry <john.garry@huawei.com>
+>>
+>>How far back should these patches be backported?
+>>
+>
+>Hi Sasha,
+>
+>This patchset is for 5.3, and I sent a separate patchset for 4.19, 
+>since the backport is a little different and required some hand 
+>modification -
+>
+>https://lore.kernel.org/linux-arm-kernel/1571046986-231263-1-git-send-email-john.garry@huawei.com/. 
+>4.19 is as far back as we want.
+>
+>Please note that the patches in this 5.3 series are relevant for 5.2 
+>also, but since 5.2 is EOL, I didn't mention it. We did test 5.2, so 
+>you can add there also.
+>
+>Please let me know if any more questions.
 
-the "value" union's largest member is u64, which is 8 bytes. Strings are
-pointers, so on 32-bit arches you can stuff 2 pointers into 8 bytes,
-while on 64-bits you have space for only one.
-
-> 
-> > +	if (!dst->is_inline && dst->length <= sizeof(dst->value)) {
-> > +		/* We have an opportunity to move the data inline */
-> > +		const void *tmp = dst->pointer;
-> > +
-> 
-> > +		memcpy(&dst->value, tmp, dst->length);
-> 
-> ...because this is strange trick.
-
-Not sure what is so strange about it. You just take data that is stored
-separately and move it into the structure, provided that it is not too
-big (i.e. it does not exceed sizeof(value union) size).
-
-> 
-> > +		dst->is_inline = true;
-> > +
-> > +		kfree(tmp);
-> > +	}
-> 
-
-Thanks.
+I've queued this and the 4.19 patches, thanks!
 
 -- 
-Dmitry
+Thanks,
+Sasha
