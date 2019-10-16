@@ -2,130 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 631AAD95AC
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Oct 2019 17:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43DE2D9644
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Oct 2019 18:01:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405022AbfJPPeJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Oct 2019 11:34:09 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:36530 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405014AbfJPPeI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Oct 2019 11:34:08 -0400
-Received: by mail-oi1-f193.google.com with SMTP id k20so20410040oih.3
-        for <linux-acpi@vger.kernel.org>; Wed, 16 Oct 2019 08:34:08 -0700 (PDT)
+        id S2391748AbfJPQBk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Oct 2019 12:01:40 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:37061 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406061AbfJPQBc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Oct 2019 12:01:32 -0400
+Received: by mail-pl1-f194.google.com with SMTP id u20so11487363plq.4;
+        Wed, 16 Oct 2019 09:01:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=G90VE6Bb79yrLS89Bw4MQZLt0drlBNa3zWUFgpxEWOI=;
-        b=uzHk9dGFu+BAuJu/jtkKm6PdKsAv0v77ftSf7INtWEGZjbXW3nuTCxWxyYcqXcc55N
-         jn0j3vZlbS1hafkC3P6q2PLJjZ+cBv7yG02yXBzE4o/EpvIP+rWjtbzCBmHxQklSqVW6
-         w8cOvr8XhtpNmSUh9hJqRfAadi7PWIZlUCGPCzpzhwQ/TXEDz/BxmYVjIrBKajenkdig
-         8nMWV6tB+HL8OjfWIixlDMG2FWnnWQNzSdshV4/OskfzQZwxlWGzkhEjFDC4AGd7lvNs
-         KhFF7eBo0szAAqTn0GyTNc3kb/1ZjJYNU5joeqawzfyRL5e08lkXX85BPwhn07w7DeYA
-         jlaA==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=VS8Uu9XK5BYTkXggZlLRkkUxjyNh72QfWUUWr6EbcIw=;
+        b=FCCfI0klLQS4Z10j8a1gIL9eEdoCIDOTwlIxRe+brd8tt5hCVC3BQmQYA/ysjE5VnZ
+         /tYu+pzk/Z86PPN+4tWnwQYjJOwMTBWNSrYqW4vuEBvfiTePimU/Exd1azq+Ukl8fTjW
+         Omr1gBKfg/DlYYDQeyAei7PW1B9OxXQe4foYjVRel4TxiDxB2NIeJFCl4gWlFT+puw/q
+         o9kz4hWfuPQssQZCIGmyeDCV5CtKYXWfIv9nrA4kiRtpQDovSpT/eP198g0hM2qcu9Kc
+         o0FKMahbxxatLHomN/1uDGTB5DEo+zDebecv7Twe6gFOaCbPVBTCG29RDh486x6egQna
+         gMAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=G90VE6Bb79yrLS89Bw4MQZLt0drlBNa3zWUFgpxEWOI=;
-        b=nReg3knrxiGnJGdwkBDnwOspKrOnD3+hsRZzHd3Kyt/OtqnJcRB2kpTG9TMpnotqMU
-         1DvFsdjZKPDwlG6pYwjQpCqPj/lZuWieHR26LQoZMIj1Tz24PE6W4mmYpph8akAoYLk7
-         3aKRL13sw2XAgusneNTz6elvfee9oGgAnoz0SC1peu37akkhhshiG0MIyyjm4njCNa/y
-         L+dqHw6FUGsQlkgzNL7/XRfcKAk3ixZgo8gwpVDF1m+kasPbC4p3Vexw9FSwCYor8ns7
-         RhaWMymyyK4Bg9gltHEWXCCZ+5iT0YbfXwJIz1R97c/UwD1KBKNvvl34z3/38Z4r7h3v
-         eAMg==
-X-Gm-Message-State: APjAAAUuUeIAUqISCNwUZlppNaKZdCmY9c49cMPV+vIq3sVhVTQ3MtOb
-        4EF4iw28LBl3M10tblobYlFOciSh6bpD/DaO+HrJtw==
-X-Google-Smtp-Source: APXvYqygwnr+NecDP1fO//HKzbSWX/belmW/bO18EhsuZZpxpYur8ANa264H/buC7850NnONeKoGNuvCNmNeaHqB1sA=
-X-Received: by 2002:aca:6087:: with SMTP id u129mr4144470oib.149.1571240048086;
- Wed, 16 Oct 2019 08:34:08 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=VS8Uu9XK5BYTkXggZlLRkkUxjyNh72QfWUUWr6EbcIw=;
+        b=KmXqi25tBxd+l619QPbrdG9vHoTf9/nbxA1cMQ2pLvr6pa+h4UVoJDHvyGsr4iK2Tw
+         d+AmuTnog7QzGEcfppXNNKO5VxL8l6manvabdYPlbqU0ks8xKH8BjnW7F51U6/yE3Mbs
+         bhLfQMrj/Iq114IivNJS9LYtZTcalgZFSU7sISHgTnK6Hbt/+I+1IpSr3oTyJcoeDdT3
+         9r7bPWR1gQgW4UD0NExo1E1iVlmq+n8l7iFsyytd7hOeZSspD8NJouwrcp6PjStx3rHJ
+         ZzrGOjh6aebOVgoDWyqv/wrRlHrrOnrMWR1dr1zjBUGiShiSNu6HLDqcYqGbP2Om1dHE
+         80rg==
+X-Gm-Message-State: APjAAAXuHD4xmEg8Vud/O1657aFSHLtEjr8iy6oJNF0JJyIHIoLy6pe5
+        A+37rc/bZOxcNTmvu32ZhoSrVDha
+X-Google-Smtp-Source: APXvYqzMMiW8EFwqe9wnTpSPSy4ylIuRniI/O8VbWuqZbnC/HrQraMYZeYYjbDNiqE8h/l9g5dgjxw==
+X-Received: by 2002:a17:902:9687:: with SMTP id n7mr42268039plp.172.1571241690785;
+        Wed, 16 Oct 2019 09:01:30 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
+        by smtp.gmail.com with ESMTPSA id i37sm3092913pje.23.2019.10.16.09.01.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Oct 2019 09:01:28 -0700 (PDT)
+Date:   Wed, 16 Oct 2019 09:01:26 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v5 11/14] software node: move small properties inline
+ when copying
+Message-ID: <20191016160126.GB35946@dtor-ws>
+References: <20191011230721.206646-1-dmitry.torokhov@gmail.com>
+ <20191011230721.206646-12-dmitry.torokhov@gmail.com>
+ <20191015122028.GI32742@smile.fi.intel.com>
+ <20191015182553.GG105649@dtor-ws>
+ <20191016074857.GN32742@smile.fi.intel.com>
 MIME-Version: 1.0
-References: <157118756627.2063440.9878062995925617180.stgit@dwillia2-desk3.amr.corp.intel.com>
- <CAKv+Gu-dxRjANWfDGAaxCtGr_UxVt=c1Byb3zKRM9EuudpqNEQ@mail.gmail.com>
-In-Reply-To: <CAKv+Gu-dxRjANWfDGAaxCtGr_UxVt=c1Byb3zKRM9EuudpqNEQ@mail.gmail.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Wed, 16 Oct 2019 08:33:56 -0700
-Message-ID: <CAPcyv4gBSX58CWH4HZ28w0_cZRzJrhgdEFHa2g8KDqyv8aFqZQ@mail.gmail.com>
-Subject: Re: [PATCH v7 00/12] EFI Specific Purpose Memory Support
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Ingo Molnar <mingo@redhat.com>,
-        Andy Shevchenko <andy@infradead.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Keith Busch <kbusch@kernel.org>, Len Brown <lenb@kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Dave Jiang <dave.jiang@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kbuild test robot <lkp@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Andy Lutomirski <luto@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191016074857.GN32742@smile.fi.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 15, 2019 at 11:55 PM Ard Biesheuvel
-<ard.biesheuvel@linaro.org> wrote:
->
-> On Wed, 16 Oct 2019 at 03:13, Dan Williams <dan.j.williams@intel.com> wrote:
-> >
-> > Changes since v6 [1]:
-> > - Collect Ard's ack / review on patches 5-7, but not on patch 4 since it
-> >   needed a non-trivial rework for linker error reported by the 0day robot.
-> >
-> > - Fixup "efi: Common enable/disable infrastructure for EFI soft
-> >   reservation" with a new dependency on CONFIG_EFI_STUB for
-> >   CONFIG_EFI_SOFT_RESERVE since the efi_soft_reserve_enabled() helper is
-> >   only built with EFI_STUB=y and the support depends on early reservations
-> >   to keep the kernel text from landing in the reservation.
->
-> As far as I know, GRUB on x86 still boots without the EFI stub by
-> default (i.e., using the 'linux' command instead of the 'linuxefi'
-> command), so even if you build the stub, it is not going to be called
-> in many cases. Is that going to be a problem?
+On Wed, Oct 16, 2019 at 10:48:57AM +0300, Andy Shevchenko wrote:
+> On Tue, Oct 15, 2019 at 11:25:53AM -0700, Dmitry Torokhov wrote:
+> > On Tue, Oct 15, 2019 at 03:20:28PM +0300, Andy Shevchenko wrote:
+> > > On Fri, Oct 11, 2019 at 04:07:18PM -0700, Dmitry Torokhov wrote:
+> > > > When copying/duplicating set of properties, move smaller properties that
+> > > > were stored separately directly inside property entry structures. We can
+> > > > move:
+> > > > 
+> > > > - up to 8 bytes from U8 arrays
+> > > > - up to 4 words
+> > > > - up to 2 double words
+> > > > - one U64 value
+> > > > - one or 2 strings.
+> > > 
+> > > Can you show where you extract such values?
+> > 
+> > the "value" union's largest member is u64, which is 8 bytes. Strings are
+> > pointers, so on 32-bit arches you can stuff 2 pointers into 8 bytes,
+> > while on 64-bits you have space for only one.
+> > 
+> > > 
+> > > > +	if (!dst->is_inline && dst->length <= sizeof(dst->value)) {
+> > > > +		/* We have an opportunity to move the data inline */
+> > > > +		const void *tmp = dst->pointer;
+> > > > +
+> > > 
+> > > > +		memcpy(&dst->value, tmp, dst->length);
+> > > 
+> > > ...because this is strange trick.
+> > 
+> > Not sure what is so strange about it. You just take data that is stored
+> > separately and move it into the structure, provided that it is not too
+> > big (i.e. it does not exceed sizeof(value union) size).
+> 
+> You store a value as union, but going to read as a member of union?
+> I'm pretty sure it breaks standard rules.
 
-It only becomes a problem if kaslr decides to land the kernel on top
-of the soft-reservation. However, I think it's ok to say that if you
-need the reservation to be honored in all circumstances, arrange to
-boot in EFI mode.
+No, I move the values _in place_ of the union, and the data is always
+fetched via void pointers. And copying data via char * or memcpy() is
+allowed even in C99 and C11.
 
->
-> > This also
-> >   moved the IS_ENABLED(CONFIG_EFI_SOFT_RESERVE) check into the header so
-> >   that the stub does not try to link to __efi_soft_reserve_enabled() in
-> >   the EFI_STUB=n case.
-> >
-> > - Rework "x86/efi: EFI soft reservation to E820 enumeration" to always
-> >   add the full EFI memory map when EFI_MEMORY_SP ranges are found. This
-> >   simplifies the logic to just add the full EFI map rather than try to
-> >   tease out just the EFI_MEMORY_SP ranges. (Ard)
-> >
-> > [1]: https://lore.kernel.org/lkml/157066227329.1059972.5659620631541203458.stgit@dwillia2-desk3.amr.corp.intel.com/
-> >
-> > ---
-> > Merge notes:
-> >
-> > Hi Ingo,
-> >
-> > I'm still looking for Ard's ack on the revised patch 4, but otherwise
-> > feel like this is ready for your consideration.
-> >
->
-> Patch 4 looks fine to me,
->
-> Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+But I am wondering why are we actually worrying about all of this? The
+kernel is gnu89 and I think is going to stay this way because we use
+initializers with a cast in a lot of places:
 
-Thanks for the help.
+#define __RAW_SPIN_LOCK_UNLOCKED(lockname)      \
+        (raw_spinlock_t) __RAW_SPIN_LOCK_INITIALIZER(lockname)
+
+and C99 and gnu99 do not allow this. See
+https://lore.kernel.org/lkml/20141019231031.GB9319@node.dhcp.inet.fi/
+
+Thanks.
+
+-- 
+Dmitry
