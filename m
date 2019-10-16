@@ -2,96 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F4BAD86CD
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Oct 2019 05:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88F88D8846
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Oct 2019 07:56:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727610AbfJPDiN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Oct 2019 23:38:13 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:40359 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726898AbfJPDiN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Oct 2019 23:38:13 -0400
-Received: by mail-pg1-f194.google.com with SMTP id e13so5201647pga.7
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Oct 2019 20:38:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=xDw1E+VxBs/5UND1mf/klt16slydi9JotBXF01e+CRk=;
-        b=kyDL16WHaN2o9selPh6MHGPHfV+X7wEq0FllVlq4/AMM/N0LVOftGKRuCwqzhga1Hd
-         cdN+t0MyQmeFRJ5bf/XbDXmItS0ZWVX7UiLiUci5QgPuJ0pmI/mAIAOhsVOExjXSLXDk
-         WCFFMMunb9/gDv9fzRuwcEBPTAfrgn2BIMd7bsPFc9ZEvqcn3DgN99CzDKWE1tGebs5x
-         6vF/R0l5IS2cpf/QJz71tCyEslIqkHo+nXy2rjOCY8UdaKI5fPfbIO9owHZ/WIva3dDB
-         ++BCPIgmNCv0Mm2uFmWjsB7CWPUdt7AcPg514jBVxgt4Lt/OWXlHaApJAdDUsRfJPF9d
-         J/LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=xDw1E+VxBs/5UND1mf/klt16slydi9JotBXF01e+CRk=;
-        b=lpD72yBujmgCT5IU80Y6GG3E0mRHTvpzh9lStwncJNr16Ce2OpDJ2AZ/9wKOgv4/TR
-         V+g0B8J4oVMG8K6DYRNhjU9nVoPpNnoDOFNW+s5DYpwauiUwWVOdXlXX2yBCJcp60LKk
-         p+LpU3k1jeKTwo5TMoFhnByHygSLHlVvkLsVlFYfaVGcO/YWjN+RSYQdbUm0yrQ9soRN
-         ZakO1XXASqyFWKhErtfU0Umbdiezh/6xYbK6XqInGhzQM+8/S+zqLwRylVrPmq3kOrWs
-         YSyTP0ZBk43+/QmzKYPSZgjgQTqedb7/c0FAuD7LeLcwUrcPsLK64hh+1Jsjgix5h2GB
-         a+0Q==
-X-Gm-Message-State: APjAAAUidGJ2gZVbk6gQNhFT8AqrfAgPRnvSlwnNx9cbfbhSXrh/NZpA
-        1gXNiAvZRa1G4MM/JZzRiBAA4w==
-X-Google-Smtp-Source: APXvYqxIMFWNe/yMHUCIaIMu64JgM3ECcEsbE/RT/QAxjCKzVVSrI8MfKrdZOI2NiD63SyqLmhqvNQ==
-X-Received: by 2002:aa7:9ed2:: with SMTP id r18mr41382466pfq.1.1571197092543;
-        Tue, 15 Oct 2019 20:38:12 -0700 (PDT)
-Received: from localhost ([122.172.151.112])
-        by smtp.gmail.com with ESMTPSA id y17sm32299937pfo.171.2019.10.15.20.38.10
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 15 Oct 2019 20:38:10 -0700 (PDT)
-Date:   Wed, 16 Oct 2019 09:08:08 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: Re: [PATCH] ACPI: processor: Avoid NULL pointer dereferences at init
- time
-Message-ID: <20191016033808.uqgc4ss6xcg4ta5v@vireshk-i7>
-References: <9765491.cFa8AugBjT@kreacher>
+        id S2387714AbfJPF4T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Oct 2019 01:56:19 -0400
+Received: from mga11.intel.com ([192.55.52.93]:27078 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387456AbfJPF4T (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 16 Oct 2019 01:56:19 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Oct 2019 22:56:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,302,1566889200"; 
+   d="scan'208";a="397057384"
+Received: from fyin-mobl.ccr.corp.intel.com (HELO [10.239.204.241]) ([10.239.204.241])
+  by fmsmga006.fm.intel.com with ESMTP; 15 Oct 2019 22:56:18 -0700
+Subject: Re: [PATCH v2] ACPI / processor_idle: use ndelay instead of io port
+ access for wait
+To:     David Laight <David.Laight@ACULAB.COM>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20191015080404.6013-1-fengwei.yin@intel.com>
+ <c9f3f4f93bb946f790fce4709253b359@AcuMS.aculab.com>
+From:   "Yin, Fengwei" <fengwei.yin@intel.com>
+Message-ID: <2b3ce9e9-e805-1b8d-86c3-c8f498a4d3dd@intel.com>
+Date:   Wed, 16 Oct 2019 13:56:17 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9765491.cFa8AugBjT@kreacher>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <c9f3f4f93bb946f790fce4709253b359@AcuMS.aculab.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 15-10-19, 19:35, Rafael J. Wysocki wrote:
-> rom: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> If there are neither processor objects nor processor device objects
-> in the ACPI tables, the per-CPU processors table will not be
-> initialized and attempting to dereference pointers from there will
-> cause the kernel to crash.  This happens in acpi_processor_ppc_init()
-> and acpi_thermal_cpufreq_init() after commit d15ce412737a ("ACPI:
-> cpufreq: Switch to QoS requests instead of cpufreq notifier")
-> which didn't add the requisite NULL pointer checks in there.
-> 
-> Add the NULL pointer checks to acpi_processor_ppc_init() and
-> acpi_thermal_cpufreq_init(), and to the corresponding "exit"
-> routines.
-> 
-> While at it, drop redundant return instructions from
-> acpi_processor_ppc_init() and acpi_thermal_cpufreq_init().
-> 
-> Fixes: d15ce412737a ("ACPI: cpufreq: Switch to QoS requests instead of cpufreq notifier")
-> Reported-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->  drivers/acpi/processor_perflib.c |   10 ++++++----
->  drivers/acpi/processor_thermal.c |   10 ++++++----
->  2 files changed, 12 insertions(+), 8 deletions(-)
+Hi David,
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+On 10/15/2019 7:48 PM, David Laight wrote:
+> From: Yin Fengwei
+>> Sent: 15 October 2019 09:04
+>> In function acpi_idle_do_entry(), an ioport access is used for dummy
+>> wait to guarantee hardware behavior. But it could trigger unnecessary
+>> vmexit in virtualization environment.
+>>
+>> If we run linux as guest and export all available native C state to
+>> guest, we did see many PM timer access triggered VMexit when guest
+>> enter deeper C state in our environment (We used ACRN hypervisor
+>> instead of kvm or xen which has PM timer emulated and exports all
+>> native C state to guest).
+>>
+>> According to the original comments of this part of code, io port
+>> access is only for dummy wait. We could use busy wait instead of io
+>> port access to guarantee hardware behavior and avoid unnecessary
+>> VMexit.
+> 
+> You need some hard synchronisation instruction(s) after the inb()
+> and before any kind of delay to ensure your delay code is executed
+> after the inb() completes.
+> 
+> I'm pretty sure that inb() is only synchronised with memory reads.
+Thanks a lot for the comments.
 
--- 
-viresh
+I didn't find the common serializing instructions API in kernel (only
+memory  barrier which is used to make sure of memory access). For Intel
+x86, cpuid could be used as serializing instruction. But it's not
+suitable for common code here. Do you have any suggestion?
+
+> 
+> ...
+>> +	/* profiling the time used for dummy wait op */
+>> +	ktime_get_real_ts64(&ts0);
+>> +	inl(acpi_gbl_FADT.xpm_timer_block.address);
+>> +	ktime_get_real_ts64(&ts1);
+> 
+> That could be dominated by the cost of ktime_get_real_ts64().
+> It also need synchronising instructions.
+I did some testing. ktime_get_real_ts64() takes much less time than io
+port access.
+
+The test code is like:
+1.
+	local_irq_save(flag);
+	ktime_get_real_ts64(&ts0);
+	inl(acpi_gbl_FADT.xpm_timer_block.address);
+	ktime_get_real_ts64(&ts1);
+	local_irq_restore(flag);
+
+2.
+	local_irq_save(flag);
+	ktime_get_real_ts64(&ts0);
+	ktime_get_real_ts64(&ts1);
+	local_irq_restore(flag);
+
+The delta in 1 is about 500000ns. And delta in 2 is about
+2000ns. The date is gotten on Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz.
+So I suppose the impact of ktime_get_real_ts64 is small.
+
+Regards
+Yin, Fengwei
+
+> 
+> 	David
+> 
+> -
+> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+> Registration No: 1397386 (Wales)
+> 
+
