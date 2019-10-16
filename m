@@ -2,49 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 018CDD97C7
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Oct 2019 18:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74A31D97F6
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Oct 2019 18:54:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393418AbfJPQoy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Oct 2019 12:44:54 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:34230 "EHLO
+        id S1726263AbfJPQye (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Oct 2019 12:54:34 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:36572 "EHLO
         mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389763AbfJPQoy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Oct 2019 12:44:54 -0400
-Received: by mail-pg1-f196.google.com with SMTP id k20so7267632pgi.1;
-        Wed, 16 Oct 2019 09:44:53 -0700 (PDT)
+        with ESMTP id S1725294AbfJPQye (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Oct 2019 12:54:34 -0400
+Received: by mail-pg1-f196.google.com with SMTP id 23so14646749pgk.3;
+        Wed, 16 Oct 2019 09:54:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=Y/WDEkNwc8G5QTZd2e72it5kKVnpD1ylukdGEnQJYfE=;
-        b=SkFJTuqXoZYZcZqFW/C6M1Y3k96KD5vp5KNmJM9xVY67oEK2D9Y4KXnYUIVENq9VI2
-         Yq+GGJVwQAtbWnLmdwqCLV2nXStNNvLu0gvYXxVaXwtR4D3DHa5CoX/15exi5jzLqrN9
-         9YqFP20QvsxBNpLWgVUka0YEszyOkpe8V2Ez05qb3DpRjdadgLTvgwXlh5H5AfvB8MXV
-         Is/xceJhkjfBTQfAw0Cv1lG3ehWRHx6CS3Mbo47WAbr+oFp6wAGMX+Rl2YgMQOYTTXwx
-         H2tg5xk12+4rf97ubjTDduB0Ath32HIe5gqtb6N4d+fH/uUjAgb/ZaaZ9Hh+EpeVffUE
-         kOng==
+        bh=VWaIAT+NIDKyZZqlxsr5yjIRMKyrU2W1SmxhpCA3akw=;
+        b=CX9jJvlCJgqdx644ullcaHmHVFaLYUbiQLuRkMSy1pZwwRhIKLBvQvRgTtCC16ag/U
+         3GC67I3dPFUAIe5+8cAr2O3T4kVxFvMVSWGovbHCxQdb2YJT8EC4XCR1RrXyJNcuTvN1
+         IUmKI8pMEgYbgkFCywzY8WWLTFv5RzlHUlYriN9p6bkHJ1eWAE3QTfC87vqy5YxBuvLh
+         BTP7QMbWuA8mTjZ33boNGOyO/esbkgXNSbJPX6lyCXgS7xl1nsdE4BDuO3mGuv2Z19ti
+         IGuqzbr34/Tb1TCYQezYnfZ6TGIv+TU34ATEl+YtTrS/687b2T5SGlps9JOglirLaS9K
+         j5ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Y/WDEkNwc8G5QTZd2e72it5kKVnpD1ylukdGEnQJYfE=;
-        b=Br+DNcWdAsjMrvkSIYs37s7fn21nvCd0mVBeZBd+VhftnDDfqPjMoTQH3AvYsAllJ5
-         pyeFB9W+y37lqEDdIz2lRV3rfzsQZxeHDFH+i96XGTPE4wHWCkD6vmVRwfCeCz6XA1YT
-         vI898syM03kczNkNZTgRV8ZsOE1xIEbUhU7ZyzH6oyVL0HTpyefij/Xo+eZZV+AU5wj6
-         EpcSFT0nIqM2HvfeKQASICeFMzn5aVcjblohvFYN5HPeRLAKXd2LEigXpWdJmkKi2d0Q
-         JV9n6M0XQBI0kNAJv/dnRb2FkxGKWiS+6zlOF/8BQqqNZc4GH6ruwaeYXJG9XdMsK+Ui
-         tR4w==
-X-Gm-Message-State: APjAAAXChkqnb11bMpvgsU92cfv/MOb2pAUsLr42G88CJsfYCgl6vVWk
-        784rUJXu0UHnI2muCdD9SzM=
-X-Google-Smtp-Source: APXvYqzW3Ewyi/n4N5PdP1FoT+CUckCZuJnajQppbavxfEZ4XWt6gsuOMYaRaEYLVRhHWskMtAKypg==
-X-Received: by 2002:a62:ed01:: with SMTP id u1mr31459977pfh.122.1571244292975;
-        Wed, 16 Oct 2019 09:44:52 -0700 (PDT)
+        bh=VWaIAT+NIDKyZZqlxsr5yjIRMKyrU2W1SmxhpCA3akw=;
+        b=kMO+VhNDMEECTF/PArgXc38IVFES7ninio6+SnDbXxYJO0i1+XPEPXIyue6az2GmWx
+         30FcnNduZCPtMrlqsrWT/d3SVS1W02LyV76D7KsmhodyyCTBd0EJlQpZAZSIubS+pt6Y
+         VkJAH80/rHIznZoaHaHX+V9cVQ3MUSAwPQ0nvWuBAsVV6WKYn163kKmIcf4T3Kki0Ft1
+         k+p413G/M1aCMmqn1L6rAHEwxW2PWtfTXNNPxrWrYmRaPiqEEPS6J+jzWpcwckAPSAgS
+         uIN+Ze+dIePukM4GHZSJYRdMNQna0LcWaP1iF9DbnpiR8v6Q28+yVhHFXb95UtauSWtA
+         42VA==
+X-Gm-Message-State: APjAAAX8ngkRAJ1uh5yY/Pz1ZeUF1tDh3KddZPQoPPgkbe3uerQqcKrj
+        0ClDBqRU/AOtXjHxNAkjnqE=
+X-Google-Smtp-Source: APXvYqwS5IJwPJhOsLM+llJ8huzG+KnbDTsk7VAndmiSyqCoCvrSTXYRJcIRhsrVPy3hVniVV6U5jA==
+X-Received: by 2002:aa7:8e16:: with SMTP id c22mr45557155pfr.116.1571244873756;
+        Wed, 16 Oct 2019 09:54:33 -0700 (PDT)
 Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
-        by smtp.gmail.com with ESMTPSA id x10sm9793405pgl.53.2019.10.16.09.44.51
+        by smtp.gmail.com with ESMTPSA id h4sm25090979pfg.159.2019.10.16.09.54.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Oct 2019 09:44:52 -0700 (PDT)
-Date:   Wed, 16 Oct 2019 09:44:50 -0700
+        Wed, 16 Oct 2019 09:54:33 -0700 (PDT)
+Date:   Wed, 16 Oct 2019 09:54:30 -0700
 From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -54,61 +54,88 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v5 11/14] software node: move small properties inline
- when copying
-Message-ID: <20191016164450.GC35946@dtor-ws>
+Subject: Re: [PATCH v5 10/14] software node: rename is_array to is_inline
+Message-ID: <20191016165430.GD35946@dtor-ws>
 References: <20191011230721.206646-1-dmitry.torokhov@gmail.com>
- <20191011230721.206646-12-dmitry.torokhov@gmail.com>
- <20191015122028.GI32742@smile.fi.intel.com>
- <20191015182553.GG105649@dtor-ws>
- <20191016074857.GN32742@smile.fi.intel.com>
- <20191016160126.GB35946@dtor-ws>
- <20191016161845.GX32742@smile.fi.intel.com>
- <20191016162308.GY32742@smile.fi.intel.com>
+ <20191011230721.206646-11-dmitry.torokhov@gmail.com>
+ <20191014073720.GH32742@smile.fi.intel.com>
+ <20191015182206.GF105649@dtor-ws>
+ <20191016075940.GP32742@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191016162308.GY32742@smile.fi.intel.com>
+In-Reply-To: <20191016075940.GP32742@smile.fi.intel.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 16, 2019 at 07:23:08PM +0300, Andy Shevchenko wrote:
-> On Wed, Oct 16, 2019 at 07:18:45PM +0300, Andy Shevchenko wrote:
-> > On Wed, Oct 16, 2019 at 09:01:26AM -0700, Dmitry Torokhov wrote:
-> > > On Wed, Oct 16, 2019 at 10:48:57AM +0300, Andy Shevchenko wrote:
-> > > > On Tue, Oct 15, 2019 at 11:25:53AM -0700, Dmitry Torokhov wrote:
+On Wed, Oct 16, 2019 at 10:59:40AM +0300, Andy Shevchenko wrote:
+> On Tue, Oct 15, 2019 at 11:22:06AM -0700, Dmitry Torokhov wrote:
+> > On Mon, Oct 14, 2019 at 10:37:20AM +0300, Andy Shevchenko wrote:
+> > > On Fri, Oct 11, 2019 at 04:07:17PM -0700, Dmitry Torokhov wrote:
+> > > > We do not need a special flag to know if we are dealing with an array,
+> > > > as we can get that data from ratio between element length and the data
+> > > > size, however we do need a flag to know whether the data is stored
+> > > > directly inside property_entry or separately.
+> > > 
+> > > > -	if (prop->is_array)
+> > > > +	if (!prop->is_inline)
+> > > 
+> > > > -	if (p->is_array) {
+> > > > +	if (!p->is_inline) {
+> > > 
+> > > > -	if (src->is_array) {
+> > > > +	if (!src->is_inline) {
+> > > 
+> > > May we have positive conditionals instead?
 > > 
-> > > > You store a value as union, but going to read as a member of union?
-> > > > I'm pretty sure it breaks standard rules.
-> > > 
-> > > No, I move the values _in place_ of the union, and the data is always
-> > > fetched via void pointers. And copying data via char * or memcpy() is
-> > > allowed even in C99 and C11.
-> > > 
-> > > But I am wondering why are we actually worrying about all of this? The
-> > > kernel is gnu89 and I think is going to stay this way because we use
-> > > initializers with a cast in a lot of places:
-> > > 
-> > > #define __RAW_SPIN_LOCK_UNLOCKED(lockname)      \
-> > >         (raw_spinlock_t) __RAW_SPIN_LOCK_INITIALIZER(lockname)
-> > > 
-> > > and C99 and gnu99 do not allow this. See
-> > > https://lore.kernel.org/lkml/20141019231031.GB9319@node.dhcp.inet.fi/
+> > I was trying to limit the context churn. I can definitely change
+> > property_get_pointer(), but the other 2 I think are better in the
+> > current form.
 > > 
-> > This is simple not a cast.
+> > > 
+> > > > + * @is_inline: True when the property value is stored directly in
+> > > 
+> > > I think word 'directly' is superfluous here.
+> > > Or, perhaps, 'stored directly' -> 'embedded'
+> > 
+> > I'm OK with "embedded".
+> > 
+> > > 
+> > > > + *     &struct property_entry instance.
+> > > 
+> > > > + * @pointer: Pointer to the property when it is stored separately from
+> > > > + *     the &struct property_entry instance.
+> > > 
+> > > 'separately from' -> 'outside' ?
+> > 
+> > Umm, I think I prefer "separately" actually.
+> > 
+> > > 
+> > > > + * @value: Value of the property when it is stored inline.
+> > > 
+> > > 'stored inline' -> 'embedded in the &struct...' ?
+> > 
+> > I was trying to have a link "stored inline" -> "is_inline".
+> > 
+> > Do we want to change the flag to be "is_embedded"?
 > 
-> 4.62 Compound literals in C99
-> ISO C99 supports compound literals. A compound literal looks like a cast
-> followed by an initializer. Its value is an object of the type specified in the
-> cast, containing the elements specified in the initializer. It is an lvalue.
+> In dictionaries I have
+> 
+> embedded <-> unilateral
 
-Yes, these are compound literals. And they can not be used as
-initializers:
+Are you trying to show synonym or antonym here? But I am pretty sure
+"unilateral" is either.
 
-https://lore.kernel.org/lkml/CAHk-=wgXBV57mz46ZB5XivjiSBGkM0cjuvnU2OWyfRF=+41NPQ@mail.gmail.com/
+Antonyms for our use of "embedded" are likely "detached" or
+"disconnected".
+
+> inline <-> ???
+
+"out of line" but I still believe "stored separately" explains precisely
+what we have here.
 
 Thanks.
 
