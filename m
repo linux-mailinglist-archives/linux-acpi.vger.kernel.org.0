@@ -2,188 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 230D9DAFA2
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2019 16:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A013DB1BC
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2019 18:00:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729738AbfJQOQz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Oct 2019 10:16:55 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:42042 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727314AbfJQOQz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Oct 2019 10:16:55 -0400
-Received: by mail-ot1-f67.google.com with SMTP id c10so2005874otd.9;
-        Thu, 17 Oct 2019 07:16:54 -0700 (PDT)
+        id S2439156AbfJQQAv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Oct 2019 12:00:51 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:43997 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2436580AbfJQQAv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Oct 2019 12:00:51 -0400
+Received: by mail-pf1-f195.google.com with SMTP id a2so1927035pfo.10;
+        Thu, 17 Oct 2019 09:00:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=bKHsm49AjH+9+kS10xeon3ScfYzXimBKCUXUhQczC7c=;
+        b=Jpj35KVo3sVfoKljx8sot28XsdRaIvkCMLBzWb6ssHzRgOFI+FN4uKedm44mjoDrGG
+         KsGYXZE5gJ3gxbO9dga++kYO/US86ElI0Jz/QWSN/N1H1pMOnBGsBvEV0IqRmPT7JyBI
+         6CKKU86QwjL6k3026BX6S/KoJrl0N03SFf6OvJgwFn0NpBwNIzbfVM+7jM6oieiq3Uyy
+         wcIWZkUbloVvbhh4rFzcWJtDVBcnFcb4u/0CaaShng1iWg2SbGMWd9ymJb88Ncv5Ncsl
+         egttf6ReYdLp2EWOAWaKmsZrdbgLlcq3+A3qLPd4mnidRb9svzpyDIP4zcQKS5iACMFY
+         LJ0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ONhbG1YIvRehChglKAzYSee1XpDEhwyMKjBcNaf717M=;
-        b=izYqhpkanZhv6t0j6kpBClORLQTasyQsD+0Gzo76AmET09Nwz3oCwVeKVvCnWqcK3E
-         TyNOXkW5dT3P6CGt/Rx+x8sB1Ik3a4xLeZxeJ4iothxjWl1AZzK4fOylTazICZ6zKUf8
-         aNBuum4P1RUU3bwxE7c5fd37wXj5rq9hNiUlNyDy5ygC2p10LL8nAoNPbMfqPWMIenHM
-         baUab7D5jGKyK8itXAroeTcFaJO7fVzcKzHRWvIg9h6oWQY4M30FiSKKRfmhXAkuMIlO
-         zPlxiix8uiprFHAQTLcWR7KUHqBkxfMy+eliO50LAOeCbyf73Jfhr277xi1qg8xmaudT
-         edSQ==
-X-Gm-Message-State: APjAAAUnML6+NPnhv4RauepLt73ZKemZOIaPGtPZrT5Um9P/0GMzRlCy
-        LQP/KMTVXoJC39QM0VEkM/pNzkvkmeVdIVr/XYA=
-X-Google-Smtp-Source: APXvYqzlXzT4lVsF0ANUd+lX83vr0WuCNqKjpz6umKGU8BvwxubmHWkCKI4rEx3LdKJ9XXFDb/fKsYOCW85mZdBE59w=
-X-Received: by 2002:a9d:5a0f:: with SMTP id v15mr3351385oth.266.1571321813586;
- Thu, 17 Oct 2019 07:16:53 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=bKHsm49AjH+9+kS10xeon3ScfYzXimBKCUXUhQczC7c=;
+        b=Ri/D+WRmVfl9IfiZCeG9NnI8W3vjmz/jLq+5KUk/HNnrVqlSbkrbKb7bWR6l054xW0
+         AqhSINKazIy/sxSyo6P2Lntkrho8/ntLwuNcrQT9y0RlTlNaR6x74/3nZsptHjNozzgQ
+         h3uvjUEsTX9Dj5jjWxlonn7iiH/kXC3WNX/4X5A/8zZXud0rLP7SCR4NTdQ1spuA2fg7
+         +AXbtyiIiHH0oWO/urm3wo/TSocdBs83Lqt3K9noGF6TIGX53yZ09Db8cLXx9KdEbeu2
+         uyY3bmFJa4iPpTVC08jt+ioWqHnPsRXebMi/fsNiETB7aEpiVNVEM9K3s7Dyb9zkEQ9e
+         GUMQ==
+X-Gm-Message-State: APjAAAWawKHXhYd5p8P6SJ9/4mNqzzHbjHvhwJ/XJG5sbDhJvIoVsSkz
+        TFiZ8REgfzCJ4s3eXI7el9xKdWPW
+X-Google-Smtp-Source: APXvYqxdUs3K8kdiwaLrIGbUOjwLrBiCkBP9lXNhqoPWli5kV2DcKOLnS8b57cZ07KNDaTySvpea2Q==
+X-Received: by 2002:a17:90a:356a:: with SMTP id q97mr5232709pjb.50.1571328050138;
+        Thu, 17 Oct 2019 09:00:50 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
+        by smtp.gmail.com with ESMTPSA id w134sm3502756pfd.4.2019.10.17.09.00.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Oct 2019 09:00:48 -0700 (PDT)
+Date:   Thu, 17 Oct 2019 09:00:46 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v5 10/14] software node: rename is_array to is_inline
+Message-ID: <20191017160046.GF35946@dtor-ws>
+References: <20191011230721.206646-1-dmitry.torokhov@gmail.com>
+ <20191011230721.206646-11-dmitry.torokhov@gmail.com>
+ <20191014073720.GH32742@smile.fi.intel.com>
+ <20191015182206.GF105649@dtor-ws>
+ <20191016075940.GP32742@smile.fi.intel.com>
+ <20191016165430.GD35946@dtor-ws>
+ <20191017071628.GD32742@smile.fi.intel.com>
 MIME-Version: 1.0
-References: <2811202.iOFZ6YHztY@kreacher> <4551555.oysnf1Sd0E@kreacher> <20191017094143.fhmhgltv6ujccxlp@vireshk-i7>
-In-Reply-To: <20191017094143.fhmhgltv6ujccxlp@vireshk-i7>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 17 Oct 2019 16:16:40 +0200
-Message-ID: <CAJZ5v0hDhJrCWnPxbV54yWAB=DKCLz33Sq8J4kXtqH4+mJn2eQ@mail.gmail.com>
-Subject: Re: [RFT][PATCH 1/3] PM: QoS: Introduce frequency QoS
-To:     Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Dmitry Osipenko <digetx@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191017071628.GD32742@smile.fi.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 17, 2019 at 11:41 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
->
-> On 16-10-19, 12:41, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Introduce frequency QoS, based on the "raw" low-level PM QoS, to
-> > represent min and max frequency requests and aggregate constraints.
-> >
-> > The min and max frequency requests are to be represented by
-> > struct freq_qos_request objects and the aggregate constraints are to
-> > be represented by struct freq_constraints objects.  The latter are
-> > expected to be initialized with the help of freq_constraints_init().
-> >
-> > The freq_qos_read_value() helper is defined to retrieve the aggregate
-> > constraints values from a given struct freq_constraints object and
-> > there are the freq_qos_add_request(), freq_qos_update_request() and
-> > freq_qos_remove_request() helpers to manipulate the min and max
-> > frequency requests.  It is assumed that the the helpers will not
-> > run concurrently with each other for the same struct freq_qos_request
-> > object, so if that may be the case, their uses must ensure proper
-> > synchronization between them (e.g. through locking).
-> >
-> > In addition, freq_qos_add_notifier() and freq_qos_remove_notifier()
-> > are provided to add and remove notifiers that will trigger on aggregate
-> > constraint changes to and from a given struct freq_constraints object,
-> > respectively.
-> >
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >  include/linux/pm_qos.h |   44 ++++++++
-> >  kernel/power/qos.c     |  240 +++++++++++++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 284 insertions(+)
-> >
-> > Index: linux-pm/include/linux/pm_qos.h
-> > ===================================================================
-> > --- linux-pm.orig/include/linux/pm_qos.h
-> > +++ linux-pm/include/linux/pm_qos.h
-> > @@ -267,4 +267,48 @@ static inline s32 dev_pm_qos_raw_resume_
-> >  }
-> >  #endif
-> >
-> > +#define FREQ_QOS_MIN_DEFAULT_VALUE   0
-> > +#define FREQ_QOS_MAX_DEFAULT_VALUE   (-1)
-> > +
-> > +enum freq_qos_req_type {
-> > +     FREQ_QOS_MIN = 1,
-> > +     FREQ_QOS_MAX,
-> > +};
-> > +
-> > +struct freq_constraints {
-> > +     struct pm_qos_constraints min_freq;
-> > +     struct blocking_notifier_head min_freq_notifiers;
-> > +     struct pm_qos_constraints max_freq;
-> > +     struct blocking_notifier_head max_freq_notifiers;
-> > +};
-> > +
-> > +struct freq_qos_request {
-> > +     enum freq_qos_req_type type;
-> > +     struct plist_node pnode;
-> > +     struct freq_constraints *qos;
-> > +};
-> > +
-> > +static inline int freq_qos_request_active(struct freq_qos_request *req)
-> > +{
-> > +     return !IS_ERR_OR_NULL(req->qos);
-> > +}
-> > +
-> > +void freq_constraints_init(struct freq_constraints *qos);
-> > +
-> > +s32 freq_qos_read_value(struct freq_constraints *qos,
-> > +                     enum freq_qos_req_type type);
-> > +
-> > +int freq_qos_add_request(struct freq_constraints *qos,
-> > +                      struct freq_qos_request *req,
-> > +                      enum freq_qos_req_type type, s32 value);
-> > +int freq_qos_update_request(struct freq_qos_request *req, s32 new_value);
-> > +int freq_qos_remove_request(struct freq_qos_request *req);
-> > +
-> > +int freq_qos_add_notifier(struct freq_constraints *qos,
-> > +                       enum freq_qos_req_type type,
-> > +                       struct notifier_block *notifier);
-> > +int freq_qos_remove_notifier(struct freq_constraints *qos,
-> > +                          enum freq_qos_req_type type,
-> > +                          struct notifier_block *notifier);
-> > +
-> >  #endif
-> > Index: linux-pm/kernel/power/qos.c
-> > ===================================================================
-> > --- linux-pm.orig/kernel/power/qos.c
-> > +++ linux-pm/kernel/power/qos.c
-> > @@ -650,3 +650,243 @@ static int __init pm_qos_power_init(void
-> >  }
-> >
-> >  late_initcall(pm_qos_power_init);
-> > +
-> > +/* Definitions related to the frequency QoS below. */
-> > +
-> > +/**
-> > + * freq_constraints_init - Initialize frequency QoS constraints.
-> > + * @qos: Frequency QoS constraints to initialize.
-> > + */
-> > +void freq_constraints_init(struct freq_constraints *qos)
-> > +{
-> > +     struct pm_qos_constraints *c;
-> > +
-> > +     c = &qos->min_freq;
-> > +     plist_head_init(&c->list);
-> > +     c->target_value = FREQ_QOS_MIN_DEFAULT_VALUE;
-> > +     c->default_value = FREQ_QOS_MIN_DEFAULT_VALUE;
-> > +     c->no_constraint_value = FREQ_QOS_MIN_DEFAULT_VALUE;
-> > +     c->type = PM_QOS_MAX;
->
-> should this be MIN ?
+On Thu, Oct 17, 2019 at 10:16:28AM +0300, Andy Shevchenko wrote:
+> On Wed, Oct 16, 2019 at 09:54:30AM -0700, Dmitry Torokhov wrote:
+> > On Wed, Oct 16, 2019 at 10:59:40AM +0300, Andy Shevchenko wrote:
+> > > On Tue, Oct 15, 2019 at 11:22:06AM -0700, Dmitry Torokhov wrote:
+> > > > On Mon, Oct 14, 2019 at 10:37:20AM +0300, Andy Shevchenko wrote:
+> > > > > On Fri, Oct 11, 2019 at 04:07:17PM -0700, Dmitry Torokhov wrote:
+> 
+> > > > > 'stored inline' -> 'embedded in the &struct...' ?
+> > > > 
+> > > > I was trying to have a link "stored inline" -> "is_inline".
+> > > > 
+> > > > Do we want to change the flag to be "is_embedded"?
+> > > 
+> > > In dictionaries I have
+> > > 
+> > > embedded <-> unilateral
+> > 
+> > Are you trying to show synonym or antonym here? But I am pretty sure
+> > "unilateral" is either.
+> 
+> Antonyms. The 'unilateral' is marked as so in the dictionary.
 
-No, it shouldn't.
+OK, that is not something that I would ever think of as an antonym, so
+even though I am not a native speaker I do not think we should be using
+it here as documentation and comments are supposed to be understood by
+all people from around the world and not by English majors only.
 
-For the min frequency, the effective constraint needs to be the
-maximum of all requests, because that satisfies all of them (each
-request means "the frequency cannot be less than this").
+Out of curiosity, is this dictionary available online? I would really
+want to see to what particular meaning of "embedded" they assign
+"unilateral" as antonym so that I know better next time I see it used.
 
-> > +     c->notifiers = &qos->min_freq_notifiers;
-> > +     BLOCKING_INIT_NOTIFIER_HEAD(c->notifiers);
-> > +
-> > +     c = &qos->max_freq;
-> > +     plist_head_init(&c->list);
-> > +     c->target_value = FREQ_QOS_MAX_DEFAULT_VALUE;
-> > +     c->default_value = FREQ_QOS_MAX_DEFAULT_VALUE;
-> > +     c->no_constraint_value = FREQ_QOS_MAX_DEFAULT_VALUE;
-> > +     c->type = PM_QOS_MIN;
->
-> and this MAX ?
+> 
+> > Antonyms for our use of "embedded" are likely "detached" or
+> > "disconnected".
+> > 
+> > > inline <-> ???
+> > 
+> > "out of line" but I still believe "stored separately" explains precisely
+> > what we have here.
+> 
+> No, 'out of line' is idiom with a special meaning.
 
-Likewise, for the max frequency, the effective constraint needs to be
-the minimum of all requests, as each of them means "the frequency
-cannot be more than this").
+Yes, and it is also a well defined term in CS.
 
-[Also note that the current code in device PM QoS uses MIN and MAX
-here in the same way. :-)]
+Thanks.
+
+-- 
+Dmitry
