@@ -2,152 +2,188 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AF09DAB55
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2019 13:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 230D9DAFA2
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2019 16:16:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409177AbfJQLiu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Oct 2019 07:38:50 -0400
-Received: from mga07.intel.com ([134.134.136.100]:28418 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2406040AbfJQLiu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 17 Oct 2019 07:38:50 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Oct 2019 04:38:49 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,307,1566889200"; 
-   d="scan'208";a="186463726"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga007.jf.intel.com with ESMTP; 17 Oct 2019 04:38:48 -0700
-Received: from andy by smile with local (Exim 4.92.2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iL47D-0003er-Ji; Thu, 17 Oct 2019 14:38:47 +0300
-Date:   Thu, 17 Oct 2019 14:38:47 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J . Wysocki " <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        Ferry Toth <fntoth@gmail.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH v1] ACPI / platform: Unregister stale platform devices
-Message-ID: <20191017113847.GM32742@smile.fi.intel.com>
-References: <20190830143432.21695-1-andriy.shevchenko@linux.intel.com>
+        id S1729738AbfJQOQz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Oct 2019 10:16:55 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:42042 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727314AbfJQOQz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Oct 2019 10:16:55 -0400
+Received: by mail-ot1-f67.google.com with SMTP id c10so2005874otd.9;
+        Thu, 17 Oct 2019 07:16:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ONhbG1YIvRehChglKAzYSee1XpDEhwyMKjBcNaf717M=;
+        b=izYqhpkanZhv6t0j6kpBClORLQTasyQsD+0Gzo76AmET09Nwz3oCwVeKVvCnWqcK3E
+         TyNOXkW5dT3P6CGt/Rx+x8sB1Ik3a4xLeZxeJ4iothxjWl1AZzK4fOylTazICZ6zKUf8
+         aNBuum4P1RUU3bwxE7c5fd37wXj5rq9hNiUlNyDy5ygC2p10LL8nAoNPbMfqPWMIenHM
+         baUab7D5jGKyK8itXAroeTcFaJO7fVzcKzHRWvIg9h6oWQY4M30FiSKKRfmhXAkuMIlO
+         zPlxiix8uiprFHAQTLcWR7KUHqBkxfMy+eliO50LAOeCbyf73Jfhr277xi1qg8xmaudT
+         edSQ==
+X-Gm-Message-State: APjAAAUnML6+NPnhv4RauepLt73ZKemZOIaPGtPZrT5Um9P/0GMzRlCy
+        LQP/KMTVXoJC39QM0VEkM/pNzkvkmeVdIVr/XYA=
+X-Google-Smtp-Source: APXvYqzlXzT4lVsF0ANUd+lX83vr0WuCNqKjpz6umKGU8BvwxubmHWkCKI4rEx3LdKJ9XXFDb/fKsYOCW85mZdBE59w=
+X-Received: by 2002:a9d:5a0f:: with SMTP id v15mr3351385oth.266.1571321813586;
+ Thu, 17 Oct 2019 07:16:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190830143432.21695-1-andriy.shevchenko@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <2811202.iOFZ6YHztY@kreacher> <4551555.oysnf1Sd0E@kreacher> <20191017094143.fhmhgltv6ujccxlp@vireshk-i7>
+In-Reply-To: <20191017094143.fhmhgltv6ujccxlp@vireshk-i7>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 17 Oct 2019 16:16:40 +0200
+Message-ID: <CAJZ5v0hDhJrCWnPxbV54yWAB=DKCLz33Sq8J4kXtqH4+mJn2eQ@mail.gmail.com>
+Subject: Re: [RFT][PATCH 1/3] PM: QoS: Introduce frequency QoS
+To:     Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Dmitry Osipenko <digetx@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 30, 2019 at 05:34:32PM +0300, Andy Shevchenko wrote:
-> When the commit 68bdb6773289
-> 
->   ("ACPI: add support for ACPI reconfiguration notifiers")
-> 
-> introduced reconfiguration notifiers it misses the point that the ACPI table,
-> which may be loaded and then unloaded via ConfigFS, can contain devices that are
-> not enumerated by their parents.
-> 
-> In such case the stale platform device is dangling in the system while the rest
-> of the devices from the same table are already gone.
-> 
-> Introduce acpi_platform_device_remove_notify() notifier that, in similar way to
-> I²C or SPI buses, unregisters the platform devices on table removal event.
-> 
+On Thu, Oct 17, 2019 at 11:41 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+>
+> On 16-10-19, 12:41, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > Introduce frequency QoS, based on the "raw" low-level PM QoS, to
+> > represent min and max frequency requests and aggregate constraints.
+> >
+> > The min and max frequency requests are to be represented by
+> > struct freq_qos_request objects and the aggregate constraints are to
+> > be represented by struct freq_constraints objects.  The latter are
+> > expected to be initialized with the help of freq_constraints_init().
+> >
+> > The freq_qos_read_value() helper is defined to retrieve the aggregate
+> > constraints values from a given struct freq_constraints object and
+> > there are the freq_qos_add_request(), freq_qos_update_request() and
+> > freq_qos_remove_request() helpers to manipulate the min and max
+> > frequency requests.  It is assumed that the the helpers will not
+> > run concurrently with each other for the same struct freq_qos_request
+> > object, so if that may be the case, their uses must ensure proper
+> > synchronization between them (e.g. through locking).
+> >
+> > In addition, freq_qos_add_notifier() and freq_qos_remove_notifier()
+> > are provided to add and remove notifiers that will trigger on aggregate
+> > constraint changes to and from a given struct freq_constraints object,
+> > respectively.
+> >
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  include/linux/pm_qos.h |   44 ++++++++
+> >  kernel/power/qos.c     |  240 +++++++++++++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 284 insertions(+)
+> >
+> > Index: linux-pm/include/linux/pm_qos.h
+> > ===================================================================
+> > --- linux-pm.orig/include/linux/pm_qos.h
+> > +++ linux-pm/include/linux/pm_qos.h
+> > @@ -267,4 +267,48 @@ static inline s32 dev_pm_qos_raw_resume_
+> >  }
+> >  #endif
+> >
+> > +#define FREQ_QOS_MIN_DEFAULT_VALUE   0
+> > +#define FREQ_QOS_MAX_DEFAULT_VALUE   (-1)
+> > +
+> > +enum freq_qos_req_type {
+> > +     FREQ_QOS_MIN = 1,
+> > +     FREQ_QOS_MAX,
+> > +};
+> > +
+> > +struct freq_constraints {
+> > +     struct pm_qos_constraints min_freq;
+> > +     struct blocking_notifier_head min_freq_notifiers;
+> > +     struct pm_qos_constraints max_freq;
+> > +     struct blocking_notifier_head max_freq_notifiers;
+> > +};
+> > +
+> > +struct freq_qos_request {
+> > +     enum freq_qos_req_type type;
+> > +     struct plist_node pnode;
+> > +     struct freq_constraints *qos;
+> > +};
+> > +
+> > +static inline int freq_qos_request_active(struct freq_qos_request *req)
+> > +{
+> > +     return !IS_ERR_OR_NULL(req->qos);
+> > +}
+> > +
+> > +void freq_constraints_init(struct freq_constraints *qos);
+> > +
+> > +s32 freq_qos_read_value(struct freq_constraints *qos,
+> > +                     enum freq_qos_req_type type);
+> > +
+> > +int freq_qos_add_request(struct freq_constraints *qos,
+> > +                      struct freq_qos_request *req,
+> > +                      enum freq_qos_req_type type, s32 value);
+> > +int freq_qos_update_request(struct freq_qos_request *req, s32 new_value);
+> > +int freq_qos_remove_request(struct freq_qos_request *req);
+> > +
+> > +int freq_qos_add_notifier(struct freq_constraints *qos,
+> > +                       enum freq_qos_req_type type,
+> > +                       struct notifier_block *notifier);
+> > +int freq_qos_remove_notifier(struct freq_constraints *qos,
+> > +                          enum freq_qos_req_type type,
+> > +                          struct notifier_block *notifier);
+> > +
+> >  #endif
+> > Index: linux-pm/kernel/power/qos.c
+> > ===================================================================
+> > --- linux-pm.orig/kernel/power/qos.c
+> > +++ linux-pm/kernel/power/qos.c
+> > @@ -650,3 +650,243 @@ static int __init pm_qos_power_init(void
+> >  }
+> >
+> >  late_initcall(pm_qos_power_init);
+> > +
+> > +/* Definitions related to the frequency QoS below. */
+> > +
+> > +/**
+> > + * freq_constraints_init - Initialize frequency QoS constraints.
+> > + * @qos: Frequency QoS constraints to initialize.
+> > + */
+> > +void freq_constraints_init(struct freq_constraints *qos)
+> > +{
+> > +     struct pm_qos_constraints *c;
+> > +
+> > +     c = &qos->min_freq;
+> > +     plist_head_init(&c->list);
+> > +     c->target_value = FREQ_QOS_MIN_DEFAULT_VALUE;
+> > +     c->default_value = FREQ_QOS_MIN_DEFAULT_VALUE;
+> > +     c->no_constraint_value = FREQ_QOS_MIN_DEFAULT_VALUE;
+> > +     c->type = PM_QOS_MAX;
+>
+> should this be MIN ?
 
-Rafael, all dependencies now in v5.4-rc1.
-Can this be applied, or I need to do more work?
+No, it shouldn't.
 
-> Depends-on: 00500147cbd3 ("drivers: Introduce device lookup variants by ACPI_COMPANION device")
-> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/acpi/acpi_platform.c | 43 ++++++++++++++++++++++++++++++++++++
->  drivers/acpi/scan.c          |  1 +
->  2 files changed, 44 insertions(+)
-> 
-> diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-> index 00ec4f2bf015..dfcd6210828e 100644
-> --- a/drivers/acpi/acpi_platform.c
-> +++ b/drivers/acpi/acpi_platform.c
-> @@ -31,6 +31,44 @@ static const struct acpi_device_id forbidden_id_list[] = {
->  	{"", 0},
->  };
->  
-> +static struct platform_device *acpi_platform_device_find_by_adev(struct acpi_device *adev)
-> +{
-> +	struct device *dev;
-> +
-> +	dev = bus_find_device_by_acpi_dev(&platform_bus_type, adev);
-> +	return dev ? to_platform_device(dev) : NULL;
-> +}
-> +
-> +static int acpi_platform_device_remove_notify(struct notifier_block *nb,
-> +					      unsigned long value, void *arg)
-> +{
-> +	struct acpi_device *adev = arg;
-> +	struct platform_device *pdev;
-> +
-> +	switch (value) {
-> +	case ACPI_RECONFIG_DEVICE_ADD:
-> +		/* Nothing to do here */
-> +		break;
-> +	case ACPI_RECONFIG_DEVICE_REMOVE:
-> +		if (!acpi_device_enumerated(adev))
-> +			break;
-> +
-> +		pdev = acpi_platform_device_find_by_adev(adev);
-> +		if (!pdev)
-> +			break;
-> +
-> +		platform_device_unregister(pdev);
-> +		put_device(&pdev->dev);
-> +		break;
-> +	}
-> +
-> +	return NOTIFY_OK;
-> +}
-> +
-> +static struct notifier_block acpi_platform_notifier = {
-> +	.notifier_call = acpi_platform_device_remove_notify,
-> +};
-> +
->  static void acpi_platform_fill_resource(struct acpi_device *adev,
->  	const struct resource *src, struct resource *dest)
->  {
-> @@ -130,3 +168,8 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
->  	return pdev;
->  }
->  EXPORT_SYMBOL_GPL(acpi_create_platform_device);
-> +
-> +void __init acpi_platform_init(void)
-> +{
-> +	acpi_reconfig_notifier_register(&acpi_platform_notifier);
-> +}
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index aad6be5c0af0..915650bf519f 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -2174,6 +2174,7 @@ int __init acpi_scan_init(void)
->  	acpi_pci_root_init();
->  	acpi_pci_link_init();
->  	acpi_processor_init();
-> +	acpi_platform_init();
->  	acpi_lpss_init();
->  	acpi_apd_init();
->  	acpi_cmos_rtc_init();
-> -- 
-> 2.23.0.rc1
-> 
+For the min frequency, the effective constraint needs to be the
+maximum of all requests, because that satisfies all of them (each
+request means "the frequency cannot be less than this").
 
--- 
-With Best Regards,
-Andy Shevchenko
+> > +     c->notifiers = &qos->min_freq_notifiers;
+> > +     BLOCKING_INIT_NOTIFIER_HEAD(c->notifiers);
+> > +
+> > +     c = &qos->max_freq;
+> > +     plist_head_init(&c->list);
+> > +     c->target_value = FREQ_QOS_MAX_DEFAULT_VALUE;
+> > +     c->default_value = FREQ_QOS_MAX_DEFAULT_VALUE;
+> > +     c->no_constraint_value = FREQ_QOS_MAX_DEFAULT_VALUE;
+> > +     c->type = PM_QOS_MIN;
+>
+> and this MAX ?
 
+Likewise, for the max frequency, the effective constraint needs to be
+the minimum of all requests, as each of them means "the frequency
+cannot be more than this").
 
+[Also note that the current code in device PM QoS uses MIN and MAX
+here in the same way. :-)]
