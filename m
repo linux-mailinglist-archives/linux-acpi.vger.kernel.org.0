@@ -2,116 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 358B8DB1DD
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2019 18:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24BBADB273
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2019 18:34:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728773AbfJQQEk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Oct 2019 12:04:40 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:36190 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728391AbfJQQEk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Oct 2019 12:04:40 -0400
-Received: by mail-pg1-f194.google.com with SMTP id 23so1619941pgk.3;
-        Thu, 17 Oct 2019 09:04:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=MEWWAMBOeS/era9AcFti+L6FUy/miAh0BHzcw7O5fnw=;
-        b=Toz6mSendGQ8kRPgCgNqB7dBwisIvwTPYspQQQQkaUCt7djKRT9RUi0rVbwijTn77k
-         4dB5vPvX8zG/9MyP0jX21p9tdea6r0kHvYuuXlKhZZhEFaPM9j5ZSRQ4kzozIn0x5Di1
-         jC7UJVbx8RdH59KgYauVgbXbFa9L2gG0ZAuhaY0eSrFWquTrmHf6p6SwLOww3ZfIaYA4
-         /5eNzoUC4Amtrllk5AEO5Q5jxYB/PvKVwIbF3yrdklnHRb8z/y6P7iBM/kXcaWV3UmjZ
-         i+1+FoPIpdJzl1e+mA6Dupg06baZjV9J2luee8dpVse3O8iWYvX32ihgLNihMi7VnFvt
-         Kazw==
+        id S2408174AbfJQQel (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Oct 2019 12:34:41 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:34833 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2393857AbfJQQel (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Oct 2019 12:34:41 -0400
+Received: by mail-oi1-f194.google.com with SMTP id x3so2723353oig.2;
+        Thu, 17 Oct 2019 09:34:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=MEWWAMBOeS/era9AcFti+L6FUy/miAh0BHzcw7O5fnw=;
-        b=lLMnFmFZyJgKUL1Z+GJhnwGbfZKfADflp/HvB3jhWozuK2py3GeaMXQI34ExyD5HF7
-         bheFH8wTHcDAGtbhn8Pq84GX25r9mRYCE64ijyPyfoJANAEQmJlcGFFzZtUFI4j33kPe
-         uY78aLyCCEVWvxPUW+PE8DXjXmjdc2FlMViXfxtjzrxbnt+TRvqDImyobWJ3H49gVIGt
-         LfCVBCekvNGxmCtjKRwhi3pxX5LKVnruexaiD5+Ma/E8D1XW75YTi+ms7B3B0Pj3fMGw
-         w/PNP8OIP97Y+S7on2V1IEf/WbFVmkRtVIoRJhIC6ssCwic8BjicXb98h8sWeWTbbU5E
-         H3qQ==
-X-Gm-Message-State: APjAAAX/9yyOdF+POG5arD8LIeHVfW3QXLLxpuzs2SBtycy8f/Kc4ODf
-        gZWS5QVOxGAspNuKxMUxRM0=
-X-Google-Smtp-Source: APXvYqzUDopEAJP5Iwc/f4Fn8fLjI9XM3OplF1Y7VC4MJkS0urPGJz1/1ZFGXQPxt8eputADJ+q2Jw==
-X-Received: by 2002:a17:90b:914:: with SMTP id bo20mr5074233pjb.6.1571328279276;
-        Thu, 17 Oct 2019 09:04:39 -0700 (PDT)
-Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
-        by smtp.gmail.com with ESMTPSA id a11sm2996970pfo.165.2019.10.17.09.04.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2019 09:04:38 -0700 (PDT)
-Date:   Thu, 17 Oct 2019 09:04:36 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v5 11/14] software node: move small properties inline
- when copying
-Message-ID: <20191017160436.GH35946@dtor-ws>
-References: <20191011230721.206646-1-dmitry.torokhov@gmail.com>
- <20191011230721.206646-12-dmitry.torokhov@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=PTweReGzWRV6Ob0sCHbhOekauupQAppLGL1gzS8TcKs=;
+        b=pe9wF3D7Kl6nB4c9mowgsk+ThJW8q9PSq+ivgjpZzgoQuAtK20bJviLymZe7UKCdw0
+         mJVlQzxDvL9DuDg6s9DB7vkG19y/oxgWV3w6YiGH8t+a7zXbp/TGkqL1pz3R5bfwJWys
+         +F9wJteJPyaoiXUswxnEAdFnpPj0yGYWFLgfzQ6qmtIjhNotK555sI2oDRIzxPDCzYAm
+         hmwhcI/9x1559oUC2HxrWG7O6T21BIGT0Xj5tF6TYcXY/seo+19Z6PxYbJfeV62/gHXA
+         rqJ1/b5wl7LBUqVpu7WSUQdksmQYUPmg8YV10wEHSCMprEpXSI+TqgI0D0rvLANqhbsQ
+         n4iA==
+X-Gm-Message-State: APjAAAUeawEOwNz7YVRhZ+kYtlvXEHr6skB4Nk+n3OoHw/LeFO7k/Fa6
+        uN4Re11HXK3Y4GZZ3HeTvpnYXS7AUoRUpbBnUxQ=
+X-Google-Smtp-Source: APXvYqxdtwn4csBmwqLiWGMGaWig215MMPVHzs3sAF65tbKccsRNu9C3I2YhQmoUAwnEvbh1AfpL5ERkR4gfKHL+voQ=
+X-Received: by 2002:aca:b6c5:: with SMTP id g188mr4177262oif.103.1571330080233;
+ Thu, 17 Oct 2019 09:34:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191011230721.206646-12-dmitry.torokhov@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <2811202.iOFZ6YHztY@kreacher> <20191016142343.GB5330@bogus>
+ <20191017095725.izchzl7enfylvpf3@vireshk-i7> <20191017095942.GF8978@bogus>
+In-Reply-To: <20191017095942.GF8978@bogus>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 17 Oct 2019 18:34:28 +0200
+Message-ID: <CAJZ5v0ixS8ZS93Fgj8XGUMGcLdAy+Fgwp5z3QirccNSiiwLtDA@mail.gmail.com>
+Subject: Re: [RFT][PATCH 0/3] cpufreq / PM: QoS: Introduce frequency QoS and
+ use it in cpufreq
+To:     Sudeep Holla <sudeep.holla@arm.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Dmitry Osipenko <digetx@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 11, 2019 at 04:07:18PM -0700, Dmitry Torokhov wrote:
-> When copying/duplicating set of properties, move smaller properties that
-> were stored separately directly inside property entry structures. We can
-> move:
-> 
-> - up to 8 bytes from U8 arrays
-> - up to 4 words
-> - up to 2 double words
-> - one U64 value
-> - one or 2 strings.
-> 
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> ---
->  drivers/base/swnode.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-> index ae4b24ee2a54..546fc1b20095 100644
-> --- a/drivers/base/swnode.c
-> +++ b/drivers/base/swnode.c
-> @@ -277,6 +277,16 @@ static int property_entry_copy_data(struct property_entry *dst,
->  		dst->value = src->value;
->  	}
->  
-> +	if (!dst->is_inline && dst->length <= sizeof(dst->value)) {
-> +		/* We have an opportunity to move the data inline */
-> +		const void *tmp = dst->pointer;
-> +
-> +		memcpy(&dst->value, tmp, dst->length);
-> +		dst->is_inline = true;
-> +
-> +		kfree(tmp);
-> +	}
+On Thu, Oct 17, 2019 at 12:00 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
+>
+> On Thu, Oct 17, 2019 at 03:27:25PM +0530, Viresh Kumar wrote:
+> > On 16-10-19, 15:23, Sudeep Holla wrote:
+> > > Thanks for the spinning these patches so quickly.
+> > >
+> > > I did give it a spin, but unfortunately it doesn't fix the bug I reported.
+> > > So I looked at my bug report in detail and looks like the cpufreq_driver
+> > > variable is set to NULL at that point and it fails to dereference it
+> > > while trying to execute:
+> > >     ret = cpufreq_driver->verify(new_policy);
+> > > (Hint verify is at offset 0x1c/28)
+> > >
+> > > So I suspect some race as this platform with bL switcher tries to
+> > > unregister and re-register the cpufreq driver during the boot.
+> > >
+> > > I need to spend more time on this as reverting the initial PM QoS patch
+> > > to cpufreq.c makes the issue disappear.
 
-This chunk needs to be moved to after dst->length is assigned.  I'll
-send updated version after I get more feedback.
+I guess you mean commit 67d874c3b2c6 ("cpufreq: Register notifiers
+with the PM QoS framework")?
 
-> +
->  	dst->length = src->length;
->  	dst->type = src->type;
->  	dst->name = kstrdup(src->name, GFP_KERNEL);
+That would make sense, because it added the cpufreq_notifier_min() and
+cpufreq_notifier_max() that trigger handle_update() via
+schedule_work().
 
-Thanks.
+[BTW, Viresh, it looks like cpufreq_set_policy() should still ensure
+that the new min is less than the new max, because the QoS doesn't do
+that.]
 
--- 
-Dmitry
+> > Is this easily reproducible ? cpufreq_driver == NULL shouldn't be the case, it
+> > get updated only once while registering/unregistering cpufreq drivers. That is
+> > the last thing which can go wrong from my point of view :)
+> >
+>
+> Yes, if I boot my TC2 with bL switcher enabled, it always crashes on boot.
+
+It does look like handle_update() races with
+cpufreq_unregister_driver() and cpufreq_remove_dev (called from there
+indirectly) does look racy.
