@@ -2,49 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 402B5DB1C6
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2019 18:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 358B8DB1DD
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2019 18:04:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389155AbfJQQCn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Oct 2019 12:02:43 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:37662 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731629AbfJQQCn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Oct 2019 12:02:43 -0400
-Received: by mail-pf1-f195.google.com with SMTP id y5so1937909pfo.4;
-        Thu, 17 Oct 2019 09:02:42 -0700 (PDT)
+        id S1728773AbfJQQEk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Oct 2019 12:04:40 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:36190 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728391AbfJQQEk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Oct 2019 12:04:40 -0400
+Received: by mail-pg1-f194.google.com with SMTP id 23so1619941pgk.3;
+        Thu, 17 Oct 2019 09:04:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=y70YcjMTae+KBmY5i8e+kvbER0Afq5EJqUnZxrc9iiw=;
-        b=m1BoLmnU/H/Dhb3zBe/SBpL7c9FEF5eKXunx5owEt9yb2l+YZxVlOuw575ghC7extd
-         csxTCpHt1uUDO4Tqp3CdjNgej+RymtE13DaEqXL4ZiFgLntwTajVvKzH9oedTdfgx3oL
-         JZUTzDfbcH0cz9nO2MVF9RZ97YYY3gRVQ9LUALLZ4zqUytu5IfkQR0m4yG9XcAJhrWa5
-         0rcGuueF0VtyihrBe6hKTXkcgXLipYu9TEIQi8H02pUUzXkEx89Eukaf9lnVoLgK7akv
-         jI88l17Y1BScByhj5UL301XtS9gqikEE80W8D5CH1nVo2EkU2TUA1l9X73wNPbXZl7Yn
-         EkFQ==
+        bh=MEWWAMBOeS/era9AcFti+L6FUy/miAh0BHzcw7O5fnw=;
+        b=Toz6mSendGQ8kRPgCgNqB7dBwisIvwTPYspQQQQkaUCt7djKRT9RUi0rVbwijTn77k
+         4dB5vPvX8zG/9MyP0jX21p9tdea6r0kHvYuuXlKhZZhEFaPM9j5ZSRQ4kzozIn0x5Di1
+         jC7UJVbx8RdH59KgYauVgbXbFa9L2gG0ZAuhaY0eSrFWquTrmHf6p6SwLOww3ZfIaYA4
+         /5eNzoUC4Amtrllk5AEO5Q5jxYB/PvKVwIbF3yrdklnHRb8z/y6P7iBM/kXcaWV3UmjZ
+         i+1+FoPIpdJzl1e+mA6Dupg06baZjV9J2luee8dpVse3O8iWYvX32ihgLNihMi7VnFvt
+         Kazw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=y70YcjMTae+KBmY5i8e+kvbER0Afq5EJqUnZxrc9iiw=;
-        b=Cw36TFfEyeyPuuSafwCOMDQLkjOeXLTXHcuHMsunTbqnppPyi0kWVR0clrqM6B4cwe
-         jxspGh4eY8Ca6Lke565DVX8QOpDa+JmE870HuXj8ssVoMOaGAeLEO6p+a0jgGm8F+vr8
-         RjV65DSEjFzTa0xBKagNIi6f1lABIhFSxVf/LmwU+F3uQ4hk8cc14sYW8N9iTjT2vcRW
-         gLrrKuAuT4xaJqKlJfgH0sB2ephfUGw+m0fxbXBPJeeK2ixbD97iqzAuQg+ttMLRDWDe
-         eQPUeKymuwCLj7ETHLNaLxryoiepNfFga35y9k1KHAugambdFY+hSNU6NhDVnfWmglZV
-         BwJQ==
-X-Gm-Message-State: APjAAAVJ6gLeCxzTrdBV6seyTDXM0x55ri3xixY+1QZ0lcKJfbVINzn5
-        fRFI/lSAjZSOJz4DRFoUy5w=
-X-Google-Smtp-Source: APXvYqyMCbyvP5twVk/9K5eZYp7k9rZ9LTNFF1bkof2hrnZcyKas+XsbwKCpdr96xRh0FMJ7m5lPEg==
-X-Received: by 2002:a17:90a:fb92:: with SMTP id cp18mr5421265pjb.2.1571328162065;
-        Thu, 17 Oct 2019 09:02:42 -0700 (PDT)
+        bh=MEWWAMBOeS/era9AcFti+L6FUy/miAh0BHzcw7O5fnw=;
+        b=lLMnFmFZyJgKUL1Z+GJhnwGbfZKfADflp/HvB3jhWozuK2py3GeaMXQI34ExyD5HF7
+         bheFH8wTHcDAGtbhn8Pq84GX25r9mRYCE64ijyPyfoJANAEQmJlcGFFzZtUFI4j33kPe
+         uY78aLyCCEVWvxPUW+PE8DXjXmjdc2FlMViXfxtjzrxbnt+TRvqDImyobWJ3H49gVIGt
+         LfCVBCekvNGxmCtjKRwhi3pxX5LKVnruexaiD5+Ma/E8D1XW75YTi+ms7B3B0Pj3fMGw
+         w/PNP8OIP97Y+S7on2V1IEf/WbFVmkRtVIoRJhIC6ssCwic8BjicXb98h8sWeWTbbU5E
+         H3qQ==
+X-Gm-Message-State: APjAAAX/9yyOdF+POG5arD8LIeHVfW3QXLLxpuzs2SBtycy8f/Kc4ODf
+        gZWS5QVOxGAspNuKxMUxRM0=
+X-Google-Smtp-Source: APXvYqzUDopEAJP5Iwc/f4Fn8fLjI9XM3OplF1Y7VC4MJkS0urPGJz1/1ZFGXQPxt8eputADJ+q2Jw==
+X-Received: by 2002:a17:90b:914:: with SMTP id bo20mr5074233pjb.6.1571328279276;
+        Thu, 17 Oct 2019 09:04:39 -0700 (PDT)
 Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
-        by smtp.gmail.com with ESMTPSA id u5sm3742939pfl.25.2019.10.17.09.02.41
+        by smtp.gmail.com with ESMTPSA id a11sm2996970pfo.165.2019.10.17.09.04.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2019 09:02:41 -0700 (PDT)
-Date:   Thu, 17 Oct 2019 09:02:39 -0700
+        Thu, 17 Oct 2019 09:04:38 -0700 (PDT)
+Date:   Thu, 17 Oct 2019 09:04:36 -0700
 From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>
@@ -54,126 +54,62 @@ Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v5 10/14] software node: rename is_array to is_inline
-Message-ID: <20191017160239.GG35946@dtor-ws>
+Subject: Re: [PATCH v5 11/14] software node: move small properties inline
+ when copying
+Message-ID: <20191017160436.GH35946@dtor-ws>
 References: <20191011230721.206646-1-dmitry.torokhov@gmail.com>
- <20191011230721.206646-11-dmitry.torokhov@gmail.com>
+ <20191011230721.206646-12-dmitry.torokhov@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191011230721.206646-11-dmitry.torokhov@gmail.com>
+In-Reply-To: <20191011230721.206646-12-dmitry.torokhov@gmail.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 11, 2019 at 04:07:17PM -0700, Dmitry Torokhov wrote:
-> We do not need a special flag to know if we are dealing with an array,
-> as we can get that data from ratio between element length and the data
-> size, however we do need a flag to know whether the data is stored
-> directly inside property_entry or separately.
+On Fri, Oct 11, 2019 at 04:07:18PM -0700, Dmitry Torokhov wrote:
+> When copying/duplicating set of properties, move smaller properties that
+> were stored separately directly inside property entry structures. We can
+> move:
+> 
+> - up to 8 bytes from U8 arrays
+> - up to 4 words
+> - up to 2 double words
+> - one U64 value
+> - one or 2 strings.
 > 
 > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 > ---
->  drivers/base/swnode.c    |  9 +++++----
->  include/linux/property.h | 12 +++++++-----
->  2 files changed, 12 insertions(+), 9 deletions(-)
+>  drivers/base/swnode.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 > 
 > diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-> index 8826c9040c80..ae4b24ee2a54 100644
+> index ae4b24ee2a54..546fc1b20095 100644
 > --- a/drivers/base/swnode.c
 > +++ b/drivers/base/swnode.c
-> @@ -108,7 +108,7 @@ static const void *property_get_pointer(const struct property_entry *prop)
->  	if (!prop->length)
->  		return NULL;
->  
-> -	if (prop->is_array)
-> +	if (!prop->is_inline)
->  		return prop->pointer;
->  
->  	return &prop->value;
-> @@ -205,7 +205,7 @@ static void property_entry_free_data(const struct property_entry *p)
->  	const char * const *src_str;
->  	size_t i, nval;
->  
-> -	if (p->is_array) {
-> +	if (!p->is_inline) {
->  		if (p->type == DEV_PROP_STRING && p->pointer) {
->  			src_str = p->pointer;
->  			nval = p->length / sizeof(const char *);
-> @@ -250,7 +250,7 @@ static int property_entry_copy_data(struct property_entry *dst,
->  	const void *pointer = property_get_pointer(src);
->  	const void *new;
->  
-> -	if (src->is_array) {
-> +	if (!src->is_inline) {
->  		if (!src->length)
->  			return -ENODATA;
->  
-> @@ -264,15 +264,16 @@ static int property_entry_copy_data(struct property_entry *dst,
->  				return -ENOMEM;
->  		}
->  
-> -		dst->is_array = true;
->  		dst->pointer = new;
->  	} else if (src->type == DEV_PROP_STRING) {
->  		new = kstrdup(src->value.str, GFP_KERNEL);
->  		if (!new && src->value.str)
->  			return -ENOMEM;
->  
-> +		dst->is_inline = true;
->  		dst->value.str = new;
->  	} else {
-> +		dst->is_inline = true;
+> @@ -277,6 +277,16 @@ static int property_entry_copy_data(struct property_entry *dst,
 >  		dst->value = src->value;
 >  	}
 >  
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index 238e1507925f..ac7823d58cfe 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -222,15 +222,17 @@ static inline int fwnode_property_count_u64(const struct fwnode_handle *fwnode,
->   * struct property_entry - "Built-in" device property representation.
->   * @name: Name of the property.
->   * @length: Length of data making up the value.
-> - * @is_array: True when the property is an array.
-> + * @is_inline: True when the property value is stored directly in
-> + *     &struct property_entry instance.
->   * @type: Type of the data in unions.
-> - * @pointer: Pointer to the property (an array of items of the given type).
-> - * @value: Value of the property (when it is a single item of the given type).
-> + * @pointer: Pointer to the property when it is stored separately from
-> + *     the &struct property_entry instance.
-> + * @value: Value of the property when it is stored inline.
->   */
->  struct property_entry {
->  	const char *name;
->  	size_t length;
-> -	bool is_array;
-> +	bool is_inline;
->  	enum dev_prop_type type;
->  	union {
->  		const void *pointer;
-> @@ -257,7 +259,6 @@ struct property_entry {
->  (struct property_entry) {						\
->  	.name = _name_,							\
->  	.length = (_len_) * __PROPERTY_ENTRY_ELEMENT_SIZE(_elem_),	\
-> -	.is_array = true,						\
->  	.type = DEV_PROP_##_Type_,					\
->  	{ .pointer = _val_ },						\
->  }
-> @@ -288,6 +289,7 @@ struct property_entry {
->  (struct property_entry) {						\
->  	.name = _name_,							\
->  	.length = __PROPERTY_ENTRY_ELEMENT_SIZE(_elem_),		\
-> +	.is_inline = true,						\
->  	.type = DEV_PROP_##_Type_,					\
->  	{ .value = { ._elem_ = _val_ } },				\
->  }
+> +	if (!dst->is_inline && dst->length <= sizeof(dst->value)) {
+> +		/* We have an opportunity to move the data inline */
+> +		const void *tmp = dst->pointer;
+> +
+> +		memcpy(&dst->value, tmp, dst->length);
+> +		dst->is_inline = true;
+> +
+> +		kfree(tmp);
+> +	}
 
-The patch also needs to set is_inline in PROPERTY_ENTRY_BOOL(), I'll
+This chunk needs to be moved to after dst->length is assigned.  I'll
 send updated version after I get more feedback.
+
+> +
+>  	dst->length = src->length;
+>  	dst->type = src->type;
+>  	dst->name = kstrdup(src->name, GFP_KERNEL);
 
 Thanks.
 
