@@ -2,109 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FBBBD9EEB
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2019 00:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7D7ADA5E7
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2019 09:03:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406827AbfJPWDh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Oct 2019 18:03:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57792 "EHLO mail.kernel.org"
+        id S2407861AbfJQHC5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Oct 2019 03:02:57 -0400
+Received: from mga01.intel.com ([192.55.52.88]:31079 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2406826AbfJPWDg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 16 Oct 2019 18:03:36 -0400
-Received: from localhost (unknown [69.71.4.100])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EA193218DE;
-        Wed, 16 Oct 2019 22:03:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571263415;
-        bh=O0G17YN2tPEZ7i3JnTYzZCDAa/F7uCFuiSjmZ3wvrfA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=BiWb/svlRwEwax+APMGEapJwph2a8ugfWL3JZwsnqQTfPQWA4SLexSE+F2cnVPgRU
-         2qJGp2NUMGqKYOWdToD89u2zQk8Y+dHmcIMFsy8yShVFJYscHruIHQrj9VnRNp7mlu
-         i5f8AtdnKEMXdw3+v/a8iBP1vkESb0pk/b5c38S4=
-Date:   Wed, 16 Oct 2019 17:03:33 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Karol Herbst <kherbst@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Lyude Paul <lyude@redhat.com>,
-        Mika Westerberg <mika.westerberg@intel.com>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        nouveau <nouveau@lists.freedesktop.org>,
-        Linux ACPI Mailing List <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v3] pci: prevent putting nvidia GPUs into lower device
- states on certain intel bridges
-Message-ID: <20191016220333.GA88523@google.com>
+        id S2390955AbfJQHC5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 17 Oct 2019 03:02:57 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Oct 2019 00:02:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,306,1566889200"; 
+   d="scan'208";a="279779997"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga001.jf.intel.com with ESMTP; 17 Oct 2019 00:02:48 -0700
+Received: from andy by smile with local (Exim 4.92.2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1iKzo7-0008AI-Np; Thu, 17 Oct 2019 10:02:47 +0300
+Date:   Thu, 17 Oct 2019 10:02:47 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v5 05/14] software node: clean up
+ property_copy_string_array()
+Message-ID: <20191017070247.GA32742@smile.fi.intel.com>
+References: <20191011230721.206646-1-dmitry.torokhov@gmail.com>
+ <20191011230721.206646-6-dmitry.torokhov@gmail.com>
+ <20191015120726.GG32742@smile.fi.intel.com>
+ <20191015181211.GD105649@dtor-ws>
+ <20191016075300.GO32742@smile.fi.intel.com>
+ <20191016170059.GE35946@dtor-ws>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACO55tuXck7vqGVLmMBGFg6A2pr3h8koRuvvWHLNDH8XvBVxew@mail.gmail.com>
+In-Reply-To: <20191016170059.GE35946@dtor-ws>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 16, 2019 at 11:48:22PM +0200, Karol Herbst wrote:
-> On Wed, Oct 16, 2019 at 11:37 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > On Wed, Oct 16, 2019 at 09:18:32PM +0200, Karol Herbst wrote:
-> > > but setting the PCI_DEV_FLAGS_NO_D3 flag does prevent using the
-> > > platform means of putting the device into D3cold, right? That's
-> > > actually what should still happen, just the D3hot step should be
-> > > skipped.
-> >
-> > If I understand correctly, when we put a device in D3cold on an ACPI
-> > system, we do something like this:
-> >
-> >   pci_set_power_state(D3cold)
-> >     if (PCI_DEV_FLAGS_NO_D3)
-> >       return 0                                   <-- nothing at all if quirked
-> >     pci_raw_set_power_state
-> >       pci_write_config_word(PCI_PM_CTRL, D3hot)  <-- set to D3hot
-> >     __pci_complete_power_transition(D3cold)
-> >       pci_platform_power_transition(D3cold)
-> >         platform_pci_set_power_state(D3cold)
-> >           acpi_pci_set_power_state(D3cold)
-> >             acpi_device_set_power(ACPI_STATE_D3_COLD)
-> >               ...
-> >                 acpi_evaluate_object("_OFF")     <-- set to D3cold
-> >
-> > I did not understand the connection with platform (ACPI) power
-> > management from your patch.  It sounds like you want this entire path
-> > except that you want to skip the PCI_PM_CTRL write?
-> >
+On Wed, Oct 16, 2019 at 10:00:59AM -0700, Dmitry Torokhov wrote:
+> On Wed, Oct 16, 2019 at 10:53:00AM +0300, Andy Shevchenko wrote:
+> > On Tue, Oct 15, 2019 at 11:12:11AM -0700, Dmitry Torokhov wrote:
+> > > On Tue, Oct 15, 2019 at 03:07:26PM +0300, Andy Shevchenko wrote:
+
+> > Yes, since property_set_pointer is called independently
+> > on the type of the value.
 > 
-> exactly. I am running with this workaround for a while now and never
-> had any fails with it anymore. The GPU gets turned off correctly and I
-> see the same power savings, just that the GPU can be powered on again.
+> We still call property_set_pointer() independently of the type of the
+> value even with this patch. The point is that we do not set the pointer
+> in property_copy_string_array(), so we only set the pointer once.
 > 
-> > That seems like something Rafael should weigh in on.  I don't know
-> > why we set the device to D3hot with PCI_PM_CTRL before using the ACPI
-> > methods, and I don't know what the effect of skipping that is.  It
-> > seems a little messy to slice out this tiny piece from the middle, but
-> > maybe it makes sense.
-> >
+> We used to have essentially for string arrays:
 > 
-> afaik when I was talking with others in the past about it, Windows is
-> doing that before using ACPI calls, but maybe they have some similar
-> workarounds for certain intel bridges as well? I am sure it affects
-> more than the one I am blacklisting here, but I rather want to check
-> each device before blacklisting all kabylake and sky lake bridges (as
-> those are the ones were this issue can be observed).
+> 	copy data
+> 	set pointer in dst
+> 	get pointer from dst
+> 	set pointer in dst
+> 
+> With this patch we have:
+> 
+> 	copy data
+> 	set pointer in dst
 
-From a quick look at the ACPI spec, I didn't see conditions like "OSPM
-must put PCI devices in D3hot before executing _OFF".  But obviously
-there's *some* reason and I probably just missed it.
+> > > This is confising and awkward and I believe it
+> > > is cleaner for property_copy_string_array() to give a pointer to a copy
+> > > of a string array, and then property_entry_copy_data() use it when
+> > > handling the destination structure.
+> > 
+> > We probably need a 3rd opinion here.
+> 
+> I think I can still convince you ;)
 
-> Sadly we had no luck getting any information about such workaround out
-> of Nvidia or Intel.
+Probably this is fine.
 
-I'm not surprised; it doesn't seem like we really have the details
-needed to get to a root cause yet.  I think what we really need is a
-PCIe analyzer trace to see what happens when the device "falls off the
-bus".
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Bjorn
+
