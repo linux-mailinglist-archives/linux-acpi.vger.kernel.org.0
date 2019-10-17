@@ -2,178 +2,169 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48EFADB907
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2019 23:29:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63622DB91F
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2019 23:41:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2503622AbfJQV3G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Oct 2019 17:29:06 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:44699 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2503620AbfJQV3F (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Oct 2019 17:29:05 -0400
-Received: by mail-lf1-f66.google.com with SMTP id q12so3014763lfc.11;
-        Thu, 17 Oct 2019 14:29:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=9WisCaGvIVX1hFD0yfP4aN4Gk25aG7SIYWHJW0guN10=;
-        b=Wzp3MqwMGPcebQE4MB7L4YEOWHXfzFEhgEDNAbJVl4LsNPZ9UkYbTbL4yXHO6taXGm
-         CqTyRgsepTfbmhfTXBEwhjnXCzxyOZUgV1/I5kBYbs/KXy5zN6JGQwAHaqHXUPt7mBer
-         g8PEzoxzzcN3JcUFyQp4fPnB5iv81UUscKrZhex/enPe+JaK/D2rl6MPM960IszXoq2c
-         s8CQyEENz0aUg6rbi+IdtcjHRusqpOU+0pkywHi/UIe95utA9q3oyooSmaJ7A2HlSU2x
-         78XxVBPt7u8y6dW5qpsmEtxy7E0qzig45YiIFF6xri8k2fCHLXNeoKnGXXPlkGpsoFD0
-         1BWQ==
+        id S1726910AbfJQVlB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Oct 2019 17:41:01 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:36564 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726205AbfJQVlB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Oct 2019 17:41:01 -0400
+Received: by mail-oi1-f196.google.com with SMTP id k20so3488226oih.3;
+        Thu, 17 Oct 2019 14:40:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=9WisCaGvIVX1hFD0yfP4aN4Gk25aG7SIYWHJW0guN10=;
-        b=tekPwXrQK13M3JAwBU4Cs+ZdGJJ3+TMKpDamSot7bbiQXubTqpua2fo+QGWaBj7lUu
-         Fo5QzZl9ZwCAtyi/YY9FxScbAYC6WlJswHG0BklPoEDFsuPt+lkN60jp/NqQQ6gIzXD5
-         HAKSmt/CsqYT51SryQmZYgFbvEj2r0oSfC61im+Ai9asOtyk1mzJb6r9ZhPvt+eWytXW
-         QvJnxoX9QN6yOxRDziZVnwuVavJUgScP3AUYCJdSjglUyhx7/ncnQzs4pXTs3OuxFW+G
-         J7Ic3mistSTuToNZ+1sQGIVRJjGd6PtQ9Mz2hRihubvag+FKPR+tP01LRLOd0apLBDgL
-         ZUTA==
-X-Gm-Message-State: APjAAAVsmPZFEA2SSlg1p+vbjWRHGJKBTZFcNPgzKPWQELgFDPjnoxxW
-        PNnVlTmVRpAeL7P3NpW7q4rNm34x
-X-Google-Smtp-Source: APXvYqxdLHj7PEXoDZrvTj8y7RlvVo+LQjP7EhIWEpeYE/KpuqcP9+Jnbm2at6c5JgPqnGeqJtUsIA==
-X-Received: by 2002:a19:ae05:: with SMTP id f5mr3631184lfc.165.1571347743190;
-        Thu, 17 Oct 2019 14:29:03 -0700 (PDT)
-Received: from [192.168.2.145] ([94.29.10.250])
-        by smtp.googlemail.com with ESMTPSA id t8sm1433774lfc.80.2019.10.17.14.29.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Oct 2019 14:29:02 -0700 (PDT)
-Subject: Re: [RFT][PATCH 2/3] cpufreq: Use per-policy frequency QoS
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>
-References: <2811202.iOFZ6YHztY@kreacher> <20154332.AJkCBzCetj@kreacher>
- <1707f018-fc6b-0122-17e0-635340daa4ef@gmail.com>
-Message-ID: <d88fc9b4-24af-6081-96e4-5a0b93c59d43@gmail.com>
-Date:   Fri, 18 Oct 2019 00:29:01 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0KCb4sSq2ZiDb51yyWDMbDo/PfcZXYvv0/zJpYdY+Fs=;
+        b=K9XUU4M8WteH9Z9Ug7r1eZyKUeLZaaCqQM/us5NmShVzhdY+avuO0HlfrWijemnCUA
+         fQrJEg0lGlkSjIXqxBG2OeZvfNRw18v4E3Q8fQE+BLR3dQI1bTeJhQA9xOaxpyfgC1ZA
+         QJS2h8+pXlSXM7tZRUhMdeWN3XCfo3NogvxEZ6PagDaqjw5TyszSM12TZVBqvJCVXP0I
+         NeezNnBI+atJilBeuQbU9HtyzN2nO2bNN4kVx9rht3oMXGi1bQcrbFM0RyQF5sN0BiUi
+         rAVRaGTCwFwLTPe8ly2sSjaCgPhXfi2aymlWtFI9zBJnsBd6NxxT9mKHGCOSsIJ/E0XM
+         ZLXw==
+X-Gm-Message-State: APjAAAUq/kqWfhBvh65LfZtsLtZyMl4kaFaAeOLIgCflF2ldGEyIGj6/
+        yWy4+InH1qv8AE2HJrlXPWb5MvL20KcmeEy8jC4=
+X-Google-Smtp-Source: APXvYqzl5PRi6EDdnnl2pbq8pO38JPWHBp9tAJVNzjiWLId1Q8uu+lFoxRdl8i+DVVwkOVUjwpd3mU+f8o/+1FQBKnI=
+X-Received: by 2002:aca:b6c5:: with SMTP id g188mr5302098oif.103.1571348458694;
+ Thu, 17 Oct 2019 14:40:58 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1707f018-fc6b-0122-17e0-635340daa4ef@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <1571148451-91114-1-git-send-email-john.garry@huawei.com>
+In-Reply-To: <1571148451-91114-1-git-send-email-john.garry@huawei.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 17 Oct 2019 23:40:47 +0200
+Message-ID: <CAJZ5v0ieDG6oNVtZ52zP592dYvPQBYOKMxtujiSbs19KT0MJag@mail.gmail.com>
+Subject: Re: [PATCH] ACPI / CPPC: Set pcc_data[pcc_ss_id] to NULL in acpi_cppc_processor_exit()
+To:     John Garry <john.garry@huawei.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linuxarm <linuxarm@huawei.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-16.10.2019 21:01, Dmitry Osipenko пишет:
-> 16.10.2019 13:47, Rafael J. Wysocki пишет:
->> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>
->> Replace the CPU device PM QoS used for the management of min and max
->> frequency constraints in cpufreq (and its users) with per-policy
->> frequency QoS to avoid problems with cpufreq policies covering
->> more then one CPU.
->>
->> Namely, a cpufreq driver is registered with the subsys interface
->> which calls cpufreq_add_dev() for each CPU, starting from CPU0, so
->> currently the PM QoS notifiers are added to the first CPU in the
->> policy (i.e. CPU0 in the majority of cases).
->>
->> In turn, when the cpufreq driver is unregistered, the subsys interface
->> doing that calls cpufreq_remove_dev() for each CPU, starting from CPU0,
->> and the PM QoS notifiers are only removed when cpufreq_remove_dev() is
->> called for the last CPU in the policy, say CPUx, which as a rule is
->> not CPU0 if the policy covers more than one CPU.  Then, the PM QoS
->> notifiers cannot be removed, because CPUx does not have them, and
->> they are still there in the device PM QoS notifiers list of CPU0,
->> which prevents new PM QoS notifiers from being registered for CPU0
->> on the next attempt to register the cpufreq driver.
->>
->> The same issue occurs when the first CPU in the policy goes offline
->> before unregistering the driver.
->>
->> After this change it does not matter which CPU is the policy CPU at
->> the driver registration time and whether or not it is online all the
->> time, because the frequency QoS is per policy and not per CPU.
->>
->> Fixes: 18c49926c4bf ("cpufreq: Add QoS requests for userspace constraints")
->> Reported-by: Dmitry Osipenko <digetx@gmail.com>
->> Reported-by: Sudeep Holla <sudeep.holla@arm.com>
->> Diagnosed-by: Viresh Kumar <viresh.kumar@linaro.org> 
->> Link: https://lore.kernel.org/linux-pm/5ad2624194baa2f53acc1f1e627eb7684c577a19.1562210705.git.viresh.kumar@linaro.org/T/#md2d89e95906b8c91c15f582146173dce2e86e99f
->> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->> ---
->>
->> Applies on top of https://patchwork.kernel.org/patch/11191343/
->>
->> ---
->>  drivers/acpi/processor_driver.c            |    9 +---
->>  drivers/acpi/processor_perflib.c           |   18 ++++----
->>  drivers/acpi/processor_thermal.c           |   18 ++++----
->>  drivers/cpufreq/cpufreq.c                  |   59 ++++++++++++-----------------
->>  drivers/cpufreq/intel_pstate.c             |   30 +++++++-------
->>  drivers/cpufreq/ppc_cbe_cpufreq_pmi.c      |   15 +++----
->>  drivers/macintosh/windfarm_cpufreq_clamp.c |   38 ++++++++++--------
->>  drivers/thermal/cpu_cooling.c              |   14 +++---
->>  include/acpi/processor.h                   |   20 ++++-----
->>  include/linux/cpufreq.h                    |    7 ++-
->>  10 files changed, 114 insertions(+), 114 deletions(-)
-> 
-> Thanks, Rafael! The use-after-free bug is fixed for me.
-> 
-> Tested-by: Dmitry Osipenko <digetx@gmail.com>
-> 
-> Viresh, I'm still seeing the warning splat after cpufreq-dt reloading. It looks like there is a
-> problem with dev_pm_opp_set_supported_hw() which should be re-applied after
-> dev_pm_opp_of_cpumask_remove_table() in order to avoid that warning, but setting supported hardware
-> is not a part of the cpufreq-dt driver and thus I think there is a problem here.
-> 
-> [   43.362906] ------------[ cut here ]------------
-> [   43.363403] WARNING: CPU: 2 PID: 224 at lib/refcount.c:156 dev_pm_opp_of_add_table+0x59/0x128
-> [   43.364119] refcount_t: increment on 0; use-after-free.
-> [   43.364562] Modules linked in: cpufreq_dt(+) tegra30_devfreq [last unloaded: cpufreq_dt]
-> [   43.365268] CPU: 2 PID: 224 Comm: modprobe Tainted: G        W
-> 5.4.0-rc3-next-20191016-00202-gdc740c468ab7 #2651
-> [   43.366167] Hardware name: NVIDIA Tegra SoC (Flattened Device Tree)
-> [   43.366747] [<c011116d>] (unwind_backtrace) from [<c010bb05>] (show_stack+0x11/0x14)
-> [   43.367417] [<c010bb05>] (show_stack) from [<c0d75aad>] (dump_stack+0x89/0x98)
-> [   43.368046] [<c0d75aad>] (dump_stack) from [<c0127813>] (__warn+0x10f/0x110)
-> [   43.368650] [<c0127813>] (__warn) from [<c0127b09>] (warn_slowpath_fmt+0x61/0x78)
-> [   43.369292] [<c0127b09>] (warn_slowpath_fmt) from [<c095b161>] (dev_pm_opp_of_add_table+0x59/0x128)
-> [   43.370057] [<c095b161>] (dev_pm_opp_of_add_table) from [<c095b261>]
-> (dev_pm_opp_of_cpumask_add_table+0x31/0x88)
-> [   43.370946] [<c095b261>] (dev_pm_opp_of_cpumask_add_table) from [<bf80024d>]
-> (cpufreq_init+0xd9/0x280 [cpufreq_dt])
-> [   43.371853] [<bf80024d>] (cpufreq_init [cpufreq_dt]) from [<c095ec63>] (cpufreq_online+0x3eb/0x890)
-> [   43.372638] [<c095ec63>] (cpufreq_online) from [<c095f191>] (cpufreq_add_dev+0x79/0x80)
-> [   43.373340] [<c095f191>] (cpufreq_add_dev) from [<c07201db>] (subsys_interface_register+0xc3/0x100)
-> [   43.374113] [<c07201db>] (subsys_interface_register) from [<c095d91b>]
-> (cpufreq_register_driver+0x13b/0x1f0)
-> [   43.374960] [<c095d91b>] (cpufreq_register_driver) from [<bf80047d>] (dt_cpufreq_probe+0x89/0xe0
-> [cpufreq_dt])
-> [   43.375818] [<bf80047d>] (dt_cpufreq_probe [cpufreq_dt]) from [<c0723df9>]
-> (platform_drv_probe+0x49/0x88)
-> [   43.376630] [<c0723df9>] (platform_drv_probe) from [<c0721aa1>] (really_probe+0x109/0x378)
-> [   43.377330] [<c0721aa1>] (really_probe) from [<c0721e5b>] (driver_probe_device+0x57/0x15c)
-> [   43.378030] [<c0721e5b>] (driver_probe_device) from [<c072210d>] (device_driver_attach+0x61/0x64)
-> [   43.378776] [<c072210d>] (device_driver_attach) from [<c0722159>] (__driver_attach+0x49/0xa0)
-> [   43.379493] [<c0722159>] (__driver_attach) from [<c071fe35>] (bus_for_each_dev+0x69/0x94)
-> [   43.380185] [<c071fe35>] (bus_for_each_dev) from [<c0720f39>] (bus_add_driver+0x179/0x1e8)
-> [   43.380883] [<c0720f39>] (bus_add_driver) from [<c0722cbf>] (driver_register+0x8f/0x130)
-> [   43.381584] [<c0722cbf>] (driver_register) from [<bf80d017>] (dt_cpufreq_platdrv_init+0x17/0x1000
-> [cpufreq_dt])
-> [   43.382447] [<bf80d017>] (dt_cpufreq_platdrv_init [cpufreq_dt]) from [<d7fca400>] (0xd7fca400)
-> [   43.383252] ---[ end trace f68728a0d3053b55 ]---
-> 
+On Tue, Oct 15, 2019 at 4:10 PM John Garry <john.garry@huawei.com> wrote:
+>
+> When enabling KASAN and DEBUG_TEST_DRIVER_REMOVE, I find this KASAN
+> warning:
+>
+> [   20.872057] BUG: KASAN: use-after-free in pcc_data_alloc+0x40/0xb8
+> [   20.878226] Read of size 4 at addr ffff00236cdeb684 by task swapper/0/1
+> [   20.884826]
+> [   20.886309] CPU: 19 PID: 1 Comm: swapper/0 Not tainted 5.4.0-rc1-00009-ge7f7df3db5bf-dirty #289
+> [   20.894994] Hardware name: Huawei D06 /D06, BIOS Hisilicon D06 UEFI RC0 - V1.16.01 03/15/2019
+> [   20.903505] Call trace:
+> [   20.905942]  dump_backtrace+0x0/0x200
+> [   20.909593]  show_stack+0x14/0x20
+> [   20.912899]  dump_stack+0xd4/0x130
+> [   20.916291]  print_address_description.isra.9+0x6c/0x3b8
+> [   20.921592]  __kasan_report+0x12c/0x23c
+> [   20.925417]  kasan_report+0xc/0x18
+> [   20.928808]  __asan_load4+0x94/0xb8
+> [   20.932286]  pcc_data_alloc+0x40/0xb8
+> [   20.935938]  acpi_cppc_processor_probe+0x4e8/0xb08
+> [   20.940717]  __acpi_processor_start+0x48/0xb0
+> [   20.945062]  acpi_processor_start+0x40/0x60
+> [   20.949235]  really_probe+0x118/0x548
+> [   20.952887]  driver_probe_device+0x7c/0x148
+> [   20.957059]  device_driver_attach+0x94/0xa0
+> [   20.961231]  __driver_attach+0xa4/0x110
+> [   20.965055]  bus_for_each_dev+0xe8/0x158
+> [   20.968966]  driver_attach+0x30/0x40
+> [   20.972531]  bus_add_driver+0x234/0x2f0
+> [   20.976356]  driver_register+0xbc/0x1d0
+> [   20.980182]  acpi_processor_driver_init+0x40/0xe4
+> [   20.984875]  do_one_initcall+0xb4/0x254
+> [   20.988700]  kernel_init_freeable+0x24c/0x2f8
+> [   20.993047]  kernel_init+0x10/0x118
+> [   20.996524]  ret_from_fork+0x10/0x18
+> [   21.000087]
+> [   21.001567] Allocated by task 1:
+> [   21.004785]  save_stack+0x28/0xc8
+> [   21.008089]  __kasan_kmalloc.isra.9+0xbc/0xd8
+> [   21.012435]  kasan_kmalloc+0xc/0x18
+> [   21.015913]  pcc_data_alloc+0x94/0xb8
+> [   21.019564]  acpi_cppc_processor_probe+0x4e8/0xb08
+> [   21.024343]  __acpi_processor_start+0x48/0xb0
+> [   21.028689]  acpi_processor_start+0x40/0x60
+> [   21.032860]  really_probe+0x118/0x548
+> [   21.036512]  driver_probe_device+0x7c/0x148
+> [   21.040684]  device_driver_attach+0x94/0xa0
+> [   21.044855]  __driver_attach+0xa4/0x110
+> [   21.048680]  bus_for_each_dev+0xe8/0x158
+> [   21.052591]  driver_attach+0x30/0x40
+> [   21.056155]  bus_add_driver+0x234/0x2f0
+> [   21.059980]  driver_register+0xbc/0x1d0
+> [   21.063805]  acpi_processor_driver_init+0x40/0xe4
+> [   21.068497]  do_one_initcall+0xb4/0x254
+> [   21.072322]  kernel_init_freeable+0x24c/0x2f8
+> [   21.076667]  kernel_init+0x10/0x118
+> [   21.080144]  ret_from_fork+0x10/0x18
+> [   21.083707]
+> [   21.085186] Freed by task 1:
+> [   21.088056]  save_stack+0x28/0xc8
+> [   21.091360]  __kasan_slab_free+0x118/0x180
+> [   21.095445]  kasan_slab_free+0x10/0x18
+> [   21.099183]  kfree+0x80/0x268
+> [   21.102139]  acpi_cppc_processor_exit+0x1a8/0x1b8
+> [   21.106832]  acpi_processor_stop+0x70/0x80
+> [   21.110917]  really_probe+0x174/0x548
+> [   21.114568]  driver_probe_device+0x7c/0x148
+> [   21.118740]  device_driver_attach+0x94/0xa0
+> [   21.122912]  __driver_attach+0xa4/0x110
+> [   21.126736]  bus_for_each_dev+0xe8/0x158
+> [   21.130648]  driver_attach+0x30/0x40
+> [   21.134212]  bus_add_driver+0x234/0x2f0
+> [   21.0x10/0x18
+> [   21.161764]
+> [   21.163244] The buggy address belongs to the object at ffff00236cdeb600
+> [   21.163244]  which belongs to the cache kmalloc-256 of size 256
+> [   21.175750] The buggy address is located 132 bytes inside of
+> [   21.175750]  256-byte region [ffff00236cdeb600, ffff00236cdeb700)
+> [   21.187473] The buggy address belongs to the page:
+> [   21.192254] page:fffffe008d937a00 refcount:1 mapcount:0 mapping:ffff002370c0fa00 index:0x0 compound_mapcount: 0
+> [   21.202331] flags: 0x1ffff00000010200(slab|head)
+> [   21.206940] raw: 1ffff00000010200 dead000000000100 dead000000000122 ffff002370c0fa00
+> [   21.214671] raw: 0000000000000000 00000000802a002a 00000001ffffffff 0000000000000000
+> [   21.222400] page dumped because: kasan: bad access detected
+> [   21.227959]
+> [   21.229438] Memory state around the buggy address:
+> [   21.234218]  ffff00236cdeb580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+> [   21.241427]  ffff00236cdeb600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> [   21.248637] >ffff00236cdeb680: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> [   21.255845]                    ^
+> [   21.259062]  ffff00236cdeb700: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+> [   21.266272]  ffff00236cdeb780: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> [   21.273480] ==================================================================
+>
+> It seems that global pcc_data[pcc_ss_id] can be freed in
+> acpi_cppc_processor_exit(), but we may later reference this value, so
+> NULLify it when freed.
+>
+> Also remove the useless setting of data "pcc_channel_acquired", which
+> we're about to free.
+>
+> Signed-off-by: John Garry <john.garry@huawei.com>
+>
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 3b2525908dd8..a1a858ad4d18 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -905,8 +905,8 @@ void acpi_cppc_processor_exit(struct acpi_processor *pr)
+>                         pcc_data[pcc_ss_id]->refcount--;
+>                         if (!pcc_data[pcc_ss_id]->refcount) {
+>                                 pcc_mbox_free_channel(pcc_data[pcc_ss_id]->pcc_channel);
+> -                               pcc_data[pcc_ss_id]->pcc_channel_acquired = 0;
+>                                 kfree(pcc_data[pcc_ss_id]);
+> +                               pcc_data[pcc_ss_id] = NULL;
+>                         }
+>                 }
+>         }
+> --
 
-Viresh, the warning is actually triggered by this line:
-
-https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/opp/of.c#L664
-
-So it looks like the cpufreq-dt driver removal drops
-opp_table->list_kref more times than it should be. I may try to take a
-closer look at it later on, please let me know if you have any suggestions.
+Applied as a fix for 5.4, thanks!
