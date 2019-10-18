@@ -2,84 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D199ADC092
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Oct 2019 11:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A689EDC0B2
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Oct 2019 11:17:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406840AbfJRJIs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Oct 2019 05:08:48 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:7462 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2406023AbfJRJIs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 18 Oct 2019 05:08:48 -0400
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id B89E6C057F2C;
-        Fri, 18 Oct 2019 09:08:47 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-117-168.ams2.redhat.com [10.36.117.168])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7D73560BF1;
-        Fri, 18 Oct 2019 09:08:44 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH] pinctrl: cherryview: Fix irq_valid_mask calculation
-Date:   Fri, 18 Oct 2019 11:08:42 +0200
-Message-Id: <20191018090842.11189-1-hdegoede@redhat.com>
+        id S2391096AbfJRJRp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Oct 2019 05:17:45 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:35817 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389986AbfJRJRp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Oct 2019 05:17:45 -0400
+Received: by mail-oi1-f194.google.com with SMTP id x3so4651453oig.2;
+        Fri, 18 Oct 2019 02:17:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=j8z1SM48UZuUXU8cTwzQych7cq4zT468OcaLYrLAHoc=;
+        b=g1TTJELLzSCQ96x5h+HOZFbeCaPUQuUYugOqk5Qw0IVZSrFDaHLv9EddoK4FbJdtdp
+         spSg6Jr3AdDpen20RUice/YTGmUwkUs6n+I3OheMK9KX4mVr+ndYzwk05rPmM3+y9j4U
+         GD+UPiyPIClzcK5LYt3KqB7sSTfyKbycKPvi7lGvcbkFomJYGg6OHOwlVtdVWB07ZB2G
+         yawkf+Z9w41QdLvGCRQUCx7Y3HBmQbjRhJZ3nTWuzrlTJxjnnJqPmqrvyfI9/x+heEQh
+         JTdoL1zAVPwCS8MaB6/LDfSbv1qTWA3AVhCbfzdY+uLRzZG7nXIY9WKQ0ufTopA8rYxx
+         jCZw==
+X-Gm-Message-State: APjAAAVcjaFIwyXV7Pueuqq8zhnoVKl25FOnpd6mpcP3nfrLv2E/J7TG
+        GY5lFgIfYwrY4he6F4k8Z1UYvjH7DyW0FvmyJPaI/xSW
+X-Google-Smtp-Source: APXvYqzyYAXhAoQkimCi9kQHw3PEfQL51Fk/qbhnBd3+8Oku0qmZ/h0tjCh8EffnfNqaU2khxg3i+VXVJXmBVeYYec8=
+X-Received: by 2002:aca:d706:: with SMTP id o6mr7309802oig.57.1571390264244;
+ Fri, 18 Oct 2019 02:17:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Fri, 18 Oct 2019 09:08:47 +0000 (UTC)
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 18 Oct 2019 11:17:32 +0200
+Message-ID: <CAJZ5v0iMdUWVv8G1D075eSEBOMoqUfoWC_ik6qy5CxNapUo1xg@mail.gmail.com>
+Subject: [GIT PULL] Power management fixes for v5.4-rc4
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Commit 03c4749dd6c7 ("gpio / ACPI: Drop unnecessary ACPI GPIO to Linux
-GPIO translation") has made the cherryview gpio numbers sparse, to get
-a 1:1 mapping between ACPI pin numbers and gpio numbers in Linux.
+Hi Linus,
 
-This has greatly simplified things, but the code setting the
-irq_valid_mask was not updated for this, so the valid mask is still in
-the old "compressed" numbering with the gaps in the pin numbers skipped,
-which is wrong as irq_valid_mask needs to be expressed in gpio numbers.
+Please pull from the tag
 
-This results in the following error on devices using pin 24 (0x0018) on
-the north GPIO controller as an ACPI event source:
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-5.4-rc4
 
-[    0.422452] cherryview-pinctrl INT33FF:01: Failed to translate GPIO to IRQ
+with top-most commit b23eb5c74e6eb6a0b3fb9cf3eb64481a17ce1cd1
 
-This has been reported (by email) to be happening on a Caterpillar CAT T20
-tablet and I've reproduced this myself on a Medion Akoya e2215t 2-in-1.
+ Merge branches 'pm-cpufreq' and 'pm-sleep'
 
-This commit uses the pin number instead of the compressed index into
-community->pins to clear the correct bits in irq_valid_mask for GPIOs
-using GPEs for interrupts, fixing these errors and in case of the
-Medion Akoya e2215t also fixing the LID switch not working.
+on top of commit 4f5cafb5cb8471e54afdc9054d973535614f7675
 
-Cc: stable@vger.kernel.org
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Fixes: 03c4749dd6c7 ("gpio / ACPI: Drop unnecessary ACPI GPIO to Linux GPIO translation")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/pinctrl/intel/pinctrl-cherryview.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Linux 5.4-rc3
 
-diff --git a/drivers/pinctrl/intel/pinctrl-cherryview.c b/drivers/pinctrl/intel/pinctrl-cherryview.c
-index aae51c507f59..02ff5e8b0510 100644
---- a/drivers/pinctrl/intel/pinctrl-cherryview.c
-+++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
-@@ -1563,7 +1563,7 @@ static void chv_init_irq_valid_mask(struct gpio_chip *chip,
- 		intsel >>= CHV_PADCTRL0_INTSEL_SHIFT;
- 
- 		if (intsel >= community->nirqs)
--			clear_bit(i, valid_mask);
-+			clear_bit(desc->number, valid_mask);
- 	}
- }
- 
--- 
-2.23.0
+to receive power management fixes for 5.4-rc4.
 
+These include a fix for a recent regression in the ACPI CPU
+performance scaling code, a PCI device power management fix,
+a system shutdown fix related to cpufreq, a removal of an ACPI
+suspend-to-idle blacklist entry and a build warning fix.
+
+Specifics:
+
+ - Fix possible NULL pointer dereference in the ACPI processor
+   scaling initialization code introduced by a recent cpufreq
+   update (Rafael Wysocki).
+
+ - Fix possible deadlock due to suspending cpufreq too late during
+   system shutdown (Rafael Wysocki).
+
+ - Make the PCI device system resume code path be more consistent
+   with its PM-runtime counterpart to fix an issue with missing
+   delay on transitions from D3cold to D0 during system resume from
+   suspend-to-idle on some systems (Rafael Wysocki).
+
+ - Drop Dell XPS13 9360 from the LPS0 Idle _DSM blacklist to make it
+   use suspend-to-idle by default (Mario Limonciello).
+
+ - Fix build warning in the core system suspend support code (Ben
+   Dooks).
+
+Thanks!
+
+
+---------------
+
+Ben Dooks (1):
+      PM: sleep: include <linux/pm_runtime.h> for pm_wq
+
+Mario Limonciello (1):
+      ACPI: PM: Drop Dell XPS13 9360 from LPS0 Idle _DSM blacklist
+
+Rafael J. Wysocki (3):
+      cpufreq: Avoid cpufreq_suspend() deadlock on system shutdown
+      PCI: PM: Fix pci_power_up()
+      ACPI: processor: Avoid NULL pointer dereferences at init time
+
+---------------
+
+ drivers/acpi/processor_perflib.c | 10 ++++++----
+ drivers/acpi/processor_thermal.c | 10 ++++++----
+ drivers/acpi/sleep.c             | 13 -------------
+ drivers/base/core.c              |  3 +++
+ drivers/cpufreq/cpufreq.c        | 10 ----------
+ drivers/pci/pci.c                | 24 +++++++++++-------------
+ kernel/power/main.c              |  1 +
+ 7 files changed, 27 insertions(+), 44 deletions(-)
