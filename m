@@ -2,83 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DF89DC0EB
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Oct 2019 11:29:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A86F8DC240
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Oct 2019 12:12:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409732AbfJRJ3h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Oct 2019 05:29:37 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:41035 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733157AbfJRJ3g (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Oct 2019 05:29:36 -0400
-Received: by mail-pf1-f194.google.com with SMTP id q7so3506373pfh.8
-        for <linux-acpi@vger.kernel.org>; Fri, 18 Oct 2019 02:29:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=g0wJcF0+MU8onT4dQlcS5SYf3gjezQhPtNmK0I7nY6I=;
-        b=AC2Lkt+54mTJ8oA7oUAFoCNuCudKUP69OuYq8gUduwPZydK3rvBO//TtYfOpIs7xw9
-         rWyccryi7QP4SA2CgY8TDSk1BJx2ZDZKA1bx4OeOhUxBFo+ur3JbMEMrMHIw4o7PA28X
-         vNtSql73UXPGvwZeNeYcyDBKU++Hduf0kh6uajhB0cgItaFqHMwHBP7fiEMxkcEpYPyM
-         D4OgKxg7+leENuo/IGr+b85l2vhbRPT0HESQSADQbHmG53Rr1pkIjypouOU/ItHz+eAi
-         UeP/TVHfsLAwAfgj/psAMseWVV5z4y0kxrQfA4LOipxDtAGpfAh0jckWOaaRYRhLM7px
-         eVFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=g0wJcF0+MU8onT4dQlcS5SYf3gjezQhPtNmK0I7nY6I=;
-        b=rS7YEWq8ebvWulXKlpfJQ146dUpzJSpdqFTP81r6ZBZset/wNnYl+sA6hENrS7C8G/
-         Tk//lan1mOPBmVB+Hwt+gm6LHl4wK1pbJtzXhxTP/GJ+ACfE0hM2GojJ2RC+GYE85cKO
-         TdY8xulTLAjLXESuFyLcy3AFULi8NLjdbb1L1O8tSUl5lWOLvvwQbj0wufNckLC7TEJv
-         XlooCuPp4eEEo/YFFDPlqhs0F0u8bp+kAiyndhZ6kdT2DSGBgOkr1cgcgDOCyk+7nhl9
-         k/LMt6rzKVjo6DhjOqZ1/1olIiQPgNW5OigN84Pru2gH5DeIo2CdNp8v9gqDZ1CaTexN
-         bSGw==
-X-Gm-Message-State: APjAAAXZ8g2ng8gwQ6vyyiTVihly11elyu6YC9svJtUWvPLg7vyy0Ei6
-        LkoDwqYH0AMK7bgjA6qpvoydZL16Sfc=
-X-Google-Smtp-Source: APXvYqzdCKqUCleUtrRntSSQeapM3vme2IX5RXZxIKneWH/lOi7AQ4zNoe3fUN+iPFYS2lkzBOzWYQ==
-X-Received: by 2002:a63:5a59:: with SMTP id k25mr9044265pgm.171.1571390975933;
-        Fri, 18 Oct 2019 02:29:35 -0700 (PDT)
-Received: from localhost ([122.172.151.112])
-        by smtp.gmail.com with ESMTPSA id r185sm5809366pfr.68.2019.10.18.02.29.34
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 18 Oct 2019 02:29:35 -0700 (PDT)
-Date:   Fri, 18 Oct 2019 14:59:33 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Subject: Re: [RFT][PATCH 2/3] cpufreq: Use per-policy frequency QoS
-Message-ID: <20191018092933.2i7dpr35wkxemgby@vireshk-i7>
-References: <2811202.iOFZ6YHztY@kreacher>
- <20154332.AJkCBzCetj@kreacher>
- <1707f018-fc6b-0122-17e0-635340daa4ef@gmail.com>
- <d88fc9b4-24af-6081-96e4-5a0b93c59d43@gmail.com>
+        id S2392659AbfJRKM6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Oct 2019 06:12:58 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:41123 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387545AbfJRKM6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Oct 2019 06:12:58 -0400
+Received: from 79.184.255.51.ipv4.supernova.orange.pl (79.184.255.51) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.292)
+ id 49e72b95e28af242; Fri, 18 Oct 2019 12:12:54 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     "Yin, Fengwei" <fengwei.yin@intel.com>
+Cc:     David Laight <David.Laight@aculab.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] ACPI / processor_idle: use ndelay instead of io port access for wait
+Date:   Fri, 18 Oct 2019 12:12:54 +0200
+Message-ID: <2566427.rT6C98KLSe@kreacher>
+In-Reply-To: <2b3ce9e9-e805-1b8d-86c3-c8f498a4d3dd@intel.com>
+References: <20191015080404.6013-1-fengwei.yin@intel.com> <c9f3f4f93bb946f790fce4709253b359@AcuMS.aculab.com> <2b3ce9e9-e805-1b8d-86c3-c8f498a4d3dd@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d88fc9b4-24af-6081-96e4-5a0b93c59d43@gmail.com>
-User-Agent: NeoMutt/20180716-391-311a52
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 18-10-19, 00:29, Dmitry Osipenko wrote:
-> Viresh, the warning is actually triggered by this line:
+On Wednesday, October 16, 2019 7:56:17 AM CEST Yin, Fengwei wrote:
+> Hi David,
 > 
-> https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/opp/of.c#L664
+> On 10/15/2019 7:48 PM, David Laight wrote:
+> > From: Yin Fengwei
+> >> Sent: 15 October 2019 09:04
+> >> In function acpi_idle_do_entry(), an ioport access is used for dummy
+> >> wait to guarantee hardware behavior. But it could trigger unnecessary
+> >> vmexit in virtualization environment.
+> >>
+> >> If we run linux as guest and export all available native C state to
+> >> guest, we did see many PM timer access triggered VMexit when guest
+> >> enter deeper C state in our environment (We used ACRN hypervisor
+> >> instead of kvm or xen which has PM timer emulated and exports all
+> >> native C state to guest).
+> >>
+> >> According to the original comments of this part of code, io port
+> >> access is only for dummy wait. We could use busy wait instead of io
+> >> port access to guarantee hardware behavior and avoid unnecessary
+> >> VMexit.
+> > 
+> > You need some hard synchronisation instruction(s) after the inb()
+> > and before any kind of delay to ensure your delay code is executed
+> > after the inb() completes.
+> > 
+> > I'm pretty sure that inb() is only synchronised with memory reads.
+> Thanks a lot for the comments.
 > 
-> So it looks like the cpufreq-dt driver removal drops
-> opp_table->list_kref more times than it should be. I may try to take a
-> closer look at it later on, please let me know if you have any suggestions.
+> I didn't find the common serializing instructions API in kernel (only
+> memory  barrier which is used to make sure of memory access). For Intel
+> x86, cpuid could be used as serializing instruction. But it's not
+> suitable for common code here. Do you have any suggestion?
 
-I was able to reproduce it and have sent a fix and cc'd you on it.
-Please give it a try.
+In the virt guest case you don't need to worry at all AFAICS, because the inb()
+itself will trap to the HV.
 
--- 
-viresh
+> > 
+> > ...
+> >> +	/* profiling the time used for dummy wait op */
+> >> +	ktime_get_real_ts64(&ts0);
+> >> +	inl(acpi_gbl_FADT.xpm_timer_block.address);
+> >> +	ktime_get_real_ts64(&ts1);
+
+You may as well use ktime_get() for this, as it's almost the same code as
+ktime_get_real_ts64() AFAICS, only simpler.
+
+Plus, static vars need not be initialized to 0.
+
+> > 
+> > That could be dominated by the cost of ktime_get_real_ts64().
+> > It also need synchronising instructions.
+> I did some testing. ktime_get_real_ts64() takes much less time than io
+> port access.
+> 
+> The test code is like:
+> 1.
+> 	local_irq_save(flag);
+> 	ktime_get_real_ts64(&ts0);
+> 	inl(acpi_gbl_FADT.xpm_timer_block.address);
+> 	ktime_get_real_ts64(&ts1);
+> 	local_irq_restore(flag);
+> 
+> 2.
+> 	local_irq_save(flag);
+> 	ktime_get_real_ts64(&ts0);
+> 	ktime_get_real_ts64(&ts1);
+> 	local_irq_restore(flag);
+> 
+> The delta in 1 is about 500000ns. And delta in 2 is about
+> 2000ns. The date is gotten on Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz.
+> So I suppose the impact of ktime_get_real_ts64 is small.
+
+You may not be hitting the worst case for ktime_get_real_ts64(), though.
+
+I wonder if special casing the virt guest would be a better approach.
+
+Then, you could leave the code as is for non-virt and I'm not sure if the
+delay is needed in the virt guest case at all.
+
+So maybe do something like "if not in a virt guest, do the dummy inl()"
+and that would be it?
+
+
+
