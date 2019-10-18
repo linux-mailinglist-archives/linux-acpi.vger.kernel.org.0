@@ -2,74 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C235BDBEF6
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Oct 2019 09:52:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6E57DBFCE
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Oct 2019 10:25:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504708AbfJRHwT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Oct 2019 03:52:19 -0400
-Received: from zaovasilisa.ru ([88.200.194.99]:46823 "EHLO usrv.lan"
-        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2504820AbfJRHwP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 18 Oct 2019 03:52:15 -0400
-X-Greylist: delayed 39671 seconds by postgrey-1.27 at vger.kernel.org; Fri, 18 Oct 2019 03:51:51 EDT
-Received: from 127.0.0.1 (localhost [127.0.0.1])
-        by usrv.lan (Postfix) with SMTP id CC3F818647F;
-        Thu, 17 Oct 2019 17:04:03 +0400 (MSD)
-Received: from [72.215.151.127] by 127.0.0.1 with ESMTP id 72A686FDC7F; Thu, 17 Oct 2019 18:59:02 +0600
-Message-ID: <735ui-$$-55e3--c$i$-l0-18w85$-6@8d6h1006syk>
-From:   "Mr Ekrem Bayraktar" <dave@dbsoundfactory.com>
-Reply-To: "Mr Ekrem Bayraktar" <dave@dbsoundfactory.com>
-To:     links@q.vu
-Subject: MOTHERLESS CHILDREN IN YOUR CITY !!
-Date:   Thu, 17 Oct 19 18:59:02 GMT
-X-Mailer: AOL 7.0 for Windows US sub 118
+        id S2632764AbfJRIZJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Oct 2019 04:25:09 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:38194 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2632763AbfJRIZJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Oct 2019 04:25:09 -0400
+Received: by mail-ot1-f67.google.com with SMTP id e11so4276000otl.5;
+        Fri, 18 Oct 2019 01:25:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=jEbq9QSiMUBdFgNaRu0lx2kBkFKJqECZlDVnFyvhGgk=;
+        b=NbD4/PUJZ51jDp5jGciPt8joG9eLxje610+QjVmfxHPB0FTJUnisNfOk/OQ3TjOb4w
+         8uN4326iHS0BiTwZEYDR8FzwhtwRbgsW1o2QbEDUiCYwJHLPv2uDx7hkL9ekxSfj7LNj
+         cqDp3BN+4vJnZO3nCVRwMhHGSfy/CMmkgSDHsOnKjEZ40JBM5efxIzX0NXbyMhfk8yPQ
+         SkHbTR8gdxn82X20Ar8oqdKSmhfssZZOVElqaJjXAZqaweTpZrBnzeUShygH7F7L9Lub
+         +bMB98UYdij2p+wvmx06CQw7rMs7ZAik4Y112KCTX8Eotrfg0iP5gX5qfALA4/TIRbyh
+         ttNA==
+X-Gm-Message-State: APjAAAUadT8183LwEl6LFQf1mLa/8GVdndUoiK1578qZaKnsfeuthlpR
+        L8nk6bxd+mSErznOmWyOeJJu9fRSxC3GpIV3cAw=
+X-Google-Smtp-Source: APXvYqwAdi4SbUncivySZf05920ohM9EzPpGF+cvDvfiO65zVjUe5FVnHgfQ1TQKvFSPNuyKSVyUItOZjrcK7vUTCVU=
+X-Received: by 2002:a9d:664:: with SMTP id 91mr235402otn.189.1571387107123;
+ Fri, 18 Oct 2019 01:25:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="EFA7_FB09FAD2"
-X-Priority: 3
-X-MSMail-Priority: Normal
+References: <2811202.iOFZ6YHztY@kreacher> <20191016142343.GB5330@bogus>
+ <20191017095725.izchzl7enfylvpf3@vireshk-i7> <20191017095942.GF8978@bogus>
+ <CAJZ5v0ixS8ZS93Fgj8XGUMGcLdAy+Fgwp5z3QirccNSiiwLtDA@mail.gmail.com> <20191018054433.tq2euue675xk4o63@vireshk-i7>
+In-Reply-To: <20191018054433.tq2euue675xk4o63@vireshk-i7>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 18 Oct 2019 10:24:56 +0200
+Message-ID: <CAJZ5v0hpfvy5iELVRWFA3HS8NoAH0=py0cE+fLaUq2hDReCrnQ@mail.gmail.com>
+Subject: Re: [RFT][PATCH 0/3] cpufreq / PM: QoS: Introduce frequency QoS and
+ use it in cpufreq
+To:     Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Dmitry Osipenko <digetx@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Fri, Oct 18, 2019 at 7:44 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+>
+> On 17-10-19, 18:34, Rafael J. Wysocki wrote:
+> > [BTW, Viresh, it looks like cpufreq_set_policy() should still ensure
+> > that the new min is less than the new max, because the QoS doesn't do
+> > that.]
+>
+> The ->verify() callback does that for us I believe.
 
---EFA7_FB09FAD2
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
-
-Dear Sir / Madam
-
-
-
-Since ever we left your country back to Canada , we have gotten Government=
- approval and we have been busying planning for the less privilege Childre=
-n projects.
-
-We are planning to release first batch of the funds $2,990,000.00 within 1=
-4 days for building an estate for motherless children in your city.
-
-I want you to use my mother;s company name to register this charity projec=
-t in your country after receiving the project funds.
-
-It must be registered as { Bayraktar Group Homeless Children Ltd }.
-
-
-Can you handle and supervise this big project ?
-Can you manager all the workers as a senior supervisor ?
-We want to be sure you can handle it before we proceed with this project.
-
-
-Please call me if you want to hear from us + 1-917 580 4919.
-Please can you manage such project please Kindly reply for further details=
-.
-
-Your full names-----------
-
-
-
-Ekrem Bayraktar.
-Bayraktar Shipping Group
-
---EFA7_FB09FAD2--
-
+It does in practice AFAICS, but in theory it may assume the right
+ordering between the min and the max and just test the boundaries, may
+it not?
