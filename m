@@ -2,113 +2,160 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9E75E099D
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Oct 2019 18:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C3CCE0E04
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Oct 2019 00:06:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731707AbfJVQsZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Oct 2019 12:48:25 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:43969 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727154AbfJVQsZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Oct 2019 12:48:25 -0400
-Received: by mail-ot1-f68.google.com with SMTP id j33so320328ota.10
-        for <linux-acpi@vger.kernel.org>; Tue, 22 Oct 2019 09:48:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0+6No+BxgIjHWFQl8mEre5geCrP8fi/EeYgiUXvYmaQ=;
-        b=s6UgbS4ygkuYPcJAAz3pNE7NObfVgWrxILYPPMZ64u/k26Tlh6VILXVknF/EVXamYW
-         JfGqLPtKv0uhIS82q3cjRbmSV68r0gXlRmOSju0sYhJbF19LHXbbiaJ1L9AhhaKRTiKP
-         7Nmc/i7KXYTM75gzn8DB3Ffy4pCr6Gj5U2IhXd6VogFuoho9HkbeTx34hgnfHaDpxJ6R
-         F2vb0qYVbMjW7271kotp9FaczmghmLyL0qHzn7+ppM77aAE1H8W4VMzOgeKAVFZVDeIY
-         ZTJYmyN1FW5YCH4xLwCspopHQI0elv9i01FAWMh92jB+mTr1bnUOm41F0QAuqBnvll+T
-         N/Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0+6No+BxgIjHWFQl8mEre5geCrP8fi/EeYgiUXvYmaQ=;
-        b=oCdl7NFMP5TZrKZGvGW1WaTYmyBJ9Y4KRpHsBp2YzEopREOs9QY0zXvnCiQqvYPzSe
-         yUc+8vVf7NrSVyb5hsjVzqf1G/gXcdNCu5uFmwsYpWkpGpdxfxqktfD2gUO38VEGGDxj
-         MW6GJ2xRo89V3rQlagF1nB3SZYt1C1binBH5HgqkOm3+3VajzO3fxp2+Cj4zvHB0m3Ws
-         RzUiBuDr1cWHF7wIQaP8jfhnpN5KeeaAPQJKnhq3Xk5JbfRjre8R8Q0pEqnjH9ucWhrr
-         J0uVdvKqTPVHOBFiBM8yOMAqDCL0tN9vWk16zAAGTQ/Q+lmzM67vuX5tec5Bq65m2Kz4
-         2w9g==
-X-Gm-Message-State: APjAAAWwb5kGIRl5ogAzkzGOoZUsl86d79y5viTT5SJHPiAi1zkMussQ
-        V7i4cJOz5DmqQBv/YTDAhH1Dez3ed9RV/oC86/NKJQ==
-X-Google-Smtp-Source: APXvYqwtw7FLGKUJW5VN/z168Ax4kCyZdkZTBUWqQLVn8w1bS74nzE4bXxhqmn24Xtn3tFVuwIDJyV6Rl48d61eRmdU=
-X-Received: by 2002:a9d:2d89:: with SMTP id g9mr3564630otb.126.1571762904646;
- Tue, 22 Oct 2019 09:48:24 -0700 (PDT)
+        id S1729909AbfJVWGG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Oct 2019 18:06:06 -0400
+Received: from mail-eopbgr130058.outbound.protection.outlook.com ([40.107.13.58]:25815
+        "EHLO EUR01-HE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727309AbfJVWGG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 22 Oct 2019 18:06:06 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jixoo6leoerlzSLnfLwDEbJa5v8ti6zfFsM6EsnYMesYr0VVURGlkDJF5IynkKDUP7npWxCqucNg+bL+xoQXeYuAKZlPUKAjMqYQaNAAzzWMiDpsFa2SRc9LY9IBiAUBhjzPGDj2pMP7J2tKZpasxzDf2jNY6RpZ81ZbWuopV6L9FCHppOiFFT5wjuYzH+0ANGldBKknrUt66795/kfAt0UtZowKlRRLVJ5AmpFEv0Zwivk4qVT0plpCMSQtFx+IETvBRNkwM/tIroM1FESG0nXuTLjqDMGCnvxaXSNFKxuwM/wxEoTwYlXptsEZHsFQYdQ4j/DzAkOBZy+NvjJX4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tZo0m+B+BonoJRv3to84zMFBHmo+eqJD9WH60UBBf+g=;
+ b=RFjB8RurNowuYLUCYdN7Xr/D1/yeVvIjO1IafG4T8eRMqMdNln3YgQcxFx7mwO/G8GSWJ1ExTmMqosQabmsHqbAbPRKdmsBIyAs92g1GzMzpB1NDTZFGVZSP69hudmaSwuTfydDaWAZqV0aPJzLBhcosr4YRF/Bvf1Sel5qsscB5LtgzR6dKe3vBnllpva2gIkczkfDCrfyhlbPOoSwE9JQs8WY60hWJvx+Vcdv1t9XIWl+RDVePTip0hOOEqaJ0ieO5WIJnd+R9XEYwKdYgIbjXJb8mqcu+znmSuqNBJlgsj27c32/FVl4vCacrzXyNmMs38NvDv2zg/uATSFfTfg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tZo0m+B+BonoJRv3to84zMFBHmo+eqJD9WH60UBBf+g=;
+ b=IDeNFZ0UMjH6QWWHhQJLGaWG6YAKS3BLHeyCiJgtYKHN+Gq2oKf3+20BLzkIqnOeR0Y/GMuUZljwC/1HDp1NSFiQcjongHTfkLAYHdYeVnLArCKMgq5k9agtIOgijyCWgNq3YydLE9RVBpv2jEhceoWyTcKxAqZhF9sfyGxQLrc=
+Received: from VI1PR04MB7023.eurprd04.prod.outlook.com (10.186.159.144) by
+ VI1PR04MB6047.eurprd04.prod.outlook.com (20.179.24.147) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2347.19; Tue, 22 Oct 2019 22:06:01 +0000
+Received: from VI1PR04MB7023.eurprd04.prod.outlook.com
+ ([fe80::58d9:b0f7:b31:c05a]) by VI1PR04MB7023.eurprd04.prod.outlook.com
+ ([fe80::58d9:b0f7:b31:c05a%7]) with mapi id 15.20.2367.022; Tue, 22 Oct 2019
+ 22:06:01 +0000
+From:   Leonard Crestez <leonard.crestez@nxp.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>
+CC:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        =?iso-8859-2?Q?Artur_=A6wigo=F1?= <a.swigon@samsung.com>,
+        Georgi Djakov <georgi.djakov@linaro.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        Saravana Kannan <saravanak@google.com>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>
+Subject: Re: [RFT][PATCH 0/3] cpufreq / PM: QoS: Introduce frequency QoS and
+ use it in cpufreq
+Thread-Topic: [RFT][PATCH 0/3] cpufreq / PM: QoS: Introduce frequency QoS and
+ use it in cpufreq
+Thread-Index: AQHViSTjqsMfVqNAR0a2lS+zHVHmpw==
+Date:   Tue, 22 Oct 2019 22:06:01 +0000
+Message-ID: <VI1PR04MB7023DF47D046AEADB4E051EBEE680@VI1PR04MB7023.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=leonard.crestez@nxp.com; 
+x-originating-ip: [89.37.124.34]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 541beb6f-9859-44d1-b975-08d7573c0680
+x-ms-traffictypediagnostic: VI1PR04MB6047:|VI1PR04MB6047:
+x-ms-exchange-purlcount: 3
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <VI1PR04MB60470BF8313A646456143A77EE680@VI1PR04MB6047.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-forefront-prvs: 01986AE76B
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(979002)(4636009)(376002)(366004)(136003)(396003)(39860400002)(346002)(189003)(199004)(478600001)(25786009)(6436002)(256004)(99286004)(55016002)(966005)(14444005)(9686003)(33656002)(102836004)(6506007)(5660300002)(7416002)(44832011)(52536014)(7696005)(66066001)(14454004)(305945005)(6306002)(486006)(7736002)(4326008)(476003)(26005)(186003)(81156014)(8676002)(229853002)(8936002)(6246003)(74316002)(66946007)(316002)(54906003)(81166006)(110136005)(91956017)(71190400001)(71200400001)(64756008)(2906002)(86362001)(66476007)(66446008)(66556008)(3846002)(6116002)(76116006)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR04MB6047;H:VI1PR04MB7023.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: YV4tCrui6NXgSHdYm5FjhHXuhrlMZvZB5aF6VaQvbBNxZztcmGirhNU3RaWCAY3Hk+6ZGaDRs/Gmq1AWdNExeM1WU2Tp8nzFA0DoW9X8A1DP4BkiCUfunSfrL5meqxx+ogm/vItBJFQ7FCiXWLZn6wlSitF3k+76VvongiZ12gbdZCY29ADgaErnkVhgP4JOfXXXEuxvp6sQdNChmzPJQRAMw0Fkj9LjOD84nnhmtYioSuctAPQAe5ZvCPoIct7CQlY4K2n/N8IAyGWPbz2sA4294ZhPlfSqkF/VNPKyJCfQwV8guhrsAqjnGXa8lU+NKXWY0Xi5TNNdoa4B9jzX7mz78/TbsGcnDNbsp4H/w2bcN5iUSwfL3NtmRng7c3xr+FWtEmPdVMCleR9BDsk6WBaFIjTfQNGr5uevPJV1YEkwqAZsHIdgBBMDA27/T3ei4q2EGZVtbpUIlf0ernaUDg==
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <157118756627.2063440.9878062995925617180.stgit@dwillia2-desk3.amr.corp.intel.com>
- <157118757175.2063440.9248947575330904096.stgit@dwillia2-desk3.amr.corp.intel.com>
- <CAJZ5v0i-hhasNCD6Ur8VLfrkc+4GOeNXXX_ZNFZjcY6F51ciSQ@mail.gmail.com> <CAJZ5v0j_-iSqiysZiW=J8Y5FCAjnPC7ZvevrLsYhngWr6mT6GQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0j_-iSqiysZiW=J8Y5FCAjnPC7ZvevrLsYhngWr6mT6GQ@mail.gmail.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Tue, 22 Oct 2019 09:48:12 -0700
-Message-ID: <CAPcyv4js1XqSe1kNeWob=ftscYFKQF+04PrKj7XDiEWUWvnMvQ@mail.gmail.com>
-Subject: Re: [PATCH v7 01/12] acpi/numa: Establish a new drivers/acpi/numa/ directory
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>,
-        Keith Busch <kbusch@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 541beb6f-9859-44d1-b975-08d7573c0680
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Oct 2019 22:06:01.3753
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: uZLh1mNJ1eV7Hzx6dFA+IpOsBkkimMkuhd5EIiT6KOw0lo3AgMKsNrxbRDuD+6mGhvYOyNShHALOe5c/2BH4Eg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6047
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 22, 2019 at 3:02 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Fri, Oct 18, 2019 at 11:25 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> >  On Wed, Oct 16, 2019 at 3:13 AM Dan Williams <dan.j.williams@intel.com> wrote:
-> > >
-> > > Currently hmat.c lives under an "hmat" directory which does not enhance
-> > > the description of the file. The initial motivation for giving hmat.c
-> > > its own directory was to delineate it as mm functionality in contrast to
-> > > ACPI device driver functionality.
-> > >
-> > > As ACPI continues to play an increasing role in conveying
-> > > memory location and performance topology information to the OS take the
-> > > opportunity to co-locate these NUMA relevant tables in a combined
-> > > directory.
-> > >
-> > > numa.c is renamed to srat.c and moved to drivers/acpi/numa/ along with
-> > > hmat.c.
-> > >
-> > > Cc: Len Brown <lenb@kernel.org>
-> > > Cc: Keith Busch <kbusch@kernel.org>
-> > > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> >
-> > Please note that https://patchwork.kernel.org/patch/11078171/ is being
-> > pushed to Linus (it is overdue anyway), so if it is pulled, there will
-> > be a merge conflict with this patch.
-> >
-> > Respin maybe?
->
-> Actually, would you mind it if I took this one into the ACPI tree right away?
->
-> There's https://patchwork.kernel.org/patch/11198373/ queued up that,
-> again, will clash with it.
->
-> Also, there is the generic Initiator proximity domains series from
-> Jonathan depending on it and I would like to move forward with that
-> one if there are no objections.
-
-Given Ard has acked all the EFI core and ARM changes can we proceed
-with merging the EFI Specific Purpose Memory series through Rafael's
-tree? It would need acks from x86 maintainers.
+Hello,=0A=
+=0A=
+I've been working on a series which add DEV_PM_QOS support to devfreq, =0A=
+now at v9:=0A=
+=0A=
+	https://patchwork.kernel.org/cover/11171807/=0A=
+=0A=
+Your third patch removes DEV_PM_QOS_FREQUENCY_MIN/MAX that my series =0A=
+depends upon. I found the email on patchwork, hopefully the in-reply-to =0A=
+header is OK?=0A=
+=0A=
+As far as I can tell the replacement ("frequency qos") needs constraints =
+=0A=
+to be managed outside the device infrastructure and it's not obviously =0A=
+usable a generic mechanism for making "min_freq/max_freq" requests to a =0A=
+specific device.=0A=
+=0A=
+I've read a bit through your emails and it seems the problem is that =0A=
+you're dealing with dev_pm_qos on per-policy basis but each "struct =0A=
+cpufreq_policy" can cover multiple CPU devices.=0A=
+=0A=
+An alternative solution which follows dev_pm_qos would be to add =0A=
+notifiers for each CPU inside cpufreq_online and cpufreq_offline. This =0A=
+makes quite a bit of sense because each CPU is a separate "device" with =0A=
+a possibly distinct list of qos requests.=0A=
+=0A=
+If cpufreq needs a group of CPUs to run at the same frequency then it =0A=
+should deal with this by doing dev_pm_qos_read_frequency on each CPU =0A=
+device and picking a frequency that attempts to satisfy all constraints.=0A=
+=0A=
+Handling sysfs min/max_freq through dev_pm_qos would be of dubious =0A=
+value, though I guess you could register identical requests for each CPU.=
+=0A=
+=0A=
+I'm not familiar with what you're trying to accomplish with PM_QOS other =
+=0A=
+than replace the sysfs min_freq/max_freq files: What I want to do is add =
+=0A=
+a driver using the interconnect driver which translates requests for =0A=
+"bandwidth-on-a-path" into "frequency-on-a-device". More specifically a =0A=
+display driver could request bandwidth to RAM and this would be =0A=
+translated into min frequency for NoC and the DDR controller, both of =0A=
+which implement scaling via devfreq:=0A=
+=0A=
+	https://patchwork.kernel.org/cover/11104113/=0A=
+	https://patchwork.kernel.org/cover/11111865/=0A=
+=0A=
+This is part of an effort to upstream an out-of-tree "busfreq" feature =0A=
+which allows device device to make "min frequency requests" through an =0A=
+entirely out-of-tree mechanism. It would also allow finer-grained =0A=
+scaling that what IMX tree currently support.=0A=
+=0A=
+If you're making cpufreq qos constrains be "per-cpufreq-policy" then =0A=
+it's not clear how you would handle in-kernel constraints from other =0A=
+subsystems. Would users have to get a pointer to struct cpufreq_policy =0A=
+and struct freq_constraints? That would make object lifetime a =0A=
+nightmare! But dev_pm_qos solves this by tying to struct device.=0A=
+=0A=
+And if you don't care about in-kernel requests then what's the purpose =0A=
+of involving PM QoS? The old min/max_freq sysfs implementation worked.=0A=
+=0A=
+--=0A=
+Regards,=0A=
+Leonard=0A=
