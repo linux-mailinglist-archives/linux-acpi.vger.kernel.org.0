@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D6200E23C2
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Oct 2019 22:03:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0E38E23C4
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Oct 2019 22:03:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405325AbfJWUCs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Oct 2019 16:02:48 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:40668 "EHLO
+        id S2404790AbfJWUDj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Oct 2019 16:03:39 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:38565 "EHLO
         mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405250AbfJWUCq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Oct 2019 16:02:46 -0400
-Received: by mail-pg1-f194.google.com with SMTP id 15so7411455pgt.7;
-        Wed, 23 Oct 2019 13:02:45 -0700 (PDT)
+        with ESMTP id S1733176AbfJWUCs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Oct 2019 16:02:48 -0400
+Received: by mail-pg1-f194.google.com with SMTP id w3so12759935pgt.5;
+        Wed, 23 Oct 2019 13:02:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=QQpe2VSd833fMVSnCEuCtaneErs8UtbkJfg8Hab68oA=;
-        b=kdaK28naNBUwj6a4ZZ/2PHgGkOWbyACEdEqBSql9+Gd5j/3lB0KrC4tlenrticjPP3
-         ntktb+2yu2ei7VLvN0KaGGz1PlkSm8ipW4x2HUZDJK7TUGZ2TX8I8WSHH+X7eVhvbK9D
-         Rx8HONM7PXFQ6DH0yFVAfQMZRvRABHyduJHbU9Y9kIfj/I+I/VM53SozVz9nICadbmcu
-         GI5aoOoyjPSsgcoTrDgY1RamCx90Fl1xVoNezPlMpBdyCbsXUPGafVe300Gy8nM5Ens+
-         KOhyc0HduO0V+sv3tYcjAaNV/+sQ+8fptPhSNDLcIcBIgw4cNT0gHKyS+fMDoxERmDIN
-         e21w==
+        bh=v3H54pMajw9vQAImO1zQUK9pcXc+MkHfH1n0XYG6X74=;
+        b=HWzChNfmQ2anc5V0nyw5UhLaS86AenhkOOnkjnHMCUOQ8ZgjQdz2KeoZC1SeuliTgc
+         9z3PO9ilE1TIlWVjviGlnCy/RywbMmphIDVwG4+sNS9lYCs4khxqD6ZnxN8xLzEVSgaJ
+         CdbEaqCyhUFsyzDY/TnN9Hsih/DLPh06gm2qHb1Wmx/yjPoqZaX5PILpkbMAyDLVWKlA
+         vdQEQKjlBju2ri2apFO36moIywuaxLp05/ny78ZU1cmGud0F1tDw1VeJ9Y7HKRjCEI6L
+         JM+As0f9rhEqcpNWaW30LyYn5X3t9mwYizRAhz3bSewfIVrWImAujlTth0I5IXj7pDJa
+         7meg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=QQpe2VSd833fMVSnCEuCtaneErs8UtbkJfg8Hab68oA=;
-        b=eJQpffbNV1a59tzKhAQ2a1dHeAOKJcvUpaPEzOaImFcHUMsYQ/OsGskNpz5T7nZBUm
-         q3RrsK39mmrqNg7QgB4OtG7WVGEmhqiF7RkX5uQf1kO6CUp7L8OOjimiqMZ4p2NtyfCp
-         VOVaWNbGRFXoda7xjyrtKRTO+u70rZ1D7OJM1hU1jtGScYPcHGjBAPAkDzHVjyl1e1Yf
-         E7LfQ7g10pY56E1I9wQ4LNimguJCNsSYTKClUsbkKIw9x8jN77FOyvPqhXTQVgd/iPJ8
-         0UTqiigkbgnhUU2eShn77N7dZJtjcH622KUsuVAHyXjmePMgsJsDn8qwqLgo4KTmlqdy
-         wtqA==
-X-Gm-Message-State: APjAAAXWbrPocndWFtqgHSQjKHH4DwGGp3UufDwYb5ubBrEVEuMP1lsK
-        ieDIjpqLYwuTorNcYMh3gIY=
-X-Google-Smtp-Source: APXvYqxyRgz+W/NS2FHRZwiG5KqfvAyLK6GpAsMwYR990mOz0HPTghKwR31MlMVcd7C+xpFzf4mq0A==
-X-Received: by 2002:a65:6781:: with SMTP id e1mr12243091pgr.173.1571860965210;
-        Wed, 23 Oct 2019 13:02:45 -0700 (PDT)
+        bh=v3H54pMajw9vQAImO1zQUK9pcXc+MkHfH1n0XYG6X74=;
+        b=gQt6yMqg/9Xc4QhA1Vb4pqYS4/C6PjLaLy8XvGw+VkeRRQAMR7ZpMe0qnOjYNTF3YB
+         3C2ddfFquKFvIsat/EWxhyLNvutO7YrK2xauTH95KRL5t5M48Zh1nycoedmVoL+vWVk2
+         gqJdZu7O7Zu2DGPzKIZ8D0w5Udw5frq8XSuE7IrV0YfwfK059xiL+Y1hnrGPixjLDMCH
+         a9XLpEYO7LXVaiCfuXkS5J5+xEIBQo6bkWJsGvOg+n5txUM2N/Vj59j4hwP2oJPzRqed
+         P9b02uYPn3zEY1a1frUZNINxsjyUGXSc4wWl2oMa7Zn5vDmFapy5XeM3pfBRi9puqQqS
+         rKzw==
+X-Gm-Message-State: APjAAAXqYfnQCyO52a5LlRce8OJAAmHi9lU4oFyhdgOgQs1yQ1BSc/Kd
+        ld3iigtcxjO3X1qWkYTJl6k=
+X-Google-Smtp-Source: APXvYqx2dQjzCEQV0a9JbYtyY0kDCslgGRmIpudMlu+R4NLpxGsBIq5EXVcukjcdBFhjDxCwVbX+Qg==
+X-Received: by 2002:a63:ce0d:: with SMTP id y13mr6007108pgf.430.1571860966900;
+        Wed, 23 Oct 2019 13:02:46 -0700 (PDT)
 Received: from dtor-ws.mtv.corp.google.com ([2620:15c:202:201:3adc:b08c:7acc:b325])
-        by smtp.gmail.com with ESMTPSA id 6sm10593598pfy.43.2019.10.23.13.02.44
+        by smtp.gmail.com with ESMTPSA id 6sm10593598pfy.43.2019.10.23.13.02.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2019 13:02:44 -0700 (PDT)
+        Wed, 23 Oct 2019 13:02:45 -0700 (PDT)
 From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>
@@ -53,9 +53,9 @@ Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         platform-driver-x86@vger.kernel.org
-Subject: [PATCH v6 04/15] software node: mark internal macros with double underscores
-Date:   Wed, 23 Oct 2019 13:02:22 -0700
-Message-Id: <20191023200233.86616-5-dmitry.torokhov@gmail.com>
+Subject: [PATCH v6 05/15] software node: clean up property_copy_string_array()
+Date:   Wed, 23 Oct 2019 13:02:23 -0700
+Message-Id: <20191023200233.86616-6-dmitry.torokhov@gmail.com>
 X-Mailer: git-send-email 2.23.0.866.gb869b98d4c-goog
 In-Reply-To: <20191023200233.86616-1-dmitry.torokhov@gmail.com>
 References: <20191023200233.86616-1-dmitry.torokhov@gmail.com>
@@ -66,72 +66,78 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Let's mark PROPERTY_ENTRY_* macros that are internal with double leading
-underscores so users are not tempted to use them.
+Because property_copy_string_array() stores the newly allocated pointer in the
+destination property, we have an awkward code in property_entry_copy_data()
+where we fetch the new pointer from dst.
+
+Let's change property_copy_string_array() to return pointer and rely on the
+common path in property_entry_copy_data() to store it in destination structure.
 
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 ---
- include/linux/property.h | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/base/swnode.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/property.h b/include/linux/property.h
-index fad2e83a207c..d6019bacd848 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -261,7 +261,7 @@ struct property_entry {
-  * and structs.
-  */
- 
--#define PROPERTY_ENTRY_ARRAY_LEN(_name_, _type_, _Type_, _val_, _len_)	\
-+#define __PROPERTY_ENTRY_ARRAY_LEN(_name_, _type_, _Type_, _val_, _len_)\
- (struct property_entry) {						\
- 	.name = _name_,							\
- 	.length = (_len_) * sizeof(_type_),				\
-@@ -271,13 +271,13 @@ struct property_entry {
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index 12ca439bab30..f41692e0f63b 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -337,8 +337,8 @@ static void property_entry_free_data(const struct property_entry *p)
+ 	kfree(p->name);
  }
  
- #define PROPERTY_ENTRY_U8_ARRAY_LEN(_name_, _val_, _len_)		\
--	PROPERTY_ENTRY_ARRAY_LEN(_name_, u8, U8, _val_, _len_)
-+	__PROPERTY_ENTRY_ARRAY_LEN(_name_, u8, U8, _val_, _len_)
- #define PROPERTY_ENTRY_U16_ARRAY_LEN(_name_, _val_, _len_)		\
--	PROPERTY_ENTRY_ARRAY_LEN(_name_, u16, U16, _val_, _len_)
-+	__PROPERTY_ENTRY_ARRAY_LEN(_name_, u16, U16, _val_, _len_)
- #define PROPERTY_ENTRY_U32_ARRAY_LEN(_name_, _val_, _len_)		\
--	PROPERTY_ENTRY_ARRAY_LEN(_name_, u32, U32, _val_, _len_)
-+	__PROPERTY_ENTRY_ARRAY_LEN(_name_, u32, U32, _val_, _len_)
- #define PROPERTY_ENTRY_U64_ARRAY_LEN(_name_, _val_, _len_)		\
--	PROPERTY_ENTRY_ARRAY_LEN(_name_, u64, U64, _val_, _len_)
-+	__PROPERTY_ENTRY_ARRAY_LEN(_name_, u64, U64, _val_, _len_)
+-static int property_copy_string_array(struct property_entry *dst,
+-				      const struct property_entry *src)
++static const char * const *
++property_copy_string_array(const struct property_entry *src)
+ {
+ 	const char **d;
+ 	size_t nval = src->length / sizeof(*d);
+@@ -346,7 +346,7 @@ static int property_copy_string_array(struct property_entry *dst,
  
- #define PROPERTY_ENTRY_STRING_ARRAY_LEN(_name_, _val_, _len_)		\
- (struct property_entry) {						\
-@@ -299,7 +299,7 @@ struct property_entry {
- #define PROPERTY_ENTRY_STRING_ARRAY(_name_, _val_)			\
- 	PROPERTY_ENTRY_STRING_ARRAY_LEN(_name_, _val_, ARRAY_SIZE(_val_))
+ 	d = kcalloc(nval, sizeof(*d), GFP_KERNEL);
+ 	if (!d)
+-		return -ENOMEM;
++		return NULL;
  
--#define PROPERTY_ENTRY_INTEGER(_name_, _type_, _Type_, _val_)	\
-+#define __PROPERTY_ENTRY_INTEGER(_name_, _type_, _Type_, _val_)	\
- (struct property_entry) {					\
- 	.name = _name_,						\
- 	.length = sizeof(_type_),				\
-@@ -308,13 +308,13 @@ struct property_entry {
+ 	for (i = 0; i < nval; i++) {
+ 		d[i] = kstrdup(src->pointer.str[i], GFP_KERNEL);
+@@ -354,12 +354,11 @@ static int property_copy_string_array(struct property_entry *dst,
+ 			while (--i >= 0)
+ 				kfree(d[i]);
+ 			kfree(d);
+-			return -ENOMEM;
++			return NULL;
+ 		}
+ 	}
+ 
+-	dst->pointer.str = d;
+-	return 0;
++	return d;
  }
  
- #define PROPERTY_ENTRY_U8(_name_, _val_)		\
--	PROPERTY_ENTRY_INTEGER(_name_, u8, U8, _val_)
-+	__PROPERTY_ENTRY_INTEGER(_name_, u8, U8, _val_)
- #define PROPERTY_ENTRY_U16(_name_, _val_)		\
--	PROPERTY_ENTRY_INTEGER(_name_, u16, U16, _val_)
-+	__PROPERTY_ENTRY_INTEGER(_name_, u16, U16, _val_)
- #define PROPERTY_ENTRY_U32(_name_, _val_)		\
--	PROPERTY_ENTRY_INTEGER(_name_, u32, U32, _val_)
-+	__PROPERTY_ENTRY_INTEGER(_name_, u32, U32, _val_)
- #define PROPERTY_ENTRY_U64(_name_, _val_)		\
--	PROPERTY_ENTRY_INTEGER(_name_, u64, U64, _val_)
-+	__PROPERTY_ENTRY_INTEGER(_name_, u64, U64, _val_)
+ static int property_entry_copy_data(struct property_entry *dst,
+@@ -367,17 +366,15 @@ static int property_entry_copy_data(struct property_entry *dst,
+ {
+ 	const void *pointer = property_get_pointer(src);
+ 	const void *new;
+-	int error;
  
- #define PROPERTY_ENTRY_STRING(_name_, _val_)		\
- (struct property_entry) {				\
+ 	if (src->is_array) {
+ 		if (!src->length)
+ 			return -ENODATA;
+ 
+ 		if (src->type == DEV_PROP_STRING) {
+-			error = property_copy_string_array(dst, src);
+-			if (error)
+-				return error;
+-			new = dst->pointer.str;
++			new = property_copy_string_array(src);
++			if (!new)
++				return -ENOMEM;
+ 		} else {
+ 			new = kmemdup(pointer, src->length, GFP_KERNEL);
+ 			if (!new)
 -- 
 2.23.0.866.gb869b98d4c-goog
 
