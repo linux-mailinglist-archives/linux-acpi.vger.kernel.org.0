@@ -2,135 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D478E14D7
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Oct 2019 10:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98D86E14F1
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Oct 2019 11:00:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390358AbfJWI5y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Oct 2019 04:57:54 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:34333 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387829AbfJWI5y (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Oct 2019 04:57:54 -0400
-Received: by mail-oi1-f195.google.com with SMTP id 83so16738849oii.1;
-        Wed, 23 Oct 2019 01:57:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+SgWDtx0/EohgvsL2Dr3cG8xzUVsn7JdTYAZdxeMPfg=;
-        b=oUfJ2mjhJFMJ60ad42Y7nlf1r6nSXrvD5lljqYgL9u8G3krMTGB7+C3ia2n22l/v8K
-         bO7b8vMvnuGbWp2O2VnqFxYZJ7fLdGZzBtMMpfsAkK9leOfVRuPTtke8+brgcdp/YfVs
-         gZCPD0U4iXlZ0e6+UHhLiMmusBL+c7a89Fk7pOOnnPNIERdEZR53qPQvuUaNAdbiGhXu
-         9mIb2/CErKNHqvXCgl2Cv0S2JrXfrV5afUN8v6SQdNFZ+ywKShSsKtXSShkkBwLfskp6
-         yU7iOwnMTtpVwsiUswSIfUgzCpwM8e82RIZLcdq06QYo2gzBCej/DxNLNcr6FZfoKaIW
-         SiHw==
-X-Gm-Message-State: APjAAAVY41Y5Onz21QCpt1vg91fwXnholWOvwApFFC5zLnqyntRq6R+a
-        osaBjr2/7IN98Ht3wSJ31/Ix0s/gsJjUq0h8qYo=
-X-Google-Smtp-Source: APXvYqwhTBg9vuA1Oqj9UiGYZuKXA2wZzV8vgNARWImcMs2DbYEml/kicZIjjXGr2bCaenXjJbEL488WLAVz7xersw0=
-X-Received: by 2002:aca:d706:: with SMTP id o6mr6916124oig.57.1571821072330;
- Wed, 23 Oct 2019 01:57:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <VI1PR04MB7023DF47D046AEADB4E051EBEE680@VI1PR04MB7023.eurprd04.prod.outlook.com>
- <CAJZ5v0g-hTOhVJOz28CGmpcxUiiTrYyV=ARwNCN9w4doeRcCRw@mail.gmail.com>
- <VI1PR04MB7023808153A1FD2740FACF01EE6B0@VI1PR04MB7023.eurprd04.prod.outlook.com>
- <CAJZ5v0gWdFVbvPobLic7F+bRrz-QUoV3GPhpawdFT0MVjAhuOQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gWdFVbvPobLic7F+bRrz-QUoV3GPhpawdFT0MVjAhuOQ@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 23 Oct 2019 10:57:41 +0200
-Message-ID: <CAJZ5v0gpbkHP5c4eN1s+gqueiSniZC6_o0GXuBcuzDLrVmt+=Q@mail.gmail.com>
-Subject: Re: [RFT][PATCH 0/3] cpufreq / PM: QoS: Introduce frequency QoS and
- use it in cpufreq
-To:     Leonard Crestez <leonard.crestez@nxp.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
+        id S2390400AbfJWJAr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Oct 2019 05:00:47 -0400
+Received: from mga04.intel.com ([192.55.52.120]:43799 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387829AbfJWJAr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 23 Oct 2019 05:00:47 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Oct 2019 02:00:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,220,1569308400"; 
+   d="scan'208";a="209878290"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 23 Oct 2019 02:00:43 -0700
+Received: by lahna (sSMTP sendmail emulation); Wed, 23 Oct 2019 12:00:42 +0300
+Date:   Wed, 23 Oct 2019 12:00:42 +0300
+From:   Mika Westerberg <mika.westerberg@intel.com>
+To:     Karol Herbst <kherbst@redhat.com>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Lyude Paul <lyude@redhat.com>,
+        Linux PCI <linux-pci@vger.kernel.org>,
         Linux PM <linux-pm@vger.kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        =?UTF-8?B?QXJ0dXIgxZp3aWdvxYQ=?= <a.swigon@samsung.com>,
-        Georgi Djakov <georgi.djakov@linaro.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        Saravana Kannan <saravanak@google.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        nouveau <nouveau@lists.freedesktop.org>,
+        Linux ACPI Mailing List <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v3] pci: prevent putting nvidia GPUs into lower device
+ states on certain intel bridges
+Message-ID: <20191023090042.GQ2819@lahna.fi.intel.com>
+References: <CACO55tuXck7vqGVLmMBGFg6A2pr3h8koRuvvWHLNDH8XvBVxew@mail.gmail.com>
+ <20191021133328.GI2819@lahna.fi.intel.com>
+ <CACO55tujUZr+rKkyrkfN+wkNOJWdNEVhVc-eZ3RCXJD+G1z=7A@mail.gmail.com>
+ <20191021140852.GM2819@lahna.fi.intel.com>
+ <CACO55tvp6n2ahizwhc70xRJ1uTohs2ep962vwtHGQK-MkcLmsw@mail.gmail.com>
+ <20191021154606.GT2819@lahna.fi.intel.com>
+ <CACO55tsGhvG1qapRkdu_j7R534cFa5o=Gv2s4VZDrWUrxjBFwA@mail.gmail.com>
+ <CACO55ts7hivYgN7=3bcAjWx2h8FfbR5UiKiOOExYY9m-TGRNfw@mail.gmail.com>
+ <20191022124453.GK2819@lahna.fi.intel.com>
+ <CACO55tvxvwUqzg=jLoO6bhmcaXQwRaTv9S4pt2t0V5TUi+HsEw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACO55tvxvwUqzg=jLoO6bhmcaXQwRaTv9S4pt2t0V5TUi+HsEw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 23, 2019 at 10:54 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Wed, Oct 23, 2019 at 4:20 AM Leonard Crestez <leonard.crestez@nxp.com> wrote:
+On Tue, Oct 22, 2019 at 02:51:53PM +0200, Karol Herbst wrote:
+> On Tue, Oct 22, 2019 at 2:45 PM Mika Westerberg
+> <mika.westerberg@intel.com> wrote:
 > >
-> > On 2019-10-23 1:48 AM, Rafael J. Wysocki wrote:
-> > > On Wed, Oct 23, 2019 at 12:06 AM Leonard Crestez
-> > > <leonard.crestez@nxp.com> wrote:
-> > >> I've been working on a series which add DEV_PM_QOS support to devfreq,
-> > >> now at v9:
-> > >>
-> > >> Your third patch removes DEV_PM_QOS_FREQUENCY_MIN/MAX that my series
-> > >> depends upon. I found the email on patchwork, hopefully the in-reply-to
-> > >> header is OK?
-> > >>
-> > >> As far as I can tell the replacement ("frequency qos") needs constraints
-> > >> to be managed outside the device infrastructure and it's not obviously
-> > >> usable a generic mechanism for making "min_freq/max_freq" requests to a
-> > >> specific device.
+> > On Tue, Oct 22, 2019 at 11:16:14AM +0200, Karol Herbst wrote:
+> > > I think there is something I totally forgot about:
 > > >
-> > > You can add a struct freq_constrants pointer to struct dev_pm_info and
-> > > use it just fine.  It doesn't have to be bolted into struct
-> > > dev_pm_qos.
+> > > When there was never a driver bound to the GPU, and if runtime power
+> > > management gets enabled on that device, runtime suspend/resume works
+> > > as expected (I am not 100% sure on if that always works, but I will
+> > > recheck that).
 > >
-> > I'm not sure what you mean by this? min/max_freq was already available
-> > in dev_pm_qos so it's not clear why it would be moved somewhere else.
-> > What I'm looking for is a mechanism to make min/max_freq requests on a
-> > per-device basis and DEV_PM_QOS_MIN_FREQUENCY already did that.
+> > AFAIK, if there is no driver bound to the PCI device it is left to D0
+> > regardless of the runtime PM state which could explain why it works in
+> > that case (it is never put into D3hot).
 > >
-> > Reuse is good, right?
->
-> But they go away in patch 3 of this series as there are no users in
-> the tree.  Sorry about that.
->
-> > >> I've read a bit through your emails and it seems the problem is that
-> > >> you're dealing with dev_pm_qos on per-policy basis but each "struct
-> > >> cpufreq_policy" can cover multiple CPU devices.
-> > >>
-> > >> An alternative solution which follows dev_pm_qos would be to add
-> > >> notifiers for each CPU inside cpufreq_online and cpufreq_offline. This
-> > >> makes quite a bit of sense because each CPU is a separate "device" with
-> > >> a possibly distinct list of qos requests.
-> > >
-> > > But combining the lists of requests for all the CPUs in a policy
-> > > defeats the idea of automatic aggregation of requests which really is
-> > > what PM QoS is about.
+> > I looked at the acpidump you sent and there is one thing that may
+> > explain the differences between Windows and Linux. Not sure if you were
+> > aware of this already, though. The power resource PGOF() method has
+> > this:
 > >
-> > My primary interest is the "dev" part of dev_pm_qos: making pm_qos
-> > requests tied to a specific device.
->
-> The list of requests needs to be associated with the user of the
-> effective constraint.  If that is the device, it is all good.
->
-> > > There have to be two lists of requests per policy, one for the max and
-> > > one for the min frequency >
-> > >> If cpufreq needs a group of CPUs to run at the same frequency then it
-> > >> should deal with this by doing dev_pm_qos_read_frequency on each CPU
-> > >> device and picking a frequency that attempts to satisfy all constraints.
-> > >
-> > > No, that would be combining the requests by hand.
+> >    If (((OSYS <= 0x07D9) || ((OSYS == 0x07DF) && (_REV == 0x05)))) {
+> >       ...
+> >    }
 > >
-> > It's just a loop though.
->
-> Yes, it is, and needs to be run on every change of an effective
-> constraint for any CPU even if the total effective constraint doesn't
-> change.  And, of course, the per-policy user space limits would need
-> to be combined with that by hand.
->
-> Not particularly straightforward if you asked me.
->
-> Not to mention the fact that, say, cpu_cooling, has a per-policy list
-> of requests anyway.
+> 
+> I think this is the fallback to some older method of runtime
+> suspending the device, and I think it will end up touching different
+> registers on the bridge controller which do not show the broken
+> behaviour.
 
-A per-policy request, not a list of them.  Sorry.
+I think it actually tries to identify older Windows and then Linux (the
+_REV == 0x05 check comes from that). So at least some point Dell people
+have experiment this on Linux.
