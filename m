@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24CF6E23C6
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Oct 2019 22:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6200E23C2
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Oct 2019 22:03:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405195AbfJWUCp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Oct 2019 16:02:45 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:40666 "EHLO
+        id S2405325AbfJWUCs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Oct 2019 16:02:48 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:40668 "EHLO
         mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405185AbfJWUCp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Oct 2019 16:02:45 -0400
-Received: by mail-pg1-f194.google.com with SMTP id 15so7411414pgt.7;
-        Wed, 23 Oct 2019 13:02:44 -0700 (PDT)
+        with ESMTP id S2405250AbfJWUCq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Oct 2019 16:02:46 -0400
+Received: by mail-pg1-f194.google.com with SMTP id 15so7411455pgt.7;
+        Wed, 23 Oct 2019 13:02:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=qtC7CH3uCwc1qnA7SQUM9vPjiJGHmllhEByKdOb4NKs=;
-        b=Bl1g34Mkp5wfx+KC9+klwhpKZk1kBhcM5NRp3FEFF07RQNZcVc4o24x1U11z10h6M6
-         LCIeI2Dy1qVdyeYk7Ldx8r3o/qs/FDyIX3QfJUJZyD6lq6pPMhvkUrpaqPFqgaYiyrc3
-         6AIibK6lfZYm/yIMhlv+VDOye62lgOM16ixQJY6NjpXW1cRbUnAW2sfmJmSkBRg0iuQU
-         3TSJB9Avz/zvs2sutC7DOVkbaoMD3gD+J/KdR/CbqCL7putsPB1Epk4uelX31SWDQwYo
-         5ackelqsjcnw8GQO5oqsP47ZlhuqjTzYI4ozItX8zAvf0I5EN94RSc+j0ee8WUme0gEd
-         1FoQ==
+        bh=QQpe2VSd833fMVSnCEuCtaneErs8UtbkJfg8Hab68oA=;
+        b=kdaK28naNBUwj6a4ZZ/2PHgGkOWbyACEdEqBSql9+Gd5j/3lB0KrC4tlenrticjPP3
+         ntktb+2yu2ei7VLvN0KaGGz1PlkSm8ipW4x2HUZDJK7TUGZ2TX8I8WSHH+X7eVhvbK9D
+         Rx8HONM7PXFQ6DH0yFVAfQMZRvRABHyduJHbU9Y9kIfj/I+I/VM53SozVz9nICadbmcu
+         GI5aoOoyjPSsgcoTrDgY1RamCx90Fl1xVoNezPlMpBdyCbsXUPGafVe300Gy8nM5Ens+
+         KOhyc0HduO0V+sv3tYcjAaNV/+sQ+8fptPhSNDLcIcBIgw4cNT0gHKyS+fMDoxERmDIN
+         e21w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=qtC7CH3uCwc1qnA7SQUM9vPjiJGHmllhEByKdOb4NKs=;
-        b=F4DSrxN/ZVYhh0GomiSfJkljFcfjhyAd2MJ4VjdSz5wFsO+EPZk0MVLQoLGpz47yZu
-         r716THGct8pGd2bG0O8jfxMENyOWArPyhyOSWNy8IcgvTs4hA3mCRkEhy5/88srm/70A
-         YL53po063wjZKE2+y/MHH9OwrP3M2sh5YxkYAHTS+YFVbGdtsu49PR4edo6FjA9Fy8OB
-         vBbCFUrfSNTK5i/vM/5d7WD4iS+23Vbuayy4CakiWxL51mBIUbdIzOtyP8X3tGN307q5
-         aGxGFm9ZM9Un/y36WRTjORHbL+0tkMaNHpm9zLCa8BKfywdvmmGkQnu9CNd+cF8csQpL
-         zwNw==
-X-Gm-Message-State: APjAAAUaFh0LFXzXCGx7wMLD890FbHTYbJ45BLFRKJ5PCcAgK0LxbGQT
-        BuiULh16sqMIwbHlK+t8lic=
-X-Google-Smtp-Source: APXvYqxrtG+HMKhqIm6N7hCHG05q+xOQ8FHVy0CHWWfKPchAcaWeOKq4CAT1YBwjvkyfK5HeusGoGw==
-X-Received: by 2002:a63:6949:: with SMTP id e70mr11937570pgc.226.1571860963943;
-        Wed, 23 Oct 2019 13:02:43 -0700 (PDT)
+        bh=QQpe2VSd833fMVSnCEuCtaneErs8UtbkJfg8Hab68oA=;
+        b=eJQpffbNV1a59tzKhAQ2a1dHeAOKJcvUpaPEzOaImFcHUMsYQ/OsGskNpz5T7nZBUm
+         q3RrsK39mmrqNg7QgB4OtG7WVGEmhqiF7RkX5uQf1kO6CUp7L8OOjimiqMZ4p2NtyfCp
+         VOVaWNbGRFXoda7xjyrtKRTO+u70rZ1D7OJM1hU1jtGScYPcHGjBAPAkDzHVjyl1e1Yf
+         E7LfQ7g10pY56E1I9wQ4LNimguJCNsSYTKClUsbkKIw9x8jN77FOyvPqhXTQVgd/iPJ8
+         0UTqiigkbgnhUU2eShn77N7dZJtjcH622KUsuVAHyXjmePMgsJsDn8qwqLgo4KTmlqdy
+         wtqA==
+X-Gm-Message-State: APjAAAXWbrPocndWFtqgHSQjKHH4DwGGp3UufDwYb5ubBrEVEuMP1lsK
+        ieDIjpqLYwuTorNcYMh3gIY=
+X-Google-Smtp-Source: APXvYqxyRgz+W/NS2FHRZwiG5KqfvAyLK6GpAsMwYR990mOz0HPTghKwR31MlMVcd7C+xpFzf4mq0A==
+X-Received: by 2002:a65:6781:: with SMTP id e1mr12243091pgr.173.1571860965210;
+        Wed, 23 Oct 2019 13:02:45 -0700 (PDT)
 Received: from dtor-ws.mtv.corp.google.com ([2620:15c:202:201:3adc:b08c:7acc:b325])
-        by smtp.gmail.com with ESMTPSA id 6sm10593598pfy.43.2019.10.23.13.02.42
+        by smtp.gmail.com with ESMTPSA id 6sm10593598pfy.43.2019.10.23.13.02.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2019 13:02:42 -0700 (PDT)
+        Wed, 23 Oct 2019 13:02:44 -0700 (PDT)
 From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>
@@ -53,9 +53,9 @@ Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         platform-driver-x86@vger.kernel.org
-Subject: [PATCH v6 03/15] efi/apple-properties: use PROPERTY_ENTRY_U8_ARRAY_LEN
-Date:   Wed, 23 Oct 2019 13:02:21 -0700
-Message-Id: <20191023200233.86616-4-dmitry.torokhov@gmail.com>
+Subject: [PATCH v6 04/15] software node: mark internal macros with double underscores
+Date:   Wed, 23 Oct 2019 13:02:22 -0700
+Message-Id: <20191023200233.86616-5-dmitry.torokhov@gmail.com>
 X-Mailer: git-send-email 2.23.0.866.gb869b98d4c-goog
 In-Reply-To: <20191023200233.86616-1-dmitry.torokhov@gmail.com>
 References: <20191023200233.86616-1-dmitry.torokhov@gmail.com>
@@ -66,54 +66,72 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Let's switch to using PROPERTY_ENTRY_U8_ARRAY_LEN() to initialize
-property entries. Also, when dumping data, rely on local variables
-instead of poking into the property entry structure directly.
+Let's mark PROPERTY_ENTRY_* macros that are internal with double leading
+underscores so users are not tempted to use them.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 ---
- drivers/firmware/efi/apple-properties.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ include/linux/property.h | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/firmware/efi/apple-properties.c b/drivers/firmware/efi/apple-properties.c
-index 0e206c9e0d7a..5ccf39986a14 100644
---- a/drivers/firmware/efi/apple-properties.c
-+++ b/drivers/firmware/efi/apple-properties.c
-@@ -53,7 +53,8 @@ static void __init unmarshal_key_value_pairs(struct dev_header *dev_header,
+diff --git a/include/linux/property.h b/include/linux/property.h
+index fad2e83a207c..d6019bacd848 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -261,7 +261,7 @@ struct property_entry {
+  * and structs.
+  */
  
- 	for (i = 0; i < dev_header->prop_count; i++) {
- 		int remaining = dev_header->len - (ptr - (void *)dev_header);
--		u32 key_len, val_len;
-+		u32 key_len, val_len, entry_len;
-+		const u8 *entry_data;
- 		char *key;
+-#define PROPERTY_ENTRY_ARRAY_LEN(_name_, _type_, _Type_, _val_, _len_)	\
++#define __PROPERTY_ENTRY_ARRAY_LEN(_name_, _type_, _Type_, _val_, _len_)\
+ (struct property_entry) {						\
+ 	.name = _name_,							\
+ 	.length = (_len_) * sizeof(_type_),				\
+@@ -271,13 +271,13 @@ struct property_entry {
+ }
  
- 		if (sizeof(key_len) > remaining)
-@@ -85,17 +86,14 @@ static void __init unmarshal_key_value_pairs(struct dev_header *dev_header,
- 		ucs2_as_utf8(key, ptr + sizeof(key_len),
- 			     key_len - sizeof(key_len));
+ #define PROPERTY_ENTRY_U8_ARRAY_LEN(_name_, _val_, _len_)		\
+-	PROPERTY_ENTRY_ARRAY_LEN(_name_, u8, U8, _val_, _len_)
++	__PROPERTY_ENTRY_ARRAY_LEN(_name_, u8, U8, _val_, _len_)
+ #define PROPERTY_ENTRY_U16_ARRAY_LEN(_name_, _val_, _len_)		\
+-	PROPERTY_ENTRY_ARRAY_LEN(_name_, u16, U16, _val_, _len_)
++	__PROPERTY_ENTRY_ARRAY_LEN(_name_, u16, U16, _val_, _len_)
+ #define PROPERTY_ENTRY_U32_ARRAY_LEN(_name_, _val_, _len_)		\
+-	PROPERTY_ENTRY_ARRAY_LEN(_name_, u32, U32, _val_, _len_)
++	__PROPERTY_ENTRY_ARRAY_LEN(_name_, u32, U32, _val_, _len_)
+ #define PROPERTY_ENTRY_U64_ARRAY_LEN(_name_, _val_, _len_)		\
+-	PROPERTY_ENTRY_ARRAY_LEN(_name_, u64, U64, _val_, _len_)
++	__PROPERTY_ENTRY_ARRAY_LEN(_name_, u64, U64, _val_, _len_)
  
--		entry[i].name = key;
--		entry[i].length = val_len - sizeof(val_len);
--		entry[i].is_array = !!entry[i].length;
--		entry[i].type = DEV_PROP_U8;
--		entry[i].pointer.u8_data = ptr + key_len + sizeof(val_len);
--
-+		entry_data = ptr + key_len + sizeof(val_len);
-+		entry_len = val_len - sizeof(val_len);
-+		entry[i] = PROPERTY_ENTRY_U8_ARRAY_LEN(key, entry_data,
-+						       entry_len);
- 		if (dump_properties) {
--			dev_info(dev, "property: %s\n", entry[i].name);
-+			dev_info(dev, "property: %s\n", key);
- 			print_hex_dump(KERN_INFO, pr_fmt(), DUMP_PREFIX_OFFSET,
--				16, 1, entry[i].pointer.u8_data,
--				entry[i].length, true);
-+				16, 1, entry_data, entry_len, true);
- 		}
+ #define PROPERTY_ENTRY_STRING_ARRAY_LEN(_name_, _val_, _len_)		\
+ (struct property_entry) {						\
+@@ -299,7 +299,7 @@ struct property_entry {
+ #define PROPERTY_ENTRY_STRING_ARRAY(_name_, _val_)			\
+ 	PROPERTY_ENTRY_STRING_ARRAY_LEN(_name_, _val_, ARRAY_SIZE(_val_))
  
- 		ptr += key_len + val_len;
+-#define PROPERTY_ENTRY_INTEGER(_name_, _type_, _Type_, _val_)	\
++#define __PROPERTY_ENTRY_INTEGER(_name_, _type_, _Type_, _val_)	\
+ (struct property_entry) {					\
+ 	.name = _name_,						\
+ 	.length = sizeof(_type_),				\
+@@ -308,13 +308,13 @@ struct property_entry {
+ }
+ 
+ #define PROPERTY_ENTRY_U8(_name_, _val_)		\
+-	PROPERTY_ENTRY_INTEGER(_name_, u8, U8, _val_)
++	__PROPERTY_ENTRY_INTEGER(_name_, u8, U8, _val_)
+ #define PROPERTY_ENTRY_U16(_name_, _val_)		\
+-	PROPERTY_ENTRY_INTEGER(_name_, u16, U16, _val_)
++	__PROPERTY_ENTRY_INTEGER(_name_, u16, U16, _val_)
+ #define PROPERTY_ENTRY_U32(_name_, _val_)		\
+-	PROPERTY_ENTRY_INTEGER(_name_, u32, U32, _val_)
++	__PROPERTY_ENTRY_INTEGER(_name_, u32, U32, _val_)
+ #define PROPERTY_ENTRY_U64(_name_, _val_)		\
+-	PROPERTY_ENTRY_INTEGER(_name_, u64, U64, _val_)
++	__PROPERTY_ENTRY_INTEGER(_name_, u64, U64, _val_)
+ 
+ #define PROPERTY_ENTRY_STRING(_name_, _val_)		\
+ (struct property_entry) {				\
 -- 
 2.23.0.866.gb869b98d4c-goog
 
