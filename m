@@ -2,139 +2,232 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D20CDE1490
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Oct 2019 10:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7339E14CB
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Oct 2019 10:54:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390298AbfJWIpl convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 23 Oct 2019 04:45:41 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([146.101.78.151]:31457 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2390250AbfJWIpk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 23 Oct 2019 04:45:40 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-173-UtFTQs3SPJ-8JSk6ctjl9Q-1; Wed, 23 Oct 2019 09:45:37 +0100
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Wed, 23 Oct 2019 09:45:36 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Wed, 23 Oct 2019 09:45:36 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Yin Fengwei' <fengwei.yin@intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>
-Subject: RE: [PATCH v3] ACPI/processor_idle: Remove dummy wait if kernel is in
- guest mode
-Thread-Topic: [PATCH v3] ACPI/processor_idle: Remove dummy wait if kernel is
- in guest mode
-Thread-Index: AQHViXZzrjg4+aYFMUePkP2//whb1adn5/Eg
-Date:   Wed, 23 Oct 2019 08:45:36 +0000
-Message-ID: <30ee0a348f624698801691f65eeecd87@AcuMS.aculab.com>
-References: <20191023074945.17016-1-fengwei.yin@intel.com>
-In-Reply-To: <20191023074945.17016-1-fengwei.yin@intel.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        id S2390363AbfJWIyo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Oct 2019 04:54:44 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:45181 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390348AbfJWIyo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Oct 2019 04:54:44 -0400
+Received: by mail-oi1-f195.google.com with SMTP id o205so16678874oib.12;
+        Wed, 23 Oct 2019 01:54:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=l/tYMdvknt4Y45qXikSRBwej7y1KwwcBMADpz4Xm+Go=;
+        b=C6UZClynQ/HN2DGGUh7euNW/2al2w/i2b1WtfANPs+t1oAMzTWuxCVrSHd8+IhtTP3
+         WTea2j9KSndANdt7cxy4TPrcDbWElXQprG6jqnv5+3gEof56Y1IJQ2pMW+ORlCsT8Pzq
+         CQeZyTRB7ws0/VAH0twFh8RlQ3zpRxyw7iAAIo6J4hk4bHOyEYK/CHSAxHj7Won1HgL/
+         iaT1jOu1jKgiKLwgb0+9BmIm3r8INDM+u+HERfKMcrDkM/gzVaRPFbgucplhy/TDfJbq
+         EYfxyA3hipDyja6jSF0chPOBqbpYQY5W+AS/iuBAP9uN8X6Xg0mEHqEjF7M+mikKnslO
+         NIAg==
+X-Gm-Message-State: APjAAAVbL6unGW903X3wBIyXiyHz6GC/LY39o0wDGstNxYC70bN1Wv9l
+        jxIea7QJIaEelPTzUSCF9TJsYc6K6+df6TfRUO8=
+X-Google-Smtp-Source: APXvYqybflU7DWe+aDpt9KxzvaDxipKdXHCdTIZtzL+dBmDd6MHS4G0Vc4XexUXKpw/cUNXWkGIsJWz9bjslk2tCWok=
+X-Received: by 2002:aca:d405:: with SMTP id l5mr6308661oig.115.1571820882347;
+ Wed, 23 Oct 2019 01:54:42 -0700 (PDT)
 MIME-Version: 1.0
-X-MC-Unique: UtFTQs3SPJ-8JSk6ctjl9Q-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+References: <VI1PR04MB7023DF47D046AEADB4E051EBEE680@VI1PR04MB7023.eurprd04.prod.outlook.com>
+ <CAJZ5v0g-hTOhVJOz28CGmpcxUiiTrYyV=ARwNCN9w4doeRcCRw@mail.gmail.com> <VI1PR04MB7023808153A1FD2740FACF01EE6B0@VI1PR04MB7023.eurprd04.prod.outlook.com>
+In-Reply-To: <VI1PR04MB7023808153A1FD2740FACF01EE6B0@VI1PR04MB7023.eurprd04.prod.outlook.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 23 Oct 2019 10:54:31 +0200
+Message-ID: <CAJZ5v0gWdFVbvPobLic7F+bRrz-QUoV3GPhpawdFT0MVjAhuOQ@mail.gmail.com>
+Subject: Re: [RFT][PATCH 0/3] cpufreq / PM: QoS: Introduce frequency QoS and
+ use it in cpufreq
+To:     Leonard Crestez <leonard.crestez@nxp.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        =?UTF-8?B?QXJ0dXIgxZp3aWdvxYQ=?= <a.swigon@samsung.com>,
+        Georgi Djakov <georgi.djakov@linaro.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        Saravana Kannan <saravanak@google.com>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Yin Fengwei
-> Sent: 23 October 2019 08:50
+On Wed, Oct 23, 2019 at 4:20 AM Leonard Crestez <leonard.crestez@nxp.com> wrote:
+>
+> On 2019-10-23 1:48 AM, Rafael J. Wysocki wrote:
+> > On Wed, Oct 23, 2019 at 12:06 AM Leonard Crestez
+> > <leonard.crestez@nxp.com> wrote:
+> >> I've been working on a series which add DEV_PM_QOS support to devfreq,
+> >> now at v9:
+> >>
+> >> Your third patch removes DEV_PM_QOS_FREQUENCY_MIN/MAX that my series
+> >> depends upon. I found the email on patchwork, hopefully the in-reply-to
+> >> header is OK?
+> >>
+> >> As far as I can tell the replacement ("frequency qos") needs constraints
+> >> to be managed outside the device infrastructure and it's not obviously
+> >> usable a generic mechanism for making "min_freq/max_freq" requests to a
+> >> specific device.
+> >
+> > You can add a struct freq_constrants pointer to struct dev_pm_info and
+> > use it just fine.  It doesn't have to be bolted into struct
+> > dev_pm_qos.
+>
+> I'm not sure what you mean by this? min/max_freq was already available
+> in dev_pm_qos so it's not clear why it would be moved somewhere else.
+> What I'm looking for is a mechanism to make min/max_freq requests on a
+> per-device basis and DEV_PM_QOS_MIN_FREQUENCY already did that.
+>
+> Reuse is good, right?
 
+But they go away in patch 3 of this series as there are no users in
+the tree.  Sorry about that.
 
-> In function acpi_idle_do_entry(), an ioport access is used for dummy
-> wait to guarantee hardware behavior. But it could trigger unnecessary
-> vmexit if kernel is running as guest in virtualization environtment.
-> 
-> If it's in virtualization environment, the deeper C state enter
-> operation (inb()) will trap to hyervisor. It's not needed to do
-> dummy wait after the inb() call. So we remove the dummy io port
-> access to avoid unnecessary VMexit.
-> 
-> We keep dummy io port access to maintain timing for native environment.
-> 
-> Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
-> ---
-> ChangeLog:
-> v2 -> v3:
->  - Remove dummy io port access totally for virtualization env.
-> 
-> v1 -> v2:
->  - Use ndelay instead of dead loop for dummy delay.
-> 
->  drivers/acpi/processor_idle.c | 36 ++++++++++++++++++++++++++++++++---
->  1 file changed, 33 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> index ed56c6d20b08..0c4a97dd6917 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -58,6 +58,17 @@ struct cpuidle_driver acpi_idle_driver = {
->  static
->  DEFINE_PER_CPU(struct acpi_processor_cx * [CPUIDLE_STATE_MAX], acpi_cstate);
-> 
-> +static void (*dummy_wait)(u64 address);
-> +
-> +static void default_dummy_wait(u64 address)
-> +{
-> +	inl(address);
-> +}
-> +
-> +static void default_noop_wait(u64 address)
-> +{
-> +}
-> +
+> >> I've read a bit through your emails and it seems the problem is that
+> >> you're dealing with dev_pm_qos on per-policy basis but each "struct
+> >> cpufreq_policy" can cover multiple CPU devices.
+> >>
+> >> An alternative solution which follows dev_pm_qos would be to add
+> >> notifiers for each CPU inside cpufreq_online and cpufreq_offline. This
+> >> makes quite a bit of sense because each CPU is a separate "device" with
+> >> a possibly distinct list of qos requests.
+> >
+> > But combining the lists of requests for all the CPUs in a policy
+> > defeats the idea of automatic aggregation of requests which really is
+> > what PM QoS is about.
+>
+> My primary interest is the "dev" part of dev_pm_qos: making pm_qos
+> requests tied to a specific device.
 
-Overengineered...
-Just add:
+The list of requests needs to be associated with the user of the
+effective constraint.  If that is the device, it is all good.
 
-static void wait_for_freeze(void)
-{
-#ifdef	CONFIG_X86
-	/* No delay is needed if we are a guest */
-	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
-		return;
-#endif
-	/* Dummy wait op - must do something useless after P_LVL2 read
-	   because chipsets cannot guarantee that STPCLK# signal
-	   gets asserted in time to freeze execution properly. */
-	inl(acpi_gbl_FADT.xpm_timer_block.address);
-}
+> > There have to be two lists of requests per policy, one for the max and
+> > one for the min frequency >
+> >> If cpufreq needs a group of CPUs to run at the same frequency then it
+> >> should deal with this by doing dev_pm_qos_read_frequency on each CPU
+> >> device and picking a frequency that attempts to satisfy all constraints.
+> >
+> > No, that would be combining the requests by hand.
+>
+> It's just a loop though.
 
-and use it to replace the inl().
+Yes, it is, and needs to be run on every change of an effective
+constraint for any CPU even if the total effective constraint doesn't
+change.  And, of course, the per-policy user space limits would need
+to be combined with that by hand.
 
-...
-> +#ifdef	CONFIG_X86
-> +	/* For x86, if we are running in guest, we don't need extra
-> +	 * access ioport as dummy wait.
-> +	 */
-> +	if (boot_cpu_has(X86_FEATURE_HYPERVISOR)) {
-> +		pr_err("We are in virtual env");
-> +		dummy_wait = default_noop_wait;
-> +	} else {
-> +		pr_err("We are not in virtual env");
-> +	}
-> +#endif
+Not particularly straightforward if you asked me.
 
-WTF are the pr_err() for???
+Not to mention the fact that, say, cpu_cooling, has a per-policy list
+of requests anyway.
 
-	David
+> >> Handling sysfs min/max_freq through dev_pm_qos would be of dubious
+> >> value, though I guess you could register identical requests for each CPU.
+> >>
+> >> I'm not familiar with what you're trying to accomplish with PM_QOS other
+> >> than replace the sysfs min_freq/max_freq files:
+> >
+> > QoS-based management of the frequency limits is not really needed for
+> > that.  The real motivation for adding it were things like thermal and
+> > platform firmware induced limits that all have their own values to
+> > combine with the ones provided by user space.
+>
+> Current users seem to be thermal-related. Do you care about min/max_freq
+> requests from stuff not directly tied to a CPU?
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+Yes, I do.
 
+And they will need to add requests per policy.
+
+> >> What I want to do is add
+> >> a driver using the interconnect driver which translates requests for
+> >> "bandwidth-on-a-path" into "frequency-on-a-device". More specifically a
+> >> display driver could request bandwidth to RAM and this would be
+> >> translated into min frequency for NoC and the DDR controller, both of
+> >> which implement scaling via devfreq:
+> >>
+> >> This is part of an effort to upstream an out-of-tree "busfreq" feature
+> >> which allows device device to make "min frequency requests" through an
+> >> entirely out-of-tree mechanism. It would also allow finer-grained
+> >> scaling that what IMX tree currently support.
+> >>
+> >> If you're making cpufreq qos constrains be "per-cpufreq-policy" then
+> >> it's not clear how you would handle in-kernel constraints from other
+> >> subsystems. Would users have to get a pointer to struct cpufreq_policy
+> >> and struct freq_constraints?
+> >
+> > Yes.
+> >
+> >> That would make object lifetime a nightmare!
+> >
+> > Why really?  It is not much different from the device PM QoS case
+>  >> Actually,  is a simple
+> > one-for-one replacement of the former.  As it turns out, all of its
+> > users have access to a policy object anyway already.
+>
+> All current users are very closely tied to cpufreq, what I had in mind
+> is requests from unrelated subsystems.
+
+You can use cpufreq policy notifiers for that.  Add a request for each
+CPU in the policy (or for each related CPU if that is needed) to
+policy->constraints on CREATE_POLICY and remove them on REMOVE_POLICY.
+That's all you need to do.
+
+BTW, the original code from Viresh did that already, I haven't changed
+it.  And it didn't have per-CPU lists of frequency requests for that
+matter, it used the ones in policy->cpu as the per-policy lists, which
+doesn't work.
+
+> Browsing through the cpufreq core it seems that it's possible for a
+> struct cpufreq_policy to be created and destroyed at various points, the
+> simplest example being rmmod/modprobe on a cpufreq driver.
+>
+> The freq_qos_add_request function grabs a pointer to struct
+> freq_constraints, this can become invalid when cpufreq_policy is freed.
+>
+> I guess all users need to register a CPUFREQ_POLICY_NOTIFIER and make
+> sure to freq_qos_add_request every time?
+
+Yes.
+
+The policy is the user of the effective constraint anyway and holding
+on to a list of requests without a user of the effective constraint
+would be, well, not useful.
+
+> Looking at your [PATCH 2/3] I  can't spot any obvious issue, thermal clamping
+> code seems to get the appropriate callbacks.
+>
+> >> But dev_pm_qos solves this by tying to struct device.
+>
+> The lifetime of "struct device" is already controlled by
+> get_device/put_device.
+
+And why does this matter here?
+
+> > Well, the cpufreq sysfs is per-policy and not per-CPU and we really
+> > need a per-policy min and max frequency in cpufreq, for governors etc.
+>
+> Aggregation could be performed at two levels:
+>
+> 1) Per cpu device (by dev_pm_qos)
+> 2) Per policy (inside cpufreq)
+>
+> The per-cpu dev_pm_qos notifier would just update a per-policy
+> pm_qos_constraints object. The second step could even be done strictly
+> inside the cpufreq core using existing pm_qos, no need to invent new
+> frameworks.
+>
+> Maybe dev_pm_qos is not a very good fit for cpufreq because of these
+> "cpu device versus cpufreq_policy" issues but it makes a ton of sense
+> for devfreq. Can you maybe hold PATCH 3 from this series pending further
+> discussion?
+
+It can be reverted at any time if need be and in 5.4 that would be dead code.
