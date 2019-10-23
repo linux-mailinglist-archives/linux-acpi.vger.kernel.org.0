@@ -2,93 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98D86E14F1
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Oct 2019 11:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 417B3E152E
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Oct 2019 11:03:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390400AbfJWJAr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Oct 2019 05:00:47 -0400
-Received: from mga04.intel.com ([192.55.52.120]:43799 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387829AbfJWJAr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 23 Oct 2019 05:00:47 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Oct 2019 02:00:47 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,220,1569308400"; 
-   d="scan'208";a="209878290"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
-  by fmsmga001.fm.intel.com with SMTP; 23 Oct 2019 02:00:43 -0700
-Received: by lahna (sSMTP sendmail emulation); Wed, 23 Oct 2019 12:00:42 +0300
-Date:   Wed, 23 Oct 2019 12:00:42 +0300
-From:   Mika Westerberg <mika.westerberg@intel.com>
-To:     Karol Herbst <kherbst@redhat.com>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Lyude Paul <lyude@redhat.com>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        nouveau <nouveau@lists.freedesktop.org>,
-        Linux ACPI Mailing List <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v3] pci: prevent putting nvidia GPUs into lower device
- states on certain intel bridges
-Message-ID: <20191023090042.GQ2819@lahna.fi.intel.com>
-References: <CACO55tuXck7vqGVLmMBGFg6A2pr3h8koRuvvWHLNDH8XvBVxew@mail.gmail.com>
- <20191021133328.GI2819@lahna.fi.intel.com>
- <CACO55tujUZr+rKkyrkfN+wkNOJWdNEVhVc-eZ3RCXJD+G1z=7A@mail.gmail.com>
- <20191021140852.GM2819@lahna.fi.intel.com>
- <CACO55tvp6n2ahizwhc70xRJ1uTohs2ep962vwtHGQK-MkcLmsw@mail.gmail.com>
- <20191021154606.GT2819@lahna.fi.intel.com>
- <CACO55tsGhvG1qapRkdu_j7R534cFa5o=Gv2s4VZDrWUrxjBFwA@mail.gmail.com>
- <CACO55ts7hivYgN7=3bcAjWx2h8FfbR5UiKiOOExYY9m-TGRNfw@mail.gmail.com>
- <20191022124453.GK2819@lahna.fi.intel.com>
- <CACO55tvxvwUqzg=jLoO6bhmcaXQwRaTv9S4pt2t0V5TUi+HsEw@mail.gmail.com>
+        id S2390807AbfJWJDc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Oct 2019 05:03:32 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:43758 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390828AbfJWJDb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Oct 2019 05:03:31 -0400
+Received: by mail-oi1-f195.google.com with SMTP id s5so1324378oie.10;
+        Wed, 23 Oct 2019 02:03:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JUN9J/2vsghSQEDoYKjkArcf/+ULxW+MHO+ZanwPpo4=;
+        b=gsvSpxN8asmmJPaABTh0U7UQr4o1rZIqS6m6NbPa1f9vlQ7DPCM7tz1n9y/Nwa1WfI
+         dQVVzLdpzhZ1I0ur3nKHHMl+3CX5ERnkxHNtFUdIBNFqE8Kn2vM6Rjac8qJb0UIV+IQt
+         rv3VgX1Vo53WsqiLUfaWEb2e52sZsooDt6XTh1qpSn+e24v+VwbQp3nAxIes8ObbcPiN
+         QN/gjimkQpSq/tkzmqHAHi5qXuCPxE3uN2iYg5yaIH4Mnrq6pY8VOmCPIsxTmI9J084S
+         TlW+tDSexTnnIY7kb4nU7zi9iAze3agfwMiuKhQ4XzW2TIN/BcNp1TE5b7nLb2AkmPmN
+         qKdg==
+X-Gm-Message-State: APjAAAUfYFk0i+GW7Qo64YsSi3pTP8HOgQ63O6ckbotBBtcNg9uwe24p
+        4iuYMEs5ydQToTc9ILZhc7f+livCDpFoLsOFN54=
+X-Google-Smtp-Source: APXvYqzpnyRsjI08y4ZRUgjrw1GIJ1LFN//WuKMFEHxAIcp2foV7Lo1Ho0NyPkQWiuDpIsFmd7Iy31deRT8TXFwo9RE=
+X-Received: by 2002:aca:d706:: with SMTP id o6mr6936010oig.57.1571821410371;
+ Wed, 23 Oct 2019 02:03:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACO55tvxvwUqzg=jLoO6bhmcaXQwRaTv9S4pt2t0V5TUi+HsEw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <20191023074945.17016-1-fengwei.yin@intel.com> <30ee0a348f624698801691f65eeecd87@AcuMS.aculab.com>
+In-Reply-To: <30ee0a348f624698801691f65eeecd87@AcuMS.aculab.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 23 Oct 2019 11:03:19 +0200
+Message-ID: <CAJZ5v0jizy95pVh1gek5rmaVvGeZUMkVdKJUdesZeXGbj=mwRw@mail.gmail.com>
+Subject: Re: [PATCH v3] ACPI/processor_idle: Remove dummy wait if kernel is in
+ guest mode
+To:     David Laight <David.Laight@aculab.com>
+Cc:     Yin Fengwei <fengwei.yin@intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 22, 2019 at 02:51:53PM +0200, Karol Herbst wrote:
-> On Tue, Oct 22, 2019 at 2:45 PM Mika Westerberg
-> <mika.westerberg@intel.com> wrote:
+On Wed, Oct 23, 2019 at 10:45 AM David Laight <David.Laight@aculab.com> wrote:
+>
+> From: Yin Fengwei
+> > Sent: 23 October 2019 08:50
+>
+>
+> > In function acpi_idle_do_entry(), an ioport access is used for dummy
+> > wait to guarantee hardware behavior. But it could trigger unnecessary
+> > vmexit if kernel is running as guest in virtualization environtment.
 > >
-> > On Tue, Oct 22, 2019 at 11:16:14AM +0200, Karol Herbst wrote:
-> > > I think there is something I totally forgot about:
-> > >
-> > > When there was never a driver bound to the GPU, and if runtime power
-> > > management gets enabled on that device, runtime suspend/resume works
-> > > as expected (I am not 100% sure on if that always works, but I will
-> > > recheck that).
+> > If it's in virtualization environment, the deeper C state enter
+> > operation (inb()) will trap to hyervisor. It's not needed to do
+> > dummy wait after the inb() call. So we remove the dummy io port
+> > access to avoid unnecessary VMexit.
 > >
-> > AFAIK, if there is no driver bound to the PCI device it is left to D0
-> > regardless of the runtime PM state which could explain why it works in
-> > that case (it is never put into D3hot).
+> > We keep dummy io port access to maintain timing for native environment.
 > >
-> > I looked at the acpidump you sent and there is one thing that may
-> > explain the differences between Windows and Linux. Not sure if you were
-> > aware of this already, though. The power resource PGOF() method has
-> > this:
+> > Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
+> > ---
+> > ChangeLog:
+> > v2 -> v3:
+> >  - Remove dummy io port access totally for virtualization env.
 > >
-> >    If (((OSYS <= 0x07D9) || ((OSYS == 0x07DF) && (_REV == 0x05)))) {
-> >       ...
-> >    }
+> > v1 -> v2:
+> >  - Use ndelay instead of dead loop for dummy delay.
 > >
-> 
-> I think this is the fallback to some older method of runtime
-> suspending the device, and I think it will end up touching different
-> registers on the bridge controller which do not show the broken
-> behaviour.
+> >  drivers/acpi/processor_idle.c | 36 ++++++++++++++++++++++++++++++++---
+> >  1 file changed, 33 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> > index ed56c6d20b08..0c4a97dd6917 100644
+> > --- a/drivers/acpi/processor_idle.c
+> > +++ b/drivers/acpi/processor_idle.c
+> > @@ -58,6 +58,17 @@ struct cpuidle_driver acpi_idle_driver = {
+> >  static
+> >  DEFINE_PER_CPU(struct acpi_processor_cx * [CPUIDLE_STATE_MAX], acpi_cstate);
+> >
+> > +static void (*dummy_wait)(u64 address);
+> > +
+> > +static void default_dummy_wait(u64 address)
+> > +{
+> > +     inl(address);
+> > +}
+> > +
+> > +static void default_noop_wait(u64 address)
+> > +{
+> > +}
+> > +
+>
+> Overengineered...
+> Just add:
+>
+> static void wait_for_freeze(void)
+> {
+> #ifdef  CONFIG_X86
+>         /* No delay is needed if we are a guest */
+>         if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
+>                 return;
+> #endif
+>
+>         /* Dummy wait op - must do something useless after P_LVL2 read
+>            because chipsets cannot guarantee that STPCLK# signal
+>            gets asserted in time to freeze execution properly. */
+>         inl(acpi_gbl_FADT.xpm_timer_block.address);
+> }
+>
+> and use it to replace the inl().
 
-I think it actually tries to identify older Windows and then Linux (the
-_REV == 0x05 check comes from that). So at least some point Dell people
-have experiment this on Linux.
+I was about to make a similar comment.
