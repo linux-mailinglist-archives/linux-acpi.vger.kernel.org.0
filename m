@@ -2,14 +2,14 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EBF17E3BD7
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Oct 2019 21:13:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB1B6E3BDA
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Oct 2019 21:13:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392922AbfJXTNp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        id S2392924AbfJXTNp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
         Thu, 24 Oct 2019 15:13:45 -0400
-Received: from mga01.intel.com ([192.55.52.88]:56945 "EHLO mga01.intel.com"
+Received: from mga01.intel.com ([192.55.52.88]:56947 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392897AbfJXTNp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        id S2390839AbfJXTNp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
         Thu, 24 Oct 2019 15:13:45 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
@@ -17,7 +17,7 @@ Received: from orsmga007.jf.intel.com ([10.7.209.58])
   by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Oct 2019 12:13:44 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.68,225,1569308400"; 
-   d="scan'208";a="188686269"
+   d="scan'208";a="188686272"
 Received: from sibelius.jf.intel.com ([10.54.75.23])
   by orsmga007.jf.intel.com with ESMTP; 24 Oct 2019 12:13:43 -0700
 From:   Erik Schmauss <erik.schmauss@intel.com>
@@ -25,9 +25,9 @@ To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         linux-acpi@vger.kernel.org
 Cc:     Bob Moore <robert.moore@intel.com>,
         Erik Schmauss <erik.schmauss@intel.com>
-Subject: [PATCH 03/12] ACPICA: More Clang changes - V8.0.1 Fixed all "dead assignment" warnings.
-Date:   Thu, 24 Oct 2019 11:55:47 -0700
-Message-Id: <20191024185556.4606-4-erik.schmauss@intel.com>
+Subject: [PATCH 04/12] ACPICA: Add new external interface, acpi_unload_table
+Date:   Thu, 24 Oct 2019 11:55:48 -0700
+Message-Id: <20191024185556.4606-5-erik.schmauss@intel.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20191024185556.4606-1-erik.schmauss@intel.com>
 References: <20191024185556.4606-1-erik.schmauss@intel.com>
@@ -40,154 +40,72 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Bob Moore <robert.moore@intel.com>
 
-ACPICA commit 54b3aefb5de860306951c8c3339b1c37dcdf1b39
+ACPICA commit c69369cd9cf0134e1aac516e97d612947daa8dc2
 
-Link: https://github.com/acpica/acpica/commit/54b3aefb
+Unload a table via the table_index.
+
+Link: https://github.com/acpica/acpica/commit/c69369cd
 Signed-off-by: Bob Moore <robert.moore@intel.com>
 Signed-off-by: Erik Schmauss <erik.schmauss@intel.com>
 ---
- drivers/acpi/acpica/hwxfsleep.c | 3 +++
- drivers/acpi/acpica/nsconvert.c | 2 +-
- drivers/acpi/acpica/nsdump.c    | 2 --
- drivers/acpi/acpica/nsxfname.c  | 4 ++--
- drivers/acpi/acpica/psobject.c  | 6 ++----
- drivers/acpi/acpica/rscreate.c  | 3 +++
- drivers/acpi/acpica/tbdata.c    | 3 +++
- drivers/acpi/acpica/utids.c     | 2 --
- 8 files changed, 14 insertions(+), 11 deletions(-)
+ drivers/acpi/acpica/tbxfload.c | 32 ++++++++++++++++++++++++++++++++
+ include/acpi/acpixf.h          |  3 +++
+ 2 files changed, 35 insertions(+)
 
-diff --git a/drivers/acpi/acpica/hwxfsleep.c b/drivers/acpi/acpica/hwxfsleep.c
-index abbf9702aa7f..2919746c9041 100644
---- a/drivers/acpi/acpica/hwxfsleep.c
-+++ b/drivers/acpi/acpica/hwxfsleep.c
-@@ -166,6 +166,9 @@ acpi_status acpi_enter_sleep_state_s4bios(void)
- 
- 	status = acpi_hw_write_port(acpi_gbl_FADT.smi_command,
- 				    (u32)acpi_gbl_FADT.s4_bios_request, 8);
-+	if (ACPI_FAILURE(status)) {
-+		return_ACPI_STATUS(status);
-+	}
- 
- 	do {
- 		acpi_os_stall(ACPI_USEC_PER_MSEC);
-diff --git a/drivers/acpi/acpica/nsconvert.c b/drivers/acpi/acpica/nsconvert.c
-index 14cbf63f1991..c86d0770ed6e 100644
---- a/drivers/acpi/acpica/nsconvert.c
-+++ b/drivers/acpi/acpica/nsconvert.c
-@@ -486,5 +486,5 @@ acpi_ns_convert_to_reference(struct acpi_namespace_node *scope,
- error_exit:
- 	ACPI_FREE(name);
- 	*return_object = new_object;
--	return (AE_OK);
-+	return (status);
+diff --git a/drivers/acpi/acpica/tbxfload.c b/drivers/acpi/acpica/tbxfload.c
+index 86f1693f6d29..ce86e7945e90 100644
+--- a/drivers/acpi/acpica/tbxfload.c
++++ b/drivers/acpi/acpica/tbxfload.c
+@@ -390,3 +390,35 @@ acpi_status acpi_unload_parent_table(acpi_handle object)
  }
-diff --git a/drivers/acpi/acpica/nsdump.c b/drivers/acpi/acpica/nsdump.c
-index 1df6d72ae46b..9ad340f644a1 100644
---- a/drivers/acpi/acpica/nsdump.c
-+++ b/drivers/acpi/acpica/nsdump.c
-@@ -589,8 +589,6 @@ acpi_ns_dump_one_object(acpi_handle obj_handle,
  
- 			goto cleanup;
- 		}
--
--		obj_type = ACPI_TYPE_INVALID;	/* Terminate loop after next pass */
- 	}
- 
- cleanup:
-diff --git a/drivers/acpi/acpica/nsxfname.c b/drivers/acpi/acpica/nsxfname.c
-index 55b4a5b3331f..161e60ddfb69 100644
---- a/drivers/acpi/acpica/nsxfname.c
-+++ b/drivers/acpi/acpica/nsxfname.c
-@@ -425,8 +425,8 @@ acpi_get_object_info(acpi_handle handle,
- 	}
- 
- 	if (cls) {
--		next_id_string = acpi_ns_copy_device_id(&info->class_code,
--							cls, next_id_string);
-+		(void)acpi_ns_copy_device_id(&info->class_code,
-+					     cls, next_id_string);
- 	}
- 
- 	/* Copy the fixed-length data */
-diff --git a/drivers/acpi/acpica/psobject.c b/drivers/acpi/acpica/psobject.c
-index 9acf5f7453e9..ded2779fc8ea 100644
---- a/drivers/acpi/acpica/psobject.c
-+++ b/drivers/acpi/acpica/psobject.c
-@@ -480,7 +480,7 @@ acpi_ps_complete_op(struct acpi_walk_state *walk_state,
- 			    acpi_ps_get_opcode_info((*op)->common.aml_opcode);
- 			walk_state->opcode = (*op)->common.aml_opcode;
- 
--			(void)walk_state->ascending_callback(walk_state);
-+			status = walk_state->ascending_callback(walk_state);
- 			(void)acpi_ps_next_parse_state(walk_state, *op, status);
- 
- 			status2 = acpi_ps_complete_this_op(walk_state, *op);
-@@ -489,7 +489,6 @@ acpi_ps_complete_op(struct acpi_walk_state *walk_state,
- 			}
- 		}
- 
--		status = AE_OK;
- 		break;
- 
- 	case AE_CTRL_BREAK:
-@@ -511,14 +510,13 @@ acpi_ps_complete_op(struct acpi_walk_state *walk_state,
- 		walk_state->opcode = (*op)->common.aml_opcode;
- 
- 		status = walk_state->ascending_callback(walk_state);
--		status = acpi_ps_next_parse_state(walk_state, *op, status);
-+		(void)acpi_ps_next_parse_state(walk_state, *op, status);
- 
- 		status2 = acpi_ps_complete_this_op(walk_state, *op);
- 		if (ACPI_FAILURE(status2)) {
- 			return_ACPI_STATUS(status2);
- 		}
- 
--		status = AE_OK;
- 		break;
- 
- 	case AE_CTRL_TERMINATE:
-diff --git a/drivers/acpi/acpica/rscreate.c b/drivers/acpi/acpica/rscreate.c
-index 570ea0df8a1b..c659b54985a5 100644
---- a/drivers/acpi/acpica/rscreate.c
-+++ b/drivers/acpi/acpica/rscreate.c
-@@ -312,6 +312,9 @@ acpi_rs_create_pci_routing_table(union acpi_operand_object *package_object,
- 				path_buffer.pointer = user_prt->source;
- 
- 				status = acpi_ns_handle_to_pathname((acpi_handle)node, &path_buffer, FALSE);
-+				if (ACPI_FAILURE(status)) {
-+					return_ACPI_STATUS(status);
-+				}
- 
- 				/* +1 to include null terminator */
- 
-diff --git a/drivers/acpi/acpica/tbdata.c b/drivers/acpi/acpica/tbdata.c
-index 309440010ab2..2cf36451e46f 100644
---- a/drivers/acpi/acpica/tbdata.c
-+++ b/drivers/acpi/acpica/tbdata.c
-@@ -933,6 +933,9 @@ acpi_tb_load_table(u32 table_index, struct acpi_namespace_node *parent_node)
- 	}
- 
- 	status = acpi_ns_load_table(table_index, parent_node);
-+	if (ACPI_FAILURE(status)) {
-+		return_ACPI_STATUS(status);
+ ACPI_EXPORT_SYMBOL(acpi_unload_parent_table)
++/*******************************************************************************
++ *
++ * FUNCTION:    acpi_unload_table
++ *
++ * PARAMETERS:  table_index         - Index as returned by acpi_load_table
++ *
++ * RETURN:      Status
++ *
++ * DESCRIPTION: Via the table_index representing an SSDT or OEMx table, unloads
++ *              the table and deletes all namespace objects associated with
++ *              that table. Unloading of the DSDT is not allowed.
++ *              Note: Mainly intended to support hotplug removal of SSDTs.
++ *
++ ******************************************************************************/
++acpi_status acpi_unload_table(u32 table_index)
++{
++	acpi_status status;
++
++	ACPI_FUNCTION_TRACE(acpi_unload_table);
++
++	if (table_index == 1) {
++
++		/* table_index==1 means DSDT is the owner. DSDT cannot be unloaded */
++
++		return_ACPI_STATUS(AE_TYPE);
 +	}
++
++	status = acpi_tb_unload_table(table_index);
++	return_ACPI_STATUS(status);
++}
++
++ACPI_EXPORT_SYMBOL(acpi_unload_table)
+diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
+index e5e041413581..109b2f14b6c6 100644
+--- a/include/acpi/acpixf.h
++++ b/include/acpi/acpixf.h
+@@ -460,6 +460,9 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status ACPI_INIT_FUNCTION
+ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+ 			    acpi_load_table(struct acpi_table_header *table))
  
- 	/*
- 	 * Update GPEs for any new _Lxx/_Exx methods. Ignore errors. The host is
-diff --git a/drivers/acpi/acpica/utids.c b/drivers/acpi/acpica/utids.c
-index e805abdd95b8..30198c828ab6 100644
---- a/drivers/acpi/acpica/utids.c
-+++ b/drivers/acpi/acpica/utids.c
-@@ -289,9 +289,7 @@ acpi_ut_execute_CID(struct acpi_namespace_node *device_node,
- 						  value);
- 			length = ACPI_EISAID_STRING_SIZE;
- 		} else {	/* ACPI_TYPE_STRING */
--
- 			/* Copy the String CID from the returned object */
--
- 			strcpy(next_id_string, cid_objects[i]->string.pointer);
- 			length = cid_objects[i]->string.length + 1;
- 		}
++ACPI_EXTERNAL_RETURN_STATUS(acpi_status
++			    acpi_unload_table(u32 table_index))
++
+ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+ 			    acpi_unload_parent_table(acpi_handle object))
+ 
 -- 
 2.21.0
 
