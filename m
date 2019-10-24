@@ -2,191 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D61FE3483
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Oct 2019 15:42:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6571E3A01
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Oct 2019 19:29:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393690AbfJXNmW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Oct 2019 09:42:22 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:45816 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389598AbfJXNmW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Oct 2019 09:42:22 -0400
-Received: by mail-oi1-f196.google.com with SMTP id o205so20614251oib.12;
-        Thu, 24 Oct 2019 06:42:21 -0700 (PDT)
+        id S2394030AbfJXR3M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Oct 2019 13:29:12 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:43738 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439987AbfJXR3M (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Oct 2019 13:29:12 -0400
+Received: by mail-oi1-f195.google.com with SMTP id s5so5934237oie.10;
+        Thu, 24 Oct 2019 10:29:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=v65XPmSdUFz0UF1/zSSxF9xHx4d8boMDUd5sPcsrtTM=;
-        b=jq2e11mWxEKjHzMIMBF8msiMPeh3H22H7ciTPWsXCuiGN3Bk1l0ms1ll5X5sT6t3vf
-         0MzSSTaH6bP+SqDfXQeU3cr2vXnY5Flud6gSxCQ2i+tYKP/vgmPul61J1n/7gAxnTw6o
-         4Zh4j447X49NHpuNVyFfkW0G3+rYBT8Mve+jZyNs3gUvcU6BZfPHv+ttKQVil43iFQcl
-         5HJ2VQvJPq5/pEWcumpXuXt3DYpIRBUY80GhMj0Zfl0PVmGyY8slRT6WCIM+E+4N5qqJ
-         W/3E6+i7V7GdlsQWHgLgj5Soq/CsXPRESsxcGdUD/pzTsx3bGZ8nhEjoYqGikAQ3vX2A
-         Ay0w==
-X-Gm-Message-State: APjAAAXNy04mMaXMIb5ZwH09omNbazfuoaOmykttP4TzvPFx9Pt7w0e+
-        FxaMrha/sPPusXwLAABH63b+t/1skHIz3iCQzsg=
-X-Google-Smtp-Source: APXvYqzd4wT1azyXt+q32xSzopKpw/cc4FtOrJDZxZYX0NqyfkMvvUQAkyNWcy3oJLJ58d1cIF8rWJVNSF4luMyQUtQ=
-X-Received: by 2002:aca:b6c5:: with SMTP id g188mr4807663oif.103.1571924540858;
- Thu, 24 Oct 2019 06:42:20 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=n5/rr+7Iw1y1Xy/3+ehYuCjVxFwNY/p/xnADvXnbRFY=;
+        b=lm+1av40snF4o1Dg9GOrsscwEm9vWqOelQ9oiOTU2Eg8UhS1LTu579EjBSmHtA6MkT
+         iy0bO9EA4PioKW0qs9a5oZ4veyp/T7a6qxGMdEhGp0RwmYBrFZQr7HK9AbSQPHFEtx4u
+         Wzq84YYaCiWyjJaXxIJethv1VKF9nNL26jh1a6ht5dzFigrsv7qxukGEeDQXvLWSJCSw
+         YZh5WjClpE1HbF9RtZ7+JGpPGlWwjR99Vo2y8SCOC3f2dbUX92DO6eoJLtW083Apf/6Z
+         Utp9UWHG4P3WzQLrAGahS15CNIi2olpFNfvbkJpWQ5QLTFjnuQR6DZM/xGGyDceFq0l0
+         MgOA==
+X-Gm-Message-State: APjAAAW2Tq/+vYBRqSfajQ2i/jGOBOi5ZJG04kEpkMd6wQZvf6+c4aOC
+        9EXOQvnM76U2VUVilkOgaLMK8GVvQHpZBsj5FbGNJEG6
+X-Google-Smtp-Source: APXvYqz8XiDgEsBH3NsG0Lt5ZM8CfElOkevsns8Tg3fMEbRsL5nkTur+76lw9j2XQO1yTyx9DWZGsas3wYd0G717TKA=
+X-Received: by 2002:aca:d706:: with SMTP id o6mr5915677oig.57.1571938149356;
+ Thu, 24 Oct 2019 10:29:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <VI1PR04MB7023DF47D046AEADB4E051EBEE680@VI1PR04MB7023.eurprd04.prod.outlook.com>
- <CAJZ5v0g-hTOhVJOz28CGmpcxUiiTrYyV=ARwNCN9w4doeRcCRw@mail.gmail.com>
- <VI1PR04MB7023808153A1FD2740FACF01EE6B0@VI1PR04MB7023.eurprd04.prod.outlook.com>
- <CAJZ5v0gWdFVbvPobLic7F+bRrz-QUoV3GPhpawdFT0MVjAhuOQ@mail.gmail.com> <AM7PR04MB7015D5B0C6952BF6B04C140CEE6B0@AM7PR04MB7015.eurprd04.prod.outlook.com>
-In-Reply-To: <AM7PR04MB7015D5B0C6952BF6B04C140CEE6B0@AM7PR04MB7015.eurprd04.prod.outlook.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 24 Oct 2019 15:42:09 +0200
-Message-ID: <CAJZ5v0iY4QScdQJW4xzJEMcfxkB2QDjBkR2oo3zBRL7x70PmnQ@mail.gmail.com>
-Subject: Re: [RFT][PATCH 0/3] cpufreq / PM: QoS: Introduce frequency QoS and
- use it in cpufreq
-To:     Leonard Crestez <leonard.crestez@nxp.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        =?UTF-8?B?QXJ0dXIgxZp3aWdvxYQ=?= <a.swigon@samsung.com>,
-        Georgi Djakov <georgi.djakov@linaro.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        Saravana Kannan <saravanak@google.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>
+Date:   Thu, 24 Oct 2019 19:28:58 +0200
+Message-ID: <CAJZ5v0jJ_hWQKH0FNoTk+EtzLS=y3ovC4+pXPq+NWB1vPZU9pg@mail.gmail.com>
+Subject: [GIT PULL] Power management fixes for v5.4-rc5
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 23, 2019 at 3:33 PM Leonard Crestez <leonard.crestez@nxp.com> wrote:
->
-> On 2019-10-23 11:54 AM, Rafael J. Wysocki wrote:
-> > On Wed, Oct 23, 2019 at 4:20 AM Leonard Crestez <leonard.crestez@nxp.com> wrote:
-> >> On 2019-10-23 1:48 AM, Rafael J. Wysocki wrote:
+Hi Linus,
 
-[cut]
+Please pull from the tag
 
-> >>> But combining the lists of requests for all the CPUs in a policy
-> >>> defeats the idea of automatic aggregation of requests which really is
-> >>> what PM QoS is about.
-> >>
-> >> My primary interest is the "dev" part of dev_pm_qos: making pm_qos
-> >> requests tied to a specific device.
-> >
-> > The list of requests needs to be associated with the user of the
-> > effective constraint.  If that is the device, it is all good.
->
-> The phrase "user of the effective constraint" is somewhat unclear.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-5.4-rc5
 
-Fair enough, so let me elaborate.
+with top-most commit 767d2d710e9066c47919a4e5f05a21e1ad40ddc4
 
-The effective constraint (ie. the one resulting from taking all of the
-requests in the relevant QoS list into account) affects the selection
-of an OPP, so it is natural to associate the QoS list producing it
-with a list of OPPs to select.  In the cpufreq case, the policy holds
-the list of OPPs and so it also should hold the corresponding QoS
-lists (for the min and max frequency limits).  It "uses" the effective
-constraints produced by those QoS lists by preventing the OPPs out of
-the between the min and max values  from being selected.
+ Merge branches 'pm-cpuidle' and 'pm-opp'
 
-Essentially, the policy represents a power (clock/voltage) domain with
-multiple components (it doesn't matter what they are at this level of
-abstraction). While there can be multiple sources of QoS requests
-associated with each component, all of these requests ultimately need
-to be passed to the domain for aggregation, because that's where the
-frequency selection decisions are made and so that's where the
-effective constraint value needs to be known. Now, the natural way to
-allow requests from multiple sources to be passed for aggregation is
-to provide a QoS list that they can be added to. That really is what
-PM QoS is for.
+on top of commit 7d194c2100ad2a6dded545887d02754948ca5241
 
-> I'm using the target device as dev for dev_pm_qos, not the requestor.
-> This is consistent with how it was used for cpufreq: thermal called a
-> dev_pm_qos_add_request on with dev = cpu_dev not a thermal sensor or
-> anything else.
+ Linux 5.4-rc4
 
-Not really, but close. :-)
+to receive power management fixes for 5.4-rc5.
 
-Without my series (that is 5.4-rc4, say), the cpu_cooling driver adds
-its constraint to the device PM QoS of cpufreq_cdev which is a special
-device created by that driver.  That would be fine, except that the
-cpufreq core doesn't use that QoS.  It uses the device PM QoS of the
-policy->cpu device instead.  That is, that's where it adds its
-notifiers (see cpufreq_policy_alloc()), that's where user space
-requests are added (see cpufreq_online()), and (most important) that's
-where the effective constraint value is read from (see
-cpufreq_set_policy()).  That turns out to be problematic (in addition
-to the cpu_cooling driver's QoS requests going nowhere), because
-confusion ensues if the current policy->cpu goes away.
+These fix problems related to frequency limits management in
+cpufreq that were introduced during the 5.3 cycle (when PM QoS
+had started to be used for that), fix a few issues in the OPP
+(operating performance points) library code and fix up the
+recently added haltpoll cpuidle driver.
 
-> However looking at other dev_pm_qos users there are instances of a
-> driver calling dev_pm_qos_add_request on it's own device but this is not
-> a strict requirement, correct?
+The cpufreq changes are somewhat bigger that I would like them
+to be at this stage of the cycle, but the problems fixed by them
+include crashes on boot and shutdown in some cases (among other
+things) and in my view it is better to address the root of the
+issue right away.
 
-No, it isn't.
+Specifics:
 
-> >>> There have to be two lists of requests per policy, one for the max and
-> >>> one for the min frequency >
-> >>>> If cpufreq needs a group of CPUs to run at the same frequency then it
-> >>>> should deal with this by doing dev_pm_qos_read_frequency on each CPU
-> >>>> device and picking a frequency that attempts to satisfy all constraints.
-> >>>
-> >>> No, that would be combining the requests by hand.
-> >>
-> >> It's just a loop though.
-> >
-> > Yes, it is, and needs to be run on every change of an effective
-> > constraint for any CPU even if the total effective constraint doesn't
-> > change.  And, of course, the per-policy user space limits would need
-> > to be combined with that by hand.
-> >
-> > Not particularly straightforward if you asked me.
->
-> Well, this cpu-to-policy aggregation could also use a pm_qos_constraint
-> object instead of looping.
+ - Using device PM QoS of CPU devices for managing frequency limits
+   in cpufreq does not work, so introduce frequency QoS (based on the
+   original low-level PM QoS) for this purpose, switch cpufreq and
+   related code over to using it and fix a race involving deferred
+   updates of frequency limits on top of that (Rafael Wysocki, Sudeep
+   Holla).
 
-Yes, it could, but then somebody would need to add those
-"intermediate" requests to a proper policy-level QoS and it would need
-an extra notifier invocation to update each of them on a "component"
-QoS change.
+ - Avoid calling regulator_enable()/disable() from the OPP framework
+   to avoid side-effects on boot-enabled regulators that may change their
+   initial voltage due to performing initial voltage balancing without
+   all restrictions from the consumers (Marek Szyprowski).
 
-This is an interesting idea in case we ever need to improve the
-scalability of the QoS lists, but I'd rather use the simpler approach
-for now.
+ - Avoid a kref management issue in the OPP library code and drop an
+   incorrectly added lockdep_assert_held() from it (Viresh Kumar).
 
-[cut]
-
-> >>> Well, the cpufreq sysfs is per-policy and not per-CPU and we really
-> >>> need a per-policy min and max frequency in cpufreq, for governors etc.
-> >>
-> >> Aggregation could be performed at two levels:
-> >>
-> >> 1) Per cpu device (by dev_pm_qos)
-> >> 2) Per policy (inside cpufreq)
-> >>
-> >> The per-cpu dev_pm_qos notifier would just update a per-policy
-> >> pm_qos_constraints object. The second step could even be done strictly
-> >> inside the cpufreq core using existing pm_qos, no need to invent new
-> >> frameworks.
-> >>
-> >> Maybe dev_pm_qos is not a very good fit for cpufreq because of these
-> >> "cpu device versus cpufreq_policy" issues but it makes a ton of sense
-> >> for devfreq. Can you maybe hold PATCH 3 from this series pending further
-> >> discussion?
-> >
-> > It can be reverted at any time if need be and in 5.4 that would be dead code.
->
-> I guess I can post v10 of my "devfreq pm qos" which starts by reverting
-> "PATCH 3" of this series?
-
-You may do that, but I would consider adding a struct freq_constraints
-pointer directly to struct dev_pm_info and using the new frequency QoS
-helpers to manage it.
-
-Arguably, there is no need to bundle that with the rest of device PM
-QoS and doing the above would help to avoid some code duplication too.
+ - Make the recently added haltpoll cpuidle driver take the 'idle='
+   override into account as appropriate (Zhenzhong Duan).
 
 Thanks!
+
+
+---------------
+
+Marek Szyprowski (1):
+      opp: core: Revert "add regulators enable and disable"
+
+Rafael J. Wysocki (3):
+      PM: QoS: Introduce frequency QoS
+      cpufreq: Use per-policy frequency QoS
+      PM: QoS: Drop frequency QoS types from device PM QoS
+
+Sudeep Holla (1):
+      cpufreq: Cancel policy update work scheduled before freeing
+
+Viresh Kumar (2):
+      opp: of: drop incorrect lockdep_assert_held()
+      opp: Reinitialize the list_kref before adding the static OPPs again
+
+Zhenzhong Duan (1):
+      cpuidle: haltpoll: Take 'idle=' override into account
+
+---------------
+
+ drivers/acpi/processor_driver.c            |   9 +-
+ drivers/acpi/processor_perflib.c           |  18 +--
+ drivers/acpi/processor_thermal.c           |  18 +--
+ drivers/base/power/qos.c                   |  70 +--------
+ drivers/cpufreq/cpufreq.c                  |  62 ++++----
+ drivers/cpufreq/intel_pstate.c             |  30 ++--
+ drivers/cpufreq/ppc_cbe_cpufreq_pmi.c      |  15 +-
+ drivers/cpuidle/cpuidle-haltpoll.c         |   4 +
+ drivers/macintosh/windfarm_cpufreq_clamp.c |  38 +++--
+ drivers/opp/core.c                         |  16 +-
+ drivers/opp/of.c                           |   9 +-
+ drivers/thermal/cpu_cooling.c              |  14 +-
+ include/acpi/processor.h                   |  20 +--
+ include/linux/cpufreq.h                    |   7 +-
+ include/linux/pm_qos.h                     |  56 +++++--
+ kernel/power/qos.c                         | 240 +++++++++++++++++++++++++++++
+ 16 files changed, 417 insertions(+), 209 deletions(-)
