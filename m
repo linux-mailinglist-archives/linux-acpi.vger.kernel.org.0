@@ -2,229 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AB20E3DFB
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Oct 2019 23:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E74EFE3E23
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Oct 2019 23:29:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728896AbfJXVLG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Oct 2019 17:11:06 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:45542 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727838AbfJXVLG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Oct 2019 17:11:06 -0400
-Received: by mail-oi1-f195.google.com with SMTP id o205so21896463oib.12;
-        Thu, 24 Oct 2019 14:11:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hN99Jokr3uIdiQNCM5+i7FHFETWX6HSl8y81A5JP5kE=;
-        b=MSQDJPUdGu1CJGQKF51/s5YVUgney9QbkugoXdIMpWck5DmS37MpDmu9M9wpxczNNr
-         3sCQdB+Jlh0WWU8EyvJaziu6gWk08uTN5Oata/4yMunxgJwOfdtt83vURjCnvbFZpeUZ
-         d4h7MlnVCoIWjjpYr+bD3QNuAC/sUXoSQicsd/OkfcGHUMT8wMRs0pVXtJiVEFRcaXdT
-         +rLGn0GbkynnNd/vYN1879wjo4LckrFCQMvnxz5NVBqS0Ky86CDmEYFO5mH+Tr3kXB4x
-         Q26bYPodpkT957mz/D+YO73bs6hP/7XXd9WA1EfIuTkzsg6fgoC6UyPo6LAmWCQtlT85
-         CU8A==
-X-Gm-Message-State: APjAAAU11//DdFsc6J825J1pnbCvEG/z/mJxyqPfaWd+k0lINVbQrbjc
-        rjWG/Ff87KVCWBfw+wxGG7gIOLZ2UeYP7CWrYak=
-X-Google-Smtp-Source: APXvYqxhN/AbyhpMkaijd7k2bjBdnyC3L5RQt2i6xt0HXQMo8NB7edoG+hG1xin1+z1ain6uzAdu2lEpO1CN4NAct1Q=
-X-Received: by 2002:aca:d706:: with SMTP id o6mr90730oig.57.1571951464771;
- Thu, 24 Oct 2019 14:11:04 -0700 (PDT)
+        id S1729253AbfJXV3q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Oct 2019 17:29:46 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:53404 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729247AbfJXV3p (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Oct 2019 17:29:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1571952584;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=xdAm26JwyHkgbR50QvC+H2Fp7CLfPYdFaLeSX5jyse4=;
+        b=gNU5HAcTU72K2fLLjN8q/6Jzf8PNDHcPNyi3Gv47coU2s1PQe7IHIkmOqu/EcErFCfNn3v
+        rLTrkhYjPnNHxaVaherXjaVmzv/aH9sjc2bhjn4HZnYZbJl5ZuQkZVU7YJ3sdWkr2NXMwA
+        0JSvRROexBZylKQHJ6a5az5cXX4dUsE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-14-3NOf5ZZyM5yQtgW52tvnVg-1; Thu, 24 Oct 2019 17:29:41 -0400
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 09A90800D49;
+        Thu, 24 Oct 2019 21:29:40 +0000 (UTC)
+Received: from shalem.localdomain.com (unknown [10.36.118.40])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 5DB0760BF3;
+        Thu, 24 Oct 2019 21:29:38 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        stable@vger.kernel.org
+Subject: [PATCH 1/3] ACPI / LPSS: Add LNXVIDEO -> BYT I2C7 to lpss_device_links
+Date:   Thu, 24 Oct 2019 23:29:34 +0200
+Message-Id: <20191024212936.144648-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <VI1PR04MB7023DF47D046AEADB4E051EBEE680@VI1PR04MB7023.eurprd04.prod.outlook.com>
- <CAJZ5v0g-hTOhVJOz28CGmpcxUiiTrYyV=ARwNCN9w4doeRcCRw@mail.gmail.com>
- <VI1PR04MB7023808153A1FD2740FACF01EE6B0@VI1PR04MB7023.eurprd04.prod.outlook.com>
- <CAJZ5v0gWdFVbvPobLic7F+bRrz-QUoV3GPhpawdFT0MVjAhuOQ@mail.gmail.com>
- <AM7PR04MB7015D5B0C6952BF6B04C140CEE6B0@AM7PR04MB7015.eurprd04.prod.outlook.com>
- <CAJZ5v0iY4QScdQJW4xzJEMcfxkB2QDjBkR2oo3zBRL7x70PmnQ@mail.gmail.com> <VI1PR04MB7023C43A2E9B60A26B6DD0CCEE6A0@VI1PR04MB7023.eurprd04.prod.outlook.com>
-In-Reply-To: <VI1PR04MB7023C43A2E9B60A26B6DD0CCEE6A0@VI1PR04MB7023.eurprd04.prod.outlook.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 24 Oct 2019 23:10:53 +0200
-Message-ID: <CAJZ5v0gR+hfrYf3+L5FwULuhXKxYykoWdWQphkk_OwtWqN12Uw@mail.gmail.com>
-Subject: Re: [RFT][PATCH 0/3] cpufreq / PM: QoS: Introduce frequency QoS and
- use it in cpufreq
-To:     Leonard Crestez <leonard.crestez@nxp.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        =?UTF-8?B?QXJ0dXIgxZp3aWdvxYQ=?= <a.swigon@samsung.com>,
-        Georgi Djakov <georgi.djakov@linaro.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        Saravana Kannan <saravanak@google.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-MC-Unique: 3NOf5ZZyM5yQtgW52tvnVg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 24, 2019 at 7:47 PM Leonard Crestez <leonard.crestez@nxp.com> wrote:
->
-> On 24.10.2019 16:42, Rafael J. Wysocki wrote:
-> > On Wed, Oct 23, 2019 at 3:33 PM Leonard Crestez <leonard.crestez@nxp.com> wrote:
-> >>
-> >> On 2019-10-23 11:54 AM, Rafael J. Wysocki wrote:
-> >>> On Wed, Oct 23, 2019 at 4:20 AM Leonard Crestez <leonard.crestez@nxp.com> wrote:
-> >>>> On 2019-10-23 1:48 AM, Rafael J. Wysocki wrote:
-> >
-> > [cut]
-> >
-> >>>>> But combining the lists of requests for all the CPUs in a policy
-> >>>>> defeats the idea of automatic aggregation of requests which really is
-> >>>>> what PM QoS is about.
-> >>>>
-> >>>> My primary interest is the "dev" part of dev_pm_qos: making pm_qos
-> >>>> requests tied to a specific device.
-> >>>
-> >>> The list of requests needs to be associated with the user of the
-> >>> effective constraint.  If that is the device, it is all good.
-> >>
-> >> The phrase "user of the effective constraint" is somewhat unclear.
-> >
-> > Fair enough, so let me elaborate.
-> >
-> > The effective constraint (ie. the one resulting from taking all of the
-> > requests in the relevant QoS list into account) affects the selection
-> > of an OPP, so it is natural to associate the QoS list producing it
-> > with a list of OPPs to select.  In the cpufreq case, the policy holds
-> > the list of OPPs and so it also should hold the corresponding QoS
-> > lists (for the min and max frequency limits).  It "uses" the effective
-> > constraints produced by those QoS lists by preventing the OPPs out of
-> > the between the min and max values  from being selected.
-> >
-> > Essentially, the policy represents a power (clock/voltage) domain with
-> > multiple components (it doesn't matter what they are at this level of
-> > abstraction). While there can be multiple sources of QoS requests
-> > associated with each component, all of these requests ultimately need
-> > to be passed to the domain for aggregation, because that's where the
-> > frequency selection decisions are made and so that's where the
-> > effective constraint value needs to be known. Now, the natural way to
-> > allow requests from multiple sources to be passed for aggregation is
-> > to provide a QoS list that they can be added to. That really is what
-> > PM QoS is for.
-> >
-> >> I'm using the target device as dev for dev_pm_qos, not the requestor.
-> >> This is consistent with how it was used for cpufreq: thermal called a
-> >> dev_pm_qos_add_request on with dev = cpu_dev not a thermal sensor or
-> >> anything else.
-> >
-> > Not really, but close. :-)
-> >
-> > Without my series (that is 5.4-rc4, say), the cpu_cooling driver adds
-> > its constraint to the device PM QoS of cpufreq_cdev which is a special
-> > device created by that driver.  That would be fine, except that the
-> > cpufreq core doesn't use that QoS.  It uses the device PM QoS of the
-> > policy->cpu device instead.  That is, that's where it adds its
-> > notifiers (see cpufreq_policy_alloc()), that's where user space
-> > requests are added (see cpufreq_online()), and (most important) that's
-> > where the effective constraint value is read from (see
-> > cpufreq_set_policy()).  That turns out to be problematic (in addition
-> > to the cpu_cooling driver's QoS requests going nowhere), because
-> > confusion ensues if the current policy->cpu goes away.
->
-> That behavior in cpu_cooling seems like a bug.
+So far on Bay Trail (BYT) we only have been adding a device_link adding
+the iGPU (LNXVIDEO) device as consumer for the I2C controller for the
+PMIC for I2C5, but the PMIC only uses I2C5 on BYT CR (cost reduced) on
+regular BYT platforms I2C7 is used and we were not adding the device_link
+sometimes causing resume ordering issues.
 
-Well, kind of. :-)
+This commit adds LNXVIDEO -> BYT I2C7 to the lpss_device_links table,
+fixing this.
 
-> >> However looking at other dev_pm_qos users there are instances of a
-> >> driver calling dev_pm_qos_add_request on it's own device but this is not
-> >> a strict requirement, correct?
-> >
-> > No, it isn't.
-> >
-> >>>>> There have to be two lists of requests per policy, one for the max and
-> >>>>> one for the min frequency >
-> >>>>>> If cpufreq needs a group of CPUs to run at the same frequency then it
-> >>>>>> should deal with this by doing dev_pm_qos_read_frequency on each CPU
-> >>>>>> device and picking a frequency that attempts to satisfy all constraints.
-> >>>>>
-> >>>>> No, that would be combining the requests by hand.
-> >>>>
-> >>>> It's just a loop though.
-> >>>
-> >>> Yes, it is, and needs to be run on every change of an effective
-> >>> constraint for any CPU even if the total effective constraint doesn't
-> >>> change.  And, of course, the per-policy user space limits would need
-> >>> to be combined with that by hand.
-> >>>
-> >>> Not particularly straightforward if you asked me.
-> >>
-> >> Well, this cpu-to-policy aggregation could also use a pm_qos_constraint
-> >> object instead of looping.
-> >
-> > Yes, it could, but then somebody would need to add those
-> > "intermediate" requests to a proper policy-level QoS and it would need
-> > an extra notifier invocation to update each of them on a "component"
-> > QoS change.
-> >
-> > This is an interesting idea in case we ever need to improve the
-> > scalability of the QoS lists, but I'd rather use the simpler approach
-> > for now.
->
-> The advantage I see is reducing the exposure of cpufreq internals
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/acpi_lpss.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-That can be achieved by providing a helper to add a frequency QoS
-request to the min or max QoS list of the policy covering a given CPU.
-The caller of it would just need to pass the CPU number, a pointer to
-the request struct and the type.
+diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+index 60bbc5090abe..e7a4504f0fbf 100644
+--- a/drivers/acpi/acpi_lpss.c
++++ b/drivers/acpi/acpi_lpss.c
+@@ -473,9 +473,14 @@ struct lpss_device_links {
+  * the supplier is not enumerated until after the consumer is probed.
+  */
+ static const struct lpss_device_links lpss_device_links[] =3D {
++=09/* CHT External sdcard slot controller depends on PMIC I2C ctrl */
+ =09{"808622C1", "7", "80860F14", "3", DL_FLAG_PM_RUNTIME},
++=09/* CHT iGPU depends on PMIC I2C controller */
+ =09{"808622C1", "7", "LNXVIDEO", NULL, DL_FLAG_PM_RUNTIME},
++=09/* BYT CR iGPU depends on PMIC I2C controller (UID 5 on CR) */
+ =09{"80860F41", "5", "LNXVIDEO", NULL, DL_FLAG_PM_RUNTIME},
++=09/* BYT iGPU depends on PMIC I2C controller (UID 7 on non CR) */
++=09{"80860F41", "7", "LNXVIDEO", NULL, DL_FLAG_PM_RUNTIME},
+ };
+=20
+ static bool hid_uid_match(struct acpi_device *adev,
+--=20
+2.23.0
 
-It wasn't necessary to add it at this time, though, and there would be
-the extra complication that the caller would need to know whether or
-not the policy had been created already.
-
-> >>>>> Well, the cpufreq sysfs is per-policy and not per-CPU and we really
-> >>>>> need a per-policy min and max frequency in cpufreq, for governors etc.
-> >>>>
-> >>>> Aggregation could be performed at two levels:
-> >>>>
-> >>>> 1) Per cpu device (by dev_pm_qos)
-> >>>> 2) Per policy (inside cpufreq)
-> >>>>
-> >>>> The per-cpu dev_pm_qos notifier would just update a per-policy
-> >>>> pm_qos_constraints object. The second step could even be done strictly
-> >>>> inside the cpufreq core using existing pm_qos, no need to invent new
-> >>>> frameworks.
-> >>>>
-> >>>> Maybe dev_pm_qos is not a very good fit for cpufreq because of these
-> >>>> "cpu device versus cpufreq_policy" issues but it makes a ton of sense
-> >>>> for devfreq. Can you maybe hold PATCH 3 from this series pending further
-> >>>> discussion?
-> >>>
-> >>> It can be reverted at any time if need be and in 5.4 that would be dead code.
-> >>
-> >> I guess I can post v10 of my "devfreq pm qos" which starts by reverting
-> >> "PATCH 3" of this series?
-> >
-> > You may do that, but I would consider adding a struct freq_constraints
-> > pointer directly to struct dev_pm_info and using the new frequency QoS
-> > helpers to manage it.
-> >
-> > Arguably, there is no need to bundle that with the rest of device PM
-> > QoS and doing the above would help to avoid some code duplication too.
->
-> Adding to struct dev_pm_info would increase sizeof(struct device) while
-> dev_pm_qos only allocates memory when constraints are added. My
-> expectation is that very few devices would even have min_freq and
-> max_freq constraints.
-
-Well, fair enough.
-
-> Maybe struct dev_pm_qos could host a "struct freq_constraints freq"
-> instead of two separate "struct pm_qos_constraints min/max_frequency"?
-
-That is possible too.
-
-> This way there would be two users of freq_constraints: cpufreq_policy
-> (which is not a device) and dev_pm_qos.
->
-> In the future freq_constraints might be extended to implement some logic
-> for conflicts between min_freq and max_freq requests.
-
-Sure.
-
-Thanks!
