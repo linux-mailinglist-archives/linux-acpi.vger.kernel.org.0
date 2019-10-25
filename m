@@ -2,156 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4B63E47AD
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2019 11:45:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75DFAE47BF
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2019 11:49:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438779AbfJYJp2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Oct 2019 05:45:28 -0400
-Received: from mga06.intel.com ([134.134.136.31]:17164 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392213AbfJYJp2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 25 Oct 2019 05:45:28 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Oct 2019 02:45:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,228,1569308400"; 
-   d="scan'208";a="400058174"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga006.fm.intel.com with ESMTP; 25 Oct 2019 02:45:10 -0700
-Received: from andy by smile with local (Exim 4.92.2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iNw9d-0003LE-Oq; Fri, 25 Oct 2019 12:45:09 +0300
-Date:   Fri, 25 Oct 2019 12:45:09 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] ACPI / LPSS: Add dmi quirk for skipping _DEP
- check for some device-links
-Message-ID: <20191025094509.GO32742@smile.fi.intel.com>
-References: <20191024215723.145922-1-hdegoede@redhat.com>
- <20191024215723.145922-3-hdegoede@redhat.com>
+        id S2394413AbfJYJtM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Oct 2019 05:49:12 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:46636 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2394386AbfJYJtM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Oct 2019 05:49:12 -0400
+Received: by mail-oi1-f194.google.com with SMTP id c2so1159205oic.13;
+        Fri, 25 Oct 2019 02:49:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JnftwLozQ7rbTOcyHRhf8Njft/n9Yteu28kTUhPkPck=;
+        b=sMK/DgJ16pGy1zZvZAwbe+USaBfd2gyWan9Tc9XKAATm2Xot//LCxSgx3389E8hz9I
+         yA2rGK/XcuDT/u5XuOEaLFGwtB+FAP0QDUPweHC9T2k92HX72NMQU/74yGqIdgYnARZs
+         zGvpf1qHxzJkhcgQsGTcSFRDJTJE1cT0P72e8EHRY3AkN2BYuGo8a44D/jGMT9iggl9V
+         zM/I32u3eXCvNXej37S17DLAF2zz2/uVW+Sc1PHvE2+s5pf+JDFGY6fKC3ousB9Y95UM
+         IPpIYZQhDus4sIMl8LVWgpmhSkNQ8dB4yHwMOJvBEwo39rW9m/Q6anBTfIP8N827TZVF
+         7foQ==
+X-Gm-Message-State: APjAAAUmypJRJ1P1NmGCVT+IFcpTMVggQHWb1r5vhAxxtPph2HxnCCu2
+        62Ax17+n/8psxbwZo+Smm7KRtKkYzsm5GN/v3r4=
+X-Google-Smtp-Source: APXvYqxSSvFmyDxcN0e+znakroRvM3i+swTFDtDyU0f82Zxu85rJEw56I5A/1ACOgXmpSLO2V/HdE/N9+nboQfyyS8Q=
+X-Received: by 2002:aca:d706:: with SMTP id o6mr2288535oig.57.1571996951367;
+ Fri, 25 Oct 2019 02:49:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191024215723.145922-3-hdegoede@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20191024213827.144974-1-hdegoede@redhat.com> <20191024213827.144974-3-hdegoede@redhat.com>
+ <20191025074154.GX32742@smile.fi.intel.com> <49aa39b7-d457-1140-afdb-2a154278b29f@redhat.com>
+ <20191025093325.GK32742@smile.fi.intel.com>
+In-Reply-To: <20191025093325.GK32742@smile.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 25 Oct 2019 11:49:00 +0200
+Message-ID: <CAJZ5v0iRpfNZqL9cfOn6ANjGxrSoe+pV8JapoH-GHOtKCnxaWQ@mail.gmail.com>
+Subject: Re: [PATCH 2/4] ACPI / PMIC: Add byt prefix to Crystal Cove PMIC
+ OpRegion driver
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Lee Jones <lee.jones@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 24, 2019 at 11:57:23PM +0200, Hans de Goede wrote:
-> The iGPU / GFX0 device's _PS0 method on the ASUS T200TA depends on the
-> I2C1 controller (which is connected to the embedded controller). But unlike
-> in the T100TA/T100CHI this dependency is not listed in the _DEP of the GFX0
-> device.
-> 
-> This results in the dev_WARN_ONCE(..., "Transfer while suspended\n") call
-> in i2c-designware-master.c triggering and the AML code not working as it
-> should.
-> 
-> This commit fixes this by adding a dmi based quirk mechanism for devices
-> which miss a _DEP, and adding a quirk for the LNXVIDEO depending on the
-> I2C1 device on the Asus T200TA.
+On Fri, Oct 25, 2019 at 11:33 AM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Fri, Oct 25, 2019 at 10:59:06AM +0200, Hans de Goede wrote:
+> > On 25-10-2019 09:41, Andy Shevchenko wrote:
+> > > On Thu, Oct 24, 2019 at 11:38:25PM +0200, Hans de Goede wrote:
+>
+> > > I would go with previously established pattern, i.e. intel_pmic_bytcc.c.
+>
+> > Well that would be consistent with the chtwc for the Whiskey Cove, but
+> > Crystal Cove related files are shortened to crc in many places already:
+> >
+> > Filenames before this patch:
+> > drivers/acpi/pmic/intel_pmic_crc.c
+> > drivers/pwm/pwm-crc.c
+> > drivers/mfd/intel_soc_pmic_crc.c
+> >
+> > And to me "cc" stands for the Type-C cc lines, or for Cc: from email,
+> > so IMHO it is best to stick with crc here.
+>
+> Okay, let's do an exception here due to the fact the code and name already
+> exists and spreads enough thru sources.
+>
+> It means you may use mine tags.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-One comment below.
-
-> Cc: stable@vger.kernel.org
-> Fixes: 2d71ee0ce72f ("ACPI / LPSS: Add a device link from the GPU to the BYT I2C5 controller")
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
-> Changes in v2:
-> -Add Fixes: tag
-> 
-> Changes in v3:
-> -Point Fixes tag to a more apropriate commit
-> ---
->  drivers/acpi/acpi_lpss.c | 22 +++++++++++++++++++---
->  1 file changed, 19 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-> index cd8cf3333f04..751ed38f2a10 100644
-> --- a/drivers/acpi/acpi_lpss.c
-> +++ b/drivers/acpi/acpi_lpss.c
-> @@ -10,6 +10,7 @@
->  #include <linux/acpi.h>
->  #include <linux/clkdev.h>
->  #include <linux/clk-provider.h>
-> +#include <linux/dmi.h>
->  #include <linux/err.h>
->  #include <linux/io.h>
->  #include <linux/mutex.h>
-> @@ -463,6 +464,18 @@ struct lpss_device_links {
->  	const char *consumer_hid;
->  	const char *consumer_uid;
->  	u32 flags;
-> +	const struct dmi_system_id *dep_missing_ids;
-> +};
-> +
-> +/* Please keep this list sorted alphabetically by vendor and model */
-> +static const struct dmi_system_id i2c1_dep_missing_dmi_ids[] = {
-> +	{
-> +		.matches = {
-> +			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "T200TA"),
-> +		},
-> +	},
-> +	{}
->  };
->  
->  /*
-> @@ -478,7 +491,8 @@ static const struct lpss_device_links lpss_device_links[] = {
->  	/* CHT iGPU depends on PMIC I2C controller */
->  	{"808622C1", "7", "LNXVIDEO", NULL, DL_FLAG_PM_RUNTIME},
->  	/* BYT iGPU depends on the Embedded Controller I2C controller (UID 1) */
-> -	{"80860F41", "1", "LNXVIDEO", NULL, DL_FLAG_PM_RUNTIME},
-> +	{"80860F41", "1", "LNXVIDEO", NULL, DL_FLAG_PM_RUNTIME,
-> +	 i2c1_dep_missing_dmi_ids},
->  	/* BYT CR iGPU depends on PMIC I2C controller (UID 5 on CR) */
->  	{"80860F41", "5", "LNXVIDEO", NULL, DL_FLAG_PM_RUNTIME},
->  	/* BYT iGPU depends on PMIC I2C controller (UID 7 on non CR) */
-> @@ -577,7 +591,8 @@ static void acpi_lpss_link_consumer(struct device *dev1,
->  	if (!dev2)
->  		return;
->  
-
-> -	if (acpi_lpss_dep(ACPI_COMPANION(dev2), ACPI_HANDLE(dev1)))
-> +	if ((link->dep_missing_ids && dmi_check_system(link->dep_missing_ids))
-> +	    || acpi_lpss_dep(ACPI_COMPANION(dev2), ACPI_HANDLE(dev1)))
->  		device_link_add(dev2, dev1, link->flags);
-
-Perhaps a helper?
-
->  
->  	put_device(dev2);
-> @@ -592,7 +607,8 @@ static void acpi_lpss_link_supplier(struct device *dev1,
->  	if (!dev2)
->  		return;
->  
-> -	if (acpi_lpss_dep(ACPI_COMPANION(dev1), ACPI_HANDLE(dev2)))
-> +	if ((link->dep_missing_ids && dmi_check_system(link->dep_missing_ids))
-> +	    || acpi_lpss_dep(ACPI_COMPANION(dev1), ACPI_HANDLE(dev2)))
->  		device_link_add(dev1, dev2, link->flags);
-
-And use it here?
-
->  
->  	put_device(dev2);
-> -- 
-> 2.23.0
-> 
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+OK, applying the series as 5.5 material, thanks!
