@@ -2,128 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AA5CE404F
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2019 01:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E570E40A7
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2019 02:41:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727079AbfJXXSS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Oct 2019 19:18:18 -0400
-Received: from mga06.intel.com ([134.134.136.31]:33007 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726395AbfJXXSS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 24 Oct 2019 19:18:18 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Oct 2019 16:18:17 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,226,1569308400"; 
-   d="scan'208";a="210255295"
-Received: from cwschule-mobl.amr.corp.intel.com (HELO [10.254.104.186]) ([10.254.104.186])
-  by fmsmga001.fm.intel.com with ESMTP; 24 Oct 2019 16:18:15 -0700
-Subject: Re: [PATCH 1/3] ACPI / LPSS: Add LNXVIDEO -> BYT I2C7 to
- lpss_device_links
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Stable <stable@vger.kernel.org>
-References: <20191024212936.144648-1-hdegoede@redhat.com>
- <CAJZ5v0jDuvEBob93wgYFuz0q1QyraOtxnbs-xqBOM_87jBnKqw@mail.gmail.com>
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Message-ID: <5c15fd87-414a-41fb-48a2-11c675ed6cfb@linux.intel.com>
-Date:   Thu, 24 Oct 2019 18:18:15 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1732751AbfJYAlo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Oct 2019 20:41:44 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:65441 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726164AbfJYAlo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Oct 2019 20:41:44 -0400
+Received: from 79.184.254.57.ipv4.supernova.orange.pl (79.184.254.57) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.292)
+ id 3d5b083a06540a5e; Fri, 25 Oct 2019 02:41:41 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: [PATCH] ACPI: processor: Add QoS requests for all CPUs
+Date:   Fri, 25 Oct 2019 02:41:40 +0200
+Message-ID: <2435090.1mJ0fSsrDY@kreacher>
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0jDuvEBob93wgYFuz0q1QyraOtxnbs-xqBOM_87jBnKqw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+The _PPC change notifications from the platform firmware are per-CPU,
+so acpi_processor_ppc_init() needs to add a frequency QoS request
+for each CPU covered by a cpufreq policy to take all of them into
+account.
+
+Even though ACPI thermal control of CPUs sets frequency limits
+per processor package, it also needs a frequency QoS request for each
+CPU in a cpufreq policy in case some of them are taken offline and
+the frequency limit needs to be set through the remaining online
+ones (this is slightly excessive, because all CPUs covered by one
+cpufreq policy will set the same frequency limit through their QoS
+requests, but it is not incorrect).
+
+Modify the code in accordance with the above observations.
+
+Fixes: d15ce412737a ("ACPI: cpufreq: Switch to QoS requests instead of cpufreq notifier")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/processor_perflib.c |   38 +++++++++++++++++++++++---------------
+ drivers/acpi/processor_thermal.c |   38 +++++++++++++++++++++++---------------
+ 2 files changed, 46 insertions(+), 30 deletions(-)
+
+Index: linux-pm/drivers/acpi/processor_thermal.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/processor_thermal.c
++++ linux-pm/drivers/acpi/processor_thermal.c
+@@ -127,26 +127,34 @@ static int cpufreq_set_cur_state(unsigne
+ 
+ void acpi_thermal_cpufreq_init(struct cpufreq_policy *policy)
+ {
+-	int cpu = policy->cpu;
+-	struct acpi_processor *pr = per_cpu(processors, cpu);
+-	int ret;
+-
+-	if (!pr)
+-		return;
+-
+-	ret = freq_qos_add_request(&policy->constraints, &pr->thermal_req,
+-				   FREQ_QOS_MAX, INT_MAX);
+-	if (ret < 0)
+-		pr_err("Failed to add freq constraint for CPU%d (%d)\n", cpu,
+-		       ret);
++	unsigned int cpu;
++
++	for_each_cpu(cpu, policy->related_cpus) {
++		struct acpi_processor *pr = per_cpu(processors, cpu);
++		int ret;
++
++		if (!pr)
++			continue;
++
++		ret = freq_qos_add_request(&policy->constraints,
++					   &pr->thermal_req,
++					   FREQ_QOS_MAX, INT_MAX);
++		if (ret < 0)
++			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
++			       cpu, ret);
++	}
+ }
+ 
+ void acpi_thermal_cpufreq_exit(struct cpufreq_policy *policy)
+ {
+-	struct acpi_processor *pr = per_cpu(processors, policy->cpu);
++	unsigned int cpu;
++
++	for_each_cpu(cpu, policy->related_cpus) {
++		struct acpi_processor *pr = per_cpu(processors, policy->cpu);
+ 
+-	if (pr)
+-		freq_qos_remove_request(&pr->thermal_req);
++		if (pr)
++			freq_qos_remove_request(&pr->thermal_req);
++	}
+ }
+ #else				/* ! CONFIG_CPU_FREQ */
+ static int cpufreq_get_max_state(unsigned int cpu)
+Index: linux-pm/drivers/acpi/processor_perflib.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/processor_perflib.c
++++ linux-pm/drivers/acpi/processor_perflib.c
+@@ -159,26 +159,34 @@ void acpi_processor_ignore_ppc_init(void
+ 
+ void acpi_processor_ppc_init(struct cpufreq_policy *policy)
+ {
+-	int cpu = policy->cpu;
+-	struct acpi_processor *pr = per_cpu(processors, cpu);
+-	int ret;
+-
+-	if (!pr)
+-		return;
+-
+-	ret = freq_qos_add_request(&policy->constraints, &pr->perflib_req,
+-				   FREQ_QOS_MAX, INT_MAX);
+-	if (ret < 0)
+-		pr_err("Failed to add freq constraint for CPU%d (%d)\n", cpu,
+-		       ret);
++	unsigned int cpu;
++
++	for_each_cpu(cpu, policy->related_cpus) {
++		struct acpi_processor *pr = per_cpu(processors, cpu);
++		int ret;
++
++		if (!pr)
++			continue;
++
++		ret = freq_qos_add_request(&policy->constraints,
++					   &pr->perflib_req,
++					   FREQ_QOS_MAX, INT_MAX);
++		if (ret < 0)
++			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
++			       cpu, ret);
++	}
+ }
+ 
+ void acpi_processor_ppc_exit(struct cpufreq_policy *policy)
+ {
+-	struct acpi_processor *pr = per_cpu(processors, policy->cpu);
++	unsigned int cpu;
++
++	for_each_cpu(cpu, policy->related_cpus) {
++		struct acpi_processor *pr = per_cpu(processors, cpu);
+ 
+-	if (pr)
+-		freq_qos_remove_request(&pr->perflib_req);
++		if (pr)
++			freq_qos_remove_request(&pr->perflib_req);
++	}
+ }
+ 
+ static int acpi_processor_get_performance_control(struct acpi_processor *pr)
 
 
-On 10/24/19 4:34 PM, Rafael J. Wysocki wrote:
-> On Thu, Oct 24, 2019 at 11:29 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> So far on Bay Trail (BYT) we only have been adding a device_link adding
->> the iGPU (LNXVIDEO) device as consumer for the I2C controller for the
->> PMIC for I2C5, but the PMIC only uses I2C5 on BYT CR (cost reduced) on
->> regular BYT platforms I2C7 is used and we were not adding the device_link
->> sometimes causing resume ordering issues.
->>
->> This commit adds LNXVIDEO -> BYT I2C7 to the lpss_device_links table,
->> fixing this.
->>
->> Cc: stable@vger.kernel.org
-> 
-> Thanks for these fixes, but it would be kind of nice to have Fixes:
-> tags for them too.
-
-Nice, this removes the warnings I saw on Asus T100TA
-[   56.015285] i2c_designware 80860F41:00: Transfer while suspended
-
-Thanks Hans! Feel free to take the following tag for your v2.
-
-Tested-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-
-Maybe an unrelated point, but with this series I now see a new message 
-(logged only once):
-[   46.888703] ACPI: button: The lid device is not compliant to SW_LID.
-
-Not sure what exactly this is about, but it may be linked to the fact 
-that the power button is useless to resume and somehow I have to 
-close/reopen the lid to force the device to resume.
-
-if it helps here are the traces for 2 cycles of suspend/resume.
-
-[   34.242313] PM: suspend entry (s2idle)
-[   34.246896] Filesystems sync: 0.004 seconds
-[   34.247265] Freezing user space processes ... (elapsed 0.001 seconds) 
-done.
-[   34.249250] OOM killer disabled.
-[   34.249253] Freezing remaining freezable tasks ... (elapsed 0.000 
-seconds) done.
-[   34.250195] printk: Suspending console(s) (use no_console_suspend to 
-debug)
-[   41.251352] mmc1: queuing unknown CIS tuple 0x80 (2 bytes)
-[   41.252948] mmc1: queuing unknown CIS tuple 0x80 (3 bytes)
-[   41.254530] mmc1: queuing unknown CIS tuple 0x80 (3 bytes)
-[   41.257397] mmc1: queuing unknown CIS tuple 0x80 (7 bytes)
-[   41.586893] OOM killer enabled.
-[   41.586898] Restarting tasks ... done.
-[   41.625298] video LNXVIDEO:00: Restoring backlight state
-[   41.625718] PM: suspend exit
-[   45.162584] ax88179_178a 2-1:1.0 enx00051ba24714: ax88179 - Link 
-status is: 1
-[   45.171220] IPv6: ADDRCONF(NETDEV_CHANGE): enx00051ba24714: link 
-becomes ready
-[   45.400724] ACPI: button: The lid device is not compliant to SW_LID.
-[   58.478184] PM: suspend entry (s2idle)
-[   58.528882] Filesystems sync: 0.051 seconds
-[   58.529354] Freezing user space processes ... (elapsed 0.004 seconds) 
-done.
-[   58.533708] OOM killer disabled.
-[   58.533712] Freezing remaining freezable tasks ... (elapsed 0.000 
-seconds) done.
-[   58.534648] printk: Suspending console(s) (use no_console_suspend to 
-debug)
-[   63.084134] mmc1: queuing unknown CIS tuple 0x80 (2 bytes)
-[   63.085736] mmc1: queuing unknown CIS tuple 0x80 (3 bytes)
-[   63.087337] mmc1: queuing unknown CIS tuple 0x80 (3 bytes)
-[   63.090241] mmc1: queuing unknown CIS tuple 0x80 (7 bytes)
-[   63.420651] OOM killer enabled.
-[   63.420656] Restarting tasks ... done.
-[   63.458493] video LNXVIDEO:00: Restoring backlight state
-[   63.458918] PM: suspend exit
-[   66.862343] ax88179_178a 2-1:1.0 enx00051ba24714: ax88179 - Link 
-status is: 1
-[   66.869564] IPv6: ADDRCONF(NETDEV_CHANGE): enx00051ba24714: link 
-becomes ready
 
