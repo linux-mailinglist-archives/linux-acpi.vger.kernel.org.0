@@ -2,38 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EC11E4DAF
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2019 16:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6E0AE4D7D
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2019 16:01:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391069AbfJYOBg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Oct 2019 10:01:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53344 "EHLO mail.kernel.org"
+        id S1731531AbfJYOA2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Oct 2019 10:00:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54324 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2505479AbfJYN6H (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 25 Oct 2019 09:58:07 -0400
+        id S2410378AbfJYN6p (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 25 Oct 2019 09:58:45 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BDC6F222C2;
-        Fri, 25 Oct 2019 13:58:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AB847222CE;
+        Fri, 25 Oct 2019 13:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572011887;
-        bh=56jLaJVyE7J6WQTZ+h1JWCw4Ord1UhA/TJ58CERVaLg=;
+        s=default; t=1572011925;
+        bh=QVtj9yD9gM/Kn2BDw1bk2ZWLuSivu4VtM58leskAUQc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lCECg/QqOn0qpCNHMJ2kJQ/ojVr16MWV5s6WeWmLOozBN/Dsq/6JxF64F0xtmmmGn
-         ZIXC3/ok1NW3QLQimCO4+WZI3qmcQ72R9gv9r8bZbbV1+aUyBQOH7VkVENE9Lr/gAn
-         //vbrPV1DWzcz1HG7/2O5nzlHcv24C/3WQarnDfk=
+        b=cp02R1/v5+lL6OnIZ03S7LS7qF4lPm8htoOtHNaOU3xZrD1ihfg+2Xx7P6l/dA5aG
+         SKf1ewGKeOSWysejkqVHklbKkQ8e48kB6Y6p7K2DpKKU/fZo3TKYEmaTc/Lb8RS3ZM
+         yizQ5VZWXDtgnre+8DYwfsfQNNHBOuTOjPM4Pb/0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Zhang Rui <rui.zhang@intel.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 03/20] ACPI: video: Use vendor backlight on Sony VPCEH3U1E
-Date:   Fri, 25 Oct 2019 09:57:43 -0400
-Message-Id: <20191025135801.25739-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 02/16] ACPI: video: Use vendor backlight on Sony VPCEH3U1E
+Date:   Fri, 25 Oct 2019 09:58:26 -0400
+Message-Id: <20191025135842.25977-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191025135801.25739-1-sashal@kernel.org>
-References: <20191025135801.25739-1-sashal@kernel.org>
+In-Reply-To: <20191025135842.25977-1-sashal@kernel.org>
+References: <20191025135842.25977-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -59,7 +59,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+)
 
 diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index cdc47375178e7..555f568dbf3e4 100644
+index 8c5503c0bad7c..3fc828e086b1e 100644
 --- a/drivers/acpi/video_detect.c
 +++ b/drivers/acpi/video_detect.c
 @@ -135,6 +135,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
