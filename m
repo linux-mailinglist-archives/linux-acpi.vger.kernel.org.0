@@ -2,86 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D8B1E46F1
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2019 11:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27E1EE4733
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2019 11:30:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438249AbfJYJTM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Oct 2019 05:19:12 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:41231 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726409AbfJYJTM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Oct 2019 05:19:12 -0400
-Received: by mail-ot1-f66.google.com with SMTP id 94so1541587oty.8
-        for <linux-acpi@vger.kernel.org>; Fri, 25 Oct 2019 02:19:12 -0700 (PDT)
+        id S2408758AbfJYJaB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Oct 2019 05:30:01 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:37130 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2408067AbfJYJaA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Oct 2019 05:30:00 -0400
+Received: by mail-ot1-f68.google.com with SMTP id 53so1582174otv.4;
+        Fri, 25 Oct 2019 02:30:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=eO6kpTIXKYcY4ou5sdoReZQ7k/e/XcEWAgmC5JAEAbM=;
-        b=fV6IEAYaHlzpVZucCQyxW4MSRUc3HT9DYR9EkiR3DJsF7wAbG6UAc2WkzrK8zWqjeL
-         Je/Qmq9Fj7nf0cJ7dF2+gWDZTHrM4kLoEjFouGOcrPN5kTrGRYeZMIbq96noZvlExpqi
-         /uxOpCRGkjonJP4jbgYqGikdDF0oXmRbp4MWE9Y4lCGH0t0mfg6RloR9lkYkAlsvvn5N
-         HRHrXJDIsQTBkpl9M5UtwCZVeuNX144MTG3nch2O8imHVacVjtZhi4v2ckxD1hKDDUVO
-         lCqsQKUU1oJlAOpLI2hoI461xLanrnBVKfbBXUp0MJ3zGykl9gh00t5afoqz17J+KUVQ
-         bWgg==
-X-Gm-Message-State: APjAAAU7WNldy6uAd5UCi2btw20dcr6nyzTwdQ+2QBzba2B/f50SFWE3
-        j3//kRDFX6+J0A1pfQOUKFSSHqQfIynZAXU039I=
-X-Google-Smtp-Source: APXvYqw+T996enm3bzg1Ug2Oo2tklbN/dna8OVt4+rhQ0y1BHc9Za+kliY9otnBdocuRbRwJN4vOZ4SgESoxaqQGiTc=
-X-Received: by 2002:a9d:5a0f:: with SMTP id v15mr1982615oth.266.1571995151487;
- Fri, 25 Oct 2019 02:19:11 -0700 (PDT)
+        bh=cU1OixEwalemmBVOtdh43Cbb3H+ljnFK0wFPUoflBD4=;
+        b=kLQA4VMmDJbAJAaln5MqDnG1VwY0bsPwOYamGyjCEylZR4a64kdxF2DjwG1Ki/8GZx
+         Y8/mzzFvjElpt+M8jgy3rM4fnXTLg1v4V7YcAgzeF+uOwHHc6y6/OzeCDdflZo3pZmXI
+         aUZSr48pwb2MQiE9w/IZSxA05Tw9yby99T2F0ByvHTEJQnEioCItlut7rpnyT3OjQkap
+         gnonHUDzZ2lj7vSLSfs8zksqsrOh7nFDcyt45vsh44taPSzi9qWmx3rq95ARYdU7p377
+         utw5OS4TrT/oNmpSHHqmhIlghOZKnoGQPQr4dz6qRB5VWOiDCEr5s2Q/FCV1yh1dKMN+
+         q9SA==
+X-Gm-Message-State: APjAAAU3DU0n2//9RQWDQ8BhrOjtM220EqR6mpQHOVXDjCCS2VO5iveb
+        UrFsbCbt2sJwijS2uPn6TFTXRiQpdKe50xMEgl0=
+X-Google-Smtp-Source: APXvYqz2vywbyEVId7Pf5c1eOgBzo2kYCDQGSePp+4wh/X6injFWVYLZJNy79xhbDXX9niCyd/Faw/1yd+7SOB7+qwY=
+X-Received: by 2002:a9d:459b:: with SMTP id x27mr1816253ote.167.1571995799632;
+ Fri, 25 Oct 2019 02:29:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191024185556.4606-1-erik.schmauss@intel.com>
-In-Reply-To: <20191024185556.4606-1-erik.schmauss@intel.com>
+References: <20191024215723.145922-1-hdegoede@redhat.com> <20191024215723.145922-3-hdegoede@redhat.com>
+In-Reply-To: <20191024215723.145922-3-hdegoede@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 25 Oct 2019 11:19:00 +0200
-Message-ID: <CAJZ5v0gqN3yGcLLVntYQgwxVsUhbEZ8L0UJNXOh=xA6nmgTQLA@mail.gmail.com>
-Subject: Re: [PATCH 00/12] ACPICA version 20191018
-To:     Erik Schmauss <erik.schmauss@intel.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Date:   Fri, 25 Oct 2019 11:29:48 +0200
+Message-ID: <CAJZ5v0hVuakKRAfoB-+WGqjvxQ4EM5_jnf95VtQQxG5e4=5GsQ@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] ACPI / LPSS: Add dmi quirk for skipping _DEP check
+ for some device-links
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Stable <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 24, 2019 at 9:13 PM Erik Schmauss <erik.schmauss@intel.com> wrote:
+On Thu, Oct 24, 2019 at 11:57 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> This patchset contains the linuxized patches for ACPICA version
-> 20191018. There are several debugger changes but they are meant for
-> acpiexec at this time. acpi_load_table definition has been modified and
-> a new acpi_unload_table has been added. These new interfaces can be used
-> as a part of config fs to load and unload tables.
+> The iGPU / GFX0 device's _PS0 method on the ASUS T200TA depends on the
+> I2C1 controller (which is connected to the embedded controller). But unlike
+> in the T100TA/T100CHI this dependency is not listed in the _DEP of the GFX0
+> device.
 >
-> Other than that, Bob has run clang on our code base and removed several
-> compiler warnings.
+> This results in the dev_WARN_ONCE(..., "Transfer while suspended\n") call
+> in i2c-designware-master.c triggering and the AML code not working as it
+> should.
 >
-> This patchset is also available here:
-> https://github.com/SchmErik/linux/tree/v20191018
+> This commit fixes this by adding a dmi based quirk mechanism for devices
+> which miss a _DEP, and adding a quirk for the LNXVIDEO depending on the
+> I2C1 device on the Asus T200TA.
 >
-> Bob Moore (5):
->   ACPICA: Results from Clang changes/fixes From Clang V5.0.1. Mostly
->     "set but never read" warnings.
->   ACPICA: Win OSL: Replace get_tick_count with get_tick_count64
->   ACPICA: More Clang changes - V8.0.1 Fixed all "dead assignment"
->     warnings.
->   ACPICA: Add new external interface, acpi_unload_table
->   ACPICA: Update version to 20191018
+> Cc: stable@vger.kernel.org
+> Fixes: 2d71ee0ce72f ("ACPI / LPSS: Add a device link from the GPU to the BYT I2C5 controller")
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Changes in v2:
+> -Add Fixes: tag
 >
-> Erik Schmauss (6):
->   ACPICA: utilities: add flag to only display data when dumping buffers
->   ACPICA: Debugger: add command to dump all fields of a particular
->     subtype
->   ACPICA: debugger: surround field unit output with braces '{'
->   ACPICA: debugger: add field unit support for acpi_db_get_next_token
->   ACPICA: acpiexec: initialize all simple types and field units from
->     user input
->   ACPICA: debugger: remove leading whitespaces when converting a string
->     to a buffer
+> Changes in v3:
+> -Point Fixes tag to a more apropriate commit
+> ---
+>  drivers/acpi/acpi_lpss.c | 22 +++++++++++++++++++---
+>  1 file changed, 19 insertions(+), 3 deletions(-)
 >
-> Nikolaus Voss (1):
->   ACPICA: make acpi_load_table() return table index
+> diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+> index cd8cf3333f04..751ed38f2a10 100644
+> --- a/drivers/acpi/acpi_lpss.c
+> +++ b/drivers/acpi/acpi_lpss.c
+> @@ -10,6 +10,7 @@
+>  #include <linux/acpi.h>
+>  #include <linux/clkdev.h>
+>  #include <linux/clk-provider.h>
+> +#include <linux/dmi.h>
+>  #include <linux/err.h>
+>  #include <linux/io.h>
+>  #include <linux/mutex.h>
+> @@ -463,6 +464,18 @@ struct lpss_device_links {
+>         const char *consumer_hid;
+>         const char *consumer_uid;
+>         u32 flags;
+> +       const struct dmi_system_id *dep_missing_ids;
+> +};
+> +
+> +/* Please keep this list sorted alphabetically by vendor and model */
+> +static const struct dmi_system_id i2c1_dep_missing_dmi_ids[] = {
+> +       {
+> +               .matches = {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+> +                       DMI_MATCH(DMI_PRODUCT_NAME, "T200TA"),
+> +               },
+> +       },
+> +       {}
+>  };
+>
+>  /*
+> @@ -478,7 +491,8 @@ static const struct lpss_device_links lpss_device_links[] = {
+>         /* CHT iGPU depends on PMIC I2C controller */
+>         {"808622C1", "7", "LNXVIDEO", NULL, DL_FLAG_PM_RUNTIME},
+>         /* BYT iGPU depends on the Embedded Controller I2C controller (UID 1) */
+> -       {"80860F41", "1", "LNXVIDEO", NULL, DL_FLAG_PM_RUNTIME},
+> +       {"80860F41", "1", "LNXVIDEO", NULL, DL_FLAG_PM_RUNTIME,
+> +        i2c1_dep_missing_dmi_ids},
+>         /* BYT CR iGPU depends on PMIC I2C controller (UID 5 on CR) */
+>         {"80860F41", "5", "LNXVIDEO", NULL, DL_FLAG_PM_RUNTIME},
+>         /* BYT iGPU depends on PMIC I2C controller (UID 7 on non CR) */
+> @@ -577,7 +591,8 @@ static void acpi_lpss_link_consumer(struct device *dev1,
+>         if (!dev2)
+>                 return;
+>
+> -       if (acpi_lpss_dep(ACPI_COMPANION(dev2), ACPI_HANDLE(dev1)))
+> +       if ((link->dep_missing_ids && dmi_check_system(link->dep_missing_ids))
+> +           || acpi_lpss_dep(ACPI_COMPANION(dev2), ACPI_HANDLE(dev1)))
+>                 device_link_add(dev2, dev1, link->flags);
+>
+>         put_device(dev2);
+> @@ -592,7 +607,8 @@ static void acpi_lpss_link_supplier(struct device *dev1,
+>         if (!dev2)
+>                 return;
+>
+> -       if (acpi_lpss_dep(ACPI_COMPANION(dev1), ACPI_HANDLE(dev2)))
+> +       if ((link->dep_missing_ids && dmi_check_system(link->dep_missing_ids))
+> +           || acpi_lpss_dep(ACPI_COMPANION(dev1), ACPI_HANDLE(dev2)))
+>                 device_link_add(dev1, dev2, link->flags);
+>
+>         put_device(dev2);
+> --
 
-Queuing up as 5.5 material with some minor subject/changelog modifications.
-
-Thanks!
+Applying the series as 5.5 material, thanks!
