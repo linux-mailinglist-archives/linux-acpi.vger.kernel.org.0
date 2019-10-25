@@ -2,167 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E570E40A7
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2019 02:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D39DE41DD
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2019 04:53:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732751AbfJYAlo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Oct 2019 20:41:44 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:65441 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726164AbfJYAlo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Oct 2019 20:41:44 -0400
-Received: from 79.184.254.57.ipv4.supernova.orange.pl (79.184.254.57) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.292)
- id 3d5b083a06540a5e; Fri, 25 Oct 2019 02:41:41 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
+        id S2391311AbfJYCxv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Oct 2019 22:53:51 -0400
+Received: from mail-pf1-f182.google.com ([209.85.210.182]:45250 "EHLO
+        mail-pf1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732696AbfJYCxv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Oct 2019 22:53:51 -0400
+Received: by mail-pf1-f182.google.com with SMTP id x28so536654pfi.12
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Oct 2019 19:53:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=LIAxzZdUB/yYNUMYUR2KW+Y1d8eGDKKE+QAPPE4WwsY=;
+        b=Vz7o7lQSTD6qHd8pLVTzTEbjC3I5zYa86pniTc6E8MwTONeHhHKlqf9rq+Iniayq4x
+         QuxjKOVu3+KCRr/GpbvTRqba9Cm+o+aa8CQo89l8JfaCutV5qrAvKWQ/xt1sNqbHZqp9
+         Mkcp1qd/TLYt+odIYQb1Lh7gKcSnRu+SriiDu3NSZYv1lbI944GPXRgD3z7mx+E5UOqa
+         pej0kWb1PQSK8A7e+1AtvSm3jNGi6510Tb/zdjFj1c0FiugBs2nTj6vuWARJh+/jHYpZ
+         BtGzS0J3f/hi/saT+EcgO59Yta52WpgIqIGAjDTwXJyIG0bPtxlikXRcpG9wkTZ+EMIM
+         w92g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=LIAxzZdUB/yYNUMYUR2KW+Y1d8eGDKKE+QAPPE4WwsY=;
+        b=CPlZlHTKkfBmZRomxiuekILM7bql9KvHoajQl7uLhxOiwiLfHBvJUbSqens3DK3I7V
+         h/zGVist1PDtZ4FMf3G5a3riXy4ieNPy+oLNyHEsxHbhw57fwa9w8Y4elNi90w99xEwU
+         8rMBgma6bvfsnuvfZwWufT8jxbMM9F9E/7E5tMNY3Z9UYBTbJnyKBBCL68bkBIKe6nLX
+         eAPvuYyVwJwzciWKoqAKuDRmtPoKUNJM5BbA01/av8A55L1ca/adqDmhEcJLsuKcMiiZ
+         jk509fAm3c8JzT2sQvOc9dxTbFsWvPJY6xut0MGIGxtv/MfJcFEz58VDzGJyET/kpGKk
+         mBPw==
+X-Gm-Message-State: APjAAAXgVYfjesDsgIuE1vjz/xzO+0pgWx9JRxQUpm2vYjnZnb/gYG9J
+        RUY5i9/vf2EyIctbh4Far5/Jgw==
+X-Google-Smtp-Source: APXvYqw6+uxpZOQ1bKlEOo2fMWZXsuQqMpl1CAftf0fRvSZKWwcW1De5GpA5fGKl8LGe6rGoWu23rA==
+X-Received: by 2002:a65:62d1:: with SMTP id m17mr1482308pgv.284.1571972030760;
+        Thu, 24 Oct 2019 19:53:50 -0700 (PDT)
+Received: from localhost ([122.172.151.112])
+        by smtp.gmail.com with ESMTPSA id m65sm4232784pje.3.2019.10.24.19.53.49
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 24 Oct 2019 19:53:49 -0700 (PDT)
+Date:   Fri, 25 Oct 2019 08:23:43 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH] ACPI: processor: Add QoS requests for all CPUs
-Date:   Fri, 25 Oct 2019 02:41:40 +0200
-Message-ID: <2435090.1mJ0fSsrDY@kreacher>
+Subject: Re: [PATCH] ACPI: processor: Add QoS requests for all CPUs
+Message-ID: <20191025025343.tyihliza45os3e4r@vireshk-i7>
+References: <2435090.1mJ0fSsrDY@kreacher>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2435090.1mJ0fSsrDY@kreacher>
+User-Agent: NeoMutt/20180716-391-311a52
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On 25-10-19, 02:41, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> The _PPC change notifications from the platform firmware are per-CPU,
+> so acpi_processor_ppc_init() needs to add a frequency QoS request
+> for each CPU covered by a cpufreq policy to take all of them into
+> account.
+> 
+> Even though ACPI thermal control of CPUs sets frequency limits
+> per processor package, it also needs a frequency QoS request for each
+> CPU in a cpufreq policy in case some of them are taken offline and
+> the frequency limit needs to be set through the remaining online
+> ones (this is slightly excessive, because all CPUs covered by one
+> cpufreq policy will set the same frequency limit through their QoS
+> requests, but it is not incorrect).
+> 
+> Modify the code in accordance with the above observations.
 
-The _PPC change notifications from the platform firmware are per-CPU,
-so acpi_processor_ppc_init() needs to add a frequency QoS request
-for each CPU covered by a cpufreq policy to take all of them into
-account.
+I am not sure if I understood everything you just said, but I don't
+see how things can break with the current code we have.
 
-Even though ACPI thermal control of CPUs sets frequency limits
-per processor package, it also needs a frequency QoS request for each
-CPU in a cpufreq policy in case some of them are taken offline and
-the frequency limit needs to be set through the remaining online
-ones (this is slightly excessive, because all CPUs covered by one
-cpufreq policy will set the same frequency limit through their QoS
-requests, but it is not incorrect).
+Both acpi_thermal_cpufreq_init() and acpi_processor_ppc_init() are
+called from acpi_processor_notifier() which is registered as a policy
+notifier and is called when a policy is created or removed. Even if
+some CPUs of a policy go offline, it won't matter as the request for
+the policy stays and it will be dropped only when all the CPUs of a
+policy go offline.
 
-Modify the code in accordance with the above observations.
+What am I missing ?
 
-Fixes: d15ce412737a ("ACPI: cpufreq: Switch to QoS requests instead of cpufreq notifier")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/processor_perflib.c |   38 +++++++++++++++++++++++---------------
- drivers/acpi/processor_thermal.c |   38 +++++++++++++++++++++++---------------
- 2 files changed, 46 insertions(+), 30 deletions(-)
-
-Index: linux-pm/drivers/acpi/processor_thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/processor_thermal.c
-+++ linux-pm/drivers/acpi/processor_thermal.c
-@@ -127,26 +127,34 @@ static int cpufreq_set_cur_state(unsigne
- 
- void acpi_thermal_cpufreq_init(struct cpufreq_policy *policy)
- {
--	int cpu = policy->cpu;
--	struct acpi_processor *pr = per_cpu(processors, cpu);
--	int ret;
--
--	if (!pr)
--		return;
--
--	ret = freq_qos_add_request(&policy->constraints, &pr->thermal_req,
--				   FREQ_QOS_MAX, INT_MAX);
--	if (ret < 0)
--		pr_err("Failed to add freq constraint for CPU%d (%d)\n", cpu,
--		       ret);
-+	unsigned int cpu;
-+
-+	for_each_cpu(cpu, policy->related_cpus) {
-+		struct acpi_processor *pr = per_cpu(processors, cpu);
-+		int ret;
-+
-+		if (!pr)
-+			continue;
-+
-+		ret = freq_qos_add_request(&policy->constraints,
-+					   &pr->thermal_req,
-+					   FREQ_QOS_MAX, INT_MAX);
-+		if (ret < 0)
-+			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
-+			       cpu, ret);
-+	}
- }
- 
- void acpi_thermal_cpufreq_exit(struct cpufreq_policy *policy)
- {
--	struct acpi_processor *pr = per_cpu(processors, policy->cpu);
-+	unsigned int cpu;
-+
-+	for_each_cpu(cpu, policy->related_cpus) {
-+		struct acpi_processor *pr = per_cpu(processors, policy->cpu);
- 
--	if (pr)
--		freq_qos_remove_request(&pr->thermal_req);
-+		if (pr)
-+			freq_qos_remove_request(&pr->thermal_req);
-+	}
- }
- #else				/* ! CONFIG_CPU_FREQ */
- static int cpufreq_get_max_state(unsigned int cpu)
-Index: linux-pm/drivers/acpi/processor_perflib.c
-===================================================================
---- linux-pm.orig/drivers/acpi/processor_perflib.c
-+++ linux-pm/drivers/acpi/processor_perflib.c
-@@ -159,26 +159,34 @@ void acpi_processor_ignore_ppc_init(void
- 
- void acpi_processor_ppc_init(struct cpufreq_policy *policy)
- {
--	int cpu = policy->cpu;
--	struct acpi_processor *pr = per_cpu(processors, cpu);
--	int ret;
--
--	if (!pr)
--		return;
--
--	ret = freq_qos_add_request(&policy->constraints, &pr->perflib_req,
--				   FREQ_QOS_MAX, INT_MAX);
--	if (ret < 0)
--		pr_err("Failed to add freq constraint for CPU%d (%d)\n", cpu,
--		       ret);
-+	unsigned int cpu;
-+
-+	for_each_cpu(cpu, policy->related_cpus) {
-+		struct acpi_processor *pr = per_cpu(processors, cpu);
-+		int ret;
-+
-+		if (!pr)
-+			continue;
-+
-+		ret = freq_qos_add_request(&policy->constraints,
-+					   &pr->perflib_req,
-+					   FREQ_QOS_MAX, INT_MAX);
-+		if (ret < 0)
-+			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
-+			       cpu, ret);
-+	}
- }
- 
- void acpi_processor_ppc_exit(struct cpufreq_policy *policy)
- {
--	struct acpi_processor *pr = per_cpu(processors, policy->cpu);
-+	unsigned int cpu;
-+
-+	for_each_cpu(cpu, policy->related_cpus) {
-+		struct acpi_processor *pr = per_cpu(processors, cpu);
- 
--	if (pr)
--		freq_qos_remove_request(&pr->perflib_req);
-+		if (pr)
-+			freq_qos_remove_request(&pr->perflib_req);
-+	}
- }
- 
- static int acpi_processor_get_performance_control(struct acpi_processor *pr)
-
-
-
+-- 
+viresh
