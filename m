@@ -2,140 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 33D70E6EEC
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2019 10:20:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D0D5E6F9F
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2019 11:24:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732470AbfJ1JUn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Oct 2019 05:20:43 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:5198 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731818AbfJ1JUn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 28 Oct 2019 05:20:43 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id BDE91E4F3058705C3E4E;
-        Mon, 28 Oct 2019 17:20:38 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.439.0; Mon, 28 Oct 2019
- 17:20:35 +0800
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To:     Greg KH <gregkh@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>
-CC:     Robin Murphy <robin.murphy@arm.com>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-        <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
-        <mattst88@gmail.com>, <benh@kernel.crashing.org>,
-        <paulus@samba.org>, <mpe@ellerman.id.au>,
-        <heiko.carstens@de.ibm.com>, <gor@linux.ibm.com>,
-        <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>,
-        <dalias@libc.org>, <davem@davemloft.net>, <ralf@linux-mips.org>,
-        <paul.burton@mips.com>, <jhogan@kernel.org>,
-        <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>,
-        <akpm@linux-foundation.org>, <rppt@linux.ibm.com>,
-        <anshuman.khandual@arm.com>, <tglx@linutronix.de>, <cai@lca.pw>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <hpa@zytor.com>, <x86@kernel.org>,
-        <dave.hansen@linux.intel.com>, <luto@kernel.org>,
-        <len.brown@intel.com>, <axboe@kernel.dk>, <dledford@redhat.com>,
-        <jeffrey.t.kirsher@intel.com>, <linux-alpha@vger.kernel.org>,
-        <naveen.n.rao@linux.vnet.ibm.com>, <mwb@linux.vnet.ibm.com>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
-        <linux-sh@vger.kernel.org>, <sparclinux@vger.kernel.org>,
-        <tbogendoerfer@suse.de>, <linux-mips@vger.kernel.org>,
-        <rafael@kernel.org>, <bhelgaas@google.com>,
-        <linux-pci@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>, <lenb@kernel.org>,
-        <linux-acpi@vger.kernel.org>
-References: <20190924131939.GS23050@dhcp22.suse.cz>
- <1adcbe68-6753-3497-48a0-cc84ac503372@huawei.com>
- <20190925104108.GE4553@hirez.programming.kicks-ass.net>
- <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
- <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
- <a5f0fc80-8e88-b781-77ce-1213e5d62125@huawei.com>
- <20191010073212.GB18412@dhcp22.suse.cz>
- <6cc94f9b-0d79-93a8-5ec2-4f6c21639268@huawei.com>
- <20191011111539.GX2311@hirez.programming.kicks-ass.net>
- <7fad58d6-5126-e8b8-a7d8-a91814da53ba@huawei.com>
- <20191012074014.GA2037204@kroah.com>
-From:   Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <1ec704df-97a5-04b7-1f20-8e3db19440a3@huawei.com>
-Date:   Mon, 28 Oct 2019 17:20:33 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+        id S1732042AbfJ1KYJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Oct 2019 06:24:09 -0400
+Received: from mga05.intel.com ([192.55.52.43]:28313 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731694AbfJ1KYJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 28 Oct 2019 06:24:09 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Oct 2019 03:24:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,239,1569308400"; 
+   d="scan'208";a="374192692"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga005.jf.intel.com with ESMTP; 28 Oct 2019 03:24:07 -0700
+Received: from andy by smile with local (Exim 4.92.2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1iP2By-00010f-3I; Mon, 28 Oct 2019 12:24:06 +0200
+Date:   Mon, 28 Oct 2019 12:24:06 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 5/6] ACPI / button: Add DMI quirk for Asus T200TA
+Message-ID: <20191028102406.GL32742@smile.fi.intel.com>
+References: <20191026202436.311894-1-hdegoede@redhat.com>
+ <20191026202436.311894-5-hdegoede@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20191012074014.GA2037204@kroah.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191026202436.311894-5-hdegoede@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2019/10/12 15:40, Greg KH wrote:
-> On Sat, Oct 12, 2019 at 02:17:26PM +0800, Yunsheng Lin wrote:
->> add pci and acpi maintainer
->> cc linux-pci@vger.kernel.org and linux-acpi@vger.kernel.org
->>
->> On 2019/10/11 19:15, Peter Zijlstra wrote:
->>> On Fri, Oct 11, 2019 at 11:27:54AM +0800, Yunsheng Lin wrote:
->>>> But I failed to see why the above is related to making node_to_cpumask_map()
->>>> NUMA_NO_NODE aware?
->>>
->>> Your initial bug is for hns3, which is a PCI device, which really _MUST_
->>> have a node assigned.
->>>
->>> It not having one, is a straight up bug. We must not silently accept
->>> NO_NODE there, ever.
->>>
->>
->> I suppose you mean reporting a lack of affinity when the node of a pcie
->> device is not set by "not silently accept NO_NODE".
+On Sat, Oct 26, 2019 at 10:24:35PM +0200, Hans de Goede wrote:
+> The Asus T200TA lid has some weird behavior where _LID keeps reporting
+> closed after every second openening of the lid. Causing immediate
+> re-suspend after opening every other open.
 > 
-> If the firmware of a pci device does not provide the node information,
-> then yes, warn about that.
-> 
->> As Greg has asked about in [1]:
->> what is a user to do when the user sees the kernel reporting that?
->>
->> We may tell user to contact their vendor for info or updates about
->> that when they do not know about their system well enough, but their
->> vendor may get away with this by quoting ACPI spec as the spec
->> considering this optional. Should the user believe this is indeed a
->> fw bug or a misreport from the kernel?
-> 
-> Say it is a firmware bug, if it is a firmware bug, that's simple.
-> 
->> If this kind of reporting is common pratice and will not cause any
->> misunderstanding, then maybe we can report that.
-> 
-> Yes, please do so, that's the only way those boxes are ever going to get
-> fixed.  And go add the test to the "firmware testing" tool that is based
-> on Linux that Intel has somewhere, to give vendors a chance to fix this
-> before they ship hardware.
-> 
-> This shouldn't be a big deal, we warn of other hardware bugs all the
-> time.
+> I've looked at the AML code but it involves talking to the EC and we
+> have no idea what the EC is doing. Setting lid_init_state to
+> ACPI_BUTTON_LID_INIT_OPEN fixes the unwanted behavior, so this commit
+> adds a DMI based quirk to use ACPI_BUTTON_LID_INIT_OPEN on the T200TA.
 
-Hi, all.
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-The warning for the above case has been added in [1].
-
-So maybe it makes sense to make node_to_cpumask_map() NUMA_NO_NODE aware
-now?
-
-If Yes, this patch still can be applied to the latest linus' tree cleanly,
-Do I need to resend it?
-
-
-[1] https://lore.kernel.org/linux-pci/1571467543-26125-1-git-send-email-linyunsheng@huawei.com/
 > 
-> thanks,
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Changes in v2:
+> - New patch in v2 of this series
+> ---
+>  drivers/acpi/button.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> greg k-h
+> diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+> index e4b2aa43265b..a090e9542d82 100644
+> --- a/drivers/acpi/button.c
+> +++ b/drivers/acpi/button.c
+> @@ -77,6 +77,18 @@ MODULE_DEVICE_TABLE(acpi, button_device_ids);
+>  
+>  /* Please keep this list sorted alphabetically by vendor and model */
+>  static const struct dmi_system_id dmi_lid_quirks[] = {
+> +	{
+> +		/*
+> +		 * Asus T200TA, _LID keeps reporting closed after every second
+> +		 * openening of the lid. Causing immediate re-suspend after
+> +		 * opening every other open. Using LID_INIT_OPEN fixes this.
+> +		 */
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "T200TA"),
+> +		},
+> +		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
+> +	},
+>  	{
+>  		/* GP-electronic T701, _LID method points to a floating GPIO */
+>  		.matches = {
+> -- 
+> 2.23.0
 > 
-> .
-> 
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
