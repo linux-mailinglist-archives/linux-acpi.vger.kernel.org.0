@@ -2,27 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C5F6CE7477
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2019 16:08:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E369E749B
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2019 16:12:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388953AbfJ1PI2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Oct 2019 11:08:28 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:43422 "EHLO
+        id S2390572AbfJ1PMx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Oct 2019 11:12:53 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:60193 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726945AbfJ1PI2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Oct 2019 11:08:28 -0400
+        with ESMTP id S1731098AbfJ1PMx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Oct 2019 11:12:53 -0400
 Received: from cust-east-parth2-46-193-72-114.wb.wifirst.net (46.193.72.114) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.292)
- id 5d2e8ad309cf977a; Mon, 28 Oct 2019 16:08:25 +0100
+ id 83bf5fa78bdd09e1; Mon, 28 Oct 2019 16:12:50 +0100
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     "Schmauss, Erik" <erik.schmauss@intel.com>
+To:     Dan Williams <dan.j.williams@intel.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH 00/12] ACPICA version 20191018
-Date:   Mon, 28 Oct 2019 16:08:25 +0100
-Message-ID: <2645368.DDsniWIdCY@kreacher>
-In-Reply-To: <CF6A88132359CE47947DB4C6E1709ED53C6641E5@ORSMSX122.amr.corp.intel.com>
-References: <20191024185556.4606-1-erik.schmauss@intel.com> <CAJZ5v0gqN3yGcLLVntYQgwxVsUhbEZ8L0UJNXOh=xA6nmgTQLA@mail.gmail.com> <CF6A88132359CE47947DB4C6E1709ED53C6641E5@ORSMSX122.amr.corp.intel.com>
+        Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>,
+        Keith Busch <kbusch@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v7 01/12] acpi/numa: Establish a new drivers/acpi/numa/ directory
+Date:   Mon, 28 Oct 2019 16:12:49 +0100
+Message-ID: <1666116.19LcctqB44@kreacher>
+In-Reply-To: <CAPcyv4js1XqSe1kNeWob=ftscYFKQF+04PrKj7XDiEWUWvnMvQ@mail.gmail.com>
+References: <157118756627.2063440.9878062995925617180.stgit@dwillia2-desk3.amr.corp.intel.com> <CAJZ5v0j_-iSqiysZiW=J8Y5FCAjnPC7ZvevrLsYhngWr6mT6GQ@mail.gmail.com> <CAPcyv4js1XqSe1kNeWob=ftscYFKQF+04PrKj7XDiEWUWvnMvQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -31,60 +43,57 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Friday, October 25, 2019 7:08:14 PM CET Schmauss, Erik wrote:
+On Tuesday, October 22, 2019 6:48:12 PM CET Dan Williams wrote:
+> On Tue, Oct 22, 2019 at 3:02 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >
+> > On Fri, Oct 18, 2019 at 11:25 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > >
+> > >  On Wed, Oct 16, 2019 at 3:13 AM Dan Williams <dan.j.williams@intel.com> wrote:
+> > > >
+> > > > Currently hmat.c lives under an "hmat" directory which does not enhance
+> > > > the description of the file. The initial motivation for giving hmat.c
+> > > > its own directory was to delineate it as mm functionality in contrast to
+> > > > ACPI device driver functionality.
+> > > >
+> > > > As ACPI continues to play an increasing role in conveying
+> > > > memory location and performance topology information to the OS take the
+> > > > opportunity to co-locate these NUMA relevant tables in a combined
+> > > > directory.
+> > > >
+> > > > numa.c is renamed to srat.c and moved to drivers/acpi/numa/ along with
+> > > > hmat.c.
+> > > >
+> > > > Cc: Len Brown <lenb@kernel.org>
+> > > > Cc: Keith Busch <kbusch@kernel.org>
+> > > > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > > Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > >
+> > > Please note that https://patchwork.kernel.org/patch/11078171/ is being
+> > > pushed to Linus (it is overdue anyway), so if it is pulled, there will
+> > > be a merge conflict with this patch.
+> > >
+> > > Respin maybe?
+> >
+> > Actually, would you mind it if I took this one into the ACPI tree right away?
+> >
+> > There's https://patchwork.kernel.org/patch/11198373/ queued up that,
+> > again, will clash with it.
+> >
+> > Also, there is the generic Initiator proximity domains series from
+> > Jonathan depending on it and I would like to move forward with that
+> > one if there are no objections.
 > 
-> > -----Original Message-----
-> > From: Rafael J. Wysocki <rafael@kernel.org>
-> > Sent: Friday, October 25, 2019 2:19 AM
-> > To: Schmauss, Erik <erik.schmauss@intel.com>
-> > Cc: Rafael J . Wysocki <rafael@kernel.org>; ACPI Devel Maling List <linux-
-> > acpi@vger.kernel.org>
-> > Subject: Re: [PATCH 00/12] ACPICA version 20191018
-> > 
-> > On Thu, Oct 24, 2019 at 9:13 PM Erik Schmauss <erik.schmauss@intel.com>
-> > wrote:
-> > >
-> > > This patchset contains the linuxized patches for ACPICA version
-> > > 20191018. There are several debugger changes but they are meant for
-> > > acpiexec at this time. acpi_load_table definition has been modified
-> > > and a new acpi_unload_table has been added. These new interfaces can
-> > > be used as a part of config fs to load and unload tables.
-> > >
-> > > Other than that, Bob has run clang on our code base and removed
-> > > several compiler warnings.
-> > >
-> > > This patchset is also available here:
-> > > https://github.com/SchmErik/linux/tree/v20191018
-> > >
-> > > Bob Moore (5):
-> > >   ACPICA: Results from Clang changes/fixes From Clang V5.0.1. Mostly
-> > >     "set but never read" warnings.
-> > >   ACPICA: Win OSL: Replace get_tick_count with get_tick_count64
-> > >   ACPICA: More Clang changes - V8.0.1 Fixed all "dead assignment"
-> > >     warnings.
-> > >   ACPICA: Add new external interface, acpi_unload_table
-> > >   ACPICA: Update version to 20191018
-> > >
-> > > Erik Schmauss (6):
-> > >   ACPICA: utilities: add flag to only display data when dumping buffers
-> > >   ACPICA: Debugger: add command to dump all fields of a particular
-> > >     subtype
-> > >   ACPICA: debugger: surround field unit output with braces '{'
-> > >   ACPICA: debugger: add field unit support for acpi_db_get_next_token
-> > >   ACPICA: acpiexec: initialize all simple types and field units from
-> > >     user input
-> > >   ACPICA: debugger: remove leading whitespaces when converting a string
-> > >     to a buffer
-> > >
-> > > Nikolaus Voss (1):
-> > >   ACPICA: make acpi_load_table() return table index
-> > 
-> > Queuing up as 5.5 material with some minor subject/changelog modifications.
-> [Schmauss, Erik]
-> 
-> Sorry about the build errors...I'll send a v2 today.
+> Given Ard has acked all the EFI core and ARM changes can we proceed
+> with merging the EFI Specific Purpose Memory series through Rafael's
+> tree? It would need acks from x86 maintainers.
 
-Replacing this one with the v2 in my tree, thanks!
+In the face of the lack of responses here, I think I will apply this patch
+alone and expose a stable branch containing it in case somebody else wants
+to pull it in.
+
+Thanks!
+
 
 
 
