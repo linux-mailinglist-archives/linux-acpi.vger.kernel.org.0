@@ -2,157 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C4E41E77D6
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2019 18:49:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19483E78A3
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2019 19:40:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390724AbfJ1RtM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 28 Oct 2019 13:49:12 -0400
-Received: from mga05.intel.com ([192.55.52.43]:58210 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730981AbfJ1RtM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 28 Oct 2019 13:49:12 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Oct 2019 10:49:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,240,1569308400"; 
-   d="scan'208";a="205240171"
-Received: from orsmsx105.amr.corp.intel.com ([10.22.225.132])
-  by FMSMGA003.fm.intel.com with ESMTP; 28 Oct 2019 10:49:11 -0700
-Received: from orsmsx160.amr.corp.intel.com (10.22.226.43) by
- ORSMSX105.amr.corp.intel.com (10.22.225.132) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Mon, 28 Oct 2019 10:49:10 -0700
-Received: from orsmsx122.amr.corp.intel.com ([169.254.11.32]) by
- ORSMSX160.amr.corp.intel.com ([169.254.13.29]) with mapi id 14.03.0439.000;
- Mon, 28 Oct 2019 10:49:10 -0700
-From:   "Schmauss, Erik" <erik.schmauss@intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: RE: [PATCH v2 00/12] ACPICA version 20191018v2
-Thread-Topic: [PATCH v2 00/12] ACPICA version 20191018v2
-Thread-Index: AQHVi37VnZRkL5AwUk+Mvr5HUTYSd6dwr3SA//+dI/A=
-Date:   Mon, 28 Oct 2019 17:49:10 +0000
-Message-ID: <CF6A88132359CE47947DB4C6E1709ED53C6648FF@ORSMSX122.amr.corp.intel.com>
-References: <20191025213700.14685-1-erik.schmauss@intel.com>
- <20191028155833.GN32742@smile.fi.intel.com>
-In-Reply-To: <20191028155833.GN32742@smile.fi.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiZjAyZGYzNDUtNzA1NS00MjhkLTk2MWQtNWU4MzkyYjdiZWUwIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoicFkyUTd4QnNpYzFaN1NjZnZnYU5pMEd1ejh2Q2pvcHFia2JWUXJNZGZqTzB5Z0J2anpSOU1EOU9UU2hTUTQ3aSJ9
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.138]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
+        id S1728454AbfJ1Sk3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Oct 2019 14:40:29 -0400
+Received: from mta-p6.oit.umn.edu ([134.84.196.206]:46206 "EHLO
+        mta-p6.oit.umn.edu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727034AbfJ1Sk3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Oct 2019 14:40:29 -0400
+X-Greylist: delayed 542 seconds by postgrey-1.27 at vger.kernel.org; Mon, 28 Oct 2019 14:40:28 EDT
+Received: from localhost (unknown [127.0.0.1])
+        by mta-p6.oit.umn.edu (Postfix) with ESMTP id 124EB1CC
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Oct 2019 18:31:26 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at umn.edu
+Received: from mta-p6.oit.umn.edu ([127.0.0.1])
+        by localhost (mta-p6.oit.umn.edu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id PUhOw6jSI3yv for <linux-acpi@vger.kernel.org>;
+        Mon, 28 Oct 2019 13:31:25 -0500 (CDT)
+Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com [209.85.219.200])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mta-p6.oit.umn.edu (Postfix) with ESMTPS id DDD2F13F
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Oct 2019 13:31:25 -0500 (CDT)
+Received: by mail-yb1-f200.google.com with SMTP id k79so8611394ybf.21
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Oct 2019 11:31:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umn.edu; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=tt/VlbO+igImLkepQJBqwL30PnoA8x9FYvcXGMTcDYw=;
+        b=oNO8+LLHuVipTV+Rmo33B3yON7KyUc9Xj/Pfe8UT1QPRw01PV6eWl4WHxhg+9SvBZ0
+         bqscgIZdzeoQ8IDLZ+0i7jpFyHxw8oin0pPI85H9xjH+ZiugAxI7LYEq4oCB3R/t/8O9
+         P9NmBYOztPK9w7xgbg982mHdMuuUtwOufxCq00e94XU8xEBtjVN9q2yvz/aAl4Gsw4n/
+         Y21aeTWKjmxUx5zC4y2uCsTo/vzdgf+uRr09xIxVvn0ITT0WEByyWq6IQCwnMA1BAIiQ
+         NKebG+Q/ALGkz/AiQWBhLGddIleFsBRSnclNxPt7HJdNi2GyMz4saYe5STIzNQDWdgCE
+         PRGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=tt/VlbO+igImLkepQJBqwL30PnoA8x9FYvcXGMTcDYw=;
+        b=inEZgl1jaFK+JbyW9coxarYGHVS2Lu7lXFJ7xOvPJlHHvkNi9YST456waR3SmDsiXO
+         FjJLYHXVpEWXIzNHg676v7TqIfcTNg/Vupd29e/ZL2v6bM0iURUuqzfzbKFW30J27LOB
+         DdQHUcJXUoWcx40Rm8gmiMFaMFspmmaFK0mrwXD1QDtEnma+2C5rbpyCdgqgy/rVia9O
+         zOhtjhNhIP2JR0C2oQJYxmHfS24mjwoTONOXCtTaY91zw/hMrhwoMI+9JERLmJLJJYx/
+         AhCEYH/7tzXkNXu1NMPRodXCiSCP5h52Qa8wPhtR9GAtWKf18PQ9S4KPph7BxJtCR3oS
+         hrOw==
+X-Gm-Message-State: APjAAAVwZLUIfIU+8Oh2HFpfowowc1r/3lk9S24zCMt62fF13QeNUZb/
+        245qV73s8Kmnn/dwLw8M+VmCuB9UcRIXijxn4UGcPm/hCkAmLJn0dXGEQlnQ3l5CxEHTc/Z5bPH
+        dBLJiDg4qj9pfWXvvfR3N/ZG+9g==
+X-Received: by 2002:a81:848b:: with SMTP id u133mr14474839ywf.249.1572287485189;
+        Mon, 28 Oct 2019 11:31:25 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqzdS2/es6j9HHrsCkQGYL6DtKHSGg0H+WNsXY+UpzKPg1CIgtE3W/3jPS5Q92CHzMEUvQZuBA==
+X-Received: by 2002:a81:848b:: with SMTP id u133mr14474807ywf.249.1572287484704;
+        Mon, 28 Oct 2019 11:31:24 -0700 (PDT)
+Received: from bee.dtc.umn.edu (cs-bee-u.cs.umn.edu. [128.101.106.63])
+        by smtp.gmail.com with ESMTPSA id v198sm7033511ywv.44.2019.10.28.11.31.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Oct 2019 11:31:24 -0700 (PDT)
+From:   Kangjie Lu <kjlu@umn.edu>
+To:     kjlu@umn.edu
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] acpi: fix potential race conditions bypassing checks
+Date:   Mon, 28 Oct 2019 13:31:14 -0500
+Message-Id: <20191028183114.15709-1-kjlu@umn.edu>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+"obj" is a local variable. Elements are deep-copied from external
+package to obj and security-checked. The original code is
+seemingly fine; however, compilers optimize the deep copies into
+shallow copies, introducing potential race conditions. For
+example, the checks for type and length may be bypassed. The fix
+tells compilers to not optimize the deep copy by inserting
+"volatile".
 
+Signed-off-by: Kangjie Lu <kjlu@umn.edu>
+---
+ drivers/acpi/processor_throttling.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> -----Original Message-----
-> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Sent: Monday, October 28, 2019 8:59 AM
-> To: Schmauss, Erik <erik.schmauss@intel.com>
-> Cc: Rafael J . Wysocki <rafael@kernel.org>; linux-acpi@vger.kernel.org
-> Subject: Re: [PATCH v2 00/12] ACPICA version 20191018v2
-> 
-> On Fri, Oct 25, 2019 at 02:36:48PM -0700, Erik Schmauss wrote:
-> > V2 - fixed build warnings
-> >
-> > This patchset contains the linuxized patches for ACPICA version
-> > 20191018. There are several debugger changes but they are meant for
-> > acpiexec at this time. acpi_load_table definition has been modified
-> > and a new acpi_unload_table has been added. These new interfaces can
-> > be used as a part of config fs to load and unload tables.
-> >
-> > Other than that, Bob has run clang on our code base and removed
-> > several compiler warnings.
-> >
-> > This patchset is also available here:
-> > https://github.com/SchmErik/linux/tree/v20191018
-> >
-> 
-> I have tested this series and it works in my case.
-> Thank you!
-> 
-> P.S. Rafael, I think we can also append the oneliner I have added in the
-> comment to the patch 5.
-
-I agree. It makes sense to use the interface in the same commit for linux
-
-> 
-> >
-> > Bob Moore (5):
-> >   ACPICA: Results from Clang changes/fixes From Clang V5.0.1. Mostly
-> >     "set but never read" warnings.
-> >   ACPICA: Win OSL: Replace get_tick_count with get_tick_count64
-> >   ACPICA: More Clang changes - V8.0.1 Fixed all "dead assignment"
-> >     warnings.
-> >   ACPICA: Add new external interface, acpi_unload_table
-> >   ACPICA: Update version to 20191018
-> >
-> > Erik Schmauss (6):
-> >   ACPICA: utilities: add flag to only display data when dumping buffers
-> >   ACPICA: debugger: add command to dump all fields of a particular
-> >     subtype
-> >   ACPICA: debugger: surround field unit output with braces '{'
-> >   ACPICA: debugger: add field unit support for acpi_db_get_next_token
-> >   ACPICA: acpiexec: initialize all simple types and field units from
-> >     user input
-> >   ACPICA: debugger: remove leading whitespaces when converting a string
-> >     to a buffer
-> >
-> > Nikolaus Voss (1):
-> >   ACPICA: make acpi_load_table() return table index
-> >
-> >  drivers/acpi/acpi_configfs.c    |   2 +-
-> >  drivers/acpi/acpica/acdebug.h   |   2 +
-> >  drivers/acpi/acpica/acstruct.h  |  10 +++
-> >  drivers/acpi/acpica/acutils.h   |   9 +--
-> >  drivers/acpi/acpica/dbconvert.c |   4 ++
-> >  drivers/acpi/acpica/dbdisply.c  |   2 -
-> >  drivers/acpi/acpica/dbfileio.c  |   2 +-
-> >  drivers/acpi/acpica/dbinput.c   |  36 +++++++++-
-> >  drivers/acpi/acpica/dbmethod.c  |   4 ++
-> >  drivers/acpi/acpica/dbnames.c   | 114 ++++++++++++++++++++++++++++++++
-> >  drivers/acpi/acpica/dbobject.c  |   1 -
-> >  drivers/acpi/acpica/dscontrol.c |   2 +-
-> >  drivers/acpi/acpica/dsfield.c   |  12 +---
-> >  drivers/acpi/acpica/evgpeblk.c  |  11 +--
-> >  drivers/acpi/acpica/evgpeinit.c |   3 -
-> >  drivers/acpi/acpica/evmisc.c    |  12 +++-
-> >  drivers/acpi/acpica/evregion.c  |   4 +-
-> >  drivers/acpi/acpica/evrgnini.c  |   1 -
-> >  drivers/acpi/acpica/hwxfsleep.c |   3 +
-> >  drivers/acpi/acpica/nsconvert.c |   2 +-
-> >  drivers/acpi/acpica/nsdump.c    |   6 +-
-> >  drivers/acpi/acpica/nsxfname.c  |   4 +-
-> >  drivers/acpi/acpica/psobject.c  |   7 +-
-> >  drivers/acpi/acpica/rscreate.c  |   3 +
-> >  drivers/acpi/acpica/tbdata.c    |   3 +
-> >  drivers/acpi/acpica/tbxfload.c  |  40 ++++++++++-
-> > drivers/acpi/acpica/utbuffer.c  |  52 ++++++++-------
-> >  drivers/acpi/acpica/utids.c     |   2 -
-> >  drivers/acpi/acpica/uttrack.c   |   2 +-
-> >  drivers/firmware/efi/efi.c      |   2 +-
-> >  include/acpi/acpixf.h           |   8 ++-
-> >  31 files changed, 291 insertions(+), 74 deletions(-)
-> >
-> > --
-> > 2.21.0
-> >
-> 
-> --
-> With Best Regards,
-> Andy Shevchenko
-> 
+diff --git a/drivers/acpi/processor_throttling.c b/drivers/acpi/processor_throttling.c
+index 532a1ae3595a..6f4d86f8a9ce 100644
+--- a/drivers/acpi/processor_throttling.c
++++ b/drivers/acpi/processor_throttling.c
+@@ -413,7 +413,7 @@ static int acpi_processor_get_throttling_control(struct acpi_processor *pr)
+ 	acpi_status status = 0;
+ 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+ 	union acpi_object *ptc = NULL;
+-	union acpi_object obj = { 0 };
++	volatile union acpi_object obj = { 0 };
+ 	struct acpi_processor_throttling *throttling;
+ 
+ 	status = acpi_evaluate_object(pr->handle, "_PTC", NULL, &buffer);
+-- 
+2.17.1
 
