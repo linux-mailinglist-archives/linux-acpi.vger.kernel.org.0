@@ -2,51 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6C2CE7C11
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2019 23:00:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D02E4E7C1A
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2019 23:01:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390598AbfJ1WAk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Oct 2019 18:00:40 -0400
-Received: from mail-yw1-f73.google.com ([209.85.161.73]:55359 "EHLO
-        mail-yw1-f73.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733126AbfJ1WAk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Oct 2019 18:00:40 -0400
-Received: by mail-yw1-f73.google.com with SMTP id q127so7818544ywg.22
-        for <linux-acpi@vger.kernel.org>; Mon, 28 Oct 2019 15:00:38 -0700 (PDT)
+        id S1728096AbfJ1WAy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Oct 2019 18:00:54 -0400
+Received: from mail-pg1-f201.google.com ([209.85.215.201]:44796 "EHLO
+        mail-pg1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390630AbfJ1WAl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Oct 2019 18:00:41 -0400
+Received: by mail-pg1-f201.google.com with SMTP id k23so9395762pgl.11
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Oct 2019 15:00:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=upotkqq+9g/nTJCCHScNfZXgcoXdKEqGwLzb+Bn6D0Y=;
-        b=Qv9oiHU7AUKTP0R5gGeXdUxj68ExoehUu9oDXkbMNcG68LytyaAqOaWMHTvi6qjMlL
-         4kHkBlG0nvyxdKgPf0vmDcM97YaW799Rwp/eQgdHZhRdXTLiZrO3TibOL2e6KHuJX3t3
-         F3LLCBGfL8A5wuA0YQtn/N9AqhfqCtKy8IA/5+dICz4hGjSRGih0Ed5OuBTME0s18y+v
-         utT4L1ISxBCS9qdPLCdiJBvNR+dJy+eqTyEV7bBHNnVp6iRFro7HdbXivVtRh2pwMkDe
-         yS6Md2B8LZjzD5AFFevJxHoADZq1lErKQPG0Mge4mnkdV3/jkJqe9RMFOkLanRlNA8Am
-         8yFQ==
+        bh=1WpJs4rqFlazEgG1ALqWM9ztjxvHbXQZYC6yFmWs2yk=;
+        b=Yk6qAWI2BvbfBU05Wsff0PGaMNDhMIm5Rg86/K6xfu7Ma5L7ToyW6RNRjxoM4Zg0TZ
+         G7EswA38UEa/5hWjOs9Rj9+aAM2uTwa/DxQemqAUpjIyuZ01xRkLERXg1ZB4q4hp2Bmb
+         /lK0wtpMAUCxYWy4n40EF5mTihZrzbqmuJuNUzYwBkHijNaSOWbWatRM5osGKG8e5G40
+         g7xTXzNsFUFuPKgTLNK+cAxfUNPX66DJKbpl6ZuVMygFxzMPMNLx2pczWyj4jM7jF8oQ
+         atYJOzCIhoGGv1hCrpbhZGpW+SA9MrnblLyteW4ZN5WRcvlKTrZXt4paFNSBfkYgtf8S
+         RdHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=upotkqq+9g/nTJCCHScNfZXgcoXdKEqGwLzb+Bn6D0Y=;
-        b=SuqOFcXWTGji5LGOZISodhGnXijZS+riH+UKs7sKIOMqqcN3aSzEB9zIkT7Mp++gIF
-         YrYdDLWJZnOTgMoNKBDJR6iIyR2pcTFshBkKwB07pfD6NtZRdJFH6vrjP1xZIWwNOf4P
-         NeG2L5G1ly5FUj3Eykho1yUv9Pz244iM54SvOuy1vFNogdoFzMPQcPkF5CFhgFIfgUur
-         IWgMpySIDAuR6qWvhruHCRh3Pah3njkTAPgDQzXyj/nNz5TgwwOy1n4e2++OUYm3K9TI
-         47PAm+bUTGVyYHxS16KHKSA+/cq/vCQ6rhIdAYTJVfZrI7tqfJh4pU9BBrNKXwue+IV1
-         wGkA==
-X-Gm-Message-State: APjAAAUQ1dq3YqN0oWrrDkfW3SiXwHy/H7cnax3XLy7Fqjl5OopX8HvO
-        5lOWgSFqtZYbGwkm459Q6lyJzak4hi4BiZ8=
-X-Google-Smtp-Source: APXvYqzcURfhua2CKyamK/sUULVUfXDKxXcKCDQwXhh9lS4MtwXiZPDAirm4HkPHHKjlnqf46/JbWEWCoXfGpHU=
-X-Received: by 2002:a81:59c2:: with SMTP id n185mr14319764ywb.64.1572300037529;
- Mon, 28 Oct 2019 15:00:37 -0700 (PDT)
-Date:   Mon, 28 Oct 2019 15:00:23 -0700
+        bh=1WpJs4rqFlazEgG1ALqWM9ztjxvHbXQZYC6yFmWs2yk=;
+        b=XddsfzHM7oQJvzN5efQ6PgTVfmT/yfzixHEPpe2Oj9VzNTOv+z/Tk22DGV6H4q1sSM
+         IQzIZPbNJ00c+yfqHDCJbjHTR5sRjpomQhzKaLc6hetyvWZVjsX8KpX1ejIwybF2ClMI
+         d6ysTVMfXghvVT71jFrnQ6gr4giSuaKIza8KuKE+a3odK1h3ObUMrDJlTX0uRq0Qj4Nz
+         cjG8t70Jrfdtw6LJ3bfPGKXijsI1/c3qqP9LxnwpKkfV4h14/RMdYpQUjQwPSqGEbq0x
+         DrstSzx03c8IqAT4OP08nQajhSXEaTwBb4RG3FRtGP/QeQ963uLaYrp5ZMTzhdB5aiCB
+         3Bpg==
+X-Gm-Message-State: APjAAAVgQz6/xKTGUboROF0jwt/4j4I4LCO2ZjZNx5gq/NYO0VtIGW6J
+        5VAoveK38oaE0dfLriEguFUXusvyRjw9gu4=
+X-Google-Smtp-Source: APXvYqy9nquaj1y+oeAHBa2FvIbJ3pRLRVkY7Q7QAx/FpyzTrOehqtDTnU4RgtT4SEkxlu/hY0FIOMFzyx2ixSk=
+X-Received: by 2002:a65:554e:: with SMTP id t14mr21065330pgr.370.1572300040549;
+ Mon, 28 Oct 2019 15:00:40 -0700 (PDT)
+Date:   Mon, 28 Oct 2019 15:00:24 -0700
 In-Reply-To: <20191028220027.251605-1-saravanak@google.com>
-Message-Id: <20191028220027.251605-3-saravanak@google.com>
+Message-Id: <20191028220027.251605-4-saravanak@google.com>
 Mime-Version: 1.0
 References: <20191028220027.251605-1-saravanak@google.com>
 X-Mailer: git-send-email 2.24.0.rc0.303.g954a862665-goog
-Subject: [PATCH v1 2/5] driver core: Allow a device to wait on optional suppliers
+Subject: [PATCH v1 3/5] driver core: Allow fwnode_operations.add_links to
+ differentiate errors
 From:   Saravana Kannan <saravanak@google.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -62,106 +63,71 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Before this change, if a device is waiting on suppliers, it's assumed
-that all those suppliers are needed for the device to probe
-successfully. This change allows marking a devices as waiting only on
-optional suppliers. This allows a device to wait on suppliers (and link
-to them as soon as they are available) without preventing the device
-from being probed.
+When add_links() still has suppliers that it needs to link to in the
+future, this patch allows it to differentiate between suppliers that are
+needed for probing vs suppliers that are needed for sync_state()
+correctness.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 ---
- drivers/base/core.c    | 28 +++++++++++++++++++++++++---
- include/linux/device.h |  3 +++
- 2 files changed, 28 insertions(+), 3 deletions(-)
+ drivers/base/core.c    | 12 ++++++++----
+ include/linux/fwnode.h | 13 +++++++++----
+ 2 files changed, 17 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 17ed054c4132..48cd43a91ce6 100644
+index 48cd43a91ce6..e6d3e6d485da 100644
 --- a/drivers/base/core.c
 +++ b/drivers/base/core.c
-@@ -480,13 +480,25 @@ EXPORT_SYMBOL_GPL(device_link_add);
-  * This function is NOT meant to be called from the probe function of the
-  * consumer but rather from code that creates/adds the consumer device.
-  */
--static void device_link_wait_for_supplier(struct device *consumer)
-+static void device_link_wait_for_supplier(struct device *consumer,
-+					  bool need_for_probe)
- {
- 	mutex_lock(&wfs_lock);
- 	list_add_tail(&consumer->links.needs_suppliers, &wait_for_suppliers);
-+	consumer->links.need_for_probe = need_for_probe;
- 	mutex_unlock(&wfs_lock);
- }
+@@ -2297,7 +2297,7 @@ int device_add(struct device *dev)
+ 	struct device *parent;
+ 	struct kobject *kobj;
+ 	struct class_interface *class_intf;
+-	int error = -EINVAL;
++	int error = -EINVAL, fw_ret;
+ 	struct kobject *glue_dir = NULL;
  
-+static void device_link_wait_for_mandatory_supplier(struct device *consumer)
-+{
-+	device_link_wait_for_supplier(consumer, true);
-+}
-+
-+static void device_link_wait_for_optional_supplier(struct device *consumer)
-+{
-+	device_link_wait_for_supplier(consumer, false);
-+}
-+
- /**
-  * device_link_add_missing_supplier_links - Add links from consumer devices to
-  *					    supplier devices, leaving any
-@@ -656,7 +668,8 @@ int device_links_check_suppliers(struct device *dev)
- 	 * probe.
+ 	dev = get_device(dev);
+@@ -2413,9 +2413,13 @@ int device_add(struct device *dev)
  	 */
- 	mutex_lock(&wfs_lock);
--	if (!list_empty(&dev->links.needs_suppliers)) {
-+	if (!list_empty(&dev->links.needs_suppliers) &&
-+	    dev->links.need_for_probe) {
- 		mutex_unlock(&wfs_lock);
- 		return -EPROBE_DEFER;
- 	}
-@@ -760,6 +773,15 @@ void device_links_driver_bound(struct device *dev)
- {
- 	struct device_link *link;
+ 	device_link_add_missing_supplier_links();
  
-+	/*
-+	 * If a device probes successfully, it's expected to have created all
-+	 * the device links it needs to or make new device links as it needs
-+	 * them. So, it no longer needs to wait on any suppliers.
-+	 */
-+	mutex_lock(&wfs_lock);
-+	list_del_init(&dev->links.needs_suppliers);
-+	mutex_unlock(&wfs_lock);
-+
- 	device_links_write_lock();
- 
- 	list_for_each_entry(link, &dev->links.consumers, s_node) {
-@@ -2393,7 +2415,7 @@ int device_add(struct device *dev)
- 
- 	if (fwnode_has_op(dev->fwnode, add_links)
- 	    && fwnode_call_int_op(dev->fwnode, add_links, dev))
--		device_link_wait_for_supplier(dev);
-+		device_link_wait_for_mandatory_supplier(dev, true);
+-	if (fwnode_has_op(dev->fwnode, add_links)
+-	    && fwnode_call_int_op(dev->fwnode, add_links, dev))
+-		device_link_wait_for_mandatory_supplier(dev, true);
++	if (fwnode_has_op(dev->fwnode, add_links)) {
++		fw_ret = fwnode_call_int_op(dev->fwnode, add_links, dev);
++		if (fw_ret == -ENODEV)
++			device_link_wait_for_mandatory_supplier(dev);
++		else if (fw_ret)
++			device_link_wait_for_optional_supplier(dev);
++	}
  
  	bus_probe_device(dev);
  	if (parent)
-diff --git a/include/linux/device.h b/include/linux/device.h
-index f1f2aa0b19da..4fd33da9a848 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1156,6 +1156,8 @@ enum dl_dev_state {
-  * @consumers: List of links to consumer devices.
-  * @needs_suppliers: Hook to global list of devices waiting for suppliers.
-  * @defer_sync: Hook to global list of devices that have deferred sync_state.
-+ * @need_for_probe: If needs_suppliers is on a list, this indicates if the
-+ *		    suppliers are needed for probe or not.
-  * @status: Driver status information.
+diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+index 25bb81f8ded8..a19134eae5a5 100644
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -96,10 +96,15 @@ struct fwnode_reference_args {
+  *		available suppliers.
+  *
+  *		Return 0 if device links have been successfully created to all
+- *		the suppliers of this device or if the supplier information is
+- *		not known. Return an error if and only if the supplier
+- *		information is known but some of the suppliers are not yet
+- *		available to create device links to.
++ *		the suppliers this device needs to create device links to or if
++ *		the supplier information is not known.
++ *
++ *		Return -ENODEV if and only if the suppliers needed for probing
++ *		the device are not yet available to create device links to.
++ *
++ *		Return -EAGAIN if there are suppliers that need to be linked to
++ *		that are not yet available but none of those suppliers are
++ *		necessary for probing this device.
   */
- struct dev_links_info {
-@@ -1163,6 +1165,7 @@ struct dev_links_info {
- 	struct list_head consumers;
- 	struct list_head needs_suppliers;
- 	struct list_head defer_sync;
-+	bool need_for_probe;
- 	enum dl_dev_state status;
- };
- 
+ struct fwnode_operations {
+ 	struct fwnode_handle *(*get)(struct fwnode_handle *fwnode);
 -- 
 2.24.0.rc0.303.g954a862665-goog
 
