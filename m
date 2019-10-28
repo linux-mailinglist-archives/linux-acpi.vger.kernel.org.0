@@ -2,52 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D02E4E7C1A
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2019 23:01:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06EEAE7C16
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2019 23:01:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728096AbfJ1WAy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Oct 2019 18:00:54 -0400
-Received: from mail-pg1-f201.google.com ([209.85.215.201]:44796 "EHLO
-        mail-pg1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390630AbfJ1WAl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Oct 2019 18:00:41 -0400
-Received: by mail-pg1-f201.google.com with SMTP id k23so9395762pgl.11
-        for <linux-acpi@vger.kernel.org>; Mon, 28 Oct 2019 15:00:41 -0700 (PDT)
+        id S1727000AbfJ1WAr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Oct 2019 18:00:47 -0400
+Received: from mail-vk1-f202.google.com ([209.85.221.202]:33648 "EHLO
+        mail-vk1-f202.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390646AbfJ1WAq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Oct 2019 18:00:46 -0400
+Received: by mail-vk1-f202.google.com with SMTP id a130so5644874vke.0
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Oct 2019 15:00:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=1WpJs4rqFlazEgG1ALqWM9ztjxvHbXQZYC6yFmWs2yk=;
-        b=Yk6qAWI2BvbfBU05Wsff0PGaMNDhMIm5Rg86/K6xfu7Ma5L7ToyW6RNRjxoM4Zg0TZ
-         G7EswA38UEa/5hWjOs9Rj9+aAM2uTwa/DxQemqAUpjIyuZ01xRkLERXg1ZB4q4hp2Bmb
-         /lK0wtpMAUCxYWy4n40EF5mTihZrzbqmuJuNUzYwBkHijNaSOWbWatRM5osGKG8e5G40
-         g7xTXzNsFUFuPKgTLNK+cAxfUNPX66DJKbpl6ZuVMygFxzMPMNLx2pczWyj4jM7jF8oQ
-         atYJOzCIhoGGv1hCrpbhZGpW+SA9MrnblLyteW4ZN5WRcvlKTrZXt4paFNSBfkYgtf8S
-         RdHw==
+        bh=p1q/Pw/wuy9bjo/DrQQAdF+Yb7XQb+VfuKZvKfT16cM=;
+        b=WAfl1XmPbwo+7VE/CZN0905b+HEiYar7/NvUthq601HPXxT94eCGYY2F4WfuKln4W7
+         +SfqttoOOX9bXAFCz8ORqsda1Ic2Uh3Ud+PYGT6xFRU4sjsX8FxhctSmhYGWjuK2/dMW
+         LHMMJUos6oA87dNWQjCZ1EcxcjqfBavBeCcLKRO/W91UmWen/BnwZhnKmCsTTpXml3ho
+         DduqFtcrLux5Npe9TmskCDaZBmz6ho7fI1oGF2ZSxPAddumrBpli4aTCIVo5rDh+5hnZ
+         e/DiPNdXDAbp0iWTPlfNBmMt/jewBkIKimoHqF6EbT/oggxlma0OCQPTQc/K3+BotBRD
+         oXUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=1WpJs4rqFlazEgG1ALqWM9ztjxvHbXQZYC6yFmWs2yk=;
-        b=XddsfzHM7oQJvzN5efQ6PgTVfmT/yfzixHEPpe2Oj9VzNTOv+z/Tk22DGV6H4q1sSM
-         IQzIZPbNJ00c+yfqHDCJbjHTR5sRjpomQhzKaLc6hetyvWZVjsX8KpX1ejIwybF2ClMI
-         d6ysTVMfXghvVT71jFrnQ6gr4giSuaKIza8KuKE+a3odK1h3ObUMrDJlTX0uRq0Qj4Nz
-         cjG8t70Jrfdtw6LJ3bfPGKXijsI1/c3qqP9LxnwpKkfV4h14/RMdYpQUjQwPSqGEbq0x
-         DrstSzx03c8IqAT4OP08nQajhSXEaTwBb4RG3FRtGP/QeQ963uLaYrp5ZMTzhdB5aiCB
-         3Bpg==
-X-Gm-Message-State: APjAAAVgQz6/xKTGUboROF0jwt/4j4I4LCO2ZjZNx5gq/NYO0VtIGW6J
-        5VAoveK38oaE0dfLriEguFUXusvyRjw9gu4=
-X-Google-Smtp-Source: APXvYqy9nquaj1y+oeAHBa2FvIbJ3pRLRVkY7Q7QAx/FpyzTrOehqtDTnU4RgtT4SEkxlu/hY0FIOMFzyx2ixSk=
-X-Received: by 2002:a65:554e:: with SMTP id t14mr21065330pgr.370.1572300040549;
- Mon, 28 Oct 2019 15:00:40 -0700 (PDT)
-Date:   Mon, 28 Oct 2019 15:00:24 -0700
+        bh=p1q/Pw/wuy9bjo/DrQQAdF+Yb7XQb+VfuKZvKfT16cM=;
+        b=CIa5pIecWTvC19TRNA1ffV4R/tpjn++wnWSJebizgdHbEvpDXC2KwQkcqcS7A+kaYm
+         F96uTJPMEIxz4/peGhGxmUfO8tUbFEF/BwQEV3I7xGfWLcQX1+AM3xN7/w1l9+7LtAG0
+         t/c/g4yrKCYYpenn6amBhZYA9p8RnW0G9UdJLiT//Ibx6Iy8W/Zq5C51Vrk7k5GXxdrf
+         gUjgz8KCaGVDSRP5QhB+SFK1BB5PFw0dnR3FJTs3WzhTkuMlmNBsEgI6ycOUaM3zIgjb
+         oa/BCofuz3++/sNTsYUelrNWMLgTGiCKtvQMdjaOGywZXo/NPepsed5+7hyW6D3nZvKC
+         /0Og==
+X-Gm-Message-State: APjAAAVVUloxhdaEmqwjaMJ6+0T/CRx+p0VwfsawwZLOM+QSSb3Vc2n3
+        fHCWRXy8pDObv/zxMHTBMgr16O+NM/+kF/U=
+X-Google-Smtp-Source: APXvYqyedBmeKcCmUfQlI/6WF0HNof2bWz1MwtqdnVskuaQNyPZRJ7ILHAIvQWm0quDgwRzmEACcOOkgvrFUk10=
+X-Received: by 2002:a05:6102:835:: with SMTP id k21mr10123988vsb.11.1572300043709;
+ Mon, 28 Oct 2019 15:00:43 -0700 (PDT)
+Date:   Mon, 28 Oct 2019 15:00:25 -0700
 In-Reply-To: <20191028220027.251605-1-saravanak@google.com>
-Message-Id: <20191028220027.251605-4-saravanak@google.com>
+Message-Id: <20191028220027.251605-5-saravanak@google.com>
 Mime-Version: 1.0
 References: <20191028220027.251605-1-saravanak@google.com>
 X-Mailer: git-send-email 2.24.0.rc0.303.g954a862665-goog
-Subject: [PATCH v1 3/5] driver core: Allow fwnode_operations.add_links to
- differentiate errors
+Subject: [PATCH v1 4/5] of: property: Make sure child dependencies don't block
+ probing of parent
 From:   Saravana Kannan <saravanak@google.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -63,71 +63,71 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When add_links() still has suppliers that it needs to link to in the
-future, this patch allows it to differentiate between suppliers that are
-needed for probing vs suppliers that are needed for sync_state()
-correctness.
+When creating device links to proxy the sync_state() needs of child
+dependencies, create SYNC_STATE_ONLY device links so that children
+dependencies don't block probing of the parent.
+
+Also, differentiate between missing suppliers of parent device vs
+missing suppliers of child devices so that driver core doesn't block
+parent device probing when only child supplier dependencies are missing.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 ---
- drivers/base/core.c    | 12 ++++++++----
- include/linux/fwnode.h | 13 +++++++++----
- 2 files changed, 17 insertions(+), 8 deletions(-)
+ drivers/of/property.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 48cd43a91ce6..e6d3e6d485da 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2297,7 +2297,7 @@ int device_add(struct device *dev)
- 	struct device *parent;
- 	struct kobject *kobj;
- 	struct class_interface *class_intf;
--	int error = -EINVAL;
-+	int error = -EINVAL, fw_ret;
- 	struct kobject *glue_dir = NULL;
- 
- 	dev = get_device(dev);
-@@ -2413,9 +2413,13 @@ int device_add(struct device *dev)
- 	 */
- 	device_link_add_missing_supplier_links();
- 
--	if (fwnode_has_op(dev->fwnode, add_links)
--	    && fwnode_call_int_op(dev->fwnode, add_links, dev))
--		device_link_wait_for_mandatory_supplier(dev, true);
-+	if (fwnode_has_op(dev->fwnode, add_links)) {
-+		fw_ret = fwnode_call_int_op(dev->fwnode, add_links, dev);
-+		if (fw_ret == -ENODEV)
-+			device_link_wait_for_mandatory_supplier(dev);
-+		else if (fw_ret)
-+			device_link_wait_for_optional_supplier(dev);
-+	}
- 
- 	bus_probe_device(dev);
- 	if (parent)
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 25bb81f8ded8..a19134eae5a5 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -96,10 +96,15 @@ struct fwnode_reference_args {
-  *		available suppliers.
-  *
-  *		Return 0 if device links have been successfully created to all
-- *		the suppliers of this device or if the supplier information is
-- *		not known. Return an error if and only if the supplier
-- *		information is known but some of the suppliers are not yet
-- *		available to create device links to.
-+ *		the suppliers this device needs to create device links to or if
-+ *		the supplier information is not known.
-+ *
-+ *		Return -ENODEV if and only if the suppliers needed for probing
-+ *		the device are not yet available to create device links to.
-+ *
-+ *		Return -EAGAIN if there are suppliers that need to be linked to
-+ *		that are not yet available but none of those suppliers are
-+ *		necessary for probing this device.
+diff --git a/drivers/of/property.c b/drivers/of/property.c
+index 2808832b2e86..f16f85597ccc 100644
+--- a/drivers/of/property.c
++++ b/drivers/of/property.c
+@@ -1032,10 +1032,10 @@ static bool of_is_ancestor_of(struct device_node *test_ancestor,
+  * - -EINVAL if the supplier link is invalid and should not be created
+  * - -ENODEV if there is no device that corresponds to the supplier phandle
   */
- struct fwnode_operations {
- 	struct fwnode_handle *(*get)(struct fwnode_handle *fwnode);
+-static int of_link_to_phandle(struct device *dev, struct device_node *sup_np)
++static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
++			      u32 dl_flags)
+ {
+ 	struct device *sup_dev;
+-	u32 dl_flags = DL_FLAG_AUTOPROBE_CONSUMER;
+ 	int ret = 0;
+ 	struct device_node *tmp_np = sup_np;
+ 
+@@ -1195,13 +1195,20 @@ static int of_link_property(struct device *dev, struct device_node *con_np,
+ 	unsigned int i = 0;
+ 	bool matched = false;
+ 	int ret = 0;
++	u32 dl_flags;
++
++	if (dev->of_node == con_np)
++		dl_flags = DL_FLAG_AUTOPROBE_CONSUMER;
++	else
++		dl_flags = DL_FLAG_SYNC_STATE_ONLY;
+ 
+ 	/* Do not stop at first failed link, link all available suppliers. */
+ 	while (!matched && s->parse_prop) {
+ 		while ((phandle = s->parse_prop(con_np, prop_name, i))) {
+ 			matched = true;
+ 			i++;
+-			if (of_link_to_phandle(dev, phandle) == -EAGAIN)
++			if (of_link_to_phandle(dev, phandle, dl_flags)
++								== -EAGAIN)
+ 				ret = -EAGAIN;
+ 			of_node_put(phandle);
+ 		}
+@@ -1219,10 +1226,10 @@ static int of_link_to_suppliers(struct device *dev,
+ 
+ 	for_each_property_of_node(con_np, p)
+ 		if (of_link_property(dev, con_np, p->name))
+-			ret = -EAGAIN;
++			ret = -ENODEV;
+ 
+ 	for_each_child_of_node(con_np, child)
+-		if (of_link_to_suppliers(dev, child))
++		if (of_link_to_suppliers(dev, child) && !ret)
+ 			ret = -EAGAIN;
+ 
+ 	return ret;
 -- 
 2.24.0.rc0.303.g954a862665-goog
 
