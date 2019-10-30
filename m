@@ -2,132 +2,207 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5677BE9669
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2019 07:34:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 708E5E9943
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2019 10:37:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726187AbfJ3GeJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 30 Oct 2019 02:34:09 -0400
-Received: from mga17.intel.com ([192.55.52.151]:61172 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726108AbfJ3GeI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 30 Oct 2019 02:34:08 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Oct 2019 23:34:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,246,1569308400"; 
-   d="scan'208";a="203095707"
-Received: from tao-optiplex-7060.sh.intel.com ([10.239.159.36])
-  by orsmga003.jf.intel.com with ESMTP; 29 Oct 2019 23:34:05 -0700
-From:   Tao Xu <tao3.xu@intel.com>
-To:     rafael.j.wysocki@intel.com, lenb@kernel.org, keith.busch@intel.com,
-        gregkh@linuxfoundation.org, dan.j.williams@intel.com,
-        dave.hansen@linux.intel.com
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Tao Xu <tao3.xu@intel.com>, Jingqi Liu <Jingqi.liu@intel.com>
-Subject: [PATCH] ACPI/HMAT: use %u instead of %d to print u32 variables
-Date:   Wed, 30 Oct 2019 14:34:03 +0800
-Message-Id: <20191030063403.20128-1-tao3.xu@intel.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726177AbfJ3Jhc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Oct 2019 05:37:32 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:50980 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725822AbfJ3Jhc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 30 Oct 2019 05:37:32 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id F2C7BA0BD3193CAEC5F1;
+        Wed, 30 Oct 2019 17:37:28 +0800 (CST)
+Received: from localhost.localdomain (10.69.192.58) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 30 Oct 2019 17:37:23 +0800
+From:   Yunsheng Lin <linyunsheng@huawei.com>
+To:     <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
+        <bp@alien8.de>, <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
+        <mattst88@gmail.com>, <benh@kernel.crashing.org>,
+        <paulus@samba.org>, <mpe@ellerman.id.au>,
+        <heiko.carstens@de.ibm.com>, <gor@linux.ibm.com>,
+        <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>,
+        <dalias@libc.org>, <davem@davemloft.net>, <ralf@linux-mips.org>,
+        <paul.burton@mips.com>, <jhogan@kernel.org>,
+        <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>
+CC:     <akpm@linux-foundation.org>, <rppt@linux.ibm.com>,
+        <anshuman.khandual@arm.com>, <tglx@linutronix.de>, <cai@lca.pw>,
+        <robin.murphy@arm.com>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <hpa@zytor.com>, <x86@kernel.org>,
+        <dave.hansen@linux.intel.com>, <luto@kernel.org>,
+        <peterz@infradead.org>, <len.brown@intel.com>, <axboe@kernel.dk>,
+        <dledford@redhat.com>, <jeffrey.t.kirsher@intel.com>,
+        <linux-alpha@vger.kernel.org>, <naveen.n.rao@linux.vnet.ibm.com>,
+        <mwb@linux.vnet.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>,
+        <sparclinux@vger.kernel.org>, <tbogendoerfer@suse.de>,
+        <linux-mips@vger.kernel.org>, <rafael@kernel.org>,
+        <mhocko@kernel.org>, <gregkh@linuxfoundation.org>,
+        <bhelgaas@google.com>, <linux-pci@vger.kernel.org>,
+        <rjw@rjwysocki.net>, <lenb@kernel.org>,
+        <linux-acpi@vger.kernel.org>
+Subject: [PATCH v7] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Date:   Wed, 30 Oct 2019 17:34:28 +0800
+Message-ID: <1572428068-180880-1-git-send-email-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.69.192.58]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Use %u instead of %d to print u32 variables to expand the value range,
-especially when latency or bandwidth value is bigger than INT_MAX.
-Then HMAT latency can support up to 4.29s and bandwidth can support
-up to 4PB/s.
+When passing the return value of dev_to_node() to cpumask_of_node()
+without checking if the device's node id is NUMA_NO_NODE, there is
+global-out-of-bounds detected by KASAN.
 
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Jingqi Liu <Jingqi.liu@intel.com>
-Signed-off-by: Tao Xu <tao3.xu@intel.com>
+From the discussion [1], NUMA_NO_NODE really means no node affinity,
+which also means all cpus should be usable. So the cpumask_of_node()
+should always return all cpus online when user passes the node id as
+NUMA_NO_NODE, just like similar semantic that page allocator handles
+NUMA_NO_NODE.
+
+But we cannot really copy the page allocator logic. Simply because the
+page allocator doesn't enforce the near node affinity. It just picks it
+up as a preferred node but then it is free to fallback to any other numa
+node. This is not the case here and node_to_cpumask_map will only restrict
+to the particular node's cpus which would have really non deterministic
+behavior depending on where the code is executed. So in fact we really
+want to return cpu_online_mask for NUMA_NO_NODE.
+
+Also there is a debugging version of node_to_cpumask_map() for x86 and
+arm64, which is only used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this
+patch changes it to handle NUMA_NO_NODE as normal node_to_cpumask_map().
+
+[1] https://lkml.org/lkml/2019/9/11/66
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+Suggested-by: Michal Hocko <mhocko@kernel.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Paul Burton <paul.burton@mips.com> # MIPS bits
 ---
-
-This patch is based on:
-EFI Specific Purpose Memory Support,
-https://lore.kernel.org/patchwork/cover/1139858/
+V7: replace -1 with NUMA_NO_NODE for mips ip27 as suggested by Paul.
+V6: Drop the cpu_all_mask -> cpu_online_mask change for it seems a
+    little controversial, may need deeper investigation, and rebased
+    on the latest linux-next.
+V5: Drop unsigned "fix" change for x86/arm64, and change comment log
+    according to Michal's comment.
+V4: Have all these changes in a single patch.
+V3: Change to only handle NUMA_NO_NODE, and return cpu_online_mask
+    for NUMA_NO_NODE case, and change the commit log to better justify
+    the change.
+V2: make the node id checking change to other arches too.
 ---
- drivers/acpi/numa/hmat.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/arm64/include/asm/numa.h                    | 3 +++
+ arch/arm64/mm/numa.c                             | 3 +++
+ arch/mips/include/asm/mach-ip27/topology.h       | 2 +-
+ arch/mips/include/asm/mach-loongson64/topology.h | 4 +++-
+ arch/s390/include/asm/topology.h                 | 3 +++
+ arch/x86/include/asm/topology.h                  | 3 +++
+ arch/x86/mm/numa.c                               | 3 +++
+ 7 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index 1ce366a7bc55..f96e443990c1 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -293,7 +293,7 @@ static __init int hmat_parse_locality(union acpi_subtable_headers *header,
- 	u8 type, mem_hier;
+diff --git a/arch/arm64/include/asm/numa.h b/arch/arm64/include/asm/numa.h
+index 626ad01..c8a4b31 100644
+--- a/arch/arm64/include/asm/numa.h
++++ b/arch/arm64/include/asm/numa.h
+@@ -25,6 +25,9 @@ const struct cpumask *cpumask_of_node(int node);
+ /* Returns a pointer to the cpumask of CPUs on Node 'node'. */
+ static inline const struct cpumask *cpumask_of_node(int node)
+ {
++	if (node == NUMA_NO_NODE)
++		return cpu_online_mask;
++
+ 	return node_to_cpumask_map[node];
+ }
+ #endif
+diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
+index 4decf16..5ae7eea 100644
+--- a/arch/arm64/mm/numa.c
++++ b/arch/arm64/mm/numa.c
+@@ -46,6 +46,9 @@ EXPORT_SYMBOL(node_to_cpumask_map);
+  */
+ const struct cpumask *cpumask_of_node(int node)
+ {
++	if (node == NUMA_NO_NODE)
++		return cpu_online_mask;
++
+ 	if (WARN_ON(node >= nr_node_ids))
+ 		return cpu_none_mask;
  
- 	if (hmat_loc->header.length < sizeof(*hmat_loc)) {
--		pr_notice("HMAT: Unexpected locality header length: %d\n",
-+		pr_notice("HMAT: Unexpected locality header length: %u\n",
- 			 hmat_loc->header.length);
- 		return -EINVAL;
- 	}
-@@ -305,12 +305,12 @@ static __init int hmat_parse_locality(union acpi_subtable_headers *header,
- 	total_size = sizeof(*hmat_loc) + sizeof(*entries) * ipds * tpds +
- 		     sizeof(*inits) * ipds + sizeof(*targs) * tpds;
- 	if (hmat_loc->header.length < total_size) {
--		pr_notice("HMAT: Unexpected locality header length:%d, minimum required:%d\n",
-+		pr_notice("HMAT: Unexpected locality header length:%u, minimum required:%u\n",
- 			 hmat_loc->header.length, total_size);
- 		return -EINVAL;
- 	}
+diff --git a/arch/mips/include/asm/mach-ip27/topology.h b/arch/mips/include/asm/mach-ip27/topology.h
+index 965f079..db293cf 100644
+--- a/arch/mips/include/asm/mach-ip27/topology.h
++++ b/arch/mips/include/asm/mach-ip27/topology.h
+@@ -15,7 +15,7 @@ struct cpuinfo_ip27 {
+ extern struct cpuinfo_ip27 sn_cpu_info[NR_CPUS];
  
--	pr_info("HMAT: Locality: Flags:%02x Type:%s Initiator Domains:%d Target Domains:%d Base:%lld\n",
-+	pr_info("HMAT: Locality: Flags:%02x Type:%s Initiator Domains:%u Target Domains:%u Base:%lld\n",
- 		hmat_loc->flags, hmat_data_type(type), ipds, tpds,
- 		hmat_loc->entry_base_unit);
+ #define cpu_to_node(cpu)	(sn_cpu_info[(cpu)].p_nodeid)
+-#define cpumask_of_node(node)	((node) == -1 ?				\
++#define cpumask_of_node(node)	((node) == NUMA_NO_NODE ?		\
+ 				 cpu_all_mask :				\
+ 				 &hub_data(node)->h_cpus)
+ struct pci_bus;
+diff --git a/arch/mips/include/asm/mach-loongson64/topology.h b/arch/mips/include/asm/mach-loongson64/topology.h
+index 7ff819a..e78daa6 100644
+--- a/arch/mips/include/asm/mach-loongson64/topology.h
++++ b/arch/mips/include/asm/mach-loongson64/topology.h
+@@ -5,7 +5,9 @@
+ #ifdef CONFIG_NUMA
  
-@@ -323,7 +323,7 @@ static __init int hmat_parse_locality(union acpi_subtable_headers *header,
- 			value = hmat_normalize(entries[init * tpds + targ],
- 					       hmat_loc->entry_base_unit,
- 					       type);
--			pr_info("  Initiator-Target[%d-%d]:%d%s\n",
-+			pr_info("  Initiator-Target[%u-%u]:%u%s\n",
- 				inits[init], targs[targ], value,
- 				hmat_data_type_suffix(type));
+ #define cpu_to_node(cpu)	(cpu_logical_map(cpu) >> 2)
+-#define cpumask_of_node(node)	(&__node_data[(node)]->cpumask)
++#define cpumask_of_node(node)	((node) == NUMA_NO_NODE ?		\
++				 cpu_online_mask :			\
++				 &__node_data[(node)]->cpumask)
  
-@@ -350,13 +350,13 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
- 	u32 attrs;
+ struct pci_bus;
+ extern int pcibus_to_node(struct pci_bus *);
+diff --git a/arch/s390/include/asm/topology.h b/arch/s390/include/asm/topology.h
+index cca406f..1bd2e73 100644
+--- a/arch/s390/include/asm/topology.h
++++ b/arch/s390/include/asm/topology.h
+@@ -78,6 +78,9 @@ static inline int cpu_to_node(int cpu)
+ #define cpumask_of_node cpumask_of_node
+ static inline const struct cpumask *cpumask_of_node(int node)
+ {
++	if (node == NUMA_NO_NODE)
++		return cpu_online_mask;
++
+ 	return &node_to_cpumask_map[node];
+ }
  
- 	if (cache->header.length < sizeof(*cache)) {
--		pr_notice("HMAT: Unexpected cache header length: %d\n",
-+		pr_notice("HMAT: Unexpected cache header length: %u\n",
- 			 cache->header.length);
- 		return -EINVAL;
- 	}
- 
- 	attrs = cache->cache_attributes;
--	pr_info("HMAT: Cache: Domain:%d Size:%llu Attrs:%08x SMBIOS Handles:%d\n",
-+	pr_info("HMAT: Cache: Domain:%u Size:%llu Attrs:%08x SMBIOS Handles:%d\n",
- 		cache->memory_PD, cache->cache_size, attrs,
- 		cache->number_of_SMBIOShandles);
- 
-@@ -411,17 +411,17 @@ static int __init hmat_parse_proximity_domain(union acpi_subtable_headers *heade
- 	struct memory_target *target = NULL;
- 
- 	if (p->header.length != sizeof(*p)) {
--		pr_notice("HMAT: Unexpected address range header length: %d\n",
-+		pr_notice("HMAT: Unexpected address range header length: %u\n",
- 			 p->header.length);
- 		return -EINVAL;
- 	}
- 
- 	if (hmat_revision == 1)
--		pr_info("HMAT: Memory (%#llx length %#llx) Flags:%04x Processor Domain:%d Memory Domain:%d\n",
-+		pr_info("HMAT: Memory (%#llx length %#llx) Flags:%04x Processor Domain:%u Memory Domain:%u\n",
- 			p->reserved3, p->reserved4, p->flags, p->processor_PD,
- 			p->memory_PD);
- 	else
--		pr_info("HMAT: Memory Flags:%04x Processor Domain:%d Memory Domain:%d\n",
-+		pr_info("HMAT: Memory Flags:%04x Processor Domain:%u Memory Domain:%u\n",
- 			p->flags, p->processor_PD, p->memory_PD);
- 
- 	if (p->flags & ACPI_HMAT_MEMORY_PD_VALID && hmat_revision == 1) {
+diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+index 4b14d23..7fa82e1 100644
+--- a/arch/x86/include/asm/topology.h
++++ b/arch/x86/include/asm/topology.h
+@@ -69,6 +69,9 @@ extern const struct cpumask *cpumask_of_node(int node);
+ /* Returns a pointer to the cpumask of CPUs on Node 'node'. */
+ static inline const struct cpumask *cpumask_of_node(int node)
+ {
++	if (node == NUMA_NO_NODE)
++		return cpu_online_mask;
++
+ 	return node_to_cpumask_map[node];
+ }
+ #endif
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index 4123100e..9859acb 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -861,6 +861,9 @@ void numa_remove_cpu(int cpu)
+  */
+ const struct cpumask *cpumask_of_node(int node)
+ {
++	if (node == NUMA_NO_NODE)
++		return cpu_online_mask;
++
+ 	if ((unsigned)node >= nr_node_ids) {
+ 		printk(KERN_WARNING
+ 			"cpumask_of_node(%d): (unsigned)node >= nr_node_ids(%u)\n",
 -- 
-2.20.1
+2.8.1
 
