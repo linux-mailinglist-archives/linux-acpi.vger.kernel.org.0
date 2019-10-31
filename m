@@ -2,152 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B8BAEA674
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2019 23:43:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39BBDEA984
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2019 04:26:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727497AbfJ3WnJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 30 Oct 2019 18:43:09 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:32778 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727064AbfJ3WnI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Oct 2019 18:43:08 -0400
-Received: by mail-pg1-f193.google.com with SMTP id u23so2538452pgo.0;
-        Wed, 30 Oct 2019 15:43:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=y0oPUoFzTii7ISlKgBqFiFMQKVFEygUTi9cyMnkiLCk=;
-        b=Hu5aYBUcdoSDd90QlvKV/W8VXrJZeQw3jJdITe9I0iSl/Lt8Jm0Y03uMXbwhymKSe1
-         Eg/QToOWKxh6uOdgU38ghvs1Y+zwBpbgMmqRxZsgR8j4cK+EoLtPQvFUNwLEdfAHiXkH
-         1fKRURZoRJJU01e0ljT5raVLUFZaONGBW+vEwoH8mUBFQYqFCDM8jdlGYloZBCPlq770
-         VDvAAYHT5RF8XtZmrHoVbaLJyu7CMVcvgnXLeXKDDGPw6v7IZSIhn26BQDlHKFO0D6xM
-         pdkczxZlkBPvfxnEqve1mTorhjZJYw/jaiyDvaCeAttFaU+m6qECOYbFWGJmsMTpcDvZ
-         vEHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=y0oPUoFzTii7ISlKgBqFiFMQKVFEygUTi9cyMnkiLCk=;
-        b=RG44ZwCbdHn3cAb+J88iYW5ZCag1KqaYf0F1/45q0g0HCq4ngFW7QThtpx9QggN0Go
-         VlebkohWH1LfL3+oRyXfGhVrxATscnJV2ZX+8/dwGPgcE8ZLThYdtFpe+k+aE5xJrBRW
-         Vf9SUrO6lbmrBLJnBrB7kAxoinhcgcFXAHQ4jnPvxA8JMWzQ/zuKPp3vuEnQX+33hQfq
-         kQN9XHrzQe5gW17SA1M6exDVhYunIGQsHyRO8iJ/Kpd4RTgPBwvmfu2aOS+yDCIHZEUm
-         n1PC2WWvwBX/kzt7S4lRP9GigpKbblOQzTv8oGZdla4QilMw6jGFqwA3PxYUZEynzdo5
-         zVvQ==
-X-Gm-Message-State: APjAAAVQz/h1QwCtOFqd1gURf9ysd+WJLXuzuJ4AmMSWwKkWK78Hf4mq
-        bmaNzvOjxUru0kEuhb9KIGY=
-X-Google-Smtp-Source: APXvYqyBfb9xuS39HM2yTn0aXyuVgz6M19c7eUmnE1VDN25ZFMX/dAt+2dtxP09MoQIhtjclqeUCog==
-X-Received: by 2002:a17:90a:5d0f:: with SMTP id s15mr2135497pji.126.1572475387770;
-        Wed, 30 Oct 2019 15:43:07 -0700 (PDT)
-Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
-        by smtp.gmail.com with ESMTPSA id x7sm1100750pff.0.2019.10.30.15.43.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2019 15:43:06 -0700 (PDT)
-Date:   Wed, 30 Oct 2019 15:43:04 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v6 00/15] software node: add support for reference
- properties
-Message-ID: <20191030224304.GH57214@dtor-ws>
-References: <20191023200233.86616-1-dmitry.torokhov@gmail.com>
+        id S1726347AbfJaD0L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Oct 2019 23:26:11 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:60838 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726336AbfJaD0K (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 30 Oct 2019 23:26:10 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id A11698C8659FB5227AE0;
+        Thu, 31 Oct 2019 11:26:07 +0800 (CST)
+Received: from [127.0.0.1] (10.74.191.121) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Thu, 31 Oct 2019
+ 11:26:05 +0800
+Subject: Re: [PATCH v7] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+To:     Peter Zijlstra <peterz@infradead.org>
+CC:     <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
+        <bp@alien8.de>, <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
+        <mattst88@gmail.com>, <benh@kernel.crashing.org>,
+        <paulus@samba.org>, <mpe@ellerman.id.au>,
+        <heiko.carstens@de.ibm.com>, <gor@linux.ibm.com>,
+        <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>,
+        <dalias@libc.org>, <davem@davemloft.net>, <ralf@linux-mips.org>,
+        <paul.burton@mips.com>, <jhogan@kernel.org>,
+        <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>,
+        <akpm@linux-foundation.org>, <rppt@linux.ibm.com>,
+        <anshuman.khandual@arm.com>, <tglx@linutronix.de>, <cai@lca.pw>,
+        <robin.murphy@arm.com>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <hpa@zytor.com>, <x86@kernel.org>,
+        <dave.hansen@linux.intel.com>, <luto@kernel.org>,
+        <len.brown@intel.com>, <axboe@kernel.dk>, <dledford@redhat.com>,
+        <jeffrey.t.kirsher@intel.com>, <linux-alpha@vger.kernel.org>,
+        <naveen.n.rao@linux.vnet.ibm.com>, <mwb@linux.vnet.ibm.com>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
+        <linux-sh@vger.kernel.org>, <sparclinux@vger.kernel.org>,
+        <tbogendoerfer@suse.de>, <linux-mips@vger.kernel.org>,
+        <rafael@kernel.org>, <mhocko@kernel.org>,
+        <gregkh@linuxfoundation.org>, <bhelgaas@google.com>,
+        <linux-pci@vger.kernel.org>, <rjw@rjwysocki.net>,
+        <lenb@kernel.org>, <linux-acpi@vger.kernel.org>
+References: <1572428068-180880-1-git-send-email-linyunsheng@huawei.com>
+ <20191030101449.GW4097@hirez.programming.kicks-ass.net>
+From:   Yunsheng Lin <linyunsheng@huawei.com>
+Message-ID: <f7aa833e-3ed3-aba0-8c6e-8753a68182c2@huawei.com>
+Date:   Thu, 31 Oct 2019 11:26:04 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191023200233.86616-1-dmitry.torokhov@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191030101449.GW4097@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.74.191.121]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+On 2019/10/30 18:14, Peter Zijlstra wrote:
+> On Wed, Oct 30, 2019 at 05:34:28PM +0800, Yunsheng Lin wrote:
+>> When passing the return value of dev_to_node() to cpumask_of_node()
+>> without checking if the device's node id is NUMA_NO_NODE, there is
+>> global-out-of-bounds detected by KASAN.
+>>
+>> From the discussion [1], NUMA_NO_NODE really means no node affinity,
+>> which also means all cpus should be usable. So the cpumask_of_node()
+>> should always return all cpus online when user passes the node id as
+>> NUMA_NO_NODE, just like similar semantic that page allocator handles
+>> NUMA_NO_NODE.
+>>
+>> But we cannot really copy the page allocator logic. Simply because the
+>> page allocator doesn't enforce the near node affinity. It just picks it
+>> up as a preferred node but then it is free to fallback to any other numa
+>> node. This is not the case here and node_to_cpumask_map will only restrict
+>> to the particular node's cpus which would have really non deterministic
+>> behavior depending on where the code is executed. So in fact we really
+>> want to return cpu_online_mask for NUMA_NO_NODE.
+>>
+>> Also there is a debugging version of node_to_cpumask_map() for x86 and
+>> arm64, which is only used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this
+>> patch changes it to handle NUMA_NO_NODE as normal node_to_cpumask_map().
+>>
+>> [1] https://lkml.org/lkml/2019/9/11/66
+>> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+>> Suggested-by: Michal Hocko <mhocko@kernel.org>
+>> Acked-by: Michal Hocko <mhocko@suse.com>
+>> Acked-by: Paul Burton <paul.burton@mips.com> # MIPS bits
+> 
+> Still:
+> 
+> Nacked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-On Wed, Oct 23, 2019 at 01:02:18PM -0700, Dmitry Torokhov wrote:
-> These series implement "references" properties for software nodes as true
-> properties, instead of managing them completely separately.
-> 
-> The first 10 patches are generic cleanups and consolidation and
-> unification of the existing code; patch #11 implements moving of small
-> properties inline when copying property entries; patch #12 implements
-> PROPERTY_ENTRY_REF() and friends; patch #13 converts the user of
-> references to the property syntax, and patch #14 removes the remains of
-> references as entities that are managed separately.
-> 
-> Patch #15 adds unit tests to verify that the handling of property
-> entries is correct.
+It seems I still misunderstood your meaning by "We must not silently accept
+NO_NODE there" in [1].
 
-Do you have any concerns with the series? I think Andy did all the
-reviewing that he could...
+I am not sure if there is still disagreement that the NO_NODE state for
+dev->numa_node should exist at all.
 
-Thanks!
+From the previous disscussion [2], you seem to propose to do "wild guess" or
+"fixup" for all devices(including virtual and physcial) with NO_NODE, which means
+the NO_NODE is needed anymore and should be removed when the "wild guess" or "fixup"
+is done. So maybe the reason for your nack here it is that there should be no other
+NO_NODE handling or fixing related to NO_NODE before the "wild guess" or "fixup"
+process is finished, so making node_to_cpumask_map() NUMA_NO_NODE aware is unnecessary.
 
+Or your reason for the nack is still specific to the pcie device without a numa node,
+the "wild guess" need to be done for this case before making node_to_cpumask_map()
+NUMA_NO_NODE?
+
+Please help to clarify the reason for nack. Or is there still some other reason for the
+nack I missed from the previous disscussion?
+
+Thanks.
+
+[1] https://lore.kernel.org/lkml/20191011111539.GX2311@hirez.programming.kicks-ass.net/
+[2] https://lore.kernel.org/lkml/20191014094912.GY2311@hirez.programming.kicks-ass.net/
 > 
-> Changes in v6:
-> - rebased onto next-20191023
-> - fixed patch moving small properties inline
-> - fixed handling boolean properties after is_array -> is_inline
->   conversion
-> - changed comments around is_inline "stored directly" vs embedded
->   in one place (Andy)
-> - added unit tests for property entries based on KUnit framework
-> - added Any's reviewed-by/acked-by
-> 
-> Changes in v5:
-> - rebased onto next-20191011
-> 
-> Changes in v4:
-> - dealt with union aliasing concerns
-> - inline small properties on copy
-> 
-> Changes in v3:
-> - added various cleanups before implementing reference properties
-> 
-> Changes in v2:
-> - reworked code so that even single-entry reference properties are
->   stored as arrays (i.e. the software_node_ref_args instances are
->   not part of property_entry structure) to avoid size increase.
->   From user's POV nothing is changed, one can still use PROPERTY_ENTRY_REF
->   macro to define reference "inline".
-> - dropped unused DEV_PROP_MAX
-> - rebased on linux-next
-> 
-> Dmitry Torokhov (15):
->   software node: remove DEV_PROP_MAX
->   software node: introduce PROPERTY_ENTRY_ARRAY_XXX_LEN()
->   efi/apple-properties: use PROPERTY_ENTRY_U8_ARRAY_LEN
->   software node: mark internal macros with double underscores
->   software node: clean up property_copy_string_array()
->   software node: get rid of property_set_pointer()
->   software node: remove property_entry_read_uNN_array functions
->   software node: unify PROPERTY_ENTRY_XXX macros
->   software node: simplify property_entry_read_string_array()
->   software node: rename is_array to is_inline
->   software node: move small properties inline when copying
->   software node: implement reference properties
->   platform/x86: intel_cht_int33fe: use inline reference properties
->   software node: remove separate handling of references
->   software node: add basic tests for property entries
-> 
->  drivers/base/swnode.c                         | 263 ++++------
->  drivers/base/test/Makefile                    |   2 +
->  drivers/base/test/property-entry-test.c       | 472 ++++++++++++++++++
->  drivers/firmware/efi/apple-properties.c       |  18 +-
->  .../platform/x86/intel_cht_int33fe_typec.c    |  81 +--
->  include/linux/property.h                      | 178 +++----
->  6 files changed, 702 insertions(+), 312 deletions(-)
->  create mode 100644 drivers/base/test/property-entry-test.c
-> 
-> -- 
-> 2.23.0.866.gb869b98d4c-goog
+> .
 > 
 
--- 
-Dmitry
