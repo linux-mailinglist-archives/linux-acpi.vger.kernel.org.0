@@ -2,89 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73C64EC034
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2019 10:01:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA38AEC144
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2019 11:28:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726889AbfKAJBQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Nov 2019 05:01:16 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:51839 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726555AbfKAJBP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Nov 2019 05:01:15 -0400
-Received: by mail-wm1-f65.google.com with SMTP id q70so8613391wme.1
-        for <linux-acpi@vger.kernel.org>; Fri, 01 Nov 2019 02:01:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=w9H6C5mwxHUabRjZS5CCH7OW180B81Cniy6znfZhWb0=;
-        b=K+DJg0TPN7ZlAVDrEeZ6Mbx2/BdPDoauyLwl22EktSDllRb4tWTW2ESgXL0M/JXwSw
-         aKWW2wWcISV8jqMsZQt1vLmTnYa+4nVgu30MEPJQulNNe6Ee8HNHhOwtjWSYb1Ns8MiY
-         rG+TiIC1/daHDyXz1Y9GohussoQU9YfZPOYVW2+ms7ay5wPR0LMWA78waoo2+8WOD41Z
-         PwkFG0ZGYj25Giz245Kz7ssc9KjaXiOLlwfqBDCB4XKGO0Vcl+IOsWZfX/d7q/l65/8o
-         qGZn80j/Zl+Tf1z8RskUejPv8bZltylGYan6rb8x4qLpokgXY+2JEkr9D2OChmS87M6k
-         QcLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=w9H6C5mwxHUabRjZS5CCH7OW180B81Cniy6znfZhWb0=;
-        b=FevRGHFM1PiD2lIhhFS3Ur2wiGhj9BY4AoFQZR45bK9pbPzu5SwcpQC3y/MXpit6BG
-         /8AF15Sh2ozPeTtW2aJ7C9p2zFT1SlIwtjFMZYOv+LVo1jkw2gFp4rp2jIc9qhkR6Jqz
-         u9laB6Knvy9WQwcNkFUcPyr67zO/p7gWOK5dZ30Z0+YMZkLfJaecYvr31VndyFEMzpyb
-         atCPCAX+5ZlHaziDf8Fct6sMxQRKjLw88vj9cUeEqEIeVNWJlRaTbS6SlRP2IgKG+qzk
-         ujwtNlPyIR2Xl98y/4tivD1CPJKT5nxGhvhQqsTMUN9kfcLc38+GCFldsxXYYUmSavFh
-         DptA==
-X-Gm-Message-State: APjAAAXNCatp8nRRb523Pkl5L+qlM8C6zXtrySMjj1IgBGx5DCuMPW5Q
-        t7WPy1Q2k7u6MuJNWa1Eh0Pn6A==
-X-Google-Smtp-Source: APXvYqybMcloyFbmbF1Y/Sk/rON3MWYd0PnCqOjPSeSEVDaPAub+pipFgNF+3lxxBvkZdcx3cVeVKg==
-X-Received: by 2002:a05:600c:22d9:: with SMTP id 25mr9378244wmg.166.1572598873687;
-        Fri, 01 Nov 2019 02:01:13 -0700 (PDT)
-Received: from dell ([2.31.163.64])
-        by smtp.gmail.com with ESMTPSA id i71sm8776266wri.68.2019.11.01.02.01.12
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 01 Nov 2019 02:01:13 -0700 (PDT)
-Date:   Fri, 1 Nov 2019 09:01:11 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] mfd: intel_soc_pmic_crc: Add "cht_crystal_cove_pmic"
- cell to CHT cells
-Message-ID: <20191101090111.GG5700@dell>
-References: <20191024213827.144974-1-hdegoede@redhat.com>
- <20191024213827.144974-5-hdegoede@redhat.com>
+        id S1729333AbfKAK2r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Nov 2019 06:28:47 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:57068 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729290AbfKAK2q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Nov 2019 06:28:46 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA1AKFeb144312;
+        Fri, 1 Nov 2019 10:28:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=HuA8RaLVfqKHYCJhNS2PfjhgX6duj/i6VwF/atHQe0U=;
+ b=Iq/ZFoG1vmZajIFaLIDy3zU02rQ5rdrV94mauY24RI9QVarahicT/Dwj8ajBH1M4e3kk
+ TgmDpMP1mWWtxqPc9YyugNMjvOtWvh5/BOjfncsjp8j2/zaC36SMwKXcMqN6KBa4jeL+
+ QdTWrBelUxhMeB21dzWzPqcKuBCWEDm/xmL3UtkDOL/V6pLqC4cqP2nqfu83AdAN17mC
+ X6m8wzK4k0GhS7FZc5NH1IIQeALIpb7sBodCPZTIlDswg6DFWuFplFljQjFdOk3EIWPP
+ keenyV/UOfXH0Jqgkr+H70PuGrUCvlJGuPv+CjYAT41+fLnBs51BY88YlmgSW4Z8y5l7 /g== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2vxwhfs5c3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 01 Nov 2019 10:28:39 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA1ASGG7067286;
+        Fri, 1 Nov 2019 10:28:38 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 2vyv9hyywq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 01 Nov 2019 10:28:38 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xA1ASZBT009972;
+        Fri, 1 Nov 2019 10:28:35 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 01 Nov 2019 03:28:34 -0700
+Date:   Fri, 1 Nov 2019 13:28:26 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     kbuild@lists.01.org, Erik Schmauss <erik.schmauss@intel.com>
+Cc:     kbuild-all@lists.01.org, linux-acpi@vger.kernel.org,
+        devel@acpica.org, linux-pm@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: [pm:bleeding-edge 62/70] drivers/acpi/acpica/dbnames.c:576
+ acpi_db_walk_for_fields() error: double free of 'buffer.pointer'
+Message-ID: <20191101102553.GH18421@kadam>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191024213827.144974-5-hdegoede@redhat.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9427 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1911010105
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9427 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1911010104
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 24 Oct 2019, Hans de Goede wrote:
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   aaa43552df9b1f8c788d18df5f5989f8a13433f5
+commit: 5fd033288a86676045d9e16243dfc5f988013371 [62/70] ACPICA: debugger: add command to dump all fields of particular subtype
 
-> Add a "cht_crystal_cove_pmic" cell to the cells for the Cherry Trail
-> variant of the Crystal Cove PMIC. Adding this cell enables / hooks-up
-> the new Cherry Trail Crystal Cove PMIC OpRegion driver.
-> 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/mfd/intel_soc_pmic_crc.c | 3 +++
->  1 file changed, 3 insertions(+)
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Applied, thanks.
+smatch warnings:
+drivers/acpi/acpica/dbnames.c:576 acpi_db_walk_for_fields() error: double free of 'buffer.pointer'
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+# https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=5fd033288a86676045d9e16243dfc5f988013371
+git remote add pm https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
+git remote update pm
+git checkout 5fd033288a86676045d9e16243dfc5f988013371
+vim +576 drivers/acpi/acpica/dbnames.c
+
+5fd033288a8667 Erik Schmauss 2019-10-25  518  static acpi_status
+5fd033288a8667 Erik Schmauss 2019-10-25  519  acpi_db_walk_for_fields(acpi_handle obj_handle,
+5fd033288a8667 Erik Schmauss 2019-10-25  520  			u32 nesting_level, void *context, void **return_value)
+5fd033288a8667 Erik Schmauss 2019-10-25  521  {
+5fd033288a8667 Erik Schmauss 2019-10-25  522  	union acpi_object *ret_value;
+5fd033288a8667 Erik Schmauss 2019-10-25  523  	struct acpi_region_walk_info *info =
+5fd033288a8667 Erik Schmauss 2019-10-25  524  	    (struct acpi_region_walk_info *)context;
+5fd033288a8667 Erik Schmauss 2019-10-25  525  	struct acpi_buffer buffer;
+5fd033288a8667 Erik Schmauss 2019-10-25  526  	acpi_status status;
+5fd033288a8667 Erik Schmauss 2019-10-25  527  	struct acpi_namespace_node *node = acpi_ns_validate_handle(obj_handle);
+5fd033288a8667 Erik Schmauss 2019-10-25  528  
+5fd033288a8667 Erik Schmauss 2019-10-25  529  	if (!node) {
+5fd033288a8667 Erik Schmauss 2019-10-25  530  		return (AE_OK);
+5fd033288a8667 Erik Schmauss 2019-10-25  531  	}
+5fd033288a8667 Erik Schmauss 2019-10-25  532  	if (node->object->field.region_obj->region.space_id !=
+5fd033288a8667 Erik Schmauss 2019-10-25  533  	    info->address_space_id) {
+5fd033288a8667 Erik Schmauss 2019-10-25  534  		return (AE_OK);
+5fd033288a8667 Erik Schmauss 2019-10-25  535  	}
+5fd033288a8667 Erik Schmauss 2019-10-25  536  
+5fd033288a8667 Erik Schmauss 2019-10-25  537  	info->count++;
+5fd033288a8667 Erik Schmauss 2019-10-25  538  
+5fd033288a8667 Erik Schmauss 2019-10-25  539  	/* Get and display the full pathname to this object */
+5fd033288a8667 Erik Schmauss 2019-10-25  540  
+5fd033288a8667 Erik Schmauss 2019-10-25  541  	buffer.length = ACPI_ALLOCATE_LOCAL_BUFFER;
+5fd033288a8667 Erik Schmauss 2019-10-25  542  	status = acpi_ns_handle_to_pathname(obj_handle, &buffer, TRUE);
+5fd033288a8667 Erik Schmauss 2019-10-25  543  	if (ACPI_FAILURE(status)) {
+5fd033288a8667 Erik Schmauss 2019-10-25  544  		acpi_os_printf("Could Not get pathname for object %p\n",
+5fd033288a8667 Erik Schmauss 2019-10-25  545  			       obj_handle);
+5fd033288a8667 Erik Schmauss 2019-10-25  546  		return (AE_OK);
+5fd033288a8667 Erik Schmauss 2019-10-25  547  	}
+5fd033288a8667 Erik Schmauss 2019-10-25  548  
+5fd033288a8667 Erik Schmauss 2019-10-25  549  	acpi_os_printf("%s ", (char *)buffer.pointer);
+5fd033288a8667 Erik Schmauss 2019-10-25  550  	ACPI_FREE(buffer.pointer);
+
+Freed here.
+
+5fd033288a8667 Erik Schmauss 2019-10-25  551  
+5fd033288a8667 Erik Schmauss 2019-10-25  552  	buffer.length = ACPI_ALLOCATE_LOCAL_BUFFER;
+5fd033288a8667 Erik Schmauss 2019-10-25  553  	acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
+
+No error handling here so "buffer.pointer" isn't necessarily modified.
+
+5fd033288a8667 Erik Schmauss 2019-10-25  554  
+5fd033288a8667 Erik Schmauss 2019-10-25  555  	ret_value = (union acpi_object *)buffer.pointer;
+5fd033288a8667 Erik Schmauss 2019-10-25  556  	switch (ret_value->type) {
+5fd033288a8667 Erik Schmauss 2019-10-25  557  	case ACPI_TYPE_INTEGER:
+5fd033288a8667 Erik Schmauss 2019-10-25  558  
+5fd033288a8667 Erik Schmauss 2019-10-25  559  		acpi_os_printf("%8.8X%8.8X",
+5fd033288a8667 Erik Schmauss 2019-10-25  560  			       ACPI_FORMAT_UINT64(ret_value->integer.value));
+5fd033288a8667 Erik Schmauss 2019-10-25  561  		break;
+5fd033288a8667 Erik Schmauss 2019-10-25  562  
+5fd033288a8667 Erik Schmauss 2019-10-25  563  	case ACPI_TYPE_BUFFER:
+5fd033288a8667 Erik Schmauss 2019-10-25  564  
+5fd033288a8667 Erik Schmauss 2019-10-25  565  		acpi_ut_dump_buffer(ret_value->buffer.pointer,
+5fd033288a8667 Erik Schmauss 2019-10-25  566  				    ret_value->buffer.length,
+5fd033288a8667 Erik Schmauss 2019-10-25  567  				    DB_DISPLAY_DATA_ONLY | DB_BYTE_DISPLAY, 0);
+5fd033288a8667 Erik Schmauss 2019-10-25  568  		break;
+5fd033288a8667 Erik Schmauss 2019-10-25  569  
+5fd033288a8667 Erik Schmauss 2019-10-25  570  	default:
+5fd033288a8667 Erik Schmauss 2019-10-25  571  
+5fd033288a8667 Erik Schmauss 2019-10-25  572  		break;
+5fd033288a8667 Erik Schmauss 2019-10-25  573  	}
+5fd033288a8667 Erik Schmauss 2019-10-25  574  	acpi_os_printf("\n");
+5fd033288a8667 Erik Schmauss 2019-10-25  575  
+5fd033288a8667 Erik Schmauss 2019-10-25 @576  	ACPI_FREE(buffer.pointer);
+
+Double free.
+
+5fd033288a8667 Erik Schmauss 2019-10-25  577  
+5fd033288a8667 Erik Schmauss 2019-10-25  578  	return (AE_OK);
+5fd033288a8667 Erik Schmauss 2019-10-25  579  }
+
+---
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
