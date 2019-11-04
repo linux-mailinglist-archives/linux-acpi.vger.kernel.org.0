@@ -2,43 +2,43 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EEBEEE37D
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Nov 2019 16:18:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E99AFEE567
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Nov 2019 18:01:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729041AbfKDPSx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 4 Nov 2019 10:18:53 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37206 "EHLO mail.kernel.org"
+        id S1728188AbfKDRBa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 Nov 2019 12:01:30 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44026 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728701AbfKDPSw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 4 Nov 2019 10:18:52 -0500
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+        id S1727989AbfKDRBa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 4 Nov 2019 12:01:30 -0500
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4EB5521850;
-        Mon,  4 Nov 2019 15:18:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B38D0214B2;
+        Mon,  4 Nov 2019 17:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572880732;
-        bh=/ilrDL5VFaGpvPXs/d5mauxhkJ0VKGY7RHd5Pe6j8b0=;
+        s=default; t=1572886888;
+        bh=+MtZPHtXKdsSw7Bm/k8kkH1yNhktHmkA+OzqMTB1qsw=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=wTywLaNuB1HoB+eHGZmmElU4pQpLJ/PV5mF36CJuy/1bQfcipZr84T1PqmiUIArU5
-         ftG3HQxRIspAdhGGux+9pRkRszRercjMzWg7Mvc2qjLl6LUTu+M5u63eWY+9Ngmmt8
-         pHfzfEv5zhebUS6m4ity8kDROsNzhpnJln/zzRKM=
-Received: by mail-qt1-f177.google.com with SMTP id r22so14367995qtt.2;
-        Mon, 04 Nov 2019 07:18:52 -0800 (PST)
-X-Gm-Message-State: APjAAAVquLknXXRDybn1jwG9xNDYI+E4KCEnfhOkhaqTRY6Zai/m8vuH
-        ftEfSknEPkom2mr3j34sf/8yX+PH79Vt8Ji5Wg==
-X-Google-Smtp-Source: APXvYqz6VOGe10++SnT2O1uuLn6+9WTHPod7Ohdefkb2HVUrRipukxsh2BWWbxVhlbAuqfj5fPwaTiEMADzf53iiCnc=
-X-Received: by 2002:a05:6214:8e5:: with SMTP id dr5mr21902677qvb.79.1572880731365;
- Mon, 04 Nov 2019 07:18:51 -0800 (PST)
+        b=TpQQFTR2EFY00egCJK1oAzh9DT7POr/CTY0WnCUAB/2BeMaio38vdV1yPDdJ7LNmt
+         NJt/IMhJUhKdGJG7+aCn1qhhoFeAnvuKXgFCt9QkUW34dqfkPqMX3Az0KdbZttCrG0
+         3Q/ZdoRCleOKx/JLAhfQoZedoB1dFhC/6hLxYWsE=
+Received: by mail-qk1-f180.google.com with SMTP id m125so18267399qkd.8;
+        Mon, 04 Nov 2019 09:01:28 -0800 (PST)
+X-Gm-Message-State: APjAAAXhazfkjG9F8cx8ZCJKXjBWP9hSwnypZw8+w67wjXD4QB2xq3WG
+        ETqWxS5Nq7F5I+A5K999YnC2RhWe2CHw1dP2jA==
+X-Google-Smtp-Source: APXvYqwgsKbRtBwlM6IP+7Jb7jCD2qb6TrBglXZcYJiaKjk035Dt56BQa7exM3fo+NyU11adG6CGbyTwxp/LndrfMFY=
+X-Received: by 2002:a37:4904:: with SMTP id w4mr17253854qka.119.1572886887790;
+ Mon, 04 Nov 2019 09:01:27 -0800 (PST)
 MIME-Version: 1.0
-References: <20191028220027.251605-1-saravanak@google.com> <20191028220027.251605-6-saravanak@google.com>
-In-Reply-To: <20191028220027.251605-6-saravanak@google.com>
+References: <20191028220027.251605-1-saravanak@google.com> <20191028220027.251605-5-saravanak@google.com>
+In-Reply-To: <20191028220027.251605-5-saravanak@google.com>
 From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 4 Nov 2019 09:18:39 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+obCEeaNjpvJ6VvO6b2F6A5oHcRD8PYAifUvBQHbQ_Og@mail.gmail.com>
-Message-ID: <CAL_Jsq+obCEeaNjpvJ6VvO6b2F6A5oHcRD8PYAifUvBQHbQ_Og@mail.gmail.com>
-Subject: Re: [PATCH v1 5/5] of: property: Skip adding device links to
- suppliers that aren't devices
+Date:   Mon, 4 Nov 2019 11:01:16 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJQ9siUGgmGqZnF_Wk3mVau29yVZRL_3LxFKgD8=mccQQ@mail.gmail.com>
+Message-ID: <CAL_JsqJQ9siUGgmGqZnF_Wk3mVau29yVZRL_3LxFKgD8=mccQQ@mail.gmail.com>
+Subject: Re: [PATCH v1 4/5] of: property: Make sure child dependencies don't
+ block probing of parent
 To:     Saravana Kannan <saravanak@google.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -55,49 +55,79 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 On Mon, Oct 28, 2019 at 5:00 PM Saravana Kannan <saravanak@google.com> wrote:
 >
-> Some devices need to be initialized really early and can't wait for
-> driver core or drivers to be functional.  These devices are typically
-> initialized without creating a struct device for their device nodes.
+> When creating device links to proxy the sync_state() needs of child
+> dependencies, create SYNC_STATE_ONLY device links so that children
+> dependencies don't block probing of the parent.
 >
-> If a supplier ends up being one of these devices, skip trying to add
-> device links to them.
+> Also, differentiate between missing suppliers of parent device vs
+> missing suppliers of child devices so that driver core doesn't block
+> parent device probing when only child supplier dependencies are missing.
 >
 > Signed-off-by: Saravana Kannan <saravanak@google.com>
 > ---
->  drivers/of/property.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  drivers/of/property.c | 17 ++++++++++++-----
+>  1 file changed, 12 insertions(+), 5 deletions(-)
+
+Reviewed-by: Rob Herring <robh@kernel.org>
+
+One nit below:
+
 >
 > diff --git a/drivers/of/property.c b/drivers/of/property.c
-> index f16f85597ccc..21c9d251318a 100644
+> index 2808832b2e86..f16f85597ccc 100644
 > --- a/drivers/of/property.c
 > +++ b/drivers/of/property.c
-> @@ -1038,6 +1038,7 @@ static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
+> @@ -1032,10 +1032,10 @@ static bool of_is_ancestor_of(struct device_node *test_ancestor,
+>   * - -EINVAL if the supplier link is invalid and should not be created
+>   * - -ENODEV if there is no device that corresponds to the supplier phandle
+>   */
+> -static int of_link_to_phandle(struct device *dev, struct device_node *sup_np)
+> +static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
+> +                             u32 dl_flags)
+>  {
 >         struct device *sup_dev;
+> -       u32 dl_flags = DL_FLAG_AUTOPROBE_CONSUMER;
 >         int ret = 0;
 >         struct device_node *tmp_np = sup_np;
-> +       int is_populated;
 >
->         of_node_get(sup_np);
->         /*
-> @@ -1062,9 +1063,10 @@ static int of_link_to_phandle(struct device *dev, struct device_node *sup_np,
->                 return -EINVAL;
->         }
->         sup_dev = get_dev_from_fwnode(&sup_np->fwnode);
-> +       is_populated = of_node_check_flag(sup_np, OF_POPULATED);
->         of_node_put(sup_np);
->         if (!sup_dev)
-> -               return -EAGAIN;
-> +               return is_populated ? 0 : -EAGAIN;
+> @@ -1195,13 +1195,20 @@ static int of_link_property(struct device *dev, struct device_node *con_np,
+>         unsigned int i = 0;
+>         bool matched = false;
+>         int ret = 0;
+> +       u32 dl_flags;
+> +
+> +       if (dev->of_node == con_np)
+> +               dl_flags = DL_FLAG_AUTOPROBE_CONSUMER;
+> +       else
+> +               dl_flags = DL_FLAG_SYNC_STATE_ONLY;
+>
+>         /* Do not stop at first failed link, link all available suppliers. */
+>         while (!matched && s->parse_prop) {
+>                 while ((phandle = s->parse_prop(con_np, prop_name, i))) {
+>                         matched = true;
+>                         i++;
+> -                       if (of_link_to_phandle(dev, phandle) == -EAGAIN)
+> +                       if (of_link_to_phandle(dev, phandle, dl_flags)
+> +                                                               == -EAGAIN)
 
-You're only using the flag in one spot and a comment would be good
-here, so I'd just do:
+nit: I'd just keep this one line or at least move '==' up.
 
-if (of_node_check_flag(sup_np, OF_POPULATED))
-        return 0; /* Early device without a struct device */
-
->         if (!device_link_add(dev, sup_dev, dl_flags))
->                 ret = -EAGAIN;
->         put_device(sup_dev);
+>                                 ret = -EAGAIN;
+>                         of_node_put(phandle);
+>                 }
+> @@ -1219,10 +1226,10 @@ static int of_link_to_suppliers(struct device *dev,
+>
+>         for_each_property_of_node(con_np, p)
+>                 if (of_link_property(dev, con_np, p->name))
+> -                       ret = -EAGAIN;
+> +                       ret = -ENODEV;
+>
+>         for_each_child_of_node(con_np, child)
+> -               if (of_link_to_suppliers(dev, child))
+> +               if (of_link_to_suppliers(dev, child) && !ret)
+>                         ret = -EAGAIN;
+>
+>         return ret;
 > --
 > 2.24.0.rc0.303.g954a862665-goog
 >
