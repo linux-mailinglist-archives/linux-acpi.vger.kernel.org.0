@@ -2,108 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3EBEFFF7
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Nov 2019 15:35:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F02DAF0916
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Nov 2019 23:09:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389096AbfKEOft (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Nov 2019 09:35:49 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:6156 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730671AbfKEOft (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 5 Nov 2019 09:35:49 -0500
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 6651DD1F6090D5C4B9CC;
-        Tue,  5 Nov 2019 22:35:46 +0800 (CST)
-Received: from [127.0.0.1] (10.177.251.225) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Tue, 5 Nov 2019
- 22:35:39 +0800
-To:     <rjw@rjwysocki.net>, <lenb@kernel.org>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>,
-        "hushiyuan@huawei.com" <hushiyuan@huawei.com>,
-        "linfeilong@huawei.com" <linfeilong@huawei.com>
-From:   Yunfeng Ye <yeyunfeng@huawei.com>
-Subject: [PATCH] ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100
-Message-ID: <8bdc7a86-e464-9c46-3d40-4f3c75111ce6@huawei.com>
-Date:   Tue, 5 Nov 2019 22:35:25 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1729906AbfKEWJr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Nov 2019 17:09:47 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:44677 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729989AbfKEWJq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Nov 2019 17:09:46 -0500
+Received: by mail-oi1-f196.google.com with SMTP id s71so19065960oih.11;
+        Tue, 05 Nov 2019 14:09:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OkAzPBWAjAe+diVtWjb/mYuOGJLL+Yx2Cib7q7L6uYw=;
+        b=qk0zMj4SybdQcDCRbZ4o93JfvlHr0TNkAqypFEY5xRUaI9kDk48T5dmIDaGlNt0Bpv
+         Hz9fFzO6Wzof8y0yBR94D9m773qicjKHyzkgC8NbyuvY7YOdSVuIA1hkSg+KIsz2Sjr4
+         KgeanYhl5hm22DlN5ATuG0sPOlg3H+/S8IWXhRGlrddfoEVIcplWZ3Afr9IW9rnnkAWr
+         9kcyAvQUgkAONGNAjDnRwUjEmhhUiOeB3FIY185H6x0O7KHZLqrq/SlZ46Ifqzavznvk
+         hvcUycYvRG+WqOAgPF2rd9AkbTW5aNZK3i7QJcOFQhBQ4A5tyKToG9TsNEHbgKV6awpk
+         VFmw==
+X-Gm-Message-State: APjAAAUWV0oEEk6qxecdQWCZ5QXJKY2QECAzB2A4nF2ecUqx7aO25tAG
+        tCcWGOEZh1L30o95hemw6tc5K+7dxCUGNqTfYMw=
+X-Google-Smtp-Source: APXvYqwuPh7ZhgfFBcsX7RC7HKVF4j3RKFOljgvBfkmpSwFWsVOKP3TQOWZ1doIiK2FwcQKSUOOEe2aEzQOvaWhDplM=
+X-Received: by 2002:aca:c753:: with SMTP id x80mr1029051oif.115.1572991785760;
+ Tue, 05 Nov 2019 14:09:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.251.225]
-X-CFilter-Loop: Reflected
+References: <20191023200233.86616-1-dmitry.torokhov@gmail.com> <20191030224304.GH57214@dtor-ws>
+In-Reply-To: <20191030224304.GH57214@dtor-ws>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 5 Nov 2019 23:09:34 +0100
+Message-ID: <CAJZ5v0iihCMCc9xozdafrxjwH7cXYDMu_Vfx1snYfOEYTYRJVQ@mail.gmail.com>
+Subject: Re: [PATCH v6 00/15] software node: add support for reference properties
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There are two problems after commit 0f27cff8597d ("ACPI: sysfs: Make
-ACPI GPE mask kernel parameter cover all GPEs"):
+On Wed, Oct 30, 2019 at 11:43 PM Dmitry Torokhov
+<dmitry.torokhov@gmail.com> wrote:
+>
+> Hi Rafael,
+>
+> On Wed, Oct 23, 2019 at 01:02:18PM -0700, Dmitry Torokhov wrote:
+> > These series implement "references" properties for software nodes as true
+> > properties, instead of managing them completely separately.
+> >
+> > The first 10 patches are generic cleanups and consolidation and
+> > unification of the existing code; patch #11 implements moving of small
+> > properties inline when copying property entries; patch #12 implements
+> > PROPERTY_ENTRY_REF() and friends; patch #13 converts the user of
+> > references to the property syntax, and patch #14 removes the remains of
+> > references as entities that are managed separately.
+> >
+> > Patch #15 adds unit tests to verify that the handling of property
+> > entries is correct.
+>
+> Do you have any concerns with the series? I think Andy did all the
+> reviewing that he could...
 
-1. ACPI_MASKABLE_GPE_MAX is changed from 0x80 to 0xff, so the check
-condition "gpe > ACPI_MASKABLE_GPE_MAX" is not valid because the type of
-gpe is u8.
+Yes, he did, and he is unconvinced.
 
-2. The size of bitmap is ACPI_MASKABLE_GPE_MAX, so it is not support the
-num 255 for gpe.
+I basically have no problems with patches [1-9/15], so I'm going to
+queue them up for 5.5.
 
-Update the macro ACPI_MASKABLE_GPE_MAX to 0x100, and change the type of
-gpe to u32, also modify the checking condition for gpe.
+Patch [10/15] by itself is kind of pointless IMO, so it'll depend on
+what happens to the rest.
 
-Bye the way, update the docs for kernel parameter acpi_mask_gpe.
-
-Fixes: 0f27cff8597d ("ACPI: sysfs: Make ACPI GPE mask kernel parameter cover all GPEs")
-Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
----
- Documentation/admin-guide/kernel-parameters.txt | 1 +
- drivers/acpi/sysfs.c                            | 8 ++++----
- 2 files changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index a84a83f8881e..dd878e2491e1 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -114,6 +114,7 @@
- 			This facility can be used to prevent such uncontrolled
- 			GPE floodings.
- 			Format: <int>
-+			Support masking of GPEs numbered from 0x00 to 0xff
-
- 	acpi_no_auto_serialize	[HW,ACPI]
- 			Disable auto-serialization of AML methods
-diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-index 75948a3f1a20..3c3302583d78 100644
---- a/drivers/acpi/sysfs.c
-+++ b/drivers/acpi/sysfs.c
-@@ -819,14 +819,14 @@ static ssize_t counter_set(struct kobject *kobj,
-  * interface:
-  *   echo unmask > /sys/firmware/acpi/interrupts/gpe00
-  */
--#define ACPI_MASKABLE_GPE_MAX	0xFF
-+#define ACPI_MASKABLE_GPE_MAX	0x100
- static DECLARE_BITMAP(acpi_masked_gpes_map, ACPI_MASKABLE_GPE_MAX) __initdata;
-
- static int __init acpi_gpe_set_masked_gpes(char *val)
- {
--	u8 gpe;
-+	u32 gpe;
-
--	if (kstrtou8(val, 0, &gpe) || gpe > ACPI_MASKABLE_GPE_MAX)
-+	if (kstrtouint(val, 0, &gpe) || gpe >= ACPI_MASKABLE_GPE_MAX)
- 		return -EINVAL;
- 	set_bit(gpe, acpi_masked_gpes_map);
-
-@@ -838,7 +838,7 @@ void __init acpi_gpe_apply_masked_gpes(void)
- {
- 	acpi_handle handle;
- 	acpi_status status;
--	u8 gpe;
-+	u32 gpe;
-
- 	for_each_set_bit(gpe, acpi_masked_gpes_map, ACPI_MASKABLE_GPE_MAX) {
- 		status = acpi_get_gpe_device(gpe, &handle);
--- 
-2.7.4
-
+Patch [11/15] kind of causes brows to rise, so let me reply to it directly.
