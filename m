@@ -2,228 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D521F0ACF
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2019 01:00:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 609B5F156D
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2019 12:51:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727252AbfKFAA5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Nov 2019 19:00:57 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:39009 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728410AbfKFAA4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Nov 2019 19:00:56 -0500
-Received: by mail-oi1-f193.google.com with SMTP id v138so19312138oif.6
-        for <linux-acpi@vger.kernel.org>; Tue, 05 Nov 2019 16:00:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1hiwhUzBCXtjT83VsDEmYQHpboeTfijrcF+AJ7syBgI=;
-        b=MbXZiQWcxLr/gVCG+4TdqJiu9bk0wCssGuEy3JC0jY361MdKBbNcQEbabZc2GwKXpg
-         cJe54VxnwZZKb1YlthhCkm0wK42efq1vPtHhHFSibIJbMtNoGy6nenFRPVN4rbBfoK57
-         Sw/B3zSfBx1U4OFn9zi9MHGwJIqq6PsVdOnJXsbSzecojJk5vfAXaNJAMdxFCwKm/BII
-         LOPCWctuW8M2PteNbNjrne7FXwL6ZVAzN9ctKGS4erPZxzyqfjx7oE3+/7SEZVIYj7NW
-         a5wspJqTqOcB8e7AGbAznLFYoM2Mb9pHqtF+afn/bSNz+GkvfTZBR16IW96xlpOfT5n9
-         mF8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1hiwhUzBCXtjT83VsDEmYQHpboeTfijrcF+AJ7syBgI=;
-        b=UEGusqOBPxhnkA/JflZgxB3BkJK1athDT2JHTE8u1oVw8L0vWxDLVXdJprwz1ueThw
-         pAeMh6cXwVf2sAxHolyRYCDsFg5YFisQqdCeMFOAWb4wvrYg/H5JS9SDuCN9f4BJIzz8
-         J9caeWXfLHxnEp6jgnddY57qIUg0bvgI2Jwvw0lVwGykKCsuKJ2Pj5gEXZYrPG7YFsbc
-         kj8nuep0tpzGls/UvVCilrfovYu/UIby1cRNHAI/r+BOW2OJL8A0p4mHBkiq1Ojx18rU
-         rCVYGaH0j7YV7FRYwzzERj8z8uArwHUHIFDdTaScWsx4VxeV1dqcqUGg5dl3Z8XHAHW2
-         8vSA==
-X-Gm-Message-State: APjAAAUSVhXWo+XDLGT14VUzrvZ5VBp1TDrEMSfx/0aWGeCGq2gxehoc
-        93LGRi8DK4i/JciwKU5BriMBoyx+DU05AFM+XT8SGQ==
-X-Google-Smtp-Source: APXvYqwzm4wCZExmTT9d9VK+Gdv2LNZ8t/hDnxctzxs8ZILMZJ/1pkogRUEcaomc67Ia7ab9IQrVz0Wbl2XfyNTwQMs=
-X-Received: by 2002:aca:b03:: with SMTP id 3mr1450645oil.24.1572998455036;
- Tue, 05 Nov 2019 16:00:55 -0800 (PST)
+        id S1728550AbfKFLvS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 Nov 2019 06:51:18 -0500
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:21478 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727652AbfKFLvS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Nov 2019 06:51:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1573041077;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=nLEH9lcnH2lSbcqL7i7SMc6euCO54pLcRyPUEa5TIHs=;
+        b=T4rOe7XpacEfq5eKU2Jxr2WGRbw2ljPRrVVy2bCmmYstvMRLwuAcZLYchwBZho8cjlay8E
+        CCnAb1uF2jM0NwvgtAdgDEq5Sbqw1ITsj2fYwqlQ9tmwx9bKP2n06Ws/vnNzPQUJstBzk7
+        8xMKDpAetpCbAIB+VZs94WX1g1cwzz4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-274-pOTk_qxlP06ID003yIQDCw-1; Wed, 06 Nov 2019 06:51:14 -0500
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B55621800D53;
+        Wed,  6 Nov 2019 11:51:12 +0000 (UTC)
+Received: from shalem.localdomain.com (ovpn-116-167.ams2.redhat.com [10.36.116.167])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 5111860BF4;
+        Wed,  6 Nov 2019 11:51:11 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH] gpiolib: acpi: Add Terra Pad 1061 to the run_edge_events_on_boot_blacklist
+Date:   Wed,  6 Nov 2019 12:51:09 +0100
+Message-Id: <20191106115109.119346-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <20191028220027.251605-1-saravanak@google.com> <20191028220027.251605-4-saravanak@google.com>
- <7640808.4Pc6YCm0Y9@kreacher> <CAGETcx9z86d+w7jO8Nnu+R62RrT829rj3FFHW2GvGdSsnoB3og@mail.gmail.com>
- <CAJZ5v0gfgr=y=NYyNHDeOX_JsUa+41LPucovvC5TnOB3HuonTg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gfgr=y=NYyNHDeOX_JsUa+41LPucovvC5TnOB3HuonTg@mail.gmail.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Tue, 5 Nov 2019 16:00:18 -0800
-Message-ID: <CAGETcx-X938BxBeqYD8m8Wrx-hRaXk6EEeR4szh34CS5Sv7EgA@mail.gmail.com>
-Subject: Re: [PATCH v1 3/5] driver core: Allow fwnode_operations.add_links to
- differentiate errors
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        Android Kernel Team <kernel-team@android.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-MC-Unique: pOTk_qxlP06ID003yIQDCw-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 5, 2019 at 3:07 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Tue, Nov 5, 2019 at 11:52 PM Saravana Kannan <saravanak@google.com> wrote:
-> >
-> > Hi Rafael,
-> >
-> > Thanks for the review.
-> >
-> > On Tue, Nov 5, 2019 at 2:43 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
-> > >
-> > > On Monday, October 28, 2019 11:00:24 PM CET Saravana Kannan wrote:
-> > > > When add_links() still has suppliers that it needs to link to in the
-> > > > future, this patch allows it to differentiate between suppliers that are
-> > > > needed for probing vs suppliers that are needed for sync_state()
-> > > > correctness.
-> > >
-> > > I guess you mean that it will return different error codes in the different
-> > > cases.
-> >
-> > Yes.
-> >
-> > >
-> > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > > ---
-> > > >  drivers/base/core.c    | 12 ++++++++----
-> > > >  include/linux/fwnode.h | 13 +++++++++----
-> > > >  2 files changed, 17 insertions(+), 8 deletions(-)
-> > > >
-> > > > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > > > index 48cd43a91ce6..e6d3e6d485da 100644
-> > > > --- a/drivers/base/core.c
-> > > > +++ b/drivers/base/core.c
-> > > > @@ -2297,7 +2297,7 @@ int device_add(struct device *dev)
-> > > >       struct device *parent;
-> > > >       struct kobject *kobj;
-> > > >       struct class_interface *class_intf;
-> > > > -     int error = -EINVAL;
-> > > > +     int error = -EINVAL, fw_ret;
-> > > >       struct kobject *glue_dir = NULL;
-> > > >
-> > > >       dev = get_device(dev);
-> > > > @@ -2413,9 +2413,13 @@ int device_add(struct device *dev)
-> > > >        */
-> > > >       device_link_add_missing_supplier_links();
-> > > >
-> > > > -     if (fwnode_has_op(dev->fwnode, add_links)
-> > > > -         && fwnode_call_int_op(dev->fwnode, add_links, dev))
-> > > > -             device_link_wait_for_mandatory_supplier(dev, true);
-> > > > +     if (fwnode_has_op(dev->fwnode, add_links)) {
-> > >
-> > > fw_ret can be defined here and I'd just call it "ret".
-> >
-> > I thought that style of variable declaration is frowned up in the
-> > kernel coding style.
->
-> Well, I'm not aware of that. :-)
+The Terra Pad 1061 has the usual micro-USB-B id-pin handler, but instead
+of controlling the actual micro-USB-B it turns the 5V boost for the
+tablet's USB-A connector and its keyboard-cover connector off.
 
-I've definitely seen such comments before. So I'll leave fw_ret as is.
-If you and Greg both want to change it to the way you mentioned, I'm
-happy to do it.
+The actual micro-USB-B connector on the tablet is wired for charging only,
+and its id pin is *not* connected to the GPIO which is used for the
+(broken) id-pin event handler in the DSDT.
 
-> > >
-> > > > +             fw_ret = fwnode_call_int_op(dev->fwnode, add_links, dev);
-> > > > +             if (fw_ret == -ENODEV)
-> > > > +                     device_link_wait_for_mandatory_supplier(dev);
-> > > > +             else if (fw_ret)
-> > > > +                     device_link_wait_for_optional_supplier(dev);
-> > > > +     }
-> > > >
-> > > >       bus_probe_device(dev);
-> > > >       if (parent)
-> > > > diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-> > > > index 25bb81f8ded8..a19134eae5a5 100644
-> > > > --- a/include/linux/fwnode.h
-> > > > +++ b/include/linux/fwnode.h
-> > > > @@ -96,10 +96,15 @@ struct fwnode_reference_args {
-> > > >   *           available suppliers.
-> > > >   *
-> > > >   *           Return 0 if device links have been successfully created to all
-> > > > - *           the suppliers of this device or if the supplier information is
-> > > > - *           not known. Return an error if and only if the supplier
-> > > > - *           information is known but some of the suppliers are not yet
-> > > > - *           available to create device links to.
-> > > > + *           the suppliers this device needs to create device links to or if
-> > > > + *           the supplier information is not known.
-> > >
-> > > "the known suppliers of this device or if the supplier information is not known."
-> >
-> > "suppliers it needs to create device links to" is a subset of known
-> > suppliers. There's no requirement that fw needs to create links to ALL
-> > known suppliers. Just a minor distinction.
->
-> That depends on what exactly you mean by "known suppliers".  The
-> suppliers that are not listed by the firmware are not known at this
-> point.
+While at it not only add a comment why the Terra Pad 1061 is on the
+blacklist, but also fix the missing comment for the Minix Neo Z83-4 entry.
 
-Ok, I'll rephrase my comment:
-"suppliers it needs to create device links to" is a subset of listed
-suppliers. There's no requirement that fw needs to create links to ALL
-listed suppliers. For example, I can't think of any reason for
-sync_state() to be necessary for an interrupt controller driver. So,
-fw doesn't need to create device links from consumer to interrupt
-supplier. So I'm being more explicit and saying "the suppliers this
-device needs to create device links to" instead of "the listed
-suppliers of this device".
+Fixes: 61f7f7c8f978 ("gpiolib: acpi: Add gpiolib_acpi_run_edge_events_on_bo=
+ot option and blacklist")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/gpio/gpiolib-acpi.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-Long story short, I wrote the comment this way intentionally and
-changing it to what you suggest makes it inaccurate IMHO. But I'm open
-to other wording suggestions to improve the clarity of this comment.
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index 2911dd6f2625..5372652c38eb 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -1307,11 +1307,28 @@ late_initcall_sync(acpi_gpio_handle_deferred_reques=
+t_irqs);
+=20
+ static const struct dmi_system_id run_edge_events_on_boot_blacklist[] =3D =
+{
+ =09{
++=09=09/*
++=09=09 * The Minix Neo Z83-4 has a micro-USB-B id-pin handler for
++=09=09 * a non existing micro-USB-B connector which puts the HDMI
++=09=09 * DDC pins in GPIO mode, breaking HDMI support.
++=09=09 */
+ =09=09.matches =3D {
+ =09=09=09DMI_MATCH(DMI_SYS_VENDOR, "MINIX"),
+ =09=09=09DMI_MATCH(DMI_PRODUCT_NAME, "Z83-4"),
+ =09=09}
+ =09},
++=09{
++=09=09/*
++=09=09 * The Terra Pad 1061 has a micro-USB-B id-pin handler, which
++=09=09 * instead of controlling the actual micro-USB-B turns the 5V
++=09=09 * boost for its USB-A connector off. The actual micro-USB-B
++=09=09 * connector is wired for charging only.
++=09=09 */
++=09=09.matches =3D {
++=09=09=09DMI_MATCH(DMI_SYS_VENDOR, "Wortmann_AG"),
++=09=09=09DMI_MATCH(DMI_PRODUCT_NAME, "TERRA_PAD_1061"),
++=09=09}
++=09},
+ =09{} /* Terminating entry */
+ };
+=20
+--=20
+2.23.0
 
->
-> > > > + *
-> > > > + *           Return -ENODEV if and only if the suppliers needed for probing
-> > > > + *           the device are not yet available to create device links to.
-> > >
-> > > It would be more precise to say something like this:
-> > >
-> > > "Return -ENODEV if an attempt to create a device link to one of the device's
-> > > suppliers needed for probing it fails."
-> >
-> > "attempt to create a device link to one of the device's suppliers
-> > needed for probing it fails" to me means device_link_add() fails.
-> > But I'm trying to say that it should return an error if the struct
-> > device isn't even there yet.
->
-> OK, so it should be something like "if the supplier device has not
-> been registered yet".
->
-> My point is that "not yet available" is kind of ambiguous.
-
-Agree, the latest suggestion sounds better.
-
-> > > > + *
-> > > > + *           Return -EAGAIN if there are suppliers that need to be linked to
-> > > > + *           that are not yet available but none of those suppliers are
-> > > > + *           necessary for probing this device.
-> > >
-> > > "Return -EAGAIN if attempts to create device links to some of the device's
-> > > suppliers have failed, but those suppliers are not necessary for probing the
-> > > device."
-> >
-> > Same comment as before. The distinction I'm making here is that
-> > -EAGAIN is needed when the struct device itself isn't there.
-> >
-> > Btw, Greg already pulled these into driver-core-next. Let me know if
-> > you want me to send a delta patch to fix any of these comments.
->
-> Well, it's a Greg's call if he has taken the patches, but it also
-> depends on you (if you agree with the comments, it would be prudent to
-> send updates).
-
-I don't mind sending updates at all. Just trying to make sure I follow
-the maintainers' preference in case they don't want trivial (because
-my current ones aren't terrible :)) comment update patches.
-
-Once we agree on all the discussion here, I can send an update patch.
-
-Thanks again for your review.
-
--Saravana
