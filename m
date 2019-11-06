@@ -2,112 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BE22F189B
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2019 15:27:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48423F1A50
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2019 16:47:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728425AbfKFO07 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 6 Nov 2019 09:26:59 -0500
-Received: from mga04.intel.com ([192.55.52.120]:62136 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726945AbfKFO07 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 6 Nov 2019 09:26:59 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Nov 2019 06:26:58 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,275,1569308400"; 
-   d="scan'208";a="377062806"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga005.jf.intel.com with ESMTP; 06 Nov 2019 06:26:56 -0800
-Received: from andy by smile with local (Exim 4.93-RC1)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iSMGt-0004JY-LA; Wed, 06 Nov 2019 16:26:55 +0200
-Date:   Wed, 6 Nov 2019 16:26:55 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        id S1727631AbfKFPrX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 Nov 2019 10:47:23 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:33667 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727192AbfKFPrX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Nov 2019 10:47:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1573055243;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=NmN4OJBBm35WbMBR7Y/Z8itvsVjEWg72ApTODlVnx+A=;
+        b=dX2LCnCGtk7dxf1Y/PCUBKKQPo/7VZuqHPorfY7Cc3XVf3ku0cy4BanwlyoCnYYgPodVyk
+        T9W8r+qGmVkE1zXO8bpIR30yeirihoEJ4nMc6hZITluC+C3NV8Gfwm2RqqS2RNltvpgIZk
+        lric5QpuepOPEnaLzxGMSEoE24ybD54=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-202-3bAqftt6OiWXQB1TR-Z_Ug-1; Wed, 06 Nov 2019 10:47:19 -0500
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6EA1C8017E0;
+        Wed,  6 Nov 2019 15:47:18 +0000 (UTC)
+Received: from shalem.localdomain.com (ovpn-116-167.ams2.redhat.com [10.36.116.167])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0125E5D70E;
+        Wed,  6 Nov 2019 15:47:16 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] gpiolib: acpi: Add Terra Pad 1061 to the
- run_edge_events_on_boot_blacklist
-Message-ID: <20191106142655.GD32742@smile.fi.intel.com>
-References: <20191106115109.119346-1-hdegoede@redhat.com>
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH v2 0/3] pinctrl: cherryview: Pass irqchip when adding gpiochip
+Date:   Wed,  6 Nov 2019 16:47:12 +0100
+Message-Id: <20191106154715.155596-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191106115109.119346-1-hdegoede@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-MC-Unique: 3bAqftt6OiWXQB1TR-Z_Ug-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 06, 2019 at 12:51:09PM +0100, Hans de Goede wrote:
-> The Terra Pad 1061 has the usual micro-USB-B id-pin handler, but instead
-> of controlling the actual micro-USB-B it turns the 5V boost for the
-> tablet's USB-A connector and its keyboard-cover connector off.
-> 
-> The actual micro-USB-B connector on the tablet is wired for charging only,
-> and its id pin is *not* connected to the GPIO which is used for the
-> (broken) id-pin event handler in the DSDT.
-> 
-> While at it not only add a comment why the Terra Pad 1061 is on the
-> blacklist, but also fix the missing comment for the Minix Neo Z83-4 entry.
+Hi All,
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Here is v2 of my series for Cherry Trail devices to pass the irqchip when
+adding the gpiochip instead of registering it separately. Similar to how
+this is done for Bay Trail devices in Andy's recent series:
+"[RESEND][PATCH v2 0/7] gpiolib: fix GPIO <-> pin mapping registration".
 
-Thanks!
+Note this series depends on that series as well as on the cherryview change=
+s
+currently queued in pinctrl/intel.git/for-next .
 
-> 
-> Fixes: 61f7f7c8f978 ("gpiolib: acpi: Add gpiolib_acpi_run_edge_events_on_boot option and blacklist")
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/gpio/gpiolib-acpi.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
-> 
-> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-> index 2911dd6f2625..5372652c38eb 100644
-> --- a/drivers/gpio/gpiolib-acpi.c
-> +++ b/drivers/gpio/gpiolib-acpi.c
-> @@ -1307,11 +1307,28 @@ late_initcall_sync(acpi_gpio_handle_deferred_request_irqs);
->  
->  static const struct dmi_system_id run_edge_events_on_boot_blacklist[] = {
->  	{
-> +		/*
-> +		 * The Minix Neo Z83-4 has a micro-USB-B id-pin handler for
-> +		 * a non existing micro-USB-B connector which puts the HDMI
-> +		 * DDC pins in GPIO mode, breaking HDMI support.
-> +		 */
->  		.matches = {
->  			DMI_MATCH(DMI_SYS_VENDOR, "MINIX"),
->  			DMI_MATCH(DMI_PRODUCT_NAME, "Z83-4"),
->  		}
->  	},
-> +	{
-> +		/*
-> +		 * The Terra Pad 1061 has a micro-USB-B id-pin handler, which
-> +		 * instead of controlling the actual micro-USB-B turns the 5V
-> +		 * boost for its USB-A connector off. The actual micro-USB-B
-> +		 * connector is wired for charging only.
-> +		 */
-> +		.matches = {
-> +			DMI_MATCH(DMI_SYS_VENDOR, "Wortmann_AG"),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "TERRA_PAD_1061"),
-> +		}
-> +	},
->  	{} /* Terminating entry */
->  };
->  
-> -- 
-> 2.23.0
-> 
+Changes in v2:
+- Add kerndoc comments for new chv_pinctrl struct members
 
--- 
-With Best Regards,
-Andy Shevchenko
+Regards,
 
+Hans
 
