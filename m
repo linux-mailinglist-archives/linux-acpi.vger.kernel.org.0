@@ -2,106 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E62EF31CA
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2019 15:52:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54BE0F31D3
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2019 15:54:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387673AbfKGOwd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Nov 2019 09:52:33 -0500
-Received: from mga04.intel.com ([192.55.52.120]:5239 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729450AbfKGOwd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 7 Nov 2019 09:52:33 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Nov 2019 06:52:32 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,278,1569308400"; 
-   d="scan'208";a="213035757"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga001.fm.intel.com with SMTP; 07 Nov 2019 06:52:29 -0800
-Received: by lahna (sSMTP sendmail emulation); Thu, 07 Nov 2019 16:52:29 +0200
-Date:   Thu, 7 Nov 2019 16:52:29 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Valerio Passini <passini.valerio@gmail.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Subject: Re: [PATCH] ACPI / hotplug / PCI: Allocate resources directly under
- the non-hotplug bridge
-Message-ID: <20191107145229.GT2552@lahna.fi.intel.com>
-References: <20191107140259.GN2552@lahna.fi.intel.com>
- <20191107144055.GA94678@google.com>
+        id S2388166AbfKGOyb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Nov 2019 09:54:31 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:63452 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387870AbfKGOya (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Nov 2019 09:54:30 -0500
+Received: from 79.184.254.83.ipv4.supernova.orange.pl (79.184.254.83) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.292)
+ id 2b552d6f1ba461aa; Thu, 7 Nov 2019 15:54:28 +0100
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc:     linux-mm@kvack.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        x86@kernel.org, Keith Busch <keith.busch@intel.com>,
+        jglisse@redhat.com, linuxarm@huawei.com,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH V5 1/4] ACPI: Support Generic Initiator only domains
+Date:   Thu, 07 Nov 2019 15:54:28 +0100
+Message-ID: <1768519.laKBN70clK@kreacher>
+In-Reply-To: <20191018134656.00000f70@huawei.com>
+References: <20191004114330.104746-1-Jonathan.Cameron@huawei.com> <1895971.7mY3IlW731@kreacher> <20191018134656.00000f70@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191107144055.GA94678@google.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 07, 2019 at 08:40:55AM -0600, Bjorn Helgaas wrote:
-> On Thu, Nov 07, 2019 at 04:02:59PM +0200, Mika Westerberg wrote:
-> > On Thu, Nov 07, 2019 at 07:52:46AM -0600, Bjorn Helgaas wrote:
-> > > > > What would happen if a device below one of the non-hotplug
-> > > > > bridges, e.g., 3a:00.0, had an I/O BAR?  Would this patch
-> > > > > still work?
-> > > > 
-> > > > I think it would still work because now we call
-> > > > pci_bus_size_bridges() only for non-hotplug bridge which do not
-> > > > have I/O window open so pbus_size_io() fails to find the "free"
-> > > > I/O resource on that bus and the kernel then fails to assign
-> > > > that I/O resource for the device.
+On Friday, October 18, 2019 2:46:56 PM CET Jonathan Cameron wrote:
+> On Fri, 18 Oct 2019 12:18:33 +0200
+> "Rafael J. Wysocki" <rjw@rjwysocki.net> wrote:
+> 
+> > On Friday, October 4, 2019 1:43:27 PM CEST Jonathan Cameron wrote:
+> > > Generic Initiators are a new ACPI concept that allows for the
+> > > description of proximity domains that contain a device which
+> > > performs memory access (such as a network card) but neither
+> > > host CPU nor Memory.
 > > > 
-> > > Not sure I understand; are you saying that we wouldn't have the
-> > > EC/GPE issue, but we'd be unable to use a device below 3a:00.0
-> > > that happened to have an I/O BAR?
+> > > This patch has the parsing code and provides the infrastructure
+> > > for an architecture to associate these new domains with their
+> > > nearest memory processing node.
+> > > 
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
 > > 
-> > Yes.
+> > This depends on the series from Dan at:
 > > 
-> > > That doesn't sound optimal because there is I/O space available
-> > > that could be routed to 3a:00.0
+> > https://lore.kernel.org/linux-acpi/CAPcyv4gBSX58CWH4HZ28w0_cZRzJrhgdEFHa2g8KDqyv8aFqZQ@mail.gmail.com/T/#m1acce3ae8f29f680c0d95fd1e840e703949fbc48
 > > 
-> > If the none of the upstream bridges up to the PCIe root port does
-> > not have I/O window open, I don't think we can do much about it.
-> > Unless I'm missing something of course.
+> Hi Rafael,
 > 
-> The path to this hypothetical 3a:00.0 device is:
+> Yes. Cover letter mentions it was rebased on v4 of that series.
 > 
->   PCI host bridge to bus 0000:00
->   pci_bus 0000:00: root bus resource [io  0x0000-0x0cf7 window]
->   pci_bus 0000:00: root bus resource [io  0x0d00-0xffff window]
->   00:1b.0: Root Port to [bus 02-3a]
->   02:00.0: Switch Upstream Port to [bus 03-3a]
->   03:02.0: Switch Downstream Port to [bus 3a]
->   3a:00.0: reg 0x10: [io  0x????-0x????]
+> > AFAICS, so please respin when that one hits the Linus' tree.
 > 
-> None of the bridges (00:1b.0, 02:00.0, 03:02.0) currently has an open
-> I/O window, but there's space available on bus 00 and windows *could*
-> be opened.
+> Sure, though that pushes it out another cycle and it's beginning to
+> get a bit silly (just rebases since April).
+> 
+> I guess it can't be helped given the series hits several trees.
 
-Right.
+I've just applied the Dan's series and I can take patch [1/4] from this one,
+but for the [2-3/4] I'd like to get some ACKs from the arm64 and x86 people
+respectively.
 
-> I guess it comes down to that ordering problem: this Notify() and
-> acpiphp_native_scan_bridge() happens before pnp/system.c reserves
-> things, so we don't yet know what space is actually available.
+Thanks!
 
-Yes, exactly. The some parts of the range 0x0d00-0xffff belongs to
-PNP/ACPI so if we open the window now it might stomp over some crucial
-ACPI resources.
 
-> If firmware had configured I/O windows for these bridges, 3a:00.0
-> would probably work.  But it doesn't seem right that we would depend
-> on that firmware configuration.
 
-Well, if firmware has configured the topology in such way I think we
-should at least try to trust it is intentional. Even if the (PCIe)
-device might have an I/O BAR it should work without it (only legacy
-endpoints are allowed to create I/O requests, althought many non-legacy
-seem to include I/O BAR).
