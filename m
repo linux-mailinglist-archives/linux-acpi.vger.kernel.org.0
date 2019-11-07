@@ -2,33 +2,46 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3C33F2302
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2019 01:05:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AE25F23FC
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2019 02:07:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727498AbfKGAFP convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 6 Nov 2019 19:05:15 -0500
-Received: from ns.otock.info ([211.1.225.14]:50949 "EHLO ns.otock.info"
+        id S1728041AbfKGBHI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 Nov 2019 20:07:08 -0500
+Received: from gate.crashing.org ([63.228.1.57]:39135 "EHLO gate.crashing.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727296AbfKGAFP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 6 Nov 2019 19:05:15 -0500
-X-Greylist: delayed 518 seconds by postgrey-1.27 at vger.kernel.org; Wed, 06 Nov 2019 19:05:15 EST
-Received: (qmail 17731 invoked from network); 7 Nov 2019 08:47:20 +0900
-Received: from unknown (HELO illumi-garden.com) (178.158.10.197)
-  by illumi-garden.com with ESMTPA; 7 Nov 2019 08:47:19 +0900
-From:   "Mark Underwood" <basicmark@illumi-garden.com>
-Content-Type: text/plain;
-        charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Mime-Version: 1.0 (1.0)
-Subject: 
-Message-Id: <9ABA2FB3-A793-476D-F819-A0AF50884DEE@illumi-garden.com>
-Date:   Wed, 6 Nov 2019 18:51:56 -0500
-To:     "linux acpi" <linux-acpi@vger.kernel.org>
-Reply-To: "Mark Underwood" <basicmarkr@yahoo.com>
-X-Mailer: iPhone Mail (15C153)
+        id S1725989AbfKGBHI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 6 Nov 2019 20:07:08 -0500
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id xA715jlv031273;
+        Wed, 6 Nov 2019 19:05:46 -0600
+Message-ID: <50469ff0f7f7fb8513bf4daed018c2d96503e27a.camel@kernel.crashing.org>
+Subject: Re: [PATCH] ACPI / hotplug / PCI: Allocate resources directly under
+ the non-hotplug bridge
+From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Valerio Passini <passini.valerio@gmail.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
+Date:   Wed, 06 Nov 2019 17:05:45 -0800
+In-Reply-To: <20191106232405.GA242013@google.com>
+References: <20191106232405.GA242013@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Linux    https://surl.me/mm3i     Mark Underwood
+On Wed, 2019-11-06 at 17:24 -0600, Bjorn Helgaas wrote:
+> [+cc Ben]
+
+Note: I'm travelling this week, I'll try to have a look in the next few
+days but can't promise.
+
+Cheers,
+Ben.
+
