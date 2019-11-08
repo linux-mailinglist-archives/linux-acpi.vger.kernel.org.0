@@ -2,39 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC0E4F4852
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2019 12:56:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9D78F495B
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2019 13:02:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388511AbfKHL4E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Nov 2019 06:56:04 -0500
-Received: from mail.kernel.org ([198.145.29.99]:32966 "EHLO mail.kernel.org"
+        id S2390273AbfKHLnA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Nov 2019 06:43:00 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57272 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391161AbfKHLpk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 8 Nov 2019 06:45:40 -0500
+        id S2390256AbfKHLm7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 8 Nov 2019 06:42:59 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1E1C720656;
-        Fri,  8 Nov 2019 11:45:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E3C85222C6;
+        Fri,  8 Nov 2019 11:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573213539;
-        bh=d999pwMigJEppsr13vUh55zksJ5+AulgB9PyRUebJXw=;
+        s=default; t=1573213378;
+        bh=iPEPDvHbozR84hkIztkr8rhaoWmU3zId6OhRs5uz0Ik=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oBtak9kyEZJXGaSfrZkWpHhB8f3GDozMFWRo/say8G+YD12LvkPZTAfelX19epIdo
-         nqZOU0cyjzaH481qaeGkN7Uw9X/zchYa8hZihZZR/CaTS8qvcSxV/Jh8a9EONd4yl8
-         3VJMOE9tncJHmXHbDRQsEXFgDH3f56VsxkV0pE9E=
+        b=b0RfyYkSnEHLKSK+ZKn7WpLjWZjA6Q/YP+Jjm9x1tc2rUNwjDHy7/ZJSM/1dIKKAT
+         B0rEqMyZLhuK1wmOhsjSYI73qBcQkzZ3Oz7MpoITX/KOPWyVYz6cxfGY0PmpoJ1O75
+         jqZotgUQvVR5p9g9BEKugVQ0yXkR8a18pSXS1Iyo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 102/103] ACPI / LPSS: Exclude I2C busses shared with PUNIT from pmc_atom_d3_mask
-Date:   Fri,  8 Nov 2019 06:43:07 -0500
-Message-Id: <20191108114310.14363-102-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 202/205] ACPI / LPSS: Exclude I2C busses shared with PUNIT from pmc_atom_d3_mask
+Date:   Fri,  8 Nov 2019 06:37:49 -0500
+Message-Id: <20191108113752.12502-202-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191108114310.14363-1-sashal@kernel.org>
-References: <20191108114310.14363-1-sashal@kernel.org>
+In-Reply-To: <20191108113752.12502-1-sashal@kernel.org>
+References: <20191108113752.12502-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -72,10 +72,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 20 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-index 51592dd45b066..1ab8d7223b252 100644
+index c651e206d7960..7eda27d43b482 100644
 --- a/drivers/acpi/acpi_lpss.c
 +++ b/drivers/acpi/acpi_lpss.c
-@@ -98,6 +98,9 @@ struct lpss_private_data {
+@@ -99,6 +99,9 @@ struct lpss_private_data {
  	u32 prv_reg_ctx[LPSS_PRV_REG_COUNT];
  };
  
@@ -85,7 +85,7 @@ index 51592dd45b066..1ab8d7223b252 100644
  /* LPSS run time quirks */
  static unsigned int lpss_quirks;
  
-@@ -174,6 +177,21 @@ static void byt_pwm_setup(struct lpss_private_data *pdata)
+@@ -175,6 +178,21 @@ static void byt_pwm_setup(struct lpss_private_data *pdata)
  
  static void byt_i2c_setup(struct lpss_private_data *pdata)
  {
@@ -107,7 +107,7 @@ index 51592dd45b066..1ab8d7223b252 100644
  	lpss_deassert_reset(pdata);
  
  	if (readl(pdata->mmio_base + pdata->dev_desc->prv_offset))
-@@ -789,7 +807,7 @@ static void lpss_iosf_enter_d3_state(void)
+@@ -894,7 +912,7 @@ static void lpss_iosf_enter_d3_state(void)
  	 * Here we read the values related to LPSS power island, i.e. LPSS
  	 * devices, excluding both LPSS DMA controllers, along with SCC domain.
  	 */
@@ -116,7 +116,7 @@ index 51592dd45b066..1ab8d7223b252 100644
  	int ret;
  
  	ret = pmc_atom_read(PMC_FUNC_DIS, &func_dis);
-@@ -807,7 +825,7 @@ static void lpss_iosf_enter_d3_state(void)
+@@ -912,7 +930,7 @@ static void lpss_iosf_enter_d3_state(void)
  	 * Shutdown both LPSS DMA controllers if and only if all other devices
  	 * are already in D3hot.
  	 */
