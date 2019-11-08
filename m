@@ -2,33 +2,34 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BA45F3C7A
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2019 01:04:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F25F3C88
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2019 01:06:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726094AbfKHAEf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Nov 2019 19:04:35 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:48860 "EHLO
+        id S1726094AbfKHAF7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Nov 2019 19:05:59 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:48637 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725940AbfKHAEe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Nov 2019 19:04:34 -0500
+        with ESMTP id S1725906AbfKHAF7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Nov 2019 19:05:59 -0500
 Received: from 79.184.254.83.ipv4.supernova.orange.pl (79.184.254.83) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.292)
- id 4b51c36d0c6d2e90; Fri, 8 Nov 2019 01:04:31 +0100
+ id 657f9753bd504601; Fri, 8 Nov 2019 01:05:55 +0100
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v6 11/15] software node: move small properties inline when copying
-Date:   Fri, 08 Nov 2019 01:04:31 +0100
-Message-ID: <3310518.lfHdziMng4@kreacher>
-In-Reply-To: <20191105235656.GW57214@dtor-ws>
-References: <20191023200233.86616-1-dmitry.torokhov@gmail.com> <47671501.dVG71sAca0@kreacher> <20191105235656.GW57214@dtor-ws>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Android Kernel Team <kernel-team@android.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v1 2/5] driver core: Allow a device to wait on optional suppliers
+Date:   Fri, 08 Nov 2019 01:05:55 +0100
+Message-ID: <2876287.EbKXPN90gv@kreacher>
+In-Reply-To: <CAGETcx9KSwXgrc0PaWQtBuiET-0ts9HNgjzRcioewjqzjuQGSg@mail.gmail.com>
+References: <20191028220027.251605-1-saravanak@google.com> <1593797.btdyhENphq@kreacher> <CAGETcx9KSwXgrc0PaWQtBuiET-0ts9HNgjzRcioewjqzjuQGSg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -37,103 +38,126 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wednesday, November 6, 2019 12:56:56 AM CET Dmitry Torokhov wrote:
-> Hi Rafael,
-> 
-> On Wed, Nov 06, 2019 at 12:42:02AM +0100, Rafael J. Wysocki wrote:
-> > On Wednesday, October 23, 2019 10:02:29 PM CET Dmitry Torokhov wrote:
-> > > When copying/duplicating set of properties, move smaller properties that
-> > > were stored separately directly inside property entry structures. We can
-> > > move:
-> > > 
-> > > - up to 8 bytes from U8 arrays
-> > > - up to 4 words
-> > > - up to 2 double words
-> > > - one U64 value
-> > > - one or 2 strings.
-> > 
-> > Yes, we can do that, but how much of a difference does this really make?
-> 
-> Arguably not much I think, but it was pretty cheap to do.
-> 
-> > 
-> > Also, how can one distinguish between a single-value property and an inline
-> > array which this change?  By looking at the length?
-> 
-> We do not really need to distinguish between the 2. The device
-> properties API is typically wrap single values around arrays (i.e. it is
-> perfectly fine to use scalar API to fetch first element of array and use
-> array API to fetch a scalar). So we have property of certain type with
-> certain number of elements, and it can either be stored inside
-> property_entry structure, or outside of it. They are 2 orthogonal
-> concepts.
-> 
-> > 
-> > > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+On Tuesday, November 5, 2019 11:35:28 PM CET Saravana Kannan wrote:
+> Looks like I squashed/rebased a bit incorrectly. It's fixed in the
+> next patch in the series.
+
+Well, that still is somewhat bisection-unfriendly.
+
+> On Tue, Nov 5, 2019 at 2:29 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+> >
+> > On Monday, October 28, 2019 11:00:23 PM CET Saravana Kannan wrote:
+> > > Before this change, if a device is waiting on suppliers, it's assumed
+> > > that all those suppliers are needed for the device to probe
+> > > successfully. This change allows marking a devices as waiting only on
+> > > optional suppliers. This allows a device to wait on suppliers (and link
+> > > to them as soon as they are available) without preventing the device
+> > > from being probed.
+> > >
+> > > Signed-off-by: Saravana Kannan <saravanak@google.com>
 > > > ---
-> > >  drivers/base/swnode.c | 10 ++++++++++
-> > >  1 file changed, 10 insertions(+)
-> > > 
-> > > diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-> > > index 18a30fb3cc58..49e1108aa4b7 100644
-> > > --- a/drivers/base/swnode.c
-> > > +++ b/drivers/base/swnode.c
-> > > @@ -280,6 +280,16 @@ static int property_entry_copy_data(struct property_entry *dst,
-> > >  	if (!dst->name)
-> > >  		goto out_free_data;
-> > >  
-> > > +	if (!dst->is_inline && dst->length <= sizeof(dst->value)) {
-> > > +		/* We have an opportunity to move the data inline */
-> > > +		const void *tmp = dst->pointer;
+> > >  drivers/base/core.c    | 28 +++++++++++++++++++++++++---
+> > >  include/linux/device.h |  3 +++
+> > >  2 files changed, 28 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > > index 17ed054c4132..48cd43a91ce6 100644
+> > > --- a/drivers/base/core.c
+> > > +++ b/drivers/base/core.c
+> > > @@ -480,13 +480,25 @@ EXPORT_SYMBOL_GPL(device_link_add);
+> > >   * This function is NOT meant to be called from the probe function of the
+> > >   * consumer but rather from code that creates/adds the consumer device.
+> > >   */
+> > > -static void device_link_wait_for_supplier(struct device *consumer)
+> > > +static void device_link_wait_for_supplier(struct device *consumer,
+> > > +                                       bool need_for_probe)
+> > >  {
+> > >       mutex_lock(&wfs_lock);
+> > >       list_add_tail(&consumer->links.needs_suppliers, &wait_for_suppliers);
+> > > +     consumer->links.need_for_probe = need_for_probe;
+> > >       mutex_unlock(&wfs_lock);
+> > >  }
+> > >
+> > > +static void device_link_wait_for_mandatory_supplier(struct device *consumer)
+> > > +{
+> > > +     device_link_wait_for_supplier(consumer, true);
+> > > +}
 > > > +
-> > > +		memcpy(&dst->value, tmp, dst->length);
-> > > +		dst->is_inline = true;
+> > > +static void device_link_wait_for_optional_supplier(struct device *consumer)
+> > > +{
+> > > +     device_link_wait_for_supplier(consumer, false);
+> > > +}
 > > > +
-> > > +		kfree(tmp);
-> > 
-> > This would have been more useful if we had been able to avoid making the
-> > allocation altogether.
+> > >  /**
+> > >   * device_link_add_missing_supplier_links - Add links from consumer devices to
+> > >   *                                       supplier devices, leaving any
+> > > @@ -656,7 +668,8 @@ int device_links_check_suppliers(struct device *dev)
+> > >        * probe.
+> > >        */
+> > >       mutex_lock(&wfs_lock);
+> > > -     if (!list_empty(&dev->links.needs_suppliers)) {
+> > > +     if (!list_empty(&dev->links.needs_suppliers) &&
+> > > +         dev->links.need_for_probe) {
+> > >               mutex_unlock(&wfs_lock);
+> > >               return -EPROBE_DEFER;
+> > >       }
+> > > @@ -760,6 +773,15 @@ void device_links_driver_bound(struct device *dev)
+> > >  {
+> > >       struct device_link *link;
+> > >
+> > > +     /*
+> > > +      * If a device probes successfully, it's expected to have created all
+> > > +      * the device links it needs to or make new device links as it needs
+> > > +      * them. So, it no longer needs to wait on any suppliers.
+> > > +      */
+> > > +     mutex_lock(&wfs_lock);
+> > > +     list_del_init(&dev->links.needs_suppliers);
+> > > +     mutex_unlock(&wfs_lock);
+> > > +
+> > >       device_links_write_lock();
+> > >
+> > >       list_for_each_entry(link, &dev->links.consumers, s_node) {
+> > > @@ -2393,7 +2415,7 @@ int device_add(struct device *dev)
+> > >
+> > >       if (fwnode_has_op(dev->fwnode, add_links)
+> > >           && fwnode_call_int_op(dev->fwnode, add_links, dev))
+> > > -             device_link_wait_for_supplier(dev);
+> > > +             device_link_wait_for_mandatory_supplier(dev, true);
+> >
+> > Does this compile even?
+> >
+> > The function takes one argument according to the definition above ...
+> >
+> > >       bus_probe_device(dev);
+> > >       if (parent)
+> > > diff --git a/include/linux/device.h b/include/linux/device.h
+> > > index f1f2aa0b19da..4fd33da9a848 100644
+> > > --- a/include/linux/device.h
+> > > +++ b/include/linux/device.h
+> > > @@ -1156,6 +1156,8 @@ enum dl_dev_state {
+> > >   * @consumers: List of links to consumer devices.
+> > >   * @needs_suppliers: Hook to global list of devices waiting for suppliers.
+> > >   * @defer_sync: Hook to global list of devices that have deferred sync_state.
+> > > + * @need_for_probe: If needs_suppliers is on a list, this indicates if the
+> > > + *               suppliers are needed for probe or not.
+> > >   * @status: Driver status information.
+> > >   */
+> > >  struct dev_links_info {
+> > > @@ -1163,6 +1165,7 @@ struct dev_links_info {
+> > >       struct list_head consumers;
+> > >       struct list_head needs_suppliers;
+> > >       struct list_head defer_sync;
+> > > +     bool need_for_probe;
+> > >       enum dl_dev_state status;
+> > >  };
+> > >
+> > >
+> >
+> >
+> >
+> >
 > 
-> OK, I can do that and re-send this patch and the one with the tests.
 
-But if you do that, IMO it would be prudent to extend the definition of
-struct property_entry like this:
-
- struct property_entry {
- 	const char *name;
- 	size_t length;
- 	bool is_array;
- 	enum dev_prop_type type;
- 	union {
- 		union {
- 			const u8 *u8_data;
- 			const u16 *u16_data;
- 			const u32 *u32_data;
- 			const u64 *u64_data;
- 			const char * const *str;
- 		} pointer;
- 		union {
- 			u8 u8_data;
- 			u16 u16_data;
- 			u32 u32_data;
- 			u64 u64_data;
- 			const char *str;
-+			u8 u8_buf[sizeof(u64)];
-+			u16 u16_buf[sizeof(u64)/sizeof(u16)];
-+			u32 u32_buf[sizeof(u64)/sizeof(u32)];
-+			char char_buf[sizeof(u64)];
- 		} value;
- 	};
- };
-
-to make it clear that the value field is going to be used as an array in
-some cases.
-
-> In the mean time, can you please consider patches 12-14?
-
-I cannot find drivers/platform/x86/intel_cht_int33fe_typec.c in the mainline,
-so I cannot apply patch [13/15] now and I'm not sure how useful it would be
-to apply patches [10,12/15] without the other two.
 
 
 
