@@ -2,84 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58DB7F64F1
-	for <lists+linux-acpi@lfdr.de>; Sun, 10 Nov 2019 04:04:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46DAEF6B9A
+	for <lists+linux-acpi@lfdr.de>; Sun, 10 Nov 2019 22:29:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727347AbfKJDDL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 9 Nov 2019 22:03:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56608 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728087AbfKJCsu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 9 Nov 2019 21:48:50 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3DD0D22582;
-        Sun, 10 Nov 2019 02:48:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573354129;
-        bh=nl6Vclgv9ewfJPYnz2RDeFn5PkpJj7SCpo04XJ7eSoY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K761KyJNAI9lCFJ/fswezAVsGirmGY4FzicV1TvT5FVr5YX8eCHybyPhPH0YqUL7Z
-         My8632wnL/bom3QwzuW0rPR8CyKHgLY/1cgIkZ2RVvXuuw82gH0P4oKLylto/iXusf
-         cMLTUaameD0GamS/wYX9JaQkPE2vRAgvTiQAOwmk=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sinan Kaya <okaya@kernel.org>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Sasha Levin <sashal@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 02/66] PCI/ACPI: Correct error message for ASPM disabling
-Date:   Sat,  9 Nov 2019 21:47:41 -0500
-Message-Id: <20191110024846.32598-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191110024846.32598-1-sashal@kernel.org>
-References: <20191110024846.32598-1-sashal@kernel.org>
+        id S1726896AbfKJV3h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 10 Nov 2019 16:29:37 -0500
+Received: from mail-wm1-f45.google.com ([209.85.128.45]:38618 "EHLO
+        mail-wm1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726882AbfKJV3h (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 10 Nov 2019 16:29:37 -0500
+Received: by mail-wm1-f45.google.com with SMTP id z19so11275777wmk.3
+        for <linux-acpi@vger.kernel.org>; Sun, 10 Nov 2019 13:29:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:subject:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=nV4R2l6cwPUGHq6goraRBWuQwlY13oxSS8W/vCdyUik=;
+        b=KTHzmp32TuR8aam/YaVfGDTUuhVn0Xra8w64lvWEw7pm2kf5UE5n4vBPfV0MZ7ROPI
+         EeZ+XIu7k6qZPKw0Doyep8Ho9eBLocbKuQuVpZuaAURxyi3r1pvfak3Yc7paywhfbpZ3
+         ThQrNiD4iYvCVVJrxkdbFI3fg9F/EHoSs+9XEk1GVHj0PSyKyDDLEOD55LdfdU56FfPm
+         QW5R0fxXsHHrsgcPL9wQrcj1zYi7zf6HaWzedZNWm+nr4Soe+YCyK3AZXPgMpsykzevJ
+         nSFj1lTq+I1JaEx2gAwwiWaIGqRdL3voi0TSMCAxl8BSj+x4RlBF5ivZKLZ2NlT0TCLs
+         G86A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=nV4R2l6cwPUGHq6goraRBWuQwlY13oxSS8W/vCdyUik=;
+        b=JE8zxp3RrKZLdNv/M8cqA/GXHB8nNud73LX4AsdT85fQYpcV5LYevSNzzZXeu94GHD
+         Aa4KWKFeZZDn7cGfWhwCLNEfCRbYpaeoS3BB9KPHD9L3/UPmUwRAmPZxW0H6tUnr8xxo
+         qJZ612oSlxxGW5+bUCNPmHoyiMGCNB6fRJfIWP2AW/+o/yWG+2Dnm5PG0ods5f533XoB
+         5yZYJp6RmelZyn6t6UXeFY5flrVmdtQKJMzKuMCRgrx1gSxUe83A8gWDRwa1CkBpNfjM
+         rXG4J71UWBRnc0GCLssPUIpP4p9tQl42/xpZ92jm+6kU8hnjMwsDW0zPjL7YXZzcn9KV
+         9tqA==
+X-Gm-Message-State: APjAAAVAsZv+xADkcG7CgRu7n/59TmxF6iOTQwr67Z5LjYlklwxp+P6r
+        iYIUTbr7EoWfNJ1tlX0TZSo=
+X-Google-Smtp-Source: APXvYqxnYDzLXGxFskTlZ4a5FbYSbxLQFvbuPAsOp6lVryj8NQx5IZ90lPgEiQSwSoED74RV41y2fg==
+X-Received: by 2002:a1c:3b82:: with SMTP id i124mr15166035wma.122.1573421374893;
+        Sun, 10 Nov 2019 13:29:34 -0800 (PST)
+Received: from [192.168.2.202] (pD9E5A712.dip0.t-ipconnect.de. [217.229.167.18])
+        by smtp.gmail.com with ESMTPSA id v10sm26751301wmg.48.2019.11.10.13.29.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 10 Nov 2019 13:29:34 -0800 (PST)
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+Subject: Re: PROBLEM: Calling ObjectType on buffer field reports type integer
+To:     "Schmauss, Erik" <erik.schmauss@intel.com>,
+        "Moore, Robert" <robert.moore@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>
+Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>
+References: <3ef42aa1-196d-f3db-0e5d-2fd84c198242@gmail.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C592D47@ORSMSX122.amr.corp.intel.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C59405C@ORSMSX122.amr.corp.intel.com>
+ <fe4bcc1c-5c15-caa6-ce01-a5df962ff008@gmail.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C5942CA@ORSMSX122.amr.corp.intel.com>
+ <51e156ec-c2ed-84be-13c0-99a213e1d4b7@gmail.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C595C50@ORSMSX122.amr.corp.intel.com>
+ <88077d9c-b2b7-5fc6-37e9-fa12d6aebe73@gmail.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C614AA8@ORSMSX122.amr.corp.intel.com>
+Message-ID: <c6511010-f160-a2ee-1b89-46df051a85e4@gmail.com>
+Date:   Sun, 10 Nov 2019 22:29:33 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CF6A88132359CE47947DB4C6E1709ED53C614AA8@ORSMSX122.amr.corp.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Sinan Kaya <okaya@kernel.org>
 
-[ Upstream commit 1ad61b612b95980a4d970c52022aa01dfc0f6068 ]
+On 7/23/19 1:01 AM, Schmauss, Erik wrote:
+> Sorry about the late response. This slipped through the cracks.
+> I've sent them an email just now and I'll keep you informed
 
-If _OSC execution fails today for platforms without an _OSC entry, code is
-printing a misleading message saying disabling ASPM as follows:
+Hi again,
 
-  acpi PNP0A03:00: _OSC failed (AE_NOT_FOUND); disabling ASPM
+is there any update on this?
 
-We need to ensure that platform supports ASPM to begin with.
+Regards,
 
-Reported-by: Michael Kelley <mikelley@microsoft.com>
-Signed-off-by: Sinan Kaya <okaya@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/pci_root.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-index b66815f35be6b..317ecc2e5757b 100644
---- a/drivers/acpi/pci_root.c
-+++ b/drivers/acpi/pci_root.c
-@@ -454,8 +454,9 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm)
- 	decode_osc_support(root, "OS supports", support);
- 	status = acpi_pci_osc_support(root, support);
- 	if (ACPI_FAILURE(status)) {
--		dev_info(&device->dev, "_OSC failed (%s); disabling ASPM\n",
--			 acpi_format_exception(status));
-+		dev_info(&device->dev, "_OSC failed (%s)%s\n",
-+			 acpi_format_exception(status),
-+			 pcie_aspm_support_enabled() ? "; disabling ASPM" : "");
- 		*no_aspm = 1;
- 		return;
- 	}
--- 
-2.20.1
-
+Maximilian
