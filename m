@@ -2,94 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16277FB8C7
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2019 20:27:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBF7BFB9F9
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2019 21:34:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726979AbfKMT11 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Nov 2019 14:27:27 -0500
-Received: from mga06.intel.com ([134.134.136.31]:57823 "EHLO mga06.intel.com"
+        id S1726628AbfKMUe3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Nov 2019 15:34:29 -0500
+Received: from foss.arm.com ([217.140.110.172]:58006 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726115AbfKMT11 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 13 Nov 2019 14:27:27 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Nov 2019 11:27:26 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,301,1569308400"; 
-   d="scan'208";a="406071628"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga006.fm.intel.com with ESMTP; 13 Nov 2019 11:27:23 -0800
-Received: from andy by smile with local (Exim 4.93-RC1)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iUyIU-0000L0-U9; Wed, 13 Nov 2019 21:27:22 +0200
-Date:   Wed, 13 Nov 2019 21:27:22 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] pinctrl: cherryview: Pass irqchip when adding
- gpiochip
-Message-ID: <20191113192722.GK32742@smile.fi.intel.com>
-References: <20191113190520.305410-1-hdegoede@redhat.com>
- <20191113190520.305410-3-hdegoede@redhat.com>
+        id S1726162AbfKMUe3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 13 Nov 2019 15:34:29 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2ECF57A7;
+        Wed, 13 Nov 2019 12:34:28 -0800 (PST)
+Received: from [10.1.196.37] (e121345-lin.cambridge.arm.com [10.1.196.37])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9CFC03F52E;
+        Wed, 13 Nov 2019 12:34:23 -0800 (PST)
+Subject: Re: [PATCH] dma-mapping: treat dev->bus_dma_mask as a DMA limit
+To:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-ide@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Paul Burton <paulburton@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>, x86@kernel.org,
+        phil@raspberrypi.org, linux-acpi@vger.kernel.org,
+        Ingo Molnar <mingo@redhat.com>,
+        James Hogan <jhogan@kernel.org>, Len Brown <lenb@kernel.org>,
+        devicetree@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+References: <20191113161340.27228-1-nsaenzjulienne@suse.de>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <f74cd8a6-00bf-46c3-8e2e-d278e72d6e0e@arm.com>
+Date:   Wed, 13 Nov 2019 20:34:15 +0000
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191113190520.305410-3-hdegoede@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191113161340.27228-1-nsaenzjulienne@suse.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 13, 2019 at 08:05:20PM +0100, Hans de Goede wrote:
-> We need to convert all old gpio irqchips to pass the irqchip
-> setup along when adding the gpio_chip. For more info see
-> drivers/gpio/TODO.
+On 13/11/2019 4:13 pm, Nicolas Saenz Julienne wrote:
+> Using a mask to represent bus DMA constraints has a set of limitations.
+> The biggest one being it can only hold a power of two (minus one). The
+> DMA mapping code is already aware of this and treats dev->bus_dma_mask
+> as a limit. This quirk is already used by some architectures although
+> still rare.
 > 
-> For chained irqchips this is a pretty straight-forward conversion.
+> With the introduction of the Raspberry Pi 4 we've found a new contender
+> for the use of bus DMA limits, as its PCIe bus can only address the
+> lower 3GB of memory (of a total of 4GB). This is impossible to represent
+> with a mask. To make things worse the device-tree code rounds non power
+> of two bus DMA limits to the next power of two, which is unacceptable in
+> this case.
 > 
-> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> In the light of this, rename dev->bus_dma_mask to dev->bus_dma_limit all
+> over the tree and treat it as such. Note that dev->bus_dma_limit is
+> meant to contain the higher accesible DMA address.
 
->  	struct irq_chip irqchip;
->  	void __iomem *regs;
-> +	unsigned int irq;
->  	unsigned intr_lines[16];
+Neat, you win a "why didn't I do it that way in the first place?" :)
 
-This will conflict with our for-next.
+Looking at it without all the history of previous attempts, this looks 
+entirely reasonable, and definitely a step in the right direction.
 
-> +	if (need_valid_mask)
-> +		chip->irq.init_valid_mask = chv_init_irq_valid_mask;
-> +	chip->irq.init_hw = chv_gpio_irq_init_hw;
-> +	chip->irq.parent_handler = chv_gpio_irq_handler;
-> +	chip->irq.num_parents = 1;
-> +	chip->irq.parents = &pctrl->irq;
-> +	chip->irq.default_type = IRQ_TYPE_NONE;
-> +	chip->irq.handler = handle_bad_irq;
->  
->  	if (!need_valid_mask) {
->  		irq_base = devm_irq_alloc_descs(pctrl->dev, -1, 0,
+[...]
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index 5a7551d060f2..f18827cf96df 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -1097,7 +1097,7 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
+>   		 * Limit coherent and dma mask based on size
+>   		 * retrieved from firmware.
+>   		 */
+> -		dev->bus_dma_mask = mask;
+> +		dev->bus_dma_limit = mask;
 
+Although this preserves the existing behaviour, as in of_dma_configure() 
+we can do better here since we have the original address range to hand. 
+I think it's worth keeping the ACPI and OF paths in sync for minor 
+tweaks like this, rather than letting them diverge unnecessarily.
 
-Perhaps now it makes sense to
+Otherwise, the rest looks OK to me - in principle we could store it as 
+an exclusive limit such that we could then streamline the min_not_zero() 
+tests to just min(mask, limit - 1), but that's probably too clever for 
+its own good.
 
-	if (need_valid_mask) {
-		chip->irq.init_valid_mask = chv_init_irq_valid_mask;
-	} else {
-		irq_base = devm_irq_alloc_descs(pctrl->dev, -1, 0,
-		...
-	}
+Robin.
 
-?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+>   		dev->coherent_dma_mask = mask;
+>   		*dev->dma_mask = mask;
+>   	}
