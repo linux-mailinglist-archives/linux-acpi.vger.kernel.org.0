@@ -2,38 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 793A1FA2F3
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2019 03:07:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19D74FA260
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2019 03:04:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728095AbfKMCAs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Nov 2019 21:00:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56292 "EHLO mail.kernel.org"
+        id S1731012AbfKMCCX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Nov 2019 21:02:23 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58898 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730578AbfKMCAs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 12 Nov 2019 21:00:48 -0500
+        id S1730991AbfKMCCX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 12 Nov 2019 21:02:23 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5A2BC22470;
-        Wed, 13 Nov 2019 02:00:47 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 39D9422469;
+        Wed, 13 Nov 2019 02:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573610448;
-        bh=znLn9LJ2/eO4Ye50gjLxQYVnp33OeM+DWzZHWQSYY7Q=;
+        s=default; t=1573610542;
+        bh=oFxvNZ1hbHppCSTLDNl26gqmoZhX77aU+CZX6kpqLm4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x2CQBAKTco4T9t65q02WLthZYaIRVuw6LC6IMjpx8XZcH9VVjwNiUGse+gOqWAHzs
-         vCkgMIaRUOrVEhciiykqbquLvDrXuvZ/sp4lerDOaOwoUXTVVfDVNfo/20lcV6thUP
-         1NVDbqaB1rVtlVUUgwV6ULJlXCrF4iYcBKrUCCn0=
+        b=EM9aOGeJWgr38N2iofatDlgC/SbKbwd81eSSRBh1eGnYKbs3b569Q1FhvrQdh5aCO
+         UnMgbC/wmMc8DwMFdL/Ynirnbtj7OIqwYjpDicc7IKj7tFH4jHrici4xsMa5yKZFef
+         0aaTgRzVAaYTAa2+45TLdghsI3HjpH9iPwcyjyBc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     =?UTF-8?q?Ronald=20Tschal=C3=A4r?= <ronald@innovation.ch>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 44/68] ACPI / SBS: Fix rare oops when removing modules
-Date:   Tue, 12 Nov 2019 20:59:08 -0500
-Message-Id: <20191113015932.12655-44-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 31/48] ACPI / SBS: Fix rare oops when removing modules
+Date:   Tue, 12 Nov 2019 21:01:14 -0500
+Message-Id: <20191113020131.13356-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191113015932.12655-1-sashal@kernel.org>
-References: <20191113015932.12655-1-sashal@kernel.org>
+In-Reply-To: <20191113020131.13356-1-sashal@kernel.org>
+References: <20191113020131.13356-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -68,10 +68,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 3 insertions(+)
 
 diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index 416953a425109..b9fade7a3bcf4 100644
+index a000ecb995e66..e59f50576f2ae 100644
 --- a/drivers/acpi/osl.c
 +++ b/drivers/acpi/osl.c
-@@ -1126,6 +1126,7 @@ void acpi_os_wait_events_complete(void)
+@@ -1186,6 +1186,7 @@ void acpi_os_wait_events_complete(void)
  	flush_workqueue(kacpid_wq);
  	flush_workqueue(kacpi_notify_wq);
  }
