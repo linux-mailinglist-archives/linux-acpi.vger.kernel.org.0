@@ -2,147 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D625FB78C
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2019 19:29:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 242F0FB81A
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2019 19:53:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728410AbfKMS3p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Nov 2019 13:29:45 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:35246 "EHLO
+        id S1726422AbfKMSxI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Nov 2019 13:53:08 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:24486 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728416AbfKMS3p (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Nov 2019 13:29:45 -0500
+        with ESMTP id S1727216AbfKMSxI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Nov 2019 13:53:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1573669784;
+        s=mimecast20190719; t=1573671187;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=yJo+GhaY79x6EdUITPXkCFJe4srmFXCD64FAwHWcdrY=;
-        b=VN2caMGxisSA6M6ljFzQfQdwQDwIGhOrqmdWcf/VSFEr+gYN/mP4qF2cO3SaNJRGbQxmlz
-        4qVUlu/6WTNNAoNqWQaxmXvaXhHTJ8POnX3MPayoOrjdk6cNGTukHKoTaDGdKFJ9DhCKH9
-        ww7AgDx88fogpr9N/GU1IvqD1HWXOFg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-225-ZXRyYyLSPby-r5Bno3CBuA-1; Wed, 13 Nov 2019 13:29:42 -0500
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 494FE806120;
-        Wed, 13 Nov 2019 18:29:41 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-116-143.ams2.redhat.com [10.36.116.143])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D16D86117F;
-        Wed, 13 Nov 2019 18:29:39 +0000 (UTC)
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=5+HAHo4BNOqRrUG4b1K5kwYbPMXRPwWPUh+sV4jx464=;
+        b=V4LzwybXDUIiuwJ5MPSSHGrpiNcj+O7cEILOf2lfJhiehOQC4niyaRtcyw4w2jWUmm2IPR
+        dGEPGd2r3dsXZdzbvHocEaDE7Alyo+bMi94YU3/tL+k5RnA9HTeJTHZwbO8kYwXJVRsifi
+        DtCKfJQIGVpP/NL8UM+/6kFBhCoDW5c=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-73-TNV5CqJINX21-8PcgjzkOw-1; Wed, 13 Nov 2019 13:53:02 -0500
+Received: by mail-wr1-f70.google.com with SMTP id w9so2224048wrn.9
+        for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2019 10:53:02 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=lOcI/zp+bxBnYkB4CrKpl1njMNwmC2784UB3qltnyqw=;
+        b=okE1WWR4DDVOFSP4KQgwfelTDnt+rW7wuQ7u0kcQ4KTssE2Oj1RAt0CXQDLC9Umnoy
+         Do9gllBP8x3+AphLYw8Dk/L7F43BAqnJjhvMOADVADilARTcrJvNj1XSWGjybtZONFIU
+         4c2SGnLrruDpp30EIdaFNIBgetWURJcx/9osurt7k+Nk2h+5IvACJLHel1Ebz0vgFJKM
+         VHIhL7ED5174Ev3QzkJnjrrNU4aWzYbxVQ2i/tu1feeAUln4uq4LJrjBr1sWh/ZXWLfv
+         +K8im27RO0Vni7SbgtyFVSfz1+ZeJolM3VsgSYJ56XC3pHu2fsOZXPkyFxIsg2qAo5he
+         nFYg==
+X-Gm-Message-State: APjAAAU25LNJG+b8cHRb7kRkAPAFJcBAmNH24lc2ZWFmOfptr5y5yL5L
+        afhnAjNNKkNl/m7UCw5enM5Wikn1OrhE86ujG60CUmyZTDd60uMJfZFYcovHaZqG/CmmTNlJDLw
+        A+cGNjSY5pWPe34KdnWYLEg==
+X-Received: by 2002:a5d:448f:: with SMTP id j15mr1072829wrq.70.1573671181471;
+        Wed, 13 Nov 2019 10:53:01 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxFyZKber1u3LPbNRbr1/dl4EJ6L4KuzEpLv31MGG9lKn4KkBDLP10DXdNtzZYAKEzXmOkqUg==
+X-Received: by 2002:a5d:448f:: with SMTP id j15mr1072814wrq.70.1573671181302;
+        Wed, 13 Nov 2019 10:53:01 -0800 (PST)
+Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
+        by smtp.gmail.com with ESMTPSA id x8sm3942716wrm.7.2019.11.13.10.53.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Nov 2019 10:53:00 -0800 (PST)
+Subject: Re: [PATCH v2 3/3] pinctrl: cherryview: Pass irqchip when adding
+ gpiochip
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+References: <20191106154715.155596-1-hdegoede@redhat.com>
+ <20191106154715.155596-4-hdegoede@redhat.com>
+ <20191106161622.GM32742@smile.fi.intel.com>
+ <20191106161753.GN32742@smile.fi.intel.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-To:     Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-i2c@vger.kernel.org,
-        linux-acpi@vger.kernel.org, youling 257 <youling257@gmail.com>
-Subject: [PATCH v2] i2c: acpi: Force bus speed to 400KHz if a Silead touchscreen is present
-Date:   Wed, 13 Nov 2019 19:29:38 +0100
-Message-Id: <20191113182938.279299-1-hdegoede@redhat.com>
+Message-ID: <46a5e93d-b6d9-8c8d-647b-5a74840cea3d@redhat.com>
+Date:   Wed, 13 Nov 2019 19:52:59 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.0
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-MC-Unique: ZXRyYyLSPby-r5Bno3CBuA-1
+In-Reply-To: <20191106161753.GN32742@smile.fi.intel.com>
+Content-Language: en-US
+X-MC-Unique: TNV5CqJINX21-8PcgjzkOw-1
 X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Many cheap devices use Silead touchscreen controllers. Testing has shown
-repeatedly that these touchscreen controllers work fine at 400KHz, but for
-unknown reasons do not work properly at 100KHz. This has been seen on
-both ARM and x86 devices using totally different i2c controllers.
+Hi,
 
-On some devices the ACPI tables list another device at the same I2C-bus
-as only being capable of 100KHz, testing has shown that these other
-devices work fine at 400KHz (as can be expected of any recent I2C hw).
+On 06-11-2019 17:17, Andy Shevchenko wrote:
+> On Wed, Nov 06, 2019 at 06:16:22PM +0200, Andy Shevchenko wrote:
+>> On Wed, Nov 06, 2019 at 04:47:15PM +0100, Hans de Goede wrote:
+>>> We need to convert all old gpio irqchips to pass the irqchip
+>>> setup along when adding the gpio_chip. For more info see
+>>> drivers/gpio/TODO.
+>>>
+>>> For chained irqchips this is a pretty straight-forward conversion.
+>>
+>>> +=09chip->irq.chip =3D &pctrl->irqchip;
+>>
+>>> +=09if (pctrl->need_valid_mask)
+>>> +=09=09chip->irq.init_valid_mask =3D chv_init_irq_valid_mask;
+>>
+>> I just realize we probably may assign here unconditionally
+>=20
+> Continuing...
+>=20
+>>
+>>> +=09chip->irq.init_hw =3D chv_gpio_irq_init_hw;
+>>> +=09chip->irq.parent_handler =3D chv_gpio_irq_handler;
+>>> +=09chip->irq.num_parents =3D 1;
+>>> +=09chip->irq.parents =3D &pctrl->irq;
+>>> +=09chip->irq.default_type =3D IRQ_TYPE_NONE;
+>>> +=09chip->irq.handler =3D handle_bad_irq;
+>>>  =20
+>>>   =09if (!pctrl->need_valid_mask) {
+>=20
+> And here turn it back to NULL and check the pointer against NULL instead =
+of
+> additional variable.
+>=20
+> What do you think?
 
-This commit makes i2c_acpi_find_bus_speed() always return 400KHz if a
-Silead touchscreen controller is present, fixing the touchscreen not
-working on devices which ACPI tables' wrongly list another device on the
-same bus as only being capable of 100KHz.
+I think that first setting it and then clearing it again is not
+very pretty. But ...
 
-Specifically this fixes the touchscreen on the Jumper EZpad 6 m4 not
-working.
+I do think you are on to something, we can use pctrl->chip.irq.init_valid_m=
+ask
+instead of storing the dmi quirk in the chv_pinctrl struct.
 
-Reported-and-tested-by: youling 257 <youling257@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v2:
--Print a warning when we are forcing the bus to another speed then the
- lowest speed of all devices the DSTD lists on the bus
----
- drivers/i2c/i2c-core-acpi.c | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+Then we can leave the dmi handling as is, and replace later checks for
+the dmi quirk (in callbacks) with a check for pctrl->chip.irq.init_valid_ma=
+sk
+I do believe that that is better then adding a need_validmask member to
+the chv_pinctrl struct, I will prepare a v3 of the series with this change.
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index 9cb2aa1e20ef..af9f3394a4a6 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -39,6 +39,7 @@ struct i2c_acpi_lookup {
- =09int index;
- =09u32 speed;
- =09u32 min_speed;
-+=09u32 force_speed;
- };
-=20
- /**
-@@ -285,6 +286,19 @@ i2c_acpi_match_device(const struct acpi_device_id *mat=
-ches,
- =09return acpi_match_device(matches, &client->dev);
- }
-=20
-+static const struct acpi_device_id i2c_acpi_force_400khz_device_ids[] =3D =
-{
-+=09/*
-+=09 * These Silead touchscreen controllers only work at 400KHz, for
-+=09 * some reason they do not work at 100KHz. On some devices the ACPI
-+=09 * tables list another device at their bus as only being capable
-+=09 * of 100KHz, testing has shown that these other devices work fine
-+=09 * at 400KHz (as can be expected of any recent i2c hw) so we force
-+=09 * the speed of the bus to 400 KHz if a Silead device is present.
-+=09 */
-+=09{ "MSSL1680", 0 },
-+=09{}
-+};
-+
- static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
- =09=09=09=09=09   void *data, void **return_value)
- {
-@@ -303,6 +317,9 @@ static acpi_status i2c_acpi_lookup_speed(acpi_handle ha=
-ndle, u32 level,
- =09if (lookup->speed <=3D lookup->min_speed)
- =09=09lookup->min_speed =3D lookup->speed;
-=20
-+=09if (acpi_match_device_ids(adev, i2c_acpi_force_400khz_device_ids) =3D=
-=3D 0)
-+=09=09lookup->force_speed =3D 400000;
-+
- =09return AE_OK;
- }
-=20
-@@ -340,7 +357,16 @@ u32 i2c_acpi_find_bus_speed(struct device *dev)
- =09=09return 0;
- =09}
-=20
--=09return lookup.min_speed !=3D UINT_MAX ? lookup.min_speed : 0;
-+=09if (lookup.force_speed) {
-+=09=09if (lookup.force_speed !=3D lookup.min_speed)
-+=09=09=09dev_warn(dev, FW_BUG "DSDT wrongly sets I2C bus speed to %d, forc=
-ing it to %d\n",
-+=09=09=09=09 lookup.min_speed, lookup.force_speed);
-+=09=09return lookup.force_speed;
-+=09} else if (lookup.min_speed !=3D UINT_MAX) {
-+=09=09return lookup.min_speed;
-+=09} else {
-+=09=09return 0;
-+=09}
- }
- EXPORT_SYMBOL_GPL(i2c_acpi_find_bus_speed);
-=20
---=20
-2.23.0
+Regards,
+
+Hans
 
