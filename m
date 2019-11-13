@@ -2,163 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB6BFFB85E
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2019 20:05:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16277FB8C7
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2019 20:27:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728431AbfKMTFb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Nov 2019 14:05:31 -0500
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:56205 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728218AbfKMTFb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 13 Nov 2019 14:05:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1573671929;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WsjVbhAU3RZUlTZg0KMR6VNBY0LJs0DeOvWZgA764Ac=;
-        b=JvBQIzWEMJWi0TrngElP07ua/QdXEMmIlG7d9QrPsid8gQQPP+2Xfpu+6i0S39BnnSjWhU
-        f0a4VbiMzteijsx7p4TVp749J+o0DGZh8K6RbIvrOWB0YLDhuj7PkvvhdDn/gwjl+wLIIL
-        z0o0S77c6oMde8zSLosE9FTuGZ3XI5A=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-427-VgnOlNPyPLqFW87wghexJQ-1; Wed, 13 Nov 2019 14:05:28 -0500
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8BA091005500;
-        Wed, 13 Nov 2019 19:05:26 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-116-143.ams2.redhat.com [10.36.116.143])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 1892C100EBCC;
-        Wed, 13 Nov 2019 19:05:24 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        id S1726979AbfKMT11 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Nov 2019 14:27:27 -0500
+Received: from mga06.intel.com ([134.134.136.31]:57823 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726115AbfKMT11 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 13 Nov 2019 14:27:27 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Nov 2019 11:27:26 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,301,1569308400"; 
+   d="scan'208";a="406071628"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga006.fm.intel.com with ESMTP; 13 Nov 2019 11:27:23 -0800
+Received: from andy by smile with local (Exim 4.93-RC1)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1iUyIU-0000L0-U9; Wed, 13 Nov 2019 21:27:22 +0200
+Date:   Wed, 13 Nov 2019 21:27:22 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH v3 3/3] pinctrl: cherryview: Pass irqchip when adding gpiochip
-Date:   Wed, 13 Nov 2019 20:05:20 +0100
-Message-Id: <20191113190520.305410-3-hdegoede@redhat.com>
-In-Reply-To: <20191113190520.305410-1-hdegoede@redhat.com>
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] pinctrl: cherryview: Pass irqchip when adding
+ gpiochip
+Message-ID: <20191113192722.GK32742@smile.fi.intel.com>
 References: <20191113190520.305410-1-hdegoede@redhat.com>
+ <20191113190520.305410-3-hdegoede@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-MC-Unique: VgnOlNPyPLqFW87wghexJQ-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191113190520.305410-3-hdegoede@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-We need to convert all old gpio irqchips to pass the irqchip
-setup along when adding the gpio_chip. For more info see
-drivers/gpio/TODO.
+On Wed, Nov 13, 2019 at 08:05:20PM +0100, Hans de Goede wrote:
+> We need to convert all old gpio irqchips to pass the irqchip
+> setup along when adding the gpio_chip. For more info see
+> drivers/gpio/TODO.
+> 
+> For chained irqchips this is a pretty straight-forward conversion.
+> 
+> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-For chained irqchips this is a pretty straight-forward conversion.
+>  	struct irq_chip irqchip;
+>  	void __iomem *regs;
+> +	unsigned int irq;
+>  	unsigned intr_lines[16];
 
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v2:
-- Add kerneldoc for chv_pinctrl.irq struct member
----
- drivers/pinctrl/intel/pinctrl-cherryview.c | 42 +++++++++++-----------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+This will conflict with our for-next.
 
-diff --git a/drivers/pinctrl/intel/pinctrl-cherryview.c b/drivers/pinctrl/i=
-ntel/pinctrl-cherryview.c
-index dd7d48614b7b..0d8a993f0cee 100644
---- a/drivers/pinctrl/intel/pinctrl-cherryview.c
-+++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
-@@ -149,6 +149,7 @@ struct chv_pin_context {
-  * @chip: GPIO chip in this pin controller
-  * @irqchip: IRQ chip in this pin controller
-  * @regs: MMIO registers
-+ * @irq: Our parent irq
-  * @intr_lines: Stores mapping between 16 HW interrupt wires and GPIO
-  *=09=09offset (in GPIO number space)
-  * @community: Community this pinctrl instance represents
-@@ -165,6 +166,7 @@ struct chv_pinctrl {
- =09struct gpio_chip chip;
- =09struct irq_chip irqchip;
- =09void __iomem *regs;
-+=09unsigned int irq;
- =09unsigned intr_lines[16];
- =09const struct chv_community *community;
- =09u32 saved_intmask;
-@@ -1617,16 +1619,25 @@ static int chv_gpio_probe(struct chv_pinctrl *pctrl=
-, int irq)
- =09chip->add_pin_ranges =3D chv_gpio_add_pin_ranges;
- =09chip->parent =3D pctrl->dev;
- =09chip->base =3D -1;
--=09if (need_valid_mask)
--=09=09chip->irq.init_valid_mask =3D chv_init_irq_valid_mask;
-=20
--=09ret =3D devm_gpiochip_add_data(pctrl->dev, chip, pctrl);
--=09if (ret) {
--=09=09dev_err(pctrl->dev, "Failed to register gpiochip\n");
--=09=09return ret;
--=09}
-+=09pctrl->irq =3D irq;
-+=09pctrl->irqchip.name =3D "chv-gpio";
-+=09pctrl->irqchip.irq_startup =3D chv_gpio_irq_startup;
-+=09pctrl->irqchip.irq_ack =3D chv_gpio_irq_ack;
-+=09pctrl->irqchip.irq_mask =3D chv_gpio_irq_mask;
-+=09pctrl->irqchip.irq_unmask =3D chv_gpio_irq_unmask;
-+=09pctrl->irqchip.irq_set_type =3D chv_gpio_irq_type;
-+=09pctrl->irqchip.flags =3D IRQCHIP_SKIP_SET_WAKE;
-=20
--=09chv_gpio_irq_init_hw(chip);
-+=09chip->irq.chip =3D &pctrl->irqchip;
-+=09if (need_valid_mask)
-+=09=09chip->irq.init_valid_mask =3D chv_init_irq_valid_mask;
-+=09chip->irq.init_hw =3D chv_gpio_irq_init_hw;
-+=09chip->irq.parent_handler =3D chv_gpio_irq_handler;
-+=09chip->irq.num_parents =3D 1;
-+=09chip->irq.parents =3D &pctrl->irq;
-+=09chip->irq.default_type =3D IRQ_TYPE_NONE;
-+=09chip->irq.handler =3D handle_bad_irq;
-=20
- =09if (!need_valid_mask) {
- =09=09irq_base =3D devm_irq_alloc_descs(pctrl->dev, -1, 0,
-@@ -1637,18 +1648,9 @@ static int chv_gpio_probe(struct chv_pinctrl *pctrl,=
- int irq)
- =09=09}
- =09}
-=20
--=09pctrl->irqchip.name =3D "chv-gpio";
--=09pctrl->irqchip.irq_startup =3D chv_gpio_irq_startup;
--=09pctrl->irqchip.irq_ack =3D chv_gpio_irq_ack;
--=09pctrl->irqchip.irq_mask =3D chv_gpio_irq_mask;
--=09pctrl->irqchip.irq_unmask =3D chv_gpio_irq_unmask;
--=09pctrl->irqchip.irq_set_type =3D chv_gpio_irq_type;
--=09pctrl->irqchip.flags =3D IRQCHIP_SKIP_SET_WAKE;
--
--=09ret =3D gpiochip_irqchip_add(chip, &pctrl->irqchip, 0,
--=09=09=09=09   handle_bad_irq, IRQ_TYPE_NONE);
-+=09ret =3D devm_gpiochip_add_data(pctrl->dev, chip, pctrl);
- =09if (ret) {
--=09=09dev_err(pctrl->dev, "failed to add IRQ chip\n");
-+=09=09dev_err(pctrl->dev, "Failed to register gpiochip\n");
- =09=09return ret;
- =09}
-=20
-@@ -1662,8 +1664,6 @@ static int chv_gpio_probe(struct chv_pinctrl *pctrl, =
-int irq)
- =09=09}
- =09}
-=20
--=09gpiochip_set_chained_irqchip(chip, &pctrl->irqchip, irq,
--=09=09=09=09     chv_gpio_irq_handler);
- =09return 0;
- }
-=20
---=20
-2.23.0
+> +	if (need_valid_mask)
+> +		chip->irq.init_valid_mask = chv_init_irq_valid_mask;
+> +	chip->irq.init_hw = chv_gpio_irq_init_hw;
+> +	chip->irq.parent_handler = chv_gpio_irq_handler;
+> +	chip->irq.num_parents = 1;
+> +	chip->irq.parents = &pctrl->irq;
+> +	chip->irq.default_type = IRQ_TYPE_NONE;
+> +	chip->irq.handler = handle_bad_irq;
+>  
+>  	if (!need_valid_mask) {
+>  		irq_base = devm_irq_alloc_descs(pctrl->dev, -1, 0,
+
+
+Perhaps now it makes sense to
+
+	if (need_valid_mask) {
+		chip->irq.init_valid_mask = chv_init_irq_valid_mask;
+	} else {
+		irq_base = devm_irq_alloc_descs(pctrl->dev, -1, 0,
+		...
+	}
+
+?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
