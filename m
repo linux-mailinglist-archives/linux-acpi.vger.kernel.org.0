@@ -2,54 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E684FC903
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Nov 2019 15:36:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C334FC93E
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Nov 2019 15:50:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726930AbfKNOgu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Nov 2019 09:36:50 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:40287 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726263AbfKNOgt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Nov 2019 09:36:49 -0500
-Received: by mail-oi1-f194.google.com with SMTP id 22so5429537oip.7
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Nov 2019 06:36:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eXJ+D6UpPbQWBLTJ7M1XVrpbzC7rh0dCOOBEp6gQIL0=;
-        b=IRHQtHogA4m2uvVBzzBaT65ttDtSfS2JXjGszBBzZAxJxNwYrh2FxBX0cqa9ZWMgrc
-         MpXpVbGUkAJWA/Q3kjawD6nOAZbbIhZVH+CY47WJj6JDKBvWmMzNHs5vvsI8Ay3mZ5zt
-         +98LxIHC98+9Gx2i6RuvCaBsqMZBNd7fn0zNwFqsrgjR6HuXveG+3aajdlWcISz83GPm
-         1LAhbJxYtTR0oIjrUZNWSpPIYVdDX9phCVvHyckHtfZs6p6hvfGnj5EIB9XpSCZYlvea
-         HANcNG+RJzxJD48N+Av7VVqGdNsMDHNnsBy0bs55xyyOGGWf8bjOrMYTU6LQB6HKndpc
-         /EqA==
-X-Gm-Message-State: APjAAAUNPhFtVbtI0A87YlnGI0CWLFKnIJd5HAZHGXsEeG8MyExnfJxm
-        N2P/hANkndjvIRQyaxk3nbKwInSkLrNOQommnSvAQA==
-X-Google-Smtp-Source: APXvYqy3BuoaSuFSP66bzYjYYD0UfGChglC9Ys+P4vhtjHOC5En450PQlOlslOiTfSZ4LwViD556Lq5tDnWzFX9h0mY=
-X-Received: by 2002:aca:c753:: with SMTP id x80mr3581576oif.115.1573742207134;
- Thu, 14 Nov 2019 06:36:47 -0800 (PST)
-MIME-Version: 1.0
+        id S1726567AbfKNOuI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Nov 2019 09:50:08 -0500
+Received: from out2-smtp.messagingengine.com ([66.111.4.26]:34435 "EHLO
+        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726452AbfKNOuH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 14 Nov 2019 09:50:07 -0500
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id 4C00321CBA;
+        Thu, 14 Nov 2019 09:50:07 -0500 (EST)
+Received: from imap2 ([10.202.2.52])
+  by compute5.internal (MEProxy); Thu, 14 Nov 2019 09:50:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=airpost.net; h=
+        mime-version:message-id:in-reply-to:references:date:from:to:cc
+        :subject:content-type; s=fm1; bh=Fr498jAwuhCFDshl+yHP6q34OMawxBO
+        ikAHoTWWFMyo=; b=nzDD6p8n2cph8GQt61hlFokFFUBPSUIXeMyoN+HiBSkxLzF
+        sl1giCyNHTwPICrIFrk3udntdxzPx7/uFI+d3tc0bbvnV+aY2S2fw/5s3Tg+NZO8
+        0Kt2DZodHv7KRSvsgFH5QQhi1Tnika3aat42f0oxvxO0FJB52/n2FQ05tw+1lDoa
+        6mzQ29ZGa2ZoXZc4/a0HA+lmYKGnfaYy7wlID67uFRNmwddKi+FWYhnLoLQ5dDOl
+        P3pvkwcaSn7lXtiG6dRBB3mBpLNHglYPkFVAjiZ0Ry5DH5/b25FzY+U14gB6Ee07
+        tFl+9sh0mIDTZJokreV+awp76AQPG0HQTYcSqNw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=Fr498j
+        AwuhCFDshl+yHP6q34OMawxBOikAHoTWWFMyo=; b=PLwma+t1p32Wb+7zcZKmLA
+        UusIPfwwRhZPp+YfpRKZWCOHEhvsjlmkBRrknJe+JPvQXMmMVu8n6UBC1dNjIOEi
+        qo3ffAqNz6E/nGP4cQwi4Z1b/n13tMsKzaqLkB7mBLhumgsWO0eUo1PwBVEvmNvh
+        bxCZJZD+Kl1JUoswozrIN2uONCEzorwcdiv62FPK6x3YLC2N4zUk2gIsRxZ1sPgB
+        3KC7ROPuLvALeqef5MaUBNMP6YKRBBg+nskBsqMBfgB0C7HMKhNhEvc4v/JkwKmI
+        9Kf8evDlYDhMU6zZyzEGQ5ojo/EG5kXvsqJ9sNl1+8Np2bJdgLqziAdSpO2c25rw
+        ==
+X-ME-Sender: <xms:n2nNXf7cQoNaG0U1Pjo25-jVdX0OkOieLKBfFZe63YJJE6zxsA8W9w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrudeffedgieelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvffutgesthdtredtreertdenucfhrhhomhepfdeurhhu
+    nhhoucffrghnthgrshdfuceokhgvrhhnvghlsegurghnthgrshdrrghirhhpohhsthdrnh
+    gvtheqnecuffhomhgrihhnpehtihhnhigtohhrvghlihhnuhigrdhnvghtnecurfgrrhgr
+    mhepmhgrihhlfhhrohhmpehkvghrnhgvlhesuggrnhhtrghsrdgrihhrphhoshhtrdhnvg
+    htnecuvehluhhsthgvrhfuihiivgeptd
+X-ME-Proxy: <xmx:n2nNXdKWqWJ5Yttsm-htlpTWMDqAUd_fMOdNeTI15nxobzpb4ZN01w>
+    <xmx:n2nNXcUzK4OIIQQz3r-S6_hzMGwn-3yLH8HTIqqNBxJO-eLWxHfFgQ>
+    <xmx:n2nNXR0l3rSIqyBcb7vJuSdfB4lbCjRXAfIlM3ja6XmjDRzZlf90eA>
+    <xmx:n2nNXedixygxwLFTr6v6U65A2U5h29fCm4IEwbAWcIOY-LjTzLOOuw>
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 26636E00A3; Thu, 14 Nov 2019 09:50:07 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.1.7-562-gfd0633a-fmstable-20191114v1
+Mime-Version: 1.0
+Message-Id: <cd3bd414-50c8-4751-8370-6a17b3b338f6@www.fastmail.com>
+In-Reply-To: <CAJZ5v0iZ9pR8ou95q2kQnawWWmuOqpnEivRVx4H12sa4FGveSg@mail.gmail.com>
 References: <b509514b-f831-4288-9852-25385da45c9c@www.fastmail.com>
-In-Reply-To: <b509514b-f831-4288-9852-25385da45c9c@www.fastmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 14 Nov 2019 15:36:36 +0100
-Message-ID: <CAJZ5v0iZ9pR8ou95q2kQnawWWmuOqpnEivRVx4H12sa4FGveSg@mail.gmail.com>
+ <CAJZ5v0iZ9pR8ou95q2kQnawWWmuOqpnEivRVx4H12sa4FGveSg@mail.gmail.com>
+Date:   Thu, 14 Nov 2019 09:49:46 -0500
+From:   "Bruno Dantas" <kernel@dantas.airpost.net>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>
 Subject: Re: how to disable the "button" kernel module?
-To:     Bruno Dantas <kernel@dantas.airpost.net>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 14, 2019 at 3:33 PM Bruno Dantas <kernel@dantas.airpost.net> wrote:
+> Why exactly do you want to disable it?
 >
-> I realize that "button" is a kernel built-in and therefore cannot be disabled via "blacklist=button" boot parameter. So I thought I'd try initcall_blacklist=<function> but I cannot find an obvious module initialization function in button.c
->
-> Please, how would one disable the button module? I'm looking for a method that would not involve recompiling the kernel.
 
-It definitely can be built as a module.
+I'd like to disable it because I want my laptop's lid switch state to be 100% invisible to userland--as if the lid switch were broken and always in the "open" state. All the less drastic attempts I've made at achieving this have failed: 
+http://forum.tinycorelinux.net/index.php/topic,23326.0.html
 
-Why exactly do you want to disable it?
+I realize that disabling the "button" module would likely make my laptop's power button inoperable, but that's okay because I only use the button to power up the laptop, never to power it down.
