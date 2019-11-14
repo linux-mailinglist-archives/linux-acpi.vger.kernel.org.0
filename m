@@ -2,102 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 345CAFC09C
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Nov 2019 08:16:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7DCCFC0C7
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Nov 2019 08:31:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725852AbfKNHQn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Nov 2019 02:16:43 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:6227 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725838AbfKNHQm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 14 Nov 2019 02:16:42 -0500
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 3930F728594AE501539C;
-        Thu, 14 Nov 2019 15:16:40 +0800 (CST)
-Received: from [127.0.0.1] (10.177.251.225) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Thu, 14 Nov 2019
- 15:16:33 +0800
-To:     <rjw@rjwysocki.net>, <lenb@kernel.org>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>,
-        "hushiyuan@huawei.com" <hushiyuan@huawei.com>,
-        "linfeilong@huawei.com" <linfeilong@huawei.com>
-From:   Yunfeng Ye <yeyunfeng@huawei.com>
-Subject: [PATCH v2] ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100
-Message-ID: <cc03ba18-4949-9244-639c-94f461f03361@huawei.com>
-Date:   Thu, 14 Nov 2019 15:16:24 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1725977AbfKNHbW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Nov 2019 02:31:22 -0500
+Received: from mga17.intel.com ([192.55.52.151]:36579 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725852AbfKNHbW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 14 Nov 2019 02:31:22 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Nov 2019 23:31:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,302,1569308400"; 
+   d="scan'208";a="214484238"
+Received: from unknown (HELO [10.237.72.180]) ([10.237.72.180])
+  by fmsmga001.fm.intel.com with ESMTP; 13 Nov 2019 23:31:19 -0800
+Subject: Re: [PATCH v2] i2c: acpi: Force bus speed to 400KHz if a Silead
+ touchscreen is present
+To:     Hans de Goede <hdegoede@redhat.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
+        youling 257 <youling257@gmail.com>
+References: <20191113182938.279299-1-hdegoede@redhat.com>
+From:   Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Message-ID: <69d7f2a2-99fd-2652-1119-89ae7f3ac7f4@linux.intel.com>
+Date:   Thu, 14 Nov 2019 09:31:18 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20191113182938.279299-1-hdegoede@redhat.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.251.225]
-X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The commit 0f27cff8597d ("ACPI: sysfs: Make ACPI GPE mask kernel
-parameter cover all GPEs") says:
-  "Use a bitmap of size 0xFF instead of a u64 for the GPE mask so 256
-   GPEs can be masked"
+Hi
 
-But the masking of GPE 0xFF it not supported and the check condition
-"gpe > ACPI_MASKABLE_GPE_MAX" is not valid because the type of gpe is
-u8.
+On 11/13/19 8:29 PM, Hans de Goede wrote:
+> Many cheap devices use Silead touchscreen controllers. Testing has shown
+> repeatedly that these touchscreen controllers work fine at 400KHz, but for
+> unknown reasons do not work properly at 100KHz. This has been seen on
+> both ARM and x86 devices using totally different i2c controllers.
+> 
+> On some devices the ACPI tables list another device at the same I2C-bus
+> as only being capable of 100KHz, testing has shown that these other
+> devices work fine at 400KHz (as can be expected of any recent I2C hw).
+> 
+> This commit makes i2c_acpi_find_bus_speed() always return 400KHz if a
+> Silead touchscreen controller is present, fixing the touchscreen not
+> working on devices which ACPI tables' wrongly list another device on the
+> same bus as only being capable of 100KHz.
+> 
+> Specifically this fixes the touchscreen on the Jumper EZpad 6 m4 not
+> working.
+> 
+> Reported-and-tested-by: youling 257 <youling257@gmail.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Changes in v2:
+> -Print a warning when we are forcing the bus to another speed then the
+>   lowest speed of all devices the DSTD lists on the bus
+> ---
+>   drivers/i2c/i2c-core-acpi.c | 28 +++++++++++++++++++++++++++-
+>   1 file changed, 27 insertions(+), 1 deletion(-)
+> 
+I think this is the only sane way to go forward, i.e. kernel figures it 
+out not the user needing to have a custom DSDT.
 
-So modify the macro ACPI_MASKABLE_GPE_MAX to 0x100, and drop the "gpe >
-ACPI_MASKABLE_GPE_MAX" check. In addition, update the docs "Format" for
-acpi_mask_gpe parameter.
+Of course there is a small risk some device on the same bus cease 
+working but benefit of this patch is worth of it. Otherwise these 
+touchscreen devices keep not working and getting possible regression 
+increases also knowledge.
 
-Fixes: 0f27cff8597d ("ACPI: sysfs: Make ACPI GPE mask kernel parameter cover all GPEs")
-Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
----
-v1 -> v2:
- - drop the "gpe > ACPI_MASKABLE_GPE_MAX" check
- - update the docs "Format" from <int> to <byte> for acpi_mask_gpe parameter
- - update the commit comment
-
- Documentation/admin-guide/kernel-parameters.txt | 2 +-
- drivers/acpi/sysfs.c                            | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index a84a83f8881e..87e27186dc69 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -113,7 +113,7 @@
- 			the GPE dispatcher.
- 			This facility can be used to prevent such uncontrolled
- 			GPE floodings.
--			Format: <int>
-+			Format: <byte>
-
- 	acpi_no_auto_serialize	[HW,ACPI]
- 			Disable auto-serialization of AML methods
-diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-index 75948a3f1a20..0a83ce186bc4 100644
---- a/drivers/acpi/sysfs.c
-+++ b/drivers/acpi/sysfs.c
-@@ -819,14 +819,14 @@ static ssize_t counter_set(struct kobject *kobj,
-  * interface:
-  *   echo unmask > /sys/firmware/acpi/interrupts/gpe00
-  */
--#define ACPI_MASKABLE_GPE_MAX	0xFF
-+#define ACPI_MASKABLE_GPE_MAX	0x100
- static DECLARE_BITMAP(acpi_masked_gpes_map, ACPI_MASKABLE_GPE_MAX) __initdata;
-
- static int __init acpi_gpe_set_masked_gpes(char *val)
- {
- 	u8 gpe;
-
--	if (kstrtou8(val, 0, &gpe) || gpe > ACPI_MASKABLE_GPE_MAX)
-+	if (kstrtou8(val, 0, &gpe))
- 		return -EINVAL;
- 	set_bit(gpe, acpi_masked_gpes_map);
-
--- 
-2.7.4
-
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
