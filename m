@@ -2,107 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05AB3FC3C2
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Nov 2019 11:13:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC759FC416
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Nov 2019 11:26:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726057AbfKNKNt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Nov 2019 05:13:49 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:25999 "EHLO
+        id S1727022AbfKNK0J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Nov 2019 05:26:09 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:21445 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726024AbfKNKNt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Nov 2019 05:13:49 -0500
+        with ESMTP id S1726655AbfKNK0J (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Nov 2019 05:26:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1573726428;
+        s=mimecast20190719; t=1573727168;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=a53Ydq+aH2LKzD//Y+TJ+HSP6hOxvXXCC2aTaMVmZ58=;
-        b=L/TZ0qUiJ5ASJ2D5tcaADsoXV269kcevS9yf/QWkq7ZzXPVADcaBpNtOxM0nZQh9Mk7JGr
-        wUwNTDAadfzOgyJuXyMJcIu3s6wdFLjhEcKvr/XFtT4ojLchSxvk1pXmtmBaMttYsLkdbT
-        /hcjEjQB1aKj+MqLp9yj4z3uZeVPVUI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-311-8KJKKgU-PsCML9j6kDsaEA-1; Thu, 14 Nov 2019 05:13:45 -0500
-Received: by mail-wm1-f71.google.com with SMTP id t203so3093855wmt.7
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Nov 2019 02:13:44 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=vSmHParZB6JYehXtY9NprOwMmU6fr0JasU3pThGPyJk=;
-        b=rpGGmVuPXcUXpBjj4FU/HIIew19c8nJQ9OJmg4/c2mS+nTuqsnrBrIu2Ua4xPHpxFh
-         xS5j+pBgfgo3VOuwp8fwh85MXySbpuT4jMtkt9qX/zEsmvXmYUEj4V4wXamjkqfVxQ5v
-         7xB3++WESAalsw184g6Tg9HWrDhIUDqFjH+OYzgaxWEFA7ONvCh/30K8AdAHCCyJwJ1Y
-         dEz0PRDmo4UmqftJEILbElo2EHgxsLr18D84+wysxR32r8kaUUi3us9GUzWzbOtpeVz+
-         p0znZ3a7Rz9M3rHJJU775LM1Tx8p7VUckZfGfZLNLrTuhz7zTu2qn50pC7woeeMUbW37
-         N2Pg==
-X-Gm-Message-State: APjAAAWtYhAdmP45W9/PNDTWIZzUSPljI4Csk31uh6uzigDpf/EaH2Zc
-        awFZgrSRDQJlaPBoAnQaY8lP2H8gl4pGDt8NzMWeu6c116FnRs+9CnozyCc7AjkNSZHBwj4uDy6
-        GInYDElNjo4wwCjI7SoUjww==
-X-Received: by 2002:a5d:67ce:: with SMTP id n14mr7238675wrw.67.1573726423843;
-        Thu, 14 Nov 2019 02:13:43 -0800 (PST)
-X-Google-Smtp-Source: APXvYqwdVuoOYYF8UVn4I7LrvyeuyRdpSl0NauUCG6q6YdjAsL6J80NmVO8yGSeFa8MWanIWyn0gDQ==
-X-Received: by 2002:a5d:67ce:: with SMTP id n14mr7238667wrw.67.1573726423698;
-        Thu, 14 Nov 2019 02:13:43 -0800 (PST)
-Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
-        by smtp.gmail.com with ESMTPSA id a11sm5778358wmh.40.2019.11.14.02.13.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Nov 2019 02:13:42 -0800 (PST)
-Subject: Re: [PATCH] gpiolib: acpi: Print pin number on
- acpi_gpiochip_alloc_event errors
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
-References: <20191018195208.94405-1-hdegoede@redhat.com>
- <20191021091124.GK32742@smile.fi.intel.com>
- <f3294033-8105-8c26-a8e2-3ced55276fdb@redhat.com>
- <20191021132345.GT32742@smile.fi.intel.com>
+         content-transfer-encoding:content-transfer-encoding;
+        bh=aGAID/+da5Ux36hJtomZOGJxRYu/UiZIOckzXlQYhlk=;
+        b=YXQtqyW3eR6FonIwZjs0tY3y1HfEXgD+caLm/aFfJQh1DXEnd53VKODL84P9Q1E41WeaO6
+        9+eDIMsgRoAh0t9eslKf8nMDSwJ7C/xo1v86Z+Cc4XTebX7buzE6TlcpiUelgr2oPlPtww
+        DdqjAtteTi9asfzegIK7Ol1La8NafQ4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-305-dwPZsXT0PuqGpy-q71cmMg-1; Thu, 14 Nov 2019 05:26:04 -0500
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AABD11050905;
+        Thu, 14 Nov 2019 10:26:02 +0000 (UTC)
+Received: from shalem.localdomain.com (unknown [10.36.118.128])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 48D2853C28;
+        Thu, 14 Nov 2019 10:26:01 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <9fb1f06c-b641-f2f4-fa60-8bad57cf87d2@redhat.com>
-Date:   Thu, 14 Nov 2019 11:13:42 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.0
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH v2 1/2] gpiolib: acpi: Print pin number on acpi_gpiochip_alloc_event errors
+Date:   Thu, 14 Nov 2019 11:25:59 +0100
+Message-Id: <20191114102600.34558-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20191021132345.GT32742@smile.fi.intel.com>
-Content-Language: en-US
-X-MC-Unique: 8KJKKgU-PsCML9j6kDsaEA-1
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-MC-Unique: dwPZsXT0PuqGpy-q71cmMg-1
 X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Print pin number and error-code on acpi_gpiochip_alloc_event errors,
+to help debugging these.
 
-On 21-10-2019 15:23, Andy Shevchenko wrote:
-> On Mon, Oct 21, 2019 at 02:52:13PM +0200, Hans de Goede wrote:
->> On 21-10-2019 11:11, Andy Shevchenko wrote:
->>> On Fri, Oct 18, 2019 at 09:52:08PM +0200, Hans de Goede wrote:
->>>> Print pin number on acpi_gpiochip_alloc_event errors, to help debuggin=
-g
->>>> these.
->>>
->>> I'm not sure which one is better decimal or hex, perhaps Mika can help =
-me, in any case
->>
->> They are listed as hex in the dis-assembled DSTD.
->=20
-> Oh, now I noticed the potential issue. The pin can be 16-bit, you pring h=
-ere
-> only for the case when we have evname. Maybe do something similar in thes=
-e
-> messages? Print event name for pin inside byte range and value otherwise?
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+Changes in v2:
+-Take into account that pin-number may be 16 bits
+-Also log the error-code
+---
+ drivers/gpio/gpiolib-acpi.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-I'm preparing a v2 now, together with another related, less cosmetic patch.
-I will switch to a 16 bit printf format for v2.
-
-Regards,
-
-Hans
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index 59ccfd24627d..473c3b7508af 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -230,19 +230,25 @@ static acpi_status acpi_gpiochip_alloc_event(struct a=
+cpi_resource *ares,
+ =09desc =3D gpiochip_request_own_desc(chip, pin, "ACPI:Event",
+ =09=09=09=09=09 GPIO_ACTIVE_HIGH, GPIOD_IN);
+ =09if (IS_ERR(desc)) {
+-=09=09dev_err(chip->parent, "Failed to request GPIO\n");
++=09=09dev_err(chip->parent,
++=09=09=09"Failed to request GPIO for pin 0x%04X, err %ld\n",
++=09=09=09pin, PTR_ERR(desc));
+ =09=09return AE_ERROR;
+ =09}
+=20
+ =09ret =3D gpiochip_lock_as_irq(chip, pin);
+ =09if (ret) {
+-=09=09dev_err(chip->parent, "Failed to lock GPIO as interrupt\n");
++=09=09dev_err(chip->parent,
++=09=09=09"Failed to lock GPIO pin 0x%04X as interrupt, err %d\n",
++=09=09=09pin, ret);
+ =09=09goto fail_free_desc;
+ =09}
+=20
+ =09irq =3D gpiod_to_irq(desc);
+ =09if (irq < 0) {
+-=09=09dev_err(chip->parent, "Failed to translate GPIO to IRQ\n");
++=09=09dev_err(chip->parent,
++=09=09=09"Failed to translate GPIO pin 0x%04X to IRQ, err %d\n",
++=09=09=09pin, irq);
+ =09=09goto fail_unlock_irq;
+ =09}
+=20
+--=20
+2.23.0
 
