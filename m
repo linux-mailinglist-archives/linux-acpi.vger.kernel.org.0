@@ -2,82 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ADBBFD468
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Nov 2019 06:33:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 479F7FD882
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Nov 2019 10:11:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726017AbfKOFdL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Nov 2019 00:33:11 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:35632 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725848AbfKOFdL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Nov 2019 00:33:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:
-        Subject:Sender:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=t9pKAk5jRst2KOPoVTJaEkdldG1GZYtYdIn8IcV12jE=; b=rLbh0H8sv9W8oRhKzUW2z9H+u
-        n5pVgq0mv/WTCI7KJ2Ds0H4C3zrEfQR1rJGUVBEsH2IOGmxtH4Iaa0HlNkcP/+g3DjJut9fB0L3Ah
-        L5Aihasn2ELhhJWyFD6sl7n7CLOQ4aih/tdYO09U8Wi/hFRYnrfOtVugQSu/agBAKaG/vE5+tuz4b
-        FR+hoJ5Zj++dL+qO7g/904BUC1e9gRrESPqzpz8AKZevGX9zV2ypTU8K17e+1AJguYDLaYGKMxj2Q
-        Lt9PXy08lhIXy76y9JcT8VvLbMCdxSO1lWsFztCGbPeiybJF8AXhngChIV/MfMl7iFJDH+FSf+Ins
-        GJtmRdqrw==;
-Received: from [2601:1c0:6280:3f0::5a22]
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iVUEJ-0002hA-9w; Fri, 15 Nov 2019 05:33:11 +0000
-Subject: Re: how to disable the button kernel module?
-To:     Bruno GNUser <kernel@dantas.airpost.net>,
-        linux-kernel@vger.kernel.org,
-        ACPI Devel Mailing List <linux-acpi@vger.kernel.org>
-References: <1573732820166-0.post@n7.nabble.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <0780918b-184e-55a6-a439-06403d3777ff@infradead.org>
-Date:   Thu, 14 Nov 2019 21:33:10 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        id S1727001AbfKOJLk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Nov 2019 04:11:40 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:42924 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726996AbfKOJLk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Nov 2019 04:11:40 -0500
+Received: by mail-oi1-f196.google.com with SMTP id x4so67104oie.9;
+        Fri, 15 Nov 2019 01:11:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GhSO1gIvMBthCcIYFaVagEQHsOd7UGLs1OedipoLMqc=;
+        b=lovYERWYyIDeDPf1W/cd2PDl/FK8oMk2Y6HdjVz8fgnehi7vmAgYoMt34tLBHdbwWu
+         Z8eJ/etk2gKpdTPekc8eJ4MQzMndzCSfrjV+nqEe4DkzPsSqop97p+UY5dqMy2BLPptN
+         UrwehvsuEU0mLjdJ90VL4HSBMOM3LHii3VisEhI5cPSDDDEMQBh1yVKigcGLgxZ8W7Us
+         aYF46VQUplDU5vnONA6gq0nLYG+Di8ot4S1YRwIezP8ZKJq5KlhHD/Tab5XGDJ65hmCX
+         frn6zyvkmA+2T4LD04xnU/J5oPcxzMxEO8QX500jMM0P3rmezjUHhSyhOy3SlI48HwvD
+         xz4g==
+X-Gm-Message-State: APjAAAVCnEKdgDxabph32vVKhB6/O7DW8bSP/W+7vY58Ne4B9WkBBr4E
+        mz+G4JpmHvk8T4ZUfhSnYYvaqjVpDl9AoCKCQMsjPMAY
+X-Google-Smtp-Source: APXvYqyWoRPYNz/S8J6cX2/Gzn9hhzRueSIqtaxfybY/4WNLjj/JZ/o5l9hXir/UzAHxM1LOv2DmGlOl8ff62y4W3Zw=
+X-Received: by 2002:aca:1101:: with SMTP id 1mr7335246oir.103.1573809099105;
+ Fri, 15 Nov 2019 01:11:39 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <1573732820166-0.post@n7.nabble.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <1573732820166-0.post@n7.nabble.com> <0780918b-184e-55a6-a439-06403d3777ff@infradead.org>
+In-Reply-To: <0780918b-184e-55a6-a439-06403d3777ff@infradead.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 15 Nov 2019 10:11:28 +0100
+Message-ID: <CAJZ5v0g4iqh22GwTKu51eXiqz-V9aiUwPi-_yyJykR+x0=9V5A@mail.gmail.com>
+Subject: Re: how to disable the button kernel module?
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     Bruno GNUser <kernel@dantas.airpost.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Mailing List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 11/14/19 4:00 AM, Bruno GNUser wrote:
-> I realize that /button/ is a kernel built-in and therefore cannot be disabled
-> via the /blacklist=<module_name>/ boot parameter. So I thought I'd try
-> /initcall_blacklist=<function>/ but I cannot find an obvious module
-> initialization function in button.c
+On Fri, Nov 15, 2019 at 6:33 AM Randy Dunlap <rdunlap@infradead.org> wrote:
+>
+> On 11/14/19 4:00 AM, Bruno GNUser wrote:
+> > I realize that /button/ is a kernel built-in and therefore cannot be disabled
+> > via the /blacklist=<module_name>/ boot parameter. So I thought I'd try
+> > /initcall_blacklist=<function>/ but I cannot find an obvious module
+> > initialization function in button.c
+>
+> In what kernel version if the button driver built-in?
+> It currently can be built as a loadable module.
+>
+> The lines
+> module_driver(acpi_button_driver, acpi_button_register_driver,
+>                acpi_button_unregister_driver);
+> at the end of the source file create an init function named
+> acpi_button_driver_init.  You could try:
+>   initcall_blacklist=acpi_button_driver_init
+>
+>
+> > Please, how would one disable the /button/ module? Either using the
+> > /initcall_blacklist=foo/ or some other method is fine, as long as it does
+> > not involve recompiling the kernel.
+>
+> Any help from ACPI people?
 
-In what kernel version if the button driver built-in?
-It currently can be built as a loadable module.
+https://lore.kernel.org/linux-acpi/CAJZ5v0hy2QpJtnGVvOOggOzTDifD1HYosN9vf0y_=15b+M8v0Q@mail.gmail.com/T/#t
 
-The lines
-module_driver(acpi_button_driver, acpi_button_register_driver,
-	       acpi_button_unregister_driver);
-at the end of the source file create an init function named
-acpi_button_driver_init.  You could try:
-  initcall_blacklist=acpi_button_driver_init
-
-
-> Please, how would one disable the /button/ module? Either using the
-> /initcall_blacklist=foo/ or some other method is fine, as long as it does
-> not involve recompiling the kernel. 
-
-Any help from ACPI people?
-
-
-> Thanks,
-> Bruno GNUser
-> 
-> 
-> --
-> Sent from: http://linux-kernel.2935.n7.nabble.com/
-
-
--- 
-~Randy
-
+Thanks!
