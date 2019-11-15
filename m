@@ -2,76 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80535FE1C2
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Nov 2019 16:48:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 23382FE1D9
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Nov 2019 16:49:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727577AbfKOPsL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Nov 2019 10:48:11 -0500
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:39489 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727526AbfKOPsK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Nov 2019 10:48:10 -0500
-Received: by mail-lf1-f67.google.com with SMTP id j14so8369805lfk.6
-        for <linux-acpi@vger.kernel.org>; Fri, 15 Nov 2019 07:48:09 -0800 (PST)
+        id S1727557AbfKOPto (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Nov 2019 10:49:44 -0500
+Received: from mail-io1-f66.google.com ([209.85.166.66]:33641 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727628AbfKOPtm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Nov 2019 10:49:42 -0500
+Received: by mail-io1-f66.google.com with SMTP id j13so10950503ioe.0
+        for <linux-acpi@vger.kernel.org>; Fri, 15 Nov 2019 07:49:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tKS6rtCZj8IaErcUrjRP92Wgp74E5JlJ2MHPseDiEWo=;
-        b=Pic7rPYcvUsXNNtxBunu7WIK/Gtn4aqprOS1rk1gJIxywYezckGtII0nqrTVIGPXBu
-         7MsWQumzkSuy4YEAkpMGQAplLbZ60ovggZ1uzw1W5aSK5lHxgNC2Wgh4POqh0FUZjHyN
-         3tLPOHQNm0o9KZCS/W8rM7+FhMHSaLHt0pi2HExHuH450Gp4nOnsgb9ldXtZktmZXuHr
-         hXfZXQlO6pzFI32s5eowebPHMceoXvtHTNZ5+x6iFaDAL1kwPjpoiesNixWvmRnUnpyQ
-         06YbbNurlYG5puRjR/FlE7wEHtrep1feCMKcoSmeBgzheWPwwYyiZqcFqusneo1YmGJB
-         3RDg==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=X5NAAOrJ3bS32ihsXavVCESX6DNfXdWEE7aVqtLVIHM=;
+        b=T96mBsWswYjsm0w7ecYkWpV509ib/ulk9bHbI0Xwo0rzkePegh7rSfOcmzGbyf8vTc
+         lns/HOXyf4/6jOYDVIgZ/CZyIfN2m2y88qVdmXSABhNsP0MXDIRsHGSOOd7wWkwuGiQx
+         ehcoBpFXp6INIFq3jwmveina1L3fsWjpzHRhMvlhwo8OJ8Dy4xuFXwCrYZiL/Ja/dmiU
+         sEvBblBcC09ww5H/W1Li3rJXBc1TYjMn46kjeboNwYGUiqFeNnjz46iJxarBlBzUTpau
+         7EU4w1MkRxjhgPFrJ2/ipVqnuE4IawmENFYcW1JVUg9OFLrEKZvfb77T8+3XayPV4Zd+
+         KrHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tKS6rtCZj8IaErcUrjRP92Wgp74E5JlJ2MHPseDiEWo=;
-        b=dPG8b5f/W3e6MEOfuu8GWrwVskCZoqsF0+py9BoPESHfgkRrQgx27uq25uQADg2mP3
-         ycmCCForW/AQ4ydDg3PbL2jy5tSvhnvz9IwNJaaJJhtpMB1zlaemsbXgjtVK6WzNzbcT
-         kLHu4wzWtkJ5iY2q4nGr8QYDG5gR7WIJq9zf4zxlABUgpnQn+WwSFLA/Rj3BRq5QcVrQ
-         gsVWVLz/NGhmAhwiN8C8hUVhfE3nPr1gPM9hZBjruKw7irIm21tA8J0iBkIA7mbhDpxF
-         TAFitTZoRzTrxae2BTs6CznJHyQG92QNQ1+pGUAB/fLFVo187FPl27x9yRcKnJAsyIWT
-         8OJA==
-X-Gm-Message-State: APjAAAXDNkPd20TVXYt/1EfKiFBSGxb3Q7tdlBs9fkQ/H/SF1Nf4cL4C
-        xcLrFPuGyVPza8cbvOAVgacQAnAczaP/J61wQeeK+w==
-X-Google-Smtp-Source: APXvYqyZoqBIeRRXE6Tp+xEkPnpvBKDFdlWGPub1qxgpSvfSx0sWfBaGbFbMN2YsYEXanF1TNEKAivdJG/k7sxcjKQk=
-X-Received: by 2002:a19:651b:: with SMTP id z27mr11532990lfb.117.1573832888693;
- Fri, 15 Nov 2019 07:48:08 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=X5NAAOrJ3bS32ihsXavVCESX6DNfXdWEE7aVqtLVIHM=;
+        b=WgDYw3JczwIxMylgY0v+YYvZxLr8+DTr0vu7ZVFz3HW+kYAd+xUytoi4xyZw7hyfT6
+         /uB29faZ0r5aeCJBUmyvYmTOHdv37SnB4/cDYChr66DQikJhnDIx/G5Vzos96z3oJ191
+         6fWwljusJvbrHz4AeRK9nMY8tJCYWjK1fr3Oir0o03rYvOAm2VsfpM0cQGscsSA1ig/r
+         +32a+yvDYZ/SVuA4sbjB9ABDBpXadLyJNjT/WqmtpZtLkVRyiSgDk7ZuGaOAWuFcSLl1
+         x3uujjD8DkKjMu5bSJQpYnawOOueStWT2j6/iWsIsRtvTu6qv3asduLyPLsRW0vjf+Nt
+         J8qw==
+X-Gm-Message-State: APjAAAX3xKbMTVG2NUzyWS97gRbGfRi1qGbFet43UzpWIXdFsTWM2ra1
+        6ov6+gK91LvHzTd2ZLJJeLEbx3laIT8RvJI9VQ==
+X-Google-Smtp-Source: APXvYqxEj1beLI6zhjihT/lmX2Dk324PGcIr8veC5c+0F/PFQKT7AeNYgljOGh72OwNqCMMZvqGkvMbSAqCkDjgGkjg=
+X-Received: by 2002:a5e:8e02:: with SMTP id a2mr1343031ion.269.1573832982053;
+ Fri, 15 Nov 2019 07:49:42 -0800 (PST)
 MIME-Version: 1.0
-References: <20191114102600.34558-1-hdegoede@redhat.com>
-In-Reply-To: <20191114102600.34558-1-hdegoede@redhat.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 15 Nov 2019 16:47:57 +0100
-Message-ID: <CACRpkdZ6otZOsN++qTm1ZBPxSmd=T5NcyZKYfWDScuB1YrHiFA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] gpiolib: acpi: Print pin number on
- acpi_gpiochip_alloc_event errors
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 15 Nov 2019 07:49:41
+ -0800 (PST)
+Reply-To: moneygram.1820@outlook.fr
+From:   "Ms.Mary Coster" <info.zennitbankplcnigerian@gmail.com>
+Date:   Fri, 15 Nov 2019 16:49:41 +0100
+Message-ID: <CABHzvrkUQbbmg0Gr7foD3OjAJiY7Fd37=SW3mU=fnOPOcOyNdQ@mail.gmail.com>
+Subject: Goodnews, I have deposited your transfer total amount US$4.8million
+ Dollars with Money Gram this morning. we agreed you will be receiving it
+ $5000.00 daily.
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 14, 2019 at 11:26 AM Hans de Goede <hdegoede@redhat.com> wrote:
-
-> Print pin number and error-code on acpi_gpiochip_alloc_event errors,
-> to help debugging these.
->
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
-> Changes in v2:
-> -Take into account that pin-number may be 16 bits
-> -Also log the error-code
-
-Patch applied.
-
-Yours,
-Linus Walleij
+Attn, Dear
+Goodnews, I have deposited your transfer total amount US$4.8million
+Dollars with Money Gram this morning. we agreed you will be receiving
+it $5000.00 daily.
+Contact Mr. John Dave Director, Money Gram to pick up your first Money
+Gram payment $5000.00 today.
+Contact Person; Mr. John Dave Director, Money Gram,International
+Remittance-Benin
+Email; moneygram.1820@outlook.fr
+Telephone; +229 62619517
+Please re-confirm your address to him once again such as listed below.
+1.Your Full Name..............................
+2.Address.........................
+3.Country....................
+4.Sex.........................................
+5.Your telephone numbers..........................
+6. Copy of your ID...........................
+This is to avoid sending your funds to wrong person, He is waiting to
+hear from you urgent today.
+Let me know once you pick up your transfer $5000.00 today.
+Finally, Note I have paid for the service fees, but only money will
+send to him is $90.00 transfer fee before you can pick up the transfer
+today.
+Ask, Mr. John Dave Director, Money Gram to give you direction where to
+send your transfer fee $90.00 only to Him Immediately so that you can
+pick up $5000.00 us dollars today.
+Thanks for undrstanding.
+Mary Coster
+m.coster@aol.com
