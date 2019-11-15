@@ -2,86 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 23382FE1D9
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Nov 2019 16:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEF06FE6A6
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Nov 2019 21:56:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727557AbfKOPto (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Nov 2019 10:49:44 -0500
-Received: from mail-io1-f66.google.com ([209.85.166.66]:33641 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727628AbfKOPtm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Nov 2019 10:49:42 -0500
-Received: by mail-io1-f66.google.com with SMTP id j13so10950503ioe.0
-        for <linux-acpi@vger.kernel.org>; Fri, 15 Nov 2019 07:49:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=X5NAAOrJ3bS32ihsXavVCESX6DNfXdWEE7aVqtLVIHM=;
-        b=T96mBsWswYjsm0w7ecYkWpV509ib/ulk9bHbI0Xwo0rzkePegh7rSfOcmzGbyf8vTc
-         lns/HOXyf4/6jOYDVIgZ/CZyIfN2m2y88qVdmXSABhNsP0MXDIRsHGSOOd7wWkwuGiQx
-         ehcoBpFXp6INIFq3jwmveina1L3fsWjpzHRhMvlhwo8OJ8Dy4xuFXwCrYZiL/Ja/dmiU
-         sEvBblBcC09ww5H/W1Li3rJXBc1TYjMn46kjeboNwYGUiqFeNnjz46iJxarBlBzUTpau
-         7EU4w1MkRxjhgPFrJ2/ipVqnuE4IawmENFYcW1JVUg9OFLrEKZvfb77T8+3XayPV4Zd+
-         KrHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=X5NAAOrJ3bS32ihsXavVCESX6DNfXdWEE7aVqtLVIHM=;
-        b=WgDYw3JczwIxMylgY0v+YYvZxLr8+DTr0vu7ZVFz3HW+kYAd+xUytoi4xyZw7hyfT6
-         /uB29faZ0r5aeCJBUmyvYmTOHdv37SnB4/cDYChr66DQikJhnDIx/G5Vzos96z3oJ191
-         6fWwljusJvbrHz4AeRK9nMY8tJCYWjK1fr3Oir0o03rYvOAm2VsfpM0cQGscsSA1ig/r
-         +32a+yvDYZ/SVuA4sbjB9ABDBpXadLyJNjT/WqmtpZtLkVRyiSgDk7ZuGaOAWuFcSLl1
-         x3uujjD8DkKjMu5bSJQpYnawOOueStWT2j6/iWsIsRtvTu6qv3asduLyPLsRW0vjf+Nt
-         J8qw==
-X-Gm-Message-State: APjAAAX3xKbMTVG2NUzyWS97gRbGfRi1qGbFet43UzpWIXdFsTWM2ra1
-        6ov6+gK91LvHzTd2ZLJJeLEbx3laIT8RvJI9VQ==
-X-Google-Smtp-Source: APXvYqxEj1beLI6zhjihT/lmX2Dk324PGcIr8veC5c+0F/PFQKT7AeNYgljOGh72OwNqCMMZvqGkvMbSAqCkDjgGkjg=
-X-Received: by 2002:a5e:8e02:: with SMTP id a2mr1343031ion.269.1573832982053;
- Fri, 15 Nov 2019 07:49:42 -0800 (PST)
+        id S1726818AbfKOU4o (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Nov 2019 15:56:44 -0500
+Received: from sauhun.de ([88.99.104.3]:43698 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726550AbfKOU4o (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 15 Nov 2019 15:56:44 -0500
+Received: from localhost (p54B33606.dip0.t-ipconnect.de [84.179.54.6])
+        by pokefinder.org (Postfix) with ESMTPSA id 142F62C03E3;
+        Fri, 15 Nov 2019 21:56:42 +0100 (CET)
+Date:   Fri, 15 Nov 2019 21:56:41 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
+        youling 257 <youling257@gmail.com>
+Subject: Re: [PATCH v2] i2c: acpi: Force bus speed to 400KHz if a Silead
+ touchscreen is present
+Message-ID: <20191115205641.GA8973@kunai>
+References: <20191113182938.279299-1-hdegoede@redhat.com>
+ <20191114204815.GC7213@kunai>
+ <c67a085b-8013-ef03-b5b2-431ea64ca97a@redhat.com>
 MIME-Version: 1.0
-Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 15 Nov 2019 07:49:41
- -0800 (PST)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Ms.Mary Coster" <info.zennitbankplcnigerian@gmail.com>
-Date:   Fri, 15 Nov 2019 16:49:41 +0100
-Message-ID: <CABHzvrkUQbbmg0Gr7foD3OjAJiY7Fd37=SW3mU=fnOPOcOyNdQ@mail.gmail.com>
-Subject: Goodnews, I have deposited your transfer total amount US$4.8million
- Dollars with Money Gram this morning. we agreed you will be receiving it
- $5000.00 daily.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="mYCpIKhGyMATD0i+"
+Content-Disposition: inline
+In-Reply-To: <c67a085b-8013-ef03-b5b2-431ea64ca97a@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Attn, Dear
-Goodnews, I have deposited your transfer total amount US$4.8million
-Dollars with Money Gram this morning. we agreed you will be receiving
-it $5000.00 daily.
-Contact Mr. John Dave Director, Money Gram to pick up your first Money
-Gram payment $5000.00 today.
-Contact Person; Mr. John Dave Director, Money Gram,International
-Remittance-Benin
-Email; moneygram.1820@outlook.fr
-Telephone; +229 62619517
-Please re-confirm your address to him once again such as listed below.
-1.Your Full Name..............................
-2.Address.........................
-3.Country....................
-4.Sex.........................................
-5.Your telephone numbers..........................
-6. Copy of your ID...........................
-This is to avoid sending your funds to wrong person, He is waiting to
-hear from you urgent today.
-Let me know once you pick up your transfer $5000.00 today.
-Finally, Note I have paid for the service fees, but only money will
-send to him is $90.00 transfer fee before you can pick up the transfer
-today.
-Ask, Mr. John Dave Director, Money Gram to give you direction where to
-send your transfer fee $90.00 only to Him Immediately so that you can
-pick up $5000.00 us dollars today.
-Thanks for undrstanding.
-Mary Coster
-m.coster@aol.com
+
+--mYCpIKhGyMATD0i+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+
+> Well it is configuring the bus at a speed where not all devices
+> can work, where as there is another speed where all devices do work.
+> With that said I'm open to a different wording for the warning. Feel
+> free to modify this before you add it to your tree.
+
+Changed the message to "DSDT uses known not-working I2C bus speed %d,
+forcing it to %d\n" and applied to for-current, thanks!
+
+
+--mYCpIKhGyMATD0i+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl3PEQUACgkQFA3kzBSg
+KbZWCA/9GV8vhIAUOBWcnEOCxRGff8hTsxHFRdQo7dydg4JOlGJqK1oXJHZFQXeB
+RbUhSl58gPallhC7RUUOXqMfyiZREDrVEbFvIm79Orveqlw1optRd1oocAy3tbif
+KyVMRuTZqFtgMhD8E+D5hfoBPTM6u2E9FbbvAE4g78Y1AsjrUDDUq/M2fmrXQAgB
+A+luBxBOiqQbBYWBPGNvtj6etTSwh4SGmiPxTDNh++CpzrQcAKU/it5p1SbRAwc+
+69pBwZDnmsnHRsYmvjhFdMQPAuKLyGLpae6m8v+xAOBC9JDpmRrLAN3P80W+HkXJ
+8BvrJjzdfNunlRvZQFuz3YiWD4XGJmyUhnl5sVvjfFAW1repTC+eG3LAPan9Ft4z
+yA4WP99tsSAJgRKBXcNXXpNJPjXCVE/FYGZwGagjA7SK1wT0hWx42N+Hezin++9a
+139ax28+BpDVEHqqchNIXMTwYdnGyFupzInTZUgMAn+iyrWLeXNcIw85wWIdjnhO
+yivC72pT20fqTnn7cG670kDUTux8iq59mUv37LNwUZ2ub2EgcNUnOqYOSRxkRakf
+ZA8OMZr+a8uphBS6aF0LzQMGA1Eus9QqX6XNPknyv3ebk8RZZgPlZGNJjd2fzOds
+UHUfRU9XalYm/ucIyNear+pz4nTwmrcYv1A7FqJFPll5nuef4AM=
+=FM4c
+-----END PGP SIGNATURE-----
+
+--mYCpIKhGyMATD0i+--
