@@ -2,24 +2,24 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EBD53FFB1F
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 Nov 2019 18:59:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8316BFFB22
+	for <lists+linux-acpi@lfdr.de>; Sun, 17 Nov 2019 18:59:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726627AbfKQR71 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 17 Nov 2019 12:59:27 -0500
-Received: from mga14.intel.com ([192.55.52.115]:38372 "EHLO mga14.intel.com"
+        id S1726695AbfKQR7d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 17 Nov 2019 12:59:33 -0500
+Received: from mga04.intel.com ([192.55.52.120]:23113 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726047AbfKQR71 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 17 Nov 2019 12:59:27 -0500
+        id S1726047AbfKQR7d (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 17 Nov 2019 12:59:33 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Nov 2019 09:59:27 -0800
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Nov 2019 09:59:33 -0800
 X-IronPort-AV: E=Sophos;i="5.68,317,1569308400"; 
-   d="scan'208";a="289042016"
+   d="scan'208";a="203861997"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Nov 2019 09:59:26 -0800
-Subject: [PATCH v2 07/18] libnvdimm: Move nvdimm_attribute_group to
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Nov 2019 09:59:32 -0800
+Subject: [PATCH v2 08/18] libnvdimm: Move nvdimm_bus_attribute_group to
  device_type
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     linux-nvdimm@lists.01.org
@@ -32,8 +32,8 @@ Cc:     Ira Weiny <ira.weiny@intel.com>,
         peterz@infradead.org, dave.hansen@linux.intel.com, hch@lst.de,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-acpi@vger.kernel.org
-Date:   Sun, 17 Nov 2019 09:45:10 -0800
-Message-ID: <157401271088.43284.16320038373036215858.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date:   Sun, 17 Nov 2019 09:45:16 -0800
+Message-ID: <157401271602.43284.2740061832589958924.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <157401267421.43284.2135775608523385279.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <157401267421.43284.2135775608523385279.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -47,7 +47,7 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 A 'struct device_type' instance can carry default attributes for the
 device. Use this facility to remove the export of
-nvdimm_attribute_group and put the responsibility on the core rather
+nvdimm_bus_attribute_group and put the responsibility on the core rather
 than leaf implementations to define this attribute.
 
 Cc: Ira Weiny <ira.weiny@intel.com>
@@ -57,120 +57,175 @@ Cc: Vishal Verma <vishal.l.verma@intel.com>
 Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Link: https://lore.kernel.org/r/157309903201.1582359.10966209746585062329.stgit@dwillia2-desk3.amr.corp.intel.com
+Link: https://lore.kernel.org/r/157309903815.1582359.6418211876315050283.stgit@dwillia2-desk3.amr.corp.intel.com
 ---
- arch/powerpc/platforms/pseries/papr_scm.c |    9 ++-----
+ arch/powerpc/platforms/pseries/papr_scm.c |    6 ------
  drivers/acpi/nfit/core.c                  |    1 -
- drivers/nvdimm/dimm_devs.c                |   36 +++++++++++++++--------------
- include/linux/libnvdimm.h                 |    1 -
- 4 files changed, 20 insertions(+), 27 deletions(-)
+ drivers/nvdimm/bus.c                      |    9 +++++++--
+ drivers/nvdimm/core.c                     |    8 ++++++--
+ drivers/nvdimm/e820.c                     |    6 ------
+ drivers/nvdimm/nd.h                       |    1 +
+ drivers/nvdimm/of_pmem.c                  |    6 ------
+ include/linux/libnvdimm.h                 |    2 --
+ 8 files changed, 14 insertions(+), 25 deletions(-)
 
 diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 0405fb769336..8354737ac340 100644
+index 8354737ac340..33aa59e666e5 100644
 --- a/arch/powerpc/platforms/pseries/papr_scm.c
 +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -289,11 +289,6 @@ static const struct attribute_group *bus_attr_groups[] = {
- 	NULL,
- };
+@@ -284,11 +284,6 @@ int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+ 	return 0;
+ }
  
--static const struct attribute_group *papr_scm_dimm_groups[] = {
--	&nvdimm_attribute_group,
+-static const struct attribute_group *bus_attr_groups[] = {
+-	&nvdimm_bus_attribute_group,
 -	NULL,
 -};
 -
  static inline int papr_scm_node(int node)
  {
  	int min_dist = INT_MAX, dist;
-@@ -339,8 +334,8 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
- 	dimm_flags = 0;
- 	set_bit(NDD_ALIASING, &dimm_flags);
+@@ -319,7 +314,6 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ 	p->bus_desc.ndctl = papr_scm_ndctl;
+ 	p->bus_desc.module = THIS_MODULE;
+ 	p->bus_desc.of_node = p->pdev->dev.of_node;
+-	p->bus_desc.attr_groups = bus_attr_groups;
+ 	p->bus_desc.provider_name = kstrdup(p->pdev->name, GFP_KERNEL);
  
--	p->nvdimm = nvdimm_create(p->bus, p, papr_scm_dimm_groups,
--				dimm_flags, PAPR_SCM_DIMM_CMD_MASK, 0, NULL);
-+	p->nvdimm = nvdimm_create(p->bus, p, NULL, dimm_flags,
-+				  PAPR_SCM_DIMM_CMD_MASK, 0, NULL);
- 	if (!p->nvdimm) {
- 		dev_err(dev, "Error creating DIMM object for %pOF\n", p->dn);
- 		goto err;
+ 	if (!p->bus_desc.provider_name)
 diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index 69c406ecc3a6..84fc1f865802 100644
+index 84fc1f865802..a3320f93616d 100644
 --- a/drivers/acpi/nfit/core.c
 +++ b/drivers/acpi/nfit/core.c
-@@ -1698,7 +1698,6 @@ static const struct attribute_group acpi_nfit_dimm_attribute_group = {
+@@ -1404,7 +1404,6 @@ static const struct attribute_group acpi_nfit_attribute_group = {
  };
  
- static const struct attribute_group *acpi_nfit_dimm_attribute_groups[] = {
--	&nvdimm_attribute_group,
- 	&acpi_nfit_dimm_attribute_group,
+ static const struct attribute_group *acpi_nfit_attribute_groups[] = {
+-	&nvdimm_bus_attribute_group,
+ 	&acpi_nfit_attribute_group,
  	NULL,
  };
-diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
-index 278867c68682..94ea6dba6b4f 100644
---- a/drivers/nvdimm/dimm_devs.c
-+++ b/drivers/nvdimm/dimm_devs.c
-@@ -202,22 +202,6 @@ static void nvdimm_release(struct device *dev)
- 	kfree(nvdimm);
+diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
+index 28e1b265aa63..1d330d46d036 100644
+--- a/drivers/nvdimm/bus.c
++++ b/drivers/nvdimm/bus.c
+@@ -300,9 +300,14 @@ static void nvdimm_bus_release(struct device *dev)
+ 	kfree(nvdimm_bus);
  }
  
--static const struct attribute_group *nvdimm_attribute_groups[] = {
--	&nd_device_attribute_group,
++static const struct device_type nvdimm_bus_dev_type = {
++	.release = nvdimm_bus_release,
++	.groups = nvdimm_bus_attribute_groups,
++};
++
+ bool is_nvdimm_bus(struct device *dev)
+ {
+-	return dev->release == nvdimm_bus_release;
++	return dev->type == &nvdimm_bus_dev_type;
+ }
+ 
+ struct nvdimm_bus *walk_to_nvdimm_bus(struct device *nd_dev)
+@@ -355,7 +360,7 @@ struct nvdimm_bus *nvdimm_bus_register(struct device *parent,
+ 	badrange_init(&nvdimm_bus->badrange);
+ 	nvdimm_bus->nd_desc = nd_desc;
+ 	nvdimm_bus->dev.parent = parent;
+-	nvdimm_bus->dev.release = nvdimm_bus_release;
++	nvdimm_bus->dev.type = &nvdimm_bus_dev_type;
+ 	nvdimm_bus->dev.groups = nd_desc->attr_groups;
+ 	nvdimm_bus->dev.bus = &nvdimm_bus_type;
+ 	nvdimm_bus->dev.of_node = nd_desc->of_node;
+diff --git a/drivers/nvdimm/core.c b/drivers/nvdimm/core.c
+index 9204f1e9fd14..81231ca23db0 100644
+--- a/drivers/nvdimm/core.c
++++ b/drivers/nvdimm/core.c
+@@ -385,10 +385,14 @@ static struct attribute *nvdimm_bus_attributes[] = {
+ 	NULL,
+ };
+ 
+-struct attribute_group nvdimm_bus_attribute_group = {
++static const struct attribute_group nvdimm_bus_attribute_group = {
+ 	.attrs = nvdimm_bus_attributes,
+ };
+-EXPORT_SYMBOL_GPL(nvdimm_bus_attribute_group);
++
++const struct attribute_group *nvdimm_bus_attribute_groups[] = {
++	&nvdimm_bus_attribute_group,
++	NULL,
++};
+ 
+ int nvdimm_bus_add_badrange(struct nvdimm_bus *nvdimm_bus, u64 addr, u64 length)
+ {
+diff --git a/drivers/nvdimm/e820.c b/drivers/nvdimm/e820.c
+index 9a971a59dec7..e02f60ad6c99 100644
+--- a/drivers/nvdimm/e820.c
++++ b/drivers/nvdimm/e820.c
+@@ -8,11 +8,6 @@
+ #include <linux/libnvdimm.h>
+ #include <linux/module.h>
+ 
+-static const struct attribute_group *e820_pmem_attribute_groups[] = {
+-	&nvdimm_bus_attribute_group,
 -	NULL,
 -};
 -
--static const struct device_type nvdimm_device_type = {
--	.name = "nvdimm",
--	.release = nvdimm_release,
--	.groups = nvdimm_attribute_groups,
+ static int e820_pmem_remove(struct platform_device *pdev)
+ {
+ 	struct nvdimm_bus *nvdimm_bus = platform_get_drvdata(pdev);
+@@ -55,7 +50,6 @@ static int e820_pmem_probe(struct platform_device *pdev)
+ 	struct nvdimm_bus *nvdimm_bus;
+ 	int rc = -ENXIO;
+ 
+-	nd_desc.attr_groups = e820_pmem_attribute_groups;
+ 	nd_desc.provider_name = "e820";
+ 	nd_desc.module = THIS_MODULE;
+ 	nvdimm_bus = nvdimm_bus_register(dev, &nd_desc);
+diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
+index ec3d5f619957..c9f6a5b5253a 100644
+--- a/drivers/nvdimm/nd.h
++++ b/drivers/nvdimm/nd.h
+@@ -241,6 +241,7 @@ void nd_region_exit(void);
+ struct nvdimm;
+ extern const struct attribute_group nd_device_attribute_group;
+ extern const struct attribute_group nd_numa_attribute_group;
++extern const struct attribute_group *nvdimm_bus_attribute_groups[];
+ struct nvdimm_drvdata *to_ndd(struct nd_mapping *nd_mapping);
+ int nvdimm_check_config_data(struct device *dev);
+ int nvdimm_init_nsarea(struct nvdimm_drvdata *ndd);
+diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
+index c0b5ac36df9d..8224d1431ea9 100644
+--- a/drivers/nvdimm/of_pmem.c
++++ b/drivers/nvdimm/of_pmem.c
+@@ -9,11 +9,6 @@
+ #include <linux/ioport.h>
+ #include <linux/slab.h>
+ 
+-static const struct attribute_group *bus_attr_groups[] = {
+-	&nvdimm_bus_attribute_group,
+-	NULL,
 -};
 -
--bool is_nvdimm(struct device *dev)
--{
--	return dev->type == &nvdimm_device_type;
--}
--
- struct nvdimm *to_nvdimm(struct device *dev)
- {
- 	struct nvdimm *nvdimm = container_of(dev, struct nvdimm, dev);
-@@ -456,11 +440,27 @@ static umode_t nvdimm_visible(struct kobject *kobj, struct attribute *a, int n)
- 	return 0;
- }
+ struct of_pmem_private {
+ 	struct nvdimm_bus_descriptor bus_desc;
+ 	struct nvdimm_bus *bus;
+@@ -35,7 +30,6 @@ static int of_pmem_region_probe(struct platform_device *pdev)
+ 	if (!priv)
+ 		return -ENOMEM;
  
--struct attribute_group nvdimm_attribute_group = {
-+static const struct attribute_group nvdimm_attribute_group = {
- 	.attrs = nvdimm_attributes,
- 	.is_visible = nvdimm_visible,
- };
--EXPORT_SYMBOL_GPL(nvdimm_attribute_group);
-+
-+static const struct attribute_group *nvdimm_attribute_groups[] = {
-+	&nd_device_attribute_group,
-+	&nvdimm_attribute_group,
-+	NULL,
-+};
-+
-+static const struct device_type nvdimm_device_type = {
-+	.name = "nvdimm",
-+	.release = nvdimm_release,
-+	.groups = nvdimm_attribute_groups,
-+};
-+
-+bool is_nvdimm(struct device *dev)
-+{
-+	return dev->type == &nvdimm_device_type;
-+}
- 
- struct nvdimm *__nvdimm_create(struct nvdimm_bus *nvdimm_bus,
- 		void *provider_data, const struct attribute_group **groups,
+-	priv->bus_desc.attr_groups = bus_attr_groups;
+ 	priv->bus_desc.provider_name = kstrdup(pdev->name, GFP_KERNEL);
+ 	priv->bus_desc.module = THIS_MODULE;
+ 	priv->bus_desc.of_node = np;
 diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
-index eb597d1cb891..3644af97bcb4 100644
+index 3644af97bcb4..9df091bd30ba 100644
 --- a/include/linux/libnvdimm.h
 +++ b/include/linux/libnvdimm.h
-@@ -66,7 +66,6 @@ enum {
+@@ -65,8 +65,6 @@ enum {
+ 	DPA_RESOURCE_ADJUSTED = 1 << 0,
  };
  
- extern struct attribute_group nvdimm_bus_attribute_group;
--extern struct attribute_group nvdimm_attribute_group;
- 
+-extern struct attribute_group nvdimm_bus_attribute_group;
+-
  struct nvdimm;
  struct nvdimm_bus_descriptor;
+ typedef int (*ndctl_fn)(struct nvdimm_bus_descriptor *nd_desc,
 
