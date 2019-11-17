@@ -2,24 +2,25 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA6FAFFB25
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 Nov 2019 18:59:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EEB28FFB28
+	for <lists+linux-acpi@lfdr.de>; Sun, 17 Nov 2019 18:59:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726721AbfKQR7k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 17 Nov 2019 12:59:40 -0500
-Received: from mga07.intel.com ([134.134.136.100]:19027 "EHLO mga07.intel.com"
+        id S1726788AbfKQR7p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 17 Nov 2019 12:59:45 -0500
+Received: from mga01.intel.com ([192.55.52.88]:25581 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726047AbfKQR7j (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 17 Nov 2019 12:59:39 -0500
+        id S1726047AbfKQR7p (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 17 Nov 2019 12:59:45 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Nov 2019 09:59:38 -0800
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Nov 2019 09:59:44 -0800
 X-IronPort-AV: E=Sophos;i="5.68,317,1569308400"; 
-   d="scan'208";a="204001957"
+   d="scan'208";a="407167161"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Nov 2019 09:59:38 -0800
-Subject: [PATCH v2 09/18] dax: Create a dax device_type
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Nov 2019 09:59:44 -0800
+Subject: [PATCH v2 10/18] dax: Simplify root read-only definition for the
+ 'resource' attribute
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     linux-nvdimm@lists.01.org
 Cc:     Ira Weiny <ira.weiny@intel.com>,
@@ -28,8 +29,8 @@ Cc:     Ira Weiny <ira.weiny@intel.com>,
         peterz@infradead.org, dave.hansen@linux.intel.com, hch@lst.de,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-acpi@vger.kernel.org
-Date:   Sun, 17 Nov 2019 09:45:22 -0800
-Message-ID: <157401272218.43284.1616508957994921177.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date:   Sun, 17 Nov 2019 09:45:27 -0800
+Message-ID: <157401272766.43284.6942797624123280468.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <157401267421.43284.2135775608523385279.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <157401267421.43284.2135775608523385279.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -41,42 +42,38 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Move the open coded release method and attribute groups to a 'struct
-device_type' instance.
+Rather than update the permission in ->is_visible() set the permission
+directly at declaration time.
 
 Cc: Ira Weiny <ira.weiny@intel.com>
 Cc: Vishal Verma <vishal.l.verma@intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Link: https://lore.kernel.org/r/157309904365.1582359.5451327195246651379.stgit@dwillia2-desk3.amr.corp.intel.com
+Link: https://lore.kernel.org/r/157309904959.1582359.7281180042781955506.stgit@dwillia2-desk3.amr.corp.intel.com
 ---
- drivers/dax/bus.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/dax/bus.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
-index 8fafbeab510a..f3e6e00ece40 100644
+index f3e6e00ece40..ce6d648d7670 100644
 --- a/drivers/dax/bus.c
 +++ b/drivers/dax/bus.c
-@@ -373,6 +373,11 @@ static void dev_dax_release(struct device *dev)
- 	kfree(dev_dax);
+@@ -309,7 +309,7 @@ static ssize_t resource_show(struct device *dev,
+ 
+ 	return sprintf(buf, "%#llx\n", dev_dax_resource(dev_dax));
+ }
+-static DEVICE_ATTR_RO(resource);
++static DEVICE_ATTR(resource, 0400, resource_show, NULL);
+ 
+ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
+ 		char *buf)
+@@ -329,8 +329,6 @@ static umode_t dev_dax_visible(struct kobject *kobj, struct attribute *a, int n)
+ 
+ 	if (a == &dev_attr_target_node.attr && dev_dax_target_node(dev_dax) < 0)
+ 		return 0;
+-	if (a == &dev_attr_resource.attr)
+-		return 0400;
+ 	return a->mode;
  }
  
-+static const struct device_type dev_dax_type = {
-+	.release = dev_dax_release,
-+	.groups = dax_attribute_groups,
-+};
-+
- static void unregister_dev_dax(void *dev)
- {
- 	struct dev_dax *dev_dax = to_dev_dax(dev);
-@@ -430,8 +435,7 @@ struct dev_dax *__devm_create_dev_dax(struct dax_region *dax_region, int id,
- 	else
- 		dev->class = dax_class;
- 	dev->parent = parent;
--	dev->groups = dax_attribute_groups;
--	dev->release = dev_dax_release;
-+	dev->type = &dev_dax_type;
- 	dev_set_name(dev, "dax%d.%d", dax_region->id, id);
- 
- 	rc = device_add(dev);
 
