@@ -2,25 +2,25 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EEB28FFB28
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 Nov 2019 18:59:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA5B1FFB2B
+	for <lists+linux-acpi@lfdr.de>; Sun, 17 Nov 2019 18:59:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726788AbfKQR7p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 17 Nov 2019 12:59:45 -0500
-Received: from mga01.intel.com ([192.55.52.88]:25581 "EHLO mga01.intel.com"
+        id S1726833AbfKQR7v (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 17 Nov 2019 12:59:51 -0500
+Received: from mga06.intel.com ([134.134.136.31]:44433 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726047AbfKQR7p (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 17 Nov 2019 12:59:45 -0500
+        id S1726047AbfKQR7v (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 17 Nov 2019 12:59:51 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Nov 2019 09:59:44 -0800
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Nov 2019 09:59:50 -0800
 X-IronPort-AV: E=Sophos;i="5.68,317,1569308400"; 
-   d="scan'208";a="407167161"
+   d="scan'208";a="405855083"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Nov 2019 09:59:44 -0800
-Subject: [PATCH v2 10/18] dax: Simplify root read-only definition for the
- 'resource' attribute
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Nov 2019 09:59:50 -0800
+Subject: [PATCH v2 11/18] libnvdimm: Simplify root read-only definition for
+ the 'resource' attribute
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     linux-nvdimm@lists.01.org
 Cc:     Ira Weiny <ira.weiny@intel.com>,
@@ -29,8 +29,8 @@ Cc:     Ira Weiny <ira.weiny@intel.com>,
         peterz@infradead.org, dave.hansen@linux.intel.com, hch@lst.de,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-acpi@vger.kernel.org
-Date:   Sun, 17 Nov 2019 09:45:27 -0800
-Message-ID: <157401272766.43284.6942797624123280468.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date:   Sun, 17 Nov 2019 09:45:33 -0800
+Message-ID: <157401273394.43284.12148079363063773132.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <157401267421.43284.2135775608523385279.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <157401267421.43284.2135775608523385279.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -49,31 +49,96 @@ Cc: Ira Weiny <ira.weiny@intel.com>
 Cc: Vishal Verma <vishal.l.verma@intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Link: https://lore.kernel.org/r/157309904959.1582359.7281180042781955506.stgit@dwillia2-desk3.amr.corp.intel.com
+Link: https://lore.kernel.org/r/157309905534.1582359.13927459228885931097.stgit@dwillia2-desk3.amr.corp.intel.com
 ---
- drivers/dax/bus.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/nvdimm/namespace_devs.c |    9 +++------
+ drivers/nvdimm/pfn_devs.c       |   10 +---------
+ drivers/nvdimm/region_devs.c    |   10 +++-------
+ 3 files changed, 7 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
-index f3e6e00ece40..ce6d648d7670 100644
---- a/drivers/dax/bus.c
-+++ b/drivers/dax/bus.c
-@@ -309,7 +309,7 @@ static ssize_t resource_show(struct device *dev,
- 
- 	return sprintf(buf, "%#llx\n", dev_dax_resource(dev_dax));
+diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
+index 05d99a8b3175..032dc61725ff 100644
+--- a/drivers/nvdimm/namespace_devs.c
++++ b/drivers/nvdimm/namespace_devs.c
+@@ -1303,7 +1303,7 @@ static ssize_t resource_show(struct device *dev,
+ 		return -ENXIO;
+ 	return sprintf(buf, "%#llx\n", (unsigned long long) res->start);
  }
 -static DEVICE_ATTR_RO(resource);
 +static DEVICE_ATTR(resource, 0400, resource_show, NULL);
  
- static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
- 		char *buf)
-@@ -329,8 +329,6 @@ static umode_t dev_dax_visible(struct kobject *kobj, struct attribute *a, int n)
+ static const unsigned long blk_lbasize_supported[] = { 512, 520, 528,
+ 	4096, 4104, 4160, 4224, 0 };
+@@ -1619,11 +1619,8 @@ static umode_t namespace_visible(struct kobject *kobj,
+ {
+ 	struct device *dev = container_of(kobj, struct device, kobj);
  
- 	if (a == &dev_attr_target_node.attr && dev_dax_target_node(dev_dax) < 0)
- 		return 0;
+-	if (a == &dev_attr_resource.attr) {
+-		if (is_namespace_blk(dev))
+-			return 0;
+-		return 0400;
+-	}
++	if (a == &dev_attr_resource.attr && is_namespace_blk(dev))
++		return 0;
+ 
+ 	if (is_namespace_pmem(dev) || is_namespace_blk(dev)) {
+ 		if (a == &dev_attr_size.attr)
+diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
+index 17ceac5b5313..b94f7a7e94b8 100644
+--- a/drivers/nvdimm/pfn_devs.c
++++ b/drivers/nvdimm/pfn_devs.c
+@@ -218,7 +218,7 @@ static ssize_t resource_show(struct device *dev,
+ 
+ 	return rc;
+ }
+-static DEVICE_ATTR_RO(resource);
++static DEVICE_ATTR(resource, 0400, resource_show, NULL);
+ 
+ static ssize_t size_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+@@ -269,16 +269,8 @@ static struct attribute *nd_pfn_attributes[] = {
+ 	NULL,
+ };
+ 
+-static umode_t pfn_visible(struct kobject *kobj, struct attribute *a, int n)
+-{
 -	if (a == &dev_attr_resource.attr)
 -		return 0400;
- 	return a->mode;
- }
+-	return a->mode;
+-}
+-
+ static struct attribute_group nd_pfn_attribute_group = {
+ 	.attrs = nd_pfn_attributes,
+-	.is_visible = pfn_visible,
+ };
  
+ const struct attribute_group *nd_pfn_attribute_groups[] = {
+diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+index 0afc1973e938..be3e429e86af 100644
+--- a/drivers/nvdimm/region_devs.c
++++ b/drivers/nvdimm/region_devs.c
+@@ -553,7 +553,7 @@ static ssize_t resource_show(struct device *dev,
+ 
+ 	return sprintf(buf, "%#llx\n", nd_region->ndr_start);
+ }
+-static DEVICE_ATTR_RO(resource);
++static DEVICE_ATTR(resource, 0400, resource_show, NULL);
+ 
+ static ssize_t persistence_domain_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+@@ -605,12 +605,8 @@ static umode_t region_visible(struct kobject *kobj, struct attribute *a, int n)
+ 	if (!is_memory(dev) && a == &dev_attr_badblocks.attr)
+ 		return 0;
+ 
+-	if (a == &dev_attr_resource.attr) {
+-		if (is_memory(dev))
+-			return 0400;
+-		else
+-			return 0;
+-	}
++	if (a == &dev_attr_resource.attr && !is_memory(dev))
++		return 0;
+ 
+ 	if (a == &dev_attr_deep_flush.attr) {
+ 		int has_flush = nvdimm_has_flush(nd_region);
 
