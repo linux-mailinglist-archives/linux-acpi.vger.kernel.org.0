@@ -2,102 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DBF6E1009F7
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2019 18:11:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2386E100A1A
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2019 18:19:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726996AbfKRRLq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Nov 2019 12:11:46 -0500
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:38429 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726423AbfKRRLp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Nov 2019 12:11:45 -0500
-Received: by mail-qt1-f195.google.com with SMTP id p20so21049743qtq.5
-        for <linux-acpi@vger.kernel.org>; Mon, 18 Nov 2019 09:11:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=I9AamA3i41CaG/YN/mH1OD14yz4M1P+YN+R1DKIQobA=;
-        b=OEShDiadmaUPbbspmJ1yct3Frqqs1CgvfsGWbj9YHf7FbskUKGeOwqdbqa2/8Z3JrL
-         Z2VAtNApsbPnaI7HU/0Exhb4+s/i3SZBASM17G2O7fMhdwURucIfBX+YwGcLgk9VdzdO
-         5fHxgES+yWsuB8xwx9BlTpKeY6t5jQJeJajaT5zoXOpNTsMmj6F4M5lAnsk7fEa/xQi6
-         OR6RIDLSFEAry9Eo/U9W6FFuojumTEjYvHu6JhigiJdKklzmaW0QgjHc5ENcLUFHk8S7
-         UsnWVgLeIwJh/YufQBfOqlQ3vzFQc+xKxmRzqLeR7O9wo4EoMzuTI79k0YmT0gnRM/ks
-         rVqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=I9AamA3i41CaG/YN/mH1OD14yz4M1P+YN+R1DKIQobA=;
-        b=MLkhatsLiQrTx51kEUleE6h/Uep+4ZkU63mlGK6Lwb+r8RHRAA0rM0lvAweXVU75rv
-         v0LBF6GzhHPA1x3gP/F0vxU7XtCxEranT+X5PCDZdYv3EocdzQdnTKymUx8EzR3swxoG
-         9Pxg9nHQAhZmMQfpS2bQsNqcWb0o/geNkP3FXGauF62rEdAoC2aqJbO/a73x1ZE2tP1i
-         TUwPdGb/a+HISNP5H7XjAwUq/8wtYtR50/DkoXkik5KsSi+IxBE37ZvOifGpSW1ehkiq
-         kH3qL/OSim69BQM7ISdGuuWgG80goH8XJNsjyZedD3ZHzS/2m8hO3y5Jf8DJd3l7Uy7e
-         fdcw==
-X-Gm-Message-State: APjAAAXZKCb1hsgjAtu9YpvoRiSESXS0H6xn+l3V8o/qTtHv4S6Zbo+p
-        e2b6OyZZlm+EP+tTdwkXttnmhjw5WmQswOrCwn2k6A==
-X-Google-Smtp-Source: APXvYqyxsB78hBFrU6adUj2RffV9Rwtw2Mw6d9H6fnaWwroEef/4eio2L2UuXPksfcTtros6v7l0QWf0UDLK0UR1C70=
-X-Received: by 2002:ac8:4157:: with SMTP id e23mr28174425qtm.158.1574097104300;
- Mon, 18 Nov 2019 09:11:44 -0800 (PST)
+        id S1726647AbfKRRT3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Nov 2019 12:19:29 -0500
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:19211
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726423AbfKRRT3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 18 Nov 2019 12:19:29 -0500
+X-IronPort-AV: E=Sophos;i="5.68,320,1569276000"; 
+   d="scan'208";a="327147313"
+Received: from unknown (HELO [172.20.24.15]) ([204.98.150.10])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES128-SHA; 18 Nov 2019 18:18:38 +0100
+Subject: Re: [PATCH V5 1/4] ACPI: Support Generic Initiator only domains
+To:     Dan Williams <dan.j.williams@intel.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc:     Tao Xu <tao3.xu@intel.com>, Linux MM <linux-mm@kvack.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        X86 ML <x86@kernel.org>, Keith Busch <keith.busch@intel.com>,
+        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Linuxarm <linuxarm@huawei.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+References: <20191004114330.104746-1-Jonathan.Cameron@huawei.com>
+ <20191004114330.104746-2-Jonathan.Cameron@huawei.com>
+ <CAPcyv4jZG-5s6NsS-_-oNG45y0Qb1mVD_s8cCGqLYtzvHqEo+Q@mail.gmail.com>
+ <20191113094742.00000dc4@huawei.com>
+ <77b6a6e8-9d44-1e1c-3bf0-a8d04833598d@intel.com>
+ <20191113174845.000009d3@huawei.com>
+ <CAPcyv4g5xUBp871+T26+se8WH9154g7V81qsToYAbXAALMuhKQ@mail.gmail.com>
+ <20191114112504.00005b61@huawei.com>
+ <CAPcyv4jrXvPOvoBCW8H42_og1wJ_t9_=5N4C7-OugYyNzdqBLA@mail.gmail.com>
+From:   Brice Goglin <brice.goglin@gmail.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=brice.goglin@gmail.com; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <d0106281-f65c-369f-ef0f-11afc5f60048@gmail.com>
+Date:   Mon, 18 Nov 2019 18:18:23 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <000000000000ee674f0597a18709@google.com>
-In-Reply-To: <000000000000ee674f0597a18709@google.com>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Mon, 18 Nov 2019 18:11:32 +0100
-Message-ID: <CACT4Y+aHkU46kF26a6afuQ+UO3N3W9Ur898dFBa+mQ2q6QzoQQ@mail.gmail.com>
-Subject: Re: linux-next boot error: can't ssh into the instance (3)
-To:     syzbot <syzbot+ce541a23cf58c1f6b1b1@syzkaller.appspotmail.com>,
-        yeyunfeng@huawei.com, rafael.j.wysocki@intel.com, lenb@kernel.org,
-        linux-acpi@vger.kernel.org
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAPcyv4jrXvPOvoBCW8H42_og1wJ_t9_=5N4C7-OugYyNzdqBLA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 18, 2019 at 5:35 PM syzbot
-<syzbot+ce541a23cf58c1f6b1b1@syzkaller.appspotmail.com> wrote:
+Le 16/11/2019 à 21:45, Dan Williams a écrit :
 >
-> Hello,
->
-> syzbot found the following crash on:
->
-> HEAD commit:    519ead8f Add linux-next specific files for 20191118
-> git tree:       linux-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=14653416e00000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=652dd3906d691711
-> dashboard link: https://syzkaller.appspot.com/bug?extid=ce541a23cf58c1f6b1b1
-> compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
->
-> Unfortunately, I don't have any reproducer for this crash yet.
->
-> IMPORTANT: if you fix the bug, please add the following tag to the commit:
-> Reported-by: syzbot+ce541a23cf58c1f6b1b1@syzkaller.appspotmail.com
+>> My feeling is that any existing users of access0 are definitely not going
+>> to be expecting generic initiators, so we might want to do this the other
+>> way around. access0 is only CPUs and memory, access1 is including
+>> generic initiators.  If there are no GIs don't expose access1 at all?
+> There are no consumers of the information that I know of, so I do not
+> see the risk of regression.
 
 
-Looks at the console output, this seems to be related to:
+hwloc already reads access0/initiators/ node symlinks (mostly useful for
+finding which CPUs are local to kmem dax devices). If I understand
+correctly the changes you propose, we would get an empty list of CPUs in
+the access0/initiators/ nodes? If it only occurs on platforms with GI
+(when are those coming to market?), I'd say it's not a big deal for us,
+we'll manage to have users upgrade their hwloc.
 
-commit eb09878e13013f0faee0a97562da557c4026b8a1
-Author: Yunfeng Ye <yeyunfeng@huawei.com>
-Date:   Thu Nov 14 15:16:24 2019 +0800
-
-    ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100
-
-+drivers/acpi/sysfs.c maintainers
+Brice
 
 
-> ---
-> This bug is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
->
-> syzbot will keep track of this bug report. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
->
-> --
-> You received this message because you are subscribed to the Google Groups "syzkaller-bugs" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to syzkaller-bugs+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/syzkaller-bugs/000000000000ee674f0597a18709%40google.com.
