@@ -2,91 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF52B1012BC
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Nov 2019 06:02:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E016C101C6F
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Nov 2019 09:19:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725536AbfKSFCW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Nov 2019 00:02:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45088 "EHLO mail.kernel.org"
+        id S1727938AbfKSITQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Nov 2019 03:19:16 -0500
+Received: from mga02.intel.com ([134.134.136.20]:39243 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725280AbfKSFCV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 19 Nov 2019 00:02:21 -0500
-Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net [24.5.143.220])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EC23F222A4;
-        Tue, 19 Nov 2019 05:02:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574139741;
-        bh=rFN7FtR8VY7lJ+xyujHLbuOglcKaHGGxuJ28YM4gUNs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ojsaZnLlamg5M40NlAuVcaTjr7CPLYi1ITJd+IkMMsh1Ho7BWttf16bwMuQzO3HVq
-         /5FO5hwSTSJDTbHlaBTiz0Y4rTYdy++/U5YeVox+z7vm0CTCoQYTiwRBl55Ds31zw2
-         MmWwBSonhiXqsH0TBSO947VdYDFXUzD8ZXPUWb/g=
-Date:   Mon, 18 Nov 2019 21:02:19 -0800
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc:     Dmitry Vyukov <dvyukov@google.com>,
-        syzbot <syzbot+ce541a23cf58c1f6b1b1@syzkaller.appspotmail.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        yeyunfeng@huawei.com, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-Subject: Re: linux-next boot error: can't ssh into the instance (3)
-Message-ID: <20191119050219.GJ163020@sol.localdomain>
-References: <000000000000ee674f0597a18709@google.com>
- <CACT4Y+aHkU46kF26a6afuQ+UO3N3W9Ur898dFBa+mQ2q6QzoQQ@mail.gmail.com>
- <CAHp75Vf6hfh0+MxX7G5=skcTx+_37ypz_KMi-NYLGB7wW5zs5g@mail.gmail.com>
+        id S1727471AbfKSITP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 19 Nov 2019 03:19:15 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Nov 2019 00:19:14 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,322,1569308400"; 
+   d="scan'208";a="215487844"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga001.fm.intel.com with SMTP; 19 Nov 2019 00:19:10 -0800
+Received: by lahna (sSMTP sendmail emulation); Tue, 19 Nov 2019 10:19:09 +0200
+Date:   Tue, 19 Nov 2019 10:19:09 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] pinctrl: baytrail: Really serialize all register accesses
+Message-ID: <20191119081909.GE11621@lahna.fi.intel.com>
+References: <20191118142020.22256-1-hdegoede@redhat.com>
+ <20191118142020.22256-2-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHp75Vf6hfh0+MxX7G5=skcTx+_37ypz_KMi-NYLGB7wW5zs5g@mail.gmail.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <20191118142020.22256-2-hdegoede@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 18, 2019 at 07:37:27PM +0200, Andy Shevchenko wrote:
-> On Mon, Nov 18, 2019 at 7:16 PM Dmitry Vyukov <dvyukov@google.com> wrote:
-> >
-> > On Mon, Nov 18, 2019 at 5:35 PM syzbot
-> > <syzbot+ce541a23cf58c1f6b1b1@syzkaller.appspotmail.com> wrote:
-> > >
-> > > Hello,
-> > >
-> > > syzbot found the following crash on:
-> > >
-> > > HEAD commit:    519ead8f Add linux-next specific files for 20191118
-> > > git tree:       linux-next
-> > > console output: https://syzkaller.appspot.com/x/log.txt?x=14653416e00000
-> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=652dd3906d691711
-> > > dashboard link: https://syzkaller.appspot.com/bug?extid=ce541a23cf58c1f6b1b1
-> > > compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-> > >
-> > > Unfortunately, I don't have any reproducer for this crash yet.
-> > >
-> > > IMPORTANT: if you fix the bug, please add the following tag to the commit:
-> > > Reported-by: syzbot+ce541a23cf58c1f6b1b1@syzkaller.appspotmail.com
-> >
-> >
-> > Looks at the console output, this seems to be related to:
-> >
-> > commit eb09878e13013f0faee0a97562da557c4026b8a1
-> > Author: Yunfeng Ye <yeyunfeng@huawei.com>
-> > Date:   Thu Nov 14 15:16:24 2019 +0800
-> >
-> >     ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100
-> >
-> > +drivers/acpi/sysfs.c maintainers
+On Mon, Nov 18, 2019 at 03:20:20PM +0100, Hans de Goede wrote:
+> Commit 39ce8150a079 ("pinctrl: baytrail: Serialize all register access")
+> added a spinlock around all register accesses because:
 > 
-> Just bisected to the same
+> "There is a hardware issue in Intel Baytrail where concurrent GPIO register
+>  access might result reads of 0xffffffff and writes might get dropped
+>  completely."
 > 
+> Testing has shown that this does not catch all cases, there are still
+> 2 problems remaining
+> 
+> 1) The original fix uses a spinlock per byt_gpio device / struct,
+> additional testing has shown that this is not sufficient concurent
+> accesses to 2 different GPIO banks also suffer from the same problem.
+> 
+> This commit fixes this by moving to a single global lock.
+> 
+> 2) The original fix did not add a lock around the register accesses in
+> the suspend/resume handling.
+> 
+> Since pinctrl-baytrail.c is using normal suspend/resume handlers,
+> interrupts are still enabled during suspend/resume handling. Nothing
+> should be using the GPIOs when they are being taken down, _but_ the
+> GPIOs themselves may still cause interrupts, which are likely to
+> use (read) the triggering GPIO. So we need to protect against
+> concurrent GPIO register accesses in the suspend/resume handlers too.
+> 
+> This commit fixes this by adding the missing spin_lock / unlock calls.
+> 
+> The 2 fixes together fix the Acer Switch 10 SW5-012 getting completely
+> confused after a suspend resume. The DSDT for this device has a bug
+> in its _LID method which reprograms the home and power button trigger-
+> flags requesting both high and low _level_ interrupts so the IRQs for
+> these 2 GPIOs continuously fire. This combined with the saving of
+> registers during suspend, triggers concurrent GPIO register accesses
+> resulting in saving 0xffffffff as pconf0 value during suspend and then
+> when restoring this on resume the pinmux settings get all messed up,
+> resulting in various I2C busses being stuck, the wifi no longer working
+> and often the tablet simply not coming out of suspend at all.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 39ce8150a079 ("pinctrl: baytrail: Serialize all register access")
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/pinctrl/intel/pinctrl-baytrail.c | 81 +++++++++++++-----------
+>  1 file changed, 44 insertions(+), 37 deletions(-)
+> 
+> diff --git a/drivers/pinctrl/intel/pinctrl-baytrail.c b/drivers/pinctrl/intel/pinctrl-baytrail.c
+> index b18336d42252..1b289f64c3a2 100644
+> --- a/drivers/pinctrl/intel/pinctrl-baytrail.c
+> +++ b/drivers/pinctrl/intel/pinctrl-baytrail.c
+> @@ -111,7 +111,6 @@ struct byt_gpio {
+>  	struct platform_device *pdev;
+>  	struct pinctrl_dev *pctl_dev;
+>  	struct pinctrl_desc pctl_desc;
+> -	raw_spinlock_t lock;
+>  	const struct intel_pinctrl_soc_data *soc_data;
+>  	struct intel_community *communities_copy;
+>  	struct byt_gpio_pin_context *saved_context;
+> @@ -550,6 +549,8 @@ static const struct intel_pinctrl_soc_data *byt_soc_data[] = {
+>  	NULL
+>  };
+>  
+> +static DEFINE_RAW_SPINLOCK(byt_gpio_lock);
 
-I had to revert this in order to boot linux-next as well.  Rafael, can this
-please be reverted?
+Can we call it byt_lock instead? Following same convention we use in
+chv.
 
-Thanks,
-
-- Eric
+Other than that looks good and definitely right thing to do. Thanks for
+doing this Hans!
