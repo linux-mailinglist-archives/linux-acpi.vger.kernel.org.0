@@ -2,96 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC974101D48
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Nov 2019 09:27:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69BED101E2B
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Nov 2019 09:43:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726980AbfKSI1k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Nov 2019 03:27:40 -0500
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:33737 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726658AbfKSI1j (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Nov 2019 03:27:39 -0500
-Received: by mail-oi1-f196.google.com with SMTP id m193so18147242oig.0;
-        Tue, 19 Nov 2019 00:27:39 -0800 (PST)
+        id S1726948AbfKSInS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Nov 2019 03:43:18 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:41912 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725798AbfKSInR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Nov 2019 03:43:17 -0500
+Received: by mail-ot1-f68.google.com with SMTP id 94so17145423oty.8;
+        Tue, 19 Nov 2019 00:43:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=tTdWL/mbHMVFqnx8U/KnwfTChDme7rGemRgVyorvz5w=;
-        b=l0X6O7PEaPU86WL2vwx0dORjRKiCYFVITkKrXVCwL9QqBAK/tWpnqA0tu3v8a4rTxb
-         5w7FB5pqHS8zgVR0kHFDyGE1trrs/zbFkNQGnRcl4d3CiFOOkmqD2EyyAqcB9LV2RYs2
-         VVMmbZ/0a4o9yywDaXUEz8LrWJdUPrVV3eh9QC9KDSDqy3GnOm/cHZqTFEcdENUB6tW/
-         IBevUdkWSE59bip2iLpMl0k2kwEvDZHGQAhkGYEUpE310UukqFDl6l5qdVnYUs6l8kqk
-         dlefW0R0D5yBlTwQyXvgm/ul9Oj7jrhstgfoXJr8p6MPDUDPQH3yUGNHuF7jkfDeOi8r
-         BaIw==
-X-Gm-Message-State: APjAAAWOJ71zZO/rMbLs8fx9UG1wm7OCcYSU/eBrvzR4wgF2ff3MRf6H
-        Om3akKPmz4ZQO5VvSyY7dnc7akj6sS+f3GyyAqc=
-X-Google-Smtp-Source: APXvYqw5oP+tndd0SdbE4QtLUB1pEEYEitwAwRNYCNmrtaGz9K5GIU5cpVPb+zsX08aRaDOnKXX2Nq6rtBHj8leI7kQ=
-X-Received: by 2002:a05:6808:901:: with SMTP id w1mr3087853oih.57.1574152058803;
- Tue, 19 Nov 2019 00:27:38 -0800 (PST)
+        bh=fLWDK5bcLE7hl1oQBmKL/QSkLfiCovIMYar92vueUXk=;
+        b=i36lthW+vDi3Fq4WkIZJyygob9g5mM9LxWvf3G/QvFsfe89NJVnlRNhCpVTMd+SPG7
+         yQ6MA311OVqaG8fFem6gHf4hdkDOrKgiPflzPAQE9/T3ZGe1ZZS6bXHpjUMdBcOoKBAM
+         wxI9+6A6vKRzCeuXq/GjJ9MNhXzQEUcP9gFM/yQNYOtfxX90dabNgG4vrqdcaMwQF8dR
+         LUvGEdWEdNj6ON73pv5gcErm3STnzacppfk7tip4/KyYjQ/TUVQIEp6EyINNFG3vXjr3
+         sAm83uN7KuD8kaREZ07Xrx/BrTAoRsmZZfSAv8PdnJG67hHYX8wYdub90/wlyrbJQ43B
+         qY3w==
+X-Gm-Message-State: APjAAAXvtKATPuU8nmXKY3T251m9DDZqayq1qqThbCU/MUj7QSU1KFDp
+        BDxv2SkFyWGCceAnOQAcDU1XXYCrzqIThIDZFoILvssO
+X-Google-Smtp-Source: APXvYqyi3eCXBMMch5CtVbQEo2KQ1dQxzAcuZxmaAX4zIZ97CAY0YQWL30MNgoAvRbeC/ixOij26w94cyE9/Tx6JGzk=
+X-Received: by 2002:a9d:4c85:: with SMTP id m5mr2748250otf.118.1574152996610;
+ Tue, 19 Nov 2019 00:43:16 -0800 (PST)
 MIME-Version: 1.0
-References: <000000000000ee674f0597a18709@google.com> <CACT4Y+aHkU46kF26a6afuQ+UO3N3W9Ur898dFBa+mQ2q6QzoQQ@mail.gmail.com>
- <CAHp75Vf6hfh0+MxX7G5=skcTx+_37ypz_KMi-NYLGB7wW5zs5g@mail.gmail.com> <20191119050219.GJ163020@sol.localdomain>
-In-Reply-To: <20191119050219.GJ163020@sol.localdomain>
+References: <cc03ba18-4949-9244-639c-94f461f03361@huawei.com>
+ <CAA9_cmc7BuWkBHadHRAxfch43KWovb6rSr2AR9y3bVue0M9EhQ@mail.gmail.com>
+ <CAJZ5v0g35zvSB88d7qK8n1uRGCuO5VNK11jHVQRNKwyQW4vZSQ@mail.gmail.com>
+ <CAA42JLYCod=mymBiDDXxQ1sts7e-Ot_q9SKdJxjSkcsZRVGDTQ@mail.gmail.com>
+ <CAJZ5v0iAbf7qQeyeR6CVYTX8v=OpEcbFksTHgQ0LAZk-QKqHpQ@mail.gmail.com> <9eff3584-a25b-ca47-d38f-ce83862baa18@huawei.com>
+In-Reply-To: <9eff3584-a25b-ca47-d38f-ce83862baa18@huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 19 Nov 2019 09:27:27 +0100
-Message-ID: <CAJZ5v0h6EVqXpP7p=-WiLKOQAaDCn-DX_H7dbKAfQ+o=fmmEWA@mail.gmail.com>
-Subject: Re: linux-next boot error: can't ssh into the instance (3)
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        syzbot <syzbot+ce541a23cf58c1f6b1b1@syzkaller.appspotmail.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Yunfeng Ye <yeyunfeng@huawei.com>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
+Date:   Tue, 19 Nov 2019 09:43:04 +0100
+Message-ID: <CAJZ5v0h9xQeebYst8mg6YOzSXoY=JDg0F8wDXw1QPEatiC-=UA@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100
+To:     Yunfeng Ye <yeyunfeng@huawei.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Dexuan-Linux Cui <dexuan.linux@gmail.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        "hushiyuan@huawei.com" <hushiyuan@huawei.com>,
+        "linfeilong@huawei.com" <linfeilong@huawei.com>,
+        Dexuan Cui <decui@microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 19, 2019 at 6:02 AM Eric Biggers <ebiggers@kernel.org> wrote:
+On Tue, Nov 19, 2019 at 3:22 AM Yunfeng Ye <yeyunfeng@huawei.com> wrote:
 >
-> On Mon, Nov 18, 2019 at 07:37:27PM +0200, Andy Shevchenko wrote:
-> > On Mon, Nov 18, 2019 at 7:16 PM Dmitry Vyukov <dvyukov@google.com> wrote:
-> > >
-> > > On Mon, Nov 18, 2019 at 5:35 PM syzbot
-> > > <syzbot+ce541a23cf58c1f6b1b1@syzkaller.appspotmail.com> wrote:
-> > > >
-> > > > Hello,
-> > > >
-> > > > syzbot found the following crash on:
-> > > >
-> > > > HEAD commit:    519ead8f Add linux-next specific files for 20191118
-> > > > git tree:       linux-next
-> > > > console output: https://syzkaller.appspot.com/x/log.txt?x=14653416e00000
-> > > > kernel config:  https://syzkaller.appspot.com/x/.config?x=652dd3906d691711
-> > > > dashboard link: https://syzkaller.appspot.com/bug?extid=ce541a23cf58c1f6b1b1
-> > > > compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-> > > >
-> > > > Unfortunately, I don't have any reproducer for this crash yet.
-> > > >
-> > > > IMPORTANT: if you fix the bug, please add the following tag to the commit:
-> > > > Reported-by: syzbot+ce541a23cf58c1f6b1b1@syzkaller.appspotmail.com
-> > >
-> > >
-> > > Looks at the console output, this seems to be related to:
-> > >
-> > > commit eb09878e13013f0faee0a97562da557c4026b8a1
-> > > Author: Yunfeng Ye <yeyunfeng@huawei.com>
-> > > Date:   Thu Nov 14 15:16:24 2019 +0800
-> > >
-> > >     ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100
-> > >
-> > > +drivers/acpi/sysfs.c maintainers
-> >
-> > Just bisected to the same
-> >
 >
-> I had to revert this in order to boot linux-next as well.  Rafael, can this
-> please be reverted?
+>
+> On 2019/11/19 5:15, Rafael J. Wysocki wrote:
+> > On Mon, Nov 18, 2019 at 8:44 PM Dexuan-Linux Cui <dexuan.linux@gmail.com> wrote:
+> >>
+> >> On Mon, Nov 18, 2019 at 1:04 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >>>
+> >>> On Sat, Nov 16, 2019 at 9:06 PM Dan Williams <dan.j.williams@intel.com> wrote:
+> >>>>
+> >>>> On Wed, Nov 13, 2019 at 11:17 PM Yunfeng Ye <yeyunfeng@huawei.com> wrote:
+> >>>>>
+> >>>>> The commit 0f27cff8597d ("ACPI: sysfs: Make ACPI GPE mask kernel
+> >>>>> parameter cover all GPEs") says:
+> >>>>>   "Use a bitmap of size 0xFF instead of a u64 for the GPE mask so 256
+> >>>>>    GPEs can be masked"
+> >>>>>
+> >>>>> But the masking of GPE 0xFF it not supported and the check condition
+> >>>>> "gpe > ACPI_MASKABLE_GPE_MAX" is not valid because the type of gpe is
+> >>>>> u8.
+> >>>>>
+> >>>>> So modify the macro ACPI_MASKABLE_GPE_MAX to 0x100, and drop the "gpe >
+> >>>>> ACPI_MASKABLE_GPE_MAX" check. In addition, update the docs "Format" for
+> >>>>> acpi_mask_gpe parameter.
+> >>>>>
+> >>>>> Fixes: 0f27cff8597d ("ACPI: sysfs: Make ACPI GPE mask kernel parameter cover all GPEs")
+> >>>>> Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
+> >>>>> ---
+> >>>>> v1 -> v2:
+> >>>>>  - drop the "gpe > ACPI_MASKABLE_GPE_MAX" check
+> >>>>>  - update the docs "Format" from <int> to <byte> for acpi_mask_gpe parameter
+> >>>>>  - update the commit comment
+> >>>>>
+> >>>>>  Documentation/admin-guide/kernel-parameters.txt | 2 +-
+> >>>>>  drivers/acpi/sysfs.c                            | 4 ++--
+> >>>>>  2 files changed, 3 insertions(+), 3 deletions(-)
+> >>>>
+> >>>> Bisect flags commit eb09878e1301 "ACPI: sysfs: Change
+> >>>> ACPI_MASKABLE_GPE_MAX to 0x100" in -next as the reason for a boot
+> >>>> regression in my qemu-kvm test environment. It spews:
+> >>>>
+> >>>> [    1.456728] ACPI: Masking GPE 0x0.
+> >>>> ...
+> >>>> [  161.721420] ACPI: Masking GPE 0x0.
+> >>>>
+> >>>> ...and then hangs.
+> >>>>
+> >>>> A straight revert gets the configuration back on its feet.
+> >>>>
+> >>>> qemu-system-x86_64 --version
+> >>>> QEMU emulator version 4.0.50 (v4.0.0-928-g49c6c6ac0cd8)
+> >>>
+> >>> OK, I'll drop it then, thanks!
+> >>
+> >> We're seeing the same issue wtih 5.4.0-rc7-next-20191118 on a Linux VM
+> >> running on Hyper-V :
+> >>
+> >> [    0.133029] ACPI: 1 ACPI AML tables successfully acquired and loaded
+> >> [    0.144023] ACPI: Interpreter enabled
+> >> [    0.145023] ACPI: (supports S0 S5)
+> >> [    0.146023] ACPI: Using IOAPIC for interrupt routing
+> >> [    0.147024] PCI: Using host bridge windows from ACPI; if necessary,
+> >> use "pci=nocrs" and report a bug
+> >> [    0.148031] ACPI: Masking GPE 0x0.
+> >> ...
+> >> [  774.839023] ACPI: Masking GPE 0x0.
+> >> [  774.840023] ACPI: Masking GPE 0x0.
+> >>
+> >> I guess the patch is only tested on a physical machine and not on a VM...
+> >
+> > It looks like the patch hasn't been tested at all.
+> >
+> > Please try to change the data type of gpe in
+> > acpi_gpe_apply_masked_gpes() to u16 and see if that helps.
+> >
+> Sorry for this problem, I have no good test after modification according to
+> inspection opinions.
 
-Dropped already from my linux-next branch, should not be there in
-linux-next any more.
+I see.
+
+Well, reviewers make mistakes too ...
+
+> The first version patch is ok, the type of gpe is changed to u32. and I have
+> test it before.
+
+OK
+
+So I have added the u8 -> u16 change for gpe in
+acpi_gpe_apply_masked_gpes() and applied it again, as that should work
+AFAICS.
