@@ -2,144 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 626261027E8
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Nov 2019 16:18:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3155102839
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Nov 2019 16:38:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728217AbfKSPSg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Nov 2019 10:18:36 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:57160 "EHLO
+        id S1727937AbfKSPi7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Nov 2019 10:38:59 -0500
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:25918 "EHLO
         us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728171AbfKSPSf (ORCPT
+        by vger.kernel.org with ESMTP id S1727505AbfKSPi6 (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 19 Nov 2019 10:18:35 -0500
+        Tue, 19 Nov 2019 10:38:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574176715;
+        s=mimecast20190719; t=1574177936;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=T1xgbYHwGV/X4qOujvrB+x8YaMZaSCqcczgDWtCSP8s=;
-        b=PMKsychZszZ405ZmwQTZmcxi/yhKG83GvCC3JGbP95uGd1M6+2LkZMdmbblpR0UVaZLIUz
-        lsqUmyVxp/SIpd1xvbNVmQhX39g/q9YUPUWjJ9yqyY7XL6qgGTGCnYPVSuAa9hgxx7Vavg
-        jQlFoM7slHAJjknrqxcH+DdAbqPj9HA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-219-WfxXZp1-MWuD2QExxvJkuA-1; Tue, 19 Nov 2019 10:18:33 -0500
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C03541804975;
-        Tue, 19 Nov 2019 15:18:30 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-117-49.ams2.redhat.com [10.36.117.49])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4B0A81001B35;
-        Tue, 19 Nov 2019 15:18:28 +0000 (UTC)
+        bh=FTxJmudlnMQQjRRxh/x/4NOPPe9JpTOrcw07y3bRZ+A=;
+        b=HQiPyts4Sd/KD4V3BJ739Qqkxnb8lYBPUpR4GyNqxKIWqg9qMoHetr4EV+sqz9A7qBnKaU
+        FTpI/Hxaz8c5NZRwdznUzXEoOJsSIxMa4v9de+WGigYBZlDyoe4dFneVRxfXnYphJft+km
+        71RSr3qomIIvF+sZ4uLJNAXPKvhOgRY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-236--F9aUHkUPku0hWI7_87OBQ-1; Tue, 19 Nov 2019 10:38:55 -0500
+Received: by mail-wm1-f71.google.com with SMTP id z3so2476272wmk.1
+        for <linux-acpi@vger.kernel.org>; Tue, 19 Nov 2019 07:38:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=RiyemL711+UTpgAFyILUw1P7Hb8w/e7oipbse+Ru6BU=;
+        b=CNRezbxorrYJQjFUQP5qvL1NNEINHPOM4TqKcQaelajqb4IlSvny3RGAxhBJ17ffHx
+         oEs3DUcimqOVZrZcNcfOOM26b1cgGSw5ifaUZ54LbGX489BwBxly9oQNkr/bW2LcxjjY
+         PordJ++1O0LOMdGgPMNBUsOHycNrQf+4iLw3m83OtnXbb7n+STANWhKaYp6Dwmz1vbMs
+         LgKAzggc5rLdzMmm1ZH/nQYQxMyTl0/BknAMqPbF0RtSuwq9lZ48+OTKMaINmgpmBEjj
+         n6kqxli0qCnmfYAlwcdNvZV70GO7dYQ+M41wqy2ACfI7uwe7+4IIAIpaPFcgTlDVGZBX
+         WccQ==
+X-Gm-Message-State: APjAAAWIftEjLwvKdpj6noFB0BQ/fArcdyJS8ttaLWVxDFR4Eg9it1mc
+        SxF7V4Pv8MqoZJlzi9pviV1kx2jytzJlUnNf43en85PSaJvn/6Ow4oBsIfva11E+xgPSvt6qcqd
+        UPuVM8UHRu2Edrve/su4mGw==
+X-Received: by 2002:adf:f147:: with SMTP id y7mr30551744wro.236.1574177933984;
+        Tue, 19 Nov 2019 07:38:53 -0800 (PST)
+X-Google-Smtp-Source: APXvYqw6k3t6w/uSt3UhXjSK9V5CC55Oxb8Mdl3qFb0ut7kzii8TvQiUjfOFUwcR8yIASWO9Qk1q3Q==
+X-Received: by 2002:adf:f147:: with SMTP id y7mr30551714wro.236.1574177933754;
+        Tue, 19 Nov 2019 07:38:53 -0800 (PST)
+Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
+        by smtp.gmail.com with ESMTPSA id o5sm27292840wrx.15.2019.11.19.07.38.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Nov 2019 07:38:53 -0800 (PST)
+Subject: Re: [PATCH] ACPI / button: Add DMI quirk for Acer Switch 10 SW5-032
+ lid-switch
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+References: <20191118153556.28751-1-hdegoede@redhat.com>
+ <20191119082642.GF11621@lahna.fi.intel.com>
+ <7a2ac981-1c28-5abb-0599-68da44675bdc@redhat.com>
+ <20191119124411.GF32742@smile.fi.intel.com>
+ <20191119125757.GJ11621@lahna.fi.intel.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Lee Jones <lee.jones@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] drm/i915: DSI: select correct PWM controller to use based on the VBT
-Date:   Tue, 19 Nov 2019 16:18:18 +0100
-Message-Id: <20191119151818.67531-4-hdegoede@redhat.com>
-In-Reply-To: <20191119151818.67531-1-hdegoede@redhat.com>
-References: <20191119151818.67531-1-hdegoede@redhat.com>
+Message-ID: <84e0ce18-500e-b45a-c77a-ad4cc35b1533@redhat.com>
+Date:   Tue, 19 Nov 2019 16:38:52 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.0
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-MC-Unique: WfxXZp1-MWuD2QExxvJkuA-1
+In-Reply-To: <20191119125757.GJ11621@lahna.fi.intel.com>
+Content-Language: en-US
+X-MC-Unique: -F9aUHkUPku0hWI7_87OBQ-1
 X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
+Content-Type: text/plain; charset=WINDOWS-1252; format=flowed
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-At least Bay Trail (BYT) and Cherry Trail (CHT) devices can use 1 of 2
-different PWM controllers for controlling the LCD's backlight brightness.
-Either the one integrated into the PMIC or the one integrated into the
-SoC (the 1st LPSS PWM controller).
+Hi,
 
-So far in the LPSS code on BYT we have skipped registering the LPSS PWM
-controller "pwm_backlight" lookup entry when a Crystal Cove PMIC is
-present, assuming that in this case the PMIC PWM controller will be used.
+On 19-11-2019 13:57, Mika Westerberg wrote:
+> On Tue, Nov 19, 2019 at 02:44:11PM +0200, Andy Shevchenko wrote:
+>> On Tue, Nov 19, 2019 at 12:12:35PM +0100, Hans de Goede wrote:
+>>> On 19-11-2019 09:26, Mika Westerberg wrote:
+>>>> On Mon, Nov 18, 2019 at 04:35:56PM +0100, Hans de Goede wrote:
+>>
+>>> Working around this is not impossible, but it will be quite ugly and gi=
+ven
+>>> the age of the machine IMHO not worth it. I've also found out that I ne=
+ed a
+>>> DSDT override to be able to control the LCD backlight, this is controll=
+ed by
+>>> the 1st PWM controller in the SoC LPSS block, which is normally enumera=
+ted
+>>> through ACPI but the entire Device (PWM1) {} block is missing from the
+>>> DSDT :|  Adding it from similar hardware fixes things and makes the bac=
+klight
+>>> controllable. TL;DR: it seems that this is one of the rare cased where
+>>> people who want to run Linux will need to do a manual DSDT override :|
+>>
+>> If it's missing it's easy to inject entire block from EFI variable or us=
+ing
+>> ConfigFS (see meta-acpi project [1] for details).
+>>
+>>> When they do that override they can also fix the _LID method and
+>>> then re-enable LID functionality on the kernel commandline overriding
+>>> this DMI quirk.
+>>
+>> Yes, if you override entire DSDT it can be fixed for many bugs at once.
+>>
+>>> I will probably do a blog post on this (some people have asked me
+>>> to do some blogposts about how to analyze DSDT-s, this will be a nice
+>>> example) and add a link to the DSDT override to the blogpost, I believe
+>>> that this is the best we can do for users of this device.
+>>
+>> Perhaps above mentioned project somehow can be extended to keep DSDT ASL=
+ code
+>> for overriding? Mika?
+>>
+>> [1]: https://github.com/westeri/meta-acpi/
+>=20
+> No objections.
+>=20
+> Maybe we should have a mechanism in the kernel that allows you to have
+> ACPI table quirks like this for multiple different systems (based on DMI
+> indentifiers perhaps) inside a single initrd and the kernel then loads
+> tables only matching the running system. That would allow distros to
+> ship these for broken systems.
 
-On CHT we have been relying on only 1 of the 2 PWM controllers being
-enabled in the DSDT at the same time; and always registered the lookup.
+I would love to have something like this, but I'm afraid that the distros
+cannot just distribute modified DSDT's. I know we ask people to upload
+acpidump's to bugzilla, etc. all the time. But one can reasonably argue
+that that is fair-use (IANAL, TINLA). OTOH for something to be distributed
+by distros we are going to need something a lot less handwavy wrt
+re-dsitribution of these files, which AFAIK is impossible to get.
 
-So far this has been working, but the correct way to determine which PWM
-controller needs to be used is by checking a bit in the VBT table and
-recently I've learned about 2 different BYT devices:
-Point of View MOBII TAB-P800W
-Acer Switch 10 SW5-012
+I had a discussion about this a while ago at my local hackerspace (*),
+and someone there suggested to distribute patch files and have some
+scripts which automatically generate an overlay by doing acpidump +
+acpixtract + iasl -d + apply-patch + iasl -ta. This would then automaticall=
+y
+run at boot so that the next boot will have a fixed DSDT. Which is an
+interesting concept if anyone is willing to work on it ...
 
-Which use a Crystal Cove PMIC, yet the LCD is connected to the SoC/LPSS
-PWM controller (and the VBT correctly indicates this), so here our old
-heuristics fail.
+Regards,
 
-This commit fixes using the wrong PWM controller on these devices by
-calling pwm_get() for the right PWM controller based on the
-VBT dsi.config.pwm_blc bit.
+Hans
 
-Note this is part of a series which contains 2 other patches which renames
-the PWM lookup for the 1st SoC/LPSS PWM from "pwm_backlight" to
-"pwm_pmic_backlight" and the PWM lookup for the Crystal Cove PMIC PWM
-from "pwm_backlight" to "pwm_pmic_backlight".
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/gpu/drm/i915/display/intel_panel.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_panel.c b/drivers/gpu/drm/i=
-915/display/intel_panel.c
-index bc14e9c0285a..ddcf311d1114 100644
---- a/drivers/gpu/drm/i915/display/intel_panel.c
-+++ b/drivers/gpu/drm/i915/display/intel_panel.c
-@@ -1840,13 +1840,22 @@ static int pwm_setup_backlight(struct intel_connect=
-or *connector,
- =09=09=09       enum pipe pipe)
- {
- =09struct drm_device *dev =3D connector->base.dev;
-+=09struct drm_i915_private *dev_priv =3D to_i915(dev);
- =09struct intel_panel *panel =3D &connector->panel;
-+=09const char *desc;
- =09int retval;
-=20
--=09/* Get the PWM chip for backlight control */
--=09panel->backlight.pwm =3D pwm_get(dev->dev, "pwm_backlight");
-+=09/* Get the right PWM chip for DSI backlight according to VBT */
-+=09if (dev_priv->vbt.dsi.config->pwm_blc =3D=3D PPS_BLC_PMIC) {
-+=09=09panel->backlight.pwm =3D pwm_get(dev->dev, "pwm_pmic_backlight");
-+=09=09desc =3D "PMIC";
-+=09} else {
-+=09=09panel->backlight.pwm =3D pwm_get(dev->dev, "pwm_soc_backlight");
-+=09=09desc =3D "SoC";
-+=09}
-+
- =09if (IS_ERR(panel->backlight.pwm)) {
--=09=09DRM_ERROR("Failed to own the pwm chip\n");
-+=09=09DRM_ERROR("Failed to get the %s PWM chip\n", desc);
- =09=09panel->backlight.pwm =3D NULL;
- =09=09return -ENODEV;
- =09}
-@@ -1873,6 +1882,7 @@ static int pwm_setup_backlight(struct intel_connector=
- *connector,
- =09=09=09=09 CRC_PMIC_PWM_PERIOD_NS);
- =09panel->backlight.enabled =3D panel->backlight.level !=3D 0;
-=20
-+=09DRM_INFO("Using %s PWM for LCD backlight control\n", desc);
- =09return 0;
- }
-=20
---=20
-2.23.0
+
+*) While working on fixing something which needed a DSDT override IIRC
+
 
