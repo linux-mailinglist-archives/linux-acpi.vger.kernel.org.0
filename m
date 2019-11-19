@@ -2,150 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69BED101E2B
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Nov 2019 09:43:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DAAAE1022A1
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Nov 2019 12:10:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726948AbfKSInS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Nov 2019 03:43:18 -0500
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:41912 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725798AbfKSInR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Nov 2019 03:43:17 -0500
-Received: by mail-ot1-f68.google.com with SMTP id 94so17145423oty.8;
-        Tue, 19 Nov 2019 00:43:17 -0800 (PST)
+        id S1726510AbfKSLKV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Nov 2019 06:10:21 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:39805 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726000AbfKSLKU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Nov 2019 06:10:20 -0500
+Received: by mail-wm1-f67.google.com with SMTP id t26so3051969wmi.4;
+        Tue, 19 Nov 2019 03:10:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=NYWeXLuQGLvOPwK8pHNuzurveHjA/E4XL3deYT2CQ6Q=;
+        b=skdJ1UEHu5PJl89Mkk9VRRqLagIUdwLLzIvfE7qxc79DduSNiquwoFXzoJXVUbZ9zw
+         g1cNgucakgJrNBfc9PtJPQUQH7hiPIbQNdvm4HfPAxaPqEE5yDoU/Fm0WZrr770x6z9Z
+         1mV4N6EIFIO+H5heFTgopWe3ElCwZHNDP6TrB6ZxXDF+BVJoJCgzBj9WZ81yUaCLfyGK
+         QBfOV9xXA4+nU1SmqoIng5FZDcMYQif9wRQNWBuakBreDAgwkdsGdC6lPo7bjUeRutEb
+         FqwSvcrmf/LrgaSpoIWvYSkunbCfPVklaj+EQbJw7jUcxpmgoRV0aJoU4yUuzBudNnyu
+         7iYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fLWDK5bcLE7hl1oQBmKL/QSkLfiCovIMYar92vueUXk=;
-        b=i36lthW+vDi3Fq4WkIZJyygob9g5mM9LxWvf3G/QvFsfe89NJVnlRNhCpVTMd+SPG7
-         yQ6MA311OVqaG8fFem6gHf4hdkDOrKgiPflzPAQE9/T3ZGe1ZZS6bXHpjUMdBcOoKBAM
-         wxI9+6A6vKRzCeuXq/GjJ9MNhXzQEUcP9gFM/yQNYOtfxX90dabNgG4vrqdcaMwQF8dR
-         LUvGEdWEdNj6ON73pv5gcErm3STnzacppfk7tip4/KyYjQ/TUVQIEp6EyINNFG3vXjr3
-         sAm83uN7KuD8kaREZ07Xrx/BrTAoRsmZZfSAv8PdnJG67hHYX8wYdub90/wlyrbJQ43B
-         qY3w==
-X-Gm-Message-State: APjAAAXvtKATPuU8nmXKY3T251m9DDZqayq1qqThbCU/MUj7QSU1KFDp
-        BDxv2SkFyWGCceAnOQAcDU1XXYCrzqIThIDZFoILvssO
-X-Google-Smtp-Source: APXvYqyi3eCXBMMch5CtVbQEo2KQ1dQxzAcuZxmaAX4zIZ97CAY0YQWL30MNgoAvRbeC/ixOij26w94cyE9/Tx6JGzk=
-X-Received: by 2002:a9d:4c85:: with SMTP id m5mr2748250otf.118.1574152996610;
- Tue, 19 Nov 2019 00:43:16 -0800 (PST)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=NYWeXLuQGLvOPwK8pHNuzurveHjA/E4XL3deYT2CQ6Q=;
+        b=hZmXTyiyx7aVpTe+a8ydQ0G4XT+90owkQ5cxH1ixfdTTwdvTgb0r4PkMJeqhvjlpV5
+         vZWknw9yZOszz1sQUHUC/AzaE74Vwxy9ZhC1/zSmm2vinDq19hphlDcM4QQCshQe6CU+
+         HJXBERLE6vh7N0to9kNRNm/mr1mYY47a0dJ+LE2uwVZCltntBE2ZVUjDA55HdUVxlONc
+         JnKUEqVZUxEZ5DsRLjLe5yLoSHBIh8umj3Rgk58xywo86ikHpsoBkyQza/nD/LFsYnZH
+         k/YAIO/ro2U8w205N0idlkMnzyDb5qGSlou/o67wPxA1ItWynr5d6ProFXaSuYhB4WiW
+         nwSw==
+X-Gm-Message-State: APjAAAURyIdLbu0gCAqW4G/EW90ZQ3Rrmta4rIEKzEu/L9lVmkJfbXdL
+        aQYaC6TW1B09T3/3NR/mxoA=
+X-Google-Smtp-Source: APXvYqxkMDs2asP+vgJXKZTaN6ik3+6S/o6ZGiHDU8XukZ5zzOg6DqoFabjwqzDackICD1Kv7aubiw==
+X-Received: by 2002:a7b:cb4a:: with SMTP id v10mr4628412wmj.106.1574161816817;
+        Tue, 19 Nov 2019 03:10:16 -0800 (PST)
+Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
+        by smtp.gmail.com with ESMTPSA id z4sm2754237wmf.36.2019.11.19.03.10.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Nov 2019 03:10:15 -0800 (PST)
+Date:   Tue, 19 Nov 2019 12:10:12 +0100
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Sean Christopherson <sean.j.christopherson@intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Nadav Amit <namit@vmware.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
+Subject: Re: [PATCH 00/12] treewide: break dependencies on x86's RM header
+Message-ID: <20191119111012.GA109842@gmail.com>
+References: <20191119002121.4107-1-sean.j.christopherson@intel.com>
 MIME-Version: 1.0
-References: <cc03ba18-4949-9244-639c-94f461f03361@huawei.com>
- <CAA9_cmc7BuWkBHadHRAxfch43KWovb6rSr2AR9y3bVue0M9EhQ@mail.gmail.com>
- <CAJZ5v0g35zvSB88d7qK8n1uRGCuO5VNK11jHVQRNKwyQW4vZSQ@mail.gmail.com>
- <CAA42JLYCod=mymBiDDXxQ1sts7e-Ot_q9SKdJxjSkcsZRVGDTQ@mail.gmail.com>
- <CAJZ5v0iAbf7qQeyeR6CVYTX8v=OpEcbFksTHgQ0LAZk-QKqHpQ@mail.gmail.com> <9eff3584-a25b-ca47-d38f-ce83862baa18@huawei.com>
-In-Reply-To: <9eff3584-a25b-ca47-d38f-ce83862baa18@huawei.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 19 Nov 2019 09:43:04 +0100
-Message-ID: <CAJZ5v0h9xQeebYst8mg6YOzSXoY=JDg0F8wDXw1QPEatiC-=UA@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100
-To:     Yunfeng Ye <yeyunfeng@huawei.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Dexuan-Linux Cui <dexuan.linux@gmail.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        "hushiyuan@huawei.com" <hushiyuan@huawei.com>,
-        "linfeilong@huawei.com" <linfeilong@huawei.com>,
-        Dexuan Cui <decui@microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191119002121.4107-1-sean.j.christopherson@intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 19, 2019 at 3:22 AM Yunfeng Ye <yeyunfeng@huawei.com> wrote:
->
->
->
-> On 2019/11/19 5:15, Rafael J. Wysocki wrote:
-> > On Mon, Nov 18, 2019 at 8:44 PM Dexuan-Linux Cui <dexuan.linux@gmail.com> wrote:
-> >>
-> >> On Mon, Nov 18, 2019 at 1:04 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >>>
-> >>> On Sat, Nov 16, 2019 at 9:06 PM Dan Williams <dan.j.williams@intel.com> wrote:
-> >>>>
-> >>>> On Wed, Nov 13, 2019 at 11:17 PM Yunfeng Ye <yeyunfeng@huawei.com> wrote:
-> >>>>>
-> >>>>> The commit 0f27cff8597d ("ACPI: sysfs: Make ACPI GPE mask kernel
-> >>>>> parameter cover all GPEs") says:
-> >>>>>   "Use a bitmap of size 0xFF instead of a u64 for the GPE mask so 256
-> >>>>>    GPEs can be masked"
-> >>>>>
-> >>>>> But the masking of GPE 0xFF it not supported and the check condition
-> >>>>> "gpe > ACPI_MASKABLE_GPE_MAX" is not valid because the type of gpe is
-> >>>>> u8.
-> >>>>>
-> >>>>> So modify the macro ACPI_MASKABLE_GPE_MAX to 0x100, and drop the "gpe >
-> >>>>> ACPI_MASKABLE_GPE_MAX" check. In addition, update the docs "Format" for
-> >>>>> acpi_mask_gpe parameter.
-> >>>>>
-> >>>>> Fixes: 0f27cff8597d ("ACPI: sysfs: Make ACPI GPE mask kernel parameter cover all GPEs")
-> >>>>> Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
-> >>>>> ---
-> >>>>> v1 -> v2:
-> >>>>>  - drop the "gpe > ACPI_MASKABLE_GPE_MAX" check
-> >>>>>  - update the docs "Format" from <int> to <byte> for acpi_mask_gpe parameter
-> >>>>>  - update the commit comment
-> >>>>>
-> >>>>>  Documentation/admin-guide/kernel-parameters.txt | 2 +-
-> >>>>>  drivers/acpi/sysfs.c                            | 4 ++--
-> >>>>>  2 files changed, 3 insertions(+), 3 deletions(-)
-> >>>>
-> >>>> Bisect flags commit eb09878e1301 "ACPI: sysfs: Change
-> >>>> ACPI_MASKABLE_GPE_MAX to 0x100" in -next as the reason for a boot
-> >>>> regression in my qemu-kvm test environment. It spews:
-> >>>>
-> >>>> [    1.456728] ACPI: Masking GPE 0x0.
-> >>>> ...
-> >>>> [  161.721420] ACPI: Masking GPE 0x0.
-> >>>>
-> >>>> ...and then hangs.
-> >>>>
-> >>>> A straight revert gets the configuration back on its feet.
-> >>>>
-> >>>> qemu-system-x86_64 --version
-> >>>> QEMU emulator version 4.0.50 (v4.0.0-928-g49c6c6ac0cd8)
-> >>>
-> >>> OK, I'll drop it then, thanks!
-> >>
-> >> We're seeing the same issue wtih 5.4.0-rc7-next-20191118 on a Linux VM
-> >> running on Hyper-V :
-> >>
-> >> [    0.133029] ACPI: 1 ACPI AML tables successfully acquired and loaded
-> >> [    0.144023] ACPI: Interpreter enabled
-> >> [    0.145023] ACPI: (supports S0 S5)
-> >> [    0.146023] ACPI: Using IOAPIC for interrupt routing
-> >> [    0.147024] PCI: Using host bridge windows from ACPI; if necessary,
-> >> use "pci=nocrs" and report a bug
-> >> [    0.148031] ACPI: Masking GPE 0x0.
-> >> ...
-> >> [  774.839023] ACPI: Masking GPE 0x0.
-> >> [  774.840023] ACPI: Masking GPE 0x0.
-> >>
-> >> I guess the patch is only tested on a physical machine and not on a VM...
-> >
-> > It looks like the patch hasn't been tested at all.
-> >
-> > Please try to change the data type of gpe in
-> > acpi_gpe_apply_masked_gpes() to u16 and see if that helps.
-> >
-> Sorry for this problem, I have no good test after modification according to
-> inspection opinions.
 
-I see.
+* Sean Christopherson <sean.j.christopherson@intel.com> wrote:
 
-Well, reviewers make mistakes too ...
+> x86's asm/realmode.h, which defines low level structures, variables and
+> helpers used to bring up APs during SMP boot, ends up getting included in
+> practically every nook and cranny of the kernel because the address used
+> by ACPI for resuming from S3 also happens to be stored in the real mode
+> header, and ACPI bleeds the dependency into its widely included headers.
+> 
+> As a result, modifying realmode.h for even the most trivial change to the
+> boot code triggers a full kernel rebuild, which is frustrating to say the
+> least as it some of the most difficult code to get exactly right *and* is
+> also some of the most functionally isolated code in the kernel.
+> 
+> To break the kernel's widespread dependency on realmode.h, add a wrapper
+> in the aforementioned ACPI S3 code to access the real mode header instead
+> of derefencing the header directly in asm/acpi.h and thereby exposing it
+> to the world via linux/acpi.h.
+> 
+> Build tested on x86 with allyesconfig and allmodconfig, so hopefully there
+> aren't more build issues lurking, but at this point it wouldn't surprise
+> me in the least if this somehow manages to break the build.
+> 
+> Based on tip/master, commit ceceaf1f12ba ("Merge branch 'WIP.x86/cleanups'").
+> 
+> Patch Synopsis:
+>   - Patches 01-09 fix a variety of build errors that arise when patch 12
+>     drops realmode.h from asm/acpi.h.  Most of the errors are quite absurb
+>     as they have no relation whatsoever to x86's RM boot code, but occur
+>     because realmode.h happens to include asm/io.h.
 
-> The first version patch is ok, the type of gpe is changed to u32. and I have
-> test it before.
+Yeah, these kind of parasitic header dependencies are the main driving 
+force behind kernel header spaghetti hell: it's super easy to add a new 
+header, but very hard to remove them...
 
-OK
+Hence they practically only accumulate.
 
-So I have added the u8 -> u16 change for gpe in
-acpi_gpe_apply_masked_gpes() and applied it again, as that should work
-AFAICS.
+As a result header removal patches get priority, from me at least. :-)
+
+>   - Patch 10 removes a spurious include of realmode.h from an ACPI header.
+> 
+>   - Patches 11 and 12 implement the wrapper and move it out of acpi.h.
+
+So if the ACPI maintainers are fine with -tip carrying patches #11 and #12
+then I'd be glad to route these patches upstream.
+
+I've applied them to tip:WIP.core/headers as a work-in-progress tree, and 
+I'm testing them on randconfigs to make sure there's no broken 
+dependencies. I'll wait for the ACPI acks.
+
+I edited the title of patch 12 slightly, to:
+
+   c8bceb321209: x86/ACPI/sleep: Move acpi_wakeup_address() definition into sleep.c, remove <asm/realmode.h> from <asm/acpi.h>
+
+to make sure the big header dependency change is obvious at first sight.
+
+Thanks,
+
+	Ingo
