@@ -2,103 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5A73102AE9
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Nov 2019 18:42:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0837102C75
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Nov 2019 20:17:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728126AbfKSRm0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Nov 2019 12:42:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45220 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728060AbfKSRm0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 19 Nov 2019 12:42:26 -0500
-Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net [24.5.143.220])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 986A420718;
-        Tue, 19 Nov 2019 17:42:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574185345;
-        bh=5CpZAgS92mSvLsDp8eiwhNfpZxP3RgkMymtz27c4Qfo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=xB5OhM4wTyqZebgSeaTdJ4euEEj4BOPM5PRDEZYuixl8l9EBwhZ3TO5Hy9fJANEVA
-         YpslYSOQBUj6HZGBPsxlPLf6c2stcvTVfNrkFtqZswzUrh4rfQ792h0+3z6muctUhS
-         16+yUKRxY4hqlzZRMbUoZPwugHUoy16fofefBayI=
-Date:   Tue, 19 Nov 2019 09:42:24 -0800
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        syzbot <syzbot+ce541a23cf58c1f6b1b1@syzkaller.appspotmail.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Yunfeng Ye <yeyunfeng@huawei.com>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-Subject: Re: linux-next boot error: can't ssh into the instance (3)
-Message-ID: <20191119174224.GC819@sol.localdomain>
-References: <000000000000ee674f0597a18709@google.com>
- <CACT4Y+aHkU46kF26a6afuQ+UO3N3W9Ur898dFBa+mQ2q6QzoQQ@mail.gmail.com>
- <CAHp75Vf6hfh0+MxX7G5=skcTx+_37ypz_KMi-NYLGB7wW5zs5g@mail.gmail.com>
- <20191119050219.GJ163020@sol.localdomain>
- <CAJZ5v0h6EVqXpP7p=-WiLKOQAaDCn-DX_H7dbKAfQ+o=fmmEWA@mail.gmail.com>
+        id S1727218AbfKSTRS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Nov 2019 14:17:18 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:38462 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727036AbfKSTRS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Nov 2019 14:17:18 -0500
+Received: by mail-oi1-f193.google.com with SMTP id a14so20050278oid.5;
+        Tue, 19 Nov 2019 11:17:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=wNhSIdXIAMhTZZlTq4fvLUCixY9Z52dvDBqLG8iKTeg=;
+        b=RwYmRCTgVEBKrMJlWvkpWxd/5naacajGqd7cDvNQfe10wT0oEdntJWDUuS7cNHwA5Y
+         Pc3sIynZs9P6WuCaA8VkzLAHA2sa1oNFvHf2M5M8D6iut9pi3R9NAI1LvL66zrlIO1qO
+         r+Y1CDonyZnv8kRpjDVwnZPSNnOuK6VTTqSsqR0x8mzjTFqN/cumHEzq7RzmDWKNGrwf
+         N4lh6JXh0fe8oAEZvyTWO/yFE7AJBkGE7eIrAOmFm0fskx5IVuwuRvyGvm3kow5wG0PN
+         u5N99lSFkWWN6wd9CDh+0STVDUYMwf5wB9il+TNbJmCXb9tz6jf5EvzRS7easWy8HQV/
+         iBKg==
+X-Gm-Message-State: APjAAAUf/z5oP2KnQc/BzZfo1tozVfdtdkwkr68hjlKZBS15ZLlP/Z4S
+        dFLN0Fz+ikGeTUG9oJzHqiEVqWz89/B0B6BAl7o=
+X-Google-Smtp-Source: APXvYqwLfxciI4GS3t+oWbXzFREIpD12GUXpB9UJ5E3BLWwvX0dd5QLcJSKaltQnW2ZhblzctccArehQ8GCNyphjH2U=
+X-Received: by 2002:aca:1101:: with SMTP id 1mr5643630oir.103.1574191036787;
+ Tue, 19 Nov 2019 11:17:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0h6EVqXpP7p=-WiLKOQAaDCn-DX_H7dbKAfQ+o=fmmEWA@mail.gmail.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+References: <2811202.iOFZ6YHztY@kreacher> <4551555.oysnf1Sd0E@kreacher>
+ <000001d59d61$eb4e6670$c1eb3350$@net> <000401d59ee6$959e3da0$c0dab8e0$@net>
+In-Reply-To: <000401d59ee6$959e3da0$c0dab8e0$@net>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 19 Nov 2019 20:17:05 +0100
+Message-ID: <CAJZ5v0i1iAjpWju6FiCjP3RvspKDRfSwz4=b_3qgGhhfz8sSrw@mail.gmail.com>
+Subject: Re: [RFT][PATCH 1/3] PM: QoS: Introduce frequency QoS
+To:     Doug Smythies <dsmythies@telus.net>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Dmitry Osipenko <digetx@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 19, 2019 at 09:27:27AM +0100, Rafael J. Wysocki wrote:
-> On Tue, Nov 19, 2019 at 6:02 AM Eric Biggers <ebiggers@kernel.org> wrote:
-> >
-> > On Mon, Nov 18, 2019 at 07:37:27PM +0200, Andy Shevchenko wrote:
-> > > On Mon, Nov 18, 2019 at 7:16 PM Dmitry Vyukov <dvyukov@google.com> wrote:
-> > > >
-> > > > On Mon, Nov 18, 2019 at 5:35 PM syzbot
-> > > > <syzbot+ce541a23cf58c1f6b1b1@syzkaller.appspotmail.com> wrote:
-> > > > >
-> > > > > Hello,
-> > > > >
-> > > > > syzbot found the following crash on:
-> > > > >
-> > > > > HEAD commit:    519ead8f Add linux-next specific files for 20191118
-> > > > > git tree:       linux-next
-> > > > > console output: https://syzkaller.appspot.com/x/log.txt?x=14653416e00000
-> > > > > kernel config:  https://syzkaller.appspot.com/x/.config?x=652dd3906d691711
-> > > > > dashboard link: https://syzkaller.appspot.com/bug?extid=ce541a23cf58c1f6b1b1
-> > > > > compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-> > > > >
-> > > > > Unfortunately, I don't have any reproducer for this crash yet.
-> > > > >
-> > > > > IMPORTANT: if you fix the bug, please add the following tag to the commit:
-> > > > > Reported-by: syzbot+ce541a23cf58c1f6b1b1@syzkaller.appspotmail.com
-> > > >
-> > > >
-> > > > Looks at the console output, this seems to be related to:
-> > > >
-> > > > commit eb09878e13013f0faee0a97562da557c4026b8a1
-> > > > Author: Yunfeng Ye <yeyunfeng@huawei.com>
-> > > > Date:   Thu Nov 14 15:16:24 2019 +0800
-> > > >
-> > > >     ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100
-> > > >
-> > > > +drivers/acpi/sysfs.c maintainers
-> > >
-> > > Just bisected to the same
-> > >
-> >
-> > I had to revert this in order to boot linux-next as well.  Rafael, can this
-> > please be reverted?
-> 
-> Dropped already from my linux-next branch, should not be there in
-> linux-next any more.
-> 
+On Tue, Nov 19, 2019 at 3:35 PM Doug Smythies <dsmythies@telus.net> wrote:
+>
+> On 2019.11.17 08:13 Doug Smythies wrote:
+> > On 2019.11.16 23:35 Doug Smythies wrote:
+>
+> >> Hi Rafael,
+> >>
+> >> Not sure, but I think it is this one that
+> >> causes complaining when I try to set the
+> >> intel_pstate driver to passive mode.
+> >> I started from active mode, powersave governor,
+> >> no HWP.
+> >>
+> >> Kernel: 5.4-rc7
+> >>
+> >> I did not go back and try previous 5.4 RCs.
+>
+> After looking at the git tags for this patch,
+> I tried kernel 5.4-rc2, which was the closest
+> Kernel I had to before the patch set was added.
+> It worked fine, as expected.
+>
+> >> I did try kernel 5.3-rc8, because I already had
+> >> it installed, and it worked fine.
+> >>
+> >> I use a script (for years), run as sudo:
+> >>
+> >> doug@s15:~/temp$ cat set_cpu_passive
+> >> #! /bin/bash
+> >> cat /sys/devices/system/cpu/intel_pstate/status
+> >> echo passive > /sys/devices/system/cpu/intel_pstate/status
+> >> cat /sys/devices/system/cpu/intel_pstate/status
+> >>
+> >> And I get this (very small excerpt):
+> >>
+> >> freq_qos_add_request() called for active request
+> >> WARNING: CPU: 1 PID: 2758 at kernel/power/qos.c:763 freq_qos_add_request+0x4c/0xa0
+> >> CPU: 1 PID: 2758 Comm: set_cpu_passive Not tainted 5.4.0-rc7-stock #727
+> >> Failed to add freq constraint for CPU0 (-22)
+> >>
+> >> freq_qos_add_request() called for active request
+> >> WARNING: CPU: 1 PID: 2758 at kernel/power/qos.c:763 freq_qos_add_request+0x4c/0xa0
+> >> CPU: 1 PID: 2758 Comm: set_cpu_passive Tainted: G        W         5.4.0-rc7-stock #727
+> >> Failed to add freq constraint for CPU1 (-22)
+>
+> Updated summary of previous emails:
+> This patch or patch set breaks the after boot
+> ability to change CPU frequency scaling drivers.
+>
+> Using a workaround of booting with
+> "intel_pstate=passive" seems to prevent the errors.
+>
+> Changing between the intel_pstate and intel_cpufreq drivers
+> (i.e. between active and passive modes)
+> after boot, either way, causes the errors. i.e.
+>
+> Failed to add freq constraint for CPU7 (-22)
+> (2 per CPU per attempt)
 
-next-20191119 works for me, thanks for the quick revert.
+These messages come from acpi_processor_ppc_init() and
+acpi_thermal_cpufreq_init(), AFAICS, which are invoked by
+acpi_processor_notifier() and that is invoked by the
+blocking_notifier_call_chain() in cpufreq_online() which tirggers for
+new policies after adding the max freq QoS request to
+policy->constraints.
 
-Let's invalidate this syzbot report:
+The requests added by them should be removed by
+acpi_processor_ppc_exit() and acpi_thermal_cpufreq_exit(),
+respectively, invoked by the blocking_notifier_call_chain() in
+cpufreq_policy_free(), but it looks like that doesn't happen.
 
-#syz invalid
+However, I now also see that freq_qos_remove_request() doesn't clear
+the qos field in req which is should do, so freq_qos_add_request()
+will complain and fail if the object pointed to by req is passed to it
+again.
+
+I'll send a patch to test for this later today.
