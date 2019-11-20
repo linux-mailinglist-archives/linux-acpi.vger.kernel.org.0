@@ -2,108 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E7144103785
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Nov 2019 11:30:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 423C9103814
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Nov 2019 11:58:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727716AbfKTKai (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Nov 2019 05:30:38 -0500
-Received: from bilbo.ozlabs.org ([203.11.71.1]:54971 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726001AbfKTKai (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 20 Nov 2019 05:30:38 -0500
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 47HzVK1tJ2z9sPL;
-        Wed, 20 Nov 2019 21:30:32 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1574245836;
-        bh=NoZPjg+0nioBWvif4gw1spRKoX1kFqqPPof1Rda5KVs=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=aLedtDwBTRHLQE3y5ARLngDZMOd0WLJxz56poFpD5/TLbHjLLMPY+g+/dnvleNZ1A
-         7h8lHBaEoVK5BuzEdb8LYbVma1lry1OivSstDcZFDBbZul9eOwM0dA9N/QpRX7T/4u
-         hOW5bb+0IdgBat24zL5Kn9QMuNuuMX3swigIWYmqNbRv/2tevyK0k6I5Il6ozSK5br
-         5t+ExnZxNVFvl+jeYCvtoCYOaC0AW3HZ/oetU9BtOifc7VpDEBqQVYCfQTAKcRdfFk
-         I7281Q60xL/IDK4jdt7pZVMY3Brx0w6eqjliMF7kmPGMlcUyjtrmQWNBPfzlvPsBxE
-         b04DPEpalr6Yw==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Dan Williams <dan.j.williams@intel.com>, linux-nvdimm@lists.01.org
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        peterz@infradead.org, vishal.l.verma@intel.com,
-        dave.hansen@linux.intel.com, hch@lst.de,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 16/18] powerpc/papr_scm: Switch to numa_map_to_online_node()
-In-Reply-To: <157401276263.43284.12616818803654229788.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <157401267421.43284.2135775608523385279.stgit@dwillia2-desk3.amr.corp.intel.com> <157401276263.43284.12616818803654229788.stgit@dwillia2-desk3.amr.corp.intel.com>
-Date:   Wed, 20 Nov 2019 21:30:31 +1100
-Message-ID: <87lfsac01k.fsf@mpe.ellerman.id.au>
+        id S1728945AbfKTK6g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Nov 2019 05:58:36 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:49359 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728942AbfKTK6f (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Nov 2019 05:58:35 -0500
+Received: from 79.184.253.244.ipv4.supernova.orange.pl (79.184.253.244) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.292)
+ id 469c83978beedbff; Wed, 20 Nov 2019 11:58:32 +0100
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Sean Christopherson <sean.j.christopherson@intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, Len Brown <len.brown@intel.com>,
+        Pavel Machek <pavel@ucw.cz>, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Nadav Amit <namit@vmware.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
+Subject: Re: [PATCH 11/12] ACPI/sleep: Convert acpi_wakeup_address into a function
+Date:   Wed, 20 Nov 2019 11:58:31 +0100
+Message-ID: <7338293.UcAxln0NAJ@kreacher>
+In-Reply-To: <20191119002121.4107-12-sean.j.christopherson@intel.com>
+References: <20191119002121.4107-1-sean.j.christopherson@intel.com> <20191119002121.4107-12-sean.j.christopherson@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dan Williams <dan.j.williams@intel.com> writes:
-> Now that the core exports numa_map_to_online_node() switch to that
-> instead of the locally coded duplicate.
->
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
+On Tuesday, November 19, 2019 1:21:20 AM CET Sean Christopherson wrote:
+> Convert acpi_wakeup_address from a raw variable into a function so that
+> x86 can wrap its dereference of the real mode boot header in a function
+> instead of broadcasting it to the world via a #define.  This sets the
+> stage for a future patch to move the definition of acpi_wakeup_address()
+> out of asm/acpi.h and thus break acpi.h's dependency on asm/realmode.h.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-cheers
-
-> Cc: "Oliver O'Halloran" <oohall@gmail.com>
-> Reported-by: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > ---
->  arch/powerpc/platforms/pseries/papr_scm.c |   21 +--------------------
->  1 file changed, 1 insertion(+), 20 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index 33aa59e666e5..ef81515f3b6a 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -284,25 +284,6 @@ int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
->  	return 0;
->  }
+>  arch/ia64/include/asm/acpi.h | 5 ++++-
+>  arch/ia64/kernel/acpi.c      | 2 --
+>  arch/x86/include/asm/acpi.h  | 5 ++++-
+>  drivers/acpi/sleep.c         | 4 ++--
+>  4 files changed, 10 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/ia64/include/asm/acpi.h b/arch/ia64/include/asm/acpi.h
+> index f886d4dc9d55..36d7003eee71 100644
+> --- a/arch/ia64/include/asm/acpi.h
+> +++ b/arch/ia64/include/asm/acpi.h
+> @@ -38,7 +38,10 @@ int acpi_gsi_to_irq (u32 gsi, unsigned int *irq);
+>  /* Low-level suspend routine. */
+>  extern int acpi_suspend_lowlevel(void);
 >  
-> -static inline int papr_scm_node(int node)
-> -{
-> -	int min_dist = INT_MAX, dist;
-> -	int nid, min_node;
-> -
-> -	if ((node == NUMA_NO_NODE) || node_online(node))
-> -		return node;
-> -
-> -	min_node = first_online_node;
-> -	for_each_online_node(nid) {
-> -		dist = node_distance(node, nid);
-> -		if (dist < min_dist) {
-> -			min_dist = dist;
-> -			min_node = nid;
-> -		}
-> -	}
-> -	return min_node;
-> -}
-> -
->  static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->  {
->  	struct device *dev = &p->pdev->dev;
-> @@ -347,7 +328,7 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+> -extern unsigned long acpi_wakeup_address;
+> +static inline unsigned long acpi_wakeup_address(void)
+> +{
+> +	return 0;
+> +}
 >  
->  	memset(&ndr_desc, 0, sizeof(ndr_desc));
->  	target_nid = dev_to_node(&p->pdev->dev);
-> -	online_nid = papr_scm_node(target_nid);
-> +	online_nid = numa_map_to_online_node(target_nid);
->  	ndr_desc.numa_node = online_nid;
->  	ndr_desc.target_node = target_nid;
->  	ndr_desc.res = &p->res;
+>  /*
+>   * Record the cpei override flag and current logical cpu. This is
+> diff --git a/arch/ia64/kernel/acpi.c b/arch/ia64/kernel/acpi.c
+> index 70d1587ddcd4..a5636524af76 100644
+> --- a/arch/ia64/kernel/acpi.c
+> +++ b/arch/ia64/kernel/acpi.c
+> @@ -42,8 +42,6 @@ int acpi_lapic;
+>  unsigned int acpi_cpei_override;
+>  unsigned int acpi_cpei_phys_cpuid;
+>  
+> -unsigned long acpi_wakeup_address = 0;
+> -
+>  #define ACPI_MAX_PLATFORM_INTERRUPTS	256
+>  
+>  /* Array to record platform interrupt vectors for generic interrupt routing. */
+> diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+> index bc9693c9107e..57788ec6fa82 100644
+> --- a/arch/x86/include/asm/acpi.h
+> +++ b/arch/x86/include/asm/acpi.h
+> @@ -62,7 +62,10 @@ static inline void acpi_disable_pci(void)
+>  extern int (*acpi_suspend_lowlevel)(void);
+>  
+>  /* Physical address to resume after wakeup */
+> -#define acpi_wakeup_address ((unsigned long)(real_mode_header->wakeup_start))
+> +static inline unsigned long acpi_wakeup_address(void)
+> +{
+> +	return ((unsigned long)(real_mode_header->wakeup_start));
+> +}
+>  
+>  /*
+>   * Check if the CPU can handle C2 and deeper
+> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+> index 2af937a8b1c5..9e66c4109556 100644
+> --- a/drivers/acpi/sleep.c
+> +++ b/drivers/acpi/sleep.c
+> @@ -63,9 +63,9 @@ static int acpi_sleep_prepare(u32 acpi_state)
+>  #ifdef CONFIG_ACPI_SLEEP
+>  	/* do we have a wakeup address for S2 and S3? */
+>  	if (acpi_state == ACPI_STATE_S3) {
+> -		if (!acpi_wakeup_address)
+> +		if (!acpi_wakeup_address())
+>  			return -EFAULT;
+> -		acpi_set_waking_vector(acpi_wakeup_address);
+> +		acpi_set_waking_vector(acpi_wakeup_address());
+>  
+>  	}
+>  	ACPI_FLUSH_CPU_CACHE();
+> 
+
+
+
+
