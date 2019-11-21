@@ -2,108 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E9CA104D1B
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Nov 2019 09:02:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A00EA104F13
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Nov 2019 10:19:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726358AbfKUICD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Nov 2019 03:02:03 -0500
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:38355 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726230AbfKUICD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 21 Nov 2019 03:02:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574323322;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=mG0FHW0fig4Cx/LxAaJLR6J3VqDT9J+mhAWOfYVykWs=;
-        b=M/BxHV9MEmk+gkhq8PlUSFXybhegVDOwzS6YMLHmbbxGpTLlNaX2b/P8YOkXHJaiseT6Nw
-        PqiAltKhhfmZA+ltywuW0U4hovVizkkYUZrVED+8/XTE2b1nx6L14I142IKt5dj5kEWcg+
-        NfrXnjS1px0UtRCO8cHHdEtzaOtWMd4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-380-g80Ev-2mMmmrw3oAT5So1Q-1; Thu, 21 Nov 2019 03:01:58 -0500
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C6273801E5D;
-        Thu, 21 Nov 2019 08:01:56 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id B7AEC692BE;
-        Thu, 21 Nov 2019 08:01:56 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
-        by colo-mx.corp.redhat.com (Postfix) with ESMTP id 8F4591809563;
-        Thu, 21 Nov 2019 08:01:56 +0000 (UTC)
-Date:   Thu, 21 Nov 2019 03:01:56 -0500 (EST)
-From:   Pankaj Gupta <pagupta@redhat.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Jeff Moyer <jmoyer@redhat.com>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Vishal L Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
+        id S1726270AbfKUJTE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Nov 2019 04:19:04 -0500
+Received: from mx2.suse.de ([195.135.220.15]:49138 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726014AbfKUJTE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 21 Nov 2019 04:19:04 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 134B7B324;
+        Thu, 21 Nov 2019 09:19:01 +0000 (UTC)
+Message-ID: <f7c09f06913fa1ed5e98c55ebe6d9db81bf232c0.camel@suse.de>
+Subject: Re: [PATCH] dma-mapping: treat dev->bus_dma_mask as a DMA limit
+From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To:     Christoph Hellwig <hch@lst.de>, Robin Murphy <robin.murphy@arm.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        linux-mips@vger.kernel.org, linux-ide@vger.kernel.org,
+        Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Paul Burton <paulburton@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+        phil@raspberrypi.org, linux-acpi@vger.kernel.org,
+        Ingo Molnar <mingo@redhat.com>, linux-pci@vger.kernel.org,
+        James Hogan <jhogan@kernel.org>, Len Brown <lenb@kernel.org>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Vivek Goyal <vgoyal@redhat.com>,
-        Keith Busch <keith.busch@intel.com>
-Message-ID: <2089367516.35808121.1574323316486.JavaMail.zimbra@redhat.com>
-In-Reply-To: <CAPcyv4gCe8k1GdatAWn1991pm3QZq2WBFAGEFsZ2PXpyo2=wMw@mail.gmail.com>
-References: <20191120092831.6198-1-pagupta@redhat.com> <x49d0dmihmu.fsf@segfault.boston.devel.redhat.com> <CAPcyv4gCe8k1GdatAWn1991pm3QZq2WBFAGEFsZ2PXpyo2=wMw@mail.gmail.com>
-Subject: Re: [PATCH] virtio pmem: fix async flush ordering
+        Hanjun Guo <guohanjun@huawei.com>,
+        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        iommu@lists.linux-foundation.org,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        linuxppc-dev@lists.ozlabs.org
+Date:   Thu, 21 Nov 2019 10:18:54 +0100
+In-Reply-To: <20191121073152.GB24024@lst.de>
+References: <20191113161340.27228-1-nsaenzjulienne@suse.de>
+         <dd074ef5c23ba56598e92be19e8e25ae31b75f93.camel@suse.de>
+         <20191119170006.GA19569@lst.de>
+         <7609007d-52f5-bb10-e8d5-96fadbfab46d@arm.com>
+         <20191121073152.GB24024@lst.de>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-lq+O6sjXzX+AgzEMEd7n"
+User-Agent: Evolution 3.34.1 
 MIME-Version: 1.0
-X-Originating-IP: [10.67.116.169, 10.4.195.1]
-Thread-Topic: virtio pmem: fix async flush ordering
-Thread-Index: n73vjZWQN2B3un3TvjjmhkQyzbgvzg==
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-MC-Unique: g80Ev-2mMmmrw3oAT5So1Q-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
+--=-lq+O6sjXzX+AgzEMEd7n
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> >
-> > >  Remove logic to create child bio in the async flush function which
-> > >  causes child bio to get executed after parent bio 'pmem_make_request=
-'
-> > >  completes. This resulted in wrong ordering of REQ_PREFLUSH with the
-> > >  data write request.
-> > >
-> > >  Instead we are performing flush from the parent bio to maintain the
-> > >  correct order. Also, returning from function 'pmem_make_request' if
-> > >  REQ_PREFLUSH returns an error.
-> > >
-> > > Reported-by: Jeff Moyer <jmoyer@redhat.com>
-> > > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
-> >
-> > There's a slight change in behavior for the error path in the
-> > virtio_pmem driver.  Previously, all errors from virtio_pmem_flush were
-> > converted to -EIO.  Now, they are reported as-is.  I think this is
-> > actually an improvement.
-> >
-> > I'll also note that the current behavior can result in data corruption,
-> > so this should be tagged for stable.
+On Thu, 2019-11-21 at 08:31 +0100, Christoph Hellwig wrote:
+> On Tue, Nov 19, 2019 at 05:17:03PM +0000, Robin Murphy wrote:
+> > TBH I can't see it being a massive problem even if the DMA patch, drive=
+r=20
+> > and DTS patch went entirely separately via the respective DMA, PCI, and=
+=20
+> > arm-soc trees in the same cycle. Bisecting over a merge window is a big=
+=20
+> > enough pain in the bum as it is, and if the worst case is that someone=
+=20
+> > trying to do that on a Pi4 has a wonky PCI controller appear for a coup=
+le=20
+> > of commits, they may as well just disable that driver for their bisecti=
+on,=20
+> > because it wasn't there at the start so can't possibly be the thing the=
+y're=20
+> > looking for regressions in ;)
 >=20
-> I added that and was about to push this out, but what about the fact
-> that now the guest will synchronously wait for flushing to occur. The
-> goal of the child bio was to allow that to be an I/O wait with
-> overlapping I/O, or at least not blocking the submission thread. Does
-> the block layer synchronously wait for PREFLUSH requests? If not I
-> think a synchronous wait is going to be a significant performance
-> regression. Are there any numbers to accompany this change?
-
-My bad, I missed this point completely.
-
-Thanks,
-Pankaj
-
+> Agreed.
 >=20
->=20
+> Nicolas, can you send a respin?  That way I can still queue it up
+> for 5.5.
+
+Oh, I thought it was too late for that already. I'll send it in a minute.
+
+Regards,
+Nicolas
+
+
+--=-lq+O6sjXzX+AgzEMEd7n
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl3WVn4ACgkQlfZmHno8
+x/6kBwf/SKtubLT3BK6PDi2kFxS7U1Nuy9X/MqsOPMdQNIIzccK4WqpweJsn3fn7
+WUh4Tsn5H2fjaeqsOCLpG5PeYLO6nDWDmCzVszhsyBjqWczikEWQ8reuCbXbbW6G
+rUh1wlp8+VDFDs0reFtW9POlYcvxixcMmbkSjKPEtZCh/GjdgIcjdkCtvwGkdrE1
+8E8Z6K9lqyiB2WQ0z7tdOf3fglQwJ7HxRgsmlYm1u0UQCm3+Hdrvy2hO7X/OYhtB
+4JbPmzPk62RNUjdmnuJ8t2ar57gMQ4VwRi7hjfCir9Iq8t/B7vCzCAQnzREpL05w
+BEUfJlvCYEvS3eArOErmv3Mm+/ugdg==
+=NUIQ
+-----END PGP SIGNATURE-----
+
+--=-lq+O6sjXzX+AgzEMEd7n--
 
