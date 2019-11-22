@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 626D1106C4D
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 11:51:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9F85106C54
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 11:51:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729474AbfKVKvB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Nov 2019 05:51:01 -0500
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:33784 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729471AbfKVKvA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Nov 2019 05:51:00 -0500
-Received: by mail-wm1-f68.google.com with SMTP id t26so6008637wmi.0
-        for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2019 02:50:59 -0800 (PST)
+        id S1729242AbfKVKvN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Nov 2019 05:51:13 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:54671 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729768AbfKVKvJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Nov 2019 05:51:09 -0500
+Received: by mail-wm1-f66.google.com with SMTP id x26so6643686wmk.4
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2019 02:51:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=A1h5FjHSoFWza4c7kQCG4diNrL6ym0OIuM4Ss4lynM4=;
-        b=bAqX72LIDtPtMJeGcUhtez0KLSm3flrmYHny6W5WMhZW2tBjcEjLpecXs8daLtPL+u
-         gIyq0KG407aqOZvr8HCFfx2NxejbVRv+DXKSXLx1CmdcZvWAq2wuqlUIJFsCWwnqVj0z
-         FNPNz0je2zOTjhgcT7Rskv72VmKDs3V7INAXyNn62BSM84iWNxGhohaR8+szZkJBwjXz
-         gdfG/SnuAB8CMKbpfQ2N8du37PEiZ833hhE67RGgFzExhMx9eL1NmwtFVa7X0wbDMWv4
-         I3LJsTClmFHCo6nmwPzWtZwPa8AoFWIvUaQZg04i4FPj5mGi2bRHYO6iQf1hiWBEEDVY
-         8C7g==
+        bh=vx4Rp2JWxTpwjHbsPUwQOJio9qv2Si3UTdoXXTOJ6hw=;
+        b=RzMiAchIN0a1MA2agzsMmmUVN/NACrbKmeQxW9OYLy/xyPd/+bdzJ3ZJ1a0SCZIMfi
+         1opvf0yvvJPDEs69SqH0j0177JHM9wAcPvQa0Gx7Qfznl9EMxk1LCPjTfQ/rzrY99sa9
+         tj6hbbskL7HY5QzmcYnpJ7i7eRhpYkp7Wf4Uk4wk9S0J4GIQIVqnSyoESgxWxPktMOyg
+         tzoZBhV6FQMgH8nP/3g1GYHXT/3k1thAdNwX9RVy6NoGRBnSI0wWuQUkd+LZicHh7Mrp
+         w2x3EEBfT7ZqyQsIs5utEfoIRm2rYkYWXLhhZn6cJ8ThHpUuu7kXjmE83dXpl6mgyUgR
+         1HUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=A1h5FjHSoFWza4c7kQCG4diNrL6ym0OIuM4Ss4lynM4=;
-        b=lhaxGlc2qdgbmFMfOnBUkN4WLUFgWP1jZqjxUOfOyrJVOxOvKprG2dNIoKq8RCdQgf
-         liTaYGUIaPp0cR23Jl8g7zvhVpJwouuU+gmKCRBn2LwncZHEYjFJAQd6pu/Fu6ERdFid
-         FlN60ziuR8y4xaB20uDwDM04BbNjJMhvw8Bcqh/TmuT0Ubl56COkmhq2WD2oLwIirr5H
-         Yiqm6x0/5W+NPMEvi9CyxZ3pNEVBS8bm5g6IUrOOgTaPxgs5um588uJNLckMAD7Xb8A9
-         rbbuAtClUMrjzQa3cN7CnpAXSqomyhFCKqO46akTZj4lQsJaEZkHc/PRspz+EOeswW98
-         Th5w==
-X-Gm-Message-State: APjAAAUF6ucjrkzcTRq8qYZlYg1qZJasOIxG4zVXz84mIkaZlHqff8oB
-        Seg9nMypujtNO4nMWLEIEWIelrKAhbw=
-X-Google-Smtp-Source: APXvYqxlTuwGUmkspUqjVuJ7P7Gpo4B2+3ScBVHak+J+rgbXQroDE7A0jT8JY1RDm1JiUtrUxVmxiQ==
-X-Received: by 2002:a1c:4b18:: with SMTP id y24mr15475854wma.71.1574419858922;
-        Fri, 22 Nov 2019 02:50:58 -0800 (PST)
+        bh=vx4Rp2JWxTpwjHbsPUwQOJio9qv2Si3UTdoXXTOJ6hw=;
+        b=mYP+JHm6QWY6Hd0i5bRpKFcRgoP/ROjwOqH2UgoFXMXeXfh9ocM/HVkGRTG68iMuus
+         o3FurEiJWIdLoAhrvEv4+HQ8ET+JwbAhsu9gpcOS4ICdCfOVvsyc2Gbmsl+6EP0oEPNX
+         eKdK72zc2/akgYA5rV6GU0q2DC4E02QWuZbgyOB9b361oL7XB+zIizUSMbADOjqTHKkp
+         RtZogTbzd5Yposl9dbLIbGBcS3GOkzCVucg49ARE2iFSeCVf1K1zfkGoJ1JELlCw1A1b
+         k7Qu9VAwVRCHEG4OyyXlKs775yQtnvruj7TZEUB13N0edY1m+UCo+Q4B13gmRSsfLPan
+         nGLg==
+X-Gm-Message-State: APjAAAVDq/qrebKCiESHUmchV5HdI9LqECJ2B2pxr2tLz3Q7RXrSUvgT
+        eiJXIVgCE83wTyUMipRu06q8t4lD8yo=
+X-Google-Smtp-Source: APXvYqyZxbgndRY6b3Fh3ipFtYb3tNJ6jmpmtk3V3fd+ZYBSzCjLSNTlmzWGkB0HHefvBHwBmcEmHA==
+X-Received: by 2002:a1c:7c18:: with SMTP id x24mr16254886wmc.130.1574419867091;
+        Fri, 22 Nov 2019 02:51:07 -0800 (PST)
 Received: from localhost.localdomain (xdsl-188-155-204-106.adslplus.ch. [188.155.204.106])
-        by smtp.gmail.com with ESMTPSA id o133sm2088197wmb.4.2019.11.22.02.50.57
+        by smtp.gmail.com with ESMTPSA id o133sm2088197wmb.4.2019.11.22.02.51.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2019 02:50:58 -0800 (PST)
+        Fri, 22 Nov 2019 02:51:06 -0800 (PST)
 From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
 To:     linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         iommu@lists.linux-foundation.org,
@@ -55,9 +55,9 @@ Cc:     rjw@rjwysocki.net, lenb@kernel.org, lorenzo.pieralisi@arm.com,
         mst@redhat.com, jasowang@redhat.com, jacob.jun.pan@intel.com,
         eric.auger@redhat.com, sebastien.boeuf@intel.com,
         kevin.tian@intel.com
-Subject: [RFC 06/13] ACPI/IORT: Support VIOT virtio-pci node
-Date:   Fri, 22 Nov 2019 11:49:53 +0100
-Message-Id: <20191122105000.800410-7-jean-philippe@linaro.org>
+Subject: [RFC virtio 12/13] virtio-iommu: Add built-in topology description
+Date:   Fri, 22 Nov 2019 11:49:59 +0100
+Message-Id: <20191122105000.800410-13-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191122105000.800410-1-jean-philippe@linaro.org>
 References: <20191122105000.800410-1-jean-philippe@linaro.org>
@@ -68,240 +68,129 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When virtio-iommu uses the PCI transport, IORT doesn't instantiate the
-device and doesn't create a fwnode. They will be created later by the
-PCI subsystem. Store the information needed to identify the IOMMU in
-iort_fwnode_list.
+Add a lightweight method to describe the IOMMU topology in the config
+space, guarded by a new feature bit. A list of capabilities in the
+config space describes the devices managed by the IOMMU and their
+endpoint IDs.
 
-Signed-off-by: Jean-Philippe Brucker <jean-philippe.brucker@arm.com>
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
- drivers/acpi/iort.c | 117 +++++++++++++++++++++++++++++++++++---------
- 1 file changed, 93 insertions(+), 24 deletions(-)
+ virtio-iommu.tex | 88 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 88 insertions(+)
 
-diff --git a/drivers/acpi/iort.c b/drivers/acpi/iort.c
-index adc5953fffa5..b517aa4e83ba 100644
---- a/drivers/acpi/iort.c
-+++ b/drivers/acpi/iort.c
-@@ -30,10 +30,17 @@ struct iort_its_msi_chip {
- 	u32			translation_id;
- };
+diff --git a/virtio-iommu.tex b/virtio-iommu.tex
+index 28c562b..2b29873 100644
+--- a/virtio-iommu.tex
++++ b/virtio-iommu.tex
+@@ -67,6 +67,9 @@ \subsection{Feature bits}\label{sec:Device Types / IOMMU Device / Feature bits}
  
-+struct iort_pci_devid {
-+	u16 segment;
-+	u8 bus;
-+	u8 devfn;
+ \item[VIRTIO_IOMMU_F_MMIO (5)]
+   The VIRTIO_IOMMU_MAP_F_MMIO flag is available.
++
++\item[VIRTIO_IOMMU_F_TOPOLOGY (6)]
++  Topology description is available at \field{topo_offset}.
+ \end{description}
+ 
+ \drivernormative{\subsubsection}{Feature bits}{Device Types / IOMMU Device / Feature bits}
+@@ -97,6 +100,7 @@ \subsection{Device configuration layout}\label{sec:Device Types / IOMMU Device /
+     le32 end;
+   } domain_range;
+   le32 probe_size;
++  le16 topo_offset;
+ };
+ \end{lstlisting}
+ 
+@@ -141,6 +145,90 @@ \subsection{Device initialization}\label{sec:Device Types / IOMMU Device / Devic
+ If the driver does not accept the VIRTIO_IOMMU_F_BYPASS feature, the
+ device SHOULD NOT let endpoints access the guest-physical address space.
+ 
++\subsubsection{Built-in topology description}\label{sec:Device Types / IOMMU Device / Device initialization / topology}
++
++The device manages memory accesses from endpoints, identified by endpoint
++IDs. The driver can discover which endpoint ID corresponds to an endpoint
++using several methods, depending on the platform. Platforms described
++with device tree use the \texttt{iommus} and \texttt{iommu-map} properties
++embedded into device nodes for this purpose. Platforms described with
++ACPI use a table such as the Virtual I/O Table. Platforms that do not
++support either device tree or ACPI may embed a minimalistic description
++in the device configuration space.
++
++An important disadvantage of describing the topology from within the
++device is the lack of initialization ordering information. Out-of-band
++descriptions such as device tree and ACPI let the operating system know
++about device dependencies so that it can initialize supplier devices
++(IOMMUs) before their consumers (endpoints). Platforms using the
++VIRTIO_IOMMU_F_TOPOLOGY feature have to communicate the device dependency
++in another way.
++
++If the VIRTIO_IOMMU_F_TOPOLOGY feature is negotiated, \field{topo_offset}
++is the offset between the beginning of the device-specific configuration
++space (virtio_iommu_config) and the first topology structure header. A
++topology structures defines the endpoint ID of one or more endpoints
++managed by the virtio-iommu device.
++
++\begin{lstlisting}
++struct virtio_iommu_topo_head {
++  le16 type;
++  le16 next;
 +};
++\end{lstlisting}
 +
- struct iort_fwnode {
- 	struct list_head list;
- 	struct acpi_iort_node *iort_node;
- 	struct fwnode_handle *fwnode;
-+	struct iort_pci_devid *pci_devid;
- };
- static LIST_HEAD(iort_fwnode_list);
- static DEFINE_SPINLOCK(iort_fwnode_lock);
-@@ -44,7 +51,8 @@ static bool iort_type_matches(u8 type, enum iort_node_category category)
- 	case IORT_IOMMU_TYPE:
- 		return type == ACPI_IORT_NODE_SMMU ||
- 		       type == ACPI_IORT_NODE_SMMU_V3 ||
--		       type == ACPI_VIOT_IORT_NODE_VIRTIO_MMIO_IOMMU;
-+		       type == ACPI_VIOT_IORT_NODE_VIRTIO_MMIO_IOMMU ||
-+		       type == ACPI_VIOT_IORT_NODE_VIRTIO_PCI_IOMMU;
- 	case IORT_MSI_TYPE:
- 		return type == ACPI_IORT_NODE_ITS_GROUP;
- 	default:
-@@ -59,12 +67,14 @@ static bool iort_type_matches(u8 type, enum iort_node_category category)
-  *
-  * @node: IORT table node associated with the IOMMU
-  * @fwnode: fwnode associated with the IORT node
-+ * @pci_devid: pci device ID associated with the IORT node, may be NULL
-  *
-  * Returns: 0 on success
-  *          <0 on failure
-  */
- static inline int iort_set_fwnode(struct acpi_iort_node *iort_node,
--				  struct fwnode_handle *fwnode)
-+				  struct fwnode_handle *fwnode,
-+				  struct iort_pci_devid *pci_devid)
- {
- 	struct iort_fwnode *np;
- 
-@@ -76,6 +86,7 @@ static inline int iort_set_fwnode(struct acpi_iort_node *iort_node,
- 	INIT_LIST_HEAD(&np->list);
- 	np->iort_node = iort_node;
- 	np->fwnode = fwnode;
-+	np->pci_devid = pci_devid;
- 
- 	spin_lock(&iort_fwnode_lock);
- 	list_add_tail(&np->list, &iort_fwnode_list);
-@@ -121,6 +132,7 @@ static inline void iort_delete_fwnode(struct acpi_iort_node *node)
- 	spin_lock(&iort_fwnode_lock);
- 	list_for_each_entry_safe(curr, tmp, &iort_fwnode_list, list) {
- 		if (curr->iort_node == node) {
-+			kfree(curr->pci_devid);
- 			list_del(&curr->list);
- 			kfree(curr);
- 			break;
-@@ -870,6 +882,7 @@ static inline bool iort_iommu_driver_enabled(u8 type)
- 	case ACPI_IORT_NODE_SMMU:
- 		return IS_BUILTIN(CONFIG_ARM_SMMU);
- 	case ACPI_VIOT_IORT_NODE_VIRTIO_MMIO_IOMMU:
-+	case ACPI_VIOT_IORT_NODE_VIRTIO_PCI_IOMMU:
- 		return IS_ENABLED(CONFIG_VIRTIO_IOMMU);
- 	default:
- 		pr_warn("IORT node type %u does not describe an IOMMU\n", type);
-@@ -1451,6 +1464,28 @@ static void __init viommu_mmio_dma_configure(struct device *dev,
- 	acpi_dma_configure(dev, attr);
- }
- 
-+static __init struct iort_pci_devid *
-+viommu_pci_get_devid(struct acpi_iort_node *node)
-+{
-+	unsigned int val;
-+	struct iort_pci_devid *devid;
-+	struct acpi_viot_iort_virtio_pci_iommu *viommu;
++\field{next} is the offset between the beginning of the device-specific
++configuration space and the next topology structure header. When
++\field{next} is zero, this is the last structure.
 +
-+	viommu = (struct acpi_viot_iort_virtio_pci_iommu *)node->node_data;
++\field{type} describes the type of structure:
++\begin{description}
++  \item[VIRTIO_IOMMU_TOPO_PCI_RANGE (0)] struct virtio_iommu_topo_pci_range
++  \item[VIRTIO_IOMMU_TOPO_ENDPOINT (1)] struct virtio_iommu_topo_endpoint
++\end{description}
 +
-+	val = le32_to_cpu(viommu->devid);
++\paragraph{PCI range}\label{sec:Device Types / IOMMU Device / Device initialization / topology / PCI range}
 +
-+	devid = kzalloc(sizeof(*devid), GFP_KERNEL);
-+	if (!devid)
-+		return ERR_PTR(-ENOMEM);
-+
-+	devid->segment = val >> 16;
-+	devid->bus = PCI_BUS_NUM(val);
-+	devid->devfn = val & 0xff;
-+
-+	return devid;
-+}
-+
- struct iort_dev_config {
- 	const char *name;
- 	int (*dev_init)(struct acpi_iort_node *node);
-@@ -1462,6 +1497,7 @@ struct iort_dev_config {
- 	int (*dev_set_proximity)(struct device *dev,
- 				    struct acpi_iort_node *node);
- 	int (*dev_add_platdata)(struct platform_device *pdev);
-+	struct iort_pci_devid *(*dev_get_pci_devid)(struct acpi_iort_node *node);
- };
- 
- static const struct iort_dev_config iort_arm_smmu_v3_cfg __initconst = {
-@@ -1494,6 +1530,10 @@ static const struct iort_dev_config iort_viommu_mmio_cfg __initconst = {
- 	.dev_init_resources = viommu_mmio_init_resources,
- };
- 
-+static const struct iort_dev_config iort_viommu_pci_cfg __initconst = {
-+	.dev_get_pci_devid = viommu_pci_get_devid,
++\begin{lstlisting}
++struct virtio_iommu_topo_pci_range {
++  struct virtio_iommu_topo_head head;
++  le32 endpoint_start;
++  le16 hierarchy;
++  le16 requester_start;
++  le16 requester_end;
++  le16 reserved;
 +};
++\end{lstlisting}
 +
- static __init const struct iort_dev_config *iort_get_dev_cfg(
- 			struct acpi_iort_node *node)
- {
-@@ -1510,6 +1550,8 @@ static __init const struct iort_dev_config *iort_get_dev_cfg(
- 		switch (node->type) {
- 		case ACPI_VIOT_IORT_NODE_VIRTIO_MMIO_IOMMU:
- 			return &iort_viommu_mmio_cfg;
-+		case ACPI_VIOT_IORT_NODE_VIRTIO_PCI_IOMMU:
-+			return &iort_viommu_pci_cfg;
- 		}
- 	}
++The PCI range structure describes the endpoint IDs of a series of PCI
++devices.
++
++\begin{description}
++  \item[\field{hierarchy}] Identifier of the PCI hierarchy. Sometimes
++    called PCI segment or domain number.
++  \item[\field{requester_start}] First requester ID in the range.
++  \item[\field{requester_end}] Last requester ID in the range.
++  \item[\field{endpoint_start}] First endpoint ID.
++\end{description}
++
++The correspondence between a PCI requester ID in the range
++[ requester_start; requester_end ] and its endpoint IDs is a linear
++transformation: endpoint_id = requester_id - requester_start +
++endpoint_start.
++
++\paragraph{Single endpoint}\label{sec:Device Types / IOMMU Device / Device initialization / topology / Single endpoint}
++
++\begin{lstlisting}
++struct virtio_iommu_topo_endpoint {
++  struct virtio_iommu_topo_head head;
++  le32 endpoint;
++  le64 address;
++};
++\end{lstlisting}
++
++\field{endpoint} is the ID of a single endpoint, identified by its first
++MMIO address in the physical address space.
++
+ \subsection{Device operations}\label{sec:Device Types / IOMMU Device / Device operations}
  
-@@ -1641,13 +1683,55 @@ static void __init iort_enable_acs(struct acpi_iort_node *iort_node)
- static inline void iort_enable_acs(struct acpi_iort_node *iort_node) { }
- #endif
- 
--static void __init iort_init_platform_devices(void)
-+static int __init iort_init_node(struct acpi_iort_node *iort_node)
-+{
-+	int ret;
-+	const struct iort_dev_config *ops;
-+	struct fwnode_handle *fwnode;
-+
-+	iort_enable_acs(iort_node);
-+
-+	ops = iort_get_dev_cfg(iort_node);
-+	if (!ops)
-+		return 0;
-+
-+	if (ops->dev_get_pci_devid) {
-+		struct iort_pci_devid *pci_devid =
-+			ops->dev_get_pci_devid(iort_node);
-+
-+		if (IS_ERR(pci_devid))
-+			return PTR_ERR(pci_devid);
-+		/*
-+		 * For a PCI-based IOMMU, set the pci_devid handle now, but
-+		 * leave the fwnode empty. It will be completed later when the
-+		 * PCI device gets probed.
-+		 */
-+		iort_set_fwnode(iort_node, NULL, pci_devid);
-+
-+		return 0;
-+	}
-+
-+	fwnode = acpi_alloc_fwnode_static();
-+	if (!fwnode)
-+		return -ENOMEM;
-+
-+	iort_set_fwnode(iort_node, fwnode, NULL);
-+
-+	ret = iort_add_platform_device(iort_node, ops);
-+	if (ret) {
-+		iort_delete_fwnode(iort_node);
-+		acpi_free_fwnode_static(fwnode);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static void __init iort_init_devices(void)
- {
- 	struct acpi_iort_node *iort_node, *iort_end;
- 	struct acpi_table_iort *iort;
--	struct fwnode_handle *fwnode;
--	int i, ret;
--	const struct iort_dev_config *ops;
-+	int i;
- 
- 	/*
- 	 * iort_table and iort both point to the start of IORT table, but
-@@ -1667,23 +1751,8 @@ static void __init iort_init_platform_devices(void)
- 			return;
- 		}
- 
--		iort_enable_acs(iort_node);
--
--		ops = iort_get_dev_cfg(iort_node);
--		if (ops) {
--			fwnode = acpi_alloc_fwnode_static();
--			if (!fwnode)
--				return;
--
--			iort_set_fwnode(iort_node, fwnode);
--
--			ret = iort_add_platform_device(iort_node, ops);
--			if (ret) {
--				iort_delete_fwnode(iort_node);
--				acpi_free_fwnode_static(fwnode);
--				return;
--			}
--		}
-+		if (iort_init_node(iort_node))
-+			return;
- 
- 		iort_node = ACPI_ADD_PTR(struct acpi_iort_node, iort_node,
- 					 iort_node->length);
-@@ -1703,7 +1772,7 @@ void __init acpi_iort_register_table(struct acpi_table_header *table,
- 	iort_table = table;
- 	iort_table_source = source;
- 
--	iort_init_platform_devices();
-+	iort_init_devices();
- }
- 
- void __init acpi_iort_init(void)
+ Driver send requests on the request virtqueue, notifies the device and
 -- 
 2.24.0
 
