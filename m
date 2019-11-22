@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 164E8106C46
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 11:51:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09222106C48
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 11:51:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727702AbfKVKuz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Nov 2019 05:50:55 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:37426 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728776AbfKVKux (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Nov 2019 05:50:53 -0500
-Received: by mail-wr1-f67.google.com with SMTP id t1so8060584wrv.4
-        for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2019 02:50:52 -0800 (PST)
+        id S1729042AbfKVKu5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Nov 2019 05:50:57 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:39269 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729041AbfKVKu4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Nov 2019 05:50:56 -0500
+Received: by mail-wr1-f65.google.com with SMTP id y11so4938355wrt.6
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2019 02:50:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=TVZC8O5GuUsgdVDCzcN2CqTy4L8wnnx0IKWd5NiFgCs=;
-        b=Q3aBSYS6L0keHFMg9s3YF/O/MS0ZbpfYzXYluOwOpxXbstgAIVmQmrUo3jmGNcrDMZ
-         RRPRqees28PfvdT26W0bPHIpTF934vMZ1mdXqlDToqWtyVfmuX00leXURFV5dfkQ02NJ
-         g8MLLi84nyK+BFemsn5DmX+bFGOhLRD0eyOqDxu7lLUZ9cyS3bFHai1Fg75a75rR5dmc
-         HAtSQb2nq4jX33aT5hVPbjbJphW0npRYuRLSvtGKiec4rx5bJjM/h3+QM3a2GsLsz6Wf
-         aE1lZ/Wt3JEJzcp0sPuMjwjNU7ZJsgm+knGVpf9Ib7BC1bjVvZmANR5bEwTu8vWj9Clx
-         OrdA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=QSOEuqiwSkp0pKauWHbGWQ/ZTlyMXXOkwS/8GtifrN4=;
+        b=W7hCSd2ZSVICv1YxYegFWXSVd6l1oG1ycKu4xwLtfaqmJ1Sr/sS7CGCIhL5OUFctgV
+         rFlDn4NTpw09pBYMHxwU6pH2cz9EVPDd82YiD+fipk/QzoM2ZTqkoGqbf2q6XD4JpyS+
+         HkMTEjqWyUroxkEhpMb4c/0VyR9Aw+pHVSLPeKpU1gI66GcePWDqG9JF6i6l7iVkhw9O
+         HBT/ds4+s3GdaMuNxe380ctWLjNh/MJ2b3Hk57/ghF/Biz69x0PQcTJZJYmGuyc5PIKl
+         PPqZBuha1oUQBGfwL1MF98ZPcbDge7wnRdlh9wtxqOZWybLzDV/fSrbPRQTF4GQmLdAt
+         HDsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=TVZC8O5GuUsgdVDCzcN2CqTy4L8wnnx0IKWd5NiFgCs=;
-        b=QY1mwB1VQjBLUfRAS34dM35miYryd++1Cwwda6j43db9jsjaRfzuW1Iwelrx0lEb9y
-         UV1cxby2QK8qwOpjtHWyG4v4z4GW/cMoDprNTdvdvXjNOI9jhhtriZTYpuxhDBPIpzt/
-         X+pSVc/3dXTUg+HYSYcDHiDKeKGgoMPCg/fy9c+DMMcX5X393VuWdZWtN1Qp2hZiQJ9r
-         DWcIBic8Gh1olpPh9sjeGSqBsrmr3D0+IoJE63ZNNvxpZQEHi6+BP5QmEKR1PXru0gi0
-         HGnYTGdwcQ0VIBM5g3/UBMlPsrRGdeVAMO7JUSD7u+U/n8xntqk4so5bVyoNsojmLxa4
-         ua0g==
-X-Gm-Message-State: APjAAAVGH3cAOHQencEI1/Egc+i1pzGNuzS1EdrWHpdFiqtZJuyCtZCJ
-        WPKGUst4uO0pQ1mjklOu4JrpdvpZ/zk=
-X-Google-Smtp-Source: APXvYqwBWCyLPkUhZBo6K0fMA3vA5VrmhXM4U/1z4Br0F1oFeGiiIWprIEctPIwsTs5r8FDOo3DDYA==
-X-Received: by 2002:adf:f688:: with SMTP id v8mr174600wrp.147.1574419850990;
-        Fri, 22 Nov 2019 02:50:50 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=QSOEuqiwSkp0pKauWHbGWQ/ZTlyMXXOkwS/8GtifrN4=;
+        b=dvBGnAqimxnHEvRhaJ05DHXo/UAbAIZoO8WfOAaRQEj256SZxctujLKTqsIfHNGUnn
+         cohRfih74xKQvmw3deqVAtu6/mgnE3jyPqQ1SA9I3QthJviL/hbA0M7ubZuzH3BRSemX
+         p8iH67224Lv03Iql37m2pQiYGftAea7rJtmXYimJD4DAK+WJ0EN8NKMfKKhlx5Yq3T/a
+         W/nEhsfz1BwsgD76v01FSXsGXJu8B7pqyEkfnityuhczVw3zYgVzbXyvp0IACUl3RJMf
+         YnrlDpWXFaDyXERhEb5kUPsIzL3JqLi7htabKpqjav9P28hQ1ZY0k4OCaU5cnbfhq5Ni
+         JHkg==
+X-Gm-Message-State: APjAAAWxTA/3Zi6Uv0fF074U5SUUuMPSWedt8LETKprbZKL+epV5pOrw
+        fNYMI/FjiOtqwvAM3ni3oNeQbjgUtU4=
+X-Google-Smtp-Source: APXvYqyrNICCuqc5KqD/VdDvmjiGaMlkwy1z/6XvuGideDQTx1xutKKjYm2Bj/850Fnk8Z8ehJdCwA==
+X-Received: by 2002:adf:f088:: with SMTP id n8mr17421703wro.115.1574419855065;
+        Fri, 22 Nov 2019 02:50:55 -0800 (PST)
 Received: from localhost.localdomain (xdsl-188-155-204-106.adslplus.ch. [188.155.204.106])
-        by smtp.gmail.com with ESMTPSA id o133sm2088197wmb.4.2019.11.22.02.50.49
+        by smtp.gmail.com with ESMTPSA id o133sm2088197wmb.4.2019.11.22.02.50.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2019 02:50:50 -0800 (PST)
+        Fri, 22 Nov 2019 02:50:54 -0800 (PST)
 From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
 To:     linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         iommu@lists.linux-foundation.org,
@@ -55,10 +55,12 @@ Cc:     rjw@rjwysocki.net, lenb@kernel.org, lorenzo.pieralisi@arm.com,
         mst@redhat.com, jasowang@redhat.com, jacob.jun.pan@intel.com,
         eric.auger@redhat.com, sebastien.boeuf@intel.com,
         kevin.tian@intel.com
-Subject: [RFC 00/13] virtio-iommu on non-devicetree platforms
-Date:   Fri, 22 Nov 2019 11:49:47 +0100
-Message-Id: <20191122105000.800410-1-jean-philippe@linaro.org>
+Subject: [RFC 03/13] ACPI/IORT: Allow registration of external tables
+Date:   Fri, 22 Nov 2019 11:49:50 +0100
+Message-Id: <20191122105000.800410-4-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.24.0
+In-Reply-To: <20191122105000.800410-1-jean-philippe@linaro.org>
+References: <20191122105000.800410-1-jean-philippe@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
@@ -66,139 +68,98 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-I'm seeking feedback on multi-platform support for virtio-iommu. At the
-moment only devicetree (DT) is supported and we don't have a pleasant
-solution for other platforms. Once we figure out the topology
-description, x86 support is trivial.
+Add a function to register an IORT table from an external source.
 
-Since the IOMMU manages memory accesses from other devices, the guest
-kernel needs to initialize the IOMMU before endpoints start issuing DMA.
-It's a solved problem: firmware or hypervisor describes through DT or
-ACPI tables the device dependencies, and probe of endpoints is deferred
-until the IOMMU is probed. But:
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+---
+ drivers/acpi/iort.c       | 22 ++++++++++++++++++++--
+ include/linux/acpi_iort.h | 10 ++++++++++
+ 2 files changed, 30 insertions(+), 2 deletions(-)
 
-(1) ACPI has one table per vendor (DMAR for Intel, IVRS for AMD and IORT
-    for Arm). From my point of view IORT is easier to extend, since we
-    just need to introduce a new node type. There are no dependencies to
-    Arm in the Linux IORT driver, so it works well with CONFIG_X86.
-
-    However, there are concerns about other OS vendors feeling obligated
-    to implement this new node, so Arm proposed introducing another ACPI
-    table, that can wrap any of DMAR, IVRS and IORT to extend it with
-    new virtual nodes. A draft of this VIOT table specification is
-    available at http://jpbrucker.net/virtio-iommu/viot/viot-v5.pdf
-
-    I'm afraid this could increase fragmentation as guests would need to
-    implement or modify their support for all of DMAR, IVRS and IORT. If
-    we end up doing VIOT, I suggest limiting it to IORT.
-
-(2) In addition, there are some concerns about having virtio depend on
-    ACPI or DT. Some hypervisors (Firecracker, QEMU microvm, kvmtool x86
-    [1]) don't currently implement those methods.
-
-    It was suggested to embed the topology description into the device.
-    It can work, as demonstrated at the end of this RFC, with the
-    following limitations:
-
-    - The topology description must be read before any endpoint managed
-      by the IOMMU is probed, and even before the virtio module is
-      loaded. This RFC uses a PCI quirk to manually parse the virtio
-      configuration. It assumes that all endpoints managed by the IOMMU
-      are under this same PCI host.
-
-    - I don't have a solution for the virtio-mmio transport at the
-      moment, because I haven't had time to modify a host to test it. I
-      think it could either use a notifier on the platform bus, or
-      better, a new 'iommu' command-line argument to the virtio-mmio
-      driver. So the current prototype doesn't work for firecracker and
-      microvm, which rely on virtio-mmio.
-
-    - For Arm, if the platform has an ITS, the hypervisor needs IORT or
-      DT to describe it anyway. More generally, not using either ACPI or
-      DT might prevent from supporting other features as well. I suspect
-      the above users will have to implement a standard method sooner or
-      later.
-
-    - Even when reusing as much existing code as possible, guest support
-      is still going to be around a few hundred lines since we can't
-      rely on the normal virtio infrastructure to be loaded at that
-      point. As you can see below, the diffstat for the incomplete
-      topology implementation is already bigger than the exhaustive IORT
-      support, even when jumping through the VIOT hoop.
-
-    So it's a lightweight solution for very specific use-cases, and we
-    should still support ACPI for the general case. Multi-platform
-    guests such as Linux will then need to support three topology
-    descriptions instead of two.
-
-In this RFC I present both solutions, but I'd rather not keep all of it.
-Please see the individual patches for details:
-
-(1) Patches 1, 3-10 add support for virtio-iommu to the Linux IORT
-    driver and patches 2, 11 add the VIOT glue.
-
-(2) Patch 12 adds the built-in topology description to the virtio-iommu
-    specification. Patch 13 is a partial implementation for the Linux
-    virtio-iommu driver. It only supports PCI, not platform devices.
-
-You can find Linux and QEMU code on my virtio-iommu/devel branches at
-http://jpbrucker.net/git/linux and http://jpbrucker.net/git/qemu
-
-
-I split the diffstat since there are two independent features. The first
-one is for patches 1-11, and the second one for patch 13.
-
-Jean-Philippe Brucker (11):
-  ACPI/IORT: Move IORT to the ACPI folder
-  ACPI: Add VIOT definitions
-  ACPI/IORT: Allow registration of external tables
-  ACPI/IORT: Add node categories
-  ACPI/IORT: Support VIOT virtio-mmio node
-  ACPI/IORT: Support VIOT virtio-pci node
-  ACPI/IORT: Defer probe until virtio-iommu-pci has registered a fwnode
-  ACPI/IORT: Add callback to update a device's fwnode
-  iommu/virtio: Create fwnode if necessary
-  iommu/virtio: Update IORT fwnode
-  ACPI: Add VIOT table
-
- MAINTAINERS                     |   9 +
- drivers/acpi/Kconfig            |   7 +
- drivers/acpi/Makefile           |   2 +
- drivers/acpi/arm64/Kconfig      |   3 -
- drivers/acpi/arm64/Makefile     |   1 -
- drivers/acpi/bus.c              |   2 +
- drivers/acpi/{arm64 => }/iort.c | 317 ++++++++++++++++++++++++++------
- drivers/acpi/tables.c           |   2 +-
- drivers/acpi/viot.c             |  44 +++++
- drivers/iommu/Kconfig           |   1 +
- drivers/iommu/virtio-iommu.c    |  61 +++++-
- include/acpi/actbl2.h           |  31 ++++
- include/linux/acpi_iort.h       |  14 ++
- include/linux/acpi_viot.h       |  20 ++
- 14 files changed, 448 insertions(+), 66 deletions(-)
- rename drivers/acpi/{arm64 => }/iort.c (86%)
- create mode 100644 drivers/acpi/viot.c
- create mode 100644 include/linux/acpi_viot.h
-
-Jean-Philippe Brucker (1):
-  iommu/virtio: Add topology description to virtio-iommu config space
-
- drivers/base/platform.c               |   3 +
- drivers/iommu/Kconfig                 |   9 +
- drivers/iommu/Makefile                |   1 +
- drivers/iommu/virtio-iommu-topology.c | 410 ++++++++++++++++++++++++++
- drivers/iommu/virtio-iommu.c          |   3 +
- drivers/pci/pci-driver.c              |   3 +
- include/linux/virtio_iommu.h          |  18 ++
- include/uapi/linux/virtio_iommu.h     |  26 ++
- 8 files changed, 473 insertions(+)
- create mode 100644 drivers/iommu/virtio-iommu-topology.c
- create mode 100644 include/linux/virtio_iommu.h
-
-
-[1] firecracker: https://github.com/firecracker-microvm/firecracker
-    microvm: https://github.com/qemu/qemu/blob/master/docs/microvm.rst
-    kvmtool: https://git.kernel.org/pub/scm/linux/kernel/git/will/kvmtool.git/
+diff --git a/drivers/acpi/iort.c b/drivers/acpi/iort.c
+index d62a9ea26fae..9c6c91e06f8f 100644
+--- a/drivers/acpi/iort.c
++++ b/drivers/acpi/iort.c
+@@ -144,6 +144,7 @@ typedef acpi_status (*iort_find_node_callback)
+ 
+ /* Root pointer to the mapped IORT table */
+ static struct acpi_table_header *iort_table;
++static enum iort_table_source iort_table_source;
+ 
+ static LIST_HEAD(iort_msi_chip_list);
+ static DEFINE_SPINLOCK(iort_msi_chip_lock);
+@@ -1617,11 +1618,28 @@ static void __init iort_init_platform_devices(void)
+ 	}
+ }
+ 
++void __init acpi_iort_register_table(struct acpi_table_header *table,
++				     enum iort_table_source source)
++{
++	/*
++	 * Firmware or hypervisor should know better than give us two IORT
++	 * tables.
++	 */
++	if (WARN_ON(iort_table))
++		return;
++
++	iort_table = table;
++	iort_table_source = source;
++
++	iort_init_platform_devices();
++}
++
+ void __init acpi_iort_init(void)
+ {
+ 	acpi_status status;
++	static struct acpi_table_header *table;
+ 
+-	status = acpi_get_table(ACPI_SIG_IORT, 0, &iort_table);
++	status = acpi_get_table(ACPI_SIG_IORT, 0, &table);
+ 	if (ACPI_FAILURE(status)) {
+ 		if (status != AE_NOT_FOUND) {
+ 			const char *msg = acpi_format_exception(status);
+@@ -1632,5 +1650,5 @@ void __init acpi_iort_init(void)
+ 		return;
+ 	}
+ 
+-	iort_init_platform_devices();
++	acpi_iort_register_table(table, IORT_SOURCE_IORT);
+ }
+diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
+index 8e7e2ec37f1b..f4db5fff07cf 100644
+--- a/include/linux/acpi_iort.h
++++ b/include/linux/acpi_iort.h
+@@ -11,6 +11,11 @@
+ #include <linux/fwnode.h>
+ #include <linux/irqdomain.h>
+ 
++enum iort_table_source {
++	IORT_SOURCE_IORT,	/* The Real Thing */
++	IORT_SOURCE_VIOT,	/* Paravirtual extensions */
++};
++
+ #define IORT_IRQ_MASK(irq)		(irq & 0xffffffffULL)
+ #define IORT_IRQ_TRIGGER_MASK(irq)	((irq >> 32) & 0xffffffffULL)
+ 
+@@ -27,6 +32,8 @@ int iort_register_domain_token(int trans_id, phys_addr_t base,
+ void iort_deregister_domain_token(int trans_id);
+ struct fwnode_handle *iort_find_domain_token(int trans_id);
+ #ifdef CONFIG_ACPI_IORT
++void acpi_iort_register_table(struct acpi_table_header *table,
++			      enum iort_table_source source);
+ void acpi_iort_init(void);
+ u32 iort_msi_map_rid(struct device *dev, u32 req_id);
+ struct irq_domain *iort_get_device_domain(struct device *dev, u32 req_id);
+@@ -37,6 +44,9 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *size);
+ const struct iommu_ops *iort_iommu_configure(struct device *dev);
+ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head);
+ #else
++static void acpi_iort_register_table(struct acpi_table_header *table,
++				     enum iort_table_source source)
++{ }
+ static inline void acpi_iort_init(void) { }
+ static inline u32 iort_msi_map_rid(struct device *dev, u32 req_id)
+ { return req_id; }
 -- 
 2.24.0
 
