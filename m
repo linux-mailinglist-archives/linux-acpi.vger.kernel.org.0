@@ -2,83 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D620105CEA
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Nov 2019 23:58:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8711105E80
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 03:11:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726270AbfKUW6f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Nov 2019 17:58:35 -0500
-Received: from mail-io1-f67.google.com ([209.85.166.67]:40147 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726038AbfKUW6f (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Nov 2019 17:58:35 -0500
-Received: by mail-io1-f67.google.com with SMTP id b26so3620076ion.7;
-        Thu, 21 Nov 2019 14:58:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uN4hyE3BsXplYJBM6a2D+eSFwcm1JgVbWlkvWiQItuM=;
-        b=GNXYPv+MoZ6ufzCOmzmZ3FbAGuNxZFHtzj2f+mLFc4MuUsi8YJcOkyliGl2bInzAI/
-         e4Zy5nUd8r4M/WJuXHH69WsI5BOApmhlhe4xbO1CkywTpGBJvqAzk5kzq+IGGuq+HbPF
-         CVGiIgsEzJNLWPQbB7z904ZoBU9uwh3kvmd0TjuMX3Gx1s+8e7Nps9W2iWA0lNaS/c88
-         5B7REKcrpUQLMjkze2sYAD9dL0OHLNGUlcd34h7NHg9gVsCVES3P+6tciTQCSy8DuC23
-         oKWi/dTAt+M5cVXwpI8DInfw8Iznpdpz5JLa23QtpB8QGgoHb+XzGfrmyOtXJyITE9tE
-         /dwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uN4hyE3BsXplYJBM6a2D+eSFwcm1JgVbWlkvWiQItuM=;
-        b=tflF5XoMxZOPv6EiYQWSla8GvLGizFjnICYeY3ZBL32FbzRocSnPG828X4l1JQyd4R
-         qb7nXMJTyqU5cAL/xtrexo0mLXS5b8PzeFqm+6HfuuUf8gTGSyp4Z8zldySb8qewWvHY
-         Ee0K6zb+VLHLgg5te9MhYXKo2HqSMRbD+3KJak5YHqi1kuAVsBO7PFGv5RZJuJWQbACf
-         LeHxKESNJ41XPp2kcBS+hZi3036lZmDWR4KOplQVjYQr+Q05sTCkt/XVinXzze+TKMiH
-         zSBsB5QaF5dZwNa1sLGWk1J/R5VMGniswiq+K4dis3rhEON3CWf2Ewn8ybG84dNpTKZR
-         7UCQ==
-X-Gm-Message-State: APjAAAUTB3xtsAypHmO1xZrLfxTZmIY0krPLT1jcYSxFbsWBO8+b3y7k
-        ROdnqThtHrPWlaJ6J7KF4nLuoJcXkh4/96O8FyY=
-X-Google-Smtp-Source: APXvYqxt2fyeSeuT7Rks7RsLI5P5xJkkHZ7JT6gT1o753wrBhnsAWRGn8abdnAlt9IuIed0B6IO1Ba87ARUD4oQ+9Z8=
-X-Received: by 2002:a02:6a02:: with SMTP id l2mr2823388jac.89.1574377112589;
- Thu, 21 Nov 2019 14:58:32 -0800 (PST)
+        id S1726541AbfKVCLi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Nov 2019 21:11:38 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42816 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726329AbfKVCLi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 21 Nov 2019 21:11:38 -0500
+Received: from oasis.local.home (unknown [66.170.99.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 160052068F;
+        Fri, 22 Nov 2019 02:11:36 +0000 (UTC)
+Date:   Thu, 21 Nov 2019 21:11:34 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Sean Christopherson <sean.j.christopherson@intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Nadav Amit <namit@vmware.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
+Subject: Re: [PATCH 03/12] x86/ftrace: Explicitly include vmalloc.h for
+ set_vm_flush_reset_perms()
+Message-ID: <20191121211134.5938b2d9@oasis.local.home>
+In-Reply-To: <20191119002121.4107-4-sean.j.christopherson@intel.com>
+References: <20191119002121.4107-1-sean.j.christopherson@intel.com>
+        <20191119002121.4107-4-sean.j.christopherson@intel.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20191120054728.0979695C0FE4@us180.sjc.aristanetworks.com>
-In-Reply-To: <20191120054728.0979695C0FE4@us180.sjc.aristanetworks.com>
-From:   Dmitry Safonov <0x7f454c46@gmail.com>
-Date:   Thu, 21 Nov 2019 22:58:21 +0000
-Message-ID: <CAJwJo6bu0Hkmneg=DuwN=v_G4pkm1JQnUWKEVcudJD5L0pjLiw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: only free map once in osl.c
-To:     Francesco Ruggeri <fruggeri@arista.com>
-Cc:     lenb@kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 20 Nov 2019 at 05:50, Francesco Ruggeri <fruggeri@arista.com> wrote:
->
-> acpi_os_map_cleanup checks map->refcount outside of acpi_ioremap_lock
-> before freeing the map. This creates a race condition the can result
-> in the map being freed more than once.
-> A panic can be caused by running
->
-> for ((i=0; i<10; i++))
-> do
->         for ((j=0; j<100000; j++))
->         do
->                 cat /sys/firmware/acpi/tables/data/BERT >/dev/null
->         done &
-> done
->
-> This patch makes sure that only the process that drops the reference
-> to 0 does the freeing.
->
-> Fixes: b7c1fadd6c2e ("ACPI: Do not use krefs under a mutex in osl.c")
-> Signed-off-by: Francesco Ruggeri <fruggeri@arista.com>
+On Mon, 18 Nov 2019 16:21:12 -0800
+Sean Christopherson <sean.j.christopherson@intel.com> wrote:
 
-Reviewed-by: Dmitry Safonov <0x7f454c46@gmail.com>
+> The inclusion of linux/vmalloc.h, which is required for its definition
+> of set_vm_flush_reset_perms(), is somehow dependent on asm/realmode.h
+> being included by asm/acpi.h.  Explicitly include linux/vmalloc.h so
+> that a future patch can drop the realmode.h include from asm/acpi.h
+> without breaking the build.
+> 
+> Fixes: 7fdfe1e40b225 ("x86/ftrace: Use vmalloc special flag")
+> Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 
-Thanks,
-             Dmitry
+Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+
+-- Steve
+
+> ---
+>  arch/x86/kernel/ftrace.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
+> index 2a179fb35cd1..681eae0fb64d 100644
+> --- a/arch/x86/kernel/ftrace.c
+> +++ b/arch/x86/kernel/ftrace.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/list.h>
+>  #include <linux/module.h>
+>  #include <linux/memory.h>
+> +#include <linux/vmalloc.h>
+>  
+>  #include <trace/syscall.h>
+>  
+
