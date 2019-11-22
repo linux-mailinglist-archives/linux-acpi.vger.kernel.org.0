@@ -2,97 +2,133 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44B7F1074EF
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 16:33:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AF161074F2
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 16:33:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726568AbfKVPdG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Nov 2019 10:33:06 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:44272 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726046AbfKVPdG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Nov 2019 10:33:06 -0500
-Received: by mail-wr1-f67.google.com with SMTP id i12so9059754wrn.11
-        for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2019 07:33:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=LQ0qY4Da80FqTT8SCe/q1MMW5kmKX6FKTTmrD9FMwQA=;
-        b=AgTSYuNm6XEfw9a1bin5Mb4/xCbTQ+NinMuVrvghSeEv3dFsAecF1XJPbn2iv1M6hY
-         p0cpqzbGPXGEzyjwmISfMojE0LxhDCyXfa7O2GrFOBPRPXKuA+np+l5lv+sd9iltRTGl
-         40ixAedr0XBP0RObe/d0u6Kl85Lo7q6+M9uiiTyuCvGh/7qkjHt2Zq4kMpQER1oGToOy
-         rUOFCo4z9GDEZTsAvXfugh8vyqyedf0J0SPQLCi87POM0biTYvmX+sFQlV/zavO9a9u0
-         P8VMOSvA9vHtkz3cLbYbYkxR93aPdU1+xJbHJ1IsxNrJ+8+Zdneft3cnMtP6yGDS/0pX
-         XQWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=LQ0qY4Da80FqTT8SCe/q1MMW5kmKX6FKTTmrD9FMwQA=;
-        b=HMfeEKeWFnsPRuNyzxwA+IVg69wHBTHhoY0RhaL4GHVXvBezwx0+4CMnPHXs8XJSQu
-         sECpyQ1VqLZ0UoJPe+MHAZ8AvWv4DXzPj747elL4d5sDz92AXpjdrOwXUBPw1Mo0BeuL
-         UmjLCeSyHZyYjamuubjbGEund8v89vq1TyoyTFPbdGTKJxVx6/isz1uIQxt3j+0DGQX7
-         6CEUoJYIlLm1HiyI6940OBuK0E2XHcyWyd0K6vuYyHR3qV2nI+SnF3KaRZHmaEUcFKHj
-         HO/Ov4lPgkqIADh8HiiK068LUwucNCtOZozj/1YOHeXXeHYpwRMyMFc+Il4O63lyPiW/
-         gLCA==
-X-Gm-Message-State: APjAAAVWoeF6HW+LX+HkoCNd4VcskEkURrdda0Mu3yd9pqAj/A+nxbUN
-        fPqQ7X3JI0UESxDA2VYoaDmA6g==
-X-Google-Smtp-Source: APXvYqzX6JrW+q24Zk8k1hZ/pOgzDIL1U2YSPMN1DIk72zz9G9tgaPGNFMdZipoYaSd2Rw5YaSO23g==
-X-Received: by 2002:adf:f20d:: with SMTP id p13mr17340480wro.325.1574436784658;
-        Fri, 22 Nov 2019 07:33:04 -0800 (PST)
-Received: from lophozonia (xdsl-188-155-204-106.adslplus.ch. [188.155.204.106])
-        by smtp.gmail.com with ESMTPSA id y6sm8172846wrw.6.2019.11.22.07.33.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2019 07:33:03 -0800 (PST)
-Date:   Fri, 22 Nov 2019 16:33:01 +0100
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc:     iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        joro@8bytes.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
-        sudeep.holla@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
-        will@kernel.org, robin.murphy@arm.com, zhangfei.gao@linaro.org,
-        eric.auger@redhat.com
-Subject: Re: [PATCH v2 8/8] iommu/arm-smmu-v3: Add support for PCI PASID
-Message-ID: <20191122153301.GC810215@lophozonia>
-References: <20191108152508.4039168-1-jean-philippe@linaro.org>
- <20191108152508.4039168-9-jean-philippe@linaro.org>
- <20191111160529.00006dcd@huawei.com>
+        id S1726655AbfKVPdS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Nov 2019 10:33:18 -0500
+Received: from thoth.sbs.de ([192.35.17.2]:33792 "EHLO thoth.sbs.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726613AbfKVPdR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 22 Nov 2019 10:33:17 -0500
+Received: from mail2.sbs.de (mail2.sbs.de [192.129.41.66])
+        by thoth.sbs.de (8.15.2/8.15.2) with ESMTPS id xAMFX7ka032603
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 22 Nov 2019 16:33:07 +0100
+Received: from [139.25.68.37] ([139.25.68.37])
+        by mail2.sbs.de (8.15.2/8.15.2) with ESMTP id xAMFX64q016437;
+        Fri, 22 Nov 2019 16:33:07 +0100
+Subject: Re: [PATCH v3 1/2] gpio: sch: Add edge event support
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-gpio@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+References: <cover.1574277614.git.jan.kiszka@siemens.com>
+ <42ae6149a14f81fd86c5acb5bd33e987123b6bed.1574277614.git.jan.kiszka@siemens.com>
+ <20191122111219.GW32742@smile.fi.intel.com>
+From:   Jan Kiszka <jan.kiszka@siemens.com>
+Message-ID: <5d7399ce-1776-18ef-3bb5-6e3e8e7e7524@siemens.com>
+Date:   Fri, 22 Nov 2019 16:33:05 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191111160529.00006dcd@huawei.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <20191122111219.GW32742@smile.fi.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jonathan,
-
-On Mon, Nov 11, 2019 at 04:05:29PM +0000, Jonathan Cameron wrote:
-> On Fri, 8 Nov 2019 16:25:08 +0100
-> Jean-Philippe Brucker <jean-philippe@linaro.org> wrote:
+On 22.11.19 12:12, Andy Shevchenko wrote:
+> On Wed, Nov 20, 2019 at 08:20:13PM +0100, Jan Kiszka wrote:
+>> From: Jan Kiszka <jan.kiszka@siemens.com>
+>>
+>> Add the required infrastructure consisting of an irq_chip_generic with
+>> its irq_chip_type callbacks to enable and report edge events of the pins
+>> to the gpio core. The actual hook-up of the event interrupt will happen
+>> separately.
 > 
-> > Enable PASID for PCI devices that support it. Since the SSID tables are
-> > allocated by arm_smmu_attach_dev(), PASID has to be enabled early enough.
-> > arm_smmu_dev_feature_enable() would be too late, since by that time the
-> > main DMA domain has already been attached. Do it in add_device() instead.
-> > 
-> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> Seems straightforward.
+>> +static int sch_irq_type(struct irq_data *d, unsigned int type)
+>> +{
+>> +	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(d);
+>> +	struct sch_gpio *sch = gc->private;
+>> +	unsigned int gpio_num = d->irq - sch->irq_base;
+>> +	unsigned long flags;
+>> +	int rising = 0;
+>> +	int falling = 0;
+>> +
+>> +	switch (type & IRQ_TYPE_SENSE_MASK) {
+>> +	case IRQ_TYPE_EDGE_RISING:
+>> +		rising = 1;
+>> +		break;
+>> +	case IRQ_TYPE_EDGE_FALLING:
+>> +		falling = 1;
+>> +		break;
+>> +	case IRQ_TYPE_EDGE_BOTH:
+>> +		rising = 1;
+>> +		falling = 1;
+>> +		break;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	spin_lock_irqsave(&sch->lock, flags);
+>> +	sch_gpio_reg_set(sch, gpio_num, GTPE, rising);
+>> +	sch_gpio_reg_set(sch, gpio_num, GTNE, falling);
+>> +	spin_unlock_irqrestore(&sch->lock, flags);
 > 
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Won't we need to set up IRQ handler here and use handle_bad_irq() during
+> initialization phase?
+
+Why? This is just defining the edge type, not whether an interrupt could 
+be generated or not. Also, we only have edge events here, so no reason 
+to switch types.
+
 > 
-> Thanks for working on this stuff.  I hope we an move to get the rest of the
-> SVA elements lined up behind it so everything moves quickly in the next
-> cycle (or two).
+>> +
+>> +	return 0;
+>> +}
+> 
+>> +	irq_base = devm_irq_alloc_descs(&pdev->dev, -1, 0, sch->chip.ngpio,
+>> +					NUMA_NO_NODE);
+>> +	if (irq_base < 0)
+>> +		return irq_base;
+>> +	sch->irq_base = irq_base;
+>> +
+>> +	gc = devm_irq_alloc_generic_chip(&pdev->dev, "sch_gpio", 1, irq_base,
+>> +					 NULL, handle_simple_irq);
+>> +	if (!gc)
+>> +		return -ENOMEM;
+>> +
+>> +	gc->private = sch;
+>> +	ct = gc->chip_types;
+>> +
+>> +	ct->chip.irq_mask = sch_irq_mask;
+>> +	ct->chip.irq_unmask = sch_irq_unmask;
+>> +	ct->chip.irq_set_type = sch_irq_type;
+>> +
+>> +	ret = devm_irq_setup_generic_chip(&pdev->dev, gc,
+>> +					  IRQ_MSK(sch->chip.ngpio),
+>> +					  0, IRQ_NOREQUEST | IRQ_NOPROBE, 0);
+>> +	if (ret)
+>> +		return ret;
+> 
+> Shan't we do this in the (similar) way how it's done in pinctrl-cherryview.c
+> driver? (Keep in mind later patches which are going to be v5.5)
+> 
 
-Thanks a lot for the thorough review. I'm aiming for v5.6 for the PASID
-series, and then realistically v5.7 for the rest of SVA, but I'll try to
-send it sooner.
+Can you be a bit more specific for me? Do you mean the pattern 
+gpiochip_irqchip_add / gpiochip_set_chained_irqchip? What would be the 
+difference / benefit? And how would I link sch_sci_handler to that pattern?
 
-Thanks,
-Jean
+Jan
 
+-- 
+Siemens AG, Corporate Technology, CT RDA IOT SES-DE
+Corporate Competence Center Embedded Linux
