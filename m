@@ -2,137 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 287A51075BA
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 17:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1869107644
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 18:11:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726638AbfKVQZX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Nov 2019 11:25:23 -0500
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:37820 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726666AbfKVQZW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 22 Nov 2019 11:25:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574439921;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dHdyHfkNKosHl51NLrMjsjBT0ZayHryhZQGO5Md7wqE=;
-        b=fkgsDrpJ7qdIE/ZntwpIM9t+ZRHI9I5rZef9UUq/cc683neCdFAK8wWNTagVaOZypEDPJj
-        F+K+n9KUBq5NYuzGaOwTp4CB7XaPiP4Wwhxu7MRK5Lrnr7mbChG+Wwwa5B+JEmHUw5zgXm
-        0Omj5nQeZygrjnBujNrvFfvvSS1obTQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-165-FxwrXjrrPBO6LPh4PmY5hA-1; Fri, 22 Nov 2019 11:25:17 -0500
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 07B7B184CAA8;
-        Fri, 22 Nov 2019 16:25:15 +0000 (UTC)
-Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 659181CB;
-        Fri, 22 Nov 2019 16:25:13 +0000 (UTC)
-From:   Jeff Moyer <jmoyer@redhat.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Pankaj Gupta <pagupta@redhat.com>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Vishal L Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        "Weiny\, Ira" <ira.weiny@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Vivek Goyal <vgoyal@redhat.com>,
-        Keith Busch <keith.busch@intel.com>
-Subject: Re: [PATCH] virtio pmem: fix async flush ordering
-References: <20191120092831.6198-1-pagupta@redhat.com>
-        <x49d0dmihmu.fsf@segfault.boston.devel.redhat.com>
-        <CAPcyv4gCe8k1GdatAWn1991pm3QZq2WBFAGEFsZ2PXpyo2=wMw@mail.gmail.com>
-        <x49h82vevw1.fsf@segfault.boston.devel.redhat.com>
-        <CAPcyv4idC=LgkwP+A1GKJ1CWkzUZ_RVBDCVfA3yAL9TNw1zZmw@mail.gmail.com>
-X-PGP-KeyID: 1F78E1B4
-X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
-Date:   Fri, 22 Nov 2019 11:25:11 -0500
-In-Reply-To: <CAPcyv4idC=LgkwP+A1GKJ1CWkzUZ_RVBDCVfA3yAL9TNw1zZmw@mail.gmail.com>
-        (Dan Williams's message of "Fri, 22 Nov 2019 08:13:05 -0800")
-Message-ID: <x49d0djev4o.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S1726638AbfKVRLf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Nov 2019 12:11:35 -0500
+Received: from mga07.intel.com ([134.134.136.100]:52621 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726046AbfKVRLf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 22 Nov 2019 12:11:35 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Nov 2019 09:11:34 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,230,1571727600"; 
+   d="scan'208";a="407636294"
+Received: from orsmsx104.amr.corp.intel.com ([10.22.225.131])
+  by fmsmga005.fm.intel.com with ESMTP; 22 Nov 2019 09:11:33 -0800
+Received: from orsmsx110.amr.corp.intel.com ([169.254.10.52]) by
+ ORSMSX104.amr.corp.intel.com ([169.254.4.122]) with mapi id 14.03.0439.000;
+ Fri, 22 Nov 2019 09:11:32 -0800
+From:   "Moore, Robert" <robert.moore@intel.com>
+To:     Maximilian Luz <luzmaximilian@gmail.com>,
+        "Schmauss, Erik" <erik.schmauss@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>
+CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>
+Subject: RE: PROBLEM: Calling ObjectType on buffer field reports type integer
+Thread-Topic: PROBLEM: Calling ObjectType on buffer field reports type
+ integer
+Thread-Index: AQHVmA31VHOI3uSOc0mKl5AUoFma0qeXf3RA
+Date:   Fri, 22 Nov 2019 17:11:31 +0000
+Message-ID: <94F2FBAB4432B54E8AACC7DFDE6C92E3B96B196C@ORSMSX110.amr.corp.intel.com>
+References: <3ef42aa1-196d-f3db-0e5d-2fd84c198242@gmail.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C592D47@ORSMSX122.amr.corp.intel.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C59405C@ORSMSX122.amr.corp.intel.com>
+ <fe4bcc1c-5c15-caa6-ce01-a5df962ff008@gmail.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C5942CA@ORSMSX122.amr.corp.intel.com>
+ <51e156ec-c2ed-84be-13c0-99a213e1d4b7@gmail.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C595C50@ORSMSX122.amr.corp.intel.com>
+ <88077d9c-b2b7-5fc6-37e9-fa12d6aebe73@gmail.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C614AA8@ORSMSX122.amr.corp.intel.com>
+ <c6511010-f160-a2ee-1b89-46df051a85e4@gmail.com>
+In-Reply-To: <c6511010-f160-a2ee-1b89-46df051a85e4@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMjQ0N2VjYWMtYTNiMS00MTI5LTgyMjQtNmMzNTc0MDYyMGZjIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoibTU1eVRwYzBhUWltTHlLT1N2VWtcL0lBa1hUOVJHU1JqZjV6emtaNzAreTFNNlBqRnBETGVxdmpYMjNhYitBdGwifQ==
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.138]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-MC-Unique: FxwrXjrrPBO6LPh4PmY5hA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dan Williams <dan.j.williams@intel.com> writes:
-
-> On Fri, Nov 22, 2019 at 8:09 AM Jeff Moyer <jmoyer@redhat.com> wrote:
->>
->> Dan Williams <dan.j.williams@intel.com> writes:
->>
->> > On Wed, Nov 20, 2019 at 9:26 AM Jeff Moyer <jmoyer@redhat.com> wrote:
->> >>
->> >> Pankaj Gupta <pagupta@redhat.com> writes:
->> >>
->> >> >  Remove logic to create child bio in the async flush function which
->> >> >  causes child bio to get executed after parent bio 'pmem_make_reque=
-st'
->> >> >  completes. This resulted in wrong ordering of REQ_PREFLUSH with th=
-e
->> >> >  data write request.
->> >> >
->> >> >  Instead we are performing flush from the parent bio to maintain th=
-e
->> >> >  correct order. Also, returning from function 'pmem_make_request' i=
-f
->> >> >  REQ_PREFLUSH returns an error.
->> >> >
->> >> > Reported-by: Jeff Moyer <jmoyer@redhat.com>
->> >> > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
->> >>
->> >> There's a slight change in behavior for the error path in the
->> >> virtio_pmem driver.  Previously, all errors from virtio_pmem_flush we=
-re
->> >> converted to -EIO.  Now, they are reported as-is.  I think this is
->> >> actually an improvement.
->> >>
->> >> I'll also note that the current behavior can result in data corruptio=
-n,
->> >> so this should be tagged for stable.
->> >
->> > I added that and was about to push this out, but what about the fact
->> > that now the guest will synchronously wait for flushing to occur. The
->> > goal of the child bio was to allow that to be an I/O wait with
->> > overlapping I/O, or at least not blocking the submission thread. Does
->> > the block layer synchronously wait for PREFLUSH requests?
->>
->> You *have* to wait for the preflush to complete before issuing the data
->> write.  See the "Explicit cache flushes" section in
->> Documentation/block/writeback_cache_control.rst.
->
-> I'm not debating the ordering, or that the current implementation is
-> obviously broken. I'm questioning whether the bio tagged with PREFLUSH
-> is a barrier for future I/Os. My reading is that it is only a gate for
-> past writes, and it can be queued. I.e. along the lines of
-> md_flush_request().
-
-Sorry, I misunderstood your question.
-
-For a write bio with REQ_PREFLUSH set, the PREFLUSH has to be done
-before the data attached to the bio is written.  That preflush is not an
-I/O barrier.  In other words, for unrelated I/O (any other bio in the
-system), it does not impart any specific ordering requirements.  Upper
-layers are expected to wait for any related I/O completions before
-issuing a flush request.
-
-So yes, you can queue the bio to a worker thread and return to the
-caller.  In fact, this is what I had originally suggested to Pankaj.
-
-Cheers,
-Jeff
-
+V2Ugd2lsbCBwcm9iYWJseSBtYWtlIHRoaXMgY2hhbmdlLCBkZXBlbmRpbmcgb24gd2hhdCBXaW5k
+b3dzIGRvZXMuDQpCb2INCg0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogTWF4
+aW1pbGlhbiBMdXogPGx1em1heGltaWxpYW5AZ21haWwuY29tPiANClNlbnQ6IFN1bmRheSwgTm92
+ZW1iZXIgMTAsIDIwMTkgMTozMCBQTQ0KVG86IFNjaG1hdXNzLCBFcmlrIDxlcmlrLnNjaG1hdXNz
+QGludGVsLmNvbT47IE1vb3JlLCBSb2JlcnQgPHJvYmVydC5tb29yZUBpbnRlbC5jb20+OyBXeXNv
+Y2tpLCBSYWZhZWwgSiA8cmFmYWVsLmoud3lzb2NraUBpbnRlbC5jb20+DQpDYzogbGludXgtYWNw
+aUB2Z2VyLmtlcm5lbC5vcmc7IGRldmVsQGFjcGljYS5vcmcNClN1YmplY3Q6IFJlOiBQUk9CTEVN
+OiBDYWxsaW5nIE9iamVjdFR5cGUgb24gYnVmZmVyIGZpZWxkIHJlcG9ydHMgdHlwZSBpbnRlZ2Vy
+DQoNCg0KT24gNy8yMy8xOSAxOjAxIEFNLCBTY2htYXVzcywgRXJpayB3cm90ZToNCj4gU29ycnkg
+YWJvdXQgdGhlIGxhdGUgcmVzcG9uc2UuIFRoaXMgc2xpcHBlZCB0aHJvdWdoIHRoZSBjcmFja3Mu
+DQo+IEkndmUgc2VudCB0aGVtIGFuIGVtYWlsIGp1c3Qgbm93IGFuZCBJJ2xsIGtlZXAgeW91IGlu
+Zm9ybWVkDQoNCkhpIGFnYWluLA0KDQppcyB0aGVyZSBhbnkgdXBkYXRlIG9uIHRoaXM/DQoNClJl
+Z2FyZHMsDQoNCk1heGltaWxpYW4NCg==
