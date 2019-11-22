@@ -2,35 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 894B1106089
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 06:50:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49C5E106121
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 06:54:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727279AbfKVFts (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Nov 2019 00:49:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54082 "EHLO mail.kernel.org"
+        id S1727493AbfKVFyY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Nov 2019 00:54:24 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59166 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727269AbfKVFts (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 22 Nov 2019 00:49:48 -0500
+        id S1728791AbfKVFxK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 22 Nov 2019 00:53:10 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 69B1B20708;
-        Fri, 22 Nov 2019 05:49:47 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3BE892068F;
+        Fri, 22 Nov 2019 05:53:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574401788;
-        bh=TdQPgtFlO5dSn5dVBSQBaPwxIW+NrmCLiLXyK8OT3FI=;
+        s=default; t=1574401989;
+        bh=DqeW1U78vlTUIlsSZ6UY5jGKiwesidoeQuHKuMlvuJg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ExA6NxJXr0plclW3L2s8YKChQfkFYPR35do7NNtPl18JcSFHIfVc8p9+HpvRYITVx
-         fB7KTqDjZJiSNszlBaPStF2JhG02FAuoBN5aBTpiSoBFGB2t4nFB08VGwJQLK30ATD
-         bxvZ4f6Gcg2Q8+9DxbDb7fFz4/SQKgQkYM7R3nx4=
+        b=cK5KdBqaWiD+JOm/8CPRdG89yDO+nf4SDbOJcITUi1qpNBjArn70DSlmCWX6v7OOE
+         H1p1xuEhqYlERej8cwO53i33fe4nSvxv6jQM82ALmPpwhFMM5H9NGrR+XCQMCNnCcx
+         CbnQnksFbbxosKjgSLwnu2mYvjo2dX6KCGandiUE=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>,
+Cc:     James Morse <james.morse@arm.com>, Borislav Petkov <bp@suse.de>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 036/219] ACPI / LPSS: Ignore acpi_device_fix_up_power() return value
-Date:   Fri, 22 Nov 2019 00:46:08 -0500
-Message-Id: <20191122054911.1750-29-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 207/219] ACPI / APEI: Don't wait to serialise with oops messages when panic()ing
+Date:   Fri, 22 Nov 2019 00:48:58 -0500
+Message-Id: <20191122054911.1750-199-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191122054911.1750-1-sashal@kernel.org>
 References: <20191122054911.1750-1-sashal@kernel.org>
@@ -43,52 +43,52 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: James Morse <james.morse@arm.com>
 
-[ Upstream commit 1a2fa02f7489dc4d746f2a15fb77b3ce1affade8 ]
+[ Upstream commit 78b0b690f6558ed788dccafa45965325dd11ba89 ]
 
-Ignore acpi_device_fix_up_power() return value. If we return an error
-we end up with acpi_default_enumeration() still creating a platform-
-device for the device and we end up with the device still being used
-but without the special LPSS related handling which is not useful.
+oops_begin() exists to group printk() messages with the oops message
+printed by die(). To reach this caller we know that platform firmware
+took this error first, then notified the OS via NMI with a 'panic'
+severity.
 
-Specicifically ignoring the error fixes the touchscreen no longer
-working after a suspend/resume on a Prowise PT301 tablet.
+Don't wait for another CPU to release the die-lock before panic()ing,
+our only goal is to print this fatal error and panic().
 
-This tablet has a broken _PS0 method on the touchscreen's I2C controller,
-causing acpi_device_fix_up_power() to fail, causing fallback to standard
-platform-dev handling and specifically causing acpi_lpss_save/restore_ctx
-to not run.
+This code is always called in_nmi(), and since commit 42a0bb3f7138
+("printk/nmi: generic solution for safe printk in NMI"), it has been
+safe to call printk() from this context. Messages are batched in a
+per-cpu buffer and printed via irq-work, or a call back from panic().
 
-The I2C controllers _PS0 method does actually turn on the device, but then
-does some more nonsense which fails when run during early boot trying to
-use I2C opregion handling on another not-yet registered I2C controller.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patchwork.kernel.org/patch/10313555/
+Acked-by: Borislav Petkov <bp@suse.de>
+Signed-off-by: James Morse <james.morse@arm.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_lpss.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/acpi/apei/ghes.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-index c651e206d7960..d79245e9dff72 100644
---- a/drivers/acpi/acpi_lpss.c
-+++ b/drivers/acpi/acpi_lpss.c
-@@ -637,12 +637,7 @@ static int acpi_lpss_create_device(struct acpi_device *adev,
- 	 * have _PS0 and _PS3 without _PSC (and no power resources), so
- 	 * acpi_bus_init_power() will assume that the BIOS has put them into D0.
- 	 */
--	ret = acpi_device_fix_up_power(adev);
--	if (ret) {
--		/* Skip the device, but continue the namespace scan. */
--		ret = 0;
--		goto err_out;
--	}
-+	acpi_device_fix_up_power(adev);
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index f008ba7c9cedc..0c46b79e31b1e 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -33,7 +33,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/timer.h>
+ #include <linux/cper.h>
+-#include <linux/kdebug.h>
+ #include <linux/platform_device.h>
+ #include <linux/mutex.h>
+ #include <linux/ratelimit.h>
+@@ -949,7 +948,6 @@ static int ghes_notify_nmi(unsigned int cmd, struct pt_regs *regs)
  
- 	adev->driver_data = pdata;
- 	pdev = acpi_create_platform_device(adev, dev_desc->properties);
+ 		sev = ghes_severity(ghes->estatus->error_severity);
+ 		if (sev >= GHES_SEV_PANIC) {
+-			oops_begin();
+ 			ghes_print_queued_estatus();
+ 			__ghes_panic(ghes);
+ 		}
 -- 
 2.20.1
 
