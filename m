@@ -2,138 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C08EC106047
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 06:37:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 894B1106089
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 06:50:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726364AbfKVFhI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Nov 2019 00:37:08 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:27847 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726100AbfKVFhH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Nov 2019 00:37:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574401026;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=eKkONTtWVn2eOzE/ZmOcrElOUkXfPmqcjl279Q5P6lw=;
-        b=Pwj48DzQ9qQ/UmCuOYaEw8tRNYu4WoZELV/8Z5S17SuXYsftabY+jxq/jey/a383PIFG0x
-        ttTpxnOkQmySKNgtC/grCBzeMU970ib1aGy2VXXbIcf4lCLmIKbQT0Uzk9I6iEcZuwAbKL
-        YPDsmvmlzmpWaEk5FJmjTW6muWKhwoQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-171-T_UOHI-YNQGQjE4f7guipw-1; Fri, 22 Nov 2019 00:37:02 -0500
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1727279AbfKVFts (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Nov 2019 00:49:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54082 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727269AbfKVFts (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 22 Nov 2019 00:49:48 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D69E11800D41;
-        Fri, 22 Nov 2019 05:37:00 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id B6730100EA05;
-        Fri, 22 Nov 2019 05:37:00 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
-        by colo-mx.corp.redhat.com (Postfix) with ESMTP id 895A218095FF;
-        Fri, 22 Nov 2019 05:37:00 +0000 (UTC)
-Date:   Fri, 22 Nov 2019 00:37:00 -0500 (EST)
-From:   Pankaj Gupta <pagupta@redhat.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Jeff Moyer <jmoyer@redhat.com>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Vishal L Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Vivek Goyal <vgoyal@redhat.com>,
-        Keith Busch <keith.busch@intel.com>
-Message-ID: <838611538.35971353.1574401020319.JavaMail.zimbra@redhat.com>
-In-Reply-To: <CAPcyv4gsQXY5C5URF2vrTaD-0Q_CJ+ib3GVb1VFZAO+1Gdau2w@mail.gmail.com>
-References: <20191120092831.6198-1-pagupta@redhat.com> <x49d0dmihmu.fsf@segfault.boston.devel.redhat.com> <CAPcyv4gCe8k1GdatAWn1991pm3QZq2WBFAGEFsZ2PXpyo2=wMw@mail.gmail.com> <CAPcyv4hJ6gHX=NYz-CoXFSrN93HUT+Xh+DP+QAjzqgGmmghmGA@mail.gmail.com> <1617854972.35808055.1574323227395.JavaMail.zimbra@redhat.com> <CAPcyv4haUOM92uzCBfVyrANxnNHKucivq053MFBmGOL3vqMgwQ@mail.gmail.com> <560894997.35969622.1574397521533.JavaMail.zimbra@redhat.com> <CAPcyv4gsQXY5C5URF2vrTaD-0Q_CJ+ib3GVb1VFZAO+1Gdau2w@mail.gmail.com>
-Subject: Re: [PATCH] virtio pmem: fix async flush ordering
+        by mail.kernel.org (Postfix) with ESMTPSA id 69B1B20708;
+        Fri, 22 Nov 2019 05:49:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1574401788;
+        bh=TdQPgtFlO5dSn5dVBSQBaPwxIW+NrmCLiLXyK8OT3FI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=ExA6NxJXr0plclW3L2s8YKChQfkFYPR35do7NNtPl18JcSFHIfVc8p9+HpvRYITVx
+         fB7KTqDjZJiSNszlBaPStF2JhG02FAuoBN5aBTpiSoBFGB2t4nFB08VGwJQLK30ATD
+         bxvZ4f6Gcg2Q8+9DxbDb7fFz4/SQKgQkYM7R3nx4=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 036/219] ACPI / LPSS: Ignore acpi_device_fix_up_power() return value
+Date:   Fri, 22 Nov 2019 00:46:08 -0500
+Message-Id: <20191122054911.1750-29-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191122054911.1750-1-sashal@kernel.org>
+References: <20191122054911.1750-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-Originating-IP: [10.67.116.214, 10.4.195.30]
-Thread-Topic: virtio pmem: fix async flush ordering
-Thread-Index: yct1AVHQcm+1LDSyVVEj51GYlhrF5A==
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-MC-Unique: T_UOHI-YNQGQjE4f7guipw-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+From: Hans de Goede <hdegoede@redhat.com>
 
-> > > > > >
-> > > > > > I added that and was about to push this out, but what about the
-> > > > > > fact
-> > > > > > that now the guest will synchronously wait for flushing to occu=
-r.
-> > > > > > The
-> > > > > > goal of the child bio was to allow that to be an I/O wait with
-> > > > > > overlapping I/O, or at least not blocking the submission thread=
-.
-> > > > > > Does
-> > > > > > the block layer synchronously wait for PREFLUSH requests? If no=
-t I
-> > > > > > think a synchronous wait is going to be a significant performan=
-ce
-> > > > > > regression. Are there any numbers to accompany this change?
-> > > > >
-> > > > > Why not just swap the parent child relationship in the PREFLUSH c=
-ase?
-> > > >
-> > > > I we are already inside parent bio "make_request" function and we
-> > > > create
-> > > > child
-> > > > bio. How we exactly will swap the parent/child relationship for
-> > > > PREFLUSH
-> > > > case?
-> > > >
-> > > > Child bio is queued after parent bio completes.
-> > >
-> > > Sorry, I didn't quite mean with bio_split, but issuing another reques=
-t
-> > > in front of the real bio. See md_flush_request() for inspiration.
-> >
-> > o.k. Thank you. Will try to post patch today to be considered for 5.4.
-> >
->=20
-> I think it is too late for v5.4-final, but we can get it in the
-> -stable queue. Let's take the time to do it right and get some testing
-> on it.
+[ Upstream commit 1a2fa02f7489dc4d746f2a15fb77b3ce1affade8 ]
 
-Sure.
+Ignore acpi_device_fix_up_power() return value. If we return an error
+we end up with acpi_default_enumeration() still creating a platform-
+device for the device and we end up with the device still being used
+but without the special LPSS related handling which is not useful.
 
-Just sharing probable patch for early feedback, if I am doing it correctly?
-I will test it thoroughly.
+Specicifically ignoring the error fixes the touchscreen no longer
+working after a suspend/resume on a Prowise PT301 tablet.
 
-Thanks,
-Pankaj
+This tablet has a broken _PS0 method on the touchscreen's I2C controller,
+causing acpi_device_fix_up_power() to fail, causing fallback to standard
+platform-dev handling and specifically causing acpi_lpss_save/restore_ctx
+to not run.
 
-=3D=3D=3D=3D=3D=3D=3D=3D
+The I2C controllers _PS0 method does actually turn on the device, but then
+does some more nonsense which fails when run during early boot trying to
+use I2C opregion handling on another not-yet registered I2C controller.
 
-diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
-index 10351d5b49fa..c683e0e2515c 100644
---- a/drivers/nvdimm/nd_virtio.c
-+++ b/drivers/nvdimm/nd_virtio.c
-@@ -112,6 +112,12 @@ int async_pmem_flush(struct nd_region *nd_region, stru=
-ct bio *bio)
-                bio_copy_dev(child, bio);
-                child->bi_opf =3D REQ_PREFLUSH;
-                child->bi_iter.bi_sector =3D -1;
-+
-+               if (unlikely(bio->bi_opf & REQ_PREFLUSH)) {
-+                       struct request_queue *q =3D bio->bi_disk->queue;
-+                       q->make_request_fn(q, child);
-+                       return 0;
-+               }
-                bio_chain(child, bio);
-                submit_bio(child);
-                return 0;
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/acpi_lpss.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-=20
+diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+index c651e206d7960..d79245e9dff72 100644
+--- a/drivers/acpi/acpi_lpss.c
++++ b/drivers/acpi/acpi_lpss.c
+@@ -637,12 +637,7 @@ static int acpi_lpss_create_device(struct acpi_device *adev,
+ 	 * have _PS0 and _PS3 without _PSC (and no power resources), so
+ 	 * acpi_bus_init_power() will assume that the BIOS has put them into D0.
+ 	 */
+-	ret = acpi_device_fix_up_power(adev);
+-	if (ret) {
+-		/* Skip the device, but continue the namespace scan. */
+-		ret = 0;
+-		goto err_out;
+-	}
++	acpi_device_fix_up_power(adev);
+ 
+ 	adev->driver_data = pdata;
+ 	pdev = acpi_create_platform_device(adev, dev_desc->properties);
+-- 
+2.20.1
 
