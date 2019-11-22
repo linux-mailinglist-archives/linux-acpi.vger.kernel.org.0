@@ -2,145 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 433DE107863
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 20:53:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F53107A33
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 22:49:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727667AbfKVTt4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Nov 2019 14:49:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50224 "EHLO mail.kernel.org"
+        id S1726526AbfKVVtG convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 22 Nov 2019 16:49:06 -0500
+Received: from mga12.intel.com ([192.55.52.136]:61158 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727655AbfKVTtz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 22 Nov 2019 14:49:55 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E88C02075E;
-        Fri, 22 Nov 2019 19:49:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574452195;
-        bh=zvZPTTni/ycZBbfQvl6iJVAj8L2x55SrskgiKQVLozY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=McXiv1nmAk2HDAvSGdzHuh87jp+8mE+naw7fbmP9D/u4hAn2Recw46TsN9cDB0c5U
-         9wxzC2Z1dM8kTA6+Yr2K3Wu4qVuhelFnQka+ckRKfHHKfB+ctGuZ0efqrm3iO3qOjh
-         ckw7Ph+GaMH4Pt9qbYFYl/UrcT+UWJwsXbkhorao=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        youling 257 <youling257@gmail.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Wolfram Sang <wsa@the-dreams.de>, stable@kernel.org,
-        Sasha Levin <sashal@kernel.org>, linux-i2c@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 19/21] i2c: acpi: Force bus speed to 400KHz if a Silead touchscreen is present
-Date:   Fri, 22 Nov 2019 14:49:29 -0500
-Message-Id: <20191122194931.24732-19-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191122194931.24732-1-sashal@kernel.org>
-References: <20191122194931.24732-1-sashal@kernel.org>
+        id S1726089AbfKVVtG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 22 Nov 2019 16:49:06 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Nov 2019 13:49:06 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,231,1571727600"; 
+   d="scan'208";a="219591918"
+Received: from orsmsx101.amr.corp.intel.com ([10.22.225.128])
+  by orsmga002.jf.intel.com with ESMTP; 22 Nov 2019 13:49:06 -0800
+Received: from orsmsx116.amr.corp.intel.com (10.22.240.14) by
+ ORSMSX101.amr.corp.intel.com (10.22.225.128) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Fri, 22 Nov 2019 13:49:05 -0800
+Received: from orsmsx110.amr.corp.intel.com ([169.254.10.52]) by
+ ORSMSX116.amr.corp.intel.com ([169.254.7.11]) with mapi id 14.03.0439.000;
+ Fri, 22 Nov 2019 13:49:05 -0800
+From:   "Moore, Robert" <robert.moore@intel.com>
+To:     zhengbin <zhengbin13@huawei.com>,
+        "Schmauss, Erik" <erik.schmauss@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>
+Subject: RE: [PATCH] ACPICA: Use ARRAY_SIZE for
+ 'fadt_info_table','fadt_pm_info_table'
+Thread-Topic: [PATCH] ACPICA: Use ARRAY_SIZE for
+ 'fadt_info_table','fadt_pm_info_table'
+Thread-Index: AQHVoRboulD/DOKym0m5GPkUUMHHlKeXuvow
+Date:   Fri, 22 Nov 2019 21:49:05 +0000
+Message-ID: <94F2FBAB4432B54E8AACC7DFDE6C92E3B96B1A5A@ORSMSX110.amr.corp.intel.com>
+References: <1574415183-19322-1-git-send-email-zhengbin13@huawei.com>
+In-Reply-To: <1574415183-19322-1-git-send-email-zhengbin13@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiNDEzM2NmMTUtMDFjMy00NDQ3LWI5YzgtYzU2ZGZjMWY3YTVlIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoidXhvXC9jYk9zUDd5ZmhXeEpIYm9nRXNCdW5rQkh1UWNRWU1uemRWa3Zxd1hERWJhRDZ3cWt0THByVWN5Q1NVSTQifQ==
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.138]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+Where does "ARRAY_SIZE" come from? It's not a part of ACPICA.
+Bob
 
-[ Upstream commit 7574c0db2e68c4d0bae9d415a683bdd8b2a761e9 ]
 
-Many cheap devices use Silead touchscreen controllers. Testing has shown
-repeatedly that these touchscreen controllers work fine at 400KHz, but for
-unknown reasons do not work properly at 100KHz. This has been seen on
-both ARM and x86 devices using totally different i2c controllers.
+-----Original Message-----
+From: zhengbin <zhengbin13@huawei.com> 
+Sent: Friday, November 22, 2019 1:33 AM
+To: Moore, Robert <robert.moore@intel.com>; Schmauss, Erik <erik.schmauss@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>; lenb@kernel.org; linux-acpi@vger.kernel.org; devel@acpica.org
+Cc: zhengbin13@huawei.com
+Subject: [PATCH] ACPICA: Use ARRAY_SIZE for 'fadt_info_table','fadt_pm_info_table'
 
-On some devices the ACPI tables list another device at the same I2C-bus
-as only being capable of 100KHz, testing has shown that these other
-devices work fine at 400KHz (as can be expected of any recent I2C hw).
+Fixes coccicheck warning:
 
-This commit makes i2c_acpi_find_bus_speed() always return 400KHz if a
-Silead touchscreen controller is present, fixing the touchscreen not
-working on devices which ACPI tables' wrongly list another device on the
-same bus as only being capable of 100KHz.
+drivers/acpi/acpica/tbfadt.c:107:27-28: WARNING: Use ARRAY_SIZE
+drivers/acpi/acpica/tbfadt.c:137:30-31: WARNING: Use ARRAY_SIZE
 
-Specifically this fixes the touchscreen on the Jumper EZpad 6 m4 not
-working.
-
-Reported-by: youling 257 <youling257@gmail.com>
-Tested-by: youling 257 <youling257@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-[wsa: rewording warning a little]
-Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
-Cc: stable@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: zhengbin <zhengbin13@huawei.com>
 ---
- drivers/i2c/i2c-core-acpi.c | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ drivers/acpi/acpica/tbfadt.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index 847d9bf6744c2..df9800aaeac71 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -43,6 +43,7 @@ struct i2c_acpi_lookup {
- 	int index;
- 	u32 speed;
- 	u32 min_speed;
-+	u32 force_speed;
+diff --git a/drivers/acpi/acpica/tbfadt.c b/drivers/acpi/acpica/tbfadt.c index 0041bfb..324a804 100644
+--- a/drivers/acpi/acpica/tbfadt.c
++++ b/drivers/acpi/acpica/tbfadt.c
+@@ -103,8 +103,7 @@ static struct acpi_fadt_info fadt_info_table[] = {
+ 	 ACPI_FADT_SEPARATE_LENGTH | ACPI_FADT_GPE_REGISTER}  };
+
+-#define ACPI_FADT_INFO_ENTRIES \
+-			(sizeof (fadt_info_table) / sizeof (struct acpi_fadt_info))
++#define ACPI_FADT_INFO_ENTRIES (ARRAY_SIZE(fadt_info_table))
+
+ /* Table used to split Event Blocks into separate status/enable registers */
+
+@@ -133,8 +132,7 @@ static struct acpi_fadt_pm_info fadt_pm_info_table[] = {
+ 	 1}
  };
- 
- static int i2c_acpi_fill_info(struct acpi_resource *ares, void *data)
-@@ -240,6 +241,19 @@ i2c_acpi_match_device(const struct acpi_device_id *matches,
- 	return acpi_match_device(matches, &client->dev);
- }
- 
-+static const struct acpi_device_id i2c_acpi_force_400khz_device_ids[] = {
-+	/*
-+	 * These Silead touchscreen controllers only work at 400KHz, for
-+	 * some reason they do not work at 100KHz. On some devices the ACPI
-+	 * tables list another device at their bus as only being capable
-+	 * of 100KHz, testing has shown that these other devices work fine
-+	 * at 400KHz (as can be expected of any recent i2c hw) so we force
-+	 * the speed of the bus to 400 KHz if a Silead device is present.
-+	 */
-+	{ "MSSL1680", 0 },
-+	{}
-+};
-+
- static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
- 					   void *data, void **return_value)
- {
-@@ -258,6 +272,9 @@ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
- 	if (lookup->speed <= lookup->min_speed)
- 		lookup->min_speed = lookup->speed;
- 
-+	if (acpi_match_device_ids(adev, i2c_acpi_force_400khz_device_ids) == 0)
-+		lookup->force_speed = 400000;
-+
- 	return AE_OK;
- }
- 
-@@ -295,7 +312,16 @@ u32 i2c_acpi_find_bus_speed(struct device *dev)
- 		return 0;
- 	}
- 
--	return lookup.min_speed != UINT_MAX ? lookup.min_speed : 0;
-+	if (lookup.force_speed) {
-+		if (lookup.force_speed != lookup.min_speed)
-+			dev_warn(dev, FW_BUG "DSDT uses known not-working I2C bus speed %d, forcing it to %d\n",
-+				 lookup.min_speed, lookup.force_speed);
-+		return lookup.force_speed;
-+	} else if (lookup.min_speed != UINT_MAX) {
-+		return lookup.min_speed;
-+	} else {
-+		return 0;
-+	}
- }
- EXPORT_SYMBOL_GPL(i2c_acpi_find_bus_speed);
- 
--- 
-2.20.1
+
+-#define ACPI_FADT_PM_INFO_ENTRIES \
+-			(sizeof (fadt_pm_info_table) / sizeof (struct acpi_fadt_pm_info))
++#define ACPI_FADT_PM_INFO_ENTRIES (ARRAY_SIZE(fadt_pm_info_table))
+
+ /*******************************************************************************
+  *
+--
+2.7.4
 
