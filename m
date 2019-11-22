@@ -2,131 +2,158 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26BFD10705F
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 12:22:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B3B1106F98
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 12:16:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728811AbfKVKnZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Nov 2019 05:43:25 -0500
-Received: from mga18.intel.com ([134.134.136.126]:47785 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729217AbfKVKnZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 22 Nov 2019 05:43:25 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Nov 2019 02:43:23 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,229,1571727600"; 
-   d="scan'208";a="216341366"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga001.fm.intel.com with SMTP; 22 Nov 2019 02:43:20 -0800
-Received: by lahna (sSMTP sendmail emulation); Fri, 22 Nov 2019 12:43:20 +0200
-Date:   Fri, 22 Nov 2019 12:43:19 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Jan Kiszka <jan.kiszka@siemens.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-gpio@vger.kernel.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH v3 2/2] gpio: sch: Hook into ACPI SCI handler to catch
- GPIO edge events
-Message-ID: <20191122104319.GC11621@lahna.fi.intel.com>
-References: <cover.1574277614.git.jan.kiszka@siemens.com>
- <bf556de14a3d093072e50b6a6cf3c64bd62b1730.1574277614.git.jan.kiszka@siemens.com>
+        id S1727499AbfKVKuz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Nov 2019 05:50:55 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:35470 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728006AbfKVKuy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Nov 2019 05:50:54 -0500
+Received: by mail-wr1-f67.google.com with SMTP id s5so8071065wrw.2
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2019 02:50:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=GnM7tdmIuTsFG/gPDSUiRJmc1F37mgdxvtHO3FtFylE=;
+        b=Bn+Nr/ytUk5YMVm1sQH/UVWhb/mMA2dE72H0//SsVqGsJ9g8ztbjNMl03n+vqtDgX1
+         BVKT3vkBXC/ScqOu1f0iF7XkX6lsqaoR5LUZxq0mZatIZOz7WNO1g8raGl67VngxgyW9
+         Zn2kqX9vdxYlDvCmxLBCm2xmeGhSiwiljE+9lmgXsFsgUPRpHuMCsvvuNYY6NigcTHtB
+         6RIo/Qb2nm8M3urPlnZCBvaTaniwiuU4Ty9DcH8MlFxUi10bX7AZqP19/YZ8ro/tJBja
+         iDFhce9IQReQ91LQ4rr7HwA94Ofb7+RxgCw7sMyVwzrXEjrM0k5Wqz6UJ8AMXLdvEArk
+         /QLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=GnM7tdmIuTsFG/gPDSUiRJmc1F37mgdxvtHO3FtFylE=;
+        b=i3oKFgy0EN34Kk04dvzV/3AAM3KEbSiFeJcluHmCNs1vYc+rhyyvZTfxcTy5DEgaGe
+         dAeo14EUH0Zi9IZ6/vg8r+Z9xSZUgds1m70Sj1CNlIjAVhxdH0oJne4Cz6741loYm7gW
+         BIXXDGZmGbdqzxN5GA58FHNwDDSCyJCNTihmKY8GjPpYFdGVA2SNfk4gtvie930M6n4J
+         sVZlyyFNbxqXrkgAFUUdTBie/GuygZab1uTivqUlS3+/WPyVKjSQ7JsqfkA2/P5qG8Br
+         pzgNtHGotFL2GtXMisaa6dzFYzDK+iyVgw4+LziP5aluKQ6WWdMM1D8gNCru7Fv6nqtr
+         RZhw==
+X-Gm-Message-State: APjAAAXGvpL4l/e7Rs36n0fLXymLiIzynR9jWnrlX9uxZYw80KXwwv4Y
+        Wuf+I6qBRBLLZfnn/Gy/cwTnVGPSpdw=
+X-Google-Smtp-Source: APXvYqwkrBA1P0X6qMijtc1m/IkH374uodkpj4sCzTHsq7FVgmjD/iynOAUZy7h3h+1OHmfVUN05+Q==
+X-Received: by 2002:adf:c611:: with SMTP id n17mr17357418wrg.317.1574419852465;
+        Fri, 22 Nov 2019 02:50:52 -0800 (PST)
+Received: from localhost.localdomain (xdsl-188-155-204-106.adslplus.ch. [188.155.204.106])
+        by smtp.gmail.com with ESMTPSA id o133sm2088197wmb.4.2019.11.22.02.50.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Nov 2019 02:50:52 -0800 (PST)
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        iommu@lists.linux-foundation.org,
+        virtualization@lists.linux-foundation.org,
+        linux-pci@vger.kernel.org, virtio-dev@lists.oasis-open.org
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, lorenzo.pieralisi@arm.com,
+        guohanjun@huawei.com, sudeep.holla@arm.com,
+        gregkh@linuxfoundation.org, joro@8bytes.org, bhelgaas@google.com,
+        mst@redhat.com, jasowang@redhat.com, jacob.jun.pan@intel.com,
+        eric.auger@redhat.com, sebastien.boeuf@intel.com,
+        kevin.tian@intel.com
+Subject: [RFC 01/13] ACPI/IORT: Move IORT to the ACPI folder
+Date:   Fri, 22 Nov 2019 11:49:48 +0100
+Message-Id: <20191122105000.800410-2-jean-philippe@linaro.org>
+X-Mailer: git-send-email 2.24.0
+In-Reply-To: <20191122105000.800410-1-jean-philippe@linaro.org>
+References: <20191122105000.800410-1-jean-philippe@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bf556de14a3d093072e50b6a6cf3c64bd62b1730.1574277614.git.jan.kiszka@siemens.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 20, 2019 at 08:20:14PM +0100, Jan Kiszka wrote:
-> From: Jan Kiszka <jan.kiszka@siemens.com>
-> 
-> The ACPI description on the Quark platform does not provide the required
-> information to do establish generic handling. Therefore, we need to hook
-> from the driver directly into SCI handler of the ACPI subsystem in order
-> to catch and report GPIO-related events.
-> 
-> Validated on the Quark-based IOT2000 platform.
-> 
-> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+IORT can be used (by QEMU) to describe a virtual topology containing an
+architecture-agnostic paravirtualized device.
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+In order to build IORT for x86 systems, the driver has to be moved outside
+of arm64/. Since there is nothing specific to arm64 in the driver, it
+simply requires moving Makefile and Kconfig entries.
 
-Below one minor stylistic comment.
+Signed-off-by: Jean-Philippe Brucker <jean-philippe.brucker@arm.com>
+---
+ MAINTAINERS                     | 9 +++++++++
+ drivers/acpi/Kconfig            | 3 +++
+ drivers/acpi/Makefile           | 1 +
+ drivers/acpi/arm64/Kconfig      | 3 ---
+ drivers/acpi/arm64/Makefile     | 1 -
+ drivers/acpi/{arm64 => }/iort.c | 0
+ 6 files changed, 13 insertions(+), 4 deletions(-)
+ rename drivers/acpi/{arm64 => }/iort.c (100%)
 
-> ---
->  drivers/gpio/gpio-sch.c | 30 ++++++++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
-> 
-> diff --git a/drivers/gpio/gpio-sch.c b/drivers/gpio/gpio-sch.c
-> index 6a9c5500800c..75c95da145d8 100644
-> --- a/drivers/gpio/gpio-sch.c
-> +++ b/drivers/gpio/gpio-sch.c
-> @@ -155,6 +155,31 @@ static const struct gpio_chip sch_gpio_chip = {
->  	.to_irq			= sch_gpio_to_irq,
->  };
->  
-> +static u32 sch_sci_handler(void *context)
-> +{
-> +	struct sch_gpio *sch = context;
-> +	unsigned long core_status, resume_status;
-> +	unsigned int resume_gpios, offset;
-> +
-> +	core_status = inl(sch->iobase + GTS);
-> +	resume_status = inl(sch->iobase + GTS + 0x20);
-> +
-> +	if (core_status == 0 && resume_status == 0)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index eb19fad370d7..9153d278f67e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -377,6 +377,15 @@ L:	platform-driver-x86@vger.kernel.org
+ S:	Maintained
+ F:	drivers/platform/x86/i2c-multi-instantiate.c
+ 
++ACPI IORT DRIVER
++M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
++M:	Hanjun Guo <guohanjun@huawei.com>
++M:	Sudeep Holla <sudeep.holla@arm.com>
++L:	linux-acpi@vger.kernel.org
++L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
++S:	Maintained
++F:	drivers/acpi/iort.c
++
+ ACPI PMIC DRIVERS
+ M:	"Rafael J. Wysocki" <rjw@rjwysocki.net>
+ M:	Len Brown <lenb@kernel.org>
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index ebe1e9e5fd81..548976c8b2b0 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -576,6 +576,9 @@ config TPS68470_PMIC_OPREGION
+ 	  region, which must be available before any of the devices
+ 	  using this, are probed.
+ 
++config ACPI_IORT
++	bool
++
+ endif	# ACPI
+ 
+ config X86_PM_TIMER
+diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+index 5d361e4e3405..9d1792165713 100644
+--- a/drivers/acpi/Makefile
++++ b/drivers/acpi/Makefile
+@@ -123,3 +123,4 @@ video-objs			+= acpi_video.o video_detect.o
+ obj-y				+= dptf/
+ 
+ obj-$(CONFIG_ARM64)		+= arm64/
++obj-$(CONFIG_ACPI_IORT) 	+= iort.o
+diff --git a/drivers/acpi/arm64/Kconfig b/drivers/acpi/arm64/Kconfig
+index 6dba187f4f2e..d0902c85d46e 100644
+--- a/drivers/acpi/arm64/Kconfig
++++ b/drivers/acpi/arm64/Kconfig
+@@ -3,8 +3,5 @@
+ # ACPI Configuration for ARM64
+ #
+ 
+-config ACPI_IORT
+-	bool
+-
+ config ACPI_GTDT
+ 	bool
+diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
+index 6ff50f4ed947..38771a816caf 100644
+--- a/drivers/acpi/arm64/Makefile
++++ b/drivers/acpi/arm64/Makefile
+@@ -1,3 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-$(CONFIG_ACPI_IORT) 	+= iort.o
+ obj-$(CONFIG_ACPI_GTDT) 	+= gtdt.o
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/iort.c
+similarity index 100%
+rename from drivers/acpi/arm64/iort.c
+rename to drivers/acpi/iort.c
+-- 
+2.24.0
 
-You can also write this like
-
-	if (!core_status &&& !resume_status)
-
-> +		return ACPI_INTERRUPT_NOT_HANDLED;
-> +
-> +	for_each_set_bit(offset, &core_status, sch->resume_base)
-> +		generic_handle_irq(sch->irq_base + offset);
-> +
-> +	resume_gpios = sch->chip.ngpio - sch->resume_base;
-> +	for_each_set_bit(offset, &resume_status, resume_gpios)
-> +		generic_handle_irq(sch->irq_base + sch->resume_base + offset);
-> +
-> +	outl(core_status, sch->iobase + GTS);
-> +	outl(resume_status, sch->iobase + GTS + 0x20);
-> +
-> +	return ACPI_INTERRUPT_HANDLED;
-> +}
-> +
->  static int sch_irq_type(struct irq_data *d, unsigned int type)
->  {
->  	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(d);
-> @@ -215,6 +240,7 @@ static int sch_gpio_probe(struct platform_device *pdev)
->  	struct irq_chip_type *ct;
->  	struct sch_gpio *sch;
->  	struct resource *res;
-> +	acpi_status status;
->  	int irq_base, ret;
->  
->  	sch = devm_kzalloc(&pdev->dev, sizeof(*sch), GFP_KERNEL);
-> @@ -303,6 +329,10 @@ static int sch_gpio_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
->  
-> +	status = acpi_install_sci_handler(sch_sci_handler, sch);
-> +	if (ACPI_FAILURE(status))
-> +		return -EINVAL;
-> +
->  	return 0;
->  }
->  
-> -- 
-> 2.16.4
