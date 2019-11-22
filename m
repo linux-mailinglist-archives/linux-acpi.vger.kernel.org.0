@@ -2,98 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACCC5105E82
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 03:12:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80548105EB9
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 03:52:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726705AbfKVCM1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Nov 2019 21:12:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43140 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726329AbfKVCM1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 21 Nov 2019 21:12:27 -0500
-Received: from oasis.local.home (unknown [66.170.99.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BAD8F20692;
-        Fri, 22 Nov 2019 02:12:25 +0000 (UTC)
-Date:   Thu, 21 Nov 2019 21:12:24 -0500
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Sean Christopherson <sean.j.christopherson@intel.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Nadav Amit <namit@vmware.com>,
-        "VMware, Inc." <pv-drivers@vmware.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: Re: [PATCH 04/12] x86/kprobes: Explicitly include vmalloc.h for
- set_vm_flush_reset_perms()
-Message-ID: <20191121211224.15f006b4@oasis.local.home>
-In-Reply-To: <20191119002121.4107-5-sean.j.christopherson@intel.com>
-References: <20191119002121.4107-1-sean.j.christopherson@intel.com>
-        <20191119002121.4107-5-sean.j.christopherson@intel.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726335AbfKVCwf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Nov 2019 21:52:35 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:41322 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726270AbfKVCwf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 21 Nov 2019 21:52:35 -0500
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id A0621802B5DE541AF98F;
+        Fri, 22 Nov 2019 10:52:33 +0800 (CST)
+Received: from localhost.localdomain (10.69.192.58) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 22 Nov 2019 10:52:25 +0800
+From:   chenxiang <chenxiang66@hisilicon.com>
+To:     <rjw@rjwysocki.net>, <yeyunfeng@huawei.com>
+CC:     <linuxarm@huawei.com>, <linux-acpi@vger.kernel.org>,
+        <john.garry@huawei.com>, Xiang Chen <chenxiang66@hisilicon.com>
+Subject: [PATCH] ACPI: sysfs: Define the variable gpe from u8 to u16 to avoid endless loop in function apci_gpe_apply_masked_gpes()
+Date:   Fri, 22 Nov 2019 10:49:17 +0800
+Message-ID: <1574390957-6313-1-git-send-email-chenxiang66@hisilicon.com>
+X-Mailer: git-send-email 2.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.69.192.58]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 18 Nov 2019 16:21:13 -0800
-Sean Christopherson <sean.j.christopherson@intel.com> wrote:
+From: Xiang Chen <chenxiang66@hisilicon.com>
 
-> The inclusion of linux/vmalloc.h, which is required for its definition
-> of set_vm_flush_reset_perms(), is somehow dependent on asm/realmode.h
-> being included by asm/acpi.h.  Explicitly include linux/vmalloc.h so
-> that a future patch can drop the realmode.h include from asm/acpi.h
-> without breaking the build.
-> 
-> Fixes: 241a1f2238064 ("x86/kprobes: Use vmalloc special flag")
-> Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+After the patch (eb09878e1301 ("ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100")),
+the macro ACPI_MASKABLE_GPE_MAX is changed from 0xFF to 0x100. So in function
+apci_gpe_apply_masked_gpes(), the variable gpe may reach 0x100 but it is
+defined as u8, so it will be 0 when reaching 0x100. If the bitmap
+acpi_masked_gpes_map are all 0s, it will loop all the times.
 
-Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+To solve endless loop in the function, define the variable gpe from u8 to u16.
 
--- Steve
+Fixes: eb09878e1301 ("ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100")
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+---
+ drivers/acpi/sysfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> ---
->  arch/x86/kernel/kprobes/core.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
-> index 4f13af7cbcdb..a0c223ab7264 100644
-> --- a/arch/x86/kernel/kprobes/core.c
-> +++ b/arch/x86/kernel/kprobes/core.c
-> @@ -40,6 +40,7 @@
->  #include <linux/frame.h>
->  #include <linux/kasan.h>
->  #include <linux/moduleloader.h>
-> +#include <linux/vmalloc.h>
->  
->  #include <asm/text-patching.h>
->  #include <asm/cacheflush.h>
+diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
+index 0a83ce1..c60d2c6 100644
+--- a/drivers/acpi/sysfs.c
++++ b/drivers/acpi/sysfs.c
+@@ -838,7 +838,7 @@ void __init acpi_gpe_apply_masked_gpes(void)
+ {
+ 	acpi_handle handle;
+ 	acpi_status status;
+-	u8 gpe;
++	u16 gpe;
+ 
+ 	for_each_set_bit(gpe, acpi_masked_gpes_map, ACPI_MASKABLE_GPE_MAX) {
+ 		status = acpi_get_gpe_device(gpe, &handle);
+-- 
+2.8.1
 
