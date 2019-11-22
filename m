@@ -2,141 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E5C58107AA2
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 23:36:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBDE8107AE2
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 23:52:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726546AbfKVWgQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Nov 2019 17:36:16 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:43282 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726526AbfKVWgP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Nov 2019 17:36:15 -0500
-Received: from [82.43.126.140] (helo=[192.168.0.10])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iYHX9-0006Sg-VC; Fri, 22 Nov 2019 22:36:11 +0000
-Subject: Re: [Devel] Re: [PATCH] ACPICA: Use ARRAY_SIZE for
- 'fadt_info_table','fadt_pm_info_table'
-To:     "Moore, Robert" <robert.moore@intel.com>,
-        zhengbin <zhengbin13@huawei.com>,
-        "Schmauss, Erik" <erik.schmauss@intel.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>
-References: <1574415183-19322-1-git-send-email-zhengbin13@huawei.com>
- <94F2FBAB4432B54E8AACC7DFDE6C92E3B96B1A5A@ORSMSX110.amr.corp.intel.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <e2c60e61-4c2c-ced2-3eda-26d7b3fb8f4b@canonical.com>
-Date:   Fri, 22 Nov 2019 22:36:11 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        id S1726620AbfKVWwi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Nov 2019 17:52:38 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:40567 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726089AbfKVWwi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Nov 2019 17:52:38 -0500
+Received: by mail-ot1-f65.google.com with SMTP id m15so7608737otq.7
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2019 14:52:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=tMJYperTaWW9B5cjv6OfL9Z7Y/zX/rl4iTRjBSXhv9Q=;
+        b=Rbsu0mdINhGdn4Yen92e+l8i7scAEbACAdgfECz4skPbUUq3Z90+cX2Du/bjdaDjlS
+         FcP39JriBOkr4cwXgl6dYentJve2gTxqlPkcKOjkZuVcXwBkounuwBgB1/OTAarCilb4
+         Xi8Oh+elkGG11yU7q0emKSzs6JvjEkeucmiH5lxuKVt++ykW0ahEP+CwbPzoX51/VXNs
+         MNpK8PYzdrxLOvJAH6bl35yvsuabsVwqZ0Bom4pS7we3llz8CHMELHpFLBx9qn5szPcM
+         CI5v4zBIGmuLgqwmQdD+S0okwtzt0IBKV3ml+j8oKcmWU9kBQG2cK9XaaKEWVdF48hdy
+         8QDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tMJYperTaWW9B5cjv6OfL9Z7Y/zX/rl4iTRjBSXhv9Q=;
+        b=WOyh6Z4FfhLaS2NuN26XYLxxDR2gvdjz8t7uKtTT1ojzk6aWz0FFKlcoom39OJjb+n
+         r5kPcuGaHsBFk6QM+FRfpqY9KHIdwtxccNegzo1COUfT4xlLqZJyMdqF7Or8s3qKp0ay
+         4GR2kqnrLvz+cesusVwCCoywaFroztFYM5yuYs78WXd2U4t+M9Fj7I13Gl+5vjllhZ6M
+         qEe40uG08Rg9nsVEyYIbgs4ukVAOC4iP6Gupzke9l9G1IFwVwAce481eqLFsoMZO4nMS
+         84IbwyFtPoXvVWOsRagYvPQct4M3Koj7TU7YcHpuiKr0jXoE9Zmny45VzI97ryYENn6d
+         552w==
+X-Gm-Message-State: APjAAAXsgOiiMqWVvZz2bdMvHKn2CDXE/xJnqY2Hao/oFDBaVOr76H7S
+        y6hpb98r1DCYw2Ub+BYiN8gPCWM0byDrUIf2ICK0tw==
+X-Google-Smtp-Source: APXvYqxY2V0mjivtMT3n0BRaoTh60B05oEUC9GsIKrplGnELg7aWD7Hi1UrurxG7LsF1J9tK4ilExHly03E7adsKzuE=
+X-Received: by 2002:a9d:30c8:: with SMTP id r8mr12840505otg.363.1574463157247;
+ Fri, 22 Nov 2019 14:52:37 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <94F2FBAB4432B54E8AACC7DFDE6C92E3B96B1A5A@ORSMSX110.amr.corp.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20191120092831.6198-1-pagupta@redhat.com> <x49d0dmihmu.fsf@segfault.boston.devel.redhat.com>
+ <CAPcyv4gCe8k1GdatAWn1991pm3QZq2WBFAGEFsZ2PXpyo2=wMw@mail.gmail.com>
+ <CAPcyv4hJ6gHX=NYz-CoXFSrN93HUT+Xh+DP+QAjzqgGmmghmGA@mail.gmail.com>
+ <1617854972.35808055.1574323227395.JavaMail.zimbra@redhat.com>
+ <CAPcyv4haUOM92uzCBfVyrANxnNHKucivq053MFBmGOL3vqMgwQ@mail.gmail.com>
+ <560894997.35969622.1574397521533.JavaMail.zimbra@redhat.com>
+ <CAPcyv4gsQXY5C5URF2vrTaD-0Q_CJ+ib3GVb1VFZAO+1Gdau2w@mail.gmail.com> <838611538.35971353.1574401020319.JavaMail.zimbra@redhat.com>
+In-Reply-To: <838611538.35971353.1574401020319.JavaMail.zimbra@redhat.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Fri, 22 Nov 2019 14:52:25 -0800
+Message-ID: <CAPcyv4iZ5Ym3u9OiRFoPSxVa9p7ofzo8wf46JNsJnSjDx33RJg@mail.gmail.com>
+Subject: Re: [PATCH] virtio pmem: fix async flush ordering
+To:     Pankaj Gupta <pagupta@redhat.com>
+Cc:     Jeff Moyer <jmoyer@redhat.com>,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Vivek Goyal <vgoyal@redhat.com>,
+        Keith Busch <keith.busch@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 22/11/2019 21:49, Moore, Robert wrote:
-> Where does "ARRAY_SIZE" come from? It's not a part of ACPICA.
-> Bob
+On Thu, Nov 21, 2019 at 9:37 PM Pankaj Gupta <pagupta@redhat.com> wrote:
+>
+>
+> > > > > > >
+> > > > > > > I added that and was about to push this out, but what about the
+> > > > > > > fact
+> > > > > > > that now the guest will synchronously wait for flushing to occur.
+> > > > > > > The
+> > > > > > > goal of the child bio was to allow that to be an I/O wait with
+> > > > > > > overlapping I/O, or at least not blocking the submission thread.
+> > > > > > > Does
+> > > > > > > the block layer synchronously wait for PREFLUSH requests? If not I
+> > > > > > > think a synchronous wait is going to be a significant performance
+> > > > > > > regression. Are there any numbers to accompany this change?
+> > > > > >
+> > > > > > Why not just swap the parent child relationship in the PREFLUSH case?
+> > > > >
+> > > > > I we are already inside parent bio "make_request" function and we
+> > > > > create
+> > > > > child
+> > > > > bio. How we exactly will swap the parent/child relationship for
+> > > > > PREFLUSH
+> > > > > case?
+> > > > >
+> > > > > Child bio is queued after parent bio completes.
+> > > >
+> > > > Sorry, I didn't quite mean with bio_split, but issuing another request
+> > > > in front of the real bio. See md_flush_request() for inspiration.
+> > >
+> > > o.k. Thank you. Will try to post patch today to be considered for 5.4.
+> > >
+> >
+> > I think it is too late for v5.4-final, but we can get it in the
+> > -stable queue. Let's take the time to do it right and get some testing
+> > on it.
+>
+> Sure.
+>
+> Just sharing probable patch for early feedback, if I am doing it correctly?
+> I will test it thoroughly.
+>
+> Thanks,
+> Pankaj
+>
+> ========
+>
+> diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
+> index 10351d5b49fa..c683e0e2515c 100644
+> --- a/drivers/nvdimm/nd_virtio.c
+> +++ b/drivers/nvdimm/nd_virtio.c
+> @@ -112,6 +112,12 @@ int async_pmem_flush(struct nd_region *nd_region, struct bio *bio)
+>                 bio_copy_dev(child, bio);
+>                 child->bi_opf = REQ_PREFLUSH;
+>                 child->bi_iter.bi_sector = -1;
+> +
+> +               if (unlikely(bio->bi_opf & REQ_PREFLUSH)) {
+> +                       struct request_queue *q = bio->bi_disk->queue;
+> +                       q->make_request_fn(q, child);
+> +                       return 0;
+> +               }
+>                 bio_chain(child, bio);
+>                 submit_bio(child);
 
-It's definitely not part of ACPICA, it's defined in linux/kernel.h
+In the md case there is a lower level device to submit to. In this
+case I expect you would
 
-> 
-> 
-> -----Original Message-----
-> From: zhengbin <zhengbin13@huawei.com> 
-> Sent: Friday, November 22, 2019 1:33 AM
-> To: Moore, Robert <robert.moore@intel.com>; Schmauss, Erik <erik.schmauss@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>; lenb@kernel.org; linux-acpi@vger.kernel.org; devel@acpica.org
-> Cc: zhengbin13@huawei.com
-> Subject: [PATCH] ACPICA: Use ARRAY_SIZE for 'fadt_info_table','fadt_pm_info_table'
-> 
-> Fixes coccicheck warning:
-> 
-> drivers/acpi/acpica/tbfadt.c:107:27-28: WARNING: Use ARRAY_SIZE
-> drivers/acpi/acpica/tbfadt.c:137:30-31: WARNING: Use ARRAY_SIZE
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: zhengbin <zhengbin13@huawei.com>
-> ---
->  drivers/acpi/acpica/tbfadt.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpica/tbfadt.c b/drivers/acpi/acpica/tbfadt.c index 0041bfb..324a804 100644
-> --- a/drivers/acpi/acpica/tbfadt.c
-> +++ b/drivers/acpi/acpica/tbfadt.c
-> @@ -103,8 +103,7 @@ static struct acpi_fadt_info fadt_info_table[] = {
->  	 ACPI_FADT_SEPARATE_LENGTH | ACPI_FADT_GPE_REGISTER}  };
-> 
-> -#define ACPI_FADT_INFO_ENTRIES \
-> -			(sizeof (fadt_info_table) / sizeof (struct acpi_fadt_info))
-> +#define ACPI_FADT_INFO_ENTRIES (ARRAY_SIZE(fadt_info_table))
-> 
->  /* Table used to split Event Blocks into separate status/enable registers */
-> 
-> @@ -133,8 +132,7 @@ static struct acpi_fadt_pm_info fadt_pm_info_table[] = {
->  	 1}
->  };
-> 
-> -#define ACPI_FADT_PM_INFO_ENTRIES \
-> -			(sizeof (fadt_pm_info_table) / sizeof (struct acpi_fadt_pm_info))
-> +#define ACPI_FADT_PM_INFO_ENTRIES (ARRAY_SIZE(fadt_pm_info_table))
-> 
->  /*******************************************************************************
->   *
-> --
-> 2.7.4
-> _______________________________________________
-> Devel mailing list -- devel@acpica.org
-> To unsubscribe send an email to devel-leave@acpica.org
-> %(web_page_url)slistinfo%(cgiext)s/%(_internal_name)s
-> 
+- create a flush workqueue
+- queue the bio that workqueue and wait for any previous flush request
+to complete (md_flush_request does this)
+- run virtio_pmem_flush
+- complete the original bio
 
+Is there a way to make virtio_pmem_flush() get an interrupt when the
+flush is complete rather than synchronously waiting. That way if you
+get a storm of flush requests you can coalesce them like
+md_flush_request() does.
