@@ -2,158 +2,145 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E39F81077F9
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 20:23:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01383107835
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 20:49:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726961AbfKVTXu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Nov 2019 14:23:50 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:29533 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726833AbfKVTXu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 22 Nov 2019 14:23:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574450629;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=xv1dgZzh0Q37zacmXJMV+6rn9NNKoPQkTuP/wAhybg4=;
-        b=Cpr3VMOrg/eBOOf987pGsis/b6YukOmMroW1mitWu/svjeNuL5ElT3Mb3iwe6wTu9NrCri
-        /M11DSirtbeFXyyRDxWPAVEcpyVXp6tOUNBxcFeYw1CPs5u6HOBYu4e34Fzv1pzKPOIAVX
-        eIuG99ZXT1MouH/M/1tYbPFn+qvZiUQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-183-RKwSq9c5MO2OUfbba2EwSg-1; Fri, 22 Nov 2019 14:23:48 -0500
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1727420AbfKVTt3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Nov 2019 14:49:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49116 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727409AbfKVTt2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 22 Nov 2019 14:49:28 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 93402800054;
-        Fri, 22 Nov 2019 19:23:46 +0000 (UTC)
-Received: from dhcp-44-196.space.revspace.nl (unknown [10.36.112.13])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 55B101036C64;
-        Fri, 22 Nov 2019 19:23:44 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+        by mail.kernel.org (Postfix) with ESMTPSA id 8536E2072E;
+        Fri, 22 Nov 2019 19:49:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1574452166;
+        bh=Ap9UGEDtCOa0CqpkdtyJj6I7eplB2kQVc4nQABh6S4s=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=HPyvn72WNqjC6CsHbpg8rjqJIduByU9pnTQsGeePrI91TwpW7OnUfyWHusutXmC3z
+         wBPzmDf8OPEwSS6mRZiQoVAGtakjJqvZLWtOxMEMXMd+mRricbTphDJZJsFM/EPDpV
+         YUsYHvHe3X3sm59EFm4IuguFwGyNO76gGGqPvTeE=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH 2/2] gpiolib: acpi: Add honor_wakeup module-option + quirk mechanism
-Date:   Fri, 22 Nov 2019 20:23:34 +0100
-Message-Id: <20191122192334.61490-3-hdegoede@redhat.com>
-In-Reply-To: <20191122192334.61490-1-hdegoede@redhat.com>
-References: <20191122192334.61490-1-hdegoede@redhat.com>
+        youling 257 <youling257@gmail.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Wolfram Sang <wsa@the-dreams.de>, stable@kernel.org,
+        Sasha Levin <sashal@kernel.org>, linux-i2c@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 22/25] i2c: acpi: Force bus speed to 400KHz if a Silead touchscreen is present
+Date:   Fri, 22 Nov 2019 14:48:55 -0500
+Message-Id: <20191122194859.24508-22-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191122194859.24508-1-sashal@kernel.org>
+References: <20191122194859.24508-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-MC-Unique: RKwSq9c5MO2OUfbba2EwSg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On some laptops enabling wakeup on the GPIO interrupts used for ACPI _AEI
-event handling causes spurious wakeups.
+From: Hans de Goede <hdegoede@redhat.com>
 
-This commit adds a new honor_wakeup option, defaulting to true (our current
-behavior), which can be used to disable wakeup on troublesome hardware
-to avoid these spurious wakeups.
+[ Upstream commit 7574c0db2e68c4d0bae9d415a683bdd8b2a761e9 ]
 
-This is a workaround for an architectural problem with s2idle under Linux
-where we do not have any mechanism to immediately go back to sleep after
-wakeup events, other then for embedded-controller events using the standard
-ACPI EC interface, for details see:
-https://lore.kernel.org/linux-acpi/61450f9b-cbc6-0c09-8b3a-aff6bf9a0b3c@red=
-hat.com/
+Many cheap devices use Silead touchscreen controllers. Testing has shown
+repeatedly that these touchscreen controllers work fine at 400KHz, but for
+unknown reasons do not work properly at 100KHz. This has been seen on
+both ARM and x86 devices using totally different i2c controllers.
 
-One series of laptops which is not able to suspend without this workaround
-is the HP x2 10 Cherry Trail models, this commit adds a DMI based quirk
-which makes sets honor_wakeup to false on these models.
+On some devices the ACPI tables list another device at the same I2C-bus
+as only being capable of 100KHz, testing has shown that these other
+devices work fine at 400KHz (as can be expected of any recent I2C hw).
 
+This commit makes i2c_acpi_find_bus_speed() always return 400KHz if a
+Silead touchscreen controller is present, fixing the touchscreen not
+working on devices which ACPI tables' wrongly list another device on the
+same bus as only being capable of 100KHz.
+
+Specifically this fixes the touchscreen on the Jumper EZpad 6 m4 not
+working.
+
+Reported-by: youling 257 <youling257@gmail.com>
+Tested-by: youling 257 <youling257@gmail.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+[wsa: rewording warning a little]
+Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
+Cc: stable@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-acpi.c | 33 ++++++++++++++++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+ drivers/i2c/i2c-core-acpi.c | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 2b47d906d536..9ce9b449ac4b 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -22,12 +22,18 @@
- #include "gpiolib-acpi.h"
-=20
- #define QUIRK_NO_EDGE_EVENTS_ON_BOOT=09=090x01l
-+#define QUIRK_NO_WAKEUP=09=09=09=090x02l
-=20
- static int run_edge_events_on_boot =3D -1;
- module_param(run_edge_events_on_boot, int, 0444);
- MODULE_PARM_DESC(run_edge_events_on_boot,
- =09=09 "Run edge _AEI event-handlers at boot: 0=3Dno, 1=3Dyes, -1=3Dauto")=
-;
-=20
-+static int honor_wakeup =3D -1;
-+module_param(honor_wakeup, int, 0444);
-+MODULE_PARM_DESC(honor_wakeup,
-+=09=09 "Honor the ACPI wake-capable flag: 0=3Dno, 1=3Dyes, -1=3Dauto");
-+
- /**
-  * struct acpi_gpio_event - ACPI GPIO event handler data
-  *
-@@ -283,7 +289,8 @@ static acpi_status acpi_gpiochip_alloc_event(struct acp=
-i_resource *ares,
- =09event->handle =3D evt_handle;
- =09event->handler =3D handler;
- =09event->irq =3D irq;
--=09event->irq_is_wake =3D agpio->wake_capable =3D=3D ACPI_WAKE_CAPABLE;
-+=09if (honor_wakeup)
-+=09=09event->irq_is_wake =3D agpio->wake_capable =3D=3D ACPI_WAKE_CAPABLE;
- =09event->pin =3D pin;
- =09event->desc =3D desc;
-=20
-@@ -1337,6 +1344,23 @@ static const struct dmi_system_id gpiolib_acpi_quirk=
-s[] =3D {
- =09=09},
- =09=09.driver_data =3D (void *)QUIRK_NO_EDGE_EVENTS_ON_BOOT,
- =09},
-+=09{
-+=09=09/*
-+=09=09 * Various HP X2 10 Cherry Trail models use external
-+=09=09 * embedded-controller connected via I2C + a ACPI GPIO
-+=09=09 * event handler. The embedded controller generates various
-+=09=09 * spurious wakeup events when suspended. So disable wakeup
-+=09=09 * for its handler (it used the only ACPI GPIO event handler).
-+=09=09 * This breaks wakeup when opening the lid, the user needs
-+=09=09 * to press the power-button to wakeup the system. The
-+=09=09 * alternative is suspend simply not working, which is worse.
-+=09=09 */
-+=09=09.matches =3D {
-+=09=09=09DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+=09=09=09DMI_MATCH(DMI_PRODUCT_NAME, "HP x2 Detachable 10-p0XX"),
-+=09=09},
-+=09=09.driver_data =3D (void *)QUIRK_NO_WAKEUP,
-+=09},
- =09{} /* Terminating entry */
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index 32affd3fa8bd1..559c3b1284d73 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -43,6 +43,7 @@ struct i2c_acpi_lookup {
+ 	int index;
+ 	u32 speed;
+ 	u32 min_speed;
++	u32 force_speed;
  };
-=20
-@@ -1356,6 +1380,13 @@ static int acpi_gpio_setup_params(void)
- =09=09=09run_edge_events_on_boot =3D 1;
- =09}
-=20
-+=09if (honor_wakeup < 0) {
-+=09=09if (quirks & QUIRK_NO_WAKEUP)
-+=09=09=09honor_wakeup =3D 0;
-+=09=09else
-+=09=09=09honor_wakeup =3D 1;
-+=09}
-+
- =09return 0;
+ 
+ static int i2c_acpi_fill_info(struct acpi_resource *ares, void *data)
+@@ -240,6 +241,19 @@ i2c_acpi_match_device(const struct acpi_device_id *matches,
+ 	return acpi_match_device(matches, &client->dev);
  }
-=20
---=20
-2.23.0
+ 
++static const struct acpi_device_id i2c_acpi_force_400khz_device_ids[] = {
++	/*
++	 * These Silead touchscreen controllers only work at 400KHz, for
++	 * some reason they do not work at 100KHz. On some devices the ACPI
++	 * tables list another device at their bus as only being capable
++	 * of 100KHz, testing has shown that these other devices work fine
++	 * at 400KHz (as can be expected of any recent i2c hw) so we force
++	 * the speed of the bus to 400 KHz if a Silead device is present.
++	 */
++	{ "MSSL1680", 0 },
++	{}
++};
++
+ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
+ 					   void *data, void **return_value)
+ {
+@@ -258,6 +272,9 @@ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
+ 	if (lookup->speed <= lookup->min_speed)
+ 		lookup->min_speed = lookup->speed;
+ 
++	if (acpi_match_device_ids(adev, i2c_acpi_force_400khz_device_ids) == 0)
++		lookup->force_speed = 400000;
++
+ 	return AE_OK;
+ }
+ 
+@@ -295,7 +312,16 @@ u32 i2c_acpi_find_bus_speed(struct device *dev)
+ 		return 0;
+ 	}
+ 
+-	return lookup.min_speed != UINT_MAX ? lookup.min_speed : 0;
++	if (lookup.force_speed) {
++		if (lookup.force_speed != lookup.min_speed)
++			dev_warn(dev, FW_BUG "DSDT uses known not-working I2C bus speed %d, forcing it to %d\n",
++				 lookup.min_speed, lookup.force_speed);
++		return lookup.force_speed;
++	} else if (lookup.min_speed != UINT_MAX) {
++		return lookup.min_speed;
++	} else {
++		return 0;
++	}
+ }
+ EXPORT_SYMBOL_GPL(i2c_acpi_find_bus_speed);
+ 
+-- 
+2.20.1
 
