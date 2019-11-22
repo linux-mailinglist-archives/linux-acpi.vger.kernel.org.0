@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ADD7106F92
+	by mail.lfdr.de (Postfix) with ESMTP id 946E0106F93
 	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 12:16:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729263AbfKVKu7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Nov 2019 05:50:59 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:46954 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729041AbfKVKu6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Nov 2019 05:50:58 -0500
-Received: by mail-wr1-f66.google.com with SMTP id z7so4622346wrl.13
-        for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2019 02:50:57 -0800 (PST)
+        id S1729175AbfKVLQO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Nov 2019 06:16:14 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:34753 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728445AbfKVKu7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Nov 2019 05:50:59 -0500
+Received: by mail-wr1-f68.google.com with SMTP id t2so8087772wrr.1
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2019 02:50:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=MfTtXiG/W/rObmsyirkEQ0i6+kv30tKWKHAFlzXsK50=;
-        b=KGaaTyS3Lc/ef+t1SZuZlTE1UsU+JnOw0CHre56ANUeiS1fG2WU5O/YFQcBx5DFQ+g
-         C3eEzhT3EtsVVDaPXc0JJnwFtgO1xkFqrrE6GycrJ2S4YEKOcx4s42s4o+D2QSUmsenY
-         giJa7ayJtTWwW60SOcSL7s5TyIuTMeag5BlKYTNd2Vpv5b3Ku4VoOfgVTWmpiuNgZfga
-         0U9jEO3Ob60MHJopefjx77FsOCYeO+1ZpoKfR2ZI8XHgbGZFlpcgyTQN/mBvo0haJZcQ
-         4WN5cxwZz8VzF5n+E1gDTt+EyPoR0GPG3uAOf5O3TZXJzM8psHGvEWv0Dabay2iZKY72
-         vmuQ==
+        bh=qRDncnEv4s95CgSa1yvYrULV0iuYi2jZhVWKJTRAVu0=;
+        b=YNEi/CQbRXtkAwf0pPEyl5prqRn8u5HZ5xYtYrRJWWkt3EHX92cjZa+ZJIy6EgzQMY
+         JomcQEQZ9aHxpyPv5xUr8gzpIvqxnMSJDzlZzKuglBou7QBJ8izCjPyAp5gagAMgiSTy
+         8/Tp82wscT0Sev3YneHxCoFu66z2uQW1GImKYPrOPHwBJ+eCbINzD7/G0fD3TYBod7yi
+         cXSfkjUy19kRIUpzuBATTRkMQ1lFky+4zyrQkjA9B+Fb+7/32I9fa7POnzm7YS7U86Ce
+         NYiXSZoHwEnBnTVK2qCqhRV3tiLJKL/mgFahWAwg2v9n6ttfmUegZHJDqNkVa8wtqyzH
+         PvgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=MfTtXiG/W/rObmsyirkEQ0i6+kv30tKWKHAFlzXsK50=;
-        b=aNtVIs1LNFAsZ7HuFXBGjUp1xPeMzhNBYf31torDpYNYggsMCtW8subqrAkupw0xvn
-         iu9Nl5cmWGDNdO82txF8UowVcbUCHVK3x0QQs4NFSo3FYsh+NSiHDp3A+PSXsfd5WI+T
-         qAFN6tvj90jIAakZnDq/oTh6Y6mxgrFxsOT+qn9OnSNSZ1I8/9yo35VQnAWYlQgJhCo6
-         47hdx9VSFUzBpWFUxjTH/CbZ8JWC7pX5BBUZv71VebFHdkFB9oy8X4q9no4+XIdbK7Ae
-         t6/eu3zqpMyzgcNq7ESCjyX+S3vz/TCgf44XMAYUmkg442sgmTbMmEUxjeZmHkMp0u38
-         HHpA==
-X-Gm-Message-State: APjAAAVPNuVYWyCwxtrheOw/ir2+2QTcbhsqZtigREDD3wdGIGlwmQCY
-        IU3BPY7FSjDaCJdvbdEF4RwfnINU+vY=
-X-Google-Smtp-Source: APXvYqzYWFFlrhHka1Vw/6sChVYtvTiOJin0SbfQOyNoZG5nnElEymYjGNuUm72JutIfgIh/3EoY2g==
-X-Received: by 2002:adf:e885:: with SMTP id d5mr17167901wrm.117.1574419856320;
-        Fri, 22 Nov 2019 02:50:56 -0800 (PST)
+        bh=qRDncnEv4s95CgSa1yvYrULV0iuYi2jZhVWKJTRAVu0=;
+        b=XmVaJaw7ciX/BqxC82QxpkTL3/Tx4KTCfBHZ1te4gtAqiuT4Axic2UjvJXVdNZuaKx
+         cWoYfvx2AS7RylrYbUhT/3V+VZ78pRB6NATsLiQWOScNBuS8SGIMwRjzm2tVHno24ux7
+         HgdE7N9SWo0X+/4wzo0NzsApUfb+p2lp3gBDOwY0qkmSCD0WmZw0CB1yB6cJNlIP+q1t
+         Gbx88YhwwPwh/quxh3ZwkXC5fWakwKtY7R/cWbTT5Gm2vRRf4dlQLeSx1VMORTsoMj61
+         uxCBuu9iVUv64HtW0rvFTldrua0m9dWFI7tqLp+W60mrvIFLspUMmp+hu+zUBPLkDjBy
+         gP+w==
+X-Gm-Message-State: APjAAAXrkL+AWNVhxNRCXdYkLUvAWPaL/HY6K0FcuBI13KHAzMwoLed+
+        RCKVKaCs0MdPkqQGxQOyGAbUAOIpYyo=
+X-Google-Smtp-Source: APXvYqzXiSDh39VIufdE8cTUkRB2hfptRNr1/jdFpr07MvIngTSRR794NgxmfjDCLcPXZDKMLSVPnQ==
+X-Received: by 2002:a5d:49c4:: with SMTP id t4mr10152262wrs.226.1574419857729;
+        Fri, 22 Nov 2019 02:50:57 -0800 (PST)
 Received: from localhost.localdomain (xdsl-188-155-204-106.adslplus.ch. [188.155.204.106])
-        by smtp.gmail.com with ESMTPSA id o133sm2088197wmb.4.2019.11.22.02.50.55
+        by smtp.gmail.com with ESMTPSA id o133sm2088197wmb.4.2019.11.22.02.50.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2019 02:50:55 -0800 (PST)
+        Fri, 22 Nov 2019 02:50:57 -0800 (PST)
 From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
 To:     linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         iommu@lists.linux-foundation.org,
@@ -55,9 +55,9 @@ Cc:     rjw@rjwysocki.net, lenb@kernel.org, lorenzo.pieralisi@arm.com,
         mst@redhat.com, jasowang@redhat.com, jacob.jun.pan@intel.com,
         eric.auger@redhat.com, sebastien.boeuf@intel.com,
         kevin.tian@intel.com
-Subject: [RFC 04/13] ACPI/IORT: Add node categories
-Date:   Fri, 22 Nov 2019 11:49:51 +0100
-Message-Id: <20191122105000.800410-5-jean-philippe@linaro.org>
+Subject: [RFC 05/13] ACPI/IORT: Support VIOT virtio-mmio node
+Date:   Fri, 22 Nov 2019 11:49:52 +0100
+Message-Id: <20191122105000.800410-6-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191122105000.800410-1-jean-philippe@linaro.org>
 References: <20191122105000.800410-1-jean-philippe@linaro.org>
@@ -68,95 +68,122 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The current node filtering won't work when introducing node types
-greater than 63 (such as the virtio-iommu nodes). Add
-node_type_matches() to filter nodes by category.
+Add a new type of node to the IORT driver, that describes a virtio-iommu
+device based on the virtio-mmio transport. The node is only available
+when the IORT is a sub-table of the VIOT.
 
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Signed-off-by: Jean-Philippe Brucker <jean-philippe.brucker@arm.com>
 ---
- drivers/acpi/iort.c | 34 ++++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+ drivers/acpi/iort.c | 66 ++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 62 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/acpi/iort.c b/drivers/acpi/iort.c
-index 9c6c91e06f8f..1d43fbc0001f 100644
+index 1d43fbc0001f..adc5953fffa5 100644
 --- a/drivers/acpi/iort.c
 +++ b/drivers/acpi/iort.c
-@@ -18,10 +18,10 @@
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- 
--#define IORT_TYPE_MASK(type)	(1 << (type))
--#define IORT_MSI_TYPE		(1 << ACPI_IORT_NODE_ITS_GROUP)
--#define IORT_IOMMU_TYPE		((1 << ACPI_IORT_NODE_SMMU) |	\
--				(1 << ACPI_IORT_NODE_SMMU_V3))
-+enum iort_node_category {
-+	IORT_MSI_TYPE,
-+	IORT_IOMMU_TYPE,
-+};
- 
- struct iort_its_msi_chip {
- 	struct list_head	list;
-@@ -38,6 +38,20 @@ struct iort_fwnode {
- static LIST_HEAD(iort_fwnode_list);
- static DEFINE_SPINLOCK(iort_fwnode_lock);
- 
-+static bool iort_type_matches(u8 type, enum iort_node_category category)
-+{
-+	switch (category) {
-+	case IORT_IOMMU_TYPE:
-+		return type == ACPI_IORT_NODE_SMMU ||
-+		       type == ACPI_IORT_NODE_SMMU_V3;
-+	case IORT_MSI_TYPE:
-+		return type == ACPI_IORT_NODE_ITS_GROUP;
-+	default:
-+		WARN_ON(1);
-+		return false;
-+	}
-+}
-+
- /**
-  * iort_set_fwnode() - Create iort_fwnode and use it to register
-  *		       iommu data in the iort_fwnode_list
-@@ -397,7 +411,7 @@ static int iort_get_id_mapping_index(struct acpi_iort_node *node)
- 
- static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
- 					       u32 id_in, u32 *id_out,
--					       u8 type_mask)
-+					       enum iort_node_category category)
- {
- 	u32 id = id_in;
- 
-@@ -406,7 +420,7 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
- 		struct acpi_iort_id_mapping *map;
- 		int i, index;
- 
--		if (IORT_TYPE_MASK(node->type) & type_mask) {
-+		if (iort_type_matches(node->type, category)) {
- 			if (id_out)
- 				*id_out = id;
- 			return node;
-@@ -458,8 +472,8 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
+@@ -43,7 +43,8 @@ static bool iort_type_matches(u8 type, enum iort_node_category category)
+ 	switch (category) {
+ 	case IORT_IOMMU_TYPE:
+ 		return type == ACPI_IORT_NODE_SMMU ||
+-		       type == ACPI_IORT_NODE_SMMU_V3;
++		       type == ACPI_IORT_NODE_SMMU_V3 ||
++		       type == ACPI_VIOT_IORT_NODE_VIRTIO_MMIO_IOMMU;
+ 	case IORT_MSI_TYPE:
+ 		return type == ACPI_IORT_NODE_ITS_GROUP;
+ 	default:
+@@ -868,8 +869,10 @@ static inline bool iort_iommu_driver_enabled(u8 type)
+ 		return IS_BUILTIN(CONFIG_ARM_SMMU_V3);
+ 	case ACPI_IORT_NODE_SMMU:
+ 		return IS_BUILTIN(CONFIG_ARM_SMMU);
++	case ACPI_VIOT_IORT_NODE_VIRTIO_MMIO_IOMMU:
++		return IS_ENABLED(CONFIG_VIRTIO_IOMMU);
+ 	default:
+-		pr_warn("IORT node type %u does not describe an SMMU\n", type);
++		pr_warn("IORT node type %u does not describe an IOMMU\n", type);
+ 		return false;
+ 	}
+ }
+@@ -1408,6 +1411,46 @@ static int __init arm_smmu_v3_pmcg_add_platdata(struct platform_device *pdev)
+ 	return platform_device_add_data(pdev, &model, sizeof(model));
  }
  
- static struct acpi_iort_node *iort_node_map_platform_id(
--		struct acpi_iort_node *node, u32 *id_out, u8 type_mask,
--		int index)
-+		struct acpi_iort_node *node, u32 *id_out,
-+		enum iort_node_category category, int index)
++static int __init viommu_mmio_count_resources(struct acpi_iort_node *node)
++{
++	/* Mem + IRQ */
++	return 2;
++}
++
++static void __init viommu_mmio_init_resources(struct resource *res,
++					   struct acpi_iort_node *node)
++{
++	int hw_irq, trigger;
++	struct acpi_viot_iort_virtio_mmio_iommu *viommu;
++
++	viommu = (struct acpi_viot_iort_virtio_mmio_iommu *)node->node_data;
++
++	res[0].start = viommu->base_address;
++	res[0].end = viommu->base_address + viommu->span - 1;
++	res[0].flags = IORESOURCE_MEM;
++
++	hw_irq = IORT_IRQ_MASK(viommu->interrupt);
++	trigger = IORT_IRQ_TRIGGER_MASK(viommu->interrupt);
++	acpi_iort_register_irq(hw_irq, "viommu", trigger, res + 1);
++}
++
++static void __init viommu_mmio_dma_configure(struct device *dev,
++					  struct acpi_iort_node *node)
++{
++	enum dev_dma_attr attr;
++	struct acpi_viot_iort_virtio_mmio_iommu *viommu;
++
++	viommu = (struct acpi_viot_iort_virtio_mmio_iommu *)node->node_data;
++
++	attr = (viommu->flags & ACPI_VIOT_IORT_VIRTIO_MMIO_IOMMU_CACHE_COHERENT) ?
++		DEV_DMA_COHERENT : DEV_DMA_NON_COHERENT;
++
++	dev->dma_mask = &dev->coherent_dma_mask;
++
++	/* Configure DMA for the page table walker */
++	acpi_dma_configure(dev, attr);
++}
++
+ struct iort_dev_config {
+ 	const char *name;
+ 	int (*dev_init)(struct acpi_iort_node *node);
+@@ -1443,6 +1486,14 @@ static const struct iort_dev_config iort_arm_smmu_v3_pmcg_cfg __initconst = {
+ 	.dev_add_platdata = arm_smmu_v3_pmcg_add_platdata,
+ };
+ 
++static const struct iort_dev_config iort_viommu_mmio_cfg __initconst = {
++	/* Probe with the generic virtio-mmio driver */
++	.name = "virtio-mmio",
++	.dev_dma_configure = viommu_mmio_dma_configure,
++	.dev_count_resources = viommu_mmio_count_resources,
++	.dev_init_resources = viommu_mmio_init_resources,
++};
++
+ static __init const struct iort_dev_config *iort_get_dev_cfg(
+ 			struct acpi_iort_node *node)
  {
- 	struct acpi_iort_node *parent;
- 	u32 id;
-@@ -475,8 +489,8 @@ static struct acpi_iort_node *iort_node_map_platform_id(
- 	 * as NC (named component) -> SMMU -> ITS. If the type is matched,
- 	 * return the initial dev id and its parent pointer directly.
- 	 */
--	if (!(IORT_TYPE_MASK(parent->type) & type_mask))
--		parent = iort_node_map_id(parent, id, id_out, type_mask);
-+	if (!iort_type_matches(parent->type, category))
-+		parent = iort_node_map_id(parent, id, id_out, category);
- 	else
- 		if (id_out)
- 			*id_out = id;
+@@ -1453,9 +1504,16 @@ static __init const struct iort_dev_config *iort_get_dev_cfg(
+ 		return &iort_arm_smmu_cfg;
+ 	case ACPI_IORT_NODE_PMCG:
+ 		return &iort_arm_smmu_v3_pmcg_cfg;
+-	default:
+-		return NULL;
+ 	}
++
++	if (iort_table_source == IORT_SOURCE_VIOT) {
++		switch (node->type) {
++		case ACPI_VIOT_IORT_NODE_VIRTIO_MMIO_IOMMU:
++			return &iort_viommu_mmio_cfg;
++		}
++	}
++
++	return NULL;
+ }
+ 
+ /**
 -- 
 2.24.0
 
