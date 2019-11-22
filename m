@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD7D9106F95
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 12:16:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ADD7106F92
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2019 12:16:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729312AbfKVLQQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Nov 2019 06:16:16 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:52505 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728031AbfKVKuz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Nov 2019 05:50:55 -0500
-Received: by mail-wm1-f67.google.com with SMTP id l1so6935569wme.2
-        for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2019 02:50:54 -0800 (PST)
+        id S1729263AbfKVKu7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Nov 2019 05:50:59 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:46954 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729041AbfKVKu6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Nov 2019 05:50:58 -0500
+Received: by mail-wr1-f66.google.com with SMTP id z7so4622346wrl.13
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2019 02:50:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=/inLver145cFol/5bUSjQQctnMruvUV98+tylzxeqnk=;
-        b=KvntgGm303h0Ssxf9aIFIK2XkoQiqLGKm8oBQdtFp8m6CkhuS563d23h38idVHFBTS
-         kkHWOjKBIeiLqtFnIN5JqRxHj/IPpP1+8FLf2khs7+nbgJ0OpH9sMYPdLblXJN/5mPtZ
-         Wb+8873vkfkzhOEno3SZc1Y9APZr1NOsSzkKP1ZCQ6Z0rpQLTlKOI9WgdHg2e1LDo7F0
-         tBgAB48y5L6SMpiI5ioJ2KIyTBgMturfH5KATIT+F+PcJxgVRRlhZPFK7De+LuxTeNtE
-         M4IA2puSbiUMBj2P+pdk0515MczvrK3k66Sn0WsjBltTEdPU0l74IdtDnv4aQdCAd0EZ
-         nmsQ==
+        bh=MfTtXiG/W/rObmsyirkEQ0i6+kv30tKWKHAFlzXsK50=;
+        b=KGaaTyS3Lc/ef+t1SZuZlTE1UsU+JnOw0CHre56ANUeiS1fG2WU5O/YFQcBx5DFQ+g
+         C3eEzhT3EtsVVDaPXc0JJnwFtgO1xkFqrrE6GycrJ2S4YEKOcx4s42s4o+D2QSUmsenY
+         giJa7ayJtTWwW60SOcSL7s5TyIuTMeag5BlKYTNd2Vpv5b3Ku4VoOfgVTWmpiuNgZfga
+         0U9jEO3Ob60MHJopefjx77FsOCYeO+1ZpoKfR2ZI8XHgbGZFlpcgyTQN/mBvo0haJZcQ
+         4WN5cxwZz8VzF5n+E1gDTt+EyPoR0GPG3uAOf5O3TZXJzM8psHGvEWv0Dabay2iZKY72
+         vmuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=/inLver145cFol/5bUSjQQctnMruvUV98+tylzxeqnk=;
-        b=jzECSsfuiCRMNaUYjyRFC5OSMoPXHMry3dIknX1jsilo+0C5TWkEpWwcuM8F8+ywk7
-         7/OwarQDk3FE5maPGDWF8ZIZlO7manikjQlkaVVxp/yK0N0DfApt8WgoTtuqdne5kvVK
-         35nSNUM90NT0qhsG9Yqsz32nyZKgDJ0Dppn7XuVs8qY7+RQWfyRG4ntSGy1L45Qp2eXk
-         eAoat9Sp3eQDVjZA0BxCEdDzJtQ9oGulGkdArexA4wYxAalTYa2LwAvcoLNnHEx7e9TD
-         g4g90DOeM+vx3CKxbvE3wdvL0S+8hwEJ7PSJDzUe2Jralyz/YrO0EA9aPSeFIh2EJBjn
-         q4UA==
-X-Gm-Message-State: APjAAAWkpj+Ln2IdKIaQiwfLFfSUkS8ZgOtKM9aOWt8mQUUBkMX5UKFW
-        Z5QGeOmisSda1VmhM365RqBfb4ygRn8=
-X-Google-Smtp-Source: APXvYqybl+9ikgvCfSNL7CGfiLoR9Bk+QtDdRzYQU3EDUxB/3MAL7UXcY6vI8QXG4ikVn9LuAUlWLA==
-X-Received: by 2002:a05:600c:3cd:: with SMTP id z13mr15785876wmd.105.1574419853787;
-        Fri, 22 Nov 2019 02:50:53 -0800 (PST)
+        bh=MfTtXiG/W/rObmsyirkEQ0i6+kv30tKWKHAFlzXsK50=;
+        b=aNtVIs1LNFAsZ7HuFXBGjUp1xPeMzhNBYf31torDpYNYggsMCtW8subqrAkupw0xvn
+         iu9Nl5cmWGDNdO82txF8UowVcbUCHVK3x0QQs4NFSo3FYsh+NSiHDp3A+PSXsfd5WI+T
+         qAFN6tvj90jIAakZnDq/oTh6Y6mxgrFxsOT+qn9OnSNSZ1I8/9yo35VQnAWYlQgJhCo6
+         47hdx9VSFUzBpWFUxjTH/CbZ8JWC7pX5BBUZv71VebFHdkFB9oy8X4q9no4+XIdbK7Ae
+         t6/eu3zqpMyzgcNq7ESCjyX+S3vz/TCgf44XMAYUmkg442sgmTbMmEUxjeZmHkMp0u38
+         HHpA==
+X-Gm-Message-State: APjAAAVPNuVYWyCwxtrheOw/ir2+2QTcbhsqZtigREDD3wdGIGlwmQCY
+        IU3BPY7FSjDaCJdvbdEF4RwfnINU+vY=
+X-Google-Smtp-Source: APXvYqzYWFFlrhHka1Vw/6sChVYtvTiOJin0SbfQOyNoZG5nnElEymYjGNuUm72JutIfgIh/3EoY2g==
+X-Received: by 2002:adf:e885:: with SMTP id d5mr17167901wrm.117.1574419856320;
+        Fri, 22 Nov 2019 02:50:56 -0800 (PST)
 Received: from localhost.localdomain (xdsl-188-155-204-106.adslplus.ch. [188.155.204.106])
-        by smtp.gmail.com with ESMTPSA id o133sm2088197wmb.4.2019.11.22.02.50.52
+        by smtp.gmail.com with ESMTPSA id o133sm2088197wmb.4.2019.11.22.02.50.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2019 02:50:53 -0800 (PST)
+        Fri, 22 Nov 2019 02:50:55 -0800 (PST)
 From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
 To:     linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         iommu@lists.linux-foundation.org,
@@ -55,9 +55,9 @@ Cc:     rjw@rjwysocki.net, lenb@kernel.org, lorenzo.pieralisi@arm.com,
         mst@redhat.com, jasowang@redhat.com, jacob.jun.pan@intel.com,
         eric.auger@redhat.com, sebastien.boeuf@intel.com,
         kevin.tian@intel.com
-Subject: [RFC 02/13] ACPI: Add VIOT definitions
-Date:   Fri, 22 Nov 2019 11:49:49 +0100
-Message-Id: <20191122105000.800410-3-jean-philippe@linaro.org>
+Subject: [RFC 04/13] ACPI/IORT: Add node categories
+Date:   Fri, 22 Nov 2019 11:49:51 +0100
+Message-Id: <20191122105000.800410-5-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191122105000.800410-1-jean-philippe@linaro.org>
 References: <20191122105000.800410-1-jean-philippe@linaro.org>
@@ -68,63 +68,95 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This is temporary, until the VIOT table is published and these
-definitions added to ACPICA.
+The current node filtering won't work when introducing node types
+greater than 63 (such as the virtio-iommu nodes). Add
+node_type_matches() to filter nodes by category.
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
- include/acpi/actbl2.h | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ drivers/acpi/iort.c | 34 ++++++++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 10 deletions(-)
 
-diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-index e45ced27f4c3..99c1d747e9d8 100644
---- a/include/acpi/actbl2.h
-+++ b/include/acpi/actbl2.h
-@@ -25,6 +25,7 @@
-  * the wrong signature.
-  */
- #define ACPI_SIG_IORT           "IORT"	/* IO Remapping Table */
-+#define ACPI_SIG_VIOT           "VIOT"	/* Virtual I/O Table */
- #define ACPI_SIG_IVRS           "IVRS"	/* I/O Virtualization Reporting Structure */
- #define ACPI_SIG_LPIT           "LPIT"	/* Low Power Idle Table */
- #define ACPI_SIG_MADT           "APIC"	/* Multiple APIC Description Table */
-@@ -412,6 +413,36 @@ struct acpi_ivrs_memory {
- 	u64 memory_length;
- };
+diff --git a/drivers/acpi/iort.c b/drivers/acpi/iort.c
+index 9c6c91e06f8f..1d43fbc0001f 100644
+--- a/drivers/acpi/iort.c
++++ b/drivers/acpi/iort.c
+@@ -18,10 +18,10 @@
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
  
-+/*******************************************************************************
-+ *
-+ * VIOT - Virtual I/O Table
-+ *        Version 1
-+ *
-+ ******************************************************************************/
-+
-+struct acpi_table_viot {
-+	struct acpi_table_header header;
-+	u8 reserved[12];
-+	struct acpi_table_header base_table;
+-#define IORT_TYPE_MASK(type)	(1 << (type))
+-#define IORT_MSI_TYPE		(1 << ACPI_IORT_NODE_ITS_GROUP)
+-#define IORT_IOMMU_TYPE		((1 << ACPI_IORT_NODE_SMMU) |	\
+-				(1 << ACPI_IORT_NODE_SMMU_V3))
++enum iort_node_category {
++	IORT_MSI_TYPE,
++	IORT_IOMMU_TYPE,
 +};
+ 
+ struct iort_its_msi_chip {
+ 	struct list_head	list;
+@@ -38,6 +38,20 @@ struct iort_fwnode {
+ static LIST_HEAD(iort_fwnode_list);
+ static DEFINE_SPINLOCK(iort_fwnode_lock);
+ 
++static bool iort_type_matches(u8 type, enum iort_node_category category)
++{
++	switch (category) {
++	case IORT_IOMMU_TYPE:
++		return type == ACPI_IORT_NODE_SMMU ||
++		       type == ACPI_IORT_NODE_SMMU_V3;
++	case IORT_MSI_TYPE:
++		return type == ACPI_IORT_NODE_ITS_GROUP;
++	default:
++		WARN_ON(1);
++		return false;
++	}
++}
 +
-+#define ACPI_VIOT_IORT_NODE_VIRTIO_PCI_IOMMU    0x80
-+#define ACPI_VIOT_IORT_NODE_VIRTIO_MMIO_IOMMU   0x81
-+
-+struct acpi_viot_iort_virtio_pci_iommu {
-+	u32 devid;
-+};
-+
-+struct acpi_viot_iort_virtio_mmio_iommu {
-+	u64 base_address;
-+	u64 span;
-+	u64 flags;
-+	u64 interrupt;
-+};
-+
-+/* FIXME: rename this monstrosity. */
-+#define ACPI_VIOT_IORT_VIRTIO_MMIO_IOMMU_CACHE_COHERENT (1<<0)
-+
- /*******************************************************************************
-  *
-  * LPIT - Low Power Idle Table
+ /**
+  * iort_set_fwnode() - Create iort_fwnode and use it to register
+  *		       iommu data in the iort_fwnode_list
+@@ -397,7 +411,7 @@ static int iort_get_id_mapping_index(struct acpi_iort_node *node)
+ 
+ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
+ 					       u32 id_in, u32 *id_out,
+-					       u8 type_mask)
++					       enum iort_node_category category)
+ {
+ 	u32 id = id_in;
+ 
+@@ -406,7 +420,7 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
+ 		struct acpi_iort_id_mapping *map;
+ 		int i, index;
+ 
+-		if (IORT_TYPE_MASK(node->type) & type_mask) {
++		if (iort_type_matches(node->type, category)) {
+ 			if (id_out)
+ 				*id_out = id;
+ 			return node;
+@@ -458,8 +472,8 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
+ }
+ 
+ static struct acpi_iort_node *iort_node_map_platform_id(
+-		struct acpi_iort_node *node, u32 *id_out, u8 type_mask,
+-		int index)
++		struct acpi_iort_node *node, u32 *id_out,
++		enum iort_node_category category, int index)
+ {
+ 	struct acpi_iort_node *parent;
+ 	u32 id;
+@@ -475,8 +489,8 @@ static struct acpi_iort_node *iort_node_map_platform_id(
+ 	 * as NC (named component) -> SMMU -> ITS. If the type is matched,
+ 	 * return the initial dev id and its parent pointer directly.
+ 	 */
+-	if (!(IORT_TYPE_MASK(parent->type) & type_mask))
+-		parent = iort_node_map_id(parent, id, id_out, type_mask);
++	if (!iort_type_matches(parent->type, category))
++		parent = iort_node_map_id(parent, id, id_out, category);
+ 	else
+ 		if (id_out)
+ 			*id_out = id;
 -- 
 2.24.0
 
