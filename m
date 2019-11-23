@@ -2,151 +2,197 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE9F6107B4E
-	for <lists+linux-acpi@lfdr.de>; Sat, 23 Nov 2019 00:29:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BB25107BCC
+	for <lists+linux-acpi@lfdr.de>; Sat, 23 Nov 2019 01:01:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726546AbfKVX3E convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 22 Nov 2019 18:29:04 -0500
-Received: from mga09.intel.com ([134.134.136.24]:21075 "EHLO mga09.intel.com"
+        id S1726705AbfKWABF convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 22 Nov 2019 19:01:05 -0500
+Received: from mga07.intel.com ([134.134.136.100]:12973 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726089AbfKVX3D (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 22 Nov 2019 18:29:03 -0500
+        id S1726666AbfKWABF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 22 Nov 2019 19:01:05 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Nov 2019 15:29:03 -0800
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Nov 2019 16:01:04 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.69,231,1571727600"; 
-   d="scan'208";a="382225726"
-Received: from orsmsx107.amr.corp.intel.com ([10.22.240.5])
-  by orsmga005.jf.intel.com with ESMTP; 22 Nov 2019 15:29:03 -0800
-Received: from orsmsx156.amr.corp.intel.com (10.22.240.22) by
- ORSMSX107.amr.corp.intel.com (10.22.240.5) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Fri, 22 Nov 2019 15:29:02 -0800
-Received: from orsmsx122.amr.corp.intel.com ([169.254.11.73]) by
- ORSMSX156.amr.corp.intel.com ([169.254.8.101]) with mapi id 14.03.0439.000;
- Fri, 22 Nov 2019 15:29:02 -0800
-From:   "Schmauss, Erik" <erik.schmauss@intel.com>
-To:     "Moore, Robert" <robert.moore@intel.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>
-Subject: RE: PROBLEM: Calling ObjectType on buffer field reports type integer
-Thread-Topic: PROBLEM: Calling ObjectType on buffer field reports type
- integer
-Thread-Index: AQHU2nGbL6Z+rOUTjEmNgKjiKxQRHaYLXjCwgAaMyoCAAbd1AP//x1cAgAU5pID//5K0EIC9Al0AgALU3XCArt/DgIASk+KAgABSrgD//47LcA==
-Date:   Fri, 22 Nov 2019 23:29:01 +0000
-Message-ID: <CF6A88132359CE47947DB4C6E1709ED53C68481C@ORSMSX122.amr.corp.intel.com>
-References: <3ef42aa1-196d-f3db-0e5d-2fd84c198242@gmail.com>
- <CF6A88132359CE47947DB4C6E1709ED53C592D47@ORSMSX122.amr.corp.intel.com>
- <CF6A88132359CE47947DB4C6E1709ED53C59405C@ORSMSX122.amr.corp.intel.com>
- <fe4bcc1c-5c15-caa6-ce01-a5df962ff008@gmail.com>
- <CF6A88132359CE47947DB4C6E1709ED53C5942CA@ORSMSX122.amr.corp.intel.com>
- <51e156ec-c2ed-84be-13c0-99a213e1d4b7@gmail.com>
- <CF6A88132359CE47947DB4C6E1709ED53C595C50@ORSMSX122.amr.corp.intel.com>
- <88077d9c-b2b7-5fc6-37e9-fa12d6aebe73@gmail.com>
- <CF6A88132359CE47947DB4C6E1709ED53C614AA8@ORSMSX122.amr.corp.intel.com>
- <c6511010-f160-a2ee-1b89-46df051a85e4@gmail.com>
- <94F2FBAB4432B54E8AACC7DFDE6C92E3B96B196C@ORSMSX110.amr.corp.intel.com>
- <94F2FBAB4432B54E8AACC7DFDE6C92E3B96B1A77@ORSMSX110.amr.corp.intel.com>
-In-Reply-To: <94F2FBAB4432B54E8AACC7DFDE6C92E3B96B1A77@ORSMSX110.amr.corp.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMjQ0N2VjYWMtYTNiMS00MTI5LTgyMjQtNmMzNTc0MDYyMGZjIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoibTU1eVRwYzBhUWltTHlLT1N2VWtcL0lBa1hUOVJHU1JqZjV6emtaNzAreTFNNlBqRnBETGVxdmpYMjNhYitBdGwifQ==
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.139]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+   d="scan'208";a="290792434"
+Received: from jpan9-mobl2.amr.corp.intel.com (HELO localhost) ([10.254.71.164])
+  by orsmga001.jf.intel.com with ESMTP; 22 Nov 2019 16:01:03 -0800
+Date:   Fri, 22 Nov 2019 16:01:02 -0800
+From:   "Jacob Pan (Jun)" <jacob.jun.pan@intel.com>
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc:     <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <iommu@lists.linux-foundation.org>,
+        <virtualization@lists.linux-foundation.org>,
+        <linux-pci@vger.kernel.org>, <virtio-dev@lists.oasis-open.org>,
+        <rjw@rjwysocki.net>, <lenb@kernel.org>,
+        <lorenzo.pieralisi@arm.com>, <guohanjun@huawei.com>,
+        <sudeep.holla@arm.com>, <gregkh@linuxfoundation.org>,
+        <joro@8bytes.org>, <bhelgaas@google.com>, <mst@redhat.com>,
+        <jasowang@redhat.com>, <eric.auger@redhat.com>,
+        <sebastien.boeuf@intel.com>, <kevin.tian@intel.com>,
+        jacob.jun.pan@intel.com
+Subject: Re: [RFC 00/13] virtio-iommu on non-devicetree platforms
+Message-ID: <20191122160102.00004489@intel.com>
+In-Reply-To: <20191122105000.800410-1-jean-philippe@linaro.org>
+References: <20191122105000.800410-1-jean-philippe@linaro.org>
+Organization: intel
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Bob and I started debugging this and we found the issue:
+On Fri, 22 Nov 2019 11:49:47 +0100
+Jean-Philippe Brucker <jean-philippe@linaro.org> wrote:
 
-Let's say that we have this code:
+> I'm seeking feedback on multi-platform support for virtio-iommu. At
+> the moment only devicetree (DT) is supported and we don't have a
+> pleasant solution for other platforms. Once we figure out the topology
+> description, x86 support is trivial.
+> 
+> Since the IOMMU manages memory accesses from other devices, the guest
+> kernel needs to initialize the IOMMU before endpoints start issuing
+> DMA. It's a solved problem: firmware or hypervisor describes through
+> DT or ACPI tables the device dependencies, and probe of endpoints is
+> deferred until the IOMMU is probed. But:
+> 
+> (1) ACPI has one table per vendor (DMAR for Intel, IVRS for AMD and
+> IORT for Arm). From my point of view IORT is easier to extend, since
+> we just need to introduce a new node type. There are no dependencies
+> to Arm in the Linux IORT driver, so it works well with CONFIG_X86.
+> 
+From my limited understanding, IORT and VIOT is to solve device topology
+enumeration only? I am not sure how it can be expanded to cover
+information beyond device topology. e.g. DMAR has NUMA information and
+root port ATS, I guess they are not used today in the guest but might
+be additions in the future.
 
-Name (BUF1, Buffer (0x10) {})
-Method (M001)
-{
-    CreateField (BUF1, 1, 72, FLD0)
-    local0 = FLD0 // BUG: store operator (aka =)  converts FLD0 into an integer
-    return (ObjectType (local0)) // Integer is returned
-}
+>     However, there are concerns about other OS vendors feeling
+> obligated to implement this new node, so Arm proposed introducing
+> another ACPI table, that can wrap any of DMAR, IVRS and IORT to
+> extend it with new virtual nodes. A draft of this VIOT table
+> specification is available at
+> http://jpbrucker.net/virtio-iommu/viot/viot-v5.pdf
+> 
+>     I'm afraid this could increase fragmentation as guests would need
+> to implement or modify their support for all of DMAR, IVRS and IORT.
+> If we end up doing VIOT, I suggest limiting it to IORT.
+> 
+> (2) In addition, there are some concerns about having virtio depend on
+>     ACPI or DT. Some hypervisors (Firecracker, QEMU microvm, kvmtool
+> x86 [1]) don't currently implement those methods.
+> 
+>     It was suggested to embed the topology description into the
+> device. It can work, as demonstrated at the end of this RFC, with the
+>     following limitations:
+> 
+>     - The topology description must be read before any endpoint
+> managed by the IOMMU is probed, and even before the virtio module is
+>       loaded. This RFC uses a PCI quirk to manually parse the virtio
+>       configuration. It assumes that all endpoints managed by the
+> IOMMU are under this same PCI host.
+> 
 
-Although FLD0's value is small enough to fit in an integer, the bit length of FLD0 exceeds 64 bits so local0 should actually be a Buffer type.
+>     - I don't have a solution for the virtio-mmio transport at the
+>       moment, because I haven't had time to modify a host to test it.
+> I think it could either use a notifier on the platform bus, or
+>       better, a new 'iommu' command-line argument to the virtio-mmio
+>       driver. So the current prototype doesn't work for firecracker
+> and microvm, which rely on virtio-mmio.
+> 
+>     - For Arm, if the platform has an ITS, the hypervisor needs IORT
+> or DT to describe it anyway. More generally, not using either ACPI or
+>       DT might prevent from supporting other features as well. I
+> suspect the above users will have to implement a standard method
+> sooner or later.
+> 
+>     - Even when reusing as much existing code as possible, guest
+> support is still going to be around a few hundred lines since we can't
+>       rely on the normal virtio infrastructure to be loaded at that
+>       point. As you can see below, the diffstat for the incomplete
+>       topology implementation is already bigger than the exhaustive
+> IORT support, even when jumping through the VIOT hoop.
+> 
+>     So it's a lightweight solution for very specific use-cases, and we
+>     should still support ACPI for the general case. Multi-platform
+>     guests such as Linux will then need to support three topology
+>     descriptions instead of two.
+> 
+> In this RFC I present both solutions, but I'd rather not keep all of
+> it. Please see the individual patches for details:
+> 
+> (1) Patches 1, 3-10 add support for virtio-iommu to the Linux IORT
+>     driver and patches 2, 11 add the VIOT glue.
+> 
+> (2) Patch 12 adds the built-in topology description to the
+> virtio-iommu specification. Patch 13 is a partial implementation for
+> the Linux virtio-iommu driver. It only supports PCI, not platform
+> devices.
+> 
+> You can find Linux and QEMU code on my virtio-iommu/devel branches at
+> http://jpbrucker.net/git/linux and http://jpbrucker.net/git/qemu
+> 
+> 
+> I split the diffstat since there are two independent features. The
+> first one is for patches 1-11, and the second one for patch 13.
+> 
+> Jean-Philippe Brucker (11):
+>   ACPI/IORT: Move IORT to the ACPI folder
+>   ACPI: Add VIOT definitions
+>   ACPI/IORT: Allow registration of external tables
+>   ACPI/IORT: Add node categories
+>   ACPI/IORT: Support VIOT virtio-mmio node
+>   ACPI/IORT: Support VIOT virtio-pci node
+>   ACPI/IORT: Defer probe until virtio-iommu-pci has registered a
+> fwnode ACPI/IORT: Add callback to update a device's fwnode
+>   iommu/virtio: Create fwnode if necessary
+>   iommu/virtio: Update IORT fwnode
+>   ACPI: Add VIOT table
+> 
+>  MAINTAINERS                     |   9 +
+>  drivers/acpi/Kconfig            |   7 +
+>  drivers/acpi/Makefile           |   2 +
+>  drivers/acpi/arm64/Kconfig      |   3 -
+>  drivers/acpi/arm64/Makefile     |   1 -
+>  drivers/acpi/bus.c              |   2 +
+>  drivers/acpi/{arm64 => }/iort.c | 317
+> ++++++++++++++++++++++++++------ drivers/acpi/tables.c           |
+> 2 +- drivers/acpi/viot.c             |  44 +++++
+>  drivers/iommu/Kconfig           |   1 +
+>  drivers/iommu/virtio-iommu.c    |  61 +++++-
+>  include/acpi/actbl2.h           |  31 ++++
+>  include/linux/acpi_iort.h       |  14 ++
+>  include/linux/acpi_viot.h       |  20 ++
+>  14 files changed, 448 insertions(+), 66 deletions(-)
+>  rename drivers/acpi/{arm64 => }/iort.c (86%)
+>  create mode 100644 drivers/acpi/viot.c
+>  create mode 100644 include/linux/acpi_viot.h
+> 
+> Jean-Philippe Brucker (1):
+>   iommu/virtio: Add topology description to virtio-iommu config space
+> 
+>  drivers/base/platform.c               |   3 +
+>  drivers/iommu/Kconfig                 |   9 +
+>  drivers/iommu/Makefile                |   1 +
+>  drivers/iommu/virtio-iommu-topology.c | 410
+> ++++++++++++++++++++++++++ drivers/iommu/virtio-iommu.c          |
+> 3 + drivers/pci/pci-driver.c              |   3 +
+>  include/linux/virtio_iommu.h          |  18 ++
+>  include/uapi/linux/virtio_iommu.h     |  26 ++
+>  8 files changed, 473 insertions(+)
+>  create mode 100644 drivers/iommu/virtio-iommu-topology.c
+>  create mode 100644 include/linux/virtio_iommu.h
+> 
+> 
+> [1] firecracker: https://github.com/firecracker-microvm/firecracker
+>     microvm: https://github.com/qemu/qemu/blob/master/docs/microvm.rst
+>     kvmtool:
+> https://git.kernel.org/pub/scm/linux/kernel/git/will/kvmtool.git/
 
-This is likely an issue in the implicit object conversion rules implemented in the store operator. I'll take a look at this next week or the week after...
-
-Thanks for your patience,
-Erik
-
-> -----Original Message-----
-> From: Moore, Robert <robert.moore@intel.com>
-> Sent: Friday, November 22, 2019 2:07 PM
-> To: Moore, Robert <robert.moore@intel.com>; Maximilian Luz
-> <luzmaximilian@gmail.com>; Schmauss, Erik <erik.schmauss@intel.com>;
-> Wysocki, Rafael J <rafael.j.wysocki@intel.com>
-> Cc: linux-acpi@vger.kernel.org; devel@acpica.org
-> Subject: RE: PROBLEM: Calling ObjectType on buffer field reports type integer
-> 
-> I'm not seeing this problem. For example:
->     Method (DS01)
->     {
->         Name(BUFZ, Buffer(48){})
->         CreateField(BUFZ, 192, 69, DST0)
->         Store (ObjectType (DST0), Debug)
->     }
-> 
-> Acpiexec dsdt.aml
-> Eval DS01
-> Evaluating \DS01
-> ACPI Debug:  0x000000000000000E
-> 
-> 0x0E is in fact type "buffer field".
-> 
-> 
-> -----Original Message-----
-> From: Moore, Robert <robert.moore@intel.com>
-> Sent: Friday, November 22, 2019 9:12 AM
-> To: Maximilian Luz <luzmaximilian@gmail.com>; Schmauss, Erik
-> <erik.schmauss@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>
-> Cc: linux-acpi@vger.kernel.org; devel@acpica.org
-> Subject: [Devel] Re: PROBLEM: Calling ObjectType on buffer field reports type
-> integer
-> 
-> We will probably make this change, depending on what Windows does.
-> Bob
-> 
-> 
-> -----Original Message-----
-> From: Maximilian Luz <luzmaximilian@gmail.com>
-> Sent: Sunday, November 10, 2019 1:30 PM
-> To: Schmauss, Erik <erik.schmauss@intel.com>; Moore, Robert
-> <robert.moore@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>
-> Cc: linux-acpi@vger.kernel.org; devel@acpica.org
-> Subject: Re: PROBLEM: Calling ObjectType on buffer field reports type integer
-> 
-> 
-> On 7/23/19 1:01 AM, Schmauss, Erik wrote:
-> > Sorry about the late response. This slipped through the cracks.
-> > I've sent them an email just now and I'll keep you informed
-> 
-> Hi again,
-> 
-> is there any update on this?
-> 
-> Regards,
-> 
-> Maximilian
-> _______________________________________________
-> Devel mailing list -- devel@acpica.org
-> To unsubscribe send an email to devel-leave@acpica.org
-> %(web_page_url)slistinfo%(cgiext)s/%(_internal_name)s
