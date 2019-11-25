@@ -2,81 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 71D1610863C
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Nov 2019 02:15:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E43E410864F
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Nov 2019 02:29:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727106AbfKYBPR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 24 Nov 2019 20:15:17 -0500
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:35792 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727156AbfKYBPR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 24 Nov 2019 20:15:17 -0500
-Received: by mail-pg1-f196.google.com with SMTP id k32so6297407pgl.2
-        for <linux-acpi@vger.kernel.org>; Sun, 24 Nov 2019 17:15:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=1OTCzRuZLXKgKtG0YjZ5OtZ6bjyEuVtHenJ+Tqkqok8=;
-        b=MiPiIX+FQla5J05mdl78JALG26TaMMitW+PrtdM+n9xIli+yPctZJfy+H7rJboL8GI
-         V0FgfkpjkhcPqr9AsCYE+6wIjzm/Mcm23GSgSWEHvT/KiG/8fB9DjiDS3+m7LrX0K3T9
-         dMe7b7dgH+HXwN2oIl08lMaUVhfDrTbREjAuLoCAysaa5N7ynLTYiQGCpd40byKNLmYo
-         mJZE+1c1Xhk2Rx7LVar2Py3/Dl8cYOXgFLWQGA7/ENtFS/UJQx+hJZ436vfOHrpK6Iwy
-         MSrRAvH+CrZfsRsNFx7u+ANlvlvlCwgg0mmIzOa9QenMN/bLG3ERxK4pEZqVMv8SGDyX
-         Rsfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=1OTCzRuZLXKgKtG0YjZ5OtZ6bjyEuVtHenJ+Tqkqok8=;
-        b=sAaNcpSxIs3hkNAXP9Ah1pgC2P3xJ9XmaAqhs1yaceDjcPMc4yxHAXmvZOv55Y/9zn
-         KWLmmBhJ0bmXnE3jpZHO6nirc2MfPjM/Nfc/JXpvsADSudLTV3bO0aGcfRP4PDHuBa0T
-         qzdUDllqgZO0/HLekLNXIKgmKAF5XG8CeGhk1Np7MggjDudlq7DU9cJ8/x0daR9gbRZE
-         zf+Ueq+ARPO+5HITBzah5/EDPjowPsK7m69rMytW7n4a0kWUqsy1ONM3f4Rt9hWHDjap
-         5PD3ZqKNRP/t4YDGrVYI9UIGo4lkE2tWJnJIXAZU3gxIcy1TEDf+UQKgN0dYoIDGwUXf
-         s86A==
-X-Gm-Message-State: APjAAAWaJ8kfeRaPTuHD2tQ3Kwrgwmkbh9Or2rNspKnbUKxdcwNFQtNY
-        rYDKBPnFMYI9mPJJPAPesG/ebqanj7/WZNxXUGg=
-X-Google-Smtp-Source: APXvYqzpnhEXyCzclZ3fO4rwhMhmmMgFwwtZjdj6PPk4jFqs+x6Ccus2z8WDPirco8BEiOmfHEP5gsjWytMeR+Ra1Xg=
-X-Received: by 2002:a63:c802:: with SMTP id z2mr21810188pgg.158.1574644516736;
- Sun, 24 Nov 2019 17:15:16 -0800 (PST)
+        id S1727110AbfKYB3V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 24 Nov 2019 20:29:21 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:36582 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727072AbfKYB3V (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 24 Nov 2019 20:29:21 -0500
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 9DEF9FEABABB2759A66B;
+        Mon, 25 Nov 2019 09:29:18 +0800 (CST)
+Received: from [127.0.0.1] (10.74.219.194) by DGGEMS401-HUB.china.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Mon, 25 Nov 2019
+ 09:29:11 +0800
+Subject: Re: [PATCH] ACPI: sysfs: Define the variable gpe from u8 to u16 to
+ avoid endless loop in function apci_gpe_apply_masked_gpes()
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+References: <1574390957-6313-1-git-send-email-chenxiang66@hisilicon.com>
+ <CAJZ5v0ixTZE6sDD4tojNi7=peqCXSrkS3qyHgeo==zKr4AHKTw@mail.gmail.com>
+CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Yunfeng Ye <yeyunfeng@huawei.com>,
+        Linuxarm <linuxarm@huawei.com>,
+        "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>,
+        John Garry <john.garry@huawei.com>
+From:   "chenxiang (M)" <chenxiang66@hisilicon.com>
+Message-ID: <48e035bf-120e-4170-b794-3cf6562ce2ae@hisilicon.com>
+Date:   Mon, 25 Nov 2019 09:29:11 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Received: by 2002:a17:90a:1863:0:0:0:0 with HTTP; Sun, 24 Nov 2019 17:15:16
- -0800 (PST)
-Reply-To: aishagaddafi969@aol.com
-From:   AISHA GADDAFI <vijairaja789@gmail.com>
-Date:   Sun, 24 Nov 2019 17:15:16 -0800
-Message-ID: <CAGZ0r_LJQH_Ri6GJmWGLhWx2cbzumT_XA82KSiURvRrO=Oisnw@mail.gmail.com>
-Subject: Dear Friend (Assalamu Alaikum),
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAJZ5v0ixTZE6sDD4tojNi7=peqCXSrkS3qyHgeo==zKr4AHKTw@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.74.219.194]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
--- 
-Dear Friend (Assalamu Alaikum),
 
-I came across your e-mail contact prior a private search while in need of
-your assistance. My name is Aisha  Al-Qaddafi a single Mother and a Widow
-with three Children. I am the only biological Daughter of late Libyan
-President (Late Colonel Muammar Gaddafi).
 
-I have investment funds worth Twenty Seven Million Five Hundred Thousand
-United State Dollar ($27.500.000.00 ) and i need a trusted investment
-Manager/Partner because of my current refugee status, however, I am
-interested in you for investment project assistance in your country, may be
-from there, we can build business relationship in the nearest future.
+在 2019/11/22 18:03, Rafael J. Wysocki 写道:
+> On Fri, Nov 22, 2019 at 3:52 AM chenxiang <chenxiang66@hisilicon.com> wrote:
+>> From: Xiang Chen <chenxiang66@hisilicon.com>
+>>
+>> After the patch (eb09878e1301 ("ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100")),
+>> the macro ACPI_MASKABLE_GPE_MAX is changed from 0xFF to 0x100. So in function
+>> apci_gpe_apply_masked_gpes(), the variable gpe may reach 0x100 but it is
+>> defined as u8, so it will be 0 when reaching 0x100. If the bitmap
+>> acpi_masked_gpes_map are all 0s, it will loop all the times.
+>>
+>> To solve endless loop in the function, define the variable gpe from u8 to u16.
+>>
+>> Fixes: eb09878e1301 ("ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100")
+> This commit has been dropped.
+>
+> I have a new version of it queued up with the u16 change below folded it.
 
-I am willing to negotiate investment/business profit sharing ratio with you
-base on the future investment earning profits.
+Ok, thanks!
 
-If you are willing to handle this project on my behalf kindly reply urgent
-to enable me provide you more information about the investment funds.
+>
+> Thanks!
+>
+>> Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+>> ---
+>>   drivers/acpi/sysfs.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
+>> index 0a83ce1..c60d2c6 100644
+>> --- a/drivers/acpi/sysfs.c
+>> +++ b/drivers/acpi/sysfs.c
+>> @@ -838,7 +838,7 @@ void __init acpi_gpe_apply_masked_gpes(void)
+>>   {
+>>          acpi_handle handle;
+>>          acpi_status status;
+>> -       u8 gpe;
+>> +       u16 gpe;
+>>
+>>          for_each_set_bit(gpe, acpi_masked_gpes_map, ACPI_MASKABLE_GPE_MAX) {
+>>                  status = acpi_get_gpe_device(gpe, &handle);
+>> --
+>> 2.8.1
+>>
+> .
+>
 
-Your Urgent Reply Will Be Appreciated. write me at this email address(
-aishagaddafi969@aol.com ) for further discussion.
 
-Best Regards
-Mrs Aisha Al-Qaddafi
-Reply to: aishagaddafi969@aol.com
