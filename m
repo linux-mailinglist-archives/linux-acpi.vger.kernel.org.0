@@ -2,88 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E7501091D9
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Nov 2019 17:33:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F619109272
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Nov 2019 18:00:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728843AbfKYQd0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 25 Nov 2019 11:33:26 -0500
-Received: from foss.arm.com ([217.140.110.172]:52534 "EHLO foss.arm.com"
+        id S1728928AbfKYRAg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 25 Nov 2019 12:00:36 -0500
+Received: from mga05.intel.com ([192.55.52.43]:20026 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728683AbfKYQd0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 25 Nov 2019 11:33:26 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8683A31B;
-        Mon, 25 Nov 2019 08:33:25 -0800 (PST)
-Received: from [10.1.196.37] (e121345-lin.cambridge.arm.com [10.1.196.37])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0A7713F6C4;
-        Mon, 25 Nov 2019 08:33:20 -0800 (PST)
-Subject: Re: [PATCH v2] dma-mapping: treat dev->bus_dma_mask as a DMA limit
-To:     Christoph Hellwig <hch@lst.de>,
-        Nathan Chancellor <natechancellor@gmail.com>
-Cc:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-ide@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Paul Burton <paulburton@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>, x86@kernel.org,
-        linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        James Hogan <jhogan@kernel.org>, Len Brown <lenb@kernel.org>,
-        devicetree@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+        id S1728924AbfKYRAg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 25 Nov 2019 12:00:36 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Nov 2019 09:00:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,242,1571727600"; 
+   d="scan'208";a="216967925"
+Received: from sjchrist-coffee.jf.intel.com (HELO linux.intel.com) ([10.54.74.41])
+  by fmsmga001.fm.intel.com with ESMTP; 25 Nov 2019 09:00:34 -0800
+Date:   Mon, 25 Nov 2019 09:00:34 -0800
+From:   Sean Christopherson <sean.j.christopherson@intel.com>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Thomas Gleixner <tglx@linutronix.de>,
-        linux-arm-kernel@lists.infradead.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org
-References: <20191121092646.8449-1-nsaenzjulienne@suse.de>
- <20191123165108.GA15306@ubuntu-x2-xlarge-x86> <20191125074412.GA30595@lst.de>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <0b851d0e-37c7-062e-c287-05f8c8a54c16@arm.com>
-Date:   Mon, 25 Nov 2019 16:33:17 +0000
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, Len Brown <len.brown@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Nadav Amit <namit@vmware.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
+Subject: Re: [PATCH 11/12] ACPI/sleep: Convert acpi_wakeup_address into a
+ function
+Message-ID: <20191125170034.GB12178@linux.intel.com>
+References: <20191119002121.4107-1-sean.j.christopherson@intel.com>
+ <20191119002121.4107-12-sean.j.christopherson@intel.com>
+ <7338293.UcAxln0NAJ@kreacher>
+ <20191125104803.v6goacte2vjakx64@ucw.cz>
 MIME-Version: 1.0
-In-Reply-To: <20191125074412.GA30595@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191125104803.v6goacte2vjakx64@ucw.cz>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 25/11/2019 7:44 am, Christoph Hellwig wrote:
-> On Sat, Nov 23, 2019 at 09:51:08AM -0700, Nathan Chancellor wrote:
->> Just as an FYI, this introduces a warning on arm32 allyesconfig for me:
+On Mon, Nov 25, 2019 at 11:48:03AM +0100, Pavel Machek wrote:
+> > On Tuesday, November 19, 2019 1:21:20 AM CET Sean Christopherson wrote:
+> > > Convert acpi_wakeup_address from a raw variable into a function so that
+> > > x86 can wrap its dereference of the real mode boot header in a function
+> > > instead of broadcasting it to the world via a #define.  This sets the
+> > > stage for a future patch to move the definition of acpi_wakeup_address()
+> > > out of asm/acpi.h and thus break acpi.h's dependency on asm/realmode.h.
+> > > 
+> > > No functional change intended.
+> > > 
+> > > Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+> > 
+> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > 
+> > > --- a/drivers/acpi/sleep.c
+> > > +++ b/drivers/acpi/sleep.c
+> > > @@ -63,9 +63,9 @@ static int acpi_sleep_prepare(u32 acpi_state)
+> > >  #ifdef CONFIG_ACPI_SLEEP
+> > >  	/* do we have a wakeup address for S2 and S3? */
+> > >  	if (acpi_state == ACPI_STATE_S3) {
+> > > -		if (!acpi_wakeup_address)
+> > > +		if (!acpi_wakeup_address())
+> > >  			return -EFAULT;
+> > > -		acpi_set_waking_vector(acpi_wakeup_address);
+> > > +		acpi_set_waking_vector(acpi_wakeup_address());
+> > >  
 > 
-> I think the dma_limit argument to iommu_dma_alloc_iova should be a u64
-> and/or we need to use min_t and open code the zero exception.
+> You might want to store result in a variable... especially since you are
+> turning inline function into real one in a next patch.
 > 
-> Robin, Nicolas - any opinions?
+> And maybe function should be called get_acip_wakeup_address or
+> something? This way it is easy to mistake actual wakeup address from
+> function that gets it...
 
-Yeah, given that it's always held a mask I'm not entirely sure why it 
-was ever a dma_addr_t rather than a u64. Unless anyone else is desperate 
-to do it I'll get a cleanup patch ready for rc1.
+Agreed on both counts.
 
-> Also I wonder how this file gets compiled on arm32 given that arm32
-> has its own set of iommu dma ops..
 
-As long as the dependencies for CONFIG_IOMMU_DMA are met it can be built 
-even when it's not actually used. That said, I might have expected that 
-arm allyesconfig ends up with CONFIG_ARCH_DMA_ADDR_T_64BIT=y anyway; I 
-guess it must pick some of CONFIG_ARM_LPAE's negative dependencies.
+Ingo,
 
-(/me doesn't feel like jumping down the all*config rabbit hole today)
-
-Robin.
+Would you prefer a v2 of the entire series (with Acks and removal of Fixes),
+or a v2 that includes only the last two patches?
