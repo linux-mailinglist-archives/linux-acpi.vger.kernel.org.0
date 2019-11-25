@@ -2,93 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E43E410864F
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Nov 2019 02:29:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0211310895F
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Nov 2019 08:44:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727110AbfKYB3V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 24 Nov 2019 20:29:21 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:36582 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727072AbfKYB3V (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 24 Nov 2019 20:29:21 -0500
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 9DEF9FEABABB2759A66B;
-        Mon, 25 Nov 2019 09:29:18 +0800 (CST)
-Received: from [127.0.0.1] (10.74.219.194) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Mon, 25 Nov 2019
- 09:29:11 +0800
-Subject: Re: [PATCH] ACPI: sysfs: Define the variable gpe from u8 to u16 to
- avoid endless loop in function apci_gpe_apply_masked_gpes()
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-References: <1574390957-6313-1-git-send-email-chenxiang66@hisilicon.com>
- <CAJZ5v0ixTZE6sDD4tojNi7=peqCXSrkS3qyHgeo==zKr4AHKTw@mail.gmail.com>
-CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Yunfeng Ye <yeyunfeng@huawei.com>,
-        Linuxarm <linuxarm@huawei.com>,
-        "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>,
-        John Garry <john.garry@huawei.com>
-From:   "chenxiang (M)" <chenxiang66@hisilicon.com>
-Message-ID: <48e035bf-120e-4170-b794-3cf6562ce2ae@hisilicon.com>
-Date:   Mon, 25 Nov 2019 09:29:11 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        id S1726094AbfKYHoS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 25 Nov 2019 02:44:18 -0500
+Received: from verein.lst.de ([213.95.11.211]:34672 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725535AbfKYHoS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 25 Nov 2019 02:44:18 -0500
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id D394368C4E; Mon, 25 Nov 2019 08:44:12 +0100 (CET)
+Date:   Mon, 25 Nov 2019 08:44:12 +0100
+From:   Christoph Hellwig <hch@lst.de>
+To:     Nathan Chancellor <natechancellor@gmail.com>
+Cc:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-ide@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Paul Burton <paulburton@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>, x86@kernel.org,
+        linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        James Hogan <jhogan@kernel.org>, Len Brown <lenb@kernel.org>,
+        devicetree@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2] dma-mapping: treat dev->bus_dma_mask as a DMA limit
+Message-ID: <20191125074412.GA30595@lst.de>
+References: <20191121092646.8449-1-nsaenzjulienne@suse.de> <20191123165108.GA15306@ubuntu-x2-xlarge-x86>
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0ixTZE6sDD4tojNi7=peqCXSrkS3qyHgeo==zKr4AHKTw@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.74.219.194]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191123165108.GA15306@ubuntu-x2-xlarge-x86>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Sat, Nov 23, 2019 at 09:51:08AM -0700, Nathan Chancellor wrote:
+> Just as an FYI, this introduces a warning on arm32 allyesconfig for me:
 
+I think the dma_limit argument to iommu_dma_alloc_iova should be a u64
+and/or we need to use min_t and open code the zero exception.
 
-在 2019/11/22 18:03, Rafael J. Wysocki 写道:
-> On Fri, Nov 22, 2019 at 3:52 AM chenxiang <chenxiang66@hisilicon.com> wrote:
->> From: Xiang Chen <chenxiang66@hisilicon.com>
->>
->> After the patch (eb09878e1301 ("ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100")),
->> the macro ACPI_MASKABLE_GPE_MAX is changed from 0xFF to 0x100. So in function
->> apci_gpe_apply_masked_gpes(), the variable gpe may reach 0x100 but it is
->> defined as u8, so it will be 0 when reaching 0x100. If the bitmap
->> acpi_masked_gpes_map are all 0s, it will loop all the times.
->>
->> To solve endless loop in the function, define the variable gpe from u8 to u16.
->>
->> Fixes: eb09878e1301 ("ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100")
-> This commit has been dropped.
->
-> I have a new version of it queued up with the u16 change below folded it.
+Robin, Nicolas - any opinions?
 
-Ok, thanks!
-
->
-> Thanks!
->
->> Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
->> ---
->>   drivers/acpi/sysfs.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
->> index 0a83ce1..c60d2c6 100644
->> --- a/drivers/acpi/sysfs.c
->> +++ b/drivers/acpi/sysfs.c
->> @@ -838,7 +838,7 @@ void __init acpi_gpe_apply_masked_gpes(void)
->>   {
->>          acpi_handle handle;
->>          acpi_status status;
->> -       u8 gpe;
->> +       u16 gpe;
->>
->>          for_each_set_bit(gpe, acpi_masked_gpes_map, ACPI_MASKABLE_GPE_MAX) {
->>                  status = acpi_get_gpe_device(gpe, &handle);
->> --
->> 2.8.1
->>
-> .
->
-
-
+Also I wonder how this file gets compiled on arm32 given that arm32
+has its own set of iommu dma ops..
