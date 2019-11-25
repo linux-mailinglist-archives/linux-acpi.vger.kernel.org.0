@@ -2,49 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E3E9109313
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Nov 2019 18:48:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FF7910931E
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Nov 2019 18:53:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725851AbfKYRsX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 25 Nov 2019 12:48:23 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:37154 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727464AbfKYRsX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 25 Nov 2019 12:48:23 -0500
-Received: by mail-wr1-f66.google.com with SMTP id t1so19213203wrv.4
-        for <linux-acpi@vger.kernel.org>; Mon, 25 Nov 2019 09:48:21 -0800 (PST)
+        id S1726926AbfKYRxU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 25 Nov 2019 12:53:20 -0500
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:37384 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726118AbfKYRxU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 25 Nov 2019 12:53:20 -0500
+Received: by mail-wm1-f65.google.com with SMTP id f129so257409wmf.2
+        for <linux-acpi@vger.kernel.org>; Mon, 25 Nov 2019 09:53:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=BgkOCn6dEkaCecb5ZyLmsM0vtVrRc/X2TTNPZzp0BGs=;
-        b=avnCZcmnWQYRn2ejXtbreBr+2fzx+QirQ6jMfKAMwEDo3jyctcQvSS6SM6aBRJCAeP
-         kfDeyJNKwf8Ww1fdC45IB/7jKdswYHhGPaF1CAK1k/eHulj1Z8NDM4NLugYgnTl5DEOo
-         YefFZFkbA6n3NhXip9hDUOr85MJpTQj4qNSE9VQlJPLdQNIY7YvpyPpEkKFXnyOnZTKk
-         zxPRxvEFW8WTSxxiqEYBqSc/EW+pCq8OXdDzqUhlOxxL17HZqZAjCdkw8lFuH7Nliyrm
-         MDDF0iP1wW7sCg4O3wkJdWYO3+EHez48clfhcdiT/8bJ80T/RuVV1xpWQm7lYwPafspo
-         67oQ==
+        bh=w762PFi0VU3n3eQDHHvKOAEXrmJ/fz15F0VMqWwRKbE=;
+        b=ucHw3iITUddgxmI0WaTeJ03oRUG5uF8HifGtGA0su/1oL8KAd8AZXtYGuQKcpbum8e
+         d6QnTIGwff7BVf7S6toPsGifytN5SktOO+ePb6YqXPtb6gYo3YNY4PxId/vuZoubQL3B
+         HZEwCDCJkQy+orvI6z5xFNqQfTmQLH9SdLq2Q9e4wsRNaJ0SGNOa+RCVpbB12Hl8Og9f
+         CXY6WHbjQ2/65OtfFrYy/fCeDjmmeVA24mCcyFcYoKY1qa9FXUzoMG82gzImz8jhXo5w
+         bHyegwRNLGNDIEyqqMjAAXkzFtDrFlkTpk8MwFyhHzyAPZmSpbf+F2CL2BoPmWn8fWWF
+         u01g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=BgkOCn6dEkaCecb5ZyLmsM0vtVrRc/X2TTNPZzp0BGs=;
-        b=KITyoZVSj92s3v6jsdTXEKcUXEwqMK8Z9vxwxmNKCKomAszdOteXMLk/VaNuWXldlI
-         VMz6wmqeLeT4nJd1iw0lAxIU6Y0Gd/b54gKD9SeNFFAgYuv1VU/wT4QURvL0Q6SWSxO0
-         /N8WvU5aA7vm5PGoLw9p5Qpzwabzh/P6AL7K49lMdwbr8FqcbzlzuqdexJY6fhkyT1UL
-         XT7iPxzPjV3cGc1o+yL/I6snxHaWpInenNE7NvWO41F7ciuN82DGBH3RSUCoMDl+vkUp
-         zxN2oXqgsiAVvhT014yaCntYgCkQw3An30J7XPahtvXBYygBtuT8USnJoTopx85BgDH8
-         5JbQ==
-X-Gm-Message-State: APjAAAUvtYnZcRAVNatYD8BFmqmWaAxbRgfPY6bBWxoCfiQyc5+TtHN7
-        CkYACRAAJ4TzAAdHCV1e//Mq6g==
-X-Google-Smtp-Source: APXvYqzTUYJqRjRrvNHNtPJwWI/KyemjW5baiqCvdsWHNGy9hgofkwoCe9NS+y/KmUwV3VIZ5E9NFQ==
-X-Received: by 2002:a5d:4acb:: with SMTP id y11mr12150855wrs.106.1574704100857;
-        Mon, 25 Nov 2019 09:48:20 -0800 (PST)
+        bh=w762PFi0VU3n3eQDHHvKOAEXrmJ/fz15F0VMqWwRKbE=;
+        b=p0Q4TpfC1v8zEM+jL7LbhUD6X33Z6WQl2lqBoqOxYoKeolixBk/fYQ+zE9aUF2/Mnz
+         uWEDgxsPQD/31S2NwAC9Yjs1AIG5IbZaOrdWMQB79xNtgtthtMHpV4TBv5RBjy1rMUDH
+         CYAoZ4X3XLgY0YnvNDs21eKbdsC+QtimI5vrF5lrgFCxK1AKj16kQrvlzVFsJS/kN+gc
+         msnuGN13/jPLu1MaNJqZsHH5yAPd5pCQACjrgVuqfToasz74qBkaFugBa8dyBl0r4PdD
+         acwSc4YSKTOD3QbD0vlQ2OWoYKVHVTT03IqXFlg4SIhLvoeGQduSudOJAIoDzU9NPsYt
+         Kyaw==
+X-Gm-Message-State: APjAAAX155Qp59MrtmMoRGiYNDn7Huqq82FTXXNiDCm4VFJ8xt9nCqB2
+        VrUdHhtTZUe4tK8OwxJ0ts/5Nw==
+X-Google-Smtp-Source: APXvYqzAZYIvQKGmfaQYD5lQJqrthSCPdfwYB+f4khqntbOAs2pzi4zET6f0XPBxuKoaB6N7z3djFQ==
+X-Received: by 2002:a7b:c959:: with SMTP id i25mr98865wml.100.1574704399261;
+        Mon, 25 Nov 2019 09:53:19 -0800 (PST)
 Received: from lophozonia (xdsl-188-155-204-106.adslplus.ch. [188.155.204.106])
-        by smtp.gmail.com with ESMTPSA id x7sm11127238wrq.41.2019.11.25.09.48.19
+        by smtp.gmail.com with ESMTPSA id p1sm26490wmc.38.2019.11.25.09.53.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Nov 2019 09:48:20 -0800 (PST)
-Date:   Mon, 25 Nov 2019 18:48:17 +0100
+        Mon, 25 Nov 2019 09:53:18 -0800 (PST)
+Date:   Mon, 25 Nov 2019 18:53:16 +0100
 From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
 To:     "Michael S. Tsirkin" <mst@redhat.com>
 Cc:     linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -57,86 +57,54 @@ Cc:     linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         jasowang@redhat.com, jacob.jun.pan@intel.com,
         eric.auger@redhat.com, sebastien.boeuf@intel.com,
         kevin.tian@intel.com
-Subject: Re: [RFC 13/13] iommu/virtio: Add topology description to
-Message-ID: <20191125174817.GB945122@lophozonia>
+Subject: Re: [RFC 00/13] virtio-iommu on non-devicetree platforms
+Message-ID: <20191125175316.GC945122@lophozonia>
 References: <20191122105000.800410-1-jean-philippe@linaro.org>
- <20191122105000.800410-14-jean-philippe@linaro.org>
- <20191122072753-mutt-send-email-mst@kernel.org>
+ <20191122075438-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191122072753-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20191122075438-mutt-send-email-mst@kernel.org>
 User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 22, 2019 at 07:53:19AM -0500, Michael S. Tsirkin wrote:
-> Overall this looks good to me. The only point is that
-> I think the way the interface is designed makes writing
-> the driver a bit too difficult. Idea: if instead we just
-> have a length field and then an array of records
-> (preferably unions so we don't need to work hard),
-> we can shadow that into memory, then iterate over
-> the unions.
+On Fri, Nov 22, 2019 at 08:00:46AM -0500, Michael S. Tsirkin wrote:
+> > (2) In addition, there are some concerns about having virtio depend on
+> >     ACPI or DT. Some hypervisors (Firecracker, QEMU microvm, kvmtool x86
+> >     [1])
 > 
-> Maybe add a uniform record length + number of records field.
-> Then just skip types you do not know how to handle.
-> This will also help make sure it's within bounds.
+> power?
+
+In kvmtool it boot with device tree. It also doesn't need virtio-iommu I
+think, since it has its own paravirtualized interface.
+
+> > don't currently implement those methods.
+> > 
+> >     It was suggested to embed the topology description into the device.
+> >     It can work, as demonstrated at the end of this RFC, with the
+> >     following limitations:
+> > 
+> >     - The topology description must be read before any endpoint managed
+> >       by the IOMMU is probed, and even before the virtio module is
+> >       loaded. This RFC uses a PCI quirk to manually parse the virtio
+> >       configuration. It assumes that all endpoints managed by the IOMMU
+> >       are under this same PCI host.
+> > 
+> >     - I don't have a solution for the virtio-mmio transport at the
+> >       moment, because I haven't had time to modify a host to test it. I
+> >       think it could either use a notifier on the platform bus, or
+> >       better, a new 'iommu' command-line argument to the virtio-mmio
+> >       driver.
 > 
-> What do you think?
+> 	A notifier seems easier for users. What are the disadvantages of
+> 	that?
 
-Sounds good, that should simplify the implementation a bit.
-
-> You will need to do something to address the TODO I think.
-
-Yes, I'll try to figure out a way to test platform devices.
-
-> > +static void viommu_cwrite(struct pci_dev *dev, int cfg,
-> > +			  struct viommu_cap_config *cap, u32 length, u32 offset,
-> > +			  u32 val)
-> 
-> A single user with 4 byte parameter. Just open-code?
-
-Ok
-
-> > +		cap.head.type = viommu_cread(dev, pci_cfg, dev_cfg, 2, offset);
-> > +		cap.head.next = viommu_cread(dev, pci_cfg, dev_cfg, 2, offset + 2);
-> 
-> All of this doesn't seem to be endian-clean. Try running sparse I think
-> it will complain.
-
-It does, I'll fix this
-
-> > @@ -36,6 +37,31 @@ struct virtio_iommu_config {
-> >  	struct virtio_iommu_range_32		domain_range;
-> >  	/* Probe buffer size */
-> >  	__le32					probe_size;
-> > +	/* Offset to the beginning of the topology table */
-> > +	__le16					topo_offset;
-> 
-> why do we need an offset?
-
-I find it awkward to put a variable-size array in the middle of the
-config. The virtio_iommu_config struct would be easier to extend later if
-we keep the array at the end and only define small static fields here.
-
-> 
-> > +};
-> > +
-> > +struct virtio_iommu_topo_head {
-> > +	__le16					type;
-> > +	__le16					next;
-> > +};
-> 
-> So this linked list makes things harder than necessary imho.
-> It will be easier to just have a counter with # of records.
-> Then make all records the same size.
-> Then just read each record out into a buffer, and
-> handle it there.
-
-Yes, that should simplify things.
+For each device we have to check if it's virtio-mmio, then map the MMIO
+resource and check the device type. Having a dedicated command-line
+argument would be more efficient.
 
 Thanks,
 Jean
