@@ -2,145 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC597109E74
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Nov 2019 14:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C91510A2CA
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Nov 2019 17:56:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726295AbfKZNCR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Nov 2019 08:02:17 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:36506 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726005AbfKZNCQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 Nov 2019 08:02:16 -0500
-Received: by mail-ot1-f65.google.com with SMTP id f10so15807991oto.3;
-        Tue, 26 Nov 2019 05:02:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=a6t3Tx5m+5tPyVolI/88uOygfkVbfUzjcJAhGnLCRII=;
-        b=NDLrzdXpX4xAwUab28sA+j/QRIiDChcrhGsj9j1epMhyViU7ZTmBlSxG/zqWwymzwe
-         UhrfdY0MTzLbnPOoVGR+hQO8ADqpO6sUuPH8gYRnzO9NOV0xu2dTdlyKONzUUw6XwEfk
-         +WwIkQXhEwFqy5aTBo22NZqdXPDm7eYey15KiUrdtowo9gZqBorYe+gFoiewwXvrIUru
-         KEB1WgnZW9BY+wluAYwJVYcQFmSrlta/6WoxD+crCMIbMqNJEWXYzMMvTc7J+Tn0jHT3
-         Xx8k/1icKpgmzo7ZDyP84OruJUiJHy/IgQonXq5l085lmtuszf9P5pnehVGANmWz/278
-         h3aA==
-X-Gm-Message-State: APjAAAWJJXqfzbi/MUfRXQ6Trkb+o8kkxOnopSW4aSQbnAQfVtgQ55z8
-        ueWKl8Q/Ayg8d4AgEGqdSzKDa+a+HihXEvKJMlc=
-X-Google-Smtp-Source: APXvYqymvChDyM/t6YfoooZrIA2KvQa7JtHGhT56HIprePtkPtxG4n7ZFHHds0oUpiT7Qc1ZFurcTBenbhdMHL771wE=
-X-Received: by 2002:a9d:6b91:: with SMTP id b17mr2168488otq.189.1574773334221;
- Tue, 26 Nov 2019 05:02:14 -0800 (PST)
+        id S1728515AbfKZQyn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Nov 2019 11:54:43 -0500
+Received: from mga17.intel.com ([192.55.52.151]:10925 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727756AbfKZQym (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 26 Nov 2019 11:54:42 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Nov 2019 08:54:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,246,1571727600"; 
+   d="scan'208";a="217197185"
+Received: from sjchrist-coffee.jf.intel.com ([10.54.74.41])
+  by fmsmga001.fm.intel.com with ESMTP; 26 Nov 2019 08:54:41 -0800
+From:   Sean Christopherson <sean.j.christopherson@intel.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>
+Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Nadav Amit <nadav.amit@gmail.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
+Subject: [PATCH v2 00/12] treewide: break dependencies on x86's RM header
+Date:   Tue, 26 Nov 2019 08:54:05 -0800
+Message-Id: <20191126165417.22423-1-sean.j.christopherson@intel.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 26 Nov 2019 14:02:03 +0100
-Message-ID: <CAJZ5v0ih9pkWuMkDyKxG3rRnwELtNt+zz9JRudOgEAjS=XZawA@mail.gmail.com>
-Subject: [GIT PULL] Device properties framework updates for v5.5-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Petr Mladek <pmladek@suse.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+x86's asm/realmode.h, which defines low level structures, variables and
+helpers used to bring up APs during SMP boot, ends up getting included in
+practically every nook and cranny of the kernel because the address used
+by ACPI for resuming from S3 also happens to be stored in the real mode
+header, and ACPI bleeds the dependency into its widely included headers.
 
-Please pull from the tag
+As a result, modifying realmode.h for even the most trivial change to the
+boot code triggers a full kernel rebuild, which is frustrating to say the
+least as it some of the most difficult code to get exactly right *and* is
+also some of the most functionally isolated code in the kernel.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- devprop-5.5-rc1
+To break the kernel's widespread dependency on realmode.h, add a wrapper
+in the aforementioned ACPI S3 code to access the real mode header instead
+of derefencing the header directly in asm/acpi.h and thereby exposing it
+to the world via linux/acpi.h.
 
-with top-most commit 1afc14032e54a7e6c38304dc9a6bda1b6416f2b7
+v2:
+  - Rebased on tip/x86/cleanups, commit b74374fef924 ("x86/setup: Enhance
+    the comments").
+  - Use acpi_get_wakeup_address() as new function name. [Boris and Pavel]
+  - Capture acpi_get_wakeup_address() in a local address. [Pavel]
+  - Collect acks.  I didn't add Rafael's acks on patches 11 and 12 due to
+    the above changes.
+  - Explicitly call out the removal of <asm/realmode.h> from <asm/acpi.h>
+    in patch 12. [Ingo]
+  - Remove superfluous Fixes: tags. [Ard]
 
- software node: simplify property_entry_read_string_array()
+Patch Synopsis:
+  - Patches 01-09 fix a variety of build errors that arise when patch 12
+    drops realmode.h from asm/acpi.h.  Most of the errors are quite absurb
+    as they have no relation whatsoever to x86's RM boot code, but occur
+    because realmode.h happens to include asm/io.h.
 
-on top of commit da0c9ea146cbe92b832f1b0f694840ea8eb33cce
+  - Patch 10 removes a spurious include of realmode.h from an ACPI header.
 
- Linux 5.4-rc2
-
-to receive device properties framework updates for 5.5-rc1.
-
-These add support for printing fwnode names using a new conversion
-specifier "%pfw" (Sakari Ailus), clean up the software node and
-efi/apple-properties code in preparation for improved software node
-reference properties handling (Dmitry Torokhov) and fix the struct
-fwnode_operations description (Heikki Krogerus).
-
-There is a merge conflict between this and the printk tree (affecting
-checkpatch.pl) that has been addressed by the appended patch from
-Stephen in linux-next.
-
-Thanks!
-
-
----------------
-
-Dmitry Torokhov (9):
-      software node: remove DEV_PROP_MAX
-      software node: introduce PROPERTY_ENTRY_XXX_ARRAY_LEN()
-      efi/apple-properties: use PROPERTY_ENTRY_U8_ARRAY_LEN
-      software node: mark internal macros with double underscores
-      software node: clean up property_copy_string_array()
-      software node: get rid of property_set_pointer()
-      software node: remove property_entry_read_uNN_array functions
-      software node: unify PROPERTY_ENTRY_XXX macros
-      software node: simplify property_entry_read_string_array()
-
-Heikki Krogerus (1):
-      device property: Fix the description of struct fwnode_operations
-
-Sakari Ailus (12):
-      software node: Get reference to parent swnode in get_parent op
-      software node: Make argument to to_software_node const
-      device property: Move fwnode_get_parent() up
-      device property: Add functions for accessing node's parents
-      device property: Add fwnode_get_name for returning the name of a node
-      device property: Add a function to obtain a node's prefix
-      lib/vsprintf: Remove support for %pF and %pf in favour of %pS and %ps
-      lib/vsprintf: Add a note on re-using %pf or %pF
-      lib/vsprintf: Make use of fwnode API to obtain node names and separators
-      lib/vsprintf: OF nodes are first and foremost, struct device_nodes
-      lib/vsprintf: Add %pfw conversion specifier for printing fwnode names
-      lib/test_printf: Add tests for %pfw printk modifier
-
----------------
-
- Documentation/core-api/printk-formats.rst |  34 ++--
- drivers/acpi/property.c                   |  48 ++++++
- drivers/base/property.c                   |  83 +++++++++-
- drivers/base/swnode.c                     | 258 ++++++++++--------------------
- drivers/firmware/efi/apple-properties.c   |  18 +--
- drivers/of/property.c                     |  16 ++
- include/linux/fwnode.h                    |  10 +-
- include/linux/property.h                  | 106 ++++++------
- lib/test_printf.c                         |  32 ++++
- lib/vsprintf.c                            |  93 ++++++-----
- scripts/checkpatch.pl                     |   9 +-
- 11 files changed, 414 insertions(+), 293 deletions(-)
+  - Patches 11 and 12 implement the wrapper and move it out of acpi.h.
 
 
----------------
+Sean Christopherson (12):
+  x86/efi: Explicitly include realmode.h to handle RM trampoline quirk
+  x86/boot: Explicitly include realmode.h to handle RM reservations
+  x86/ftrace: Explicitly include vmalloc.h for
+    set_vm_flush_reset_perms()
+  x86/kprobes: Explicitly include vmalloc.h for
+    set_vm_flush_reset_perms()
+  perf/x86/intel: Explicitly include asm/io.h to use virt_to_phys()
+  efi/capsule-loader: Explicitly include linux/io.h for page_to_phys()
+  virt: vbox: Explicitly include linux/io.h to pick up various defs
+  vmw_balloon: Explicitly include linux/io.h for virt_to_phys()
+  ASoC: Intel: Skylake: Explicitly include linux/io.h for virt_to_phys()
+  x86/ACPI/sleep: Remove an unnecessary include of asm/realmode.h
+  ACPI/sleep: Convert acpi_wakeup_address into a function
+  x86/ACPI/sleep: Move acpi_get_wakeup_address() into sleep.c, remove
+    <asm/realmode.h> from <asm/acpi.h>
 
-diff --cc scripts/checkpatch.pl
-index 4b40445938dc,3d1f08fa091c..000000000000
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@@ -6019,10 -6020,13 +6020,13 @@@ sub process
-                  my $fmt = get_quoted_string($lines[$count - 1],
-raw_line($count, 0));
-                  $fmt =~ s/%%//g;
+ arch/ia64/include/asm/acpi.h             |  5 ++++-
+ arch/ia64/kernel/acpi.c                  |  2 --
+ arch/x86/events/intel/ds.c               |  1 +
+ arch/x86/include/asm/acpi.h              |  3 +--
+ arch/x86/kernel/acpi/sleep.c             | 11 +++++++++++
+ arch/x86/kernel/acpi/sleep.h             |  2 +-
+ arch/x86/kernel/ftrace.c                 |  1 +
+ arch/x86/kernel/kprobes/core.c           |  1 +
+ arch/x86/kernel/setup.c                  |  1 +
+ arch/x86/platform/efi/quirks.c           |  1 +
+ drivers/acpi/sleep.c                     |  3 +++
+ drivers/firmware/efi/capsule-loader.c    |  1 +
+ drivers/misc/vmw_balloon.c               |  1 +
+ drivers/virt/vboxguest/vboxguest_core.c  |  1 +
+ drivers/virt/vboxguest/vboxguest_utils.c |  1 +
+ sound/soc/intel/skylake/skl-sst-cldma.c  |  1 +
+ 16 files changed, 30 insertions(+), 6 deletions(-)
 
--                 while ($fmt =~ /(\%[\*\d\.]*p(\w))/g) {
-+                 while ($fmt =~ /(\%[\*\d\.]*p(\w)(\w*))/g) {
-                      $specifier = $1;
-                      $extension = $2;
--                     if ($extension !~ /[SsBKRraEehMmIiUDdgVCbGNOxt]/) {
-+                     $qualifier = $3;
- -                    if ($extension !~ /[SsBKRraEhMmIiUDdgVCbGNOxtf]/ ||
-++                    if ($extension !~ /[SsBKRraEehMmIiUDdgVCbGNOxtf]/ ||
-+                         ($extension eq "f" &&
-+                          defined $qualifier && $qualifier !~ /^w/)) {
-                          $bad_specifier = $specifier;
-                          last;
-                      }
+-- 
+2.24.0
+
