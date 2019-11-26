@@ -2,130 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6E6610A296
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Nov 2019 17:54:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDEBA10A432
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Nov 2019 19:52:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728747AbfKZQy6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Nov 2019 11:54:58 -0500
-Received: from mga17.intel.com ([192.55.52.151]:10936 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728733AbfKZQy5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 26 Nov 2019 11:54:57 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Nov 2019 08:54:56 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,246,1571727600"; 
-   d="scan'208";a="217197254"
-Received: from sjchrist-coffee.jf.intel.com ([10.54.74.41])
-  by fmsmga001.fm.intel.com with ESMTP; 26 Nov 2019 08:54:55 -0800
-From:   Sean Christopherson <sean.j.christopherson@intel.com>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>
-Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+        id S1726200AbfKZSwM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Nov 2019 13:52:12 -0500
+Received: from mx2.suse.de ([195.135.220.15]:45252 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726052AbfKZSwL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 26 Nov 2019 13:52:11 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 38C30ABD6;
+        Tue, 26 Nov 2019 18:52:08 +0000 (UTC)
+Message-ID: <45feed391bbd95c46f64b31cf8817d4f773c8da1.camel@suse.de>
+Subject: Re: [PATCH v2] dma-mapping: treat dev->bus_dma_mask as a DMA limit
+From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To:     Robin Murphy <robin.murphy@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Nathan Chancellor <natechancellor@gmail.com>
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-ide@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
         "H. Peter Anvin" <hpa@zytor.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Nadav Amit <nadav.amit@gmail.com>,
-        "VMware, Inc." <pv-drivers@vmware.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: [PATCH v2 12/12] x86/ACPI/sleep: Move acpi_get_wakeup_address() into sleep.c, remove <asm/realmode.h> from <asm/acpi.h>
-Date:   Tue, 26 Nov 2019 08:54:17 -0800
-Message-Id: <20191126165417.22423-13-sean.j.christopherson@intel.com>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191126165417.22423-1-sean.j.christopherson@intel.com>
-References: <20191126165417.22423-1-sean.j.christopherson@intel.com>
+        Paul Burton <paulburton@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>, x86@kernel.org,
+        linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        James Hogan <jhogan@kernel.org>, Len Brown <lenb@kernel.org>,
+        devicetree@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Date:   Tue, 26 Nov 2019 19:51:59 +0100
+In-Reply-To: <0b851d0e-37c7-062e-c287-05f8c8a54c16@arm.com>
+References: <20191121092646.8449-1-nsaenzjulienne@suse.de>
+         <20191123165108.GA15306@ubuntu-x2-xlarge-x86>
+         <20191125074412.GA30595@lst.de>
+         <0b851d0e-37c7-062e-c287-05f8c8a54c16@arm.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-B9dp7hYRMOcivm0VMcWv"
+User-Agent: Evolution 3.34.1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Move the definition of acpi_get_wakeup_address() into sleep.c to break
-linux/acpi.h's dependency (by way of asm/acpi.h) on asm/realmode.h.
-Everyone and their mother includes linux/acpi.h, i.e. modifying
-realmode.h results in a full kernel rebuild, which makes the already
-inscrutable real mode boot code even more difficult to understand and is
-positively rage inducing when trying to make changes to x86's boot flow.
 
-No functional change intended.
+--=-B9dp7hYRMOcivm0VMcWv
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
----
- arch/x86/include/asm/acpi.h  |  6 +-----
- arch/x86/kernel/acpi/sleep.c | 11 +++++++++++
- 2 files changed, 12 insertions(+), 5 deletions(-)
+On Mon, 2019-11-25 at 16:33 +0000, Robin Murphy wrote:
+> On 25/11/2019 7:44 am, Christoph Hellwig wrote:
+> > On Sat, Nov 23, 2019 at 09:51:08AM -0700, Nathan Chancellor wrote:
+> > > Just as an FYI, this introduces a warning on arm32 allyesconfig for m=
+e:
+> >=20
+> > I think the dma_limit argument to iommu_dma_alloc_iova should be a u64
+> > and/or we need to use min_t and open code the zero exception.
+> >=20
+> > Robin, Nicolas - any opinions?
+>=20
+> Yeah, given that it's always held a mask I'm not entirely sure why it=20
+> was ever a dma_addr_t rather than a u64. Unless anyone else is desperate=
+=20
+> to do it I'll get a cleanup patch ready for rc1.
 
-diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
-index 23ffafd927a1..ca0976456a6b 100644
---- a/arch/x86/include/asm/acpi.h
-+++ b/arch/x86/include/asm/acpi.h
-@@ -13,7 +13,6 @@
- #include <asm/processor.h>
- #include <asm/mmu.h>
- #include <asm/mpspec.h>
--#include <asm/realmode.h>
- #include <asm/x86_init.h>
- 
- #ifdef CONFIG_ACPI_APEI
-@@ -62,10 +61,7 @@ static inline void acpi_disable_pci(void)
- extern int (*acpi_suspend_lowlevel)(void);
- 
- /* Physical address to resume after wakeup */
--static inline unsigned long acpi_get_wakeup_address(void)
--{
--	return ((unsigned long)(real_mode_header->wakeup_start));
--}
-+unsigned long acpi_get_wakeup_address(void);
- 
- /*
-  * Check if the CPU can handle C2 and deeper
-diff --git a/arch/x86/kernel/acpi/sleep.c b/arch/x86/kernel/acpi/sleep.c
-index ca13851f0570..26b7256f590f 100644
---- a/arch/x86/kernel/acpi/sleep.c
-+++ b/arch/x86/kernel/acpi/sleep.c
-@@ -26,6 +26,17 @@ unsigned long acpi_realmode_flags;
- static char temp_stack[4096];
- #endif
- 
-+/**
-+ * acpi_get_wakeup_address - provide physical address for S3 wakeup
-+ *
-+ * Returns the physical address where the kernel should be resumed after the
-+ * system awakes from S3, e.g. for programming into the firmware waking vector.
-+ */
-+unsigned long acpi_get_wakeup_address(void)
-+{
-+	return ((unsigned long)(real_mode_header->wakeup_start));
-+}
-+
- /**
-  * x86_acpi_enter_sleep_state - enter sleep state
-  * @state: Sleep state to enter.
--- 
-2.24.0
+Sounds good to me too
+
+Robin, since I started the mess, I'll be happy to do it if it helps offload=
+ing
+some work from you.
+
+Regards,
+Nicolas
+
+
+--=-B9dp7hYRMOcivm0VMcWv
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl3ddE8ACgkQlfZmHno8
+x/5fVwgAnN7cpWXNHEbGgqyZcMqmBWCtR0bMa/xIu1xNgr/CAwMMZj0Z3/+6d18p
+mlU5N6AqlkTxefP9mV5ZxBzugcsriGR4+qJ05kZZAMxAeG625qDkfhSEl0FmUZRT
+WmEv98IN0aFzHEjZJAyPDNV8Ff1a3JpoHKQmnYs5z438rMZt49CPBC0jNPFdaEuj
+v9ry1DkR+cGYuD1WRyBQJjtze14XoG7ZCu0o9Htc02GZHq3OuabxDikuTC+UJ1jR
+BZX4ak4qGpJUGYT8fQA7IOA94Sd/N/CHMrDp8yv5f/kRcprKqgGX8PnMCUOPf4ns
+PsCZZGhEKvVwZy3/+QzWSYQ7q20O8w==
+=WYKI
+-----END PGP SIGNATURE-----
+
+--=-B9dp7hYRMOcivm0VMcWv--
 
