@@ -2,53 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F6A810A962
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Nov 2019 05:20:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16FE410A95D
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Nov 2019 05:20:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727360AbfK0EUN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Nov 2019 23:20:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44308 "EHLO mail.kernel.org"
+        id S1727394AbfK0EUO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Nov 2019 23:20:14 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44334 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727336AbfK0EUN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 26 Nov 2019 23:20:13 -0500
-Subject: Re: [GIT PULL] Power management updates for v5.5-rc1
+        id S1727374AbfK0EUO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 26 Nov 2019 23:20:14 -0500
+Subject: Re: [GIT PULL] ACPI updates for v5.5-rc1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574828412;
-        bh=MpGt7A+tJVPI9TqYM/+0komBT3LxkrKVeaJQlsO6wbw=;
+        s=default; t=1574828414;
+        bh=7U5QvbOcu2GrhmPv65Z5K1XMND22gyJT+/bvOU+tXtM=;
         h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=2s4iBhFrDJ9pbObCYBQZZ9M+tQ887pEftr+Yh7Pve0GDUguDfBu2bHgo9f6ELTBm8
-         EeYSiHB1kUtiUod1k6CZqPv/JesWeb9zCQEh0+B7SuCPVk5DT0z6BKy0VAySOf6FxU
-         Zz06I5KU6RvtEs5DLi3Hyq5eYSV91CU6jVk3DQ4c=
+        b=JqILwvzR1BsJxoAyrFiYdqGkCOKo2kTaSk7aJj/tnQq/wh942VjyvBbocQsgTNXlu
+         QK6fedUdzir4oTXS7t7Aj73kKtbJzAO6Pth+yfM0ND99yiDXVC+jo4QG45R4ZQMMpD
+         3hJWrD8p3bYncFROQ73w3Ytg8Ryl1Rt3t/eT82Nw=
 From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0hNKs11t2d0L=GkMN5RgOBfQ7sgss4U0VEJtS=EETwtNA@mail.gmail.com>
-References: <CAJZ5v0hNKs11t2d0L=GkMN5RgOBfQ7sgss4U0VEJtS=EETwtNA@mail.gmail.com>
+In-Reply-To: <CAJZ5v0g944ZbCaoCvGcT7EFJVKW5efSMgf9oi_d3iP_3+iwbNg@mail.gmail.com>
+References: <CAJZ5v0g944ZbCaoCvGcT7EFJVKW5efSMgf9oi_d3iP_3+iwbNg@mail.gmail.com>
 X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0hNKs11t2d0L=GkMN5RgOBfQ7sgss4U0VEJtS=EETwtNA@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-5.5-rc1
-X-PR-Tracked-Commit-Id: e350b60f4e0f089f585d738e27213c8133fe9093
+X-PR-Tracked-Message-Id: <CAJZ5v0g944ZbCaoCvGcT7EFJVKW5efSMgf9oi_d3iP_3+iwbNg@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
+ acpi-5.5-rc1
+X-PR-Tracked-Commit-Id: 782b59711e1561ee0da06bc478ca5e8249aa8d09
 X-PR-Merge-Tree: torvalds/linux.git
 X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 9e7a03233e02afd3ee061e373355f34d7254f1e6
-Message-Id: <157482841259.9403.10685238655465251112.pr-tracker-bot@kernel.org>
-Date:   Wed, 27 Nov 2019 04:20:12 +0000
+X-PR-Merge-Commit-Id: 6e9f879684b46331f51d0c76ebee981c788417db
+Message-Id: <157482841395.9403.2315371254751175937.pr-tracker-bot@kernel.org>
+Date:   Wed, 27 Nov 2019 04:20:13 +0000
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
+        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Tue, 26 Nov 2019 13:55:32 +0100:
+The pull request you sent on Tue, 26 Nov 2019 13:59:13 +0100:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-5.5-rc1
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.5-rc1
 
 has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/9e7a03233e02afd3ee061e373355f34d7254f1e6
+https://git.kernel.org/torvalds/c/6e9f879684b46331f51d0c76ebee981c788417db
 
 Thank you!
 
