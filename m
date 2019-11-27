@@ -2,162 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75E8410AE0A
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Nov 2019 11:45:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB49910B198
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Nov 2019 15:47:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726204AbfK0KpV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Nov 2019 05:45:21 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:27338 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726520AbfK0KpV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Nov 2019 05:45:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574851520;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=l/3MGv98rgFgoCMZfAmBw7k1xxpvoLbBGUfXwIUDWQc=;
-        b=ha9dLUpQhZH/EMk3Q+MogtmYyHyiIwljvKVTTJNdnEj8E/Vo3M5i7MPQFo8DGp9DxZ9lx/
-        D5ax2pWyhpAR1TehqrUm9xOfCHIZEqQqVLPiexPf1n+9wMhkvXe/yzFQ75SbAldTlT1aUE
-        luAg+IikHqTAFcRVCqGJft+LoneuBBI=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-146-dUi1VHUqNaeAbivw9GHNVg-1; Wed, 27 Nov 2019 05:45:16 -0500
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 940981852E3F;
-        Wed, 27 Nov 2019 10:45:14 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-117-253.ams2.redhat.com [10.36.117.253])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2B7075D9E1;
-        Wed, 27 Nov 2019 10:45:13 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH v2 2/2] gpiolib: acpi: Add honor_wakeup module-option + quirk mechanism
-Date:   Wed, 27 Nov 2019 11:45:09 +0100
-Message-Id: <20191127104509.10196-2-hdegoede@redhat.com>
-In-Reply-To: <20191127104509.10196-1-hdegoede@redhat.com>
-References: <20191127104509.10196-1-hdegoede@redhat.com>
+        id S1727071AbfK0OrF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Nov 2019 09:47:05 -0500
+Received: from mga14.intel.com ([192.55.52.115]:18703 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726537AbfK0OrF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 27 Nov 2019 09:47:05 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Nov 2019 06:47:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,249,1571727600"; 
+   d="scan'208";a="203094641"
+Received: from sjchrist-coffee.jf.intel.com (HELO linux.intel.com) ([10.54.74.41])
+  by orsmga008.jf.intel.com with ESMTP; 27 Nov 2019 06:47:03 -0800
+Date:   Wed, 27 Nov 2019 06:47:03 -0800
+From:   Sean Christopherson <sean.j.christopherson@intel.com>
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Nadav Amit <nadav.amit@gmail.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
+Subject: Re: [PATCH v2 00/12] treewide: break dependencies on x86's RM header
+Message-ID: <20191127144703.GA18530@linux.intel.com>
+References: <20191126165417.22423-1-sean.j.christopherson@intel.com>
+ <20191127072057.GB94748@gmail.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-MC-Unique: dUi1VHUqNaeAbivw9GHNVg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191127072057.GB94748@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On some laptops enabling wakeup on the GPIO interrupts used for ACPI _AEI
-event handling causes spurious wakeups.
+On Wed, Nov 27, 2019 at 08:20:57AM +0100, Ingo Molnar wrote:
+> 
+> * Sean Christopherson <sean.j.christopherson@intel.com> wrote:
+> 
+> > x86's asm/realmode.h, which defines low level structures, variables and
+> > helpers used to bring up APs during SMP boot, ends up getting included in
+> > practically every nook and cranny of the kernel because the address used
+> > by ACPI for resuming from S3 also happens to be stored in the real mode
+> > header, and ACPI bleeds the dependency into its widely included headers.
+> > 
+> > As a result, modifying realmode.h for even the most trivial change to the
+> > boot code triggers a full kernel rebuild, which is frustrating to say the
+> > least as it some of the most difficult code to get exactly right *and* is
+> > also some of the most functionally isolated code in the kernel.
+> > 
+> > To break the kernel's widespread dependency on realmode.h, add a wrapper
+> > in the aforementioned ACPI S3 code to access the real mode header instead
+> > of derefencing the header directly in asm/acpi.h and thereby exposing it
+> > to the world via linux/acpi.h.
+> > 
+> > v2:
+> >   - Rebased on tip/x86/cleanups, commit b74374fef924 ("x86/setup: Enhance
+> >     the comments").
+> >   - Use acpi_get_wakeup_address() as new function name. [Boris and Pavel]
+> >   - Capture acpi_get_wakeup_address() in a local address. [Pavel]
+> >   - Collect acks.  I didn't add Rafael's acks on patches 11 and 12 due to
+> >     the above changes.
+> >   - Explicitly call out the removal of <asm/realmode.h> from <asm/acpi.h>
+> >     in patch 12. [Ingo]
+> >   - Remove superfluous Fixes: tags. [Ard]
+> 
+> You didn't include every patch from v1 though, such us my fix to Quark:
+> 
+>   [PATCH] x86/platform/intel/quark: Explicitly include linux/io.h for virt_to_phys()
+> 
+> I've applied that one too and your updated patches, and it's now all 
+> pushed out into tip:WIP.core/headers.
 
-This commit adds a new honor_wakeup option, defaulting to true (our current
-behavior), which can be used to disable wakeup on troublesome hardware
-to avoid these spurious wakeups.
-
-This is a workaround for an architectural problem with s2idle under Linux
-where we do not have any mechanism to immediately go back to sleep after
-wakeup events, other then for embedded-controller events using the standard
-ACPI EC interface, for details see:
-https://lore.kernel.org/linux-acpi/61450f9b-cbc6-0c09-8b3a-aff6bf9a0b3c@red=
-hat.com/
-
-One series of laptops which is not able to suspend without this workaround
-is the HP x2 10 Cherry Trail models, this commit adds a DMI based quirk
-which makes sets honor_wakeup to false on these models.
-
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v2:
-- Use honor_wakeup && ... instead of if (honor_wakeup) ...
-- Fix some typos in the comment explaining the need for the quirk
----
- drivers/gpio/gpiolib-acpi.c | 32 +++++++++++++++++++++++++++++++-
- 1 file changed, 31 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 2b47d906d536..31fee5e918b7 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -22,12 +22,18 @@
- #include "gpiolib-acpi.h"
-=20
- #define QUIRK_NO_EDGE_EVENTS_ON_BOOT=09=090x01l
-+#define QUIRK_NO_WAKEUP=09=09=09=090x02l
-=20
- static int run_edge_events_on_boot =3D -1;
- module_param(run_edge_events_on_boot, int, 0444);
- MODULE_PARM_DESC(run_edge_events_on_boot,
- =09=09 "Run edge _AEI event-handlers at boot: 0=3Dno, 1=3Dyes, -1=3Dauto")=
-;
-=20
-+static int honor_wakeup =3D -1;
-+module_param(honor_wakeup, int, 0444);
-+MODULE_PARM_DESC(honor_wakeup,
-+=09=09 "Honor the ACPI wake-capable flag: 0=3Dno, 1=3Dyes, -1=3Dauto");
-+
- /**
-  * struct acpi_gpio_event - ACPI GPIO event handler data
-  *
-@@ -283,7 +289,7 @@ static acpi_status acpi_gpiochip_alloc_event(struct acp=
-i_resource *ares,
- =09event->handle =3D evt_handle;
- =09event->handler =3D handler;
- =09event->irq =3D irq;
--=09event->irq_is_wake =3D agpio->wake_capable =3D=3D ACPI_WAKE_CAPABLE;
-+=09event->irq_is_wake =3D honor_wakeup && agpio->wake_capable =3D=3D ACPI_=
-WAKE_CAPABLE;
- =09event->pin =3D pin;
- =09event->desc =3D desc;
-=20
-@@ -1337,6 +1343,23 @@ static const struct dmi_system_id gpiolib_acpi_quirk=
-s[] =3D {
- =09=09},
- =09=09.driver_data =3D (void *)QUIRK_NO_EDGE_EVENTS_ON_BOOT,
- =09},
-+=09{
-+=09=09/*
-+=09=09 * Various HP X2 10 Cherry Trail models use an external
-+=09=09 * embedded-controller connected via I2C + an ACPI GPIO
-+=09=09 * event handler. The embedded controller generates various
-+=09=09 * spurious wakeup events when suspended. So disable wakeup
-+=09=09 * for its handler (it uses the only ACPI GPIO event handler).
-+=09=09 * This breaks wakeup when opening the lid, the user needs
-+=09=09 * to press the power-button to wakeup the system. The
-+=09=09 * alternative is suspend simply not working, which is worse.
-+=09=09 */
-+=09=09.matches =3D {
-+=09=09=09DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+=09=09=09DMI_MATCH(DMI_PRODUCT_NAME, "HP x2 Detachable 10-p0XX"),
-+=09=09},
-+=09=09.driver_data =3D (void *)QUIRK_NO_WAKEUP,
-+=09},
- =09{} /* Terminating entry */
- };
-=20
-@@ -1356,6 +1379,13 @@ static int acpi_gpio_setup_params(void)
- =09=09=09run_edge_events_on_boot =3D 1;
- =09}
-=20
-+=09if (honor_wakeup < 0) {
-+=09=09if (quirks & QUIRK_NO_WAKEUP)
-+=09=09=09honor_wakeup =3D 0;
-+=09=09else
-+=09=09=09honor_wakeup =3D 1;
-+=09}
-+
- =09return 0;
- }
-=20
---=20
-2.23.0
-
+Sorry, it wasn't clear to me whether or not to include that one.  Next
+time I'll ask.
