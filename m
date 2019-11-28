@@ -2,83 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19CCC10C994
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Nov 2019 14:35:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBF5910CFD5
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Nov 2019 23:51:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726586AbfK1Nfm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 Nov 2019 08:35:42 -0500
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:45129 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726565AbfK1Nfl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Nov 2019 08:35:41 -0500
-Received: by mail-lf1-f68.google.com with SMTP id 203so20052435lfa.12
-        for <linux-acpi@vger.kernel.org>; Thu, 28 Nov 2019 05:35:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jvu9OZfemBYDKg0MnhgqQk6YdpE94ksYWMXeOTcKvqI=;
-        b=rZpffZGhAtCrVfEJ0STTAMBuizBQYAW52mwdkSePWuUDC6OQ0zz8Z9UVdUnR6H2hrY
-         K8Zvn9LxDwzAlWTeJB7Ldx3bCWiqA26Hw3n9v/gp2fQF0eKMGpFlNmWAhySJS3XNTdas
-         UUYv0H6vIgRTCERz1VJr2aOhsjB4FMCFbAux9lo6Cj8a+zIJaKjQ2RPLedJmZmMefZkO
-         2hd68TxsA4uugErhZ0gKWJvLLL3X1uaEi7ucIqoM58qk7UPERby7BEqxbpuqpWVJFpK0
-         FvtarJybUCicf7nDe5WUj+gFj10VYyPHsGggZmdyoMKuoCbUs3mvy/kEGkC9/BW9M5mK
-         RBqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jvu9OZfemBYDKg0MnhgqQk6YdpE94ksYWMXeOTcKvqI=;
-        b=IAuzZn5Lcbk8eoXGPVGlITDMr9gAUPXvyL58apalge44pJ5fQspV0UxwtlkBOV2mQA
-         fBwo2255upxbgZ8YNiT4CkW3+u/77o1XIgmiaCzOZgHWOEdfDXnX2GamciWqMKi43IYr
-         8ntXS6UNHKhX/Q4geZuoPRjQErCyyisXVBFn/aA0hviCCHKhHjRmIM+nrZYDE4r3nxDG
-         aXKw9sxDuIe+q6QlbSCRNtbKeEwld5OF6Z1Gr7RjCXv/2DARxekt150KrE/9SOT48i52
-         97IMjUt4XsuJp1SlKP89GrVCXIDPoOB7+x1iO9Td4aIZCH5ne5R3T8ZMBmiB+mYI/n8X
-         kJoQ==
-X-Gm-Message-State: APjAAAWLi2IrZ/BJyVG6MUYMPHv9SMi2KKLrmsV2cv7BWyCJasyUPWkq
-        Pzdv2oedHvggDOojc6csRvIaJMRswhcFCDHAb7xC7axkprA=
-X-Google-Smtp-Source: APXvYqzK0FbZzikTAfGQ/Uf5e40RCuK+895pCTYy155zY+oNBupV1A0B056rLvdFg3jVNLYSLcvbRBi8zlZyV8ONdPA=
-X-Received: by 2002:a19:645b:: with SMTP id b27mr22047811lfj.117.1574948139781;
- Thu, 28 Nov 2019 05:35:39 -0800 (PST)
+        id S1726729AbfK1WvC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 Nov 2019 17:51:02 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:45514 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726582AbfK1WvC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Nov 2019 17:51:02 -0500
+Received: from 79.184.255.242.ipv4.supernova.orange.pl (79.184.255.242) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.320)
+ id 7a1bba6277687c37; Thu, 28 Nov 2019 23:51:00 +0100
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Kenneth R. Crudup" <kenny@panix.com>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: [PATCH 0/2] ACPI: PM: s2idle: Fix possible suspend lock-up
+Date:   Thu, 28 Nov 2019 23:42:09 +0100
+Message-ID: <2787005.CsmIKtZlk9@kreacher>
 MIME-Version: 1.0
-References: <20191127104509.10196-1-hdegoede@redhat.com>
-In-Reply-To: <20191127104509.10196-1-hdegoede@redhat.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 28 Nov 2019 14:35:28 +0100
-Message-ID: <CACRpkdZVPJyagQT4UwZDUHBvg0erFCwQumNKX9U3=AcHi=ZQGw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] gpiolib: acpi: Turn dmi_system_id table into a
- generic quirk table
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 27, 2019 at 11:45 AM Hans de Goede <hdegoede@redhat.com> wrote:
+Hi All,
 
-> Turn the existing run_edge_events_on_boot_blacklist dmi_system_id table
-> into a generic quirk table, storing the quirks in the driver_data ptr.
->
-> This is a preparation patch for adding other types of (DMI based) quirks.
->
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+The first patch in this series is a fix for a suspend-to-idle issues introduced
+in 5.4 (see its changelog for details).
 
-This patch does not apply to my "devel" branch, which I am about
-to send to Torvalds, so it will very soon be the mainline.
+The second one is more of an optimization, although some systems may need it
+too (depending on how fragile their platform firmware is).
 
-Could you rebase it and I will queue it up for fixes.
+Kenneth,
 
-Also: should these two be tagged for stable? (I.e. a non-v5.5
-problem.) I suppose that requires backporting for -stable
-though.
+This series is roughly equivalent to the patch at
 
-Yours,
-Linus Walleij
+https://lore.kernel.org/linux-pm/CAJZ5v0h1Ro75++4xuCznkx6GNYd+G5NpMGP96z1jdh=dm9uZbw@mail.gmail.com/T/#m11ca9a14efe4e5193bbda69767595a5fb7bd5479
+
+The main difference is that it flushes system_wq before ec_query_wq, but that
+should not really matter if the issue you saw in 5.4 is the one described
+in the changelog of patch [1/2].
+
+Please test this series and let me know if it works for you too.
+
+In case it does work, it would be good to know if patch [1/2] is sufficient to
+fix the suspend problem at least with ec_no_wakeup == 0 (it may not be
+sufficient with ec_no_wakeup == 1).
+
+Thanks!
+
+
+
