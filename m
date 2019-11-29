@@ -2,26 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B7D6510D4C0
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Nov 2019 12:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7F0810D542
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Nov 2019 12:56:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726215AbfK2LZV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 29 Nov 2019 06:25:21 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:54861 "EHLO
+        id S1726360AbfK2L4s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 29 Nov 2019 06:56:48 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:63269 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725892AbfK2LZV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 29 Nov 2019 06:25:21 -0500
+        with ESMTP id S1725892AbfK2L4s (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 29 Nov 2019 06:56:48 -0500
 Received: from 79.184.255.242.ipv4.supernova.orange.pl (79.184.255.242) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.320)
- id 8704bd7f7b9eea39; Fri, 29 Nov 2019 12:25:18 +0100
+ id fd5d8e3d9f99383b; Fri, 29 Nov 2019 12:56:46 +0100
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
-Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] acpi: fix for memory leak in i2c_acpi_install_space_handler
-Date:   Fri, 29 Nov 2019 12:25:18 +0100
-Message-ID: <1919238.VxGNAZmCyg@kreacher>
-In-Reply-To: <20191128102825.GA1774@cosmos>
-References: <20191128102825.GA1774@cosmos>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     linux-nvdimm@lists.01.org, Michal Hocko <mhocko@suse.com>,
+        peterz@infradead.org, vishal.l.verma@intel.com,
+        dave.hansen@linux.intel.com, hch@lst.de,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 14/18] acpi/numa: Up-level "map to online node" functionality
+Date:   Fri, 29 Nov 2019 12:56:45 +0100
+Message-ID: <1753949.6LdYI5zB43@kreacher>
+In-Reply-To: <157401275104.43284.15865121806241743141.stgit@dwillia2-desk3.amr.corp.intel.com>
+References: <157401267421.43284.2135775608523385279.stgit@dwillia2-desk3.amr.corp.intel.com> <157401275104.43284.15865121806241743141.stgit@dwillia2-desk3.amr.corp.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -30,55 +34,182 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thursday, November 28, 2019 11:28:29 AM CET Vamshi K Sthambamkadi wrote:
-> kmemleak reported backtrace:
->     [<bbee0454>] kmem_cache_alloc_trace+0x128/0x260
->     [<6677f215>] i2c_acpi_install_space_handler+0x4b/0xe0
->     [<1180f4fc>] i2c_register_adapter+0x186/0x400
->     [<6083baf7>] i2c_add_adapter+0x4e/0x70
->     [<a3ddf966>] intel_gmbus_setup+0x1a2/0x2c0 [i915]
->     [<84cb69ae>] i915_driver_probe+0x8d8/0x13a0 [i915]
->     [<81911d4b>] i915_pci_probe+0x48/0x160 [i915]
->     [<4b159af1>] pci_device_probe+0xdc/0x160
->     [<b3c64704>] really_probe+0x1ee/0x450
->     [<bc029f5a>] driver_probe_device+0x142/0x1b0
->     [<d8829d20>] device_driver_attach+0x49/0x50
->     [<de71f045>] __driver_attach+0xc9/0x150
->     [<df33ac83>] bus_for_each_dev+0x56/0xa0
->     [<80089bba>] driver_attach+0x19/0x20
->     [<cc73f583>] bus_add_driver+0x177/0x220
->     [<7b29d8c7>] driver_register+0x56/0xf0
-> In i2c_acpi_remove_space_handler function, leak occurs whenever "data"
-> parameter is initialized to 0 in call to acpi_bus_get_private_data().
-> This is because the parameter validity check in acpi_bus_get_private_data
-> (condition->if(!*data)) returns EINVAL and as a consequence, memory is
-> never freed in i2c_acpi_remove_space_handler function. Fix/Correct the
-> parameter validity check in acpi_bus_get_private_data() as that of
-> similarly done in acpi_get_data_full().
+On Sunday, November 17, 2019 6:45:51 PM CET Dan Williams wrote:
+> The acpi_map_pxm_to_online_node() helper is used to find the closest
+> online node to a given proximity domain. This is used to map devices in
+> a proximity domain with no online memory or cpus to the closest online
+> node and populate a device's 'numa_node' property. The numa_node
+> property allows applications to be migrated "close" to a resource.
 > 
-> Signed-off-by: Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
+> In preparation for providing a generic facility to optionally map an
+> address range to its closest online node, or the node the range would
+> represent were it to be onlined (target_node), up-level the core of
+> acpi_map_pxm_to_online_node() to a generic mm/numa helper.
+> 
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+
+It looks like this is the only patch in the series needing my attention and
+it is fine by me, so
+
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
 > ---
->  drivers/acpi/bus.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/numa.c  |   41 -----------------------------------------
+>  include/linux/acpi.h |   23 ++++++++++++++++++++++-
+>  include/linux/numa.h |    9 +++++++++
+>  mm/mempolicy.c       |   30 ++++++++++++++++++++++++++++++
+>  4 files changed, 61 insertions(+), 42 deletions(-)
 > 
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index 48bc96d..5400267 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -153,7 +153,7 @@ int acpi_bus_get_private_data(acpi_handle handle, void **data)
+> diff --git a/drivers/acpi/numa.c b/drivers/acpi/numa.c
+> index eadbf90e65d1..47b4969d9b93 100644
+> --- a/drivers/acpi/numa.c
+> +++ b/drivers/acpi/numa.c
+> @@ -72,47 +72,6 @@ int acpi_map_pxm_to_node(int pxm)
+>  }
+>  EXPORT_SYMBOL(acpi_map_pxm_to_node);
+>  
+> -/**
+> - * acpi_map_pxm_to_online_node - Map proximity ID to online node
+> - * @pxm: ACPI proximity ID
+> - *
+> - * This is similar to acpi_map_pxm_to_node(), but always returns an online
+> - * node.  When the mapped node from a given proximity ID is offline, it
+> - * looks up the node distance table and returns the nearest online node.
+> - *
+> - * ACPI device drivers, which are called after the NUMA initialization has
+> - * completed in the kernel, can call this interface to obtain their device
+> - * NUMA topology from ACPI tables.  Such drivers do not have to deal with
+> - * offline nodes.  A node may be offline when a device proximity ID is
+> - * unique, SRAT memory entry does not exist, or NUMA is disabled, ex.
+> - * "numa=off" on x86.
+> - */
+> -int acpi_map_pxm_to_online_node(int pxm)
+> -{
+> -	int node, min_node;
+> -
+> -	node = acpi_map_pxm_to_node(pxm);
+> -
+> -	if (node == NUMA_NO_NODE)
+> -		node = 0;
+> -
+> -	min_node = node;
+> -	if (!node_online(node)) {
+> -		int min_dist = INT_MAX, dist, n;
+> -
+> -		for_each_online_node(n) {
+> -			dist = node_distance(node, n);
+> -			if (dist < min_dist) {
+> -				min_dist = dist;
+> -				min_node = n;
+> -			}
+> -		}
+> -	}
+> -
+> -	return min_node;
+> -}
+> -EXPORT_SYMBOL(acpi_map_pxm_to_online_node);
+> -
+>  static void __init
+>  acpi_table_print_srat_entry(struct acpi_subtable_header *header)
 >  {
->  	acpi_status status;
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 8b4e516bac00..aeedd09f2f71 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -401,9 +401,30 @@ extern void acpi_osi_setup(char *str);
+>  extern bool acpi_osi_is_win8(void);
 >  
-> -	if (!*data)
-> +	if (!data)
->  		return -EINVAL;
+>  #ifdef CONFIG_ACPI_NUMA
+> -int acpi_map_pxm_to_online_node(int pxm);
+>  int acpi_map_pxm_to_node(int pxm);
+>  int acpi_get_node(acpi_handle handle);
+> +
+> +/**
+> + * acpi_map_pxm_to_online_node - Map proximity ID to online node
+> + * @pxm: ACPI proximity ID
+> + *
+> + * This is similar to acpi_map_pxm_to_node(), but always returns an online
+> + * node.  When the mapped node from a given proximity ID is offline, it
+> + * looks up the node distance table and returns the nearest online node.
+> + *
+> + * ACPI device drivers, which are called after the NUMA initialization has
+> + * completed in the kernel, can call this interface to obtain their device
+> + * NUMA topology from ACPI tables.  Such drivers do not have to deal with
+> + * offline nodes.  A node may be offline when a device proximity ID is
+> + * unique, SRAT memory entry does not exist, or NUMA is disabled, ex.
+> + * "numa=off" on x86.
+> + */
+> +static inline int acpi_map_pxm_to_online_node(int pxm)
+> +{
+> +	int node = acpi_map_pxm_to_node(pxm);
+> +
+> +	return numa_map_to_online_node(node);
+> +}
+>  #else
+>  static inline int acpi_map_pxm_to_online_node(int pxm)
+>  {
+> diff --git a/include/linux/numa.h b/include/linux/numa.h
+> index 110b0e5d0fb0..20f4e44b186c 100644
+> --- a/include/linux/numa.h
+> +++ b/include/linux/numa.h
+> @@ -13,4 +13,13 @@
 >  
->  	status = acpi_get_data(handle, acpi_bus_private_data_handler, data);
+>  #define	NUMA_NO_NODE	(-1)
+>  
+> +#ifdef CONFIG_NUMA
+> +int numa_map_to_online_node(int node);
+> +#else
+> +static inline int numa_map_to_online_node(int node)
+> +{
+> +	return NUMA_NO_NODE;
+> +}
+> +#endif
+> +
+>  #endif /* _LINUX_NUMA_H */
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index 4ae967bcf954..e2d8dd21ce9d 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -127,6 +127,36 @@ static struct mempolicy default_policy = {
+>  
+>  static struct mempolicy preferred_node_policy[MAX_NUMNODES];
+>  
+> +/**
+> + * numa_map_to_online_node - Find closest online node
+> + * @nid: Node id to start the search
+> + *
+> + * Lookup the next closest node by distance if @nid is not online.
+> + */
+> +int numa_map_to_online_node(int node)
+> +{
+> +	int min_node;
+> +
+> +	if (node == NUMA_NO_NODE)
+> +		node = 0;
+> +
+> +	min_node = node;
+> +	if (!node_online(node)) {
+> +		int min_dist = INT_MAX, dist, n;
+> +
+> +		for_each_online_node(n) {
+> +			dist = node_distance(node, n);
+> +			if (dist < min_dist) {
+> +				min_dist = dist;
+> +				min_node = n;
+> +			}
+> +		}
+> +	}
+> +
+> +	return min_node;
+> +}
+> +EXPORT_SYMBOL_GPL(numa_map_to_online_node);
+> +
+>  struct mempolicy *get_task_policy(struct task_struct *p)
+>  {
+>  	struct mempolicy *pol = p->mempolicy;
 > 
-
-Applying as a stable-candidate fix for 5.5 with rewritten subject and changelog.
-
-Thanks!
 
 
 
