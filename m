@@ -2,96 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B7D10E63F
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2019 08:03:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA21A10E97C
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2019 12:21:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726002AbfLBHDy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Dec 2019 02:03:54 -0500
-Received: from mga03.intel.com ([134.134.136.65]:4373 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725965AbfLBHDy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 2 Dec 2019 02:03:54 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Dec 2019 23:03:53 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,268,1571727600"; 
-   d="scan'208";a="207980148"
-Received: from tao-optiplex-7060.sh.intel.com ([10.239.159.36])
-  by fmsmga008.fm.intel.com with ESMTP; 01 Dec 2019 23:03:51 -0800
-From:   Tao Xu <tao3.xu@intel.com>
-To:     rafael.j.wysocki@intel.com, lenb@kernel.org, keith.busch@intel.com,
-        gregkh@linuxfoundation.org, dan.j.williams@intel.com,
-        dave.hansen@linux.intel.com
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Tao Xu <tao3.xu@intel.com>
-Subject: [PATCH] ACPI/HMAT: Fix the parsing of Cache Associativity and Write Policy
-Date:   Mon,  2 Dec 2019 15:03:48 +0800
-Message-Id: <20191202070348.32148-1-tao3.xu@intel.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727354AbfLBLV1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 Dec 2019 06:21:27 -0500
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:42889 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726276AbfLBLV1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 Dec 2019 06:21:27 -0500
+Received: by mail-lf1-f68.google.com with SMTP id y19so27618506lfl.9
+        for <linux-acpi@vger.kernel.org>; Mon, 02 Dec 2019 03:21:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yzQY8ysi3fT6Co4/MqtHPbj4fPY/+U/ENbweS9dY9nE=;
+        b=pQkNeClTp2cf5DYqzAKqS48zGZdNUDqc9VZ7tpoKCvLUMnWKlkari52Nb79LdNPm8E
+         WTOtoAFWCysbP4teqhLKD5GSMyi4zP1zomk2lES0NPpsDpSq6qk5X4Y9PA9/7IiCkthS
+         EPGhZxblrCf4u9372E1KKSmCVy/x+2XnKll7AfnCQyoPi/xcuM62orWhXrqdwqDxpAIk
+         xTahI+RAIZI7t8z889baVqjk6B+tztSHvaTWDDGP9ow8cc3HRHbHdhJkdACksUPCxfc8
+         z27dcPZ6YJfUJ20E0eF0C0Z4pYhqRhMAyyn4RnNjSECWwEimYpST9CdhWXEVNjntMyBx
+         0egw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yzQY8ysi3fT6Co4/MqtHPbj4fPY/+U/ENbweS9dY9nE=;
+        b=j4R/Mw9uVWN2/TVHD+Rf9lsoQhR4xIinFlcdaToxupZEPRMZZO10vF/a3OYPB3lyHD
+         0mQsKK+5yMxUb3mjr9ciRYYKSflcF0qUxOmiTfSte9BMUhAgfmZ2ZzejCro8SrD2GmfM
+         E5vfhZTVSZIlUYYHiVYf4saG97dwCEI/bdktaExSBdru1FIQN0vBTdLmNduopjBWkHbO
+         H3SBzCDgfPOSEDUVsamAumdqKqIfoYTO6+bZNIz4BxeIl0XnEsxVbEaWTmVDuFMShd6M
+         /XuCZb1wrGTKmKBWzcIdAMGXP2IblTsKXqyXiexNL2XGxDuNrBquJ0tqgAMEmmPEIacY
+         6jFQ==
+X-Gm-Message-State: APjAAAWfMFW/Snk6O+EPa11VKIKp1o95rabmeO8KnSBravx27T3kBpg3
+        ys0yaEFUgcn7GMvm+gnp6PwupTtmSBf2eliZWfQdSrJursVWvQ==
+X-Google-Smtp-Source: APXvYqxizDsV6syxLFSpMOqZGIeczavEByhmdDXOVDNV4RRu+SUnOftHbEdPa0gGND2j61UuSk/iw7O6dhtfU4+t6Zk=
+X-Received: by 2002:a19:f701:: with SMTP id z1mr37022370lfe.133.1575285684598;
+ Mon, 02 Dec 2019 03:21:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20191129185836.2789-1-hdegoede@redhat.com> <20191129185836.2789-3-hdegoede@redhat.com>
+In-Reply-To: <20191129185836.2789-3-hdegoede@redhat.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 2 Dec 2019 12:21:13 +0100
+Message-ID: <CACRpkdbRb-LF2tNN-ueo=tKuJc+u4B7Y20+BCyqnN7wYbm8y7Q@mail.gmail.com>
+Subject: Re: [PATCH 2/2] drm/i915/vlv_dsi: Control panel and backlight enable
+ GPIOs on BYT
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In chapter 5.2.27.5, Table 5-147: Field "Cache Attributes" of
-ACPI 6.3 spec: 0 is "None", 1 is "Direct Mapped", 2 is "Complex Cache
-Indexing" for Cache Associativity; 0 is "None", 1 is "Write Back",
-2 is "Write Through" for Write Policy.
+Hi Hans,
 
-Signed-off-by: Tao Xu <tao3.xu@intel.com>
----
- drivers/acpi/numa/hmat.c | 4 ++--
- include/linux/node.h     | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+thank you for your patch!
 
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index 2c32cfb72370..719d0279563d 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -383,7 +383,7 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
- 		break;
- 	case ACPI_HMAT_CA_NONE:
- 	default:
--		tcache->cache_attrs.indexing = NODE_CACHE_OTHER;
-+		tcache->cache_attrs.indexing = NODE_CACHE_NONE;
- 		break;
- 	}
- 
-@@ -396,7 +396,7 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
- 		break;
- 	case ACPI_HMAT_CP_NONE:
- 	default:
--		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_OTHER;
-+		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_NONE;
- 		break;
- 	}
- 	list_add_tail(&tcache->node, &target->caches);
-diff --git a/include/linux/node.h b/include/linux/node.h
-index 4866f32a02d8..6dbd764d09ce 100644
---- a/include/linux/node.h
-+++ b/include/linux/node.h
-@@ -36,15 +36,15 @@ struct node_hmem_attrs {
- };
- 
- enum cache_indexing {
-+	NODE_CACHE_NONE,
- 	NODE_CACHE_DIRECT_MAP,
- 	NODE_CACHE_INDEXED,
--	NODE_CACHE_OTHER,
- };
- 
- enum cache_write_policy {
-+	NODE_CACHE_WRITE_NONE,
- 	NODE_CACHE_WRITE_BACK,
- 	NODE_CACHE_WRITE_THROUGH,
--	NODE_CACHE_WRITE_OTHER,
- };
- 
- /**
--- 
-2.20.1
+On Fri, Nov 29, 2019 at 7:58 PM Hans de Goede <hdegoede@redhat.com> wrote:
 
+> -       /* GPIO Desc for CRC based Panel control */
+> +       /* GPIO Desc for panel and backlight control */
+>         struct gpio_desc *gpio_panel;
+> +       struct gpio_desc *gpio_backlight;
+
+I think what happens here is that you reimplement
+drivers/video/backlight/gpio_backlight.c
+
+The existing power control GPIO also reimplements
+drivers/regulator/fixed.c in a sense but I am under the
+impression that x86 in general and ACPI in particular
+has a problem with the regulator subsystem so I am
+uncertain about that one.
+
+When I look at the code I get more confused because
+nominally panels should have their own drivers in
+drivers/gpu/drm/panel/* especially DSI panels, and the
+panels control their own GPIOs or regulators for power
+and backlight.
+
+I was under the impression that Heikki's and Dmitry's
+recent additions to software nodes would make it
+possible to actually spawn devices like the GPIO backlight
+and/or fixed regulator and put references to them so
+that the drivers can pick them up from the respective
+frameworks and manage them?
+
+Maybe I misunderstood things here though, I am a bit
+under the impression that elder DRM drivers are
+considered "elder gods" and do not need to use separate
+panel drivers, backlight abstraction etc, and in that
+case just go ahead, I guess.
+
+But I suspect some separation
+would help the day the i915 driver wants to reuse some
+really complex DSI panel from drivers/gpu/drm/panel/*
+though.
+
+Yours,
+Linus Walleij
