@@ -2,67 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D908510E35B
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 Dec 2019 20:55:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11B7D10E63F
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2019 08:03:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727240AbfLATzK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 1 Dec 2019 14:55:10 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:42521 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727169AbfLATzK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 1 Dec 2019 14:55:10 -0500
-Received: by mail-oi1-f194.google.com with SMTP id j22so113861oij.9;
-        Sun, 01 Dec 2019 11:55:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GVnqatJjkI2d785STQM/Hp3Qg4fwIew62MDkFU1VYf8=;
-        b=U3EYuS1dxNyqC6fvDfyJSmYGUhKM+qULTL6KGwTzYw2vpowLgnslT2YQattbTQSvYh
-         Umu5OIVLuvmjJYGVhA5V1t35308+3Znj/yS0xk/DomYLPD4Imh5rdqWpzZP4vWwudULj
-         vQeBM1/KASYzJgMxDwBJeWN1LtDodhViXHC1gvfevDEhfo406hZHMJFGG2UmNnLnwF0n
-         EpRV/YX4spdUf7OYJTHUICl3OP1xZp5T31updUm9NmWNkvyq1uMyr2swqghWOQwHutha
-         EzWkt8r6BwprG1SUbmQ5LY9QuPPEajJQdQy2KnoPL4d9nozkSXKLYv7n4Tmht9Y98qiB
-         e4hg==
-X-Gm-Message-State: APjAAAWzGA+u8F+3w8ywfj/Cb38kW5vLV/pUtNGT/LeNHNyj/7a7O7eW
-        veSzXLV9jwNxUZkA4JE4GS/lQ4KtsoZs7Qpy447DIA==
-X-Google-Smtp-Source: APXvYqxYLEKiaOGbRHJtdfln7+8FKWBYWG4GovfMLAoWPyghhvhXxos1xzBDaToO1KvOAi52s9rIRcX4BB+nubxdKaU=
-X-Received: by 2002:a54:488d:: with SMTP id r13mr8948358oic.115.1575230109255;
- Sun, 01 Dec 2019 11:55:09 -0800 (PST)
+        id S1726002AbfLBHDy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 Dec 2019 02:03:54 -0500
+Received: from mga03.intel.com ([134.134.136.65]:4373 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725965AbfLBHDy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 2 Dec 2019 02:03:54 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Dec 2019 23:03:53 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,268,1571727600"; 
+   d="scan'208";a="207980148"
+Received: from tao-optiplex-7060.sh.intel.com ([10.239.159.36])
+  by fmsmga008.fm.intel.com with ESMTP; 01 Dec 2019 23:03:51 -0800
+From:   Tao Xu <tao3.xu@intel.com>
+To:     rafael.j.wysocki@intel.com, lenb@kernel.org, keith.busch@intel.com,
+        gregkh@linuxfoundation.org, dan.j.williams@intel.com,
+        dave.hansen@linux.intel.com
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Tao Xu <tao3.xu@intel.com>
+Subject: [PATCH] ACPI/HMAT: Fix the parsing of Cache Associativity and Write Policy
+Date:   Mon,  2 Dec 2019 15:03:48 +0800
+Message-Id: <20191202070348.32148-1-tao3.xu@intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <2787005.CsmIKtZlk9@kreacher> <alpine.DEB.2.21.1911291231510.6038@hp-x360n>
-In-Reply-To: <alpine.DEB.2.21.1911291231510.6038@hp-x360n>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sun, 1 Dec 2019 20:54:54 +0100
-Message-ID: <CAJZ5v0hiSnjZ=ZuSqDsQK6CDxyFRMhUVWL+UP-QJoj9vkLo2vg@mail.gmail.com>
-Subject: Re: [PATCH 0/2] ACPI: PM: s2idle: Fix possible suspend lock-up
-To:     "Kenneth R. Crudup" <kenny@panix.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 29, 2019 at 9:35 PM Kenneth R. Crudup <kenny@panix.com> wrote:
->
->
-> On Thu, 28 Nov 2019, Rafael J. Wysocki wrote:
->
-> > Please test this series and let me know if it works for you too.
->
-> I've tested this quite a few times against the issues reported on the Linux-PM
-> mailing list ("resume failures if the charger is plugged in while suspended
-> and the battery is at < 90%" and "spurious wakeups from the EC for non-power
-> events") and this patchset has fixed both of these issues (the latter is
-> especially surprising and welcome).
->
-> I'm pretty happy with it; it's been a while since I've had a consistently
-> cold laptop while suspended. Much thanks!
+In chapter 5.2.27.5, Table 5-147: Field "Cache Attributes" of
+ACPI 6.3 spec: 0 is "None", 1 is "Direct Mapped", 2 is "Complex Cache
+Indexing" for Cache Associativity; 0 is "None", 1 is "Write Back",
+2 is "Write Through" for Write Policy.
 
-Thanks a lot for the testing and feedback, much appreciated!
+Signed-off-by: Tao Xu <tao3.xu@intel.com>
+---
+ drivers/acpi/numa/hmat.c | 4 ++--
+ include/linux/node.h     | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-I'll queue up this series for the next PM pull request.
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index 2c32cfb72370..719d0279563d 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -383,7 +383,7 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
+ 		break;
+ 	case ACPI_HMAT_CA_NONE:
+ 	default:
+-		tcache->cache_attrs.indexing = NODE_CACHE_OTHER;
++		tcache->cache_attrs.indexing = NODE_CACHE_NONE;
+ 		break;
+ 	}
+ 
+@@ -396,7 +396,7 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
+ 		break;
+ 	case ACPI_HMAT_CP_NONE:
+ 	default:
+-		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_OTHER;
++		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_NONE;
+ 		break;
+ 	}
+ 	list_add_tail(&tcache->node, &target->caches);
+diff --git a/include/linux/node.h b/include/linux/node.h
+index 4866f32a02d8..6dbd764d09ce 100644
+--- a/include/linux/node.h
++++ b/include/linux/node.h
+@@ -36,15 +36,15 @@ struct node_hmem_attrs {
+ };
+ 
+ enum cache_indexing {
++	NODE_CACHE_NONE,
+ 	NODE_CACHE_DIRECT_MAP,
+ 	NODE_CACHE_INDEXED,
+-	NODE_CACHE_OTHER,
+ };
+ 
+ enum cache_write_policy {
++	NODE_CACHE_WRITE_NONE,
+ 	NODE_CACHE_WRITE_BACK,
+ 	NODE_CACHE_WRITE_THROUGH,
+-	NODE_CACHE_WRITE_OTHER,
+ };
+ 
+ /**
+-- 
+2.20.1
+
