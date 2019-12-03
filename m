@@ -2,231 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46F0C10FCC1
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Dec 2019 12:48:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C73E110124
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Dec 2019 16:23:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725957AbfLCLsH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Dec 2019 06:48:07 -0500
-Received: from mx2.suse.de ([195.135.220.15]:49822 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726653AbfLCLsG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 3 Dec 2019 06:48:06 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 523B6AF93;
-        Tue,  3 Dec 2019 11:48:03 +0000 (UTC)
-From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-To:     andrew.murray@arm.com, maz@kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Tariq Toukan <tariqt@mellanox.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Eric Anholt <eric@anholt.net>,
-        Stefan Wahren <wahrenst@gmx.net>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Christoph Hellwig <hch@lst.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>
-Cc:     james.quinlan@broadcom.com, mbrugger@suse.com,
-        phil@raspberrypi.org, jeremy.linton@arm.com,
-        linux-pci@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        iommu@lists.linux-foundation.org
-Subject: [PATCH v4 8/8] linux/log2.h: Use roundup/dow_pow_two() on 64bit calculations
-Date:   Tue,  3 Dec 2019 12:47:41 +0100
-Message-Id: <20191203114743.1294-9-nsaenzjulienne@suse.de>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191203114743.1294-1-nsaenzjulienne@suse.de>
-References: <20191203114743.1294-1-nsaenzjulienne@suse.de>
+        id S1726847AbfLCPXX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Dec 2019 10:23:23 -0500
+Received: from mga01.intel.com ([192.55.52.88]:49802 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725997AbfLCPXX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 3 Dec 2019 10:23:23 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Dec 2019 07:23:22 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,273,1571727600"; 
+   d="scan'208";a="410876264"
+Received: from orsmsx103.amr.corp.intel.com ([10.22.225.130])
+  by fmsmga005.fm.intel.com with ESMTP; 03 Dec 2019 07:23:22 -0800
+Received: from orsmsx110.amr.corp.intel.com ([169.254.10.52]) by
+ ORSMSX103.amr.corp.intel.com ([169.254.5.179]) with mapi id 14.03.0439.000;
+ Tue, 3 Dec 2019 07:23:21 -0800
+From:   "Moore, Robert" <robert.moore@intel.com>
+To:     "Kaneda, Erik" <erik.kaneda@intel.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        zhengbin <zhengbin13@huawei.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>
+Subject: RE: [Devel] Re: [PATCH] ACPICA: Use ARRAY_SIZE for
+ 'fadt_info_table','fadt_pm_info_table'
+Thread-Topic: [Devel] Re: [PATCH] ACPICA: Use ARRAY_SIZE for
+ 'fadt_info_table','fadt_pm_info_table'
+Thread-Index: AQHVoRboulD/DOKym0m5GPkUUMHHlKeXuvowgACTb4CABGzZAIAL3S+A
+Date:   Tue, 3 Dec 2019 15:23:20 +0000
+Message-ID: <94F2FBAB4432B54E8AACC7DFDE6C92E3B96B311D@ORSMSX110.amr.corp.intel.com>
+References: <1574415183-19322-1-git-send-email-zhengbin13@huawei.com>
+ <94F2FBAB4432B54E8AACC7DFDE6C92E3B96B1A5A@ORSMSX110.amr.corp.intel.com>
+ <e2c60e61-4c2c-ced2-3eda-26d7b3fb8f4b@canonical.com>
+ <CF6A88132359CE47947DB4C6E1709ED53C688958@ORSMSX122.amr.corp.intel.com>
+In-Reply-To: <CF6A88132359CE47947DB4C6E1709ED53C688958@ORSMSX122.amr.corp.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiOTQ1NWNhZmQtOGRiMS00NjhjLTg5OWYtOThlM2FlODA0N2NlIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiWlpEYndQSGxDMGx1NCtpMVBMdzdUU0dEVzltM1VyQWxXRzBhdG9wckR6SU9jcDFPZmpQSDYyUlF0K3dJK0JYRiJ9
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.138]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The function now is safe to use while expecting a 64bit value. Use it
-where relevant.
-
-Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
----
- drivers/acpi/arm64/iort.c                        | 2 +-
- drivers/net/ethernet/mellanox/mlx4/en_clock.c    | 3 ++-
- drivers/of/device.c                              | 3 ++-
- drivers/pci/controller/cadence/pcie-cadence-ep.c | 3 ++-
- drivers/pci/controller/cadence/pcie-cadence.c    | 3 ++-
- drivers/pci/controller/pcie-brcmstb.c            | 3 ++-
- drivers/pci/controller/pcie-rockchip-ep.c        | 5 +++--
- kernel/dma/direct.c                              | 2 +-
- 8 files changed, 15 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 33f71983e001..9950c9757092 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -1090,7 +1090,7 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
- 		 * firmware.
- 		 */
- 		end = dmaaddr + size - 1;
--		mask = DMA_BIT_MASK(ilog2(end) + 1);
-+		mask = roundup_pow_of_two(end) - 1;
- 		dev->bus_dma_limit = end;
- 		dev->coherent_dma_mask = mask;
- 		*dev->dma_mask = mask;
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_clock.c b/drivers/net/ethernet/mellanox/mlx4/en_clock.c
-index 024788549c25..23dcb18224d4 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_clock.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_clock.c
-@@ -33,6 +33,7 @@
- 
- #include <linux/mlx4/device.h>
- #include <linux/clocksource.h>
-+#include <linux/log2.h>
- 
- #include "mlx4_en.h"
- 
-@@ -252,7 +253,7 @@ static u32 freq_to_shift(u16 freq)
- {
- 	u32 freq_khz = freq * 1000;
- 	u64 max_val_cycles = freq_khz * 1000 * MLX4_EN_WRAP_AROUND_SEC;
--	u64 max_val_cycles_rounded = 1ULL << fls64(max_val_cycles - 1);
-+	u64 max_val_cycles_rounded = roundup_pow_of_two(max_val_cycles);
- 	/* calculate max possible multiplier in order to fit in 64bit */
- 	u64 max_mul = div64_u64(ULLONG_MAX, max_val_cycles_rounded);
- 
-diff --git a/drivers/of/device.c b/drivers/of/device.c
-index e9127db7b067..7259922d2078 100644
---- a/drivers/of/device.c
-+++ b/drivers/of/device.c
-@@ -11,6 +11,7 @@
- #include <linux/mod_devicetable.h>
- #include <linux/slab.h>
- #include <linux/platform_device.h>
-+#include <linux/log2.h>
- 
- #include <asm/errno.h>
- #include "of_private.h"
-@@ -149,7 +150,7 @@ int of_dma_configure(struct device *dev, struct device_node *np, bool force_dma)
- 	 * set by the driver.
- 	 */
- 	end = dma_addr + size - 1;
--	mask = DMA_BIT_MASK(ilog2(end) + 1);
-+	mask = roundup_pow_of_two(end) - 1;
- 	dev->coherent_dma_mask &= mask;
- 	*dev->dma_mask &= mask;
- 	/* ...but only set bus limit if we found valid dma-ranges earlier */
-diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-index 1c173dad67d1..72eda0b2f939 100644
---- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-@@ -10,6 +10,7 @@
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/sizes.h>
-+#include <linux/log2.h>
- 
- #include "pcie-cadence.h"
- 
-@@ -65,7 +66,7 @@ static int cdns_pcie_ep_set_bar(struct pci_epc *epc, u8 fn,
- 	 * roundup_pow_of_two() returns an unsigned long, which is not suited
- 	 * for 64bit values.
- 	 */
--	sz = 1ULL << fls64(sz - 1);
-+	sz = roundup_pow_of_two(sz);
- 	aperture = ilog2(sz) - 7; /* 128B -> 0, 256B -> 1, 512B -> 2, ... */
- 
- 	if ((flags & PCI_BASE_ADDRESS_SPACE) == PCI_BASE_ADDRESS_SPACE_IO) {
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.c b/drivers/pci/controller/cadence/pcie-cadence.c
-index cd795f6fc1e2..b1689f725b41 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence.c
-@@ -4,6 +4,7 @@
- // Author: Cyrille Pitchen <cyrille.pitchen@free-electrons.com>
- 
- #include <linux/kernel.h>
-+#include <linux/log2.h>
- 
- #include "pcie-cadence.h"
- 
-@@ -15,7 +16,7 @@ void cdns_pcie_set_outbound_region(struct cdns_pcie *pcie, u8 fn,
- 	 * roundup_pow_of_two() returns an unsigned long, which is not suited
- 	 * for 64bit values.
- 	 */
--	u64 sz = 1ULL << fls64(size - 1);
-+	u64 sz = roundup_pow_of_two(size);
- 	int nbits = ilog2(sz);
- 	u32 addr0, addr1, desc0, desc1;
- 
-diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
-index 7ba06a0e1a71..e705d9d73030 100644
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -627,7 +627,8 @@ static inline int brcm_pcie_get_rc_bar2_size_and_offset(struct brcm_pcie *pcie,
- 		return -ENODEV;
- 
- 	*rc_bar2_offset = -entry->offset;
--	*rc_bar2_size = 1ULL << fls64(entry->res->end - entry->res->start);
-+	*rc_bar2_size = roundup_pow_of_two(entry->res->end -
-+					   entry->res->start + 1);
- 
- 	/*
- 	 * We validate the inbound memory view even though we should trust
-diff --git a/drivers/pci/controller/pcie-rockchip-ep.c b/drivers/pci/controller/pcie-rockchip-ep.c
-index d743b0a48988..83665f5f804a 100644
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -16,6 +16,7 @@
- #include <linux/platform_device.h>
- #include <linux/pci-epf.h>
- #include <linux/sizes.h>
-+#include <linux/log2.h>
- 
- #include "pcie-rockchip.h"
- 
-@@ -70,7 +71,7 @@ static void rockchip_pcie_prog_ep_ob_atu(struct rockchip_pcie *rockchip, u8 fn,
- 					 u32 r, u32 type, u64 cpu_addr,
- 					 u64 pci_addr, size_t size)
- {
--	u64 sz = 1ULL << fls64(size - 1);
-+	u64 sz = roundup_pow_of_two(size);
- 	int num_pass_bits = ilog2(sz);
- 	u32 addr0, addr1, desc0, desc1;
- 	bool is_nor_msg = (type == AXI_WRAPPER_NOR_MSG);
-@@ -176,7 +177,7 @@ static int rockchip_pcie_ep_set_bar(struct pci_epc *epc, u8 fn,
- 	 * roundup_pow_of_two() returns an unsigned long, which is not suited
- 	 * for 64bit values.
- 	 */
--	sz = 1ULL << fls64(sz - 1);
-+	sz = roundup_pow_of_two(sz);
- 	aperture = ilog2(sz) - 7; /* 128B -> 0, 256B -> 1, 512B -> 2, ... */
- 
- 	if ((flags & PCI_BASE_ADDRESS_SPACE) == PCI_BASE_ADDRESS_SPACE_IO) {
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 6af7ae83c4ad..056886c4efec 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -53,7 +53,7 @@ u64 dma_direct_get_required_mask(struct device *dev)
- {
- 	u64 max_dma = phys_to_dma_direct(dev, (max_pfn - 1) << PAGE_SHIFT);
- 
--	return (1ULL << (fls64(max_dma) - 1)) * 2 - 1;
-+	return rounddown_pow_of_two(max_dma) * 2 - 1;
- }
- 
- static gfp_t __dma_direct_optimal_gfp_mask(struct device *dev, u64 dma_mask,
--- 
-2.24.0
-
+SG93ZXZlciwgQUNQSUNBIGhhcyBhbiAiQUNQSV9BUlJBWV9MRU5HVEgiIG1hY3JvIHdoaWNoIGNv
+dWxkIHBvc3NpYmx5IGJlIHVzZWQuIEl0J3MgZGVmaW5lZCBsaWtlIHRoaXM6DQoNCiNkZWZpbmUg
+QUNQSV9BUlJBWV9MRU5HVEgoeCkgICAgICAgICAgICAoc2l6ZW9mKHgpIC8gc2l6ZW9mKCh4KVsw
+XSkpDQoNCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IFNjaG1hdXNzLCBFcmlr
+IDxlcmlrLnNjaG1hdXNzQGludGVsLmNvbT4gDQpTZW50OiBNb25kYXksIE5vdmVtYmVyIDI1LCAy
+MDE5IDEwOjExIEFNDQpUbzogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25pY2FsLmNv
+bT47IE1vb3JlLCBSb2JlcnQgPHJvYmVydC5tb29yZUBpbnRlbC5jb20+OyB6aGVuZ2JpbiA8emhl
+bmdiaW4xM0BodWF3ZWkuY29tPjsgV3lzb2NraSwgUmFmYWVsIEogPHJhZmFlbC5qLnd5c29ja2lA
+aW50ZWwuY29tPjsgbGVuYkBrZXJuZWwub3JnOyBsaW51eC1hY3BpQHZnZXIua2VybmVsLm9yZzsg
+ZGV2ZWxAYWNwaWNhLm9yZw0KU3ViamVjdDogUkU6IFtEZXZlbF0gUmU6IFtQQVRDSF0gQUNQSUNB
+OiBVc2UgQVJSQVlfU0laRSBmb3IgJ2ZhZHRfaW5mb190YWJsZScsJ2ZhZHRfcG1faW5mb190YWJs
+ZScNCg0KDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogbGludXgtYWNw
+aS1vd25lckB2Z2VyLmtlcm5lbC5vcmcgDQo+IDxsaW51eC1hY3BpLW93bmVyQHZnZXIua2VybmVs
+Lm9yZz4NCj4gT24gQmVoYWxmIE9mIENvbGluIElhbiBLaW5nDQo+IFNlbnQ6IEZyaWRheSwgTm92
+ZW1iZXIgMjIsIDIwMTkgMjozNiBQTQ0KPiBUbzogTW9vcmUsIFJvYmVydCA8cm9iZXJ0Lm1vb3Jl
+QGludGVsLmNvbT47IHpoZW5nYmluIA0KPiA8emhlbmdiaW4xM0BodWF3ZWkuY29tPjsgU2NobWF1
+c3MsIEVyaWsgPGVyaWsuc2NobWF1c3NAaW50ZWwuY29tPjsgDQo+IFd5c29ja2ksIFJhZmFlbCBK
+IDxyYWZhZWwuai53eXNvY2tpQGludGVsLmNvbT47IGxlbmJAa2VybmVsLm9yZzsgDQo+IGxpbnV4
+LSBhY3BpQHZnZXIua2VybmVsLm9yZzsgZGV2ZWxAYWNwaWNhLm9yZw0KPiBTdWJqZWN0OiBSZTog
+W0RldmVsXSBSZTogW1BBVENIXSBBQ1BJQ0E6IFVzZSBBUlJBWV9TSVpFIGZvciANCj4gJ2ZhZHRf
+aW5mb190YWJsZScsJ2ZhZHRfcG1faW5mb190YWJsZScNCj4gDQo+IE9uIDIyLzExLzIwMTkgMjE6
+NDksIE1vb3JlLCBSb2JlcnQgd3JvdGU6DQo+ID4gV2hlcmUgZG9lcyAiQVJSQVlfU0laRSIgY29t
+ZSBmcm9tPyBJdCdzIG5vdCBhIHBhcnQgb2YgQUNQSUNBLg0KPiA+IEJvYg0KPiANCj4gSXQncyBk
+ZWZpbml0ZWx5IG5vdCBwYXJ0IG9mIEFDUElDQSwgaXQncyBkZWZpbmVkIGluIGxpbnV4L2tlcm5l
+bC5oDQoNCkFDUElDQSBjb2RlYmFzZSBtdXN0IHdvcmsgYWNyb3NzIG11bHRpcGxlIG9wZXJhdGlu
+ZyBzeXN0ZW1zLiBTaW5jZSBBUlJBWV9TSVpFIG1hY3JvIGlzIHNwZWNpZmljIHRvIGxpbnV4LCB3
+ZSBjYW5ub3QgdGFrZSB0aGlzIGNoYW5nZSBhcyBpdCBzdGFuZHMuLg0KDQpFcmlrDQo+IA0KPiA+
+DQo+ID4NCj4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+IEZyb206IHpoZW5nYmlu
+IDx6aGVuZ2JpbjEzQGh1YXdlaS5jb20+DQo+ID4gU2VudDogRnJpZGF5LCBOb3ZlbWJlciAyMiwg
+MjAxOSAxOjMzIEFNDQo+ID4gVG86IE1vb3JlLCBSb2JlcnQgPHJvYmVydC5tb29yZUBpbnRlbC5j
+b20+OyBTY2htYXVzcywgRXJpayANCj4gPiA8ZXJpay5zY2htYXVzc0BpbnRlbC5jb20+OyBXeXNv
+Y2tpLCBSYWZhZWwgSiANCj4gPiA8cmFmYWVsLmoud3lzb2NraUBpbnRlbC5jb20+OyBsZW5iQGtl
+cm5lbC5vcmc7IA0KPiA+IGxpbnV4LWFjcGlAdmdlci5rZXJuZWwub3JnOyBkZXZlbEBhY3BpY2Eu
+b3JnDQo+ID4gQ2M6IHpoZW5nYmluMTNAaHVhd2VpLmNvbQ0KPiA+IFN1YmplY3Q6IFtQQVRDSF0g
+QUNQSUNBOiBVc2UgQVJSQVlfU0laRSBmb3INCj4gJ2ZhZHRfaW5mb190YWJsZScsJ2ZhZHRfcG1f
+aW5mb190YWJsZScNCj4gPg0KPiA+IEZpeGVzIGNvY2NpY2hlY2sgd2FybmluZzoNCj4gPg0KPiA+
+IGRyaXZlcnMvYWNwaS9hY3BpY2EvdGJmYWR0LmM6MTA3OjI3LTI4OiBXQVJOSU5HOiBVc2UgQVJS
+QVlfU0laRQ0KPiA+IGRyaXZlcnMvYWNwaS9hY3BpY2EvdGJmYWR0LmM6MTM3OjMwLTMxOiBXQVJO
+SU5HOiBVc2UgQVJSQVlfU0laRQ0KPiA+DQo+ID4gUmVwb3J0ZWQtYnk6IEh1bGsgUm9ib3QgPGh1
+bGtjaUBodWF3ZWkuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IHpoZW5nYmluIDx6aGVuZ2JpbjEz
+QGh1YXdlaS5jb20+DQo+ID4gLS0tDQo+ID4gIGRyaXZlcnMvYWNwaS9hY3BpY2EvdGJmYWR0LmMg
+fCA2ICsrLS0tLQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCA0IGRlbGV0
+aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvdGJmYWR0
+LmMgDQo+ID4gYi9kcml2ZXJzL2FjcGkvYWNwaWNhL3RiZmFkdC5jIGluZGV4IDAwNDFiZmIuLjMy
+NGE4MDQgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9hY3BpL2FjcGljYS90YmZhZHQuYw0KPiA+
+ICsrKyBiL2RyaXZlcnMvYWNwaS9hY3BpY2EvdGJmYWR0LmMNCj4gPiBAQCAtMTAzLDggKzEwMyw3
+IEBAIHN0YXRpYyBzdHJ1Y3QgYWNwaV9mYWR0X2luZm8gZmFkdF9pbmZvX3RhYmxlW10gPSB7DQo+
+ID4gIAkgQUNQSV9GQURUX1NFUEFSQVRFX0xFTkdUSCB8IEFDUElfRkFEVF9HUEVfUkVHSVNURVJ9
+ICB9Ow0KPiA+DQo+ID4gLSNkZWZpbmUgQUNQSV9GQURUX0lORk9fRU5UUklFUyBcDQo+ID4gLQkJ
+CShzaXplb2YgKGZhZHRfaW5mb190YWJsZSkgLyBzaXplb2YgKHN0cnVjdA0KPiBhY3BpX2ZhZHRf
+aW5mbykpDQo+ID4gKyNkZWZpbmUgQUNQSV9GQURUX0lORk9fRU5UUklFUyAoQVJSQVlfU0laRShm
+YWR0X2luZm9fdGFibGUpKQ0KPiA+DQo+ID4gIC8qIFRhYmxlIHVzZWQgdG8gc3BsaXQgRXZlbnQg
+QmxvY2tzIGludG8gc2VwYXJhdGUgc3RhdHVzL2VuYWJsZSANCj4gPiByZWdpc3RlcnMgKi8NCj4g
+Pg0KPiA+IEBAIC0xMzMsOCArMTMyLDcgQEAgc3RhdGljIHN0cnVjdCBhY3BpX2ZhZHRfcG1faW5m
+byANCj4gPiBmYWR0X3BtX2luZm9fdGFibGVbXQ0KPiA9IHsNCj4gPiAgCSAxfQ0KPiA+ICB9Ow0K
+PiA+DQo+ID4gLSNkZWZpbmUgQUNQSV9GQURUX1BNX0lORk9fRU5UUklFUyBcDQo+ID4gLQkJCShz
+aXplb2YgKGZhZHRfcG1faW5mb190YWJsZSkgLyBzaXplb2YgKHN0cnVjdA0KPiBhY3BpX2ZhZHRf
+cG1faW5mbykpDQo+ID4gKyNkZWZpbmUgQUNQSV9GQURUX1BNX0lORk9fRU5UUklFUyAoQVJSQVlf
+U0laRShmYWR0X3BtX2luZm9fdGFibGUpKQ0KPiA+DQo+ID4NCj4gLyoqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKg0KPiAqKioq
+KioqKioqKioqDQo+ID4gICAqDQo+ID4gLS0NCj4gPiAyLjcuNA0KPiA+IF9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQo+ID4gRGV2ZWwgbWFpbGluZyBsaXN0
+IC0tIGRldmVsQGFjcGljYS5vcmcgVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCANCj4gPiB0
+byBkZXZlbC1sZWF2ZUBhY3BpY2Eub3JnIA0KPiA+ICUod2ViX3BhZ2VfdXJsKXNsaXN0aW5mbyUo
+Y2dpZXh0KXMvJShfaW50ZXJuYWxfbmFtZSlzDQo+ID4NCg0K
