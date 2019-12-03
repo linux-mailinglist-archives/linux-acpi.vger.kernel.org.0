@@ -2,208 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 671D910ECA1
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2019 16:49:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B01D110FCBC
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Dec 2019 12:48:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727613AbfLBPtY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Dec 2019 10:49:24 -0500
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:31356 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727509AbfLBPtY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 Dec 2019 10:49:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1575301762;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=BckxIR8B8BRMaMS0XFEan4pdnPP5uhBwBvuJccFnJ8Q=;
-        b=A61CqwShmC5423Udy7o9aOqq/6lNsJ2NYVfdPVQfdO2ajWgR5P1gRvWIrAXk1c6Rzt/gcJ
-        /zEuETi06nZe/Op5g7nbY6KSGqgmjz9m1bNeAXYu2rqboVX6mMzKHT3r68KrkftXaLQDGm
-        NqUQKo2FZ4WbZEPa+6MN2xqvo6R3Auo=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-245-oXMYdmrZOq2GzMzqgqbp9Q-1; Mon, 02 Dec 2019 10:49:22 -0500
-Received: by mail-wr1-f69.google.com with SMTP id b13so114946wrx.22
-        for <linux-acpi@vger.kernel.org>; Mon, 02 Dec 2019 07:49:21 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=BckxIR8B8BRMaMS0XFEan4pdnPP5uhBwBvuJccFnJ8Q=;
-        b=gEH/7IZdrulefWtgXQzUBlY5ubh+aWcb1lkUdH9yNBG/Kr3Yey0hwdDpRvj9ISFSYQ
-         Ws3F/U/uU13cwEX98Ph6BeAGr5wposxU+fEkxqL23pr2CyPel7lNoiWbV0alBr44rrn/
-         JNRhm3eJKS9h/wex/MJFwOM57NSvC9Id+xZwXYtYxJ2F+PULqJQ4RZXKHjFpgy7QhtIV
-         fcjVxGzG0yHNqOyRqxW+YuSYPEIngUAJ2Aqy6r4Xskp7MCBBJEbCCEoyn+POSB2hj4Ri
-         RTytHRlr5MYBzWPIqclq8fFh/K4cK2R9agVz3cgugn636h2rtu5hkO30GQwZLG0ACTlJ
-         5D9w==
-X-Gm-Message-State: APjAAAUkr6NnI0jXFPXZvVrOtSG/7XHr5HXydJFbvBmHLyoJGxI/c/vv
-        RBO0rDMf61QnW5fKKyfkjk/tYR/flAdrhNKknFjTKKGnAKX8cmZXTosMgmUSgo61AKlDAeX6aNp
-        IHz+A2rq4PU4LP24zfTTAaQ==
-X-Received: by 2002:a5d:6692:: with SMTP id l18mr6456718wru.382.1575301760249;
-        Mon, 02 Dec 2019 07:49:20 -0800 (PST)
-X-Google-Smtp-Source: APXvYqzbHZlEWNG5Tykxe0xX+zM5Eoc9OUvf0CW0XqAwtTuft7mCuNUQ/uAHoVleCkgr1rQJLPOzqw==
-X-Received: by 2002:a5d:6692:: with SMTP id l18mr6456671wru.382.1575301759962;
-        Mon, 02 Dec 2019 07:49:19 -0800 (PST)
-Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
-        by smtp.gmail.com with ESMTPSA id h97sm43564707wrh.56.2019.12.02.07.49.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Dec 2019 07:49:19 -0800 (PST)
-Subject: Re: [PATCH 2/2] drm/i915/vlv_dsi: Control panel and backlight enable
- GPIOs on BYT
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-References: <20191129185836.2789-1-hdegoede@redhat.com>
- <20191129185836.2789-3-hdegoede@redhat.com>
- <CACRpkdbRb-LF2tNN-ueo=tKuJc+u4B7Y20+BCyqnN7wYbm8y7Q@mail.gmail.com>
- <87wobfj65b.fsf@intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <47c36b75-bc30-502b-7f8d-035cf2348fc4@redhat.com>
-Date:   Mon, 2 Dec 2019 16:49:18 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.0
+        id S1725997AbfLCLrx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Dec 2019 06:47:53 -0500
+Received: from mx2.suse.de ([195.135.220.15]:49394 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725773AbfLCLrw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 3 Dec 2019 06:47:52 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 6C137B183;
+        Tue,  3 Dec 2019 11:47:49 +0000 (UTC)
+From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To:     andrew.murray@arm.com, maz@kernel.org, linux-kernel@vger.kernel.org
+Cc:     james.quinlan@broadcom.com, mbrugger@suse.com,
+        f.fainelli@gmail.com, phil@raspberrypi.org, wahrenst@gmx.net,
+        jeremy.linton@arm.com, linux-pci@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Robin Murphy <robin.murphy@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        bcm-kernel-feedback-list@broadcom.com, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-rdma@vger.kernel.org, iommu@lists.linux-foundation.org,
+        netdev@vger.kernel.org, linux-rockchip@lists.infradead.org,
+        kexec@lists.infradead.org, linux-nfs@vger.kernel.org
+Subject: [PATCH v4 0/8] Raspberry Pi 4 PCIe support
+Date:   Tue,  3 Dec 2019 12:47:33 +0100
+Message-Id: <20191203114743.1294-1-nsaenzjulienne@suse.de>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-In-Reply-To: <87wobfj65b.fsf@intel.com>
-Content-Language: en-US
-X-MC-Unique: oXMYdmrZOq2GzMzqgqbp9Q-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-HI,
+This series aims at providing support for Raspberry Pi 4's PCIe
+controller, which is also shared with the Broadcom STB family of
+devices.
 
-On 02-12-2019 12:53, Jani Nikula wrote:
-> On Mon, 02 Dec 2019, Linus Walleij <linus.walleij@linaro.org> wrote:
->> Hi Hans,
->>
->> thank you for your patch!
->>
->> On Fri, Nov 29, 2019 at 7:58 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->>> -       /* GPIO Desc for CRC based Panel control */
->>> +       /* GPIO Desc for panel and backlight control */
->>>          struct gpio_desc *gpio_panel;
->>> +       struct gpio_desc *gpio_backlight;
->>
->> I think what happens here is that you reimplement
->> drivers/video/backlight/gpio_backlight.c
->>
->> The existing power control GPIO also reimplements
->> drivers/regulator/fixed.c in a sense but I am under the
->> impression that x86 in general and ACPI in particular
->> has a problem with the regulator subsystem so I am
->> uncertain about that one.
->>
->> When I look at the code I get more confused because
->> nominally panels should have their own drivers in
->> drivers/gpu/drm/panel/* especially DSI panels, and the
->> panels control their own GPIOs or regulators for power
->> and backlight.
->>
->> I was under the impression that Heikki's and Dmitry's
->> recent additions to software nodes would make it
->> possible to actually spawn devices like the GPIO backlight
->> and/or fixed regulator and put references to them so
->> that the drivers can pick them up from the respective
->> frameworks and manage them?
->>
->> Maybe I misunderstood things here though, I am a bit
->> under the impression that elder DRM drivers are
->> considered "elder gods" and do not need to use separate
->> panel drivers, backlight abstraction etc, and in that
->> case just go ahead, I guess.
->>
->> But I suspect some separation
->> would help the day the i915 driver wants to reuse some
->> really complex DSI panel from drivers/gpu/drm/panel/*
->> though.
-> 
-> Sadly I don't think that's going to happen, though.
-> 
-> For i915 the panels are described by VBT, or Video BIOS Tables. We don't
-> really know the make or model of the panels, we just get the timings and
-> sequences etc. from there. There's no info to probe a separate panel
-> driver. So we just have a "generic" DSI driver that's part of i915 which
-> uses the data from the VBT to drive all the possible panels.
-> 
-> We do use some of the drm DSI framework as a library to abstract things
-> a bit better, but that's about it.
-> 
-> The sequences should include details about GPIOs to toggle as well, so
-> in that sense I feel like the gpio calls should be bolted there.
+There was a previous attempt to upstream this some years ago[1] but was
+blocked as most STB PCIe integrations have a sparse DMA mapping[2] which
+is something currently not supported by the kernel.  Luckily this is not
+the case for the Raspberry Pi 4.
 
-Hmm, yes that makes sense, the problem really is that the VBT sequences
-for DSI panels on BYT are incomplete (*) and the MIPI_SEQ_POWER_ON / _OFF
-and MIPI_SEQ_BACKLIGHT_ON / _OFF sequences do not containt the
-"instructions" to toggle the panel-enable, resp. backlight enable
-GPIOs as they do on CHT and newer devices.
+Note that the driver code is to be based on top of Rob Herring's series
+simplifying inbound and outbound range parsing.
 
-So if we see all this of a shortcoming of the VBT tables, then it makes
-sense to move all special handling for this to intel_dsi_vbt.c, so we
-put the adding of the lookup table, the getting of the pins and the
-controlling of the pins all in there.
+[1] https://patchwork.kernel.org/cover/10605933/
+[2] https://patchwork.kernel.org/patch/10605957/
 
-Jani, is that what you have in mind ?
+---
 
-This would also solve the problem of Linus and Andy not liking the
-polution of the pinctrl driver with the adding of the platform
-specific lookups; and then we could only add the lookups when the
-VBT says the SoC is used for backlight control, leaving things
-as is (not even adding the lookups) when the PMIC is used for
-backlight control.
+Changes since v3:
+  - Moved all the log2.h related changes at the end of the series, as I
+    presume they will be contentious and I don't want the PCIe patches
+    to depend on them. Ultimately I think I'll respin them on their own
+    series but wanted to keep them in for this submission just for the
+    sake of continuity.
+  - Addressed small nits here and there.
 
-There is only one problem, currently is is not possible to
-unregister a mapping added with pinctrl_register_mappings
-and the i915 driver is typically a module which can be unloaded
-and I believe actually is unloaded as part of the i915 CI.
+Changes since v2:
+  - Redo register access in driver avoiding indirection while keeping
+    the naming intact
+  - Add patch editing ARM64's config
+  - Last MSI cleanups, notably removing MSIX flag
+  - Got rid of all _RB writes
+  - Got rid of all of_data
+  - Overall churn removal
+  - Address the rest of Andrew's comments
 
-pinctrl_register_mappings copies the passed in mapping, but
-it is a shallow copy, so it contains pointers to the modules
-const segment and we do not want to re-add another copy of
-the mapping when the module loads a second time.
+Changes since v1:
+  - add generic rounddown/roundup_pow_two64() patch
+  - Add MAINTAINERS patch
+  - Fix Kconfig
+  - Cleanup probe, use up to date APIs, exit on MSI failure
+  - Get rid of linux,pci-domain and other unused constructs
+  - Use edge triggered setup for MSI
+  - Cleanup MSI implementation
+  - Fix multiple cosmetic issues
+  - Remove supend/resume code
 
-Fixing this is easy though, there already is a pinctrl_unregister_map()
-function, we just need to export it so that the i915 driver can
-remove the mapping when it is unbound.
+Jim Quinlan (3):
+  dt-bindings: PCI: Add bindings for brcmstb's PCIe device
+  PCI: brcmstb: Add Broadcom STB PCIe host controller driver
+  PCI: brcmstb: Add MSI support
 
-Linus would exporting this function be ok with you?
+Nicolas Saenz Julienne (5):
+  ARM: dts: bcm2711: Enable PCIe controller
+  MAINTAINERS: Add brcmstb PCIe controller
+  arm64: defconfig: Enable Broadcom's STB PCIe controller
+  linux/log2.h: Fix 64bit calculations in roundup/down_pow_two()
+  linux/log2.h: Use roundup/dow_pow_two() on 64bit calculations
 
-Linus, question what is the purpose of the "dupping" / shallow
-copying of the argument passed to pinctrl_register_map ? Since
-it is shallow the mem for any pointers contained within there need
-to be kept around by the caller, so why not let the caller keep
-the pinctrl_map struct itself around too?
+ .../bindings/pci/brcm,stb-pcie.yaml           |   97 ++
+ MAINTAINERS                                   |    4 +
+ arch/arm/boot/dts/bcm2711.dtsi                |   37 +
+ arch/arm64/configs/defconfig                  |    1 +
+ drivers/acpi/arm64/iort.c                     |    2 +-
+ drivers/clk/clk-divider.c                     |    8 +-
+ drivers/clk/sunxi/clk-sunxi.c                 |    2 +-
+ drivers/infiniband/hw/hfi1/chip.c             |    4 +-
+ drivers/infiniband/hw/hfi1/init.c             |    4 +-
+ drivers/infiniband/hw/mlx4/srq.c              |    2 +-
+ drivers/infiniband/hw/mthca/mthca_srq.c       |    2 +-
+ drivers/infiniband/sw/rxe/rxe_qp.c            |    4 +-
+ drivers/iommu/intel-iommu.c                   |    4 +-
+ drivers/iommu/intel-svm.c                     |    4 +-
+ drivers/iommu/intel_irq_remapping.c           |    2 +-
+ drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c  |    4 +-
+ drivers/net/ethernet/marvell/sky2.c           |    2 +-
+ drivers/net/ethernet/mellanox/mlx4/en_clock.c |    3 +-
+ drivers/net/ethernet/rocker/rocker_hw.h       |    4 +-
+ drivers/net/ethernet/sfc/ef10.c               |    2 +-
+ drivers/net/ethernet/sfc/efx.h                |    2 +-
+ drivers/net/ethernet/sfc/falcon/efx.h         |    2 +-
+ drivers/of/device.c                           |    3 +-
+ drivers/pci/controller/Kconfig                |    9 +
+ drivers/pci/controller/Makefile               |    1 +
+ .../pci/controller/cadence/pcie-cadence-ep.c  |    3 +-
+ drivers/pci/controller/cadence/pcie-cadence.c |    3 +-
+ drivers/pci/controller/pcie-brcmstb.c         | 1008 +++++++++++++++++
+ drivers/pci/controller/pcie-rockchip-ep.c     |    5 +-
+ drivers/pci/msi.c                             |    2 +-
+ include/linux/log2.h                          |   44 +-
+ kernel/dma/direct.c                           |    2 +-
+ kernel/kexec_core.c                           |    3 +-
+ lib/rhashtable.c                              |    2 +-
+ net/sunrpc/xprtrdma/verbs.c                   |    2 +-
+ 35 files changed, 1211 insertions(+), 72 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/pci/brcm,stb-pcie.yaml
+ create mode 100644 drivers/pci/controller/pcie-brcmstb.c
 
-If we are going to export pinctrl_unregister_map() we need to make it
-do the right thing for dupped maps too, we can just store the dup flag
-in struct pinctrl_maps. So this is easy, but I wonder if we cannot
-get rid of the dupping all together ?
-
-Regards,
-
-Hans
-
-
-
-
-*) I suspect these are all version 2 VBT sequences (I guess I should check
-this) and according to the comment in vlv_dsi.c which documents the sequences,
-for v2 these sequences are not used, e.g. instead of executing the
-MIPIPanelPowerOn sequence the "panel-on" step is described simply as "power on".
-and the MIPIBacklightOn/Off sequences are described as being VBT v3+ only
+-- 
+2.24.0
 
