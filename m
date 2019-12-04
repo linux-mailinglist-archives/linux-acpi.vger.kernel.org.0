@@ -2,92 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54C4C11212F
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2019 02:54:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46A7B1121AE
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2019 04:01:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726486AbfLDBya (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Dec 2019 20:54:30 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:44328 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726189AbfLDBya (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Dec 2019 20:54:30 -0500
-Received: from 79.184.254.100.ipv4.supernova.orange.pl (79.184.254.100) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.320)
- id faa3772347af143e; Wed, 4 Dec 2019 02:54:27 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: [PATCH] ACPI: PM: Avoid attaching ACPI PM domain to certain devices
-Date:   Wed, 04 Dec 2019 02:54:27 +0100
-Message-ID: <1773028.iBGNyVBcMc@kreacher>
+        id S1726521AbfLDDBj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Dec 2019 22:01:39 -0500
+Received: from mga11.intel.com ([192.55.52.93]:47720 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726482AbfLDDBj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 3 Dec 2019 22:01:39 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Dec 2019 19:01:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,275,1571727600"; 
+   d="scan'208";a="385576029"
+Received: from jpan9-mobl2.amr.corp.intel.com (HELO localhost) ([10.254.106.153])
+  by orsmga005.jf.intel.com with ESMTP; 03 Dec 2019 19:01:37 -0800
+Date:   Tue, 3 Dec 2019 19:01:36 -0800
+From:   "Jacob Pan (Jun)" <jacob.jun.pan@intel.com>
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc:     <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <iommu@lists.linux-foundation.org>,
+        <virtualization@lists.linux-foundation.org>,
+        <linux-pci@vger.kernel.org>, <virtio-dev@lists.oasis-open.org>,
+        <rjw@rjwysocki.net>, <lenb@kernel.org>,
+        <lorenzo.pieralisi@arm.com>, <guohanjun@huawei.com>,
+        <sudeep.holla@arm.com>, <gregkh@linuxfoundation.org>,
+        <joro@8bytes.org>, <bhelgaas@google.com>, <mst@redhat.com>,
+        <jasowang@redhat.com>, <eric.auger@redhat.com>,
+        <sebastien.boeuf@intel.com>, <kevin.tian@intel.com>,
+        jacob.jun.pan@intel.com
+Subject: Re: [RFC 00/13] virtio-iommu on non-devicetree platforms
+Message-ID: <20191203190136.00007171@intel.com>
+In-Reply-To: <20191125180247.GD945122@lophozonia>
+References: <20191122105000.800410-1-jean-philippe@linaro.org>
+        <20191122160102.00004489@intel.com>
+        <20191125180247.GD945122@lophozonia>
+Organization: intel
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi Jean,
 
-Certain ACPI-enumerated devices represented as platform devices in
-Linux, like fans, require special low-level power management handling
-implemented by their drivers that is not in agreement with the ACPI
-PM domain behavior.  That leads to problems with managing ACPI fans
-during system-wide suspend and resume.
+Sorry for the delay, I was out last week. Comments inline below.
 
-For this reason, make acpi_dev_pm_attach() skip the affected devices
-by adding a list of device IDs to avoid to it and putting the IDs of
-the affected devices into that list.
+On Mon, 25 Nov 2019 19:02:47 +0100
+Jean-Philippe Brucker <jean-philippe@linaro.org> wrote:
 
-Fixes: e5cc8ef31267 (ACPI / PM: Provide ACPI PM callback routines for subsystems)
-Reported-by: Zhang Rui <rui.zhang@intel.com>
-Cc: 3.10+ <stable@vger.kernel.org> # 3.10+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
+> On Fri, Nov 22, 2019 at 04:01:02PM -0800, Jacob Pan (Jun) wrote:
+> > > (1) ACPI has one table per vendor (DMAR for Intel, IVRS for AMD
+> > > and IORT for Arm). From my point of view IORT is easier to
+> > > extend, since we just need to introduce a new node type. There
+> > > are no dependencies to Arm in the Linux IORT driver, so it works
+> > > well with CONFIG_X86. 
+> > From my limited understanding, IORT and VIOT is to solve device
+> > topology enumeration only? I am not sure how it can be expanded to
+> > cover information beyond device topology. e.g. DMAR has NUMA
+> > information and root port ATS, I guess they are not used today in
+> > the guest but might be additions in the future.  
+> 
+> The PCI root-complex node of IORT has an ATS attribute, which we can
+> already use. However its scope is the root complex, not individual
+> root ports like with DMAR.
+> 
+> I'm not very familiar with NUMA, but it looks like we just need to
+> specify a proximity domain in relation to the SRAT table, for each
+> viommu? The SMMUv3 node in IORT has a 4-bytes "proximity domain"
+> field for this. We can add the same to the VIOT virtio-iommu nodes
+> later, since the structures are extensible.
+> 
+I think there the proximity domain is more for each assigned device
+than vIOMMU. vIOMMU in the guest can have assigned devices belong to
+different pIOMMU and proximity domains. If the guest owns the first
+level page tables (gIOVA or SVA), we want to make sure page tables are
+allocated from the close proximity domain.
 
-Rui,
+My understanding is virtio IOMMU supports both virtio devices and
+assigned devices. we could care less about the former in terms of NUMA.
 
-Please test this on the machine(s) affected by the fan suspend/resume issues.
+In ACPI, we have _PXM method to retrieve device proximity domain. I
+don't know if there is something equivalent or a generic way to get
+_PXM information. I think VMM also need to make sure when an assigned
+device is used with vIOMMU, there are some memory is allocated from the
+device's proximity domain.
 
-I don't really see any cleaner way to address this problem, because the
-ACPI PM domain should not be used with the devices in question even if
-the driver that binds to them is not loaded.
+> But it might be better to keep the bare minimum information in the FW
+> descriptor, and put the rest in the virtio-iommu. So yes topology
+> enumeration is something the device cannot do itself (not fully that
+> is, see (2)) but for the rest, virtio-iommu's PROBE request can
+> provide details about each endpoint in relation to their physical
+> IOMMU.
+> 
+> We could for example add a bit in a PROBE property saying that the
+> whole path between the IOMMU and the endpoint supports ATS. For NUMA
+> it might also be more interesting to have a finer granularity, since
+> one viommu could be managing endpoints that are behind different
+> physical IOMMUs. If in the future we want to allocate page tables
+> close to the physical IOMMU for example, we might need to describe
+> multiple NUMA nodes per viommu, using the PROBE request.
+> 
+Should we reinvent something for NUMA or use ACPI's SRAT, _PXM? I am
+not sure how it is handled today in QEMU in terms of guest-host NUMA
+proximity domain mapping.
 
-Cheers,
-Rafael
-
----
- drivers/acpi/device_pm.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-Index: linux-pm/drivers/acpi/device_pm.c
-===================================================================
---- linux-pm.orig/drivers/acpi/device_pm.c
-+++ linux-pm/drivers/acpi/device_pm.c
-@@ -1314,9 +1314,19 @@ static void acpi_dev_pm_detach(struct de
-  */
- int acpi_dev_pm_attach(struct device *dev, bool power_on)
- {
-+	/*
-+	 * Skip devices whose ACPI companions match the device IDs below,
-+	 * because they require special power management handling incompatible
-+	 * with the generic ACPI PM domain.
-+	 */
-+	static const struct acpi_device_id special_pm_ids[] = {
-+		{"PNP0C0B", }, /* Generic ACPI fan */
-+		{"INT3404", }, /* Fan */
-+		{}
-+	};
- 	struct acpi_device *adev = ACPI_COMPANION(dev);
- 
--	if (!adev)
-+	if (!adev || !acpi_match_device_ids(adev, special_pm_ids))
- 		return 0;
- 
- 	/*
-
-
+> Thanks,
+> Jean
 
