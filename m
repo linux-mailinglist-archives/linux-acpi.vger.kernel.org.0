@@ -2,118 +2,188 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46A7B1121AE
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2019 04:01:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8D83112767
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2019 10:30:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726521AbfLDDBj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Dec 2019 22:01:39 -0500
-Received: from mga11.intel.com ([192.55.52.93]:47720 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726482AbfLDDBj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 3 Dec 2019 22:01:39 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Dec 2019 19:01:37 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,275,1571727600"; 
-   d="scan'208";a="385576029"
-Received: from jpan9-mobl2.amr.corp.intel.com (HELO localhost) ([10.254.106.153])
-  by orsmga005.jf.intel.com with ESMTP; 03 Dec 2019 19:01:37 -0800
-Date:   Tue, 3 Dec 2019 19:01:36 -0800
-From:   "Jacob Pan (Jun)" <jacob.jun.pan@intel.com>
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc:     <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <iommu@lists.linux-foundation.org>,
-        <virtualization@lists.linux-foundation.org>,
-        <linux-pci@vger.kernel.org>, <virtio-dev@lists.oasis-open.org>,
-        <rjw@rjwysocki.net>, <lenb@kernel.org>,
-        <lorenzo.pieralisi@arm.com>, <guohanjun@huawei.com>,
-        <sudeep.holla@arm.com>, <gregkh@linuxfoundation.org>,
-        <joro@8bytes.org>, <bhelgaas@google.com>, <mst@redhat.com>,
-        <jasowang@redhat.com>, <eric.auger@redhat.com>,
-        <sebastien.boeuf@intel.com>, <kevin.tian@intel.com>,
-        jacob.jun.pan@intel.com
-Subject: Re: [RFC 00/13] virtio-iommu on non-devicetree platforms
-Message-ID: <20191203190136.00007171@intel.com>
-In-Reply-To: <20191125180247.GD945122@lophozonia>
-References: <20191122105000.800410-1-jean-philippe@linaro.org>
-        <20191122160102.00004489@intel.com>
-        <20191125180247.GD945122@lophozonia>
-Organization: intel
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726166AbfLDJav (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 4 Dec 2019 04:30:51 -0500
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:34887 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725971AbfLDJav (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Dec 2019 04:30:51 -0500
+Received: by mail-oi1-f195.google.com with SMTP id k196so6262437oib.2;
+        Wed, 04 Dec 2019 01:30:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=X1wPeZTIIlORKYQ9nx5sgoocKreccnt1+PctvRn+gAs=;
+        b=IQ3AcVhchDiToYN47aGhxryY/UAFpAH3ezNQD8bq2wyV+n6ExpLng+oFnoHqpJ02VN
+         nccLK/6OQOacGRUG88nINy7JcJjNfhEfcXcUgewULLj7xy766+Ihoux9R6QHR8863ME7
+         Y8tq5XZwAFWaNPJUBp7mfNpQ3fY/jNrJQ77HhxQ4J7uH/gPgKz54m1ic62plnfBQO0cH
+         FvcX2oBrawjebFomkGAbI7POkocgyYexfNBawo9QrU/CfrXvvVLHz5x6ZXhWHDPpqXCs
+         QR1NM6RECuywvuB+9Ags2EzfxmzQxHvdTZNyXlIbuK0T7lS7z/0ZuzJR8UFacUzC9fqB
+         2WLQ==
+X-Gm-Message-State: APjAAAWgBpwJYEgH+zRHx+0Mz6KOTa/eoNMrWmol1QnV1v3rouzl/nra
+        Yp7f9DPMsSnOeNCzxmd5gI2PCwIkvHNNc2ALI1g=
+X-Google-Smtp-Source: APXvYqyQMn8qVMa567Fw+mI3uTll7XsYkshjDqKOsIaPbmemQmsvdLF6N7w9dcijkjUCyPeQrgpfXoPatwTSd0TTLUw=
+X-Received: by 2002:aca:4f48:: with SMTP id d69mr1808201oib.103.1575451849488;
+ Wed, 04 Dec 2019 01:30:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <201912040922.hUcG8uqP%lkp@intel.com>
+In-Reply-To: <201912040922.hUcG8uqP%lkp@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 4 Dec 2019 10:30:37 +0100
+Message-ID: <CAJZ5v0hO7TUado+foOX7QN7nGKKk5Ha7JV8QBYLk3594ky5kMg@mail.gmail.com>
+Subject: Re: [pm:bleeding-edge 6/7] drivers/base/test/property-entry-test.c:454:1:
+ warning: the frame size of 2960 bytes is larger than 2048 bytes
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     kbuild-all@lists.01.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        kbuild test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jean,
+On Wed, Dec 4, 2019 at 2:07 AM kbuild test robot <lkp@intel.com> wrote:
+>
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+> head:   88a29de6adffb9d4d1ac7f1b1d996c616ebda145
+> commit: 80e0582b1ab83ed08dedaad5a0cdb28457ccba4f [6/7] software node: add basic tests for property entries
+> config: arm64-randconfig-a001-20191203 (attached as .config)
+> compiler: aarch64-linux-gcc (GCC) 7.5.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         git checkout 80e0582b1ab83ed08dedaad5a0cdb28457ccba4f
+>         # save the attached .config to linux build tree
+>         GCC_VERSION=7.5.0 make.cross ARCH=arm64
+>
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+>
+> All warnings (new ones prefixed by >>):
+>
+>    drivers/base/test/property-entry-test.c: In function 'pe_test_reference':
+> >> drivers/base/test/property-entry-test.c:454:1: warning: the frame size of 2960 bytes is larger than 2048 bytes [-Wframe-larger-than=]
+>     }
+>     ^
+>    drivers/base/test/property-entry-test.c: In function 'pe_test_uint_arrays':
+>    drivers/base/test/property-entry-test.c:214:1: warning: the frame size of 4288 bytes is larger than 2048 bytes [-Wframe-larger-than=]
+>     }
+>     ^
+>    drivers/base/test/property-entry-test.c: In function 'pe_test_uints':
+>    drivers/base/test/property-entry-test.c:99:1: warning: the frame size of 2736 bytes is larger than 2048 bytes [-Wframe-larger-than=]
+>     }
+>     ^
 
-Sorry for the delay, I was out last week. Comments inline below.
+Dmitry, any comments on this?
 
-On Mon, 25 Nov 2019 19:02:47 +0100
-Jean-Philippe Brucker <jean-philippe@linaro.org> wrote:
+Perhaps I should drop the tests patch until this is resolved or clarified?
 
-> On Fri, Nov 22, 2019 at 04:01:02PM -0800, Jacob Pan (Jun) wrote:
-> > > (1) ACPI has one table per vendor (DMAR for Intel, IVRS for AMD
-> > > and IORT for Arm). From my point of view IORT is easier to
-> > > extend, since we just need to introduce a new node type. There
-> > > are no dependencies to Arm in the Linux IORT driver, so it works
-> > > well with CONFIG_X86. 
-> > From my limited understanding, IORT and VIOT is to solve device
-> > topology enumeration only? I am not sure how it can be expanded to
-> > cover information beyond device topology. e.g. DMAR has NUMA
-> > information and root port ATS, I guess they are not used today in
-> > the guest but might be additions in the future.  
-> 
-> The PCI root-complex node of IORT has an ATS attribute, which we can
-> already use. However its scope is the root complex, not individual
-> root ports like with DMAR.
-> 
-> I'm not very familiar with NUMA, but it looks like we just need to
-> specify a proximity domain in relation to the SRAT table, for each
-> viommu? The SMMUv3 node in IORT has a 4-bytes "proximity domain"
-> field for this. We can add the same to the VIOT virtio-iommu nodes
-> later, since the structures are extensible.
-> 
-I think there the proximity domain is more for each assigned device
-than vIOMMU. vIOMMU in the guest can have assigned devices belong to
-different pIOMMU and proximity domains. If the guest owns the first
-level page tables (gIOVA or SVA), we want to make sure page tables are
-allocated from the close proximity domain.
-
-My understanding is virtio IOMMU supports both virtio devices and
-assigned devices. we could care less about the former in terms of NUMA.
-
-In ACPI, we have _PXM method to retrieve device proximity domain. I
-don't know if there is something equivalent or a generic way to get
-_PXM information. I think VMM also need to make sure when an assigned
-device is used with vIOMMU, there are some memory is allocated from the
-device's proximity domain.
-
-> But it might be better to keep the bare minimum information in the FW
-> descriptor, and put the rest in the virtio-iommu. So yes topology
-> enumeration is something the device cannot do itself (not fully that
-> is, see (2)) but for the rest, virtio-iommu's PROBE request can
-> provide details about each endpoint in relation to their physical
-> IOMMU.
-> 
-> We could for example add a bit in a PROBE property saying that the
-> whole path between the IOMMU and the endpoint supports ATS. For NUMA
-> it might also be more interesting to have a finer granularity, since
-> one viommu could be managing endpoints that are behind different
-> physical IOMMUs. If in the future we want to allocate page tables
-> close to the physical IOMMU for example, we might need to describe
-> multiple NUMA nodes per viommu, using the PROBE request.
-> 
-Should we reinvent something for NUMA or use ACPI's SRAT, _PXM? I am
-not sure how it is handled today in QEMU in terms of guest-host NUMA
-proximity domain mapping.
-
-> Thanks,
-> Jean
-
+> vim +454 drivers/base/test/property-entry-test.c
+>
+>    360
+>    361  /* Handling of reference properties */
+>    362  static void pe_test_reference(struct kunit *test)
+>    363  {
+>    364          const struct software_node nodes[] = {
+>    365                  { .name = "1", },
+>    366                  { .name = "2", },
+>    367          };
+>    368
+>    369          const struct software_node_ref_args refs[] = {
+>    370                  {
+>    371                          .node = &nodes[0],
+>    372                          .nargs = 0,
+>    373                  },
+>    374                  {
+>    375                          .node = &nodes[1],
+>    376                          .nargs = 2,
+>    377                          .args = { 3, 4 },
+>    378                  },
+>    379          };
+>    380
+>    381          const struct property_entry entries[] = {
+>    382                  PROPERTY_ENTRY_REF("ref-1", &nodes[0]),
+>    383                  PROPERTY_ENTRY_REF("ref-2", &nodes[1], 1, 2),
+>    384                  PROPERTY_ENTRY_REF_ARRAY("ref-3", refs),
+>    385                  { }
+>    386          };
+>    387
+>    388          struct fwnode_handle *node;
+>    389          struct fwnode_reference_args ref;
+>    390          int error;
+>    391
+>    392          error = software_node_register_nodes(nodes);
+>    393          KUNIT_ASSERT_EQ(test, error, 0);
+>    394
+>    395          node = fwnode_create_software_node(entries, NULL);
+>    396          KUNIT_ASSERT_NOT_ERR_OR_NULL(test, node);
+>    397
+>    398          error = fwnode_property_get_reference_args(node, "ref-1", NULL,
+>    399                                                     0, 0, &ref);
+>    400          KUNIT_ASSERT_EQ(test, error, 0);
+>    401          KUNIT_EXPECT_PTR_EQ(test, to_software_node(ref.fwnode), &nodes[0]);
+>    402          KUNIT_EXPECT_EQ(test, ref.nargs, 0U);
+>    403
+>    404          /* wrong index */
+>    405          error = fwnode_property_get_reference_args(node, "ref-1", NULL,
+>    406                                                     0, 1, &ref);
+>    407          KUNIT_EXPECT_NE(test, error, 0);
+>    408
+>    409          error = fwnode_property_get_reference_args(node, "ref-2", NULL,
+>    410                                                     1, 0, &ref);
+>    411          KUNIT_ASSERT_EQ(test, error, 0);
+>    412          KUNIT_EXPECT_PTR_EQ(test, to_software_node(ref.fwnode), &nodes[1]);
+>    413          KUNIT_EXPECT_EQ(test, ref.nargs, 1U);
+>    414          KUNIT_EXPECT_EQ(test, ref.args[0], 1LLU);
+>    415
+>    416          /* asking for more args, padded with zero data */
+>    417          error = fwnode_property_get_reference_args(node, "ref-2", NULL,
+>    418                                                     3, 0, &ref);
+>    419          KUNIT_ASSERT_EQ(test, error, 0);
+>    420          KUNIT_EXPECT_PTR_EQ(test, to_software_node(ref.fwnode), &nodes[1]);
+>    421          KUNIT_EXPECT_EQ(test, ref.nargs, 3U);
+>    422          KUNIT_EXPECT_EQ(test, ref.args[0], 1LLU);
+>    423          KUNIT_EXPECT_EQ(test, ref.args[1], 2LLU);
+>    424          KUNIT_EXPECT_EQ(test, ref.args[2], 0LLU);
+>    425
+>    426          /* wrong index */
+>    427          error = fwnode_property_get_reference_args(node, "ref-2", NULL,
+>    428                                                     2, 1, &ref);
+>    429          KUNIT_EXPECT_NE(test, error, 0);
+>    430
+>    431          /* array of references */
+>    432          error = fwnode_property_get_reference_args(node, "ref-3", NULL,
+>    433                                                     0, 0, &ref);
+>    434          KUNIT_ASSERT_EQ(test, error, 0);
+>    435          KUNIT_EXPECT_PTR_EQ(test, to_software_node(ref.fwnode), &nodes[0]);
+>    436          KUNIT_EXPECT_EQ(test, ref.nargs, 0U);
+>    437
+>    438          /* second reference in the array */
+>    439          error = fwnode_property_get_reference_args(node, "ref-3", NULL,
+>    440                                                     2, 1, &ref);
+>    441          KUNIT_ASSERT_EQ(test, error, 0);
+>    442          KUNIT_EXPECT_PTR_EQ(test, to_software_node(ref.fwnode), &nodes[1]);
+>    443          KUNIT_EXPECT_EQ(test, ref.nargs, 2U);
+>    444          KUNIT_EXPECT_EQ(test, ref.args[0], 3LLU);
+>    445          KUNIT_EXPECT_EQ(test, ref.args[1], 4LLU);
+>    446
+>    447          /* wrong index */
+>    448          error = fwnode_property_get_reference_args(node, "ref-1", NULL,
+>    449                                                     0, 2, &ref);
+>    450          KUNIT_EXPECT_NE(test, error, 0);
+>    451
+>    452          fwnode_remove_software_node(node);
+>    453          software_node_unregister_nodes(nodes);
+>  > 454  }
+>    455
+>
+> ---
+> 0-DAY kernel test infrastructure                 Open Source Technology Center
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
