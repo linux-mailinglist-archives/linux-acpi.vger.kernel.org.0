@@ -2,40 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 312D4112952
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2019 11:35:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18B36112961
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2019 11:37:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727388AbfLDKfB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 4 Dec 2019 05:35:01 -0500
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:39080 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727268AbfLDKfB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Dec 2019 05:35:01 -0500
-Received: by mail-ot1-f68.google.com with SMTP id 77so5874618oty.6;
-        Wed, 04 Dec 2019 02:35:00 -0800 (PST)
+        id S1727693AbfLDKhC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 4 Dec 2019 05:37:02 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:46949 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727268AbfLDKhC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Dec 2019 05:37:02 -0500
+Received: by mail-ot1-f65.google.com with SMTP id g18so5835094otj.13;
+        Wed, 04 Dec 2019 02:37:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=WNn4XHe9ywl5H5Cb0VGU+9qS/kYHcdC+aeiiry/1kpM=;
-        b=OI6cVXpMhdjVAbn0ZtgEAo788b6jCZ60MVD3EkSbOpIiYmo4vvbxvsmk/JXpZ3U8FS
-         Jr6Orw/vKUmcA8l675DGDr7rse2U8BfPZt49+Hce+oZ9VMWW3VxrtSxWLg9j4QvQZW/w
-         E0iaxUF1qbAw8t00wVAxKQJVLEI2/BfUShT9vilFaNiI4GLDcf6SakdtIYxF8wFtdJUN
-         Oyfg/qZlWYpvH5yoMVt26JmPbaY0fJ8DzIy6fCGABpcI079tdjahw3sEGGhrqe7+edAN
-         C8linyYdmC75/gZA33W/NGZyX+4RURAXt7ykb9TfmMCbKgVxfgWnoBdMbdAp30FG4wBd
-         z2rg==
-X-Gm-Message-State: APjAAAVf/8z+1xGInGzP/fh3D8kNN+5U21WD/WpSX/Dt40rtSmf6uB4s
-        zuNdQrvsqxIffWbH04S/6r8Ac+oOPnMkGLjcTSzThina
-X-Google-Smtp-Source: APXvYqwi/xv+2t7WJjFELHBgx2xxlAvDSPObHgOKAMie0hXPlaY8UJ7uVPjZHHOG5pB3iZgU8+48EoXBwiTvMXTp3tQ=
-X-Received: by 2002:a05:6830:4b9:: with SMTP id l25mr1965013otd.266.1575455700009;
- Wed, 04 Dec 2019 02:35:00 -0800 (PST)
+        bh=hrn+T0qXoBS7Oix705yZN70rK/KjrjidrzrYQzpvk60=;
+        b=uOiZ5L3ycsWP1ypJcqLcVydDA2vOHcjwdIV8iV64rGC/L/SR9xTQPpfSSuWjI5nYMc
+         bp0rGEC9XQRRrZVR+pO5MyLpDL8OT/mZnAXl9keQcmE2DKY/O/AqGeAi64yexfYxjTBI
+         uTeFv9b+90CiaQs0cqQayIkfiPSFPiDgI+kynDdGIPQ+Ipoi+KVW8ibhIkhc26v1W4Bl
+         d5jIEnAF5gF/TcSY0hYPv3YcDkgVivhJfxTuZzzBApNu9jxVFT2XbYzjSaNKf4BZliik
+         1e0cXwo+77w3W+0GuHp+vnn/FPYWHi+lAg7G75AR7pXCeXMaUcsxgjU6pfDiL8ZRVAV8
+         cYkA==
+X-Gm-Message-State: APjAAAXnXwcxDI0OxDkp1wvcZ+BHGOP8LuLRbkS0zTaqLJybyeX5sGze
+        K92wUody8GIM9WzSkUgPXzC/+4pdbmQI9+T+8eI=
+X-Google-Smtp-Source: APXvYqylkz9yP/hrkQViDPt291eUwfZVYWuWFjR8l2wU4NqXVMwO1iSg4PjIa/CfW4XWAaZk9Q06SEPG/3IkwwHc9L0=
+X-Received: by 2002:a9d:7483:: with SMTP id t3mr1952495otk.262.1575455821133;
+ Wed, 04 Dec 2019 02:37:01 -0800 (PST)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 4 Dec 2019 11:34:48 +0100
-Message-ID: <CAJZ5v0iWz6HG4C19U2Pax8KpyGm=AvwDbU__w=Yt7ij1JqQZFg@mail.gmail.com>
-Subject: [GIT PULL] More power management updates for v5.5-rc1
+Date:   Wed, 4 Dec 2019 11:36:50 +0100
+Message-ID: <CAJZ5v0g4T6cCQr0BegWhY+KD0W2VJRqBTNoeu-bV8RYmPzTtRg@mail.gmail.com>
+Subject: [GIT PULL] More ACPI updates for v5.5-rc1
 To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
@@ -48,87 +47,66 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pm-5.5-rc1-2
+ acpi-5.5-rc1-2
 
-with top-most commit 1e4230f56dac141eb149ebec01f41b6fad27e503
+with top-most commit b65d56305c6f5c74b1b4fcaf55d48e949e49d67c
 
- Merge branches 'pm-sleep', 'pm-cpuidle', 'pm-cpufreq', 'pm-devfreq'
-and 'pm-avs'
+ Merge branches 'acpi-bus', 'acpi-button', 'acpi-sysfs' and 'acpi-misc'
 
 on top of commit 6e9f879684b46331f51d0c76ebee981c788417db
 
  Merge tag 'acpi-5.5-rc1' of
 git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
 
-to receive additional power management updates for 5.5-rc1.
+to receive additional ACPI updates for 5.5-rc1.
 
-These fix an ACPI EC driver bug exposed by the recent rework
-of the suspend-to-idle code flow, reintroduce frequency
-constraints into device PM QoS (in preparation for adding
-QoS support to devfreq), drop a redundant field from struct
-cpuidle_state and clean up Kconfig in some places.
+These close a nasty race condition in the ACPI memory mappings
+management code and an invalid parameter check in a library
+routing, allow GPE 0xFF to be masked via kernel command line,
+add a new lid switch blacklist entry and clean up Kconfig.
 
 Specifics:
 
- - Avoid a race condition in the ACPI EC driver that may cause
-   systems to be unable to leave suspend-to-idle (Rafael Wysocki).
+ - Fix locking issue in acpi_os_map_cleanup() leading to a race
+   condition that can be harnessed for provoking a kernel panic
+   from user space (Francesco Ruggeri).
 
- - Drop the "disabled" field, which is redundant, from struct
-   cpuidle_state (Rafael Wysocki).
+ - Fix parameter check in acpi_bus_get_private_data() (Vamshi K
+   Sthambamkadi).
 
- - Reintroduce device PM QoS frequency constraints (temporarily
-   introduced and than dropped during the 5.4 cycle) in preparation
-   for adding QoS support to devfreq (Leonard Crestez).
+ - Allow GPE 0xFF to be masked via kernel command line (Yunfeng Ye).
 
- - Clean up indentation (in multiple places) and the cpuidle drivers
-   help text in Kconfig (Krzysztof Kozlowski, Randy Dunlap).
+ - Add a new lid switch blacklist entry for Acer Switch 10 SW5-032
+   to the ACPI button driver (Hans de Goede).
+
+ - Clean up Kconfig (Krzysztof Kozlowski).
 
 Thanks!
 
 
 ---------------
 
-Krzysztof Kozlowski (3):
-      cpuidle: Fix Kconfig indentation
-      cpufreq: Fix Kconfig indentation
-      power: avs: Fix Kconfig indentation
+Francesco Ruggeri (1):
+      ACPI: OSL: only free map once in osl.c
 
-Leonard Crestez (4):
-      PM / QoS: Redefine FREQ_QOS_MAX_DEFAULT_VALUE to S32_MAX
-      PM / QoS: Initial kunit test
-      PM / QoS: Reorder pm_qos/freq_qos/dev_pm_qos structs
-      PM / QoS: Restore DEV_PM_QOS_MIN/MAX_FREQUENCY
+Hans de Goede (1):
+      ACPI: button: Add DMI quirk for Acer Switch 10 SW5-032 lid-switch
 
-Marek Szyprowski (1):
-      PM / devfreq: Add missing locking while setting suspend_freq
+Krzysztof Kozlowski (1):
+      ACPI: Fix Kconfig indentation
 
-Rafael J. Wysocki (3):
-      cpuidle: Drop disabled field from struct cpuidle_state
-      ACPI: EC: Rework flushing of pending work
-      ACPI: PM: s2idle: Rework ACPI events synchronization
+Vamshi K Sthambamkadi (1):
+      ACPI: bus: Fix NULL pointer check in acpi_bus_get_private_data()
 
-Randy Dunlap (1):
-      cpuidle: minor Kconfig help text fixes
+Yunfeng Ye (1):
+      ACPI: sysfs: Change ACPI_MASKABLE_GPE_MAX to 0x100
 
 ---------------
 
- arch/sh/kernel/cpu/shmobile/cpuidle.c |   8 +--
- drivers/acpi/ec.c                     |  36 ++++-------
- drivers/acpi/sleep.c                  |  26 ++++++--
- drivers/base/Kconfig                  |   4 ++
- drivers/base/power/Makefile           |   1 +
- drivers/base/power/qos-test.c         | 117 ++++++++++++++++++++++++++++++++++
- drivers/base/power/qos.c              |  73 +++++++++++++++++++--
- drivers/cpufreq/Kconfig.powerpc       |   8 +--
- drivers/cpufreq/Kconfig.x86           |  16 ++---
- drivers/cpuidle/Kconfig               |  16 ++---
- drivers/cpuidle/Kconfig.arm           |  22 +++----
- drivers/cpuidle/cpuidle.c             |   2 +-
- drivers/cpuidle/poll_state.c          |   1 -
- drivers/devfreq/devfreq.c             |   4 ++
- drivers/idle/intel_idle.c             |   6 +-
- drivers/power/avs/Kconfig             |  12 ++--
- include/linux/cpuidle.h               |   2 +-
- include/linux/pm_qos.h                |  86 ++++++++++++++-----------
- kernel/power/qos.c                    |   4 +-
- 19 files changed, 324 insertions(+), 120 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |  2 +-
+ drivers/acpi/Kconfig                            |  8 +++----
+ drivers/acpi/bus.c                              |  2 +-
+ drivers/acpi/button.c                           | 13 ++++++++++++
+ drivers/acpi/osl.c                              | 28 +++++++++++++++----------
+ drivers/acpi/sysfs.c                            |  6 +++---
+ 6 files changed, 39 insertions(+), 20 deletions(-)
