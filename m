@@ -2,33 +2,33 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BF7A11391D
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2019 02:08:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78E0611393C
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2019 02:23:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728121AbfLEBIZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 4 Dec 2019 20:08:25 -0500
-Received: from mga17.intel.com ([192.55.52.151]:24082 "EHLO mga17.intel.com"
+        id S1728470AbfLEBXQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 4 Dec 2019 20:23:16 -0500
+Received: from mga05.intel.com ([192.55.52.43]:11477 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728098AbfLEBIZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 4 Dec 2019 20:08:25 -0500
+        id S1727146AbfLEBXQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 4 Dec 2019 20:23:16 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Dec 2019 17:08:24 -0800
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Dec 2019 17:23:14 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.69,279,1571727600"; 
-   d="scan'208";a="294380489"
+   d="scan'208";a="385977676"
 Received: from spandruv-mobl3.jf.intel.com ([10.252.134.55])
-  by orsmga001.jf.intel.com with ESMTP; 04 Dec 2019 17:08:23 -0800
+  by orsmga005.jf.intel.com with ESMTP; 04 Dec 2019 17:23:12 -0800
 From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 To:     rjw@rjwysocki.net, lenb@kernel.org, rui.zhang@intel.com,
         corbet@lwn.net
 Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-doc@vger.kernel.org,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: [PATCH] ACPI / fan: Display fan performance state information
-Date:   Wed,  4 Dec 2019 17:08:10 -0800
-Message-Id: <20191205010810.18410-1-srinivas.pandruvada@linux.intel.com>
+Subject: [UPDATE][PATCH] ACPI / fan: Display fan performance state information
+Date:   Wed,  4 Dec 2019 17:23:09 -0800
+Message-Id: <20191205012309.23868-1-srinivas.pandruvada@linux.intel.com>
 X-Mailer: git-send-email 2.17.2
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
@@ -55,9 +55,13 @@ Documentation/acpi/fan_performance_states.txt
 Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Tested-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
 ---
- Documentation/acpi/fan_performance_states.txt |  39 ++++++
- drivers/acpi/fan.c                            | 111 ++++++++++++++++--
- 2 files changed, 141 insertions(+), 9 deletions(-)
+updated version:
+	Removed one unnecessary platoform_device* conversion from
+	acpi_device* in the function argument.
+
+ Documentation/acpi/fan_performance_states.txt |  39 +++++++
+ drivers/acpi/fan.c                            | 106 ++++++++++++++++--
+ 2 files changed, 138 insertions(+), 7 deletions(-)
  create mode 100644 Documentation/acpi/fan_performance_states.txt
 
 diff --git a/Documentation/acpi/fan_performance_states.txt b/Documentation/acpi/fan_performance_states.txt
@@ -106,7 +110,7 @@ index 000000000000..06fd8eb002f2
 +performance state. The range is from 0-9. For any other values, "invalid" is
 +be displayed.
 diff --git a/drivers/acpi/fan.c b/drivers/acpi/fan.c
-index 816b0803f7fb..b0ce7a48f0f6 100644
+index 816b0803f7fb..f5e9f67e6a5f 100644
 --- a/drivers/acpi/fan.c
 +++ b/drivers/acpi/fan.c
 @@ -50,6 +50,7 @@ struct acpi_fan_fps {
@@ -117,11 +121,10 @@ index 816b0803f7fb..b0ce7a48f0f6 100644
  };
  
  struct acpi_fan_fif {
-@@ -265,8 +266,67 @@ static int acpi_fan_speed_cmp(const void *a, const void *b)
+@@ -265,6 +266,64 @@ static int acpi_fan_speed_cmp(const void *a, const void *b)
  	return fps1->speed - fps2->speed;
  }
  
--static int acpi_fan_get_fps(struct acpi_device *device)
 +#define to_fps_state(k) container_of(k, struct acpi_fan_fps, kobj)
 +
 +#define DEFINE_ONE_FPS_ATTR_RO(_name)\
@@ -149,7 +152,7 @@ index 816b0803f7fb..b0ce7a48f0f6 100644
 +static ssize_t show_trip_point_index(struct kobject *kobj,
 +				     struct kobj_attribute *attr,
 +				     char *buf)
- {
++{
 +	struct acpi_fan_fps *fps = to_fps_state(kobj);
 +
 +	if (fps->trip_point > 9)
@@ -180,13 +183,10 @@ index 816b0803f7fb..b0ce7a48f0f6 100644
 +
 +#define ACPI_FPS_NAME_LEN	20
 +
-+static int acpi_fan_get_fps(struct platform_device *pdev)
-+{
-+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+ static int acpi_fan_get_fps(struct acpi_device *device)
+ {
  	struct acpi_fan *fan = acpi_driver_data(device);
- 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
- 	union acpi_object *obj;
-@@ -295,12 +355,13 @@ static int acpi_fan_get_fps(struct acpi_device *device)
+@@ -295,12 +354,13 @@ static int acpi_fan_get_fps(struct acpi_device *device)
  	}
  	for (i = 0; i < fan->fps_count; i++) {
  		struct acpi_buffer format = { sizeof("NNNNN"), "NNNNN" };
@@ -202,7 +202,7 @@ index 816b0803f7fb..b0ce7a48f0f6 100644
  		}
  	}
  
-@@ -308,6 +369,21 @@ static int acpi_fan_get_fps(struct acpi_device *device)
+@@ -308,6 +368,21 @@ static int acpi_fan_get_fps(struct acpi_device *device)
  	sort(fan->fps, fan->fps_count, sizeof(*fan->fps),
  	     acpi_fan_speed_cmp, NULL);
  
@@ -224,13 +224,11 @@ index 816b0803f7fb..b0ce7a48f0f6 100644
  err:
  	kfree(obj);
  	return status;
-@@ -330,14 +406,14 @@ static int acpi_fan_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, fan);
+@@ -331,13 +406,13 @@ static int acpi_fan_probe(struct platform_device *pdev)
  
  	if (acpi_fan_is_acpi4(device)) {
--		if (acpi_fan_get_fif(device) || acpi_fan_get_fps(device))
+ 		if (acpi_fan_get_fif(device) || acpi_fan_get_fps(device))
 -			goto end;
-+		if (acpi_fan_get_fif(device) || acpi_fan_get_fps(pdev))
 +			goto err_end;
  		fan->acpi4 = true;
  	} else {
@@ -242,7 +240,7 @@ index 816b0803f7fb..b0ce7a48f0f6 100644
  		}
  	}
  
-@@ -350,7 +426,7 @@ static int acpi_fan_probe(struct platform_device *pdev)
+@@ -350,7 +425,7 @@ static int acpi_fan_probe(struct platform_device *pdev)
  						&fan_cooling_ops);
  	if (IS_ERR(cdev)) {
  		result = PTR_ERR(cdev);
@@ -251,7 +249,7 @@ index 816b0803f7fb..b0ce7a48f0f6 100644
  	}
  
  	dev_dbg(&pdev->dev, "registered as cooling_device%d\n", cdev->id);
-@@ -365,10 +441,21 @@ static int acpi_fan_probe(struct platform_device *pdev)
+@@ -365,10 +440,21 @@ static int acpi_fan_probe(struct platform_device *pdev)
  	result = sysfs_create_link(&cdev->device.kobj,
  				   &pdev->dev.kobj,
  				   "device");
@@ -275,7 +273,7 @@ index 816b0803f7fb..b0ce7a48f0f6 100644
  	return result;
  }
  
-@@ -376,6 +463,12 @@ static int acpi_fan_remove(struct platform_device *pdev)
+@@ -376,6 +462,12 @@ static int acpi_fan_remove(struct platform_device *pdev)
  {
  	struct acpi_fan *fan = platform_get_drvdata(pdev);
  
