@@ -2,307 +2,160 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E8BC114E59
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Dec 2019 10:49:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A788115145
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Dec 2019 14:46:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726134AbfLFJte (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Dec 2019 04:49:34 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:64218 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726070AbfLFJte (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Dec 2019 04:49:34 -0500
-Received: from 79.184.254.100.ipv4.supernova.orange.pl (79.184.254.100) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.320)
- id 28f4daad6b3a8c0a; Fri, 6 Dec 2019 10:49:30 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux PM <linux-pm@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Len Brown <len.brown@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Len Brown <lenb@kernel.org>
-Subject: [RFC][PATCH 6/6] intel_idle: Use ACPI _CST for processor models without C-state tables
-Date:   Fri, 06 Dec 2019 10:46:27 +0100
-Message-ID: <1693656.BlZ3FklVZA@kreacher>
-In-Reply-To: <2037014.bnAicLLH9b@kreacher>
-References: <2037014.bnAicLLH9b@kreacher>
+        id S1726237AbfLFNqL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Dec 2019 08:46:11 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:34453 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726234AbfLFNqL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Dec 2019 08:46:11 -0500
+Received: by mail-wr1-f68.google.com with SMTP id t2so7859541wrr.1
+        for <linux-acpi@vger.kernel.org>; Fri, 06 Dec 2019 05:46:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pchhA+Qd735SiSghx5b7/GfwHxZh3fNBHhqJYmqBUkQ=;
+        b=rQLHkO7IRCw5XPQn/IUAVnExx5nXAsdqEWsTnS4ch1KjpjqMl16TC0P9iDdQ2D8hT3
+         Z+EPLj7cs1cKQdWsjbGO7rZqrxlWkGOKnAqWux4G2Sw4m09Xzth8mPG7s2VDSNk278dx
+         0imU8O7oY+UK+iO+a3RO3FB/2yqxoc+Q+uroWwbF2DPFw9u5f/s66DQvpMKPt+iHjHJi
+         2oaZqs9M41GUTwDIN7Yk9ymiE4rqasPdSRD4oqAsPxwEpRvq8d6hqs3PG17Xvj9qAtdC
+         VSYPpZhNVWOzOTRC1QU9DiyjNo67stkqkdx1eJ2koG++8HnVmjkcRJNtH8TM9AHRYWeT
+         9FfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pchhA+Qd735SiSghx5b7/GfwHxZh3fNBHhqJYmqBUkQ=;
+        b=llFS5O4jk+U7v9JdRgWiuGgjVk9qZiekcQ4mrJchM6Z1UwEVih8BfsEnPTNdkf+rRG
+         WWuxIE+K94PWjVDsCs4DNDrqknp98II5wjdyqdb6fuNv/YTQldnU917dcUNnuK1mPRiS
+         szDEmYInNVDWXZaenb9E4jVfpyE4VT9zL0bhQL8GYUGFruzUR5CadlLDDGlkKGnxaDFj
+         J1f9XK80ngGZOazCF23+piOuT4tGk6IUIBUsuTAgcjtjb6HsdPtysb1yu6bd7sR4Fu+R
+         tW6kxFP8UY2AmVq4jSejmtYM+qY5qQbQqp723U+IQHQaxT5q6zNUU3EancS0HBTQ3GS1
+         tMfg==
+X-Gm-Message-State: APjAAAVtb/sYu1NQIW+SDFkzuJE5upyXU6BeU0IgyVaFodvHFmFtJ9+l
+        pFDPvrOJuOGafFM/hM87EO8=
+X-Google-Smtp-Source: APXvYqx8sqfPPsfpm2+eiqI2Seer6sXLfQEMVv4iUfw28oPb8JZme60gTk6C+7UqZ6BnZtMGSeT2Nw==
+X-Received: by 2002:a5d:5267:: with SMTP id l7mr16973781wrc.84.1575639969373;
+        Fri, 06 Dec 2019 05:46:09 -0800 (PST)
+Received: from xws.fritz.box (pD9E5AB28.dip0.t-ipconnect.de. [217.229.171.40])
+        by smtp.gmail.com with ESMTPSA id w8sm3732001wmm.0.2019.12.06.05.46.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Dec 2019 05:46:08 -0800 (PST)
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+Cc:     Erik Kaneda <erik.kaneda@intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Rafael J Wysocki <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        Maximilian Luz <luzmaximilian@gmail.com>
+Subject: [PATCH] ACPICA: Dispatcher: always generate buffer objects for ASL create_field() operator
+Date:   Fri,  6 Dec 2019 14:45:44 +0100
+Message-Id: <20191206134544.963913-1-luzmaximilian@gmail.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The Microsoft AML interpreter always creates Buffer objects via the
+create_field() operator. Linux currently does this only when the field
+size is larger than the maximum integer width. This causes problems with
+the DSDT of Microsoft Surface devices.
 
-Modify the intel_idle driver to get the C-states information from ACPI
-_CST if the processor model is not recognized by it.
+These devices determine the success of a function call by the type
+returned from it. On success, a Buffer object is expected, on failure an
+Integer containing an error code. This buffer object is created with a
+dynamic size via the create_field() operator. Due to the difference in
+behavior, Buffer values of small size are however converted to Integers
+and thus interpreted by the DSDT as the method having failed, whereas in
+reality it succeeded.
 
-The processor is still required to support MWAIT and the information
-from ACPI _CST will only be used if all of the C-states listed by
-_CST are of the ACPI_CSTATE_FFH type (which means that they are
-expected to be entered via MWAIT).
+This is actually not a bug in the kernel, but rather Microsoft not
+conforming with the ACPI specification.
 
-Moreover, the driver assumes that the _CST information is the same
-for all CPUs in the system, so it is sufficient to evaluate _CST for
-one of them and extract the common list of C-states from there.
-Also _CST is evaluated once at the system initialization time and
-the driver does not respond to _CST change notifications (the plan
-is to change that in the future).
-
-[The next step will be to combine the _CST data with the driver's
- own static tables of C-states for some processors n order to allow
- of more robustness.]
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
 ---
- drivers/idle/intel_idle.c |  181 ++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 153 insertions(+), 28 deletions(-)
+Description to be expanded.
 
-Index: linux-pm/drivers/idle/intel_idle.c
-===================================================================
---- linux-pm.orig/drivers/idle/intel_idle.c
-+++ linux-pm/drivers/idle/intel_idle.c
-@@ -41,6 +41,7 @@
+This is a re-submit with changes as requested in
+    PROBLEM: Calling ObjectType on buffer field reports type integer
+---
+ drivers/acpi/acpica/acobject.h |  3 ++-
+ drivers/acpi/acpica/dsopcode.c |  2 ++
+ drivers/acpi/acpica/exfield.c  | 15 ++++++++++++---
+ 3 files changed, 16 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/acpi/acpica/acobject.h b/drivers/acpi/acpica/acobject.h
+index 8def0e3d690f..10154a8157ec 100644
+--- a/drivers/acpi/acpica/acobject.h
++++ b/drivers/acpi/acpica/acobject.h
+@@ -260,7 +260,8 @@ struct acpi_object_index_field {
+ /* The buffer_field is different in that it is part of a Buffer, not an op_region */
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include <linux/acpi.h>
- #include <linux/kernel.h>
- #include <linux/cpuidle.h>
- #include <linux/tick.h>
-@@ -1111,6 +1112,120 @@ static const struct x86_cpu_id intel_idl
- 	{}
+ struct acpi_object_buffer_field {
+-	ACPI_OBJECT_COMMON_HEADER ACPI_COMMON_FIELD_INFO union acpi_operand_object *buffer_obj;	/* Containing Buffer object */
++	ACPI_OBJECT_COMMON_HEADER ACPI_COMMON_FIELD_INFO u8 is_create_field;	/* Special case for objects created by create_field() */
++	union acpi_operand_object *buffer_obj;	/* Containing Buffer object */
  };
  
-+#define INTEL_CPU_FAM6_MWAIT \
-+	{ X86_VENDOR_INTEL, 6, X86_MODEL_ANY, X86_FEATURE_MWAIT, 0 }
-+
-+static const struct x86_cpu_id intel_mwait_ids[] __initconst = {
-+	INTEL_CPU_FAM6_MWAIT,
-+	{}
-+};
-+
-+static bool intel_idle_max_cstate_reached(int cstate)
-+{
-+	if (cstate + 1 > max_cstate) {
-+		pr_info("max_cstate %d reached\n", max_cstate);
-+		return true;
-+	}
-+	return false;
-+}
-+
-+#ifdef CONFIG_ACPI_PROCESSOR_CSTATE
-+#include <acpi/processor.h>
-+
-+static struct acpi_processor_power acpi_state_table;
-+
-+/**
-+ * intel_idle_cst_usable - Check if the _CST information can be used.
-+ *
-+ * Check if all of the C-states listed by _CST in the max_cstate range are
-+ * ACPI_CSTATE_FFH, which means that they should be entered via MWAIT.
-+ */
-+static bool intel_idle_cst_usable(void)
-+{
-+	int cstate, limit;
-+
-+	limit = min_t(int, min_t(int, CPUIDLE_STATE_MAX, max_cstate + 1),
-+		      acpi_state_table.count);
-+
-+	for (cstate = 1; cstate < limit; cstate++) {
-+		struct acpi_processor_cx *cx = &acpi_state_table.states[cstate];
-+
-+		if (cx->entry_method != ACPI_CSTATE_FFH)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
-+static bool intel_idle_acpi_cst_extract(void)
-+{
-+	unsigned int cpu;
-+
-+	for_each_possible_cpu(cpu) {
-+		struct acpi_processor *pr = per_cpu(processors, cpu);
-+
-+		if (!pr)
-+			continue;
-+
-+		if (acpi_processor_evaluate_cst(pr->handle, cpu, &acpi_state_table))
-+			continue;
-+
-+		acpi_state_table.count++;
-+
-+		if (!intel_idle_cst_usable())
-+			continue;
-+
-+		if (!acpi_processor_claim_cst_control()) {
-+			acpi_state_table.count = 0;
-+			return false;
-+		}
-+
-+		return true;
-+	}
-+
-+	pr_debug("ACPI _CST not found or not usable\n");
-+	return false;
-+}
-+
-+static void intel_idle_init_cstates_acpi(struct cpuidle_driver *drv)
-+{
-+	int cstate, limit = min_t(int, CPUIDLE_STATE_MAX, acpi_state_table.count);
-+
-+	/*
-+	 * If limit > 0, intel_idle_cst_usable() has returned 'true', so all of
-+	 * the interesting states are ACPI_CSTATE_FFH.
-+	 */
-+	for (cstate = 1; cstate < limit; cstate++) {
-+		struct acpi_processor_cx *cx;
-+		struct cpuidle_state *state;
-+
-+		if (intel_idle_max_cstate_reached(cstate))
-+			break;
-+
-+		cx = &acpi_state_table.states[cstate];
-+
-+		state = &drv->states[drv->state_count++];
-+
-+		snprintf(state->name, CPUIDLE_NAME_LEN, "C%d", cstate);
-+		strlcpy(state->desc, cx->desc, CPUIDLE_DESC_LEN);
-+		state->exit_latency = cx->latency;
-+		state->target_residency = cx->latency;
-+		if (cx->type > ACPI_STATE_C1)
-+			state->target_residency += 2 * cx->latency;
-+
-+		state->flags = MWAIT2flg(cx->address);
-+		if (cx->type > ACPI_STATE_C2)
-+			state->flags |= CPUIDLE_FLAG_TLB_FLUSHED;
-+
-+		state->enter = intel_idle;
-+		state->enter_s2idle = intel_idle_s2idle;
-+	}
-+}
-+#else /* !CONFIG_ACPI_PROCESSOR_CSTATE */
-+static inline bool intel_idle_acpi_cst_extract(void) { return false; }
-+static inline void intel_idle_init_cstates_acpi(struct cpuidle_driver *drv) { }
-+#endif /* !CONFIG_ACPI_PROCESSOR_CSTATE */
-+
- /*
-  * intel_idle_probe()
-  */
-@@ -1125,17 +1240,15 @@ static int __init intel_idle_probe(void)
+ /******************************************************************************
+diff --git a/drivers/acpi/acpica/dsopcode.c b/drivers/acpi/acpica/dsopcode.c
+index 10f32b62608e..4632055121cd 100644
+--- a/drivers/acpi/acpica/dsopcode.c
++++ b/drivers/acpi/acpica/dsopcode.c
+@@ -217,6 +217,8 @@ acpi_ds_init_buffer_field(u16 aml_opcode,
  	}
  
- 	id = x86_match_cpu(intel_idle_ids);
--	if (!id) {
--		if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL &&
--		    boot_cpu_data.x86 == 6)
--			pr_debug("does not run on family %d model %d\n",
--				 boot_cpu_data.x86, boot_cpu_data.x86_model);
--		return -ENODEV;
--	}
--
--	if (!boot_cpu_has(X86_FEATURE_MWAIT)) {
--		pr_debug("Please enable MWAIT in BIOS SETUP\n");
--		return -ENODEV;
-+	if (id) {
-+		if (!boot_cpu_has(X86_FEATURE_MWAIT)) {
-+			pr_debug("Please enable MWAIT in BIOS SETUP\n");
-+			return -ENODEV;
-+		}
-+	} else {
-+		id = x86_match_cpu(intel_mwait_ids);
-+		if (!id)
-+			return -ENODEV;
- 	}
+ 	obj_desc->buffer_field.buffer_obj = buffer_desc;
++	obj_desc->buffer_field.is_create_field =
++		aml_opcode == AML_CREATE_FIELD_OP;
  
- 	if (boot_cpu_data.cpuid_level < CPUID_MWAIT_LEAF)
-@@ -1151,7 +1264,10 @@ static int __init intel_idle_probe(void)
- 	pr_debug("MWAIT substates: 0x%x\n", mwait_substates);
+ 	/* Reference count for buffer_desc inherits obj_desc count */
  
- 	icpu = (const struct idle_cpu *)id->driver_data;
--	cpuidle_state_table = icpu->state_table;
-+	if (icpu)
-+		cpuidle_state_table = icpu->state_table;
-+	else if (!intel_idle_acpi_cst_extract())
-+		return -ENODEV;
+diff --git a/drivers/acpi/acpica/exfield.c b/drivers/acpi/acpica/exfield.c
+index d3d2dbfba680..7a4521f5ab3e 100644
+--- a/drivers/acpi/acpica/exfield.c
++++ b/drivers/acpi/acpica/exfield.c
+@@ -96,7 +96,8 @@ acpi_ex_get_protocol_buffer_length(u32 protocol_id, u32 *return_length)
+  * RETURN:      Status
+  *
+  * DESCRIPTION: Read from a named field. Returns either an Integer or a
+- *              Buffer, depending on the size of the field.
++ *              Buffer, depending on the size of the field and whether if a
++ *              field is created by the create_field() operator.
+  *
+  ******************************************************************************/
  
- 	pr_debug("v" INTEL_IDLE_VERSION " model 0x%X\n",
- 		 boot_cpu_data.x86_model);
-@@ -1333,31 +1449,19 @@ static void intel_idle_state_table_updat
- 	}
- }
+@@ -154,14 +155,22 @@ acpi_ex_read_data_from_field(struct acpi_walk_state *walk_state,
+ 	 * the use of arithmetic operators on the returned value if the
+ 	 * field size is equal or smaller than an Integer.
+ 	 *
++	 * However, all buffer fields created by create_field operator needs to
++	 * remain as a buffer to match other AML interpreter implementations.
++	 *
+ 	 * Note: Field.length is in bits.
+ 	 */
+ 	buffer_length =
+ 	    (acpi_size)ACPI_ROUND_BITS_UP_TO_BYTES(obj_desc->field.bit_length);
  
--/*
-- * intel_idle_cpuidle_driver_init()
-- * allocate, initialize cpuidle_states
-- */
--static void __init intel_idle_cpuidle_driver_init(void)
-+static void intel_idle_init_cstates_icpu(struct cpuidle_driver *drv)
- {
- 	int cstate;
--	struct cpuidle_driver *drv = &intel_idle_driver;
--
--	intel_idle_state_table_update();
--
--	cpuidle_poll_state_init(drv);
--	drv->state_count = 1;
+-	if (buffer_length > acpi_gbl_integer_byte_width) {
++	if (buffer_length > acpi_gbl_integer_byte_width ||
++	    (obj_desc->common.type == ACPI_TYPE_BUFFER_FIELD &&
++	     obj_desc->buffer_field.is_create_field)) {
  
- 	for (cstate = 0; cstate < CPUIDLE_STATE_MAX; ++cstate) {
- 		unsigned int mwait_hint;
+-		/* Field is too large for an Integer, create a Buffer instead */
++		/*
++		 * Field is either too large for an Integer or created by the
++		 * create_field() operator, so we need to create a Buffer.
++		 */
  
--		if (!cpuidle_state_table[cstate].enter &&
--		    !cpuidle_state_table[cstate].enter_s2idle)
-+		if (intel_idle_max_cstate_reached(cstate))
- 			break;
- 
--		if (cstate + 1 > max_cstate) {
--			pr_info("max_cstate %d reached\n", max_cstate);
-+		if (!cpuidle_state_table[cstate].enter &&
-+		    !cpuidle_state_table[cstate].enter_s2idle)
- 			break;
--		}
- 
- 		/* If marked as unusable, skip this state. */
- 		if (cpuidle_state_table[cstate].flags & CPUIDLE_FLAG_UNUSABLE) {
-@@ -1380,6 +1484,24 @@ static void __init intel_idle_cpuidle_dr
- 	}
- }
- 
-+/*
-+ * intel_idle_cpuidle_driver_init()
-+ * allocate, initialize cpuidle_states
-+ */
-+static void __init intel_idle_cpuidle_driver_init(void)
-+{
-+	struct cpuidle_driver *drv = &intel_idle_driver;
-+
-+	intel_idle_state_table_update();
-+
-+	cpuidle_poll_state_init(drv);
-+	drv->state_count = 1;
-+
-+	if (icpu)
-+		intel_idle_init_cstates_icpu(drv);
-+	else
-+		intel_idle_init_cstates_acpi(drv);
-+}
- 
- /*
-  * intel_idle_cpu_init()
-@@ -1398,6 +1520,9 @@ static int intel_idle_cpu_init(unsigned
- 		return -EIO;
- 	}
- 
-+	if (!icpu)
-+		return 0;
-+
- 	if (icpu->auto_demotion_disable_flags)
- 		auto_demotion_disable();
- 
-
-
+ 		buffer_desc = acpi_ut_create_buffer_object(buffer_length);
+ 		if (!buffer_desc) {
+-- 
+2.24.0
 
