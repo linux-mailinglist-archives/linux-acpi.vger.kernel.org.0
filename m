@@ -2,93 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 51A96117190
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2019 17:26:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64DC11171E7
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2019 17:37:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725904AbfLIQ0w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Dec 2019 11:26:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:32818 "EHLO mail.kernel.org"
+        id S1726197AbfLIQhB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Dec 2019 11:37:01 -0500
+Received: from mga12.intel.com ([192.55.52.136]:65260 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726477AbfLIQ0w (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 9 Dec 2019 11:26:52 -0500
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 839772080D;
-        Mon,  9 Dec 2019 16:26:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575908811;
-        bh=XmMuS1tdYvjAP/dOf3MN6vwqugHg0P62ECl8srBnh14=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=zOU+VVGKwRrsQ0D+daeQ+x/xsP+ATGq5Wl9RqLMP25OEiY225038UWy37UJhw427c
-         daPKborkT9vmKrlKEnjdHU05mgGRcG8eVRcpb/wMvX8g9vmrQcTXv0EFF7BeKw12Kf
-         l0lhHe8IOzGxUjarOFoGOoeadP8wDld7a054/8Sc=
-Date:   Mon, 9 Dec 2019 16:26:46 +0000
-From:   Will Deacon <will@kernel.org>
-To:     Andre Przywara <andre.przywara@arm.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Andrew Murray <andrew.murray@arm.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] pcie: Add quirk for the Arm Neoverse N1SDP platform
-Message-ID: <20191209162645.GA7489@willie-the-truck>
-References: <20191209160638.141431-1-andre.przywara@arm.com>
+        id S1725904AbfLIQhB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 9 Dec 2019 11:37:01 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Dec 2019 08:37:00 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,296,1571727600"; 
+   d="scan'208";a="244511160"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga002.fm.intel.com with ESMTP; 09 Dec 2019 08:36:59 -0800
+Received: from andy by smile with local (Exim 4.93-RC5)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1ieM1q-00011F-Qo; Mon, 09 Dec 2019 18:36:58 +0200
+Date:   Mon, 9 Dec 2019 18:36:58 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jan Kiszka <jan.kiszka@siemens.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-gpio@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH v3 1/2] gpio: sch: Add edge event support
+Message-ID: <20191209163658.GL32742@smile.fi.intel.com>
+References: <cover.1574277614.git.jan.kiszka@siemens.com>
+ <42ae6149a14f81fd86c5acb5bd33e987123b6bed.1574277614.git.jan.kiszka@siemens.com>
+ <20191122111219.GW32742@smile.fi.intel.com>
+ <5d7399ce-1776-18ef-3bb5-6e3e8e7e7524@siemens.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191209160638.141431-1-andre.przywara@arm.com>
+In-Reply-To: <5d7399ce-1776-18ef-3bb5-6e3e8e7e7524@siemens.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Dec 09, 2019 at 04:06:38PM +0000, Andre Przywara wrote:
-> From: Deepak Pandey <Deepak.Pandey@arm.com>
+On Fri, Nov 22, 2019 at 04:33:05PM +0100, Jan Kiszka wrote:
+> On 22.11.19 12:12, Andy Shevchenko wrote:
+> > On Wed, Nov 20, 2019 at 08:20:13PM +0100, Jan Kiszka wrote:
+
+> > > +	switch (type & IRQ_TYPE_SENSE_MASK) {
+> > > +	case IRQ_TYPE_EDGE_RISING:
+> > > +		rising = 1;
+> > > +		break;
+> > > +	case IRQ_TYPE_EDGE_FALLING:
+> > > +		falling = 1;
+> > > +		break;
+> > > +	case IRQ_TYPE_EDGE_BOTH:
+> > > +		rising = 1;
+> > > +		falling = 1;
+> > > +		break;
+> > > +	default:
+> > > +		return -EINVAL;
+> > > +	}
+
+> > Won't we need to set up IRQ handler here and use handle_bad_irq() during
+> > initialization phase?
 > 
-> The Arm N1SDP SoC suffers from some PCIe integration issues, most
-> prominently config space accesses to not existing BDFs being answered
-> with a bus abort, resulting in an SError.
+> Why? This is just defining the edge type, not whether an interrupt could be
+> generated or not. Also, we only have edge events here, so no reason to
+> switch types.
 
-"Do as I say, not as I do"?
+OK.
 
-> To mitigate this, the firmware scans the bus before boot (catching the
-> SErrors) and creates a table with valid BDFs, which acts as a filter for
-> Linux' config space accesses.
+> > > +	irq_base = devm_irq_alloc_descs(&pdev->dev, -1, 0, sch->chip.ngpio,
+> > > +					NUMA_NO_NODE);
+> > > +	if (irq_base < 0)
+> > > +		return irq_base;
+> > > +	sch->irq_base = irq_base;
+> > > +
+> > > +	gc = devm_irq_alloc_generic_chip(&pdev->dev, "sch_gpio", 1, irq_base,
+> > > +					 NULL, handle_simple_irq);
+> > > +	if (!gc)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	gc->private = sch;
+> > > +	ct = gc->chip_types;
+> > > +
+> > > +	ct->chip.irq_mask = sch_irq_mask;
+> > > +	ct->chip.irq_unmask = sch_irq_unmask;
+> > > +	ct->chip.irq_set_type = sch_irq_type;
+> > > +
+> > > +	ret = devm_irq_setup_generic_chip(&pdev->dev, gc,
+> > > +					  IRQ_MSK(sch->chip.ngpio),
+> > > +					  0, IRQ_NOREQUEST | IRQ_NOPROBE, 0);
+> > > +	if (ret)
+> > > +		return ret;
+> > 
+> > Shan't we do this in the (similar) way how it's done in pinctrl-cherryview.c
+> > driver? (Keep in mind later patches which are going to be v5.5)
+> > 
 > 
-> Add code consulting the table as an ACPI PCIe quirk, also register the
-> corresponding device tree based description of the host controller.
-> Also fix the other two minor issues on the way, namely not being fully
-> ECAM compliant and config space accesses being restricted to 32-bit
-> accesses only.
-> 
-> This allows the Arm Neoverse N1SDP board to boot Linux without crashing
-> and to access *any* devices (there are no platform devices except UART).
-> 
-> Signed-off-by: Deepak Pandey <Deepak.Pandey@arm.com>
-> [Sudipto: extend to cover the CCIX root port as well]
-> Signed-off-by: Sudipto Paul <sudipto.paul@arm.com>
-> [Andre: fix coding style issues, rewrite some parts, add DT support]
-> Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-> ---
->  arch/arm64/configs/defconfig        |   1 +
->  drivers/acpi/pci_mcfg.c             |   7 +
->  drivers/pci/controller/Kconfig      |  11 ++
->  drivers/pci/controller/Makefile     |   1 +
->  drivers/pci/controller/pcie-n1sdp.c | 196 ++++++++++++++++++++++++++++
->  include/linux/pci-ecam.h            |   2 +
->  6 files changed, 218 insertions(+)
->  create mode 100644 drivers/pci/controller/pcie-n1sdp.c
+> Can you be a bit more specific for me? Do you mean the pattern
+> gpiochip_irqchip_add / gpiochip_set_chained_irqchip? What would be the
+> difference / benefit? And how would I link sch_sci_handler to that pattern?
 
-Where can I buy one of these? They're "unreleased" according to:
+Now we have struct irq_chip is part of GPIO chip, so, we may use it and supply
+needed callbacks and settings before calling gpiochip_add_data().
 
-https://community.arm.com/developer/tools-software/oss-platforms/w/docs/440/neoverse-n1-sdp
+Will it work in this case?
 
-and I don't think we should wreck upstream because of a platform that
-doesn't exist.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Will
+
