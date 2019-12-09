@@ -2,122 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64DC11171E7
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2019 17:37:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7443117388
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2019 19:12:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726197AbfLIQhB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Dec 2019 11:37:01 -0500
-Received: from mga12.intel.com ([192.55.52.136]:65260 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725904AbfLIQhB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 9 Dec 2019 11:37:01 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Dec 2019 08:37:00 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,296,1571727600"; 
-   d="scan'208";a="244511160"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga002.fm.intel.com with ESMTP; 09 Dec 2019 08:36:59 -0800
-Received: from andy by smile with local (Exim 4.93-RC5)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ieM1q-00011F-Qo; Mon, 09 Dec 2019 18:36:58 +0200
-Date:   Mon, 9 Dec 2019 18:36:58 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jan Kiszka <jan.kiszka@siemens.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-gpio@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH v3 1/2] gpio: sch: Add edge event support
-Message-ID: <20191209163658.GL32742@smile.fi.intel.com>
-References: <cover.1574277614.git.jan.kiszka@siemens.com>
- <42ae6149a14f81fd86c5acb5bd33e987123b6bed.1574277614.git.jan.kiszka@siemens.com>
- <20191122111219.GW32742@smile.fi.intel.com>
- <5d7399ce-1776-18ef-3bb5-6e3e8e7e7524@siemens.com>
+        id S1726265AbfLISL6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Dec 2019 13:11:58 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:38688 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726342AbfLISL6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Dec 2019 13:11:58 -0500
+Received: by mail-wr1-f67.google.com with SMTP id y17so17286008wrh.5
+        for <linux-acpi@vger.kernel.org>; Mon, 09 Dec 2019 10:11:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EPZYuKzuHS01ypbpAypAPWL2i1nnzUw0mtei/SOU8FI=;
+        b=eChG24HveCLJr1w7htcnEaSdvHwWYy3dopCe7PzKjFIohfKepun/JzeHDOVtJdhFBX
+         krj9dCfZna5uDRah00TO6hMrC5CxJ839KjvhzTUWqxzJ0nzCKaHhF508qHSSy0GZtoSx
+         KJKhRNuYym1oZf7HWKmhQjbPY2WwKkqcLV/aEZnMdOGhN7+MIwQiCiCZ6KKFGROEzZxL
+         Htj1QWdRJqh6WeQx5GUmgHJil8TmhNhDhDAyvl7+sHEzB6M95GtfmZ/PLcNOaeZEdyGj
+         IBWYXgi+wPjUJZNb7Xjum2/nBvekCA934r8JznZDGI55yX51UEARM1sRTsF7H8bRaJoC
+         7XyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EPZYuKzuHS01ypbpAypAPWL2i1nnzUw0mtei/SOU8FI=;
+        b=L2wKYt9o2pCKDDc5XZc0niJbrdU1P7qVOpxqrIP3gp14nLeToVVkalPUksuhCuEke+
+         9kQ9ynRNzdUyXTp6zgyXxWb95j4Y/yOg71y7jWOLd8n8AwHcKnNFL3nOLDYj+lfQE96u
+         T0tmh0J6ri9VoRegFuR8tVXKqdFmqW8H/qaw3Sk+xM5VtlA3CEMvuCUHXjLe9BL21NAj
+         2zF4g0sKkgO2Eo4Pz9K8ctVIhhvBb+Eho7Y4ZGosBAli/8RdSr3exRUJsZAMtHploJ4r
+         WNV6vCfiq2QyAw3AGxpkSiurAkmNIcXZBb8E9CnkQrKrJU0GArg6/TIRlKWxVMEUt5yt
+         89yw==
+X-Gm-Message-State: APjAAAUhVOsPROA9tkzdFw8eDUGU1lJVur4hCOwpvgjkFLDcIjAXfz2c
+        OmgMbPigv3/9045RbYAW0isbfQ==
+X-Google-Smtp-Source: APXvYqzT1ymN3phudM5XMKZ/AIHs5aojcXL1B8J2G48oy5R7vLLmgXJx0GUEWH2l1syk1oV2bTStlA==
+X-Received: by 2002:a5d:5704:: with SMTP id a4mr3593884wrv.198.1575915116081;
+        Mon, 09 Dec 2019 10:11:56 -0800 (PST)
+Received: from localhost.localdomain (adsl-62-167-101-88.adslplus.ch. [62.167.101.88])
+        by smtp.gmail.com with ESMTPSA id h2sm309838wrv.66.2019.12.09.10.11.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Dec 2019 10:11:55 -0800 (PST)
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        iommu@lists.linux-foundation.org
+Cc:     joro@8bytes.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
+        will@kernel.org, robin.murphy@arm.com, bhelgaas@google.com,
+        eric.auger@redhat.com, jonathan.cameron@huawei.com,
+        zhangfei.gao@linaro.org
+Subject: [PATCH v3 00/13] iommu: Add PASID support to Arm SMMUv3
+Date:   Mon,  9 Dec 2019 19:05:01 +0100
+Message-Id: <20191209180514.272727-1-jean-philippe@linaro.org>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5d7399ce-1776-18ef-3bb5-6e3e8e7e7524@siemens.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 22, 2019 at 04:33:05PM +0100, Jan Kiszka wrote:
-> On 22.11.19 12:12, Andy Shevchenko wrote:
-> > On Wed, Nov 20, 2019 at 08:20:13PM +0100, Jan Kiszka wrote:
+Add support for Substream ID and PASIDs to the SMMUv3 driver.
+Changes since v2 [1]:
 
-> > > +	switch (type & IRQ_TYPE_SENSE_MASK) {
-> > > +	case IRQ_TYPE_EDGE_RISING:
-> > > +		rising = 1;
-> > > +		break;
-> > > +	case IRQ_TYPE_EDGE_FALLING:
-> > > +		falling = 1;
-> > > +		break;
-> > > +	case IRQ_TYPE_EDGE_BOTH:
-> > > +		rising = 1;
-> > > +		falling = 1;
-> > > +		break;
-> > > +	default:
-> > > +		return -EINVAL;
-> > > +	}
+* Split preparatory work into patches 5, 6, 8 and 9.
 
-> > Won't we need to set up IRQ handler here and use handle_bad_irq() during
-> > initialization phase?
-> 
-> Why? This is just defining the edge type, not whether an interrupt could be
-> generated or not. Also, we only have edge events here, so no reason to
-> switch types.
+* Added patch 1. Not strictly relevant, but since we're moving the DMA
+  allocations and adding a new one, we might as well clean the flags
+  first.
 
-OK.
+* Fixed a double free reported by Jonathan, and other small
+  issues.
 
-> > > +	irq_base = devm_irq_alloc_descs(&pdev->dev, -1, 0, sch->chip.ngpio,
-> > > +					NUMA_NO_NODE);
-> > > +	if (irq_base < 0)
-> > > +		return irq_base;
-> > > +	sch->irq_base = irq_base;
-> > > +
-> > > +	gc = devm_irq_alloc_generic_chip(&pdev->dev, "sch_gpio", 1, irq_base,
-> > > +					 NULL, handle_simple_irq);
-> > > +	if (!gc)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	gc->private = sch;
-> > > +	ct = gc->chip_types;
-> > > +
-> > > +	ct->chip.irq_mask = sch_irq_mask;
-> > > +	ct->chip.irq_unmask = sch_irq_unmask;
-> > > +	ct->chip.irq_set_type = sch_irq_type;
-> > > +
-> > > +	ret = devm_irq_setup_generic_chip(&pdev->dev, gc,
-> > > +					  IRQ_MSK(sch->chip.ngpio),
-> > > +					  0, IRQ_NOREQUEST | IRQ_NOPROBE, 0);
-> > > +	if (ret)
-> > > +		return ret;
-> > 
-> > Shan't we do this in the (similar) way how it's done in pinctrl-cherryview.c
-> > driver? (Keep in mind later patches which are going to be v5.5)
-> > 
-> 
-> Can you be a bit more specific for me? Do you mean the pattern
-> gpiochip_irqchip_add / gpiochip_set_chained_irqchip? What would be the
-> difference / benefit? And how would I link sch_sci_handler to that pattern?
+* Added patch 12. Upstream commit c6e9aefbf9db ("PCI/ATS: Remove unused
+  PRI and PASID stubs") removed the unused PASID stubs. Since the SMMU
+  driver can be built without PCI, the stubs are now needed.
 
-Now we have struct irq_chip is part of GPIO chip, so, we may use it and supply
-needed callbacks and settings before calling gpiochip_add_data().
+[1] https://lore.kernel.org/linux-iommu/20191108152508.4039168-1-jean-philippe@linaro.org/
 
-Will it work in this case?
+Jean-Philippe Brucker (13):
+  iommu/arm-smmu-v3: Drop __GFP_ZERO flag from DMA allocation
+  dt-bindings: document PASID property for IOMMU masters
+  iommu/arm-smmu-v3: Support platform SSID
+  ACPI/IORT: Support PASID for platform devices
+  iommu/arm-smmu-v3: Prepare arm_smmu_s1_cfg for SSID support
+  iommu/arm-smmu-v3: Add context descriptor tables allocators
+  iommu/arm-smmu-v3: Add support for Substream IDs
+  iommu/arm-smmu-v3: Propate ssid_bits
+  iommu/arm-smmu-v3: Handle failure of arm_smmu_write_ctx_desc()
+  iommu/arm-smmu-v3: Add second level of context descriptor table
+  iommu/arm-smmu-v3: Improve add_device() error handling
+  PCI/ATS: Add PASID stubs
+  iommu/arm-smmu-v3: Add support for PCI PASID
+
+ .../devicetree/bindings/iommu/iommu.txt       |   6 +
+ drivers/acpi/arm64/iort.c                     |  18 +
+ drivers/iommu/arm-smmu-v3.c                   | 462 +++++++++++++++---
+ drivers/iommu/of_iommu.c                      |   6 +-
+ include/linux/iommu.h                         |   2 +
+ include/linux/pci-ats.h                       |   3 +
+ 6 files changed, 437 insertions(+), 60 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.24.0
 
