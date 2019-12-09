@@ -2,134 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9ABB11625B
-	for <lists+linux-acpi@lfdr.de>; Sun,  8 Dec 2019 15:05:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B1281167A6
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2019 08:43:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726425AbfLHOFW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 8 Dec 2019 09:05:22 -0500
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:31604 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726406AbfLHOFW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 8 Dec 2019 09:05:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1575813920;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=30ipBLDOpILVGltlX+yMvZubDIZXAvCZnhKBpoYTnd0=;
-        b=SkKosVp5YTE7Hi+oVvSCkJn+2c6pDWpLMZ8JKKGRa6FCydEcMO1GZ+j2iWajZOm/dz4vML
-        e0d2wF6PjmSKKP3juJ8JlvHVl9h3l+QOUmKiJirjh725ShF7xWDWFm0pRxeCVZMrW3rnKH
-        76F6xBL4tdnPr80KSJA40GtnqIlG3mU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-353-BA45oVaSN82a4fwlim6N7A-1; Sun, 08 Dec 2019 09:05:19 -0500
-Received: by mail-wr1-f71.google.com with SMTP id c6so5969332wrm.18
-        for <linux-acpi@vger.kernel.org>; Sun, 08 Dec 2019 06:05:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=30ipBLDOpILVGltlX+yMvZubDIZXAvCZnhKBpoYTnd0=;
-        b=d0keIVrxHTdHJgWACfy2IUmvWlFL4imvGvRJPACdmKgI+oGpu7uI0KUJcSPRmbsfYT
-         lorFr8aFOQEe4VEEHmyj+jhcpw9QFQBTKgeujiU9UHzMSTtbyqlZb7yd7ldVuY2UhNKb
-         Rox7VSvn8FoMha/+EyrtnvIJuubDXu3kMmnOA+FF4z9L1Jb/LBfIGiIjKp+zklZ3lnCq
-         gzzhlWIq7ydMXuKOoniBM3RTkYF+EKvwNyhRayfwLi9n8UtWXLHxasA3MlXY5dL1Dq7I
-         5kcOppM1Gei4c3Q+GW36n/+S74p+1Y9z32HqryI7z7SlAUC65GupLktx4ZuvOMGpoS+c
-         03VQ==
-X-Gm-Message-State: APjAAAVqkUru+z962Nv/vF8bD/uZPho2H7N/jj1A33N71PuOMnSHtGsJ
-        6lDCgzsdxFenq8yNvRD+xa+L0r2i3K4jXk5tIG6/BlF+/oOSRoE2mdVU9g+iDSAC5nDYrKvkio2
-        qQ9zyZyGT5uKQE8gw4FmXZA==
-X-Received: by 2002:adf:ebc3:: with SMTP id v3mr3828227wrn.280.1575813918075;
-        Sun, 08 Dec 2019 06:05:18 -0800 (PST)
-X-Google-Smtp-Source: APXvYqwClxrwfKXccjCy3DgP3KyYWvRyxieD/Vi/Ud1fqKAxEpVX6n6WXJ4jmC4eyZLJ/l742BKMfA==
-X-Received: by 2002:adf:ebc3:: with SMTP id v3mr3828207wrn.280.1575813917877;
-        Sun, 08 Dec 2019 06:05:17 -0800 (PST)
-Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
-        by smtp.gmail.com with ESMTPSA id q6sm24703020wrx.72.2019.12.08.06.05.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 08 Dec 2019 06:05:17 -0800 (PST)
-Subject: Re: [PATCH] ACPI: button: Add a DMI quirk for Razer Blade Stealth 13
- late 2019 lid-switch
-To:     Jason Ekstrand <jason@jlekstrand.net>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20191206175409.335568-1-jason@jlekstrand.net>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <3565c99f-3cc4-32cb-1cac-98c7b0392e5c@redhat.com>
-Date:   Sun, 8 Dec 2019 15:05:16 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        id S1727122AbfLIHnX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Dec 2019 02:43:23 -0500
+Received: from mga05.intel.com ([192.55.52.43]:34353 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727115AbfLIHnX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 9 Dec 2019 02:43:23 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Dec 2019 23:43:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,294,1571727600"; 
+   d="scan'208";a="237660470"
+Received: from txu2-mobl.ccr.corp.intel.com (HELO [10.239.197.115]) ([10.239.197.115])
+  by fmsmga004.fm.intel.com with ESMTP; 08 Dec 2019 23:43:21 -0800
+Subject: Re: [PATCH] ACPI/HMAT: Fix the parsing of Cache Associativity and
+ Write Policy
+To:     rafael.j.wysocki@intel.com, lenb@kernel.org, keith.busch@intel.com,
+        gregkh@linuxfoundation.org, dan.j.williams@intel.com,
+        dave.hansen@linux.intel.com
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20191202070348.32148-1-tao3.xu@intel.com>
+From:   Tao Xu <tao3.xu@intel.com>
+Message-ID: <5cb15538-7097-1aa1-00a1-ce21c086c13b@intel.com>
+Date:   Mon, 9 Dec 2019 15:43:21 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-In-Reply-To: <20191206175409.335568-1-jason@jlekstrand.net>
-Content-Language: en-US
-X-MC-Unique: BA45oVaSN82a4fwlim6N7A-1
-X-Mimecast-Spam-Score: 0
+In-Reply-To: <20191202070348.32148-1-tao3.xu@intel.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Gentle ping :)
 
-On 06-12-2019 18:54, Jason Ekstrand wrote:
-> Running evemu-record on the lid switch event shows that the lid reports
-> the first close but then never reports an open.  This causes systemd to
-> continuously re-suspend the laptop every 30s.  Resetting the _LID to
-> open fixes the issue.
-
-Sorry to be a bit nitpicky here, but the LID does work normally right,
-so it does signal an event when it gets closed a second time right?
-
-Your current commit message and comment suggest closing the LID only
-works once. So perhaps something like this for the comment:
-
-/*
-  * Razer Blade Stealth 13 late 2019, _LID always reports closed,
-  * even when opened.
-  */
-
-And adjust the comment accordingly.
-
-Regards,
-
-Hans
-
-
-
-> Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+On 12/2/2019 3:03 PM, Tao Xu wrote:
+> In chapter 5.2.27.5, Table 5-147: Field "Cache Attributes" of
+> ACPI 6.3 spec: 0 is "None", 1 is "Direct Mapped", 2 is "Complex Cache
+> Indexing" for Cache Associativity; 0 is "None", 1 is "Write Back",
+> 2 is "Write Through" for Write Policy.
+> 
+> Signed-off-by: Tao Xu <tao3.xu@intel.com>
 > ---
+>   drivers/acpi/numa/hmat.c | 4 ++--
+>   include/linux/node.h     | 4 ++--
+>   2 files changed, 4 insertions(+), 4 deletions(-)
 > 
-> Re-sending due to a typo in my own e-mail address. :(
-> 
->   drivers/acpi/button.c | 11 +++++++++++
->   1 file changed, 11 insertions(+)
-> 
-> diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
-> index 662e07afe9a1..f7ca94e41c48 100644
-> --- a/drivers/acpi/button.c
-> +++ b/drivers/acpi/button.c
-> @@ -122,6 +122,17 @@ static const struct dmi_system_id dmi_lid_quirks[] = {
->   		},
->   		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
->   	},
-> +	{
-> +		/*
-> +		 * Razer Blade Stealth 13 late 2019, _LID reports the first
-> +		 * close but never resets to open.
-> +		 */
-> +		.matches = {
-> +			DMI_MATCH(DMI_SYS_VENDOR, "Razer"),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "Razer Blade Stealth 13 Late 2019"),
-> +		},
-> +		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
-> +	},
->   	{}
+> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+> index 2c32cfb72370..719d0279563d 100644
+> --- a/drivers/acpi/numa/hmat.c
+> +++ b/drivers/acpi/numa/hmat.c
+> @@ -383,7 +383,7 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
+>   		break;
+>   	case ACPI_HMAT_CA_NONE:
+>   	default:
+> -		tcache->cache_attrs.indexing = NODE_CACHE_OTHER;
+> +		tcache->cache_attrs.indexing = NODE_CACHE_NONE;
+>   		break;
+>   	}
+>   
+> @@ -396,7 +396,7 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
+>   		break;
+>   	case ACPI_HMAT_CP_NONE:
+>   	default:
+> -		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_OTHER;
+> +		tcache->cache_attrs.write_policy = NODE_CACHE_WRITE_NONE;
+>   		break;
+>   	}
+>   	list_add_tail(&tcache->node, &target->caches);
+> diff --git a/include/linux/node.h b/include/linux/node.h
+> index 4866f32a02d8..6dbd764d09ce 100644
+> --- a/include/linux/node.h
+> +++ b/include/linux/node.h
+> @@ -36,15 +36,15 @@ struct node_hmem_attrs {
 >   };
 >   
+>   enum cache_indexing {
+> +	NODE_CACHE_NONE,
+>   	NODE_CACHE_DIRECT_MAP,
+>   	NODE_CACHE_INDEXED,
+> -	NODE_CACHE_OTHER,
+>   };
+>   
+>   enum cache_write_policy {
+> +	NODE_CACHE_WRITE_NONE,
+>   	NODE_CACHE_WRITE_BACK,
+>   	NODE_CACHE_WRITE_THROUGH,
+> -	NODE_CACHE_WRITE_OTHER,
+>   };
+>   
+>   /**
 > 
 
