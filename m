@@ -2,18 +2,18 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A6F11187C4
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2019 13:13:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6472F1187D7
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2019 13:13:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727535AbfLJMNc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Dec 2019 07:13:32 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:41772 "EHLO
+        id S1727544AbfLJMNd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Dec 2019 07:13:33 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:51166 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727224AbfLJMNc (ORCPT
+        with ESMTP id S1727332AbfLJMNc (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Dec 2019 07:13:32 -0500
 Received: from 79.184.255.117.ipv4.supernova.orange.pl (79.184.255.117) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.320)
- id 785dde6ab70efc65; Tue, 10 Dec 2019 13:13:30 +0100
+ id 2bc94e7c1cbbb6eb; Tue, 10 Dec 2019 13:13:29 +0100
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux PM <linux-pm@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
@@ -21,9 +21,9 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         Len Brown <len.brown@intel.com>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Len Brown <lenb@kernel.org>
-Subject: [RFC v2][PATCH 6/9] intel_idle: Use ACPI _CST for processor models without C-state tables
-Date:   Tue, 10 Dec 2019 13:06:25 +0100
-Message-ID: <3789365.7kqZenubyC@kreacher>
+Subject: [RFC v2][PATCH 7/9] cpuidle: Allow idle states to be disabled by default
+Date:   Tue, 10 Dec 2019 13:07:46 +0100
+Message-ID: <4082336.WN7UBzZTZ7@kreacher>
 In-Reply-To: <35821518.IbFVMVmUy3@kreacher>
 References: <35821518.IbFVMVmUy3@kreacher>
 MIME-Version: 1.0
@@ -36,277 +36,128 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Modify the intel_idle driver to get the C-states information from ACPI
-_CST if the processor model is not recognized by it.
+In certain situations it may be useful to prevent some idle states
+from being used by default while allowing user space to enable them
+later on.
 
-The processor is still required to support MWAIT and the information
-from ACPI _CST will only be used if all of the C-states listed by
-_CST are of the ACPI_CSTATE_FFH type (which means that they are
-expected to be entered via MWAIT).
-
-Moreover, the driver assumes that the _CST information is the same
-for all CPUs in the system, so it is sufficient to evaluate _CST for
-one of them and extract the common list of C-states from there.
-Also _CST is evaluated once at the system initialization time and
-the driver does not respond to _CST change notifications (that can
-be changed in the future).
+For this purpose, introduce a new state flag, CPUIDLE_FLAG_OFF, to
+mark idle states that should be disabled by default, make the core
+set CPUIDLE_STATE_DISABLED_BY_USER for those states at the
+initialization time and add a new state attribute in sysfs,
+"initial_status", to inform user space of the initial status of
+the given idle state ("disabled" if CPUIDLE_FLAG_OFF is set for it,
+"enabled" otherwise).
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
 
-Changes from the previous version:
-
- - Append "_ACPI" to the names of the C-states coming from _CST.
- - For ACPI C-states types other than C1 set target_residency as 4 times
-   the exit latency (which is closer to the numbers used by intel_idle for
-   "known" processors).
+No changes from the previous version.
 
 ---
- drivers/idle/intel_idle.c |  181 ++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 153 insertions(+), 28 deletions(-)
+ Documentation/ABI/testing/sysfs-devices-system-cpu |    6 ++++++
+ Documentation/admin-guide/pm/cpuidle.rst           |    3 +++
+ drivers/cpuidle/cpuidle.c                          |    6 +++++-
+ drivers/cpuidle/sysfs.c                            |   10 ++++++++++
+ include/linux/cpuidle.h                            |    1 +
+ 5 files changed, 25 insertions(+), 1 deletion(-)
 
-Index: linux-pm/drivers/idle/intel_idle.c
+Index: linux-pm/drivers/cpuidle/sysfs.c
 ===================================================================
---- linux-pm.orig/drivers/idle/intel_idle.c
-+++ linux-pm/drivers/idle/intel_idle.c
-@@ -41,6 +41,7 @@
+--- linux-pm.orig/drivers/cpuidle/sysfs.c
++++ linux-pm/drivers/cpuidle/sysfs.c
+@@ -327,6 +327,14 @@ static ssize_t store_state_disable(struc
+ 	return size;
+ }
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++static ssize_t show_state_initial_status(struct cpuidle_state *state,
++					  struct cpuidle_state_usage *state_usage,
++					  char *buf)
++{
++	return sprintf(buf, "%s\n",
++		       state->flags & CPUIDLE_FLAG_OFF ? "disabled" : "enabled");
++}
++
+ define_one_state_ro(name, show_state_name);
+ define_one_state_ro(desc, show_state_desc);
+ define_one_state_ro(latency, show_state_exit_latency);
+@@ -337,6 +345,7 @@ define_one_state_ro(time, show_state_tim
+ define_one_state_rw(disable, show_state_disable, store_state_disable);
+ define_one_state_ro(above, show_state_above);
+ define_one_state_ro(below, show_state_below);
++define_one_state_ro(initial_status, show_state_initial_status);
  
-+#include <linux/acpi.h>
- #include <linux/kernel.h>
- #include <linux/cpuidle.h>
- #include <linux/tick.h>
-@@ -1111,6 +1112,120 @@ static const struct x86_cpu_id intel_idl
- 	{}
+ static struct attribute *cpuidle_state_default_attrs[] = {
+ 	&attr_name.attr,
+@@ -349,6 +358,7 @@ static struct attribute *cpuidle_state_d
+ 	&attr_disable.attr,
+ 	&attr_above.attr,
+ 	&attr_below.attr,
++	&attr_initial_status.attr,
+ 	NULL
  };
  
-+#define INTEL_CPU_FAM6_MWAIT \
-+	{ X86_VENDOR_INTEL, 6, X86_MODEL_ANY, X86_FEATURE_MWAIT, 0 }
-+
-+static const struct x86_cpu_id intel_mwait_ids[] __initconst = {
-+	INTEL_CPU_FAM6_MWAIT,
-+	{}
-+};
-+
-+static bool intel_idle_max_cstate_reached(int cstate)
-+{
-+	if (cstate + 1 > max_cstate) {
-+		pr_info("max_cstate %d reached\n", max_cstate);
-+		return true;
-+	}
-+	return false;
-+}
-+
-+#ifdef CONFIG_ACPI_PROCESSOR_CSTATE
-+#include <acpi/processor.h>
-+
-+static struct acpi_processor_power acpi_state_table;
-+
-+/**
-+ * intel_idle_cst_usable - Check if the _CST information can be used.
-+ *
-+ * Check if all of the C-states listed by _CST in the max_cstate range are
-+ * ACPI_CSTATE_FFH, which means that they should be entered via MWAIT.
-+ */
-+static bool intel_idle_cst_usable(void)
-+{
-+	int cstate, limit;
-+
-+	limit = min_t(int, min_t(int, CPUIDLE_STATE_MAX, max_cstate + 1),
-+		      acpi_state_table.count);
-+
-+	for (cstate = 1; cstate < limit; cstate++) {
-+		struct acpi_processor_cx *cx = &acpi_state_table.states[cstate];
-+
-+		if (cx->entry_method != ACPI_CSTATE_FFH)
-+			return false;
+Index: linux-pm/include/linux/cpuidle.h
+===================================================================
+--- linux-pm.orig/include/linux/cpuidle.h
++++ linux-pm/include/linux/cpuidle.h
+@@ -77,6 +77,7 @@ struct cpuidle_state {
+ #define CPUIDLE_FLAG_COUPLED	BIT(1) /* state applies to multiple cpus */
+ #define CPUIDLE_FLAG_TIMER_STOP BIT(2) /* timer is stopped on this state */
+ #define CPUIDLE_FLAG_UNUSABLE	BIT(3) /* avoid using this state */
++#define CPUIDLE_FLAG_OFF	BIT(4) /* disable this state by default */
+ 
+ struct cpuidle_device_kobj;
+ struct cpuidle_state_kobj;
+Index: linux-pm/drivers/cpuidle/cpuidle.c
+===================================================================
+--- linux-pm.orig/drivers/cpuidle/cpuidle.c
++++ linux-pm/drivers/cpuidle/cpuidle.c
+@@ -571,10 +571,14 @@ static int __cpuidle_register_device(str
+ 	if (!try_module_get(drv->owner))
+ 		return -EINVAL;
+ 
+-	for (i = 0; i < drv->state_count; i++)
++	for (i = 0; i < drv->state_count; i++) {
+ 		if (drv->states[i].flags & CPUIDLE_FLAG_UNUSABLE)
+ 			dev->states_usage[i].disable |= CPUIDLE_STATE_DISABLED_BY_DRIVER;
+ 
++		if (drv->states[i].flags & CPUIDLE_FLAG_OFF)
++			dev->states_usage[i].disable |= CPUIDLE_STATE_DISABLED_BY_USER;
 +	}
 +
-+	return true;
-+}
-+
-+static bool intel_idle_acpi_cst_extract(void)
-+{
-+	unsigned int cpu;
-+
-+	for_each_possible_cpu(cpu) {
-+		struct acpi_processor *pr = per_cpu(processors, cpu);
-+
-+		if (!pr)
-+			continue;
-+
-+		if (acpi_processor_evaluate_cst(pr->handle, cpu, &acpi_state_table))
-+			continue;
-+
-+		acpi_state_table.count++;
-+
-+		if (!intel_idle_cst_usable())
-+			continue;
-+
-+		if (!acpi_processor_claim_cst_control()) {
-+			acpi_state_table.count = 0;
-+			return false;
-+		}
-+
-+		return true;
-+	}
-+
-+	pr_debug("ACPI _CST not found or not usable\n");
-+	return false;
-+}
-+
-+static void intel_idle_init_cstates_acpi(struct cpuidle_driver *drv)
-+{
-+	int cstate, limit = min_t(int, CPUIDLE_STATE_MAX, acpi_state_table.count);
-+
-+	/*
-+	 * If limit > 0, intel_idle_cst_usable() has returned 'true', so all of
-+	 * the interesting states are ACPI_CSTATE_FFH.
-+	 */
-+	for (cstate = 1; cstate < limit; cstate++) {
-+		struct acpi_processor_cx *cx;
-+		struct cpuidle_state *state;
-+
-+		if (intel_idle_max_cstate_reached(cstate))
-+			break;
-+
-+		cx = &acpi_state_table.states[cstate];
-+
-+		state = &drv->states[drv->state_count++];
-+
-+		snprintf(state->name, CPUIDLE_NAME_LEN, "C%d_ACPI", cstate);
-+		strlcpy(state->desc, cx->desc, CPUIDLE_DESC_LEN);
-+		state->exit_latency = cx->latency;
-+		state->target_residency = cx->latency;
-+		if (cx->type > ACPI_STATE_C1)
-+			state->target_residency *= 4;
-+
-+		state->flags = MWAIT2flg(cx->address);
-+		if (cx->type > ACPI_STATE_C2)
-+			state->flags |= CPUIDLE_FLAG_TLB_FLUSHED;
-+
-+		state->enter = intel_idle;
-+		state->enter_s2idle = intel_idle_s2idle;
-+	}
-+}
-+#else /* !CONFIG_ACPI_PROCESSOR_CSTATE */
-+static inline bool intel_idle_acpi_cst_extract(void) { return false; }
-+static inline void intel_idle_init_cstates_acpi(struct cpuidle_driver *drv) { }
-+#endif /* !CONFIG_ACPI_PROCESSOR_CSTATE */
-+
- /*
-  * intel_idle_probe()
-  */
-@@ -1125,17 +1240,15 @@ static int __init intel_idle_probe(void)
- 	}
+ 	per_cpu(cpuidle_devices, dev->cpu) = dev;
+ 	list_add(&dev->device_list, &cpuidle_detected_devices);
  
- 	id = x86_match_cpu(intel_idle_ids);
--	if (!id) {
--		if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL &&
--		    boot_cpu_data.x86 == 6)
--			pr_debug("does not run on family %d model %d\n",
--				 boot_cpu_data.x86, boot_cpu_data.x86_model);
--		return -ENODEV;
--	}
--
--	if (!boot_cpu_has(X86_FEATURE_MWAIT)) {
--		pr_debug("Please enable MWAIT in BIOS SETUP\n");
--		return -ENODEV;
-+	if (id) {
-+		if (!boot_cpu_has(X86_FEATURE_MWAIT)) {
-+			pr_debug("Please enable MWAIT in BIOS SETUP\n");
-+			return -ENODEV;
-+		}
-+	} else {
-+		id = x86_match_cpu(intel_mwait_ids);
-+		if (!id)
-+			return -ENODEV;
- 	}
+Index: linux-pm/Documentation/ABI/testing/sysfs-devices-system-cpu
+===================================================================
+--- linux-pm.orig/Documentation/ABI/testing/sysfs-devices-system-cpu
++++ linux-pm/Documentation/ABI/testing/sysfs-devices-system-cpu
+@@ -196,6 +196,12 @@ Description:
+ 		does not reflect it. Likewise, if one enables a deep state but a
+ 		lighter state still is disabled, then this has no effect.
  
- 	if (boot_cpu_data.cpuid_level < CPUID_MWAIT_LEAF)
-@@ -1151,7 +1264,10 @@ static int __init intel_idle_probe(void)
- 	pr_debug("MWAIT substates: 0x%x\n", mwait_substates);
++What:		/sys/devices/system/cpu/cpuX/cpuidle/stateN/initial_status
++Date:		November 2019
++KernelVersion:	v5.6
++Contact:	Linux power management list <linux-pm@vger.kernel.org>
++Description:
++		(RO) The initial status of this state, "enabled" or "disabled".
  
- 	icpu = (const struct idle_cpu *)id->driver_data;
--	cpuidle_state_table = icpu->state_table;
-+	if (icpu)
-+		cpuidle_state_table = icpu->state_table;
-+	else if (!intel_idle_acpi_cst_extract())
-+		return -ENODEV;
+ What:		/sys/devices/system/cpu/cpuX/cpuidle/stateN/residency
+ Date:		March 2014
+Index: linux-pm/Documentation/admin-guide/pm/cpuidle.rst
+===================================================================
+--- linux-pm.orig/Documentation/admin-guide/pm/cpuidle.rst
++++ linux-pm/Documentation/admin-guide/pm/cpuidle.rst
+@@ -506,6 +506,9 @@ object corresponding to it, as follows:
+ ``disable``
+ 	Whether or not this idle state is disabled.
  
- 	pr_debug("v" INTEL_IDLE_VERSION " model 0x%X\n",
- 		 boot_cpu_data.x86_model);
-@@ -1333,31 +1449,19 @@ static void intel_idle_state_table_updat
- 	}
- }
- 
--/*
-- * intel_idle_cpuidle_driver_init()
-- * allocate, initialize cpuidle_states
-- */
--static void __init intel_idle_cpuidle_driver_init(void)
-+static void intel_idle_init_cstates_icpu(struct cpuidle_driver *drv)
- {
- 	int cstate;
--	struct cpuidle_driver *drv = &intel_idle_driver;
--
--	intel_idle_state_table_update();
--
--	cpuidle_poll_state_init(drv);
--	drv->state_count = 1;
- 
- 	for (cstate = 0; cstate < CPUIDLE_STATE_MAX; ++cstate) {
- 		unsigned int mwait_hint;
- 
--		if (!cpuidle_state_table[cstate].enter &&
--		    !cpuidle_state_table[cstate].enter_s2idle)
-+		if (intel_idle_max_cstate_reached(cstate))
- 			break;
- 
--		if (cstate + 1 > max_cstate) {
--			pr_info("max_cstate %d reached\n", max_cstate);
-+		if (!cpuidle_state_table[cstate].enter &&
-+		    !cpuidle_state_table[cstate].enter_s2idle)
- 			break;
--		}
- 
- 		/* If marked as unusable, skip this state. */
- 		if (cpuidle_state_table[cstate].flags & CPUIDLE_FLAG_UNUSABLE) {
-@@ -1380,6 +1484,24 @@ static void __init intel_idle_cpuidle_dr
- 	}
- }
- 
-+/*
-+ * intel_idle_cpuidle_driver_init()
-+ * allocate, initialize cpuidle_states
-+ */
-+static void __init intel_idle_cpuidle_driver_init(void)
-+{
-+	struct cpuidle_driver *drv = &intel_idle_driver;
++``initial_status``
++	The initial status of this state, "enabled" or "disabled".
 +
-+	intel_idle_state_table_update();
-+
-+	cpuidle_poll_state_init(drv);
-+	drv->state_count = 1;
-+
-+	if (icpu)
-+		intel_idle_init_cstates_icpu(drv);
-+	else
-+		intel_idle_init_cstates_acpi(drv);
-+}
- 
- /*
-  * intel_idle_cpu_init()
-@@ -1398,6 +1520,9 @@ static int intel_idle_cpu_init(unsigned
- 		return -EIO;
- 	}
- 
-+	if (!icpu)
-+		return 0;
-+
- 	if (icpu->auto_demotion_disable_flags)
- 		auto_demotion_disable();
+ ``latency``
+ 	Exit latency of the idle state in microseconds.
  
 
 
