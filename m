@@ -2,67 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1370C11A7F8
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2019 10:46:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2532611A94B
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2019 11:53:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728743AbfLKJqC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Dec 2019 04:46:02 -0500
-Received: from mx-out.tlen.pl ([193.222.135.158]:26728 "EHLO mx-out.tlen.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727888AbfLKJqB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 11 Dec 2019 04:46:01 -0500
-X-Greylist: delayed 394 seconds by postgrey-1.27 at vger.kernel.org; Wed, 11 Dec 2019 04:46:01 EST
-Received: (wp-smtpd smtp.tlen.pl 7699 invoked from network); 11 Dec 2019 10:39:20 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
-          t=1576057160; bh=vO+bFE2Ilhfw7pmQtVHnoPeP/BVjkJ2aq5R4+CZNkiI=;
-          h=From:To:Cc:Subject;
-          b=wOfHrhlWCOvP5NKyeOLTv7du/ngSUfQUzuyhsHAtC5MkoHZp3roukg84w8KUBmTol
-           iHVKbAWBmN8lAQENzJP/NYDeS2KaacxwvOdfy66kaJ97mRC0Pskfv9uw2/MpRYKz7p
-           TUl1Qx3CE1Ik0vNuWYSMEoVHoH4gErkXzcdaEWIE=
-Received: from public-gprs362173.centertel.pl (HELO localhost.localdomain) (cosiekvfj@o2.pl@[37.47.45.254])
-          (envelope-sender <cosiekvfj@o2.pl>)
-          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <rui.zhang@intel.com>; 11 Dec 2019 10:39:20 +0100
-From:   =?UTF-8?q?Kacper=20Piwi=C5=84ski?= <cosiekvfj@o2.pl>
-To:     Zhang Rui <rui.zhang@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     =?UTF-8?q?Kacper=20Piwi=C5=84ski?= <cosiekvfj@o2.pl>
-Subject: [PATCH] ACPI: acpi_video: fix typo in comment
-Date:   Wed, 11 Dec 2019 10:37:28 +0100
-Message-Id: <20191211093728.4163-1-cosiekvfj@o2.pl>
-X-Mailer: git-send-email 2.24.0
+        id S1728517AbfLKKxI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Dec 2019 05:53:08 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:56052 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726119AbfLKKxI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Dec 2019 05:53:08 -0500
+Received: from 79.184.253.70.ipv4.supernova.orange.pl (79.184.253.70) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.320)
+ id ab16ea88a6a49f12; Wed, 11 Dec 2019 11:53:06 +0100
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     kbuild-all@lists.01.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        kbuild test robot <lkp@intel.com>
+Subject: Re: [PATCH v9] software node: add basic tests for property entries
+Date:   Wed, 11 Dec 2019 11:53:05 +0100
+Message-ID: <12135118.EjhP6glzqA@kreacher>
+In-Reply-To: <CAJZ5v0jDmNUqPVWH9XnwEreg=HucbtjWf6LW630iPMtBb9f1Nw@mail.gmail.com>
+References: <201912040922.hUcG8uqP%lkp@intel.com> <20191204185315.GM50317@dtor-ws> <CAJZ5v0jDmNUqPVWH9XnwEreg=HucbtjWf6LW630iPMtBb9f1Nw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-WP-DKIM-Status: good (id: o2.pl)                                      
-X-WP-MailID: 4604a5f9e9c53ca3898b3ce9680c96fe
-X-WP-AV: skaner antywirusowy Poczty o2
-X-WP-SPAM: NO 0000001 [sdIR]                               
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Signed-off-by: Kacper Piwiński <cosiekvfj@o2.pl>
----
- drivers/acpi/acpi_video.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Monday, December 9, 2019 9:44:47 AM CET Rafael J. Wysocki wrote:
+> On Wed, Dec 4, 2019 at 7:53 PM Dmitry Torokhov
+> <dmitry.torokhov@gmail.com> wrote:
+> >
+> > This adds tests for creating software nodes with properties supplied by
+> > PROPERTY_ENTRY_XXX() macros and fetching and validating data from said
+> > nodes/properties.
+> >
+> > We are using KUnit framework for the tests.
+> >
+> > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> 
+> Applied (as 5.5 material), thanks!
 
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index 4f325e47519f..9b4da4167a2b 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -2183,7 +2183,7 @@ int acpi_video_register(void)
- 	if (register_count) {
- 		/*
- 		 * if the function of acpi_video_register is already called,
--		 * don't register the acpi_vide_bus again and return no error.
-+		 * don't register the acpi_video_bus again and return no error.
- 		 */
- 		goto leave;
- 	}
--- 
-2.24.0
+And dropped again, because 0-day still complains.
+
+I'm going to push the rest of the series to Linus this week.  The last patch
+can wait, even though it would be good to have it.
+
+Cheers!
+
+
 
