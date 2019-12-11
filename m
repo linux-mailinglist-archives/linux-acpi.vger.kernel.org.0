@@ -2,127 +2,200 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80C6C119FDC
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2019 01:24:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C25B11A2D5
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2019 04:04:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726769AbfLKAYV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Dec 2019 19:24:21 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:39963 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727053AbfLKAYV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Dec 2019 19:24:21 -0500
-Received: by mail-lj1-f196.google.com with SMTP id s22so21929030ljs.7
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Dec 2019 16:24:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FzptMs7UZH6tl5XnB4UdAl95BzHbDkNlnuDcD9QRDL8=;
-        b=cLhiqiuP6lKc2NY83ihPT47G3f+3QK4gZxKFKmw65nI/bJUTPbL1OjQ3/4EllNePCM
-         OBINPY2S7VQ49MkrBdTCMtAjDl6tcNokO7M8rS2kQtWpfU0g+d3zdtKiOMkYGsyKmOr8
-         JkZOg0YTxCt4YVjkOhCNImrhQDKtSjw6qYJNLuE8MQtu9GkRGEiq08YmpoX0yD2p5qPQ
-         D/sdqJRrkY1E0EaTMYyDhsblV9geNYlSdkpSKp8bRuByL3iYs0NdjZbsWTlKq1WwXOPo
-         kiJ8wMZb9xBnMw9ZnPAq1XrFyhqAluKOJjgBE0OSi8dd4m32SO0dsx7U/6aP4NqAZLoN
-         MH9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FzptMs7UZH6tl5XnB4UdAl95BzHbDkNlnuDcD9QRDL8=;
-        b=lLJYKYlhT1XE116MElQ6tQiVpHTrMFkhx63Q+aHt5ssVJhYexWHwN0whdQIdppJkpq
-         WotmTG/nEKqm8rYcZ79Wn1Msi/V++9eelA1uLTRfikSTlANQPok7FKkftJNm8xea540D
-         hg42vmQaLzsT6fehTIijhyLzIjfi3iSdEx0uGVSvheepdhFMFRLbQr39onqbsT7o6YQe
-         oCrc1FpLFCJdBdhDBAQ2zKwzaOSZ46NXlzIHTeDrBbWYNPKVw1aMmneU1XsF0CysX4Au
-         n0ZHMol800FFxiJoQA8Nh7bfujOz2OB2xHDdjhzWvMg0h83gYfhHHsHa1Ob37LV1kHLZ
-         v+3Q==
-X-Gm-Message-State: APjAAAUHlkugzmbho1kJUH8SUYaUhKjS03oC7iWv8KvP/GZxhR6UfZ/7
-        svL7KJNqvLPZl2T7ujouvypdul6jLfvXsK5nJQvL1g==
-X-Google-Smtp-Source: APXvYqxunEspa1cPku2zi+O3v5VP7+hdM/iiNVHSELvrW9FMmlBlF5UcunUZT+DJ74s0UyP/7ItRKxU/YAJNU6q4iw0=
-X-Received: by 2002:a2e:9587:: with SMTP id w7mr74491ljh.42.1576023859174;
- Tue, 10 Dec 2019 16:24:19 -0800 (PST)
+        id S1726974AbfLKDEt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Dec 2019 22:04:49 -0500
+Received: from mga09.intel.com ([134.134.136.24]:34882 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726619AbfLKDEs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 10 Dec 2019 22:04:48 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Dec 2019 19:04:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,301,1571727600"; 
+   d="scan'208";a="215772928"
+Received: from shzintpr04.sh.intel.com (HELO [0.0.0.0]) ([10.239.4.101])
+  by orsmga003.jf.intel.com with ESMTP; 10 Dec 2019 19:04:46 -0800
+Subject: Re: [PATCH] ACPI/HMAT: Fix the parsing of Cache Associativity and
+ Write Policy
+From:   Tao Xu <tao3.xu@intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20191202070348.32148-1-tao3.xu@intel.com>
+ <CAJZ5v0hqjR5EdrxcdkLUpxseFiizqNjtA3nYdDtZiSt85JiywQ@mail.gmail.com>
+ <6dbcdaff-feae-68b9-006d-dd8aec032553@intel.com>
+ <CAJZ5v0jYb7XQC7u0rmxF-XVMAsEoOfmD11-FYDvMrZuOuzgyiA@mail.gmail.com>
+ <0e4219c3-943a-e416-e5eb-723bed8c9383@intel.com>
+ <CAJZ5v0h6_7AoYW5Syk=BUR656eW11A3GjA7uvmTA6ayByOaqBg@mail.gmail.com>
+ <82e7361e-256e-002c-6b30-601cec1fad07@intel.com>
+Message-ID: <0f8084fd-86a9-081c-e32a-20c756c9daf6@intel.com>
+Date:   Wed, 11 Dec 2019 11:04:45 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-References: <20191129185836.2789-1-hdegoede@redhat.com> <20191129185836.2789-3-hdegoede@redhat.com>
- <CACRpkdbRb-LF2tNN-ueo=tKuJc+u4B7Y20+BCyqnN7wYbm8y7Q@mail.gmail.com>
- <87wobfj65b.fsf@intel.com> <47c36b75-bc30-502b-7f8d-035cf2348fc4@redhat.com>
-In-Reply-To: <47c36b75-bc30-502b-7f8d-035cf2348fc4@redhat.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 11 Dec 2019 01:24:07 +0100
-Message-ID: <CACRpkdaJGZsJpYu3cgQCeWuJD1y9CQyzuk_VYfGfAT8WC=_1VA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] drm/i915/vlv_dsi: Control panel and backlight enable
- GPIOs on BYT
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <82e7361e-256e-002c-6b30-601cec1fad07@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Dec 2, 2019 at 4:49 PM Hans de Goede <hdegoede@redhat.com> wrote:
 
-> There is only one problem, currently is is not possible to
-> unregister a mapping added with pinctrl_register_mappings
-> and the i915 driver is typically a module which can be unloaded
-> and I believe actually is unloaded as part of the i915 CI.
->
-> pinctrl_register_mappings copies the passed in mapping, but
-> it is a shallow copy, so it contains pointers to the modules
-> const segment and we do not want to re-add another copy of
-> the mapping when the module loads a second time.
->
-> Fixing this is easy though, there already is a pinctrl_unregister_map()
-> function, we just need to export it so that the i915 driver can
-> remove the mapping when it is unbound.
->
-> Linus would exporting this function be ok with you?
+On 12/10/19 9:18 PM, Tao Xu wrote:
+> On 12/10/2019 4:27 PM, Rafael J. Wysocki wrote:
+>> On Tue, Dec 10, 2019 at 9:19 AM Tao Xu <tao3.xu@intel.com> wrote:
+>>>
+>>> On 12/10/2019 4:06 PM, Rafael J. Wysocki wrote:
+>>>> On Tue, Dec 10, 2019 at 2:04 AM Tao Xu <tao3.xu@intel.com> wrote:
+>>>>>
+>>>>> On 12/9/2019 6:01 PM, Rafael J. Wysocki wrote:
+>>>>>> On Mon, Dec 2, 2019 at 8:03 AM Tao Xu <tao3.xu@intel.com> wrote:
+>>>>>>>
+>>>>>>> In chapter 5.2.27.5, Table 5-147: Field "Cache Attributes" of
+>>>>>>> ACPI 6.3 spec: 0 is "None", 1 is "Direct Mapped", 2 is "Complex 
+>>>>>>> Cache
+>>>>>>> Indexing" for Cache Associativity; 0 is "None", 1 is "Write Back",
+>>>>>>> 2 is "Write Through" for Write Policy.
+>>>>>>
+>>>>>> Well, I'm not sure what the connection between the above statement,
+>>>>>> which is correct AFAICS, and the changes made by the patch is.
+>>>>>>
+>>>>>> Is that the *_OTHER symbol names are confusing or something deeper?
+>>>>>>
+>>>>>
+>>>>> Because in include/acpi/actbl1.h:
+>>>>>
+>>>>> #define ACPI_HMAT_CA_NONE                     (0)
+>>>>>
+>>>>> ACPI_HMAT_CA_NONE is 0, but in include/linux/node.h:
+>>>>>
+>>>>>       enum cache_indexing {
+>>>>>              NODE_CACHE_DIRECT_MAP,
+>>>>>              NODE_CACHE_INDEXED,
+>>>>>              NODE_CACHE_OTHER,
+>>>>>       };
+>>>>> NODE_CACHE_OTHER is 2, and for otner enum:
+>>>>>
+>>>>>             case ACPI_HMAT_CA_DIRECT_MAPPED:
+>>>>>                     tcache->cache_attrs.indexing = 
+>>>>> NODE_CACHE_DIRECT_MAP;
+>>>>>                     break;
+>>>>>             case ACPI_HMAT_CA_COMPLEX_CACHE_INDEXING:
+>>>>>                     tcache->cache_attrs.indexing = NODE_CACHE_INDEXED;
+>>>>>                     break;
+>>>>> in include/acpi/actbl1.h:
+>>>>>
+>>>>>     #define ACPI_HMAT_CA_DIRECT_MAPPED            (1)
+>>>>>     #define ACPI_HMAT_CA_COMPLEX_CACHE_INDEXING   (2)
+>>>>>
+>>>>> but in include/linux/node.h:
+>>>>>
+>>>>> NODE_CACHE_DIRECT_MAP is 0, NODE_CACHE_INDEXED is 1. This is 
+>>>>> incorrect.
+>>>>
+>>>> Why is it incorrect?
+>>>
+>>> Sorry I paste the wrong pre-define.
+>>>
+>>> This is the incorrect line:
+>>>
+>>> case ACPI_HMAT_CA_DIRECT_MAPPED:
+>>> tcache->cache_attrs.indexing = NODE_CACHE_DIRECT_MAP;
+>>>
+>>> ACPI_HMAT_CA_DIRECT_MAPPED is 1, NODE_CACHE_DIRECT_MAP is 0. That means
+>>> if HMAT table input 1 for cache_attrs.indexing, kernel store 0 in
+>>> cache_attrs.indexing. But in ACPI 6.3, 0 means "None". So for the whole
+>>> switch codes:
+>>
+>> This is a mapping between the ACPI-defined values and the generic ones
+>> defined in the kernel.  There is not rule I know of by which they must
+>> be the same numbers.  Or is there such a rule which I'm missing?
+>>
+>> As long as cache_attrs.indexing is used consistently going forward,
+>> the difference between the ACPI-defined numbers and its values
+>> shouldn't matter, should it?
+>>
+> Yes, it will not influence the ACPI HMAT tables. Only influence is the 
+> sysfs, as in 
+> https://www.kernel.org/doc/html/latest/admin-guide/mm/numaperf.html:
+> 
+> # tree sys/devices/system/node/node0/memory_side_cache/
+> /sys/devices/system/node/node0/memory_side_cache/
+> |-- index1
+> |   |-- indexing
+> |   |-- line_size
+> |   |-- size
+> |   `-- write_policy
+> 
+> indexing is parsed in this file, so it can be read by user-space. 
+> Although now there is no user-space tool use this information to do some 
+> thing. But I am wondering if it is used in the future, someone use it to 
+> show the memory side cache information to user or use it to do 
+> performance turning.
 
-Yep!
+I finish a test using emulated ACPI HMAT from QEMU
+(branch:hmat https://github.com/taoxu916/qemu.git)
 
-> Linus, question what is the purpose of the "dupping" / shallow
-> copying of the argument passed to pinctrl_register_map ?
+And I get the kernel log and sysfs output:
+[    0.954288] HMAT: Cache: Domain:0 Size:20480 Attrs:00081111 SMBIOS 
+Handles:0
+[    0.954835] HMAT: Cache: Domain:1 Size:15360 Attrs:00081111 SMBIOS 
+Handles:0
 
-The initial commit contained this comment later removed:
+/sys/devices/system/node/node0/memory_side_cache/index1 # cat indexing
+0
+/sys/devices/system/node/node0/memory_side_cache/index1 # cat write_policy
+0
 
-+       /*
-+        * Make a copy of the map array - string pointers will end up in the
-+        * kernel const section anyway so these do not need to be deep copied.
-+        */
+Note that 'Attrs' is printed using %x, so we can get:
+(attrs & ACPI_HMAT_CACHE_ASSOCIATIVITY) >> 8 = 1,
+(attrs & ACPI_HMAT_WRITE_POLICY) >> 12       = 1
 
-The use was to free up memory for platforms using boardfiles
-with a gazillion variants and huge pin control tables, so these
-could be marked  __initdata and discarded after boot.
-As the strings would anyway stay around we didn't need to
-deep copy.
+but we get 0 in sysfs, so if user or software read this information and 
+read the ACPI 6.3 spec, will think there is 'none' for Cache 
+Associativity or Write Policy.
 
-See for example in arch/arm/mach-u300/core.c
-static struct pinctrl_map __initdata u300_pinmux_map[]
+p.s. the qemu input CLI:
 
-> Since
-> it is shallow the mem for any pointers contained within there need
-> to be kept around by the caller, so why not let the caller keep
-> the pinctrl_map struct itself around too?
-
-So the strings will be kept around because the kernel can't get
-rid of strings. (Yeah it is silly, should haven been fixed ages
-ago, but not by me, haha :)
-
-> If we are going to export pinctrl_unregister_map() we need to make it
-> do the right thing for dupped maps too, we can just store the dup flag
-> in struct pinctrl_maps. So this is easy, but I wonder if we cannot
-> get rid of the dupping all together ?
-
-Maybe ... I don't know. What do you think? I suppose you could
-make u300 crash if you do that.
-
-Yours,
-Linus Walleij
+./x86_64-softmmu/qemu-system-x86_64 \
+-machine pc,hmat=on -nographic \
+-kernel ./bzImage \
+-initrd ./initramfs-virt \
+-append console=ttyS0 \
+-m 2G \
+-smp 2,sockets=2 \
+-object memory-backend-ram,size=1G,id=m0 \
+-object memory-backend-ram,size=1G,id=m1 \
+-numa node,nodeid=0,memdev=m0 \
+-numa node,nodeid=1,memdev=m1,initiator=0 \
+-numa cpu,node-id=0,socket-id=0 \
+-numa cpu,node-id=0,socket-id=1 \
+-numa 
+hmat-lb,initiator=0,target=0,hierarchy=memory,data-type=access-latency,latency=20 
+\
+-numa 
+hmat-lb,initiator=0,target=0,hierarchy=memory,data-type=access-bandwidth,bandwidth=200M 
+\
+-numa 
+hmat-lb,initiator=0,target=1,hierarchy=memory,data-type=access-latency,latency=65 
+\
+-numa 
+hmat-lb,initiator=0,target=1,hierarchy=memory,data-type=access-bandwidth,bandwidth=200M 
+\
+-numa 
+hmat-cache,node-id=0,size=20K,level=1,associativity=direct,policy=write-back,line=8 
+\
+-numa 
+hmat-cache,node-id=1,size=15K,level=1,associativity=direct,policy=write-back,line=8
