@@ -2,159 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5354D11D178
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Dec 2019 16:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B59A311D278
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Dec 2019 17:41:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729424AbfLLPwW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Dec 2019 10:52:22 -0500
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:40456 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729403AbfLLPwW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Dec 2019 10:52:22 -0500
-Received: by mail-wm1-f66.google.com with SMTP id t14so3062830wmi.5
-        for <linux-acpi@vger.kernel.org>; Thu, 12 Dec 2019 07:52:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=ppVt/c6SNGbxwMT06FmYWiQkL8ReCtZAObgQLli/bGc=;
-        b=FQK+F5Tqc8VmatT6qdaJSBwIwwPtF4BX7q+Zo2tSJdUU7H3Poig4l99vIp+I1/Vvlh
-         mimYc8wDLLjPw0140MevtlhicgJTxyOHkfWRR5ay61yk0bxeCWWLe4PrBHC4fIXmy8xg
-         ffcCWN9W2Sts1HHv2X6IJH3dkKfXiIOEIBUem78RJYbraY689kLWgWeWyJNiG3YG7Mru
-         PJyaMuC+g111+wvG/l7UEPS5W5yajVSs2te9dnR4P63kRf/E3jnMGPhIBVqUIGqSyNk7
-         JlY1+9WWAU6STu+j4Oi234ZDrjlFqABIbb7Sj/1lHOB31K2H9V5kA4HnFDRFrdDawBKB
-         vBHQ==
+        id S1729883AbfLLQlf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Dec 2019 11:41:35 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:36300 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729852AbfLLQlf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Dec 2019 11:41:35 -0500
+Received: by mail-oi1-f196.google.com with SMTP id c16so911263oic.3;
+        Thu, 12 Dec 2019 08:41:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=ppVt/c6SNGbxwMT06FmYWiQkL8ReCtZAObgQLli/bGc=;
-        b=ZkbDwPu/p0ari4J35/XOcWap7oWovC/v8+n3MMtmswc59bYPq7zI3OS7i8FW+YA4nH
-         nqvDfo3h9RiEsD/qZioBUK/D1SVwIwKfWdZhdlly2QJjb7H53XPyTEQjIlRSQ4nnusZ7
-         Bx21ruQ/qndEIcN/XIt4Di2EFlQNFt61PZKcnGtZ58kIKe/J/xJHtMJN/6u3uqLF29VZ
-         7gRzNIOz0Sv+98MDyE16q1BX5eaboa7/Po29A0Fk4l20KcJ+I4OstYpTLd/wGotDKvLA
-         0ybN29+0vypvVsUjAdXudcktToNg44+Q9ol1qMjkOYq9vIlbdTWn+YGci1+hYAOsQjAo
-         SNTg==
-X-Gm-Message-State: APjAAAWUloYautpEuYVbph+uUACyPCfJPslBnorpZIQmPxlUNOTrfys9
-        7Wj5w+DVWi/bKIWoQpTX9MRXkkHMahA=
-X-Google-Smtp-Source: APXvYqyvc2Y2xdShKzDEsC4cVAZysnpb3aqCe69/dn9O8AQEa41FSMBBexqoLXh3Te7JRAVg4RzXxA==
-X-Received: by 2002:a1c:14a:: with SMTP id 71mr7609430wmb.48.1576165939689;
-        Thu, 12 Dec 2019 07:52:19 -0800 (PST)
-Received: from dell ([95.149.164.71])
-        by smtp.gmail.com with ESMTPSA id z189sm7190746wmc.2.2019.12.12.07.52.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2019 07:52:19 -0800 (PST)
-Date:   Thu, 12 Dec 2019 15:52:09 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
-        <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] mfd: intel_soc_pmic: Rename pwm_backlight pwm-lookup
- to pwm_pmic_backlight
-Message-ID: <20191212155209.GC3468@dell>
-References: <20191119151818.67531-1-hdegoede@redhat.com>
- <20191119151818.67531-3-hdegoede@redhat.com>
- <20191210085111.GQ3468@dell>
- <a05e5a2b-568e-2b0d-0293-aa937c590a74@redhat.com>
- <20191212084546.GA3468@dell>
- <d22e9a04-da09-0f41-a78e-ac17a947650a@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kAhkMJgoZo1BWz+qs5Xno3OsSKZ86r1MkClH94NFChM=;
+        b=ZGBqSKgXkEU8zPLpGwOZI18a87nXD3r2fvq+D0pW0f6ala7KTcbSKdwgARMwzpLDo4
+         /sq6isXWuLTvxs9DS/Od/BRQV71ITatVSEE8jrjkTiQI/F+F6bAy/8MAtD/lKC7CTOvu
+         8yt+sbayYou0QAebyUFWnsK3+qC4E6/QN1h0DJLlpfocwiR+l7Vnz51BvA4nMGtaADPP
+         dJGrGuvRiL2ONf0lcuvqYuw2Zwj9camNbSiRGy8mXJKS4lj2SLgJPOOYxROStCWYZzq5
+         1zhmyYzlD73Fz09SK7yo71qm4vVCFOCALtGbpUxvPPlVEAbVv0fDDm0sLv5YVamB1UD2
+         44zg==
+X-Gm-Message-State: APjAAAXV64tNbqEUDxHk2raeRvNW+E07L16mGZy1zciz+572uUlwJFdh
+        JLHMnQaOXQdnvrepsOLi/1WCPIFCn9o+xe1++jk=
+X-Google-Smtp-Source: APXvYqz/HR4b555gMUmBfIr+En2JhqxAwZmSDSEDPYWP867i+78mHmWSktUG5yszyRCA4BCxfwarPEWTLzzeFMNk+PY=
+X-Received: by 2002:a05:6808:b38:: with SMTP id t24mr5694666oij.110.1576168894436;
+ Thu, 12 Dec 2019 08:41:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d22e9a04-da09-0f41-a78e-ac17a947650a@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20191108042225.45391-1-dmitry.torokhov@gmail.com>
+ <20191108042225.45391-2-dmitry.torokhov@gmail.com> <CGME20191212111237eucas1p1a278d2d5d2437e3219896367e82604cc@eucas1p1.samsung.com>
+ <b3f6ca8b-dbdf-0cec-aa8f-47ffcc5c5307@samsung.com> <20191212112825.GK32742@smile.fi.intel.com>
+In-Reply-To: <20191212112825.GK32742@smile.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 12 Dec 2019 17:41:21 +0100
+Message-ID: <CAJZ5v0i3dSOSa37yWLM+zDVnMKVTkOxbyKD4vo0KVwj_uFB26Q@mail.gmail.com>
+Subject: Re: [PATCH v8 1/6] software node: rename is_array to is_inline
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Linux Samsung SOC <linux-samsung-soc@vger.kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Felipe Balbi <balbi@kernel.org>,
+        Linux USB Mailing List <linux-usb@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 12 Dec 2019, Hans de Goede wrote:
+On Thu, Dec 12, 2019 at 12:28 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Thu, Dec 12, 2019 at 12:12:36PM +0100, Marek Szyprowski wrote:
+> > Dear All,
+> >
+> > On 08.11.2019 05:22, Dmitry Torokhov wrote:
+> > > We do not need a special flag to know if we are dealing with an array,
+> > > as we can get that data from ratio between element length and the data
+> > > size, however we do need a flag to know whether the data is stored
+> > > directly inside property_entry or separately.
+> > >
+> > > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> >
+> > Today I've noticed that this patch got merged to linux-next as commit
+> > e6bff4665c595b5a4aff173848851ed49ac3bfad. Sadly it breaks DWC3/xHCI
+> > driver operation on Samsung Exynos5 SoCs (and probably on other SoCs
+> > which use DWC3 in host mode too). I get the following errors during boot:
+> >
+> > dwc3 12000000.dwc3: failed to add properties to xHCI
+> > dwc3 12000000.dwc3: failed to initialize host
+> > dwc3: probe of 12000000.dwc3 failed with error -61
+> >
+> > Here is a full kernel log from Exynos5250-based Snow Chromebook on KernelCI:
+> >
+> > https://storage.kernelci.org/next/master/next-20191212/arm/exynos_defconfig/gcc-8/lab-collabora/boot-exynos5250-snow.txt
+> >
+> > (lack of 'ref' clk is not related nor fatal to the driver operation).
+> >
+> > The code which fails after this patch is located in
+> > drivers/usb/dwc3/host.c. Let me know if I can help more in locating the bug.
+>
+> Thank you for report.
+>
+> I think we should not have that patch in the fist place... I used to have
+> a bad feeling about it and then forgot about it existence.
 
-> Hi,
-> 
-> On 12-12-2019 09:45, Lee Jones wrote:
-> > On Wed, 11 Dec 2019, Hans de Goede wrote:
-> > 
-> > > Hi Lee,
-> > > 
-> > > On 10-12-2019 09:51, Lee Jones wrote:
-> > > > On Tue, 19 Nov 2019, Hans de Goede wrote:
-> > > > 
-> > > > > At least Bay Trail (BYT) and Cherry Trail (CHT) devices can use 1 of 2
-> > > > > different PWM controllers for controlling the LCD's backlight brightness.
-> > > > > 
-> > > > > Either the one integrated into the PMIC or the one integrated into the
-> > > > > SoC (the 1st LPSS PWM controller).
-> > > > > 
-> > > > > So far in the LPSS code on BYT we have skipped registering the LPSS PWM
-> > > > > controller "pwm_backlight" lookup entry when a Crystal Cove PMIC is
-> > > > > present, assuming that in this case the PMIC PWM controller will be used.
-> > > > > 
-> > > > > On CHT we have been relying on only 1 of the 2 PWM controllers being
-> > > > > enabled in the DSDT at the same time; and always registered the lookup.
-> > > > > 
-> > > > > So far this has been working, but the correct way to determine which PWM
-> > > > > controller needs to be used is by checking a bit in the VBT table and
-> > > > > recently I've learned about 2 different BYT devices:
-> > > > > Point of View MOBII TAB-P800W
-> > > > > Acer Switch 10 SW5-012
-> > > > > 
-> > > > > Which use a Crystal Cove PMIC, yet the LCD is connected to the SoC/LPSS
-> > > > > PWM controller (and the VBT correctly indicates this), so here our old
-> > > > > heuristics fail.
-> > > > > 
-> > > > > Since only the i915 driver has access to the VBT, this commit renames
-> > > > > the "pwm_backlight" lookup entries for the Crystal Cove PMIC's PWM
-> > > > > controller to "pwm_pmic_backlight" so that the i915 driver can do a
-> > > > > pwm_get() for the right controller depending on the VBT bit, instead of
-> > > > > the i915 driver relying on a "pwm_backlight" lookup getting registered
-> > > > > which magically points to the right controller.
-> > > > > 
-> > > > > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> > > > > ---
-> > > > >    drivers/mfd/intel_soc_pmic_core.c | 2 +-
-> > > > >    1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > 
-> > > > For my own reference:
-> > > >     Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
-> > > 
-> > > As mentioned in the cover-letter, to avoid breaking bi-sectability
-> > > as well as to avoid breaking the intel-gfx CI we need to merge this series
-> > > in one go through one tree. Specifically through the drm-intel tree.
-> > > Is that ok with you ?
-> > > 
-> > > If this is ok with you, then you do not have to do anything, I will just push
-> > > the entire series to drm-intel. drivers/mfd/intel_soc_pmic_core.c
-> > > does not see much changes so I do not expect this to lead to any conflicts.
-> > 
-> > It's fine, so long as a minimal immutable pull-request is provided.
-> > Whether it's pulled or not will depend on a number of factors, but it
-> > needs to be an option.
-> 
-> The way the drm subsys works that is not really a readily available
-> option. The struct definition which this patch changes a single line in
-> has not been touched since 2015-06-26 so I really doubt we will get a
-> conflict from this.
+Well, I think you mean the [2/6].
 
-Always with the exceptions ...
+The $subject one really shouldn't change functionality, we must have
+missed something here.
 
-OOI, why does this *have* to go through the DRM tree?
-
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Anyway, I'll drop this branch from the linux-next one for now.
