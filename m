@@ -2,191 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3E6B11D6A9
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Dec 2019 20:03:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7151711D842
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Dec 2019 22:07:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730543AbfLLTDB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Dec 2019 14:03:01 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:34600 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730449AbfLLTDB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 12 Dec 2019 14:03:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1576177378;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=2g3fZhcsSrRGHzfeL8zuc2n1XDVEZgXCmHzHbk4+Fz4=;
-        b=FkJsvhDCyfBjs6N7AvR2iUvb03PH5dU1Zb0xQH4HDLdB8DpF90VkDfBykbx3jrVXfhfq23
-        rw1qLc0Qo39QWvg0b3HYXBqZzdb7CZGGxlR9MmrYK+O9779RKd3gnAqcIk0B4HlzjJfRdH
-        LQMBIcbkyGEbW0iqGu65yVArqCVzztA=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-43-DGrfIIEYMomyg4HUHvEgaQ-1; Thu, 12 Dec 2019 14:02:55 -0500
-X-MC-Unique: DGrfIIEYMomyg4HUHvEgaQ-1
-Received: by mail-wm1-f70.google.com with SMTP id p5so892219wmc.4
-        for <linux-acpi@vger.kernel.org>; Thu, 12 Dec 2019 11:02:55 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=2g3fZhcsSrRGHzfeL8zuc2n1XDVEZgXCmHzHbk4+Fz4=;
-        b=HME3X9UqKsp5FQ/s5CtLaXnd5vT3HAizf6aY0ZGzBsQ3ysjVK4gE51kmp0hxHninY2
-         d/gc3eQhulLvphPGgb4cZH802a9axAdPD3nm3sZ/7PSkiHbh01kCXbbbs8d4DfHw44Dt
-         IJ5UPP2jha1WlY8wrV5JYonqu5TMIUdCfdQIuRftE7/NT2zA7NqItkwGjFLkI3YOpTca
-         vN2peBpBpmAF8xxBzlVkwYoI+5r17DyFA0zaxCum4UJZlcBE80guBmw6Z7lU1w/XOFzT
-         mIxf7iRsrK4O2c4BffqpPqE19rLeJYwnXqe7U3fDR13BkIuPnaIcEiYqzrlqtu1H86D5
-         on6w==
-X-Gm-Message-State: APjAAAXMVLiHaDLhPjL/eGJlXDoflCh76ghFGkh6VHTyYg548I+HuZnP
-        g8n3xVXBrt/iSw5JZ/cebviQJ8TQU0cyp5Eu0gr0BTPGIWERvgzPzj8KohAQAmQ6+id7msxTJJe
-        YaFTQlGN1qctnVV/xpQMGjA==
-X-Received: by 2002:a1c:ab85:: with SMTP id u127mr8067539wme.40.1576177374199;
-        Thu, 12 Dec 2019 11:02:54 -0800 (PST)
-X-Google-Smtp-Source: APXvYqzQukJStmxmoEoaxXikD5ciYQ5z/yOZy47VSl9amElYeQjqTK2KA5kfBGOBwBV7OX3cgJ0QIw==
-X-Received: by 2002:a1c:ab85:: with SMTP id u127mr8067516wme.40.1576177373951;
-        Thu, 12 Dec 2019 11:02:53 -0800 (PST)
-Received: from shalem.localdomain (2001-1c00-0c0c-fe00-7e79-4dac-39d0-9c14.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:7e79:4dac:39d0:9c14])
-        by smtp.gmail.com with ESMTPSA id e18sm7016654wrr.95.2019.12.12.11.02.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Dec 2019 11:02:53 -0800 (PST)
-Subject: Re: [PATCH 2/3] mfd: intel_soc_pmic: Rename pwm_backlight pwm-lookup
- to pwm_pmic_backlight
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        id S1730969AbfLLVH2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Dec 2019 16:07:28 -0500
+Received: from foss.arm.com ([217.140.110.172]:60840 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730742AbfLLVH2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 12 Dec 2019 16:07:28 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1BD2A328;
+        Thu, 12 Dec 2019 13:07:27 -0800 (PST)
+Received: from localhost (unknown [10.37.6.20])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 87EB43F718;
+        Thu, 12 Dec 2019 13:07:26 -0800 (PST)
+Date:   Thu, 12 Dec 2019 21:07:24 +0000
+From:   Andrew Murray <andrew.murray@arm.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Andre Przywara <andre.przywara@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <20191119151818.67531-1-hdegoede@redhat.com>
- <20191119151818.67531-3-hdegoede@redhat.com> <20191210085111.GQ3468@dell>
- <a05e5a2b-568e-2b0d-0293-aa937c590a74@redhat.com>
- <20191212084546.GA3468@dell>
- <d22e9a04-da09-0f41-a78e-ac17a947650a@redhat.com>
- <20191212155209.GC3468@dell>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <4d07445d-98b1-f23c-0aac-07709b45df78@redhat.com>
-Date:   Thu, 12 Dec 2019 20:02:51 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Len Brown <lenb@kernel.org>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH] pcie: Add quirk for the Arm Neoverse N1SDP platform
+Message-ID: <20191212210723.GJ24359@e119886-lin.cambridge.arm.com>
+References: <20191209160638.141431-1-andre.przywara@arm.com>
+ <20191210144115.GA94877@google.com>
 MIME-Version: 1.0
-In-Reply-To: <20191212155209.GC3468@dell>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191210144115.GA94877@google.com>
+User-Agent: Mutt/1.10.1+81 (426a6c1) (2018-08-26)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 12-12-2019 16:52, Lee Jones wrote:
-> On Thu, 12 Dec 2019, Hans de Goede wrote:
+On Tue, Dec 10, 2019 at 08:41:15AM -0600, Bjorn Helgaas wrote:
+> On Mon, Dec 09, 2019 at 04:06:38PM +0000, Andre Przywara wrote:
+> > From: Deepak Pandey <Deepak.Pandey@arm.com>
+> > 
+> > The Arm N1SDP SoC suffers from some PCIe integration issues, most
+> > prominently config space accesses to not existing BDFs being answered
+> > with a bus abort, resulting in an SError.
 > 
->> Hi,
->>
->> On 12-12-2019 09:45, Lee Jones wrote:
->>> On Wed, 11 Dec 2019, Hans de Goede wrote:
->>>
->>>> Hi Lee,
->>>>
->>>> On 10-12-2019 09:51, Lee Jones wrote:
->>>>> On Tue, 19 Nov 2019, Hans de Goede wrote:
->>>>>
->>>>>> At least Bay Trail (BYT) and Cherry Trail (CHT) devices can use 1 of 2
->>>>>> different PWM controllers for controlling the LCD's backlight brightness.
->>>>>>
->>>>>> Either the one integrated into the PMIC or the one integrated into the
->>>>>> SoC (the 1st LPSS PWM controller).
->>>>>>
->>>>>> So far in the LPSS code on BYT we have skipped registering the LPSS PWM
->>>>>> controller "pwm_backlight" lookup entry when a Crystal Cove PMIC is
->>>>>> present, assuming that in this case the PMIC PWM controller will be used.
->>>>>>
->>>>>> On CHT we have been relying on only 1 of the 2 PWM controllers being
->>>>>> enabled in the DSDT at the same time; and always registered the lookup.
->>>>>>
->>>>>> So far this has been working, but the correct way to determine which PWM
->>>>>> controller needs to be used is by checking a bit in the VBT table and
->>>>>> recently I've learned about 2 different BYT devices:
->>>>>> Point of View MOBII TAB-P800W
->>>>>> Acer Switch 10 SW5-012
->>>>>>
->>>>>> Which use a Crystal Cove PMIC, yet the LCD is connected to the SoC/LPSS
->>>>>> PWM controller (and the VBT correctly indicates this), so here our old
->>>>>> heuristics fail.
->>>>>>
->>>>>> Since only the i915 driver has access to the VBT, this commit renames
->>>>>> the "pwm_backlight" lookup entries for the Crystal Cove PMIC's PWM
->>>>>> controller to "pwm_pmic_backlight" so that the i915 driver can do a
->>>>>> pwm_get() for the right controller depending on the VBT bit, instead of
->>>>>> the i915 driver relying on a "pwm_backlight" lookup getting registered
->>>>>> which magically points to the right controller.
->>>>>>
->>>>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>>>>> ---
->>>>>>     drivers/mfd/intel_soc_pmic_core.c | 2 +-
->>>>>>     1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>
->>>>> For my own reference:
->>>>>      Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
->>>>
->>>> As mentioned in the cover-letter, to avoid breaking bi-sectability
->>>> as well as to avoid breaking the intel-gfx CI we need to merge this series
->>>> in one go through one tree. Specifically through the drm-intel tree.
->>>> Is that ok with you ?
->>>>
->>>> If this is ok with you, then you do not have to do anything, I will just push
->>>> the entire series to drm-intel. drivers/mfd/intel_soc_pmic_core.c
->>>> does not see much changes so I do not expect this to lead to any conflicts.
->>>
->>> It's fine, so long as a minimal immutable pull-request is provided.
->>> Whether it's pulled or not will depend on a number of factors, but it
->>> needs to be an option.
->>
->> The way the drm subsys works that is not really a readily available
->> option. The struct definition which this patch changes a single line in
->> has not been touched since 2015-06-26 so I really doubt we will get a
->> conflict from this.
+> Can we tease this apart a little more?  Linux doesn't program all the
+> bits that control error signaling, so even on hardware that works
+> perfectly, much of this behavior is determined by what firmware did.
+> I wonder if Linux could be more careful about this.
 > 
-> Always with the exceptions ...
+> "Bus abort" is not a term used in PCIe.  IIUC, a config read to a
+> device that doesn't exist should terminate with an Unsupported Request
+> completion, e.g., see the implementation note in PCIe r5.0 sec 2.3.1.
 > 
-> OOI, why does this *have* to go through the DRM tree?
+> The UR should be an uncorrectable non-fatal error (Table 6-5), and
+> Figures 6-2 and 6-3 show how it should be handled and when it should
+> be signaled as a system error.  In case you don't have a copy of the
+> spec, I extracted those two figures and put them at [1].
+> 
+> Can you collect "lspci -vvxxx" output to see if we can correlate it
+> with those figures and the behavior you see?
+> 
+> [1] https://drive.google.com/file/d/1ihhdQvr0a7ZEJG-3gPddw1Tq7cTFAsah/view?usp=sharing
+> 
+> > To mitigate this, the firmware scans the bus before boot (catching the
+> > SErrors) and creates a table with valid BDFs, which acts as a filter for
+> > Linux' config space accesses.
+> > 
+> > Add code consulting the table as an ACPI PCIe quirk, also register the
+> > corresponding device tree based description of the host controller.
+> > Also fix the other two minor issues on the way, namely not being fully
+> > ECAM compliant and config space accesses being restricted to 32-bit
+> > accesses only.
+> 
+> As I'm sure you've noticed, controllers that support only 32-bit
+> config writes are not spec compliant and devices may not work
+> correctly.  The comment in pci_generic_config_write32() explains why.
+> 
+> You may not trip over this problem frequently, but I wouldn't call it
+> a "minor" issue because when you *do* trip over it, you have no
+> indication that a register was corrupted.
+> 
+> Even ECAM compliance is not really minor -- if this controller were
+> fully compliant with the spec, you would need ZERO Linux changes to
+> support it.  Every quirk like this means additional maintenance
+> burden, and it's not just a one-time thing.  It means old kernels that
+> *should* "just work" on your system will not work unless somebody
+> backports the quirk.
 
-This patch renames the name used to lookup the pwm controller from
-"pwm_backlight" to "pwm_pmic_backlight" because there are 2 possible
-pwm controllers which may be used, one in the SoC itself and one
-in the PMIC. Which controller should be used is described in a table
-in the Video BIOS, so another part of this series adds this code to
-the i915 driver:
+With regards to URs resulting in unwanted aborts or similar - this seems
+to be a very common theme amongst ARM PCI controller drivers. For example
+both ARM32 imx6 and ARM32 keystone have fault handlers to handle an abort
+and fabricate a 0xffffffff read value.
 
--	panel->backlight.pwm = pwm_get(dev->dev, "pwm_backlight");
-+	/* Get the right PWM chip for DSI backlight according to VBT */
-+	if (dev_priv->vbt.dsi.config->pwm_blc == PPS_BLC_PMIC) {
-+		panel->backlight.pwm = pwm_get(dev->dev, "pwm_pmic_backlight");
-+		desc = "PMIC";
-+	} else {
-+		panel->backlight.pwm = pwm_get(dev->dev, "pwm_soc_backlight");
-+		desc = "SoC";
-+	}
+The ARM32 rcar driver, whilst it doesn't appear to produce an abort, does
+read the PCI_STATUS register after making a config read to determine if
+any aborts have happened - in which case it reports
+PCIBIOS_DEVICE_NOT_FOUND.
 
-So both not to break bisectability, but also so as to not break the extensive
-CI system which is used to test the i915 driver we need the MFD change doing
-the rename to go upstrream through the same tree as the i915 change.
+And as recently reported [1], the rockchip driver also appears to produce
+aborts.
 
-I have even considered just squashing the 2 commits together as having only 1
-present, but not the other breaks stuff left and right.
+I suspect that this ARM64 controller driver won't be the last either. Thus
+any solution here may form the basis of copy-cat solutions for subsequent
+controllers.
 
-Regards,
+From my understanding of the issues, the ARM64 serrors are imprecise and
+as a result there isn't a sensible way of using them to determine that a
+read is a UR. So where there are no other solutions to suppress the
+generation of an abort by the controller, the only solutions that seem to
+exist are 1) pre-scan the devices in firmware and only talk to those devices
+in Linux - a safe option but limiting - perhaps with side effects for CRS
+and 2) the approach rcar takes in using the PCI_STATUS register - though
+you'd end up having to mask the serror (PSTATE.A) for a limited period of
+time - a risky option (you'll miss real serrors) - but with no side effects.
 
-Hans
+(I don't know if option 2 is feasible in this case by the way).
 
+[1] https://lore.kernel.org/linux-pci/2a381384-9d47-a7e2-679c-780950cd862d@rock-chips.com/2-0001-WFT-PCI-rockchip-play-game-with-unsupported-request-.patch
+
+Thanks,
+
+Andrew Murray
+
+> 
+> > This allows the Arm Neoverse N1SDP board to boot Linux without crashing
+> > and to access *any* devices (there are no platform devices except UART).
