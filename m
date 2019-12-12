@@ -2,29 +2,29 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D872211D8FF
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Dec 2019 23:03:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFE1211D911
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Dec 2019 23:10:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731198AbfLLWDu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Dec 2019 17:03:50 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:55846 "EHLO
+        id S1731227AbfLLWKf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Dec 2019 17:10:35 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:63468 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730779AbfLLWDu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Dec 2019 17:03:50 -0500
+        with ESMTP id S1731142AbfLLWKe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Dec 2019 17:10:34 -0500
 Received: from 79.184.255.82.ipv4.supernova.orange.pl (79.184.255.82) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.320)
- id d1780aa828de6562; Thu, 12 Dec 2019 23:03:47 +0100
+ id b488f049766fb159; Thu, 12 Dec 2019 23:10:32 +0100
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-Cc:     x86@kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, len.brown@intel.com, pavel@ucw.cz,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
-        Cao jin <caoj.fnst@cn.fujitsu.com>, linux-acpi@vger.kernel.org
-Subject: Re: [RFC PATCH] x86/acpi: Drop duplicate BOOT table initialization
-Date:   Thu, 12 Dec 2019 23:03:47 +0100
-Message-ID: <24266640.LfmLNjZWAc@kreacher>
-In-Reply-To: <20191115092424.17356-1-ruansy.fnst@cn.fujitsu.com>
-References: <20191115092424.17356-1-ruansy.fnst@cn.fujitsu.com>
+To:     Anchal Agarwal <anchalag@amazon.com>
+Cc:     Balbir Singh <sblbir@amazon.com>,
+        Frank van der Linden <fllinden@amazon.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Erik Kaneda <erik.kaneda@intel.com>
+Subject: Re: [PATCH] ACPICA: Enable sleep button on ACPI legacy wake
+Date:   Thu, 12 Dec 2019 23:10:32 +0100
+Message-ID: <5749186.Fh4Yg0zt7g@kreacher>
+In-Reply-To: <20191101212319.1FFC440EB1@dev-dsk-anchalag-2a-9c2d1d96.us-west-2.amazon.com>
+References: <20191101212319.1FFC440EB1@dev-dsk-anchalag-2a-9c2d1d96.us-west-2.amazon.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -33,41 +33,50 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Friday, November 15, 2019 10:24:24 AM CET Shiyang Ruan wrote:
-> From: Cao jin <caoj.fnst@cn.fujitsu.com>
-> 
-> ACPI BOOT table is initialized in both acpi_boot_table_init &
-> acpi_boot_init of setup_arch, but its usage is quite late at the end of
-> start_kernel. It should be safe to drop one of them. Since it is less
-> related with table init, drop it from there.
+On Monday, October 29, 2018 6:52:16 PM CET Anchal Agarwal wrote:
+> Currently we do not see sleep_enable bit set after guest resumes
+> from hibernation. Hibernation is triggered in guest on receiving
+> a sleep trigger from the hypervisor(S4 state). We see that power
+> button is enabled on wake up from S4 state however sleep button
+> isn't.
 
-Well, "It should be safe to drop one of them" is kind of a weak justification.
+I'm not against this change in principle, although it may change behavior
+in a somewhat unexpected way on some systems.
 
-I need to be convinced that one of them is redundant.  At this point I am not.
+> This causes subsequent invocation of sleep state to fail
+> in the guest.
 
-> Signed-off-by: Cao jin <caoj.fnst@cn.fujitsu.com>
-> Cc: <linux-acpi@vger.kernel.org>
-> Signed-off-by: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
+However, can you explain this in a bit more detail?
+ 
+> Signed-off-by: Anchal Agarwal <anchalag@amazon.com>
+> Reviewed-by: Balbir Singh <sblbir@amazon.com>
+> Reviewed-by: Frank van der Linden <fllinden@amazon.com>
 > ---
->  arch/x86/kernel/acpi/boot.c | 2 --
->  1 file changed, 2 deletions(-)
+>  drivers/acpi/acpica/hwsleep.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 > 
-> It existed since git repo is built, so it might has its reason? The
-> patch is not tested since I don't have BOOT table in my firmware.
-> 
-> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-> index 04205ce127a1..ca1c15bb0b48 100644
-> --- a/arch/x86/kernel/acpi/boot.c
-> +++ b/arch/x86/kernel/acpi/boot.c
-> @@ -1558,8 +1558,6 @@ void __init acpi_boot_table_init(void)
->  		return;
->  	}
+> diff --git a/drivers/acpi/acpica/hwsleep.c b/drivers/acpi/acpica/hwsleep.c
+> index b62db8ec446f..a176c7802760 100644
+> --- a/drivers/acpi/acpica/hwsleep.c
+> +++ b/drivers/acpi/acpica/hwsleep.c
+> @@ -300,6 +300,17 @@ acpi_status acpi_hw_legacy_wake(u8 sleep_state)
+>  				    [ACPI_EVENT_POWER_BUTTON].
+>  				    status_register_id, ACPI_CLEAR_STATUS);
 >  
-> -	acpi_table_parse(ACPI_SIG_BOOT, acpi_parse_sbf);
-> -
->  	/*
->  	 * blacklist may disable ACPI entirely
->  	 */
+> +	/* Enable sleep button */
+> +	(void)
+> +	      acpi_write_bit_register(acpi_gbl_fixed_event_info
+> +				      [ACPI_EVENT_SLEEP_BUTTON].
+> +				      enable_register_id, ACPI_ENABLE_EVENT);
+> +
+> +	(void)
+> +	      acpi_write_bit_register(acpi_gbl_fixed_event_info
+> +				      [ACPI_EVENT_SLEEP_BUTTON].
+> +				      status_register_id, ACPI_CLEAR_STATUS);
+> +
+>  	acpi_hw_execute_sleep_method(METHOD_PATHNAME__SST, ACPI_SST_WORKING);
+>  	return_ACPI_STATUS(status);
+>  }
 > 
 
 
