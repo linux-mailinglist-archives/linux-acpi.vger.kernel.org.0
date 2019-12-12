@@ -2,114 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3E5111BDBD
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2019 21:17:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDBE911C863
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Dec 2019 09:46:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726717AbfLKUR3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Dec 2019 15:17:29 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60932 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726411AbfLKUR2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 11 Dec 2019 15:17:28 -0500
-Received: from localhost (mobile-166-170-223-177.mycingular.net [166.170.223.177])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E6BBF20836;
-        Wed, 11 Dec 2019 20:17:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576095447;
-        bh=4r2Iy5r3yltzkOi+Ue/uCbrEJloSfsHyNrQQPZ6a91M=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=K4rsURO1d1nG/9CUOU21PXHxDAlfjKTIYvivgtNsYl2RHhWnxioV5ZWBR5AvTs0VK
-         ouL+9ULhlT2NOagYYFpOiUEp/E5LJNw/znAZJQl9HBw5tUbqd5CwjrZ8AfaYQk25T8
-         Zm3bYJLHCtPdebAetY0QRpkGCgDR477M8hji3lBA=
-Date:   Wed, 11 Dec 2019 14:17:25 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Andre Przywara <andre.przywara@arm.com>
-Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Andrew Murray <andrew.murray@arm.com>,
+        id S1728080AbfLLIp7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Dec 2019 03:45:59 -0500
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:54329 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728224AbfLLIp7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Dec 2019 03:45:59 -0500
+Received: by mail-wm1-f68.google.com with SMTP id b11so1384973wmj.4
+        for <linux-acpi@vger.kernel.org>; Thu, 12 Dec 2019 00:45:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=ysjj9kjjoSIsFGYFqXCoqpOZyZtCGjaHakYJs3J9tu0=;
+        b=N1PqWi95BtpSJzjsz/imsAalWGW70TyGbewoErGOeVYBvmj9ihXbpRHlxXIvaeIdlR
+         nHD/dzoQNgA60wueuAOGCb/L+hXKeY7w9KTGtJUq1VSy6T2dfe1tL7lOYkrcG1ddn4gw
+         hOBTY06mszGcg9kdbiouVhtIe1PYsdzXkRvp+rXKt6w0STrNRVaF/lGfCGKAb1pV+Z1Y
+         yHpNGXQ3JIoX2JaEcuk5Wp/anUnYiXNSkvJX2qXWnHcutx24QNBY/QFaNHIMyG4LFKSE
+         LOOR99KWBWA/Ukr08iOkTK5nE9MvbxjarBOjT/6rEux4i6ppKrzbd2Cynkl7BHjOIzlm
+         mdAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=ysjj9kjjoSIsFGYFqXCoqpOZyZtCGjaHakYJs3J9tu0=;
+        b=SYljBDyzofgmdqqnrFsFogIPk3v5V/fSxkPVhm3D1lOPufZ7CMBrp3ca4XUAlH4uEm
+         mpRLkFMQ6N772A05AOs4dxzFJX2kfJn4/gJlSNWES0yQZW5IG/21cSCJ1nrGLIRteZPY
+         EvwarNJdUArco8Jj9uZ2+tZFeqd33NkVAoisaPzLfFjhVjjhj8KaFjbz6OvIxGUMdn/l
+         FzIb7I4O5t0D8luO/rpAYs5TmXCIidgi22M+R96pnwAY86cZd4yli5Vki6v/25tQCCuX
+         uJKWeZETy0IrsQ7W2kc0MZGLVjsgo07c/25UyCb6TguCRHeMnu1NocEIzAxuPvu6e70U
+         cV1g==
+X-Gm-Message-State: APjAAAW4912SbCDmE7pQ6+xAgnY3N5U0hwzlED47t+jZR5fkCdVmoFBu
+        /EWXdZFFjbl+UXIUGbWKIYBCuQ==
+X-Google-Smtp-Source: APXvYqwAZfpkK8vySmNTpYajooUQMZ/RgbPaVPzY1J92T1Yb1GNzuR3Kfm3il2PW8j/esg6YAvAe+g==
+X-Received: by 2002:a7b:cc13:: with SMTP id f19mr5235577wmh.81.1576140357340;
+        Thu, 12 Dec 2019 00:45:57 -0800 (PST)
+Received: from dell ([95.149.164.71])
+        by smtp.gmail.com with ESMTPSA id k8sm5263306wrl.3.2019.12.12.00.45.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Dec 2019 00:45:56 -0800 (PST)
+Date:   Thu, 12 Dec 2019 08:45:46 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
+        <ville.syrjala@linux.intel.com>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] pcie: Add quirk for the Arm Neoverse N1SDP platform
-Message-ID: <20191211201725.GA30513@google.com>
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mfd: intel_soc_pmic: Rename pwm_backlight pwm-lookup
+ to pwm_pmic_backlight
+Message-ID: <20191212084546.GA3468@dell>
+References: <20191119151818.67531-1-hdegoede@redhat.com>
+ <20191119151818.67531-3-hdegoede@redhat.com>
+ <20191210085111.GQ3468@dell>
+ <a05e5a2b-568e-2b0d-0293-aa937c590a74@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20191211110049.54a2d6f3@donnerap.cambridge.arm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a05e5a2b-568e-2b0d-0293-aa937c590a74@redhat.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 11, 2019 at 11:00:49AM +0000, Andre Przywara wrote:
-> On Tue, 10 Dec 2019 08:41:15 -0600
-> Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > On Mon, Dec 09, 2019 at 04:06:38PM +0000, Andre Przywara wrote:
-> > > From: Deepak Pandey <Deepak.Pandey@arm.com>
+On Wed, 11 Dec 2019, Hans de Goede wrote:
+
+> Hi Lee,
+> 
+> On 10-12-2019 09:51, Lee Jones wrote:
+> > On Tue, 19 Nov 2019, Hans de Goede wrote:
+> > 
+> > > At least Bay Trail (BYT) and Cherry Trail (CHT) devices can use 1 of 2
+> > > different PWM controllers for controlling the LCD's backlight brightness.
 > > > 
-> > > The Arm N1SDP SoC suffers from some PCIe integration issues, most
-> > > prominently config space accesses to not existing BDFs being answered
-> > > with a bus abort, resulting in an SError.  
+> > > Either the one integrated into the PMIC or the one integrated into the
+> > > SoC (the 1st LPSS PWM controller).
+> > > 
+> > > So far in the LPSS code on BYT we have skipped registering the LPSS PWM
+> > > controller "pwm_backlight" lookup entry when a Crystal Cove PMIC is
+> > > present, assuming that in this case the PMIC PWM controller will be used.
+> > > 
+> > > On CHT we have been relying on only 1 of the 2 PWM controllers being
+> > > enabled in the DSDT at the same time; and always registered the lookup.
+> > > 
+> > > So far this has been working, but the correct way to determine which PWM
+> > > controller needs to be used is by checking a bit in the VBT table and
+> > > recently I've learned about 2 different BYT devices:
+> > > Point of View MOBII TAB-P800W
+> > > Acer Switch 10 SW5-012
+> > > 
+> > > Which use a Crystal Cove PMIC, yet the LCD is connected to the SoC/LPSS
+> > > PWM controller (and the VBT correctly indicates this), so here our old
+> > > heuristics fail.
+> > > 
+> > > Since only the i915 driver has access to the VBT, this commit renames
+> > > the "pwm_backlight" lookup entries for the Crystal Cove PMIC's PWM
+> > > controller to "pwm_pmic_backlight" so that the i915 driver can do a
+> > > pwm_get() for the right controller depending on the VBT bit, instead of
+> > > the i915 driver relying on a "pwm_backlight" lookup getting registered
+> > > which magically points to the right controller.
+> > > 
+> > > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> > > ---
+> > >   drivers/mfd/intel_soc_pmic_core.c | 2 +-
+> > >   1 file changed, 1 insertion(+), 1 deletion(-)
 > > 
-> > Can we tease this apart a little more?  Linux doesn't program all the
-> > bits that control error signaling, so even on hardware that works
-> > perfectly, much of this behavior is determined by what firmware did.
-> > I wonder if Linux could be more careful about this.
-> > 
-> > "Bus abort" is not a term used in PCIe.
+> > For my own reference:
+> >    Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
 > 
-> Yes, sorry, that was my sloppy term, also aiming more at the CPU
-> side of the bus, between the cores and the RC.
->
-> >  IIUC, a config read to a
-> > device that doesn't exist should terminate with an Unsupported Request
-> > completion, e.g., see the implementation note in PCIe r5.0 sec 2.3.1.
+> As mentioned in the cover-letter, to avoid breaking bi-sectability
+> as well as to avoid breaking the intel-gfx CI we need to merge this series
+> in one go through one tree. Specifically through the drm-intel tree.
+> Is that ok with you ?
 > 
-> Yes, that's what Lorenzo mentioned as well.
-> 
-> > The UR should be an uncorrectable non-fatal error (Table 6-5), and
-> > Figures 6-2 and 6-3 show how it should be handled and when it should
-> > be signaled as a system error.  In case you don't have a copy of the
-> > spec, I extracted those two figures and put them at [1].
-> 
-> Thanks for that.
-> So in the last few months we tossed several ideas around how to
-> work-around this without kernel intervention, all of them turned out
-> to be not working. There are indeed registers in the RC that
-> influence error reporting to the CPU side, but even if we could
-> suppress (or catch) the SError, we can't recover and fixup the read
-> transaction to the CPU. Even Lorenzo gave up on this ;-) As far as I
-> understood this, there are gates missing which are supposed to
-> translate this specific UR into a valid "all-1s" response.
+> If this is ok with you, then you do not have to do anything, I will just push
+> the entire series to drm-intel. drivers/mfd/intel_soc_pmic_core.c
+> does not see much changes so I do not expect this to lead to any conflicts.
 
-But the commit log says firmware scanned the bus (catching the
-SErrors).  Shouldn't Linux be able to catch them the same way?
+It's fine, so long as a minimal immutable pull-request is provided.
+Whether it's pulled or not will depend on a number of factors, but it
+needs to be an option.
 
-The "all-1s" response directly from hardware is typical of most
-platforms, but I don't think it's strictly required by the PCIe spec
-and I don't think it's absolutely essential even to Linux.  If you can
-catch the SErrors, isn't there a way for software to fabricate that
-all-1s data and continue after the read?
-
-> > Even ECAM compliance is not really minor -- if this controller were
-> > fully compliant with the spec, you would need ZERO Linux changes to
-> > support it.  Every quirk like this means additional maintenance
-> > burden, and it's not just a one-time thing.  It means old kernels that
-> > *should* "just work" on your system will not work unless somebody
-> > backports the quirk.
-> 
-> I am well aware of that, and we had quite some discussions
-> internally, with quite some opposition.  ...
-
-The main point is that *future* silicon should be designed to avoid
-this issue.  I hope at least that part was not controversial.
-
-If we want to take advantage of the generic PCI code supplied by
-Linux, we have to expect that the hardware will play by the rules of
-PCI.
-
-Bjorn
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
