@@ -2,18 +2,18 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D11D11E097
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2019 10:27:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA05011E09D
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2019 10:27:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726831AbfLMJ1m (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Dec 2019 04:27:42 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:61528 "EHLO
+        id S1726860AbfLMJ1s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Dec 2019 04:27:48 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:41983 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726793AbfLMJ1i (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Dec 2019 04:27:38 -0500
+        with ESMTP id S1726779AbfLMJ1h (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Dec 2019 04:27:37 -0500
 Received: from 79.184.255.82.ipv4.supernova.orange.pl (79.184.255.82) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.320)
- id 55d164afaf331298; Fri, 13 Dec 2019 10:27:36 +0100
+ id ea518d7512e1c01a; Fri, 13 Dec 2019 10:27:35 +0100
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux PM <linux-pm@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
@@ -21,9 +21,11 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         Len Brown <len.brown@intel.com>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Len Brown <lenb@kernel.org>
-Subject: [PATCH v1 00/10] cpuidle: intel_idle: Use ACPI _CST to get idle states information
-Date:   Fri, 13 Dec 2019 10:09:40 +0100
-Message-ID: <3950312.2WmFeOdZGY@kreacher>
+Subject: [PATCH v1 01/10] ACPI: processor: Export function to claim _CST control
+Date:   Fri, 13 Dec 2019 10:11:41 +0100
+Message-ID: <1905009.oqaLcrmCQp@kreacher>
+In-Reply-To: <3950312.2WmFeOdZGY@kreacher>
+References: <3950312.2WmFeOdZGY@kreacher>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -32,45 +34,111 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi All,
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-The RFC of this does not seem to have attracted much attention, so here goes
-the first non-RFC revision.
+The intel_idle driver will be modified to use ACPI _CST subsequently
+and it will need to notify the platform firmware of that if
+acpi_gbl_FADT.cst_control is set, so add a routine for this purpose,
+acpi_processor_claim_cst_control(), to acpi_processor.c (so that it
+is always present which is required by intel_idle) and export it
+to allow the ACPI processor driver (which is modular) to call it.
 
-The purpose of this set of patches is to allow the intel_idle driver to use
-C-states information from ACPI _CST on systems where the processor is not
-recognized by it.
+No intentional functional impact.
 
-The first five patches are preparatory (please look into the changelogs for
-details) and are not expected to make any functional difference.
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
 
-Patch [06/10] adds ACPI _CST support to intel_idle so that _CST is used when
-the driver does not have a dedicated list of C-states for the given processor.
+No changes from the RFC version.
 
-Patch [07/10] is an update of https://patchwork.kernel.org/patch/11256815/.
+---
+ drivers/acpi/acpi_processor.c | 25 +++++++++++++++++++++++++
+ drivers/acpi/processor_idle.c | 12 ++++--------
+ include/linux/acpi.h          |  6 ++++++
+ 3 files changed, 35 insertions(+), 8 deletions(-)
 
-Patch [08/10] changes intel_idle to also use ACPI _CST in specific cases when
-there is a tables of C-states for the given processor in the driver (it will
-use the _CST information to decide which C-state to enable by default then).
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index 2c4dda0787e8..8a53f3c5b70e 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -705,3 +705,28 @@ void __init acpi_processor_init(void)
+ 	acpi_scan_add_handler_with_hotplug(&processor_handler, "processor");
+ 	acpi_scan_add_handler(&processor_container_handler);
+ }
++
++#ifdef CONFIG_ACPI_PROCESSOR_CSTATE
++/**
++ * acpi_processor_claim_cst_control - Request _CST control from the platform.
++ */
++bool acpi_processor_claim_cst_control(void)
++{
++	static bool cst_control_claimed;
++	acpi_status status;
++
++	if (!acpi_gbl_FADT.cst_control || cst_control_claimed)
++		return true;
++
++	status = acpi_os_write_port(acpi_gbl_FADT.smi_command,
++				    acpi_gbl_FADT.cst_control, 8);
++	if (ACPI_FAILURE(status)) {
++		pr_warn("ACPI: Failed to claim processor _CST control\n");
++		return false;
++	}
++
++	cst_control_claimed = true;
++	return true;
++}
++EXPORT_SYMBOL_GPL(acpi_processor_claim_cst_control);
++#endif /* CONFIG_ACPI_PROCESSOR_CSTATE */
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index 2ae95df2e74f..dd737d836c03 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -909,7 +909,6 @@ static int acpi_processor_setup_cstates(struct acpi_processor *pr)
+ 
+ static inline void acpi_processor_cstate_first_run_checks(void)
+ {
+-	acpi_status status;
+ 	static int first_run;
+ 
+ 	if (first_run)
+@@ -921,13 +920,10 @@ static inline void acpi_processor_cstate_first_run_checks(void)
+ 			  max_cstate);
+ 	first_run++;
+ 
+-	if (acpi_gbl_FADT.cst_control && !nocst) {
+-		status = acpi_os_write_port(acpi_gbl_FADT.smi_command,
+-					    acpi_gbl_FADT.cst_control, 8);
+-		if (ACPI_FAILURE(status))
+-			ACPI_EXCEPTION((AE_INFO, status,
+-					"Notifying BIOS of _CST ability failed"));
+-	}
++	if (nocst)
++		return;
++
++	acpi_processor_claim_cst_control();
+ }
+ #else
+ 
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 0f37a7d5fa77..ee39b05e7f76 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -279,6 +279,12 @@ static inline bool invalid_phys_cpuid(phys_cpuid_t phys_id)
+ 
+ /* Validate the processor object's proc_id */
+ bool acpi_duplicate_processor_id(int proc_id);
++/* Processor _CTS control */
++#ifdef CONFIG_ACPI_PROCESSOR_CSTATE
++bool acpi_processor_claim_cst_control(void);
++#else
++static inline bool acpi_processor_claim_cst_control(void) { return false; }
++#endif
+ 
+ #ifdef CONFIG_ACPI_HOTPLUG_CPU
+ /* Arch dependent functions for cpu hotplug support */
+-- 
+2.16.4
 
-Patch [09/10] adds a module parameter called "no_acpi" that can be used to
-prevent intel_idle from using ACPI _CST via the kernel command line.
-
-Finally, the last patch makes intel_idle use ACPI _CST, if available, on all
-server systems supported by it.
-
-This has been lightly tested on a Dell XPS13 9360 (with an additional patch to
-set use_acpi for Kaby Lake).  The difference between using the idle states list
-from _CST and the built-in one generally appears to be that in the latter case
-the processor spends more time in package C-state when the system is idle.
-
-If there are any concerns about this series, please let me know.
-
-For easier access, the patches are available from the intel_idle+acpi branch
-in the linux-pm.git tree.
-
-Thanks,
-Rafael
 
 
 
