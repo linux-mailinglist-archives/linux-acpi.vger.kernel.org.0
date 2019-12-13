@@ -2,306 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 125FA11E0AB
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2019 10:28:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93B5C11E0E8
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2019 10:35:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726735AbfLMJ1d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Dec 2019 04:27:33 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:43689 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725799AbfLMJ1d (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Dec 2019 04:27:33 -0500
-Received: from 79.184.255.82.ipv4.supernova.orange.pl (79.184.255.82) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.320)
- id 8de01d217efb030e; Fri, 13 Dec 2019 10:27:28 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux PM <linux-pm@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Len Brown <len.brown@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Len Brown <lenb@kernel.org>
-Subject: [PATCH v1 10/10] intel_idle: Use ACPI _CST on server systems
-Date:   Fri, 13 Dec 2019 10:27:07 +0100
-Message-ID: <3728343.TGOlGdFZx8@kreacher>
-In-Reply-To: <3950312.2WmFeOdZGY@kreacher>
-References: <3950312.2WmFeOdZGY@kreacher>
+        id S1726841AbfLMJfI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Dec 2019 04:35:08 -0500
+Received: from mga14.intel.com ([192.55.52.115]:13644 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726802AbfLMJfH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 13 Dec 2019 04:35:07 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Dec 2019 01:34:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,309,1571727600"; 
+   d="scan'208";a="208406553"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga008.jf.intel.com with ESMTP; 13 Dec 2019 01:34:37 -0800
+Received: from andy by smile with local (Exim 4.93-RC7)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1ifhLJ-00066h-JG; Fri, 13 Dec 2019 11:34:37 +0200
+Date:   Fri, 13 Dec 2019 11:34:37 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Gayatri Kammela <gayatri.kammela@intel.com>
+Cc:     linux-pm@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        alex.hung@canonical.com, linux-acpi@vger.kernel.org,
+        lenb@kernel.org, rjw@rjwysocki.net, linux-kernel@vger.kernel.org,
+        daniel.lezcano@linaro.org, amit.kucheria@verdurent.com,
+        charles.d.prestopine@intel.com, dvhart@infradead.org,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@intel.com>
+Subject: Re: [PATCH v1 1/4] acpi: dptf: Add new Tiger Lake hardware IDs to
+ support DPTF drivers in acpi
+Message-ID: <20191213093437.GO32742@smile.fi.intel.com>
+References: <cover.1576189376.git.gayatri.kammela@intel.com>
+ <baaa3d7d1d1129a31c5a000578d1ad8198ca3881.1576189376.git.gayatri.kammela@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <baaa3d7d1d1129a31c5a000578d1ad8198ca3881.1576189376.git.gayatri.kammela@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+On Thu, Dec 12, 2019 at 02:37:17PM -0800, Gayatri Kammela wrote:
+> Tiger Lake has new unique hardware IDs that are needed to support
+> DPTF drivers. Hence, add them.
 
-In many cases, especially on server systems, it is desirable to avoid
-enabling C-states that have been disabled in the platform firmware
-(BIOS) setup, except for C1E.
+>  	{"INT3407", 0},
+> +	{"INT1047", 0},
 
-As a rule, the C-states disabled this way are not listed by ACPI
-_CST, so if that is used by intel_idle along with the specific
-table of C-states that it has for the given processor, the C-states
-disabled through the platform firmware will not be enabled by default
-by intel_idle.
+Can we keep them in sorted order?
 
-Accordingly, set the use_acpi flag (introduced previously) in all
-server processor profiles defined in intel_idle (so as to make it use
-ACPI _CST to decide which C-states to enable by default) and set
-the CPUIDLE_FLAG_ALWAYS_ENABLE flag (also introduced previously)
-for C1E in all C-states tables in intel_idle that contain C1 too
-(so that C1E is enabled regardless of whether or not it is listed
-by ACPI _CST).
+>  	{"INT3409"},
+>  	{"INT340A"},
+>  	{"INT340B"},
+> +	{"INT1040"},
+> +	{"INT1043"},
+> +	{"INT1044"},
+> +	{"INT1047"},
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
+Ditto.
 
-New patch, not present in the RFC.
-
----
- drivers/idle/intel_idle.c | 70 +++++++++++++++++++++++++++++++++--------------
- 1 file changed, 50 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-index 26fe383bb921..1467490adfc3 100644
---- a/drivers/idle/intel_idle.c
-+++ b/drivers/idle/intel_idle.c
-@@ -131,7 +131,7 @@ static struct cpuidle_state nehalem_cstates[] = {
- 	{
- 		.name = "C1E",
- 		.desc = "MWAIT 0x01",
--		.flags = MWAIT2flg(0x01),
-+		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
- 		.exit_latency = 10,
- 		.target_residency = 20,
- 		.enter = &intel_idle,
-@@ -168,7 +168,7 @@ static struct cpuidle_state snb_cstates[] = {
- 	{
- 		.name = "C1E",
- 		.desc = "MWAIT 0x01",
--		.flags = MWAIT2flg(0x01),
-+		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
- 		.exit_latency = 10,
- 		.target_residency = 20,
- 		.enter = &intel_idle,
-@@ -303,7 +303,7 @@ static struct cpuidle_state ivb_cstates[] = {
- 	{
- 		.name = "C1E",
- 		.desc = "MWAIT 0x01",
--		.flags = MWAIT2flg(0x01),
-+		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
- 		.exit_latency = 10,
- 		.target_residency = 20,
- 		.enter = &intel_idle,
-@@ -348,7 +348,7 @@ static struct cpuidle_state ivt_cstates[] = {
- 	{
- 		.name = "C1E",
- 		.desc = "MWAIT 0x01",
--		.flags = MWAIT2flg(0x01),
-+		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
- 		.exit_latency = 10,
- 		.target_residency = 80,
- 		.enter = &intel_idle,
-@@ -385,7 +385,7 @@ static struct cpuidle_state ivt_cstates_4s[] = {
- 	{
- 		.name = "C1E",
- 		.desc = "MWAIT 0x01",
--		.flags = MWAIT2flg(0x01),
-+		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
- 		.exit_latency = 10,
- 		.target_residency = 250,
- 		.enter = &intel_idle,
-@@ -422,7 +422,7 @@ static struct cpuidle_state ivt_cstates_8s[] = {
- 	{
- 		.name = "C1E",
- 		.desc = "MWAIT 0x01",
--		.flags = MWAIT2flg(0x01),
-+		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
- 		.exit_latency = 10,
- 		.target_residency = 500,
- 		.enter = &intel_idle,
-@@ -459,7 +459,7 @@ static struct cpuidle_state hsw_cstates[] = {
- 	{
- 		.name = "C1E",
- 		.desc = "MWAIT 0x01",
--		.flags = MWAIT2flg(0x01),
-+		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
- 		.exit_latency = 10,
- 		.target_residency = 20,
- 		.enter = &intel_idle,
-@@ -527,7 +527,7 @@ static struct cpuidle_state bdw_cstates[] = {
- 	{
- 		.name = "C1E",
- 		.desc = "MWAIT 0x01",
--		.flags = MWAIT2flg(0x01),
-+		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
- 		.exit_latency = 10,
- 		.target_residency = 20,
- 		.enter = &intel_idle,
-@@ -596,7 +596,7 @@ static struct cpuidle_state skl_cstates[] = {
- 	{
- 		.name = "C1E",
- 		.desc = "MWAIT 0x01",
--		.flags = MWAIT2flg(0x01),
-+		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
- 		.exit_latency = 10,
- 		.target_residency = 20,
- 		.enter = &intel_idle,
-@@ -665,7 +665,7 @@ static struct cpuidle_state skx_cstates[] = {
- 	{
- 		.name = "C1E",
- 		.desc = "MWAIT 0x01",
--		.flags = MWAIT2flg(0x01),
-+		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
- 		.exit_latency = 10,
- 		.target_residency = 20,
- 		.enter = &intel_idle,
-@@ -815,7 +815,7 @@ static struct cpuidle_state bxt_cstates[] = {
- 	{
- 		.name = "C1E",
- 		.desc = "MWAIT 0x01",
--		.flags = MWAIT2flg(0x01),
-+		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
- 		.exit_latency = 10,
- 		.target_residency = 20,
- 		.enter = &intel_idle,
-@@ -876,7 +876,7 @@ static struct cpuidle_state dnv_cstates[] = {
- 	{
- 		.name = "C1E",
- 		.desc = "MWAIT 0x01",
--		.flags = MWAIT2flg(0x01),
-+		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
- 		.exit_latency = 10,
- 		.target_residency = 20,
- 		.enter = &intel_idle,
-@@ -998,6 +998,13 @@ static const struct idle_cpu idle_cpu_nehalem = {
- 	.disable_promotion_to_c1e = true,
- };
- 
-+static const struct idle_cpu idle_cpu_nhx = {
-+	.state_table = nehalem_cstates,
-+	.auto_demotion_disable_flags = NHM_C1_AUTO_DEMOTE | NHM_C3_AUTO_DEMOTE,
-+	.disable_promotion_to_c1e = true,
-+	.use_acpi = true,
-+};
-+
- static const struct idle_cpu idle_cpu_atom = {
- 	.state_table = atom_cstates,
- };
-@@ -1016,6 +1023,12 @@ static const struct idle_cpu idle_cpu_snb = {
- 	.disable_promotion_to_c1e = true,
- };
- 
-+static const struct idle_cpu idle_cpu_snx = {
-+	.state_table = snb_cstates,
-+	.disable_promotion_to_c1e = true,
-+	.use_acpi = true,
-+};
-+
- static const struct idle_cpu idle_cpu_byt = {
- 	.state_table = byt_cstates,
- 	.disable_promotion_to_c1e = true,
-@@ -1036,6 +1049,7 @@ static const struct idle_cpu idle_cpu_ivb = {
- static const struct idle_cpu idle_cpu_ivt = {
- 	.state_table = ivt_cstates,
- 	.disable_promotion_to_c1e = true,
-+	.use_acpi = true,
- };
- 
- static const struct idle_cpu idle_cpu_hsw = {
-@@ -1043,11 +1057,23 @@ static const struct idle_cpu idle_cpu_hsw = {
- 	.disable_promotion_to_c1e = true,
- };
- 
-+static const struct idle_cpu idle_cpu_hsx = {
-+	.state_table = hsw_cstates,
-+	.disable_promotion_to_c1e = true,
-+	.use_acpi = true,
-+};
-+
- static const struct idle_cpu idle_cpu_bdw = {
- 	.state_table = bdw_cstates,
- 	.disable_promotion_to_c1e = true,
- };
- 
-+static const struct idle_cpu idle_cpu_bdx = {
-+	.state_table = bdw_cstates,
-+	.disable_promotion_to_c1e = true,
-+	.use_acpi = true,
-+};
-+
- static const struct idle_cpu idle_cpu_skl = {
- 	.state_table = skl_cstates,
- 	.disable_promotion_to_c1e = true,
-@@ -1056,15 +1082,18 @@ static const struct idle_cpu idle_cpu_skl = {
- static const struct idle_cpu idle_cpu_skx = {
- 	.state_table = skx_cstates,
- 	.disable_promotion_to_c1e = true,
-+	.use_acpi = true,
- };
- 
- static const struct idle_cpu idle_cpu_avn = {
- 	.state_table = avn_cstates,
- 	.disable_promotion_to_c1e = true,
-+	.use_acpi = true,
- };
- 
- static const struct idle_cpu idle_cpu_knl = {
- 	.state_table = knl_cstates,
-+	.use_acpi = true,
- };
- 
- static const struct idle_cpu idle_cpu_bxt = {
-@@ -1075,20 +1104,21 @@ static const struct idle_cpu idle_cpu_bxt = {
- static const struct idle_cpu idle_cpu_dnv = {
- 	.state_table = dnv_cstates,
- 	.disable_promotion_to_c1e = true,
-+	.use_acpi = true,
- };
- 
- static const struct x86_cpu_id intel_idle_ids[] __initconst = {
--	INTEL_CPU_FAM6(NEHALEM_EP,		idle_cpu_nehalem),
-+	INTEL_CPU_FAM6(NEHALEM_EP,		idle_cpu_nhx),
- 	INTEL_CPU_FAM6(NEHALEM,			idle_cpu_nehalem),
- 	INTEL_CPU_FAM6(NEHALEM_G,		idle_cpu_nehalem),
- 	INTEL_CPU_FAM6(WESTMERE,		idle_cpu_nehalem),
--	INTEL_CPU_FAM6(WESTMERE_EP,		idle_cpu_nehalem),
--	INTEL_CPU_FAM6(NEHALEM_EX,		idle_cpu_nehalem),
-+	INTEL_CPU_FAM6(WESTMERE_EP,		idle_cpu_nhx),
-+	INTEL_CPU_FAM6(NEHALEM_EX,		idle_cpu_nhx),
- 	INTEL_CPU_FAM6(ATOM_BONNELL,		idle_cpu_atom),
- 	INTEL_CPU_FAM6(ATOM_BONNELL_MID,	idle_cpu_lincroft),
--	INTEL_CPU_FAM6(WESTMERE_EX,		idle_cpu_nehalem),
-+	INTEL_CPU_FAM6(WESTMERE_EX,		idle_cpu_nhx),
- 	INTEL_CPU_FAM6(SANDYBRIDGE,		idle_cpu_snb),
--	INTEL_CPU_FAM6(SANDYBRIDGE_X,		idle_cpu_snb),
-+	INTEL_CPU_FAM6(SANDYBRIDGE_X,		idle_cpu_snx),
- 	INTEL_CPU_FAM6(ATOM_SALTWELL,		idle_cpu_atom),
- 	INTEL_CPU_FAM6(ATOM_SILVERMONT,		idle_cpu_byt),
- 	INTEL_CPU_FAM6(ATOM_SILVERMONT_MID,	idle_cpu_tangier),
-@@ -1096,14 +1126,14 @@ static const struct x86_cpu_id intel_idle_ids[] __initconst = {
- 	INTEL_CPU_FAM6(IVYBRIDGE,		idle_cpu_ivb),
- 	INTEL_CPU_FAM6(IVYBRIDGE_X,		idle_cpu_ivt),
- 	INTEL_CPU_FAM6(HASWELL,			idle_cpu_hsw),
--	INTEL_CPU_FAM6(HASWELL_X,		idle_cpu_hsw),
-+	INTEL_CPU_FAM6(HASWELL_X,		idle_cpu_hsx),
- 	INTEL_CPU_FAM6(HASWELL_L,		idle_cpu_hsw),
- 	INTEL_CPU_FAM6(HASWELL_G,		idle_cpu_hsw),
- 	INTEL_CPU_FAM6(ATOM_SILVERMONT_D,	idle_cpu_avn),
- 	INTEL_CPU_FAM6(BROADWELL,		idle_cpu_bdw),
- 	INTEL_CPU_FAM6(BROADWELL_G,		idle_cpu_bdw),
--	INTEL_CPU_FAM6(BROADWELL_X,		idle_cpu_bdw),
--	INTEL_CPU_FAM6(BROADWELL_D,		idle_cpu_bdw),
-+	INTEL_CPU_FAM6(BROADWELL_X,		idle_cpu_bdx),
-+	INTEL_CPU_FAM6(BROADWELL_D,		idle_cpu_bdx),
- 	INTEL_CPU_FAM6(SKYLAKE_L,		idle_cpu_skl),
- 	INTEL_CPU_FAM6(SKYLAKE,			idle_cpu_skl),
- 	INTEL_CPU_FAM6(KABYLAKE_L,		idle_cpu_skl),
 -- 
-2.16.4
-
-
-
+With Best Regards,
+Andy Shevchenko
 
 
