@@ -2,210 +2,428 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FD2311E3AE
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2019 13:40:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E504211E57E
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2019 15:23:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727137AbfLMMko (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Dec 2019 07:40:44 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:24990 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727078AbfLMMkn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Dec 2019 07:40:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1576240842;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=DUragvfk5FVu6qjRne2AQU3xFq5etQTYcUAxceDIICQ=;
-        b=DeGqbpggLDWv5xlccywQwW0gi6UA6O+B/R1ZY0bLcBcXpLWfMl8sSfyK3Yu9zNi1HN2HSc
-        dz895hZyCiwrHI/KlB/kUfzff6slO5wB7CTuy5TOVrVbsIGFadwXVMok9KAMPgFcYbaTfK
-        +1w40tx9ThlEGNmRIRxpj58RSNvX9A4=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-316-j_cLybctP5yI4WuV6CCLdw-1; Fri, 13 Dec 2019 07:40:40 -0500
-X-MC-Unique: j_cLybctP5yI4WuV6CCLdw-1
-Received: by mail-wr1-f70.google.com with SMTP id z15so2553236wrw.0
-        for <linux-acpi@vger.kernel.org>; Fri, 13 Dec 2019 04:40:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=DUragvfk5FVu6qjRne2AQU3xFq5etQTYcUAxceDIICQ=;
-        b=f/Yi7yw983xk5keWJpYPjvQFpu84CvEBXsoHh3G3FzkoLG/l+0RKbx9ra7vOrFVLkv
-         3eBuuvmxFhauq5osBN5P8bqN/L4VrWmZvWvJ+JDCngWD0DKuBfFnYJIDkdkaBe4Wo7fG
-         dwmevhkaGK2wWJHmR51L2ooATBJopPeptx66IFSnnC9sYVrgztsbo9pzdGjlbN24TiB2
-         r/r8N4v4IVxC1lOnKGvpdFUScX1WNMWhsSjbH8DPK/3HoCzZ1aMiFGnpIcOPm1va9rvB
-         LqAeb6213ZnVAR6igVlyFAWiCI+mkbORBYC3eKLH8FisrG41SBoFUNhja17+DPRpl6rH
-         xCTQ==
-X-Gm-Message-State: APjAAAUBi7tlMfQftrBZ1KHfReeIVWUvZCF7Pvu1TfUwB694qE4nfiyY
-        HrCyrdVsbGsJHt9TlTxVk1OustWfFtM1ZMtKpFdxWtOBpw87ifPMBllBSCz64VJddWQ12LO4wXb
-        ZfpOvGGkIq5UZUxE8Mm2F0Q==
-X-Received: by 2002:a7b:cf01:: with SMTP id l1mr12587142wmg.86.1576240839203;
-        Fri, 13 Dec 2019 04:40:39 -0800 (PST)
-X-Google-Smtp-Source: APXvYqzbRIcHY9orrZ4lf2zeld4ZX7W4hZ9ME2FvdqX7ky1NhoyqbFSoXWz8BRoTm7hDdHzOuVqAiA==
-X-Received: by 2002:a7b:cf01:: with SMTP id l1mr12587108wmg.86.1576240838906;
-        Fri, 13 Dec 2019 04:40:38 -0800 (PST)
-Received: from shalem.localdomain (2001-1c00-0c0c-fe00-7e79-4dac-39d0-9c14.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:7e79:4dac:39d0:9c14])
-        by smtp.gmail.com with ESMTPSA id t81sm10032474wmg.6.2019.12.13.04.40.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Dec 2019 04:40:38 -0800 (PST)
-Subject: Re: [PATCH 2/3] mfd: intel_soc_pmic: Rename pwm_backlight pwm-lookup
- to pwm_pmic_backlight
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        id S1727717AbfLMOXw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Dec 2019 09:23:52 -0500
+Received: from foss.arm.com ([217.140.110.172]:32826 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727444AbfLMOXv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 13 Dec 2019 09:23:51 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 15EEC13D5;
+        Fri, 13 Dec 2019 06:23:50 -0800 (PST)
+Received: from donnerap.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9E8BC3F52E;
+        Fri, 13 Dec 2019 06:23:48 -0800 (PST)
+Date:   Fri, 13 Dec 2019 14:23:34 +0000
+From:   Andre Przywara <andre.przywara@arm.com>
+To:     Andrew Murray <andrew.murray@arm.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <20191119151818.67531-1-hdegoede@redhat.com>
- <20191119151818.67531-3-hdegoede@redhat.com> <20191210085111.GQ3468@dell>
- <a05e5a2b-568e-2b0d-0293-aa937c590a74@redhat.com>
- <20191212084546.GA3468@dell>
- <d22e9a04-da09-0f41-a78e-ac17a947650a@redhat.com>
- <20191212155209.GC3468@dell>
- <4d07445d-98b1-f23c-0aac-07709b45df78@redhat.com>
- <20191213082734.GE3468@dell>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <d648794d-4c76-cfa1-dcbd-16c34d409c51@redhat.com>
-Date:   Fri, 13 Dec 2019 13:40:37 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Len Brown <lenb@kernel.org>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH] pcie: Add quirk for the Arm Neoverse N1SDP platform
+Message-ID: <20191213142334.1631e3db@donnerap.cambridge.arm.com>
+In-Reply-To: <20191212123748.GF24359@e119886-lin.cambridge.arm.com>
+References: <20191209160638.141431-1-andre.przywara@arm.com>
+        <20191212123748.GF24359@e119886-lin.cambridge.arm.com>
+Organization: ARM
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; aarch64-unknown-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20191213082734.GE3468@dell>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Thu, 12 Dec 2019 12:37:48 +0000
+Andrew Murray <andrew.murray@arm.com> wrote:
 
-On 13-12-2019 09:27, Lee Jones wrote:
-> On Thu, 12 Dec 2019, Hans de Goede wrote:
+Hi Andrew,
+
+> On Mon, Dec 09, 2019 at 04:06:38PM +0000, Andre Przywara wrote:
+> > From: Deepak Pandey <Deepak.Pandey@arm.com>
+> > 
+> > The Arm N1SDP SoC suffers from some PCIe integration issues, most
+> > prominently config space accesses to not existing BDFs being answered
+> > with a bus abort, resulting in an SError.  
 > 
->> Hi,
->>
->> On 12-12-2019 16:52, Lee Jones wrote:
->>> On Thu, 12 Dec 2019, Hans de Goede wrote:
->>>
->>>> Hi,
->>>>
->>>> On 12-12-2019 09:45, Lee Jones wrote:
->>>>> On Wed, 11 Dec 2019, Hans de Goede wrote:
->>>>>
->>>>>> Hi Lee,
->>>>>>
->>>>>> On 10-12-2019 09:51, Lee Jones wrote:
->>>>>>> On Tue, 19 Nov 2019, Hans de Goede wrote:
->>>>>>>
->>>>>>>> At least Bay Trail (BYT) and Cherry Trail (CHT) devices can use 1 of 2
->>>>>>>> different PWM controllers for controlling the LCD's backlight brightness.
->>>>>>>>
->>>>>>>> Either the one integrated into the PMIC or the one integrated into the
->>>>>>>> SoC (the 1st LPSS PWM controller).
->>>>>>>>
->>>>>>>> So far in the LPSS code on BYT we have skipped registering the LPSS PWM
->>>>>>>> controller "pwm_backlight" lookup entry when a Crystal Cove PMIC is
->>>>>>>> present, assuming that in this case the PMIC PWM controller will be used.
->>>>>>>>
->>>>>>>> On CHT we have been relying on only 1 of the 2 PWM controllers being
->>>>>>>> enabled in the DSDT at the same time; and always registered the lookup.
->>>>>>>>
->>>>>>>> So far this has been working, but the correct way to determine which PWM
->>>>>>>> controller needs to be used is by checking a bit in the VBT table and
->>>>>>>> recently I've learned about 2 different BYT devices:
->>>>>>>> Point of View MOBII TAB-P800W
->>>>>>>> Acer Switch 10 SW5-012
->>>>>>>>
->>>>>>>> Which use a Crystal Cove PMIC, yet the LCD is connected to the SoC/LPSS
->>>>>>>> PWM controller (and the VBT correctly indicates this), so here our old
->>>>>>>> heuristics fail.
->>>>>>>>
->>>>>>>> Since only the i915 driver has access to the VBT, this commit renames
->>>>>>>> the "pwm_backlight" lookup entries for the Crystal Cove PMIC's PWM
->>>>>>>> controller to "pwm_pmic_backlight" so that the i915 driver can do a
->>>>>>>> pwm_get() for the right controller depending on the VBT bit, instead of
->>>>>>>> the i915 driver relying on a "pwm_backlight" lookup getting registered
->>>>>>>> which magically points to the right controller.
->>>>>>>>
->>>>>>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>>>>>>> ---
->>>>>>>>      drivers/mfd/intel_soc_pmic_core.c | 2 +-
->>>>>>>>      1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>>>
->>>>>>> For my own reference:
->>>>>>>       Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
->>>>>>
->>>>>> As mentioned in the cover-letter, to avoid breaking bi-sectability
->>>>>> as well as to avoid breaking the intel-gfx CI we need to merge this series
->>>>>> in one go through one tree. Specifically through the drm-intel tree.
->>>>>> Is that ok with you ?
->>>>>>
->>>>>> If this is ok with you, then you do not have to do anything, I will just push
->>>>>> the entire series to drm-intel. drivers/mfd/intel_soc_pmic_core.c
->>>>>> does not see much changes so I do not expect this to lead to any conflicts.
->>>>>
->>>>> It's fine, so long as a minimal immutable pull-request is provided.
->>>>> Whether it's pulled or not will depend on a number of factors, but it
->>>>> needs to be an option.
->>>>
->>>> The way the drm subsys works that is not really a readily available
->>>> option. The struct definition which this patch changes a single line in
->>>> has not been touched since 2015-06-26 so I really doubt we will get a
->>>> conflict from this.
->>>
->>> Always with the exceptions ...
->>>
->>> OOI, why does this *have* to go through the DRM tree?
->>
->> This patch renames the name used to lookup the pwm controller from
->> "pwm_backlight" to "pwm_pmic_backlight" because there are 2 possible
->> pwm controllers which may be used, one in the SoC itself and one
->> in the PMIC. Which controller should be used is described in a table
->> in the Video BIOS, so another part of this series adds this code to
->> the i915 driver:
->>
->> -	panel->backlight.pwm = pwm_get(dev->dev, "pwm_backlight");
->> +	/* Get the right PWM chip for DSI backlight according to VBT */
->> +	if (dev_priv->vbt.dsi.config->pwm_blc == PPS_BLC_PMIC) {
->> +		panel->backlight.pwm = pwm_get(dev->dev, "pwm_pmic_backlight");
->> +		desc = "PMIC";
->> +	} else {
->> +		panel->backlight.pwm = pwm_get(dev->dev, "pwm_soc_backlight");
->> +		desc = "SoC";
->> +	}
->>
->> So both not to break bisectability, but also so as to not break the extensive
->> CI system which is used to test the i915 driver we need the MFD change doing
->> the rename to go upstrream through the same tree as the i915 change.
->>
->> I have even considered just squashing the 2 commits together as having only 1
->> present, but not the other breaks stuff left and right.
+> It wouldn't be a surprise if the host controller handled UR completions
+> differently depending on if they were in response to a Type 0 configuration
+> request or a Type 1 configuration request. (I think I've seen this before).
+
+Yeah, that rings a bell here as well, I remember something with the RK3399 PCIe RC.
+ 
+> Have you verified that you still get a bus abort when you attempt to
+> perform a config read of a non-existent device downstream of the PCIe switch?
+> (and thus as a response to a Type 1 request).
+
+I think I have checked this (please confirm if my experiment is valid): I get SErrors for both probing non-existent devices on bus 0 and other busses.
+
+> I ask because if this is the case, and knowing that the PCIe switch is
+> fixed, then it would be possible to simplify this quirk (by just making
+> assumptions of the presence of devices in bus 0 rather than all the busses).
+
+Yeah, thanks for trying, but no luck here ;-)
+
+> > To mitigate this, the firmware scans the bus before boot (catching the
+> > SErrors) and creates a table with valid BDFs, which acts as a filter for
+> > Linux' config space accesses.
+> > 
+> > Add code consulting the table as an ACPI PCIe quirk, also register the
+> > corresponding device tree based description of the host controller.
+> > Also fix the other two minor issues on the way, namely not being fully
+> > ECAM compliant and config space accesses being restricted to 32-bit
+> > accesses only.
+> > 
+> > This allows the Arm Neoverse N1SDP board to boot Linux without crashing
+> > and to access *any* devices (there are no platform devices except UART).  
 > 
-> That doesn't answer the question.
+> This implies that this quirk has no side-effects and everything will work
+> as expected - but this is only true for the simple case. For example hot
+> plug won't work, SR-IOV, and others won't work.
+
+Yeah, good point, I should have mentioned this. This is really a best effort hack^Wworkaround to make the system work as best as possible.
+Yes, SR-IOV won't work. We are about to evaluate our options here, but for now it's just not supported on this system.
+
+I don't think hot plug is of a particular concern here, since the hardware doesn't support physical hot plug. I am not sure if a Thunderbolt add-in card would trigger this problem, but in the worst case it just wouldn't work.
+
+> Also what happens for devices that return CRS? - does this also result in an
+> abort?
+
+I haven't tried, and it looks like it's hard to trigger? But chances are indeed that it could generate SErrors.
+
+> Does that mean that the firmware will consider these devices as not
+> present instead of not ready yet? If this is an issue, then FLR of devices
+> will also create issues (resulting in SErrors for users).
 > 
-> Why do they all *have* to go in via the DRM tree specifically?
+> I think it would be helpful to update this commit message to indicate that
+> this makes it work better, but it may be broken in certain ways.
 
-1. As explained these chanegs need to stay together
-2. This change is primarily a drm/i915 change. Also the i915 code sees lots
-of changes every cycle, where as the change to the mfd code touches a block
-of code which has not been touched since 2015-06-26, so the chance of conflicts
-is much bigger if this goes on through another tree.
+Good point. This is really a pragmatic patch to make the system usable at all.
 
-I honestly do not see the problem here? Let me reverse the question why should this
-NOT go in through the drm tree?
+> > Signed-off-by: Deepak Pandey <Deepak.Pandey@arm.com>
+> > [Sudipto: extend to cover the CCIX root port as well]
+> > Signed-off-by: Sudipto Paul <sudipto.paul@arm.com>
+> > [Andre: fix coding style issues, rewrite some parts, add DT support]
+> > Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+> > ---
+> >  arch/arm64/configs/defconfig        |   1 +
+> >  drivers/acpi/pci_mcfg.c             |   7 +
+> >  drivers/pci/controller/Kconfig      |  11 ++
+> >  drivers/pci/controller/Makefile     |   1 +
+> >  drivers/pci/controller/pcie-n1sdp.c | 196 ++++++++++++++++++++++++++++
+> >  include/linux/pci-ecam.h            |   2 +
+> >  6 files changed, 218 insertions(+)
+> >  create mode 100644 drivers/pci/controller/pcie-n1sdp.c
+> > 
+> > diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+> > index 6a83ba2aea3e..58124ef5070b 100644
+> > --- a/arch/arm64/configs/defconfig
+> > +++ b/arch/arm64/configs/defconfig
+> > @@ -177,6 +177,7 @@ CONFIG_NET_9P=y
+> >  CONFIG_NET_9P_VIRTIO=y
+> >  CONFIG_PCI=y
+> >  CONFIG_PCIEPORTBUS=y
+> > +CONFIG_PCI_QUIRKS=y
+> >  CONFIG_PCI_IOV=y
+> >  CONFIG_HOTPLUG_PCI=y
+> >  CONFIG_HOTPLUG_PCI_ACPI=y
+> > diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
+> > index 6b347d9920cc..7a2b41b9ab57 100644
+> > --- a/drivers/acpi/pci_mcfg.c
+> > +++ b/drivers/acpi/pci_mcfg.c
+> > @@ -142,6 +142,13 @@ static struct mcfg_fixup mcfg_quirks[] = {
+> >  	XGENE_V2_ECAM_MCFG(4, 0),
+> >  	XGENE_V2_ECAM_MCFG(4, 1),
+> >  	XGENE_V2_ECAM_MCFG(4, 2),
+> > +
+> > +#define N1SDP_ECAM_MCFG(rev, seg, ops) \
+> > +	{"ARMLTD", "ARMN1SDP", rev, seg, MCFG_BUS_ANY, ops }
+> > +
+> > +	/* N1SDP SoC with v1 PCIe controller */
+> > +	N1SDP_ECAM_MCFG(0x20181101, 0, &pci_n1sdp_pcie_ecam_ops),
+> > +	N1SDP_ECAM_MCFG(0x20181101, 1, &pci_n1sdp_ccix_ecam_ops),
+> >  };
+> >  
+> >  static char mcfg_oem_id[ACPI_OEM_ID_SIZE];
+> > diff --git a/drivers/pci/controller/Kconfig b/drivers/pci/controller/Kconfig
+> > index c77069c8ee5d..45700d32f02e 100644
+> > --- a/drivers/pci/controller/Kconfig
+> > +++ b/drivers/pci/controller/Kconfig
+> > @@ -37,6 +37,17 @@ config PCI_FTPCI100
+> >  	depends on OF
+> >  	default ARCH_GEMINI
+> >  
+> > +config PCIE_HOST_N1SDP_ECAM
+> > +	bool "ARM N1SDP PCIe Controller"
+> > +	depends on ARM64
+> > +	depends on OF || (ACPI && PCI_QUIRKS)
+> > +	select PCI_HOST_COMMON
+> > +	default y if ARCH_VEXPRESS
+> > +	help
+> > +	  Say Y here if you want PCIe support for the Arm N1SDP platform.
+> > +	  The controller is ECAM compliant, but needs a quirk to workaround
+> > +	  an integration issue.  
+> 
+> Again - please indicate the scope of support provided.
+> 
+> > +
+> >  config PCI_TEGRA
+> >  	bool "NVIDIA Tegra PCIe controller"
+> >  	depends on ARCH_TEGRA || COMPILE_TEST
+> > diff --git a/drivers/pci/controller/Makefile b/drivers/pci/controller/Makefile
+> > index 3d4f597f15ce..5f47fefbd67d 100644
+> > --- a/drivers/pci/controller/Makefile
+> > +++ b/drivers/pci/controller/Makefile
+> > @@ -28,6 +28,7 @@ obj-$(CONFIG_PCIE_MEDIATEK) += pcie-mediatek.o
+> >  obj-$(CONFIG_PCIE_MOBIVEIL) += pcie-mobiveil.o
+> >  obj-$(CONFIG_PCIE_TANGO_SMP8759) += pcie-tango.o
+> >  obj-$(CONFIG_VMD) += vmd.o
+> > +obj-$(CONFIG_PCIE_HOST_N1SDP_ECAM) += pcie-n1sdp.o
+> >  # pcie-hisi.o quirks are needed even without CONFIG_PCIE_DW
+> >  obj-y				+= dwc/
+> >  
+> > diff --git a/drivers/pci/controller/pcie-n1sdp.c b/drivers/pci/controller/pcie-n1sdp.c
+> > new file mode 100644
+> > index 000000000000..620ab221466c
+> > --- /dev/null
+> > +++ b/drivers/pci/controller/pcie-n1sdp.c
+> > @@ -0,0 +1,196 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Copyright (C) 2018/2019 ARM Ltd.
+> > + *
+> > + * This quirk is to mask the following issues:
+> > + * - PCIE SLVERR: config space accesses to invalid PCIe BDFs cause a bus
+> > + *		  error (signalled as an asynchronous SError)
+> > + * - MCFG BDF mapping: the root complex is mapped separately from the device
+> > + *		       config space
+> > + * - Non 32-bit accesses to config space are not supported.
+> > + *
+> > + * At boot time the SCP board firmware creates a discovery table with
+> > + * the root complex' base address and the valid BDF values, discovered while
+> > + * scanning the config space and catching the SErrors.
+> > + * Linux responds only to the EPs listed in this table, returning NULL  
+> 
+> NIT: it will respond to the switch devices which aren't EPs.
+> 
+> 
+> > + * for the rest.
+> > + */
+> > +
+> > +#include <linux/kernel.h>
+> > +#include <linux/init.h>
+> > +#include <linux/ioport.h>
+> > +#include <linux/sizes.h>
+> > +#include <linux/of_pci.h>
+> > +#include <linux/of.h>
+> > +#include <linux/pci-ecam.h>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/module.h>
+> > +
+> > +/* Platform specific values as hardcoded in the firmware. */
+> > +#define AP_NS_SHARED_MEM_BASE	0x06000000
+> > +#define MAX_SEGMENTS		2		/* Two PCIe root complexes. */
+> > +#define BDF_TABLE_SIZE		SZ_16K
+> > +
+> > +/*
+> > + * Shared memory layout as written by the SCP upon boot time:
+> > + *  ----
+> > + *  Discover data header --> RC base address
+> > + *                       \-> BDF Count
+> > + *  Discover data        --> BDF 0...n
+> > + *  ----
+> > + */
+> > +struct pcie_discovery_data {
+> > +	u32 rc_base_addr;
+> > +	u32 nr_bdfs;
+> > +	u32 valid_bdfs[0];
+> > +} *pcie_discovery_data[MAX_SEGMENTS];
+> > +
+> > +void __iomem *rc_remapped_addr[MAX_SEGMENTS];
+> > +
+> > +/*
+> > + * map_bus() is called before we do a config space access for a certain
+> > + * device. We use this to check whether this device is valid, avoiding
+> > + * config space accesses which would result in an SError otherwise.
+> > + */
+> > +static void __iomem *pci_n1sdp_map_bus(struct pci_bus *bus, unsigned int devfn,
+> > +				       int where)
+> > +{
+> > +	struct pci_config_window *cfg = bus->sysdata;
+> > +	unsigned int devfn_shift = cfg->ops->bus_shift - 8;
+> > +	unsigned int busn = bus->number;
+> > +	unsigned int segment = bus->domain_nr;
+> > +	unsigned int bdf_addr;
+> > +	unsigned int table_count, i;
+> > +
+> > +	if (segment >= MAX_SEGMENTS ||
+> > +	    busn < cfg->busr.start || busn > cfg->busr.end)
+> > +		return NULL;
+> > +
+> > +	/* The PCIe root complex has a separate config space mapping. */
+> > +	if (busn == 0 && devfn == 0)
+> > +		return rc_remapped_addr[segment] + where;
+> > +
+> > +	busn -= cfg->busr.start;
+> > +	bdf_addr = (busn << cfg->ops->bus_shift) + (devfn << devfn_shift);
+> > +	table_count = pcie_discovery_data[segment]->nr_bdfs;
+> > +	for (i = 0; i < table_count; i++) {
+> > +		if (bdf_addr == pcie_discovery_data[segment]->valid_bdfs[i])
+> > +			return pci_ecam_map_bus(bus, devfn, where);
+> > +	}
+> > +
+> > +	return NULL;
+> > +}
+> > +
+> > +static int pci_n1sdp_init(struct pci_config_window *cfg, unsigned int segment)
+> > +{
+> > +	phys_addr_t table_base;
+> > +	struct device *dev = cfg->parent;
+> > +	struct pcie_discovery_data *shared_data;
+> > +	size_t bdfs_size;
+> > +
+> > +	if (segment >= MAX_SEGMENTS)
+> > +		return -ENODEV;
+> > +
+> > +	table_base = AP_NS_SHARED_MEM_BASE + segment * BDF_TABLE_SIZE;  
+> 
+> How can you be sure that this table is populated and isn't junk? I.e. using an older
+> SCP version?
 
-Regards,
+This is just (and always was) part of the firmware. If not, it won't work. Technically we tie this to the DT compatible or the ACPI signature.
 
-Hans
+> > +
+> > +	if (!request_mem_region(table_base, BDF_TABLE_SIZE,
+> > +				"PCIe valid BDFs")) {
+> > +		dev_err(dev, "PCIe BDF shared region request failed\n");
+> > +		return -ENOMEM;
+> > +	}
+> > +
+> > +	shared_data = devm_ioremap(dev,
+> > +				   table_base, BDF_TABLE_SIZE);
+> > +	if (!shared_data)
+> > +		return -ENOMEM;
+> > +
+> > +	/* Copy the valid BDFs structure to allocated normal memory. */
+> > +	bdfs_size = sizeof(struct pcie_discovery_data) +
+> > +		    sizeof(u32) * shared_data->nr_bdfs;
+> > +	pcie_discovery_data[segment] = devm_kmalloc(dev, bdfs_size, GFP_KERNEL);
+> > +	if (!pcie_discovery_data[segment])
+> > +		return -ENOMEM;
+> > +
+> > +	memcpy_fromio(pcie_discovery_data[segment], shared_data, bdfs_size);
+> > +
+> > +	rc_remapped_addr[segment] = devm_ioremap_nocache(dev,
+> > +						shared_data->rc_base_addr,
+> > +						PCI_CFG_SPACE_EXP_SIZE);
+> > +	if (!rc_remapped_addr[segment]) {
+> > +		dev_err(dev, "Cannot remap root port base\n");
+> > +		return -ENOMEM;
+> > +	}
+> > +
+> > +	devm_iounmap(dev, shared_data);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int pci_n1sdp_pcie_init(struct pci_config_window *cfg)
+> > +{
+> > +	return pci_n1sdp_init(cfg, 0);
+> > +}
+> > +
+> > +static int pci_n1sdp_ccix_init(struct pci_config_window *cfg)
+> > +{
+> > +	return pci_n1sdp_init(cfg, 1);
+> > +}
+> > +
+> > +struct pci_ecam_ops pci_n1sdp_pcie_ecam_ops = {
+> > +	.bus_shift	= 20,
+> > +	.init		= pci_n1sdp_pcie_init,
+> > +	.pci_ops	= {
+> > +		.map_bus        = pci_n1sdp_map_bus,
+> > +		.read           = pci_generic_config_read32,
+> > +		.write          = pci_generic_config_write32,
+> > +	}
+> > +};
+> > +
+> > +struct pci_ecam_ops pci_n1sdp_ccix_ecam_ops = {
+> > +	.bus_shift	= 20,
+> > +	.init		= pci_n1sdp_ccix_init,
+> > +	.pci_ops	= {
+> > +		.map_bus        = pci_n1sdp_map_bus,
+> > +		.read           = pci_generic_config_read32,
+> > +		.write          = pci_generic_config_write32,
+> > +	}
+> > +};
+> > +
+> > +static const struct of_device_id n1sdp_pcie_of_match[] = {
+> > +	{ .compatible = "arm,n1sdp-pcie" },
+> > +	{ },
+> > +};
+> > +MODULE_DEVICE_TABLE(of, n1sdp_pcie_of_match);
+> > +
+> > +static int n1sdp_pcie_probe(struct platform_device *pdev)
+> > +{
+> > +	const struct device_node *of_node = pdev->dev.of_node;
+> > +	u32 segment;
+> > +
+> > +	if (of_property_read_u32(of_node, "linux,pci-domain", &segment)) {
+> > +		dev_err(&pdev->dev, "N1SDP PCI controllers require linux,pci-domain property\n");
+> > +		return -EINVAL;
+> > +	}  
+> 
+> Can you use of_get_pci_domain_nr here?
+
+Ah, indeed. There seems to be an of_... function for everything ;-)
+
+Cheers,
+Andre.
+
+> > +
+> > +	switch (segment) {
+> > +	case 0:
+> > +		return pci_host_common_probe(pdev, &pci_n1sdp_pcie_ecam_ops);
+> > +	case 1:
+> > +		return pci_host_common_probe(pdev, &pci_n1sdp_ccix_ecam_ops);
+> > +	}
+> > +
+> > +	dev_err(&pdev->dev, "Invalid segment number, must be smaller than %d\n",
+> > +		MAX_SEGMENTS);
+> > +
+> > +	return -EINVAL;
+> > +}
+> > +
+> > +static struct platform_driver n1sdp_pcie_driver = {
+> > +	.driver = {
+> > +		.name = KBUILD_MODNAME,
+> > +		.of_match_table = n1sdp_pcie_of_match,
+> > +		.suppress_bind_attrs = true,
+> > +	},
+> > +	.probe = n1sdp_pcie_probe,
+> > +};
+> > +builtin_platform_driver(n1sdp_pcie_driver);
+> > diff --git a/include/linux/pci-ecam.h b/include/linux/pci-ecam.h
+> > index a73164c85e78..03cdea69f4e8 100644
+> > --- a/include/linux/pci-ecam.h
+> > +++ b/include/linux/pci-ecam.h
+> > @@ -57,6 +57,8 @@ extern struct pci_ecam_ops pci_thunder_ecam_ops; /* Cavium ThunderX 1.x */
+> >  extern struct pci_ecam_ops xgene_v1_pcie_ecam_ops; /* APM X-Gene PCIe v1 */
+> >  extern struct pci_ecam_ops xgene_v2_pcie_ecam_ops; /* APM X-Gene PCIe v2.x */
+> >  extern struct pci_ecam_ops al_pcie_ops; /* Amazon Annapurna Labs PCIe */
+> > +extern struct pci_ecam_ops pci_n1sdp_pcie_ecam_ops; /* Arm N1SDP PCIe */
+> > +extern struct pci_ecam_ops pci_n1sdp_ccix_ecam_ops; /* Arm N1SDP PCIe */
+> >  #endif
+> >  
+> >  #ifdef CONFIG_PCI_HOST_COMMON
+> > -- 
+> > 2.17.1
+> >   
 
