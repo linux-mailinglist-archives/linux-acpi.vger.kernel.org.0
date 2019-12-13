@@ -2,285 +2,149 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2755111E5E0
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2019 15:53:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D1C211E64A
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2019 16:16:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727802AbfLMOx2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Dec 2019 09:53:28 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:45464 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727690AbfLMOx2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Dec 2019 09:53:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
-        From:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=O1lTvrez9BfqDz6dWwHlTUzsfr1CMMJPuBwlVLCUrpY=; b=XsQHpqQxQW2ILsutxdZLcnLSd
-        4cwnd5sfVKneDo57XKkndHcoVvjgr5bXbE6DcQJwPDJa6SFQLWWLNquwix487jz+PLq8k9oVoQcdG
-        Y07wnkcg2NoplPDDHTqN6wV4qXFphxKY2a/DcHXZePae515KrKNoMn71LhO0igmDvltjHV5DjfWYa
-        lZc2RuHKhjzmrC4aokHRVTCLBsIprju5IkT4JG8yXn1dWlfHxx4zuIQKaF04zB2ChAdltZ0HfHDc/
-        31xtUTGufuHePLzdEUNxYVCFhmgWLWWVhlIthQ2IAu2Js4Kj/ZnirY72kYIyjb+RQl1IjWRLNsBfm
-        cC8nZmQKQ==;
-Received: from tmo-101-54.customers.d1-online.com ([80.187.101.54] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1ifmJr-00008e-JE; Fri, 13 Dec 2019 14:53:28 +0000
-Date:   Fri, 13 Dec 2019 15:53:22 +0100
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>, Borislav Petkov <bp@alien8.de>,
-        <james.morse@arm.com>, <rjw@rjwysocki.net>, <tony.luck@intel.com>,
-        <linuxarm@huawei.com>, <ard.biesheuvel@linaro.org>,
-        <nariman.poushin@linaro.org>,
-        Thanu Rangarajan <Thanu.Rangarajan@arm.com>
-Subject: Re: [PATCH v5 6/6] efi / ras: CCIX Agent internal error reporting
-Message-ID: <20191213155322.2f169ed0@kernel.org>
-In-Reply-To: <20191114133919.32290-7-Jonathan.Cameron@huawei.com>
-References: <20191114133919.32290-1-Jonathan.Cameron@huawei.com>
-        <20191114133919.32290-7-Jonathan.Cameron@huawei.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        id S1727742AbfLMPP1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Dec 2019 10:15:27 -0500
+Received: from mx2.freebsd.org ([96.47.72.81]:41266 "EHLO mx2.freebsd.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727674AbfLMPP1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 13 Dec 2019 10:15:27 -0500
+X-Greylist: delayed 602 seconds by postgrey-1.27 at vger.kernel.org; Fri, 13 Dec 2019 10:15:26 EST
+Received: from mx1.freebsd.org (mx1.freebsd.org [96.47.72.80])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (Client CN "mx1.freebsd.org", Issuer "Let's Encrypt Authority X3" (verified OK))
+        by mx2.freebsd.org (Postfix) with ESMTPS id 9B4458ADA1;
+        Fri, 13 Dec 2019 15:05:23 +0000 (UTC)
+        (envelope-from jkim@FreeBSD.org)
+Received: from smtp.freebsd.org (smtp.freebsd.org [96.47.72.83])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         server-signature RSA-PSS (4096 bits)
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "smtp.freebsd.org", Issuer "Let's Encrypt Authority X3" (verified OK))
+        by mx1.freebsd.org (Postfix) with ESMTPS id 47ZDVq2sSMz47Ds;
+        Fri, 13 Dec 2019 15:05:23 +0000 (UTC)
+        (envelope-from jkim@FreeBSD.org)
+Received: from freefall.freebsd.org (static-71-168-218-4.cmdnnj.fios.verizon.net [71.168.218.4])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: jkim/mail)
+        by smtp.freebsd.org (Postfix) with ESMTPSA id 8C0BD2F43C;
+        Fri, 13 Dec 2019 15:05:22 +0000 (UTC)
+        (envelope-from jkim@FreeBSD.org)
+Subject: Re: [Devel] Re: [PATCH] ACPICA: Fix compilation with bare-metal
+ toolchian
+To:     "Moore, Robert" <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Kaneda, Erik" <erik.kaneda@intel.com>
+Cc:     "Laster K." <officiallazerl0rd@gmail.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>
+References: <CAMhj-NcA8J8rD1PC6mH+HAjBdv2H532UB5aB5-0Y6VWtUh=8-g@mail.gmail.com>
+ <2847939.QcJ3fIVZhg@kreacher>
+ <94F2FBAB4432B54E8AACC7DFDE6C92E3B96BFE2C@ORSMSX110.amr.corp.intel.com>
+From:   Jung-uk Kim <jkim@FreeBSD.org>
+Autocrypt: addr=jkim@FreeBSD.org; prefer-encrypt=mutual; keydata=
+ mQENBFJBztUBCAChqNyGqmFuNo0U7MBzsD+q/G6Cv0l7LGVrOAsgh34M8wIWhD+tztDWMVfn
+ AhxNDd0ceCj2bYOe67sTQxAScEcbt2FfvPOLp9MEXb9qohZj172Gwkk7dnhOhZZKhVGVZKM4
+ NcsuBDUzgf4f3Vdzj4wg6WlqplnTZo8lPE4hZWvZHoFIyunPTJWenybeV1xnxK7JkUdSvQR0
+ fA59RfTTECMwTrSEfYGUnxIDBraxJ7Ecs/0hGQ7sljIj8WBvlRDU5fU1xfF35aw56T8POQRq
+ F4E6RVJW3YGuTpSwgtGZOTfygcLRhAiq3dFC3JNLaTVTpM8PjOinJyt9AU6RoITGOKwDABEB
+ AAG0Hkp1bmctdWsgS2ltIDxqa2ltQEZyZWVCU0Qub3JnPokBPQQTAQoAJwUCUkHO1QIbAwUJ
+ E0/POwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgAAKCRB8n5Ym/NvxRqyzB/wL7QtsIpeGfGIA
+ ZPMtgXMucM3NWzomyQMln2j2efUkDKthzh9jBxgF53TjOr7imwIt0PT2k1bqctPrq5IRqnu9
+ mGroqaCLE3LG2/E3jEaao4k9PO6efwlioyivUo5NrqIQOQ4k3EAXw7d2y0Dk1VpTgdMrnUAB
+ hj7lGlLqS4ydcrf24DdbCRGdEQwqd9DBeBgbWynxAJMgbZBhYVEyIHuQKkJ8qY0ibIPXXuF0
+ KYDeH0qUHtWV2K3srNyPtymUkBQD84Pl1GWRYx05XdUHDmnX0JV3lg0BfYJZgZv0ehPQrMfY
+ Fd9abTkf9FHQYz1JtsC8wUuRgqElRd6+YAGf8Tt9uQENBFJBztUBCADLtSrP44El2VoJmH14
+ OFrlOgxzZnbn+Y/Gf1k12mJBiR+A+pBeRLD50p7AiTrjHRxO3cHcl9Dh0uf1VSbXgp8Or0ye
+ iP/86fZPd4k5HXNmDTLL0HecPE08SCqGZ0W8vllQrokB1QxxRUB+fFMPJyMCjDAZ7P9fFTOS
+ dTw1bJSTtOD8Sx8MpZUa9ti06bXFlVYDlaqSdgk181SSx+ZbSKkQR8CIMARlHwiLsa3Z9q9O
+ EJr20HPyxe0AlTvwvFndH61hg7ds63eRvglwRnNON28VXO/lvKXq7Br/CiiyhFdKfINIx2Z5
+ htYq22tgGTW7mBURbIKoECFBTX9Lv6BXz6w9ABEBAAGJASUEGAEKAA8FAlJBztUCGwwFCRNP
+ zzsACgkQfJ+WJvzb8UZcJQf+IsTCxUEqY7W/pT84sMg5/QD3s6ufTRncvq14fEOxCNq1Rf4Q
+ 9P+tOFa8GZfKDGB2BFGIrW7uT5mlmKdK1vO6ZIA930y5kUsnCmBUEBJkE2ciSQk01aB/1o62
+ Q3Gk/F6BwtNY9OXiqF7AcAo+K/BMIaqb26QKeh+IIgK1NN9dQiq3ByTbl4zpGZa6MmsnnRTu
+ mzGKt2nkz7vBzH6+hZp1OzGZikgjjhYWVFoJo1dvf/rv4obs0ZJEqFPQs/1Qa1dbkKBv6odB
+ XJpPH0ssOluTY24d1XxTiKTwmWvHeQkOKRAIfD7VTtF4TesoZYkf7hsh3e3VwXhptSLFnEOi
+ WwYofg==
+Message-ID: <8ee4ecbe-f451-112e-677a-87a4d73ccdfc@FreeBSD.org>
+Date:   Fri, 13 Dec 2019 10:05:21 -0500
+User-Agent: Mozilla/5.0 (X11; FreeBSD amd64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <94F2FBAB4432B54E8AACC7DFDE6C92E3B96BFE2C@ORSMSX110.amr.corp.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Em Thu, 14 Nov 2019 21:39:19 +0800
-Jonathan Cameron <Jonathan.Cameron@huawei.com> escreveu:
+On 19. 12. 12., Moore, Robert wrote:
+>> -----Original Message-----
+>> From: Rafael J. Wysocki [mailto:rjw@rjwysocki.net]
+>> Sent: Friday, July 5, 2019 2:44 AM
+>> To: Moore, Robert <robert.moore@intel.com>; Schmauss, Erik
+>> <erik.schmauss@intel.com>
+>> Cc: Laster K. <officiallazerl0rd@gmail.com>; Wysocki, Rafael J
+>> <rafael.j.wysocki@intel.com>; lenb@kernel.org; linux-
+>> acpi@vger.kernel.org; devel@acpica.org
+>> Subject: Re: [PATCH] ACPICA: Fix compilation with bare-metal toolchian
+>>
+>> On Saturday, June 22, 2019 11:03:54 PM CEST Laster K. wrote:
+>>> An ifdef expects to be compiled with full-fledged Linux toolchain, but
+>>> it's common to compile kernel with just bare-metal toolchain which
+>>> doesn't define __linux__. So, also add __KERNEL__ check.
+>>>
+> [Moore, Robert] 
+> This sounds OK, as long as no other supported hosts define __KERNEL__.
 
-> The CCIX 1.0 Base specification defines an internal agent error,
-> for which the specific data present afte the header is vendor
-> defined.
-> 
+FreeBSD defines _KERNEL for kernel source.
 
-Patches 3 to 6 just repeats the same things I mentioned already on
-patch 1.
+JK
 
-Except for that, the series look ready for merging on my PoV.
-
-Regards,
-Mauro
-
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
-> Changes since v4
-> * none
-> 
->  drivers/acpi/apei/ghes.c         |  4 ++
->  drivers/firmware/efi/cper-ccix.c | 43 +++++++++++++++++++++
->  include/linux/cper.h             | 29 +++++++++++++++
->  include/ras/ras_event.h          | 64 ++++++++++++++++++++++++++++++++
->  4 files changed, 140 insertions(+)
-> 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 22df8c14ec13..5a75fb0374dd 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -533,6 +533,10 @@ static void ghes_handle_ccix_per(struct acpi_hest_generic_data *gdata, int sev)
->  		trace_ccix_link_error_event(payload, err_seq, sev,
->  					    ccix_link_err_ven_len_get(payload));
->  		break;
-> +	case CCIX_AGENT_INTERNAL_ERROR:
-> +		trace_ccix_agent_error_event(payload, err_seq, sev,
-> +					     ccix_agent_err_ven_len_get(payload));
-> +		break;
->  	default:
->  		/* Unknown error type */
->  		pr_info("CCIX error of unknown or vendor defined type\n");
-> diff --git a/drivers/firmware/efi/cper-ccix.c b/drivers/firmware/efi/cper-ccix.c
-> index ea17fb9140f9..d95fddf17bd3 100644
-> --- a/drivers/firmware/efi/cper-ccix.c
-> +++ b/drivers/firmware/efi/cper-ccix.c
-> @@ -587,6 +587,38 @@ static int cper_ccix_link_err_details(const char *pfx,
->  	return 0;
->  }
->  
-> +static int cper_ccix_agent_err_details(const char *pfx,
-> +				       struct acpi_hest_generic_data *gdata)
-> +{
-> +	struct cper_ccix_agent_err *full_agent_err;
-> +	struct cper_sec_ccix_agent_err *agent_err;
-> +	u16 vendor_data_len;
-> +	int i;
-> +
-> +	if (gdata->error_data_length < sizeof(*full_agent_err))
-> +		return -ENOSPC;
-> +
-> +	full_agent_err = acpi_hest_get_payload(gdata);
-> +
-> +	agent_err = &full_agent_err->agent_record;
-> +
-> +	if (agent_err->validation_bits & CCIX_AGENT_INTERNAL_ERR_VENDOR_DATA_VALID) {
-> +		if (gdata->error_data_length < sizeof(*full_agent_err) + 4)
-> +			return -ENOSPC;
-> +
-> +		vendor_data_len = agent_err->vendor_data[0] & GENMASK(15, 0);
-> +		if (gdata->error_data_length <
-> +		    sizeof(*full_agent_err) + vendor_data_len)
-> +			return -ENOSPC;
-> +
-> +		for (i = 0; i < vendor_data_len/4 - 1; i++)
-> +			printk("%s""Vendor%d: 0x%08x\n", pfx, i,
-> +			       agent_err->vendor_data[i + 1]);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  int cper_print_ccix_per(const char *pfx, struct acpi_hest_generic_data *gdata)
->  {
->  	struct cper_sec_ccix_header *header = acpi_hest_get_payload(gdata);
-> @@ -656,6 +688,8 @@ int cper_print_ccix_per(const char *pfx, struct acpi_hest_generic_data *gdata)
->  		return cper_ccix_port_err_details(pfx, gdata);
->  	case CCIX_LINK_ERROR:
->  		return cper_ccix_link_err_details(pfx, gdata);
-> +	case CCIX_AGENT_INTERNAL_ERROR:
-> +		return cper_ccix_agent_err_details(pfx, gdata);
->  	default:
->  		/* Vendor defined so no formatting be done */
->  		break;
-> @@ -878,3 +912,12 @@ const char *cper_ccix_link_err_unpack(struct trace_seq *p,
->  
->  	return ret;
->  }
-> +
-> +void cper_ccix_agent_err_pack(const struct cper_sec_ccix_agent_err *agent_record,
-> +			      struct cper_ccix_agent_err_compact *cagent_err,
-> +			      const u16 vendor_data_len,
-> +			      u8 *vendor_data)
-> +{
-> +	cagent_err->validation_bits = agent_record->validation_bits;
-> +	memcpy(vendor_data, &agent_record->vendor_data[1], vendor_data_len);
-> +}
-> diff --git a/include/linux/cper.h b/include/linux/cper.h
-> index d35be55351e3..373c1d387a70 100644
-> --- a/include/linux/cper.h
-> +++ b/include/linux/cper.h
-> @@ -783,6 +783,30 @@ struct cper_ccix_link_err_compact {
->  	__u8	credit_type;
->  };
->  
-> +struct cper_sec_ccix_agent_err {
-> +	__u32	validation_bits;
-> +#define CCIX_AGENT_INTERNAL_ERR_VENDOR_DATA_VALID	BIT(0)
-> +	__u32	vendor_data[];
-> +};
-> +
-> +struct cper_ccix_agent_err {
-> +	struct cper_sec_ccix_header header;
-> +	__u32 ccix_header[CCIX_PER_LOG_HEADER_DWS];
-> +	struct cper_sec_ccix_agent_err agent_record;
-> +};
-> +
-> +static inline u16 ccix_agent_err_ven_len_get(struct cper_ccix_agent_err *agent_err)
-> +{
-> +	if (agent_err->agent_record.validation_bits & CCIX_AGENT_INTERNAL_ERR_VENDOR_DATA_VALID)
-> +		return agent_err->agent_record.vendor_data[0] & 0xFFFF;
-> +	else
-> +		return 0;
-> +}
-> +
-> +struct cper_ccix_agent_err_compact {
-> +	__u32	validation_bits;
-> +};
-> +
->  /* Reset to default packing */
->  #pragma pack()
->  
-> @@ -835,6 +859,11 @@ void cper_ccix_link_err_pack(const struct cper_sec_ccix_link_error *link_record,
->  const char *cper_ccix_link_err_unpack(struct trace_seq *p,
->  				      struct cper_ccix_link_err_compact *clink_err);
->  
-> +void cper_ccix_agent_err_pack(const struct cper_sec_ccix_agent_err *agent_record,
-> +			      struct cper_ccix_agent_err_compact *cagent_err,
-> +			      const u16 vendor_data_len,
-> +			      u8 *vendor_data);
-> +
->  struct acpi_hest_generic_data;
->  int cper_print_ccix_per(const char *pfx,
->  			struct acpi_hest_generic_data *gdata);
-> diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
-> index 7cecfadb0b15..59b62d5cd8cf 100644
-> --- a/include/ras/ras_event.h
-> +++ b/include/ras/ras_event.h
-> @@ -679,6 +679,70 @@ TRACE_EVENT(ccix_link_error_event,
->  		__print_hex(__get_dynamic_array(vendor_data), __entry->vendor_data_length)
->  	)
->  );
-> +
-> +TRACE_EVENT(ccix_agent_error_event,
-> +	TP_PROTO(struct cper_ccix_agent_err *err,
-> +		 u32 err_seq,
-> +		 u8 sev, u16 ven_len),
-> +
-> +	TP_ARGS(err, err_seq, sev, ven_len),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(u32, err_seq)
-> +		__field(u8, sev)
-> +		__field(u8, sevdetail)
-> +		__field(u8, source)
-> +		__field(u8, component)
-> +		__field(u64, pa)
-> +		__field(u8, pa_mask_lsb)
-> +		__field(u16, vendor_data_length)
-> +		__field_struct(struct cper_ccix_agent_err_compact, data)
-> +		__dynamic_array(u8, vendor_data, ven_len)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->err_seq = err_seq;
-> +
-> +		__entry->sev = sev;
-> +		__entry->sevdetail = FIELD_GET(CCIX_PER_LOG_DW1_SEV_UE_M |
-> +			CCIX_PER_LOG_DW1_SEV_NO_COMM_M |
-> +			CCIX_PER_LOG_DW1_SEV_DEGRADED_M |
-> +			CCIX_PER_LOG_DW1_SEV_DEFFERABLE_M,
-> +			err->ccix_header[1]);
-> +		if (err->header.validation_bits & 0x1)
-> +			__entry->source = err->header.source_id;
-> +		else
-> +			__entry->source = ~0;
-> +		__entry->component = FIELD_GET(CCIX_PER_LOG_DW1_COMP_TYPE_M,
-> +						   err->ccix_header[1]);
-> +		if (err->ccix_header[1] & CCIX_PER_LOG_DW1_ADDR_VAL_M) {
-> +			__entry->pa = (u64)err->ccix_header[2] << 32 |
-> +				(err->ccix_header[3] & 0xfffffffc);
-> +			__entry->pa_mask_lsb = err->ccix_header[4] & 0xff;
-> +		} else {
-> +			__entry->pa = ~0ull;
-> +			__entry->pa_mask_lsb = ~0;
-> +		}
-> +		/* Do not store the vendor data header length */
-> +		__entry->vendor_data_length = ven_len ? ven_len - 4 : 0;
-> +		cper_ccix_agent_err_pack(&err->agent_record, &__entry->data,
-> +					__entry->vendor_data_length,
-> +					__get_dynamic_array(vendor_data));
-> +	),
-> +
-> +	TP_printk("{%d} %s CCIX PER Agent Internal Error in %s SevUE:%d SevNoComm:%d SevDegraded:%d SevDeferred:%d physical addr: %016llx (mask: %x) vendor:%s",
-> +		__entry->err_seq,
-> +		cper_severity_str(__entry->sev),
-> +		cper_ccix_comp_type_str(__entry->component),
-> +		__entry->sevdetail & BIT(0) ? 1 : 0,
-> +		__entry->sevdetail & BIT(1) ? 1 : 0,
-> +		__entry->sevdetail & BIT(2) ? 1 : 0,
-> +		__entry->sevdetail & BIT(3) ? 1 : 0,
-> +		__entry->pa,
-> +		__entry->pa_mask_lsb,
-> +		__print_hex(__get_dynamic_array(vendor_data), __entry->vendor_data_length)
-> +	)
-> +);
->  #endif
->  
->  /*
-
-
-
-
-Cheers,
-Mauro
+>>> Signed-off-by: Laster K. (lazerl0rd) <officiallazerl0rd@gmail.com>
+>>> ---
+>>> Apologies for the multiple/spammed e-mails, I was having mail client
+>> issues.
+>>>
+>>>  include/acpi/platform/acenv.h   | 2 +-
+>>>  include/acpi/platform/acenvex.h | 2 +-
+>>>  2 files changed, 2 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/include/acpi/platform/acenv.h
+>>> b/include/acpi/platform/acenv.h index 35ab3f87cc29..b69319198cb8
+>>> 100644
+>>> --- a/include/acpi/platform/acenv.h
+>>> +++ b/include/acpi/platform/acenv.h
+>>> @@ -148,7 +148,7 @@
+>>>
+>>>  #endif
+>>>
+>>> -#if defined(_LINUX) || defined(__linux__)
+>>> +#if defined(_LINUX) || defined(__KERNEL__) || defined(__linux__)
+>>>  #include <acpi/platform/aclinux.h>
+>>>
+>>>  #elif defined(_APPLE) || defined(__APPLE__) diff --git
+>>> a/include/acpi/platform/acenvex.h b/include/acpi/platform/acenvex.h
+>>> index 2e36c8344897..c7697a47e33f 100644
+>>> --- a/include/acpi/platform/acenvex.h
+>>> +++ b/include/acpi/platform/acenvex.h
+>>> @@ -19,7 +19,7 @@
+>>>   *
+>>>
+>>> **********************************************************************
+>>> *******/
+>>>
+>>> -#if defined(_LINUX) || defined(__linux__)
+>>> +#if defined(_LINUX) || defined(__KERNEL__) || defined(__linux__)
+>>>  #include <acpi/platform/aclinuxex.h>
+>>>
+>>>  #elif defined(__DragonFly__)
+>>>
+>>
+>> Erik, Bob, any input here?
