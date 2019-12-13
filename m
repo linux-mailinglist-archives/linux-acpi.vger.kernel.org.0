@@ -2,166 +2,194 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27FF611DE4B
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2019 07:47:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4ED811DF69
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2019 09:27:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725810AbfLMGrP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Dec 2019 01:47:15 -0500
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:56052 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725468AbfLMGrP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Dec 2019 01:47:15 -0500
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20191213064714euoutp0220187a7c4cb24d356ed28133d0441774~f22f3NzYW2466624666euoutp02n
-        for <linux-acpi@vger.kernel.org>; Fri, 13 Dec 2019 06:47:14 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20191213064714euoutp0220187a7c4cb24d356ed28133d0441774~f22f3NzYW2466624666euoutp02n
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1576219634;
-        bh=t1I5hcEKwuXV2m0d6yumfwLKzTFjTTmDrgwb3WQm/xU=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=PnmqBC6uIL2aUaMtaRakD8l1Dvw0AEddm89VzezJFvtFN3hYgcnIYVCQZGxxzOAx1
-         ZiN3tHKZjUeLXXdOX2lWKpfLNwNervgw7/g9G+SeSgXVJWiRmtb5gR6/wfrHoGAkEM
-         DUOXs7PxMyhFxwXIRUnBcbnhg5tR/lRCKHJ8wNG8=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20191213064713eucas1p1e98ee455ccdf6de51019716d4e5439a4~f22fo-CLQ2911829118eucas1p1z;
-        Fri, 13 Dec 2019 06:47:13 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id F4.31.60679.1F333FD5; Fri, 13
-        Dec 2019 06:47:13 +0000 (GMT)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20191213064713eucas1p1508810401752280046aadd43d3058e8c~f22fFQ2A03242832428eucas1p1r;
-        Fri, 13 Dec 2019 06:47:13 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20191213064713eusmtrp2154ee5a2edf9cc3dda1c6be8b0c0cc60~f22fEiHaK1280712807eusmtrp2y;
-        Fri, 13 Dec 2019 06:47:13 +0000 (GMT)
-X-AuditID: cbfec7f4-0cbff7000001ed07-e9-5df333f18d7c
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 97.B1.08375.1F333FD5; Fri, 13
-        Dec 2019 06:47:13 +0000 (GMT)
-Received: from [106.120.51.15] (unknown [106.120.51.15]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20191213064712eusmtip2b7988ba4e33fa3f182d4683597bd8648~f22efyDfz2818728187eusmtip2A;
-        Fri, 13 Dec 2019 06:47:12 +0000 (GMT)
-Subject: Re: [PATCH v8 1/6] software node: rename is_array to is_inline
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Linux Samsung SOC <linux-samsung-soc@vger.kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Felipe Balbi <balbi@kernel.org>,
-        Linux USB Mailing List <linux-usb@vger.kernel.org>
-From:   Marek Szyprowski <m.szyprowski@samsung.com>
-Message-ID: <ef1eb8d9-92f3-a4e4-f8d2-a2e247737c97@samsung.com>
-Date:   Fri, 13 Dec 2019 07:47:12 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
-        Thunderbird/60.9.1
+        id S1725890AbfLMI1s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Dec 2019 03:27:48 -0500
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:52894 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725882AbfLMI1r (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Dec 2019 03:27:47 -0500
+Received: by mail-wm1-f65.google.com with SMTP id p9so5329777wmc.2
+        for <linux-acpi@vger.kernel.org>; Fri, 13 Dec 2019 00:27:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=JwuoHfqD4FyIs4KF1Ipmu8G5TBEwPS2a5x2rk/31xck=;
+        b=RZu/Wv0m4HqQgb7kZHHwyZiV72yCDHClDTjqRYig6G327C22KOVE23Gl4QlWIk4J9g
+         /mTwG/EcWHHf9sYXXpPtTpllj8NvhWZ9k5SsV4jgWzE2uqeHWssPggXoaT2gjyI8wre+
+         VqxL2RAU5YTssHRWil1Gz4l8a8O18PLMhlz0Fd0EfGvTrga/wRtXo8/VzsNwEzcaJc2o
+         kCgWLQL7844S7BROBTksqLxNyH5Y12iS0O9bHQi+v4QV3BqAKqGVjvm8V1yufjNHj3vI
+         SyFI8XHa40wO7C8ZTiULcUMVsX8duH9Oq530Z+8L5UrJXOxugLt6sFTO3yrlOsl2a4f/
+         pvOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=JwuoHfqD4FyIs4KF1Ipmu8G5TBEwPS2a5x2rk/31xck=;
+        b=tOGnDS28LVEgX6JMD+b+R0o05YWwFSoYV5s4z7vp1EKYZr798E750di9joVKTul8IC
+         ZWH3JuKlRAGkEqfQ5Q+vMs1EoDQzz9DM1BIQKpudRNAGU8XBa0mZWBdrkzhLvJxqPWhG
+         3nmtgixuHH4t9HaKUPz39P5HYQjZqLothif6ombhx8X0zh4tqdJCcEcaiFLM997zVhmd
+         gQ0Jz+mD/d/zFkzHI0M/P6XdRRmeZDl7CCocE5olE8sMU5pGst+BMkAdnz/ReU/yZWJo
+         y7eu4ZW+ehovY7xlOMpUXrLGRV+5MNO5kPTH53N+yoU0AbNlyx2PLaAuQH/YAMRBnAF6
+         pAZQ==
+X-Gm-Message-State: APjAAAVErDFKEUk1OteyQmNvReXsfzpwwNjDMyQgvYnks/FFOhwrbWj5
+        htqwio1N3WXnsKL1E2rt5oeofw==
+X-Google-Smtp-Source: APXvYqw9NFR6SJCU7qpurkLNw/ZkJfL008Kue/7hzmCvNYuR/i+XEHjDwK63wFSkZZdj2Cmg0QgOSw==
+X-Received: by 2002:a1c:7918:: with SMTP id l24mr12505169wme.125.1576225664505;
+        Fri, 13 Dec 2019 00:27:44 -0800 (PST)
+Received: from dell ([95.149.164.71])
+        by smtp.gmail.com with ESMTPSA id a133sm225770wme.29.2019.12.13.00.27.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Dec 2019 00:27:43 -0800 (PST)
+Date:   Fri, 13 Dec 2019 08:27:34 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
+        <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mfd: intel_soc_pmic: Rename pwm_backlight pwm-lookup
+ to pwm_pmic_backlight
+Message-ID: <20191213082734.GE3468@dell>
+References: <20191119151818.67531-1-hdegoede@redhat.com>
+ <20191119151818.67531-3-hdegoede@redhat.com>
+ <20191210085111.GQ3468@dell>
+ <a05e5a2b-568e-2b0d-0293-aa937c590a74@redhat.com>
+ <20191212084546.GA3468@dell>
+ <d22e9a04-da09-0f41-a78e-ac17a947650a@redhat.com>
+ <20191212155209.GC3468@dell>
+ <4d07445d-98b1-f23c-0aac-07709b45df78@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0i3dSOSa37yWLM+zDVnMKVTkOxbyKD4vo0KVwj_uFB26Q@mail.gmail.com>
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Brightmail-Tracker: H4sIAAAAAAAAA01SfUyMcRz3u+e5u6ebaz9X9JWKXWPyUsLm8bLGFm6Y1cYfXo6e9Liiu+yu
-        ImaS9eLStCS5yUvhWrfCzS5XDb3otCiJpryFQ6VD3clMSk9P0X+fz+f7+ez7/WxfipA1Cr2p
-        GE08q9UwsXKRhLTU/2pa2LfEqVxU1hlMZ6WcE9DD3ysRXZ9mF9O1hV2I1pusJN3cfFNM5w4a
-        BbTx7mlEt1ZcENH5zXcFdOH1VILOLa8T06aqLoIucJ0lVrsrrIbXYoW55KRI8aqtSqS42BCu
-        cJr9woTbJaui2NiYRFYbFBIhic60fhMeuI8PZVrck1GlVI/cKMBLoS47V6hHEkqGixHYH/YK
-        eOJC0FCaNUacCCr/mITjkZwvZ0h+YERwpfY8wRMHguOFbxHn8sDrweT6MJKgKE8cCT1GLech
-        cBsJ1vefxJxHhINB79CLOCzFIfC2oJbgMIlng2nwOeKyU7ESMozRvGUKNJy3k5zshsOhb2g5
-        JxN4JpQ7LhA89oIO+6XRowF3i6Hdlk/yR4eC2dkr4rEH9Nhui3nsA8PW8cAJBO+aSsU8OYWg
-        NSUf8a6VUGtrGS1D4AC4URHEy2ugPPUxwcmA3eGFYwp/hDvkWM6NyVLISJPx7jlgsJX9W1v9
-        5CmRjeSGCc0ME+oYJtQx/N97GZElyItN0KlVrG6xhj0YqGPUugSNKnBPnNqMRl6sccjmuoMq
-        BiNrEKaQfLJ0UlS/UiZkEnVJ6hoEFCH3lLLznUqZNIpJOsxq43ZrE2JZXQ2aQZFyL+mSwm6l
-        DKuYeHY/yx5gteNTAeXmnYwkz/p3LMvc1RruP41ed5Rl01VbEmmLh+VWq2OFpq3MQ7BWWtSR
-        HZqZHRL6+XdYZIVvYnuA54av11rypuuVIQ7/gSIy1292/9Z56dS+n9ePvGHezNq8ce8mVeRV
-        85XBBVC9s+DYwAP7I4XvXJL52HS/SB2+rTPLp/ie66V914+IvFQ5qYtmgucRWh3zF7eoMDBe
-        AwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrHIsWRmVeSWpSXmKPExsVy+t/xe7ofjT/HGrzdJ2TR2zSdyeL/h92M
-        FsfanrBbHF70gtGia/VOFovz5zewW0z5s5zJYvm+fkaLy7vmsFnMOL+PyWLRslZmiynbj7Bb
-        rN7zgtli7pepzA58Hjtn3WX32LSqk83jzrU9bB7zTgZ6fN4kF8AapWdTlF9akqqQkV9cYqsU
-        bWhhpGdoaaFnZGKpZ2hsHmtlZKqkb2eTkpqTWZZapG+XoJfRvfM9a8EBgYrubXwNjLt5uxg5
-        OSQETCQmvZ7M0sXIxSEksJRRYt/yJ8wQCRmJk9MaWCFsYYk/17rYIIpeM0q031zEBJIQFnCX
-        WP3lMViRiECSxLpF68GKmAVusEhMunkYrEhI4COTxJ0zYSA2m4ChRNdbkEmcHLwCdhL35x4G
-        28YioCqx+s9VRhBbVCBW4vvKT4wQNYISJ2c+ATqPg4NTIFDi4z9LkDCzgJnEvM0PmSFseYnt
-        b+dA2eISt57MZ5rAKDQLSfcsJC2zkLTMQtKygJFlFaNIamlxbnpusaFecWJucWleul5yfu4m
-        RmDcbjv2c/MOxksbgw8xCnAwKvHwMqR8ihViTSwrrsw9xCjBwawkwpuq/TlWiDclsbIqtSg/
-        vqg0J7X4EKMp0G8TmaVEk/OBKSWvJN7Q1NDcwtLQ3Njc2MxCSZy3Q+BgjJBAemJJanZqakFq
-        EUwfEwenVAOj3czuCyveSu8wlO23S/k3b4orf4LO2wdZziVr7dpWNXVkpEzappqxo9bZUufb
-        wgMbfy6f+DD1QK9o5+cJatNE30vzfdzj+8xnbY+ovs7yXpH8WypPC0O9cpa71hXIsBqEOKRt
-        c6pt2uiUK2ppweXeYHX8hd5HrnU15vYzLf9XpmbZ1PgsslZiKc5INNRiLipOBAAKvGg28QIA
-        AA==
-X-CMS-MailID: 20191213064713eucas1p1508810401752280046aadd43d3058e8c
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20191212111237eucas1p1a278d2d5d2437e3219896367e82604cc
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20191212111237eucas1p1a278d2d5d2437e3219896367e82604cc
-References: <20191108042225.45391-1-dmitry.torokhov@gmail.com>
-        <20191108042225.45391-2-dmitry.torokhov@gmail.com>
-        <CGME20191212111237eucas1p1a278d2d5d2437e3219896367e82604cc@eucas1p1.samsung.com>
-        <b3f6ca8b-dbdf-0cec-aa8f-47ffcc5c5307@samsung.com>
-        <20191212112825.GK32742@smile.fi.intel.com>
-        <CAJZ5v0i3dSOSa37yWLM+zDVnMKVTkOxbyKD4vo0KVwj_uFB26Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4d07445d-98b1-f23c-0aac-07709b45df78@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+On Thu, 12 Dec 2019, Hans de Goede wrote:
 
-On 12.12.2019 17:41, Rafael J. Wysocki wrote:
-> On Thu, Dec 12, 2019 at 12:28 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
->> On Thu, Dec 12, 2019 at 12:12:36PM +0100, Marek Szyprowski wrote:
->>> On 08.11.2019 05:22, Dmitry Torokhov wrote:
->>>> We do not need a special flag to know if we are dealing with an array,
->>>> as we can get that data from ratio between element length and the data
->>>> size, however we do need a flag to know whether the data is stored
->>>> directly inside property_entry or separately.
->>>>
->>>> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
->>> Today I've noticed that this patch got merged to linux-next as commit
->>> e6bff4665c595b5a4aff173848851ed49ac3bfad. Sadly it breaks DWC3/xHCI
->>> driver operation on Samsung Exynos5 SoCs (and probably on other SoCs
->>> which use DWC3 in host mode too). I get the following errors during boot:
->>>
->>> dwc3 12000000.dwc3: failed to add properties to xHCI
->>> dwc3 12000000.dwc3: failed to initialize host
->>> dwc3: probe of 12000000.dwc3 failed with error -61
->>>
->>> Here is a full kernel log from Exynos5250-based Snow Chromebook on KernelCI:
->>>
->>> https://storage.kernelci.org/next/master/next-20191212/arm/exynos_defconfig/gcc-8/lab-collabora/boot-exynos5250-snow.txt
->>>
->>> (lack of 'ref' clk is not related nor fatal to the driver operation).
->>>
->>> The code which fails after this patch is located in
->>> drivers/usb/dwc3/host.c. Let me know if I can help more in locating the bug.
->> Thank you for report.
->>
->> I think we should not have that patch in the fist place... I used to have
->> a bad feeling about it and then forgot about it existence.
-> Well, I think you mean the [2/6].
->
-> The $subject one really shouldn't change functionality, we must have
-> missed something here.
+> Hi,
+> 
+> On 12-12-2019 16:52, Lee Jones wrote:
+> > On Thu, 12 Dec 2019, Hans de Goede wrote:
+> > 
+> > > Hi,
+> > > 
+> > > On 12-12-2019 09:45, Lee Jones wrote:
+> > > > On Wed, 11 Dec 2019, Hans de Goede wrote:
+> > > > 
+> > > > > Hi Lee,
+> > > > > 
+> > > > > On 10-12-2019 09:51, Lee Jones wrote:
+> > > > > > On Tue, 19 Nov 2019, Hans de Goede wrote:
+> > > > > > 
+> > > > > > > At least Bay Trail (BYT) and Cherry Trail (CHT) devices can use 1 of 2
+> > > > > > > different PWM controllers for controlling the LCD's backlight brightness.
+> > > > > > > 
+> > > > > > > Either the one integrated into the PMIC or the one integrated into the
+> > > > > > > SoC (the 1st LPSS PWM controller).
+> > > > > > > 
+> > > > > > > So far in the LPSS code on BYT we have skipped registering the LPSS PWM
+> > > > > > > controller "pwm_backlight" lookup entry when a Crystal Cove PMIC is
+> > > > > > > present, assuming that in this case the PMIC PWM controller will be used.
+> > > > > > > 
+> > > > > > > On CHT we have been relying on only 1 of the 2 PWM controllers being
+> > > > > > > enabled in the DSDT at the same time; and always registered the lookup.
+> > > > > > > 
+> > > > > > > So far this has been working, but the correct way to determine which PWM
+> > > > > > > controller needs to be used is by checking a bit in the VBT table and
+> > > > > > > recently I've learned about 2 different BYT devices:
+> > > > > > > Point of View MOBII TAB-P800W
+> > > > > > > Acer Switch 10 SW5-012
+> > > > > > > 
+> > > > > > > Which use a Crystal Cove PMIC, yet the LCD is connected to the SoC/LPSS
+> > > > > > > PWM controller (and the VBT correctly indicates this), so here our old
+> > > > > > > heuristics fail.
+> > > > > > > 
+> > > > > > > Since only the i915 driver has access to the VBT, this commit renames
+> > > > > > > the "pwm_backlight" lookup entries for the Crystal Cove PMIC's PWM
+> > > > > > > controller to "pwm_pmic_backlight" so that the i915 driver can do a
+> > > > > > > pwm_get() for the right controller depending on the VBT bit, instead of
+> > > > > > > the i915 driver relying on a "pwm_backlight" lookup getting registered
+> > > > > > > which magically points to the right controller.
+> > > > > > > 
+> > > > > > > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> > > > > > > ---
+> > > > > > >     drivers/mfd/intel_soc_pmic_core.c | 2 +-
+> > > > > > >     1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > > > 
+> > > > > > For my own reference:
+> > > > > >      Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
+> > > > > 
+> > > > > As mentioned in the cover-letter, to avoid breaking bi-sectability
+> > > > > as well as to avoid breaking the intel-gfx CI we need to merge this series
+> > > > > in one go through one tree. Specifically through the drm-intel tree.
+> > > > > Is that ok with you ?
+> > > > > 
+> > > > > If this is ok with you, then you do not have to do anything, I will just push
+> > > > > the entire series to drm-intel. drivers/mfd/intel_soc_pmic_core.c
+> > > > > does not see much changes so I do not expect this to lead to any conflicts.
+> > > > 
+> > > > It's fine, so long as a minimal immutable pull-request is provided.
+> > > > Whether it's pulled or not will depend on a number of factors, but it
+> > > > needs to be an option.
+> > > 
+> > > The way the drm subsys works that is not really a readily available
+> > > option. The struct definition which this patch changes a single line in
+> > > has not been touched since 2015-06-26 so I really doubt we will get a
+> > > conflict from this.
+> > 
+> > Always with the exceptions ...
+> > 
+> > OOI, why does this *have* to go through the DRM tree?
+> 
+> This patch renames the name used to lookup the pwm controller from
+> "pwm_backlight" to "pwm_pmic_backlight" because there are 2 possible
+> pwm controllers which may be used, one in the SoC itself and one
+> in the PMIC. Which controller should be used is described in a table
+> in the Video BIOS, so another part of this series adds this code to
+> the i915 driver:
+> 
+> -	panel->backlight.pwm = pwm_get(dev->dev, "pwm_backlight");
+> +	/* Get the right PWM chip for DSI backlight according to VBT */
+> +	if (dev_priv->vbt.dsi.config->pwm_blc == PPS_BLC_PMIC) {
+> +		panel->backlight.pwm = pwm_get(dev->dev, "pwm_pmic_backlight");
+> +		desc = "PMIC";
+> +	} else {
+> +		panel->backlight.pwm = pwm_get(dev->dev, "pwm_soc_backlight");
+> +		desc = "SoC";
+> +	}
+> 
+> So both not to break bisectability, but also so as to not break the extensive
+> CI system which is used to test the i915 driver we need the MFD change doing
+> the rename to go upstrream through the same tree as the i915 change.
+> 
+> I have even considered just squashing the 2 commits together as having only 1
+> present, but not the other breaks stuff left and right.
 
-Nope, I was really talking about [1/6]. It looks that it revealed an 
-issue in the DWC3 driver pointed by Dmitry.
+That doesn't answer the question.
 
-> Anyway, I'll drop this branch from the linux-next one for now.
+Why do they all *have* to go in via the DRM tree specifically?
 
-Best regards
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
