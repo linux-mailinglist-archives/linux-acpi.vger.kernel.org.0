@@ -2,87 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B16F911FC9C
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2019 02:40:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC5F811FD58
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2019 04:53:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726373AbfLPBkx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 15 Dec 2019 20:40:53 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:8125 "EHLO huawei.com"
+        id S1726922AbfLPDt7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 15 Dec 2019 22:49:59 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:38258 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726299AbfLPBkx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 15 Dec 2019 20:40:53 -0500
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 371A684517E6E3C7AA24;
-        Mon, 16 Dec 2019 09:40:51 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 16 Dec 2019 09:40:44 +0800
-From:   Chen Zhou <chenzhou10@huawei.com>
-To:     <robert.moore@intel.com>, <erik.schmauss@intel.com>,
-        <rafael.j.wysocki@intel.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <chenzhou10@huawei.com>
-Subject: [PATCH] ACPICA: debugger: remove unnecessary parentheses
-Date:   Mon, 16 Dec 2019 09:37:36 +0800
-Message-ID: <20191216013736.170949-1-chenzhou10@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726528AbfLPDt7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 15 Dec 2019 22:49:59 -0500
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id C76EB634CA425675EF14;
+        Mon, 16 Dec 2019 11:49:56 +0800 (CST)
+Received: from [127.0.0.1] (10.177.223.23) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Mon, 16 Dec 2019
+ 11:49:50 +0800
+Subject: Re: [PATCH] ACPI/IORT: fix the iort_id_map function
+To:     Pankaj Bansal <pankaj.bansal@nxp.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>
+References: <20191215203303.29811-1-pankaj.bansal@nxp.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <ffc5a6e9-cac3-d6c6-fe16-745b4f9e481f@huawei.com>
+Date:   Mon, 16 Dec 2019 11:49:28 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
+In-Reply-To: <20191215203303.29811-1-pankaj.bansal@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.223.23]
 X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Remove unnecessary parentheses found by checkpatch
+Hi Pankaj,
 
-Signed-off-by: Chen Zhou <chenzhou10@huawei.com>
----
- drivers/acpi/acpica/dbinput.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+On 2019/12/15 23:12, Pankaj Bansal wrote:
+> As per http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf
+> in ID mappings:
+> Number of IDs = The number of IDs in the range minus one.
 
-diff --git a/drivers/acpi/acpica/dbinput.c b/drivers/acpi/acpica/dbinput.c
-index e1632b3..8470df94 100644
---- a/drivers/acpi/acpica/dbinput.c
-+++ b/drivers/acpi/acpica/dbinput.c
-@@ -738,7 +738,7 @@ acpi_db_command_dispatch(char *input_buffer,
- 	case CMD_NULL:
- 
- 		if (op) {
--			return (AE_OK);
-+			return AE_OK;
- 		}
- 		break;
- 
-@@ -818,7 +818,7 @@ acpi_db_command_dispatch(char *input_buffer,
- 			acpi_os_printf
- 			    ("Invalid adress space ID: must be between 0 and %u inclusive\n",
- 			     ACPI_NUM_PREDEFINED_REGIONS - 1);
--			return (AE_OK);
-+			return AE_OK;
- 		}
- 
- 		status = acpi_db_display_fields((u32)temp64);
-@@ -827,7 +827,7 @@ acpi_db_command_dispatch(char *input_buffer,
- 	case CMD_GO:
- 
- 		acpi_gbl_cm_single_step = FALSE;
--		return (AE_OK);
-+		return AE_OK;
- 
- 	case CMD_HANDLERS:
- 
-@@ -879,7 +879,7 @@ acpi_db_command_dispatch(char *input_buffer,
- 
- 		if (op) {
- 			acpi_gbl_cm_single_step = TRUE;
--			return (AE_OK);
-+			return AE_OK;
- 		}
- 		break;
- 
--- 
-2.7.4
+Hmm, the spec is confusing, the spec may need to be updated, for example,
+for a PCI bus, device ID + function ID will take 8 bits and will be 256
+IDs for that PCI bus, not sure why we need to minus one.
+
+> 
+> Therefore, it's valid for ID mapping to contain single device mapping which
+> would have Number of IDs field 0.
+
+Why not use single mapping flag for this case?
+
+Thanks
+Hanjun
 
