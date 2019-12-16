@@ -2,66 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC5F811FD58
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2019 04:53:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 587D511FD82
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2019 05:18:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726922AbfLPDt7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 15 Dec 2019 22:49:59 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:38258 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726528AbfLPDt7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 15 Dec 2019 22:49:59 -0500
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id C76EB634CA425675EF14;
-        Mon, 16 Dec 2019 11:49:56 +0800 (CST)
-Received: from [127.0.0.1] (10.177.223.23) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Mon, 16 Dec 2019
- 11:49:50 +0800
-Subject: Re: [PATCH] ACPI/IORT: fix the iort_id_map function
-To:     Pankaj Bansal <pankaj.bansal@nxp.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>
-References: <20191215203303.29811-1-pankaj.bansal@nxp.com>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <ffc5a6e9-cac3-d6c6-fe16-745b4f9e481f@huawei.com>
-Date:   Mon, 16 Dec 2019 11:49:28 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.5.0
+        id S1726676AbfLPES1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 15 Dec 2019 23:18:27 -0500
+Received: from mo-csw-fb1115.securemx.jp ([210.130.202.174]:48052 "EHLO
+        mo-csw-fb.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726437AbfLPES1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 15 Dec 2019 23:18:27 -0500
+X-Greylist: delayed 620 seconds by postgrey-1.27 at vger.kernel.org; Sun, 15 Dec 2019 23:18:25 EST
+Received: by mo-csw-fb.securemx.jp (mx-mo-csw-fb1115) id xBG484bA028120; Mon, 16 Dec 2019 13:08:05 +0900
+Received: by mo-csw.securemx.jp (mx-mo-csw1114) id xBG47nQ3008763; Mon, 16 Dec 2019 13:07:49 +0900
+X-Iguazu-Qid: 2wGqjDiQpC9B15ge9O
+X-Iguazu-QSIG: v=2; s=0; t=1576469269; q=2wGqjDiQpC9B15ge9O; m=s5a6vg9zpyrVRrEsYdwnILKPvfFX08BE9xRq9WG+OXI=
+Received: from imx2.toshiba.co.jp (imx2.toshiba.co.jp [106.186.93.51])
+        by relay.securemx.jp (mx-mr1111) id xBG47ltE020225;
+        Mon, 16 Dec 2019 13:07:48 +0900
+Received: from enc01.localdomain ([106.186.93.100])
+        by imx2.toshiba.co.jp  with ESMTP id xBG47lqx028241;
+        Mon, 16 Dec 2019 13:07:47 +0900 (JST)
+Received: from hop001.toshiba.co.jp ([133.199.164.63])
+        by enc01.localdomain  with ESMTP id xBG47l4L000309;
+        Mon, 16 Dec 2019 13:07:47 +0900
+From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+To:     linux-serial@vger.kernel.org
+Cc:     Punit Agrawal <punit1.agrawal@toshiba.co.jp>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        nobuhiro1.iwamatsu@toshiba.co.jp, shrirang.bagul@canonical.com,
+        robh@kernel.org, gregkh@linuxfoundation.org, johan@kernel.org,
+        hdegoede@redhat.com
+Subject: [RFC  0/1] serdes: Add whitelist to bring back missing serial port
+Date:   Mon, 16 Dec 2019 13:08:24 +0900
+X-TSB-HOP: ON
+Message-Id: <20191216040825.523720-1-punit1.agrawal@toshiba.co.jp>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-In-Reply-To: <20191215203303.29811-1-pankaj.bansal@nxp.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.223.23]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Pankaj,
 
-On 2019/12/15 23:12, Pankaj Bansal wrote:
-> As per http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf
-> in ID mappings:
-> Number of IDs = The number of IDs in the range minus one.
+Hi,
 
-Hmm, the spec is confusing, the spec may need to be updated, for example,
-for a PCI bus, device ID + function ID will take 8 bits and will be 256
-IDs for that PCI bus, not sure why we need to minus one.
+While booting v5.5-rc1 on Apollo Lake based UP2[0], I ran into an
+issue with the primary serial port. The kernel is able to output to
+ttyS0 but systemd isn't able to raise a login prompt. On further
+investigation, it turns out that no serial device (/dev/ttyS0) is
+being created as the device is claimed by serdev sub-system.
 
-> 
-> Therefore, it's valid for ID mapping to contain single device mapping which
-> would have Number of IDs field 0.
+The issue has been reported in a few different places[0][1]. A patch
+was proposed to solve the issue but there doesn't seem to be any
+further progress[2]. Feedback on the thread suggested implementing a
+whitelist based approach - which is what this RFC does.
 
-Why not use single mapping flag for this case?
+With this patch, systemd is able to create a login prompt. The
+whitelist has intentionally been left blank as it's not clear which
+devices go in there.
 
-Thanks
-Hanjun
+Feedback welcome.
+
+Thanks,
+Punit
+
+[0] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=911831
+[1] https://bugs.launchpad.net/ubuntu/+source/linux-oem/+bug/1769610
+[2] https://marc.info/?l=linux-serial&m=152455861101408&w=2
+
+Punit Agrawal (1):
+  serdev: Only claim supported devices
+
+ drivers/tty/serdev/core.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+-- 
+2.24.0
 
