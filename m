@@ -2,41 +2,44 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 587D511FD82
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2019 05:18:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 532CB11FD86
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2019 05:19:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726676AbfLPES1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 15 Dec 2019 23:18:27 -0500
-Received: from mo-csw-fb1115.securemx.jp ([210.130.202.174]:48052 "EHLO
+        id S1726646AbfLPETB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 15 Dec 2019 23:19:01 -0500
+Received: from mo-csw-fb1115.securemx.jp ([210.130.202.174]:48074 "EHLO
         mo-csw-fb.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726437AbfLPES1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 15 Dec 2019 23:18:27 -0500
-X-Greylist: delayed 620 seconds by postgrey-1.27 at vger.kernel.org; Sun, 15 Dec 2019 23:18:25 EST
-Received: by mo-csw-fb.securemx.jp (mx-mo-csw-fb1115) id xBG484bA028120; Mon, 16 Dec 2019 13:08:05 +0900
-Received: by mo-csw.securemx.jp (mx-mo-csw1114) id xBG47nQ3008763; Mon, 16 Dec 2019 13:07:49 +0900
-X-Iguazu-Qid: 2wGqjDiQpC9B15ge9O
-X-Iguazu-QSIG: v=2; s=0; t=1576469269; q=2wGqjDiQpC9B15ge9O; m=s5a6vg9zpyrVRrEsYdwnILKPvfFX08BE9xRq9WG+OXI=
-Received: from imx2.toshiba.co.jp (imx2.toshiba.co.jp [106.186.93.51])
-        by relay.securemx.jp (mx-mr1111) id xBG47ltE020225;
-        Mon, 16 Dec 2019 13:07:48 +0900
-Received: from enc01.localdomain ([106.186.93.100])
-        by imx2.toshiba.co.jp  with ESMTP id xBG47lqx028241;
-        Mon, 16 Dec 2019 13:07:47 +0900 (JST)
-Received: from hop001.toshiba.co.jp ([133.199.164.63])
-        by enc01.localdomain  with ESMTP id xBG47l4L000309;
-        Mon, 16 Dec 2019 13:07:47 +0900
+        with ESMTP id S1726437AbfLPETA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 15 Dec 2019 23:19:00 -0500
+Received: by mo-csw-fb.securemx.jp (mx-mo-csw-fb1115) id xBG48Kll028133; Mon, 16 Dec 2019 13:08:22 +0900
+Received: by mo-csw.securemx.jp (mx-mo-csw1115) id xBG488Qk017365; Mon, 16 Dec 2019 13:08:09 +0900
+X-Iguazu-Qid: 2wGqvJJtoWA1JGcIjc
+X-Iguazu-QSIG: v=2; s=0; t=1576469288; q=2wGqvJJtoWA1JGcIjc; m=c6t1eqbr5EJEYmX/jEMSvsBS/AYPWiWSv9JFMDMFpMo=
+Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
+        by relay.securemx.jp (mx-mr1112) id xBG487U4027663;
+        Mon, 16 Dec 2019 13:08:08 +0900
+Received: from enc02.toshiba.co.jp ([61.202.160.51])
+        by imx12.toshiba.co.jp  with ESMTP id xBG487Re019649;
+        Mon, 16 Dec 2019 13:08:07 +0900 (JST)
+Received: from hop101.toshiba.co.jp ([133.199.85.107])
+        by enc02.toshiba.co.jp  with ESMTP id xBG487r8018845;
+        Mon, 16 Dec 2019 13:08:07 +0900
 From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
 To:     linux-serial@vger.kernel.org
 Cc:     Punit Agrawal <punit1.agrawal@toshiba.co.jp>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         nobuhiro1.iwamatsu@toshiba.co.jp, shrirang.bagul@canonical.com,
-        robh@kernel.org, gregkh@linuxfoundation.org, johan@kernel.org,
-        hdegoede@redhat.com
-Subject: [RFC  0/1] serdes: Add whitelist to bring back missing serial port
-Date:   Mon, 16 Dec 2019 13:08:24 +0900
+        Rob Herring <robh@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johan Hovold <johan@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [RFC ] serdev: Only claim supported devices
+Date:   Mon, 16 Dec 2019 13:08:25 +0900
 X-TSB-HOP: ON
-Message-Id: <20191216040825.523720-1-punit1.agrawal@toshiba.co.jp>
+Message-Id: <20191216040825.523720-2-punit1.agrawal@toshiba.co.jp>
 X-Mailer: git-send-email 2.24.0
+In-Reply-To: <20191216040825.523720-1-punit1.agrawal@toshiba.co.jp>
+References: <20191216040825.523720-1-punit1.agrawal@toshiba.co.jp>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
@@ -44,39 +47,50 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Serdev sub-system claims all serial devices that are not already
+enumerated. As a result, no device node is created for serial port on
+certain devices such as the Apollo Lake based UP2. This has the
+unintended consequence of unable to raise the login prompt via serial
+connection.
 
-Hi,
+Introduce a whitelist to only register devices that are supported by
+the sub-system.
 
-While booting v5.5-rc1 on Apollo Lake based UP2[0], I ran into an
-issue with the primary serial port. The kernel is able to output to
-ttyS0 but systemd isn't able to raise a login prompt. On further
-investigation, it turns out that no serial device (/dev/ttyS0) is
-being created as the device is claimed by serdev sub-system.
-
-The issue has been reported in a few different places[0][1]. A patch
-was proposed to solve the issue but there doesn't seem to be any
-further progress[2]. Feedback on the thread suggested implementing a
-whitelist based approach - which is what this RFC does.
-
-With this patch, systemd is able to create a login prompt. The
-whitelist has intentionally been left blank as it's not clear which
-devices go in there.
-
-Feedback welcome.
-
-Thanks,
-Punit
-
-[0] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=911831
-[1] https://bugs.launchpad.net/ubuntu/+source/linux-oem/+bug/1769610
-[2] https://marc.info/?l=linux-serial&m=152455861101408&w=2
-
-Punit Agrawal (1):
-  serdev: Only claim supported devices
-
+Signed-off-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Johan Hovold <johan@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>
+---
  drivers/tty/serdev/core.c | 8 ++++++++
  1 file changed, 8 insertions(+)
 
+diff --git a/drivers/tty/serdev/core.c b/drivers/tty/serdev/core.c
+index 226adeec2aed..0f414aa4d870 100644
+--- a/drivers/tty/serdev/core.c
++++ b/drivers/tty/serdev/core.c
+@@ -663,6 +663,10 @@ static acpi_status acpi_serdev_register_device(struct serdev_controller *ctrl,
+ 	return AE_OK;
+ }
+ 
++static const struct acpi_device_id serdev_supported_devices[] = {
++	{ },
++};
++
+ static acpi_status acpi_serdev_add_device(acpi_handle handle, u32 level,
+ 					  void *data, void **return_value)
+ {
+@@ -675,6 +679,10 @@ static acpi_status acpi_serdev_add_device(acpi_handle handle, u32 level,
+ 	if (acpi_device_enumerated(adev))
+ 		return AE_OK;
+ 
++	/* Skip if not supported */
++	if (acpi_match_device_ids(adev, serdev_supported_devices) == -ENOENT)
++		return AE_OK;
++
+ 	if (acpi_serdev_check_resources(ctrl, adev))
+ 		return AE_OK;
+ 
 -- 
 2.24.0
 
