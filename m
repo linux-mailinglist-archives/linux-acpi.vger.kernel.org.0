@@ -2,27 +2,26 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32364120385
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2019 12:16:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBCC21203D4
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2019 12:25:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727089AbfLPLQN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Dec 2019 06:16:13 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:46034 "EHLO
+        id S1727383AbfLPLY7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Dec 2019 06:24:59 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:42198 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727059AbfLPLQN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Dec 2019 06:16:13 -0500
+        with ESMTP id S1727368AbfLPLY7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Dec 2019 06:24:59 -0500
 Received: from 79.184.253.1.ipv4.supernova.orange.pl (79.184.253.1) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.320)
- id 038a9e5e7a342150; Mon, 16 Dec 2019 12:16:11 +0100
+ id a75c78bdd54642d0; Mon, 16 Dec 2019 12:24:57 +0100
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     kc27041980@gmail.com
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] acpi/ec.c: Move call to kref_get() to under the mutex_lock(&ec->mutex)
-Date:   Mon, 16 Dec 2019 12:16:10 +0100
-Message-ID: <71678431.1RUZMxPmvT@kreacher>
-In-Reply-To: <1574679798-18958-1-git-send-email-KC17041980@gmail.com>
-References: <1574679798-18958-1-git-send-email-KC17041980@gmail.com>
+To:     Zhengyuan Liu <liuzhengyuan@kylinos.cn>
+Cc:     linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2] tools/acpi: fix compilation error
+Date:   Mon, 16 Dec 2019 12:24:57 +0100
+Message-ID: <3122906.rUR3b5QzkR@kreacher>
+In-Reply-To: <20191213162712.6208-1-liuzhengyuan@kylinos.cn>
+References: <20191213162712.6208-1-liuzhengyuan@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -31,80 +30,50 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Monday, November 25, 2019 12:03:18 PM CET kc27041980@gmail.com wrote:
-> From: KC27041980 <kc27041980@gmail.com>
+On Friday, December 13, 2019 5:27:12 PM CET Zhengyuan Liu wrote:
+> If we compile tools/acpi target in the top source directory, we'd get a
+> compilation error showing as bellow:
 > 
-> Move call to kref_get() to under the mutex_lock(&ec->mutex) as this
-> will remove any delete race scenarios.
+> 	# make tools/acpi
+> 	  DESCEND  power/acpi
+> 	  DESCEND  tools/acpidbg
+> 	  CC       tools/acpidbg/acpidbg.o
+> 	Assembler messages:
+> 	Fatal error: can't create /home/lzy/kernel-upstream/power/acpi/\
+> 			tools/acpidbg/acpidbg.o: No such file or directory
+> 	../../Makefile.rules:26: recipe for target '/home/lzy/kernel-upstream/\
+> 			power/acpi/tools/acpidbg/acpidbg.o' failed
+> 	make[3]: *** [/home/lzy/kernel-upstream//power/acpi/tools/acpidbg/\
+> 			acpidbg.o] Error 1
+> 	Makefile:19: recipe for target 'acpidbg' failed
+> 	make[2]: *** [acpidbg] Error 2
+> 	Makefile:54: recipe for target 'acpi' failed
+> 	make[1]: *** [acpi] Error 2
+> 	Makefile:1607: recipe for target 'tools/acpi' failed
+> 	make: *** [tools/acpi] Error 2
 > 
-> Signed-off-by: KC27041980 <kc27041980@gmail.com>
+> Fixes: d5a4b1a540b ("tools/power/acpi: Remove direct kernel source include reference")
+> Signed-off-by: Zhengyuan Liu <liuzhengyuan@kylinos.cn>
 > ---
->  drivers/acpi/ec.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  tools/power/acpi/Makefile.config | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-> index da1e5c5..9c1bd57 100644
-> --- a/drivers/acpi/ec.c
-> +++ b/drivers/acpi/ec.c
-> @@ -1073,8 +1073,12 @@ acpi_ec_get_query_handler_by_value(struct acpi_ec *ec, u8 value)
->  			break;
->  		}
->  	}
-> +
-> +	if (found)
-> +		acpi_ec_get_query_handler(handler);
->  	mutex_unlock(&ec->mutex);
-> -	return found ? acpi_ec_get_query_handler(handler) : NULL;
-> +
-> +	return found ? handler : NULL;
->  }
+> diff --git a/tools/power/acpi/Makefile.config b/tools/power/acpi/Makefile.config
+> index 0111d246d1ca..54a2857c2510 100644
+> --- a/tools/power/acpi/Makefile.config
+> +++ b/tools/power/acpi/Makefile.config
+> @@ -15,7 +15,7 @@ include $(srctree)/../../scripts/Makefile.include
 >  
->  static void acpi_ec_query_handler_release(struct kref *kref)
+>  OUTPUT=$(srctree)/
+>  ifeq ("$(origin O)", "command line")
+> -	OUTPUT := $(O)/power/acpi/
+> +	OUTPUT := $(O)/tools/power/acpi/
+>  endif
+>  #$(info Determined 'OUTPUT' to be $(OUTPUT))
+>  
 > 
 
-Well, what about the appended patch instead?
-
----
- drivers/acpi/ec.c |   16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
-
-Index: linux-pm/drivers/acpi/ec.c
-===================================================================
---- linux-pm.orig/drivers/acpi/ec.c
-+++ linux-pm/drivers/acpi/ec.c
-@@ -1053,28 +1053,20 @@ void acpi_ec_unblock_transactions(void)
-                                 Event Management
-    -------------------------------------------------------------------------- */
- static struct acpi_ec_query_handler *
--acpi_ec_get_query_handler(struct acpi_ec_query_handler *handler)
--{
--	if (handler)
--		kref_get(&handler->kref);
--	return handler;
--}
--
--static struct acpi_ec_query_handler *
- acpi_ec_get_query_handler_by_value(struct acpi_ec *ec, u8 value)
- {
- 	struct acpi_ec_query_handler *handler;
--	bool found = false;
- 
- 	mutex_lock(&ec->mutex);
- 	list_for_each_entry(handler, &ec->list, node) {
- 		if (value == handler->query_bit) {
--			found = true;
--			break;
-+			kref_get(&handler->kref);
-+			mutex_unlock(&ec->mutex);
-+			return handler;
- 		}
- 	}
- 	mutex_unlock(&ec->mutex);
--	return found ? acpi_ec_get_query_handler(handler) : NULL;
-+	return NULL;
- }
- 
- static void acpi_ec_query_handler_release(struct kref *kref)
+Applying as 5.6 material, thanks!
 
 
 
