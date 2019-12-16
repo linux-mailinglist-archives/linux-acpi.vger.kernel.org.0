@@ -2,124 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFFFE11FEA2
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2019 07:53:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53CC712006E
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2019 09:58:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726612AbfLPGxn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Dec 2019 01:53:43 -0500
-Received: from mo-csw1516.securemx.jp ([210.130.202.155]:33644 "EHLO
-        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726054AbfLPGxn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Dec 2019 01:53:43 -0500
-Received: by mo-csw.securemx.jp (mx-mo-csw1516) id xBG6rTSv011327; Mon, 16 Dec 2019 15:53:29 +0900
-X-Iguazu-Qid: 34tKGlJZZm5ZOtrFJg
-X-Iguazu-QSIG: v=2; s=0; t=1576479208; q=34tKGlJZZm5ZOtrFJg; m=1iGBw1Qi+KmDlKhNqILFR4qOVaGF3CybMVK/P0DyAvw=
-Received: from imx2.toshiba.co.jp (imx2.toshiba.co.jp [106.186.93.51])
-        by relay.securemx.jp (mx-mr1512) id xBG6rRun013693;
-        Mon, 16 Dec 2019 15:53:28 +0900
-Received: from enc01.localdomain ([106.186.93.100])
-        by imx2.toshiba.co.jp  with ESMTP id xBG6rRcx004446;
-        Mon, 16 Dec 2019 15:53:27 +0900 (JST)
-Received: from hop001.toshiba.co.jp ([133.199.164.63])
-        by enc01.localdomain  with ESMTP id xBG6rR6r026063;
-        Mon, 16 Dec 2019 15:53:27 +0900
-From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     linux-serial@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, nobuhiro1.iwamatsu@toshiba.co.jp,
-        shrirang.bagul@canonical.com, robh@kernel.org,
-        gregkh@linuxfoundation.org, johan@kernel.org
-Subject: Re: [RFC 0/1] serdes: Add whitelist to bring back missing serial port
-References: <20191216040825.523720-1-punit1.agrawal@toshiba.co.jp>
-        <b1ce4dff-7239-640a-fcc3-4ff935fdb3a7@redhat.com>
-Date:   Mon, 16 Dec 2019 15:54:06 +0900
-In-Reply-To: <b1ce4dff-7239-640a-fcc3-4ff935fdb3a7@redhat.com> (Hans de
-        Goede's message of "Mon, 16 Dec 2019 07:29:46 +0100")
-X-TSB-HOP: ON
-Message-ID: <87woawpxpt.fsf@kokedama.swc.toshiba.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S1726818AbfLPI6j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Dec 2019 03:58:39 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:35409 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726772AbfLPI6j (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Dec 2019 03:58:39 -0500
+Received: by mail-ot1-f67.google.com with SMTP id o9so8288599ote.2;
+        Mon, 16 Dec 2019 00:58:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LFJZor1biFEHIwwZ0BclodlIuoSH1GnzGtcFATNXh5w=;
+        b=kOhETbg38DJObu/oUCSafgukO19vRQvfKsu++dqX/FwXe+kb6+mhddkgIBP4UMdfMI
+         nu5ItM6dRIfyNP+ACpFsmygWzySvudgTEUh29gZYPOwOZN2kBEBdWe7lRi8xvMhXyst1
+         PfVvzGnHBo3obCv2ieXHiKPiLC/3Bwjm7DMdF6K1aixYQ8nNsom3qlu9P/CRxNJINoif
+         PzJQK8pB/KBeDOgPSsPkVGex4ZzrPE0P/SrHZXgLT2M+QnGiqOXXmZh3O4LbRryLruy0
+         Z8zzpBDRXwpa8V7pt7URJea/w0iCSSkBYXhcSFHSiIzTuAnna/uGLSXCh4qRp6JH6+Nf
+         1lyQ==
+X-Gm-Message-State: APjAAAVsYG76JjaTI8pASwmshryLvc3ouBtNGK5hVchN+62/Jm2QsP++
+        VBHnCrTmEBi1Bznykn4Rq/IXucp3bKa54yw4aoU=
+X-Google-Smtp-Source: APXvYqwIHgcR8X1x79aA30CcO7mb98RgFmcgRiLRKFjpih9hvfMnINWSwB/MEDD2rGBZXliIDZOM7hfyst4lsWb5jXw=
+X-Received: by 2002:a05:6830:18cd:: with SMTP id v13mr29766196ote.118.1576486718384;
+ Mon, 16 Dec 2019 00:58:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <cover.1576260216.git.gayatri.kammela@intel.com> <3c1ed2c9964c63fc956ec249d7bfce8d49f53fee.1576260216.git.gayatri.kammela@intel.com>
+In-Reply-To: <3c1ed2c9964c63fc956ec249d7bfce8d49f53fee.1576260216.git.gayatri.kammela@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 16 Dec 2019 09:58:27 +0100
+Message-ID: <CAJZ5v0hysFS+tVKz3fJ0yoOTqaGpx+4oD2Nh98HCzT86=hXawA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] acpi: fan: Add new Tiger Lake hardware ID to
+ support fan driver in acpi
+To:     Gayatri Kammela <gayatri.kammela@intel.com>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Alex Hung <alex.hung@canonical.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        "Prestopine, Charles D" <charles.d.prestopine@intel.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Hans,
+On Fri, Dec 13, 2019 at 9:40 PM Gayatri Kammela
+<gayatri.kammela@intel.com> wrote:
+>
+> Tiger Lake has a new unique hardware ID to support fan driver. Hence,
+> add it.
+>
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Zhang Rui <rui.zhang@intel.com>
+> Cc: Srinivas Pandruvada <srinivas.pandruvada@intel.com>
+> Signed-off-by: Gayatri Kammela <gayatri.kammela@intel.com>
+> ---
+>  drivers/acpi/fan.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/acpi/fan.c b/drivers/acpi/fan.c
+> index 816b0803f7fb..13708fb48038 100644
+> --- a/drivers/acpi/fan.c
+> +++ b/drivers/acpi/fan.c
+> @@ -25,6 +25,7 @@ static int acpi_fan_remove(struct platform_device *pdev);
+>
+>  static const struct acpi_device_id fan_device_ids[] = {
+>         {"PNP0C0B", 0},
+> +       {"INT1044", 0},
 
-Thanks for chiming in.
+This has to go into device_pm.c:acpi_dev_pm_attach() too, see commit
 
-Hans de Goede <hdegoede@redhat.com> writes:
+b9ea0bae260f ACPI: PM: Avoid attaching ACPI PM domain to certain devices
 
-> HI,
->
-> On 16-12-2019 05:08, Punit Agrawal wrote:
->>
->> Hi,
->>
->> While booting v5.5-rc1 on Apollo Lake based UP2[0], I ran into an
->> issue with the primary serial port. The kernel is able to output to
->> ttyS0 but systemd isn't able to raise a login prompt. On further
->> investigation, it turns out that no serial device (/dev/ttyS0) is
->> being created as the device is claimed by serdev sub-system.
->>
->> The issue has been reported in a few different places[0][1]. A patch
->> was proposed to solve the issue but there doesn't seem to be any
->> further progress[2]. Feedback on the thread suggested implementing a
->> whitelist based approach - which is what this RFC does.
->>
->> With this patch, systemd is able to create a login prompt. The
->> whitelist has intentionally been left blank as it's not clear which
->> devices go in there.
->
-> As I already mentioned when discussing this upstream:
->
-> https://marc.info/?l=linux-serial&m=152460460418058&w=2
->
-> I am afraid that a whitelist is not going to fly, that means
-> duplicating all the device-ids in all the relevant drivers and that
-> everytime we add a device-id we need to do so in 2 places. Just take
-> a look at drivers/bluetooth/hci_bcm.c at the device-id list starting
-> at line 1187 and that is just 1 driver.
-
-I had seen the linked mail but was missing the context given here. I am
-not that familiar with the serial devices framework.
-
->
-> I also mention a hack for RTL8723BS devices there, but those have
-> gotten a proper in kernel driver in the mean time.
->
-> Looking at the ACPI device id list in the proposed upstream fix
-> with a "hsuart serdev driver":
-> https://www.spinics.net/lists/linux-serial/msg30035.html
->
-> +static const struct acpi_device_id hsuart_acpi_match[] = {
-> +	{"INT3511", 0},
-> +	{"INT3512", 0},
-> +	{ },
-> +};
->
-> Then blacklist with just these 2 ids would clearly be a much better
-> approach, as we are talking 2 ids vs 50+ ids here for whitelist vs
-> blacklist.
->
-> The whitepaper on this:
-> https://www.intel.com/content/dam/www/public/us/en/documents/white-papers/enabling-multi-com-port-white-paper.pdf
-> Also mentions these 2 as "the default Hardware IDs (INT3511 and INT3512) used here are Intel HS-UART COM
-> port peripheral device IDs." as the hardware ids to use if the port has no
-> specific function, in other words to use these 2 ids when under Linux the
-> serial-port should just show up as a /dev/ttyS* device.
->
-> So I believe that the fix here is using a blacklist with just these 2
-> ids in there.
-
-That makes sense.
-
-A shorter list of exceptions is better than the longer list of supported
-device list that is going to be duplicated.
-
-I will respin the patches taking the blacklist approach if there is no
-other feedback.
-
-Thanks,
-Punit
+>         {"INT3404", 0},
+>         {"", 0},
+>  };
+> --
