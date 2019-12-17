@@ -2,107 +2,180 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E921122CCC
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Dec 2019 14:25:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EADED122CD3
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Dec 2019 14:27:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727310AbfLQNZg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Dec 2019 08:25:36 -0500
-Received: from mga07.intel.com ([134.134.136.100]:34728 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726164AbfLQNZg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 17 Dec 2019 08:25:36 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Dec 2019 05:25:35 -0800
-X-IronPort-AV: E=Sophos;i="5.69,325,1571727600"; 
-   d="scan'208";a="209700078"
-Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.161])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Dec 2019 05:25:31 -0800
-From:   Jani Nikula <jani.nikula@linux.intel.com>
-To:     Lee Jones <lee.jones@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] mfd: intel_soc_pmic: Rename pwm_backlight pwm-lookup to pwm_pmic_backlight
-In-Reply-To: <20191217081127.GI18955@dell>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20191210085111.GQ3468@dell> <a05e5a2b-568e-2b0d-0293-aa937c590a74@redhat.com> <20191212084546.GA3468@dell> <d22e9a04-da09-0f41-a78e-ac17a947650a@redhat.com> <20191212155209.GC3468@dell> <4d07445d-98b1-f23c-0aac-07709b45df78@redhat.com> <20191213082734.GE3468@dell> <d648794d-4c76-cfa1-dcbd-16c34d409c51@redhat.com> <20191216093016.GE3648@dell> <fc3c29da-528d-a6b6-d13b-92e6469eadea@redhat.com> <20191217081127.GI18955@dell>
-Date:   Tue, 17 Dec 2019 15:25:29 +0200
-Message-ID: <87immfyth2.fsf@intel.com>
+        id S1726709AbfLQN1P (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Dec 2019 08:27:15 -0500
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:20893 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726164AbfLQN1P (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 17 Dec 2019 08:27:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1576589233;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=pUq2a5pZ/dt2qGPzTnxHTjJcR3qch9Jn0NM29Gx0avs=;
+        b=GUJigyGWcU335oSByS5Vqq52E8m1ie5RgYu1+SLT3bhurC6t9oKI+SZg6giEaDzAwuP2yX
+        mP3zSihoeiDDCROxhnmcMzatLROia6mh+TdPnLWNjd3W5j+H8TofDwfS8nZ4+LLSONUf1p
+        foD9hdRomb+1L7dl5L/4LNGocQ+zDcM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-210-D7gd0hVnNieBrcFWJ_UiaQ-1; Tue, 17 Dec 2019 08:27:09 -0500
+X-MC-Unique: D7gd0hVnNieBrcFWJ_UiaQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 265F68017DF;
+        Tue, 17 Dec 2019 13:27:07 +0000 (UTC)
+Received: from [10.36.116.117] (ovpn-116-117.ams2.redhat.com [10.36.116.117])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 24A2060C63;
+        Tue, 17 Dec 2019 13:27:02 +0000 (UTC)
+Subject: Re: [PATCH v3 05/13] iommu/arm-smmu-v3: Prepare arm_smmu_s1_cfg for
+ SSID support
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        iommu@lists.linux-foundation.org
+Cc:     joro@8bytes.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
+        will@kernel.org, robin.murphy@arm.com, bhelgaas@google.com,
+        jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
+References: <20191209180514.272727-1-jean-philippe@linaro.org>
+ <20191209180514.272727-6-jean-philippe@linaro.org>
+From:   Auger Eric <eric.auger@redhat.com>
+Message-ID: <7b20be5c-0b3f-dbec-ffd6-508b4667cf1b@redhat.com>
+Date:   Tue, 17 Dec 2019 14:27:01 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20191209180514.272727-6-jean-philippe@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 17 Dec 2019, Lee Jones <lee.jones@linaro.org> wrote:
-> On Mon, 16 Dec 2019, Hans de Goede wrote:
->
->> Hi,
->> 
->> Doing immutable branches assumes that there is a base point,
->> e.g. 5.5-rc1 where the immutable branch can then be based on and
->> that the branch can then be merged without issues into both subsystems.
->> 
->> drm is constantly evolving to deal with and mostly catch up with new
->> hardware as both GPUs and display-pipelines are evolving quite rapidly
->> atm drm-intel-next has about 400 commits on top of 5.5-rc1 so for an
->> immutable branch I can either base it on drm-intel-next which
->> violates your request for a clean minimal branch to merge; or I can
->> base it on 5.5-rc1 which leads to a big chance of problems when
->> merging it given to large amount of churn in drm-intel-next.
->
-> This is a *slightly* more compelling reason than the ones you've
-> previously provided.
->
->> So instead of the normal case of 2 subsystems seeing some changes
->> on both side the case we have here is a part of a file which has
->> not changed since 2015-06-26 in one subsys (and changing only
->> a single line there!) and OTOH we have bigger changes to a subsys
->> which see 400 patches land in the first week since rc1 .
->
-> This is not.
->
->> I hope that you agree that in this case given the large amount of
->> churn in drm-intel-next it makes since to just straight forward
->> apply these patches on top of drm-intel-next.
->
-> I have Acked this patch, but remember *this* is the exception rather
-> than the rule.  If/when we have a case where a contributor works
-> cross-subsystem with DRM and the code/file adapted is live (more
-> likely to change), I will have to insist on an immutable branch
-> strategy.  DRM will have to deal with that appropriately.
+Hi Jean,
 
-Hi, thanks for the ack and reaching an agreement with Hans, and sorry
-for not responding earlier.
+On 12/9/19 7:05 PM, Jean-Philippe Brucker wrote:
+> When adding SSID support to the SMMUv3 driver, we'll need to manipulate
+> leaf pasid tables and context descriptors. Extract the context
+> descriptor structure and introduce a new table structure.
+> 
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-It's not unusual for us to have topic branches for cross-subsystem or
-cross-driver changes, and I think usually we try to be accommodating in
-merging stuff through whichever tree it makes most sense. In fact my ack
-to do just that was my first response on this series [1].
+Thanks
 
-So I don't really know why the fuss. We'll anyway deal with any
-cross-subsystem series on a case by case basis, depending on what makes
-most sense, and what suits all maintainers involved.
+Eric
 
+> ---
+>  drivers/iommu/arm-smmu-v3.c | 44 +++++++++++++++++++++----------------
+>  1 file changed, 25 insertions(+), 19 deletions(-)
+> 
+> diff --git a/drivers/iommu/arm-smmu-v3.c b/drivers/iommu/arm-smmu-v3.c
+> index 837b4283b4dc..b287e303b1d7 100644
+> --- a/drivers/iommu/arm-smmu-v3.c
+> +++ b/drivers/iommu/arm-smmu-v3.c
+> @@ -553,16 +553,21 @@ struct arm_smmu_strtab_l1_desc {
+>  	dma_addr_t			l2ptr_dma;
+>  };
+>  
+> +struct arm_smmu_ctx_desc {
+> +	u16				asid;
+> +	u64				ttbr;
+> +	u64				tcr;
+> +	u64				mair;
+> +};
+> +
+> +struct arm_smmu_cd_table {
+> +	__le64				*ptr;
+> +	dma_addr_t			ptr_dma;
+> +};
+> +
+>  struct arm_smmu_s1_cfg {
+> -	__le64				*cdptr;
+> -	dma_addr_t			cdptr_dma;
+> -
+> -	struct arm_smmu_ctx_desc {
+> -		u16	asid;
+> -		u64	ttbr;
+> -		u64	tcr;
+> -		u64	mair;
+> -	}				cd;
+> +	struct arm_smmu_cd_table	table;
+> +	struct arm_smmu_ctx_desc	cd;
+>  };
+>  
+>  struct arm_smmu_s2_cfg {
+> @@ -1471,6 +1476,7 @@ static void arm_smmu_write_ctx_desc(struct arm_smmu_device *smmu,
+>  				    struct arm_smmu_s1_cfg *cfg)
+>  {
+>  	u64 val;
+> +	__le64 *cdptr = cfg->table.ptr;
+>  
+>  	/*
+>  	 * We don't need to issue any invalidation here, as we'll invalidate
+> @@ -1488,12 +1494,12 @@ static void arm_smmu_write_ctx_desc(struct arm_smmu_device *smmu,
+>  	if (smmu->features & ARM_SMMU_FEAT_STALL_FORCE)
+>  		val |= CTXDESC_CD_0_S;
+>  
+> -	cfg->cdptr[0] = cpu_to_le64(val);
+> +	cdptr[0] = cpu_to_le64(val);
+>  
+>  	val = cfg->cd.ttbr & CTXDESC_CD_1_TTB0_MASK;
+> -	cfg->cdptr[1] = cpu_to_le64(val);
+> +	cdptr[1] = cpu_to_le64(val);
+>  
+> -	cfg->cdptr[3] = cpu_to_le64(cfg->cd.mair);
+> +	cdptr[3] = cpu_to_le64(cfg->cd.mair);
+>  }
+>  
+>  /* Stream table manipulation functions */
+> @@ -1624,7 +1630,7 @@ static void arm_smmu_write_strtab_ent(struct arm_smmu_master *master, u32 sid,
+>  		   !(smmu->features & ARM_SMMU_FEAT_STALL_FORCE))
+>  			dst[1] |= cpu_to_le64(STRTAB_STE_1_S1STALLD);
+>  
+> -		val |= (s1_cfg->cdptr_dma & STRTAB_STE_0_S1CTXPTR_MASK) |
+> +		val |= (s1_cfg->table.ptr_dma & STRTAB_STE_0_S1CTXPTR_MASK) |
+>  			FIELD_PREP(STRTAB_STE_0_CFG, STRTAB_STE_0_CFG_S1_TRANS);
+>  	}
+>  
+> @@ -2138,11 +2144,11 @@ static void arm_smmu_domain_free(struct iommu_domain *domain)
+>  	if (smmu_domain->stage == ARM_SMMU_DOMAIN_S1) {
+>  		struct arm_smmu_s1_cfg *cfg = &smmu_domain->s1_cfg;
+>  
+> -		if (cfg->cdptr) {
+> +		if (cfg->table.ptr) {
+>  			dmam_free_coherent(smmu_domain->smmu->dev,
+>  					   CTXDESC_CD_DWORDS << 3,
+> -					   cfg->cdptr,
+> -					   cfg->cdptr_dma);
+> +					   cfg->table.ptr,
+> +					   cfg->table.ptr_dma);
+>  
+>  			arm_smmu_bitmap_free(smmu->asid_map, cfg->cd.asid);
+>  		}
+> @@ -2167,9 +2173,9 @@ static int arm_smmu_domain_finalise_s1(struct arm_smmu_domain *smmu_domain,
+>  	if (asid < 0)
+>  		return asid;
+>  
+> -	cfg->cdptr = dmam_alloc_coherent(smmu->dev, CTXDESC_CD_DWORDS << 3,
+> -					 &cfg->cdptr_dma, GFP_KERNEL);
+> -	if (!cfg->cdptr) {
+> +	cfg->table.ptr = dmam_alloc_coherent(smmu->dev, CTXDESC_CD_DWORDS << 3,
+> +					     &cfg->table.ptr_dma, GFP_KERNEL);
+> +	if (!cfg->table.ptr) {
+>  		dev_warn(smmu->dev, "failed to allocate context descriptor\n");
+>  		ret = -ENOMEM;
+>  		goto out_free_asid;
+> 
 
-Thanks again,
-Jani.
-
-
-[1] http://mid.mail-archive.com/87pnhnyir8.fsf@intel.com
-
-
-
--- 
-Jani Nikula, Intel Open Source Graphics Center
