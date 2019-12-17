@@ -2,118 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1050012336F
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Dec 2019 18:24:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64CA2123566
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Dec 2019 20:08:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727101AbfLQRYc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Dec 2019 12:24:32 -0500
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:44007 "EHLO
+        id S1726731AbfLQTIT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Dec 2019 14:08:19 -0500
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:50363 "EHLO
         us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726887AbfLQRYb (ORCPT
+        by vger.kernel.org with ESMTP id S1726764AbfLQTIT (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 17 Dec 2019 12:24:31 -0500
+        Tue, 17 Dec 2019 14:08:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1576603470;
+        s=mimecast20190719; t=1576609698;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=z9EWxVih18eWOWqVZH496crr0Ey2713iPaECnfpP2vE=;
-        b=WzgiU9HD/0RIy1KMYHbppXdRk6cUoxVgmi9ADIbNXvDuhlaFrhZY/lDaAocBIR/hzYsYXY
-        QaiEOkGBdc1Ur9Mq9bBg+Kp0rE81nJwX3KoTmbC4WRH41qMg0RBwjteAjyiYh3HSXyJylv
-        a9FLNw8SS2hJgMuuZRK1jd5W2qfJU08=
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=9SZztgkt4hsOS7juNUs09VjfZrBBGCxfzt1D6SjtF+4=;
+        b=GcckYLL0FkaeW3TBus6MsblZU354Z5NSlMwPPQ4q6YdOG0xLI+h5EooJRHADdlzPj0HMVV
+        syLH56s/THsp866kOkJPPaYebEqbQASRBhACKY2Rd5OYEcjErfCGhppqLSF1nKxUoKapEO
+        z4EoNMDb8Ppuayt9ox0zxlZvqu8Qilk=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-117-rLIk8wDJP16gfQOgon_8HA-1; Tue, 17 Dec 2019 12:24:26 -0500
-X-MC-Unique: rLIk8wDJP16gfQOgon_8HA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+ us-mta-409-EL6cZdH6MhWpyFGjU07UyA-1; Tue, 17 Dec 2019 14:08:14 -0500
+X-MC-Unique: EL6cZdH6MhWpyFGjU07UyA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 42E7E8017DF;
-        Tue, 17 Dec 2019 17:24:24 +0000 (UTC)
-Received: from [10.36.116.117] (ovpn-116-117.ams2.redhat.com [10.36.116.117])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 12510620A7;
-        Tue, 17 Dec 2019 17:24:19 +0000 (UTC)
-Subject: Re: [PATCH v3 09/13] iommu/arm-smmu-v3: Handle failure of
- arm_smmu_write_ctx_desc()
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        iommu@lists.linux-foundation.org
-Cc:     joro@8bytes.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
-        sudeep.holla@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
-        will@kernel.org, robin.murphy@arm.com, bhelgaas@google.com,
-        jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
-References: <20191209180514.272727-1-jean-philippe@linaro.org>
- <20191209180514.272727-10-jean-philippe@linaro.org>
-From:   Auger Eric <eric.auger@redhat.com>
-Message-ID: <bff90d55-4f81-aa60-2341-9fb467cfdd59@redhat.com>
-Date:   Tue, 17 Dec 2019 18:24:18 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.4.0
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A5A5FA1CD7;
+        Tue, 17 Dec 2019 19:08:13 +0000 (UTC)
+Received: from shalem.localdomain.com (ovpn-116-227.ams2.redhat.com [10.36.116.227])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 881917C82C;
+        Tue, 17 Dec 2019 19:08:12 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH] ACPI: video: Do not export a non working backlight interface on MSI MS-7721 boards
+Date:   Tue, 17 Dec 2019 20:08:11 +0100
+Message-Id: <20191217190811.638607-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20191209180514.272727-10-jean-philippe@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jean,
+Despite our heuristics to not wrongly export a non working ACPI backlight
+interface on desktop machines, we still end up exporting one on desktops
+using a motherboard from the MSI MS-7721 series.
 
-On 12/9/19 7:05 PM, Jean-Philippe Brucker wrote:
-> Second-level context descriptor tables will be allocated lazily in
-> arm_smmu_write_ctx_desc(). Help with handling allocation failure by
-> moving the CD write into arm_smmu_domain_finalise_s1().
+I've looked at improving the heuristics, but in this case a quirk seems
+to be the only way to solve this.
 
-nit: would rather change the title to something like "Prepare for
-arm_smmu_write_ctx_desc() failure"
-> 
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+While at it also add a comment to separate the video_detect_force_none
+entries in the video_detect_dmi_table from other type of entries, as we
+already do for the other entry types.
 
-Thanks
+Cc: stable@vger.kernel.org
+BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=3D1783786
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/video_detect.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-Eric
-
-> ---
->  drivers/iommu/arm-smmu-v3.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iommu/arm-smmu-v3.c b/drivers/iommu/arm-smmu-v3.c
-> index f260abadde6d..fc5119f34187 100644
-> --- a/drivers/iommu/arm-smmu-v3.c
-> +++ b/drivers/iommu/arm-smmu-v3.c
-> @@ -2301,8 +2301,15 @@ static int arm_smmu_domain_finalise_s1(struct arm_smmu_domain *smmu_domain,
->  	cfg->cd.ttbr	= pgtbl_cfg->arm_lpae_s1_cfg.ttbr[0];
->  	cfg->cd.tcr	= pgtbl_cfg->arm_lpae_s1_cfg.tcr;
->  	cfg->cd.mair	= pgtbl_cfg->arm_lpae_s1_cfg.mair;
-> +
-> +	ret = arm_smmu_write_ctx_desc(smmu_domain, 0, &cfg->cd);
-> +	if (ret)
-> +		goto out_free_tables;
-> +
->  	return 0;
->  
-> +out_free_tables:
-> +	arm_smmu_free_cd_tables(smmu_domain);
->  out_free_asid:
->  	arm_smmu_bitmap_free(smmu->asid_map, asid);
->  	return ret;
-> @@ -2569,10 +2576,6 @@ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev)
->  	if (smmu_domain->stage != ARM_SMMU_DOMAIN_BYPASS)
->  		master->ats_enabled = arm_smmu_ats_supported(master);
->  
-> -	if (smmu_domain->stage == ARM_SMMU_DOMAIN_S1)
-> -		arm_smmu_write_ctx_desc(smmu_domain, 0,
-> -					&smmu_domain->s1_cfg.cd);
-> -
->  	arm_smmu_install_ste_for_dev(master);
->  
->  	spin_lock_irqsave(&smmu_domain->devices_lock, flags);
-> 
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 31014c7d3793..e63fd7bfd3a5 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -336,6 +336,11 @@ static const struct dmi_system_id video_detect_dmi_t=
+able[] =3D {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7510"),
+ 		},
+ 	},
++
++	/*
++	 * Desktops which falsely report a backlight and which our heuristics
++	 * for this do not catch.
++	 */
+ 	{
+ 	 .callback =3D video_detect_force_none,
+ 	 .ident =3D "Dell OptiPlex 9020M",
+@@ -344,6 +349,14 @@ static const struct dmi_system_id video_detect_dmi_t=
+able[] =3D {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex 9020M"),
+ 		},
+ 	},
++	{
++	 .callback =3D video_detect_force_none,
++	 .ident =3D "MSI MS-7721",
++	 .matches =3D {
++		DMI_MATCH(DMI_SYS_VENDOR, "MSI"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "MS-7721"),
++		},
++	},
+ 	{ },
+ };
+=20
+--=20
+2.23.0
 
