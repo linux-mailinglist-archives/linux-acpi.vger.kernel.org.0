@@ -2,104 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64CA2123566
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Dec 2019 20:08:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CDDC123607
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Dec 2019 20:55:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726731AbfLQTIT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Dec 2019 14:08:19 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:50363 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726764AbfLQTIT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 17 Dec 2019 14:08:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1576609698;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=9SZztgkt4hsOS7juNUs09VjfZrBBGCxfzt1D6SjtF+4=;
-        b=GcckYLL0FkaeW3TBus6MsblZU354Z5NSlMwPPQ4q6YdOG0xLI+h5EooJRHADdlzPj0HMVV
-        syLH56s/THsp866kOkJPPaYebEqbQASRBhACKY2Rd5OYEcjErfCGhppqLSF1nKxUoKapEO
-        z4EoNMDb8Ppuayt9ox0zxlZvqu8Qilk=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-409-EL6cZdH6MhWpyFGjU07UyA-1; Tue, 17 Dec 2019 14:08:14 -0500
-X-MC-Unique: EL6cZdH6MhWpyFGjU07UyA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A5A5FA1CD7;
-        Tue, 17 Dec 2019 19:08:13 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-116-227.ams2.redhat.com [10.36.116.227])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 881917C82C;
-        Tue, 17 Dec 2019 19:08:12 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH] ACPI: video: Do not export a non working backlight interface on MSI MS-7721 boards
-Date:   Tue, 17 Dec 2019 20:08:11 +0100
-Message-Id: <20191217190811.638607-1-hdegoede@redhat.com>
+        id S1727609AbfLQTzA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Dec 2019 14:55:00 -0500
+Received: from mga14.intel.com ([192.55.52.115]:56006 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727483AbfLQTzA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 17 Dec 2019 14:55:00 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Dec 2019 11:55:00 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,326,1571727600"; 
+   d="scan'208";a="217624414"
+Received: from sibelius.jf.intel.com ([10.54.75.23])
+  by orsmga006.jf.intel.com with ESMTP; 17 Dec 2019 11:54:59 -0800
+From:   Erik Kaneda <erik.kaneda@intel.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org
+Cc:     Erik Kaneda <erik.kaneda@intel.com>
+Subject: [PATCH 0/5] ACPICA version 20191213 patches
+Date:   Tue, 17 Dec 2019 11:35:18 -0800
+Message-Id: <20191217193523.20204-1-erik.kaneda@intel.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Despite our heuristics to not wrongly export a non working ACPI backlight
-interface on desktop machines, we still end up exporting one on desktops
-using a motherboard from the MSI MS-7721 series.
+This patchset contains a linux-ized patchset of the 20191213 release of
+ACPICA. Notable patches include Maximilan Luz's change to the AML
+interpreter to always treat buffer fields created from the ASL
+CreateField() operator as buffers rather than treating it as an integer
+if the buffer field is small enough to fit an integer. Other than that,
+there is a disassembler change to properly disassemble references to
+buffer fields that share the same namesegment as a method.
 
-I've looked at improving the heuristics, but in this case a quirk seems
-to be the only way to solve this.
+This patchset is also available at the following link:
+https://github.com/SchmErik/linux/tree/20191213
 
-While at it also add a comment to separate the video_detect_force_none
-entries in the video_detect_dmi_table from other type of entries, as we
-already do for the other entry types.
+Bob Moore (1):
+  ACPICA: Update version to 20191213
 
-Cc: stable@vger.kernel.org
-BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=3D1783786
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/video_detect.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Colin Ian King (1):
+  ACPICA: debugger: fix spelling mistake "adress" -> "address"
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 31014c7d3793..e63fd7bfd3a5 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -336,6 +336,11 @@ static const struct dmi_system_id video_detect_dmi_t=
-able[] =3D {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7510"),
- 		},
- 	},
-+
-+	/*
-+	 * Desktops which falsely report a backlight and which our heuristics
-+	 * for this do not catch.
-+	 */
- 	{
- 	 .callback =3D video_detect_force_none,
- 	 .ident =3D "Dell OptiPlex 9020M",
-@@ -344,6 +349,14 @@ static const struct dmi_system_id video_detect_dmi_t=
-able[] =3D {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex 9020M"),
- 		},
- 	},
-+	{
-+	 .callback =3D video_detect_force_none,
-+	 .ident =3D "MSI MS-7721",
-+	 .matches =3D {
-+		DMI_MATCH(DMI_SYS_VENDOR, "MSI"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "MS-7721"),
-+		},
-+	},
- 	{ },
- };
-=20
---=20
-2.23.0
+Erik Kaneda (2):
+  ACPICA: Disassembler: create buffer fields in ACPI_PARSE_LOAD_PASS1
+  ACPICA: acpisrc: add unix line ending support for non-windows build
+
+Maximilian Luz (1):
+  ACPICA: Dispatcher: always generate buffer objects for ASL
+    create_field() operator
+
+ drivers/acpi/acpica/acobject.h |  3 ++-
+ drivers/acpi/acpica/dbinput.c  |  2 +-
+ drivers/acpi/acpica/dsfield.c  |  2 +-
+ drivers/acpi/acpica/dsopcode.c |  2 ++
+ drivers/acpi/acpica/dswload.c  | 21 +++++++++++++++++++++
+ drivers/acpi/acpica/exfield.c  | 10 ++++++++--
+ include/acpi/acpixf.h          |  2 +-
+ include/acpi/platform/acenv.h  | 11 +++++++++++
+ 8 files changed, 47 insertions(+), 6 deletions(-)
+
+-- 
+2.21.0
 
