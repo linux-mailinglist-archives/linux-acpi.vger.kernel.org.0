@@ -2,71 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA73E122930
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Dec 2019 11:50:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08F56122958
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Dec 2019 11:59:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727260AbfLQKuD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Dec 2019 05:50:03 -0500
-Received: from mga03.intel.com ([134.134.136.65]:1450 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726655AbfLQKuC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 17 Dec 2019 05:50:02 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Dec 2019 02:50:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,325,1571727600"; 
-   d="scan'208";a="221735328"
-Received: from pl-dbox.sh.intel.com (HELO intel.com) ([10.239.13.128])
-  by fmsmga001.fm.intel.com with ESMTP; 17 Dec 2019 02:49:59 -0800
-Date:   Tue, 17 Dec 2019 18:57:47 +0800
-From:   Philip Li <philip.li@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     lkp <lkp@intel.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "kbuild-all@lists.01.org" <kbuild-all@lists.01.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: Re: [kbuild-all] Re: [pm:intel_idle+acpi 4/10]
- acpi_processor.c:undefined reference to `acpi_processor_ffh_cstate_probe'
-Message-ID: <20191217105747.GF9122@intel.com>
-References: <201912162148.hTRbNfPp%lkp@intel.com>
- <CAJZ5v0iTOSnvZqKuL7gy7QBtdHxcM7wPS8qdgbvs6+sQxZX5yg@mail.gmail.com>
- <831EE4E5E37DCC428EB295A351E66249522A215D@shsmsx102.ccr.corp.intel.com>
- <CAJZ5v0gFbjbqTOD845RjzpJQXQY=ko=9GxwVxoqw0fPccfig4w@mail.gmail.com>
+        id S1726487AbfLQK7Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Dec 2019 05:59:16 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:23797 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727170AbfLQK7Q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Dec 2019 05:59:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1576580354;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=tAVUgYEbOKAmbmGHd4mLJpWS0BdtmbZWYoTyqnMHjpM=;
+        b=JdBnTdDONHwJSbdk+TN8rFbUUl4FyLL4htHki6Ybl5mfWcRfIh5tdPKVHVGoyEZ6seVoHZ
+        Se39KZrKXGWvDscPtwFz9dzxE5cxDgKjsDP+Jn+cf41Up1Zhyin9+lvmXuMmhqK5iTy0zT
+        9oBf/ZX0BRBdpN7p1bd32wznzD56FBE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-241-toc7B--iMgaH3SihD5o5Wg-1; Tue, 17 Dec 2019 05:59:12 -0500
+X-MC-Unique: toc7B--iMgaH3SihD5o5Wg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D132618FF662;
+        Tue, 17 Dec 2019 10:59:08 +0000 (UTC)
+Received: from [10.36.116.117] (ovpn-116-117.ams2.redhat.com [10.36.116.117])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id C1D465D9C9;
+        Tue, 17 Dec 2019 10:59:04 +0000 (UTC)
+Subject: Re: [PATCH v3 01/13] iommu/arm-smmu-v3: Drop __GFP_ZERO flag from DMA
+ allocation
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        iommu@lists.linux-foundation.org
+Cc:     joro@8bytes.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
+        will@kernel.org, robin.murphy@arm.com, bhelgaas@google.com,
+        jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
+References: <20191209180514.272727-1-jean-philippe@linaro.org>
+ <20191209180514.272727-2-jean-philippe@linaro.org>
+From:   Auger Eric <eric.auger@redhat.com>
+Message-ID: <2917e0a3-e351-69fe-5e67-adeda9d40617@redhat.com>
+Date:   Tue, 17 Dec 2019 11:59:03 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0gFbjbqTOD845RjzpJQXQY=ko=9GxwVxoqw0fPccfig4w@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20191209180514.272727-2-jean-philippe@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 17, 2019 at 09:23:14AM +0100, Rafael J. Wysocki wrote:
-> On Tue, Dec 17, 2019 at 1:31 AM Li, Philip <philip.li@intel.com> wrote:
-> >
-> > > Subject: [kbuild-all] Re: [pm:intel_idle+acpi 4/10] acpi_processor.c:undefined
-> > > reference to `acpi_processor_ffh_cstate_probe'
-> > >
-> > > On Mon, Dec 16, 2019 at 2:26 PM kbuild test robot <lkp@intel.com> wrote:
-> > > >
-> > > > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
-> > > intel_idle+acpi
-> > > > head:   dcedc03145600b929a32acb85b212131b079bc46
-> > > > commit: 0300cf31f061e6287810c894337f29df2e200e2d [4/10] ACPI: processor:
-> > > Export acpi_processor_evaluate_cst()
-> > >
-> > > Outdated.  Please stop sending these.
-> > thanks for the input Rafael, we will ignore the following tests on it.
+Hi Jean,
+
+On 12/9/19 7:05 PM, Jean-Philippe Brucker wrote:
+> Since commit 518a2f1925c3 ("dma-mapping: zero memory returned from
+> dma_alloc_*"), dma_alloc_* always initializes memory to zero, so there
+> is no need to use dma_zalloc_* or pass the __GFP_ZERO flag anymore.
 > 
-> Well, the branch has been rebased since then and effectively it is a new one.
+> The flag was introduced by commit 04fa26c71be5 ("iommu/arm-smmu: Convert
+> DMA buffer allocations to the managed API"), since the managed API
+> didn't provide a dmam_zalloc_coherent() function.
 > 
-> My point is that if something like that happens, the script should
-> discard the old branch and pull the new one from scratch.
-Got it, sorry for wrong understanding. We will add logic to judge the rebase
-to reduce the later meaningless reports. Currently we only support the checking
-of new patch set version in mailing list.
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+
+Thanks
+
+Eric
+
+> ---
+>  drivers/iommu/arm-smmu-v3.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iommu/arm-smmu-v3.c b/drivers/iommu/arm-smmu-v3.c
+> index effe72eb89e7..d4e8b7f8d9f4 100644
+> --- a/drivers/iommu/arm-smmu-v3.c
+> +++ b/drivers/iommu/arm-smmu-v3.c
+> @@ -1675,7 +1675,7 @@ static int arm_smmu_init_l2_strtab(struct arm_smmu_device *smmu, u32 sid)
+>  
+>  	desc->span = STRTAB_SPLIT + 1;
+>  	desc->l2ptr = dmam_alloc_coherent(smmu->dev, size, &desc->l2ptr_dma,
+> -					  GFP_KERNEL | __GFP_ZERO);
+> +					  GFP_KERNEL);
+>  	if (!desc->l2ptr) {
+>  		dev_err(smmu->dev,
+>  			"failed to allocate l2 stream table for SID %u\n",
+> @@ -2161,8 +2161,7 @@ static int arm_smmu_domain_finalise_s1(struct arm_smmu_domain *smmu_domain,
+>  		return asid;
+>  
+>  	cfg->cdptr = dmam_alloc_coherent(smmu->dev, CTXDESC_CD_DWORDS << 3,
+> -					 &cfg->cdptr_dma,
+> -					 GFP_KERNEL | __GFP_ZERO);
+> +					 &cfg->cdptr_dma, GFP_KERNEL);
+>  	if (!cfg->cdptr) {
+>  		dev_warn(smmu->dev, "failed to allocate context descriptor\n");
+>  		ret = -ENOMEM;
+> @@ -2883,7 +2882,7 @@ static int arm_smmu_init_strtab_2lvl(struct arm_smmu_device *smmu)
+>  
+>  	l1size = cfg->num_l1_ents * (STRTAB_L1_DESC_DWORDS << 3);
+>  	strtab = dmam_alloc_coherent(smmu->dev, l1size, &cfg->strtab_dma,
+> -				     GFP_KERNEL | __GFP_ZERO);
+> +				     GFP_KERNEL);
+>  	if (!strtab) {
+>  		dev_err(smmu->dev,
+>  			"failed to allocate l1 stream table (%u bytes)\n",
+> @@ -2910,7 +2909,7 @@ static int arm_smmu_init_strtab_linear(struct arm_smmu_device *smmu)
+>  
+>  	size = (1 << smmu->sid_bits) * (STRTAB_STE_DWORDS << 3);
+>  	strtab = dmam_alloc_coherent(smmu->dev, size, &cfg->strtab_dma,
+> -				     GFP_KERNEL | __GFP_ZERO);
+> +				     GFP_KERNEL);
+>  	if (!strtab) {
+>  		dev_err(smmu->dev,
+>  			"failed to allocate linear stream table (%u bytes)\n",
+> 
+
