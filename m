@@ -2,95 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 892E7124005
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Dec 2019 08:04:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BBC312401E
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Dec 2019 08:14:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726771AbfLRHEP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Dec 2019 02:04:15 -0500
-Received: from mx0b-0016f401.pphosted.com ([67.231.156.173]:34230 "EHLO
-        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725797AbfLRHEP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 18 Dec 2019 02:04:15 -0500
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-        by mx0b-0016f401.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBI71A3a029583;
-        Tue, 17 Dec 2019 23:04:12 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=pfpt0818;
- bh=UZcnCwq10j0m/Je2ObzEn/jzRkw3tFD03EzMMVd90kY=;
- b=oNB3FkYU6UFk2BbZIlzIFPRlb7hS0SOAZz3YIeonFMpyMwy+VzoJME8H7yzUtAJIe0p3
- ELYr1mpPucVMM3+4MZNnBZkcqTqlB66XbodqS2Amt/2rhavt1lVa9/HZnK4emnJ2bVWP
- 80KClpDX05wvybw/NkIx6V61kjCuxJsLucbocvZotwTl5MjQPWbfr35dT5Z7ZEP/dGWM
- fFKkNEcsctusOvsMOw2T/FsrvabKEc86ggKyFPVA3pCFnDax4ANcDj0K5EGqz+qjnv2X
- uIAQBAPC3Z/Xq+uvQqZd1TZ5z0jIb3PB+q6qGfV7MK2WPi2hDFaLYNfJqc6mX34duCjk RQ== 
-Received: from sc-exch01.marvell.com ([199.233.58.181])
-        by mx0b-0016f401.pphosted.com with ESMTP id 2wxn0wnjy7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Tue, 17 Dec 2019 23:04:12 -0800
-Received: from SC-EXCH03.marvell.com (10.93.176.83) by SC-EXCH01.marvell.com
- (10.93.176.81) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 17 Dec
- 2019 23:04:10 -0800
-Received: from maili.marvell.com (10.93.176.43) by SC-EXCH03.marvell.com
- (10.93.176.83) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 17 Dec 2019 23:04:10 -0800
-Received: from dc5-eodlnx05.marvell.com (dc5-eodlnx05.marvell.com [10.69.113.147])
-        by maili.marvell.com (Postfix) with ESMTP id 4CDA33F703F;
-        Tue, 17 Dec 2019 23:04:10 -0800 (PST)
-From:   Bhaskar Upadhaya <bupadhaya@marvell.com>
-To:     <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-edac@vger.kernel.org>, <lenb@kernel.org>,
-        <rafael@kernel.org>
-CC:     <gkulkarni@marvell.com>, <rrichter@marvell.com>,
-        <bhaskar.upadhaya.linux@gmail.com>,
-        Bhaskar Upadhaya <bupadhaya@marvell.com>
-Subject: [RFC PATCH] apei/ghes: fix ghes_poll_func by registering in non-deferrable mode
-Date:   Tue, 17 Dec 2019 23:03:38 -0800
-Message-ID: <1576652618-27017-1-git-send-email-bupadhaya@marvell.com>
-X-Mailer: git-send-email 1.8.3.1
+        id S1725882AbfLRHOt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Dec 2019 02:14:49 -0500
+Received: from mga06.intel.com ([134.134.136.31]:64110 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725799AbfLRHOt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 18 Dec 2019 02:14:49 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Dec 2019 23:14:48 -0800
+X-IronPort-AV: E=Sophos;i="5.69,328,1571727600"; 
+   d="scan'208";a="209988246"
+Received: from asama-mobl.amr.corp.intel.com (HELO localhost) ([10.252.50.109])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Dec 2019 23:14:43 -0800
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mfd: intel_soc_pmic: Rename pwm_backlight pwm-lookup to pwm_pmic_backlight
+In-Reply-To: <20191217135140.GL18955@dell>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20191212084546.GA3468@dell> <d22e9a04-da09-0f41-a78e-ac17a947650a@redhat.com> <20191212155209.GC3468@dell> <4d07445d-98b1-f23c-0aac-07709b45df78@redhat.com> <20191213082734.GE3468@dell> <d648794d-4c76-cfa1-dcbd-16c34d409c51@redhat.com> <20191216093016.GE3648@dell> <fc3c29da-528d-a6b6-d13b-92e6469eadea@redhat.com> <20191217081127.GI18955@dell> <87immfyth2.fsf@intel.com> <20191217135140.GL18955@dell>
+Date:   Wed, 18 Dec 2019 09:14:47 +0200
+Message-ID: <87a77q14wo.fsf@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-18_01:2019-12-17,2019-12-18 signatures=0
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently Linux register ghes_poll_func with TIMER_DEFERRABLE flag,
-because of which it is serviced when the CPU eventually wakes up with a
-subsequent non-deferrable timer and not at the configured polling interval.
+On Tue, 17 Dec 2019, Lee Jones <lee.jones@linaro.org> wrote:
+> Hans was making the case that this was impractical for DRM, due to the
+> amount of churn you guys receive, hence the discussion.  I'm very
+> pleased that this is not the case.
 
-For polling mode, the polling interval configured by firmware should not
-be exceeded as per ACPI_6_3 spec[refer Table 18-394], So Timer need to
-be configured in non-deferrable mode by removing TIMER_DEFERRABLE flag.
-With NO_HZ enabled and timer callback being configured in non-deferrable
-mode, timer callback will get called exactly after polling interval.
+Heh, well, it is the case, but the point is that should be our problem,
+not yours. ;)
 
-Impact of removing TIMER_DEFFERABLE flag
-- With NO_HZ enabled, additional timer ticks and unnecessary wakeups of
- the cpu happens exactly after polling interval.
+BR,
+Jani.
 
-- If polling interval is too small than polling function will be called
- too frequently which may stall the cpu.
 
-Signed-off-by: Bhaskar Upadhaya <bupadhaya@marvell.com>
----
- drivers/acpi/apei/ghes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 777f6f7122b4..c8f9230f69fb 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1181,7 +1181,7 @@ static int ghes_probe(struct platform_device *ghes_dev)
- 
- 	switch (generic->notify.type) {
- 	case ACPI_HEST_NOTIFY_POLLED:
--		timer_setup(&ghes->timer, ghes_poll_func, TIMER_DEFERRABLE);
-+		timer_setup(&ghes->timer, ghes_poll_func, 0);
- 		ghes_add_timer(ghes);
- 		break;
- 	case ACPI_HEST_NOTIFY_EXTERNAL:
 -- 
-2.17.1
-
+Jani Nikula, Intel Open Source Graphics Center
