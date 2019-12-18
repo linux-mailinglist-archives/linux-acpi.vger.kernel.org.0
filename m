@@ -2,60 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BBC312401E
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Dec 2019 08:14:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18F6312411B
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Dec 2019 09:10:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725882AbfLRHOt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Dec 2019 02:14:49 -0500
-Received: from mga06.intel.com ([134.134.136.31]:64110 "EHLO mga06.intel.com"
+        id S1725882AbfLRIKZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Dec 2019 03:10:25 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47752 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725799AbfLRHOt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 18 Dec 2019 02:14:49 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Dec 2019 23:14:48 -0800
-X-IronPort-AV: E=Sophos;i="5.69,328,1571727600"; 
-   d="scan'208";a="209988246"
-Received: from asama-mobl.amr.corp.intel.com (HELO localhost) ([10.252.50.109])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Dec 2019 23:14:43 -0800
-From:   Jani Nikula <jani.nikula@linux.intel.com>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] mfd: intel_soc_pmic: Rename pwm_backlight pwm-lookup to pwm_pmic_backlight
-In-Reply-To: <20191217135140.GL18955@dell>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20191212084546.GA3468@dell> <d22e9a04-da09-0f41-a78e-ac17a947650a@redhat.com> <20191212155209.GC3468@dell> <4d07445d-98b1-f23c-0aac-07709b45df78@redhat.com> <20191213082734.GE3468@dell> <d648794d-4c76-cfa1-dcbd-16c34d409c51@redhat.com> <20191216093016.GE3648@dell> <fc3c29da-528d-a6b6-d13b-92e6469eadea@redhat.com> <20191217081127.GI18955@dell> <87immfyth2.fsf@intel.com> <20191217135140.GL18955@dell>
-Date:   Wed, 18 Dec 2019 09:14:47 +0200
-Message-ID: <87a77q14wo.fsf@intel.com>
+        id S1725797AbfLRIKZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 18 Dec 2019 03:10:25 -0500
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4CC43218AC;
+        Wed, 18 Dec 2019 08:10:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576656624;
+        bh=U/8TqUzAxcIc+qf1l+OtBYMcKlgSCegbO9PGNei3WeI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VKDfzirQOjpeHWk5eF3cWwSWFLR3cL9yGD4gaGtlYPSz8A17HM3uxkm4Mvlabygoi
+         CUBl4QJq/nGE9OgZpCANpxnWU2wBFmq2txfaV+f2CFOx3ZaJA9WfaMb3DQyxhocyma
+         P2Nwe8dXfis9xyBpoZFv7Ry3ODg38Bj5lP0gDdYo=
+Date:   Wed, 18 Dec 2019 09:10:22 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+Cc:     linux-serial@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, nobuhiro1.iwamatsu@toshiba.co.jp,
+        shrirang.bagul@canonical.com, stable@vger.kernel.org,
+        Rob Herring <robh@kernel.org>, Johan Hovold <johan@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: Re: [PATCH] serdev: Don't claim unsupported serial devices
+Message-ID: <20191218081022.GA1553073@kroah.com>
+References: <20191218065646.817493-1-punit1.agrawal@toshiba.co.jp>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191218065646.817493-1-punit1.agrawal@toshiba.co.jp>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 17 Dec 2019, Lee Jones <lee.jones@linaro.org> wrote:
-> Hans was making the case that this was impractical for DRM, due to the
-> amount of churn you guys receive, hence the discussion.  I'm very
-> pleased that this is not the case.
+On Wed, Dec 18, 2019 at 03:56:46PM +0900, Punit Agrawal wrote:
+> Serdev sub-system claims all serial devices that are not already
+> enumerated.
 
-Heh, well, it is the case, but the point is that should be our problem,
-not yours. ;)
+All ACPI serial devices, right?  Surely not all other types of serial
+devices in the system.
 
-BR,
-Jani.
+And what do you mean by "not already enumerated"?
 
+> As a result, no device node is created for serial port on
+> certain boards such as the Apollo Lake based UP2. This has the
+> unintended consequence of not being able to raise the login prompt via
+> serial connection.
+> 
+> Introduce a blacklist to reject devices that should not be treated as
 
--- 
-Jani Nikula, Intel Open Source Graphics Center
+"reject ACPI serial devices"
+
+> a serdev device. Add the Intel HS UART peripheral ids to the blacklist
+> to bring back serial port on SoCs carrying them.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Johan Hovold <johan@kernel.org>
+> Cc: Hans de Goede <hdegoede@redhat.com>
+> ---
+> 
+> Hi,
+> 
+> The patch has been updated based on feedback recieved on the RFC[0].
+> 
+> Please consider merging if there are no objections.
+> 
+> Thanks,
+> Punit
+> 
+> [0] https://www.spinics.net/lists/linux-serial/msg36646.html
+> 
+>  drivers/tty/serdev/core.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/tty/serdev/core.c b/drivers/tty/serdev/core.c
+> index 226adeec2aed..0d64fb7d4f36 100644
+> --- a/drivers/tty/serdev/core.c
+> +++ b/drivers/tty/serdev/core.c
+> @@ -663,6 +663,12 @@ static acpi_status acpi_serdev_register_device(struct serdev_controller *ctrl,
+>  	return AE_OK;
+>  }
+>  
+> +static const struct acpi_device_id serdev_blacklist_devices[] = {
+
+s/serdev_blacklist_devices/serdev_blacklist/acpi_devices/  ?
+
+This is an acpi-specific thing, not a generic tty thing.
+
+thanks,
+
+greg k-h
