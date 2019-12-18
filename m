@@ -2,49 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0051E124CC9
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Dec 2019 17:10:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 385FA124CDF
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Dec 2019 17:13:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727277AbfLRQKe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Dec 2019 11:10:34 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:36008 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727121AbfLRQKe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Dec 2019 11:10:34 -0500
-Received: by mail-wr1-f67.google.com with SMTP id z3so2921687wru.3
-        for <linux-acpi@vger.kernel.org>; Wed, 18 Dec 2019 08:10:32 -0800 (PST)
+        id S1727121AbfLRQNc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Dec 2019 11:13:32 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:46143 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726985AbfLRQNc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Dec 2019 11:13:32 -0500
+Received: by mail-wr1-f66.google.com with SMTP id z7so2868366wrl.13
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Dec 2019 08:13:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=c8CBYJotaME8s7Ii/JzatZyff2J7fay7KXQVz82AJFg=;
-        b=Sxy90pGkAdWmS2Fgg1g9dDmRYM88EKGHw+3sHdVzrc/jXY1im07pY4qUv1tGNMFQQk
-         IcekmR8ZcC3tFNKeEjDAkEGo31sQzuifBkI1yTZSgyo4SKdsyJsWbVwWFYGXwlPpAkhx
-         XRuhpq4pljIs7U5JvYnTtLM4nZitTnXapzCw5DQHNgB6SeKoZJeGkQ1klqygxkp7+RpW
-         WjEwhJC4iCG1aEKCSznQiMBQpuy+m+bSMgY28JLRnV8cBMrn15RqbaEHWG6RiNnqDhbN
-         nih4Ob9CXvxvj259j4M6yjk+0zriLR+qz1v/rwXtQ0kpWi6stqyzl02mE7nywETjkOB5
-         IjbA==
+        bh=PXvdq6qWFeAmRkgUP6ivkMlcnTIDIWAWnzZnITD9gIQ=;
+        b=TO3udsaM0wHSFHtqq3lx9Vpw/cuxpABpx0ZL6fQor8a23g56txPXE2jNc4FuScZ3Fi
+         LXZKSp/98TUo9nRfA1Ld8V1forbku0Bk8tJ7SeCtxPlk3DYZ/BK9L2TwV3xh0U+J3QHt
+         JSei+y68UXeLCYVSEiEOrmRm+hf9jKrLSy3waZ06SVfY3S32E4pocftRNi7yO6SsbTOE
+         unPpzZIPwL0bn7imVjhmGKGqJ7kxahOEYFOwX2CzXvusbd5u0aHn0r4+JtE8EWQKZb4G
+         tXYPPjKJCaNiGfLjAylBAAaSiaK44cjKb9WiZ+3GgVPYjq+oQZQM5pfgoyCaaxXTBT4G
+         e4hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=c8CBYJotaME8s7Ii/JzatZyff2J7fay7KXQVz82AJFg=;
-        b=p3e+lAa9btmKr+Dp71T7s3R7+ygvFy7rocmcindJEgfb5CjgM4eJ2rN34Va/SYgKeE
-         vM6P22z2ntw/ZEdUYJILqmNfZNoWXlZ9PDEjmtOO5LyNO6XdD6K2eOtcyOdn7TW6j7fI
-         267xmVSOYcV55GSMB7WcqSXIElyFasKzcFnFfAhyoCFB0UUSuOldoIZTXV/PyyNL6zqk
-         ymGxsiq3XaNTmBqELLeW4mymiSTCNSXQSgX0aIBWhmpHvxPwXAV7vZtCok2pSKYQYlTY
-         I+g0mITPjUKzOQ9RLIZdbtCnimR6rDj5wdGtmM/LztHKqmGwGF+BgQ0eWXo7P9r9EcRM
-         ZZsA==
-X-Gm-Message-State: APjAAAWp1DIm3quhIt5lSLO07LESbFpGW6dIsLSueckcoyggZXfnjoMg
-        III6CsdH+dHFEId6G9akapTVoA==
-X-Google-Smtp-Source: APXvYqzsaGjamve7e+ufvEcnCPaUD5lFGwfiwdLCMRmGmU/OQUapuquuTDlM74GkdPYUKGdDnOKsEA==
-X-Received: by 2002:a5d:4e90:: with SMTP id e16mr3895866wru.318.1576685432128;
-        Wed, 18 Dec 2019 08:10:32 -0800 (PST)
+        bh=PXvdq6qWFeAmRkgUP6ivkMlcnTIDIWAWnzZnITD9gIQ=;
+        b=f7xXDiQau3YgisqIv1jjeE0xY8Q3NDirPsfszBZebrR2eL3in9kwtl4il4K1df6Vwk
+         OXdGuXsY5wEBk/7IT8NmY2q4RC0vMSFKFWUqNOCEXX5pezSYAE4qD23htfNa3l5/EGeC
+         skg5b8sXe/ZrFx2nzJTEo2qKu9bG7do/PUI9LOYNHEZggIRjLQqR0TkeKrzUrDRSVroo
+         QrkfFNBkOJvq2zMisJ0vcoeo+dqeqhLncV5rYdw0Qv92g1WrPRnAyrfdbhEtYT2hy8nD
+         8PTSEqm6E1i9lfAzPU0G8Mj8MVBsE+0l9J62h62E3myt74h0yrlCa1+fFaWM7ZT/jWvt
+         KfEA==
+X-Gm-Message-State: APjAAAUwiNDUaBUfzhe96jhtuvEkG8Sa0aLD06dZTs9EeOpEHfoJwo7O
+        +1xxLybidvN9Zn7NqtFwcITNaA==
+X-Google-Smtp-Source: APXvYqz3/O6xngUMvfQZDBfpU617F1qkmNRS56a4TzmWh1A2QPAdGPRnlUyBsXlERsvvTcYDCOXcBA==
+X-Received: by 2002:adf:f244:: with SMTP id b4mr3692481wrp.88.1576685610515;
+        Wed, 18 Dec 2019 08:13:30 -0800 (PST)
 Received: from myrica (adsl-84-227-176-239.adslplus.ch. [84.227.176.239])
-        by smtp.gmail.com with ESMTPSA id 60sm3115391wrn.86.2019.12.18.08.10.30
+        by smtp.gmail.com with ESMTPSA id b17sm3034639wrp.49.2019.12.18.08.13.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Dec 2019 08:10:31 -0800 (PST)
-Date:   Wed, 18 Dec 2019 17:10:26 +0100
+        Wed, 18 Dec 2019 08:13:29 -0800 (PST)
+Date:   Wed, 18 Dec 2019 17:13:23 +0100
 From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
 To:     Auger Eric <eric.auger@redhat.com>
 Cc:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -55,111 +55,86 @@ Cc:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         sudeep.holla@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
         will@kernel.org, robin.murphy@arm.com, bhelgaas@google.com,
         jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
-Subject: Re: [PATCH v3 10/13] iommu/arm-smmu-v3: Add second level of context
- descriptor table
-Message-ID: <20191218161026.GH2371701@myrica>
+Subject: Re: [PATCH v3 13/13] iommu/arm-smmu-v3: Add support for PCI PASID
+Message-ID: <20191218161323.GI2371701@myrica>
 References: <20191209180514.272727-1-jean-philippe@linaro.org>
- <20191209180514.272727-11-jean-philippe@linaro.org>
- <26230082-03d2-5c01-389a-9e32dd281b57@redhat.com>
+ <20191209180514.272727-14-jean-philippe@linaro.org>
+ <551ce08c-4160-72c9-05b5-97799f6e5d25@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <26230082-03d2-5c01-389a-9e32dd281b57@redhat.com>
+In-Reply-To: <551ce08c-4160-72c9-05b5-97799f6e5d25@redhat.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 18, 2019 at 10:59:36AM +0100, Auger Eric wrote:
-> >  struct arm_smmu_s1_cfg {
-> > -	struct arm_smmu_cd_table	table;
-> > +	struct arm_smmu_cd_table	*tables;
-> > +	size_t				num_tables;
-> > +	__le64				*l1ptr;
-> you may add a comment saying that l1ptr and l1ptr_dma are only set/used
-> in non linear case and one comment saying that "tables" represent leaf
-> tables.
-
-I now have
-	/* Leaf tables or linear table */
-and
-	/* First level tables, when two level are used */
-but I'm not entirely convinced it adds value
-
-> > +	dma_addr_t			l1ptr_dma;
-> >  	struct arm_smmu_ctx_desc	cd;
-> >  	u8				s1fmt;
-> >  	u8				s1cdmax;
-> > @@ -1521,9 +1538,53 @@ static void arm_smmu_free_cd_leaf_table(struct arm_smmu_device *smmu,
-> >  {
-> >  	size_t size = num_entries * (CTXDESC_CD_DWORDS << 3);
-> >  
-> > +	if (!table->ptr)
-> > +		return;
-> >  	dmam_free_coherent(smmu->dev, size, table->ptr, table->ptr_dma);
-> >  }
-> >  
-> > +static void arm_smmu_write_cd_l1_desc(__le64 *dst,
-> > +				      struct arm_smmu_cd_table *table)
+On Wed, Dec 18, 2019 at 11:17:55AM +0100, Auger Eric wrote:
+> > +static int arm_smmu_enable_pasid(struct arm_smmu_master *master)
 > > +{
-> > +	u64 val = (table->ptr_dma & CTXDESC_L1_DESC_L2PTR_MASK) |
-> > +		  CTXDESC_L1_DESC_VALID;
+> > +	int ret;
+> > +	int features;
+> > +	int num_pasids;
+> > +	struct pci_dev *pdev;
 > > +
-> > +	WRITE_ONCE(*dst, cpu_to_le64(val));
+> > +	if (!dev_is_pci(master->dev))
+> > +		return -ENODEV;
+> > +
+> > +	pdev = to_pci_dev(master->dev);
+> > +
+> > +	features = pci_pasid_features(pdev);
+> > +	if (features < 0)
+> > +		return -ENODEV;
+> why -ENODEV?
+
+Right that should return features. The below should return num_pasids.
+
+> > +
+> > +	num_pasids = pci_max_pasids(pdev);
+> > +	if (num_pasids <= 0)
+> > +		return -ENODEV;
+> > +
+> > +	ret = pci_enable_pasid(pdev, features);
+> > +	if (!ret)
+> > +		master->ssid_bits = min_t(u8, ilog2(num_pasids),
+> > +					  master->smmu->ssid_bits);
+> so here we are ;-)
+> > +	return ret;
 > > +}
 > > +
-> > +static __le64 *arm_smmu_get_cd_ptr(struct arm_smmu_domain *smmu_domain,
-> > +				   u32 ssid)
+> > +static void arm_smmu_disable_pasid(struct arm_smmu_master *master)
 > > +{
-> > +	__le64 *l1ptr;
-> > +	unsigned int idx;
-> > +	struct arm_smmu_cd_table *table;
-> > +	struct arm_smmu_device *smmu = smmu_domain->smmu;
-> > +	struct arm_smmu_s1_cfg *cfg = &smmu_domain->s1_cfg;
+> > +	struct pci_dev *pdev;
 > > +
-> > +	if (cfg->s1fmt == STRTAB_STE_0_S1FMT_LINEAR) {
-> > +		table = &cfg->tables[0];
-> > +		idx = ssid;
-> > +	} else {
-> nit: you may avoid this extra indent by either returning above or go to
-> a label.
-> > +		idx = ssid >> CTXDESC_SPLIT;
-> > +		if (idx >= cfg->num_tables)
-> > +			return NULL;
+> > +	if (!dev_is_pci(master->dev))
+> > +		return;
 > > +
-> > +		table = &cfg->tables[idx];
-> > +		if (!table->ptr) {
-> > +			if (arm_smmu_alloc_cd_leaf_table(smmu, table,
-> > +							 CTXDESC_L2_ENTRIES))
-> > +				return NULL;
+> > +	pdev = to_pci_dev(master->dev);
 > > +
-> > +			l1ptr = cfg->l1ptr + idx * CTXDESC_L1_DESC_DWORDS;
-> > +			arm_smmu_write_cd_l1_desc(l1ptr, table);
-> > +			/* An invalid L1CD can be cached */
-> > +			arm_smmu_sync_cd(smmu_domain, ssid, false);
-> > +		}
-> > +		idx = ssid & (CTXDESC_L2_ENTRIES - 1);
-> > +	}
-> > +	return table->ptr + idx * CTXDESC_CD_DWORDS;> +}
+> > +	if (!pdev->pasid_enabled)
+> > +		return;
 > > +
-> >  static u64 arm_smmu_cpu_tcr_to_cd(u64 tcr)
+> > +	master->ssid_bits = 0;
+> > +	pci_disable_pasid(pdev);
+> > +}
+> > +
+> >  static void arm_smmu_detach_dev(struct arm_smmu_master *master)
 > >  {
-> >  	u64 val = 0;
-> > @@ -1556,8 +1617,10 @@ static int arm_smmu_write_ctx_desc(struct arm_smmu_domain *smmu_domain,
-> >  	u64 val;
-> >  	bool cd_live;
-> >  	struct arm_smmu_device *smmu = smmu_domain->smmu;
-> > -	__le64 *cdptr = smmu_domain->s1_cfg.table.ptr + ssid *
-> > -			CTXDESC_CD_DWORDS;
-> > +	__le64 *cdptr = arm_smmu_get_cd_ptr(smmu_domain, ssid);
-> > +
-> > +	if (!cdptr)
-> > +		return -ENOMEM;
-> -ENOMEM does not fit well with (idx >= cfg->num_tables) case
-> Besides the idx is checked against the max table capacity only in non
-> linear mode. Can't you check the ssid against cfg->s1cdmax earlier?
+> >  	unsigned long flags;
+> > @@ -2851,13 +2894,16 @@ static int arm_smmu_add_device(struct device *dev)
+> >  
+> >  	master->ssid_bits = min(smmu->ssid_bits, fwspec->num_pasid_bits);
+> >  
+> > +	/* Note that PASID must be enabled before, and disabled after ATS */
+> > +	arm_smmu_enable_pasid(master);
+> No error handling?
 
-Ok, I'll move that check here
+The device still works if PASID isn't supported or cannot be enabled, it
+just won't have some capabilities (IOMMU_DEV_FEAT_AUX and
+IOMMU_DEV_FEAT_SVA), so I don't think add_device should return an error.
+
+But it's a good point, I think at least printing an error like
+arm_smmu_enable_ats() does would be better.
 
 Thanks,
 Jean
