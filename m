@@ -2,39 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69ACE124E88
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Dec 2019 17:59:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED0FC124E93
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Dec 2019 18:00:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727192AbfLRQ7m (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Dec 2019 11:59:42 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:23957 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727173AbfLRQ7m (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 18 Dec 2019 11:59:42 -0500
+        id S1727624AbfLRRA1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Dec 2019 12:00:27 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:40517 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727600AbfLRRA1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Dec 2019 12:00:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1576688380;
+        s=mimecast20190719; t=1576688426;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4Za81kYce2Fs+Hb3XKFLJLsPu+11LvEPxuKMd/7XIn8=;
-        b=UPd2Kvqstmf2khh9xStshlO7jEbV2XGc7fhk2CE1ZaFjOubsyElKLiFxBm+3t6bec2jv4o
-        B8lrZz1TSFKyvw86+/AYPe6Sw84wn8RL/R8eFijoNlMD1ZeTmGzHCs0zYdNWba/C0OFRM3
-        hQoIvaEwngOzQySY5xFF/Afi27FklX0=
+        bh=dn5SUwiPZ6v5NQ8mtwG6iqV/r/5Gbbs8HrzPzH1EerI=;
+        b=X5I+RWQKaKMORa2YSd2a5kZLGEHwmPKfLGmxZyfEYM+lRErqMj0Uz2B9OrYOiDDSO2vCFv
+        jwCQkqFeIBbFhZ4VpQNH5qZnvV93uCTLdvR9KuurPhMQiSpRkiwmZfb2EtWQkSB9adhNam
+        KqWiTEp98gwIcIxacqTqhjKVfxVkmjw=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-371-BHfeu4x5N7OvigT_OZNnDg-1; Wed, 18 Dec 2019 11:59:36 -0500
-X-MC-Unique: BHfeu4x5N7OvigT_OZNnDg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+ us-mta-352-9UUkOd8SOmCuHuHDl5aHpg-1; Wed, 18 Dec 2019 12:00:18 -0500
+X-MC-Unique: 9UUkOd8SOmCuHuHDl5aHpg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 409E219586C2;
-        Wed, 18 Dec 2019 16:59:34 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 797B119586C8;
+        Wed, 18 Dec 2019 17:00:14 +0000 (UTC)
 Received: from [10.36.116.117] (ovpn-116-117.ams2.redhat.com [10.36.116.117])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id B6E3F26DEC;
-        Wed, 18 Dec 2019 16:59:29 +0000 (UTC)
-Subject: Re: [PATCH v3 07/13] iommu/arm-smmu-v3: Add support for Substream IDs
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 1A81460C18;
+        Wed, 18 Dec 2019 17:00:09 +0000 (UTC)
+Subject: Re: [PATCH v3 08/13] iommu/arm-smmu-v3: Propate ssid_bits
 To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
 Cc:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
@@ -45,20 +44,20 @@ Cc:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         will@kernel.org, robin.murphy@arm.com, bhelgaas@google.com,
         jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
 References: <20191209180514.272727-1-jean-philippe@linaro.org>
- <20191209180514.272727-8-jean-philippe@linaro.org>
- <aeed148a-3c55-6e97-8d97-efa4f8c6d9f4@redhat.com>
- <20191218160759.GF2371701@myrica>
+ <20191209180514.272727-9-jean-philippe@linaro.org>
+ <466bbc57-79d4-274c-67bc-4ed591da9968@redhat.com>
+ <20191218160834.GG2371701@myrica>
 From:   Auger Eric <eric.auger@redhat.com>
-Message-ID: <3f8e85f6-92ac-79a2-f048-780b8712ae99@redhat.com>
-Date:   Wed, 18 Dec 2019 17:59:28 +0100
+Message-ID: <bf66e477-6fea-517e-98b6-123eef625334@redhat.com>
+Date:   Wed, 18 Dec 2019 18:00:08 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.4.0
 MIME-Version: 1.0
-In-Reply-To: <20191218160759.GF2371701@myrica>
+In-Reply-To: <20191218160834.GG2371701@myrica>
 Content-Type: text/plain; charset=windows-1252
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
@@ -66,132 +65,33 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi Jean,
 
-On 12/18/19 5:07 PM, Jean-Philippe Brucker wrote:
-> On Tue, Dec 17, 2019 at 05:43:59PM +0100, Auger Eric wrote:
->>> -static void arm_smmu_write_ctx_desc(struct arm_smmu_device *smmu,
->>> -				    struct arm_smmu_s1_cfg *cfg)
->>> +static int arm_smmu_write_ctx_desc(struct arm_smmu_domain *smmu_domain,
->>> +				   int ssid, struct arm_smmu_ctx_desc *cd)
->>>  {
->>> -	u64 val;
->>> -	__le64 *cdptr = cfg->table.ptr;
->>> -
->>>  	/*
->>> -	 * We don't need to issue any invalidation here, as we'll invalidate
->>> -	 * the STE when installing the new entry anyway.
->>> +	 * This function handles the following cases:
->>> +	 *
->>> +	 * (1) Install primary CD, for normal DMA traffic (SSID = 0).
->>> +	 * (2) Install a secondary CD, for SID+SSID traffic.
->>> +	 * (3) Update ASID of a CD. Atomically write the first 64 bits of the
->>> +	 *     CD, then invalidate the old entry and mappings.
->>> +	 * (4) Remove a secondary CD.
->> I see arm_smmu_write_ctx_desc getting called with non null cd in
->> arm_smmu_attach_dev but I do not see it removed in the detach path?
+On 12/18/19 5:08 PM, Jean-Philippe Brucker wrote:
+> On Tue, Dec 17, 2019 at 06:07:26PM +0100, Auger Eric wrote:
+>> Hi Jean,
+>>
+>> On 12/9/19 7:05 PM, Jean-Philippe Brucker wrote:
+>>
+>> s/Propate/Propagate in the commit title.
+>>> Now that we support substream IDs, initialize s1cdmax with the number of
+>>> SSID bits supported by a master and the SMMU.
+>>>
+>>> Context descriptor tables are allocated once for the first master
+>>> attached to a domain. Therefore attaching multiple devices with
+>>> different SSID sizes is tricky, and we currently don't support it.
+>>>
+>>> As a future improvement it would be nice to at least support attaching a
+>>> SSID-capable device to a domain that isn't using SSID, by reallocating
+>>> the SSID table.
+>> Isn't that use case relevant (I mean using both devices in a non SSID
+>> use case). For platform devices you can work this around with FW but for
+>> PCI devices?
 > 
-> No we don't have to remove the primary CD, since detach clears the STE and
-> frees the CD tables.
-OK
-> 
->>>  	 */
->>> -	val = arm_smmu_cpu_tcr_to_cd(cfg->cd.tcr) |
->>> -#ifdef __BIG_ENDIAN
->>> -	      CTXDESC_CD_0_ENDI |
->>> -#endif
->>> -	      CTXDESC_CD_0_R | CTXDESC_CD_0_A | CTXDESC_CD_0_ASET |
->>> -	      CTXDESC_CD_0_AA64 | FIELD_PREP(CTXDESC_CD_0_ASID, cfg->cd.asid) |
->>> -	      CTXDESC_CD_0_V;
->>> +	u64 val;
->>> +	bool cd_live;
->>> +	struct arm_smmu_device *smmu = smmu_domain->smmu;
->>> +	__le64 *cdptr = smmu_domain->s1_cfg.table.ptr + ssid *
->>> +			CTXDESC_CD_DWORDS;>
->>> -	/* STALL_MODEL==0b10 && CD.S==0 is ILLEGAL */
->>> -	if (smmu->features & ARM_SMMU_FEAT_STALL_FORCE)
->>> -		val |= CTXDESC_CD_0_S;
->>> +	val = le64_to_cpu(cdptr[0]);
->>> +	cd_live = !!(val & CTXDESC_CD_0_V);
->>>  
->>> -	cdptr[0] = cpu_to_le64(val);
->>> +	if (!cd) { /* (4) */
->>> +		val = 0;
->>> +	} else if (cd_live) { /* (3) */
->>> +		val &= ~CTXDESC_CD_0_ASID;
->>> +		val |= FIELD_PREP(CTXDESC_CD_0_ASID, cd->asid);
->>> +		/*
->>> +		 * Until CD+TLB invalidation, both ASIDs may be used for tagging
->>> +		 * this substream's traffic
->>> +		 */
->>> +	} else { /* (1) and (2) */
->>> +		cdptr[1] = cpu_to_le64(cd->ttbr & CTXDESC_CD_1_TTB0_MASK);
->>> +		cdptr[2] = 0;
->>> +		cdptr[3] = cpu_to_le64(cd->mair);
->>> +
->>> +		/*
->>> +		 * STE is live, and the SMMU might fetch this CD at any
->>> +		 * time. Ensure that it observes the rest of the CD before we
->>> +		 * enable it.
->> Mostly, on't you want the invalid state to be seen?
-Sorry I wanted to say you mostly want to enforce the INVALID bit (what I
-understand from your below explanations). I was confused by the wording
-"Ensure that it observes the rest of the CD before we enable it".
-> 
-> Sorry I didn't get your question. Without the sync, the SMMU could read an
-> invalid address in CD[1], read V=1 in CD[0] and proceed with dereferencing
-> the bogus pointer before seeing our update to CD[1].
-> 
-> To prevent this we follow the update procedure described in IHI0070Ca
-> 3.21.3.1 (Configuration structure update procedure):
-> 
->     Because the SMMU can read any reachable structure at any time, and is not
->     required to read the double-words of the structure in order, Arm
->     recommends that the following procedure is used to initialize structures:
->     1. Structure starts invalid, having V == 0.
->     2. Fill in all fields, leaving V == 0, then perform a DSB operation to
->        ensure written data is observable from the SMMU.
->     3. Issue a CMD_CFGI_<STRUCT>, as appropriate.
->     4. Issue a CMD_SYNC, and wait for completion.
->     5. Set V to 1, then perform a DSB operation to ensure write is
->        observable by the SMMU.
->     6. Issue CMD_CFGI_<STRUCT>, as appropriate.
->     7. Optionally issue a CMD_SYNC, and wait for completion. This must be
->        done if a subsequent software operation, such as enabling device
->        DMA, depends on the SMMU using the new structure.
-> 
->>> @@ -1664,6 +1739,7 @@ static void arm_smmu_write_strtab_ent(struct arm_smmu_master *master, u32 sid,
->>>  	if (s1_cfg) {
->>>  		BUG_ON(ste_live);
->>>  		dst[1] = cpu_to_le64(
->>> +			 FIELD_PREP(STRTAB_STE_1_S1DSS, STRTAB_STE_1_S1DSS_SSID0) |
->>>  			 FIELD_PREP(STRTAB_STE_1_S1CIR, STRTAB_STE_1_S1C_CACHE_WBRA) |
->>>  			 FIELD_PREP(STRTAB_STE_1_S1COR, STRTAB_STE_1_S1C_CACHE_WBRA) |
->>>  			 FIELD_PREP(STRTAB_STE_1_S1CSH, ARM_SMMU_SH_ISH) |
->>> @@ -1674,7 +1750,9 @@ static void arm_smmu_write_strtab_ent(struct arm_smmu_master *master, u32 sid,
->>>  			dst[1] |= cpu_to_le64(STRTAB_STE_1_S1STALLD);
->>>  
->>>  		val |= (s1_cfg->table.ptr_dma & STRTAB_STE_0_S1CTXPTR_MASK) |
->>> -			FIELD_PREP(STRTAB_STE_0_CFG, STRTAB_STE_0_CFG_S1_TRANS);
->>> +			FIELD_PREP(STRTAB_STE_0_CFG, STRTAB_STE_0_CFG_S1_TRANS) |
->>> +			FIELD_PREP(STRTAB_STE_0_S1CDMAX, s1_cfg->s1cdmax) |
->>> +			FIELD_PREP(STRTAB_STE_0_S1FMT, s1_cfg->s1fmt);
->> Do I understand correctly that each time we update the CD, we also
->> update the STE. This is not wrong but theoretically this is not needed,
->> right?
-> 
-> Only the primary CD. Once we add SVA (or auxiliary domains) we need to
-> update secondary CDs while the STE is live. This series is just
-> preparation for SVA support. I didn't include the full support because it
-> requires another 25+ patches.
-OK
-> 
->> This also explains why you do not need the CMD_PREFETCH_CONFIG with ssid
->> because you invalidate the config per sid?
-> 
-> Hm, I didn't add a CMD_PREFETCH_CONFIG to CDs because I don't know if it's
-> useful. Maybe as future optimization.
-OK
+> Normally each device gets its own domain. Especially since PASID is a PCI
+> Express capability, I expect them to be properly isolated with ACS, each
+> with its own IOMMU group. So I don't think this is too relevant for the
+> moment, it would be a quirk for a broken system.
 
-Thanks
+OK
 
 Eric
 > 
