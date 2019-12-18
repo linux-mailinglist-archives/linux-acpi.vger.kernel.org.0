@@ -2,158 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 613A81243EB
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Dec 2019 11:05:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 705B6124420
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Dec 2019 11:17:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726701AbfLRKFt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Dec 2019 05:05:49 -0500
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:30827 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725799AbfLRKFt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 18 Dec 2019 05:05:49 -0500
+        id S1726830AbfLRKRw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Dec 2019 05:17:52 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:32133 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726787AbfLRKRw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Dec 2019 05:17:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1576663547;
+        s=mimecast20190719; t=1576664271;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FSkrFpm1DW1Y7i6HiHHtFhN9Nhr2jT7JhuCbqt9yG0o=;
-        b=HMa3mKavab7DQS2DFwwIWWNhmOmZWMoMFVdu21e8w+LbkG5UedcBRm3DMMoXm5yatDYskF
-        XuBIJf+ESBkOnB3GNvphc2Kr9h8rprswGAqZ5vwMjqNdDOXIOXoYiVw4vSLNsKONzjx/fc
-        dSOcv6KPjh0GosY2FFeODBSihENLfQE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-72-8FvJB1SgO4KXULxGU_T0eA-1; Wed, 18 Dec 2019 05:05:44 -0500
-X-MC-Unique: 8FvJB1SgO4KXULxGU_T0eA-1
-Received: by mail-wr1-f70.google.com with SMTP id w6so654875wrm.16
-        for <linux-acpi@vger.kernel.org>; Wed, 18 Dec 2019 02:05:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=FSkrFpm1DW1Y7i6HiHHtFhN9Nhr2jT7JhuCbqt9yG0o=;
-        b=SnG/x6tLyIcp4RlLqF2SyO1OJuHcOUXgOnQdNXzn5/efnCKjz8n/9+l8Nn7XMEsH0C
-         EUNslHLJLbKf+bUrdqdt2cvhCc2H4WjJnzq2ZLU/bxJjzojYmasC9g9Tv4Pqpuea7QL2
-         UNKHwW1U4JjnY2/BxfnTWWmz07nh6t7FESrOxQLH3crgzKmV6Ca0gG6qFrYZheyIi9Zn
-         DHfvIUJbqBcOR2watv+fp7lGEh/mKDjsXuKQdW0DsVpcIu8vQFSPv25NKJ3TfVjSuFVX
-         u1SNL46nylQ0EbhGY/dCcwngYglcseYRCbyjfQiFUyQFe31rkRI+/PxxL49IeUNeAzTO
-         GrFQ==
-X-Gm-Message-State: APjAAAXMyJXus2cFzf+jXrUV9gMeFlPODHXhhicL/5FwHENTHZyUG5Xz
-        laINLK1t0d7FHK5/IEpd+q0OPCrdonf/ssT1xEzv4So8TlAmj6h1kGQDgYIp1qv0BfjpL5EhldO
-        Gu3N2Nlaqiy7RBVYlQKDW9Q==
-X-Received: by 2002:adf:f54d:: with SMTP id j13mr499098wrp.19.1576663542492;
-        Wed, 18 Dec 2019 02:05:42 -0800 (PST)
-X-Google-Smtp-Source: APXvYqxX6RhlxdEWJs66pu6RNx9WXgk/AjvVABJfgEXDOjUWKh9KkobAdo1xitp5e/cWXJ63qptzmA==
-X-Received: by 2002:adf:f54d:: with SMTP id j13mr499080wrp.19.1576663542320;
-        Wed, 18 Dec 2019 02:05:42 -0800 (PST)
-Received: from shalem.localdomain (2001-1c00-0c0c-fe00-7e79-4dac-39d0-9c14.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:7e79:4dac:39d0:9c14])
-        by smtp.gmail.com with ESMTPSA id 5sm2130892wrh.5.2019.12.18.02.05.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Dec 2019 02:05:41 -0800 (PST)
-Subject: Re: [PATCH] serdev: Don't claim unsupported serial devices
-To:     Punit Agrawal <punit1.agrawal@toshiba.co.jp>,
-        linux-serial@vger.kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        nobuhiro1.iwamatsu@toshiba.co.jp, shrirang.bagul@canonical.com,
-        stable@vger.kernel.org, Rob Herring <robh@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Johan Hovold <johan@kernel.org>
-References: <20191218065646.817493-1-punit1.agrawal@toshiba.co.jp>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <096046b6-324a-8496-8599-ed7e5ffc6e3c@redhat.com>
-Date:   Wed, 18 Dec 2019 11:05:40 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        bh=Ak6ATDFUqAlrkDJyAcSn/Y2cYfzHlLjmCX8QIyVg8Ig=;
+        b=D4bUYAMrwlk9fyRoEI6HrHN9uvjx8+iF5p3TixAXyE7hn9rOmF6zMjRYuTIgj/5zH0kqD/
+        ti2Iul/gNSEuJjhUKatkWYg1NicFRi4nOrml1DAsJzTKY82aCwQ0NCTakprGOajoFo0aw9
+        LoDbOEDYWDNgZDjoZRalyHiYFz6E1/8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-270-lTO4kAjwMJqiIHHZkW6rbQ-1; Wed, 18 Dec 2019 05:17:48 -0500
+X-MC-Unique: lTO4kAjwMJqiIHHZkW6rbQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 166DEDB22;
+        Wed, 18 Dec 2019 10:17:46 +0000 (UTC)
+Received: from [10.36.116.117] (ovpn-116-117.ams2.redhat.com [10.36.116.117])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id E974E68882;
+        Wed, 18 Dec 2019 10:17:41 +0000 (UTC)
+Subject: Re: [PATCH v3 03/13] iommu/arm-smmu-v3: Support platform SSID
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        iommu@lists.linux-foundation.org
+Cc:     joro@8bytes.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
+        will@kernel.org, robin.murphy@arm.com, bhelgaas@google.com,
+        jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
+References: <20191209180514.272727-1-jean-philippe@linaro.org>
+ <20191209180514.272727-4-jean-philippe@linaro.org>
+From:   Auger Eric <eric.auger@redhat.com>
+Message-ID: <06c57de4-cfca-f95f-ac06-ab6f49a028a3@redhat.com>
+Date:   Wed, 18 Dec 2019 11:17:40 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
 MIME-Version: 1.0
-In-Reply-To: <20191218065646.817493-1-punit1.agrawal@toshiba.co.jp>
-Content-Type: text/plain; charset=windows-1252; format=flowed
+In-Reply-To: <20191209180514.272727-4-jean-philippe@linaro.org>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Jean,
 
-On 18-12-2019 07:56, Punit Agrawal wrote:
-> Serdev sub-system claims all serial devices that are not already
-> enumerated. As a result, no device node is created for serial port on
-> certain boards such as the Apollo Lake based UP2. This has the
-> unintended consequence of not being able to raise the login prompt via
-> serial connection.
+On 12/9/19 7:05 PM, Jean-Philippe Brucker wrote:
+> For platform devices that support SubstreamID (SSID), firmware provides
+> the number of supported SSID bits. Restrict it to what the SMMU supports
+> and cache it into master->ssid_bits, which will also be used for PCI
+> PASID.
 > 
-> Introduce a blacklist to reject devices that should not be treated as
-> a serdev device. Add the Intel HS UART peripheral ids to the blacklist
-> to bring back serial port on SoCs carrying them.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Johan Hovold <johan@kernel.org>
-> Cc: Hans de Goede <hdegoede@redhat.com>
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+the title of the patch does not really explain what it actually does. At
+this stage we are far from supporting SSIDs ;-) Same for 04?
 
-Thank you for addressing this long standing issue.
+Thanks
 
-The basic approach here looks good to me, once the minor
-comments from other reviewers are addressed you can add my:
-
-Acked-by: Hans de Goede <hdegoede@redhat.com>
-
-to the next version.
-
-Regards,
-
-Hans
-
-
-
+Eric
 > ---
+>  drivers/iommu/arm-smmu-v3.c | 13 +++++++++++++
+>  drivers/iommu/of_iommu.c    |  6 +++++-
+>  include/linux/iommu.h       |  2 ++
+>  3 files changed, 20 insertions(+), 1 deletion(-)
 > 
-> Hi,
-> 
-> The patch has been updated based on feedback recieved on the RFC[0].
-> 
-> Please consider merging if there are no objections.
-> 
-> Thanks,
-> Punit
-> 
-> [0] https://www.spinics.net/lists/linux-serial/msg36646.html
-> 
->   drivers/tty/serdev/core.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
-> 
-> diff --git a/drivers/tty/serdev/core.c b/drivers/tty/serdev/core.c
-> index 226adeec2aed..0d64fb7d4f36 100644
-> --- a/drivers/tty/serdev/core.c
-> +++ b/drivers/tty/serdev/core.c
-> @@ -663,6 +663,12 @@ static acpi_status acpi_serdev_register_device(struct serdev_controller *ctrl,
->   	return AE_OK;
->   }
->   
-> +static const struct acpi_device_id serdev_blacklist_devices[] = {
-> +	{"INT3511", 0},
-> +	{"INT3512", 0},
-> +	{ },
-> +};
+> diff --git a/drivers/iommu/arm-smmu-v3.c b/drivers/iommu/arm-smmu-v3.c
+> index d4e8b7f8d9f4..837b4283b4dc 100644
+> --- a/drivers/iommu/arm-smmu-v3.c
+> +++ b/drivers/iommu/arm-smmu-v3.c
+> @@ -292,6 +292,12 @@
+>  
+>  #define CTXDESC_CD_1_TTB0_MASK		GENMASK_ULL(51, 4)
+>  
+> +/*
+> + * When the SMMU only supports linear context descriptor tables, pick a
+> + * reasonable size limit (64kB).
+> + */
+> +#define CTXDESC_LINEAR_CDMAX		ilog2(SZ_64K / (CTXDESC_CD_DWORDS << 3))
 > +
->   static acpi_status acpi_serdev_add_device(acpi_handle handle, u32 level,
->   					  void *data, void **return_value)
->   {
-> @@ -675,6 +681,10 @@ static acpi_status acpi_serdev_add_device(acpi_handle handle, u32 level,
->   	if (acpi_device_enumerated(adev))
->   		return AE_OK;
->   
-> +	/* Skip if black listed */
-> +	if (!acpi_match_device_ids(adev, serdev_blacklist_devices))
-> +		return AE_OK;
+>  /* Convert between AArch64 (CPU) TCR format and SMMU CD format */
+>  #define ARM_SMMU_TCR2CD(tcr, fld)	FIELD_PREP(CTXDESC_CD_0_TCR_##fld, \
+>  					FIELD_GET(ARM64_TCR_##fld, tcr))
+> @@ -638,6 +644,7 @@ struct arm_smmu_master {
+>  	u32				*sids;
+>  	unsigned int			num_sids;
+>  	bool				ats_enabled;
+> +	unsigned int			ssid_bits;
+>  };
+>  
+>  /* SMMU private data for an IOMMU domain */
+> @@ -2571,6 +2578,12 @@ static int arm_smmu_add_device(struct device *dev)
+>  		}
+>  	}
+>  
+> +	master->ssid_bits = min(smmu->ssid_bits, fwspec->num_pasid_bits);
 > +
->   	if (acpi_serdev_check_resources(ctrl, adev))
->   		return AE_OK;
->   
+> +	if (!(smmu->features & ARM_SMMU_FEAT_2_LVL_CDTAB))
+> +		master->ssid_bits = min_t(u8, master->ssid_bits,
+> +					  CTXDESC_LINEAR_CDMAX);
+> +
+>  	group = iommu_group_get_for_dev(dev);
+>  	if (!IS_ERR(group)) {
+>  		iommu_group_put(group);
+> diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+> index 026ad2b29dcd..b3ccb2f7f1c7 100644
+> --- a/drivers/iommu/of_iommu.c
+> +++ b/drivers/iommu/of_iommu.c
+> @@ -196,8 +196,12 @@ const struct iommu_ops *of_iommu_configure(struct device *dev,
+>  			if (err)
+>  				break;
+>  		}
+> -	}
+>  
+> +		fwspec = dev_iommu_fwspec_get(dev);
+> +		if (!err && fwspec)
+> +			of_property_read_u32(master_np, "pasid-num-bits",
+> +					     &fwspec->num_pasid_bits);
+> +	}
+>  
+>  	/*
+>  	 * Two success conditions can be represented by non-negative err here:
+> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+> index 3a113c5d7394..bd46775c3329 100644
+> --- a/include/linux/iommu.h
+> +++ b/include/linux/iommu.h
+> @@ -581,6 +581,7 @@ struct iommu_group *fsl_mc_device_group(struct device *dev);
+>   * @ops: ops for this device's IOMMU
+>   * @iommu_fwnode: firmware handle for this device's IOMMU
+>   * @iommu_priv: IOMMU driver private data for this device
+> + * @num_pasid_bits: number of PASID bits supported by this device
+>   * @num_ids: number of associated device IDs
+>   * @ids: IDs which this device may present to the IOMMU
+>   */
+> @@ -589,6 +590,7 @@ struct iommu_fwspec {
+>  	struct fwnode_handle	*iommu_fwnode;
+>  	void			*iommu_priv;
+>  	u32			flags;
+> +	u32			num_pasid_bits;
+>  	unsigned int		num_ids;
+>  	u32			ids[1];
+>  };
 > 
 
