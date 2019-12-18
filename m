@@ -2,21 +2,22 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4B571245D0
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Dec 2019 12:32:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19DBE1245D7
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Dec 2019 12:34:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726141AbfLRLcK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Dec 2019 06:32:10 -0500
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:44147 "EHLO
+        id S1726735AbfLRLei (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Dec 2019 06:34:38 -0500
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:44355 "EHLO
         mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726551AbfLRLcK (ORCPT
+        by vger.kernel.org with ESMTP id S1726141AbfLRLei (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 18 Dec 2019 06:32:10 -0500
+        Wed, 18 Dec 2019 06:34:38 -0500
 X-IronPort-AV: E=Sophos;i="5.69,329,1571695200"; 
-   d="scan'208";a="420838389"
+   d="scan'208";a="420838954"
 Received: from nat-inria-bordeaux-52-gw-01-bso.bordeaux.inria.fr (HELO [10.204.4.154]) ([194.199.1.52])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES128-SHA; 18 Dec 2019 12:32:06 +0100
-Subject: Re: [PATCH V6 0/7] ACPI: Support Generic Initiator proximity domains
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES128-SHA; 18 Dec 2019 12:34:34 +0100
+Subject: Re: [PATCH V6 7/7] docs: mm: numaperf.rst Add brief description for
+ access class 1.
 To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-mm@kvack.org,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, x86@kernel.org
@@ -29,6 +30,7 @@ Cc:     Keith Busch <keith.busch@intel.com>, jglisse@redhat.com,
         Hanjun Guo <guohanjun@huawei.com>,
         Sudeep Holla <sudeep.holla@arm.com>
 References: <20191216153809.105463-1-Jonathan.Cameron@huawei.com>
+ <20191216153809.105463-8-Jonathan.Cameron@huawei.com>
 From:   Brice Goglin <brice.goglin@gmail.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=brice.goglin@gmail.com; prefer-encrypt=mutual; keydata=
@@ -62,12 +64,12 @@ Autocrypt: addr=brice.goglin@gmail.com; prefer-encrypt=mutual; keydata=
  53kNJl92HHc9nc//aCQDi1R71NyhtSx+6PyivoBkuaKYs+S4pHmtsFE+5+pkUNROtm4ExLen
  4N4OL6Kq85mWGf2f6hd+OWtn8we1mADjDtdnDHuv+3E3cacFJPP/wFV94ZhqvW4QcyBWcRNF
  A5roa7vcnu/MsCcBoheR0UdYsOnJoEpSZswvC/BGqJTkA2sf
-Message-ID: <dc5f5502-09c6-d476-db0e-0af3412bb031@gmail.com>
-Date:   Wed, 18 Dec 2019 12:32:06 +0100
+Message-ID: <4cf4e790-cacb-b250-bf28-5ba540eb0dc7@gmail.com>
+Date:   Wed, 18 Dec 2019 12:34:34 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191216153809.105463-1-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20191216153809.105463-8-Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Content-Language: en-US
@@ -77,27 +79,42 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 Le 16/12/2019 à 16:38, Jonathan Cameron a écrit :
-> Introduces a new type of NUMA node for cases where we want to represent
-> the access characteristics of a non CPU initiator of memory requests,
-> as these differ from all those for existing nodes containing CPUs and/or
-> memory.
+> Try to make minimal changes to the document which already describes
+> access class 0 in a generic fashion (including IO initiatiors that
+> are not CPUs).
 >
-> These Generic Initiators are presented by the node access0 class in
-> sysfs in the same way as a CPU.   It seems likely that there will be
-> usecases in which the best 'CPU' is desired and Generic Initiators
-> should be ignored.  The final few patches in this series introduced
-> access1 which is a new performance class in the sysfs node description
-> which presents only CPU to memory relationships.  Test cases for this
-> are described below.
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  Documentation/admin-guide/mm/numaperf.rst | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/Documentation/admin-guide/mm/numaperf.rst b/Documentation/admin-guide/mm/numaperf.rst
+> index a80c3c37226e..327c0d72692d 100644
+> --- a/Documentation/admin-guide/mm/numaperf.rst
+> +++ b/Documentation/admin-guide/mm/numaperf.rst
+> @@ -56,6 +56,11 @@ nodes' access characteristics share the same performance relative to other
+>  linked initiator nodes. Each target within an initiator's access class,
+>  though, do not necessarily perform the same as each other.
+>  
+> +The access class "1" is used to allow differentiation between initiators
+> +that are CPUs and hence suitable for generic task scheduling, and
+> +IO initiators such as GPUs and CPUs.  Unlike access class 0, only
+> +nodes containing CPUs are considered.
+> +
+>  ================
+>  NUMA Performance
+>  ================
+> @@ -88,6 +93,9 @@ The latency attributes are provided in nanoseconds.
+>  The values reported here correspond to the rated latency and bandwidth
+>  for the platform.
+>  
+> +Access class 0, takes the same form, but only includes values for CPU to
+> +memory activity.
 
 
-Hello Jonathan
+Shouldn't this be "class 1" here?
 
-If I want to test this with a fake GI, what are the minimal set of
-changes I should put in my ACPI tables? Can I just specify a dummy GI in
-SRAT? What handle should I use there?
-
-Thanks
+Both hunks look contradictory to me.
 
 Brice
 
