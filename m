@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96398126705
+	by mail.lfdr.de (Postfix) with ESMTP id 89778126703
 	for <lists+linux-acpi@lfdr.de>; Thu, 19 Dec 2019 17:31:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726996AbfLSQbf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Dec 2019 11:31:35 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:37308 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726965AbfLSQbb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Dec 2019 11:31:31 -0500
-Received: by mail-wm1-f67.google.com with SMTP id f129so6286139wmf.2
-        for <linux-acpi@vger.kernel.org>; Thu, 19 Dec 2019 08:31:30 -0800 (PST)
+        id S1726945AbfLSQbd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Dec 2019 11:31:33 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:36224 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726906AbfLSQbc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Dec 2019 11:31:32 -0500
+Received: by mail-wr1-f68.google.com with SMTP id z3so6637962wru.3
+        for <linux-acpi@vger.kernel.org>; Thu, 19 Dec 2019 08:31:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=FYioDhZ/j/78qMyUi+NbeqzegCC3zzPggnOI7+kacPU=;
-        b=E5aFBHpxzJkkIdtB9W66GN6ZLoFLgZNBR0wli2z1R1GfTj4GDjCqIV7HMTgweAZs/m
-         ERMXbIUqhoOBDH6Y6yVu9fvJUbv1S/8bk4nVNiphi6Bj9Hr+xJPMF+CM0wdD4p/Nxi15
-         DDZ2eWHA4Po8SV0rJ2mSAgR36BjhDGY65Cg+Nrvt9skytm0oy8yLdbTRRrrti8PY8sxG
-         GqI3y8AJ1hhG5ISFHxJBz9r9FQVWnJK5gOR2aOQHSLuQPhBDyUQ6M6IhwH5s6ciR9Vts
-         9/GMh/foacnJ6Etj2gcl6Fz+phGe372ALVmMIdUJmCb95IS4K+ulNixBQU6NY1edO0qz
-         7V/g==
+        bh=0nQT4ayYi2icUCghAPJFv/Sszvlp8khOsvgAay7NA80=;
+        b=npHKtHQyMJP1HB7cti1f6qmoeI+DJKFn7XvDJJvdFOvDZnGuyq626gmPPg1VW/g+vf
+         NqHOB4YW3LtpAFxkZLtWK59MIggQeBHMnf2FU4aoFn2biHVyVWj0iduHkMNtN+Cw2QKl
+         3GzgzVR/AU8hNb4bXoVdj3ptMWKCW30ACKJ3zUu58boNWddLRmDvOzJlIlY5xbZoskN5
+         NreU0QK4KXWGIqcGeZD3D1pGnvnWQRzTZfOi+0GHu41hGDI1yGc6L4u2Cpc68atX6ZYW
+         BASd0KfcX6CjN1z5HsyiO9BpOuElbJpjkF8aVQmcH6L1OGUKS7nE3VlxwSQerqKeYRZZ
+         jh5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=FYioDhZ/j/78qMyUi+NbeqzegCC3zzPggnOI7+kacPU=;
-        b=C2Epgr0tKIwuQ0O0otKSO4OSI2dlGN2/nMXxZKTrej1S0PnaaYKQThek76nKE+B2re
-         VWYmJJl0iqz2TTXlIaS26V4ClZ+HUfnotrVJnuAFE40S3U3NVDvrlV2EthSaZE+yq10L
-         ZCZfbhFrjIgTO0tZeLf2pOANyncJzw9/1UlHWVQxfS/LrYe0uuzSxXQ9r8dOH3+Q9UvR
-         HT+AfCPM9RE8c2GXbjhQ/fsJVIH1RCjl/hvYzI3LwYW+QAVpXiJVDsSLwix4TLD2wqOS
-         m5yJlqzM2xH7EvpPDk5XDosaM5/+JIK9Y1PJe7+EmHsrYt0gmYQeko9whWyLBcYzCB9W
-         EAgQ==
-X-Gm-Message-State: APjAAAXtR+xhALJj88XRHiywbzEzK+LbxWNI3BkDbXtko2a5bXtUk8dG
-        Jr5OG97N2OP/4lxSLw48F5aNow==
-X-Google-Smtp-Source: APXvYqz3tbndDtmJIFC5nyvsIDtpq2oUpdByujhcgVkyGmtlGJFmTfIjiRRUks4oRR3Fv+Nm/TOV1w==
-X-Received: by 2002:a1c:80d4:: with SMTP id b203mr10896801wmd.102.1576773089551;
-        Thu, 19 Dec 2019 08:31:29 -0800 (PST)
+        bh=0nQT4ayYi2icUCghAPJFv/Sszvlp8khOsvgAay7NA80=;
+        b=DlYO18Tv9auGcxE6y+O7hbdTR9ycy56i2orfDfhF4AvmVg2mieFofwz4aP9S/tTLAC
+         rhIso5EvcU1p5pECGB7yM9E8VP+KUXBZVmB6GygOV4IOrUA8/Sc+r27ZGLitEoId7aVQ
+         xlF8CAOK7fVQ8VEoOPFHGjIIiPonAhc0Rp+y9imwCN0GXoWpdGGeiM5dIPWcOOmlD3Pw
+         xA/Y1BZPJNkUQPyDb//n7XwQ1DyxIavQCLqiLkqsBN7zoScLBzkDESJi2pQwsmeofuUu
+         fE055LVBLip32tw1mFebLZGDrExwUDHuMrnTjJOGW9XL4CUimbECaRkC+oRfe6LNa2GH
+         tW4w==
+X-Gm-Message-State: APjAAAXi3Q9ryH6MFYx5NXqNPk7q9s2J219RDuZwOdRMqf8gH7ZH9POK
+        xlNyyjs9OtHldD4R31D2eMhN4Q==
+X-Google-Smtp-Source: APXvYqySYIruAf+8UBV8yIOQEKLEyMW/IQr33V3GJnSu1IpDHvzkWr5tRTKgSPhwJDgoXMZbxqfv3Q==
+X-Received: by 2002:a5d:53d1:: with SMTP id a17mr10010531wrw.327.1576773090913;
+        Thu, 19 Dec 2019 08:31:30 -0800 (PST)
 Received: from localhost.localdomain (adsl-84-227-176-239.adslplus.ch. [84.227.176.239])
-        by smtp.gmail.com with ESMTPSA id u22sm7092068wru.30.2019.12.19.08.31.28
+        by smtp.gmail.com with ESMTPSA id u22sm7092068wru.30.2019.12.19.08.31.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2019 08:31:29 -0800 (PST)
+        Thu, 19 Dec 2019 08:31:30 -0800 (PST)
 From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
 To:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
@@ -54,9 +54,9 @@ Cc:     joro@8bytes.org, robh+dt@kernel.org, mark.rutland@arm.com,
         will@kernel.org, robin.murphy@arm.com, bhelgaas@google.com,
         eric.auger@redhat.com, jonathan.cameron@huawei.com,
         zhangfei.gao@linaro.org
-Subject: [PATCH v4 08/13] iommu/arm-smmu-v3: Propagate ssid_bits
-Date:   Thu, 19 Dec 2019 17:30:28 +0100
-Message-Id: <20191219163033.2608177-9-jean-philippe@linaro.org>
+Subject: [PATCH v4 09/13] iommu/arm-smmu-v3: Prepare for handling arm_smmu_write_ctx_desc() failure
+Date:   Thu, 19 Dec 2019 17:30:29 +0100
+Message-Id: <20191219163033.2608177-10-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20191219163033.2608177-1-jean-philippe@linaro.org>
 References: <20191219163033.2608177-1-jean-philippe@linaro.org>
@@ -67,107 +67,48 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Now that we support substream IDs, initialize s1cdmax with the number of
-SSID bits supported by a master and the SMMU.
+Second-level context descriptor tables will be allocated lazily in
+arm_smmu_write_ctx_desc(). Help with handling allocation failure by
+moving the CD write into arm_smmu_domain_finalise_s1().
 
-Context descriptor tables are allocated once for the first master
-attached to a domain. Therefore attaching multiple devices with
-different SSID sizes is tricky, and we currently don't support it.
-
-As a future improvement it would be nice to at least support attaching a
-SSID-capable device to a domain that isn't using SSID, by reallocating
-the SSID table. This would allow supporting a SSID-capable device that
-is in the same IOMMU group as a bridge, for example. Varying SSID size
-is less of a concern, since the PCIe specification "highly recommends"
-that devices supporting PASID implement all 20 bits of it.
-
-Tested-by: Zhangfei Gao <zhangfei.gao@linaro.org>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
- drivers/iommu/arm-smmu-v3.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/iommu/arm-smmu-v3.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/iommu/arm-smmu-v3.c b/drivers/iommu/arm-smmu-v3.c
-index e1bec7e552b9..e147087198ef 100644
+index e147087198ef..b825a5639afc 100644
 --- a/drivers/iommu/arm-smmu-v3.c
 +++ b/drivers/iommu/arm-smmu-v3.c
-@@ -2279,6 +2279,7 @@ static void arm_smmu_domain_free(struct iommu_domain *domain)
- }
- 
- static int arm_smmu_domain_finalise_s1(struct arm_smmu_domain *smmu_domain,
-+				       struct arm_smmu_master *master,
- 				       struct io_pgtable_cfg *pgtbl_cfg)
- {
- 	int ret;
-@@ -2290,6 +2291,8 @@ static int arm_smmu_domain_finalise_s1(struct arm_smmu_domain *smmu_domain,
- 	if (asid < 0)
- 		return asid;
- 
-+	cfg->s1cdmax = master->ssid_bits;
+@@ -2301,8 +2301,15 @@ static int arm_smmu_domain_finalise_s1(struct arm_smmu_domain *smmu_domain,
+ 	cfg->cd.ttbr	= pgtbl_cfg->arm_lpae_s1_cfg.ttbr[0];
+ 	cfg->cd.tcr	= pgtbl_cfg->arm_lpae_s1_cfg.tcr;
+ 	cfg->cd.mair	= pgtbl_cfg->arm_lpae_s1_cfg.mair;
 +
- 	ret = arm_smmu_alloc_cd_tables(smmu_domain);
- 	if (ret)
- 		goto out_free_asid;
-@@ -2306,6 +2309,7 @@ static int arm_smmu_domain_finalise_s1(struct arm_smmu_domain *smmu_domain,
- }
- 
- static int arm_smmu_domain_finalise_s2(struct arm_smmu_domain *smmu_domain,
-+				       struct arm_smmu_master *master,
- 				       struct io_pgtable_cfg *pgtbl_cfg)
- {
- 	int vmid;
-@@ -2322,7 +2326,8 @@ static int arm_smmu_domain_finalise_s2(struct arm_smmu_domain *smmu_domain,
++	ret = arm_smmu_write_ctx_desc(smmu_domain, 0, &cfg->cd);
++	if (ret)
++		goto out_free_tables;
++
  	return 0;
- }
  
--static int arm_smmu_domain_finalise(struct iommu_domain *domain)
-+static int arm_smmu_domain_finalise(struct iommu_domain *domain,
-+				    struct arm_smmu_master *master)
- {
- 	int ret;
- 	unsigned long ias, oas;
-@@ -2330,6 +2335,7 @@ static int arm_smmu_domain_finalise(struct iommu_domain *domain)
- 	struct io_pgtable_cfg pgtbl_cfg;
- 	struct io_pgtable_ops *pgtbl_ops;
- 	int (*finalise_stage_fn)(struct arm_smmu_domain *,
-+				 struct arm_smmu_master *,
- 				 struct io_pgtable_cfg *);
- 	struct arm_smmu_domain *smmu_domain = to_smmu_domain(domain);
- 	struct arm_smmu_device *smmu = smmu_domain->smmu;
-@@ -2384,7 +2390,7 @@ static int arm_smmu_domain_finalise(struct iommu_domain *domain)
- 	domain->geometry.aperture_end = (1UL << pgtbl_cfg.ias) - 1;
- 	domain->geometry.force_aperture = true;
++out_free_tables:
++	arm_smmu_free_cd_tables(smmu_domain);
+ out_free_asid:
+ 	arm_smmu_bitmap_free(smmu->asid_map, asid);
+ 	return ret;
+@@ -2569,10 +2576,6 @@ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev)
+ 	if (smmu_domain->stage != ARM_SMMU_DOMAIN_BYPASS)
+ 		master->ats_enabled = arm_smmu_ats_supported(master);
  
--	ret = finalise_stage_fn(smmu_domain, &pgtbl_cfg);
-+	ret = finalise_stage_fn(smmu_domain, master, &pgtbl_cfg);
- 	if (ret < 0) {
- 		free_io_pgtable_ops(pgtbl_ops);
- 		return ret;
-@@ -2537,7 +2543,7 @@ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev)
+-	if (smmu_domain->stage == ARM_SMMU_DOMAIN_S1)
+-		arm_smmu_write_ctx_desc(smmu_domain, 0,
+-					&smmu_domain->s1_cfg.cd);
+-
+ 	arm_smmu_install_ste_for_dev(master);
  
- 	if (!smmu_domain->smmu) {
- 		smmu_domain->smmu = smmu;
--		ret = arm_smmu_domain_finalise(domain);
-+		ret = arm_smmu_domain_finalise(domain, master);
- 		if (ret) {
- 			smmu_domain->smmu = NULL;
- 			goto out_unlock;
-@@ -2549,6 +2555,13 @@ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev)
- 			dev_name(smmu->dev));
- 		ret = -ENXIO;
- 		goto out_unlock;
-+	} else if (smmu_domain->stage == ARM_SMMU_DOMAIN_S1 &&
-+		   master->ssid_bits != smmu_domain->s1_cfg.s1cdmax) {
-+		dev_err(dev,
-+			"cannot attach to incompatible domain (%u SSID bits != %u)\n",
-+			smmu_domain->s1_cfg.s1cdmax, master->ssid_bits);
-+		ret = -EINVAL;
-+		goto out_unlock;
- 	}
- 
- 	master->domain = smmu_domain;
+ 	spin_lock_irqsave(&smmu_domain->devices_lock, flags);
 -- 
 2.24.1
 
