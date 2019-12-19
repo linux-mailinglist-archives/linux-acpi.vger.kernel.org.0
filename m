@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98F9512670E
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Dec 2019 17:31:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17D32126711
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Dec 2019 17:31:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726984AbfLSQbj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        id S1726965AbfLSQbj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
         Thu, 19 Dec 2019 11:31:39 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:38536 "EHLO
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:42939 "EHLO
         mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727002AbfLSQbh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Dec 2019 11:31:37 -0500
-Received: by mail-wr1-f65.google.com with SMTP id y17so6640327wrh.5
-        for <linux-acpi@vger.kernel.org>; Thu, 19 Dec 2019 08:31:35 -0800 (PST)
+        with ESMTP id S1727006AbfLSQbi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Dec 2019 11:31:38 -0500
+Received: by mail-wr1-f65.google.com with SMTP id q6so6597089wro.9
+        for <linux-acpi@vger.kernel.org>; Thu, 19 Dec 2019 08:31:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=k0PTgEa8Z2EtxKNp+bXlU3gMIeIQMMd4dvAJJmx7ucE=;
-        b=W+Iytwj4wvUZ2mbwDVM7FzjhurcQ7XEm74cJFZdKNOpWZtf7wK2eBP0X8FsMZeSJ6x
-         iR0hoMFIuiITseQd974oYuP4t6sCXPRf3CBmd6yCV89pn+xP+xk+w7DoS2RBpcJj2xkt
-         9hAy9ONlO9aTHj8k3D5PUqhPlRW8+9sBhjji/UXYjHTc2kU0B/rcTeoqySC1prww1Kh5
-         lDK2rbNnj95q+9W/YHUT8aL/yY4xujuGQ3Gqt7+IIi+uCEaUwCmo0aNTuAmGuF4PphBE
-         eH7TqxdLwqXapRzKuHr8uFQZKVtKa1+hpBYpYNgTi8ckKxL0EE66EGNi9XNuHJ5DvbFx
-         fRpA==
+        bh=DFKSWV5x7hWib4ywLyYZ2Xpzoe8h6HBPQg/y9idEIyA=;
+        b=hH3b80WjL1UfLkeRj1KaYK2xXE9kCJqYv3IfxG/t0piRVkIEPEUriaWxmUbpRUG4Fq
+         1k4YH7bs2VDmawOY4Ebix453yuxAxC2sbnROIZRwLQvY7OvLOXgFy/TmXEfK8P7l47eN
+         dX7k8lSRFzJO+MKenvWY8EegeAUWz+s7gbOrYX00KG2aT3ygF3N+B7D30eheZ3koHxzj
+         uDhVQVW0qwmeuvx00tfSyjjW4lZx7I/dbMTo3eCCRLmzgO3m1oH86DGHt1HFdggdqAHd
+         DzIYrIar+5lr7sDIBSRuf4W1WoYmC8U0q2tRT6n3rfDQY1FOLTQqyNkw6XyKGZTogK8O
+         81MQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=k0PTgEa8Z2EtxKNp+bXlU3gMIeIQMMd4dvAJJmx7ucE=;
-        b=tk4pL7G1w+TW0Phj+UcLT9bP66AnjrN4w3Gg3N7c+rWnPAlJKfbDFW+ku30nas3Jnv
-         lEvWFbl2VzQ/HGHdXYPeq5V4l3g77Ko6IcjbnvOde/dGuThk3u7o9VK0pbEOkDjSm03q
-         R1VPBTj9gZObdMBWCVnQzy9U2XUUn1K6ifnXdXGM3/4CUEEwA/6g/xefZgL2iKnC5eHW
-         Oz/YkGUjtb7G4aPeXBEtabxDMkezj4zDkfeIGpiAejhR2Hp361xQrFjNrHYi2651RgcG
-         AMcTDPQu2HDdNxKnXE+lvmNEkL7fFsQ4pmrq3hGrpaIj9ALg7RggQZL0tri99AAlWSe/
-         SiOQ==
-X-Gm-Message-State: APjAAAUrcQWARlOf3LvVxZl96ysW65vYRv2OUkOTHlAPsdAjuTv9wSeE
-        z3X/fEWi+kRJKgAsJHY/3+GLXQ==
-X-Google-Smtp-Source: APXvYqydpFFmYvpMjkEfbCXJIymkJAymWbp5K7XBwcoeSyvYywcmv2pSNLmPre/mfuyPhSrLgbG6Lw==
-X-Received: by 2002:adf:fcc4:: with SMTP id f4mr10390218wrs.247.1576773095285;
-        Thu, 19 Dec 2019 08:31:35 -0800 (PST)
+        bh=DFKSWV5x7hWib4ywLyYZ2Xpzoe8h6HBPQg/y9idEIyA=;
+        b=Evc04BnSex8fuQXLJnFYA7UbEfnNFp4A98eEFUAIpUEbMaNyjpuLjcWB0ToKjyKtUt
+         WDPMbhE3g2C4kbbG+i0prSuPPk+9Gkvxji327j4lyTcVHQmnxDXNMuQ3uLg76y2e596X
+         5P9ITMy84m5zV9psXP7TSRamMz0g2lYvCPlERuVZJwaBcO+YC0r3w+l+63KKK9sR67BB
+         U3z/PcgRVj2Fv5/yL6JzL42LgxTIWwmJTLVI5IBx5c5nOcXpETHfcw6mNFcr61hgLjYN
+         4ixkAVe2LHFOzm2wlhSAIcgmr/O7QarxBWXKAhDOo/92ctnvEqQm8PbYDxDmtX8hCqXv
+         4Z9Q==
+X-Gm-Message-State: APjAAAVnIJhgJcQYB2U8KqaXJR2GBOl6d9B/tzU/qruTpuRKO0eW1MTX
+        bjf6RPtyqroXedCXk4D5v/2rZQ==
+X-Google-Smtp-Source: APXvYqyRkRT8Nl9uMCu8TDEXSE0TrK+jCYgWkOFDWo74ajAHonUbBJuugZCeMz0UhO+iHDiRitfiHQ==
+X-Received: by 2002:a5d:640d:: with SMTP id z13mr10506261wru.181.1576773096482;
+        Thu, 19 Dec 2019 08:31:36 -0800 (PST)
 Received: from localhost.localdomain (adsl-84-227-176-239.adslplus.ch. [84.227.176.239])
-        by smtp.gmail.com with ESMTPSA id u22sm7092068wru.30.2019.12.19.08.31.33
+        by smtp.gmail.com with ESMTPSA id u22sm7092068wru.30.2019.12.19.08.31.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2019 08:31:34 -0800 (PST)
+        Thu, 19 Dec 2019 08:31:36 -0800 (PST)
 From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
 To:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
@@ -54,9 +54,9 @@ Cc:     joro@8bytes.org, robh+dt@kernel.org, mark.rutland@arm.com,
         will@kernel.org, robin.murphy@arm.com, bhelgaas@google.com,
         eric.auger@redhat.com, jonathan.cameron@huawei.com,
         zhangfei.gao@linaro.org
-Subject: [PATCH v4 12/13] PCI/ATS: Add PASID stubs
-Date:   Thu, 19 Dec 2019 17:30:32 +0100
-Message-Id: <20191219163033.2608177-13-jean-philippe@linaro.org>
+Subject: [PATCH v4 13/13] iommu/arm-smmu-v3: Add support for PCI PASID
+Date:   Thu, 19 Dec 2019 17:30:33 +0100
+Message-Id: <20191219163033.2608177-14-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20191219163033.2608177-1-jean-philippe@linaro.org>
 References: <20191219163033.2608177-1-jean-philippe@linaro.org>
@@ -67,33 +67,111 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The SMMUv3 driver, which may be built without CONFIG_PCI, will soon gain
-PASID support.  Partially revert commit c6e9aefbf9db ("PCI/ATS: Remove
-unused PRI and PASID stubs") to re-introduce the PASID stubs, and avoid
-adding more #ifdefs to the SMMU driver.
+Enable PASID for PCI devices that support it. Since the SSID tables are
+allocated by arm_smmu_attach_dev(), PASID has to be enabled early enough.
+arm_smmu_dev_feature_enable() would be too late, since by that time the
+main DMA domain has already been attached. Do it in add_device() instead.
 
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Tested-by: Zhangfei Gao <zhangfei.gao@linaro.org>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
- include/linux/pci-ats.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iommu/arm-smmu-v3.c | 55 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 54 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/pci-ats.h b/include/linux/pci-ats.h
-index 5d62e78946a3..d08f0869f121 100644
---- a/include/linux/pci-ats.h
-+++ b/include/linux/pci-ats.h
-@@ -33,6 +33,9 @@ void pci_disable_pasid(struct pci_dev *pdev);
- int pci_pasid_features(struct pci_dev *pdev);
- int pci_max_pasids(struct pci_dev *pdev);
- #else /* CONFIG_PCI_PASID */
-+static inline int pci_enable_pasid(struct pci_dev *pdev, int features)
-+{ return -EINVAL; }
-+static inline void pci_disable_pasid(struct pci_dev *pdev) { }
- static inline int pci_pasid_features(struct pci_dev *pdev)
- { return -EINVAL; }
- static inline int pci_max_pasids(struct pci_dev *pdev)
+diff --git a/drivers/iommu/arm-smmu-v3.c b/drivers/iommu/arm-smmu-v3.c
+index e62ca80f2f76..8e95ecad4c9a 100644
+--- a/drivers/iommu/arm-smmu-v3.c
++++ b/drivers/iommu/arm-smmu-v3.c
+@@ -2644,6 +2644,53 @@ static void arm_smmu_disable_ats(struct arm_smmu_master *master)
+ 	atomic_dec(&smmu_domain->nr_ats_masters);
+ }
+ 
++static int arm_smmu_enable_pasid(struct arm_smmu_master *master)
++{
++	int ret;
++	int features;
++	int num_pasids;
++	struct pci_dev *pdev;
++
++	if (!dev_is_pci(master->dev))
++		return -ENODEV;
++
++	pdev = to_pci_dev(master->dev);
++
++	features = pci_pasid_features(pdev);
++	if (features < 0)
++		return features;
++
++	num_pasids = pci_max_pasids(pdev);
++	if (num_pasids <= 0)
++		return num_pasids;
++
++	ret = pci_enable_pasid(pdev, features);
++	if (ret) {
++		dev_err(&pdev->dev, "Failed to enable PASID\n");
++		return ret;
++	}
++
++	master->ssid_bits = min_t(u8, ilog2(num_pasids),
++				  master->smmu->ssid_bits);
++	return 0;
++}
++
++static void arm_smmu_disable_pasid(struct arm_smmu_master *master)
++{
++	struct pci_dev *pdev;
++
++	if (!dev_is_pci(master->dev))
++		return;
++
++	pdev = to_pci_dev(master->dev);
++
++	if (!pdev->pasid_enabled)
++		return;
++
++	master->ssid_bits = 0;
++	pci_disable_pasid(pdev);
++}
++
+ static void arm_smmu_detach_dev(struct arm_smmu_master *master)
+ {
+ 	unsigned long flags;
+@@ -2852,13 +2899,16 @@ static int arm_smmu_add_device(struct device *dev)
+ 
+ 	master->ssid_bits = min(smmu->ssid_bits, fwspec->num_pasid_bits);
+ 
++	/* Note that PASID must be enabled before, and disabled after ATS */
++	arm_smmu_enable_pasid(master);
++
+ 	if (!(smmu->features & ARM_SMMU_FEAT_2_LVL_CDTAB))
+ 		master->ssid_bits = min_t(u8, master->ssid_bits,
+ 					  CTXDESC_LINEAR_CDMAX);
+ 
+ 	ret = iommu_device_link(&smmu->iommu, dev);
+ 	if (ret)
+-		goto err_free_master;
++		goto err_disable_pasid;
+ 
+ 	group = iommu_group_get_for_dev(dev);
+ 	if (IS_ERR(group)) {
+@@ -2871,6 +2921,8 @@ static int arm_smmu_add_device(struct device *dev)
+ 
+ err_unlink:
+ 	iommu_device_unlink(&smmu->iommu, dev);
++err_disable_pasid:
++	arm_smmu_disable_pasid(master);
+ err_free_master:
+ 	kfree(master);
+ 	fwspec->iommu_priv = NULL;
+@@ -2891,6 +2943,7 @@ static void arm_smmu_remove_device(struct device *dev)
+ 	arm_smmu_detach_dev(master);
+ 	iommu_group_remove_device(dev);
+ 	iommu_device_unlink(&smmu->iommu, dev);
++	arm_smmu_disable_pasid(master);
+ 	kfree(master);
+ 	iommu_fwspec_free(dev);
+ }
 -- 
 2.24.1
 
