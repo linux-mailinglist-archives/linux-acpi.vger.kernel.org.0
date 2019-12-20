@@ -2,184 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0EE212827B
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2019 19:54:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A954A1283FB
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2019 22:40:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727512AbfLTSye (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Dec 2019 13:54:34 -0500
-Received: from mga04.intel.com ([192.55.52.120]:17674 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727404AbfLTSye (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 20 Dec 2019 13:54:34 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Dec 2019 10:54:32 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,336,1571727600"; 
-   d="scan'208";a="267593304"
-Received: from jpan9-mobl2.amr.corp.intel.com (HELO localhost) ([10.254.180.107])
-  by FMSMGA003.fm.intel.com with ESMTP; 20 Dec 2019 10:54:31 -0800
-Date:   Fri, 20 Dec 2019 10:54:30 -0800
-From:   "Jacob Pan (Jun)" <jacob.jun.pan@intel.com>
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc:     <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <iommu@lists.linux-foundation.org>,
-        <virtualization@lists.linux-foundation.org>,
-        <linux-pci@vger.kernel.org>, <virtio-dev@lists.oasis-open.org>,
-        <rjw@rjwysocki.net>, <lenb@kernel.org>,
-        <lorenzo.pieralisi@arm.com>, <guohanjun@huawei.com>,
-        <sudeep.holla@arm.com>, <gregkh@linuxfoundation.org>,
-        <joro@8bytes.org>, <bhelgaas@google.com>, <mst@redhat.com>,
-        <jasowang@redhat.com>, <eric.auger@redhat.com>,
-        <sebastien.boeuf@intel.com>, <kevin.tian@intel.com>,
-        jacob.jun.pan@intel.com
-Subject: Re: [RFC 00/13] virtio-iommu on non-devicetree platforms
-Message-ID: <20191220105430.0000437b@intel.com>
-In-Reply-To: <20191218112044.GA2371701@myrica>
-References: <20191122105000.800410-1-jean-philippe@linaro.org>
-        <20191122160102.00004489@intel.com>
-        <20191125180247.GD945122@lophozonia>
-        <20191203190136.00007171@intel.com>
-        <20191218112044.GA2371701@myrica>
-Organization: intel
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1727513AbfLTVkV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Dec 2019 16:40:21 -0500
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:56247 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727422AbfLTVkV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 20 Dec 2019 16:40:21 -0500
+X-IronPort-AV: E=Sophos;i="5.69,337,1571695200"; 
+   d="scan'208";a="421295525"
+Received: from 91-160-5-165.subs.proxad.net (HELO [192.168.44.23]) ([91.160.5.165])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES128-SHA; 20 Dec 2019 22:40:18 +0100
+Subject: Re: [PATCH V6 0/7] ACPI: Support Generic Initiator proximity domains
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     linux-mm@kvack.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        x86@kernel.org, Keith Busch <kbusch@kernel.org>,
+        jglisse@redhat.com, "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        linuxarm@huawei.com, Andrew Morton <akpm@linux-foundation.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Tao Xu <tao3.xu@intel.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+References: <20191216153809.105463-1-Jonathan.Cameron@huawei.com>
+ <dc5f5502-09c6-d476-db0e-0af3412bb031@gmail.com>
+ <20191218145041.00005a11@Huawei.com>
+From:   Brice Goglin <brice.goglin@gmail.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=brice.goglin@gmail.com; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <1867024e-b0c4-c291-7190-262cc4b297a8@gmail.com>
+Date:   Fri, 20 Dec 2019 22:40:18 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20191218145041.00005a11@Huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 18 Dec 2019 12:20:44 +0100
-Jean-Philippe Brucker <jean-philippe@linaro.org> wrote:
+Le 18/12/2019 à 15:50, Jonathan Cameron a écrit :
+> On Wed, 18 Dec 2019 12:32:06 +0100
+> Brice Goglin <brice.goglin@gmail.com> wrote:
+>
+>> Le 16/12/2019 à 16:38, Jonathan Cameron a écrit :
+>>> Introduces a new type of NUMA node for cases where we want to represent
+>>> the access characteristics of a non CPU initiator of memory requests,
+>>> as these differ from all those for existing nodes containing CPUs and/or
+>>> memory.
+>>>
+>>> These Generic Initiators are presented by the node access0 class in
+>>> sysfs in the same way as a CPU.   It seems likely that there will be
+>>> usecases in which the best 'CPU' is desired and Generic Initiators
+>>> should be ignored.  The final few patches in this series introduced
+>>> access1 which is a new performance class in the sysfs node description
+>>> which presents only CPU to memory relationships.  Test cases for this
+>>> are described below.  
+>>
+>> Hello Jonathan
+>>
+>> If I want to test this with a fake GI, what are the minimal set of
+>> changes I should put in my ACPI tables? Can I just specify a dummy GI in
+>> SRAT? What handle should I use there?
+> Exactly that for a dummy GI.  Also extend HMAT and SLIT for the extra
+> proximity domain / initiator.
 
-> On Tue, Dec 03, 2019 at 07:01:36PM -0800, Jacob Pan (Jun) wrote:
-> > Hi Jean,
-> > 
-> > Sorry for the delay, I was out last week. Comments inline below.
-> > 
-> > On Mon, 25 Nov 2019 19:02:47 +0100
-> > Jean-Philippe Brucker <jean-philippe@linaro.org> wrote:
-> >   
-> > > On Fri, Nov 22, 2019 at 04:01:02PM -0800, Jacob Pan (Jun) wrote:  
-> > > > > (1) ACPI has one table per vendor (DMAR for Intel, IVRS for
-> > > > > AMD and IORT for Arm). From my point of view IORT is easier to
-> > > > > extend, since we just need to introduce a new node type. There
-> > > > > are no dependencies to Arm in the Linux IORT driver, so it
-> > > > > works well with CONFIG_X86.   
-> > > > From my limited understanding, IORT and VIOT is to solve device
-> > > > topology enumeration only? I am not sure how it can be expanded
-> > > > to cover information beyond device topology. e.g. DMAR has NUMA
-> > > > information and root port ATS, I guess they are not used today
-> > > > in the guest but might be additions in the future.    
-> > > 
-> > > The PCI root-complex node of IORT has an ATS attribute, which we
-> > > can already use. However its scope is the root complex, not
-> > > individual root ports like with DMAR.
-> > > 
-> > > I'm not very familiar with NUMA, but it looks like we just need to
-> > > specify a proximity domain in relation to the SRAT table, for each
-> > > viommu? The SMMUv3 node in IORT has a 4-bytes "proximity domain"
-> > > field for this. We can add the same to the VIOT virtio-iommu nodes
-> > > later, since the structures are extensible.
-> > >   
-> > I think there the proximity domain is more for each assigned device
-> > than vIOMMU. vIOMMU in the guest can have assigned devices belong to
-> > different pIOMMU and proximity domains. If the guest owns the first
-> > level page tables (gIOVA or SVA), we want to make sure page tables
-> > are allocated from the close proximity domain.
-> > 
-> > My understanding is virtio IOMMU supports both virtio devices and
-> > assigned devices. we could care less about the former in terms of
-> > NUMA.
-> > 
-> > In ACPI, we have _PXM method to retrieve device proximity domain. I
-> > don't know if there is something equivalent or a generic way to get
-> > _PXM information. I think VMM also need to make sure when an
-> > assigned device is used with vIOMMU, there are some memory is
-> > allocated from the device's proximity domain.
-> >   
-> > > But it might be better to keep the bare minimum information in
-> > > the FW descriptor, and put the rest in the virtio-iommu. So yes
-> > > topology enumeration is something the device cannot do itself
-> > > (not fully that is, see (2)) but for the rest, virtio-iommu's
-> > > PROBE request can provide details about each endpoint in relation
-> > > to their physical IOMMU.
-> > > 
-> > > We could for example add a bit in a PROBE property saying that the
-> > > whole path between the IOMMU and the endpoint supports ATS. For
-> > > NUMA it might also be more interesting to have a finer
-> > > granularity, since one viommu could be managing endpoints that
-> > > are behind different physical IOMMUs. If in the future we want to
-> > > allocate page tables close to the physical IOMMU for example, we
-> > > might need to describe multiple NUMA nodes per viommu, using the
-> > > PROBE request. 
-> > Should we reinvent something for NUMA or use ACPI's SRAT, _PXM?   
-> 
-> Regardless whether we put it in the VIOT or in the virtio-iommu PROBE
-> request, we necessarily need to reuse the node IDs defined by SRAT (or
-> numa-node-id on devicetree, also a 32-bit value). A virtio-pci based
-> virtio-iommu already has the _PXM of its closest bridge and wouldn't
-> need anything more in the VIOT, while a virtio-mmio based
-> virtio-iommu would need a proximity domain field in the VIOT. That
-> could be added later since the table is extensible, but as you
-> pointed out, that information might not be very useful.
-> 
-> > I am not sure how it is handled today in QEMU in terms of guest-host
-> > NUMA proximity domain mapping.  
-> 
-> It looks like the user can specify this guest-host mapping on the
-> command-line:
-> 
->   -object memory-backend-ram,id=mem0,size=4G,host-nodes=3,policy=bind
->   -object memory-backend-ram,id=mem1,size=4G,host-nodes=4,policy=bind
->   -numa node,memdev=mem0,nodeid=numa0
->   -numa node,memdev=mem1,nodeid=numa1
->   -numa cpu,node-id=numa0,socket-id=0
->   -numa cpu,node-id=numa1,socket-id=1
-> 
-> numa0 and numa1 would get proximity domains 0 and 1, corresponding to
-> host domains 3 and 4. It is also possible to specify the NUMA node of
-> a PCI bus (via the PCI expander bridge), and therefore to assign a
-> VFIO PCI device in the same proximity domain as its physical location.
-> 
->   -device pxb,id=bridge1,bus=pci.0,numa_node=1 (simplified)
->   -device vfio-pci,host=03:01.0,bus=bridge1
-> 
-Thanks a lot for the thorough explanation. I will give that a try on
-x86, I assume the ACPI tables also built to match these cmdline options.
-> Linux can use this information to allocate DMA close to the endpoint
-> (see for example __iommu_dma_alloc_pages()). For page tables
-> allocation, io-pgtables currently takes the node ID of the IOMMU
-> device, not the endpoint. For the scenario you describe (virtio-iommu
-> endpoints managed by different physical IOMMU), we would need to take
-> for example the node ID of the first endpoint in the iommu_domain for
-> which we're allocating page tables.
-> 
-If iommu_domain is shared by multiple device from different NUMA node,
-I guess taking the first one is as good as anyone. It would not be
-an optimal configuration.
-> Is it safe to assume that the pIOMMU is in the same proximity domain
-> as the physical endpoint?
-I think it is a safe assumption.
->  If that's the case, then the guest already
-> has all the information it needs. Otherwise it's easy to add a
-> proximity domain PROBE property for each endpoint. Configuring the
-> host to pass that information might be more difficult.
-> 
-I agree, guest should always allocate DMA and IOVA page tables basedon
-the endpoint. VT-d currently allocates page table pages based on IOMMU
-NUMA node, that might have to change.
-> 
-> Off topic, I've been wondering how to make iommu-sva aware of NUMA
-> topology as well, so that when handling a page request we allocate
-> memory on the faulting device's NUMA node, but I think it might
-> require invasive changes to the mm subsystem, to pass a NUMA node to
-> handle_mm_fault().
-> 
-> Thanks,
-> Jean
+
+I couldn't get this to work (your patches on top of 5.5-rc2). I added
+the GI in SRAT, and extended HMAT and SLIT accordingly.
+
+I don't know if that's expected but I get an additional node in sysfs,
+with 0kB memory.
+
+However the HMAT table gets ignored because find_mem_target() fails in
+hmat_parse_proximity_domain(). The target should have been allocated in
+alloc_memory_target() which is called in srat_parse_mem_affinity(), but
+it seems to me that this function isn't called for GI nodes. Or should
+SRAT also contain a normal Memory node with same PM as the GI?
+
+Brice
+
 
