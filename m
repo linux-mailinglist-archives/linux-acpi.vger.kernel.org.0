@@ -2,121 +2,193 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A954A1283FB
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2019 22:40:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF5521287B6
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2019 07:14:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727513AbfLTVkV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Dec 2019 16:40:21 -0500
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:56247 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727422AbfLTVkV (ORCPT
+        id S1725838AbfLUGOU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 21 Dec 2019 01:14:20 -0500
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:52656
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725773AbfLUGOT (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 20 Dec 2019 16:40:21 -0500
-X-IronPort-AV: E=Sophos;i="5.69,337,1571695200"; 
-   d="scan'208";a="421295525"
-Received: from 91-160-5-165.subs.proxad.net (HELO [192.168.44.23]) ([91.160.5.165])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES128-SHA; 20 Dec 2019 22:40:18 +0100
-Subject: Re: [PATCH V6 0/7] ACPI: Support Generic Initiator proximity domains
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     linux-mm@kvack.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        x86@kernel.org, Keith Busch <kbusch@kernel.org>,
-        jglisse@redhat.com, "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        linuxarm@huawei.com, Andrew Morton <akpm@linux-foundation.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Tao Xu <tao3.xu@intel.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-References: <20191216153809.105463-1-Jonathan.Cameron@huawei.com>
- <dc5f5502-09c6-d476-db0e-0af3412bb031@gmail.com>
- <20191218145041.00005a11@Huawei.com>
-From:   Brice Goglin <brice.goglin@gmail.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=brice.goglin@gmail.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <1867024e-b0c4-c291-7190-262cc4b297a8@gmail.com>
-Date:   Fri, 20 Dec 2019 22:40:18 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Sat, 21 Dec 2019 01:14:19 -0500
+X-IronPort-AV: E=Sophos;i="5.69,338,1571695200"; 
+   d="scan'208";a="333931587"
+Received: from abo-154-110-68.mrs.modulonet.fr (HELO hadrien) ([85.68.110.154])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Dec 2019 07:14:13 +0100
+Date:   Sat, 21 Dec 2019 07:14:12 +0100 (CET)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Niklas Cassel <niklas.cassel@linaro.org>
+cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>, linux-pm@vger.kernel.org,
+        devel@acpica.org, linux-acpi@vger.kernel.org,
+        kbuild-all@lists.01.org
+Subject: [pm:bleeding-edge 59/60] drivers/power/avs/qcom-cpr.c:1539:5-21:
+ WARNING: Unsigned expression compared with zero: drv -> num_corners < 0
+ (fwd)
+Message-ID: <alpine.DEB.2.21.1912210710140.2559@hadrien>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-In-Reply-To: <20191218145041.00005a11@Huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Le 18/12/2019 à 15:50, Jonathan Cameron a écrit :
-> On Wed, 18 Dec 2019 12:32:06 +0100
-> Brice Goglin <brice.goglin@gmail.com> wrote:
->
->> Le 16/12/2019 à 16:38, Jonathan Cameron a écrit :
->>> Introduces a new type of NUMA node for cases where we want to represent
->>> the access characteristics of a non CPU initiator of memory requests,
->>> as these differ from all those for existing nodes containing CPUs and/or
->>> memory.
->>>
->>> These Generic Initiators are presented by the node access0 class in
->>> sysfs in the same way as a CPU.   It seems likely that there will be
->>> usecases in which the best 'CPU' is desired and Generic Initiators
->>> should be ignored.  The final few patches in this series introduced
->>> access1 which is a new performance class in the sysfs node description
->>> which presents only CPU to memory relationships.  Test cases for this
->>> are described below.  
->>
->> Hello Jonathan
->>
->> If I want to test this with a fake GI, what are the minimal set of
->> changes I should put in my ACPI tables? Can I just specify a dummy GI in
->> SRAT? What handle should I use there?
-> Exactly that for a dummy GI.  Also extend HMAT and SLIT for the extra
-> proximity domain / initiator.
+Please see line 1539.  It seems that the num_corners field is unsigned, so
+it will not be less than 0.
+
+julia
 
 
-I couldn't get this to work (your patches on top of 5.5-rc2). I added
-the GI in SRAT, and extended HMAT and SLIT accordingly.
 
-I don't know if that's expected but I get an additional node in sysfs,
-with 0kB memory.
+---------- Forwarded message ----------
+Date: Sat, 21 Dec 2019 06:52:19 +0800
+From: kbuild test robot <lkp@intel.com>
+To: kbuild@lists.01.org
+Cc: Julia Lawall <julia.lawall@lip6.fr>
+Subject: [pm:bleeding-edge 59/60] drivers/power/avs/qcom-cpr.c:1539:5-21:
+    WARNING: Unsigned expression compared with zero: drv -> num_corners < 0
 
-However the HMAT table gets ignored because find_mem_target() fails in
-hmat_parse_proximity_domain(). The target should have been allocated in
-alloc_memory_target() which is called in srat_parse_mem_affinity(), but
-it seems to me that this function isn't called for GI nodes. Or should
-SRAT also contain a normal Memory node with same PM as the GI?
+CC: kbuild-all@lists.01.org
+CC: linux-acpi@vger.kernel.org
+CC: devel@acpica.org
+CC: linux-pm@vger.kernel.org
+TO: Niklas Cassel <niklas.cassel@linaro.org>
+CC: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+CC: "Jorge Ramirez-Ortiz" <jorge.ramirez-ortiz@linaro.org>
+CC: Bjorn Andersson <bjorn.andersson@linaro.org>
+CC: Ulf Hansson <ulf.hansson@linaro.org>
 
-Brice
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   89eba9e38dc4ed4576eaf7711c60403568663291
+commit: bf6910abf54871b0e976e52f56fb3b3dd1b90e48 [59/60] power: avs: Add support for CPR (Core Power Reduction)
+:::::: branch date: 13 hours ago
+:::::: commit date: 13 hours ago
 
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
+Reported-by: Julia Lawall <julia.lawall@lip6.fr>
 
+>> drivers/power/avs/qcom-cpr.c:1539:5-21: WARNING: Unsigned expression compared with zero: drv -> num_corners < 0
+
+# https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=bf6910abf54871b0e976e52f56fb3b3dd1b90e48
+git remote add pm https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
+git remote update pm
+git checkout bf6910abf54871b0e976e52f56fb3b3dd1b90e48
+vim +1539 drivers/power/avs/qcom-cpr.c
+
+bf6910abf54871 Niklas Cassel 2019-11-29  1487
+bf6910abf54871 Niklas Cassel 2019-11-29  1488  static int cpr_pd_attach_dev(struct generic_pm_domain *domain,
+bf6910abf54871 Niklas Cassel 2019-11-29  1489  			     struct device *dev)
+bf6910abf54871 Niklas Cassel 2019-11-29  1490  {
+bf6910abf54871 Niklas Cassel 2019-11-29  1491  	struct cpr_drv *drv = container_of(domain, struct cpr_drv, pd);
+bf6910abf54871 Niklas Cassel 2019-11-29  1492  	const struct acc_desc *acc_desc = drv->acc_desc;
+bf6910abf54871 Niklas Cassel 2019-11-29  1493  	int ret = 0;
+bf6910abf54871 Niklas Cassel 2019-11-29  1494
+bf6910abf54871 Niklas Cassel 2019-11-29  1495  	mutex_lock(&drv->lock);
+bf6910abf54871 Niklas Cassel 2019-11-29  1496
+bf6910abf54871 Niklas Cassel 2019-11-29  1497  	dev_dbg(drv->dev, "attach callback for: %s\n", dev_name(dev));
+bf6910abf54871 Niklas Cassel 2019-11-29  1498
+bf6910abf54871 Niklas Cassel 2019-11-29  1499  	/*
+bf6910abf54871 Niklas Cassel 2019-11-29  1500  	 * This driver only supports scaling voltage for a CPU cluster
+bf6910abf54871 Niklas Cassel 2019-11-29  1501  	 * where all CPUs in the cluster share a single regulator.
+bf6910abf54871 Niklas Cassel 2019-11-29  1502  	 * Therefore, save the struct device pointer only for the first
+bf6910abf54871 Niklas Cassel 2019-11-29  1503  	 * CPU device that gets attached. There is no need to do any
+bf6910abf54871 Niklas Cassel 2019-11-29  1504  	 * additional initialization when further CPUs get attached.
+bf6910abf54871 Niklas Cassel 2019-11-29  1505  	 */
+bf6910abf54871 Niklas Cassel 2019-11-29  1506  	if (drv->attached_cpu_dev)
+bf6910abf54871 Niklas Cassel 2019-11-29  1507  		goto unlock;
+bf6910abf54871 Niklas Cassel 2019-11-29  1508
+bf6910abf54871 Niklas Cassel 2019-11-29  1509  	/*
+bf6910abf54871 Niklas Cassel 2019-11-29  1510  	 * cpr_scale_voltage() requires the direction (if we are changing
+bf6910abf54871 Niklas Cassel 2019-11-29  1511  	 * to a higher or lower OPP). The first time
+bf6910abf54871 Niklas Cassel 2019-11-29  1512  	 * cpr_set_performance_state() is called, there is no previous
+bf6910abf54871 Niklas Cassel 2019-11-29  1513  	 * performance state defined. Therefore, we call
+bf6910abf54871 Niklas Cassel 2019-11-29  1514  	 * cpr_find_initial_corner() that gets the CPU clock frequency
+bf6910abf54871 Niklas Cassel 2019-11-29  1515  	 * set by the bootloader, so that we can determine the direction
+bf6910abf54871 Niklas Cassel 2019-11-29  1516  	 * the first time cpr_set_performance_state() is called.
+bf6910abf54871 Niklas Cassel 2019-11-29  1517  	 */
+bf6910abf54871 Niklas Cassel 2019-11-29  1518  	drv->cpu_clk = devm_clk_get(dev, NULL);
+bf6910abf54871 Niklas Cassel 2019-11-29  1519  	if (IS_ERR(drv->cpu_clk)) {
+bf6910abf54871 Niklas Cassel 2019-11-29  1520  		ret = PTR_ERR(drv->cpu_clk);
+bf6910abf54871 Niklas Cassel 2019-11-29  1521  		if (ret != -EPROBE_DEFER)
+bf6910abf54871 Niklas Cassel 2019-11-29  1522  			dev_err(drv->dev, "could not get cpu clk: %d\n", ret);
+bf6910abf54871 Niklas Cassel 2019-11-29  1523  		goto unlock;
+bf6910abf54871 Niklas Cassel 2019-11-29  1524  	}
+bf6910abf54871 Niklas Cassel 2019-11-29  1525  	drv->attached_cpu_dev = dev;
+bf6910abf54871 Niklas Cassel 2019-11-29  1526
+bf6910abf54871 Niklas Cassel 2019-11-29  1527  	dev_dbg(drv->dev, "using cpu clk from: %s\n",
+bf6910abf54871 Niklas Cassel 2019-11-29  1528  		dev_name(drv->attached_cpu_dev));
+bf6910abf54871 Niklas Cassel 2019-11-29  1529
+bf6910abf54871 Niklas Cassel 2019-11-29  1530  	/*
+bf6910abf54871 Niklas Cassel 2019-11-29  1531  	 * Everything related to (virtual) corners has to be initialized
+bf6910abf54871 Niklas Cassel 2019-11-29  1532  	 * here, when attaching to the power domain, since we need to know
+bf6910abf54871 Niklas Cassel 2019-11-29  1533  	 * the maximum frequency for each fuse corner, and this is only
+bf6910abf54871 Niklas Cassel 2019-11-29  1534  	 * available after the cpufreq driver has attached to us.
+bf6910abf54871 Niklas Cassel 2019-11-29  1535  	 * The reason for this is that we need to know the highest
+bf6910abf54871 Niklas Cassel 2019-11-29  1536  	 * frequency associated with each fuse corner.
+bf6910abf54871 Niklas Cassel 2019-11-29  1537  	 */
+bf6910abf54871 Niklas Cassel 2019-11-29  1538  	drv->num_corners = dev_pm_opp_get_opp_count(&drv->pd.dev);
+bf6910abf54871 Niklas Cassel 2019-11-29 @1539  	if (drv->num_corners < 0) {
+bf6910abf54871 Niklas Cassel 2019-11-29  1540  		ret = drv->num_corners;
+bf6910abf54871 Niklas Cassel 2019-11-29  1541  		goto unlock;
+bf6910abf54871 Niklas Cassel 2019-11-29  1542  	}
+bf6910abf54871 Niklas Cassel 2019-11-29  1543  	if (drv->num_corners < 2) {
+bf6910abf54871 Niklas Cassel 2019-11-29  1544  		dev_err(drv->dev, "need at least 2 OPPs to use CPR\n");
+bf6910abf54871 Niklas Cassel 2019-11-29  1545  		ret = -EINVAL;
+bf6910abf54871 Niklas Cassel 2019-11-29  1546  		goto unlock;
+bf6910abf54871 Niklas Cassel 2019-11-29  1547  	}
+bf6910abf54871 Niklas Cassel 2019-11-29  1548
+bf6910abf54871 Niklas Cassel 2019-11-29  1549  	dev_dbg(drv->dev, "number of OPPs: %d\n", drv->num_corners);
+bf6910abf54871 Niklas Cassel 2019-11-29  1550
+bf6910abf54871 Niklas Cassel 2019-11-29  1551  	drv->corners = devm_kcalloc(drv->dev, drv->num_corners,
+bf6910abf54871 Niklas Cassel 2019-11-29  1552  				    sizeof(*drv->corners),
+bf6910abf54871 Niklas Cassel 2019-11-29  1553  				    GFP_KERNEL);
+bf6910abf54871 Niklas Cassel 2019-11-29  1554  	if (!drv->corners) {
+bf6910abf54871 Niklas Cassel 2019-11-29  1555  		ret = -ENOMEM;
+bf6910abf54871 Niklas Cassel 2019-11-29  1556  		goto unlock;
+bf6910abf54871 Niklas Cassel 2019-11-29  1557  	}
+bf6910abf54871 Niklas Cassel 2019-11-29  1558
+bf6910abf54871 Niklas Cassel 2019-11-29  1559  	ret = cpr_corner_init(drv);
+bf6910abf54871 Niklas Cassel 2019-11-29  1560  	if (ret)
+bf6910abf54871 Niklas Cassel 2019-11-29  1561  		goto unlock;
+bf6910abf54871 Niklas Cassel 2019-11-29  1562
+bf6910abf54871 Niklas Cassel 2019-11-29  1563  	cpr_set_loop_allowed(drv);
+bf6910abf54871 Niklas Cassel 2019-11-29  1564
+bf6910abf54871 Niklas Cassel 2019-11-29  1565  	ret = cpr_init_parameters(drv);
+bf6910abf54871 Niklas Cassel 2019-11-29  1566  	if (ret)
+bf6910abf54871 Niklas Cassel 2019-11-29  1567  		goto unlock;
+bf6910abf54871 Niklas Cassel 2019-11-29  1568
+bf6910abf54871 Niklas Cassel 2019-11-29  1569  	/* Configure CPR HW but keep it disabled */
+bf6910abf54871 Niklas Cassel 2019-11-29  1570  	ret = cpr_config(drv);
+bf6910abf54871 Niklas Cassel 2019-11-29  1571  	if (ret)
+bf6910abf54871 Niklas Cassel 2019-11-29  1572  		goto unlock;
+bf6910abf54871 Niklas Cassel 2019-11-29  1573
+bf6910abf54871 Niklas Cassel 2019-11-29  1574  	ret = cpr_find_initial_corner(drv);
+bf6910abf54871 Niklas Cassel 2019-11-29  1575  	if (ret)
+bf6910abf54871 Niklas Cassel 2019-11-29  1576  		goto unlock;
+bf6910abf54871 Niklas Cassel 2019-11-29  1577
+bf6910abf54871 Niklas Cassel 2019-11-29  1578  	if (acc_desc->config)
+bf6910abf54871 Niklas Cassel 2019-11-29  1579  		regmap_multi_reg_write(drv->tcsr, acc_desc->config,
+bf6910abf54871 Niklas Cassel 2019-11-29  1580  				       acc_desc->num_regs_per_fuse);
+bf6910abf54871 Niklas Cassel 2019-11-29  1581
+bf6910abf54871 Niklas Cassel 2019-11-29  1582  	/* Enable ACC if required */
+bf6910abf54871 Niklas Cassel 2019-11-29  1583  	if (acc_desc->enable_mask)
+bf6910abf54871 Niklas Cassel 2019-11-29  1584  		regmap_update_bits(drv->tcsr, acc_desc->enable_reg,
+bf6910abf54871 Niklas Cassel 2019-11-29  1585  				   acc_desc->enable_mask,
+bf6910abf54871 Niklas Cassel 2019-11-29  1586  				   acc_desc->enable_mask);
+bf6910abf54871 Niklas Cassel 2019-11-29  1587
+bf6910abf54871 Niklas Cassel 2019-11-29  1588  unlock:
+bf6910abf54871 Niklas Cassel 2019-11-29  1589  	mutex_unlock(&drv->lock);
+bf6910abf54871 Niklas Cassel 2019-11-29  1590
+bf6910abf54871 Niklas Cassel 2019-11-29  1591  	return ret;
+bf6910abf54871 Niklas Cassel 2019-11-29  1592  }
+bf6910abf54871 Niklas Cassel 2019-11-29  1593
+
+---
+0-DAY kernel test infrastructure                 Open Source Technology Center
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
