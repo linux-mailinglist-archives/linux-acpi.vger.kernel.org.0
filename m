@@ -2,179 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63CA212939E
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Dec 2019 10:28:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A9B812943F
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Dec 2019 11:35:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726108AbfLWJ2l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Dec 2019 04:28:41 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:7730 "EHLO huawei.com"
+        id S1726709AbfLWKfp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Dec 2019 05:35:45 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2214 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726059AbfLWJ2k (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 23 Dec 2019 04:28:40 -0500
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 27F3C245AD9346E61920;
-        Mon, 23 Dec 2019 17:28:39 +0800 (CST)
-Received: from linux-ibm.site (10.175.102.37) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 23 Dec 2019 17:28:29 +0800
-From:   Hanjun Guo <guohanjun@huawei.com>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        id S1726150AbfLWKfp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 23 Dec 2019 05:35:45 -0500
+Received: from lhreml708-cah.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id 33EC2D8FCD3267545E41;
+        Mon, 23 Dec 2019 10:35:44 +0000 (GMT)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ lhreml708-cah.china.huawei.com (10.201.108.49) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Mon, 23 Dec 2019 10:35:43 +0000
+Received: from [127.0.0.1] (10.202.227.179) by lhreml724-chm.china.huawei.com
+ (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Mon, 23 Dec
+ 2019 10:35:43 +0000
+Subject: Re: [RFC PATCH 1/2] ACPICA/IORT: Correct the comment for id_count
+To:     Hanjun Guo <guohanjun@huawei.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Sudeep Holla <sudeep.holla@arm.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Pankaj Bansal" <pankaj.bansal@nxp.com>,
-        Erik Schmauss <erik.schmauss@intel.com>
-CC:     <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
-        Hanjun Guo <guohanjun@huawei.com>
-Subject: [RFC PATCH 2/2] ACPI/IORT: Workaround for IORT ID count "minus one" issue
-Date:   Mon, 23 Dec 2019 17:23:17 +0800
-Message-ID: <1577092997-9852-2-git-send-email-guohanjun@huawei.com>
-X-Mailer: git-send-email 1.7.12.4
-In-Reply-To: <1577092997-9852-1-git-send-email-guohanjun@huawei.com>
+        Pankaj Bansal <pankaj.bansal@nxp.com>,
+        "Erik Schmauss" <erik.schmauss@intel.com>
+CC:     <linux-acpi@vger.kernel.org>, <linuxarm@huawei.com>,
+        <linux-arm-kernel@lists.infradead.org>
 References: <1577092997-9852-1-git-send-email-guohanjun@huawei.com>
+From:   John Garry <john.garry@huawei.com>
+Message-ID: <efd1d3fd-0e7c-64af-f226-5f263e48d88c@huawei.com>
+Date:   Mon, 23 Dec 2019 10:35:43 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.102.37]
+In-Reply-To: <1577092997-9852-1-git-send-email-guohanjun@huawei.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.179]
+X-ClientProxiedBy: lhreml727-chm.china.huawei.com (10.201.108.78) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
 X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The IORT spec [0] says Number of IDs = The number of IDs in the range minus
-one, it is confusing but it was written down in the first version of the
-IORT spec. But the IORT ID mapping function iort_id_map() did something
-wrong from the start, which bails out if:
+On 23/12/2019 09:23, Hanjun Guo wrote:
+> In IORT spec
+> (http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf),
+> id_num means Number of IDs minus one, update the comment.
+> 
+> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
+> ---
+> 
+> This patch just for comments, needs to be upstream in ACPICA first.
+> 
+>   include/acpi/actbl2.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+> index e45ced2..382642f 100644
+> --- a/include/acpi/actbl2.h
+> +++ b/include/acpi/actbl2.h
+> @@ -104,7 +104,7 @@ enum acpi_iort_node_type {
+>   
+>   struct acpi_iort_id_mapping {
+>   	u32 input_base;		/* Lowest value in input range */
+> -	u32 id_count;		/* Number of IDs */
+> +	u32 id_count;		/* Number of IDs in the range minus one */
 
-the request ID >= the input base + number of IDs
+The IORT spec also uses the term "Length" in the examples...
 
-This is wrong because it ignored the "minus one", and breaks some valid
-usecases such as ID mapping to contain single device mapping without
-single mapping flag set.
-
-Pankaj Bansal proposed a solution to fix the issue [1], which bails
-out if:
-
-the request ID > the input base + number of IDs
-
-This works as the spec defined, unfortunately some firmware didn't
-minus one for the number of IDs in the range, and the propoased
-solution will break those systems in this way:
-
-PCI hostbridge mapping entry 1:
-Input base:  0x1000
-ID Count:    0x100
-Output base: 0x1000
-Output reference: 0xC4  //ITS reference
-
-PCI hostbridge mapping entry 2:
-Input base:  0x1100
-ID Count:    0x100
-Output base: 0x2000
-Output reference: 0xD4  //ITS reference
-
-Two mapping entries which the second entry's Input base = the first
-entry's Input base + ID count, so for requester ID 0x1100 will map
-to ITS 0xC4 not 0xD4 if we update '>=' to '>'.
-
-So introduce a workaround to match the IORT's OEM information for
-the broken firmware, also update the logic of the ID mapping for
-firmwares report the number of IDs as the IORT spec defined, to
-make the code compatible for both kinds of system.
-
-I checked the ACPI tables in the tianocore/edk2-platforms [2], only
-HiSilicon HIP07/08 did wrong, so just add HIP07/08 to the workaround
-info table, if we break other platforms, we can add that later.
-
-[0]: http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf
-[1]: https://patchwork.kernel.org/patch/11292823/
-[2]: https://github.com/tianocore/edk2-platforms
-
-Cc: Pankaj Bansal <pankaj.bansal@nxp.com>
-Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
----
- drivers/acpi/arm64/iort.c | 54 ++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 51 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 33f7198..112b1b0 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -298,6 +298,41 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
- 	return status;
- }
- 
-+struct iort_workaround_oem_info {
-+	char oem_id[ACPI_OEM_ID_SIZE + 1];
-+	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
-+	u32 oem_revision;
-+};
-+
-+static bool apply_id_count_workaround;
-+
-+static struct iort_workaround_oem_info wa_info[] __initdata = {
-+	{
-+		.oem_id		= "HISI  ",
-+		.oem_table_id	= "HIP07   ",
-+		.oem_revision	= 0,
-+	}, {
-+		.oem_id		= "HISI  ",
-+		.oem_table_id	= "HIP08   ",
-+		.oem_revision	= 0,
-+	}
-+};
-+
-+static void __init
-+iort_check_id_count_workaround(struct acpi_table_header *tbl)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
-+		if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
-+		    !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
-+		    wa_info[i].oem_revision == tbl->oem_revision) {
-+			apply_id_count_workaround = true;
-+			break;
-+		}
-+	}
-+}
-+
- static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
- 		       u32 *rid_out)
- {
-@@ -314,9 +349,21 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
- 		return -ENXIO;
- 	}
- 
--	if (rid_in < map->input_base ||
--	    (rid_in >= map->input_base + map->id_count))
--		return -ENXIO;
-+	/*
-+	 * IORT spec says Number of IDs = The number of IDs in the range minus
-+	 * one, but the IORT code ingored the "minus one", and some firmware
-+	 * did that too, so apply a workaround here to keep compatible with
-+	 * both new and old versions of the firmware.
-+	 */
-+	if (apply_id_count_workaround) {
-+		if (rid_in < map->input_base ||
-+			(rid_in >= map->input_base + map->id_count))
-+			return -ENXIO;
-+	} else {
-+		if (rid_in < map->input_base ||
-+			(rid_in > map->input_base + map->id_count))
-+			return -ENXIO;
-+	}
- 
- 	*rid_out = map->output_base + (rid_in - map->input_base);
- 	return 0;
-@@ -1631,5 +1678,6 @@ void __init acpi_iort_init(void)
- 		return;
- 	}
- 
-+	iort_check_id_count_workaround(iort_table);
- 	iort_init_platform_devices();
- }
--- 
-1.7.12.4
+>   	u32 output_base;	/* Lowest value in output range */
+>   	u32 output_reference;	/* A reference to the output node */
+>   	u32 flags;
+> 
 
