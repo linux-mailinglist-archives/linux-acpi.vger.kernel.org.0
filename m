@@ -2,58 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69FDA129F18
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Dec 2019 09:37:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFE7E12A449
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Dec 2019 23:19:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726128AbfLXIhV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Dec 2019 03:37:21 -0500
-Received: from mail-il1-f194.google.com ([209.85.166.194]:35233 "EHLO
-        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726160AbfLXIhU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Dec 2019 03:37:20 -0500
-Received: by mail-il1-f194.google.com with SMTP id g12so16098696ild.2
-        for <linux-acpi@vger.kernel.org>; Tue, 24 Dec 2019 00:37:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=LcGU1mt+nAQIi3eKcWZpiy7DqrkNG23tK1MNYV9CB+M=;
-        b=VlyE5hkjIlVtebFVtbJSUDG1nq6yxqsP+CXAAvK16kEDCa9/FIjqePwKOUOUFxUPGI
-         IobnBKqUZtvWs9liflZ3kccv66QhBRcGlV0NLmY+Uo4N83fE4acq5fKevjm3GVqyORPq
-         V25kDNfLb/u3NDc8qTILa6U172uqigqrULaJBwbLq67hwZ4izN64H1YClKD775qzZNF9
-         0l4JMYDmF4urkgDiYDNvOqEpGdvq+E73I4yTDC9aWLwqkTeAHCJ4Ixn//xPq6JLVBBNn
-         aamV2t3zoMGAP8AF+RdWv4cRolj9/iVR4FvRYYpwL/EkEZCm6WUSjJi89kMXjGu5nUwC
-         ihKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=LcGU1mt+nAQIi3eKcWZpiy7DqrkNG23tK1MNYV9CB+M=;
-        b=IedOMAYkmwFLSuC3W4xVvMbYkulfMT9E9kt4igEJAQQ9qqt9mCAgfAKGOFiWSyFlTX
-         Jga+XwURfz4HMlaPPMgakR7Y8qK2YsmGPUNqGUU+qk4E9bbQew8F+d55Y4zGxrqirHoq
-         yEHYs5gmTGUIyfPXq5cm4VVf9tI7+ZnsQQufRqh71K3h/fMp16+Fms+Vn5qV0vN4KIGZ
-         2mtgVSC+eNkzc4J7o+H0kotrHLNr0Kf6iRNpZ3F3aKcE0GI6djGz1/NA0LhbJsdUo7Fu
-         P5QOXyotl/lYjzbGbXYgZfmWYr8VV5XK0Vf9ne5FkN4xCogxNdVlxe0+w/HbliqMHDDp
-         0QTA==
-X-Gm-Message-State: APjAAAV75bQHEAHMoHShn0E1kYtp52VhXARWSrm6mO8WP3ktlCzzFJBU
-        ekGE716CJWT1/0K5k7tSLyaejrPrAfCbC3ym87k=
-X-Google-Smtp-Source: APXvYqxLrvnOpR+O6ofXnSEOnwrvGziUPmMlJTtG0DR2NirldWli2cXJyiYqfAfUdIRDZDD83uetmfvXHC6vAEF7nxQ=
-X-Received: by 2002:a92:c50e:: with SMTP id r14mr29396039ilg.52.1577176639205;
- Tue, 24 Dec 2019 00:37:19 -0800 (PST)
+        id S1726322AbfLXWTI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Dec 2019 17:19:08 -0500
+Received: from mga18.intel.com ([134.134.136.126]:58177 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726224AbfLXWTI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 24 Dec 2019 17:19:08 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Dec 2019 14:19:07 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,353,1571727600"; 
+   d="scan'208";a="417663535"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 24 Dec 2019 14:19:05 -0800
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1ijsW9-000GhO-8K; Wed, 25 Dec 2019 06:19:05 +0800
+Date:   Wed, 25 Dec 2019 06:18:33 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Niklas Cassel <niklas.cassel@linaro.org>
+Cc:     kbuild-all@lists.01.org, linux-acpi@vger.kernel.org,
+        devel@acpica.org, linux-pm@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [pm:bleeding-edge 59/60] drivers/power/avs/qcom-cpr.c:1081:15:
+ sparse: sparse: symbol 'cpr_get_opp_hz_for_req' was not declared. Should it
+ be static?
+Message-ID: <201912250622.SScsrif7%lkp@intel.com>
 MIME-Version: 1.0
-Received: by 2002:a5e:c244:0:0:0:0:0 with HTTP; Tue, 24 Dec 2019 00:37:18
- -0800 (PST)
-Reply-To: bethnatividad9@gmail.com
-From:   Beth Nat <am19040@gmail.com>
-Date:   Tue, 24 Dec 2019 08:37:18 +0000
-Message-ID: <CAEgaL+akE_7uuR+QBv+=W5npZ3Bg=jguaB4zU63CGVjztQeQyg@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-How are you today my dear? i saw your profile and it interests me, i
-am a Military nurse from USA. Can we be friend? I want to know more
-about you.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   89eba9e38dc4ed4576eaf7711c60403568663291
+commit: bf6910abf54871b0e976e52f56fb3b3dd1b90e48 [59/60] power: avs: Add support for CPR (Core Power Reduction)
+reproduce:
+        # apt-get install sparse
+        # sparse version: v0.6.1-129-g341daf20-dirty
+        git checkout bf6910abf54871b0e976e52f56fb3b3dd1b90e48
+        make ARCH=x86_64 allmodconfig
+        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
+
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
+
+
+sparse warnings: (new ones prefixed by >>)
+
+>> drivers/power/avs/qcom-cpr.c:1081:15: sparse: sparse: symbol 'cpr_get_opp_hz_for_req' was not declared. Should it be static?
+
+Please review and possibly fold the followup patch.
+
+---
+0-DAY kernel test infrastructure                 Open Source Technology Center
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
