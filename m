@@ -2,112 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F62312A837
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Dec 2019 14:28:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55BF712AC4D
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Dec 2019 14:02:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726353AbfLYN2T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Dec 2019 08:28:19 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:56291 "EHLO
+        id S1725954AbfLZNCh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 26 Dec 2019 08:02:37 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:59955 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726289AbfLYN2S (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Dec 2019 08:28:18 -0500
+        with ESMTP id S1726440AbfLZNCh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 Dec 2019 08:02:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1577280497;
+        s=mimecast20190719; t=1577365356;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=BLxiTJ10kXJAxHgsCQIVOiCm+kcYau2SMSoZjreP3vQ=;
-        b=Gc3d+HaXKzGVtV6rEif0V3kI4IHesU55t+IpVB4XCxyLr54GmbOJJzvL/8FWvG1KQBxGUW
-        BrgOFXOxVOtn3xflEjYv7Kr/AtKCF8cSfoj5L6MVChxG5T4h2Uh72ka5vG6GsVL3lyoX39
-        2t5IH90HRNo8L57emVltIMlIkk2frKM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-98-BXslORRZN1m7xyPLM9Ny5A-1; Wed, 25 Dec 2019 08:28:16 -0500
-X-MC-Unique: BXslORRZN1m7xyPLM9Ny5A-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A01431005513;
-        Wed, 25 Dec 2019 13:28:14 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-116-79.ams2.redhat.com [10.36.116.79])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0BDDA101F6CF;
-        Wed, 25 Dec 2019 13:28:12 +0000 (UTC)
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=5aEamWq7nLWLZ8ATUMzi/DS0XmBcftQ/KkilQfpBaX4=;
+        b=QV+dOuPslFw9jE2X/yinx+MQdj78n53c+gGv/9XrxZUofdjzBPGqWeZmliBMHpw0pgsiP8
+        VADdH0Wr/STnz0huLwMm6T5tGGLqHXq/b5ja+U+TpGZyMU2UBSOwj0fBVreAAUzeNjrMEN
+        v4ujpo4z3AnbPShaqGb+Ja5xW/YbrDo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-14-KMn2BmxRM2q1vhzIjfw6RA-1; Thu, 26 Dec 2019 08:02:33 -0500
+X-MC-Unique: KMn2BmxRM2q1vhzIjfw6RA-1
+Received: by mail-wr1-f72.google.com with SMTP id y7so12430634wrm.3
+        for <linux-acpi@vger.kernel.org>; Thu, 26 Dec 2019 05:02:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=5aEamWq7nLWLZ8ATUMzi/DS0XmBcftQ/KkilQfpBaX4=;
+        b=LkjZMrfycz+BfPR1pdn5lai7CSahSnWyeBA4p19ZILN1EwYqWxW+CJNK9QD54YiaaE
+         XNL0i+AItq027Kgm43t+fBEczZTVFxDxV4YJ1NW/pezaBm7m54LJl/oMhHpDNTzU4npd
+         APv7OwHR6EIWcC7XGm4S169HOAfLmmJOOuaxtTUsSBhGgu089/7IjVmiLVSOX1y8hwMf
+         cvVOq1CkR+i8au177p+dcUOcka1o7erLHL3GsZ+BLcaDrhcGVb9Bp+hSXGimiK3ek/52
+         pHtPXbKRzO9fJNQbX4VdIvOCilfxWpgGQJZS02nmJUgVpr92wl5rATGVkyo23G/g4TlV
+         KuiQ==
+X-Gm-Message-State: APjAAAVybb/QypRqQW9lRIW/vVpb24D547lDgaDQIoEwIOuHJpNKup1h
+        tYXwJ05yFF0JuyBrm+mDmRIBJWf5VeLS1oLuM50LxOEJplWkUKg6L0mR1qFWmgiX/cspCLKpoNj
+        2aq0TJkx0LKiDVLl5jRdkvw==
+X-Received: by 2002:a05:6000:12c9:: with SMTP id l9mr47527859wrx.304.1577365352208;
+        Thu, 26 Dec 2019 05:02:32 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxWvVTiX30mgHFVy5MoJjlKqVEzL3gxNEqM+bSe/fg2yubRgZOSstgjb30m0GS7jPb2rSBJDA==
+X-Received: by 2002:a05:6000:12c9:: with SMTP id l9mr47527833wrx.304.1577365351990;
+        Thu, 26 Dec 2019 05:02:31 -0800 (PST)
+Received: from shalem.localdomain (2001-1c00-0c0c-fe00-7e79-4dac-39d0-9c14.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:7e79:4dac:39d0:9c14])
+        by smtp.gmail.com with ESMTPSA id o129sm8511008wmb.1.2019.12.26.05.02.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Dec 2019 05:02:31 -0800 (PST)
+Subject: Re: [PATCH] ACPI: video: Do not export a non working backlight
+ interface on MSI MS-7721 boards
+To:     Sasha Levin <sashal@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi@vger.kernel.org, stable@vger.kernel.org
+References: <20191217190811.638607-1-hdegoede@redhat.com>
+ <20191225235530.C65AD20838@mail.kernel.org>
 From:   Hans de Goede <hdegoede@redhat.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Bastien Nocera <hadess@hadess.net>,
-        Dmitry Mastykin <mastichi@gmail.com>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH v2] pinctrl: baytrail: Remove WARN when setting direct-irq pin to output
-Date:   Wed, 25 Dec 2019 14:28:12 +0100
-Message-Id: <20191225132812.90889-1-hdegoede@redhat.com>
+Message-ID: <72606fb0-58dd-a415-b14d-b65ed53d3965@redhat.com>
+Date:   Thu, 26 Dec 2019 14:02:29 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.1
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20191225235530.C65AD20838@mail.kernel.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Suspending Goodix touchscreens requires changing the interrupt pin to
-output before sending them a power-down command. Followed by wiggling
-the interrupt pin to wake the device up, after which it is put back
-in input mode.
+Hi,
 
-On Cherry Trail device the interrupt pin is listed as a GpioInt ACPI
-resource so we can do this without problems as long as we release the
-irq before changing the pin to output mode.
+On 26-12-2019 00:55, Sasha Levin wrote:
+> Hi,
+> 
+> [This is an automated email]
+> 
+> This commit has been processed because it contains a -stable tag.
+> The stable tag indicates that it's relevant for the following trees: all
+> 
+> The bot has tested the following trees: v5.4.5, v5.3.18, v4.19.90, v4.14.159, v4.9.206, v4.4.206.
+> 
+> v5.4.5: Build OK!
+> v5.3.18: Build OK!
+> v4.19.90: Build OK!
+> v4.14.159: Build OK!
+> v4.9.206: Failed to apply! Possible dependencies:
+>      1f59ab2783ae ("ACPI / video: Add force_none quirk for Dell OptiPlex 9020M")
+>      d37efb79bc1c ("ACPI / video: Add quirks for the Dell Precision 7510")
+> 
+> v4.4.206: Failed to apply! Possible dependencies:
+>      1f59ab2783ae ("ACPI / video: Add force_none quirk for Dell OptiPlex 9020M")
+>      d37efb79bc1c ("ACPI / video: Add quirks for the Dell Precision 7510")
+> 
+> 
+> NOTE: The patch will not be queued to stable trees until it is upstream.
+> 
+> How should we proceed with this patch?
 
-On Bay Trail devices with a Goodix touchscreen direct-irq mode is used
-in combination with listing the pin as a normal GpioIo resource. This
-works fine, but this triggers the WARN in byt_gpio_set_direction-s output
-path because direct-irq support is enabled on the pin.
+This fix is mostly cosmetical (it hides a non working brightness control
+in various desktop environments) so just backporting this to the kernels
+where it cleanly applies is fine.
 
-This commit removes the WARN call, fixing a bunch of WARN splats in
-dmesg on each suspend/resume cycle.
+Regards,
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v2:
-- Drop now unused conf_ref local variable
----
- drivers/pinctrl/intel/pinctrl-baytrail.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
-
-diff --git a/drivers/pinctrl/intel/pinctrl-baytrail.c b/drivers/pinctrl/i=
-ntel/pinctrl-baytrail.c
-index c6f53ed626c9..db55761c90cc 100644
---- a/drivers/pinctrl/intel/pinctrl-baytrail.c
-+++ b/drivers/pinctrl/intel/pinctrl-baytrail.c
-@@ -801,7 +801,6 @@ static int byt_gpio_set_direction(struct pinctrl_dev =
-*pctl_dev,
- {
- 	struct intel_pinctrl *vg =3D pinctrl_dev_get_drvdata(pctl_dev);
- 	void __iomem *val_reg =3D byt_gpio_reg(vg, offset, BYT_VAL_REG);
--	void __iomem *conf_reg =3D byt_gpio_reg(vg, offset, BYT_CONF0_REG);
- 	unsigned long flags;
- 	u32 value;
-=20
-@@ -811,15 +810,7 @@ static int byt_gpio_set_direction(struct pinctrl_dev=
- *pctl_dev,
- 	value &=3D ~BYT_DIR_MASK;
- 	if (input)
- 		value |=3D BYT_OUTPUT_EN;
--	else
--		/*
--		 * Before making any direction modifications, do a check if gpio
--		 * is set for direct IRQ.  On baytrail, setting GPIO to output
--		 * does not make sense, so let's at least warn the caller before
--		 * they shoot themselves in the foot.
--		 */
--		WARN(readl(conf_reg) & BYT_DIRECT_IRQ_EN,
--		     "Potential Error: Setting GPIO with direct_irq_en to output");
-+
- 	writel(value, val_reg);
-=20
- 	raw_spin_unlock_irqrestore(&byt_lock, flags);
---=20
-2.24.1
+Hans
 
