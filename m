@@ -2,115 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3A0112BBB0
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Dec 2019 23:47:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C6B112BBBE
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Dec 2019 00:04:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725306AbfL0Wro (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Dec 2019 17:47:44 -0500
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:20082 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725820AbfL0Wro (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 27 Dec 2019 17:47:44 -0500
+        id S1725957AbfL0XEz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Dec 2019 18:04:55 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:24923 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725820AbfL0XEz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Dec 2019 18:04:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1577486862;
+        s=mimecast20190719; t=1577487894;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rSnj7H1B3NWu+D/Hqawoc3PIHGYDDd6CVWrGix3Owek=;
-        b=gPIHrVSs6/BZYYwsvV3eTBe6VVxkHRgvH7MtdMtu0zmtDNdIx5/6+1/nQlt+0bSEYj4er2
-        YcPNAhBIxItrabDyfSyyQoADgQ3Xa/h51guB5r8Jx9U9vfyLSHYi9927ixM2ZvBBbhnf2I
-        x4hB9gGmC8OgJRY2BopL9EtVpav/raU=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-423-C-Ng_UOFPjqt62vHG7Yq4w-1; Fri, 27 Dec 2019 17:47:41 -0500
-X-MC-Unique: C-Ng_UOFPjqt62vHG7Yq4w-1
-Received: by mail-wr1-f69.google.com with SMTP id w6so13312738wrm.16
-        for <linux-acpi@vger.kernel.org>; Fri, 27 Dec 2019 14:47:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=rSnj7H1B3NWu+D/Hqawoc3PIHGYDDd6CVWrGix3Owek=;
-        b=G78LnenWRGpBsru05SjswjDguje5ZFNmZZsA1iJs/Iu5yp5KTpY1pcvILErXBupkO3
-         2lpVWlUbeP6Xb8oQ189S10TT6ppJkQ6Du510zMrG6siQn9bQuJZFDB2BDaZqx/R94OBr
-         XAVuebeCurPVrHKVOGrZmPAQuGp1D7ALKqrVnPz4hF9MqCza1cVasuR9bVBl1CytcIte
-         VY82LmmdcIyc0sVIq2DMBxnbM4XUNWCLSOa8NAoAzxGGVzLW9P4+79q/wcDkJhOStwYa
-         j6MGJAz2J9OpuVg5GAA3BCtMOHUdnuYrDh01uAwSerHpJsFjjx6+TTzxzjlFw9W6nT9Q
-         XdsQ==
-X-Gm-Message-State: APjAAAXLxz/U7Y/GYNdubx8jdZdkj2haLu0lUaDPRGuGU7eHc6sdeQch
-        sIt0HkBDGVJbWZ3Ix+b96QKzj6yAz6OZt+P39KqXoyhts3NKQ3LWiHBjc9q+MEg6CqpczZiPNa1
-        5M3fKzyERtJegWCTh1GIxDw==
-X-Received: by 2002:adf:ee92:: with SMTP id b18mr55030292wro.281.1577486860207;
-        Fri, 27 Dec 2019 14:47:40 -0800 (PST)
-X-Google-Smtp-Source: APXvYqxl+YQ1B+lEizCw3KFw9gTGuVkFDNul/t/BJGu27B2XogZSlO17lVCfX/fcxUtptgEwHSqZhQ==
-X-Received: by 2002:adf:ee92:: with SMTP id b18mr55030282wro.281.1577486860015;
-        Fri, 27 Dec 2019 14:47:40 -0800 (PST)
-Received: from shalem.localdomain (2001-1c00-0c0c-fe00-7e79-4dac-39d0-9c14.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:7e79:4dac:39d0:9c14])
-        by smtp.gmail.com with ESMTPSA id n8sm36484869wrx.42.2019.12.27.14.47.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Dec 2019 14:47:39 -0800 (PST)
-Subject: Re: [PATCH v2] pinctrl: baytrail: Remove WARN when setting direct-irq
- pin to output
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=l0SdVAhVPQ42qaTt6y2m+vLP6dr1tqwtZ8loUPh9QNk=;
+        b=g7WZx8CsKTEeXwTt1/jHOmhwgZmvYQws2cNvxpAR6nMOm9giQtD3o7NdeWhxFp2ll+oaPg
+        P9JLOQvaw9QlmQ/vIZzr+0EkSksLckl/xmTc1cPHtK1cwgyWy6CifYO2I+LyAYXOw4rRyu
+        BQSwYxG+ZNBKhf4dq6KggM9G975mZXs=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-407-fyTQpu2XNea_2--TEDhbOg-1; Fri, 27 Dec 2019 18:04:53 -0500
+X-MC-Unique: fyTQpu2XNea_2--TEDhbOg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0BD381005502;
+        Fri, 27 Dec 2019 23:04:51 +0000 (UTC)
+Received: from shalem.localdomain.com (ovpn-116-21.ams2.redhat.com [10.36.116.21])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 341BE107A44F;
+        Fri, 27 Dec 2019 23:04:48 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
         Bastien Nocera <hadess@hadess.net>,
         Dmitry Mastykin <mastichi@gmail.com>,
         linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
-References: <20191225132812.90889-1-hdegoede@redhat.com>
- <20191227141220.GA2628@lahna.fi.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <acafef49-bd32-6900-01d2-f6adccabe201@redhat.com>
-Date:   Fri, 27 Dec 2019 23:47:38 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+Subject: [PATCH] pinctrl: baytrail: Do not clear IRQ flags on direct-irq enabled pins
+Date:   Sat, 28 Dec 2019 00:04:47 +0100
+Message-Id: <20191227230447.32458-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20191227141220.GA2628@lahna.fi.intel.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Suspending Goodix touchscreens requires changing the interrupt pin to
+output before sending them a power-down command. Followed by wiggling
+the interrupt pin to wake the device up, after which it is put back
+in input mode.
 
-On 27-12-2019 15:12, Mika Westerberg wrote:
-> On Wed, Dec 25, 2019 at 02:28:12PM +0100, Hans de Goede wrote:
->> Suspending Goodix touchscreens requires changing the interrupt pin to
->> output before sending them a power-down command. Followed by wiggling
->> the interrupt pin to wake the device up, after which it is put back
->> in input mode.
->>
->> On Cherry Trail device the interrupt pin is listed as a GpioInt ACPI
->> resource so we can do this without problems as long as we release the
->> irq before changing the pin to output mode.
->>
->> On Bay Trail devices with a Goodix touchscreen direct-irq mode is used
->> in combination with listing the pin as a normal GpioIo resource. This
->> works fine, but this triggers the WARN in byt_gpio_set_direction-s output
->> path because direct-irq support is enabled on the pin.
->>
->> This commit removes the WARN call, fixing a bunch of WARN splats in
->> dmesg on each suspend/resume cycle.
-> 
-> But this is still something we don't expect to do normally, right?
+On Bay Trail devices with a Goodix touchscreen direct-irq mode is used
+in combination with listing the pin as a normal GpioIo resource.
 
-Well on devices which a Goodix touchscreen, of which there are quite a few
-we do. And it seems that Windows allows this.
+This works fine, until the goodix driver gets rmmod-ed and then insmod-ed
+again. In this case byt_gpio_disable_free() calls
+byt_gpio_clear_triggering() which clears the IRQ flags and after that the
+(direct) IRQ no longer triggers.
 
-> How
-> about changing this to dev_warn() or dev_info() so it is still visible
-> in dmesg and possibly helps future debugging.
+This commit fixes this by adding a check for the BYT_DIRECT_IRQ_EN flag
+to byt_gpio_clear_triggering().
 
-The problem is that we hit this path everytime we output a value on the
-pin. I guess we can change the WARN to dev_info_once() if you prefer that.
+Note that byt_gpio_clear_triggering() only gets called from
+byt_gpio_disable_free() for direct-irq enabled pins, as these are exclude=
+d
+from the irq_valid mask by byt_init_irq_valid_mask().
 
-Regards,
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/pinctrl/intel/pinctrl-baytrail.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Hans
+diff --git a/drivers/pinctrl/intel/pinctrl-baytrail.c b/drivers/pinctrl/i=
+ntel/pinctrl-baytrail.c
+index db55761c90cc..844b89f230d7 100644
+--- a/drivers/pinctrl/intel/pinctrl-baytrail.c
++++ b/drivers/pinctrl/intel/pinctrl-baytrail.c
+@@ -742,8 +742,13 @@ static void byt_gpio_clear_triggering(struct intel_p=
+inctrl *vg, unsigned int off
+=20
+ 	raw_spin_lock_irqsave(&byt_lock, flags);
+ 	value =3D readl(reg);
++	/* Do not clear direct-irq enabled irqs (from gpio_disable_free) */
++	if (value & BYT_DIRECT_IRQ_EN)
++		goto out;
++
+ 	value &=3D ~(BYT_TRIG_POS | BYT_TRIG_NEG | BYT_TRIG_LVL);
+ 	writel(value, reg);
++out:
+ 	raw_spin_unlock_irqrestore(&byt_lock, flags);
+ }
+=20
+--=20
+2.24.1
 
