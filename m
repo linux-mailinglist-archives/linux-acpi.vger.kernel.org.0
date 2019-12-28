@@ -2,101 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C6B112BBBE
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Dec 2019 00:04:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F58412BDB5
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Dec 2019 14:58:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725957AbfL0XEz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Dec 2019 18:04:55 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:24923 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725820AbfL0XEz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Dec 2019 18:04:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1577487894;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=l0SdVAhVPQ42qaTt6y2m+vLP6dr1tqwtZ8loUPh9QNk=;
-        b=g7WZx8CsKTEeXwTt1/jHOmhwgZmvYQws2cNvxpAR6nMOm9giQtD3o7NdeWhxFp2ll+oaPg
-        P9JLOQvaw9QlmQ/vIZzr+0EkSksLckl/xmTc1cPHtK1cwgyWy6CifYO2I+LyAYXOw4rRyu
-        BQSwYxG+ZNBKhf4dq6KggM9G975mZXs=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-407-fyTQpu2XNea_2--TEDhbOg-1; Fri, 27 Dec 2019 18:04:53 -0500
-X-MC-Unique: fyTQpu2XNea_2--TEDhbOg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0BD381005502;
-        Fri, 27 Dec 2019 23:04:51 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-116-21.ams2.redhat.com [10.36.116.21])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 341BE107A44F;
-        Fri, 27 Dec 2019 23:04:48 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Bastien Nocera <hadess@hadess.net>,
-        Dmitry Mastykin <mastichi@gmail.com>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH] pinctrl: baytrail: Do not clear IRQ flags on direct-irq enabled pins
-Date:   Sat, 28 Dec 2019 00:04:47 +0100
-Message-Id: <20191227230447.32458-1-hdegoede@redhat.com>
+        id S1726088AbfL1N6g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 28 Dec 2019 08:58:36 -0500
+Received: from mail-ot1-f41.google.com ([209.85.210.41]:46261 "EHLO
+        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726075AbfL1N6g (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 28 Dec 2019 08:58:36 -0500
+Received: by mail-ot1-f41.google.com with SMTP id k8so22886176otl.13
+        for <linux-acpi@vger.kernel.org>; Sat, 28 Dec 2019 05:58:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=LE/mkhAtcJRxtczd4x1eRd3AeL/lAYsqVavJ5lKIKeY=;
+        b=H/EVJ9ofV+M3yHnmHitO+2VBX8nLfvHC8STPjfQSQkv+ncBEmZkprnLZR5UDR4dsrq
+         RE+SEMF33D9bqDlkYGlCqrt3qERgR65KJAHmm4a53zB7MJ2aKvbcE9RRCThCD/btyj1l
+         osKvzQVMHE1ih0ABNg/Y95SRfrDyAnGusom5vZktgOir5j1IxoI2zmCwfijpOZiS0kWk
+         xc/0uU3gbQ4QX6s85RGPCLNDkjFV0JtSFzScsa3xxTO/R0R3T/dbV7ZDblE7Sdm4jTeC
+         aX2BBmwh2qYclmvwSBwea4hYetDjxQVMY/CFFBKSO5GdZjWcRKcwWOgKATQHAYtDajYN
+         UoMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=LE/mkhAtcJRxtczd4x1eRd3AeL/lAYsqVavJ5lKIKeY=;
+        b=fAx/jN5ginudxnT37sE+C8aGbmFJAJD83sgkTW7Go4QpgzXqpFm5mItS34xVN7G2kr
+         Nhc/5ak2bS0S2vzcOrrqeRG8rHbgxpuuolT2X4FPV1MC+hzVQ/LivB09ein/y0MSiR/S
+         WUKCuYbsZ3hdzzQMfUeXOtcacEnnAclwna0Uf+2cWY3znuQVJGTIxR1OZLRAYfwLJDi0
+         rh8xuKq3lEch7EAok//OKRMnz9wmWO7EIwponWcWbLUXxHuzwjv+Jt8IIibn+qhIVlp2
+         WyAWj94NOmWsYuEes/enHUXCPdtxdNBRpMHd+HMbbTUoyKTuunY8eqK6T/iIqQOdM6UO
+         Q4ZA==
+X-Gm-Message-State: APjAAAUowRrdzjnZA8P+N+bU8YOecBZia24ziMqNwXEVG2jqAPY02FH6
+        op1fQqJVMlwFjLSvVp/HgB6B5pt/gd5V/rwm50Hv5fXK
+X-Google-Smtp-Source: APXvYqy5wUdiHzHxRnsQEMq87IjfltxfXuSjGzxXRDOImhEfISpXb6eX/U4OifCunp73QFrC8a7Jk9A6n6ryED0lgAc=
+X-Received: by 2002:a9d:6211:: with SMTP id g17mr57786049otj.168.1577541515447;
+ Sat, 28 Dec 2019 05:58:35 -0800 (PST)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+From:   =?UTF-8?Q?Nicol=C3=B2_Veronese?= <nicveronese@gmail.com>
+Date:   Sat, 28 Dec 2019 14:58:23 +0100
+Message-ID: <CAC8rN+BAr-JqJLJWNYfNoj_=BnLZDniY-pCbCCpjJCB3005JHQ@mail.gmail.com>
+Subject: Troubleshooting an ACPI I2C driver that fails the match
+To:     linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Suspending Goodix touchscreens requires changing the interrupt pin to
-output before sending them a power-down command. Followed by wiggling
-the interrupt pin to wake the device up, after which it is put back
-in input mode.
+Hi,
+I'm new with kernel development so I might have done something stupid
+during my troubleshooting procedure.
 
-On Bay Trail devices with a Goodix touchscreen direct-irq mode is used
-in combination with listing the pin as a normal GpioIo resource.
+I'm trying to make working the Ambient Light Sensor on my old
+Chromebook, this was working up to 4.15 but then something broke in
+the chromeos_laptop driver. So now the people that are running an
+alternative Chromebook firmware are using ACPI to load the right
+modules instead of using the google SMBios table.
+My first step was to create the ACPI node on coreboot with the i2c
+hardware information. The ALS chip is the ISL29018 and the right
+module should be this one:
+https://elixir.bootlin.com/linux/v5.0.21/source/drivers/iio/light/isl29018.=
+c#L810
 
-This works fine, until the goodix driver gets rmmod-ed and then insmod-ed
-again. In this case byt_gpio_disable_free() calls
-byt_gpio_clear_triggering() which clears the IRQ flags and after that the
-(direct) IRQ no longer triggers.
+According to tho the ACPI table of the driver the _HID should be
+"ISL29018" we have created the DSDT:
+https://github.com/MrChromebox/coreboot/blob/5a16469c9fb4131f04b2bc56da03fa=
+b0f2faf1bc/src/mainboard/google/slippy/variants/peppy/include/variant/acpi/=
+mainboard.asl#L163
 
-This commit fixes this by adding a check for the BYT_DIRECT_IRQ_EN flag
-to byt_gpio_clear_triggering().
+The module is loaded, but nothing happens, so I have started with
+ftrace to see if there was something wrong with the driver itself and
+after some more tests I also started to build my own kernel with lots
+of printk to know the parameters.
 
-Note that byt_gpio_clear_triggering() only gets called from
-byt_gpio_disable_free() for direct-irq enabled pins, as these are exclude=
-d
-from the irq_valid mask by byt_init_irq_valid_mask().
+What I've discovered so far is:
+i2c_device_probe() is not even called.
+__acpi_match_device() fails to find a proper match. It is not scanning
+the right ACPI/PNP from the DSDT. On the i2c bus the device also has
+an Atmel touchscreen. It tries to match the Atmel TS, not the ALS. (It
+fails the check here,
+https://elixir.bootlin.com/linux/v4.18/source/drivers/acpi/bus.c#L783
+device looks like it is NULL)
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/pinctrl/intel/pinctrl-baytrail.c | 5 +++++
- 1 file changed, 5 insertions(+)
+With that in mind and with the dmesg logs after "modprobe isl29018":
+https://pastebin.com/84YzQ0GY
+I have traced the problem up to the "acpi_primary_dev_companion()"
+function. I think that that is the one that is returning NULL.
+Talking with the COREBOOT guys the ACPI asl is correct and they have
+no idea why the Linux kernel is failing to load that specific device.
 
-diff --git a/drivers/pinctrl/intel/pinctrl-baytrail.c b/drivers/pinctrl/i=
-ntel/pinctrl-baytrail.c
-index db55761c90cc..844b89f230d7 100644
---- a/drivers/pinctrl/intel/pinctrl-baytrail.c
-+++ b/drivers/pinctrl/intel/pinctrl-baytrail.c
-@@ -742,8 +742,13 @@ static void byt_gpio_clear_triggering(struct intel_p=
-inctrl *vg, unsigned int off
-=20
- 	raw_spin_lock_irqsave(&byt_lock, flags);
- 	value =3D readl(reg);
-+	/* Do not clear direct-irq enabled irqs (from gpio_disable_free) */
-+	if (value & BYT_DIRECT_IRQ_EN)
-+		goto out;
-+
- 	value &=3D ~(BYT_TRIG_POS | BYT_TRIG_NEG | BYT_TRIG_LVL);
- 	writel(value, reg);
-+out:
- 	raw_spin_unlock_irqrestore(&byt_lock, flags);
- }
-=20
---=20
-2.24.1
+For reference this is the touchpad dmesg , (as you will see the match
+is found and the i2c device gets properly probed):
+https://pastebin.com/PKiTKpD9
 
+I have no more ideas to test out where the problem is. I've tried with
+different kernel version all 4.18+
+
+If someone has a suggestion/things to help me out with this issue I'm
+facing it would be welcome.
+
+Regards,
+Nicol=C3=B2
