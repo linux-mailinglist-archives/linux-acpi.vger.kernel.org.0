@@ -2,125 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F1EA12CFD9
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Dec 2019 13:01:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45B5112CFE7
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Dec 2019 13:10:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727422AbfL3MBP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Dec 2019 07:01:15 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:46638 "EHLO huawei.com"
+        id S1727419AbfL3MKG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Dec 2019 07:10:06 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:54964 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726196AbfL3MBP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 30 Dec 2019 07:01:15 -0500
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 851AD5C8891C7BB89C4D;
-        Mon, 30 Dec 2019 20:01:12 +0800 (CST)
-Received: from linux-ibm.site (10.175.102.37) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 30 Dec 2019 20:01:05 +0800
-From:   Xiongfeng Wang <wangxiongfeng2@huawei.com>
-To:     <rjw@rjwysocki.net>, <lenb@kernel.org>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <tiantao6@huawei.com>, <jonathan.cameron@huawei.com>,
-        <guohanjun@huawei.com>, <wangxiongfeng2@huawei.com>
-Subject: [PATCH v2] ACPI/PPTT: fixed some parameter type is not right
-Date:   Mon, 30 Dec 2019 19:56:28 +0800
-Message-ID: <1577706988-56848-1-git-send-email-wangxiongfeng2@huawei.com>
-X-Mailer: git-send-email 1.7.12.4
+        id S1727400AbfL3MKG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 30 Dec 2019 07:10:06 -0500
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id C8FC8D8A95EED0F8C0E1;
+        Mon, 30 Dec 2019 20:10:00 +0800 (CST)
+Received: from [127.0.0.1] (10.177.223.23) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.439.0; Mon, 30 Dec 2019
+ 20:09:55 +0800
+Subject: Re: [PATCH 1/2] cpufreq : cppc: Break out if we match the HiSilicon
+ cppc workaround
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+CC:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        <linux-acpi@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+        Xiongfeng Wang <wangxiongfeng2@huawei.com>
+References: <1577152590-25574-1-git-send-email-guohanjun@huawei.com>
+ <2965934.S1MOicRWCW@kreacher>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <25ced2e7-426b-be14-326f-076e01f9e2e7@huawei.com>
+Date:   Mon, 30 Dec 2019 20:10:17 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.102.37]
+In-Reply-To: <2965934.S1MOicRWCW@kreacher>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.223.23]
 X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Tian Tao <tiantao6@huawei.com>
+On 2019/12/30 6:47, Rafael J. Wysocki wrote:
+> On Tuesday, December 24, 2019 2:56:29 AM CET Hanjun Guo wrote:
+>> Bail out if we match the OEM information, to save some possible
+>> extra iteration. And update the code to fix minor coding style issue.
+>>
+>> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
+>> ---
+>>  drivers/cpufreq/cppc_cpufreq.c | 6 ++++--
+>>  1 file changed, 4 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+>> index 8d8da76..d0ca300 100644
+>> --- a/drivers/cpufreq/cppc_cpufreq.c
+>> +++ b/drivers/cpufreq/cppc_cpufreq.c
+>> @@ -39,7 +39,7 @@
+>>  static struct cppc_cpudata **all_cpu_data;
+>>  
+>>  struct cppc_workaround_oem_info {
+>> -	char oem_id[ACPI_OEM_ID_SIZE +1];
+>> +	char oem_id[ACPI_OEM_ID_SIZE + 1];
+>>  	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
+>>  	u32 oem_revision;
+>>  };
+>> @@ -93,8 +93,10 @@ static void cppc_check_hisi_workaround(void)
+>>  	for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
+>>  		if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
+>>  		    !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
+>> -		    wa_info[i].oem_revision == tbl->oem_revision)
+>> +		    wa_info[i].oem_revision == tbl->oem_revision) {
+>>  			apply_hisi_workaround = true;
+>> +			break;
+>> +		}
+>>  	}
+>>  }
+>>  
+>>
+> 
+> Both this and the [2/2] applies as 5.6 material with reworked
+> subjects and changelog changes.  Thanks!
 
-The fourth parameter 'level' of function 'acpi_find_cache_level()' is a
-signed interger, but its caller 'acpi_find_cache_node()' passes that
-parameter an unsigned interger. This patch fixes the paramter type
-inconsistency.
+Much better for the reworked subject and changelog, thank
+you very much!
 
-Signed-off-by: Tian Tao <tiantao6@huawei.com>
-Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
-
----
-v2:	fix the conflicts in the third hunk.
-	Modify the commit information a little bit.
----
- drivers/acpi/pptt.c | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-index f31544d..4ae9335 100644
---- a/drivers/acpi/pptt.c
-+++ b/drivers/acpi/pptt.c
-@@ -98,11 +98,11 @@ static inline bool acpi_pptt_match_type(int table_type, int type)
-  *
-  * Return: The cache structure and the level we terminated with.
-  */
--static int acpi_pptt_walk_cache(struct acpi_table_header *table_hdr,
--				int local_level,
--				struct acpi_subtable_header *res,
--				struct acpi_pptt_cache **found,
--				int level, int type)
-+static unsigned int acpi_pptt_walk_cache(struct acpi_table_header *table_hdr,
-+					 unsigned int local_level,
-+					 struct acpi_subtable_header *res,
-+					 struct acpi_pptt_cache **found,
-+					 unsigned int level, int type)
- {
- 	struct acpi_pptt_cache *cache;
- 
-@@ -119,7 +119,7 @@ static int acpi_pptt_walk_cache(struct acpi_table_header *table_hdr,
- 			if (*found != NULL && cache != *found)
- 				pr_warn("Found duplicate cache level/type unable to determine uniqueness\n");
- 
--			pr_debug("Found cache @ level %d\n", level);
-+			pr_debug("Found cache @ level %u\n", level);
- 			*found = cache;
- 			/*
- 			 * continue looking at this node's resource list
-@@ -132,16 +132,17 @@ static int acpi_pptt_walk_cache(struct acpi_table_header *table_hdr,
- 	return local_level;
- }
- 
--static struct acpi_pptt_cache *acpi_find_cache_level(struct acpi_table_header *table_hdr,
--						     struct acpi_pptt_processor *cpu_node,
--						     int *starting_level, int level,
--						     int type)
-+static struct acpi_pptt_cache *
-+acpi_find_cache_level(struct acpi_table_header *table_hdr,
-+		      struct acpi_pptt_processor *cpu_node,
-+		      unsigned int *starting_level, unsigned int level,
-+		      int type)
- {
- 	struct acpi_subtable_header *res;
--	int number_of_levels = *starting_level;
-+	unsigned int number_of_levels = *starting_level;
- 	int resource = 0;
- 	struct acpi_pptt_cache *ret = NULL;
--	int local_level;
-+	unsigned int local_level;
- 
- 	/* walk down from processor node */
- 	while ((res = acpi_get_pptt_resource(table_hdr, cpu_node, resource))) {
-@@ -321,12 +322,12 @@ static struct acpi_pptt_cache *acpi_find_cache_node(struct acpi_table_header *ta
- 						    unsigned int level,
- 						    struct acpi_pptt_processor **node)
- {
--	int total_levels = 0;
-+	unsigned int total_levels = 0;
- 	struct acpi_pptt_cache *found = NULL;
- 	struct acpi_pptt_processor *cpu_node;
- 	u8 acpi_type = acpi_cache_type(type);
- 
--	pr_debug("Looking for CPU %d's level %d cache type %d\n",
-+	pr_debug("Looking for CPU %d's level %u cache type %d\n",
- 		 acpi_cpu_id, level, acpi_type);
- 
- 	cpu_node = acpi_find_processor_node(table_hdr, acpi_cpu_id);
--- 
-1.7.12.4
+Hanjun
 
