@@ -2,59 +2,405 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8C0612CE3F
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Dec 2019 10:34:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CDBF12CE97
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Dec 2019 10:46:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727299AbfL3Jem (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Dec 2019 04:34:42 -0500
-Received: from sonic314-15.consmr.mail.bf2.yahoo.com ([74.6.132.125]:34878
-        "EHLO sonic314-15.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727162AbfL3Jel (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 30 Dec 2019 04:34:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1577698480; bh=YooljpITC31Cc9KXMfJzAPmr/1tCBEdX27fhfqn54Fs=; h=Date:From:Reply-To:Subject:References:From:Subject; b=bJ8zajuKko9Qp7lnufJkDY+wNt2FXRIRvA1Bp3gAVb7B2BO8gOkh0Yjz0vRiGswJVP3OJBhWWA5ujA4Gc+sLV+LirPxhT0hTcuhXGXZCiTT/uY8xfNI+H1qVb3d8tv31hre5OKnt+IofFXhry3CV15nhcjBsQnFymDW83bokZmhbjjEUzYM7Ogpm3sTJVFsC5an8kqrDdtT0csk4rFAB5AWgsvbUrcj8fvRMPGqy+2rGPBRj94PjsZK1eoyVshbWmNe9ercX2JMlijosJPczAkuaVR54ZsEApmNU3XACvfdsZ3mDNkDvBfnfh4QgfZLF1PQfWkCK4326OKn49e6luw==
-X-YMail-OSG: eEzk7jgVM1m72GeAJkvjLjnl6YuZdIcRZJgidG6pq0QpUBPtGqb0aPSNBvnB1vA
- WqN_tB_nGQs1XHkLHIhP5KKGS2nFHx8tBdIio1J.3mNXgB.lGEX7XfMW_UVBbEJG5BjCbxV6iXcY
- RHcM49XyHrTmo1ZLabBb_ZAjnab8DmxsdaCT2L5V8ud7Wthodyyo61Wnk3SZZ2oujGnYxbGUXIUp
- f7NNJInV_fCV3OEKFMJkgwoc86SIu5n31No.Spm1WozON8ldgMQmOMfCWGk_p__l979kPWtcin7m
- hcuMCeepDroxeh13r_3prsBkg2n5ATBK3oJPsD6sWxJNMMHT_VXdxTsX_TY892kf1Pn.3UC8aELS
- Prjr4ylyeiixVF68UvS.vqbkeKoF0LQcS9FbLhm8e0zlsnGeCUfh1Uikagpgo9AGxPvBJCGDrwXT
- CkGneTBRH0qfp10JjR4vb6TODwWNHIpY.Zo16TJDY7U35ejyCmQHTR2WMREGVSINMB52HRmtcSU0
- M_MCoK_RkHPwfYF1Hbxw._W3yvbY5GS1hhhGBVoRW9qIM0UfZz2r8a2ug4uEbNBW.ecAr6r4YjyC
- mwUrgcEr7E376GQ2ekJ2YfEquwSeVxba1B_M5E7N8bRytk0gPhYAv_aeDHQLg1hcuGZ1CiJ.L5eR
- Z1iLWPvweMOLtL4iTepI5HWyqeKLiN7P2DTB.utPVAEOh3..cd8y.Y7ZlyNOsVEZ7pTTfKmOVhcv
- u5l0yVYFEs..MQ1q8gyk_pn8BIUA.FiarjQ.H9Uf8HxlgERks2SUnIfEm7NHNsCs9.suAKgDHld6
- Dtxa.hsDx4Pb9NQKWQvSt0w42re.se73nLhHv0hPITfkZqtuLobnxC23eLzOTo9WtYZB2nfiq8E.
- smbKn2UuDN5p3z_XjjVv3fReu6s862g.c6CBMaT52frBt4x2xWjvOWVYjg1lQk9OEf6CGnfZqNz_
- vqmGhziDvYTdGuqG6KKy4nB1vJApJNSsOr7KgBzesESh5zj4ZZiS0wFebP98xfaxlmcUvot_tvUq
- 2Z9Y9Ur4mHJPA9thEjGwTKNEQRm_cJgEABiAc1DD2_lJVw6x0h1QJe8BAARMbqQLo5Cnz69CQKs_
- HTjgD5emejOyOv8Idj8R6P4WxtrpeRL3bmv3QEeJ6KkMwDr3u3crQG8uoWsaiaBtesCFVGEmgDCk
- vaZxgM4snE9mzNDAGjRY5jWsbvZHVc_gEPhrsN8DKbKq19cs8Fcfs4yfhPH31taCOS0qauGA_gxK
- lMZfjkXkJbq6WEchvy3FOcfkhY205oGSEDgE9v7xRCIWYvx8cGHxKyLIPcYvFlEZ.9An7oMBh
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.bf2.yahoo.com with HTTP; Mon, 30 Dec 2019 09:34:40 +0000
-Date:   Mon, 30 Dec 2019 09:34:38 +0000 (UTC)
-From:   Lisa Williams <ah77900432@gmail.com>
-Reply-To: lisawilliams003@yahoo.com
-Message-ID: <1054553309.3099532.1577698478836@mail.yahoo.com>
-Subject: Hello
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1054553309.3099532.1577698478836.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.14873 YMailNodin Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)
-To:     unlisted-recipients:; (no To-header on input)
+        id S1727273AbfL3JqP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Dec 2019 04:46:15 -0500
+Received: from mga05.intel.com ([192.55.52.43]:3531 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727243AbfL3JqP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 30 Dec 2019 04:46:15 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Dec 2019 01:46:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,374,1571727600"; 
+   d="scan'208";a="243812901"
+Received: from jsong16-mobl1.ccr.corp.intel.com (HELO rzhang1-mobile.ccr.corp.intel.com) ([10.255.30.53])
+  by fmsmga004.fm.intel.com with ESMTP; 30 Dec 2019 01:46:12 -0800
+From:   Zhang Rui <rui.zhang@intel.com>
+To:     rjw@rjwysocki.net
+Cc:     linux-acpi@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>
+Subject: [PATCH V2] ACPI: introduce support for FPDT table
+Date:   Mon, 30 Dec 2019 17:46:01 +0800
+Message-Id: <20191230094601.16008-1-rui.zhang@intel.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+ACPI Firmware Performance Data Table (FPDT) provides information about
+firmware performance during system boot, S3 suspend and S3 resume.
 
+Have the kernel parse the FPDT table, and expose the firmware
+performance data to userspace as syfs attributes under
+/sys/firmware/acpi/fpdt/.
 
-Hi Dear,
+Tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+---
+ Documentation/ABI/testing/sysfs-firmware-acpi |  43 +++
+ drivers/acpi/Kconfig                          |   9 +
+ drivers/acpi/Makefile                         |   1 +
+ drivers/acpi/acpi_fpdt.c                      | 263 ++++++++++++++++++
+ 4 files changed, 316 insertions(+)
+ create mode 100644 drivers/acpi/acpi_fpdt.c
 
-I was just going through the Internet search when I found your email address, I want to make a new and special friend, so I decided to contact you to see how we can make it work out if we can. Please I wish you will have the desire with me so that we can get to know each other better and see what happens in future.
+diff --git a/Documentation/ABI/testing/sysfs-firmware-acpi b/Documentation/ABI/testing/sysfs-firmware-acpi
+index 613f42a9d5cd..b76f0ef7945a 100644
+--- a/Documentation/ABI/testing/sysfs-firmware-acpi
++++ b/Documentation/ABI/testing/sysfs-firmware-acpi
+@@ -1,3 +1,46 @@
++What:		/sys/firmware/acpi/firmware_performance_data/
++Date:		Aug 2019
++Contact:	Zhang Rui <rui.zhang@intel.com>
++Description:
++		ACPI Firmware Performance Data Table (FPDT) provides
++		information for firmware performance data for system boot,
++		S3 suspend and S3 resume. This sysfs entry contains the
++		performance data retrieved from the FPDT.
++
++		boot_performance:
++			firmware_start_ns: Timer value logged at the beginning
++				of firmware image execution. In nanoseconds.
++			bootloader_load_ns: Timer value logged just prior to
++				loading the OS boot loader into memory.
++				In nanoseconds.
++			bootloader_launch_ns: Timer value logged just prior to
++				launching the currently loaded OS boot loader
++				image. In nanoseconds.
++			exitbootservice_start_ns: Timer value logged at the
++				point when the OS loader calls the
++				ExitBootServices function for UEFI compatible
++				firmware. In nanoseconds.
++			exitbootservice_end_ns: Timer value logged at the point
++				just prior to the OS loader gaining control
++				back from the ExitBootServices function for
++				UEFI compatible firmware. In nanoseconds.
++		suspend_performance:
++			suspend_start_ns: Timer value recorded at the previous
++				OS write to SLP_TYP upon entry to S3. In
++				nanoseconds.
++			suspend_end_ns: Timer value recorded at the previous
++				firmware write to SLP_TYP used to trigger
++				hardware entry to S3. In nanoseconds.
++		resume_performance:
++			resume_count: A count of the number of S3 resume cycles
++				since the last full boot sequence.
++			resume_avg_ns: Average timer value of all resume cycles
++				logged since the last full boot sequence,
++				including the most recent resume. In nanoseconds.
++			resume_prev_ns: Timer recorded at the end of the previous
++				platform runtime firmware S3 resume, just prior to
++				handoff to the OS waking vector. In nanoseconds.
++
+ What:		/sys/firmware/acpi/bgrt/
+ Date:		January 2012
+ Contact:	Matthew Garrett <mjg@redhat.com>
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index ebe1e9e5fd81..8517c8ba4633 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -88,6 +88,15 @@ config ACPI_SPCR_TABLE
+ 	  This table provides information about the configuration of the
+ 	  earlycon console.
+ 
++config ACPI_FPDT
++	bool "ACPI Firmware Performance Data Table(FPDT)"
++	depends on X86_64
++	default y
++	help
++	  Enable support for the Firmware Performance Data Table (FPDT).
++	  This table provides information on the timing of the system
++	  boot, S3 suspend and S3 resume firmware code paths.
++
+ config ACPI_LPIT
+ 	bool
+ 	depends on X86_64
+diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+index 5d361e4e3405..3cabb112aec4 100644
+--- a/drivers/acpi/Makefile
++++ b/drivers/acpi/Makefile
+@@ -58,6 +58,7 @@ acpi-$(CONFIG_DEBUG_FS)		+= debugfs.o
+ acpi-$(CONFIG_ACPI_NUMA)	+= numa.o
+ acpi-$(CONFIG_ACPI_PROCFS_POWER) += cm_sbs.o
+ acpi-y				+= acpi_lpat.o
++acpi-$(CONFIG_ACPI_FPDT)	+= acpi_fpdt.o
+ acpi-$(CONFIG_ACPI_LPIT)	+= acpi_lpit.o
+ acpi-$(CONFIG_ACPI_GENERIC_GSI) += irq.o
+ acpi-$(CONFIG_ACPI_WATCHDOG)	+= acpi_watchdog.o
+diff --git a/drivers/acpi/acpi_fpdt.c b/drivers/acpi/acpi_fpdt.c
+new file mode 100644
+index 000000000000..2e4a4803f2d6
+--- /dev/null
++++ b/drivers/acpi/acpi_fpdt.c
+@@ -0,0 +1,263 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++/*
++ * FPDT support for exporting boot and suspend/resume performance data
++ *
++ * Copyright (C) 2019 Intel Corporation. All rights reserved.
++ */
++
++#define pr_fmt(fmt) "ACPI FPDT: " fmt
++
++#include <linux/acpi.h>
++
++/*
++ * FPDT contains ACPI table header and a number of fpdt_subtable_entries.
++ * Each fpdt_subtable_entry points to a subtable: FBPT or S3PT.
++ * Each FPDT subtable (FBPT/S3PT) is composed of a fpdt_subtable_header
++ * and a number of fpdt performance records.
++ * Each FPDT performance record is composed of a fpdt_record_header and
++ * performance data fields, for boot or suspend or resume phase.
++ */
++enum fpdt_subtable_type {
++	SUBTABLE_FBPT,
++	SUBTABLE_S3PT,
++};
++
++struct fpdt_subtable_entry {
++	u16 type;		/* refer to enum fpdt_subtable_type */
++	u8 length;
++	u8 revision;
++	u32 reserved;
++	u64 address;		/* physical address of the S3PT/FBPT table */
++};
++
++struct fpdt_subtable_header {
++	u32 signature;
++	u32 length;
++};
++
++enum fpdt_record_type {
++	RECORD_S3_RESUME,
++	RECORD_S3_SUSPEND,
++	RECORD_BOOT,
++};
++
++struct fpdt_record_header {
++	u16 type;		/* refer to enum fpdt_record_type */
++	u8 length;
++	u8 revision;
++};
++
++struct resume_performance_record {
++	struct fpdt_record_header header;
++	u32 resume_count;
++	u64 resume_prev;
++	u64 resume_avg;
++} __attribute__((packed));
++
++struct boot_performance_record {
++	struct fpdt_record_header header;
++	u32 reserved;
++	u64 firmware_start;
++	u64 bootloader_load;
++	u64 bootloader_launch;
++	u64 exitbootservice_start;
++	u64 exitbootservice_end;
++} __attribute__((packed));
++
++struct suspend_performance_record {
++	struct fpdt_record_header header;
++	u64 suspend_start;
++	u64 suspend_end;
++} __attribute__((packed));
++
++
++static struct resume_performance_record *record_resume;
++static struct suspend_performance_record *record_suspend;
++static struct boot_performance_record *record_boot;
++
++#define FPDT_ATTR(phase, name)	\
++static ssize_t name##_show(struct kobject *kobj,	\
++		 struct kobj_attribute *attr, char *buf)	\
++{	\
++	return sprintf(buf, "%llu\n", record_##phase->name);	\
++}	\
++static struct kobj_attribute name##_attr =	\
++__ATTR(name##_ns, 0444, name##_show, NULL)
++
++FPDT_ATTR(resume, resume_prev);
++FPDT_ATTR(resume, resume_avg);
++FPDT_ATTR(suspend, suspend_start);
++FPDT_ATTR(suspend, suspend_end);
++FPDT_ATTR(boot, firmware_start);
++FPDT_ATTR(boot, bootloader_load);
++FPDT_ATTR(boot, bootloader_launch);
++FPDT_ATTR(boot, exitbootservice_start);
++FPDT_ATTR(boot, exitbootservice_end);
++
++static ssize_t resume_count_show(struct kobject *kobj,
++				 struct kobj_attribute *attr, char *buf)
++{
++	return sprintf(buf, "%u\n", record_resume->resume_count);
++}
++
++static struct kobj_attribute resume_count_attr =
++__ATTR_RO(resume_count);
++
++static struct attribute *resume_attrs[] = {
++	&resume_count_attr.attr,
++	&resume_prev_attr.attr,
++	&resume_avg_attr.attr,
++	NULL
++};
++
++static const struct attribute_group resume_attr_group = {
++	.attrs = resume_attrs,
++	.name = "resume",
++};
++
++static struct attribute *suspend_attrs[] = {
++	&suspend_start_attr.attr,
++	&suspend_end_attr.attr,
++	NULL
++};
++
++static const struct attribute_group suspend_attr_group = {
++	.attrs = suspend_attrs,
++	.name = "suspend",
++};
++
++static struct attribute *boot_attrs[] = {
++	&firmware_start_attr.attr,
++	&bootloader_load_attr.attr,
++	&bootloader_launch_attr.attr,
++	&exitbootservice_start_attr.attr,
++	&exitbootservice_end_attr.attr,
++	NULL
++};
++
++static const struct attribute_group boot_attr_group = {
++	.attrs = boot_attrs,
++	.name = "boot",
++};
++
++static struct kobject *fpdt_kobj;
++
++static int fpdt_process_subtable(u64 address, u32 subtable_type)
++{
++	struct fpdt_subtable_header *subtable_header;
++	struct fpdt_record_header *record_header;
++	char *signature = (subtable_type == SUBTABLE_FBPT ? "FBPT" : "S3PT");
++	u32 length, offset;
++	int result;
++
++	subtable_header = acpi_os_map_memory(address, sizeof(*subtable_header));
++	if (!subtable_header)
++		return -ENOMEM;
++
++	if (strncmp((char *)&subtable_header->signature, signature, 4)) {
++		pr_info(FW_BUG "subtable signature and type mismatch!\n");
++		return -EINVAL;
++	}
++
++	length = subtable_header->length;
++	acpi_os_unmap_memory(subtable_header, sizeof(*subtable_header));
++
++	subtable_header = acpi_os_map_memory(address, length);
++	if (!subtable_header)
++		return -ENOMEM;
++
++	offset = sizeof(*subtable_header);
++	while (offset < length) {
++		record_header = (void *)subtable_header + offset;
++		offset += record_header->length;
++
++		switch (record_header->type) {
++		case RECORD_S3_RESUME:
++			if (subtable_type != SUBTABLE_S3PT) {
++				pr_err(FW_BUG "Invalid record %d for subtable %s\n",
++				     record_header->type, signature);
++				return -EINVAL;
++			}
++			if (record_resume) {
++				pr_err("Duplicate resume performance record found.\n");
++				continue;
++			}
++			record_resume = (struct resume_performance_record *)record_header;
++			result = sysfs_create_group(fpdt_kobj, &resume_attr_group);
++			if (result)
++				return result;
++			break;
++		case RECORD_S3_SUSPEND:
++			if (subtable_type != SUBTABLE_S3PT) {
++				pr_err(FW_BUG "Invalid %d for subtable %s\n",
++				     record_header->type, signature);
++				continue;
++			}
++			if (record_suspend) {
++				pr_err("Duplicate suspend performance record found.\n");
++				continue;
++			}
++			record_suspend = (struct suspend_performance_record *)record_header;
++			result = sysfs_create_group(fpdt_kobj, &suspend_attr_group);
++			if (result)
++				return result;
++			break;
++		case RECORD_BOOT:
++			if (subtable_type != SUBTABLE_FBPT) {
++				pr_err(FW_BUG "Invalid %d for subtable %s\n",
++				     record_header->type, signature);
++				return -EINVAL;
++			}
++			if (record_boot) {
++				pr_err("Duplicate boot performance record found.\n");
++				continue;
++			}
++			record_boot = (struct boot_performance_record *)record_header;
++			result = sysfs_create_group(fpdt_kobj, &boot_attr_group);
++			if (result)
++				return result;
++			break;
++
++		default:
++			pr_err(FW_BUG "Invalid record %d found.\n", record_header->type);
++			return -EINVAL;
++		}
++	}
++	return 0;
++}
++
++void acpi_init_fpdt(void)
++{
++	acpi_status status;
++	struct acpi_table_header *header;
++	struct fpdt_subtable_entry *subtable;
++	u32 offset = sizeof(*header);
++
++	status = acpi_get_table(ACPI_SIG_FPDT, 0, &header);
++
++	if (ACPI_FAILURE(status))
++		return;
++
++	fpdt_kobj = kobject_create_and_add("fpdt", acpi_kobj);
++	if (!fpdt_kobj)
++		return;
++
++	while (offset < header->length) {
++		subtable = (void *)header + offset;
++		switch (subtable->type) {
++		case SUBTABLE_FBPT:
++		case SUBTABLE_S3PT:
++			fpdt_process_subtable(subtable->address,
++					      subtable->type);
++			break;
++		default:
++			pr_info(FW_BUG, "Invalid subtable type %d found.\n",
++			       subtable->type);
++			return;
++		}
++		offset += sizeof(*subtable);
++	}
++}
++
++fs_initcall(acpi_init_fpdt);
+-- 
+2.17.1
 
-My name is Lisa Williams, I am an American, but presently I live in the UK, I will be glad to see your reply for us to know each other better to exchange pictures and details about us
-
-Yours
-Lisa
