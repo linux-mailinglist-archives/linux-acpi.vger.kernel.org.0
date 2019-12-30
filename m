@@ -2,76 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8012C12CB34
-	for <lists+linux-acpi@lfdr.de>; Sun, 29 Dec 2019 23:47:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4227112CD24
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Dec 2019 07:03:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726607AbfL2Wrt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 29 Dec 2019 17:47:49 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:54102 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726584AbfL2Wrt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 29 Dec 2019 17:47:49 -0500
-Received: from 79.184.253.116.ipv4.supernova.orange.pl (79.184.253.116) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.320)
- id b3a5fd46b8adb14e; Sun, 29 Dec 2019 23:47:47 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Hanjun Guo <guohanjun@huawei.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Subject: Re: [PATCH 1/2] cpufreq : cppc: Break out if we match the HiSilicon cppc workaround
-Date:   Sun, 29 Dec 2019 23:47:47 +0100
-Message-ID: <2965934.S1MOicRWCW@kreacher>
-In-Reply-To: <1577152590-25574-1-git-send-email-guohanjun@huawei.com>
-References: <1577152590-25574-1-git-send-email-guohanjun@huawei.com>
+        id S1727126AbfL3GDE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Dec 2019 01:03:04 -0500
+Received: from vuizook.err.no ([178.255.151.162]:60962 "EHLO vuizook.err.no"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727115AbfL3GDE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 30 Dec 2019 01:03:04 -0500
+X-Greylist: delayed 998 seconds by postgrey-1.27 at vger.kernel.org; Mon, 30 Dec 2019 01:03:03 EST
+Received: from p576124-ipngn200707tokaisakaetozai.aichi.ocn.ne.jp ([122.31.139.124] helo=glandium.org)
+        by vuizook.err.no with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mh@glandium.org>)
+        id 1ilnsl-0003LE-7D; Mon, 30 Dec 2019 05:46:23 +0000
+Received: from glandium by goemon.lan with local (Exim 4.92)
+        (envelope-from <mh@glandium.org>)
+        id 1ilnsi-000LHA-KC; Mon, 30 Dec 2019 14:46:20 +0900
+Date:   Mon, 30 Dec 2019 14:46:20 +0900
+From:   Mike Hommey <mh@glandium.org>
+To:     linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org
+Subject: I2C/SMBus support for Threadripper 39x0X?
+Message-ID: <20191230054620.lesgynpyghprzmsh@glandium.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-GPG-Fingerprint: 182E 161D 1130 B9FC CD7D  B167 E42A A04F A6AA 8C72
+User-Agent: NeoMutt/20180716
+X-Spam-Status: (score 0.9): No, score=0.9 required=5.0 tests=SPF_FAIL,SPF_HELO_FAIL autolearn=disabled version=3.4.2
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tuesday, December 24, 2019 2:56:29 AM CET Hanjun Guo wrote:
-> Bail out if we match the OEM information, to save some possible
-> extra iteration. And update the code to fix minor coding style issue.
-> 
-> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
-> ---
->  drivers/cpufreq/cppc_cpufreq.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-> index 8d8da76..d0ca300 100644
-> --- a/drivers/cpufreq/cppc_cpufreq.c
-> +++ b/drivers/cpufreq/cppc_cpufreq.c
-> @@ -39,7 +39,7 @@
->  static struct cppc_cpudata **all_cpu_data;
->  
->  struct cppc_workaround_oem_info {
-> -	char oem_id[ACPI_OEM_ID_SIZE +1];
-> +	char oem_id[ACPI_OEM_ID_SIZE + 1];
->  	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
->  	u32 oem_revision;
->  };
-> @@ -93,8 +93,10 @@ static void cppc_check_hisi_workaround(void)
->  	for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
->  		if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
->  		    !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
-> -		    wa_info[i].oem_revision == tbl->oem_revision)
-> +		    wa_info[i].oem_revision == tbl->oem_revision) {
->  			apply_hisi_workaround = true;
-> +			break;
-> +		}
->  	}
->  }
->  
-> 
+Hi,
 
-Both this and the [2/2] applies as 5.6 material with reworked
-subjects and changelog changes.  Thanks!
+I recently built a machine with a Threadripper 3970X and a Gigabyte
+TRX40 Aorus pro wifi, and while it works for most of everything with
+5.5 rc3 or rc4, I do have an issue with SMBus support, which I was
+supposing is why I'm not seeing any readings for e.g. CPU fans with
+lm-sensors.
 
+The i2c-piix4 driver loads, but does nothing, leaving this message in
+dmesg:
 
+[    2.711213] ACPI Warning: SystemIO range 0x0000000000000B00-0x0000000000000B08 conflicts with OpRegion 0x0000000000000B00-0x0000000000000B0F (\GSA1.SMBI) (20191018/utaddress-213)
+[    2.711218] ACPI: If an ACPI driver is available for this device, you should use it instead of the native driver
 
+Instrumenting the module, I can see it comes from
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/i2c/busses/i2c-piix4.c?id=fd6988496e79a6a4bdb514a4655d2920209eb85d#n323
 
+If I remove the check, the module loads and dmesg says:
+
+[ 7589.210039] piix4_smbus 0000:00:14.0: SMBus Host Controller at 0xb00, revision 0
+[ 7589.210041] piix4_smbus 0000:00:14.0: Using register 0x02 for SMBus port selection
+
+and now i2cdetect -l does find the smbus adapter, which it didn't find
+before the change.
+
+i2c-6   smbus           SMBus PIIX4 adapter port 2 at 0b00      SMBus adapter
+i2c-5   smbus           SMBus PIIX4 adapter port 0 at 0b00      SMBus adapter
+
+sensors-detect doesn't find any sensors in there, though (only SPD
+EEPROMs), so that may not be where my missing sensors are.
+
+In any case, the SMBus adapter is currently not initialized without tweaking the
+module.
+
+I should add, though, that during boot, I see a bunch of these in dmesg:
+
+[    0.388399] ACPI BIOS Error (bug): Failure creating named object [\_SB.I2CA.WT1A], AE_ALREADY_EXISTS (20191018/dswload2-324)
+[    0.388405] ACPI Error: AE_ALREADY_EXISTS, During name lookup/catalog (20191018/psobject-221)
+[    0.388407] ACPI: Skipping parse of AML opcode: OpcodeName unavailable (0x5B82)
+[    0.388408] ACPI BIOS Error (bug): Failure creating named object [\_SB.I2CA.MT1A], AE_ALREADY_EXISTS (20191018/dswload2-324)
+[    0.388411] ACPI Error: AE_ALREADY_EXISTS, During name lookup/catalog (20191018/psobject-221)
+[    0.388412] ACPI: Skipping parse of AML opcode: OpcodeName unavailable (0x5B82)
+(and many more similar ones)
+
+I don't know if they'd be related, but dumping the ACPI tables, it looks
+like there are "only" duplicates between the DSDT and one of the SSDT
+tables.
+
+Cheers,
+
+Mike
