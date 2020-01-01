@@ -2,182 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39B3012D00A
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Dec 2019 13:32:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4069412DF31
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Jan 2020 15:51:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727531AbfL3Mb6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Dec 2019 07:31:58 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:47084 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727496AbfL3Mb6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 30 Dec 2019 07:31:58 -0500
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 86F696DD0046223156DB;
-        Mon, 30 Dec 2019 20:31:55 +0800 (CST)
-Received: from linux-ibm.site (10.175.102.37) by
- DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 30 Dec 2019 20:31:48 +0800
-From:   Hanjun Guo <guohanjun@huawei.com>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Pankaj Bansal" <pankaj.bansal@nxp.com>
-CC:     <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
-        John Garry <john.garry@huawei.com>,
-        Hanjun Guo <guohanjun@huawei.com>
-Subject: [PATCH v1] ACPI/IORT: Workaround for IORT ID count "minus one" issue
-Date:   Mon, 30 Dec 2019 20:27:04 +0800
-Message-ID: <1577708824-4873-1-git-send-email-guohanjun@huawei.com>
-X-Mailer: git-send-email 1.7.12.4
+        id S1726893AbgAAOv6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 1 Jan 2020 09:51:58 -0500
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:39184 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725872AbgAAOv6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Jan 2020 09:51:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1577890316;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=9gqQr/+c9pqV5pQvS4YN/PwQEOwT63BT34eIfRYUFd4=;
+        b=NzRSDNi7yeHzjhWunNFFfrbeMi6MWfD0xoWY6iOGlxBM21odbzoPd2e5VbYSREJ3kCBtjp
+        2zjxgpTciVwLmZI70EVQQ85V2Jnad8yE6ekcHzM1OBxPoDwRL8+17k4hUnvmJQT9+w+hjQ
+        vN3Q/9oKetw4WlbjUXE4pix5vqsuCPA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-205-moB-7eVhNfWMxR69K-Uleg-1; Wed, 01 Jan 2020 09:51:55 -0500
+X-MC-Unique: moB-7eVhNfWMxR69K-Uleg-1
+Received: by mail-wr1-f69.google.com with SMTP id k18so19427461wrw.9
+        for <linux-acpi@vger.kernel.org>; Wed, 01 Jan 2020 06:51:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=9gqQr/+c9pqV5pQvS4YN/PwQEOwT63BT34eIfRYUFd4=;
+        b=moH/sGBWkQaRue3p1EoW02qZpjx8IHSbkLz8IAxRGCWHJGrnQkm/H+X3iitv4GAhRR
+         wOFW4COmwWiZa/OKf0Pogl1PY4LuUpGOxlHULQSkm7oXEQB2LHAhv/ky1JHwEsx0ObyM
+         1Z67oq/reExh8B3hY/S5A0U8IdX4+N1vSX5SQSEaWM47AjYjY3ZbmPwjxZz6PQHfOCZ8
+         lPbgFBcT65YXRBkJ9SXqnZY5GNqcgMyHob1CU1dFatJfVkLffc8Kv+GhhwP/1Kadb6vn
+         vnCoGHJpGNXpqmdl+rmnEGlq5IWP4JHj5C2VB9V2429jL4haMkxScDcwp90YcFxWqGE6
+         e+tg==
+X-Gm-Message-State: APjAAAWkVAgwDC9YQ8beUc+3rKPX6/ZRn4OlwucVsz/SnX+J+0J3KTOH
+        Wrh9lnn2Lb3fGzNC+T8zXziM8hEZ4xUh5CbDgUr2BmGI13Yd4WgiYiGA2+XGZ8PveD6yGOiWBY4
+        /PDsjPonMrdbKl17ig148cg==
+X-Received: by 2002:adf:f288:: with SMTP id k8mr82138648wro.301.1577890314432;
+        Wed, 01 Jan 2020 06:51:54 -0800 (PST)
+X-Google-Smtp-Source: APXvYqz7Dj2aGS6ChUGPgxfcCnqaDTOZ3W5KDIc9GFjuuirLshpd149g1xVtsfAnqadyi+tNp8Mn8Q==
+X-Received: by 2002:adf:f288:: with SMTP id k8mr82138621wro.301.1577890314237;
+        Wed, 01 Jan 2020 06:51:54 -0800 (PST)
+Received: from shalem.localdomain (2001-1c00-0c0c-fe00-7e79-4dac-39d0-9c14.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:7e79:4dac:39d0:9c14])
+        by smtp.gmail.com with ESMTPSA id z4sm5657541wma.2.2020.01.01.06.51.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Jan 2020 06:51:53 -0800 (PST)
+Subject: Re: [PATCH v2] pinctrl: baytrail: Remove WARN when setting direct-irq
+ pin to output
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bastien Nocera <hadess@hadess.net>,
+        Dmitry Mastykin <mastichi@gmail.com>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+References: <20191225132812.90889-1-hdegoede@redhat.com>
+ <20191227141220.GA2628@lahna.fi.intel.com>
+ <acafef49-bd32-6900-01d2-f6adccabe201@redhat.com>
+ <20191230100844.GC2628@lahna.fi.intel.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <d56d3764-e82a-4969-6579-d4d3a17a1d3d@redhat.com>
+Date:   Wed, 1 Jan 2020 15:51:52 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.102.37]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20191230100844.GC2628@lahna.fi.intel.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The IORT spec [0] says Number of IDs = The number of IDs in the range minus
-one, it is confusing but it was written down in the first version of the
-IORT spec. But the IORT ID mapping function iort_id_map() did something
-wrong from the start, which bails out if:
+Hi,
 
-the request ID >= the input base + number of IDs
+On 30-12-2019 11:08, Mika Westerberg wrote:
+> On Fri, Dec 27, 2019 at 11:47:38PM +0100, Hans de Goede wrote:
+>> The problem is that we hit this path everytime we output a value on the
+>> pin. I guess we can change the WARN to dev_info_once() if you prefer that.
+> 
+> Yes, I think dev_info_once() would be fine.
 
-This is wrong because it ignored the "minus one", and breaks some valid
-usecases such as ID mapping to contain single device mapping without
-single mapping flag set.
+Ok, version 3 replacing the WARN() with a dev_info_once coming up.
 
-Pankaj Bansal proposed a solution to fix the issue [1], which bails
-out if:
+Regards,
 
-the request ID > the input base + number of IDs
-
-This works as the spec defined, unfortunately some firmware didn't
-minus one for the number of IDs in the range, and the propoased
-solution will break those systems in this way:
-
-PCI hostbridge mapping entry 1:
-Input base:  0x1000
-ID Count:    0x100
-Output base: 0x1000
-Output reference: 0xC4  //ITS reference
-
-PCI hostbridge mapping entry 2:
-Input base:  0x1100
-ID Count:    0x100
-Output base: 0x2000
-Output reference: 0xD4  //ITS reference
-
-Two mapping entries which the second entry's Input base = the first
-entry's Input base + ID count, so for requester ID 0x1100 will map
-to ITS 0xC4 not 0xD4 if we update '>=' to '>'.
-
-So introduce a workaround to match the IORT's OEM information for
-the broken firmware, also update the logic of the ID mapping for
-firmwares report the number of IDs as the IORT spec defined, to
-make the code compatible for both kinds of system.
-
-I checked the ACPI tables in the tianocore/edk2-platforms [2], only
-HiSilicon HIP07/08 did wrong, so just add HIP07/08 to the workaround
-info table, if we break other platforms, we can add that later.
-
-[0]: http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf
-[1]: https://patchwork.kernel.org/patch/11292823/
-[2]: https://github.com/tianocore/edk2-platforms
-
-Cc: Pankaj Bansal <pankaj.bansal@nxp.com>
-Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
----
-
-RFC->v1:
-- Print warning when matched the workaround info, suggested by Pankaj.
-
- drivers/acpi/arm64/iort.c | 55 ++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 52 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 33f7198..60eb10d 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -298,6 +298,42 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
- 	return status;
- }
- 
-+struct iort_workaround_oem_info {
-+	char oem_id[ACPI_OEM_ID_SIZE + 1];
-+	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
-+	u32 oem_revision;
-+};
-+
-+static bool apply_id_count_workaround;
-+
-+static struct iort_workaround_oem_info wa_info[] __initdata = {
-+	{
-+		.oem_id		= "HISI  ",
-+		.oem_table_id	= "HIP07   ",
-+		.oem_revision	= 0,
-+	}, {
-+		.oem_id		= "HISI  ",
-+		.oem_table_id	= "HIP08   ",
-+		.oem_revision	= 0,
-+	}
-+};
-+
-+static void __init
-+iort_check_id_count_workaround(struct acpi_table_header *tbl)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
-+		if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
-+		    !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
-+		    wa_info[i].oem_revision == tbl->oem_revision) {
-+			apply_id_count_workaround = true;
-+			pr_warn(FW_BUG "ID count for ID mapping entry is wrong, applying workaround\n");
-+			break;
-+		}
-+	}
-+}
-+
- static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
- 		       u32 *rid_out)
- {
-@@ -314,9 +350,21 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
- 		return -ENXIO;
- 	}
- 
--	if (rid_in < map->input_base ||
--	    (rid_in >= map->input_base + map->id_count))
--		return -ENXIO;
-+	/*
-+	 * IORT spec says Number of IDs = The number of IDs in the range minus
-+	 * one, but the IORT code ingored the "minus one", and some firmware
-+	 * did that too, so apply a workaround here to keep compatible with
-+	 * both new and old versions of the firmware.
-+	 */
-+	if (apply_id_count_workaround) {
-+		if (rid_in < map->input_base ||
-+			(rid_in >= map->input_base + map->id_count))
-+			return -ENXIO;
-+	} else {
-+		if (rid_in < map->input_base ||
-+			(rid_in > map->input_base + map->id_count))
-+			return -ENXIO;
-+	}
- 
- 	*rid_out = map->output_base + (rid_in - map->input_base);
- 	return 0;
-@@ -1631,5 +1679,6 @@ void __init acpi_iort_init(void)
- 		return;
- 	}
- 
-+	iort_check_id_count_workaround(iort_table);
- 	iort_init_platform_devices();
- }
--- 
-1.7.12.4
+Hans
 
