@@ -2,124 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03C4512EB5A
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Jan 2020 22:27:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22B7D12EB6D
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Jan 2020 22:37:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726199AbgABV1L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Jan 2020 16:27:11 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:23371 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726103AbgABV1L (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Jan 2020 16:27:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1578000430;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=PpYbVzWZkkwXmuxKU68lA7mgW4bz/XGYjmci9VZh6ZU=;
-        b=O5bWnXaI3rvbpMXDq7orZBjFCTNaRzBbqhqFwXwQba2M166wz8gZ1+zVYqjbbyrhEVAg5+
-        NPjB14mKznioFV1+BMRUJ2USCXKEEjIFsX4TXwKa28LeC2rzAjk1sRGhsGq+5jNMouC0dP
-        Xqwj93f0Qd9nw+OsaXqymePKum1we0I=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-337-iLxMMDxIPWS9KFLqQ_a_Xw-1; Thu, 02 Jan 2020 16:27:09 -0500
-X-MC-Unique: iLxMMDxIPWS9KFLqQ_a_Xw-1
-Received: by mail-wr1-f70.google.com with SMTP id c17so15976893wrp.10
-        for <linux-acpi@vger.kernel.org>; Thu, 02 Jan 2020 13:27:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=PpYbVzWZkkwXmuxKU68lA7mgW4bz/XGYjmci9VZh6ZU=;
-        b=bqR5cM8nfWW75Rf7BemEWohlBRyHDopjsObS+etXfx/9BwDYFLpqVmD+KANcg3RA1F
-         8HZfNRzN26rf6B4PYiPr1iVdg3oNcgReWXtFzjra+e2NxnpkLSiuxxXJBEQfG9j2IeuJ
-         1BDnsrDhLCZT5jtEi+6S/5fsltCzIKYETaJtjIr2dD7XkyW+HhxrAujBVcw9xyIKpjTd
-         SPCs7m3FpMKe77yR5B4hQjbvKvJbRkgzdnDdstndN/pAyYfSwIN4xyDBavJ1ViPDUCgv
-         zEIYpN9XlHPyyEV6skneEHlHoXPvIjy+zfE1O9fTkp96j3sFBWrOf/Pc4Fq7FNhUOmPx
-         6Vtg==
-X-Gm-Message-State: APjAAAWQZRvzfEu0z3fC4F6Aa4dCfRhQdK9t1I8TpngpnYhxy9lozuSj
-        1KtDRJDfS62va5Vk8x18UZKqkP3+1nSH+jhzwl2NaAzML2Y37LNOqi1ISmib35sppH+HS0fdktT
-        sRQ7fL6YgMU1Gu3LAslwjpA==
-X-Received: by 2002:a05:6000:1187:: with SMTP id g7mr29395662wrx.109.1578000428333;
-        Thu, 02 Jan 2020 13:27:08 -0800 (PST)
-X-Google-Smtp-Source: APXvYqxzTcuAi7Pt7nocywZojYU3QnxHnmj9Zekuq4+JDJeNLdhsFfNQ//LfZ2fZaVTc9W4d6sCEYQ==
-X-Received: by 2002:a05:6000:1187:: with SMTP id g7mr29395655wrx.109.1578000428180;
-        Thu, 02 Jan 2020 13:27:08 -0800 (PST)
-Received: from shalem.localdomain (2001-1c00-0c0c-fe00-7e79-4dac-39d0-9c14.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:7e79:4dac:39d0:9c14])
-        by smtp.gmail.com with ESMTPSA id q11sm56704622wrp.24.2020.01.02.13.27.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Jan 2020 13:27:07 -0800 (PST)
-Subject: Re: [PATCH] ACPI: button: Add a DMI quirk for Razer Blade Stealth 13
- late 2019 lid-switch
-To:     Jason Ekstrand <jason@jlekstrand.net>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20191206175409.335568-1-jason@jlekstrand.net>
- <20200102202754.24028-1-jason@jlekstrand.net>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <7eba4578-42e2-69da-99a3-2fc316a588b8@redhat.com>
-Date:   Thu, 2 Jan 2020 22:27:06 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+        id S1725989AbgABVhI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Jan 2020 16:37:08 -0500
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:54424 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725851AbgABVhI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Jan 2020 16:37:08 -0500
+X-IronPort-AV: E=Sophos;i="5.69,388,1571695200"; 
+   d="scan'208";a="429721732"
+Received: from vir91-18_migr-88-121-247-124.fbx.proxad.net (HELO [192.168.0.4]) ([88.121.247.124])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES128-SHA; 02 Jan 2020 22:37:05 +0100
+Subject: Re: [PATCH V6 0/7] ACPI: Support Generic Initiator proximity domains
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     linux-mm@kvack.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        x86@kernel.org, Keith Busch <kbusch@kernel.org>,
+        jglisse@redhat.com, "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        linuxarm@huawei.com, Andrew Morton <akpm@linux-foundation.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Tao Xu <tao3.xu@intel.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+References: <20191216153809.105463-1-Jonathan.Cameron@huawei.com>
+ <dc5f5502-09c6-d476-db0e-0af3412bb031@gmail.com>
+ <20191218145041.00005a11@Huawei.com>
+ <1867024e-b0c4-c291-7190-262cc4b297a8@gmail.com>
+ <20200102152604.000039f1@Huawei.com>
+From:   Brice Goglin <brice.goglin@gmail.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=brice.goglin@gmail.com; prefer-encrypt=mutual; keydata=
+ mQINBFNg91oBEADMfOyfz9iilNPe1Yy3pheXLf5O/Vpr+gFJoXcjA80bMeSWBf4on8Mt5Fg/
+ jpVuNBhii0Zyq4Lip1I2ve+WQjfL3ixYQqvNRLgfw/FL0gNHSOe9dVFo0ol0lT+vu3AXOVmh
+ AM4IrsOp2Tmt+w89Oyvu+xwHW54CJX3kXp4c7COz79A6OhbMEPQUreerTavSvYpH5pLY55WX
+ qOSdjmlXD45yobQbMg9rFBy1BECrj4DJSpym/zJMFVnyC5yAq2RdPFRyvYfS0c491adD/iw9
+ eFZY1XWj+WqLSW8zEejdl78npWOucfin7eAKvov5Bqa1MLGS/2ojVMHXJN0qpStpKcueV5Px
+ igX8i4O4pPT10xCXZ7R6KIGUe1FE0N7MLErLvBF6AjMyiFHix9rBG0pWADgCQUUFjc8YBKng
+ nwIKl39uSpk5W5rXbZ9nF3Gp/uigTBNVvaLO4PIDw9J3svHQwCB31COsUWS1QhoLMIQPdUkk
+ GarScanm8i37Ut9G+nB4nLeDRYpPIVBFXFD/DROIEfLqOXNbGwOjDd5RWuzA0TNzJSeOkH/0
+ qYr3gywjiE81zALO3UeDj8TaPAv3Dmu7SoI86Bl7qm6UOnSL7KQxZWuMTlU3BF3d+0Ly0qxv
+ k1XRPrL58IyoHIgAVom0uUnLkRKHczdhGDpNzsQDJaO71EPp8QARAQABuQINBFNg91oBEADp
+ 3vwjw8tQBnNfYJNJMs6AXC8PXB5uApT1pJ0fioaXvifPNL6gzsGtAF53aLeqB7UXuByHr8Bm
+ sz7BvwA06XfXXdyLQP+8Oz3ZnUpw5inDIzLpRbUuAjI+IjUtguIKAkU1rZNdCXMOqEwCaomR
+ itwaiX9H7yiDTKCUaqx8yAuAQWactWDdyFii2FA7IwVlD/GBqMWVweZsMfeWgPumKB3jyElm
+ 1RpkzULrtKbu7MToMH2fmWqBtTkRptABkY7VEd8qENKJBZKJGiskFk6ylp8VzZdwbAtEDDTG
+ K00Vg4PZGiIGbQo8mBqbc63DY+MdyUEksTTu2gTcqZMm/unQUJA8xB4JrTAyljo/peIt6lsQ
+ a4+/eVolfKL1t1C3DY8f4wMoqnZORagnWA2oHsLsYKvcnqzA0QtYIIb1S1YatV+MNMFf3HuN
+ 7xr/jWlfdt59quXiOHU3qxIzXJo/OfC3mwNW4zQWJkG233UOf6YErmrSaTIBTIWF8CxGY9iX
+ PaJGNYSUa6R/VJS09EWeZgRz9Gk3h5AyDrdo5RFN9HNwOj41o0cjeLDF69092Lg5p5isuOqs
+ rlPi5imHKcDtrXS7LacUI6H0c8onWoH9LuW99WznEtFgPJg++TAvf9M2x57Gzl+/nYTB5/Kp
+ l1qdPPC91zUipiKbnF5f8bQpol0WC+ovmQARAQABiQIfBBgBAgAJBQJTYPdaAhsMAAoJEESR
+ kPMjWr074+0P/iEcN27dx3oBTzoeGEBhZUVQRZ7w4A61H/vW8oO8IPkZv9kFr5pCfIonmHEb
+ Blg6yfjeHXwF5SF2ywWRKkRsFHpaFWywxqk9HWXu8cGR1pFsrwC3EdossuVbEFNmhjHvcAo1
+ 1nJ7JFzPTEnlPjE6OY9tEDwl+kp1WvyXqNk9bosaX8ivikhmhB477BA3Kv8uUE7UL6p7CBdq
+ umaOFISi1we5PYE4P/6YcyhQ9Z2wH6ad2PpwAFNBwxSu+xCrVmaDskAwknf6UVPN3bt67sFA
+ aVgotepx6SPhBuH4OSOxVHMDDLMu7W7pJjnSKzMcAyXmdjON05SzSaILwfceByvHAnvcFh2p
+ XK9U4E/SyWZDJEcGRRt79akzZxls52stJK/2Tsr0vKtZVAwogiaKuSp+m6BRQcVVhTo/Kq3E
+ 0tSnsTHFeIO6QFHKJCJv4FRE3Dmtz15lueihUBowsq9Hk+u3UiLoSmrMAZ6KgA4SQxB2p8/M
+ 53kNJl92HHc9nc//aCQDi1R71NyhtSx+6PyivoBkuaKYs+S4pHmtsFE+5+pkUNROtm4ExLen
+ 4N4OL6Kq85mWGf2f6hd+OWtn8we1mADjDtdnDHuv+3E3cacFJPP/wFV94ZhqvW4QcyBWcRNF
+ A5roa7vcnu/MsCcBoheR0UdYsOnJoEpSZswvC/BGqJTkA2sf
+Message-ID: <b428d231-4879-4462-ac42-900b5d094eee@gmail.com>
+Date:   Thu, 2 Jan 2020 22:37:04 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200102202754.24028-1-jason@jlekstrand.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <20200102152604.000039f1@Huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Le 02/01/2020 à 16:27, Jonathan Cameron a écrit :
+>
+>> However the HMAT table gets ignored because find_mem_target() fails in
+>> hmat_parse_proximity_domain(). The target should have been allocated in
+>> alloc_memory_target() which is called in srat_parse_mem_affinity(), but
+>> it seems to me that this function isn't called for GI nodes. Or should
+>> SRAT also contain a normal Memory node with same PM as the GI?
+>>
+> Hi Brice,
+>
+> Yes you should see a node with 0kB memory.  Same as you get for a processor
+> only node I believe.
+>
+> srat_parse_mem_affinity shouldn't call alloc_memory_target for the GI nodes
+> as they don't have any memory.   The hmat table should only refer to
+> GI domains as initiators.  Just to check, do you have them listed as
+> a target node?  Or perhaps in some hmat proximity entry as memory_PD?
+>
 
-On 02-01-2020 21:27, Jason Ekstrand wrote:
-> Running evemu-record on the lid switch event shows that the lid reports
-> the first close but then never reports an open.  This causes systemd to
-> continuously re-suspend the laptop every 30s.  Resetting the _LID to
-> open fixes the issue.
-> 
-> v2: Updated the comment to better describe the behavior of ACPI
-> 
-> Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Thanks, I finally got things to work. I am on x86. It's a dual-socket
+machine with SubNUMA clusters (2 nodes per socket) and NVDIMMs (one
+dax-kmem node per socket). Before adding a GI, initiators look like this:
 
-Thanks, looks good to me now:
+node0 -> node0 and node4
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+node1 -> node1 and node5
 
-Regards,
+node2 -> node2 and node4
 
-Hans
+node3 -> node3 and node5
+
+I added a GI with faster access to node0, node2, node4 (first socket).
+
+The GI node becomes an access0 initiator for node4, and node0 and node2
+remain access1 initiators.
+
+The GI node doesn't become access0 initiator for node0 and node2, likely
+because of this test :
+
+        /*
+         * If the Address Range Structure provides a local processor pxm, link
+         * only that one. Otherwise, find the best performance attributes and
+         * register all initiators that match.
+         */
+        if (target->processor_pxm != PXM_INVAL) {
+
+I guess I should split node0-3 into separate CPU nodes and memory nodes
+in SRAT?
+
+Brice
 
 
-> ---
->   drivers/acpi/button.c | 11 +++++++++++
->   1 file changed, 11 insertions(+)
-> 
-> diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
-> index 662e07afe9a1..ef5d473e7992 100644
-> --- a/drivers/acpi/button.c
-> +++ b/drivers/acpi/button.c
-> @@ -122,6 +122,17 @@ static const struct dmi_system_id dmi_lid_quirks[] = {
->   		},
->   		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
->   	},
-> +	{
-> +		/*
-> +		 * Razer Blade Stealth 13 late 2019, notification of the LID device
-> +		 * only happens on close, not on open and _LID always returns closed.
-> +		 */
-> +		.matches = {
-> +			DMI_MATCH(DMI_SYS_VENDOR, "Razer"),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "Razer Blade Stealth 13 Late 2019"),
-> +		},
-> +		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
-> +	},
->   	{}
->   };
->   
-> 
+
 
