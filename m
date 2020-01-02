@@ -2,216 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FCF012E597
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Jan 2020 12:18:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92BA912E80D
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Jan 2020 16:27:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728147AbgABLSW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Jan 2020 06:18:22 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2219 "EHLO huawei.com"
+        id S1728698AbgABP1Y convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 2 Jan 2020 10:27:24 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2221 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728111AbgABLSW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 2 Jan 2020 06:18:22 -0500
-Received: from LHREML712-CAH.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id E3A86358BA1AB7826A05;
-        Thu,  2 Jan 2020 11:18:20 +0000 (GMT)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- LHREML712-CAH.china.huawei.com (10.201.108.35) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Thu, 2 Jan 2020 11:18:20 +0000
-Received: from [127.0.0.1] (10.202.226.43) by lhreml724-chm.china.huawei.com
- (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Thu, 2 Jan 2020
- 11:18:20 +0000
-Subject: Re: [PATCH v1] ACPI/IORT: Workaround for IORT ID count "minus one"
- issue
-To:     "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        id S1728561AbgABP1Y (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 2 Jan 2020 10:27:24 -0500
+Received: from LHREML714-CAH.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id B45E849FCBA97A570CA8;
+        Thu,  2 Jan 2020 15:27:22 +0000 (GMT)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ LHREML714-CAH.china.huawei.com (10.201.108.37) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Thu, 2 Jan 2020 15:27:22 +0000
+Received: from localhost (10.202.226.57) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5; Thu, 2 Jan 2020
+ 15:27:22 +0000
+Date:   Thu, 2 Jan 2020 15:27:19 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Brice Goglin <brice.goglin@gmail.com>
+CC:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>,
+        Keith Busch <kbusch@kernel.org>, <jglisse@redhat.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>, <linuxarm@huawei.com>,
+        "Andrew Morton" <akpm@linux-foundation.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Tao Xu <tao3.xu@intel.com>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-        Robert Richter <rrichter@marvell.com>
-References: <1577708824-4873-1-git-send-email-guohanjun@huawei.com>
-From:   John Garry <john.garry@huawei.com>
-Message-ID: <639f61ab-e692-caaf-9b4e-b848b05caee2@huawei.com>
-Date:   Thu, 2 Jan 2020 11:18:19 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH V6 0/7] ACPI: Support Generic Initiator proximity
+ domains
+Message-ID: <20200102152604.000039f1@Huawei.com>
+In-Reply-To: <1867024e-b0c4-c291-7190-262cc4b297a8@gmail.com>
+References: <20191216153809.105463-1-Jonathan.Cameron@huawei.com>
+ <dc5f5502-09c6-d476-db0e-0af3412bb031@gmail.com>
+ <20191218145041.00005a11@Huawei.com>
+ <1867024e-b0c4-c291-7190-262cc4b297a8@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-In-Reply-To: <1577708824-4873-1-git-send-email-guohanjun@huawei.com>
-Content-Type: text/plain; charset="gbk"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.43]
-X-ClientProxiedBy: lhreml710-chm.china.huawei.com (10.201.108.61) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.226.57]
+X-ClientProxiedBy: lhreml709-chm.china.huawei.com (10.201.108.58) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
 X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-+
+On Fri, 20 Dec 2019 22:40:18 +0100
+Brice Goglin <brice.goglin@gmail.com> wrote:
 
-On 30/12/2019 12:27, Guohanjun (Hanjun Guo) wrote:
-> The IORT spec [0] says Number of IDs = The number of IDs in the range minus
-> one, it is confusing but it was written down in the first version of the
-> IORT spec. But the IORT ID mapping function iort_id_map() did something
-> wrong from the start, which bails out if:
+> Le 18/12/2019 à 15:50, Jonathan Cameron a écrit :
+> > On Wed, 18 Dec 2019 12:32:06 +0100
+> > Brice Goglin <brice.goglin@gmail.com> wrote:
+> >  
+> >> Le 16/12/2019 à 16:38, Jonathan Cameron a écrit :  
+> >>> Introduces a new type of NUMA node for cases where we want to represent
+> >>> the access characteristics of a non CPU initiator of memory requests,
+> >>> as these differ from all those for existing nodes containing CPUs and/or
+> >>> memory.
+> >>>
+> >>> These Generic Initiators are presented by the node access0 class in
+> >>> sysfs in the same way as a CPU.   It seems likely that there will be
+> >>> usecases in which the best 'CPU' is desired and Generic Initiators
+> >>> should be ignored.  The final few patches in this series introduced
+> >>> access1 which is a new performance class in the sysfs node description
+> >>> which presents only CPU to memory relationships.  Test cases for this
+> >>> are described below.    
+> >>
+> >> Hello Jonathan
+> >>
+> >> If I want to test this with a fake GI, what are the minimal set of
+> >> changes I should put in my ACPI tables? Can I just specify a dummy GI in
+> >> SRAT? What handle should I use there?  
+> > Exactly that for a dummy GI.  Also extend HMAT and SLIT for the extra
+> > proximity domain / initiator.  
 > 
-> the request ID >= the input base + number of IDs
 > 
-> This is wrong because it ignored the "minus one", and breaks some valid
-> usecases such as ID mapping to contain single device mapping without
-> single mapping flag set.
+> I couldn't get this to work (your patches on top of 5.5-rc2). I added
+> the GI in SRAT, and extended HMAT and SLIT accordingly.
 > 
-> Pankaj Bansal proposed a solution to fix the issue [1], which bails
-> out if:
+> I don't know if that's expected but I get an additional node in sysfs,
+> with 0kB memory.
 > 
-> the request ID > the input base + number of IDs
+> However the HMAT table gets ignored because find_mem_target() fails in
+> hmat_parse_proximity_domain(). The target should have been allocated in
+> alloc_memory_target() which is called in srat_parse_mem_affinity(), but
+> it seems to me that this function isn't called for GI nodes. Or should
+> SRAT also contain a normal Memory node with same PM as the GI?
 > 
-> This works as the spec defined, unfortunately some firmware didn't
-> minus one for the number of IDs in the range, and the propoased
-> solution will break those systems in this way:
-> 
-> PCI hostbridge mapping entry 1:
-> Input base:  0x1000
-> ID Count:    0x100
-> Output base: 0x1000
-> Output reference: 0xC4  //ITS reference
-> 
-> PCI hostbridge mapping entry 2:
-> Input base:  0x1100
-> ID Count:    0x100
-> Output base: 0x2000
-> Output reference: 0xD4  //ITS reference
-> 
-> Two mapping entries which the second entry's Input base = the first
-> entry's Input base + ID count, so for requester ID 0x1100 will map
-> to ITS 0xC4 not 0xD4 if we update '>=' to '>'.
-> 
-> So introduce a workaround to match the IORT's OEM information for
-> the broken firmware, also update the logic of the ID mapping for
-> firmwares report the number of IDs as the IORT spec defined, to
-> make the code compatible for both kinds of system.
-> 
-> I checked the ACPI tables in the tianocore/edk2-platforms [2], 
+Hi Brice,
 
-Hi Hanjun,
+Yes you should see a node with 0kB memory.  Same as you get for a processor
+only node I believe.
 
-only
-> HiSilicon HIP07/08 did wrong, so just add HIP07/08 to the workaround
-> info table, 
+srat_parse_mem_affinity shouldn't call alloc_memory_target for the GI nodes
+as they don't have any memory.   The hmat table should only refer to
+GI domains as initiators.  Just to check, do you have them listed as
+a target node?  Or perhaps in some hmat proximity entry as memory_PD?
 
-Are you asserting that other platforms are ok on the basis that NumIds = 
-large power of 2 - 1, e.g. 0xffff? Is this strictly proper?
+To answer your question, SRAT should not contain a normal memory node
+with the same PXM as that would defeat the whole purpose as we would have
+been able to have such a domain without Generic Initiators.
 
-if we break other platforms, we can add that later.
-> 
+Also, just to check, x86 or arm64?
 
-I think that it would be better to audit others now as well as best as 
-reasonably possible. There is somewhat limited coverage in [2].
+Thanks for testing this.
 
-Thanks,
-John
+Jonathan
 
 
-> [0]: http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf
-> [1]: https://patchwork.kernel.org/patch/11292823/
-> [2]: https://github.com/tianocore/edk2-platforms
+> Brice
 > 
-> Cc: Pankaj Bansal <pankaj.bansal@nxp.com>
-> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
-> ---
 > 
-> RFC->v1:
-> - Print warning when matched the workaround info, suggested by Pankaj.
-> 
->   drivers/acpi/arm64/iort.c | 55 ++++++++++++++++++++++++++++++++++++++++++++---
->   1 file changed, 52 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index 33f7198..60eb10d 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -298,6 +298,42 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
->   	return status;
->   }
->   
-> +struct iort_workaround_oem_info {
-> +	char oem_id[ACPI_OEM_ID_SIZE + 1];
-> +	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
-> +	u32 oem_revision;
-> +};
-> +
-> +static bool apply_id_count_workaround;
-> +
-> +static struct iort_workaround_oem_info wa_info[] __initdata = {
-> +	{
-> +		.oem_id		= "HISI  ",
-> +		.oem_table_id	= "HIP07   ",
-> +		.oem_revision	= 0,
-> +	}, {
-> +		.oem_id		= "HISI  ",
-> +		.oem_table_id	= "HIP08   ",
-> +		.oem_revision	= 0,
-> +	}
-> +};
-> +
-> +static void __init
-> +iort_check_id_count_workaround(struct acpi_table_header *tbl)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
-> +		if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
-> +		    !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
-> +		    wa_info[i].oem_revision == tbl->oem_revision) {
-> +			apply_id_count_workaround = true;
-> +			pr_warn(FW_BUG "ID count for ID mapping entry is wrong, applying workaround\n");
-> +			break;
-> +		}
-> +	}
-> +}
-> +
->   static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
->   		       u32 *rid_out)
->   {
-> @@ -314,9 +350,21 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
->   		return -ENXIO;
->   	}
->   
-> -	if (rid_in < map->input_base ||
-> -	    (rid_in >= map->input_base + map->id_count))
-> -		return -ENXIO;
-> +	/*
-> +	 * IORT spec says Number of IDs = The number of IDs in the range minus
-> +	 * one, but the IORT code ingored the "minus one", and some firmware
-> +	 * did that too, so apply a workaround here to keep compatible with
-> +	 * both new and old versions of the firmware.
-> +	 */
-> +	if (apply_id_count_workaround) {
-> +		if (rid_in < map->input_base ||
-> +			(rid_in >= map->input_base + map->id_count))
-> +			return -ENXIO;
-> +	} else {
-> +		if (rid_in < map->input_base ||
-> +			(rid_in > map->input_base + map->id_count))
-> +			return -ENXIO;
-> +	}
->   
->   	*rid_out = map->output_base + (rid_in - map->input_base);
->   	return 0;
-> @@ -1631,5 +1679,6 @@ void __init acpi_iort_init(void)
->   		return;
->   	}
->   
-> +	iort_check_id_count_workaround(iort_table);
->   	iort_init_platform_devices();
->   }
-> 
+
 
