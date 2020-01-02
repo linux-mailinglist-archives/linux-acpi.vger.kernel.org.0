@@ -2,70 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 284EA12E9A2
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Jan 2020 19:01:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B17212EADA
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Jan 2020 21:28:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727907AbgABSBn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Jan 2020 13:01:43 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:54980 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727890AbgABSBn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 2 Jan 2020 13:01:43 -0500
-Received: from zn.tnic (p200300EC2F00E700329C23FFFEA6A903.dip0.t-ipconnect.de [IPv6:2003:ec:2f00:e700:329c:23ff:fea6:a903])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7A2E51EC0419;
-        Thu,  2 Jan 2020 19:01:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1577988097;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=tT0jvwjEfaD2BIfE3OdrlYZgbSWvbo0cYYcu6rKbP80=;
-        b=PQAb8bkB51WAgC5xGXXhFRDSY09onyZvEJoWoMXreMVZWQWnzog+GHEVELPv7STBa53feX
-        MK6obYcvNOZIc5L1kHTN9iKY6PAf+I37Xc4/aMJ135WO9SQOwrstgKhttGgydPvPidAaDy
-        z7rYqs+AuvvPDKmA53Ia+Y26j/90+uI=
-Date:   Thu, 2 Jan 2020 19:01:30 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Bhaskar Upadhaya <bupadhaya@marvell.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-edac@vger.kernel.org, lenb@kernel.org, rafael@kernel.org,
-        gkulkarni@marvell.com, rrichter@marvell.com,
-        bhaskar.upadhaya.linux@gmail.com
-Subject: Re: [RFC PATCH] apei/ghes: fix ghes_poll_func by registering in
- non-deferrable mode
-Message-ID: <20200102180130.GG8345@zn.tnic>
-References: <1576652618-27017-1-git-send-email-bupadhaya@marvell.com>
+        id S1725861AbgABU2K (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Jan 2020 15:28:10 -0500
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:44686 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725783AbgABU2K (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Jan 2020 15:28:10 -0500
+Received: by mail-pg1-f194.google.com with SMTP id x7so22408699pgl.11
+        for <linux-acpi@vger.kernel.org>; Thu, 02 Jan 2020 12:28:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jlekstrand-net.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=nvVcmlkNvZgR9NC4iyrVMsbtfW9B3x2SucU6Uz6N6dM=;
+        b=ieYvsLZTf7YkKr6c4cvY+IElAxPeGge7dnnP+bwh/iMn6BtOVR7aIJNdxoCKVxaFdJ
+         7PvFnTwhxrtHG64aPN1bqjhLzG68bcI+yRFMBu8/6ka/zqvTma3772sSbcwk8r924DQP
+         TDLRRiQUdO69Jfit1wcYpMTo9/SNVvVJaLn+ORvjNIPi5qeCg9UVo7Yb1QSHKyIGl+us
+         q+g7w2V8/dLLTAxLriA3k6OE6m6Pu0oYT/57AtZKWSuvzOtqfmq9KtyDXrrNvR+OnW+I
+         Fax5efFrKw++B3oYhU/d8UxHCnA64KMu2D7t0wSFf+omFY5q7Z4q3L7zanx+wzW9TJFs
+         FTNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=nvVcmlkNvZgR9NC4iyrVMsbtfW9B3x2SucU6Uz6N6dM=;
+        b=O5KbpVwYQkxiqIP8De9/RmkplMpTG5UHoOb3sy7C0BSYKaoXmlTJqBsl21qF59eY2V
+         XkjzcSuNQtJ29/mNblUhhgd/bPwVEyJ/wm3l7YkcDj/gViexRqcuKtRApb2Ur2W+jrA9
+         zKZbqF/anB4RhVu6/AVGV4jYe7MIlt3EIviVa1KsGFZYPgY/qpBoVyfnPQxMP52SLHhN
+         /BXoHYwtKAiQ2S7nZ70tHiS+op/RRHnDHLeFtLwyP22zEtPDoCnbqgNmiLORyivnqJTC
+         o0tb9MH+Tsfj16a/3tOpWQw6bDs9L8DPqY1JDNotuvAqNGj97GC/rIJp/S5mdJQFbvqg
+         +4DA==
+X-Gm-Message-State: APjAAAUes0v27TwaSdI4yBflGxuK9yxoF9iu0ufysYAvfkK+0VbYy9yp
+        ox8pb6ZdKxH4WBcD4HLNHNEfRw==
+X-Google-Smtp-Source: APXvYqznFxGPwMkXy87HNZv7iDkAzGbHD4tMeRUXQK5vRUyZlykzLCZCHmSReIIleZIkLpctSAn8YA==
+X-Received: by 2002:a63:454a:: with SMTP id u10mr92912183pgk.248.1577996889938;
+        Thu, 02 Jan 2020 12:28:09 -0800 (PST)
+Received: from omlet.an.intel.com ([192.55.54.42])
+        by smtp.gmail.com with ESMTPSA id n188sm61206681pga.84.2020.01.02.12.28.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jan 2020 12:28:09 -0800 (PST)
+From:   Jason Ekstrand <jason@jlekstrand.net>
+Cc:     hdegoede@redhat.com, Jason Ekstrand <jason@jlekstrand.net>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI: button: Add a DMI quirk for Razer Blade Stealth 13 late 2019 lid-switch
+Date:   Thu,  2 Jan 2020 14:27:54 -0600
+Message-Id: <20200102202754.24028-1-jason@jlekstrand.net>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20191206175409.335568-1-jason@jlekstrand.net>
+References: <20191206175409.335568-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1576652618-27017-1-git-send-email-bupadhaya@marvell.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 17, 2019 at 11:03:38PM -0800, Bhaskar Upadhaya wrote:
-> Currently Linux register ghes_poll_func with TIMER_DEFERRABLE flag,
-> because of which it is serviced when the CPU eventually wakes up with a
-> subsequent non-deferrable timer and not at the configured polling interval.
-> 
-> For polling mode, the polling interval configured by firmware should not
-> be exceeded as per ACPI_6_3 spec[refer Table 18-394],
+Running evemu-record on the lid switch event shows that the lid reports
+the first close but then never reports an open.  This causes systemd to
+continuously re-suspend the laptop every 30s.  Resetting the _LID to
+open fixes the issue.
 
-I see
+v2: Updated the comment to better describe the behavior of ACPI
 
-"Table 18-394 Hardware Error Notification Structure"
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+---
+ drivers/acpi/button.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-where does it say that the interval should not be exceeded and what is
-going to happen if it gets exceeded?
-
-IOW, are you fixing something you're observing on some platform or
-you're reading the spec only?
-
+diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+index 662e07afe9a1..ef5d473e7992 100644
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -122,6 +122,17 @@ static const struct dmi_system_id dmi_lid_quirks[] = {
+ 		},
+ 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
+ 	},
++	{
++		/*
++		 * Razer Blade Stealth 13 late 2019, notification of the LID device
++		 * only happens on close, not on open and _LID always returns closed.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Razer"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Razer Blade Stealth 13 Late 2019"),
++		},
++		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
++	},
+ 	{}
+ };
+ 
 -- 
-Regards/Gruss,
-    Boris.
+2.23.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
