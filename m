@@ -2,386 +2,254 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0739812F6BD
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jan 2020 11:31:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 422D912F717
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jan 2020 12:21:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727457AbgACKa7 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 3 Jan 2020 05:30:59 -0500
-Received: from m4a0073g.houston.softwaregrp.com ([15.124.2.131]:52076 "EHLO
-        m4a0073g.houston.softwaregrp.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727220AbgACKa6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Jan 2020 05:30:58 -0500
-X-Greylist: delayed 21039 seconds by postgrey-1.27 at vger.kernel.org; Fri, 03 Jan 2020 05:30:57 EST
-Received: FROM m4a0073g.houston.softwaregrp.com (15.120.17.147) BY m4a0073g.houston.softwaregrp.com WITH ESMTP;
- Fri,  3 Jan 2020 10:28:43 +0000
-Received: from M4W0334.microfocus.com (2002:f78:1192::f78:1192) by
- M4W0335.microfocus.com (2002:f78:1193::f78:1193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1591.10; Fri, 3 Jan 2020 10:28:37 +0000
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (15.124.8.11) by
- M4W0334.microfocus.com (15.120.17.146) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1591.10 via Frontend Transport; Fri, 3 Jan 2020 10:28:37 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KKIdnN4iFks65LZdbE9ASvAGKM3u9YWWHWh75Y7uyPgu6T0ILS9B3jbRc1oCiJGaAQWkK4Bm82NzyYZcYssyZVm4q/ONGFzLw23pD3wKbWIkq7/6LgAhXb6HcqFLa3+AUpVVk5d1G5vz4Yf9IJ6gqrQp24r6shz59QA0BPgVeNqgrmQRpISYLhsbGZjy4rDEp+n7+xFLnt0mTybRilOtW81bOw0SR1mJs59saErxNEH7TBX7UEuVHXLJsfqh78Ij3P3EnRfRKqrwxXf02sVW10koQ1TEIOP4zIN1Uy/+FCmIh9htX1CuD7NBCMXhrKaWt1wVSPiZ9Wfi6Q4MrTgnLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wnDAy0QYr9hQLhshBVuVzD2KNbmU7LKNkb0FxBAuqeM=;
- b=PkseEmQXNNq/B4zT8Ykc8y9W8DbZx5DH3utVe7dlvjKFoivDN3JEGSRnra5wYOLLGZfuNDoBs6IoGCvHLLo8jp4+Y/h9R33+9YXR9ybmG2LHrl4zAVdeeKZsr4iPh9vwiC2ASdKfvlPfZiax6WV50X8Bd75kdLFlFlfuNh52qJNuAzFKqoHVsTRTpqvbQFjikdxXqJxgXq4XdB6FqpZyZz+3281PwR406AXsalU6u/M6zneAuW4BM8JUXIfPoD04ewecaYodDb1y3msMbAS7cmwST+Yog7Xm6MK80UuT8bTvDMcPDABI7+IpnT2Zo+cLSPequxVRkzPe303xRArrag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
- dkim=pass header.d=suse.com; arc=none
-Received: from SN1PR18MB2126.namprd18.prod.outlook.com (52.132.196.157) by
- SN1PR18MB2158.namprd18.prod.outlook.com (52.132.200.157) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2602.12; Fri, 3 Jan 2020 10:28:35 +0000
-Received: from SN1PR18MB2126.namprd18.prod.outlook.com
- ([fe80::68a8:34cd:7c1c:f49d]) by SN1PR18MB2126.namprd18.prod.outlook.com
- ([fe80::68a8:34cd:7c1c:f49d%3]) with mapi id 15.20.2602.012; Fri, 3 Jan 2020
- 10:28:35 +0000
-Received: from linux-8mug (60.251.47.115) by HK2PR03CA0047.apcprd03.prod.outlook.com (2603:1096:202:17::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2623.4 via Frontend Transport; Fri, 3 Jan 2020 10:28:33 +0000
-From:   Chester Lin <clin@suse.com>
-To:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-CC:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "robert.moore@intel.com" <robert.moore@intel.com>,
-        "erik.schmauss@intel.com" <erik.schmauss@intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Joey Lee <JLee@suse.com>,
-        "mhocko@kernel.org" <mhocko@kernel.org>
-Subject: Re: [RFC PATCH v2 3/3] ACPI / device_sysfs: Add eject_show and add a
- cancel option in eject_store
-Thread-Topic: [RFC PATCH v2 3/3] ACPI / device_sysfs: Add eject_show and add a
- cancel option in eject_store
-Thread-Index: AQHVwe/laTkHKyiaX0KG+ALRD+NasKfYnjAAgAAe/AA=
-Date:   Fri, 3 Jan 2020 10:28:35 +0000
-Message-ID: <20200103102822.GA7077@linux-8mug>
-References: <20200103043926.31507-1-clin@suse.com>
- <20200103043926.31507-4-clin@suse.com> <20200103083728.GB831558@kroah.com>
-In-Reply-To: <20200103083728.GB831558@kroah.com>
-Accept-Language: zh-TW, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: HK2PR03CA0047.apcprd03.prod.outlook.com
- (2603:1096:202:17::17) To SN1PR18MB2126.namprd18.prod.outlook.com
- (2603:10b6:802:29::29)
-authentication-results: spf=none (sender IP is ) smtp.mailfrom=clin@suse.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [60.251.47.115]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 75ae4eae-3e40-4d12-c22e-08d79037b089
-x-ms-traffictypediagnostic: SN1PR18MB2158:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <SN1PR18MB2158D61020B40D08F45B56F0AD230@SN1PR18MB2158.namprd18.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6108;
-x-forefront-prvs: 0271483E06
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(39860400002)(346002)(376002)(366004)(136003)(396003)(52314003)(45074003)(189003)(199004)(71200400001)(86362001)(55016002)(26005)(55236004)(6916009)(478600001)(4326008)(956004)(8936002)(81166006)(81156014)(52116002)(66946007)(66476007)(66556008)(64756008)(66446008)(33716001)(1076003)(33656002)(8676002)(9686003)(5660300002)(2906002)(16526019)(186003)(316002)(6496006)(54906003);DIR:OUT;SFP:1102;SCL:1;SRVR:SN1PR18MB2158;H:SN1PR18MB2126.namprd18.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: suse.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: H4vRc8LXhmAokBALF+Djclfndiv0zCrUEbPIs6HEuY2jtueBpGimX830Z7P9iRJnJ5IBbzcO0oVSl1jNFFUzZQmFc8BxhmDD2vq6lpfDBLZbSasbOv1FjNgYbPkN/46IbaDBHrlUp6+aAwbNgD/BLrkjfBQ+gZFeb6E+l+itnOp+0A9fO46PZP0fB9/lnlTiw+ADSMvRBcpHRrqKenbZMmdsb2dMhpMmj7QS6JBUe+S08+W0nMi1HIfsua5vWS1BWTAmlmDAOgAvGmCRYOkiV6H8TwOT2/hPL/Cg2TSRIazC+RnEH9N4AAIegZ65pUx5Egjr0Hjms1zS3pvfDmx1MIo3aYl255R36ubS80XKrZ7z35Kia6Gyn06VNyGdvJmEM7NY//e1J97NAQ7xDXxIvoTHGVqznZnKreAbIgxrMfNNCCcAjkDm5q4BKADmz9Xe/LTqtXc8D9v1lSis8bBfiDRpE4xkAItQWMhrEzNoxqopJBC5IhUSRu6leolfLdge8AXhvza5NNVVSrj2pRno+w==
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <B9F93DDF40405E4D82A57E1A67515C1D@namprd18.prod.outlook.com>
-Content-Transfer-Encoding: 8BIT
+        id S1727350AbgACLVv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Jan 2020 06:21:51 -0500
+Received: from mga17.intel.com ([192.55.52.151]:25397 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727220AbgACLVu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 3 Jan 2020 06:21:50 -0500
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Jan 2020 03:21:49 -0800
+X-IronPort-AV: E=Sophos;i="5.69,390,1571727600"; 
+   d="scan'208";a="252562997"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Jan 2020 03:21:47 -0800
+Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
+        id 2A9F12083A; Fri,  3 Jan 2020 13:21:45 +0200 (EET)
+Date:   Fri, 3 Jan 2020 13:21:45 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
+        rafael@kernel.org, Rob Herring <robh@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Joe Perches <joe@perches.com>
+Subject: Re: [PATCH v9 09/12] lib/vsprintf: Make use of fwnode API to obtain
+ node names and separators
+Message-ID: <20200103112145.GM19828@paasikivi.fi.intel.com>
+References: <20191003123219.11237-1-sakari.ailus@linux.intel.com>
+ <20191003123219.11237-10-sakari.ailus@linux.intel.com>
+ <20200102222041.GA29067@roeck-us.net>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 75ae4eae-3e40-4d12-c22e-08d79037b089
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Jan 2020 10:28:35.7762
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 856b813c-16e5-49a5-85ec-6f081e13b527
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rW0Jh4SOVkG8P90n3gYCe2osGL17PUmYgvwjmAEMEANvowWwU0RCu/RFXJ3BRtEo
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR18MB2158
-X-OriginatorOrg: suse.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200102222041.GA29067@roeck-us.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Greg,
+Hi Guenter,
 
-On Fri, Jan 03, 2020 at 09:37:28AM +0100, gregkh@linuxfoundation.org wrote:
-> On Fri, Jan 03, 2020 at 04:40:17AM +0000, Chester Lin wrote:
-> > Add an eject_show attribute for users to monitor current status because
-> > sometimes it could take time to finish an ejection so we need to know
-> > whether it is still in progress or not. For userspace who might need to
-> > cancel an onging ejection, we also offer an option in eject_store.
+On Thu, Jan 02, 2020 at 02:20:41PM -0800, Guenter Roeck wrote:
+> Hi,
+> 
+> On Thu, Oct 03, 2019 at 03:32:16PM +0300, Sakari Ailus wrote:
+> > Instead of implementing our own means of discovering parent nodes, node
+> > names or counting how many parents a node has, use the newly added
+> > functions in the fwnode API to obtain that information.
 > > 
-> > Signed-off-by: Chester Lin <clin@suse.com>
+> > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Reviewed-by: Petr Mladek <pmladek@suse.com>
 > > ---
-> >  Documentation/ABI/testing/sysfs-bus-acpi |  9 ++-
-> >  drivers/acpi/device_sysfs.c              | 94 +++++++++++++++++++++---
-> >  drivers/acpi/internal.h                  |  4 +-
-> >  drivers/acpi/scan.c                      | 38 +++++++++-
-> >  4 files changed, 129 insertions(+), 16 deletions(-)
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-acpi b/Documentation/ABI/testing/sysfs-bus-acpi
-> > index e7898cfe5fb1..32fdf4af962e 100644
-> > --- a/Documentation/ABI/testing/sysfs-bus-acpi
-> > +++ b/Documentation/ABI/testing/sysfs-bus-acpi
-> > @@ -53,9 +53,12 @@ What:		/sys/bus/acpi/devices/.../eject
-> >  Date:		December 2006
-> >  Contact:	Rafael J. Wysocki <rjw@rjwysocki.net>
-> >  Description:
-> > -		Writing 1 to this attribute will trigger hot removal of
-> > -		this device object.  This file exists for every device
-> > -		object that has _EJ0 method.
-> > +		(R) Allows users to read eject status of the device object.
-> > +		(W) Writing 1 to this attribute will trigger hot removal of
-> > +		this device object. Writing 2 to this attribute will cancel hot
-> > +		removal work if it's still in offline process and the original
-> > +		state of this device object will be recovered. This file exists
-> > +		for every device object that has _EJ0 method.
 > 
-> Oh that's going to cause problems :)
+> This patch results in a lockdep splat when running one of my qemu
+> emulations. See below for log and bisect results. A complete log
+> is available at
+> https://kerneltests.org/builders/qemu-arm-master/builds/1408/steps/qemubuildcommand/logs/stdio
 > 
-> Why not just have a new file, "cancel_eject" that you can write to, to
-> cancel the eject happening?
-> 
-> That way you don't have an odd "state" that this file needs to keep
-> track of.
-> 
+> Guenter
 
-Thank you for the advice and I will add it.
+Thank you for reporting this.
 
-> And what happens if you write a '2' here when eject is not happening?
-> It didn't look like your code handled that state well.
->
+I looked into the issue, and indeed I can conform the patch introduces this
+as it takes the devtree_lock for printing the name of the fwnode. There is
+however chance of a deadlock in practice as the code in mm/slub.c does not
+deal with fwnodes (in which case acquiring devtree_lock could be possible),
+maybe for other reasons as well. The patch however introduces an unpleasant
+source of such warnings.
 
-When eject is not happening, the eject_stat is null so the procedure will go to
-eject_end without changing anything.
+One approach to address this could be not allocating memory while holding
+devtree_lock spinlock. That seems entirely feasible. But could also
+releasing memory cause something to be printed, effectively causing the
+same problem? The code in mm/slub.c is non-trivial, and I haven't checked
+other allocators.
 
-> >  
-> >  What:		/sys/bus/acpi/devices/.../status
-> >  Date:		Jan, 2014
-> > diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-> > index 96869f1538b9..6801b268fe9d 100644
-> > --- a/drivers/acpi/device_sysfs.c
-> > +++ b/drivers/acpi/device_sysfs.c
-> > @@ -365,17 +365,13 @@ static ssize_t power_state_show(struct device *dev,
-> >  
-> >  static DEVICE_ATTR_RO(power_state);
-> >  
-> > -static ssize_t
-> > -acpi_eject_store(struct device *d, struct device_attribute *attr,
-> > -		const char *buf, size_t count)
-> > +static ssize_t eject_show(struct device *d,
-> > +				struct device_attribute *attr, char *buf)
-> >  {
-> >  	struct acpi_device *acpi_device = to_acpi_device(d);
-> >  	acpi_object_type not_used;
-> >  	acpi_status status;
-> >  
-> > -	if (!count || buf[0] != '1')
-> > -		return -EINVAL;
-> > -
-> >  	if ((!acpi_device->handler || !acpi_device->handler->hotplug.enabled)
-> >  	    && !acpi_device->driver)
-> >  		return -ENODEV;
-> > @@ -384,18 +380,96 @@ acpi_eject_store(struct device *d, struct device_attribute *attr,
-> >  	if (ACPI_FAILURE(status) || !acpi_device->flags.ejectable)
-> >  		return -ENODEV;
-> >  
-> > +	return sprintf(buf, "%s\n", acpi_eject_status_string(acpi_device));
-> > +}
-> > +
-> > +static ssize_t
-> > +eject_store(struct device *d, struct device_attribute *attr,
-> > +		const char *buf, size_t count)
-> > +{
-> > +	struct acpi_device *acpi_device = to_acpi_device(d);
-> > +	struct eject_data *eject_node = NULL;
-> > +	acpi_object_type not_used;
-> > +	acpi_status status;
-> > +	bool cancel_eject = false;
-> > +	ssize_t ret;
-> > +
-> > +	if (!count)
-> > +		return -EINVAL;
-> > +
-> > +	switch (buf[0]) {
-> > +	case '1':
-> > +		break;
-> > +	case '2':
-> > +		acpi_scan_lock_acquire();
-> > +		eject_node = (struct eject_data *)acpi_device->eject_stat;
-> > +
-> > +		if (!eject_node) {
-> > +			acpi_scan_lock_release();
-> > +			ret = -EINVAL;
-> > +			goto eject_end;
-> > +		}
-> > +
-> > +		/*
-> > +		 * Find a root to start cancellation from the top
-> > +		 */
-> > +		if (eject_node->base.root_handle) {
-> > +			acpi_device = acpi_bus_get_acpi_device(
-> > +					eject_node->base.root_handle);
-> > +
-> > +			if (acpi_device)
-> > +				eject_node =
-> > +				   (struct eject_data *)acpi_device->eject_stat;
-> > +			else
-> > +				eject_node = NULL;
-> > +
-> > +		}
-> > +
-> > +		if (eject_node &&
-> > +		   (eject_node->status == ACPI_EJECT_STATUS_GOING_OFFLINE ||
-> > +		    eject_node->status == ACPI_EJECT_STATUS_READY_REMOVE)) {
-> > +			eject_node->status = ACPI_EJECT_STATUS_CANCEL;
-> > +			cancel_eject = true;
-> > +		}
-> > +
-> > +		acpi_scan_lock_release();
-> > +		if (cancel_eject)
-> > +			break;
-> > +	default:
-> > +		ret = -EINVAL;
-> > +		goto eject_end;
-> > +	};
-> > +
-> > +	if ((!acpi_device->handler || !acpi_device->handler->hotplug.enabled)
-> > +	    && !acpi_device->driver) {
-> > +		ret = -ENODEV;
-> > +		goto eject_end;
-> > +	}
-> > +
-> > +	status = acpi_get_type(acpi_device->handle, &not_used);
-> > +	if (ACPI_FAILURE(status) || !acpi_device->flags.ejectable) {
-> > +		ret = -ENODEV;
-> > +		goto eject_end;
-> > +	}
-> > +
-> >  	get_device(&acpi_device->dev);
-> >  	status = acpi_hotplug_schedule(acpi_device, ACPI_OST_EC_OSPM_EJECT);
-> > -	if (ACPI_SUCCESS(status))
-> > -		return count;
-> > +	if (ACPI_SUCCESS(status)) {
-> > +		ret = count;
-> > +		goto eject_end;
-> > +	}
-> >  
-> >  	put_device(&acpi_device->dev);
-> >  	acpi_evaluate_ost(acpi_device->handle, ACPI_OST_EC_OSPM_EJECT,
-> >  			  ACPI_OST_SC_NON_SPECIFIC_FAILURE, NULL);
-> > -	return status == AE_NO_MEMORY ? -ENOMEM : -EAGAIN;
-> > +	ret = (status == AE_NO_MEMORY) ? -ENOMEM : -EAGAIN;
-> > +
-> > +eject_end:
-> > +	return ret;
-> > +
-> >  }
-> >  
-> > -static DEVICE_ATTR(eject, 0200, NULL, acpi_eject_store);
-> > +static DEVICE_ATTR_RW(eject);
-> >  
-> >  static ssize_t
-> >  acpi_device_hid_show(struct device *dev, struct device_attribute *attr, char *buf)
-> > diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-> > index 8154690b872b..e5d526402188 100644
-> > --- a/drivers/acpi/internal.h
-> > +++ b/drivers/acpi/internal.h
-> > @@ -265,7 +265,8 @@ enum acpi_eject_status {
-> >  	ACPI_EJECT_STATUS_NONE = 0,
-> >  	ACPI_EJECT_STATUS_GOING_OFFLINE,
-> >  	ACPI_EJECT_STATUS_READY_REMOVE,
-> > -	ACPI_EJECT_STATUS_FAIL
-> > +	ACPI_EJECT_STATUS_FAIL,
-> > +	ACPI_EJECT_STATUS_CANCEL
-> >  };
-> >  
-> >  enum acpi_eject_node_type {
-> > @@ -286,5 +287,6 @@ struct eject_data {
-> >  };
-> >  
-> >  void acpi_eject_retry(struct acpi_device *adev);
-> > +char *acpi_eject_status_string(struct acpi_device *adev);
-> >  
-> >  #endif /* _ACPI_INTERNAL_H_ */
-> > diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> > index 13f16b6ad7a2..90983c067410 100644
-> > --- a/drivers/acpi/scan.c
-> > +++ b/drivers/acpi/scan.c
-> > @@ -366,8 +366,9 @@ static int acpi_scan_offline_check(struct acpi_device *device)
-> >  			return -EBUSY;
-> >  		}
-> >  
-> > -		if (eject_obj->status == ACPI_EJECT_STATUS_FAIL) {
-> > -			dev_warn(&device->dev, "Eject failed. Recover all.\n");
-> > +		if (eject_obj->status == ACPI_EJECT_STATUS_FAIL ||
-> > +		    eject_obj->status == ACPI_EJECT_STATUS_CANCEL) {
-> > +			dev_warn(&device->dev, "Eject stopped. Recover all.\n");
-> >  			acpi_scan_notify_online(device);
-> >  			return -EAGAIN;
-> >  		}
-> > @@ -383,6 +384,39 @@ static int acpi_scan_offline_check(struct acpi_device *device)
-> >  	return ret;
-> >  }
-> >  
-> > +char *acpi_eject_status_string(struct acpi_device *adev)
-> > +{
-> > +	struct eject_data *eject_obj;
-> > +	char *status_string = "none";
-> > +
-> > +	mutex_lock(&acpi_scan_lock);
-> > +	eject_obj = (struct eject_data *) adev->eject_stat;
-> 
-> Always use checkpatch.pl so maintainers don't have to ask you to use
-> checkpatch.pl :)
-> 
-
-Acutally I have used checkpatch.pl but haven't found a warning on this
-line:
-  total: 0 errors, 0 warnings, 199 lines checked
-
-The last commit of checkpatch.pl in my code base is 184b8f7f91ca. Anyway,
-thank you for the reminder I will remove the cast from next version :)
-
-> > +
-> > +	if (eject_obj) {
-> > +		switch (eject_obj->status) {
-> > +		case ACPI_EJECT_STATUS_NONE:
-> > +			break;
-> > +		case ACPI_EJECT_STATUS_GOING_OFFLINE:
-> > +			status_string = "going offline";
-> > +			break;
-> > +		case ACPI_EJECT_STATUS_READY_REMOVE:
-> > +			status_string = "ready to remove";
-> > +			break;
-> > +		case ACPI_EJECT_STATUS_FAIL:
-> > +			status_string = "failure";
-> > +			break;
-> > +		case ACPI_EJECT_STATUS_CANCEL:
-> > +			status_string = "cancel";
-> > +			break;
-> > +		default:
-> > +			status_string = "(unknown)";
-> > +		}
-> > +	}
-> > +
-> > +	mutex_unlock(&acpi_scan_lock);
-> > +	return status_string;
-> 
-> So the state can change right after checking it and reporting it to
-> userspace?
-> 
-> If so, what good is the lock here at all?
-> 
-
-I use this lock to prevent the eject_state from being freed during a query
-since any status change might still happen. For example, the userland process
-could be preempted before accessing eject_state and then the eject_state could
-be quickly freed due to eject failure or eject completion. [The free opertion
-is implemented in acpi_free_eject_stat()]
+Perhaps a safest way to fix this could be returning to use dn->full_name
+for printing node names, in which case the devtree_lock would no longer be
+taken for printing names. The effect would be though that there would be
+again one more user for the full_name field, information that can be
+reconstructed from the node's parents.
 
 > 
-> thanks,
+> ---
+> ======================================================
+> WARNING: possible circular locking dependency detected
+> 5.5.0-rc4-00066-g738d2902773e #1 Not tainted
+> ------------------------------------------------------
+> swapper/0/1 is trying to acquire lock:
+> c1313b00 (logbuf_lock){-.-.}, at: vprintk_emit+0x68/0x2d4
 > 
-> greg k-h
+> but task is already holding lock:
+> ef030b90 (&(&n->list_lock)->rlock){..-.}, at: free_debug_processing+0x38/0x418
 > 
+> which lock already depends on the new lock.
+> 
+> 
+> the existing dependency chain (in reverse order) is:
+> 
+> -> #2 (&(&n->list_lock)->rlock){..-.}:
+>        ___slab_alloc.constprop.23+0x12c/0x798
+>        __slab_alloc.constprop.22+0x44/0x70
+>        __kmalloc+0x384/0x41c
+>        of_populate_phandle_cache+0xcc/0x148
+>        of_core_init+0x8/0xbc
+>        driver_init+0x1c/0x2c
+>        kernel_init_freeable+0xac/0x1b4
+>        kernel_init+0x8/0x118
+>        ret_from_fork+0x14/0x20
+>        0x0
+> 
+> -> #1 (devtree_lock){....}:
+>        of_get_parent+0x18/0x34
+>        of_fwnode_get_parent+0x34/0x40
+>        fwnode_count_parents+0x28/0x58
+>        fwnode_full_name_string+0x18/0xa0
+>        device_node_string+0x490/0x4f0
+>        pointer+0x440/0x4d8
+>        vsnprintf+0x1bc/0x3d8
+>        vscnprintf+0xc/0x24
+>        vprintk_store+0x34/0x204
+>        vprintk_emit+0x94/0x2d4
+>        vprintk_default+0x20/0x28
+>        printk+0x30/0x54
+>        exynos4_pm_init_power_domain+0x220/0x258
+>        do_one_initcall+0x8c/0x440
+>        kernel_init_freeable+0x150/0x1b4
+>        kernel_init+0x8/0x118
+>        ret_from_fork+0x14/0x20
+>        0x0
+> 
+> -> #0 (logbuf_lock){-.-.}:
+>        lock_acquire+0xec/0x290
+>        _raw_spin_lock+0x38/0x48
+>        vprintk_emit+0x68/0x2d4
+>        vprintk_default+0x20/0x28
+>        printk+0x30/0x54
+>        unwind_frame+0x6a8/0x6fc
+>        walk_stackframe+0x2c/0x38
+>        __save_stack_trace+0x84/0x8c
+>        stack_trace_save+0x3c/0x5c
+>        set_track+0x40/0x9c
+>        free_debug_processing+0x1a4/0x418
+>        __slab_free+0x2d4/0x510
+>        kmem_cache_free+0x44c/0x49c
+>        rcu_core+0x348/0x994
+>        __do_softirq+0x164/0x668
+>        irq_exit+0x16c/0x170
+>        __handle_domain_irq+0x80/0xec
+>        gic_handle_irq+0x58/0x9c
+>        __irq_svc+0x70/0xb0
+>        raid6_neon8_gen_syndrome_real+0x264/0x39c
+>        raid6_neon8_gen_syndrome_real+0x264/0x39c
+> 
+> other info that might help us debug this:
+> 
+> Chain exists of:
+>   logbuf_lock --> devtree_lock --> &(&n->list_lock)->rlock
+> 
+>  Possible unsafe locking scenario:
+> 
+>        CPU0                    CPU1
+>        ----                    ----
+>   lock(&(&n->list_lock)->rlock);
+>                                lock(devtree_lock);
+>                                lock(&(&n->list_lock)->rlock);
+>   lock(logbuf_lock);
+> 
+>  *** DEADLOCK ***
+> 
+> 2 locks held by swapper/0/1:
+>  #0: c131466c (rcu_callback){....}, at: rcu_core+0x304/0x994
+>  #1: ef030b90 (&(&n->list_lock)->rlock){..-.}, at: free_debug_processing+0x38/0x418
+> 
+> stack backtrace:
+> CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.5.0-rc4-00066-g738d2902773e #1
+> Hardware name: SAMSUNG EXYNOS (Flattened Device Tree)
+> [<c0113264>] (unwind_backtrace) from [<c010e448>] (show_stack+0x10/0x14)
+> [<c010e448>] (show_stack) from [<c0c9b754>] (dump_stack+0xa4/0xd0)
+> [<c0c9b754>] (dump_stack) from [<c018cbd8>] (check_noncircular+0x258/0x274)
+> [<c018cbd8>] (check_noncircular) from [<c019043c>] (__lock_acquire+0x1870/0x2860)
+> [<c019043c>] (__lock_acquire) from [<c018e088>] (lock_acquire+0xec/0x290)
+> [<c018e088>] (lock_acquire) from [<c0cbf278>] (_raw_spin_lock+0x38/0x48)
+> [<c0cbf278>] (_raw_spin_lock) from [<c01a1f84>] (vprintk_emit+0x68/0x2d4)
+> [<c01a1f84>] (vprintk_emit) from [<c01a2210>] (vprintk_default+0x20/0x28)
+> [<c01a2210>] (vprintk_default) from [<c01a2844>] (printk+0x30/0x54)
+> [<c01a2844>] (printk) from [<c0113210>] (unwind_frame+0x6a8/0x6fc)
+> [<c0113210>] (unwind_frame) from [<c010ddf0>] (walk_stackframe+0x2c/0x38)
+> [<c010ddf0>] (walk_stackframe) from [<c010df54>] (__save_stack_trace+0x84/0x8c)
+> [<c010df54>] (__save_stack_trace) from [<c01c2d40>] (stack_trace_save+0x3c/0x5c)
+> [<c01c2d40>] (stack_trace_save) from [<c02ae258>] (set_track+0x40/0x9c)
+> [<c02ae258>] (set_track) from [<c02b06a8>] (free_debug_processing+0x1a4/0x418)
+> [<c02b06a8>] (free_debug_processing) from [<c02b0bf0>] (__slab_free+0x2d4/0x510)
+> [<c02b0bf0>] (__slab_free) from [<c02b17ac>] (kmem_cache_free+0x44c/0x49c)
+> [<c02b17ac>] (kmem_cache_free) from [<c01bd608>] (rcu_core+0x348/0x994)
+> [<c01bd608>] (rcu_core) from [<c010230c>] (__do_softirq+0x164/0x668)
+> [<c010230c>] (__do_softirq) from [<c0131310>] (irq_exit+0x16c/0x170)
+> [<c0131310>] (irq_exit) from [<c01a3740>] (__handle_domain_irq+0x80/0xec)
+> [<c01a3740>] (__handle_domain_irq) from [<c0630828>] (gic_handle_irq+0x58/0x9c)
+> [<c0630828>] (gic_handle_irq) from [<c0101a70>] (__irq_svc+0x70/0xb0)
+> Exception stack(0xef19bd30 to 0xef19bd78)
+> bd20:                                     c0d43e50 c0d43e60 ef19bebc c0d43e70
+> bd40: c0d43e20 c0d43e10 00000400 00000430 00000440 00000450 00000460 00000470
+> bd60: c0d43e40 ef19bd80 c0d43e30 c0625c00 20000013 ffffffff
+> [<c0101a70>] (__irq_svc) from [<c0625c00>] (raid6_neon8_gen_syndrome_real+0x264/0x39c)
+> 
+> ---
+> Bisect:
+> 
+> # bad: [738d2902773e30939a982c8df7a7f94293659810] Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+> # good: [219d54332a09e8d8741c1e1982f5eae56099de85] Linux 5.4
+> git bisect start 'HEAD' 'v5.4'
+> # bad: [8c39f71ee2019e77ee14f88b1321b2348db51820] Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+> git bisect bad 8c39f71ee2019e77ee14f88b1321b2348db51820
+> # good: [3b397c7ccafe0624018cb09fc96729f8f6165573] Merge tag 'regmap-v5.5' of git://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap
+> git bisect good 3b397c7ccafe0624018cb09fc96729f8f6165573
+> # bad: [89d57dddd7d319ded00415790a0bb3c954b7e386] Merge tag 'media/v5.5-1' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media
+> git bisect bad 89d57dddd7d319ded00415790a0bb3c954b7e386
+> # good: [9e7a03233e02afd3ee061e373355f34d7254f1e6] Merge tag 'pm-5.5-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+> git bisect good 9e7a03233e02afd3ee061e373355f34d7254f1e6
+> # good: [09578eacaaa44149738267083ccc050990409f86] Merge tag 'asoc-v5.5-2' of https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound into for-linus
+> git bisect good 09578eacaaa44149738267083ccc050990409f86
+> # good: [1c7ae4a51298d52a21f63b2214657982036c7498] media: ad5820: Add support for of-autoload
+> git bisect good 1c7ae4a51298d52a21f63b2214657982036c7498
+> # good: [99cf8a7074c4ce3ff3685cd389f54e7bd4bbf510] media: dt-bindings: Fix building error for dt_binding_check
+> git bisect good 99cf8a7074c4ce3ff3685cd389f54e7bd4bbf510
+> # good: [782b59711e1561ee0da06bc478ca5e8249aa8d09] Merge branch 'acpi-mm'
+> git bisect good 782b59711e1561ee0da06bc478ca5e8249aa8d09
+> # good: [0ca40f41d795fd91811e44506bb73d0b9ca33bdd] Merge branch 'patchwork' into v4l_for_linus
+> git bisect good 0ca40f41d795fd91811e44506bb73d0b9ca33bdd
+> # bad: [a00351687f8a05773c1c57be80a5bbca68fa9ae8] software node: remove DEV_PROP_MAX
+> git bisect bad a00351687f8a05773c1c57be80a5bbca68fa9ae8
+> # good: [9af7706492f985867d070861fe39fee0fe41326f] lib/vsprintf: Remove support for %pF and %pf in favour of %pS and %ps
+> git bisect good 9af7706492f985867d070861fe39fee0fe41326f
+> # bad: [83abc5a77f3b028b8c845c39ce4053119e1de35b] lib/vsprintf: OF nodes are first and foremost, struct device_nodes
+> git bisect bad 83abc5a77f3b028b8c845c39ce4053119e1de35b
+> # bad: [a92eb7621b9fb2c28a588ce333d226f56fab6a85] lib/vsprintf: Make use of fwnode API to obtain node names and separators
+> git bisect bad a92eb7621b9fb2c28a588ce333d226f56fab6a85
+> # good: [1586c5ae2f9310235b5e70abe712c73fc32eb98f] lib/vsprintf: Add a note on re-using %pf or %pF
+> git bisect good 1586c5ae2f9310235b5e70abe712c73fc32eb98f
+> # first bad commit: [a92eb7621b9fb2c28a588ce333d226f56fab6a85] lib/vsprintf: Make use of fwnode API to obtain node names and separators
+
+-- 
+Kind regards,
+
+Sakari Ailus
