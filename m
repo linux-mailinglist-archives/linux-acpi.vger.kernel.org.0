@@ -2,306 +2,173 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E41C012F58F
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jan 2020 09:37:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFBC112F69A
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jan 2020 11:09:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726133AbgACIhc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Jan 2020 03:37:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44788 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725972AbgACIhc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 3 Jan 2020 03:37:32 -0500
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6D30A21D7D;
-        Fri,  3 Jan 2020 08:37:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578040650;
-        bh=ZD8qOsqQa8ANN+XuR2aHEzJsTu7jUSmoOLSeAscuNxM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lF2DC8bJI6QgcSSmhWYXcKAGSXiyBrrOM8J1mcf8CMpuoax/rsdnmdkedynk1Bq8Z
-         GSYjGH5vQzpsVo5Hnk9tQxZjnR66IAQv8YNHPQmmwgDkoMKZlZR2NNHjoPY/8G8Dgw
-         l/rVlE4PKYRXvR02l7FCXZZ0bhipq6SKVie/Tca0=
-Date:   Fri, 3 Jan 2020 09:37:28 +0100
-From:   "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To:     Chester Lin <clin@suse.com>
-Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "robert.moore@intel.com" <robert.moore@intel.com>,
-        "erik.schmauss@intel.com" <erik.schmauss@intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Joey Lee <JLee@suse.com>,
-        "mhocko@kernel.org" <mhocko@kernel.org>
-Subject: Re: [RFC PATCH v2 3/3] ACPI / device_sysfs: Add eject_show and add a
- cancel option in eject_store
-Message-ID: <20200103083728.GB831558@kroah.com>
-References: <20200103043926.31507-1-clin@suse.com>
- <20200103043926.31507-4-clin@suse.com>
+        id S1727221AbgACKJY convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 3 Jan 2020 05:09:24 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2222 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725972AbgACKJY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 3 Jan 2020 05:09:24 -0500
+Received: from LHREML713-CAH.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id 6369F35EAC12E5808DA;
+        Fri,  3 Jan 2020 10:09:22 +0000 (GMT)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ LHREML713-CAH.china.huawei.com (10.201.108.36) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Fri, 3 Jan 2020 10:09:22 +0000
+Received: from localhost (10.202.226.57) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Fri, 3 Jan 2020
+ 10:09:21 +0000
+Date:   Fri, 3 Jan 2020 10:09:20 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Brice Goglin <brice.goglin@gmail.com>
+CC:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>,
+        Keith Busch <kbusch@kernel.org>, <jglisse@redhat.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>, <linuxarm@huawei.com>,
+        "Andrew Morton" <akpm@linux-foundation.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Tao Xu <tao3.xu@intel.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH V6 0/7] ACPI: Support Generic Initiator proximity
+ domains
+Message-ID: <20200103100920.00006a18@Huawei.com>
+In-Reply-To: <b428d231-4879-4462-ac42-900b5d094eee@gmail.com>
+References: <20191216153809.105463-1-Jonathan.Cameron@huawei.com>
+        <dc5f5502-09c6-d476-db0e-0af3412bb031@gmail.com>
+        <20191218145041.00005a11@Huawei.com>
+        <1867024e-b0c4-c291-7190-262cc4b297a8@gmail.com>
+        <20200102152604.000039f1@Huawei.com>
+        <b428d231-4879-4462-ac42-900b5d094eee@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200103043926.31507-4-clin@suse.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.226.57]
+X-ClientProxiedBy: lhreml730-chm.china.huawei.com (10.201.108.81) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 03, 2020 at 04:40:17AM +0000, Chester Lin wrote:
-> Add an eject_show attribute for users to monitor current status because
-> sometimes it could take time to finish an ejection so we need to know
-> whether it is still in progress or not. For userspace who might need to
-> cancel an onging ejection, we also offer an option in eject_store.
+On Thu, 2 Jan 2020 22:37:04 +0100
+Brice Goglin <brice.goglin@gmail.com> wrote:
+
+> Le 02/01/2020 à 16:27, Jonathan Cameron a écrit :
+> >  
+> >> However the HMAT table gets ignored because find_mem_target() fails in
+> >> hmat_parse_proximity_domain(). The target should have been allocated in
+> >> alloc_memory_target() which is called in srat_parse_mem_affinity(), but
+> >> it seems to me that this function isn't called for GI nodes. Or should
+> >> SRAT also contain a normal Memory node with same PM as the GI?
+> >>  
+> > Hi Brice,
+> >
+> > Yes you should see a node with 0kB memory.  Same as you get for a processor
+> > only node I believe.
+> >
+> > srat_parse_mem_affinity shouldn't call alloc_memory_target for the GI nodes
+> > as they don't have any memory.   The hmat table should only refer to
+> > GI domains as initiators.  Just to check, do you have them listed as
+> > a target node?  Or perhaps in some hmat proximity entry as memory_PD?
+> >  
 > 
-> Signed-off-by: Chester Lin <clin@suse.com>
-> ---
->  Documentation/ABI/testing/sysfs-bus-acpi |  9 ++-
->  drivers/acpi/device_sysfs.c              | 94 +++++++++++++++++++++---
->  drivers/acpi/internal.h                  |  4 +-
->  drivers/acpi/scan.c                      | 38 +++++++++-
->  4 files changed, 129 insertions(+), 16 deletions(-)
+> Thanks, I finally got things to work. I am on x86. It's a dual-socket
+> machine with SubNUMA clusters (2 nodes per socket) and NVDIMMs (one
+> dax-kmem node per socket). Before adding a GI, initiators look like this:
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-acpi b/Documentation/ABI/testing/sysfs-bus-acpi
-> index e7898cfe5fb1..32fdf4af962e 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-acpi
-> +++ b/Documentation/ABI/testing/sysfs-bus-acpi
-> @@ -53,9 +53,12 @@ What:		/sys/bus/acpi/devices/.../eject
->  Date:		December 2006
->  Contact:	Rafael J. Wysocki <rjw@rjwysocki.net>
->  Description:
-> -		Writing 1 to this attribute will trigger hot removal of
-> -		this device object.  This file exists for every device
-> -		object that has _EJ0 method.
-> +		(R) Allows users to read eject status of the device object.
-> +		(W) Writing 1 to this attribute will trigger hot removal of
-> +		this device object. Writing 2 to this attribute will cancel hot
-> +		removal work if it's still in offline process and the original
-> +		state of this device object will be recovered. This file exists
-> +		for every device object that has _EJ0 method.
+> node0 -> node0 and node4
+> 
+> node1 -> node1 and node5
+> 
+> node2 -> node2 and node4
+> 
+> node3 -> node3 and node5
+> 
+> I added a GI with faster access to node0, node2, node4 (first socket).
+> 
+> The GI node becomes an access0 initiator for node4, and node0 and node2
+> remain access1 initiators.
+> 
+> The GI node doesn't become access0 initiator for node0 and node2, likely
+> because of this test :
+> 
+>         /*
+>          * If the Address Range Structure provides a local processor pxm, link
+>          * only that one. Otherwise, find the best performance attributes and
+>          * register all initiators that match.
+>          */
+>         if (target->processor_pxm != PXM_INVAL) {
+> 
+> I guess I should split node0-3 into separate CPU nodes and memory nodes
+> in SRAT?
 
-Oh that's going to cause problems :)
+It sounds like it's working as expected.  There are a few assumptions made about
+'sensible' hmat configurations.
 
-Why not just have a new file, "cancel_eject" that you can write to, to
-cancel the eject happening?
+1) If the memory and processor are in the same domain, that should mean the
+access characteristics within that domain are the best in the system.
+It is possible to have a setup with very low latency access
+from a particular processor but also low bandwidth.  Another domain may have
+high bandwidth but long latency.   Such systems may occur, but they are probably
+going to not be for 'normal memory the OS can just use'.
 
-That way you don't have an odd "state" that this file needs to keep
-track of.
+2) If we have a relevant "Memory Proximity Domain Attributes Structure"
+Note this was renamed in acpi 6.3 from "Address Range Structure" as
+it no longer has any address ranges.
+(which are entirely optional btw) that indicates that the memory controller
+for a given memory lies in the proximity domain of the Initiator specified.
+If that happens we ignore cases where hmat says somewhere else is nearer
+via bandwidth and latency.
 
-And what happens if you write a '2' here when eject is not happening?
-It didn't look like your code handled that state well.
+For case 1) I'm not sure we actually enforce it.
+I think you've hit case 2).  
 
->  
->  What:		/sys/bus/acpi/devices/.../status
->  Date:		Jan, 2014
-> diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-> index 96869f1538b9..6801b268fe9d 100644
-> --- a/drivers/acpi/device_sysfs.c
-> +++ b/drivers/acpi/device_sysfs.c
-> @@ -365,17 +365,13 @@ static ssize_t power_state_show(struct device *dev,
->  
->  static DEVICE_ATTR_RO(power_state);
->  
-> -static ssize_t
-> -acpi_eject_store(struct device *d, struct device_attribute *attr,
-> -		const char *buf, size_t count)
-> +static ssize_t eject_show(struct device *d,
-> +				struct device_attribute *attr, char *buf)
->  {
->  	struct acpi_device *acpi_device = to_acpi_device(d);
->  	acpi_object_type not_used;
->  	acpi_status status;
->  
-> -	if (!count || buf[0] != '1')
-> -		return -EINVAL;
-> -
->  	if ((!acpi_device->handler || !acpi_device->handler->hotplug.enabled)
->  	    && !acpi_device->driver)
->  		return -ENODEV;
-> @@ -384,18 +380,96 @@ acpi_eject_store(struct device *d, struct device_attribute *attr,
->  	if (ACPI_FAILURE(status) || !acpi_device->flags.ejectable)
->  		return -ENODEV;
->  
-> +	return sprintf(buf, "%s\n", acpi_eject_status_string(acpi_device));
-> +}
-> +
-> +static ssize_t
-> +eject_store(struct device *d, struct device_attribute *attr,
-> +		const char *buf, size_t count)
-> +{
-> +	struct acpi_device *acpi_device = to_acpi_device(d);
-> +	struct eject_data *eject_node = NULL;
-> +	acpi_object_type not_used;
-> +	acpi_status status;
-> +	bool cancel_eject = false;
-> +	ssize_t ret;
-> +
-> +	if (!count)
-> +		return -EINVAL;
-> +
-> +	switch (buf[0]) {
-> +	case '1':
-> +		break;
-> +	case '2':
-> +		acpi_scan_lock_acquire();
-> +		eject_node = (struct eject_data *)acpi_device->eject_stat;
-> +
-> +		if (!eject_node) {
-> +			acpi_scan_lock_release();
-> +			ret = -EINVAL;
-> +			goto eject_end;
-> +		}
-> +
-> +		/*
-> +		 * Find a root to start cancellation from the top
-> +		 */
-> +		if (eject_node->base.root_handle) {
-> +			acpi_device = acpi_bus_get_acpi_device(
-> +					eject_node->base.root_handle);
-> +
-> +			if (acpi_device)
-> +				eject_node =
-> +				   (struct eject_data *)acpi_device->eject_stat;
-> +			else
-> +				eject_node = NULL;
-> +
-> +		}
-> +
-> +		if (eject_node &&
-> +		   (eject_node->status == ACPI_EJECT_STATUS_GOING_OFFLINE ||
-> +		    eject_node->status == ACPI_EJECT_STATUS_READY_REMOVE)) {
-> +			eject_node->status = ACPI_EJECT_STATUS_CANCEL;
-> +			cancel_eject = true;
-> +		}
-> +
-> +		acpi_scan_lock_release();
-> +		if (cancel_eject)
-> +			break;
-> +	default:
-> +		ret = -EINVAL;
-> +		goto eject_end;
-> +	};
-> +
-> +	if ((!acpi_device->handler || !acpi_device->handler->hotplug.enabled)
-> +	    && !acpi_device->driver) {
-> +		ret = -ENODEV;
-> +		goto eject_end;
-> +	}
-> +
-> +	status = acpi_get_type(acpi_device->handle, &not_used);
-> +	if (ACPI_FAILURE(status) || !acpi_device->flags.ejectable) {
-> +		ret = -ENODEV;
-> +		goto eject_end;
-> +	}
-> +
->  	get_device(&acpi_device->dev);
->  	status = acpi_hotplug_schedule(acpi_device, ACPI_OST_EC_OSPM_EJECT);
-> -	if (ACPI_SUCCESS(status))
-> -		return count;
-> +	if (ACPI_SUCCESS(status)) {
-> +		ret = count;
-> +		goto eject_end;
-> +	}
->  
->  	put_device(&acpi_device->dev);
->  	acpi_evaluate_ost(acpi_device->handle, ACPI_OST_EC_OSPM_EJECT,
->  			  ACPI_OST_SC_NON_SPECIFIC_FAILURE, NULL);
-> -	return status == AE_NO_MEMORY ? -ENOMEM : -EAGAIN;
-> +	ret = (status == AE_NO_MEMORY) ? -ENOMEM : -EAGAIN;
-> +
-> +eject_end:
-> +	return ret;
-> +
->  }
->  
-> -static DEVICE_ATTR(eject, 0200, NULL, acpi_eject_store);
-> +static DEVICE_ATTR_RW(eject);
->  
->  static ssize_t
->  acpi_device_hid_show(struct device *dev, struct device_attribute *attr, char *buf)
-> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-> index 8154690b872b..e5d526402188 100644
-> --- a/drivers/acpi/internal.h
-> +++ b/drivers/acpi/internal.h
-> @@ -265,7 +265,8 @@ enum acpi_eject_status {
->  	ACPI_EJECT_STATUS_NONE = 0,
->  	ACPI_EJECT_STATUS_GOING_OFFLINE,
->  	ACPI_EJECT_STATUS_READY_REMOVE,
-> -	ACPI_EJECT_STATUS_FAIL
-> +	ACPI_EJECT_STATUS_FAIL,
-> +	ACPI_EJECT_STATUS_CANCEL
->  };
->  
->  enum acpi_eject_node_type {
-> @@ -286,5 +287,6 @@ struct eject_data {
->  };
->  
->  void acpi_eject_retry(struct acpi_device *adev);
-> +char *acpi_eject_status_string(struct acpi_device *adev);
->  
->  #endif /* _ACPI_INTERNAL_H_ */
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 13f16b6ad7a2..90983c067410 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -366,8 +366,9 @@ static int acpi_scan_offline_check(struct acpi_device *device)
->  			return -EBUSY;
->  		}
->  
-> -		if (eject_obj->status == ACPI_EJECT_STATUS_FAIL) {
-> -			dev_warn(&device->dev, "Eject failed. Recover all.\n");
-> +		if (eject_obj->status == ACPI_EJECT_STATUS_FAIL ||
-> +		    eject_obj->status == ACPI_EJECT_STATUS_CANCEL) {
-> +			dev_warn(&device->dev, "Eject stopped. Recover all.\n");
->  			acpi_scan_notify_online(device);
->  			return -EAGAIN;
->  		}
-> @@ -383,6 +384,39 @@ static int acpi_scan_offline_check(struct acpi_device *device)
->  	return ret;
->  }
->  
-> +char *acpi_eject_status_string(struct acpi_device *adev)
-> +{
-> +	struct eject_data *eject_obj;
-> +	char *status_string = "none";
-> +
-> +	mutex_lock(&acpi_scan_lock);
-> +	eject_obj = (struct eject_data *) adev->eject_stat;
+Removing the address range structures should work, or as you say you can
+move that memory into separate memory nodes.  It will be a bit of a strange
+setup though.  Assuming node4 is an NVDIMM then that would be closer to a
+potential real system.  With a suitable coherent bus (CCIX is most familiar
+to me and can do this) You might have
 
-Always use checkpatch.pl so maintainers don't have to ask you to use
-checkpatch.pl :)
+ _______       ________    _______
+|       |     |        |   |       |
+| Node0 |     | Node4  |---| Node6 |
+| CPU   |-----| Mem +  |---| GI    |
+| Mem   |     | CCHome |---|       |
+|_______|     |________|   |_______|
+   |                          |
+   |__________________________|
 
-> +
-> +	if (eject_obj) {
-> +		switch (eject_obj->status) {
-> +		case ACPI_EJECT_STATUS_NONE:
-> +			break;
-> +		case ACPI_EJECT_STATUS_GOING_OFFLINE:
-> +			status_string = "going offline";
-> +			break;
-> +		case ACPI_EJECT_STATUS_READY_REMOVE:
-> +			status_string = "ready to remove";
-> +			break;
-> +		case ACPI_EJECT_STATUS_FAIL:
-> +			status_string = "failure";
-> +			break;
-> +		case ACPI_EJECT_STATUS_CANCEL:
-> +			status_string = "cancel";
-> +			break;
-> +		default:
-> +			status_string = "(unknown)";
-> +		}
-> +	}
-> +
-> +	mutex_unlock(&acpi_scan_lock);
-> +	return status_string;
+CCHome Cache Coherency directory location to avoid the need for more
+esoteric cache coherency short cut methods etc.
 
-So the state can change right after checking it and reporting it to
-userspace?
+Idea being the GI node is some big fat DB accelerator or similar doing
+offloaded queries.  It has a fat pipe to the NVDIMMs.  
 
-If so, what good is the lock here at all?
+Lets ignore that, to actually justify the use of a GI only node,
+you need some more elements as this situation could be represented
+by fusing node4 and node6 and having asymmetric HMAT between Node0
+and the fused Node4.
+
+So in conclusion, with your setup, only the NVDIMM nodes look like the
+sort of memory that might be in a node nearer to a GI than the host.
+> 
+> Brice
+
+Thanks again for looking at this!
+
+Jonathan
+> 
+> 
+> 
+> 
 
 
-thanks,
-
-greg k-h
