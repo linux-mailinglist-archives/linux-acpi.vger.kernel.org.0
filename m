@@ -2,195 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55E6413169E
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2020 18:19:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8E08131B86
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2020 23:35:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726696AbgAFRTg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Jan 2020 12:19:36 -0500
-Received: from foss.arm.com ([217.140.110.172]:46236 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726526AbgAFRTg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 6 Jan 2020 12:19:36 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 37E6A31B;
-        Mon,  6 Jan 2020 09:19:35 -0800 (PST)
-Received: from [10.1.196.37] (e121345-lin.cambridge.arm.com [10.1.196.37])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F84C3F6C4;
-        Mon,  6 Jan 2020 09:19:33 -0800 (PST)
-Subject: Re: [PATCH v1] ACPI/IORT: Workaround for IORT ID count "minus one"
- issue
-To:     Hanjun Guo <guohanjun@huawei.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>
-Cc:     linux-acpi@vger.kernel.org, John Garry <john.garry@huawei.com>,
-        linuxarm@huawei.com, linux-arm-kernel@lists.infradead.org
-References: <1577708824-4873-1-git-send-email-guohanjun@huawei.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <2ce224b2-d926-67b0-f9dd-85ac53d967c5@arm.com>
-Date:   Mon, 6 Jan 2020 17:19:32 +0000
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726774AbgAFWfE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Jan 2020 17:35:04 -0500
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:33015 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726721AbgAFWfE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Jan 2020 17:35:04 -0500
+Received: by mail-pl1-f194.google.com with SMTP id c13so22385542pls.0;
+        Mon, 06 Jan 2020 14:35:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=qpvMgFdftf9ANhib2LlVwDtagmLWmW++B/ixHTrUb0U=;
+        b=oYdr2Rsm8aY2Krd2gOUV/nJh56dClC+QsvrjkZF3g/7GGV1ZjYbCgC4lXZmvSnSlER
+         9p8dv+MtdtyLh1S0gm08MwXvYox2H4s9MLGLjyyRGOx8ACReA7dDOoD70Ub7rtPbKpzw
+         0cAv/QLyio0m6BvC515cMhuUV6XxH9XbggQF5Ll+faWzs5iYch9Gld46pXdiAyq3Cqkt
+         UKeuOqgjJgrzVPHJaheY8VjrbTtjg9lE5f0s1q8DejgvfisEHxXbNz9+oz/7hW9D+8bP
+         ypElH5K9LVab+l4oupj+e56UP1wap/IBCMfJzpFL6qeSHgMyZA2WRPI8YlgxkycTh8e+
+         BdbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=qpvMgFdftf9ANhib2LlVwDtagmLWmW++B/ixHTrUb0U=;
+        b=Zfd6WIBbeooPZgV7b12zRG0gQL2/40yRqD7sHB8+2NsjfDlO54pygNo6Pf4X+GhSSa
+         AqL+dNkJKB9iJzU+4A2Kbb1XTxg8y+Uiyvy2aoE7/LHsrxEoXkqp3RHRUSwGz8TJ9ucM
+         Uu5szpYA+e+epS+TqBwt8JJedttSdcIR7Duwf6S4WUfk0Yzv/jxlnTwTtlUg4MucYsjo
+         5vucbGc/jEtW0aei8pS+2pmqaI7VJXy8/EZJd3BEDoEtNYCheMpMuTQsby5W56VOvkes
+         1TbkJBe4cEMfV5/kAraDyOBA3kBH5mDSQ1NsZtcjZCn4LMc7nCXnRhcKuX3Ve2T4mnTY
+         krbA==
+X-Gm-Message-State: APjAAAVHItpGJyEEYeP/l/A4zC6JA7Np1auBq9bZgDxREA6m9BV3JAko
+        BizVvd7e9QAhL3ggLpwOGoo=
+X-Google-Smtp-Source: APXvYqwB0AkExqosTf+he1/2pNPXNah/DcoAIBnpMa/3YyMC3mf9MP5n3ID6YAxLrVLdEIrwmyRbnQ==
+X-Received: by 2002:a17:902:8a8d:: with SMTP id p13mr102320928plo.296.1578350103830;
+        Mon, 06 Jan 2020 14:35:03 -0800 (PST)
+Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
+        by smtp.gmail.com with ESMTPSA id w131sm81300933pfc.16.2020.01.06.14.35.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jan 2020 14:35:03 -0800 (PST)
+Date:   Mon, 6 Jan 2020 14:35:00 -0800
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Qian Cai <cai@lca.pw>
+Cc:     rafael.j.wysocki@intel.com, gregkh@linuxfoundation.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] drivers/base/test: fix global-out-of-bounds error
+Message-ID: <20200106223500.GG8314@dtor-ws>
+References: <20200106163735.1826-1-cai@lca.pw>
 MIME-Version: 1.0
-In-Reply-To: <1577708824-4873-1-git-send-email-guohanjun@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200106163735.1826-1-cai@lca.pw>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 30/12/2019 12:27 pm, Hanjun Guo wrote:
-> The IORT spec [0] says Number of IDs = The number of IDs in the range minus
-> one, it is confusing but it was written down in the first version of the
-> IORT spec. But the IORT ID mapping function iort_id_map() did something
-> wrong from the start, which bails out if:
+On Mon, Jan 06, 2020 at 11:37:35AM -0500, Qian Cai wrote:
+> The commit c032ace71c29 ("software node: add basic tests for property
+> entries") introduced a global-out-of-bounds error because it forgot to
+> add a terminator of "nodes "for software_node_register_nodes() to
+> process.
 > 
-> the request ID >= the input base + number of IDs
+>  	# Subtest: property-entry
+>  	1..7
+>  	ok 1 - pe_test_uints
+>  	ok 2 - pe_test_uint_arrays
+>  	ok 3 - pe_test_strings
+>  	ok 4 - pe_test_bool
+>  	ok 5 - pe_test_move_inline_u8
+>  	ok 6 - pe_test_move_inline_str
+>  ==================================================================
+>  BUG: KASAN: global-out-of-bounds in
+>  software_node_register_nodes+0x41/0x80
+>  Read of size 8 at addr ffffffff989ef250 by task kunit_try_catch/316
 > 
-> This is wrong because it ignored the "minus one", and breaks some valid
-> usecases such as ID mapping to contain single device mapping without
-> single mapping flag set.
+>  CPU: 17 PID: 316 Comm: kunit_try_catch Not tainted
+>  5.5.0-rc4-next-20200106+ #1
+>  Hardware name: HPE ProLiant DL385 Gen10/ProLiant DL385 Gen10, BIOS A40
+>  03/09/2018
+>  Call Trace:
+>   dump_stack+0xa0/0xea
+>   print_address_description.constprop.5.cold.7+0x64/0x384
+>   __kasan_report.cold.8+0x7a/0xc0
+>   kasan_report+0x12/0x20
+>   __asan_load8+0x71/0xa0
+>   software_node_register_nodes+0x41/0x80
+>   pe_test_reference+0x1eb/0x1200
+>   kunit_try_run_case+0x6b/0xd1
+>   kunit_generic_run_threadfn_adapter+0x29/0x50
+>   kthread+0x1e6/0x210
+>   ret_from_fork+0x27/0x50
 > 
-> Pankaj Bansal proposed a solution to fix the issue [1], which bails
-> out if:
+>  The buggy address belongs to the variable:
+>   nodes.21544+0x30/0x920
 > 
-> the request ID > the input base + number of IDs
+>  Memory state around the buggy address:
+>   ffffffff989ef100: fa fa fa fa 00 04 fa fa fa fa fa fa 00 00 00 00
+>   ffffffff989ef180: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>  >ffffffff989ef200: fa fa fa fa 00 00 00 00 00 00 fa fa fa fa fa fa
+>                                                   ^
+>   ffffffff989ef280: 00 06 fa fa fa fa fa fa 00 00 04 fa fa fa fa fa
+>   ffffffff989ef300: 00 00 fa fa fa fa fa fa 00 05 fa fa fa fa fa fa
+>  ==================================================================
+>  Disabling lock debugging due to kernel taint
+>  	ok 7 - pe_test_reference
+>  ok 8 - property-entry
 > 
-> This works as the spec defined, unfortunately some firmware didn't
-> minus one for the number of IDs in the range, and the propoased
-> solution will break those systems in this way:
-> 
-> PCI hostbridge mapping entry 1:
-> Input base:  0x1000
-> ID Count:    0x100
-> Output base: 0x1000
-> Output reference: 0xC4  //ITS reference
-> 
-> PCI hostbridge mapping entry 2:
-> Input base:  0x1100
-> ID Count:    0x100
-> Output base: 0x2000
-> Output reference: 0xD4  //ITS reference
-> 
-> Two mapping entries which the second entry's Input base = the first
-> entry's Input base + ID count, so for requester ID 0x1100 will map
-> to ITS 0xC4 not 0xD4 if we update '>=' to '>'.
-> 
-> So introduce a workaround to match the IORT's OEM information for
-> the broken firmware, also update the logic of the ID mapping for
-> firmwares report the number of IDs as the IORT spec defined, to
-> make the code compatible for both kinds of system.
-> 
-> I checked the ACPI tables in the tianocore/edk2-platforms [2], only
-> HiSilicon HIP07/08 did wrong, so just add HIP07/08 to the workaround
-> info table, if we break other platforms, we can add that later.
-> 
-> [0]: http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf
-> [1]: https://patchwork.kernel.org/patch/11292823/
-> [2]: https://github.com/tianocore/edk2-platforms
-> 
-> Cc: Pankaj Bansal <pankaj.bansal@nxp.com>
-> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
+> Fixes: c032ace71c29 ("software node: add basic tests for property entries")
+> Signed-off-by: Qian Cai <cai@lca.pw>
+
+Thanks Qian.
+
+Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+
 > ---
+>  drivers/base/test/property-entry-test.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> RFC->v1:
-> - Print warning when matched the workaround info, suggested by Pankaj.
+> diff --git a/drivers/base/test/property-entry-test.c b/drivers/base/test/property-entry-test.c
+> index da812834b631..abe03315180f 100644
+> --- a/drivers/base/test/property-entry-test.c
+> +++ b/drivers/base/test/property-entry-test.c
+> @@ -366,6 +366,7 @@ static void pe_test_reference(struct kunit *test)
+>  	static const struct software_node nodes[] = {
+>  		{ .name = "1", },
+>  		{ .name = "2", },
+> +		{ }
+>  	};
+>  
+>  	static const struct software_node_ref_args refs[] = {
+> -- 
+> 2.21.0 (Apple Git-122.2)
 > 
->   drivers/acpi/arm64/iort.c | 55 ++++++++++++++++++++++++++++++++++++++++++++---
->   1 file changed, 52 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index 33f7198..60eb10d 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -298,6 +298,42 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
->   	return status;
->   }
->   
-> +struct iort_workaround_oem_info {
-> +	char oem_id[ACPI_OEM_ID_SIZE + 1];
-> +	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
-> +	u32 oem_revision;
-> +};
-> +
-> +static bool apply_id_count_workaround;
-> +
-> +static struct iort_workaround_oem_info wa_info[] __initdata = {
-> +	{
-> +		.oem_id		= "HISI  ",
-> +		.oem_table_id	= "HIP07   ",
-> +		.oem_revision	= 0,
-> +	}, {
-> +		.oem_id		= "HISI  ",
-> +		.oem_table_id	= "HIP08   ",
-> +		.oem_revision	= 0,
-> +	}
-> +};
-> +
-> +static void __init
-> +iort_check_id_count_workaround(struct acpi_table_header *tbl)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
-> +		if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
-> +		    !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
-> +		    wa_info[i].oem_revision == tbl->oem_revision) {
-> +			apply_id_count_workaround = true;
-> +			pr_warn(FW_BUG "ID count for ID mapping entry is wrong, applying workaround\n");
-> +			break;
-> +		}
-> +	}
-> +}
-> +
->   static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
->   		       u32 *rid_out)
->   {
-> @@ -314,9 +350,21 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
->   		return -ENXIO;
->   	}
->   
-> -	if (rid_in < map->input_base ||
-> -	    (rid_in >= map->input_base + map->id_count))
-> -		return -ENXIO;
-> +	/*
-> +	 * IORT spec says Number of IDs = The number of IDs in the range minus
-> +	 * one, but the IORT code ingored the "minus one", and some firmware
-> +	 * did that too, so apply a workaround here to keep compatible with
-> +	 * both new and old versions of the firmware.
-> +	 */
-> +	if (apply_id_count_workaround) {
-> +		if (rid_in < map->input_base ||
-> +			(rid_in >= map->input_base + map->id_count))
-> +			return -ENXIO;
-> +	} else {
-> +		if (rid_in < map->input_base ||
-> +			(rid_in > map->input_base + map->id_count))
-> +			return -ENXIO;
-> +	}
 
-This seems needlessly repetitive and convoluted... how about refactoring 
-to something like:
-
-	map_max = map->input_base + map->id_count;
-	if (apply_id_count_workaround)
-		map_max--;
-
-?
-
-Robin.
-
->   	*rid_out = map->output_base + (rid_in - map->input_base);
->   	return 0;
-> @@ -1631,5 +1679,6 @@ void __init acpi_iort_init(void)
->   		return;
->   	}
->   
-> +	iort_check_id_count_workaround(iort_table);
->   	iort_init_platform_devices();
->   }
-> 
+-- 
+Dmitry
