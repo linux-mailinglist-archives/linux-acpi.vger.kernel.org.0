@@ -2,92 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B26D3130FFF
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2020 11:06:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F38F13111B
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2020 12:03:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726296AbgAFKGF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Jan 2020 05:06:05 -0500
-Received: from sauhun.de ([88.99.104.3]:37032 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726133AbgAFKGE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 6 Jan 2020 05:06:04 -0500
-Received: from localhost (p54B338AC.dip0.t-ipconnect.de [84.179.56.172])
-        by pokefinder.org (Postfix) with ESMTPSA id 8DC052C0686;
-        Mon,  6 Jan 2020 11:06:01 +0100 (CET)
-Date:   Mon, 6 Jan 2020 11:05:58 +0100
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-clk@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
-        netdev@vger.kernel.org, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH] treewide: remove redundent IS_ERR() before error code
- check
-Message-ID: <20200106100558.GA4831@kunai>
-References: <20200106045833.1725-1-masahiroy@kernel.org>
+        id S1726173AbgAFLDb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Jan 2020 06:03:31 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:40891 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726080AbgAFLDb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Jan 2020 06:03:31 -0500
+Received: by mail-ot1-f68.google.com with SMTP id w21so63517382otj.7;
+        Mon, 06 Jan 2020 03:03:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6vdryAwpAtjdLmL+w82hzip04Zqpf7RG2w9DyYsoli4=;
+        b=q4YbPMkfXd/I9FQeGyVxHlqjckdvE1tjIRfqafgAFdOgINud/OV2rTNYKuYY2RIcF5
+         Te998iW27gIX+djVeqLQfZ56J9Lcio6zw0E/D0Sj/UXX3Nm79WZgH2mSXxRdxb8PIx6j
+         MEl2Uct0/LoMaUGe4EqDrfufKVu2zwVScn1iMHz+V8RwFWdMryvKDijyIKjVdmlIYt5K
+         4MhPX0SbSxSAkoauQMOF6D4yxI9OZTV9aXcHQ5ihMcQrW3bU4MqF/s5oqNQuDjI6tVP8
+         cQnS2bzUbUvoxbMjxWQux/ZGFSqOjJgwBzuh5BlOXcVMt7gOUjAMyqsKj9NtDQ24Ypxv
+         vJdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6vdryAwpAtjdLmL+w82hzip04Zqpf7RG2w9DyYsoli4=;
+        b=pm89ymOwJfJvfFxGR8Ml0/k/mOOj2ZplrQdXQM1d8RUjFFwo/w3aW4VkTFX1C7BBFy
+         5iw3j1mxFD+puS1ORqVWR3xtZ+stBa9bZ8cv3GzYN8BA5BRR43Nm0Gv1oYR1gP+tOg40
+         nGUCjJ5LICavSy4/mD9gEDHo9PTmuPGhPeeI+ozyszM/yxLGhV3Wr1P0aRAGC5moozUD
+         oJQPTdCuDVQWAJA7zkb8Jl0+T6s+PL3IwRt7i6ZCzBxv1sTf2Ro20+6k0oqqyoHyOEO3
+         +/zkrTsjrbs26m9rfSkhxlNb5UbWL9QmzMgP+43nyor7DRSztnCVUyqjvihDxGKDZHp/
+         HClg==
+X-Gm-Message-State: APjAAAWWGb7rZQfnkqm0/ORzic8an3poAvEczLhZAo8XvfeQimJVlkOH
+        elYhqUXgqLSBU69JJm+hJW+ayVtW13q7A9J0LcI=
+X-Google-Smtp-Source: APXvYqw9wUMjHkz2hw3pD8PhUwQ5RLqU5K/0A4FMvhStPMw80kAZ3AUyK0h+3wc9r20fi7Q5O0KQdUUAv0+WcRqMao8=
+X-Received: by 2002:a05:6830:1e2d:: with SMTP id t13mr118894094otr.128.1578308610177;
+ Mon, 06 Jan 2020 03:03:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="zhXaljGHf11kAtnf"
-Content-Disposition: inline
-In-Reply-To: <20200106045833.1725-1-masahiroy@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <1576652618-27017-1-git-send-email-bupadhaya@marvell.com> <20200102180130.GG8345@zn.tnic>
+In-Reply-To: <20200102180130.GG8345@zn.tnic>
+From:   Bhaskar Upadhaya <bhaskar.upadhaya.linux@gmail.com>
+Date:   Mon, 6 Jan 2020 16:33:19 +0530
+Message-ID: <CAEYJA6oXTxTmJEji5_Hup2oB+GrgGnmSTiS-nNuzbNzGJ9VESA@mail.gmail.com>
+Subject: Re: [RFC PATCH] apei/ghes: fix ghes_poll_func by registering in
+ non-deferrable mode
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Bhaskar Upadhaya <bupadhaya@marvell.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-edac@vger.kernel.org, lenb@kernel.org, rafael@kernel.org,
+        gkulkarni@marvell.com, rrichter@marvell.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Thu, Jan 2, 2020 at 11:31 PM Borislav Petkov <bp@alien8.de> wrote:
+>
+> On Tue, Dec 17, 2019 at 11:03:38PM -0800, Bhaskar Upadhaya wrote:
+> > Currently Linux register ghes_poll_func with TIMER_DEFERRABLE flag,
+> > because of which it is serviced when the CPU eventually wakes up with a
+> > subsequent non-deferrable timer and not at the configured polling interval.
+> >
+> > For polling mode, the polling interval configured by firmware should not
+> > be exceeded as per ACPI_6_3 spec[refer Table 18-394],
+>
+> I see
+>
+> "Table 18-394 Hardware Error Notification Structure"
+>
+> where does it say that the interval should not be exceeded and what is
+> going to happen if it gets exceeded?
 
---zhXaljGHf11kAtnf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Definition of poll interval as per spec (referred ACPI 6.3):
+"Indicates the poll interval in milliseconds OSPM should use to
+periodically check the error source for the presence of an error
+condition."
 
-On Mon, Jan 06, 2020 at 01:58:33PM +0900, Masahiro Yamada wrote:
-> 'PTR_ERR(p) =3D=3D -E*' is a stronger condition than IS_ERR(p).
-> Hence, IS_ERR(p) is unneeded.
->=20
-> The semantic patch that generates this commit is as follows:
->=20
-> // <smpl>
-> @@
-> expression ptr;
-> constant error_code;
-> @@
-> -IS_ERR(ptr) && (PTR_ERR(ptr) =3D=3D - error_code)
-> +PTR_ERR(ptr) =3D=3D - error_code
-> // </smpl>
->=20
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+This indicates OSPM should periodically check error source within poll
+interval, but with timer being configured with TIMER_DEFERRABLE, timer
+is not called within poll interval limit
+>
+> IOW, are you fixing something you're observing on some platform or
+> you're reading the spec only?
 
-For drivers/i2c:
-
-Acked-by: Wolfram Sang <wsa@the-dreams.de>
-
-Thanks!
-
-
---zhXaljGHf11kAtnf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl4TBoIACgkQFA3kzBSg
-KbYycQ/9HHMMaJuiDZs2ZZyg9Szbt/uDs6lfGNwX2WQjjgoo0FHwIISx26fwUSS0
-sfKb1VukurwS3gKvijHI2Tgo+f8Vb5W76AfDl7l2Pt+/1Fc3udj81ejuq6hrwDtX
-8lb3i4K7U7mReQW1CuGDL2a15XNeUCNSocbEz9r/fSMSCcO7vtYFQdJ1PRCiO40n
-Z9RU/AGK5/6Dm8H6JaPvBbkL4cSaKu0fWTLYwZfm5lUqpj8ERaGKdlz4W/DEy5nw
-/FLsLSoRRKpkrWFzohHUjEplvrX5Xv7//Pl4GHVxH25rPhKgXL7M4bkJUrAOG8Ap
-zRni09tOZTNrB2zkt3dFgDSUXwPHJOM0KLrVyFeze3ZtA/8rDaDxbr7a0lK0Jgi6
-X3+CMoirCftC9W2ub9a9h/IOhLqzFzVoWNN3QsHr4XxLYmE1EvhoIYbCRs3JpVrV
-cgbYECZxZElbp6K6u7sEsETPvGjvHi4gzXBZUwxYpdZyWaUsV+XIzxqQyeQIqkFF
-Yp6Cjmd/cjgLLUMwxL2QaopFPm+Ul+f5AojzQbMP6ScKbrjYfKn8S60q4fwrShk1
-yDlNFlQgdSrn1Dt1PfGllfjLz1bcQ/tsZsmP/ulyPE0Ph9Mv5ixDhEse7mZmOVjm
-8khnVJiGQcIi1CMl8mR8uDU6319aQvxcYWlG84KlF7nXsigrRqA=
-=e1Dd
------END PGP SIGNATURE-----
-
---zhXaljGHf11kAtnf--
+We are observing an issue in our ThunderX2 platforms wherein
+ghes_poll_func is not called within poll interval when timer is
+configured with TIMER_DEFERRABLE flag(For NO_HZ kernel) and hence we
+are losing the error records.
+>
+> --
+> Regards/Gruss,
+>     Boris.
+>
+> https://people.kernel.org/tglx/notes-about-netiquette
