@@ -2,132 +2,195 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FEEC13162C
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2020 17:37:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55E6413169E
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2020 18:19:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726687AbgAFQhn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Jan 2020 11:37:43 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:34148 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726657AbgAFQhn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Jan 2020 11:37:43 -0500
-Received: by mail-qt1-f196.google.com with SMTP id 5so42912269qtz.1
-        for <linux-acpi@vger.kernel.org>; Mon, 06 Jan 2020 08:37:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lca.pw; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=r+jSOrz0ggOnULHRyjZYHEWOfyv+l6rhjy3cWQ3mwrg=;
-        b=RAyqu9ZLSyNlyDDhChjFRkyveS5QKwUZJe2h0lZR6/TQPI0+6XpML62Vch9hdHaMeL
-         /TcMgkfKPU5NIubrIi10QSrVv3n0gGYW4ekh4nEOEeAO9LhddRcOUNn1QT92sVL2qbRz
-         coaYe2jWakCCkzsDg5C0kiVQiYAI+nLLU6MZJ9EqgMo/hhJUZ5f9CzeAtz9W/An/tcY4
-         lJxl+9FZnuCgQb4MoAXLw1vK2iIZCBUVfXOQrSpknWaA8wSUU0O9CjRP910Ezwj1CyAS
-         Gy4FpCOtKZpkSyeYGd1hgw3f94FqfuCuTKMWrNb+NEUhRt4yQ29cPVuEdi4jIp251wPX
-         0/sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=r+jSOrz0ggOnULHRyjZYHEWOfyv+l6rhjy3cWQ3mwrg=;
-        b=niNbGcq33Ym3SP5IPda8x0NWaBkyHfHZO8ezEn0sR+5ZIfcd+4avsnWqDMwGhafzcy
-         HgUZKQMlcpN9ZhFeqlB9vO9Cm4utJBW/wggee5ffg4WyVZR3wHSBDKOzqFzjNw8xZI+E
-         TV2EAWMeEp/S8w+Vg3ymkxBCyO7yZhOU4eVvcYjV2ux2sceUwy0AcZIARpp4tNKL1ASM
-         c4rPGcGcL9UayZCkfpFBXLDmd0kgBhRmGiPSSgPiSG8aB1hCdrBpzkW+HscwO6oOUflG
-         N23LK8HXg/2stDc/a5HnT8W7syHOuQvowm4CaTN/roul4Mg6GWXg1kV+j6Ecjrz5q5GL
-         o//g==
-X-Gm-Message-State: APjAAAX0IxD0bHfM745CT45aSHDZazBis4NTnnmtnEgzkvufzUR0XpZq
-        36khYzK/4/gN9UJFv9xWgZ/sIA==
-X-Google-Smtp-Source: APXvYqxtlnL/pyN9q3EiFstOPI51sTUm5NCbQtajWd3B5j+kI6sEpgpIdpIC6PFYRD7ynqiscM/ypw==
-X-Received: by 2002:ac8:16ca:: with SMTP id y10mr79055212qtk.340.1578328662546;
-        Mon, 06 Jan 2020 08:37:42 -0800 (PST)
-Received: from ovpn-121-70.rdu2.redhat.com (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
-        by smtp.gmail.com with ESMTPSA id l85sm20924871qke.103.2020.01.06.08.37.41
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 06 Jan 2020 08:37:41 -0800 (PST)
-From:   Qian Cai <cai@lca.pw>
-To:     rafael.j.wysocki@intel.com
-Cc:     dmitry.torokhov@gmail.com, gregkh@linuxfoundation.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Qian Cai <cai@lca.pw>
-Subject: [PATCH -next] drivers/base/test: fix global-out-of-bounds error
-Date:   Mon,  6 Jan 2020 11:37:35 -0500
-Message-Id: <20200106163735.1826-1-cai@lca.pw>
-X-Mailer: git-send-email 2.21.0 (Apple Git-122.2)
+        id S1726696AbgAFRTg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Jan 2020 12:19:36 -0500
+Received: from foss.arm.com ([217.140.110.172]:46236 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726526AbgAFRTg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 6 Jan 2020 12:19:36 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 37E6A31B;
+        Mon,  6 Jan 2020 09:19:35 -0800 (PST)
+Received: from [10.1.196.37] (e121345-lin.cambridge.arm.com [10.1.196.37])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F84C3F6C4;
+        Mon,  6 Jan 2020 09:19:33 -0800 (PST)
+Subject: Re: [PATCH v1] ACPI/IORT: Workaround for IORT ID count "minus one"
+ issue
+To:     Hanjun Guo <guohanjun@huawei.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Pankaj Bansal <pankaj.bansal@nxp.com>
+Cc:     linux-acpi@vger.kernel.org, John Garry <john.garry@huawei.com>,
+        linuxarm@huawei.com, linux-arm-kernel@lists.infradead.org
+References: <1577708824-4873-1-git-send-email-guohanjun@huawei.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <2ce224b2-d926-67b0-f9dd-85ac53d967c5@arm.com>
+Date:   Mon, 6 Jan 2020 17:19:32 +0000
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <1577708824-4873-1-git-send-email-guohanjun@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The commit c032ace71c29 ("software node: add basic tests for property
-entries") introduced a global-out-of-bounds error because it forgot to
-add a terminator of "nodes "for software_node_register_nodes() to
-process.
+On 30/12/2019 12:27 pm, Hanjun Guo wrote:
+> The IORT spec [0] says Number of IDs = The number of IDs in the range minus
+> one, it is confusing but it was written down in the first version of the
+> IORT spec. But the IORT ID mapping function iort_id_map() did something
+> wrong from the start, which bails out if:
+> 
+> the request ID >= the input base + number of IDs
+> 
+> This is wrong because it ignored the "minus one", and breaks some valid
+> usecases such as ID mapping to contain single device mapping without
+> single mapping flag set.
+> 
+> Pankaj Bansal proposed a solution to fix the issue [1], which bails
+> out if:
+> 
+> the request ID > the input base + number of IDs
+> 
+> This works as the spec defined, unfortunately some firmware didn't
+> minus one for the number of IDs in the range, and the propoased
+> solution will break those systems in this way:
+> 
+> PCI hostbridge mapping entry 1:
+> Input base:  0x1000
+> ID Count:    0x100
+> Output base: 0x1000
+> Output reference: 0xC4  //ITS reference
+> 
+> PCI hostbridge mapping entry 2:
+> Input base:  0x1100
+> ID Count:    0x100
+> Output base: 0x2000
+> Output reference: 0xD4  //ITS reference
+> 
+> Two mapping entries which the second entry's Input base = the first
+> entry's Input base + ID count, so for requester ID 0x1100 will map
+> to ITS 0xC4 not 0xD4 if we update '>=' to '>'.
+> 
+> So introduce a workaround to match the IORT's OEM information for
+> the broken firmware, also update the logic of the ID mapping for
+> firmwares report the number of IDs as the IORT spec defined, to
+> make the code compatible for both kinds of system.
+> 
+> I checked the ACPI tables in the tianocore/edk2-platforms [2], only
+> HiSilicon HIP07/08 did wrong, so just add HIP07/08 to the workaround
+> info table, if we break other platforms, we can add that later.
+> 
+> [0]: http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf
+> [1]: https://patchwork.kernel.org/patch/11292823/
+> [2]: https://github.com/tianocore/edk2-platforms
+> 
+> Cc: Pankaj Bansal <pankaj.bansal@nxp.com>
+> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
+> ---
+> 
+> RFC->v1:
+> - Print warning when matched the workaround info, suggested by Pankaj.
+> 
+>   drivers/acpi/arm64/iort.c | 55 ++++++++++++++++++++++++++++++++++++++++++++---
+>   1 file changed, 52 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index 33f7198..60eb10d 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -298,6 +298,42 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
+>   	return status;
+>   }
+>   
+> +struct iort_workaround_oem_info {
+> +	char oem_id[ACPI_OEM_ID_SIZE + 1];
+> +	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
+> +	u32 oem_revision;
+> +};
+> +
+> +static bool apply_id_count_workaround;
+> +
+> +static struct iort_workaround_oem_info wa_info[] __initdata = {
+> +	{
+> +		.oem_id		= "HISI  ",
+> +		.oem_table_id	= "HIP07   ",
+> +		.oem_revision	= 0,
+> +	}, {
+> +		.oem_id		= "HISI  ",
+> +		.oem_table_id	= "HIP08   ",
+> +		.oem_revision	= 0,
+> +	}
+> +};
+> +
+> +static void __init
+> +iort_check_id_count_workaround(struct acpi_table_header *tbl)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
+> +		if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
+> +		    !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
+> +		    wa_info[i].oem_revision == tbl->oem_revision) {
+> +			apply_id_count_workaround = true;
+> +			pr_warn(FW_BUG "ID count for ID mapping entry is wrong, applying workaround\n");
+> +			break;
+> +		}
+> +	}
+> +}
+> +
+>   static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
+>   		       u32 *rid_out)
+>   {
+> @@ -314,9 +350,21 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
+>   		return -ENXIO;
+>   	}
+>   
+> -	if (rid_in < map->input_base ||
+> -	    (rid_in >= map->input_base + map->id_count))
+> -		return -ENXIO;
+> +	/*
+> +	 * IORT spec says Number of IDs = The number of IDs in the range minus
+> +	 * one, but the IORT code ingored the "minus one", and some firmware
+> +	 * did that too, so apply a workaround here to keep compatible with
+> +	 * both new and old versions of the firmware.
+> +	 */
+> +	if (apply_id_count_workaround) {
+> +		if (rid_in < map->input_base ||
+> +			(rid_in >= map->input_base + map->id_count))
+> +			return -ENXIO;
+> +	} else {
+> +		if (rid_in < map->input_base ||
+> +			(rid_in > map->input_base + map->id_count))
+> +			return -ENXIO;
+> +	}
 
- 	# Subtest: property-entry
- 	1..7
- 	ok 1 - pe_test_uints
- 	ok 2 - pe_test_uint_arrays
- 	ok 3 - pe_test_strings
- 	ok 4 - pe_test_bool
- 	ok 5 - pe_test_move_inline_u8
- 	ok 6 - pe_test_move_inline_str
- ==================================================================
- BUG: KASAN: global-out-of-bounds in
- software_node_register_nodes+0x41/0x80
- Read of size 8 at addr ffffffff989ef250 by task kunit_try_catch/316
+This seems needlessly repetitive and convoluted... how about refactoring 
+to something like:
 
- CPU: 17 PID: 316 Comm: kunit_try_catch Not tainted
- 5.5.0-rc4-next-20200106+ #1
- Hardware name: HPE ProLiant DL385 Gen10/ProLiant DL385 Gen10, BIOS A40
- 03/09/2018
- Call Trace:
-  dump_stack+0xa0/0xea
-  print_address_description.constprop.5.cold.7+0x64/0x384
-  __kasan_report.cold.8+0x7a/0xc0
-  kasan_report+0x12/0x20
-  __asan_load8+0x71/0xa0
-  software_node_register_nodes+0x41/0x80
-  pe_test_reference+0x1eb/0x1200
-  kunit_try_run_case+0x6b/0xd1
-  kunit_generic_run_threadfn_adapter+0x29/0x50
-  kthread+0x1e6/0x210
-  ret_from_fork+0x27/0x50
+	map_max = map->input_base + map->id_count;
+	if (apply_id_count_workaround)
+		map_max--;
 
- The buggy address belongs to the variable:
-  nodes.21544+0x30/0x920
+?
 
- Memory state around the buggy address:
-  ffffffff989ef100: fa fa fa fa 00 04 fa fa fa fa fa fa 00 00 00 00
-  ffffffff989ef180: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- >ffffffff989ef200: fa fa fa fa 00 00 00 00 00 00 fa fa fa fa fa fa
-                                                  ^
-  ffffffff989ef280: 00 06 fa fa fa fa fa fa 00 00 04 fa fa fa fa fa
-  ffffffff989ef300: 00 00 fa fa fa fa fa fa 00 05 fa fa fa fa fa fa
- ==================================================================
- Disabling lock debugging due to kernel taint
- 	ok 7 - pe_test_reference
- ok 8 - property-entry
+Robin.
 
-Fixes: c032ace71c29 ("software node: add basic tests for property entries")
-Signed-off-by: Qian Cai <cai@lca.pw>
----
- drivers/base/test/property-entry-test.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/base/test/property-entry-test.c b/drivers/base/test/property-entry-test.c
-index da812834b631..abe03315180f 100644
---- a/drivers/base/test/property-entry-test.c
-+++ b/drivers/base/test/property-entry-test.c
-@@ -366,6 +366,7 @@ static void pe_test_reference(struct kunit *test)
- 	static const struct software_node nodes[] = {
- 		{ .name = "1", },
- 		{ .name = "2", },
-+		{ }
- 	};
- 
- 	static const struct software_node_ref_args refs[] = {
--- 
-2.21.0 (Apple Git-122.2)
-
+>   	*rid_out = map->output_base + (rid_in - map->input_base);
+>   	return 0;
+> @@ -1631,5 +1679,6 @@ void __init acpi_iort_init(void)
+>   		return;
+>   	}
+>   
+> +	iort_check_id_count_workaround(iort_table);
+>   	iort_init_platform_devices();
+>   }
+> 
