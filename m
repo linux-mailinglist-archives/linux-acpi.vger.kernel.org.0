@@ -2,92 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A13B0132467
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2020 12:03:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85FDD13252D
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2020 12:50:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727427AbgAGLDg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Jan 2020 06:03:36 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:34639 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727211AbgAGLDg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Jan 2020 06:03:36 -0500
-Received: by mail-oi1-f195.google.com with SMTP id l136so17472016oig.1;
-        Tue, 07 Jan 2020 03:03:36 -0800 (PST)
+        id S1727894AbgAGLuu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Jan 2020 06:50:50 -0500
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:44779 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727806AbgAGLuu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Jan 2020 06:50:50 -0500
+Received: by mail-lj1-f196.google.com with SMTP id u71so54377010lje.11
+        for <linux-acpi@vger.kernel.org>; Tue, 07 Jan 2020 03:50:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=VIJiwe+IJSM2z0EGLFS2PQGz3M9nkcD68T5NhPhR9H8=;
-        b=CcKZCfwZJPCPqsKfYcPbHeCIgrb5nyuGzG4g8NYws1HU0a9pHjn9XpiO9j2ihiirp/
-         4W0jaMMVy6QhJrLRPaa47jd7wnZ4SXJDD1VPqIW//aernvkAjVWp+BSYpoyq4/pWcE4F
-         IkvPow5je2qqfsq6asNMRIePqXyHVf4xGwQXxIq8lq9KoTh/jHmZ59mvNlVGrnhJT1nL
-         lTA2kMODrx6Qu7UumTDdGbUG87l2yokDUt0qk6nEPHNI3eQMIen617qYU/eHaQELjAFd
-         6UFQ/hiQUToJA8Bj+q6X2cP0qvUoLNM9Pbun1i5ofCAzIkqQ2Cld/ffK7OyiQRhrIbxs
-         l6wQ==
+        bh=iFsSM6vxEydUs02gD1XbE7gcNfWrUkov42GXmL/B/g4=;
+        b=UgZQmucPLWkmL6jVn+2bdRf8+0/tT1LQC8SCfASVMPN3ceCLoNrSJE96uAaxDXt/Zu
+         0Hbo5G+pbUeUM6GbbhF1YlxQarR7l4+JqZEmF5905YYykk8rHxtLD58wHt+ShBjRK912
+         LJZivrqsEFdbg4bAnOqjO2Q5Dkrwywm8kzc8yTsjFMVi37R8wmbW/DYGysjNHy4SK2V1
+         6E88aVpieRgKBp+RpdgjcTtmatxzcC+kMjHuHNsH36cRdiq/F2czCfYVTCL1xfJ+lsG+
+         W0ATtxjMQzJWiHW7Ex0twfEwGwjoh2cACHL5CRlSeBOncj4WUca2GyKrhrx05SE6vl80
+         dRmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=VIJiwe+IJSM2z0EGLFS2PQGz3M9nkcD68T5NhPhR9H8=;
-        b=XkG/PTnuCpPF88KA25UBMAFBzMDyXhBmN39ITfFfAdgutgZNvfq2MuD/Fd9rYsV04P
-         PnIoP4WNX5MRwHS9hGuusvekMEkSK6tM7EsIo3Bd1lIrUpEEocA3JAp7FtHOuFGv2r4r
-         9pZ7XyylsnvOip5dKx/tikv/MLaunML/vYBtoY01HQaoTusYkSegKmQ86+xa9D34+yQ2
-         T7ix54Yyt7uQIBfLFifNEt4fDLiS7CFzIwOu8+0QqqhHcUAz9rrjx0uf+xFA59Lzyhjf
-         APuF7TEWT8ZHvAwztWD/KZSpBXjnUng6O43mvqxH5Nc+EJx0/0z2voDyntoLw27Ttgnz
-         h17w==
-X-Gm-Message-State: APjAAAWUaKiHM7fbZ7aLfDMvBt+hwSyI67HI3nIZKveXuWBUJbYyBZ9d
-        w3/yB8Q152WtOeKtgEiXXN9ihPWx5mtQCOiG+lBcEw==
-X-Google-Smtp-Source: APXvYqwJdREpeWna05No2U9cVuqfKfYHIH1LmsXxw61Z6a3kpnZIlq7281h28otaUoQlZsAkbNf9FwtZsnV+bKGyLg8=
-X-Received: by 2002:aca:43c1:: with SMTP id q184mr6326963oia.116.1578395015612;
- Tue, 07 Jan 2020 03:03:35 -0800 (PST)
+        bh=iFsSM6vxEydUs02gD1XbE7gcNfWrUkov42GXmL/B/g4=;
+        b=QB5U+mWxPiH2jwcelRH9YS6bsJolCIkUdia7NUpiYpOUtrreQwT7bEzq6EeV/S03GD
+         KEm8EtcPlezxm2i6xT9nKtQJQZ0bMX54hpKZNbfr+fZ9eLvgMnvEuB/rUe6IMa9W4wpc
+         TYOZuSNAXoLUYzP1vzWU7vfuDjvHFVfGKYjAWDrYKcZac/WeImUoUzY/BGA/6JwD7D56
+         1SXm9PRQWX3J9iF02kKSPfABEKNd7nGMa7YQ0G0PlodWM/BpzUeQ91Kf3ExyEH3pC+GQ
+         1AE8IDb2xUvjij1SVQxXgQKiVCvNssYh2Z8eSuMESjmw2fGZqkDzCYzFdUChBc9fehAj
+         DYcw==
+X-Gm-Message-State: APjAAAU5yKQNfRCeF7mc5TE8O3hVxSHwp16X6w/ZtxnYuPvXYfT2Ls1P
+        yTQb5EaktMaFunnz5/3/84ABew3/vkYucwWgySahatHeC90=
+X-Google-Smtp-Source: APXvYqzqbaKvZ9Puh8J+kZVQvq2lpgj8PQt1Pkad+wgIKlI0vpiAAtUqurvSdYL9m9Fvp0HSudCVCKDTbQrmH6PpsH8=
+X-Received: by 2002:a2e:b4f6:: with SMTP id s22mr64319128ljm.218.1578397848306;
+ Tue, 07 Jan 2020 03:50:48 -0800 (PST)
 MIME-Version: 1.0
-References: <1576652618-27017-1-git-send-email-bupadhaya@marvell.com>
- <20200102180130.GG8345@zn.tnic> <CAEYJA6oXTxTmJEji5_Hup2oB+GrgGnmSTiS-nNuzbNzGJ9VESA@mail.gmail.com>
- <20200106130949.GD12238@zn.tnic>
-In-Reply-To: <20200106130949.GD12238@zn.tnic>
-From:   Bhaskar Upadhaya <bhaskar.upadhaya.linux@gmail.com>
-Date:   Tue, 7 Jan 2020 16:33:24 +0530
-Message-ID: <CAEYJA6rPiBYnM4rT5WJnvTSrk6GBHeLYxK5OF5oxmeVxVepGGQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] apei/ghes: fix ghes_poll_func by registering in
- non-deferrable mode
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Bhaskar Upadhaya <bupadhaya@marvell.com>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-edac@vger.kernel.org, lenb@kernel.org, rafael@kernel.org,
-        gkulkarni@marvell.com, rrichter@marvell.com
+References: <20200101145243.15912-1-hdegoede@redhat.com>
+In-Reply-To: <20200101145243.15912-1-hdegoede@redhat.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 7 Jan 2020 12:50:36 +0100
+Message-ID: <CACRpkdbTunsVtgGw5=ksn=cn+ZwYT_F7OhVqucaQjA1-5D8BfQ@mail.gmail.com>
+Subject: Re: [PATCH v3] pinctrl: baytrail: Replace WARN with dev_info_once
+ when setting direct-irq pin to output
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bastien Nocera <hadess@hadess.net>,
+        Dmitry Mastykin <mastichi@gmail.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 6, 2020 at 6:39 PM Borislav Petkov <bp@alien8.de> wrote:
->
-> On Mon, Jan 06, 2020 at 04:33:19PM +0530, Bhaskar Upadhaya wrote:
-> > Definition of poll interval as per spec (referred ACPI 6.3):
-> > "Indicates the poll interval in milliseconds OSPM should use to
-> > periodically check the error source for the presence of an error
-> > condition."
->
-> Please add that...
->
-> > We are observing an issue in our ThunderX2 platforms wherein
-> > ghes_poll_func is not called within poll interval when timer is
-> > configured with TIMER_DEFERRABLE flag(For NO_HZ kernel) and hence we
-> > are losing the error records.
->
-> ... and that to your commit message then, so that it is crystal clear
-> *why* you're making this change.
+On Wed, Jan 1, 2020 at 3:52 PM Hans de Goede <hdegoede@redhat.com> wrote:
 
-Thanks Borislav, I will edit the commit message with you comments in
-the next patch.
-Can I get your Ack in the next patch ?
+> Suspending Goodix touchscreens requires changing the interrupt pin to
+> output before sending them a power-down command. Followed by wiggling
+> the interrupt pin to wake the device up, after which it is put back
+> in input mode.
+>
+> On Cherry Trail device the interrupt pin is listed as a GpioInt ACPI
+> resource so we can do this without problems as long as we release the
+> irq before changing the pin to output mode.
+>
+> On Bay Trail devices with a Goodix touchscreen direct-irq mode is used
+> in combination with listing the pin as a normal GpioIo resource. This
+> works fine, but this triggers the WARN in byt_gpio_set_direction-s output
+> path because direct-irq support is enabled on the pin.
+>
+> This commit replaces the WARN call with a dev_info_once call, fixing a
+> bunch of WARN splats in dmesg on each suspend/resume cycle.
+>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Changes in v3:
+> - Replace WARN with a dev_info_once call, instead of dropping it
 
->
-> Thx.
->
-> --
-> Regards/Gruss,
->     Boris.
->
-> https://people.kernel.org/tglx/notes-about-netiquette
+Patch applied with Mika's ACK!
+
+Yours,
+Linus Walleij
