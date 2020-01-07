@@ -2,27 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BAFCA132D68
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2020 18:48:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 137BA132D71
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2020 18:48:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728461AbgAGRsI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Jan 2020 12:48:08 -0500
-Received: from sauhun.de ([88.99.104.3]:53300 "EHLO pokefinder.org"
+        id S1728575AbgAGRsV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Jan 2020 12:48:21 -0500
+Received: from sauhun.de ([88.99.104.3]:53380 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728211AbgAGRsI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 7 Jan 2020 12:48:08 -0500
+        id S1728562AbgAGRsV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 7 Jan 2020 12:48:21 -0500
 Received: from localhost (p5486CF8B.dip0.t-ipconnect.de [84.134.207.139])
-        by pokefinder.org (Postfix) with ESMTPSA id D79E72C05BA;
-        Tue,  7 Jan 2020 18:48:05 +0100 (CET)
+        by pokefinder.org (Postfix) with ESMTPSA id E5A752C3946;
+        Tue,  7 Jan 2020 18:48:19 +0100 (CET)
 From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
 To:     linux-i2c@vger.kernel.org
 Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 00/12] i2c: convert subsystem to use i2c_new_client_device()
-Date:   Tue,  7 Jan 2020 18:47:34 +0100
-Message-Id: <20200107174748.9616-1-wsa+renesas@sang-engineering.com>
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Wolfram Sang <wsa@the-dreams.de>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 08/12] i2c: i2c-core-acpi: convert to use i2c_new_client_device()
+Date:   Tue,  7 Jan 2020 18:47:42 +0100
+Message-Id: <20200107174748.9616-9-wsa+renesas@sang-engineering.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200107174748.9616-1-wsa+renesas@sang-engineering.com>
+References: <20200107174748.9616-1-wsa+renesas@sang-engineering.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
@@ -30,49 +33,60 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This patch series converts the I2C subsystem to use the new API. Drivers
-have been build tested. There is one user left in the SMBus part of the
-core which will need a seperate series because all users of this
-function need to be checked/converted, too.
+Move away from the deprecated API and return the shiny new ERRPTR where
+useful.
 
-Except for documentation patches, the conversion has been done with a
-coccinelle script and further simplification have been applied when
-proofreading the patches.
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
+Build tested only.
 
-A branch is here:
+ drivers/i2c/i2c-core-acpi.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/i2c/new_client_device
-
-Looking forward to comments...
-
-Wolfram Sang (12):
-  i2c: cht-wc: convert to use i2c_new_client_device()
-  i2c: i801: convert to use i2c_new_client_device()
-  i2c: nvidia-gpu: convert to use i2c_new_client_device()
-  i2c: ocores: convert to use i2c_new_client_device()
-  i2c: powermac: convert to use i2c_new_client_device()
-  i2c: taos-evm: convert to use i2c_new_client_device()
-  i2c: xiic: convert to use i2c_new_client_device()
-  i2c: i2c-core-acpi: convert to use i2c_new_client_device()
-  i2c: i2c-core-base: convert to use i2c_new_client_device()
-  i2c: i2c-core-of: convert to use i2c_new_client_device()
-  docs: i2c: use the new API in 'instantiating-devices.rst'
-  docs: i2c: use the new API in 'writing-clients'
-
- Documentation/i2c/instantiating-devices.rst |  8 ++++----
- Documentation/i2c/writing-clients.rst       | 20 ++++++++++----------
- drivers/i2c/busses/i2c-cht-wc.c             |  6 +++---
- drivers/i2c/busses/i2c-i801.c               |  6 +++---
- drivers/i2c/busses/i2c-nvidia-gpu.c         |  6 +++---
- drivers/i2c/busses/i2c-ocores.c             |  2 +-
- drivers/i2c/busses/i2c-powermac.c           |  8 ++++----
- drivers/i2c/busses/i2c-taos-evm.c           |  4 ++--
- drivers/i2c/busses/i2c-xiic.c               |  2 +-
- drivers/i2c/i2c-core-acpi.c                 | 12 ++++--------
- drivers/i2c/i2c-core-base.c                 | 13 ++++++-------
- drivers/i2c/i2c-core-of.c                   |  7 +++----
- 12 files changed, 44 insertions(+), 50 deletions(-)
-
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index 62a1c92ab803..8f3dbc97a057 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -225,7 +225,7 @@ static void i2c_acpi_register_device(struct i2c_adapter *adapter,
+ 	adev->power.flags.ignore_parent = true;
+ 	acpi_device_set_enumerated(adev);
+ 
+-	if (!i2c_new_device(adapter, info)) {
++	if (IS_ERR(i2c_new_client_device(adapter, info))) {
+ 		adev->power.flags.ignore_parent = false;
+ 		dev_err(&adapter->dev,
+ 			"failed to add I2C device %s from ACPI\n",
+@@ -451,7 +451,8 @@ struct notifier_block i2c_acpi_notifier = {
+  * resources, in that case this function can be used to create an i2c-client
+  * for other I2cSerialBus resources in the Current Resource Settings table.
+  *
+- * Also see i2c_new_device, which this function calls to create the i2c-client.
++ * Also see i2c_new_client_device, which this function calls to create the
++ * i2c-client.
+  *
+  * Returns a pointer to the new i2c-client, or error pointer in case of failure.
+  * Specifically, -EPROBE_DEFER is returned if the adapter is not found.
+@@ -461,7 +462,6 @@ struct i2c_client *i2c_acpi_new_device(struct device *dev, int index,
+ {
+ 	struct i2c_acpi_lookup lookup;
+ 	struct i2c_adapter *adapter;
+-	struct i2c_client *client;
+ 	struct acpi_device *adev;
+ 	LIST_HEAD(resource_list);
+ 	int ret;
+@@ -489,11 +489,7 @@ struct i2c_client *i2c_acpi_new_device(struct device *dev, int index,
+ 	if (!adapter)
+ 		return ERR_PTR(-EPROBE_DEFER);
+ 
+-	client = i2c_new_device(adapter, info);
+-	if (!client)
+-		return ERR_PTR(-ENODEV);
+-
+-	return client;
++	return i2c_new_client_device(adapter, info);
+ }
+ EXPORT_SYMBOL_GPL(i2c_acpi_new_device);
+ 
 -- 
 2.20.1
 
