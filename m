@@ -2,90 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 85FDD13252D
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2020 12:50:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51FCF13256D
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2020 12:58:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727894AbgAGLuu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Jan 2020 06:50:50 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:44779 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727806AbgAGLuu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Jan 2020 06:50:50 -0500
-Received: by mail-lj1-f196.google.com with SMTP id u71so54377010lje.11
-        for <linux-acpi@vger.kernel.org>; Tue, 07 Jan 2020 03:50:49 -0800 (PST)
+        id S1726690AbgAGL6E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Jan 2020 06:58:04 -0500
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:33747 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727988AbgAGL6E (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Jan 2020 06:58:04 -0500
+Received: by mail-lf1-f65.google.com with SMTP id n25so38698208lfl.0
+        for <linux-acpi@vger.kernel.org>; Tue, 07 Jan 2020 03:58:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=iFsSM6vxEydUs02gD1XbE7gcNfWrUkov42GXmL/B/g4=;
-        b=UgZQmucPLWkmL6jVn+2bdRf8+0/tT1LQC8SCfASVMPN3ceCLoNrSJE96uAaxDXt/Zu
-         0Hbo5G+pbUeUM6GbbhF1YlxQarR7l4+JqZEmF5905YYykk8rHxtLD58wHt+ShBjRK912
-         LJZivrqsEFdbg4bAnOqjO2Q5Dkrwywm8kzc8yTsjFMVi37R8wmbW/DYGysjNHy4SK2V1
-         6E88aVpieRgKBp+RpdgjcTtmatxzcC+kMjHuHNsH36cRdiq/F2czCfYVTCL1xfJ+lsG+
-         W0ATtxjMQzJWiHW7Ex0twfEwGwjoh2cACHL5CRlSeBOncj4WUca2GyKrhrx05SE6vl80
-         dRmQ==
+        bh=xDan+NrzXoxR0IPHrL1TDLZarGAclLuRifX+nstdyLs=;
+        b=ZPMn1nE42pxSFIb1/Jg5EmMBDBWfpJQgc8kIHzd/wnsIg2z055kAeJe7IZ2lGrc4VL
+         5iOir8/YoGZBNkqMWNXaOcbg+N/r6+fBoQT6km2FvUpMk7pcIVvr8jxVeX0JbAzzGCZN
+         iI49xWxMtMPuXPX0jJ2HosEiAOgGCEvLEVp4WJzyqu0yjdtWOLNiu7F8F7TIV++LYAZr
+         uOhFfo5Xoefp+qWIgsAz4DVWy6WFyiBlgFZ5gTi7lZacYbdFEhKD6rb0esbk/bVgt7Kh
+         ds63EIcLrBWwiztHDjS82JL3nJTbkG9Wgjt4BDhKFhlUtUkb1ZapxVFO3gsFt5mE4e6D
+         w8sA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=iFsSM6vxEydUs02gD1XbE7gcNfWrUkov42GXmL/B/g4=;
-        b=QB5U+mWxPiH2jwcelRH9YS6bsJolCIkUdia7NUpiYpOUtrreQwT7bEzq6EeV/S03GD
-         KEm8EtcPlezxm2i6xT9nKtQJQZ0bMX54hpKZNbfr+fZ9eLvgMnvEuB/rUe6IMa9W4wpc
-         TYOZuSNAXoLUYzP1vzWU7vfuDjvHFVfGKYjAWDrYKcZac/WeImUoUzY/BGA/6JwD7D56
-         1SXm9PRQWX3J9iF02kKSPfABEKNd7nGMa7YQ0G0PlodWM/BpzUeQ91Kf3ExyEH3pC+GQ
-         1AE8IDb2xUvjij1SVQxXgQKiVCvNssYh2Z8eSuMESjmw2fGZqkDzCYzFdUChBc9fehAj
-         DYcw==
-X-Gm-Message-State: APjAAAU5yKQNfRCeF7mc5TE8O3hVxSHwp16X6w/ZtxnYuPvXYfT2Ls1P
-        yTQb5EaktMaFunnz5/3/84ABew3/vkYucwWgySahatHeC90=
-X-Google-Smtp-Source: APXvYqzqbaKvZ9Puh8J+kZVQvq2lpgj8PQt1Pkad+wgIKlI0vpiAAtUqurvSdYL9m9Fvp0HSudCVCKDTbQrmH6PpsH8=
-X-Received: by 2002:a2e:b4f6:: with SMTP id s22mr64319128ljm.218.1578397848306;
- Tue, 07 Jan 2020 03:50:48 -0800 (PST)
+        bh=xDan+NrzXoxR0IPHrL1TDLZarGAclLuRifX+nstdyLs=;
+        b=lt3YaTHBkiYzc1v/eq0WyM79sraB/9SmM0ue37zwoP+DNcyPuTpK4i7VKCf4QJOLZi
+         83ka/eFQsPcMW8AoGwp4tDSodTVyskxBJvlSby99JE88EJi7wEnTspQMFxalsDR54fgE
+         EH67rMCrrHd9iDlFuDWMchZF7CeiweOl+5xWEGkOY3K5wA+sC9ss1Mq2WqSgVQ6iRiAt
+         MlcXeQFsE4lFn8s+O3G0BlPozYXpMS+N65/Xo4T/Rt04HAIWqcLTPZUkg0qJO6tei7fk
+         h0jjz7/qoIm9o7vIauhDxB9LM2erxGA5Nt18ijHirHehrm86YpC8yJpLNd7YCSGfFepl
+         RstA==
+X-Gm-Message-State: APjAAAWHqdDamNZlkaCXnvn+xvWrEuITuV8PLJ1UTfiLmxhgLgZ6Bw0Y
+        LdBAyJIm8eX1h/TEMbmBq+Xi/Kl4e3fF/dYJlD45/LxZdtc=
+X-Google-Smtp-Source: APXvYqwBV7Ee1u2/FkNJ0D4MbpRQIHVF3KeTSLqGk3g7UjA/Un7cz14I6dnnOSlGcQuSrKdeuZpBbnhTEHw44fEXAz0=
+X-Received: by 2002:a19:8a41:: with SMTP id m62mr59154614lfd.5.1578398282446;
+ Tue, 07 Jan 2020 03:58:02 -0800 (PST)
 MIME-Version: 1.0
-References: <20200101145243.15912-1-hdegoede@redhat.com>
-In-Reply-To: <20200101145243.15912-1-hdegoede@redhat.com>
+References: <20200105160357.97154-1-hdegoede@redhat.com> <20200105160357.97154-2-hdegoede@redhat.com>
+In-Reply-To: <20200105160357.97154-2-hdegoede@redhat.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 7 Jan 2020 12:50:36 +0100
-Message-ID: <CACRpkdbTunsVtgGw5=ksn=cn+ZwYT_F7OhVqucaQjA1-5D8BfQ@mail.gmail.com>
-Subject: Re: [PATCH v3] pinctrl: baytrail: Replace WARN with dev_info_once
- when setting direct-irq pin to output
+Date:   Tue, 7 Jan 2020 12:57:51 +0100
+Message-ID: <CACRpkdYx864UEo9-Bpiian4evJMrrCN-kp61s+Y1gc7BZ88KZA@mail.gmail.com>
+Subject: Re: [PATCH resend v2 1/2] gpiolib: acpi: Turn dmi_system_id table
+ into a generic quirk table
 To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bastien Nocera <hadess@hadess.net>,
-        Dmitry Mastykin <mastichi@gmail.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jan 1, 2020 at 3:52 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On Sun, Jan 5, 2020 at 5:04 PM Hans de Goede <hdegoede@redhat.com> wrote:
 
-> Suspending Goodix touchscreens requires changing the interrupt pin to
-> output before sending them a power-down command. Followed by wiggling
-> the interrupt pin to wake the device up, after which it is put back
-> in input mode.
+> Turn the existing run_edge_events_on_boot_blacklist dmi_system_id table
+> into a generic quirk table, storing the quirks in the driver_data ptr.
 >
-> On Cherry Trail device the interrupt pin is listed as a GpioInt ACPI
-> resource so we can do this without problems as long as we release the
-> irq before changing the pin to output mode.
+> This is a preparation patch for adding other types of (DMI based) quirks.
 >
-> On Bay Trail devices with a Goodix touchscreen direct-irq mode is used
-> in combination with listing the pin as a normal GpioIo resource. This
-> works fine, but this triggers the WARN in byt_gpio_set_direction-s output
-> path because direct-irq support is enabled on the pin.
->
-> This commit replaces the WARN call with a dev_info_once call, fixing a
-> bunch of WARN splats in dmesg on each suspend/resume cycle.
->
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
-> Changes in v3:
-> - Replace WARN with a dev_info_once call, instead of dropping it
 
-Patch applied with Mika's ACK!
+Patch applied for fixes.
 
 Yours,
 Linus Walleij
