@@ -2,94 +2,187 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE78E132573
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2020 12:59:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0235132598
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2020 13:04:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727963AbgAGL7B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Jan 2020 06:59:01 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:34441 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727982AbgAGL7A (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Jan 2020 06:59:00 -0500
-Received: by mail-lj1-f196.google.com with SMTP id z22so49627143ljg.1
-        for <linux-acpi@vger.kernel.org>; Tue, 07 Jan 2020 03:58:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=t+RjLA1nu+UarfxlPRBZDGYPPkFySZnZrIRRIWUIMtU=;
-        b=NMzuTRGgyu2V1U2Ya+o+byXEakfTmtpwvAvhcwv7MAWttIFE8nLJ9fVOLLK2v0joeD
-         YRx6ySZYaDLLJUkQjwuqLoNYn+pHipZHr+vvHgi/2Gn+wCxSpT0vG5YLxQLnva0EPlr1
-         KmACwIBIzIVFPleHkwQqmgTOCsNoe0484H5wRgEWMluuNRsBBmrh0mFVczIfwNhws9HA
-         E5HVT4KB9hjLdfepHPqpw2UsIigGB2++fEk+SMre9q4CeMsKPfsz5DRw7V5Ohy306I0+
-         0rPo51/c4gjCRYdEKgU1fyg/8ibJ3oSwGcei2oKqLGVANF3gulHRtsFw0L2c9pM4EdVU
-         siow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=t+RjLA1nu+UarfxlPRBZDGYPPkFySZnZrIRRIWUIMtU=;
-        b=tqoowTCZdSJJDtDVYiy6XMxWjids3Wpx9BiiGEabQ4UDa6JVQw9gUvkNRzapICf2nM
-         WiuI/XK4FwuCXiD7+PtppzO0rbJlqOdio4WQe8fROlHs//7wpJjyh66hO3cQpMQQzBH/
-         fFFe9AkSaYdTQD1mNsSRF8wifGD37sTX9Xk/UEICvygMaEc9tVj1Xp4qW7QZsuraw5kF
-         Dvi9BRjcG6vHFnja4Cx8uOTuOjHRF8EBlOtKBHvYUirWh5lAMF+nCL65RqatV6Yf/CJ3
-         CHjowLZdPsFCajCrrAZLadE5scTyHYG4zw6xmNG8Q/4DZ3rogttRpvh6oy0OJn57yXwO
-         no0w==
-X-Gm-Message-State: APjAAAUzQukfRtphNuwYNE1+aWkEjqFZsxxgW4/AiPtdGRmLHDaMtwjB
-        Ippbo7oCIuxebsCb0U0vLeBJwm5H6+zYzi1P+PTM2Q==
-X-Google-Smtp-Source: APXvYqzmZNZYK7BCEuoCF3uU03mrF91sLuPTkgtI16O1cE7YJ+XdbyiUKr82lO1llQvYDUT4AbK6PUOF3qwIQ3xjNXw=
-X-Received: by 2002:a2e:86d6:: with SMTP id n22mr52181964ljj.77.1578398338600;
- Tue, 07 Jan 2020 03:58:58 -0800 (PST)
+        id S1727834AbgAGMET (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Jan 2020 07:04:19 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:49384 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726690AbgAGMES (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 7 Jan 2020 07:04:18 -0500
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id C779D37ECAFB608F4710;
+        Tue,  7 Jan 2020 20:04:16 +0800 (CST)
+Received: from [127.0.0.1] (10.177.223.23) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Tue, 7 Jan 2020
+ 20:04:08 +0800
+Subject: Re: [PATCH v1] ACPI/IORT: Workaround for IORT ID count "minus one"
+ issue
+To:     Robin Murphy <robin.murphy@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Pankaj Bansal <pankaj.bansal@nxp.com>
+CC:     <linux-acpi@vger.kernel.org>, John Garry <john.garry@huawei.com>,
+        <linuxarm@huawei.com>, <linux-arm-kernel@lists.infradead.org>
+References: <1577708824-4873-1-git-send-email-guohanjun@huawei.com>
+ <2ce224b2-d926-67b0-f9dd-85ac53d967c5@arm.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <598006c5-ba8e-1cb4-f273-6a209650b310@huawei.com>
+Date:   Tue, 7 Jan 2020 20:03:46 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
 MIME-Version: 1.0
-References: <20200105160357.97154-1-hdegoede@redhat.com> <20200105160357.97154-3-hdegoede@redhat.com>
-In-Reply-To: <20200105160357.97154-3-hdegoede@redhat.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 7 Jan 2020 12:58:47 +0100
-Message-ID: <CACRpkdbbtzdq7EKMV1WW16t571sXvQZ3MbbixcT9yx2NtR01dw@mail.gmail.com>
-Subject: Re: [PATCH resend v2 2/2] gpiolib: acpi: Add honor_wakeup
- module-option + quirk mechanism
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <2ce224b2-d926-67b0-f9dd-85ac53d967c5@arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.177.223.23]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Jan 5, 2020 at 5:04 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On 2020/1/7 1:19, Robin Murphy wrote:
+> On 30/12/2019 12:27 pm, Hanjun Guo wrote:
+>> The IORT spec [0] says Number of IDs = The number of IDs in the range minus
+>> one, it is confusing but it was written down in the first version of the
+>> IORT spec. But the IORT ID mapping function iort_id_map() did something
+>> wrong from the start, which bails out if:
+>>
+>> the request ID >= the input base + number of IDs
+>>
+>> This is wrong because it ignored the "minus one", and breaks some valid
+>> usecases such as ID mapping to contain single device mapping without
+>> single mapping flag set.
+>>
+>> Pankaj Bansal proposed a solution to fix the issue [1], which bails
+>> out if:
+>>
+>> the request ID > the input base + number of IDs
+>>
+>> This works as the spec defined, unfortunately some firmware didn't
+>> minus one for the number of IDs in the range, and the propoased
+>> solution will break those systems in this way:
+>>
+>> PCI hostbridge mapping entry 1:
+>> Input base:  0x1000
+>> ID Count:    0x100
+>> Output base: 0x1000
+>> Output reference: 0xC4  //ITS reference
+>>
+>> PCI hostbridge mapping entry 2:
+>> Input base:  0x1100
+>> ID Count:    0x100
+>> Output base: 0x2000
+>> Output reference: 0xD4  //ITS reference
+>>
+>> Two mapping entries which the second entry's Input base = the first
+>> entry's Input base + ID count, so for requester ID 0x1100 will map
+>> to ITS 0xC4 not 0xD4 if we update '>=' to '>'.
+>>
+>> So introduce a workaround to match the IORT's OEM information for
+>> the broken firmware, also update the logic of the ID mapping for
+>> firmwares report the number of IDs as the IORT spec defined, to
+>> make the code compatible for both kinds of system.
+>>
+>> I checked the ACPI tables in the tianocore/edk2-platforms [2], only
+>> HiSilicon HIP07/08 did wrong, so just add HIP07/08 to the workaround
+>> info table, if we break other platforms, we can add that later.
+>>
+>> [0]: http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf
+>> [1]: https://patchwork.kernel.org/patch/11292823/
+>> [2]: https://github.com/tianocore/edk2-platforms
+>>
+>> Cc: Pankaj Bansal <pankaj.bansal@nxp.com>
+>> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+>> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
+>> ---
+>>
+>> RFC->v1:
+>> - Print warning when matched the workaround info, suggested by Pankaj.
+>>
+>>   drivers/acpi/arm64/iort.c | 55 ++++++++++++++++++++++++++++++++++++++++++++---
+>>   1 file changed, 52 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+>> index 33f7198..60eb10d 100644
+>> --- a/drivers/acpi/arm64/iort.c
+>> +++ b/drivers/acpi/arm64/iort.c
+>> @@ -298,6 +298,42 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
+>>       return status;
+>>   }
+>>   +struct iort_workaround_oem_info {
+>> +    char oem_id[ACPI_OEM_ID_SIZE + 1];
+>> +    char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
+>> +    u32 oem_revision;
+>> +};
+>> +
+>> +static bool apply_id_count_workaround;
+>> +
+>> +static struct iort_workaround_oem_info wa_info[] __initdata = {
+>> +    {
+>> +        .oem_id        = "HISI  ",
+>> +        .oem_table_id    = "HIP07   ",
+>> +        .oem_revision    = 0,
+>> +    }, {
+>> +        .oem_id        = "HISI  ",
+>> +        .oem_table_id    = "HIP08   ",
+>> +        .oem_revision    = 0,
+>> +    }
+>> +};
+>> +
+>> +static void __init
+>> +iort_check_id_count_workaround(struct acpi_table_header *tbl)
+>> +{
+>> +    int i;
+>> +
+>> +    for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
+>> +        if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
+>> +            !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
+>> +            wa_info[i].oem_revision == tbl->oem_revision) {
+>> +            apply_id_count_workaround = true;
+>> +            pr_warn(FW_BUG "ID count for ID mapping entry is wrong, applying workaround\n");
+>> +            break;
+>> +        }
+>> +    }
+>> +}
+>> +
+>>   static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
+>>                  u32 *rid_out)
+>>   {
+>> @@ -314,9 +350,21 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
+>>           return -ENXIO;
+>>       }
+>>   -    if (rid_in < map->input_base ||
+>> -        (rid_in >= map->input_base + map->id_count))
+>> -        return -ENXIO;
+>> +    /*
+>> +     * IORT spec says Number of IDs = The number of IDs in the range minus
+>> +     * one, but the IORT code ingored the "minus one", and some firmware
+>> +     * did that too, so apply a workaround here to keep compatible with
+>> +     * both new and old versions of the firmware.
+>> +     */
+>> +    if (apply_id_count_workaround) {
+>> +        if (rid_in < map->input_base ||
+>> +            (rid_in >= map->input_base + map->id_count))
+>> +            return -ENXIO;
+>> +    } else {
+>> +        if (rid_in < map->input_base ||
+>> +            (rid_in > map->input_base + map->id_count))
+>> +            return -ENXIO;
+>> +    }
+> 
+> This seems needlessly repetitive and convoluted... how about refactoring to something like:
+> 
+>     map_max = map->input_base + map->id_count;
+>     if (apply_id_count_workaround)
+>         map_max--;
 
-> On some laptops enabling wakeup on the GPIO interrupts used for ACPI _AEI
-> event handling causes spurious wakeups.
->
-> This commit adds a new honor_wakeup option, defaulting to true (our current
-> behavior), which can be used to disable wakeup on troublesome hardware
-> to avoid these spurious wakeups.
->
-> This is a workaround for an architectural problem with s2idle under Linux
-> where we do not have any mechanism to immediately go back to sleep after
-> wakeup events, other then for embedded-controller events using the standard
-> ACPI EC interface, for details see:
-> https://lore.kernel.org/linux-acpi/61450f9b-cbc6-0c09-8b3a-aff6bf9a0b3c@redhat.com/
->
-> One series of laptops which is not able to suspend without this workaround
-> is the HP x2 10 Cherry Trail models, this commit adds a DMI based quirk
-> which makes sets honor_wakeup to false on these models.
->
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
-> Changes in v2:
-> - Use honor_wakeup && ... instead of if (honor_wakeup) ...
-> - Fix some typos in the comment explaining the need for the quirk
+Much better, thanks! I will update my patch.
 
-Patch applied for fixes.
+Thanks
+Hanjun
 
-Yours,
-Linus Walleij
