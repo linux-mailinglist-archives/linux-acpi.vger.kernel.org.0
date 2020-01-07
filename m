@@ -2,91 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 137BA132D71
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2020 18:48:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5564F133025
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2020 20:56:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728575AbgAGRsV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Jan 2020 12:48:21 -0500
-Received: from sauhun.de ([88.99.104.3]:53380 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728562AbgAGRsV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 7 Jan 2020 12:48:21 -0500
-Received: from localhost (p5486CF8B.dip0.t-ipconnect.de [84.134.207.139])
-        by pokefinder.org (Postfix) with ESMTPSA id E5A752C3946;
-        Tue,  7 Jan 2020 18:48:19 +0100 (CET)
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-i2c@vger.kernel.org
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Wolfram Sang <wsa@the-dreams.de>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 08/12] i2c: i2c-core-acpi: convert to use i2c_new_client_device()
-Date:   Tue,  7 Jan 2020 18:47:42 +0100
-Message-Id: <20200107174748.9616-9-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200107174748.9616-1-wsa+renesas@sang-engineering.com>
-References: <20200107174748.9616-1-wsa+renesas@sang-engineering.com>
+        id S1728624AbgAGT4s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Jan 2020 14:56:48 -0500
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:41500 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728358AbgAGT4g (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Jan 2020 14:56:36 -0500
+Received: by mail-ed1-f68.google.com with SMTP id c26so610950eds.8
+        for <linux-acpi@vger.kernel.org>; Tue, 07 Jan 2020 11:56:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=lUsTd9lJYwK928kai9reachpHe0HC9Hv8/gDLGwtaBI=;
+        b=m/Udengj3famfT4AeeQ1IRW+yMW7VasUnASahB37i/PoeHrkRBk2CGyFKYNukmjW7S
+         L8SRka5Jakx3oOkJPsG2IofN9vOqI+MJeZI3Q0YE0hhIfxJgla/Mvi4GlBIJ0+PXKJyR
+         fGhtIsUmeS9lphgKJPwASTV0Wis5x+akjvA6FztTMBR/K8fgi7sOjdtLa1OeTeeGw/oC
+         WuhGv+1qsxod0shrSr56iRhzuujf6ypC8mQV8JosjFfNeYtuq3xDGNFupimiXFOQL0SO
+         8SxYRsEAywqZcf7WmcQRmN/Qkf20W+/a6rRSJl252WjsQoa/SZxLvQ4mGRJVkfZ3ex9s
+         ABpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=lUsTd9lJYwK928kai9reachpHe0HC9Hv8/gDLGwtaBI=;
+        b=p8sDm0J+P++yW0PEiWCz++EDvzHgs39hugXUghH1MzTUhuu4scMU5PCyJiVOVMHQVM
+         tBg9fX12AbLl/JVVrO1RKqcyHsAtJHCfwlcz+IgcJbjOEgHnhc0OrlIuQ2P9GxHPPvLt
+         c0zE7mYSr0LmTQuNZrWMYL5tbNxjU3n/DrmvecQTnj5GPS8fB0xRns4ox1B1stDYXzfn
+         vgbVK6DVdFD8+OoWL86gF98yS9O0gb8CopnYAD/gYNG4yBgp6cXBid0sB7xva3wINAfG
+         jRLOv+s5CUOTuaexvlwoGB5e/D0n43Sfqmxirod1F5NzM/i8136NIcuBbggyZAMrhKoE
+         UI7Q==
+X-Gm-Message-State: APjAAAUAUCj0aUiELgZgFayVUO+pbcZT50k518/avCG/HKdFs3/95qSC
+        bCnV89JWB+lyUWjrOVlLa5YjiuZRRZWDS1xdx6Y=
+X-Google-Smtp-Source: APXvYqzNbcT08PcgNHBR6CjdjGMonF1aREtl3FixKkalZzLFfyP3YZsjOtPyVn2SjFoUiZ8TzNVIEuitC7fnDU0d3Kk=
+X-Received: by 2002:a17:907:20ef:: with SMTP id rh15mr1111482ejb.325.1578426995176;
+ Tue, 07 Jan 2020 11:56:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a17:906:72c6:0:0:0:0 with HTTP; Tue, 7 Jan 2020 11:56:34
+ -0800 (PST)
+Reply-To: dhlexpresscouriercompany.nyusa@gmail.com
+From:   "Dr. William Johnson" <currency1000000@gmail.com>
+Date:   Tue, 7 Jan 2020 20:56:34 +0100
+Message-ID: <CAPqfnSEyU1pBR_7HT2g1KK7i8caLMBQ8yPA8KRDVm+MN-K_Z4w@mail.gmail.com>
+Subject: contact Dhl office New York to receive your Prepaid ATM Master Card
+ worth $15.8Million US DOLLARS now.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Move away from the deprecated API and return the shiny new ERRPTR where
-useful.
-
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
-Build tested only.
-
- drivers/i2c/i2c-core-acpi.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index 62a1c92ab803..8f3dbc97a057 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -225,7 +225,7 @@ static void i2c_acpi_register_device(struct i2c_adapter *adapter,
- 	adev->power.flags.ignore_parent = true;
- 	acpi_device_set_enumerated(adev);
- 
--	if (!i2c_new_device(adapter, info)) {
-+	if (IS_ERR(i2c_new_client_device(adapter, info))) {
- 		adev->power.flags.ignore_parent = false;
- 		dev_err(&adapter->dev,
- 			"failed to add I2C device %s from ACPI\n",
-@@ -451,7 +451,8 @@ struct notifier_block i2c_acpi_notifier = {
-  * resources, in that case this function can be used to create an i2c-client
-  * for other I2cSerialBus resources in the Current Resource Settings table.
-  *
-- * Also see i2c_new_device, which this function calls to create the i2c-client.
-+ * Also see i2c_new_client_device, which this function calls to create the
-+ * i2c-client.
-  *
-  * Returns a pointer to the new i2c-client, or error pointer in case of failure.
-  * Specifically, -EPROBE_DEFER is returned if the adapter is not found.
-@@ -461,7 +462,6 @@ struct i2c_client *i2c_acpi_new_device(struct device *dev, int index,
- {
- 	struct i2c_acpi_lookup lookup;
- 	struct i2c_adapter *adapter;
--	struct i2c_client *client;
- 	struct acpi_device *adev;
- 	LIST_HEAD(resource_list);
- 	int ret;
-@@ -489,11 +489,7 @@ struct i2c_client *i2c_acpi_new_device(struct device *dev, int index,
- 	if (!adapter)
- 		return ERR_PTR(-EPROBE_DEFER);
- 
--	client = i2c_new_device(adapter, info);
--	if (!client)
--		return ERR_PTR(-ENODEV);
--
--	return client;
-+	return i2c_new_client_device(adapter, info);
- }
- EXPORT_SYMBOL_GPL(i2c_acpi_new_device);
- 
--- 
-2.20.1
-
+ATTN Dear Beneficiary.
+Goodnews
+I have Registered your Prepaid ATM Master Card
+worth $15.800,000.00 US DOLLARS with Courier company
+asigned to deliver it to you today.
+So contact Dhl office New York to receive your Prepaid ATM Master Card
+worth $15.8Million US DOLLARS now.
+Contact Person: Mrs. Mary Michael, Director, DHL Courier Company-NY USA. 10218
+Email. dhlexpresscouriercompany.nyusa@gmail.com
+Call the office +(202) 890-8752
+Rec-Confirmed your mailing address to the office as I listed below.
+Your Full Name--------------
+House Address-----------
+Your working Phone Number----------------
+ID copy-------------------------
+Sex-----------------------------
+Note,delivery fee to your address is only $25.00. send it to this
+company urgent on itunes card today so that DHL will deliver this
+Prepaid ATM Master Card to you today according to our finally
+agreement.
+Thanks for coperations,
+Dr. William Johnson
