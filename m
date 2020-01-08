@@ -2,75 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41D85133037
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2020 21:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73280133ED3
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2020 11:04:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728369AbgAGUCN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Jan 2020 15:02:13 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:57262 "EHLO mail.skyhub.de"
+        id S1727297AbgAHKEw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Jan 2020 05:04:52 -0500
+Received: from mga12.intel.com ([192.55.52.136]:15579 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728358AbgAGUCN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 7 Jan 2020 15:02:13 -0500
-Received: from zn.tnic (p200300EC2F0FB400453AE1B66C2BC925.dip0.t-ipconnect.de [IPv6:2003:ec:2f0f:b400:453a:e1b6:6c2b:c925])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7B0701EC0CD3;
-        Tue,  7 Jan 2020 21:02:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1578427331;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=ysOcvAqAKnTyDEY5Saj0YcqW5rlYPZb9UU4KflK5iSs=;
-        b=LJrGoOQaZjEMccNlBstQ3nCwxvQ+RFSVIczJtEam+HYzGJ++W8NhjF62U9KL5vhcEkS4xI
-        sUhutd8vR2MkV21jR9aMhawxREor8jTEqEo9/gr9gDd3z3ZTW+YMmBEXdhqSjAb7++KNXW
-        qSZ3zJ7GRA5JK7xo4Hf87moF6gemf8E=
-Date:   Tue, 7 Jan 2020 21:02:08 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Robert Richter <rrichter@marvell.com>,
-        Bhaskar Upadhaya <bhaskar.upadhaya.linux@gmail.com>
-Cc:     Bhaskar Upadhaya <bupadhaya@marvell.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        Ganapatrao Prabhakerrao Kulkarni <gkulkarni@marvell.com>
-Subject: Re: [RFC PATCH] apei/ghes: fix ghes_poll_func by registering in
- non-deferrable mode
-Message-ID: <20200107200208.GN29542@zn.tnic>
-References: <1576652618-27017-1-git-send-email-bupadhaya@marvell.com>
- <20200102180130.GG8345@zn.tnic>
- <CAEYJA6oXTxTmJEji5_Hup2oB+GrgGnmSTiS-nNuzbNzGJ9VESA@mail.gmail.com>
- <20200106130949.GD12238@zn.tnic>
- <CAEYJA6rPiBYnM4rT5WJnvTSrk6GBHeLYxK5OF5oxmeVxVepGGQ@mail.gmail.com>
- <20200107130421.6w67frcsllkblie2@rric.localdomain>
+        id S1726567AbgAHKEw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 8 Jan 2020 05:04:52 -0500
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Jan 2020 02:04:52 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,409,1571727600"; 
+   d="scan'208";a="225872894"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga001.fm.intel.com with SMTP; 08 Jan 2020 02:04:49 -0800
+Received: by lahna (sSMTP sendmail emulation); Wed, 08 Jan 2020 12:04:49 +0200
+Date:   Wed, 8 Jan 2020 12:04:49 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-i2c@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 08/12] i2c: i2c-core-acpi: convert to use
+ i2c_new_client_device()
+Message-ID: <20200108100449.GT465886@lahna.fi.intel.com>
+References: <20200107174748.9616-1-wsa+renesas@sang-engineering.com>
+ <20200107174748.9616-9-wsa+renesas@sang-engineering.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200107130421.6w67frcsllkblie2@rric.localdomain>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200107174748.9616-9-wsa+renesas@sang-engineering.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 07, 2020 at 01:04:29PM +0000, Robert Richter wrote:
-> > Thanks Borislav, I will edit the commit message with you comments in
-> > the next patch.
-> > Can I get your Ack in the next patch ?
+On Tue, Jan 07, 2020 at 06:47:42PM +0100, Wolfram Sang wrote:
+> Move away from the deprecated API and return the shiny new ERRPTR where
+> useful.
+> 
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-Acks are being given when the new version arrives. Look at LKML archives
-for examples.
-
-> I guess Boris will apply the patch to his tree as maintainer, so no
-> need to ack it.
-
-Nah, apei/ghes stuff goes through Rafael. I'm just a reviewer for the
-APEI side.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
