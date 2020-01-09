@@ -2,128 +2,215 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14EE1135D10
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2020 16:44:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB76135D68
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2020 17:02:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732575AbgAIPom (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jan 2020 10:44:42 -0500
-Received: from mga02.intel.com ([134.134.136.20]:3757 "EHLO mga02.intel.com"
+        id S1729522AbgAIQCd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jan 2020 11:02:33 -0500
+Received: from foss.arm.com ([217.140.110.172]:33238 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732548AbgAIPol (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 9 Jan 2020 10:44:41 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Jan 2020 07:44:41 -0800
-X-IronPort-AV: E=Sophos;i="5.69,414,1571727600"; 
-   d="scan'208";a="227826443"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Jan 2020 07:44:38 -0800
-Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id 2F22220F4E;
-        Thu,  9 Jan 2020 17:44:33 +0200 (EET)
-Received: from sailus by punajuuri.localdomain with local (Exim 4.92)
-        (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1ipa01-00055H-HW; Thu, 09 Jan 2020 17:45:29 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     linux-i2c@vger.kernel.org
-Cc:     Wolfram Sang <wsa@the-dreams.de>,
+        id S1728956AbgAIQCd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 9 Jan 2020 11:02:33 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D29601FB;
+        Thu,  9 Jan 2020 08:02:31 -0800 (PST)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9A93A3F703;
+        Thu,  9 Jan 2020 08:02:30 -0800 (PST)
+Date:   Thu, 9 Jan 2020 16:02:21 +0000
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>
-Subject: [PATCH v3 5/5] at24: Support probing while off
-Date:   Thu,  9 Jan 2020 17:45:29 +0200
-Message-Id: <20200109154529.19484-6-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200109154529.19484-1-sakari.ailus@linux.intel.com>
-References: <20200109154529.19484-1-sakari.ailus@linux.intel.com>
+        Pankaj Bansal <pankaj.bansal@nxp.com>,
+        linux-acpi@vger.kernel.org, John Garry <john.garry@huawei.com>,
+        linuxarm@huawei.com, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v1] ACPI/IORT: Workaround for IORT ID count "minus one"
+ issue
+Message-ID: <20200109160220.GA27079@e121166-lin.cambridge.arm.com>
+References: <1577708824-4873-1-git-send-email-guohanjun@huawei.com>
+ <2ce224b2-d926-67b0-f9dd-85ac53d967c5@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2ce224b2-d926-67b0-f9dd-85ac53d967c5@arm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In certain use cases (where the chip is part of a camera module, and the
-camera module is wired together with a camera privacy LED), powering on
-the device during probe is undesirable. Add support for the at24 to
-execute probe while being powered off. For this to happen, a hint in form
-of a device property is required from the firmware.
+On Mon, Jan 06, 2020 at 05:19:32PM +0000, Robin Murphy wrote:
+> On 30/12/2019 12:27 pm, Hanjun Guo wrote:
+> > The IORT spec [0] says Number of IDs = The number of IDs in the range minus
+> > one, it is confusing but it was written down in the first version of the
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
----
- drivers/misc/eeprom/at24.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+Why is it confusing ? Because we botched the kernel code :) ?
 
-diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
-index 0681d5fdd538a..41ac65d1e5d41 100644
---- a/drivers/misc/eeprom/at24.c
-+++ b/drivers/misc/eeprom/at24.c
-@@ -564,6 +564,7 @@ static int at24_probe(struct i2c_client *client)
- 	bool i2c_fn_i2c, i2c_fn_block;
- 	unsigned int i, num_addresses;
- 	struct at24_data *at24;
-+	bool low_power;
- 	struct regmap *regmap;
- 	bool writable;
- 	u8 test_byte;
-@@ -701,19 +702,24 @@ static int at24_probe(struct i2c_client *client)
- 
- 	i2c_set_clientdata(client, at24);
- 
--	/* enable runtime pm */
--	pm_runtime_set_active(dev);
-+	low_power = acpi_dev_low_power_state_probe(&client->dev);
-+	if (!low_power)
-+		pm_runtime_set_active(dev);
-+
- 	pm_runtime_enable(dev);
- 
- 	/*
--	 * Perform a one-byte test read to verify that the
--	 * chip is functional.
-+	 * Perform a one-byte test read to verify that the chip is functional,
-+	 * unless powering on the device is to be avoided during probe (i.e.
-+	 * it's powered off right now).
- 	 */
--	err = at24_read(at24, 0, &test_byte, 1);
--	pm_runtime_idle(dev);
--	if (err) {
--		pm_runtime_disable(dev);
--		return -ENODEV;
-+	if (!low_power) {
-+		err = at24_read(at24, 0, &test_byte, 1);
-+		pm_runtime_idle(dev);
-+		if (err) {
-+			pm_runtime_disable(dev);
-+			return -ENODEV;
-+		}
- 	}
- 
- 	if (writable)
-@@ -728,8 +734,12 @@ static int at24_probe(struct i2c_client *client)
- 
- static int at24_remove(struct i2c_client *client)
- {
-+	bool low_power;
-+
- 	pm_runtime_disable(&client->dev);
--	pm_runtime_set_suspended(&client->dev);
-+	low_power = acpi_dev_low_power_state_probe(&client->dev);
-+	if (!low_power)
-+		pm_runtime_set_suspended(&client->dev);
- 
- 	return 0;
- }
-@@ -743,6 +753,7 @@ static struct i2c_driver at24_driver = {
- 	.probe_new = at24_probe,
- 	.remove = at24_remove,
- 	.id_table = at24_ids,
-+	.probe_low_power = true,
- };
- 
- static int __init at24_init(void)
--- 
-2.20.1
+> > IORT spec. But the IORT ID mapping function iort_id_map() did something
+> > wrong from the start, which bails out if:
+> > 
+> > the request ID >= the input base + number of IDs
+> > 
+> > This is wrong because it ignored the "minus one", and breaks some valid
+> > usecases such as ID mapping to contain single device mapping without
+> > single mapping flag set.
+> > 
+> > Pankaj Bansal proposed a solution to fix the issue [1], which bails
+> > out if:
+> > 
+> > the request ID > the input base + number of IDs
 
+Add a Link: tag, when I read a commit log I want to have a reference
+to the patches relevant to the commit in question (which in turn
+will help understand what Pankaj suggested).
+
+> > This works as the spec defined, unfortunately some firmware didn't
+> > minus one for the number of IDs in the range, and the propoased
+> > solution will break those systems in this way:
+> > 
+> > PCI hostbridge mapping entry 1:
+> > Input base:  0x1000
+> > ID Count:    0x100
+> > Output base: 0x1000
+> > Output reference: 0xC4  //ITS reference
+> > 
+> > PCI hostbridge mapping entry 2:
+> > Input base:  0x1100
+> > ID Count:    0x100
+> > Output base: 0x2000
+> > Output reference: 0xD4  //ITS reference
+> > 
+> > Two mapping entries which the second entry's Input base = the first
+> > entry's Input base + ID count, so for requester ID 0x1100 will map
+> > to ITS 0xC4 not 0xD4 if we update '>=' to '>'.
+> > 
+> > So introduce a workaround to match the IORT's OEM information for
+> > the broken firmware, also update the logic of the ID mapping for
+> > firmwares report the number of IDs as the IORT spec defined, to
+> > make the code compatible for both kinds of system.
+> > 
+> > I checked the ACPI tables in the tianocore/edk2-platforms [2], only
+> > HiSilicon HIP07/08 did wrong, so just add HIP07/08 to the workaround
+> > info table, if we break other platforms, we can add that later.
+> > 
+> > [0]: http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf
+> > [1]: https://patchwork.kernel.org/patch/11292823/
+
+Add a Link: tag to a message-ID
+
+> > [2]: https://github.com/tianocore/edk2-platforms
+
+It is useless in a commit log - this is a moving target.
+
+I can rewrite this commit log if you think it is faster.
+
+> > 
+> > Cc: Pankaj Bansal <pankaj.bansal@nxp.com>
+> > Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> > Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
+> > ---
+> > 
+> > RFC->v1:
+> > - Print warning when matched the workaround info, suggested by Pankaj.
+> > 
+> >   drivers/acpi/arm64/iort.c | 55 ++++++++++++++++++++++++++++++++++++++++++++---
+> >   1 file changed, 52 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> > index 33f7198..60eb10d 100644
+> > --- a/drivers/acpi/arm64/iort.c
+> > +++ b/drivers/acpi/arm64/iort.c
+> > @@ -298,6 +298,42 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
+> >   	return status;
+> >   }
+> > +struct iort_workaround_oem_info {
+> > +	char oem_id[ACPI_OEM_ID_SIZE + 1];
+> > +	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
+> > +	u32 oem_revision;
+> > +};
+> > +
+> > +static bool apply_id_count_workaround;
+> > +
+> > +static struct iort_workaround_oem_info wa_info[] __initdata = {
+> > +	{
+> > +		.oem_id		= "HISI  ",
+> > +		.oem_table_id	= "HIP07   ",
+> > +		.oem_revision	= 0,
+> > +	}, {
+> > +		.oem_id		= "HISI  ",
+> > +		.oem_table_id	= "HIP08   ",
+> > +		.oem_revision	= 0,
+> > +	}
+> > +};
+> > +
+> > +static void __init
+> > +iort_check_id_count_workaround(struct acpi_table_header *tbl)
+> > +{
+> > +	int i;
+> > +
+> > +	for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
+> > +		if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
+> > +		    !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
+> > +		    wa_info[i].oem_revision == tbl->oem_revision) {
+> > +			apply_id_count_workaround = true;
+> > +			pr_warn(FW_BUG "ID count for ID mapping entry is wrong, applying workaround\n");
+> > +			break;
+> > +		}
+> > +	}
+> > +}
+> > +
+> >   static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
+> >   		       u32 *rid_out)
+> >   {
+> > @@ -314,9 +350,21 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
+> >   		return -ENXIO;
+> >   	}
+> > -	if (rid_in < map->input_base ||
+> > -	    (rid_in >= map->input_base + map->id_count))
+> > -		return -ENXIO;
+> > +	/*
+> > +	 * IORT spec says Number of IDs = The number of IDs in the range minus
+
+Section, page, table number please, "IORT spec says" is too vague.
+
+> > +	 * one, but the IORT code ingored the "minus one", and some firmware
+
+s/ingored/ignored/
+
+> > +	 * did that too, so apply a workaround here to keep compatible with
+> > +	 * both new and old versions of the firmware.
+
+It is not "new" vs "old" it is spec compliant vs non-spec compliant.
+
+> > +	 */
+> > +	if (apply_id_count_workaround) {
+> > +		if (rid_in < map->input_base ||
+> > +			(rid_in >= map->input_base + map->id_count))
+> > +			return -ENXIO;
+> > +	} else {
+> > +		if (rid_in < map->input_base ||
+> > +			(rid_in > map->input_base + map->id_count))
+> > +			return -ENXIO;
+> > +	}
+> 
+> This seems needlessly repetitive and convoluted... how about refactoring to
+> something like:
+
++1
+
+> 
+> 	map_max = map->input_base + map->id_count;
+> 	if (apply_id_count_workaround)
+> 		map_max--;
+
+You can even turn it into an inline function (ie iort_get_map_max())
+with the comment above in it so that the quirk is isolated instead
+of having it in the middle of iort_id_map().
+
+I am fine either way. We need test coverage since I feel this may
+break a number of systems (ie I don't think it should be merged as
+a fix).
+
+Lorenzo
