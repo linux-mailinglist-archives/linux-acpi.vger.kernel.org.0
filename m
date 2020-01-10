@@ -2,239 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2859913675B
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2020 07:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7113913680C
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2020 08:15:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731503AbgAJGWr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Jan 2020 01:22:47 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:9147 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731501AbgAJGWr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 10 Jan 2020 01:22:47 -0500
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id C5869A7AE2945C902281;
-        Fri, 10 Jan 2020 14:22:41 +0800 (CST)
-Received: from [127.0.0.1] (10.177.223.23) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.439.0; Fri, 10 Jan 2020
- 14:22:33 +0800
-Subject: Re: [PATCH v1] ACPI/IORT: Workaround for IORT ID count "minus one"
- issue
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>
-CC:     Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>,
-        <linux-acpi@vger.kernel.org>, John Garry <john.garry@huawei.com>,
-        <linuxarm@huawei.com>, <linux-arm-kernel@lists.infradead.org>
-References: <1577708824-4873-1-git-send-email-guohanjun@huawei.com>
- <2ce224b2-d926-67b0-f9dd-85ac53d967c5@arm.com>
- <20200109160220.GA27079@e121166-lin.cambridge.arm.com>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <4cee4a91-6459-819b-d4d4-f5e8899103b9@huawei.com>
-Date:   Fri, 10 Jan 2020 14:22:22 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.5.0
+        id S1725965AbgAJHP5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Jan 2020 02:15:57 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:33339 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725948AbgAJHP5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jan 2020 02:15:57 -0500
+Received: by mail-wr1-f65.google.com with SMTP id b6so760067wrq.0
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Jan 2020 23:15:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=9OKjM0NiA29A1YJnbOkfMLLtP+OMdLBmVsUr4YFKYmI=;
+        b=w/heI5CiX5CG06QP7Sv0cxrLLmnMMNh5cvAR7T4TCmnIz8Eg3fbiQMZwB2YUCUpzbx
+         mmUosVo3fH6aOf6Aw9xKPmPZaT8+jdHft0aUNvd2tlXM5ANa9UjfFpFSb57+ymTYjG/2
+         pmxgcgaIyHPJWXiJr293yDtYme/mtd7L/Ak/YuEKAWw/I7xuaRqZVe1bFAEd9cpRytTN
+         8ysCaE+HPdU//NOzq5Yzx8gqKE6Qa7hl0Pjp7FgaKVgfeZQOTmnyBEh7OOHhgjv7kBn9
+         PyVyqewx7EOuO4LrYCozQosfklyZ3gAuvuPuSG21SND9Z7ck4iaNLeZ0n3+gj/x48gi1
+         MOxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=9OKjM0NiA29A1YJnbOkfMLLtP+OMdLBmVsUr4YFKYmI=;
+        b=UeA3pFI3GE3SAFws+KwK1u3sExfEyG5NVrAB1Ws4eJdSlGBFfQ9njbSQpEqgxHOmKE
+         sh7FPsQIIwubqC4cyYBaE4+/SwLVZN4vHtbSNVmkT7jxC7DEzuMKp+9mpQo36KR+iKPz
+         WEMNtwt8et9XGF4gHqUT4NjI9p+qVRWBv9w/MEBYpDI2ncO8PIaO+aayT28JV4TCK82+
+         UTxi+NQd/MfMjroDvy2xpVmYT8xdD4cPtbh5Ui0UlmjiAuPmLQbIMfEb+BHP9N66BuBj
+         i9VFtXJ0cM7nsealirN5TBupFOhEYGanPw3rOdE093Tu8QxzwsKUGzPqyTYf5rRx5X80
+         ApbQ==
+X-Gm-Message-State: APjAAAVTBLHWTDwHSH1F3uTuoGMDAYE/s1x9kdOavJVgVRJliSVqQi3z
+        l03cl/9PTK0JXgZyM5JlNcWkqqRHRDU=
+X-Google-Smtp-Source: APXvYqyrMC4qUZGMDa4vTDXPc+WMRe1Cedi+NXO2t/JRWGPthrCa8hHpKeJ8ml5/0kP4fhuDUvDeMQ==
+X-Received: by 2002:a5d:65cf:: with SMTP id e15mr1802033wrw.126.1578640555220;
+        Thu, 09 Jan 2020 23:15:55 -0800 (PST)
+Received: from myrica (adsl-84-227-176-239.adslplus.ch. [84.227.176.239])
+        by smtp.gmail.com with ESMTPSA id x17sm1129827wrt.74.2020.01.09.23.15.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jan 2020 23:15:54 -0800 (PST)
+Date:   Fri, 10 Jan 2020 08:15:47 +0100
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     Will Deacon <will@kernel.org>
+Cc:     mark.rutland@arm.com, devicetree@vger.kernel.org,
+        linux-pci@vger.kernel.org, sudeep.holla@arm.com, rjw@rjwysocki.net,
+        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org,
+        robh+dt@kernel.org, guohanjun@huawei.com, bhelgaas@google.com,
+        zhangfei.gao@linaro.org, robin.murphy@arm.com,
+        linux-arm-kernel@lists.infradead.org, lenb@kernel.org
+Subject: Re: [PATCH v4 00/13] iommu: Add PASID support to Arm SMMUv3
+Message-ID: <20200110071547.GA959441@myrica>
+References: <20191219163033.2608177-1-jean-philippe@linaro.org>
+ <20200109143618.GA942461@myrica>
+ <20200109144100.GD12236@willie-the-truck>
 MIME-Version: 1.0
-In-Reply-To: <20200109160220.GA27079@e121166-lin.cambridge.arm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.223.23]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200109144100.GD12236@willie-the-truck>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2020/1/10 0:02, Lorenzo Pieralisi wrote:
-> On Mon, Jan 06, 2020 at 05:19:32PM +0000, Robin Murphy wrote:
->> On 30/12/2019 12:27 pm, Hanjun Guo wrote:
->>> The IORT spec [0] says Number of IDs = The number of IDs in the range minus
->>> one, it is confusing but it was written down in the first version of the
+On Thu, Jan 09, 2020 at 02:41:01PM +0000, Will Deacon wrote:
+> On Thu, Jan 09, 2020 at 03:36:18PM +0100, Jean-Philippe Brucker wrote:
+> > On Thu, Dec 19, 2019 at 05:30:20PM +0100, Jean-Philippe Brucker wrote:
+> > > Add support for Substream ID and PASIDs to the SMMUv3 driver. Since v3
+> > > [1], I added review and tested tags where appropriate and applied the
+> > > suggested changes, shown in the diff below. Thanks all!
+> > > 
+> > > I'm testing using the zip accelerator on the Hisilicon KunPeng920 and
+> > > Zhangfei's uacce module [2]. The full SVA support, which I'll send out
+> > > early next year, is available on my branch sva/zip-devel at
+> > > https://jpbrucker.net/git/linux/
+> > 
+> > Is there anything more I should do for the PASID support? Ideally I'd like
+> > to get this in v5.6 so I can focus on the rest of the SVA work and on
+> > performance improvements.
 > 
-> Why is it confusing ? Because we botched the kernel code :) ?
+> Apologies, I'm just behind with review what with the timing of the new
+> year. You're on the list, but I was hoping to get Robin's TCR stuff dusted
+> off so that Jordan doesn't have to depend on patches languishing on the
+> mailing list and there's also the nvidia stuff to review as well.
+> 
+> Going as fast as I can!
 
-I think 'minus one' is not bringing any benefit :)
+No worries, I just wanted to check that it didn't slip through the cracks.
 
-> 
->>> IORT spec. But the IORT ID mapping function iort_id_map() did something
->>> wrong from the start, which bails out if:
->>>
->>> the request ID >= the input base + number of IDs
->>>
->>> This is wrong because it ignored the "minus one", and breaks some valid
->>> usecases such as ID mapping to contain single device mapping without
->>> single mapping flag set.
->>>
->>> Pankaj Bansal proposed a solution to fix the issue [1], which bails
->>> out if:
->>>
->>> the request ID > the input base + number of IDs
-> 
-> Add a Link: tag, when I read a commit log I want to have a reference
-> to the patches relevant to the commit in question (which in turn
-> will help understand what Pankaj suggested).
-> 
->>> This works as the spec defined, unfortunately some firmware didn't
->>> minus one for the number of IDs in the range, and the propoased
->>> solution will break those systems in this way:
->>>
->>> PCI hostbridge mapping entry 1:
->>> Input base:  0x1000
->>> ID Count:    0x100
->>> Output base: 0x1000
->>> Output reference: 0xC4  //ITS reference
->>>
->>> PCI hostbridge mapping entry 2:
->>> Input base:  0x1100
->>> ID Count:    0x100
->>> Output base: 0x2000
->>> Output reference: 0xD4  //ITS reference
->>>
->>> Two mapping entries which the second entry's Input base = the first
->>> entry's Input base + ID count, so for requester ID 0x1100 will map
->>> to ITS 0xC4 not 0xD4 if we update '>=' to '>'.
->>>
->>> So introduce a workaround to match the IORT's OEM information for
->>> the broken firmware, also update the logic of the ID mapping for
->>> firmwares report the number of IDs as the IORT spec defined, to
->>> make the code compatible for both kinds of system.
->>>
->>> I checked the ACPI tables in the tianocore/edk2-platforms [2], only
->>> HiSilicon HIP07/08 did wrong, so just add HIP07/08 to the workaround
->>> info table, if we break other platforms, we can add that later.
->>>
->>> [0]: http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf
->>> [1]: https://patchwork.kernel.org/patch/11292823/
-> 
-> Add a Link: tag to a message-ID
-> 
->>> [2]: https://github.com/tianocore/edk2-platforms
-> 
-> It is useless in a commit log - this is a moving target.
-> 
-> I can rewrite this commit log if you think it is faster.
-
-That will be very helpful, please do so, thanks!
-
-> 
->>>
->>> Cc: Pankaj Bansal <pankaj.bansal@nxp.com>
->>> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
->>> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
->>> ---
->>>
->>> RFC->v1:
->>> - Print warning when matched the workaround info, suggested by Pankaj.
->>>
->>>   drivers/acpi/arm64/iort.c | 55 ++++++++++++++++++++++++++++++++++++++++++++---
->>>   1 file changed, 52 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
->>> index 33f7198..60eb10d 100644
->>> --- a/drivers/acpi/arm64/iort.c
->>> +++ b/drivers/acpi/arm64/iort.c
->>> @@ -298,6 +298,42 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
->>>   	return status;
->>>   }
->>> +struct iort_workaround_oem_info {
->>> +	char oem_id[ACPI_OEM_ID_SIZE + 1];
->>> +	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
->>> +	u32 oem_revision;
->>> +};
->>> +
->>> +static bool apply_id_count_workaround;
->>> +
->>> +static struct iort_workaround_oem_info wa_info[] __initdata = {
->>> +	{
->>> +		.oem_id		= "HISI  ",
->>> +		.oem_table_id	= "HIP07   ",
->>> +		.oem_revision	= 0,
->>> +	}, {
->>> +		.oem_id		= "HISI  ",
->>> +		.oem_table_id	= "HIP08   ",
->>> +		.oem_revision	= 0,
->>> +	}
->>> +};
->>> +
->>> +static void __init
->>> +iort_check_id_count_workaround(struct acpi_table_header *tbl)
->>> +{
->>> +	int i;
->>> +
->>> +	for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
->>> +		if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
->>> +		    !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
->>> +		    wa_info[i].oem_revision == tbl->oem_revision) {
->>> +			apply_id_count_workaround = true;
->>> +			pr_warn(FW_BUG "ID count for ID mapping entry is wrong, applying workaround\n");
->>> +			break;
->>> +		}
->>> +	}
->>> +}
->>> +
->>>   static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
->>>   		       u32 *rid_out)
->>>   {
->>> @@ -314,9 +350,21 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
->>>   		return -ENXIO;
->>>   	}
->>> -	if (rid_in < map->input_base ||
->>> -	    (rid_in >= map->input_base + map->id_count))
->>> -		return -ENXIO;
->>> +	/*
->>> +	 * IORT spec says Number of IDs = The number of IDs in the range minus
-> 
-> Section, page, table number please, "IORT spec says" is too vague.
-> 
->>> +	 * one, but the IORT code ingored the "minus one", and some firmware
-> 
-> s/ingored/ignored/
-> 
->>> +	 * did that too, so apply a workaround here to keep compatible with
->>> +	 * both new and old versions of the firmware.
-> 
-> It is not "new" vs "old" it is spec compliant vs non-spec compliant.
-
-Agreed.
-
-> 
->>> +	 */
->>> +	if (apply_id_count_workaround) {
->>> +		if (rid_in < map->input_base ||
->>> +			(rid_in >= map->input_base + map->id_count))
->>> +			return -ENXIO;
->>> +	} else {
->>> +		if (rid_in < map->input_base ||
->>> +			(rid_in > map->input_base + map->id_count))
->>> +			return -ENXIO;
->>> +	}
->>
->> This seems needlessly repetitive and convoluted... how about refactoring to
->> something like:
-> 
-> +1
-> 
->>
->> 	map_max = map->input_base + map->id_count;
->> 	if (apply_id_count_workaround)
->> 		map_max--;
-> 
-> You can even turn it into an inline function (ie iort_get_map_max())
-> with the comment above in it so that the quirk is isolated instead
-> of having it in the middle of iort_id_map().
-
-I vote for this one, it's self-contained.
-
-> 
-> I am fine either way. We need test coverage since I feel this may
-> break a number of systems (ie I don't think it should be merged as
-> a fix).
-
-Will you resend this patch with commit log and the updated code? or
-let me do that? Both are ok to me, let's get it tested for longer time
-if we merge it ASAP.
-
-Thanks
-Hanjun
-
+Thanks,
+Jean
