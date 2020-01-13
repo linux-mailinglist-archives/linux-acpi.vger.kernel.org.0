@@ -2,237 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27D93138FAC
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2020 11:56:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 24770139B50
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2020 22:21:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726127AbgAMK4u (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Jan 2020 05:56:50 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:34098 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725992AbgAMK4u (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Jan 2020 05:56:50 -0500
-Received: by mail-oi1-f194.google.com with SMTP id l136so7841582oig.1
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Jan 2020 02:56:49 -0800 (PST)
+        id S1728665AbgAMVVz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Jan 2020 16:21:55 -0500
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:33264 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728668AbgAMVVy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Jan 2020 16:21:54 -0500
+Received: by mail-lj1-f194.google.com with SMTP id y6so11837605lji.0
+        for <linux-acpi@vger.kernel.org>; Mon, 13 Jan 2020 13:21:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=t0TLC5mt6zw20J38nO6UV1Kz+5E95WBtIXeRkoxQ4a0=;
+        b=nGlZB+kmYCFVkWgGiGizF0iYMx6fc08SyNenEi1ie1BH6O9A7leQ+E1z8gmkHTjOpr
+         nOoqdrML0dZbAGO5UFtshGU/OWD6f6f0F/veZ5aCAM986QlXq24ftad1qHaX9i4q98Wg
+         EoYjC5Oyb3t1NQaQxIOk0nTQslTThixJMUhhDGvDRQHs0do2h9LwZvDqK3AIdzZpAM0R
+         CvzgjSLXZdR1AH7tbS5NH6zqqD94GYqcZTUj1pzBtDCZpZMBOHCY3HvooaxZobtr/kB6
+         NQhaW0mcftRzL8qnqQIP50jYeo/WnjE9xL+LH+Nk1uyDoDfsZ2XvtnUMEGk1p21ER/Rt
+         PVAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Jvj9lTVrKQ9U2LozCH+5mW1LeDHFUOyrgU4z4is2HCY=;
-        b=h7GUWNw4vIf5syE3E74ZV3vObR0Q9fXwTYCWyHzNmcq6YM59+ISBIgoXbvMv+SGbVJ
-         yoXS0zb7AkYk7Cy/S32h1OCaTjlhx4eHoiDu1qR6IESkljWb6fvHiIniV0i5tfK2H+5A
-         ipzUJUUVTJd6kWAxKJjpMj/FDU36atvB/VcnJqP0nXoNgfxE0Cy5DI384z5YHeJYVU6+
-         cEKAWmtP7KCAzm5T2qfHPhQr9gtvqyKiJgmqcIp5M81oAi/UmkUjycUFXmNSxZoBOa2J
-         b7jazAJ1Xjsho+UWaIfhy9ixT5UUipWCOH9AqPj9BuCLOEAr1RSa+8slOrkg8b+8vOmk
-         rzlw==
-X-Gm-Message-State: APjAAAWDm5Z+HpDZSB32TqtTN5ugCmn+muOj85l4L5jAJtYCpjLN8+aY
-        lJ+fb0RFELNkXZ97tSrV8VE/vRasgoLE5/H/2qXK2w==
-X-Google-Smtp-Source: APXvYqyBm1kIqgCkJVhNcvCBtjVthSYUDD13DSO/xlkfgJOjOR9XfrXkBPEq0j0Mvx3h/5w2myvCYIDdjZuKodOSeJg=
-X-Received: by 2002:a05:6808:1c5:: with SMTP id x5mr12683081oic.57.1578913009112;
- Mon, 13 Jan 2020 02:56:49 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=t0TLC5mt6zw20J38nO6UV1Kz+5E95WBtIXeRkoxQ4a0=;
+        b=gc2hBQRouu5KNe7hpDh826Q560zzFXbEm2/mTSeHm9nfJNf21knP2eeNHbCvMwH4Tg
+         Yz81V8if2cChs895Y8OslLVA5v6mTmnk2svMVLmaxolpQC2O4bY831k9TQfNg5C41vEN
+         A/xEDvRAs4C0298Nwk3EoKShx08FrOswJAZbTIoQtFMx3Fzph/w5mM4ephomVOdKfLiV
+         dDzL7LSNGU6MOE9jywE53l3YMZdXJhF1Rq5nU4PDX6Yv+HYJuUSGA4vDG90IL0yHEqyn
+         MsAhb6+d9Xe4BsvpCx3jShUSAQDUG+D4j/gb1Xrw6b+TO8Ym+MjQZxll7/qE9zzpX+nR
+         gWYg==
+X-Gm-Message-State: APjAAAWNP42uDEaMvwOQ2L96sCQWg01bm7eeuIiZFMf1xkn1pOC1ESSh
+        61B+kSvWbkKPOQt7ZpqL1KGer3H6oAEDEA3B4gQ=
+X-Google-Smtp-Source: APXvYqwJ/b8MnFX6qGdbe6KhaLPoA7/BeUW0PPYYIJ1mHO8USQIQaLJkgTT9NUU5/zUO7MBmyAI4TrPoI3UxJUdMMW8=
+X-Received: by 2002:a2e:9e4c:: with SMTP id g12mr12150442ljk.15.1578950512647;
+ Mon, 13 Jan 2020 13:21:52 -0800 (PST)
 MIME-Version: 1.0
-References: <20200110193150.4196-1-erik.kaneda@intel.com>
-In-Reply-To: <20200110193150.4196-1-erik.kaneda@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 13 Jan 2020 11:56:38 +0100
-Message-ID: <CAJZ5v0gDsi9-4r8Pns=XJijFdtKTLZuwDyNBApXYwAwZKoNAFg@mail.gmail.com>
-Subject: Re: [PATCH 0/2] ACPICA version 20200110
-To:     Erik Kaneda <erik.kaneda@intel.com>
-Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Reply-To: mrsanna.h.bruun119@gmail.com
+Received: by 2002:ac2:4a9d:0:0:0:0:0 with HTTP; Mon, 13 Jan 2020 13:21:52
+ -0800 (PST)
+From:   "Mrs. Anna H. Bruun" <mrsanna.h.bruun119@gmail.com>
+Date:   Mon, 13 Jan 2020 13:21:52 -0800
+X-Google-Sender-Auth: OgFXnPtFSZTyLXaS-XP0YuYAmlo
+Message-ID: <CAEv_75a3rq65fdm=kAmcgVfwsaASntdBv6-YFC2YYLg4EOGa9A@mail.gmail.com>
+Subject: My Greetings
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 10, 2020 at 8:52 PM Erik Kaneda <erik.kaneda@intel.com> wrote:
->
-> This is the Linux-ized 20200110 release of ACPICA. This updates the
-> copyright year in all ACPICA files. This patch is rather large and may
-> be rejected by the Linux ACPI mailing list. If this is the case, the
-> patch set is available at the following link:
->
-> https://github.com/SchmErik/linux/tree/20200110
->
->
-> Bob Moore (2):
->   ACPICA: All acpica: Update copyrights to 2020 Including tool signons.
->   ACPICA: Update version to 20200110
->
->  drivers/acpi/acpica/acapps.h                             | 4 ++--
->  drivers/acpi/acpica/accommon.h                           | 2 +-
->  drivers/acpi/acpica/acconvert.h                          | 2 +-
->  drivers/acpi/acpica/acdebug.h                            | 2 +-
->  drivers/acpi/acpica/acdispat.h                           | 2 +-
->  drivers/acpi/acpica/acevents.h                           | 2 +-
->  drivers/acpi/acpica/acglobal.h                           | 2 +-
->  drivers/acpi/acpica/achware.h                            | 2 +-
->  drivers/acpi/acpica/acinterp.h                           | 2 +-
->  drivers/acpi/acpica/aclocal.h                            | 2 +-
->  drivers/acpi/acpica/acmacros.h                           | 2 +-
->  drivers/acpi/acpica/acnamesp.h                           | 2 +-
->  drivers/acpi/acpica/acobject.h                           | 2 +-
->  drivers/acpi/acpica/acopcode.h                           | 2 +-
->  drivers/acpi/acpica/acparser.h                           | 2 +-
->  drivers/acpi/acpica/acpredef.h                           | 2 +-
->  drivers/acpi/acpica/acresrc.h                            | 2 +-
->  drivers/acpi/acpica/acstruct.h                           | 2 +-
->  drivers/acpi/acpica/actables.h                           | 2 +-
->  drivers/acpi/acpica/acutils.h                            | 2 +-
->  drivers/acpi/acpica/amlcode.h                            | 2 +-
->  drivers/acpi/acpica/amlresrc.h                           | 2 +-
->  drivers/acpi/acpica/dbhistry.c                           | 2 +-
->  drivers/acpi/acpica/dsargs.c                             | 2 +-
->  drivers/acpi/acpica/dscontrol.c                          | 2 +-
->  drivers/acpi/acpica/dsdebug.c                            | 2 +-
->  drivers/acpi/acpica/dsfield.c                            | 2 +-
->  drivers/acpi/acpica/dsinit.c                             | 2 +-
->  drivers/acpi/acpica/dsmethod.c                           | 2 +-
->  drivers/acpi/acpica/dsobject.c                           | 2 +-
->  drivers/acpi/acpica/dsopcode.c                           | 2 +-
->  drivers/acpi/acpica/dspkginit.c                          | 2 +-
->  drivers/acpi/acpica/dswexec.c                            | 2 +-
->  drivers/acpi/acpica/dswload.c                            | 2 +-
->  drivers/acpi/acpica/dswload2.c                           | 2 +-
->  drivers/acpi/acpica/dswscope.c                           | 2 +-
->  drivers/acpi/acpica/dswstate.c                           | 2 +-
->  drivers/acpi/acpica/evevent.c                            | 2 +-
->  drivers/acpi/acpica/evglock.c                            | 2 +-
->  drivers/acpi/acpica/evgpe.c                              | 2 +-
->  drivers/acpi/acpica/evgpeblk.c                           | 2 +-
->  drivers/acpi/acpica/evgpeinit.c                          | 2 +-
->  drivers/acpi/acpica/evgpeutil.c                          | 2 +-
->  drivers/acpi/acpica/evhandler.c                          | 2 +-
->  drivers/acpi/acpica/evmisc.c                             | 2 +-
->  drivers/acpi/acpica/evregion.c                           | 2 +-
->  drivers/acpi/acpica/evrgnini.c                           | 2 +-
->  drivers/acpi/acpica/evxface.c                            | 2 +-
->  drivers/acpi/acpica/evxfevnt.c                           | 2 +-
->  drivers/acpi/acpica/evxfgpe.c                            | 2 +-
->  drivers/acpi/acpica/evxfregn.c                           | 2 +-
->  drivers/acpi/acpica/exconcat.c                           | 2 +-
->  drivers/acpi/acpica/exconfig.c                           | 2 +-
->  drivers/acpi/acpica/exconvrt.c                           | 2 +-
->  drivers/acpi/acpica/excreate.c                           | 2 +-
->  drivers/acpi/acpica/exdebug.c                            | 2 +-
->  drivers/acpi/acpica/exdump.c                             | 2 +-
->  drivers/acpi/acpica/exfield.c                            | 2 +-
->  drivers/acpi/acpica/exfldio.c                            | 2 +-
->  drivers/acpi/acpica/exmisc.c                             | 2 +-
->  drivers/acpi/acpica/exmutex.c                            | 2 +-
->  drivers/acpi/acpica/exnames.c                            | 2 +-
->  drivers/acpi/acpica/exoparg1.c                           | 2 +-
->  drivers/acpi/acpica/exoparg2.c                           | 2 +-
->  drivers/acpi/acpica/exoparg3.c                           | 2 +-
->  drivers/acpi/acpica/exoparg6.c                           | 2 +-
->  drivers/acpi/acpica/exprep.c                             | 2 +-
->  drivers/acpi/acpica/exregion.c                           | 2 +-
->  drivers/acpi/acpica/exresnte.c                           | 2 +-
->  drivers/acpi/acpica/exresolv.c                           | 2 +-
->  drivers/acpi/acpica/exresop.c                            | 2 +-
->  drivers/acpi/acpica/exserial.c                           | 2 +-
->  drivers/acpi/acpica/exstore.c                            | 2 +-
->  drivers/acpi/acpica/exstoren.c                           | 2 +-
->  drivers/acpi/acpica/exstorob.c                           | 2 +-
->  drivers/acpi/acpica/exsystem.c                           | 2 +-
->  drivers/acpi/acpica/extrace.c                            | 2 +-
->  drivers/acpi/acpica/exutils.c                            | 2 +-
->  drivers/acpi/acpica/hwacpi.c                             | 2 +-
->  drivers/acpi/acpica/hwesleep.c                           | 2 +-
->  drivers/acpi/acpica/hwgpe.c                              | 2 +-
->  drivers/acpi/acpica/hwsleep.c                            | 2 +-
->  drivers/acpi/acpica/hwtimer.c                            | 2 +-
->  drivers/acpi/acpica/hwvalid.c                            | 2 +-
->  drivers/acpi/acpica/hwxface.c                            | 2 +-
->  drivers/acpi/acpica/hwxfsleep.c                          | 2 +-
->  drivers/acpi/acpica/nsarguments.c                        | 2 +-
->  drivers/acpi/acpica/nsconvert.c                          | 2 +-
->  drivers/acpi/acpica/nsdump.c                             | 2 +-
->  drivers/acpi/acpica/nsdumpdv.c                           | 2 +-
->  drivers/acpi/acpica/nsinit.c                             | 2 +-
->  drivers/acpi/acpica/nsload.c                             | 2 +-
->  drivers/acpi/acpica/nsparse.c                            | 2 +-
->  drivers/acpi/acpica/nspredef.c                           | 2 +-
->  drivers/acpi/acpica/nsprepkg.c                           | 2 +-
->  drivers/acpi/acpica/nsrepair.c                           | 2 +-
->  drivers/acpi/acpica/nsrepair2.c                          | 2 +-
->  drivers/acpi/acpica/nsutils.c                            | 2 +-
->  drivers/acpi/acpica/nswalk.c                             | 2 +-
->  drivers/acpi/acpica/nsxfname.c                           | 2 +-
->  drivers/acpi/acpica/psargs.c                             | 2 +-
->  drivers/acpi/acpica/psloop.c                             | 2 +-
->  drivers/acpi/acpica/psobject.c                           | 2 +-
->  drivers/acpi/acpica/psopcode.c                           | 2 +-
->  drivers/acpi/acpica/psopinfo.c                           | 2 +-
->  drivers/acpi/acpica/psparse.c                            | 2 +-
->  drivers/acpi/acpica/psscope.c                            | 2 +-
->  drivers/acpi/acpica/pstree.c                             | 2 +-
->  drivers/acpi/acpica/psutils.c                            | 2 +-
->  drivers/acpi/acpica/pswalk.c                             | 2 +-
->  drivers/acpi/acpica/psxface.c                            | 2 +-
->  drivers/acpi/acpica/tbdata.c                             | 2 +-
->  drivers/acpi/acpica/tbfadt.c                             | 2 +-
->  drivers/acpi/acpica/tbfind.c                             | 2 +-
->  drivers/acpi/acpica/tbinstal.c                           | 2 +-
->  drivers/acpi/acpica/tbprint.c                            | 2 +-
->  drivers/acpi/acpica/tbutils.c                            | 2 +-
->  drivers/acpi/acpica/tbxface.c                            | 2 +-
->  drivers/acpi/acpica/tbxfload.c                           | 2 +-
->  drivers/acpi/acpica/tbxfroot.c                           | 2 +-
->  drivers/acpi/acpica/utaddress.c                          | 2 +-
->  drivers/acpi/acpica/utalloc.c                            | 2 +-
->  drivers/acpi/acpica/utascii.c                            | 2 +-
->  drivers/acpi/acpica/utbuffer.c                           | 2 +-
->  drivers/acpi/acpica/utcache.c                            | 2 +-
->  drivers/acpi/acpica/utcopy.c                             | 2 +-
->  drivers/acpi/acpica/utdebug.c                            | 2 +-
->  drivers/acpi/acpica/utdecode.c                           | 2 +-
->  drivers/acpi/acpica/uteval.c                             | 2 +-
->  drivers/acpi/acpica/utglobal.c                           | 2 +-
->  drivers/acpi/acpica/uthex.c                              | 2 +-
->  drivers/acpi/acpica/utids.c                              | 2 +-
->  drivers/acpi/acpica/utinit.c                             | 2 +-
->  drivers/acpi/acpica/utlock.c                             | 2 +-
->  drivers/acpi/acpica/utobject.c                           | 2 +-
->  drivers/acpi/acpica/utosi.c                              | 2 +-
->  drivers/acpi/acpica/utpredef.c                           | 2 +-
->  drivers/acpi/acpica/utprint.c                            | 2 +-
->  drivers/acpi/acpica/uttrack.c                            | 2 +-
->  drivers/acpi/acpica/utuuid.c                             | 2 +-
->  drivers/acpi/acpica/utxface.c                            | 2 +-
->  drivers/acpi/acpica/utxfinit.c                           | 2 +-
->  include/acpi/acbuffer.h                                  | 2 +-
->  include/acpi/acconfig.h                                  | 2 +-
->  include/acpi/acexcep.h                                   | 2 +-
->  include/acpi/acnames.h                                   | 2 +-
->  include/acpi/acoutput.h                                  | 2 +-
->  include/acpi/acpi.h                                      | 2 +-
->  include/acpi/acpiosxf.h                                  | 2 +-
->  include/acpi/acpixf.h                                    | 4 ++--
->  include/acpi/acrestyp.h                                  | 2 +-
->  include/acpi/actbl.h                                     | 2 +-
->  include/acpi/actbl1.h                                    | 2 +-
->  include/acpi/actbl2.h                                    | 2 +-
->  include/acpi/actbl3.h                                    | 2 +-
->  include/acpi/actypes.h                                   | 2 +-
->  include/acpi/acuuid.h                                    | 2 +-
->  include/acpi/platform/acenv.h                            | 2 +-
->  include/acpi/platform/acenvex.h                          | 2 +-
->  include/acpi/platform/acgcc.h                            | 2 +-
->  include/acpi/platform/acgccex.h                          | 2 +-
->  include/acpi/platform/acintel.h                          | 2 +-
->  include/acpi/platform/aclinux.h                          | 2 +-
->  include/acpi/platform/aclinuxex.h                        | 2 +-
->  tools/power/acpi/common/cmfsize.c                        | 2 +-
->  tools/power/acpi/common/getopt.c                         | 2 +-
->  tools/power/acpi/os_specific/service_layers/oslinuxtbl.c | 2 +-
->  tools/power/acpi/os_specific/service_layers/osunixdir.c  | 2 +-
->  tools/power/acpi/os_specific/service_layers/osunixmap.c  | 2 +-
->  tools/power/acpi/os_specific/service_layers/osunixxf.c   | 2 +-
->  tools/power/acpi/tools/acpidump/acpidump.h               | 2 +-
->  tools/power/acpi/tools/acpidump/apdump.c                 | 2 +-
->  tools/power/acpi/tools/acpidump/apfiles.c                | 2 +-
->  tools/power/acpi/tools/acpidump/apmain.c                 | 2 +-
->  174 files changed, 176 insertions(+), 176 deletions(-)
+My Dear
 
-Both patches applies as 5.6 material, thanks!
+My Name is Mrs. Anna H. Bruun, from Norway. I know that this message
+will be a surprise to you. Firstly, I am married to Mr. Patrick Bruun,
+A gold merchant who owns a small gold Mine in Burkina Faso; He died of
+Cardiovascular Disease in mid-March 2011. During his life time he
+deposited the sum of =E2=82=AC 8.5 Million Euro) Eight million, Five hundre=
+d
+thousand Euros in a bank in Ouagadougou the capital city of Burkina
+Faso. The deposited money was from the sale of the shares, death
+benefits payment and entitlements of my deceased husband by his
+company.
+
+I am sending this message to you praying that it will reach you in
+good health, since I am not in good health condition in which I sleep
+every night without knowing if I may be alive to see the next day. I
+am suffering from long time cancer and presently i am partially
+suffering from a stroke illness which has become almost impossible for
+me to move around. I am married to my late husband for over 4 years
+before he died and is unfortunately that we don't have a child, my
+doctor confided in me that i have less chance to live. Having known my
+health condition, I decided to contact you to claim the fund since I
+don't have any relation I grew up from the orphanage home,
+
+I have decided to donate what I have to you for the support of helping
+Motherless babies/Less privileged/Widows' because I am dying and
+diagnosed of cancer for about 2 years ago. I have been touched by God
+Almighty to donate from what I have inherited from my late husband to
+you for good work of God Almighty. I have asked Almighty God to
+forgive me and believe he has, because He is a Merciful God I will be
+going in for an operation surgery soon
+
+This is the reason i need your services to stand as my next of kin or
+an executor to claim the funds for charity purposes. If this money
+remains unclaimed after my death, the bank executives or the
+government will take the money as unclaimed fund and maybe use it for
+selfish and worthless ventures, I need a very honest person who can
+claim this money and use it for Charity works, for orphanages, widows
+and also build schools for less privilege that will be named after my
+late husband and my name; I need your urgent answer to know if you
+will be able to execute this project, and I will give you more
+Information on how the fund will be transferred to your bank account.
+
+Thanks
+Mrs. Anna H.
