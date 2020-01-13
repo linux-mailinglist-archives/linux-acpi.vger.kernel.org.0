@@ -2,85 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F03D138BB7
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2020 07:16:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4769138C25
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2020 08:05:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729184AbgAMGQp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Jan 2020 01:16:45 -0500
-Received: from mail01.vodafone.es ([217.130.24.71]:37277 "EHLO
-        mail01.vodafone.es" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725909AbgAMGQp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Jan 2020 01:16:45 -0500
-IronPort-SDR: ePVpGIrltg4LNRT4XXwlJPYtosn8jqm/MpBlNprqkzQtwhxk47flxTdE9vZkoIWFRA/q7lVE2w
- Cjkj9qK2KZ1A==
-IronPort-PHdr: =?us-ascii?q?9a23=3AKaxxcRQ3xRZ3dge9a9Xbbv7RJtpsv+yvbD5Q0Y?=
- =?us-ascii?q?Iujvd0So/mwa6ybRSN2/xhgRfzUJnB7Loc0qyK6vumAzJRqsfd+Fk5M7V0Hy?=
- =?us-ascii?q?cfjssXmwFySOWkMmbcaMDQUiohAc5ZX0Vk9XzoeWJcGcL5ekGA6ibqtW1aFR?=
- =?us-ascii?q?rwLxd6KfroEYDOkcu3y/qy+5rOaAlUmTaxe7x/IAi4oAnLqMUbgI9vJqk1xx?=
- =?us-ascii?q?bGv3BFZ/lYyWR0KFyJgh3y/N2w/Jlt8yRRv/Iu6ctNWrjkcqo7ULJVEi0oP3?=
- =?us-ascii?q?g668P3uxbDSxCP5mYHXWUNjhVIGQnF4wrkUZr3ryD3q/By2CiePc3xULA0RT?=
- =?us-ascii?q?Gv5LplRRP0lCsKMSMy/GfQhsJtkK1Uuhehphxmz4PKZ4GVLuJ+fqTHfdwAWW?=
- =?us-ascii?q?pOQN9dWDJHAo+lc4YPE/YBMvxEoIn9uVQOqAWxBQ+wBO/21DBIgGb606o90+?=
- =?us-ascii?q?QnDw7H3BUsEMwIsH/JqNn4OrseXfywwKTO0D7Nbe5Z2S3l5YbGch4hu++CU7?=
- =?us-ascii?q?Ftf8Xe1UYhGBjIjkmSpIP5Iz+ZyvgBv3ad4uF9VeyvkWknqwRprza12Mgslp?=
- =?us-ascii?q?fGhpgIwV/E8iV5xok1LsC/RU5jf9GkDIVftzuUNotxRMMiTHpluCYhyrIdpZ?=
- =?us-ascii?q?G3ZjQFyJMixxLFa/yHcJGF7xT+X+iSOTd1nGxpdK+9ihqo7EStxPHwWtOq3F?=
- =?us-ascii?q?tFtCZInNnBu3YQ3BLJ8MeHUOFy/kK51DaK0ADc9/9LLFgvlareN54h2rkwlo?=
- =?us-ascii?q?cPsUjbHi/5hkH2jKiOe0Uh4Oeo6uDnYq/4qZ+YK4N5hRvyMropmsOiG+s4PA?=
- =?us-ascii?q?8OX26F9uimyrLj5lX1QLRMjvIojqnUqI7WKdkZq6KjHgNY3Jov5wyhAzqpyt?=
- =?us-ascii?q?gVk3kKIEpAeB2djojpP1/OIOr/Dfe6m1msiClkx+zYMb37DJTNKX7DkLj6cL?=
- =?us-ascii?q?Z98E5T0xY8wcpD6JJTD7ENOvLzWkzpuNzCEhA5KxC0w/rgCNhl0oMeWGSPAr?=
- =?us-ascii?q?KWMa/Lq1CH+vovI+iXaY8LtzbyNeIl6+TtjXAng18de7em3Z8NZHC/BPRmLB?=
- =?us-ascii?q?bRXX25htYHDHdPtwEmTcT0h1CYFz1efXC/W+Q7/D5oMo++CZb/QdWVjaCMxm?=
- =?us-ascii?q?+EGZtZLjReB0yBC2jvcYqEWPcXYim6LcpokzhCXr+kHdwPzxar4Tf317d9Zt?=
- =?us-ascii?q?XT/CJQ4YruyNVv+OrVmjky7jZ/Sc+a1ieNTDcnzSszWzYq0fUm8gRGwVCZ3P?=
- =?us-ascii?q?0j26RV?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2ETKgAEChxemCMYgtkUBjMYGgEBAQE?=
- =?us-ascii?q?BAQEBAQMBAQEBEQEBAQICAQEBAYF7AgEBFwEBgS6BTVIgEpNPgU0fg0OLY4E?=
- =?us-ascii?q?Agx4VhggTDIFbDQEBAQEBNQIBAYRATgEXgQ8kOgQNAgMNAQEFAQEBAQEFBAE?=
- =?us-ascii?q?BAhABAQEBAQYNCwYphUqCHQweAQQBAQEBAwMDAQEMAYNdBxkPOUpMAQ4BU4M?=
- =?us-ascii?q?EgksBATOFJJc7AY0EDQ0ChR2CJQQKgQmBGiOBNgGMGBqBQT+BIyGCKwgBggG?=
- =?us-ascii?q?CfwESAWyCSIJZBI1CEiGBB4gpmBeCQQR2iUyMAoI3AQ+IAYQxAxCCRQ+BCYg?=
- =?us-ascii?q?DhE6BfaM3V4EMDXpxMxqCJhqBIE8YDYgbji1AgRYQAk+JLoIyAQE?=
-X-IPAS-Result: =?us-ascii?q?A2ETKgAEChxemCMYgtkUBjMYGgEBAQEBAQEBAQMBAQEBE?=
- =?us-ascii?q?QEBAQICAQEBAYF7AgEBFwEBgS6BTVIgEpNPgU0fg0OLY4EAgx4VhggTDIFbD?=
- =?us-ascii?q?QEBAQEBNQIBAYRATgEXgQ8kOgQNAgMNAQEFAQEBAQEFBAEBAhABAQEBAQYNC?=
- =?us-ascii?q?wYphUqCHQweAQQBAQEBAwMDAQEMAYNdBxkPOUpMAQ4BU4MEgksBATOFJJc7A?=
- =?us-ascii?q?Y0EDQ0ChR2CJQQKgQmBGiOBNgGMGBqBQT+BIyGCKwgBggGCfwESAWyCSIJZB?=
- =?us-ascii?q?I1CEiGBB4gpmBeCQQR2iUyMAoI3AQ+IAYQxAxCCRQ+BCYgDhE6BfaM3V4EMD?=
- =?us-ascii?q?XpxMxqCJhqBIE8YDYgbji1AgRYQAk+JLoIyAQE?=
-X-IronPort-AV: E=Sophos;i="5.69,427,1571695200"; 
-   d="scan'208";a="304601038"
-Received: from mailrel04.vodafone.es ([217.130.24.35])
-  by mail01.vodafone.es with ESMTP; 13 Jan 2020 07:16:42 +0100
-Received: (qmail 24629 invoked from network); 12 Jan 2020 05:00:22 -0000
-Received: from unknown (HELO 192.168.1.3) (quesosbelda@[217.217.179.17])
-          (envelope-sender <peterwong@hsbc.com.hk>)
-          by mailrel04.vodafone.es (qmail-ldap-1.03) with SMTP
-          for <linux-acpi@vger.kernel.org>; 12 Jan 2020 05:00:22 -0000
-Date:   Sun, 12 Jan 2020 06:00:18 +0100 (CET)
-From:   Peter Wong <peterwong@hsbc.com.hk>
-Reply-To: Peter Wong <peterwonghkhsbc@gmail.com>
-To:     linux-acpi@vger.kernel.org
-Message-ID: <23038799.460862.1578805222391.JavaMail.cash@217.130.24.55>
-Subject: Investment opportunity
+        id S1726976AbgAMHFS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Jan 2020 02:05:18 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:8704 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725954AbgAMHFS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 13 Jan 2020 02:05:18 -0500
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 90D8B53AD7DB6C6596EA;
+        Mon, 13 Jan 2020 15:05:16 +0800 (CST)
+Received: from [127.0.0.1] (10.177.223.23) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Mon, 13 Jan 2020
+ 15:05:07 +0800
+Subject: Re: [PATCH v1] ACPI/IORT: Workaround for IORT ID count "minus one"
+ issue
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+CC:     Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Pankaj Bansal <pankaj.bansal@nxp.com>,
+        <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
+        John Garry <john.garry@huawei.com>
+References: <1577708824-4873-1-git-send-email-guohanjun@huawei.com>
+ <20200110121148.GA22244@e121166-lin.cambridge.arm.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <3b45e62a-89bf-a950-d3de-1435cba9d1a8@huawei.com>
+Date:   Mon, 13 Jan 2020 15:04:01 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <20200110121148.GA22244@e121166-lin.cambridge.arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.223.23]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Greetings,
-Please read the attached investment proposal and reply for more details.
-Are you interested in loan?
-Sincerely: Peter Wong
+On 2020/1/10 20:11, Lorenzo Pieralisi wrote:
+> On Mon, Dec 30, 2019 at 08:27:04PM +0800, Hanjun Guo wrote:
+>> The IORT spec [0] says Number of IDs = The number of IDs in the range minus
+>> one, it is confusing but it was written down in the first version of the
+>> IORT spec. But the IORT ID mapping function iort_id_map() did something
+>> wrong from the start, which bails out if:
+>>
+>> the request ID >= the input base + number of IDs
+>>
+>> This is wrong because it ignored the "minus one", and breaks some valid
+>> usecases such as ID mapping to contain single device mapping without
+>> single mapping flag set.
+>>
+>> Pankaj Bansal proposed a solution to fix the issue [1], which bails
+>> out if:
+>>
+>> the request ID > the input base + number of IDs
+>>
+>> This works as the spec defined, unfortunately some firmware didn't
+>> minus one for the number of IDs in the range, and the propoased
+>> solution will break those systems in this way:
+>>
+>> PCI hostbridge mapping entry 1:
+>> Input base:  0x1000
+>> ID Count:    0x100
+>> Output base: 0x1000
+>> Output reference: 0xC4  //ITS reference
+>>
+>> PCI hostbridge mapping entry 2:
+>> Input base:  0x1100
+>> ID Count:    0x100
+>> Output base: 0x2000
+>> Output reference: 0xD4  //ITS reference
+>>
+>> Two mapping entries which the second entry's Input base = the first
+>> entry's Input base + ID count, so for requester ID 0x1100 will map
+>> to ITS 0xC4 not 0xD4 if we update '>=' to '>'.
+>>
+>> So introduce a workaround to match the IORT's OEM information for
+>> the broken firmware, also update the logic of the ID mapping for
+>> firmwares report the number of IDs as the IORT spec defined, to
+>> make the code compatible for both kinds of system.
+>>
+>> I checked the ACPI tables in the tianocore/edk2-platforms [2], only
+>> HiSilicon HIP07/08 did wrong, so just add HIP07/08 to the workaround
+>> info table, if we break other platforms, we can add that later.
+>>
+>> [0]: http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf
+>> [1]: https://patchwork.kernel.org/patch/11292823/
+>> [2]: https://github.com/tianocore/edk2-platforms
+>>
+>> Cc: Pankaj Bansal <pankaj.bansal@nxp.com>
+>> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+>> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
+> 
+> Commit log rewritten below - please update the code (and check the
+> log) as per this thread discussion.
 
+Thank you, I will resend it ASAP.
 
-
-
-----------------------------------------------------
-This email was sent by the shareware version of Postman Professional.
+Thanks
+Hanjun
 
