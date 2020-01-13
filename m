@@ -2,164 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A61C138F5F
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2020 11:41:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1633138F9E
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2020 11:52:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727286AbgAMKlZ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 13 Jan 2020 05:41:25 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:40474 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725992AbgAMKlY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Jan 2020 05:41:24 -0500
-Received: by mail-ot1-f65.google.com with SMTP id w21so8474975otj.7;
-        Mon, 13 Jan 2020 02:41:24 -0800 (PST)
+        id S1726567AbgAMKwG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Jan 2020 05:52:06 -0500
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:33317 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726193AbgAMKwG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Jan 2020 05:52:06 -0500
+Received: by mail-oi1-f195.google.com with SMTP id v140so7827422oie.0;
+        Mon, 13 Jan 2020 02:52:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=XoJuS01vPQ4pN0b1Cp7e9TdKG+2c5zyK3vQd3vSp1BE=;
-        b=uCsBp1yqPy7YmqcyyHfBxDfscrmXqjfwfaz3jDM/Ij1Vd5GF3+168idqaEKKGo+7zs
-         YsLoFwsrV57a0u2IcyLFaqZ4Rpboq7h6qBVBRhNbHgM0LOKxuFITsNCIYG8+JV+aBQv9
-         uae0gzI7LGoincI3jx6z1k/Hti9yxKX3Gf7jykm/YgC6dSan1hjt7ozTPyj2XHGzjk2Q
-         mcrqXQtWe7DKjbmdSOoM12rQ/8G7NfVhS4r2F4zoRLGM1EzfdQkdeebCCwFk8xZV2/+R
-         6vjMKdVzNNSAj60wElDl+WiB1kwba9+bJ3EW68m3UWJnGuT5i5Tmp9ygYzE0KzbZ6N6i
-         W8xw==
-X-Gm-Message-State: APjAAAUUenw4dJwBN5WxSGn93A0p8Pz8pEjNUnw3nYmLIrcP0LzkO9to
-        XZcVB/OxhDoa4ol5XwCjaumuefnTzi+VHfLaYU9XHhar
-X-Google-Smtp-Source: APXvYqwa5gGw8qcimQGa6PNGfDx1jPzYIi9NPt7xRXjzNeTA3BeF3VN1gXT/xLiMsDYGTIrnOeIl46vhNuj+RhZo9Yo=
-X-Received: by 2002:a9d:7653:: with SMTP id o19mr3910234otl.118.1578912083671;
- Mon, 13 Jan 2020 02:41:23 -0800 (PST)
+         :message-id:subject:to:cc;
+        bh=jtPM0qNpCXM1Rp0ETmaEt0V+zDCKJAyqKnvcFDnN5TI=;
+        b=WA4RR2py+X17VEccHsq0Sdywm2W6ngeIRGqz90eIxFxnLoNNH2GhBqHz0n9S118gJc
+         zskt81YTcUo+d9Fj2CTm1kffpU2UPoJYCXCyE201l58tLyLZDA9t45UdwDazYqbtXJIb
+         sVrU7nBIHEMf7NpTfzR7XympmiEA4cwYdQucqsWCqzv2XVzc22hDeYUx1LlmuMwGVbhn
+         0OBuGyTOFN+Du9SJaKcdfC881dPjwoA7wOpuzgKRwoG+YPKhq4Av0bf/Kezco38fT43W
+         Oh1p34UU5m67PG1MjLvgRpZ4IjJa6U5LsMHtvH5AgNlN3Rcaq6kUzTxxH1M+bQpaM9pH
+         4IwA==
+X-Gm-Message-State: APjAAAX1zJaAvdkl4srzVC7XPnEh1fsq0UoNOxpgGfTGhwg7R+UHv0fN
+        3jaIVuxVpQmh3cLF4ckbwkajK45/rR9usETeSD4=
+X-Google-Smtp-Source: APXvYqwbPBJ7mO31GdY19gP+AB/5p+E2X/W43tAwX6BnwDbHMCtzOVfiGXE9nXaiCBE06uLBIrvcFyfeOTJNQ6C/roU=
+X-Received: by 2002:aca:d6c8:: with SMTP id n191mr12916572oig.103.1578912725769;
+ Mon, 13 Jan 2020 02:52:05 -0800 (PST)
 MIME-Version: 1.0
-References: <20200109154529.19484-1-sakari.ailus@linux.intel.com> <20200109154529.19484-3-sakari.ailus@linux.intel.com>
-In-Reply-To: <20200109154529.19484-3-sakari.ailus@linux.intel.com>
+References: <1578503858-27853-1-git-send-email-bupadhaya@marvell.com> <20200109095026.GA5603@zn.tnic>
+In-Reply-To: <20200109095026.GA5603@zn.tnic>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 13 Jan 2020 11:41:12 +0100
-Message-ID: <CAJZ5v0hfGateSt-_EBuyHqLYi5NR4PUFB=wDF+Gu+9-tFXuohg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/5] ACPI: Add a convenience function to tell a device
- is suspended in probe
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+Date:   Mon, 13 Jan 2020 11:51:54 +0100
+Message-ID: <CAJZ5v0gohOwnGqMk86Zyqxn11fxukXifSe=T08n7vrvv5Q4QNw@mail.gmail.com>
+Subject: Re: [PATCH V2] apei/ghes: fix ghes_poll_func by registering in
+ non-deferrable mode
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Bhaskar Upadhaya <bupadhaya@marvell.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Mani, Rajmohan" <rajmohan.mani@intel.com>,
-        Tomasz Figa <tfiga@chromium.org>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:EDAC-CORE" <linux-edac@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, gkulkarni@marvell.com,
+        Robert Richter <rrichter@marvell.com>,
+        bhaskar.upadhaya.linux@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 9, 2020 at 4:44 PM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
+On Thu, Jan 9, 2020 at 10:50 AM Borislav Petkov <bp@alien8.de> wrote:
 >
-> Add a convenience function to tell whether a device is suspended for probe
-> or remove, for busses where the custom is that drivers don't need to
-> resume devices in probe, or suspend them in their remove handlers.
+> On Wed, Jan 08, 2020 at 09:17:38AM -0800, Bhaskar Upadhaya wrote:
+> > Currently Linux register ghes_poll_func with TIMER_DEFERRABLE flag,
+> > because of which it is serviced when the CPU eventually wakes up with a
+> > subsequent non-deferrable timer and not at the configured polling interval.
+> >
+> > For polling mode, the polling interval configured by firmware should not
+> > be exceeded as per ACPI_6_3 spec[refer Table 18-394], So Timer need to
+> > be configured in non-deferrable mode by removing TIMER_DEFERRABLE flag.
+> > With NO_HZ enabled and timer callback being configured in non-deferrable
+> > mode, timer callback will get called exactly after polling interval.
+> >
+> > Definition of poll interval as per spec (referred ACPI 6.3):
+> > "Indicates the poll interval in milliseconds OSPM should use to
+> > periodically check the error source for the presence of an error
+> > condition"
+> >
+> > We are observing an issue in our ThunderX2 platforms wherein
+> > ghes_poll_func is not called within poll interval when timer is
+> > configured with TIMER_DEFERRABLE flag(For NO_HZ kernel) and hence
+> > we are losing the error records.
+> >
+> > Impact of removing TIMER_DEFFERABLE flag
+> > - With NO_HZ enabled, additional timer ticks and unnecessary wakeups of
+> >  the cpu happens exactly after polling interval.
+> >
+> > - If polling interval is too small than polling function will be called
+> >  too frequently which may stall the cpu.
 >
-> Returns false on non-ACPI systems.
+> If that becomes a problem, the polling interval setting should be fixed
+> to filter too small values.
 >
-> Suggested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
->  drivers/acpi/device_pm.c | 35 +++++++++++++++++++++++++++++++++++
->  include/linux/acpi.h     |  5 +++++
->  2 files changed, 40 insertions(+)
+> Anyway, I went and streamlined your commit message:
 >
-> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> index 5e4a8860a9c0c..87393020276d8 100644
-> --- a/drivers/acpi/device_pm.c
-> +++ b/drivers/acpi/device_pm.c
-> @@ -1348,4 +1348,39 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
->         return 1;
->  }
->  EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
-> +
-> +/**
-> + * acpi_dev_low_power_state_probe - Tell if a device is in a low power state
+>     apei/ghes: Do not delay GHES polling
+>
+>     Currently, the ghes_poll_func() timer callback is registered with the
+>     TIMER_DEFERRABLE flag. Thus, it is run when the CPU eventually wakes
+>     up together with a subsequent non-deferrable timer and not at the precisely
+>     configured polling interval.
+>
+>     For polling mode, the polling interval configured by firmware should not
+>     be exceeded according to the ACPI spec 6.3, Table 18-394. The definition
+>     of the polling interval is:
+>
+>     "Indicates the poll interval in milliseconds OSPM should use to
+>     periodically check the error source for the presence of an error
+>     condition."
+>
+>     If this interval is extended due to the timer callback deferring, error
+>     records can get lost. Which we are observing on our ThunderX2 platforms.
+>
+>     Therefore, remove the TIMER_DEFERRABLE flag so that the timer callback
+>     executes at the precise interval.
+>
+> and made it more readable, hopefully.
+>
+> Rafael, pls fixup when applying.
 
-"Check the current ACPI power state of a device."
+Done.
 
-> + *                                 during probe
+> With that:
+>
+> Acked-by: Borislav Petkov <bp@suse.de>
 
-Why is this limited to probe?
-
-The function actually checks whether or not the ACPI power state of
-the device is low-power at the call time (except that it is a bit racy
-with respect to _set_power(), so it may not work as expected if called
-in parallel with that one).
-
-Maybe drop the "probe" part of the name (actually, I would call this
-function acpi_dev_state_low_power()) and add a paragraph about the
-potential race with _set_power() to the description?
-
-> + * @dev: The device
-
-"Physical device the ACPI power state of which to check".
-
-> + *
-> + * Tell whether a given device is in a low power state during the driver's probe
-> + * or remove operation.
-> + *
-> + * Drivers of devices on certain busses such as I²C can generally assume (on
-> + * ACPI based systems) that the devices they control are powered on without
-> + * driver having to do anything about it. Using struct
-> + * device_driver.probe_low_power and "probe-low-power" property, this can be
-> + * negated and the driver has full control of the device power management.
-
-The above information belongs somewhere else in my view.
-
-> + * Always returns false on non-ACPI based systems. True is returned on ACPI
-
-"On a system without ACPI, return false.  On a system with ACPI,
-return true if the current ACPI power state of the device is not D0,
-or false otherwise.
-
-Note that the power state of a device is not well-defined after it has
-been passed to acpi_device_set_power() and before that function
-returns, so it is not valid to ask for the ACPI power state of the
-device in that time frame."
-
-> + * based systems iff the device is in a low power state during probe or remove.
-> + */
-> +bool acpi_dev_low_power_state_probe(struct device *dev)
-> +{
-> +       int power_state;
-> +       int ret;
-> +
-> +       if (!is_acpi_device_node(dev_fwnode(dev)))
-> +               return false;
-
-This is (at least) inefficient, because the same check is repeated by
-ACPI_COMPANION().
-
-If you really want to print the message, it is better to do something like
-
-struct acpi_device *adev = ACPI_COMPANION(dev);
-
-if (!adev)
-        return false;
-
-ret = acpi_device_get_power(adev, &power_state);
-
-> +
-> +       ret = acpi_device_get_power(ACPI_COMPANION(dev), &power_state);
-> +       if (ret) {
-> +               dev_warn(dev, "Cannot obtain power state (%d)\n", ret);
-
-And the log level of this message is way too high IMO.
-
-This means a firmware bug AFAICS and so after seeing it once on a
-given system it becomes noise.  I'd use pr_debug() to print it.
-
-> +               return false;
-> +       }
-> +
-> +       return power_state != ACPI_STATE_D0;
-> +}
-> +EXPORT_SYMBOL_GPL(acpi_dev_low_power_state_probe);
-> +
->  #endif /* CONFIG_PM */
+Thanks!
