@@ -2,200 +2,227 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E7DE13A920
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2020 13:19:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B80B513A974
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2020 13:38:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729074AbgANMTc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Jan 2020 07:19:32 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:45564 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726053AbgANMTb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 14 Jan 2020 07:19:31 -0500
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 4C8371514FD2988328EA;
-        Tue, 14 Jan 2020 20:19:30 +0800 (CST)
-Received: from linux-ibm.site (10.175.102.37) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 14 Jan 2020 20:19:24 +0800
-From:   Hanjun Guo <guohanjun@huawei.com>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Pankaj Bansal" <pankaj.bansal@nxp.com>
-CC:     <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
-        John Garry <john.garry@huawei.com>,
-        "Shameerali Kolothum Thodi" <shameerali.kolothum.thodi@huawei.com>,
-        Ganapatrao Kulkarni <gkulkarni@marvell.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        "Tyler Baicar" <baicar@os.amperecomputing.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>
-Subject: [PATCH v2] ACPI/IORT: Fix 'Number of IDs' handling in iort_id_map()
-Date:   Tue, 14 Jan 2020 20:14:11 +0800
-Message-ID: <1579004051-48797-1-git-send-email-guohanjun@huawei.com>
-X-Mailer: git-send-email 1.7.12.4
+        id S1726197AbgANMi1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Jan 2020 07:38:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36218 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726053AbgANMi1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 14 Jan 2020 07:38:27 -0500
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1007B24672;
+        Tue, 14 Jan 2020 12:38:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579005506;
+        bh=4qRrU6xmKvpy8FR7qF450rvS7P/WNYx1D18kyu0KUL8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=n4X6TGCnSCEYxOD71ysSAp8JqXB5gP16QX5rGahs/0uN3bqmXYSyl+JtzTnAQh8Tf
+         x6BPKCttM9fo/zNYtq5QNsdsMIX4hoCnE4RWUwWnlqYn6E2/eom8qg/1I9dkGMouZ/
+         efdkw+13BcWXIYmoiRfeHQ56lSg9kxK6OTMT5GpI=
+Date:   Tue, 14 Jan 2020 12:38:19 +0000
+From:   Will Deacon <will@kernel.org>
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        iommu@lists.linux-foundation.org, joro@8bytes.org,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
+        robin.murphy@arm.com, bhelgaas@google.com, eric.auger@redhat.com,
+        jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
+Subject: Re: [PATCH v4 07/13] iommu/arm-smmu-v3: Add support for Substream IDs
+Message-ID: <20200114123819.GC29222@willie-the-truck>
+References: <20191219163033.2608177-1-jean-philippe@linaro.org>
+ <20191219163033.2608177-8-jean-philippe@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.102.37]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191219163033.2608177-8-jean-philippe@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The IORT specification [0] (Section 3, table 4, page 9) defines the
-'Number of IDs' as 'The number of IDs in the range minus one'.
+On Thu, Dec 19, 2019 at 05:30:27PM +0100, Jean-Philippe Brucker wrote:
+> At the moment, the SMMUv3 driver implements only one stage-1 or stage-2
+> page directory per device. However SMMUv3 allows more than one address
+> space for some devices, by providing multiple stage-1 page directories. In
+> addition to the Stream ID (SID), that identifies a device, we can now have
+> Substream IDs (SSID) identifying an address space. In PCIe, SID is called
+> Requester ID (RID) and SSID is called Process Address-Space ID (PASID).
+> A complete stage-1 walk goes through the context descriptor table:
+> 
+>       Stream tables       Ctx. Desc. tables       Page tables
+>         +--------+   ,------->+-------+   ,------->+-------+
+>         :        :   |        :       :   |        :       :
+>         +--------+   |        +-------+   |        +-------+
+>    SID->|  STE   |---'  SSID->|  CD   |---'  IOVA->|  PTE  |--> IPA
+>         +--------+            +-------+            +-------+
+>         :        :            :       :            :       :
+>         +--------+            +-------+            +-------+
+> 
+> Rewrite arm_smmu_write_ctx_desc() to modify context descriptor table
+> entries. To keep things simple we only implement one level of context
+> descriptor tables here, but as with stream and page tables, an SSID can
+> be split to index multiple levels of tables.
+> 
+> Tested-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> ---
+>  drivers/iommu/arm-smmu-v3.c | 125 +++++++++++++++++++++++++++++-------
+>  1 file changed, 102 insertions(+), 23 deletions(-)
 
-However, the IORT ID mapping function iort_id_map() treats the 'Number
-of IDs' field as if it were the full IDs mapping count, with the
-following check in place to detect out of boundary input IDs:
+--->8
 
-InputID >= Input base + Number of IDs
+> @@ -1456,6 +1472,33 @@ static int arm_smmu_cmdq_issue_sync(struct arm_smmu_device *smmu)
+>  }
+>  
+>  /* Context descriptor manipulation functions */
+> +static void arm_smmu_sync_cd(struct arm_smmu_domain *smmu_domain,
+> +			     int ssid, bool leaf)
+> +{
+> +	size_t i;
+> +	unsigned long flags;
+> +	struct arm_smmu_master *master;
+> +	struct arm_smmu_device *smmu = smmu_domain->smmu;
+> +	struct arm_smmu_cmdq_ent cmd = {
+> +		.opcode	= CMDQ_OP_CFGI_CD,
+> +		.cfgi	= {
+> +			.ssid	= ssid,
+> +			.leaf	= leaf,
+> +		},
+> +	};
+> +
+> +	spin_lock_irqsave(&smmu_domain->devices_lock, flags);
+> +	list_for_each_entry(master, &smmu_domain->devices, domain_head) {
+> +		for (i = 0; i < master->num_sids; i++) {
+> +			cmd.cfgi.sid = master->sids[i];
+> +			arm_smmu_cmdq_issue_cmd(smmu, &cmd);
+> +		}
+> +	}
+> +	spin_unlock_irqrestore(&smmu_domain->devices_lock, flags);
+> +
+> +	arm_smmu_cmdq_issue_sync(smmu);
 
-This check is flawed in that it considers the 'Number of IDs' field as
-the full number of IDs mapping and disregards the 'minus one' from
-the IDs count.
+Can you send a follow-up patch converting this to batch submission, please?
 
-The correct check in iort_id_map() should be implemented as:
+> +}
+> +
+>  static int arm_smmu_alloc_cd_leaf_table(struct arm_smmu_device *smmu,
+>  					struct arm_smmu_cd_table *table,
+>  					size_t num_entries)
+> @@ -1498,34 +1541,65 @@ static u64 arm_smmu_cpu_tcr_to_cd(u64 tcr)
+>  	return val;
+>  }
+>  
+> -static void arm_smmu_write_ctx_desc(struct arm_smmu_device *smmu,
+> -				    struct arm_smmu_s1_cfg *cfg)
+> +static int arm_smmu_write_ctx_desc(struct arm_smmu_domain *smmu_domain,
+> +				   int ssid, struct arm_smmu_ctx_desc *cd)
+>  {
+> -	u64 val;
+> -	__le64 *cdptr = cfg->table.ptr;
+> -
+>  	/*
+> -	 * We don't need to issue any invalidation here, as we'll invalidate
+> -	 * the STE when installing the new entry anyway.
+> +	 * This function handles the following cases:
+> +	 *
+> +	 * (1) Install primary CD, for normal DMA traffic (SSID = 0).
+> +	 * (2) Install a secondary CD, for SID+SSID traffic.
+> +	 * (3) Update ASID of a CD. Atomically write the first 64 bits of the
+> +	 *     CD, then invalidate the old entry and mappings.
+> +	 * (4) Remove a secondary CD.
+>  	 */
+> -	val = arm_smmu_cpu_tcr_to_cd(cfg->cd.tcr) |
+> -#ifdef __BIG_ENDIAN
+> -	      CTXDESC_CD_0_ENDI |
+> -#endif
+> -	      CTXDESC_CD_0_R | CTXDESC_CD_0_A | CTXDESC_CD_0_ASET |
+> -	      CTXDESC_CD_0_AA64 | FIELD_PREP(CTXDESC_CD_0_ASID, cfg->cd.asid) |
+> -	      CTXDESC_CD_0_V;
+> +	u64 val;
+> +	bool cd_live;
+> +	struct arm_smmu_device *smmu = smmu_domain->smmu;
+> +	__le64 *cdptr = smmu_domain->s1_cfg.table.ptr + ssid *
+> +			CTXDESC_CD_DWORDS;
+>  
+> -	/* STALL_MODEL==0b10 && CD.S==0 is ILLEGAL */
+> -	if (smmu->features & ARM_SMMU_FEAT_STALL_FORCE)
+> -		val |= CTXDESC_CD_0_S;
+> +	val = le64_to_cpu(cdptr[0]);
+> +	cd_live = !!(val & CTXDESC_CD_0_V);
+>  
+> -	cdptr[0] = cpu_to_le64(val);
+> +	if (!cd) { /* (4) */
+> +		val = 0;
+> +	} else if (cd_live) { /* (3) */
+> +		val &= ~CTXDESC_CD_0_ASID;
+> +		val |= FIELD_PREP(CTXDESC_CD_0_ASID, cd->asid);
+> +		/*
+> +		 * Until CD+TLB invalidation, both ASIDs may be used for tagging
+> +		 * this substream's traffic
+> +		 */
 
-InputID > Input base + Number of IDs
+I don't think you need to change anything here, but I do find it a little
+scary that we can modify live CDs like this. However, given that the
+hardware is permitted to cache the structures regardless of validity, it
+appears to be the only option. Terrifying!
 
-this implements the specification correctly but unfortunately it breaks
-existing firmwares that erroneously set the 'Number of IDs' as the full
-IDs mapping count rather than IDs mapping count minus one.
+> +	} else { /* (1) and (2) */
+> +		cdptr[1] = cpu_to_le64(cd->ttbr & CTXDESC_CD_1_TTB0_MASK);
 
-e.g.
+Can you use FIELD_PREP here too?
 
-PCI hostbridge mapping entry 1:
-Input base:  0x1000
-ID Count:    0x100
-Output base: 0x1000
-Output reference: 0xC4  //ITS reference
+> +		cdptr[2] = 0;
+> +		cdptr[3] = cpu_to_le64(cd->mair);
+> +
+> +		/*
+> +		 * STE is live, and the SMMU might read dwords of this CD in any
+> +		 * order. Ensure that it observes valid values before reading
+> +		 * V=1.
+> +		 */
+> +		arm_smmu_sync_cd(smmu_domain, ssid, true);
+>  
+> -	val = cfg->cd.ttbr & CTXDESC_CD_1_TTB0_MASK;
+> -	cdptr[1] = cpu_to_le64(val);
+> +		val = arm_smmu_cpu_tcr_to_cd(cd->tcr) |
+> +#ifdef __BIG_ENDIAN
+> +			CTXDESC_CD_0_ENDI |
+> +#endif
+> +			CTXDESC_CD_0_R | CTXDESC_CD_0_A | CTXDESC_CD_0_ASET |
+> +			CTXDESC_CD_0_AA64 |
+> +			FIELD_PREP(CTXDESC_CD_0_ASID, cd->asid) |
+> +			CTXDESC_CD_0_V;
+>  
+> -	cdptr[3] = cpu_to_le64(cfg->cd.mair);
+> +		/* STALL_MODEL==0b10 && CD.S==0 is ILLEGAL */
+> +		if (smmu->features & ARM_SMMU_FEAT_STALL_FORCE)
+> +			val |= CTXDESC_CD_0_S;
+> +	}
+> +
+> +	WRITE_ONCE(cdptr[0], cpu_to_le64(val));
 
-PCI hostbridge mapping entry 2:
-Input base:  0x1100
-ID Count:    0x100
-Output base: 0x2000
-Output reference: 0xD4  //ITS reference
+Can you add a comment here citing 3.21.3 ("Configuration structures and
+configuration invalidation completion") please? Specifically, the note that
+states:
 
-Two mapping entries which the second entry's Input base = the first
-entry's Input base + ID count, so for InputID 0x1100 and with the
-correct InputID check in place in iort_id_map() the kernel would map
-the InputID to ITS 0xC4 not 0xD4 as it would be expected.
+  | The size of single-copy atomic reads made by the SMMU is IMPLEMENTATION
+  | DEFINED but must be at least 64 bits.
 
-Therefore, to keep supporting existing flawed firmwares, introduce a
-workaround that instructs the kernel to use the old InputID range check
-logic in iort_id_map(), so that we can support both firmwares written
-with the flawed 'Number of IDs' logic and the correct one as defined in
-the specifications.
+Because that's really crucial to the WRITE_ONCE() above!
 
-[0]: http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf
+Shouldn't we also do the same thing for the STE side of things? I think so,
+and you can just comment of them with the quote and cite the comment from
+the other callsite.
 
-Reported-by: Pankaj Bansal <pankaj.bansal@nxp.com>
-Link: https://lore.kernel.org/linux-acpi/20191215203303.29811-1-pankaj.bansal@nxp.com/
-Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
-Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc: Pankaj Bansal <pankaj.bansal@nxp.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
----
+Thanks,
 
-v1->v2:
- - Update the commit log and title by Lorenzo;
- - Update the code and log suggested by Robin and Lorenzo;
-
-RFC->v1:
- - Print warning when matched the workaround info, suggested by Pankaj;
-
- drivers/acpi/arm64/iort.c | 57 +++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 55 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 33f7198..6078064 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -298,6 +298,59 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
- 	return status;
- }
- 
-+struct iort_workaround_oem_info {
-+	char oem_id[ACPI_OEM_ID_SIZE + 1];
-+	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
-+	u32 oem_revision;
-+};
-+
-+static bool apply_id_count_workaround;
-+
-+static struct iort_workaround_oem_info wa_info[] __initdata = {
-+	{
-+		.oem_id		= "HISI  ",
-+		.oem_table_id	= "HIP07   ",
-+		.oem_revision	= 0,
-+	}, {
-+		.oem_id		= "HISI  ",
-+		.oem_table_id	= "HIP08   ",
-+		.oem_revision	= 0,
-+	}
-+};
-+
-+static void __init
-+iort_check_id_count_workaround(struct acpi_table_header *tbl)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
-+		if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
-+		    !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
-+		    wa_info[i].oem_revision == tbl->oem_revision) {
-+			apply_id_count_workaround = true;
-+			pr_warn(FW_BUG "ID count for ID mapping entry is wrong, applying workaround\n");
-+			break;
-+		}
-+	}
-+}
-+
-+static inline u32 iort_get_map_max(struct acpi_iort_id_mapping *map)
-+{
-+	u32 map_max = map->input_base + map->id_count;
-+
-+	/*
-+	 * The IORT specification revision D (Section 3, table 4, page 9) says
-+	 * Number of IDs = The number of IDs in the range minus one, but the
-+	 * IORT code ignored the "minus one", and some firmware did that too,
-+	 * so apply a workaround here to keep compatible with both the spec
-+	 * compliant and non-spec compliant firmwares.
-+	 */
-+	if (apply_id_count_workaround)
-+		map_max--;
-+
-+	return map_max;
-+}
-+
- static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
- 		       u32 *rid_out)
- {
-@@ -314,8 +367,7 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
- 		return -ENXIO;
- 	}
- 
--	if (rid_in < map->input_base ||
--	    (rid_in >= map->input_base + map->id_count))
-+	if (rid_in < map->input_base || rid_in > iort_get_map_max(map))
- 		return -ENXIO;
- 
- 	*rid_out = map->output_base + (rid_in - map->input_base);
-@@ -1631,5 +1683,6 @@ void __init acpi_iort_init(void)
- 		return;
- 	}
- 
-+	iort_check_id_count_workaround(iort_table);
- 	iort_init_platform_devices();
- }
--- 
-1.7.12.4
-
+Will
