@@ -2,103 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24770139B50
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2020 22:21:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA7D713A103
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2020 07:34:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728665AbgAMVVz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Jan 2020 16:21:55 -0500
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:33264 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728668AbgAMVVy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Jan 2020 16:21:54 -0500
-Received: by mail-lj1-f194.google.com with SMTP id y6so11837605lji.0
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Jan 2020 13:21:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=t0TLC5mt6zw20J38nO6UV1Kz+5E95WBtIXeRkoxQ4a0=;
-        b=nGlZB+kmYCFVkWgGiGizF0iYMx6fc08SyNenEi1ie1BH6O9A7leQ+E1z8gmkHTjOpr
-         nOoqdrML0dZbAGO5UFtshGU/OWD6f6f0F/veZ5aCAM986QlXq24ftad1qHaX9i4q98Wg
-         EoYjC5Oyb3t1NQaQxIOk0nTQslTThixJMUhhDGvDRQHs0do2h9LwZvDqK3AIdzZpAM0R
-         CvzgjSLXZdR1AH7tbS5NH6zqqD94GYqcZTUj1pzBtDCZpZMBOHCY3HvooaxZobtr/kB6
-         NQhaW0mcftRzL8qnqQIP50jYeo/WnjE9xL+LH+Nk1uyDoDfsZ2XvtnUMEGk1p21ER/Rt
-         PVAQ==
+        id S1728791AbgANGeL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Jan 2020 01:34:11 -0500
+Received: from mail-il1-f200.google.com ([209.85.166.200]:34043 "EHLO
+        mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728783AbgANGeL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Jan 2020 01:34:11 -0500
+Received: by mail-il1-f200.google.com with SMTP id l13so9790279ils.1
+        for <linux-acpi@vger.kernel.org>; Mon, 13 Jan 2020 22:34:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=t0TLC5mt6zw20J38nO6UV1Kz+5E95WBtIXeRkoxQ4a0=;
-        b=gc2hBQRouu5KNe7hpDh826Q560zzFXbEm2/mTSeHm9nfJNf21knP2eeNHbCvMwH4Tg
-         Yz81V8if2cChs895Y8OslLVA5v6mTmnk2svMVLmaxolpQC2O4bY831k9TQfNg5C41vEN
-         A/xEDvRAs4C0298Nwk3EoKShx08FrOswJAZbTIoQtFMx3Fzph/w5mM4ephomVOdKfLiV
-         dDzL7LSNGU6MOE9jywE53l3YMZdXJhF1Rq5nU4PDX6Yv+HYJuUSGA4vDG90IL0yHEqyn
-         MsAhb6+d9Xe4BsvpCx3jShUSAQDUG+D4j/gb1Xrw6b+TO8Ym+MjQZxll7/qE9zzpX+nR
-         gWYg==
-X-Gm-Message-State: APjAAAWNP42uDEaMvwOQ2L96sCQWg01bm7eeuIiZFMf1xkn1pOC1ESSh
-        61B+kSvWbkKPOQt7ZpqL1KGer3H6oAEDEA3B4gQ=
-X-Google-Smtp-Source: APXvYqwJ/b8MnFX6qGdbe6KhaLPoA7/BeUW0PPYYIJ1mHO8USQIQaLJkgTT9NUU5/zUO7MBmyAI4TrPoI3UxJUdMMW8=
-X-Received: by 2002:a2e:9e4c:: with SMTP id g12mr12150442ljk.15.1578950512647;
- Mon, 13 Jan 2020 13:21:52 -0800 (PST)
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=AsoDybWiu9oeeZIYozVRkA2K+tw442FbkqUUZ2+BDk4=;
+        b=hpaHDIE6NsYlgfJ6oYoQwaw2YVPioUbpQK9L1xN5hmvsan/TnDFtYksf0/IrSLq6aO
+         SogQOusVI4NKZpfT4NMwySMPJ0Hd7u5I5xfo0peiDjXfyaY95k+adg90v3HI5ojJtRNt
+         eQ7DRDPMM3C6CELKk8o6430CzjGsiwyhx72z1HmErdfy5+IT0gfjFCZeqCaaKpnaJDJW
+         xQ5MOHlk7OnsUMlZRpdPQFfsHOu2pDhzGZH18bphofohmHwGNzsxttOItDrdppbO5Lev
+         l6u9EGzJ8zmqHkx8WOqZM4hGXOfkzLs0Oju3LXqnlR2NMMB4X49bE1eak0zVxGOZ2HCx
+         rWbA==
+X-Gm-Message-State: APjAAAW35uZtyP+eq2gJlXkrpqeoO8buhzufHXZKhvNDrPEFC+R/JeMC
+        tmkG8aiUdjJVbg0pse1Wy64BlN18iIYfzNy4Pj2h3IO23c6W
+X-Google-Smtp-Source: APXvYqwgTdOp85AttTjzBrnZD7gxdOtH9RZ0rYYksQSDiYgMzGVwR5CKnEeGUOuZFCV7CKvHoAtRchuXup6x4gmDCairIf8TIA24
 MIME-Version: 1.0
-Reply-To: mrsanna.h.bruun119@gmail.com
-Received: by 2002:ac2:4a9d:0:0:0:0:0 with HTTP; Mon, 13 Jan 2020 13:21:52
- -0800 (PST)
-From:   "Mrs. Anna H. Bruun" <mrsanna.h.bruun119@gmail.com>
-Date:   Mon, 13 Jan 2020 13:21:52 -0800
-X-Google-Sender-Auth: OgFXnPtFSZTyLXaS-XP0YuYAmlo
-Message-ID: <CAEv_75a3rq65fdm=kAmcgVfwsaASntdBv6-YFC2YYLg4EOGa9A@mail.gmail.com>
-Subject: My Greetings
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Received: by 2002:a5d:8a0c:: with SMTP id w12mr15667659iod.194.1578983650674;
+ Mon, 13 Jan 2020 22:34:10 -0800 (PST)
+Date:   Mon, 13 Jan 2020 22:34:10 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000009acfef059c13c771@google.com>
+Subject: KASAN: vmalloc-out-of-bounds Read in acpi_nfit_ctl
+From:   syzbot <syzbot+002f559bf34c2c7467d0@syzkaller.appspotmail.com>
+To:     dan.j.williams@intel.com, dave.jiang@intel.com,
+        ira.weiny@intel.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
+        rjw@rjwysocki.net, syzkaller-bugs@googlegroups.com,
+        vishal.l.verma@intel.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-My Dear
+Hello,
 
-My Name is Mrs. Anna H. Bruun, from Norway. I know that this message
-will be a surprise to you. Firstly, I am married to Mr. Patrick Bruun,
-A gold merchant who owns a small gold Mine in Burkina Faso; He died of
-Cardiovascular Disease in mid-March 2011. During his life time he
-deposited the sum of =E2=82=AC 8.5 Million Euro) Eight million, Five hundre=
-d
-thousand Euros in a bank in Ouagadougou the capital city of Burkina
-Faso. The deposited money was from the sale of the shares, death
-benefits payment and entitlements of my deceased husband by his
-company.
+syzbot found the following crash on:
 
-I am sending this message to you praying that it will reach you in
-good health, since I am not in good health condition in which I sleep
-every night without knowing if I may be alive to see the next day. I
-am suffering from long time cancer and presently i am partially
-suffering from a stroke illness which has become almost impossible for
-me to move around. I am married to my late husband for over 4 years
-before he died and is unfortunately that we don't have a child, my
-doctor confided in me that i have less chance to live. Having known my
-health condition, I decided to contact you to claim the fund since I
-don't have any relation I grew up from the orphanage home,
+HEAD commit:    040a3c33 Merge tag 'iommu-fixes-v5.5-rc5' of git://git.ker..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=120a5d8ee00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=7e89bd00623fe71e
+dashboard link: https://syzkaller.appspot.com/bug?extid=002f559bf34c2c7467d0
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+userspace arch: i386
 
-I have decided to donate what I have to you for the support of helping
-Motherless babies/Less privileged/Widows' because I am dying and
-diagnosed of cancer for about 2 years ago. I have been touched by God
-Almighty to donate from what I have inherited from my late husband to
-you for good work of God Almighty. I have asked Almighty God to
-forgive me and believe he has, because He is a Merciful God I will be
-going in for an operation surgery soon
+Unfortunately, I don't have any reproducer for this crash yet.
 
-This is the reason i need your services to stand as my next of kin or
-an executor to claim the funds for charity purposes. If this money
-remains unclaimed after my death, the bank executives or the
-government will take the money as unclaimed fund and maybe use it for
-selfish and worthless ventures, I need a very honest person who can
-claim this money and use it for Charity works, for orphanages, widows
-and also build schools for less privilege that will be named after my
-late husband and my name; I need your urgent answer to know if you
-will be able to execute this project, and I will give you more
-Information on how the fund will be transferred to your bank account.
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+002f559bf34c2c7467d0@syzkaller.appspotmail.com
 
-Thanks
-Mrs. Anna H.
+==================================================================
+BUG: KASAN: vmalloc-out-of-bounds in test_bit  
+include/asm-generic/bitops/instrumented-non-atomic.h:110 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in acpi_nfit_ctl+0x47f/0x1840  
+drivers/acpi/nfit/core.c:495
+Read of size 8 at addr ffffc90002ddbbb8 by task syz-executor.1/5941
+
+CPU: 3 PID: 5941 Comm: syz-executor.1 Not tainted 5.5.0-rc5-syzkaller #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS  
+rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
+Call Trace:
+  __dump_stack lib/dump_stack.c:77 [inline]
+  dump_stack+0x197/0x210 lib/dump_stack.c:118
+  print_address_description.constprop.0.cold+0x5/0x30b mm/kasan/report.c:374
+  __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
+  kasan_report+0x12/0x20 mm/kasan/common.c:639
+  check_memory_region_inline mm/kasan/generic.c:185 [inline]
+  check_memory_region+0x134/0x1a0 mm/kasan/generic.c:192
+  __kasan_check_read+0x11/0x20 mm/kasan/common.c:95
+  test_bit include/asm-generic/bitops/instrumented-non-atomic.h:110 [inline]
+  acpi_nfit_ctl+0x47f/0x1840 drivers/acpi/nfit/core.c:495
+  __nd_ioctl drivers/nvdimm/bus.c:1152 [inline]
+  nd_ioctl.isra.0+0xfe2/0x1580 drivers/nvdimm/bus.c:1230
+  bus_ioctl+0x59/0x70 drivers/nvdimm/bus.c:1242
+  compat_ptr_ioctl+0x6e/0xa0 fs/ioctl.c:788
+  __do_compat_sys_ioctl fs/compat_ioctl.c:214 [inline]
+  __se_compat_sys_ioctl fs/compat_ioctl.c:142 [inline]
+  __ia32_compat_sys_ioctl+0x233/0x610 fs/compat_ioctl.c:142
+  do_syscall_32_irqs_on arch/x86/entry/common.c:337 [inline]
+  do_fast_syscall_32+0x27b/0xe16 arch/x86/entry/common.c:408
+  entry_SYSENTER_compat+0x70/0x7f arch/x86/entry/entry_64_compat.S:139
+RIP: 0023:0xf7f37a39
+Code: 00 00 00 89 d3 5b 5e 5f 5d c3 b8 80 96 98 00 eb c4 8b 04 24 c3 8b 1c  
+24 c3 8b 34 24 c3 8b 3c 24 c3 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90  
+90 90 90 eb 0d 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 002b:00000000f5d330cc EFLAGS: 00000296 ORIG_RAX: 0000000000000036
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 000000000000560a
+RDX: 0000000020000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+
+
+Memory state around the buggy address:
+  ffffc90002ddba80: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
+  ffffc90002ddbb00: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
+> ffffc90002ddbb80: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
+                                         ^
+  ffffc90002ddbc00: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
+  ffffc90002ddbc80: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
+==================================================================
+
+
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
