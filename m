@@ -2,92 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 407D013A41F
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2020 10:47:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89A2913A7DC
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2020 12:07:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728964AbgANJrK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Jan 2020 04:47:10 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2264 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725842AbgANJrJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 14 Jan 2020 04:47:09 -0500
-Received: from LHREML713-CAH.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id 0524B413676FB742ABE3;
-        Tue, 14 Jan 2020 09:47:08 +0000 (GMT)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- LHREML713-CAH.china.huawei.com (10.201.108.36) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Tue, 14 Jan 2020 09:47:07 +0000
-Received: from [127.0.0.1] (10.202.226.43) by lhreml724-chm.china.huawei.com
- (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Tue, 14 Jan
- 2020 09:47:07 +0000
-Subject: Re: [PATCH v1] ACPI/IORT: Workaround for IORT ID count "minus one"
- issue
-To:     Hanjun Guo <guohanjun@huawei.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-References: <1577708824-4873-1-git-send-email-guohanjun@huawei.com>
- <d3af932c-106e-ee6e-56d3-5a665fd9b357@huawei.com>
- <b67fa77a-af21-9013-9162-1cfbd946e648@huawei.com>
-From:   John Garry <john.garry@huawei.com>
-Message-ID: <eef4fe19-5813-ab8d-6249-906dbb3dbbcd@huawei.com>
-Date:   Tue, 14 Jan 2020 09:47:06 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+        id S1729074AbgANLG7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Jan 2020 06:06:59 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45402 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725956AbgANLG7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 14 Jan 2020 06:06:59 -0500
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9C6F0206D5;
+        Tue, 14 Jan 2020 11:06:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579000018;
+        bh=NUepL9I8VxhkL/G0N0NYGcEM4cH+wKLTDcaEIcpguBw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZUXDxIj3k1xuPdIk/43rzWfhLIyHVCsu6peTMrszGiIL2GjqQGiwJBY+YMhXjZ9Qu
+         hYIVZExluD75rG7RLmMDyAZDrmqM0ooSK5PGWTvVRgb5PqsNA9meXdzClU84zB9kZu
+         vjyxEKvFPeISAkzr+LkiY2R4VxGgYDHQba/bS0es=
+Date:   Tue, 14 Jan 2020 11:06:52 +0000
+From:   Will Deacon <will@kernel.org>
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        iommu@lists.linux-foundation.org, joro@8bytes.org,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
+        robin.murphy@arm.com, bhelgaas@google.com, eric.auger@redhat.com,
+        jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
+Subject: Re: [PATCH v4 06/13] iommu/arm-smmu-v3: Add context descriptor
+ tables allocators
+Message-ID: <20200114110651.GA29222@willie-the-truck>
+References: <20191219163033.2608177-1-jean-philippe@linaro.org>
+ <20191219163033.2608177-7-jean-philippe@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <b67fa77a-af21-9013-9162-1cfbd946e648@huawei.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.202.226.43]
-X-ClientProxiedBy: lhreml729-chm.china.huawei.com (10.201.108.80) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191219163033.2608177-7-jean-philippe@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 14/01/2020 07:19, Hanjun Guo wrote:
-> On 2020/1/13 17:34, John Garry wrote:
->> On 30/12/2019 12:27, Guohanjun (Hanjun Guo) wrote:
->>> +};
->>> +
->>> +static bool apply_id_count_workaround;
->>> +
->>> +static struct iort_workaround_oem_info wa_info[] __initdata = {
->>> +    {
->>> +        .oem_id        = "HISI  ",
->>> +        .oem_table_id    = "HIP07   ",
->>> +        .oem_revision    = 0,
->>> +    }, {
->>> +        .oem_id        = "HISI  ",
->>> +        .oem_table_id    = "HIP08   ",
->>> +        .oem_revision    = 0,
->>> +    }
->>> +};
->>
->> Am I right in saying that any future BIOS for these chipsets will have to continue to have buggy firmware? If so, it's unfortunate.
+On Thu, Dec 19, 2019 at 05:30:26PM +0100, Jean-Philippe Brucker wrote:
+> Support for SSID will require allocating context descriptor tables. Move
+> the context descriptor allocation to separate functions.
 > 
-> For better compatibility, I would say yes :(
+> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> ---
+>  drivers/iommu/arm-smmu-v3.c | 57 ++++++++++++++++++++++++++++++-------
+>  1 file changed, 46 insertions(+), 11 deletions(-)
 > 
-> For example, if you fix that in the firmware, and update
-> the IORT revision number, then it will run pretty good
-> on new version of the kernel, but not on old version of
-> kernel without the backporting of this patch.
+> diff --git a/drivers/iommu/arm-smmu-v3.c b/drivers/iommu/arm-smmu-v3.c
+> index b287e303b1d7..43d6a7ded6e4 100644
+> --- a/drivers/iommu/arm-smmu-v3.c
+> +++ b/drivers/iommu/arm-smmu-v3.c
+> @@ -568,6 +568,7 @@ struct arm_smmu_cd_table {
+>  struct arm_smmu_s1_cfg {
+>  	struct arm_smmu_cd_table	table;
+>  	struct arm_smmu_ctx_desc	cd;
+> +	u8				s1cdmax;
+>  };
+>  
+>  struct arm_smmu_s2_cfg {
+> @@ -1455,6 +1456,31 @@ static int arm_smmu_cmdq_issue_sync(struct arm_smmu_device *smmu)
+>  }
+>  
+>  /* Context descriptor manipulation functions */
+> +static int arm_smmu_alloc_cd_leaf_table(struct arm_smmu_device *smmu,
+> +					struct arm_smmu_cd_table *table,
+> +					size_t num_entries)
+> +{
+> +	size_t size = num_entries * (CTXDESC_CD_DWORDS << 3);
+> +
+> +	table->ptr = dmam_alloc_coherent(smmu->dev, size, &table->ptr_dma,
+> +					 GFP_KERNEL);
+> +	if (!table->ptr) {
+> +		dev_warn(smmu->dev,
+> +			 "failed to allocate context descriptor table\n");
+> +		return -ENOMEM;
+> +	}
+> +	return 0;
+> +}
+> +
+> +static void arm_smmu_free_cd_leaf_table(struct arm_smmu_device *smmu,
+> +					struct arm_smmu_cd_table *table,
+> +					size_t num_entries)
+> +{
+> +	size_t size = num_entries * (CTXDESC_CD_DWORDS << 3);
+> +
+> +	dmam_free_coherent(smmu->dev, size, table->ptr, table->ptr_dma);
+> +}
 
-ok, so that seems to be a trade off then. Having to backport introduces 
-a risk.
+I think we'd be better off taking the 'arm_smmu_s1_cfg' as a parameter here
+instead of the table pointer and a num_entries value, since the code above
+implies that we support partial freeing of the context descriptors.
 
-So then it might be good to add a comment to ID count members in 
-open-source edk2-platforms hip07 and hip08 IORTs to mention it is buggy, 
-so not to be copied as a reference.
+I can do that as a follow-up patch if you agree. Thoughts?
 
-Cheers,
-John
+Will
