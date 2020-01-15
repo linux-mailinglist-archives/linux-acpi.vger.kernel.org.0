@@ -2,49 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F221613AF6A
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2020 17:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F6C213BA8E
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2020 08:57:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726450AbgANQbI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Jan 2020 11:31:08 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:34794 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726365AbgANQbI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Jan 2020 11:31:08 -0500
-Received: by mail-wr1-f65.google.com with SMTP id t2so12842710wrr.1
-        for <linux-acpi@vger.kernel.org>; Tue, 14 Jan 2020 08:31:07 -0800 (PST)
+        id S1728988AbgAOH5y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Jan 2020 02:57:54 -0500
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:39565 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728981AbgAOH5y (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jan 2020 02:57:54 -0500
+Received: by mail-wm1-f65.google.com with SMTP id 20so16645036wmj.4
+        for <linux-acpi@vger.kernel.org>; Tue, 14 Jan 2020 23:57:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=nIBJ+W2XCD+RKINYx9xkIa8YvUMMciM9OXCElPBSqto=;
-        b=M0rGSjX9nhYA7xN6pq7nhN6GCQ/pfDUlb4rdJCSHj6D+yjeHRwNaicItFWdsW8JbyT
-         0r2ZOLTPD4PiLhKBQP+gQi3RfUVO8CPvNNeGmJYcQZsBNoaUF+rmB9LeAdDXtYoTAs3z
-         /M1wPatIKp5y/+wVTpYms7hkx+ApHpcYj3Ty2BCTxMnBE26KXcbIZuRLQWJKDUism3aC
-         xcmD0s0/v47kD/d6AfPrCR3HWlQ6APhaS4fwC4dlUmgTCHyCQHB83AVLmEbcEqm7Cwlb
-         WeokJ+UT1R5DNUZMf2Ox/rwDuSmxPny71TIZNSbBI/CKjU78aXO6zyLB4mt0lwBIkwBK
-         Kv/g==
+        bh=6Ia3VncVrF7c3ZybtE0PPF5JK9Ck+5/tRhdE7y0iz1s=;
+        b=i8ACrPmCSBs+LYW5GnsySs7+9Wv84u6t9RSSW45kj5ZeFcp32dD8ehSZC7Xt1/5Bqg
+         h1DjGveoSyal45wtXHcZT12ieGr2xy/e8wo3G3CDUp4cnmrVk2dBMBHelGHp79Fony6U
+         PzxYeHpAPCO7OJlHOgT9kJnoaQxA/TYufvx/R4aFz+DWsO6XAAmRO/6BrT+Ih8WgpQdu
+         c6ekNSgZ6GiY2J08rJXJvTGQ1oEZ9kxZNs4IRe/nMDFb9UnQ9GcYUYMB+eaE+qqao7xg
+         33CsbG7zAeSpBNRqs3YmXjFWPmjtHKVWEZJY7FefO2sA/OEizZXaufWIgyH59yrGNt8Q
+         Yk/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=nIBJ+W2XCD+RKINYx9xkIa8YvUMMciM9OXCElPBSqto=;
-        b=DrKKJiZiePN82v1tqvmusbvVdTbRnncqTvszGYd0Cgh4fzEFPgVW5C4hsJbCEJdN/9
-         Xpneg11F17cmWeNbiHbhRHFE1rEA0R6LynSKtLSO7L8ey71enZm/UkDDBpqgwUe0WKEC
-         F3ZjxExPivjAOH4ieqV16Cczix8TooAuBMYstgnaPQfae787j6U4yEvaEaJWE5PU7vQL
-         sm1zVk7xlkoWeZbM+sUDLwtcp2f9KStiNyC3BuRXdhJ53Lgw2aIcRrbbbj3ZsjVdO3hL
-         EqxUvlpMOBQ+yoCVcAke8diOQ0GiyqCcSwuIPG6NB1IN4ys7wJZRp9ckuxvnz7ORHTey
-         3bIQ==
-X-Gm-Message-State: APjAAAWRIL5/KmNdHgLvLhaU3fMPaRPHG9c6kVkOpF7Gw+De/YrH6Jvx
-        Jf4wByvSfRBmI8KvDkJ82u4cIEXU5mI=
-X-Google-Smtp-Source: APXvYqw0/eegQ0zcb+toj+yn2h4NywBCJ2IMJC+LicnhxZZ6kzhHXcoqIC9Hr1rNQ6HwLknQccYolQ==
-X-Received: by 2002:adf:dd46:: with SMTP id u6mr26754664wrm.13.1579019466232;
-        Tue, 14 Jan 2020 08:31:06 -0800 (PST)
+        bh=6Ia3VncVrF7c3ZybtE0PPF5JK9Ck+5/tRhdE7y0iz1s=;
+        b=Iyw1Nz3FXCbJlBrNm4k+v3EzjvNHowFAzKLZ5MqMk0HNV3XrQ+2ej5MUNnZIvVDhrs
+         rjo8EW5Auy5CHnVcD0XcEJUB3lELmdsxQ+pU6v3mknykbeRwzXMAmnDJ7qs9s+y/SRY3
+         vIGUVxgNSWnJmeDSKPUTS++TEgD4fM4I9gQVVxkavZxuB4LPx/d/a/hOrEM4vn559WjF
+         bGKvK6u5WF/U1IBsVSIBnUXmDTN6uPuWwBgHeLXxl2MZNGnztYxh3i++h6R/RJp14vvE
+         DiaPthGNVeItpysC4r5zaLBIKRBirvZEd5JWBsetdTNrFPRAEVEeBEqImfQILm48fOG5
+         B56g==
+X-Gm-Message-State: APjAAAXH+YaIvV2hXlnMFFX74NYGF1bFHBgBksjGoGWNC+2M62PHCUNl
+        paxQ+LxziRMSV73VqE4Lex47GA==
+X-Google-Smtp-Source: APXvYqyNEYvahUX2hjnKrrpMAXYUfqqL20FGP88ce7WRH3XP7tUR3FPmbPiIfTuZpy5b/JjF1w/zZg==
+X-Received: by 2002:a7b:cd07:: with SMTP id f7mr30916595wmj.37.1579075071790;
+        Tue, 14 Jan 2020 23:57:51 -0800 (PST)
 Received: from myrica ([2001:171b:2266:ba60:116c:c27a:3e7f:5eaf])
-        by smtp.gmail.com with ESMTPSA id a16sm20643732wrt.37.2020.01.14.08.31.04
+        by smtp.gmail.com with ESMTPSA id h2sm23782648wrv.66.2020.01.14.23.57.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2020 08:31:05 -0800 (PST)
-Date:   Tue, 14 Jan 2020 17:31:01 +0100
+        Tue, 14 Jan 2020 23:57:51 -0800 (PST)
+Date:   Wed, 15 Jan 2020 08:57:46 +0100
 From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
 To:     Will Deacon <will@kernel.org>
 Cc:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -55,56 +55,58 @@ Cc:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         sudeep.holla@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
         robin.murphy@arm.com, bhelgaas@google.com, eric.auger@redhat.com,
         jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
-Subject: Re: [PATCH v4 09/13] iommu/arm-smmu-v3: Prepare for handling
- arm_smmu_write_ctx_desc() failure
-Message-ID: <20200114163101.GB5319@myrica>
+Subject: Re: [PATCH v4 13/13] iommu/arm-smmu-v3: Add support for PCI PASID
+Message-ID: <20200115075746.GA32782@myrica>
 References: <20191219163033.2608177-1-jean-philippe@linaro.org>
- <20191219163033.2608177-10-jean-philippe@linaro.org>
- <20200114124247.GD29222@willie-the-truck>
+ <20191219163033.2608177-14-jean-philippe@linaro.org>
+ <20200114124541.GE29222@willie-the-truck>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200114124247.GD29222@willie-the-truck>
+In-Reply-To: <20200114124541.GE29222@willie-the-truck>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 14, 2020 at 12:42:47PM +0000, Will Deacon wrote:
-> On Thu, Dec 19, 2019 at 05:30:29PM +0100, Jean-Philippe Brucker wrote:
-> > Second-level context descriptor tables will be allocated lazily in
-> > arm_smmu_write_ctx_desc(). Help with handling allocation failure by
-> > moving the CD write into arm_smmu_domain_finalise_s1().
-> > 
-> > Reviewed-by: Eric Auger <eric.auger@redhat.com>
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > ---
-> >  drivers/iommu/arm-smmu-v3.c | 11 +++++++----
-> >  1 file changed, 7 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/iommu/arm-smmu-v3.c b/drivers/iommu/arm-smmu-v3.c
-> > index e147087198ef..b825a5639afc 100644
-> > --- a/drivers/iommu/arm-smmu-v3.c
-> > +++ b/drivers/iommu/arm-smmu-v3.c
-> > @@ -2301,8 +2301,15 @@ static int arm_smmu_domain_finalise_s1(struct arm_smmu_domain *smmu_domain,
-> >  	cfg->cd.ttbr	= pgtbl_cfg->arm_lpae_s1_cfg.ttbr[0];
-> >  	cfg->cd.tcr	= pgtbl_cfg->arm_lpae_s1_cfg.tcr;
-> >  	cfg->cd.mair	= pgtbl_cfg->arm_lpae_s1_cfg.mair;
-> > +
-> > +	ret = arm_smmu_write_ctx_desc(smmu_domain, 0, &cfg->cd);
+On Tue, Jan 14, 2020 at 12:45:42PM +0000, Will Deacon wrote:
+> On Thu, Dec 19, 2019 at 05:30:33PM +0100, Jean-Philippe Brucker wrote:
+> > Enable PASID for PCI devices that support it. Since the SSID tables are
+> > allocated by arm_smmu_attach_dev(), PASID has to be enabled early enough.
+> > arm_smmu_dev_feature_enable() would be too late, since by that time the
 > 
-> Hmm. This ends up calling arm_smmu_sync_cd() but I think that happens before
-> we've added the master to the devices list of the domain. Does that mean we
-> miss the new SSID during the invalidation?
+> What is arm_smmu_dev_feature_enable()?
 
-Yes, the arm_smmu_sync_cd() isn't useful in this case, it's only needed
-when the STE is live and arm_smmu_write_ctx_desc() is called for a
-ssid!=0. On this path, the CD cache is invalidated by a CFGI_STE executed
-later, when arm_smmu_attach_dev() installs the STE. I didn't want to add a
-special case that avoids the sync when ssid==0 in because a spurious sync
-probably doesn't impact performance here and arm_smmu_write_ctx_desc() is
-quite fiddly already.
+It's the implementation of the IOMMU op .dev_enable_feat(), which I'll add
+later (called by a device driver to enable the SVA feature). I'll reword
+this comment, since the only real requirement is enabling PASID before
+ATS.
+
+> >  static void arm_smmu_detach_dev(struct arm_smmu_master *master)
+> >  {
+> >  	unsigned long flags;
+> > @@ -2852,13 +2899,16 @@ static int arm_smmu_add_device(struct device *dev)
+> >  
+> >  	master->ssid_bits = min(smmu->ssid_bits, fwspec->num_pasid_bits);
+> >  
+> > +	/* Note that PASID must be enabled before, and disabled after ATS */
+> > +	arm_smmu_enable_pasid(master);
+> 
+> Is that part of the PCIe specs? If so, please can you add a citation to the
+> comment?
+
+Yes (PCIe 4.0r1.0 10.5.1.3 ATS Control register).
+
+> Are there any other ordering requirements, i.e. with respect to enabling
+> substreams at the SMMU? For example, can a speculative ATS request provide
+> a PASID?
+
+You recent fix bfff88ec1afe ("iommu/arm-smmu-v3: Rework enabling/disabling
+of ATS for PCI masters") should prevent from speculative ATS requests.
+More generally both ATS and SSID are enabled and disabled at the same time
+in the SMMU, when toggling STE.V, so any request arriving before STE
+enablement will be aborted regardless of SSID.
 
 Thanks,
 Jean
+
