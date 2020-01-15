@@ -2,431 +2,451 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A31A13BE19
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2020 12:02:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BE1013C1C2
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2020 13:53:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729998AbgAOLCW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Jan 2020 06:02:22 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:9620 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726165AbgAOLCV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 15 Jan 2020 06:02:21 -0500
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 0666611C78B2A629D1AC;
-        Wed, 15 Jan 2020 19:02:19 +0800 (CST)
-Received: from DESKTOP-6T4S3DQ.china.huawei.com (10.202.226.55) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 15 Jan 2020 19:02:08 +0800
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     <linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <rjw@rjwysocki.net>,
-        <lenb@kernel.org>, <bp@alien8.de>, <james.morse@arm.com>,
-        <tony.luck@intel.com>, <gregkh@linuxfoundation.org>,
-        <zhangliguang@linux.alibaba.com>, <tglx@linutronix.de>
-CC:     <linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
-        <tanxiaofei@huawei.com>, <yangyicong@hisilicon.com>,
-        Shiju Jose <shiju.jose@huawei.com>
-Subject: [RFC PATCH 2/2] PCI:hip08:Add driver to handle HiSilicon hip08 PCIe controller's errors
-Date:   Wed, 15 Jan 2020 11:01:40 +0000
-Message-ID: <20200115110141.12300-3-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.19.2.windows.1
-In-Reply-To: <20200115110141.12300-1-shiju.jose@huawei.com>
-References: <Shiju Jose>
- <20200115110141.12300-1-shiju.jose@huawei.com>
+        id S1728909AbgAOMxb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Jan 2020 07:53:31 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:33563 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726550AbgAOMxa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jan 2020 07:53:30 -0500
+Received: by mail-wm1-f67.google.com with SMTP id d139so4707289wmd.0
+        for <linux-acpi@vger.kernel.org>; Wed, 15 Jan 2020 04:53:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=V2gNHDrbsk9ohEf85IxlXIQbuuwolBwZUysOChnAnn0=;
+        b=cNUP6NhsdUVgBnVfjD3Jhz4/+A3pBx0OJZsxrVnzOx9W7Jdg3x/X3ld3q4laMAhBZR
+         0Qwhk4uj1HQeisUoXKoQ1xQWHTKCtnNGyOnAAWa9RLDznRs2AzmzQXBLozFe7cLQwjG9
+         vutpbhV7i2p6taET7Dzy1SvaJiID0jS/M4L4LaSLeZcdjT3jrXo9EEN7Xm0ebRBm6rMU
+         v//64gwV/RMNFLxK8ndS9f8QEnfTDVPUAdHn6IAnCKr2qIhNRBTL7rWXLa9PwwltwljI
+         W32Bw6k+Q+AZByF11giISGl337YFokdLTonNTlrMWB0Z6sVTfIl6YBN1XlUWKzCY/Ulh
+         Qlkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=V2gNHDrbsk9ohEf85IxlXIQbuuwolBwZUysOChnAnn0=;
+        b=C4WOGOFk0ccaZPuL9zcXSrtP2/8o8RohPNu7KfTHKD4DhnEL6RvC7JINy2ogWAX+MI
+         n+WkiAqe59nR8Y2tW7rI4oqomak+aolvNW9qdsxyznFH84zph+FNLvK760LblGCdxpL0
+         2og8MXFx7cTnjlNXf3rsSAiL02eBe/od8jlPIG0TRgorNry/uepDgf9V88Ufls0cK3kL
+         zRP0ZqtNwQ1F42cwKPibWiL+Ak2hknzuYpSrejteFHgGh8Xb9P20X/Ps78LHz28tbZc0
+         AzsxhKRepb6SxYXejmAeGSiOyvJ4M824mpS6b4OPtx+zbQfDFc6i2p8gGEnI4AhWPXhp
+         yWfQ==
+X-Gm-Message-State: APjAAAUHTgA5XjAYv0Js65fvvMgu+qpKGkzGNHPq283olt7W8x3FJCti
+        HX0G4DLbI+MmQ7l67WqUZJVaKg==
+X-Google-Smtp-Source: APXvYqzMwxImhwynpdDaKwAiaRqTssEar5/aQ5wgBt/n+ry8r89EuhUII94N4JzZx1c+tdEKt7nRqg==
+X-Received: by 2002:a05:600c:220e:: with SMTP id z14mr33458894wml.114.1579092807329;
+        Wed, 15 Jan 2020 04:53:27 -0800 (PST)
+Received: from localhost.localdomain ([2001:171b:2266:ba60:116c:c27a:3e7f:5eaf])
+        by smtp.gmail.com with ESMTPSA id d12sm25196171wrp.62.2020.01.15.04.53.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jan 2020 04:53:26 -0800 (PST)
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        iommu@lists.linux-foundation.org, will@kernel.org
+Cc:     joro@8bytes.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
+        robin.murphy@arm.com, bhelgaas@google.com, eric.auger@redhat.com,
+        jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
+Subject: [PATCH v5 00/13] iommu: Add PASID support to Arm SMMUv3
+Date:   Wed, 15 Jan 2020 13:52:26 +0100
+Message-Id: <20200115125239.136759-1-jean-philippe@linaro.org>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.202.226.55]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+Since v4 [1] I addressed some of Will's comment.
 
-The hip08 error handle driver logs and reports PCIe controller's
-recoverable errors.
-Perform root port reset and restore link status for the recovery.
+Still missing and will be submitted as follow-up patches:
+* write STE.V with WRITE_ONCE() (patch 7)
+* batch submission of CD invalidation (patch 7)
+* Remove WARN_ON_ONCE() in add_device() (patch 13)
+  Pending Robin's input.
 
-Following are some of the PCIe controller's recoverable errors
-1. completion transmission timeout error.
-2. CRS retry counter over the threshold error.
-3. ECC 2 bit errors
-4. AXI bresponse/rresponse errors etc.
+So I think patches 1-10 should be good to go, but anything in between
+would be good too, and I'll send the rest for 5.7.
 
-RFC: The appropriate location for this driver may be discussed.
+Thanks,
+Jean
 
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
----
- drivers/pci/controller/Kconfig                 |   8 +
- drivers/pci/controller/Makefile                |   1 +
- drivers/pci/controller/pcie-hisi-hip08-error.c | 323 +++++++++++++++++++++++++
- 3 files changed, 332 insertions(+)
- create mode 100644 drivers/pci/controller/pcie-hisi-hip08-error.c
+[1] https://lore.kernel.org/linux-iommu/20191219163033.2608177-1-jean-philippe@linaro.org/
 
-diff --git a/drivers/pci/controller/Kconfig b/drivers/pci/controller/Kconfig
-index c77069c..0ee99b8 100644
---- a/drivers/pci/controller/Kconfig
-+++ b/drivers/pci/controller/Kconfig
-@@ -260,6 +260,14 @@ config PCI_HYPERV_INTERFACE
- 	  The Hyper-V PCI Interface is a helper driver allows other drivers to
- 	  have a common interface with the Hyper-V PCI frontend driver.
- 
-+config PCIE_HISI_HIP08_ERR_HANDLER
-+	depends on ARM64 || COMPILE_TEST
-+	depends on (ACPI && PCI_QUIRKS)
-+	bool "HiSilicon hip08 Soc PCIe local error handling driver"
-+	help
-+	  Say Y here if you want PCIe error handling support
-+	  for the PCIe local(controller) errors on HiSilicon hip08 SoC
-+
- source "drivers/pci/controller/dwc/Kconfig"
- source "drivers/pci/controller/cadence/Kconfig"
- endmenu
-diff --git a/drivers/pci/controller/Makefile b/drivers/pci/controller/Makefile
-index 3d4f597..ac9852f 100644
---- a/drivers/pci/controller/Makefile
-+++ b/drivers/pci/controller/Makefile
-@@ -28,6 +28,7 @@ obj-$(CONFIG_PCIE_MEDIATEK) += pcie-mediatek.o
- obj-$(CONFIG_PCIE_MOBIVEIL) += pcie-mobiveil.o
- obj-$(CONFIG_PCIE_TANGO_SMP8759) += pcie-tango.o
- obj-$(CONFIG_VMD) += vmd.o
-+obj-$(CONFIG_PCIE_HISI_HIP08_ERR_HANDLER) += pcie-hisi-hip08-error.o
- # pcie-hisi.o quirks are needed even without CONFIG_PCIE_DW
- obj-y				+= dwc/
- 
-diff --git a/drivers/pci/controller/pcie-hisi-hip08-error.c b/drivers/pci/controller/pcie-hisi-hip08-error.c
-new file mode 100644
-index 0000000..6f5d002
---- /dev/null
-+++ b/drivers/pci/controller/pcie-hisi-hip08-error.c
-@@ -0,0 +1,323 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * PCIe driver for handling PCIe local errors occurred on
-+ * HiSilicon hip08 PCIe controller.
-+ *
-+ * Copyright (c) 2018-2019 Hisilicon Limited.
-+ */
-+
-+#include <linux/acpi.h>
-+#include <acpi/ghes.h>
-+#include <linux/bitfield.h>
-+#include <linux/bitops.h>
-+#include <linux/delay.h>
-+#include <linux/irq.h>
-+#include <linux/irqdomain.h>
-+#include <linux/list.h>
-+#include <linux/pci.h>
-+#include <linux/platform_device.h>
-+#include <linux/resource.h>
-+#include <linux/kfifo.h>
-+#include <linux/spinlock.h>
-+
-+#include "../pci.h"
-+
-+#define HISI_PCIE_ERR_RECOVER_RING_SIZE           16
-+#define	HISI_PCIE_ERR_INFO_SIZE	1024
-+
-+/* HISI PCIe Local error definitions */
-+#define HISI_PCIE_ERR_MISC_REGS	33
-+
-+#define HISI_PCIE_SUB_MODULE_ID_AP	0
-+#define HISI_PCIE_SUB_MODULE_ID_TL	1
-+#define HISI_PCIE_SUB_MODULE_ID_MAC	2
-+#define HISI_PCIE_SUB_MODULE_ID_DL	3
-+#define HISI_PCIE_SUB_MODULE_ID_SDI	4
-+
-+#define HISI_PCIE_LOCAL_VALID_VERSION		BIT(0)
-+#define HISI_PCIE_LOCAL_VALID_SOC_ID		BIT(1)
-+#define HISI_PCIE_LOCAL_VALID_SOCKET_ID		BIT(2)
-+#define HISI_PCIE_LOCAL_VALID_NIMBUS_ID		BIT(3)
-+#define HISI_PCIE_LOCAL_VALID_SUB_MODULE_ID	BIT(4)
-+#define HISI_PCIE_LOCAL_VALID_CORE_ID		BIT(5)
-+#define HISI_PCIE_LOCAL_VALID_PORT_ID		BIT(6)
-+#define HISI_PCIE_LOCAL_VALID_ERR_TYPE		BIT(7)
-+#define HISI_PCIE_LOCAL_VALID_ERR_SEVERITY	BIT(8)
-+#define HISI_PCIE_LOCAL_VALID_ERR_MISC		9
-+
-+#define HISI_ERR_SEV_RECOVERABLE	0
-+#define HISI_ERR_SEV_FATAL		1
-+#define HISI_ERR_SEV_CORRECTED		2
-+#define HISI_ERR_SEV_NONE		3
-+
-+guid_t hip08_pcie_sec_type = GUID_INIT(0xB2889FC9, 0xE7D7, 0x4F9D, 0xA8, 0x67,
-+				       0xAF, 0x42, 0xE9, 0x8B, 0xE7, 0x72);
-+
-+#define HISI_PCIE_CORE_ID(v)             ((v) >> 3)
-+#define HISI_PCIE_PORT_ID(core, v)       ((v >> 1) + (core << 3))
-+#define HISI_PCIE_CORE_PORT_ID(v)        ((v % 8) << 1)
-+#define HISI_PCIE_ROOT_BUSNR(v)          ((v) ? 0x80 : 0)
-+
-+struct hisi_pcie_local_err_data {
-+	uint64_t   val_bits;
-+	uint8_t    version;
-+	uint8_t    soc_id;
-+	uint8_t    socket_id;
-+	uint8_t    nimbus_id;
-+	uint8_t    sub_module_id;
-+	uint8_t    core_id;
-+	uint8_t    port_id;
-+	uint8_t    err_severity;
-+	uint16_t   err_type;
-+	uint8_t    reserv[2];
-+	uint32_t   err_misc[HISI_PCIE_ERR_MISC_REGS];
+Jean-Philippe Brucker (13):
+  iommu/arm-smmu-v3: Drop __GFP_ZERO flag from DMA allocation
+  dt-bindings: document PASID property for IOMMU masters
+  iommu/arm-smmu-v3: Parse PASID devicetree property of platform devices
+  ACPI/IORT: Parse SSID property of named component node
+  iommu/arm-smmu-v3: Prepare arm_smmu_s1_cfg for SSID support
+  iommu/arm-smmu-v3: Add context descriptor tables allocators
+  iommu/arm-smmu-v3: Add support for Substream IDs
+  iommu/arm-smmu-v3: Propagate ssid_bits
+  iommu/arm-smmu-v3: Prepare for handling arm_smmu_write_ctx_desc()
+    failure
+  iommu/arm-smmu-v3: Add second level of context descriptor table
+  iommu/arm-smmu-v3: Improve add_device() error handling
+  PCI/ATS: Add PASID stubs
+  iommu/arm-smmu-v3: Add support for PCI PASID
+
+ .../devicetree/bindings/iommu/iommu.txt       |   6 +
+ drivers/acpi/arm64/iort.c                     |  18 +
+ drivers/iommu/arm-smmu-v3.c                   | 464 +++++++++++++++---
+ drivers/iommu/of_iommu.c                      |   6 +-
+ include/linux/iommu.h                         |   2 +
+ include/linux/pci-ats.h                       |   3 +
+ 6 files changed, 439 insertions(+), 60 deletions(-)
+
+----
+Diff since v4 (large due to structures refactoring):
+
+#diff --git a/drivers/iommu/arm-smmu-v3.c b/drivers/iommu/arm-smmu-v3.c
+index 8e95ecad4c9a..f42454512e87 100644
+--- a/drivers/iommu/arm-smmu-v3.c
++++ b/drivers/iommu/arm-smmu-v3.c
+@@ -275,7 +275,7 @@
+ #define CTXDESC_L2_ENTRIES		(1 << CTXDESC_SPLIT)
+
+ #define CTXDESC_L1_DESC_DWORDS		1
+-#define CTXDESC_L1_DESC_VALID		1
++#define CTXDESC_L1_DESC_V		(1UL << 0)
+ #define CTXDESC_L1_DESC_L2PTR_MASK	GENMASK_ULL(51, 12)
+
+ #define CTXDESC_CD_DWORDS		8
+@@ -583,18 +583,20 @@ struct arm_smmu_ctx_desc {
+ 	u64				mair;
+ };
+
+-struct arm_smmu_cd_table {
+-	__le64				*ptr;
+-	dma_addr_t			ptr_dma;
++struct arm_smmu_l1_ctx_desc {
++	__le64				*l2ptr;
++	dma_addr_t			l2ptr_dma;
 +};
 +
-+struct pcie_err_info {
-+	struct hisi_pcie_local_err_data err_data;
-+	struct platform_device *pdev;
-+};
++struct arm_smmu_ctx_desc_cfg {
++	__le64				*cdtab;
++	dma_addr_t			cdtab_dma;
++	struct arm_smmu_l1_ctx_desc	*l1_desc;
++	unsigned int			num_l1_ents;
+ };
+
+ struct arm_smmu_s1_cfg {
+-	/* Leaf tables or linear table */
+-	struct arm_smmu_cd_table	*tables;
+-	size_t				num_tables;
+-	/* First level tables, when two levels are used */
+-	__le64				*l1ptr;
+-	dma_addr_t			l1ptr_dma;
++	struct arm_smmu_ctx_desc_cfg	cdcfg;
+ 	struct arm_smmu_ctx_desc	cd;
+ 	u8				s1fmt;
+ 	u8				s1cdmax;
+@@ -1519,14 +1521,13 @@ static void arm_smmu_sync_cd(struct arm_smmu_domain *smmu_domain,
+ }
+
+ static int arm_smmu_alloc_cd_leaf_table(struct arm_smmu_device *smmu,
+-					struct arm_smmu_cd_table *table,
+-					size_t num_entries)
++					struct arm_smmu_l1_ctx_desc *l1_desc)
+ {
+-	size_t size = num_entries * (CTXDESC_CD_DWORDS << 3);
++	size_t size = CTXDESC_L2_ENTRIES * (CTXDESC_CD_DWORDS << 3);
+
+-	table->ptr = dmam_alloc_coherent(smmu->dev, size, &table->ptr_dma,
+-					 GFP_KERNEL);
+-	if (!table->ptr) {
++	l1_desc->l2ptr = dmam_alloc_coherent(smmu->dev, size,
++					     &l1_desc->l2ptr_dma, GFP_KERNEL);
++	if (!l1_desc->l2ptr) {
+ 		dev_warn(smmu->dev,
+ 			 "failed to allocate context descriptor table\n");
+ 		return -ENOMEM;
+@@ -1534,22 +1535,11 @@ static int arm_smmu_alloc_cd_leaf_table(struct arm_smmu_device *smmu,
+ 	return 0;
+ }
+
+-static void arm_smmu_free_cd_leaf_table(struct arm_smmu_device *smmu,
+-					struct arm_smmu_cd_table *table,
+-					size_t num_entries)
+-{
+-	size_t size = num_entries * (CTXDESC_CD_DWORDS << 3);
+-
+-	if (!table->ptr)
+-		return;
+-	dmam_free_coherent(smmu->dev, size, table->ptr, table->ptr_dma);
+-}
+-
+ static void arm_smmu_write_cd_l1_desc(__le64 *dst,
+-				      struct arm_smmu_cd_table *table)
++				      struct arm_smmu_l1_ctx_desc *l1_desc)
+ {
+-	u64 val = (table->ptr_dma & CTXDESC_L1_DESC_L2PTR_MASK) |
+-		  CTXDESC_L1_DESC_VALID;
++	u64 val = (l1_desc->l2ptr_dma & CTXDESC_L1_DESC_L2PTR_MASK) |
++		  CTXDESC_L1_DESC_V;
+
+ 	WRITE_ONCE(*dst, cpu_to_le64(val));
+ }
+@@ -1559,27 +1549,26 @@ static __le64 *arm_smmu_get_cd_ptr(struct arm_smmu_domain *smmu_domain,
+ {
+ 	__le64 *l1ptr;
+ 	unsigned int idx;
+-	struct arm_smmu_cd_table *table;
++	struct arm_smmu_l1_ctx_desc *l1_desc;
+ 	struct arm_smmu_device *smmu = smmu_domain->smmu;
+-	struct arm_smmu_s1_cfg *cfg = &smmu_domain->s1_cfg;
++	struct arm_smmu_ctx_desc_cfg *cdcfg = &smmu_domain->s1_cfg.cdcfg;
+
+-	if (cfg->s1fmt == STRTAB_STE_0_S1FMT_LINEAR)
+-		return cfg->tables[0].ptr + ssid * CTXDESC_CD_DWORDS;
++	if (smmu_domain->s1_cfg.s1fmt == STRTAB_STE_0_S1FMT_LINEAR)
++		return cdcfg->cdtab + ssid * CTXDESC_CD_DWORDS;
+
+ 	idx = ssid >> CTXDESC_SPLIT;
+-	table = &cfg->tables[idx];
+-	if (!table->ptr) {
+-		if (arm_smmu_alloc_cd_leaf_table(smmu, table,
+-						 CTXDESC_L2_ENTRIES))
++	l1_desc = &cdcfg->l1_desc[idx];
++	if (!l1_desc->l2ptr) {
++		if (arm_smmu_alloc_cd_leaf_table(smmu, l1_desc))
+ 			return NULL;
+
+-		l1ptr = cfg->l1ptr + idx * CTXDESC_L1_DESC_DWORDS;
+-		arm_smmu_write_cd_l1_desc(l1ptr, table);
++		l1ptr = cdcfg->cdtab + idx * CTXDESC_L1_DESC_DWORDS;
++		arm_smmu_write_cd_l1_desc(l1ptr, l1_desc);
+ 		/* An invalid L1CD can be cached */
+ 		arm_smmu_sync_cd(smmu_domain, ssid, false);
+ 	}
+ 	idx = ssid & (CTXDESC_L2_ENTRIES - 1);
+-	return table->ptr + idx * CTXDESC_CD_DWORDS;
++	return l1_desc->l2ptr + idx * CTXDESC_CD_DWORDS;
+ }
+
+ static u64 arm_smmu_cpu_tcr_to_cd(u64 tcr)
+@@ -1613,8 +1602,8 @@ static int arm_smmu_write_ctx_desc(struct arm_smmu_domain *smmu_domain,
+ 	 */
+ 	u64 val;
+ 	bool cd_live;
+-	struct arm_smmu_device *smmu = smmu_domain->smmu;
+ 	__le64 *cdptr;
++	struct arm_smmu_device *smmu = smmu_domain->smmu;
+
+ 	if (WARN_ON(ssid >= (1 << smmu_domain->s1_cfg.s1cdmax)))
+ 		return -E2BIG;
+@@ -1661,6 +1650,15 @@ static int arm_smmu_write_ctx_desc(struct arm_smmu_domain *smmu_domain,
+ 			val |= CTXDESC_CD_0_S;
+ 	}
+
++	/*
++	 * The SMMU accesses 64-bit values atomically. See IHI0070Ca 3.21.3
++	 * "Configuration structures and configuration invalidation completion"
++	 *
++	 *   The size of single-copy atomic reads made by the SMMU is
++	 *   IMPLEMENTATION DEFINED but must be at least 64 bits. Any single
++	 *   field within an aligned 64-bit span of a structure can be altered
++	 *   without first making the structure invalid.
++	 */
+ 	WRITE_ONCE(cdptr[0], cpu_to_le64(val));
+ 	arm_smmu_sync_cd(smmu_domain, ssid, true);
+ 	return 0;
+@@ -1669,61 +1667,48 @@ static int arm_smmu_write_ctx_desc(struct arm_smmu_domain *smmu_domain,
+ static int arm_smmu_alloc_cd_tables(struct arm_smmu_domain *smmu_domain)
+ {
+ 	int ret;
+-	size_t size = 0;
++	size_t l1size;
+ 	size_t max_contexts;
+ 	struct arm_smmu_device *smmu = smmu_domain->smmu;
+ 	struct arm_smmu_s1_cfg *cfg = &smmu_domain->s1_cfg;
++	struct arm_smmu_ctx_desc_cfg *cdcfg = &cfg->cdcfg;
+
+ 	max_contexts = 1 << cfg->s1cdmax;
+
+ 	if (!(smmu->features & ARM_SMMU_FEAT_2_LVL_CDTAB) ||
+ 	    max_contexts <= CTXDESC_L2_ENTRIES) {
+ 		cfg->s1fmt = STRTAB_STE_0_S1FMT_LINEAR;
+-		cfg->num_tables = 1;
++		cdcfg->num_l1_ents = max_contexts;
 +
-+static char *pcie_local_sub_module_name(uint8_t id)
-+{
-+	switch (id) {
-+	case HISI_PCIE_SUB_MODULE_ID_AP: return "AP Layer";
-+	case HISI_PCIE_SUB_MODULE_ID_TL: return "TL Layer";
-+	case HISI_PCIE_SUB_MODULE_ID_MAC: return "MAC Layer";
-+	case HISI_PCIE_SUB_MODULE_ID_DL: return "DL Layer";
-+	case HISI_PCIE_SUB_MODULE_ID_SDI: return "SDI Layer";
-+	}
++		l1size = max_contexts * (CTXDESC_CD_DWORDS << 3);
+ 	} else {
+ 		cfg->s1fmt = STRTAB_STE_0_S1FMT_64K_L2;
+-		cfg->num_tables = DIV_ROUND_UP(max_contexts,
+-					       CTXDESC_L2_ENTRIES);
+-
+-		size = cfg->num_tables * (CTXDESC_L1_DESC_DWORDS << 3);
+-		cfg->l1ptr = dmam_alloc_coherent(smmu->dev, size,
+-						 &cfg->l1ptr_dma,
+-						 GFP_KERNEL);
+-		if (!cfg->l1ptr) {
+-			dev_warn(smmu->dev,
+-				 "failed to allocate L1 context table\n");
++		cdcfg->num_l1_ents = DIV_ROUND_UP(max_contexts,
++						  CTXDESC_L2_ENTRIES);
 +
-+	return "unknown";
-+}
++		cdcfg->l1_desc = devm_kcalloc(smmu->dev, cdcfg->num_l1_ents,
++					      sizeof(*cdcfg->l1_desc),
++					      GFP_KERNEL);
++		if (!cdcfg->l1_desc)
+ 			return -ENOMEM;
+-		}
 +
-+static char *err_severity(uint8_t err_sev)
-+{
-+	switch (err_sev) {
-+	case HISI_ERR_SEV_RECOVERABLE: return "recoverable";
-+	case HISI_ERR_SEV_FATAL: return "fatal";
-+	case HISI_ERR_SEV_CORRECTED: return "corrected";
-+	case HISI_ERR_SEV_NONE: return "none";
-+	}
++		l1size = cdcfg->num_l1_ents * (CTXDESC_L1_DESC_DWORDS << 3);
+ 	}
+
+-	cfg->tables = devm_kzalloc(smmu->dev, sizeof(struct arm_smmu_cd_table) *
+-				   cfg->num_tables, GFP_KERNEL);
+-	if (!cfg->tables) {
++	cdcfg->cdtab = dmam_alloc_coherent(smmu->dev, l1size, &cdcfg->cdtab_dma,
++					   GFP_KERNEL);
++	if (!cdcfg->cdtab) {
++		dev_warn(smmu->dev, "failed to allocate context descriptor\n");
+ 		ret = -ENOMEM;
+ 		goto err_free_l1;
+ 	}
+
+-	/*
+-	 * Only allocate a leaf table for linear case. With two levels, leaf
+-	 * tables are allocated lazily.
+-	 */
+-	if (cfg->s1fmt == STRTAB_STE_0_S1FMT_LINEAR) {
+-		ret = arm_smmu_alloc_cd_leaf_table(smmu, &cfg->tables[0],
+-						   max_contexts);
+-		if (ret)
+-			goto err_free_tables;
+-	}
+-
+ 	return 0;
+
+-err_free_tables:
+-	devm_kfree(smmu->dev, cfg->tables);
+-	cfg->tables = NULL;
+ err_free_l1:
+-	if (cfg->l1ptr) {
+-		dmam_free_coherent(smmu->dev, size, cfg->l1ptr, cfg->l1ptr_dma);
+-		cfg->l1ptr = NULL;
+-		cfg->l1ptr_dma = 0;
++	if (cdcfg->l1_desc) {
++		devm_kfree(smmu->dev, cdcfg->l1_desc);
++		cdcfg->l1_desc = NULL;
+ 	}
+ 	return ret;
+ }
+@@ -1731,24 +1716,32 @@ static int arm_smmu_alloc_cd_tables(struct arm_smmu_domain *smmu_domain)
+ static void arm_smmu_free_cd_tables(struct arm_smmu_domain *smmu_domain)
+ {
+ 	int i;
++	size_t size, l1size;
+ 	struct arm_smmu_device *smmu = smmu_domain->smmu;
+-	struct arm_smmu_s1_cfg *cfg = &smmu_domain->s1_cfg;
+-	size_t num_leaf_entries = 1 << cfg->s1cdmax;
+-	struct arm_smmu_cd_table *table = cfg->tables;
++	struct arm_smmu_ctx_desc_cfg *cdcfg = &smmu_domain->s1_cfg.cdcfg;
+
+-	if (cfg->l1ptr) {
+-		size_t size = cfg->num_tables * (CTXDESC_L1_DESC_DWORDS << 3);
++	if (cdcfg->l1_desc) {
++		size = CTXDESC_L2_ENTRIES * (CTXDESC_CD_DWORDS << 3);
+
+-		dmam_free_coherent(smmu->dev, size, cfg->l1ptr, cfg->l1ptr_dma);
+-		cfg->l1ptr = NULL;
+-		cfg->l1ptr_dma = 0;
+-		num_leaf_entries = CTXDESC_L2_ENTRIES;
++		for (i = 0; i < cdcfg->num_l1_ents; i++) {
++			if (!cdcfg->l1_desc[i].l2ptr)
++				continue;
 +
-+	return "unknown";
-+}
-+
-+static struct pci_dev *hisi_hip08_pcie_get_rp(u32 chip_id, u32 port_id)
-+{
-+	u32 devfn = PCI_DEVFN(port_id, 0);
-+	u32 busnr = HISI_PCIE_ROOT_BUSNR(chip_id);
-+
-+	return pci_get_domain_bus_and_slot(0, busnr, devfn);
-+}
-+
-+static int hisi_hip08_pcie_port_acpi_reset(struct platform_device *pdev,
-+					u32 chip_id, u32 port_id)
-+{
-+	struct device *dev = &(pdev->dev);
-+	struct acpi_object_list arg_list;
-+	union acpi_object arg[3];
-+
-+	arg[0].type = ACPI_TYPE_INTEGER;
-+	arg[0].integer.value = chip_id;
-+	arg[1].type = ACPI_TYPE_INTEGER;
-+	arg[1].integer.value = HISI_PCIE_CORE_ID(port_id);
-+	arg[2].type = ACPI_TYPE_INTEGER;
-+	arg[2].integer.value = HISI_PCIE_CORE_PORT_ID(port_id);
-+
-+	arg_list.count = 3;
-+	arg_list.pointer = arg;
-+	/* Call the ACPI handle to reset root port  */
-+	if (ACPI_HANDLE(dev)) {
-+		unsigned long long data = 0;
-+		acpi_status s;
-+
-+		s = acpi_evaluate_integer(ACPI_HANDLE(dev),
-+				"RST", &arg_list, &data);
-+
-+		if (ACPI_FAILURE(s)) {
-+			dev_err(dev, "No Reset method\n");
-+			return -EIO;
++			dmam_free_coherent(smmu->dev, size,
++					   cdcfg->l1_desc[i].l2ptr,
++					   cdcfg->l1_desc[i].l2ptr_dma);
 +		}
++		devm_kfree(smmu->dev, cdcfg->l1_desc);
++		cdcfg->l1_desc = NULL;
 +
-+		if (data) {
-+			dev_err(dev, "Failed to Reset\n");
-+			return -EIO;
-+		}
-+
++		l1size = cdcfg->num_l1_ents * (CTXDESC_L1_DESC_DWORDS << 3);
 +	} else {
-+		dev_err(dev, "No Reset method\n");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int hisi_hip08_pcie_port_reset(struct platform_device *dev,
-+				      u32 chip_id, u32 port_id)
-+{
-+	struct pci_dev *pdev;
-+	struct pci_bus *root_bus;
-+
-+	pdev = hisi_hip08_pcie_get_rp(chip_id, port_id);
-+	if (!pdev) {
-+		dev_info(&(dev->dev), "Fail to get root port device\n");
-+		return -ENODEV;
-+	}
-+	root_bus = pdev->bus;
-+
-+	pci_stop_and_remove_bus_device_locked(pdev);
-+
-+	if (hisi_hip08_pcie_port_acpi_reset(dev, chip_id, port_id))
-+		return -EIO;
-+	ssleep(1UL);
-+
-+	/* add root port and downstream devices */
-+	pci_lock_rescan_remove();
-+	pci_rescan_bus(root_bus);
-+	pci_unlock_rescan_remove();
-+
-+	return 0;
-+}
-+
-+static void pcie_local_error_handle(const struct hisi_pcie_local_err_data *err,
-+				    struct platform_device *pdev)
-+{
-+	char buf[HISI_PCIE_ERR_INFO_SIZE];
-+	char *p = buf, *end = buf + sizeof(buf);
-+	struct device *dev = &(pdev->dev);
-+	uint32_t i;
-+	int rc;
-+
-+	if (err->val_bits == 0) {
-+		dev_warn(dev, "%s: no valid error information\n", __func__);
-+		return;
-+	}
-+
-+	/* Logging */
-+	p += snprintf(p, end - p, "[ Table version=%d ", err->version);
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_SOC_ID)
-+		p += snprintf(p, end - p, "SOC ID=%d ", err->soc_id);
-+
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_SOCKET_ID)
-+		p += snprintf(p, end - p, "socket ID=%d ", err->socket_id);
-+
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_NIMBUS_ID)
-+		p += snprintf(p, end - p, "nimbus ID=%d ", err->nimbus_id);
-+
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_SUB_MODULE_ID)
-+		p += snprintf(p, end - p, "sub module=%s ",
-+			      pcie_local_sub_module_name(err->sub_module_id));
-+
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_CORE_ID)
-+		p += snprintf(p, end - p, "core ID=core%d ", err->core_id);
-+
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_PORT_ID)
-+		p += snprintf(p, end - p, "port ID=port%d ", err->port_id);
-+
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_ERR_SEVERITY)
-+		p += snprintf(p, end - p, "error severity=%s ",
-+			      err_severity(err->err_severity));
-+
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_ERR_TYPE)
-+		p += snprintf(p, end - p, "error type=0x%x ", err->err_type);
-+
-+	p += snprintf(p, end - p, "]\n");
-+	dev_info(dev, "\nHISI HIP08: PCIe local error\n");
-+	dev_info(dev, "%s\n", buf);
-+
-+	dev_info(dev, "Reg Dump:\n");
-+	for (i = 0; i < HISI_PCIE_ERR_MISC_REGS; i++) {
-+		if (err->val_bits & BIT(HISI_PCIE_LOCAL_VALID_ERR_MISC + i))
-+			dev_info(dev,
-+				 "ERR_MISC_%d=0x%x\n", i, err->err_misc[i]);
-+	}
-+
-+	/* Recovery for the PCIe local errors */
-+	if (err->err_severity == HISI_ERR_SEV_RECOVERABLE) {
-+		/* try reset PCI port for the error recovery */
-+		rc = hisi_hip08_pcie_port_reset(pdev, err->socket_id,
-+				HISI_PCIE_PORT_ID(err->core_id, err->port_id));
-+		if (rc) {
-+			dev_info(dev, "fail to do hip08 pcie port reset\n");
-+			return;
-+		}
-+	}
-+}
-+
-+static DEFINE_KFIFO(pcie_err_recover_ring, struct pcie_err_info,
-+		    HISI_PCIE_ERR_RECOVER_RING_SIZE);
-+static DEFINE_SPINLOCK(pcie_err_recover_ring_lock);
-+
-+static void pcie_local_err_recover_work_func(struct work_struct *work)
-+{
-+	struct pcie_err_info pcie_err_entry;
-+
-+	while (kfifo_get(&pcie_err_recover_ring, &pcie_err_entry)) {
-+		pcie_local_error_handle(&pcie_err_entry.err_data,
-+					pcie_err_entry.pdev);
-+	}
-+}
-+
-+static DECLARE_WORK(pcie_err_recover_work, pcie_local_err_recover_work_func);
-+
-+
-+static void hip08_pcie_local_error_handle(struct acpi_hest_generic_data *gdata,
-+					  int sev, void *data)
-+{
-+	const struct hisi_pcie_local_err_data *err_data =
-+					acpi_hest_get_payload(gdata);
-+	struct pcie_err_info err_info;
-+	struct platform_device *pdev = data;
-+	struct device *dev = &(pdev->dev);
-+
-+	memcpy(&err_info.err_data, err_data, sizeof(*err_data));
-+	err_info.pdev = pdev;
-+
-+	if (kfifo_in_spinlocked(&pcie_err_recover_ring, &err_info, 1,
-+				&pcie_err_recover_ring_lock))
-+		schedule_work(&pcie_err_recover_work);
-+	else
-+		dev_warn(dev, "Buffer overflow when recovering PCIe local error\n");
-+}
-+
-+static int hisi_hip08_pcie_err_handler_probe(struct platform_device *pdev)
-+{
-+	int ret = 0;
-+
-+	if (ghes_register_event_handler(hip08_pcie_sec_type,
-+					hip08_pcie_local_error_handle,
-+					pdev)) {
-+		dev_err(&(pdev->dev), "%s : ghes_register_event_handler fail\n",
-+			__func__);
-+		return ret;
-+}
-+
-+	return 0;
-+}
-+
-+static int hisi_hip08_pcie_err_handler_remove(struct platform_device *pdev)
-+{
-+	ghes_unregister_event_handler(hip08_pcie_sec_type);
-+
-+	return 0;
-+}
-+
-+static const struct acpi_device_id hip08_pcie_acpi_match[] = {
-+	{ "HISI0361", 0 },
-+	{ }
-+};
-+
-+static struct platform_driver hisi_hip08_pcie_err_handler_driver = {
-+	.driver = {
-+		.name	= "hisi-hip08-pcie-err-handler",
-+		.acpi_match_table = hip08_pcie_acpi_match,
-+	},
-+	.probe		= hisi_hip08_pcie_err_handler_probe,
-+	.remove		= hisi_hip08_pcie_err_handler_remove,
-+};
-+module_platform_driver(hisi_hip08_pcie_err_handler_driver);
-+
-+MODULE_DESCRIPTION("HiSilicon HIP08 PCIe controller error handling driver");
-+MODULE_LICENSE("GPL v2");
-+
--- 
-1.9.1
++		l1size = cdcfg->num_l1_ents * (CTXDESC_CD_DWORDS << 3);
+ 	}
+
+-	for (i = 0; i < cfg->num_tables; i++, table++)
+-		arm_smmu_free_cd_leaf_table(smmu, table, num_leaf_entries);
+-	devm_kfree(smmu->dev, cfg->tables);
+-	cfg->tables = NULL;
++	dmam_free_coherent(smmu->dev, l1size, cdcfg->cdtab, cdcfg->cdtab_dma);
++	cdcfg->cdtab_dma = 0;
++	cdcfg->cdtab = NULL;
+ }
+
+ /* Stream table manipulation functions */
+@@ -1868,9 +1861,6 @@ static void arm_smmu_write_strtab_ent(struct arm_smmu_master *master, u32 sid,
+ 	}
+
+ 	if (s1_cfg) {
+-		dma_addr_t ptr_dma = s1_cfg->l1ptr ? s1_cfg->l1ptr_dma :
+-				     s1_cfg->tables[0].ptr_dma;
+-
+ 		BUG_ON(ste_live);
+ 		dst[1] = cpu_to_le64(
+ 			 FIELD_PREP(STRTAB_STE_1_S1DSS, STRTAB_STE_1_S1DSS_SSID0) |
+@@ -1883,7 +1873,7 @@ static void arm_smmu_write_strtab_ent(struct arm_smmu_master *master, u32 sid,
+ 		   !(smmu->features & ARM_SMMU_FEAT_STALL_FORCE))
+ 			dst[1] |= cpu_to_le64(STRTAB_STE_1_S1STALLD);
+
+-		val |= (ptr_dma & STRTAB_STE_0_S1CTXPTR_MASK) |
++		val |= (s1_cfg->cdcfg.cdtab_dma & STRTAB_STE_0_S1CTXPTR_MASK) |
+ 			FIELD_PREP(STRTAB_STE_0_CFG, STRTAB_STE_0_CFG_S1_TRANS) |
+ 			FIELD_PREP(STRTAB_STE_0_S1CDMAX, s1_cfg->s1cdmax) |
+ 			FIELD_PREP(STRTAB_STE_0_S1FMT, s1_cfg->s1fmt);
+@@ -2399,7 +2389,7 @@ static void arm_smmu_domain_free(struct iommu_domain *domain)
+ 	if (smmu_domain->stage == ARM_SMMU_DOMAIN_S1) {
+ 		struct arm_smmu_s1_cfg *cfg = &smmu_domain->s1_cfg;
+
+-		if (cfg->tables) {
++		if (cfg->cdcfg.cdtab) {
+ 			arm_smmu_free_cd_tables(smmu_domain);
+ 			arm_smmu_bitmap_free(smmu->asid_map, cfg->cd.asid);
+ 		}
+@@ -2438,11 +2428,11 @@ static int arm_smmu_domain_finalise_s1(struct arm_smmu_domain *smmu_domain,
+
+ 	ret = arm_smmu_write_ctx_desc(smmu_domain, 0, &cfg->cd);
+ 	if (ret)
+-		goto out_free_tables;
++		goto out_free_cd_tables;
+
+ 	return 0;
+
+-out_free_tables:
++out_free_cd_tables:
+ 	arm_smmu_free_cd_tables(smmu_domain);
+ out_free_asid:
+ 	arm_smmu_bitmap_free(smmu->asid_map, asid);
+@@ -2899,7 +2889,14 @@ static int arm_smmu_add_device(struct device *dev)
+
+ 	master->ssid_bits = min(smmu->ssid_bits, fwspec->num_pasid_bits);
+
+-	/* Note that PASID must be enabled before, and disabled after ATS */
++	/*
++	 * Note that PASID must be enabled before, and disabled after ATS:
++	 * PCI Express Base 4.0r1.0 - 10.5.1.3 ATS Control Register
++	 *
++	 *   Behavior is undefined if this bit is Set and the value of the PASID
++	 *   Enable, Execute Requested Enable, or Privileged Mode Requested bits
++	 *   are changed.
++	 */
+ 	arm_smmu_enable_pasid(master);
+
+ 	if (!(smmu->features & ARM_SMMU_FEAT_2_LVL_CDTAB))
+
 
 
