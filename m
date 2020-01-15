@@ -2,126 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A5EF13CCA8
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2020 19:58:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC72113CD8F
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2020 20:58:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728904AbgAOS6u (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Jan 2020 13:58:50 -0500
-Received: from smtp-fw-33001.amazon.com ([207.171.190.10]:45043 "EHLO
-        smtp-fw-33001.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728928AbgAOS6t (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jan 2020 13:58:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1579114729; x=1610650729;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=73iRbj90euAs81pmcyjRvkvGLKITpykEHoHY7B0WgBc=;
-  b=MY88sdxhkCwffW7d1JacCBN5SBmu2eEdL+BLVmIVbJWRI0omoSRJiWYh
-   GpzmWFS54nofsL/E5kOp0xjiLEeTJmHqyVv4hpQ3WBydizxs6GzjbKlEF
-   SkNAMvDtbEvILG3/9l/FGQ/tfJ5E8lpip+H2h67Gl/w24lJlHmfZuZh6N
-   o=;
-IronPort-SDR: TIa88R3aFmSrGQ2PR9BpfSoRqg125frZIQoNRfhMWhKqbGW4KqwJFfkhsC3MXkt/P2FK3J5AQ0
- RLqMS6ToVvJA==
-X-IronPort-AV: E=Sophos;i="5.70,323,1574121600"; 
-   d="scan'208";a="20313183"
-Received: from sea32-co-svc-lb4-vlan3.sea.corp.amazon.com (HELO email-inbound-relay-1e-57e1d233.us-east-1.amazon.com) ([10.47.23.38])
-  by smtp-border-fw-out-33001.sea14.amazon.com with ESMTP; 15 Jan 2020 18:58:37 +0000
-Received: from EX13MTAUWB001.ant.amazon.com (iad55-ws-svc-p15-lb9-vlan3.iad.amazon.com [10.40.159.166])
-        by email-inbound-relay-1e-57e1d233.us-east-1.amazon.com (Postfix) with ESMTPS id B9CA614190B;
-        Wed, 15 Jan 2020 18:58:34 +0000 (UTC)
-Received: from EX13D01UWB001.ant.amazon.com (10.43.161.75) by
- EX13MTAUWB001.ant.amazon.com (10.43.161.207) with Microsoft SMTP Server (TLS)
- id 15.0.1367.3; Wed, 15 Jan 2020 18:58:34 +0000
-Received: from EX13MTAUEE002.ant.amazon.com (10.43.62.24) by
- EX13d01UWB001.ant.amazon.com (10.43.161.75) with Microsoft SMTP Server (TLS)
- id 15.0.1367.3; Wed, 15 Jan 2020 18:58:33 +0000
-Received: from dev-dsk-anchalag-2a-9c2d1d96.us-west-2.amazon.com
- (172.22.96.68) by mail-relay.amazon.com (10.43.62.224) with Microsoft SMTP
- Server id 15.0.1367.3 via Frontend Transport; Wed, 15 Jan 2020 18:58:32 +0000
-Received: by dev-dsk-anchalag-2a-9c2d1d96.us-west-2.amazon.com (Postfix, from userid 4335130)
-        id BB3BB40E7E; Wed, 15 Jan 2020 18:58:32 +0000 (UTC)
-Date:   Wed, 15 Jan 2020 18:58:32 +0000
-From:   Anchal Agarwal <anchalag@amazon.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-CC:     <sblbir@amazon.com>, <fllinden@amazon.com>,
-        <linux-acpi@vger.kernel.org>, <erik.kaneda@intel.com>,
-        Bob Moore <robert.moore@intel.com>, <anchalag@amazon.com>
-Subject: Re: [PATCH] ACPICA: Enable sleep button on ACPI legacy wake
-Message-ID: <20200115185832.GA31684@dev-dsk-anchalag-2a-9c2d1d96.us-west-2.amazon.com>
-References: <20191101212319.1FFC440EB1@dev-dsk-anchalag-2a-9c2d1d96.us-west-2.amazon.com>
- <5749186.Fh4Yg0zt7g@kreacher>
- <20200102223919.GA22256@dev-dsk-anchalag-2a-9c2d1d96.us-west-2.amazon.com>
- <2310267.gkPY8ABrMH@kreacher>
+        id S1729299AbgAOT5H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Jan 2020 14:57:07 -0500
+Received: from sauhun.de ([88.99.104.3]:41054 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726566AbgAOT5H (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 15 Jan 2020 14:57:07 -0500
+Received: from localhost (p54B33239.dip0.t-ipconnect.de [84.179.50.57])
+        by pokefinder.org (Postfix) with ESMTPSA id 467852C0742;
+        Wed, 15 Jan 2020 20:57:05 +0100 (CET)
+Date:   Wed, 15 Jan 2020 20:57:05 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 00/12] i2c: convert subsystem to use
+ i2c_new_client_device()
+Message-ID: <20200115195704.GC23789@ninjato>
+References: <20200107174748.9616-1-wsa+renesas@sang-engineering.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="oTHb8nViIGeoXxdp"
 Content-Disposition: inline
-In-Reply-To: <2310267.gkPY8ABrMH@kreacher>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <20200107174748.9616-1-wsa+renesas@sang-engineering.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jan 15, 2020 at 11:24:47AM +0100, Rafael J. Wysocki wrote:
-> On Thursday, January 2, 2020 11:39:19 PM CET Anchal Agarwal wrote:
-> > On Thu, Dec 12, 2019 at 11:10:32PM +0100, Rafael J. Wysocki wrote:
-> > > On Monday, October 29, 2018 6:52:16 PM CET Anchal Agarwal wrote:
-> > > > Currently we do not see sleep_enable bit set after guest resumes
-> > > > from hibernation. Hibernation is triggered in guest on receiving
-> > > > a sleep trigger from the hypervisor(S4 state). We see that power
-> > > > button is enabled on wake up from S4 state however sleep button
-> > > > isn't.
-> > > 
-> > > I'm not against this change in principle, although it may change behavior
-> > > in a somewhat unexpected way on some systems.
-> > > 
-> > Apologies for late response, I was out on vacation. 
-> > Can you please elaborate more on that?
-> 
-> See below.
-> 
-> > > > This causes subsequent invocation of sleep state to fail
-> > > > in the guest.
-> > > 
-> > > However, can you explain this in a bit more detail?
-> > >  
-> > I can explain this for my particular case, however, any code path going
-> > through acpi_hw_legacy_wake path will not have sleep button enabled. Why
-> > is only power button event enabled and not sleep here?
-> 
-> Good question and related to the potentially unexpected behavior part.
-> 
-> Presumably, on some systems the sleep button could not be enabled
-> automatically as it triggered another suspend right away after that.
-> 
-> That's speculation, though.
-> 
-> > In my case, I am using sleep button event to generate S4 state
-> > which causes guest VM running on xen to hibernate.
-> 
-> Usually, however, the sleep button is used to trigger transitions into S3
-> (or suspend-to-idle on systems that support it).
-> 
-> > I have found
-> > in my debugging process that after first resume when kernel goes 
-> > through this code path, sleep button event is not enabled and 
-> > when hypervisor try to generate sci interrupt, its not received in
-> > the guest since this path does not enable sleep event.
-> 
-> OK
-> 
-> So the patch can be applied AFAICS, but if it is reported to cause problems to
-> happen, it will need to be reverted.
-> 
-> Please resend the patch with a proper CC list (including Bob, Erik, the ACPICA
-> devel list etc).
-> 
-> Thanks!
-Sure can I add your Reviewed-by or Acked-by?
 
-Thanks,
-Anchal
-> 
-> 
-> 
+--oTHb8nViIGeoXxdp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Jan 07, 2020 at 06:47:34PM +0100, Wolfram Sang wrote:
+> This patch series converts the I2C subsystem to use the new API. Drivers
+> have been build tested. There is one user left in the SMBus part of the
+> core which will need a seperate series because all users of this
+> function need to be checked/converted, too.
+>=20
+> Except for documentation patches, the conversion has been done with a
+> coccinelle script and further simplification have been applied when
+> proofreading the patches.
+>=20
+> A branch is here:
+>=20
+> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/i2c/n=
+ew_client_device
+>=20
+> Looking forward to comments...
+
+Thanks for all the quick reviews and tests \o/
+
+Series applied to for-next, thanks!
+
+
+--oTHb8nViIGeoXxdp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl4fbpAACgkQFA3kzBSg
+KbZsuxAAlGN3Qw/NoGCVgmD5F27FU32w32SIt3btqM+Smwb8h/YywvrdIxuaElC4
+U0FVB9Nt21/V6whDPbpRqNwtf3Wld5jgpFt3GinATmO0LBrYZM0qsrAWaf9Mnnaw
+KgDuO5MOsyLhxxgsT7ak2ASe6o+QzDUOxtGJJLgjEUxAcdF7MEVinFLPA1qOgGlu
+qTPNb+z3htcdaoLIVBvUBzS6xIt8HyD2XB71db4C1TqBfdoWI/kRIWn5Fd0Bjiv4
+EmUag6Gy7G0CTw0lzmYne+gSB/U8ugzpNDTWEyns4bxTVUGgyuAdWcPomJ9Duieq
+zA2yUvTbIX/L/smIXiJcXUOwgWiozVsY+oFpDp0lpg7ZaULiuCZbmcdbil6GRfqB
+qVfn8F94w1GRCQ5lNzMTuUbTIo/4w5HFMKQY23lJ8BMI26nVQ4+6YyUoZstLLyMA
+Np0s2EAUUGGO9IdMigfaJrVW7m0ukj1Je4S9a8OAE4eVuV89o1UjNdx0O7kV4BPI
+K0YpHnEvGaEiQB3MonKIE0jUL6WA1eXUUxsgQCBoXyPx9nmz5QzANoenIPmN8PBw
+sf8NAgK8ppLrkWjmbydI2GWMFFhp4gXdGFzvrjLahMNXZsHGLyK/ad9XS6+E54RD
+GynwEX6zU+0Znoa+3I2Po2bbPBRvuHSZqES3obLnS7x/VQ8Xz1w=
+=uUCI
+-----END PGP SIGNATURE-----
+
+--oTHb8nViIGeoXxdp--
