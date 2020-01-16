@@ -2,124 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A875E13D980
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jan 2020 13:01:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B2DD13E105
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jan 2020 17:47:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726857AbgAPMBZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Jan 2020 07:01:25 -0500
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:37862 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726440AbgAPMBZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Jan 2020 07:01:25 -0500
-Received: by mail-ua1-f66.google.com with SMTP id h32so7536375uah.4
-        for <linux-acpi@vger.kernel.org>; Thu, 16 Jan 2020 04:01:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=0I+PreediRVMEWgWGPoXFPj3GLqhFhozrkL+77ZQpRU=;
-        b=gqsNeMXibvD5pjGv+eufAr9mZXSTPrGaBu4g5jxfECy3ZUkebpMyurVJKBzZ243OkS
-         uA83Y2MknX+rVgNwclTRwlSo+Q+pag+0972ylL77pEp2+BtZZSVYmIwsu/YviQ5Fwn2W
-         GwRsVl5j7rkZJp6Z0v9+/kaMGDEQHJtamMKrs7usWqSZP5BPE9N6nxjKvCe/n/x5F8KY
-         C0YI9KpE1ZDF8x1kK/3AtShRp2yfxFAeCk7r/Uu09Yv3O7zywhHrky42g6ZTtnu1VbYx
-         6wAFIRojVwk+QW9LjfIA/5iKn2rQwMnzT0YQ8eTiT0n3Zcu7Is8BzGA5UmGmb4EiZSpZ
-         UbPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=0I+PreediRVMEWgWGPoXFPj3GLqhFhozrkL+77ZQpRU=;
-        b=HcyxQsRS+F7AgjX/iOJqBjmIiScAGX6x754+4BQEhU/Nt5BRH4/ghe5mir6yNsGr4I
-         qLPPFnW6QXPet7woU5flIOclVttQIa8tslNpFhdFTKrtUzu7A2GUPFz5l3uICkEk0J1O
-         I++x2/OJHnXwgppvIaqhBUKmXKjMAo3BmRRc4PalPxuIzZHSPh9SgJ1VrahfLpJ5TyEB
-         uUq3CHZzYPn/eG5sdniKdDf34TbDhJm0OYuvQ0VQzgmXo/bEx0pJZXtV69EaWBL/RN0W
-         kzBoWCksf645RCr/fV7SVs2nEtj+nH1aQWGi3GUAohS1z9X1DK5sSMH4VBhiWPMF80VB
-         Mwow==
-X-Gm-Message-State: APjAAAXEcZy5ZhbC8iKZLaeXbz9bwoCb7TcGbAPK6lAs+p+u7GkzUGPL
-        Hu9QPqPw/tZ4bn3Mv+KamEER4fZIvka3BpZVS+E=
-X-Google-Smtp-Source: APXvYqwzd/2VRVcdwTDqkBKGvAYxtCJGuE/jgPQ/S45lBHGmusaGccyZMI91viUdgk9/AusK/HlUoj7H5NFWr6ROIdE=
-X-Received: by 2002:ab0:7411:: with SMTP id r17mr17777951uap.31.1579176083996;
- Thu, 16 Jan 2020 04:01:23 -0800 (PST)
+        id S1729030AbgAPQrL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Jan 2020 11:47:11 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56848 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729862AbgAPQrI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 16 Jan 2020 11:47:08 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7B9CB21582;
+        Thu, 16 Jan 2020 16:47:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579193228;
+        bh=Yy84DGQLF/tHpAhgKO6JE9/YdrRcR9e+usfeH9XJYXQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=0duIkbEIGjIYHrud0BUWfk22jYXm9tdhBucvSHYYp6CGK/wNbVLi/CtbrYiLX7Vd2
+         kjpiGy9oX7kJdldVCh++RZQTgYe21usdK/LPSRgFO6Q+Cvq4dwZQWtzO/rXmdTEX5z
+         1OWlO0Z0ACtItmqlhOw4PzzwtM2TEOE6JXCxAfQg=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 050/205] ACPI: platform: Unregister stale platform devices
+Date:   Thu, 16 Jan 2020 11:40:25 -0500
+Message-Id: <20200116164300.6705-50-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200116164300.6705-1-sashal@kernel.org>
+References: <20200116164300.6705-1-sashal@kernel.org>
 MIME-Version: 1.0
-Reply-To: sebastient766@gmail.com
-Received: by 2002:a67:e2c1:0:0:0:0:0 with HTTP; Thu, 16 Jan 2020 04:01:23
- -0800 (PST)
-From:   =?UTF-8?B?TXIuU8OpYmFzdGllbiBUb25p?= <sebastient766@gmail.com>
-Date:   Thu, 16 Jan 2020 04:01:23 -0800
-X-Google-Sender-Auth: B8Vr8IFc8qoQgViWAO9xkC2_nXc
-Message-ID: <CAKsTvF5Q0zF23oJE8TuGayDd+PnTNQQgtt_QCAcahbwp+9YR3w@mail.gmail.com>
-Subject: Dear Friend,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-FROM MR.S=C3=89BASTIEN TONI
-AUDIT& ACCOUNT MANAGER
-BANK OF AFRICA (B.O.A)
-OUAGADOUGOU BURKINA FASO
-WEST AFRICA
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Dear Friend,
+[ Upstream commit cb0701acfa7e3fe9e919cf2aa2aa939b7fd603c2 ]
 
-With due respect, I have decided to contact you on
-transubstantiation  that will be beneficial to both of us. At the
-bank last account and  auditing evaluation, my staffs came across an
-old account which was being maintained by a foreign client who we
-learn was among the deceased passengers of motor accident on
-November.2003, the deceased was unable to run this account since his
-death. Theaccount has  remained dormant without the knowledge of his
-family since it was put in a  safe deposit account in the bank for
-future investment by the client.
+When commit 68bdb6773289 ("ACPI: add support for ACPI reconfiguration
+notifiers") introduced reconfiguration notifiers, it missed the point
+that the ACPI table, which might be loaded and then unloaded via
+ConfigFS, could contain devices that were not enumerated by their
+parents.
 
-Since his demise, even the members of his family haven't applied for
-claims  over this fund and it has been in the safe deposit account
-until I  discovered that it cannot be claimed since our client
-isaforeign nationaland we are sure that he has no next of kin here to
-file claims over the money. As the director of the department, this
-discovery was brought to my office so as to decide what is to bedone. I
-decided to seek ways through which to transfer this money out of the
-bank  and out of the country too.
+In such cases, the stale platform device is dangling in the system
+while the rest of the devices from the same table are already gone.
 
+Introduce acpi_platform_device_remove_notify() notifier that, in
+similar way to I²C or SPI buses, unregisters the platform devices
+on table removal event.
 
-The total amount in the account is 18.6 million with my positions as
-staffs  of the bank, I am handicapped because I cannot operate foreign
-accounts and  cannot lay debonair claim over this money. The client
-was a foreign  national and you will only be asked to act as his next
-of kin and I will  supply you with all the necessary information and
-bank data to assist you in being able to transfer this money to any
-bank of your  choice where this money could be transferred into.The
-total sum will be shared as follows: 50% for me, 50% for you and
-expenses incidental occur  during the transfer will be incur by both
-of us. The transfer is risk free on both sides hence you are going to
-follow my instruction till the fund  transfer to your account. Since I
-work in this bank that is why you should  be confident in the success
-of this transaction because you will be updated with information as at
-when desired.
+Fixes: 68bdb6773289 ("ACPI: add support for ACPI reconfiguration notifiers")
+Depends-on: 00500147cbd3 ("drivers: Introduce device lookup variants by ACPI_COMPANION device")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+[ rjw: Changelog & function rename ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/acpi_platform.c | 43 ++++++++++++++++++++++++++++++++++++
+ drivers/acpi/scan.c          |  1 +
+ 2 files changed, 44 insertions(+)
 
-I will wish you to keep this transaction secret and confidential as I
-am  hoping to retire with my share of this money at the end of
-transaction  which will be when this money is safety in your account.
-I will then come over to your country for sharing according to the
-previously agreed percentages. You might even have to advise me on
-possibilities of investment in your country or elsewhere of our
-choice. May  God help you to help me to a restive retirement, Amen,And
-You have to  contact me through my private e-mail
-at(sebastient766@gmail.com)Please for further information and inquires
-feel free to contact me back immediately for more explanation and
-better  understanding I want you to assure me your capability of
-handling this  project with trust by providing me your following
-information details such as:
+diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+index 00ec4f2bf015..c05050f474cd 100644
+--- a/drivers/acpi/acpi_platform.c
++++ b/drivers/acpi/acpi_platform.c
+@@ -31,6 +31,44 @@ static const struct acpi_device_id forbidden_id_list[] = {
+ 	{"", 0},
+ };
+ 
++static struct platform_device *acpi_platform_device_find_by_companion(struct acpi_device *adev)
++{
++	struct device *dev;
++
++	dev = bus_find_device_by_acpi_dev(&platform_bus_type, adev);
++	return dev ? to_platform_device(dev) : NULL;
++}
++
++static int acpi_platform_device_remove_notify(struct notifier_block *nb,
++					      unsigned long value, void *arg)
++{
++	struct acpi_device *adev = arg;
++	struct platform_device *pdev;
++
++	switch (value) {
++	case ACPI_RECONFIG_DEVICE_ADD:
++		/* Nothing to do here */
++		break;
++	case ACPI_RECONFIG_DEVICE_REMOVE:
++		if (!acpi_device_enumerated(adev))
++			break;
++
++		pdev = acpi_platform_device_find_by_companion(adev);
++		if (!pdev)
++			break;
++
++		platform_device_unregister(pdev);
++		put_device(&pdev->dev);
++		break;
++	}
++
++	return NOTIFY_OK;
++}
++
++static struct notifier_block acpi_platform_notifier = {
++	.notifier_call = acpi_platform_device_remove_notify,
++};
++
+ static void acpi_platform_fill_resource(struct acpi_device *adev,
+ 	const struct resource *src, struct resource *dest)
+ {
+@@ -130,3 +168,8 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+ 	return pdev;
+ }
+ EXPORT_SYMBOL_GPL(acpi_create_platform_device);
++
++void __init acpi_platform_init(void)
++{
++	acpi_reconfig_notifier_register(&acpi_platform_notifier);
++}
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index aad6be5c0af0..915650bf519f 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -2174,6 +2174,7 @@ int __init acpi_scan_init(void)
+ 	acpi_pci_root_init();
+ 	acpi_pci_link_init();
+ 	acpi_processor_init();
++	acpi_platform_init();
+ 	acpi_lpss_init();
+ 	acpi_apd_init();
+ 	acpi_cmos_rtc_init();
+-- 
+2.20.1
 
-(1)NAME..............
-(2)AGE:................
-(3)SEX:.....................
-(4)PHONE NUMBER:.................
-(5)OCCUPATION:.....................
-(6)YOUR COUNTRY:.....................
-
-Yours sincerely,
-Mr.S=C3=A9bastien Toni
