@@ -2,131 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39EA713E49A
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jan 2020 18:09:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC25013E64E
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jan 2020 18:19:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389371AbgAPRJa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Jan 2020 12:09:30 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45526 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389689AbgAPRJ3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:09:29 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5C19B24686;
-        Thu, 16 Jan 2020 17:09:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579194569;
-        bh=aFuI9s9qrYGvRS3aJIBpExQNugQRFOhhIn8THPtBKoo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g6Wwm9cfTpwTEcc321Q2yGt7PJg9zR1zcxvro7wJCQCwpbYJ9CN3zB5HSdZb2u03A
-         FjsznxaEvP+2INjOWgjUZb7H7HqUPAFVtDiEYrtxyFUUUa9f9L6qXOIbwsr/ukV//t
-         ZYcIlPFZoU66wqlVewQfSOGqZG1krmDDSHk4ydcg=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        "Robert R . Howell" <RHowell@uwyo.edu>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 447/671] PM: ACPI/PCI: Resume all devices during hibernation
-Date:   Thu, 16 Jan 2020 12:01:25 -0500
-Message-Id: <20200116170509.12787-184-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200116170509.12787-1-sashal@kernel.org>
-References: <20200116170509.12787-1-sashal@kernel.org>
+        id S2391422AbgAPRSR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Jan 2020 12:18:17 -0500
+Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:8812 "EHLO
+        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391384AbgAPRSR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Jan 2020 12:18:17 -0500
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+        id <B5e209a9f0001>; Thu, 16 Jan 2020 09:17:19 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+  by hqpgpgate101.nvidia.com (PGP Universal service);
+  Thu, 16 Jan 2020 09:18:15 -0800
+X-PGP-Universal: processed;
+        by hqpgpgate101.nvidia.com on Thu, 16 Jan 2020 09:18:15 -0800
+Received: from [10.24.37.48] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 16 Jan
+ 2020 17:18:11 +0000
+Subject: Re: [PATCH V3 0/2] PCI: Add MCFG quirks for Tegra194 host controllers
+To:     <bhelgaas@google.com>, <lorenzo.pieralisi@arm.com>,
+        <rjw@rjwysocki.net>, <lenb@kernel.org>, <andrew.murray@arm.com>,
+        <treding@nvidia.com>, <jonathanh@nvidia.com>
+CC:     <linux-tegra@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kthota@nvidia.com>, <mmaddireddy@nvidia.com>, <sagar.tv@gmail.com>
+References: <20200106082709.14370-1-vidyas@nvidia.com>
+ <20200110191500.9538-1-vidyas@nvidia.com>
+X-Nvconfidentiality: public
+From:   Vidya Sagar <vidyas@nvidia.com>
+Message-ID: <e264ae37-f3b3-96d1-9294-3ea9f78b78fc@nvidia.com>
+Date:   Thu, 16 Jan 2020 22:48:08 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200110191500.9538-1-vidyas@nvidia.com>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1579195039; bh=hfxzNASfjnng1sY6kKvhYD/Q1iFNO8maPXvGYEY4Eqo=;
+        h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
+         Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+         X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+         Content-Transfer-Encoding;
+        b=RnFh97nXGo9YJI9RPveweovTrQ/kf8VhPfkrpPo/P7W/Gig3mlah1NDuwcLh2iENH
+         oxoDM+xo0MBdor2PbuvfgM9pEKkP9KX7JO59RRC5A9Cum7ySTTNpMTrZO1Wg7ZMIhp
+         giRP5G1kuCIihLvVs3TaPqIriL5EJXI96iXShpzddAh20X23RC/vW3rP4fOmKWY32G
+         KGYgMAa7tPWxqXVzBW+YkP1k++Ih+45CBAwJZywtCa64oYRJu6vRd71Pif29yksOXm
+         S8il3C2RX4pLr30B0eKOg/9sXJdSpBzt8zEUmqxZOdeiQYpsdk5ItnPWg6j9+Kh8/z
+         ZbJAsKG5TEvMQ==
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Hi Bjorn,
+Could you please review this series?
 
-[ Upstream commit 501debd4aa5edc755037c39ea5a8fba23b41e580 ]
+Thanks in advance,
+Vidya Sagar
 
-Both the PCI bus type and the ACPI PM domain avoid resuming
-runtime-suspended devices with DPM_FLAG_SMART_SUSPEND set during
-hibernation (before creating the snapshot image of system memory),
-but that turns out to be a mistake.  It leads to functional issues
-and adds complexity that's hard to justify.
-
-For this reason, resume all runtime-suspended PCI devices and all
-devices in the ACPI PM domains before creating a snapshot image of
-system memory during hibernation.
-
-Fixes: 05087360fd7a (ACPI / PM: Take SMART_SUSPEND driver flag into account)
-Fixes: c4b65157aeef (PCI / PM: Take SMART_SUSPEND driver flag into account)
-Link: https://lore.kernel.org/linux-acpi/917d4399-2e22-67b1-9d54-808561f9083f@uwyo.edu/T/#maf065fe6e4974f2a9d79f332ab99dfaba635f64c
-Reported-by: Robert R. Howell <RHowell@uwyo.edu>
-Tested-by: Robert R. Howell <RHowell@uwyo.edu>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/device_pm.c | 13 +++++++------
- drivers/pci/pci-driver.c | 16 ++++++++--------
- 2 files changed, 15 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-index e0927c5fd282..11b7a1632e5a 100644
---- a/drivers/acpi/device_pm.c
-+++ b/drivers/acpi/device_pm.c
-@@ -1116,13 +1116,14 @@ EXPORT_SYMBOL_GPL(acpi_subsys_resume_early);
- int acpi_subsys_freeze(struct device *dev)
- {
- 	/*
--	 * This used to be done in acpi_subsys_prepare() for all devices and
--	 * some drivers may depend on it, so do it here.  Ideally, however,
--	 * runtime-suspended devices should not be touched during freeze/thaw
--	 * transitions.
-+	 * Resume all runtime-suspended devices before creating a snapshot
-+	 * image of system memory, because the restore kernel generally cannot
-+	 * be expected to always handle them consistently and they need to be
-+	 * put into the runtime-active metastate during system resume anyway,
-+	 * so it is better to ensure that the state saved in the image will be
-+	 * always consistent with that.
- 	 */
--	if (!dev_pm_test_driver_flags(dev, DPM_FLAG_SMART_SUSPEND))
--		pm_runtime_resume(dev);
-+	pm_runtime_resume(dev);
- 
- 	return pm_generic_freeze(dev);
- }
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index e69af9b8361d..5def4b74d54a 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -996,15 +996,15 @@ static int pci_pm_freeze(struct device *dev)
- 	}
- 
- 	/*
--	 * This used to be done in pci_pm_prepare() for all devices and some
--	 * drivers may depend on it, so do it here.  Ideally, runtime-suspended
--	 * devices should not be touched during freeze/thaw transitions,
--	 * however.
-+	 * Resume all runtime-suspended devices before creating a snapshot
-+	 * image of system memory, because the restore kernel generally cannot
-+	 * be expected to always handle them consistently and they need to be
-+	 * put into the runtime-active metastate during system resume anyway,
-+	 * so it is better to ensure that the state saved in the image will be
-+	 * always consistent with that.
- 	 */
--	if (!dev_pm_smart_suspend_and_suspended(dev)) {
--		pm_runtime_resume(dev);
--		pci_dev->state_saved = false;
--	}
-+	pm_runtime_resume(dev);
-+	pci_dev->state_saved = false;
- 
- 	if (pm->freeze) {
- 		int error;
--- 
-2.20.1
-
+On 1/11/20 12:44 AM, Vidya Sagar wrote:
+> The PCIe controller in Tegra194 SoC is not completely ECAM-compliant.
+> With the current hardware design limitations in place, ECAM can be enabled
+> only for one controller (C5 controller to be precise) with bus numbers
+> starting from 160 instead of 0. A different approach is taken to avoid this
+> abnormal way of enabling ECAM for just one controller but to enable
+> configuration space access for all the other controllers. In this approach,
+> ops are added through MCFG quirk mechanism which access the configuration
+> spaces by dynamically programming iATU (internal AddressTranslation Unit)
+> to generate respective configuration accesses just like the way it is
+> done in DesignWare core sub-system.
+> To increase the size of ECAM, a device-tree change is pushed in this series
+> to move the IO window from 32-bit PCIe aperture to 64-bit PCIe aperture leaving
+> the entire 32MB of 32-bit aperture for configuration space access.
+> 
+> V3:
+> * Pushed a device-tree change in the series to enable more space for ECAM
+> 
+> Vidya Sagar (2):
+>    arm64: tegra: Re-order PCIe aperture mappings to support ACPI boot
+>    PCI: Add MCFG quirks for Tegra194 host controllers
+> 
+>   arch/arm64/boot/dts/nvidia/tegra194.dtsi   |  36 ++++----
+>   drivers/acpi/pci_mcfg.c                    |   7 ++
+>   drivers/pci/controller/dwc/Kconfig         |   3 +-
+>   drivers/pci/controller/dwc/Makefile        |   2 +-
+>   drivers/pci/controller/dwc/pcie-tegra194.c | 102 +++++++++++++++++++++
+>   include/linux/pci-ecam.h                   |   1 +
+>   6 files changed, 131 insertions(+), 20 deletions(-)
+> 
