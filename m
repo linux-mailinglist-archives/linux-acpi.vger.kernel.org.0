@@ -2,62 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83EFC141F98
-	for <lists+linux-acpi@lfdr.de>; Sun, 19 Jan 2020 19:44:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9B1B14216D
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jan 2020 02:24:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728927AbgASSo4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 19 Jan 2020 13:44:56 -0500
-Received: from mail-il1-f193.google.com ([209.85.166.193]:46085 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728819AbgASSo4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 19 Jan 2020 13:44:56 -0500
-Received: by mail-il1-f193.google.com with SMTP id t17so25477459ilm.13
-        for <linux-acpi@vger.kernel.org>; Sun, 19 Jan 2020 10:44:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/o+CA7VDRA7UR3HGeT8+/tYzwEnOXwq5B8ZHP2/HeYc=;
-        b=frxwjTRIp+XgDBvVlMfTiQhQaXARjuhmZKvuCg0fbiQvc0jcqoJ5N06KXRMimf2ipV
-         hUPtfIPtPm2My5Mmi2xtE8PNIh4ec2Z/E+IxWiy0J9NFDyiy/wDmf7sfUKrmJl1I7q7T
-         i9+7yFlnGTsA5uK0vk2neF+Wum2OBPPzxKbXPSqtB3fiY+96zKZZMDA8Ye1x6zGAEV7+
-         5xDpsnWlxGtfjsKCF/uXtBOzmkzTPrjM57oTMkiy8m4RJynJEVle6lhb+3rLG0Kj3Odd
-         nRonxdfi9T9bISdf45oqNhq6SMpv/y8BIdEKECqh6AlFIP7XZ6silqJta2OddruS1Fx1
-         Darg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/o+CA7VDRA7UR3HGeT8+/tYzwEnOXwq5B8ZHP2/HeYc=;
-        b=Izs6NeIG+JdkrWspFNp+4N56u3605wAI18DGxvRBftTy/lpTpE5stwvU/C0XA4yHHv
-         RnF2GUD+6H7W6NMUQBIaXl8Lx0DczaR2uJK7DhXRFUetxaWkSY5bUE0FzA+kggEwtWzX
-         EoPZPI/lLfkKzAOmrizgadI8e59MNI5sDquARpkXz+b7+uW0YkvlwAC/DPepUh3hDabD
-         EOJL/pXP4OUbYt+jWgEO2XLueUjnldMpH0hsPyrcG+9MCUJOgPMZNoMi/9eGhlDxd5Y3
-         QX1I3wna1F1KQ4tt+tQEETycNnF4qFTV5ulh6cfrRasgfGJ/Icptvz+12mC6SEIMTfAi
-         OmIw==
-X-Gm-Message-State: APjAAAUUNb0uwwTR9yDAKbFoN4p+GFtS8hF5jwHlINfuZ41lj9sHaFYl
-        88xozTsWjiBC41bOSZjKphykPWX0YZHFGRR3EEM=
-X-Google-Smtp-Source: APXvYqwunf6TLONVcydOsD/K4p2fb+EOwhav1QOrqeu8+8G07aq34R9Hg5B1Ukz1B2r3cNBCizzmziQLI/4gi0D4r3s=
-X-Received: by 2002:a92:5e0c:: with SMTP id s12mr8141829ilb.19.1579459495550;
- Sun, 19 Jan 2020 10:44:55 -0800 (PST)
+        id S1728931AbgATBY0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 19 Jan 2020 20:24:26 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:56118 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728927AbgATBY0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 19 Jan 2020 20:24:26 -0500
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 0B1DED1496066D6CEE24;
+        Mon, 20 Jan 2020 09:24:24 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS410-HUB.china.huawei.com
+ (10.3.19.210) with Microsoft SMTP Server id 14.3.439.0; Mon, 20 Jan 2020
+ 09:24:17 +0800
+From:   yu kuai <yukuai3@huawei.com>
+To:     <perex@perex.cz>, <rafael.j.wysocki@intel.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <yukuai3@huawei.com>, <yi.zhang@huawei.com>,
+        <zhengbin13@huawei.com>
+Subject: [PATCH] PNP: isapnp: remove defined but not used function 'isapnp_checksum'
+Date:   Mon, 20 Jan 2020 09:23:31 +0800
+Message-ID: <20200120012331.34776-1-yukuai3@huawei.com>
+X-Mailer: git-send-email 2.17.2
 MIME-Version: 1.0
-Received: by 2002:a02:95c8:0:0:0:0:0 with HTTP; Sun, 19 Jan 2020 10:44:55
- -0800 (PST)
-Reply-To: favordens@email.com
-From:   Favor Desmond <contecindy5@gmail.com>
-Date:   Sun, 19 Jan 2020 18:44:55 +0000
-Message-ID: <CAOfCPNxSu9KUi1AXT1eCU3k_nDieFtnVEn9jEmoRmAm70LZ0JQ@mail.gmail.com>
-Subject: HELLO
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello Dear
-Greetings to you,I am Favor Desmond from Ivory coast currently living
-in  Togo Republic,I would like to know you more, so that i can tell
-you little amount myself and my photo, email address is
-favordens@email.com
-Thanks
-Favor
+Fix gcc '-Wunused-function' warnning:
+
+drivers/pnp/isapnp/core.c:752:29: warning: 'isapnp_checksum' defined but
+not used [-Wunused-function]
+752 | static unsigned char __init isapnp_checksum(unsigned char *data)
+
+Commit 04c589f35bc5 ("PNP: isapnp: remove set but not used variable
+'checksum'") removes the last caller of the function. It is never used
+and so can be removed.
+
+Fixes: 04c589f35bc5 ("PNP: isapnp: remove set but not used variable 'checksum'")
+Signed-off-by: yu kuai <yukuai3@huawei.com>
+---
+ drivers/pnp/isapnp/core.c | 22 ----------------------
+ 1 file changed, 22 deletions(-)
+
+diff --git a/drivers/pnp/isapnp/core.c b/drivers/pnp/isapnp/core.c
+index 179b737280e1..6c457006e84b 100644
+--- a/drivers/pnp/isapnp/core.c
++++ b/drivers/pnp/isapnp/core.c
+@@ -746,28 +746,6 @@ static void __init isapnp_parse_resource_map(struct pnp_card *card)
+ 	}
+ }
+ 
+-/*
+- *  Compute ISA PnP checksum for first eight bytes.
+- */
+-static unsigned char __init isapnp_checksum(unsigned char *data)
+-{
+-	int i, j;
+-	unsigned char checksum = 0x6a, bit, b;
+-
+-	for (i = 0; i < 8; i++) {
+-		b = data[i];
+-		for (j = 0; j < 8; j++) {
+-			bit = 0;
+-			if (b & (1 << j))
+-				bit = 1;
+-			checksum =
+-			    ((((checksum ^ (checksum >> 1)) & 0x01) ^ bit) << 7)
+-			    | (checksum >> 1);
+-		}
+-	}
+-	return checksum;
+-}
+-
+ /*
+  *  Build device list for all present ISA PnP devices.
+  */
+-- 
+2.17.2
+
