@@ -2,219 +2,196 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61C7C143153
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jan 2020 19:14:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AFA63143925
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jan 2020 10:10:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726901AbgATSOC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Jan 2020 13:14:02 -0500
-Received: from mga07.intel.com ([134.134.136.100]:6625 "EHLO mga07.intel.com"
+        id S1728689AbgAUJJw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Jan 2020 04:09:52 -0500
+Received: from mga11.intel.com ([192.55.52.93]:50095 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726876AbgATSOC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 20 Jan 2020 13:14:02 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
+        id S1727969AbgAUJJw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 21 Jan 2020 04:09:52 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Jan 2020 10:14:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,342,1574150400"; 
-   d="scan'208";a="374382959"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 20 Jan 2020 10:14:00 -0800
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1itbYl-000Hb6-H5; Tue, 21 Jan 2020 02:13:59 +0800
-Date:   Tue, 21 Jan 2020 02:13:35 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 971a12f8e68bf3b19eb1161e1fcefdf3b0573907
-Message-ID: <5e25edcf.kO1auxAqDHJDghhQ%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Jan 2020 01:09:51 -0800
+X-IronPort-AV: E=Sophos;i="5.70,345,1574150400"; 
+   d="scan'208";a="215470836"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Jan 2020 01:09:49 -0800
+Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
+        id DDE45208C5; Tue, 21 Jan 2020 11:09:46 +0200 (EET)
+Date:   Tue, 21 Jan 2020 11:09:46 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Mani, Rajmohan" <rajmohan.mani@intel.com>,
+        Tomasz Figa <tfiga@chromium.org>
+Subject: Re: [PATCH v3 2/5] ACPI: Add a convenience function to tell a device
+ is suspended in probe
+Message-ID: <20200121090946.GX5440@paasikivi.fi.intel.com>
+References: <20200109154529.19484-1-sakari.ailus@linux.intel.com>
+ <20200109154529.19484-3-sakari.ailus@linux.intel.com>
+ <CAJZ5v0hfGateSt-_EBuyHqLYi5NR4PUFB=wDF+Gu+9-tFXuohg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0hfGateSt-_EBuyHqLYi5NR4PUFB=wDF+Gu+9-tFXuohg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: 971a12f8e68bf3b19eb1161e1fcefdf3b0573907  Merge branch 'pm-cpuidle-next' into testing
+Hi Rafael,
 
-elapsed time: 400m
+Thank you for the review.
 
-configs tested: 163
-configs skipped: 1
+On Mon, Jan 13, 2020 at 11:41:12AM +0100, Rafael J. Wysocki wrote:
+> On Thu, Jan 9, 2020 at 4:44 PM Sakari Ailus
+> <sakari.ailus@linux.intel.com> wrote:
+> >
+> > Add a convenience function to tell whether a device is suspended for probe
+> > or remove, for busses where the custom is that drivers don't need to
+> > resume devices in probe, or suspend them in their remove handlers.
+> >
+> > Returns false on non-ACPI systems.
+> >
+> > Suggested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > ---
+> >  drivers/acpi/device_pm.c | 35 +++++++++++++++++++++++++++++++++++
+> >  include/linux/acpi.h     |  5 +++++
+> >  2 files changed, 40 insertions(+)
+> >
+> > diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+> > index 5e4a8860a9c0c..87393020276d8 100644
+> > --- a/drivers/acpi/device_pm.c
+> > +++ b/drivers/acpi/device_pm.c
+> > @@ -1348,4 +1348,39 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
+> >         return 1;
+> >  }
+> >  EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
+> > +
+> > +/**
+> > + * acpi_dev_low_power_state_probe - Tell if a device is in a low power state
+> 
+> "Check the current ACPI power state of a device."
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Sounds good.
 
-parisc                            allnoconfig
-parisc                            allyesonfig
-parisc                         b180_defconfig
-parisc                        c3000_defconfig
-parisc                              defconfig
-x86_64               randconfig-e001-20200120
-x86_64               randconfig-e002-20200120
-x86_64               randconfig-e003-20200120
-i386                 randconfig-e001-20200120
-i386                 randconfig-e002-20200120
-i386                 randconfig-e003-20200120
-i386                             alldefconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-alpha                               defconfig
-csky                                defconfig
-nds32                             allnoconfig
-nds32                               defconfig
-arc                              allyesconfig
-arc                                 defconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm                         at91_dt_defconfig
-arm                           efm32_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-csky                 randconfig-a001-20200120
-openrisc             randconfig-a001-20200120
-s390                 randconfig-a001-20200120
-sh                   randconfig-a001-20200120
-xtensa               randconfig-a001-20200120
-xtensa                       common_defconfig
-openrisc                    or1ksim_defconfig
-nios2                         3c120_defconfig
-xtensa                          iss_defconfig
-c6x                        evmc6678_defconfig
-c6x                              allyesconfig
-nios2                         10m50_defconfig
-openrisc                 simple_smp_defconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                                  defconfig
-s390                             alldefconfig
-s390                             allmodconfig
-s390                              allnoconfig
-s390                             allyesconfig
-s390                          debug_defconfig
-s390                                defconfig
-s390                       zfcpdump_defconfig
-x86_64               randconfig-g001-20200120
-x86_64               randconfig-g002-20200120
-x86_64               randconfig-g003-20200120
-i386                 randconfig-g001-20200120
-i386                 randconfig-g002-20200120
-i386                 randconfig-g003-20200120
-h8300                     edosk2674_defconfig
-h8300                    h8300h-sim_defconfig
-h8300                       h8s-sim_defconfig
-m68k                             allmodconfig
-m68k                       m5475evb_defconfig
-m68k                          multi_defconfig
-m68k                           sun3_defconfig
-x86_64               randconfig-d001-20200120
-x86_64               randconfig-d002-20200120
-x86_64               randconfig-d003-20200120
-i386                 randconfig-d001-20200120
-i386                 randconfig-d002-20200120
-i386                 randconfig-d003-20200120
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64               randconfig-c001-20200120
-x86_64               randconfig-c002-20200120
-x86_64               randconfig-c003-20200120
-i386                 randconfig-c001-20200120
-i386                 randconfig-c002-20200120
-i386                 randconfig-c003-20200120
-x86_64               randconfig-f001-20200120
-x86_64               randconfig-f002-20200120
-x86_64               randconfig-f003-20200120
-i386                 randconfig-f001-20200120
-i386                 randconfig-f002-20200120
-i386                 randconfig-f003-20200120
-ia64                                defconfig
-sh                               allmodconfig
-sh                                allnoconfig
-sh                          rsk7269_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                            titan_defconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allmodconfig
-mips                              allnoconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                          allmodconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                             defconfig
-c6x                  randconfig-a001-20200120
-h8300                randconfig-a001-20200120
-microblaze           randconfig-a001-20200120
-nios2                randconfig-a001-20200120
-sparc64              randconfig-a001-20200120
-x86_64               randconfig-a001-20200120
-x86_64               randconfig-a002-20200120
-x86_64               randconfig-a003-20200120
-i386                 randconfig-a001-20200120
-i386                 randconfig-a002-20200120
-i386                 randconfig-a003-20200120
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-ia64                             alldefconfig
-ia64                             allmodconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-arc                  randconfig-a001-20200120
-arm                  randconfig-a001-20200120
-arm64                randconfig-a001-20200120
-ia64                 randconfig-a001-20200120
-powerpc              randconfig-a001-20200120
-sparc                randconfig-a001-20200120
-x86_64               randconfig-b001-20200120
-x86_64               randconfig-b002-20200120
-x86_64               randconfig-b003-20200120
-i386                 randconfig-b001-20200120
-i386                 randconfig-b002-20200120
-i386                 randconfig-b003-20200120
-x86_64               randconfig-h001-20200120
-x86_64               randconfig-h002-20200120
-x86_64               randconfig-h003-20200120
-i386                 randconfig-h001-20200120
-i386                 randconfig-h002-20200120
-i386                 randconfig-h003-20200120
-c6x                  randconfig-a001-20200121
-h8300                randconfig-a001-20200121
-microblaze           randconfig-a001-20200121
-nios2                randconfig-a001-20200121
-sparc64              randconfig-a001-20200121
+> 
+> > + *                                 during probe
+> 
+> Why is this limited to probe?
 
----
-0-DAY kernel test infrastructure                 Open Source Technology Center
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
+Well.. that was the purpose. It could be used at other times, too, I guess,
+but most of the time runtime PM is the right interface for doing that.
+
+> 
+> The function actually checks whether or not the ACPI power state of
+> the device is low-power at the call time (except that it is a bit racy
+> with respect to _set_power(), so it may not work as expected if called
+> in parallel with that one).
+> 
+> Maybe drop the "probe" part of the name (actually, I would call this
+> function acpi_dev_state_low_power()) and add a paragraph about the
+> potential race with _set_power() to the description?
+
+Agreed, I'll use the text you provided below.
+
+> 
+> > + * @dev: The device
+> 
+> "Physical device the ACPI power state of which to check".
+
+Ok.
+
+> 
+> > + *
+> > + * Tell whether a given device is in a low power state during the driver's probe
+> > + * or remove operation.
+> > + *
+> > + * Drivers of devices on certain busses such as I²C can generally assume (on
+> > + * ACPI based systems) that the devices they control are powered on without
+> > + * driver having to do anything about it. Using struct
+> > + * device_driver.probe_low_power and "probe-low-power" property, this can be
+> > + * negated and the driver has full control of the device power management.
+> 
+> The above information belongs somewhere else in my view.
+
+How about putting it to the DSD ReST property documentation, perhaps with a
+little bit more context? I can add another patch for that.
+
+> 
+> > + * Always returns false on non-ACPI based systems. True is returned on ACPI
+> 
+> "On a system without ACPI, return false.  On a system with ACPI,
+> return true if the current ACPI power state of the device is not D0,
+> or false otherwise.
+> 
+> Note that the power state of a device is not well-defined after it has
+> been passed to acpi_device_set_power() and before that function
+> returns, so it is not valid to ask for the ACPI power state of the
+> device in that time frame."
+
+Works for me.
+
+> 
+> > + * based systems iff the device is in a low power state during probe or remove.
+> > + */
+> > +bool acpi_dev_low_power_state_probe(struct device *dev)
+> > +{
+> > +       int power_state;
+> > +       int ret;
+> > +
+> > +       if (!is_acpi_device_node(dev_fwnode(dev)))
+> > +               return false;
+> 
+> This is (at least) inefficient, because the same check is repeated by
+> ACPI_COMPANION().
+> 
+> If you really want to print the message, it is better to do something like
+> 
+> struct acpi_device *adev = ACPI_COMPANION(dev);
+> 
+> if (!adev)
+>         return false;
+> 
+> ret = acpi_device_get_power(adev, &power_state);
+
+Yes, makes sense.
+
+> 
+> > +
+> > +       ret = acpi_device_get_power(ACPI_COMPANION(dev), &power_state);
+> > +       if (ret) {
+> > +               dev_warn(dev, "Cannot obtain power state (%d)\n", ret);
+> 
+> And the log level of this message is way too high IMO.
+> 
+> This means a firmware bug AFAICS and so after seeing it once on a
+> given system it becomes noise.  I'd use pr_debug() to print it.
+
+I'll switch to dev_dbg() then --- as we have the device.
+
+> 
+> > +               return false;
+> > +       }
+> > +
+> > +       return power_state != ACPI_STATE_D0;
+> > +}
+> > +EXPORT_SYMBOL_GPL(acpi_dev_low_power_state_probe);
+> > +
+> >  #endif /* CONFIG_PM */
+
+-- 
+Kind regards,
+
+Sakari Ailus
