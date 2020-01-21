@@ -2,240 +2,145 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B3BB143E6A
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jan 2020 14:44:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71F92144174
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jan 2020 17:05:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729061AbgAUNom (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Jan 2020 08:44:42 -0500
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:40284 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728932AbgAUNol (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jan 2020 08:44:41 -0500
-Received: by mail-wm1-f68.google.com with SMTP id t14so3060453wmi.5;
-        Tue, 21 Jan 2020 05:44:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=if+g8L2ZfoMcIKn+DcPuF7NKQRL3TFRLPN4rsOE3noI=;
-        b=oOTfSGFdPLIG3ZFP7RAXMRpRBnIhxnmzZhfnwwpKyaAGD8I5m/xM61q0aD4KkGxU+x
-         kph8eF3tFaclGy4y0MsxuJyLM1mBAwXAxLNUASJuuLWedtqdhs9tZLvsXyT3bJfmVaaO
-         4NqulbBDC3t8eTofVSIbN7XzOo2mhtQzGTJulQz5CG5iT8F2hYRyanAQKNGDllH23Ibw
-         zM4OfF52TN1sglQnrZQCnO/lYGPie1hmRQhQp85BebSAmNe6Y71utgONMKruQf16mKni
-         xid3wjVsMyIRQZ5ppWc1Bh1YdIJZJZOfmCpnnXETpYNfim5DmqPxx5fCPa5OC6QfOho4
-         BHKw==
+        id S1729603AbgAUQDL convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 21 Jan 2020 11:03:11 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:45847 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729937AbgAUQDE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jan 2020 11:03:04 -0500
+Received: by mail-ot1-f65.google.com with SMTP id 59so3336383otp.12;
+        Tue, 21 Jan 2020 08:03:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=if+g8L2ZfoMcIKn+DcPuF7NKQRL3TFRLPN4rsOE3noI=;
-        b=o+HFfhsmDK2ZcifrSSPA4YFWO2KjMftuQ1KEyCH9YYDdG3Ve0VkeoIbzh0tfMLa0V8
-         jiv7hOHShVW8VhhBR3rfVTw8CvpNb9Vr31ylU1eHiFQ7KOV1SOR8OCrL/V9A25xevvZN
-         NHEygXLez5aKtt+Miivn5BEf3vUzd0JDm8T3LM6JLrGzsjx4pKT0vBzYlnQcb7dJySlq
-         SuYhFOwRMIaLF/PJNQTzli6eT2H0755E3g1JmYZOh+Fwwz2ZmGxC4kXsNM7wKFnjpDCZ
-         gjNQBgDDCxNBucFEwzeNBVMS7ni7yrMazHhwN2oPMh/e5PxcG6DnAAhtMtlHdydbBLas
-         v6uw==
-X-Gm-Message-State: APjAAAUl53GfTi0gHqnwW6bzWpzyl3ZOyaHNPhdNqjcZ0RAv+fX7mRMY
-        Ind2rbYeZRu/WL3PXF3UVoY=
-X-Google-Smtp-Source: APXvYqxvUn0yt7E953WqxyycUnvvZpLZrK+yLK0AeN05Sb669QrM1PQPZMDISUTTAH7ZJwVd2KC1Ag==
-X-Received: by 2002:a7b:c4cc:: with SMTP id g12mr4742468wmk.68.1579614278174;
-        Tue, 21 Jan 2020 05:44:38 -0800 (PST)
-Received: from localhost (p2E5BEF3F.dip0.t-ipconnect.de. [46.91.239.63])
-        by smtp.gmail.com with ESMTPSA id 16sm3811188wmi.0.2020.01.21.05.44.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jan 2020 05:44:36 -0800 (PST)
-Date:   Tue, 21 Jan 2020 14:44:35 +0100
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     Vidya Sagar <vidyas@nvidia.com>, bjorn@helgaas.com,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Andrew Murray <andrew.murray@arm.com>, treding@nvidia.com,
-        jonathanh@nvidia.com, linux-tegra@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>, kthota@nvidia.com,
-        mmaddireddy@nvidia.com, sagar.tv@gmail.com
-Subject: Re: [PATCH] PCI: Add MCFG quirks for Tegra194 host controllers
-Message-ID: <20200121134435.GC899558@ulmo>
-References: <20200103174935.5612-1-vidyas@nvidia.com>
- <CABhMZUUHGEEhsJ-+foSsodqtKXyX5ZNPkGgv_VzXz=Qv+NVcUA@mail.gmail.com>
- <9a767725-9671-6402-4e1c-a648f5a7860b@nvidia.com>
- <20200117121736.GA7072@e121166-lin.cambridge.arm.com>
- <20200120111042.GA203160@ulmo>
- <20200120151849.GA24402@e121166-lin.cambridge.arm.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=3uhVIJum8giozCbBAOAWfX0RCY6W6sw6Ypl8FcWQYgw=;
+        b=gjnBgvKuRoIHcy/7hapOzadDpTWIpf9+Eq/Y08/QYvaBjHphHnnuUgtDOSHLg38EZu
+         P4QwcAdxFv4WO/DU5wWV/TWEncKxhCtf2Nk2v+QABtmBWrHlh0XKyinQP94WQNzdPOnH
+         eU5YJ31FSo1SG35pvOvEdO/UZt78wnJ5XQMcIBQEmoguSSgu2Th2E84MSIhbecTBYfh4
+         siOzoKI9xlLFL3Hzs+9dXA6rODGNAagp34WKpO87Ppv3Fvj9kOn37Z5cICRY1Vtxa64+
+         xcLUMsBxFyWs9AIw7nYD++0Xe3Vaz6SMBAwPyDD1EkcEJpklZrHMBWIOmnoqDnWKJ319
+         KzZQ==
+X-Gm-Message-State: APjAAAVKj4tHv25eq1NeDsk+XHXcQCrJtrZx8QWGEjUa3l3sBM3A/NRA
+        djcGwCd89fkssadXC4sxey3FSRMGMyAyZx7n1Tw=
+X-Google-Smtp-Source: APXvYqw6XT5EzbITnd9lPUjkFNyWUErkpjeaTNijKjeAsb/nf2EtB/i7hY+Prsk+BHDYhDqQd3i9Wde9kUjQ1TdRaCg=
+X-Received: by 2002:a05:6830:4b9:: with SMTP id l25mr4157514otd.266.1579622583933;
+ Tue, 21 Jan 2020 08:03:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="S1BNGpv0yoYahz37"
-Content-Disposition: inline
-In-Reply-To: <20200120151849.GA24402@e121166-lin.cambridge.arm.com>
-User-Agent: Mutt/1.13.1 (2019-12-14)
+References: <20200109154529.19484-1-sakari.ailus@linux.intel.com>
+ <20200109154529.19484-3-sakari.ailus@linux.intel.com> <CAJZ5v0hfGateSt-_EBuyHqLYi5NR4PUFB=wDF+Gu+9-tFXuohg@mail.gmail.com>
+ <20200121090946.GX5440@paasikivi.fi.intel.com>
+In-Reply-To: <20200121090946.GX5440@paasikivi.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 21 Jan 2020 17:02:52 +0100
+Message-ID: <CAJZ5v0gEO_QesTg2oqA-9dYbPJ5Gsm5H8wvSRQTLeww0o2vx3g@mail.gmail.com>
+Subject: Re: [PATCH v3 2/5] ACPI: Add a convenience function to tell a device
+ is suspended in probe
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Mani, Rajmohan" <rajmohan.mani@intel.com>,
+        Tomasz Figa <tfiga@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Tue, Jan 21, 2020 at 10:09 AM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> Hi Rafael,
+>
+> Thank you for the review.
+>
+> On Mon, Jan 13, 2020 at 11:41:12AM +0100, Rafael J. Wysocki wrote:
+> > On Thu, Jan 9, 2020 at 4:44 PM Sakari Ailus
+> > <sakari.ailus@linux.intel.com> wrote:
+> > >
+> > > Add a convenience function to tell whether a device is suspended for probe
+> > > or remove, for busses where the custom is that drivers don't need to
+> > > resume devices in probe, or suspend them in their remove handlers.
+> > >
+> > > Returns false on non-ACPI systems.
+> > >
+> > > Suggested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > ---
+> > >  drivers/acpi/device_pm.c | 35 +++++++++++++++++++++++++++++++++++
+> > >  include/linux/acpi.h     |  5 +++++
+> > >  2 files changed, 40 insertions(+)
+> > >
+> > > diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+> > > index 5e4a8860a9c0c..87393020276d8 100644
+> > > --- a/drivers/acpi/device_pm.c
+> > > +++ b/drivers/acpi/device_pm.c
+> > > @@ -1348,4 +1348,39 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
+> > >         return 1;
+> > >  }
+> > >  EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
+> > > +
+> > > +/**
+> > > + * acpi_dev_low_power_state_probe - Tell if a device is in a low power state
+> >
+> > "Check the current ACPI power state of a device."
+>
+> Sounds good.
+>
+> >
+> > > + *                                 during probe
+> >
+> > Why is this limited to probe?
+>
+> Well.. that was the purpose. It could be used at other times, too, I guess,
+> but most of the time runtime PM is the right interface for doing that.
 
---S1BNGpv0yoYahz37
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+PM-runtime is a layer above this one.
 
-On Mon, Jan 20, 2020 at 03:18:49PM +0000, Lorenzo Pieralisi wrote:
-> On Mon, Jan 20, 2020 at 12:10:42PM +0100, Thierry Reding wrote:
->=20
-> [...]
->=20
-> > > > Currently the BSP has the kernel booting through Device Tree mechan=
-ism
-> > > > and there is a plan to support UEFI based boot as well in the futur=
-e software
-> > > > releases for which we need this quirky way of handling ECAM.
-> > > > Tegra194 is going to be the only and last chip with this issue and =
-next chip
-> > > > in line in Tegra SoC series will be fully compliant with ECAM.
-> > >=20
-> > > ACPI on ARM64 works on a standard subset of systems, defined by the
-> > > ARM SBSA:
-> > >=20
-> > > http://infocenter.arm.com/help/topic/com.arm.doc.den0029c/Server_Base=
-_System_Architecture_v6_0_ARM_DEN_0029C_SBSA_6_0.pdf
-> >=20
-> > I don't understand what you're saying here. Are you saying that you want
-> > to prevent vendors from upstreaming code that they need to support their
-> > ACPI based platforms? I understand that the lack of support for proper
-> > ECAM means that a platform will not be SBSA compatible, but I wasn't
-> > aware that lack of SBSA compatibility meant that a platform would be
-> > prohibited from implementing ACPI support in an upstream kernel.
->=20
-> ACPI on ARM64 requires a set of HW components described in the SBSA.
->=20
-> If those HW requirements are not fulfilled you can't bootstrap an ARM64
-> system with ACPI - it is as simple as that.
+It is mostly about the coordination between devices, reference
+counting etc which this is about device power states.
 
-That's an odd statement. We do in fact have an ARM64 system that doesn't
-fulfill the ECAM requirement and yet it successfully boots with ACPI.
+> >
+> > The function actually checks whether or not the ACPI power state of
+> > the device is low-power at the call time (except that it is a bit racy
+> > with respect to _set_power(), so it may not work as expected if called
+> > in parallel with that one).
+> >
+> > Maybe drop the "probe" part of the name (actually, I would call this
+> > function acpi_dev_state_low_power()) and add a paragraph about the
+> > potential race with _set_power() to the description?
+>
+> Agreed, I'll use the text you provided below.
+>
+> >
+> > > + * @dev: The device
+> >
+> > "Physical device the ACPI power state of which to check".
+>
+> Ok.
+>
+> >
+> > > + *
+> > > + * Tell whether a given device is in a low power state during the driver's probe
+> > > + * or remove operation.
+> > > + *
+> > > + * Drivers of devices on certain busses such as I涎 can generally assume (on
+> > > + * ACPI based systems) that the devices they control are powered on without
+> > > + * driver having to do anything about it. Using struct
+> > > + * device_driver.probe_low_power and "probe-low-power" property, this can be
+> > > + * negated and the driver has full control of the device power management.
+> >
+> > The above information belongs somewhere else in my view.
+>
+> How about putting it to the DSD ReST property documentation, perhaps with a
+> little bit more context? I can add another patch for that.
 
->                                             It is not even appropriate
-> to discuss this on a Linux mailing list anymore since it is HW
-> requirements and it has been public information since ACPI on ARM64 was
-> first enabled.
-
-Erm... we're discussing Linux patches. Why would it be inappropriate to
-discuss them on a Linux mailing list?
-
-> > > These patches will have to be carried out of tree, the MCFG quirk
-> > > mechanism (merged as Bjorn said more than three years ago) was suppos=
-ed
-> > > to be a temporary plaster to bootstrap server platforms with teething
-> > > issues, the aim is to remove it eventually not to add more code to it
-> > > indefinitely.
-> >=20
-> > Now, I fully agree that quirks are suboptimal and we'd all prefer if we
-> > didn't have to deal with them. Unfortunately the reality is that
-> > mistakes happen and hardware doesn't always work the way we want it to.
-> > There's plenty of other quirk mechanisms in the kernel, and frankly this
-> > one isn't really that bad in comparison.
->=20
-> Because you don't have to maintain it ;) - I think I said what I had to
-> say about the MCFG mechanism in the past - it has been three years
-> and counting - it is time to remove it rather that adding to it.
-
-What makes you think you can simply remove this without breaking support
-for all of the devices that currently rely on the quirks?
-
-> > > So I am afraid but this quirk (and any other coming our way) will not=
- be
-> > > merged in an upstream kernel anymore - for any queries please put Nvi=
-dia
-> > > in touch.
-> >=20
-> > Again, I don't understand what you're trying to achieve here. You seem
-> > to be saying that we categorically can't support this hardware because
-> > it isn't fully SBSA compatible.
->=20
-> I am not trying to achieve anything - I am just stating public
-> information - let me repeat it again for interested readers: to
-> bootstrap an ARM64 system with ACPI the platform HW design must follow
-> the SBSA guidelines.
-
-Can you clarify for me where I can find this public information? What
-I've been able to find suggests that that SBSA-compliant systems would
-typically run ACPI, but I can't find anything about SBSA compliance
-being a prerequisite for booting a system with ACPI.
-
-I can understand why someone might *wish* for that to always be true,
-but it seems to be a bit far removed from reality.
-
-> > Do you have any alternative suggestions on how we can support this in an
-> > upstream kernel?
->=20
-> Booting with a device tree ?
-
-We can already do that, but should that prevent us from making UEFI and
-ACPI an alternative boot mechanism?
-
-> > We realized a while ago that we cannot achieve proper ECAM on Tegra194
-> > because of some issues with the hardware and we've provided this as
-> > feedback to the hardware engineers. As a result, the next generation of
-> > Tegra should no longer suffer from these issues.
->=20
-> We will bootstrap next generation Tegra with ACPI then, there are
-> SBSA tests available for compliancy - again, that's a matter for
-> Nvidia and Arm to settle, not a mailing list discussion.
-
-I don't understand why you keep insisting on this. The mailing lists are
-where kernel patches are discussed, are they not?
-
-> > As for Tegra194, that chip taped out two years ago and it isn't possible
-> > to make it fully ECAM compliant other than by revising the chip, which,
-> > frankly, isn't going to happen.
-> >=20
-> > So I see two options here: either we find a way of dealing with this, by
-> > either merging this quirk or finding an alternative solution, or we make
-> > the decision that some hardware just can't be supported.
-> >=20
-> > The former is fairly common, whereas I've never heard of the latter.
->=20
-> What does this mean ? Should I wreck the upstream kernel to make it boot
-> with ACPI on *any* ARM64 platform out there then ?
-
-Heh... you must have a very low opinion of the upstream kernel if you
-think merging these 100 lines of code is going to wreck it.
-
-And if you look at the patch, the bulk (95/109 lines) is actually in the
-Tegra194 PCIe driver and only 14/109 lines are added to the MCFG quirks.
-That's hardly the kind of change that's going to wreck the kernel.
-
-> My stance is clear above and the ACPI PCI programming model - inclusive
-> of firmware - has been there since ACPI was deployed, if ACPI support
-> is required HW must comply, either that or it is out of tree patches
-> and I can't be blamed for that.
-
-Looking at the existing quirks table, there's evidently a number of
-people that didn't get the memo. The issue seems to be fairly common,
-yet for some reason you're singling out Tegra194.
-
-Thierry
-
---S1BNGpv0yoYahz37
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl4nAEEACgkQ3SOs138+
-s6G5DQ/9G0ZaDC8Mzmqe9WaV7CIEFGsBcaF8PeT7dmcnEc9yaR1hcFy255/cDsSA
-IKNlJgD7GdhlSLKRqUOA1jpfMBhfGGRrZ62yG/Ba7Ha1IevQTlmQrvqW4lDbCAH4
-My53v0C3pEsBu9SFsvUxG8PenzWwq6OWtFXOwSngmF/iVyXoNgENJCxjC1perYn6
-mAWNINizszqjmlKyaOguNx4Pct/9awCESnrmATe6pnGkZ84r3SSU3TkzihizNpGc
-4tbTBHfzAIkldohAJ/dskbXdRDlv2uFabwJMYt554Irb6tnmx8xPZ73SBXjJ6qFz
-ljQf2d6c82KEfyVkfAODJaskWWvMLIhq9vVnpNDjtXQbQaRtXtYBD3TG4sRyDOFh
-G4hCRYmNkunnr636vR/la/0yi5ld5K0dSJOlYfzLFbjmyZ3OSv0ppJw3QHcyYN9F
-0H66WiZNYKHaVhhtGwSjEd3mYX0lH2xGgfNBHTekARi0BUbVfNT1kuwfaontTJYw
-HXhrdMRc+rugMu4jZ5rFq3KrX31sY6pUw07Z0O//EYne4pGDtx8Fluqei2kMZwug
-MmeO0ikMgXpXDloX5azoWn7wUvjMfhsAzVULVX8kahDmL8BgKttH/y5iSWDWFwao
-bdNvSU81crFj9E37pnjfo1+tAQ9N9hLcF16frOywJnDhvAvvpAM=
-=/1Qm
------END PGP SIGNATURE-----
-
---S1BNGpv0yoYahz37--
+Yes, something like that.
