@@ -2,196 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFA63143925
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jan 2020 10:10:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4798143E47
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jan 2020 14:42:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728689AbgAUJJw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Jan 2020 04:09:52 -0500
-Received: from mga11.intel.com ([192.55.52.93]:50095 "EHLO mga11.intel.com"
+        id S1728901AbgAUNmI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Jan 2020 08:42:08 -0500
+Received: from mga17.intel.com ([192.55.52.151]:4186 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727969AbgAUJJw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 21 Jan 2020 04:09:52 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
+        id S1728982AbgAUNlp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 21 Jan 2020 08:41:45 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Jan 2020 01:09:51 -0800
-X-IronPort-AV: E=Sophos;i="5.70,345,1574150400"; 
-   d="scan'208";a="215470836"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Jan 2020 05:41:44 -0800
+X-IronPort-AV: E=Sophos;i="5.70,346,1574150400"; 
+   d="scan'208";a="307199828"
 Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Jan 2020 01:09:49 -0800
-Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id DDE45208C5; Tue, 21 Jan 2020 11:09:46 +0200 (EET)
-Date:   Tue, 21 Jan 2020 11:09:46 +0200
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Jan 2020 05:41:40 -0800
+Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id BE67F20435;
+        Tue, 21 Jan 2020 15:41:38 +0200 (EET)
+Received: from sailus by punajuuri.localdomain with local (Exim 4.92)
+        (envelope-from <sakari.ailus@linux.intel.com>)
+        id 1ittn3-0005Jn-5L; Tue, 21 Jan 2020 15:41:57 +0200
 From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+To:     linux-i2c@vger.kernel.org
+Cc:     Wolfram Sang <wsa@the-dreams.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, Bingbu Cao <bingbu.cao@intel.com>,
+        linux-media@vger.kernel.org,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Mani, Rajmohan" <rajmohan.mani@intel.com>,
-        Tomasz Figa <tfiga@chromium.org>
-Subject: Re: [PATCH v3 2/5] ACPI: Add a convenience function to tell a device
- is suspended in probe
-Message-ID: <20200121090946.GX5440@paasikivi.fi.intel.com>
-References: <20200109154529.19484-1-sakari.ailus@linux.intel.com>
- <20200109154529.19484-3-sakari.ailus@linux.intel.com>
- <CAJZ5v0hfGateSt-_EBuyHqLYi5NR4PUFB=wDF+Gu+9-tFXuohg@mail.gmail.com>
+        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>
+Subject: [PATCH v4 0/6] Support running driver's probe for a device powered off
+Date:   Tue, 21 Jan 2020 15:41:51 +0200
+Message-Id: <20200121134157.20396-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0hfGateSt-_EBuyHqLYi5NR4PUFB=wDF+Gu+9-tFXuohg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+Hi all,
 
-Thank you for the review.
+These patches enable calling (and finishing) a driver's probe function
+without powering on the respective device on busses where the practice is
+to power on the device for probe. While it generally is a driver's job to
+check the that the device is there, there are cases where it might be
+undesirable. (In this case it stems from a combination of hardware design
+and user expectations; see below.) The downside with this change is that
+if there is something wrong with the device, it will only be found at the
+time the device is used. In this case (the camera sensors + EEPROM in a
+sensor) I don't see any tangible harm from that though.
 
-On Mon, Jan 13, 2020 at 11:41:12AM +0100, Rafael J. Wysocki wrote:
-> On Thu, Jan 9, 2020 at 4:44 PM Sakari Ailus
-> <sakari.ailus@linux.intel.com> wrote:
-> >
-> > Add a convenience function to tell whether a device is suspended for probe
-> > or remove, for busses where the custom is that drivers don't need to
-> > resume devices in probe, or suspend them in their remove handlers.
-> >
-> > Returns false on non-ACPI systems.
-> >
-> > Suggested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > ---
-> >  drivers/acpi/device_pm.c | 35 +++++++++++++++++++++++++++++++++++
-> >  include/linux/acpi.h     |  5 +++++
-> >  2 files changed, 40 insertions(+)
-> >
-> > diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> > index 5e4a8860a9c0c..87393020276d8 100644
-> > --- a/drivers/acpi/device_pm.c
-> > +++ b/drivers/acpi/device_pm.c
-> > @@ -1348,4 +1348,39 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
-> >         return 1;
-> >  }
-> >  EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
-> > +
-> > +/**
-> > + * acpi_dev_low_power_state_probe - Tell if a device is in a low power state
-> 
-> "Check the current ACPI power state of a device."
+An indication both from the driver and the firmware is required to allow
+the device's power state to remain off during probe (see the first patch).
 
-Sounds good.
 
-> 
-> > + *                                 during probe
-> 
-> Why is this limited to probe?
+The use case is such that there is a privacy LED next to an integrated
+user-facing laptop camera, and this LED is there to signal the user that
+the camera is recording a video or capturing images. That LED also happens
+to be wired to one of the power supplies of the camera, so whenever you
+power on the camera, the LED will be lit, whether images are captured from
+the camera --- or not. There's no way to implement this differently
+without additional software control (allowing of which is itself a
+hardware design decision) on most CSI-2-connected camera sensors as they
+simply have no pin to signal the camera streaming state.
 
-Well.. that was the purpose. It could be used at other times, too, I guess,
-but most of the time runtime PM is the right interface for doing that.
+This is also what happens during driver probe: the camera will be powered
+on by the I²C subsystem calling dev_pm_domain_attach() and the device is
+already powered on when the driver's own probe function is called. To the
+user this visible during the boot process as a blink of the privacy LED,
+suggesting that the camera is recording without the user having used an
+application to do that. From the end user's point of view the behaviour is
+not expected and for someone unfamiliar with internal workings of a
+computer surely seems quite suspicious --- even if images are not being
+actually captured.
 
-> 
-> The function actually checks whether or not the ACPI power state of
-> the device is low-power at the call time (except that it is a bit racy
-> with respect to _set_power(), so it may not work as expected if called
-> in parallel with that one).
-> 
-> Maybe drop the "probe" part of the name (actually, I would call this
-> function acpi_dev_state_low_power()) and add a paragraph about the
-> potential race with _set_power() to the description?
+I've tested these on Linux-next, Bartosz's at24/for-next, Wolfram's
+i2c/for-next as well as Linux media master today; the patches apply to all
+without trouble.
 
-Agreed, I'll use the text you provided below.
 
-> 
-> > + * @dev: The device
-> 
-> "Physical device the ACPI power state of which to check".
+since v3 <URL:https://lore.kernel.org/linux-acpi/20200109154529.19484-1-sakari.ailus@linux.intel.com/T/#t>:
 
-Ok.
+- Rework the 2nd patch based on Rafael's comments
 
-> 
-> > + *
-> > + * Tell whether a given device is in a low power state during the driver's probe
-> > + * or remove operation.
-> > + *
-> > + * Drivers of devices on certain busses such as I�C can generally assume (on
-> > + * ACPI based systems) that the devices they control are powered on without
-> > + * driver having to do anything about it. Using struct
-> > + * device_driver.probe_low_power and "probe-low-power" property, this can be
-> > + * negated and the driver has full control of the device power management.
-> 
-> The above information belongs somewhere else in my view.
+	- Rework description of the ACPI low power state helper function,
+	  according to Rafael's text.
 
-How about putting it to the DSD ReST property documentation, perhaps with a
-little bit more context? I can add another patch for that.
+	- Rename and rework the same function as
+	  acpi_dev_state_low_power().
 
-> 
-> > + * Always returns false on non-ACPI based systems. True is returned on ACPI
-> 
-> "On a system without ACPI, return false.  On a system with ACPI,
-> return true if the current ACPI power state of the device is not D0,
-> or false otherwise.
-> 
-> Note that the power state of a device is not well-defined after it has
-> been passed to acpi_device_set_power() and before that function
-> returns, so it is not valid to ask for the ACPI power state of the
-> device in that time frame."
+	- Reflect the changes in commit message as well.
 
-Works for me.
+- Added a patch to document the probe-low-power _DSD property.
 
-> 
-> > + * based systems iff the device is in a low power state during probe or remove.
-> > + */
-> > +bool acpi_dev_low_power_state_probe(struct device *dev)
-> > +{
-> > +       int power_state;
-> > +       int ret;
-> > +
-> > +       if (!is_acpi_device_node(dev_fwnode(dev)))
-> > +               return false;
-> 
-> This is (at least) inefficient, because the same check is repeated by
-> ACPI_COMPANION().
-> 
-> If you really want to print the message, it is better to do something like
-> 
-> struct acpi_device *adev = ACPI_COMPANION(dev);
-> 
-> if (!adev)
->         return false;
-> 
-> ret = acpi_device_get_power(adev, &power_state);
+since v2 <URL:https://patchwork.kernel.org/cover/11114255/>:
 
-Yes, makes sense.
+- Remove extra CONFIG_PM ifdefs; these are not needed.
 
-> 
-> > +
-> > +       ret = acpi_device_get_power(ACPI_COMPANION(dev), &power_state);
-> > +       if (ret) {
-> > +               dev_warn(dev, "Cannot obtain power state (%d)\n", ret);
-> 
-> And the log level of this message is way too high IMO.
-> 
-> This means a firmware bug AFAICS and so after seeing it once on a
-> given system it becomes noise.  I'd use pr_debug() to print it.
+- Move the checks for power state hints from drivers/base/dd.c to
+  drivers/i2c/i2c-base-core.c; these are I²C devices anyway.
 
-I'll switch to dev_dbg() then --- as we have the device.
+- Move the probe_low_power field from struct device_driver to struct
+  i2c_driver.
 
-> 
-> > +               return false;
-> > +       }
-> > +
-> > +       return power_state != ACPI_STATE_D0;
-> > +}
-> > +EXPORT_SYMBOL_GPL(acpi_dev_low_power_state_probe);
-> > +
-> >  #endif /* CONFIG_PM */
+since v1:
+
+- Rename probe_powered_off struct device field as probe_low_power and
+  reflect the similar naming to the patches overall.
+
+- Work with CONFIG_PM disabled, too.
+
+Rajmohan Mani (1):
+  media: i2c: imx319: Support probe while the device is off
+
+Sakari Ailus (5):
+  i2c: Allow driver to manage the device's power state during probe
+  ACPI: Add a convenience function to tell a device is in low power
+    state
+  ov5670: Support probe whilst the device is in a low power state
+  at24: Support probing while off
+  Documentation: ACPI: Document probe-low-power _DSD property
+
+ .../acpi/dsd/probe-low-power.rst              | 28 +++++++++++++++++
+ Documentation/firmware-guide/acpi/index.rst   |  1 +
+ drivers/acpi/device_pm.c                      | 31 +++++++++++++++++++
+ drivers/i2c/i2c-core-base.c                   | 15 +++++++--
+ drivers/media/i2c/imx319.c                    | 23 ++++++++------
+ drivers/media/i2c/ov5670.c                    | 23 ++++++++------
+ drivers/misc/eeprom/at24.c                    | 31 +++++++++++++------
+ include/linux/acpi.h                          |  5 +++
+ include/linux/i2c.h                           |  3 ++
+ 9 files changed, 129 insertions(+), 31 deletions(-)
+ create mode 100644 Documentation/firmware-guide/acpi/dsd/probe-low-power.rst
 
 -- 
-Kind regards,
+2.20.1
 
-Sakari Ailus
