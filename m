@@ -2,244 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C283F1465F8
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jan 2020 11:49:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64F561472E6
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jan 2020 22:03:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726170AbgAWKtt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Jan 2020 05:49:49 -0500
-Received: from foss.arm.com ([217.140.110.172]:37642 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726099AbgAWKtt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 23 Jan 2020 05:49:49 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E508A31B;
-        Thu, 23 Jan 2020 02:49:47 -0800 (PST)
-Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E97AC3F6C4;
-        Thu, 23 Jan 2020 02:49:45 -0800 (PST)
-Date:   Thu, 23 Jan 2020 10:49:41 +0000
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     Vidya Sagar <vidyas@nvidia.com>, bjorn@helgaas.com,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Andrew Murray <andrew.murray@arm.com>, treding@nvidia.com,
-        jonathanh@nvidia.com, linux-tegra@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>, kthota@nvidia.com,
-        mmaddireddy@nvidia.com, sagar.tv@gmail.com
-Subject: Re: [PATCH] PCI: Add MCFG quirks for Tegra194 host controllers
-Message-ID: <20200123104941.GA7179@e121166-lin.cambridge.arm.com>
-References: <20200103174935.5612-1-vidyas@nvidia.com>
- <CABhMZUUHGEEhsJ-+foSsodqtKXyX5ZNPkGgv_VzXz=Qv+NVcUA@mail.gmail.com>
- <9a767725-9671-6402-4e1c-a648f5a7860b@nvidia.com>
- <20200117121736.GA7072@e121166-lin.cambridge.arm.com>
- <20200120111042.GA203160@ulmo>
- <20200120151849.GA24402@e121166-lin.cambridge.arm.com>
- <20200121134435.GC899558@ulmo>
+        id S1729275AbgAWVCv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Jan 2020 16:02:51 -0500
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:36832 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729271AbgAWVCv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 23 Jan 2020 16:02:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1579813370;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=pLi5SfL84NgXq8WFsW3R7nL9ScHECfM9R+VNo4tDUzg=;
+        b=eJkxG8YwEtCHo9879u+18Ah0ZeipVLPZogUGNnVWuyXdankzgleuFefYjW0t5QFt9VeklF
+        +jgRkX7vCoA17F2GLk+UMNMsfuJGPNQ700bJgkqtGo/pfTjIddczpBo1gI+FIFf0eGH2Ll
+        +hM3fLMvaOFCVIO/v1bAePKmGJEM6vY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-267-_5pGQQheORiVH_i-ROBxuA-1; Thu, 23 Jan 2020 16:02:48 -0500
+X-MC-Unique: _5pGQQheORiVH_i-ROBxuA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 16724100551D;
+        Thu, 23 Jan 2020 21:02:46 +0000 (UTC)
+Received: from shalem.localdomain.com (ovpn-116-20.ams2.redhat.com [10.36.116.20])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D75DC8CCD9;
+        Thu, 23 Jan 2020 21:02:43 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [RFC v2] x86: Select HARDIRQS_SW_RESEND on x86
+Date:   Thu, 23 Jan 2020 22:02:42 +0100
+Message-Id: <20200123210242.53367-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200121134435.GC899558@ulmo>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 21, 2020 at 02:44:35PM +0100, Thierry Reding wrote:
-> On Mon, Jan 20, 2020 at 03:18:49PM +0000, Lorenzo Pieralisi wrote:
-> > On Mon, Jan 20, 2020 at 12:10:42PM +0100, Thierry Reding wrote:
-> > 
-> > [...]
-> > 
-> > > > > Currently the BSP has the kernel booting through Device Tree mechanism
-> > > > > and there is a plan to support UEFI based boot as well in the future software
-> > > > > releases for which we need this quirky way of handling ECAM.
-> > > > > Tegra194 is going to be the only and last chip with this issue and next chip
-> > > > > in line in Tegra SoC series will be fully compliant with ECAM.
-> > > > 
-> > > > ACPI on ARM64 works on a standard subset of systems, defined by the
-> > > > ARM SBSA:
-> > > > 
-> > > > http://infocenter.arm.com/help/topic/com.arm.doc.den0029c/Server_Base_System_Architecture_v6_0_ARM_DEN_0029C_SBSA_6_0.pdf
-> > > 
-> > > I don't understand what you're saying here. Are you saying that you want
-> > > to prevent vendors from upstreaming code that they need to support their
-> > > ACPI based platforms? I understand that the lack of support for proper
-> > > ECAM means that a platform will not be SBSA compatible, but I wasn't
-> > > aware that lack of SBSA compatibility meant that a platform would be
-> > > prohibited from implementing ACPI support in an upstream kernel.
-> > 
-> > ACPI on ARM64 requires a set of HW components described in the SBSA.
-> > 
-> > If those HW requirements are not fulfilled you can't bootstrap an ARM64
-> > system with ACPI - it is as simple as that.
-> 
-> That's an odd statement. We do in fact have an ARM64 system that doesn't
-> fulfill the ECAM requirement and yet it successfully boots with ACPI.
+Modern x86 laptops are starting to use GPIO pins as interrupts more
+and more, e.g. touchpads and touchscreens have almost all moved away
+from PS/2 and USB to using I2C with a GPIO pin as interrupt.
+Modern x86 laptops also have almost all moved to using s2idle instead
+of using the system S3 ACPI power state to suspend.
 
-I know very well (but that's not a reason to break the PCIe
-specification).
+The Intel and AMD pinctrl drivers do not define irq_retrigger handlers
+for the irqchips they register, this is causing edge triggered interrupts
+which happen while suspended using s2idle to get lost.
 
-Still, the mistake you are making is thinking that ACPI compliancy
-stops at the MCFG quirk. Adding another quirk to the MCFG list will make
-PCI enumerates but there is more to that, eg MSI/IOMMU and that's
-just an example.
+One specific example of this is the lid switch on some devices, lid
+switches used to be handled by the embedded-controller, but now the
+lid open/closed sensor is sometimes directly connected to a GPIO pin.
+On most devices the ACPI code for this looks like this:
 
-There are platforms in that MCFG list that eg can't do MSI which
-basically means they are useless - you look at it as yet another hook
-into MCFG, I look at it with history in mind and from an ACPI ARM64
-maintainership perspective.
+Method (_E00, ...) {
+	Notify (LID0, 0x80) // Status Change
+}
 
-So first thing to do is to post full support for this host controller
-inclusive of MSI/INTx (which AFAICS is another piece of HW that is
-not SBSA compliant since DWC uses a funnel to trigger MSIs) and
-IOMMU, then we will see how to proceed.
+Where _E00 is an ACPI event handler for changes on both edges of the GPIO
+connected to the lid sensor, this event handler is then combined with an
+_LID method which directly reads the pin. When the device is resumed by
+opening the lid, the GPIO interrupt will wake the system, but because the
+pinctrl irqchip doesn't have an irq_retrigger handler, the Notify will no=
+t
+happen. This is not a problem in the case the _LID method directly reads
+the GPIO, because the drivers/acpi/button.c code will call _LID on resume
+anyways.
 
-Look at this (and again, that's just an example but AFAICS it applies to
-this host bridge as well):
+But some devices have an event handler for the GPIO connected to the
+lid sensor which looks like this:
 
-https://lore.kernel.org/linux-pci/VE1PR04MB67029FB127DBF4A725CB9698904E0@VE1PR04MB6702.eurprd04.prod.outlook.com
+Method (_E00, ...) {
+	if (LID_GPIO =3D=3D One)
+		LIDS =3D One
+	else
+		LIDS =3D Zero
+	Notify (LID0, 0x80) // Status Change
+}
 
-> >                                             It is not even appropriate
-> > to discuss this on a Linux mailing list anymore since it is HW
-> > requirements and it has been public information since ACPI on ARM64 was
-> > first enabled.
-> 
-> Erm... we're discussing Linux patches. Why would it be inappropriate to
-> discuss them on a Linux mailing list?
+And the _LID method returns the cached LIDS value, since on open we
+do not re-run the edge-interrupt handler when we re-enable IRQS on resume
+(because of the missing irq_retrigger handler), _LID now will keep
+reporting closed, as LIDS was never changed to reflect the open status,
+this causes userspace to re-resume the laptop again shortly after opening
+the lid.
 
-I am not discussing Linux patches at all - I am telling you that the
-DWC host controller is not a) PCIe spec compliant b) SBSA compliant
-and there is nothing to review from a Linux kernel code perspective.
+The Intel GPIO controllers do not allow implementing irq_retrigger withou=
+t
+emulating it in software, at which point we are better of just using the
+generic HARDIRQS_SW_RESEND mechanism rather then re-implementing software
+emulation for this separately in aprox. 14 different pinctrl drivers.
 
-This is just another quirk to enumerate with ACPI a non-compliant
-system, if Bjorn is willing to take it go for it.
+This commit selects HARDIRQS_SW_RESEND solving the problem of
+edge-triggered GPIO interrupts not being re-triggered on resume when they
+were triggered during suspend (s2idle) and/or when they were the cause of
+the wakeup.
 
-> > > > These patches will have to be carried out of tree, the MCFG quirk
-> > > > mechanism (merged as Bjorn said more than three years ago) was supposed
-> > > > to be a temporary plaster to bootstrap server platforms with teething
-> > > > issues, the aim is to remove it eventually not to add more code to it
-> > > > indefinitely.
-> > > 
-> > > Now, I fully agree that quirks are suboptimal and we'd all prefer if we
-> > > didn't have to deal with them. Unfortunately the reality is that
-> > > mistakes happen and hardware doesn't always work the way we want it to.
-> > > There's plenty of other quirk mechanisms in the kernel, and frankly this
-> > > one isn't really that bad in comparison.
-> > 
-> > Because you don't have to maintain it ;) - I think I said what I had to
-> > say about the MCFG mechanism in the past - it has been three years
-> > and counting - it is time to remove it rather that adding to it.
-> 
-> What makes you think you can simply remove this without breaking support
-> for all of the devices that currently rely on the quirks?
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+I'm sending this out as a RFC since I'm not %100 sure this is the best
+solution and it seems like a somewhat big change to make.
 
-Don't you think I know ? I said "eventually" for a reason, read what
-I write.
+Also maybe we should add a Cc: stable@vger.kernel.org ??? This seems like
+somewhat a big change for that but it does solve some real issues...
+---
+Changes in v2:
+-v2 is really a resend because I forgot to add the pinctrl people to the =
+Cc
+-While at it also fix some typos in the commit message
+---
+ arch/x86/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-> > > > So I am afraid but this quirk (and any other coming our way) will not be
-> > > > merged in an upstream kernel anymore - for any queries please put Nvidia
-> > > > in touch.
-> > > 
-> > > Again, I don't understand what you're trying to achieve here. You seem
-> > > to be saying that we categorically can't support this hardware because
-> > > it isn't fully SBSA compatible.
-> > 
-> > I am not trying to achieve anything - I am just stating public
-> > information - let me repeat it again for interested readers: to
-> > bootstrap an ARM64 system with ACPI the platform HW design must follow
-> > the SBSA guidelines.
-> 
-> Can you clarify for me where I can find this public information? What
-> I've been able to find suggests that that SBSA-compliant systems would
-> typically run ACPI, but I can't find anything about SBSA compliance
-> being a prerequisite for booting a system with ACPI.
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index c1cbfc7b3ae8..8f8128047b49 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -118,6 +118,7 @@ config X86
+ 	select GENERIC_IRQ_PROBE
+ 	select GENERIC_IRQ_RESERVATION_MODE
+ 	select GENERIC_IRQ_SHOW
++	select HARDIRQS_SW_RESEND
+ 	select GENERIC_PENDING_IRQ		if SMP
+ 	select GENERIC_SMP_IDLE_THREAD
+ 	select GENERIC_STRNCPY_FROM_USER
+--=20
+2.24.1
 
-https://developer.arm.com/architectures/platform-design/server-systems
-
-Read: SBSA/SBBR
-
-/Documentation/arm64/arm-acpi.rst
-
-> I can understand why someone might *wish* for that to always be true,
-> but it seems to be a bit far removed from reality.
-
-It is reality and it is not a *wish*, Nvidia will comply - even if
-*eventually* we end up merging this code.
-
-> > > Do you have any alternative suggestions on how we can support this in an
-> > > upstream kernel?
-> > 
-> > Booting with a device tree ?
-> 
-> We can already do that, but should that prevent us from making UEFI and
-> ACPI an alternative boot mechanism?
-
-Why do you need ACPI support ? What for ?
-
-> > > We realized a while ago that we cannot achieve proper ECAM on Tegra194
-> > > because of some issues with the hardware and we've provided this as
-> > > feedback to the hardware engineers. As a result, the next generation of
-> > > Tegra should no longer suffer from these issues.
-> > 
-> > We will bootstrap next generation Tegra with ACPI then, there are
-> > SBSA tests available for compliancy - again, that's a matter for
-> > Nvidia and Arm to settle, not a mailing list discussion.
-> 
-> I don't understand why you keep insisting on this. The mailing lists are
-> where kernel patches are discussed, are they not?
-
-See above.
-
-> > > As for Tegra194, that chip taped out two years ago and it isn't possible
-> > > to make it fully ECAM compliant other than by revising the chip, which,
-> > > frankly, isn't going to happen.
-> > > 
-> > > So I see two options here: either we find a way of dealing with this, by
-> > > either merging this quirk or finding an alternative solution, or we make
-> > > the decision that some hardware just can't be supported.
-> > > 
-> > > The former is fairly common, whereas I've never heard of the latter.
-> > 
-> > What does this mean ? Should I wreck the upstream kernel to make it boot
-> > with ACPI on *any* ARM64 platform out there then ?
-> 
-> Heh... you must have a very low opinion of the upstream kernel if you
-> think merging these 100 lines of code is going to wreck it.
-
-I have a very high opinion of the upstream kernel and that's why
-as I said above I think in terms of overall ACPI ARM64 maintainership
-rather than a platform quirk to get ACPI PCI enumeration going.
-
-> And if you look at the patch, the bulk (95/109 lines) is actually in the
-> Tegra194 PCIe driver and only 14/109 lines are added to the MCFG quirks.
-> That's hardly the kind of change that's going to wreck the kernel.
-
-See above, show us the rest of the story.
-
-> > My stance is clear above and the ACPI PCI programming model - inclusive
-> > of firmware - has been there since ACPI was deployed, if ACPI support
-> > is required HW must comply, either that or it is out of tree patches
-> > and I can't be blamed for that.
-> 
-> Looking at the existing quirks table, there's evidently a number of
-> people that didn't get the memo. The issue seems to be fairly common,
-> yet for some reason you're singling out Tegra194.
-
-The issue is not very common at all. I said it before and I repeat it
-again: those MCFG quirks were merged more than three years ago to help
-bootstrap ACPI ARM64 ecosystem on early HW and ACPI for ARM64 is meant
-for server (SBSA/SBBR compliant) systems, for other platforms DT is the
-firmware of choice, ACPI on those does not work well (and *I* will have
-to work around it).
-
-I am not singling out anybody, read the mailing lists and you will
-realize. You asked for this patch to be reviewed, I told you what
-my thoughts are and this patch implications - you want to go ahead,
-ask Bjorn to merge it but at least we do it with the broader
-consequences in mind.
-
-Lorenzo
