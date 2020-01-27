@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70AF714A816
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Jan 2020 17:32:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15D8B14A824
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Jan 2020 17:33:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725893AbgA0QcG convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 27 Jan 2020 11:32:06 -0500
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:38063 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725828AbgA0QcG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jan 2020 11:32:06 -0500
-Received: by mail-oi1-f196.google.com with SMTP id l9so7220344oii.5;
-        Mon, 27 Jan 2020 08:32:05 -0800 (PST)
+        id S1726164AbgA0QdZ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 27 Jan 2020 11:33:25 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:40900 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725893AbgA0QdZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jan 2020 11:33:25 -0500
+Received: by mail-ot1-f66.google.com with SMTP id i6so5086198otr.7;
+        Mon, 27 Jan 2020 08:33:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
          :content-transfer-encoding;
-        bh=VeccTOturxhWBwOWdsdrI8lN/hBVymQLTDOh5JKZxy8=;
-        b=Rs2T5i6MGF/FWacjXCXK4uM1OmwfxHhGDJRCIm88Iae6vUE/CJEon/R2myiHFNmZeR
-         eRcG9U0pCOTsHlmWXh5VFGaOgfaGoYS2jlHUODo3hC0LaNQh/IzFNb7Z8bG/pKZpk01T
-         ZrO64uin5X3dTlNI4E3/N9CcCrE4/Ks5u4ud3rrYqFbnyNU+aD46NgPVRffbPIGUGNy3
-         Yc7PjTIzQWVgbI8W+gcuX6KJJVwBO/+5Z6XMOChDTSRYaFE9sEfv3zOLacpoF20HYKRG
-         PVPsMugXuCVOxj2UNwym25oUg2AUthbtZuqmgJJBUN+F6QqJYHPcrQGwhAPivnmR1CO8
-         QteQ==
-X-Gm-Message-State: APjAAAV4o/jTzCApvu4KeUmrUsvoGtLGus4b0+hVvokJfSuZ330YNTiT
-        IVM+q59HMLCkE2uk26wqXND50BT+9emSgsP5xbYztm/O
-X-Google-Smtp-Source: APXvYqwhoE7cDXsoVHRpYLKRzp4ltic/HLNEQ2Z/VljtCY4VPRS/aQEVKkmpvsaS/y9JYGdV6HdwnlHFm3qV9IGeeuc=
-X-Received: by 2002:a54:488d:: with SMTP id r13mr7614457oic.115.1580142725384;
- Mon, 27 Jan 2020 08:32:05 -0800 (PST)
+        bh=f/ZGrZ9HsT6m0ACGhs2b9a+taXd9uRKJVazaOYIqfgc=;
+        b=uNaoGDFfCsVdQJSQfJTDzPxLnWcwJJArOkth5Ib4+Qd9zm7hIZqHgI3g42jnsJsfKe
+         Zh+IhNV99vNjPIwfw5X/lWdTQt5CAQxabLKOXQpkoZpFM5G+nh3zp42w7Jy0UbUqrNi4
+         mU13IjpsxuA0QJM9uawy4pGXhFCKJNXj+BpADQfVxesMdL8Kg4MOmS36hjjKDPpHGaua
+         9ZMSx11Rr2u5cK5X+WSFcTYLfQ7LV4WLccQfGMWHYIPs9zKezEuWh3QbvKqj8zUBhBeV
+         TigdNCBvnvsF2QCovheDLWFqvtV6WSD66L1Rrzwkzjk3fXzwTOrqvlE7MvsbEm6v1r0n
+         UakA==
+X-Gm-Message-State: APjAAAVKL91j+J4BZRdaamBonOS2X8aydXyTGs6cy6LmtsT8NAjAlKml
+        FjLioLtRGrbPmzWof5S5cw7X71DERetpFKTP56PkApHK
+X-Google-Smtp-Source: APXvYqwpKJ1FM3ArpHg5ydqbpoltI25GBDgqtVln3A8hzr1RDwqFp4xjQlFHlcRA0uPNj+Rau68zt8qzpQXN8qdK5LA=
+X-Received: by 2002:a05:6830:4b9:: with SMTP id l25mr13364327otd.266.1580142803396;
+ Mon, 27 Jan 2020 08:33:23 -0800 (PST)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 27 Jan 2020 17:31:54 +0100
-Message-ID: <CAJZ5v0jGdfSUK4s3nq_uCiQrg8tWrycv_C_xNg7CYk4LC8o-Dw@mail.gmail.com>
-Subject: [GIT PULL] Power management updates for v5.6-rc1
+Date:   Mon, 27 Jan 2020 17:33:12 +0100
+Message-ID: <CAJZ5v0iRaeR4n=ddVM9pJj0oxRpv1K2UWXqZbwiNmkrOPr3h1w@mail.gmail.com>
+Subject: [GIT PULL] ACPI updates for v5.6-rc1
 To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
@@ -50,324 +50,336 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pm-5.6-rc1
+ acpi-5.6-rc1
 
-with top-most commit c102671af085aacf17219e9bdcfccddc6620a866
+with top-most commit ca11abf113474fe8e1205c6851a9a6ffd598bb26
 
- Merge branch 'pm-devfreq'
+ Merge branches 'acpi-tables', 'acpi-button', 'acpi-ec', 'acpi-doc'
+and 'acpi-tools'
 
-on top of commit 3a83c8c81c91fe10e7002c2c0e74b23e80f41f28
+on top of commit b3a987b0264d3ddbb24293ebff10eddfc472f653
 
- Merge tag 'pm-5.5-rc8' of
-git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+ Linux 5.5-rc6
 
-to receive power management updates for 5.6-rc1.
+to receive ACPI updates for 5.6-rc1.
 
-These add ACPI support to the intel_idle driver along with an admin
-guide document for it, add support for CPR (Core Power Reduction) to
-the AVS (Adaptive Voltage Scaling) subsystem, add new hardware support
-in a few places, add some new sysfs attributes, debugfs files and
-tracepoints, fix bugs and clean up a bunch of things all over.
+These update the ACPICA code in the kernel to the most recent
+upstream revision (20200110), add new hardware support to a handful
+of ACPI drivers, make the ACPI fan driver expose power states
+information for fans, add some more quirks, fix bugs and clean up
+assorted things.
 
 Specifics:
 
- - Update the ACPI processor driver in order to export
-   acpi_processor_evaluate_cst() to the code outside of it, add
-   ACPI support to the intel_idle driver based on that and clean
-   up that driver somewhat (Rafael Wysocki).
+ - Update the ACPICA code in the kernel to upstream revision
+   20200110 including:
 
- - Add an admin guide document for the intel_idle driver (Rafael
-   Wysocki).
+   * Update of copyright notices to 2020 (Bob Moore).
 
- - Clean up cpuidle core and drivers, enable compilation testing
-   for some of them (Benjamin Gaignard, Krzysztof Kozlowski, Rafael
-   Wysocki, Yangtao Li).
+   * Dispatcher fix to always generate buffer objects for the ASL
+     create_field() operator (Maximilian Luz).
 
- - Fix reference counting of OPP (operating performance points) table
-   structures (Viresh Kumar).
+   * Debugger cleanup (Colin Ian King).
 
- - Add support for CPR (Core Power Reduction) to the AVS (Adaptive
-   Voltage Scaling) subsystem (Niklas Cassel, Colin Ian King,
-   YueHaibing).
+   * Disassembler change to create buffer fields in
+     ACPI_PARSE_LOAD_PASS1 (Erik Kaneda).
 
- - Add support for TigerLake Mobile and JasperLake to the Intel RAPL
-   power capping driver (Zhang Rui).
+   * UNIX line ending support for non-windows builds in acpisrc
+     (Erik Kaneda).
 
- - Update cpufreq drivers:
+ - Update the list of ACPICA maintainers (Rafael Wysocki).
 
-   * Add i.MX8MP support to imx-cpufreq-dt (Anson Huang).
+ - Add Intel Tiger Lake ACPI device IDs to the ACPI DPTF, ACPI fan,
+   int340x_thermal and intel-hid drivers (Gayatri Kammela).
 
-   * Fix usage of a macro in loongson2_cpufreq (Alexandre Oliva).
+ - Make the ACPI fan driver create additional sysfs attributes to
+   expose power states information for fans (Srinivas Pandruvada).
 
-   * Fix cpufreq policy reference counting issues in s3c and
-     brcmstb-avs (chenqiwu).
+ - Fix up the ACPI battery driver to deal with unexpected battery
+   capacity information in a better way (Hans de Goede).
 
-   * Fix ACPI table reference counting issue and HiSilicon quirk
-     handling in the CPPC driver (Hanjun Guo).
+ - Add ACPI backlight quirks for Lenovo E41-25/45 and MSI MS-7721
+   boards (Aaron Ma, Hans de Goede).
 
-   * Clean up spelling mistake in intel_pstate (Harry Pan).
+ - Add DMI quirk for Razer Blade Stealth 13 late 2019 lid switch
+   to the ACPI button driver (Jason Ekstrand).
 
-   * Convert the kirkwood and tegra186 drivers to using
-     devm_platform_ioremap_resource() (Yangtao Li).
+ - Drop TIMER_DEFERRABLE from the GHES polling mode timer function
+   flags to make it run precisely at the configured time (Bhaskar
+   Upadhaya).
 
- - Update devfreq core:
+ - Fix race condition related to the reference counting of query
+   handlers in the ACPI EC driver (Rafael Wysocki).
 
-   * Add 'name' sysfs attribute for devfreq devices (Chanwoo Choi).
+ - Fix ACPI tools build issue (Zhengyuan Liu).
 
-   * Clean up the handing of transition statistics and allow them
-     to be reset by writing 0 to the 'trans_stat' devfreq device
-     attribute in sysfs (Kamil Konieczny).
+ - Replace dma_request_slave_channel() with dma_request_chan() in the
+   firmware guide documentation for ACPI (Peter Ujfalusi).
 
-   * Add 'devfreq_summary' to debugfs (Chanwoo Choi).
-
-   * Clean up kerneldoc comments and Kconfig indentation (Krzysztof
-     Kozlowski, Randy Dunlap).
-
- - Update devfreq drivers:
-
-   * Add dynamic scaling for the imx8m DDR controller and clean up
-     imx8m-ddrc (Leonard Crestez, YueHaibing).
-
-   * Fix DT node reference counting and nitialization error code path
-     in rk3399_dmc and add COMPILE_TEST and HAVE_ARM_SMCCC dependency
-     for it (Chanwoo Choi, Yangtao Li).
-
-   * Fix DT node reference counting in rockchip-dfi and make it use
-     devm_platform_ioremap_resource() (Yangtao Li).
-
-   * Fix excessive stack usage in exynos-ppmu (Arnd Bergmann).
-
-   * Fix initialization error code paths in exynos-bus (Yangtao Li).
-
-   * Clean up exynos-bus and exynos somewhat (Artur Świgoń, Krzysztof
-     Kozlowski).
-
- - Add tracepoints for tracking usage_count updates unrelated to
-   status changes in PM-runtime (Michał Mirosław).
-
- - Add sysfs attribute to control the "sync on suspend" behavior
-   during system-wide suspend (Jonas Meurer).
-
- - Switch system-wide suspend tests over to 64-bit time (Alexandre
-   Belloni).
-
- - Make wakeup sources statistics in debugfs cover deleted ones which
-   used to be the case some time ago (zhuguangqing).
-
- - Clean up computations carried out during hibernation, update
-   messages related to hibernation and fix a spelling mistake in one
-   of them (Wen Yang, Luigi Semenzato, Colin Ian King).
-
- - Add mailmap entry for maintainer e-mail address that has not been
-   functional for several years (Rafael Wysocki).
+ - Fix typo in a comment and clean up function parameter data type
+   inconsistencies (Kacper Piwiński, Tian Tao).
 
 Thanks!
 
 
 ---------------
 
-Alexandre Belloni (1):
-      PM: sleep: Switch to rtc_time64_to_tm()/rtc_tm_to_time64()
+Aaron Ma (1):
+      ACPI: video: Use native backlight on Lenovo E41-25/45
 
-Alexandre Oliva (1):
-      cpufreq: loongson2_cpufreq: adjust cpufreq uses of LOONGSON_CHIPCFG
+Bhaskar Upadhaya (1):
+      apei/ghes: Do not delay GHES polling
 
-Anson Huang (2):
-      cpufreq: Use imx-cpufreq-dt for i.MX8MP's speed grading
-      cpufreq: imx-cpufreq-dt: Add i.MX8MP support
+Bob Moore (3):
+      ACPICA: Update version to 20191213
+      ACPICA: All acpica: Update copyrights to 2020 Including tool signons.
+      ACPICA: Update version to 20200110
 
-Arnd Bergmann (1):
-      PM / devfreq: exynos-ppmu: Fix excessive stack usage
+Colin Ian King (1):
+      ACPICA: debugger: fix spelling mistake "adress" -> "address"
 
-Artur Świgoń (3):
-      PM / devfreq: exynos-bus: Extract exynos_bus_profile_init()
-      PM / devfreq: exynos-bus: Extract exynos_bus_profile_init_passive()
-      PM / devfreq: exynos-bus: Reduce goto statements and remove unused headers
+Erik Kaneda (2):
+      ACPICA: Disassembler: create buffer fields in ACPI_PARSE_LOAD_PASS1
+      ACPICA: acpisrc: add unix line ending support for non-windows build
 
-Benjamin Gaignard (3):
-      cpuidle: coupled: fix warnings when compiling with W=1
-      cpuidle: sysfs: fix warnings when compiling with W=1
-      cpuidle: fix cpuidle_find_deepest_state() kerneldoc warnings
+Gayatri Kammela (4):
+      ACPI: DPTF: Add Tiger Lake ACPI device IDs
+      ACPI: fan: Add Tiger Lake ACPI device ID
+      platform/x86: intel-hid: Add Tiger Lake ACPI device ID
+      thermal: int340x_thermal: Add Tiger Lake ACPI device IDs
 
-Chanwoo Choi (3):
-      PM / devfreq: Add new name attribute for sysfs
-      PM / devfreq: rk3399_dmc: Add COMPILE_TEST and HAVE_ARM_SMCCC dependency
-      PM / devfreq: Add debugfs support with devfreq_summary file
+Hans de Goede (4):
+      ACPI / battery: Deal with design or full capacity being reported as -1
+      ACPI / battery: Use design-cap for capacity calculations if
+full-cap is not available
+      ACPI / battery: Deal better with neither design nor full
+capacity not being reported
+      ACPI: video: Do not export a non working backlight interface on
+MSI MS-7721 boards
 
-Colin Ian King (2):
-      power: avs: fix uninitialized error return on failed
-cpr_read_fuse_uV() call
-      PM: hibernate: fix spelling mistake "shapshot" -> "snapshot"
+Jason Ekstrand (1):
+      ACPI: button: Add DMI quirk for Razer Blade Stealth 13 late 2019
+lid switch
 
-Hanjun Guo (2):
-      cpufreq : CPPC: Break out if HiSilicon CPPC workaround is matched
-      cpufreq: CPPC: put ACPI table after using it
+Kacper Piwiński (1):
+      ACPI: video: fix typo in comment
 
-Harry Pan (1):
-      cpufreq: intel_pstate: fix spelling mistake: "Whethet" -> "Whether"
+Maximilian Luz (1):
+      ACPICA: Dispatcher: always generate buffer objects for ASL
+create_field() operator
 
-Jonas Meurer (1):
-      PM: suspend: Add sysfs attribute to control the "sync on suspend" behavior
+Peter Ujfalusi (1):
+      docs: firmware-guide: ACPI: Replace dma_request_slave_channel()
+with dma_request_chan()
 
-Kamil Konieczny (4):
-      PM / devfreq: Change time stats to 64-bit
-      PM / devfreq: Add clearing transitions stats
-      PM / devfreq: Move statistics to separate struct devfreq_stats
-      PM / devfreq: Move declaration of DEVICE_ATTR_RW(min_freq)
+Rafael J. Wysocki (2):
+      ACPICA: Update the list of maintainers
+      ACPI: EC: Reference count query handlers under lock
 
-Krzysztof Kozlowski (3):
-      PM / devfreq: Fix Kconfig indentation
-      PM / devfreq: exynos: Rename Exynos to lowercase
-      cpuidle: arm: Enable compile testing for some of drivers
+Srinivas Pandruvada (1):
+      ACPI: fan: Expose fan performance state information
 
-Leonard Crestez (3):
-      dt-bindings: memory: Add bindings for imx8m ddr controller
-      PM / devfreq: Add dynamic scaling for imx8m ddr controller
-      PM / devfreq: imx8m-ddrc: Remove unused defines
+Tian Tao (1):
+      ACPI: PPTT: Consistently use unsigned int as parameter type
 
-Luigi Semenzato (1):
-      PM: hibernate: Add more logging on hibernation failure
-
-Michał Mirosław (1):
-      PM-runtime: add tracepoints for usage_count changes
-
-Niklas Cassel (7):
-      dt-bindings: power: avs: Add support for CPR (Core Power Reduction)
-      power: avs: Add support for CPR (Core Power Reduction)
-      power: avs: qcom-cpr: fix invalid printk specifier in debug print
-      power: avs: qcom-cpr: fix unsigned expression compared with zero
-      power: avs: qcom-cpr: make sure that regmap is available
-      power: avs: qcom-cpr: remove set but unused variable
-      power: avs: qcom-cpr: make cpr_get_opp_hz_for_req() static
-
-Rafael J. Wysocki (22):
-      ACPI: processor: Export function to claim _CST control
-      ACPI: processor: Introduce acpi_processor_evaluate_cst()
-      ACPI: processor: Clean up acpi_processor_evaluate_cst()
-      mailmap: Add entry for <rjw@sisk.pl>
-      ACPI: processor: Make ACPI_PROCESSOR_CSTATE depend on ACPI_PROCESSOR
-      ACPI: processor: Export acpi_processor_evaluate_cst()
-      intel_idle: Refactor intel_idle_cpuidle_driver_init()
-      intel_idle: Use ACPI _CST for processor models without C-state tables
-      cpuidle: Allow idle states to be disabled by default
-      intel_idle: Allow ACPI _CST to be used for selected known processors
-      intel_idle: Add module parameter to prevent ACPI _CST from being used
-      intel_idle: Use ACPI _CST on server systems
-      cpuidle: Drop unused cpuidle_driver_ref/unref() functions
-      Documentation: admin-guide: PM: Add intel_idle document
-      intel_idle: Eliminate __setup_broadcast_timer()
-      intel_idle: Fold intel_idle_probe() into intel_idle_init()
-      intel_idle: Clean up NULL pointer check in intel_idle_init()
-      intel_idle: Rearrange intel_idle_cpuidle_driver_init()
-      intel_idle: Move and clean up intel_idle_cpuidle_devices_uninit()
-      intel_idle: Annotate initialization code and data structures
-      intel_idle: Move 3 functions closer to their callers
-      intel_idle: Clean up irtl_2_usec()
-
-Randy Dunlap (1):
-      PM / devfreq: Fix multiple kernel-doc warnings
-
-Viresh Kumar (2):
-      opp: Free static OPPs on errors while adding them
-      opp: Replace list_kref with a local counter
-
-Wen Yang (1):
-      PM: hibernate: improve arithmetic division in
-preallocate_highmem_fraction()
-
-Yangtao Li (10):
-      cpuidle: clps711x: convert to devm_platform_ioremap_resource()
-      cpuidle: kirkwood: convert to devm_platform_ioremap_resource()
-      PM / devfreq: rockchip-dfi: Add missing of_node_put()
-      PM / devfreq: rk3399_dmc: Add missing of_node_put()
-      PM / devfreq: rockchip-dfi: Convert to devm_platform_ioremap_resource
-      PM / devfreq: rk3399_dmc: Disable devfreq-event device when fails
-      PM / devfreq: exynos-bus: Disable devfreq-event device when fails
-      PM / devfreq: exynos-bus: Add error log when fail to get devfreq-event
-      cpufreq: kirkwood: convert to devm_platform_ioremap_resource
-      cpufreq: tegra186: convert to devm_platform_ioremap_resource
-
-YueHaibing (2):
-      PM / devfreq: imx8m-ddrc: Fix inconsistent IS_ERR and PTR_ERR
-      power: avs: qcom-cpr: remove duplicated include from qcom-cpr.c
-
-Zhang Rui (3):
-      powercap/intel_rapl: add support for TigerLake Mobile
-      x86/cpu: Add Jasper Lake to Intel family
-      powercap/intel_rapl: add support for JasperLake
-
-chenqiwu (2):
-      cpufreq: s3c: fix unbalances of cpufreq policy refcount
-      cpufreq: brcmstb-avs: fix imbalance of cpufreq policy refcount
-
-zhuguangqing (1):
-      PM: wakeup: Show statistics for deleted wakeup sources again
+Zhengyuan Liu (1):
+      tools/power/acpi: fix compilation error
 
 ---------------
 
- .mailmap                                           |    1 +
- Documentation/ABI/testing/sysfs-class-devfreq      |   18 +-
- Documentation/ABI/testing/sysfs-devices-system-cpu |    6 +
- Documentation/ABI/testing/sysfs-power              |   13 +
- Documentation/admin-guide/pm/cpuidle.rst           |    3 +
- Documentation/admin-guide/pm/intel_idle.rst        |  246 +++
- Documentation/admin-guide/pm/working-state.rst     |    1 +
- .../memory-controllers/fsl/imx8m-ddrc.yaml         |   72 +
- .../devicetree/bindings/power/avs/qcom,cpr.txt     |  130 ++
- MAINTAINERS                                        |    8 +
- arch/x86/include/asm/intel-family.h                |    1 +
- drivers/acpi/Kconfig                               |    1 +
- drivers/acpi/acpi_processor.c                      |  182 ++
- drivers/acpi/processor_idle.c                      |  174 +-
- drivers/base/power/runtime.c                       |   13 +-
- drivers/base/power/wakeup.c                        |    3 +
- drivers/cpufreq/brcmstb-avs-cpufreq.c              |    2 +
- drivers/cpufreq/cppc_cpufreq.c                     |    8 +-
- drivers/cpufreq/cpufreq-dt-platdev.c               |    1 +
- drivers/cpufreq/imx-cpufreq-dt.c                   |    6 +-
- drivers/cpufreq/intel_pstate.c                     |    2 +-
- drivers/cpufreq/kirkwood-cpufreq.c                 |    4 +-
- drivers/cpufreq/loongson2_cpufreq.c                |    8 +-
- drivers/cpufreq/s3c2416-cpufreq.c                  |   12 +-
- drivers/cpufreq/s5pv210-cpufreq.c                  |   11 +-
- drivers/cpufreq/tegra186-cpufreq.c                 |    4 +-
- drivers/cpuidle/Kconfig.arm                        |   12 +-
- drivers/cpuidle/coupled.c                          |    9 +-
- drivers/cpuidle/cpuidle-clps711x.c                 |    5 +-
- drivers/cpuidle/cpuidle-kirkwood.c                 |    5 +-
- drivers/cpuidle/cpuidle.c                          |    9 +-
- drivers/cpuidle/driver.c                           |   46 -
- drivers/cpuidle/sysfs.c                            |   16 +-
- drivers/devfreq/Kconfig                            |   21 +-
- drivers/devfreq/Makefile                           |    1 +
- drivers/devfreq/devfreq-event.c                    |    4 +-
- drivers/devfreq/devfreq.c                          |  166 +-
- drivers/devfreq/event/Kconfig                      |    6 +-
- drivers/devfreq/event/exynos-nocp.c                |    2 +-
- drivers/devfreq/event/exynos-nocp.h                |    2 +-
- drivers/devfreq/event/exynos-ppmu.c                |   15 +-
- drivers/devfreq/event/exynos-ppmu.h                |    2 +-
- drivers/devfreq/event/rockchip-dfi.c               |    5 +-
- drivers/devfreq/exynos-bus.c                       |  155 +-
- drivers/devfreq/imx8m-ddrc.c                       |  471 +++++
- drivers/devfreq/rk3399_dmc.c                       |   19 +-
- drivers/idle/intel_idle.c                          |  482 ++++--
- drivers/opp/core.c                                 |   48 +-
- drivers/opp/of.c                                   |   31 +-
- drivers/opp/opp.h                                  |    6 +-
- drivers/power/avs/Kconfig                          |   16 +
- drivers/power/avs/Makefile                         |    1 +
- drivers/power/avs/qcom-cpr.c                       | 1793 ++++++++++++++++++++
- drivers/powercap/intel_rapl_common.c               |    2 +
- include/linux/acpi.h                               |   15 +
- include/linux/cpuidle.h                            |    6 +-
- include/linux/devfreq.h                            |   29 +-
- include/linux/suspend.h                            |    2 +
- include/trace/events/rpm.h                         |    6 +
- kernel/power/Kconfig                               |    5 +-
- kernel/power/hibernate.c                           |   23 +-
- kernel/power/main.c                                |   33 +
- kernel/power/snapshot.c                            |   28 +-
- kernel/power/suspend.c                             |    2 +-
- kernel/power/suspend_test.c                        |    6 +-
- 65 files changed, 3829 insertions(+), 606 deletions(-)
+ .mailmap                                           |  1 +
+ .../admin-guide/acpi/fan_performance_states.rst    | 62 ++++++++++++++
+ Documentation/admin-guide/acpi/index.rst           |  1 +
+ Documentation/firmware-guide/acpi/enumeration.rst  | 16 ++--
+ MAINTAINERS                                        |  2 +-
+ drivers/acpi/acpi_video.c                          |  2 +-
+ drivers/acpi/acpica/acapps.h                       |  4 +-
+ drivers/acpi/acpica/accommon.h                     |  2 +-
+ drivers/acpi/acpica/acconvert.h                    |  2 +-
+ drivers/acpi/acpica/acdebug.h                      |  2 +-
+ drivers/acpi/acpica/acdispat.h                     |  2 +-
+ drivers/acpi/acpica/acevents.h                     |  2 +-
+ drivers/acpi/acpica/acglobal.h                     |  2 +-
+ drivers/acpi/acpica/achware.h                      |  2 +-
+ drivers/acpi/acpica/acinterp.h                     |  2 +-
+ drivers/acpi/acpica/aclocal.h                      |  2 +-
+ drivers/acpi/acpica/acmacros.h                     |  2 +-
+ drivers/acpi/acpica/acnamesp.h                     |  2 +-
+ drivers/acpi/acpica/acobject.h                     |  5 +-
+ drivers/acpi/acpica/acopcode.h                     |  2 +-
+ drivers/acpi/acpica/acparser.h                     |  2 +-
+ drivers/acpi/acpica/acpredef.h                     |  2 +-
+ drivers/acpi/acpica/acresrc.h                      |  2 +-
+ drivers/acpi/acpica/acstruct.h                     |  2 +-
+ drivers/acpi/acpica/actables.h                     |  2 +-
+ drivers/acpi/acpica/acutils.h                      |  2 +-
+ drivers/acpi/acpica/amlcode.h                      |  2 +-
+ drivers/acpi/acpica/amlresrc.h                     |  2 +-
+ drivers/acpi/acpica/dbhistry.c                     |  2 +-
+ drivers/acpi/acpica/dbinput.c                      |  2 +-
+ drivers/acpi/acpica/dsargs.c                       |  2 +-
+ drivers/acpi/acpica/dscontrol.c                    |  2 +-
+ drivers/acpi/acpica/dsdebug.c                      |  2 +-
+ drivers/acpi/acpica/dsfield.c                      |  4 +-
+ drivers/acpi/acpica/dsinit.c                       |  2 +-
+ drivers/acpi/acpica/dsmethod.c                     |  2 +-
+ drivers/acpi/acpica/dsobject.c                     |  2 +-
+ drivers/acpi/acpica/dsopcode.c                     |  4 +-
+ drivers/acpi/acpica/dspkginit.c                    |  2 +-
+ drivers/acpi/acpica/dswexec.c                      |  2 +-
+ drivers/acpi/acpica/dswload.c                      | 23 ++++-
+ drivers/acpi/acpica/dswload2.c                     |  2 +-
+ drivers/acpi/acpica/dswscope.c                     |  2 +-
+ drivers/acpi/acpica/dswstate.c                     |  2 +-
+ drivers/acpi/acpica/evevent.c                      |  2 +-
+ drivers/acpi/acpica/evglock.c                      |  2 +-
+ drivers/acpi/acpica/evgpe.c                        |  2 +-
+ drivers/acpi/acpica/evgpeblk.c                     |  2 +-
+ drivers/acpi/acpica/evgpeinit.c                    |  2 +-
+ drivers/acpi/acpica/evgpeutil.c                    |  2 +-
+ drivers/acpi/acpica/evhandler.c                    |  2 +-
+ drivers/acpi/acpica/evmisc.c                       |  2 +-
+ drivers/acpi/acpica/evregion.c                     |  2 +-
+ drivers/acpi/acpica/evrgnini.c                     |  2 +-
+ drivers/acpi/acpica/evxface.c                      |  2 +-
+ drivers/acpi/acpica/evxfevnt.c                     |  2 +-
+ drivers/acpi/acpica/evxfgpe.c                      |  2 +-
+ drivers/acpi/acpica/evxfregn.c                     |  2 +-
+ drivers/acpi/acpica/exconcat.c                     |  2 +-
+ drivers/acpi/acpica/exconfig.c                     |  2 +-
+ drivers/acpi/acpica/exconvrt.c                     |  2 +-
+ drivers/acpi/acpica/excreate.c                     |  2 +-
+ drivers/acpi/acpica/exdebug.c                      |  2 +-
+ drivers/acpi/acpica/exdump.c                       |  2 +-
+ drivers/acpi/acpica/exfield.c                      | 12 ++-
+ drivers/acpi/acpica/exfldio.c                      |  2 +-
+ drivers/acpi/acpica/exmisc.c                       |  2 +-
+ drivers/acpi/acpica/exmutex.c                      |  2 +-
+ drivers/acpi/acpica/exnames.c                      |  2 +-
+ drivers/acpi/acpica/exoparg1.c                     |  2 +-
+ drivers/acpi/acpica/exoparg2.c                     |  2 +-
+ drivers/acpi/acpica/exoparg3.c                     |  2 +-
+ drivers/acpi/acpica/exoparg6.c                     |  2 +-
+ drivers/acpi/acpica/exprep.c                       |  2 +-
+ drivers/acpi/acpica/exregion.c                     |  2 +-
+ drivers/acpi/acpica/exresnte.c                     |  2 +-
+ drivers/acpi/acpica/exresolv.c                     |  2 +-
+ drivers/acpi/acpica/exresop.c                      |  2 +-
+ drivers/acpi/acpica/exserial.c                     |  2 +-
+ drivers/acpi/acpica/exstore.c                      |  2 +-
+ drivers/acpi/acpica/exstoren.c                     |  2 +-
+ drivers/acpi/acpica/exstorob.c                     |  2 +-
+ drivers/acpi/acpica/exsystem.c                     |  2 +-
+ drivers/acpi/acpica/extrace.c                      |  2 +-
+ drivers/acpi/acpica/exutils.c                      |  2 +-
+ drivers/acpi/acpica/hwacpi.c                       |  2 +-
+ drivers/acpi/acpica/hwesleep.c                     |  2 +-
+ drivers/acpi/acpica/hwgpe.c                        |  2 +-
+ drivers/acpi/acpica/hwsleep.c                      |  2 +-
+ drivers/acpi/acpica/hwtimer.c                      |  2 +-
+ drivers/acpi/acpica/hwvalid.c                      |  2 +-
+ drivers/acpi/acpica/hwxface.c                      |  2 +-
+ drivers/acpi/acpica/hwxfsleep.c                    |  2 +-
+ drivers/acpi/acpica/nsarguments.c                  |  2 +-
+ drivers/acpi/acpica/nsconvert.c                    |  2 +-
+ drivers/acpi/acpica/nsdump.c                       |  2 +-
+ drivers/acpi/acpica/nsdumpdv.c                     |  2 +-
+ drivers/acpi/acpica/nsinit.c                       |  2 +-
+ drivers/acpi/acpica/nsload.c                       |  2 +-
+ drivers/acpi/acpica/nsparse.c                      |  2 +-
+ drivers/acpi/acpica/nspredef.c                     |  2 +-
+ drivers/acpi/acpica/nsprepkg.c                     |  2 +-
+ drivers/acpi/acpica/nsrepair.c                     |  2 +-
+ drivers/acpi/acpica/nsrepair2.c                    |  2 +-
+ drivers/acpi/acpica/nsutils.c                      |  2 +-
+ drivers/acpi/acpica/nswalk.c                       |  2 +-
+ drivers/acpi/acpica/nsxfname.c                     |  2 +-
+ drivers/acpi/acpica/psargs.c                       |  2 +-
+ drivers/acpi/acpica/psloop.c                       |  2 +-
+ drivers/acpi/acpica/psobject.c                     |  2 +-
+ drivers/acpi/acpica/psopcode.c                     |  2 +-
+ drivers/acpi/acpica/psopinfo.c                     |  2 +-
+ drivers/acpi/acpica/psparse.c                      |  2 +-
+ drivers/acpi/acpica/psscope.c                      |  2 +-
+ drivers/acpi/acpica/pstree.c                       |  2 +-
+ drivers/acpi/acpica/psutils.c                      |  2 +-
+ drivers/acpi/acpica/pswalk.c                       |  2 +-
+ drivers/acpi/acpica/psxface.c                      |  2 +-
+ drivers/acpi/acpica/tbdata.c                       |  2 +-
+ drivers/acpi/acpica/tbfadt.c                       |  2 +-
+ drivers/acpi/acpica/tbfind.c                       |  2 +-
+ drivers/acpi/acpica/tbinstal.c                     |  2 +-
+ drivers/acpi/acpica/tbprint.c                      |  2 +-
+ drivers/acpi/acpica/tbutils.c                      |  2 +-
+ drivers/acpi/acpica/tbxface.c                      |  2 +-
+ drivers/acpi/acpica/tbxfload.c                     |  2 +-
+ drivers/acpi/acpica/tbxfroot.c                     |  2 +-
+ drivers/acpi/acpica/utaddress.c                    |  2 +-
+ drivers/acpi/acpica/utalloc.c                      |  2 +-
+ drivers/acpi/acpica/utascii.c                      |  2 +-
+ drivers/acpi/acpica/utbuffer.c                     |  2 +-
+ drivers/acpi/acpica/utcache.c                      |  2 +-
+ drivers/acpi/acpica/utcopy.c                       |  2 +-
+ drivers/acpi/acpica/utdebug.c                      |  2 +-
+ drivers/acpi/acpica/utdecode.c                     |  2 +-
+ drivers/acpi/acpica/uteval.c                       |  2 +-
+ drivers/acpi/acpica/utglobal.c                     |  2 +-
+ drivers/acpi/acpica/uthex.c                        |  2 +-
+ drivers/acpi/acpica/utids.c                        |  2 +-
+ drivers/acpi/acpica/utinit.c                       |  2 +-
+ drivers/acpi/acpica/utlock.c                       |  2 +-
+ drivers/acpi/acpica/utobject.c                     |  2 +-
+ drivers/acpi/acpica/utosi.c                        |  2 +-
+ drivers/acpi/acpica/utpredef.c                     |  2 +-
+ drivers/acpi/acpica/utprint.c                      |  2 +-
+ drivers/acpi/acpica/uttrack.c                      |  2 +-
+ drivers/acpi/acpica/utuuid.c                       |  2 +-
+ drivers/acpi/acpica/utxface.c                      |  2 +-
+ drivers/acpi/acpica/utxfinit.c                     |  2 +-
+ drivers/acpi/apei/ghes.c                           |  2 +-
+ drivers/acpi/battery.c                             | 75 ++++++++++++-----
+ drivers/acpi/button.c                              | 11 +++
+ drivers/acpi/device_pm.c                           |  1 +
+ drivers/acpi/dptf/dptf_power.c                     |  1 +
+ drivers/acpi/dptf/int340x_thermal.c                |  4 +
+ drivers/acpi/ec.c                                  | 16 +---
+ drivers/acpi/fan.c                                 | 97 ++++++++++++++++++++--
+ drivers/acpi/pptt.c                                | 29 +++----
+ drivers/acpi/video_detect.c                        | 29 +++++++
+ drivers/platform/x86/intel-hid.c                   |  1 +
+ .../intel/int340x_thermal/int3400_thermal.c        |  1 +
+ .../intel/int340x_thermal/int3403_thermal.c        |  1 +
+ include/acpi/acbuffer.h                            |  2 +-
+ include/acpi/acconfig.h                            |  2 +-
+ include/acpi/acexcep.h                             |  2 +-
+ include/acpi/acnames.h                             |  2 +-
+ include/acpi/acoutput.h                            |  2 +-
+ include/acpi/acpi.h                                |  2 +-
+ include/acpi/acpiosxf.h                            |  2 +-
+ include/acpi/acpixf.h                              |  4 +-
+ include/acpi/acrestyp.h                            |  2 +-
+ include/acpi/actbl.h                               |  2 +-
+ include/acpi/actbl1.h                              |  2 +-
+ include/acpi/actbl2.h                              |  2 +-
+ include/acpi/actbl3.h                              |  2 +-
+ include/acpi/actypes.h                             |  2 +-
+ include/acpi/acuuid.h                              |  2 +-
+ include/acpi/platform/acenv.h                      | 13 ++-
+ include/acpi/platform/acenvex.h                    |  2 +-
+ include/acpi/platform/acgcc.h                      |  2 +-
+ include/acpi/platform/acgccex.h                    |  2 +-
+ include/acpi/platform/acintel.h                    |  2 +-
+ include/acpi/platform/aclinux.h                    |  2 +-
+ include/acpi/platform/aclinuxex.h                  |  2 +-
+ tools/power/acpi/Makefile.config                   |  2 +-
+ tools/power/acpi/common/cmfsize.c                  |  2 +-
+ tools/power/acpi/common/getopt.c                   |  2 +-
+ .../acpi/os_specific/service_layers/oslinuxtbl.c   |  2 +-
+ .../acpi/os_specific/service_layers/osunixdir.c    |  2 +-
+ .../acpi/os_specific/service_layers/osunixmap.c    |  2 +-
+ .../acpi/os_specific/service_layers/osunixxf.c     |  2 +-
+ tools/power/acpi/tools/acpidump/acpidump.h         |  2 +-
+ tools/power/acpi/tools/acpidump/apdump.c           |  2 +-
+ tools/power/acpi/tools/acpidump/apfiles.c          |  2 +-
+ tools/power/acpi/tools/acpidump/apmain.c           |  2 +-
+ 195 files changed, 511 insertions(+), 246 deletions(-)
