@@ -2,118 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C08714B34F
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jan 2020 12:09:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BA4C14B36B
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jan 2020 12:18:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725927AbgA1LJ1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jan 2020 06:09:27 -0500
-Received: from foss.arm.com ([217.140.110.172]:55288 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725903AbgA1LJ1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 28 Jan 2020 06:09:27 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09CAE30E;
-        Tue, 28 Jan 2020 03:09:24 -0800 (PST)
-Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 147EF3F52E;
-        Tue, 28 Jan 2020 03:09:20 -0800 (PST)
-Date:   Tue, 28 Jan 2020 11:09:16 +0000
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Makarand Pawagi <makarand.pawagi@nxp.com>
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux@armlinux.org.uk, jon@solid-run.com,
-        cristian.sovaiala@nxp.com, laurentiu.tudor@nxp.com,
-        ioana.ciornei@nxp.com, V.Sethi@nxp.com, calvin.johnson@nxp.com,
-        pankaj.bansal@nxp.com, guohanjun@huawei.com, sudeep.holla@arm.com,
-        rjw@rjwysocki.net, lenb@kernel.org, stuyoder@gmail.com,
-        tglx@linutronix.de, jason@lakedaemon.net, maz@kernel.org,
-        shameerali.kolothum.thodi@huawei.com, will@kernel.org,
-        robin.murphy@arm.com, nleeder@codeaurora.org
-Subject: Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
-Message-ID: <20200128110916.GA491@e121166-lin.cambridge.arm.com>
-References: <1580198925-50411-1-git-send-email-makarand.pawagi@nxp.com>
+        id S1725941AbgA1LSP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jan 2020 06:18:15 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:37670 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725948AbgA1LSP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 28 Jan 2020 06:18:15 -0500
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 496A1E444703DA9C65CE;
+        Tue, 28 Jan 2020 19:18:10 +0800 (CST)
+Received: from localhost.localdomain (10.69.192.58) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 28 Jan 2020 19:18:02 +0800
+From:   John Garry <john.garry@huawei.com>
+To:     <rjw@rjwysocki.net>, <lenb@kernel.org>
+CC:     <jeremy.linton@arm.com>, <arnd@arndb.de>, <olof@lixom.net>,
+        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <guohanjun@huawei.com>, <gregkh@linuxfoundation.org>,
+        John Garry <john.garry@huawei.com>
+Subject: [PATCH RFC 0/2] Add basic generic ACPI soc driver
+Date:   Tue, 28 Jan 2020 19:14:17 +0800
+Message-ID: <1580210059-199540-1-git-send-email-john.garry@huawei.com>
+X-Mailer: git-send-email 2.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1580198925-50411-1-git-send-email-makarand.pawagi@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain
+X-Originating-IP: [10.69.192.58]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 28, 2020 at 01:38:45PM +0530, Makarand Pawagi wrote:
-> ACPI support is added in the fsl-mc driver. Driver will parse
-> MC DSDT table to extract memory and other resorces.
-> 
-> Interrupt (GIC ITS) information will be extracted from MADT table
-> by drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c.
-> 
-> IORT table will be parsed to configure DMA.
-> 
-> Signed-off-by: Makarand Pawagi <makarand.pawagi@nxp.com>
-> ---
->  drivers/acpi/arm64/iort.c                   | 53 +++++++++++++++++++++
->  drivers/bus/fsl-mc/dprc-driver.c            |  3 +-
->  drivers/bus/fsl-mc/fsl-mc-bus.c             | 48 +++++++++++++------
->  drivers/bus/fsl-mc/fsl-mc-msi.c             | 10 +++-
->  drivers/bus/fsl-mc/fsl-mc-private.h         |  4 +-
->  drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c | 71 ++++++++++++++++++++++++++++-
->  include/linux/acpi_iort.h                   |  5 ++
->  7 files changed, 174 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index 33f7198..beb9cd5 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -15,6 +15,7 @@
->  #include <linux/kernel.h>
->  #include <linux/list.h>
->  #include <linux/pci.h>
-> +#include <linux/fsl/mc.h>
->  #include <linux/platform_device.h>
->  #include <linux/slab.h>
->  
-> @@ -622,6 +623,29 @@ static int iort_dev_find_its_id(struct device *dev, u32 req_id,
->  }
->  
->  /**
-> + * iort_get_fsl_mc_device_domain() - Find MSI domain related to a device
-> + * @dev: The device.
-> + * @mc_icid: ICID for the fsl_mc device.
-> + *
-> + * Returns: the MSI domain for this device, NULL otherwise
-> + */
-> +struct irq_domain *iort_get_fsl_mc_device_domain(struct device *dev,
-> +							u32 mc_icid)
-> +{
-> +	struct fwnode_handle *handle;
-> +	int its_id;
-> +
-> +	if (iort_dev_find_its_id(dev, mc_icid, 0, &its_id))
-> +		return NULL;
-> +
-> +	handle = iort_find_domain_token(its_id);
-> +	if (!handle)
-> +		return NULL;
-> +
-> +	return irq_find_matching_fwnode(handle, DOMAIN_BUS_FSL_MC_MSI);
-> +}
+A requirement has come up recently to be able to read system SoC packages
+identifiers from userspace [0].
 
-NAK
+For device tree FW-based systems, this would be quite straightforward, in
+that we could add a soc driver for that system and use the DT model
+identifier as the soc id - that's how most soc drivers seem to do it.
 
-I am not willing to take platform specific code in the generic IORT
-layer.
+For ACPI-based systems, the only place I know to get (put) such SoC
+information is in the PPTT, specifically the ID Type Structure for a
+processor package node. A processor package node describes a physical
+boundary of a processor topology.
 
-ACPI on ARM64 works on platforms that comply with SBSA/SBBR guidelines:
+The ACPI spec does not declare how the fields in this structure must be
+used, however it does provide pretty clear examples, which I would expect
+most implementers to follow. As such, I try to solve the problem in 2
+parts:
+- Add ACPI PPTT API to get opaque package structure
+- Add basic ACPI generic soc driver, which can interpret the fields
+  for known platforms to fill in the ID Type Structure as per example
+  in the spec.
 
-https://developer.arm.com/architectures/platform-design/server-systems
+So I'm hoping here for some comments on this approach - hence the RFC.
+I've cc'ed some folks which may have suggestions.
 
-Deviating from those requires butchering ACPI specifications (ie IORT)
-and related kernel code which goes totally against what ACPI is meant
-for on ARM64 systems, so there is no upstream pathway for this code
-I am afraid.
+[0] https://lore.kernel.org/linux-arm-kernel/1579876505-113251-6-git-send-email-john.garry@huawei.com/ ,
+    https://lore.kernel.org/linux-arm-kernel/1579876505-113251-1-git-send-email-john.garry@huawei.com/
 
-Thanks,
-Lorenzo
+John Garry (2):
+  ACPI/PPTT: Add acpi_pptt_get_package_info() API
+  soc: Add a basic ACPI generic driver
+
+ drivers/acpi/pptt.c        |  81 +++++++++++++++++++++++++++++
+ drivers/soc/Makefile       |   1 +
+ drivers/soc/acpi_generic.c | 102 +++++++++++++++++++++++++++++++++++++
+ include/linux/acpi.h       |  13 +++++
+ 4 files changed, 197 insertions(+)
+ create mode 100644 drivers/soc/acpi_generic.c
+
+-- 
+2.17.1
+
