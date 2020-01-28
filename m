@@ -2,40 +2,43 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9280414B4F0
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jan 2020 14:33:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF30014B6A4
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jan 2020 15:06:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726129AbgA1Ndw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jan 2020 08:33:52 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2315 "EHLO huawei.com"
+        id S1727135AbgA1OGp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jan 2020 09:06:45 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2316 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725852AbgA1Ndw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 28 Jan 2020 08:33:52 -0500
-Received: from lhreml706-cah.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 3CA825C12289569A1C47;
-        Tue, 28 Jan 2020 13:33:50 +0000 (GMT)
+        id S1728060AbgA1OEX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 28 Jan 2020 09:04:23 -0500
+Received: from lhreml702-cah.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id 3EA43D9489E734582F3A;
+        Tue, 28 Jan 2020 14:04:21 +0000 (GMT)
 Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- lhreml706-cah.china.huawei.com (10.201.108.47) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Tue, 28 Jan 2020 13:33:49 +0000
+ lhreml702-cah.china.huawei.com (10.201.108.43) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Tue, 28 Jan 2020 14:04:20 +0000
 Received: from [127.0.0.1] (10.202.226.43) by lhreml724-chm.china.huawei.com
  (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Tue, 28 Jan
- 2020 13:33:49 +0000
-Subject: Re: [PATCH RFC 2/2] soc: Add a basic ACPI generic driver
-To:     Greg KH <gregkh@linuxfoundation.org>
+ 2020 14:04:20 +0000
+Subject: Re: [PATCH RFC 1/2] ACPI/PPTT: Add acpi_pptt_get_package_info() API
+To:     Sudeep Holla <sudeep.holla@arm.com>
 CC:     <rjw@rjwysocki.net>, <lenb@kernel.org>, <jeremy.linton@arm.com>,
         <arnd@arndb.de>, <olof@lixom.net>, <linux-kernel@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <guohanjun@huawei.com>
+        <linux-acpi@vger.kernel.org>, <guohanjun@huawei.com>,
+        <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>
 References: <1580210059-199540-1-git-send-email-john.garry@huawei.com>
- <1580210059-199540-3-git-send-email-john.garry@huawei.com>
- <20200128115629.GB2680602@kroah.com>
+ <1580210059-199540-2-git-send-email-john.garry@huawei.com>
+ <20200128123415.GB36168@bogus>
 From:   John Garry <john.garry@huawei.com>
-Message-ID: <ae2c9384-4fb9-b3ea-d6a8-aaa652ffdafc@huawei.com>
-Date:   Tue, 28 Jan 2020 13:33:48 +0000
+Message-ID: <60c79aaa-4c49-71b1-11be-8e41a6bf3c1d@huawei.com>
+Date:   Tue, 28 Jan 2020 14:04:19 +0000
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.2
 MIME-Version: 1.0
-In-Reply-To: <20200128115629.GB2680602@kroah.com>
+In-Reply-To: <20200128123415.GB36168@bogus>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -48,119 +51,76 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On 28/01/2020 12:34, Sudeep Holla wrote:
 
-Hi Greg,
+Hi Sudeep,
 
->> +
->> +#define pr_fmt(fmt) "SOC ACPI GENERIC: " fmt
+> On Tue, Jan 28, 2020 at 07:14:18PM +0800, John Garry wrote:
+>> The ACPI PPTT ID structure (see 6.2 spec, section 5.2.29.3) allows the
+>> vendor to provide an identifier (or vendor specific part number) for a
+>> particular processor hierarchy node structure. That may be a processor
+>> identifier for a processor node, or some chip identifier for a processor
+>> package node.
+>>
 > 
-> You have a device, why do you need pr_fmt()?
-> 
+> Unfortunately, there were plans to deprecate this in favour of the new
+> SOC_ID SMCCC API[1]. I am not sure if you or anyone in your company have
+> access to UEFI ASWG mantis where you can look for the ECR for the PPTT
+> Type 2 deprecation.
 
-The only print in the code can be removed, below, so I need not worry 
-about this, i.e. remove it.
+I wasn't aware and I can't get access...
 
->> +
->> +#include <linux/acpi.h>
->> +#include <linux/sys_soc.h>
->> +
->> +/*
->> + * Known platforms that fill in PPTT package ID structures according to
->> + * ACPI spec examples, that being:
->> + * - Custom driver attribute is in ID Type Structure VENDOR_ID member
->> + * - SoC id is in ID Type Structure LEVEL_2_ID member
->> + *    See ACPI SPEC 6.2 Table 5-154 for PPTT ID Type Structure
->> + */
->> +static struct acpi_platform_list plat_list[] = {
->> +	{"HISI  ", "HIP08   ", 0, ACPI_SIG_PPTT, all_versions},
->> +	{ } /* End */
->> +};
->> +
->> +struct acpi_generic_soc_struct {
->> +	struct soc_device_attribute dev_attr;
->> +	u32 vendor;
->> +};
->> +
->> +static ssize_t vendor_show(struct device *dev,
->> +			   struct device_attribute *attr,
->> +			   char *buf)
->> +{
->> +	struct acpi_generic_soc_struct *soc = dev_get_drvdata(dev);
->> +	u8 vendor_id[5] = {};
->> +
->> +	*(u32 *)vendor_id = soc->vendor;
->> +
->> +	return sprintf(buf, "%s\n", vendor_id);
->> +}
->> +
->> +static DEVICE_ATTR_RO(vendor);
->> +
->> +static __init int soc_acpi_generic_init(void)
->> +{
->> +	int index;
->> +
->> +	index = acpi_match_platform_list(plat_list);
->> +	if (index < 0)
->> +		return -ENOENT;
->> +
->> +	index = 0;
->> +	while (true) {
->> +		struct acpi_pptt_package_info info;
->> +
->> +		if (!acpi_pptt_get_package_info(index, &info)) {
->> +			struct soc_device_attribute *soc_dev_attr;
->> +			struct acpi_generic_soc_struct *soc;
->> +			struct soc_device *soc_dev;
->> +			u8 soc_id[9] = {};
->> +
->> +			*(u64 *)soc_id = info.LEVEL_2_ID;
->> +
->> +			soc = kzalloc(sizeof(*soc), GFP_KERNEL);
->> +			if (!soc)
->> +				return -ENOMEM;
->> +
->> +			soc_dev_attr = &soc->dev_attr;
->> +			soc_dev_attr->soc_id = kasprintf(GFP_KERNEL, "%s",
->> +							 soc_id);
->> +			if (!soc_dev_attr->soc_id) {
->> +				kfree(soc);
->> +				return -ENOMEM;
->> +			}
->> +			soc->vendor = info.vendor_id;
->> +
->> +			soc_dev = soc_device_register(soc_dev_attr);
->> +			if (IS_ERR(soc_dev)) {
->> +				int ret = PTR_ERR(soc_dev);
->> +
->> +				pr_info("could not register soc (%d) index=%d\n",
->> +					ret, index);
-> 
-> pr_err()?
+Personally I would rather PPTT ID structure have a fixed field 
+definition in future spec versions, rather than deprecate.
 
-Yes, more appropriate.
+ From checking here, nobody has even used it (properly) for processor 
+package nodes:
+https://github.com/tianocore/edk2-platforms/tree/master/Platform
+
+  I understand it's not ideal, but we need to converge,
+> please take a look at both before further discussion.
+
+I can only check the SMCCC extension which you pointed me at.
 
 > 
-> And shouldn't the core print out the error, not the person who calls it?
+> I personally would not prefer to add the support when I know it is getting
+> deprecated. I am not sure on kernel community policy on the same.
 
-Sure, that would sounds reasonable, but I just wanted to get the index 
-at which we fail. I could live without it.
+So I need a generic solution for this, as my userspace tool requires a 
+generic solution.
 
 > 
 > 
->> +				kfree(soc_dev_attr->soc_id);
->> +				kfree(soc);
->> +				return ret;
->> +			}
->> +			dev_set_drvdata(soc_device_to_device(soc_dev), soc);
->> +			device_create_file(soc_device_to_device(soc_dev),
->> +					   &dev_attr_vendor);
+> [...]
 > 
-> You just raced with userspace and lost.  Use the built-in api that I
-> made _just_ because of SOC drivers to do this correctly.
+>>
+>> The ID structure table has a number of fields, which are left open to
+>> interpretation per implementation. However the spec does provide reference
+>> examples of how the fields could be used. As such, just provide the
+>> table fields directly in the API, which the caller may interpret (probably
+>> as per spec example).
+>>
 > 
+> The "open for interpretation" part is why it's not being favoured anymore
+> by silicon vendors as OEM/ODMs can override the same.
+> 
+>> https://lore.kernel.org/linux-arm-kernel/1579876505-113251-6-git-send-email-john.garry@huawei.com/
+>>
+> Ah, there's already quite a lot of dependency built for this feature :(
 
-Fine, there is the soc device custom attr group which I can use. But, as 
-Arnd said, maybe we can drop this custom file.
+Not really. It's only an RFC ATM, and my requirement is a sysfs file to 
+read the SoC id(s) (under ACPI FW). So I would still expect to be able 
+to support this from the SMCCC extension method.
+
+> 
+> --
+> Regards,
+> Sudeep
+> 
+> [1] https://developer.arm.com/docs/den0028/c
+> .
+> 
 
 Cheers,
 John
+
