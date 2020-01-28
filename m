@@ -2,147 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A87F14C167
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jan 2020 21:07:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 621F614C2F5
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jan 2020 23:31:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726296AbgA1UHI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jan 2020 15:07:08 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2325 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726143AbgA1UHI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 28 Jan 2020 15:07:08 -0500
-Received: from lhreml701-cah.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id CA9D9A9543D69BE1C047;
-        Tue, 28 Jan 2020 20:07:06 +0000 (GMT)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- lhreml701-cah.china.huawei.com (10.201.108.42) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Tue, 28 Jan 2020 20:07:06 +0000
-Received: from [127.0.0.1] (10.210.167.110) by lhreml724-chm.china.huawei.com
- (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Tue, 28 Jan
- 2020 20:07:05 +0000
-Subject: Re: [PATCH RFC 0/2] Add basic generic ACPI soc driver
-To:     Jeremy Linton <jeremy.linton@arm.com>, <rjw@rjwysocki.net>,
-        <lenb@kernel.org>
-CC:     <arnd@arndb.de>, <olof@lixom.net>, <linux-kernel@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <guohanjun@huawei.com>,
-        <gregkh@linuxfoundation.org>
-References: <1580210059-199540-1-git-send-email-john.garry@huawei.com>
- <bb87efe5-d0be-498a-25a1-008a7bebd452@arm.com>
- <5ab3a97d-bbc4-6d5a-fd06-f8da324339ab@huawei.com>
- <6be8d175-477d-d163-3fe0-3ab562874ce4@arm.com>
-From:   John Garry <john.garry@huawei.com>
-Message-ID: <b4d00a0a-1bf9-9ccd-c734-f532cac523d1@huawei.com>
-Date:   Tue, 28 Jan 2020 20:07:04 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+        id S1726257AbgA1WbA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jan 2020 17:31:00 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:34417 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726211AbgA1WbA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jan 2020 17:31:00 -0500
+Received: by mail-ot1-f68.google.com with SMTP id a15so13675414otf.1;
+        Tue, 28 Jan 2020 14:31:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=iX2V9T24wEabMeqlN5Cam7uCTsFLrLNLsDKY3xVe4h4=;
+        b=W158dTfG1Kag4hB030mDOlfLaMBoFl0ivZTNeoxoAjhtPESVt272+iwTZp6By+XMo5
+         K+Bldk80KimNMr/atmJTiju0kZqfSHrZvG2ZSNwy3VstY3Y5q4VXRE0HcSGl/h3covXJ
+         nwaLJkK8Ngw1ixR4li+kAKYnYDVpk8xRqKQM9hnDNaZqnBrqtjWyKR5WKScikvEOYlom
+         bLu5EWsYN+iaVHVjKgx8PsZbMV0OCCDBCfQ28g+98wz3FbLFy6OM4l2UelNIwQbgPNrO
+         l8oAAFXm5DpP7o/JSdxD9JEPojH6xF9PI9DxW5Zt6yyeTzQvpcYzM7/YbuQokGE5FBNA
+         ariw==
+X-Gm-Message-State: APjAAAUjmqblSRxQTXAoy9YrU2AG4rRdIju+xWO0nhls2PQKGgFduK/0
+        bXBPus2/I5pCWEFGLYINzAZCC2sVsCvi2T8VqEM=
+X-Google-Smtp-Source: APXvYqwGxKHqpIKx0p0HtWL/2AntxlhWrFJg6cZnB3vFs65wxLJRTCzWHYF5xUPi3qJz56SLgzHqLM6lwO6EnUxqlT4=
+X-Received: by 2002:a9d:7559:: with SMTP id b25mr2289937otl.189.1580250659687;
+ Tue, 28 Jan 2020 14:30:59 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <6be8d175-477d-d163-3fe0-3ab562874ce4@arm.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.210.167.110]
-X-ClientProxiedBy: lhreml712-chm.china.huawei.com (10.201.108.63) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
+References: <1580210059-199540-1-git-send-email-john.garry@huawei.com>
+ <1580210059-199540-3-git-send-email-john.garry@huawei.com>
+ <CAOesGMiCVSvL8H+haLoz=xyiX1CxBSRL_pbCgx-DLhN+5xRn9g@mail.gmail.com>
+ <4c6462e3-e368-bd9f-260f-e8351c85bcc2@huawei.com> <CAJZ5v0jN5ED_U2s06--8Rx-S4g-wuVxw9YPR12_WL3TnV81_Ag@mail.gmail.com>
+ <b6cc7edd-fbb9-ed7a-412e-0d75e4c8ec2b@huawei.com>
+In-Reply-To: <b6cc7edd-fbb9-ed7a-412e-0d75e4c8ec2b@huawei.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 28 Jan 2020 23:30:48 +0100
+Message-ID: <CAJZ5v0jbh_zU8getDO2VdsQ7qzjnwkTXjsNd+j+j=K4PPDO05w@mail.gmail.com>
+Subject: Re: [PATCH RFC 2/2] soc: Add a basic ACPI generic driver
+To:     John Garry <john.garry@huawei.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Olof Johansson <olof@lixom.net>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jeremy,
+On Tue, Jan 28, 2020 at 8:28 PM John Garry <john.garry@huawei.com> wrote:
+>
+>
+> >>>>
+> >>>> Signed-off-by: John Garry <john.garry@huawei.com>
+> >>>> ---
+> >>>>    drivers/soc/Makefile       |   1 +
+> >>>>    drivers/soc/acpi_generic.c | 102 +++++++++++++++++++++++++++++++++++++
+> >>>>    2 files changed, 103 insertions(+)
+> >>>>    create mode 100644 drivers/soc/acpi_generic.c
+> >>>>
+> >>>> diff --git a/drivers/soc/Makefile b/drivers/soc/Makefile
+> >>>> index 8b49d782a1ab..2a59a30a22cd 100644
+> >>>> --- a/drivers/soc/Makefile
+> >>>> +++ b/drivers/soc/Makefile
+> >>>> @@ -3,6 +3,7 @@
+> >>>>    # Makefile for the Linux Kernel SOC specific device drivers.
+> >>>>    #
+> >>>>
+> >>>> +obj-$(CONFIG_ACPI_PPTT)                += acpi_generic.o
+> >>>>    obj-$(CONFIG_ARCH_ACTIONS)     += actions/
+> >>>>    obj-$(CONFIG_SOC_ASPEED)       += aspeed/
+> >>>>    obj-$(CONFIG_ARCH_AT91)                += atmel/
+> >>>
+> >>> Based on everything I've seen so far, this should go under drivers/acpi instead.
+> >>
+> >> soc drivers seem to live in drivers/soc (non-arm32, anyway), so I
+> >> decided on this location. But drivers/acpi would also seem reasonable now.
+> >
+>
+> Hi Rafael,
+>
+> > Any reasons for not putting it into drivers/acpi/pptt.c specifically?
+> > .
+>
+> I don't think so.
+>
+> One thing is that the code does a one-time scan of the PPTT to find all
+> processor package nodes with ID structures to register the soc devices -
+> so we would need some new call from from acpi_init() for that.
 
->> I did consider DMI, but I want something more generic, i.e. could 
->> cover embedded/DT systems also.
->>
->> And I need to double check if DMI really has the info I require. Last 
->> time I checked, it didn't for my dev board, but I know that some 
->> fields are simply not filled in.
-> 
-> Well the info is probably there, but that doesn't mean it should be used 
-> programmatically. As your board shows, its not that reliable. And 
-> looking at the linked patch I see you mention that.
+Or an extra initcall or similar. [Calls from acpi_init() are basically
+for things that need to be strictly ordered in a specific way for some
+reason.]
 
-Right, I am trying to stay away from that.
-
-> 
-> 
->>
->>>
->>> But, quickly looking at the use case, I can't help but think you 
->>> don't really want any of the above, or the PPTT id. It seems the 
->>> mapping should actually be tied directly to the uncore PMU 
->>> definition, rather than a soc/machine/whatever identifier. Which 
->>> would imply keying off one of the ACPI object identifiers for the PMU 
->>> itself.
->>
->> So a PMU device (/sys/bus/event_source/devices) does not have a link 
->> to the ACPI object identifiers or uncore PMU platform device etc.
->>
->> And even if it did, there is no clear link between that ACPI object 
->> and the events it supports for that implementation.
-> 
-> Having a direct link isn't ideal either. It seems you do mention the pmu 
-> naming conventions, which can be controlled based on ACPI object 
-> identifiers.
-
-Not necessarily.
-
-  Something like "uncore_dmc_hsi1" where the appended bits
-> could for example vary on _CID+_UID or DT name.
-
-We already do include some naming from ACPI tables in naming (see 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/perf/hisilicon/hisi_uncore_ddrc_pmu.c?h=v5.5#n377), 
-but this is not good enough. I'll explain below.
-
-> 
-> Not sure that is a particularly good suggestion either, but I do think 
-> its a better idea to tie the mapping to the pmu type/man/version concept 
-> than the SOC it appears in. The sysfs-bus-event_source-devices-* ABI 
-> docs are noticeably silent on the format of the pmu name (is that 
-> somewhere else?).
-
-I would say that there is a lack of PMU naming convention, which I did 
-note in my referenced patchset.
-
-Apart from that, I think that this problem can be better explained with 
-the SMMUv3 PMCG example.
-
-So this PMU has support for a number of IMP DEF events. The SMMUv3 PMCG 
-has no method to identify the implementation, so we cannot know which 
-IMP DEF events are supported for a specific implementation.
-
-The PMCG PMU naming is fixed, and is in the form smmuv3_pmcg_XXXX - so 
-we cannot use some special naming. And the XXXX does not tell us 
-anything about the implementation to help know the IMP DEF events.
-
-Now the perf tool has support to know which CPU+uncore events are 
-supported for a particular CPU through pmu-events feature - see 
-tools/perf/pmu-events/README
-
-The perf tool includes a number of per-CPU event tables.
-
-The matching of per-CPU event table the perf tool uses is based on 
-knowing the host CPUID - this is easy to retrieve this via some special 
-arch-specific CPU reg, etc. So once it knows the CPUID, "perf list" 
-command can show all the events for that CPU.
-
-Now we can extend this idea for the PMCG PMU to support the IMP DEF 
-events. For this, we add support for a table of "system" PMU events per 
-SoC - similar to the CPU tables - containing the PMCG events. We cannot 
-use the CPUID to match the event table for SoC, as a CPUID is not always 
-specific to a SoC - that's definite for ARM world and definite for 
-SMMUv3 PMCG. So then perf tool needs to know some SoC identifier to 
-match the per-SoC events table. That's why I want the SoC id in readable 
-form in sysfs.
-
-To add a final note on uncore PMUs, for ARM this is bit of grey area. So 
-currently we match uncore PMUs on CPUID. However I figure some SoC 
-implementer could take, for example, an A72, and add some uncore PMUs. 
-As such, we cannot always match on CPUID, so being able to match on a 
-SoC identifier would be better also.
-
-Hope it explains.
-
-Thanks,
-John
+Why would that be a problem?
