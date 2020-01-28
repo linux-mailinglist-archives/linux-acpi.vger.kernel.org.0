@@ -2,132 +2,165 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 171DE14B475
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jan 2020 13:50:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9280414B4F0
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jan 2020 14:33:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726034AbgA1Muo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jan 2020 07:50:44 -0500
-Received: from mout.kundenserver.de ([217.72.192.74]:38203 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725283AbgA1Muo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jan 2020 07:50:44 -0500
-Received: from mail-qv1-f50.google.com ([209.85.219.50]) by
- mrelayeu.kundenserver.de (mreue108 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1MfYDO-1jTZIA1JYO-00g0pf; Tue, 28 Jan 2020 13:50:42 +0100
-Received: by mail-qv1-f50.google.com with SMTP id dc14so6158053qvb.9;
-        Tue, 28 Jan 2020 04:50:42 -0800 (PST)
-X-Gm-Message-State: APjAAAUlbMj3edb9FViq9eps2RGb60zdG8lN3Vf74v43TmedTXTOEPnx
-        BmDNf0v0QfjPbLYkXhvxwbc6vr7YH5m7rPxNuxs=
-X-Google-Smtp-Source: APXvYqwJy4DwfEzTsOkoi0YCpAanaatx64QLkeoLB3399GuTavZPkuD/rRK//KCoPuUtr3vyStofBIgJqCNGfmKx4so=
-X-Received: by 2002:a0c:ead1:: with SMTP id y17mr20934030qvp.210.1580215841088;
- Tue, 28 Jan 2020 04:50:41 -0800 (PST)
-MIME-Version: 1.0
-References: <1580210059-199540-1-git-send-email-john.garry@huawei.com> <1580210059-199540-3-git-send-email-john.garry@huawei.com>
-In-Reply-To: <1580210059-199540-3-git-send-email-john.garry@huawei.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 28 Jan 2020 13:50:25 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2famGETLM7JgEh+eUJ9HSqm_Fu79uAkU_BPOkDvV2ROg@mail.gmail.com>
-Message-ID: <CAK8P3a2famGETLM7JgEh+eUJ9HSqm_Fu79uAkU_BPOkDvV2ROg@mail.gmail.com>
+        id S1726129AbgA1Ndw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jan 2020 08:33:52 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2315 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725852AbgA1Ndw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 28 Jan 2020 08:33:52 -0500
+Received: from lhreml706-cah.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id 3CA825C12289569A1C47;
+        Tue, 28 Jan 2020 13:33:50 +0000 (GMT)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ lhreml706-cah.china.huawei.com (10.201.108.47) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Tue, 28 Jan 2020 13:33:49 +0000
+Received: from [127.0.0.1] (10.202.226.43) by lhreml724-chm.china.huawei.com
+ (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Tue, 28 Jan
+ 2020 13:33:49 +0000
 Subject: Re: [PATCH RFC 2/2] soc: Add a basic ACPI generic driver
-To:     John Garry <john.garry@huawei.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, jeremy.linton@arm.com,
-        Olof Johansson <olof@lixom.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        gregkh <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:3nMHLYujwFcb9tdRgyh5pqOB2vOeaVGdkAJy7Iigx6xOA/kppSB
- Xmzua0GGpQ4F+4mZwBygccrfbLrpJDE/+hqngCif9WS/q4wGfCRsaZSvF9rV9Qk7RDu2VHm
- P0FZS9HOb7Yyez4DE4I/oBJspzXWb7NvXMRnqJTzrPl0tKW30LH7gzsNpITyW06DmRlUZ5o
- ca6a12vh1gngg6T66vv3Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:MDP6mq5stY0=:AeGKJuejOqVgqxsGJ0wycJ
- 11NhK/41P7k7onJk3BhJdklMt7NQpdAUSaFj30J+HeCFAlSez13JYgG+Nk5VM2DqatIJKVMhs
- CU5PMSwMns2HR8j2FKn+Xl/2NC0SBg9fCfjSNEgrPsLy8RSniQ/8jpTfxSbtvLVlRxcKlJn7l
- cotp5oMjXFSvjzsTqdXAgyjOYwgc68/s01y6SWWJDYTlC4HGULTQbWvgy7+OTCk/EC5uLH9qQ
- Tj7TlNl8SovLqHxgtxqTVNNL5JmKMdAhu0SL2C7jSHzmlho2IgxV0KPmBHKFfPwREXWhJfJqk
- APp7l0QfVPuuo+M2BB0LSJwXpmDv8+nSnixdH4Y49d8K8asb6OMAhpHHiSRJIaohYvAOpQzr1
- lkIvXGdwAD6XB67DBtTKgAWF1WvN8njLlLBkknX+f9OgxCtSt4YVpj/0JRH9uIYOGIVEB4GAA
- ofPYzP8pPsseGKgnWpECxUWi3N2lGp3wP1BQcmY+dfOXs6FgIMceWEJFQHdiYZmVRZjnA4W0B
- G5tEhbe+/lRKG1thA78s7704I0ZVT1fe40Emrz0NR4d8az8i0ndWqHDm1ppTybDUd6kHGmb0o
- jB1zUDKRK6ceSnFYIEc6xbXe4Rv7p5uqbk0DdjmuVTQcSABshpPNI6BCtt7NgxcZqc3VTu4cI
- gvcw2oTmrKilAk/UlD2sIBhUMKnwyUsmLPgwxy4k3WHstEOVyBnj7eeKNGsIOEL91O8I/u8iP
- ULkxSF+j7uzVagC7UIIcRxx9YH7mN/kdSxCGyF7u9Vog9lOYaPMfFe0RF13WtTg7cgp8BWuiP
- HPz0PP10JP2aMGQhcKwA6m8cVbaxcZevJ6XXaN9E/F4zEo2+zw=
+To:     Greg KH <gregkh@linuxfoundation.org>
+CC:     <rjw@rjwysocki.net>, <lenb@kernel.org>, <jeremy.linton@arm.com>,
+        <arnd@arndb.de>, <olof@lixom.net>, <linux-kernel@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <guohanjun@huawei.com>
+References: <1580210059-199540-1-git-send-email-john.garry@huawei.com>
+ <1580210059-199540-3-git-send-email-john.garry@huawei.com>
+ <20200128115629.GB2680602@kroah.com>
+From:   John Garry <john.garry@huawei.com>
+Message-ID: <ae2c9384-4fb9-b3ea-d6a8-aaa652ffdafc@huawei.com>
+Date:   Tue, 28 Jan 2020 13:33:48 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
+MIME-Version: 1.0
+In-Reply-To: <20200128115629.GB2680602@kroah.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.43]
+X-ClientProxiedBy: lhreml732-chm.china.huawei.com (10.201.108.83) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 28, 2020 at 12:18 PM John Garry <john.garry@huawei.com> wrote:
->
-> Add a generic driver for platforms which populate their ACPI PPTT
-> processor package ID Type Structure according to suggestion in the ACPI
-> spec - see ACPI 6.2, section 5.2.29.3 ID structure Type 2.
->
-> The soc_id is from member LEVEL_2_ID.
->
-> For this, we need to use a whitelist of platforms which are known to
-> populate the structure as suggested.
->
-> For now, only the vendor and soc_id fields are exposed.
->
-> Signed-off-by: John Garry <john.garry@huawei.com>
 
-Would it be possible to make this the root device for all on-chip devices
-to correctly reflect the hierarchy inside of the soc?
+Hi Greg,
 
-> +/*
-> + * Known platforms that fill in PPTT package ID structures according to
-> + * ACPI spec examples, that being:
-> + * - Custom driver attribute is in ID Type Structure VENDOR_ID member
-> + * - SoC id is in ID Type Structure LEVEL_2_ID member
-> + *    See ACPI SPEC 6.2 Table 5-154 for PPTT ID Type Structure
-> + */
-> +static struct acpi_platform_list plat_list[] = {
-> +       {"HISI  ", "HIP08   ", 0, ACPI_SIG_PPTT, all_versions},
-> +       { } /* End */
-> +};
+>> +
+>> +#define pr_fmt(fmt) "SOC ACPI GENERIC: " fmt
+> 
+> You have a device, why do you need pr_fmt()?
+> 
 
-That matches a single machine, right? It doesn't seem very generic
-that way.
+The only print in the code can be removed, below, so I need not worry 
+about this, i.e. remove it.
 
-> +struct acpi_generic_soc_struct {
-> +       struct soc_device_attribute dev_attr;
-> +       u32 vendor;
-> +};
-> +
-> +static ssize_t vendor_show(struct device *dev,
-> +                          struct device_attribute *attr,
-> +                          char *buf)
-> +{
-> +       struct acpi_generic_soc_struct *soc = dev_get_drvdata(dev);
-> +       u8 vendor_id[5] = {};
-> +
-> +       *(u32 *)vendor_id = soc->vendor;
-> +
-> +       return sprintf(buf, "%s\n", vendor_id);
-> +}
+>> +
+>> +#include <linux/acpi.h>
+>> +#include <linux/sys_soc.h>
+>> +
+>> +/*
+>> + * Known platforms that fill in PPTT package ID structures according to
+>> + * ACPI spec examples, that being:
+>> + * - Custom driver attribute is in ID Type Structure VENDOR_ID member
+>> + * - SoC id is in ID Type Structure LEVEL_2_ID member
+>> + *    See ACPI SPEC 6.2 Table 5-154 for PPTT ID Type Structure
+>> + */
+>> +static struct acpi_platform_list plat_list[] = {
+>> +	{"HISI  ", "HIP08   ", 0, ACPI_SIG_PPTT, all_versions},
+>> +	{ } /* End */
+>> +};
+>> +
+>> +struct acpi_generic_soc_struct {
+>> +	struct soc_device_attribute dev_attr;
+>> +	u32 vendor;
+>> +};
+>> +
+>> +static ssize_t vendor_show(struct device *dev,
+>> +			   struct device_attribute *attr,
+>> +			   char *buf)
+>> +{
+>> +	struct acpi_generic_soc_struct *soc = dev_get_drvdata(dev);
+>> +	u8 vendor_id[5] = {};
+>> +
+>> +	*(u32 *)vendor_id = soc->vendor;
+>> +
+>> +	return sprintf(buf, "%s\n", vendor_id);
+>> +}
+>> +
+>> +static DEVICE_ATTR_RO(vendor);
+>> +
+>> +static __init int soc_acpi_generic_init(void)
+>> +{
+>> +	int index;
+>> +
+>> +	index = acpi_match_platform_list(plat_list);
+>> +	if (index < 0)
+>> +		return -ENOENT;
+>> +
+>> +	index = 0;
+>> +	while (true) {
+>> +		struct acpi_pptt_package_info info;
+>> +
+>> +		if (!acpi_pptt_get_package_info(index, &info)) {
+>> +			struct soc_device_attribute *soc_dev_attr;
+>> +			struct acpi_generic_soc_struct *soc;
+>> +			struct soc_device *soc_dev;
+>> +			u8 soc_id[9] = {};
+>> +
+>> +			*(u64 *)soc_id = info.LEVEL_2_ID;
+>> +
+>> +			soc = kzalloc(sizeof(*soc), GFP_KERNEL);
+>> +			if (!soc)
+>> +				return -ENOMEM;
+>> +
+>> +			soc_dev_attr = &soc->dev_attr;
+>> +			soc_dev_attr->soc_id = kasprintf(GFP_KERNEL, "%s",
+>> +							 soc_id);
+>> +			if (!soc_dev_attr->soc_id) {
+>> +				kfree(soc);
+>> +				return -ENOMEM;
+>> +			}
+>> +			soc->vendor = info.vendor_id;
+>> +
+>> +			soc_dev = soc_device_register(soc_dev_attr);
+>> +			if (IS_ERR(soc_dev)) {
+>> +				int ret = PTR_ERR(soc_dev);
+>> +
+>> +				pr_info("could not register soc (%d) index=%d\n",
+>> +					ret, index);
+> 
+> pr_err()?
 
-I'd rather not see nonstandard attributes in a "generic" driver at
-all. Maybe the
-you can simply concatenate the vendor and  LEVEL_2_ID into a single string
-here?
+Yes, more appropriate.
 
-> +                       soc = kzalloc(sizeof(*soc), GFP_KERNEL);
-> +                       if (!soc)
-> +                               return -ENOMEM;
-> +
-> +                       soc_dev_attr = &soc->dev_attr;
-> +                       soc_dev_attr->soc_id = kasprintf(GFP_KERNEL, "%s",
-> +                                                        soc_id);
+> 
+> And shouldn't the core print out the error, not the person who calls it?
 
-On the other hand, it would make sense to fill out additional fields here.
-You have already matched the name of the board from the
-acpi_platform_list, so there are two strings available that could be put
-into the "machine" field, and it would make sense to fill out "family" with
-something that identifies it as coming from ACPI PPTT data.
+Sure, that would sounds reasonable, but I just wanted to get the index 
+at which we fail. I could live without it.
 
-             Arnd
+> 
+> 
+>> +				kfree(soc_dev_attr->soc_id);
+>> +				kfree(soc);
+>> +				return ret;
+>> +			}
+>> +			dev_set_drvdata(soc_device_to_device(soc_dev), soc);
+>> +			device_create_file(soc_device_to_device(soc_dev),
+>> +					   &dev_attr_vendor);
+> 
+> You just raced with userspace and lost.  Use the built-in api that I
+> made _just_ because of SOC drivers to do this correctly.
+> 
+
+Fine, there is the soc device custom attr group which I can use. But, as 
+Arnd said, maybe we can drop this custom file.
+
+Cheers,
+John
