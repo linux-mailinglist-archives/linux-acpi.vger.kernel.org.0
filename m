@@ -2,51 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39C5B14CB7F
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jan 2020 14:36:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41A0614CBE3
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jan 2020 14:54:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726069AbgA2Ng3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Jan 2020 08:36:29 -0500
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:40820 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726140AbgA2Ng3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jan 2020 08:36:29 -0500
-Received: by mail-qk1-f196.google.com with SMTP id t204so16153331qke.7
-        for <linux-acpi@vger.kernel.org>; Wed, 29 Jan 2020 05:36:28 -0800 (PST)
+        id S1726385AbgA2Nyc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Jan 2020 08:54:32 -0500
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:43732 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726271AbgA2Nyc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jan 2020 08:54:32 -0500
+Received: by mail-qk1-f194.google.com with SMTP id j20so17020750qka.10
+        for <linux-acpi@vger.kernel.org>; Wed, 29 Jan 2020 05:54:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=3V6xmU3srA+se3hcicm5DWexrikGI8dUa+mXdjGXknk=;
-        b=DyOBHrHd5BqYv9mIpfnW6WvCaFIoyTvOEgcISOB4GhL5+pTjagzqJtDyYV4OMewGZ2
-         /pUGtZS5H5oenY9pX4V6gr2QbSvxuggpRlAuWiOkkHKlVM1+zQnHPwM3ho3X+99G1Md5
-         71XUsAe+Uf/jdIjjfRUaluv+2kcnKl9hLaP2XvT8ynLxvYww5N0KZgG8LhXkhkR+HCpn
-         SUsIoVrzHW4Drw01pRZ1fWTcGuWSpnq1VFkwinajQMSqa0aaxivhMhVtbETM4z13n3cp
-         +uI3Ew5pFrK5TvwOPFJNhwkZWx6/xa6EvnCOJTG8sa4ndrJq8dFdyLwXsO0IRFI/A0ZF
-         Jt/g==
+        bh=rYOGFr9wS3HXrXEfVL8jpzDCtWVLlGedKrOARmVJi80=;
+        b=UUQJmVe3RNHr2pAk/tALeA720imfjRHs47ntw1zXz/kqNcwGoBQC0PW8D06qV2Oidm
+         /3hAlVbIi6jc7HbqeOijLyabl+P6omrNVI4SgR2SXGbNIdgYn0c/nvixNsABMaqxeN89
+         m5GAYxhLMy5VIPizb7/fIzdcW9JxzCEUq2OCLvEFDdIdJKZEDYiSzdiuSdf70G6m3+lw
+         OCRpUjx8T2h2/G5TP2qnwqTl04kx4ceG7lNSbFP36iNl9n4KIgVlA3bvC3DjjagYfBaN
+         /HgiR6xceYivvrVJl9b9e6/vrS5oZuMhvT08M5F2bjiJZz15F3bzgXcW2kEOvSTtYtN4
+         r9vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=3V6xmU3srA+se3hcicm5DWexrikGI8dUa+mXdjGXknk=;
-        b=DJWI/ga7OGDDWpomRfgwdoKuO7ZVAVdV2AZlfpS8SeFuN3OIA3BYM6PwV5IhPrrxv7
-         B7L4O/ped2O6dM6dABerJy+XGxBHs9kFzZG/0VTtdWdzA5AvV4vG6oErOfBVLipVdNkN
-         AL/ZMqC4AWXKQigXW8PaJ9rks7bQ/LoA5zCwap3ORBOcOjLhN1DKIy9m1FkybVSv5F8O
-         jwEjQiOa8uOsdKnCQCMY4KhNsHtxBgVoO1AbNDguhskserjv4+5FBkICVbZxf0vHFDQH
-         InRluMRSHvAJMMQ6kXu4tJzv3M+onRktWfkoKTKrhP9JX6MeZ1J2BQWoNFy2NT+ASGxr
-         JAaQ==
-X-Gm-Message-State: APjAAAUTclRhw6BLGi0slB1YTZ6uebWrAki9x3i6pkBbXl+cO+CltWRK
-        AE94D2jIfUw2z9aFR/G8/Q47/r8rTlRU3nwF0se0gQ==
-X-Google-Smtp-Source: APXvYqxfZlmtcKRvq/YwL8Dt6Hqy3CSN0gsp5gSGv3hLHa6C1T6oKCVRnJJbvsu5E48hvFVjf2+832MwZ1IBH9CbsV4=
-X-Received: by 2002:a37:4808:: with SMTP id v8mr25569122qka.263.1580304988349;
- Wed, 29 Jan 2020 05:36:28 -0800 (PST)
+        bh=rYOGFr9wS3HXrXEfVL8jpzDCtWVLlGedKrOARmVJi80=;
+        b=GkRNFi32W99nirNbargUQcUavXQ8Vq5/CjC1x2ZiW48n5NKAtQ2PAnMdJpuv1HFPry
+         3ozkRtBE5MA1/11Jc5XQ2pIWoIxzeSIbuTLkkLdZadT0p4bcgkd6f2PVfIHyWKXO7s/S
+         h0TxT7RwM8gXhvgas6buYbzYfilpJrfQUQzRUtOZ4lm5uzvxU5EZzdz4DY0QyXaRd0Bd
+         syKHOJ4nVko2y5EhciLD9lNn7sW7hctd5PbxdHAzQXpZcmKzcVfYsKEAxMJ2MBXQlUl3
+         ogA3SmKXO+5PvjrDnQ5w/C3Wuj37vl3650yxjNITWZ80u/y5oFE2jfPKFO3FhrJUcr9g
+         OrwA==
+X-Gm-Message-State: APjAAAVxOKQVSBuwIITNku2fknwDcLWRJnkmRY8ZXeEvf2oFG/dxSEsE
+        cUKgscPmVYblvbMsrFpSlBBIzfC0BrPwCpbbZFdYlA==
+X-Google-Smtp-Source: APXvYqxBEm4xJ6kv4arA/On09OUECl7DMlqvpUATSIKO8jSWyETC4I0SLTiOGIrDuIdF6CfuHSTxmM2f0fSLvrDBC7A=
+X-Received: by 2002:a05:620a:12cf:: with SMTP id e15mr28371679qkl.120.1580306071128;
+ Wed, 29 Jan 2020 05:54:31 -0800 (PST)
 MIME-Version: 1.0
-References: <20200121134157.20396-1-sakari.ailus@linux.intel.com> <20200121134157.20396-6-sakari.ailus@linux.intel.com>
-In-Reply-To: <20200121134157.20396-6-sakari.ailus@linux.intel.com>
+References: <20200121134157.20396-1-sakari.ailus@linux.intel.com> <20200121134157.20396-2-sakari.ailus@linux.intel.com>
+In-Reply-To: <20200121134157.20396-2-sakari.ailus@linux.intel.com>
 From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Wed, 29 Jan 2020 14:36:17 +0100
-Message-ID: <CAMpxmJU5dG49N2FA0oSQsOfKrCr3KQ1BisON4c+nUJJmZQG=bQ@mail.gmail.com>
-Subject: Re: [PATCH v4 5/6] at24: Support probing while off
+Date:   Wed, 29 Jan 2020 14:54:20 +0100
+Message-ID: <CAMpxmJX8gF3TujMMeEgERAFM4YbpgnNjOmuV+U7uWCndqsyGeA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/6] i2c: Allow driver to manage the device's power
+ state during probe
 To:     Sakari Ailus <sakari.ailus@linux.intel.com>
 Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
         Wolfram Sang <wsa@the-dreams.de>,
@@ -69,100 +70,103 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 wt., 21 sty 2020 o 14:41 Sakari Ailus <sakari.ailus@linux.intel.com> napisa=
 =C5=82(a):
 >
-> In certain use cases (where the chip is part of a camera module, and the
-> camera module is wired together with a camera privacy LED), powering on
-> the device during probe is undesirable. Add support for the at24 to
-> execute probe while being powered off. For this to happen, a hint in form
-> of a device property is required from the firmware.
+> Enable drivers to tell ACPI that there's no need to power on a device for
+> probe. Drivers should still perform this by themselves if there's a need
+> to. In some cases powering on the device during probe is undesirable, and
+> this change enables a driver to choose what fits best for it.
 >
 > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 > ---
->  drivers/misc/eeprom/at24.c | 31 +++++++++++++++++++++----------
->  1 file changed, 21 insertions(+), 10 deletions(-)
+>  drivers/i2c/i2c-core-base.c | 15 ++++++++++++---
+>  include/linux/i2c.h         |  3 +++
+>  2 files changed, 15 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
-> index 0681d5fdd538a..5fc1162b67618 100644
-> --- a/drivers/misc/eeprom/at24.c
-> +++ b/drivers/misc/eeprom/at24.c
-> @@ -564,6 +564,7 @@ static int at24_probe(struct i2c_client *client)
->         bool i2c_fn_i2c, i2c_fn_block;
->         unsigned int i, num_addresses;
->         struct at24_data *at24;
-> +       bool low_power;
->         struct regmap *regmap;
->         bool writable;
->         u8 test_byte;
-> @@ -701,19 +702,24 @@ static int at24_probe(struct i2c_client *client)
+> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+> index 9f8dcd3f83850..7bf1699c9044d 100644
+> --- a/drivers/i2c/i2c-core-base.c
+> +++ b/drivers/i2c/i2c-core-base.c
+> @@ -303,6 +303,14 @@ static int i2c_smbus_host_notify_to_irq(const struct=
+ i2c_client *client)
+>         return irq > 0 ? irq : -ENXIO;
+>  }
 >
->         i2c_set_clientdata(client, at24);
->
-> -       /* enable runtime pm */
-> -       pm_runtime_set_active(dev);
-> +       low_power =3D acpi_dev_state_low_power(&client->dev);
-> +       if (!low_power)
-> +               pm_runtime_set_active(dev);
+> +static bool probe_low_power(struct device *dev)
+> +{
+> +       struct i2c_driver *driver =3D to_i2c_driver(dev->driver);
 > +
->         pm_runtime_enable(dev);
+> +       return driver->probe_low_power &&
+> +               device_property_present(dev, "probe-low-power");
+> +}
+> +
+>  static int i2c_device_probe(struct device *dev)
+>  {
+>         struct i2c_client       *client =3D i2c_verify_client(dev);
+> @@ -375,7 +383,8 @@ static int i2c_device_probe(struct device *dev)
+>         if (status < 0)
+>                 goto err_clear_wakeup_irq;
 >
->         /*
-> -        * Perform a one-byte test read to verify that the
-> -        * chip is functional.
-> +        * Perform a one-byte test read to verify that the chip is functi=
-onal,
-> +        * unless powering on the device is to be avoided during probe (i=
-.e.
-> +        * it's powered off right now).
->          */
-> -       err =3D at24_read(at24, 0, &test_byte, 1);
-> -       pm_runtime_idle(dev);
-> -       if (err) {
-> -               pm_runtime_disable(dev);
-> -               return -ENODEV;
-> +       if (!low_power) {
-> +               err =3D at24_read(at24, 0, &test_byte, 1);
-> +               pm_runtime_idle(dev);
-> +               if (err) {
-> +                       pm_runtime_disable(dev);
-> +                       return -ENODEV;
-> +               }
+> -       status =3D dev_pm_domain_attach(&client->dev, true);
+> +       status =3D dev_pm_domain_attach(&client->dev,
+> +                                     !probe_low_power(&client->dev));
+>         if (status)
+>                 goto err_clear_wakeup_irq;
+>
+> @@ -397,7 +406,7 @@ static int i2c_device_probe(struct device *dev)
+>         return 0;
+>
+>  err_detach_pm_domain:
+> -       dev_pm_domain_detach(&client->dev, true);
+> +       dev_pm_domain_detach(&client->dev, !probe_low_power(&client->dev)=
+);
+>  err_clear_wakeup_irq:
+>         dev_pm_clear_wake_irq(&client->dev);
+>         device_init_wakeup(&client->dev, false);
+> @@ -419,7 +428,7 @@ static int i2c_device_remove(struct device *dev)
+>                 status =3D driver->remove(client);
 >         }
 >
->         if (writable)
-> @@ -728,8 +734,12 @@ static int at24_probe(struct i2c_client *client)
+> -       dev_pm_domain_detach(&client->dev, true);
+> +       dev_pm_domain_detach(&client->dev, !probe_low_power(&client->dev)=
+);
 >
->  static int at24_remove(struct i2c_client *client)
->  {
-> +       bool low_power;
-> +
->         pm_runtime_disable(&client->dev);
-> -       pm_runtime_set_suspended(&client->dev);
-> +       low_power =3D acpi_dev_state_low_power(&client->dev);
+>         dev_pm_clear_wake_irq(&client->dev);
+>         device_init_wakeup(&client->dev, false);
+> diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+> index 582ef05ec07ed..6d0d6af393c56 100644
+> --- a/include/linux/i2c.h
+> +++ b/include/linux/i2c.h
+> @@ -229,6 +229,8 @@ enum i2c_alert_protocol {
+>   * @address_list: The I2C addresses to probe (for detect)
+>   * @clients: List of detected clients we created (for i2c-core use only)
+>   * @disable_i2c_core_irq_mapping: Tell the i2c-core to not do irq-mappin=
+g
+> + * @probe_low_power: Let the driver manage the device's power state
+> + *                  during probe and remove.
+>   *
+>   * The driver.owner field should be set to the module owner of this driv=
+er.
+>   * The driver.name field should be set to the name of this driver.
+> @@ -289,6 +291,7 @@ struct i2c_driver {
+>         struct list_head clients;
+>
+>         bool disable_i2c_core_irq_mapping;
+> +       bool probe_low_power;
 
-This is inconsistent. You define the low_power field in the context
-structure (BTW the name low_power is a bit vague here - without
-looking at its assignment it would make me think it's about something
-battery-related, how about 'off_at_probe'?) and instead of reusing
-this field here, you call acpi_dev_state_low_power() again. Either
-don't store the context for the life-time of the device if not
-necessary or don't call acpi_dev_state_low_power() at remove, although
-the commit message doesn't describe whether the latter is done on
-purpose.
+I don't see any users of disable_i2c_core_irq_mapping in current
+mainline. Maybe instead of adding another 1-byte boolean for every
+such property, let's just use the fact that this struct will have at
+least an alignment of 32-bits anyway and merge the two into an int
+field called 'flags' so that we can extend it in the future if needed?
+
+The name 'probe_low_power' is misleading to me too. It makes me think
+it's the default state for some reason. It should be something like
+'allow_low_power_probe'.
 
 Bartosz
 
-> +       if (!low_power)
-> +               pm_runtime_set_suspended(&client->dev);
->
->         return 0;
->  }
-> @@ -743,6 +753,7 @@ static struct i2c_driver at24_driver =3D {
->         .probe_new =3D at24_probe,
->         .remove =3D at24_remove,
->         .id_table =3D at24_ids,
-> +       .probe_low_power =3D true,
 >  };
+>  #define to_i2c_driver(d) container_of(d, struct i2c_driver, driver)
 >
->  static int __init at24_init(void)
 > --
 > 2.20.1
 >
