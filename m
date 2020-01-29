@@ -2,79 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3436114C939
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jan 2020 12:03:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39C5B14CB7F
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jan 2020 14:36:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726091AbgA2LDa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Jan 2020 06:03:30 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2328 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726067AbgA2LDa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 29 Jan 2020 06:03:30 -0500
-Received: from LHREML710-CAH.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id BF4FEE6D71F9D8E74484;
-        Wed, 29 Jan 2020 11:03:28 +0000 (GMT)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- LHREML710-CAH.china.huawei.com (10.201.108.33) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Wed, 29 Jan 2020 11:03:28 +0000
-Received: from [127.0.0.1] (10.202.226.43) by lhreml724-chm.china.huawei.com
- (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Wed, 29 Jan
- 2020 11:03:28 +0000
-Subject: Re: [PATCH RFC 1/2] ACPI/PPTT: Add acpi_pptt_get_package_info() API
-To:     Sudeep Holla <sudeep.holla@arm.com>
-CC:     <rjw@rjwysocki.net>, <lenb@kernel.org>, <jeremy.linton@arm.com>,
-        <arnd@arndb.de>, <olof@lixom.net>, <linux-kernel@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <guohanjun@huawei.com>,
-        <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        wanghuiqiang <wanghuiqiang@huawei.com>
-References: <1580210059-199540-1-git-send-email-john.garry@huawei.com>
- <1580210059-199540-2-git-send-email-john.garry@huawei.com>
- <20200128123415.GB36168@bogus>
- <60c79aaa-4c49-71b1-11be-8e41a6bf3c1d@huawei.com>
- <20200128145430.GA47557@bogus>
-From:   John Garry <john.garry@huawei.com>
-Message-ID: <8c9f68ed-2cc8-ae33-2c6a-8c520511d7c4@huawei.com>
-Date:   Wed, 29 Jan 2020 11:03:27 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+        id S1726069AbgA2Ng3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Jan 2020 08:36:29 -0500
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:40820 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726140AbgA2Ng3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jan 2020 08:36:29 -0500
+Received: by mail-qk1-f196.google.com with SMTP id t204so16153331qke.7
+        for <linux-acpi@vger.kernel.org>; Wed, 29 Jan 2020 05:36:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=3V6xmU3srA+se3hcicm5DWexrikGI8dUa+mXdjGXknk=;
+        b=DyOBHrHd5BqYv9mIpfnW6WvCaFIoyTvOEgcISOB4GhL5+pTjagzqJtDyYV4OMewGZ2
+         /pUGtZS5H5oenY9pX4V6gr2QbSvxuggpRlAuWiOkkHKlVM1+zQnHPwM3ho3X+99G1Md5
+         71XUsAe+Uf/jdIjjfRUaluv+2kcnKl9hLaP2XvT8ynLxvYww5N0KZgG8LhXkhkR+HCpn
+         SUsIoVrzHW4Drw01pRZ1fWTcGuWSpnq1VFkwinajQMSqa0aaxivhMhVtbETM4z13n3cp
+         +uI3Ew5pFrK5TvwOPFJNhwkZWx6/xa6EvnCOJTG8sa4ndrJq8dFdyLwXsO0IRFI/A0ZF
+         Jt/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=3V6xmU3srA+se3hcicm5DWexrikGI8dUa+mXdjGXknk=;
+        b=DJWI/ga7OGDDWpomRfgwdoKuO7ZVAVdV2AZlfpS8SeFuN3OIA3BYM6PwV5IhPrrxv7
+         B7L4O/ped2O6dM6dABerJy+XGxBHs9kFzZG/0VTtdWdzA5AvV4vG6oErOfBVLipVdNkN
+         AL/ZMqC4AWXKQigXW8PaJ9rks7bQ/LoA5zCwap3ORBOcOjLhN1DKIy9m1FkybVSv5F8O
+         jwEjQiOa8uOsdKnCQCMY4KhNsHtxBgVoO1AbNDguhskserjv4+5FBkICVbZxf0vHFDQH
+         InRluMRSHvAJMMQ6kXu4tJzv3M+onRktWfkoKTKrhP9JX6MeZ1J2BQWoNFy2NT+ASGxr
+         JAaQ==
+X-Gm-Message-State: APjAAAUTclRhw6BLGi0slB1YTZ6uebWrAki9x3i6pkBbXl+cO+CltWRK
+        AE94D2jIfUw2z9aFR/G8/Q47/r8rTlRU3nwF0se0gQ==
+X-Google-Smtp-Source: APXvYqxfZlmtcKRvq/YwL8Dt6Hqy3CSN0gsp5gSGv3hLHa6C1T6oKCVRnJJbvsu5E48hvFVjf2+832MwZ1IBH9CbsV4=
+X-Received: by 2002:a37:4808:: with SMTP id v8mr25569122qka.263.1580304988349;
+ Wed, 29 Jan 2020 05:36:28 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200128145430.GA47557@bogus>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.43]
-X-ClientProxiedBy: lhreml735-chm.china.huawei.com (10.201.108.86) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
+References: <20200121134157.20396-1-sakari.ailus@linux.intel.com> <20200121134157.20396-6-sakari.ailus@linux.intel.com>
+In-Reply-To: <20200121134157.20396-6-sakari.ailus@linux.intel.com>
+From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Date:   Wed, 29 Jan 2020 14:36:17 +0100
+Message-ID: <CAMpxmJU5dG49N2FA0oSQsOfKrCr3KQ1BisON4c+nUJJmZQG=bQ@mail.gmail.com>
+Subject: Re: [PATCH v4 5/6] at24: Support probing while off
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, Bingbu Cao <bingbu.cao@intel.com>,
+        linux-media <linux-media@vger.kernel.org>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 28/01/2020 14:54, Sudeep Holla wrote:
->>>> https://lore.kernel.org/linux-arm-kernel/1579876505-113251-6-git-send-email-john.garry@huawei.com/
->>>>
->>> Ah, there's already quite a lot of dependency built for this feature:(
->> Not really. It's only an RFC ATM, and my requirement is a sysfs file to read
->> the SoC id(s) (under ACPI FW). So I would still expect to be able to support
->> this from the SMCCC extension method.
->>
+wt., 21 sty 2020 o 14:41 Sakari Ailus <sakari.ailus@linux.intel.com> napisa=
+=C5=82(a):
+>
+> In certain use cases (where the chip is part of a camera module, and the
+> camera module is wired together with a camera privacy LED), powering on
+> the device during probe is undesirable. Add support for the at24 to
+> execute probe while being powered off. For this to happen, a hint in form
+> of a device property is required from the firmware.
+>
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+>  drivers/misc/eeprom/at24.c | 31 +++++++++++++++++++++----------
+>  1 file changed, 21 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
+> index 0681d5fdd538a..5fc1162b67618 100644
+> --- a/drivers/misc/eeprom/at24.c
+> +++ b/drivers/misc/eeprom/at24.c
+> @@ -564,6 +564,7 @@ static int at24_probe(struct i2c_client *client)
+>         bool i2c_fn_i2c, i2c_fn_block;
+>         unsigned int i, num_addresses;
+>         struct at24_data *at24;
+> +       bool low_power;
+>         struct regmap *regmap;
+>         bool writable;
+>         u8 test_byte;
+> @@ -701,19 +702,24 @@ static int at24_probe(struct i2c_client *client)
+>
+>         i2c_set_clientdata(client, at24);
+>
+> -       /* enable runtime pm */
+> -       pm_runtime_set_active(dev);
+> +       low_power =3D acpi_dev_state_low_power(&client->dev);
+> +       if (!low_power)
+> +               pm_runtime_set_active(dev);
+> +
+>         pm_runtime_enable(dev);
+>
+>         /*
+> -        * Perform a one-byte test read to verify that the
+> -        * chip is functional.
+> +        * Perform a one-byte test read to verify that the chip is functi=
+onal,
+> +        * unless powering on the device is to be avoided during probe (i=
+.e.
+> +        * it's powered off right now).
+>          */
+> -       err =3D at24_read(at24, 0, &test_byte, 1);
+> -       pm_runtime_idle(dev);
+> -       if (err) {
+> -               pm_runtime_disable(dev);
+> -               return -ENODEV;
+> +       if (!low_power) {
+> +               err =3D at24_read(at24, 0, &test_byte, 1);
+> +               pm_runtime_idle(dev);
+> +               if (err) {
+> +                       pm_runtime_disable(dev);
+> +                       return -ENODEV;
+> +               }
+>         }
+>
+>         if (writable)
+> @@ -728,8 +734,12 @@ static int at24_probe(struct i2c_client *client)
+>
+>  static int at24_remove(struct i2c_client *client)
+>  {
+> +       bool low_power;
+> +
+>         pm_runtime_disable(&client->dev);
+> -       pm_runtime_set_suspended(&client->dev);
+> +       low_power =3D acpi_dev_state_low_power(&client->dev);
 
-Hi Sudeep,
+This is inconsistent. You define the low_power field in the context
+structure (BTW the name low_power is a bit vague here - without
+looking at its assignment it would make me think it's about something
+battery-related, how about 'off_at_probe'?) and instead of reusing
+this field here, you call acpi_dev_state_low_power() again. Either
+don't store the context for the life-time of the device if not
+necessary or don't call acpi_dev_state_low_power() at remove, although
+the commit message doesn't describe whether the latter is done on
+purpose.
 
-> As mentioned above, yes the driver would remain almost same for SMCCC
-> SOC_ID support too. The main point was: do we need to add support to
-> PPTT Type 2 entry when we know there is proposal to deprecate it. I
-> would at-least wait to see progress on that until I would add this to
-> the kernel.
+Bartosz
 
-Not having support in the kernel for a feature which may be officially 
-deprecated, i.e public knowledge, in future (maybe 1 year) seems harsh. 
-Especially when there is no final released alternative.
-
-So do you know if other OSes use it?
-
-Thanks
-John
+> +       if (!low_power)
+> +               pm_runtime_set_suspended(&client->dev);
+>
+>         return 0;
+>  }
+> @@ -743,6 +753,7 @@ static struct i2c_driver at24_driver =3D {
+>         .probe_new =3D at24_probe,
+>         .remove =3D at24_remove,
+>         .id_table =3D at24_ids,
+> +       .probe_low_power =3D true,
+>  };
+>
+>  static int __init at24_init(void)
+> --
+> 2.20.1
+>
