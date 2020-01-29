@@ -2,174 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF62E14C32A
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jan 2020 23:52:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 428C514C86F
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jan 2020 10:58:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726303AbgA1Wwx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jan 2020 17:52:53 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:40394 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726276AbgA1Www (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jan 2020 17:52:52 -0500
-Received: by mail-oi1-f195.google.com with SMTP id a142so10492963oii.7
-        for <linux-acpi@vger.kernel.org>; Tue, 28 Jan 2020 14:52:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sxVHgOSnmMGgW8uL1BJ/P+dMNaJRboMeN5GXKdzVv4A=;
-        b=cmLNBjkqeBt+iRZP7QjTip3DF30zlEoUfw2pheGk/vyDnXH0zWlT4paoQdhdA7Zh4i
-         281Nh2A3KludfoSASxcyEVUB2dknGIUS0A/IlAluWTKThzFnTIpfpy3pcxB5oHZFprnq
-         ZiNPorHzSy7YJxufMIjA1tGkmSkfhxzvU9ZdGBfsMFRzedTRMKtBstd00MQhUE8XpzIh
-         jqi0QHXspEqgrAeabZcoRgPqzwi8eMLmwFtZGZ6QODamfD66R3CFDiiVfk4JaywrDQsV
-         8PdVlvE4kCMcxqI9BhC+IVwyVlcAfuUWsLJ4/YlrClyBdXm7sR0I9Ss1wpPvLNdeLQwx
-         sqeg==
-X-Gm-Message-State: APjAAAWGDlhUXQ2ArBqaETy2iW1tPiwG8M1dHw0iBtWMJfO8ZcCbWLvW
-        b2aSE5dPAxurRVGQgSJr0+EWFPTYH4hJzncu/T9upw==
-X-Google-Smtp-Source: APXvYqxvYXO/MZWUvnoFelQ+P71/MsLvtZ+lzK9EeHZb8e2OB6U7pxyShvpwtJvZAznv06UDGKIZ1P7Rt02PWU+Nu3U=
-X-Received: by 2002:a05:6808:1c5:: with SMTP id x5mr4628604oic.57.1580251971923;
- Tue, 28 Jan 2020 14:52:51 -0800 (PST)
-MIME-Version: 1.0
-References: <20200128151641.37132-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20200128151641.37132-1-andriy.shevchenko@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 28 Jan 2020 23:52:40 +0100
-Message-ID: <CAJZ5v0jVrJeMPUG3m_uk3ey4JYysw9RvXDRLx4J+TwpGa5Y4nA@mail.gmail.com>
-Subject: Re: [PATCH v1] MAINTAINERS: Sort entries in database for ACPI
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        id S1726114AbgA2J6H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Jan 2020 04:58:07 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2326 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726068AbgA2J6H (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 29 Jan 2020 04:58:07 -0500
+Received: from LHREML714-CAH.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id 6C5DEA6AF853B8C8AC10;
+        Wed, 29 Jan 2020 09:58:05 +0000 (GMT)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ LHREML714-CAH.china.huawei.com (10.201.108.37) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Wed, 29 Jan 2020 09:58:05 +0000
+Received: from [127.0.0.1] (10.202.226.43) by lhreml724-chm.china.huawei.com
+ (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Wed, 29 Jan
+ 2020 09:58:04 +0000
+Subject: Re: [PATCH RFC 2/2] soc: Add a basic ACPI generic driver
+To:     Olof Johansson <olof@lixom.net>
+CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+        "jeremy.linton@arm.com" <jeremy.linton@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <1580210059-199540-1-git-send-email-john.garry@huawei.com>
+ <1580210059-199540-3-git-send-email-john.garry@huawei.com>
+ <CAOesGMiCVSvL8H+haLoz=xyiX1CxBSRL_pbCgx-DLhN+5xRn9g@mail.gmail.com>
+ <4c6462e3-e368-bd9f-260f-e8351c85bcc2@huawei.com>
+ <CAOesGMjrC=b781LLU-Btp1b9uKTiMXj8tF3rjK_Wy6Q4iaR+Rw@mail.gmail.com>
+From:   John Garry <john.garry@huawei.com>
+Message-ID: <734a01d8-3b50-48ca-1d94-d79d0e6610ff@huawei.com>
+Date:   Wed, 29 Jan 2020 09:58:04 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
+MIME-Version: 1.0
+In-Reply-To: <CAOesGMjrC=b781LLU-Btp1b9uKTiMXj8tF3rjK_Wy6Q4iaR+Rw@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.43]
+X-ClientProxiedBy: lhreml735-chm.china.huawei.com (10.201.108.86) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 28, 2020 at 4:16 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> Run parse-maintainers.pl and choose ACPI records. Fix them accordingly.
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  MAINTAINERS | 38 +++++++++++++++++++-------------------
->  1 file changed, 19 insertions(+), 19 deletions(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index f04b1c6508fe..ddfbddd95744 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -317,30 +317,30 @@ ACPI
->  M:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
->  M:     Len Brown <lenb@kernel.org>
->  L:     linux-acpi@vger.kernel.org
-> +S:     Supported
->  W:     https://01.org/linux-acpi
-> -Q:     https://patchwork.kernel.org/project/linux-acpi/list/
->  T:     git git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-> +Q:     https://patchwork.kernel.org/project/linux-acpi/list/
->  B:     https://bugzilla.kernel.org
-> -S:     Supported
-> +F:     Documentation/ABI/testing/configfs-acpi
-> +F:     Documentation/ABI/testing/sysfs-bus-acpi
-> +F:     Documentation/firmware-guide/acpi/
->  F:     drivers/acpi/
-> +F:     drivers/pci/*/*acpi*
-> +F:     drivers/pci/*acpi*
->  F:     drivers/pnp/pnpacpi/
-> +F:     include/acpi/
->  F:     include/linux/acpi.h
->  F:     include/linux/fwnode.h
-> -F:     include/acpi/
-> -F:     Documentation/firmware-guide/acpi/
-> -F:     Documentation/ABI/testing/sysfs-bus-acpi
-> -F:     Documentation/ABI/testing/configfs-acpi
-> -F:     drivers/pci/*acpi*
-> -F:     drivers/pci/*/*acpi*
->  F:     tools/power/acpi/
->
->  ACPI APEI
->  M:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
->  M:     Len Brown <lenb@kernel.org>
-> -L:     linux-acpi@vger.kernel.org
->  R:     James Morse <james.morse@arm.com>
->  R:     Tony Luck <tony.luck@intel.com>
->  R:     Borislav Petkov <bp@alien8.de>
-> +L:     linux-acpi@vger.kernel.org
->  F:     drivers/acpi/apei/
->
->  ACPI COMPONENT ARCHITECTURE (ACPICA)
-> @@ -363,9 +363,9 @@ F:  tools/power/acpi/
->  ACPI FAN DRIVER
->  M:     Zhang Rui <rui.zhang@intel.com>
->  L:     linux-acpi@vger.kernel.org
-> +S:     Supported
->  W:     https://01.org/linux-acpi
->  B:     https://bugzilla.kernel.org
-> -S:     Supported
->  F:     drivers/acpi/fan.c
->
->  ACPI FOR ARM64 (ACPI/arm64)
-> @@ -389,26 +389,26 @@ M:        Len Brown <lenb@kernel.org>
->  R:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->  R:     Mika Westerberg <mika.westerberg@linux.intel.com>
->  L:     linux-acpi@vger.kernel.org
-> -Q:     https://patchwork.kernel.org/project/linux-acpi/list/
-> +S:     Supported
->  T:     git git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-> +Q:     https://patchwork.kernel.org/project/linux-acpi/list/
->  B:     https://bugzilla.kernel.org
-> -S:     Supported
->  F:     drivers/acpi/pmic/
->
->  ACPI THERMAL DRIVER
->  M:     Zhang Rui <rui.zhang@intel.com>
->  L:     linux-acpi@vger.kernel.org
-> +S:     Supported
->  W:     https://01.org/linux-acpi
->  B:     https://bugzilla.kernel.org
-> -S:     Supported
->  F:     drivers/acpi/*thermal*
->
->  ACPI VIDEO DRIVER
->  M:     Zhang Rui <rui.zhang@intel.com>
->  L:     linux-acpi@vger.kernel.org
-> +S:     Supported
->  W:     https://01.org/linux-acpi
->  B:     https://bugzilla.kernel.org
-> -S:     Supported
->  F:     drivers/acpi/acpi_video.c
->
->  ACPI WMI DRIVER
-> @@ -13353,11 +13353,6 @@ T:     git git://github.com/intel/pm-graph
->  S:     Supported
->  F:     tools/power/pm-graph
->
-> -PNP SUPPORT
-> -M:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> -S:     Maintained
-> -F:     drivers/pnp/
-> -
->  PNI RM3100 IIO DRIVER
->  M:     Song Qiang <songqiang1304521@gmail.com>
->  L:     linux-iio@vger.kernel.org
-> @@ -13365,6 +13360,11 @@ S:     Maintained
->  F:     drivers/iio/magnetometer/rm3100*
->  F:     Documentation/devicetree/bindings/iio/magnetometer/pni,rm3100.txt
->
-> +PNP SUPPORT
-> +M:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> +S:     Maintained
-> +F:     drivers/pnp/
-> +
->  POSIX CLOCKS and TIMERS
->  M:     Thomas Gleixner <tglx@linutronix.de>
->  L:     linux-kernel@vger.kernel.org
-> --
+Hi Olof,
 
-Applied as 5.6 material along with the other 2 ACPI-related
-MAINTAINERS updates, thanks!
+>>>
+>>> Based on everything I've seen so far, this should go under drivers/acpi instead.
+>>
+>> soc drivers seem to live in drivers/soc (non-arm32, anyway), so I
+>> decided on this location. But drivers/acpi would also seem reasonable now.
+> 
+> We don't want drivers/soc to be too much of a catch-all -- it is meant
+> for some of the glue pieces that don't have good homes elsewhere.
+> Unfortunately, the slope is slippery and we've already gone down it a
+> bit, but I think we can fairly clearly declare that this kind of
+> cross-soc material is likely not the right home for it -- especially
+> when drivers/acpi is a good fit in this case.
 
-But in the future please send such things in a series for easier handling.
+ok
+
+> 
+>>>> diff --git a/drivers/soc/acpi_generic.c b/drivers/soc/acpi_generic.c
+>>>> new file mode 100644
+>>>> index 000000000000..34a1f5f8e063
+>>>> --- /dev/null
+>>>> +++ b/drivers/soc/acpi_generic.c
+>>>> @@ -0,0 +1,102 @@
+>>>> +// SPDX-License-Identifier: GPL-2.0
+>>>> +/*
+>>>> + * Copyright (c) John Garry, john.garry@huawei.com
+>>>> + */
+>>>> +
+>>>> +#define pr_fmt(fmt) "SOC ACPI GENERIC: " fmt
+>>>> +
+>>>> +#include <linux/acpi.h>
+>>>> +#include <linux/sys_soc.h>
+>>>> +
+
+[...]
+
+>>>
+>>> Hmm, this doesn't look like much of a driver to me. This looks like
+>>> the export of an attribute to userspace, and should probably be done
+>>> by ACPI core instead of creating an empty driver for it.
+>>
+>> OK, but I'm thinking that having a soc driver can be useful as it is
+>> common to DT, and so userspace only has to check a single location. And
+>> the soc driver can also cover multiple-chip systems without have to
+>> reinvent that code for ACPI core. And it saves adding a new ABI.
+> 
+> While having a single location could be convenient, the actual data
+> read/written would be different (I'm guessing).
+
+Without doubt we would have different data sometimes between ACPI and DT 
+FW..
+
+And it is not ideal that the soc_id sysfs file could have different 
+contents for the same SoC, depending on ACPI or DT.
+
+> 
+> We also already have a supposed standard way of figuring out what SoC
+> we're on (toplevel compatible for the DT). 
+
+ From checking some soc drivers, there is a distinction between how 
+soc_id and machine is evaluated: machine comes from DT model, which 
+looks standard; however soc_id seems to have different methods of 
+evaluate, like sometimes reading some system id register (I'm checking 
+exynos-chipid.c there).
+
+We're just looking for soc_id. But, as before, it would probably be 
+different between ACPI and DT, so not ideal.
+
+So no matter what, I think
+> userspace will need to handle two ways of probing this.
+> 
+
+That should not be a big problem.
+
+> 
+
+Thanks,
+John
+
