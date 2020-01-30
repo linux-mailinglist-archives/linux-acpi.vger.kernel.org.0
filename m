@@ -2,171 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41A0614CBE3
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jan 2020 14:54:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2782514D99F
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Jan 2020 12:23:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726385AbgA2Nyc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Jan 2020 08:54:32 -0500
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:43732 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726271AbgA2Nyc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jan 2020 08:54:32 -0500
-Received: by mail-qk1-f194.google.com with SMTP id j20so17020750qka.10
-        for <linux-acpi@vger.kernel.org>; Wed, 29 Jan 2020 05:54:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=rYOGFr9wS3HXrXEfVL8jpzDCtWVLlGedKrOARmVJi80=;
-        b=UUQJmVe3RNHr2pAk/tALeA720imfjRHs47ntw1zXz/kqNcwGoBQC0PW8D06qV2Oidm
-         /3hAlVbIi6jc7HbqeOijLyabl+P6omrNVI4SgR2SXGbNIdgYn0c/nvixNsABMaqxeN89
-         m5GAYxhLMy5VIPizb7/fIzdcW9JxzCEUq2OCLvEFDdIdJKZEDYiSzdiuSdf70G6m3+lw
-         OCRpUjx8T2h2/G5TP2qnwqTl04kx4ceG7lNSbFP36iNl9n4KIgVlA3bvC3DjjagYfBaN
-         /HgiR6xceYivvrVJl9b9e6/vrS5oZuMhvT08M5F2bjiJZz15F3bzgXcW2kEOvSTtYtN4
-         r9vQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=rYOGFr9wS3HXrXEfVL8jpzDCtWVLlGedKrOARmVJi80=;
-        b=GkRNFi32W99nirNbargUQcUavXQ8Vq5/CjC1x2ZiW48n5NKAtQ2PAnMdJpuv1HFPry
-         3ozkRtBE5MA1/11Jc5XQ2pIWoIxzeSIbuTLkkLdZadT0p4bcgkd6f2PVfIHyWKXO7s/S
-         h0TxT7RwM8gXhvgas6buYbzYfilpJrfQUQzRUtOZ4lm5uzvxU5EZzdz4DY0QyXaRd0Bd
-         syKHOJ4nVko2y5EhciLD9lNn7sW7hctd5PbxdHAzQXpZcmKzcVfYsKEAxMJ2MBXQlUl3
-         ogA3SmKXO+5PvjrDnQ5w/C3Wuj37vl3650yxjNITWZ80u/y5oFE2jfPKFO3FhrJUcr9g
-         OrwA==
-X-Gm-Message-State: APjAAAVxOKQVSBuwIITNku2fknwDcLWRJnkmRY8ZXeEvf2oFG/dxSEsE
-        cUKgscPmVYblvbMsrFpSlBBIzfC0BrPwCpbbZFdYlA==
-X-Google-Smtp-Source: APXvYqxBEm4xJ6kv4arA/On09OUECl7DMlqvpUATSIKO8jSWyETC4I0SLTiOGIrDuIdF6CfuHSTxmM2f0fSLvrDBC7A=
-X-Received: by 2002:a05:620a:12cf:: with SMTP id e15mr28371679qkl.120.1580306071128;
- Wed, 29 Jan 2020 05:54:31 -0800 (PST)
+        id S1727027AbgA3LXq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Jan 2020 06:23:46 -0500
+Received: from foss.arm.com ([217.140.110.172]:51236 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726902AbgA3LXq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 30 Jan 2020 06:23:46 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EBFFB328;
+        Thu, 30 Jan 2020 03:23:45 -0800 (PST)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8139E3F67D;
+        Thu, 30 Jan 2020 03:23:44 -0800 (PST)
+Date:   Thu, 30 Jan 2020 11:23:38 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     John Garry <john.garry@huawei.com>
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, jeremy.linton@arm.com,
+        arnd@arndb.de, olof@lixom.net, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, guohanjun@huawei.com,
+        gregkh@linuxfoundation.org, Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH RFC 1/2] ACPI/PPTT: Add acpi_pptt_get_package_info() API
+Message-ID: <20200130112338.GA54532@bogus>
+References: <1580210059-199540-1-git-send-email-john.garry@huawei.com>
+ <1580210059-199540-2-git-send-email-john.garry@huawei.com>
+ <20200128123415.GB36168@bogus>
 MIME-Version: 1.0
-References: <20200121134157.20396-1-sakari.ailus@linux.intel.com> <20200121134157.20396-2-sakari.ailus@linux.intel.com>
-In-Reply-To: <20200121134157.20396-2-sakari.ailus@linux.intel.com>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Wed, 29 Jan 2020 14:54:20 +0100
-Message-ID: <CAMpxmJX8gF3TujMMeEgERAFM4YbpgnNjOmuV+U7uWCndqsyGeA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/6] i2c: Allow driver to manage the device's power
- state during probe
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, Bingbu Cao <bingbu.cao@intel.com>,
-        linux-media <linux-media@vger.kernel.org>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200128123415.GB36168@bogus>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-wt., 21 sty 2020 o 14:41 Sakari Ailus <sakari.ailus@linux.intel.com> napisa=
-=C5=82(a):
+On Tue, Jan 28, 2020 at 12:34:15PM +0000, Sudeep Holla wrote:
+> On Tue, Jan 28, 2020 at 07:14:18PM +0800, John Garry wrote:
+> > The ACPI PPTT ID structure (see 6.2 spec, section 5.2.29.3) allows the
+> > vendor to provide an identifier (or vendor specific part number) for a
+> > particular processor hierarchy node structure. That may be a processor
+> > identifier for a processor node, or some chip identifier for a processor
+> > package node.
+> >
 >
-> Enable drivers to tell ACPI that there's no need to power on a device for
-> probe. Drivers should still perform this by themselves if there's a need
-> to. In some cases powering on the device during probe is undesirable, and
-> this change enables a driver to choose what fits best for it.
+> Unfortunately, there were plans to deprecate this in favour of the new
+> SOC_ID SMCCC API[1]. I am not sure if you or anyone in your company have
+> access to UEFI ASWG mantis where you can look for the ECR for the PPTT
+> Type 2 deprecation. I understand it's not ideal, but we need to converge,
+> please take a look at both before further discussion.
 >
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
->  drivers/i2c/i2c-core-base.c | 15 ++++++++++++---
->  include/linux/i2c.h         |  3 +++
->  2 files changed, 15 insertions(+), 3 deletions(-)
+> I personally would not prefer to add the support when I know it is getting
+> deprecated. I am not sure on kernel community policy on the same.
 >
-> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-> index 9f8dcd3f83850..7bf1699c9044d 100644
-> --- a/drivers/i2c/i2c-core-base.c
-> +++ b/drivers/i2c/i2c-core-base.c
-> @@ -303,6 +303,14 @@ static int i2c_smbus_host_notify_to_irq(const struct=
- i2c_client *client)
->         return irq > 0 ? irq : -ENXIO;
->  }
->
-> +static bool probe_low_power(struct device *dev)
-> +{
-> +       struct i2c_driver *driver =3D to_i2c_driver(dev->driver);
-> +
-> +       return driver->probe_low_power &&
-> +               device_property_present(dev, "probe-low-power");
-> +}
-> +
->  static int i2c_device_probe(struct device *dev)
->  {
->         struct i2c_client       *client =3D i2c_verify_client(dev);
-> @@ -375,7 +383,8 @@ static int i2c_device_probe(struct device *dev)
->         if (status < 0)
->                 goto err_clear_wakeup_irq;
->
-> -       status =3D dev_pm_domain_attach(&client->dev, true);
-> +       status =3D dev_pm_domain_attach(&client->dev,
-> +                                     !probe_low_power(&client->dev));
->         if (status)
->                 goto err_clear_wakeup_irq;
->
-> @@ -397,7 +406,7 @@ static int i2c_device_probe(struct device *dev)
->         return 0;
->
->  err_detach_pm_domain:
-> -       dev_pm_domain_detach(&client->dev, true);
-> +       dev_pm_domain_detach(&client->dev, !probe_low_power(&client->dev)=
-);
->  err_clear_wakeup_irq:
->         dev_pm_clear_wake_irq(&client->dev);
->         device_init_wakeup(&client->dev, false);
-> @@ -419,7 +428,7 @@ static int i2c_device_remove(struct device *dev)
->                 status =3D driver->remove(client);
->         }
->
-> -       dev_pm_domain_detach(&client->dev, true);
-> +       dev_pm_domain_detach(&client->dev, !probe_low_power(&client->dev)=
-);
->
->         dev_pm_clear_wake_irq(&client->dev);
->         device_init_wakeup(&client->dev, false);
-> diff --git a/include/linux/i2c.h b/include/linux/i2c.h
-> index 582ef05ec07ed..6d0d6af393c56 100644
-> --- a/include/linux/i2c.h
-> +++ b/include/linux/i2c.h
-> @@ -229,6 +229,8 @@ enum i2c_alert_protocol {
->   * @address_list: The I2C addresses to probe (for detect)
->   * @clients: List of detected clients we created (for i2c-core use only)
->   * @disable_i2c_core_irq_mapping: Tell the i2c-core to not do irq-mappin=
-g
-> + * @probe_low_power: Let the driver manage the device's power state
-> + *                  during probe and remove.
->   *
->   * The driver.owner field should be set to the module owner of this driv=
-er.
->   * The driver.name field should be set to the name of this driver.
-> @@ -289,6 +291,7 @@ struct i2c_driver {
->         struct list_head clients;
->
->         bool disable_i2c_core_irq_mapping;
-> +       bool probe_low_power;
 
-I don't see any users of disable_i2c_core_irq_mapping in current
-mainline. Maybe instead of adding another 1-byte boolean for every
-such property, let's just use the fact that this struct will have at
-least an alignment of 32-bits anyway and merge the two into an int
-field called 'flags' so that we can extend it in the future if needed?
+OK, the details on the proposal to deprecate can be now found in UEFI
+bugzilla [1]
 
-The name 'probe_low_power' is misleading to me too. It makes me think
-it's the default state for some reason. It should be something like
-'allow_low_power_probe'.
+--
+Regards,
+Sudeep
 
-Bartosz
-
->  };
->  #define to_i2c_driver(d) container_of(d, struct i2c_driver, driver)
->
-> --
-> 2.20.1
->
+[1] https://bugzilla.tianocore.org/show_bug.cgi?id=2492
