@@ -2,83 +2,214 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA08914EC19
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jan 2020 12:54:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C27C114EC27
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jan 2020 13:02:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728515AbgAaLyV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 Jan 2020 06:54:21 -0500
-Received: from eu-smtp-delivery-151.mimecast.com ([146.101.78.151]:48324 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728502AbgAaLyV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 31 Jan 2020 06:54:21 -0500
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id uk-mta-5-zpWOsHEVPoSZC0YuGcU7Rg-1;
- Fri, 31 Jan 2020 11:54:14 +0000
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Fri, 31 Jan 2020 11:54:13 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Fri, 31 Jan 2020 11:54:13 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     "'artem.bityutskiy@linux.intel.com'" 
-        <artem.bityutskiy@linux.intel.com>,
-        "'Rafael J. Wysocki'" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>
-CC:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Len Brown <len.brown@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        David Box <david.e.box@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: RE: [PATCH 2/2] intel_idle: Introduce 'states_off' module parameter
-Thread-Topic: [PATCH 2/2] intel_idle: Introduce 'states_off' module parameter
-Thread-Index: AQHV13w6Eg2UWHP5m0aqtl9kDKUdz6gEmmHQgAAIoQCAAAUioA==
-Date:   Fri, 31 Jan 2020 11:54:13 +0000
-Message-ID: <6cf71f6964c6433abeaf445847c97611@AcuMS.aculab.com>
-References: <1720216.0Jr2BLnqKp@kreacher> <16995896.bQtfYxEEOs@kreacher>
-         <86fb1cd10e344f76a3e96c4b6c722680@AcuMS.aculab.com>
- <28a92577c83276baf355dc8de272a79dc854025a.camel@linux.intel.com>
-In-Reply-To: <28a92577c83276baf355dc8de272a79dc854025a.camel@linux.intel.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        id S1728428AbgAaMCH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 Jan 2020 07:02:07 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:36875 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728442AbgAaMCH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 Jan 2020 07:02:07 -0500
+Received: by mail-wm1-f67.google.com with SMTP id f129so8387386wmf.2
+        for <linux-acpi@vger.kernel.org>; Fri, 31 Jan 2020 04:02:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=mbDxoFJm2oj+qhmVC/5UqLWBu4cSJFdbmCZh1//SVQ4=;
+        b=mYoMDYgfxsoqJFWW3pc1GvButWs7I+ctO4pZCarC+mZtnIJe0Gdqgy27ddJxZxcrz7
+         SVx7e5lutA81dKlggkTmmmtmSVncGLDGm0cC6fKfjlA0u6DzPGaoLKOEdiEu8oIvwOUT
+         +1x0QGJQD7mIOcsV4HkaPQeHYUxlekwTim81WrJ50UNbhnGtjcOSdsxF8V5n9g7ndF4C
+         74zpfo3MZvg3Z8jbr0DqnZXLAoAU+CLGgVQmrV2UUQaaNtSZy204apfDLTeEZ9JAzQQw
+         pEXULMN0WgEbIONtu00fIhLezf5FgM3nUMS84Vj5W2qW+vA+qYnJE4psO6bRKgt8WDHH
+         9sRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=mbDxoFJm2oj+qhmVC/5UqLWBu4cSJFdbmCZh1//SVQ4=;
+        b=R84YdYPry/YWa3wjJUrjAar8ttRXPvTbf9nks5ck91Do5D/NYPotAUDSom6p53Xsvz
+         z+MdBoElz0anoKhd5aCL4ww1g1mukhnvhaQwCnCMgjpHAc+aTi37WJ3YS/HyGAOy9qny
+         XsONpgJSb/EodJ31cY5HuudSjOwG6T90aPQwX+cmtxXmCY73515wUyFQ9lj97OcSwUcF
+         L5fXXPRNLRfh+vcC5St6S+a/wkXUykL6L33aFVxbhO2bsgvnNAuKebFi2nejaRmi63PN
+         3H1n/+vn12P536fDgf6tgY7Do0MeRmYXVdbgxe+HRTr4Yv9o7NILznjNmOsPVfAd750G
+         436w==
+X-Gm-Message-State: APjAAAUAef6Mfvoraa257dLGcKyZcof0ZxbuPHTwCD3qLGWaV93hZSb7
+        g6Q1fhy8PyBbJ+Z2Zu2RSq/AiJT6IwsDjtDkALrRWA==
+X-Google-Smtp-Source: APXvYqyLtANt7wYq0lzcfnJ4oPim2jg3zsq8GEIuplfKm8PZP6V4fWF6UhT0UKkmPz3Joc4FOM6mQXP4R6uiWrkIJbw=
+X-Received: by 2002:a05:600c:248:: with SMTP id 8mr11681147wmj.1.1580472123485;
+ Fri, 31 Jan 2020 04:02:03 -0800 (PST)
 MIME-Version: 1.0
-X-MC-Unique: zpWOsHEVPoSZC0YuGcU7Rg-1
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+References: <1580198925-50411-1-git-send-email-makarand.pawagi@nxp.com>
+ <20200128110916.GA491@e121166-lin.cambridge.arm.com> <DB8PR04MB7164DDF48480956F05886DABEB070@DB8PR04MB7164.eurprd04.prod.outlook.com>
+ <12531d6c569c7e14dffe8e288d9f4a0b@kernel.org>
+In-Reply-To: <12531d6c569c7e14dffe8e288d9f4a0b@kernel.org>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Fri, 31 Jan 2020 13:01:51 +0100
+Message-ID: <CAKv+Gu8uaJBmy5wDgk=uzcmC4vkEyOjW=JRvhpjfsdh-HcOCLg@mail.gmail.com>
+Subject: Re: [EXT] Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
+To:     Marc Zyngier <maz@kernel.org>
+Cc:     Makarand Pawagi <makarand.pawagi@nxp.com>,
+        Calvin Johnson <calvin.johnson@nxp.com>, stuyoder@gmail.com,
+        nleeder@codeaurora.org, Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Will Deacon <will@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Pankaj Bansal <pankaj.bansal@nxp.com>, jon@solid-run.com,
+        Russell King <linux@armlinux.org.uk>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andy Wang <Andy.Wang@arm.com>, Varun Sethi <V.Sethi@nxp.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Paul Yang <Paul.Yang@arm.com>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Shameerali Kolothum Thodi 
+        <shameerali.kolothum.thodi@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-RnJvbTogQXJ0ZW0gQml0eXV0c2tpeSA+DQo+IFNlbnQ6IDMxIEphbnVhcnkgMjAyMCAxMToyNA0K
-PiBPbiBGcmksIDIwMjAtMDEtMzEgYXQgMTE6MDcgKzAwMDAsIERhdmlkIExhaWdodCB3cm90ZToN
-Cj4gPiBVbmxlc3MgeW91IGtub3cgZXhhY3RseSB3aGljaCBjcHUgdGFibGUgaXMgYmVpbmcgdXNl
-ZCB0aGUNCj4gPiBvbmx5IGNvbnN0cmFpbnQgYSB1c2VyIGNhbiByZXF1ZXN0IGlzIHRoZSBsYXRl
-bmN5Lg0KPiANCj4gSGkgRGF2aWQsDQo+IA0KPiBpbiBhbGwgbXkgdXNlLWNhc2VzIEkgYWx3YXlz
-IGtub3cgd2hhdCBpcyB0aGUgQ1BVIEkgYW0gZGVhbGluZyB3aXRoIGFuZA0KPiB3aGF0IGFyZSB0
-aGUgQy1zdGF0ZXMuIFNpbXBseSBiZWNhdXNlIGluIG15IHZpZXcgdGhleSBhcmUgYWx3YXlzIENQ
-VS0NCj4gZGVwZW5kZW50IGluIHRlcm1zIG9mIHdoYXQgdGhleSBkbyBhbmQgaG93IGFyZSB0aGV5
-IG5hbWVkLg0KPiANCj4gV2hhdCB5b3Ugc2F5IHNvdW5kcyB0byBtZSBsaWtlIHlvdSB3b3VsZCB3
-YW50IHRvIGRpc2FibGUgc29tZSBDLXN0YXRlcw0KPiB3aXRob3V0IGtub3dpbmcgYW55dGhpbmcg
-KG9yIG11Y2gpIGFib3V0IHRoZSBDUFUgeW91IGFyZSBkZWFsaW5nIHdpdGgNCj4gYW5kIHRoZSBD
-LXN0YXRlIG5hbWVzLg0KPiANCj4gSWYgc28sIGNvdWxkIHlvdSBwbGVhc2Ugc2hhcmUgZXhhbXBs
-ZXMgb2Ygc3VjaCB1c2UtY2FzZXM/DQoNCkR1bm5vLCBidXQgY2xlYXJseSB5b3Ugd2FudCB0byBk
-aXNhYmxlIChzYXkpIEMzIHdoaWxlIGxlYXZpbmcgQzYNCmVuYWJsZWQuDQoNCkkgd2FzIHRyeWlu
-ZyB0byBmaW5kIHdoeSBpdCB3YXMgdGFraW5nIDYwMCt1cyBmb3IgYSBSVCBwcm9jZXNzDQp0byBn
-ZXQgcmVzY2hlZHVsZWQgd2hlbiBpdCBoYWQgb25seSBiZWVuIHNsZWVwaW5nIGZvciBhIGZldyB1
-cy4NCg0KSSBmb3VuZCB3aGVyZSBpdCB3YXMgc2xlZXBpbmcsIGJ1dCB0aGF0IGRpZG4ndCBoZWxw
-IGF0IGFsbC4NClNvbWVvbmUgcG9pbnRlZCBtZSBhdCBhICdyYW5kb20nIHBkZiB0aGF0IHJlZmVy
-cmVkIHRvIC9kZXYvY3B1X2RtYV9sYXRlbmN5Lg0KU2V0dGluZyB0aGF0IHRvIGEgc21hbGwgdmFs
-dWUgKGVnIDIwKSBoZWxwcyBubyBlbmQuDQpCdXQgdGhlcmUgYXJlIG5vIHJlZmVyZW5jZXMgaW4g
-dGhlIGNvZGUgb3IgbWFuIHBhZ2VzIHRvIHRoYXQuDQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVk
-IEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5l
-cywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
+On Fri, 31 Jan 2020 at 12:06, Marc Zyngier <maz@kernel.org> wrote:
+>
+> On 2020-01-31 10:35, Makarand Pawagi wrote:
+> >> -----Original Message-----
+> >> From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> >> Sent: Tuesday, January 28, 2020 4:39 PM
+> >> To: Makarand Pawagi <makarand.pawagi@nxp.com>
+> >> Cc: netdev@vger.kernel.org; linux-kernel@vger.kernel.org; linux-arm-
+> >> kernel@lists.infradead.org; linux-acpi@vger.kernel.org;
+> >> linux@armlinux.org.uk;
+> >> jon@solid-run.com; Cristi Sovaiala <cristian.sovaiala@nxp.com>;
+> >> Laurentiu
+> >> Tudor <laurentiu.tudor@nxp.com>; Ioana Ciornei
+> >> <ioana.ciornei@nxp.com>;
+> >> Varun Sethi <V.Sethi@nxp.com>; Calvin Johnson
+> >> <calvin.johnson@nxp.com>;
+> >> Pankaj Bansal <pankaj.bansal@nxp.com>; guohanjun@huawei.com;
+> >> sudeep.holla@arm.com; rjw@rjwysocki.net; lenb@kernel.org;
+> >> stuyoder@gmail.com; tglx@linutronix.de; jason@lakedaemon.net;
+> >> maz@kernel.org; shameerali.kolothum.thodi@huawei.com; will@kernel.org;
+> >> robin.murphy@arm.com; nleeder@codeaurora.org
+> >> Subject: [EXT] Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
+> >>
+> >> Caution: EXT Email
+> >>
+> >> On Tue, Jan 28, 2020 at 01:38:45PM +0530, Makarand Pawagi wrote:
+> >> > ACPI support is added in the fsl-mc driver. Driver will parse MC DSDT
+> >> > table to extract memory and other resorces.
+> >> >
+> >> > Interrupt (GIC ITS) information will be extracted from MADT table by
+> >> > drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c.
+> >> >
+> >> > IORT table will be parsed to configure DMA.
+> >> >
+> >> > Signed-off-by: Makarand Pawagi <makarand.pawagi@nxp.com>
+> >> > ---
+> >> >  drivers/acpi/arm64/iort.c                   | 53 +++++++++++++++++++++
+> >> >  drivers/bus/fsl-mc/dprc-driver.c            |  3 +-
+> >> >  drivers/bus/fsl-mc/fsl-mc-bus.c             | 48 +++++++++++++------
+> >> >  drivers/bus/fsl-mc/fsl-mc-msi.c             | 10 +++-
+> >> >  drivers/bus/fsl-mc/fsl-mc-private.h         |  4 +-
+> >> >  drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c | 71
+> >> ++++++++++++++++++++++++++++-
+> >> >  include/linux/acpi_iort.h                   |  5 ++
+> >> >  7 files changed, 174 insertions(+), 20 deletions(-)
+> >> >
+> >> > diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> >> > index 33f7198..beb9cd5 100644
+> >> > --- a/drivers/acpi/arm64/iort.c
+> >> > +++ b/drivers/acpi/arm64/iort.c
+> >> > @@ -15,6 +15,7 @@
+> >> >  #include <linux/kernel.h>
+> >> >  #include <linux/list.h>
+> >> >  #include <linux/pci.h>
+> >> > +#include <linux/fsl/mc.h>
+> >> >  #include <linux/platform_device.h>
+> >> >  #include <linux/slab.h>
+> >> >
+> >> > @@ -622,6 +623,29 @@ static int iort_dev_find_its_id(struct device
+> >> > *dev, u32 req_id,  }
+> >> >
+> >> >  /**
+> >> > + * iort_get_fsl_mc_device_domain() - Find MSI domain related to a
+> >> > +device
+> >> > + * @dev: The device.
+> >> > + * @mc_icid: ICID for the fsl_mc device.
+> >> > + *
+> >> > + * Returns: the MSI domain for this device, NULL otherwise  */ struct
+> >> > +irq_domain *iort_get_fsl_mc_device_domain(struct device *dev,
+> >> > +                                                     u32 mc_icid) {
+> >> > +     struct fwnode_handle *handle;
+> >> > +     int its_id;
+> >> > +
+> >> > +     if (iort_dev_find_its_id(dev, mc_icid, 0, &its_id))
+> >> > +             return NULL;
+> >> > +
+> >> > +     handle = iort_find_domain_token(its_id);
+> >> > +     if (!handle)
+> >> > +             return NULL;
+> >> > +
+> >> > +     return irq_find_matching_fwnode(handle, DOMAIN_BUS_FSL_MC_MSI);
+> >> > +}
+> >>
+> >> NAK
+> >>
+> >> I am not willing to take platform specific code in the generic IORT
+> >> layer.
+> >>
+> >> ACPI on ARM64 works on platforms that comply with SBSA/SBBR
+> >> guidelines:
+> >>
+> >>
+> >> https://developer.arm.com/architectures/platform-design/server-systems
+> >>
+> >> Deviating from those requires butchering ACPI specifications (ie IORT)
+> >> and
+> >> related kernel code which goes totally against what ACPI is meant for
+> >> on ARM64
+> >> systems, so there is no upstream pathway for this code I am afraid.
+> >>
+> > Reason of adding this platform specific function in the generic IORT
+> > layer is
+> > That iort_get_device_domain() only deals with PCI bus
+> > (DOMAIN_BUS_PCI_MSI).
+> >
+> > fsl-mc objects when probed, need to find irq_domain which is associated
+> > with
+> > the fsl-mc bus (DOMAIN_BUS_FSL_MC_MSI). It will not be possible to do
+> > that
+> > if we do not add this function because there are no other suitable APIs
+> > exported
+> > by IORT layer to do the job.
+>
+> I think we all understood the patch. What both Lorenzo and myself are
+> saying is
+> that we do not want non-PCI support in IORT.
+>
 
+IORT supports platform devices (aka named components) as well, and
+there is some support for platform MSIs in the GIC layer.
+
+So it may be possible to hide your exotic bus from the OS entirely,
+and make the firmware instantiate a DSDT with device objects and
+associated IORT nodes that describe whatever lives on that bus as
+named components.
+
+That way, you will not have to change the OS at all, so your hardware
+will not only be supported in linux v5.7+, it will also be supported
+by OSes that commercial distro vendors are shipping today. *That* is
+the whole point of using ACPI.
+
+If you are going to bother and modify the OS, you lose this advantage,
+and ACPI gives you no benefit over DT at all.
