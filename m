@@ -2,192 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1F6414EB70
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jan 2020 12:06:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 374D614EB75
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jan 2020 12:07:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728353AbgAaLG4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 Jan 2020 06:06:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49124 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728342AbgAaLGz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 31 Jan 2020 06:06:55 -0500
-Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AD79020707;
-        Fri, 31 Jan 2020 11:06:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580468814;
-        bh=rhOWBY9a8XVKosz1BHZiYYX/9QEa7aR9m1m6Yhc5uPQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=aNaAMJZWTRFZ512RsXZ2YSxJeHik233WIht4ZLh84FI5nvkblDEn2W3g+hd6737ig
-         2K6BCGZNYmty0Ke7DvqlZdjfxNrDxgZtAjcOm2M9QOkdxYVjEWaHP5dfgEvuVchCVG
-         M90O43IJ6pAgrjeejY/zc87QXaqGrUFFGCvpQS1o=
-Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
-        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <maz@kernel.org>)
-        id 1ixU8S-002LRZ-U0; Fri, 31 Jan 2020 11:06:53 +0000
+        id S1728325AbgAaLHo convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 31 Jan 2020 06:07:44 -0500
+Received: from eu-smtp-delivery-151.mimecast.com ([146.101.78.151]:39615 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728353AbgAaLHo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 31 Jan 2020 06:07:44 -0500
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-73-VjcVhdg1N8ihqIuBpg4wFw-1; Fri, 31 Jan 2020 11:07:40 +0000
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Fri, 31 Jan 2020 11:07:40 +0000
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Fri, 31 Jan 2020 11:07:40 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     "'Rafael J. Wysocki'" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>
+CC:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Len Brown <len.brown@intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        David Box <david.e.box@linux.intel.com>,
+        "Artem Bityutskiy" <artem.bityutskiy@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: RE: [PATCH 2/2] intel_idle: Introduce 'states_off' module parameter
+Thread-Topic: [PATCH 2/2] intel_idle: Introduce 'states_off' module parameter
+Thread-Index: AQHV13w6Eg2UWHP5m0aqtl9kDKUdz6gEmmHQ
+Date:   Fri, 31 Jan 2020 11:07:39 +0000
+Message-ID: <86fb1cd10e344f76a3e96c4b6c722680@AcuMS.aculab.com>
+References: <1720216.0Jr2BLnqKp@kreacher> <16995896.bQtfYxEEOs@kreacher>
+In-Reply-To: <16995896.bQtfYxEEOs@kreacher>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 31 Jan 2020 11:06:52 +0000
-From:   Marc Zyngier <maz@kernel.org>
-To:     Makarand Pawagi <makarand.pawagi@nxp.com>
-Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux@armlinux.org.uk, jon@solid-run.com,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Varun Sethi <V.Sethi@nxp.com>,
-        Calvin Johnson <calvin.johnson@nxp.com>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>, guohanjun@huawei.com,
-        sudeep.holla@arm.com, rjw@rjwysocki.net, lenb@kernel.org,
-        stuyoder@gmail.com, tglx@linutronix.de, jason@lakedaemon.net,
-        shameerali.kolothum.thodi@huawei.com, will@kernel.org,
-        robin.murphy@arm.com, nleeder@codeaurora.org,
-        Andy Wang <Andy.Wang@arm.com>, Paul Yang <Paul.Yang@arm.com>
-Subject: Re: [EXT] Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
-In-Reply-To: <DB8PR04MB7164DDF48480956F05886DABEB070@DB8PR04MB7164.eurprd04.prod.outlook.com>
-References: <1580198925-50411-1-git-send-email-makarand.pawagi@nxp.com>
- <20200128110916.GA491@e121166-lin.cambridge.arm.com>
- <DB8PR04MB7164DDF48480956F05886DABEB070@DB8PR04MB7164.eurprd04.prod.outlook.com>
-Message-ID: <12531d6c569c7e14dffe8e288d9f4a0b@kernel.org>
-X-Sender: maz@kernel.org
-User-Agent: Roundcube Webmail/1.3.8
-X-SA-Exim-Connect-IP: 51.254.78.96
-X-SA-Exim-Rcpt-To: makarand.pawagi@nxp.com, lorenzo.pieralisi@arm.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, linux@armlinux.org.uk, jon@solid-run.com, cristian.sovaiala@nxp.com, laurentiu.tudor@nxp.com, ioana.ciornei@nxp.com, V.Sethi@nxp.com, calvin.johnson@nxp.com, pankaj.bansal@nxp.com, guohanjun@huawei.com, sudeep.holla@arm.com, rjw@rjwysocki.net, lenb@kernel.org, stuyoder@gmail.com, tglx@linutronix.de, jason@lakedaemon.net, shameerali.kolothum.thodi@huawei.com, will@kernel.org, robin.murphy@arm.com, nleeder@codeaurora.org, Andy.Wang@arm.com, Paul.Yang@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-MC-Unique: VjcVhdg1N8ihqIuBpg4wFw-1
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2020-01-31 10:35, Makarand Pawagi wrote:
->> -----Original Message-----
->> From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
->> Sent: Tuesday, January 28, 2020 4:39 PM
->> To: Makarand Pawagi <makarand.pawagi@nxp.com>
->> Cc: netdev@vger.kernel.org; linux-kernel@vger.kernel.org; linux-arm-
->> kernel@lists.infradead.org; linux-acpi@vger.kernel.org; 
->> linux@armlinux.org.uk;
->> jon@solid-run.com; Cristi Sovaiala <cristian.sovaiala@nxp.com>; 
->> Laurentiu
->> Tudor <laurentiu.tudor@nxp.com>; Ioana Ciornei 
->> <ioana.ciornei@nxp.com>;
->> Varun Sethi <V.Sethi@nxp.com>; Calvin Johnson 
->> <calvin.johnson@nxp.com>;
->> Pankaj Bansal <pankaj.bansal@nxp.com>; guohanjun@huawei.com;
->> sudeep.holla@arm.com; rjw@rjwysocki.net; lenb@kernel.org;
->> stuyoder@gmail.com; tglx@linutronix.de; jason@lakedaemon.net;
->> maz@kernel.org; shameerali.kolothum.thodi@huawei.com; will@kernel.org;
->> robin.murphy@arm.com; nleeder@codeaurora.org
->> Subject: [EXT] Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
->> 
->> Caution: EXT Email
->> 
->> On Tue, Jan 28, 2020 at 01:38:45PM +0530, Makarand Pawagi wrote:
->> > ACPI support is added in the fsl-mc driver. Driver will parse MC DSDT
->> > table to extract memory and other resorces.
->> >
->> > Interrupt (GIC ITS) information will be extracted from MADT table by
->> > drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c.
->> >
->> > IORT table will be parsed to configure DMA.
->> >
->> > Signed-off-by: Makarand Pawagi <makarand.pawagi@nxp.com>
->> > ---
->> >  drivers/acpi/arm64/iort.c                   | 53 +++++++++++++++++++++
->> >  drivers/bus/fsl-mc/dprc-driver.c            |  3 +-
->> >  drivers/bus/fsl-mc/fsl-mc-bus.c             | 48 +++++++++++++------
->> >  drivers/bus/fsl-mc/fsl-mc-msi.c             | 10 +++-
->> >  drivers/bus/fsl-mc/fsl-mc-private.h         |  4 +-
->> >  drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c | 71
->> ++++++++++++++++++++++++++++-
->> >  include/linux/acpi_iort.h                   |  5 ++
->> >  7 files changed, 174 insertions(+), 20 deletions(-)
->> >
->> > diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
->> > index 33f7198..beb9cd5 100644
->> > --- a/drivers/acpi/arm64/iort.c
->> > +++ b/drivers/acpi/arm64/iort.c
->> > @@ -15,6 +15,7 @@
->> >  #include <linux/kernel.h>
->> >  #include <linux/list.h>
->> >  #include <linux/pci.h>
->> > +#include <linux/fsl/mc.h>
->> >  #include <linux/platform_device.h>
->> >  #include <linux/slab.h>
->> >
->> > @@ -622,6 +623,29 @@ static int iort_dev_find_its_id(struct device
->> > *dev, u32 req_id,  }
->> >
->> >  /**
->> > + * iort_get_fsl_mc_device_domain() - Find MSI domain related to a
->> > +device
->> > + * @dev: The device.
->> > + * @mc_icid: ICID for the fsl_mc device.
->> > + *
->> > + * Returns: the MSI domain for this device, NULL otherwise  */ struct
->> > +irq_domain *iort_get_fsl_mc_device_domain(struct device *dev,
->> > +                                                     u32 mc_icid) {
->> > +     struct fwnode_handle *handle;
->> > +     int its_id;
->> > +
->> > +     if (iort_dev_find_its_id(dev, mc_icid, 0, &its_id))
->> > +             return NULL;
->> > +
->> > +     handle = iort_find_domain_token(its_id);
->> > +     if (!handle)
->> > +             return NULL;
->> > +
->> > +     return irq_find_matching_fwnode(handle, DOMAIN_BUS_FSL_MC_MSI);
->> > +}
->> 
->> NAK
->> 
->> I am not willing to take platform specific code in the generic IORT 
->> layer.
->> 
->> ACPI on ARM64 works on platforms that comply with SBSA/SBBR 
->> guidelines:
->> 
->> 
->> https://developer.arm.com/architectures/platform-design/server-systems
->> 
->> Deviating from those requires butchering ACPI specifications (ie IORT) 
->> and
->> related kernel code which goes totally against what ACPI is meant for 
->> on ARM64
->> systems, so there is no upstream pathway for this code I am afraid.
->> 
-> Reason of adding this platform specific function in the generic IORT 
-> layer is
-> That iort_get_device_domain() only deals with PCI bus 
-> (DOMAIN_BUS_PCI_MSI).
+From: Rafael J. Wysocki
+> Sent: 30 January 2020 14:47
 > 
-> fsl-mc objects when probed, need to find irq_domain which is associated 
-> with
-> the fsl-mc bus (DOMAIN_BUS_FSL_MC_MSI). It will not be possible to do 
-> that
-> if we do not add this function because there are no other suitable APIs 
-> exported
-> by IORT layer to do the job.
+> In certain system configurations it may not be desirable to use some
+> C-states assumed to be available by intel_idle and the driver needs
+> to be prevented from using them even before the cpuidle sysfs
+> interface becomes accessible to user space.  Currently, the only way
+> to achieve that is by setting the 'max_cstate' module parameter to a
+> value lower than the index of the shallowest of the C-states in
+> question, but that may be overly intrusive, because it effectively
+> makes all of the idle states deeper than the 'max_cstate' one go
+> away (and the C-state to avoid may be in the middle of the range
+> normally regarded as available).
+> 
+> To allow that limitation to be overcome, introduce a new module
+> parameter called 'states_off' to represent a list of idle states to
+> be disabled by default in the form of a bitmask and update the
+> documentation to cover it.
 
-I think we all understood the patch. What both Lorenzo and myself are 
-saying is
-that we do not want non-PCI support in IORT.
+The problem I see is that there are (at least) 3 different ways of
+referring to the C-States:
 
-You have decided to have exotic hardware, and sidestep all the 
-standardization
-efforts. This is your right. But you can't have your cake and eat it.
+1) The state names, C1, C1E, C3, C7 etc.
+   I'm not sure these are visible outside intel_idle.c.
+2) The maximum allowed latency in us.
+3) The index into the cpu-dependant tables in intel_idle.c.
 
-Thanks,
+Boot parameters that set 3 are completely hopeless for normal
+users. The C-state names might be - but they aren't documented.
 
-         M.
--- 
-Jazz is not dead. It just smells funny...
+Unless you know exactly which cpu table is being used the
+only constraint a user can request is the latency.
+
+(I've had the misfortune to read intel_idle.c in the last week.
+Almost impenetrable TLA ridden uncommented code.)
+
+...
+> + * The positions of the bits that are set in the two's complement representation
+> + * of this value are the indices of the idle states to be disabled by default
+> + * (as reflected by the names of the corresponding idle state directories in
+> + * sysfs, "state0", "state1" ... "state<i>" ..., where <i> is the index of the
+> + * given state).
+
+What has 'two's complement' got to do with anything?
+
+...
+> +The value of the ``states_off`` module parameter (0 by default) represents a
+> +list of idle states to be disabled by default in the form of a bitmask.  Namely,
+> +the positions of the bits that are set in the two's complement representation of
+> +that value are the indices of idle states to be disabled by default (as
+> +reflected by the names of the corresponding idle state directories in ``sysfs``,
+> +:file:`state0`, :file:`state1` ... :file:`state<i>` ..., where ``<i>`` is the
+> +index of the given idle state; see :ref:`idle-states-representation` in
+> +:doc:`cpuidle`).  For example, if ``states_off`` is equal to 3, the driver will
+> +disable idle states 0 and 1 by default, and if it is equal to 8, idle state 3
+> +will be disabled by default and so on (bit positions beyond the maximum idle
+> +state index are ignored).  The idle states disabled this way can be enabled (on
+> +a per-CPU basis) from user space via ``sysfs``.
+
+A few line breaks would make that easier to read.
+
+	David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
