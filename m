@@ -2,24 +2,24 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 921B114F279
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jan 2020 19:59:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DDEE14F28D
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Jan 2020 20:10:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726001AbgAaS7D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 Jan 2020 13:59:03 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56561 "EHLO
+        id S1726065AbgAaTKd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 Jan 2020 14:10:33 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56570 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725939AbgAaS7D (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 Jan 2020 13:59:03 -0500
+        with ESMTP id S1726017AbgAaTKd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 Jan 2020 14:10:33 -0500
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tip-bot2@linutronix.de>)
-        id 1ixbVH-00045g-FQ; Fri, 31 Jan 2020 19:58:55 +0100
+        id 1ixbgS-0004CG-LY; Fri, 31 Jan 2020 20:10:29 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C2E821C1D5A;
-        Fri, 31 Jan 2020 19:58:54 +0100 (CET)
-Date:   Fri, 31 Jan 2020 18:58:54 -0000
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 4E5EF1C1D5A;
+        Fri, 31 Jan 2020 20:10:28 +0100 (CET)
+Date:   Fri, 31 Jan 2020 19:10:28 -0000
 From:   "tip-bot2 for Steven Clarkson" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
@@ -31,7 +31,7 @@ Cc:     Steven Clarkson <sc@lambdal.com>, Borislav Petkov <bp@suse.de>,
 In-Reply-To: <CAHKq8taGzj0u1E_i=poHUam60Bko5BpiJ9jn0fAupFUYexvdUQ@mail.gmail.com>
 References: <CAHKq8taGzj0u1E_i=poHUam60Bko5BpiJ9jn0fAupFUYexvdUQ@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <158049713455.396.18295937467351025626.tip-bot2@tip-bot2>
+Message-ID: <158049782801.396.10779532409008194964.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -47,12 +47,12 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     32ea5bc7ab8344600e87acf68cd6981c845d6edc
-Gitweb:        https://git.kernel.org/tip/32ea5bc7ab8344600e87acf68cd6981c845d6edc
+Commit-ID:     2b73ea3796242608b4ccf019ff217156c92e92fe
+Gitweb:        https://git.kernel.org/tip/2b73ea3796242608b4ccf019ff217156c92e92fe
 Author:        Steven Clarkson <sc@lambdal.com>
 AuthorDate:    Thu, 30 Jan 2020 16:48:16 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 31 Jan 2020 19:54:35 +01:00
+CommitterDate: Fri, 31 Jan 2020 20:03:23 +01:00
 
 x86/boot: Handle malformed SRAT tables during early ACPI parsing
 
@@ -63,7 +63,9 @@ zeros in its SRAT table. The kernel could boot successfully on this
 board/firmware prior to the introduction of early parsing this table or
 after a BIOS update.
 
- [ bp: Fixup whitespace damage and commit message. ]
+ [ bp: Fixup whitespace damage and commit message. Make it return 0 to
+   denote that there are no immovable regions because who knows what
+   else is broken in this BIOS. ]
 
 Fixes: 02a3e3cdb7f1 ("x86/boot: Parse SRAT table and count immovable memory regions")
 Signed-off-by: Steven Clarkson <sc@lambdal.com>
