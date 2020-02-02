@@ -2,109 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3278F14F92A
-	for <lists+linux-acpi@lfdr.de>; Sat,  1 Feb 2020 18:36:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 452D214FB14
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Feb 2020 01:55:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726195AbgBARgX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 1 Feb 2020 12:36:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55400 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726169AbgBARgX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 1 Feb 2020 12:36:23 -0500
-Received: from cakuba.hsd1.ca.comcast.net (c-73-93-4-247.hsd1.ca.comcast.net [73.93.4.247])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3A7DC20678;
-        Sat,  1 Feb 2020 17:36:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580578582;
-        bh=KuaxtJRw14v59ff+I3CJb9O7IIbfHXwjQfiE5sV/mdE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=npYR5SuSSCd/RxiufbwuT5b4Zl8DzXdHMvm2gczI+LuLTrmyTyRHAxb8GqPRusVOi
-         Nksy1LlWZ878WB0PdUdrVy/8Ii2I44Uj6dzZknH6IzTQTsdL+SqTTz+l5y69hwYEb7
-         /5shIJwIWw2mwK7nG7bHMe+sX4ZF1a4Tus98IhLg=
-Date:   Sat, 1 Feb 2020 09:36:20 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     Jiri Pirko <jiri@mellanox.com>, Andrew Lunn <andrew@lunn.ch>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Calvin Johnson <calvin.johnson@nxp.com>, stuyoder@gmail.com,
-        nleeder@codeaurora.org, Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Will Deacon <will@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>,
-        Jon Nettleton <jon@solid-run.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andy Wang <Andy.Wang@arm.com>,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        Varun Sethi <V.Sethi@nxp.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Paul Yang <Paul.Yang@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Shameerali Kolothum Thodi 
-        <shameerali.kolothum.thodi@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Subject: Re: [EXT] Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
-Message-ID: <20200201093620.4b55d6fa@cakuba.hsd1.ca.comcast.net>
-In-Reply-To: <20200201114919.GQ25745@shell.armlinux.org.uk>
-References: <DB8PR04MB7164DDF48480956F05886DABEB070@DB8PR04MB7164.eurprd04.prod.outlook.com>
-        <12531d6c569c7e14dffe8e288d9f4a0b@kernel.org>
-        <CAKv+Gu8uaJBmy5wDgk=uzcmC4vkEyOjW=JRvhpjfsdh-HcOCLg@mail.gmail.com>
-        <CABdtJHsu9R9g4mn25=9EW3jkCMhnej_rfkiRzo3OCX4cv4hpUQ@mail.gmail.com>
-        <0680c2ce-cff0-d163-6bd9-1eb39be06eee@arm.com>
-        <CABdtJHuLZeNd9bQZ-cmQi00WnObYPvM=BdWNw4EMpOFHjRd70w@mail.gmail.com>
-        <b136adc4-be48-82df-0592-97b4ba11dd79@arm.com>
-        <20200131142906.GG9639@lunn.ch>
-        <20200131151500.GO25745@shell.armlinux.org.uk>
-        <20200131074050.38d78ff0@cakuba.hsd1.ca.comcast.net>
-        <20200201114919.GQ25745@shell.armlinux.org.uk>
+        id S1726722AbgBBAzW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 1 Feb 2020 19:55:22 -0500
+Received: from sonic313-14.consmr.mail.bf2.yahoo.com ([74.6.133.124]:39042
+        "EHLO sonic313-14.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726712AbgBBAzW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 1 Feb 2020 19:55:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1580604921; bh=YooljpITC31Cc9KXMfJzAPmr/1tCBEdX27fhfqn54Fs=; h=Date:From:Reply-To:Subject:References:From:Subject; b=S5oCEhXpvsi1xMvAs1s/OI3/QquDDobJKYwG3N3GxYMB8u3EJnS8/j40DNbPxqKh7hL5p9mbxp882HGx+UpQNKuvjSIw9FYyJ8pWp2OV8XY1NDl6RmHH/ZLuQK7ktBjVtRpize55FvxvRRKNkNr4oqDn1/bUQ0v3QjY6ESLOrxLRBz58iIgmXYIWCI/4p4DCKA/Lk7gzIIawbQV/KKpeP2DVtSFi/IbleK1uCzkWxgyqZ9mLFzLCEretp47mSXlGmwoQDQ77VhlEjKq2lHb83ylPI13+00riFAL35bZDlt319X6OW2J9B0MnS4dDHHcneYMT+Muex6CfsudCktBhuw==
+X-YMail-OSG: IFySW08VM1nEcMBf7jogDoRmQEPI9L9pyDL3J7J0rVSCmimlGRI.o3eRM2YpFp8
+ jcKTZcQ05tjVHuFyYq_hYYkqAv.WBpTpPYhudcHQQWKwS9FpSx77GO0MVnPSH0HwMh69BC1ZdMsu
+ 8_o7jErVH4Rbrwki6yZcSaQtXCCJiZtvJJXoF8Pxb_8VyNf7XjO3s4ifomxdlmVOdHSo7YsvBPUH
+ ZB40JWZOzL3WVqTIZKfKftLjX5Zg7cbYhuKaVY2AUz78w.rH9H_tkjitDoSwKg2a2fRXcvV83U9B
+ jiGSrfGyJNRAu1fHTeslo4i9hY55jWkpRlgXFFULCKO4jPscePePuMoxkR34pZJXRMNLRkXVOiHr
+ cQL_uKq5huG6V8QN_ThGLW10SovgOhVTLyg0fbpp8jDw9jrWS9h4Zqa22mrnGKixyaf.McBo0P.8
+ r.HbTvms619.jNBChvMOWXGLiT_Z2RoB4sIhN4M4zexLTVYMrTKWHJcx8v0GWdPFhtf4JmkJ11ho
+ .3jxOcD82pC2bxpUDEypKmENCW6g9S2MsPnUoBdA3yUJs4oRLiKkhSLf.9u62v4l1jT2xATdEYts
+ PdzKYhwuYIE1sbdEjnBCD4NilODmq.3FK3qNLvM9aVhbGjQVXnRnuB2RrHXKzusX2Jnh63t_WV.b
+ eI2fnSI375lP8uSbcGSC4Ul1LA.MRLIgy3J2ud8Bn1AFQiy.D_.OAoUUs0zK_gpZSptDdVLGcBh6
+ FCPjhI9W2g5iGHCLw3jHzzIeWhphLgW3K2AxfDX30FQ930PAkajRCO4o_9m18ux.d_8Jg2_QP0Ld
+ K_P9YnGL.VBNI5qDMn51oFuFGa4.uq6y8.dXNWKNMurNGzpaKz17bVHclEiqTtwuFcrVtO0kxZKt
+ GaBQDFqHWqOXAuGKqUiPEAuN75kOPf2yIxVw6.2IRgv6KdkKhMACLQI0k00kjYP_cDV9l9G1kag2
+ 4N06iivjccGeCg7AVAtRc8Js0mpCVadUnbslObuE8_b3TwJpWpIVNpsY5v3CkWId1qstQGSWuWo6
+ glw5DT_K4BupsSL4fS5iZvlIKo_3OB1Gfto4eTdkEjcTcIoQN3yc1cQwc9FDzatlbdxiFpZ95ibW
+ Qm0haXn0nhM21y2l9vmHacsGdnraxxS8aous4VC9GROs0vDB2DYtij_1kpK2N21m8fcznKcPoRm8
+ .PUF.5S0GRn3J9ejjKe9l4fFC3i2BEIM1qjNKZr8FZo1fR9OHbodrKYD9PtAchzd6zhq7h3wIU6I
+ lgzfJeeb2ra7XFHHjxtCn9IqQLVpl2xRHSMwl.GaDDWKJT8DxrGF__TstA45YnGkuVW04O2I.
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.bf2.yahoo.com with HTTP; Sun, 2 Feb 2020 00:55:21 +0000
+Date:   Sun, 2 Feb 2020 00:55:18 +0000 (UTC)
+From:   Lisa Williams <ah1195485@gmail.com>
+Reply-To: lisawilliams00357@yahoo.com
+Message-ID: <727789886.314862.1580604918409@mail.yahoo.com>
+Subject: Hello
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+References: <727789886.314862.1580604918409.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15149 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:72.0) Gecko/20100101 Firefox/72.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, 1 Feb 2020 11:49:19 +0000, Russell King - ARM Linux admin wrote:
-> What if someone decides to do:
-> 
-> 	devlink port split device/1 count 2
-> 
-> what do we end up with?  Presumably two network devices running with
-> two serdes lanes each (if supported by the hardware).  At that point
-> can they then do:
-> 
-> 	devlink port split device/2 count 2
-> 
-> and end up with one network device with two 10G serdes lanes, and two
-> network devices each with one 10G serdes lane, 
 
-I think all your guesses are correct, it's a pretty straight forward
-API, but it's also pretty thin, and some of the logic is in FW, so
-there isn't much in a way of a standard on how things should behave :S
 
-> or can port splitting only be used on the "master" device/port ?
+Hi Dear,
 
-I think both mlxsw and the NFP rejects re-split/further splitting.
-Ports have to be unsplit first. So there is only one device for
-splitting, and unsplitting can be done on any of the sub-devices.
+I was just going through the Internet search when I found your email address, I want to make a new and special friend, so I decided to contact you to see how we can make it work out if we can. Please I wish you will have the desire with me so that we can get to know each other better and see what happens in future.
 
-> Unfortunately, I don't think I have any network devices that support
-> this so I can't experiment to find out how this should work; yes, I
-> have a Mellanox card, but it supports a single 10G SFP+, and therefore
-> does not support port splitting.
+My name is Lisa Williams, I am an American, but presently I live in the UK, I will be glad to see your reply for us to know each other better to exchange pictures and details about us
 
-I think you'd need a mlxsw or an nfp to play with this.
-
-Maybe Jiri can clarify further :)
+Yours
+Lisa
