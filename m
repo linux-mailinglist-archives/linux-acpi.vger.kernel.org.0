@@ -2,165 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 90F87150517
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Feb 2020 12:19:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D371E150E2A
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Feb 2020 17:51:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727984AbgBCLT2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Feb 2020 06:19:28 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:48188 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727707AbgBCLT2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Feb 2020 06:19:28 -0500
-Received: from 79.184.253.222.ipv4.supernova.orange.pl (79.184.253.222) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.341)
- id 388e399c8b7c643b; Mon, 3 Feb 2020 12:19:25 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux PM <linux-pm@vger.kernel.org>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Len Brown <len.brown@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        David Box <david.e.box@linux.intel.com>,
-        Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
-        David Laight <David.Laight@aculab.com>
-Subject: [PATCH v2 2/2] intel_idle: Introduce 'states_off' module parameter
-Date:   Mon, 03 Feb 2020 12:19:07 +0100
-Message-ID: <3192311.hLYMgh4pot@kreacher>
-In-Reply-To: <1921392.EN65KG1giI@kreacher>
-References: <1720216.0Jr2BLnqKp@kreacher> <1921392.EN65KG1giI@kreacher>
+        id S1728080AbgBCQvz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Feb 2020 11:51:55 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:10144 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728074AbgBCQvz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 3 Feb 2020 11:51:55 -0500
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 9C6C7707665075F96F12;
+        Tue,  4 Feb 2020 00:51:50 +0800 (CST)
+Received: from DESKTOP-6T4S3DQ.china.huawei.com (10.202.226.55) by
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 4 Feb 2020 00:51:41 +0800
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     <linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <rjw@rjwysocki.net>,
+        <helgaas@kernel.org>, <lenb@kernel.org>, <bp@alien8.de>,
+        <james.morse@arm.com>, <tony.luck@intel.com>,
+        <gregkh@linuxfoundation.org>, <zhangliguang@linux.alibaba.com>,
+        <tglx@linutronix.de>
+CC:     <linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
+        <tanxiaofei@huawei.com>, <yangyicong@hisilicon.com>,
+        Shiju Jose <shiju.jose@huawei.com>
+Subject: [PATCH v3 0/2] ACPI: APEI: Add support to notify the vendor specific HW errors
+Date:   Mon, 3 Feb 2020 16:51:20 +0000
+Message-ID: <20200203165122.17748-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.19.2.windows.1
+In-Reply-To: <Shiju Jose>
+References: <Shiju Jose>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.202.226.55]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Presently the vendor drivers are unable to do the recovery for the
+vendor specific recoverable HW errors, reported to the APEI driver
+in the vendor defined sections, because APEI driver does not support
+reporting the same to the vendor drivers.
 
-In certain system configurations it may not be desirable to use some
-C-states assumed to be available by intel_idle and the driver needs
-to be prevented from using them even before the cpuidle sysfs
-interface becomes accessible to user space.  Currently, the only way
-to achieve that is by setting the 'max_cstate' module parameter to a
-value lower than the index of the shallowest of the C-states in
-question, but that may be overly intrusive, because it effectively
-makes all of the idle states deeper than the 'max_cstate' one go
-away (and the C-state to avoid may be in the middle of the range
-normally regarded as available).
+This patch set
+1. add an interface to the APEI driver to enable the vendor
+drivers to register the event handling functions for the corresponding
+vendor specific HW errors and report the error to the vendor driver.
 
-To allow that limitation to be overcome, introduce a new module
-parameter called 'states_off' to represent a list of idle states to
-be disabled by default in the form of a bitmask and update the
-documentation to cover it.
+2. add driver to handle HiSilicon hip08 PCIe controller's errors
+   which is an example application of the above APEI interface.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
+Changes:
 
--> v2:
-   * Address a couple of review comments from David Laight.
+V3:
+1. Fix the comments from Bjorn Helgaas.
 
----
- Documentation/admin-guide/pm/intel_idle.rst |   19 ++++++++++++++++++-
- drivers/idle/intel_idle.c                   |   23 ++++++++++++++++++++---
- 2 files changed, 38 insertions(+), 4 deletions(-)
+V2:
+1. Changes in the HiSilicon PCIe controller's error handling driver
+   for the comments from Bjorn Helgaas.
+   
+2. Changes in the APEI interface to support reporting the vendor error
+   for module with multiple devices, but use the same section type.
+   In the error handler will use socket id/sub module id etc to distinguish
+   the device.
 
-Index: linux-pm/drivers/idle/intel_idle.c
-===================================================================
---- linux-pm.orig/drivers/idle/intel_idle.c
-+++ linux-pm/drivers/idle/intel_idle.c
-@@ -63,6 +63,7 @@ static struct cpuidle_driver intel_idle_
- };
- /* intel_idle.max_cstate=0 disables driver */
- static int max_cstate = CPUIDLE_STATE_MAX - 1;
-+static unsigned int disabled_states_mask;
- 
- static unsigned int mwait_substates;
- 
-@@ -1234,6 +1235,9 @@ static void __init intel_idle_init_cstat
- 		if (cx->type > ACPI_STATE_C2)
- 			state->flags |= CPUIDLE_FLAG_TLB_FLUSHED;
- 
-+		if (disabled_states_mask & BIT(cstate))
-+			state->flags |= CPUIDLE_FLAG_OFF;
-+
- 		state->enter = intel_idle;
- 		state->enter_s2idle = intel_idle_s2idle;
- 	}
-@@ -1466,9 +1470,10 @@ static void __init intel_idle_init_cstat
- 		/* Structure copy. */
- 		drv->states[drv->state_count] = cpuidle_state_table[cstate];
- 
--		if ((icpu->use_acpi || force_use_acpi) &&
--		    intel_idle_off_by_default(mwait_hint) &&
--		    !(cpuidle_state_table[cstate].flags & CPUIDLE_FLAG_ALWAYS_ENABLE))
-+		if ((disabled_states_mask & BIT(drv->state_count)) ||
-+		    ((icpu->use_acpi || force_use_acpi) &&
-+		     intel_idle_off_by_default(mwait_hint) &&
-+		     !(cpuidle_state_table[cstate].flags & CPUIDLE_FLAG_ALWAYS_ENABLE)))
- 			drv->states[drv->state_count].flags |= CPUIDLE_FLAG_OFF;
- 
- 		drv->state_count++;
-@@ -1487,6 +1492,10 @@ static void __init intel_idle_init_cstat
- static void __init intel_idle_cpuidle_driver_init(struct cpuidle_driver *drv)
- {
- 	cpuidle_poll_state_init(drv);
-+
-+	if (disabled_states_mask & BIT(0))
-+		drv->states[0].flags |= CPUIDLE_FLAG_OFF;
-+
- 	drv->state_count = 1;
- 
- 	if (icpu)
-@@ -1667,3 +1676,11 @@ device_initcall(intel_idle_init);
-  * is the easiest way (currently) to continue doing that.
-  */
- module_param(max_cstate, int, 0444);
-+/*
-+ * The positions of the bits that are set in this number are the indices of the
-+ * idle states to be disabled by default (as reflected by the names of the
-+ * corresponding idle state directories in sysfs, "state0", "state1" ...
-+ * "state<i>" ..., where <i> is the index of the given state).
-+ */
-+module_param_named(states_off, disabled_states_mask, uint, 0444);
-+MODULE_PARM_DESC(states_off, "Mask of disabled idle states");
-Index: linux-pm/Documentation/admin-guide/pm/intel_idle.rst
-===================================================================
---- linux-pm.orig/Documentation/admin-guide/pm/intel_idle.rst
-+++ linux-pm/Documentation/admin-guide/pm/intel_idle.rst
-@@ -168,7 +168,7 @@ and ``idle=nomwait``.  If any of them is
- ``MWAIT`` instruction is not allowed to be used, so the initialization of
- ``intel_idle`` will fail.
- 
--Apart from that there are three module parameters recognized by ``intel_idle``
-+Apart from that there are four module parameters recognized by ``intel_idle``
- itself that can be set via the kernel command line (they cannot be updated via
- sysfs, so that is the only way to change their values).
- 
-@@ -195,6 +195,23 @@ driver ignore the system's ACPI tables e
- recognized processor models, respectively (they both are unset by default and
- ``use_acpi`` has no effect if ``no_acpi`` is set).
- 
-+The value of the ``states_off`` module parameter (0 by default) represents a
-+list of idle states to be disabled by default in the form of a bitmask.
-+
-+Namely, the positions of the bits that are set in the ``states_off`` value are
-+the indices of idle states to be disabled by default (as reflected by the names
-+of the corresponding idle state directories in ``sysfs``, :file:`state0`,
-+:file:`state1` ... :file:`state<i>` ..., where ``<i>`` is the index of the given
-+idle state; see :ref:`idle-states-representation` in :doc:`cpuidle`).
-+
-+For example, if ``states_off`` is equal to 3, the driver will disable idle
-+states 0 and 1 by default, and if it is equal to 8, idle state 3 will be
-+disabled by default and so on (bit positions beyond the maximum idle state index
-+are ignored).
-+
-+The idle states disabled this way can be enabled (on a per-CPU basis) from user
-+space via ``sysfs``.
-+
- 
- .. _intel-idle-core-and-package-idle-states:
- 
+V1:  
+1. Fix comments from James Morse.
 
+2. add driver to handle HiSilicon hip08 PCIe controller's errors,
+   which is an application of the above interface.
+
+Shiju Jose (1):
+  ACPI: APEI: Add support to notify the vendor specific HW errors
+
+Yicong Yang (1):
+  PCI: HIP: Add handling of HiSilicon HIP PCIe controller's errors
+
+ drivers/acpi/apei/ghes.c                 | 116 ++++++++++-
+ drivers/pci/controller/Kconfig           |   8 +
+ drivers/pci/controller/Makefile          |   1 +
+ drivers/pci/controller/pcie-hisi-error.c | 334 +++++++++++++++++++++++++++++++
+ include/acpi/ghes.h                      |  56 ++++++
+ 5 files changed, 510 insertions(+), 5 deletions(-)
+ create mode 100644 drivers/pci/controller/pcie-hisi-error.c
+
+-- 
+1.9.1
 
 
