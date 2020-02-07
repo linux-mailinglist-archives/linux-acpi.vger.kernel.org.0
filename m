@@ -2,42 +2,371 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 695F41558DF
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Feb 2020 14:59:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61486155A06
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Feb 2020 15:50:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726861AbgBGN7M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 Feb 2020 08:59:12 -0500
-Received: from host5.net38.ru ([77.243.126.231]:42748 "EHLO host5.net38.ru"
+        id S1727026AbgBGOuE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 Feb 2020 09:50:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55936 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726819AbgBGN7M (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 7 Feb 2020 08:59:12 -0500
-X-Greylist: delayed 576 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Feb 2020 08:59:12 EST
-Received: by host5.net38.ru (Postfix, from userid 8)
-        id 27BA9283CC3; Fri,  7 Feb 2020 21:49:33 +0800 (+08)
-DKIM-Filter: OpenDKIM Filter v2.11.0 host5.net38.ru 27BA9283CC3
-X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on host5.net38.ru
-X-Spam-Level: *
-X-Spam-Status: No, score=1.5 required=5.0 tests=ALL_TRUSTED,
-        FREEMAIL_FORGED_REPLYTO,URIBL_BLOCKED autolearn=disabled version=3.3.1
-Received: from blogs.inter-comfort.ru (unknown [171.234.114.242])
-        by host5.net38.ru (Postfix) with ESMTPA id C01712815EF
-        for <linux-acpi@vger.kernel.org>; Fri,  7 Feb 2020 21:49:31 +0800 (+08)
-DKIM-Filter: OpenDKIM Filter v2.11.0 host5.net38.ru C01712815EF
-Content-transfer-encoding: 7bit
-From:   "Mark Underwood" <basicmark@inter-comfort.ru>
-Content-type: text/plain; charset=us-ascii
-MIME-version: 1.0 (1.0)
-Date:   Fri, 7 Feb 2020 16:49:31 +0300
-Message-Id: <6C40C7BD-C689-4BF9-E912-DC2F0145B840@inter-comfort.ru>
-Subject: 
-To:     "linux acpi" <linux-acpi@vger.kernel.org>
-Reply-To: "Mark Underwood" <basicmarkr@yahoo.com>
-X-Mailer: iPhone Mail (15E302)
-X-Virus-Scanned: clamav-milter 0.100.2 at host5.net38.ru
-X-Virus-Status: Clean
+        id S1726874AbgBGOuE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 7 Feb 2020 09:50:04 -0500
+Received: from localhost (173-25-83-245.client.mchsi.com [173.25.83.245])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0764320720;
+        Fri,  7 Feb 2020 14:50:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1581087003;
+        bh=KqaeTN64wY2BvZofsx8i3u+SHrgmi7tPSHZDrSFoQhw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=murR2FpKhvUIrQqWnJKp3lHOQk6qxM/LNQRH/2xnBcWtAuDXhXpnVzsm1CKKngc3T
+         ZEjegCPBSVCvWEL4A0aD6C8eV88eqVUCaeetcr/aOLwW6UTg1ylaz9bIrgnPbbGJRq
+         Ce6HS5u6U5HDh2yTzdGzoavzb8iAmOeZMlj3fphY=
+Date:   Fri, 7 Feb 2020 08:50:01 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Vidya Sagar <vidyas@nvidia.com>, bjorn@helgaas.com,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Andrew Murray <andrew.murray@arm.com>, treding@nvidia.com,
+        jonathanh@nvidia.com, linux-tegra@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>, kthota@nvidia.com,
+        mmaddireddy@nvidia.com, sagar.tv@gmail.com
+Subject: Re: [PATCH] PCI: Add MCFG quirks for Tegra194 host controllers
+Message-ID: <20200207145001.GA183417@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200206164639.GA2182011@ulmo>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Linux    https://is.gd/MWJz52    Mark
+On Thu, Feb 06, 2020 at 05:46:39PM +0100, Thierry Reding wrote:
+> On Thu, Jan 23, 2020 at 10:49:41AM +0000, Lorenzo Pieralisi wrote:
+> > On Tue, Jan 21, 2020 at 02:44:35PM +0100, Thierry Reding wrote:
+> > > On Mon, Jan 20, 2020 at 03:18:49PM +0000, Lorenzo Pieralisi wrote:
+> > > > On Mon, Jan 20, 2020 at 12:10:42PM +0100, Thierry Reding wrote:
+> > > > 
+> > > > [...]
+> > > > 
+> > > > > > > Currently the BSP has the kernel booting through Device
+> > > > > > > Tree mechanism and there is a plan to support UEFI based
+> > > > > > > boot as well in the future software releases for which
+> > > > > > > we need this quirky way of handling ECAM.  Tegra194 is
+> > > > > > > going to be the only and last chip with this issue and
+> > > > > > > next chip in line in Tegra SoC series will be fully
+> > > > > > > compliant with ECAM.
+> > > > > > 
+> > > > > > ACPI on ARM64 works on a standard subset of systems,
+> > > > > > defined by the ARM SBSA:
+> > > > > > 
+> > > > > > http://infocenter.arm.com/help/topic/com.arm.doc.den0029c/Server_Base_System_Architecture_v6_0_ARM_DEN_0029C_SBSA_6_0.pdf
+> > > > > 
+> > > > > I don't understand what you're saying here. Are you saying
+> > > > > that you want to prevent vendors from upstreaming code that
+> > > > > they need to support their ACPI based platforms? I
+> > > > > understand that the lack of support for proper ECAM means
+> > > > > that a platform will not be SBSA compatible, but I wasn't
+> > > > > aware that lack of SBSA compatibility meant that a platform
+> > > > > would be prohibited from implementing ACPI support in an
+> > > > > upstream kernel.
+
+"Vendors upstreaming code to support ACPI-based platforms" is a
+concept that really doesn't fit in the ACPI model.  More below.
+
+> > > > ACPI on ARM64 requires a set of HW components described in the
+> > > > SBSA.
+> > > > 
+> > > > If those HW requirements are not fulfilled you can't bootstrap
+> > > > an ARM64 system with ACPI - it is as simple as that.
+> > > 
+> > > That's an odd statement. We do in fact have an ARM64 system that
+> > > doesn't fulfill the ECAM requirement and yet it successfully
+> > > boots with ACPI.
+> > 
+> > I know very well (but that's not a reason to break the PCIe
+> > specification).
+> > 
+> > Still, the mistake you are making is thinking that ACPI compliancy
+> > stops at the MCFG quirk. Adding another quirk to the MCFG list
+> > will make PCI enumerates but there is more to that, eg MSI/IOMMU
+> > and that's just an example.
+> > 
+> > There are platforms in that MCFG list that eg can't do MSI which
+> > basically means they are useless - you look at it as yet another
+> > hook into MCFG, I look at it with history in mind and from an ACPI
+> > ARM64 maintainership perspective.
+> > 
+> > So first thing to do is to post full support for this host
+> > controller inclusive of MSI/INTx (which AFAICS is another piece of
+> > HW that is not SBSA compliant since DWC uses a funnel to trigger
+> > MSIs) and IOMMU, then we will see how to proceed.
+> > 
+> > Look at this (and again, that's just an example but AFAICS it
+> > applies to this host bridge as well):
+> > 
+> > https://lore.kernel.org/linux-pci/VE1PR04MB67029FB127DBF4A725CB9698904E0@VE1PR04MB6702.eurprd04.prod.outlook.com
+> 
+> So it turns out we indeed have the same issue with MSIs since
+> Tegra194 uses the same DesignWare controller that others do (looks
+> like at least HiSilicon and Annapurna Labs are in the same boat).
+> That said, most drivers fallback to legacy interrupts and that works
+> fine. Agreed that it isn't ideal, but it's about as good as it's
+> going to get on this hardware.
+> 
+> > > > It is not even appropriate to discuss this on a Linux mailing
+> > > > list anymore since it is HW requirements and it has been
+> > > > public information since ACPI on ARM64 was first enabled.
+> > > 
+> > > Erm... we're discussing Linux patches. Why would it be
+> > > inappropriate to discuss them on a Linux mailing list?
+> > 
+> > I am not discussing Linux patches at all - I am telling you that
+> > the DWC host controller is not a) PCIe spec compliant b) SBSA
+> > compliant and there is nothing to review from a Linux kernel code
+> > perspective.
+> > 
+> > This is just another quirk to enumerate with ACPI a non-compliant
+> > system, if Bjorn is willing to take it go for it.
+> 
+> Yeah, I'd like to hear Bjorn's opinion on this. I understand that
+> this is far from an ideal situation and I'd much prefer that this
+> chip was compliant. But for historical reasons it isn't. This chip
+> was designed before SBSA became the quasi standard. Tegra194 also
+> isn't a server chip to begin with, so SBSA compliance would likely
+> not have been the main objective.
+> 
+> > > > > > These patches will have to be carried out of tree, the
+> > > > > > MCFG quirk mechanism (merged as Bjorn said more than three
+> > > > > > years ago) was supposed to be a temporary plaster to
+> > > > > > bootstrap server platforms with teething issues, the aim
+> > > > > > is to remove it eventually not to add more code to it
+> > > > > > indefinitely.
+> > > > > 
+> > > > > Now, I fully agree that quirks are suboptimal and we'd all
+> > > > > prefer if we didn't have to deal with them. Unfortunately
+> > > > > the reality is that mistakes happen and hardware doesn't
+> > > > > always work the way we want it to.  There's plenty of other
+> > > > > quirk mechanisms in the kernel, and frankly this one isn't
+> > > > > really that bad in comparison.
+> > > > 
+> > > > Because you don't have to maintain it ;) - I think I said what
+> > > > I had to say about the MCFG mechanism in the past - it has
+> > > > been three years and counting - it is time to remove it rather
+> > > > that adding to it.
+> > > 
+> > > What makes you think you can simply remove this without breaking
+> > > support for all of the devices that currently rely on the
+> > > quirks?
+> > 
+> > Don't you think I know ? I said "eventually" for a reason, read
+> > what I write.
+> 
+> I read what you wrote. My point is that even "eventually" things are
+> going to break if you just rip out the quirks.
+
+I doubt we'll actually remove quirks; I suspect Lorenzo meant that in
+future hardware we should be removing the *need* for the quirks.  They
+are annoyances and they do make maintenance more difficult, but in
+general I don't think we should remove things that are being used.
+
+> > > > > > So I am afraid but this quirk (and any other coming our
+> > > > > > way) will not be merged in an upstream kernel anymore -
+> > > > > > for any queries please put Nvidia in touch.
+> > > > > 
+> > > > > Again, I don't understand what you're trying to achieve
+> > > > > here. You seem to be saying that we categorically can't
+> > > > > support this hardware because it isn't fully SBSA
+> > > > > compatible.
+> > > > 
+> > > > I am not trying to achieve anything - I am just stating public
+> > > > information - let me repeat it again for interested readers:
+> > > > to bootstrap an ARM64 system with ACPI the platform HW design
+> > > > must follow the SBSA guidelines.
+> > > 
+> > > Can you clarify for me where I can find this public information?
+> > > What I've been able to find suggests that that SBSA-compliant
+> > > systems would typically run ACPI, but I can't find anything
+> > > about SBSA compliance being a prerequisite for booting a system
+> > > with ACPI.
+> > 
+> > https://developer.arm.com/architectures/platform-design/server-systems
+> > 
+> > Read: SBSA/SBBR
+> > 
+> > /Documentation/arm64/arm-acpi.rst
+> > 
+> > > I can understand why someone might *wish* for that to always be
+> > > true, but it seems to be a bit far removed from reality.
+> > 
+> > It is reality and it is not a *wish*, Nvidia will comply - even if
+> > *eventually* we end up merging this code.
+> 
+> I already said that we reported these findings to the hardware team
+> and this is hopefully going to allow us to be SBSA compliant in
+> future chips. However, it's too late for Tegra194 and we can't
+> retroactively fix it.
+> 
+> > > > > Do you have any alternative suggestions on how we can
+> > > > > support this in an upstream kernel?
+> > > > 
+> > > > Booting with a device tree ?
+> > > 
+> > > We can already do that, but should that prevent us from making
+> > > UEFI and ACPI an alternative boot mechanism?
+> > 
+> > Why do you need ACPI support ? What for ?
+> 
+> Customers have requested it and they want to be able to use an
+> upstream kernel.
+> 
+> > > > > We realized a while ago that we cannot achieve proper ECAM
+> > > > > on Tegra194 because of some issues with the hardware and
+> > > > > we've provided this as feedback to the hardware engineers.
+> > > > > As a result, the next generation of Tegra should no longer
+> > > > > suffer from these issues.
+> > > > 
+> > > > We will bootstrap next generation Tegra with ACPI then, there
+> > > > are SBSA tests available for compliancy - again, that's a
+> > > > matter for Nvidia and Arm to settle, not a mailing list
+> > > > discussion.
+> > > 
+> > > I don't understand why you keep insisting on this. The mailing
+> > > lists are where kernel patches are discussed, are they not?
+> > 
+> > See above.
+> > 
+> > > > > As for Tegra194, that chip taped out two years ago and it
+> > > > > isn't possible to make it fully ECAM compliant other than by
+> > > > > revising the chip, which, frankly, isn't going to happen.
+> > > > > 
+> > > > > So I see two options here: either we find a way of dealing
+> > > > > with this, by either merging this quirk or finding an
+> > > > > alternative solution, or we make the decision that some
+> > > > > hardware just can't be supported.
+> > > > > 
+> > > > > The former is fairly common, whereas I've never heard of the
+> > > > > latter.
+> > > > 
+> > > > What does this mean ? Should I wreck the upstream kernel to
+> > > > make it boot with ACPI on *any* ARM64 platform out there then
+> > > > ?
+> > > 
+> > > Heh... you must have a very low opinion of the upstream kernel
+> > > if you think merging these 100 lines of code is going to wreck
+> > > it.
+> > 
+> > I have a very high opinion of the upstream kernel and that's why
+> > as I said above I think in terms of overall ACPI ARM64
+> > maintainership rather than a platform quirk to get ACPI PCI
+> > enumeration going.
+> 
+> From a maintenance point of view things aren't going to change much
+> just because we add these additional quirks. These are for the same
+> IP that's already supported by other quirks for other platforms and
+> the code lives entirely in the DesignWare driver, so I don't see how
+> this negatively impacts maintainability of the kernel.
+> 
+> > > And if you look at the patch, the bulk (95/109 lines) is
+> > > actually in the Tegra194 PCIe driver and only 14/109 lines are
+> > > added to the MCFG quirks.  That's hardly the kind of change
+> > > that's going to wreck the kernel.
+> > 
+> > See above, show us the rest of the story.
+> 
+> Like I said, not much we can do about MSI support without more
+> driver- specific code. But since we can fallback to legacy
+> interrupts, things end up working fine.
+> 
+> Again, I fully realize that this isn't ideal and I'd rather prefer
+> we didn't have to add this. But I'm also realistic and understand
+> that hardware designs aren't always perfect, no matter how much we
+> want them to be. The best we can do is take the lessons learned and
+> try to make the next chip better.
+> 
+> > > > My stance is clear above and the ACPI PCI programming model -
+> > > > inclusive of firmware - has been there since ACPI was
+> > > > deployed, if ACPI support is required HW must comply, either
+> > > > that or it is out of tree patches and I can't be blamed for
+> > > > that.
+> > > 
+> > > Looking at the existing quirks table, there's evidently a number
+> > > of people that didn't get the memo. The issue seems to be fairly
+> > > common, yet for some reason you're singling out Tegra194.
+> > 
+> > The issue is not very common at all. I said it before and I repeat
+> > it again: those MCFG quirks were merged more than three years ago
+> > to help bootstrap ACPI ARM64 ecosystem on early HW and ACPI for
+> > ARM64 is meant for server (SBSA/SBBR compliant) systems, for other
+> > platforms DT is the firmware of choice, ACPI on those does not
+> > work well (and *I* will have to work around it).
+> 
+> Like I said, Tegra194 is not a server chip. But it turns out that
+> people want to use ACPI on non-server systems as well. The website
+> that you linked to above:
+> 
+> 	https://developer.arm.com/architectures/platform-design/server-systems
+> 
+> even says that SBSA is being extended to other segments. So, again,
+> this means that we either have to say, collectively, that we don't
+> want to support ACPI on ARM64 except on systems that are fully SBSA
+> compliant or we have to find a way to make things work. I'm not sure
+> we really want the first option and the quirk is a good compromise
+> to get us the second option.
+> 
+> > I am not singling out anybody, read the mailing lists and you will
+> > realize. You asked for this patch to be reviewed, I told you what
+> > my thoughts are and this patch implications - you want to go
+> > ahead, ask Bjorn to merge it but at least we do it with the
+> > broader consequences in mind.
+> 
+> You seemed to be categorically rejecting this patch only because the
+> system wasn't fully SBSA compliant. Given that other, non-SBSA
+> compliant devices are currently supported, it certainly seemed like
+> you were singling out.
+> 
+> Anyway, like you said, it's ultimately up to Bjorn to take this or
+> not, so it's not productive to go back and forth on this between the
+> two of us.
+> 
+> Perhaps a more productive way to go forward would be to look at what
+> you had in mind in terms of a deprecation plan for the MCFG quirks.
+> One idea that came up as we were discussing this internally was to
+> move the quirk code into the DesignWare driver. That is, instead of
+> having this code live in the ACPI code and referencing the
+> DesignWare code, it'd be the DesignWare driver itself that would
+> initialize PCI. This would have the added benefit that MSIs could be
+> used, since the DesignWare driver does have the means of decoding
+> which MSI occurred. The same code that is used to do this when
+> booting from DT could be reused when booting from ACPI.
+
+I think the idea of moving this code around misses the fundamental
+point that bringing up a new system with ACPI should require *zero*
+kernel changes.  It's not a question of where in the kernel quirks
+live; it's simply that no drivers (DesignWare or other), no quirks,
+no config changes, no new code at all should be required.
+
+One should be able to take a RHEL/SUSE/Ubuntu/etc CD released years
+ago and boot it on hardware designed today.  If that CD doesn't boot,
+the starting assumption is that the OEM needs to fix the hardware or
+firmware.  This is standard operating procedure in the x86 world, and
+it's essential if we want to participate in the upstream and distro
+world.
+
+> The benefits here would be that we'd move the code out of the
+> quirks, so we'd be effectively relying less on those quirks, which
+> in turn would help to deprecate them.
+> 
+> Now, I'm not exactly sure I understand your concerns regarding
+> maintainability of these quirks, so maybe that proposal isn't really
+> what you're looking for. Perhaps you have a better idea?
+> 
+> Thierry
+
+
