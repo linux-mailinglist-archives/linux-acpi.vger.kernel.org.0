@@ -2,88 +2,164 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92CB815744D
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2020 13:13:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE9451575DA
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2020 13:45:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727522AbgBJMNj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Feb 2020 07:13:39 -0500
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:42647 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727572AbgBJMNh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Feb 2020 07:13:37 -0500
-Received: by mail-lj1-f195.google.com with SMTP id d10so6849217ljl.9
-        for <linux-acpi@vger.kernel.org>; Mon, 10 Feb 2020 04:13:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=vN2cr2vYuekIm6JB3RgzI3N00DPK13rxE05UgfLMK1g=;
-        b=YIBsA5VJek4eTnKn2pyI8v0xnHMc6C4Me1qGENSJaftZsVsADcpc7zQdgAcvstNpGI
-         5uUV001BlBaybQA8GmgHoJRqBxxM5Lq5CyNCKgSrOzLzaC414i3TG5gAYLt+8gc4q/5G
-         rsoeEPAQcQL8WP6F5zUiR722OFbq6TNOkeoAyIfgowZ/o9t4weJ/jtY0nAdAYSM8mlG5
-         PECJAaVQqb8k39iwk77F+1E6Jwh7tqDIzlLNToxNuoiaN0m8pDpC8mUfCGgCLxr3ZHDd
-         jEUB4tk2OlInOczT/HDeua+aqxGkJUWFpjji73fqdMH8VPQ91nMkt+nZRLmdaJeynLuf
-         zaog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=vN2cr2vYuekIm6JB3RgzI3N00DPK13rxE05UgfLMK1g=;
-        b=NwTX5hYoBNWtaCMFYc17xrAaGW8WEIvBFMdGtAYZRkeI12CtiBGe8Cif1oCn84eOKr
-         R/0F8gzUOFVPzYFCz0IvswyxBzNi6ijjXASZ3R06EOAvfR/LYoKjmkh88UlldLjj3Id0
-         5noNf0tFa4A5OEvXpNQC95EoWTuVCbMCMxiuTpYRRRAsyovJa+D3rB3U+4rJcO43JyFf
-         zJphHXPP7Qb0iQsB4blCWBgceW0auAmXQ5A3feZBlX4miAHdbvCRDpk934z7wwWTpXNv
-         SNWMSrWj8hRBWhV2mY2l4HNOCP5quFHWMYd6uWASuoZT9iSm8q+vjXfA8USEILsnvFVA
-         Zwvg==
-X-Gm-Message-State: APjAAAXzY2Ywehl+gW2/W+lbq16+qImjpZ2zytFpUONrE5jl4Za6AtQd
-        CcJb8MFdeECsvtm8qnfzPIJODkXuH4nGSGdBLu+2aw==
-X-Google-Smtp-Source: APXvYqyqMjSOxKkLTzhlykvdu5X6v3ck2AqaYe6S9rhtmxvr4OjpPMMK1+q4Qeb5isYmKKI7mE7VWDk2kpFAgXhCU18=
-X-Received: by 2002:a2e:9013:: with SMTP id h19mr756323ljg.223.1581336814637;
- Mon, 10 Feb 2020 04:13:34 -0800 (PST)
+        id S1730728AbgBJMpd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Feb 2020 07:45:33 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:56364 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730491AbgBJMpc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Feb 2020 07:45:32 -0500
+Received: from 79.184.254.199.ipv4.supernova.orange.pl (79.184.254.199) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.341)
+ id b5b46441409b89cc; Mon, 10 Feb 2020 13:45:29 +0100
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        David Box <david.e.box@linux.intel.com>
+Subject: [PATCH] ACPI: PM: s2idle: Avoid possible race related to the EC GPE
+Date:   Mon, 10 Feb 2020 13:45:29 +0100
+Message-ID: <11464642.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
-References: <20200205194804.1647-1-mst@semihalf.com> <20200206083149.GK2667@lahna.fi.intel.com>
- <CAMiGqYi2rVAc=hepkY-4S1U_3dJdbR4pOoB0f8tbBL4pzWLdxA@mail.gmail.com>
- <20200207075654.GB2667@lahna.fi.intel.com> <CAMiGqYjmd2edUezEXsX4JBSyOozzks1Pu8miPEviGsx=x59nZQ@mail.gmail.com>
-In-Reply-To: <CAMiGqYjmd2edUezEXsX4JBSyOozzks1Pu8miPEviGsx=x59nZQ@mail.gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 10 Feb 2020 13:13:23 +0100
-Message-ID: <CACRpkdbBOfYQ9kxaDG4vwtnm1eu3yMDM-ZGJPyev-P4Fz5QT5A@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: cherryview: Add quirk with custom translation of
- ACPI GPIO numbers
-To:     =?UTF-8?Q?Micha=C5=82_Stanek?= <mst@semihalf.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        stanekm@google.com, stable <stable@vger.kernel.org>,
-        Marcin Wojtas <mw@semihalf.com>, levinale@chromium.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Feb 8, 2020 at 7:43 PM Micha=C5=82 Stanek <mst@semihalf.com> wrote:
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-> Actually it is a GPIO offset in ACPI tables for Braswell that was
-> hardcoded in the old firmware to match the previous (consecutive)
-> Linux GPIO numbering.
+It is theoretically possible for the ACPI EC GPE to be set after the
+s2idle_ops->wake() called from s2idle_loop() has returned and before
+the subsequent pm_wakeup_pending() check is carried out.  If that
+happens, the resulting wakeup event will cause the system to resume
+even though it may be a spurious one.
 
-That's bad practice by the firmware authors. (Sad face)
+To avoid that race, first make the ->wake() callback in struct
+platform_s2idle_ops return a bool value indicating whether or not
+to let the system resume and rearrange s2idle_loop() to use that
+value instad of the direct pm_wakeup_pending() call if ->wake() is
+present.
 
-We have enough problem saving ourselves from our own
-legacy ABIs without someone handling out more guns to shoot
-oneself in the foot with. :(
+Next, rework acpi_s2idle_wake() to process EC events and check
+pm_wakeup_pending() before rearming the SCI for system wakeup
+to prevent it from triggering prematurely and add comments to
+that function to explain the rationale for the new code flow.
 
-I'm also speaking on behalf of Microsoft and others in this I
-think. In the past we would find Windowsisms in the BIOSes
-and get really annoyed that we had to work around them.
-Now there are Linuxisms in the BIOS, that's not any better.
+Fixes: 56b991849009 ("PM: sleep: Simplify suspend-to-idle control flow")
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/sleep.c    |   46 ++++++++++++++++++++++++++++++++--------------
+ include/linux/suspend.h |    2 +-
+ kernel/power/suspend.c  |    9 +++++----
+ 3 files changed, 38 insertions(+), 19 deletions(-)
 
-Yours,
-Linus Walleij
+Index: linux-pm/drivers/acpi/sleep.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/sleep.c
++++ linux-pm/drivers/acpi/sleep.c
+@@ -990,21 +990,28 @@ static void acpi_s2idle_sync(void)
+ 	acpi_os_wait_events_complete(); /* synchronize Notify handling */
+ }
+ 
+-static void acpi_s2idle_wake(void)
++static bool acpi_s2idle_wake(void)
+ {
+-	/*
+-	 * If IRQD_WAKEUP_ARMED is set for the SCI at this point, the SCI has
+-	 * not triggered while suspended, so bail out.
+-	 */
+-	if (!acpi_sci_irq_valid() ||
+-	    irqd_is_wakeup_armed(irq_get_irq_data(acpi_sci_irq)))
+-		return;
+-
+-	/*
+-	 * If there are EC events to process, the wakeup may be a spurious one
+-	 * coming from the EC.
+-	 */
+-	if (acpi_ec_dispatch_gpe()) {
++	if (!acpi_sci_irq_valid())
++		return pm_wakeup_pending();
++
++	while (pm_wakeup_pending()) {
++		/*
++		 * If IRQD_WAKEUP_ARMED is set for the SCI at this point, the
++		 * SCI has not triggered while suspended, so bail out (the
++		 * wakeup is pending anyway and the SCI is not the source of
++		 * it).
++		 */
++		if (irqd_is_wakeup_armed(irq_get_irq_data(acpi_sci_irq)))
++			return true;
++
++		/*
++		 * If there are no EC events to process, the wakeup is regarded
++		 * as a genuine one.
++		 */
++		if (!acpi_ec_dispatch_gpe())
++			return true;
++
+ 		/*
+ 		 * Cancel the wakeup and process all pending events in case
+ 		 * there are any wakeup ones in there.
+@@ -1017,8 +1024,19 @@ static void acpi_s2idle_wake(void)
+ 
+ 		acpi_s2idle_sync();
+ 
++		/*
++		 * The SCI is in the "suspended" state now and it cannot produce
++		 * new wakeup events till the rearming below, so if any of them
++		 * are pending here, they must be resulting from the processing
++		 * of EC events above or coming from somewhere else.
++		 */
++		if (pm_wakeup_pending())
++			return true;
++
+ 		rearm_wake_irq(acpi_sci_irq);
+ 	}
++
++	return false;
+ }
+ 
+ static void acpi_s2idle_restore_early(void)
+Index: linux-pm/include/linux/suspend.h
+===================================================================
+--- linux-pm.orig/include/linux/suspend.h
++++ linux-pm/include/linux/suspend.h
+@@ -191,7 +191,7 @@ struct platform_s2idle_ops {
+ 	int (*begin)(void);
+ 	int (*prepare)(void);
+ 	int (*prepare_late)(void);
+-	void (*wake)(void);
++	bool (*wake)(void);
+ 	void (*restore_early)(void);
+ 	void (*restore)(void);
+ 	void (*end)(void);
+Index: linux-pm/kernel/power/suspend.c
+===================================================================
+--- linux-pm.orig/kernel/power/suspend.c
++++ linux-pm/kernel/power/suspend.c
+@@ -131,11 +131,12 @@ static void s2idle_loop(void)
+ 	 * to avoid them upfront.
+ 	 */
+ 	for (;;) {
+-		if (s2idle_ops && s2idle_ops->wake)
+-			s2idle_ops->wake();
+-
+-		if (pm_wakeup_pending())
++		if (s2idle_ops && s2idle_ops->wake) {
++			if (s2idle_ops->wake())
++				break;
++		} else if (pm_wakeup_pending()) {
+ 			break;
++		}
+ 
+ 		pm_wakeup_clear(false);
+ 
+
+
+
