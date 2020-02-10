@@ -2,90 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDB681572A3
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2020 11:14:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F41991572B3
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2020 11:16:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726961AbgBJKOU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Feb 2020 05:14:20 -0500
-Received: from mga07.intel.com ([134.134.136.100]:44766 "EHLO mga07.intel.com"
+        id S1727505AbgBJKQu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Feb 2020 05:16:50 -0500
+Received: from mx2.suse.de ([195.135.220.15]:43592 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726792AbgBJKOU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 10 Feb 2020 05:14:20 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Feb 2020 02:14:19 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,424,1574150400"; 
-   d="scan'208";a="347020341"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga001.fm.intel.com with SMTP; 10 Feb 2020 02:14:15 -0800
-Received: by lahna (sSMTP sendmail emulation); Mon, 10 Feb 2020 12:14:14 +0200
-Date:   Mon, 10 Feb 2020 12:14:14 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     =?utf-8?Q?Micha=C5=82?= Stanek <mst@semihalf.com>
-Cc:     linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stanekm@google.com,
-        stable@vger.kernel.org, Marcin Wojtas <mw@semihalf.com>,
-        levinale@chromium.org, andriy.shevchenko@linux.intel.com,
-        Linus Walleij <linus.walleij@linaro.org>,
-        bgolaszewski@baylibre.com, rafael.j.wysocki@intel.com,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: Re: [PATCH] pinctrl: cherryview: Add quirk with custom translation
- of ACPI GPIO numbers
-Message-ID: <20200210101414.GN2667@lahna.fi.intel.com>
-References: <20200205194804.1647-1-mst@semihalf.com>
- <20200206083149.GK2667@lahna.fi.intel.com>
- <CAMiGqYi2rVAc=hepkY-4S1U_3dJdbR4pOoB0f8tbBL4pzWLdxA@mail.gmail.com>
- <20200207075654.GB2667@lahna.fi.intel.com>
- <CAMiGqYjmd2edUezEXsX4JBSyOozzks1Pu8miPEviGsx=x59nZQ@mail.gmail.com>
+        id S1727499AbgBJKQu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 10 Feb 2020 05:16:50 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 790F3ACCA;
+        Mon, 10 Feb 2020 10:16:48 +0000 (UTC)
+Date:   Mon, 10 Feb 2020 11:16:38 +0100
+From:   Jean Delvare <jdelvare@suse.de>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-watchdog@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Tom Abraham <tabraham@suse.com>
+Subject: wdat_wdt: access width inconsistency
+Message-ID: <20200210111638.64925c8e@endymion>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMiGqYjmd2edUezEXsX4JBSyOozzks1Pu8miPEviGsx=x59nZQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Feb 08, 2020 at 07:43:24PM +0100, Michał Stanek wrote:
-> > >
-> > > Hi Mika,
-> > >
-> > > The previous patches from Dmitry handled IRQ numbering, here we have a
-> > > similar issue with GPIO to pin translation - hardcoded values in FW
-> > > which do not agree with the (non-consecutive) numbering in newer
-> > > kernels.
-> >
-> > Hmm, so instead of passing GpioIo/GpioInt resources to devices the
-> > firmware uses some hard-coded Linux GPIO numbering scheme? Would you
-> > able to share the exact firmware description where this happens?
-> 
-> Actually it is a GPIO offset in ACPI tables for Braswell that was
-> hardcoded in the old firmware to match the previous (consecutive)
-> Linux GPIO numbering.
+Hi all,
 
-Can you share the ACPI tables and point me to the GPIO that is using
-Linux number?
+I'm still working on my customer issue where the wdat_wdt driver
+reboots the server instantly as soon as the watchdog daemon is started.
+I looked at all the upstream fixes and we already have all relevant
+ones in our kernel so I start suspecting either a driver bug or a BIOS
+issue.
 
-> > > > What GPIO(s) we are talking about and how does it show up to the user?
-> > >
-> > > As an example, the issue manifests itself when you run 'crossystem
-> > > wpsw_cur'. On my Kefka it incorrectly reports the value as 1 instead
-> > > of 0 when the write protect screw is removed.
-> >
-> > Is it poking GPIOs directly through sysfs relying the Linux GPIO
-> > numbering (which can change and is fragile anyway)?
-> 
-> I believe so, yes.
+While reading the driver code I noticed one suspect thing related to
+the register access width, which I'd like a second opinion on.
 
-This is something that should be fixed in userspace. Using global Linux
-GPIO or IRQ numbers is fragile and source of issues like this. There are
-correct ways of using GPIOs from userspace: in case of sysfs, you can
-find the base of the chip and then user relative numbering against it or
-switch to use libgpiod that does the same but uses the newer char
-device. Both cases the GPIO number are relative against the GPIO chip so
-they work even if global Linux GPIO numbering changes.
+Both acpi_watchdog.c and wdat_wdt.c contain code like:
+
+	res.end = res.start + gas->access_width - 1;
+
+This suggests that gas->access_width is expected to be 4 in case of a
+32-bit register. However in wdat_wdt_read/wdat_wdt_write we have:
+
+	switch (gas->access_width) {
+	(...)
+	case 3:
+		*value = ioread32(instr->reg);
+
+This looks inconsistent to me.
+
+My reading of the ACPI specification suggests that 3 is the right value
+for 32-bit registers. If so, then shouldn't the resource's end be set
+to:
+
+	res.end = res.start + (1 << (gas->access_width - 1)) - 1;
+
+?
+
+Thanks,
+-- 
+Jean Delvare
+SUSE L3 Support
