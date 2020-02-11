@@ -2,82 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E5CEB15956A
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2020 17:54:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 528DF1595E4
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2020 18:03:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729663AbgBKQyI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Feb 2020 11:54:08 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:55993 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727707AbgBKQyI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Feb 2020 11:54:08 -0500
-Received: from 79.184.254.199.ipv4.supernova.orange.pl (79.184.254.199) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.341)
- id bf497f49ca41fc91; Tue, 11 Feb 2020 17:54:06 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        David Box <david.e.box@linux.intel.com>,
-        Chen Yu <yu.c.chen@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        Bob Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
-Subject: [PATCH 2/2] ACPI: PM: s2idle: Prevent spurious SCIs from waking up the system
-Date:   Tue, 11 Feb 2020 17:53:52 +0100
-Message-ID: <7099853.cFaFQmLQCt@kreacher>
-In-Reply-To: <6974889.tv0o8xEHfr@kreacher>
-References: <6974889.tv0o8xEHfr@kreacher>
+        id S1727964AbgBKRDf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Feb 2020 12:03:35 -0500
+Received: from mx2.suse.de ([195.135.220.15]:42104 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727767AbgBKRDf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 11 Feb 2020 12:03:35 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id EC517BA00;
+        Tue, 11 Feb 2020 17:03:32 +0000 (UTC)
+Date:   Tue, 11 Feb 2020 18:03:31 +0100
+From:   Jean Delvare <jdelvare@suse.de>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-watchdog@vger.kernel.org, Tom Abraham <tabraham@suse.com>
+Subject: Re: wdat_wdt: access width inconsistency
+Message-ID: <20200211180331.11dbe525@endymion>
+In-Reply-To: <20200211163753.GK2667@lahna.fi.intel.com>
+References: <20200210111638.64925c8e@endymion>
+        <20200210112326.GP2667@lahna.fi.intel.com>
+        <20200211141147.20bad275@endymion>
+        <20200211135944.GF2667@lahna.fi.intel.com>
+        <20200211172533.08b27181@endymion>
+        <20200211163753.GK2667@lahna.fi.intel.com>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Tue, 11 Feb 2020 18:37:53 +0200, Mika Westerberg wrote:
+> On Tue, Feb 11, 2020 at 05:25:33PM +0100, Jean Delvare wrote:
+> > On Tue, 11 Feb 2020 15:59:44 +0200, Mika Westerberg wrote:  
+> > > If the default timeout is short then that might happen but I think WDAT
+> > > spec had some "reasonable" lower limit.  
+> > 
+> > Could you please point me to the WDAT specification? Somehow my web
+> > search failed to spot it.  
+> 
+> You can find it here:
+> 
+>   http://msdn.microsoft.com/en-us/windows/hardware/gg463320.aspx
+> 
+> Most of the ACPI related documents not part of the spec itself are
+> listed in the following page:
+> 
+>   https://uefi.org/acpi
 
-If the platform triggers a spurious SCI even though the status bit
-is not set for any GPE when the system is suspended to idle, it will
-be treated as a genuine wakeup, so avoid that by checking if any GPEs
-are active at all before returning 'true' from acpi_s2idle_wake().
+Great, thanks for the info.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=206413
-Fixes: 56b991849009 ("PM: sleep: Simplify suspend-to-idle control flow")
-Reported-by: Tsuchiya Yuto <kitakar@gmail.com>
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/sleep.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+As I read the specification, it is mandatory to have a timeout >= 5
+minutes *if* the watchdog is enabled at boot time. Otherwise the 5
+minutes is only a recommendation. I wouldn't be surprised if some
+hardware vendors do not initialize the timeout value and assume the OS
+will do it for them. Odds are that Windows does that.
 
-Index: linux-pm/drivers/acpi/sleep.c
-===================================================================
---- linux-pm.orig/drivers/acpi/sleep.c
-+++ linux-pm/drivers/acpi/sleep.c
-@@ -1006,10 +1006,16 @@ static bool acpi_s2idle_wake(void)
- 			return true;
- 
- 		/*
--		 * If there are no EC events to process, the wakeup is regarded
--		 * as a genuine one.
-+		 * If there are no EC events to process and at least one of the
-+		 * other enabled GPEs is active, the wakeup is regarded as a
-+		 * genuine one.
-+		 *
-+		 * Note that the checks below must be carried out in this order
-+		 * to avoid returning prematurely due to a change of the EC GPE
-+		 * status bit from unset to set between the checks with the
-+		 * status bits of all the other GPEs unset.
- 		 */
--		if (!acpi_ec_dispatch_gpe())
-+		if (acpi_any_gpe_status_set() && !acpi_ec_dispatch_gpe())
- 			return true;
- 
- 		/*
-
-
-
+Thanks again,
+-- 
+Jean Delvare
+SUSE L3 Support
