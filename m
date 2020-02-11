@@ -2,21 +2,21 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A35CA15ABD1
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 16:17:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7850515AC49
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 16:44:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727717AbgBLPRH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Feb 2020 10:17:07 -0500
-Received: from foss.arm.com ([217.140.110.172]:34004 "EHLO foss.arm.com"
+        id S1728245AbgBLPod (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Feb 2020 10:44:33 -0500
+Received: from foss.arm.com ([217.140.110.172]:34384 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727680AbgBLPRH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 Feb 2020 10:17:07 -0500
+        id S1727026AbgBLPod (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Feb 2020 10:44:33 -0500
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1CB09328;
-        Wed, 12 Feb 2020 07:17:06 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3FD01328;
+        Wed, 12 Feb 2020 07:44:33 -0800 (PST)
 Received: from [192.168.122.164] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D92923F68F;
-        Wed, 12 Feb 2020 07:17:05 -0800 (PST)
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 081923F68F;
+        Wed, 12 Feb 2020 07:44:33 -0800 (PST)
 Subject: Re: About PPTT find_acpi_cpu_topology_package()
 To:     John Garry <john.garry@huawei.com>,
         Sudeep Holla <sudeep.holla@arm.com>
@@ -30,8 +30,8 @@ References: <7a888a84-d4c5-2b49-05f3-29876d49cae6@huawei.com>
  <20200212135551.GB36981@bogus>
  <1a04ddf8-4903-2986-a94e-c070dc2c2160@huawei.com>
 From:   Jeremy Linton <jeremy.linton@arm.com>
-Message-ID: <4a28fd33-9f48-c771-a5b1-0cbf263bca6a@arm.com>
-Date:   Tue, 11 Feb 2020 13:01:58 -0600
+Message-ID: <3c15a54a-18ac-265e-c16c-272577b9dead@arm.com>
+Date:   Tue, 11 Feb 2020 13:31:43 -0600
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.4.1
 MIME-Version: 1.0
@@ -120,14 +120,10 @@ On 2/12/20 8:41 AM, John Garry wrote:
 > +    pr_warn_once("ACPI Processor ID valid not set for physical package 
 > node, will use node table offset as substitute for UID\n");
 
-Level will probably never be PPTT_ABORT_PACKAGE, so.. you probably have 
-to have the warning higher up when it terminates the package search.
+To clarify my other email there, since I can't seem to type clearly..
 
-OTOH, just because this is set doesn't mean you get "nice" ids. I've had 
-complaints, because there is a firmware floating around which uses the 
-MPIDR value as the processor_id, so the cores come out with really weird 
-numbers too.
-
+Just note that find_acpi_cpu_topology_hetero_id() is also using a 
+PPTT_ABORT_PACKAGE termination.
 
 
 >                  return ACPI_PTR_DIFF(cpu_node, table);
