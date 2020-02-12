@@ -2,106 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5A2415A874
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 12:59:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 570D415A8BF
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 13:07:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728234AbgBLL7y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Feb 2020 06:59:54 -0500
-Received: from foss.arm.com ([217.140.110.172]:60098 "EHLO foss.arm.com"
+        id S1726775AbgBLMHe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Feb 2020 07:07:34 -0500
+Received: from mx2.suse.de ([195.135.220.15]:34028 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727007AbgBLL7y (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 Feb 2020 06:59:54 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0C20A31B;
-        Wed, 12 Feb 2020 03:59:52 -0800 (PST)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 280993F6CF;
-        Wed, 12 Feb 2020 03:59:51 -0800 (PST)
-Date:   Wed, 12 Feb 2020 11:59:45 +0000
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     John Garry <john.garry@huawei.com>
-Cc:     Jeremy Linton <jeremy.linton@arm.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "liuqi (BA)" <liuqi115@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Subject: Re: About PPTT find_acpi_cpu_topology_package()
-Message-ID: <20200212115945.GA36981@bogus>
-References: <7a888a84-d4c5-2b49-05f3-29876d49cae6@huawei.com>
+        id S1726470AbgBLMHd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Feb 2020 07:07:33 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 5B0F3AD2C;
+        Wed, 12 Feb 2020 12:07:32 +0000 (UTC)
+Date:   Wed, 12 Feb 2020 13:07:01 +0100
+From:   Jean Delvare <jdelvare@suse.de>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-watchdog@vger.kernel.org, Tom Abraham <tabraham@suse.com>
+Subject: Re: [PATCH 3/3] ACPI / watchdog: Set default timeout in probe
+Message-ID: <20200212130701.1682e406@endymion>
+In-Reply-To: <20200212110540.83559-3-mika.westerberg@linux.intel.com>
+References: <20200211180331.11dbe525@endymion>
+        <20200212110540.83559-1-mika.westerberg@linux.intel.com>
+        <20200212110540.83559-3-mika.westerberg@linux.intel.com>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7a888a84-d4c5-2b49-05f3-29876d49cae6@huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 12, 2020 at 11:20:12AM +0000, John Garry wrote:
-> Hi Jeremy,
->
-> I have a question about $subject for you, since you wrote the code.
->
-> This function returns a unique identifier for the package, but would not be
-> the logically indexed package id we would expect, like 0, 1, 2, ...
->
+On Wed, 12 Feb 2020 14:05:40 +0300, Mika Westerberg wrote:
+> If the BIOS default timeout for the watchdog is too small userspace may
+> not have enough time to configure new timeout after opening the device
+> before the system is already reset. For this reason program default
+> timeout of 30 seconds in the driver probe and allow userspace to change
+> this from command line or through module parameter (wdat_wdt.timeout).
+> 
+> Reported-by: Jean Delvare <jdelvare@suse.de>
+> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> ---
+>  drivers/watchdog/wdat_wdt.c | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+> 
+> diff --git a/drivers/watchdog/wdat_wdt.c b/drivers/watchdog/wdat_wdt.c
+> index 2132018f031d..7b0257163522 100644
+> --- a/drivers/watchdog/wdat_wdt.c
+> +++ b/drivers/watchdog/wdat_wdt.c
+> @@ -54,6 +54,13 @@ module_param(nowayout, bool, 0);
+>  MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started (default="
+>  		 __MODULE_STRING(WATCHDOG_NOWAYOUT) ")");
+>  
+> +#define WDAT_DEFAULT_TIMEOUT	30
+> +
+> +static int timeout = WDAT_DEFAULT_TIMEOUT;
+> +module_param(timeout, int, 0);
+> +MODULE_PARM_DESC(timeout, "Watchdog timeout in seconds (default="
+> +		 __MODULE_STRING(WDAT_DEFAULT_TIMEOUT) ")");
+> +
+>  static int wdat_wdt_read(struct wdat_wdt *wdat,
+>  	 const struct wdat_instruction *instr, u32 *value)
+>  {
+> @@ -308,6 +315,7 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+>  	struct device *dev = &pdev->dev;
+>  	const struct acpi_wdat_entry *entries;
+>  	const struct acpi_table_wdat *tbl;
+> +	int default_timeout = timeout;
+>  	struct wdat_wdt *wdat;
+>  	struct resource *res;
+>  	void __iomem **regs;
+> @@ -438,6 +446,22 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+>  
+>  	platform_set_drvdata(pdev, wdat);
+>  
+> +	/*
+> +	 * Set initial timeout so that userspace has time to configure
+> +	 * the watchdog properly after it has opened the device. In some
+> +	 * cases the BIOS default is too short and causes immediate reboot.
+> +	 */
+> +	default_timeout = timeout;
 
-Firstly, it must be physical socket number and not logical id.
+You have already done that at variable declaration time.
 
-> It returns of the offset in the PPTT of the topology physical CPU node.
->
+> +	if (timeout < wdat->wdd.min_hw_heartbeat_ms ||
+> +	    timeout > wdat->wdd.max_hw_heartbeat_ms)
 
-Yes, intentionally. We don't want to generate a logical index for this.
-Simply not going to happen as we can't guarantee unique number always.
-We need to get that uniqueness from the firmware and hence the choice of
-offset. Remember that the offset is used only if firmware conveniently
-ignored all the optional properties including UID in the processor
-container representing the physical socket.
+Comparing seconds to milliseconds is unlikely to give the expected
+result.
 
-> So I may get something like this:
->
-> john@ubuntu:~$ more
-> /sys/devices/system/cpu/cpu80/topology/physical_package_id
-> 5418
->
+> +		default_timeout = WDAT_DEFAULT_TIMEOUT;
+> +	else
+> +		default_timeout = timeout;
 
-Good, now the platform have a reason to fix it in the firmware if it is
-very hard to see and understand the above value.
+You have already done that twice ;-)
 
-> For sure, this does not violate the ABI in
-> Documentation/ABI/testing/sysfs-devices-system-cpu:
->
+> +
+> +	ret = wdat_wdt_set_timeout(&wdat->wdd, timeout);
 
-Very good to see you are not disagreeing with that :)
+You must pass "default_timeout" here, not "timeout", else the check
+before serves no purpose. It might be less confusing to not introduce a
+separate variable and just tweak timeout in place?
 
-> "physical_package_id: physical package id of cpu#. Typically	 corresponds to
-> a physical socket number, but the actual value is architecture and platform
-> dependent."
->
-> Question: Is there any reason for which we cannot assign an indexed package
-> id to each package node?
->
-
-Yes, as mentioned above. We are not going to do extra work for lazy firmware.
-Linux also will be lazy on such platform and provide weird unique numbers
-like in the above case you have mentioned.
-
-> Some userspace tools rely on a sane meaningful package id, like perf:
->
-
-Good that you mention now. Time to update the firmware then.
+> +	if (ret)
+> +		return ret;
+> +
+>  	watchdog_set_nowayout(&wdat->wdd, nowayout);
+>  	return devm_watchdog_register_device(dev, &wdat->wdd);
+>  }
 
 
-[...]
-
->
-> This can only deal with a socket id which fits in a byte. I'd rather not
-> change this code if possible.
->
-
-Agreed, add UID to the processor container, job done.
-
---
-Regards,
-Sudeep
+-- 
+Jean Delvare
+SUSE L3 Support
