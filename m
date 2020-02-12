@@ -2,109 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D6C5E15AE95
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 18:17:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2E7315B26E
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 22:02:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726982AbgBLRRr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Feb 2020 12:17:47 -0500
-Received: from foss.arm.com ([217.140.110.172]:35622 "EHLO foss.arm.com"
+        id S1727791AbgBLVCE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 12 Feb 2020 16:02:04 -0500
+Received: from mga11.intel.com ([192.55.52.93]:40824 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726728AbgBLRRq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 Feb 2020 12:17:46 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 67F7330E;
-        Wed, 12 Feb 2020 09:17:46 -0800 (PST)
-Received: from [192.168.122.164] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2DB953F68F;
-        Wed, 12 Feb 2020 09:17:46 -0800 (PST)
-Subject: Re: About PPTT find_acpi_cpu_topology_package()
-To:     John Garry <john.garry@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Cc:     "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "liuqi (BA)" <liuqi115@huawei.com>,
-        wanghuiqiang <wanghuiqiang@huawei.com>
-References: <7a888a84-d4c5-2b49-05f3-29876d49cae6@huawei.com>
- <20200212115945.GA36981@bogus>
- <be88fdfc-50a0-9753-4f8f-d80c303892be@huawei.com>
- <20200212135551.GB36981@bogus>
- <1a04ddf8-4903-2986-a94e-c070dc2c2160@huawei.com>
- <3c15a54a-18ac-265e-c16c-272577b9dead@arm.com>
- <bfc39a01-419a-9358-fd6d-c73fdcb9c881@huawei.com>
-From:   Jeremy Linton <jeremy.linton@arm.com>
-Message-ID: <eedbafc2-019c-517f-4623-4b6ad80f5438@arm.com>
-Date:   Tue, 11 Feb 2020 15:12:42 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-In-Reply-To: <bfc39a01-419a-9358-fd6d-c73fdcb9c881@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+        id S1727138AbgBLVCE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Feb 2020 16:02:04 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Feb 2020 13:02:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,434,1574150400"; 
+   d="scan'208";a="281337938"
+Received: from orsmsx106.amr.corp.intel.com ([10.22.225.133])
+  by FMSMGA003.fm.intel.com with ESMTP; 12 Feb 2020 13:02:03 -0800
+Received: from orsmsx110.amr.corp.intel.com ([169.254.10.107]) by
+ ORSMSX106.amr.corp.intel.com ([169.254.1.123]) with mapi id 14.03.0439.000;
+ Wed, 12 Feb 2020 13:02:03 -0800
+From:   "Moore, Robert" <robert.moore@intel.com>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Jean Delvare <jdelvare@suse.de>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+CC:     Len Brown <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "linux-watchdog@vger.kernel.org" <linux-watchdog@vger.kernel.org>,
+        "Kaneda, Erik" <erik.kaneda@intel.com>,
+        "Tom Abraham" <tabraham@suse.com>
+Subject: RE: [PATCH v2 1/3] ACPICA: Introduce ACPI_ACCESS_BYTE_WIDTH() macro
+Thread-Topic: [PATCH v2 1/3] ACPICA: Introduce ACPI_ACCESS_BYTE_WIDTH() macro
+Thread-Index: AQHV4bUX6obbox02EUG+swOmUWlaeagYC72w
+Date:   Wed, 12 Feb 2020 21:02:02 +0000
+Message-ID: <94F2FBAB4432B54E8AACC7DFDE6C92E3B96E7D91@ORSMSX110.amr.corp.intel.com>
+References: <20200212145941.32914-1-mika.westerberg@linux.intel.com>
+ <20200212145941.32914-2-mika.westerberg@linux.intel.com>
+In-Reply-To: <20200212145941.32914-2-mika.westerberg@linux.intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMjhjMmE5OTktNjg4OC00MDRkLTg5OTgtY2ZlMzMzZDg3OGZkIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiK2lpWUJ1b2JzTHJsbzFiWm43cDVud1g2Ulh2WDFpXC9OUndHVW8yMXVxbmtGV1lhZGRMUVREQlhtZVB3elZDMjcifQ==
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.138]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
 
-On 2/12/20 10:41 AM, John Garry wrote:
->>>
->>> How about something like this:
->>>
->>> --- a/drivers/acpi/pptt.c
->>> +++ b/drivers/acpi/pptt.c
->>> @@ -515,6 +515,8 @@ static int topology_get_acpi_cpu_tag(struct 
->>> acpi_table_header *table,
->>>    if (level == 0 || cpu_node->flags & 
->>> ACPI_PPTT_ACPI_PROCESSOR_ID_VALID)
->>>      return cpu_node->acpi_processor_id;
->>> +   if (level == PPTT_ABORT_PACKAGE)
->>> +    pr_warn_once("ACPI Processor ID valid not set for physical 
->>> package node, will use node table offset as substitute for UID\n");
->>
-> 
-> Hi Jeremy,
-> 
->> To clarify my other email there, since I can't seem to type clearly..
->>
->> Just note that find_acpi_cpu_topology_hetero_id() is also using a 
->> PPTT_ABORT_PACKAGE termination.
-> 
-> OK, so I may need to check the flag == ACPI_PPTT_PHYSICAL_PACKAGE also.
 
-Without a lot of thought, it probably sufficient to only check the flag. 
-The level is mostly noise, the ==0 check in there was to work around the 
-verbiage in the first PPTT revision.
+-----Original Message-----
+From: Mika Westerberg <mika.westerberg@linux.intel.com> 
+Sent: Wednesday, February 12, 2020 7:00 AM
+To: Jean Delvare <jdelvare@suse.de>; Rafael J. Wysocki <rjw@rjwysocki.net>
+Cc: Len Brown <lenb@kernel.org>; linux-acpi@vger.kernel.org; Wim Van Sebroeck <wim@linux-watchdog.org>; Guenter Roeck <linux@roeck-us.net>; linux-watchdog@vger.kernel.org; Moore, Robert <robert.moore@intel.com>; Kaneda, Erik <erik.kaneda@intel.com>; Tom Abraham <tabraham@suse.com>; Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH v2 1/3] ACPICA: Introduce ACPI_ACCESS_BYTE_WIDTH() macro
 
-> 
-> BTW, Is the value returned by find_acpi_cpu_topology_hetero_id() also  > exposed to userspace some way? Or any other PPTT offsets?
+Sometimes it is useful to find the access_width field value in bytes and not in bits so add a helper that can be used for this purpose.
 
-Not yet :)
+Suggested-by: Jean Delvare <jdelvare@suse.de>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+---
+ include/acpi/actypes.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> 
->>
->>
->>>                  return ACPI_PTR_DIFF(cpu_node, table);
->>>          }
->>>          pr_warn_once("PPTT table found, but unable to locate core %d 
->>> (%d)\n",
->>>
-> 
-> I'll validate Sudeep's suggestion to set the Processor ID valid flag and 
-> appropriate processor id for the physical package cpu node with an 
-> experimental firmware before sending any patch. There seems to be a bit 
-> of doubt on your part regarding that.
+diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h index a2583c2bc054..4defed58ea33 100644
+--- a/include/acpi/actypes.h
++++ b/include/acpi/actypes.h
+@@ -532,11 +532,12 @@ typedef u64 acpi_integer;
+ 	 strnlen (a, ACPI_NAMESEG_SIZE) == ACPI_NAMESEG_SIZE)
+ 
+ /*
+- * Algorithm to obtain access bit width.
++ * Algorithm to obtain access bit or byte width.
+  * Can be used with access_width of struct acpi_generic_address and access_size of
+  * struct acpi_resource_generic_register.
+  */
+ #define ACPI_ACCESS_BIT_WIDTH(size)     (1 << ((size) + 2))
++#define ACPI_ACCESS_BYTE_WIDTH(size)    (1 << ((size) - 1))
+ 
+OK, we've taken this one into ACPICA.
+Thanks,
+Bob
 
-Just pay attention to the definition of _UID/Acpi Processor UID, etc. 
-The MADT says that ACPI processor UID is matched with a processor 
-container with a matching numeric _UID. The processor container 
-definition says that the _UID must be unique in the processor container 
-hierarchy.
-
-To me, this says that processor containers/ACPI processors UIDs must all 
-be unique. AKA, you can't have both a processor with _UID=1 and a socket 
-with _UID=1. Given that linux isn't matching the socket _UID, you can 
-create a PPTT+DSDT that does what you want but likely violates the spec.
-
+ /*******************************************************************************
+  *
+--
+2.25.0
 
