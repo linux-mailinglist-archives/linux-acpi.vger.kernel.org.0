@@ -2,71 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E7B1715A06C
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 06:17:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9933B15A667
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 11:30:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725812AbgBLFRP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Feb 2020 00:17:15 -0500
-Received: from mail-oi1-f181.google.com ([209.85.167.181]:37440 "EHLO
-        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725601AbgBLFRO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Feb 2020 00:17:14 -0500
-Received: by mail-oi1-f181.google.com with SMTP id q84so881445oic.4
-        for <linux-acpi@vger.kernel.org>; Tue, 11 Feb 2020 21:17:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lambdal-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=swj2e1unZxLTr+eU0S7w12ZleMVKRnLyFuIP1piSS8I=;
-        b=Eu8Jwz8tweAfLxp6xoPZfgE9THQgs4DJNn7wnaYMtugxlu505ZfPJ3pz5VMg5qLKaC
-         9VeRCjshOY23jCKCcAd+eVEMBFdCVVCfJEmdbxn9ikrdk+tRHGj5JEv8mukh9AOy3kCp
-         zDNwamsReN9LG+oaaVEwr/h2rM8GqQC0KfKTU2iO0k/DOcZRgYFTGMDiHZ9hQI5r5GsI
-         Rj+n8dblIV8XAZBFZw5mgLsBtek/krVVXSjP7izhE9NxwxxIS1YK8MZScVNtmxEjjySn
-         n799xyRJ5Xo+iOY1CFhbyAqnoZGSyBeB3/wmy80wwFvp+53uv+7+YvNrF1mRL0Uvi7it
-         u2Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=swj2e1unZxLTr+eU0S7w12ZleMVKRnLyFuIP1piSS8I=;
-        b=FMLfe6RL9GAvp8VOtCsZS9yTQuuo0y/LfBeZqQnR03MgSxeN3C+M0MaI0Rx53grFrh
-         OccVVz5X/hsBzMFimThdTB4rmiqc/iwsNrJnkY+r40vuSNK08cEsdks+/5i6KI+kf+XF
-         WlEGBh6fwfUuvil/YhTfJZgJnl/xN9j9NQB/e/jGb2e6DGd2WZRLStoXnI9E4zX/PCDa
-         rOXrXe8Wdf2whuDZ3Suk6beKj0SV3VeHwk+1iAXmPewQsSVvOpT/87fPSI0Jbo8ROXAk
-         CkeBZCNBzhoJo32zf0i7ujPku7+kmXJ53sfOy2kjy/1zFQ4Pf7LS1HY1KL250RC8RmtC
-         R9gg==
-X-Gm-Message-State: APjAAAXS5XuRGIDVqYmDDbbG/KJdHzF59gRDjFRZhKsGm8ASFVAO7tOw
-        vUP+ii+nQ3Aetv6Hq/DI4+fK6xoqk60=
-X-Google-Smtp-Source: APXvYqxi/NgsDLYK2/SMRqF+1b27DULShmfgn7/RR1WgMr8iPTvE+CAhzeOFNJhfEIIyYQGOxJfGQg==
-X-Received: by 2002:aca:530e:: with SMTP id h14mr5027806oib.105.1581484633975;
-        Tue, 11 Feb 2020 21:17:13 -0800 (PST)
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com. [209.85.210.44])
-        by smtp.gmail.com with ESMTPSA id f37sm2005124otb.33.2020.02.11.21.17.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Feb 2020 21:17:13 -0800 (PST)
-Received: by mail-ot1-f44.google.com with SMTP id 59so678889otp.12;
-        Tue, 11 Feb 2020 21:17:13 -0800 (PST)
-X-Received: by 2002:a9d:7a56:: with SMTP id z22mr7525771otm.201.1581484633007;
- Tue, 11 Feb 2020 21:17:13 -0800 (PST)
+        id S1727535AbgBLKae (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Feb 2020 05:30:34 -0500
+Received: from mx2.suse.de ([195.135.220.15]:55396 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726351AbgBLKae (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Feb 2020 05:30:34 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 2E734AD20;
+        Wed, 12 Feb 2020 10:30:32 +0000 (UTC)
+Date:   Wed, 12 Feb 2020 11:30:30 +0100
+From:   Jean Delvare <jdelvare@suse.de>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-watchdog@vger.kernel.org, Tom Abraham <tabraham@suse.com>
+Subject: Re: wdat_wdt: access width inconsistency
+Message-ID: <20200212113030.1c5c9524@endymion>
+In-Reply-To: <20200210112326.GP2667@lahna.fi.intel.com>
+References: <20200210111638.64925c8e@endymion>
+        <20200210112326.GP2667@lahna.fi.intel.com>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-From:   Steven Clarkson <sc@lambdal.com>
-Date:   Tue, 11 Feb 2020 21:17:02 -0800
-X-Gmail-Original-Message-ID: <CAHKq8taawUbZWubQ8qzy05+qUKuCAYGy7kEZ-PkgPeFhode5gg@mail.gmail.com>
-Message-ID: <CAHKq8taawUbZWubQ8qzy05+qUKuCAYGy7kEZ-PkgPeFhode5gg@mail.gmail.com>
-Subject: Request to cherry pick 2b73ea379624 into 5.4.x and 5.5.x
-To:     stable@vger.kernel.org
-Cc:     linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Greg,
+Hi again Mika,
 
-Commit 2b73ea379624 ("x86/boot: Handle malformed SRAT tables during
-early ACPI parsing") fixes a boot hang on some ASUS motherboards with
-an older BIOS. Could you pull this into 5.4.x and 5.5.x? Should cherry
-pick cleanly into both.
+On Mon, 10 Feb 2020 13:23:26 +0200, Mika Westerberg wrote:
+> I think you are right. For the code in acpi_watchdog.c:
+> 
+> 	if (gas->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+> 		res.flags = IORESOURCE_MEM;
+> 		res.end = res.start + ALIGN(gas->access_width, 4) - 1;
+> 	} else if (gas->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+> 		res.flags = IORESOURCE_IO;
+> 		res.end = res.start + gas->access_width - 1;
+> 	} else {
+> 		..
+> 
+> I think it does the "correct" thing, although it is bit convoluted. The
+> first one aligns it to 4 and the I/O access is either 8- or 16-bits so
+> it should be fine, unless I'm missing something.
 
-Thanks
+I'm looking again into this today. What was the rationale for the
+ALIGN() in the first place? The WDAT table is supposed to declare the
+resources with the appropriate width so it should not set access_width
+= 1 or 2 if the register should be accessed with 32-bit memory
+reads/writes, right? Could it be that the ALIGN() was added to solve
+the bug caused by using access_width directly instead of converting it
+to a byte count first?
 
-Steve
+Or is the ALIGN() a safety guard against broken WDAT tables? I'm not
+sure what bad would happen from doing memory-mapped reads/writes of
+less than 32 bits, so I'm really wondering why the ALIGN() is there.
+Especially when the code in wdat_wdt itself doesn't align anything, so
+it's only about the resource size really. Requesting a resource larger
+than we need doesn't make a lot of sense to me.
+
+(The underlying question being: can I get rid of that ALIGN()
+altogether while fixing the gas->access_width misuse bug?)
+
+-- 
+Jean Delvare
+SUSE L3 Support
