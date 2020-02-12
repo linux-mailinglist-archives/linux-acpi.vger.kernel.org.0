@@ -2,102 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 296E315A79F
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 12:20:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C98115A850
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 12:52:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728075AbgBLLUR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Feb 2020 06:20:17 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2412 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727947AbgBLLUR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 Feb 2020 06:20:17 -0500
-Received: from LHREML710-CAH.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 7763F2A0E0C223C69696;
-        Wed, 12 Feb 2020 11:20:14 +0000 (GMT)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- LHREML710-CAH.china.huawei.com (10.201.108.33) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Wed, 12 Feb 2020 11:20:14 +0000
-Received: from [127.0.0.1] (10.202.226.45) by lhreml724-chm.china.huawei.com
- (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Wed, 12 Feb
- 2020 11:20:13 +0000
-From:   John Garry <john.garry@huawei.com>
-Subject: About PPTT find_acpi_cpu_topology_package()
-To:     Jeremy Linton <jeremy.linton@arm.com>
-CC:     "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "liuqi (BA)" <liuqi115@huawei.com>
-Message-ID: <7a888a84-d4c5-2b49-05f3-29876d49cae6@huawei.com>
-Date:   Wed, 12 Feb 2020 11:20:12 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+        id S1727987AbgBLLwr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Feb 2020 06:52:47 -0500
+Received: from mx2.suse.de ([195.135.220.15]:57220 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726775AbgBLLwr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Feb 2020 06:52:47 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 1768FB15E;
+        Wed, 12 Feb 2020 11:52:46 +0000 (UTC)
+Date:   Wed, 12 Feb 2020 12:52:44 +0100
+From:   Jean Delvare <jdelvare@suse.de>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-watchdog@vger.kernel.org, Tom Abraham <tabraham@suse.com>
+Subject: Re: [PATCH 1/3] ACPICA: Introduce ACPI_ACCESS_BIT_WIDTH() macro
+Message-ID: <20200212125244.2b61202e@endymion>
+In-Reply-To: <20200212110540.83559-1-mika.westerberg@linux.intel.com>
+References: <20200211180331.11dbe525@endymion>
+        <20200212110540.83559-1-mika.westerberg@linux.intel.com>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.45]
-X-ClientProxiedBy: lhreml720-chm.china.huawei.com (10.201.108.71) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jeremy,
+On Wed, 12 Feb 2020 14:05:38 +0300, Mika Westerberg wrote:
+> Sometimes it is useful to find the access_width field value in bytes and
+> not in bits so add a helper that can be used for this purpose.
 
-I have a question about $subject for you, since you wrote the code.
+s/ACPI_ACCESS_BIT_WIDTH/ACPI_ACCESS_BYTE_WIDTH/ in the subject.
 
-This function returns a unique identifier for the package, but would not 
-be the logically indexed package id we would expect, like 0, 1, 2, ...
+> 
+> Suggested-by: Jean Delvare <jdelvare@suse.de>
+> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> ---
+>  include/acpi/actypes.h | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
+> index a2583c2bc054..77d40b02f62a 100644
+> --- a/include/acpi/actypes.h
+> +++ b/include/acpi/actypes.h
+> @@ -537,6 +537,7 @@ typedef u64 acpi_integer;
+>   * struct acpi_resource_generic_register.
+>   */
+>  #define ACPI_ACCESS_BIT_WIDTH(size)     (1 << ((size) + 2))
+> +#define ACPI_ACCESS_BYTE_WIDTH(size)    (ACPI_ACCESS_BIT_WIDTH(size) / 8)
 
-It returns of the offset in the PPTT of the topology physical CPU node.
+One of the points of having this macro being to avoid needless math,
+I'd rather do:
 
-So I may get something like this:
+#define ACPI_ACCESS_BYTE_WIDTH(size)    (1 << ((size) - 1))
 
-john@ubuntu:~$ more 
-/sys/devices/system/cpu/cpu80/topology/physical_package_id
-5418
+Some compilers might be able to optimize it, but maybe not all, and I
+see little point in giving the compiler more work anyway when it can be
+easily avoided.
 
-For sure, this does not violate the ABI in 
-Documentation/ABI/testing/sysfs-devices-system-cpu:
+You may also want to replace "bit" by "bit or byte in the comment right
+before the macros.
 
-"physical_package_id: physical package id of cpu#. Typically	 
-corresponds to a physical socket number, but the actual value		is 
-architecture and platform dependent."
+>  
+>  /*******************************************************************************
+>   *
 
-Question: Is there any reason for which we cannot assign an indexed 
-package id to each package node?
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
 
-Some userspace tools rely on a sane meaningful package id, like perf:
-
-See tools/perf/util/cpumap.c:
-
-int cpu_map__get_die(struct perf_cpu_map *map, int idx, void *data)
-{
-...
-
-	s = cpu_map__get_socket(map, idx, data);
-	if (s == -1)
-		return -1;
-
-	/*
-	 * Encode socket in bit range 15:8
-	 * die_id is relative to socket, and
-	 * we need a global id. So we combine
-	 * socket + die id
-	 */
-	if (WARN_ONCE(die_id >> 8, "The die id number is too big.\n"))
-		return -1;
-
-...
-
-	return (s << 8) | (die_id & 0xff);
-}
-
-This can only deal with a socket id which fits in a byte. I'd rather not 
-change this code if possible.
-
-Thanks,
-John
+-- 
+Jean Delvare
+SUSE L3 Support
