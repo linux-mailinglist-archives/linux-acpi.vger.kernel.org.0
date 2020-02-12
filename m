@@ -2,95 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 685B015AD8C
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 17:41:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0C8515ADDF
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 17:58:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727372AbgBLQlt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Feb 2020 11:41:49 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2417 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727361AbgBLQlt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 Feb 2020 11:41:49 -0500
-Received: from LHREML714-CAH.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 3E82A7C504FEDD7BB71E;
-        Wed, 12 Feb 2020 16:41:47 +0000 (GMT)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- LHREML714-CAH.china.huawei.com (10.201.108.37) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Wed, 12 Feb 2020 16:41:47 +0000
-Received: from [127.0.0.1] (10.202.226.45) by lhreml724-chm.china.huawei.com
- (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Wed, 12 Feb
- 2020 16:41:46 +0000
-Subject: Re: About PPTT find_acpi_cpu_topology_package()
-To:     Jeremy Linton <jeremy.linton@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-CC:     "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "liuqi (BA)" <liuqi115@huawei.com>,
-        wanghuiqiang <wanghuiqiang@huawei.com>
-References: <7a888a84-d4c5-2b49-05f3-29876d49cae6@huawei.com>
- <20200212115945.GA36981@bogus>
- <be88fdfc-50a0-9753-4f8f-d80c303892be@huawei.com>
- <20200212135551.GB36981@bogus>
- <1a04ddf8-4903-2986-a94e-c070dc2c2160@huawei.com>
- <3c15a54a-18ac-265e-c16c-272577b9dead@arm.com>
-From:   John Garry <john.garry@huawei.com>
-Message-ID: <bfc39a01-419a-9358-fd6d-c73fdcb9c881@huawei.com>
-Date:   Wed, 12 Feb 2020 16:41:46 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+        id S1728804AbgBLQ6E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Feb 2020 11:58:04 -0500
+Received: from mga14.intel.com ([192.55.52.115]:1933 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726351AbgBLQ6E (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Feb 2020 11:58:04 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Feb 2020 08:58:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,433,1574150400"; 
+   d="scan'208";a="347547083"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga001.fm.intel.com with SMTP; 12 Feb 2020 08:58:00 -0800
+Received: by lahna (sSMTP sendmail emulation); Wed, 12 Feb 2020 18:58:00 +0200
+Date:   Wed, 12 Feb 2020 18:58:00 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Jean Delvare <jdelvare@suse.de>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-watchdog@vger.kernel.org,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Tom Abraham <tabraham@suse.com>
+Subject: Re: [PATCH v2 2/3] ACPI / watchdog: Fix gas->access_width usage
+Message-ID: <20200212165800.GG2667@lahna.fi.intel.com>
+References: <20200212145941.32914-1-mika.westerberg@linux.intel.com>
+ <20200212145941.32914-3-mika.westerberg@linux.intel.com>
+ <20200212165537.46f251cf@endymion>
 MIME-Version: 1.0
-In-Reply-To: <3c15a54a-18ac-265e-c16c-272577b9dead@arm.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.202.226.45]
-X-ClientProxiedBy: lhreml720-chm.china.huawei.com (10.201.108.71) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200212165537.46f251cf@endymion>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
->>
->> How about something like this:
->>
->> --- a/drivers/acpi/pptt.c
->> +++ b/drivers/acpi/pptt.c
->> @@ -515,6 +515,8 @@ static int topology_get_acpi_cpu_tag(struct 
->> acpi_table_header *table,
->>    if (level == 0 || cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID)
->>      return cpu_node->acpi_processor_id;
->> +   if (level == PPTT_ABORT_PACKAGE)
->> +    pr_warn_once("ACPI Processor ID valid not set for physical 
->> package node, will use node table offset as substitute for UID\n");
+On Wed, Feb 12, 2020 at 04:55:37PM +0100, Jean Delvare wrote:
+> On Wed, 12 Feb 2020 17:59:40 +0300, Mika Westerberg wrote:
+> > ACPI Generic Address Structure (GAS) access_width field is not in bytes
+> > as the driver seems to expect in few places so fix this by using the
+> > newly introduced macro ACPI_ACCESS_BYTE_WIDTH().
+> > 
+> > Fixes: b1abf6fc4982 ("ACPI / watchdog: Fix off-by-one error at resource assignment")
 > 
+> It does not actually fix that commit, as the bug already existed prior
+> to it. It has to be applied on top of that commit though because they
+> touch the same lines, granted.
 
-Hi Jeremy,
+Yeah, I figured I should put the dependency commit here as well. I guess
+Depends-on can be used as well:
 
-> To clarify my other email there, since I can't seem to type clearly..
+Depends-on: b1abf6fc4982 ("ACPI / watchdog: Fix off-by-one error at resource assignment")
+
+> > Fixes: 058dfc767008 ("ACPI / watchdog: Add support for WDAT hardware watchdog")
+> > Reported-by: Jean Delvare <jdelvare@suse.de>
+> > Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> > ---
+> >  drivers/acpi/acpi_watchdog.c | 3 +--
+> >  drivers/watchdog/wdat_wdt.c  | 2 +-
+> >  2 files changed, 2 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/acpi/acpi_watchdog.c b/drivers/acpi/acpi_watchdog.c
+> > index b5516b04ffc0..d827a4a3e946 100644
+> > --- a/drivers/acpi/acpi_watchdog.c
+> > +++ b/drivers/acpi/acpi_watchdog.c
+> > @@ -126,12 +126,11 @@ void __init acpi_watchdog_init(void)
+> >  		gas = &entries[i].register_region;
+> >  
+> >  		res.start = gas->address;
+> > +		res.end = res.start + ACPI_ACCESS_BYTE_WIDTH(gas->access_width) - 1;
+> >  		if (gas->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+> >  			res.flags = IORESOURCE_MEM;
+> > -			res.end = res.start + ALIGN(gas->access_width, 4) - 1;
+> >  		} else if (gas->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+> >  			res.flags = IORESOURCE_IO;
+> > -			res.end = res.start + gas->access_width - 1;
+> >  		} else {
+> >  			pr_warn("Unsupported address space: %u\n",
+> >  				gas->space_id);
+> > diff --git a/drivers/watchdog/wdat_wdt.c b/drivers/watchdog/wdat_wdt.c
+> > index b069349b52f5..e1b1fcfc02af 100644
+> > --- a/drivers/watchdog/wdat_wdt.c
+> > +++ b/drivers/watchdog/wdat_wdt.c
+> > @@ -389,7 +389,7 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+> >  
+> >  		memset(&r, 0, sizeof(r));
+> >  		r.start = gas->address;
+> > -		r.end = r.start + gas->access_width - 1;
+> > +		r.end = r.start + ACPI_ACCESS_BYTE_WIDTH(gas->access_width) - 1;
+> >  		if (gas->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+> >  			r.flags = IORESOURCE_MEM;
+> >  		} else if (gas->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
 > 
-> Just note that find_acpi_cpu_topology_hetero_id() is also using a 
-> PPTT_ABORT_PACKAGE termination.
+> Reviewed-by: Jean Delvare <jdelvare@suse.de>
 
-OK, so I may need to check the flag == ACPI_PPTT_PHYSICAL_PACKAGE also.
-
-BTW, Is the value returned by find_acpi_cpu_topology_hetero_id() also 
-exposed to userspace some way? Or any other PPTT offsets?
-
-> 
-> 
->>                  return ACPI_PTR_DIFF(cpu_node, table);
->>          }
->>          pr_warn_once("PPTT table found, but unable to locate core %d 
->> (%d)\n",
->>
-
-I'll validate Sudeep's suggestion to set the Processor ID valid flag and 
-appropriate processor id for the physical package cpu node with an 
-experimental firmware before sending any patch. There seems to be a bit 
-of doubt on your part regarding that.
-
-Thanks,
-John
+Thanks!
