@@ -2,111 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A27C815AD66
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 17:29:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 685B015AD8C
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 17:41:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727519AbgBLQ3c (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Feb 2020 11:29:32 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:42653 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727548AbgBLQ3b (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Feb 2020 11:29:31 -0500
-Received: by mail-ot1-f65.google.com with SMTP id 66so2488422otd.9
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Feb 2020 08:29:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=647g8a8Lt3ytHPQLGC+Zkvcfptz2Smcfs4FoMFLjKRU=;
-        b=fJBoaSI0tDyGiB+SX2LJTQPvgdQN85ITMAUE7AB+w3z3H6fCsgY2DX4U6x+xEkNyxy
-         lgTCrIPKF0eXqy2YBT5fSM4l3H9+XIbZH8GEGfjuQKlPxZ5p8JXCZb8r+klFRI3t7Qf2
-         ESoCpMXzUxLU55bKVBpYYh7c6he8IBVIu0qiUgLNeL4CY0S8tVpLquHkAQoVUTHBg9wW
-         TGgtF4DpVnYQQ3Aio3SGwS4QcMwq4T/md1bG2ZKFBe4iNy9b1iV7B3DfkGQo/4jg40KV
-         vK9oUrVWlKpOfIVGuwXEggTZJvRsIrOQ0wjVoIFsMT6hK608eokjdjGoBbuDF1flSnGK
-         tA1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=647g8a8Lt3ytHPQLGC+Zkvcfptz2Smcfs4FoMFLjKRU=;
-        b=e51jpXKbAil7GADpKXKJ8F9HloaQCPCMQ/ZkP0/f3XPmjJX/Nd69dQBNOhR0JJ4/rq
-         prdwauwgCqtZYmgu3QfeeDGxT2GSamAPKn99duDBuYVkuCSVHPozhqBHkui6xkTmjph/
-         CI+6XGJixI+ZH+zWJVrUkGv5/UPOh+AMCwu23soJvbB9H/D5wfo1o9HJZKStVQFMmQzM
-         zgs258SGm09QN6nIkjZeVoVpOLt+Sb/xna7TJ59yOe4eorbtPew3dA2zxxlFJx20Z5E3
-         Kg75cyWwtPebhj2xLJQ1tHyhZwlp0DmAMJjHKkpYMj2BUvNsx755a6IQEgcIxNKdxNWf
-         4eDw==
-X-Gm-Message-State: APjAAAUEsFZ8waiQIxjDO+9yasCx44BUi7EgkiRP3MW18mdRF8pOm0bV
-        BDr57N2TrTTQu1fOSuMasJP040wlOg1K/2IV4F8THoPapc8=
-X-Google-Smtp-Source: APXvYqwmJT3w1mf5raAkgQf5NTWMOsCpSoJRY4gg8xdeBS+4tymIkSp4wQ2G+gjIfltmRN4Tv4ku+uJQNUoLQX0avwY=
-X-Received: by 2002:a9d:7852:: with SMTP id c18mr9463684otm.247.1581524971031;
- Wed, 12 Feb 2020 08:29:31 -0800 (PST)
-MIME-Version: 1.0
-References: <20190805142706.22520-1-keith.busch@intel.com> <20190805142706.22520-4-keith.busch@intel.com>
- <CAJZ5v0hCkibcbiYdPmBXdnDHZbGP2q0uNRi01oU0NMz5o3WwGA@mail.gmail.com> <1922204.kTHyOg1r71@kreacher>
-In-Reply-To: <1922204.kTHyOg1r71@kreacher>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Wed, 12 Feb 2020 08:29:20 -0800
-Message-ID: <CAPcyv4iLyHLqRD4E9HHx+pcRVHkF8zYKjCBE9YDQOiZTQVyo0g@mail.gmail.com>
-Subject: Re: [PATCH 3/3] acpi/hmat: Skip publishing target info for nodes with
- no online memory
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        id S1727372AbgBLQlt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Feb 2020 11:41:49 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2417 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727361AbgBLQlt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Feb 2020 11:41:49 -0500
+Received: from LHREML714-CAH.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id 3E82A7C504FEDD7BB71E;
+        Wed, 12 Feb 2020 16:41:47 +0000 (GMT)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ LHREML714-CAH.china.huawei.com (10.201.108.37) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Wed, 12 Feb 2020 16:41:47 +0000
+Received: from [127.0.0.1] (10.202.226.45) by lhreml724-chm.china.huawei.com
+ (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Wed, 12 Feb
+ 2020 16:41:46 +0000
+Subject: Re: About PPTT find_acpi_cpu_topology_package()
+To:     Jeremy Linton <jeremy.linton@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+CC:     "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+        "liuqi (BA)" <liuqi115@huawei.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>
+References: <7a888a84-d4c5-2b49-05f3-29876d49cae6@huawei.com>
+ <20200212115945.GA36981@bogus>
+ <be88fdfc-50a0-9753-4f8f-d80c303892be@huawei.com>
+ <20200212135551.GB36981@bogus>
+ <1a04ddf8-4903-2986-a94e-c070dc2c2160@huawei.com>
+ <3c15a54a-18ac-265e-c16c-272577b9dead@arm.com>
+From:   John Garry <john.garry@huawei.com>
+Message-ID: <bfc39a01-419a-9358-fd6d-c73fdcb9c881@huawei.com>
+Date:   Wed, 12 Feb 2020 16:41:46 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
+MIME-Version: 1.0
+In-Reply-To: <3c15a54a-18ac-265e-c16c-272577b9dead@arm.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.202.226.45]
+X-ClientProxiedBy: lhreml720-chm.china.huawei.com (10.201.108.71) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 26, 2019 at 2:05 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
->
-> On Monday, August 12, 2019 10:59:58 AM CEST Rafael J. Wysocki wrote:
-> > On Mon, Aug 5, 2019 at 4:30 PM Keith Busch <keith.busch@intel.com> wrote:
-> > >
-> > > From: Dan Williams <dan.j.williams@intel.com>
-> > >
-> > > There are multiple scenarios where the HMAT may contain information
-> > > about proximity domains that are not currently online. Rather than fail
-> > > to report any HMAT data just elide those offline domains.
-> > >
-> > > If and when those domains are later onlined they can be added to the
-> > > HMEM reporting at that point.
-> > >
-> > > This was found while testing EFI_MEMORY_SP support which reserves
-> > > "specific purpose" memory from the general allocation pool. If that
-> > > reservation results in an empty numa-node then the node is not marked
-> > > online leading a spurious:
-> > >
-> > >     "acpi/hmat: Ignoring HMAT: Invalid table"
-> > >
-> > > ...result for HMAT parsing.
-> > >
-> > > Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > Reviewed-by: Keith Busch <keith.busch@intel.com>
-> > > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> >
-> > When you send somebody else's patches, you should sign them off as a
-> > rule, but since you sent this one with your own R-by, I converted that
-> > to a S-o-b.
-> >
->
-> And all patches in the series have been applied.
+>>
+>> How about something like this:
+>>
+>> --- a/drivers/acpi/pptt.c
+>> +++ b/drivers/acpi/pptt.c
+>> @@ -515,6 +515,8 @@ static int topology_get_acpi_cpu_tag(struct 
+>> acpi_table_header *table,
+>>    if (level == 0 || cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID)
+>>      return cpu_node->acpi_processor_id;
+>> +   if (level == PPTT_ABORT_PACKAGE)
+>> +    pr_warn_once("ACPI Processor ID valid not set for physical 
+>> package node, will use node table offset as substitute for UID\n");
+> 
 
-I want to flag this patch (commit 5c7ed4385424 "HMAT: Skip publishing
-target info for nodes with no online memory")
-for -stable to cleanup a spurious WARN_ON:
+Hi Jeremy,
 
-WARNING: CPU: 7 PID: 1 at drivers/base/node.c:191 node_set_perf_attrs+0x90/0xa0
-CPU: 7 PID: 1 Comm: swapper/0 Not tainted 5.3.6-100.fc29.x86_64 #1
-RIP: 0010:node_set_perf_attrs+0x90/0xa0
-Call Trace:
- ? do_early_param+0x8e/0x8e
- hmat_init+0x2ff/0x443
- ? hmat_parse_subtable+0x55a/0x55a
- ? do_early_param+0x8e/0x8e
- do_one_initcall+0x46/0x1f4
+> To clarify my other email there, since I can't seem to type clearly..
+> 
+> Just note that find_acpi_cpu_topology_hetero_id() is also using a 
+> PPTT_ABORT_PACKAGE termination.
 
-Do you mind if I forward to stable@, or do you collect ACPI patches to
-send to stable@?
+OK, so I may need to check the flag == ACPI_PPTT_PHYSICAL_PACKAGE also.
+
+BTW, Is the value returned by find_acpi_cpu_topology_hetero_id() also 
+exposed to userspace some way? Or any other PPTT offsets?
+
+> 
+> 
+>>                  return ACPI_PTR_DIFF(cpu_node, table);
+>>          }
+>>          pr_warn_once("PPTT table found, but unable to locate core %d 
+>> (%d)\n",
+>>
+
+I'll validate Sudeep's suggestion to set the Processor ID valid flag and 
+appropriate processor id for the physical package cpu node with an 
+experimental firmware before sending any patch. There seems to be a bit 
+of doubt on your part regarding that.
+
+Thanks,
+John
