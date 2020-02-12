@@ -2,109 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2163E15A756
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 12:05:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B43015A759
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 12:05:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727414AbgBLLFp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Feb 2020 06:05:45 -0500
-Received: from mga11.intel.com ([192.55.52.93]:58048 "EHLO mga11.intel.com"
+        id S1725821AbgBLLFt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Feb 2020 06:05:49 -0500
+Received: from mx2.suse.de ([195.135.220.15]:41300 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725887AbgBLLFp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 Feb 2020 06:05:45 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Feb 2020 03:05:44 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,428,1574150400"; 
-   d="scan'208";a="237680103"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga006.jf.intel.com with ESMTP; 12 Feb 2020 03:05:42 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id 350BD1F6; Wed, 12 Feb 2020 13:05:41 +0200 (EET)
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Jean Delvare <jdelvare@suse.de>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        id S1725874AbgBLLFt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Feb 2020 06:05:49 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 243ADAC6B;
+        Wed, 12 Feb 2020 11:05:47 +0000 (UTC)
+Date:   Wed, 12 Feb 2020 12:05:45 +0100
+From:   Jean Delvare <jdelvare@suse.de>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         Wim Van Sebroeck <wim@linux-watchdog.org>,
         Guenter Roeck <linux@roeck-us.net>,
-        linux-watchdog@vger.kernel.org, Tom Abraham <tabraham@suse.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 3/3] ACPI / watchdog: Set default timeout in probe
-Date:   Wed, 12 Feb 2020 14:05:40 +0300
-Message-Id: <20200212110540.83559-3-mika.westerberg@linux.intel.com>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200212110540.83559-1-mika.westerberg@linux.intel.com>
-References: <20200211180331.11dbe525@endymion>
- <20200212110540.83559-1-mika.westerberg@linux.intel.com>
+        linux-watchdog@vger.kernel.org, Tom Abraham <tabraham@suse.com>
+Subject: Re: wdat_wdt: access width inconsistency
+Message-ID: <20200212120545.56e8ec42@endymion>
+In-Reply-To: <20200212104747.GR2667@lahna.fi.intel.com>
+References: <20200210111638.64925c8e@endymion>
+        <20200210112326.GP2667@lahna.fi.intel.com>
+        <20200212113030.1c5c9524@endymion>
+        <20200212104747.GR2667@lahna.fi.intel.com>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-If the BIOS default timeout for the watchdog is too small userspace may
-not have enough time to configure new timeout after opening the device
-before the system is already reset. For this reason program default
-timeout of 30 seconds in the driver probe and allow userspace to change
-this from command line or through module parameter (wdat_wdt.timeout).
+On Wed, 12 Feb 2020 12:47:47 +0200, Mika Westerberg wrote:
+> On Wed, Feb 12, 2020 at 11:30:30AM +0100, Jean Delvare wrote:
+> > (The underlying question being: can I get rid of that ALIGN()
+> > altogether while fixing the gas->access_width misuse bug?)  
+> 
+> I think the ALIGN() was there just because I did not realize that
+> access_width is 3 and not 4 for 32-bit memory. So it is not needed.
+> 
+> I actually have a patch series that should fix this and the other issue
+> you found (I found a couple of spare cycles in the morning) so if you
+> don't mind I'll submit them soon.
 
-Reported-by: Jean Delvare <jdelvare@suse.de>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
----
- drivers/watchdog/wdat_wdt.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+Sure please do, I don't care about ownership, I only want these bugs to
+be fixed. I got myself side-tracked by another issue at work this
+morning.
 
-diff --git a/drivers/watchdog/wdat_wdt.c b/drivers/watchdog/wdat_wdt.c
-index 2132018f031d..7b0257163522 100644
---- a/drivers/watchdog/wdat_wdt.c
-+++ b/drivers/watchdog/wdat_wdt.c
-@@ -54,6 +54,13 @@ module_param(nowayout, bool, 0);
- MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started (default="
- 		 __MODULE_STRING(WATCHDOG_NOWAYOUT) ")");
- 
-+#define WDAT_DEFAULT_TIMEOUT	30
-+
-+static int timeout = WDAT_DEFAULT_TIMEOUT;
-+module_param(timeout, int, 0);
-+MODULE_PARM_DESC(timeout, "Watchdog timeout in seconds (default="
-+		 __MODULE_STRING(WDAT_DEFAULT_TIMEOUT) ")");
-+
- static int wdat_wdt_read(struct wdat_wdt *wdat,
- 	 const struct wdat_instruction *instr, u32 *value)
- {
-@@ -308,6 +315,7 @@ static int wdat_wdt_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	const struct acpi_wdat_entry *entries;
- 	const struct acpi_table_wdat *tbl;
-+	int default_timeout = timeout;
- 	struct wdat_wdt *wdat;
- 	struct resource *res;
- 	void __iomem **regs;
-@@ -438,6 +446,22 @@ static int wdat_wdt_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, wdat);
- 
-+	/*
-+	 * Set initial timeout so that userspace has time to configure
-+	 * the watchdog properly after it has opened the device. In some
-+	 * cases the BIOS default is too short and causes immediate reboot.
-+	 */
-+	default_timeout = timeout;
-+	if (timeout < wdat->wdd.min_hw_heartbeat_ms ||
-+	    timeout > wdat->wdd.max_hw_heartbeat_ms)
-+		default_timeout = WDAT_DEFAULT_TIMEOUT;
-+	else
-+		default_timeout = timeout;
-+
-+	ret = wdat_wdt_set_timeout(&wdat->wdd, timeout);
-+	if (ret)
-+		return ret;
-+
- 	watchdog_set_nowayout(&wdat->wdd, nowayout);
- 	return devm_watchdog_register_device(dev, &wdat->wdd);
- }
+I'll be happy to review your changes.
+
 -- 
-2.25.0
-
+Jean Delvare
+SUSE L3 Support
