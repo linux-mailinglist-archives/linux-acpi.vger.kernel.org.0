@@ -2,157 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF0D5159D65
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 00:40:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7B1715A06C
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2020 06:17:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728178AbgBKXi5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Feb 2020 18:38:57 -0500
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:15763 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728172AbgBKXi4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Feb 2020 18:38:56 -0500
-X-Originating-IP: 172.58.46.131
-Received: from localhost (unknown [172.58.46.131])
-        (Authenticated sender: josh@joshtriplett.org)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 845AC240003;
-        Tue, 11 Feb 2020 23:38:48 +0000 (UTC)
-Date:   Tue, 11 Feb 2020 15:38:06 -0800
-From:   Josh Triplett <josh@joshtriplett.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org
-Cc:     Arjan van de Ven <arjan@linux.intel.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] ACPI: Add new tiny-power-button driver to directly
- signal init
-Message-ID: <af419b2293c486b5cff6834770fc8e02cfea06c9.1581463668.git.josh@joshtriplett.org>
-References: <cover.1581463668.git.josh@joshtriplett.org>
+        id S1725812AbgBLFRP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Feb 2020 00:17:15 -0500
+Received: from mail-oi1-f181.google.com ([209.85.167.181]:37440 "EHLO
+        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725601AbgBLFRO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Feb 2020 00:17:14 -0500
+Received: by mail-oi1-f181.google.com with SMTP id q84so881445oic.4
+        for <linux-acpi@vger.kernel.org>; Tue, 11 Feb 2020 21:17:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lambdal-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=swj2e1unZxLTr+eU0S7w12ZleMVKRnLyFuIP1piSS8I=;
+        b=Eu8Jwz8tweAfLxp6xoPZfgE9THQgs4DJNn7wnaYMtugxlu505ZfPJ3pz5VMg5qLKaC
+         9VeRCjshOY23jCKCcAd+eVEMBFdCVVCfJEmdbxn9ikrdk+tRHGj5JEv8mukh9AOy3kCp
+         zDNwamsReN9LG+oaaVEwr/h2rM8GqQC0KfKTU2iO0k/DOcZRgYFTGMDiHZ9hQI5r5GsI
+         Rj+n8dblIV8XAZBFZw5mgLsBtek/krVVXSjP7izhE9NxwxxIS1YK8MZScVNtmxEjjySn
+         n799xyRJ5Xo+iOY1CFhbyAqnoZGSyBeB3/wmy80wwFvp+53uv+7+YvNrF1mRL0Uvi7it
+         u2Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=swj2e1unZxLTr+eU0S7w12ZleMVKRnLyFuIP1piSS8I=;
+        b=FMLfe6RL9GAvp8VOtCsZS9yTQuuo0y/LfBeZqQnR03MgSxeN3C+M0MaI0Rx53grFrh
+         OccVVz5X/hsBzMFimThdTB4rmiqc/iwsNrJnkY+r40vuSNK08cEsdks+/5i6KI+kf+XF
+         WlEGBh6fwfUuvil/YhTfJZgJnl/xN9j9NQB/e/jGb2e6DGd2WZRLStoXnI9E4zX/PCDa
+         rOXrXe8Wdf2whuDZ3Suk6beKj0SV3VeHwk+1iAXmPewQsSVvOpT/87fPSI0Jbo8ROXAk
+         CkeBZCNBzhoJo32zf0i7ujPku7+kmXJ53sfOy2kjy/1zFQ4Pf7LS1HY1KL250RC8RmtC
+         R9gg==
+X-Gm-Message-State: APjAAAXS5XuRGIDVqYmDDbbG/KJdHzF59gRDjFRZhKsGm8ASFVAO7tOw
+        vUP+ii+nQ3Aetv6Hq/DI4+fK6xoqk60=
+X-Google-Smtp-Source: APXvYqxi/NgsDLYK2/SMRqF+1b27DULShmfgn7/RR1WgMr8iPTvE+CAhzeOFNJhfEIIyYQGOxJfGQg==
+X-Received: by 2002:aca:530e:: with SMTP id h14mr5027806oib.105.1581484633975;
+        Tue, 11 Feb 2020 21:17:13 -0800 (PST)
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com. [209.85.210.44])
+        by smtp.gmail.com with ESMTPSA id f37sm2005124otb.33.2020.02.11.21.17.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Feb 2020 21:17:13 -0800 (PST)
+Received: by mail-ot1-f44.google.com with SMTP id 59so678889otp.12;
+        Tue, 11 Feb 2020 21:17:13 -0800 (PST)
+X-Received: by 2002:a9d:7a56:: with SMTP id z22mr7525771otm.201.1581484633007;
+ Tue, 11 Feb 2020 21:17:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1581463668.git.josh@joshtriplett.org>
+From:   Steven Clarkson <sc@lambdal.com>
+Date:   Tue, 11 Feb 2020 21:17:02 -0800
+X-Gmail-Original-Message-ID: <CAHKq8taawUbZWubQ8qzy05+qUKuCAYGy7kEZ-PkgPeFhode5gg@mail.gmail.com>
+Message-ID: <CAHKq8taawUbZWubQ8qzy05+qUKuCAYGy7kEZ-PkgPeFhode5gg@mail.gmail.com>
+Subject: Request to cherry pick 2b73ea379624 into 5.4.x and 5.5.x
+To:     stable@vger.kernel.org
+Cc:     linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Virtual machines often use an ACPI power button event to tell the
-machine to shut down gracefully.
+Greg,
 
-Provide an extremely lightweight "tiny power button" driver to handle
-this event by signaling init directly, rather than running a separate
-daemon (such as acpid or systemd-logind) that adds to startup time and
-VM image complexity.
+Commit 2b73ea379624 ("x86/boot: Handle malformed SRAT tables during
+early ACPI parsing") fixes a boot hang on some ASUS motherboards with
+an older BIOS. Could you pull this into 5.4.x and 5.5.x? Should cherry
+pick cleanly into both.
 
-The kernel configuration defines the default signal to send init, and
-userspace can change this signal via a module parameter.
+Thanks
 
-Suggested-by: "Rafael J. Wysocki" <rafael@kernel.org>
-Signed-off-by: Josh Triplett <josh@joshtriplett.org>
----
- drivers/acpi/Kconfig             | 24 +++++++++++++++++
- drivers/acpi/Makefile            |  1 +
- drivers/acpi/tiny-power-button.c | 46 ++++++++++++++++++++++++++++++++
- 3 files changed, 71 insertions(+)
- create mode 100644 drivers/acpi/tiny-power-button.c
-
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index cc57bab146b5..ce2730d61a8f 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -190,6 +190,30 @@ config ACPI_BUTTON
- 	  To compile this driver as a module, choose M here:
- 	  the module will be called button.
- 
-+config ACPI_TINY_POWER_BUTTON
-+	tristate "Tiny Power Button Driver"
-+	depends on !ACPI_BUTTON
-+	help
-+	  This driver provides a tiny alternative to the ACPI Button driver.
-+	  The tiny power button driver only handles the power button. Rather
-+	  than notifying userspace via the input layer or a netlink event, this
-+	  driver directly signals the init process to shut down.
-+
-+	  This driver is particularly suitable for cloud and VM environments,
-+	  which use a simulated power button to initiate a controlled poweroff,
-+	  but which may not want to run a separate userspace daemon to process
-+	  input events.
-+
-+config ACPI_TINY_POWER_BUTTON_SIGNAL
-+	int "Tiny Power Button Signal"
-+	depends on ACPI_TINY_POWER_BUTTON
-+	default 38
-+	help
-+	  Default signal to send to init in response to the power button.
-+
-+	  Likely values here include 38 (SIGRTMIN+4) to power off, or 2
-+	  (SIGINT) to simulate Ctrl+Alt+Del.
-+
- config ACPI_VIDEO
- 	tristate "Video"
- 	depends on X86 && BACKLIGHT_CLASS_DEVICE
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index 33fdaf67454e..e81e1ebbfb32 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -71,6 +71,7 @@ obj-$(CONFIG_ACPI_IPMI)		+= acpi_ipmi.o
- 
- obj-$(CONFIG_ACPI_AC) 		+= ac.o
- obj-$(CONFIG_ACPI_BUTTON)	+= button.o
-+obj-$(CONFIG_ACPI_TINY_POWER_BUTTON)	+= tiny-power-button.o
- obj-$(CONFIG_ACPI_FAN)		+= fan.o
- obj-$(CONFIG_ACPI_VIDEO)	+= video.o
- obj-$(CONFIG_ACPI_TAD)		+= acpi_tad.o
-diff --git a/drivers/acpi/tiny-power-button.c b/drivers/acpi/tiny-power-button.c
-new file mode 100644
-index 000000000000..6273d73c0b59
---- /dev/null
-+++ b/drivers/acpi/tiny-power-button.c
-@@ -0,0 +1,46 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+#include <linux/module.h>
-+#include <linux/sched/signal.h>
-+#include <linux/acpi.h>
-+#include <acpi/button.h>
-+
-+ACPI_MODULE_NAME("tiny-power-button");
-+MODULE_AUTHOR("Josh Triplett");
-+MODULE_DESCRIPTION("ACPI Tiny Power Button Driver");
-+MODULE_LICENSE("GPL");
-+
-+static int power_signal __read_mostly = CONFIG_ACPI_TINY_POWER_BUTTON_SIGNAL;
-+module_param(power_signal, int, 0644);
-+MODULE_PARM_DESC(power_signal, "Power button sends this signal to init");
-+
-+static const struct acpi_device_id tiny_power_button_device_ids[] = {
-+	{ ACPI_BUTTON_HID_POWER, 0 },
-+	{ ACPI_BUTTON_HID_POWERF, 0 },
-+	{ "", 0 },
-+};
-+MODULE_DEVICE_TABLE(acpi, tiny_power_button_device_ids);
-+
-+static int acpi_noop_add_remove(struct acpi_device *device)
-+{
-+	return 0;
-+}
-+
-+static void acpi_tiny_power_button_notify(struct acpi_device *device, u32 event)
-+{
-+	kill_cad_pid(power_signal, 1);
-+}
-+
-+static struct acpi_driver acpi_tiny_power_button_driver = {
-+	.name = "tiny-power-button",
-+	.class = "tiny-power-button",
-+	.ids = tiny_power_button_device_ids,
-+	.ops = {
-+		.add = acpi_noop_add_remove,
-+		.remove = acpi_noop_add_remove,
-+		.notify = acpi_tiny_power_button_notify,
-+	},
-+};
-+
-+module_driver(acpi_tiny_power_button_driver,
-+		acpi_bus_register_driver,
-+		acpi_bus_unregister_driver);
--- 
-2.25.0
-
+Steve
