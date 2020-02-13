@@ -2,39 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96E9A15C374
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Feb 2020 16:44:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D7F015C464
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Feb 2020 16:53:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387714AbgBMPl0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Feb 2020 10:41:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56152 "EHLO mail.kernel.org"
+        id S2387420AbgBMPqp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Feb 2020 10:46:45 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49298 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387725AbgBMP2e (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 13 Feb 2020 10:28:34 -0500
+        id S1729320AbgBMP1N (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 13 Feb 2020 10:27:13 -0500
 Received: from localhost (unknown [104.132.1.104])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AE4D42168B;
-        Thu, 13 Feb 2020 15:28:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C57D224670;
+        Thu, 13 Feb 2020 15:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581607713;
+        s=default; t=1581607632;
         bh=qNVJvkLk5QY4zMFf9zWqo7r205XJykyNObIRHrwIBPo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eSdhd21AsrVeBhBUaZ+REaI2tMFdnzhL7z43zMczyMMYYTx+/7hnyC7F2aH9Bx77R
-         w9nYGJ9S1BQbeVWQOlbBNxOZAQrIvcEALG6e2LvVrRSRhmfAWfWXz8s1v9HLdUtk0o
-         pqENeUCrUB1DNqxacNHEf8LLz1STEZ0xxhILv6FY=
+        b=I/RI49Fj0iePnzHFOd2elTDSeOXHDVFQ/YA8TQB1FVeMz0ExNwkBI8hmFYzWqcVTS
+         YKIgBuEU7kgdmWz+cfL6D3neYYVPpap7N6AjzG2bgQ3Z29AgQWa9TPAoShpYIVQQTl
+         rBWRcvsGBvZUi49UventhH9pm7sJqv54kRxL3NoQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Steven Clarkson <sc@lambdal.com>,
         Borislav Petkov <bp@suse.de>, linux-acpi@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.5 035/120] x86/boot: Handle malformed SRAT tables during early ACPI parsing
-Date:   Thu, 13 Feb 2020 07:20:31 -0800
-Message-Id: <20200213151913.733845018@linuxfoundation.org>
+Subject: [PATCH 5.4 34/96] x86/boot: Handle malformed SRAT tables during early ACPI parsing
+Date:   Thu, 13 Feb 2020 07:20:41 -0800
+Message-Id: <20200213151852.168079621@linuxfoundation.org>
 X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200213151901.039700531@linuxfoundation.org>
-References: <20200213151901.039700531@linuxfoundation.org>
+In-Reply-To: <20200213151839.156309910@linuxfoundation.org>
+References: <20200213151839.156309910@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
