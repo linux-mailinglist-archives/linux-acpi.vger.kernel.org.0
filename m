@@ -2,90 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AAEDB15F6D8
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2020 20:28:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34E2515F79C
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2020 21:21:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388133AbgBNT2y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Feb 2020 14:28:54 -0500
-Received: from a3.inai.de ([88.198.85.195]:45284 "EHLO a3.inai.de"
+        id S1729633AbgBNUVt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 14 Feb 2020 15:21:49 -0500
+Received: from mga02.intel.com ([134.134.136.20]:31163 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387576AbgBNT2x (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Feb 2020 14:28:53 -0500
-Received: by a3.inai.de (Postfix, from userid 25121)
-        id 224915872CEC1; Fri, 14 Feb 2020 20:28:52 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-        by a3.inai.de (Postfix) with ESMTP id 1E15560C55E44
-        for <linux-acpi@vger.kernel.org>; Fri, 14 Feb 2020 20:28:52 +0100 (CET)
-Date:   Fri, 14 Feb 2020 20:28:52 +0100 (CET)
-From:   Jan Engelhardt <jengelh@inai.de>
-To:     linux-acpi@vger.kernel.org
-Subject: Linux hangs at ACPI init on Medion P15648 MD63490
-Message-ID: <nycvar.YFH.7.76.2002141734590.24119@n3.vanv.qr>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        id S1728529AbgBNUVt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 14 Feb 2020 15:21:49 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Feb 2020 12:21:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,441,1574150400"; 
+   d="scan'208";a="223127865"
+Received: from orsmsx107.amr.corp.intel.com ([10.22.240.5])
+  by orsmga007.jf.intel.com with ESMTP; 14 Feb 2020 12:21:48 -0800
+Received: from orsmsx110.amr.corp.intel.com ([169.254.10.107]) by
+ ORSMSX107.amr.corp.intel.com ([169.254.1.106]) with mapi id 14.03.0439.000;
+ Fri, 14 Feb 2020 12:21:48 -0800
+From:   "Moore, Robert" <robert.moore@intel.com>
+To:     "Kaneda, Erik" <erik.kaneda@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+CC:     "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: RE: [PATCH] ACPICA: Fix a typo in acuuid.h
+Thread-Topic: [PATCH] ACPICA: Fix a typo in acuuid.h
+Thread-Index: AQHV4wBMHiM0+joAK0665+NbOcZNwKga+7yAgAB29oD//6/2AA==
+Date:   Fri, 14 Feb 2020 20:21:48 +0000
+Message-ID: <94F2FBAB4432B54E8AACC7DFDE6C92E3B96EA166@ORSMSX110.amr.corp.intel.com>
+References: <20200214063003.29741-1-christophe.jaillet@wanadoo.fr>
+ <2712088.SaWAGPlJqS@kreacher>
+ <BL0PR11MB29466C25466F5A88B4D4F5B9F0150@BL0PR11MB2946.namprd11.prod.outlook.com>
+In-Reply-To: <BL0PR11MB29466C25466F5A88B4D4F5B9F0150@BL0PR11MB2946.namprd11.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiM2ZkMjYzOTktMmRlOS00ZGYyLWFkMTEtNTlmMzc4ZTBhYjVlIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiOCsxbldrMEtsbkZCS2N6c2o4dXpvQ2ZWYXBERkdvb3hzTFRjeFwvdERKK1lnZjNESmZcLzNoZ29ObUt4emhYK0hQIn0=
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.139]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Greetings.
+Ok, got it.
+Thanks,
+Bob
+-
+
+-----Original Message-----
+From: Kaneda, Erik <erik.kaneda@intel.com> 
+Sent: Friday, February 14, 2020 9:08 AM
+To: Rafael J. Wysocki <rjw@rjwysocki.net>; Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: lenb@kernel.org; Moore, Robert <robert.moore@intel.com>; linux-acpi@vger.kernel.org; devel@acpica.org; linux-kernel@vger.kernel.org; kernel-janitors@vger.kernel.org
+Subject: RE: [PATCH] ACPICA: Fix a typo in acuuid.h
 
 
-I have a problem with a certain x86 laptop, and judging from the
-kernel's output, this looks very much like a broken ACPI table.
-Versions tried are 5.3.8 (Fedora31 liveimage), 5.5.2 (openSUSE
-Tumbleweed installer) and 5.6.0-rc1+
-(b19e8c68470385dd2c5440876591fddb02c8c402; self compile), all
-exhibiting the same hang.
 
-The last messages emitted by 5.6.0-rc1+ are:
+> -----Original Message-----
+> From: linux-acpi-owner@vger.kernel.org <linux-acpi- 
+> owner@vger.kernel.org> On Behalf Of Rafael J. Wysocki
+> Sent: Friday, February 14, 2020 2:02 AM
+> To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>; Kaneda, Erik 
+> <erik.kaneda@intel.com>
+> Cc: lenb@kernel.org; Moore, Robert <robert.moore@intel.com>; linux- 
+> acpi@vger.kernel.org; devel@acpica.org; linux-kernel@vger.kernel.org; 
+> kernel-janitors@vger.kernel.org
+> Subject: Re: [PATCH] ACPICA: Fix a typo in acuuid.h
+> 
+> On Friday, February 14, 2020 7:30:03 AM CET Christophe JAILLET wrote:
+> > The comment related to the ending of the include guard should be 
+> > related to __ACUUID_H__, not __AUUID_H__ (i.e. 'C' is missing).
+> >
+> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> 
+> Erik, please route this through the upstream.
 
-	ACPI: 11 ACPI AML tables successfully acquired and loaded
-	ACPI: EC: EC started
-	ACPI: EC: interrupt blocked
-	ACPI: \: Used as first EC
-	ACPI: \: GPE=0x10, IRQ=-1, EC_CMD/EC_SC=0x66, EC_DATA=0x62
-	ACPI: EC: Boot ECDT EC used to handle transactions
-	<hang>
+Thanks for your patch!
 
-The full boot procedure is made available at
-http://inai.de/files/m921.mp4 [79MB].
-Curiously, FreeBSD 12.1 can be booted without issues, so either they
-already workaround the issue, or don't trigger it in the first place.
+I'll add it to our next release (in March)
 
-After about 20 minutes, the kernel issues a stack trace.
-http://inai.de/files/m922.mp4 [4.2M]; this seems to repeat every 
-20 minutes:
+Erik
+> 
+> Thanks!
+> 
+> > ---
+> >  include/acpi/acuuid.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/include/acpi/acuuid.h b/include/acpi/acuuid.h index
+> > 9dd4689a39cf..9e1367b19069 100644
+> > --- a/include/acpi/acuuid.h
+> > +++ b/include/acpi/acuuid.h
+> > @@ -57,4 +57,4 @@
+> >  #define UUID_THERMAL_EXTENSIONS         "14d399cd-7a27-4b18-8fb4-
+> 7cb7b9f4e500"
+> >  #define UUID_DEVICE_PROPERTIES          "daffd814-6eba-4d8c-8a91-
+> bc9bbf4aa301"
+> >
+> > -#endif/* __AUUID_H__ */
+> > +#endif/* __ACUUID_H__ */
+> >
+> 
+> 
+> 
 
-	Task swapper blocked for more than 491 seconds.
-	schedule
-	schedule_timeout
-	__down_timeout
-	down_timeout
-	acpi_os_wait_semaphore
-	acpi_ex_system_wait_semaphore
-	acpi_ev_acquire_global_lock
-	acpi_ex_acquire_mutex_object
-	acpi_ex_acquire_global_lock
-	acpi_ex_write_data_to_field
-	acpi_ex_store_object_to_node
-	acpi_ex_store
-	acpi_ex_opcode_1A_1T_1R
-	acpi_ds_exec_end_op
-	acpi_ps_parse_loop
-	[a few frames more]
 
-For comparison, a (vastly) different laptop with a proper firmware,
-the EC messages go like this:
-
-	<Fujitsu U728 for comparison>
-	ACPI: EC: EC started
-	ACPI: EC: interrupt blocked
-	ACPI: \_SB_.PCI0.LPCB.EC__: Used as first EC
-	ACPI: \_SB_.PCI0.LPCB.EC__: GPE=0x22, EC_CMD/EC_SC=0x66, EC_DATA=0x62
-	ACPI: \_SB_.PCI0.LPCB.EC__: Boot DSDT EC used to handle transactions
-	ACPI: Interpreter enabled
-
-It kind of makes sense that, if "\" is seen as an EC in the Medion that 
-it is not going to work.
