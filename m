@@ -2,94 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17D0615E646
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2020 17:47:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E059715E6EB
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2020 17:51:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392950AbgBNQqg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Feb 2020 11:46:36 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56092 "EHLO mail.kernel.org"
+        id S2405128AbgBNQUI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Feb 2020 11:20:08 -0500
+Received: from foss.arm.com ([217.140.110.172]:37688 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392947AbgBNQV3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:21:29 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EF48A246BA;
-        Fri, 14 Feb 2020 16:21:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581697288;
-        bh=ftB5Z6b5r/RLIwz3EN0MwqoxY3tOGyZahjT6k1BwxAA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t+n+GYrJHJk3n83cynVFggCFQJya0hLFoG6ZVAn1gUQwjPGNHZQ5L2vBOQNBiNf0k
-         ZxdulhorJrp6p8twNUxEHu4BWkZRZsBrwnRIoqXl7EORNaGTWvaZbdVUGFZiSMnF1l
-         ArSh4rz2mKxkNditVTziWKcIejyM0xWSRkPyYLNI=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Zhengyuan Liu <liuzhengyuan@kylinos.cn>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org
-Subject: [PATCH AUTOSEL 4.9 005/141] tools/power/acpi: fix compilation error
-Date:   Fri, 14 Feb 2020 11:19:05 -0500
-Message-Id: <20200214162122.19794-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200214162122.19794-1-sashal@kernel.org>
-References: <20200214162122.19794-1-sashal@kernel.org>
+        id S2405122AbgBNQUH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:20:07 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E7F21328;
+        Fri, 14 Feb 2020 08:20:06 -0800 (PST)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9512D3F68E;
+        Fri, 14 Feb 2020 08:20:03 -0800 (PST)
+Date:   Fri, 14 Feb 2020 16:19:57 +0000
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Pankaj Bansal <pankaj.bansal@nxp.com>
+Cc:     Marc Zyngier <maz@kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Makarand Pawagi <makarand.pawagi@nxp.com>,
+        Calvin Johnson <calvin.johnson@nxp.com>,
+        "stuyoder@gmail.com" <stuyoder@gmail.com>,
+        "nleeder@codeaurora.org" <nleeder@codeaurora.org>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Will Deacon <will@kernel.org>,
+        "jon@solid-run.com" <jon@solid-run.com>,
+        Russell King <linux@armlinux.org.uk>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andy Wang <Andy.Wang@arm.com>, Varun Sethi <V.Sethi@nxp.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Paul Yang <Paul.Yang@arm.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Shameerali Kolothum Thodi 
+        <shameerali.kolothum.thodi@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>
+Subject: Re: [EXT] Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
+Message-ID: <20200214161957.GA27513@e121166-lin.cambridge.arm.com>
+References: <1580198925-50411-1-git-send-email-makarand.pawagi@nxp.com>
+ <20200128110916.GA491@e121166-lin.cambridge.arm.com>
+ <DB8PR04MB7164DDF48480956F05886DABEB070@DB8PR04MB7164.eurprd04.prod.outlook.com>
+ <12531d6c569c7e14dffe8e288d9f4a0b@kernel.org>
+ <CAKv+Gu8uaJBmy5wDgk=uzcmC4vkEyOjW=JRvhpjfsdh-HcOCLg@mail.gmail.com>
+ <VI1PR0401MB249622CFA9B213632F1DE955F1150@VI1PR0401MB2496.eurprd04.prod.outlook.com>
+ <7349fa0e6d62a3e0d0e540f2e17646e0@kernel.org>
+ <VI1PR0401MB2496373E0C6D1097F22B3026F1150@VI1PR0401MB2496.eurprd04.prod.outlook.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <VI1PR0401MB2496373E0C6D1097F22B3026F1150@VI1PR0401MB2496.eurprd04.prod.outlook.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Zhengyuan Liu <liuzhengyuan@kylinos.cn>
+On Fri, Feb 14, 2020 at 03:58:14PM +0000, Pankaj Bansal wrote:
 
-[ Upstream commit 1985f8c7f9a42a651a9750d6fcadc74336d182df ]
+[...]
 
-If we compile tools/acpi target in the top source directory, we'd get a
-compilation error showing as bellow:
+> > Why should the device know about its own ID? That's a bus/interconnect thing.
+> > And nothing should be passed *to* IORT. IORT is the source.
+> 
+> IORT is translation between Input IDs <-> Output IDs. The Input ID is still expected to be passed to parse IORT table.
 
-	# make tools/acpi
-	  DESCEND  power/acpi
-	  DESCEND  tools/acpidbg
-	  CC       tools/acpidbg/acpidbg.o
-	Assembler messages:
-	Fatal error: can't create /home/lzy/kernel-upstream/power/acpi/\
-			tools/acpidbg/acpidbg.o: No such file or directory
-	../../Makefile.rules:26: recipe for target '/home/lzy/kernel-upstream/\
-			power/acpi/tools/acpidbg/acpidbg.o' failed
-	make[3]: *** [/home/lzy/kernel-upstream//power/acpi/tools/acpidbg/\
-			acpidbg.o] Error 1
-	Makefile:19: recipe for target 'acpidbg' failed
-	make[2]: *** [acpidbg] Error 2
-	Makefile:54: recipe for target 'acpi' failed
-	make[1]: *** [acpi] Error 2
-	Makefile:1607: recipe for target 'tools/acpi' failed
-	make: *** [tools/acpi] Error 2
+Named components use an array of single mappings (as in entries with
+single mapping flag set) - Input ID is irrelevant.
 
-Fixes: d5a4b1a540b8 ("tools/power/acpi: Remove direct kernel source include reference")
-Signed-off-by: Zhengyuan Liu <liuzhengyuan@kylinos.cn>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- tools/power/acpi/Makefile.config | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Not sure what your named component is though and what you want to do
+with it, the fact that IORT allows mapping for named components do
+not necessarily mean that it can describe what your system really is,
+on that you need to elaborate for us to be able to help.
 
-diff --git a/tools/power/acpi/Makefile.config b/tools/power/acpi/Makefile.config
-index a1883bbb01447..fb5559f9819af 100644
---- a/tools/power/acpi/Makefile.config
-+++ b/tools/power/acpi/Makefile.config
-@@ -18,7 +18,7 @@ include $(srctree)/../../scripts/Makefile.include
- 
- OUTPUT=$(srctree)/
- ifeq ("$(origin O)", "command line")
--	OUTPUT := $(O)/power/acpi/
-+	OUTPUT := $(O)/tools/power/acpi/
- endif
- #$(info Determined 'OUTPUT' to be $(OUTPUT))
- 
--- 
-2.20.1
-
+Lorenzo
