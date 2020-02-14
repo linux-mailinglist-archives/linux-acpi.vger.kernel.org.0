@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20BC915E248
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2020 17:23:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EA4515E743
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2020 17:53:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405544AbgBNQWv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Feb 2020 11:22:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58666 "EHLO mail.kernel.org"
+        id S2404939AbgBNQTG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Feb 2020 11:19:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52066 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2393239AbgBNQWs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:22:48 -0500
+        id S2404433AbgBNQTF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:19:05 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0FDB724761;
-        Fri, 14 Feb 2020 16:22:46 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 594C624712;
+        Fri, 14 Feb 2020 16:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581697368;
-        bh=bX4UW4bwdLIwbssVAWjQ1Qt3M8b/dHtiBBmgjZj3URA=;
+        s=default; t=1581697144;
+        bh=yeiinYy8/oYoFOzhnRQJqP1ogz6RwTKcKCi2FWoXwhw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gPHv2Xm/eOTc0jpju0kffp9jrNno5zevMejwVeCkPHvdlbOCv4zyLpnhFga00NlrO
-         6ogA0DpluolggeArPNNQtFlshjILZ27eok1TGVL+voMW+EAKyae9I7vL37mWqZlEjM
-         xb5LKPu0gVXZ/l0MIXWHpQZ/DtViSMRn3nk+zyrw=
+        b=aQEm0O3+T5VmEdmThtkhe2E+47k2NBry9R4VVr3ZAI2aLrm4NJ+qBQEheFPbJ4bZF
+         gVHmn+7LVu/KOWuXX3Okq6y28bd0BqNzSdImmXusz2UQe5fhvjZf61CA5TnJlCLJ/I
+         SlHx+Y+Xj42WVsVnDK6Itk8w4Q384tY0U0RGoXn8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Erik Kaneda <erik.kaneda@intel.com>,
@@ -31,12 +31,12 @@ Cc:     Erik Kaneda <erik.kaneda@intel.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
         devel@acpica.org
-Subject: [PATCH AUTOSEL 4.9 067/141] ACPICA: Disassembler: create buffer fields in ACPI_PARSE_LOAD_PASS1
-Date:   Fri, 14 Feb 2020 11:20:07 -0500
-Message-Id: <20200214162122.19794-67-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 084/186] ACPICA: Disassembler: create buffer fields in ACPI_PARSE_LOAD_PASS1
+Date:   Fri, 14 Feb 2020 11:15:33 -0500
+Message-Id: <20200214161715.18113-84-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200214162122.19794-1-sashal@kernel.org>
-References: <20200214162122.19794-1-sashal@kernel.org>
+In-Reply-To: <20200214161715.18113-1-sashal@kernel.org>
+References: <20200214161715.18113-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -80,10 +80,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 22 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/acpi/acpica/dsfield.c b/drivers/acpi/acpica/dsfield.c
-index 6a4b603d0e834..10bbf6ca082ab 100644
+index 7bcf5f5ea0297..8df4a49a99a6b 100644
 --- a/drivers/acpi/acpica/dsfield.c
 +++ b/drivers/acpi/acpica/dsfield.c
-@@ -272,7 +272,7 @@ acpi_ds_create_buffer_field(union acpi_parse_object *op,
+@@ -273,7 +273,7 @@ acpi_ds_create_buffer_field(union acpi_parse_object *op,
   * FUNCTION:    acpi_ds_get_field_names
   *
   * PARAMETERS:  info            - create_field info structure
@@ -93,10 +93,10 @@ index 6a4b603d0e834..10bbf6ca082ab 100644
   *
   * RETURN:      Status
 diff --git a/drivers/acpi/acpica/dswload.c b/drivers/acpi/acpica/dswload.c
-index fd34040d4f44a..9c41d2153d0f2 100644
+index eaa859a89702a..1d82e1419397e 100644
 --- a/drivers/acpi/acpica/dswload.c
 +++ b/drivers/acpi/acpica/dswload.c
-@@ -440,6 +440,27 @@ acpi_status acpi_ds_load1_end_op(struct acpi_walk_state *walk_state)
+@@ -444,6 +444,27 @@ acpi_status acpi_ds_load1_end_op(struct acpi_walk_state *walk_state)
  	ACPI_DEBUG_PRINT((ACPI_DB_DISPATCH, "Op=%p State=%p\n", op,
  			  walk_state));
  
