@@ -2,186 +2,201 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6AEF15E451
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2020 17:35:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 876C915EBFB
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2020 18:24:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406610AbgBNQfQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Feb 2020 11:35:16 -0500
-Received: from mail-db8eur05on2058.outbound.protection.outlook.com ([40.107.20.58]:36173
-        "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2405869AbgBNQfP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:35:15 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PqNugZmi2Q2vZfb1QtvNc35/bs+BYqlobyBaz/fTTcQWN5jJzpRJzoYry8SE1UUYrW4HH6SnKGGmedX00DkbNJx39R+L0bAmL1L0GUzGK7qCxh8IJyCKOCyCQd2lSwid0VhaOz0jyeezy0tHKGPow+9np3YnJwQK6J1gmaDcmLe4DQY7bdPFOA7PrTEpVZAUfXZ4KzZdlzeWZ83POvePD/tpD7JLCW4khc7DWqwxI/Ddu3cD5a0x3gyfXeiEOX5y2DTLxwx9jU//sEvGAWM5Ne4dxYdPcq1RfFBL6C30dpzAQYyEB6iGk69mzi1dvh9J+jTw7jeu7DLaCJScMod8Sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b2kN3QfQUhxZgkhGzcKsQOEtUmZa44QdzyLpV9NnSac=;
- b=TFrwp/D5tNaOJcy9861Vp7Xkg5KhrbLYsrz1VXJX3GVhHJA3YMzYHToBMCqmwkdhZalSDFrLTfrhhgG2vATBU2DMRViIZ56W+nndYHbb88Dq9e6LOeP+Wg26CbTImqFQcik1Cs8NtAYnXWPjgMnWZyasaf4Fnmnb+hmQhUm3JI+0stThJET/NR9kkP7V7a60WJc+/7LP+E+sVJtj3/qCZ8l3xXxAe0KlYstistqgsI/MmqTdUk+2bvMKrcDrBPaRzkF/xc44ItPJ2YfTktFf+TzRQYv58W23JvEqmkRz46X3bGSKQeGOTdI1axP2HyMtH2sbKpgAeLANuCuZ1Foyuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b2kN3QfQUhxZgkhGzcKsQOEtUmZa44QdzyLpV9NnSac=;
- b=NCcxuzNLAexlyVcQfbTVIky+E2SKeIB0vx4yXjgQW3Ga6xroEIig5WcjNNlWZuCHaI7fhtllaua7PUucEXdkZzzUZ3DFKp8t11Wf4pHu3Epbh0tdYMB5d/ydZvRjseEe/bWwrMk1uSk49JZpWSBOvY1AhsMf4Uj75+25juPcVhA=
-Received: from VI1PR0401MB2496.eurprd04.prod.outlook.com (10.168.65.10) by
- VI1PR0401MB2639.eurprd04.prod.outlook.com (10.168.66.11) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2707.25; Fri, 14 Feb 2020 16:35:10 +0000
-Received: from VI1PR0401MB2496.eurprd04.prod.outlook.com
- ([fe80::196a:28a9:bb9:2fae]) by VI1PR0401MB2496.eurprd04.prod.outlook.com
- ([fe80::196a:28a9:bb9:2fae%9]) with mapi id 15.20.2729.025; Fri, 14 Feb 2020
- 16:35:10 +0000
-From:   Pankaj Bansal <pankaj.bansal@nxp.com>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-CC:     Marc Zyngier <maz@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        Calvin Johnson <calvin.johnson@nxp.com>,
-        "stuyoder@gmail.com" <stuyoder@gmail.com>,
-        "nleeder@codeaurora.org" <nleeder@codeaurora.org>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
+        id S2391232AbgBNQJR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Feb 2020 11:09:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33586 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390090AbgBNQJQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:09:16 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BD36D24694;
+        Fri, 14 Feb 2020 16:09:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1581696556;
+        bh=JFmU9L5DKs2efaKZkAdEWbq9vodAIhVGttA8t5P2wVI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=AFNfTmk5OzeDi88VV6+MH2eXwchC26GE1RTIXcS49HF3Oicilc+zJGQb2XeNw2WTb
+         BBvie9FibnMmZfeZPWkrXxAf6QR1si0mEv7K6Ru7E+cAi+LH/miIUmQisCGQ7zSM91
+         bl13TfWuTXNPZ6991QGZarKiuh2rnhff6EravLd0=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Hanjun Guo <guohanjun@huawei.com>,
+        Pankaj Bansal <pankaj.bansal@nxp.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Will Deacon <will@kernel.org>,
-        "jon@solid-run.com" <jon@solid-run.com>,
-        Russell King <linux@armlinux.org.uk>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andy Wang <Andy.Wang@arm.com>, Varun Sethi <V.Sethi@nxp.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Paul Yang <Paul.Yang@arm.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Shameerali Kolothum Thodi 
-        <shameerali.kolothum.thodi@huawei.com>,
         Sudeep Holla <sudeep.holla@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>
-Subject: RE: [EXT] Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
-Thread-Topic: [EXT] Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
-Thread-Index: AQHV1bJZgaFB40NXxUCtFFLRVXyi06f/610AgAStpQCAAAiuAIAAD1yAgBYviuCAABITAIAAAFRwgAAG0ICAAAEwoA==
-Date:   Fri, 14 Feb 2020 16:35:10 +0000
-Message-ID: <VI1PR0401MB2496800C88A3A2CF912959E6F1150@VI1PR0401MB2496.eurprd04.prod.outlook.com>
-References: <1580198925-50411-1-git-send-email-makarand.pawagi@nxp.com>
- <20200128110916.GA491@e121166-lin.cambridge.arm.com>
- <DB8PR04MB7164DDF48480956F05886DABEB070@DB8PR04MB7164.eurprd04.prod.outlook.com>
- <12531d6c569c7e14dffe8e288d9f4a0b@kernel.org>
- <CAKv+Gu8uaJBmy5wDgk=uzcmC4vkEyOjW=JRvhpjfsdh-HcOCLg@mail.gmail.com>
- <VI1PR0401MB249622CFA9B213632F1DE955F1150@VI1PR0401MB2496.eurprd04.prod.outlook.com>
- <7349fa0e6d62a3e0d0e540f2e17646e0@kernel.org>
- <VI1PR0401MB2496373E0C6D1097F22B3026F1150@VI1PR0401MB2496.eurprd04.prod.outlook.com>
- <20200214161957.GA27513@e121166-lin.cambridge.arm.com>
-In-Reply-To: <20200214161957.GA27513@e121166-lin.cambridge.arm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pankaj.bansal@nxp.com; 
-x-originating-ip: [49.36.135.121]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 6e1797b2-6528-425f-24c8-08d7b16bdbdf
-x-ms-traffictypediagnostic: VI1PR0401MB2639:|VI1PR0401MB2639:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR0401MB26390DD1BE89EDA895A2B72AF1150@VI1PR0401MB2639.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 03137AC81E
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(366004)(396003)(39860400002)(376002)(346002)(136003)(189003)(199004)(44832011)(316002)(55016002)(66446008)(86362001)(5660300002)(53546011)(6916009)(66476007)(26005)(6506007)(76116006)(66946007)(478600001)(54906003)(966005)(66556008)(64756008)(7696005)(8936002)(33656002)(7416002)(52536014)(81156014)(186003)(8676002)(2906002)(4326008)(71200400001)(9686003)(81166006);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR0401MB2639;H:VI1PR0401MB2496.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: zQbBSiKy6Z+RKJBoqQZL2+9qhliT9jAjsjfnBl7Cn9vEFpFYhy4EbLoTBAVF3gZa9CFjVz97bxSjEUyfyNmbHVIOvH3jnuQN5+yyRopSVZ8VTREBEQIhBgcUMrvCtLDa42qI1dJW6PjxSnZuqxmG0vesX5YGDim2tXSUqfE0esH+Zpwl0Cj6CaVZH9Vsfx/Vo6jGVydfhQR8HBkHJhtBrp4hxuVciEDrW314SbxpF0isrOAx8gLQAGOFXMwcNW6bwysVaWwh8Jwvv+uqt9HuZEPjYojRgQpGiF0PWOBDw4GKtmGifBY8/rUIqxYIv1J4g3s1QqBw1WF7YBoAHrqArYuYiCZ5Zsv8eGVvZUPKPj0FkQkcJZ+DGl3Rwn8WFSDQwAuTPz8wfjhf8hGPDywxc0sY9bDzqJzVlk3EgkGQX5NrL8tD12NnKJf4qd2DGsj6M+VfOWpFyayn/eOVcV8wiNMjHXLW+U53AyXBuBeGrYPxVOmL1znZ6oRKw9ro7QIGgAXLFlpWQsdpsWOD47aqzw==
-x-ms-exchange-antispam-messagedata: xFEKZHxu/6MtRhbutzPDO74S5Zc6ENV9FRZFLFUqsnl2w7vpmKE0yRcPSQ++oNZAX7Ei9CpxkIQ6ZWAGj1HPBdUo2rAqHsKxidsZ/vJB0ovDaAfBJX6zb1kGG0O9GuagAejyy41p8bKqMnFSx35S6g==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.4 347/459] ACPI/IORT: Fix 'Number of IDs' handling in iort_id_map()
+Date:   Fri, 14 Feb 2020 10:59:57 -0500
+Message-Id: <20200214160149.11681-347-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200214160149.11681-1-sashal@kernel.org>
+References: <20200214160149.11681-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6e1797b2-6528-425f-24c8-08d7b16bdbdf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Feb 2020 16:35:10.2016
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: OyzKbye/g6GQkpQJHYBuyYlY9SrxaicFEmKN138J2q73l0XpC8RMUFk3XbJ0rM0aIAmlhDoaMyxH9udusjpjng==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0401MB2639
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+From: Hanjun Guo <guohanjun@huawei.com>
 
+[ Upstream commit 3c23b83a88d00383e1d498cfa515249aa2fe0238 ]
 
-> -----Original Message-----
-> From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> Sent: Friday, February 14, 2020 9:50 PM
-> To: Pankaj Bansal <pankaj.bansal@nxp.com>
-> Cc: Marc Zyngier <maz@kernel.org>; Ard Biesheuvel
-> <ard.biesheuvel@linaro.org>; Makarand Pawagi <makarand.pawagi@nxp.com>;
-> Calvin Johnson <calvin.johnson@nxp.com>; stuyoder@gmail.com;
-> nleeder@codeaurora.org; Ioana Ciornei <ioana.ciornei@nxp.com>; Cristi
-> Sovaiala <cristian.sovaiala@nxp.com>; Hanjun Guo <guohanjun@huawei.com>;
-> Will Deacon <will@kernel.org>; jon@solid-run.com; Russell King
-> <linux@armlinux.org.uk>; ACPI Devel Maling List <linux-acpi@vger.kernel.o=
-rg>;
-> Len Brown <lenb@kernel.org>; Jason Cooper <jason@lakedaemon.net>; Andy
-> Wang <Andy.Wang@arm.com>; Varun Sethi <V.Sethi@nxp.com>; Thomas
-> Gleixner <tglx@linutronix.de>; linux-arm-kernel <linux-arm-
-> kernel@lists.infradead.org>; Laurentiu Tudor <laurentiu.tudor@nxp.com>; P=
-aul
-> Yang <Paul.Yang@arm.com>; netdev@vger.kernel.org; Rafael J. Wysocki
-> <rjw@rjwysocki.net>; Linux Kernel Mailing List <linux-kernel@vger.kernel.=
-org>;
-> Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>;
-> Sudeep Holla <sudeep.holla@arm.com>; Robin Murphy
-> <robin.murphy@arm.com>
-> Subject: Re: [EXT] Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
->=20
-> On Fri, Feb 14, 2020 at 03:58:14PM +0000, Pankaj Bansal wrote:
->=20
-> [...]
->=20
-> > > Why should the device know about its own ID? That's a bus/interconnec=
-t
-> thing.
-> > > And nothing should be passed *to* IORT. IORT is the source.
-> >
-> > IORT is translation between Input IDs <-> Output IDs. The Input ID is s=
-till
-> expected to be passed to parse IORT table.
->=20
-> Named components use an array of single mappings (as in entries with sing=
-le
-> mapping flag set) - Input ID is irrelevant.
->=20
-> Not sure what your named component is though and what you want to do with
-> it, the fact that IORT allows mapping for named components do not necessa=
-rily
-> mean that it can describe what your system really is, on that you need to
-> elaborate for us to be able to help.
+The IORT specification [0] (Section 3, table 4, page 9) defines the
+'Number of IDs' as 'The number of IDs in the range minus one'.
 
-Details about MC bus can be read from here:
-https://elixir.bootlin.com/linux/latest/source/Documentation/networking/dev=
-ice_drivers/freescale/dpaa2/overview.rst#L324
+However, the IORT ID mapping function iort_id_map() treats the 'Number
+of IDs' field as if it were the full IDs mapping count, with the
+following check in place to detect out of boundary input IDs:
 
-As stated above, in Linux MC is a bus (just like PCI bus, AMBA bus etc)
-There can be multiple devices attached to this bus. Moreover, we can dynami=
-cally create/destroy these devices.
-Now, we want to represent this BUS (not individual devices connected to bus=
-) in IORT table.
-The only possible way right now we see is that we describe it as Named comp=
-onents having a pool of ID mappings.
-As and when devices are created and attached to bus, we sift through this p=
-ool to correctly determine the output ID for the device.
-Now the input ID that we provide, can come from device itself.
-Then we can use the Platform MSI framework for MC bus devices.
+InputID >= Input base + Number of IDs
 
->=20
-> Lorenzo
+This check is flawed in that it considers the 'Number of IDs' field as
+the full number of IDs mapping and disregards the 'minus one' from
+the IDs count.
+
+The correct check in iort_id_map() should be implemented as:
+
+InputID > Input base + Number of IDs
+
+this implements the specification correctly but unfortunately it breaks
+existing firmwares that erroneously set the 'Number of IDs' as the full
+IDs mapping count rather than IDs mapping count minus one.
+
+e.g.
+
+PCI hostbridge mapping entry 1:
+Input base:  0x1000
+ID Count:    0x100
+Output base: 0x1000
+Output reference: 0xC4  //ITS reference
+
+PCI hostbridge mapping entry 2:
+Input base:  0x1100
+ID Count:    0x100
+Output base: 0x2000
+Output reference: 0xD4  //ITS reference
+
+Two mapping entries which the second entry's Input base = the first
+entry's Input base + ID count, so for InputID 0x1100 and with the
+correct InputID check in place in iort_id_map() the kernel would map
+the InputID to ITS 0xC4 not 0xD4 as it would be expected.
+
+Therefore, to keep supporting existing flawed firmwares, introduce a
+workaround that instructs the kernel to use the old InputID range check
+logic in iort_id_map(), so that we can support both firmwares written
+with the flawed 'Number of IDs' logic and the correct one as defined in
+the specifications.
+
+[0]: http://infocenter.arm.com/help/topic/com.arm.doc.den0049d/DEN0049D_IO_Remapping_Table.pdf
+
+Reported-by: Pankaj Bansal <pankaj.bansal@nxp.com>
+Link: https://lore.kernel.org/linux-acpi/20191215203303.29811-1-pankaj.bansal@nxp.com/
+Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
+Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc: Pankaj Bansal <pankaj.bansal@nxp.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/arm64/iort.c | 57 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 55 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 5a7551d060f25..161b609e4cdfb 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -298,6 +298,59 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
+ 	return status;
+ }
+ 
++struct iort_workaround_oem_info {
++	char oem_id[ACPI_OEM_ID_SIZE + 1];
++	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
++	u32 oem_revision;
++};
++
++static bool apply_id_count_workaround;
++
++static struct iort_workaround_oem_info wa_info[] __initdata = {
++	{
++		.oem_id		= "HISI  ",
++		.oem_table_id	= "HIP07   ",
++		.oem_revision	= 0,
++	}, {
++		.oem_id		= "HISI  ",
++		.oem_table_id	= "HIP08   ",
++		.oem_revision	= 0,
++	}
++};
++
++static void __init
++iort_check_id_count_workaround(struct acpi_table_header *tbl)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
++		if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
++		    !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
++		    wa_info[i].oem_revision == tbl->oem_revision) {
++			apply_id_count_workaround = true;
++			pr_warn(FW_BUG "ID count for ID mapping entry is wrong, applying workaround\n");
++			break;
++		}
++	}
++}
++
++static inline u32 iort_get_map_max(struct acpi_iort_id_mapping *map)
++{
++	u32 map_max = map->input_base + map->id_count;
++
++	/*
++	 * The IORT specification revision D (Section 3, table 4, page 9) says
++	 * Number of IDs = The number of IDs in the range minus one, but the
++	 * IORT code ignored the "minus one", and some firmware did that too,
++	 * so apply a workaround here to keep compatible with both the spec
++	 * compliant and non-spec compliant firmwares.
++	 */
++	if (apply_id_count_workaround)
++		map_max--;
++
++	return map_max;
++}
++
+ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
+ 		       u32 *rid_out)
+ {
+@@ -314,8 +367,7 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
+ 		return -ENXIO;
+ 	}
+ 
+-	if (rid_in < map->input_base ||
+-	    (rid_in >= map->input_base + map->id_count))
++	if (rid_in < map->input_base || rid_in > iort_get_map_max(map))
+ 		return -ENXIO;
+ 
+ 	*rid_out = map->output_base + (rid_in - map->input_base);
+@@ -1637,5 +1689,6 @@ void __init acpi_iort_init(void)
+ 		return;
+ 	}
+ 
++	iort_check_id_count_workaround(iort_table);
+ 	iort_init_platform_devices();
+ }
+-- 
+2.20.1
+
