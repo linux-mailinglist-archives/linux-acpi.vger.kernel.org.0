@@ -2,39 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B69E915E12F
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2020 17:17:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20BC915E248
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2020 17:23:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404448AbgBNQR1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Feb 2020 11:17:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48724 "EHLO mail.kernel.org"
+        id S2405544AbgBNQWv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Feb 2020 11:22:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58666 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404442AbgBNQR0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:17:26 -0500
+        id S2393239AbgBNQWs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:22:48 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D2968246EA;
-        Fri, 14 Feb 2020 16:17:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0FDB724761;
+        Fri, 14 Feb 2020 16:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581697045;
-        bh=PMSX/tFOGngG/68Yc2H6qa4dqSV6/a54J+KGhwu72ZA=;
+        s=default; t=1581697368;
+        bh=bX4UW4bwdLIwbssVAWjQ1Qt3M8b/dHtiBBmgjZj3URA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tkPtqW1TD7chSDR3BABcJYzPpdD9k0qxnA5oGX8htG98GuWROZw/i2flOrS65RdUZ
-         lhorkt6O+/3epb55IWvMGbDngcXidpChGFzyt85/MJaaY3MmbY8SV20RluayCkgs1/
-         jrry5zCFTyqAiMXdV9zWb73MfVcaF4JuzBETzjl0=
+        b=gPHv2Xm/eOTc0jpju0kffp9jrNno5zevMejwVeCkPHvdlbOCv4zyLpnhFga00NlrO
+         6ogA0DpluolggeArPNNQtFlshjILZ27eok1TGVL+voMW+EAKyae9I7vL37mWqZlEjM
+         xb5LKPu0gVXZ/l0MIXWHpQZ/DtViSMRn3nk+zyrw=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Zhengyuan Liu <liuzhengyuan@kylinos.cn>,
+Cc:     Erik Kaneda <erik.kaneda@intel.com>,
+        Elia Geretto <elia.f.geretto@gmail.com>,
+        Bob Moore <robert.moore@intel.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
         devel@acpica.org
-Subject: [PATCH AUTOSEL 4.14 007/186] tools/power/acpi: fix compilation error
-Date:   Fri, 14 Feb 2020 11:14:16 -0500
-Message-Id: <20200214161715.18113-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 067/141] ACPICA: Disassembler: create buffer fields in ACPI_PARSE_LOAD_PASS1
+Date:   Fri, 14 Feb 2020 11:20:07 -0500
+Message-Id: <20200214162122.19794-67-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200214161715.18113-1-sashal@kernel.org>
-References: <20200214161715.18113-1-sashal@kernel.org>
+In-Reply-To: <20200214162122.19794-1-sashal@kernel.org>
+References: <20200214162122.19794-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,52 +46,84 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Zhengyuan Liu <liuzhengyuan@kylinos.cn>
+From: Erik Kaneda <erik.kaneda@intel.com>
 
-[ Upstream commit 1985f8c7f9a42a651a9750d6fcadc74336d182df ]
+[ Upstream commit 5ddbd77181dfca61b16d2e2222382ea65637f1b9 ]
 
-If we compile tools/acpi target in the top source directory, we'd get a
-compilation error showing as bellow:
+ACPICA commit 29cc8dbc5463a93625bed87d7550a8bed8913bf4
 
-	# make tools/acpi
-	  DESCEND  power/acpi
-	  DESCEND  tools/acpidbg
-	  CC       tools/acpidbg/acpidbg.o
-	Assembler messages:
-	Fatal error: can't create /home/lzy/kernel-upstream/power/acpi/\
-			tools/acpidbg/acpidbg.o: No such file or directory
-	../../Makefile.rules:26: recipe for target '/home/lzy/kernel-upstream/\
-			power/acpi/tools/acpidbg/acpidbg.o' failed
-	make[3]: *** [/home/lzy/kernel-upstream//power/acpi/tools/acpidbg/\
-			acpidbg.o] Error 1
-	Makefile:19: recipe for target 'acpidbg' failed
-	make[2]: *** [acpidbg] Error 2
-	Makefile:54: recipe for target 'acpi' failed
-	make[1]: *** [acpi] Error 2
-	Makefile:1607: recipe for target 'tools/acpi' failed
-	make: *** [tools/acpi] Error 2
+create_buffer_field is a deferred op that is typically processed in
+load pass 2. However, disassembly of control method contents walk the
+parse tree with ACPI_PARSE_LOAD_PASS1 and AML_CREATE operators are
+processed in a later walk. This is a problem when there is a control
+method that has the same name as the AML_CREATE object. In this case,
+any use of the name segment will be detected as a method call rather
+than a reference to a buffer field. If this is detected as a method
+call, it can result in a mal-formed parse tree if the control methods
+have parameters.
 
-Fixes: d5a4b1a540b8 ("tools/power/acpi: Remove direct kernel source include reference")
-Signed-off-by: Zhengyuan Liu <liuzhengyuan@kylinos.cn>
+This change in processing AML_CREATE ops earlier solves this issue by
+inserting the named object in the ACPI namespace so that references
+to this name would be detected as a name string rather than a method
+call.
+
+Link: https://github.com/acpica/acpica/commit/29cc8dbc
+Reported-by: Elia Geretto <elia.f.geretto@gmail.com>
+Tested-by: Elia Geretto <elia.f.geretto@gmail.com>
+Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/acpi/Makefile.config | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/dsfield.c |  2 +-
+ drivers/acpi/acpica/dswload.c | 21 +++++++++++++++++++++
+ 2 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/tools/power/acpi/Makefile.config b/tools/power/acpi/Makefile.config
-index f304be71c278c..fc116c060b98d 100644
---- a/tools/power/acpi/Makefile.config
-+++ b/tools/power/acpi/Makefile.config
-@@ -18,7 +18,7 @@ include $(srctree)/../../scripts/Makefile.include
+diff --git a/drivers/acpi/acpica/dsfield.c b/drivers/acpi/acpica/dsfield.c
+index 6a4b603d0e834..10bbf6ca082ab 100644
+--- a/drivers/acpi/acpica/dsfield.c
++++ b/drivers/acpi/acpica/dsfield.c
+@@ -272,7 +272,7 @@ acpi_ds_create_buffer_field(union acpi_parse_object *op,
+  * FUNCTION:    acpi_ds_get_field_names
+  *
+  * PARAMETERS:  info            - create_field info structure
+- *  `           walk_state      - Current method state
++ *              walk_state      - Current method state
+  *              arg             - First parser arg for the field name list
+  *
+  * RETURN:      Status
+diff --git a/drivers/acpi/acpica/dswload.c b/drivers/acpi/acpica/dswload.c
+index fd34040d4f44a..9c41d2153d0f2 100644
+--- a/drivers/acpi/acpica/dswload.c
++++ b/drivers/acpi/acpica/dswload.c
+@@ -440,6 +440,27 @@ acpi_status acpi_ds_load1_end_op(struct acpi_walk_state *walk_state)
+ 	ACPI_DEBUG_PRINT((ACPI_DB_DISPATCH, "Op=%p State=%p\n", op,
+ 			  walk_state));
  
- OUTPUT=$(srctree)/
- ifeq ("$(origin O)", "command line")
--	OUTPUT := $(O)/power/acpi/
-+	OUTPUT := $(O)/tools/power/acpi/
- endif
- #$(info Determined 'OUTPUT' to be $(OUTPUT))
++	/*
++	 * Disassembler: handle create field operators here.
++	 *
++	 * create_buffer_field is a deferred op that is typically processed in load
++	 * pass 2. However, disassembly of control method contents walk the parse
++	 * tree with ACPI_PARSE_LOAD_PASS1 and AML_CREATE operators are processed
++	 * in a later walk. This is a problem when there is a control method that
++	 * has the same name as the AML_CREATE object. In this case, any use of the
++	 * name segment will be detected as a method call rather than a reference
++	 * to a buffer field.
++	 *
++	 * This earlier creation during disassembly solves this issue by inserting
++	 * the named object in the ACPI namespace so that references to this name
++	 * would be a name string rather than a method call.
++	 */
++	if ((walk_state->parse_flags & ACPI_PARSE_DISASSEMBLE) &&
++	    (walk_state->op_info->flags & AML_CREATE)) {
++		status = acpi_ds_create_buffer_field(op, walk_state);
++		return_ACPI_STATUS(status);
++	}
++
+ 	/* We are only interested in opcodes that have an associated name */
  
+ 	if (!(walk_state->op_info->flags & (AML_NAMED | AML_FIELD))) {
 -- 
 2.20.1
 
