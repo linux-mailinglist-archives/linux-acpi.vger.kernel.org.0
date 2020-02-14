@@ -2,92 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CEBD915D578
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2020 11:25:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B848115D5D9
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2020 11:35:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729081AbgBNKZH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Feb 2020 05:25:07 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:43613 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729070AbgBNKZH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Feb 2020 05:25:07 -0500
-Received: by mail-oi1-f193.google.com with SMTP id p125so8924810oif.10;
-        Fri, 14 Feb 2020 02:25:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=J/ylcXowH9IUbay2pFa/zekk1oZvednUbZRzx4NaqLY=;
-        b=Gg2LMxYDDKHkeXiZSi8T2Qoe/jW5qpnGqAoRcgpO9erhnA6U0DRgzW3+ZKLVvR548G
-         oH7YOLfbxxxewVbEfeojehjb+hwi+28alB1k5pVGMfBsDzUz8iDwnC33Osbbq9jENbcx
-         S5FgKIm0/4AWXFUpvqpMxp/DlolFvls1R523n+6zr64yIJpUIcC8PtZHBGY0x2wAN1Cl
-         C3qXMRGdXNEMhfNr7HMcVnxE3gkA023O2QAt7QVNQ4cmBkF2BtRupgbOxaXli36GB/uj
-         F7+HihWWYbnTKDm3oYHpX52GtGH/1XUQphmh7n0ZoyDjOljbHksZ35rG2NiR1K4xSv0l
-         VOnA==
-X-Gm-Message-State: APjAAAVRB7F5XRk4JByQEd5+FdhZMkvrEef0AnrtZuZOPq3HKPWOw5v7
-        h4uFMMeWzqF2R6gmIts4CQTJQC3/VjpvDJMiRW8Z8Y6E
-X-Google-Smtp-Source: APXvYqw/xXyV8lUVHLdZmTfxQI/QoiAon39/YamwUDTUht0OQpDS41igPTjvp8rgplu89uqrwLEPFjqDiXdtsD5i9Bk=
-X-Received: by 2002:aca:d6c8:: with SMTP id n191mr1411911oig.103.1581675906194;
- Fri, 14 Feb 2020 02:25:06 -0800 (PST)
-MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 14 Feb 2020 11:24:55 +0100
-Message-ID: <CAJZ5v0hpEebbSFUFdtRnLWvXhyruzNgNaL9o-Od1a3jkgYRQKg@mail.gmail.com>
-Subject: [GIT PULL] Power management fixes for v5.6-rc2
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        id S2387415AbgBNKfI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Feb 2020 05:35:08 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2427 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729125AbgBNKfH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 14 Feb 2020 05:35:07 -0500
+Received: from lhreml706-cah.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 1D4FA64C7A29C3366FED;
+        Fri, 14 Feb 2020 10:35:06 +0000 (GMT)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ lhreml706-cah.china.huawei.com (10.201.108.47) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Fri, 14 Feb 2020 10:35:05 +0000
+Received: from [127.0.0.1] (10.210.168.87) by lhreml724-chm.china.huawei.com
+ (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Fri, 14 Feb
+ 2020 10:35:04 +0000
+Subject: Re: About PPTT find_acpi_cpu_topology_package()
+To:     Jeremy Linton <jeremy.linton@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+CC:     "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        "liuqi (BA)" <liuqi115@huawei.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>
+References: <7a888a84-d4c5-2b49-05f3-29876d49cae6@huawei.com>
+ <20200212115945.GA36981@bogus>
+ <be88fdfc-50a0-9753-4f8f-d80c303892be@huawei.com>
+ <20200212135551.GB36981@bogus>
+ <1a04ddf8-4903-2986-a94e-c070dc2c2160@huawei.com>
+ <3c15a54a-18ac-265e-c16c-272577b9dead@arm.com>
+ <bfc39a01-419a-9358-fd6d-c73fdcb9c881@huawei.com>
+ <eedbafc2-019c-517f-4623-4b6ad80f5438@arm.com>
+ <b9ca7718-3834-b42d-a36e-63c81f677a78@huawei.com>
+ <20200213140006.GB31787@bogus>
+ <76c2c4fa-3466-171b-3538-9a7374f4baae@huawei.com>
+ <2feeb7aa-465c-6d40-920b-2c1aa25fbed6@arm.com>
+From:   John Garry <john.garry@huawei.com>
+Message-ID: <bf130dcb-73b5-7173-7111-f513e73fd12b@huawei.com>
+Date:   Fri, 14 Feb 2020 10:35:03 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
+MIME-Version: 1.0
+In-Reply-To: <2feeb7aa-465c-6d40-920b-2c1aa25fbed6@arm.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.210.168.87]
+X-ClientProxiedBy: lhreml710-chm.china.huawei.com (10.201.108.61) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+>>>
+>>
+>> ACPI Processor ID valid just means that there is an associated 
+>> processor container entry which has a UID which matches the ACPI 
+>> Processor ID for this node.
+>>
+>> I can't see anything to say that if the ACPI Processor ID valid flag 
+>> is unset then the ACPI processor ID itself is not still a valid 
+>> identifier. As such, it's implied that it is still valid. But the spec 
+>> should be clarified here.
+> 
+> I see what your saying here, but I think the implication is that no 
+> useful information is contained in the field when its not marked valid.
+> "The flags field (...) includes a bit to describe whether (this field) 
+> is valid"
 
-Please pull from the tag
+OK, right. So I think that the wording can be improved in the spec, 
+specifically around the meaning in ACPI Processor ID valid.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pm-5.6-rc2
+> 
+> Make sure your looking at ACPI 6.3+ because its a lot cleaner than the 
+> earlier revisions, particularly around the leaf node case.
 
-with top-most commit 3629ac5b92535793ba6226e243c2324a20c35fae
+So you have something newer than 
+https://uefi.org/sites/default/files/resources/ACPI_6_3_final_Jan30.pdf?
 
- Merge branch 'pm-cpufreq'
+> .
 
-on top of commit bb6d3fb354c5ee8d6bde2d576eb7220ea09862b9
+So my FW colleague tells me that they tried adding processor containers 
+for hierarchy components, but the kernel complained. I don't know the 
+specifics. I need to follow up on that.
 
- Linux 5.6-rc1
+Do I see this, which we could refer to:
 
-to receive power management fixes for 5.6-rc2.
+https://github.com/tianocore/edk2-platforms/blob/master/Platform/ARM/JunoPkg/AcpiTables/Dsdt.asl#L36
 
-These fix issues related to the handling of wakeup events signaled
-through the ACPI SCI while suspended to idle (Rafael Wysocki) and
-unexport an internal cpufreq variable (Yangtao Li).
+Any more pointers as references would be appreciated.
 
-Thanks!
-
-
----------------
-
-Rafael J. Wysocki (4):
-      ACPI: EC: Fix flushing of pending work
-      ACPI: PM: s2idle: Avoid possible race related to the EC GPE
-      ACPICA: Introduce acpi_any_gpe_status_set()
-      ACPI: PM: s2idle: Prevent spurious SCIs from waking up the system
-
-Yangtao Li (1):
-      cpufreq: Make cpufreq_global_kobject static
-
----------------
-
- drivers/acpi/acpica/achware.h |  2 ++
- drivers/acpi/acpica/evxfgpe.c | 32 +++++++++++++++++++
- drivers/acpi/acpica/hwgpe.c   | 71 +++++++++++++++++++++++++++++++++++++++++++
- drivers/acpi/ec.c             | 44 ++++++++++++++++-----------
- drivers/acpi/sleep.c          | 50 ++++++++++++++++++++++--------
- drivers/cpufreq/cpufreq.c     |  5 ++-
- include/acpi/acpixf.h         |  1 +
- include/linux/cpufreq.h       |  3 --
- include/linux/suspend.h       |  2 +-
- kernel/power/suspend.c        |  9 +++---
- 10 files changed, 177 insertions(+), 42 deletions(-)
+Thanks,
+John
