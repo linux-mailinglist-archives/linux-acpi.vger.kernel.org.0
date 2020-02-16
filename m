@@ -2,91 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6953160458
-	for <lists+linux-acpi@lfdr.de>; Sun, 16 Feb 2020 15:37:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87157160664
+	for <lists+linux-acpi@lfdr.de>; Sun, 16 Feb 2020 21:49:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728191AbgBPOhF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 16 Feb 2020 09:37:05 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:36163 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727691AbgBPOhE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 16 Feb 2020 09:37:04 -0500
-Received: by mail-wr1-f68.google.com with SMTP id z3so16585888wru.3
-        for <linux-acpi@vger.kernel.org>; Sun, 16 Feb 2020 06:37:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/iFJpnpPofTU5L6V82p8kONU7wlBI1ARpKZln5D3vi8=;
-        b=gXeIKfdXbW4ZlJ+E/1db5QdKn/9roKT2UincWD4jL5lkx5CvkyRPZVNCvuITsfGVX3
-         lu1xN+TCC2XuEVPkXApDkpzQ2tfL0aq+W1EWPCWphzMMpHxhmen7RpyMIW0lN9dZPvWI
-         sOEd1fHDdHSmmisAdhXEPkneGvxLwuuynUEfaMzAtIyV2pVLMucJ5NxE8/s7b9zgNCak
-         bJvqTOTjYt+TMkhtUbpE+MVGZ4wqYZo8fSp8hM4NU7hdm8WLSpcYpPMRcnlYfssrUyOW
-         qeR48Wvn1F6a1hboMwnJrUE9+Gc9THWVVFCslhJ1/tYFv3/4YenVX/+x3ge2WqUHQPH0
-         hyHQ==
+        id S1726036AbgBPUtO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 16 Feb 2020 15:49:14 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:42653 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726020AbgBPUtN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 16 Feb 2020 15:49:13 -0500
+Received: by mail-ot1-f67.google.com with SMTP id 66so14145538otd.9
+        for <linux-acpi@vger.kernel.org>; Sun, 16 Feb 2020 12:49:13 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/iFJpnpPofTU5L6V82p8kONU7wlBI1ARpKZln5D3vi8=;
-        b=JPZketJHfnzRGyYZupctDu5K6uewmwRhKAGmCDhAtPlTzVI88/Qtg6pZ9GxogeUGc1
-         iAwSoCcTS4Zo0PK2peOy1Tgdnjo3Gpg10ZEAWsPDPpvWyItjLl46CKe1+Pzhyy6Uc0q9
-         5wY1YDogA5FBw/ZADPIhrqEMJzSr0Pnqq3WEkF8Cjizx8rjileF8tYx2/BouaVdvlpqj
-         KLS/uHeI+l2Ko5PwT2xjwt23rPKHqRiigcMI5PVF6suZWwJbX8BH1fj7bxgXSQLiklDc
-         k+dK05DEHA+gtYwABE7Mf4yI7SxiSTkTY654c5yqljkaZ7U64pDYrK/rXU4mMX77TVVC
-         F9VA==
-X-Gm-Message-State: APjAAAWZ6pOMp5BXo28rkK2f1eUea9fg4kNOtAMnFTxcCivtRaCytweL
-        85sOquqw1E5CY6sHYJn9yP7PM8CpiU0Nazo+79k=
-X-Google-Smtp-Source: APXvYqwwTuH0fyvy1HeHjlpt2V9uE87MyAWa9wMqUMaJn6/fAyVyLhEQEdpZfbW2IZekutdNFcGhkehkOUt1TIbaRLo=
-X-Received: by 2002:adf:f484:: with SMTP id l4mr16853024wro.207.1581863822701;
- Sun, 16 Feb 2020 06:37:02 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JWK2l3ezdzvA3GVxiSq1O+tgY8mTUG3Oa2phHQeXZLc=;
+        b=MpRtQY0w0ZuidO5BCMmSO9Cd6i+gCgoR4EPA9qvIvh8taAm+HQnDU94m+H9SCWSnFP
+         eBycW+G6ppWw/JdAC1eT90NT9YXzGRnTC6C6J/Ylb7/lKkLHT7kFbHGJjMahUQ+DCyAY
+         rP0ZK/4Gln3/ZrqyJBrs5vhoW5OrLilEQ4I33tA+++Wfa3aCBveLaQCrMWLMCMI2gjch
+         h6jXtOFp8RYDsrBAA1jr2QoME95VYx21TCNOzyxIVRgUTrdgmNLU8p3UeIemUh6lGso7
+         wOrbexH9g64XM3YJNRBzmCblJZmyJFoAis7IhF8Tu/p4QCsHhqJ4wbXZBOu2evOYftWM
+         E6AA==
+X-Gm-Message-State: APjAAAXIe4tKlR0dhq3WziVhVlbBp8uYFZuTzgZCDOukvClIbS6vqUpy
+        +IdMwdrbAXiwYDkVB1QpI/NChzc9b4fHosF5l1ZjDSKI
+X-Google-Smtp-Source: APXvYqzmxePp89Rb6c7VuIlJ1OKOgJPJ5JR3smykIEcUWe/LECWRvBxlXw/GSQ403qRfaTbSYIIwDvtAm4BWApSOjiI=
+X-Received: by 2002:a05:6830:4b9:: with SMTP id l25mr10223683otd.266.1581886153005;
+ Sun, 16 Feb 2020 12:49:13 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:adf:f408:0:0:0:0:0 with HTTP; Sun, 16 Feb 2020 06:37:02
- -0800 (PST)
-Reply-To: isacckwesiii@gmail.com
-From:   "Isaac. Kwesi" <isacckwesi.1@gmail.com>
-Date:   Sun, 16 Feb 2020 06:37:02 -0800
-Message-ID: <CACs3cOdneu8J5omBnP46=O3tjzw8YV+LynKwRuegpZKQrb0cGg@mail.gmail.com>
-Subject: Yes
-To:     undisclosed-recipients:;
+References: <nycvar.YFH.7.76.2002141734590.24119@n3.vanv.qr>
+ <CAJZ5v0jesX_fz6-1wnNqYqtVE1qtjZhMsq2OW2L6EGvcpLPtsg@mail.gmail.com> <nycvar.YFH.7.76.2002161038370.4312@n3.vanv.qr>
+In-Reply-To: <nycvar.YFH.7.76.2002161038370.4312@n3.vanv.qr>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Sun, 16 Feb 2020 21:49:02 +0100
+Message-ID: <CAJZ5v0jOOi0SjZ+SUv8L8f6z2uxu40Q7AP_q9XKVEOePxwBHfg@mail.gmail.com>
+Subject: Re: Linux hangs at ACPI init on Medion P15648 MD63490
+To:     Jan Engelhardt <jengelh@inai.de>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
--- 
+On Sun, Feb 16, 2020 at 3:16 PM Jan Engelhardt <jengelh@inai.de> wrote:
+>
+>
+> On Sunday 2020-02-16 01:32, Rafael J. Wysocki wrote:
+> >On Fri, Feb 14, 2020 at 8:28 PM Jan Engelhardt <jengelh@inai.de> wrote:
+> >>
+> >> I have a problem with a certain x86 laptop, and judging from the
+> >> kernel's output, this looks very much like a broken ACPI table.
+> >> Versions tried are 5.3.8 (Fedora31 liveimage), 5.5.2 (openSUSE
+> >> Tumbleweed installer) and 5.6.0-rc1+
+> >> (b19e8c68470385dd2c5440876591fddb02c8c402; self compile), all
+> >> exhibiting the same hang.
+> >>         ACPI: \: Used as first EC
+> >>         ACPI: \: GPE=0x10, IRQ=-1, EC_CMD/EC_SC=0x66, EC_DATA=0x62
+> >
+> >Would it be possible to try 5.0 or earlier on the problematic machine?
+> >You may be hitting a regression here.
+>
+> Seems not to be the case. The same hang shows, with slightly different messages.
+>
+>         5.0
+>         unable to progress to the problem point...
+>         the NMI watchdog causes a panic due to the slow scrolling of
+>         earlyprintk=efi
+>
+>         4.12.14 (openSUSE)
+>         ACPI: : EC: EC started
+>         ACPI: : EC: interrupt blocked
+>         ACPI: \: Used as first EC
+>         ACPI: \: GPE=0x10, EC_CMD/EC_SC=0x66, EC_DATA=0x62
+>                 (no mention of IRQ=-1)
+>         ACPI: \: Used as boot ECDT EC to handle transactions
+>         <hang>
+>
+>         4.4.76 (openSUSE)
+>         ACPI : EC: EC description table is found, configuring boot EC
+>         ACPI : EC: EC started
+>         <hang>
+>
+> I thus went back to 5.6-rc and enabled full ACPI tracing
+> (layer=0xffffffff/level=0xffffffff) starting from
+>
+> nsinit.c:213    /* Walk namespace to execute all _INIs on present devices */
+>
+> onwards. That log output is at http://inai.de/files/m923.mp4 [53MB].
 
+If that is the case, then AFAICS the issue may not be directly related
+to the EC at all.  This output only means that the system has an ECDT,
+but that should not be a problem by itself.
 
--- 
-Dear My Good Friend.
+The system appears to hang somewhere in acpi_ns_initialize_devices()
+and it is hard to say where exactly.
 
-I have this business i will like to contact you for but if only you
-can be trusted; my name is Mr Isaac. Kwesi. I am the only surviving
-son of my father , i just need to further my education when i come
-over to your country.
-
-The arrangement of this deal is for you to only assist me have the
-said fund transfer into your bank account through the bank internet
-online banking transaction.
-
-The said fund is (USD$4,530,000.00) four Million Five Hundred and
-thirty  Thousand United State Dollars Only. And will like you to work
-with my advice so that we will not make any mistake.
-
-Since the transfer will go through online that means there will be no
-delays for immediate transfer, will also like to offer you %40 for the
-total funds as commission.
-
-If you are willing to assist me on this proposal therefore go ahead
-and fill the below information;
-
-FULL NAME...........
-ADDRESS.............
-AGE.................
-SEX.................
-OCCUPATION..........
-TELEPHONE/FAX NUMBER......
-
-
-Yours faithfully.
-Mr Isaac. Kwesi
+I would suggest creating a BZ entry at bugzilla.kernel.org for this
+issue and attaching the output of acpidump from the affected system in
+there.
