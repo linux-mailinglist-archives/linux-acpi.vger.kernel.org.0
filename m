@@ -2,58 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F8F8160770
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Feb 2020 01:10:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CAB851609A6
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Feb 2020 05:42:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726128AbgBQAKr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 16 Feb 2020 19:10:47 -0500
-Received: from a3.inai.de ([88.198.85.195]:52738 "EHLO a3.inai.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726099AbgBQAKr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 16 Feb 2020 19:10:47 -0500
-Received: by a3.inai.de (Postfix, from userid 25121)
-        id 4F8EE5874A7A5; Mon, 17 Feb 2020 01:10:45 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-        by a3.inai.de (Postfix) with ESMTP id 4B92C60C26E25;
-        Mon, 17 Feb 2020 01:10:45 +0100 (CET)
-Date:   Mon, 17 Feb 2020 01:10:45 +0100 (CET)
-From:   Jan Engelhardt <jengelh@inai.de>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Subject: Re: Linux hangs at ACPI init on Medion P15648 MD63490
-In-Reply-To: <CAJZ5v0jOOi0SjZ+SUv8L8f6z2uxu40Q7AP_q9XKVEOePxwBHfg@mail.gmail.com>
-Message-ID: <nycvar.YFH.7.76.2002170109040.8537@n3.vanv.qr>
-References: <nycvar.YFH.7.76.2002141734590.24119@n3.vanv.qr> <CAJZ5v0jesX_fz6-1wnNqYqtVE1qtjZhMsq2OW2L6EGvcpLPtsg@mail.gmail.com> <nycvar.YFH.7.76.2002161038370.4312@n3.vanv.qr> <CAJZ5v0jOOi0SjZ+SUv8L8f6z2uxu40Q7AP_q9XKVEOePxwBHfg@mail.gmail.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        id S1727329AbgBQEmk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 16 Feb 2020 23:42:40 -0500
+Received: from bombadil.infradead.org ([198.137.202.133]:40326 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726656AbgBQEmk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 16 Feb 2020 23:42:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:MIME-Version:Date:Message-ID:Subject:From:Cc:To:Sender:Reply-To:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=j5xYGsqatix9Wvp6r37SE7HlFrIRp5sccIPwkdusUgw=; b=PFv2kuVxmKyTv/vL9P5ucI7Kcq
+        zbXfsJTGMdZai0nWspDOd1RVKO6/M6vZbU2cUKPuPyzOHL76btnCoNZVosmnKZSRt2CPmMjbpqdTA
+        eywYiK32nNE0zFskUsoOlT/5xRRyuvPm/6qzzhmWqdoLi9qn7/TH7K6QKUofW1SUVRQISh23TQnTC
+        BiE4Re9POUeS8qOi6QFnlm9qLry7UzLHmB0QYH8x7Qp7rfzs8OCt0Pgw7z3x5HoKbAwcKgX/Dl1+/
+        Pwlkh8Zk4QWPdcXHSIfRnJwO3+4WNJXmlUS6SWsg+ij14H/cL3Tlu8s0VUeLheSZKJk020MetNyhs
+        O6+CKP8A==;
+Received: from [2601:1c0:6280:3f0::19c2]
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1j3YEv-00018f-Hj; Mon, 17 Feb 2020 04:42:37 +0000
+To:     "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        ACPI Devel Mailing List <linux-acpi@vger.kernel.org>
+Cc:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH] Documentation/admin-guide/acpi: fix
+ fan_performance_states.rst warnings
+Message-ID: <98d72d3b-c9eb-36bc-1d68-2c3020bdf9c5@infradead.org>
+Date:   Sun, 16 Feb 2020 20:42:36 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+From: Randy Dunlap <rdunlap@infradead.org>
 
-On Sunday 2020-02-16 21:49, Rafael J. Wysocki wrote:
+Fix Sphinx format warnings in fan_performace_states.rst
+by adding indentation.
 
->> I thus went back to 5.6-rc and enabled full ACPI tracing
->> (layer=0xffffffff/level=0xffffffff) starting from
->>
->> nsinit.c:213    /* Walk namespace to execute all _INIs on present devices */
->>
->> onwards. That log output is at http://inai.de/files/m923.mp4 [53MB].
->
->If that is the case, then AFAICS the issue may not be directly related
->to the EC at all.  This output only means that the system has an ECDT,
->but that should not be a problem by itself.
->
->The system appears to hang somewhere in acpi_ns_initialize_devices()
->and it is hard to say where exactly.
+Documentation/admin-guide/acpi/fan_performance_states.rst:21: WARNING: Literal block ends without a blank line; unexpected unindent.
+Documentation/admin-guide/acpi/fan_performance_states.rst:41: WARNING: Literal block expected; none found.
 
-I had an exact stack trace. (Stashed in all those videos - now extracted and
-posted to the bug)
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ Documentation/admin-guide/acpi/fan_performance_states.rst |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
->I would suggest creating a BZ entry at bugzilla.kernel.org for this
->issue and attaching the output of acpidump from the affected system in
->there.
+--- lnx-56-rc2.orig/Documentation/admin-guide/acpi/fan_performance_states.rst
++++ lnx-56-rc2/Documentation/admin-guide/acpi/fan_performance_states.rst
+@@ -18,7 +18,7 @@ may look as follows::
+ 
+  $ ls -l /sys/bus/acpi/devices/INT3404:00/
+  total 0
+-...
++ ...
+  -r--r--r-- 1 root root 4096 Dec 13 20:38 state0
+  -r--r--r-- 1 root root 4096 Dec 13 20:38 state1
+  -r--r--r-- 1 root root 4096 Dec 13 20:38 state10
+@@ -38,7 +38,7 @@ where each of the "state*" files represe
+ and contains a colon-separated list of 5 integer numbers (fields) with the
+ following interpretation::
+ 
+-control_percent:trip_point_index:speed_rpm:noise_level_mdb:power_mw
++  control_percent:trip_point_index:speed_rpm:noise_level_mdb:power_mw
+ 
+ * ``control_percent``: The percent value to be used to set the fan speed to a
+   specific level using the _FSL object (0-100).
 
-https://bugzilla.kernel.org/show_bug.cgi?id=206553
+
