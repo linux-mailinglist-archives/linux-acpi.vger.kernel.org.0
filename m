@@ -2,35 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5219116161B
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Feb 2020 16:25:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED926161644
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Feb 2020 16:35:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728631AbgBQPZ2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Feb 2020 10:25:28 -0500
-Received: from foss.arm.com ([217.140.110.172]:37308 "EHLO foss.arm.com"
+        id S1728124AbgBQPfE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Feb 2020 10:35:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42880 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727553AbgBQPZ2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 17 Feb 2020 10:25:28 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8B69030E;
-        Mon, 17 Feb 2020 07:25:27 -0800 (PST)
-Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 41D553F703;
-        Mon, 17 Feb 2020 07:25:24 -0800 (PST)
-Date:   Mon, 17 Feb 2020 15:25:18 +0000
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Pankaj Bansal <pankaj.bansal@nxp.com>
-Cc:     Marc Zyngier <maz@kernel.org>,
+        id S1727976AbgBQPfE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 17 Feb 2020 10:35:04 -0500
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 380E020718;
+        Mon, 17 Feb 2020 15:35:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1581953703;
+        bh=8efhOOieeB7D17j3jQ31Byut/zxDybXrDad5pZgzM6g=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=GUBKrAqfG8eSWxLQWWL2Hm7nfXDbOjgbkjFFHnQy6utvXaBluk+63gdAGLNnTeb30
+         H6BGDGTl6RRv71CiGYfZQM6e2IQ6OJd6B6ojZFHMj8nAM7Y+I5YMylksMDqdvFABaM
+         7usA1EvhAx1vDJlpGyn37JrX8xFPvBnuoK+EtALk=
+Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
+        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <maz@kernel.org>)
+        id 1j3iQH-005xOP-JS; Mon, 17 Feb 2020 15:35:01 +0000
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 17 Feb 2020 15:35:01 +0000
+From:   Marc Zyngier <maz@kernel.org>
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     Pankaj Bansal <pankaj.bansal@nxp.com>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Makarand Pawagi <makarand.pawagi@nxp.com>,
-        Calvin Johnson <calvin.johnson@nxp.com>,
-        "stuyoder@gmail.com" <stuyoder@gmail.com>,
-        "nleeder@codeaurora.org" <nleeder@codeaurora.org>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Calvin Johnson <calvin.johnson@nxp.com>, stuyoder@gmail.com,
+        nleeder@codeaurora.org, Ioana Ciornei <ioana.ciornei@nxp.com>,
         Cristi Sovaiala <cristian.sovaiala@nxp.com>,
         Hanjun Guo <guohanjun@huawei.com>,
-        Will Deacon <will@kernel.org>,
-        "jon@solid-run.com" <jon@solid-run.com>,
+        Will Deacon <will@kernel.org>, jon@solid-run.com,
         Russell King <linux@armlinux.org.uk>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Len Brown <lenb@kernel.org>,
@@ -39,8 +51,7 @@ Cc:     Marc Zyngier <maz@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
         Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Paul Yang <Paul.Yang@arm.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        Paul Yang <Paul.Yang@arm.com>, netdev@vger.kernel.org,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Shameerali Kolothum Thodi 
@@ -48,7 +59,7 @@ Cc:     Marc Zyngier <maz@kernel.org>,
         Sudeep Holla <sudeep.holla@arm.com>,
         Robin Murphy <robin.murphy@arm.com>
 Subject: Re: [EXT] Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
-Message-ID: <20200217152518.GA18376@e121166-lin.cambridge.arm.com>
+In-Reply-To: <20200217152518.GA18376@e121166-lin.cambridge.arm.com>
 References: <DB8PR04MB7164DDF48480956F05886DABEB070@DB8PR04MB7164.eurprd04.prod.outlook.com>
  <12531d6c569c7e14dffe8e288d9f4a0b@kernel.org>
  <CAKv+Gu8uaJBmy5wDgk=uzcmC4vkEyOjW=JRvhpjfsdh-HcOCLg@mail.gmail.com>
@@ -59,122 +70,55 @@ References: <DB8PR04MB7164DDF48480956F05886DABEB070@DB8PR04MB7164.eurprd04.prod.
  <VI1PR0401MB2496800C88A3A2CF912959E6F1150@VI1PR0401MB2496.eurprd04.prod.outlook.com>
  <20200214174949.GA30484@e121166-lin.cambridge.arm.com>
  <VI1PR0401MB2496308C27B7DAA7A5396970F1160@VI1PR0401MB2496.eurprd04.prod.outlook.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <VI1PR0401MB2496308C27B7DAA7A5396970F1160@VI1PR0401MB2496.eurprd04.prod.outlook.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+ <20200217152518.GA18376@e121166-lin.cambridge.arm.com>
+Message-ID: <384eb5378ee2b240d6ab7d89aef2d5c7@kernel.org>
+X-Sender: maz@kernel.org
+User-Agent: Roundcube Webmail/1.3.10
+X-SA-Exim-Connect-IP: 51.254.78.96
+X-SA-Exim-Rcpt-To: lorenzo.pieralisi@arm.com, pankaj.bansal@nxp.com, ard.biesheuvel@linaro.org, makarand.pawagi@nxp.com, calvin.johnson@nxp.com, stuyoder@gmail.com, nleeder@codeaurora.org, ioana.ciornei@nxp.com, cristian.sovaiala@nxp.com, guohanjun@huawei.com, will@kernel.org, jon@solid-run.com, linux@armlinux.org.uk, linux-acpi@vger.kernel.org, lenb@kernel.org, jason@lakedaemon.net, Andy.Wang@arm.com, V.Sethi@nxp.com, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, laurentiu.tudor@nxp.com, Paul.Yang@arm.com, netdev@vger.kernel.org, rjw@rjwysocki.net, linux-kernel@vger.kernel.org, shameerali.kolothum.thodi@huawei.com, sudeep.holla@arm.com, robin.murphy@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 17, 2020 at 12:35:12PM +0000, Pankaj Bansal wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> > Sent: Friday, February 14, 2020 11:20 PM
-> > To: Pankaj Bansal <pankaj.bansal@nxp.com>
-> > Cc: Marc Zyngier <maz@kernel.org>; Ard Biesheuvel
-> > <ard.biesheuvel@linaro.org>; Makarand Pawagi <makarand.pawagi@nxp.com>;
-> > Calvin Johnson <calvin.johnson@nxp.com>; stuyoder@gmail.com;
-> > nleeder@codeaurora.org; Ioana Ciornei <ioana.ciornei@nxp.com>; Cristi
-> > Sovaiala <cristian.sovaiala@nxp.com>; Hanjun Guo <guohanjun@huawei.com>;
-> > Will Deacon <will@kernel.org>; jon@solid-run.com; Russell King
-> > <linux@armlinux.org.uk>; ACPI Devel Maling List <linux-acpi@vger.kernel.org>;
-> > Len Brown <lenb@kernel.org>; Jason Cooper <jason@lakedaemon.net>; Andy
-> > Wang <Andy.Wang@arm.com>; Varun Sethi <V.Sethi@nxp.com>; Thomas
-> > Gleixner <tglx@linutronix.de>; linux-arm-kernel <linux-arm-
-> > kernel@lists.infradead.org>; Laurentiu Tudor <laurentiu.tudor@nxp.com>; Paul
-> > Yang <Paul.Yang@arm.com>; netdev@vger.kernel.org; Rafael J. Wysocki
-> > <rjw@rjwysocki.net>; Linux Kernel Mailing List <linux-kernel@vger.kernel.org>;
-> > Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>;
-> > Sudeep Holla <sudeep.holla@arm.com>; Robin Murphy
-> > <robin.murphy@arm.com>
-> > Subject: Re: [EXT] Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
-> > 
-> > On Fri, Feb 14, 2020 at 04:35:10PM +0000, Pankaj Bansal wrote:
-> > 
-> > [...]
-> > 
-> > > > -----Original Message-----
-> > > > From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> > > > Sent: Friday, February 14, 2020 9:50 PM
-> > > > To: Pankaj Bansal <pankaj.bansal@nxp.com>
-> > > > Cc: Marc Zyngier <maz@kernel.org>; Ard Biesheuvel
-> > > > <ard.biesheuvel@linaro.org>; Makarand Pawagi
-> > <makarand.pawagi@nxp.com>;
-> > > > Calvin Johnson <calvin.johnson@nxp.com>; stuyoder@gmail.com;
-> > > > nleeder@codeaurora.org; Ioana Ciornei <ioana.ciornei@nxp.com>; Cristi
-> > > > Sovaiala <cristian.sovaiala@nxp.com>; Hanjun Guo
-> > <guohanjun@huawei.com>;
-> > > > Will Deacon <will@kernel.org>; jon@solid-run.com; Russell King
-> > > > <linux@armlinux.org.uk>; ACPI Devel Maling List <linux-
-> > acpi@vger.kernel.org>;
-> > > > Len Brown <lenb@kernel.org>; Jason Cooper <jason@lakedaemon.net>;
-> > Andy
-> > > > Wang <Andy.Wang@arm.com>; Varun Sethi <V.Sethi@nxp.com>; Thomas
-> > > > Gleixner <tglx@linutronix.de>; linux-arm-kernel <linux-arm-
-> > > > kernel@lists.infradead.org>; Laurentiu Tudor <laurentiu.tudor@nxp.com>;
-> > Paul
-> > > > Yang <Paul.Yang@arm.com>; netdev@vger.kernel.org; Rafael J. Wysocki
-> > > > <rjw@rjwysocki.net>; Linux Kernel Mailing List <linux-
-> > kernel@vger.kernel.org>;
-> > > > Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>;
-> > > > Sudeep Holla <sudeep.holla@arm.com>; Robin Murphy
-> > > > <robin.murphy@arm.com>
-> > > > Subject: Re: [EXT] Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
-> > Side note: would you mind removing the email headers (as above) in your
-> > replies please ?
+On 2020-02-17 15:25, Lorenzo Pieralisi wrote:
+> On Mon, Feb 17, 2020 at 12:35:12PM +0000, Pankaj Bansal wrote:
 
-Read the question above please.
+Hi Lorenzo,
 
 [...]
 
-> > > As stated above, in Linux MC is a bus (just like PCI bus, AMBA bus etc)
-> > > There can be multiple devices attached to this bus. Moreover, we can
-> > dynamically create/destroy these devices.
-> > > Now, we want to represent this BUS (not individual devices connected to bus)
-> > in IORT table.
-> > > The only possible way right now we see is that we describe it as Named
-> > components having a pool of ID mappings.
-> > > As and when devices are created and attached to bus, we sift through this pool
-> > to correctly determine the output ID for the device.
-> > > Now the input ID that we provide, can come from device itself.
-> > > Then we can use the Platform MSI framework for MC bus devices.
-> > 
-> > So are you asking me if that's OK ? Or there is something you can't
-> > describe with IORT ?
+>> > Side note: can you explain to me please how the MSI allocation flow
+>> > and kernel data structures/drivers are modeled in DT ? I had a quick
+>> > look at:
+>> >
+>> > drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c
+>> >
+>> > and to start with, does that code imply that we create a
+>> > DOMAIN_BUS_FSL_MC_MSI on ALL DT systems with an ITS device node ?
+>> 
+>> Yes. It's being done for all DT systems having ITS node.
 > 
-> I am asking if that would be acceptable?
-> i.e. we represent MC bus as Named component is IORT table with a pool of IDs (without single ID mapping flag)
-> and then we use the Platform MSI framework for all children devices of MC bus.
-> Note that it would require the Platform MSI layer to correctly pass an input id for a platform device to IORT layer.
+> This does not seem correct to me, I will let Marc comment on
+> the matter.
 
-How is this solved in DT ? You don't seem to need any DT binding on top
-of the msi-parent property, which is equivalent to IORT single mappings
-AFAICS so I would like to understand the whole DT flow (so that I
-understand how this FSL bus works) before commenting any further.
+Unfortunately, there isn't a very good way to avoid that ATM,
+other than defering the registration of the irqdomain until
+we know that a particular bus (for example a PCIe RC) is registered.
 
-> And IORT layer ought to retrieve the output id based on single ID mapping flag as well as input id.
-> 
-> > 
-> > Side note: can you explain to me please how the MSI allocation flow
-> > and kernel data structures/drivers are modeled in DT ? I had a quick
-> > look at:
-> > 
-> > drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c
-> > 
-> > and to start with, does that code imply that we create a
-> > DOMAIN_BUS_FSL_MC_MSI on ALL DT systems with an ITS device node ?
-> 
-> Yes. It's being done for all DT systems having ITS node.
+I started working on that at some point, and ended up nowhere because
+no bus (PCI, FSL, or anything else) really give us the right information
+when it is actually required (when a device starts claiming interrupts).
 
-This does not seem correct to me, I will let Marc comment on
-the matter.
+I *think* we could try a defer it until a bus root is found, and that
+this bus has a topological link to an ITS. probably invasive though,
+as you would need a set of "MSI providers" for each available irqchip
+node.
 
-> The domain creation is handled in drivers/bus/fsl-mc/fsl-mc-msi.c
+In short, messy. But I'd be happy to revive this and have a look again.
 
-Thanks,
-Lorenzo
+         M.
+-- 
+Jazz is not dead. It just smells funny...
