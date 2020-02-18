@@ -2,23 +2,23 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A40E1621EE
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Feb 2020 09:00:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E05791621F4
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Feb 2020 09:02:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726134AbgBRIAQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Feb 2020 03:00:16 -0500
-Received: from mail-eopbgr20065.outbound.protection.outlook.com ([40.107.2.65]:63582
+        id S1726127AbgBRICq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Feb 2020 03:02:46 -0500
+Received: from mail-eopbgr20071.outbound.protection.outlook.com ([40.107.2.71]:59934
         "EHLO EUR02-VE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726114AbgBRIAP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 18 Feb 2020 03:00:15 -0500
+        id S1726114AbgBRICp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 18 Feb 2020 03:02:45 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Mm0FFtPa9O6KHYZQCNbFULmz0AwZCUXtI477Dd3msB0awGAed/IKCjflcYhU0SkxHci3+3mCFPVVxXIvPmAzDBja16hoLYm+RUP9DZoXevVmAvBghk4o8dFkqnoiHj5d5By2F7d/kC1wfCdwG76lqneFFUXBcYGHm+W1nNQ2dUOA/XSkKXfcuTWe8y/+jF7YpFizARgXx+VlCcHvTOIeNvuphju0A1NFW+SggHLuammWnmPNIFg7s8BQrUCZ9UTQ0Z6cxdhq7fQa38oxarey34XNG/y1a2NLb8V3uRBBx5uLqvfGUReV2Ac74ZtAjr6kB0OgdYhPERu9hzH76sp+Tg==
+ b=JFgo+FvvNxYrEcMkdifG89brK8ghZhSkK3oGq7ORF7ce740UZwxUC833FchNSgec3liM/kOUob9eHUZPoXwuLnzIv2jCH0la20MHxm6k8naFt8ktD+0U59RQKdRLVh3M7uO4U/IsHPG0LaVCt5Fl0otVxcbupKgvsBphajZd4vCQiL+p1jbihjw6gmjsmBMUur3tEzPMbvd7SlVMj8+jHhnwZT4/5LINQ2BD1yPwMCliM38FBbngFtml9BhpTudqbwM9kMetzlxIq3JTIR5OpJn0Dp9pYEzI9xZoU4svc96pxrekJi3n0boP/UNwzoJce82t1ecUbksnmcG1Z/lWTQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
  bh=Qlk1ZiZoBNb/lJ/o5xUare6dE2mny+C1umuC1cIS14M=;
- b=Q7WLrW4wwocD9lEvrwtEMJr+PZvLErEdHLdiKEmFsVLt4ZVIMxSCg/OTY16Ri7mTLrTCVgz2CArNINpaH7yyYzH4KxkfP7Q8d5hrTmoRvnu9n1qnaUTAK85FenKk0BTlIcUoqB9LrvjYzAhntwdGtR4TbpPbOLsEAKnm9f4nGZ3Z26TFEVfpqm2uCvPMTui7+uOk1G8i3Tck7aVs5xKldkbZbe2ivApSEj+gmKGGa9XF50IlGlERLkpvQ9rMKseZdxeVZhaBBYH9WHvcE5xZVJnc4Rdvkn2U5oz4hcgnGBk1M1omsl/8zT1ehKQbwJ2n5uehB0mcXERr9HMRl2jV+Q==
+ b=nOhlvY0dzvhs+8U5F4SgtYKmoI/8HInvnbRACbQ2tTBOv0Gjbz3NK3yR4Jebsa+jDlpKGkEox9ZRaR/1gvDq4aAocvpmeaqWJ6XZMOtRDdJWYqmyY1yxIkEGX3g8VUqtaH459BQuchJ7tIIkmljrNAY1mr7XwBqlQX/TYI/LbLwQ+XVSjuePl08dDOJZtXfluaQQMKuglYSiNtXgKmVytfcPCH/DGsoDPaWuXnYgY2cYDeTpXR/46kTp6GPz9+bkaw0s8DD7SBJPQ+WQA1M49RPgUxnRh0RygVsCLR/C3J+5DAKg/7K+8UriOi7m8aOn6J7p6rGp3D5YT1YO4t3hqw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
@@ -26,15 +26,15 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector2-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
  bh=Qlk1ZiZoBNb/lJ/o5xUare6dE2mny+C1umuC1cIS14M=;
- b=IbA7fTZvcovqH3zpMRsrQ7KY5mNTW9b7djcn2VRJ8uRCiGnD5b62paedB9z7Ooh496ioCZefhLGHB+PhYFwcCjex14I9fCEt9MKC33qTqfO/UOD2mDcv5TUzgg80TmMuf5e9U/MNhHNfxfd2QKP+wm9jplG2+oEz36IX+WOW/Uw=
+ b=ARjyvK7mcpHzeSBG9kGsUGhQsb87FSf011e9yE2EXU0nvg1AtxQ8KoDZm0r0ut/NidJbJZakkX0EYVrHKbWLx3euhStp9/wqmXnqsza9sywWCs8+a85qjTMHDRpTxspCv78Rg+mK5hEk0I068cmRjZBv3smIaOgL2vuuwCBlo7I=
 Received: from VI1PR04MB5135.eurprd04.prod.outlook.com (20.177.52.139) by
  VI1PR04MB5742.eurprd04.prod.outlook.com (20.178.127.84) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2729.24; Tue, 18 Feb 2020 08:00:10 +0000
+ 15.20.2729.24; Tue, 18 Feb 2020 08:02:41 +0000
 Received: from VI1PR04MB5135.eurprd04.prod.outlook.com
  ([fe80::ed73:9d46:d34:5e19]) by VI1PR04MB5135.eurprd04.prod.outlook.com
  ([fe80::ed73:9d46:d34:5e19%6]) with mapi id 15.20.2729.032; Tue, 18 Feb 2020
- 08:00:09 +0000
+ 08:02:41 +0000
 From:   "Pankaj Bansal (OSS)" <pankaj.bansal@oss.nxp.com>
 To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
 CC:     Marc Zyngier <maz@kernel.org>,
@@ -64,11 +64,23 @@ CC:     Marc Zyngier <maz@kernel.org>,
         <shameerali.kolothum.thodi@huawei.com>,
         Sudeep Holla <sudeep.holla@arm.com>,
         Robin Murphy <robin.murphy@arm.com>
-Subject: RE: Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
-Thread-Topic: Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
-Thread-Index: AdXmMUccpWvJlrLjQUGeP0U0UIbIhA==
-Date:   Tue, 18 Feb 2020 08:00:09 +0000
-Message-ID: <VI1PR04MB5135D7D8597D33DB76DA05BDB0110@VI1PR04MB5135.eurprd04.prod.outlook.com>
+Subject: RE: [EXT] Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
+Thread-Topic: [EXT] Re: [PATCH] bus: fsl-mc: Add ACPI support for fsl-mc
+Thread-Index: AQHV1bJZgaFB40NXxUCtFFLRVXyi06f/610AgAStpQCAAAiuAIAAD1yAgBYviuCAABITAIAAAFRwgAAG0ICAAAEwoIAAF+uAgARaY6CAADQ7AIABFovw
+Date:   Tue, 18 Feb 2020 08:02:41 +0000
+Message-ID: <VI1PR04MB51353FF263391E5FBD1629B5B0110@VI1PR04MB5135.eurprd04.prod.outlook.com>
+References: <DB8PR04MB7164DDF48480956F05886DABEB070@DB8PR04MB7164.eurprd04.prod.outlook.com>
+ <12531d6c569c7e14dffe8e288d9f4a0b@kernel.org>
+ <CAKv+Gu8uaJBmy5wDgk=uzcmC4vkEyOjW=JRvhpjfsdh-HcOCLg@mail.gmail.com>
+ <VI1PR0401MB249622CFA9B213632F1DE955F1150@VI1PR0401MB2496.eurprd04.prod.outlook.com>
+ <7349fa0e6d62a3e0d0e540f2e17646e0@kernel.org>
+ <VI1PR0401MB2496373E0C6D1097F22B3026F1150@VI1PR0401MB2496.eurprd04.prod.outlook.com>
+ <20200214161957.GA27513@e121166-lin.cambridge.arm.com>
+ <VI1PR0401MB2496800C88A3A2CF912959E6F1150@VI1PR0401MB2496.eurprd04.prod.outlook.com>
+ <20200214174949.GA30484@e121166-lin.cambridge.arm.com>
+ <VI1PR0401MB2496308C27B7DAA7A5396970F1160@VI1PR0401MB2496.eurprd04.prod.outlook.com>
+ <20200217152518.GA18376@e121166-lin.cambridge.arm.com>
+In-Reply-To: <20200217152518.GA18376@e121166-lin.cambridge.arm.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -78,10 +90,10 @@ authentication-results: spf=none (sender IP is )
 x-originating-ip: [92.120.1.71]
 x-ms-publictraffictype: Email
 x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: e92bccdb-3a4c-4cc8-31d4-08d7b4489363
+x-ms-office365-filtering-correlation-id: 6d1d4080-59af-4156-6a4e-08d7b448edc2
 x-ms-traffictypediagnostic: VI1PR04MB5742:|VI1PR04MB5742:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR04MB5742B89C0CE7B8A32ED828C2B0110@VI1PR04MB5742.eurprd04.prod.outlook.com>
+x-microsoft-antispam-prvs: <VI1PR04MB5742D38E40438767CA2D6237B0110@VI1PR04MB5742.eurprd04.prod.outlook.com>
 x-ms-oob-tlc-oobclassifiers: OLM:10000;
 x-forefront-prvs: 031763BCAF
 x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(346002)(136003)(39860400002)(396003)(376002)(366004)(199004)(189003)(52536014)(86362001)(4326008)(8936002)(53546011)(478600001)(33656002)(2906002)(71200400001)(6506007)(7416002)(76116006)(186003)(26005)(6916009)(54906003)(316002)(55016002)(66556008)(64756008)(66446008)(66946007)(9686003)(7696005)(81156014)(81166006)(5660300002)(8676002)(66476007);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR04MB5742;H:VI1PR04MB5135.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:0;MX:1;
@@ -89,19 +101,19 @@ received-spf: None (protection.outlook.com: oss.nxp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: MZwTz5ilBGZp+jrKZKmok653Z788XK5FgE9eWpSuaDKcU2e4ZpPUGcFUH6SQCa8klhJ3Iy1pesUMyrXO+nyyIDa9wm7vWQkmiJEXEY7aKw2FT9CFR+ew0HSH24ic1IcQty4SN8VMZW3pWXvzn2Ce+iY2bz9sQoAt/wj7XinfaDQdynWFjtDfiVPxBzDQPQsVMLN31T+RrL168csQnTBRhYqVQeFOCBdrgd3yY2lLJVJeRZzufLmjq4F/Bft9b623JD7Qx4bZMtvn8k+4FWj91p0pfnh9pqJR9NVcWCVY8pskAl1WCA1BpFXwVhijI6mxDxQmd+tfdU5VC07GP+OeeQHZmbnstdbCl19Et6xVjX7J+Vh4PzCFbO8akqRtdnPp70kapE+/+WF4sRPfOMqifVAVMA8i1auVH7RUxCF7AYnN2C1vOq5Ptxp70DxwGY1G
-x-ms-exchange-antispam-messagedata: mcyelNs2qq81YkqBG3XFVATPZY+sb+/gLCwyJW10se9YDBWtcJPE56cOE8qDYuVZC2EWo89Mu1xYCOlj6MZlN8ImRXNQsEeh7C+3Db1zHZQRRt35H3GUxboiJzD5GnJNpyBNAHlS8nVY+mTi9kSRFg==
+x-microsoft-antispam-message-info: xrbotrZibDrXthDh1JClh3LW2N2vJd+SmahCKxwrCxFtHskQId13Lel8o1U2FKtmXKlJ4TwG836wdg65wJNRc1wvqBf7iVzRAlHorOR3OY8gDC7x074+dld3OUwaC4JlPTChUCOAa4eDfOvE3pEGM1hbdf1eBAjdPNCRG82nWXW7h2CDi5qRsPHo2ThbzWxSMK9yQKPvULYfgTa2Q6PMG13p+FliDBlZHEJwxsaHtYHxvaoyZEFmJN//HyYUjKtT67apwYXC0J0hCa4KfdfdhKm5+oNpF6LYH/DjGB5U3r8LB6ptDw5YjG+3TezUt+WH0fNK58VjEP/CyTVc2v47x84gFsYzazXVucLATnWWS34GRlsfwmD/hBjX81qzINFLWbzQ/qIhdGLdiju9uJO7qIva20QhQT2dGMU9zGejQ9TRGubo5UJ8nnBUqOjNxAOC
+x-ms-exchange-antispam-messagedata: +656RCIVDCsnK6w1MW7Zg/IMnkpvU3wFkHOCQf/PczEiw00cB5A3kzJ1tY5AU0in2Wl8FDqDEEsf0U1ywn229DB9d8xYHFFE/XgEDDLqmRnewgUGG5D0Ofdh+9AiMDSiFhXg68cm1ulhjx25edj/JQ==
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e92bccdb-3a4c-4cc8-31d4-08d7b4489363
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Feb 2020 08:00:09.8101
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d1d4080-59af-4156-6a4e-08d7b448edc2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Feb 2020 08:02:41.4741
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: K5oEvqF13PEX9ZLjQjOMz496G3e/kSaElM9ZrGlZ8qzMJ4N7LUrclrDnfy2CUlVXhMQ8K5A7sQXVyTuVMpU2LzvRf4uVRl6q/xbfM70O9a0Sg04skChF2La4abUPY9yd
+X-MS-Exchange-CrossTenant-userprincipalname: aRZsIbLvRep0h0GSx886cB4/5el1kPYqVQaSRwmt6jX3/6cVK4c/3PdihmvG3PRuKp1xTNX67lAuEYe9PSO9EH77AEl8U1OHS9IHfsr/eNyetb2irxAxWK3tPcv6NJ/h
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5742
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
