@@ -2,63 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BDBA716426B
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2020 11:42:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC8E2164599
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2020 14:36:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726717AbgBSKmr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Feb 2020 05:42:47 -0500
-Received: from 8bytes.org ([81.169.241.247]:54904 "EHLO theia.8bytes.org"
+        id S1726617AbgBSNgc convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 19 Feb 2020 08:36:32 -0500
+Received: from scm.imp.edu.mx ([132.247.16.103]:18945 "EHLO scm.imp.edu.mx"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726270AbgBSKmr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 19 Feb 2020 05:42:47 -0500
-Received: by theia.8bytes.org (Postfix, from userid 1000)
-        id C31CF36C; Wed, 19 Feb 2020 11:42:45 +0100 (CET)
-Date:   Wed, 19 Feb 2020 11:42:44 +0100
-From:   Joerg Roedel <joro@8bytes.org>
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc:     bhelgaas@google.com, will@kernel.org, robh+dt@kernel.org,
-        lorenzo.pieralisi@arm.com, baolu.lu@linux.intel.com,
-        linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org,
-        corbet@lwn.net, mark.rutland@arm.com, liviu.dudau@arm.com,
-        sudeep.holla@arm.com, guohanjun@huawei.com, rjw@rjwysocki.net,
-        lenb@kernel.org, robin.murphy@arm.com, dwmw2@infradead.org,
-        amurray@thegoodpenguin.co.uk, frowand.list@gmail.com
-Subject: Re: [PATCH 00/10] PCI/ATS: Device-tree support and other improvements
-Message-ID: <20200219104244.GD1961@8bytes.org>
-References: <20200213165049.508908-1-jean-philippe@linaro.org>
+        id S1726548AbgBSNgc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 19 Feb 2020 08:36:32 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 1A6EC18AC7C;
+        Wed, 19 Feb 2020 06:11:25 -0600 (CST)
+X-Virus-Scanned: by SpamTitan at imp.edu.mx
+Received: from scm.imp.edu.mx (localhost [127.0.0.1])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 3BDD118DA14;
+        Wed, 19 Feb 2020 04:51:46 -0600 (CST)
+Authentication-Results: scm.imp.edu.mx; none
+Received: from imp.edu.mx (unknown [10.249.93.105])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 39D5318D9F9;
+        Wed, 19 Feb 2020 04:51:42 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by imp.edu.mx (Postfix) with ESMTP id 23609180635F4E;
+        Wed, 19 Feb 2020 04:51:43 -0600 (CST)
+Received: from imp.edu.mx ([127.0.0.1])
+        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id VKJQCI3YEdu1; Wed, 19 Feb 2020 04:51:43 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by imp.edu.mx (Postfix) with ESMTP id 0235E180635F44;
+        Wed, 19 Feb 2020 04:51:43 -0600 (CST)
+X-Virus-Scanned: amavisd-new at imp.edu.mx
+Received: from imp.edu.mx ([127.0.0.1])
+        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id lUsOR2y12Kdm; Wed, 19 Feb 2020 04:51:42 -0600 (CST)
+Received: from [45.147.4.119] (unknown [45.147.4.119])
+        by imp.edu.mx (Postfix) with ESMTPSA id A3A89180635F4E;
+        Wed, 19 Feb 2020 04:51:41 -0600 (CST)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200213165049.508908-1-jean-philippe@linaro.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: 19-02-2020
+To:     Recipients <mucios@imp.edu.mx>
+From:   "urs portmann" <mucios@imp.edu.mx>
+Date:   Wed, 19 Feb 2020 21:51:39 +1100
+Reply-To: onube@qq.com
+Message-Id: <20200219105141.A3A89180635F4E@imp.edu.mx>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jean-Philippe,
+Guten Morgen,
+                                          19-02-2020
+Wir haben versucht, Sie zu erreichen und haben noch nichts von Ihnen gehört. Haben Sie unsere letzte E-Mail über Ihre S.p.e.n.d.e erhalten? Wenn nicht, melden Sie sich bitte bei uns, um weitere Informationen zu erhalten.
 
+Wir warten darauf, von Ihnen zu hören, sobald Sie diese Nachricht erhalten, die Sie bei der weiteren Vorgehensweise unterstützt.
 
-On Thu, Feb 13, 2020 at 05:50:38PM +0100, Jean-Philippe Brucker wrote:
-> Jean-Philippe Brucker (11):
->   dt-bindings: PCI: generic: Add ats-supported property
->   PCI: Add ats_supported host bridge flag
->   PCI: OF: Check whether the host bridge supports ATS
->   ACPI/IORT: Check ATS capability in root complex node
->   PCI/ATS: Gather checks into pci_ats_supported()
->   iommu/amd: Use pci_ats_supported()
->   iommu/arm-smmu-v3: Use pci_ats_supported()
->   iommu/vt-d: Use pci_ats_supported()
->   ACPI/IORT: Drop ATS fwspec flag
->   arm64: dts: fast models: Enable PCIe ATS for Base RevC FVP
->   Documentation: Generalize the "pci=noats" boot parameter 
-
-Nice patch-set! Thanks for the consolidation work. I can take it into
-the iommu-tree, given that the non-iommu parts get the necessary Acks.
-
-
-Regards,
-
-	Joerg
+Mfg
+urs portmann
