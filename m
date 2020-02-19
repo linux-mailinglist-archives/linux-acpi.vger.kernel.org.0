@@ -2,62 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC8E2164599
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2020 14:36:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 012DE165276
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2020 23:24:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726617AbgBSNgc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 19 Feb 2020 08:36:32 -0500
-Received: from scm.imp.edu.mx ([132.247.16.103]:18945 "EHLO scm.imp.edu.mx"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726548AbgBSNgc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 19 Feb 2020 08:36:32 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by scm.imp.edu.mx (Postfix) with ESMTP id 1A6EC18AC7C;
-        Wed, 19 Feb 2020 06:11:25 -0600 (CST)
-X-Virus-Scanned: by SpamTitan at imp.edu.mx
-Received: from scm.imp.edu.mx (localhost [127.0.0.1])
-        by scm.imp.edu.mx (Postfix) with ESMTP id 3BDD118DA14;
-        Wed, 19 Feb 2020 04:51:46 -0600 (CST)
-Authentication-Results: scm.imp.edu.mx; none
-Received: from imp.edu.mx (unknown [10.249.93.105])
-        by scm.imp.edu.mx (Postfix) with ESMTP id 39D5318D9F9;
-        Wed, 19 Feb 2020 04:51:42 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by imp.edu.mx (Postfix) with ESMTP id 23609180635F4E;
-        Wed, 19 Feb 2020 04:51:43 -0600 (CST)
-Received: from imp.edu.mx ([127.0.0.1])
-        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id VKJQCI3YEdu1; Wed, 19 Feb 2020 04:51:43 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by imp.edu.mx (Postfix) with ESMTP id 0235E180635F44;
-        Wed, 19 Feb 2020 04:51:43 -0600 (CST)
-X-Virus-Scanned: amavisd-new at imp.edu.mx
-Received: from imp.edu.mx ([127.0.0.1])
-        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id lUsOR2y12Kdm; Wed, 19 Feb 2020 04:51:42 -0600 (CST)
-Received: from [45.147.4.119] (unknown [45.147.4.119])
-        by imp.edu.mx (Postfix) with ESMTPSA id A3A89180635F4E;
-        Wed, 19 Feb 2020 04:51:41 -0600 (CST)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1727469AbgBSWY5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Feb 2020 17:24:57 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:34831 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727163AbgBSWY5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Feb 2020 17:24:57 -0500
+Received: by mail-oi1-f193.google.com with SMTP id b18so25521148oie.2;
+        Wed, 19 Feb 2020 14:24:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=bw/arhxO0zD6uxPv9B55JT/z9CSekm6k6Bmp/kVtLV0=;
+        b=iDoyGV5c0sHKnm8fR8KkHHXF/ntWO0w46zg5ISA1UjqFbYZT6PWEJgNscnK/WbzFiq
+         zST2+piKM7q4lOxSJE3idurDkXnWN9cSm6HbTejthJM8QihAnSXj8sXAo7xbKMTtaAS7
+         R+WoTJmlNxUJkgnSnwOknoV1cqtrkw7YI9ZMijGBZoRy9hvljRb3nHsjSnn0202Hxko5
+         ctpdzYwDrwk5IAm+qS6+AOz7vbKP3Y95XtDb/Qv/Y2j1gvtcBF4uxDIfF+BjDYotZnno
+         20hfTkJf79AF5oeNR9v6EGFKZ/8u7aOzMtdKfUJeOVRhd5US+KM0S1fes2AIirl+AuPS
+         hjwQ==
+X-Gm-Message-State: APjAAAUGzG6jwCLUc/rfUKD8lpIHVFw6wRIecqwf7YvXqQxbHcZIFltT
+        MvGzhud4J5MSdT4SGnsLUg==
+X-Google-Smtp-Source: APXvYqzZzuIwDzmzfqhTKUe49az+Etwqyco/nG1nDw+t4D7VEkxMrWlgNAsahLPneOunxOSWnXEiHQ==
+X-Received: by 2002:aca:d903:: with SMTP id q3mr6124909oig.12.1582151096719;
+        Wed, 19 Feb 2020 14:24:56 -0800 (PST)
+Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id l80sm428436oib.37.2020.02.19.14.24.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Feb 2020 14:24:56 -0800 (PST)
+Received: (nullmailer pid 16262 invoked by uid 1000);
+        Wed, 19 Feb 2020 22:24:54 -0000
+Date:   Wed, 19 Feb 2020 16:24:54 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc:     bhelgaas@google.com, will@kernel.org, robh+dt@kernel.org,
+        lorenzo.pieralisi@arm.com, joro@8bytes.org,
+        baolu.lu@linux.intel.com, linux-doc@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org, corbet@lwn.net,
+        mark.rutland@arm.com, liviu.dudau@arm.com, sudeep.holla@arm.com,
+        guohanjun@huawei.com, rjw@rjwysocki.net, lenb@kernel.org,
+        robin.murphy@arm.com, dwmw2@infradead.org,
+        amurray@thegoodpenguin.co.uk, frowand.list@gmail.com
+Subject: Re: [PATCH 01/11] dt-bindings: PCI: generic: Add ats-supported
+ property
+Message-ID: <20200219222454.GA16221@bogus>
+References: <20200213165049.508908-1-jean-philippe@linaro.org>
+ <20200213165049.508908-2-jean-philippe@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: 19-02-2020
-To:     Recipients <mucios@imp.edu.mx>
-From:   "urs portmann" <mucios@imp.edu.mx>
-Date:   Wed, 19 Feb 2020 21:51:39 +1100
-Reply-To: onube@qq.com
-Message-Id: <20200219105141.A3A89180635F4E@imp.edu.mx>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200213165049.508908-2-jean-philippe@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Guten Morgen,
-                                          19-02-2020
-Wir haben versucht, Sie zu erreichen und haben noch nichts von Ihnen gehört. Haben Sie unsere letzte E-Mail über Ihre S.p.e.n.d.e erhalten? Wenn nicht, melden Sie sich bitte bei uns, um weitere Informationen zu erhalten.
+On Thu, 13 Feb 2020 17:50:39 +0100, Jean-Philippe Brucker wrote:
+> Add a way for firmware to tell the OS that ATS is supported by the PCI
+> root complex. An endpoint with ATS enabled may send Translation Requests
+> and Translated Memory Requests, which look just like Normal Memory
+> Requests with a non-zero AT field. So a root controller that ignores the
+> AT field may simply forward the request to the IOMMU as a Normal Memory
+> Request, which could end badly. In any case, the endpoint will be
+> unusable.
+> 
+> The ats-supported property allows the OS to only enable ATS in endpoints
+> if the root controller can handle ATS requests. Only add the property to
+> pcie-host-ecam-generic for the moment. For non-generic root controllers,
+> availability of ATS can be inferred from the compatible string.
+> 
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> ---
+>  Documentation/devicetree/bindings/pci/host-generic-pci.yaml | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
 
-Wir warten darauf, von Ihnen zu hören, sobald Sie diese Nachricht erhalten, die Sie bei der weiteren Vorgehensweise unterstützt.
-
-Mfg
-urs portmann
+Reviewed-by: Rob Herring <robh@kernel.org>
