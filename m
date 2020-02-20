@@ -2,85 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 012DE165276
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2020 23:24:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95D10165A83
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Feb 2020 10:53:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727469AbgBSWY5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Feb 2020 17:24:57 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:34831 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727163AbgBSWY5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Feb 2020 17:24:57 -0500
-Received: by mail-oi1-f193.google.com with SMTP id b18so25521148oie.2;
-        Wed, 19 Feb 2020 14:24:57 -0800 (PST)
+        id S1726799AbgBTJxw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Feb 2020 04:53:52 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:41915 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726771AbgBTJxw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Feb 2020 04:53:52 -0500
+Received: by mail-ot1-f66.google.com with SMTP id r27so3066300otc.8;
+        Thu, 20 Feb 2020 01:53:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=bw/arhxO0zD6uxPv9B55JT/z9CSekm6k6Bmp/kVtLV0=;
-        b=iDoyGV5c0sHKnm8fR8KkHHXF/ntWO0w46zg5ISA1UjqFbYZT6PWEJgNscnK/WbzFiq
-         zST2+piKM7q4lOxSJE3idurDkXnWN9cSm6HbTejthJM8QihAnSXj8sXAo7xbKMTtaAS7
-         R+WoTJmlNxUJkgnSnwOknoV1cqtrkw7YI9ZMijGBZoRy9hvljRb3nHsjSnn0202Hxko5
-         ctpdzYwDrwk5IAm+qS6+AOz7vbKP3Y95XtDb/Qv/Y2j1gvtcBF4uxDIfF+BjDYotZnno
-         20hfTkJf79AF5oeNR9v6EGFKZ/8u7aOzMtdKfUJeOVRhd5US+KM0S1fes2AIirl+AuPS
-         hjwQ==
-X-Gm-Message-State: APjAAAUGzG6jwCLUc/rfUKD8lpIHVFw6wRIecqwf7YvXqQxbHcZIFltT
-        MvGzhud4J5MSdT4SGnsLUg==
-X-Google-Smtp-Source: APXvYqzZzuIwDzmzfqhTKUe49az+Etwqyco/nG1nDw+t4D7VEkxMrWlgNAsahLPneOunxOSWnXEiHQ==
-X-Received: by 2002:aca:d903:: with SMTP id q3mr6124909oig.12.1582151096719;
-        Wed, 19 Feb 2020 14:24:56 -0800 (PST)
-Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id l80sm428436oib.37.2020.02.19.14.24.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2020 14:24:56 -0800 (PST)
-Received: (nullmailer pid 16262 invoked by uid 1000);
-        Wed, 19 Feb 2020 22:24:54 -0000
-Date:   Wed, 19 Feb 2020 16:24:54 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc:     bhelgaas@google.com, will@kernel.org, robh+dt@kernel.org,
-        lorenzo.pieralisi@arm.com, joro@8bytes.org,
-        baolu.lu@linux.intel.com, linux-doc@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux-foundation.org, corbet@lwn.net,
-        mark.rutland@arm.com, liviu.dudau@arm.com, sudeep.holla@arm.com,
-        guohanjun@huawei.com, rjw@rjwysocki.net, lenb@kernel.org,
-        robin.murphy@arm.com, dwmw2@infradead.org,
-        amurray@thegoodpenguin.co.uk, frowand.list@gmail.com
-Subject: Re: [PATCH 01/11] dt-bindings: PCI: generic: Add ats-supported
- property
-Message-ID: <20200219222454.GA16221@bogus>
-References: <20200213165049.508908-1-jean-philippe@linaro.org>
- <20200213165049.508908-2-jean-philippe@linaro.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=jeN19GuMB9ysdWk9mvfpt7TayG82X3Z6MoBxOjoN1DQ=;
+        b=aj3HSdcnObpMLp28TZMsunEHb7Q79as1GgDSnPUDnmeqDlwUqh3X2s6AZk+JzsrATG
+         H6gVwRT7EZEE7W1Xek/mmnp6uV1kgpBqpOUAUjA7/OJGpPibP4RCe0fXZCFVDlRnJITc
+         ZmRUbqXUsefDtI5kZD+qUl+N0a7PgS8jHEC+BVq3iE/x0dKi0LqNzeFCZUTc0pZWRRMv
+         IqTQRcP9JPywkQc32E0lTVEa8VOdJ+7c31QrHZRrIaW2ChEXwRJ5jtMyuN7nmqJLi15m
+         /3GMHog5o3XEEvXlL+MqUIgPIgsSGI28XcCLB9NeHpLXt2JHTkiG3vr7nzF8wiak9rVR
+         Os/A==
+X-Gm-Message-State: APjAAAWvVnDdYOp7kiHXD+77UtUh2ChEdQOM/PdafJCBSQVqwnkUfuF2
+        5B6VbmlZwT/oFIE7ZIl5dJkGON2PQtNfKr1/Kj4=
+X-Google-Smtp-Source: APXvYqxLOo4uzE64DC6gPgGBW4hdqs+4rlt7vt1Fjhxf8+gu4PC1ikAdU8TeWnrzHm8OZrIZcVApDNT1MUzLwx8rN1w=
+X-Received: by 2002:a9d:7559:: with SMTP id b25mr22192490otl.189.1582192431589;
+ Thu, 20 Feb 2020 01:53:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200213165049.508908-2-jean-philippe@linaro.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <98d72d3b-c9eb-36bc-1d68-2c3020bdf9c5@infradead.org>
+In-Reply-To: <98d72d3b-c9eb-36bc-1d68-2c3020bdf9c5@infradead.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 20 Feb 2020 10:53:39 +0100
+Message-ID: <CAJZ5v0hsoYc4CYw90CAQGKpeh=Zt5oC0YWkP-o-t2TuntSng2A@mail.gmail.com>
+Subject: Re: [PATCH] Documentation/admin-guide/acpi: fix fan_performance_states.rst
+ warnings
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        ACPI Devel Mailing List <linux-acpi@vger.kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 13 Feb 2020 17:50:39 +0100, Jean-Philippe Brucker wrote:
-> Add a way for firmware to tell the OS that ATS is supported by the PCI
-> root complex. An endpoint with ATS enabled may send Translation Requests
-> and Translated Memory Requests, which look just like Normal Memory
-> Requests with a non-zero AT field. So a root controller that ignores the
-> AT field may simply forward the request to the IOMMU as a Normal Memory
-> Request, which could end badly. In any case, the endpoint will be
-> unusable.
-> 
-> The ats-supported property allows the OS to only enable ATS in endpoints
-> if the root controller can handle ATS requests. Only add the property to
-> pcie-host-ecam-generic for the moment. For non-generic root controllers,
-> availability of ATS can be inferred from the compatible string.
-> 
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+On Mon, Feb 17, 2020 at 5:42 AM Randy Dunlap <rdunlap@infradead.org> wrote:
+>
+> From: Randy Dunlap <rdunlap@infradead.org>
+>
+> Fix Sphinx format warnings in fan_performace_states.rst
+> by adding indentation.
+>
+> Documentation/admin-guide/acpi/fan_performance_states.rst:21: WARNING: Literal block ends without a blank line; unexpected unindent.
+> Documentation/admin-guide/acpi/fan_performance_states.rst:41: WARNING: Literal block expected; none found.
+>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > ---
->  Documentation/devicetree/bindings/pci/host-generic-pci.yaml | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
+>  Documentation/admin-guide/acpi/fan_performance_states.rst |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> --- lnx-56-rc2.orig/Documentation/admin-guide/acpi/fan_performance_states.rst
+> +++ lnx-56-rc2/Documentation/admin-guide/acpi/fan_performance_states.rst
+> @@ -18,7 +18,7 @@ may look as follows::
+>
+>   $ ls -l /sys/bus/acpi/devices/INT3404:00/
+>   total 0
+> -...
+> + ...
+>   -r--r--r-- 1 root root 4096 Dec 13 20:38 state0
+>   -r--r--r-- 1 root root 4096 Dec 13 20:38 state1
+>   -r--r--r-- 1 root root 4096 Dec 13 20:38 state10
+> @@ -38,7 +38,7 @@ where each of the "state*" files represe
+>  and contains a colon-separated list of 5 integer numbers (fields) with the
+>  following interpretation::
+>
+> -control_percent:trip_point_index:speed_rpm:noise_level_mdb:power_mw
+> +  control_percent:trip_point_index:speed_rpm:noise_level_mdb:power_mw
+>
+>  * ``control_percent``: The percent value to be used to set the fan speed to a
+>    specific level using the _FSL object (0-100).
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Applied as a fix for 5.6, thanks!
