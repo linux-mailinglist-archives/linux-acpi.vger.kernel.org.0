@@ -2,89 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95D10165A83
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Feb 2020 10:53:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FD53165B05
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Feb 2020 11:02:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726799AbgBTJxw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Feb 2020 04:53:52 -0500
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:41915 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726771AbgBTJxw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Feb 2020 04:53:52 -0500
-Received: by mail-ot1-f66.google.com with SMTP id r27so3066300otc.8;
-        Thu, 20 Feb 2020 01:53:52 -0800 (PST)
+        id S1727134AbgBTKB7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Feb 2020 05:01:59 -0500
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:44903 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727799AbgBTKBz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Feb 2020 05:01:55 -0500
+Received: by mail-pg1-f195.google.com with SMTP id g3so1675601pgs.11
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Feb 2020 02:01:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
+        b=dwLd+3LJSBvFv79bNaPi6FIYMGxFD1eshrWzldIBC927Bytj2OeUIl46o05MA/UKyI
+         DjmfA5dBsVk8BQ9OXq3epakhEpn1NCET+bN9jwwy91pQqfxiIrtXmA3RyD4MuPfYS+oY
+         jHuAZ4otLQF/K8fOOYMfmcvdr3MzYdC2QxNJkxUBElIsQ1/M2U+MhwY+307i2MPbo6kH
+         Lbfx5x/qGM+bO71N+KBJ6inysZdkXSm2eCjmYPg9GtXsVWiqQcYbif6t4h5YQ1bOKLgt
+         RyhWqs6CeyEu950mSMP6vUO3A3PuB4uohkbDd3Ac+FBY28oeJDhwEczU7CID4ErHs5j7
+         sijQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jeN19GuMB9ysdWk9mvfpt7TayG82X3Z6MoBxOjoN1DQ=;
-        b=aj3HSdcnObpMLp28TZMsunEHb7Q79as1GgDSnPUDnmeqDlwUqh3X2s6AZk+JzsrATG
-         H6gVwRT7EZEE7W1Xek/mmnp6uV1kgpBqpOUAUjA7/OJGpPibP4RCe0fXZCFVDlRnJITc
-         ZmRUbqXUsefDtI5kZD+qUl+N0a7PgS8jHEC+BVq3iE/x0dKi0LqNzeFCZUTc0pZWRRMv
-         IqTQRcP9JPywkQc32E0lTVEa8VOdJ+7c31QrHZRrIaW2ChEXwRJ5jtMyuN7nmqJLi15m
-         /3GMHog5o3XEEvXlL+MqUIgPIgsSGI28XcCLB9NeHpLXt2JHTkiG3vr7nzF8wiak9rVR
-         Os/A==
-X-Gm-Message-State: APjAAAWvVnDdYOp7kiHXD+77UtUh2ChEdQOM/PdafJCBSQVqwnkUfuF2
-        5B6VbmlZwT/oFIE7ZIl5dJkGON2PQtNfKr1/Kj4=
-X-Google-Smtp-Source: APXvYqxLOo4uzE64DC6gPgGBW4hdqs+4rlt7vt1Fjhxf8+gu4PC1ikAdU8TeWnrzHm8OZrIZcVApDNT1MUzLwx8rN1w=
-X-Received: by 2002:a9d:7559:: with SMTP id b25mr22192490otl.189.1582192431589;
- Thu, 20 Feb 2020 01:53:51 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
+        b=kPu7DSRC1HKAGO4eJtQmaM7h6sFw6vDCvfMpiPz1I3qzoBlHMuqsXT0nBhvrD7QvIY
+         j3LnIYK86nE2iXTIzO3j8tbcxIykpGjnihuNqVNQg2UDnveTSBuuAn6xzzGreINhZY8O
+         GAHcLzbMdVmoA4j1FlLVaur+vwATLmSmg6dbyixTbUPlPqb73IB6p4cp3ydbwys4U6zm
+         Z4vl0NnDZtPHXkNyrD7j+V+JlgHg+ql/7UKGw0Xn7pqaMbf62txTkBkcitaq/y2QTyU3
+         9gQdL1kfC25tV4BEUQsS3Z0ZLy0sEKlLBv+r5iO58ECCdDk67UihzdvWjfKUHy8LJhqd
+         iJAQ==
+X-Gm-Message-State: APjAAAUBYqCpq3ZHtbGVH2jEKTIT3j1XPk1kbNYcciUM26SbhMJGd3Ml
+        l5PsOO7At4WoRvbv2ajPUejJ7bFsQy2e56o2wSs=
+X-Google-Smtp-Source: APXvYqw2sveZUCKBmV2iXF7UHHebBZ3ekgWlf/dl5jMXuVzDcCdiEBqTAy6RUU+C44tDWqIwIllQmcg5tddHbn2SarE=
+X-Received: by 2002:a63:2cc9:: with SMTP id s192mr31430410pgs.441.1582192914773;
+ Thu, 20 Feb 2020 02:01:54 -0800 (PST)
 MIME-Version: 1.0
-References: <98d72d3b-c9eb-36bc-1d68-2c3020bdf9c5@infradead.org>
-In-Reply-To: <98d72d3b-c9eb-36bc-1d68-2c3020bdf9c5@infradead.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 20 Feb 2020 10:53:39 +0100
-Message-ID: <CAJZ5v0hsoYc4CYw90CAQGKpeh=Zt5oC0YWkP-o-t2TuntSng2A@mail.gmail.com>
-Subject: Re: [PATCH] Documentation/admin-guide/acpi: fix fan_performance_states.rst
- warnings
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        ACPI Devel Mailing List <linux-acpi@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Jonathan Corbet <corbet@lwn.net>
+Received: by 2002:a17:90a:90f:0:0:0:0 with HTTP; Thu, 20 Feb 2020 02:01:54
+ -0800 (PST)
+Reply-To: cagesusan199@gmail.com
+From:   "Mrs. Susan S. Cage" <drgoodluckebelejonathan061@gmail.com>
+Date:   Thu, 20 Feb 2020 02:01:54 -0800
+Message-ID: <CALjo5=92honwOTiCOFfRnXNatmAOfe0-zurnTeHjVVaTGZhc8w@mail.gmail.com>
+Subject: Attention:Beneficiary
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 17, 2020 at 5:42 AM Randy Dunlap <rdunlap@infradead.org> wrote:
->
-> From: Randy Dunlap <rdunlap@infradead.org>
->
-> Fix Sphinx format warnings in fan_performace_states.rst
-> by adding indentation.
->
-> Documentation/admin-guide/acpi/fan_performance_states.rst:21: WARNING: Literal block ends without a blank line; unexpected unindent.
-> Documentation/admin-guide/acpi/fan_performance_states.rst:41: WARNING: Literal block expected; none found.
->
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->  Documentation/admin-guide/acpi/fan_performance_states.rst |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> --- lnx-56-rc2.orig/Documentation/admin-guide/acpi/fan_performance_states.rst
-> +++ lnx-56-rc2/Documentation/admin-guide/acpi/fan_performance_states.rst
-> @@ -18,7 +18,7 @@ may look as follows::
->
->   $ ls -l /sys/bus/acpi/devices/INT3404:00/
->   total 0
-> -...
-> + ...
->   -r--r--r-- 1 root root 4096 Dec 13 20:38 state0
->   -r--r--r-- 1 root root 4096 Dec 13 20:38 state1
->   -r--r--r-- 1 root root 4096 Dec 13 20:38 state10
-> @@ -38,7 +38,7 @@ where each of the "state*" files represe
->  and contains a colon-separated list of 5 integer numbers (fields) with the
->  following interpretation::
->
-> -control_percent:trip_point_index:speed_rpm:noise_level_mdb:power_mw
-> +  control_percent:trip_point_index:speed_rpm:noise_level_mdb:power_mw
->
->  * ``control_percent``: The percent value to be used to set the fan speed to a
->    specific level using the _FSL object (0-100).
+-- 
+Dearest Friend,
 
-Applied as a fix for 5.6, thanks!
+Sorry for invading your privacy, my name is Susan S. Cage I am 81
+years, citizen of United States and presently in hospital undergoing
+chromatography for bronchogenic carcinomas (Lung cancer) which
+affected both Lungs. The doctors said I have few days to live because
+the cancer has now affected my brain.
+
+My late husband left Fifteen Million, Five Hundred British Pounds
+Sterling in my account, I want to transfer the money to you and I want
+you to use it as a donate for charitable and help the needy,
+motherless, less privileged and widows within your location.
+
+I need your assurance that you will use the fund for charity, once I a
+favorable reply from you, will inform my Bank through my lawyer to
+transfer the fund to you as my Next of Kin and Sole Beneficiary. Once
+I receive your response, I will inform my bank in writing through my
+lawyer.
+
+
+
+Thank you and God bless you.
+
+Mrs. Susan S. Cage
