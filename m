@@ -2,191 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0F521678F4
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2020 10:07:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB01B167987
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2020 10:36:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727815AbgBUJHj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Feb 2020 04:07:39 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:37150 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727629AbgBUJHj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Feb 2020 04:07:39 -0500
-Received: by mail-ot1-f67.google.com with SMTP id b3so1392059otp.4
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Feb 2020 01:07:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Z0diNZQf5HZZ7B9Ku9aThWBNofz9C2xpIf2HlqFxG7s=;
-        b=WmyxccyrDojvN0Jh7KHm+aKUuqn+ZZ2y2iLr5hh+7DYCNJ78lQ0O/6/fg+neNr6dOT
-         bH45IygQLoS1tq6njihgnUf/KXtbf76r38CVsY3b95UWdPKPgU+7c9Y/INWYNoPNubOY
-         v7WMAtTui5dduiRHD9pfRDB9JaN3iVt89fvpgY4RiEX9LEzjjc+ETEoqyfGjmwrWvFYO
-         U7/bRQ/Kmjiv+MQHpZh79iFLMe1K8gX0Oif293mLk0yT52tTICMpGOqQtMFBpXbaTOlg
-         NpGgaB0R2QCcgM5SZ7es9IzlCumFGE2COA8Fx354HY14MJroJLvcJdX8uazwlKGRG55F
-         aRKw==
-X-Gm-Message-State: APjAAAUiBFYi5ihplvLZmZZNiJx1NWkp9X6cumc/ZSqL/23pgHEnTzPM
-        FV7z189aL+kx0xGIANnaT5atqMjZnT4cM49ZN14=
-X-Google-Smtp-Source: APXvYqwaTcgmCh5t5XP9fypH5lMZCjiD4QHJSItwkaXm5ierNt008qPgvgOR1jDJozfsQ1qSdIGjnkykx7uU2MnpHt0=
-X-Received: by 2002:a9d:7559:: with SMTP id b25mr26516156otl.189.1582276058238;
- Fri, 21 Feb 2020 01:07:38 -0800 (PST)
+        id S1727998AbgBUJg2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 21 Feb 2020 04:36:28 -0500
+Received: from mail.fireflyinternet.com ([77.68.26.236]:61518 "EHLO
+        fireflyinternet.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727840AbgBUJg2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Feb 2020 04:36:28 -0500
+X-Greylist: delayed 989 seconds by postgrey-1.27 at vger.kernel.org; Fri, 21 Feb 2020 04:36:27 EST
+X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
+Received: from localhost (unverified [78.156.65.138]) 
+        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 20298788-1500050 
+        for multiple; Fri, 21 Feb 2020 09:19:51 +0000
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20200219101724.27521-1-sakari.ailus@linux.intel.com>
-In-Reply-To: <20200219101724.27521-1-sakari.ailus@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 21 Feb 2020 10:07:27 +0100
-Message-ID: <CAJZ5v0g-R_5n6-mJGc_sAGkg3OP4c=Kk356C+DeFnbFj5=GUaw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] PM-runtime: Add pm_runtime_get_if_active
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+From:   Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <4974198.mf5Me8BlfX@kreacher>
+Cc:     linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+References: <CAHk-=wgqwiBLGvwTqU2kJEPNmafPpPe_K0XgBU-A58M+mkwpgQ@mail.gmail.com>
+ <158197497594.2449.9692451182044632969@skylake-alporthouse-com>
+ <10791544.HYfhKnFLvn@kreacher> <4974198.mf5Me8BlfX@kreacher>
+Message-ID: <158227678951.3099.15076882205129643027@skylake-alporthouse-com>
+User-Agent: alot/0.6
+Subject: Re: Linux 5.6-rc2
+Date:   Fri, 21 Feb 2020 09:19:49 +0000
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 19, 2020 at 11:21 AM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> pm_runtime_get_if_in_use() bumps the usage count if the usage count is
-> non-zero and the device's runtime PM status is active. This works for
-> drivers that do not use autoidle, but for those that do, the function
-> returns zero even when the device is active.
->
-> In order to maintain sane device state while the device is powered on in
-> hope it'll be needed, pm_runtime_get_if_active(dev, true) returns greater
-> than zero if the device was in active state when it was called, in which
-> case it also increments the device's usage_count.
->
-> If the second argument of pm_runtime_get_if_active() is false, the function
-> acts just as pm_runtime_get_if_in_use() does. This patch also makes the
-> latter as a wrapper for the former.
->
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Quoting Rafael J. Wysocki (2020-02-21 00:46:18)
+> On Thursday, February 20, 2020 11:41:22 PM CET Rafael J. Wysocki wrote:
+> > On Monday, February 17, 2020 10:29:35 PM CET Chris Wilson wrote:
+> > > Quoting Linus Torvalds (2020-02-17 21:20:27)
+> > > > On Mon, Feb 17, 2020 at 8:22 AM Chris Wilson <chris@chris-wilson.co.uk> wrote:
+> > > > >
+> > > > > Quoting Linus Torvalds (2020-02-16 21:32:32)
+> > > > > > Rafael J. Wysocki (4):
+> > > > > >       ACPI: EC: Fix flushing of pending work
+> > > > > >       ACPI: PM: s2idle: Avoid possible race related to the EC GPE
+> > > > > >       ACPICA: Introduce acpi_any_gpe_status_set()
+> > > > > >       ACPI: PM: s2idle: Prevent spurious SCIs from waking up the system
+> > > > >
+> > > > > Our S0 testing broke on all platforms, so we've reverted
+> > > > > e3728b50cd9b ("ACPI: PM: s2idle: Avoid possible race related to the EC GPE")
+> > > > > fdde0ff8590b ("ACPI: PM: s2idle: Prevent spurious SCIs from waking up the system")
+> > > > >
+> > > > > There wasn't much in the logs, for example,
+> > > > > https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5445/fi-kbl-7500u/igt@gem_exec_suspend@basic-s0.html
+> > > > 
+> > > > So the machine suspends, but never comes back?
+> > > > 
+> > > > Do you need to revert both for it to work for you? Or is the revert of
+> > > > fdde0ff8590b just to avoid the conflict?
+> > > 
+> > > fdde0ff85 was just to avoid conflicts.
+> > >  
+> > > > I'm assuming you bisected this, and the bisect indicated e3728b50cd9b,
+> > > > and then to revert it you reverted the other commit too..
+> > > 
+> > > Lucky guess based on diff rc1..rc2. Bisect was going to be painful, but
+> > > could be done if this is not enough clue for Rafael.
+> > 
+> > Sorry for the delayed response, was away.
+> > 
+> > I'm guessing that you are using rtcwake for wakeup, in which case reverting
+> > fdde0ff85 alone should unbreak it.
+> > 
+> > Can you please double check that?
+> 
+> And below is a patch that should fix it if I'm not mistaken (verified on my
+> system where I was able to reproduce the issue), so it would suffice to test
+> this one on top of the -rc2.
 
-Can you please CC this to linux-pm too?
+Correct on both accounts. Reverting fdde0ff85 alone was enough, and
+replacing the reverts with the suggested patch works.
 
 > ---
->  Documentation/power/runtime_pm.rst |  6 +++++
->  drivers/base/power/runtime.c       | 36 ++++++++++++++++++++++--------
->  include/linux/pm_runtime.h         | 12 +++++++++-
->  3 files changed, 44 insertions(+), 10 deletions(-)
->
-> diff --git a/Documentation/power/runtime_pm.rst b/Documentation/power/runtime_pm.rst
-> index ab8406c84254..0553008b6279 100644
-> --- a/Documentation/power/runtime_pm.rst
-> +++ b/Documentation/power/runtime_pm.rst
-> @@ -382,6 +382,12 @@ drivers/base/power/runtime.c and include/linux/pm_runtime.h:
->        nonzero, increment the counter and return 1; otherwise return 0 without
->        changing the counter
->
-> +  `int pm_runtime_get_if_active(struct device *dev, bool ign_usage_count);`
-> +    - return -EINVAL if 'power.disable_depth' is nonzero; otherwise, if the
-> +      runtime PM status is RPM_ACTIVE, and either ign_usage_count is true
-> +      or the device's usage_count is non-zero, increment the counter and
-> +      return 1; otherwise return 0 without changing the counter
-> +
->    `void pm_runtime_put_noidle(struct device *dev);`
->      - decrement the device's usage counter
->
-> diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-> index 16134a69bf6f..99c7da112c95 100644
-> --- a/drivers/base/power/runtime.c
-> +++ b/drivers/base/power/runtime.c
-> @@ -1087,29 +1087,47 @@ int __pm_runtime_resume(struct device *dev, int rpmflags)
->  EXPORT_SYMBOL_GPL(__pm_runtime_resume);
->
->  /**
-> - * pm_runtime_get_if_in_use - Conditionally bump up the device's usage counter.
-> + * pm_runtime_get_if_active - Conditionally bump up the device's usage counter.
->   * @dev: Device to handle.
->   *
->   * Return -EINVAL if runtime PM is disabled for the device.
->   *
-> - * If that's not the case and if the device's runtime PM status is RPM_ACTIVE
-> - * and the runtime PM usage counter is nonzero, increment the counter and
-> - * return 1.  Otherwise return 0 without changing the counter.
-> + * Otherwise, if the device's runtime PM status is RPM_ACTIVE and either
-> + * ign_usage_count is true or the device's usage_count is non-zero, increment
-> + * the counter and return 1. Otherwise return 0 without changing the counter.
-> + *
-> + * If ign_usage_count is true, the function can be used to prevent suspending
-> + * the device when its runtime PM status is RPM_ACTIVE.
-> + *
-> + * If ign_usage_count is false, the function can be used to prevent suspending
-> + * the device when both its runtime PM status is RPM_ACTIVE and its usage_count
-> + * is non-zero.
-> + *
-> + * The caller is resposible for putting the device's usage count when ther
-> + * return value is greater than zero.
->   */
-> -int pm_runtime_get_if_in_use(struct device *dev)
-> +int pm_runtime_get_if_active(struct device *dev, bool ign_usage_count)
->  {
->         unsigned long flags;
->         int retval;
->
->         spin_lock_irqsave(&dev->power.lock, flags);
-> -       retval = dev->power.disable_depth > 0 ? -EINVAL :
-> -               dev->power.runtime_status == RPM_ACTIVE
-> -                       && atomic_inc_not_zero(&dev->power.usage_count);
-> +       if (dev->power.disable_depth > 0) {
-> +               retval = -EINVAL;
-> +       } else if (dev->power.runtime_status != RPM_ACTIVE) {
-> +               retval = 0;
-> +       } else if (ign_usage_count) {
-> +               retval = 1;
-> +               atomic_inc(&dev->power.usage_count);
-> +       } else {
-> +               retval = atomic_inc_not_zero(&dev->power.usage_count);
-> +       }
->         trace_rpm_usage_rcuidle(dev, 0);
->         spin_unlock_irqrestore(&dev->power.lock, flags);
-> +
->         return retval;
->  }
-> -EXPORT_SYMBOL_GPL(pm_runtime_get_if_in_use);
-> +EXPORT_SYMBOL_GPL(pm_runtime_get_if_active);
->
->  /**
->   * __pm_runtime_set_status - Set runtime PM status of a device.
-> diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
-> index 22af69d237a6..3bdcbce8141a 100644
-> --- a/include/linux/pm_runtime.h
-> +++ b/include/linux/pm_runtime.h
-> @@ -38,7 +38,7 @@ extern int pm_runtime_force_resume(struct device *dev);
->  extern int __pm_runtime_idle(struct device *dev, int rpmflags);
->  extern int __pm_runtime_suspend(struct device *dev, int rpmflags);
->  extern int __pm_runtime_resume(struct device *dev, int rpmflags);
-> -extern int pm_runtime_get_if_in_use(struct device *dev);
-> +extern int pm_runtime_get_if_active(struct device *dev, bool ign_usage_count);
->  extern int pm_schedule_suspend(struct device *dev, unsigned int delay);
->  extern int __pm_runtime_set_status(struct device *dev, unsigned int status);
->  extern int pm_runtime_barrier(struct device *dev);
-> @@ -60,6 +60,11 @@ extern void pm_runtime_put_suppliers(struct device *dev);
->  extern void pm_runtime_new_link(struct device *dev);
->  extern void pm_runtime_drop_link(struct device *dev);
->
-> +static inline int pm_runtime_get_if_in_use(struct device *dev)
-> +{
-> +       return pm_runtime_get_if_active(dev, false);
-> +}
-> +
->  static inline void pm_suspend_ignore_children(struct device *dev, bool enable)
->  {
->         dev->power.ignore_children = enable;
-> @@ -143,6 +148,11 @@ static inline int pm_runtime_get_if_in_use(struct device *dev)
->  {
->         return -EINVAL;
->  }
-> +static inline int pm_runtime_get_if_active(struct device *dev,
-> +                                          bool ign_usage_count)
-> +{
-> +       return -EINVAL;
-> +}
->  static inline int __pm_runtime_set_status(struct device *dev,
->                                             unsigned int status) { return 0; }
->  static inline int pm_runtime_barrier(struct device *dev) { return 0; }
-> --
-> 2.20.1
->
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Subject: [PATCH] ACPI: PM: s2idle: Check fixed wakeup events in acpi_s2idle_wake()
+> 
+> Commit fdde0ff8590b ("ACPI: PM: s2idle: Prevent spurious SCIs from
+> waking up the system") overlooked the fact that fixed events can wake
+> up the system too and broke RTC wakeup from suspend-to-idle as a
+> result.
+> 
+> Fix this issue by checking the fixed events in acpi_s2idle_wake() in
+> addition to checking wakeup GPEs and break out of the suspend-to-idle
+> loop if the status bits of any enabled fixed events are set then.
+> 
+> Fixes: fdde0ff8590b ("ACPI: PM: s2idle: Prevent spurious SCIs from waking up the system")
+> Reported-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Chris Wilson <chris@chris-wilson.co.uk>
+-Chris
