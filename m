@@ -2,36 +2,37 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AC6D169859
-	for <lists+linux-acpi@lfdr.de>; Sun, 23 Feb 2020 16:18:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB8CE16985C
+	for <lists+linux-acpi@lfdr.de>; Sun, 23 Feb 2020 16:18:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726534AbgBWPSf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 23 Feb 2020 10:18:35 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:21296 "EHLO
+        id S1726748AbgBWPSh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 23 Feb 2020 10:18:37 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:44062 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726208AbgBWPSf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 23 Feb 2020 10:18:35 -0500
+        with ESMTP id S1726302AbgBWPSh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 23 Feb 2020 10:18:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1582471114;
+        s=mimecast20190719; t=1582471116;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=YXSldU4rp7h4W4vTeJugaLuXIu5wGOGxej7iJwzQz/Y=;
-        b=Sqf8wAQQg39lS0W68LXTLdoqqQK/WmqywDJqkyIsr0AOtwiYmWJycQmOmaoP/+7vNGJJIB
-        IC0ukOOzz12GH2r/dsvDS8Ci1VV9/pci7efTZTDpdH+P4tpenxI7xYDSzOuNCjibJOsMkg
-        dUoc1nuYK0QIpAHLjX7VlNOpN+vxanU=
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ftkt+1nwUQBtt2uoTyVof1WSluDrQ6UZVIbX98z4hO8=;
+        b=WT97dU3StkxoApUksAsf0Lc1wbiTD9bvg9LRcVOgD2lpD3VJmeWbeTQRwOWIFKJjNrpg/0
+        eDeBHOH0G2+Eu29QgyJja5tRCd7dlMELvr9b9ianDLYMWmDKAWX8wDraSH+tevT8D66Rhg
+        UkLExtAx+D4Q+zGQbL4bcL5et5Mjft8=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-11-lKDw3IOOO9O-kUDf_BzGSQ-1; Sun, 23 Feb 2020 10:18:32 -0500
-X-MC-Unique: lKDw3IOOO9O-kUDf_BzGSQ-1
+ us-mta-37-zuGZMp79PKyPLG6ltzsdhQ-1; Sun, 23 Feb 2020 10:18:34 -0500
+X-MC-Unique: zuGZMp79PKyPLG6ltzsdhQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 489D2107ACC7;
-        Sun, 23 Feb 2020 15:18:31 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 137AA13E2;
+        Sun, 23 Feb 2020 15:18:33 +0000 (UTC)
 Received: from x1.localdomain.com (ovpn-116-120.ams2.redhat.com [10.36.116.120])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A664D398;
-        Sun, 23 Feb 2020 15:18:29 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9230F398;
+        Sun, 23 Feb 2020 15:18:31 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -39,9 +40,11 @@ To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
         Linus Walleij <linus.walleij@linaro.org>
 Cc:     Hans de Goede <hdegoede@redhat.com>, linux-gpio@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH 0/2] gpiolib: acpi: ignore-wakeup handling rework
-Date:   Sun, 23 Feb 2020 16:18:26 +0100
-Message-Id: <20200223151828.311682-1-hdegoede@redhat.com>
+Subject: [PATCH 1/2] gpiolib: acpi: Correct comment for HP x2 10 honor_wakeup quirk
+Date:   Sun, 23 Feb 2020 16:18:27 +0100
+Message-Id: <20200223151828.311682-2-hdegoede@redhat.com>
+In-Reply-To: <20200223151828.311682-1-hdegoede@redhat.com>
+References: <20200223151828.311682-1-hdegoede@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Content-Transfer-Encoding: quoted-printable
@@ -50,30 +53,75 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi All,
+Commit aa23ca3d98f7 ("gpiolib: acpi: Add honor_wakeup module-option +
+quirk mechanism") added a quirk for some models of the HP x2 10 series.
 
-The first patch just updates the comment describing why we are ignoring
-GPIO ACPI event wakeups on HP x2 10 models.
+There are 2 issues with the comment describing the quirk:
+1) The comment claims the DMI quirk applies to all Cherry Trail based HP =
+x2
+   10 models. In the mean time I have learned that there are at least 3
+   variants of the HP x2 10 models:
 
-The second patch is more interesting, in the mean time I've learned their
-are actually at least 3 variants of the HP x2 10, and the original quirk
-only applies to the Cherry Trail with TI PMIC variant (and the original
-DMI match only matches that model). We need a similar quirk for the
-Bay Trail with AXP288 model, but there we only want to ignore the wakeups
-for the GPIO ACPI event which is (ab)used for embedded-controller events
-on this model while still honoring the wakeup flags on other pins.
+   Bay Trail SoC + AXP288 PMIC
+   Cherry Trail SoC + AXP288 PMIC
+   Cherry Trail SoC + TI PMIC
 
-I'm not 100% happy with the solution I've come up with to allow ignoring
-events on a single pin. But this was the best KISS thing I could come up
-with. Alternatives would involve string parsing (*), which I would rather
-avoid. I'm very much open to alternatives for the current approach in the
-second patch.
+   And this quirk's DMI matches only match the Cherry Trail SoC + TI PMIC
+   SoC, which is good because we want a slightly different quirk for the
+   others. This commit updates the comment to make it clear that the quir=
+k
+   is only for the Cherry Trail SoC + TI PMIC variants.
 
-Regards,
+2) The comment says that it is ok to disable wakeup on all ACPI GPIO even=
+t
+   handlers, because there is only the one for the embedded-controller
+   events. This is not true, there also is a handler for the special
+   INT0002 device which is related to USB wakeups. We need to also disabl=
+e
+   wakeups on that one because the device turns of the USB-keyboard built
+   into the dock when closing the lid. The XHCI controller takes a while
+   to notice this, so it only notices it when already suspended, causing
+   a spurious wakeup because of this. So disabling wakeup on all handlers
+   is the right thing to do, but not because there only is the one handle=
+r
+   for the EC events. This commit updates the comment to correctly reflec=
+t
+   this.
 
-Hans
+Fixes: aa23ca3d98f7 ("gpiolib: acpi: Add honor_wakeup module-option + qui=
+rk mechanism")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/gpio/gpiolib-acpi.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-
-*) And more complex DMI quirk handling since now we would need to store
-a string + some other flags in the DMI driver_data
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index 31fee5e918b7..bc96f28d4807 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -1345,11 +1345,16 @@ static const struct dmi_system_id gpiolib_acpi_qu=
+irks[] =3D {
+ 	},
+ 	{
+ 		/*
+-		 * Various HP X2 10 Cherry Trail models use an external
+-		 * embedded-controller connected via I2C + an ACPI GPIO
+-		 * event handler. The embedded controller generates various
+-		 * spurious wakeup events when suspended. So disable wakeup
+-		 * for its handler (it uses the only ACPI GPIO event handler).
++		 * HP X2 10 models with Cherry Trail SoC + TI PMIC use an
++		 * external embedded-controller connected via I2C + an ACPI
++		 * GPIO event handler. The embedded controller generates
++		 * various spurious wakeup events when suspended.
++		 * When suspending by closing the LID, the power to the USB
++		 * keyboard is turned off, causing INT0002 ACPI events to
++		 * trigger once the XHCI controller notices the keyboard is
++		 * gone. So INT0002 events cause spurious wakeups too.
++		 * These are the only 2 ACPI event handlers, so we disable
++		 * wakeups for all event handlers to fix the spurious wakeups.
+ 		 * This breaks wakeup when opening the lid, the user needs
+ 		 * to press the power-button to wakeup the system. The
+ 		 * alternative is suspend simply not working, which is worse.
+--=20
+2.25.0
 
