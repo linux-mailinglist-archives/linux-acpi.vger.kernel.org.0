@@ -2,98 +2,171 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1234116BCE7
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2020 10:04:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFC2816BD58
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2020 10:34:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729416AbgBYJEI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Feb 2020 04:04:08 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:41422 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729153AbgBYJEI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 25 Feb 2020 04:04:08 -0500
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 6F6B2544FE40937246FC;
-        Tue, 25 Feb 2020 17:04:04 +0800 (CST)
-Received: from linux-TFkxOR.huawei.com (10.175.104.212) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 25 Feb 2020 17:03:46 +0800
-From:   Heyi Guo <guoheyi@huawei.com>
-To:     <devel@edk2.groups.io>
-CC:     <wanghaibin.wang@huawei.com>, Heyi Guo <guoheyi@huawei.com>,
-        "Lorenzo Pieralisi" <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] acpi/iort: check output reference for the real used mapping
-Date:   Tue, 25 Feb 2020 17:01:36 +0800
-Message-ID: <20200225090136.40989-1-guoheyi@huawei.com>
-X-Mailer: git-send-email 2.19.1
+        id S1729462AbgBYJef (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Feb 2020 04:34:35 -0500
+Received: from retiisi.org.uk ([95.216.213.190]:32856 "EHLO
+        hillosipuli.retiisi.org.uk" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729437AbgBYJef (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 25 Feb 2020 04:34:35 -0500
+Received: from lanttu.localdomain (unknown [IPv6:2a01:4f9:c010:4572::e1:1001])
+        by hillosipuli.retiisi.org.uk (Postfix) with ESMTP id C7D4D634C87;
+        Tue, 25 Feb 2020 11:33:26 +0200 (EET)
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     linux-pm@vger.kernel.org, rafael@kernel.org
+Subject: [RESEND PATCH 1/1] PM-runtime: Add pm_runtime_get_if_active
+Date:   Tue, 25 Feb 2020 11:31:02 +0200
+Message-Id: <20200225093102.18277-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.104.212]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The function iort_node_map_id() does the sanity check against the
-first mapping in the node, but not the one which we really use.
+pm_runtime_get_if_in_use() bumps the usage count if the usage count is
+non-zero and the device's runtime PM status is active. This works for
+drivers that do not use autoidle, but for those that do, the function
+returns zero even when the device is active.
 
-Logically we need check the mapping we use, or check every mapping in
-the node. Choose the first fix for we are not firmware tester.
+In order to maintain sane device state while the device is powered on in
+hope it'll be needed, pm_runtime_get_if_active(dev, true) returns greater
+than zero if the device was in active state when it was called, in which
+case it also increments the device's usage_count.
 
-Signed-off-by: Heyi Guo <guoheyi@huawei.com>
+If the second argument of pm_runtime_get_if_active() is false, the function
+acts just as pm_runtime_get_if_in_use() does. This patch also makes the
+latter as a wrapper for the former.
 
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 ---
-Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc: Hanjun Guo <guohanjun@huawei.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
----
- drivers/acpi/arm64/iort.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+This time cc'ing linux-pm as well.
 
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index ed3d2d1a7ae9..d0fe8d673240 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -470,13 +470,6 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
- 		map = ACPI_ADD_PTR(struct acpi_iort_id_mapping, node,
- 				   node->mapping_offset);
+ Documentation/power/runtime_pm.rst |  6 +++++
+ drivers/base/power/runtime.c       | 36 ++++++++++++++++++++++--------
+ include/linux/pm_runtime.h         | 12 +++++++++-
+ 3 files changed, 44 insertions(+), 10 deletions(-)
+
+diff --git a/Documentation/power/runtime_pm.rst b/Documentation/power/runtime_pm.rst
+index ab8406c84254..0553008b6279 100644
+--- a/Documentation/power/runtime_pm.rst
++++ b/Documentation/power/runtime_pm.rst
+@@ -382,6 +382,12 @@ drivers/base/power/runtime.c and include/linux/pm_runtime.h:
+       nonzero, increment the counter and return 1; otherwise return 0 without
+       changing the counter
  
--		/* Firmware bug! */
--		if (!map->output_reference) {
--			pr_err(FW_BUG "[node %p type %d] ID map has NULL parent reference\n",
--			       node, node->type);
--			goto fail_map;
--		}
--
- 		/*
- 		 * Get the special ID mapping index (if any) and skip its
- 		 * associated ID map to prevent erroneous multi-stage
-@@ -497,6 +490,13 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
- 		if (i == node->mapping_count)
- 			goto fail_map;
- 
-+		/* Firmware bug! */
-+		if (!map->output_reference) {
-+			pr_err(FW_BUG "[node %p type %d] ID map has NULL parent reference\n",
-+			       node, node->type);
-+			goto fail_map;
-+		}
++  `int pm_runtime_get_if_active(struct device *dev, bool ign_usage_count);`
++    - return -EINVAL if 'power.disable_depth' is nonzero; otherwise, if the
++      runtime PM status is RPM_ACTIVE, and either ign_usage_count is true
++      or the device's usage_count is non-zero, increment the counter and
++      return 1; otherwise return 0 without changing the counter
 +
- 		node = ACPI_ADD_PTR(struct acpi_iort_node, iort_table,
- 				    map->output_reference);
- 	}
+   `void pm_runtime_put_noidle(struct device *dev);`
+     - decrement the device's usage counter
+ 
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index 16134a69bf6f..99c7da112c95 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1087,29 +1087,47 @@ int __pm_runtime_resume(struct device *dev, int rpmflags)
+ EXPORT_SYMBOL_GPL(__pm_runtime_resume);
+ 
+ /**
+- * pm_runtime_get_if_in_use - Conditionally bump up the device's usage counter.
++ * pm_runtime_get_if_active - Conditionally bump up the device's usage counter.
+  * @dev: Device to handle.
+  *
+  * Return -EINVAL if runtime PM is disabled for the device.
+  *
+- * If that's not the case and if the device's runtime PM status is RPM_ACTIVE
+- * and the runtime PM usage counter is nonzero, increment the counter and
+- * return 1.  Otherwise return 0 without changing the counter.
++ * Otherwise, if the device's runtime PM status is RPM_ACTIVE and either
++ * ign_usage_count is true or the device's usage_count is non-zero, increment
++ * the counter and return 1. Otherwise return 0 without changing the counter.
++ *
++ * If ign_usage_count is true, the function can be used to prevent suspending
++ * the device when its runtime PM status is RPM_ACTIVE.
++ *
++ * If ign_usage_count is false, the function can be used to prevent suspending
++ * the device when both its runtime PM status is RPM_ACTIVE and its usage_count
++ * is non-zero.
++ *
++ * The caller is resposible for putting the device's usage count when ther
++ * return value is greater than zero.
+  */
+-int pm_runtime_get_if_in_use(struct device *dev)
++int pm_runtime_get_if_active(struct device *dev, bool ign_usage_count)
+ {
+ 	unsigned long flags;
+ 	int retval;
+ 
+ 	spin_lock_irqsave(&dev->power.lock, flags);
+-	retval = dev->power.disable_depth > 0 ? -EINVAL :
+-		dev->power.runtime_status == RPM_ACTIVE
+-			&& atomic_inc_not_zero(&dev->power.usage_count);
++	if (dev->power.disable_depth > 0) {
++		retval = -EINVAL;
++	} else if (dev->power.runtime_status != RPM_ACTIVE) {
++		retval = 0;
++	} else if (ign_usage_count) {
++		retval = 1;
++		atomic_inc(&dev->power.usage_count);
++	} else {
++		retval = atomic_inc_not_zero(&dev->power.usage_count);
++	}
+ 	trace_rpm_usage_rcuidle(dev, 0);
+ 	spin_unlock_irqrestore(&dev->power.lock, flags);
++
+ 	return retval;
+ }
+-EXPORT_SYMBOL_GPL(pm_runtime_get_if_in_use);
++EXPORT_SYMBOL_GPL(pm_runtime_get_if_active);
+ 
+ /**
+  * __pm_runtime_set_status - Set runtime PM status of a device.
+diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
+index 22af69d237a6..3bdcbce8141a 100644
+--- a/include/linux/pm_runtime.h
++++ b/include/linux/pm_runtime.h
+@@ -38,7 +38,7 @@ extern int pm_runtime_force_resume(struct device *dev);
+ extern int __pm_runtime_idle(struct device *dev, int rpmflags);
+ extern int __pm_runtime_suspend(struct device *dev, int rpmflags);
+ extern int __pm_runtime_resume(struct device *dev, int rpmflags);
+-extern int pm_runtime_get_if_in_use(struct device *dev);
++extern int pm_runtime_get_if_active(struct device *dev, bool ign_usage_count);
+ extern int pm_schedule_suspend(struct device *dev, unsigned int delay);
+ extern int __pm_runtime_set_status(struct device *dev, unsigned int status);
+ extern int pm_runtime_barrier(struct device *dev);
+@@ -60,6 +60,11 @@ extern void pm_runtime_put_suppliers(struct device *dev);
+ extern void pm_runtime_new_link(struct device *dev);
+ extern void pm_runtime_drop_link(struct device *dev);
+ 
++static inline int pm_runtime_get_if_in_use(struct device *dev)
++{
++	return pm_runtime_get_if_active(dev, false);
++}
++
+ static inline void pm_suspend_ignore_children(struct device *dev, bool enable)
+ {
+ 	dev->power.ignore_children = enable;
+@@ -143,6 +148,11 @@ static inline int pm_runtime_get_if_in_use(struct device *dev)
+ {
+ 	return -EINVAL;
+ }
++static inline int pm_runtime_get_if_active(struct device *dev,
++					   bool ign_usage_count)
++{
++	return -EINVAL;
++}
+ static inline int __pm_runtime_set_status(struct device *dev,
+ 					    unsigned int status) { return 0; }
+ static inline int pm_runtime_barrier(struct device *dev) { return 0; }
 -- 
-2.19.1
+2.20.1
 
