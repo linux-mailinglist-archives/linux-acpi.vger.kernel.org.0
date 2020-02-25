@@ -2,76 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3CA916C17B
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2020 13:57:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30FD016C47E
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2020 15:57:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729659AbgBYM5B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Feb 2020 07:57:01 -0500
-Received: from mga11.intel.com ([192.55.52.93]:35498 "EHLO mga11.intel.com"
+        id S1730601AbgBYO5G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Feb 2020 09:57:06 -0500
+Received: from foss.arm.com ([217.140.110.172]:51830 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725788AbgBYM5B (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 25 Feb 2020 07:57:01 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Feb 2020 04:57:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,484,1574150400"; 
-   d="scan'208";a="237664636"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga003.jf.intel.com with ESMTP; 25 Feb 2020 04:56:58 -0800
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1j6Zlk-004esL-O0; Tue, 25 Feb 2020 14:57:00 +0200
-Date:   Tue, 25 Feb 2020 14:57:00 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Marc Lehmann <schmorp@schmorp.de>, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH resend 2/3] gpiolib: acpi: Rename honor_wakeup option to
- ignore_wake, add extra quirk
-Message-ID: <20200225125700.GL10400@smile.fi.intel.com>
-References: <20200225102753.8351-1-hdegoede@redhat.com>
- <20200225102753.8351-3-hdegoede@redhat.com>
- <20200225105437.GG10400@smile.fi.intel.com>
- <e0c39a89-bcac-4315-d764-5853eb77537d@redhat.com>
- <20200225123425.GK10400@smile.fi.intel.com>
+        id S1729207AbgBYO5G (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 25 Feb 2020 09:57:06 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CA9691FB;
+        Tue, 25 Feb 2020 06:57:05 -0800 (PST)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7B1233F703;
+        Tue, 25 Feb 2020 06:57:04 -0800 (PST)
+Date:   Tue, 25 Feb 2020 14:57:02 +0000
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Heyi Guo <guoheyi@huawei.com>
+Cc:     devel@edk2.groups.io, wanghaibin.wang@huawei.com,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] acpi/iort: check output reference for the real used
+ mapping
+Message-ID: <20200225145702.GB8970@e121166-lin.cambridge.arm.com>
+References: <20200225090136.40989-1-guoheyi@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200225123425.GK10400@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20200225090136.40989-1-guoheyi@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 25, 2020 at 02:34:25PM +0200, Andy Shevchenko wrote:
-> On Tue, Feb 25, 2020 at 12:26:04PM +0100, Hans de Goede wrote:
-
-> Let's do it as a list of pairs, but in slightly different format (I see some
-> potential to derive a generic parser, based on users described in
-> Documentation/admin-guide/kernel-parameters.txt), i.e.
+On Tue, Feb 25, 2020 at 05:01:36PM +0800, Heyi Guo wrote:
+> The function iort_node_map_id() does the sanity check against the
+> first mapping in the node, but not the one which we really use.
 > 
-> 	ignore_wake=pin:controller[,pin:controller[,...]]
+> Logically we need check the mapping we use, or check every mapping in
+> the node. Choose the first fix for we are not firmware tester.
 
-Another possible format
+Yes, I agree with you, I will think about what's best to do, can
+I pick up this patch and resend it on your behalf please ?
 
-	ignore_wake=controller@pin[;controller@pin[;...]]
+Thanks,
+Lorenzo
 
-The second one, while having less users, can be extended to have list of pins
-of the same controller, like
-
-	ignore_wake=controller@pin[:pin2:pin3][;controller@pin[:...][;...]]
-
-(colon to match existing user, but can be, of course, changed)
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> Signed-off-by: Heyi Guo <guoheyi@huawei.com>
+> 
+> ---
+> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> Cc: Hanjun Guo <guohanjun@huawei.com>
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  drivers/acpi/arm64/iort.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index ed3d2d1a7ae9..d0fe8d673240 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -470,13 +470,6 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
+>  		map = ACPI_ADD_PTR(struct acpi_iort_id_mapping, node,
+>  				   node->mapping_offset);
+>  
+> -		/* Firmware bug! */
+> -		if (!map->output_reference) {
+> -			pr_err(FW_BUG "[node %p type %d] ID map has NULL parent reference\n",
+> -			       node, node->type);
+> -			goto fail_map;
+> -		}
+> -
+>  		/*
+>  		 * Get the special ID mapping index (if any) and skip its
+>  		 * associated ID map to prevent erroneous multi-stage
+> @@ -497,6 +490,13 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
+>  		if (i == node->mapping_count)
+>  			goto fail_map;
+>  
+> +		/* Firmware bug! */
+> +		if (!map->output_reference) {
+> +			pr_err(FW_BUG "[node %p type %d] ID map has NULL parent reference\n",
+> +			       node, node->type);
+> +			goto fail_map;
+> +		}
+> +
+>  		node = ACPI_ADD_PTR(struct acpi_iort_node, iort_table,
+>  				    map->output_reference);
+>  	}
+> -- 
+> 2.19.1
+> 
