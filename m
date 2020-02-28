@@ -2,154 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B3399173ED3
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2020 18:48:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06045174296
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2020 23:54:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725900AbgB1Rsf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Feb 2020 12:48:35 -0500
-Received: from foss.arm.com ([217.140.110.172]:42130 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725805AbgB1Rsf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 28 Feb 2020 12:48:35 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 731E331B;
-        Fri, 28 Feb 2020 09:48:34 -0800 (PST)
-Received: from eglon.cambridge.arm.com (eglon.cambridge.arm.com [10.1.196.105])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8FB4D3F7B4;
-        Fri, 28 Feb 2020 09:48:32 -0800 (PST)
-From:   James Morse <james.morse@arm.com>
-To:     linux-mm@kvack.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-        Rafael Wysocki <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Tyler Baicar <tyler@amperecomputing.com>,
-        Xie XiuQi <xiexiuqi@huawei.com>,
-        James Morse <james.morse@arm.com>
-Subject: [PATCH 3/3] arm64: acpi: Make apei_claim_sea() synchronise with APEI's irq work
-Date:   Fri, 28 Feb 2020 17:48:17 +0000
-Message-Id: <20200228174817.74278-4-james.morse@arm.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200228174817.74278-1-james.morse@arm.com>
-References: <20200228174817.74278-1-james.morse@arm.com>
+        id S1726970AbgB1Wym (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Feb 2020 17:54:42 -0500
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:45486 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726525AbgB1Wyl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Feb 2020 17:54:41 -0500
+Received: by mail-lj1-f194.google.com with SMTP id e18so5090121ljn.12
+        for <linux-acpi@vger.kernel.org>; Fri, 28 Feb 2020 14:54:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=PEk+rGai1GRI6QlTmVACuUYoYRTC+COuRPdssaHj9hU=;
+        b=QYV4KNTsjUJKQupViFBewOqKWiK0ODb/mIegNzyagUoADqT7tFF4wH6/X5NuXQCIeG
+         GeOj/xuQqe7SRQF/VK+2IX9CFoJHrl3Jyl8rLlXkFd5k26unehSN22d3oin/PBJACHM+
+         qOwlf1j3EgMZngWwCuc7T85BO3RofzpjvRhFDwxbfcjVz2DwaXHeL4BBo/aLUmUWcqsz
+         nS8QkdPIsTVd+PTmcbhV3a15on3mrRx7CHbGdqlfkimlmSHek3jMo2Tf3w7ujAqlzB/U
+         lxO4BC16mjMnt6CIcpUqOzYyr+8gdZs2dFtl2rnmp4cNPM9NiJZHvTF78LeqrtqVuDJs
+         7MFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=PEk+rGai1GRI6QlTmVACuUYoYRTC+COuRPdssaHj9hU=;
+        b=BPl0CKr3iGHif9RriEju/HUfBEEklxLTgHdqsOj+eIZjZvpY3bR+g2Rmd9ptXqi4WM
+         yV+NGYAwoSOh9fsy+XYYFbNYu6HJ+iPvEzOnrwxQFFpLf2UxKLc/x2ERsxBTYMY+XHD2
+         px0XwkmVly11k/dxVCreYG1oGFUrwX7frJKB0NeClEbtcMZnyn124j3KHxsXUudhOFEu
+         nDffIOQkRbvG+6gPq67iQ42mP/54R0g6rg8cbgx4fxPTzKMOSQMoJdmg/d4q7LnAfk94
+         dNEKHcXz/MDlz2LnFoM80jpErnXRAduyC+UQ02Z8ChBAiSs0Qp/dAC0NA+mMwLaa2PNv
+         G1tw==
+X-Gm-Message-State: ANhLgQ06tSr13/O3q33Lk+My9DEAaZ+LfFBRDLPHBgG9Glw783xKMMK/
+        NRWzc0gs+azKaJPxcNoRuUPHBnkn98WDQ3YLKO/O2A==
+X-Google-Smtp-Source: ADFU+vvct0krUKrAq5gI5QS2nVa0gcdunFoiXaZPdLALeC2hJ9Co5jGX5anrbEAfVAy9PC+2zyrJxJbS9gAgbBTc2jc=
+X-Received: by 2002:a05:651c:39b:: with SMTP id e27mr3066189ljp.99.1582930479633;
+ Fri, 28 Feb 2020 14:54:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200225102753.8351-1-hdegoede@redhat.com>
+In-Reply-To: <20200225102753.8351-1-hdegoede@redhat.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 28 Feb 2020 23:54:28 +0100
+Message-ID: <CACRpkdb3W=fL3VnNSep2MFnihqEj5GwWsN6BdWRSWckZBMHAOg@mail.gmail.com>
+Subject: Re: [PATCH resend 1/3] gpiolib: acpi: ignore-wakeup handling rework
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Marc Lehmann <schmorp@schmorp.de>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-APEI is unable to do all of its error handling work in nmi-context, so
-it defers non-fatal work onto the irq_work queue. arch_irq_work_raise()
-sends an IPI to the calling cpu, but this is not guaranteed to be taken
-before returning to user-space.
+On Tue, Feb 25, 2020 at 11:28 AM Hans de Goede <hdegoede@redhat.com> wrote:
 
-Unless the exception interrupted a context with irqs-masked,
-irq_work_run() can run immediately. Otherwise return -EINPROGRESS to
-indicate ghes_notify_sea() found some work to do, but it hasn't
-finished yet.
+> The first patch just updates the comment describing why we are ignoring
+> GPIO ACPI event wakeups on HP x2 10 models.
 
-With this apei_claim_sea() returning '0' means this external-abort was
-also notification of a firmware-first RAS error, and that APEI has
-processed the CPER records.
+OK
 
-Signed-off-by: James Morse <james.morse@arm.com>
----
-Changes since $last_year:
- * Dropped all the tags ... its been a year.
- * Added user_mode() test in do_sea() and expanded the comment.
- * Dont depend on daif value for return_to_irqs_enabled because of pNMI.
- * pr_warn() should be ratelimited
----
- arch/arm64/kernel/acpi.c | 25 +++++++++++++++++++++++++
- arch/arm64/mm/fault.c    | 12 +++++++-----
- 2 files changed, 32 insertions(+), 5 deletions(-)
+> The second patch is more interesting, in the mean time I've learned their
+> are actually at least 3 variants of the HP x2 10, and the original quirk
+> only applies to the Cherry Trail with TI PMIC variant (and the original
+> DMI match only matches that model). We need a similar quirk for the
+> Bay Trail with AXP288 model, but there we only want to ignore the wakeups
+> for the GPIO ACPI event which is (ab)used for embedded-controller events
+> on this model while still honoring the wakeup flags on other pins.
+>
+> I'm not 100% happy with the solution I've come up with to allow ignoring
+> events on a single pin. But this was the best KISS thing I could come up
+> with. Alternatives would involve string parsing (*), which I would rather
+> avoid. I'm very much open to alternatives for the current approach in the
+> second patch.
+>
+> Since sending out the first 2 patches of this series I've received
+> positive testing feedback for the quirk for the HP X2 10 Cherry Trail +
+> AXP288 PMIC variant, so here is a resend of the first 2 patches with
+> a third patch adding a quirk for the third variant of HP X2 10 added.
 
-diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
-index a100483b47c4..46ec402e97ed 100644
---- a/arch/arm64/kernel/acpi.c
-+++ b/arch/arm64/kernel/acpi.c
-@@ -19,6 +19,7 @@
- #include <linux/init.h>
- #include <linux/irq.h>
- #include <linux/irqdomain.h>
-+#include <linux/irq_work.h>
- #include <linux/memblock.h>
- #include <linux/of_fdt.h>
- #include <linux/smp.h>
-@@ -269,6 +270,7 @@ pgprot_t __acpi_get_mem_attribute(phys_addr_t addr)
- int apei_claim_sea(struct pt_regs *regs)
- {
- 	int err = -ENOENT;
-+	bool return_to_irqs_enabled;
- 	unsigned long current_flags;
- 
- 	if (!IS_ENABLED(CONFIG_ACPI_APEI_GHES))
-@@ -276,6 +278,12 @@ int apei_claim_sea(struct pt_regs *regs)
- 
- 	current_flags = local_daif_save_flags();
- 
-+	/* current_flags isn't useful here as daif doesn't tell us about pNMI */
-+	return_to_irqs_enabled = !irqs_disabled_flags(arch_local_save_flags());
-+
-+	if (regs)
-+		return_to_irqs_enabled = interrupts_enabled(regs);
-+
- 	/*
- 	 * SEA can interrupt SError, mask it and describe this as an NMI so
- 	 * that APEI defers the handling.
-@@ -284,6 +292,23 @@ int apei_claim_sea(struct pt_regs *regs)
- 	nmi_enter();
- 	err = ghes_notify_sea();
- 	nmi_exit();
-+
-+	/*
-+	 * APEI NMI-like notifications are deferred to irq_work. Unless
-+	 * we interrupted irqs-masked code, we can do that now.
-+	 */
-+	if (!err) {
-+		if (return_to_irqs_enabled) {
-+			local_daif_restore(DAIF_PROCCTX_NOIRQ);
-+			__irq_enter();
-+			irq_work_run();
-+			__irq_exit();
-+		} else {
-+			pr_warn_ratelimited("APEI work queued but not completed");
-+			err = -EINPROGRESS;
-+		}
-+	}
-+
- 	local_daif_restore(current_flags);
- 
- 	return err;
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 85566d32958f..cefeb34580da 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -645,11 +645,13 @@ static int do_sea(unsigned long addr, unsigned int esr, struct pt_regs *regs)
- 
- 	inf = esr_to_fault_info(esr);
- 
--	/*
--	 * Return value ignored as we rely on signal merging.
--	 * Future patches will make this more robust.
--	 */
--	apei_claim_sea(regs);
-+	if (user_mode(regs) && apei_claim_sea(regs) == 0) {
-+		/*
-+		 * APEI claimed this as a firmware-first notification.
-+		 * Some processing deferred to task_work before ret_to_user().
-+		 */
-+		return 0;
-+	}
- 
- 	if (esr & ESR_ELx_FnV)
- 		siaddr = NULL;
--- 
-2.24.1
+I'm waiting for some ACPI person to say yes to this,
+Mika ideally but the other Intel guys like Andy also works :)
 
+Yours,
+Linus Walleij
