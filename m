@@ -2,79 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F0F5817345B
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2020 10:43:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3EBF173550
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2020 11:27:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726891AbgB1Jnf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Feb 2020 04:43:35 -0500
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:38145 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726005AbgB1Jne (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Feb 2020 04:43:34 -0500
-Received: by mail-qk1-f196.google.com with SMTP id z19so2354520qkj.5
-        for <linux-acpi@vger.kernel.org>; Fri, 28 Feb 2020 01:43:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BZQpTZWkGzDGWJobzwuAfOw+XS/boYthReZIyRMS7WA=;
-        b=zGlBgJoIRe/RfSDE9HfZaopWq8WV2piNpuuScoZMuTQcTFm7Rj7MXadxMl1J52m2pp
-         lRBVSUEo27UOymkMXOCNeUsK5ZFmi582iShoBjR4B5kphtTxBnmjHade3IgHsIpzP4p0
-         amvg1FgKhEHtAeDxH1CJK9rcz+KWWN5I+tPHeqLY9RFKOSb8/wp6Tm99onBqGNnJqlYk
-         jaL7IvAscMrl0gBEGKBj8OLuP847Q2y9T5NGo8qMHI+UhUEt2niJ/Env7WBb1W0zHM+e
-         KoNFYiBsHCpC/Rp8HOoYVFmxqagwOhcYMOhIa/SVH9YXQdtoa6raA5SMFkeknm77T5uw
-         ykZg==
+        id S1726400AbgB1K1n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Feb 2020 05:27:43 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:37499 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726063AbgB1K1m (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Feb 2020 05:27:42 -0500
+Received: by mail-ot1-f66.google.com with SMTP id b3so2114546otp.4;
+        Fri, 28 Feb 2020 02:27:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BZQpTZWkGzDGWJobzwuAfOw+XS/boYthReZIyRMS7WA=;
-        b=Fbg6Rhdpklt/jmMyUSwf0rWU2LQAk4iB0wioyYDtBKjcccvmriJBzPFrgk/uwoB8Go
-         u5bzRDWPQ9oAtz7Ozqia8Zo1+AFXBvppUtBgRKmN6ep6QqHEkUosUYaMlFgzX80zgT/U
-         EP2VSW0P80eVIz/BZxp0P9k3LdezCILmEaxYNY1H29pHt8AeQfB5WGBXEMtRjju1Wz21
-         gqlVJnZ38bn3KSlncfHwdJe61x/S3eUjvI0K0Spuf6ZJxyc09qgPFYXiXjTalwptUQfZ
-         3zGBD+X0/D2B3aQ/YhrzQOYahxnpjkcNmZW1llXorOFe2Soj6jIDLzbvIy8acF0HWcgw
-         f7Fg==
-X-Gm-Message-State: APjAAAUFV+/sqKC0kNkp4oI2cMyXae6f/u4yQWdBBq0LPKDMigtp4LAs
-        JxwWkHClJ1eRFGevZFnLLK0yD3QS8DEK3idPRSyAgg==
-X-Google-Smtp-Source: APXvYqxUoWSKm+NYzu9ZiSLa1bUICU9tgjR/Qm+eZi+RRxEOw9s1pWhOp2Oxj4m4aVk4D87nMkpVBsKiQDQXK5Rz3ZI=
-X-Received: by 2002:a05:620a:12a5:: with SMTP id x5mr3582343qki.478.1582883013336;
- Fri, 28 Feb 2020 01:43:33 -0800 (PST)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=3vhF7j/MsBkVwbUHAaD31ZVQA2bpYO88TuIPdepoZjo=;
+        b=ap4cdmgAz/vHJCTo5D2ACzOtKIMAqVLEs4d8K2qxe4H26E1uyv7XNlR2AfaF0O3CwC
+         NDksAA/tVlcQjXni/qKbZ7/9XLiE9P6i7vBqcdwDEVYsPjYEDiwPzLQqoPLqwvDF2g7q
+         7Wu5OZwqotF+z3aIF1VegokvS1IHWvkXYI4fDGyVXRcNx38DsjjkCauzvp0cm1hIVyvC
+         Smki7M1Gmp1pt2y0wvyM7yf2GFlTyIq1oVW1LsmKbbxxY8SLiZXLCXtlnsdAtKUN8z2G
+         3SXJrC0ofYcddoiE7jtaUiVq4X+TFYGSGblsHuzNk9Rvh1LyswjZTfX+iR7CfnHwEb6/
+         gKzA==
+X-Gm-Message-State: APjAAAWOLIerjb8XJ3a7epNsdeHUbD9Tw2CiKWdPJRVMzPHlrEdik9PA
+        oINNY4rNx9PPAz5HpKiTJaTPFMaziq5Z8Ne0rAcPP+41
+X-Google-Smtp-Source: APXvYqywDcqQfD72MsU2RobLZS0g/jl8FF6lSH6lGshFlixc6ONmP2WsYDmrUKXJx+SLbMgdoXXK4UETUy/FZeVVhpI=
+X-Received: by 2002:a9d:7653:: with SMTP id o19mr2615920otl.118.1582885661879;
+ Fri, 28 Feb 2020 02:27:41 -0800 (PST)
 MIME-Version: 1.0
-References: <2094703.CetWLLyMuz@kreacher>
-In-Reply-To: <2094703.CetWLLyMuz@kreacher>
-From:   Daniel Drake <drake@endlessm.com>
-Date:   Fri, 28 Feb 2020 09:43:22 +0000
-Message-ID: <CAD8Lp46VbG3b5NV54vmBFQH2YLY6wRngYv0oY2tiveovPRhiVw@mail.gmail.com>
-Subject: Re: [PATCH 0/6] ACPI: EC: Updates related to initialization
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Jian-Hong Pan <jian-hong@endlessm.com>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 28 Feb 2020 11:27:30 +0100
+Message-ID: <CAJZ5v0h6eQ72p8uNnxRkAYJjSZ7yTC5yyZitoZ96KA+05Dq7Dg@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v5.6-rc4
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 27, 2020 at 10:25 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
-> The purpose of this series of update of the ACPI EC driver is to make its
-> initialization more straightforward.
->
-> They fix a couple of issues, clean up some things, remove redundant code etc.
->
-> Please refer to the changelogs of individual patches for details.
->
-> For easier access, the series is available in the git branch at
->
->  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
->  acpi-ec-work
->
-> on top of 5.6-rc3.
+Hi Linus,
 
-Jian-Hong, can you please test this on Asus UX434DA?
-Check if the screen brightness hotkeys are still working after these changes.
+Please pull from the tag
 
-Thanks
-Daniel
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.6-rc4
+
+with top-most commit cabe17d0173ab04bd3f87b8199ae75f43f1ea473
+
+ ACPI: watchdog: Set default timeout in probe
+
+on top of commit bb6d3fb354c5ee8d6bde2d576eb7220ea09862b9
+
+ Linux 5.6-rc1
+
+to receive ACPI fixes for 5.6-rc4.
+
+These fix a couple of configuration issues in the ACPI watchdog
+(WDAT) driver (Mika Westerberg) and make it possible to disable
+that driver at boot time in case it still does not work as
+expected (Jean Delvare).
+
+Thanks!
+
+
+---------------
+
+Jean Delvare (1):
+      ACPI: watchdog: Allow disabling WDAT at boot
+
+Mika Westerberg (3):
+      ACPICA: Introduce ACPI_ACCESS_BYTE_WIDTH() macro
+      ACPI: watchdog: Fix gas->access_width usage
+      ACPI: watchdog: Set default timeout in probe
+
+---------------
+
+ Documentation/admin-guide/kernel-parameters.txt |  4 ++++
+ drivers/acpi/acpi_watchdog.c                    | 15 ++++++++++++---
+ drivers/watchdog/wdat_wdt.c                     | 25 ++++++++++++++++++++++++-
+ include/acpi/actypes.h                          |  3 ++-
+ 4 files changed, 42 insertions(+), 5 deletions(-)
