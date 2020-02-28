@@ -2,187 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84898172F4A
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2020 04:27:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0F5817345B
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2020 10:43:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730672AbgB1D1j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Feb 2020 22:27:39 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:41923 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730668AbgB1D1j (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Feb 2020 22:27:39 -0500
-Received: by mail-oi1-f193.google.com with SMTP id i1so1520958oie.8
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Feb 2020 19:27:38 -0800 (PST)
+        id S1726891AbgB1Jnf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Feb 2020 04:43:35 -0500
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:38145 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726005AbgB1Jne (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Feb 2020 04:43:34 -0500
+Received: by mail-qk1-f196.google.com with SMTP id z19so2354520qkj.5
+        for <linux-acpi@vger.kernel.org>; Fri, 28 Feb 2020 01:43:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=NDgUQnCysZ7NFsIwDokx6+x5eoZKUCkBzb/ZNj5Uk14=;
-        b=qdaDLB40g+oyHb7JAcITCqVVaUs363TrbWV1T7QaYfFPpjtX8uy60Dkj2GU6XBpJGN
-         lAN731kvw5+DtZs/Jmqj9a2zAwq3yyiugAXweWmF+/7ozu2pZbH5NlF01boeMxI4jdgy
-         wPRxGYAstclqvIhU99ubI0HPyarsbPFL0vGzov59t9CBbria3MovzKiPtqyjDYHWW2JH
-         2VT7OciJqRRyU7x4MX7hi9uKOBuzKgCDwo/tWsH1Su907YVLYbNXINavQw2gJe+mO85A
-         /jDNEzcKqvCRg53uCe5vIYRMa8+V2F9YUQ2DdfHUYcFd8Xslim1gBU7pGdnNPZQA37BA
-         sbBA==
+        bh=BZQpTZWkGzDGWJobzwuAfOw+XS/boYthReZIyRMS7WA=;
+        b=zGlBgJoIRe/RfSDE9HfZaopWq8WV2piNpuuScoZMuTQcTFm7Rj7MXadxMl1J52m2pp
+         lRBVSUEo27UOymkMXOCNeUsK5ZFmi582iShoBjR4B5kphtTxBnmjHade3IgHsIpzP4p0
+         amvg1FgKhEHtAeDxH1CJK9rcz+KWWN5I+tPHeqLY9RFKOSb8/wp6Tm99onBqGNnJqlYk
+         jaL7IvAscMrl0gBEGKBj8OLuP847Q2y9T5NGo8qMHI+UhUEt2niJ/Env7WBb1W0zHM+e
+         KoNFYiBsHCpC/Rp8HOoYVFmxqagwOhcYMOhIa/SVH9YXQdtoa6raA5SMFkeknm77T5uw
+         ykZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=NDgUQnCysZ7NFsIwDokx6+x5eoZKUCkBzb/ZNj5Uk14=;
-        b=ZswQTmSVJMC23PTjYJ/vmUoZuyyt+dwpmVO7I4l4LCK3KkbYE8/xbeWkNiDKzP3VtU
-         9lh5DhFGeQT86IIo9IP9VtiarKE3OTvRRNKM0jMqw2Uscdhr7xtD0le1htoW6vvoncX8
-         z1v7UUC9gkybEoUotoulEPbisoh2q0JJA3awYX7909u+/npcE2PtwJ3BdTMqxNWH46Zt
-         UwKT0u3o0b+diNfKW+oh69oYhPvtEo73hw05s1qalHnYwdR9rp3HnLQMW9PXznVjlycz
-         av/mvi+L7gKqpNhNme7AvwP3GCyAzErmpVYdEZ8Fo+A6pSjP8JzfXuY4UVAE+waRKERJ
-         1PvQ==
-X-Gm-Message-State: APjAAAUyaEVf+6qEhOh66lZYw2/KAnFcZ5+QNhwOu/NB8dT3Sli0xHGw
-        fxPzpEb+vyRvjSTZYHZHR6JO4ZFPdxRqCMPeXdcj0w==
-X-Google-Smtp-Source: APXvYqyOVn3TXyhx+GoHYcgMBBF9yOdT1HuTV+3w8j1kxYzXCl2z3YA80qnpCa43jnHHo1tUjwE1QG14/Zn3P7OrhMk=
-X-Received: by 2002:aca:5205:: with SMTP id g5mr5640oib.43.1582860458043; Thu,
- 27 Feb 2020 19:27:38 -0800 (PST)
+        bh=BZQpTZWkGzDGWJobzwuAfOw+XS/boYthReZIyRMS7WA=;
+        b=Fbg6Rhdpklt/jmMyUSwf0rWU2LQAk4iB0wioyYDtBKjcccvmriJBzPFrgk/uwoB8Go
+         u5bzRDWPQ9oAtz7Ozqia8Zo1+AFXBvppUtBgRKmN6ep6QqHEkUosUYaMlFgzX80zgT/U
+         EP2VSW0P80eVIz/BZxp0P9k3LdezCILmEaxYNY1H29pHt8AeQfB5WGBXEMtRjju1Wz21
+         gqlVJnZ38bn3KSlncfHwdJe61x/S3eUjvI0K0Spuf6ZJxyc09qgPFYXiXjTalwptUQfZ
+         3zGBD+X0/D2B3aQ/YhrzQOYahxnpjkcNmZW1llXorOFe2Soj6jIDLzbvIy8acF0HWcgw
+         f7Fg==
+X-Gm-Message-State: APjAAAUFV+/sqKC0kNkp4oI2cMyXae6f/u4yQWdBBq0LPKDMigtp4LAs
+        JxwWkHClJ1eRFGevZFnLLK0yD3QS8DEK3idPRSyAgg==
+X-Google-Smtp-Source: APXvYqxUoWSKm+NYzu9ZiSLa1bUICU9tgjR/Qm+eZi+RRxEOw9s1pWhOp2Oxj4m4aVk4D87nMkpVBsKiQDQXK5Rz3ZI=
+X-Received: by 2002:a05:620a:12a5:: with SMTP id x5mr3582343qki.478.1582883013336;
+ Fri, 28 Feb 2020 01:43:33 -0800 (PST)
 MIME-Version: 1.0
-References: <20200222014038.180923-1-saravanak@google.com> <20200222014038.180923-3-saravanak@google.com>
-In-Reply-To: <20200222014038.180923-3-saravanak@google.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 27 Feb 2020 19:27:01 -0800
-Message-ID: <CAGETcx-xxd_E=-zF5+a58queyGg_5JX9tbCm49YBtcvFUhVEZw@mail.gmail.com>
-Subject: Re: [PATCH v1 2/5] driver core: Add fw_devlink kernel commandline option
-To:     Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>
-Cc:     Android Kernel Team <kernel-team@android.com>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+References: <2094703.CetWLLyMuz@kreacher>
+In-Reply-To: <2094703.CetWLLyMuz@kreacher>
+From:   Daniel Drake <drake@endlessm.com>
+Date:   Fri, 28 Feb 2020 09:43:22 +0000
+Message-ID: <CAD8Lp46VbG3b5NV54vmBFQH2YLY6wRngYv0oY2tiveovPRhiVw@mail.gmail.com>
+Subject: Re: [PATCH 0/6] ACPI: EC: Updates related to initialization
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jian-Hong Pan <jian-hong@endlessm.com>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+        "Rafael J. Wysocki" <rafael@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Feb 21, 2020 at 5:40 PM Saravana Kannan <saravanak@google.com> wrote:
+On Thu, Feb 27, 2020 at 10:25 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+> The purpose of this series of update of the ACPI EC driver is to make its
+> initialization more straightforward.
 >
-> fwnode_operations.add_links allows creating device links from
-> information provided by firmware.
+> They fix a couple of issues, clean up some things, remove redundant code etc.
 >
-> fwnode_operations.add_links is currently implemented only by
-> OF/devicetree code and a specific case of efi. However, there's nothing
-> preventing ACPI or other firmware types from implementing it.
+> Please refer to the changelogs of individual patches for details.
 >
-> The OF implementation is currently controlled by a kernel commandline
-> parameter called of_devlink.
+> For easier access, the series is available in the git branch at
 >
-> Since this feature is generic isn't limited to OF, add a generic
-> fw_devlink kernel commandline parameter to control this feature across
-> firmware types.
+>  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+>  acpi-ec-work
 >
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> ---
->  .../admin-guide/kernel-parameters.txt         | 18 +++++++++++++
->  drivers/base/core.c                           | 27 ++++++++++++++++++-
->  include/linux/fwnode.h                        |  2 ++
->  3 files changed, 46 insertions(+), 1 deletion(-)
->
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index dbc22d684627..29985152b66d 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -1350,6 +1350,24 @@
->                         can be changed at run time by the max_graph_depth file
->                         in the tracefs tracing directory. default: 0 (no limit)
->
-> +       fw_devlink=     [KNL] Create device links between consumer and supplier
-> +                       devices by scanning the firmware to infer the
-> +                       consumer/supplier relationships. This feature is
-> +                       especially useful when drivers are loaded as modules as
-> +                       it ensures proper ordering of tasks like device probing
-> +                       (suppliers first, then consumers), supplier boot state
-> +                       clean up (only after all consumers have probed),
-> +                       suspend/resume & runtime PM (consumers first, then
-> +                       suppliers).
-> +                       Format: { off | permissive | on | rpm }
-> +                       off --  Don't create device links from firmware info.
-> +                       permissive -- Create device links from firmware info
-> +                               but use it only for ordering boot state clean
-> +                               up (sync_state() calls).
-> +                       on --   Create device links from firmware info and use it
-> +                               to enforce probe and suspend/resume ordering.
-> +                       rpm --  Like "on", but also use to order runtime PM.
-> +
+> on top of 5.6-rc3.
 
-A bit of bikeshedding myself: I could rename "on" to "enforce" and
-"rpm" to "enforce-rpm".
+Jian-Hong, can you please test this on Asus UX434DA?
+Check if the screen brightness hotkeys are still working after these changes.
 
-Let me know if any of you have a strong preference on these two options.
-
--Saravana
-
->         gamecon.map[2|3]=
->                         [HW,JOY] Multisystem joystick and NES/SNES/PSX pad
->                         support via parallel port (up to 5 devices per port)
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index d32a3aefff32..aeaca8a3aad9 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -2345,6 +2345,31 @@ static int device_private_init(struct device *dev)
->         return 0;
->  }
->
-> +u32 fw_devlink_flags;
-> +static int __init fw_devlink_setup(char *arg)
-> +{
-> +       if (!arg)
-> +               return -EINVAL;
-> +
-> +       if (strcmp(arg, "off") == 0) {
-> +               fw_devlink_flags = 0;
-> +       } else if (strcmp(arg, "permissive") == 0) {
-> +               fw_devlink_flags = DL_FLAG_SYNC_STATE_ONLY;
-> +       } else if (strcmp(arg, "on") == 0) {
-> +               fw_devlink_flags = DL_FLAG_AUTOPROBE_CONSUMER;
-> +       } else if (strcmp(arg, "rpm") == 0) {
-> +               fw_devlink_flags = DL_FLAG_AUTOPROBE_CONSUMER |
-> +                                  DL_FLAG_PM_RUNTIME;
-> +       }
-> +       return 0;
-> +}
-> +early_param("fw_devlink", fw_devlink_setup);
-> +
-> +u32 fw_devlink_get_flags(void)
-> +{
-> +       return fw_devlink_flags;
-> +}
-> +
->  /**
->   * device_add - add device to device hierarchy.
->   * @dev: device.
-> @@ -2493,7 +2518,7 @@ int device_add(struct device *dev)
->          */
->         device_link_add_missing_supplier_links();
->
-> -       if (fwnode_has_op(dev->fwnode, add_links)) {
-> +       if (fw_devlink_flags && fwnode_has_op(dev->fwnode, add_links)) {
->                 fw_ret = fwnode_call_int_op(dev->fwnode, add_links, dev);
->                 if (fw_ret == -ENODEV)
->                         device_link_wait_for_mandatory_supplier(dev);
-> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-> index 8feeb94b8acc..e0abafbb17f8 100644
-> --- a/include/linux/fwnode.h
-> +++ b/include/linux/fwnode.h
-> @@ -170,4 +170,6 @@ struct fwnode_operations {
->         } while (false)
->  #define get_dev_from_fwnode(fwnode)    get_device((fwnode)->dev)
->
-> +extern u32 fw_devlink_get_flags(void);
-> +
->  #endif
-> --
-> 2.25.0.265.gbab2e86ba0-goog
->
+Thanks
+Daniel
