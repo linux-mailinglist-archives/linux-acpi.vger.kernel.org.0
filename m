@@ -2,93 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53D8A175377
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Mar 2020 06:54:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E116A17571D
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Mar 2020 10:30:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726545AbgCBFyq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Mar 2020 00:54:46 -0500
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:38026 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725446AbgCBFyq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 Mar 2020 00:54:46 -0500
-Received: by mail-ua1-f66.google.com with SMTP id y3so144698uaq.5
-        for <linux-acpi@vger.kernel.org>; Sun, 01 Mar 2020 21:54:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=xaVFZKXkYwadGJPmxWSyTrfKN4QDA7x77UvzbDi6hYw=;
-        b=CPr77l7kD5D+rAiwuZyWv8zJQjAQzrZ2SaX5O2HwQfDvb7nfHwgMHYMKB/gDZFMkU/
-         hp4j50gGKIAeYlYuClcTqi6vwyt/nf3iceTzGL7aNCOe3LpLnTo9xxtuLd9s2u4emmki
-         d1AiObF/E9n73EjuUtApBgiVqckrKAiE4IJ9mgutkBLgyp1BcRCAOnONvw3fteUiFVVA
-         79dkuS2hylinTvRyOh14/8EHEGPAfdVK7ZHcHofybDXihzL9HSjGPKukITYYTxHjSHKM
-         FpUcaY+ypDV92ZR62HEp5QvYKo4CTQEDvovh+34M5achweW6EW8YfmTOkPv+29Hd5ZeG
-         YvUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=xaVFZKXkYwadGJPmxWSyTrfKN4QDA7x77UvzbDi6hYw=;
-        b=nsc2qhzcbWMKeNQuVaTfQaom8vEy6xr94YKqAlxd3OEa/NKf8nSruMP56qMWvEXcOo
-         WElgb8psjEofbMXC/+QIq7U1eln53tLoVN4FKNaELRCiFJ4I8WTrJrfatuMKgXMB5QNe
-         X6Qehgdw7zsvnG2H4+Fhj18rBPr0+UgjMZIQPA72V1lRw6O0dsQpQGRTIYbiFMU735yA
-         G5wW8P5ChXILytfwYDXcVjz0a+ROMMXmIytfKoMIzm5Zt2VX4fDcDBuoCx35yqAf0Abn
-         C5bxthqSyEEyOuofD3OTMgYXr3cNVq6UjZtd6jXOZct3yq+NLC93twBsLCrH5taMnY7w
-         QMBA==
-X-Gm-Message-State: ANhLgQ1sY6SGAAhZNvZY0T7akJemhIKlG+KfPhRy8DyBn/4WPAQt/Uj8
-        xAz/UxItzsYbS62borNazt2LB8cfIE+CbGOfv+sUew==
-X-Google-Smtp-Source: ADFU+vtnQNxDfyhIydJNfyBpdE0lGq6GsJ6tyObK59DOF5xuyYZSJgq3fkaYxljupt7e3lTfBookfoG23Ynd14+Qjt0=
-X-Received: by 2002:ab0:2758:: with SMTP id c24mr6576762uap.94.1583128485802;
- Sun, 01 Mar 2020 21:54:45 -0800 (PST)
+        id S1727115AbgCBJak (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 Mar 2020 04:30:40 -0500
+Received: from mga06.intel.com ([134.134.136.31]:49847 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726382AbgCBJak (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 2 Mar 2020 04:30:40 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Mar 2020 01:30:38 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,506,1574150400"; 
+   d="scan'208";a="228354851"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga007.jf.intel.com with ESMTP; 02 Mar 2020 01:30:36 -0800
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1j8hPK-00660e-6X; Mon, 02 Mar 2020 11:30:38 +0200
+Date:   Mon, 2 Mar 2020 11:30:38 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Marc Lehmann <schmorp@schmorp.de>, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH resend 2/3] gpiolib: acpi: Rename honor_wakeup option to
+ ignore_wake, add extra quirk
+Message-ID: <20200302093038.GN1224808@smile.fi.intel.com>
+References: <20200225102753.8351-1-hdegoede@redhat.com>
+ <20200225102753.8351-3-hdegoede@redhat.com>
+ <20200225105437.GG10400@smile.fi.intel.com>
+ <e0c39a89-bcac-4315-d764-5853eb77537d@redhat.com>
+ <20200225123425.GK10400@smile.fi.intel.com>
+ <20200225125700.GL10400@smile.fi.intel.com>
+ <44cc5510-571c-21c4-1855-f3141f72eaa3@redhat.com>
+ <ac38ee83-5edf-2ee0-8cec-a0b4367054a8@redhat.com>
 MIME-Version: 1.0
-References: <2094703.CetWLLyMuz@kreacher> <CAD8Lp46VbG3b5NV54vmBFQH2YLY6wRngYv0oY2tiveovPRhiVw@mail.gmail.com>
-In-Reply-To: <CAD8Lp46VbG3b5NV54vmBFQH2YLY6wRngYv0oY2tiveovPRhiVw@mail.gmail.com>
-From:   Jian-Hong Pan <jian-hong@endlessm.com>
-Date:   Mon, 2 Mar 2020 13:53:56 +0800
-Message-ID: <CAPpJ_edfTg11QZs25MrThj2+FKUo2103rv7iYNzo=kr-jeg1MA@mail.gmail.com>
-Subject: Re: [PATCH 0/6] ACPI: EC: Updates related to initialization
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Daniel Drake <drake@endlessm.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ac38ee83-5edf-2ee0-8cec-a0b4367054a8@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Daniel Drake <drake@endlessm.com> =E6=96=BC 2020=E5=B9=B42=E6=9C=8828=E6=97=
-=A5 =E9=80=B1=E4=BA=94 =E4=B8=8B=E5=8D=885:43=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> On Thu, Feb 27, 2020 at 10:25 PM Rafael J. Wysocki <rjw@rjwysocki.net> wr=
-ote:
-> > The purpose of this series of update of the ACPI EC driver is to make i=
-ts
-> > initialization more straightforward.
-> >
-> > They fix a couple of issues, clean up some things, remove redundant cod=
-e etc.
-> >
-> > Please refer to the changelogs of individual patches for details.
-> >
-> > For easier access, the series is available in the git branch at
-> >
-> >  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
-> >  acpi-ec-work
-> >
-> > on top of 5.6-rc3.
->
-> Jian-Hong, can you please test this on Asus UX434DA?
-> Check if the screen brightness hotkeys are still working after these chan=
-ges.
+On Sat, Feb 29, 2020 at 09:57:52PM +0100, Hans de Goede wrote:
+> On 2/28/20 12:22 PM, Hans de Goede wrote:
+> > On 2/25/20 1:57 PM, Andy Shevchenko wrote:
+> > > On Tue, Feb 25, 2020 at 02:34:25PM +0200, Andy Shevchenko wrote:
+> > > > On Tue, Feb 25, 2020 at 12:26:04PM +0100, Hans de Goede wrote:
+> > > 
+> > > > Let's do it as a list of pairs, but in slightly different format (I see some
+> > > > potential to derive a generic parser, based on users described in
+> > > > Documentation/admin-guide/kernel-parameters.txt), i.e.
+> > > > 
+> > > >     ignore_wake=pin:controller[,pin:controller[,...]]
+> > > 
+> > > Another possible format
+> > > 
+> > >     ignore_wake=controller@pin[;controller@pin[;...]]
+> > 
+> > I like this one, the other one with the pin first feels wrong, the pin is
+> > part of the controller, not the other way around.
+> > 
+> > I will rework the patch series to use the ignore_wake=controller@pin format.
+> 
+> Just a quick note. I've changed the separator from ; to , for some reason
+> grub, at least as used in Fedora with Fedora's grub2 BLS (boot loader spec)
+> implementation does not like it when there is a ; in the kernel commandline.
 
-Hi Rafael,
+Hmm... I think it would be harder then to have less possible formats in the
+command line. Do you really need right now several pins to be listed?
 
-Thanks for your patches, but we found an issue:
-The laptops like ASUS UX434DA's screen brightness hotkeys work before
-this patch series.  However, the hotkeys are failed with the patch
-"ACPI: EC: Unify handling of event handler installation failures".
+If it's about testing, perhaps we may do it with other means.
 
-Jian-Hong Pan
+> I will also send an email about this to Fedora grub maintainer, but for
+> now it is easiest to just avoid the problem.
+
+It's definitely bug in Grub due to existing kernel users with such format.
+It means Grub is unable to support kernel command line in full.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
