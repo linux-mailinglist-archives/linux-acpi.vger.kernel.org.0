@@ -2,206 +2,155 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB25517701C
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Mar 2020 08:29:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DA5417709E
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Mar 2020 09:01:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725840AbgCCH3k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Mar 2020 02:29:40 -0500
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:45744 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727340AbgCCH3k (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Mar 2020 02:29:40 -0500
-Received: by mail-vs1-f66.google.com with SMTP id m4so1695708vsa.12
-        for <linux-acpi@vger.kernel.org>; Mon, 02 Mar 2020 23:29:38 -0800 (PST)
+        id S1727577AbgCCIBX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Mar 2020 03:01:23 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:54833 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725879AbgCCIBX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Mar 2020 03:01:23 -0500
+Received: by mail-wm1-f67.google.com with SMTP id i9so530575wml.4
+        for <linux-acpi@vger.kernel.org>; Tue, 03 Mar 2020 00:01:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=FfJGP3VvelPHBu9uAoszVPyAW2vGFIv4G/uor0aD668=;
-        b=wS4MKI86i7vYgDExykq5E/9nAFZP1oxRif7r7AX+nw2mR4pGHUdQ54RIYxqtwLwneY
-         A5K//2Hg6Cq3gYj2GT5HQ0W+jiSbn7zSEO1wIHugA2IFFR6/VB0MtqnEPNnFUv1Ba4Qi
-         QzriKcACmsM+4l1zZQ3CGfLph9nz1xKozupNGUKPucW+PneR3xFN4GWQNkmkRa+Nh+A7
-         7w/0Lo2DjYpYQMtfVGLqq93RLdFd5x/80J4zmRxMW7jzhwB5ii3n33303mN4E59Be12d
-         5RYNVbtl7KHRuKVP0TSN7NPLddqIHzO4qXp3eG6Ebm3QBU9IXP42ewCVg/UbsTrU+k1j
-         X78Q==
+         :cc;
+        bh=1KFVCRDxDtzub9zZu4H3xTogihEXNQAo7KqjGf/X5ds=;
+        b=EIYNgH7ltAnh/xuunt1NPohmKiypqOkqB+g7AB19td4meB3xEI9LzjrtpsSEUoFA5m
+         k93KAhkLIKXtXdu7WekEm5Ofn7EhY8huVn18GNJ8633kgdpWpBuy6oHiZ1K+n5AqYgQR
+         r7BvnXMo2/BIDIYw95KSNU/+OQ60UQ5SnAwOZjrN0WTKL/2dE1yBSMn/wJTVX4Uk9wcx
+         dxXcZtrLUfz1BbCJLrvANf3UVMyKyjWC7UMrixWttACi937C0WGvGAFkZ1tZ/vTI8IeT
+         XULbHPuvRIn69wpxyQ/CKRMwi4sR1bIN8ikjjR57ijE3aQMmVAlYzj8Sf7nJk7v+ZNXA
+         grqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=FfJGP3VvelPHBu9uAoszVPyAW2vGFIv4G/uor0aD668=;
-        b=UojTMmSxnllUnK620Q9euitTwdnLhCUNFb7pSr5f0yXj3n1ovgmepHjXznhwWQ9nda
-         KVMWx7QdA4IKV0PndgNxtiF+gEGh3rUkG0PWXT0oMDEeV7whdhUk5DzcolHGOyTkHSvt
-         OircxH2IjTYLYsZB6CjT7QUcp3W4wDidtIFVJIDa2wz2GiWdcNJmIN23w8iP1Fa3bJdK
-         EXqZP8aaQgE5IWZGbX/WwNMAQKsSwuvWALpLvanWVQB5z7ekFt2d1/xkPWPGuPP0IzLk
-         3ShfnJTbEeOEkpP4VsHjqu7Z7qWXxd/d4G1+oTjjjPW/Z8goV0LqifkTZX8a6wJQZCrX
-         FBLg==
-X-Gm-Message-State: ANhLgQ19PL3BfbZVHYyhMk5SpxEstWG2f0Lny3AVV6hhRO67gXHnGtCY
-        HbmDbL/ZOHFNUmjws7LgV+5spLm5r7JmdfaeM4/dAw==
-X-Google-Smtp-Source: ADFU+vulPkBe+NP8hErcIC7CIaSa54wA7KvH3UVGqyZLPXVSP7bmLeyJKxNI+sys5rqmvRX9zk33gOx/WwmhWFhKvEk=
-X-Received: by 2002:a05:6102:3205:: with SMTP id r5mr1609818vsf.206.1583220577377;
- Mon, 02 Mar 2020 23:29:37 -0800 (PST)
+         :message-id:subject:to:cc;
+        bh=1KFVCRDxDtzub9zZu4H3xTogihEXNQAo7KqjGf/X5ds=;
+        b=acYL7spla1c5SQDo4ds9uczoA39qfF2Qo2T+HdiDidrqGgyWNmeW387BTZuwtkYZAw
+         j5gulJxcpddwDLlrcLrTv8MrjxEpaE6kUdGKuce0iok6Mer57BZfnNuQ4kTciSkFKC1J
+         f+hJl4h/WwnFziAWaiM6P3hhXWo/Hxj8iduoGv0RrFYNP8kwscpIQI68a1r+n8ICb53x
+         okn5AW5v2d0jvx2EYxoURjHNEHMTBTqs7x2v7XI5IgfEnxfK+mEXxGCeW98pjxxoBUNW
+         vSJMDHvs6h/XNEs7JmpANfsTAbMRC9V9zqKWp4dmWTJOXj35VU22vpd6J3DC7dkEUYAn
+         7aUA==
+X-Gm-Message-State: ANhLgQ35JaaSMETXxLxBQS0jYSSrw75fyv+uu3phqGi/+dq2HJ2iJ330
+        rupHQYs0HV9Lfjy3MXyqw6/LVKBTmaQtWNzGap68QA==
+X-Google-Smtp-Source: ADFU+vtMD9Hn+PWCo8WlKQENvA+VrRYcQgo1HZGruvYLZljw/sATAP3ygGaVLtX5UMG/zzD28ojIn4NQgBpDcfFk/dI=
+X-Received: by 2002:a05:600c:24b:: with SMTP id 11mr2902120wmj.1.1583222480788;
+ Tue, 03 Mar 2020 00:01:20 -0800 (PST)
 MIME-Version: 1.0
-References: <2094703.CetWLLyMuz@kreacher> <CAD8Lp46VbG3b5NV54vmBFQH2YLY6wRngYv0oY2tiveovPRhiVw@mail.gmail.com>
- <CAPpJ_edfTg11QZs25MrThj2+FKUo2103rv7iYNzo=kr-jeg1MA@mail.gmail.com>
- <CAJZ5v0gB9yuVmPjJ_MvfT8aFpvP-X5JRsNfZn8+Mv5RwTednGg@mail.gmail.com> <CAJZ5v0imqwdmXzKayqs1kgHOb-mXrkr61uNxVka8J9bKca989Q@mail.gmail.com>
-In-Reply-To: <CAJZ5v0imqwdmXzKayqs1kgHOb-mXrkr61uNxVka8J9bKca989Q@mail.gmail.com>
-From:   Jian-Hong Pan <jian-hong@endlessm.com>
-Date:   Tue, 3 Mar 2020 15:28:48 +0800
-Message-ID: <CAPpJ_efvF0XzjevA1eL3BUJqBwxRTOPLcqWKN40Azj-n1AtjcA@mail.gmail.com>
-Subject: Re: [PATCH 0/6] ACPI: EC: Updates related to initialization
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Daniel Drake <drake@endlessm.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
+References: <158318759687.2216124.4684754859068906007.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <158318760967.2216124.7838939599184768260.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <158318760967.2216124.7838939599184768260.stgit@dwillia2-desk3.amr.corp.intel.com>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Tue, 3 Mar 2020 09:01:09 +0100
+Message-ID: <CAKv+Gu_Erea9q4Ay2wmq70EQ8844baBtvVQsv0T1DM8U8eHY6Q@mail.gmail.com>
+Subject: Re: [PATCH 2/5] efi/fake_mem: Arrange for a resource entry per
+ efi_fake_mem instance
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Rafael J. Wysocki <rafael@kernel.org> =E6=96=BC 2020=E5=B9=B43=E6=9C=882=E6=
-=97=A5 =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=887:45=E5=AF=AB=E9=81=93=EF=BC=9A
+On Mon, 2 Mar 2020 at 23:36, Dan Williams <dan.j.williams@intel.com> wrote:
 >
-> On Mon, Mar 2, 2020 at 11:38 AM Rafael J. Wysocki <rafael@kernel.org> wro=
-te:
-> >
-> > On Mon, Mar 2, 2020 at 6:54 AM Jian-Hong Pan <jian-hong@endlessm.com> w=
-rote:
-> > >
-> > > Daniel Drake <drake@endlessm.com> =E6=96=BC 2020=E5=B9=B42=E6=9C=8828=
-=E6=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8B=E5=8D=885:43=E5=AF=AB=E9=81=93=EF=BC=
-=9A
-> > > >
-> > > > On Thu, Feb 27, 2020 at 10:25 PM Rafael J. Wysocki <rjw@rjwysocki.n=
-et> wrote:
-> > > > > The purpose of this series of update of the ACPI EC driver is to =
-make its
-> > > > > initialization more straightforward.
-> > > > >
-> > > > > They fix a couple of issues, clean up some things, remove redunda=
-nt code etc.
-> > > > >
-> > > > > Please refer to the changelogs of individual patches for details.
-> > > > >
-> > > > > For easier access, the series is available in the git branch at
-> > > > >
-> > > > >  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.gi=
-t \
-> > > > >  acpi-ec-work
-> > > > >
-> > > > > on top of 5.6-rc3.
-> > > >
-> > > > Jian-Hong, can you please test this on Asus UX434DA?
-> > > > Check if the screen brightness hotkeys are still working after thes=
-e changes.
-> > >
-> > > Hi Rafael,
-> > >
-> > > Thanks for your patches, but we found an issue:
-> > > The laptops like ASUS UX434DA's screen brightness hotkeys work before
-> > > this patch series.  However, the hotkeys are failed with the patch
-> > > "ACPI: EC: Unify handling of event handler installation failures".
-> >
-> > So I have modified the series to avoid the change that can possibly bre=
-ak this.
-> >
-> > Can you please pull the new series from
-> >
-> >  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
-> >  acpi-ec-work
-> >
-> > (same branch) and retest?
+> In preparation for attaching a platform device per iomem resource teach
+> the efi_fake_mem code to create an e820 entry per instance. Similar to
+> E820_TYPE_PRAM, bypass merging resource when the e820 map is sanitized.
 >
-> Note that the current top-most commit in that branch is
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: x86@kernel.org
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+
+> ---
+>  arch/x86/kernel/e820.c              |   16 +++++++++++++++-
+>  drivers/firmware/efi/x86_fake_mem.c |   12 +++++++++---
+>  2 files changed, 24 insertions(+), 4 deletions(-)
 >
-> 0957d98f50da ACPI: EC: Consolidate event handler installation code
-
-I tested the commits in acpi-ec-work branch whose last commit is
-0957d98f50da ("ACPI: EC: Consolidate event handler installation
-code").  The screen brightness hotkeys are still failed with
-0957d98f50da ("ACPI: EC: Consolidate event handler installation
-code").
-
-I tweak and add some debug messages:
-
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 85f1fe8e208a..3887f427283c 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1443,23 +1443,27 @@ static bool install_gpe_event_handler(struct
-acpi_ec *ec)
-        return true;
- }
-
--static bool install_gpio_irq_event_handler(struct acpi_ec *ec,
-+static int install_gpio_irq_event_handler(struct acpi_ec *ec,
-                                           struct acpi_device *device)
- {
-        int irq, ret;
-
-        /* ACPI reduced hardware platforms use a GpioInt specified in _CRS.=
- */
-        irq =3D acpi_dev_gpio_irq_get(device, 0);
--       if (irq < 0)
--               return false;
-+       if (irq < 0) {
-+               pr_err("%s: acpi_dev_gpio_irq_get returns %d\n", __func__, =
-irq);
-+               return irq;
-+       }
-
-        ret =3D request_irq(irq, acpi_ec_irq_handler, IRQF_SHARED, "ACPI EC=
-", ec);
--       if (ret < 0)
--               return false;
-+       if (ret < 0) {
-+               pr_err("%s: request_irq returns %d\n", __func__, ret);
-+               return ret;
-+       }
-
-        ec->irq =3D irq;
-
--       return true;
-+       return 0;
- }
-
- /**
-@@ -1517,9 +1521,11 @@ static int ec_install_handlers(struct acpi_ec
-*ec, struct acpi_device *device)
-                         * fatal, because the EC can be polled for events.
-                         */
-                } else {
--                       ready =3D install_gpio_irq_event_handler(ec, device=
-);
--                       if (!ready)
--                               return -ENXIO;
-+                       pr_err("%s: install_gpio_irq_event_handler\n",
-__func__);
-+                       int ret =3D install_gpio_irq_event_handler(ec, devi=
-ce);
-+                       if (ret)
-+                               return ret;
-+                       ready =3D true;
-                }
-                if (ready) {
-                        set_bit(EC_FLAGS_EVENT_HANDLER_INSTALLED, &ec->flag=
-s);
-
-The dmesg shows:
-
-[    0.121117] ACPI: EC: ec_install_handlers: install_gpio_irq_event_handle=
-r
-[    0.121133] ACPI: EC: install_gpio_irq_event_handler:
-acpi_dev_gpio_irq_get returns -517
-
-Originally, ec_install_handlers() will return the returned value from
-install_gpio_irq_event_handler() from acpi_dev_gpio_irq_get(), which
-is -EPROBE_DEFER, instead of -ENXIO.  However, ec_install_handlers()
-returns -ENXIO directly if install_gpio_irq_event_handler() returns
-false in patch ("ACPI: EC: Consolidate event handler installation
-code").  Here needs some modification.
-
-Jian-Hong Pan
+> diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+> index c5399e80c59c..96babb3a6629 100644
+> --- a/arch/x86/kernel/e820.c
+> +++ b/arch/x86/kernel/e820.c
+> @@ -305,6 +305,20 @@ static int __init cpcompare(const void *a, const void *b)
+>         return (ap->addr != ap->entry->addr) - (bp->addr != bp->entry->addr);
+>  }
+>
+> +static bool e820_nomerge(enum e820_type type)
+> +{
+> +       /*
+> +        * These types may indicate distinct platform ranges aligned to
+> +        * numa node, protection domain, performance domain, or other
+> +        * boundaries. Do not merge them.
+> +        */
+> +       if (type == E820_TYPE_PRAM)
+> +               return true;
+> +       if (type == E820_TYPE_SOFT_RESERVED)
+> +               return true;
+> +       return false;
+> +}
+> +
+>  int __init e820__update_table(struct e820_table *table)
+>  {
+>         struct e820_entry *entries = table->entries;
+> @@ -380,7 +394,7 @@ int __init e820__update_table(struct e820_table *table)
+>                 }
+>
+>                 /* Continue building up new map based on this information: */
+> -               if (current_type != last_type || current_type == E820_TYPE_PRAM) {
+> +               if (current_type != last_type || e820_nomerge(current_type)) {
+>                         if (last_type != 0)      {
+>                                 new_entries[new_nr_entries].size = change_point[chg_idx]->addr - last_addr;
+>                                 /* Move forward only if the new size was non-zero: */
+> diff --git a/drivers/firmware/efi/x86_fake_mem.c b/drivers/firmware/efi/x86_fake_mem.c
+> index e5d6d5a1b240..0bafcc1bb0f6 100644
+> --- a/drivers/firmware/efi/x86_fake_mem.c
+> +++ b/drivers/firmware/efi/x86_fake_mem.c
+> @@ -38,7 +38,7 @@ void __init efi_fake_memmap_early(void)
+>                 m_start = mem->range.start;
+>                 m_end = mem->range.end;
+>                 for_each_efi_memory_desc(md) {
+> -                       u64 start, end;
+> +                       u64 start, end, size;
+>
+>                         if (md->type != EFI_CONVENTIONAL_MEMORY)
+>                                 continue;
+> @@ -58,11 +58,17 @@ void __init efi_fake_memmap_early(void)
+>                          */
+>                         start = max(start, m_start);
+>                         end = min(end, m_end);
+> +                       size = end - start + 1;
+>
+>                         if (end <= start)
+>                                 continue;
+> -                       e820__range_update(start, end - start + 1, E820_TYPE_RAM,
+> -                                       E820_TYPE_SOFT_RESERVED);
+> +
+> +                       /*
+> +                        * Ensure each efi_fake_mem instance results in
+> +                        * a unique e820 resource
+> +                        */
+> +                       e820__range_remove(start, size, E820_TYPE_RAM, 1);
+> +                       e820__range_add(start, size, E820_TYPE_SOFT_RESERVED);
+>                         e820__update_table(e820_table);
+>                 }
+>         }
+>
