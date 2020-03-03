@@ -2,94 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C4A4C178437
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Mar 2020 21:41:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47AF317858C
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Mar 2020 23:23:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731636AbgCCUlt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Mar 2020 15:41:49 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:46034 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729681AbgCCUlt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Mar 2020 15:41:49 -0500
-Received: by mail-wr1-f67.google.com with SMTP id v2so6100210wrp.12;
-        Tue, 03 Mar 2020 12:41:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=woDLnQT31XgiRNk9DQZv8gRSvGaIo3mJ0GaQ1nM51GM=;
-        b=LHmrPVvlbsRGCO5FAVzOsvmkCEv2jIPik6Jl6Ftr7arZdioMmpaPOAThUL1l/I6Qlm
-         3rj35adGbgtXFwUwf7pbRww3k3AGqSDywui69IF7xWP1UPDc7BkDj/x7qFFeQQO2XMaT
-         OmsJEhOXGj/onAHf2S2mSCfI9l/k9OkIeaelF98O+FfuHhXktI9X5VBkMaOW5MnUaMnZ
-         6qzNk+BbOZV77tOftXvnZ5tZKP24mg04Hh1V6Pan7Spu8rSYDK18lYxF6wqbiFkcs91z
-         4UvCbEY94m1D3BI2XUfYe9YihoJfWIkzQHMpkNrJTFVUPU+A7toKSOLo4Zime/TkeSrc
-         Maiw==
+        id S1727026AbgCCWXY convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 3 Mar 2020 17:23:24 -0500
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:46746 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726766AbgCCWXY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Mar 2020 17:23:24 -0500
+Received: by mail-oi1-f194.google.com with SMTP id a22so4712602oid.13;
+        Tue, 03 Mar 2020 14:23:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=woDLnQT31XgiRNk9DQZv8gRSvGaIo3mJ0GaQ1nM51GM=;
-        b=NFqryLiMKMwSbV2gylnL3SBYMSad5kyejJR7NgvJ3h6cGYqYVgyflpu0OI5pSYowYX
-         rdx1+0rq6olqff43SMkPQ/s+qlMCnXBdGfqU+4UxFXiBa81skHUz/VHBkq2zdHy3T8UX
-         vz9H6I4ph/GtNwpcCRWSXXxV8IADMQaha26nVTUJ5bTsr5qZj/XhVXb8QGd2M9WgPHBF
-         TDb7YUT6QjLgbB9Z7Zf2lmRKfMuEwL4FocnzX23YCmeklz6rgGf8x1dbGFcLcsryd79I
-         70sZkta+V4X11lMykGHreB5c/oaf95zUvXAVnfddrrh8I97G891Fv5Co4dBZK2SmH0Z5
-         bOZw==
-X-Gm-Message-State: ANhLgQ3gAgyOa9czZmgP6VvOy0+NxSjytXORnCik2RhnC8Q9eHob1wlB
-        SwfMcSZeigoIt32i+aGiCQ==
-X-Google-Smtp-Source: ADFU+vsGj6aZ/TvtMwnt6J6I/4YSUsaorDIgFG1wjuPKvkja3v7ctdlD9lfPY1nBMmBmrqWDZEJZfw==
-X-Received: by 2002:a05:6000:189:: with SMTP id p9mr7039296wrx.391.1583268106733;
-        Tue, 03 Mar 2020 12:41:46 -0800 (PST)
-Received: from avx2 ([46.53.249.49])
-        by smtp.gmail.com with ESMTPSA id w16sm1387813wrp.8.2020.03.03.12.41.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2020 12:41:46 -0800 (PST)
-Date:   Tue, 3 Mar 2020 23:41:44 +0300
-From:   Alexey Dobriyan <adobriyan@gmail.com>
-To:     rjw@rjwysocki.net, lenb@kernel.org
-Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
-        luto@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH] x86/acpi: make "asmlinkage" part first thing in the function
- definition
-Message-ID: <20200303204144.GA9913@avx2>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=t5x1nQ/2cd3iRTnJ5bqPpexORRJrGQYgbji7W2ye2JU=;
+        b=Q/JTqJByVKc5TM/1S9/y3bh5yYhRYwxtE6Mf/AOWfSo78jkQtyokH5XgC+4a+vWbXf
+         ZilRRrug8sxh2+cKrR7ZphG/vCpbUWVKI7jVCx3jNsmfG8WB14JPuxBe6ZOqPLm3dh5a
+         eazHzmc7ax/nl8tLxdZtRzlNH/6bE5V20OCw+SuiICzzEv9MwTOILOHiZbfjLq5YCG2O
+         xszC7rHVoIcj0RZUY50WT9a9aDQnJQ+WgrsOgMOdhHFtMUiN7cZio9QsyFQMDYQcrGuN
+         bZq7g1Ij03HwcNv2Xc5STp22/BLVXTHD7bR7bSvBB7Ni4btUL+R+9pffPjl5rNrIBSo9
+         oZkg==
+X-Gm-Message-State: ANhLgQ1hZJMlJM8Ryj0T8n9eJ4qrRzh1kRM6n+Ym/sov+Mz97FgGN8nK
+        nN4PdfxkW9QmeViiRpKql810d0JrAB7deVnGWeo=
+X-Google-Smtp-Source: ADFU+vuTXmKtBbImASbgUaaJFYvKWEvg0GEjaRr8XCRdkp5Pd4AeAmO6ILQy5ObMgknzgx+7IMsrcpuj/08qB4jdhGc=
+X-Received: by 2002:a54:4e96:: with SMTP id c22mr564709oiy.110.1583274203313;
+ Tue, 03 Mar 2020 14:23:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <2094703.CetWLLyMuz@kreacher> <CAD8Lp46VbG3b5NV54vmBFQH2YLY6wRngYv0oY2tiveovPRhiVw@mail.gmail.com>
+ <CAPpJ_edfTg11QZs25MrThj2+FKUo2103rv7iYNzo=kr-jeg1MA@mail.gmail.com>
+ <CAJZ5v0gB9yuVmPjJ_MvfT8aFpvP-X5JRsNfZn8+Mv5RwTednGg@mail.gmail.com>
+ <CAJZ5v0imqwdmXzKayqs1kgHOb-mXrkr61uNxVka8J9bKca989Q@mail.gmail.com>
+ <CAPpJ_efvF0XzjevA1eL3BUJqBwxRTOPLcqWKN40Azj-n1AtjcA@mail.gmail.com> <CAJZ5v0hie79+jG+3h4t5Q8r0M7E37HY-7i8ijg8DpvS0RXZSiQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hie79+jG+3h4t5Q8r0M7E37HY-7i8ijg8DpvS0RXZSiQ@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 3 Mar 2020 23:23:12 +0100
+Message-ID: <CAJZ5v0hwrZX4+4m-g0c2bUTHxJO=1+kenXBjLz1ChWdcxSLJbA@mail.gmail.com>
+Subject: Re: [PATCH 0/6] ACPI: EC: Updates related to initialization
+To:     Jian-Hong Pan <jian-hong@endlessm.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Daniel Drake <drake@endlessm.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-g++ insists that function declaration must start with extern "C"
-(which asmlinkage expands to).
+On Tue, Mar 3, 2020 at 10:09 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Tue, Mar 3, 2020 at 8:29 AM Jian-Hong Pan <jian-hong@endlessm.com> wrote:
+> >
+> > Rafael J. Wysocki <rafael@kernel.org> 於 2020年3月2日 週一 下午7:45寫道：
+> > >
 
-gcc doesn't care.
+[cut]
 
-Signed-off-by: _Z6Alexeyv <adobriyan@gmail.com>
----
+> >
+> > Originally, ec_install_handlers() will return the returned value from
+> > install_gpio_irq_event_handler() from acpi_dev_gpio_irq_get(), which
+> > is -EPROBE_DEFER, instead of -ENXIO.  However, ec_install_handlers()
+> > returns -ENXIO directly if install_gpio_irq_event_handler() returns
+> > false in patch ("ACPI: EC: Consolidate event handler installation
+> > code").  Here needs some modification.
+>
+> Thanks, I forgot about the -EPROBE_DEFER case.
 
- arch/x86/kernel/acpi/sleep.c |    2 +-
- arch/x86/kernel/acpi/sleep.h |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+The top-most commit in the git branch at
 
---- a/arch/x86/kernel/acpi/sleep.c
-+++ b/arch/x86/kernel/acpi/sleep.c
-@@ -43,7 +43,7 @@ unsigned long acpi_get_wakeup_address(void)
-  *
-  * Wrapper around acpi_enter_sleep_state() to be called by assmebly.
-  */
--acpi_status asmlinkage __visible x86_acpi_enter_sleep_state(u8 state)
-+asmlinkage acpi_status __visible x86_acpi_enter_sleep_state(u8 state)
- {
- 	return acpi_enter_sleep_state(state);
- }
---- a/arch/x86/kernel/acpi/sleep.h
-+++ b/arch/x86/kernel/acpi/sleep.h
-@@ -19,4 +19,4 @@ extern void do_suspend_lowlevel(void);
- 
- extern int x86_acpi_suspend_lowlevel(void);
- 
--acpi_status asmlinkage x86_acpi_enter_sleep_state(u8 state);
-+asmlinkage acpi_status x86_acpi_enter_sleep_state(u8 state);
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-ec-work
+
+has been updated to take that case into account (I think that it
+should be spelled out explicitly or it will be very easy to overlook
+in the future).
+
+Please test this one if possible.
