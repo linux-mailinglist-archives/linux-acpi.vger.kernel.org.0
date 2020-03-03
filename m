@@ -2,187 +2,181 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 237751770BC
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Mar 2020 09:06:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2A4717720F
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Mar 2020 10:10:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727663AbgCCIGu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Mar 2020 03:06:50 -0500
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:25540 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727656AbgCCIGu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Mar 2020 03:06:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1583222808;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=Nef5Bf9pKI8ANujlRyt5wOOUrBcWDZB8peR1Zkb7rzU=;
-        b=Up+dzErVyJFcFGEPo5SgZJqvUErHH6Aq7qktTa/SG7DEwcr70KaG2IbB5SoM/2SeTUsfoF
-        zvqt1gfy9YWInvbXrhka+yc+X45rxgs3yMkqX+mEDZezGbIeNh9z6atxSMzfOh1IjEhqn6
-        T2CNKEe3MNR2Yr2WBpE0eE8CXIkXTog=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-256-OWhx7svFM6yEKL-EWUbtag-1; Tue, 03 Mar 2020 03:06:44 -0500
-X-MC-Unique: OWhx7svFM6yEKL-EWUbtag-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 484B8106C0A8;
-        Tue,  3 Mar 2020 08:06:42 +0000 (UTC)
-Received: from [10.36.117.113] (ovpn-117-113.ams2.redhat.com [10.36.117.113])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 1EE0760C84;
-        Tue,  3 Mar 2020 08:06:29 +0000 (UTC)
-Subject: Re: [PATCH v1 02/11] virtio-mem: Paravirtualized memory hotplug
-To:     kbuild test robot <lkp@intel.com>
-Cc:     kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, virtio-dev@lists.oasis-open.org,
-        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
-        Michal Hocko <mhocko@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Igor Mammedov <imammedo@redhat.com>,
-        Dave Young <dyoung@redhat.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Stefan Hajnoczi <stefanha@redhat.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-References: <20200302134941.315212-3-david@redhat.com>
- <202003031039.To18mcrC%lkp@intel.com>
-From:   David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABtCREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT6JAlgEEwEIAEICGwMFCQlmAYAGCwkIBwMCBhUI
- AgkKCwQWAgMBAh4BAheAFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAl3pImkCGQEACgkQTd4Q
- 9wD/g1o+VA//SFvIHUAvul05u6wKv/pIR6aICPdpF9EIgEU448g+7FfDgQwcEny1pbEzAmiw
- zAXIQ9H0NZh96lcq+yDLtONnXk/bEYWHHUA014A1wqcYNRY8RvY1+eVHb0uu0KYQoXkzvu+s
- Dncuguk470XPnscL27hs8PgOP6QjG4jt75K2LfZ0eAqTOUCZTJxA8A7E9+XTYuU0hs7QVrWJ
- jQdFxQbRMrYz7uP8KmTK9/Cnvqehgl4EzyRaZppshruKMeyheBgvgJd5On1wWq4ZUV5PFM4x
- II3QbD3EJfWbaJMR55jI9dMFa+vK7MFz3rhWOkEx/QR959lfdRSTXdxs8V3zDvChcmRVGN8U
- Vo93d1YNtWnA9w6oCW1dnDZ4kgQZZSBIjp6iHcA08apzh7DPi08jL7M9UQByeYGr8KuR4i6e
- RZI6xhlZerUScVzn35ONwOC91VdYiQgjemiVLq1WDDZ3B7DIzUZ4RQTOaIWdtXBWb8zWakt/
- ztGhsx0e39Gvt3391O1PgcA7ilhvqrBPemJrlb9xSPPRbaNAW39P8ws/UJnzSJqnHMVxbRZC
- Am4add/SM+OCP0w3xYss1jy9T+XdZa0lhUvJfLy7tNcjVG/sxkBXOaSC24MFPuwnoC9WvCVQ
- ZBxouph3kqc4Dt5X1EeXVLeba+466P1fe1rC8MbcwDkoUo65Ag0EVcufkQEQAOfX3n0g0fZz
- Bgm/S2zF/kxQKCEKP8ID+Vz8sy2GpDvveBq4H2Y34XWsT1zLJdvqPI4af4ZSMxuerWjXbVWb
- T6d4odQIG0fKx4F8NccDqbgHeZRNajXeeJ3R7gAzvWvQNLz4piHrO/B4tf8svmRBL0ZB5P5A
- 2uhdwLU3NZuK22zpNn4is87BPWF8HhY0L5fafgDMOqnf4guJVJPYNPhUFzXUbPqOKOkL8ojk
- CXxkOFHAbjstSK5Ca3fKquY3rdX3DNo+EL7FvAiw1mUtS+5GeYE+RMnDCsVFm/C7kY8c2d0G
- NWkB9pJM5+mnIoFNxy7YBcldYATVeOHoY4LyaUWNnAvFYWp08dHWfZo9WCiJMuTfgtH9tc75
- 7QanMVdPt6fDK8UUXIBLQ2TWr/sQKE9xtFuEmoQGlE1l6bGaDnnMLcYu+Asp3kDT0w4zYGsx
- 5r6XQVRH4+5N6eHZiaeYtFOujp5n+pjBaQK7wUUjDilPQ5QMzIuCL4YjVoylWiBNknvQWBXS
- lQCWmavOT9sttGQXdPCC5ynI+1ymZC1ORZKANLnRAb0NH/UCzcsstw2TAkFnMEbo9Zu9w7Kv
- AxBQXWeXhJI9XQssfrf4Gusdqx8nPEpfOqCtbbwJMATbHyqLt7/oz/5deGuwxgb65pWIzufa
- N7eop7uh+6bezi+rugUI+w6DABEBAAGJAiUEGAECAA8FAlXLn5ECGwwFCQlmAYAACgkQTd4Q
- 9wD/g1qA6w/+M+ggFv+JdVsz5+ZIc6MSyGUozASX+bmIuPeIecc9UsFRatc91LuJCKMkD9Uv
- GOcWSeFpLrSGRQ1Z7EMzFVU//qVs6uzhsNk0RYMyS0B6oloW3FpyQ+zOVylFWQCzoyyf227y
- GW8HnXunJSC+4PtlL2AY4yZjAVAPLK2l6mhgClVXTQ/S7cBoTQKP+jvVJOoYkpnFxWE9pn4t
- H5QIFk7Ip8TKr5k3fXVWk4lnUi9MTF/5L/mWqdyIO1s7cjharQCstfWCzWrVeVctpVoDfJWp
- 4LwTuQ5yEM2KcPeElLg5fR7WB2zH97oI6/Ko2DlovmfQqXh9xWozQt0iGy5tWzh6I0JrlcxJ
- ileZWLccC4XKD1037Hy2FLAjzfoWgwBLA6ULu0exOOdIa58H4PsXtkFPrUF980EEibUp0zFz
- GotRVekFAceUaRvAj7dh76cToeZkfsjAvBVb4COXuhgX6N4pofgNkW2AtgYu1nUsPAo+NftU
- CxrhjHtLn4QEBpkbErnXQyMjHpIatlYGutVMS91XTQXYydCh5crMPs7hYVsvnmGHIaB9ZMfB
- njnuI31KBiLUks+paRkHQlFcgS2N3gkRBzH7xSZ+t7Re3jvXdXEzKBbQ+dC3lpJB0wPnyMcX
- FOTT3aZT7IgePkt5iC/BKBk3hqKteTnJFeVIT7EC+a6YUFg=
-Organization: Red Hat GmbH
-Message-ID: <3851c1eb-92ee-7c85-088f-2adeef3272e6@redhat.com>
-Date:   Tue, 3 Mar 2020 09:06:29 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1728037AbgCCJKM convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 3 Mar 2020 04:10:12 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:40365 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728031AbgCCJKM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Mar 2020 04:10:12 -0500
+Received: by mail-ot1-f68.google.com with SMTP id x19so2274046otp.7;
+        Tue, 03 Mar 2020 01:10:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=5ic/CV5iEBANwAlsxrIRMOAxvyvHS1HnvZnEEB3hD4E=;
+        b=V++44Y6yVshBDXpDbtDXCdPw4P8ZLTab7yFUDHG2OMkP3xaOAj6zh8BVY5yZx2f17T
+         DP4UbWDCKRRIde8KZjjuYgtvf5o5OMF2KTF+lOFpdAxwy6QyQOqYYEkryOCX8/JvzYDe
+         fQUi6UHyq1J7QL2bcmvWGSXeziu5RpCPbYNkPP4Ksn02olfX3BeY8ndvQCXIimASj10N
+         GBjnZxWbbDju5R/MeCFJ47OyVnL6ntt47od0W3EhItyEfJ+7DMWDwOuIb7J6/4NMEZWz
+         6eM8opB8Uwmie0Uyzd9q2IFs1rcRMV6KC0Twac81qpc71kcBl5wJcNaHqJPEwsB++YZX
+         OBfg==
+X-Gm-Message-State: ANhLgQ32qgKenX6SfxypI2rCb1cwtrz72b9sgswLonwDE+qcpEfranHu
+        +YrpRY9VDlZDrONNJ05vhjBSuFUvYsCTzJ2qtds=
+X-Google-Smtp-Source: ADFU+vtvc21TQ88o8cq33ZI/McdFOfkzAwNNnQBYQAMvdqPpoE0wsM1THs9YPiszbWJKs1E7ZSUY482+hucO4cZf3pk=
+X-Received: by 2002:a9d:7653:: with SMTP id o19mr2537029otl.118.1583226611337;
+ Tue, 03 Mar 2020 01:10:11 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <202003031039.To18mcrC%lkp@intel.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-Content-Transfer-Encoding: quoted-printable
+References: <2094703.CetWLLyMuz@kreacher> <CAD8Lp46VbG3b5NV54vmBFQH2YLY6wRngYv0oY2tiveovPRhiVw@mail.gmail.com>
+ <CAPpJ_edfTg11QZs25MrThj2+FKUo2103rv7iYNzo=kr-jeg1MA@mail.gmail.com>
+ <CAJZ5v0gB9yuVmPjJ_MvfT8aFpvP-X5JRsNfZn8+Mv5RwTednGg@mail.gmail.com>
+ <CAJZ5v0imqwdmXzKayqs1kgHOb-mXrkr61uNxVka8J9bKca989Q@mail.gmail.com> <CAPpJ_efvF0XzjevA1eL3BUJqBwxRTOPLcqWKN40Azj-n1AtjcA@mail.gmail.com>
+In-Reply-To: <CAPpJ_efvF0XzjevA1eL3BUJqBwxRTOPLcqWKN40Azj-n1AtjcA@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 3 Mar 2020 10:09:59 +0100
+Message-ID: <CAJZ5v0hie79+jG+3h4t5Q8r0M7E37HY-7i8ijg8DpvS0RXZSiQ@mail.gmail.com>
+Subject: Re: [PATCH 0/6] ACPI: EC: Updates related to initialization
+To:     Jian-Hong Pan <jian-hong@endlessm.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Daniel Drake <drake@endlessm.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 03.03.20 03:24, kbuild test robot wrote:
-> Hi David,
->=20
-> I love your patch! Yet something to improve:
->=20
-> [auto build test ERROR on pm/linux-next]
-> [also build test ERROR on linus/master v5.6-rc4 next-20200302]
-> [cannot apply to linux/master mmotm/master]
-> [if your patch is applied to the wrong git tree, please drop us a note =
-to help
-> improve the system. BTW, we also suggest to use '--base' option to spec=
-ify the
-> base tree in git format-patch, please see https://stackoverflow.com/a/3=
-7406982]
->=20
-> url:    https://github.com/0day-ci/linux/commits/David-Hildenbrand/virt=
-io-mem-paravirtualized-memory/20200303-020852
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm=
-.git linux-next
-> config: x86_64-randconfig-s1-20200303 (attached as .config)
-> compiler: gcc-5 (Ubuntu 5.5.0-12ubuntu1) 5.5.0 20171010
-> reproduce:
->         # save the attached .config to linux build tree
->         make ARCH=3Dx86_64=20
->=20
-> If you fix the issue, kindly add following tag
-> Reported-by: kbuild test robot <lkp@intel.com>
->=20
-> All errors (new ones prefixed by >>):
->=20
->    In file included from <command-line>:1:0:
->>> ./usr/include/linux/virtio_mem.h:185:2: error: unknown type name 'uin=
-t32_t'
->      uint32_t block_size;
->      ^
->>> ./usr/include/linux/virtio_mem.h:187:2: error: unknown type name 'uin=
-t16_t'
->      uint16_t node_id;
->      ^
->    ./usr/include/linux/virtio_mem.h:188:2: error: unknown type name 'ui=
-nt16_t'
->      uint16_t padding;
->      ^
->>> ./usr/include/linux/virtio_mem.h:190:2: error: unknown type name 'uin=
-t64_t'
->      uint64_t addr;
->      ^
->    ./usr/include/linux/virtio_mem.h:192:2: error: unknown type name 'ui=
-nt64_t'
->      uint64_t region_size;
->      ^
->    ./usr/include/linux/virtio_mem.h:198:2: error: unknown type name 'ui=
-nt64_t'
->      uint64_t usable_region_size;
->      ^
->    ./usr/include/linux/virtio_mem.h:203:2: error: unknown type name 'ui=
-nt64_t'
->      uint64_t plugged_size;
->      ^
->    ./usr/include/linux/virtio_mem.h:205:2: error: unknown type name 'ui=
-nt64_t'
->      uint64_t requested_size;
->      ^
+On Tue, Mar 3, 2020 at 8:29 AM Jian-Hong Pan <jian-hong@endlessm.com> wrote:
+>
+> Rafael J. Wysocki <rafael@kernel.org> 於 2020年3月2日 週一 下午7:45寫道：
+> >
+> > On Mon, Mar 2, 2020 at 11:38 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > >
+> > > On Mon, Mar 2, 2020 at 6:54 AM Jian-Hong Pan <jian-hong@endlessm.com> wrote:
+> > > >
+> > > > Daniel Drake <drake@endlessm.com> 於 2020年2月28日 週五 下午5:43寫道：
+> > > > >
+> > > > > On Thu, Feb 27, 2020 at 10:25 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+> > > > > > The purpose of this series of update of the ACPI EC driver is to make its
+> > > > > > initialization more straightforward.
+> > > > > >
+> > > > > > They fix a couple of issues, clean up some things, remove redundant code etc.
+> > > > > >
+> > > > > > Please refer to the changelogs of individual patches for details.
+> > > > > >
+> > > > > > For easier access, the series is available in the git branch at
+> > > > > >
+> > > > > >  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+> > > > > >  acpi-ec-work
+> > > > > >
+> > > > > > on top of 5.6-rc3.
+> > > > >
+> > > > > Jian-Hong, can you please test this on Asus UX434DA?
+> > > > > Check if the screen brightness hotkeys are still working after these changes.
+> > > >
+> > > > Hi Rafael,
+> > > >
+> > > > Thanks for your patches, but we found an issue:
+> > > > The laptops like ASUS UX434DA's screen brightness hotkeys work before
+> > > > this patch series.  However, the hotkeys are failed with the patch
+> > > > "ACPI: EC: Unify handling of event handler installation failures".
+> > >
+> > > So I have modified the series to avoid the change that can possibly break this.
+> > >
+> > > Can you please pull the new series from
+> > >
+> > >  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+> > >  acpi-ec-work
+> > >
+> > > (same branch) and retest?
+> >
+> > Note that the current top-most commit in that branch is
+> >
+> > 0957d98f50da ACPI: EC: Consolidate event handler installation code
+>
+> I tested the commits in acpi-ec-work branch whose last commit is
+> 0957d98f50da ("ACPI: EC: Consolidate event handler installation
+> code").  The screen brightness hotkeys are still failed with
+> 0957d98f50da ("ACPI: EC: Consolidate event handler installation
+> code").
+>
+> I tweak and add some debug messages:
+>
+> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+> index 85f1fe8e208a..3887f427283c 100644
+> --- a/drivers/acpi/ec.c
+> +++ b/drivers/acpi/ec.c
+> @@ -1443,23 +1443,27 @@ static bool install_gpe_event_handler(struct
+> acpi_ec *ec)
+>         return true;
+>  }
+>
+> -static bool install_gpio_irq_event_handler(struct acpi_ec *ec,
+> +static int install_gpio_irq_event_handler(struct acpi_ec *ec,
+>                                            struct acpi_device *device)
+>  {
+>         int irq, ret;
+>
+>         /* ACPI reduced hardware platforms use a GpioInt specified in _CRS. */
+>         irq = acpi_dev_gpio_irq_get(device, 0);
+> -       if (irq < 0)
+> -               return false;
+> +       if (irq < 0) {
+> +               pr_err("%s: acpi_dev_gpio_irq_get returns %d\n", __func__, irq);
+> +               return irq;
+> +       }
+>
+>         ret = request_irq(irq, acpi_ec_irq_handler, IRQF_SHARED, "ACPI EC", ec);
+> -       if (ret < 0)
+> -               return false;
+> +       if (ret < 0) {
+> +               pr_err("%s: request_irq returns %d\n", __func__, ret);
+> +               return ret;
+> +       }
+>
+>         ec->irq = irq;
+>
+> -       return true;
+> +       return 0;
+>  }
+>
+>  /**
+> @@ -1517,9 +1521,11 @@ static int ec_install_handlers(struct acpi_ec
+> *ec, struct acpi_device *device)
+>                          * fatal, because the EC can be polled for events.
+>                          */
+>                 } else {
+> -                       ready = install_gpio_irq_event_handler(ec, device);
+> -                       if (!ready)
+> -                               return -ENXIO;
+> +                       pr_err("%s: install_gpio_irq_event_handler\n",
+> __func__);
+> +                       int ret = install_gpio_irq_event_handler(ec, device);
+> +                       if (ret)
+> +                               return ret;
+> +                       ready = true;
+>                 }
+>                 if (ready) {
+>                         set_bit(EC_FLAGS_EVENT_HANDLER_INSTALLED, &ec->flags);
+>
+> The dmesg shows:
+>
+> [    0.121117] ACPI: EC: ec_install_handlers: install_gpio_irq_event_handler
+> [    0.121133] ACPI: EC: install_gpio_irq_event_handler:
+> acpi_dev_gpio_irq_get returns -517
+>
+> Originally, ec_install_handlers() will return the returned value from
+> install_gpio_irq_event_handler() from acpi_dev_gpio_irq_get(), which
+> is -EPROBE_DEFER, instead of -ENXIO.  However, ec_install_handlers()
+> returns -ENXIO directly if install_gpio_irq_event_handler() returns
+> false in patch ("ACPI: EC: Consolidate event handler installation
+> code").  Here needs some modification.
 
-Right, these have to be __u64 and friends. Should really enable
-CONFIG_UAPI_HEADER_TEST in my default config.
-
-
---=20
-Thanks,
-
-David / dhildenb
-
+Thanks, I forgot about the -EPROBE_DEFER case.
