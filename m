@@ -2,181 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2A4717720F
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Mar 2020 10:10:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02F271776F7
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Mar 2020 14:29:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728037AbgCCJKM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 3 Mar 2020 04:10:12 -0500
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:40365 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728031AbgCCJKM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Mar 2020 04:10:12 -0500
-Received: by mail-ot1-f68.google.com with SMTP id x19so2274046otp.7;
-        Tue, 03 Mar 2020 01:10:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=5ic/CV5iEBANwAlsxrIRMOAxvyvHS1HnvZnEEB3hD4E=;
-        b=V++44Y6yVshBDXpDbtDXCdPw4P8ZLTab7yFUDHG2OMkP3xaOAj6zh8BVY5yZx2f17T
-         DP4UbWDCKRRIde8KZjjuYgtvf5o5OMF2KTF+lOFpdAxwy6QyQOqYYEkryOCX8/JvzYDe
-         fQUi6UHyq1J7QL2bcmvWGSXeziu5RpCPbYNkPP4Ksn02olfX3BeY8ndvQCXIimASj10N
-         GBjnZxWbbDju5R/MeCFJ47OyVnL6ntt47od0W3EhItyEfJ+7DMWDwOuIb7J6/4NMEZWz
-         6eM8opB8Uwmie0Uyzd9q2IFs1rcRMV6KC0Twac81qpc71kcBl5wJcNaHqJPEwsB++YZX
-         OBfg==
-X-Gm-Message-State: ANhLgQ32qgKenX6SfxypI2rCb1cwtrz72b9sgswLonwDE+qcpEfranHu
-        +YrpRY9VDlZDrONNJ05vhjBSuFUvYsCTzJ2qtds=
-X-Google-Smtp-Source: ADFU+vtvc21TQ88o8cq33ZI/McdFOfkzAwNNnQBYQAMvdqPpoE0wsM1THs9YPiszbWJKs1E7ZSUY482+hucO4cZf3pk=
-X-Received: by 2002:a9d:7653:: with SMTP id o19mr2537029otl.118.1583226611337;
- Tue, 03 Mar 2020 01:10:11 -0800 (PST)
+        id S1727901AbgCCN3I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Mar 2020 08:29:08 -0500
+Received: from smtp-fw-9101.amazon.com ([207.171.184.25]:31077 "EHLO
+        smtp-fw-9101.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727663AbgCCN3H (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Mar 2020 08:29:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1583242146; x=1614778146;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6aT2iVKaU3CdZpvZbkcMGdpLccOAfl0OuWApHtrLgI0=;
+  b=nqwMNVvYF1XQYlzERcio0ghcc6CJrwdQnQk1pDKFy1SZmSsb87Kp40Rf
+   F8wS3l+I4+cIvFBq5BZNEFtUo/N68YWxkmT9/b201ziVA/Vs7+2D6lrrh
+   dX9fXFDPlPv2yYhQ1/rPxGVmFd28McdEblPBXoabDEfkPknbTKZhGk0Jl
+   c=;
+IronPort-SDR: YKBruZw2eunFnfNRBBwICfu717xKJ4iN7VjCqX0YqCj7VTpkFsX8e88Q0wh4jHSaA3u7M8Alwf
+ CVaQWj7FkdYQ==
+X-IronPort-AV: E=Sophos;i="5.70,511,1574121600"; 
+   d="scan'208";a="20495977"
+Received: from sea32-co-svc-lb4-vlan3.sea.corp.amazon.com (HELO email-inbound-relay-2b-8cc5d68b.us-west-2.amazon.com) ([10.47.23.38])
+  by smtp-border-fw-out-9101.sea19.amazon.com with ESMTP; 03 Mar 2020 13:29:04 +0000
+Received: from EX13MTAUEA002.ant.amazon.com (pdx4-ws-svc-p6-lb7-vlan3.pdx.amazon.com [10.170.41.166])
+        by email-inbound-relay-2b-8cc5d68b.us-west-2.amazon.com (Postfix) with ESMTPS id 18F1CA2393;
+        Tue,  3 Mar 2020 13:29:03 +0000 (UTC)
+Received: from EX13D04EUA004.ant.amazon.com (10.43.165.150) by
+ EX13MTAUEA002.ant.amazon.com (10.43.61.77) with Microsoft SMTP Server (TLS)
+ id 15.0.1236.3; Tue, 3 Mar 2020 13:29:02 +0000
+Received: from EX13MTAUEE002.ant.amazon.com (10.43.62.24) by
+ EX13D04EUA004.ant.amazon.com (10.43.165.150) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.2; Tue, 3 Mar 2020 13:29:01 +0000
+Received: from u961addbe640f56.ant.amazon.com (10.28.84.111) by
+ mail-relay.amazon.com (10.43.62.224) with Microsoft SMTP Server id
+ 15.0.1367.3 via Frontend Transport; Tue, 3 Mar 2020 13:28:58 +0000
+From:   Stanislav Spassov <stanspas@amazon.com>
+To:     <linux-pci@vger.kernel.org>
+CC:     Stanislav Spassov <stanspas@amazon.de>,
+        <linux-acpi@vger.kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        =?UTF-8?q?Jan=20H=20=2E=20Sch=C3=B6nherr?= <jschoenh@amazon.de>,
+        "Jonathan Corbet" <corbet@lwn.net>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Sinan Kaya <okaya@kernel.org>, Rajat Jain <rajatja@google.com>,
+        kbuild test robot <lkp@intel.com>
+Subject: [PATCH v3 00/17] Improve PCI device post-reset readiness polling
+Date:   Tue, 3 Mar 2020 14:28:35 +0100
+Message-ID: <20200303132852.13184-1-stanspas@amazon.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <2094703.CetWLLyMuz@kreacher> <CAD8Lp46VbG3b5NV54vmBFQH2YLY6wRngYv0oY2tiveovPRhiVw@mail.gmail.com>
- <CAPpJ_edfTg11QZs25MrThj2+FKUo2103rv7iYNzo=kr-jeg1MA@mail.gmail.com>
- <CAJZ5v0gB9yuVmPjJ_MvfT8aFpvP-X5JRsNfZn8+Mv5RwTednGg@mail.gmail.com>
- <CAJZ5v0imqwdmXzKayqs1kgHOb-mXrkr61uNxVka8J9bKca989Q@mail.gmail.com> <CAPpJ_efvF0XzjevA1eL3BUJqBwxRTOPLcqWKN40Azj-n1AtjcA@mail.gmail.com>
-In-Reply-To: <CAPpJ_efvF0XzjevA1eL3BUJqBwxRTOPLcqWKN40Azj-n1AtjcA@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 3 Mar 2020 10:09:59 +0100
-Message-ID: <CAJZ5v0hie79+jG+3h4t5Q8r0M7E37HY-7i8ijg8DpvS0RXZSiQ@mail.gmail.com>
-Subject: Re: [PATCH 0/6] ACPI: EC: Updates related to initialization
-To:     Jian-Hong Pan <jian-hong@endlessm.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Daniel Drake <drake@endlessm.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 3, 2020 at 8:29 AM Jian-Hong Pan <jian-hong@endlessm.com> wrote:
->
-> Rafael J. Wysocki <rafael@kernel.org> 於 2020年3月2日 週一 下午7:45寫道：
-> >
-> > On Mon, Mar 2, 2020 at 11:38 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > >
-> > > On Mon, Mar 2, 2020 at 6:54 AM Jian-Hong Pan <jian-hong@endlessm.com> wrote:
-> > > >
-> > > > Daniel Drake <drake@endlessm.com> 於 2020年2月28日 週五 下午5:43寫道：
-> > > > >
-> > > > > On Thu, Feb 27, 2020 at 10:25 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
-> > > > > > The purpose of this series of update of the ACPI EC driver is to make its
-> > > > > > initialization more straightforward.
-> > > > > >
-> > > > > > They fix a couple of issues, clean up some things, remove redundant code etc.
-> > > > > >
-> > > > > > Please refer to the changelogs of individual patches for details.
-> > > > > >
-> > > > > > For easier access, the series is available in the git branch at
-> > > > > >
-> > > > > >  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
-> > > > > >  acpi-ec-work
-> > > > > >
-> > > > > > on top of 5.6-rc3.
-> > > > >
-> > > > > Jian-Hong, can you please test this on Asus UX434DA?
-> > > > > Check if the screen brightness hotkeys are still working after these changes.
-> > > >
-> > > > Hi Rafael,
-> > > >
-> > > > Thanks for your patches, but we found an issue:
-> > > > The laptops like ASUS UX434DA's screen brightness hotkeys work before
-> > > > this patch series.  However, the hotkeys are failed with the patch
-> > > > "ACPI: EC: Unify handling of event handler installation failures".
-> > >
-> > > So I have modified the series to avoid the change that can possibly break this.
-> > >
-> > > Can you please pull the new series from
-> > >
-> > >  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
-> > >  acpi-ec-work
-> > >
-> > > (same branch) and retest?
-> >
-> > Note that the current top-most commit in that branch is
-> >
-> > 0957d98f50da ACPI: EC: Consolidate event handler installation code
->
-> I tested the commits in acpi-ec-work branch whose last commit is
-> 0957d98f50da ("ACPI: EC: Consolidate event handler installation
-> code").  The screen brightness hotkeys are still failed with
-> 0957d98f50da ("ACPI: EC: Consolidate event handler installation
-> code").
->
-> I tweak and add some debug messages:
->
-> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-> index 85f1fe8e208a..3887f427283c 100644
-> --- a/drivers/acpi/ec.c
-> +++ b/drivers/acpi/ec.c
-> @@ -1443,23 +1443,27 @@ static bool install_gpe_event_handler(struct
-> acpi_ec *ec)
->         return true;
->  }
->
-> -static bool install_gpio_irq_event_handler(struct acpi_ec *ec,
-> +static int install_gpio_irq_event_handler(struct acpi_ec *ec,
->                                            struct acpi_device *device)
->  {
->         int irq, ret;
->
->         /* ACPI reduced hardware platforms use a GpioInt specified in _CRS. */
->         irq = acpi_dev_gpio_irq_get(device, 0);
-> -       if (irq < 0)
-> -               return false;
-> +       if (irq < 0) {
-> +               pr_err("%s: acpi_dev_gpio_irq_get returns %d\n", __func__, irq);
-> +               return irq;
-> +       }
->
->         ret = request_irq(irq, acpi_ec_irq_handler, IRQF_SHARED, "ACPI EC", ec);
-> -       if (ret < 0)
-> -               return false;
-> +       if (ret < 0) {
-> +               pr_err("%s: request_irq returns %d\n", __func__, ret);
-> +               return ret;
-> +       }
->
->         ec->irq = irq;
->
-> -       return true;
-> +       return 0;
->  }
->
->  /**
-> @@ -1517,9 +1521,11 @@ static int ec_install_handlers(struct acpi_ec
-> *ec, struct acpi_device *device)
->                          * fatal, because the EC can be polled for events.
->                          */
->                 } else {
-> -                       ready = install_gpio_irq_event_handler(ec, device);
-> -                       if (!ready)
-> -                               return -ENXIO;
-> +                       pr_err("%s: install_gpio_irq_event_handler\n",
-> __func__);
-> +                       int ret = install_gpio_irq_event_handler(ec, device);
-> +                       if (ret)
-> +                               return ret;
-> +                       ready = true;
->                 }
->                 if (ready) {
->                         set_bit(EC_FLAGS_EVENT_HANDLER_INSTALLED, &ec->flags);
->
-> The dmesg shows:
->
-> [    0.121117] ACPI: EC: ec_install_handlers: install_gpio_irq_event_handler
-> [    0.121133] ACPI: EC: install_gpio_irq_event_handler:
-> acpi_dev_gpio_irq_get returns -517
->
-> Originally, ec_install_handlers() will return the returned value from
-> install_gpio_irq_event_handler() from acpi_dev_gpio_irq_get(), which
-> is -EPROBE_DEFER, instead of -ENXIO.  However, ec_install_handlers()
-> returns -ENXIO directly if install_gpio_irq_event_handler() returns
-> false in patch ("ACPI: EC: Consolidate event handler installation
-> code").  Here needs some modification.
+From: Stanislav Spassov <stanspas@amazon.de>
 
-Thanks, I forgot about the -EPROBE_DEFER case.
+The first version of this patch series can be found here:
+https://lore.kernel.org/linux-pci/20200223122057.6504-1-stanspas@amazon.com
+
+Originally (v1), this patch series aimed to only solve an issue where
+pci_dev_wait can cause system crashes. After a reset, a hung device may
+keep responding with CRS completions indefinitely. If CRS Software
+Visibility is enabled on the Root Port, attempting to read any register
+other than PCI_VENDOR_ID will cause the Root Port to autonomously retry
+the request without reporting back to the CPU core. Unless the number of
+retries or the amount of time spent retrying is limited by
+platform-specific means, this scenario leads to low-level platform
+timeouts (such as a TOR Timeout), which easily escalate to a crash.
+
+The feedback on the first version of this patch series inspired a
+deeper dive into the PCI Firmware Spec (_DSM functions 8 and 9),
+which revealed several different types of delays that can be overriden
+on a per-device basis to avoid waiting for too long on device that are
+known to come back quickly after reset. The kernel already stores such
+overrides for some, but not all of the delays.
+
+While adding the infrastructure to allow overriding delays, I discovered
+and addressed several inconsistencies between what the PCIE
+Base Specification says and what the code does, and came up with more
+improvements all around device resets and readiness polling.
+
+This patch series now paves the way for Readiness Time Reporting capability
+support, and touches upon (in comments) some changes that would be
+required for supporting Readiness Notifications.
+
+[Compared to v2, v3 fixes build failures on i386 and arm/arm64:
+Reported-by: kbuild test robot <lkp@intel.com>
+- int(value_us / 1000) does not work for u64 value_us due to:
+  undefined reference to `__udivdi3'
+  Change: use '(int)value_us / 1000' to match pre-existing code.
+  It seems this would be susceptible to overflow/truncation ?
+- I had failed to replace all mentions of PCI_PM_D3COLD_WAIT after
+  renaming that constant to PCI_RESET_DELAY.]
+
+Stanislav Spassov (17):
+  PCI: Fall back to slot/bus reset if softer methods timeout
+  PCI: Remove unused PCI_PM_BUS_WAIT
+  PCI: Use pci_bridge_wait_for_secondary_bus after SBR
+  PCI: Do not override delay for D0->D3hot transition
+  PCI: Fix handling of _DSM 8 (avoiding reset delays)
+  PCI: Fix us->ms conversion in pci_acpi_optimize_delay
+  PCI: Clean up and document PM/reset delays
+  PCI: Add more delay overrides to struct pci_dev
+  PCI: Generalize pci_bus_max_d3cold_delay to pci_bus_max_delay
+  PCI: Use correct delay in pci_bridge_wait_for_secondary_bus
+  PCI: Refactor pci_dev_wait to remove timeout parameter
+  PCI: Refactor pci_dev_wait to take pci_init_event
+  PCI: Cache CRS Software Visibiliy in struct pci_dev
+  PCI: Introduce per-device reset_ready_poll override
+  PCI: Refactor polling loop out of pci_dev_wait
+  PCI: Add CRS handling to pci_dev_wait()
+  PCI: Lower PCIE_RESET_READY_POLL_MS from 1m to 1s
+
+ Documentation/power/pci.rst           |   4 +-
+ arch/x86/pci/intel_mid_pci.c          |   2 +-
+ drivers/hid/intel-ish-hid/ipc/ipc.c   |   2 +-
+ drivers/mfd/intel-lpss-pci.c          |   2 +-
+ drivers/net/ethernet/marvell/sky2.c   |   2 +-
+ drivers/pci/controller/pci-aardvark.c |   2 +-
+ drivers/pci/controller/pci-mvebu.c    |   2 +-
+ drivers/pci/iov.c                     |   4 +-
+ drivers/pci/pci-acpi.c                | 106 ++++++++----
+ drivers/pci/pci-driver.c              |   4 +-
+ drivers/pci/pci.c                     | 233 ++++++++++++++++++--------
+ drivers/pci/pci.h                     |  81 ++++++++-
+ drivers/pci/probe.c                   |  10 +-
+ drivers/pci/quirks.c                  |   9 +-
+ include/linux/pci-acpi.h              |   8 +-
+ include/linux/pci.h                   |  45 ++++-
+ 16 files changed, 390 insertions(+), 126 deletions(-)
+
+
+base-commit: bb6d3fb354c5ee8d6bde2d576eb7220ea09862b9
+-- 
+2.25.1
+
+
+
+
+Amazon Development Center Germany GmbH
+Krausenstr. 38
+10117 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+Sitz: Berlin
+Ust-ID: DE 289 237 879
+
+
+
