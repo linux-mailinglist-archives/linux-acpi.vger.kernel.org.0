@@ -2,107 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 293231788AF
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Mar 2020 03:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E66BC178CED
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Mar 2020 09:57:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387469AbgCDCyY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Mar 2020 21:54:24 -0500
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:40359 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387454AbgCDCyY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Mar 2020 21:54:24 -0500
-Received: by mail-ua1-f65.google.com with SMTP id t20so141379uao.7
-        for <linux-acpi@vger.kernel.org>; Tue, 03 Mar 2020 18:54:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=BeYrItptjbmjm//xr6aNyLoo5RY49LjduotLIGizl2Q=;
-        b=svKGsOub7ZxaZcRswMLgCyDY9M7NlICSs5yYlhOef4CgZNMJcaYeET/xRbMKQ2Sjr5
-         x7GrMkay5P8/ZTFyES2T+ek+RbYR2RemcPCVu+HbAmIFr52QuJUfNlYIDjqSawG8QDzp
-         0vCxvKUV/N1gtjL905bZyOBMcqzTysyA9eRQIdcblr7hiLn1f0+ey7tUnKSqwIK0dsIS
-         QBaYZSPDhDrYqdgCHcHWHXctCO5wH1KioQ8OeE2T7xde0a1zreyfPiWu4q1SIFRVPuK5
-         aXi9e42c6PiHzw6poPmQTBgbmSY2eZooZwI57dm74ZY9MkZBdtGScDfCaLfZfBsw1f2W
-         kINQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=BeYrItptjbmjm//xr6aNyLoo5RY49LjduotLIGizl2Q=;
-        b=QM4liwON76CAj+7/u/u5K1mf6SX3qPf5H/a5Fgbjp34wNdqp2Phpy8vT0vWJ+bBjo1
-         0sH7QC3SCFEku0QvKgCr/dAC7AnxksEXIRBe3kwcTfniEP/aemdigy3l6wdzVxFHuLiR
-         6tCh+RJAsKLdI8Ih5FlOKYPrY+CwdnGWpufPjfwmJFzNCgv+Uacnf+8y2y/ecQqFZizy
-         HZ3pzkNmHooMVCqVrlns+muvm98pJoTxcZZLsP6N79ooaerx5hzR6IJsxpcA0vWsewqM
-         pxFnPTpmESoCmkTx42EZsoghpfvYFlGYbhF/68MP/44Tbe/99efqdD70xSmIGrAkyGsH
-         vrFw==
-X-Gm-Message-State: ANhLgQ173IQFJpuFDAZzxj5PxnWHhOuMd/FYS+D+Ts+ky5jECKctkH/N
-        ZB8DkH37jGN5eCaTQvmKVpYnk15lf+taq6kyRwXkQw==
-X-Google-Smtp-Source: ADFU+vsmy3goZ2XX5DADDbfFg/eIMnxSpbzjpinVr40A+RklPux/uxz2QGDs7Xd1N45NfSJVEjGvjDKfrkpOY1fF7WQ=
-X-Received: by 2002:ab0:1161:: with SMTP id g33mr388779uac.32.1583290462899;
- Tue, 03 Mar 2020 18:54:22 -0800 (PST)
+        id S1728642AbgCDI5X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 4 Mar 2020 03:57:23 -0500
+Received: from terminus.zytor.com ([198.137.202.136]:59771 "EHLO
+        mail.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727734AbgCDI5X (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 4 Mar 2020 03:57:23 -0500
+Received: from [IPv6:2601:646:8600:3281:d841:929b:f37:3a31] ([IPv6:2601:646:8600:3281:d841:929b:f37:3a31])
+        (authenticated bits=0)
+        by mail.zytor.com (8.15.2/8.15.2) with ESMTPSA id 0248uuI6301245
+        (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+        Wed, 4 Mar 2020 00:56:57 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 0248uuI6301245
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+        s=2020022001; t=1583312217;
+        bh=utclo29XAiv2dCDxoewItG7aKxdh43V5IBOk+FLmUjY=;
+        h=Date:In-Reply-To:References:Subject:To:CC:From:From;
+        b=cXEyWHpJQo074KfzwRKYbKann7+FAimOqGQv6QUi4OIfOaa9rTLXfqJLtS+wYT5mj
+         uyHFTop4R7A/l9kT2sBZqG/37sZaT/LkV+b0WxBGHDhx7uZWy9REvhHf4anYRPTAHV
+         TxTXNJ7ey+1FhWjJbRPyXMAg1jkSgw7phFlp5EhiHfp6+lXmXrXYxijRzGVGfbHJov
+         +rlGKs6OwvOTqFsmNJzFXuqbq4+nnUzRl4Qv1+wohaAq0B47aRrV8geqZ88r/wxlKN
+         Iv4Cp+wJqmVyxQxhxSuEbxWfggUa/cv4c86ZGwccl31fygbpOcwUT7WS9TEZsM4PgX
+         EeARcAxxx3zxg==
+Date:   Wed, 04 Mar 2020 00:54:09 -0800
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20200303204144.GA9913@avx2>
+References: <20200303204144.GA9913@avx2>
 MIME-Version: 1.0
-References: <2094703.CetWLLyMuz@kreacher> <CAD8Lp46VbG3b5NV54vmBFQH2YLY6wRngYv0oY2tiveovPRhiVw@mail.gmail.com>
- <CAPpJ_edfTg11QZs25MrThj2+FKUo2103rv7iYNzo=kr-jeg1MA@mail.gmail.com>
- <CAJZ5v0gB9yuVmPjJ_MvfT8aFpvP-X5JRsNfZn8+Mv5RwTednGg@mail.gmail.com>
- <CAJZ5v0imqwdmXzKayqs1kgHOb-mXrkr61uNxVka8J9bKca989Q@mail.gmail.com>
- <CAPpJ_efvF0XzjevA1eL3BUJqBwxRTOPLcqWKN40Azj-n1AtjcA@mail.gmail.com>
- <CAJZ5v0hie79+jG+3h4t5Q8r0M7E37HY-7i8ijg8DpvS0RXZSiQ@mail.gmail.com> <CAJZ5v0hwrZX4+4m-g0c2bUTHxJO=1+kenXBjLz1ChWdcxSLJbA@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hwrZX4+4m-g0c2bUTHxJO=1+kenXBjLz1ChWdcxSLJbA@mail.gmail.com>
-From:   Jian-Hong Pan <jian-hong@endlessm.com>
-Date:   Wed, 4 Mar 2020 10:53:33 +0800
-Message-ID: <CAPpJ_ed5KPPu47ri3phnjKrToqJ8vSNV32zaRmBPLr3pq4M_4A@mail.gmail.com>
-Subject: Re: [PATCH 0/6] ACPI: EC: Updates related to initialization
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Daniel Drake <drake@endlessm.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] x86/acpi: make "asmlinkage" part first thing in the function definition
+To:     Alexey Dobriyan <adobriyan@gmail.com>, rjw@rjwysocki.net,
+        lenb@kernel.org
+CC:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        luto@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+From:   hpa@zytor.com
+Message-ID: <9947D7CB-B9CD-47E0-BC5E-C7FC3A81FC7B@zytor.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Rafael J. Wysocki <rafael@kernel.org> =E6=96=BC 2020=E5=B9=B43=E6=9C=884=E6=
-=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8A=E5=8D=886:23=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> On Tue, Mar 3, 2020 at 10:09 AM Rafael J. Wysocki <rafael@kernel.org> wro=
-te:
-> >
-> > On Tue, Mar 3, 2020 at 8:29 AM Jian-Hong Pan <jian-hong@endlessm.com> w=
+On March 3, 2020 12:41:44 PM PST, Alexey Dobriyan <adobriyan@gmail=2Ecom> w=
 rote:
-> > >
-> > > Rafael J. Wysocki <rafael@kernel.org> =E6=96=BC 2020=E5=B9=B43=E6=9C=
-=882=E6=97=A5 =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=887:45=E5=AF=AB=E9=81=93=
-=EF=BC=9A
-> > > >
+>g++ insists that function declaration must start with extern "C"
+>(which asmlinkage expands to)=2E
 >
-> [cut]
+>gcc doesn't care=2E
 >
-> > >
-> > > Originally, ec_install_handlers() will return the returned value from
-> > > install_gpio_irq_event_handler() from acpi_dev_gpio_irq_get(), which
-> > > is -EPROBE_DEFER, instead of -ENXIO.  However, ec_install_handlers()
-> > > returns -ENXIO directly if install_gpio_irq_event_handler() returns
-> > > false in patch ("ACPI: EC: Consolidate event handler installation
-> > > code").  Here needs some modification.
-> >
-> > Thanks, I forgot about the -EPROBE_DEFER case.
+>Signed-off-by: _Z6Alexeyv <adobriyan@gmail=2Ecom>
+>---
 >
-> The top-most commit in the git branch at
+> arch/x86/kernel/acpi/sleep=2Ec |    2 +-
+> arch/x86/kernel/acpi/sleep=2Eh |    2 +-
+> 2 files changed, 2 insertions(+), 2 deletions(-)
 >
->  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
->  acpi-ec-work
->
-> has been updated to take that case into account (I think that it
-> should be spelled out explicitly or it will be very easy to overlook
-> in the future).
->
-> Please test this one if possible.
+>--- a/arch/x86/kernel/acpi/sleep=2Ec
+>+++ b/arch/x86/kernel/acpi/sleep=2Ec
+>@@ -43,7 +43,7 @@ unsigned long acpi_get_wakeup_address(void)
+>  *
+>  * Wrapper around acpi_enter_sleep_state() to be called by assmebly=2E
+>  */
+>-acpi_status asmlinkage __visible x86_acpi_enter_sleep_state(u8 state)
+>+asmlinkage acpi_status __visible x86_acpi_enter_sleep_state(u8 state)
+> {
+> 	return acpi_enter_sleep_state(state);
+> }
+>--- a/arch/x86/kernel/acpi/sleep=2Eh
+>+++ b/arch/x86/kernel/acpi/sleep=2Eh
+>@@ -19,4 +19,4 @@ extern void do_suspend_lowlevel(void);
+>=20
+> extern int x86_acpi_suspend_lowlevel(void);
+>=20
+>-acpi_status asmlinkage x86_acpi_enter_sleep_state(u8 state);
+>+asmlinkage acpi_status x86_acpi_enter_sleep_state(u8 state);
 
-Tested the commits on some laptops including ASUS UX434DA.  The
-brightness hotkeys are working now.
-
-Jian-Hong Pan
+Are you building the kernel with C++?!
+--=20
+Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
