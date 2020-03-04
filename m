@@ -2,95 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFE09178D2C
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Mar 2020 10:14:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03C96178DF9
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Mar 2020 11:04:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725283AbgCDJOH convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 4 Mar 2020 04:14:07 -0500
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:34363 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725271AbgCDJOH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Mar 2020 04:14:07 -0500
-Received: by mail-ot1-f68.google.com with SMTP id j16so1339193otl.1;
-        Wed, 04 Mar 2020 01:14:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=2yqcmNpEhEyaoox7sgCu8vgkk/Ww/B7auVe1x64oSBk=;
-        b=j2diKycW4GOtU6AnzvAzCml2SGfkMYP0g4a1XcRmhSAJxaocdO7v5mJ9DAWQKUs5IK
-         okoUG3OExWv7IQ4/KhM5a6t+PADRtpMSwfE13UMZc2n9hQyV0KWZhNNm86CsP81mlAMX
-         AZeP0+Y2iAgCIkJzKut8Ikt+izg55VWjyVLF6Tp3kykU+nYKI39vyCxLLSPKajAW8Ns1
-         LLqLs/oJNl2fedu5I5J81bo5h1Fs9SHOyV0+VLUjZvqGuUJnfNYy3/HVpFviOtpM1m8r
-         O5o5oYjbgTa18iq8ny0OYCgP2IZIWVS4OrNOQAjTP1awtUOT6yy5aXv6RkAPee4gDhuQ
-         /TNQ==
-X-Gm-Message-State: ANhLgQ2uAK/xYxY9X6hSTT2aUS4FxJ0Q0mm9/Jtsn49gXvuhaj2TrqnY
-        z+6pN2f+zvPXfE4BT4qokVSI1oWbEyxR0fUG/qA=
-X-Google-Smtp-Source: ADFU+vvJVrT5XzB+LN4pvHpPN9koJloy6ZWiadNJKU6hGzyCilF4pGMcGTQth78LVdONiuIhebTgdghVxAbgAmk19GE=
-X-Received: by 2002:a05:6830:4b9:: with SMTP id l25mr1612658otd.266.1583313246413;
- Wed, 04 Mar 2020 01:14:06 -0800 (PST)
+        id S1726860AbgCDKEo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 4 Mar 2020 05:04:44 -0500
+Received: from bombadil.infradead.org ([198.137.202.133]:54284 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726137AbgCDKEo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Mar 2020 05:04:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=joc6mkpsAJhcX0YbSolxXtfYnAc+3nHjCaHtP4av6cA=; b=SJy5M/ffBE1p9hJhif0f8H62mq
+        hEX2p1T7p2fmGz0zJQJ9bgotX/ie27/bPzy4ZJCya+QsQYcA/NGPslBJlpDuu6vodH+MwhcpHtoeO
+        2OIX/ztQ/gj5RMwHNndjuRtPW37hpJwjphRsVknIRPL0MPH6snmxX3NaQLYoqucw37WVEO/MDQ+zb
+        B72Zh6wpkL1i55feEvJSOZOfIxuelto44mvAjfgHREW57zd5/stIByD5PvGy3KvrOmym0opWWdzF6
+        fGnrVFZSn3GPDp22KXP1pwYEuVB3PeUvNENlJjQve2/6BVzQolYNBjtIxWJmCIpfjkruLPPoSjBVj
+        F4V3FnkA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1j9QtL-0001om-Vx; Wed, 04 Mar 2020 10:04:40 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 8E35D3013A4;
+        Wed,  4 Mar 2020 11:02:39 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 12DBF20BCBDC5; Wed,  4 Mar 2020 11:04:38 +0100 (CET)
+Date:   Wed, 4 Mar 2020 11:04:38 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     hpa@zytor.com
+Cc:     Alexey Dobriyan <adobriyan@gmail.com>, rjw@rjwysocki.net,
+        lenb@kernel.org, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, luto@kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH] x86/acpi: make "asmlinkage" part first thing in the
+ function definition
+Message-ID: <20200304100437.GM2596@hirez.programming.kicks-ass.net>
+References: <20200303204144.GA9913@avx2>
+ <9947D7CB-B9CD-47E0-BC5E-C7FC3A81FC7B@zytor.com>
 MIME-Version: 1.0
-References: <2094703.CetWLLyMuz@kreacher> <CAD8Lp46VbG3b5NV54vmBFQH2YLY6wRngYv0oY2tiveovPRhiVw@mail.gmail.com>
- <CAPpJ_edfTg11QZs25MrThj2+FKUo2103rv7iYNzo=kr-jeg1MA@mail.gmail.com>
- <CAJZ5v0gB9yuVmPjJ_MvfT8aFpvP-X5JRsNfZn8+Mv5RwTednGg@mail.gmail.com>
- <CAJZ5v0imqwdmXzKayqs1kgHOb-mXrkr61uNxVka8J9bKca989Q@mail.gmail.com>
- <CAPpJ_efvF0XzjevA1eL3BUJqBwxRTOPLcqWKN40Azj-n1AtjcA@mail.gmail.com>
- <CAJZ5v0hie79+jG+3h4t5Q8r0M7E37HY-7i8ijg8DpvS0RXZSiQ@mail.gmail.com>
- <CAJZ5v0hwrZX4+4m-g0c2bUTHxJO=1+kenXBjLz1ChWdcxSLJbA@mail.gmail.com> <CAPpJ_ed5KPPu47ri3phnjKrToqJ8vSNV32zaRmBPLr3pq4M_4A@mail.gmail.com>
-In-Reply-To: <CAPpJ_ed5KPPu47ri3phnjKrToqJ8vSNV32zaRmBPLr3pq4M_4A@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 4 Mar 2020 10:13:54 +0100
-Message-ID: <CAJZ5v0jVNXGxko+LUJ5K91UmM_Fz4Q=JN2eK1sSxO7AsDj=Gyw@mail.gmail.com>
-Subject: Re: [PATCH 0/6] ACPI: EC: Updates related to initialization
-To:     Jian-Hong Pan <jian-hong@endlessm.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Daniel Drake <drake@endlessm.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9947D7CB-B9CD-47E0-BC5E-C7FC3A81FC7B@zytor.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 4, 2020 at 3:54 AM Jian-Hong Pan <jian-hong@endlessm.com> wrote:
->
-> Rafael J. Wysocki <rafael@kernel.org> 於 2020年3月4日 週三 上午6:23寫道：
+On Wed, Mar 04, 2020 at 12:54:09AM -0800, hpa@zytor.com wrote:
+> On March 3, 2020 12:41:44 PM PST, Alexey Dobriyan <adobriyan@gmail.com> wrote:
+> >g++ insists that function declaration must start with extern "C"
+> >(which asmlinkage expands to).
 > >
-> > On Tue, Mar 3, 2020 at 10:09 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > >
-> > > On Tue, Mar 3, 2020 at 8:29 AM Jian-Hong Pan <jian-hong@endlessm.com> wrote:
-> > > >
-> > > > Rafael J. Wysocki <rafael@kernel.org> 於 2020年3月2日 週一 下午7:45寫道：
-> > > > >
+> >gcc doesn't care.
 > >
-> > [cut]
+> >Signed-off-by: _Z6Alexeyv <adobriyan@gmail.com>
+> >---
 > >
-> > > >
-> > > > Originally, ec_install_handlers() will return the returned value from
-> > > > install_gpio_irq_event_handler() from acpi_dev_gpio_irq_get(), which
-> > > > is -EPROBE_DEFER, instead of -ENXIO.  However, ec_install_handlers()
-> > > > returns -ENXIO directly if install_gpio_irq_event_handler() returns
-> > > > false in patch ("ACPI: EC: Consolidate event handler installation
-> > > > code").  Here needs some modification.
-> > >
-> > > Thanks, I forgot about the -EPROBE_DEFER case.
+> > arch/x86/kernel/acpi/sleep.c |    2 +-
+> > arch/x86/kernel/acpi/sleep.h |    2 +-
+> > 2 files changed, 2 insertions(+), 2 deletions(-)
 > >
-> > The top-most commit in the git branch at
-> >
-> >  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
-> >  acpi-ec-work
-> >
-> > has been updated to take that case into account (I think that it
-> > should be spelled out explicitly or it will be very easy to overlook
-> > in the future).
-> >
-> > Please test this one if possible.
->
-> Tested the commits on some laptops including ASUS UX434DA.  The
-> brightness hotkeys are working now.
+> >--- a/arch/x86/kernel/acpi/sleep.c
+> >+++ b/arch/x86/kernel/acpi/sleep.c
+> >@@ -43,7 +43,7 @@ unsigned long acpi_get_wakeup_address(void)
+> >  *
+> >  * Wrapper around acpi_enter_sleep_state() to be called by assmebly.
+> >  */
+> >-acpi_status asmlinkage __visible x86_acpi_enter_sleep_state(u8 state)
+> >+asmlinkage acpi_status __visible x86_acpi_enter_sleep_state(u8 state)
+> > {
+> > 	return acpi_enter_sleep_state(state);
+> > }
+> >--- a/arch/x86/kernel/acpi/sleep.h
+> >+++ b/arch/x86/kernel/acpi/sleep.h
+> >@@ -19,4 +19,4 @@ extern void do_suspend_lowlevel(void);
+> > 
+> > extern int x86_acpi_suspend_lowlevel(void);
+> > 
+> >-acpi_status asmlinkage x86_acpi_enter_sleep_state(u8 state);
+> >+asmlinkage acpi_status x86_acpi_enter_sleep_state(u8 state);
+> 
+> Are you building the kernel with C++?!
 
-Thank you!
+He is :-) IIRC he's got a whole bunch of patches that removes all the
+C++ keywords from the kernel.
