@@ -2,76 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E9832178FCB
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Mar 2020 12:49:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CFE6179C0B
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Mar 2020 23:55:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387919AbgCDLt6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 4 Mar 2020 06:49:58 -0500
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:35684 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387772AbgCDLt6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Mar 2020 06:49:58 -0500
-Received: by mail-lf1-f68.google.com with SMTP id z9so1268809lfa.2
-        for <linux-acpi@vger.kernel.org>; Wed, 04 Mar 2020 03:49:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=WTBczowU/Nsod2w33lz16yranT9oF8yu5BlEgmgClk0=;
-        b=D/cpIw2y6ROUU4ct6eCx4dDT1b4Dr0xVJzPYIz8m8tOf79SQoEwxZT6j0YN5zt6c6X
-         dZ8qPkcOZa+DLCtvjAZB/0GlYhiBcn3xGHmSo1dc/5ufHjL3ACMeRRBDmiGd3Le8wyYP
-         xCIGKoaQBWMzbx/YNiO5Ct4lfX5d60CWR0hMiwEnPKzaBeivBDJT8AVv/kjE9CovKx3E
-         lBCsJgaOQ1OkXtO8yFlOlyYqaGP8TE8ZFzueQWkZ6XQiBxHIRYVWrJBQHVR/5OdFDxO0
-         4EgquYukufcQKw2lProKLVMWR26fHl2R/iI2ctam179V6Ez9XmUbTc1ghQo82pmfr/4l
-         1l9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=WTBczowU/Nsod2w33lz16yranT9oF8yu5BlEgmgClk0=;
-        b=gKe5AyMpfcBLvdbXHw5ekUahUt9AuMOx4xRWOuBcdviLwM3zDn3W0aVdIHZxpyPElx
-         sggDU7MCfjQMzQHW+Z8hKA0cZozIvk8PkozVI3orcRVI4Kfi6kTeXR6f38GoRMrYu/6F
-         mVvHxds8XfpcAOgPlYUWvCj7N5zE3LOiqyV5w+JdfA64OLDRDTfgh2IHCU8alPAdQZ49
-         R8FzOomX+fWSJ5A9GBPLjFys1nzLal9Vv2sPZSnK2sP1ugDtx+kYkvR3IAPqNCfH5/0Q
-         qsBDRNxZq3lZ2l+X0DFSW1/wapi5GN7NBYax95cyVpt63yN2+3w3Iu3wz0U74aVKcyPk
-         snOQ==
-X-Gm-Message-State: ANhLgQ3bG9+Xoj9dxuUN5uLMRxGV5bAkrPjNXey9C/pgyLhri9OaIcLO
-        q1seucX4R+xIFWBUzOSE77BbOsYudk85j3YOjaw=
-X-Google-Smtp-Source: ADFU+vvzvqDhaRMObBeYi90ElGJltN7l7gZ4C6K1a/m+5EEf4Zlr41LxLsmlHecGxuTRush2SmZdNgvlBykPbyk6N2U=
-X-Received: by 2002:a19:6406:: with SMTP id y6mr1840276lfb.125.1583322596588;
- Wed, 04 Mar 2020 03:49:56 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:ac2:5446:0:0:0:0:0 with HTTP; Wed, 4 Mar 2020 03:49:56 -0800 (PST)
-Reply-To: brianjesse343@gmail.com
-From:   brianjesse <westernu288@gmail.com>
-Date:   Wed, 4 Mar 2020 11:49:56 +0000
-Message-ID: <CAD1j+E-_CdazNEJenbd_qj48oB8VgGri17aN+S=kzXowoyF+sw@mail.gmail.com>
-Subject: Hl
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        id S2388312AbgCDWzz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 4 Mar 2020 17:55:55 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:46881 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725875AbgCDWzz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Mar 2020 17:55:55 -0500
+Received: from 2.general.alexhung.us.vpn ([10.172.65.255] helo=canonical.com)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <alex.hung@canonical.com>)
+        id 1j9cvL-0007N9-Ky; Wed, 04 Mar 2020 22:55:32 +0000
+From:   Alex Hung <alex.hung@canonical.com>
+To:     corbet@lwn.net, rjw@rjwysocki.net, len.brown@intel.com,
+        pavel@ucw.cz, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        hpa@zytor.com, x86@kernel.org, mchehab+samsung@kernel.org,
+        jpoimboe@redhat.com, akpm@linux-foundation.org,
+        pawan.kumar.gupta@linux.intel.com, jgross@suse.com,
+        linux-doc@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, alex.hung@canonical.com
+Subject: [PATCH][RESEND] acpi/x86: add a kernel parameter to disable ACPI BGRT
+Date:   Wed,  4 Mar 2020 15:55:29 -0700
+Message-Id: <20200304225529.6706-1-alex.hung@canonical.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Witaj, Uprzejmie informujemy, =C5=BCe ten e-mail, kt=C3=B3ry dotar=C5=82 do=
- Twojej
-skrzynki pocztowej, nie jest
-b=C5=82=C4=85d, ale zosta=C5=82 specjalnie skierowany do rozpatrzenia. ja
-mam propozycj=C4=99 (7,500.000,00 $) pozostawion=C4=85 przez mojego zmar=C5=
-=82ego
-klienta in=C5=BCyniera Carlosa
-kt=C3=B3ry nosi przy tobie to samo imi=C4=99, kt=C3=B3ry pracowa=C5=82 i mi=
-eszka=C5=82 tutaj w Lom=C3=A9
-I=C5=9B=C4=87. M=C3=B3j zmar=C5=82y klient i rodzina uczestniczyli w wypadk=
-u samochodowym,
-kt=C3=B3ry mia=C5=82 miejsce
-ich =C5=BCycia. Kontaktuj=C4=99 si=C4=99 z tob=C4=85 jako najbli=C5=BCszym =
-krewnym zmar=C5=82ego, wi=C4=99c ty
-mo=C5=BCe otrzyma=C4=87 =C5=9Brodki na roszczenia. Zrobi=C4=99 to po twojej=
- szybkiej odpowiedzi
-poinformuj=C4=99 ci=C4=99 o sposobach wykonania tego przymierza. skontaktuj=
- si=C4=99
-ze mn=C4=85 w tej sprawie
-e-maile (brianjesse343@gmail.com)
+BGRT is for displaying seamless OEM logo from booting to login screen;
+however, this mechanism does not always work well on all configurations
+and the OEM logo can be displayed multiple times. This looks worse than
+without BGRT enabled.
+
+This patch adds a kernel parameter to disable BGRT in boot time. This is
+easier than re-compiling a kernel with CONFIG_ACPI_BGRT disabled.
+
+Signed-off-by: Alex Hung <alex.hung@canonical.com>
+---
+
+ * Resend to include linux-acpi emailing list
+
+ Documentation/admin-guide/kernel-parameters.txt |  3 +++
+ arch/x86/kernel/acpi/boot.c                     | 10 +++++++++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index ffff776..55c5b2f 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -442,6 +442,9 @@
+ 	bert_disable	[ACPI]
+ 			Disable BERT OS support on buggy BIOSes.
+ 
++	bgrt_disable	[ACPI][X86]
++			Disable BGRT to avoid flickering OEM logo.
++
+ 	bttv.card=	[HW,V4L] bttv (bt848 + bt878 based grabber cards)
+ 	bttv.radio=	Most important insmod options are available as
+ 			kernel args too.
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 04205ce..d1757ce 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -45,6 +45,7 @@ EXPORT_SYMBOL(acpi_disabled);
+ #define PREFIX			"ACPI: "
+ 
+ int acpi_noirq;				/* skip ACPI IRQ initialization */
++int acpi_nobgrt;			/* skip ACPI BGRT */
+ int acpi_pci_disabled;		/* skip ACPI PCI scan and IRQ initialization */
+ EXPORT_SYMBOL(acpi_pci_disabled);
+ 
+@@ -1619,7 +1620,7 @@ int __init acpi_boot_init(void)
+ 	acpi_process_madt();
+ 
+ 	acpi_table_parse(ACPI_SIG_HPET, acpi_parse_hpet);
+-	if (IS_ENABLED(CONFIG_ACPI_BGRT))
++	if (IS_ENABLED(CONFIG_ACPI_BGRT) && !acpi_nobgrt)
+ 		acpi_table_parse(ACPI_SIG_BGRT, acpi_parse_bgrt);
+ 
+ 	if (!acpi_noirq)
+@@ -1671,6 +1672,13 @@ static int __init parse_acpi(char *arg)
+ }
+ early_param("acpi", parse_acpi);
+ 
++static int __init parse_acpi_bgrt(char *arg)
++{
++	acpi_nobgrt = true;
++	return 0;
++}
++early_param("bgrt_disable", parse_acpi_bgrt);
++
+ /* FIXME: Using pci= for an ACPI parameter is a travesty. */
+ static int __init parse_pci(char *arg)
+ {
+-- 
+2.7.4
+
