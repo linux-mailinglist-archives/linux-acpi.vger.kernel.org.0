@@ -2,103 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CFE6179C0B
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Mar 2020 23:55:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5233717A0B0
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2020 08:50:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388312AbgCDWzz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 4 Mar 2020 17:55:55 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:46881 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725875AbgCDWzz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Mar 2020 17:55:55 -0500
-Received: from 2.general.alexhung.us.vpn ([10.172.65.255] helo=canonical.com)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <alex.hung@canonical.com>)
-        id 1j9cvL-0007N9-Ky; Wed, 04 Mar 2020 22:55:32 +0000
-From:   Alex Hung <alex.hung@canonical.com>
-To:     corbet@lwn.net, rjw@rjwysocki.net, len.brown@intel.com,
-        pavel@ucw.cz, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        hpa@zytor.com, x86@kernel.org, mchehab+samsung@kernel.org,
-        jpoimboe@redhat.com, akpm@linux-foundation.org,
-        pawan.kumar.gupta@linux.intel.com, jgross@suse.com,
-        linux-doc@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-acpi@vger.kernel.org, alex.hung@canonical.com
-Subject: [PATCH][RESEND] acpi/x86: add a kernel parameter to disable ACPI BGRT
-Date:   Wed,  4 Mar 2020 15:55:29 -0700
-Message-Id: <20200304225529.6706-1-alex.hung@canonical.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726079AbgCEHuE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Mar 2020 02:50:04 -0500
+Received: from mga11.intel.com ([192.55.52.93]:62923 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725914AbgCEHuE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 5 Mar 2020 02:50:04 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Mar 2020 23:50:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,517,1574150400"; 
+   d="scan'208";a="234335912"
+Received: from rjwysock-mobl1.ger.corp.intel.com (HELO [10.249.138.71]) ([10.249.138.71])
+  by orsmga008.jf.intel.com with ESMTP; 04 Mar 2020 23:50:01 -0800
+Subject: Re: [cpufreq] 909c0e9cc1: fwq.fwq.med 210.0% improvement
+To:     kernel test robot <rong.a.chen@intel.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>, linux-acpi@vger.kernel.org,
+        devel@acpica.org, linux-pm@vger.kernel.org, lkp@lists.01.org,
+        Rafael Wysocki <rafael@kernel.org>
+References: <20200305013509.GF5972@shao2-debian>
+From:   "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Organization: Intel Technology Poland Sp. z o. o., KRS 101882, ul. Slowackiego
+ 173, 80-298 Gdansk
+Message-ID: <951b0986-bb35-d9a5-1639-0a8cdb3dcd04@intel.com>
+Date:   Thu, 5 Mar 2020 08:50:00 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
+MIME-Version: 1.0
+In-Reply-To: <20200305013509.GF5972@shao2-debian>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-BGRT is for displaying seamless OEM logo from booting to login screen;
-however, this mechanism does not always work well on all configurations
-and the OEM logo can be displayed multiple times. This looks worse than
-without BGRT enabled.
+On 3/5/2020 2:35 AM, kernel test robot wrote:
+> Greeting,
+>
+> FYI, we noticed a 210.0% improvement of fwq.fwq.med due to commit:
 
-This patch adds a kernel parameter to disable BGRT in boot time. This is
-easier than re-compiling a kernel with CONFIG_ACPI_BGRT disabled.
+Well, that sounds impressive. :-)
 
-Signed-off-by: Alex Hung <alex.hung@canonical.com>
----
 
- * Resend to include linux-acpi emailing list
+>
+> commit: 909c0e9cc11ba39fa5a660583b25c2431cf54deb ("cpufreq: intel_pstate: Use passive mode by default without HWP")
+> https://git.kernel.org/cgit/linux/kernel/git/rafael/linux-pm.git intel_pstate-passive
+>
+> in testcase: fwq
+> on test machine: 16 threads Intel(R) Xeon(R) CPU D-1541 @ 2.10GHz with 48G memory
+> with following parameters:
+>
+> 	nr_task: 100%
+> 	samples: 100000ss
+> 	iterations: 18x
+> 	cpufreq_governor: powersave
 
- Documentation/admin-guide/kernel-parameters.txt |  3 +++
- arch/x86/kernel/acpi/boot.c                     | 10 +++++++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+The governor should be schedutil, though, unless it is explicitly set to 
+powersave in the test environment.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index ffff776..55c5b2f 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -442,6 +442,9 @@
- 	bert_disable	[ACPI]
- 			Disable BERT OS support on buggy BIOSes.
- 
-+	bgrt_disable	[ACPI][X86]
-+			Disable BGRT to avoid flickering OEM logo.
-+
- 	bttv.card=	[HW,V4L] bttv (bt848 + bt878 based grabber cards)
- 	bttv.radio=	Most important insmod options are available as
- 			kernel args too.
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 04205ce..d1757ce 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -45,6 +45,7 @@ EXPORT_SYMBOL(acpi_disabled);
- #define PREFIX			"ACPI: "
- 
- int acpi_noirq;				/* skip ACPI IRQ initialization */
-+int acpi_nobgrt;			/* skip ACPI BGRT */
- int acpi_pci_disabled;		/* skip ACPI PCI scan and IRQ initialization */
- EXPORT_SYMBOL(acpi_pci_disabled);
- 
-@@ -1619,7 +1620,7 @@ int __init acpi_boot_init(void)
- 	acpi_process_madt();
- 
- 	acpi_table_parse(ACPI_SIG_HPET, acpi_parse_hpet);
--	if (IS_ENABLED(CONFIG_ACPI_BGRT))
-+	if (IS_ENABLED(CONFIG_ACPI_BGRT) && !acpi_nobgrt)
- 		acpi_table_parse(ACPI_SIG_BGRT, acpi_parse_bgrt);
- 
- 	if (!acpi_noirq)
-@@ -1671,6 +1672,13 @@ static int __init parse_acpi(char *arg)
- }
- early_param("acpi", parse_acpi);
- 
-+static int __init parse_acpi_bgrt(char *arg)
-+{
-+	acpi_nobgrt = true;
-+	return 0;
-+}
-+early_param("bgrt_disable", parse_acpi_bgrt);
-+
- /* FIXME: Using pci= for an ACPI parameter is a travesty. */
- static int __init parse_pci(char *arg)
- {
--- 
-2.7.4
+Is that the case?
+
 
