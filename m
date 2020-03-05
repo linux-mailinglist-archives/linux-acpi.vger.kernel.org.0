@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7041E17AB71
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2020 18:14:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DAF017AC34
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2020 18:19:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727656AbgCEROX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Mar 2020 12:14:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40458 "EHLO mail.kernel.org"
+        id S1727556AbgCERTB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Mar 2020 12:19:01 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41966 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727652AbgCEROW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 5 Mar 2020 12:14:22 -0500
+        id S1728008AbgCERPS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 5 Mar 2020 12:15:18 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 19B0020870;
-        Thu,  5 Mar 2020 17:14:21 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3234C207FD;
+        Thu,  5 Mar 2020 17:15:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583428461;
-        bh=/5PjSR4kPjWHx0GL4pT1dw9603Pf8EUSxrvXB5tGyEA=;
+        s=default; t=1583428518;
+        bh=cZr6PQdmiL0Y5o22uj5yyFQjh/COZT2QBmPyV9LF2xA=;
         h=From:To:Cc:Subject:Date:From;
-        b=F/1yKuOf3ZtUtxrv6DIhTA0nQ8BM+nNYyoDWVr4+jHc73zmISSyadMJkwWXRByvH1
-         BjAWnPniMgqZCrteA6oyrRFTJi7ENiGlzzHTQDxm5vUjf424pZ2uzBYvjzCbmWGcBq
-         g1wEBtM+/4LkqvUJaJgaqN644tZggHlfYCDJQkLg=
+        b=O5o4zH6uBRMgYUdIS61ti0g0F4ugazmvtokGw0NkSUZ7TyC/OluK+uPGHlQipQetY
+         iq3GtgwQIRw/AWddhnjqiV/DmqeCbXSKmqCtQNQ9vO5wW+cjDtZEiFYxWJ9VkcnhEY
+         gLsKlsYraesdri2OEA54BtscznK3KIBOwxGJEXiM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jean Delvare <jdelvare@suse.de>,
@@ -30,9 +30,9 @@ Cc:     Jean Delvare <jdelvare@suse.de>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-doc@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 01/58] ACPI: watchdog: Allow disabling WDAT at boot
-Date:   Thu,  5 Mar 2020 12:13:22 -0500
-Message-Id: <20200305171420.29595-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 01/31] ACPI: watchdog: Allow disabling WDAT at boot
+Date:   Thu,  5 Mar 2020 12:14:45 -0500
+Message-Id: <20200305171516.30028-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 X-stable: review
@@ -60,7 +60,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 15 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 5594c8bf1dcd4..b5c933fa971f3 100644
+index 8bf0c0532046f..1a5101b7e853c 100644
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
 @@ -136,6 +136,10 @@
@@ -75,10 +75,10 @@ index 5594c8bf1dcd4..b5c933fa971f3 100644
  			Pass the RSDP address to the kernel, mostly used
  			on machines running EFI runtime service to boot the
 diff --git a/drivers/acpi/acpi_watchdog.c b/drivers/acpi/acpi_watchdog.c
-index b5516b04ffc07..ab6e434b4cee0 100644
+index 95600309ce420..685fd0ef9e8f2 100644
 --- a/drivers/acpi/acpi_watchdog.c
 +++ b/drivers/acpi/acpi_watchdog.c
-@@ -55,12 +55,14 @@ static bool acpi_watchdog_uses_rtc(const struct acpi_table_wdat *wdat)
+@@ -58,12 +58,14 @@ static bool acpi_watchdog_uses_rtc(const struct acpi_table_wdat *wdat)
  }
  #endif
  
@@ -94,7 +94,7 @@ index b5516b04ffc07..ab6e434b4cee0 100644
  		return NULL;
  
  	status = acpi_get_table(ACPI_SIG_WDAT, 0,
-@@ -88,6 +90,14 @@ bool acpi_has_watchdog(void)
+@@ -91,6 +93,14 @@ bool acpi_has_watchdog(void)
  }
  EXPORT_SYMBOL_GPL(acpi_has_watchdog);
  
