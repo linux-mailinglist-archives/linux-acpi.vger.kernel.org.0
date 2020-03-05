@@ -2,73 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CF6B17A846
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2020 15:56:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 691ED17AB42
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2020 18:13:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725938AbgCEO4H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Mar 2020 09:56:07 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:43251 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726004AbgCEO4H (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Mar 2020 09:56:07 -0500
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28] helo=dude02.lab.pengutronix.de)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1j9ruu-0003O3-5k; Thu, 05 Mar 2020 15:56:04 +0100
-Received: from mfe by dude02.lab.pengutronix.de with local (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1j9rut-0001Cx-Mk; Thu, 05 Mar 2020 15:56:03 +0100
-From:   Marco Felsch <m.felsch@pengutronix.de>
-To:     rjw@rjwysocki.net, lenb@kernel.org, sakari.ailus@linux.intel.com
-Cc:     kernel@pengutronix.de, linux-acpi@vger.kernel.org
-Subject: [PATCH] Documentation: ACPI: fix port numbering example
-Date:   Thu,  5 Mar 2020 15:56:01 +0100
-Message-Id: <20200305145601.3467-1-m.felsch@pengutronix.de>
+        id S1725963AbgCERNM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Mar 2020 12:13:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38482 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725938AbgCERNM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 5 Mar 2020 12:13:12 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 66449207FD;
+        Thu,  5 Mar 2020 17:13:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583428391;
+        bh=FIFrABoB8QeK45tFteYnkG68cJC9jutS7xfCAHi33XQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=uOTCiV99S2m/yZV+oJXTsEnFpZ0UOZWrvet2apb/fdblX2xobiAcSIHZtp/3p/gIB
+         cGAe+TOrTS2kYMytMzEi0VLy+r7JC48XXO+J/iqNsvRZ4p1Caqo7WoJyZbcv9eUhgM
+         BOxCbI64fbpcR7hFximO5iONyzOk3YnB6IaCBJxk=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Jean Delvare <jdelvare@suse.de>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-doc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.5 01/67] ACPI: watchdog: Allow disabling WDAT at boot
+Date:   Thu,  5 Mar 2020 12:12:02 -0500
+Message-Id: <20200305171309.29118-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::28
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-If I understood it right the ports should be numbered using the "port"
-property and not the "reg" property. I stumbled over it during
-extending the v4l2_fwnode_parse_link() helper which also use the "port"
-property.
+From: Jean Delvare <jdelvare@suse.de>
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+[ Upstream commit 3f9e12e0df012c4a9a7fd7eb0d3ae69b459d6b2c ]
+
+In case the WDAT interface is broken, give the user an option to
+ignore it to let a native driver bind to the watchdog device instead.
+
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Hi,
+ Documentation/admin-guide/kernel-parameters.txt |  4 ++++
+ drivers/acpi/acpi_watchdog.c                    | 12 +++++++++++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-I don't know if this is right since I'm not a ACPI guy *sorry*
-Anyway reading the doc description and the v4l2_fwnode_parse_link() code
-give me a 2/3 chance.
-
-Regards,
-  Marco
-
- Documentation/firmware-guide/acpi/dsd/graph.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Documentation/firmware-guide/acpi/dsd/graph.rst b/Documentation/firmware-guide/acpi/dsd/graph.rst
-index 1a6ce7afba5e..dcf0102aeb29 100644
---- a/Documentation/firmware-guide/acpi/dsd/graph.rst
-+++ b/Documentation/firmware-guide/acpi/dsd/graph.rst
-@@ -97,7 +97,7 @@ A simple example of this is show below::
- 	    Name (PRT0, Package() {
- 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
- 		Package () {
--		    Package () { "reg", 0 },
-+		    Package () { "port", 0 },
- 		},
- 		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
- 		Package () {
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index ade4e6ec23e03..727a03fb26c99 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -136,6 +136,10 @@
+ 			dynamic table installation which will install SSDT
+ 			tables to /sys/firmware/acpi/tables/dynamic.
+ 
++	acpi_no_watchdog	[HW,ACPI,WDT]
++			Ignore the ACPI-based watchdog interface (WDAT) and let
++			a native driver control the watchdog device instead.
++
+ 	acpi_rsdp=	[ACPI,EFI,KEXEC]
+ 			Pass the RSDP address to the kernel, mostly used
+ 			on machines running EFI runtime service to boot the
+diff --git a/drivers/acpi/acpi_watchdog.c b/drivers/acpi/acpi_watchdog.c
+index b5516b04ffc07..ab6e434b4cee0 100644
+--- a/drivers/acpi/acpi_watchdog.c
++++ b/drivers/acpi/acpi_watchdog.c
+@@ -55,12 +55,14 @@ static bool acpi_watchdog_uses_rtc(const struct acpi_table_wdat *wdat)
+ }
+ #endif
+ 
++static bool acpi_no_watchdog;
++
+ static const struct acpi_table_wdat *acpi_watchdog_get_wdat(void)
+ {
+ 	const struct acpi_table_wdat *wdat = NULL;
+ 	acpi_status status;
+ 
+-	if (acpi_disabled)
++	if (acpi_disabled || acpi_no_watchdog)
+ 		return NULL;
+ 
+ 	status = acpi_get_table(ACPI_SIG_WDAT, 0,
+@@ -88,6 +90,14 @@ bool acpi_has_watchdog(void)
+ }
+ EXPORT_SYMBOL_GPL(acpi_has_watchdog);
+ 
++/* ACPI watchdog can be disabled on boot command line */
++static int __init disable_acpi_watchdog(char *str)
++{
++	acpi_no_watchdog = true;
++	return 1;
++}
++__setup("acpi_no_watchdog", disable_acpi_watchdog);
++
+ void __init acpi_watchdog_init(void)
+ {
+ 	const struct acpi_wdat_entry *entries;
 -- 
 2.20.1
 
