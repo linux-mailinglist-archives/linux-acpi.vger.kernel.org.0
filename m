@@ -2,93 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84DB217A1DB
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2020 10:06:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC36A17A3B0
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2020 12:08:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725946AbgCEJGA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Mar 2020 04:06:00 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:37544 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725912AbgCEJGA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Mar 2020 04:06:00 -0500
-Received: by mail-oi1-f195.google.com with SMTP id q65so5224697oif.4;
-        Thu, 05 Mar 2020 01:06:00 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TFaIpxONCt+sIKKd0QPqj0IgGgaDTj/hC/vgrFizdCQ=;
-        b=GuzS8nT3AauttJ6WfU/a6zTaQ464al1hHmereqWJb/Ssz+PgO89ZNSWLT+2xGhbIAb
-         k9erFuzRmTtgQv5VAtIXO2M48mIXQTze4OmmMGMkyHfBYvVnfvvpgphvSP7urJVN1uoT
-         /hievaawLxaBuoYt6FFYCNHeMc6Tdx83HiNwDG3Di+L2TAP4dH1SjL3HelJ4Dq1OXm/6
-         KN18lIlFBwzefLKQEUc0+4XbKPUztBe/OnkkwLdjaf9TbVf4wNLvBDv87SwCxw81eBvl
-         jfy2O+jxRxuQsFahzVIwLFcI9fsEmN8fuusIlYPo0xo8ANcO89wlEEA74bxZ6UulYTki
-         xPDw==
-X-Gm-Message-State: ANhLgQ3c8xrF+uhqJ94aaBppbfyaejCbRxlkwV9HifavVxJzTm0aiYCV
-        zPqBSuiafriJr3uXxEwSeQWDHCsiYkavvdE27pE=
-X-Google-Smtp-Source: ADFU+vsVto72cKF3MbnXe+qIld4wE26jLbmiKoIvdaN3p8hl2BHPVRl6eXOwNLvQlumM0l5svFNoiVz3tZWVRYd3M0s=
-X-Received: by 2002:aca:bfc2:: with SMTP id p185mr5074380oif.57.1583399159819;
- Thu, 05 Mar 2020 01:05:59 -0800 (PST)
+        id S1726635AbgCELId (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Mar 2020 06:08:33 -0500
+Received: from ulan.pagasa.dost.gov.ph ([202.90.128.205]:45842 "EHLO
+        mailgw.pagasa.dost.gov.ph" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726048AbgCELId (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Mar 2020 06:08:33 -0500
+X-Greylist: delayed 1193 seconds by postgrey-1.27 at vger.kernel.org; Thu, 05 Mar 2020 06:08:31 EST
+Received: from webmail.pagasa.dost.int ([10.10.11.8])
+        by mailgw.pagasa.dost.gov.ph  with ESMTP id 025AknBo006293-025AknBq006293
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Thu, 5 Mar 2020 18:46:49 +0800
+Received: from localhost (localhost [127.0.0.1])
+        by webmail.pagasa.dost.int (Postfix) with ESMTP id 1EB172981BC0;
+        Thu,  5 Mar 2020 18:46:49 +0800 (PST)
+Received: from webmail.pagasa.dost.int ([127.0.0.1])
+        by localhost (webmail.pagasa.dost.int [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id BQLwVh4haVpM; Thu,  5 Mar 2020 18:46:48 +0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by webmail.pagasa.dost.int (Postfix) with ESMTP id 175292981BD4;
+        Thu,  5 Mar 2020 18:46:48 +0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 webmail.pagasa.dost.int 175292981BD4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pagasa.dost.gov.ph;
+        s=96B9A03E-48B0-11EA-A7E8-92F42F537CE2; t=1583405208;
+        bh=RC75T5p3JPNk7JUNB+lH0UfaFQO1Ac584gPL3SIL6h8=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=vwxX3L8Z7uHnDJPZBIix9IBQi0XMBiY4sLQTc/9+h6pT2FHeTz61v6B+3f3w6WhXh
+         jUdnW3+FuZCvkf1pcG3LkjpsYvCQO7zO587a10BanpMqFFL6zPGTaTUsrqnCnsqpAd
+         CtN8Atz3iXBEFHZeiXsfNfnWSfk0n7tqEffbmBy8=
+X-Virus-Scanned: amavisd-new at pagasa.dost.int
+Received: from webmail.pagasa.dost.int ([127.0.0.1])
+        by localhost (webmail.pagasa.dost.int [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id AzhqNaAHLoc6; Thu,  5 Mar 2020 18:46:47 +0800 (PST)
+Received: from webmail.pagasa.dost.int (webmail.pagasa.dost.int [10.11.1.8])
+        by webmail.pagasa.dost.int (Postfix) with ESMTP id 5119729819D2;
+        Thu,  5 Mar 2020 18:46:46 +0800 (PST)
+Date:   Thu, 5 Mar 2020 18:46:46 +0800 (PST)
+From:   "Juanito S. Galang" <juanito.galang@pagasa.dost.gov.ph>
+Message-ID: <1980644409.3575157.1583405206290.JavaMail.zimbra@pagasa.dost.gov.ph>
+Subject: 
 MIME-Version: 1.0
-References: <20200305013509.GF5972@shao2-debian> <951b0986-bb35-d9a5-1639-0a8cdb3dcd04@intel.com>
- <cbe4887c-d54a-c4aa-e4bf-981b5fcc291d@intel.com>
-In-Reply-To: <cbe4887c-d54a-c4aa-e4bf-981b5fcc291d@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 5 Mar 2020 10:05:48 +0100
-Message-ID: <CAJZ5v0g2vzYQ04GyrpubLx2+B0O4SDbqoTDCvhnSyaj1j1xswA@mail.gmail.com>
-Subject: Re: [cpufreq] 909c0e9cc1: fwq.fwq.med 210.0% improvement
-To:     Rong Chen <rong.a.chen@intel.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Linux PM <linux-pm@vger.kernel.org>, lkp@lists.01.org,
-        Rafael Wysocki <rafael@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 8.8.15_GA_3899 (ZimbraWebClient - GC79 (Win)/8.8.15_GA_3895)
+Thread-Index: lWYDQbv6QI/eIWKrWUD3NPCXqIIr9A==
+Thread-Topic: 
+X-FEAS-DKIM: Valid
+Authentication-Results: mailgw.pagasa.dost.gov.ph;
+        dkim=pass header.i=@pagasa.dost.gov.ph
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 5, 2020 at 9:18 AM Rong Chen <rong.a.chen@intel.com> wrote:
->
->
->
-> On 3/5/20 3:50 PM, Rafael J. Wysocki wrote:
-> > On 3/5/2020 2:35 AM, kernel test robot wrote:
-> >> Greeting,
-> >>
-> >> FYI, we noticed a 210.0% improvement of fwq.fwq.med due to commit:
-> >
-> > Well, that sounds impressive. :-)
-> >
-> >
-> >>
-> >> commit: 909c0e9cc11ba39fa5a660583b25c2431cf54deb ("cpufreq:
-> >> intel_pstate: Use passive mode by default without HWP")
-> >> https://git.kernel.org/cgit/linux/kernel/git/rafael/linux-pm.git
-> >> intel_pstate-passive
-> >>
-> >> in testcase: fwq
-> >> on test machine: 16 threads Intel(R) Xeon(R) CPU D-1541 @ 2.10GHz
-> >> with 48G memory
-> >> with following parameters:
-> >>
-> >>     nr_task: 100%
-> >>     samples: 100000ss
-> >>     iterations: 18x
-> >>     cpufreq_governor: powersave
-> >
-> > The governor should be schedutil, though, unless it is explicitly set
-> > to powersave in the test environment.
-> >
-> > Is that the case?
-> >
-> >
->
-> Hi Rafael,
->
-> Yes, we set to powersave for this test.
 
-I wonder why this is done?  Is there any particular technical reason
-for doing that?
+
+Herzlichen Gl=C3=BCckwunsch Lieber Beg=C3=BCnstigter,Sie erhalten diese E-M=
+ail von der Robert Bailey Foundation. Ich bin ein pensionierter Regierungsa=
+ngestellter aus Harlem und ein Gewinner des Powerball Lottery Jackpot im We=
+rt von 343,8 Millionen US-Dollar. Ich bin der gr=C3=B6=C3=9Fte Jackpot-Gewi=
+nner in der Geschichte der New Yorker Lotterie im US-Bundesstaat Amerika. I=
+ch habe diese Lotterie am 27. Oktober 2018 gewonnen und m=C3=B6chte Sie dar=
+=C3=BCber informieren, dass Google in Zusammenarbeit mit Microsoft Ihre "E-=
+Mail-Adresse" auf meine Bitte, einen Spendenbetrag von 3.000.000,00 Million=
+en Euro zu erhalten, =C3=BCbermittelt hat. Ich spende diese 3 Millionen Eur=
+o an Sie, um den Wohlt=C3=A4tigkeitsheimen und armen Menschen in Ihrer Geme=
+inde zu helfen, damit wir die Welt f=C3=BCr alle verbessern k=C3=B6nnen.Wei=
+tere Informationen finden Sie auf der folgenden Website, damit Sie nicht sk=
+eptisch sind
+Diese Spende von 3 Mio. EUR.https://nypost.com/2018/11/14/meet-the-winner-o=
+f-the-biggest-lottery-jackpot-in-new-york-history/Sie k=C3=B6nnen auch mein=
+ YouTube f=C3=BCr mehr Best=C3=A4tigung aufpassen:
+https://www.youtube.com/watch?v=3DH5vT18Ysavc
+Bitte beachten Sie, dass alle Antworten an (robertdonation7@gmail.com=C2=A0=
+ ) gesendet werden, damit wir das k=C3=B6nnen
+Fahren Sie fort, um das gespendete Geld an Sie zu =C3=BCberweisen.E-Mail: r=
+obertdonation7@gmail.comFreundliche Gr=C3=BC=C3=9Fe,
+Robert Bailey
+* * * * * * * * * * * * * * * *
+Powerball Jackpot Gewinner
