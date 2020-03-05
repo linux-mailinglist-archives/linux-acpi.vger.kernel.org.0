@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 691ED17AB42
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2020 18:13:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7041E17AB71
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2020 18:14:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725963AbgCERNM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Mar 2020 12:13:12 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38482 "EHLO mail.kernel.org"
+        id S1727656AbgCEROX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Mar 2020 12:14:23 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40458 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725938AbgCERNM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 5 Mar 2020 12:13:12 -0500
+        id S1727652AbgCEROW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 5 Mar 2020 12:14:22 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 66449207FD;
-        Thu,  5 Mar 2020 17:13:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 19B0020870;
+        Thu,  5 Mar 2020 17:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583428391;
-        bh=FIFrABoB8QeK45tFteYnkG68cJC9jutS7xfCAHi33XQ=;
+        s=default; t=1583428461;
+        bh=/5PjSR4kPjWHx0GL4pT1dw9603Pf8EUSxrvXB5tGyEA=;
         h=From:To:Cc:Subject:Date:From;
-        b=uOTCiV99S2m/yZV+oJXTsEnFpZ0UOZWrvet2apb/fdblX2xobiAcSIHZtp/3p/gIB
-         cGAe+TOrTS2kYMytMzEi0VLy+r7JC48XXO+J/iqNsvRZ4p1Caqo7WoJyZbcv9eUhgM
-         BOxCbI64fbpcR7hFximO5iONyzOk3YnB6IaCBJxk=
+        b=F/1yKuOf3ZtUtxrv6DIhTA0nQ8BM+nNYyoDWVr4+jHc73zmISSyadMJkwWXRByvH1
+         BjAWnPniMgqZCrteA6oyrRFTJi7ENiGlzzHTQDxm5vUjf424pZ2uzBYvjzCbmWGcBq
+         g1wEBtM+/4LkqvUJaJgaqN644tZggHlfYCDJQkLg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jean Delvare <jdelvare@suse.de>,
@@ -30,9 +30,9 @@ Cc:     Jean Delvare <jdelvare@suse.de>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-doc@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.5 01/67] ACPI: watchdog: Allow disabling WDAT at boot
-Date:   Thu,  5 Mar 2020 12:12:02 -0500
-Message-Id: <20200305171309.29118-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 01/58] ACPI: watchdog: Allow disabling WDAT at boot
+Date:   Thu,  5 Mar 2020 12:13:22 -0500
+Message-Id: <20200305171420.29595-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 X-stable: review
@@ -60,7 +60,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 15 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index ade4e6ec23e03..727a03fb26c99 100644
+index 5594c8bf1dcd4..b5c933fa971f3 100644
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
 @@ -136,6 +136,10 @@
