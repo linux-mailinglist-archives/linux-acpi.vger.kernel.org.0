@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE87417ABB0
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2020 18:18:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7DB417AC02
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2020 18:19:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728214AbgCERPo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Mar 2020 12:15:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42530 "EHLO mail.kernel.org"
+        id S1727668AbgCERRU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Mar 2020 12:17:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43010 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728201AbgCERPn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 5 Mar 2020 12:15:43 -0500
+        id S1728346AbgCERQB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 5 Mar 2020 12:16:01 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EEE5820848;
-        Thu,  5 Mar 2020 17:15:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 56279207FD;
+        Thu,  5 Mar 2020 17:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583428542;
-        bh=aopbHIW+I0DSh3ng9FlXnjrdQ/UGyGiOjgXONBtWJ+Q=;
+        s=default; t=1583428561;
+        bh=KLdV1W7v+XUkCDtJRVdJ1TK9zKJReuB6m3r1pJnyvLU=;
         h=From:To:Cc:Subject:Date:From;
-        b=FF+7r6vPjTNVTnMvjRTlbuovOKFBv8a1ZMA9DjAs4gtXHLLSZ8h9Q+1GL3aTZYZZn
-         v+jt8OJgE0kp4gXEm9+Vnb0agADJOfXvc+cYk3qz6CB+gFB8yfpBJpJdqG59oJgx/F
-         9pw15xXvaJmk8EDF52gJHPjKTOROf+/Frltz+MiE=
+        b=Y/hG0rLlR1QXUvrySgcIVE2yVI+YqJVO9nix0h7LNJo7jk4BcfV3a1alJiqAugWpq
+         NaPpRZwRHOCYNGRn1WOeRU+YqecvBkWqXrPnsSsY+t99tspNvCNe1Mwb6isdbqgKRN
+         OZ/3hnSbrKeBBC23bgmxzsukmKAa7fgNfrMR1KQk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jean Delvare <jdelvare@suse.de>,
@@ -30,9 +30,9 @@ Cc:     Jean Delvare <jdelvare@suse.de>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-doc@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 01/19] ACPI: watchdog: Allow disabling WDAT at boot
-Date:   Thu,  5 Mar 2020 12:15:22 -0500
-Message-Id: <20200305171540.30250-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 01/12] ACPI: watchdog: Allow disabling WDAT at boot
+Date:   Thu,  5 Mar 2020 12:15:48 -0500
+Message-Id: <20200305171559.30422-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 X-stable: review
@@ -55,15 +55,15 @@ Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  4 ++++
- drivers/acpi/acpi_watchdog.c                    | 12 +++++++++++-
+ Documentation/kernel-parameters.txt |  4 ++++
+ drivers/acpi/acpi_watchdog.c        | 12 +++++++++++-
  2 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 7e0a4be3503d6..ae51b1b7b67fb 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -137,6 +137,10 @@
+diff --git a/Documentation/kernel-parameters.txt b/Documentation/kernel-parameters.txt
+index b2d2f4539a3fe..e05d65d6fcb68 100644
+--- a/Documentation/kernel-parameters.txt
++++ b/Documentation/kernel-parameters.txt
+@@ -335,6 +335,10 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
  			dynamic table installation which will install SSDT
  			tables to /sys/firmware/acpi/tables/dynamic.
  
@@ -75,7 +75,7 @@ index 7e0a4be3503d6..ae51b1b7b67fb 100644
  			Pass the RSDP address to the kernel, mostly used
  			on machines running EFI runtime service to boot the
 diff --git a/drivers/acpi/acpi_watchdog.c b/drivers/acpi/acpi_watchdog.c
-index 95600309ce420..685fd0ef9e8f2 100644
+index 396e358c2cee0..0c9d5f0fcf56c 100644
 --- a/drivers/acpi/acpi_watchdog.c
 +++ b/drivers/acpi/acpi_watchdog.c
 @@ -58,12 +58,14 @@ static bool acpi_watchdog_uses_rtc(const struct acpi_table_wdat *wdat)
