@@ -2,105 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EBDD217B223
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Mar 2020 00:17:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AEC717B4DE
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Mar 2020 04:29:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726378AbgCEXR6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Mar 2020 18:17:58 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:63419 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726049AbgCEXR5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Mar 2020 18:17:57 -0500
-Received: from 79.184.237.41.ipv4.supernova.orange.pl (79.184.237.41) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.341)
- id 4a20b7f991c383a4; Fri, 6 Mar 2020 00:17:55 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: [PATCH] ACPI: EC: Eliminate EC_FLAGS_QUERY_HANDSHAKE
-Date:   Fri, 06 Mar 2020 00:17:55 +0100
-Message-ID: <4132402.vtZ0fvcVVT@kreacher>
+        id S1726368AbgCFD35 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Mar 2020 22:29:57 -0500
+Received: from mga14.intel.com ([192.55.52.115]:2171 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726358AbgCFD34 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 5 Mar 2020 22:29:56 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Mar 2020 19:29:56 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,520,1574150400"; 
+   d="scan'208";a="439984539"
+Received: from yhuang-dev.sh.intel.com (HELO yhuang-dev) ([10.239.159.23])
+  by fmsmga005.fm.intel.com with ESMTP; 05 Mar 2020 19:29:54 -0800
+From:   "Huang\, Ying" <ying.huang@intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Rong Chen <rong.a.chen@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list\:ACPI COMPONENT ARCHITECTURE \(ACPICA\)" 
+        <devel@acpica.org>, Linux PM <linux-pm@vger.kernel.org>,
+        <lkp@lists.01.org>, Andi Kleen <andi.kleen@intel.com>
+Subject: Re: [LKP] Re: [cpufreq] 909c0e9cc1: fwq.fwq.med 210.0% improvement
+References: <20200305013509.GF5972@shao2-debian>
+        <951b0986-bb35-d9a5-1639-0a8cdb3dcd04@intel.com>
+        <cbe4887c-d54a-c4aa-e4bf-981b5fcc291d@intel.com>
+        <CAJZ5v0g2vzYQ04GyrpubLx2+B0O4SDbqoTDCvhnSyaj1j1xswA@mail.gmail.com>
+Date:   Fri, 06 Mar 2020 11:29:53 +0800
+In-Reply-To: <CAJZ5v0g2vzYQ04GyrpubLx2+B0O4SDbqoTDCvhnSyaj1j1xswA@mail.gmail.com>
+        (Rafael J. Wysocki's message of "Thu, 5 Mar 2020 10:05:48 +0100")
+Message-ID: <87zhcuyxce.fsf@yhuang-dev.intel.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=ascii
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi, Rafael,
 
-The EC_FLAGS_QUERY_HANDSHAKE switch is never set in the current
-code (the only function setting it is defined under #if 0) and
-has no effect whatever, so eliminate it and drop the code
-depending on it.
+"Rafael J. Wysocki" <rafael@kernel.org> writes:
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/ec.c |   35 +++--------------------------------
- 1 file changed, 3 insertions(+), 32 deletions(-)
+> On Thu, Mar 5, 2020 at 9:18 AM Rong Chen <rong.a.chen@intel.com> wrote:
+>>
+>>
+>>
+>> On 3/5/20 3:50 PM, Rafael J. Wysocki wrote:
+>> > On 3/5/2020 2:35 AM, kernel test robot wrote:
+>> >> Greeting,
+>> >>
+>> >> FYI, we noticed a 210.0% improvement of fwq.fwq.med due to commit:
+>> >
+>> > Well, that sounds impressive. :-)
+>> >
+>> >
+>> >>
+>> >> commit: 909c0e9cc11ba39fa5a660583b25c2431cf54deb ("cpufreq:
+>> >> intel_pstate: Use passive mode by default without HWP")
+>> >> https://git.kernel.org/cgit/linux/kernel/git/rafael/linux-pm.git
+>> >> intel_pstate-passive
+>> >>
+>> >> in testcase: fwq
+>> >> on test machine: 16 threads Intel(R) Xeon(R) CPU D-1541 @ 2.10GHz
+>> >> with 48G memory
+>> >> with following parameters:
+>> >>
+>> >>     nr_task: 100%
+>> >>     samples: 100000ss
+>> >>     iterations: 18x
+>> >>     cpufreq_governor: powersave
+>> >
+>> > The governor should be schedutil, though, unless it is explicitly set
+>> > to powersave in the test environment.
+>> >
+>> > Is that the case?
+>> >
+>> >
+>>
+>> Hi Rafael,
+>>
+>> Yes, we set to powersave for this test.
+>
+> I wonder why this is done?  Is there any particular technical reason
+> for doing that?
 
-Index: linux-pm/drivers/acpi/ec.c
-===================================================================
---- linux-pm.orig/drivers/acpi/ec.c
-+++ linux-pm/drivers/acpi/ec.c
-@@ -182,7 +182,6 @@ static bool boot_ec_is_ecdt = false;
- static struct workqueue_struct *ec_wq;
- static struct workqueue_struct *ec_query_wq;
- 
--static int EC_FLAGS_QUERY_HANDSHAKE; /* Needs QR_EC issued when SCI_EVT set */
- static int EC_FLAGS_CORRECT_ECDT; /* Needs ECDT port address correction */
- static int EC_FLAGS_IGNORE_DSDT_GPE; /* Needs ECDT GPE as correction setting */
- static int EC_FLAGS_CLEAR_ON_RESUME; /* Needs acpi_ec_clear() on boot/resume */
-@@ -690,21 +689,9 @@ static void advance_transaction(struct a
- 			wakeup = true;
- 		}
- 		goto out;
--	} else {
--		if (EC_FLAGS_QUERY_HANDSHAKE &&
--		    !(status & ACPI_EC_FLAG_SCI) &&
--		    (t->command == ACPI_EC_COMMAND_QUERY)) {
--			ec_transaction_transition(ec, ACPI_EC_COMMAND_POLL);
--			t->rdata[t->ri++] = 0x00;
--			ec_transaction_transition(ec, ACPI_EC_COMMAND_COMPLETE);
--			ec_dbg_evt("Command(%s) completed by software",
--				   acpi_ec_cmd_string(ACPI_EC_COMMAND_QUERY));
--			wakeup = true;
--		} else if ((status & ACPI_EC_FLAG_IBF) == 0) {
--			acpi_ec_write_cmd(ec, t->command);
--			ec_transaction_transition(ec, ACPI_EC_COMMAND_POLL);
--		} else
--			goto err;
-+	} else if (!(status & ACPI_EC_FLAG_IBF)) {
-+		acpi_ec_write_cmd(ec, t->command);
-+		ec_transaction_transition(ec, ACPI_EC_COMMAND_POLL);
- 		goto out;
- 	}
- err:
-@@ -1805,22 +1792,6 @@ static void __init acpi_ec_ecdt_start(vo
- 	acpi_bus_register_early_device(ACPI_BUS_TYPE_ECDT_EC);
- }
- 
--#if 0
--/*
-- * Some EC firmware variations refuses to respond QR_EC when SCI_EVT is not
-- * set, for which case, we complete the QR_EC without issuing it to the
-- * firmware.
-- * https://bugzilla.kernel.org/show_bug.cgi?id=82611
-- * https://bugzilla.kernel.org/show_bug.cgi?id=97381
-- */
--static int ec_flag_query_handshake(const struct dmi_system_id *id)
--{
--	pr_debug("Detected the EC firmware requiring QR_EC issued when SCI_EVT set\n");
--	EC_FLAGS_QUERY_HANDSHAKE = 1;
--	return 0;
--}
--#endif
--
- /*
-  * On some hardware it is necessary to clear events accumulated by the EC during
-  * sleep. These ECs stop reporting GPEs until they are manually polled, if too
+fwq is a noise benchmark to measure the hardware and software noise
+level.  More information could be found in the following document.
 
+https://asc.llnl.gov/sequoia/benchmarks/FTQ_summary_v1.1.pdf
 
+In 0day, to measure the noise introduced by power management, we will
+run fwq with the performance and powersave governors.  Do you think this
+is reasonable?  Or we should use some other governors?
 
+Best Regards,
+Huang, Ying
