@@ -2,45 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 198D717C6CA
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Mar 2020 21:07:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AC4917C782
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Mar 2020 22:05:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726271AbgCFUHp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Mar 2020 15:07:45 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:43778 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726185AbgCFUHp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Mar 2020 15:07:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1583525264;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=+YIIYWVi7RdgKfAy7yTaNL+3yMfo1EDUARXKVoiNRlk=;
-        b=iORSAA+dvGs8kGAy7INVNjSgZaeQlvWI0LcSQIeTCrDSFzVoNo2lizxJGSc4gpQvEeF4Ii
-        ywln5Q2Gx4dT0F37AfPsTsHjoWhmXSxNLzskAkYcIS4bJg7X8hsY0OJa56/m/6XBEXyf2K
-        ueAbIihO24iciP2EbmdSq2CsakVLOyQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-299-9S-s0OdCNB2jyIvWkNZXNg-1; Fri, 06 Mar 2020 15:07:35 -0500
-X-MC-Unique: 9S-s0OdCNB2jyIvWkNZXNg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BB225184C804;
-        Fri,  6 Mar 2020 20:07:32 +0000 (UTC)
-Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id AB79A1001B2D;
-        Fri,  6 Mar 2020 20:07:29 +0000 (UTC)
-From:   Jeff Moyer <jmoyer@redhat.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     linux-acpi@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+        id S1726462AbgCFVFm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Mar 2020 16:05:42 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:44328 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726231AbgCFVFm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Mar 2020 16:05:42 -0500
+Received: by mail-ot1-f67.google.com with SMTP id v22so3805061otq.11
+        for <linux-acpi@vger.kernel.org>; Fri, 06 Mar 2020 13:05:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=a1kF/OZzMQLactEcP2uvKaRdr9m2gxg0zsQwgDcUpS8=;
+        b=zHeO+NASipBgaWDXKZxHQ9T6Qk7JyQTufn1LqoKL9eCvWxA6ERYUyq5brfvaGK2Q2T
+         O/1XtzLEJ1OB063KrHNDlljqirAy6dSyKF1iCoBOl1Vku6umli7wybNDN4liHG6HiEkL
+         iJQBdSeZVh2iwysFc31yvgGzAfDguHevXnkROYvBITGUqkec3Q6DiV6vn3qAjCSwkC6V
+         7yLNzobtVea45nRJ6F+O3pxCAX7i2s3r6qp0ctkisp7YTbLrPNxHKjQpvGQULi0khAfv
+         gHd+Vg6XcX50oieboKdVEQSwY9XXXxKOGwnkGWC6OtC68at4+VqDSlJ0yEpTWQIPL97W
+         CziA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=a1kF/OZzMQLactEcP2uvKaRdr9m2gxg0zsQwgDcUpS8=;
+        b=s3+kOdNEfMOS5hG3oUxyNhMHoqvbEI8B2RJ4ciulAo+U7yRctc7Z2mTAaxyBSfVugB
+         uZ5xYxdoChdR2QUdSvbjyu6bS24g1MrotLUF8ajMDYVb77CNUuA7VRQci69WXNEGEjUw
+         K+gdtHRmj41x25gGpR2VSU+Op2nKDpWTcZ5Var31SzzMMZxomSLbs8zWcqY/eafYvDKT
+         FeTNFxJCg9t6ljzCXCu0RqBP5uHC8kQxlPmyMn+HHhDIvvvJIKOjVv193bmpsxY8QfuT
+         qFuzlHTqWe6hXHLXzw7dgmtLquxh6In6vCiVF3UZf2wFxvVZEjMC5M/HcBlxYPj0IAya
+         yoDg==
+X-Gm-Message-State: ANhLgQ0Z4D1ZD0aFXs1f1X9HlUo+Cw9KCy3He/6OpYVvYmyk40rJ4Tpt
+        KD/yuHy3wdNsSbOsBxBxCYuLKvqr706snsKertzV+Q==
+X-Google-Smtp-Source: ADFU+vu3caJkxN5foYyF0GPM62BSitG6fiBBhbRTadus2AVityefuk0oEkE1SzZK3vy+IUU4Bmf/G7dorCK3e8I7x8s=
+X-Received: by 2002:a05:6830:1313:: with SMTP id p19mr763057otq.126.1583528741694;
+ Fri, 06 Mar 2020 13:05:41 -0800 (PST)
+MIME-Version: 1.0
+References: <158318759687.2216124.4684754859068906007.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <x49a74tnt6n.fsf@segfault.boston.devel.redhat.com>
+In-Reply-To: <x49a74tnt6n.fsf@segfault.boston.devel.redhat.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Fri, 6 Mar 2020 13:05:30 -0800
+Message-ID: <CAPcyv4jCWtPf0XEHfw6GGGE80k0_wKpoaruopRFJwKcsHk18gw@mail.gmail.com>
+Subject: Re: [PATCH 0/5] Manual definition of Soft Reserved memory devices
+To:     Jeff Moyer <jmoyer@redhat.com>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
         Peter Zijlstra <peterz@infradead.org>,
         Ard Biesheuvel <ardb@kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Borislav Petkov <bp@alien8.de>,
-        Wei Yang <richardw.yang@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
+        Wei Yang <richardw.yang@linux.intel.com>,
+        X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
         Brice Goglin <Brice.Goglin@inria.fr>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -49,120 +65,45 @@ Cc:     linux-acpi@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
         Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Andy Lutomirski <luto@kernel.org>,
         Tom Lendacky <thomas.lendacky@amd.com>,
-        linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/5] Manual definition of Soft Reserved memory devices
-References: <158318759687.2216124.4684754859068906007.stgit@dwillia2-desk3.amr.corp.intel.com>
-X-PGP-KeyID: 1F78E1B4
-X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
-Date:   Fri, 06 Mar 2020 15:07:28 -0500
-In-Reply-To: <158318759687.2216124.4684754859068906007.stgit@dwillia2-desk3.amr.corp.intel.com>
-        (Dan Williams's message of "Mon, 02 Mar 2020 14:19:57 -0800")
-Message-ID: <x49a74tnt6n.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Joao Martins <joao.m.martins@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dan Williams <dan.j.williams@intel.com> writes:
+On Fri, Mar 6, 2020 at 12:07 PM Jeff Moyer <jmoyer@redhat.com> wrote:
+>
+> Dan Williams <dan.j.williams@intel.com> writes:
+>
+> > Given the current dearth of systems that supply an ACPI HMAT table, and
+> > the utility of being able to manually define device-dax "hmem" instances
+> > via the efi_fake_mem= option, relax the requirements for creating these
+> > devices. Specifically, add an option (numa=nohmat) to optionally disable
+> > consideration of the HMAT and update efi_fake_mem= to behave like
+> > memmap=nn!ss in terms of delimiting device boundaries.
+>
+> So, am I correct in deducing that your primary motivation is testing
+> without hardware/firmware support?
 
-> Given the current dearth of systems that supply an ACPI HMAT table, and
-> the utility of being able to manually define device-dax "hmem" instances
-> via the efi_fake_mem= option, relax the requirements for creating these
-> devices. Specifically, add an option (numa=nohmat) to optionally disable
-> consideration of the HMAT and update efi_fake_mem= to behave like
-> memmap=nn!ss in terms of delimiting device boundaries.
+My primary motivation is making the dax_kmem facility useful to
+shipping platforms that have performance differentiated memory, but
+may not have EFI-defined soft-reservations / HMAT (or
+non-EFI-ACPI-platform equivalent). I'm anticipating HMAT enabled
+platforms where the platform firmware policy for what is
+soft-reserved, or not, is not the policy the system owner would pick.
+I'd also highlight Joao's work [1] (see the TODO section) as an
+indication of the demand for custom carving memory resources and
+applying the device-dax memory management interface.
 
-So, am I correct in deducing that your primary motivation is testing
-without hardware/firmware support?  This looks like a bit of a hack to
-me, and I think maybe it would be better to just emulate the HMAT using
-qemu.  I don't have a strong objection, though.
+> This looks like a bit of a hack to
+> me, and I think maybe it would be better to just emulate the HMAT using
+> qemu.  I don't have a strong objection, though.
 
--Jeff
+Yeah, qemu emulation does not help when you, the system owner, have a
+different use case than what the bare-metal platform-firmware
+envisioned for "specific-purpose memory".
 
->
-> All review welcome of course, but the E820 changes want an x86
-> maintainer ack, the efi_fake_mem update needs Ard, and Rafael has
-> previously shepherded the HMAT changes. For the changes to
-> kernel/resource.c, where there is no clear maintainer, I just copied the
-> last few people to make thoughtful changes in that area. I am happy to
-> take these through the nvdimm tree along with these prerequisites
-> already in -next:
->
-> b2ca916ce392 ACPI: NUMA: Up-level "map to online node" functionality
-> 4fcbe96e4d0b mm/numa: Skip NUMA_NO_NODE and online nodes in numa_map_to_online_node()
-> 575e23b6e13c powerpc/papr_scm: Switch to numa_map_to_online_node()
-> 1e5d8e1e47af x86/mm: Introduce CONFIG_NUMA_KEEP_MEMINFO
-> 5d30f92e7631 x86/NUMA: Provide a range-to-target_node lookup facility
-> 7b27a8622f80 libnvdimm/e820: Retrieve and populate correct 'target_node' info
->
-> Tested with:
->
->         numa=nohmat efi_fake_mem=4G@9G:0x40000,4G@13G:0x40000
->
-> ...to create to device-dax instances:
->
-> 	# daxctl list -RDu
-> 	[
-> 	  {
-> 	    "path":"\/platform\/hmem.1",
-> 	    "id":1,
-> 	    "size":"4.00 GiB (4.29 GB)",
-> 	    "align":2097152,
-> 	    "devices":[
-> 	      {
-> 	        "chardev":"dax1.0",
-> 	        "size":"4.00 GiB (4.29 GB)",
-> 	        "target_node":3,
-> 	        "mode":"devdax"
-> 	      }
-> 	    ]
-> 	  },
-> 	  {
-> 	    "path":"\/platform\/hmem.0",
-> 	    "id":0,
-> 	    "size":"4.00 GiB (4.29 GB)",
-> 	    "align":2097152,
-> 	    "devices":[
-> 	      {
-> 	        "chardev":"dax0.0",
-> 	        "size":"4.00 GiB (4.29 GB)",
-> 	        "target_node":2,
-> 	        "mode":"devdax"
-> 	      }
-> 	    ]
-> 	  }
-> 	]
->
-> ---
->
-> Dan Williams (5):
->       ACPI: NUMA: Add 'nohmat' option
->       efi/fake_mem: Arrange for a resource entry per efi_fake_mem instance
->       ACPI: HMAT: Refactor hmat_register_target_device to hmem_register_device
->       resource: Report parent to walk_iomem_res_desc() callback
->       ACPI: HMAT: Attach a device for each soft-reserved range
->
->
->  arch/x86/kernel/e820.c              |   16 +++++-
->  arch/x86/mm/numa.c                  |    4 +
->  drivers/acpi/numa/hmat.c            |   71 +++-----------------------
->  drivers/dax/Kconfig                 |    5 ++
->  drivers/dax/Makefile                |    3 -
->  drivers/dax/hmem/Makefile           |    6 ++
->  drivers/dax/hmem/device.c           |   97 +++++++++++++++++++++++++++++++++++
->  drivers/dax/hmem/hmem.c             |    2 -
->  drivers/firmware/efi/x86_fake_mem.c |   12 +++-
->  include/acpi/acpi_numa.h            |    1 
->  include/linux/dax.h                 |    8 +++
->  kernel/resource.c                   |    1 
->  12 files changed, 156 insertions(+), 70 deletions(-)
->  create mode 100644 drivers/dax/hmem/Makefile
->  create mode 100644 drivers/dax/hmem/device.c
->  rename drivers/dax/{hmem.c => hmem/hmem.c} (98%)
->
-> base-commit: 7b27a8622f802761d5c6abd6c37b22312a35343c
-
+[1]: https://lore.kernel.org/lkml/20200110190313.17144-1-joao.m.martins@oracle.com/
