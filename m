@@ -2,109 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C4BAA17C50D
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Mar 2020 19:07:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 198D717C6CA
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Mar 2020 21:07:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726162AbgCFSHm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Mar 2020 13:07:42 -0500
-Received: from smtp-fw-2101.amazon.com ([72.21.196.25]:63405 "EHLO
-        smtp-fw-2101.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725935AbgCFSHl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Mar 2020 13:07:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1583518061; x=1615054061;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:mime-version:
-   content-transfer-encoding;
-  bh=RBx28tXAqYegxsqpNcHeqV1C0xz3pWJ+HCGDjYNItYI=;
-  b=XNN9cBbT1ithZCsFMyLaN7eIgGO4jp1t0+nmisb2wGRE8/n+mtOD1deD
-   +Cop9sNs4MXDpSroS1UwaCMnAiNM5o6YGAKY4b2kInRcodhwhPhi3NDuk
-   R+3kKVgrmYTpWo/sbKpeoxb/1jhw7ZoQpkVp8kQjNX+ZA+usP6I0n2943
-   w=;
-IronPort-SDR: A/4mgSc+fg54FcJMwEP4/3jjITyrPpajg7uCstYuxw9fGbDRMmlhbdqo3HFvDhFC75tssZ1AEg
- ucYcogvrxgQg==
-X-IronPort-AV: E=Sophos;i="5.70,523,1574121600"; 
-   d="scan'208";a="20404702"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-2c-6f38efd9.us-west-2.amazon.com) ([10.43.8.2])
-  by smtp-border-fw-out-2101.iad2.amazon.com with ESMTP; 06 Mar 2020 18:07:28 +0000
-Received: from EX13MTAUEA002.ant.amazon.com (pdx4-ws-svc-p6-lb7-vlan3.pdx.amazon.com [10.170.41.166])
-        by email-inbound-relay-2c-6f38efd9.us-west-2.amazon.com (Postfix) with ESMTPS id 95D00A1FC4;
-        Fri,  6 Mar 2020 18:07:26 +0000 (UTC)
-Received: from EX13D12EUC001.ant.amazon.com (10.43.164.45) by
- EX13MTAUEA002.ant.amazon.com (10.43.61.77) with Microsoft SMTP Server (TLS)
- id 15.0.1236.3; Fri, 6 Mar 2020 18:07:26 +0000
-Received: from EX13D04EUB003.ant.amazon.com (10.43.166.235) by
- EX13D12EUC001.ant.amazon.com (10.43.164.45) with Microsoft SMTP Server (TLS)
- id 15.0.1497.2; Fri, 6 Mar 2020 18:07:25 +0000
-Received: from EX13D04EUB003.ant.amazon.com ([10.43.166.235]) by
- EX13D04EUB003.ant.amazon.com ([10.43.166.235]) with mapi id 15.00.1497.006;
- Fri, 6 Mar 2020 18:07:25 +0000
-From:   "Spassov, Stanislav" <stanspas@amazon.de>
-To:     "ashok.raj@intel.com" <ashok.raj@intel.com>
-CC:     "corbet@lwn.net" <corbet@lwn.net>,
-        "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
-        "lkp@intel.com" <lkp@intel.com>,
-        "okaya@kernel.org" <okaya@kernel.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "Schoenherr, Jan H." <jschoenh@amazon.de>,
-        "rajatja@google.com" <rajatja@google.com>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "bhelgaas@google.com" <bhelgaas@google.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v3 16/17] PCI: Add CRS handling to pci_dev_wait()
-Thread-Topic: [PATCH v3 16/17] PCI: Add CRS handling to pci_dev_wait()
-Thread-Index: AQHV8+IWrpzxIUAC80CDa943SrHMMA==
-Date:   Fri, 6 Mar 2020 18:07:24 +0000
-Message-ID: <c273cb0c448781cdb42932e3dd324a30668cee65.camel@amazon.de>
-References: <20200303132852.13184-1-stanspas@amazon.com>
-         <20200303132852.13184-17-stanspas@amazon.com>
-         <20200305175620.GA94051@otc-nc-03>
-In-Reply-To: <20200305175620.GA94051@otc-nc-03>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.43.165.159]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B667164A025FF142A9385DD88419E9A9@amazon.com>
+        id S1726271AbgCFUHp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Mar 2020 15:07:45 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:43778 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726185AbgCFUHp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Mar 2020 15:07:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1583525264;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=+YIIYWVi7RdgKfAy7yTaNL+3yMfo1EDUARXKVoiNRlk=;
+        b=iORSAA+dvGs8kGAy7INVNjSgZaeQlvWI0LcSQIeTCrDSFzVoNo2lizxJGSc4gpQvEeF4Ii
+        ywln5Q2Gx4dT0F37AfPsTsHjoWhmXSxNLzskAkYcIS4bJg7X8hsY0OJa56/m/6XBEXyf2K
+        ueAbIihO24iciP2EbmdSq2CsakVLOyQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-299-9S-s0OdCNB2jyIvWkNZXNg-1; Fri, 06 Mar 2020 15:07:35 -0500
+X-MC-Unique: 9S-s0OdCNB2jyIvWkNZXNg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BB225184C804;
+        Fri,  6 Mar 2020 20:07:32 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id AB79A1001B2D;
+        Fri,  6 Mar 2020 20:07:29 +0000 (UTC)
+From:   Jeff Moyer <jmoyer@redhat.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     linux-acpi@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Wei Yang <richardw.yang@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Brice Goglin <Brice.Goglin@inria.fr>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/5] Manual definition of Soft Reserved memory devices
+References: <158318759687.2216124.4684754859068906007.stgit@dwillia2-desk3.amr.corp.intel.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date:   Fri, 06 Mar 2020 15:07:28 -0500
+In-Reply-To: <158318759687.2216124.4684754859068906007.stgit@dwillia2-desk3.amr.corp.intel.com>
+        (Dan Williams's message of "Mon, 02 Mar 2020 14:19:57 -0800")
+Message-ID: <x49a74tnt6n.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-PiA+IElGIENSUyBpcyBzdXBwb3J0ZWQgYnkgUm9vdCBQb3J0IGJ1dCBDUlMgU1YgaXMgbm90IGVu
-YWJsZWQsIHRoZSByZXF1ZXN0DQo+ID4gaXMgcmV0cmllZCBhdXRvbm9tb3VzbHkgYnkgdGhlIFJv
-b3QgUG9ydC4gUGxhdGZvcm0tc3BlY2lmaWMgY29uZmlndXJhdGlvbg0KPiA+IHJlZ2lzdGVycyBt
-YXkgZXhpc3QgdG8gbGltaXQgdGhlIG51bWJlciBvZiBvciB0aW1lIHRha2VuIGJ5IHN1Y2ggcmV0
-cmllcy4NCj4gDQo+IEFsc28gd2hlbiBDUlNWIGlzIGVuYWJsZWQsIGNvbmZpZyByZWFkIHRoYXQg
-ZG9lc24ndCBjb3ZlciBWRU5ET1IgaXMNCj4gYWxzbyByZXRyaWVkIGF1dG9tYXRpY2FsbHkuDQo+
-IA0KDQpBZ3JlZWQuIFRoaXMgaXMgZXhwbGFpbmVkIGluIHRoZSB2ZXJ5IG5leHQgc2VudGVuY2Ug
-b2YgdGhlIGNvbW1pdCBtZXNzYWdlLA0KYnV0IEkgd2lsbCBzZWUgaWYgSSBjYW4gcmUtb3JkZXIv
-cmUtcGhyYXNlIHRvIG1ha2UgdGhlIGV4cGxhbmF0aW9uIGxlc3MgY29uZnVzaW5nLg0KDQo+ID4g
-DQo+ID4gKyAgICAgaWYgKGRldi0+Y3Jzc3ZfZW5hYmxlZCkgew0KPiA+ICsgICAgICAgICAgICAg
-dTMyIGlkOw0KPiANCj4gSSBsaWtlIHRoaXMgY2hlY2sgdG8gcmVhZCBWRU5ET1JfSUQgd2hlbiBj
-cnNzdiBpcyBlbmFibGVkLiBCdXQgeW91ciBwYXRjaGVzDQo+IHNlZW1zIHRvIGRlZmluZSBpbiBw
-YXRjaDEzIGFuZCB1c2VkIGluIHBhdGNoMTY/DQo+IA0KPiBjYW4gd2Uga2VlcCB0aGVtIHNpbXBs
-ZT8gYW5kIGlmIHBvc3NpYmxlIGp1c3QgdGhpcyB3b3VsZCBiZSBhDQo+IG5lZWRlZCBmaXguIFdl
-IGhhdmUgc29tZSBzeXN0ZW1zIHRoYXQgd2UgaGF2ZSBmb3VuZCBjYW4gY2F1c2UNCj4gdGltZW91
-dHMgaWYgQ1JTViBpcyBlbmFibGVkLCBidXQgeW91IHJlYWQgYW55IG90aGVyIHJlZ2lzdGVyDQo+
-IG90aGVyIHRoYW4gdGhlIFBDSV9WRU5ET1IuDQo+IA0KPiBXb3VsZCBwcmVmZXIgdG8gc2VlIHRo
-aXMgZml4IGJlZm9yZSB0aGUgb3RoZXIgY2xlYW51cHMgY2FuIHN0YWJpbGl6ZSA6LSkNCj4gDQoN
-Ck1ha2VzIHNlbnNlLiBJIGd1ZXNzIEkgZ290IGFoZWFkIG9mIG15c2VsZiB3aGVuIGV4dGVuZGlu
-ZyB0aGUgb3JpZ2luYWwgdjEgb2YgdGhpcyBwYXRjaCBzZXJpZXMgZnJvbSBvbmx5IGRlYWxpbmcg
-d2l0aCB0aGUgQ1JTIHByb2JsZW0gdG8gImxldCdzIGZpeCB0aGUgd29ybGQiDQo6LSkgIEkgd2ls
-bCByZW9yZGVyIG15IHBhdGNoZXMgYSBiaXQgYW5kIHBvc3QgdGhlbSBhcyB0d28gc2VwYXJhdGUg
-c2VyaWVzLCBzbyB0aGF0IHRoZSBDUlMtcmVsYXRlZCBzdHVmZiBjYW4gYmUgcHVzaGVkIGVhcmxp
-ZXIgYW5kIG9uIGl0cyBvd24gd2hpbGUgdGhlIHJlc3QNCnN0YWJpbGl6ZXMuDQoNCj4gSSB3b3Vs
-ZCBhbHNvIG1hcmsgdGhhdCBmb3Igc3RhYmxlLg0KCgoKQW1hem9uIERldmVsb3BtZW50IENlbnRl
-ciBHZXJtYW55IEdtYkgKS3JhdXNlbnN0ci4gMzgKMTAxMTcgQmVybGluCkdlc2NoYWVmdHNmdWVo
-cnVuZzogQ2hyaXN0aWFuIFNjaGxhZWdlciwgSm9uYXRoYW4gV2Vpc3MKRWluZ2V0cmFnZW4gYW0g
-QW10c2dlcmljaHQgQ2hhcmxvdHRlbmJ1cmcgdW50ZXIgSFJCIDE0OTE3MyBCClNpdHo6IEJlcmxp
-bgpVc3QtSUQ6IERFIDI4OSAyMzcgODc5CgoK
+Dan Williams <dan.j.williams@intel.com> writes:
+
+> Given the current dearth of systems that supply an ACPI HMAT table, and
+> the utility of being able to manually define device-dax "hmem" instances
+> via the efi_fake_mem= option, relax the requirements for creating these
+> devices. Specifically, add an option (numa=nohmat) to optionally disable
+> consideration of the HMAT and update efi_fake_mem= to behave like
+> memmap=nn!ss in terms of delimiting device boundaries.
+
+So, am I correct in deducing that your primary motivation is testing
+without hardware/firmware support?  This looks like a bit of a hack to
+me, and I think maybe it would be better to just emulate the HMAT using
+qemu.  I don't have a strong objection, though.
+
+-Jeff
+
+>
+> All review welcome of course, but the E820 changes want an x86
+> maintainer ack, the efi_fake_mem update needs Ard, and Rafael has
+> previously shepherded the HMAT changes. For the changes to
+> kernel/resource.c, where there is no clear maintainer, I just copied the
+> last few people to make thoughtful changes in that area. I am happy to
+> take these through the nvdimm tree along with these prerequisites
+> already in -next:
+>
+> b2ca916ce392 ACPI: NUMA: Up-level "map to online node" functionality
+> 4fcbe96e4d0b mm/numa: Skip NUMA_NO_NODE and online nodes in numa_map_to_online_node()
+> 575e23b6e13c powerpc/papr_scm: Switch to numa_map_to_online_node()
+> 1e5d8e1e47af x86/mm: Introduce CONFIG_NUMA_KEEP_MEMINFO
+> 5d30f92e7631 x86/NUMA: Provide a range-to-target_node lookup facility
+> 7b27a8622f80 libnvdimm/e820: Retrieve and populate correct 'target_node' info
+>
+> Tested with:
+>
+>         numa=nohmat efi_fake_mem=4G@9G:0x40000,4G@13G:0x40000
+>
+> ...to create to device-dax instances:
+>
+> 	# daxctl list -RDu
+> 	[
+> 	  {
+> 	    "path":"\/platform\/hmem.1",
+> 	    "id":1,
+> 	    "size":"4.00 GiB (4.29 GB)",
+> 	    "align":2097152,
+> 	    "devices":[
+> 	      {
+> 	        "chardev":"dax1.0",
+> 	        "size":"4.00 GiB (4.29 GB)",
+> 	        "target_node":3,
+> 	        "mode":"devdax"
+> 	      }
+> 	    ]
+> 	  },
+> 	  {
+> 	    "path":"\/platform\/hmem.0",
+> 	    "id":0,
+> 	    "size":"4.00 GiB (4.29 GB)",
+> 	    "align":2097152,
+> 	    "devices":[
+> 	      {
+> 	        "chardev":"dax0.0",
+> 	        "size":"4.00 GiB (4.29 GB)",
+> 	        "target_node":2,
+> 	        "mode":"devdax"
+> 	      }
+> 	    ]
+> 	  }
+> 	]
+>
+> ---
+>
+> Dan Williams (5):
+>       ACPI: NUMA: Add 'nohmat' option
+>       efi/fake_mem: Arrange for a resource entry per efi_fake_mem instance
+>       ACPI: HMAT: Refactor hmat_register_target_device to hmem_register_device
+>       resource: Report parent to walk_iomem_res_desc() callback
+>       ACPI: HMAT: Attach a device for each soft-reserved range
+>
+>
+>  arch/x86/kernel/e820.c              |   16 +++++-
+>  arch/x86/mm/numa.c                  |    4 +
+>  drivers/acpi/numa/hmat.c            |   71 +++-----------------------
+>  drivers/dax/Kconfig                 |    5 ++
+>  drivers/dax/Makefile                |    3 -
+>  drivers/dax/hmem/Makefile           |    6 ++
+>  drivers/dax/hmem/device.c           |   97 +++++++++++++++++++++++++++++++++++
+>  drivers/dax/hmem/hmem.c             |    2 -
+>  drivers/firmware/efi/x86_fake_mem.c |   12 +++-
+>  include/acpi/acpi_numa.h            |    1 
+>  include/linux/dax.h                 |    8 +++
+>  kernel/resource.c                   |    1 
+>  12 files changed, 156 insertions(+), 70 deletions(-)
+>  create mode 100644 drivers/dax/hmem/Makefile
+>  create mode 100644 drivers/dax/hmem/device.c
+>  rename drivers/dax/{hmem.c => hmem/hmem.c} (98%)
+>
+> base-commit: 7b27a8622f802761d5c6abd6c37b22312a35343c
 
