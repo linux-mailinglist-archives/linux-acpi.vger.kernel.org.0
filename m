@@ -2,52 +2,40 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E134A17D515
-	for <lists+linux-acpi@lfdr.de>; Sun,  8 Mar 2020 18:04:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38DC217D56A
+	for <lists+linux-acpi@lfdr.de>; Sun,  8 Mar 2020 19:15:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726411AbgCHREx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 8 Mar 2020 13:04:53 -0400
-Received: from www752.sakura.ne.jp ([59.106.19.202]:55463 "EHLO
-        www752.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726338AbgCHREw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 8 Mar 2020 13:04:52 -0400
-X-Greylist: delayed 3792 seconds by postgrey-1.27 at vger.kernel.org; Sun, 08 Mar 2020 13:04:52 EDT
-Received: from fsav101.sakura.ne.jp (fsav101.sakura.ne.jp [27.133.134.228])
-        by www752.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 028FpPAT061629;
-        Mon, 9 Mar 2020 00:51:25 +0900 (JST)
-        (envelope-from postmaster@hokusetubad.sakura.ne.jp)
-Received: from www752.sakura.ne.jp (59.106.19.202)
- by fsav101.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav101.sakura.ne.jp);
- Mon, 09 Mar 2020 00:51:25 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav101.sakura.ne.jp)
-Received: from www752.sakura.ne.jp (localhost [127.0.0.1])
-        by www752.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 028FpOhJ061610;
-        Mon, 9 Mar 2020 00:51:25 +0900 (JST)
-        (envelope-from postmaster@hokusetubad.sakura.ne.jp)
-Received: (from hokusetubad@localhost)
-        by www752.sakura.ne.jp (8.15.2/8.15.2/Submit) id 028FpOOQ061609;
-        Mon, 9 Mar 2020 00:51:24 +0900 (JST)
-        (envelope-from postmaster@hokusetubad.sakura.ne.jp)
-Message-Id: <202003081551.028FpOOQ061609@www752.sakura.ne.jp>
-X-Authentication-Warning: www752.sakura.ne.jp: hokusetubad set sender to postmaster@hokusetubad.sakura.ne.jp using -f
-Subject: BUSINESS PROPOSAL
-From:   postmaster@hokusetubad.sakura.ne.jp
-Reply-To: abulkareem461@gmail.com
-To:     nJreyes@midway.edu
+        id S1726322AbgCHSPm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 8 Mar 2020 14:15:42 -0400
+Received: from msvr.eekspcb.com ([58.210.169.85]:33342 "EHLO msvr.eekspcb.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726297AbgCHSPm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 8 Mar 2020 14:15:42 -0400
+X-Greylist: delayed 1329 seconds by postgrey-1.27 at vger.kernel.org; Sun, 08 Mar 2020 14:15:41 EDT
+Received: from User ([156.96.45.188]) by msvr.eekspcb.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 9 Mar 2020 01:34:04 +0800
+Reply-To: <francoispiniault@gmail.com>
+From:   "Francois Pinault" <francioispinaul@gmail.com>
+Subject: Re:
+Date:   Sun, 8 Mar 2020 13:33:01 -0400
 MIME-Version: 1.0
-Date:   Mon, 09 Mar 2020 00:51:24 +0900
-Content-Type: text/plain; charset="ISO-2022-JP"
+Content-Type: text/plain;
+        charset="Windows-1251"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <MSVR3sllNY30kkZIhTr00000908@msvr.eekspcb.com>
+X-OriginalArrivalTime: 08 Mar 2020 17:34:05.0773 (UTC) FILETIME=[C41D57D0:01D5F56F]
+X-TM-AS-Product-Ver: SMEX-10.0.0.4152-7.000.1014-25274.001
+X-TM-AS-Result: Yes-101.003900-8.000000-31
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dearest Friend
-
-I am Mr Abdul Kareem working with Emirate NBD Bank Dubai,United Arab Emirate as Finance Manager.
-I have a very profitable Business that concerns you and will benefit both of us after completion.
-Kindly get back to me for more details.
-Awaiting your response.
-Regards
-Abdul Kareem
+A donation was made in your favour by Francois Pinault, reply for more details.
