@@ -2,144 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A7DEC17DC53
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2020 10:23:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 979F317DDE8
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2020 11:48:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726217AbgCIJXH convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 9 Mar 2020 05:23:07 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2517 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725962AbgCIJXH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 9 Mar 2020 05:23:07 -0400
-Received: from lhreml707-cah.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id EFEBBDAF59E32787575D;
-        Mon,  9 Mar 2020 09:23:05 +0000 (GMT)
-Received: from lhreml713-chm.china.huawei.com (10.201.108.64) by
- lhreml707-cah.china.huawei.com (10.201.108.48) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Mon, 9 Mar 2020 09:23:05 +0000
-Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
- lhreml713-chm.china.huawei.com (10.201.108.64) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 9 Mar 2020 09:23:05 +0000
-Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
- lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1713.004;
- Mon, 9 Mar 2020 09:23:05 +0000
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "helgaas@kernel.org" <helgaas@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "zhangliguang@linux.alibaba.com" <zhangliguang@linux.alibaba.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>
-CC:     Linuxarm <linuxarm@huawei.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        tanxiaofei <tanxiaofei@huawei.com>,
-        yangyicong <yangyicong@huawei.com>
-Subject: RE: [PATCH v4 0/2] ACPI: APEI: Add support to notify the vendor
- specific HW errors
-Thread-Topic: [PATCH v4 0/2] ACPI: APEI: Add support to notify the vendor
- specific HW errors
-Thread-Index: AQHV3aHkegohdCgESkuEgBYAy0dBQqhALNvg
-Date:   Mon, 9 Mar 2020 09:23:05 +0000
-Message-ID: <30d704c86d8b4be591ee36c0e735069d@huawei.com>
-References: <Shiju Jose> <20200207103143.20104-1-shiju.jose@huawei.com>
-In-Reply-To: <20200207103143.20104-1-shiju.jose@huawei.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.83.9]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1726478AbgCIKss (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Mar 2020 06:48:48 -0400
+Received: from mga04.intel.com ([192.55.52.120]:15000 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726444AbgCIKss (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 9 Mar 2020 06:48:48 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Mar 2020 03:48:48 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,532,1574150400"; 
+   d="scan'208";a="353345195"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga001.fm.intel.com with SMTP; 09 Mar 2020 03:48:45 -0700
+Received: by lahna (sSMTP sendmail emulation); Mon, 09 Mar 2020 12:48:44 +0200
+Date:   Mon, 9 Mar 2020 12:48:44 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH] gpiolib: acpi: Add missing __init(const) markers to
+ initcall-s
+Message-ID: <20200309104844.GK2540@lahna.fi.intel.com>
+References: <20200306144722.175298-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200306144722.175298-1-hdegoede@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi All,
+On Fri, Mar 06, 2020 at 03:47:22PM +0100, Hans de Goede wrote:
+> The gpiolib ACPI code uses 2 initcall-s and the called function
+> (and used DMI table) is missing __init(const) markers.
+> 
+> This commit fixes this freeing up some extra memory once the kernel
+> has completed booting.
+> 
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-Gentle reminder on this patch set.
-
-Thanks,
-Shiju
-
->-----Original Message-----
->From: linux-acpi-owner@vger.kernel.org [mailto:linux-acpi-
->owner@vger.kernel.org] On Behalf Of Shiju Jose
->Sent: 07 February 2020 10:32
->To: linux-acpi@vger.kernel.org; linux-pci@vger.kernel.org; linux-
->kernel@vger.kernel.org; rjw@rjwysocki.net; helgaas@kernel.org;
->lenb@kernel.org; bp@alien8.de; james.morse@arm.com; tony.luck@intel.com;
->gregkh@linuxfoundation.org; zhangliguang@linux.alibaba.com;
->tglx@linutronix.de
->Cc: Linuxarm <linuxarm@huawei.com>; Jonathan Cameron
-><jonathan.cameron@huawei.com>; tanxiaofei <tanxiaofei@huawei.com>;
->yangyicong <yangyicong@huawei.com>; Shiju Jose <shiju.jose@huawei.com>
->Subject: [PATCH v4 0/2] ACPI: APEI: Add support to notify the vendor specific
->HW errors
->
->Presently the vendor drivers are unable to do the recovery for the vendor
->specific recoverable HW errors, reported to the APEI driver in the vendor
->defined sections, because APEI driver does not support reporting the same to
->the vendor drivers.
->
->This patch set
->1. add an interface to the APEI driver to enable the vendor drivers to register
->the event handling functions for the corresponding vendor specific HW errors
->and report the error to the vendor driver.
->
->2. add driver to handle HiSilicon hip08 PCIe controller's errors
->   which is an example application of the above APEI interface.
->
->Changes:
->
->V4:
->1. Fix for the smatch warning in the PCIe error driver:
->   warn: should '((((1))) << (9 + i))' be a 64 bit type?
->   if (err->val_bits & BIT(HISI_PCIE_LOCAL_VALID_ERR_MISC + i))
->	^^^ This should be BIT_ULL() because it goes up to 9 + 32.
->
->V3:
->1. Fix the comments from Bjorn Helgaas.
->
->V2:
->1. Changes in the HiSilicon PCIe controller's error handling driver
->   for the comments from Bjorn Helgaas.
->
->2. Changes in the APEI interface to support reporting the vendor error
->   for module with multiple devices, but use the same section type.
->   In the error handler will use socket id/sub module id etc to distinguish
->   the device.
->
->V1:
->1. Fix comments from James Morse.
->
->2. add driver to handle HiSilicon hip08 PCIe controller's errors,
->   which is an application of the above interface.
->
->Shiju Jose (1):
->  ACPI: APEI: Add support to notify the vendor specific HW errors
->
->Yicong Yang (1):
->  PCI: HIP: Add handling of HiSilicon HIP PCIe controller errors
->
-> drivers/acpi/apei/ghes.c                 | 116 ++++++++++-
-> drivers/pci/controller/Kconfig           |   8 +
-> drivers/pci/controller/Makefile          |   1 +
-> drivers/pci/controller/pcie-hisi-error.c | 334
->+++++++++++++++++++++++++++++++
-> include/acpi/ghes.h                      |  56 ++++++
-> 5 files changed, 510 insertions(+), 5 deletions(-)  create mode 100644
->drivers/pci/controller/pcie-hisi-error.c
->
->--
->1.9.1
->
-
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
