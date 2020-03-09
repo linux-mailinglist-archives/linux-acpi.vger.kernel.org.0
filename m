@@ -2,54 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 979F317DDE8
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2020 11:48:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 837E017E158
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2020 14:38:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726478AbgCIKss (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Mar 2020 06:48:48 -0400
-Received: from mga04.intel.com ([192.55.52.120]:15000 "EHLO mga04.intel.com"
+        id S1726523AbgCINiC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Mar 2020 09:38:02 -0400
+Received: from mga09.intel.com ([134.134.136.24]:48597 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726444AbgCIKss (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 9 Mar 2020 06:48:48 -0400
+        id S1726427AbgCINiC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 9 Mar 2020 09:38:02 -0400
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Mar 2020 03:48:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,532,1574150400"; 
-   d="scan'208";a="353345195"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga001.fm.intel.com with SMTP; 09 Mar 2020 03:48:45 -0700
-Received: by lahna (sSMTP sendmail emulation); Mon, 09 Mar 2020 12:48:44 +0200
-Date:   Mon, 9 Mar 2020 12:48:44 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] gpiolib: acpi: Add missing __init(const) markers to
- initcall-s
-Message-ID: <20200309104844.GK2540@lahna.fi.intel.com>
-References: <20200306144722.175298-1-hdegoede@redhat.com>
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Mar 2020 06:38:01 -0700
+X-IronPort-AV: E=Sophos;i="5.70,533,1574150400"; 
+   d="scan'208";a="353368911"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Mar 2020 06:37:59 -0700
+Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
+        id C032B20AC3; Mon,  9 Mar 2020 15:37:57 +0200 (EET)
+Date:   Mon, 9 Mar 2020 15:37:57 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Marco Felsch <m.felsch@pengutronix.de>
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, kernel@pengutronix.de,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH] Documentation: ACPI: fix port numbering example
+Message-ID: <20200309133757.GS5379@paasikivi.fi.intel.com>
+References: <20200305145601.3467-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200306144722.175298-1-hdegoede@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20200305145601.3467-1-m.felsch@pengutronix.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 06, 2020 at 03:47:22PM +0100, Hans de Goede wrote:
-> The gpiolib ACPI code uses 2 initcall-s and the called function
-> (and used DMI table) is missing __init(const) markers.
-> 
-> This commit fixes this freeing up some extra memory once the kernel
-> has completed booting.
-> 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Hi Marco,
 
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Thanks for the patch.
+
+On Thu, Mar 05, 2020 at 03:56:01PM +0100, Marco Felsch wrote:
+> If I understood it right the ports should be numbered using the "port"
+> property and not the "reg" property. I stumbled over it during
+> extending the v4l2_fwnode_parse_link() helper which also use the "port"
+> property.
+> 
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+> Hi,
+> 
+> I don't know if this is right since I'm not a ACPI guy *sorry*
+> Anyway reading the doc description and the v4l2_fwnode_parse_link() code
+> give me a 2/3 chance.
+
+Looking at the documentation, this indeed seems to be a bug in the
+documentation. The code is right, as is the example. As the property was
+previously called "port", there is no actual harm even if someone just read
+the documentation, and not the examples or the code parsing this.
+
+The buggy patch is a4138e7c12287268348cc2dcad414a62c515d77a .
+
+Could you use this instead?
+
+diff --git a/Documentation/firmware-guide/acpi/dsd/graph.rst b/Documentation/firmware-guide/acpi/dsd/graph.rst
+index 1a6ce7afba5ea..2f19a0487b18c 100644
+--- a/Documentation/firmware-guide/acpi/dsd/graph.rst
++++ b/Documentation/firmware-guide/acpi/dsd/graph.rst
+@@ -56,7 +56,7 @@ package would be::
+ 
+     Package() { "endpoint@0", "EP40" }
+ 
+-Each port node contains a property extension key "port", the value of which is
++Each port node contains a property extension key "reg", the value of which is
+ the number of the port. Each endpoint is similarly numbered with a property
+ extension key "reg", the value of which is the number of the endpoint. Port
+ numbers must be unique within a device and endpoint numbers must be unique
+
+-- 
+Sakari Ailus
