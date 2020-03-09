@@ -2,86 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48ABF17DB68
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2020 09:44:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7DEC17DC53
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2020 10:23:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726383AbgCIIod (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Mar 2020 04:44:33 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:32993 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725962AbgCIIod (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Mar 2020 04:44:33 -0400
-Received: by mail-lj1-f194.google.com with SMTP id f13so9018887ljp.0
-        for <linux-acpi@vger.kernel.org>; Mon, 09 Mar 2020 01:44:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WuWdu7nxXfXVt4yHlJeP8mC4hyCnfyWtZ6yU8HPw5Fo=;
-        b=esNgclYyu48TDTWPjISveSQvodz5uYROWjA03ivciBULXvldwwxd7ntoUpWKDUfOhG
-         DJ5l8YSvUsEFI+XcIZkQJkXdJ2OOAJHuQAdUgrw3tLtCF3yqCs3xQfZEd9UU+Xd14fD0
-         eNkTkB2FlvwBmSzIpkK865PRiU0yxhtfmsdIk77eeDvJtB21aWYqBEwb9wZwnOAzkHCT
-         o56aGxOW6HbEo5TMiUJGh8JMbZ46aW8r8yTnnw5qU00MVTT1HjF9AbC9hp+JZnOxUFSs
-         9r+Kr7VUQ2bJeDhef8nkLO7Ua6DUBnUo822+ibc5oAYGzSNL5ZRIxLpH8JBZy4I+sllj
-         Bbqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WuWdu7nxXfXVt4yHlJeP8mC4hyCnfyWtZ6yU8HPw5Fo=;
-        b=FGYfoy6slgv52lEkS4zf0cvwls8IKVPQHFqdAmamFDuKYL51tMUc703r4Sr9hDopDD
-         wajKpBksqvcfd2XrhZAQi7Qxhbp6zWi/bm5CDkn4VlyD4ak9+5DdvHor0CoCwgZPEyMy
-         qox4mjEcaR+MJy5gO2kQDHMrwMG0CZZ68OKsBV5o/qaGEZBt779a3x04+5aUJTBhNY+C
-         qcLvED4hPsrxZnFPKViM9wD4bXCL70ndyGeDliQBhRwzzU+7rw/hENg4moAxkgIcKYWn
-         BAnBzsAsnNN6GQCv4WFHmHNSJHk/KGFo/J6GaWf5Q90gj4y0piWSaAp60Wm8onmsUwkH
-         Zfpw==
-X-Gm-Message-State: ANhLgQ1X5GWeWdmxD7rYcoBuSvcHAaXvovSw4cOg6DMytvrSTdAhclyT
-        KjyJPFVgbafR478TCjRv/dt4DGPWG/oeSVl5MgjSGQ==
-X-Google-Smtp-Source: ADFU+vslcN9/s1UNg2sU76s/qyS/lNsAhzbkrCnooWqOOLmAI2CKk33RcEZ5HS7lDWi1QmS/nEaiEqLd9O2UYTVTao8=
-X-Received: by 2002:a05:651c:1026:: with SMTP id w6mr806580ljm.168.1583743470931;
- Mon, 09 Mar 2020 01:44:30 -0700 (PDT)
+        id S1726217AbgCIJXH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 9 Mar 2020 05:23:07 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2517 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725962AbgCIJXH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 9 Mar 2020 05:23:07 -0400
+Received: from lhreml707-cah.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id EFEBBDAF59E32787575D;
+        Mon,  9 Mar 2020 09:23:05 +0000 (GMT)
+Received: from lhreml713-chm.china.huawei.com (10.201.108.64) by
+ lhreml707-cah.china.huawei.com (10.201.108.48) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Mon, 9 Mar 2020 09:23:05 +0000
+Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
+ lhreml713-chm.china.huawei.com (10.201.108.64) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Mon, 9 Mar 2020 09:23:05 +0000
+Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
+ lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1713.004;
+ Mon, 9 Mar 2020 09:23:05 +0000
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "helgaas@kernel.org" <helgaas@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "zhangliguang@linux.alibaba.com" <zhangliguang@linux.alibaba.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>
+CC:     Linuxarm <linuxarm@huawei.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        tanxiaofei <tanxiaofei@huawei.com>,
+        yangyicong <yangyicong@huawei.com>
+Subject: RE: [PATCH v4 0/2] ACPI: APEI: Add support to notify the vendor
+ specific HW errors
+Thread-Topic: [PATCH v4 0/2] ACPI: APEI: Add support to notify the vendor
+ specific HW errors
+Thread-Index: AQHV3aHkegohdCgESkuEgBYAy0dBQqhALNvg
+Date:   Mon, 9 Mar 2020 09:23:05 +0000
+Message-ID: <30d704c86d8b4be591ee36c0e735069d@huawei.com>
+References: <Shiju Jose> <20200207103143.20104-1-shiju.jose@huawei.com>
+In-Reply-To: <20200207103143.20104-1-shiju.jose@huawei.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.47.83.9]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-References: <20200302111225.6641-1-hdegoede@redhat.com> <20200302111225.6641-4-hdegoede@redhat.com>
-In-Reply-To: <20200302111225.6641-4-hdegoede@redhat.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 9 Mar 2020 09:44:19 +0100
-Message-ID: <CACRpkdaASfOQ5EYjUDyq88E8x=J5EE7OA8LckgBC8N8o-Q7YcQ@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] gpiolib: acpi: Add quirk to ignore EC wakeups on
- HP x2 10 CHT + AXP288 model
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Marc Lehmann <schmorp@schmorp.de>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 2, 2020 at 12:12 PM Hans de Goede <hdegoede@redhat.com> wrote:
+Hi All,
 
-> There are at least 3 models of the HP x2 10 models:
->
-> Bay Trail SoC + AXP288 PMIC
-> Cherry Trail SoC + AXP288 PMIC
-> Cherry Trail SoC + TI PMIC
->
-> Like on the other HP x2 10 models we need to ignore wakeup for ACPI GPIO
-> events on the external embedded-controller pin to avoid spurious wakeups
-> on the HP x2 10 CHT + AXP288 model too.
->
-> This commit adds an extra DMI based quirk for the HP x2 10 CHT + AXP288
-> model, ignoring wakeups for ACPI GPIO events on the EC interrupt pin
-> on this model. This fixes spurious wakeups from suspend on this model.
->
-> Fixes: aa23ca3d98f7 ("gpiolib: acpi: Add honor_wakeup module-option + quirk mech
-> Reported-and-tested-by: Marc Lehmann <schmorp@schmorp.de>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Gentle reminder on this patch set.
 
-Patch applied with Mika's ACK.
+Thanks,
+Shiju
 
-Yours,
-Linus Walleij
+>-----Original Message-----
+>From: linux-acpi-owner@vger.kernel.org [mailto:linux-acpi-
+>owner@vger.kernel.org] On Behalf Of Shiju Jose
+>Sent: 07 February 2020 10:32
+>To: linux-acpi@vger.kernel.org; linux-pci@vger.kernel.org; linux-
+>kernel@vger.kernel.org; rjw@rjwysocki.net; helgaas@kernel.org;
+>lenb@kernel.org; bp@alien8.de; james.morse@arm.com; tony.luck@intel.com;
+>gregkh@linuxfoundation.org; zhangliguang@linux.alibaba.com;
+>tglx@linutronix.de
+>Cc: Linuxarm <linuxarm@huawei.com>; Jonathan Cameron
+><jonathan.cameron@huawei.com>; tanxiaofei <tanxiaofei@huawei.com>;
+>yangyicong <yangyicong@huawei.com>; Shiju Jose <shiju.jose@huawei.com>
+>Subject: [PATCH v4 0/2] ACPI: APEI: Add support to notify the vendor specific
+>HW errors
+>
+>Presently the vendor drivers are unable to do the recovery for the vendor
+>specific recoverable HW errors, reported to the APEI driver in the vendor
+>defined sections, because APEI driver does not support reporting the same to
+>the vendor drivers.
+>
+>This patch set
+>1. add an interface to the APEI driver to enable the vendor drivers to register
+>the event handling functions for the corresponding vendor specific HW errors
+>and report the error to the vendor driver.
+>
+>2. add driver to handle HiSilicon hip08 PCIe controller's errors
+>   which is an example application of the above APEI interface.
+>
+>Changes:
+>
+>V4:
+>1. Fix for the smatch warning in the PCIe error driver:
+>   warn: should '((((1))) << (9 + i))' be a 64 bit type?
+>   if (err->val_bits & BIT(HISI_PCIE_LOCAL_VALID_ERR_MISC + i))
+>	^^^ This should be BIT_ULL() because it goes up to 9 + 32.
+>
+>V3:
+>1. Fix the comments from Bjorn Helgaas.
+>
+>V2:
+>1. Changes in the HiSilicon PCIe controller's error handling driver
+>   for the comments from Bjorn Helgaas.
+>
+>2. Changes in the APEI interface to support reporting the vendor error
+>   for module with multiple devices, but use the same section type.
+>   In the error handler will use socket id/sub module id etc to distinguish
+>   the device.
+>
+>V1:
+>1. Fix comments from James Morse.
+>
+>2. add driver to handle HiSilicon hip08 PCIe controller's errors,
+>   which is an application of the above interface.
+>
+>Shiju Jose (1):
+>  ACPI: APEI: Add support to notify the vendor specific HW errors
+>
+>Yicong Yang (1):
+>  PCI: HIP: Add handling of HiSilicon HIP PCIe controller errors
+>
+> drivers/acpi/apei/ghes.c                 | 116 ++++++++++-
+> drivers/pci/controller/Kconfig           |   8 +
+> drivers/pci/controller/Makefile          |   1 +
+> drivers/pci/controller/pcie-hisi-error.c | 334
+>+++++++++++++++++++++++++++++++
+> include/acpi/ghes.h                      |  56 ++++++
+> 5 files changed, 510 insertions(+), 5 deletions(-)  create mode 100644
+>drivers/pci/controller/pcie-hisi-error.c
+>
+>--
+>1.9.1
+>
+
