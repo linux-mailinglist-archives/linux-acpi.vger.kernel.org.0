@@ -2,161 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC4AA17F2C9
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Mar 2020 10:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26E1F17F414
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Mar 2020 10:48:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726244AbgCJJJ6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Mar 2020 05:09:58 -0400
-Received: from mga11.intel.com ([192.55.52.93]:48313 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726195AbgCJJJ5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 10 Mar 2020 05:09:57 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Mar 2020 02:09:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,535,1574150400"; 
-   d="scan'208";a="441231115"
-Received: from yhuang-dev.sh.intel.com (HELO yhuang-dev) ([10.239.159.23])
-  by fmsmga005.fm.intel.com with ESMTP; 10 Mar 2020 02:09:54 -0700
-From:   "Huang\, Ying" <ying.huang@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Rong Chen <rong.a.chen@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list\:ACPI COMPONENT ARCHITECTURE \(ACPICA\)" 
-        <devel@acpica.org>, Linux PM <linux-pm@vger.kernel.org>,
-        <lkp@lists.01.org>, Andi Kleen <andi.kleen@intel.com>,
-        Chen Yu <yu.c.chen@intel.com>, Rui Zhang <rui.zhang@intel.com>,
-        Zhengjun Xing <zhengjun.xing@intel.com>
-Subject: Re: [LKP] Re: [cpufreq] 909c0e9cc1: fwq.fwq.med 210.0% improvement
-References: <20200305013509.GF5972@shao2-debian>
-        <951b0986-bb35-d9a5-1639-0a8cdb3dcd04@intel.com>
-        <cbe4887c-d54a-c4aa-e4bf-981b5fcc291d@intel.com>
-        <CAJZ5v0g2vzYQ04GyrpubLx2+B0O4SDbqoTDCvhnSyaj1j1xswA@mail.gmail.com>
-        <87zhcuyxce.fsf@yhuang-dev.intel.com>
-        <CAJZ5v0g3f1Rf0HFLH+hWkbW6q0_E1RjhX2AeUxa_DHfJRQj7Qw@mail.gmail.com>
-        <87imjez5rl.fsf@yhuang-dev.intel.com>
-        <CAJZ5v0hdAnN-mu8b9g19cM8AqYGXDbs1qVxLu-qE-3P6fP1=XA@mail.gmail.com>
-Date:   Tue, 10 Mar 2020 17:09:54 +0800
-In-Reply-To: <CAJZ5v0hdAnN-mu8b9g19cM8AqYGXDbs1qVxLu-qE-3P6fP1=XA@mail.gmail.com>
-        (Rafael J. Wysocki's message of "Tue, 10 Mar 2020 09:45:57 +0100")
-Message-ID: <8736agy3rx.fsf@yhuang-dev.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S1726466AbgCJJst (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Mar 2020 05:48:49 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:50129 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726211AbgCJJst (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Mar 2020 05:48:49 -0400
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mfe@pengutronix.de>)
+        id 1jBbVI-0000Vj-1Y; Tue, 10 Mar 2020 10:48:48 +0100
+Received: from mfe by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <mfe@pengutronix.de>)
+        id 1jBbVH-0006Qd-4M; Tue, 10 Mar 2020 10:48:47 +0100
+Date:   Tue, 10 Mar 2020 10:48:47 +0100
+From:   Marco Felsch <m.felsch@pengutronix.de>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, rjw@rjwysocki.net,
+        kernel@pengutronix.de, lenb@kernel.org
+Subject: Re: [PATCH] Documentation: ACPI: fix port numbering example
+Message-ID: <20200310094847.hkva5a3hxepoevkm@pengutronix.de>
+References: <20200305145601.3467-1-m.felsch@pengutronix.de>
+ <20200309133757.GS5379@paasikivi.fi.intel.com>
+ <20200310061458.6ruh2omqqcugemqt@pengutronix.de>
+ <20200310082333.GZ5379@paasikivi.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200310082333.GZ5379@paasikivi.fi.intel.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 10:47:35 up 116 days,  1:06, 135 users,  load average: 0.15, 0.23,
+ 0.13
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-"Rafael J. Wysocki" <rafael@kernel.org> writes:
+On 20-03-10 10:23, Sakari Ailus wrote:
+> Marco,
+> 
+> On Tue, Mar 10, 2020 at 07:14:58AM +0100, Marco Felsch wrote:
+> > Hi Sakari,
+> > 
+> > On 20-03-09 15:37, Sakari Ailus wrote:
+> > > Hi Marco,
+> > > 
+> > > Thanks for the patch.
+> > > 
+> > > On Thu, Mar 05, 2020 at 03:56:01PM +0100, Marco Felsch wrote:
+> > > > If I understood it right the ports should be numbered using the "port"
+> > > > property and not the "reg" property. I stumbled over it during
+> > > > extending the v4l2_fwnode_parse_link() helper which also use the "port"
+> > > > property.
+> > > > 
+> > > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > > > ---
+> > > > Hi,
+> > > > 
+> > > > I don't know if this is right since I'm not a ACPI guy *sorry*
+> > > > Anyway reading the doc description and the v4l2_fwnode_parse_link() code
+> > > > give me a 2/3 chance.
+> > > 
+> > > Looking at the documentation, this indeed seems to be a bug in the
+> > > documentation. The code is right, as is the example. As the property was
+> > > previously called "port", there is no actual harm even if someone just read
+> > > the documentation, and not the examples or the code parsing this.
+> > > 
+> > > The buggy patch is a4138e7c12287268348cc2dcad414a62c515d77a .
+> > > 
+> > > Could you use this instead?
+> > 
+> > Of course, thanks for the clarification. It seems that we need to update the
+> > v4l2_fwnode_parse_link() too?
+> 
+> Well, yes. This has escaped me because there have been no ACPI users of
+> that function. In fact, there are only two users in total. That suggests it
+> may not be that useful after all as other drivers do the same job without.
 
-> On Mon, Mar 9, 2020 at 2:17 AM Huang, Ying <ying.huang@intel.com> wrote:
->>
->> "Rafael J. Wysocki" <rafael@kernel.org> writes:
->>
->> > On Fri, Mar 6, 2020 at 4:29 AM Huang, Ying <ying.huang@intel.com> wrote:
->> >>
->> >> Hi, Rafael,
->> >>
->> >> "Rafael J. Wysocki" <rafael@kernel.org> writes:
->> >>
->> >> > On Thu, Mar 5, 2020 at 9:18 AM Rong Chen <rong.a.chen@intel.com> wrote:
->> >> >>
->> >> >>
->> >> >>
->> >> >> On 3/5/20 3:50 PM, Rafael J. Wysocki wrote:
->> >> >> > On 3/5/2020 2:35 AM, kernel test robot wrote:
->> >> >> >> Greeting,
->> >> >> >>
->> >> >> >> FYI, we noticed a 210.0% improvement of fwq.fwq.med due to commit:
->> >> >> >
->> >> >> > Well, that sounds impressive. :-)
->> >> >> >
->> >> >> >
->> >> >> >>
->> >> >> >> commit: 909c0e9cc11ba39fa5a660583b25c2431cf54deb ("cpufreq:
->> >> >> >> intel_pstate: Use passive mode by default without HWP")
->> >> >> >> https://git.kernel.org/cgit/linux/kernel/git/rafael/linux-pm.git
->> >> >> >> intel_pstate-passive
->> >> >> >>
->> >> >> >> in testcase: fwq
->> >> >> >> on test machine: 16 threads Intel(R) Xeon(R) CPU D-1541 @ 2.10GHz
->> >> >> >> with 48G memory
->> >> >> >> with following parameters:
->> >> >> >>
->> >> >> >>     nr_task: 100%
->> >> >> >>     samples: 100000ss
->> >> >> >>     iterations: 18x
->> >> >> >>     cpufreq_governor: powersave
->> >> >> >
->> >> >> > The governor should be schedutil, though, unless it is explicitly set
->> >> >> > to powersave in the test environment.
->> >> >> >
->> >> >> > Is that the case?
->> >> >> >
->> >> >> >
->> >> >>
->> >> >> Hi Rafael,
->> >> >>
->> >> >> Yes, we set to powersave for this test.
->> >> >
->> >> > I wonder why this is done?  Is there any particular technical reason
->> >> > for doing that?
->> >>
->> >> fwq is a noise benchmark to measure the hardware and software noise
->> >> level.  More information could be found in the following document.
->> >>
->> >> https://asc.llnl.gov/sequoia/benchmarks/FTQ_summary_v1.1.pdf
->> >>
->> >> In 0day, to measure the noise introduced by power management, we will
->> >> run fwq with the performance and powersave governors.  Do you think this
->> >> is reasonable?  Or we should use some other governors?
->> >
->> > I think that the schedutil governor should be tested too if present.
->> >
->> > Also note that for the intel_pstate driver "powersave" may mean
->> > different things depending on the current operation mode of the
->> > driver.  If scaling_driver is "intel_pstate", then "powersave" is the
->> > driver's built-in algorithm.  If scaling_driver is "intel_cpufreq",
->> > though, "powersave" means running at the minimum frequency all the
->> > time.
->>
->> Thanks for your guidance.  We will test schedutil governor in the future
->> too.
->>
->> As for powersave, should we stop testing it?
->
-> You cannot stop testing it, because it is the default governor
-> algorithm for intel_pstate working in the active mode.
->
->>  Or just pay attention to the possible issue you pointed out?
->
-> Yes, please!
->
-> Basically, I would recommend to test the following configurations by default:
->
-> (1) scaling_driver = intel_pstate + scaling_governor = powersave
->
-> (2) scaling_driver = intel_cpufreq + scaling_governor = schedutil
->
-> The other ones are kind of less interesting.
->
-> [Note that in order to switch over from intel_pstate to intel_cpufreq,
-> you need to write "passive" into
-> /sys/devices/system/cpu/intel_pstate/status and if that write fails,
-> configuration (2) is not available and may be skipped.]
->
->> Should we add ondemand governor?
->
-> Not necessarily, maybe as a reference only if you have spare cycles.
+3 with the _new_ v4l2-fwnode-connectors ;-)
 
-Got it!  Thanks a lot for your information!
+> Feel free to write a patch. :-)
 
-Best Regards,
-Huang, Ying
+K, I will do so.
 
-> Thanks!
+Regards,
+  Marco
