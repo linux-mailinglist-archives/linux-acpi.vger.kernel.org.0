@@ -2,242 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B80EF18140B
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Mar 2020 10:08:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7FB9181874
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Mar 2020 13:47:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728767AbgCKJGq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Mar 2020 05:06:46 -0400
-Received: from mga07.intel.com ([134.134.136.100]:51905 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728704AbgCKJGq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 11 Mar 2020 05:06:46 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Mar 2020 02:06:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,540,1574150400"; 
-   d="scan'208";a="443490311"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 11 Mar 2020 02:06:43 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jBxK6-000D9r-M7; Wed, 11 Mar 2020 17:06:42 +0800
-Date:   Wed, 11 Mar 2020 17:06:07 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- abcd59902c6467999041971af4ab14f30a2b3780
-Message-ID: <5e68a9ff.Ch2jRY2Uj0OWxrsE%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1729444AbgCKMq4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Mar 2020 08:46:56 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:39960 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729435AbgCKMq4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Mar 2020 08:46:56 -0400
+Received: by mail-wr1-f66.google.com with SMTP id p2so2435546wrw.7
+        for <linux-acpi@vger.kernel.org>; Wed, 11 Mar 2020 05:46:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9aHr7/EWopa+d5MVT7UWPgRiU9Syfo6iTheTFisLSBg=;
+        b=FXsN33JoJealTXC3dRRue6HkzhWSIRjvlNRUP49llb/Tp1/P6LLbWK2WENByBzb932
+         Vi1Fg8Ri+qgxJrwy5zjp/NXrbWtEhuMkRTQj1X4R9I44S53W3vZuVYp8IrCbYVblbQ3t
+         O28JXtBnjgkZqXtJcIVINkr/xuwcmJ4AcO+2ctUVBEJKMuSZEV7wYUoSaD3Zco3ZO7q/
+         ujjg+wfK4m1DiebSFJn9cbZqflg/q7DAWj/98GahfRpw7xqn470ERyL3IPCqRQQaQIB0
+         0zSlrkdrriSBVsPOQ4i+h5gPOwW+U83Jz9SjjpEDyMiKdpx/YTRM4O6K6sHqODrD7YCC
+         shxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9aHr7/EWopa+d5MVT7UWPgRiU9Syfo6iTheTFisLSBg=;
+        b=bdZWMcyJK8gTn8rBYtH94uu0UA3nY+b1k2fbLV039cO+XkOlYTdoW0TkAurFOvWTcD
+         TCrX+bZR2gTorBQ7s9FRDP7RC7642cnNbmon37nLz2VgztGqmmta+fk+qeIm8kvM6owP
+         jneQSQx12sjMVsbtp+QKUphCup8pvdE7otQZERisPtErbcDivVbbUXN3nUlzzaI90P1R
+         eLEG4SGJ+d2z6VzBh0Btzy7zzaB958QeLnGfA0qckjZvPE842LDqQ/bspFkgrVcfb7JK
+         DNbomHmEIWxqfh24ZAcgaZBADBUUZy2hn1kOM8RZNtUlqXPGXoRpENTXb/KdWWxH3TtS
+         zfxg==
+X-Gm-Message-State: ANhLgQ2MJzmvjyrVHLWWW2BO3lAd4pXUkqRCJk2FO51TsD8/9Fw4u3Kt
+        gBvvKKltKRzFEKzJR+3O6t9vjg==
+X-Google-Smtp-Source: ADFU+vvLjmlfZFee1kgQb0ezvJQIIb3y7DZjOUpYxqDYvVtYVhI9wjUkV+NDFpgxKBOntX41muaOsw==
+X-Received: by 2002:adf:bb81:: with SMTP id q1mr4344011wrg.110.1583930814354;
+        Wed, 11 Mar 2020 05:46:54 -0700 (PDT)
+Received: from localhost.localdomain ([2001:171b:c9a8:fbc0:116c:c27a:3e7f:5eaf])
+        by smtp.gmail.com with ESMTPSA id c2sm8380020wma.39.2020.03.11.05.46.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2020 05:46:53 -0700 (PDT)
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     bhelgaas@google.com, will@kernel.org, robh+dt@kernel.org,
+        joro@8bytes.org, baolu.lu@linux.intel.com, sudeep.holla@arm.com,
+        linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org
+Cc:     lorenzo.pieralisi@arm.com, corbet@lwn.net, mark.rutland@arm.com,
+        liviu.dudau@arm.com, guohanjun@huawei.com, rjw@rjwysocki.net,
+        lenb@kernel.org, robin.murphy@arm.com, dwmw2@infradead.org,
+        amurray@thegoodpenguin.co.uk, frowand.list@gmail.com,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: [PATCH v2 00/11] PCI/ATS: Device-tree support and other improvements
+Date:   Wed, 11 Mar 2020 13:44:55 +0100
+Message-Id: <20200311124506.208376-1-jean-philippe@linaro.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: abcd59902c6467999041971af4ab14f30a2b3780  Merge branch 'acpi-ec' into testing
+Enable ATS on device-tree based systems, and factor the common ATS
+enablement checks into pci_enable_ats().
 
-elapsed time: 1449m
+Since v1 [1] I added acks and review tags, simplified patch 3 and tried
+to clarify the comment in patch 2.
 
-configs tested: 186
-configs skipped: 0
+I'd like acks or comments on the following patches:
+* PCI on patches 2, 3 and 5
+* Arm SMMUv3 on patch 7
+* Intel VT-d on patch 8
+* arm64 DT on patch 10 
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Thanks,
+Jean
 
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-arm                         at91_dt_defconfig
-arm                           efm32_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                               defconfig
-sparc                            allyesconfig
-i386                                defconfig
-xtensa                       common_defconfig
-m68k                             allmodconfig
-nds32                             allnoconfig
-alpha                               defconfig
-nds32                               defconfig
-parisc                generic-64bit_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sparc64                             defconfig
-ia64                             alldefconfig
-arc                                 defconfig
-sparc64                           allnoconfig
-um                           x86_64_defconfig
-sh                                allnoconfig
-sparc64                          allmodconfig
-i386                              allnoconfig
-i386                             alldefconfig
-i386                             allyesconfig
-ia64                             allmodconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-ia64                                defconfig
-c6x                              allyesconfig
-c6x                        evmc6678_defconfig
-nios2                         10m50_defconfig
-nios2                         3c120_defconfig
-openrisc                    or1ksim_defconfig
-openrisc                 simple_smp_defconfig
-xtensa                          iss_defconfig
-csky                                defconfig
-h8300                     edosk2674_defconfig
-h8300                    h8300h-sim_defconfig
-h8300                       h8s-sim_defconfig
-m68k                       m5475evb_defconfig
-m68k                          multi_defconfig
-m68k                           sun3_defconfig
-arc                              allyesconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allmodconfig
-mips                              allnoconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-parisc                            allnoconfig
-parisc                           allyesconfig
-parisc                generic-32bit_defconfig
-alpha                randconfig-a001-20200311
-m68k                 randconfig-a001-20200311
-mips                 randconfig-a001-20200311
-nds32                randconfig-a001-20200311
-parisc               randconfig-a001-20200311
-riscv                randconfig-a001-20200311
-alpha                randconfig-a001-20200309
-m68k                 randconfig-a001-20200309
-mips                 randconfig-a001-20200309
-nds32                randconfig-a001-20200309
-parisc               randconfig-a001-20200309
-riscv                randconfig-a001-20200309
-h8300                randconfig-a001-20200311
-sparc64              randconfig-a001-20200311
-c6x                  randconfig-a001-20200311
-nios2                randconfig-a001-20200311
-csky                 randconfig-a001-20200311
-openrisc             randconfig-a001-20200311
-s390                 randconfig-a001-20200311
-sh                   randconfig-a001-20200311
-xtensa               randconfig-a001-20200311
-csky                 randconfig-a001-20200310
-openrisc             randconfig-a001-20200310
-s390                 randconfig-a001-20200310
-sh                   randconfig-a001-20200310
-xtensa               randconfig-a001-20200310
-x86_64               randconfig-b001-20200311
-x86_64               randconfig-b002-20200311
-x86_64               randconfig-b003-20200311
-i386                 randconfig-b001-20200311
-x86_64               randconfig-b001-20200309
-x86_64               randconfig-b002-20200309
-x86_64               randconfig-b003-20200309
-i386                 randconfig-b001-20200309
-i386                 randconfig-b002-20200309
-i386                 randconfig-b003-20200309
-i386                 randconfig-b002-20200311
-i386                 randconfig-b003-20200311
-x86_64               randconfig-c001-20200311
-x86_64               randconfig-c002-20200311
-x86_64               randconfig-c003-20200311
-i386                 randconfig-c001-20200311
-i386                 randconfig-c002-20200311
-i386                 randconfig-c003-20200311
-x86_64               randconfig-c001-20200310
-x86_64               randconfig-c002-20200310
-x86_64               randconfig-c003-20200310
-i386                 randconfig-c001-20200310
-i386                 randconfig-c002-20200310
-i386                 randconfig-c003-20200310
-x86_64               randconfig-d001-20200311
-x86_64               randconfig-d002-20200311
-x86_64               randconfig-d003-20200311
-i386                 randconfig-d001-20200311
-i386                 randconfig-d002-20200311
-i386                 randconfig-d003-20200311
-x86_64               randconfig-e001-20200310
-x86_64               randconfig-e002-20200310
-x86_64               randconfig-e003-20200310
-i386                 randconfig-e001-20200310
-i386                 randconfig-e002-20200310
-i386                 randconfig-e003-20200310
-x86_64               randconfig-f001-20200311
-x86_64               randconfig-f002-20200311
-x86_64               randconfig-f003-20200311
-i386                 randconfig-f001-20200311
-i386                 randconfig-f002-20200311
-i386                 randconfig-f003-20200311
-x86_64               randconfig-g003-20200309
-i386                 randconfig-g001-20200309
-i386                 randconfig-g003-20200309
-x86_64               randconfig-g001-20200309
-x86_64               randconfig-g002-20200309
-i386                 randconfig-g002-20200309
-x86_64               randconfig-g001-20200311
-x86_64               randconfig-g002-20200311
-x86_64               randconfig-g003-20200311
-i386                 randconfig-g001-20200311
-i386                 randconfig-g002-20200311
-i386                 randconfig-g003-20200311
-x86_64               randconfig-h001-20200311
-x86_64               randconfig-h002-20200311
-x86_64               randconfig-h003-20200311
-i386                 randconfig-h001-20200311
-i386                 randconfig-h002-20200311
-i386                 randconfig-h003-20200311
-arc                  randconfig-a001-20200311
-arm                  randconfig-a001-20200311
-arm64                randconfig-a001-20200311
-ia64                 randconfig-a001-20200311
-powerpc              randconfig-a001-20200311
-sparc                randconfig-a001-20200311
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-s390                             alldefconfig
-s390                             allmodconfig
-s390                              allnoconfig
-s390                             allyesconfig
-s390                          debug_defconfig
-s390                                defconfig
-s390                       zfcpdump_defconfig
-sh                               allmodconfig
-sh                          rsk7269_defconfig
-sh                            titan_defconfig
-sparc                               defconfig
-sparc64                          allyesconfig
-um                                  defconfig
-um                             i386_defconfig
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                               rhel-7.6
+[1] https://lore.kernel.org/linux-iommu/20200213165049.508908-1-jean-philippe@linaro.org/
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Jean-Philippe Brucker (11):
+  dt-bindings: PCI: generic: Add ats-supported property
+  PCI: Add ats_supported host bridge flag
+  PCI: OF: Check whether the host bridge supports ATS
+  ACPI/IORT: Check ATS capability in root complex node
+  PCI/ATS: Gather checks into pci_ats_supported()
+  iommu/amd: Use pci_ats_supported()
+  iommu/arm-smmu-v3: Use pci_ats_supported()
+  iommu/vt-d: Use pci_ats_supported()
+  ACPI/IORT: Drop ATS fwspec flag
+  arm64: dts: fast models: Enable PCIe ATS for Base RevC FVP
+  Documentation: Generalize the "pci=noats" boot parameter
+
+ .../admin-guide/kernel-parameters.txt         |  4 +-
+ .../bindings/pci/host-generic-pci.yaml        |  6 +++
+ arch/arm64/boot/dts/arm/fvp-base-revc.dts     |  1 +
+ drivers/acpi/arm64/iort.c                     | 38 +++++++++++++------
+ drivers/acpi/pci_root.c                       |  3 ++
+ drivers/iommu/amd_iommu.c                     | 12 ++----
+ drivers/iommu/arm-smmu-v3.c                   | 18 ++-------
+ drivers/iommu/intel-iommu.c                   |  9 ++---
+ drivers/pci/ats.c                             | 30 ++++++++++++++-
+ drivers/pci/controller/pci-host-common.c      | 11 ++++++
+ drivers/pci/probe.c                           |  8 ++++
+ include/linux/acpi_iort.h                     |  8 ++++
+ include/linux/iommu.h                         |  4 --
+ include/linux/pci-ats.h                       |  3 ++
+ include/linux/pci.h                           |  1 +
+ 15 files changed, 109 insertions(+), 47 deletions(-)
+
+-- 
+2.25.1
+
