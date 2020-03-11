@@ -2,151 +2,242 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30DC01813C1
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Mar 2020 09:58:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B80EF18140B
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Mar 2020 10:08:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728444AbgCKI4C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Mar 2020 04:56:02 -0400
-Received: from mga12.intel.com ([192.55.52.136]:8691 "EHLO mga12.intel.com"
+        id S1728767AbgCKJGq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Mar 2020 05:06:46 -0400
+Received: from mga07.intel.com ([134.134.136.100]:51905 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728150AbgCKI4C (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 11 Mar 2020 04:56:02 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
+        id S1728704AbgCKJGq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 11 Mar 2020 05:06:46 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Mar 2020 01:56:00 -0700
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Mar 2020 02:06:44 -0700
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.70,540,1574150400"; 
-   d="scan'208";a="277295646"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Mar 2020 01:55:57 -0700
-Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id 3E8972096B; Wed, 11 Mar 2020 10:55:55 +0200 (EET)
-Date:   Wed, 11 Mar 2020 10:55:55 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, Bingbu Cao <bingbu.cao@intel.com>,
-        linux-media <linux-media@vger.kernel.org>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>
-Subject: Re: [PATCH v4 5/6] at24: Support probing while off
-Message-ID: <20200311085555.GH5379@paasikivi.fi.intel.com>
-References: <20200121134157.20396-1-sakari.ailus@linux.intel.com>
- <20200121134157.20396-6-sakari.ailus@linux.intel.com>
- <CAMpxmJU5dG49N2FA0oSQsOfKrCr3KQ1BisON4c+nUJJmZQG=bQ@mail.gmail.com>
+   d="scan'208";a="443490311"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 11 Mar 2020 02:06:43 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jBxK6-000D9r-M7; Wed, 11 Mar 2020 17:06:42 +0800
+Date:   Wed, 11 Mar 2020 17:06:07 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ abcd59902c6467999041971af4ab14f30a2b3780
+Message-ID: <5e68a9ff.Ch2jRY2Uj0OWxrsE%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMpxmJU5dG49N2FA0oSQsOfKrCr3KQ1BisON4c+nUJJmZQG=bQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Bartosz,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: abcd59902c6467999041971af4ab14f30a2b3780  Merge branch 'acpi-ec' into testing
 
-Thanks for the reply.
+elapsed time: 1449m
 
-On Wed, Jan 29, 2020 at 02:36:17PM +0100, Bartosz Golaszewski wrote:
-> wt., 21 sty 2020 o 14:41 Sakari Ailus <sakari.ailus@linux.intel.com> napisał(a):
-> >
-> > In certain use cases (where the chip is part of a camera module, and the
-> > camera module is wired together with a camera privacy LED), powering on
-> > the device during probe is undesirable. Add support for the at24 to
-> > execute probe while being powered off. For this to happen, a hint in form
-> > of a device property is required from the firmware.
-> >
-> > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > ---
-> >  drivers/misc/eeprom/at24.c | 31 +++++++++++++++++++++----------
-> >  1 file changed, 21 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
-> > index 0681d5fdd538a..5fc1162b67618 100644
-> > --- a/drivers/misc/eeprom/at24.c
-> > +++ b/drivers/misc/eeprom/at24.c
-> > @@ -564,6 +564,7 @@ static int at24_probe(struct i2c_client *client)
-> >         bool i2c_fn_i2c, i2c_fn_block;
-> >         unsigned int i, num_addresses;
-> >         struct at24_data *at24;
-> > +       bool low_power;
-> >         struct regmap *regmap;
-> >         bool writable;
-> >         u8 test_byte;
-> > @@ -701,19 +702,24 @@ static int at24_probe(struct i2c_client *client)
-> >
-> >         i2c_set_clientdata(client, at24);
-> >
-> > -       /* enable runtime pm */
-> > -       pm_runtime_set_active(dev);
-> > +       low_power = acpi_dev_state_low_power(&client->dev);
-> > +       if (!low_power)
-> > +               pm_runtime_set_active(dev);
-> > +
-> >         pm_runtime_enable(dev);
-> >
-> >         /*
-> > -        * Perform a one-byte test read to verify that the
-> > -        * chip is functional.
-> > +        * Perform a one-byte test read to verify that the chip is functional,
-> > +        * unless powering on the device is to be avoided during probe (i.e.
-> > +        * it's powered off right now).
-> >          */
-> > -       err = at24_read(at24, 0, &test_byte, 1);
-> > -       pm_runtime_idle(dev);
-> > -       if (err) {
-> > -               pm_runtime_disable(dev);
-> > -               return -ENODEV;
-> > +       if (!low_power) {
-> > +               err = at24_read(at24, 0, &test_byte, 1);
-> > +               pm_runtime_idle(dev);
-> > +               if (err) {
-> > +                       pm_runtime_disable(dev);
-> > +                       return -ENODEV;
-> > +               }
-> >         }
-> >
-> >         if (writable)
-> > @@ -728,8 +734,12 @@ static int at24_probe(struct i2c_client *client)
-> >
-> >  static int at24_remove(struct i2c_client *client)
-> >  {
-> > +       bool low_power;
-> > +
-> >         pm_runtime_disable(&client->dev);
-> > -       pm_runtime_set_suspended(&client->dev);
-> > +       low_power = acpi_dev_state_low_power(&client->dev);
-> 
-> This is inconsistent. You define the low_power field in the context
-> structure (BTW the name low_power is a bit vague here - without
-> looking at its assignment it would make me think it's about something
-> battery-related, how about 'off_at_probe'?) and instead of reusing
+configs tested: 186
+configs skipped: 0
 
-The field was called probe_powered_off in v1, but I changed it to
-probe_low_power (and renamed related functions etc.) based on review
-comments --- for the device may not be powered off actually.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> this field here, you call acpi_dev_state_low_power() again. Either
-> don't store the context for the life-time of the device if not
-> necessary or don't call acpi_dev_state_low_power() at remove, although
-> the commit message doesn't describe whether the latter is done on
-> purpose.
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm64                            allyesconfig
+arm                         at91_dt_defconfig
+arm                           efm32_defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                        multi_v7_defconfig
+arm                        shmobile_defconfig
+arm                           sunxi_defconfig
+arm64                               defconfig
+sparc                            allyesconfig
+i386                                defconfig
+xtensa                       common_defconfig
+m68k                             allmodconfig
+nds32                             allnoconfig
+alpha                               defconfig
+nds32                               defconfig
+parisc                generic-64bit_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sparc64                             defconfig
+ia64                             alldefconfig
+arc                                 defconfig
+sparc64                           allnoconfig
+um                           x86_64_defconfig
+sh                                allnoconfig
+sparc64                          allmodconfig
+i386                              allnoconfig
+i386                             alldefconfig
+i386                             allyesconfig
+ia64                             allmodconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                                defconfig
+c6x                              allyesconfig
+c6x                        evmc6678_defconfig
+nios2                         10m50_defconfig
+nios2                         3c120_defconfig
+openrisc                    or1ksim_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                          iss_defconfig
+csky                                defconfig
+h8300                     edosk2674_defconfig
+h8300                    h8300h-sim_defconfig
+h8300                       h8s-sim_defconfig
+m68k                       m5475evb_defconfig
+m68k                          multi_defconfig
+m68k                           sun3_defconfig
+arc                              allyesconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+mips                           32r2_defconfig
+mips                         64r6el_defconfig
+mips                             allmodconfig
+mips                              allnoconfig
+mips                             allyesconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+parisc                            allnoconfig
+parisc                           allyesconfig
+parisc                generic-32bit_defconfig
+alpha                randconfig-a001-20200311
+m68k                 randconfig-a001-20200311
+mips                 randconfig-a001-20200311
+nds32                randconfig-a001-20200311
+parisc               randconfig-a001-20200311
+riscv                randconfig-a001-20200311
+alpha                randconfig-a001-20200309
+m68k                 randconfig-a001-20200309
+mips                 randconfig-a001-20200309
+nds32                randconfig-a001-20200309
+parisc               randconfig-a001-20200309
+riscv                randconfig-a001-20200309
+h8300                randconfig-a001-20200311
+sparc64              randconfig-a001-20200311
+c6x                  randconfig-a001-20200311
+nios2                randconfig-a001-20200311
+csky                 randconfig-a001-20200311
+openrisc             randconfig-a001-20200311
+s390                 randconfig-a001-20200311
+sh                   randconfig-a001-20200311
+xtensa               randconfig-a001-20200311
+csky                 randconfig-a001-20200310
+openrisc             randconfig-a001-20200310
+s390                 randconfig-a001-20200310
+sh                   randconfig-a001-20200310
+xtensa               randconfig-a001-20200310
+x86_64               randconfig-b001-20200311
+x86_64               randconfig-b002-20200311
+x86_64               randconfig-b003-20200311
+i386                 randconfig-b001-20200311
+x86_64               randconfig-b001-20200309
+x86_64               randconfig-b002-20200309
+x86_64               randconfig-b003-20200309
+i386                 randconfig-b001-20200309
+i386                 randconfig-b002-20200309
+i386                 randconfig-b003-20200309
+i386                 randconfig-b002-20200311
+i386                 randconfig-b003-20200311
+x86_64               randconfig-c001-20200311
+x86_64               randconfig-c002-20200311
+x86_64               randconfig-c003-20200311
+i386                 randconfig-c001-20200311
+i386                 randconfig-c002-20200311
+i386                 randconfig-c003-20200311
+x86_64               randconfig-c001-20200310
+x86_64               randconfig-c002-20200310
+x86_64               randconfig-c003-20200310
+i386                 randconfig-c001-20200310
+i386                 randconfig-c002-20200310
+i386                 randconfig-c003-20200310
+x86_64               randconfig-d001-20200311
+x86_64               randconfig-d002-20200311
+x86_64               randconfig-d003-20200311
+i386                 randconfig-d001-20200311
+i386                 randconfig-d002-20200311
+i386                 randconfig-d003-20200311
+x86_64               randconfig-e001-20200310
+x86_64               randconfig-e002-20200310
+x86_64               randconfig-e003-20200310
+i386                 randconfig-e001-20200310
+i386                 randconfig-e002-20200310
+i386                 randconfig-e003-20200310
+x86_64               randconfig-f001-20200311
+x86_64               randconfig-f002-20200311
+x86_64               randconfig-f003-20200311
+i386                 randconfig-f001-20200311
+i386                 randconfig-f002-20200311
+i386                 randconfig-f003-20200311
+x86_64               randconfig-g003-20200309
+i386                 randconfig-g001-20200309
+i386                 randconfig-g003-20200309
+x86_64               randconfig-g001-20200309
+x86_64               randconfig-g002-20200309
+i386                 randconfig-g002-20200309
+x86_64               randconfig-g001-20200311
+x86_64               randconfig-g002-20200311
+x86_64               randconfig-g003-20200311
+i386                 randconfig-g001-20200311
+i386                 randconfig-g002-20200311
+i386                 randconfig-g003-20200311
+x86_64               randconfig-h001-20200311
+x86_64               randconfig-h002-20200311
+x86_64               randconfig-h003-20200311
+i386                 randconfig-h001-20200311
+i386                 randconfig-h002-20200311
+i386                 randconfig-h003-20200311
+arc                  randconfig-a001-20200311
+arm                  randconfig-a001-20200311
+arm64                randconfig-a001-20200311
+ia64                 randconfig-a001-20200311
+powerpc              randconfig-a001-20200311
+sparc                randconfig-a001-20200311
+riscv                            allmodconfig
+riscv                             allnoconfig
+riscv                            allyesconfig
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+s390                             alldefconfig
+s390                             allmodconfig
+s390                              allnoconfig
+s390                             allyesconfig
+s390                          debug_defconfig
+s390                                defconfig
+s390                       zfcpdump_defconfig
+sh                               allmodconfig
+sh                          rsk7269_defconfig
+sh                            titan_defconfig
+sparc                               defconfig
+sparc64                          allyesconfig
+um                                  defconfig
+um                             i386_defconfig
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                                    lkp
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                               rhel-7.6
 
-Right. probe-low-power property has the same effect on remove for
-consistency, i.e. the device can remain in low power state during remove.
-This is documented in probe_low_power field documentation in the first
-patch.
-
--- 
-Regards,
-
-Sakari Ailus
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
