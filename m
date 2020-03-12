@@ -2,77 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BDE0182473
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Mar 2020 23:09:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40CBF1826BC
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Mar 2020 02:44:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729799AbgCKWJy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Mar 2020 18:09:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40816 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729535AbgCKWJx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Mar 2020 18:09:53 -0400
-Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1jC9Xu-0001sJ-Cb; Wed, 11 Mar 2020 23:09:46 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
-        id C2842100F5A; Wed, 11 Mar 2020 23:09:45 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>
-Cc:     linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC v2] x86: Select HARDIRQS_SW_RESEND on x86
-In-Reply-To: <218eb262-011f-0739-8e74-9ca3ef793bb8@redhat.com>
-References: <87sgk4naqh.fsf@nanos.tec.linutronix.de> <0e5b484d-89f5-c018-328a-fb4a04c6cd91@redhat.com> <87fteek27x.fsf@nanos.tec.linutronix.de> <218eb262-011f-0739-8e74-9ca3ef793bb8@redhat.com>
-Date:   Wed, 11 Mar 2020 23:09:45 +0100
-Message-ID: <87a74mk0gm.fsf@nanos.tec.linutronix.de>
+        id S2387404AbgCLBo0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Mar 2020 21:44:26 -0400
+Received: from mga07.intel.com ([134.134.136.100]:51962 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387501AbgCLBoZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 11 Mar 2020 21:44:25 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Mar 2020 18:44:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,543,1574150400"; 
+   d="scan'208";a="443763768"
+Received: from blu2-mobl3.ccr.corp.intel.com (HELO [10.254.208.137]) ([10.254.208.137])
+  by fmsmga006.fm.intel.com with ESMTP; 11 Mar 2020 18:44:18 -0700
+Cc:     baolu.lu@linux.intel.com, lorenzo.pieralisi@arm.com,
+        corbet@lwn.net, mark.rutland@arm.com, liviu.dudau@arm.com,
+        guohanjun@huawei.com, rjw@rjwysocki.net, lenb@kernel.org,
+        robin.murphy@arm.com, dwmw2@infradead.org,
+        amurray@thegoodpenguin.co.uk, frowand.list@gmail.com
+Subject: Re: [PATCH v2 08/11] iommu/vt-d: Use pci_ats_supported()
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        bhelgaas@google.com, will@kernel.org, robh+dt@kernel.org,
+        joro@8bytes.org, sudeep.holla@arm.com, linux-doc@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org
+References: <20200311124506.208376-1-jean-philippe@linaro.org>
+ <20200311124506.208376-9-jean-philippe@linaro.org>
+From:   Lu Baolu <baolu.lu@linux.intel.com>
+Message-ID: <7019230c-3c56-e6db-6704-d73f23fa39b5@linux.intel.com>
+Date:   Thu, 12 Mar 2020 09:44:16 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+In-Reply-To: <20200311124506.208376-9-jean-philippe@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hans de Goede <hdegoede@redhat.com> writes:
-> On 3/11/20 10:31 PM, Thomas Gleixner wrote:
->> Hans de Goede <hdegoede@redhat.com> writes:
->>>> I just need to stare at the legacy PIC and the virt stuff.
->>>>
->>>>> Also maybe we should add a Cc: stable@vger.kernel.org ??? This seems like
->>>>> somewhat a big change for that but it does solve some real issues...
->>>>
->>>> Yes. Let me stare at the couple of weird irqchips which might get
->>>> surprised. I'll teach them not to do that :)
->>>
->>> I know that you are very busy, still I'm wondering is there any progress
->>> on this ?
->> 
->> Bah. That fell through the cracks, but actually I looked at this due to
->> the PCI-E AER wreckage. So yes, this is fine, but we want:
->> 
->>   https://lkml.kernel.org/r/20200306130623.590923677@linutronix.de
->>   https://lkml.kernel.org/r/20200306130623.684591280@linutronix.de
->> 
->> if we want to backport this to stable.
->
-> So far I have seen a few, but not a lot of devices which need this, so
-> I'm not 100% sure what to do here.
->
-> Do you consider this change safe / suitable for stable if those 2 patches
-> are backported and applied first?
+Hi Jean,
 
-I think so. The two patches are on my list for backports anyway, but I
-wanted to give them some time to simmer.
+On 2020/3/11 20:45, Jean-Philippe Brucker wrote:
+> The pci_ats_supported() function checks if a device supports ATS and is
+> allowed to use it.
+> 
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> ---
+>   drivers/iommu/intel-iommu.c | 9 +++------
+>   1 file changed, 3 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/iommu/intel-iommu.c b/drivers/iommu/intel-iommu.c
+> index 6fa6de2b6ad5..17208280ef5c 100644
+> --- a/drivers/iommu/intel-iommu.c
+> +++ b/drivers/iommu/intel-iommu.c
+> @@ -1454,8 +1454,7 @@ static void iommu_enable_dev_iotlb(struct device_domain_info *info)
+>   	    !pci_reset_pri(pdev) && !pci_enable_pri(pdev, 32))
+>   		info->pri_enabled = 1;
+>   #endif
+> -	if (!pdev->untrusted && info->ats_supported &&
+> -	    pci_ats_page_aligned(pdev) &&
+> +	if (info->ats_supported && pci_ats_page_aligned(pdev) &&
+>   	    !pci_enable_ats(pdev, VTD_PAGE_SHIFT)) {
+>   		info->ats_enabled = 1;
+>   		domain_update_iotlb(info->domain);
+> @@ -2611,10 +2610,8 @@ static struct dmar_domain *dmar_insert_one_dev_info(struct intel_iommu *iommu,
+>   	if (dev && dev_is_pci(dev)) {
+>   		struct pci_dev *pdev = to_pci_dev(info->dev);
+>   
+> -		if (!pdev->untrusted &&
+> -		    !pci_ats_disabled() &&
 
-Thanks,
+The pci_ats_disabled() couldn't be replaced by pci_ats_supported(). Even
+pci_ats_supported() returns true, user still can disable it. Or move
+ats_disabled into pci_ats_supported()?
 
-        tglx
+Best regards,
+baolu
+
+> -		    ecap_dev_iotlb_support(iommu->ecap) &&
+> -		    pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ATS) &&
+> +		if (ecap_dev_iotlb_support(iommu->ecap) &&
+> +		    pci_ats_supported(pdev) &&
+>   		    dmar_find_matched_atsr_unit(pdev))
+>   			info->ats_supported = 1;
