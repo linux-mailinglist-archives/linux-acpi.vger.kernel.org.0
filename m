@@ -2,121 +2,160 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9282A182FDB
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Mar 2020 13:06:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A54F182FFA
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Mar 2020 13:10:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726669AbgCLMGP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Mar 2020 08:06:15 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:57640 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726254AbgCLMGP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Mar 2020 08:06:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584014774;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=xSNpSvUKNp6/83m+odfBvo9SeOnVj+MqMyFuwojaVPk=;
-        b=WGIlFxQgatTpPnXZbL+a/VJX7zhLF2vTe9cBsFK5jY6t2cHUNAo+7SXkgpcDYIwnycFnvg
-        9S26I8Z2CWUSj7r49L/6GxGDx6GJqwtip6ULaU/eDgp1tnV/dhdDxkUgL3uJ3dSaEmj963
-        sO8F/4beRmwyeAevn64TSIFoOSqy8ZU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-389-jqPQfRGhNJi5sigpmv1Raw-1; Thu, 12 Mar 2020 08:06:13 -0400
-X-MC-Unique: jqPQfRGhNJi5sigpmv1Raw-1
-Received: by mail-wr1-f71.google.com with SMTP id i7so2529734wru.3
-        for <linux-acpi@vger.kernel.org>; Thu, 12 Mar 2020 05:06:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=xSNpSvUKNp6/83m+odfBvo9SeOnVj+MqMyFuwojaVPk=;
-        b=ohIX/wUwwkCtezFgYiyxWKQHeY3ZEly1CdErpa9DzbolQHEsRB11CbqV0teGR4nZH5
-         5o5Jp3PwxNwyrO0nVLMfqhN63gL27wWhxbgasjx195osjQI4dNVzbGScgGO/qsb7GnJF
-         d3Do7kOOAWYFzc6PSgpCYoYqwluE65nXcvTWuhLA6S87nt6ATHopW/bXQfZH+pP42Gyn
-         XHONhagghb2oPtyW+kfhjPR9Qal2SDezR8XnSSaKCFhBeKiyODgzOEtmt6SI3buCHaIH
-         B4brxixdC8FDXidYRS0UfGoJ5rDy2LTHnwITdnnAHVuWFj5ZSg4lfmWBEYlbtdMUmRHo
-         HmQQ==
-X-Gm-Message-State: ANhLgQ3z/816v4nhZ0dFCvssSD8Sdotwif/5XQDozXe57SIR7ki2ymqP
-        NV0LDXAfPDfrbeWg26z+8KpNC0RJDMiQgFDWLN5MK0lctpa5ksBQL5Q/8gigMFOg9EhQR+pVL7E
-        o8/w/DEuuI4/Y5Lw9ZKQRCQ==
-X-Received: by 2002:a1c:2d4f:: with SMTP id t76mr4517476wmt.60.1584014772243;
-        Thu, 12 Mar 2020 05:06:12 -0700 (PDT)
-X-Google-Smtp-Source: ADFU+vt+HRWOgRlV2pNiPqlueoA4u8RAn38ejkM1ffrZr8wxJmwV3UnkER85ZZH0WJCOEzq7uqjitA==
-X-Received: by 2002:a1c:2d4f:: with SMTP id t76mr4516835wmt.60.1584014764673;
-        Thu, 12 Mar 2020 05:06:04 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-fc7e-fd47-85c1-1ab3.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:fc7e:fd47:85c1:1ab3])
-        by smtp.gmail.com with ESMTPSA id w4sm23445550wrl.12.2020.03.12.05.06.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Mar 2020 05:06:03 -0700 (PDT)
-Subject: Re: [RFC v2] x86: Select HARDIRQS_SW_RESEND on x86
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>
-Cc:     linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-References: <87sgk4naqh.fsf@nanos.tec.linutronix.de>
- <0e5b484d-89f5-c018-328a-fb4a04c6cd91@redhat.com>
- <87fteek27x.fsf@nanos.tec.linutronix.de>
- <218eb262-011f-0739-8e74-9ca3ef793bb8@redhat.com>
- <87a74mk0gm.fsf@nanos.tec.linutronix.de>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <9a7ebae2-fa65-4a85-5951-120f3543e5fb@redhat.com>
-Date:   Thu, 12 Mar 2020 13:06:03 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <87a74mk0gm.fsf@nanos.tec.linutronix.de>
-Content-Type: text/plain; charset=windows-1252; format=flowed
+        id S1726851AbgCLMK2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Mar 2020 08:10:28 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2554 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725268AbgCLMK2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 12 Mar 2020 08:10:28 -0400
+Received: from lhreml705-cah.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id A1C5738194AA22480A3B;
+        Thu, 12 Mar 2020 12:10:25 +0000 (GMT)
+Received: from lhreml717-chm.china.huawei.com (10.201.108.68) by
+ lhreml705-cah.china.huawei.com (10.201.108.46) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Thu, 12 Mar 2020 12:10:25 +0000
+Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
+ lhreml717-chm.china.huawei.com (10.201.108.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Thu, 12 Mar 2020 12:10:25 +0000
+Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
+ lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1713.004;
+ Thu, 12 Mar 2020 12:10:25 +0000
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     James Morse <james.morse@arm.com>
+CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "helgaas@kernel.org" <helgaas@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "zhangliguang@linux.alibaba.com" <zhangliguang@linux.alibaba.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        Linuxarm <linuxarm@huawei.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        tanxiaofei <tanxiaofei@huawei.com>,
+        yangyicong <yangyicong@huawei.com>
+Subject: RE: [PATCH v4 1/2] ACPI: APEI: Add support to notify the vendor
+ specific HW errors
+Thread-Topic: [PATCH v4 1/2] ACPI: APEI: Add support to notify the vendor
+ specific HW errors
+Thread-Index: AQHV3aHpvUUiw2j43UuF7uWUQ9pa06hD2fwAgAADqhA=
+Date:   Thu, 12 Mar 2020 12:10:24 +0000
+Message-ID: <689f0c7cb0fe49d6a9df140cc1b56690@huawei.com>
+References: <Shiju Jose> <20200207103143.20104-1-shiju.jose@huawei.com>
+ <20200207103143.20104-2-shiju.jose@huawei.com>
+ <4967c0e6-b264-a13a-28c7-5ca497442823@arm.com>
+In-Reply-To: <4967c0e6-b264-a13a-28c7-5ca497442823@arm.com>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.47.88.146]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 3/11/20 11:09 PM, Thomas Gleixner wrote:
-> Hans de Goede <hdegoede@redhat.com> writes:
->> On 3/11/20 10:31 PM, Thomas Gleixner wrote:
->>> Hans de Goede <hdegoede@redhat.com> writes:
->>>>> I just need to stare at the legacy PIC and the virt stuff.
->>>>>
->>>>>> Also maybe we should add a Cc: stable@vger.kernel.org ??? This seems like
->>>>>> somewhat a big change for that but it does solve some real issues...
->>>>>
->>>>> Yes. Let me stare at the couple of weird irqchips which might get
->>>>> surprised. I'll teach them not to do that :)
->>>>
->>>> I know that you are very busy, still I'm wondering is there any progress
->>>> on this ?
->>>
->>> Bah. That fell through the cracks, but actually I looked at this due to
->>> the PCI-E AER wreckage. So yes, this is fine, but we want:
->>>
->>>    https://lkml.kernel.org/r/20200306130623.590923677@linutronix.de
->>>    https://lkml.kernel.org/r/20200306130623.684591280@linutronix.de
->>>
->>> if we want to backport this to stable.
->>
->> So far I have seen a few, but not a lot of devices which need this, so
->> I'm not 100% sure what to do here.
->>
->> Do you consider this change safe / suitable for stable if those 2 patches
->> are backported and applied first?
-> 
-> I think so. The two patches are on my list for backports anyway, but I
-> wanted to give them some time to simmer.
-
-OK, I'll submit this patch for stable then once your backports have landed.
-
-Regards,
-
-Hans
-
+SGkgSmFtZXMsDQoNClRoYW5rcyBmb3IgcmV2aWV3aW5nIHRoZSBjb2RlLg0KDQo+LS0tLS1Pcmln
+aW5hbCBNZXNzYWdlLS0tLS0NCj5Gcm9tOiBsaW51eC1wY2ktb3duZXJAdmdlci5rZXJuZWwub3Jn
+IFttYWlsdG86bGludXgtcGNpLQ0KPm93bmVyQHZnZXIua2VybmVsLm9yZ10gT24gQmVoYWxmIE9m
+IEphbWVzIE1vcnNlDQo+U2VudDogMTEgTWFyY2ggMjAyMCAxNzozMA0KPlRvOiBTaGlqdSBKb3Nl
+IDxzaGlqdS5qb3NlQGh1YXdlaS5jb20+DQo+Q2M6IGxpbnV4LWFjcGlAdmdlci5rZXJuZWwub3Jn
+OyBsaW51eC1wY2lAdmdlci5rZXJuZWwub3JnOyBsaW51eC0NCj5rZXJuZWxAdmdlci5rZXJuZWwu
+b3JnOyByandAcmp3eXNvY2tpLm5ldDsgaGVsZ2Fhc0BrZXJuZWwub3JnOw0KPmxlbmJAa2VybmVs
+Lm9yZzsgYnBAYWxpZW44LmRlOyB0b255Lmx1Y2tAaW50ZWwuY29tOw0KPmdyZWdraEBsaW51eGZv
+dW5kYXRpb24ub3JnOyB6aGFuZ2xpZ3VhbmdAbGludXguYWxpYmFiYS5jb207DQo+dGdseEBsaW51
+dHJvbml4LmRlOyBMaW51eGFybSA8bGludXhhcm1AaHVhd2VpLmNvbT47IEpvbmF0aGFuIENhbWVy
+b24NCj48am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsgdGFueGlhb2ZlaSA8dGFueGlhb2Zl
+aUBodWF3ZWkuY29tPjsNCj55YW5neWljb25nIDx5YW5neWljb25nQGh1YXdlaS5jb20+DQo+U3Vi
+amVjdDogUmU6IFtQQVRDSCB2NCAxLzJdIEFDUEk6IEFQRUk6IEFkZCBzdXBwb3J0IHRvIG5vdGlm
+eSB0aGUgdmVuZG9yDQo+c3BlY2lmaWMgSFcgZXJyb3JzDQo+DQo+SGkgU2hpanUsDQo+DQo+T24g
+MDcvMDIvMjAyMCAxMDozMSwgU2hpanUgSm9zZSB3cm90ZToNCj4+IFByZXNlbnRseSBBUEVJIGRv
+ZXMgbm90IHN1cHBvcnQgcmVwb3J0aW5nIHRoZSB2ZW5kb3Igc3BlY2lmaWMgSFcNCj4+IGVycm9y
+cywgcmVjZWl2ZWQgaW4gdGhlIHZlbmRvciBkZWZpbmVkIHRhYmxlIGVudHJpZXMsIHRvIHRoZSB2
+ZW5kb3INCj4+IGRyaXZlcnMgZm9yIGFueSByZWNvdmVyeS4NCj4+DQo+PiBUaGlzIHBhdGNoIGFk
+ZHMgdGhlIHN1cHBvcnQgdG8gcmVnaXN0ZXIgYW5kIHVucmVnaXN0ZXIgdGhlIGVycm9yDQo+PiBo
+YW5kbGluZyBmdW5jdGlvbiBmb3IgdGhlIHZlbmRvciBzcGVjaWZpYyBIVyBlcnJvcnMgYW5kIG5v
+dGlmeSB0aGUNCj4+IHJlZ2lzdGVyZWQga2VybmVsIGRyaXZlci4NCj4NCj5JcyBpdCBwb3NzaWJs
+ZSB0byB1c2UgdGhlIGtlcm5lbCdzIGV4aXN0aW5nIGF0b21pY19ub3RpZmllcl9jaGFpbl9yZWdp
+c3RlcigpIEFQSSBmb3INCj50aGlzPw0KPg0KPlRoZSBvbmUgdGhpbmcgdGhhdCBjYW4ndCBiZSBk
+b25lIGluIHRoZSBzYW1lIHdheSBpcyB0aGUgR1VJRCBmaWx0ZXJpbmcgaW4gZ2hlcy5jLg0KPkVh
+Y2ggZHJpdmVyIHdvdWxkIG5lZWQgdG8gY2hlY2sgaWYgdGhlIGNhbGwgbWF0Y2hlZCBhIEdVSUQg
+dGhleSBrbmV3IGFib3V0LA0KPmFuZCByZXR1cm4gTk9USUZZX0RPTkUgaWYgdGhleSAiZG9uJ3Qg
+Y2FyZSIuDQo+DQo+SSB0aGluayB0aGlzIHBhdGNoIHdvdWxkIGJlIGEgbG90IHNtYWxsZXIgaWYg
+aXQgd2FzIHR3ZWFrZWQgdG8gYmUgYWJsZSB0byB1c2UgdGhlDQo+ZXhpc3RpbmcgQVBJLiBJZiB0
+aGVyZSBpcyBhIHJlYXNvbiBub3QgdG8gdXNlIGl0LCBpdCB3b3VsZCBiZSBnb29kIHRvIGtub3cg
+d2hhdCBpdA0KPmlzLg0KSSB0aGluayB3aGVuIHVzaW5nIGF0b21pY19ub3RpZmllcl9jaGFpbl9y
+ZWdpc3RlciB3ZSBoYXZlIGZvbGxvd2luZyBsaW1pdGF0aW9ucywNCjEuIEFsbCB0aGUgcmVnaXN0
+ZXJlZCBlcnJvciBoYW5kbGVycyB3b3VsZCBnZXQgY2FsbGVkLCB0aG91Z2ggYW4gZXJyb3IgaXMg
+bm90IHJlbGF0ZWQgdG8gdGhvc2UgaGFuZGxlcnMuICAgIA0KICAgIEFsc28gdGhpcyBtYXkgbGVh
+ZCB0byBtaXNoYW5kbGluZyBvZiB0aGUgZXJyb3IgaW5mb3JtYXRpb24gaWYgYSBoYW5kbGVyIGRv
+ZXMgbm90DQogICAgaW1wbGVtZW50IEdVSUQgY2hlY2tpbmcgZXRjLg0KMi4gYXRvbWljX25vdGlm
+aWVyX2NoYWluX3JlZ2lzdGVyIChub3RpZmllcl9jaGFpbl9yZWdpc3RlcikgbG9va3MgbGlrZSBk
+b2VzIG5vdCBzdXBwb3J0IA0KICAgIHBhc3MgdGhlIGhhbmRsZXIncyBwcml2YXRlIGRhdGEgZHVy
+aW5nIHRoZSByZWdpc3RyYXRpb24gd2hpY2ggc3VwcG9zZWQgdG8gDQogICAgcGFzc2VkIGxhdGVy
+IGluIHRoZSBjYWxsIGJhY2sgZnVuY3Rpb24gKm5vdGlmaWVyX2ZuX3QoLi4uICx2b2lkICpkYXRh
+KSB0byB0aGUgaGFuZGxlci4NCjMuIEFsc28gZ290IGRpZmZpY3VsdHkgaW4gcGFzc2luZyB0aGUg
+Z2hlcyBlcnJvciBkYXRhKGFjcGlfaGVzdF9nZW5lcmljX2RhdGEpLCBHVUlEDQogICAgZm9yIHRo
+ZSBlcnJvciByZWNlaXZlZCB0byB0aGUgaGFuZGxlciB0aHJvdWdoIHRoZSBub3RpZmllcl9jaGFp
+biAgY2FsbGJhY2sgaW50ZXJmYWNlLiANCiAgICANClNvcnJ5IGlmIEkgZGlkIG5vdCAgdW5kZXJz
+dG9vZCB5b3VyIHN1Z2dlc3Rpb24gY29ycmVjdGx5Lg0KIA0KPg0KPg0KPj4gZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvYWNwaS9hcGVpL2doZXMuYyBiL2RyaXZlcnMvYWNwaS9hcGVpL2doZXMuYyBpbmRl
+eA0KPj4gMTAzYWNiYi4uNjllMThkNyAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvYWNwaS9hcGVp
+L2doZXMuYw0KPj4gKysrIGIvZHJpdmVycy9hY3BpL2FwZWkvZ2hlcy5jDQo+PiBAQCAtNDkwLDYg
+KzQ5MCwxMDkgQEAgc3RhdGljIHZvaWQgZ2hlc19oYW5kbGVfYWVyKHN0cnVjdA0KPj4gYWNwaV9o
+ZXN0X2dlbmVyaWNfZGF0YSAqZ2RhdGEpDQo+DQo+PiArLyoqDQo+PiArICogZ2hlc191bnJlZ2lz
+dGVyX2V2ZW50X2hhbmRsZXIgLSB1bnJlZ2lzdGVyIHRoZSBwcmV2aW91c2x5DQo+PiArICogcmVn
+aXN0ZXJlZCBldmVudCBoYW5kbGluZyBmdW5jdGlvbi4NCj4+ICsgKiBAc2VjX3R5cGU6IHNlY190
+eXBlIG9mIHRoZSBjb3JyZXNwb25kaW5nIENQRVIuDQo+PiArICogQGRhdGE6IGRyaXZlciBzcGVj
+aWZpYyBkYXRhIHRvIGRpc3Rpbmd1aXNoIGRldmljZXMuDQo+PiArICovDQo+PiArdm9pZCBnaGVz
+X3VucmVnaXN0ZXJfZXZlbnRfaGFuZGxlcihndWlkX3Qgc2VjX3R5cGUsIHZvaWQgKmRhdGEpIHsN
+Cj4+ICsJc3RydWN0IGdoZXNfZXZlbnRfbm90aWZ5ICpldmVudF9ub3RpZnk7DQo+PiArCWJvb2wg
+Zm91bmQgPSBmYWxzZTsNCj4+ICsNCj4+ICsJbXV0ZXhfbG9jaygmZ2hlc19ldmVudF9ub3RpZnlf
+bXV0ZXgpOw0KPj4gKwlyY3VfcmVhZF9sb2NrKCk7DQo+PiArCWxpc3RfZm9yX2VhY2hfZW50cnlf
+cmN1KGV2ZW50X25vdGlmeSwNCj4+ICsJCQkJJmdoZXNfZXZlbnRfaGFuZGxlcl9saXN0LCBsaXN0
+KSB7DQo+PiArCQlpZiAoZ3VpZF9lcXVhbCgmZXZlbnRfbm90aWZ5LT5zZWNfdHlwZSwgJnNlY190
+eXBlKSkgew0KPg0KPj4gKwkJCWlmIChkYXRhICE9IGV2ZW50X25vdGlmeS0+ZGF0YSkNCj4NCj5J
+dCBsb29rcyBsaWtlIHlvdSBuZWVkIG11bHRpcGxlIGRyaXZlcnMgdG8gaGFuZGxlIHRoZSBzYW1l
+IEdVSUQgYmVjYXVzZSBvZg0KPm11bHRpcGxlIHJvb3QgcG9ydHMuIENhbid0IHRoZSBoYW5kbGVy
+IGxvb2t1cCB0aGUgcmlnaHQgZGV2aWNlPw0KVGhpcyBjaGVjayB3YXMgYmVjYXVzZSBHVUlEIGlz
+IHNoYXJlZCBhbW9uZyBtdWx0aXBsZSBkZXZpY2VzIHdpdGggb25lIGRyaXZlciBhcyBzZWVuDQpp
+biB0aGUgQjI4ODlGQzkgZHJpdmVyIChwY2llLWhpc2ktZXJyb3IuYykuIA0KICANCj4NCj4NCj4+
+ICsJCQkJY29udGludWU7DQo+PiArCQkJbGlzdF9kZWxfcmN1KCZldmVudF9ub3RpZnktPmxpc3Qp
+Ow0KPj4gKwkJCWZvdW5kID0gdHJ1ZTsNCj4+ICsJCQlicmVhazsNCj4+ICsJCX0NCj4+ICsJfQ0K
+Pj4gKwlyY3VfcmVhZF91bmxvY2soKTsNCj4+ICsJbXV0ZXhfdW5sb2NrKCZnaGVzX2V2ZW50X25v
+dGlmeV9tdXRleCk7DQo+PiArDQo+PiArCWlmICghZm91bmQpIHsNCj4+ICsJCXByX2VycigiVHJp
+ZWQgdG8gdW5yZWdpc3RlciBhIEdIRVMgZXZlbnQgaGFuZGxlciB0aGF0IGhhcyBub3QNCj5iZWVu
+IHJlZ2lzdGVyZWRcbiIpOw0KPj4gKwkJcmV0dXJuOw0KPj4gKwl9DQo+PiArDQo+PiArCXN5bmNo
+cm9uaXplX3JjdSgpOw0KPj4gKwlrZnJlZShldmVudF9ub3RpZnkpOw0KPj4gK30NCj4+ICtFWFBP
+UlRfU1lNQk9MX0dQTChnaGVzX3VucmVnaXN0ZXJfZXZlbnRfaGFuZGxlcik7DQo+DQo+PiBAQCAt
+NTI1LDExICs2MjgsMTQgQEAgc3RhdGljIHZvaWQgZ2hlc19kb19wcm9jKHN0cnVjdCBnaGVzICpn
+aGVzLA0KPj4NCj4+ICAJCQlsb2dfYXJtX2h3X2Vycm9yKGVycik7DQo+PiAgCQl9IGVsc2Ugew0K
+Pj4gLQkJCXZvaWQgKmVyciA9IGFjcGlfaGVzdF9nZXRfcGF5bG9hZChnZGF0YSk7DQo+PiAtDQo+
+PiAtCQkJbG9nX25vbl9zdGFuZGFyZF9ldmVudChzZWNfdHlwZSwgZnJ1X2lkLCBmcnVfdGV4dCwN
+Cj4+IC0JCQkJCSAgICAgICBzZWNfc2V2LCBlcnIsDQo+PiAtCQkJCQkgICAgICAgZ2RhdGEtPmVy
+cm9yX2RhdGFfbGVuZ3RoKTsNCj4+ICsJCQlpZiAoIWdoZXNfaGFuZGxlX25vbl9zdGFuZGFyZF9l
+dmVudChzZWNfdHlwZSwgZ2RhdGEsDQo+PiArCQkJCQkJCSAgICBzZXYpKSB7DQo+PiArCQkJCXZv
+aWQgKmVyciA9IGFjcGlfaGVzdF9nZXRfcGF5bG9hZChnZGF0YSk7DQo+PiArDQo+PiArCQkJCWxv
+Z19ub25fc3RhbmRhcmRfZXZlbnQoc2VjX3R5cGUsIGZydV9pZCwNCj4+ICsJCQkJCQkgICAgICAg
+ZnJ1X3RleHQsIHNlY19zZXYsIGVyciwNCj4+ICsJCQkJCQkgICAgICAgZ2RhdGEtPmVycm9yX2Rh
+dGFfbGVuZ3RoKTsNCj4+ICsJCQl9DQo+DQo+U28sIGEgc2lkZSBlZmZlY3Qgb2YgdGhlIGtlcm5l
+bCBoYW5kbGluZyB0aGVzZSBpcyB0aGV5IG5vIGxvbmdlciBnZXQgbG9nZ2VkIG91dCBvZg0KPnRy
+YWNlIHBvaW50cz8NCj4NCj5JIGd1ZXNzIHRoZSBkcml2ZXIgdGhlIGNsYWltcyB0aGlzIGxvZ3Mg
+c29tZSBtb3JlIGFjY3VyYXRlIGluZm9ybWF0aW9uLiBBcmUNCj50aGVyZSBleHBlY3RlZCB0byBi
+ZSBhbnkgdXNlci1zcGFjZSBwcm9ncmFtcyBkb2luZyBzb21ldGhpbmcgdXNlZnVsIHdpdGgNCj5C
+Mjg4OUZDOS4uLiB0b2RheT8NClRoZSBCMjg4OUZDOSBkcml2ZXIgZG9lcyBub3QgZXhwZWN0IGFu
+eSBjb3JyZXNwb25kaW5nIHVzZXIgc3BhY2UgcHJvZ3JhbXMuIA0KVGhlIGRyaXZlciBtYWlubHkg
+Zm9yIHRoZSBlcnJvciByZWNvdmVyeSBhbmQgYmFzaWMgZXJyb3IgZGVjb2RpbmcgYW5kIGxvZ2dp
+bmcuDQpQcmV2aW91c2x5IHdlIGFkZGVkIHRoZSBlcnJvciBsb2dnaW5nIGZvciB0aGUgQjI4ODlG
+QzkgaW4gdGhlIHJhc2RhZW1vbi4NCj4NCj4NCj5UaGFua3MsDQo+DQo+SmFtZXMNCg0KVGhhbmtz
+LA0KU2hpanUNCg==
