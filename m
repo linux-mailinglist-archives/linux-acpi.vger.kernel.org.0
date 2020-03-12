@@ -2,112 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 679BE183439
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Mar 2020 16:14:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 026B7183ACB
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Mar 2020 21:45:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727735AbgCLPOv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Mar 2020 11:14:51 -0400
-Received: from mga02.intel.com ([134.134.136.20]:4466 "EHLO mga02.intel.com"
+        id S1726706AbgCLUpR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Mar 2020 16:45:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36764 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727455AbgCLPOv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 12 Mar 2020 11:14:51 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Mar 2020 08:14:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,545,1574150400"; 
-   d="scan'208";a="266376041"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga004.fm.intel.com with ESMTP; 12 Mar 2020 08:14:48 -0700
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1jCPXu-00916h-38; Thu, 12 Mar 2020 17:14:50 +0200
-Date:   Thu, 12 Mar 2020 17:14:50 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: Re: [RFC PATCH] i2c: acpi: put device when verifying client fails
-Message-ID: <20200312151450.GZ1922688@smile.fi.intel.com>
-References: <20200312133244.9564-1-wsa@the-dreams.de>
+        id S1726246AbgCLUpR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 12 Mar 2020 16:45:17 -0400
+Received: from localhost (mobile-166-175-186-165.mycingular.net [166.175.186.165])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 067F0205F4;
+        Thu, 12 Mar 2020 20:45:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1584045916;
+        bh=zZzSYd+OhEGo8pmui4OqaDSuxP1H2anQxWw6SpQUHb8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=nx7m7zJcnrAvX1RV8llWgsCoe4zJIRYbu9W2a5EFju1bjHduukyyrr861uJ2A38+c
+         SD4yPMh1iEsi3jWdLg+wFDm11H4Mn213zXfKWrpetsfmbPZmH4P3EnuIJMFcVRAlzQ
+         GHFsnrLuzMfgwFRn6465StIBaqkEOazOtFgUBYDc=
+Date:   Thu, 12 Mar 2020 15:45:14 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc:     will@kernel.org, robh+dt@kernel.org, joro@8bytes.org,
+        baolu.lu@linux.intel.com, sudeep.holla@arm.com,
+        linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org,
+        lorenzo.pieralisi@arm.com, corbet@lwn.net, mark.rutland@arm.com,
+        liviu.dudau@arm.com, guohanjun@huawei.com, rjw@rjwysocki.net,
+        lenb@kernel.org, robin.murphy@arm.com, dwmw2@infradead.org,
+        amurray@thegoodpenguin.co.uk, frowand.list@gmail.com
+Subject: Re: [PATCH v2 03/11] PCI: OF: Check whether the host bridge supports
+ ATS
+Message-ID: <20200312204514.GA178416@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200312133244.9564-1-wsa@the-dreams.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20200311124506.208376-4-jean-philippe@linaro.org>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 12, 2020 at 02:32:44PM +0100, Wolfram Sang wrote:
-> From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+On Wed, Mar 11, 2020 at 01:44:58PM +0100, Jean-Philippe Brucker wrote:
+> When setting up a generic host on a device-tree based system, copy the
+> ats-supported flag into the pci_host_bridge structure.
 > 
-> i2c_verify_client() can fail, so we need to put the device when that
-> happens.
-
-I hope it's not a CoVID-19 makes me mistakenly commented in the first place. :-)
-
-So, theoretically below is possible, but practically it's doubtful.
-
-The I2CSerialBusV2() ACPI resource can be present solely in I²C slave device
-nodes according to the specification. However, we might have two possible cases
-a) screwed up ACPI table;
-b) I²C master which in turn is I²C slave.
-
-While a) has been so far unseen, b) case sounds like plasible for I²C muxes IIUC.
-
-So, I agree with the patch, and sorry for the first reaction.
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-> Fixes: 525e6fabeae2 ("i2c / ACPI: add support for ACPI reconfigure notifications")
-> Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > ---
+> v1->v2: keep the helper in pci-host-common.c
+> ---
+>  drivers/pci/controller/pci-host-common.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 > 
-> RFC because I don't know if it can be that the returned dev is not an
-> i2c_client. Yet, since it can happen theoretically, I think we should
-> have the checks.
-> 
->  drivers/i2c/i2c-core-acpi.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-> index 8f3dbc97a057..8b0ff780919b 100644
-> --- a/drivers/i2c/i2c-core-acpi.c
-> +++ b/drivers/i2c/i2c-core-acpi.c
-> @@ -394,9 +394,17 @@ EXPORT_SYMBOL_GPL(i2c_acpi_find_adapter_by_handle);
->  static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev)
->  {
->  	struct device *dev;
-> +	struct i2c_client *client;
->  
->  	dev = bus_find_device_by_acpi_dev(&i2c_bus_type, adev);
-> -	return dev ? i2c_verify_client(dev) : NULL;
-> +	if (!dev)
-> +		return NULL;
-> +
-> +	client = i2c_verify_client(dev);
-> +	if (!client)
-> +		put_device(dev);
-> +
-> +	return client;
+> diff --git a/drivers/pci/controller/pci-host-common.c b/drivers/pci/controller/pci-host-common.c
+> index 250a3fc80ec6..2e800bc6ae7a 100644
+> --- a/drivers/pci/controller/pci-host-common.c
+> +++ b/drivers/pci/controller/pci-host-common.c
+> @@ -54,6 +54,16 @@ static struct pci_config_window *gen_pci_init(struct device *dev,
+>  	return ERR_PTR(err);
 >  }
 >  
->  static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
+> +static void of_pci_host_check_ats(struct pci_host_bridge *bridge)
+> +{
+> +	struct device_node *np = bridge->bus->dev.of_node;
+> +
+> +	if (!np)
+> +		return;
+> +
+> +	bridge->ats_supported = of_property_read_bool(np, "ats-supported");
+> +}
+> +
+>  int pci_host_common_probe(struct platform_device *pdev,
+>  			  struct pci_ecam_ops *ops)
+>  {
+> @@ -92,6 +102,7 @@ int pci_host_common_probe(struct platform_device *pdev,
+>  		return ret;
+>  	}
+>  
+> +	of_pci_host_check_ats(bridge);
+
+I would prefer to write this as a predicate instead of having the
+assignment be a side-effect, e.g.,
+
+  bridge->ats_supported = of_pci_host_ats_supported(bridge);
+
+If that works for you,
+
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+
+>  	platform_set_drvdata(pdev, bridge->bus);
+>  	return 0;
+>  }
 > -- 
-> 2.20.1
+> 2.25.1
 > 
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
