@@ -2,204 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D95C3182EB8
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Mar 2020 12:13:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9282A182FDB
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Mar 2020 13:06:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726641AbgCLLNv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Mar 2020 07:13:51 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:35172 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726299AbgCLLNu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Mar 2020 07:13:50 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jCLmb-0006Sp-Fe; Thu, 12 Mar 2020 11:13:45 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: [PATCH] ACPI: sysfs: copy ACPI data using io memory copying
-Date:   Thu, 12 Mar 2020 11:13:45 +0000
-Message-Id: <20200312111345.1057569-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        id S1726669AbgCLMGP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Mar 2020 08:06:15 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:57640 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726254AbgCLMGP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Mar 2020 08:06:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1584014774;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=xSNpSvUKNp6/83m+odfBvo9SeOnVj+MqMyFuwojaVPk=;
+        b=WGIlFxQgatTpPnXZbL+a/VJX7zhLF2vTe9cBsFK5jY6t2cHUNAo+7SXkgpcDYIwnycFnvg
+        9S26I8Z2CWUSj7r49L/6GxGDx6GJqwtip6ULaU/eDgp1tnV/dhdDxkUgL3uJ3dSaEmj963
+        sO8F/4beRmwyeAevn64TSIFoOSqy8ZU=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-389-jqPQfRGhNJi5sigpmv1Raw-1; Thu, 12 Mar 2020 08:06:13 -0400
+X-MC-Unique: jqPQfRGhNJi5sigpmv1Raw-1
+Received: by mail-wr1-f71.google.com with SMTP id i7so2529734wru.3
+        for <linux-acpi@vger.kernel.org>; Thu, 12 Mar 2020 05:06:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=xSNpSvUKNp6/83m+odfBvo9SeOnVj+MqMyFuwojaVPk=;
+        b=ohIX/wUwwkCtezFgYiyxWKQHeY3ZEly1CdErpa9DzbolQHEsRB11CbqV0teGR4nZH5
+         5o5Jp3PwxNwyrO0nVLMfqhN63gL27wWhxbgasjx195osjQI4dNVzbGScgGO/qsb7GnJF
+         d3Do7kOOAWYFzc6PSgpCYoYqwluE65nXcvTWuhLA6S87nt6ATHopW/bXQfZH+pP42Gyn
+         XHONhagghb2oPtyW+kfhjPR9Qal2SDezR8XnSSaKCFhBeKiyODgzOEtmt6SI3buCHaIH
+         B4brxixdC8FDXidYRS0UfGoJ5rDy2LTHnwITdnnAHVuWFj5ZSg4lfmWBEYlbtdMUmRHo
+         HmQQ==
+X-Gm-Message-State: ANhLgQ3z/816v4nhZ0dFCvssSD8Sdotwif/5XQDozXe57SIR7ki2ymqP
+        NV0LDXAfPDfrbeWg26z+8KpNC0RJDMiQgFDWLN5MK0lctpa5ksBQL5Q/8gigMFOg9EhQR+pVL7E
+        o8/w/DEuuI4/Y5Lw9ZKQRCQ==
+X-Received: by 2002:a1c:2d4f:: with SMTP id t76mr4517476wmt.60.1584014772243;
+        Thu, 12 Mar 2020 05:06:12 -0700 (PDT)
+X-Google-Smtp-Source: ADFU+vt+HRWOgRlV2pNiPqlueoA4u8RAn38ejkM1ffrZr8wxJmwV3UnkER85ZZH0WJCOEzq7uqjitA==
+X-Received: by 2002:a1c:2d4f:: with SMTP id t76mr4516835wmt.60.1584014764673;
+        Thu, 12 Mar 2020 05:06:04 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-fc7e-fd47-85c1-1ab3.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:fc7e:fd47:85c1:1ab3])
+        by smtp.gmail.com with ESMTPSA id w4sm23445550wrl.12.2020.03.12.05.06.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Mar 2020 05:06:03 -0700 (PDT)
+Subject: Re: [RFC v2] x86: Select HARDIRQS_SW_RESEND on x86
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>
+Cc:     linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+References: <87sgk4naqh.fsf@nanos.tec.linutronix.de>
+ <0e5b484d-89f5-c018-328a-fb4a04c6cd91@redhat.com>
+ <87fteek27x.fsf@nanos.tec.linutronix.de>
+ <218eb262-011f-0739-8e74-9ca3ef793bb8@redhat.com>
+ <87a74mk0gm.fsf@nanos.tec.linutronix.de>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <9a7ebae2-fa65-4a85-5951-120f3543e5fb@redhat.com>
+Date:   Thu, 12 Mar 2020 13:06:03 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <87a74mk0gm.fsf@nanos.tec.linutronix.de>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hi,
 
-Reading ACPI data on ARM64 at a non-aligned offset from
-/sys/firmware/acpi/tables/data/BERT will cause a splat because
-the data is I/O memory mapped and being read with just a memcpy.
-Fix this by introducing an I/O variant of memory_read_from_buffer
-and using I/O memory mapped copies instead.
+On 3/11/20 11:09 PM, Thomas Gleixner wrote:
+> Hans de Goede <hdegoede@redhat.com> writes:
+>> On 3/11/20 10:31 PM, Thomas Gleixner wrote:
+>>> Hans de Goede <hdegoede@redhat.com> writes:
+>>>>> I just need to stare at the legacy PIC and the virt stuff.
+>>>>>
+>>>>>> Also maybe we should add a Cc: stable@vger.kernel.org ??? This seems like
+>>>>>> somewhat a big change for that but it does solve some real issues...
+>>>>>
+>>>>> Yes. Let me stare at the couple of weird irqchips which might get
+>>>>> surprised. I'll teach them not to do that :)
+>>>>
+>>>> I know that you are very busy, still I'm wondering is there any progress
+>>>> on this ?
+>>>
+>>> Bah. That fell through the cracks, but actually I looked at this due to
+>>> the PCI-E AER wreckage. So yes, this is fine, but we want:
+>>>
+>>>    https://lkml.kernel.org/r/20200306130623.590923677@linutronix.de
+>>>    https://lkml.kernel.org/r/20200306130623.684591280@linutronix.de
+>>>
+>>> if we want to backport this to stable.
+>>
+>> So far I have seen a few, but not a lot of devices which need this, so
+>> I'm not 100% sure what to do here.
+>>
+>> Do you consider this change safe / suitable for stable if those 2 patches
+>> are backported and applied first?
+> 
+> I think so. The two patches are on my list for backports anyway, but I
+> wanted to give them some time to simmer.
 
-Fixes the following splat:
+OK, I'll submit this patch for stable then once your backports have landed.
 
-[  439.789355] Unable to handle kernel paging request at virtual address ffff800041ac0007
-[  439.797275] Mem abort info:
-[  439.800078]   ESR = 0x96000021
-[  439.803131]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  439.808437]   SET = 0, FnV = 0
-[  439.811486]   EA = 0, S1PTW = 0
-[  439.814621] Data abort info:
-[  439.817489]   ISV = 0, ISS = 0x00000021
-[  439.821319]   CM = 0, WnR = 0
-[  439.824282] swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000000817fc000
-[  439.830979] [ffff800041ac0007] pgd=000000bffcfff003, pud=0000009f27cee003, pmd=000000bf4b993003, pte=0068000080280703
-[  439.841584] Internal error: Oops: 96000021 [#1] SMP
-[  439.846449] Modules linked in: nls_iso8859_1 dm_multipath scsi_dh_rdac scsi_dh_emc scsi_dh_alua ipmi_ssif input_leds joydev ipmi_devintf ipmi_msghandler thunderx2_pmu sch_fq_codel ip_tables x_tables autofs4 btrfs zstd_compress raid10 raid456 async_raid6_recov async_memcpy async_pq async_xor async_tx xor xor_neon raid6_pq libcrc32c raid1 raid0 multipath linear i2c_smbus ast i2c_algo_bit crct10dif_ce drm_vram_helper uas ttm ghash_ce drm_kms_helper sha2_ce syscopyarea sha256_arm64 qede sysfillrect mpt3sas sha1_ce sysimgblt fb_sys_fops raid_class qed drm scsi_transport_sas usb_storage ahci crc8 gpio_xlp i2c_xlp9xx hid_generic usbhid hid aes_neon_bs aes_neon_blk aes_ce_blk crypto_simd cryptd aes_ce_cipher
-[  439.908474] CPU: 2 PID: 3926 Comm: a.out Not tainted 5.4.0-14-generic #17-Ubuntu
-[  439.915855] Hardware name: To be filled by O.E.M. Saber/Saber, BIOS 0ACKL027 07/01/2019
-[  439.923844] pstate: 80400009 (Nzcv daif +PAN -UAO)
-[  439.928625] pc : __memcpy+0x90/0x180
-[  439.932192] lr : memory_read_from_buffer+0x64/0x88
-[  439.936968] sp : ffff8000350dbc70
-[  439.940270] x29: ffff8000350dbc70 x28: ffff009e9c444b00
-[  439.945568] x27: 0000000000000000 x26: 0000000000000000
-[  439.950866] x25: 0000000056000000 x24: ffff800041ac0000
-[  439.956164] x23: ffff009ea163f980 x22: 0000000000000007
-[  439.961462] x21: ffff8000350dbce8 x20: 000000000000000e
-[  439.966760] x19: 0000000000000007 x18: ffff8000112f64a8
-[  439.972058] x17: 0000000000000000 x16: 0000000000000000
-[  439.977355] x15: 0000000080280000 x14: ffff800041aed000
-[  439.982653] x13: ffff009ee9fa2840 x12: ffff800041ad1000
-[  439.987951] x11: ffff8000115e1360 x10: ffff8000115e1360
-[  439.993248] x9 : 0000000000010000 x8 : ffff800011ad2658
-[  439.998546] x7 : ffff800041ac0000 x6 : ffff009ea163f980
-[  440.003844] x5 : 0140000000000000 x4 : 0000000000010000
-[  440.009141] x3 : ffff800041ac0000 x2 : 0000000000000007
-[  440.014439] x1 : ffff800041ac0007 x0 : ffff009ea163f980
-[  440.019737] Call trace:
-[  440.022173]  __memcpy+0x90/0x180
-[  440.025392]  acpi_data_show+0x54/0x80
-[  440.029044]  sysfs_kf_bin_read+0x6c/0xa8
-[  440.032954]  kernfs_file_direct_read+0x90/0x2d0
-[  440.037470]  kernfs_fop_read+0x68/0x78
-[  440.041210]  __vfs_read+0x48/0x90
-[  440.044511]  vfs_read+0xd0/0x1a0
-[  440.047726]  ksys_read+0x78/0x100
-[  440.051028]  __arm64_sys_read+0x24/0x30
-[  440.054852]  el0_svc_common.constprop.0+0xdc/0x1d8
-[  440.059629]  el0_svc_handler+0x34/0xa0
-[  440.063366]  el0_svc+0x10/0x14
-[  440.066411] Code: 36180062 f8408423 f80084c3 36100062 (b8404423)
-[  440.072492] ---[ end trace 45fb374e8d2d800e ]---
+Regards,
 
-A simple reproducer is as follows:
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <string.h>
-
-int main(void)
-{
-        int fd;
-        char buffer[7];
-        ssize_t n;
-
-        fd = open("/sys/firmware/acpi/tables/data/BERT", O_RDONLY);
-        if (fd < 0) {
-                perror("open failed");
-                return -1;
-        }
-        do {
-                n = read(fd, buffer, sizeof(buffer));
-        } while (n > 0);
-
-        return 0;
-}
-
-BugLink: https://bugs.launchpad.net/bugs/1866772
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/acpi/sysfs.c   |  2 +-
- fs/libfs.c             | 33 +++++++++++++++++++++++++++++++++
- include/linux/string.h |  2 ++
- 3 files changed, 36 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-index c60d2c6d31d6..fb9e216cb8c0 100644
---- a/drivers/acpi/sysfs.c
-+++ b/drivers/acpi/sysfs.c
-@@ -446,7 +446,7 @@ static ssize_t acpi_data_show(struct file *filp, struct kobject *kobj,
- 	base = acpi_os_map_memory(data_attr->addr, data_attr->attr.size);
- 	if (!base)
- 		return -ENOMEM;
--	rc = memory_read_from_buffer(buf, count, &offset, base,
-+	rc = memory_read_from_io_buffer(buf, count, &offset, base,
- 				     data_attr->attr.size);
- 	acpi_os_unmap_memory(base, data_attr->attr.size);
- 
-diff --git a/fs/libfs.c b/fs/libfs.c
-index c686bd9caac6..3e112c51ce7b 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -800,6 +800,39 @@ ssize_t memory_read_from_buffer(void *to, size_t count, loff_t *ppos,
- }
- EXPORT_SYMBOL(memory_read_from_buffer);
- 
-+/**
-+ * memory_read_from_io_buffer - copy data from a io memory mapped buffer
-+ * @to: the kernel space buffer to read to
-+ * @count: the maximum number of bytes to read
-+ * @ppos: the current position in the buffer
-+ * @from: the buffer to read from
-+ * @available: the size of the buffer
-+ *
-+ * The memory_read_from_buffer() function reads up to @count bytes from the
-+ * io memory mappy buffer @from at offset @ppos into the kernel space address
-+ * starting at @to.
-+ *
-+ * On success, the number of bytes read is returned and the offset @ppos is
-+ * advanced by this number, or negative value is returned on error.
-+ **/
-+ssize_t memory_read_from_io_buffer(void *to, size_t count, loff_t *ppos,
-+				   const void *from, size_t available)
-+{
-+	loff_t pos = *ppos;
-+
-+	if (pos < 0)
-+		return -EINVAL;
-+	if (pos >= available)
-+		return 0;
-+	if (count > available - pos)
-+		count = available - pos;
-+	memcpy_fromio(to, from + pos, count);
-+	*ppos = pos + count;
-+
-+	return count;
-+}
-+EXPORT_SYMBOL(memory_read_from_io_buffer);
-+
- /*
-  * Transaction based IO.
-  * The file expects a single write which triggers the transaction, and then
-diff --git a/include/linux/string.h b/include/linux/string.h
-index 6dfbb2efa815..0c6ec2aa3909 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -216,6 +216,8 @@ int bprintf(u32 *bin_buf, size_t size, const char *fmt, ...) __printf(3, 4);
- 
- extern ssize_t memory_read_from_buffer(void *to, size_t count, loff_t *ppos,
- 				       const void *from, size_t available);
-+extern ssize_t memory_read_from_io_buffer(void *to, size_t count, loff_t *ppos,
-+					  const void *from, size_t available);
- 
- int ptr_to_hashval(const void *ptr, unsigned long *hashval_out);
- 
--- 
-2.25.1
+Hans
 
