@@ -2,63 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 878171845F4
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Mar 2020 12:29:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCA2A1848F7
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Mar 2020 15:16:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726613AbgCML3h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Mar 2020 07:29:37 -0400
-Received: from mga02.intel.com ([134.134.136.20]:24224 "EHLO mga02.intel.com"
+        id S1726834AbgCMOQS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Mar 2020 10:16:18 -0400
+Received: from sauhun.de ([88.99.104.3]:52264 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726492AbgCML3h (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 13 Mar 2020 07:29:37 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Mar 2020 04:29:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,548,1574150400"; 
-   d="scan'208";a="354351002"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga001.fm.intel.com with SMTP; 13 Mar 2020 04:29:33 -0700
-Received: by lahna (sSMTP sendmail emulation); Fri, 13 Mar 2020 13:29:32 +0200
-Date:   Fri, 13 Mar 2020 13:29:32 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
+        id S1726526AbgCMOQS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 13 Mar 2020 10:16:18 -0400
+Received: from localhost (p54B3314F.dip0.t-ipconnect.de [84.179.49.79])
+        by pokefinder.org (Postfix) with ESMTPSA id F24D52C1ED4;
+        Fri, 13 Mar 2020 15:16:15 +0100 (CET)
+Date:   Fri, 13 Mar 2020 15:16:13 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     linux-i2c@vger.kernel.org
+Cc:     linux-acpi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Jarkko Nikula <jarkko.nikula@linux.intel.com>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>
 Subject: Re: [RFC PATCH] i2c: acpi: put device when verifying client fails
-Message-ID: <20200313112932.GA2540@lahna.fi.intel.com>
+Message-ID: <20200313141612.GA1852@ninjato>
 References: <20200312133244.9564-1-wsa@the-dreams.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Nq2Wo0NMKNjxTN9z"
 Content-Disposition: inline
 In-Reply-To: <20200312133244.9564-1-wsa@the-dreams.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+
+--Nq2Wo0NMKNjxTN9z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
 On Thu, Mar 12, 2020 at 02:32:44PM +0100, Wolfram Sang wrote:
 > From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> 
+>=20
 > i2c_verify_client() can fail, so we need to put the device when that
 > happens.
-> 
-> Fixes: 525e6fabeae2 ("i2c / ACPI: add support for ACPI reconfigure notifications")
+>=20
+> Fixes: 525e6fabeae2 ("i2c / ACPI: add support for ACPI reconfigure notifi=
+cations")
 > Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
 > Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> ---
-> 
-> RFC because I don't know if it can be that the returned dev is not an
-> i2c_client. Yet, since it can happen theoretically, I think we should
-> have the checks.
 
-I agree,
+Applied to for-current, thanks!
 
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+
+--Nq2Wo0NMKNjxTN9z
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl5rlakACgkQFA3kzBSg
+KbZbaxAArEAsA1yKwsk92jQHfsNR+Xq/KPoHgCn2ebTVnEMuqsT4HdyysiJut86o
+NE6IxWaxYXrkrunYpsKNfWBDiONDKMhCkBIYrvemUtN6vvdQfdTOcIZmgzq9o1EP
+DexXySXd05+kq2DLDl3A887MA4upkSAA7AGa7ZVKnb5xVEpZue5ANAWObbuqkU6U
+Pz71g3wLD+XO5msbHkn8+6C1bUwTUcq/yZHqDYFu1tcrwpVYldoZ68OR9IMgD+JP
+/vGq1iFBV91QeoSRvXqJcOgMOhai1Z/u8u9XPs33v66MlzbYjiH+r7ZCabO1ZVt0
+lD4Q5lvkvxUE+cE1yEQLrVzNihUIy4XD2K8LvBxeDx6r0WdCKsCM8f82AnXSQ6FW
+sZpmx+2ISEfpptgCOSFzXc9whps7zOiHlCIpKq2T4yGiH//HQu+oNA02QcS/opKd
+eMxkY9TLqTVVhnVsmyvyo5IZsAU0Qg2ns10UE8+JvFgcFss6i3UUwP3p+w/WAXNO
+ZyqsPzrkWytmIQ+wTFpqDp2nXMqaNWr66RjlTFUkIzUYht6d6gWaPItr+BAhAIbc
+LpbKe5RziAUX22QnYLcuYcXKIPwg8orNmhwlJ2uOhQCpYkTGM8ls3hAtc1JUNnFx
+OC511G9TUqAiVuRLhQQPqw3JUxivQJfaECrL9vZZoFWRd6jhFhI=
+=7Mho
+-----END PGP SIGNATURE-----
+
+--Nq2Wo0NMKNjxTN9z--
