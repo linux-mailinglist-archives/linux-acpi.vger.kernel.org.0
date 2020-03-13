@@ -2,25 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BBD1184A66
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Mar 2020 16:17:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAAEA184D49
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Mar 2020 18:09:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726446AbgCMPRn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Mar 2020 11:17:43 -0400
-Received: from foss.arm.com ([217.140.110.172]:57070 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726420AbgCMPRn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 13 Mar 2020 11:17:43 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9E61F31B;
-        Fri, 13 Mar 2020 08:17:42 -0700 (PDT)
-Received: from [172.16.1.159] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1CCC73F67D;
-        Fri, 13 Mar 2020 08:17:38 -0700 (PDT)
-Subject: Re: [PATCH v4 1/2] ACPI: APEI: Add support to notify the vendor
- specific HW errors
-To:     Shiju Jose <shiju.jose@huawei.com>
-Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        id S1726442AbgCMRJF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Mar 2020 13:09:05 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2559 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726406AbgCMRJE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 13 Mar 2020 13:09:04 -0400
+Received: from lhreml701-cah.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id 08546B0FE24240643515;
+        Fri, 13 Mar 2020 17:09:02 +0000 (GMT)
+Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
+ lhreml701-cah.china.huawei.com (10.201.108.42) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Fri, 13 Mar 2020 17:08:43 +0000
+Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
+ lhreml715-chm.china.huawei.com (10.201.108.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Fri, 13 Mar 2020 17:08:43 +0000
+Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
+ lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1713.004;
+ Fri, 13 Mar 2020 17:08:43 +0000
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     James Morse <james.morse@arm.com>
+CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
@@ -34,165 +40,154 @@ Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         Jonathan Cameron <jonathan.cameron@huawei.com>,
         tanxiaofei <tanxiaofei@huawei.com>,
         yangyicong <yangyicong@huawei.com>
+Subject: RE: [PATCH v4 1/2] ACPI: APEI: Add support to notify the vendor
+ specific HW errors
+Thread-Topic: [PATCH v4 1/2] ACPI: APEI: Add support to notify the vendor
+ specific HW errors
+Thread-Index: AQHV3aHpvUUiw2j43UuF7uWUQ9pa06hD2fwAgAADqhCAAvwSAIAACSkg
+Date:   Fri, 13 Mar 2020 17:08:43 +0000
+Message-ID: <0a37fd4508a94a999a3d0fe0d4222052@huawei.com>
 References: <Shiju Jose> <20200207103143.20104-1-shiju.jose@huawei.com>
  <20200207103143.20104-2-shiju.jose@huawei.com>
  <4967c0e6-b264-a13a-28c7-5ca497442823@arm.com>
  <689f0c7cb0fe49d6a9df140cc1b56690@huawei.com>
-From:   James Morse <james.morse@arm.com>
-Openpgp: preference=signencrypt
-Message-ID: <7c1a20de-746f-8fc2-29a1-6e5d607ebb48@arm.com>
-Date:   Fri, 13 Mar 2020 15:17:22 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <689f0c7cb0fe49d6a9df140cc1b56690@huawei.com>
-Content-Type: text/plain; charset=utf-8
+ <7c1a20de-746f-8fc2-29a1-6e5d607ebb48@arm.com>
+In-Reply-To: <7c1a20de-746f-8fc2-29a1-6e5d607ebb48@arm.com>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.47.88.248]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Shiju,
-
-On 3/12/20 12:10 PM, Shiju Jose wrote:
->> On 07/02/2020 10:31, Shiju Jose wrote:
->>> Presently APEI does not support reporting the vendor specific HW
->>> errors, received in the vendor defined table entries, to the vendor
->>> drivers for any recovery.
->>>
->>> This patch adds the support to register and unregister the error
->>> handling function for the vendor specific HW errors and notify the
->>> registered kernel driver.
->>
->> Is it possible to use the kernel's existing atomic_notifier_chain_register() API for
->> this?
->>
->> The one thing that can't be done in the same way is the GUID filtering in ghes.c.
->> Each driver would need to check if the call matched a GUID they knew about,
->> and return NOTIFY_DONE if they "don't care".
->>
->> I think this patch would be a lot smaller if it was tweaked to be able to use the
->> existing API. If there is a reason not to use it, it would be good to know what it
->> is.
-
-> I think when using atomic_notifier_chain_register we have following limitations,
-> 1. All the registered error handlers would get called, though an error is not related to those handlers.    
-
-The notifier chain provides NOTIFY_STOP_MASK, so that one of the callers
-can say the work is done. We only expect a handful of these, so I don't
-think there is going to be a scalability problem.
-
-
->     Also this may lead to mishandling of the error information if a handler does not
->     implement GUID checking etc.
-
-Which would be a bug we can fix.
-There is no point worrying about bugs in out of tree code.
-
-
-> 2. atomic_notifier_chain_register (notifier_chain_register) looks like does not support 
->     pass the handler's private data during the registration which supposed to 
->     passed later in the call back function *notifier_fn_t(... ,void *data) to the handler.
-
-The callback is provided with the struct notifier_block. A bit of
-container_of() magic will give you whatever structure you embedded it in!
-
-
-> 3. Also got difficulty in passing the ghes error data(acpi_hest_generic_data), GUID
->     for the error received to the handler through the notifier_chain  callback interface. 
-
-Here you've lost me. Because you need to pass more than one thing? Can't
-we have a struct for that?
-
-But, isn't it all in struct acpi_hest_generic_data already? That is
-where the guid and severity come from.
-
-
->>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c index
->>> 103acbb..69e18d7 100644
->>> --- a/drivers/acpi/apei/ghes.c
->>> +++ b/drivers/acpi/apei/ghes.c
->>> @@ -490,6 +490,109 @@ static void ghes_handle_aer(struct
->>> acpi_hest_generic_data *gdata)
->>
->>> +/**
->>> + * ghes_unregister_event_handler - unregister the previously
->>> + * registered event handling function.
->>> + * @sec_type: sec_type of the corresponding CPER.
->>> + * @data: driver specific data to distinguish devices.
->>> + */
->>> +void ghes_unregister_event_handler(guid_t sec_type, void *data) {
->>> +	struct ghes_event_notify *event_notify;
->>> +	bool found = false;
->>> +
->>> +	mutex_lock(&ghes_event_notify_mutex);
->>> +	rcu_read_lock();
->>> +	list_for_each_entry_rcu(event_notify,
->>> +				&ghes_event_handler_list, list) {
->>> +		if (guid_equal(&event_notify->sec_type, &sec_type)) {
->>
->>> +			if (data != event_notify->data)
->>
->> It looks like you need multiple drivers to handle the same GUID because of
->> multiple root ports. Can't the handler lookup the right device?
-
-> This check was because GUID is shared among multiple devices with one driver as seen
-> in the B2889FC9 driver (pcie-hisi-error.c). 
-
-(we should stop calling it by its guid ... does it have a name?!)
-
-
-This must be some kind of error collector for a bus right?
-
-I agree we may need to have multiple drivers register to handle vendor
-events, but it looks like you are registering the same handler multiple
-times, with different private structures.
-
-Can't it find the affected device from the error description?
-
-
->>> @@ -525,11 +628,14 @@ static void ghes_do_proc(struct ghes *ghes,
->>>
->>>  			log_arm_hw_error(err);
->>>  		} else {
->>> -			void *err = acpi_hest_get_payload(gdata);
->>> -
->>> -			log_non_standard_event(sec_type, fru_id, fru_text,
->>> -					       sec_sev, err,
->>> -					       gdata->error_data_length);
->>> +			if (!ghes_handle_non_standard_event(sec_type, gdata,
->>> +							    sev)) {
->>> +				void *err = acpi_hest_get_payload(gdata);
->>> +
->>> +				log_non_standard_event(sec_type, fru_id,
->>> +						       fru_text, sec_sev, err,
->>> +						       gdata->error_data_length);
->>> +			}
->>
->> So, a side effect of the kernel handling these is they no longer get logged out of
->> trace points?
->>
->> I guess the driver the claims this logs some more accurate information. Are
->> there expected to be any user-space programs doing something useful with
->> B2889FC9... today?
-
-> The B2889FC9 driver does not expect any corresponding user space programs. 
-> The driver mainly for the error recovery and basic error decoding and logging.
-
-> Previously we added the error logging for the B2889FC9 in the rasdaemon.
-
-So this series would break the error logging in rasdaemon.
-
-User-space would need to be upgraded to receive the trace information
-from the specific driver instead. (how does it know?!)
-
-Could we log_non_standard_event() unconditionally, maybe adding a field
-to indicate that a driver claimed it, so there may be more data
-somewhere else...
-
-
-Thanks,
-
-James
+SGkgSmFtZXMsDQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEphbWVzIE1v
+cnNlIFttYWlsdG86amFtZXMubW9yc2VAYXJtLmNvbV0NCj5TZW50OiAxMyBNYXJjaCAyMDIwIDE1
+OjE3DQo+VG86IFNoaWp1IEpvc2UgPHNoaWp1Lmpvc2VAaHVhd2VpLmNvbT4NCj5DYzogbGludXgt
+YWNwaUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LXBjaUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LQ0K
+Pmtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IHJqd0Byand5c29ja2kubmV0OyBoZWxnYWFzQGtlcm5l
+bC5vcmc7DQo+bGVuYkBrZXJuZWwub3JnOyBicEBhbGllbjguZGU7IHRvbnkubHVja0BpbnRlbC5j
+b207DQo+Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc7IHpoYW5nbGlndWFuZ0BsaW51eC5hbGli
+YWJhLmNvbTsNCj50Z2x4QGxpbnV0cm9uaXguZGU7IExpbnV4YXJtIDxsaW51eGFybUBodWF3ZWku
+Y29tPjsgSm9uYXRoYW4gQ2FtZXJvbg0KPjxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyB0
+YW54aWFvZmVpIDx0YW54aWFvZmVpQGh1YXdlaS5jb20+Ow0KPnlhbmd5aWNvbmcgPHlhbmd5aWNv
+bmdAaHVhd2VpLmNvbT4NCj5TdWJqZWN0OiBSZTogW1BBVENIIHY0IDEvMl0gQUNQSTogQVBFSTog
+QWRkIHN1cHBvcnQgdG8gbm90aWZ5IHRoZSB2ZW5kb3INCj5zcGVjaWZpYyBIVyBlcnJvcnMNCj4N
+Cj5IaSBTaGlqdSwNCj4NCj5PbiAzLzEyLzIwIDEyOjEwIFBNLCBTaGlqdSBKb3NlIHdyb3RlOg0K
+Pj4+IE9uIDA3LzAyLzIwMjAgMTA6MzEsIFNoaWp1IEpvc2Ugd3JvdGU6DQo+Pj4+IFByZXNlbnRs
+eSBBUEVJIGRvZXMgbm90IHN1cHBvcnQgcmVwb3J0aW5nIHRoZSB2ZW5kb3Igc3BlY2lmaWMgSFcN
+Cj4+Pj4gZXJyb3JzLCByZWNlaXZlZCBpbiB0aGUgdmVuZG9yIGRlZmluZWQgdGFibGUgZW50cmll
+cywgdG8gdGhlIHZlbmRvcg0KPj4+PiBkcml2ZXJzIGZvciBhbnkgcmVjb3ZlcnkuDQo+Pj4+DQo+
+Pj4+IFRoaXMgcGF0Y2ggYWRkcyB0aGUgc3VwcG9ydCB0byByZWdpc3RlciBhbmQgdW5yZWdpc3Rl
+ciB0aGUgZXJyb3INCj4+Pj4gaGFuZGxpbmcgZnVuY3Rpb24gZm9yIHRoZSB2ZW5kb3Igc3BlY2lm
+aWMgSFcgZXJyb3JzIGFuZCBub3RpZnkgdGhlDQo+Pj4+IHJlZ2lzdGVyZWQga2VybmVsIGRyaXZl
+ci4NCj4+Pg0KPj4+IElzIGl0IHBvc3NpYmxlIHRvIHVzZSB0aGUga2VybmVsJ3MgZXhpc3RpbmcN
+Cj4+PiBhdG9taWNfbm90aWZpZXJfY2hhaW5fcmVnaXN0ZXIoKSBBUEkgZm9yIHRoaXM/DQo+Pj4N
+Cj4+PiBUaGUgb25lIHRoaW5nIHRoYXQgY2FuJ3QgYmUgZG9uZSBpbiB0aGUgc2FtZSB3YXkgaXMg
+dGhlIEdVSUQgZmlsdGVyaW5nIGluDQo+Z2hlcy5jLg0KPj4+IEVhY2ggZHJpdmVyIHdvdWxkIG5l
+ZWQgdG8gY2hlY2sgaWYgdGhlIGNhbGwgbWF0Y2hlZCBhIEdVSUQgdGhleSBrbmV3DQo+Pj4gYWJv
+dXQsIGFuZCByZXR1cm4gTk9USUZZX0RPTkUgaWYgdGhleSAiZG9uJ3QgY2FyZSIuDQo+Pj4NCj4+
+PiBJIHRoaW5rIHRoaXMgcGF0Y2ggd291bGQgYmUgYSBsb3Qgc21hbGxlciBpZiBpdCB3YXMgdHdl
+YWtlZCB0byBiZQ0KPj4+IGFibGUgdG8gdXNlIHRoZSBleGlzdGluZyBBUEkuIElmIHRoZXJlIGlz
+IGEgcmVhc29uIG5vdCB0byB1c2UgaXQsIGl0DQo+Pj4gd291bGQgYmUgZ29vZCB0byBrbm93IHdo
+YXQgaXQgaXMuDQo+DQo+PiBJIHRoaW5rIHdoZW4gdXNpbmcgYXRvbWljX25vdGlmaWVyX2NoYWlu
+X3JlZ2lzdGVyIHdlIGhhdmUgZm9sbG93aW5nDQo+bGltaXRhdGlvbnMsDQo+PiAxLiBBbGwgdGhl
+IHJlZ2lzdGVyZWQgZXJyb3IgaGFuZGxlcnMgd291bGQgZ2V0IGNhbGxlZCwgdGhvdWdoIGFuIGVy
+cm9yIGlzIG5vdA0KPnJlbGF0ZWQgdG8gdGhvc2UgaGFuZGxlcnMuDQo+DQo+VGhlIG5vdGlmaWVy
+IGNoYWluIHByb3ZpZGVzIE5PVElGWV9TVE9QX01BU0ssIHNvIHRoYXQgb25lIG9mIHRoZSBjYWxs
+ZXJzIGNhbg0KPnNheSB0aGUgd29yayBpcyBkb25lLiBXZSBvbmx5IGV4cGVjdCBhIGhhbmRmdWwg
+b2YgdGhlc2UsIHNvIEkgZG9uJ3QgdGhpbmsgdGhlcmUgaXMNCj5nb2luZyB0byBiZSBhIHNjYWxh
+YmlsaXR5IHByb2JsZW0uDQpPay4gSSB3aWxsIGNoZWNrIHRoZSBlcnJvciByZXBvcnRpbmcgYnkg
+dXNpbmcgYXRvbWljX25vdGlmaWVyX2NoYWluIGFuZCB0ZXN0Lg0KDQo+DQo+DQo+PiAgICAgQWxz
+byB0aGlzIG1heSBsZWFkIHRvIG1pc2hhbmRsaW5nIG9mIHRoZSBlcnJvciBpbmZvcm1hdGlvbiBp
+ZiBhIGhhbmRsZXIgZG9lcw0KPm5vdA0KPj4gICAgIGltcGxlbWVudCBHVUlEIGNoZWNraW5nIGV0
+Yy4NCj4NCj5XaGljaCB3b3VsZCBiZSBhIGJ1ZyB3ZSBjYW4gZml4Lg0KPlRoZXJlIGlzIG5vIHBv
+aW50IHdvcnJ5aW5nIGFib3V0IGJ1Z3MgaW4gb3V0IG9mIHRyZWUgY29kZS4NCk9rLg0KDQo+DQo+
+DQo+PiAyLiBhdG9taWNfbm90aWZpZXJfY2hhaW5fcmVnaXN0ZXIgKG5vdGlmaWVyX2NoYWluX3Jl
+Z2lzdGVyKSBsb29rcyBsaWtlIGRvZXMgbm90DQo+c3VwcG9ydA0KPj4gICAgIHBhc3MgdGhlIGhh
+bmRsZXIncyBwcml2YXRlIGRhdGEgZHVyaW5nIHRoZSByZWdpc3RyYXRpb24gd2hpY2ggc3VwcG9z
+ZWQgdG8NCj4+ICAgICBwYXNzZWQgbGF0ZXIgaW4gdGhlIGNhbGwgYmFjayBmdW5jdGlvbiAqbm90
+aWZpZXJfZm5fdCguLi4gLHZvaWQgKmRhdGEpIHRvIHRoZQ0KPmhhbmRsZXIuDQo+DQo+VGhlIGNh
+bGxiYWNrIGlzIHByb3ZpZGVkIHdpdGggdGhlIHN0cnVjdCBub3RpZmllcl9ibG9jay4gQSBiaXQg
+b2YNCj5jb250YWluZXJfb2YoKSBtYWdpYyB3aWxsIGdpdmUgeW91IHdoYXRldmVyIHN0cnVjdHVy
+ZSB5b3UgZW1iZWRkZWQgaXQgaW4hDQpPay4gSSB3aWxsIGNoZWNrIHRoaXMuDQogDQo+DQo+DQo+
+PiAzLiBBbHNvIGdvdCBkaWZmaWN1bHR5IGluIHBhc3NpbmcgdGhlIGdoZXMgZXJyb3IgZGF0YShh
+Y3BpX2hlc3RfZ2VuZXJpY19kYXRhKSwNCj5HVUlEDQo+PiAgICAgZm9yIHRoZSBlcnJvciByZWNl
+aXZlZCB0byB0aGUgaGFuZGxlciB0aHJvdWdoIHRoZSBub3RpZmllcl9jaGFpbiAgY2FsbGJhY2sN
+Cj5pbnRlcmZhY2UuDQo+DQo+SGVyZSB5b3UndmUgbG9zdCBtZS4gQmVjYXVzZSB5b3UgbmVlZCB0
+byBwYXNzIG1vcmUgdGhhbiBvbmUgdGhpbmc/IENhbid0IHdlDQo+aGF2ZSBhIHN0cnVjdCBmb3Ig
+dGhhdD8NCj4NCj5CdXQsIGlzbid0IGl0IGFsbCBpbiBzdHJ1Y3QgYWNwaV9oZXN0X2dlbmVyaWNf
+ZGF0YSBhbHJlYWR5PyBUaGF0IGlzIHdoZXJlIHRoZSBndWlkDQo+YW5kIHNldmVyaXR5IGNvbWUg
+ZnJvbS4NCk9rLiAgcmlnaHQuIA0KIA0KPg0KPg0KPj4+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9h
+Y3BpL2FwZWkvZ2hlcy5jIGIvZHJpdmVycy9hY3BpL2FwZWkvZ2hlcy5jDQo+Pj4+IGluZGV4DQo+
+Pj4+IDEwM2FjYmIuLjY5ZTE4ZDcgMTAwNjQ0DQo+Pj4+IC0tLSBhL2RyaXZlcnMvYWNwaS9hcGVp
+L2doZXMuYw0KPj4+PiArKysgYi9kcml2ZXJzL2FjcGkvYXBlaS9naGVzLmMNCj4+Pj4gQEAgLTQ5
+MCw2ICs0OTAsMTA5IEBAIHN0YXRpYyB2b2lkIGdoZXNfaGFuZGxlX2FlcihzdHJ1Y3QNCj4+Pj4g
+YWNwaV9oZXN0X2dlbmVyaWNfZGF0YSAqZ2RhdGEpDQo+Pj4NCj4+Pj4gKy8qKg0KPj4+PiArICog
+Z2hlc191bnJlZ2lzdGVyX2V2ZW50X2hhbmRsZXIgLSB1bnJlZ2lzdGVyIHRoZSBwcmV2aW91c2x5
+DQo+Pj4+ICsgKiByZWdpc3RlcmVkIGV2ZW50IGhhbmRsaW5nIGZ1bmN0aW9uLg0KPj4+PiArICog
+QHNlY190eXBlOiBzZWNfdHlwZSBvZiB0aGUgY29ycmVzcG9uZGluZyBDUEVSLg0KPj4+PiArICog
+QGRhdGE6IGRyaXZlciBzcGVjaWZpYyBkYXRhIHRvIGRpc3Rpbmd1aXNoIGRldmljZXMuDQo+Pj4+
+ICsgKi8NCj4+Pj4gK3ZvaWQgZ2hlc191bnJlZ2lzdGVyX2V2ZW50X2hhbmRsZXIoZ3VpZF90IHNl
+Y190eXBlLCB2b2lkICpkYXRhKSB7DQo+Pj4+ICsJc3RydWN0IGdoZXNfZXZlbnRfbm90aWZ5ICpl
+dmVudF9ub3RpZnk7DQo+Pj4+ICsJYm9vbCBmb3VuZCA9IGZhbHNlOw0KPj4+PiArDQo+Pj4+ICsJ
+bXV0ZXhfbG9jaygmZ2hlc19ldmVudF9ub3RpZnlfbXV0ZXgpOw0KPj4+PiArCXJjdV9yZWFkX2xv
+Y2soKTsNCj4+Pj4gKwlsaXN0X2Zvcl9lYWNoX2VudHJ5X3JjdShldmVudF9ub3RpZnksDQo+Pj4+
+ICsJCQkJJmdoZXNfZXZlbnRfaGFuZGxlcl9saXN0LCBsaXN0KSB7DQo+Pj4+ICsJCWlmIChndWlk
+X2VxdWFsKCZldmVudF9ub3RpZnktPnNlY190eXBlLCAmc2VjX3R5cGUpKSB7DQo+Pj4NCj4+Pj4g
+KwkJCWlmIChkYXRhICE9IGV2ZW50X25vdGlmeS0+ZGF0YSkNCj4+Pg0KPj4+IEl0IGxvb2tzIGxp
+a2UgeW91IG5lZWQgbXVsdGlwbGUgZHJpdmVycyB0byBoYW5kbGUgdGhlIHNhbWUgR1VJRA0KPj4+
+IGJlY2F1c2Ugb2YgbXVsdGlwbGUgcm9vdCBwb3J0cy4gQ2FuJ3QgdGhlIGhhbmRsZXIgbG9va3Vw
+IHRoZSByaWdodCBkZXZpY2U/DQo+DQo+PiBUaGlzIGNoZWNrIHdhcyBiZWNhdXNlIEdVSUQgaXMg
+c2hhcmVkIGFtb25nIG11bHRpcGxlIGRldmljZXMgd2l0aCBvbmUNCj4+IGRyaXZlciBhcyBzZWVu
+IGluIHRoZSBCMjg4OUZDOSBkcml2ZXIgKHBjaWUtaGlzaS1lcnJvci5jKS4NCj4NCj4od2Ugc2hv
+dWxkIHN0b3AgY2FsbGluZyBpdCBieSBpdHMgZ3VpZCAuLi4gZG9lcyBpdCBoYXZlIGEgbmFtZT8h
+KQ0KPg0KPg0KPlRoaXMgbXVzdCBiZSBzb21lIGtpbmQgb2YgZXJyb3IgY29sbGVjdG9yIGZvciBh
+IGJ1cyByaWdodD8NCj4NCj5JIGFncmVlIHdlIG1heSBuZWVkIHRvIGhhdmUgbXVsdGlwbGUgZHJp
+dmVycyByZWdpc3RlciB0byBoYW5kbGUgdmVuZG9yIGV2ZW50cywNCj5idXQgaXQgbG9va3MgbGlr
+ZSB5b3UgYXJlIHJlZ2lzdGVyaW5nIHRoZSBzYW1lIGhhbmRsZXIgbXVsdGlwbGUgdGltZXMsIHdp
+dGgNCj5kaWZmZXJlbnQgcHJpdmF0ZSBzdHJ1Y3R1cmVzLg0KPg0KPkNhbid0IGl0IGZpbmQgdGhl
+IGFmZmVjdGVkIGRldmljZSBmcm9tIHRoZSBlcnJvciBkZXNjcmlwdGlvbj8NClllcy4gV2UgYWxy
+ZWFkeSBoYXZlIHRoZSBjb2RlIGluIHRoZSBQQ0llIGVycm9yIGhhbmRsaW5nIGRyaXZlciB0byBp
+ZGVudGlmeSB0aGUgcmlnaHQgZGV2aWNlDQpmcm9tIHRoZSBlcnJvciBpbmZvcm1hdGlvbi4NCg0K
+Pg0KPg0KPj4+PiBAQCAtNTI1LDExICs2MjgsMTQgQEAgc3RhdGljIHZvaWQgZ2hlc19kb19wcm9j
+KHN0cnVjdCBnaGVzICpnaGVzLA0KPj4+Pg0KPj4+PiAgCQkJbG9nX2FybV9od19lcnJvcihlcnIp
+Ow0KPj4+PiAgCQl9IGVsc2Ugew0KPj4+PiAtCQkJdm9pZCAqZXJyID0gYWNwaV9oZXN0X2dldF9w
+YXlsb2FkKGdkYXRhKTsNCj4+Pj4gLQ0KPj4+PiAtCQkJbG9nX25vbl9zdGFuZGFyZF9ldmVudChz
+ZWNfdHlwZSwgZnJ1X2lkLCBmcnVfdGV4dCwNCj4+Pj4gLQkJCQkJICAgICAgIHNlY19zZXYsIGVy
+ciwNCj4+Pj4gLQkJCQkJICAgICAgIGdkYXRhLT5lcnJvcl9kYXRhX2xlbmd0aCk7DQo+Pj4+ICsJ
+CQlpZiAoIWdoZXNfaGFuZGxlX25vbl9zdGFuZGFyZF9ldmVudChzZWNfdHlwZSwgZ2RhdGEsDQo+
+Pj4+ICsJCQkJCQkJICAgIHNldikpIHsNCj4+Pj4gKwkJCQl2b2lkICplcnIgPSBhY3BpX2hlc3Rf
+Z2V0X3BheWxvYWQoZ2RhdGEpOw0KPj4+PiArDQo+Pj4+ICsJCQkJbG9nX25vbl9zdGFuZGFyZF9l
+dmVudChzZWNfdHlwZSwgZnJ1X2lkLA0KPj4+PiArCQkJCQkJICAgICAgIGZydV90ZXh0LCBzZWNf
+c2V2LCBlcnIsDQo+Pj4+ICsJCQkJCQkgICAgICAgZ2RhdGEtPmVycm9yX2RhdGFfbGVuZ3RoKTsN
+Cj4+Pj4gKwkJCX0NCj4+Pg0KPj4+IFNvLCBhIHNpZGUgZWZmZWN0IG9mIHRoZSBrZXJuZWwgaGFu
+ZGxpbmcgdGhlc2UgaXMgdGhleSBubyBsb25nZXIgZ2V0DQo+Pj4gbG9nZ2VkIG91dCBvZiB0cmFj
+ZSBwb2ludHM/DQo+Pj4NCj4+PiBJIGd1ZXNzIHRoZSBkcml2ZXIgdGhlIGNsYWltcyB0aGlzIGxv
+Z3Mgc29tZSBtb3JlIGFjY3VyYXRlDQo+Pj4gaW5mb3JtYXRpb24uIEFyZSB0aGVyZSBleHBlY3Rl
+ZCB0byBiZSBhbnkgdXNlci1zcGFjZSBwcm9ncmFtcyBkb2luZw0KPj4+IHNvbWV0aGluZyB1c2Vm
+dWwgd2l0aCBCMjg4OUZDOS4uLiB0b2RheT8NCj4NCj4+IFRoZSBCMjg4OUZDOSBkcml2ZXIgZG9l
+cyBub3QgZXhwZWN0IGFueSBjb3JyZXNwb25kaW5nIHVzZXIgc3BhY2UNCj5wcm9ncmFtcy4NCj4+
+IFRoZSBkcml2ZXIgbWFpbmx5IGZvciB0aGUgZXJyb3IgcmVjb3ZlcnkgYW5kIGJhc2ljIGVycm9y
+IGRlY29kaW5nIGFuZCBsb2dnaW5nLg0KPg0KPj4gUHJldmlvdXNseSB3ZSBhZGRlZCB0aGUgZXJy
+b3IgbG9nZ2luZyBmb3IgdGhlIEIyODg5RkM5IGluIHRoZSByYXNkYWVtb24uDQo+DQo+U28gdGhp
+cyBzZXJpZXMgd291bGQgYnJlYWsgdGhlIGVycm9yIGxvZ2dpbmcgaW4gcmFzZGFlbW9uLg0KSXQg
+ZG9lcyBub3QgYWZmZWN0IHRoZSBsb2dnaW5nIGluZm9ybWF0aW9uIHRvIHRoZSB1c2VyIGZvciB0
+aGUgSGlTaWxpY29uIFBDSWUgY29udHJvbGxlciBlcnJvcnMNCmJlY2F1c2UgdGhlIGxldmVsIG9m
+IGxvZ2dpbmcgaW5mb3JtYXRpb24gaXMgdGhlIHNhbWUgYm90aCBpbiB0aGUgcmFzZGFlbW9uIGFu
+ZCBpbiB0aGUNCm5ld2x5IGFkZGluZyBIaVNpbGljb24gUENJZSBjb250cm9sbGVyIGVycm9yIGhh
+bmRsaW5nIGRyaXZlci4NCj4NCj5Vc2VyLXNwYWNlIHdvdWxkIG5lZWQgdG8gYmUgdXBncmFkZWQg
+dG8gcmVjZWl2ZSB0aGUgdHJhY2UgaW5mb3JtYXRpb24gZnJvbQ0KPnRoZSBzcGVjaWZpYyBkcml2
+ZXIgaW5zdGVhZC4gKGhvdyBkb2VzIGl0IGtub3c/ISkNCj4NCj5Db3VsZCB3ZSBsb2dfbm9uX3N0
+YW5kYXJkX2V2ZW50KCkgdW5jb25kaXRpb25hbGx5LCBtYXliZSBhZGRpbmcgYSBmaWVsZCB0bw0K
+PmluZGljYXRlIHRoYXQgYSBkcml2ZXIgY2xhaW1lZCBpdCwgc28gdGhlcmUgbWF5IGJlIG1vcmUg
+ZGF0YSBzb21ld2hlcmUgZWxzZS4uLg0Kc3VyZSwgSSB3aWxsIGNoZWNrIHRoZSBwb3NzaWJpbGl0
+eSBvZiBhZGRpbmcgdGhlIGZpZWxkIHRvIGluZGljYXRlIGRyaXZlciBjbGFpbWVkIGl0IGFuZA0K
+Y2FsbGluZyBsb2dfbm9uX3N0YW5kYXJkX2V2ZW50KCkgYWx3YXlzLg0KPg0KPg0KPlRoYW5rcywN
+Cj4NCj5KYW1lcw0KDQpUaGFua3MsDQpTaGlqdQ0K
