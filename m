@@ -2,26 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFC7A1857B1
-	for <lists+linux-acpi@lfdr.de>; Sun, 15 Mar 2020 02:46:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C53FA18588C
+	for <lists+linux-acpi@lfdr.de>; Sun, 15 Mar 2020 03:13:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726869AbgCOBqD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 14 Mar 2020 21:46:03 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:41978 "EHLO
+        id S1727582AbgCOCN5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 14 Mar 2020 22:13:57 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:43081 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726738AbgCOBqD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 14 Mar 2020 21:46:03 -0400
+        with ESMTP id S1727611AbgCOCN5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 14 Mar 2020 22:13:57 -0400
 Received: from 185.80.35.16 (185.80.35.16) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.341)
- id 8c69cbe11c14e040; Sat, 14 Mar 2020 10:46:01 +0100
+ id 4685d5ea9f201b09; Sat, 14 Mar 2020 11:13:56 +0100
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Jan Engelhardt <jengelh@inai.de>
-Cc:     linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] x86: ignore unspecified bit positions in the ACPI global lock field
-Date:   Sat, 14 Mar 2020 10:46:00 +0100
-Message-ID: <2030043.rEjxodZhqh@kreacher>
-In-Reply-To: <20200305122425.32223-1-jengelh@inai.de>
-References: <20200305122425.32223-1-jengelh@inai.de>
+To:     Takashi Iwai <tiwai@suse.de>
+Cc:     linux-acpi@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
+        Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH] ACPI: fan: Use scnprintf() for avoiding potential buffer overflow
+Date:   Sat, 14 Mar 2020 11:13:55 +0100
+Message-ID: <6805885.HkWLXbPDYh@kreacher>
+In-Reply-To: <20200311070851.3731-1-tiwai@suse.de>
+References: <20200311070851.3731-1-tiwai@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -30,37 +31,63 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thursday, March 5, 2020 1:24:25 PM CET Jan Engelhardt wrote:
-> The value in "new" is constructed from "old" such that all bits defined
-> as reserved by the ACPI spec[1] are left untouched. But if those bits
-> do not happen to be all zero, "new < 3" will not evaluate to true.
+On Wednesday, March 11, 2020 8:08:51 AM CET Takashi Iwai wrote:
+> Since snprintf() returns the would-be-output size instead of the
+> actual output size, the succeeding calls may go beyond the given
+> buffer limit.  Fix it by replacing with scnprintf().
 > 
-> The firmware of the laptop(s) Medion MD63490 / Akoya P15648 comes with
-> garbage inside the "FACS" ACPI table. The starting value is
-> old=0x4944454d, therefore new=0x4944454e, which is >= 3. Mask off
-> the reserved bits.
+> Also adjust the argument to really match with the actually remaining
+> buffer size.
 > 
-> [1] https://uefi.org/sites/default/files/resources/ACPI_6_2.pdf
-> 
-> References: https://bugzilla.kernel.org/show_bug.cgi?id=206553
-> Signed-off-by: Jan Engelhardt <jengelh@inai.de>
+> Signed-off-by: Takashi Iwai <tiwai@suse.de>
 > ---
->  arch/x86/kernel/acpi/boot.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/fan.c | 20 ++++++++++----------
+>  1 file changed, 10 insertions(+), 10 deletions(-)
 > 
-> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-> index 04205ce127a1..f9e84a0e2fa2 100644
-> --- a/arch/x86/kernel/acpi/boot.c
-> +++ b/arch/x86/kernel/acpi/boot.c
-> @@ -1740,7 +1740,7 @@ int __acpi_acquire_global_lock(unsigned int *lock)
->  		new = (((old & ~0x3) + 2) + ((old >> 1) & 0x1));
->  		val = cmpxchg(lock, old, new);
->  	} while (unlikely (val != old));
-> -	return (new < 3) ? -1 : 0;
-> +	return ((new & 0x3) < 3) ? -1 : 0;
->  }
+> diff --git a/drivers/acpi/fan.c b/drivers/acpi/fan.c
+> index aaf4e8f348cf..873e039ad4b7 100644
+> --- a/drivers/acpi/fan.c
+> +++ b/drivers/acpi/fan.c
+> @@ -276,29 +276,29 @@ static ssize_t show_state(struct device *dev, struct device_attribute *attr, cha
+>  	int count;
 >  
->  int __acpi_release_global_lock(unsigned int *lock)
+>  	if (fps->control == 0xFFFFFFFF || fps->control > 100)
+> -		count = snprintf(buf, PAGE_SIZE, "not-defined:");
+> +		count = scnprintf(buf, PAGE_SIZE, "not-defined:");
+>  	else
+> -		count = snprintf(buf, PAGE_SIZE, "%lld:", fps->control);
+> +		count = scnprintf(buf, PAGE_SIZE, "%lld:", fps->control);
+>  
+>  	if (fps->trip_point == 0xFFFFFFFF || fps->trip_point > 9)
+> -		count += snprintf(&buf[count], PAGE_SIZE, "not-defined:");
+> +		count += scnprintf(&buf[count], PAGE_SIZE - count, "not-defined:");
+>  	else
+> -		count += snprintf(&buf[count], PAGE_SIZE, "%lld:", fps->trip_point);
+> +		count += scnprintf(&buf[count], PAGE_SIZE - count, "%lld:", fps->trip_point);
+>  
+>  	if (fps->speed == 0xFFFFFFFF)
+> -		count += snprintf(&buf[count], PAGE_SIZE, "not-defined:");
+> +		count += scnprintf(&buf[count], PAGE_SIZE - count, "not-defined:");
+>  	else
+> -		count += snprintf(&buf[count], PAGE_SIZE, "%lld:", fps->speed);
+> +		count += scnprintf(&buf[count], PAGE_SIZE - count, "%lld:", fps->speed);
+>  
+>  	if (fps->noise_level == 0xFFFFFFFF)
+> -		count += snprintf(&buf[count], PAGE_SIZE, "not-defined:");
+> +		count += scnprintf(&buf[count], PAGE_SIZE - count, "not-defined:");
+>  	else
+> -		count += snprintf(&buf[count], PAGE_SIZE, "%lld:", fps->noise_level * 100);
+> +		count += scnprintf(&buf[count], PAGE_SIZE - count, "%lld:", fps->noise_level * 100);
+>  
+>  	if (fps->power == 0xFFFFFFFF)
+> -		count += snprintf(&buf[count], PAGE_SIZE, "not-defined\n");
+> +		count += scnprintf(&buf[count], PAGE_SIZE - count, "not-defined\n");
+>  	else
+> -		count += snprintf(&buf[count], PAGE_SIZE, "%lld\n", fps->power);
+> +		count += scnprintf(&buf[count], PAGE_SIZE - count, "%lld\n", fps->power);
+>  
+>  	return count;
+>  }
 > 
 
 Applied as 5.7 material, thanks!
