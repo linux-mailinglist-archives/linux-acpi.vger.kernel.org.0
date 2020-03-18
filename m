@@ -2,93 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 665B018A5FA
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Mar 2020 22:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 357A118A758
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Mar 2020 22:49:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728178AbgCRUzD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Mar 2020 16:55:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55134 "EHLO mail.kernel.org"
+        id S1726801AbgCRVti (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Mar 2020 17:49:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33928 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728167AbgCRUzD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 18 Mar 2020 16:55:03 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726647AbgCRVti (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 18 Mar 2020 17:49:38 -0400
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AA275208FE;
-        Wed, 18 Mar 2020 20:55:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3AB5F20754;
+        Wed, 18 Mar 2020 21:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584564902;
-        bh=Fw2Y7SJT1KxgyT/KkiFlJP+vzAotUhytvqgs9F+e2yo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p2ppZ9trnB7rYkhUn0JRl+dHabjvRGdzdUPoWN1Rv5dCyJcibjWkAo/NnAF+noHk1
-         d0S1SHgAQlxxwsPvBfwm4K1Aj8XPp4uBUksD/Wa/eOy+CJ4zYil8V/YEx8Uw/y347z
-         ZAR/hKZgCyiZGOlm9TOG61fIWAMIznZ6KWsurgjo=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Sasha Levin <sashal@kernel.org>, linux-i2c@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 69/73] i2c: acpi: put device when verifying client fails
-Date:   Wed, 18 Mar 2020 16:53:33 -0400
-Message-Id: <20200318205337.16279-69-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200318205337.16279-1-sashal@kernel.org>
-References: <20200318205337.16279-1-sashal@kernel.org>
+        s=default; t=1584568177;
+        bh=P5WR7+CCKYuF1D3YjB6Qxj3jRbK8RLNPfWPK6xDhFJU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MYDwg6ol1Z+QGh9/zDrDHt8bnPDtWLxTMCHZXahQMrF2zKu+dxR/eo1lJ1FPMFmub
+         rYxZ8TlyKf1p57qSoAehM9cwXmkd62W+Yj/ZFIe/fzmdsKEaGLM6wI5Isl4w5zHhXz
+         i2Fyra1JtidfYnS4VkKmkpnTCTdgAjhqKz+PtDSA=
+Date:   Wed, 18 Mar 2020 21:49:30 +0000
+From:   Will Deacon <will@kernel.org>
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc:     bhelgaas@google.com, robh+dt@kernel.org, joro@8bytes.org,
+        baolu.lu@linux.intel.com, sudeep.holla@arm.com,
+        linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org,
+        lorenzo.pieralisi@arm.com, corbet@lwn.net, mark.rutland@arm.com,
+        liviu.dudau@arm.com, guohanjun@huawei.com, rjw@rjwysocki.net,
+        lenb@kernel.org, robin.murphy@arm.com, dwmw2@infradead.org,
+        amurray@thegoodpenguin.co.uk, frowand.list@gmail.com
+Subject: Re: [PATCH v2 07/11] iommu/arm-smmu-v3: Use pci_ats_supported()
+Message-ID: <20200318214930.GB8477@willie-the-truck>
+References: <20200311124506.208376-1-jean-philippe@linaro.org>
+ <20200311124506.208376-8-jean-philippe@linaro.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200311124506.208376-8-jean-philippe@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+On Wed, Mar 11, 2020 at 01:45:02PM +0100, Jean-Philippe Brucker wrote:
+> The new pci_ats_supported() function checks if a device supports ATS and
+> is allowed to use it.
+> 
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> ---
+>  drivers/iommu/arm-smmu-v3.c | 18 +++---------------
+>  1 file changed, 3 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/iommu/arm-smmu-v3.c b/drivers/iommu/arm-smmu-v3.c
+> index 4f0a38dae6db..87ae31ef35a1 100644
+> --- a/drivers/iommu/arm-smmu-v3.c
+> +++ b/drivers/iommu/arm-smmu-v3.c
+> @@ -2592,26 +2592,14 @@ static void arm_smmu_install_ste_for_dev(struct arm_smmu_master *master)
+>  	}
+>  }
+>  
+> -#ifdef CONFIG_PCI_ATS
+>  static bool arm_smmu_ats_supported(struct arm_smmu_master *master)
+>  {
+> -	struct pci_dev *pdev;
+> +	struct device *dev = master->dev;
+>  	struct arm_smmu_device *smmu = master->smmu;
+> -	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(master->dev);
+> -
+> -	if (!(smmu->features & ARM_SMMU_FEAT_ATS) || !dev_is_pci(master->dev) ||
+> -	    !(fwspec->flags & IOMMU_FWSPEC_PCI_RC_ATS) || pci_ats_disabled())
+> -		return false;
+>  
+> -	pdev = to_pci_dev(master->dev);
+> -	return !pdev->untrusted && pdev->ats_cap;
+> +	return (smmu->features & ARM_SMMU_FEAT_ATS) && dev_is_pci(dev) &&
+> +		pci_ats_supported(to_pci_dev(dev));
+>  }
+> -#else
+> -static bool arm_smmu_ats_supported(struct arm_smmu_master *master)
+> -{
+> -	return false;
+> -}
+> -#endif
 
-[ Upstream commit 8daee952b4389729358665fb91949460641659d4 ]
+Acked-by: Will Deacon <will@kernel.org>
 
-i2c_verify_client() can fail, so we need to put the device when that
-happens.
+Cheers for doing this.
 
-Fixes: 525e6fabeae2 ("i2c / ACPI: add support for ACPI reconfigure notifications")
-Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/i2c/i2c-core-acpi.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index 62a1c92ab803d..ce70b5288472c 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -394,9 +394,17 @@ EXPORT_SYMBOL_GPL(i2c_acpi_find_adapter_by_handle);
- static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev)
- {
- 	struct device *dev;
-+	struct i2c_client *client;
- 
- 	dev = bus_find_device_by_acpi_dev(&i2c_bus_type, adev);
--	return dev ? i2c_verify_client(dev) : NULL;
-+	if (!dev)
-+		return NULL;
-+
-+	client = i2c_verify_client(dev);
-+	if (!client)
-+		put_device(dev);
-+
-+	return client;
- }
- 
- static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
--- 
-2.20.1
-
+Will
