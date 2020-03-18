@@ -2,142 +2,211 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C81F18926F
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Mar 2020 01:09:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 675EA1893BE
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Mar 2020 02:38:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726680AbgCRAJL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Mar 2020 20:09:11 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:41289 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727132AbgCRAJK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Mar 2020 20:09:10 -0400
-Received: by mail-ot1-f67.google.com with SMTP id s15so23737259otq.8
-        for <linux-acpi@vger.kernel.org>; Tue, 17 Mar 2020 17:09:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MMwlQkIOIiahCzdJMcDAgkZw1PXO1TaHhQC1hHdlF40=;
-        b=kGZyZEGu+kcB3XdOaTAZJM+rbcvTBpICmBPRE18yX/9MJPS66Ytxd7Gm3O3/3Lz55Q
-         uFACPo9wGPnI6eO+iUQifq8oVaWyWo0VgR6LIsQdBzIMGZ/wsKCnDqZ/x6TolZxAyg1I
-         FJt12qoJReN6PNsY1GOL3OhVCI7MHxaHFRL08jfk4efZyQHKo/X/2ZLHpiq65IrXN3gK
-         CSV+tleFFwhhErVV3TFP0znqCHU1QEI/RoTHD38gDLk0At7DJutddsiqKB66BpLTriWO
-         uPBtm0hIrgWWUQzC0YsHjdwX6Uk4pe8Z4vLovjAgJJKP8+tW3eLI3j7ZR73xujJ0Sx17
-         dojQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MMwlQkIOIiahCzdJMcDAgkZw1PXO1TaHhQC1hHdlF40=;
-        b=kphjK6UY0OBxSR1c1loPXlU9IXqL4Rr7dgUqCR089LSupNP3wYViVH0Fc+D1yHLtab
-         5qKHnr4hoIG7BCWbrrYhKv0BbMK/FDPmdGn7hwLUhuSmdgWIkULkXVMDT0crX+5NRG/J
-         +RGacpQf/wNooAy3aggbcRFIFRl2ZvpdkFpviABHEKwsk8C6h4izDr9wyC7sLdI4AUBz
-         lsVIPBKCa+72yCywd9i017hEj5xjqmakHf/lG8CQxILS5Gj5dG5C6cXqMI0G54SHz7+N
-         6ignUbJopAM2m/+REGV9HladGYh+kSqWSqS514/7DvT56+xtx75gMrfv8pIj+PsHDAg9
-         6TgQ==
-X-Gm-Message-State: ANhLgQ0MqzWxdJZO72E2zWYFeKgprqAAxwiKsC0L7v9bbLkqQA67DJSa
-        paZsEjLgQx+AYDenCNpiICKS8vBFN2iP2lrvGSsZlBuXhWo=
-X-Google-Smtp-Source: ADFU+vvXy+eUUC+1ujXuIzLpqPYdUPYM4SLDYMYNliIhG5QA4cIByJRT9LCJJcYo4J8eRLDL8+WNi4hE85ZKjbdciSI=
-X-Received: by 2002:a9d:60b:: with SMTP id 11mr1641568otn.126.1584490149519;
- Tue, 17 Mar 2020 17:09:09 -0700 (PDT)
+        id S1727069AbgCRBit (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Mar 2020 21:38:49 -0400
+Received: from mga05.intel.com ([192.55.52.43]:60775 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726680AbgCRBit (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 17 Mar 2020 21:38:49 -0400
+IronPort-SDR: 9K2c7G8KQ2+FZAzmlZOkmwXY4ubWFtRknRQQ0CANj6dz71gL72F9IhrCY/j5EdAVjvX/rA05r1
+ 6piK6g464gOA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2020 18:38:48 -0700
+IronPort-SDR: PYIg8zsoqSoKaAuDhxEAo54cxF8/ki0flW1p44NGgwjs9eoKiWWqOUT4tG7SnV63LdAEfQ26KE
+ VB01UYqHuN6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,565,1574150400"; 
+   d="scan'208";a="279586774"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 17 Mar 2020 18:38:46 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jENfS-000BRk-36; Wed, 18 Mar 2020 09:38:46 +0800
+Date:   Wed, 18 Mar 2020 09:38:27 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 48c5a4c87535359453a3189abce4c7ef1977cd95
+Message-ID: <5e717b93.y/kbxr9x1qKsm7mS%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <158318759687.2216124.4684754859068906007.stgit@dwillia2-desk3.amr.corp.intel.com>
- <158318760361.2216124.13612198312947463590.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <158318760361.2216124.13612198312947463590.stgit@dwillia2-desk3.amr.corp.intel.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Tue, 17 Mar 2020 17:08:58 -0700
-Message-ID: <CAPcyv4hjgNruY84Kr9S5HZ6P03fNcPcmL7H2DN19Z+CbPZ7d+Q@mail.gmail.com>
-Subject: Re: [PATCH 1/5] ACPI: NUMA: Add 'nohmat' option
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     X86 ML <x86@kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 2, 2020 at 2:36 PM Dan Williams <dan.j.williams@intel.com> wrote:
->
-> Disable parsing of the HMAT for debug, to workaround broken platform
-> instances, or cases where it is otherwise not wanted.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: 48c5a4c87535359453a3189abce4c7ef1977cd95  Merge branch 'pnp' into bleeding-edge
 
-Rafael, any heartburn with this change to the numa= option?
+elapsed time: 484m
 
-...as I look at this I realize I failed to also update
-Documentation/x86/x86_64/boot-options.rst, will fix.
+configs tested: 151
+configs skipped: 0
 
->
-> Cc: x86@kernel.org
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  arch/x86/mm/numa.c       |    4 ++++
->  drivers/acpi/numa/hmat.c |    3 ++-
->  include/acpi/acpi_numa.h |    1 +
->  3 files changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-> index 59ba008504dc..22de2e2610c1 100644
-> --- a/arch/x86/mm/numa.c
-> +++ b/arch/x86/mm/numa.c
-> @@ -44,6 +44,10 @@ static __init int numa_setup(char *opt)
->  #ifdef CONFIG_ACPI_NUMA
->         if (!strncmp(opt, "noacpi", 6))
->                 acpi_numa = -1;
-> +#ifdef CONFIG_ACPI_HMAT
-> +       if (!strncmp(opt, "nohmat", 6))
-> +               hmat_disable = 1;
-> +#endif
->  #endif
->         return 0;
->  }
-> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> index 2c32cfb72370..d3db121e393a 100644
-> --- a/drivers/acpi/numa/hmat.c
-> +++ b/drivers/acpi/numa/hmat.c
-> @@ -26,6 +26,7 @@
->  #include <linux/sysfs.h>
->
->  static u8 hmat_revision;
-> +int hmat_disable __initdata;
->
->  static LIST_HEAD(targets);
->  static LIST_HEAD(initiators);
-> @@ -814,7 +815,7 @@ static __init int hmat_init(void)
->         enum acpi_hmat_type i;
->         acpi_status status;
->
-> -       if (srat_disabled())
-> +       if (srat_disabled() || hmat_disable)
->                 return 0;
->
->         status = acpi_get_table(ACPI_SIG_SRAT, 0, &tbl);
-> diff --git a/include/acpi/acpi_numa.h b/include/acpi/acpi_numa.h
-> index fdebcfc6c8df..48ca468e9b61 100644
-> --- a/include/acpi/acpi_numa.h
-> +++ b/include/acpi/acpi_numa.h
-> @@ -18,6 +18,7 @@ extern int node_to_pxm(int);
->  extern int acpi_map_pxm_to_node(int);
->  extern unsigned char acpi_srat_revision;
->  extern int acpi_numa __initdata;
-> +extern int hmat_disable __initdata;
->
->  extern void bad_srat(void);
->  extern int srat_disabled(void);
->
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+arm                           efm32_defconfig
+arm                         at91_dt_defconfig
+arm                        shmobile_defconfig
+arm64                               defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                           sunxi_defconfig
+arm                        multi_v7_defconfig
+sparc                            allyesconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                                defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                             alldefconfig
+arm64                            allmodconfig
+arm                              allmodconfig
+nios2                         3c120_defconfig
+nios2                         10m50_defconfig
+c6x                        evmc6678_defconfig
+xtensa                          iss_defconfig
+c6x                              allyesconfig
+xtensa                       common_defconfig
+openrisc                 simple_smp_defconfig
+openrisc                    or1ksim_defconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                                defconfig
+alpha                               defconfig
+h8300                       h8s-sim_defconfig
+h8300                     edosk2674_defconfig
+m68k                       m5475evb_defconfig
+m68k                             allmodconfig
+h8300                    h8300h-sim_defconfig
+m68k                           sun3_defconfig
+m68k                          multi_defconfig
+arc                                 defconfig
+arc                              allyesconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                generic-64bit_defconfig
+parisc                generic-32bit_defconfig
+parisc                           allyesconfig
+i386                 randconfig-a003-20200317
+i386                 randconfig-a001-20200317
+x86_64               randconfig-a001-20200317
+x86_64               randconfig-a003-20200317
+i386                 randconfig-a002-20200317
+x86_64               randconfig-a002-20200317
+riscv                randconfig-a001-20200317
+alpha                randconfig-a001-20200317
+nds32                randconfig-a001-20200317
+m68k                 randconfig-a001-20200317
+parisc               randconfig-a001-20200317
+mips                 randconfig-a001-20200317
+h8300                randconfig-a001-20200317
+sparc64              randconfig-a001-20200317
+c6x                  randconfig-a001-20200317
+nios2                randconfig-a001-20200317
+microblaze           randconfig-a001-20200317
+xtensa               randconfig-a001-20200317
+openrisc             randconfig-a001-20200317
+csky                 randconfig-a001-20200317
+sh                   randconfig-a001-20200317
+s390                 randconfig-a001-20200317
+x86_64               randconfig-b001-20200317
+x86_64               randconfig-b002-20200317
+x86_64               randconfig-b003-20200317
+i386                 randconfig-b001-20200317
+i386                 randconfig-b002-20200317
+i386                 randconfig-b003-20200317
+x86_64               randconfig-d001-20200317
+i386                 randconfig-d001-20200317
+i386                 randconfig-d003-20200317
+i386                 randconfig-d002-20200317
+x86_64               randconfig-d003-20200317
+x86_64               randconfig-d002-20200317
+x86_64               randconfig-f001-20200317
+i386                 randconfig-f002-20200317
+i386                 randconfig-f003-20200317
+i386                 randconfig-f001-20200317
+x86_64               randconfig-f002-20200317
+x86_64               randconfig-f003-20200317
+i386                 randconfig-g001-20200318
+i386                 randconfig-g003-20200318
+x86_64               randconfig-g003-20200318
+x86_64               randconfig-g002-20200318
+x86_64               randconfig-g001-20200318
+i386                 randconfig-g002-20200318
+x86_64               randconfig-h001-20200317
+i386                 randconfig-h001-20200317
+x86_64               randconfig-h002-20200317
+x86_64               randconfig-h003-20200317
+i386                 randconfig-h002-20200317
+i386                 randconfig-h003-20200317
+arc                  randconfig-a001-20200317
+ia64                 randconfig-a001-20200317
+arm                  randconfig-a001-20200317
+arm64                randconfig-a001-20200317
+sparc                randconfig-a001-20200317
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+s390                       zfcpdump_defconfig
+s390                          debug_defconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                             alldefconfig
+s390                                defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                            titan_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                                allnoconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
