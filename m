@@ -2,211 +2,171 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 675EA1893BE
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Mar 2020 02:38:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E89AF18958C
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Mar 2020 07:04:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727069AbgCRBit (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Mar 2020 21:38:49 -0400
-Received: from mga05.intel.com ([192.55.52.43]:60775 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726680AbgCRBit (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 17 Mar 2020 21:38:49 -0400
-IronPort-SDR: 9K2c7G8KQ2+FZAzmlZOkmwXY4ubWFtRknRQQ0CANj6dz71gL72F9IhrCY/j5EdAVjvX/rA05r1
- 6piK6g464gOA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2020 18:38:48 -0700
-IronPort-SDR: PYIg8zsoqSoKaAuDhxEAo54cxF8/ki0flW1p44NGgwjs9eoKiWWqOUT4tG7SnV63LdAEfQ26KE
- VB01UYqHuN6A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,565,1574150400"; 
-   d="scan'208";a="279586774"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 17 Mar 2020 18:38:46 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jENfS-000BRk-36; Wed, 18 Mar 2020 09:38:46 +0800
-Date:   Wed, 18 Mar 2020 09:38:27 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        id S1727025AbgCRGEF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Mar 2020 02:04:05 -0400
+Received: from mail-eopbgr70042.outbound.protection.outlook.com ([40.107.7.42]:49033
+        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726478AbgCRGEF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 18 Mar 2020 02:04:05 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=miUEYDnCOT6IhbafWqyICIA/18MfDUDGwWZyb7G5YvcTSxyDsUThQmKlKjOGzF/p+EidDgiKXCSKgUz8fa8UnIhKuTG1bDQmONdJbgfWLSsmHXKNiof9Qef7BP+nXKX84ksfzgLKWbvL3tTbTwyP00LvIIV/BzAoLqizpdQb7LLL78QqVpSfarRPr6i9X8qThrnfb6dltzh8gQsbIEyiHnYz4QFEGJovr2h+Q0A/S8LuJgmv2BJCK4O0wHqwTCbBmlqevrfrLMbXZdtWtiKRx4oQ7d4IN4tvQNsKIv7g+N3BmeDipBbMNtJ3tA4ezrN+kySb6+1EMjEUJ5jrWcwMNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tis0CEjhJ4S44RqDanuK14m1ghIE+VgY8FLeVy5Apx4=;
+ b=Hntf30xZ8/T3DrJzZAGFs3rOzCjYxucjCXyPlioinJarff61mYIYM0sd9gIjhgvV2CC0CXpoRJEvUWlETcY0JfHFaYKU+Ag2bNlB41bfMmEGEgOLJ2Ri/BEEe17w0gTMtq73wnV4kqIzhE70viVSwy/BRG4dB6jHM8uxOOQJNVkyk4Dmaj2qmoKaT6pOFmQbNOxMmmtuXWg/U0sMBE2x69ecMuLfDpIsK03x0n1UBkx+slEIr/UKNkjCi2TGPCLjBvp5zq7IUu7gBRAfflc93LZkxRc/m/haa1/YCd9ul1FOL4+Ytr0lv9kdeEjpoG3cFkbpo2BPuECB0i6q4iKzqA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tis0CEjhJ4S44RqDanuK14m1ghIE+VgY8FLeVy5Apx4=;
+ b=lWgDEZQJdG6ic7k7tIlhOcZp06HmSI6mVh+DlwyOdJOfJfQyYHtFzelKYMwO3ErsfivI4V2FRB38bjQqaHcuX2lVbWhuJcY07c2PrFcZwELG5rTxdgQtu0cxGh5jSNINKtOBIsbOeGaNqc4GB0PY/VE30ES7oEVUTAW4dor4gCw=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=calvin.johnson@oss.nxp.com; 
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (20.178.202.86) by
+ AM0PR04MB3986.eurprd04.prod.outlook.com (52.134.91.142) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2814.22; Wed, 18 Mar 2020 06:04:01 +0000
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::1b4:31d2:1485:6e07]) by AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::1b4:31d2:1485:6e07%7]) with mapi id 15.20.2814.021; Wed, 18 Mar 2020
+ 06:04:01 +0000
+Date:   Wed, 18 Mar 2020 11:33:47 +0530
+From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Jeremy Linton <jeremy.linton@arm.com>, linux.cj@gmail.com,
+        Jon Nettleton <jon@solid-run.com>, linux@armlinux.org.uk,
+        Makarand Pawagi <makarand.pawagi@nxp.com>,
+        cristian.sovaiala@nxp.com, laurentiu.tudor@nxp.com,
+        ioana.ciornei@nxp.com, V.Sethi@nxp.com, pankaj.bansal@nxp.com,
+        "Rajesh V . Bikkina" <rajesh.bikkina@nxp.com>,
+        Marcin Wojtas <mw@semihalf.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 48c5a4c87535359453a3189abce4c7ef1977cd95
-Message-ID: <5e717b93.y/kbxr9x1qKsm7mS%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
+Subject: Re: [PATCH v1 1/7] mdio_bus: Introduce fwnode MDIO helpers
+Message-ID: <20200318060347.GA21824@lsv03152.swis.in-blr01.nxp.com>
+References: <20200131153440.20870-1-calvin.johnson@nxp.com>
+ <20200131153440.20870-2-calvin.johnson@nxp.com>
+ <20200317113650.GA6016@lsv03152.swis.in-blr01.nxp.com>
+ <20200317140426.GR24270@lunn.ch>
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20200317140426.GR24270@lunn.ch>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ClientProxiedBy: SG2PR06CA0161.apcprd06.prod.outlook.com
+ (2603:1096:1:1e::15) To AM0PR04MB5636.eurprd04.prod.outlook.com
+ (2603:10a6:208:130::22)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR06CA0161.apcprd06.prod.outlook.com (2603:1096:1:1e::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.18 via Frontend Transport; Wed, 18 Mar 2020 06:03:56 +0000
+X-Originating-IP: [14.142.151.118]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 27eaa456-e9b8-4d4f-c034-08d7cb02272e
+X-MS-TrafficTypeDiagnostic: AM0PR04MB3986:|AM0PR04MB3986:
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR04MB398636A232EE97DC26BD9B81D2F70@AM0PR04MB3986.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-Forefront-PRVS: 03468CBA43
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4636009)(39860400002)(396003)(346002)(376002)(366004)(136003)(199004)(55236004)(6506007)(7416002)(26005)(16526019)(66556008)(956004)(186003)(2906002)(66946007)(66476007)(1006002)(44832011)(6666004)(316002)(33656002)(5660300002)(54906003)(81156014)(81166006)(6916009)(86362001)(8936002)(55016002)(7696005)(9686003)(52116002)(4326008)(1076003)(8676002)(478600001)(966005)(110426005);DIR:OUT;SFP:1101;SCL:1;SRVR:AM0PR04MB3986;H:AM0PR04MB5636.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:0;
+Received-SPF: None (protection.outlook.com: oss.nxp.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: wPc4UiWXPwPHyxadYtDJx2tzLqNDVJ60gY+q5l+FSN18cgajuMbOjWVftt3YOfRZLl3apJcCb0pf9wRm1e/pedNRBH2bGfUMp/IyUyV8Dh/k/jqjNWtWewaDHOQ/o8R1abOPKWPmhN9Oqj5T5jYQ95AZiFH3rJ5rwpVtUaGwPQjp/hDHKEauJQo3N3sU76oNDjJhaTDmzmml6Oz1RvinXRNwwo0OtvkUznCgIH2Q+OCrLuNssg1PaP1fZphcCCeNDEHs7Vj+4ZKR6JUPosXBhB8ZXTMGcEF/lGyweIHoXYL1q1EnfLhXQ0Lh3wM6ymrE4L6B2uBoUBECG9vzjjj4zXu/9j/dgdh5w7o0BjCeKYHH70CZP0R97r5ntXQ3BqdIHBg/pQAk/BePz1X15NDofANf1On85vOgtrYVSzvtEEJRhDsfG0uukquB1z4hGjfz59e/VKAvAgvTVkNRLUx2rxi4+W7GIBnqs0yCNYFJZKt5icOLuPShnKPEXUxGbrAaHP9nkK2eWSnle2IX4bp8G6ST3KTSdCXso+YHjPYIaDipCgAarG+1Kmlq1DdyMZq0wUSCIbDrREMghfMAqItVaQ==
+X-MS-Exchange-AntiSpam-MessageData: cDXoVQKBOGw0D8KMjDosxkIck2uu9WmOa5CyLzXuU+PYco8Ec5vrPDD3VTvkimUMtIvObewwrvk2aR/X/mwLWIVFtjbbubgdufsbKUe2lO/kpVH7QVBdlBgvCfG0W6b7q8QisXymwqtMQ0Au726xvw==
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27eaa456-e9b8-4d4f-c034-08d7cb02272e
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2020 06:04:01.0998
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qfdzkOLq5NmUsg9+vJzy7poPSc4Q173MU73NYClh3yljGoID6b7GxgPqZ2gMxJbyIQFWBgeO6r9bmDvfMnhJUw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB3986
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: 48c5a4c87535359453a3189abce4c7ef1977cd95  Merge branch 'pnp' into bleeding-edge
+Hi Andrew,
 
-elapsed time: 484m
+On Tue, Mar 17, 2020 at 03:04:26PM +0100, Andrew Lunn wrote:
+> On Tue, Mar 17, 2020 at 05:06:50PM +0530, Calvin Johnson wrote:
+> > Hi,
+> > 
+> > On Fri, Jan 31, 2020 at 09:04:34PM +0530, Calvin Johnson wrote:
+> > 
+> > <snip>
+> > 
+> > > +/**
+> > > + * fwnode_mdiobus_child_is_phy - Return true if the child is a PHY node.
+> > > + * It must either:
+> > > + * o Compatible string of "ethernet-phy-ieee802.3-c45"
+> > > + * o Compatible string of "ethernet-phy-ieee802.3-c22"
+> > > + * Checking "compatible" property is done, in order to follow the DT binding.
+> > > + */
+> > > +static bool fwnode_mdiobus_child_is_phy(struct fwnode_handle *child)
+> > > +{
+> > > +	int ret;
+> > > +
+> > > +	ret = fwnode_property_match_string(child, "compatible",
+> > > +					   "ethernet-phy-ieee802.3-c45");
+> > > +	if (!ret)
+> > > +		return true;
+> > > +
+> > > +	ret = fwnode_property_match_string(child, "compatible",
+> > > +					   "ethernet-phy-ieee802.3-c22");
+> > > +	if (!ret)
+> > > +		return true;
+> > > +
+> > > +	if (!fwnode_property_present(child, "compatible"))
+> > > +		return true;
+> > > +
+> > > +	return false;
+> > > +}
+> > 
+> > Can we use _CID in ACPI to get the compatible string? Is there any other method
+> > to handle this kind of situation where we would like to pass C45 or C22 info to
+> > the mdiobus driver?
+> 
+> Hi Calvin
+> 
+> Is there any defacto standardised way to stuff this device tree
+> property into ACPI? It is one of the key properties, so either there
+> is one standard way, or lots of variants because nobody can be
+> bothered to go to the ACPI standardisation body and get it formalised.
 
-configs tested: 151
-configs skipped: 0
+_DSD package is used to stuff this kind of DT property. IMO, this is not the
+standard way as C22 and C45 are key properties for MDIO.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Eg usage of _DSD:
+https://source.codeaurora.org/external/qoriq/qoriq-components/edk2-platforms/tree/Platform/NXP/LX2160aRdbPkg/AcpiTables/Dsdt/Mdio.asl?h=LX2160_UEFI_ACPI_EAR1
 
-arm64                            allyesconfig
-arm                              allyesconfig
-arm64                             allnoconfig
-arm                               allnoconfig
-arm                           efm32_defconfig
-arm                         at91_dt_defconfig
-arm                        shmobile_defconfig
-arm64                               defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                           sunxi_defconfig
-arm                        multi_v7_defconfig
-sparc                            allyesconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                             alldefconfig
-i386                                defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-ia64                             alldefconfig
-arm64                            allmodconfig
-arm                              allmodconfig
-nios2                         3c120_defconfig
-nios2                         10m50_defconfig
-c6x                        evmc6678_defconfig
-xtensa                          iss_defconfig
-c6x                              allyesconfig
-xtensa                       common_defconfig
-openrisc                 simple_smp_defconfig
-openrisc                    or1ksim_defconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                                defconfig
-alpha                               defconfig
-h8300                       h8s-sim_defconfig
-h8300                     edosk2674_defconfig
-m68k                       m5475evb_defconfig
-m68k                             allmodconfig
-h8300                    h8300h-sim_defconfig
-m68k                           sun3_defconfig
-m68k                          multi_defconfig
-arc                                 defconfig
-arc                              allyesconfig
-powerpc                             defconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-mips                             allyesconfig
-mips                         64r6el_defconfig
-mips                              allnoconfig
-mips                           32r2_defconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                generic-64bit_defconfig
-parisc                generic-32bit_defconfig
-parisc                           allyesconfig
-i386                 randconfig-a003-20200317
-i386                 randconfig-a001-20200317
-x86_64               randconfig-a001-20200317
-x86_64               randconfig-a003-20200317
-i386                 randconfig-a002-20200317
-x86_64               randconfig-a002-20200317
-riscv                randconfig-a001-20200317
-alpha                randconfig-a001-20200317
-nds32                randconfig-a001-20200317
-m68k                 randconfig-a001-20200317
-parisc               randconfig-a001-20200317
-mips                 randconfig-a001-20200317
-h8300                randconfig-a001-20200317
-sparc64              randconfig-a001-20200317
-c6x                  randconfig-a001-20200317
-nios2                randconfig-a001-20200317
-microblaze           randconfig-a001-20200317
-xtensa               randconfig-a001-20200317
-openrisc             randconfig-a001-20200317
-csky                 randconfig-a001-20200317
-sh                   randconfig-a001-20200317
-s390                 randconfig-a001-20200317
-x86_64               randconfig-b001-20200317
-x86_64               randconfig-b002-20200317
-x86_64               randconfig-b003-20200317
-i386                 randconfig-b001-20200317
-i386                 randconfig-b002-20200317
-i386                 randconfig-b003-20200317
-x86_64               randconfig-d001-20200317
-i386                 randconfig-d001-20200317
-i386                 randconfig-d003-20200317
-i386                 randconfig-d002-20200317
-x86_64               randconfig-d003-20200317
-x86_64               randconfig-d002-20200317
-x86_64               randconfig-f001-20200317
-i386                 randconfig-f002-20200317
-i386                 randconfig-f003-20200317
-i386                 randconfig-f001-20200317
-x86_64               randconfig-f002-20200317
-x86_64               randconfig-f003-20200317
-i386                 randconfig-g001-20200318
-i386                 randconfig-g003-20200318
-x86_64               randconfig-g003-20200318
-x86_64               randconfig-g002-20200318
-x86_64               randconfig-g001-20200318
-i386                 randconfig-g002-20200318
-x86_64               randconfig-h001-20200317
-i386                 randconfig-h001-20200317
-x86_64               randconfig-h002-20200317
-x86_64               randconfig-h003-20200317
-i386                 randconfig-h002-20200317
-i386                 randconfig-h003-20200317
-arc                  randconfig-a001-20200317
-ia64                 randconfig-a001-20200317
-arm                  randconfig-a001-20200317
-arm64                randconfig-a001-20200317
-sparc                randconfig-a001-20200317
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-s390                       zfcpdump_defconfig
-s390                          debug_defconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                             alldefconfig
-s390                                defconfig
-sh                          rsk7269_defconfig
-sh                               allmodconfig
-sh                            titan_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                                allnoconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
+      Name (_DSD, Package () {
+        ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+          Package () {
+            Package () {"reg", 5},
+            Package () {"phy-addr", 5},
+            Package () {"compatible", "ethernet-phy-ieee802.3-c45"}
+        }
+      })
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Ideally, MDIO bus should be part of the ACPI spec.
+Maybe this property can be included in:
+https://uefi.org/sites/default/files/resources/nic-request-v2.pdf
+
+I'm still looking for a better approach than _DSD till ACPI spec defines it.
+
+Regards
+Calvin
