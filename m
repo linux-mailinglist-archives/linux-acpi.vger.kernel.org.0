@@ -2,156 +2,193 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DFB6E18C123
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Mar 2020 21:15:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28F2F18C372
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Mar 2020 00:04:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727136AbgCSUPN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Mar 2020 16:15:13 -0400
-Received: from gateway32.websitewelcome.com ([192.185.145.102]:42830 "EHLO
-        gateway32.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725787AbgCSUPN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 19 Mar 2020 16:15:13 -0400
-X-Greylist: delayed 1464 seconds by postgrey-1.27 at vger.kernel.org; Thu, 19 Mar 2020 16:15:13 EDT
-Received: from cm11.websitewelcome.com (cm11.websitewelcome.com [100.42.49.5])
-        by gateway32.websitewelcome.com (Postfix) with ESMTP id AD784BBD9EB
-        for <linux-acpi@vger.kernel.org>; Thu, 19 Mar 2020 14:50:48 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id F1BojDGyKSl8qF1BojlwOe; Thu, 19 Mar 2020 14:50:48 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-        Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=9Wv3jbj7V3+afTv1zkiRc6/kzb45qZM0mlCOpT5a6Vw=; b=GqMq4pnkbHIJSyj16jS/IXGon5
-        AEK/9C5A6VCq+zyljXQCj3ZPDd6r0vwMi+/18RhWGw3wWgiXIa0/QH9fFbUimH8EX8ZLLhraHmjHS
-        snmVD9enTefCRw9Y1O1txFkR4D40WMSnEL8tPoDHUxDhN7oUCGn2s2nRt8huwibaYN9e3Abq9iixp
-        vgWV6VI3P07cp9/Yb2VonQwMzLAI+Z+Hk0o917cOW297KF/7ozJnexvQcsrF1psDNFLBGY1KKeCX7
-        hWb2RYznbyyH9IwB4sr2lBO0J40VD0KxaadhtPCTSakKVqQ0Ir8sROTfJvSFpMYVXvxVfnZ7g6Gwz
-        4kIpaSow==;
-Received: from cablelink-189-218-116-241.hosts.intercable.net ([189.218.116.241]:52652 helo=embeddedor)
-        by gator4166.hostgator.com with esmtpa (Exim 4.92)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1jF1Bm-000mHI-HG; Thu, 19 Mar 2020 14:50:46 -0500
-Date:   Thu, 19 Mar 2020 14:50:46 -0500
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Cc:     linux-nvdimm@lists.01.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH][next] acpi: nfit.h: Replace zero-length array with
- flexible-array member
-Message-ID: <20200319195046.GA452@embeddedor.com>
+        id S1727669AbgCSXEb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Mar 2020 19:04:31 -0400
+Received: from mga04.intel.com ([192.55.52.120]:20527 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726867AbgCSXEb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 19 Mar 2020 19:04:31 -0400
+IronPort-SDR: WeLanSqZMXMlicvu8W7cbJwTgMnwC2cE2cHPkjf7rZ54yjC1YTkkfqLz5Uvt43jj2rsYKaaMcz
+ jDcwvfX6wSYQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2020 16:04:30 -0700
+IronPort-SDR: xWaTkAWhBCEJSNmVeajuK4yalUQc7o+SZ2HQkNdStHZnjvoMQQC6eIdkOeqq/tR6WqYw68gkgd
+ 8LR4MudsuScA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,573,1574150400"; 
+   d="scan'208";a="238621004"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 19 Mar 2020 16:04:28 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jF4DE-000J3D-6b; Fri, 20 Mar 2020 07:04:28 +0800
+Date:   Fri, 20 Mar 2020 07:04:10 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 8c2bbc5c3a0aef446e9116c2d357f7563a772433
+Message-ID: <5e73fa6a.FXWjlVh0KUY8zyxQ%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 189.218.116.241
-X-Source-L: No
-X-Exim-ID: 1jF1Bm-000mHI-HG
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: cablelink-189-218-116-241.hosts.intercable.net (embeddedor) [189.218.116.241]:52652
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 10
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The current codebase makes use of the zero-length array language
-extension to the C90 standard, but the preferred mechanism to declare
-variable-length types such as these ones is a flexible array member[1][2],
-introduced in C99:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: 8c2bbc5c3a0aef446e9116c2d357f7563a772433  Merge branch 'pnp' into bleeding-edge
 
-struct foo {
-        int stuff;
-        struct boo array[];
-};
+elapsed time: 818m
 
-By making use of the mechanism above, we will get a compiler warning
-in case the flexible array does not occur last in the structure, which
-will help us prevent some kind of undefined behavior bugs from being
-inadvertently introduced[3] to the codebase from now on.
+configs tested: 133
+configs skipped: 0
 
-Also, notice that, dynamic memory allocations won't be affected by
-this change:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-"Flexible array members have incomplete type, and so the sizeof operator
-may not be applied. As a quirk of the original implementation of
-zero-length arrays, sizeof evaluates to zero."[1]
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+arm                           efm32_defconfig
+arm                         at91_dt_defconfig
+arm                        shmobile_defconfig
+arm64                               defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                           sunxi_defconfig
+arm                        multi_v7_defconfig
+sparc                            allyesconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                                defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                             alldefconfig
+nios2                         3c120_defconfig
+nios2                         10m50_defconfig
+c6x                        evmc6678_defconfig
+xtensa                          iss_defconfig
+c6x                              allyesconfig
+xtensa                       common_defconfig
+openrisc                 simple_smp_defconfig
+openrisc                    or1ksim_defconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                                defconfig
+alpha                               defconfig
+h8300                       h8s-sim_defconfig
+h8300                     edosk2674_defconfig
+m68k                       m5475evb_defconfig
+m68k                             allmodconfig
+h8300                    h8300h-sim_defconfig
+m68k                           sun3_defconfig
+m68k                          multi_defconfig
+arc                                 defconfig
+arc                              allyesconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                generic-64bit_defconfig
+parisc                generic-32bit_defconfig
+parisc                           allyesconfig
+i386                 randconfig-a003-20200319
+i386                 randconfig-a001-20200319
+x86_64               randconfig-a001-20200319
+x86_64               randconfig-a002-20200319
+i386                 randconfig-a002-20200319
+x86_64               randconfig-a003-20200319
+riscv                randconfig-a001-20200319
+m68k                 randconfig-a001-20200319
+nds32                randconfig-a001-20200319
+alpha                randconfig-a001-20200319
+parisc               randconfig-a001-20200319
+mips                 randconfig-a001-20200319
+h8300                randconfig-a001-20200319
+sparc64              randconfig-a001-20200319
+c6x                  randconfig-a001-20200319
+nios2                randconfig-a001-20200319
+microblaze           randconfig-a001-20200319
+xtensa               randconfig-a001-20200319
+csky                 randconfig-a001-20200319
+openrisc             randconfig-a001-20200319
+sh                   randconfig-a001-20200319
+s390                 randconfig-a001-20200319
+x86_64               randconfig-b001-20200319
+x86_64               randconfig-b002-20200319
+i386                 randconfig-b001-20200319
+x86_64               randconfig-b003-20200319
+i386                 randconfig-b002-20200319
+i386                 randconfig-b003-20200319
+x86_64               randconfig-c001-20200319
+i386                 randconfig-c001-20200319
+x86_64               randconfig-c002-20200319
+i386                 randconfig-c003-20200319
+x86_64               randconfig-c003-20200319
+i386                 randconfig-c002-20200319
+i386                 randconfig-d003-20200319
+i386                 randconfig-d002-20200319
+i386                 randconfig-g001-20200319
+i386                 randconfig-g003-20200319
+x86_64               randconfig-g003-20200319
+x86_64               randconfig-g002-20200319
+x86_64               randconfig-g001-20200319
+i386                 randconfig-g002-20200319
+arc                  randconfig-a001-20200319
+ia64                 randconfig-a001-20200319
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+s390                       zfcpdump_defconfig
+s390                          debug_defconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                             alldefconfig
+s390                                defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                            titan_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                                allnoconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
 
-This issue was found with the help of Coccinelle.
-
-[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-[2] https://github.com/KSPP/linux/issues/21
-[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
-
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 ---
- drivers/acpi/nfit/nfit.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/acpi/nfit/nfit.h b/drivers/acpi/nfit/nfit.h
-index 24241941181c..af09143ce403 100644
---- a/drivers/acpi/nfit/nfit.h
-+++ b/drivers/acpi/nfit/nfit.h
-@@ -144,32 +144,32 @@ struct nfit_spa {
- 	unsigned long ars_state;
- 	u32 clear_err_unit;
- 	u32 max_ars;
--	struct acpi_nfit_system_address spa[0];
-+	struct acpi_nfit_system_address spa[];
- };
- 
- struct nfit_dcr {
- 	struct list_head list;
--	struct acpi_nfit_control_region dcr[0];
-+	struct acpi_nfit_control_region dcr[];
- };
- 
- struct nfit_bdw {
- 	struct list_head list;
--	struct acpi_nfit_data_region bdw[0];
-+	struct acpi_nfit_data_region bdw[];
- };
- 
- struct nfit_idt {
- 	struct list_head list;
--	struct acpi_nfit_interleave idt[0];
-+	struct acpi_nfit_interleave idt[];
- };
- 
- struct nfit_flush {
- 	struct list_head list;
--	struct acpi_nfit_flush_address flush[0];
-+	struct acpi_nfit_flush_address flush[];
- };
- 
- struct nfit_memdev {
- 	struct list_head list;
--	struct acpi_nfit_memory_map memdev[0];
-+	struct acpi_nfit_memory_map memdev[];
- };
- 
- enum nfit_mem_flags {
--- 
-2.23.0
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
