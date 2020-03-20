@@ -2,38 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B87CD18D969
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Mar 2020 21:33:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F2A118DA90
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Mar 2020 22:52:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726953AbgCTUdJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Mar 2020 16:33:09 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:37119 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726829AbgCTUdJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Mar 2020 16:33:09 -0400
-Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1jFOJf-0003W5-B3; Fri, 20 Mar 2020 21:32:27 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
-        id A95431039FC; Fri, 20 Mar 2020 21:32:26 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+        id S1727202AbgCTVw5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Mar 2020 17:52:57 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:46201 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726666AbgCTVw5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Mar 2020 17:52:57 -0400
+Received: by mail-pf1-f196.google.com with SMTP id c19so3965104pfo.13;
+        Fri, 20 Mar 2020 14:52:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=a04BEXBq6T16pF8YgWqXF8qeXZZehjOHDxhsKaZX814=;
+        b=Skn7flJSlYGzwEVidWCfP5Sxs1un6UzXQtQz+bWdWoAKNnRM80PqPvhDZwvv2wJKw6
+         Mj81HfQM/zfiGt9ileOkKRRQWiF7jWjG6JhV+9WIbVnMz/dnDuFUHCHtIbQX4/CY7DkK
+         noOtt/A9DKzcRzAlH+RqcMdMCY2dyTdaWE9AE5cShMSjs4HBzANhTM2+7CpxOlPpNBsU
+         9nhE6/1XKN4/0cmtxXDNEwjoXngQLqF8QiIUQVIm1NRPbQReCnfpG/6XbUusceYyN0mz
+         qR1CBCi2y2i3OXLUvaPOWqAKkvUGIR4nJ+prrBs7mnq20vlj/y21DMR6IS0a4SS96qyg
+         vOYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=a04BEXBq6T16pF8YgWqXF8qeXZZehjOHDxhsKaZX814=;
+        b=osqubrMHaroAdX2xmT5TcDKYfdmAD2rMkehhh4Gjs6SU9CAVegfxsZ/rvJVGVvKVFz
+         Bp/ePrg74/IzI2RMVmLRIumo6AhN55yNnBupg84Yka97VGX+Ju6Qc+hSuJn3CaeNUmZb
+         NWABF2Df3o+Qu6Om8CCwyr7I/1tp0/Qz0grX/AHAFaS6J1+eL72L8PQ+La7TCzwricRJ
+         tRpnhaEkAG71W9VCt9IZr2oN0wnK4hGC7yhIX6UZyu3QTvZtlRVSClNYoH4zp4ZHbaQe
+         rnoAjskCtXhlg5ee4Wc/mya6JnqCmro/bbfv+OzrnQjdbfEoLD0ATwp3+t3z6HLJmvQB
+         VK1Q==
+X-Gm-Message-State: ANhLgQ0PnxycUN+1pg4nT0yArAW59uWKknhE+IZQ1BEByRakKPx41L48
+        mMNWjfI7jzf2fsAQ425fXk55KAHoHQiix6AltUE=
+X-Google-Smtp-Source: ADFU+vsmV5czmNKtoJg0C7AeN7wX4S5Al3MMjqsDaMzJBp9Kh1vmxFKQ2VcZyX/I27EONEdC3cCFyRbcSUnbF2ixLdU=
+X-Received: by 2002:a05:6a00:2b4:: with SMTP id q20mr178775pfs.36.1584741173473;
+ Fri, 20 Mar 2020 14:52:53 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200320131345.635023594@linutronix.de> <20200320131509.564059710@linutronix.de>
+ <CAHp75VdkvyqOaAsLmz8K2j4bdd0sboPoUpRr6U-zvtkSaQfPRQ@mail.gmail.com> <87eetmpy56.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <87eetmpy56.fsf@nanos.tec.linutronix.de>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 20 Mar 2020 23:52:42 +0200
+Message-ID: <CAHp75VfuU98gEriS+GDJqZX4BV-cZT9hPbrDX-roeo63O8UvYQ@mail.gmail.com>
+Subject: Re: [patch 09/22] cpufreq: Convert to new X86 CPU match macros
+To:     Thomas Gleixner <tglx@linutronix.de>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
-        "maintainer\:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Mark Gross <mgross@linux.intel.com>,
         Tony Luck <tony.luck@intel.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
         Viresh Kumar <viresh.kumar@linaro.org>,
         Linux PM <linux-pm@vger.kernel.org>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         linux-edac@vger.kernel.org,
         Platform Driver <platform-driver-x86@vger.kernel.org>,
         Jean Delvare <jdelvare@suse.com>,
@@ -52,42 +81,38 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
         linux-crypto <linux-crypto@vger.kernel.org>
-Subject: Re: [patch 08/22] ACPI: Convert to new X86 CPU match macros
-In-Reply-To: <CAHp75VcK3tL0YayjF=CSkSkHiOpg2zOV3rdkXQWJmLZ9fmevpg@mail.gmail.com>
-References: <20200320131345.635023594@linutronix.de> <20200320131509.467730627@linutronix.de> <CAHp75VcK3tL0YayjF=CSkSkHiOpg2zOV3rdkXQWJmLZ9fmevpg@mail.gmail.com>
-Date:   Fri, 20 Mar 2020 21:32:26 +0100
-Message-ID: <87bloqpy1x.fsf@nanos.tec.linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Andy Shevchenko <andy.shevchenko@gmail.com> writes:
-
-> On Fri, Mar 20, 2020 at 3:19 PM Thomas Gleixner <tglx@linutronix.de> wrote:
->>
->> The new macro set has a consistent namespace and uses C99 initializers
->> instead of the grufty C89 ones.
->>
->> Rename the local macro wrapper to X86_MATCH for consistency. It stays for
->> readability sake.
+On Fri, Mar 20, 2020 at 10:30 PM Thomas Gleixner <tglx@linutronix.de> wrote:
 >
->> +       X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT,     NULL),
->> +       X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT,        NULL),
+> Andy Shevchenko <andy.shevchenko@gmail.com> writes:
+> > On Fri, Mar 20, 2020 at 3:18 PM Thomas Gleixner <tglx@linutronix.de> wrote:
+> >
+> >> +       X86_MATCH_VENDOR_FAM_MODEL_FEATURE(INTEL,  6,  9, X86_FEATURE_EST, NULL),
+> >> +       X86_MATCH_VENDOR_FAM_MODEL_FEATURE(INTEL,  6, 13, X86_FEATURE_EST, NULL),
+> >> +       X86_MATCH_VENDOR_FAM_MODEL_FEATURE(INTEL, 15,  3, X86_FEATURE_EST, NULL),
+> >> +       X86_MATCH_VENDOR_FAM_MODEL_FEATURE(INTEL, 15,  4, X86_FEATURE_EST, NULL),
+> >
+> >> +       X86_MATCH_VENDOR_FAM_MODEL(INTEL,  6, 0x8, 0),
+> >> +       X86_MATCH_VENDOR_FAM_MODEL(INTEL,  6, 0xb, 0),
+> >> +       X86_MATCH_VENDOR_FAM_MODEL(INTEL, 15, 0x2, 0),
+> >
+> >> +       X86_MATCH_VENDOR_FAM_MODEL(INTEL,  6, 0x8, 0),
+> >> +       X86_MATCH_VENDOR_FAM_MODEL(INTEL,  6, 0xb, 0),
+> >> +       X86_MATCH_VENDOR_FAM_MODEL(INTEL, 15, 0x2, 0),
+> >
+> > Perhaps use names instead of 6 and 15?
 >
->> -#define ICPU(model)    { X86_VENDOR_INTEL, 6, model, X86_FEATURE_ANY, }
->> +#define X86_MATCH(model)       X86_MATCH_INTEL_FAM6_MODEL(model, NULL)
->
-> Maybe we can do a generic macro to avoid all these ', NULL' repetitions?
+> Thought about that and did not come up with anyting useful. FAM6 vs. 6
+> is not really any better
 
-I opted for having the data argument everywhere to keep the macro maze
-small. And we have enough places where data is actually used.
+Hmm... Do we have family 15 for Intel? Perhaps I missed something...
+Or is it for any family?
 
-Thanks,
-
-        tglx
+-- 
+With Best Regards,
+Andy Shevchenko
