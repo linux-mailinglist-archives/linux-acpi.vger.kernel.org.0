@@ -2,193 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28F2F18C372
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Mar 2020 00:04:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 935AC18CC3C
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Mar 2020 12:07:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727669AbgCSXEb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Mar 2020 19:04:31 -0400
-Received: from mga04.intel.com ([192.55.52.120]:20527 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726867AbgCSXEb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 19 Mar 2020 19:04:31 -0400
-IronPort-SDR: WeLanSqZMXMlicvu8W7cbJwTgMnwC2cE2cHPkjf7rZ54yjC1YTkkfqLz5Uvt43jj2rsYKaaMcz
- jDcwvfX6wSYQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2020 16:04:30 -0700
-IronPort-SDR: xWaTkAWhBCEJSNmVeajuK4yalUQc7o+SZ2HQkNdStHZnjvoMQQC6eIdkOeqq/tR6WqYw68gkgd
- 8LR4MudsuScA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,573,1574150400"; 
-   d="scan'208";a="238621004"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 19 Mar 2020 16:04:28 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jF4DE-000J3D-6b; Fri, 20 Mar 2020 07:04:28 +0800
-Date:   Fri, 20 Mar 2020 07:04:10 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 8c2bbc5c3a0aef446e9116c2d357f7563a772433
-Message-ID: <5e73fa6a.FXWjlVh0KUY8zyxQ%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1727047AbgCTLHu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Mar 2020 07:07:50 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:43084 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726970AbgCTLHu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Mar 2020 07:07:50 -0400
+Received: by mail-oi1-f193.google.com with SMTP id p125so6017506oif.10
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Mar 2020 04:07:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=kuhba0bbR9oJup1oQ7P5tNPZ9FqBHXE57QqcfHgaIHo=;
+        b=fpskhoGsNRoRQQsQyCpFGYyMz4V0VH265aQV8VlvJFSs/i1k07xaX+bXT2wkvSMWe5
+         zfq/drLsaCWX7kXQb8npmt4UWP8iR5CkPK8DWakfp2GUxcAjuHk8YixJ+Mjlo2NoB6El
+         nYE/vIxW18S+s6oXMvQWPPZO26naB2e1oBf4acl5x9bqoaOL5eQHZJdW/Uaiid9/D6I4
+         QMoEQpA+KTEY0j+3jKsUdyEZUqBb+cGps3JA3FDL6r6nGjMDdjvJCpdtiSGamQCfaC5S
+         tVTErq1UxRqGg0ZD8YHv0hGcDpk9XmrOIzaS12y+iSvxllg9EluPkVEjGmU8r7r7+0uu
+         fZrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=kuhba0bbR9oJup1oQ7P5tNPZ9FqBHXE57QqcfHgaIHo=;
+        b=bHEyB5qsc5YwTP0CXtTaA5zZCwfo0HCyAFSzUHQv40l9IOXeHaBPqd1KUl4eG1DnhN
+         i9D4KTIfb4KAH7QW5SFtfP9smcZWP1LxcRqjp/kTA4tIWXaOyfQZoWLERW7ZxiS6ZBRD
+         Rp8J5AYQf1rQA/XHmXSrMOj5uGkKFIWlQIxz6rYCvGWgyhT3RQyf8WeZbKqdz+znPdgX
+         Wg/aUzh93DtgcfvjgQ+JQkDCRirbrT/W6hqRB9myoSIoxLfVAhoKtAe583dARCrb8G5B
+         Zn3d7Ag1PfsmqeuOhyaeZI7eNpZlApEa/eE4oyOtebBG+MrpcNsTzEL2TV+ibS0hMKWv
+         KbLw==
+X-Gm-Message-State: ANhLgQ0Fb+tNsEBjGpEVH4HTLO1xTTX1Wsrl0xXTnAbwkvb2xe2A9mld
+        tpUJiNicw39I2BS4juw5LpSIOVFZIqzitprGvXE=
+X-Google-Smtp-Source: ADFU+vvRXYpGlgU8kruJ4epNpFpbouihhbYDMjIBj7lPYgBj2kjx5SsGrFOE0Ms+hQdDuga4qwG9zvDxADlARvL2H0Y=
+X-Received: by 2002:aca:3ad7:: with SMTP id h206mr5644593oia.169.1584702467665;
+ Fri, 20 Mar 2020 04:07:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a4a:c897:0:0:0:0:0 with HTTP; Fri, 20 Mar 2020 04:07:47
+ -0700 (PDT)
+From:   federa bureau of inteligence <federabureauofinteligence@gmail.com>
+Date:   Fri, 20 Mar 2020 11:07:47 +0000
+Message-ID: <CAE9o6LDHRn+J__z7O88dePbrQh6R9Hx0mvRSC3EH5CSi+3ddtg@mail.gmail.com>
+Subject: HAPPY SURVIVAL OF CORONAVIRUS
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: 8c2bbc5c3a0aef446e9116c2d357f7563a772433  Merge branch 'pnp' into bleeding-edge
+Dear Sir,
 
-elapsed time: 818m
+HAPPY SURVIVAL OF CORONAVIRUS
 
-configs tested: 133
-configs skipped: 0
+We are reaching for a very interesting business transaction which we
+feel will of great benefit.We the FBI unit in the western subregion of
+Africa have a fund which we confiscated and lodge it in a bank
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+This fund is worth of $12.5 million dollars.We will need your
+assistance to recieve this fund into your account for investment in
+your country.
 
-arm64                            allyesconfig
-arm                              allyesconfig
-arm64                             allnoconfig
-arm                               allnoconfig
-arm                           efm32_defconfig
-arm                         at91_dt_defconfig
-arm                        shmobile_defconfig
-arm64                               defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                           sunxi_defconfig
-arm                        multi_v7_defconfig
-sparc                            allyesconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                             alldefconfig
-i386                                defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-ia64                             alldefconfig
-nios2                         3c120_defconfig
-nios2                         10m50_defconfig
-c6x                        evmc6678_defconfig
-xtensa                          iss_defconfig
-c6x                              allyesconfig
-xtensa                       common_defconfig
-openrisc                 simple_smp_defconfig
-openrisc                    or1ksim_defconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                                defconfig
-alpha                               defconfig
-h8300                       h8s-sim_defconfig
-h8300                     edosk2674_defconfig
-m68k                       m5475evb_defconfig
-m68k                             allmodconfig
-h8300                    h8300h-sim_defconfig
-m68k                           sun3_defconfig
-m68k                          multi_defconfig
-arc                                 defconfig
-arc                              allyesconfig
-powerpc                             defconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                           32r2_defconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                generic-64bit_defconfig
-parisc                generic-32bit_defconfig
-parisc                           allyesconfig
-i386                 randconfig-a003-20200319
-i386                 randconfig-a001-20200319
-x86_64               randconfig-a001-20200319
-x86_64               randconfig-a002-20200319
-i386                 randconfig-a002-20200319
-x86_64               randconfig-a003-20200319
-riscv                randconfig-a001-20200319
-m68k                 randconfig-a001-20200319
-nds32                randconfig-a001-20200319
-alpha                randconfig-a001-20200319
-parisc               randconfig-a001-20200319
-mips                 randconfig-a001-20200319
-h8300                randconfig-a001-20200319
-sparc64              randconfig-a001-20200319
-c6x                  randconfig-a001-20200319
-nios2                randconfig-a001-20200319
-microblaze           randconfig-a001-20200319
-xtensa               randconfig-a001-20200319
-csky                 randconfig-a001-20200319
-openrisc             randconfig-a001-20200319
-sh                   randconfig-a001-20200319
-s390                 randconfig-a001-20200319
-x86_64               randconfig-b001-20200319
-x86_64               randconfig-b002-20200319
-i386                 randconfig-b001-20200319
-x86_64               randconfig-b003-20200319
-i386                 randconfig-b002-20200319
-i386                 randconfig-b003-20200319
-x86_64               randconfig-c001-20200319
-i386                 randconfig-c001-20200319
-x86_64               randconfig-c002-20200319
-i386                 randconfig-c003-20200319
-x86_64               randconfig-c003-20200319
-i386                 randconfig-c002-20200319
-i386                 randconfig-d003-20200319
-i386                 randconfig-d002-20200319
-i386                 randconfig-g001-20200319
-i386                 randconfig-g003-20200319
-x86_64               randconfig-g003-20200319
-x86_64               randconfig-g002-20200319
-x86_64               randconfig-g001-20200319
-i386                 randconfig-g002-20200319
-arc                  randconfig-a001-20200319
-ia64                 randconfig-a001-20200319
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-s390                       zfcpdump_defconfig
-s390                          debug_defconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                             alldefconfig
-s390                                defconfig
-sh                          rsk7269_defconfig
-sh                               allmodconfig
-sh                            titan_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                                allnoconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
+We will need your urgent response for details
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Inspector Greg Adams,
+For and on behalf of Cote D'Ivoire FBI
+Tel 00225 6716 6756
