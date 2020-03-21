@@ -2,22 +2,24 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D58AC18E32D
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Mar 2020 18:20:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C359D18E371
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Mar 2020 18:46:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727069AbgCURUU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 21 Mar 2020 13:20:20 -0400
-Received: from mx2.suse.de ([195.135.220.15]:52394 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726961AbgCURUU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 21 Mar 2020 13:20:20 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id C70F9ABD7;
-        Sat, 21 Mar 2020 17:20:14 +0000 (UTC)
-Date:   Sat, 21 Mar 2020 10:19:02 -0700
-From:   Davidlohr Bueso <dave@stgolabs.net>
-To:     Thomas Gleixner <tglx@linutronix.de>
+        id S1727039AbgCURqV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 21 Mar 2020 13:46:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39226 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726961AbgCURqV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 21 Mar 2020 13:46:21 -0400
+Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1jFiBn-0007G4-JJ; Sat, 21 Mar 2020 18:45:39 +0100
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+        id E02A21040D4; Sat, 21 Mar 2020 18:45:38 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Davidlohr Bueso <dave@stgolabs.net>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
@@ -57,27 +59,33 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         Jonathan Corbet <corbet@lwn.net>,
         Randy Dunlap <rdunlap@infradead.org>,
         Davidlohr Bueso <dbueso@suse.de>
-Subject: Re: [patch V3 00/20] Lock ordering documentation and annotation for
- lockdep
-Message-ID: <20200321171902.xxlnpikc65wd3b4m@linux-p48b>
-References: <20200321112544.878032781@linutronix.de>
+Subject: Re: [patch V3 00/20] Lock ordering documentation and annotation for lockdep
+In-Reply-To: <20200321171902.xxlnpikc65wd3b4m@linux-p48b>
+References: <20200321112544.878032781@linutronix.de> <20200321171902.xxlnpikc65wd3b4m@linux-p48b>
+Date:   Sat, 21 Mar 2020 18:45:38 +0100
+Message-ID: <87mu89r48t.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20200321112544.878032781@linutronix.de>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, 21 Mar 2020, Thomas Gleixner wrote:
+Davidlohr Bueso <dave@stgolabs.net> writes:
 
->This is the third and hopefully final version of this work. The second one
->can be found here:
+> On Sat, 21 Mar 2020, Thomas Gleixner wrote:
+>
+>>This is the third and hopefully final version of this work. The second one
+>>can be found here:
+>
+> Would you rather I send in a separate series with the kvm changes, or
+> should I just send a v2 with the fixes here again?
 
-Would you rather I send in a separate series with the kvm changes, or
-should I just send a v2 with the fixes here again?
+Send a separate series please. These nested threads are hard to follow.
 
 Thanks,
-Davidlohr
+
+        tglx
