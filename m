@@ -2,35 +2,29 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A8E18E181
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Mar 2020 14:23:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D58AC18E32D
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Mar 2020 18:20:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726592AbgCUNXH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 21 Mar 2020 09:23:07 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38630 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726192AbgCUNXH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 21 Mar 2020 09:23:07 -0400
-Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1jFe4i-0003bB-3f; Sat, 21 Mar 2020 14:22:04 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
-        id 6F881FFC8D; Sat, 21 Mar 2020 14:22:03 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
+        id S1727069AbgCURUU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 21 Mar 2020 13:20:20 -0400
+Received: from mx2.suse.de ([195.135.220.15]:52394 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726961AbgCURUU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 21 Mar 2020 13:20:20 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id C70F9ABD7;
+        Sat, 21 Mar 2020 17:20:14 +0000 (UTC)
+Date:   Sat, 21 Mar 2020 10:19:02 -0700
+From:   Davidlohr Bueso <dave@stgolabs.net>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
         Sebastian Siewior <bigeasy@linutronix.de>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Joel Fernandes <joel@joelfernandes.org>,
         Oleg Nesterov <oleg@redhat.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geoff Levand <geoff@infradead.org>,
-        linuxppc-dev@lists.ozlabs.org,
         Logan Gunthorpe <logang@deltatee.com>,
         Bjorn Helgaas <bhelgaas@google.com>,
         Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
@@ -55,30 +49,35 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         linux-hexagon@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
         Michal Simek <monstr@monstr.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geoff Levand <geoff@infradead.org>,
+        linuxppc-dev@lists.ozlabs.org,
         "Paul E . McKenney" <paulmck@kernel.org>,
         Jonathan Corbet <corbet@lwn.net>,
         Randy Dunlap <rdunlap@infradead.org>,
         Davidlohr Bueso <dbueso@suse.de>
-Subject: Re: [patch V3 12/20] powerpc/ps3: Convert half completion to rcuwait
-In-Reply-To: <20200321113241.930037873@linutronix.de>
-References: <20200321112544.878032781@linutronix.de> <20200321113241.930037873@linutronix.de>
-Date:   Sat, 21 Mar 2020 14:22:03 +0100
-Message-ID: <87v9mxrgg4.fsf@nanos.tec.linutronix.de>
+Subject: Re: [patch V3 00/20] Lock ordering documentation and annotation for
+ lockdep
+Message-ID: <20200321171902.xxlnpikc65wd3b4m@linux-p48b>
+References: <20200321112544.878032781@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20200321112544.878032781@linutronix.de>
+User-Agent: NeoMutt/20180716
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Thomas Gleixner <tglx@linutronix.de> writes:
+On Sat, 21 Mar 2020, Thomas Gleixner wrote:
 
-> From: Thomas Gleixner <tglx@linutronix.de>
+>This is the third and hopefully final version of this work. The second one
+>can be found here:
 
-That's obviously bogus and wants to be:
+Would you rather I send in a separate series with the kvm changes, or
+should I just send a v2 with the fixes here again?
 
-From: Peter Zijlstra (Intel) <peterz@infradead.org>
-
+Thanks,
+Davidlohr
