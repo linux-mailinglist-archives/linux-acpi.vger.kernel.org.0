@@ -2,85 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F104818DF74
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Mar 2020 11:36:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A76E18E0C0
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Mar 2020 12:38:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728042AbgCUKgB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 21 Mar 2020 06:36:01 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:54068 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725932AbgCUKgB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 21 Mar 2020 06:36:01 -0400
-Received: from 185.80.35.16 (185.80.35.16) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.341)
- id e7c2313a2645bf6d; Sat, 21 Mar 2020 11:35:59 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Cezary Rojewski <cezary.rojewski@intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        erik.schmauss@intel.com, lenb@kernel.org, rafael@kernel.org,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [RESEND PATCH] acpi: Add NHLT table signature
-Date:   Sat, 21 Mar 2020 11:35:59 +0100
-Message-ID: <1841329.abDEU0iM3b@kreacher>
-In-Reply-To: <20200320192727.20560-1-cezary.rojewski@intel.com>
-References: <20200320192727.20560-1-cezary.rojewski@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+        id S1728487AbgCULey (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 21 Mar 2020 07:34:54 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38418 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725932AbgCULex (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 21 Mar 2020 07:34:53 -0400
+Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1jFcOQ-0001zF-3g; Sat, 21 Mar 2020 12:34:18 +0100
+Received: from nanos.tec.linutronix.de (localhost [IPv6:::1])
+        by nanos.tec.linutronix.de (Postfix) with ESMTP id 2A835FFBBF;
+        Sat, 21 Mar 2020 12:34:17 +0100 (CET)
+Message-Id: <20200321112544.878032781@linutronix.de>
+User-Agent: quilt/0.65
+Date:   Sat, 21 Mar 2020 12:25:44 +0100
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Sebastian Siewior <bigeasy@linutronix.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        linux-pci@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Felipe Balbi <balbi@kernel.org>, linux-usb@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        platform-driver-x86@vger.kernel.org,
+        Zhang Rui <rui.zhang@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-pm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, kbuild test robot <lkp@intel.com>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
+        Brian Cain <bcain@codeaurora.org>,
+        linux-hexagon@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        Michal Simek <monstr@monstr.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geoff Levand <geoff@infradead.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Davidlohr Bueso <dbueso@suse.de>
+Subject: [patch V3 00/20] Lock ordering documentation and annotation for lockdep
+Content-transfer-encoding: 8-bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Friday, March 20, 2020 8:27:27 PM CET Cezary Rojewski wrote:
-> NHLT (Non-HDAudio Link Table) provides configuration of audio
-> endpoints for Intel SST (Smart Sound Technology) DSP products. Similarly
-> to other ACPI tables, data provided by BIOS may not describe it
-> correctly, thus overriding is required.
-> 
-> ACPI override mechanism checks for unknown signature before proceeding.
-> Update known signatures array to support NHLT.
-> 
-> Cc: Erik Kaneda <erik.kaneda@intel.com>
-> Cc: Robert Moore <robert.moore@intel.com>
-> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-> ---
->  drivers/acpi/tables.c | 2 +-
->  include/acpi/actbl2.h | 1 +
->  2 files changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-> index 180ac4329763..0e905c3d1645 100644
-> --- a/drivers/acpi/tables.c
-> +++ b/drivers/acpi/tables.c
-> @@ -501,7 +501,7 @@ static const char * const table_sigs[] = {
->  	ACPI_SIG_WDDT, ACPI_SIG_WDRT, ACPI_SIG_DSDT, ACPI_SIG_FADT,
->  	ACPI_SIG_PSDT, ACPI_SIG_RSDT, ACPI_SIG_XSDT, ACPI_SIG_SSDT,
->  	ACPI_SIG_IORT, ACPI_SIG_NFIT, ACPI_SIG_HMAT, ACPI_SIG_PPTT,
-> -	NULL };
-> +	ACPI_SIG_NHLT, NULL };
->  
->  #define ACPI_HEADER_SIZE sizeof(struct acpi_table_header)
->  
-> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-> index e45ced27f4c3..876ccf50ec36 100644
-> --- a/include/acpi/actbl2.h
-> +++ b/include/acpi/actbl2.h
-> @@ -43,6 +43,7 @@
->  #define ACPI_SIG_SBST           "SBST"	/* Smart Battery Specification Table */
->  #define ACPI_SIG_SDEI           "SDEI"	/* Software Delegated Exception Interface Table */
->  #define ACPI_SIG_SDEV           "SDEV"	/* Secure Devices table */
-> +#define ACPI_SIG_NHLT           "NHLT"	/* Non-HDAudio Link Table */
->  
->  /*
->   * All tables must be byte-packed to match the ACPI specification, since
-> 
+This is the third and hopefully final version of this work. The second one
+can be found here:
 
-This should go in through the ACPICA upstream IMO.
+   https://lore.kernel.org/r/20200318204302.693307984@linutronix.de
 
+Changes since V2:
 
+  - Included the arch/XXX fixups for the rcuwait changes (Sebastian)
 
+  - Folded the init fix for the PS3 change (Sebastian)
+
+  - Addressed feedback on documentation (Paul, Davidlohr, Jonathan)
+
+  - Picked up acks and reviewed tags
+
+Thanks,
+
+	tglx
 
