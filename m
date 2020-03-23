@@ -2,158 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79C34190074
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Mar 2020 22:36:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAAC9190098
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Mar 2020 22:46:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726991AbgCWVgL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Mar 2020 17:36:11 -0400
-Received: from mga06.intel.com ([134.134.136.31]:17076 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726203AbgCWVgL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 23 Mar 2020 17:36:11 -0400
-IronPort-SDR: vNqW6XBMX9TcI8Bdq39Xe0SG2mxKILk434f2eciLxBYrV+GjZxm5WQZkxAt8s4x95O0PFfGh7m
- 9gEpRAiBcwOw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2020 14:36:09 -0700
-IronPort-SDR: 52/ppiaqJr0+7nRGHO3di463XmFQdFylQyxoh7YPzOWeb6pOlDhtB+fKBsWEJ6EfQLiKD7JvnD
- rPw4HMsBshkw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,297,1580803200"; 
-   d="scan'208";a="238017779"
-Received: from unknown (HELO kekkonen.fi.intel.com) ([10.249.35.222])
-  by fmsmga007.fm.intel.com with ESMTP; 23 Mar 2020 14:36:05 -0700
-Received: by kekkonen.fi.intel.com (Postfix, from userid 1000)
-        id 6580321EF2; Mon, 23 Mar 2020 23:36:03 +0200 (EET)
-Date:   Mon, 23 Mar 2020 23:36:03 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, Bingbu Cao <bingbu.cao@intel.com>,
-        linux-media <linux-media@vger.kernel.org>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>
-Subject: Re: [PATCH v4 1/6] i2c: Allow driver to manage the device's power
- state during probe
-Message-ID: <20200323213602.GC21174@kekkonen.localdomain>
-References: <20200121134157.20396-1-sakari.ailus@linux.intel.com>
- <20200121134157.20396-2-sakari.ailus@linux.intel.com>
- <CAMpxmJX8gF3TujMMeEgERAFM4YbpgnNjOmuV+U7uWCndqsyGeA@mail.gmail.com>
+        id S1727127AbgCWVq5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Mar 2020 17:46:57 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:58813 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726618AbgCWVq5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 23 Mar 2020 17:46:57 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1585000016; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
+ To: From: Reply-To: Sender;
+ bh=ZNpFv8n1vyNtNLXdZYwI5uo1FnppFNp10NWp9MPwYDo=; b=pV5wXOXNdhL3eVZsNo55Jkdbpsbs42F62/xWygxj9c/eYVWMohS4o+mhwlvJyHV24YPdMjaD
+ W16jdED42Kc62TXTAAsR+FdFaDvndEXAjROPVUy+eo1TudXeGAQNEUZhH9VsoRGIpVCU/yYV
+ SHklrUiCw9e2cryiSqklyZqDZbg=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyJkOWYwNyIsICJsaW51eC1hY3BpQHZnZXIua2VybmVsLm9yZyIsICJiZTllNGEiXQ==
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e792e33.7f2b61a663b0-smtp-out-n02;
+ Mon, 23 Mar 2020 21:46:27 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 31ABCC44798; Mon, 23 Mar 2020 21:46:24 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from BCAIN (104-54-226-75.lightspeed.austtx.sbcglobal.net [104.54.226.75])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: bcain)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0630CC433CB;
+        Mon, 23 Mar 2020 21:46:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0630CC433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=bcain@codeaurora.org
+Reply-To: <bcain@codeaurora.org>
+From:   "Brian Cain" <bcain@codeaurora.org>
+To:     "'Thomas Gleixner'" <tglx@linutronix.de>,
+        "'LKML'" <linux-kernel@vger.kernel.org>
+Cc:     "'Peter Zijlstra'" <peterz@infradead.org>,
+        "'Ingo Molnar'" <mingo@kernel.org>,
+        "'Sebastian Siewior'" <bigeasy@linutronix.de>,
+        "'Linus Torvalds'" <torvalds@linux-foundation.org>,
+        "'Joel Fernandes'" <joel@joelfernandes.org>,
+        "'Oleg Nesterov'" <oleg@redhat.com>,
+        "'Davidlohr Bueso'" <dave@stgolabs.net>,
+        "'kbuild test robot'" <lkp@intel.com>,
+        <linux-hexagon@vger.kernel.org>,
+        "'Logan Gunthorpe'" <logang@deltatee.com>,
+        "'Bjorn Helgaas'" <bhelgaas@google.com>,
+        "'Kurt Schwemmer'" <kurt.schwemmer@microsemi.com>,
+        <linux-pci@vger.kernel.org>,
+        "'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>,
+        "'Felipe Balbi'" <balbi@kernel.org>, <linux-usb@vger.kernel.org>,
+        "'Kalle Valo'" <kvalo@codeaurora.org>,
+        "'David S. Miller'" <davem@davemloft.net>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        "'Darren Hart'" <dvhart@infradead.org>,
+        "'Andy Shevchenko'" <andy@infradead.org>,
+        <platform-driver-x86@vger.kernel.org>,
+        "'Zhang Rui'" <rui.zhang@intel.com>,
+        "'Rafael J. Wysocki'" <rafael.j.wysocki@intel.com>,
+        <linux-pm@vger.kernel.org>, "'Len Brown'" <lenb@kernel.org>,
+        <linux-acpi@vger.kernel.org>, "'Nick Hu'" <nickhu@andestech.com>,
+        "'Greentime Hu'" <green.hu@gmail.com>,
+        "'Vincent Chen'" <deanbo422@gmail.com>,
+        "'Guo Ren'" <guoren@kernel.org>, <linux-csky@vger.kernel.org>,
+        "'Tony Luck'" <tony.luck@intel.com>,
+        "'Fenghua Yu'" <fenghua.yu@intel.com>,
+        <linux-ia64@vger.kernel.org>, "'Michal Simek'" <monstr@monstr.eu>,
+        "'Michael Ellerman'" <mpe@ellerman.id.au>,
+        "'Arnd Bergmann'" <arnd@arndb.de>,
+        "'Geoff Levand'" <geoff@infradead.org>,
+        <linuxppc-dev@lists.ozlabs.org>,
+        "'Paul E . McKenney'" <paulmck@kernel.org>,
+        "'Jonathan Corbet'" <corbet@lwn.net>,
+        "'Randy Dunlap'" <rdunlap@infradead.org>,
+        "'Davidlohr Bueso'" <dbueso@suse.de>
+References: <20200321112544.878032781@linutronix.de> <20200321113241.531525286@linutronix.de>
+In-Reply-To: <20200321113241.531525286@linutronix.de>
+Subject: RE: [patch V3 08/20] hexagon: Remove mm.h from asm/uaccess.h
+Date:   Mon, 23 Mar 2020 16:46:17 -0500
+Message-ID: <0cc301d6015c$7e756490$7b602db0$@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMpxmJX8gF3TujMMeEgERAFM4YbpgnNjOmuV+U7uWCndqsyGeA@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain;
+        charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: en-us
+Thread-Index: AQHqwg4Cse+u7XkWseF638AEhQYwggGRIliZqCCrVyA=
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Bartosz,
-
-On Wed, Jan 29, 2020 at 02:54:20PM +0100, Bartosz Golaszewski wrote:
-> wt., 21 sty 2020 o 14:41 Sakari Ailus <sakari.ailus@linux.intel.com> napisał(a):
-> >
-> > Enable drivers to tell ACPI that there's no need to power on a device for
-> > probe. Drivers should still perform this by themselves if there's a need
-> > to. In some cases powering on the device during probe is undesirable, and
-> > this change enables a driver to choose what fits best for it.
-> >
-> > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > ---
-> >  drivers/i2c/i2c-core-base.c | 15 ++++++++++++---
-> >  include/linux/i2c.h         |  3 +++
-> >  2 files changed, 15 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-> > index 9f8dcd3f83850..7bf1699c9044d 100644
-> > --- a/drivers/i2c/i2c-core-base.c
-> > +++ b/drivers/i2c/i2c-core-base.c
-> > @@ -303,6 +303,14 @@ static int i2c_smbus_host_notify_to_irq(const struct i2c_client *client)
-> >         return irq > 0 ? irq : -ENXIO;
-> >  }
-> >
-> > +static bool probe_low_power(struct device *dev)
-> > +{
-> > +       struct i2c_driver *driver = to_i2c_driver(dev->driver);
-> > +
-> > +       return driver->probe_low_power &&
-> > +               device_property_present(dev, "probe-low-power");
-> > +}
-> > +
-> >  static int i2c_device_probe(struct device *dev)
-> >  {
-> >         struct i2c_client       *client = i2c_verify_client(dev);
-> > @@ -375,7 +383,8 @@ static int i2c_device_probe(struct device *dev)
-> >         if (status < 0)
-> >                 goto err_clear_wakeup_irq;
-> >
-> > -       status = dev_pm_domain_attach(&client->dev, true);
-> > +       status = dev_pm_domain_attach(&client->dev,
-> > +                                     !probe_low_power(&client->dev));
-> >         if (status)
-> >                 goto err_clear_wakeup_irq;
-> >
-> > @@ -397,7 +406,7 @@ static int i2c_device_probe(struct device *dev)
-> >         return 0;
-> >
-> >  err_detach_pm_domain:
-> > -       dev_pm_domain_detach(&client->dev, true);
-> > +       dev_pm_domain_detach(&client->dev, !probe_low_power(&client->dev));
-> >  err_clear_wakeup_irq:
-> >         dev_pm_clear_wake_irq(&client->dev);
-> >         device_init_wakeup(&client->dev, false);
-> > @@ -419,7 +428,7 @@ static int i2c_device_remove(struct device *dev)
-> >                 status = driver->remove(client);
-> >         }
-> >
-> > -       dev_pm_domain_detach(&client->dev, true);
-> > +       dev_pm_domain_detach(&client->dev, !probe_low_power(&client->dev));
-> >
-> >         dev_pm_clear_wake_irq(&client->dev);
-> >         device_init_wakeup(&client->dev, false);
-> > diff --git a/include/linux/i2c.h b/include/linux/i2c.h
-> > index 582ef05ec07ed..6d0d6af393c56 100644
-> > --- a/include/linux/i2c.h
-> > +++ b/include/linux/i2c.h
-> > @@ -229,6 +229,8 @@ enum i2c_alert_protocol {
-> >   * @address_list: The I2C addresses to probe (for detect)
-> >   * @clients: List of detected clients we created (for i2c-core use only)
-> >   * @disable_i2c_core_irq_mapping: Tell the i2c-core to not do irq-mapping
-> > + * @probe_low_power: Let the driver manage the device's power state
-> > + *                  during probe and remove.
-> >   *
-> >   * The driver.owner field should be set to the module owner of this driver.
-> >   * The driver.name field should be set to the name of this driver.
-> > @@ -289,6 +291,7 @@ struct i2c_driver {
-> >         struct list_head clients;
-> >
-> >         bool disable_i2c_core_irq_mapping;
-> > +       bool probe_low_power;
+> -----Original Message-----
+> From: Thomas Gleixner <tglx@linutronix.de>
+...
+> Subject: [patch V3 08/20] hexagon: Remove mm.h from asm/uaccess.h
 > 
-> I don't see any users of disable_i2c_core_irq_mapping in current
-> mainline. Maybe instead of adding another 1-byte boolean for every
-> such property, let's just use the fact that this struct will have at
-> least an alignment of 32-bits anyway and merge the two into an int
-> field called 'flags' so that we can extend it in the future if needed?
+> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 > 
-> The name 'probe_low_power' is misleading to me too. It makes me think
-> it's the default state for some reason. It should be something like
-> 'allow_low_power_probe'.
+> The defconfig compiles without linux/mm.h. With mm.h included the include
+> chain leands to:
+> |   CC      kernel/locking/percpu-rwsem.o
+> | In file included from include/linux/huge_mm.h:8,
+> |                  from include/linux/mm.h:567,
+> |                  from arch/hexagon/include/asm/uaccess.h:,
+> |                  from include/linux/uaccess.h:11,
+> |                  from include/linux/sched/task.h:11,
+> |                  from include/linux/sched/signal.h:9,
+> |                  from include/linux/rcuwait.h:6,
+> |                  from include/linux/percpu-rwsem.h:8,
+> |                  from kernel/locking/percpu-rwsem.c:6:
+> | include/linux/fs.h:1422:29: error: array type has incomplete element type
+> 'struct percpu_rw_semaphore'
+> |  1422 |  struct percpu_rw_semaphore rw_sem[SB_FREEZE_LEVELS];
+> 
+> once rcuwait.h includes linux/sched/signal.h.
+> 
+> Remove the linux/mm.h include.
+> 
+> Reported-by: kbuild test robot <lkp@intel.com>
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Brian Cain <bcain@codeaurora.org>
+> Cc: linux-hexagon@vger.kernel.org
+> ---
+> V3: New patch
+> ---
+>  arch/hexagon/include/asm/uaccess.h | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/hexagon/include/asm/uaccess.h
+> b/arch/hexagon/include/asm/uaccess.h
+> index 00cb38faad0c4..c1019a736ff13 100644
+> --- a/arch/hexagon/include/asm/uaccess.h
+> +++ b/arch/hexagon/include/asm/uaccess.h
+> @@ -10,7 +10,6 @@
+>  /*
+>   * User space memory access functions
+>   */
+> -#include <linux/mm.h>
+>  #include <asm/sections.h>
+> 
+>  /*
+> --
+> 2.26.0.rc2
+> 
 
-Ah, got around reading this one after sending the previous mail.
-
-Sounds reasonable. I'll address both in v5.
-
--- 
-Kind regards,
-
-Sakari Ailus
+Acked-by: Brian Cain <bcain@codeaurora.org>
