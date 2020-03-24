@@ -2,60 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD421191BA7
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Mar 2020 22:04:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F6FB191BB3
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Mar 2020 22:08:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727980AbgCXVE4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Mar 2020 17:04:56 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:41071 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726673AbgCXVEz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Mar 2020 17:04:55 -0400
-Received: by mail-oi1-f194.google.com with SMTP id k9so21455oia.8
-        for <linux-acpi@vger.kernel.org>; Tue, 24 Mar 2020 14:04:55 -0700 (PDT)
+        id S1727496AbgCXVHE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Mar 2020 17:07:04 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:40040 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727270AbgCXVHE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Mar 2020 17:07:04 -0400
+Received: by mail-oi1-f196.google.com with SMTP id y71so34759oia.7
+        for <linux-acpi@vger.kernel.org>; Tue, 24 Mar 2020 14:07:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Rqk9tFpnoHCGG96oXfSaBfuvdyqKexJKoEabwVhgS14=;
-        b=eHBfaQvu40OiqzGwWMiCeIq2H+4TUXpLzVgGaW5jdzppmKsrX2Vf2k02azSZ2StsI7
-         EUrFwvoFIrr6o5w0kbRCO9FI4gUe/HlKlk2YOIl13vcOqgR1ChdMkTHL8HraXT12Qj3i
-         kIwTBkdG7dZMmd9Nqg4hDSR/VwyRXsVWjZaLp3VBYMw/bTlLkHb/S/MVmBV/hp/JBTux
-         zWGU0sre2JXu78HNWRlwMMGKcVlUy3EcF2bi4rdgNLIhMnWAOJhSlXpUp0CXh3rcBkpY
-         MUHXng3BGvoAc9dBPDRFk1SAy1M110d80hWHOL5uQVLR9nhrkRpfN4bltwKSQp15q07i
-         k0bg==
+        bh=upl2vPR8qJWq0P3veNASLF2x9fKiteylDIqdLD2DSM4=;
+        b=ptpy7rs5mB6uI4afsGX5d/xHC6v7jmwoP62AcU7hxqL8oy2KD1VBx8vnzGN1Z/YTu9
+         eQ2RSUwJ8nwlwFEdQaeBQML+Iairvcj1+qqNWJRo8jkY6k8tyFkYrc6Y/cP8aez8cl6K
+         hwoPHaoibOwKdsohj+wZ+OwahZk2LbNJbzWMs9Ydj33jMr+HkVS/L5JZWugDUnywZrBP
+         KTt9kpWf6BW8M03A4JP8SwzRz5ntebA8IUbxg+tqsU6koNGEeAi3UMY/3t7BT2/9+2EC
+         MxHJuiEganu/DEyTeou3e77JmKbYjRNYEMiesXx+7UTQk6Li+EpZgi/Qw+zSXEQRCbVl
+         hoHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Rqk9tFpnoHCGG96oXfSaBfuvdyqKexJKoEabwVhgS14=;
-        b=WeoaIplvzEDb/3e2Ue55vWsQAmoh2CICJpmju3mnIr1i7qOMPjLfRAUWEN8LS8IbWn
-         z2HpxquGiLYAB/FqVKSjczQJFQC86P56ueBhB4bdqj9HwzwggiO6dorUoqjZ8Yyo/siN
-         m9px4QLLUCO4yNAARZRxizjB7qTAbk248WxzgNB54N3PZxSbh8SXc0TmOJFTYDooTN4k
-         iiVCkByGkYYx/asz5foReJNpIvSQu7tgJCyVtmLEJjirO1ejA7KA5WVdv/rH5TW2w26X
-         /C98c4i2IjMFXa8LdQOdTc1c4I1VtNZ2BdNKS87tusmBc3dPKapiZDPgXF/xcjGrbS6e
-         OEfw==
-X-Gm-Message-State: ANhLgQ0FMN9tEK38f3iGNF2PggIAaIsfs5+0r9KWbIAtM0vfunCHfESw
-        vG/XJAo+0Rk0arWF70/iVXwb0tqeZudqyhbpAkUbuYsJ
-X-Google-Smtp-Source: ADFU+vu8Y34XatTczyvc17L08jp5mXA4Gj8IvpURa0NIr6zfJzitzWOmIWznVDfVeD9quhDB39wMHBKcgtBInp/pcaw=
-X-Received: by 2002:aca:ef82:: with SMTP id n124mr134196oih.73.1585083894878;
- Tue, 24 Mar 2020 14:04:54 -0700 (PDT)
+        bh=upl2vPR8qJWq0P3veNASLF2x9fKiteylDIqdLD2DSM4=;
+        b=YNM8yH5Cf8f6IhFM0kXi1bZomQ2I5ECPGuxeTb3N+jDJwFyHQlSamvVeJrRGuP2z3X
+         5dy5pF1Jwe9ACEoPZhRieH2GbBazs+pLdAQEAeXJdHRjkZ7pmFEwbXon4OJ6+M+2Q0CO
+         5KmrSel0jaAP269nfjQ/xwzbRgu4ebJ9cj9mkEnxUgqM/UHPJMRhhmMLGKChwnU2OYRu
+         YM1qFtU3S/TtCqAWdTJvdXZsc2TvVeSXHonjZ4iy2ZDJ5rGuOKUEqytqUqkeCKC+UYAK
+         0+xJIdr+c9oz/gX8xCjMQJzndjohqEnMXP/+m5t1Q/dh8+Shtv3Q5NUNZXu1YwpIeoLQ
+         /uFw==
+X-Gm-Message-State: ANhLgQ1St9i0qGhnRavVWQ9Al7Zw7w/HHNrGWxDttlXyxUn4PuuwJ7az
+        g2QXJa2MX72oNmEPwbs6MjpTIlb4c8Yh768aymZPZA==
+X-Google-Smtp-Source: ADFU+vuuDTsX06lZ5QDww1C30E0693xGC6g3aELOAtPsdQe2suA+4qwGyRU1gvFT4j93s/mxQFsdDqEm0rp7qk9yuRQ=
+X-Received: by 2002:a05:6808:b0f:: with SMTP id s15mr151586oij.105.1585084023289;
+ Tue, 24 Mar 2020 14:07:03 -0700 (PDT)
 MIME-Version: 1.0
 References: <158489354353.1457606.8327903161927980740.stgit@dwillia2-desk3.amr.corp.intel.com>
- <158489356692.1457606.1858427908360761594.stgit@dwillia2-desk3.amr.corp.intel.com>
- <f964eb62-5bc9-7e85-5c44-9027a6c08d4c@oracle.com>
-In-Reply-To: <f964eb62-5bc9-7e85-5c44-9027a6c08d4c@oracle.com>
+ <158489357825.1457606.17352509511987748598.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <e9d36833-6606-da13-9dda-47abc1928273@oracle.com>
+In-Reply-To: <e9d36833-6606-da13-9dda-47abc1928273@oracle.com>
 From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Tue, 24 Mar 2020 14:04:44 -0700
-Message-ID: <CAPcyv4hgExDoKZg7QQ9JRkPEY2N56EjLgLQ2Q19tu3vnUdPqgA@mail.gmail.com>
-Subject: Re: [PATCH v2 4/6] ACPI: HMAT: Refactor hmat_register_target_device
- to hmem_register_device
+Date:   Tue, 24 Mar 2020 14:06:52 -0700
+Message-ID: <CAPcyv4iyfP88KXaK4VbaUgFWRjsRutdFF8OH7nwT-zUiv3fV7Q@mail.gmail.com>
+Subject: Re: [PATCH v2 6/6] ACPI: HMAT: Attach a device for each soft-reserved range
 To:     Joao Martins <joao.m.martins@oracle.com>
 Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Brice Goglin <Brice.Goglin@inria.fr>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         linux-nvdimm <linux-nvdimm@lists.01.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         X86 ML <x86@kernel.org>
@@ -67,150 +70,104 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 On Tue, Mar 24, 2020 at 12:41 PM Joao Martins <joao.m.martins@oracle.com> wrote:
 >
->
 > On 3/22/20 4:12 PM, Dan Williams wrote:
-> > In preparation for exposing "Soft Reserved" memory ranges without an
-> > HMAT, move the hmem device registration to its own compilation unit and
-> > make the implementation generic.
+> > The hmem enabling in commit 'cf8741ac57ed ("ACPI: NUMA: HMAT: Register
+> > "soft reserved" memory as an "hmem" device")' only registered ranges to
+> > the hmem driver for each soft-reservation that also appeared in the
+> > HMAT. While this is meant to encourage platform firmware to "do the
+> > right thing" and publish an HMAT, the corollary is that platforms that
+> > fail to publish an accurate HMAT will strand memory from Linux usage.
+> > Additionally, the "efi_fake_mem" kernel command line option enabling
+> > will strand memory by default without an HMAT.
 > >
-> > The generic implementation drops usage acpi_map_pxm_to_online_node()
-> > that was translating ACPI proximity domain values and instead relies on
-> > numa_map_to_online_node() to determine the numa node for the device.
+> > Arrange for "soft reserved" memory that goes unclaimed by HMAT entries
+> > to be published as raw resource ranges for the hmem driver to consume.
 > >
+> > Include a module parameter to disable either this fallback behavior, or
+> > the hmat enabling from creating hmem devices. The module parameter
+> > requires the hmem device enabling to have unique name in the module
+> > namespace: "device_hmem".
+> >
+> > Rather than mark this x86-only, include an interim phys_to_target_node()
+> > implementation for arm64.
+> >
+> > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Brice Goglin <Brice.Goglin@inria.fr>
+> > Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 > > Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> > Link: https://lore.kernel.org/r/158318761484.2216124.2049322072599482736.stgit@dwillia2-desk3.amr.corp.intel.com
+> > Cc: Jeff Moyer <jmoyer@redhat.com>
+> > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > Cc: Will Deacon <will@kernel.org>
 > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > > ---
-> >  drivers/acpi/numa/hmat.c  |   68 ++++-----------------------------------------
-> >  drivers/dax/Kconfig       |    4 +++
-> >  drivers/dax/Makefile      |    3 +-
-> >  drivers/dax/hmem.c        |   56 -------------------------------------
-> >  drivers/dax/hmem/Makefile |    5 +++
-> >  drivers/dax/hmem/device.c |   64 ++++++++++++++++++++++++++++++++++++++++++
-> >  drivers/dax/hmem/hmem.c   |   56 +++++++++++++++++++++++++++++++++++++
-> >  include/linux/dax.h       |    8 +++++
-> >  8 files changed, 144 insertions(+), 120 deletions(-)
-> >  delete mode 100644 drivers/dax/hmem.c
-> >  create mode 100644 drivers/dax/hmem/Makefile
-> >  create mode 100644 drivers/dax/hmem/device.c
-> >  create mode 100644 drivers/dax/hmem/hmem.c
+> >  arch/arm64/mm/numa.c      |   13 +++++++++++++
+> >  drivers/dax/Kconfig       |    1 +
+> >  drivers/dax/hmem/Makefile |    3 ++-
+> >  drivers/dax/hmem/device.c |   33 +++++++++++++++++++++++++++++++++
+> >  4 files changed, 49 insertions(+), 1 deletion(-)
 > >
-> > diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> > index a12e36a12618..134bcb40b2af 100644
-> > --- a/drivers/acpi/numa/hmat.c
-> > +++ b/drivers/acpi/numa/hmat.c
-> > @@ -24,6 +24,7 @@
-> >  #include <linux/mutex.h>
-> >  #include <linux/node.h>
-> >  #include <linux/sysfs.h>
-> > +#include <linux/dax.h>
+>
+> [...]
+>
+> > diff --git a/drivers/dax/hmem/device.c b/drivers/dax/hmem/device.c
+> > index 99bc15a8b031..f9c5fa8b1880 100644
+> > --- a/drivers/dax/hmem/device.c
+> > +++ b/drivers/dax/hmem/device.c
+> > @@ -4,6 +4,9 @@
+> >  #include <linux/module.h>
+> >  #include <linux/mm.h>
 > >
-> >  static u8 hmat_revision;
-> >  static int hmat_disable __initdata;
-> > @@ -640,66 +641,6 @@ static void hmat_register_target_perf(struct memory_target *target)
-> >       node_set_perf_attrs(mem_nid, &target->hmem_attrs, 0);
-> >  }
-> >
-> > -static void hmat_register_target_device(struct memory_target *target,
->           ^^^^ int ?
->
-> > -             struct resource *r)
-> > -{
-> > -     /* define a clean / non-busy resource for the platform device */
-> > -     struct resource res = {
-> > -             .start = r->start,
-> > -             .end = r->end,
-> > -             .flags = IORESOURCE_MEM,
-> > -     };
-> > -     struct platform_device *pdev;
-> > -     struct memregion_info info;
-> > -     int rc, id;
-> > -
-> > -     rc = region_intersects(res.start, resource_size(&res), IORESOURCE_MEM,
-> > -                     IORES_DESC_SOFT_RESERVED);
-> > -     if (rc != REGION_INTERSECTS)
-> > -             return;
->                 ^ return -ENXIO;
->
-> > -
-> > -     id = memregion_alloc(GFP_KERNEL);
-> > -     if (id < 0) {
-> > -             pr_err("memregion allocation failure for %pr\n", &res);
-> > -             return;
->                 ^ return -ENOMEM;
->
-> > -     }
-> > -
-> > -     pdev = platform_device_alloc("hmem", id);
-> > -     if (!pdev) {
->
->                 rc = -ENOMEM;
->
-> > -             pr_err("hmem device allocation failure for %pr\n", &res);
-> > -             goto out_pdev;
-> > -     }
-> > -
-> > -     pdev->dev.numa_node = acpi_map_pxm_to_online_node(target->memory_pxm);
-> > -     info = (struct memregion_info) {
-> > -             .target_node = acpi_map_pxm_to_node(target->memory_pxm),
-> > -     };
-> > -     rc = platform_device_add_data(pdev, &info, sizeof(info));
-> > -     if (rc < 0) {
-> > -             pr_err("hmem memregion_info allocation failure for %pr\n", &res);
-> > -             goto out_pdev;
-> > -     }
-> > -
-> > -     rc = platform_device_add_resources(pdev, &res, 1);
-> > -     if (rc < 0) {
-> > -             pr_err("hmem resource allocation failure for %pr\n", &res);
-> > -             goto out_resource;
-> > -     }
-> > -
-> > -     rc = platform_device_add(pdev);
-> > -     if (rc < 0) {
-> > -             dev_err(&pdev->dev, "device add failed for %pr\n", &res);
-> > -             goto out_resource;
-> > -     }
-> > -
-> > -     return;
->         ^^^^^^ return 0;
-> > -
-> > -out_resource:
-> > -     put_device(&pdev->dev);
-> > -out_pdev:
-> > -     memregion_free(id);
->
->         return rc;
->
-> > -}
-> > -
-> >  static void hmat_register_target_devices(struct memory_target *target)
-> >  {
-> >       struct resource *res;
-> > @@ -711,8 +652,11 @@ static void hmat_register_target_devices(struct memory_target *target)
-> >       if (!IS_ENABLED(CONFIG_DEV_DAX_HMEM))
-> >               return;
-> >
-> > -     for (res = target->memregions.child; res; res = res->sibling)
-> > -             hmat_register_target_device(target, res);
-> > +     for (res = target->memregions.child; res; res = res->sibling) {
-> > +             int target_nid = acpi_map_pxm_to_node(target->memory_pxm);
+> > +static bool nohmem;
+> > +module_param_named(disable, nohmem, bool, 0444);
 > > +
-> > +             hmem_register_device(target_nid, res);
-> > +     }
-> >  }
+> >  void hmem_register_device(int target_nid, struct resource *r)
+> >  {
+> >       /* define a clean / non-busy resource for the platform device */
+> > @@ -16,6 +19,9 @@ void hmem_register_device(int target_nid, struct resource *r)
+> >       struct memregion_info info;
+> >       int rc, id;
 > >
+> > +     if (nohmem)
+> > +             return;
+> > +
+> >       rc = region_intersects(res.start, resource_size(&res), IORESOURCE_MEM,
+> >                       IORES_DESC_SOFT_RESERVED);
+> >       if (rc != REGION_INTERSECTS)
+> > @@ -62,3 +68,30 @@ void hmem_register_device(int target_nid, struct resource *r)
+> >  out_pdev:
+> >       memregion_free(id);
+> >  }
+> > +
+> > +static __init int hmem_register_one(struct resource *res, void *data)
+> > +{
+> > +     /*
+> > +      * If the resource is not a top-level resource it was already
+> > +      * assigned to a device by the HMAT parsing.
+> > +      */
+> > +     if (res->parent != &iomem_resource)
+> > +             return 0;
+> > +
+> > +     hmem_register_device(phys_to_target_node(res->start), res);
+> > +
+> > +     return 0;
 >
-> If it makes sense to propagate error to hmem_register_device (as noted above),
-> then here perhaps a pr_err() if hmem registration fails mainly for reporting
-> purposes?
-
-Yeah, I guess it makes sense to at least log that something went wrong
-if someone wonders where their memory device went. I'll add that
-rework as a follow-on.
-
-> Regardless of the error nits, looks good overall. So, for what is worth:
+> Should we add an error returning value to hmem_register_device() perhaps this
+> ought to be reflected in hmem_register_one().
 >
->   Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+> > +}
+> > +
+> > +static __init int hmem_init(void)
+> > +{
+> > +     walk_iomem_res_desc(IORES_DESC_SOFT_RESERVED,
+> > +                     IORESOURCE_MEM, 0, -1, NULL, hmem_register_one);
+> > +     return 0;
+> > +}
+> > +
+>
+> (...) and then perhaps here returning in the initcall if any of the resources
+> failed hmem registration?
 
-Thanks.
+Except that hmem_register_one() is a stop-gap to collect soft-reserved
+ranges that were not already registered, and it's not an error to find
+already registered devices. However, I do think it's a good idea to
+log registrations that failed for other reasons.
