@@ -2,85 +2,218 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F21D1919F2
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Mar 2020 20:32:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC8BF191A2E
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Mar 2020 20:42:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727088AbgCXTbt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Mar 2020 15:31:49 -0400
-Received: from mga14.intel.com ([192.55.52.115]:28777 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725934AbgCXTbs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 24 Mar 2020 15:31:48 -0400
-IronPort-SDR: SWAUlNmxPqaC/IYu6LoO96NdmH/12TO+OZ/Hzyjxpe7vdW+ly/YNvt3TJksHPFI6luqoVC4YNb
- yN7UXgm1Qrqg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2020 12:31:47 -0700
-IronPort-SDR: 8/VWxHUZ8NY4RmIqej7yewcPHcwLNpP4scEJKK1G8flVXsWoOafuGEnpmA/GWWQR4A85a5Q5RF
- SBwJJ7+F7kKw==
-X-IronPort-AV: E=Sophos;i="5.72,301,1580803200"; 
-   d="scan'208";a="420008785"
-Received: from agluck-desk2.sc.intel.com (HELO agluck-desk2.amr.corp.intel.com) ([10.3.52.68])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2020 12:31:46 -0700
-Date:   Tue, 24 Mar 2020 12:31:44 -0700
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Gross <mgross@linux.intel.com>,
-        linux-edac@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        linux-pm@vger.kernel.org,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        platform-driver-x86@vger.kernel.org,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-hwmon@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        linux-pci@vger.kernel.org, Takashi Iwai <tiwai@suse.com>,
-        alsa-devel@alsa-project.org,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-crypto@vger.kernel.org
-Subject: Re: [patch 10/22] EDAC: Convert to new X86 CPU match macros
-Message-ID: <20200324193144.GA4104@agluck-desk2.amr.corp.intel.com>
-References: <20200320131345.635023594@linutronix.de>
- <20200320131509.673579000@linutronix.de>
+        id S1725877AbgCXTlZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Mar 2020 15:41:25 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:54908 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725835AbgCXTlZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Mar 2020 15:41:25 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02OJdNPh042081;
+        Tue, 24 Mar 2020 19:41:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : subject : to :
+ cc : references : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=BZzap9FVuyDYIypnbSWDj1Vek14C/oGZFl+aBV8YV2Q=;
+ b=EKQoR2ZPqaOILHUEkRj/JaEZDYHr+onN99cpAwXTtuS4GtKgCyZVEiClwQCa2AD1w5AA
+ /CGSaJYsyhAIreyRQ4FHpZJhK0N6RUgVmIGS4F7QFs0GWLKshYVp2zMUkJboYJ48z118
+ IFyiR5MSp/Fp2yTXXbXloliSvGjWTIE5jJMQKqqr5D5LhxwVXr0mQAl3YJJaC8BIioIr
+ 3S87gnJzvzIx1CQ0kvYYWbuDopqVh1ljChzuxfWCoe7vE+hERQdhbsixxWnpIPdyMMle
+ ID5+DAhRcw6LEJ4OKDd3Z+0bTDa/6GbyrVvcJ9KVSaSmWPCfO+aqaTSV2EIhbDZwtzWf Jg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2ywabr6bp8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 24 Mar 2020 19:41:06 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02OJaYgH002660;
+        Tue, 24 Mar 2020 19:41:05 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2yymbu70s1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 24 Mar 2020 19:41:05 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02OJf0C8004475;
+        Tue, 24 Mar 2020 19:41:00 GMT
+Received: from [10.175.222.8] (/10.175.222.8)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 24 Mar 2020 12:41:00 -0700
+From:   Joao Martins <joao.m.martins@oracle.com>
+Subject: Re: [PATCH v2 4/6] ACPI: HMAT: Refactor hmat_register_target_device
+ to hmem_register_device
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, peterz@infradead.org,
+        dave.hansen@linux.intel.com, ard.biesheuvel@linaro.org,
+        linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org
+References: <158489354353.1457606.8327903161927980740.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <158489356692.1457606.1858427908360761594.stgit@dwillia2-desk3.amr.corp.intel.com>
+Message-ID: <f964eb62-5bc9-7e85-5c44-9027a6c08d4c@oracle.com>
+Date:   Tue, 24 Mar 2020 19:40:56 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200320131509.673579000@linutronix.de>
+In-Reply-To: <158489356692.1457606.1858427908360761594.stgit@dwillia2-desk3.amr.corp.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9570 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
+ adultscore=0 malwarescore=0 bulkscore=0 spamscore=0 mlxlogscore=999
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003240096
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9570 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
+ lowpriorityscore=0 malwarescore=0 phishscore=0 priorityscore=1501
+ clxscore=1011 adultscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003240096
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 20, 2020 at 02:13:55PM +0100, Thomas Gleixner wrote:
-> The new macro set has a consistent namespace and uses C99 initializers
-> instead of the grufty C89 ones.
-                 ^^^^^^
 
-grufty? Did you mean crufty?
-
-Though I suppose grufty may work as well here:
-
-	gruft. Noun. (uncountable) (dialect) the particles of soil
-	that are spattered up onto grass by the rain.
+On 3/22/20 4:12 PM, Dan Williams wrote:
+> In preparation for exposing "Soft Reserved" memory ranges without an
+> HMAT, move the hmem device registration to its own compilation unit and
+> make the implementation generic.
 > 
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> The generic implementation drops usage acpi_map_pxm_to_online_node()
+> that was translating ACPI proximity domain values and instead relies on
+> numa_map_to_online_node() to determine the numa node for the device.
+> 
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Link: https://lore.kernel.org/r/158318761484.2216124.2049322072599482736.stgit@dwillia2-desk3.amr.corp.intel.com
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  drivers/acpi/numa/hmat.c  |   68 ++++-----------------------------------------
+>  drivers/dax/Kconfig       |    4 +++
+>  drivers/dax/Makefile      |    3 +-
+>  drivers/dax/hmem.c        |   56 -------------------------------------
+>  drivers/dax/hmem/Makefile |    5 +++
+>  drivers/dax/hmem/device.c |   64 ++++++++++++++++++++++++++++++++++++++++++
+>  drivers/dax/hmem/hmem.c   |   56 +++++++++++++++++++++++++++++++++++++
+>  include/linux/dax.h       |    8 +++++
+>  8 files changed, 144 insertions(+), 120 deletions(-)
+>  delete mode 100644 drivers/dax/hmem.c
+>  create mode 100644 drivers/dax/hmem/Makefile
+>  create mode 100644 drivers/dax/hmem/device.c
+>  create mode 100644 drivers/dax/hmem/hmem.c
+> 
+> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+> index a12e36a12618..134bcb40b2af 100644
+> --- a/drivers/acpi/numa/hmat.c
+> +++ b/drivers/acpi/numa/hmat.c
+> @@ -24,6 +24,7 @@
+>  #include <linux/mutex.h>
+>  #include <linux/node.h>
+>  #include <linux/sysfs.h>
+> +#include <linux/dax.h>
+>  
+>  static u8 hmat_revision;
+>  static int hmat_disable __initdata;
+> @@ -640,66 +641,6 @@ static void hmat_register_target_perf(struct memory_target *target)
+>  	node_set_perf_attrs(mem_nid, &target->hmem_attrs, 0);
+>  }
+>  
+> -static void hmat_register_target_device(struct memory_target *target,
+          ^^^^ int ?
 
-Tested the Broadwell EDAC driver. The other changes look
-good too.
+> -		struct resource *r)
+> -{
+> -	/* define a clean / non-busy resource for the platform device */
+> -	struct resource res = {
+> -		.start = r->start,
+> -		.end = r->end,
+> -		.flags = IORESOURCE_MEM,
+> -	};
+> -	struct platform_device *pdev;
+> -	struct memregion_info info;
+> -	int rc, id;
+> -
+> -	rc = region_intersects(res.start, resource_size(&res), IORESOURCE_MEM,
+> -			IORES_DESC_SOFT_RESERVED);
+> -	if (rc != REGION_INTERSECTS)
+> -		return;
+		^ return -ENXIO;
 
-Acked-by: Tony Luck <tony.luck@intel.com>
+> -
+> -	id = memregion_alloc(GFP_KERNEL);
+> -	if (id < 0) {
+> -		pr_err("memregion allocation failure for %pr\n", &res);
+> -		return;
+		^ return -ENOMEM;
+
+> -	}
+> -
+> -	pdev = platform_device_alloc("hmem", id);
+> -	if (!pdev) {
+
+		rc = -ENOMEM;
+
+> -		pr_err("hmem device allocation failure for %pr\n", &res);
+> -		goto out_pdev;
+> -	}
+> -
+> -	pdev->dev.numa_node = acpi_map_pxm_to_online_node(target->memory_pxm);
+> -	info = (struct memregion_info) {
+> -		.target_node = acpi_map_pxm_to_node(target->memory_pxm),
+> -	};
+> -	rc = platform_device_add_data(pdev, &info, sizeof(info));
+> -	if (rc < 0) {
+> -		pr_err("hmem memregion_info allocation failure for %pr\n", &res);
+> -		goto out_pdev;
+> -	}
+> -
+> -	rc = platform_device_add_resources(pdev, &res, 1);
+> -	if (rc < 0) {
+> -		pr_err("hmem resource allocation failure for %pr\n", &res);
+> -		goto out_resource;
+> -	}
+> -
+> -	rc = platform_device_add(pdev);
+> -	if (rc < 0) {
+> -		dev_err(&pdev->dev, "device add failed for %pr\n", &res);
+> -		goto out_resource;
+> -	}
+> -
+> -	return;
+	^^^^^^ return 0;
+> -
+> -out_resource:
+> -	put_device(&pdev->dev);
+> -out_pdev:
+> -	memregion_free(id);
+
+	return rc;
+
+> -}
+> -
+>  static void hmat_register_target_devices(struct memory_target *target)
+>  {
+>  	struct resource *res;
+> @@ -711,8 +652,11 @@ static void hmat_register_target_devices(struct memory_target *target)
+>  	if (!IS_ENABLED(CONFIG_DEV_DAX_HMEM))
+>  		return;
+>  
+> -	for (res = target->memregions.child; res; res = res->sibling)
+> -		hmat_register_target_device(target, res);
+> +	for (res = target->memregions.child; res; res = res->sibling) {
+> +		int target_nid = acpi_map_pxm_to_node(target->memory_pxm);
+> +
+> +		hmem_register_device(target_nid, res);
+> +	}
+>  }
+>  
+
+If it makes sense to propagate error to hmem_register_device (as noted above),
+then here perhaps a pr_err() if hmem registration fails mainly for reporting
+purposes?
+
+Regardless of the error nits, looks good overall. So, for what is worth:
+
+  Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+
+	Joao
