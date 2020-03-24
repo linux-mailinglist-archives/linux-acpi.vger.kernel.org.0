@@ -2,195 +2,370 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CD80191BF6
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Mar 2020 22:31:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44851191D4A
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 00:14:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727023AbgCXVbX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Mar 2020 17:31:23 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:55144 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727270AbgCXVbX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Mar 2020 17:31:23 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02OLJBA3072086;
-        Tue, 24 Mar 2020 21:31:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=yjVJersXVqbrRLg88fDfyrB3yVDE5LyqcnA1q1agUfc=;
- b=HGfgC4P9RWmuz1rfq1u8B0qDO1FAIlYu+QZNu+4U7xSoLNJZ5h4+05y5Bj+Gnm1eg9Xf
- dVxfNNo4Fq1LwtirCiitxISCWmUYuwMIGb1o8fQqAHgXB8+AhtQdRY+zj7lsDuZ13BA4
- /XCLUYFUlEf3Efzftpsr/yok/E1NteuBwK5lzVMhq9aQ8Yc4DDTdD5tKwvHqPTLdzPoZ
- 6f1obNFs5KZszKe1e6M7sko+1QOpptytRhLcDXrEXPhV33lLjIGcYotN9yJGtPzXpBe4
- n/d+6Jn0pXxJE6aKRw4v0Bruxiz9nQbZkv0Aesb1Jq0uY+aM1YH1++OrpgFSN/WAHBsZ Dw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 2ywabr6syn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 24 Mar 2020 21:31:01 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02OLKYtc050217;
-        Tue, 24 Mar 2020 21:31:00 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 2yymbuexnn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 24 Mar 2020 21:31:00 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02OLUnJc028150;
-        Tue, 24 Mar 2020 21:30:55 GMT
-Received: from [192.168.1.67] (/94.61.1.144)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 24 Mar 2020 14:30:49 -0700
-Subject: Re: [PATCH v2 6/6] ACPI: HMAT: Attach a device for each soft-reserved
- range
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Brice Goglin <Brice.Goglin@inria.fr>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
+        id S1726643AbgCXXO1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Mar 2020 19:14:27 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46547 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726204AbgCXXO1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Mar 2020 19:14:27 -0400
+Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1jGsjn-0007lV-Qr; Wed, 25 Mar 2020 00:13:36 +0100
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+        id DC4A4100C51; Wed, 25 Mar 2020 00:13:34 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     paulmck@kernel.org
+Cc:     LKML <linux-kernel@vger.kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        X86 ML <x86@kernel.org>
-References: <158489354353.1457606.8327903161927980740.stgit@dwillia2-desk3.amr.corp.intel.com>
- <158489357825.1457606.17352509511987748598.stgit@dwillia2-desk3.amr.corp.intel.com>
- <e9d36833-6606-da13-9dda-47abc1928273@oracle.com>
- <CAPcyv4iyfP88KXaK4VbaUgFWRjsRutdFF8OH7nwT-zUiv3fV7Q@mail.gmail.com>
-From:   Joao Martins <joao.m.martins@oracle.com>
-Message-ID: <ecfd5f74-cc03-5590-82df-6f7a3dbcdb50@oracle.com>
-Date:   Tue, 24 Mar 2020 21:30:42 +0000
+        Ingo Molnar <mingo@kernel.org>,
+        Sebastian Siewior <bigeasy@linutronix.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        linux-pci@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Felipe Balbi <balbi@kernel.org>, linux-usb@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        platform-driver-x86@vger.kernel.org,
+        Zhang Rui <rui.zhang@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-pm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, kbuild test robot <lkp@intel.com>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
+        Brian Cain <bcain@codeaurora.org>,
+        linux-hexagon@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        Michal Simek <monstr@monstr.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geoff Levand <geoff@infradead.org>,
+        linuxppc-dev@lists.ozlabs.org, Davidlohr Bueso <dbueso@suse.de>
+Subject: Re: [patch V3 13/20] Documentation: Add lock ordering and nesting documentation
+In-Reply-To: <20200323025501.GE3199@paulmck-ThinkPad-P72>
+Date:   Wed, 25 Mar 2020 00:13:34 +0100
+Message-ID: <87r1xhz6qp.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4iyfP88KXaK4VbaUgFWRjsRutdFF8OH7nwT-zUiv3fV7Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9570 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=5
- adultscore=0 malwarescore=0 bulkscore=0 spamscore=0 mlxlogscore=999
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003240107
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9570 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=5
- lowpriorityscore=0 malwarescore=0 phishscore=0 priorityscore=1501
- clxscore=1015 adultscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003240107
+Content-Type: text/plain
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 3/24/20 9:06 PM, Dan Williams wrote:
-> On Tue, Mar 24, 2020 at 12:41 PM Joao Martins <joao.m.martins@oracle.com> wrote:
->>
->> On 3/22/20 4:12 PM, Dan Williams wrote:
->>> The hmem enabling in commit 'cf8741ac57ed ("ACPI: NUMA: HMAT: Register
->>> "soft reserved" memory as an "hmem" device")' only registered ranges to
->>> the hmem driver for each soft-reservation that also appeared in the
->>> HMAT. While this is meant to encourage platform firmware to "do the
->>> right thing" and publish an HMAT, the corollary is that platforms that
->>> fail to publish an accurate HMAT will strand memory from Linux usage.
->>> Additionally, the "efi_fake_mem" kernel command line option enabling
->>> will strand memory by default without an HMAT.
->>>
->>> Arrange for "soft reserved" memory that goes unclaimed by HMAT entries
->>> to be published as raw resource ranges for the hmem driver to consume.
->>>
->>> Include a module parameter to disable either this fallback behavior, or
->>> the hmat enabling from creating hmem devices. The module parameter
->>> requires the hmem device enabling to have unique name in the module
->>> namespace: "device_hmem".
->>>
->>> Rather than mark this x86-only, include an interim phys_to_target_node()
->>> implementation for arm64.
->>>
->>> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>> Cc: Brice Goglin <Brice.Goglin@inria.fr>
->>> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
->>> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
->>> Cc: Jeff Moyer <jmoyer@redhat.com>
->>> Cc: Catalin Marinas <catalin.marinas@arm.com>
->>> Cc: Will Deacon <will@kernel.org>
->>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
->>> ---
->>>  arch/arm64/mm/numa.c      |   13 +++++++++++++
->>>  drivers/dax/Kconfig       |    1 +
->>>  drivers/dax/hmem/Makefile |    3 ++-
->>>  drivers/dax/hmem/device.c |   33 +++++++++++++++++++++++++++++++++
->>>  4 files changed, 49 insertions(+), 1 deletion(-)
->>>
->>
->> [...]
->>
->>> diff --git a/drivers/dax/hmem/device.c b/drivers/dax/hmem/device.c
->>> index 99bc15a8b031..f9c5fa8b1880 100644
->>> --- a/drivers/dax/hmem/device.c
->>> +++ b/drivers/dax/hmem/device.c
->>> @@ -4,6 +4,9 @@
->>>  #include <linux/module.h>
->>>  #include <linux/mm.h>
->>>
->>> +static bool nohmem;
->>> +module_param_named(disable, nohmem, bool, 0444);
->>> +
->>>  void hmem_register_device(int target_nid, struct resource *r)
->>>  {
->>>       /* define a clean / non-busy resource for the platform device */
->>> @@ -16,6 +19,9 @@ void hmem_register_device(int target_nid, struct resource *r)
->>>       struct memregion_info info;
->>>       int rc, id;
->>>
->>> +     if (nohmem)
->>> +             return;
->>> +
->>>       rc = region_intersects(res.start, resource_size(&res), IORESOURCE_MEM,
->>>                       IORES_DESC_SOFT_RESERVED);
->>>       if (rc != REGION_INTERSECTS)
->>> @@ -62,3 +68,30 @@ void hmem_register_device(int target_nid, struct resource *r)
->>>  out_pdev:
->>>       memregion_free(id);
->>>  }
->>> +
->>> +static __init int hmem_register_one(struct resource *res, void *data)
->>> +{
->>> +     /*
->>> +      * If the resource is not a top-level resource it was already
->>> +      * assigned to a device by the HMAT parsing.
->>> +      */
->>> +     if (res->parent != &iomem_resource)
->>> +             return 0;
->>> +
->>> +     hmem_register_device(phys_to_target_node(res->start), res);
->>> +
->>> +     return 0;
->>
->> Should we add an error returning value to hmem_register_device() perhaps this
->> ought to be reflected in hmem_register_one().
->>
->>> +}
->>> +
->>> +static __init int hmem_init(void)
->>> +{
->>> +     walk_iomem_res_desc(IORES_DESC_SOFT_RESERVED,
->>> +                     IORESOURCE_MEM, 0, -1, NULL, hmem_register_one);
->>> +     return 0;
->>> +}
->>> +
->>
->> (...) and then perhaps here returning in the initcall if any of the resources
->> failed hmem registration?
-> 
-> Except that hmem_register_one() is a stop-gap to collect soft-reserved
-> ranges that were not already registered, and it's not an error to find
-> already registered devices. 
-> 
-/nods
+Paul,
 
-And if we were to return an error (say for hmem0 out of 4 hmem ones)  before
-walking through all soft-reserved found resources, if would skip registration
-for the remaining ones.
+"Paul E. McKenney" <paulmck@kernel.org> writes:
+> On Sat, Mar 21, 2020 at 12:25:57PM +0100, Thomas Gleixner wrote:
+> In the normal case where the task sleeps through the entire lock
+> acquisition, the sequence of events is as follows:
+>
+>      state = UNINTERRUPTIBLE
+>      lock()
+>        block()
+>          real_state = state
+>          state = SLEEPONLOCK
+>
+>                                lock wakeup
+>                                  state = real_state == UNINTERRUPTIBLE
+>
+> This sequence of events can occur when the task acquires spinlocks
+> on its way to sleeping, for example, in a call to wait_event().
+>
+> The non-lock wakeup can occur when a wakeup races with this wait_event(),
+> which can result in the following sequence of events:
+>
+>      state = UNINTERRUPTIBLE
+>      lock()
+>        block()
+>          real_state = state
+>          state = SLEEPONLOCK
+>
+>                              non lock wakeup
+>                                  real_state = RUNNING
+>
+>                                lock wakeup
+>                                  state = real_state == RUNNING
+>
+> Without this real_state subterfuge, the wakeup might be lost.
 
-  Joao
+I added this with a few modifications which reflect the actual
+implementation. Conceptually the same.
+
+> rwsems have grown special-purpose interfaces that allow non-owner release.
+> This non-owner release prevents PREEMPT_RT from substituting RT-mutex
+> implementations, for example, by defeating priority inheritance.
+> After all, if the lock has no owner, whose priority should be boosted?
+> As a result, PREEMPT_RT does not currently support rwsem, which in turn
+> means that code using it must therefore be disabled until a workable
+> solution presents itself.
+>
+> [ Note: Not as confident as I would like to be in the above. ]
+
+I'm not confident either especially not after looking at the actual
+code.
+
+In fact I feel really stupid because the rw_semaphore reader non-owner
+restriction on RT simply does not exist anymore and my history biased
+memory tricked me.
+
+The first rw_semaphore implementation of RT was simple and restricted
+the reader side to a single reader to support PI on both the reader and
+the writer side. That obviosuly did not scale well and made mmap_sem
+heavy use cases pretty unhappy.
+
+The short interlude with multi-reader boosting turned out to be a failed
+experiment - Steven might still disagree though :)
+
+At some point we gave up and I myself (sic!) reimplemented the RT
+variant of rw_semaphore with a reader biased mechanism.
+
+The reader never holds the underlying rt_mutex accross the read side
+critical section. It merily increments the reader count and drops it on
+release.
+
+The only time a reader takes the rt_mutex is when it blocks on a
+writer. Writers hold the rt_mutex across the write side critical section
+to allow incoming readers to boost them. Once the writer releases the
+rw_semaphore it unlocks the rt_mutex which is then handed off to the
+readers. They increment the reader count and then drop the rt_mutex
+before continuing in the read side critical section.
+
+So while I changed the implementation it did obviously not occur to me
+that this also lifted the non-owner release restriction. Nobody else
+noticed either. So we kept dragging this along in both memory and
+implementation. Both will be fixed now :)
+
+The owner semantics of down/up_read() are only enforced by lockdep. That
+applies to both RT and !RT. The up/down_read_non_owner() variants are
+just there to tell lockdep about it.
+
+So, I picked up your other suggestions with slight modifications and
+adjusted the owner, semaphore and rw_semaphore docs accordingly.
+
+Please have a close look at the patch below (applies on tip core/locking).
+
+Thanks,
+
+        tglx, who is searching a brown paperbag
+
+8<----------
+
+ Documentation/locking/locktypes.rst |  148 +++++++++++++++++++++++-------------
+ 1 file changed, 98 insertions(+), 50 deletions(-)
+
+--- a/Documentation/locking/locktypes.rst
++++ b/Documentation/locking/locktypes.rst
+@@ -67,6 +67,17 @@ Spinning locks implicitly disable preemp
+  _irqsave/restore()   Save and disable / restore interrupt disabled state
+  ===================  ====================================================
+ 
++Owner semantics
++===============
++
++The aforementioned lock types except semaphores have strict owner
++semantics:
++
++  The context (task) that acquired the lock must release it.
++
++rw_semaphores have a special interface which allows non-owner release for
++readers.
++
+ 
+ rtmutex
+ =======
+@@ -83,6 +94,51 @@ interrupt handlers and soft interrupts.
+ and rwlock_t to be implemented via RT-mutexes.
+ 
+ 
++sempahore
++=========
++
++semaphore is a counting semaphore implementation.
++
++Semaphores are often used for both serialization and waiting, but new use
++cases should instead use separate serialization and wait mechanisms, such
++as mutexes and completions.
++
++sempahores and PREEMPT_RT
++----------------------------
++
++PREEMPT_RT does not change the sempahore implementation. That's impossible
++due to the counting semaphore semantics which have no concept of owners.
++The lack of an owner conflicts with priority inheritance. After all an
++unknown owner cannot be boosted. As a consequence blocking on semaphores
++can be subject to priority inversion.
++
++
++rw_sempahore
++============
++
++rw_semaphore is a multiple readers and single writer lock mechanism.
++
++On non-PREEMPT_RT kernels the implementation is fair, thus preventing
++writer starvation.
++
++rw_semaphore complies by default with the strict owner semantics, but there
++exist special-purpose interfaces that allow non-owner release for readers.
++These work independent of the kernel configuration.
++
++rw_sempahore and PREEMPT_RT
++---------------------------
++
++PREEMPT_RT kernels map rw_sempahore to a separate rt_mutex-based
++implementation, thus changing the fairness:
++
++ Because an rw_sempaphore writer cannot grant its priority to multiple
++ readers, a preempted low-priority reader will continue holding its lock,
++ thus starving even high-priority writers.  In contrast, because readers
++ can grant their priority to a writer, a preempted low-priority writer will
++ have its priority boosted until it releases the lock, thus preventing that
++ writer from starving readers.
++
++
+ raw_spinlock_t and spinlock_t
+ =============================
+ 
+@@ -140,7 +196,16 @@ On a PREEMPT_RT enabled kernel spinlock_
+    kernels leave task state untouched.  However, PREEMPT_RT must change
+    task state if the task blocks during acquisition.  Therefore, it saves
+    the current task state before blocking and the corresponding lock wakeup
+-   restores it.
++   restores it::
++
++    task->state = TASK_INTERRUPTIBLE
++     lock()
++       block()
++         task->saved_state = task->state
++	 task->state = TASK_UNINTERRUPTIBLE
++	 schedule()
++					lock wakeup
++					  task->state = task->saved_state
+ 
+    Other types of wakeups would normally unconditionally set the task state
+    to RUNNING, but that does not work here because the task must remain
+@@ -148,7 +213,22 @@ On a PREEMPT_RT enabled kernel spinlock_
+    wakeup attempts to awaken a task blocked waiting for a spinlock, it
+    instead sets the saved state to RUNNING.  Then, when the lock
+    acquisition completes, the lock wakeup sets the task state to the saved
+-   state, in this case setting it to RUNNING.
++   state, in this case setting it to RUNNING::
++
++    task->state = TASK_INTERRUPTIBLE
++     lock()
++       block()
++         task->saved_state = task->state
++	 task->state = TASK_UNINTERRUPTIBLE
++	 schedule()
++					non lock wakeup
++					  task->saved_state = TASK_RUNNING
++
++					lock wakeup
++					  task->state = task->saved_state
++
++   This ensures that the real wakeup cannot be lost.
++
+ 
+ rwlock_t
+ ========
+@@ -228,17 +308,16 @@ while holding normal non-raw spinlocks b
+ bit spinlocks
+ -------------
+ 
+-Bit spinlocks are problematic for PREEMPT_RT as they cannot be easily
+-substituted by an RT-mutex based implementation for obvious reasons.
+-
+-The semantics of bit spinlocks are preserved on PREEMPT_RT kernels and the
+-caveats vs. raw_spinlock_t apply.
+-
+-Some bit spinlocks are substituted by regular spinlock_t for PREEMPT_RT but
+-this requires conditional (#ifdef'ed) code changes at the usage site while
+-the spinlock_t substitution is simply done by the compiler and the
+-conditionals are restricted to header files and core implementation of the
+-locking primitives and the usage sites do not require any changes.
++PREEMPT_RT cannot substitute bit spinlocks because a single bit is too
++small to accommodate an RT-mutex.  Therefore, the semantics of bit
++spinlocks are preserved on PREEMPT_RT kernels, so that the raw_spinlock_t
++caveats also apply to bit spinlocks.
++
++Some bit spinlocks are replaced with regular spinlock_t for PREEMPT_RT
++using conditional (#ifdef'ed) code changes at the usage site.  In contrast,
++usage-site changes are not needed for the spinlock_t substitution.
++Instead, conditionals in header files and the core locking implemementation
++enable the compiler to do the substitution transparently.
+ 
+ 
+ Lock type nesting rules
+@@ -254,46 +333,15 @@ Lock type nesting rules
+ 
+   - Spinning lock types can nest inside sleeping lock types.
+ 
+-These rules apply in general independent of CONFIG_PREEMPT_RT.
++These constraints apply both in CONFIG_PREEMPT_RT and otherwise.
+ 
+-As PREEMPT_RT changes the lock category of spinlock_t and rwlock_t from
+-spinning to sleeping this has obviously restrictions how they can nest with
+-raw_spinlock_t.
+-
+-This results in the following nest ordering:
++The fact that PREEMPT_RT changes the lock category of spinlock_t and
++rwlock_t from spinning to sleeping means that they cannot be acquired while
++holding a raw spinlock.  This results in the following nesting ordering:
+ 
+   1) Sleeping locks
+   2) spinlock_t and rwlock_t
+   3) raw_spinlock_t and bit spinlocks
+ 
+-Lockdep is aware of these constraints to ensure that they are respected.
+-
+-
+-Owner semantics
+-===============
+-
+-Most lock types in the Linux kernel have strict owner semantics, i.e. the
+-context (task) which acquires a lock has to release it.
+-
+-There are two exceptions:
+-
+-  - semaphores
+-  - rwsems
+-
+-semaphores have no owner semantics for historical reason, and as such
+-trylock and release operations can be called from any context. They are
+-often used for both serialization and waiting purposes. That's generally
+-discouraged and should be replaced by separate serialization and wait
+-mechanisms, such as mutexes and completions.
+-
+-rwsems have grown interfaces which allow non owner release for special
+-purposes. This usage is problematic on PREEMPT_RT because PREEMPT_RT
+-substitutes all locking primitives except semaphores with RT-mutex based
+-implementations to provide priority inheritance for all lock types except
+-the truly spinning ones. Priority inheritance on ownerless locks is
+-obviously impossible.
+-
+-For now the rwsem non-owner release excludes code which utilizes it from
+-being used on PREEMPT_RT enabled kernels. In same cases this can be
+-mitigated by disabling portions of the code, in other cases the complete
+-functionality has to be disabled until a workable solution has been found.
++Lockdep will complain if these constraints are violated, both in
++CONFIG_PREEMPT_RT and otherwise.
+
