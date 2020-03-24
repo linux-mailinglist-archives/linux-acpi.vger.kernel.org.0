@@ -2,54 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F6FB191BB3
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Mar 2020 22:08:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CD80191BF6
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Mar 2020 22:31:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727496AbgCXVHE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Mar 2020 17:07:04 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:40040 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727270AbgCXVHE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Mar 2020 17:07:04 -0400
-Received: by mail-oi1-f196.google.com with SMTP id y71so34759oia.7
-        for <linux-acpi@vger.kernel.org>; Tue, 24 Mar 2020 14:07:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=upl2vPR8qJWq0P3veNASLF2x9fKiteylDIqdLD2DSM4=;
-        b=ptpy7rs5mB6uI4afsGX5d/xHC6v7jmwoP62AcU7hxqL8oy2KD1VBx8vnzGN1Z/YTu9
-         eQ2RSUwJ8nwlwFEdQaeBQML+Iairvcj1+qqNWJRo8jkY6k8tyFkYrc6Y/cP8aez8cl6K
-         hwoPHaoibOwKdsohj+wZ+OwahZk2LbNJbzWMs9Ydj33jMr+HkVS/L5JZWugDUnywZrBP
-         KTt9kpWf6BW8M03A4JP8SwzRz5ntebA8IUbxg+tqsU6koNGEeAi3UMY/3t7BT2/9+2EC
-         MxHJuiEganu/DEyTeou3e77JmKbYjRNYEMiesXx+7UTQk6Li+EpZgi/Qw+zSXEQRCbVl
-         hoHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=upl2vPR8qJWq0P3veNASLF2x9fKiteylDIqdLD2DSM4=;
-        b=YNM8yH5Cf8f6IhFM0kXi1bZomQ2I5ECPGuxeTb3N+jDJwFyHQlSamvVeJrRGuP2z3X
-         5dy5pF1Jwe9ACEoPZhRieH2GbBazs+pLdAQEAeXJdHRjkZ7pmFEwbXon4OJ6+M+2Q0CO
-         5KmrSel0jaAP269nfjQ/xwzbRgu4ebJ9cj9mkEnxUgqM/UHPJMRhhmMLGKChwnU2OYRu
-         YM1qFtU3S/TtCqAWdTJvdXZsc2TvVeSXHonjZ4iy2ZDJ5rGuOKUEqytqUqkeCKC+UYAK
-         0+xJIdr+c9oz/gX8xCjMQJzndjohqEnMXP/+m5t1Q/dh8+Shtv3Q5NUNZXu1YwpIeoLQ
-         /uFw==
-X-Gm-Message-State: ANhLgQ1St9i0qGhnRavVWQ9Al7Zw7w/HHNrGWxDttlXyxUn4PuuwJ7az
-        g2QXJa2MX72oNmEPwbs6MjpTIlb4c8Yh768aymZPZA==
-X-Google-Smtp-Source: ADFU+vuuDTsX06lZ5QDww1C30E0693xGC6g3aELOAtPsdQe2suA+4qwGyRU1gvFT4j93s/mxQFsdDqEm0rp7qk9yuRQ=
-X-Received: by 2002:a05:6808:b0f:: with SMTP id s15mr151586oij.105.1585084023289;
- Tue, 24 Mar 2020 14:07:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <158489354353.1457606.8327903161927980740.stgit@dwillia2-desk3.amr.corp.intel.com>
- <158489357825.1457606.17352509511987748598.stgit@dwillia2-desk3.amr.corp.intel.com>
- <e9d36833-6606-da13-9dda-47abc1928273@oracle.com>
-In-Reply-To: <e9d36833-6606-da13-9dda-47abc1928273@oracle.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Tue, 24 Mar 2020 14:06:52 -0700
-Message-ID: <CAPcyv4iyfP88KXaK4VbaUgFWRjsRutdFF8OH7nwT-zUiv3fV7Q@mail.gmail.com>
-Subject: Re: [PATCH v2 6/6] ACPI: HMAT: Attach a device for each soft-reserved range
-To:     Joao Martins <joao.m.martins@oracle.com>
+        id S1727023AbgCXVbX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Mar 2020 17:31:23 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:55144 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727270AbgCXVbX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Mar 2020 17:31:23 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02OLJBA3072086;
+        Tue, 24 Mar 2020 21:31:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=yjVJersXVqbrRLg88fDfyrB3yVDE5LyqcnA1q1agUfc=;
+ b=HGfgC4P9RWmuz1rfq1u8B0qDO1FAIlYu+QZNu+4U7xSoLNJZ5h4+05y5Bj+Gnm1eg9Xf
+ dVxfNNo4Fq1LwtirCiitxISCWmUYuwMIGb1o8fQqAHgXB8+AhtQdRY+zj7lsDuZ13BA4
+ /XCLUYFUlEf3Efzftpsr/yok/E1NteuBwK5lzVMhq9aQ8Yc4DDTdD5tKwvHqPTLdzPoZ
+ 6f1obNFs5KZszKe1e6M7sko+1QOpptytRhLcDXrEXPhV33lLjIGcYotN9yJGtPzXpBe4
+ n/d+6Jn0pXxJE6aKRw4v0Bruxiz9nQbZkv0Aesb1Jq0uY+aM1YH1++OrpgFSN/WAHBsZ Dw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2ywabr6syn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 24 Mar 2020 21:31:01 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02OLKYtc050217;
+        Tue, 24 Mar 2020 21:31:00 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 2yymbuexnn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 24 Mar 2020 21:31:00 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02OLUnJc028150;
+        Tue, 24 Mar 2020 21:30:55 GMT
+Received: from [192.168.1.67] (/94.61.1.144)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 24 Mar 2020 14:30:49 -0700
+Subject: Re: [PATCH v2 6/6] ACPI: HMAT: Attach a device for each soft-reserved
+ range
+To:     Dan Williams <dan.j.williams@intel.com>
 Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Brice Goglin <Brice.Goglin@inria.fr>,
@@ -62,112 +55,142 @@ Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
         linux-nvdimm <linux-nvdimm@lists.01.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         X86 ML <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <158489354353.1457606.8327903161927980740.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <158489357825.1457606.17352509511987748598.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <e9d36833-6606-da13-9dda-47abc1928273@oracle.com>
+ <CAPcyv4iyfP88KXaK4VbaUgFWRjsRutdFF8OH7nwT-zUiv3fV7Q@mail.gmail.com>
+From:   Joao Martins <joao.m.martins@oracle.com>
+Message-ID: <ecfd5f74-cc03-5590-82df-6f7a3dbcdb50@oracle.com>
+Date:   Tue, 24 Mar 2020 21:30:42 +0000
+MIME-Version: 1.0
+In-Reply-To: <CAPcyv4iyfP88KXaK4VbaUgFWRjsRutdFF8OH7nwT-zUiv3fV7Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9570 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=5
+ adultscore=0 malwarescore=0 bulkscore=0 spamscore=0 mlxlogscore=999
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003240107
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9570 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=5
+ lowpriorityscore=0 malwarescore=0 phishscore=0 priorityscore=1501
+ clxscore=1015 adultscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003240107
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 24, 2020 at 12:41 PM Joao Martins <joao.m.martins@oracle.com> wrote:
->
-> On 3/22/20 4:12 PM, Dan Williams wrote:
-> > The hmem enabling in commit 'cf8741ac57ed ("ACPI: NUMA: HMAT: Register
-> > "soft reserved" memory as an "hmem" device")' only registered ranges to
-> > the hmem driver for each soft-reservation that also appeared in the
-> > HMAT. While this is meant to encourage platform firmware to "do the
-> > right thing" and publish an HMAT, the corollary is that platforms that
-> > fail to publish an accurate HMAT will strand memory from Linux usage.
-> > Additionally, the "efi_fake_mem" kernel command line option enabling
-> > will strand memory by default without an HMAT.
-> >
-> > Arrange for "soft reserved" memory that goes unclaimed by HMAT entries
-> > to be published as raw resource ranges for the hmem driver to consume.
-> >
-> > Include a module parameter to disable either this fallback behavior, or
-> > the hmat enabling from creating hmem devices. The module parameter
-> > requires the hmem device enabling to have unique name in the module
-> > namespace: "device_hmem".
-> >
-> > Rather than mark this x86-only, include an interim phys_to_target_node()
-> > implementation for arm64.
-> >
-> > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Brice Goglin <Brice.Goglin@inria.fr>
-> > Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> > Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> > Cc: Jeff Moyer <jmoyer@redhat.com>
-> > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > Cc: Will Deacon <will@kernel.org>
-> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> > ---
-> >  arch/arm64/mm/numa.c      |   13 +++++++++++++
-> >  drivers/dax/Kconfig       |    1 +
-> >  drivers/dax/hmem/Makefile |    3 ++-
-> >  drivers/dax/hmem/device.c |   33 +++++++++++++++++++++++++++++++++
-> >  4 files changed, 49 insertions(+), 1 deletion(-)
-> >
->
-> [...]
->
-> > diff --git a/drivers/dax/hmem/device.c b/drivers/dax/hmem/device.c
-> > index 99bc15a8b031..f9c5fa8b1880 100644
-> > --- a/drivers/dax/hmem/device.c
-> > +++ b/drivers/dax/hmem/device.c
-> > @@ -4,6 +4,9 @@
-> >  #include <linux/module.h>
-> >  #include <linux/mm.h>
-> >
-> > +static bool nohmem;
-> > +module_param_named(disable, nohmem, bool, 0444);
-> > +
-> >  void hmem_register_device(int target_nid, struct resource *r)
-> >  {
-> >       /* define a clean / non-busy resource for the platform device */
-> > @@ -16,6 +19,9 @@ void hmem_register_device(int target_nid, struct resource *r)
-> >       struct memregion_info info;
-> >       int rc, id;
-> >
-> > +     if (nohmem)
-> > +             return;
-> > +
-> >       rc = region_intersects(res.start, resource_size(&res), IORESOURCE_MEM,
-> >                       IORES_DESC_SOFT_RESERVED);
-> >       if (rc != REGION_INTERSECTS)
-> > @@ -62,3 +68,30 @@ void hmem_register_device(int target_nid, struct resource *r)
-> >  out_pdev:
-> >       memregion_free(id);
-> >  }
-> > +
-> > +static __init int hmem_register_one(struct resource *res, void *data)
-> > +{
-> > +     /*
-> > +      * If the resource is not a top-level resource it was already
-> > +      * assigned to a device by the HMAT parsing.
-> > +      */
-> > +     if (res->parent != &iomem_resource)
-> > +             return 0;
-> > +
-> > +     hmem_register_device(phys_to_target_node(res->start), res);
-> > +
-> > +     return 0;
->
-> Should we add an error returning value to hmem_register_device() perhaps this
-> ought to be reflected in hmem_register_one().
->
-> > +}
-> > +
-> > +static __init int hmem_init(void)
-> > +{
-> > +     walk_iomem_res_desc(IORES_DESC_SOFT_RESERVED,
-> > +                     IORESOURCE_MEM, 0, -1, NULL, hmem_register_one);
-> > +     return 0;
-> > +}
-> > +
->
-> (...) and then perhaps here returning in the initcall if any of the resources
-> failed hmem registration?
+On 3/24/20 9:06 PM, Dan Williams wrote:
+> On Tue, Mar 24, 2020 at 12:41 PM Joao Martins <joao.m.martins@oracle.com> wrote:
+>>
+>> On 3/22/20 4:12 PM, Dan Williams wrote:
+>>> The hmem enabling in commit 'cf8741ac57ed ("ACPI: NUMA: HMAT: Register
+>>> "soft reserved" memory as an "hmem" device")' only registered ranges to
+>>> the hmem driver for each soft-reservation that also appeared in the
+>>> HMAT. While this is meant to encourage platform firmware to "do the
+>>> right thing" and publish an HMAT, the corollary is that platforms that
+>>> fail to publish an accurate HMAT will strand memory from Linux usage.
+>>> Additionally, the "efi_fake_mem" kernel command line option enabling
+>>> will strand memory by default without an HMAT.
+>>>
+>>> Arrange for "soft reserved" memory that goes unclaimed by HMAT entries
+>>> to be published as raw resource ranges for the hmem driver to consume.
+>>>
+>>> Include a module parameter to disable either this fallback behavior, or
+>>> the hmat enabling from creating hmem devices. The module parameter
+>>> requires the hmem device enabling to have unique name in the module
+>>> namespace: "device_hmem".
+>>>
+>>> Rather than mark this x86-only, include an interim phys_to_target_node()
+>>> implementation for arm64.
+>>>
+>>> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>> Cc: Brice Goglin <Brice.Goglin@inria.fr>
+>>> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+>>> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+>>> Cc: Jeff Moyer <jmoyer@redhat.com>
+>>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>>> Cc: Will Deacon <will@kernel.org>
+>>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+>>> ---
+>>>  arch/arm64/mm/numa.c      |   13 +++++++++++++
+>>>  drivers/dax/Kconfig       |    1 +
+>>>  drivers/dax/hmem/Makefile |    3 ++-
+>>>  drivers/dax/hmem/device.c |   33 +++++++++++++++++++++++++++++++++
+>>>  4 files changed, 49 insertions(+), 1 deletion(-)
+>>>
+>>
+>> [...]
+>>
+>>> diff --git a/drivers/dax/hmem/device.c b/drivers/dax/hmem/device.c
+>>> index 99bc15a8b031..f9c5fa8b1880 100644
+>>> --- a/drivers/dax/hmem/device.c
+>>> +++ b/drivers/dax/hmem/device.c
+>>> @@ -4,6 +4,9 @@
+>>>  #include <linux/module.h>
+>>>  #include <linux/mm.h>
+>>>
+>>> +static bool nohmem;
+>>> +module_param_named(disable, nohmem, bool, 0444);
+>>> +
+>>>  void hmem_register_device(int target_nid, struct resource *r)
+>>>  {
+>>>       /* define a clean / non-busy resource for the platform device */
+>>> @@ -16,6 +19,9 @@ void hmem_register_device(int target_nid, struct resource *r)
+>>>       struct memregion_info info;
+>>>       int rc, id;
+>>>
+>>> +     if (nohmem)
+>>> +             return;
+>>> +
+>>>       rc = region_intersects(res.start, resource_size(&res), IORESOURCE_MEM,
+>>>                       IORES_DESC_SOFT_RESERVED);
+>>>       if (rc != REGION_INTERSECTS)
+>>> @@ -62,3 +68,30 @@ void hmem_register_device(int target_nid, struct resource *r)
+>>>  out_pdev:
+>>>       memregion_free(id);
+>>>  }
+>>> +
+>>> +static __init int hmem_register_one(struct resource *res, void *data)
+>>> +{
+>>> +     /*
+>>> +      * If the resource is not a top-level resource it was already
+>>> +      * assigned to a device by the HMAT parsing.
+>>> +      */
+>>> +     if (res->parent != &iomem_resource)
+>>> +             return 0;
+>>> +
+>>> +     hmem_register_device(phys_to_target_node(res->start), res);
+>>> +
+>>> +     return 0;
+>>
+>> Should we add an error returning value to hmem_register_device() perhaps this
+>> ought to be reflected in hmem_register_one().
+>>
+>>> +}
+>>> +
+>>> +static __init int hmem_init(void)
+>>> +{
+>>> +     walk_iomem_res_desc(IORES_DESC_SOFT_RESERVED,
+>>> +                     IORESOURCE_MEM, 0, -1, NULL, hmem_register_one);
+>>> +     return 0;
+>>> +}
+>>> +
+>>
+>> (...) and then perhaps here returning in the initcall if any of the resources
+>> failed hmem registration?
+> 
+> Except that hmem_register_one() is a stop-gap to collect soft-reserved
+> ranges that were not already registered, and it's not an error to find
+> already registered devices. 
+> 
+/nods
 
-Except that hmem_register_one() is a stop-gap to collect soft-reserved
-ranges that were not already registered, and it's not an error to find
-already registered devices. However, I do think it's a good idea to
-log registrations that failed for other reasons.
+And if we were to return an error (say for hmem0 out of 4 hmem ones)  before
+walking through all soft-reserved found resources, if would skip registration
+for the remaining ones.
+
+  Joao
