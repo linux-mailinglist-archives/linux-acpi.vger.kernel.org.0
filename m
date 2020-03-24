@@ -2,98 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D6A01915E1
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Mar 2020 17:14:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 792011916AE
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Mar 2020 17:43:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727773AbgCXQNw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Mar 2020 12:13:52 -0400
-Received: from mga18.intel.com ([134.134.136.126]:58638 "EHLO mga18.intel.com"
+        id S1727574AbgCXQl6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Mar 2020 12:41:58 -0400
+Received: from foss.arm.com ([217.140.110.172]:38096 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727681AbgCXQNw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 24 Mar 2020 12:13:52 -0400
-IronPort-SDR: GKb0EOgvfEjWC88/8TiHNeaUZSlGp7SN06JnaH7RcCAywxmQjb3RL/MRmlNzthNknsvdtj0GMm
- raX7HMSzG3bA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2020 09:13:51 -0700
-IronPort-SDR: W8SciJsflDt7I1KWp22n6eTJA7U0Ua/WogD7R+qVo6jLLLwyy64NWdjac5turEh7gfGs2gJwPy
- ixWURD/+G7gA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,301,1580803200"; 
-   d="scan'208";a="393330458"
-Received: from rjwysock-mobl1.ger.corp.intel.com (HELO [10.249.142.176]) ([10.249.142.176])
-  by orsmga004.jf.intel.com with ESMTP; 24 Mar 2020 09:13:50 -0700
-Subject: Re: [PATCH][next] pnpbios: pnpbios.h: Replace zero-length array with
- flexible-array member
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-References: <20200320231827.GA21969@embeddedor.com>
-From:   "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Organization: Intel Technology Poland Sp. z o. o., KRS 101882, ul. Slowackiego
- 173, 80-298 Gdansk
-Message-ID: <bd76497e-7d37-a38b-b12c-d6069714f2f0@intel.com>
-Date:   Tue, 24 Mar 2020 17:13:50 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1727341AbgCXQl6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 24 Mar 2020 12:41:58 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9F6A71FB;
+        Tue, 24 Mar 2020 09:41:57 -0700 (PDT)
+Received: from mbp (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B87AD3F52E;
+        Tue, 24 Mar 2020 09:41:55 -0700 (PDT)
+Date:   Tue, 24 Mar 2020 16:41:53 +0000
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     James Morse <james.morse@arm.com>
+Cc:     linux-mm@kvack.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+        Rafael Wysocki <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>, Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Tyler Baicar <tyler@amperecomputing.com>,
+        Xie XiuQi <xiexiuqi@huawei.com>
+Subject: Re: [PATCH 3/3] arm64: acpi: Make apei_claim_sea() synchronise with
+ APEI's irq work
+Message-ID: <20200324164152.GB3901@mbp>
+References: <20200228174817.74278-1-james.morse@arm.com>
+ <20200228174817.74278-4-james.morse@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200320231827.GA21969@embeddedor.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200228174817.74278-4-james.morse@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 3/21/2020 12:18 AM, Gustavo A. R. Silva wrote:
-> The current codebase makes use of the zero-length array language
-> extension to the C90 standard, but the preferred mechanism to declare
-> variable-length types such as these ones is a flexible array member[1][2],
-> introduced in C99:
->
-> struct foo {
->          int stuff;
->          struct boo array[];
-> };
->
-> By making use of the mechanism above, we will get a compiler warning
-> in case the flexible array does not occur last in the structure, which
-> will help us prevent some kind of undefined behavior bugs from being
-> inadvertently introduced[3] to the codebase from now on.
->
-> Also, notice that, dynamic memory allocations won't be affected by
-> this change:
->
-> "Flexible array members have incomplete type, and so the sizeof operator
-> may not be applied. As a quirk of the original implementation of
-> zero-length arrays, sizeof evaluates to zero."[1]
->
-> This issue was found with the help of Coccinelle.
->
-> [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-> [2] https://github.com/KSPP/linux/issues/21
-> [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
->
-> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+On Fri, Feb 28, 2020 at 05:48:17PM +0000, James Morse wrote:
+> APEI is unable to do all of its error handling work in nmi-context, so
+> it defers non-fatal work onto the irq_work queue. arch_irq_work_raise()
+> sends an IPI to the calling cpu, but this is not guaranteed to be taken
+> before returning to user-space.
+> 
+> Unless the exception interrupted a context with irqs-masked,
+> irq_work_run() can run immediately. Otherwise return -EINPROGRESS to
+> indicate ghes_notify_sea() found some work to do, but it hasn't
+> finished yet.
+> 
+> With this apei_claim_sea() returning '0' means this external-abort was
+> also notification of a firmware-first RAS error, and that APEI has
+> processed the CPER records.
+> 
+> Signed-off-by: James Morse <james.morse@arm.com>
 > ---
->   drivers/pnp/pnpbios/pnpbios.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/pnp/pnpbios/pnpbios.h b/drivers/pnp/pnpbios/pnpbios.h
-> index 37acb8378f39..2ce739ff9c1a 100644
-> --- a/drivers/pnp/pnpbios/pnpbios.h
-> +++ b/drivers/pnp/pnpbios/pnpbios.h
-> @@ -107,7 +107,7 @@ struct pnp_bios_node {
->   	__u32 eisa_id;
->   	__u8 type_code[3];
->   	__u16 flags;
-> -	__u8 data[0];
-> +	__u8 data[];
->   };
->   #pragma pack()
->   
+> Changes since $last_year:
+>  * Dropped all the tags ... its been a year.
 
-Please resend this with a CC to linux-acpi, thanks!
+I think this patch hasn't changed much since, so my ack still stands.
 
-
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
