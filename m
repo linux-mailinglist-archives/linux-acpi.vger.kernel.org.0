@@ -2,157 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EAAC9190098
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Mar 2020 22:46:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B87B41905AE
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Mar 2020 07:26:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727127AbgCWVq5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Mar 2020 17:46:57 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:58813 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726618AbgCWVq5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 23 Mar 2020 17:46:57 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1585000016; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
- To: From: Reply-To: Sender;
- bh=ZNpFv8n1vyNtNLXdZYwI5uo1FnppFNp10NWp9MPwYDo=; b=pV5wXOXNdhL3eVZsNo55Jkdbpsbs42F62/xWygxj9c/eYVWMohS4o+mhwlvJyHV24YPdMjaD
- W16jdED42Kc62TXTAAsR+FdFaDvndEXAjROPVUy+eo1TudXeGAQNEUZhH9VsoRGIpVCU/yYV
- SHklrUiCw9e2cryiSqklyZqDZbg=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyJkOWYwNyIsICJsaW51eC1hY3BpQHZnZXIua2VybmVsLm9yZyIsICJiZTllNGEiXQ==
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e792e33.7f2b61a663b0-smtp-out-n02;
- Mon, 23 Mar 2020 21:46:27 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 31ABCC44798; Mon, 23 Mar 2020 21:46:24 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from BCAIN (104-54-226-75.lightspeed.austtx.sbcglobal.net [104.54.226.75])
+        id S1725951AbgCXG0h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Mar 2020 02:26:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48574 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725945AbgCXG0h (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 24 Mar 2020 02:26:37 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: bcain)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0630CC433CB;
-        Mon, 23 Mar 2020 21:46:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0630CC433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=bcain@codeaurora.org
-Reply-To: <bcain@codeaurora.org>
-From:   "Brian Cain" <bcain@codeaurora.org>
-To:     "'Thomas Gleixner'" <tglx@linutronix.de>,
-        "'LKML'" <linux-kernel@vger.kernel.org>
-Cc:     "'Peter Zijlstra'" <peterz@infradead.org>,
-        "'Ingo Molnar'" <mingo@kernel.org>,
-        "'Sebastian Siewior'" <bigeasy@linutronix.de>,
-        "'Linus Torvalds'" <torvalds@linux-foundation.org>,
-        "'Joel Fernandes'" <joel@joelfernandes.org>,
-        "'Oleg Nesterov'" <oleg@redhat.com>,
-        "'Davidlohr Bueso'" <dave@stgolabs.net>,
-        "'kbuild test robot'" <lkp@intel.com>,
-        <linux-hexagon@vger.kernel.org>,
-        "'Logan Gunthorpe'" <logang@deltatee.com>,
-        "'Bjorn Helgaas'" <bhelgaas@google.com>,
-        "'Kurt Schwemmer'" <kurt.schwemmer@microsemi.com>,
-        <linux-pci@vger.kernel.org>,
-        "'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>,
-        "'Felipe Balbi'" <balbi@kernel.org>, <linux-usb@vger.kernel.org>,
-        "'Kalle Valo'" <kvalo@codeaurora.org>,
-        "'David S. Miller'" <davem@davemloft.net>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        "'Darren Hart'" <dvhart@infradead.org>,
-        "'Andy Shevchenko'" <andy@infradead.org>,
-        <platform-driver-x86@vger.kernel.org>,
-        "'Zhang Rui'" <rui.zhang@intel.com>,
-        "'Rafael J. Wysocki'" <rafael.j.wysocki@intel.com>,
-        <linux-pm@vger.kernel.org>, "'Len Brown'" <lenb@kernel.org>,
-        <linux-acpi@vger.kernel.org>, "'Nick Hu'" <nickhu@andestech.com>,
-        "'Greentime Hu'" <green.hu@gmail.com>,
-        "'Vincent Chen'" <deanbo422@gmail.com>,
-        "'Guo Ren'" <guoren@kernel.org>, <linux-csky@vger.kernel.org>,
-        "'Tony Luck'" <tony.luck@intel.com>,
-        "'Fenghua Yu'" <fenghua.yu@intel.com>,
-        <linux-ia64@vger.kernel.org>, "'Michal Simek'" <monstr@monstr.eu>,
-        "'Michael Ellerman'" <mpe@ellerman.id.au>,
-        "'Arnd Bergmann'" <arnd@arndb.de>,
-        "'Geoff Levand'" <geoff@infradead.org>,
-        <linuxppc-dev@lists.ozlabs.org>,
-        "'Paul E . McKenney'" <paulmck@kernel.org>,
-        "'Jonathan Corbet'" <corbet@lwn.net>,
-        "'Randy Dunlap'" <rdunlap@infradead.org>,
-        "'Davidlohr Bueso'" <dbueso@suse.de>
-References: <20200321112544.878032781@linutronix.de> <20200321113241.531525286@linutronix.de>
-In-Reply-To: <20200321113241.531525286@linutronix.de>
-Subject: RE: [patch V3 08/20] hexagon: Remove mm.h from asm/uaccess.h
-Date:   Mon, 23 Mar 2020 16:46:17 -0500
-Message-ID: <0cc301d6015c$7e756490$7b602db0$@codeaurora.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id DD77520663;
+        Tue, 24 Mar 2020 06:26:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585031197;
+        bh=BSViwAiJC3sbGx+r5qKqwJNLn6pppAaGTLJ8eTWD0k0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QDuirIv8lwJ65151gMjmNP7PaYnpKYQgNmiVVHZaiqVLsT3GelzvPV5k73FrVLzEt
+         z4DPtpFGQx2NDKEnL5rx2AscUx7yhtXhe3GcJl94GlCEdHBP0EblnxrKVtHUS4yI7I
+         fwFXnVptJItp0N1LyiTwexevnBtKLTPKFLkZM/X4=
+Date:   Tue, 24 Mar 2020 07:26:35 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-usb@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v1] usb: core: Add ACPI support for USB interfaces
+Message-ID: <20200324062635.GB1977781@kroah.com>
+References: <20200323195543.51050-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: en-us
-Thread-Index: AQHqwg4Cse+u7XkWseF638AEhQYwggGRIliZqCCrVyA=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200323195543.51050-1-andriy.shevchenko@linux.intel.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> -----Original Message-----
-> From: Thomas Gleixner <tglx@linutronix.de>
-...
-> Subject: [patch V3 08/20] hexagon: Remove mm.h from asm/uaccess.h
+On Mon, Mar 23, 2020 at 09:55:43PM +0200, Andy Shevchenko wrote:
+> The ACPI companion of the device has to be set for USB interfaces
+> in order to read and attach the properties described in the ACPI table.
+> Use ACPI_COMPANION_SET macro to set this.
 > 
-> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> 
-> The defconfig compiles without linux/mm.h. With mm.h included the include
-> chain leands to:
-> |   CC      kernel/locking/percpu-rwsem.o
-> | In file included from include/linux/huge_mm.h:8,
-> |                  from include/linux/mm.h:567,
-> |                  from arch/hexagon/include/asm/uaccess.h:,
-> |                  from include/linux/uaccess.h:11,
-> |                  from include/linux/sched/task.h:11,
-> |                  from include/linux/sched/signal.h:9,
-> |                  from include/linux/rcuwait.h:6,
-> |                  from include/linux/percpu-rwsem.h:8,
-> |                  from kernel/locking/percpu-rwsem.c:6:
-> | include/linux/fs.h:1422:29: error: array type has incomplete element type
-> 'struct percpu_rw_semaphore'
-> |  1422 |  struct percpu_rw_semaphore rw_sem[SB_FREEZE_LEVELS];
-> 
-> once rcuwait.h includes linux/sched/signal.h.
-> 
-> Remove the linux/mm.h include.
-> 
-> Reported-by: kbuild test robot <lkp@intel.com>
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Brian Cain <bcain@codeaurora.org>
-> Cc: linux-hexagon@vger.kernel.org
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
-> V3: New patch
-> ---
->  arch/hexagon/include/asm/uaccess.h | 1 -
->  1 file changed, 1 deletion(-)
+>  drivers/usb/core/message.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/arch/hexagon/include/asm/uaccess.h
-> b/arch/hexagon/include/asm/uaccess.h
-> index 00cb38faad0c4..c1019a736ff13 100644
-> --- a/arch/hexagon/include/asm/uaccess.h
-> +++ b/arch/hexagon/include/asm/uaccess.h
-> @@ -10,7 +10,6 @@
->  /*
->   * User space memory access functions
+> diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
+> index 5adf489428aa..d5f834f16993 100644
+> --- a/drivers/usb/core/message.c
+> +++ b/drivers/usb/core/message.c
+> @@ -5,6 +5,7 @@
+>   * Released under the GPLv2 only.
 >   */
-> -#include <linux/mm.h>
->  #include <asm/sections.h>
-> 
->  /*
-> --
-> 2.26.0.rc2
-> 
+>  
+> +#include <linux/acpi.h>
+>  #include <linux/pci.h>	/* for scatterlist macros */
+>  #include <linux/usb.h>
+>  #include <linux/module.h>
+> @@ -1941,6 +1942,7 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
+>  			intf->dev.of_node = usb_of_get_interface_node(dev,
+>  					configuration, ifnum);
+>  		}
+> +		ACPI_COMPANION_SET(&intf->dev, ACPI_COMPANION(&dev->dev));
+>  		intf->dev.driver = NULL;
+>  		intf->dev.bus = &usb_bus_type;
+>  		intf->dev.type = &usb_if_device_type;
 
-Acked-by: Brian Cain <bcain@codeaurora.org>
+And what does this "fix"?
+
+Is this a new feature, what isn't working today without this change?
+
+And if it is a fix, should it be backported to older kernels, how far?
+
+greg k-h
