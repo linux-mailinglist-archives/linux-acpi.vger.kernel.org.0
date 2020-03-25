@@ -2,115 +2,192 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C5681928E4
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 13:51:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85DDB192A5E
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 14:49:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727328AbgCYMvg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Mar 2020 08:51:36 -0400
-Received: from foss.arm.com ([217.140.110.172]:48004 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727290AbgCYMvg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 25 Mar 2020 08:51:36 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 495FC31B;
-        Wed, 25 Mar 2020 05:51:35 -0700 (PDT)
-Received: from red-moon.cambridge.arm.com (unknown [10.57.20.165])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3F43B3F71F;
-        Wed, 25 Mar 2020 05:51:30 -0700 (PDT)
-Date:   Wed, 25 Mar 2020 12:51:18 +0000
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     laurentiu.tudor@nxp.com
-Cc:     linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        robin.murphy@arm.com, ard.biesheuvel@linaro.org,
-        ioana.ciornei@nxp.com, diana.craciun@oss.nxp.com, maz@kernel.org,
-        jon@solid-run.com, pankaj.bansal@nxp.com, makarand.pawagi@nxp.com,
-        calvin.johnson@nxp.com, V.Sethi@nxp.com, cristian.sovaiala@nxp.com,
-        Stuart.Yoder@arm.com, jeremy.linton@arm.com, joro@8bytes.org,
-        tglx@linutronix.de, jason@lakedaemon.net
-Subject: Re: [RFC PATCH 1/4] bus: fsl-mc: add custom .dma_configure
- implementation
-Message-ID: <20200325125109.GA5430@red-moon.cambridge.arm.com>
-References: <20200227100542.13819-1-laurentiu.tudor@nxp.com>
+        id S1727448AbgCYNtB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Mar 2020 09:49:01 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:38743 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727399AbgCYNtA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Mar 2020 09:49:00 -0400
+Received: by mail-qt1-f194.google.com with SMTP id z12so2137206qtq.5
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Mar 2020 06:48:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=aqwoIFeWasu7LFGFPdHVV0Lyd6mKkML5MpjpybFPze8=;
+        b=EE74JW5sNUSawE/nieOmfd+x2MIF880p7qtUdiqMYpYg6462zQ2kLJOkZBp/zZ8luR
+         LeLF/vFfOcLYUdB62zmY3K51QFgSZmG/iP4GGx+I5a0SE92IP0U4RF+7aM2l93Qy7Vud
+         nvG2VFeMmjohJfjcA0bvIVnJrlCW4v3YxJX2ttJ7WVlcmnMkkyLf4udfKgZJ/2hbbbxA
+         rCT2KtINfMQhgJ3CW1CthXBftOq80dz84C2ah45qIhat6XDiKK88vUbHCHvBUfpTJm+4
+         sEemxlKWAnJ7BDYhfbS0cKaPeCpokGUgyvW0dQfjILwPQGskDrXNcOe8Zz1MyWcy3S/N
+         MB5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=aqwoIFeWasu7LFGFPdHVV0Lyd6mKkML5MpjpybFPze8=;
+        b=umiqlhRCJoAyXCExewfmEvM5Lgk/yX+urfTGFTAXTAsUVMvUgQnQcupshvS3M6JWKQ
+         sf64zDPNN6p30OuM2EI8Dckk9LuODGJhsJYHMOwdGMlt8NmbqTnZOOf+qqzZ16OQyJiQ
+         +uGb2g350HNUPqGLESY/HA+A2ZM2QZqk9YrHKBIHPDMUxPL5FFpE2cRfAumDOCpUYCK1
+         R6s+xO0TEkoe1QH7dbKkjMCJv68+a+PUTn+L/S8vvEsk7re8DSnxalDUeWzmOwXp8Acl
+         BMCFFi15lU6jnnh4sqS6RTFo1uX1xkdFic4cDUvaTheS1QttIeEMEXQuABfWYUiNdQ+b
+         Drtw==
+X-Gm-Message-State: ANhLgQ2E19lWFnmUXrf/FQVjO8chNJ+Tgs0qrEJqDX5dMDt0+2a+7Zh2
+        q/1PLA6+GdLwImqWZpblGqh2onmuyax75vhWWtEswg==
+X-Google-Smtp-Source: ADFU+vsE+BgKySCoO4pRBagePhRdwuGbjDKSjEAF01BWlpD26chP3U1ysGLrMg10mGmwQ1lasf+U/m2D1z5qMj0K+oU=
+X-Received: by 2002:aed:3c4b:: with SMTP id u11mr2955112qte.208.1585144138478;
+ Wed, 25 Mar 2020 06:48:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200227100542.13819-1-laurentiu.tudor@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20200121134157.20396-1-sakari.ailus@linux.intel.com>
+ <20200121134157.20396-6-sakari.ailus@linux.intel.com> <CAMpxmJU5dG49N2FA0oSQsOfKrCr3KQ1BisON4c+nUJJmZQG=bQ@mail.gmail.com>
+ <20200311085555.GH5379@paasikivi.fi.intel.com> <CAMpxmJVPTKW+sYSJ3dnfF8nLAOKEa4Ob7bpxG0KD3Tkdm+rtYw@mail.gmail.com>
+ <20200323213101.GB21174@kekkonen.localdomain>
+In-Reply-To: <20200323213101.GB21174@kekkonen.localdomain>
+From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Date:   Wed, 25 Mar 2020 14:48:47 +0100
+Message-ID: <CAMpxmJVdyTkZMVuhSy0Ux8VUYTmQN_YEfH-akQsAL3zrwiz8Dw@mail.gmail.com>
+Subject: Re: [PATCH v4 5/6] at24: Support probing while off
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>, linux-acpi@vger.kernel.org,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        linux-media <linux-media@vger.kernel.org>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        Tomasz Figa <tfiga@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 27, 2020 at 12:05:39PM +0200, laurentiu.tudor@nxp.com wrote:
-> From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-> 
-> The devices on this bus are not discovered by way of device tree
-> but by queries to the firmware. It makes little sense to trick the
-> generic of layer into thinking that these devices are of related so
-> that we can get our dma configuration. Instead of doing that, add
-> our custom dma configuration implementation.
-> 
-> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-> ---
->  drivers/bus/fsl-mc/fsl-mc-bus.c | 31 ++++++++++++++++++++++++++++++-
->  1 file changed, 30 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-> index 36eb25f82c8e..eafaa0e0b906 100644
-> --- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-> +++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-> @@ -132,11 +132,40 @@ static int fsl_mc_bus_uevent(struct device *dev, struct kobj_uevent_env *env)
->  static int fsl_mc_dma_configure(struct device *dev)
->  {
->  	struct device *dma_dev = dev;
-> +	struct iommu_fwspec *fwspec;
-> +	const struct iommu_ops *iommu_ops;
-> +	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
-> +	int ret;
-> +	u32 icid;
->  
->  	while (dev_is_fsl_mc(dma_dev))
->  		dma_dev = dma_dev->parent;
->  
-> -	return of_dma_configure(dev, dma_dev->of_node, 0);
-> +	fwspec = dev_iommu_fwspec_get(dma_dev);
-> +	if (!fwspec)
-> +		return -ENODEV;
-> +	iommu_ops = iommu_ops_from_fwnode(fwspec->iommu_fwnode);
-> +	if (!iommu_ops)
-> +		return -ENODEV;
-> +
-> +	ret = iommu_fwspec_init(dev, fwspec->iommu_fwnode, iommu_ops);
-> +	if (ret)
-> +		return ret;
-> +
-> +	icid = mc_dev->icid;
-> +	ret = iommu_fwspec_add_ids(dev, &icid, 1);
+pon., 23 mar 2020 o 22:31 Sakari Ailus <sakari.ailus@linux.intel.com>
+napisa=C5=82(a):
+>
+> Bartosz,
+>
+> On Thu, Mar 12, 2020 at 02:10:32PM +0100, Bartosz Golaszewski wrote:
+> > =C5=9Br., 11 mar 2020 o 09:56 Sakari Ailus <sakari.ailus@linux.intel.co=
+m> napisa=C5=82(a):
+> > >
+> > > Hi Bartosz,
+> > >
+> > > Thanks for the reply.
+> > >
+> > > On Wed, Jan 29, 2020 at 02:36:17PM +0100, Bartosz Golaszewski wrote:
+> > > > wt., 21 sty 2020 o 14:41 Sakari Ailus <sakari.ailus@linux.intel.com=
+> napisa=C5=82(a):
+> > > > >
+> > > > > In certain use cases (where the chip is part of a camera module, =
+and the
+> > > > > camera module is wired together with a camera privacy LED), power=
+ing on
+> > > > > the device during probe is undesirable. Add support for the at24 =
+to
+> > > > > execute probe while being powered off. For this to happen, a hint=
+ in form
+> > > > > of a device property is required from the firmware.
+> > > > >
+> > > > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > > > ---
+> > > > >  drivers/misc/eeprom/at24.c | 31 +++++++++++++++++++++----------
+> >
+> > [snip!]
+> >
+> > > > >
+> > > > >  static int at24_remove(struct i2c_client *client)
+> > > > >  {
+> > > > > +       bool low_power;
+> > > > > +
+> > > > >         pm_runtime_disable(&client->dev);
+> > > > > -       pm_runtime_set_suspended(&client->dev);
+> > > > > +       low_power =3D acpi_dev_state_low_power(&client->dev);
+> > > >
+> > > > This is inconsistent. You define the low_power field in the context
+> > > > structure (BTW the name low_power is a bit vague here - without
+> > > > looking at its assignment it would make me think it's about somethi=
+ng
+> > > > battery-related, how about 'off_at_probe'?) and instead of reusing
+> > >
+> > > The field was called probe_powered_off in v1, but I changed it to
+> > > probe_low_power (and renamed related functions etc.) based on review
+> > > comments --- for the device may not be powered off actually.
+> > >
+> >
+> > But is it actually ever low-power? What are the possible logical
+> > states of the device? If I understood correctly: it's either off or on
+> > at probe - not actually low-power. Am I missing something? In your
+> > cover letter you're writing: "These patches enable calling (and
+> > finishing) a driver's probe function without powering on the
+> > respective device on busses where the practice is to power on the
+> > device for probe." To me there's no mention of a low-power state,
+> > which makes the name 'probe_low_power' seem completely unrelated.
+>
+> See <URL:https://patchwork.kernel.org/patch/10938483/>
+>
+> I've updated the patches according to the comments but did not update the
+> cover page accordingly.
+>
 
-I see. So with this patch we would use the MC named component only to
-retrieve the iommu_ops - the streamid are injected directly here
-bypassing OF/IORT bindings translations altogether. Am I reading this
-code correctly ?
+I see.
 
-Thanks,
-Lorenzo
+Rafael: I think that there are two issues with patch 1/5:
+1. It adds a very specific boolean flag to a structure that's meant to
+be very general. As I pointed out in the i2c patch: at the very least
+this could be made into an int storing flag values, instead of a
+boolean field. But rather than that - it looks to me more like a
+device (or bus) feature than a driver feature. Is there any ACPI flag
+we could use to pass this information to the driver model without
+changing the driver structure?
+2. The name is still misleading: probe_low_power doesn't correspond
+with what it actually does at all (neither did power_off). I'd go with
+something like probe_allow_low_power.
 
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!device_iommu_mapped(dev)) {
-> +		ret = iommu_probe_device(dev);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	arch_setup_dma_ops(dev, 0, *dma_dev->dma_mask + 1, iommu_ops, true);
-> +
-> +	return 0;
->  }
->  
->  static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
-> -- 
-> 2.17.1
-> 
+> Generally drivers are interested whether a device is powered on so it can
+> be accessed, but the actual power state of the device isn't known to the
+> driver when it is, well, not in an operational state. A device may be
+> powered from a regulator that is always enabled, for instance.
+>
+> >
+> > > > this field here, you call acpi_dev_state_low_power() again. Either
+> > > > don't store the context for the life-time of the device if not
+> > > > necessary or don't call acpi_dev_state_low_power() at remove, altho=
+ugh
+> > > > the commit message doesn't describe whether the latter is done on
+> > > > purpose.
+> > >
+> > > Right. probe-low-power property has the same effect on remove for
+> > > consistency, i.e. the device can remain in low power state during rem=
+ove.
+> > > This is documented in probe_low_power field documentation in the firs=
+t
+> > > patch.
+> > >
+> >
+> > Just please don't store any state if you're not using it outside of
+> > the probe() function.
+>
+> What exactly are you referring to? The patch adds a local variable to the
+> driver's probe and remove functions.
+>
+
+Yes, sorry, I looked at the patch and somehow thought it adds a new
+field to the data structure and then doesn't reuse it. My bad. Maybe
+it was a previous version IDK.
+
+
+Bartosz
+
+> --
+> Kind regards,
+>
+> Sakari Ailus
