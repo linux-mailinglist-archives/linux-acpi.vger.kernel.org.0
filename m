@@ -2,199 +2,215 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D967F19318E
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 21:01:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDB8F1933C8
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 23:33:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727280AbgCYUBI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Mar 2020 16:01:08 -0400
-Received: from mga04.intel.com ([192.55.52.120]:2557 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727236AbgCYUBH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 25 Mar 2020 16:01:07 -0400
-IronPort-SDR: xKI36SgO1X0av6ZOhbv6yPt0FzuxrTBCabo/drt4/Xmc0EdJfYbB5sqminMBnFPO6VaaRwXJ2B
- 6LhJtJRGCkUg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2020 13:01:07 -0700
-IronPort-SDR: zVq/Att6Uu5yl9CDPc1ISstWbbaeh5I5G8sKWDiCSekpT7xPA3zOzjBPSFSuJOfsZto/zO/sGQ
- fED0zoQ5ksTA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,305,1580803200"; 
-   d="scan'208";a="240725939"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 25 Mar 2020 13:01:05 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jHCD2-0007qo-GQ; Thu, 26 Mar 2020 04:01:04 +0800
-Date:   Thu, 26 Mar 2020 04:00:25 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 99c1ea0e723ac7f61e663f5f54ca51b0b731adda
-Message-ID: <5e7bb859.69jWWW9PslKAeulf%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1727389AbgCYWdC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Mar 2020 18:33:02 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:39482 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727374AbgCYWdB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Mar 2020 18:33:01 -0400
+Received: by mail-ed1-f65.google.com with SMTP id a43so4672816edf.6
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Mar 2020 15:33:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dVCDmOk9HhsK80T8G7kVWe7YwLFbt+hHKP5is8X15Cc=;
+        b=Uz8DEE88kRzzlSo4K0/OS7d3QvShBzx8HCRAWRfFe86MgzpfXcGq4vfKh+thh+jIPi
+         K4h9SugnX3zdr7Ii7b7l/KQGZtYNZOw6oWMeH6ZeSBcOMk4d4OygCHTfs1O+k2n02G/8
+         joLcuTcHQPoPmJAJx5kEpjdQx5HKQAYiCfWBAbwKccHw84BEeoGTocnCXCrAhvD8yB/z
+         Bk5rdPvWZEs5LN4XInM9Ymu02ybdM5uJo95e1CWnrA2wmEw9oTJuIpYp9Z11P2wM1gWv
+         ko1EP+wlPrH+M277pSdHqW9rXfxdPgt6KD1xRlrkK+l5fvbEKpnm9HjwFk+o/f4yXTdZ
+         4zKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dVCDmOk9HhsK80T8G7kVWe7YwLFbt+hHKP5is8X15Cc=;
+        b=MacOXY+CHBJj/DEGQDp86iAzjmBt0Q621IQGtXEYsCuZUU9mHgRnRe2fUbrndN5pgH
+         j1v1FKjIpk0KAILj0jgn0BVpwI1YSZ01rxYGtz4jy5QMX8lACQONiZKPd4aZSV7OeBWi
+         67Zc7tG4WMLK4XLt7lxMfUBC1r3DcceWENu1rN1JLEoCaKyicoaMBX/IxWqzkYZhlzzM
+         dtzCQoruqMKWsaeIR3o3SuaxW044Uf44+LlWNpYLbfUtm1LOhlkBO7qDtH3K8RRjZnZy
+         mF10czoYqoFjiTkavzBDsIffzk7viW33jNB4wVKKA5rNN2N9GdkkEUKSXNcUUmo/4/Vm
+         KwZA==
+X-Gm-Message-State: ANhLgQ2gq1Hj6ENx204xsAYmuWN9FH+/sB8qFURURpzXsEMJHIs4fKnM
+        lbJMWKkbjErZPQccx6/NgoabPkSiZCAcaqwCm5Od8A==
+X-Google-Smtp-Source: ADFU+vsCqAXZsXgnDkYvOWG3bR2wDWzsJ5qsWPjBfCL32pSGSnNmuWvylskZFSFSIbomy5pt3613yJZfFce1FytIomA=
+X-Received: by 2002:a17:906:6d8e:: with SMTP id h14mr5155925ejt.123.1585175579794;
+ Wed, 25 Mar 2020 15:32:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <158489354353.1457606.8327903161927980740.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <158489356692.1457606.1858427908360761594.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <f964eb62-5bc9-7e85-5c44-9027a6c08d4c@oracle.com> <CAPcyv4hgExDoKZg7QQ9JRkPEY2N56EjLgLQ2Q19tu3vnUdPqgA@mail.gmail.com>
+In-Reply-To: <CAPcyv4hgExDoKZg7QQ9JRkPEY2N56EjLgLQ2Q19tu3vnUdPqgA@mail.gmail.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Wed, 25 Mar 2020 15:32:48 -0700
+Message-ID: <CAPcyv4gjTmZuvqkV_r3_FuGrjK=a-CVGOnLEDZ0Fpiyg2h_Lag@mail.gmail.com>
+Subject: Re: [PATCH v2 4/6] ACPI: HMAT: Refactor hmat_register_target_device
+ to hmem_register_device
+To:     Joao Martins <joao.m.martins@oracle.com>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        X86 ML <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: 99c1ea0e723ac7f61e663f5f54ca51b0b731adda  Merge branch 'acpi-pm' into bleeding-edge
+On Tue, Mar 24, 2020 at 2:04 PM Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> On Tue, Mar 24, 2020 at 12:41 PM Joao Martins <joao.m.martins@oracle.com> wrote:
+> >
+> >
+> > On 3/22/20 4:12 PM, Dan Williams wrote:
+> > > In preparation for exposing "Soft Reserved" memory ranges without an
+> > > HMAT, move the hmem device registration to its own compilation unit and
+> > > make the implementation generic.
+> > >
+> > > The generic implementation drops usage acpi_map_pxm_to_online_node()
+> > > that was translating ACPI proximity domain values and instead relies on
+> > > numa_map_to_online_node() to determine the numa node for the device.
+> > >
+> > > Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> > > Link: https://lore.kernel.org/r/158318761484.2216124.2049322072599482736.stgit@dwillia2-desk3.amr.corp.intel.com
+> > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > > ---
+> > >  drivers/acpi/numa/hmat.c  |   68 ++++-----------------------------------------
+> > >  drivers/dax/Kconfig       |    4 +++
+> > >  drivers/dax/Makefile      |    3 +-
+> > >  drivers/dax/hmem.c        |   56 -------------------------------------
+> > >  drivers/dax/hmem/Makefile |    5 +++
+> > >  drivers/dax/hmem/device.c |   64 ++++++++++++++++++++++++++++++++++++++++++
+> > >  drivers/dax/hmem/hmem.c   |   56 +++++++++++++++++++++++++++++++++++++
+> > >  include/linux/dax.h       |    8 +++++
+> > >  8 files changed, 144 insertions(+), 120 deletions(-)
+> > >  delete mode 100644 drivers/dax/hmem.c
+> > >  create mode 100644 drivers/dax/hmem/Makefile
+> > >  create mode 100644 drivers/dax/hmem/device.c
+> > >  create mode 100644 drivers/dax/hmem/hmem.c
+> > >
+> > > diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+> > > index a12e36a12618..134bcb40b2af 100644
+> > > --- a/drivers/acpi/numa/hmat.c
+> > > +++ b/drivers/acpi/numa/hmat.c
+> > > @@ -24,6 +24,7 @@
+> > >  #include <linux/mutex.h>
+> > >  #include <linux/node.h>
+> > >  #include <linux/sysfs.h>
+> > > +#include <linux/dax.h>
+> > >
+> > >  static u8 hmat_revision;
+> > >  static int hmat_disable __initdata;
+> > > @@ -640,66 +641,6 @@ static void hmat_register_target_perf(struct memory_target *target)
+> > >       node_set_perf_attrs(mem_nid, &target->hmem_attrs, 0);
+> > >  }
+> > >
+> > > -static void hmat_register_target_device(struct memory_target *target,
+> >           ^^^^ int ?
+> >
+> > > -             struct resource *r)
+> > > -{
+> > > -     /* define a clean / non-busy resource for the platform device */
+> > > -     struct resource res = {
+> > > -             .start = r->start,
+> > > -             .end = r->end,
+> > > -             .flags = IORESOURCE_MEM,
+> > > -     };
+> > > -     struct platform_device *pdev;
+> > > -     struct memregion_info info;
+> > > -     int rc, id;
+> > > -
+> > > -     rc = region_intersects(res.start, resource_size(&res), IORESOURCE_MEM,
+> > > -                     IORES_DESC_SOFT_RESERVED);
+> > > -     if (rc != REGION_INTERSECTS)
+> > > -             return;
+> >                 ^ return -ENXIO;
+> >
+> > > -
+> > > -     id = memregion_alloc(GFP_KERNEL);
+> > > -     if (id < 0) {
+> > > -             pr_err("memregion allocation failure for %pr\n", &res);
+> > > -             return;
+> >                 ^ return -ENOMEM;
+> >
+> > > -     }
+> > > -
+> > > -     pdev = platform_device_alloc("hmem", id);
+> > > -     if (!pdev) {
+> >
+> >                 rc = -ENOMEM;
+> >
+> > > -             pr_err("hmem device allocation failure for %pr\n", &res);
+> > > -             goto out_pdev;
+> > > -     }
+> > > -
+> > > -     pdev->dev.numa_node = acpi_map_pxm_to_online_node(target->memory_pxm);
+> > > -     info = (struct memregion_info) {
+> > > -             .target_node = acpi_map_pxm_to_node(target->memory_pxm),
+> > > -     };
+> > > -     rc = platform_device_add_data(pdev, &info, sizeof(info));
+> > > -     if (rc < 0) {
+> > > -             pr_err("hmem memregion_info allocation failure for %pr\n", &res);
+> > > -             goto out_pdev;
+> > > -     }
+> > > -
+> > > -     rc = platform_device_add_resources(pdev, &res, 1);
+> > > -     if (rc < 0) {
+> > > -             pr_err("hmem resource allocation failure for %pr\n", &res);
+> > > -             goto out_resource;
+> > > -     }
+> > > -
+> > > -     rc = platform_device_add(pdev);
+> > > -     if (rc < 0) {
+> > > -             dev_err(&pdev->dev, "device add failed for %pr\n", &res);
+> > > -             goto out_resource;
+> > > -     }
+> > > -
+> > > -     return;
+> >         ^^^^^^ return 0;
+> > > -
+> > > -out_resource:
+> > > -     put_device(&pdev->dev);
+> > > -out_pdev:
+> > > -     memregion_free(id);
+> >
+> >         return rc;
+> >
+> > > -}
+> > > -
+> > >  static void hmat_register_target_devices(struct memory_target *target)
+> > >  {
+> > >       struct resource *res;
+> > > @@ -711,8 +652,11 @@ static void hmat_register_target_devices(struct memory_target *target)
+> > >       if (!IS_ENABLED(CONFIG_DEV_DAX_HMEM))
+> > >               return;
+> > >
+> > > -     for (res = target->memregions.child; res; res = res->sibling)
+> > > -             hmat_register_target_device(target, res);
+> > > +     for (res = target->memregions.child; res; res = res->sibling) {
+> > > +             int target_nid = acpi_map_pxm_to_node(target->memory_pxm);
+> > > +
+> > > +             hmem_register_device(target_nid, res);
+> > > +     }
+> > >  }
+> > >
+> >
+> > If it makes sense to propagate error to hmem_register_device (as noted above),
+> > then here perhaps a pr_err() if hmem registration fails mainly for reporting
+> > purposes?
+>
+> Yeah, I guess it makes sense to at least log that something went wrong
+> if someone wonders where their memory device went. I'll add that
+> rework as a follow-on.
 
-elapsed time: 480m
-
-configs tested: 139
-configs skipped: 0
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm64                            allyesconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm                              allmodconfig
-arm64                             allnoconfig
-arm                               allnoconfig
-arm                           efm32_defconfig
-arm                         at91_dt_defconfig
-arm                        shmobile_defconfig
-arm64                               defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                           sunxi_defconfig
-arm                        multi_v7_defconfig
-sparc                            allyesconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                             alldefconfig
-i386                                defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-ia64                             alldefconfig
-nios2                         3c120_defconfig
-nios2                         10m50_defconfig
-c6x                        evmc6678_defconfig
-xtensa                          iss_defconfig
-c6x                              allyesconfig
-xtensa                       common_defconfig
-openrisc                 simple_smp_defconfig
-openrisc                    or1ksim_defconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                                defconfig
-alpha                               defconfig
-h8300                       h8s-sim_defconfig
-h8300                     edosk2674_defconfig
-m68k                       m5475evb_defconfig
-m68k                             allmodconfig
-h8300                    h8300h-sim_defconfig
-m68k                           sun3_defconfig
-m68k                          multi_defconfig
-arc                                 defconfig
-arc                              allyesconfig
-powerpc                             defconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-mips                             allyesconfig
-mips                         64r6el_defconfig
-mips                              allnoconfig
-mips                           32r2_defconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                generic-64bit_defconfig
-parisc                generic-32bit_defconfig
-parisc                           allyesconfig
-i386                 randconfig-a002-20200325
-x86_64               randconfig-a002-20200325
-i386                 randconfig-a001-20200325
-x86_64               randconfig-a001-20200325
-i386                 randconfig-a003-20200325
-x86_64               randconfig-a003-20200325
-mips                 randconfig-a001-20200325
-nds32                randconfig-a001-20200325
-m68k                 randconfig-a001-20200325
-parisc               randconfig-a001-20200325
-alpha                randconfig-a001-20200325
-riscv                randconfig-a001-20200325
-h8300                randconfig-a001-20200325
-microblaze           randconfig-a001-20200325
-nios2                randconfig-a001-20200325
-c6x                  randconfig-a001-20200325
-sparc64              randconfig-a001-20200325
-s390                 randconfig-a001-20200325
-xtensa               randconfig-a001-20200325
-csky                 randconfig-a001-20200325
-openrisc             randconfig-a001-20200325
-sh                   randconfig-a001-20200325
-x86_64               randconfig-c003-20200325
-i386                 randconfig-c002-20200325
-x86_64               randconfig-c001-20200325
-x86_64               randconfig-c002-20200325
-i386                 randconfig-c003-20200325
-i386                 randconfig-c001-20200325
-i386                 randconfig-f001-20200325
-i386                 randconfig-f003-20200325
-i386                 randconfig-f002-20200325
-x86_64               randconfig-f002-20200325
-x86_64               randconfig-f003-20200325
-x86_64               randconfig-f001-20200325
-x86_64               randconfig-h002-20200325
-x86_64               randconfig-h003-20200325
-i386                 randconfig-h003-20200325
-i386                 randconfig-h001-20200325
-x86_64               randconfig-h001-20200325
-i386                 randconfig-h002-20200325
-arm                  randconfig-a001-20200325
-arm64                randconfig-a001-20200325
-ia64                 randconfig-a001-20200325
-sparc                randconfig-a001-20200325
-arc                  randconfig-a001-20200325
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-s390                       zfcpdump_defconfig
-s390                          debug_defconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                             alldefconfig
-s390                                defconfig
-sh                          rsk7269_defconfig
-sh                               allmodconfig
-sh                            titan_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                                allnoconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Now that I look again hmat_register_target_device() already has
+multiple pr_err() indicating that something went wrong. The error code
+would not go anywhere useful.
