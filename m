@@ -2,158 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45E39192ED3
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 17:58:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5606192EF0
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 18:10:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727598AbgCYQ63 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Mar 2020 12:58:29 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:47796 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726102AbgCYQ63 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Mar 2020 12:58:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description;
-        bh=nzNtddxyHToIfzwzcRpU+rkJvFePaVcVMvDxhJ0zIm8=; b=Ny0TO9lEhbmvUL2PtdSbl/e3Gm
-        dLHrOkD5v8ewIwjLPXGarl7V5+K4iXFzHb2IblMXtRLy0e1xYPfEYd/TNMgeQMms4qdMS3GnsSBzh
-        MG4FkMj0CmZIJdF594Ere7tUatW2cpHFY1FN56RNDDvW3fQmt0gVnStPqemN2Xr9H/2N8GLHIr5Wg
-        jCmOaOYFpQoZFzr/LNFj0CHFygyAwaMnjmIJLMM/2ZdRTd590pAvjPj/dIFmu4oG/94o0FTc9L0qs
-        q8JUj6IqIVy73yedpWdJ2Myuil5rim24S7yVdJXA5SxDwBhAKySclpEAQs+h4mmF+uJG1N1o3ZfNM
-        CTBQSfOQ==;
-Received: from [2601:1c0:6280:3f0::19c2]
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jH9M9-0002V3-KT; Wed, 25 Mar 2020 16:58:17 +0000
-Subject: [PATCH v2] Documentation/locking/locktypes: minor copy editor fixes
-To:     Thomas Gleixner <tglx@linutronix.de>, paulmck@kernel.org
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Sebastian Siewior <bigeasy@linutronix.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
-        linux-pci@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Felipe Balbi <balbi@kernel.org>, linux-usb@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        platform-driver-x86@vger.kernel.org,
-        Zhang Rui <rui.zhang@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-pm@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, kbuild test robot <lkp@intel.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
-        Brian Cain <bcain@codeaurora.org>,
-        linux-hexagon@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        Michal Simek <monstr@monstr.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geoff Levand <geoff@infradead.org>,
-        linuxppc-dev@lists.ozlabs.org, Davidlohr Bueso <dbueso@suse.de>
-References: <20200323025501.GE3199@paulmck-ThinkPad-P72>
- <87r1xhz6qp.fsf@nanos.tec.linutronix.de>
- <20200325002811.GO19865@paulmck-ThinkPad-P72>
- <87wo78y5yy.fsf@nanos.tec.linutronix.de>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <ac615f36-0b44-408d-aeab-d76e4241add4@infradead.org>
-Date:   Wed, 25 Mar 2020 09:58:14 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1727456AbgCYRKx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Mar 2020 13:10:53 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:36486 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726820AbgCYRKx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Mar 2020 13:10:53 -0400
+Received: by mail-ed1-f68.google.com with SMTP id b18so3434683edu.3
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Mar 2020 10:10:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3TB/V3cS5dQRTb7u6NS+KlfC79/CqRkvKXs/fm6g34w=;
+        b=eHcC+28qlTy7M88OlVi6MBXlOrqK6YikB2zKmxyH4Yh1II3FzBdkQrjEEUT5Zt3lJu
+         ckS7jpRPAdgt6whblMJd4ptrhZCQL79TrQz8EbzL0SeL83J/LyAjkzbRTsOj4IE/KEeE
+         s2Cx4bQIQCOK5OekxWCKafQD5/kxGKWTNVCCl4E/5W9kzq593H6wZiiDm60ecwOxStL2
+         LeujouVThMSlNjsaf48F3Yw3But0ebd1m3dEIw4LmAEfh2yIpX1peWDg7aUtH9KwQIa8
+         ruxLdm7gd+iIRBKXSIwL4KQlpkNOOyUGpbdyDdyC5u5j4vY/p7zfHHalqOU/fQZAlsKW
+         n5lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3TB/V3cS5dQRTb7u6NS+KlfC79/CqRkvKXs/fm6g34w=;
+        b=lao4wbXmfrcdRDdWbO64UgU9cR1oYyCCadhIxS0+KR2yEWyv8wJvaf8nYA4ttEVsgh
+         STN0gWIx2z/VQeVu4QPrrA9htzgzJb2EE7dAh4LZqtK9/+2ixNS/wPwkCc+hKaurWk9G
+         XmLLBh7jnH344iDUjob/lEr1Pb+gd/NcX+GO0itGJryaQ87SP2EqXpOGRYbzrT7X7AaO
+         A7mJhO8/htYC4nvrGsW0hSnuL7Fx5vh2Z55kRzzfyBlAkDvN1TzTeeLNWFs70MEdp42s
+         GKKT8suwgz+36V2NI8Ta+Pz9jeDl1KEB6NoS0JawpqhMDK3e7seiWQbVlPmI0PHWgt/b
+         Lvpg==
+X-Gm-Message-State: ANhLgQ39erRxH3YdG2vwH/2nTa2eQptpxBMgrZkpmlfY3rbTLE/i10Mk
+        TBldvRUaaDBLYU/63iWkAOMNIO7A6akmIa3anjG0sQ==
+X-Google-Smtp-Source: ADFU+vsMpfwwBF1AU4XFYsAjtIxydM3lmExgrwiqtzAko7x2yr0UVmhQyTxicjQSFrrQLSYnbAn1QFVDiy2ZTJ11JoQ=
+X-Received: by 2002:a17:906:1e8a:: with SMTP id e10mr4231020ejj.56.1585156250955;
+ Wed, 25 Mar 2020 10:10:50 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87wo78y5yy.fsf@nanos.tec.linutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <158489354353.1457606.8327903161927980740.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <158489357825.1457606.17352509511987748598.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20200325111039.GA32109@willie-the-truck>
+In-Reply-To: <20200325111039.GA32109@willie-the-truck>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Wed, 25 Mar 2020 10:10:36 -0700
+Message-ID: <CAPcyv4jQDbdUN3pwjkDx-R6Dd3adDSWq+50+O7mqZw5ezNXHeg@mail.gmail.com>
+Subject: Re: [PATCH v2 6/6] ACPI: HMAT: Attach a device for each soft-reserved range
+To:     Will Deacon <will@kernel.org>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Brice Goglin <Brice.Goglin@inria.fr>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jeff Moyer <jmoyer@redhat.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        X86 ML <x86@kernel.org>,
+        Joao Martins <joao.m.martins@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+On Wed, Mar 25, 2020 at 4:10 AM Will Deacon <will@kernel.org> wrote:
+>
+> On Sun, Mar 22, 2020 at 09:12:58AM -0700, Dan Williams wrote:
+> > The hmem enabling in commit 'cf8741ac57ed ("ACPI: NUMA: HMAT: Register
+> > "soft reserved" memory as an "hmem" device")' only registered ranges to
+> > the hmem driver for each soft-reservation that also appeared in the
+> > HMAT. While this is meant to encourage platform firmware to "do the
+> > right thing" and publish an HMAT, the corollary is that platforms that
+> > fail to publish an accurate HMAT will strand memory from Linux usage.
+> > Additionally, the "efi_fake_mem" kernel command line option enabling
+> > will strand memory by default without an HMAT.
+> >
+> > Arrange for "soft reserved" memory that goes unclaimed by HMAT entries
+> > to be published as raw resource ranges for the hmem driver to consume.
+> >
+> > Include a module parameter to disable either this fallback behavior, or
+> > the hmat enabling from creating hmem devices. The module parameter
+> > requires the hmem device enabling to have unique name in the module
+> > namespace: "device_hmem".
+> >
+> > Rather than mark this x86-only, include an interim phys_to_target_node()
+> > implementation for arm64.
+> >
+> > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Brice Goglin <Brice.Goglin@inria.fr>
+> > Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> > Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> > Cc: Jeff Moyer <jmoyer@redhat.com>
+> > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > Cc: Will Deacon <will@kernel.org>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > ---
+> >  arch/arm64/mm/numa.c      |   13 +++++++++++++
+> >  drivers/dax/Kconfig       |    1 +
+> >  drivers/dax/hmem/Makefile |    3 ++-
+> >  drivers/dax/hmem/device.c |   33 +++++++++++++++++++++++++++++++++
+> >  4 files changed, 49 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
+> > index 4decf1659700..00fba21eaec0 100644
+> > --- a/arch/arm64/mm/numa.c
+> > +++ b/arch/arm64/mm/numa.c
+> > @@ -468,3 +468,16 @@ int memory_add_physaddr_to_nid(u64 addr)
+> >       pr_warn("Unknown node for memory at 0x%llx, assuming node 0\n", addr);
+> >       return 0;
+> >  }
+> > +
+> > +/*
+> > + * device-dax instance registrations want a valid target-node in case
+> > + * they are ever onlined as memory (see hmem_register_device()).
+> > + *
+> > + * TODO: consult cached numa info
+> > + */
+> > +int phys_to_target_node(phys_addr_t addr)
+> > +{
+> > +     pr_warn_once("Unknown target node for memory at 0x%llx, assuming node 0\n",
+> > +                     addr);
+> > +     return 0;
+> > +}
+>
+> Could you implement a generic version of this by iterating over the nodes
+> with for_each_{,online_}node() and checking for intersection with
+> node_{start,end}_pfn()?
 
-Minor editorial fixes:
-- add some hyphens in multi-word adjectives
-- add some periods for consistency
-- add "'" for possessive CPU's
-- capitalize IRQ when it's an acronym and not part of a function name
-
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Paul McKenney <paulmck@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Sebastian Siewior <bigeasy@linutronix.de>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
----
- Documentation/locking/locktypes.rst |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
---- linux-next-20200325.orig/Documentation/locking/locktypes.rst
-+++ linux-next-20200325/Documentation/locking/locktypes.rst
-@@ -84,7 +84,7 @@ rtmutex
- 
- RT-mutexes are mutexes with support for priority inheritance (PI).
- 
--PI has limitations on non PREEMPT_RT enabled kernels due to preemption and
-+PI has limitations on non-PREEMPT_RT-enabled kernels due to preemption and
- interrupt disabled sections.
- 
- PI clearly cannot preempt preemption-disabled or interrupt-disabled
-@@ -150,7 +150,7 @@ kernel configuration including PREEMPT_R
- 
- raw_spinlock_t is a strict spinning lock implementation in all kernels,
- including PREEMPT_RT kernels.  Use raw_spinlock_t only in real critical
--core code, low level interrupt handling and places where disabling
-+core code, low-level interrupt handling and places where disabling
- preemption or interrupts is required, for example, to safely access
- hardware state.  raw_spinlock_t can sometimes also be used when the
- critical section is tiny, thus avoiding RT-mutex overhead.
-@@ -160,20 +160,20 @@ spinlock_t
- 
- The semantics of spinlock_t change with the state of PREEMPT_RT.
- 
--On a non PREEMPT_RT enabled kernel spinlock_t is mapped to raw_spinlock_t
-+On a non-PREEMPT_RT-enabled kernel spinlock_t is mapped to raw_spinlock_t
- and has exactly the same semantics.
- 
- spinlock_t and PREEMPT_RT
- -------------------------
- 
--On a PREEMPT_RT enabled kernel spinlock_t is mapped to a separate
-+On a PREEMPT_RT-enabled kernel spinlock_t is mapped to a separate
- implementation based on rt_mutex which changes the semantics:
- 
-- - Preemption is not disabled
-+ - Preemption is not disabled.
- 
-  - The hard interrupt related suffixes for spin_lock / spin_unlock
--   operations (_irq, _irqsave / _irqrestore) do not affect the CPUs
--   interrupt disabled state
-+   operations (_irq, _irqsave / _irqrestore) do not affect the CPU's
-+   interrupt disabled state.
- 
-  - The soft interrupt related suffix (_bh()) still disables softirq
-    handlers.
-@@ -279,7 +279,7 @@ fully preemptible context.  Instead, use
- spin_lock_irqsave() and their unlock counterparts.  In cases where the
- interrupt disabling and locking must remain separate, PREEMPT_RT offers a
- local_lock mechanism.  Acquiring the local_lock pins the task to a CPU,
--allowing things like per-CPU irq-disabled locks to be acquired.  However,
-+allowing things like per-CPU IRQ-disabled locks to be acquired.  However,
- this approach should be used only where absolutely necessary.
- 
- 
-
+Interesting. The gap is that node_{start,end}_pfn() requires
+node_data[] which to date architectures have only setup for online
+nodes. Recall a target node is an offline node that could come online
+later. However, reworking offline data into node_data could be the
+local solution for arm64, I'd just ask that each of the 6
+memory-hotplug capable archs go make that opt-in decision themselves.
