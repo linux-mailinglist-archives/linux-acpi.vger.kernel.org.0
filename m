@@ -2,482 +2,193 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 51563192E97
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 17:48:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 936A5192E9E
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 17:49:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727328AbgCYQr7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Mar 2020 12:47:59 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:55926 "EHLO huawei.com"
+        id S1727549AbgCYQtC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Mar 2020 12:49:02 -0400
+Received: from mail-eopbgr00054.outbound.protection.outlook.com ([40.107.0.54]:7901
+        "EHLO EUR02-AM5-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727641AbgCYQr7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 25 Mar 2020 12:47:59 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 5722178DC10962893DDE;
-        Thu, 26 Mar 2020 00:43:24 +0800 (CST)
-Received: from DESKTOP-6T4S3DQ.china.huawei.com (10.47.86.66) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 26 Mar 2020 00:43:14 +0800
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     <linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <rjw@rjwysocki.net>,
-        <helgaas@kernel.org>, <lenb@kernel.org>, <bp@alien8.de>,
-        <james.morse@arm.com>, <tony.luck@intel.com>,
-        <gregkh@linuxfoundation.org>, <zhangliguang@linux.alibaba.com>,
-        <tglx@linutronix.de>
-CC:     <linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
-        <tanxiaofei@huawei.com>, <yangyicong@hisilicon.com>,
-        kbuild test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Shiju Jose <shiju.jose@huawei.com>
-Subject: [PATCH v6 2/2] PCI: hip: Add handling of HiSilicon HIP PCIe controller errors
-Date:   Wed, 25 Mar 2020 16:42:23 +0000
-Message-ID: <20200325164223.650-3-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
-In-Reply-To: <20200325164223.650-1-shiju.jose@huawei.com>
-References: <Shiju Jose>
- <20200325164223.650-1-shiju.jose@huawei.com>
+        id S1727193AbgCYQtC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 25 Mar 2020 12:49:02 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fMSM4ElQ507kS1+TrQvUSNIvvOuLQvwkffU5OmWuaL/gELs1DwC/e3tqkva3kiDsuh6K6DIjmqgCz86Ax0K0UX2zHtJWCrdgf4UjwfyFZBwd0GWaa7BzYyM98Ck6h1wivx8lGe8Z8gAccfUKrSvbJhqRh+CMHiSAnCQ/0IAJRl8Rb3sToraYOmZqRQ7g7Tl5/fFpuDSC+GXVaF1qFPrYnq8jF+JFgeR6+DBu9I5p5yaaoVYGRt0f9weV+hx4BGf2l3O5JDree5dEBDMzn45o+/+yhaMQsof2a8QjxzuuHqNGuotPJYOwmWTNnmWh/qVlOyLeOpkphYuy+mWNIc3boQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QrDObxhj/nExL7H9r8WDtfxzJ7/haD3omc8Vb/3ajdo=;
+ b=Eu64c5u3tuJJB9eXUMelj1UwyX6P+a2dnl+y7BAgk4peXtzUK85878aPlh9wMygFhvUlg05hSEupb5c3bE7lSnzjy9Z3QarhfqrjgZpSVeOpI72S6YiJBm+HdzajP93hYFbZvnEVjWoVT4AaxKhukJenhlpWrrHY8NFm5WehwKG3515Sk0IZJvU/GO5apElootTiOMcG0Zo+xS6TzHrUSNq2IttHSpLziDCtxVgolTEnKecyl8PiYh8rQZ61C8nileJTaA2tM+hcaBhxObz8Gi7LsnvnnoSmMh0EAIImWFhnVhQco1fgXffKsGca3OE4854b5MGgIgUIp8w+DwGrUw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QrDObxhj/nExL7H9r8WDtfxzJ7/haD3omc8Vb/3ajdo=;
+ b=QMPErqiPouATkQUIv7QeFwt8Zyc0Ii2Rg0WoKvM8sYl70exaR+LHx1mQTCuyo/AcI42hQdG8nW1k38n3b14XO5YvToixR9zTrVFwWx8kKb3Wa4bZlhHimPWsMqtHK4ffZNZJAgDSIo9JpAF4iOO69+j3sEeSdUD+EKIobu2xeAs=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=laurentiu.tudor@nxp.com; 
+Received: from AM6PR04MB5925.eurprd04.prod.outlook.com (20.179.2.147) by
+ AM6PR04MB5080.eurprd04.prod.outlook.com (20.177.32.152) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2856.18; Wed, 25 Mar 2020 16:48:58 +0000
+Received: from AM6PR04MB5925.eurprd04.prod.outlook.com
+ ([fe80::dd71:5f33:1b21:cd9e]) by AM6PR04MB5925.eurprd04.prod.outlook.com
+ ([fe80::dd71:5f33:1b21:cd9e%5]) with mapi id 15.20.2835.023; Wed, 25 Mar 2020
+ 16:48:58 +0000
+Subject: Re: [RFC PATCH 1/4] bus: fsl-mc: add custom .dma_configure
+ implementation
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        robin.murphy@arm.com, ard.biesheuvel@linaro.org,
+        ioana.ciornei@nxp.com, diana.craciun@oss.nxp.com, maz@kernel.org,
+        jon@solid-run.com, pankaj.bansal@nxp.com, makarand.pawagi@nxp.com,
+        calvin.johnson@nxp.com, V.Sethi@nxp.com, cristian.sovaiala@nxp.com,
+        Stuart.Yoder@arm.com, jeremy.linton@arm.com, joro@8bytes.org,
+        tglx@linutronix.de, jason@lakedaemon.net
+References: <20200227100542.13819-1-laurentiu.tudor@nxp.com>
+ <20200325125109.GA5430@red-moon.cambridge.arm.com>
+From:   Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Message-ID: <499fbf9a-416f-d7c7-0655-881d92138a6c@nxp.com>
+Date:   Wed, 25 Mar 2020 18:48:55 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
+In-Reply-To: <20200325125109.GA5430@red-moon.cambridge.arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PR3P189CA0017.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:102:52::22) To AM6PR04MB5925.eurprd04.prod.outlook.com
+ (2603:10a6:20b:ab::19)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.47.86.66]
-X-CFilter-Loop: Reflected
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.1.107] (86.121.54.4) by PR3P189CA0017.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:52::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.19 via Frontend Transport; Wed, 25 Mar 2020 16:48:57 +0000
+X-Originating-IP: [86.121.54.4]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 19d9522b-fc92-45dd-3b5b-08d7d0dc69be
+X-MS-TrafficTypeDiagnostic: AM6PR04MB5080:|AM6PR04MB5080:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM6PR04MB508055372D58BBF8940FD443ECCE0@AM6PR04MB5080.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Forefront-PRVS: 0353563E2B
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4636009)(366004)(966005)(498600001)(81156014)(81166006)(6486002)(8936002)(8676002)(53546011)(36756003)(2906002)(52116002)(6916009)(44832011)(16526019)(31696002)(956004)(2616005)(26005)(31686004)(66476007)(4326008)(66946007)(16576012)(5660300002)(66556008)(7416002)(86362001)(186003)(142923001);DIR:OUT;SFP:1101;SCL:1;SRVR:AM6PR04MB5080;H:AM6PR04MB5925.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;
+Received-SPF: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: p63m+6B6e3x8jAo+3lZXr8jB8Wdr1LC8W/iFSqhfL1echA+/c6yljGg5Bkug6QdPl/TS9Fu4UFcaSczjXPVJAjsR0po8u625cZp7O98ycQaZOyn+31UljgXFd8+NUvIOweHZf9S6qT/mVOMH8FnJ2H7M0c+0fO6egN0i3lwJxGH6iapn1d1ltURuGA7JBI7Hh4NOiBQK8P0zKNjf39ZVQuRaiPNL+sc0rhatD6zdzc0o64BLitt0LZ4/a/3g8rzu6CR9/p6JCM9HLERKm78asNipq7rCX02s1cHWu51+PtZ6sUM6URvIpjKcNVhboFgX1NvxccwmAJIz9IepgijjE7s2cKkrihLzd6OrpirJQkMWDTBIz2QJwf1ne5plAW+LQ5osYyBfWn8HdJbHhEHyQACicuM3/94hTePms5/ic1BxjDo8/5tT6W2EbQOTUDO5od5gQgTAeytL6aWolyc06lo9Wi0s+WeDzwArVfS7U4OO/qHJBgrfFEcwd1hdv1+fs2P22LdgotalfNX17ZMmg1XaCHDM+oVzG3rZu1IhiKRCS2WT3lWnSbYYvTOhtHXs
+X-MS-Exchange-AntiSpam-MessageData: QWLQJADBFWzVEb2lHpXi/dFbTcDHv426ysSiW3WjXzTvNSF4HazpXa35brb89zrJIQX2AqY7os23DH4ko3iqMF2z2q3c41B8mAQrFij/cwMEhQvmTz1X4pp619whWL7WYxlkJHy3YQXRcZameXoFFw==
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19d9522b-fc92-45dd-3b5b-08d7d0dc69be
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2020 16:48:58.3900
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yfLjupmheU4znlVLeYv/i5SnnaPRyK4lkZGqMkLTm+L3O1swOthNszXP2Z/qbx2zmb+7kr9pzZEJEPEr/bUk+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR04MB5080
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+Hi Lorenzo,
 
-The HiSilicon HIP PCIe controller is capable of handling errors
-on root port and perform port reset separately at each root port.
+On 3/25/2020 2:51 PM, Lorenzo Pieralisi wrote:
+> On Thu, Feb 27, 2020 at 12:05:39PM +0200, laurentiu.tudor@nxp.com wrote:
+>> From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+>>
+>> The devices on this bus are not discovered by way of device tree
+>> but by queries to the firmware. It makes little sense to trick the
+>> generic of layer into thinking that these devices are of related so
+>> that we can get our dma configuration. Instead of doing that, add
+>> our custom dma configuration implementation.
+>>
+>> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+>> ---
+>>  drivers/bus/fsl-mc/fsl-mc-bus.c | 31 ++++++++++++++++++++++++++++++-
+>>  1 file changed, 30 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+>> index 36eb25f82c8e..eafaa0e0b906 100644
+>> --- a/drivers/bus/fsl-mc/fsl-mc-bus.c
+>> +++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+>> @@ -132,11 +132,40 @@ static int fsl_mc_bus_uevent(struct device *dev, struct kobj_uevent_env *env)
+>>  static int fsl_mc_dma_configure(struct device *dev)
+>>  {
+>>  	struct device *dma_dev = dev;
+>> +	struct iommu_fwspec *fwspec;
+>> +	const struct iommu_ops *iommu_ops;
+>> +	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
+>> +	int ret;
+>> +	u32 icid;
+>>  
+>>  	while (dev_is_fsl_mc(dma_dev))
+>>  		dma_dev = dma_dev->parent;
+>>  
+>> -	return of_dma_configure(dev, dma_dev->of_node, 0);
+>> +	fwspec = dev_iommu_fwspec_get(dma_dev);
+>> +	if (!fwspec)
+>> +		return -ENODEV;
+>> +	iommu_ops = iommu_ops_from_fwnode(fwspec->iommu_fwnode);
+>> +	if (!iommu_ops)
+>> +		return -ENODEV;
+>> +
+>> +	ret = iommu_fwspec_init(dev, fwspec->iommu_fwnode, iommu_ops);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	icid = mc_dev->icid;
+>> +	ret = iommu_fwspec_add_ids(dev, &icid, 1);
+> 
+> I see. So with this patch we would use the MC named component only to
+> retrieve the iommu_ops
 
-This patch add error handling driver for HIP PCIe controller to log
-and report recoverable errors. Perform root port reset and restore
-link status after the recovery.
+Right. I'd also add that the implementation tries to follow the existing
+standard .dma_configure implementations, e.g. of_dma_configure +
+of_iommu_configure. I'd also note that similarly to the ACPI case, this
+MC FW device is probed as a platform device in the DT scenario, binding
+here [1].
+A similar approach is used for the retrieval of the msi irq domain, see
+following patch.
 
-Following are some of the PCIe controller's recoverable errors
-1. completion transmission timeout error.
-2. CRS retry counter over the threshold error.
-3. ECC 2 bit errors
-4. AXI bresponse/rresponse errors etc.
+> - the streamid are injected directly here bypassing OF/IORT bindings translations altogether. 
 
-Also fix the following Smatch warning:
-warn: should '((((1))) << (9 + i))' be a 64 bit type?
-if (err->val_bits & BIT(HISI_PCIE_LOCAL_VALID_ERR_MISC + i))
-     ^^^ This should be BIT_ULL() because it goes up to 9 + 32.
-Reported-by: kbuild test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Actually I've submitted a v2 [2] that calls into .of_xlate() to allow
+the smmu driver to do some processing on the raw streamid coming from
+the firmware. I have not yet tested this with ACPI but expect it to
+work, however, it's debatable how valid is this approach in the context
+of ACPI.
 
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
---
-drivers/pci/controller/Kconfig           |   8 +
-drivers/pci/controller/Makefile          |   1 +
-drivers/pci/controller/pcie-hisi-error.c | 336 +++++++++++++++++++++++++++++++
-3 files changed, 345 insertions(+)
-create mode 100644 drivers/pci/controller/pcie-hisi-error.c
+> Am I reading this code correctly ?
+
+Yes. Thanks for taking the time.
+
+[1]
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+[2] https://www.spinics.net/lists/arm-kernel/msg794757.html
+
 ---
- drivers/pci/controller/Kconfig           |   8 +
- drivers/pci/controller/Makefile          |   1 +
- drivers/pci/controller/pcie-hisi-error.c | 357 +++++++++++++++++++++++
- 3 files changed, 366 insertions(+)
- create mode 100644 drivers/pci/controller/pcie-hisi-error.c
+Best Regards, Laurentiu
 
-diff --git a/drivers/pci/controller/Kconfig b/drivers/pci/controller/Kconfig
-index 20bf00f587bd..8bc6111480c8 100644
---- a/drivers/pci/controller/Kconfig
-+++ b/drivers/pci/controller/Kconfig
-@@ -268,6 +268,14 @@ config PCI_HYPERV_INTERFACE
- 	  The Hyper-V PCI Interface is a helper driver allows other drivers to
- 	  have a common interface with the Hyper-V PCI frontend driver.
- 
-+config PCIE_HISI_ERR
-+	depends on ARM64 || COMPILE_TEST
-+	depends on ACPI
-+	bool "HiSilicon HIP PCIe controller error handling driver"
-+	help
-+	  Say Y here if you want error handling support
-+	  for the PCIe controller's errors on HiSilicon HIP SoCs
-+
- source "drivers/pci/controller/dwc/Kconfig"
- source "drivers/pci/controller/cadence/Kconfig"
- endmenu
-diff --git a/drivers/pci/controller/Makefile b/drivers/pci/controller/Makefile
-index 01b2502a5323..94f37b3d9929 100644
---- a/drivers/pci/controller/Makefile
-+++ b/drivers/pci/controller/Makefile
-@@ -29,6 +29,7 @@ obj-$(CONFIG_PCIE_MOBIVEIL) += pcie-mobiveil.o
- obj-$(CONFIG_PCIE_TANGO_SMP8759) += pcie-tango.o
- obj-$(CONFIG_VMD) += vmd.o
- obj-$(CONFIG_PCIE_BRCMSTB) += pcie-brcmstb.o
-+obj-$(CONFIG_PCIE_HISI_ERR) += pcie-hisi-error.o
- # pcie-hisi.o quirks are needed even without CONFIG_PCIE_DW
- obj-y				+= dwc/
- 
-diff --git a/drivers/pci/controller/pcie-hisi-error.c b/drivers/pci/controller/pcie-hisi-error.c
-new file mode 100644
-index 000000000000..73304512af92
---- /dev/null
-+++ b/drivers/pci/controller/pcie-hisi-error.c
-@@ -0,0 +1,357 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Driver for handling the PCIe controller errors on
-+ * HiSilicon HIP SoCs.
-+ *
-+ * Copyright (c) 2018-2019 HiSilicon Limited.
-+ */
-+
-+#include <linux/acpi.h>
-+#include <acpi/ghes.h>
-+#include <linux/delay.h>
-+#include <linux/pci.h>
-+#include <linux/platform_device.h>
-+#include <linux/kfifo.h>
-+#include <linux/spinlock.h>
-+
-+#include "../pci.h"
-+
-+#define HISI_PCIE_ERR_RECOVER_RING_SIZE           16
-+#define	HISI_PCIE_ERR_INFO_SIZE	1024
-+
-+/* HISI PCIe controller error definitions */
-+#define HISI_PCIE_ERR_MISC_REGS	33
-+
-+#define HISI_PCIE_SUB_MODULE_ID_AP	0
-+#define HISI_PCIE_SUB_MODULE_ID_TL	1
-+#define HISI_PCIE_SUB_MODULE_ID_MAC	2
-+#define HISI_PCIE_SUB_MODULE_ID_DL	3
-+#define HISI_PCIE_SUB_MODULE_ID_SDI	4
-+
-+#define HISI_PCIE_LOCAL_VALID_VERSION		BIT(0)
-+#define HISI_PCIE_LOCAL_VALID_SOC_ID		BIT(1)
-+#define HISI_PCIE_LOCAL_VALID_SOCKET_ID		BIT(2)
-+#define HISI_PCIE_LOCAL_VALID_NIMBUS_ID		BIT(3)
-+#define HISI_PCIE_LOCAL_VALID_SUB_MODULE_ID	BIT(4)
-+#define HISI_PCIE_LOCAL_VALID_CORE_ID		BIT(5)
-+#define HISI_PCIE_LOCAL_VALID_PORT_ID		BIT(6)
-+#define HISI_PCIE_LOCAL_VALID_ERR_TYPE		BIT(7)
-+#define HISI_PCIE_LOCAL_VALID_ERR_SEVERITY	BIT(8)
-+#define HISI_PCIE_LOCAL_VALID_ERR_MISC		9
-+
-+#define HISI_ERR_SEV_RECOVERABLE	0
-+#define HISI_ERR_SEV_FATAL		1
-+#define HISI_ERR_SEV_CORRECTED		2
-+#define HISI_ERR_SEV_NONE		3
-+
-+static guid_t hisi_pcie_sec_type = GUID_INIT(0xB2889FC9, 0xE7D7, 0x4F9D,
-+			0xA8, 0x67, 0xAF, 0x42, 0xE9, 0x8B, 0xE7, 0x72);
-+
-+#define HISI_PCIE_CORE_ID(v)             ((v) >> 3)
-+#define HISI_PCIE_PORT_ID(core, v)       (((v) >> 1) + ((core) << 3))
-+#define HISI_PCIE_CORE_PORT_ID(v)        (((v) % 8) << 1)
-+
-+struct hisi_pcie_err_data {
-+	u64   val_bits;
-+	u8    version;
-+	u8    soc_id;
-+	u8    socket_id;
-+	u8    nimbus_id;
-+	u8    sub_module_id;
-+	u8    core_id;
-+	u8    port_id;
-+	u8    err_severity;
-+	u16   err_type;
-+	u8    reserv[2];
-+	u32   err_misc[HISI_PCIE_ERR_MISC_REGS];
-+};
-+
-+struct hisi_pcie_err_info {
-+	struct hisi_pcie_err_data err_data;
-+	struct platform_device *pdev;
-+};
-+
-+struct hisi_pcie_err_private {
-+	struct notifier_block nb;
-+	struct platform_device *pdev;
-+};
-+
-+static char *hisi_pcie_sub_module_name(u8 id)
-+{
-+	switch (id) {
-+	case HISI_PCIE_SUB_MODULE_ID_AP: return "AP Layer";
-+	case HISI_PCIE_SUB_MODULE_ID_TL: return "TL Layer";
-+	case HISI_PCIE_SUB_MODULE_ID_MAC: return "MAC Layer";
-+	case HISI_PCIE_SUB_MODULE_ID_DL: return "DL Layer";
-+	case HISI_PCIE_SUB_MODULE_ID_SDI: return "SDI Layer";
-+	}
-+
-+	return "unknown";
-+}
-+
-+static char *hisi_pcie_err_severity(u8 err_sev)
-+{
-+	switch (err_sev) {
-+	case HISI_ERR_SEV_RECOVERABLE: return "recoverable";
-+	case HISI_ERR_SEV_FATAL: return "fatal";
-+	case HISI_ERR_SEV_CORRECTED: return "corrected";
-+	case HISI_ERR_SEV_NONE: return "none";
-+	}
-+
-+	return "unknown";
-+}
-+
-+static int hisi_pcie_port_reset(struct platform_device *pdev,
-+					u32 chip_id, u32 port_id)
-+{
-+	struct device *dev = &pdev->dev;
-+	acpi_handle handle = ACPI_HANDLE(dev);
-+	union acpi_object arg[3];
-+	struct acpi_object_list arg_list;
-+	acpi_status s;
-+	unsigned long long data = 0;
-+
-+	arg[0].type = ACPI_TYPE_INTEGER;
-+	arg[0].integer.value = chip_id;
-+	arg[1].type = ACPI_TYPE_INTEGER;
-+	arg[1].integer.value = HISI_PCIE_CORE_ID(port_id);
-+	arg[2].type = ACPI_TYPE_INTEGER;
-+	arg[2].integer.value = HISI_PCIE_CORE_PORT_ID(port_id);
-+
-+	arg_list.count = 3;
-+	arg_list.pointer = arg;
-+
-+	/* Call the ACPI handle to reset root port */
-+	s = acpi_evaluate_integer(handle, "RST", &arg_list, &data);
-+	if (ACPI_FAILURE(s)) {
-+		dev_err(dev, "No RST method\n");
-+		return -EIO;
-+	}
-+
-+	if (data) {
-+		dev_err(dev, "Failed to Reset\n");
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+static int hisi_pcie_port_do_recovery(struct platform_device *dev,
-+				      u32 chip_id, u32 port_id)
-+{
-+	acpi_status s;
-+	struct device *device = &dev->dev;
-+	acpi_handle root_handle = ACPI_HANDLE(device);
-+	struct acpi_pci_root *pci_root;
-+	struct pci_bus *root_bus;
-+	struct pci_dev *pdev;
-+	u32 domain, busnr, devfn;
-+
-+	s = acpi_get_parent(root_handle, &root_handle);
-+	if (ACPI_FAILURE(s))
-+		return -ENODEV;
-+	pci_root = acpi_pci_find_root(root_handle);
-+	if (!pci_root)
-+		return -ENODEV;
-+	root_bus = pci_root->bus;
-+	domain = pci_root->segment;
-+
-+	busnr = root_bus->number;
-+	devfn = PCI_DEVFN(port_id, 0);
-+	pdev = pci_get_domain_bus_and_slot(domain, busnr, devfn);
-+	if (!pdev) {
-+		dev_warn(device, "Fail to get root port %04x:%02x:%02x.%d device\n",
-+			 domain, busnr, PCI_SLOT(devfn), PCI_FUNC(devfn));
-+		return -ENODEV;
-+	}
-+
-+	pci_stop_and_remove_bus_device_locked(pdev);
-+	pci_dev_put(pdev);
-+
-+	if (hisi_pcie_port_reset(dev, chip_id, port_id))
-+		return -EIO;
-+
-+	/*
-+	 * The initialization time of subordinate devices after
-+	 * hot reset is no more than 1s, which is required by
-+	 * the PCI spec v5.0 sec 6.6.1. The time will shorten
-+	 * if Readiness Notifications mechanisms are used. But
-+	 * wait 1s here to adapt any conditions.
-+	 */
-+	ssleep(1UL);
-+
-+	/* add root port and downstream devices */
-+	pci_lock_rescan_remove();
-+	pci_rescan_bus(root_bus);
-+	pci_unlock_rescan_remove();
-+
-+	return 0;
-+}
-+
-+static void hisi_pcie_handle_one_error(const struct hisi_pcie_err_data *err,
-+				    struct platform_device *pdev)
-+{
-+	char buf[HISI_PCIE_ERR_INFO_SIZE];
-+	char *p = buf, *end = buf + sizeof(buf);
-+	struct device *dev = &pdev->dev;
-+	u32 i;
-+	int rc;
-+
-+	if (err->val_bits == 0) {
-+		dev_warn(dev, "%s: no valid error information\n", __func__);
-+		return;
-+	}
-+
-+	/* Logging */
-+	p += snprintf(p, end - p, "[ Table version=%d ", err->version);
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_SOC_ID)
-+		p += snprintf(p, end - p, "SOC ID=%d ", err->soc_id);
-+
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_SOCKET_ID)
-+		p += snprintf(p, end - p, "socket ID=%d ", err->socket_id);
-+
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_NIMBUS_ID)
-+		p += snprintf(p, end - p, "nimbus ID=%d ", err->nimbus_id);
-+
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_SUB_MODULE_ID)
-+		p += snprintf(p, end - p, "sub module=%s ",
-+			      hisi_pcie_sub_module_name(err->sub_module_id));
-+
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_CORE_ID)
-+		p += snprintf(p, end - p, "core ID=core%d ", err->core_id);
-+
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_PORT_ID)
-+		p += snprintf(p, end - p, "port ID=port%d ", err->port_id);
-+
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_ERR_SEVERITY)
-+		p += snprintf(p, end - p, "error severity=%s ",
-+			      hisi_pcie_err_severity(err->err_severity));
-+
-+	if (err->val_bits & HISI_PCIE_LOCAL_VALID_ERR_TYPE)
-+		p += snprintf(p, end - p, "error type=0x%x ", err->err_type);
-+
-+	p += snprintf(p, end - p, "]\n");
-+	dev_info(dev, "\nHISI : HIP : PCIe controller error\n");
-+	dev_info(dev, "%s\n", buf);
-+
-+	dev_info(dev, "Reg Dump:\n");
-+	for (i = 0; i < HISI_PCIE_ERR_MISC_REGS; i++) {
-+		if (err->val_bits & BIT_ULL(HISI_PCIE_LOCAL_VALID_ERR_MISC + i))
-+			dev_info(dev,
-+				 "ERR_MISC_%d=0x%x\n", i, err->err_misc[i]);
-+	}
-+
-+	/* Recovery for the PCIe controller errors */
-+	if (err->err_severity == HISI_ERR_SEV_RECOVERABLE) {
-+		/* try reset PCI port for the error recovery */
-+		rc = hisi_pcie_port_do_recovery(pdev, err->socket_id,
-+				HISI_PCIE_PORT_ID(err->core_id, err->port_id));
-+		if (rc) {
-+			dev_warn(dev, "fail to do hisi pcie port reset\n");
-+			return;
-+		}
-+	}
-+}
-+
-+static DEFINE_KFIFO(hisi_pcie_err_recover_ring, struct hisi_pcie_err_info,
-+		    HISI_PCIE_ERR_RECOVER_RING_SIZE);
-+static DEFINE_SPINLOCK(hisi_pcie_err_recover_ring_lock);
-+
-+static void hisi_pcie_err_recover_work_func(struct work_struct *work)
-+{
-+	struct hisi_pcie_err_info pcie_err_entry;
-+
-+	while (kfifo_get(&hisi_pcie_err_recover_ring, &pcie_err_entry)) {
-+		hisi_pcie_handle_one_error(&pcie_err_entry.err_data,
-+					pcie_err_entry.pdev);
-+	}
-+}
-+
-+static DECLARE_WORK(hisi_pcie_err_recover_work,
-+		    hisi_pcie_err_recover_work_func);
-+
-+
-+static int hisi_pcie_error_notify(struct notifier_block *nb,
-+				  unsigned long event, void *data)
-+{
-+	struct acpi_hest_generic_data *gdata = data;
-+	const struct hisi_pcie_err_data *err_data =
-+				acpi_hest_get_payload(gdata);
-+	struct hisi_pcie_err_info err_info;
-+	struct hisi_pcie_err_private *priv =
-+			container_of(nb, struct hisi_pcie_err_private, nb);
-+	struct platform_device *pdev = priv->pdev;
-+	struct device *dev = &pdev->dev;
-+	u8 socket;
-+
-+	if (device_property_read_u8(dev, "socket", &socket))
-+		return NOTIFY_DONE;
-+
-+	if (!guid_equal((guid_t *)gdata->section_type, &hisi_pcie_sec_type) ||
-+	    err_data->socket_id != socket)
-+		return NOTIFY_DONE;
-+
-+	memcpy(&err_info.err_data, err_data, sizeof(*err_data));
-+	err_info.pdev = pdev;
-+
-+	if (kfifo_in_spinlocked(&hisi_pcie_err_recover_ring, &err_info, 1,
-+				&hisi_pcie_err_recover_ring_lock))
-+		schedule_work(&hisi_pcie_err_recover_work);
-+	else
-+		dev_warn(dev, "queue full when recovering PCIe controller error\n");
-+
-+	return NOTIFY_STOP;
-+}
-+
-+static int hisi_pcie_err_handler_probe(struct platform_device *pdev)
-+{
-+	struct hisi_pcie_err_private *priv;
-+	int ret;
-+
-+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->nb.notifier_call = hisi_pcie_error_notify;
-+	priv->pdev = pdev;
-+	ret = ghes_register_event_notifier(&priv->nb);
-+	if (ret) {
-+		dev_err(&pdev->dev, "%s : ghes_register_event_notifier fail\n",
-+			__func__);
-+		return ret;
-+	}
-+
-+	platform_set_drvdata(pdev, priv);
-+
-+	return 0;
-+}
-+
-+static int hisi_pcie_err_handler_remove(struct platform_device *pdev)
-+{
-+	struct hisi_pcie_err_private *priv = platform_get_drvdata(pdev);
-+
-+	if (priv)
-+		ghes_unregister_event_notifier(&priv->nb);
-+
-+	kfree(priv);
-+
-+	return 0;
-+}
-+
-+static const struct acpi_device_id hisi_pcie_acpi_match[] = {
-+	{ "HISI0361", 0 },
-+	{ }
-+};
-+
-+static struct platform_driver hisi_pcie_err_handler_driver = {
-+	.driver = {
-+		.name	= "hisi-pcie-err-handler",
-+		.acpi_match_table = hisi_pcie_acpi_match,
-+	},
-+	.probe		= hisi_pcie_err_handler_probe,
-+	.remove		= hisi_pcie_err_handler_remove,
-+};
-+module_platform_driver(hisi_pcie_err_handler_driver);
-+
-+MODULE_DESCRIPTION("HiSilicon HIP PCIe controller error handling driver");
-+MODULE_LICENSE("GPL v2");
--- 
-2.17.1
-
-
+> 
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	if (!device_iommu_mapped(dev)) {
+>> +		ret = iommu_probe_device(dev);
+>> +		if (ret)
+>> +			return ret;
+>> +	}
+>> +
+>> +	arch_setup_dma_ops(dev, 0, *dma_dev->dma_mask + 1, iommu_ops, true);
+>> +
+>> +	return 0;
+>>  }
+>>  
+>>  static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
+>> -- 
+>> 2.17.1
+>>
