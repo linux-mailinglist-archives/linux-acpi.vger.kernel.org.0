@@ -2,192 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 85DDB192A5E
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 14:49:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4EE9192A79
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 14:55:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727448AbgCYNtB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Mar 2020 09:49:01 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:38743 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727399AbgCYNtA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Mar 2020 09:49:00 -0400
-Received: by mail-qt1-f194.google.com with SMTP id z12so2137206qtq.5
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Mar 2020 06:48:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=aqwoIFeWasu7LFGFPdHVV0Lyd6mKkML5MpjpybFPze8=;
-        b=EE74JW5sNUSawE/nieOmfd+x2MIF880p7qtUdiqMYpYg6462zQ2kLJOkZBp/zZ8luR
-         LeLF/vFfOcLYUdB62zmY3K51QFgSZmG/iP4GGx+I5a0SE92IP0U4RF+7aM2l93Qy7Vud
-         nvG2VFeMmjohJfjcA0bvIVnJrlCW4v3YxJX2ttJ7WVlcmnMkkyLf4udfKgZJ/2hbbbxA
-         rCT2KtINfMQhgJ3CW1CthXBftOq80dz84C2ah45qIhat6XDiKK88vUbHCHvBUfpTJm+4
-         sEemxlKWAnJ7BDYhfbS0cKaPeCpokGUgyvW0dQfjILwPQGskDrXNcOe8Zz1MyWcy3S/N
-         MB5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=aqwoIFeWasu7LFGFPdHVV0Lyd6mKkML5MpjpybFPze8=;
-        b=umiqlhRCJoAyXCExewfmEvM5Lgk/yX+urfTGFTAXTAsUVMvUgQnQcupshvS3M6JWKQ
-         sf64zDPNN6p30OuM2EI8Dckk9LuODGJhsJYHMOwdGMlt8NmbqTnZOOf+qqzZ16OQyJiQ
-         +uGb2g350HNUPqGLESY/HA+A2ZM2QZqk9YrHKBIHPDMUxPL5FFpE2cRfAumDOCpUYCK1
-         R6s+xO0TEkoe1QH7dbKkjMCJv68+a+PUTn+L/S8vvEsk7re8DSnxalDUeWzmOwXp8Acl
-         BMCFFi15lU6jnnh4sqS6RTFo1uX1xkdFic4cDUvaTheS1QttIeEMEXQuABfWYUiNdQ+b
-         Drtw==
-X-Gm-Message-State: ANhLgQ2E19lWFnmUXrf/FQVjO8chNJ+Tgs0qrEJqDX5dMDt0+2a+7Zh2
-        q/1PLA6+GdLwImqWZpblGqh2onmuyax75vhWWtEswg==
-X-Google-Smtp-Source: ADFU+vsE+BgKySCoO4pRBagePhRdwuGbjDKSjEAF01BWlpD26chP3U1ysGLrMg10mGmwQ1lasf+U/m2D1z5qMj0K+oU=
-X-Received: by 2002:aed:3c4b:: with SMTP id u11mr2955112qte.208.1585144138478;
- Wed, 25 Mar 2020 06:48:58 -0700 (PDT)
+        id S1727456AbgCYNz0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Mar 2020 09:55:26 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2596 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727277AbgCYNzZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 25 Mar 2020 09:55:25 -0400
+Received: from lhreml702-cah.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 8396156066003943785B;
+        Wed, 25 Mar 2020 13:55:23 +0000 (GMT)
+Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
+ lhreml702-cah.china.huawei.com (10.201.108.43) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Wed, 25 Mar 2020 13:55:22 +0000
+Received: from [127.0.0.1] (10.47.86.66) by lhreml715-chm.china.huawei.com
+ (10.201.108.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Wed, 25 Mar
+ 2020 13:55:22 +0000
+To:     <linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <rjw@rjwysocki.net>,
+        <helgaas@kernel.org>, <lenb@kernel.org>, <bp@alien8.de>,
+        <james.morse@arm.com>, <tony.luck@intel.com>,
+        <gregkh@linuxfoundation.org>, <zhangliguang@linux.alibaba.com>,
+        <tglx@linutronix.de>
+CC:     <linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
+        <tanxiaofei@huawei.com>, <yangyicong@hisilicon.com>
+From:   Shiju Jose <shiju.jose@huawei.com>
+Subject: [PATCH v5 0/2] ACPI: APEI: Add support to notify the vendor specific
+ HW errors
+Message-ID: <8aa40a48-39c9-ba6b-ea70-bcb60907a733@huawei.com>
+Date:   Wed, 25 Mar 2020 13:55:03 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-References: <20200121134157.20396-1-sakari.ailus@linux.intel.com>
- <20200121134157.20396-6-sakari.ailus@linux.intel.com> <CAMpxmJU5dG49N2FA0oSQsOfKrCr3KQ1BisON4c+nUJJmZQG=bQ@mail.gmail.com>
- <20200311085555.GH5379@paasikivi.fi.intel.com> <CAMpxmJVPTKW+sYSJ3dnfF8nLAOKEa4Ob7bpxG0KD3Tkdm+rtYw@mail.gmail.com>
- <20200323213101.GB21174@kekkonen.localdomain>
-In-Reply-To: <20200323213101.GB21174@kekkonen.localdomain>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Wed, 25 Mar 2020 14:48:47 +0100
-Message-ID: <CAMpxmJVdyTkZMVuhSy0Ux8VUYTmQN_YEfH-akQsAL3zrwiz8Dw@mail.gmail.com>
-Subject: Re: [PATCH v4 5/6] at24: Support probing while off
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
-        Wolfram Sang <wsa@the-dreams.de>, linux-acpi@vger.kernel.org,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        linux-media <linux-media@vger.kernel.org>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rajmohan Mani <rajmohan.mani@intel.com>,
-        Tomasz Figa <tfiga@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.86.66]
+X-ClientProxiedBy: lhreml736-chm.china.huawei.com (10.201.108.87) To
+ lhreml715-chm.china.huawei.com (10.201.108.66)
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-pon., 23 mar 2020 o 22:31 Sakari Ailus <sakari.ailus@linux.intel.com>
-napisa=C5=82(a):
->
-> Bartosz,
->
-> On Thu, Mar 12, 2020 at 02:10:32PM +0100, Bartosz Golaszewski wrote:
-> > =C5=9Br., 11 mar 2020 o 09:56 Sakari Ailus <sakari.ailus@linux.intel.co=
-m> napisa=C5=82(a):
-> > >
-> > > Hi Bartosz,
-> > >
-> > > Thanks for the reply.
-> > >
-> > > On Wed, Jan 29, 2020 at 02:36:17PM +0100, Bartosz Golaszewski wrote:
-> > > > wt., 21 sty 2020 o 14:41 Sakari Ailus <sakari.ailus@linux.intel.com=
-> napisa=C5=82(a):
-> > > > >
-> > > > > In certain use cases (where the chip is part of a camera module, =
-and the
-> > > > > camera module is wired together with a camera privacy LED), power=
-ing on
-> > > > > the device during probe is undesirable. Add support for the at24 =
-to
-> > > > > execute probe while being powered off. For this to happen, a hint=
- in form
-> > > > > of a device property is required from the firmware.
-> > > > >
-> > > > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > > > > ---
-> > > > >  drivers/misc/eeprom/at24.c | 31 +++++++++++++++++++++----------
-> >
-> > [snip!]
-> >
-> > > > >
-> > > > >  static int at24_remove(struct i2c_client *client)
-> > > > >  {
-> > > > > +       bool low_power;
-> > > > > +
-> > > > >         pm_runtime_disable(&client->dev);
-> > > > > -       pm_runtime_set_suspended(&client->dev);
-> > > > > +       low_power =3D acpi_dev_state_low_power(&client->dev);
-> > > >
-> > > > This is inconsistent. You define the low_power field in the context
-> > > > structure (BTW the name low_power is a bit vague here - without
-> > > > looking at its assignment it would make me think it's about somethi=
-ng
-> > > > battery-related, how about 'off_at_probe'?) and instead of reusing
-> > >
-> > > The field was called probe_powered_off in v1, but I changed it to
-> > > probe_low_power (and renamed related functions etc.) based on review
-> > > comments --- for the device may not be powered off actually.
-> > >
-> >
-> > But is it actually ever low-power? What are the possible logical
-> > states of the device? If I understood correctly: it's either off or on
-> > at probe - not actually low-power. Am I missing something? In your
-> > cover letter you're writing: "These patches enable calling (and
-> > finishing) a driver's probe function without powering on the
-> > respective device on busses where the practice is to power on the
-> > device for probe." To me there's no mention of a low-power state,
-> > which makes the name 'probe_low_power' seem completely unrelated.
->
-> See <URL:https://patchwork.kernel.org/patch/10938483/>
->
-> I've updated the patches according to the comments but did not update the
-> cover page accordingly.
->
+Presently the vendor drivers are unable to do the recovery for the
+vendor specific recoverable HW errors, reported to the APEI driver
+in the vendor defined sections, because APEI driver does not support
+reporting the same to the vendor drivers.
 
-I see.
+This patch set
+1. add an interface to the APEI driver to enable the vendor
+drivers to register the event handling functions for the corresponding
+vendor specific HW errors and report the error to the vendor driver.
 
-Rafael: I think that there are two issues with patch 1/5:
-1. It adds a very specific boolean flag to a structure that's meant to
-be very general. As I pointed out in the i2c patch: at the very least
-this could be made into an int storing flag values, instead of a
-boolean field. But rather than that - it looks to me more like a
-device (or bus) feature than a driver feature. Is there any ACPI flag
-we could use to pass this information to the driver model without
-changing the driver structure?
-2. The name is still misleading: probe_low_power doesn't correspond
-with what it actually does at all (neither did power_off). I'd go with
-something like probe_allow_low_power.
+2. add driver to handle HiSilicon hip08 PCIe controller's errors
+    which is an example application of the above APEI interface.
 
-> Generally drivers are interested whether a device is powered on so it can
-> be accessed, but the actual power state of the device isn't known to the
-> driver when it is, well, not in an operational state. A device may be
-> powered from a regulator that is always enabled, for instance.
->
-> >
-> > > > this field here, you call acpi_dev_state_low_power() again. Either
-> > > > don't store the context for the life-time of the device if not
-> > > > necessary or don't call acpi_dev_state_low_power() at remove, altho=
-ugh
-> > > > the commit message doesn't describe whether the latter is done on
-> > > > purpose.
-> > >
-> > > Right. probe-low-power property has the same effect on remove for
-> > > consistency, i.e. the device can remain in low power state during rem=
-ove.
-> > > This is documented in probe_low_power field documentation in the firs=
-t
-> > > patch.
-> > >
-> >
-> > Just please don't store any state if you're not using it outside of
-> > the probe() function.
->
-> What exactly are you referring to? The patch adds a local variable to the
-> driver's probe and remove functions.
->
+Changes:
 
-Yes, sorry, I looked at the patch and somehow thought it adds a new
-field to the data structure and then doesn't reuse it. My bad. Maybe
-it was a previous version IDK.
+V5:
+1. Fix comments from James Morse.
+1.1 Changed the notification method to use the atomic_notifier_chain.
+1.2 Add the error handled status for the user space.
 
+V4:
+1. Fix for the smatch warning in the PCIe error driver:
+    warn: should '((((1))) << (9 + i))' be a 64 bit type?
+    if (err->val_bits & BIT(HISI_PCIE_LOCAL_VALID_ERR_MISC + i))
+	^^^ This should be BIT_ULL() because it goes up to 9 + 32.
 
-Bartosz
+V3:
+1. Fix the comments from Bjorn Helgaas.
 
-> --
-> Kind regards,
->
-> Sakari Ailus
+V2:
+1. Changes in the HiSilicon PCIe controller's error handling driver
+    for the comments from Bjorn Helgaas.
+
+2. Changes in the APEI interface to support reporting the vendor error
+    for module with multiple devices, but use the same section type.
+    In the error handler will use socket id/sub module id etc to distinguish
+    the device.
+
+V1:
+1. Fix comments from James Morse.
+
+2. add driver to handle HiSilicon hip08 PCIe controller's errors,
+    which is an application of the above interface.
+
+Shiju Jose (1):
+   APEI: Add support to notify the vendor specific HW errors
+
+Yicong Yang (1):
+   PCI: HIP: Add handling of HiSilicon HIP PCIe controller errors
+
+  drivers/acpi/apei/ghes.c                 |  35 ++-
+  drivers/pci/controller/Kconfig           |   8 +
+  drivers/pci/controller/Makefile          |   1 +
+  drivers/pci/controller/pcie-hisi-error.c | 357 +++++++++++++++++++++++
+  drivers/ras/ras.c                        |   5 +-
+  include/acpi/ghes.h                      |  28 ++
+  include/linux/ras.h                      |   6 +-
+  include/ras/ras_event.h                  |   7 +-
+  8 files changed, 440 insertions(+), 7 deletions(-)
+  create mode 100644 drivers/pci/controller/pcie-hisi-error.c
+
+-- 
+2.17.1
