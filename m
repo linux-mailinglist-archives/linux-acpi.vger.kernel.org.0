@@ -2,115 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 91E7D1926E0
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 12:10:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A52A319276C
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 12:43:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726264AbgCYLKq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Mar 2020 07:10:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55142 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726262AbgCYLKq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 25 Mar 2020 07:10:46 -0400
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6B8A320714;
-        Wed, 25 Mar 2020 11:10:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585134645;
-        bh=+oORi421RJ9kNbff15hBXNngbNzPdLiPd7dkY8ZfVx8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LyTvEz1HkRScEIks3fLO6NxSaEHP3bTnF7g8lw6/Sw86AIEcst4Vj/SPWtZuK/NmF
-         k0ZGmVK6WItq5DMMpc4X2IZd9Mq49bJLWf0Xffqqi6SYMw1UYEfFYhdKwRRgO6bl8X
-         /zcT5VGeyoe/A3wFwuVze9CnAzNQ3nI/5MVCmnjU=
-Date:   Wed, 25 Mar 2020 11:10:40 +0000
-From:   Will Deacon <will@kernel.org>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     linux-acpi@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Brice Goglin <Brice.Goglin@inria.fr>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Jeff Moyer <jmoyer@redhat.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        peterz@infradead.org, dave.hansen@linux.intel.com,
-        linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, joao.m.martins@oracle.com
-Subject: Re: [PATCH v2 6/6] ACPI: HMAT: Attach a device for each
- soft-reserved range
-Message-ID: <20200325111039.GA32109@willie-the-truck>
-References: <158489354353.1457606.8327903161927980740.stgit@dwillia2-desk3.amr.corp.intel.com>
- <158489357825.1457606.17352509511987748598.stgit@dwillia2-desk3.amr.corp.intel.com>
+        id S1727174AbgCYLns (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Mar 2020 07:43:48 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2595 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726313AbgCYLns (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 25 Mar 2020 07:43:48 -0400
+Received: from LHREML712-CAH.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id F1F2032D53CE5C896598;
+        Wed, 25 Mar 2020 11:43:46 +0000 (GMT)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ LHREML712-CAH.china.huawei.com (10.201.108.35) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Wed, 25 Mar 2020 11:43:46 +0000
+Received: from [127.0.0.1] (10.210.165.24) by lhreml724-chm.china.huawei.com
+ (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Wed, 25 Mar
+ 2020 11:43:45 +0000
+Subject: Re: About PPTT find_acpi_cpu_topology_package()
+To:     Jeremy Linton <jeremy.linton@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+CC:     "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "liuqi (BA)" <liuqi115@huawei.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>
+References: <7a888a84-d4c5-2b49-05f3-29876d49cae6@huawei.com>
+ <20200212115945.GA36981@bogus>
+ <be88fdfc-50a0-9753-4f8f-d80c303892be@huawei.com>
+ <20200212135551.GB36981@bogus>
+ <1a04ddf8-4903-2986-a94e-c070dc2c2160@huawei.com>
+ <4a28fd33-9f48-c771-a5b1-0cbf263bca6a@arm.com>
+From:   John Garry <john.garry@huawei.com>
+Message-ID: <c325cfe2-7dbf-e341-7f0f-081b6545e890@huawei.com>
+Date:   Wed, 25 Mar 2020 11:43:31 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <158489357825.1457606.17352509511987748598.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <4a28fd33-9f48-c771-a5b1-0cbf263bca6a@arm.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.210.165.24]
+X-ClientProxiedBy: lhreml732-chm.china.huawei.com (10.201.108.83) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Mar 22, 2020 at 09:12:58AM -0700, Dan Williams wrote:
-> The hmem enabling in commit 'cf8741ac57ed ("ACPI: NUMA: HMAT: Register
-> "soft reserved" memory as an "hmem" device")' only registered ranges to
-> the hmem driver for each soft-reservation that also appeared in the
-> HMAT. While this is meant to encourage platform firmware to "do the
-> right thing" and publish an HMAT, the corollary is that platforms that
-> fail to publish an accurate HMAT will strand memory from Linux usage.
-> Additionally, the "efi_fake_mem" kernel command line option enabling
-> will strand memory by default without an HMAT.
+>>>
+>>>> If not, at least make the user know of potential deficiencies in the 
+>>>> table.
+>>>>
+>>>
+>>> How ? What are your suggestions ? Does adding a warning or note that UID
+>>> is missing and offset is chosen help ? 
+>>
+>> I'd say so. I know now, but let's save others the potential hassle. 
+>> And having this debate again.
+>>
+>> I am kind of fine with that.
+>>
+>> How about something like this:
+>>
+>> --- a/drivers/acpi/pptt.c
+>> +++ b/drivers/acpi/pptt.c
+>> @@ -515,6 +515,8 @@ static int topology_get_acpi_cpu_tag(struct 
+>> acpi_table_header *table,
+>>    if (level == 0 || cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID)
+>>      return cpu_node->acpi_processor_id;
+>> +   if (level == PPTT_ABORT_PACKAGE)
+>> +    pr_warn_once("ACPI Processor ID valid not set for physical 
+>> package node, will use node table offset as substitute for UID\n");
 > 
-> Arrange for "soft reserved" memory that goes unclaimed by HMAT entries
-> to be published as raw resource ranges for the hmem driver to consume.
+> Level will probably never be PPTT_ABORT_PACKAGE, so.. you probably have 
+> to have the warning higher up when it terminates the package search.
 > 
-> Include a module parameter to disable either this fallback behavior, or
-> the hmat enabling from creating hmem devices. The module parameter
-> requires the hmem device enabling to have unique name in the module
-> namespace: "device_hmem".
+> OTOH, just because this is set doesn't mean you get "nice" ids. I've had 
+> complaints, because there is a firmware floating around which uses the 
+> MPIDR value as the processor_id, so the cores come out with really weird 
+> numbers too.
 > 
-> Rather than mark this x86-only, include an interim phys_to_target_node()
-> implementation for arm64.
-> 
-> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Brice Goglin <Brice.Goglin@inria.fr>
-> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Cc: Jeff Moyer <jmoyer@redhat.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  arch/arm64/mm/numa.c      |   13 +++++++++++++
->  drivers/dax/Kconfig       |    1 +
->  drivers/dax/hmem/Makefile |    3 ++-
->  drivers/dax/hmem/device.c |   33 +++++++++++++++++++++++++++++++++
->  4 files changed, 49 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
-> index 4decf1659700..00fba21eaec0 100644
-> --- a/arch/arm64/mm/numa.c
-> +++ b/arch/arm64/mm/numa.c
-> @@ -468,3 +468,16 @@ int memory_add_physaddr_to_nid(u64 addr)
->  	pr_warn("Unknown node for memory at 0x%llx, assuming node 0\n", addr);
->  	return 0;
->  }
-> +
-> +/*
-> + * device-dax instance registrations want a valid target-node in case
-> + * they are ever onlined as memory (see hmem_register_device()).
-> + *
-> + * TODO: consult cached numa info
-> + */
-> +int phys_to_target_node(phys_addr_t addr)
-> +{
-> +	pr_warn_once("Unknown target node for memory at 0x%llx, assuming node 0\n",
-> +			addr);
-> +	return 0;
-> +}
 
-Could you implement a generic version of this by iterating over the nodes
-with for_each_{,online_}node() and checking for intersection with
-node_{start,end}_pfn()?
+JFYI, we got this working now (PPTT has proper physical package ID):
 
-Will
+root@(none)$ pwd
+/sys/devices/system/cpu/cpu0/topology
+root@(none)$ more package_cpus_list
+0-63
+root@(none)$ more physical_package_id
+0
+root@(none)$ cd ../../cpu64/topology
+root@(none)$ more package_cpus_list
+64-127
+root@(none)$ more physical_package_id
+1
+root@(none)$
+
+We'll share the FW tables when ready, so you can check what we have done.
+
+BTW, I still think that we can look to add the warning message when 
+physical processor package id valid is not set
+
+Cheers,
+John
+
+> 
+> 
+>>                  return ACPI_PTR_DIFF(cpu_node, table);
+>>          }
+>>          pr_warn_once("PPTT table found, but unable to locate core %d 
+>> (%d)\n",
+>>
+>> Thanks,
+>> John
+> 
+> .
+
