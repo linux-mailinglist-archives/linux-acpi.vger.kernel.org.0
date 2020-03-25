@@ -2,139 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25D56192E2E
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 17:27:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC014192E60
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 17:39:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727880AbgCYQ1S convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 25 Mar 2020 12:27:18 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2605 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727386AbgCYQ1S (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 25 Mar 2020 12:27:18 -0400
-Received: from lhreml702-cah.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 7C7B644093CAB3F291D8;
-        Wed, 25 Mar 2020 16:27:16 +0000 (GMT)
-Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
- lhreml702-cah.china.huawei.com (10.201.108.43) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Wed, 25 Mar 2020 16:27:16 +0000
-Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
- lhreml715-chm.china.huawei.com (10.201.108.66) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Wed, 25 Mar 2020 16:27:16 +0000
-Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
- lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1713.004;
- Wed, 25 Mar 2020 16:27:16 +0000
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "zhangliguang@linux.alibaba.com" <zhangliguang@linux.alibaba.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        Linuxarm <linuxarm@huawei.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        tanxiaofei <tanxiaofei@huawei.com>,
-        yangyicong <yangyicong@huawei.com>
-Subject: RE: [PATCH v5 0/2] ACPI: APEI: Add support to notify the vendor
- specific HW errors
-Thread-Topic: [PATCH v5 0/2] ACPI: APEI: Add support to notify the vendor
- specific HW errors
-Thread-Index: AQHWArk9LTp1thyJ80ifFE8yZh20/KhZdCmQ
-Date:   Wed, 25 Mar 2020 16:27:15 +0000
-Message-ID: <84a30116698a49cda1e8b580ee35ce1f@huawei.com>
-References: <8aa40a48-39c9-ba6b-ea70-bcb60907a733@huawei.com>
- <20200325152220.GA261586@google.com>
-In-Reply-To: <20200325152220.GA261586@google.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.86.66]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1727485AbgCYQjV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Mar 2020 12:39:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39030 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727464AbgCYQjU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 25 Mar 2020 12:39:20 -0400
+Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net [50.39.105.78])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6311D2073E;
+        Wed, 25 Mar 2020 16:39:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585154359;
+        bh=A1GPX4wlECfGGG7gTSHHrGt3spoxTdKZ1xy9utwV/BA=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=APOdz2w7EH+7D58vqGoNgP8mOHfbNma8Ty1WIG8jpBICPSinl9OycWqb0OdtxkciV
+         gxpkAVRwhIe+WxIGCYwXBH73yF99ZY9v+QEk7Sp75Ev8c6B1ujrOAxGnV4ZUKw4afx
+         Pt8nI6CO51v4M2JmrHTqBAusgH99DwWPqLUsLFTU=
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+        id 325E9352094D; Wed, 25 Mar 2020 09:39:19 -0700 (PDT)
+Date:   Wed, 25 Mar 2020 09:39:19 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Sebastian Siewior <bigeasy@linutronix.de>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        linux-pci@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Felipe Balbi <balbi@kernel.org>, linux-usb@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        platform-driver-x86@vger.kernel.org,
+        Zhang Rui <rui.zhang@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-pm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, kbuild test robot <lkp@intel.com>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
+        Brian Cain <bcain@codeaurora.org>,
+        linux-hexagon@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        Michal Simek <monstr@monstr.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geoff Levand <geoff@infradead.org>,
+        linuxppc-dev@lists.ozlabs.org, Davidlohr Bueso <dbueso@suse.de>
+Subject: Re: Documentation/locking/locktypes: Further clarifications and
+ wordsmithing
+Message-ID: <20200325163919.GU19865@paulmck-ThinkPad-P72>
+Reply-To: paulmck@kernel.org
+References: <20200323025501.GE3199@paulmck-ThinkPad-P72>
+ <87r1xhz6qp.fsf@nanos.tec.linutronix.de>
+ <20200325002811.GO19865@paulmck-ThinkPad-P72>
+ <87wo78y5yy.fsf@nanos.tec.linutronix.de>
+ <20200325160212.oavrni7gmzudnczv@linutronix.de>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200325160212.oavrni7gmzudnczv@linutronix.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Bjorn,
+On Wed, Mar 25, 2020 at 05:02:12PM +0100, Sebastian Siewior wrote:
+> On 2020-03-25 13:27:49 [+0100], Thomas Gleixner wrote:
+> > The documentation of rw_semaphores is wrong as it claims that the non-owner
+> > reader release is not supported by RT. That's just history biased memory
+> > distortion.
+> > 
+> > Split the 'Owner semantics' section up and add separate sections for
+> > semaphore and rw_semaphore to reflect reality.
+> > 
+> > Aside of that the following updates are done:
+> > 
+> >  - Add pseudo code to document the spinlock state preserving mechanism on
+> >    PREEMPT_RT
+> > 
+> >  - Wordsmith the bitspinlock and lock nesting sections
+> > 
+> > Co-developed-by: Paul McKenney <paulmck@kernel.org>
+> > Signed-off-by: Paul McKenney <paulmck@kernel.org>
+> > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> 
+> > --- a/Documentation/locking/locktypes.rst
+> > +++ b/Documentation/locking/locktypes.rst
+> …
+> > +rw_semaphore
+> > +============
+> > +
+> > +rw_semaphore is a multiple readers and single writer lock mechanism.
+> > +
+> > +On non-PREEMPT_RT kernels the implementation is fair, thus preventing
+> > +writer starvation.
+> > +
+> > +rw_semaphore complies by default with the strict owner semantics, but there
+> > +exist special-purpose interfaces that allow non-owner release for readers.
+> > +These work independent of the kernel configuration.
+> 
+> This reads funny, could be my English. "This works independent …" maybe?
 
->-----Original Message-----
->From: Bjorn Helgaas [mailto:helgaas@kernel.org]
->Sent: 25 March 2020 15:22
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: linux-acpi@vger.kernel.org; linux-pci@vger.kernel.org; linux-
->kernel@vger.kernel.org; rjw@rjwysocki.net; lenb@kernel.org; bp@alien8.de;
->james.morse@arm.com; tony.luck@intel.com; gregkh@linuxfoundation.org;
->zhangliguang@linux.alibaba.com; tglx@linutronix.de; Linuxarm
-><linuxarm@huawei.com>; Jonathan Cameron
-><jonathan.cameron@huawei.com>; tanxiaofei <tanxiaofei@huawei.com>;
->yangyicong <yangyicong@huawei.com>
->Subject: Re: [PATCH v5 0/2] ACPI: APEI: Add support to notify the vendor
->specific HW errors
->
->1) If you can post things as a series, i.e., with patch 1/2 and patch
->2/2 being responses to the 0/2 cover letter, that makes things easier.
->It looks like you did this for the previous postings.
-I will send the patches as series after fixing the issues in the patch subject lines. 
+The "These" refers to "interfaces", which is plural, so "These" rather
+than "This".  But yes, it is a bit awkward, because you have to skip
+back past "readers", "release", and "non-owner" to find the implied
+subject of that last sentence.
 
->
->2) When applying these, "git am" complained (but they did apply
->cleanly):
->
->  warning: Patch sent with format=flowed; space at the end of lines might be
->lost.
->  Applying: APEI: Add support to notify the vendor specific HW errors
->  warning: Patch sent with format=flowed; space at the end of lines might be
->lost.
->  Applying: PCI: HIP: Add handling of HiSilicon HIP PCIe controller errors
->
->3) drivers/pci/controller/pcie-hisi-error.c should be next to
->drivers/pci/controller/dwc/pcie-hisi.c, shouldn't it?
-Our hip PCIe controller doesn't use DWC ip.
+So how about this instead, making the implied subject explicit?
 
->
->4) Your subject lines don't match the convention.  "git log --oneline
->drivers/acpi/apei" says:
->
->  011077d8fbfe ("APEI: Add support to notify the vendor specific HW errors")
->  cea79e7e2f24 ("apei/ghes: Do not delay GHES polling")
->  933ca4e323de ("acpi: Use pr_warn instead of pr_warning")
->  6abc7622271d ("ACPI / APEI: Release resources if gen_pool_add() fails")
->  bb100b64763c ("ACPI / APEI: Get rid of NULL_UUID_LE constant")
->  371b86897d01 ("ACPI / APEI: Remove needless __ghes_check_estatus()
->calls")
->
->and "git log --oneline --follow drivers/pci/controller/dwc/pcie-hisi*"
->says:
->
->  6e0832fa432e ("PCI: Collect all native drivers under drivers/pci/controller/")
->  8cfab3cf63cf ("PCI: Add SPDX GPL-2.0 to replace GPL v2 boilerplate")
->  5a4751680189 ("PCI: hisi: Constify dw_pcie_host_ops structure")
->  b379d385bbaa ("PCI: hisi: Remove unused variable driver")
->  a5f40e8098fe ("PCI: Don't allow unbinding host controllers that aren't
->prepared")
->  e313a447e735 ("PCI: hisi: Update PCI config space remap function")
->  b9c1153f7a9c ("PCI: hisi: Fix DT binding (hisi-pcie-almost-ecam)")
->
->So your subject lines should be:
->
->  ACPI / APEI: ...
-Sure. I will fix this.
+rw_semaphore complies by default with the strict owner semantics, but there
+exist special-purpose interfaces that allow non-owner release for readers.
+These interfaces work independent of the kernel configuration.
 
->  PCI: hisi: ...
-Can we use PCI: hip because this driver is for the HIP hardware devices. 
-
-[...]
->> --
->> 2.17.1
-
-Thanks,
-Shiju
+							Thanx, Paul
