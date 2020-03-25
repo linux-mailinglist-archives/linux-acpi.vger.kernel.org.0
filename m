@@ -2,156 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8ED81922EB
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 09:38:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ED6A1924F5
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Mar 2020 11:03:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727374AbgCYIiK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Mar 2020 04:38:10 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:39011 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726105AbgCYIiJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Mar 2020 04:38:09 -0400
-Received: by mail-lj1-f194.google.com with SMTP id i20so1515419ljn.6;
-        Wed, 25 Mar 2020 01:38:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=u1JHVU3RAXWpWzxoEBTeSB/vNLewo28StJEFtqtyLoU=;
-        b=atWEsClArOzGKdLN4osuAk7d+XSEIi82gzITfDKHYSAZ1c+WEd3Ip/J9eETstflnDX
-         LqQd2q6Qz/8hg3HTYMLWyI1r/uM72eIqZfUXxCdkYr7yZws3ErK2kSKYsVGHg9Cm/mtf
-         X32RT6WFx/DxNfiiCaK5OWiM6W7e7JeJWoOEDUpgi05XVpNAtJvKJtyzJhblBES6Z/65
-         eVjEoRNppJWoaSaLMrUSnZYRRo6sbYBlTHOOD7K3R3s4Elu3PeBJ5C7L2ulwEL9qqsKz
-         nUa//b6Qd9KEX8nStmeRXzWQurXqzw+nAWyASHspx5uRQOtfM4KAnUAZ5r+BnFZwaD/D
-         axHw==
+        id S1726239AbgCYKDL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Mar 2020 06:03:11 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:38575 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726154AbgCYKDL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Mar 2020 06:03:11 -0400
+Received: by mail-oi1-f195.google.com with SMTP id w2so1549727oic.5;
+        Wed, 25 Mar 2020 03:03:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
-         :date:message-id:mime-version;
-        bh=u1JHVU3RAXWpWzxoEBTeSB/vNLewo28StJEFtqtyLoU=;
-        b=UlVntKbe2jveYAAErnG5iWKhUbUaX0C/TvBgjuMlKDyQEPPkxpGN3GdsTnB65720L1
-         d5rR+NchMvMqgSFrYiYuF9jiQpLhsSVwX4bFIajSRfZ5u6X2TOV15nzk4FCaciwb7uAM
-         pzaut6vDU9Ax7BZriZz4OQG5mevW2jMd84s+Wm9GKJgoOb9T6imGzftlVxgsGYVuYzG8
-         F1GcK3sh/LeiAcc8oSMl5dpDJGWbiImiz1q3Tv6u1ub8esq+Pftx3IKJXybeS0Wo8vak
-         +tFExSslAm6150TWtYDFuhhm7HKdypD0qICRbTivdoLXHJYqQGGmmeHcF/i33cKk0Frw
-         9zKg==
-X-Gm-Message-State: ANhLgQ2IJyFH9Zyb4SesupW4iuvopgcCAPdAQ2bgb5qvMDxBeX/FEbtC
-        xD49I2AmH/9G/tEGg0NQmYs=
-X-Google-Smtp-Source: APiQypL8bMjMZDQevXNQgwWPs9QVjiJXOb2ocQYyMJ5E3G+qtV0tyxn/wNi26nCLubp8d+GA3TyEPA==
-X-Received: by 2002:a2e:9797:: with SMTP id y23mr1235851lji.183.1585125484852;
-        Wed, 25 Mar 2020 01:38:04 -0700 (PDT)
-Received: from saruman (91-155-214-58.elisa-laajakaista.fi. [91.155.214.58])
-        by smtp.gmail.com with ESMTPSA id f7sm522142ljj.4.2020.03.25.01.38.01
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 25 Mar 2020 01:38:03 -0700 (PDT)
-From:   Felipe Balbi <balbi@kernel.org>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Sebastian Siewior <bigeasy@linutronix.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
-        linux-pci@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        platform-driver-x86@vger.kernel.org,
-        Zhang Rui <rui.zhang@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-pm@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, kbuild test robot <lkp@intel.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
-        Brian Cain <bcain@codeaurora.org>,
-        linux-hexagon@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        Michal Simek <monstr@monstr.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geoff Levand <geoff@infradead.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Davidlohr Bueso <dbueso@suse.de>
-Subject: Re: [patch V3 03/20] usb: gadget: Use completion interface instead of open coding it
-In-Reply-To: <20200321113241.043380271@linutronix.de>
-References: <20200321112544.878032781@linutronix.de> <20200321113241.043380271@linutronix.de>
-Date:   Wed, 25 Mar 2020 10:37:57 +0200
-Message-ID: <87blokde3e.fsf@kernel.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RbxsF3iTBYd8Alr5a+AtfnDNHQ5nhFVuguNGxWvurh0=;
+        b=AAPa5MwXmDQSu4zA9dPlBPcV5CEKHNNruTSqcBA41tVpwg+YUmFEj+1IUzIfsTu6P+
+         sZ90j5lLoX90U68YrWvXMwe7LS5IjnZac4hTITfdjUcUyv/M+FjCssQkdCemvrztVo89
+         IZ0voE+t1ViCVH71uZNaZJ5YFtxPZSMcqMlyAPj2802MTEeuUMS0X5rb9S0ipohTz8wa
+         rSvAISnD6VmdzuCL8X8loynmDDiQL7P0hemUVGAGnwkodhEE1LWtUcpOCcTzpCXKHm+6
+         eYRAdAdrwJPYZQqV5Qj8TYbilpoN9sBFqQSr/fvv7GO0dAoZAFfpt6iuC4WIJ1+cQr04
+         hivw==
+X-Gm-Message-State: ANhLgQ0kCii8TSmT5tPqJKe15zHeWq8WyLyD9MHAHft6v3nVzOVkNtKN
+        EFTbUSTO3uMjAwSGMPbFeHCGqN5lp45ZYDFbFpI=
+X-Google-Smtp-Source: ADFU+vtK7XJIlmRTJBKFQ3UQeLQAPRvyeRH/mRzKTpmVW/rXoTpLQXCBWXpdUAN8zvQ1FBWw76QivKVZ5CBpzMoO6GI=
+X-Received: by 2002:aca:f07:: with SMTP id 7mr207477oip.68.1585130590326; Wed,
+ 25 Mar 2020 03:03:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
+References: <158489354353.1457606.8327903161927980740.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <158489354353.1457606.8327903161927980740.stgit@dwillia2-desk3.amr.corp.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 25 Mar 2020 11:02:58 +0100
+Message-ID: <CAJZ5v0jqKu2AFEoCPa7h-UQqzprkB1pcs9hKzu2BdQB6kRB3vQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] Manual definition of Soft Reserved memory devices
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Wei Yang <richardw.yang@linux.intel.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Brice Goglin <Brice.Goglin@inria.fr>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Jeff Moyer <jmoyer@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Will Deacon <will@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Joao Martins <joao.m.martins@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-
-Thomas Gleixner <tglx@linutronix.de> writes:
-
-> From: Thomas Gleixner <tglx@linutronix.de>
+On Sun, Mar 22, 2020 at 5:28 PM Dan Williams <dan.j.williams@intel.com> wrote:
 >
-> ep_io() uses a completion on stack and open codes the waiting with:
+> Changes since v1 [1]:
+> - Kill the ifdef'ery in arch/x86/mm/numa.c (Rafael)
 >
->   wait_event_interruptible (done.wait, done.done);
-> and
->   wait_event (done.wait, done.done);
+> - Add a dummy phys_to_target_node() for ARM64 (0day-robot)
 >
-> This waits in non-exclusive mode for complete(), but there is no reason to
-> do so because the completion can only be waited for by the task itself and
-> complete() wakes exactly one exlusive waiter.
+> - Initialize ->child and ->sibling to NULL in the resource returned by
+>   find_next_iomem_res() (Inspired by Tom's feedback even though it does
+>   not set them like he suggested)
 >
-> Replace the open coded implementation with the corresponding
-> wait_for_completion*() functions.
+> - Collect Ard's Ack
 >
-> No functional change.
+> [1]: http://lore.kernel.org/r/158318759687.2216124.4684754859068906007.stgit@dwillia2-desk3.amr.corp.intel.com
 >
-> Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Felipe Balbi <balbi@kernel.org>
-> Cc: linux-usb@vger.kernel.org
+> ---
+>
+> My primary motivation is making the dax_kmem facility useful to
+> shipping platforms that have performance differentiated memory, but
+> may not have EFI-defined soft-reservations / HMAT (or
+> non-EFI-ACPI-platform equivalent). I'm anticipating HMAT enabled
+> platforms where the platform firmware policy for what is
+> soft-reserved, or not, is not the policy the system owner would pick.
+> I'd also highlight Joao's work [2] (see the TODO section) as an
+> indication of the demand for custom carving memory resources and
+> applying the device-dax memory management interface.
+>
+> Given the current dearth of systems that supply an ACPI HMAT table, and
+> the utility of being able to manually define device-dax "hmem" instances
+> via the efi_fake_mem= option, relax the requirements for creating these
+> devices. Specifically, add an option (numa=nohmat) to optionally disable
+> consideration of the HMAT and update efi_fake_mem= to behave like
+> memmap=nn!ss in terms of delimiting device boundaries.
+>
+> [2]: https://lore.kernel.org/lkml/20200110190313.17144-1-joao.m.martins@oracle.com/
+>
+> With Ard's and Rafael's ack I'd feel ok taking this through the nvdimm
+> tree, please holler if anything still needs some fixups.
 
-Do you want to carry it via your tree? If so:
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Acked-by: Felipe Balbi <balbi@kernel.org>
+for the whole series.
 
-Otherwise, let me know and I'll pick this patch.
-
-=2D-=20
-balbi
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEElLzh7wn96CXwjh2IzL64meEamQYFAl57GGUACgkQzL64meEa
-mQY/phAAyKS/jK6b1hVevAPsOBS5Zyk+RBQmkmps/3C2lTyyturSmqT3TAMZyTZo
-/HPtsvyUYn8RBI5Pa62mvcnGi+/Lmk76YzmUqn/VJRe+J8kjuFI6IoyT4uDxdUsB
-qGTiuQ5qbV7Ft3fvLoEEbuyPZeDc/pbfFyK78ajdAYec4MGS8r12tWzhRZTRyRAG
-4fb/PjPcfk8/9eTkdgnjgINZTiwT9YN7HWpEfajl3MhlYK9pZh/J7swRaYwZULBo
-+eVd6a6ZYt0YLC8wVQ/kJ9Q3EttmWBwPJB4FIXMzYDkXx2Z898ZUKeIJ8IXlwKSh
-CynbYGL7rNJQ+UDpVA8/y5Mqqnu3pAht/csgfrBxm/ukjkMphIDjpzuUaODgH5W3
-Eb4EXNgvgspzEMgz6pv9INgPPh2tWRmBQex8qOLrs1xups+ZmhFSHGKCUs8hxlDj
-Zk0U6Mce6mopXiCf2iVgrv9ItHlp4myA/HwWEub+LwOJi8tCt+vCjzXloWMx4Ha+
-TNyxLHrqLaeTQoYgl1wJQMjIhmcrb9UMBaJ5FhKdaXAGfAeicPSzVqVHG/yl6nds
-Z2cTMhW5kIxJDMAOuemeYZLY8PMzXrG5xHT7Da3yOzurIOmp2rhvhjpt9TpjKDLE
-3qsBCaxpICoolHqV8bAov175RPtyVvv5zdyXWulMD/1c2kVYiiY=
-=IAgh
------END PGP SIGNATURE-----
---=-=-=--
+Thanks!
