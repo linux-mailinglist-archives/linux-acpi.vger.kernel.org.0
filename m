@@ -2,83 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C118B1956EB
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Mar 2020 13:15:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A311C195717
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Mar 2020 13:30:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726742AbgC0MP0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Mar 2020 08:15:26 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:53204 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726661AbgC0MP0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Mar 2020 08:15:26 -0400
-Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
-        (envelope-from <bigeasy@linutronix.de>)
-        id 1jHnsx-0005QZ-2Y; Fri, 27 Mar 2020 13:14:51 +0100
-Date:   Fri, 27 Mar 2020 13:14:51 +0100
-From:   Sebastian Siewior <bigeasy@linutronix.de>
-To:     Felipe Balbi <balbi@kernel.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
-        linux-pci@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        platform-driver-x86@vger.kernel.org,
-        Zhang Rui <rui.zhang@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-pm@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, kbuild test robot <lkp@intel.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
-        Brian Cain <bcain@codeaurora.org>,
-        linux-hexagon@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        Michal Simek <monstr@monstr.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geoff Levand <geoff@infradead.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Davidlohr Bueso <dbueso@suse.de>
-Subject: Re: [patch V3 03/20] usb: gadget: Use completion interface instead
- of open coding it
-Message-ID: <20200327121451.pxwewr46urt6dmhe@linutronix.de>
-References: <20200321112544.878032781@linutronix.de>
- <20200321113241.043380271@linutronix.de>
- <87blokde3e.fsf@kernel.org>
+        id S1726698AbgC0Ma3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Mar 2020 08:30:29 -0400
+Received: from mail.cn.fujitsu.com ([183.91.158.132]:51807 "EHLO
+        heian.cn.fujitsu.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726515AbgC0Ma2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Mar 2020 08:30:28 -0400
+X-IronPort-AV: E=Sophos;i="5.72,312,1580745600"; 
+   d="scan'208";a="87563059"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 27 Mar 2020 20:30:12 +0800
+Received: from G08CNEXMBPEKD06.g08.fujitsu.local (unknown [10.167.33.206])
+        by cn.fujitsu.com (Postfix) with ESMTP id 9BB0B50A9981;
+        Fri, 27 Mar 2020 20:19:55 +0800 (CST)
+Received: from [10.167.226.60] (10.167.226.60) by
+ G08CNEXMBPEKD06.g08.fujitsu.local (10.167.33.206) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Fri, 27 Mar 2020 20:30:07 +0800
+Subject: Re: [RFC PATCH 0/2] x86/boot: early ACPI MADT processing cleanup
+From:   Cao jin <caoj.fnst@cn.fujitsu.com>
+To:     <x86@kernel.org>, <linux-pm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+CC:     <rjw@rjwysocki.net>, <len.brown@intel.com>, <pavel@ucw.cz>,
+        <tglx@linutronix.de>, <mingo@redhat.com>, <hpa@zytor.com>,
+        Borislav Petkov <bp@alien8.de>
+References: <20200123014144.19155-1-caoj.fnst@cn.fujitsu.com>
+Message-ID: <c19f3eeb-f0d4-72c0-e942-79015d281c77@cn.fujitsu.com>
+Date:   Fri, 27 Mar 2020 20:30:16 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87blokde3e.fsf@kernel.org>
+In-Reply-To: <20200123014144.19155-1-caoj.fnst@cn.fujitsu.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.167.226.60]
+X-ClientProxiedBy: G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) To
+ G08CNEXMBPEKD06.g08.fujitsu.local (10.167.33.206)
+X-yoursite-MailScanner-ID: 9BB0B50A9981.AA43B
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: caoj.fnst@cn.fujitsu.com
+X-Spam-Status: No
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2020-03-25 10:37:57 [+0200], Felipe Balbi wrote:
-> Do you want to carry it via your tree? If so:
+Ping.
 
-We would like to do so.
+On 1/23/20 9:41 AM, Cao jin wrote:
+> Logic in early_acpi_process_madt() & acpi_process_madt() is really hard to
+> follow now. Clean them up.
+> 
+> Done basic boot test on my x86-64 PC.
+> 
+> CCed linux-acpi@vger.kernel.org
+> 
+> Cao jin (2):
+>   x86/acpi: Improve code readablity of early madt processing
+>   x86/acpi: Cleanup acpi_process_madt()
+> 
+>  arch/x86/kernel/acpi/boot.c | 72 +++++++++++++++----------------------
+>  1 file changed, 28 insertions(+), 44 deletions(-)
+> 
 
-> Acked-by: Felipe Balbi <balbi@kernel.org>
 
-Thank you.
+-- 
+Sincerely,
+Cao jin
 
-> Otherwise, let me know and I'll pick this patch.
 
-Sebastian
