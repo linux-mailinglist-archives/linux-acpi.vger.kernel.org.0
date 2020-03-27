@@ -2,75 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A311C195717
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Mar 2020 13:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9677C195991
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Mar 2020 16:07:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726698AbgC0Ma3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Mar 2020 08:30:29 -0400
-Received: from mail.cn.fujitsu.com ([183.91.158.132]:51807 "EHLO
-        heian.cn.fujitsu.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726515AbgC0Ma2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Mar 2020 08:30:28 -0400
-X-IronPort-AV: E=Sophos;i="5.72,312,1580745600"; 
-   d="scan'208";a="87563059"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 27 Mar 2020 20:30:12 +0800
-Received: from G08CNEXMBPEKD06.g08.fujitsu.local (unknown [10.167.33.206])
-        by cn.fujitsu.com (Postfix) with ESMTP id 9BB0B50A9981;
-        Fri, 27 Mar 2020 20:19:55 +0800 (CST)
-Received: from [10.167.226.60] (10.167.226.60) by
- G08CNEXMBPEKD06.g08.fujitsu.local (10.167.33.206) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Fri, 27 Mar 2020 20:30:07 +0800
-Subject: Re: [RFC PATCH 0/2] x86/boot: early ACPI MADT processing cleanup
-From:   Cao jin <caoj.fnst@cn.fujitsu.com>
-To:     <x86@kernel.org>, <linux-pm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-CC:     <rjw@rjwysocki.net>, <len.brown@intel.com>, <pavel@ucw.cz>,
-        <tglx@linutronix.de>, <mingo@redhat.com>, <hpa@zytor.com>,
-        Borislav Petkov <bp@alien8.de>
-References: <20200123014144.19155-1-caoj.fnst@cn.fujitsu.com>
-Message-ID: <c19f3eeb-f0d4-72c0-e942-79015d281c77@cn.fujitsu.com>
-Date:   Fri, 27 Mar 2020 20:30:16 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727322AbgC0PHN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Mar 2020 11:07:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44764 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727185AbgC0PHM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 27 Mar 2020 11:07:12 -0400
+Received: from localhost (mobile-166-175-186-165.mycingular.net [166.175.186.165])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A3E892072F;
+        Fri, 27 Mar 2020 15:07:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585321632;
+        bh=sIGXOYmpWblR0yL4lyxVPLJLSUNHUp9A2R6LtZEKFvw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=SBt7nDY8srmcxCDoWQfHq6tZpV06ldg+rg7SLnBn5oO/Ykxr7Fs6HJUayX8ElMdPH
+         HbSA6icHJl5Q1MfxyU3tL3P1CgpyIE8PqGyf00RF84e4UJzkJYQS/Iil3eP7InLpkC
+         GTRlklgQK4sTXsVISrZBZefbjfvVTzVvPVQtuIPg=
+Date:   Fri, 27 Mar 2020 10:07:10 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Shiju Jose <shiju.jose@huawei.com>
+Cc:     linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rjw@rjwysocki.net, lenb@kernel.org,
+        bp@alien8.de, james.morse@arm.com, tony.luck@intel.com,
+        gregkh@linuxfoundation.org, zhangliguang@linux.alibaba.com,
+        tglx@linutronix.de, linuxarm@huawei.com,
+        jonathan.cameron@huawei.com, tanxiaofei@huawei.com,
+        yangyicong@hisilicon.com
+Subject: Re: [PATCH v6 0/2] ACPI / APEI: Add support to notify the vendor
+ specific HW errors
+Message-ID: <20200327150710.GA31821@google.com>
 MIME-Version: 1.0
-In-Reply-To: <20200123014144.19155-1-caoj.fnst@cn.fujitsu.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.167.226.60]
-X-ClientProxiedBy: G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) To
- G08CNEXMBPEKD06.g08.fujitsu.local (10.167.33.206)
-X-yoursite-MailScanner-ID: 9BB0B50A9981.AA43B
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: caoj.fnst@cn.fujitsu.com
-X-Spam-Status: No
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200325164223.650-1-shiju.jose@huawei.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Ping.
-
-On 1/23/20 9:41 AM, Cao jin wrote:
-> Logic in early_acpi_process_madt() & acpi_process_madt() is really hard to
-> follow now. Clean them up.
+On Wed, Mar 25, 2020 at 04:42:21PM +0000, Shiju Jose wrote:
+> Presently the vendor drivers are unable to do the recovery for the
+> vendor specific recoverable HW errors, reported to the APEI driver
+> in the vendor defined sections, because APEI driver does not support
+> reporting the same to the vendor drivers.
 > 
-> Done basic boot test on my x86-64 PC.
+> This patch set
+> 1. add an interface to the APEI driver to enable the vendor
+> drivers to register the event handling functions for the corresponding
+> vendor specific HW errors and report the error to the vendor driver.
 > 
-> CCed linux-acpi@vger.kernel.org
+> 2. add driver to handle HiSilicon hip08 PCIe controller's errors
+>    which is an example application of the above APEI interface.
 > 
-> Cao jin (2):
->   x86/acpi: Improve code readablity of early madt processing
->   x86/acpi: Cleanup acpi_process_madt()
+> Changes:
 > 
->  arch/x86/kernel/acpi/boot.c | 72 +++++++++++++++----------------------
->  1 file changed, 28 insertions(+), 44 deletions(-)
-> 
+> V6:
+> 1. Fix few changes in the patch subject line suggested by Bjorn Helgaas.
 
+I think it will save everybody a little work if you can wait a day or
+two so you can address more comments at once.  You posted v6 only
+about three hours after v5, which isn't enough time for people to
+respond to v5.
 
--- 
-Sincerely,
-Cao jin
+I'm not going to even look at v6 because it doesn't address some of my
+v5 comments.  Please wait a few days before v7 to see if Rafael has
+any thoughts on where the error driver should live.
 
-
+Bjorn
