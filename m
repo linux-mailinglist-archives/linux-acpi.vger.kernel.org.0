@@ -2,82 +2,222 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AE1419661E
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Mar 2020 13:34:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B10A196958
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Mar 2020 21:49:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726378AbgC1MeN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Sat, 28 Mar 2020 08:34:13 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:42362 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726273AbgC1MeN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 28 Mar 2020 08:34:13 -0400
-Received: by mail-oi1-f196.google.com with SMTP id e4so11289605oig.9
-        for <linux-acpi@vger.kernel.org>; Sat, 28 Mar 2020 05:34:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Ntv4N/AS4WTrXXPqrVXfV4Dt01vquEXOEOKLI817Wdg=;
-        b=qcL6iAxSKlLe4cwamC8A3IuCTu7tfPsRowu1KOIgV8f4AFjyqH7YtO8HLkE3TdPs/R
-         q8qsb+Q49UhPEnsXoaxftNsYFnhnDY9F6dStO9MfRtX8eMq8su48YdgOQUERr4GKm7yh
-         IQi+RuhGwrsRalvseUZCs56CBpOP3jJOFRqH1a26Yb/QOjDQwr4Z2q/aDYaRau4fijrR
-         5pi7mUKDsdR+ga6bUXZnTNWnP3+tVpRQSbaS3o2vxZOyuO6/rBCpvkuAsKz0uteObu8x
-         yljqKOJt/f+XWhBwagtLtU7S4BZnIMi7LVU0+7DschLA13fuyytPMVVPWzxEsUCE+Zh9
-         fjQQ==
-X-Gm-Message-State: ANhLgQ2bHHPinkypVmRNsXo/tIA8ibcvK7OiN59XNncKoD7SuAPJk1Gt
-        /9AYBKUrzLNCWyjBFOPcL3K56Z9bgDjP5DbQaClOxA==
-X-Google-Smtp-Source: ADFU+vt1TIHStCGdpC2EreHTYRmIRFsu9qT+PmiCBQCIN2gomNW6qFMco1pRRCOejMaq2UivNU955ncYKRhP3IaXq54=
-X-Received: by 2002:a05:6808:8f:: with SMTP id s15mr2331867oic.110.1585398852738;
- Sat, 28 Mar 2020 05:34:12 -0700 (PDT)
+        id S1726977AbgC1Uth (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 28 Mar 2020 16:49:37 -0400
+Received: from mga04.intel.com ([192.55.52.120]:50263 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726604AbgC1Uth (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 28 Mar 2020 16:49:37 -0400
+IronPort-SDR: dFVDXTYWTz1O9BVxLW4fHdXKlfPdXsF7A1JF3sNb+5GY7XwNBANDU5t2Zs5RP5XbWmIptNtqpv
+ xfd4hKzSiDkQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2020 13:49:36 -0700
+IronPort-SDR: 3zmK1viqFVRINdYCOriIbqWJihy0cIdo3Q4dBhx29aAsyExD/HmHVbyIhb57jagynUv/54c55r
+ imOZ3Iqm50Qw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,317,1580803200"; 
+   d="scan'208";a="251481701"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 28 Mar 2020 13:49:34 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jIIOc-0008JF-1p; Sun, 29 Mar 2020 04:49:34 +0800
+Date:   Sun, 29 Mar 2020 04:48:59 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD REGRESSION
+ b50a778aa5b714166355ef7f4a1992e4073393fc
+Message-ID: <5e7fb83b.mzs1XRDjQiEqx806%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20200327222110.1204634-1-erik.kaneda@intel.com>
-In-Reply-To: <20200327222110.1204634-1-erik.kaneda@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 28 Mar 2020 13:34:01 +0100
-Message-ID: <CAJZ5v0hyU2U80G8ZvJZsqPtMa-9p5p9U8sGX9Kby33wiR0qA2g@mail.gmail.com>
-Subject: Re: [PATCH 00/10] ACPICA release 20200326
-To:     Erik Kaneda <erik.kaneda@intel.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 27, 2020 at 11:43 PM Erik Kaneda <erik.kaneda@intel.com> wrote:
->
-> This patch set contains the linux-ized patches of the ACPICA release
-> version 20200326
->
-> This release mostly consists of changes in the iASL compiler and the
-> acpiexec utility so linux changes are quite small. The acpiexec
-> change is specifically intended for the userspace utility's custom
-> initialization feature so there is no functional change in the kernel
-> space AML interpreter. Other than that, there were several additions to
-> ACPI tables such a new IVRS subtype and NHLT as well as trivial typo
-> fixes.
->
-> Bob Moore (3):
->   ACPICA: Fix a typo in a comment field
->   ACPICA: Fixes for acpiExec namespace init file
->   ACPICA: Update version 20200326
->
-> Cezary Rojewski (1):
->   ACPICA: Add NHLT table signature
->
-> Erik Kaneda (3):
->   ACPICA: Change PlatformCommChannel ASL keyword to PCC
->   ACPICA: acpiexec: remove redeclaration of
->     acpi_gbl_db_opt_no_region_support
->   ACPICA: WSMT: Fix typo, no functional change
->
-> John Levon (1):
->   ACPICA: utilities: fix sprintf()
->
-> Michał Żygowski (2):
->   ACPICA: Implement IVRS IVHD type 11h parsing
->   ACPICA: Fix IVRS IVHD type 10h reserved field name
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: b50a778aa5b714166355ef7f4a1992e4073393fc  Merge branch 'acpica-next' into bleeding-edge
 
-All applied as 5.7 material, thanks!
+Regressions in current branch:
+
+drivers/acpi/acpica/dswload2.c:476:3: warning: syntax error [syntaxError]
+
+Error ids grouped by kconfigs:
+
+recent_errors
+`-- x86_64-allyesconfig
+    `-- drivers-acpi-acpica-dswload2.c:warning:syntax-error-syntaxError
+
+elapsed time: 484m
+
+configs tested: 155
+configs skipped: 0
+
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+arm                           efm32_defconfig
+arm                         at91_dt_defconfig
+arm                        shmobile_defconfig
+arm64                               defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                           sunxi_defconfig
+arm                        multi_v7_defconfig
+sparc                            allyesconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                                defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                             alldefconfig
+arm                              allmodconfig
+nios2                         3c120_defconfig
+nios2                         10m50_defconfig
+c6x                        evmc6678_defconfig
+xtensa                          iss_defconfig
+c6x                              allyesconfig
+xtensa                       common_defconfig
+openrisc                 simple_smp_defconfig
+openrisc                    or1ksim_defconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                                defconfig
+alpha                               defconfig
+h8300                       h8s-sim_defconfig
+h8300                     edosk2674_defconfig
+m68k                       m5475evb_defconfig
+m68k                             allmodconfig
+h8300                    h8300h-sim_defconfig
+m68k                           sun3_defconfig
+m68k                          multi_defconfig
+arc                                 defconfig
+arc                              allyesconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                generic-64bit_defconfig
+parisc                generic-32bit_defconfig
+parisc                           allyesconfig
+i386                 randconfig-a002-20200327
+i386                 randconfig-a001-20200327
+x86_64               randconfig-a002-20200327
+x86_64               randconfig-a001-20200327
+i386                 randconfig-a003-20200327
+x86_64               randconfig-a003-20200327
+mips                 randconfig-a001-20200327
+nds32                randconfig-a001-20200327
+m68k                 randconfig-a001-20200327
+parisc               randconfig-a001-20200327
+alpha                randconfig-a001-20200327
+riscv                randconfig-a001-20200327
+h8300                randconfig-a001-20200327
+microblaze           randconfig-a001-20200327
+nios2                randconfig-a001-20200327
+c6x                  randconfig-a001-20200327
+sparc64              randconfig-a001-20200327
+s390                 randconfig-a001-20200327
+xtensa               randconfig-a001-20200327
+csky                 randconfig-a001-20200327
+openrisc             randconfig-a001-20200327
+sh                   randconfig-a001-20200327
+i386                 randconfig-b003-20200327
+i386                 randconfig-b001-20200327
+x86_64               randconfig-b003-20200327
+i386                 randconfig-b002-20200327
+x86_64               randconfig-b002-20200327
+x86_64               randconfig-b001-20200327
+x86_64               randconfig-c003-20200327
+x86_64               randconfig-c001-20200327
+i386                 randconfig-c002-20200327
+x86_64               randconfig-c002-20200327
+i386                 randconfig-c003-20200327
+i386                 randconfig-c001-20200327
+i386                 randconfig-d003-20200327
+i386                 randconfig-d001-20200327
+x86_64               randconfig-d002-20200327
+x86_64               randconfig-d001-20200327
+i386                 randconfig-d002-20200327
+x86_64               randconfig-d003-20200327
+x86_64               randconfig-e001-20200327
+x86_64               randconfig-e003-20200327
+i386                 randconfig-e002-20200327
+i386                 randconfig-e003-20200327
+i386                 randconfig-e001-20200327
+x86_64               randconfig-e002-20200327
+i386                 randconfig-f001-20200329
+i386                 randconfig-f003-20200329
+i386                 randconfig-f002-20200329
+x86_64               randconfig-f002-20200329
+x86_64               randconfig-f001-20200329
+x86_64               randconfig-h002-20200329
+x86_64               randconfig-h003-20200329
+i386                 randconfig-h003-20200329
+x86_64               randconfig-h001-20200329
+i386                 randconfig-h001-20200329
+i386                 randconfig-h002-20200329
+arm                  randconfig-a001-20200327
+ia64                 randconfig-a001-20200327
+sparc                randconfig-a001-20200327
+arc                  randconfig-a001-20200327
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+s390                       zfcpdump_defconfig
+s390                          debug_defconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                             alldefconfig
+s390                                defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                            titan_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                                allnoconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
