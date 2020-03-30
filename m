@@ -2,57 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C6F7197A10
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Mar 2020 13:01:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEA55197A59
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Mar 2020 13:05:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729658AbgC3LBK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Mar 2020 07:01:10 -0400
-Received: from mail.11d01.mspz7.gob.ec ([190.152.145.91]:53490 "EHLO
-        mail.11d01.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729553AbgC3LBJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Mar 2020 07:01:09 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTP id 8D0A72F6F5CE;
-        Mon, 30 Mar 2020 04:16:31 -0500 (-05)
-Received: from mail.11d01.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.11d01.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id wHDWD2jiTREe; Mon, 30 Mar 2020 04:16:31 -0500 (-05)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTP id 0CCE52F693CB;
-        Mon, 30 Mar 2020 04:16:31 -0500 (-05)
-DKIM-Filter: OpenDKIM Filter v2.9.2 mail.11d01.mspz7.gob.ec 0CCE52F693CB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=11d01.mspz7.gob.ec;
-        s=50CBC7E4-8BED-11E9-AF6C-F1A741A224D3; t=1585559791;
-        bh=cLQbOHa1aY+/FyDjaDQOZOnnnlZDxMu+rBX/cg5yps8=;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
-         From:Date:Reply-To:Message-Id;
-        b=I0rXDmCJi1DmUgV7kL/YWhU/SEjtjx3nHfmw9Fvm+1qaWWE48cvghCn7IXuLPzq9m
-         noTS1gQ6QjgHQK61jJdJ85k+vrJp9oJ7fMhy8dWy/cFx9wuFZ+1wP0xSkenk/+SpA8
-         vMBthVTDknFQkNI7Y+FmccFxisBOcqCb1ocpszcU=
-X-Virus-Scanned: amavisd-new at 11d01.mspz7.gob.ec
-Received: from mail.11d01.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.11d01.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id eHtT7xwanvL8; Mon, 30 Mar 2020 04:16:30 -0500 (-05)
-Received: from [10.121.152.251] (unknown [105.12.0.10])
-        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTPSA id 5FC382F6F56A;
-        Mon, 30 Mar 2020 04:16:19 -0500 (-05)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1729254AbgC3LFB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Mar 2020 07:05:01 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:35934 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729285AbgC3LFB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Mar 2020 07:05:01 -0400
+Received: by mail-wr1-f65.google.com with SMTP id 31so21055654wrs.3;
+        Mon, 30 Mar 2020 04:04:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=XkBazEXFPT2Evha6vjR9imItMnoqhOw7XhTfpTqH9rw=;
+        b=QySTWIlxqN9pAwfMxquLPaJoQKBaN/DAuMKqalJdqXhJUF07P9NMQC9Dl1xJCZjHan
+         qJRdybwAx2Es1k6MDaQz5dai4A5zW2DZoptXwGK8ncQLsBN8Xnz2MFy73c2e6dkEOL/s
+         YliynkpfajzEsVeIoSfU4zHpFNiTnuLpXhYEag4phtrI83z/YOIBqrWn5kjybu11X1rt
+         DV7CuyyiGRHqO3UNHk4DVPQL9USuvXbwWfw1+Kt1EibO5MX8BE8Q44CtA7/5mDWYt2Is
+         WaMgW9WstUWpl7nQe6HIKPe7nrZj+AGFJXlMAFCnuhBgp4eMhH17kex820smo7xEPGuP
+         /kiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=XkBazEXFPT2Evha6vjR9imItMnoqhOw7XhTfpTqH9rw=;
+        b=tFGTguT5qEpzCEjHqKz99EaV4fc8/xbG8pjBXgyleSJipMY/w5ZAleL/N1yi25wn7M
+         9a+wy4L0RrOj91QyyCCLQUnac8+lKRhMrhPKxb1uRjRq48zHMim+7/bRkmtX9N1EjN+e
+         Z6wAWlBapzMntCRbTdPRZnQQBwa9z7rNJB4j4/SyGZ5gHFP0gQ5wZUSJpVZx6pK+UCwL
+         1eAuxd9zvWWLTa0R87OXj+M+3CsPy0kStl3yYyzr2zGiHPy/qFun2MfSgloJ4eKejgMn
+         v/rMpuOqhgQ170VexRhlEkh2wpYzFAcd4Zam6Vn9+PoV3Fu94KJdIGkr40E8dMXg0r/J
+         at5g==
+X-Gm-Message-State: ANhLgQ2LBL1En9q/JgnSN1kc0N3JfMUYHtMiRGN2HGm9HTmphMRLKvwC
+        1CJF+HRqPAuEzdyR3NtT/5M69u6OxmduH4l47SQ=
+X-Google-Smtp-Source: ADFU+vsmeeWN6BFqjDs6ZOZJhwtVkxoEL3SPj+KuoGqJhs7MxebsaCNQ9XQMTvBxapDW4HOx5kzYXH7N63O9EtZcpJM=
+X-Received: by 2002:adf:f48d:: with SMTP id l13mr14634041wro.96.1585566297673;
+ Mon, 30 Mar 2020 04:04:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: spende von 2.000.000,00 Euro
-To:     Recipients <luis.sanchez@11d01.mspz7.gob.ec>
-From:   "Manuel Franco" <luis.sanchez@11d01.mspz7.gob.ec>
-Date:   Mon, 30 Mar 2020 11:47:33 +0200
-Reply-To: manuelfrancospende11@gmail.com
-Message-Id: <20200330091620.5FC382F6F56A@mail.11d01.mspz7.gob.ec>
+References: <20200311171422.10484-1-david@redhat.com> <20200311171422.10484-3-david@redhat.com>
+In-Reply-To: <20200311171422.10484-3-david@redhat.com>
+From:   Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+Date:   Mon, 30 Mar 2020 13:04:46 +0200
+Message-ID: <CAM9Jb+iLe7inqnAVmmaq2bsRGVKn+dwJqLD=M4yU3KQf+Au9hA@mail.gmail.com>
+Subject: Re: [PATCH v2 02/10] virtio-mem: Allow to specify an ACPI PXM as nid
+To:     David Hildenbrand <david@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
+        Michal Hocko <mhocko@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Michael S . Tsirkin" <mst@redhat.com>,
+        Michal Hocko <mhocko@suse.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Jason Wang <jasowang@redhat.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Igor Mammedov <imammedo@redhat.com>,
+        Dave Young <dyoung@redhat.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        Stefan Hajnoczi <stefanha@redhat.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Ich bin Manuel Franco, ich spende Ihnen 2.000.000,00 Euro. Kontaktieren Sie=
- mich jetzt, damit wir fortfahren k=F6nnen.
-
-I am Manuel Franco, I donate to you 2,000,000.00 euros. Contact me now so w=
-e can proceed.
+Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
