@@ -2,128 +2,218 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3443F1970CF
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Mar 2020 00:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACFDB1972E7
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Mar 2020 06:05:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728891AbgC2Wed (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 29 Mar 2020 18:34:33 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([63.128.21.74]:36442 "EHLO
-        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728912AbgC2Wec (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 29 Mar 2020 18:34:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1585521272;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3+ZOHsYN5eO6apwqHDZCTtdl6HvugNVY/bn8g6JeuAk=;
-        b=XkqBLo7B3eryxSkOrJTqaixmIAq3qH/EnLEjeSAMVdEwYDA34y41Q6pgEg5K4nlfv2Iei5
-        UqNg+d0V7BoVWRyH8dF6YfxMzyEg0GaEygzy4w0IOaNJxjlDvAcXhDhi94r37WEhF2GWnK
-        oQ2QKWBlk6Rbq1hGfRZWYf+9UZ9KCMQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-464-zHoEi5pCNXyMGY86fbqrog-1; Sun, 29 Mar 2020 18:34:28 -0400
-X-MC-Unique: zHoEi5pCNXyMGY86fbqrog-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 41D091005516;
-        Sun, 29 Mar 2020 22:34:27 +0000 (UTC)
-Received: from x1.localdomain.com (ovpn-112-12.ams2.redhat.com [10.36.112.12])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 891CB5DA66;
-        Sun, 29 Mar 2020 22:34:25 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "5 . 4+" <stable@vger.kernel.org>
-Subject: [PATCH 5.6 regression fix 2/2] platform/x86: intel_int0002_vgpio: Use acpi_s2idle_register_wake_callback
-Date:   Mon, 30 Mar 2020 00:34:19 +0200
-Message-Id: <20200329223419.122796-3-hdegoede@redhat.com>
-In-Reply-To: <20200329223419.122796-1-hdegoede@redhat.com>
-References: <20200329223419.122796-1-hdegoede@redhat.com>
+        id S1726000AbgC3EF5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Mar 2020 00:05:57 -0400
+Received: from mga09.intel.com ([134.134.136.24]:5158 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725268AbgC3EF5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 30 Mar 2020 00:05:57 -0400
+IronPort-SDR: iS/yF1VouVXLc1foVZGMrDH7icbj6boLAmC/vZ5op5qDkqEKT+f9KNJhLqGIA/oekPraIv4RVJ
+ zinLBmWNNkYw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2020 21:05:56 -0700
+IronPort-SDR: ur4u1wuGlyI9LHAvEQYPzhLmaDFYU1lhjjznlTvCbf8m5pdxvaeyZunsX4zAc+DuL3M1oajgV2
+ ygzohgYf0DSw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,322,1580803200"; 
+   d="scan'208";a="241511011"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 29 Mar 2020 21:05:54 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jIlgQ-000DXO-5y; Mon, 30 Mar 2020 12:05:54 +0800
+Date:   Mon, 30 Mar 2020 12:05:18 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 54c617385f8e16da77e722e6e45ff5962b3e0419
+Message-ID: <5e816ffe.T6Luqq6y+d+fiUoR%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The Power Management Events (PMEs) the INT0002 driver listens for get
-signalled by the Power Management Controller (PMC) using the same IRQ
-as used for the ACPI SCI.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: 54c617385f8e16da77e722e6e45ff5962b3e0419  Merge branch 'acpica-next' into bleeding-edge
 
-Since commit fdde0ff8590b ("ACPI: PM: s2idle: Prevent spurious SCIs from
-waking up the system") the SCI triggering without there being a wakeup
-cause recognized by the ACPI sleep code will no longer wakeup the system.
+elapsed time: 811m
 
-This breaks PMEs / wakeups signalled to the INT0002 driver, the system
-never leaves the s2idle_loop() now.
+configs tested: 158
+configs skipped: 0
 
-Use acpi_s2idle_register_wake_callback to register a function which
-checks the GPE0a_STS register for a PME and trigger a wakeup when a
-PME has been signalled.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-With this new mechanism the pm_wakeup_hard_event() call is no longer
-necessary, so remove it and also remove the matching device_init_wakeup()
-calls.
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm                              allmodconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+arm                           efm32_defconfig
+arm                         at91_dt_defconfig
+arm                        shmobile_defconfig
+arm64                               defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                           sunxi_defconfig
+arm                        multi_v7_defconfig
+sparc                            allyesconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                             alldefconfig
+nios2                         3c120_defconfig
+nios2                         10m50_defconfig
+c6x                        evmc6678_defconfig
+xtensa                          iss_defconfig
+c6x                              allyesconfig
+xtensa                       common_defconfig
+openrisc                 simple_smp_defconfig
+openrisc                    or1ksim_defconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                                defconfig
+alpha                               defconfig
+h8300                       h8s-sim_defconfig
+h8300                     edosk2674_defconfig
+m68k                       m5475evb_defconfig
+m68k                             allmodconfig
+h8300                    h8300h-sim_defconfig
+m68k                           sun3_defconfig
+m68k                          multi_defconfig
+arc                                 defconfig
+arc                              allyesconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                generic-64bit_defconfig
+parisc                generic-32bit_defconfig
+parisc                           allyesconfig
+i386                 randconfig-a002-20200329
+x86_64               randconfig-a001-20200329
+i386                 randconfig-a001-20200329
+i386                 randconfig-a003-20200329
+nds32                randconfig-a001-20200329
+mips                 randconfig-a001-20200329
+parisc               randconfig-a001-20200329
+m68k                 randconfig-a001-20200329
+alpha                randconfig-a001-20200329
+riscv                randconfig-a001-20200329
+h8300                randconfig-a001-20200329
+nios2                randconfig-a001-20200329
+microblaze           randconfig-a001-20200329
+sparc64              randconfig-a001-20200329
+c6x                  randconfig-a001-20200329
+s390                 randconfig-a001-20200329
+xtensa               randconfig-a001-20200329
+csky                 randconfig-a001-20200329
+openrisc             randconfig-a001-20200329
+sh                   randconfig-a001-20200329
+i386                 randconfig-b003-20200329
+x86_64               randconfig-b003-20200329
+i386                 randconfig-b001-20200329
+i386                 randconfig-b002-20200329
+x86_64               randconfig-b002-20200329
+x86_64               randconfig-b001-20200329
+x86_64               randconfig-c003-20200329
+i386                 randconfig-c002-20200329
+x86_64               randconfig-c001-20200329
+x86_64               randconfig-c002-20200329
+i386                 randconfig-c003-20200329
+i386                 randconfig-c001-20200329
+i386                 randconfig-d003-20200329
+i386                 randconfig-d001-20200329
+x86_64               randconfig-d002-20200329
+i386                 randconfig-d002-20200329
+x86_64               randconfig-d001-20200329
+x86_64               randconfig-d003-20200329
+x86_64               randconfig-e001-20200329
+i386                 randconfig-e002-20200329
+x86_64               randconfig-e003-20200329
+i386                 randconfig-e003-20200329
+x86_64               randconfig-e002-20200329
+i386                 randconfig-e001-20200329
+i386                 randconfig-f001-20200329
+i386                 randconfig-f003-20200329
+i386                 randconfig-f002-20200329
+x86_64               randconfig-f002-20200329
+x86_64               randconfig-f001-20200329
+i386                 randconfig-g003-20200329
+x86_64               randconfig-g002-20200329
+i386                 randconfig-g002-20200329
+i386                 randconfig-g001-20200329
+x86_64               randconfig-g001-20200329
+x86_64               randconfig-h002-20200329
+x86_64               randconfig-h003-20200329
+i386                 randconfig-h003-20200329
+x86_64               randconfig-h001-20200329
+i386                 randconfig-h001-20200329
+i386                 randconfig-h002-20200329
+arm                  randconfig-a001-20200329
+arm64                randconfig-a001-20200329
+ia64                 randconfig-a001-20200329
+sparc                randconfig-a001-20200329
+arc                  randconfig-a001-20200329
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+s390                       zfcpdump_defconfig
+s390                          debug_defconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                             alldefconfig
+s390                                defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                            titan_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                                allnoconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+i386                             alldefconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
 
-Fixes: fdde0ff8590b ("ACPI: PM: s2idle: Prevent spurious SCIs from waking=
- up the system")
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/platform/x86/intel_int0002_vgpio.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/platform/x86/intel_int0002_vgpio.c b/drivers/platfor=
-m/x86/intel_int0002_vgpio.c
-index f14e2c5f9da5..3c70694188fe 100644
---- a/drivers/platform/x86/intel_int0002_vgpio.c
-+++ b/drivers/platform/x86/intel_int0002_vgpio.c
-@@ -122,11 +122,17 @@ static irqreturn_t int0002_irq(int irq, void *data)
- 	generic_handle_irq(irq_find_mapping(chip->irq.domain,
- 					    GPE0A_PME_B0_VIRT_GPIO_PIN));
-=20
--	pm_wakeup_hard_event(chip->parent);
--
- 	return IRQ_HANDLED;
- }
-=20
-+static bool int0002_check_wake(void *data)
-+{
-+	u32 gpe_sts_reg;
-+
-+	gpe_sts_reg =3D inl(GPE0A_STS_PORT);
-+	return (gpe_sts_reg & GPE0A_PME_B0_STS_BIT);
-+}
-+
- static struct irq_chip int0002_byt_irqchip =3D {
- 	.name			=3D DRV_NAME,
- 	.irq_ack		=3D int0002_irq_ack,
-@@ -220,13 +226,13 @@ static int int0002_probe(struct platform_device *pd=
-ev)
- 		return ret;
- 	}
-=20
--	device_init_wakeup(dev, true);
-+	acpi_s2idle_register_wake_callback(irq, int0002_check_wake, NULL);
- 	return 0;
- }
-=20
- static int int0002_remove(struct platform_device *pdev)
- {
--	device_init_wakeup(&pdev->dev, false);
-+	acpi_s2idle_unregister_wake_callback(int0002_check_wake, NULL);
- 	return 0;
- }
-=20
---=20
-2.26.0
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
