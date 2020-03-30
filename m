@@ -2,106 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B362A1984F7
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Mar 2020 21:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76DEE1985D5
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Mar 2020 22:51:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728334AbgC3TzL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Mar 2020 15:55:11 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:36929 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727311AbgC3TzK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Mar 2020 15:55:10 -0400
-Received: by mail-ed1-f66.google.com with SMTP id de14so22292123edb.4
-        for <linux-acpi@vger.kernel.org>; Mon, 30 Mar 2020 12:55:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0m2AnfIRcCHRpZW6PDeIax9gdSThqigcANOhQSHQQRM=;
-        b=l9UrcbgGyZHpzzpXZ0ao5T6qmamT4bwpPo9Q1ZImIf8A7LLg6hVilR0KrN4O3gamsX
-         TTDYIQCaPyZJm/VklimIRgeNaVSOlkAPYBcWC6u4lLFVoKVG3GvRC4sgvM5WwLN230cR
-         NqacKnMDiHYRg5NxBw2W+fdR/djzIb+BwQuL5HGUnGcaGsEKVpBQA6Ibaza1SI8dNSo4
-         1wCRpauHNIBwEuVetbcLpEdV1LxzYnn6SincBoe4V3EhF3iBRM/JOpP5Gm6ettn+PyeR
-         kd8ucX/kUEddGzeLrJ8AcsMIcaAHlPDS+29wJSZpBltd4kvSmndVWXZiizq1H4clGtmK
-         Zjrg==
+        id S1728405AbgC3UvM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Mar 2020 16:51:12 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([63.128.21.74]:37471 "EHLO
+        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727750AbgC3UvM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 30 Mar 2020 16:51:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585601471;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=odm2BtAQUnUT8zj+digzS3rtXLQBUeiDF1C1EBhIhHQ=;
+        b=QfSq6X/thgqU5NJsRNEqMJKHrkswmWyeoeiBqulcLT2hHSYzw0y+gh0tJ6T3RGuFxKMHre
+        +sBnc+ovoPgIOjD1usTpgGZzyNuNCXpTL0m8n+jBK705xuPPVX6M3u63l02vmilae/GK2y
+        iGM5MEEJiScMX07f+d0ECvAOS9c1IRY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-188-WOT0WHtPMbmE89W4wMcRwg-1; Mon, 30 Mar 2020 16:51:04 -0400
+X-MC-Unique: WOT0WHtPMbmE89W4wMcRwg-1
+Received: by mail-wr1-f70.google.com with SMTP id w12so11884990wrl.23
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Mar 2020 13:51:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0m2AnfIRcCHRpZW6PDeIax9gdSThqigcANOhQSHQQRM=;
-        b=NSmqhuT9BGppMxEMp0syMfyzi4GoVlSd0Meq3C0UmNk+SCoMVW348/L27hNJk+2RY5
-         5+OVtPIpE3x/Y59V8RsD/CPTcdE2Q3wFaqwMVZhrQICBXVsmHWVcTcUHnfl2G/k3ji5T
-         DtQrVQIrom7y1dVW6wx4CffqtUxytjAQ0yiW5A3wHD1P6tRzecICO3cePxqKYFojqiBe
-         yTDmDA4YFXjCkN8OUNfFZPMNXHPlBxEn8HRGcCfLNW4sAENjN0ZaPAJns3TSwgsC78TZ
-         JEtD5cCp9XP8LQ79NUN21r5JaYlC1354WzC/hBl8agsfW8qJPl8kd+SEm4tg/hpDUy1y
-         UlXA==
-X-Gm-Message-State: ANhLgQ1gu3iWs6Kk/duzZ33j15Hm8z7tjLGt7w2E7+jvdXhT46QxaqgU
-        xD2jIXFJ0dPT7vf2COIOotAAwhqpf0ntigQS/Cj5LQ==
-X-Google-Smtp-Source: ADFU+vuRYf2PNGMfKGMR9APzvmfg1zGeVpB4kVz6LrQE2pYYEguvqYB2rhx1GF+WePdck7GQUX3jq1SI88VCcV1b6Hc=
-X-Received: by 2002:a17:906:1697:: with SMTP id s23mr12715702ejd.211.1585598108932;
- Mon, 30 Mar 2020 12:55:08 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=odm2BtAQUnUT8zj+digzS3rtXLQBUeiDF1C1EBhIhHQ=;
+        b=TG3FT9Fn2ICfeZjyBFirm8RWKPtNslG65YR3Ry9VSJgRS6JwqqAJR6LvhDZfJK6JcR
+         S4AXzY1MDQwdBESNJ2XAqLWuzI7uFRc24YjWMV4Y9xzcvhr5d0EYVbzg9JCD75yl4fIM
+         ay+I8nKd32Vy4D8u6OfZvDX8K0swU/ioGv0e4xuB88UcbYrnbQuT+0mlgW2g9o1LXpPi
+         G/hIZO9NFte7vk5nXiRcn76CHNywLkMHLwdfpn8u5pYQ3GEFvPcr3nFj/Umxr7Q/RoaW
+         Vn7gRykDCiihoq2wACKBXuacLPS5ykZZgeilzHXO+Mavw9jLt54o1gjAi0dFCGSBxmWM
+         xFCA==
+X-Gm-Message-State: ANhLgQ0mbs+DLzPf9Lf7IhO2e2rBoXS5E+z0oTDLwHNw7U98+DnqxCLo
+        mL0rd71DSfQ8cPZl2fFrX/4p7BfIaq+DvmF5+mjPl+Qaz5gk4+Wgl7Y/WuCVFav7+Mh4RC6RWY4
+        r2F7cuFm2EdtCjeQ0XIPGYA==
+X-Received: by 2002:adf:bb4c:: with SMTP id x12mr16140813wrg.137.1585601462962;
+        Mon, 30 Mar 2020 13:51:02 -0700 (PDT)
+X-Google-Smtp-Source: ADFU+vsivJs4jCKEDqtzyiapgH6FhTN+YcSjT2DE+4y/sRoMwbXGG618EuuJZHiMOPUt0GsirQs3Yw==
+X-Received: by 2002:adf:bb4c:: with SMTP id x12mr16140799wrg.137.1585601462755;
+        Mon, 30 Mar 2020 13:51:02 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-fc7e-fd47-85c1-1ab3.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:fc7e:fd47:85c1:1ab3])
+        by smtp.gmail.com with ESMTPSA id g128sm916407wmf.27.2020.03.30.13.51.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Mar 2020 13:51:02 -0700 (PDT)
+Subject: Re: ACPI Video Driver creates backlight on desktop board
+To:     Paul Menzel <pmenzel@molgen.mpg.de>,
+        Zhang Rui <rui.zhang@intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <75866748-f574-ae50-6183-ef6892c935c5@molgen.mpg.de>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <63956e11-46f2-72f4-c722-8fee2cbfbfa1@redhat.com>
+Date:   Mon, 30 Mar 2020 22:51:01 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-References: <20200319195046.GA452@embeddedor.com> <CAJZ5v0iDVL1WWTmmQX+2JDmyAfu2e8nSdLSmCqA-WZV+7pBHvw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0iDVL1WWTmmQX+2JDmyAfu2e8nSdLSmCqA-WZV+7pBHvw@mail.gmail.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Mon, 30 Mar 2020 12:54:57 -0700
-Message-ID: <CAPcyv4icgZEn9r9-+-R+rBQKebq+QcpYGQ-dvCiqhkO8XmDmEA@mail.gmail.com>
-Subject: Re: [PATCH][next] acpi: nfit.h: Replace zero-length array with
- flexible-array member
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <75866748-f574-ae50-6183-ef6892c935c5@molgen.mpg.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 25, 2020 at 3:06 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Thu, Mar 19, 2020 at 9:15 PM Gustavo A. R. Silva
-> <gustavo@embeddedor.com> wrote:
-> >
-> > The current codebase makes use of the zero-length array language
-> > extension to the C90 standard, but the preferred mechanism to declare
-> > variable-length types such as these ones is a flexible array member[1][2],
-> > introduced in C99:
-> >
-> > struct foo {
-> >         int stuff;
-> >         struct boo array[];
-> > };
-> >
-> > By making use of the mechanism above, we will get a compiler warning
-> > in case the flexible array does not occur last in the structure, which
-> > will help us prevent some kind of undefined behavior bugs from being
-> > inadvertently introduced[3] to the codebase from now on.
-> >
-> > Also, notice that, dynamic memory allocations won't be affected by
-> > this change:
-> >
-> > "Flexible array members have incomplete type, and so the sizeof operator
-> > may not be applied. As a quirk of the original implementation of
-> > zero-length arrays, sizeof evaluates to zero."[1]
-> >
-> > This issue was found with the help of Coccinelle.
-> >
-> > [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-> > [2] https://github.com/KSPP/linux/issues/21
-> > [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
-> >
-> > Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
->
-> Dan,
->
-> I'm assuming that you will take care of this one or please let me know
-> otherwise.
+Hi,
 
-Yes, this one and the other 2 related libnvdimm fixups are in my queue.
+On 3/29/20 11:36 AM, Paul Menzel wrote:
+> Dear Linux folks,
+> 
+> 
+> On the MSI desktop board [1]
+> 
+>      [    0.000000] DMI: Micro-Star International Co., Ltd. MS-7A37/B350M MORTAR (MS-7A37), BIOS 1.MR 12/02/2019
+> 
+> with an AMD Ryzen 3 2200G with Radeon Vega Graphics, the ACPI Video Driver `video` is loaded and creates a backlight device.
+> 
+>      $ readlink -f /sys/class/backlight/acpi_video0
+>      /sys/devices/pci0000:00/0000:00:08.1/0000:26:00.0/backlight/acpi_video0
+> 
+> I wonder what the driver is used for as the AMDGPU driver exists for the graphics device.
+
+Backlight on x86 hw is a bit of a mess, there is an ACPI standard for accessing it
+and with older (Windows XP era) laptops that is the interface which usually works,
+then there are a bunch of vendor specific SMBIOS or WMI backlight interfaces and
+then there is the option of directly accessing the hardware as the amdgpu driver
+is doing.
+
+We have a bunch of heuristics to avoid the acpi_video driver registering a
+backlight interface when it should not, either because the direct hw access
+should be used instead; or because there simply is no builtin LCD panel and thus
+no backlight to control.
+
+These heuristics are failing on your board.
+
+> If it’s useful, is there a way to prevent the backlight interface from getting created?
+
+You can pass "acpi_backlight=ignore" on the kernel commandline to disable the
+interface, this will stop e.g. gnome from showing a non working brightness
+slider in its top right system menu.
+
+If this works you can make this permanent and avoid other users from having to
+do the same thing by writing a patch adding a quirk for this like this one:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d21a91629f4b8e794fc4c0e0c17c85cedf1d806c
+
+Regards,
+
+Hans
+
