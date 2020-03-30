@@ -2,265 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 312AC1977A2
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Mar 2020 11:17:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B38F01978A1
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Mar 2020 12:14:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728177AbgC3JR0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Mar 2020 05:17:26 -0400
-Received: from m9a0014g.houston.softwaregrp.com ([15.124.64.90]:59956 "EHLO
-        m9a0014g.houston.softwaregrp.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727696AbgC3JR0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 30 Mar 2020 05:17:26 -0400
-Received: FROM m9a0014g.houston.softwaregrp.com (15.121.0.190) BY m9a0014g.houston.softwaregrp.com WITH ESMTP;
- Mon, 30 Mar 2020 09:16:01 +0000
-Received: from M9W0068.microfocus.com (2002:f79:bf::f79:bf) by
- M9W0067.microfocus.com (2002:f79:be::f79:be) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1591.10; Mon, 30 Mar 2020 09:11:40 +0000
-Received: from NAM04-BN3-obe.outbound.protection.outlook.com (15.124.72.14) by
- M9W0068.microfocus.com (15.121.0.191) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1591.10 via Frontend Transport; Mon, 30 Mar 2020 09:11:40 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Z64NwLckWoqzsgGFf+5KuzcXrLhm44ignyXvXy8H3kYQ2T1skxgYhUWBj5cKiWMhzuTWueaDKR5mfcJWSxAUZmm9qQZxVntj2beSu3KKvZFMjMgP3wFDn0Nvk2lgJxEene30yPhrk4clGO0BkMPU2o9t9feR+5YW1cATH4CYHqaq6HmkfgfrwS7wRwEzF7Er7RLUzN2GxDETkFeUlRhTd/zJFFoLkr4m8pPzYkFvrHmEYxg+zMPR/qo99Evb9VlVOxxJZ3AfXWZM8ATmFp0Xv8i3MUNPElnRTZdUhq/rG2z7t2HmeHjJSdhL2CdwatEoZAXfL52r0iTlcJFT9nB+Mg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Uy03OB+3cYv7xLechxW8dqEigLCkE+lI4R5cBhyrK5M=;
- b=NxxQx/78cMzYqXnzhYLLJyFBgxBkHDR646TqT8OD3klbWe/ZtHP9RjU5nsp5hJ+ZfEvZk1nVJHEV54lnbSf3xgJFOf8UfFn0gX6IfsYTxN8PugIMWB7T+Cdv+XRpvE3taCH0GCsBtmy3nwWnNp+oGvfO83KqltvflvR6WvMTJq5VgnlrwDw3XzURX2mHsZDS2JunvNYXLfR1heV/3Feukus0EvxGwI037uTSTLLJpnsnOniBDghoLrK5pvvwNgIKCG5fAFprp49wboJfQ2/adolFXE1uV0gfhrCt1M132s4g0kDagbDmj9P5zNdF2V2OPNa9hRmKd1sLRTGyOmHZ4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
- dkim=pass header.d=suse.com; arc=none
-Authentication-Results: spf=none (sender IP is ) smtp.mailfrom=clin@suse.com; 
-Received: from SN1PR18MB2126.namprd18.prod.outlook.com (2603:10b6:802:29::29)
- by SN1PR18MB2112.namprd18.prod.outlook.com (2603:10b6:802:28::32) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.18; Mon, 30 Mar
- 2020 09:11:38 +0000
-Received: from SN1PR18MB2126.namprd18.prod.outlook.com
- ([fe80::1b1:6ada:da24:d1e9]) by SN1PR18MB2126.namprd18.prod.outlook.com
- ([fe80::1b1:6ada:da24:d1e9%5]) with mapi id 15.20.2856.019; Mon, 30 Mar 2020
- 09:11:38 +0000
-Date:   Mon, 30 Mar 2020 17:11:19 +0800
-From:   Chester Lin <clin@suse.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-CC:     <rjw@rjwysocki.net>, <lenb@kernel.org>, <robert.moore@intel.com>,
-        <erik.kaneda@intel.com>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devel@acpica.org>,
-        <jlee@suse.com>, <mhocko@suse.com>, <clin@suse.com>
-Subject: Re: [RFC PATCH 1/3] ACPI: scan: add userland notification while
- handling eject events
-Message-ID: <20200330091119.GA18816@linux-8mug>
-References: <20200327112247.17691-1-clin@suse.com>
- <20200327112247.17691-2-clin@suse.com>
- <20200327113842.GA1736848@kroah.com>
- <20200330085020.GA26252@linux-8mug>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20200330085020.GA26252@linux-8mug>
-User-Agent: Mutt/1.12.2 (2019-09-21)
-X-ClientProxiedBy: LO2P265CA0429.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a0::33) To SN1PR18MB2126.namprd18.prod.outlook.com
- (2603:10b6:802:29::29)
+        id S1728722AbgC3KOr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Mar 2020 06:14:47 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2614 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728609AbgC3KOr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 30 Mar 2020 06:14:47 -0400
+Received: from lhreml719-chm.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 28A9B339EBD1807085E7;
+        Mon, 30 Mar 2020 11:14:45 +0100 (IST)
+Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
+ lhreml719-chm.china.huawei.com (10.201.108.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Mon, 30 Mar 2020 11:14:20 +0100
+Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
+ lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1713.004;
+ Mon, 30 Mar 2020 11:14:20 +0100
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     Borislav Petkov <bp@alien8.de>
+CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "helgaas@kernel.org" <helgaas@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "zhangliguang@linux.alibaba.com" <zhangliguang@linux.alibaba.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        Linuxarm <linuxarm@huawei.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        tanxiaofei <tanxiaofei@huawei.com>,
+        yangyicong <yangyicong@huawei.com>
+Subject: RE: [PATCH v6 1/2] ACPI / APEI: Add support to notify the vendor
+ specific HW errors
+Thread-Topic: [PATCH v6 1/2] ACPI / APEI: Add support to notify the vendor
+ specific HW errors
+Thread-Index: AQHWAsR+4nldebv71E6VKNN8PAfzw6hcw70AgAQRUuA=
+Date:   Mon, 30 Mar 2020 10:14:20 +0000
+Message-ID: <b180618fb6cb477ea7185979c11c5868@huawei.com>
+References: <ShijuJose> <20200325164223.650-1-shiju.jose@huawei.com>
+ <20200325164223.650-2-shiju.jose@huawei.com> <20200327182214.GD8015@zn.tnic>
+In-Reply-To: <20200327182214.GD8015@zn.tnic>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.47.25.189]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from linux-8mug (118.166.62.204) by LO2P265CA0429.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:a0::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.20 via Frontend Transport; Mon, 30 Mar 2020 09:11:31 +0000
-X-Originating-IP: [118.166.62.204]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: d2a1397a-b65c-4041-d760-08d7d48a595e
-X-MS-TrafficTypeDiagnostic: SN1PR18MB2112:
-X-LD-Processed: 856b813c-16e5-49a5-85ec-6f081e13b527,ExtFwd
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SN1PR18MB211241710E17D5FCF0BE3510ADCB0@SN1PR18MB2112.namprd18.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
-X-Forefront-PRVS: 0358535363
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN1PR18MB2126.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10019020)(4636009)(346002)(136003)(39860400002)(396003)(366004)(376002)(2906002)(66476007)(8676002)(66556008)(15650500001)(66946007)(52116002)(81156014)(6496006)(8936002)(5660300002)(33656002)(9686003)(55016002)(55236004)(6916009)(107886003)(16526019)(86362001)(186003)(26005)(4326008)(33716001)(1076003)(316002)(81166006)(956004)(478600001)(6666004);DIR:OUT;SFP:1102;
-Received-SPF: None (protection.outlook.com: suse.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 8fbu9IuK8GQIZCrl0X1zrfVcbhbZvlAUM+eFs3qEc2quynj67bOTo3juCT4491779eexUDaH2u2NxFbElzgZsjdC3y89fWHgkataBS41b+8ro/BEq2lghBERIK6w3azyu8Zkrqeakgebut+SW8t6Bze54+Kt/WEV/u+gxJyl9eB8KC18cezFRbNw6HY+NBcE/IAzrUBpPTk0Ud7nfDh83iWAn1cuaY06Z6rWBNSf/nDk5N0F8l0bFECjVCW1qeIDUnn5NR3H5KJhh/kOSHngF00NaUyg3NDyKIUT4uqRwWfzs2vzQMqjnAaBZFbHkTjoCJ7sqNHR+vF84M8anujm08CFhG7uO4eX0AsY19elCdWRwApwM1EVwqWOJBu3CNzGaAzpNQ46+BqgGU61ffsHTMRC0M0VvlQluQ6EASJ28UQcXqRXFusdd9FPEfRy1ktA
-X-MS-Exchange-AntiSpam-MessageData: Nzu2ycPvN7lkDUSUMPHhd+EHJl6b5688+pa/oIzo5fTL4s1lyq1eKyED87TpfUc33q89ZhmRkbKElPp9IrJArLBu1Qt70tKEj6/MijIH8n/gOvluFuFl18my2WkunadcX4ORsCcoLEm4DKfpfwLBKg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2a1397a-b65c-4041-d760-08d7d48a595e
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2020 09:11:38.0239
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 856b813c-16e5-49a5-85ec-6f081e13b527
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yqfJVO4euxh7PYcraisf0uC+b8MSo0lnWDzSqtVnO41bDWZGgrOfOO0DtYSLrFdn
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR18MB2112
-X-OriginatorOrg: suse.com
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 30, 2020 at 04:50:20PM +0800, Chester Lin wrote:
-> Hi Greg,
-> 
-> On Fri, Mar 27, 2020 at 12:38:42PM +0100, Greg KH wrote:
-> > On Fri, Mar 27, 2020 at 07:22:45PM +0800, Chester Lin wrote:
-> > > Add a request_offline attribute in order to tell the kernel if it's
-> > > required to send notifications to userland first while handling an eject
-> > > event. Userland will have to put the target device offline when this
-> > > attribute is set.
-> > > 
-> > > Signed-off-by: Chester Lin <clin@suse.com>
-> > > ---
-> > >  Documentation/ABI/testing/sysfs-bus-acpi | 16 ++++++++++
-> > >  drivers/acpi/device_sysfs.c              | 40 +++++++++++++++++++++++-
-> > >  drivers/acpi/scan.c                      | 39 +++++++++++++++++++----
-> > >  include/acpi/acpi_bus.h                  |  1 +
-> > >  4 files changed, 89 insertions(+), 7 deletions(-)
-> > > 
-> > > diff --git a/Documentation/ABI/testing/sysfs-bus-acpi b/Documentation/ABI/testing/sysfs-bus-acpi
-> > > index e7898cfe5fb1..b9c467704889 100644
-> > > --- a/Documentation/ABI/testing/sysfs-bus-acpi
-> > > +++ b/Documentation/ABI/testing/sysfs-bus-acpi
-> > > @@ -93,3 +93,19 @@ Description:
-> > >  		hardware, if the _HRV control method is present.  It is mostly
-> > >  		useful for non-PCI devices because lspci can list the hardware
-> > >  		version for PCI devices.
-> > > +
-> > > +What:		/sys/bus/acpi/devices/.../request_offline
-> > > +Date:		Mar, 2020
-> > > +Contact:	Chester Lin <clin@suse.com>
-> > > +Description:
-> > > +		(RW) Allows the userland to receive offline requests when
-> > > +		devices are planning to be ejected.
-> > > +
-> > > +		If bit [0] is clear, the kernel will automatically try putting
-> > > +		the target offline before the target can be ejected.
-> > > +
-> > > +		If bit [0] is set, a uevent will be sent to userland as an
-> > > +		offline request and userland is responsible for handling offline
-> > > +		operations before the target can be ejected. This approach
-> > > +		provides flexibility while some applications could need more
-> > > +		time to release resources.
-> > 
-> > Don't use "bit", use 1/0/y/n/Y/N as the kernel will parse all of that
-> > for you with the kstrtobool() which was created just for this type of
-> > sysfs file.
-> > 
-> 
-> I'm sorry for this mistake. Based on my code they should be ASCII char '1' and
-> '0' but not bitwise ops. I will fix this description.
-> 
-> > > diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-> > > index 96869f1538b9..453bd1b9edf5 100644
-> > > --- a/drivers/acpi/device_sysfs.c
-> > > +++ b/drivers/acpi/device_sysfs.c
-> > > @@ -506,6 +506,37 @@ static ssize_t status_show(struct device *dev, struct device_attribute *attr,
-> > >  }
-> > >  static DEVICE_ATTR_RO(status);
-> > >  
-> > > +static ssize_t request_offline_show(struct device *dev,
-> > > +		struct device_attribute *attr, char *buf)
-> > > +{
-> > > +	struct acpi_device *acpi_dev = to_acpi_device(dev);
-> > > +
-> > > +	return sprintf(buf, "%u\n", acpi_dev->request_offline?1:0);
-> > > +}
-> > > +
-> > > +static ssize_t request_offline_store(struct device *dev,
-> > > +		struct device_attribute *attr, const char *buf, size_t count)
-> > > +{
-> > > +	struct acpi_device *acpi_dev = to_acpi_device(dev);
-> > > +
-> > > +	if (!count)
-> > > +		return -EINVAL;
-> > > +
-> > > +	switch (buf[0]) {
-> > > +	case '0':
-> > > +		acpi_dev->request_offline = false;
-> > > +		break;
-> > > +	case '1':
-> > > +		acpi_dev->request_offline = true;
-> > > +		break;
-> > > +	default:
-> > > +		return -EINVAL;
-> > > +	}
-> > > +
-> > > +	return count;
-> > > +}
-> > > +static DEVICE_ATTR_RW(request_offline);
-> > > +
-> > >  /**
-> > >   * acpi_device_setup_files - Create sysfs attributes of an ACPI device.
-> > >   * @dev: ACPI device object.
-> > > @@ -580,6 +611,11 @@ int acpi_device_setup_files(struct acpi_device *dev)
-> > >  		result = device_create_file(&dev->dev, &dev_attr_eject);
-> > >  		if (result)
-> > >  			return result;
-> > > +
-> > > +		result = device_create_file(&dev->dev,
-> > > +					    &dev_attr_request_offline);
-> > > +		if (result)
-> > > +			return result;
-> > >  	}
-> > >  
-> > >  	if (dev->flags.power_manageable) {
-> > > @@ -623,8 +659,10 @@ void acpi_device_remove_files(struct acpi_device *dev)
-> > >  	/*
-> > >  	 * If device has _EJ0, remove 'eject' file.
-> > >  	 */
-> > > -	if (acpi_has_method(dev->handle, "_EJ0"))
-> > > +	if (acpi_has_method(dev->handle, "_EJ0")) {
-> > >  		device_remove_file(&dev->dev, &dev_attr_eject);
-> > > +		device_remove_file(&dev->dev, &dev_attr_request_offline);
-> > 
-> > You all really should be using an attribute group and the is_visible()
-> > callback to handle all of this for you automatically.
-> > 
-> > But that's a separate issue than this specific patch.
-> > 
-> 
-> That sounds good to me. I will refine this part by declaring an attribute_group
-> with a is_visible() callback.
-> 
-> > > +	}
-> > >  
-> > >  	if (acpi_has_method(dev->handle, "_SUN"))
-> > >  		device_remove_file(&dev->dev, &dev_attr_sun);
-> > > diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> > > index 6d3448895382..1cb39c5360cf 100644
-> > > --- a/drivers/acpi/scan.c
-> > > +++ b/drivers/acpi/scan.c
-> > > @@ -145,6 +145,7 @@ static acpi_status acpi_bus_offline(acpi_handle handle, u32 lvl, void *data,
-> > >  	struct acpi_device_physical_node *pn;
-> > >  	bool second_pass = (bool)data;
-> > >  	acpi_status status = AE_OK;
-> > > +	char *envp[] = { "EVENT=offline", NULL };
-> > >  
-> > >  	if (acpi_bus_get_device(handle, &device))
-> > >  		return AE_OK;
-> > > @@ -166,7 +167,18 @@ static acpi_status acpi_bus_offline(acpi_handle handle, u32 lvl, void *data,
-> > >  		} else {
-> > >  			pn->put_online = false;
-> > >  		}
-> > > -		ret = device_offline(pn->dev);
-> > > +
-> > > +		/* Don't offline directly but need to notify userland first */
-> > > +		if (device->request_offline) {
-> > > +			if (pn->dev->offline)
-> > > +				ret = 0;
-> > > +			else
-> > > +				ret = kobject_uevent_env(&pn->dev->kobj,
-> > > +							KOBJ_CHANGE, envp);
-> > 
-> > So this is a userspace visable change with regards to kobject events?
-> > 
-> > Are you sure that is ok?
-> > 
-> 
-> Since udev can see kobject events when devices are added, I haven't seen any
-> risk if we make offline events visible too. Besides, normally online/eject
-> attributes can only be written by root in userspace.
-> 
-Correct my explanation here: So far udev can see several device events already,
-such as add, online, offline and remove. So I think it should not be risky if
-we send additional change events to userspace as notification.
-
-> Thanks,
-> Chester Lin
+SGkgQm9yaXNsYXYsDQoNClRoYW5rcyBmb3IgcmV2aWV3aW5nIHRoZSBwYXRjaGVzLg0KDQo+LS0t
+LS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj5Gcm9tOiBsaW51eC1hY3BpLW93bmVyQHZnZXIua2Vy
+bmVsLm9yZyBbbWFpbHRvOmxpbnV4LWFjcGktDQo+b3duZXJAdmdlci5rZXJuZWwub3JnXSBPbiBC
+ZWhhbGYgT2YgQm9yaXNsYXYgUGV0a292DQo+U2VudDogMjcgTWFyY2ggMjAyMCAxODoyMg0KPlRv
+OiBTaGlqdSBKb3NlIDxzaGlqdS5qb3NlQGh1YXdlaS5jb20+DQo+Q2M6IGxpbnV4LWFjcGlAdmdl
+ci5rZXJuZWwub3JnOyBsaW51eC1wY2lAdmdlci5rZXJuZWwub3JnOyBsaW51eC0NCj5rZXJuZWxA
+dmdlci5rZXJuZWwub3JnOyByandAcmp3eXNvY2tpLm5ldDsgaGVsZ2Fhc0BrZXJuZWwub3JnOw0K
+PmxlbmJAa2VybmVsLm9yZzsgamFtZXMubW9yc2VAYXJtLmNvbTsgdG9ueS5sdWNrQGludGVsLmNv
+bTsNCj5ncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZzsgemhhbmdsaWd1YW5nQGxpbnV4LmFsaWJh
+YmEuY29tOw0KPnRnbHhAbGludXRyb25peC5kZTsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5j
+b20+OyBKb25hdGhhbiBDYW1lcm9uDQo+PGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNvbT47IHRh
+bnhpYW9mZWkgPHRhbnhpYW9mZWlAaHVhd2VpLmNvbT47DQo+eWFuZ3lpY29uZyA8eWFuZ3lpY29u
+Z0BodWF3ZWkuY29tPg0KPlN1YmplY3Q6IFJlOiBbUEFUQ0ggdjYgMS8yXSBBQ1BJIC8gQVBFSTog
+QWRkIHN1cHBvcnQgdG8gbm90aWZ5IHRoZSB2ZW5kb3INCj5zcGVjaWZpYyBIVyBlcnJvcnMNCj4N
+Cj5PbiBXZWQsIE1hciAyNSwgMjAyMCBhdCAwNDo0MjoyMlBNICswMDAwLCBTaGlqdSBKb3NlIHdy
+b3RlOg0KPj4gUHJlc2VudGx5IEFQRUkgZG9lcyBub3Qgc3VwcG9ydCByZXBvcnRpbmcgdGhlIHZl
+bmRvciBzcGVjaWZpYyBIVw0KPj4gZXJyb3JzLCByZWNlaXZlZCBpbiB0aGUgdmVuZG9yIGRlZmlu
+ZWQgdGFibGUgZW50cmllcywgdG8gdGhlIHZlbmRvcg0KPj4gZHJpdmVycyBmb3IgYW55IHJlY292
+ZXJ5Lg0KPj4NCj4+IFRoaXMgcGF0Y2ggYWRkcyB0aGUgc3VwcG9ydCB0byByZWdpc3RlciBhbmQg
+dW5yZWdpc3RlciB0aGUNCj4NCj5Bdm9pZCBoYXZpbmcgIlRoaXMgcGF0Y2giIG9yICJUaGlzIGNv
+bW1pdCIgaW4gdGhlIGNvbW1pdCBtZXNzYWdlLiBJdCBpcw0KPnRhdXRvbG9naWNhbGx5IHVzZWxl
+c3MuDQo+DQpTdXJlLg0KDQo+QWxzbywgZG8NCj4NCj4kIGdpdCBncmVwICdUaGlzIHBhdGNoJyBE
+b2N1bWVudGF0aW9uL3Byb2Nlc3MNCj4NCj5mb3IgbW9yZSBkZXRhaWxzLg0KU3VyZS4NCg0KPg0K
+Pj4gZXJyb3IgaGFuZGxpbmcgZnVuY3Rpb24gZm9yIHRoZSB2ZW5kb3Igc3BlY2lmaWMgSFcgZXJy
+b3JzIGFuZCBub3RpZnkNCj4+IHRoZSByZWdpc3RlcmVkIGtlcm5lbCBkcml2ZXIuDQo+Pg0KPj4g
+U2lnbmVkLW9mZi1ieTogU2hpanUgSm9zZSA8c2hpanUuam9zZUBodWF3ZWkuY29tPg0KPj4gLS0t
+DQo+PiAgZHJpdmVycy9hY3BpL2FwZWkvZ2hlcy5jIHwgMzUgKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKy0NCj4+ICBkcml2ZXJzL3Jhcy9yYXMuYyAgICAgICAgfCAgNSArKystLQ0K
+Pj4gIGluY2x1ZGUvYWNwaS9naGVzLmggICAgICB8IDI4ICsrKysrKysrKysrKysrKysrKysrKysr
+KysrKysNCj4+ICBpbmNsdWRlL2xpbnV4L3Jhcy5oICAgICAgfCAgNiArKysrLS0NCj4+ICBpbmNs
+dWRlL3Jhcy9yYXNfZXZlbnQuaCAgfCAgNyArKysrKy0tDQo+PiAgNSBmaWxlcyBjaGFuZ2VkLCA3
+NCBpbnNlcnRpb25zKCspLCA3IGRlbGV0aW9ucygtKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS9kcml2
+ZXJzL2FjcGkvYXBlaS9naGVzLmMgYi9kcml2ZXJzL2FjcGkvYXBlaS9naGVzLmMgaW5kZXgNCj4+
+IDI0Yzk2NDJlOGZjNy4uZDgzZjBiMWFhZDBkIDEwMDY0NA0KPj4gLS0tIGEvZHJpdmVycy9hY3Bp
+L2FwZWkvZ2hlcy5jDQo+PiArKysgYi9kcml2ZXJzL2FjcGkvYXBlaS9naGVzLmMNCj4+IEBAIC00
+OTAsNiArNDkwLDMyIEBAIHN0YXRpYyB2b2lkIGdoZXNfaGFuZGxlX2FlcihzdHJ1Y3QNCj4+IGFj
+cGlfaGVzdF9nZW5lcmljX2RhdGEgKmdkYXRhKSAgI2VuZGlmICB9DQo+Pg0KPj4gK3N0YXRpYyBB
+VE9NSUNfTk9USUZJRVJfSEVBRChnaGVzX2V2ZW50X25vdGlmeV9saXN0KTsNCj4+ICsNCj4+ICsv
+KioNCj4+ICsgKiBnaGVzX3JlZ2lzdGVyX2V2ZW50X25vdGlmaWVyIC0gcmVnaXN0ZXIgYW4gZXZl
+bnQgbm90aWZpZXINCj4+ICsgKiBmb3IgdGhlIG5vbi1mYXRhbCBIVyBlcnJvcnMuDQo+PiArICog
+QG5iOiBwb2ludGVyIHRvIHRoZSBub3RpZmllcl9ibG9jayBzdHJ1Y3R1cmUgb2YgdGhlIGV2ZW50
+IGhhbmRsZXIuDQo+PiArICoNCj4+ICsgKiByZXR1cm4gMCA6IFNVQ0NFU1MsIG5vbi16ZXJvIDog
+RkFJTCAgKi8gaW50DQo+PiArZ2hlc19yZWdpc3Rlcl9ldmVudF9ub3RpZmllcihzdHJ1Y3Qgbm90
+aWZpZXJfYmxvY2sgKm5iKSB7DQo+PiArCXJldHVybiBhdG9taWNfbm90aWZpZXJfY2hhaW5fcmVn
+aXN0ZXIoJmdoZXNfZXZlbnRfbm90aWZ5X2xpc3QsIG5iKTsNCj4+ICt9IEVYUE9SVF9TWU1CT0xf
+R1BMKGdoZXNfcmVnaXN0ZXJfZXZlbnRfbm90aWZpZXIpOw0KPj4gKw0KPj4gKy8qKg0KPj4gKyAq
+IGdoZXNfdW5yZWdpc3Rlcl9ldmVudF9ub3RpZmllciAtIHVucmVnaXN0ZXIgdGhlIHByZXZpb3Vz
+bHkNCj4+ICsgKiByZWdpc3RlcmVkIGV2ZW50IG5vdGlmaWVyLg0KPj4gKyAqIEBuYjogcG9pbnRl
+ciB0byB0aGUgbm90aWZpZXJfYmxvY2sgc3RydWN0dXJlIG9mIHRoZSBldmVudCBoYW5kbGVyLg0K
+Pj4gKyAqLw0KPj4gK3ZvaWQgZ2hlc191bnJlZ2lzdGVyX2V2ZW50X25vdGlmaWVyKHN0cnVjdCBu
+b3RpZmllcl9ibG9jayAqbmIpDQo+PiArew0KPj4gKwlhdG9taWNfbm90aWZpZXJfY2hhaW5fdW5y
+ZWdpc3RlcigmZ2hlc19ldmVudF9ub3RpZnlfbGlzdCwgbmIpOw0KPj4gK30NCj4+ICtFWFBPUlRf
+U1lNQk9MX0dQTChnaGVzX3VucmVnaXN0ZXJfZXZlbnRfbm90aWZpZXIpOw0KPj4gKw0KPj4gIHN0
+YXRpYyB2b2lkIGdoZXNfZG9fcHJvYyhzdHJ1Y3QgZ2hlcyAqZ2hlcywNCj4+ICAJCQkgY29uc3Qg
+c3RydWN0IGFjcGlfaGVzdF9nZW5lcmljX3N0YXR1cyAqZXN0YXR1cykNCj4+ICB7DQo+PiBAQCAt
+NTI2LDEwICs1NTIsMTcgQEAgc3RhdGljIHZvaWQgZ2hlc19kb19wcm9jKHN0cnVjdCBnaGVzICpn
+aGVzLA0KPj4gIAkJCWxvZ19hcm1faHdfZXJyb3IoZXJyKTsNCj4+ICAJCX0gZWxzZSB7DQo+PiAg
+CQkJdm9pZCAqZXJyID0gYWNwaV9oZXN0X2dldF9wYXlsb2FkKGdkYXRhKTsNCj4+ICsJCQl1OCBl
+cnJvcl9oYW5kbGVkID0gZmFsc2U7DQo+PiArCQkJaW50IHJldDsNCj4+ICsNCj4+ICsJCQlyZXQg
+PQ0KPmF0b21pY19ub3RpZmllcl9jYWxsX2NoYWluKCZnaGVzX2V2ZW50X25vdGlmeV9saXN0LCAw
+LCBnZGF0YSk7DQo+DQo+V2VsbCwgdGhpcyBpcyBhIG5vdGlmaWVyIHdpdGggc3RhbmRhcmQgbmFt
+ZSBmb3IgYSBub24tc3RhbmRhcmQgZXZlbnQuDQo+Tm90IG9wdGltYWwuDQpPay4NCg0KPg0KPldo
+eSBkb2VzIG9ubHkgdGhpcyBldmVudCBuZWVkIGEgbm90aWZpZXI/IEJlY2F1c2UgeW91ciBkcml2
+ZXIgaXMNCj5pbnRlcmVzdGVkIGluIG9ubHkgdGhvc2UgZXZlbnRzPw0KVGhlIGVycm9yIGV2ZW50
+cyBmb3IgdGhlIFBDSWUgY29udHJvbGxlciBjYW4gYmUgcmVwb3J0ZWQgdG8gdGhlIGtlcm5lbCBp
+biB0aGUgdmVuZG9yIGRlZmluZWQgZm9ybWF0DQpbYXMgcGVyIHRoZSJOLjIuMyBOb24tc3RhbmRh
+cmQgU2VjdGlvbiBCb2R5IiBvZiB0aGUgVUVGSSBzcGVjXS4gDQpUaHVzIHRoZXNlIGV2ZW50cyBy
+ZXF1aXJlIGEgbm90aWZpZXIgZnJvbSBBUEVJIHRvIHRoZSBjb3JyZXNwb25kaW5nIGtlcm5lbCBk
+cml2ZXIuIA0KDQo+DQo+PiArCQkJaWYgKHJldCAmIE5PVElGWV9PSykNCj4+ICsJCQkJZXJyb3Jf
+aGFuZGxlZCA9IHRydWU7DQo+Pg0KPj4gIAkJCWxvZ19ub25fc3RhbmRhcmRfZXZlbnQoc2VjX3R5
+cGUsIGZydV9pZCwgZnJ1X3RleHQsDQo+PiAgCQkJCQkgICAgICAgc2VjX3NldiwgZXJyLA0KPj4g
+LQkJCQkJICAgICAgIGdkYXRhLT5lcnJvcl9kYXRhX2xlbmd0aCk7DQo+PiArCQkJCQkgICAgICAg
+Z2RhdGEtPmVycm9yX2RhdGFfbGVuZ3RoLA0KPj4gKwkJCQkJICAgICAgIGVycm9yX2hhbmRsZWQp
+Ow0KPg0KPldoYXQncyB0aGF0IGVycm9yX2hhbmRsZWQgdGhpbmcgZm9yPyBUaGF0J3MganVzdCBz
+aWxseS4NClRoaXMgZmllbGQgYWRkZWQgYmFzZWQgb24gdGhlIGlucHV0IGZyb20gSmFtZXMgTW9y
+c2Ugb24gdjQgcGF0Y2ggdG8gZW5hYmxlIHRoZSB1c2VyIHNwYWNlIGFwcGxpY2F0aW9uKHJhc2Rh
+ZW1vbikNCmRvIHRoZSBkZWNvZGluZyBhbmQgbG9nZ2luZyBvZiB0aGUgYW55IGV4dHJhIGVycm9y
+IGluZm9ybWF0aW9uIHNoYXJlZCBieSB0aGUgY29ycmVzcG9uZGluZyAga2VybmVsIGRyaXZlciB0
+byB0aGUgdXNlciBzcGFjZS4NCg0KPg0KPllvdXIgbm90aWZpZXIgcmV0dXJucyBOT1RJRllfU1RP
+UCB3aGVuIGl0IGhhcyBxdWV1ZWQgdGhlIGVycm9yLiBJZiB5b3UNCj5kb24ndCB3YW50IHRvIGxv
+ZyBpdCwganVzdCB0ZXN0ID09IE5PVElGWV9TVE9QIGFuZCBkbyBub3QgbG9nIGl0IHRoZW4uDQpz
+dXJlLg0KICAgDQo+DQo+VGhlbiB5b3VyIG5vdGlmaWVyIGNhbGxiYWNrIGlzIHF1ZXVpbmcgdGhl
+IGVycm9yIGludG8gYSBrZmlmbyBmb3INCj53aGF0ZXZlciByZWFzb24gYW5kIHRoZW4gc2NoZWR1
+bGluZyBhIHdvcmtxdWV1ZSB0byBoYW5kbGUgaXQgaW4gdXNlcg0KPmNvbnRleHQuLi4NCj4NCj5T
+byBJJ20gdGhpbmtpbmcgdGhhdCBpdCB3b3VsZCBiZSBiZXR0ZXIgaWYgeW91Og0KPg0KPiogbWFr
+ZSB0aGF0IGtmaWZvIGdlbmVyaWMgYW5kIHBhcnQgb2YgZ2hlcy5jIGFuZCBxdWV1ZSBhbGwgdHlw
+ZXMgb2YNCj5lcnJvciByZWNvcmRzIGludG8gaXQgaW4gZ2hlc19kb19wcm9jKCkgLSBub3QganVz
+dCB0aGUgbm9uLXN0YW5kYXJkDQo+b25lcy4NCj4NCj4qIHRoZW4sIHdoZW4geW91J3JlIGRvbmUg
+cXVldWluZywgeW91IGtpY2sgYSB3b3JrcXVldWUuDQo+DQo+KiB0aGF0IHdvcmtxdWV1ZSBydW5z
+IGEgbm9ybWFsLCBibG9ja2luZyBub3RpZmllciB0byB3aGljaCBkcml2ZXJzDQo+cmVnaXN0ZXIu
+DQpTdXJlLiBJIHdpbGwgdGVzdCB0aGlzIG1ldGhvZCBhbmQgdXBkYXRlLg0KQ2FuIHlvdSBwbGVh
+c2UgY29uZmlybSB5b3Ugd2FudCBhbGwgdGhlIGV4aXN0aW5nIHN0YW5kYXJkIGVycm9ycyhtZW1v
+cnksIEFSTSwgUENJRSkgaW4gdGhlIGdoZXNfZG9fcHJvYyAoKQ0KdG8gYmUgcmVwb3J0ZWQgdGhy
+b3VnaCB0aGUgYmxvY2tpbmcgbm90aWZpZXI/DQoNCj4NCj5Zb3VyIGRyaXZlciBjYW4gcmVnaXN0
+ZXIgdG8gdGhhdCBub3RpZmllciB0b28gYW5kIGRvIHRoZSBub3JtYWwgaGFuZGxpbmcNCj50aGVu
+IGFuZCBub3QgaGF2ZSB0aGlzIGFkLWhvYywgc2VtaS1nZW5lcmljLCBzZW1pLXZlbmRvci1zcGVj
+aWZpYyB0aGluZy4NCj4NCj5UaHguDQo+DQo+LS0NCj5SZWdhcmRzL0dydXNzLA0KPiAgICBCb3Jp
+cy4NCj4NCj5odHRwczovL3Blb3BsZS5rZXJuZWwub3JnL3RnbHgvbm90ZXMtYWJvdXQtbmV0aXF1
+ZXR0ZQ0KDQpUaGFua3MsDQpTaGlqdQ0K
