@@ -2,229 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE3D21987DC
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Mar 2020 01:12:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67E0C1988B4
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Mar 2020 02:13:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728987AbgC3XMk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Mar 2020 19:12:40 -0400
-Received: from mga03.intel.com ([134.134.136.65]:20425 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728880AbgC3XMk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 30 Mar 2020 19:12:40 -0400
-IronPort-SDR: TIq3/iEmMa/Qv2ryt9KRV5A90YX+PJDmn35nezMmLfbo/t9Lv/3328qykNvePTRPdjQ7yXVuZa
- 76KHsDWE8NyA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2020 16:12:39 -0700
-IronPort-SDR: I6lZqY0XRB1PzN0MRRBeVARtXBbO2zUQ6EirkcD8iixARL1T+cNhPxv5AxatrRuTm01D076G9u
- 1/DqW5mIA2vQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,326,1580803200"; 
-   d="scan'208";a="283800468"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 30 Mar 2020 16:12:37 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jJ3a8-0009Qv-N7; Tue, 31 Mar 2020 07:12:36 +0800
-Date:   Tue, 31 Mar 2020 07:12:34 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 61fafa3ac67beab5d2e0bf439da2523bd035cb0e
-Message-ID: <5e827ce2.1P61BurqHloJv3G0%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1729142AbgCaANn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Mar 2020 20:13:43 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:47524 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729019AbgCaANn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Mar 2020 20:13:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description;
+        bh=JaNBaI5ODzz69YpdR1NiBrpIIhmZrZWZTY/GzTI2SZ8=; b=QvgAjlHUZLNqHLlge9mPQDRDdM
+        Rdx+MrTe21Qfde+XLC3tOHLNbT8nMXjm2ihtELQu+BFFfXtQprBT4BTZpP+BZX4je/ml17Dbq955F
+        ot140aLMKprbxjaS8YeBrDmU3ASohYTC4mzQImgnz8I1GZCWXYINstbmO9X/QAiP3TjCAo7SxRSKx
+        XRHlDOXGPtA2wkvE4GO5Dpt2aLvFJyulPktstU51ELxwzveounNRDJ89n8duNNRqP7Ed/T/krx6KJ
+        aO8qWBsUgH3n+YWUjArkoyPBS0QdA4BLBFWevVtccOFxuvRrlyDVEDAdFrR/aQm7hgxXDzq2Dcje0
+        FimSI88A==;
+Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac]
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jJ4XF-0005xW-1J; Tue, 31 Mar 2020 00:13:41 +0000
+Subject: Re: ACPI Video Driver creates backlight on desktop board
+To:     Hans de Goede <hdegoede@redhat.com>,
+        Paul Menzel <pmenzel@molgen.mpg.de>,
+        Zhang Rui <rui.zhang@intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <75866748-f574-ae50-6183-ef6892c935c5@molgen.mpg.de>
+ <63956e11-46f2-72f4-c722-8fee2cbfbfa1@redhat.com>
+ <9a934fe8-9279-094c-e589-9e439c000b04@infradead.org>
+ <3981bf9d-e721-628e-b88a-c75614a5cc64@redhat.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <1c36df4c-75a4-079d-9469-4a1cb18b3c23@infradead.org>
+Date:   Mon, 30 Mar 2020 17:13:39 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <3981bf9d-e721-628e-b88a-c75614a5cc64@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: 61fafa3ac67beab5d2e0bf439da2523bd035cb0e  Merge branches 'acpi-cppc' and 'intel_pstate-passive' into testing
+On 3/30/20 2:32 PM, Hans de Goede wrote:
+> Hi,
+> 
+> On 3/30/20 11:25 PM, Randy Dunlap wrote:
+>> On 3/30/20 1:51 PM, Hans de Goede wrote:
+>>> Hi,
+>>>
+>>> On 3/29/20 11:36 AM, Paul Menzel wrote:
+>>>> Dear Linux folks,
+>>>>
+>>>>
+>>>> On the MSI desktop board [1]
+>>>>
+>>>>       [    0.000000] DMI: Micro-Star International Co., Ltd. MS-7A37/B350M MORTAR (MS-7A37), BIOS 1.MR 12/02/2019
+>>>>
+>>>> with an AMD Ryzen 3 2200G with Radeon Vega Graphics, the ACPI Video Driver `video` is loaded and creates a backlight device.
+>>>>
+>>>>       $ readlink -f /sys/class/backlight/acpi_video0
+>>>>       /sys/devices/pci0000:00/0000:00:08.1/0000:26:00.0/backlight/acpi_video0
+>>>>
+>>>> I wonder what the driver is used for as the AMDGPU driver exists for the graphics device.
+>>>
+>>> Backlight on x86 hw is a bit of a mess, there is an ACPI standard for accessing it
+>>> and with older (Windows XP era) laptops that is the interface which usually works,
+>>> then there are a bunch of vendor specific SMBIOS or WMI backlight interfaces and
+>>> then there is the option of directly accessing the hardware as the amdgpu driver
+>>> is doing.
+>>>
+>>> We have a bunch of heuristics to avoid the acpi_video driver registering a
+>>> backlight interface when it should not, either because the direct hw access
+>>> should be used instead; or because there simply is no builtin LCD panel and thus
+>>> no backlight to control.
+>>>
+>>> These heuristics are failing on your board.
+>>>
+>>>> If it’s useful, is there a way to prevent the backlight interface from getting created?
+>>>
+>>> You can pass "acpi_backlight=ignore" on the kernel commandline to disable the
+>>
+>> Hi Hans,
+>> Should that be "acpi_backlight=none"?  I don't see 'ignore' allowed here:
+>>
+>> static void acpi_video_parse_cmdline(void)
+>> {
+>>     if (!strcmp("vendor", acpi_video_backlight_string))
+>>         acpi_backlight_cmdline = acpi_backlight_vendor;
+>>     if (!strcmp("video", acpi_video_backlight_string))
+>>         acpi_backlight_cmdline = acpi_backlight_video;
+>>     if (!strcmp("native", acpi_video_backlight_string))
+>>         acpi_backlight_cmdline = acpi_backlight_native;
+>>     if (!strcmp("none", acpi_video_backlight_string))
+>>         acpi_backlight_cmdline = acpi_backlight_none;
+>> }
+> 
+> Yes you are right that should be "acpi_backlight=none".
+> 
+>> and Documentation/admin-guide/kernel-parameters.txt could stand to be updated
+>> with a few of those options.
+> 
+> Ack, I've put this on my (much too long) TODO list. Feel free to
+> beat me to it.
 
-elapsed time: 484m
+Sure, I'll send a patch shortly.
 
-configs tested: 169
-configs skipped: 0
+-- 
+~Randy
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm64                            allyesconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm                               allnoconfig
-arm                              allmodconfig
-arm                           efm32_defconfig
-arm                         at91_dt_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                               defconfig
-sparc                            allyesconfig
-um                           x86_64_defconfig
-ia64                                defconfig
-powerpc                             defconfig
-i386                              allnoconfig
-i386                             alldefconfig
-i386                             allyesconfig
-i386                                defconfig
-ia64                             alldefconfig
-ia64                             allmodconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-nios2                         3c120_defconfig
-nios2                         10m50_defconfig
-c6x                        evmc6678_defconfig
-xtensa                          iss_defconfig
-c6x                              allyesconfig
-xtensa                       common_defconfig
-openrisc                 simple_smp_defconfig
-openrisc                    or1ksim_defconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                                defconfig
-alpha                               defconfig
-h8300                     edosk2674_defconfig
-h8300                    h8300h-sim_defconfig
-h8300                       h8s-sim_defconfig
-m68k                             allmodconfig
-m68k                       m5475evb_defconfig
-m68k                          multi_defconfig
-m68k                           sun3_defconfig
-arc                                 defconfig
-arc                              allyesconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allmodconfig
-mips                              allnoconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-parisc                            allnoconfig
-parisc                           allyesconfig
-parisc                generic-32bit_defconfig
-parisc                generic-64bit_defconfig
-x86_64               randconfig-a001-20200330
-x86_64               randconfig-a002-20200330
-x86_64               randconfig-a003-20200330
-i386                 randconfig-a001-20200330
-i386                 randconfig-a002-20200330
-i386                 randconfig-a003-20200330
-riscv                randconfig-a001-20200330
-mips                 randconfig-a001-20200330
-m68k                 randconfig-a001-20200330
-parisc               randconfig-a001-20200330
-alpha                randconfig-a001-20200330
-nds32                randconfig-a001-20200330
-c6x                  randconfig-a001-20200330
-h8300                randconfig-a001-20200330
-microblaze           randconfig-a001-20200330
-nios2                randconfig-a001-20200330
-sparc64              randconfig-a001-20200330
-csky                 randconfig-a001-20200330
-openrisc             randconfig-a001-20200330
-s390                 randconfig-a001-20200330
-sh                   randconfig-a001-20200330
-xtensa               randconfig-a001-20200330
-csky                 randconfig-a001-20200331
-openrisc             randconfig-a001-20200331
-s390                 randconfig-a001-20200331
-sh                   randconfig-a001-20200331
-xtensa               randconfig-a001-20200331
-x86_64               randconfig-b001-20200330
-x86_64               randconfig-b002-20200330
-x86_64               randconfig-b003-20200330
-i386                 randconfig-b001-20200330
-i386                 randconfig-b002-20200330
-i386                 randconfig-b003-20200330
-x86_64               randconfig-c001-20200330
-x86_64               randconfig-c002-20200330
-x86_64               randconfig-c003-20200330
-i386                 randconfig-c001-20200330
-i386                 randconfig-c002-20200330
-i386                 randconfig-c003-20200330
-x86_64               randconfig-d001-20200330
-x86_64               randconfig-d002-20200330
-x86_64               randconfig-d003-20200330
-i386                 randconfig-d001-20200330
-i386                 randconfig-d002-20200330
-i386                 randconfig-d003-20200330
-x86_64               randconfig-e001-20200330
-i386                 randconfig-e002-20200330
-x86_64               randconfig-e003-20200330
-i386                 randconfig-e003-20200330
-x86_64               randconfig-e002-20200330
-i386                 randconfig-e001-20200330
-x86_64               randconfig-f001-20200330
-x86_64               randconfig-f002-20200330
-x86_64               randconfig-f003-20200330
-i386                 randconfig-f001-20200330
-i386                 randconfig-f002-20200330
-i386                 randconfig-f003-20200330
-x86_64               randconfig-g001-20200330
-x86_64               randconfig-g002-20200330
-x86_64               randconfig-g003-20200330
-i386                 randconfig-g001-20200330
-i386                 randconfig-g002-20200330
-i386                 randconfig-g003-20200330
-x86_64               randconfig-h001-20200330
-x86_64               randconfig-h002-20200330
-x86_64               randconfig-h003-20200330
-i386                 randconfig-h001-20200330
-i386                 randconfig-h002-20200330
-i386                 randconfig-h003-20200330
-arc                  randconfig-a001-20200330
-arm                  randconfig-a001-20200330
-arm64                randconfig-a001-20200330
-ia64                 randconfig-a001-20200330
-powerpc              randconfig-a001-20200330
-sparc                randconfig-a001-20200330
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-s390                             alldefconfig
-s390                             allmodconfig
-s390                              allnoconfig
-s390                             allyesconfig
-s390                          debug_defconfig
-s390                                defconfig
-s390                       zfcpdump_defconfig
-sh                               allmodconfig
-sh                                allnoconfig
-sh                          rsk7269_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                            titan_defconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                             i386_defconfig
-um                                  defconfig
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                               rhel-7.6
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
