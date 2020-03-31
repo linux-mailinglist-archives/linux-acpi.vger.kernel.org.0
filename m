@@ -2,130 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45886198E1D
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Mar 2020 10:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7AC21991C8
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Mar 2020 11:21:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730012AbgCaIQ3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 Mar 2020 04:16:29 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:22255 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730007AbgCaIQ3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 31 Mar 2020 04:16:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1585642588;
+        id S1730928AbgCaJVg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 Mar 2020 05:21:36 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:50816 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731473AbgCaJJg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 31 Mar 2020 05:09:36 -0400
+Received: from zn.tnic (p200300EC2F0C09003D11AEAD23413CBD.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:900:3d11:aead:2341:3cbd])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 65EE11EC0CBD;
+        Tue, 31 Mar 2020 11:09:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1585645774;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0KEXjDpdkfzHGYc11MseadUyHXSxJBFAffB+nwY1U/g=;
-        b=H5BLvCbc4lzazQ+uW9HiGB5uSl91PhU6u4B+J4h3aSSTSQTxohUVxJditmIdW8rNndY28J
-        PkpbIOndhj3bo8RYJFdJ/YrgOY0DHw4ZxJeEXLY/qde46xPJmZ1tYRE+/51TXEuCkHUwUD
-        gyyZdtaigMu7X2PoH662qRqR0e7ha28=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-337-4h9Z4vX-M-utmljnTHD6iQ-1; Tue, 31 Mar 2020 04:16:26 -0400
-X-MC-Unique: 4h9Z4vX-M-utmljnTHD6iQ-1
-Received: by mail-wm1-f72.google.com with SMTP id s15so408794wmc.0
-        for <linux-acpi@vger.kernel.org>; Tue, 31 Mar 2020 01:16:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=0KEXjDpdkfzHGYc11MseadUyHXSxJBFAffB+nwY1U/g=;
-        b=mSGD1sNTrY99WXkyjkwZ7ls/RMX7Be/+vFqxZBRYkqbTJj1CD+is3SDfpIhpL6DGVn
-         lW61ofyuB5FSRFSZEnyedUD0fP2AFvpO12IaKtUwjrybpRVyXnnyBAC55er7xgmf84LB
-         VpJFRzWDI+IEq5GKXK6W/h2g6Y3QYdJlZ4k7jDmwqfvVRJsthXQKfDb2H18Az94PTaLE
-         gsFsDXLdfkLil57AN/wSrdI747/Mxe1CV5jp/xMKfe2L/bos9pKB/FkJLyIQXtPD3gBO
-         LTO5eeHRsNLPolDarNKoJDupScsMkgb5l1PcJN9NjNoluEvj6aTGmcWmZ2p9l2M4NGGX
-         6y1w==
-X-Gm-Message-State: ANhLgQ3UqIHnBGRa0Uenq92vBa+vSs33pCfLnNViv/hv+C3pTp6L8Vqq
-        7t501h3lvjvs3iblXCtVuJ9ukw6KzTJpy0KSWKEKrXoZsl3gv45Le6JmtF9YmPcSv3jOGvA5L25
-        feXE1Y/DBZoO5aYU38Tkm2Q==
-X-Received: by 2002:a1c:b657:: with SMTP id g84mr2164604wmf.107.1585642585527;
-        Tue, 31 Mar 2020 01:16:25 -0700 (PDT)
-X-Google-Smtp-Source: ADFU+vv0D8PbQSNyZJuByypmQwlp7VqNiGfkNYGvcYmg07TfkZmLPoOr3o3JKc2z0GnUlCHHAhkomA==
-X-Received: by 2002:a1c:b657:: with SMTP id g84mr2164596wmf.107.1585642585366;
-        Tue, 31 Mar 2020 01:16:25 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-fc7e-fd47-85c1-1ab3.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:fc7e:fd47:85c1:1ab3])
-        by smtp.gmail.com with ESMTPSA id q9sm2195041wrp.84.2020.03.31.01.16.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Mar 2020 01:16:24 -0700 (PDT)
-Subject: Re: [PATCH] ACPI; update docs for "acpi_backlight" kernel parameter
- options
-To:     Randy Dunlap <rdunlap@infradead.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        ACPI Devel Mailing List <linux-acpi@vger.kernel.org>
-Cc:     Zhang Rui <rui.zhang@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-References: <19409af2-f38a-6760-c7b3-aa5794a94df0@infradead.org>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <c292826f-0a41-910d-1973-e6b613fbce7e@redhat.com>
-Date:   Tue, 31 Mar 2020 10:16:23 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=IAjq8vkgmuwy5aDCdanAPTga8JYTa70hGlJvTK2iieo=;
+        b=mJDZC8MHDaOJXLbCV9bY6OQtS+NMQtl8VJzFy9IxXRsNRFMmcDI1hXEW3sx9fvxViwZqQ+
+        zaRUoDDBCBBARpOWZbSW+AgNfMQqetampHH+3rfhgtHcGFWgTYHep2T2a9mrqIZgRdtN0o
+        EPV1nJxi4h/xiUcIxBrPv7zKPSEclJw=
+Date:   Tue, 31 Mar 2020 11:09:29 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Shiju Jose <shiju.jose@huawei.com>
+Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "helgaas@kernel.org" <helgaas@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "zhangliguang@linux.alibaba.com" <zhangliguang@linux.alibaba.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        Linuxarm <linuxarm@huawei.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        tanxiaofei <tanxiaofei@huawei.com>,
+        yangyicong <yangyicong@huawei.com>
+Subject: Re: [PATCH v6 1/2] ACPI / APEI: Add support to notify the vendor
+ specific HW errors
+Message-ID: <20200331090929.GB29131@zn.tnic>
+References: <ShijuJose>
+ <20200325164223.650-1-shiju.jose@huawei.com>
+ <20200325164223.650-2-shiju.jose@huawei.com>
+ <20200327182214.GD8015@zn.tnic>
+ <b180618fb6cb477ea7185979c11c5868@huawei.com>
+ <20200330103353.GC16242@zn.tnic>
+ <ee79588ee82445dcb76f1fe6c1082fb8@huawei.com>
+ <20200330134249.GF16242@zn.tnic>
+ <613133075a174454a88312448b9b333c@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <19409af2-f38a-6760-c7b3-aa5794a94df0@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <613133075a174454a88312448b9b333c@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Mon, Mar 30, 2020 at 03:44:29PM +0000, Shiju Jose wrote:
+> 1. rasdaemon need not to print the vendor error data reported by the firmware if the 
+>     kernel driver already print those information. In this case rasdaemon will only need to store
+>     the decoded vendor error data to the SQL database.
 
-On 3/31/20 2:17 AM, Randy Dunlap wrote:
-> From: Randy Dunlap <rdunlap@infradead.org>
-> 
-> Update the Documentation for "acpi_backlight" by adding
-> 2 new options (native and none).
-> 
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: linux-acpi@vger.kernel.org
-> Cc: Zhang Rui <rui.zhang@intel.com>
-> Cc: Hans de Goede <hdegoede@redhat.com>
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Cc: Len Brown <lenb@kernel.org>
+Well, there's a problem with this:
 
-Thanks!
+rasdaemon printing != kernel driver printing
 
-Patch looks good to me:
+Because printing in dmesg would need people to go grep dmesg.
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Printing through rasdaemon or any userspace agent, OTOH, is a lot more
+flexible wrt analyzing and collecting those error records. Especially
+if you are a data center admin and you want to collect all your error
+records: grepping dmesg simply doesn't scale versus all the rasdaemon
+agents reporting to a centrallized location.
 
-Regards,
+> 2. If the vendor kernel driver want to report extra error information through
+>     the vendor specific data (though presently we do not have any such use case) for the rasdamon to log. 
+>     I think the error handled status useful to indicate that the kernel driver has filled the extra information and
+>     rasdaemon to decode and log them after extra data specific validity check.
 
-Hans
+The kernel driver can report that extra information without the kernel
+saying that the error was handled.
 
+So I still see no sense for the kernel to tell userspace explicitly that
+it handled the error. There might be a valid reason, though, of which I
+cannot think of right now.
 
+Thx.
 
+-- 
+Regards/Gruss,
+    Boris.
 
-> ---
->   Documentation/admin-guide/kernel-parameters.txt |    8 +++++---
->   1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> --- linux-next-20200330.orig/Documentation/admin-guide/kernel-parameters.txt
-> +++ linux-next-20200330/Documentation/admin-guide/kernel-parameters.txt
-> @@ -22,11 +22,13 @@
->   			default: 0
->   
->   	acpi_backlight=	[HW,ACPI]
-> -			acpi_backlight=vendor
-> -			acpi_backlight=video
-> -			If set to vendor, prefer vendor specific driver
-> +			{ vendor | video | native | none }
-> +			If set to vendor, prefer vendor-specific driver
->   			(e.g. thinkpad_acpi, sony_acpi, etc.) instead
->   			of the ACPI video.ko driver.
-> +			If set to video, use the ACPI video.ko driver.
-> +			If set to native, use the device's native backlight mode.
-> +			If set to none, disable the ACPI backlight interface.
->   
->   	acpi_force_32bit_fadt_addr
->   			force FADT to use 32 bit addresses rather than the
-> 
-
+https://people.kernel.org/tglx/notes-about-netiquette
