@@ -2,100 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C6BC19C4F8
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Apr 2020 16:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBA7B19C884
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Apr 2020 20:07:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388846AbgDBOyg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Apr 2020 10:54:36 -0400
-Received: from foss.arm.com ([217.140.110.172]:43852 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388811AbgDBOyg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 2 Apr 2020 10:54:36 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 864DB31B;
-        Thu,  2 Apr 2020 07:54:35 -0700 (PDT)
-Received: from [192.168.122.166] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 287C03F71E;
-        Thu,  2 Apr 2020 07:54:35 -0700 (PDT)
-Subject: Re: [PATCH] ACPI: PPTT: Inform user that table offset used for
- Physical processor node ID
-To:     John Garry <john.garry@huawei.com>, rjw@rjwysocki.net,
-        lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        sudeep.holla@arm.com, linuxarm@huawei.com, wanghuiqiang@huawei.com
-References: <1585830145-208714-1-git-send-email-john.garry@huawei.com>
- <89f68a3c-264a-5d1b-e63a-d1147ea07320@arm.com>
- <0244dcc3-6006-2a67-e861-d2bcce4360f6@huawei.com>
-From:   Jeremy Linton <jeremy.linton@arm.com>
-Message-ID: <ab0754b0-cb4b-dbe5-8d93-cc0df8fa4a39@arm.com>
-Date:   Thu, 2 Apr 2020 09:54:25 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S2389072AbgDBSHI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Apr 2020 14:07:08 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:49725 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728225AbgDBSHH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Apr 2020 14:07:07 -0400
+Received: from 185.80.35.16 (185.80.35.16) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.341)
+ id 754a245cf567c245; Thu, 2 Apr 2020 20:07:06 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Zhang Rui <rui.zhang@intel.com>
+Cc:     Takashi Iwai <tiwai@suse.de>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: OOB access on ACPI processor thermal device via sysfs write
+Date:   Thu, 02 Apr 2020 20:07:05 +0200
+Message-ID: <1971976.2hYWdNQAa4@kreacher>
+In-Reply-To: <0926f44775e91145a83c9eb88a468c64261af20d.camel@intel.com>
+References: <s5h5zeiwd01.wl-tiwai@suse.de> <s5h1rp6w97p.wl-tiwai@suse.de> <0926f44775e91145a83c9eb88a468c64261af20d.camel@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <0244dcc3-6006-2a67-e861-d2bcce4360f6@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Thursday, April 2, 2020 12:03:30 PM CEST Zhang Rui wrote:
+> On Thu, 2020-04-02 at 11:03 +0200, Takashi Iwai wrote:
+> > On Thu, 02 Apr 2020 09:47:50 +0200,
+> > Zhang, Rui wrote:
+> > > 
+> > > CC Viresh.
+> > > 
+> > > Yes, I've received it.
+> > > 
+> > > To me, there is not a hard rule that the cooling device max_state
+> > > must be static.
+> > > We should be able to detect the max_state change and reset the
+> > > stats table when necessary.
+> > > 
+> > > I just finished a prototype patch to do so, and will paste it
+> > > later.
+> > 
+> > Great, that sounds like a feasible option, indeed.
+> > 
+> > 
+> Please try the patch below and see if the problem goes away or not.
+> 
+> From 7b429674a0e1a6226734c8919b876bb57d946b1d Mon Sep 17 00:00:00 2001
+> From: Zhang Rui <rui.zhang@intel.com>
+> Date: Thu, 2 Apr 2020 11:18:44 +0800
+> Subject: [RFC PATCH] thermal: update thermal stats table when max cooling
+>  state changed
+> 
+> The maximum cooling state of a cooling device may be changed at
+> runtime. Thus the statistics table must be updated to handle the real
+> maximum cooling states supported.
+> 
+> This fixes an OOB issue when updating the statistics of the processor
+> cooling device, because it only supports 1 cooling state before cpufreq
+> driver loaded.
 
-On 4/2/20 9:51 AM, John Garry wrote:
-> On 02/04/2020 14:55, Jeremy Linton wrote:
->> Hi,
->>
->> On 4/2/20 7:22 AM, John Garry wrote:
->>> If the the Processor ID valid is not set for a Physical Processor 
->>> Package
->>> node, then the node table offset is used as a substitute. As such, we
->>> may get info like this from sysfs:
->>>
->>> root@(none)$ pwd
->>> /sys/devices/system/cpu/cpu0/topology
->>> root@(none)$ more physical_package_id
->>> 56
->>>
->>> Inform the user of this in the bootlog, as it is much less than 
->>> ideal, and
->>> they can remedy this in their FW.
->>>
->>> This topic was originally discussed in:
->>> https://lore.kernel.org/linux-acpi/c325cfe2-7dbf-e341-7f0f-081b6545e890@huawei.com/T/#m0ec18637d8586f832084a8a6af22580e6174669a 
->>>
->>>
->>> Signed-off-by: John Garry <john.garry@huawei.com>
->>>
->>> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
->>> index 4ae93350b70d..b4ed3c818e00 100644
->>> --- a/drivers/acpi/pptt.c
->>> +++ b/drivers/acpi/pptt.c
->>> @@ -515,6 +515,8 @@ static int topology_get_acpi_cpu_tag(struct 
->>> acpi_table_header *table,
->>>           if (level == 0 ||
->>>               cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID)
->>>               return cpu_node->acpi_processor_id;
->>> +        if (level == PPTT_ABORT_PACKAGE)
->>> +            pr_notice_once("Physical package node Processor ID valid 
->>> not set, will use table offset as substitute\n");
-> 
-> Hi Jeremy,
-> 
->>
->> What happens in the find_acpi_cpu_topology_hetro_id() case, if the 
->> last IDENTICAL node isn't a socket/etc. Are we expecting to warn of a 
->> missing processor container there as well?
-> 
-> ok, I could just use this then:
-> 
-> if (flags & ACPI_PPTT_PHYSCIAL_PACKAGE)
->      pr_notice_once("Physical package node Processor ID ...")
+It might also be addressed by adding a ->get_state_count() callback to
+struct thermal_cooling_device_ops (and fall back to ->get_max_state() if
+that is NULL) and use that for the stats allocation.
 
-I think that is a better plan.
+If the new callback always returns CPUFREQ_THERMAL_MAX_STEP, the size of the
+stats table will be sufficient in all cases and acpi_processor_notifier()
+can update it as needed.
 
-> 
-> As I recall, this tag for hetro id is not exposed to userspace (yet).
 
-Correct.
+
