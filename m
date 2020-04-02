@@ -2,94 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15B5419C9F1
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Apr 2020 21:22:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B550919CD1D
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Apr 2020 00:51:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387654AbgDBTWD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Apr 2020 15:22:03 -0400
-Received: from mga11.intel.com ([192.55.52.93]:40920 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732625AbgDBTWD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 2 Apr 2020 15:22:03 -0400
-IronPort-SDR: LVoV64XSlcBf2YFP5MixYctj01nU7A/aoWUnZ57XQZG5z8aROlLEzGywkiJMki3K3FDgpL0Fic
- oonUTB1XRcUg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2020 12:22:02 -0700
-IronPort-SDR: HPlrlLEifWROXK4+Dc1PcEvewa6yrANYd49N+uhhrAgGykfTHlVfk/hOoA+z5G7tR9/eMPMwPE
- q7MhMagLko8A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,336,1580803200"; 
-   d="scan'208";a="242612758"
-Received: from hbriegel-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.39.101])
-  by fmsmga008.fm.intel.com with ESMTP; 02 Apr 2020 12:21:58 -0700
-Date:   Thu, 2 Apr 2020 22:21:57 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Stefan Berger <stefanb@linux.vnet.ibm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-integrity@vger.kernel.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-security-module@vger.kernel.org,
-        Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v3] acpi: Extend TPM2 ACPI table with missing log fields
-Message-ID: <20200402192145.GB10314@linux.intel.com>
-References: <20200331214949.883781-1-stefanb@linux.vnet.ibm.com>
- <20200401083729.GD17325@linux.intel.com>
- <CAJZ5v0gQ04h1+zN4wHj1vkwPvqu3RPfsY60VJ+GOtgUrvWuxLQ@mail.gmail.com>
+        id S2389993AbgDBWvq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Apr 2020 18:51:46 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:53218 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2389951AbgDBWvq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Apr 2020 18:51:46 -0400
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 032MYDaO018611;
+        Thu, 2 Apr 2020 18:51:42 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 305q27avvu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 02 Apr 2020 18:51:42 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+        by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 032MoPH6011527;
+        Thu, 2 Apr 2020 22:51:41 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
+        by ppma04wdc.us.ibm.com with ESMTP id 301x774bhk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 02 Apr 2020 22:51:41 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com [9.57.199.106])
+        by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 032MpfLE53936610
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 2 Apr 2020 22:51:41 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4CBE0283F8;
+        Thu,  2 Apr 2020 22:51:41 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3299B283F5;
+        Thu,  2 Apr 2020 22:51:41 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+        by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+        Thu,  2 Apr 2020 22:51:41 +0000 (GMT)
+From:   Stefan Berger <stefanb@linux.vnet.ibm.com>
+To:     linux-integrity@vger.kernel.org, jarkko.sakkinen@linux.intel.com,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Cc:     Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH v4 0/2] tpm2: Make TPM2 logs accessible for non-UEFI firmware
+Date:   Thu,  2 Apr 2020 18:51:38 -0400
+Message-Id: <20200402225140.922789-1-stefanb@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0gQ04h1+zN4wHj1vkwPvqu3RPfsY60VJ+GOtgUrvWuxLQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-04-02_12:2020-04-02,2020-04-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
+ lowpriorityscore=0 clxscore=1015 suspectscore=0 spamscore=0
+ priorityscore=1501 mlxlogscore=807 bulkscore=0 mlxscore=0 adultscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004020164
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Apr 01, 2020 at 11:05:36AM +0200, Rafael J. Wysocki wrote:
-> On Wed, Apr 1, 2020 at 10:37 AM Jarkko Sakkinen
-> <jarkko.sakkinen@linux.intel.com> wrote:
-> >
-> > On Tue, Mar 31, 2020 at 05:49:49PM -0400, Stefan Berger wrote:
-> > > From: Stefan Berger <stefanb@linux.ibm.com>
-> > >
-> > > Recent extensions of the TPM2 ACPI table added 3 more fields
-> > > including 12 bytes of start method specific parameters and Log Area
-> > > Minimum Length (u32) and Log Area Start Address (u64). So, we extend
-> > > the existing structure with these fields to allow non-UEFI systems
-> > > to access the TPM2's log.
-> > >
-> > > The specification that has the new fields is the following:
-> > >   TCG ACPI Specification
-> > >   Family "1.2" and "2.0"
-> > >   Version 1.2, Revision 8
-> > >
-> > > Adapt all existing table size calculations to use
-> > > offsetof(struct acpi_table_tpm2, start_method_specific)
-> > > [where start_method_specific is a newly added field]
-> > > rather than sizeof(struct acpi_table_tpm2) so that the addition
-> > > of the new fields does not affect current systems that may not
-> > > have them.
-> > >
-> > > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> > > Cc: linux-acpi@vger.kernel.org
-> >
-> > I think I'm cool with this but needs an ack from ACPI maintainer.
-> >
-> > Rafael, given that this not an intrusive change in any possible means,
-> > can I pick this patch and put it to my next pull request?
-> 
-> Yes, please.
-> 
-> Thanks!
+From: Stefan Berger <stefanb@linux.ibm.com>
 
-Great, thanks Rafael.
+This series of patches extends the existing TPM2 ACPI table with additional
+fields found in the TPM2 TCG ACPI specification (reference is in the patch)
+that allow access to the log's address and its size. We then modify the
+code that so far only enables access to a TPM 1.2's log for a TPM2 as well.
+This then enables access to the TPM2's log on non-UEFI system that for example
+run SeaBIOS.
 
-Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+   Stefan
 
-Do you mind if I add your ack to the commit?
+v3->v4:
+  - Repost as one series
 
-/Jarkko
+v2->v3:
+  - Split the series into two separate patches
+  - Added comments to ACPI table fields
+  - Added check for null pointer to log area and zero log size
+
+v1->v2:
+  - Repost of the series
+
+
+
+Stefan Berger (2):
+  acpi: Extend TPM2 ACPI table with missing log fields
+  tpm: Add support for event log pointer found in TPM2 ACPI table
+
+ drivers/char/tpm/eventlog/acpi.c | 56 +++++++++++++++++++++++++---------------
+ drivers/char/tpm/tpm_crb.c       | 13 +++++++---
+ drivers/char/tpm/tpm_tis.c       |  4 ++-
+ include/acpi/actbl3.h            |  5 ++--
+ 4 files changed, 51 insertions(+), 27 deletions(-)
+
+-- 
+2.14.5
+
