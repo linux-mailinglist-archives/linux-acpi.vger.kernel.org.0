@@ -2,91 +2,311 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 389D519D952
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Apr 2020 16:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80E3119D9A0
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Apr 2020 17:00:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391021AbgDCOmw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Apr 2020 10:42:52 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:33962 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728066AbgDCOmw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Apr 2020 10:42:52 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 033EdkGe080956;
-        Fri, 3 Apr 2020 14:41:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=8eB0Qd/qSpv4suW6hmEbSPGr2zS14DHLjEQLihL5FII=;
- b=F7s6ITqDEGwCwkoP4gQrmD2rjt61Qh61UUkTPSstfgD+GphjGzKCbWsdOMU/0vv53JJ0
- 8bbQlQGagNefPhDfsrovTnd53hpWZy+ILwtbJIiUK095qbeMt8weizhFHt0QISUTHGZo
- V1I2XzXS4dIaI0Fef1DcrIOTjQhOLIm1YV8oJcezT3CZjyaQUm9G1jqU2YW9DutdoUp+
- Ek+IK2KE3RVMudvT+bAn4EBdia1RSZrAyJRU/O47kzThnN05vpy6C5uKHLBbdJAGl58i
- Tex7Cn5Mb5ouZbfHr0wsbsJx5/iYTCrVieiUd++bhcKcQZ8jieO4ahyDyG0X10bomGyY 4Q== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 303cevheuj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 Apr 2020 14:41:50 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 033EcVxG187246;
-        Fri, 3 Apr 2020 14:41:50 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 302g4xkkn3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 Apr 2020 14:41:49 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 033EfjPT022150;
-        Fri, 3 Apr 2020 14:41:45 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 Apr 2020 07:41:44 -0700
-Date:   Fri, 3 Apr 2020 17:41:29 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     kbuild@lists.01.org, Shiju Jose <shiju.jose@huawei.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rjw@rjwysocki.net, lenb@kernel.org,
-        bp@alien8.de, james.morse@arm.com, tony.luck@intel.com,
-        gregkh@linuxfoundation.org, zhangliguang@linux.alibaba.com,
-        tglx@linutronix.de, linuxarm@huawei.com,
-        jonathan.cameron@huawei.com, tanxiaofei@huawei.com,
-        yangyicong@hisilicon.com
-Subject: Re: [PATCH v5 2/2] PCI: HIP: Add handling of HiSilicon HIP PCIe
- controller errors
-Message-ID: <20200403144129.GH2066@kadam>
-References: <20200403102313.GD2066@kadam>
- <20200403133303.GA213756@google.com>
+        id S2404016AbgDCPAS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Apr 2020 11:00:18 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:40127 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2403915AbgDCPAR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Apr 2020 11:00:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585926016;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=G+WR1RIU3atyxLTePnTCnN9yfP39JOx2oAtD6wBYsRo=;
+        b=aPqExCWWcMASQ7JMbQO0FOBLiBnc56LBeybypGIsyiEbfBY4mlUUg7ZMQBcfqgb/jAs3P/
+        neycdY7xM6v6tfO+Wlfj5jMpKRogwnYVEuoEmURNuamhG/xz3P7e5FHgMSK1Jq738y3/Wh
+        d7BnvLBo2ODsEgoGF5pt4qkBrPOmy3g=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-264-pi403o77NsiA2EZtqgejgQ-1; Fri, 03 Apr 2020 11:00:14 -0400
+X-MC-Unique: pi403o77NsiA2EZtqgejgQ-1
+Received: by mail-wr1-f72.google.com with SMTP id e10so3205739wru.6
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Apr 2020 08:00:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=G+WR1RIU3atyxLTePnTCnN9yfP39JOx2oAtD6wBYsRo=;
+        b=r+q+TEoZe+TjV1s6B2ebTdEmyx4tP0W9vKs1+fTk1t3pufXCR7qjjsEx7FTbMQmY52
+         rWE/MKOWaTQ36w/+qPTCeZjRwKdAqLiSvQ6wtutG65VegIkr02BXUp8NslaV0pri8Dhw
+         iKjcbbhU3pz2+OpPG/cVJPxDvXW1BnpoYOJEYX2UgAMg7k3OPibc9OGdaA61cCy/kyd9
+         bIcTOCz3bWkLsDR5UzeLU+kTYoUtaSA2eOuBqwQaReuCKGmBwiIMAtuMogYj0ftW3QGq
+         MDkeBzyfIqghakO1VJ/70BZM1AZ3vwYYPT7Eg4OepolDimh9l/aBuiWUkgrGC6lPjNGi
+         CqKQ==
+X-Gm-Message-State: AGi0PuZclWMML9Me88CA58duu/Zawb9vMfrEWQZCB2TzPegUn6koz/NW
+        H4KVEZTDwztDCjHk/a/p/o4MvWbcHiUP1lLJW6DH9LEsJ19/JO8oSB9732jLYwjuTDitTz9z3ab
+        a8JlCWnSAbxfPVoRRUxChrA==
+X-Received: by 2002:adf:e48a:: with SMTP id i10mr10024628wrm.71.1585926013264;
+        Fri, 03 Apr 2020 08:00:13 -0700 (PDT)
+X-Google-Smtp-Source: APiQypLqnDom6UdWBr+033Gy+83GRYfkfXS0fhfrDBUfQhqFi5xzo63Mh7oAag+pjQKdqhnpcks9TA==
+X-Received: by 2002:adf:e48a:: with SMTP id i10mr10024589wrm.71.1585926012927;
+        Fri, 03 Apr 2020 08:00:12 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id w204sm12060632wma.1.2020.04.03.08.00.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Apr 2020 08:00:12 -0700 (PDT)
+Subject: Re: [PATCH v2 1/2] ACPI: PM: Add acpi_[un]register_wakeup_handler()
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "5 . 4+" <stable@vger.kernel.org>
+References: <20200403105235.105187-1-hdegoede@redhat.com>
+ <CAHp75VfV2M+uRNqDg0MfMwr2-1EMQv-cZT4-WtufrzyYi9zQXw@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <acba586b-6924-a3d8-9830-4e42a3586cb0@redhat.com>
+Date:   Fri, 3 Apr 2020 17:00:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200403133303.GA213756@google.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9579 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 suspectscore=0
- mlxscore=0 spamscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004030130
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9579 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 adultscore=0
- clxscore=1015 phishscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0
- suspectscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004030130
+In-Reply-To: <CAHp75VfV2M+uRNqDg0MfMwr2-1EMQv-cZT4-WtufrzyYi9zQXw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Apr 03, 2020 at 08:33:03AM -0500, Bjorn Helgaas wrote:
->
-> Adding tags for every reviewer or bot comment seems like overkill.
+Hi,
 
-I think style comments are their own reward but people should get credit
-for bug fixes.
+On 4/3/20 4:17 PM, Andy Shevchenko wrote:
+> On Fri, Apr 3, 2020 at 1:52 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> Since commit fdde0ff8590b ("ACPI: PM: s2idle: Prevent spurious SCIs from
+>> waking up the system") the SCI triggering without there being a wakeup
+>> cause recognized by the ACPI sleep code will no longer wakeup the system.
+>>
+>> This works as intended, but this is a problem for devices where the SCI
+>> is shared with another device which is also a wakeup source.
+>>
+>> In the past these, from the pov of the ACPI sleep code, spurious SCIs
+>> would still cause a wakeup so the wakeup from the device sharing the
+>> interrupt would actually wakeup the system. This now no longer works.
+>>
+>> This is a problem on e.g. Bay Trail-T and Cherry Trail devices where
+>> some peripherals (typically the XHCI controller) can signal a
+>> Power Management Event (PME) to the Power Management Controller (PMC)
+>> to wakeup the system, this uses the same interrupt as the SCI.
+>> These wakeups are handled through a special INT0002 ACPI device which
+>> checks for events in the GPE0a_STS for this and takes care of acking
+>> the PME so that the shared interrupt stops triggering.
+>>
+>> The change to the ACPI sleep code to ignore the spurious SCI, causes
+>> the system to no longer wakeup on these PME events. To make things
+>> worse this means that the INT0002 device driver interrupt handler will
+>> no longer run, causing the PME to not get cleared and resulting in the
+>> system hanging. Trying to wakeup the system after such a PME through e.g.
+>> the power button no longer works.
+>>
+>> Add an acpi_register_wakeup_handler() function which registers
+>> a handler to be called from acpi_s2idle_wake() and when the handler
+>> returns true, return true from acpi_s2idle_wake().
+>>
+>> The INT0002 driver will use this mechanism to check the GPE0a_STS
+>> register from acpi_s2idle_wake() and to tell the system to wakeup
+>> if a PME is signaled in the register.
+>>
+> 
+> Something happened to your editor settings? Some lines looks like too short...
+> 
+>> Fixes: fdde0ff8590b ("ACPI: PM: s2idle: Prevent spurious SCIs from waking up the system")
+>> Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>> Changes in v2:
+>> - Move the new helpers to drivers/acpi/wakeup.c
+>> - Rename the helpers to acpi_[un]register_wakeup_handler(), also give some
+>>    types/variables better names
+>> ---
+>>   drivers/acpi/sleep.c  |  4 +++
+>>   drivers/acpi/sleep.h  |  1 +
+>>   drivers/acpi/wakeup.c | 82 +++++++++++++++++++++++++++++++++++++++++++
+>>   include/linux/acpi.h  |  5 +++
+>>   4 files changed, 92 insertions(+)
+>>
+>> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+>> index e5f95922bc21..dc8c71c47285 100644
+>> --- a/drivers/acpi/sleep.c
+>> +++ b/drivers/acpi/sleep.c
+>> @@ -1025,6 +1025,10 @@ static bool acpi_s2idle_wake(void)
+>>                  if (acpi_any_gpe_status_set() && !acpi_ec_dispatch_gpe())
+>>                          return true;
+>>
+>> +               /* Check wakeups from drivers sharing the SCI. */
+>> +               if (acpi_check_wakeup_handlers())
+>> +                       return true;
+>> +
+>>                  /*
+>>                   * Cancel the wakeup and process all pending events in case
+>>                   * there are any wakeup ones in there.
+>> diff --git a/drivers/acpi/sleep.h b/drivers/acpi/sleep.h
+>> index 41675d24a9bc..3d90480ce1b1 100644
+>> --- a/drivers/acpi/sleep.h
+>> +++ b/drivers/acpi/sleep.h
+>> @@ -2,6 +2,7 @@
+>>
+>>   extern void acpi_enable_wakeup_devices(u8 sleep_state);
+>>   extern void acpi_disable_wakeup_devices(u8 sleep_state);
+>> +extern bool acpi_check_wakeup_handlers(void);
+>>
+>>   extern struct list_head acpi_wakeup_device_list;
+>>   extern struct mutex acpi_device_lock;
+>> diff --git a/drivers/acpi/wakeup.c b/drivers/acpi/wakeup.c
+>> index 9614126bf56e..de0f8e626c1c 100644
+>> --- a/drivers/acpi/wakeup.c
+>> +++ b/drivers/acpi/wakeup.c
+>> @@ -12,6 +12,15 @@
+>>   #include "internal.h"
+>>   #include "sleep.h"
+>>
+>> +struct acpi_wakeup_handler {
+>> +       struct list_head list_node;
+>> +       bool (*wakeup)(void *context);
+>> +       void *context;
+>> +};
+>> +
+>> +static LIST_HEAD(acpi_wakeup_handler_head);
+>> +static DEFINE_MUTEX(acpi_wakeup_handler_mutex);
+>> +
+>>   /*
+>>    * We didn't lock acpi_device_lock in the file, because it invokes oops in
+>>    * suspend/resume and isn't really required as this is called in S-state. At
+>> @@ -96,3 +105,76 @@ int __init acpi_wakeup_device_init(void)
+>>          mutex_unlock(&acpi_device_lock);
+>>          return 0;
+>>   }
+>> +
+>> +/**
+>> + * acpi_register_wakeup_handler - Register wakeup handler
+>> + * @wake_irq: The IRQ through which the device may receive wakeups
+>> + * @wakeup:   Wakeup-handler to call when the SCI has triggered a wakeup
+>> + * @context:  Context to pass to the handler when calling it
+>> + *
+>> + * Drivers which may share an IRQ with the SCI can use this to register
+>> + * a handler which returns true when the device they are managing wants
+>> + * to trigger a wakeup.
+>> + */
+> 
+>> +int acpi_register_wakeup_handler(
+> 
+> ...this one...
+> 
+>> +       int wake_irq, bool (*wakeup)(void *context), void *context)
 
-I also think Reviewed-by is pretty useless.  We could get rid of it, and
-only count reviews which fix bugs.  ;)
+As the changelog states, so variables were renamed, which makes this
+a bit shorter then before. Note it still does not fit in a single
+line, but I can put the second parameter after the ( now, which does
+look better. Will fix for v3.
 
-regards,
-dan carpenter
+>> +{
+>> +       struct acpi_wakeup_handler *handler;
+>> +
+>> +       /*
+>> +        * If the device is not sharing its IRQ with the SCI, there is no
+>> +        * need to register the handler.
+>> +        */
+>> +       if (!acpi_sci_irq_valid() || wake_irq != acpi_sci_irq)
+>> +               return 0;
+>> +
+>> +       handler = kmalloc(sizeof(*handler), GFP_KERNEL);
+>> +       if (!handler)
+>> +               return -ENOMEM;
+>> +
+>> +       handler->wakeup = wakeup;
+>> +       handler->context = context;
+>> +
+>> +       mutex_lock(&acpi_wakeup_handler_mutex);
+>> +       list_add(&handler->list_node, &acpi_wakeup_handler_head);
+>> +       mutex_unlock(&acpi_wakeup_handler_mutex);
+>> +
+>> +       return 0;
+>> +}
+>> +EXPORT_SYMBOL_GPL(acpi_register_wakeup_handler);
+>> +
+>> +/**
+>> + * acpi_unregister_wakeup_handler - Unregister wakeup handler
+>> + * @wakeup:   Wakeup-handler passed to acpi_register_wakeup_handler()
+>> + * @context:  Context passed to acpi_register_wakeup_handler()
+>> + */
+> 
+>> +void acpi_unregister_wakeup_handler(
+>> +       bool (*wakeup)(void *context), void *context)
+> 
+> Not sure, but looks like short.
+
+Same as above.
+
+> 
+>> +{
+>> +       struct acpi_wakeup_handler *handler;
+>> +
+>> +       mutex_lock(&acpi_wakeup_handler_mutex);
+>> +       list_for_each_entry(handler, &acpi_wakeup_handler_head, list_node) {
+> 
+>> +               if (handler->wakeup == wakeup &&
+>> +                   handler->context == context) {
+> 
+> Ditto.
+
+This one now actually fits on a single line (it is 79 chars then)
+will also fix for v3.
+
+Regards,
+
+Hans
+
+> 
+>> +                       list_del(&handler->list_node);
+>> +                       kfree(handler);
+>> +                       break;
+>> +               }
+>> +       }
+>> +       mutex_unlock(&acpi_wakeup_handler_mutex);
+>> +}
+>> +EXPORT_SYMBOL_GPL(acpi_unregister_wakeup_handler);
+>> +
+>> +bool acpi_check_wakeup_handlers(void)
+>> +{
+>> +       struct acpi_wakeup_handler *handler;
+>> +
+>> +       /* No need to lock, nothing else is running when we're called. */
+>> +       list_for_each_entry(handler, &acpi_wakeup_handler_head, list_node) {
+>> +               if (handler->wakeup(handler->context))
+>> +                       return true;
+>> +       }
+>> +
+>> +       return false;
+>> +}
+>> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+>> index 0f24d701fbdc..efac0f9c01a2 100644
+>> --- a/include/linux/acpi.h
+>> +++ b/include/linux/acpi.h
+>> @@ -488,6 +488,11 @@ void __init acpi_nvs_nosave_s3(void);
+>>   void __init acpi_sleep_no_blacklist(void);
+>>   #endif /* CONFIG_PM_SLEEP */
+>>
+>> +int acpi_register_wakeup_handler(
+>> +       int wake_irq, bool (*wakeup)(void *context), void *context);
+>> +void acpi_unregister_wakeup_handler(
+>> +       bool (*wakeup)(void *context), void *context);
+>> +
+>>   struct acpi_osc_context {
+>>          char *uuid_str;                 /* UUID string */
+>>          int rev;
+>> --
+>> 2.26.0
+>>
+> 
+> 
 
