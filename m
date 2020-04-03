@@ -2,63 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D6C5C19D06E
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Apr 2020 08:48:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4EAC19D09C
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Apr 2020 09:01:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388395AbgDCGst (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Apr 2020 02:48:49 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:47200 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2387962AbgDCGst (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 3 Apr 2020 02:48:49 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 4440CC138E76024DC4F0;
-        Fri,  3 Apr 2020 14:48:44 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.487.0; Fri, 3 Apr 2020
- 14:48:36 +0800
-From:   Jason Yan <yanaijie@huawei.com>
-To:     <robert.moore@intel.com>, <erik.kaneda@intel.com>,
-        <rafael.j.wysocki@intel.com>, <lenb@kernel.org>,
-        <linux-acpi@vger.kernel.org>, <devel@acpica.org>
-CC:     Jason Yan <yanaijie@huawei.com>
-Subject: [PATCH] ACPICA: make acpi_gbl_next_cmd_num static
-Date:   Fri, 3 Apr 2020 14:47:12 +0800
-Message-ID: <20200403064712.26746-1-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.17.2
+        id S2388221AbgDCHBc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Apr 2020 03:01:32 -0400
+Received: from mga14.intel.com ([192.55.52.115]:18429 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730759AbgDCHBc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 3 Apr 2020 03:01:32 -0400
+IronPort-SDR: zP8KYOkfrF1Lh4tLJ2CYI5w74GdKOxSymxz8jVhmHZVE9SlR/xbFqCq7sbMQyeKBK094oL0TTm
+ GkAcQhSlRMqw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2020 00:01:32 -0700
+IronPort-SDR: byiRMTrhb5XBXqTx15iVdR9oHh4AmpQIiQJnAKivtGn1djcuht1NL+AKYHxkpdiQnPxDzGdUr7
+ GczmVQoc/6oQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,338,1580803200"; 
+   d="scan'208";a="253272312"
+Received: from kboulton-mobl2.ger.corp.intel.com (HELO localhost) ([10.252.35.93])
+  by orsmga006.jf.intel.com with ESMTP; 03 Apr 2020 00:01:28 -0700
+Date:   Fri, 3 Apr 2020 10:01:26 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Stefan Berger <stefanb@linux.vnet.ibm.com>
+Cc:     linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-security-module@vger.kernel.org,
+        Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH v4 0/2] tpm2: Make TPM2 logs accessible for non-UEFI
+ firmware
+Message-ID: <20200403070114.GD25305@linux.intel.com>
+References: <20200402225140.922789-1-stefanb@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.124.28]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200402225140.922789-1-stefanb@linux.vnet.ibm.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Fix the following sparse warning:
+On Thu, Apr 02, 2020 at 06:51:38PM -0400, Stefan Berger wrote:
+> From: Stefan Berger <stefanb@linux.ibm.com>
+> 
+> This series of patches extends the existing TPM2 ACPI table with additional
+> fields found in the TPM2 TCG ACPI specification (reference is in the patch)
+> that allow access to the log's address and its size. We then modify the
+> code that so far only enables access to a TPM 1.2's log for a TPM2 as well.
+> This then enables access to the TPM2's log on non-UEFI system that for example
+> run SeaBIOS.
+> 
+>    Stefan
+> 
+> v3->v4:
+>   - Repost as one series
+> 
+> v2->v3:
+>   - Split the series into two separate patches
+>   - Added comments to ACPI table fields
+>   - Added check for null pointer to log area and zero log size
+> 
+> v1->v2:
+>   - Repost of the series
+> 
+> 
+> 
+> Stefan Berger (2):
+>   acpi: Extend TPM2 ACPI table with missing log fields
+>   tpm: Add support for event log pointer found in TPM2 ACPI table
+> 
+>  drivers/char/tpm/eventlog/acpi.c | 56 +++++++++++++++++++++++++---------------
+>  drivers/char/tpm/tpm_crb.c       | 13 +++++++---
+>  drivers/char/tpm/tpm_tis.c       |  4 ++-
+>  include/acpi/actbl3.h            |  5 ++--
+>  4 files changed, 51 insertions(+), 27 deletions(-)
+> 
+> -- 
+> 2.14.5
+> 
 
-drivers/acpi/acpica/dbhistry.c:30:5: warning: symbol
-'acpi_gbl_next_cmd_num' was not declared. Should it be static?
+Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
----
- drivers/acpi/acpica/dbhistry.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I'll apply this after I'll get Rafael's answer whether I can add his ack
+to the commits.
 
-diff --git a/drivers/acpi/acpica/dbhistry.c b/drivers/acpi/acpica/dbhistry.c
-index bb9600b867ee..801b35a08174 100644
---- a/drivers/acpi/acpica/dbhistry.c
-+++ b/drivers/acpi/acpica/dbhistry.c
-@@ -27,7 +27,7 @@ static HISTORY_INFO acpi_gbl_history_buffer[HISTORY_SIZE];
- static u16 acpi_gbl_lo_history = 0;
- static u16 acpi_gbl_num_history = 0;
- static u16 acpi_gbl_next_history_index = 0;
--u32 acpi_gbl_next_cmd_num = 1;
-+static u32 acpi_gbl_next_cmd_num = 1;
- 
- /*******************************************************************************
-  *
--- 
-2.17.2
-
+/Jarkko
