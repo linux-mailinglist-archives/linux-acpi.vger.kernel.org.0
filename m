@@ -2,90 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C4EAC19D09C
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Apr 2020 09:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 661F219D376
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Apr 2020 11:24:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388221AbgDCHBc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Apr 2020 03:01:32 -0400
-Received: from mga14.intel.com ([192.55.52.115]:18429 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730759AbgDCHBc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 3 Apr 2020 03:01:32 -0400
-IronPort-SDR: zP8KYOkfrF1Lh4tLJ2CYI5w74GdKOxSymxz8jVhmHZVE9SlR/xbFqCq7sbMQyeKBK094oL0TTm
- GkAcQhSlRMqw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2020 00:01:32 -0700
-IronPort-SDR: byiRMTrhb5XBXqTx15iVdR9oHh4AmpQIiQJnAKivtGn1djcuht1NL+AKYHxkpdiQnPxDzGdUr7
- GczmVQoc/6oQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,338,1580803200"; 
-   d="scan'208";a="253272312"
-Received: from kboulton-mobl2.ger.corp.intel.com (HELO localhost) ([10.252.35.93])
-  by orsmga006.jf.intel.com with ESMTP; 03 Apr 2020 00:01:28 -0700
-Date:   Fri, 3 Apr 2020 10:01:26 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Stefan Berger <stefanb@linux.vnet.ibm.com>
-Cc:     linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v4 0/2] tpm2: Make TPM2 logs accessible for non-UEFI
- firmware
-Message-ID: <20200403070114.GD25305@linux.intel.com>
-References: <20200402225140.922789-1-stefanb@linux.vnet.ibm.com>
+        id S2390440AbgDCJYc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Apr 2020 05:24:32 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:42317 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727431AbgDCJYc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Apr 2020 05:24:32 -0400
+Received: by mail-ot1-f65.google.com with SMTP id z5so6557380oth.9
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Apr 2020 02:24:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QdFApNje4dVg6X1gfPZZooLWocDLTTaIU6KupyCadzc=;
+        b=IxLm7zzSAbY2RBja1BlBTkiBPcmIMCYuVcurTFZH5UuVxf7K57Tt21r6Kr6Fb078t/
+         LZckrAhMY762G9n5DCzUbwKFSEoLmiXlASBUF6JD4Km5eW7JxhTzeHj+wNmLIpyFEcjB
+         kpxTPJ5tRxJ3C6uIWVwTk6c0+FxXySC9CY7azntoFJNZ5ggdaKIkUy8+jos0wMDqHB3H
+         PKXEOSHLV4Hp03fXhVlPjekVtKjGfErfVxY/3tDvNu5s1buwLnuqshGIxUZalOBFf8qG
+         H6JdtCnm2ha3+M8P9TsnIq5a2ywkQt1ziZobm4ukcWzwFLoCSApj8/nf9M/dogRRwX16
+         pjAg==
+X-Gm-Message-State: AGi0Pub0nJREEbp/PdSFomQc258SkCZUol35IMDzjxF9ohxFxu6+X+jz
+        GhKLqR6RPfA+tTYcWusoG0Z8aikzYFQk0tH9NhU=
+X-Google-Smtp-Source: APiQypJuXn7s2GqX4r3fjosMCpppzhRJ0zVb9uZF/5UUFNv03mouaz5qndIrJwVA2p47c5q5t3D5YwS1ivj/dDGXal8=
+X-Received: by 2002:a9d:750a:: with SMTP id r10mr5371551otk.118.1585905870777;
+ Fri, 03 Apr 2020 02:24:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200402225140.922789-1-stefanb@linux.vnet.ibm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20200403064712.26746-1-yanaijie@huawei.com>
+In-Reply-To: <20200403064712.26746-1-yanaijie@huawei.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 3 Apr 2020 11:24:19 +0200
+Message-ID: <CAJZ5v0gHsUMS+LciZnzC12=QO+hsVkeQWHDR1LC8PMCxoWvtAQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: make acpi_gbl_next_cmd_num static
+To:     Jason Yan <yanaijie@huawei.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>
+Cc:     Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 02, 2020 at 06:51:38PM -0400, Stefan Berger wrote:
-> From: Stefan Berger <stefanb@linux.ibm.com>
-> 
-> This series of patches extends the existing TPM2 ACPI table with additional
-> fields found in the TPM2 TCG ACPI specification (reference is in the patch)
-> that allow access to the log's address and its size. We then modify the
-> code that so far only enables access to a TPM 1.2's log for a TPM2 as well.
-> This then enables access to the TPM2's log on non-UEFI system that for example
-> run SeaBIOS.
-> 
->    Stefan
-> 
-> v3->v4:
->   - Repost as one series
-> 
-> v2->v3:
->   - Split the series into two separate patches
->   - Added comments to ACPI table fields
->   - Added check for null pointer to log area and zero log size
-> 
-> v1->v2:
->   - Repost of the series
-> 
-> 
-> 
-> Stefan Berger (2):
->   acpi: Extend TPM2 ACPI table with missing log fields
->   tpm: Add support for event log pointer found in TPM2 ACPI table
-> 
->  drivers/char/tpm/eventlog/acpi.c | 56 +++++++++++++++++++++++++---------------
->  drivers/char/tpm/tpm_crb.c       | 13 +++++++---
->  drivers/char/tpm/tpm_tis.c       |  4 ++-
->  include/acpi/actbl3.h            |  5 ++--
->  4 files changed, 51 insertions(+), 27 deletions(-)
-> 
-> -- 
-> 2.14.5
-> 
+On Fri, Apr 3, 2020 at 8:48 AM Jason Yan <yanaijie@huawei.com> wrote:
+>
+> Fix the following sparse warning:
+>
+> drivers/acpi/acpica/dbhistry.c:30:5: warning: symbol
+> 'acpi_gbl_next_cmd_num' was not declared. Should it be static?
+>
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
 
-Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Bob, Erik, I'm leaving this one to you.
 
-I'll apply this after I'll get Rafael's answer whether I can add his ack
-to the commits.
-
-/Jarkko
+> ---
+>  drivers/acpi/acpica/dbhistry.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/acpica/dbhistry.c b/drivers/acpi/acpica/dbhistry.c
+> index bb9600b867ee..801b35a08174 100644
+> --- a/drivers/acpi/acpica/dbhistry.c
+> +++ b/drivers/acpi/acpica/dbhistry.c
+> @@ -27,7 +27,7 @@ static HISTORY_INFO acpi_gbl_history_buffer[HISTORY_SIZE];
+>  static u16 acpi_gbl_lo_history = 0;
+>  static u16 acpi_gbl_num_history = 0;
+>  static u16 acpi_gbl_next_history_index = 0;
+> -u32 acpi_gbl_next_cmd_num = 1;
+> +static u32 acpi_gbl_next_cmd_num = 1;
+>
+>  /*******************************************************************************
+>   *
+> --
+> 2.17.2
+>
