@@ -2,226 +2,277 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A43119D88A
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Apr 2020 16:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B115A19D8D3
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Apr 2020 16:18:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728203AbgDCOEC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Apr 2020 10:04:02 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:41062 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728188AbgDCOEC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Apr 2020 10:04:02 -0400
-Received: by mail-qk1-f195.google.com with SMTP id y3so3198428qky.8
-        for <linux-acpi@vger.kernel.org>; Fri, 03 Apr 2020 07:04:01 -0700 (PDT)
+        id S2390683AbgDCOSB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Apr 2020 10:18:01 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:38102 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728178AbgDCOSB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Apr 2020 10:18:01 -0400
+Received: by mail-pg1-f194.google.com with SMTP id x7so3570963pgh.5;
+        Fri, 03 Apr 2020 07:17:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lca.pw; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=U37IOV9My/sXAuKgjhUoPEFREDDm1NINYe8Uc9B8Osc=;
-        b=GcUvroT51pUTRFa/ZEZHhmyyF/qXdGZFB919DPh5Fkt9znyOAcEOEHMmZURLTVIkuF
-         ltsn9vtrA3fydKbT5P2MX9C61ys6WULWmu5OCb/o50zfGaCdb9Kf3gAsANx/Tg1ywXK5
-         zBBGyz/UqSA6ZHC0o6GvhiQilgsgsmobh/fSDT9Y2vXgU9YE+SGicEVDsGuSBCq0FhTQ
-         Q8l0GXoHIrOJ0FfqgleAVye/X2njxQ7t5/tb/TCULTxh84NYRO4+XwZ9jGJcGJrP2rMU
-         +aO234OHMWbC720J0Ue2RHXXid+ABJvCTRpstYjZMyqGd3+1bptw0NwOqANzBYRzTAD8
-         r/+Q==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YBJ5aW3F9d/hZN8Ci6R0moWOmIRazhOAGrrCuU742kw=;
+        b=REvZMJ8tksFGMn7cUJzkLG3ixUR8OzmEfxLJxuA7hHrkdOM6BtIoN3DLPziCDDP+f9
+         IPwkg0t7kmbg33Spsw1eQqZ3DrnyjxYPonty6NLpASIJkB5BHaSJLkgLOLwRALF8Iy/5
+         GP61TWU8qFKBPbvirwbUNS2o9QAD4+vRC34yb2Z8J8y0C5XXahKfgKo8BJ8kY5odZD3g
+         6pR01Sy25UPqduNeHpT1UZ+5NaLOKy33HLMiC54gjJVnty+jegxl9Zcu7p7TN1fzHRR4
+         WogULlXp/vXZv7fHDk5BWuwWGoKsxquYFEvBG6b5vFj/+dowaTvWx9cimhdL8GpvpV0/
+         FIkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=U37IOV9My/sXAuKgjhUoPEFREDDm1NINYe8Uc9B8Osc=;
-        b=OEXpXwhKPCde6W8THB4ZA95w1ukaDuGHhffhjYieo/7MhuRyz+NUs6R+2Iqez8g4a7
-         1o4FLjTrUWwcEClPVQIhfIewb6x4GADHH9gn2GxKXaRtT3/OPiPjyX2aZYpdyMLPal1i
-         QExYvTbFyU1xcjNA9GUDhBpcpfstR9HBFphQBNHGQgULnQbtOAargFWOuDtUI+XuSJmS
-         8L06A3gddyUDn0cAoiEkCNZWxIYzgLnh62cQLu9O2U1XhKxii+R+FnBFmfw2eQ7SSRIa
-         xrbZBEPZkIGETSJg7tWoGmJNgqIFY3+o9CV+mRfwxzff7HaADTY2sGCOFROWoNIKBhPk
-         0pDA==
-X-Gm-Message-State: AGi0PuaunQeRxiK7PA55AfBZ4qTOgSO4Ncnzu4klkVRe7Zv0LZykL429
-        GLsPFrPjD6ymlExWlwrJwK4BIYIHEc+7cw==
-X-Google-Smtp-Source: APiQypK+XL5zkFXQZAG0rBMVlDIrPZ4LhhymVrMddYD0VYC4wH3Ink1P1sUcRwdl95vG6O8DJuXkdg==
-X-Received: by 2002:a37:4fc5:: with SMTP id d188mr8454370qkb.220.1585922640888;
-        Fri, 03 Apr 2020 07:04:00 -0700 (PDT)
-Received: from ovpn-66-203.rdu2.redhat.com (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
-        by smtp.gmail.com with ESMTPSA id s26sm6192668qkm.114.2020.04.03.07.03.59
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 03 Apr 2020 07:03:59 -0700 (PDT)
-From:   Qian Cai <cai@lca.pw>
-To:     tglx@linutronix.de, rjw@rjwysocki.net
-Cc:     mingo@redhat.com, bp@alien8.de, lenb@kernel.org,
-        peterz@infradead.org, linux-acpi@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org, Qian Cai <cai@lca.pw>
-Subject: [PATCH v3] x86/acpi: fix a deadlock with cpu hotplug
-Date:   Fri,  3 Apr 2020 10:03:45 -0400
-Message-Id: <20200403140345.3828-1-cai@lca.pw>
-X-Mailer: git-send-email 2.21.0 (Apple Git-122.2)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YBJ5aW3F9d/hZN8Ci6R0moWOmIRazhOAGrrCuU742kw=;
+        b=MbKFMljwGemMYtThQZfDJWY6qXOqbLTDWTecKcdvOzFLb/8Nik/J6X4R6CApJRLY/e
+         V1rB3blpfMyhWXn2tfT051kkHm7ny3Th0OFUyZCKSG+8289ZADB9Reytz4c/e6NWWd8N
+         vGFH1sMYM3O+wT/8cnnb+6j1bxWEWOAFTvq9eWPSxtbijFCdXGEt2PkOZEjEK9eQ5hUe
+         zQtcyA0Zb0hPWRn0NXuRvCayb+IoWln9JCsOnNlYjR7WIV7qFY7hVjVPuzYdMnp7aBnz
+         C7XDCDfF7mKXJqW6TRV5rd2Knrc5WEeblt9voncvxerovyI6TgTPo50vMGKBQ1OxcWMw
+         fPKA==
+X-Gm-Message-State: AGi0PubgY/r9kxh+2xTpTfhE8a9OelbtTpARpLoXeuoCp94p+vEB5AkZ
+        9Ni0CXpaP+xyl9Xj1gTPqmVYy/laOT/Ra/AMvvg=
+X-Google-Smtp-Source: APiQypJcJfZORkCenCiVygaV4YY81qkqnVqXICpcZq6e96NduZaR5eA1P/Auejh5/yGAIa6aRdqYCPnYvjwceuri74M=
+X-Received: by 2002:a63:1c1:: with SMTP id 184mr8807805pgb.203.1585923479129;
+ Fri, 03 Apr 2020 07:17:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200403105235.105187-1-hdegoede@redhat.com>
+In-Reply-To: <20200403105235.105187-1-hdegoede@redhat.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 3 Apr 2020 17:17:51 +0300
+Message-ID: <CAHp75VfV2M+uRNqDg0MfMwr2-1EMQv-cZT4-WtufrzyYi9zQXw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] ACPI: PM: Add acpi_[un]register_wakeup_handler()
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "5 . 4+" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Similar to the commit 0266d81e9bf5 ("acpi/processor: Prevent cpu hotplug
-deadlock") except this is for acpi_processor_ffh_cstate_probe():
+On Fri, Apr 3, 2020 at 1:52 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Since commit fdde0ff8590b ("ACPI: PM: s2idle: Prevent spurious SCIs from
+> waking up the system") the SCI triggering without there being a wakeup
+> cause recognized by the ACPI sleep code will no longer wakeup the system.
+>
+> This works as intended, but this is a problem for devices where the SCI
+> is shared with another device which is also a wakeup source.
+>
+> In the past these, from the pov of the ACPI sleep code, spurious SCIs
+> would still cause a wakeup so the wakeup from the device sharing the
+> interrupt would actually wakeup the system. This now no longer works.
+>
+> This is a problem on e.g. Bay Trail-T and Cherry Trail devices where
+> some peripherals (typically the XHCI controller) can signal a
+> Power Management Event (PME) to the Power Management Controller (PMC)
+> to wakeup the system, this uses the same interrupt as the SCI.
+> These wakeups are handled through a special INT0002 ACPI device which
+> checks for events in the GPE0a_STS for this and takes care of acking
+> the PME so that the shared interrupt stops triggering.
+>
+> The change to the ACPI sleep code to ignore the spurious SCI, causes
+> the system to no longer wakeup on these PME events. To make things
+> worse this means that the INT0002 device driver interrupt handler will
+> no longer run, causing the PME to not get cleared and resulting in the
+> system hanging. Trying to wakeup the system after such a PME through e.g.
+> the power button no longer works.
+>
+> Add an acpi_register_wakeup_handler() function which registers
+> a handler to be called from acpi_s2idle_wake() and when the handler
+> returns true, return true from acpi_s2idle_wake().
+>
+> The INT0002 driver will use this mechanism to check the GPE0a_STS
+> register from acpi_s2idle_wake() and to tell the system to wakeup
+> if a PME is signaled in the register.
+>
 
-"The problem is that the work is scheduled on the current CPU from the
-hotplug thread associated with that CPU.
+Something happened to your editor settings? Some lines looks like too short...
 
-It's not required to invoke these functions via the workqueue because
-the hotplug thread runs on the target CPU already.
+> Fixes: fdde0ff8590b ("ACPI: PM: s2idle: Prevent spurious SCIs from waking up the system")
+> Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Changes in v2:
+> - Move the new helpers to drivers/acpi/wakeup.c
+> - Rename the helpers to acpi_[un]register_wakeup_handler(), also give some
+>   types/variables better names
+> ---
+>  drivers/acpi/sleep.c  |  4 +++
+>  drivers/acpi/sleep.h  |  1 +
+>  drivers/acpi/wakeup.c | 82 +++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/acpi.h  |  5 +++
+>  4 files changed, 92 insertions(+)
+>
+> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+> index e5f95922bc21..dc8c71c47285 100644
+> --- a/drivers/acpi/sleep.c
+> +++ b/drivers/acpi/sleep.c
+> @@ -1025,6 +1025,10 @@ static bool acpi_s2idle_wake(void)
+>                 if (acpi_any_gpe_status_set() && !acpi_ec_dispatch_gpe())
+>                         return true;
+>
+> +               /* Check wakeups from drivers sharing the SCI. */
+> +               if (acpi_check_wakeup_handlers())
+> +                       return true;
+> +
+>                 /*
+>                  * Cancel the wakeup and process all pending events in case
+>                  * there are any wakeup ones in there.
+> diff --git a/drivers/acpi/sleep.h b/drivers/acpi/sleep.h
+> index 41675d24a9bc..3d90480ce1b1 100644
+> --- a/drivers/acpi/sleep.h
+> +++ b/drivers/acpi/sleep.h
+> @@ -2,6 +2,7 @@
+>
+>  extern void acpi_enable_wakeup_devices(u8 sleep_state);
+>  extern void acpi_disable_wakeup_devices(u8 sleep_state);
+> +extern bool acpi_check_wakeup_handlers(void);
+>
+>  extern struct list_head acpi_wakeup_device_list;
+>  extern struct mutex acpi_device_lock;
+> diff --git a/drivers/acpi/wakeup.c b/drivers/acpi/wakeup.c
+> index 9614126bf56e..de0f8e626c1c 100644
+> --- a/drivers/acpi/wakeup.c
+> +++ b/drivers/acpi/wakeup.c
+> @@ -12,6 +12,15 @@
+>  #include "internal.h"
+>  #include "sleep.h"
+>
+> +struct acpi_wakeup_handler {
+> +       struct list_head list_node;
+> +       bool (*wakeup)(void *context);
+> +       void *context;
+> +};
+> +
+> +static LIST_HEAD(acpi_wakeup_handler_head);
+> +static DEFINE_MUTEX(acpi_wakeup_handler_mutex);
+> +
+>  /*
+>   * We didn't lock acpi_device_lock in the file, because it invokes oops in
+>   * suspend/resume and isn't really required as this is called in S-state. At
+> @@ -96,3 +105,76 @@ int __init acpi_wakeup_device_init(void)
+>         mutex_unlock(&acpi_device_lock);
+>         return 0;
+>  }
+> +
+> +/**
+> + * acpi_register_wakeup_handler - Register wakeup handler
+> + * @wake_irq: The IRQ through which the device may receive wakeups
+> + * @wakeup:   Wakeup-handler to call when the SCI has triggered a wakeup
+> + * @context:  Context to pass to the handler when calling it
+> + *
+> + * Drivers which may share an IRQ with the SCI can use this to register
+> + * a handler which returns true when the device they are managing wants
+> + * to trigger a wakeup.
+> + */
 
-Check whether current is a per cpu thread pinned on the target CPU and
-invoke the function directly to avoid the workqueue."
+> +int acpi_register_wakeup_handler(
 
- WARNING: possible circular locking dependency detected
- ------------------------------------------------------
- cpuhp/1/15 is trying to acquire lock:
- ffffc90003447a28 ((work_completion)(&wfc.work)){+.+.}-{0:0}, at: __flush_work+0x4c6/0x630
+...this one...
 
- but task is already holding lock:
- ffffffffafa1c0e8 (cpuidle_lock){+.+.}-{3:3}, at: cpuidle_pause_and_lock+0x17/0x20
+> +       int wake_irq, bool (*wakeup)(void *context), void *context)
+> +{
+> +       struct acpi_wakeup_handler *handler;
+> +
+> +       /*
+> +        * If the device is not sharing its IRQ with the SCI, there is no
+> +        * need to register the handler.
+> +        */
+> +       if (!acpi_sci_irq_valid() || wake_irq != acpi_sci_irq)
+> +               return 0;
+> +
+> +       handler = kmalloc(sizeof(*handler), GFP_KERNEL);
+> +       if (!handler)
+> +               return -ENOMEM;
+> +
+> +       handler->wakeup = wakeup;
+> +       handler->context = context;
+> +
+> +       mutex_lock(&acpi_wakeup_handler_mutex);
+> +       list_add(&handler->list_node, &acpi_wakeup_handler_head);
+> +       mutex_unlock(&acpi_wakeup_handler_mutex);
+> +
+> +       return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_register_wakeup_handler);
+> +
+> +/**
+> + * acpi_unregister_wakeup_handler - Unregister wakeup handler
+> + * @wakeup:   Wakeup-handler passed to acpi_register_wakeup_handler()
+> + * @context:  Context passed to acpi_register_wakeup_handler()
+> + */
 
- which lock already depends on the new lock.
+> +void acpi_unregister_wakeup_handler(
+> +       bool (*wakeup)(void *context), void *context)
 
- the existing dependency chain (in reverse order) is:
+Not sure, but looks like short.
 
- -> #1 (cpu_hotplug_lock){++++}-{0:0}:
- cpus_read_lock+0x3e/0xc0
- irq_calc_affinity_vectors+0x5f/0x91
- __pci_enable_msix_range+0x10f/0x9a0
- pci_alloc_irq_vectors_affinity+0x13e/0x1f0
- pci_alloc_irq_vectors_affinity at drivers/pci/msi.c:1208
- pqi_ctrl_init+0x72f/0x1618 [smartpqi]
- pqi_pci_probe.cold.63+0x882/0x892 [smartpqi]
- local_pci_probe+0x7a/0xc0
- work_for_cpu_fn+0x2e/0x50
- process_one_work+0x57e/0xb90
- worker_thread+0x363/0x5b0
- kthread+0x1f4/0x220
- ret_from_fork+0x27/0x50
+> +{
+> +       struct acpi_wakeup_handler *handler;
+> +
+> +       mutex_lock(&acpi_wakeup_handler_mutex);
+> +       list_for_each_entry(handler, &acpi_wakeup_handler_head, list_node) {
 
- -> #0 ((work_completion)(&wfc.work)){+.+.}-{0:0}:
- __lock_acquire+0x2244/0x32a0
- lock_acquire+0x1a2/0x680
- __flush_work+0x4e6/0x630
- work_on_cpu+0x114/0x160
- acpi_processor_ffh_cstate_probe+0x129/0x250
- acpi_processor_evaluate_cst+0x4c8/0x580
- acpi_processor_get_power_info+0x86/0x740
- acpi_processor_hotplug+0xc3/0x140
- acpi_soft_cpu_online+0x102/0x1d0
- cpuhp_invoke_callback+0x197/0x1120
- cpuhp_thread_fun+0x252/0x2f0
- smpboot_thread_fn+0x255/0x440
- kthread+0x1f4/0x220
- ret_from_fork+0x27/0x50
+> +               if (handler->wakeup == wakeup &&
+> +                   handler->context == context) {
 
- other info that might help us debug this:
+Ditto.
 
- Chain exists of:
- (work_completion)(&wfc.work) --> cpuhp_state-up --> cpuidle_lock
+> +                       list_del(&handler->list_node);
+> +                       kfree(handler);
+> +                       break;
+> +               }
+> +       }
+> +       mutex_unlock(&acpi_wakeup_handler_mutex);
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_unregister_wakeup_handler);
+> +
+> +bool acpi_check_wakeup_handlers(void)
+> +{
+> +       struct acpi_wakeup_handler *handler;
+> +
+> +       /* No need to lock, nothing else is running when we're called. */
+> +       list_for_each_entry(handler, &acpi_wakeup_handler_head, list_node) {
+> +               if (handler->wakeup(handler->context))
+> +                       return true;
+> +       }
+> +
+> +       return false;
+> +}
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 0f24d701fbdc..efac0f9c01a2 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -488,6 +488,11 @@ void __init acpi_nvs_nosave_s3(void);
+>  void __init acpi_sleep_no_blacklist(void);
+>  #endif /* CONFIG_PM_SLEEP */
+>
+> +int acpi_register_wakeup_handler(
+> +       int wake_irq, bool (*wakeup)(void *context), void *context);
+> +void acpi_unregister_wakeup_handler(
+> +       bool (*wakeup)(void *context), void *context);
+> +
+>  struct acpi_osc_context {
+>         char *uuid_str;                 /* UUID string */
+>         int rev;
+> --
+> 2.26.0
+>
 
- Possible unsafe locking scenario:
 
- CPU0                    CPU1
- ----                    ----
- lock(cpuidle_lock);
-                         lock(cpuhp_state-up);
-                         lock(cpuidle_lock);
- lock((work_completion)(&wfc.work));
-
- *** DEADLOCK ***
-
- 3 locks held by cpuhp/1/15:
- #0: ffffffffaf51ab10 (cpu_hotplug_lock){++++}-{0:0}, at: cpuhp_thread_fun+0x69/0x2f0
- #1: ffffffffaf51ad40 (cpuhp_state-up){+.+.}-{0:0}, at: cpuhp_thread_fun+0x69/0x2f0
- #2: ffffffffafa1c0e8 (cpuidle_lock){+.+.}-{3:3}, at: cpuidle_pause_and_lock+0x17/0x20
-
- Call Trace:
- dump_stack+0xa0/0xea
- print_circular_bug.cold.52+0x147/0x14c
- check_noncircular+0x295/0x2d0
- __lock_acquire+0x2244/0x32a0
- lock_acquire+0x1a2/0x680
- __flush_work+0x4e6/0x630
- work_on_cpu+0x114/0x160
- acpi_processor_ffh_cstate_probe+0x129/0x250
- acpi_processor_evaluate_cst+0x4c8/0x580
- acpi_processor_get_power_info+0x86/0x740
- acpi_processor_hotplug+0xc3/0x140
- acpi_soft_cpu_online+0x102/0x1d0
- cpuhp_invoke_callback+0x197/0x1120
- cpuhp_thread_fun+0x252/0x2f0
- smpboot_thread_fn+0x255/0x440
- kthread+0x1f4/0x220
- ret_from_fork+0x27/0x50
-
-Signed-off-by: Qian Cai <cai@lca.pw>
----
-
-v3:
-Remove #ifdef since cstate.o should rather depend on ACPI_PROCESSOR_IDLE
-per Rafael.
-
-v2:
-Make call_on_cpu() a static inline function to avoid a compilation
-error when ACPI_PROCESSOR=m thanks to lkp@intel.com.
-
- arch/x86/kernel/acpi/cstate.c       | 3 ++-
- drivers/acpi/processor_throttling.c | 7 -------
- include/acpi/processor.h            | 8 ++++++++
- 3 files changed, 10 insertions(+), 8 deletions(-)
-
-diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
-index caf2edccbad2..49ae4e1ac9cd 100644
---- a/arch/x86/kernel/acpi/cstate.c
-+++ b/arch/x86/kernel/acpi/cstate.c
-@@ -161,7 +161,8 @@ int acpi_processor_ffh_cstate_probe(unsigned int cpu,
- 
- 	/* Make sure we are running on right CPU */
- 
--	retval = work_on_cpu(cpu, acpi_processor_ffh_cstate_probe_cpu, cx);
-+	retval = call_on_cpu(cpu, acpi_processor_ffh_cstate_probe_cpu, cx,
-+			     false);
- 	if (retval == 0) {
- 		/* Use the hint in CST */
- 		percpu_entry->states[cx->index].eax = cx->address;
-diff --git a/drivers/acpi/processor_throttling.c b/drivers/acpi/processor_throttling.c
-index 532a1ae3595a..a0bd56ece3ff 100644
---- a/drivers/acpi/processor_throttling.c
-+++ b/drivers/acpi/processor_throttling.c
-@@ -897,13 +897,6 @@ static long __acpi_processor_get_throttling(void *data)
- 	return pr->throttling.acpi_processor_get_throttling(pr);
- }
- 
--static int call_on_cpu(int cpu, long (*fn)(void *), void *arg, bool direct)
--{
--	if (direct || (is_percpu_thread() && cpu == smp_processor_id()))
--		return fn(arg);
--	return work_on_cpu(cpu, fn, arg);
--}
--
- static int acpi_processor_get_throttling(struct acpi_processor *pr)
- {
- 	if (!pr)
-diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-index 47805172e73d..683e124ad517 100644
---- a/include/acpi/processor.h
-+++ b/include/acpi/processor.h
-@@ -297,6 +297,14 @@ static inline void acpi_processor_ffh_cstate_enter(struct acpi_processor_cx
- }
- #endif
- 
-+static inline int call_on_cpu(int cpu, long (*fn)(void *), void *arg,
-+			      bool direct)
-+{
-+	if (direct || (is_percpu_thread() && cpu == smp_processor_id()))
-+		return fn(arg);
-+	return work_on_cpu(cpu, fn, arg);
-+}
-+
- /* in processor_perflib.c */
- 
- #ifdef CONFIG_CPU_FREQ
 -- 
-2.21.0 (Apple Git-122.2)
-
+With Best Regards,
+Andy Shevchenko
