@@ -2,70 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 012A119E69C
-	for <lists+linux-acpi@lfdr.de>; Sat,  4 Apr 2020 19:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1058E19E6E5
+	for <lists+linux-acpi@lfdr.de>; Sat,  4 Apr 2020 19:51:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726258AbgDDRQJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 4 Apr 2020 13:16:09 -0400
-Received: from mail-vk1-f195.google.com ([209.85.221.195]:34426 "EHLO
-        mail-vk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726224AbgDDRQI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Apr 2020 13:16:08 -0400
-Received: by mail-vk1-f195.google.com with SMTP id p123so2881464vkg.1
-        for <linux-acpi@vger.kernel.org>; Sat, 04 Apr 2020 10:16:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=QAHPoVjCjdV3t4V+yiEOlIcKQL0G3JYt87cluu1r7t8=;
-        b=OMRdYgi4/Km6d5WPoo/71yngEkcA4u8ioErqZ8P+NWSyXY/KNp2qOCbQZbcDrz1xS9
-         3sDQkfXBpSQZlbJIUM/JWop2jNhsR3lyln1GxIfJf0JSx/kxKWis95/EH3tjGaRRQymq
-         vPOD4WQbxUjXXFRTeFilORz8za+yaxDP8MgeHcmoEDaKIBXWv2vbGB52d1wH5r2qVhhp
-         vlvofac1sIYrJiNxQM1bqxTtw4oFjQIMnV1jgHxeArDBvb70sfuv/Bt9KaL1q9AYW0j5
-         vNmVwAYXf9Zcmb33Wz/9RlY4dmS4NvgiLPfFzbS1MviiErM2zPc2cugplO/ALU58q6R8
-         1uFw==
+        id S1726683AbgDDRvA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 4 Apr 2020 13:51:00 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:34396 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726679AbgDDRvA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Apr 2020 13:51:00 -0400
+Received: by mail-ot1-f65.google.com with SMTP id m2so10902895otr.1;
+        Sat, 04 Apr 2020 10:51:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=QAHPoVjCjdV3t4V+yiEOlIcKQL0G3JYt87cluu1r7t8=;
-        b=nJOwCJzVnXzWAJTQWNUpBqNkfPhTqHKu5dZ5mcoMhuNCdTFNflT0w7vzTuLVfJkjz1
-         GzuKlht0YO8ZM/RWhxaHOCPbQb94ke85I0eaErNQ9GuKZ6ma37ObsqEvRk/E/SJSI6d2
-         1JFEqnydHcuRtPs+CasPkhCvm392iVTeptHEq2yVG6Fa07iCNnVO5YndyeOamtB9jQDQ
-         GlnpPBn/LJnlyHEeAwTukkgH1A3HVYibX334V8HkBso29FweLJ/K0KbWKAdMjVwt3Ik7
-         PQldvQW+6EgEL4sySe82VvRRlYTHQb4vCxx/bKoLhnKv4LAaNx9k4fEjrYsiTH7yCoOr
-         DUcw==
-X-Gm-Message-State: AGi0PuaFIlgezJIHMDCLjG9KVOsgzpf6Dhi7Jhhqznnw5mbhTY9cFcYG
-        ZlSZTgyt9k/UOYcelkvBwFTLEoihwiW2ikXRrew=
-X-Google-Smtp-Source: APiQypLAil18gzIIQOunxJcqPPiN57jbSTkoaY2c+kvgbcb2KzLzxCV2EZUUA8LbUWrPgZ/faJSu3RatcHOUdrJkAZ4=
-X-Received: by 2002:a1f:a2d0:: with SMTP id l199mr10027890vke.77.1586020567378;
- Sat, 04 Apr 2020 10:16:07 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Y95rECaQ8JB4IMFJRuAfYH3Qk60HSfmhEkxfieQ/dWg=;
+        b=l4eADaJJP50tnMxSIRVwn/ducog3dlch4SMXXXBsaNnU4CxbudhlHhi0yXdAjfhGk7
+         1HH3WXqq55Huz9Kv5ozHX9Oo/+Dnd9hyd/OdAyiTl7LF35BnMOoqU1aMsZHqvnvS5jmT
+         gDt8MMaf7cCOWKK03ek3oRWyWM+BemBewqMtSHX/9hqeJqMEeoDHY6FHGQIZhXeG6aZ+
+         yaGzl14vElYELcrIHPu/2ZSYVkKy0IeVgWnGOlWeCtd78Wwg7MVuNkYkWtCvHosYiEqd
+         bBhKtyi1/ZG/cHgAQTNoDYX7zbWpW2sYWxb/iVWH0t94rHIQsIBFBpcqQ0gjg8gzfdD4
+         klrQ==
+X-Gm-Message-State: AGi0PuZER9iMjk6dZ9DDOJ2ZPXrxDlv0ZJlW2eyHTSbUqPDBwWa3A9n1
+        ZvQdG+o8+EVGllBZauzV5253l4YBMX9YNn44/es=
+X-Google-Smtp-Source: APiQypJXXSKrtbFEwdda3esGGDETkJrOSOvYCy5M8vLD2IXdxdKJ69CPDhiUNzeJjGIdiud49pm4phv+b+5KqB034Yg=
+X-Received: by 2002:a9d:7402:: with SMTP id n2mr11522707otk.262.1586022660147;
+ Sat, 04 Apr 2020 10:51:00 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a9f:25d4:0:0:0:0:0 with HTTP; Sat, 4 Apr 2020 10:16:07 -0700 (PDT)
-From:   Herminia Wade <koneado101@gmail.com>
-Date:   Sat, 4 Apr 2020 19:16:07 +0200
-Message-ID: <CAL2-NmjDm8YhJidofa9JkUwRt+LA43Ma8P2rbWEhr13uCun=sw@mail.gmail.com>
-Subject: HI
-To:     undisclosed-recipients:;
+References: <20200403140345.3828-1-cai@lca.pw> <CAJZ5v0jjZzSosFwR3Yqu9mWtUNms1u9fbJbQb=tc5=CPc7r_1w@mail.gmail.com>
+ <20200403165305.GF20218@zn.tnic>
+In-Reply-To: <20200403165305.GF20218@zn.tnic>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Sat, 4 Apr 2020 19:50:48 +0200
+Message-ID: <CAJZ5v0hZH0LU9NeTkjRqzXyMoU8YWn7gpvO4vJQqYDaHAW3ixA@mail.gmail.com>
+Subject: Re: [PATCH v3] x86/acpi: fix a deadlock with cpu hotplug
+To:     Borislav Petkov <bp@alien8.de>, Qian Cai <cai@lca.pw>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dear.
-I greetings you in the name of our lord Jesus Christ.
-I am Mrs. Herminia Wade an aging widow suffering from long time
-illness. I am currently admitted in a private hospital in Abidjan Cote
-d`Ivoire, I have some funds I inherited from my late loving husband
-Mr. Wade, the sum of US$ 3, 800, 000 which he deposited in bank here
-and I need a very honest and God fearing person that can use these
-funds for charity work and 15% out of the total funds will be for your
-compensation for doing this work of charity. I found your email
-address from the internet and decided to contact you.
+On Fri, Apr 3, 2020 at 6:53 PM Borislav Petkov <bp@alien8.de> wrote:
+>
+> On Fri, Apr 03, 2020 at 05:45:10PM +0200, Rafael J. Wysocki wrote:
+> > I can take this one unless there are objections or concerns.
+>
+> Please do - I did trigger that yesterday again.
+>
+> Tested-by: Borislav Petkov <bp@suse.de>
 
-Please if you and your husband would be able to use these funds for
-the Lord's work kindly reply me as soon as possible for more details.
-
-I am looking forward hearing from you.
-
-Remain Blessed
-Mrs. Herminia,
+OK, applied now, thanks!
