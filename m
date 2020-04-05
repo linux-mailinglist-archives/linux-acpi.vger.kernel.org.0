@@ -2,42 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15DF119EABC
-	for <lists+linux-acpi@lfdr.de>; Sun,  5 Apr 2020 13:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6066A19EAE9
+	for <lists+linux-acpi@lfdr.de>; Sun,  5 Apr 2020 13:35:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726523AbgDELZa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 5 Apr 2020 07:25:30 -0400
-Received: from mga11.intel.com ([192.55.52.93]:56998 "EHLO mga11.intel.com"
+        id S1726605AbgDELfb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 5 Apr 2020 07:35:31 -0400
+Received: from mga03.intel.com ([134.134.136.65]:43579 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726410AbgDELZa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 5 Apr 2020 07:25:30 -0400
-IronPort-SDR: 2MCxANneolgn47I2hkkBOjJ3G5Z0crSPsRj36J/oR/uJk9CdF5P+WFW+SqJBoo8L9RBoBLoC64
- 2RD1LDNxw02A==
+        id S1726455AbgDELfa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 5 Apr 2020 07:35:30 -0400
+IronPort-SDR: O2YYnNriYdNouKuZPmgPl+OAg5+F/LOb+PHU+gKmFOE0aplY88R1Yss5lITQITCI9p0YNwIULo
+ 1b18VQwcp3Aw==
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2020 04:25:27 -0700
-IronPort-SDR: b8IuDFa6QZSoP3bg/lkGeKyfG0ZQjPz5kEhhKYehLRb7PCTNgwGKbVa/tWuDG0dqg+NXw/ELp5
- Voy6D+YlJbvA==
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2020 04:35:29 -0700
+IronPort-SDR: 1Xnp+RHgn9vcs1M3qX+PO8UJ/A83T1SGCRm8DD7CBSClDLl70vAJXA+24MtFgQB5TNh8flrCk7
+ wjsNiB4XqpTw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.72,347,1580803200"; 
-   d="gz'50?scan'50,208,50";a="451777685"
+   d="gz'50?scan'50,208,50";a="243873750"
 Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 05 Apr 2020 04:25:24 -0700
+  by orsmga008.jf.intel.com with ESMTP; 05 Apr 2020 04:35:26 -0700
 Received: from kbuild by lkp-server01 with local (Exim 4.89)
         (envelope-from <lkp@intel.com>)
-        id 1jL3P2-0003aT-0u; Sun, 05 Apr 2020 19:25:24 +0800
-Date:   Sun, 5 Apr 2020 19:24:58 +0800
+        id 1jL3Yk-0004eU-5N; Sun, 05 Apr 2020 19:35:26 +0800
+Date:   Sun, 5 Apr 2020 19:34:37 +0800
 From:   kbuild test robot <lkp@intel.com>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Cc:     kbuild-all@lists.01.org, linux-acpi@vger.kernel.org,
         devel@acpica.org, linux-pm@vger.kernel.org
-Subject: [pm:pm-sleep-core 2/3] drivers/base/power/main.c:588:31: warning:
- initialization makes pointer from integer without a cast
-Message-ID: <202004051951.LR72d0pW%lkp@intel.com>
+Subject: [pm:pm-sleep-core 3/3] drivers/base/power/main.c:582:3: error:
+ 'state' undeclared; did you mean 'statx'?
+Message-ID: <202004051933.OTMBppfJ%lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="YZ5djTAD1cGYuMQK"
+Content-Type: multipart/mixed; boundary="SLDf9lqlvOQaIe6s"
 Content-Disposition: inline
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
@@ -46,186 +46,101 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
---YZ5djTAD1cGYuMQK
+--SLDf9lqlvOQaIe6s
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-sleep-core
 head:   3aa654e1e731ad8f8aff1a937e09fae14380b6e5
-commit: f31f24f5fef92e6b50dffdd2c53d2d4c4c8c2fc9 [2/3] PM: sleep: core: Fold functions into their callers
+commit: 3aa654e1e731ad8f8aff1a937e09fae14380b6e5 [3/3] PM: sleep: core: Do not skip callbacks in the resume phase
 config: x86_64-defconfig (attached as .config)
 compiler: gcc-7 (Ubuntu 7.5.0-6ubuntu2) 7.5.0
 reproduce:
-        git checkout f31f24f5fef92e6b50dffdd2c53d2d4c4c8c2fc9
+        git checkout 3aa654e1e731ad8f8aff1a937e09fae14380b6e5
         # save the attached .config to linux build tree
         make ARCH=x86_64 
 
 If you fix the issue, kindly add following tag as appropriate
 Reported-by: kbuild test robot <lkp@intel.com>
 
-All warnings (new ones prefixed by >>):
+All error/warnings (new ones prefixed by >>):
 
+   drivers/base/power/main.c: In function 'dev_pm_may_skip_resume':
+>> drivers/base/power/main.c:582:3: error: 'state' undeclared (first use in this function); did you mean 'statx'?
+      state.event == PM_EVENT_THAW);
+      ^~~~~
+      statx
+   drivers/base/power/main.c:582:3: note: each undeclared identifier is reported only once for each function it appears in
    In file included from include/linux/compiler_types.h:68:0,
                     from <command-line>:0:
    drivers/base/power/main.c: In function 'device_resume_noirq':
->> drivers/base/power/main.c:588:31: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+   drivers/base/power/main.c:597:31: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
      const char uninitialized_var(*info);
                                   ^
    include/linux/compiler-gcc.h:65:34: note: in definition of macro 'uninitialized_var'
     #define uninitialized_var(x) x = x
                                      ^
    drivers/base/power/main.c: In function 'device_resume_early':
-   drivers/base/power/main.c:779:31: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+   drivers/base/power/main.c:765:31: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
      const char uninitialized_var(*info);
                                   ^
    include/linux/compiler-gcc.h:65:34: note: in definition of macro 'uninitialized_var'
     #define uninitialized_var(x) x = x
                                      ^
    drivers/base/power/main.c: In function '__device_suspend_noirq':
-   drivers/base/power/main.c:1196:31: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+   drivers/base/power/main.c:1192:31: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
      const char uninitialized_var(*info);
                                   ^
    include/linux/compiler-gcc.h:65:34: note: in definition of macro 'uninitialized_var'
     #define uninitialized_var(x) x = x
                                      ^
    drivers/base/power/main.c: In function '__device_suspend_late':
-   drivers/base/power/main.c:1381:31: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+   drivers/base/power/main.c:1377:31: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
      const char uninitialized_var(*info);
                                   ^
    include/linux/compiler-gcc.h:65:34: note: in definition of macro 'uninitialized_var'
     #define uninitialized_var(x) x = x
                                      ^
-   drivers/base/power/main.c: In function 'device_resume_early':
-   drivers/base/power/main.c:779:31: warning: 'info' is used uninitialized in this function [-Wuninitialized]
-     const char uninitialized_var(*info);
-                                  ^
-   drivers/base/power/main.c: In function 'device_resume_noirq':
-   drivers/base/power/main.c:588:31: warning: 'info' is used uninitialized in this function [-Wuninitialized]
-     const char uninitialized_var(*info);
-                                  ^
-   drivers/base/power/main.c: In function '__device_suspend_noirq':
-   drivers/base/power/main.c:1196:31: warning: 'info' is used uninitialized in this function [-Wuninitialized]
-     const char uninitialized_var(*info);
-                                  ^
-   drivers/base/power/main.c: In function '__device_suspend_late':
-   drivers/base/power/main.c:1381:31: warning: 'info' is used uninitialized in this function [-Wuninitialized]
-     const char uninitialized_var(*info);
-                                  ^
+   drivers/base/power/main.c: In function 'dev_pm_may_skip_resume':
+>> drivers/base/power/main.c:583:1: warning: control reaches end of non-void function [-Wreturn-type]
+    }
+    ^
 
-vim +588 drivers/base/power/main.c
+vim +582 drivers/base/power/main.c
 
-   575	
-   576	/**
-   577	 * device_resume_noirq - Execute a "noirq resume" callback for given device.
-   578	 * @dev: Device to handle.
-   579	 * @state: PM transition of the system being carried out.
-   580	 * @async: If true, the device is being resumed asynchronously.
-   581	 *
-   582	 * The driver of @dev will not receive interrupts while this function is being
-   583	 * executed.
-   584	 */
-   585	static int device_resume_noirq(struct device *dev, pm_message_t state, bool async)
-   586	{
-   587		pm_callback_t callback = NULL;
- > 588		const char uninitialized_var(*info);
-   589		bool skip_resume;
-   590		int error = 0;
-   591	
-   592		TRACE_DEVICE(dev);
-   593		TRACE_RESUME(0);
-   594	
-   595		if (dev->power.syscore || dev->power.direct_complete)
-   596			goto Out;
-   597	
-   598		if (!dev->power.is_noirq_suspended)
-   599			goto Out;
-   600	
-   601		if (!dpm_wait_for_superior(dev, async))
-   602			goto Out;
-   603	
-   604		if (dev->pm_domain) {
-   605			info = "noirq power domain ";
-   606			callback = pm_noirq_op(&dev->pm_domain->ops, state);
-   607		} else if (dev->type && dev->type->pm) {
-   608			info = "noirq type ";
-   609			callback = pm_noirq_op(dev->type->pm, state);
-   610		} else if (dev->class && dev->class->pm) {
-   611			info = "noirq class ";
-   612			callback = pm_noirq_op(dev->class->pm, state);
-   613		} else if (dev->bus && dev->bus->pm) {
-   614			info = "noirq bus ";
-   615			callback = pm_noirq_op(dev->bus->pm, state);
-   616		}
-   617		if (callback) {
-   618			skip_resume = false;
-   619			goto Run;
-   620		}
-   621	
-   622		skip_resume = dev_pm_may_skip_resume(dev);
-   623		if (skip_resume)
-   624			goto Skip;
-   625	
-   626		/*
-   627		 * If "freeze" driver callbacks have been skipped during hibernation,
-   628		 * because the device was runtime-suspended in __device_suspend_late(),
-   629		 * the corresponding "thaw" callbacks must be skipped too, because
-   630		 * running them for a runtime-suspended device may not be valid.
-   631		 */
-   632		if (dev_pm_smart_suspend_and_suspended(dev) &&
-   633		    state.event == PM_EVENT_THAW) {
-   634			skip_resume = true;
-   635			goto Skip;
-   636		}
-   637	
-   638		if (dev->driver && dev->driver->pm) {
-   639			info = "noirq driver ";
-   640			callback = pm_noirq_op(dev->driver->pm, state);
-   641		}
-   642	
-   643		/*
-   644		 * The device is going to be resumed, so set its PM-runtime status to
-   645		 * "active" (that can be done for all devices regardless of whether or
-   646		 * not PM-runtime is enabled for them).
-   647		 */
-   648		pm_runtime_set_active(dev);
-   649	
-   650	Run:
-   651		error = dpm_run_callback(callback, dev, state, info);
-   652	
-   653	Skip:
-   654		dev->power.is_noirq_suspended = false;
-   655	
-   656		if (skip_resume) {
-   657			/* Make the next phases of resume skip the device. */
-   658			dev->power.is_late_suspended = false;
-   659			dev->power.is_suspended = false;
-   660			/*
-   661			 * The device is going to be left in suspend, but it might not
-   662			 * have been in runtime suspend before the system suspended, so
-   663			 * its runtime PM status needs to be updated to avoid confusing
-   664			 * the runtime PM framework when runtime PM is enabled for the
-   665			 * device again.
-   666			 */
-   667			pm_runtime_set_suspended(dev);
-   668		}
-   669	
-   670	Out:
-   671		complete_all(&dev->power.completion);
-   672		TRACE_RESUME(error);
-   673		return error;
-   674	}
-   675	
+   563	
+   564	/**
+   565	 * dev_pm_may_skip_resume - System-wide device resume optimization check.
+   566	 * @dev: Target device.
+   567	 *
+   568	 * Driver-level resume callbacks can be skipped for @dev if its configuration is
+   569	 * suitable for that (power.must_resume is not set) and the current transition
+   570	 * is not the hibernation-related "restore" one (in which case all devices must
+   571	 * be resumed) or the current transition is hibernation-related "thaw" one and
+   572	 * the driver-level callbacks were skipped for @dev during the corresponding
+   573	 * "freeze" transition (which happens when DPM_FLAG_SMART_SUSPEND is set and the
+   574	 * device remains in runtime suspend), so running the "thaw" callbacks for it
+   575	 * may be invalid.
+   576	 */
+   577	bool dev_pm_may_skip_resume(struct device *dev)
+   578	{
+   579		return (!dev->power.must_resume &&
+   580			pm_transition.event != PM_EVENT_RESTORE) ||
+   581		       (dev_pm_smart_suspend_and_suspended(dev) &&
+ > 582			state.event == PM_EVENT_THAW);
+ > 583	}
+   584	
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---YZ5djTAD1cGYuMQK
+--SLDf9lqlvOQaIe6s
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICOG+iV4AAy5jb25maWcAlDzbctw2su/5iinnJaktO5ItKz7nlB5AEpxBhiRoAJyLXliK
+H4sICJXBiV4AAy5jb25maWcAlDzbctw2su/5iinnJaktO5ItKz7nlB5AEpxBhiRoAJyLXliK
 NHJUa0vekbRr//3pBnhpgKDWSaVsD7px73s3+PNPPy/Y89PDl6unu+urz5+/Lz4d7g/Hq6fD
 zeL27vPh/xaZXFTSLHgmzBtALu7un7/99u3DeXt+tnj/5vzNyWJ9ON4fPi/Sh/vbu0/P0Pfu
 4f6nn3+C/3+Gxi9fYZjj/y4+XV+//n3xS/Pn8/3T8+L3N+/fnLw+f7a/3v7qfkOPVFa5WLZp
@@ -765,4 +680,4 @@ trxEjUMuxjXO99nAYmh1sgOdx5MeG8xDjGA+NPxoWzbFC08uHz0ZWsFXOCZ7YW3juJgvPCbc
 oJhQFCR0oD/8XtROSIo9wsacEZNyng3MCJBmAjg0DK4OMndjGLSshAUAjdVaDW4PVlgBcSn+
 P3tbOv4d6AEA
 
---YZ5djTAD1cGYuMQK--
+--SLDf9lqlvOQaIe6s--
