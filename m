@@ -2,66 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DCB0B19F928
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Apr 2020 17:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39C3119FCD1
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Apr 2020 20:15:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729067AbgDFPtt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Apr 2020 11:49:49 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:44641 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728945AbgDFPts (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Apr 2020 11:49:48 -0400
-Received: from 185.80.35.16 (185.80.35.16) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.341)
- id 52034e87f0ed0a75; Mon, 6 Apr 2020 17:49:46 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: [PATCH] ACPI: EC: Fix up fast path check in acpi_ec_add()
-Date:   Mon, 06 Apr 2020 17:49:45 +0200
-Message-ID: <1708495.96b3J6AjSg@kreacher>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+        id S1726582AbgDFSPY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Apr 2020 14:15:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35534 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726720AbgDFSPX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 6 Apr 2020 14:15:23 -0400
+Subject: Re: [GIT PULL] More power management updates for v5.7-rc1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586196923;
+        bh=zhxeOaGtcKfyiLmmMtq/+kY1GCO6x1vK9xvn6tackk0=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=OBI9A5S4lB/pn2R/7H46CbfSU3ctGekA4IUpV7eZ7tTH+51kIdGAQ6VXPjfAubU1C
+         oCySRhSxxGDkSyZZaXwWGJmlFjsYpF27lQKDtxf8mL6ZqR5SPEK7Po6a+cCM0HNU62
+         10ixcOOd9bqekOiGu5H0NR/0NYZqCKSBCxPAhYd8=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0ji9p4_whgcJbh6mm8cdYpruHEzOsTqje7JedD45wH5Dg@mail.gmail.com>
+References: <CAJZ5v0ji9p4_whgcJbh6mm8cdYpruHEzOsTqje7JedD45wH5Dg@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0ji9p4_whgcJbh6mm8cdYpruHEzOsTqje7JedD45wH5Dg@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
+ pm-5.7-rc1-2
+X-PR-Tracked-Commit-Id: 54032b863b56b0e5313bfcd6ef0818943c59c4f4
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: ef05db16bbd81c0afc4e97806ab338665863bd3b
+Message-Id: <158619692333.24927.12793948460579407311.pr-tracker-bot@kernel.org>
+Date:   Mon, 06 Apr 2020 18:15:23 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The pull request you sent on Mon, 6 Apr 2020 17:11:39 +0200:
 
-The fast path check in acpi_ec_add() is not incorrect, because in
-fact acpi_device_hid(device) can be equal to ACPI_ECDT_HID only if
-boot_ec is not NULL, but it may confuse static checkers, so change
-it to explicitly check boot_ec upfront and use the slow path if
-that pointer is NULL.
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-5.7-rc1-2
 
-Link: https://lore.kernel.org/linux-acpi/20200406144217.GA68494@mwanda/
-Fixes: 3d9b8dd8320d ("ACPI: EC: Use fast path in acpi_ec_add() for DSDT boot EC")
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/ec.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/ef05db16bbd81c0afc4e97806ab338665863bd3b
 
-Index: linux-pm/drivers/acpi/ec.c
-===================================================================
---- linux-pm.orig/drivers/acpi/ec.c
-+++ linux-pm/drivers/acpi/ec.c
-@@ -1589,8 +1589,8 @@ static int acpi_ec_add(struct acpi_devic
- 	strcpy(acpi_device_name(device), ACPI_EC_DEVICE_NAME);
- 	strcpy(acpi_device_class(device), ACPI_EC_CLASS);
- 
--	if ((boot_ec && boot_ec->handle == device->handle) ||
--	    !strcmp(acpi_device_hid(device), ACPI_ECDT_HID)) {
-+	if (boot_ec && (boot_ec->handle == device->handle ||
-+	    !strcmp(acpi_device_hid(device), ACPI_ECDT_HID))) {
- 		/* Fast path: this device corresponds to the boot EC. */
- 		ec = boot_ec;
- 	} else {
+Thank you!
 
-
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
