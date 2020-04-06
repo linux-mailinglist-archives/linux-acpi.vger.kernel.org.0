@@ -2,86 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04F3219F773
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Apr 2020 16:01:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A84C19F827
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Apr 2020 16:44:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728392AbgDFOBz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Apr 2020 10:01:55 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:38966 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726436AbgDFOBz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Apr 2020 10:01:55 -0400
-Received: by mail-lf1-f68.google.com with SMTP id m2so633419lfo.6
-        for <linux-acpi@vger.kernel.org>; Mon, 06 Apr 2020 07:01:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=prytznet.se; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=DF9xo5Ugj+GE9CsnV0I6VxMjelwsstlt8GDPYa0qqY8=;
-        b=auJaXc8njXvCh+WriO786pHHfJR77QrQL+kTKaw/bdj2D5WzP8ZSesq/KDDOaHP5Vj
-         2ezANI1PIAAVh30SGR4EJLXErZLZ155J6KPPfLhegRhrsHJJ6DbfH6/ErbrOu7cI2M8F
-         /FIsseePR9uPnugJuLap+6lI3usT+CtjSH8JMQf07uj3C6eJaewnFTX5b4IFgOt5AEyS
-         3wrd2ehns802nYfJTKMEXBcxuL7+1O+qycvwHl1PSOI7efjvao4/z/A1uxwfVZUnVvut
-         d/lpZhKo0K67tUkcF614b9Tzwqb6OxZkbpEGukTz3h2ycyoD7FPyB4117yGi4EfJl/UL
-         2oKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=DF9xo5Ugj+GE9CsnV0I6VxMjelwsstlt8GDPYa0qqY8=;
-        b=lfq9l9MdFezb+VJbqgQBorp0c/xq3wNveJls4TuF2ISuiNthTPl4rTwXd4ArWA3dkM
-         aFCL23DVcyO7jT4pTpuk2FxFQuxxShypaewlTbIW86bpfqfGpM+ryck6IIonpQOMLZzB
-         eqAETl8FDjM3ptAueIdoUyevLKXH1gLBM2gjsaIIaPSY6O4zSIJT03SNc21BluxGcrHB
-         f8V538NOwbbIQ8oMrxjGSgF8pgY/uBmrjhKYTVrNYwlAXLGC5SfyZik2t/IwCej06tVn
-         teR6NDFBkdQkPzX9v1jCFpZmMtNdxym1IeO5txByZhnL29hvgmbBNuzwpnLM6kCl1A/A
-         NJkw==
-X-Gm-Message-State: AGi0PuZOGp7VKTasClM6LPUTz/DNOiBOHYqGNSczWbvwTzvH3/Ft5vch
-        MlNQZqjXg/tkDQ6wtq5MMleTdp/N/cDErg==
-X-Google-Smtp-Source: APiQypKcbpfttSH+/SSk0uDjbyFynamGys6QFeyIq1+IK9aTAtxNognuaaoGUQPjuE5WIhKAnhBurA==
-X-Received: by 2002:a19:4b90:: with SMTP id y138mr12879584lfa.39.1586181711648;
-        Mon, 06 Apr 2020 07:01:51 -0700 (PDT)
-Received: from localhost.localdomain ([158.174.82.32])
-        by smtp.gmail.com with ESMTPSA id k11sm6516277lfe.44.2020.04.06.07.01.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2020 07:01:51 -0700 (PDT)
-From:   Vilhelm Prytz <vilhelm@prytznet.se>
-To:     linux-acpi@vger.kernel.org
-Cc:     Vilhelm Prytz <vilhelm@prytznet.se>
-Subject: [PATCH] Documentation: firmware-guide: ACPI: fix table in namespace.rst
-Date:   Mon,  6 Apr 2020 16:01:22 +0200
-Message-Id: <20200406140122.21514-1-vilhelm@prytznet.se>
-X-Mailer: git-send-email 2.17.1
+        id S1728721AbgDFOo3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Apr 2020 10:44:29 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:42360 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728719AbgDFOo3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Apr 2020 10:44:29 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 036EhhSZ194083;
+        Mon, 6 Apr 2020 14:44:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=NPzOHNL43b3IOI3Dg4i9Q4dV8e8iUPkPKzlaZijfd18=;
+ b=YUOfFcqf5oAQ/JB5RuW1U/8RgVGKNQ3DZI3iVSbizkanrsNbVPqb72OlVAPtHVqTNH2v
+ O5c67XUjqtwN0q7sbK/RBwVhd/oCFeWDVYn98o7KwMCJGLLcYomvPmMwQjcYzPtf+XHU
+ vfhrZwhBP2VodS/LMIMP/FPPiX23KGAO5qZFmeNDdE5dsUPnyxR102r+QmVAFix2Mt9/
+ xToVAeir+zjIauJ6mDLJstVCZSQsEpkkkPSOLnFXRGUcTaKzAiPqB9S6GUoH/7dRPBbc
+ vRCXBqekcmHVzQoxVIcKtyqQJsywz6rgaiGTTI6lizXgC27ol/WGCM1fTKyuP807DGfW 6g== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 306j6m7916-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 06 Apr 2020 14:44:26 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 036EgPAY029945;
+        Mon, 6 Apr 2020 14:42:25 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 30839q6ffd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 06 Apr 2020 14:42:25 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 036EgNL6026874;
+        Mon, 6 Apr 2020 14:42:24 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 06 Apr 2020 07:42:23 -0700
+Date:   Mon, 6 Apr 2020 17:42:17 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     rafael.j.wysocki@intel.com
+Cc:     linux-acpi@vger.kernel.org
+Subject: [bug report] ACPI: EC: Avoid passing redundant argument to functions
+Message-ID: <20200406144217.GA68494@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9582 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 malwarescore=0
+ mlxscore=0 mlxlogscore=999 bulkscore=0 suspectscore=10 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004060122
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9582 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999 spamscore=0
+ priorityscore=1501 suspectscore=10 lowpriorityscore=0 malwarescore=0
+ impostorscore=0 mlxscore=0 phishscore=0 adultscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004060122
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Fixed the alignment in the ACPI block diagram (RST table) by adding missing spaces
+Hello Rafael J. Wysocki,
 
-Signed-off-by: Vilhelm Prytz <vilhelm@prytznet.se>
----
- Documentation/firmware-guide/acpi/namespace.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+This is a semi-automatic email about new static checker warnings.
 
-diff --git a/Documentation/firmware-guide/acpi/namespace.rst b/Documentation/firmware-guide/acpi/namespace.rst
-index 3eb763d6656d..6193582a2204 100644
---- a/Documentation/firmware-guide/acpi/namespace.rst
-+++ b/Documentation/firmware-guide/acpi/namespace.rst
-@@ -56,13 +56,13 @@ are illustrated in the following diagram::
-                   +- - - -+                  |  +-------------------| |
-                   | Entry | - - - - - - - -+ |  | Definition Blocks | |
-                   +- - - -+                | |  +-------------------+ |
--                                          | |  +- - - - - - - - - -+ |
--                                          +-|->|       SSDT        | |
-+                                           | |  +- - - - - - - - - -+ |
-+                                           +-|->|       SSDT        | |
-                                              |  +-------------------+ |
-                                              |  | Definition Blocks | |
-                                              |  +- - - - - - - - - -+ |
-                                              +------------------------+
--                                                         |
-+                                                          |
-                                              OSPM Loading |
-                                                          \|/
-                                                    +----------------+
--- 
-2.17.1
+The patch a2b691772acd: "ACPI: EC: Avoid passing redundant argument 
+to functions" from Feb 27, 2020, leads to the following Smatch 
+complaint:
 
+    drivers/acpi/ec.c:1624 acpi_ec_add()
+    error: we previously assumed 'ec' could be null (see line 1595)
+
+drivers/acpi/ec.c
+  1588  
+  1589          strcpy(acpi_device_name(device), ACPI_EC_DEVICE_NAME);
+  1590          strcpy(acpi_device_class(device), ACPI_EC_CLASS);
+  1591  
+  1592          if ((boot_ec && boot_ec->handle == device->handle) ||
+                     ^^^^^^^
+Assume "boot_ec" is NULL.
+
+  1593              !strcmp(acpi_device_hid(device), ACPI_ECDT_HID)) {
+
+And the strings math.
+
+  1594			/* Fast path: this device corresponds to the boot EC. */
+  1595			ec = boot_ec;
+                        ^^^^^^^^^^^^
+so "ec" is NULL.
+
+  1596		} else {
+  1597			acpi_status status;
+  1598	
+  1599			ec = acpi_ec_alloc();
+  1600			if (!ec)
+  1601				return -ENOMEM;
+  1602	
+  1603			status = ec_parse_device(device->handle, 0, ec, NULL);
+  1604			if (status != AE_CTRL_TERMINATE) {
+  1605				ret = -EINVAL;
+  1606				goto err;
+  1607			}
+  1608	
+  1609			if (boot_ec && ec->command_addr == boot_ec->command_addr &&
+  1610			    ec->data_addr == boot_ec->data_addr) {
+  1611				/*
+  1612				 * Trust PNP0C09 namespace location rather than
+  1613				 * ECDT ID. But trust ECDT GPE rather than _GPE
+  1614				 * because of ASUS quirks, so do not change
+  1615				 * boot_ec->gpe to ec->gpe.
+  1616				 */
+  1617				boot_ec->handle = ec->handle;
+  1618				acpi_handle_debug(ec->handle, "duplicated.\n");
+  1619				acpi_ec_free(ec);
+  1620				ec = boot_ec;
+  1621			}
+  1622		}
+  1623	
+  1624		ret = acpi_ec_setup(ec, device);
+                                    ^^
+NULL dereference inside the function.
+
+  1625		if (ret)
+  1626			goto err;
+
+regards,
+dan carpenter
