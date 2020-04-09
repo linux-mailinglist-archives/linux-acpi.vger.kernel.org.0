@@ -2,142 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6EC61A3541
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Apr 2020 15:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B363A1A3D10
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Apr 2020 01:49:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727003AbgDIN7B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Apr 2020 09:59:01 -0400
-Received: from sauhun.de ([88.99.104.3]:59294 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726964AbgDIN7B (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 9 Apr 2020 09:59:01 -0400
-Received: from localhost (p54B33209.dip0.t-ipconnect.de [84.179.50.9])
-        by pokefinder.org (Postfix) with ESMTPSA id CD0952C1FDE;
-        Thu,  9 Apr 2020 15:58:58 +0200 (CEST)
-Date:   Thu, 9 Apr 2020 15:58:58 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] i2c: designware: platdrv: Remove DPM_FLAG_SMART_SUSPEND
- flag on BYT and CHT
-Message-ID: <20200409135858.GE1136@ninjato>
-References: <20200407181116.61066-1-hdegoede@redhat.com>
+        id S1726867AbgDIXt1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Apr 2020 19:49:27 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:43570 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726726AbgDIXt1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Apr 2020 19:49:27 -0400
+Received: by mail-io1-f68.google.com with SMTP id u2so183436iop.10;
+        Thu, 09 Apr 2020 16:49:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/9eaq0H8oGg8K4IrgPtJPslJKNTLiRXhsyT2mSt9uHg=;
+        b=LEHlijWAgaGdufMN+SLouCAfFPyGh0WZRwh/a7PLOfnQMBZRiy1ETT4TKA24SYxydN
+         kGT64cVMIsrrvsQrSV6xlbFxH1SvhbwTWPBgXdiecQ4LQyH4BK1L/1QOfZXuD1oplX+w
+         XiMqGpdaOtXwWZM60GL894falVj1ToAptxErAoyu2CNu6rs76b7c2l51mUPcOnUKAX35
+         2l82d1UuEj71tAvG8VqYikmvE7VRyyopE25aH11XDTjul5JSfWiDntIPfG+1t62JzICi
+         BAdDimvTQXuvGceSS/LRxOiZ00si90Tc6M2nPVisX1k+9oLOgnGG2fnTnr6i8QH4O43o
+         VJ/w==
+X-Gm-Message-State: AGi0Pua4ZqXc6KvG1INe0A/wl4mPFPJZLaEgCnLABrDG7K3qBEKYUOFM
+        SEuKGjD26M0WIhRBUGCW2Q==
+X-Google-Smtp-Source: APiQypIdiMtTCZPPD7LTx2QITtk9ZR5KlqXELktIFYlBTigIR35XweuEgwpB2TujFJ6toR/nxp9cGQ==
+X-Received: by 2002:a6b:b512:: with SMTP id e18mr1774396iof.168.1586476167109;
+        Thu, 09 Apr 2020 16:49:27 -0700 (PDT)
+Received: from xps15.herring.priv ([64.188.179.248])
+        by smtp.googlemail.com with ESMTPSA id w7sm93416ior.51.2020.04.09.16.49.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2020 16:49:26 -0700 (PDT)
+From:   Rob Herring <robh@kernel.org>
+To:     Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Will Deacon <will@kernel.org>
+Cc:     Andrew Murray <amurray@thegoodpenguin.co.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Mans Rullgard <mans@mansr.com>,
+        Marc Gonzalez <marc.w.gonzalez@free.fr>,
+        Robert Richter <rrichter@marvell.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Toan Le <toan@os.amperecomputing.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Chocron <jonnyc@amazon.com>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-pci@vger.kernel.org
+Subject: [PATCH 0/3] PCI: Modularize host-generic
+Date:   Thu,  9 Apr 2020 17:49:20 -0600
+Message-Id: <20200409234923.21598-1-robh@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="lteA1dqeVaWQ9QQl"
-Content-Disposition: inline
-In-Reply-To: <20200407181116.61066-1-hdegoede@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+This is part of a larger effort to modularize ARCH_VEXPRESS. In
+particular, the Arm FVP platforms use the host-generic driver. This
+conversion was straight-forward. I didn't convert the other ECAM drivers
+using host-common to modules, but am happy to do so if there's a strong
+desire to do so.
 
---lteA1dqeVaWQ9QQl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In the process, I noticed that 'const' was being dropped from the match
+table .data pointer, so the first patch constifies struct pci_ecam_ops.
+I started trying to constify pci_ops too, but that became a never ending
+treewide rabbit hole. So I ended up with a cast when we assign pci_ops
+from pci_ecam_ops.
 
-On Tue, Apr 07, 2020 at 08:11:16PM +0200, Hans de Goede wrote:
-> We already set DPM_FLAG_SMART_PREPARE, so we completely skip all
-> callbacks (other then prepare) where possible, quoting from
-> dw_i2c_plat_prepare():
->=20
->         /*
->          * If the ACPI companion device object is present for this device=
-, it
->          * may be accessed during suspend and resume of other devices via=
- I2C
->          * operation regions, so tell the PM core and middle layers to av=
-oid
->          * skipping system suspend/resume callbacks for it in that case.
->          */
->         return !has_acpi_companion(dev);
->=20
-> Also setting the DPM_FLAG_SMART_SUSPEND will cause acpi_subsys_suspend()
-> to leave the controller runtime-suspended even if dw_i2c_plat_prepare()
-> returned 0.
->=20
-> Leaving the controller runtime-suspended normally, when the I2C controller
-> is suspended during the suspend_late phase, is not an issue because
-> the pm_runtime_get_sync() done by i2c_dw_xfer() will (runtime-)resume it.
->=20
-> But for dw I2C controllers on Bay- and Cherry-Trail devices acpi_lpss.c
-> leaves the controller alive until the suspend_noirq phase, because it may
-> be used by the _PS3 ACPI methods of PCI devices and PCI devices are left
-> powered on until the suspend_noirq phase.
->=20
-> Between the suspend_late and resume_early phases runtime-pm is disabled.
-> So for any ACPI I2C OPRegion accesses done after the suspend_late phase,
-> the pm_runtime_get_sync() done by i2c_dw_xfer() is a no-op and the
-> controller is left runtime-suspended.
->=20
-> i2c_dw_xfer() has a check to catch this condition (rather then waiting
-> for the I2C transfer to timeout because the controller is suspended).
-> acpi_subsys_suspend() leaving the controller runtime-suspended in
-> combination with an ACPI I2C OPRegion access done after the suspend_late
-> phase triggers this check, leading to the following error being logged
-> on a Bay Trail based Lenovo Thinkpad 8 tablet:
->=20
-> [   93.275882] i2c_designware 80860F41:00: Transfer while suspended
-> [   93.275993] WARNING: CPU: 0 PID: 412 at drivers/i2c/busses/i2c-designw=
-are-master.c:429 i2c_dw_xfer+0x239/0x280
-> ...
-> [   93.276252] Workqueue: kacpi_notify acpi_os_execute_deferred
-> [   93.276267] RIP: 0010:i2c_dw_xfer+0x239/0x280
-> ...
-> [   93.276340] Call Trace:
-> [   93.276366]  __i2c_transfer+0x121/0x520
-> [   93.276379]  i2c_transfer+0x4c/0x100
-> [   93.276392]  i2c_acpi_space_handler+0x219/0x510
-> [   93.276408]  ? up+0x40/0x60
-> [   93.276419]  ? i2c_acpi_notify+0x130/0x130
-> [   93.276433]  acpi_ev_address_space_dispatch+0x1e1/0x252
-> ...
->=20
-> So since on BYT and CHT platforms we want ACPI I2c OPRegion accesses
-> to work until the suspend_noirq phase, we need the controller to be
-> runtime-resumed during the suspend phase if it is runtime-suspended
-> suspended at that time. This means that we must not set the
-> DPM_FLAG_SMART_SUSPEND on these platforms.
->=20
-> On BYT and CHT we already have a special ACCESS_NO_IRQ_SUSPEND flag
-> to make sure the controller stays functional until the suspend_noirq
-> phase. This commit makes the driver not set the DPM_FLAG_SMART_SUSPEND
-> flag when that flag is set.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: b30f2f65568f ("i2c: designware: Set IRQF_NO_SUSPEND flag for all B=
-YT and CHT controllers")
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-
-Applied to for-current, thanks!
+Rob
 
 
---lteA1dqeVaWQ9QQl
-Content-Type: application/pgp-signature; name="signature.asc"
+Rob Herring (3):
+  PCI: Constify struct pci_ecam_ops
+  PCI: host-generic: Support building as modules
+  PCI: host-generic: Eliminate pci_host_common_probe wrappers
 
------BEGIN PGP SIGNATURE-----
+ arch/arm64/kernel/pci.c                   |  4 ++--
+ drivers/acpi/pci_mcfg.c                   |  8 +++----
+ drivers/pci/controller/Kconfig            |  4 ++--
+ drivers/pci/controller/dwc/pcie-al.c      |  2 +-
+ drivers/pci/controller/dwc/pcie-hisi.c    | 19 +++++------------
+ drivers/pci/controller/pci-host-common.c  | 18 ++++++++++++----
+ drivers/pci/controller/pci-host-generic.c | 26 +++++++----------------
+ drivers/pci/controller/pci-thunder-ecam.c | 14 ++++++------
+ drivers/pci/controller/pci-thunder-pem.c  | 16 ++++++--------
+ drivers/pci/controller/pci-xgene.c        |  4 ++--
+ drivers/pci/controller/pcie-tango.c       |  9 +++++---
+ drivers/pci/ecam.c                        | 10 ++++++---
+ drivers/pci/setup-bus.c                   |  1 +
+ include/linux/pci-acpi.h                  |  2 +-
+ include/linux/pci-ecam.h                  | 25 +++++++++++-----------
+ 15 files changed, 78 insertions(+), 84 deletions(-)
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl6PKiIACgkQFA3kzBSg
-KbbBkw//e2KN5CvLP6AZzV4CffpueQ3raRdlim5bFriBY+osRRGDTSwZMbOl+ABU
-6S/o2FkLhWf7Flezra3bVrPAEOh8i33cKLyDKHjZV87MBJAIUENB1h5qO88EznEk
-wPj7Oldy6v33ibUkOjF0ShJPh8GeunaqkjCVHLV57wB9Efe5UQ4EhArLfUzg96C9
-9qKYOUmYyjJu50YvhGNo00UDyLDAsvIygCW9DdnsTl6xVbNQDQ4YzkCWo3794UVa
-TsWk5/PLiyztcCsHq0b92lBkALVnaaCNV9QKk9dQ5IA8XabPu+F16RO4G8WjRy8r
-77mz/MJRjOc+sQnhHewM7PCA14pf49OjFycLZeunmc7LhMJnWsDaD5RW79BvBcU5
-h/Ikgo/a3Uv79uc0uQuYPfnscMIheK4vRK2kGJ82/3TTUy/LErS5ntnCJpBrje9J
-wSFhtLWSxeoi1CxzmPEubOyuM1XDd9T0kWicwj6n0aBxRVCqG5EY8gmWpSC5Vz7N
-8azTJroHp36dlQiBN0txHMLQw6bOmZ0RjmD/NP1G6SakbrOGDk0db+t6HItLnigt
-WEWzp+QJdIYoPc96UPOC3sppP70o0VWdlLfkoZYzBjk+0ndlRtN21LrV0ol2EUGQ
-i1pSechX2rtIlu/AirZiDLSE4+wV0EJeCTsIaalOLkpPUA3Kpg4=
-=Irkd
------END PGP SIGNATURE-----
-
---lteA1dqeVaWQ9QQl--
+--
+2.20.1
