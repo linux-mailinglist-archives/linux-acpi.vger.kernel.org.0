@@ -2,57 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82BC81A5283
-	for <lists+linux-acpi@lfdr.de>; Sat, 11 Apr 2020 16:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5059F1A40F6
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Apr 2020 06:15:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726054AbgDKOnP convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Sat, 11 Apr 2020 10:43:15 -0400
-Received: from unallocated-static.datacentres.rogers.com ([72.142.144.38]:56727
-        "EHLO smartermail2" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726037AbgDKOnP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 11 Apr 2020 10:43:15 -0400
-X-Greylist: delayed 1680 seconds by postgrey-1.27 at vger.kernel.org; Sat, 11 Apr 2020 10:43:15 EDT
-Received: from coris.com (UnknownHost [103.207.36.17]) by smartermail2 with SMTP;
-   Thu, 9 Apr 2020 23:32:32 -0400
-Reply-To: kentpace@sina.com
-From:   Kent Pace <kentpace@coris.com>
-To:     linux-acpi@vger.kernel.org
-Subject: Urgent!!!!! Please read
-Date:   09 Apr 2020 20:32:29 -0700
-Message-ID: <20200409203229.1AB6244E110426C2@coris.com>
+        id S1727004AbgDJDrH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Apr 2020 23:47:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57520 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726997AbgDJDrG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 9 Apr 2020 23:47:06 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 453A72145D;
+        Fri, 10 Apr 2020 03:47:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586490426;
+        bh=wXjcofiFvFahVRTswUeqglP9vGCBEyPL97IqTxFzP7w=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=XNi2a81+ifBu3u7iJGX9J1EFwy8mbIWg7nMnubZfNQDHaJIlvmcRtlYm2kQu62UqC
+         zEv3KzFSkUNgiJZTz2qLH2KE2U0lCEEw57owvfek+GpgZQnJBtn0Z/DtHFt5mKBqWd
+         LBopjMDQjzDoX4OCLyKm45jUQl0ESkYucsZ+GoJY=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 25/68] ACPI: EC: Do not clear boot_ec_is_ecdt in acpi_ec_add()
+Date:   Thu,  9 Apr 2020 23:45:50 -0400
+Message-Id: <20200410034634.7731-25-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200410034634.7731-1-sashal@kernel.org>
+References: <20200410034634.7731-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dear Friend,
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
+[ Upstream commit 65a691f5f8f0bb63d6a82eec7b0ffd193d8d8a5f ]
 
-There is something very important I need to discuss with you.  I 
-am writing  this letter in tears and fear. In tears because I 
-will soon depart and in fear because I don't really know if you 
-will do this faithfully.
+The reason for clearing boot_ec_is_ecdt in acpi_ec_add() (if a
+PNP0C09 device object matching the ECDT boot EC had been found in
+the namespace) was to cause acpi_ec_ecdt_start() to return early,
+but since the latter does not look at boot_ec_is_ecdt any more,
+acpi_ec_add() need not clear it.
 
+Moreover, doing that may be confusing as it may cause "DSDT" to be
+printed instead of "ECDT" in the EC initialization completion
+message, so stop doing it.
 
-I am COVID-19  patient and the doctor has already confirmed I may 
-not last for the next 7 days.
+While at it, split the EC initialization completion message into
+two messages, one regarding the boot EC and another one printed
+regardless of whether or not the EC at hand is the boot one.
 
-I have substantial amount of money deposited in a security vault 
-around your country. It is in trunk boxes and once  I receive 
-your response and see your readiness to claim the money 
-immediately, I will forward the needed documents and the contact 
-of the security vault where the consignment is deposited,
-I am not asking you to give me anything but I want you to help 
-people that has been infected with this deadly virus with 60% of 
-the money and 40% should be for you and your family.
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/ec.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-I will disclose exact amount in the boxes as soon as I 
-receive your response.
-
-
-Regards
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index d1f1cf5d4bf08..3385be8b057c8 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1641,7 +1641,6 @@ static int acpi_ec_add(struct acpi_device *device)
+ 
+ 		if (boot_ec && ec->command_addr == boot_ec->command_addr &&
+ 		    ec->data_addr == boot_ec->data_addr) {
+-			boot_ec_is_ecdt = false;
+ 			/*
+ 			 * Trust PNP0C09 namespace location rather than
+ 			 * ECDT ID. But trust ECDT GPE rather than _GPE
+@@ -1661,9 +1660,12 @@ static int acpi_ec_add(struct acpi_device *device)
+ 
+ 	if (ec == boot_ec)
+ 		acpi_handle_info(boot_ec->handle,
+-				 "Boot %s EC used to handle transactions and events\n",
++				 "Boot %s EC initialization complete\n",
+ 				 boot_ec_is_ecdt ? "ECDT" : "DSDT");
+ 
++	acpi_handle_info(ec->handle,
++			 "EC: Used to handle transactions and events\n");
++
+ 	device->driver_data = ec;
+ 
+ 	ret = !!request_region(ec->data_addr, 1, "EC data");
+-- 
+2.20.1
 
