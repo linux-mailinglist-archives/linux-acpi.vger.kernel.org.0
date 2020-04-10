@@ -2,86 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB0291A44B6
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Apr 2020 11:50:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 282E11A46A0
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Apr 2020 15:14:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725913AbgDJJuf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Apr 2020 05:50:35 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:39431 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725893AbgDJJuf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Apr 2020 05:50:35 -0400
-Received: by mail-ot1-f65.google.com with SMTP id x11so1378115otp.6;
-        Fri, 10 Apr 2020 02:50:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=iKhNpJ8qVUg8Zg4eX9pSmK83aKuUthTOf/oQ+sa/l9s=;
-        b=INaZ6hIaY1oo82GPRBMJjJzgx6wwMs7LMKfo2LdWxyXha6wf4SsxYoWruCsiJKRXTS
-         ODOoFkWyeOVHrqV4QHvRZJXxojC38zgAuA+RVdaeOdT5OGqioQ4ZCPd17+cG8Mfg8yNf
-         qy3FMeHBZxwPOetZRYVmWYtvStCshQAe9CvIk3GzSA2FVKz9w1I/bTO7R4iDgohegZCH
-         xP0dG7MbfgUBchbQ29tNX4Cim9AeEH9jqW0myv7zWyAukaA4OalQ+Bvzmcmy7J2Uzqn/
-         o9zvwXa9Dos2h84bcV6K8kqZNNmeBRhzQ2/K069uNppMSsSJTd5jtT2DBCKPXxstRyhw
-         Au2A==
-X-Gm-Message-State: AGi0PuYp7exynjQT49m6Ttuo7P1MCEibTEMBNhGdykm93zPgqF+j+uSD
-        EObT6j85KwGPS1eKsIas+Zt9ho/mq6xZvBpBjcJgrFgA
-X-Google-Smtp-Source: APiQypI4bz4JGebBrEGirLeUCog/uYr7XTIy5rZ1b7RYA62xYEBQDmE3SiekjjXTXbuf1nqo/ICZxZwxwoJGGFdb4OI=
-X-Received: by 2002:a9d:7402:: with SMTP id n2mr3597051otk.262.1586512234925;
- Fri, 10 Apr 2020 02:50:34 -0700 (PDT)
+        id S1725991AbgDJNOu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Apr 2020 09:14:50 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:42437 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725930AbgDJNOu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 10 Apr 2020 09:14:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1586524489;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=UgrYcoVu9FKjPVruinahWgmUMbCGqdc7Uj5CG/o/3e0=;
+        b=ii9OKcfxgaU1yWwgkf3u3AGw+GSdbMWqZO9XUPCfeZ/tq67kUNq9Tv7r6MVvQ/pMRAxTe4
+        999v1p7cPSPDMBV2zgxcMQwqCnYukzQe2PMxrm5TIrq2CjpCr8JcGdCemTTyjB6AsFqfaA
+        H9zZYjyAErfK2Cg7/Bnm+Ey899T6vnE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-271-XHtnpSRtO6i9i5L_NmSftw-1; Fri, 10 Apr 2020 09:14:47 -0400
+X-MC-Unique: XHtnpSRtO6i9i5L_NmSftw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8709D8017F3;
+        Fri, 10 Apr 2020 13:14:46 +0000 (UTC)
+Received: from x1.localdomain.com (ovpn-112-81.ams2.redhat.com [10.36.112.81])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2DB5210027A9;
+        Fri, 10 Apr 2020 13:14:43 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org
+Subject: [PATCH] ACPI/PCI: pci_link: use extended_irq union member when setting ext-irq shareable
+Date:   Fri, 10 Apr 2020 15:14:42 +0200
+Message-Id: <20200410131442.22842-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 10 Apr 2020 11:50:23 +0200
-Message-ID: <CAJZ5v0g8hyYjx1eTZ7U+zvE+UrPjseZSAd-r6=-G4U_2M05yEA@mail.gmail.com>
-Subject: [GIT PULL] More ACPI updates for v5.7-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+The case ACPI_RESOURCE_TYPE_EXTENDED_IRQ inside acpi_pci_link_set()
+is correctly using resource->res.data.extended_irq.foo for most settings,
+but for the sharable setting it sofar has accidentally been using
+resource->res.data.irq.shareable instead of
+resource->res.data.extended_irq.shareable.
 
-Please pull from the tag
+Note that the old code happens to also work because the sharable field
+offset is the same for both the acpi_resource_irq and
+acpi_resource_extended_irq structs.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-5.7-rc1-3
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/pci_link.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-with top-most commit 0214da7cce2030f1a71fb555e2967faf3b92aebf
+diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
+index 00a6da2121be..ed3d2182cf2c 100644
+--- a/drivers/acpi/pci_link.c
++++ b/drivers/acpi/pci_link.c
+@@ -322,10 +322,10 @@ static int acpi_pci_link_set(struct acpi_pci_link *=
+link, int irq)
+ 		resource->res.data.extended_irq.polarity =3D
+ 		    link->irq.polarity;
+ 		if (link->irq.triggering =3D=3D ACPI_EDGE_SENSITIVE)
+-			resource->res.data.irq.shareable =3D
++			resource->res.data.extended_irq.shareable =3D
+ 			    ACPI_EXCLUSIVE;
+ 		else
+-			resource->res.data.irq.shareable =3D ACPI_SHARED;
++			resource->res.data.extended_irq.shareable =3D ACPI_SHARED;
+ 		resource->res.data.extended_irq.interrupt_count =3D 1;
+ 		resource->res.data.extended_irq.interrupts[0] =3D irq;
+ 		/* ignore resource_source, it's optional */
+--=20
+2.26.0
 
- Merge branches 'acpi-ec' and 'acpi-x86'
-
-on top of commit 7e63420847ae5f1036e4f7c42f0b3282e73efbc2
-
- Merge tag 'acpi-5.7-rc1-2' of
-git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-
-to receive more ACPI updates for 5.7-rc1.
-
-These prevent a false-positive static checker warning from triggering
-in the ACPI EC driver (Rafael Wysocki), fix white space in an ACPI
-document (Vilhelm Prytz) and add static annotation to one variable
-(Jason Yan).
-
-Thanks!
-
-
----------------
-
-Jason Yan (1):
-      ACPI, x86/boot: make acpi_nobgrt static
-
-Rafael J. Wysocki (1):
-      ACPI: EC: Fix up fast path check in acpi_ec_add()
-
-Vilhelm Prytz (1):
-      Documentation: firmware-guide: ACPI: fix table alignment in namespace.rst
-
----------------
-
- Documentation/firmware-guide/acpi/namespace.rst | 6 +++---
- arch/x86/kernel/acpi/boot.c                     | 2 +-
- drivers/acpi/ec.c                               | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
