@@ -2,37 +2,37 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5059F1A40F6
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Apr 2020 06:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8E991A3F61
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Apr 2020 05:55:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727004AbgDJDrH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Apr 2020 23:47:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57520 "EHLO mail.kernel.org"
+        id S1726817AbgDJDsW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Apr 2020 23:48:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59738 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726997AbgDJDrG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 9 Apr 2020 23:47:06 -0400
+        id S1728164AbgDJDsV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 9 Apr 2020 23:48:21 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 453A72145D;
-        Fri, 10 Apr 2020 03:47:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4D6902137B;
+        Fri, 10 Apr 2020 03:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586490426;
-        bh=wXjcofiFvFahVRTswUeqglP9vGCBEyPL97IqTxFzP7w=;
+        s=default; t=1586490501;
+        bh=t6NJkxg/UoyJvKDLvCs0NmGB1mpeIXUzCQ01MywZPuk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XNi2a81+ifBu3u7iJGX9J1EFwy8mbIWg7nMnubZfNQDHaJIlvmcRtlYm2kQu62UqC
-         zEv3KzFSkUNgiJZTz2qLH2KE2U0lCEEw57owvfek+GpgZQnJBtn0Z/DtHFt5mKBqWd
-         LBopjMDQjzDoX4OCLyKm45jUQl0ESkYucsZ+GoJY=
+        b=FdvhQe10lSgI4+YM29HMFuJUIRPMVTySAo173DnqOqa09c5CoYbpYNOfrMyocuo0t
+         p3kex69uqC+R9IZ0hDhNeb0eJoq8NhwPF7XiMme9KyqKOcs3Fw0rSFUm9zn0PBQasO
+         jOw8V2I7t1XYZ5c2nOcSq2D9vaRAjNjrvFUBjq4k=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 25/68] ACPI: EC: Do not clear boot_ec_is_ecdt in acpi_ec_add()
-Date:   Thu,  9 Apr 2020 23:45:50 -0400
-Message-Id: <20200410034634.7731-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.5 17/56] ACPI: EC: Do not clear boot_ec_is_ecdt in acpi_ec_add()
+Date:   Thu,  9 Apr 2020 23:47:21 -0400
+Message-Id: <20200410034800.8381-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200410034634.7731-1-sashal@kernel.org>
-References: <20200410034634.7731-1-sashal@kernel.org>
+In-Reply-To: <20200410034800.8381-1-sashal@kernel.org>
+References: <20200410034800.8381-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -67,10 +67,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index d1f1cf5d4bf08..3385be8b057c8 100644
+index bd74c78366759..f351d0711e495 100644
 --- a/drivers/acpi/ec.c
 +++ b/drivers/acpi/ec.c
-@@ -1641,7 +1641,6 @@ static int acpi_ec_add(struct acpi_device *device)
+@@ -1649,7 +1649,6 @@ static int acpi_ec_add(struct acpi_device *device)
  
  		if (boot_ec && ec->command_addr == boot_ec->command_addr &&
  		    ec->data_addr == boot_ec->data_addr) {
@@ -78,7 +78,7 @@ index d1f1cf5d4bf08..3385be8b057c8 100644
  			/*
  			 * Trust PNP0C09 namespace location rather than
  			 * ECDT ID. But trust ECDT GPE rather than _GPE
-@@ -1661,9 +1660,12 @@ static int acpi_ec_add(struct acpi_device *device)
+@@ -1669,9 +1668,12 @@ static int acpi_ec_add(struct acpi_device *device)
  
  	if (ec == boot_ec)
  		acpi_handle_info(boot_ec->handle,
