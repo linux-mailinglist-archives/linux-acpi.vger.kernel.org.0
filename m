@@ -2,220 +2,210 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82BE61A4C19
-	for <lists+linux-acpi@lfdr.de>; Sat, 11 Apr 2020 00:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6F8B1A4E86
+	for <lists+linux-acpi@lfdr.de>; Sat, 11 Apr 2020 09:29:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726646AbgDJWbC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Apr 2020 18:31:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33446 "EHLO mail.kernel.org"
+        id S1725900AbgDKH3X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 11 Apr 2020 03:29:23 -0400
+Received: from mga02.intel.com ([134.134.136.20]:48613 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726582AbgDJWbB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 10 Apr 2020 18:31:01 -0400
-Received: from localhost (mobile-166-170-220-109.mycingular.net [166.170.220.109])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A60BA207FF;
-        Fri, 10 Apr 2020 22:31:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586557861;
-        bh=WKCPMyZXyRYjTjboILM55FNirG1PFaP3Ss/VnsTBfQQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=qBEc+7+O1wMkH/6ypssUxab8P2wygTjaQTHKGyjIrKIbjjqi3/CzoMgKk7rBrlr2a
-         9+0liEXt3w1Z2/B/+9ywGPovBmGJ4BOAnGt0xG5oMng2iNQH6O+2HYmD1HeUpl7W4/
-         ivNhAKFQf0U2lhBVnLnA1veNBR9iHphBNKVrsoGM=
-Date:   Fri, 10 Apr 2020 17:30:58 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-        Keith Busch <keith.busch@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>, Mario.Limonciello@dell.com,
-        Anthony Wong <anthony.wong@canonical.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Sakari Ailus <sakari.ailus@iki.fi>, linux-pci@vger.kernel.org,
+        id S1725869AbgDKH3X (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 11 Apr 2020 03:29:23 -0400
+IronPort-SDR: li0xdVSNlwLVyl3qAGzB8NAvVwemb70CW9YGQyT70z1hGoyn8xwtRYvX3P9Wc857Qi+TlxjPif
+ fU25ZLK3G75Q==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2020 00:29:23 -0700
+IronPort-SDR: KUuTvwEGJ5/7I3f7dTpVf014pkTfh5DX5UEjPNNnHnkSBH9bFI7xh/VgJG7R2DiYKONmTpUrUm
+ 1+V/whldRgjQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,370,1580803200"; 
+   d="scan'208";a="255690761"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 11 Apr 2020 00:29:15 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jNAZm-000633-A0; Sat, 11 Apr 2020 15:29:14 +0800
+Date:   Sat, 11 Apr 2020 15:28:53 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
         linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 10/10] PCI / ACPI: Whitelist D3 for more PCIe hotplug
- ports
-Message-ID: <20200410223058.GA18278@google.com>
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 1846b08e7d4fe43b7e158c56783e347ec0b1fd5f
+Message-ID: <5e9171b5.okvHPrlnV4+qJ0+Q%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200409065411.GH2567@lahna.fi.intel.com>
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-[breadcrumbs for the archives: this thread is about
-26ad34d510a8 ("PCI / ACPI: Whitelist D3 for more PCIe hotplug ports"),
-https://git.kernel.org/linus/26ad34d510a8]
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: 1846b08e7d4fe43b7e158c56783e347ec0b1fd5f  Merge branch 'intel_pstate-passive' into bleeding-edge
 
-On Thu, Apr 09, 2020 at 09:54:11AM +0300, Mika Westerberg wrote:
-> On Wed, Apr 08, 2020 at 03:12:08PM -0500, Bjorn Helgaas wrote:
-> > On Wed, Apr 08, 2020 at 09:04:09AM +0300, Mika Westerberg wrote:
-> > > On Tue, Apr 07, 2020 at 06:54:23PM -0500, Bjorn Helgaas wrote:
-> > > > On Thu, Sep 13, 2018 at 05:33:22PM +0300, Mika Westerberg wrote:
-> > > > > In order to have better power management for Thunderbolt PCIe chains,
-> > > > > Windows enables power management for native PCIe hotplug ports if there
-> > > > > is following ACPI _DSD attached to the root port:
-> > > > > 
-> > > > >   Name (_DSD, Package () {
-> > > > >       ToUUID ("6211e2c0-58a3-4af3-90e1-927a4e0c55a4"),
-> > > > >       Package () {
-> > > > >           Package () {"HotPlugSupportInD3", 1}
-> > > > >       }
-> > > > >   })
-> > > > > 
-> > > > > This is also documented in:
-> > > > > 
-> > > > >   https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-pcie-root-ports-supporting-hot-plug-in-d3
-> > > > 
-> > > > This doc basically says that if the platform supplies this _DSD, the
-> > > > root port is "capable of handling hot plug events while in D3 state".
-> > > > 
-> > > > What does that mean?  That statement is not really actionable.  I
-> > > > *assume* it's telling us about some specific hardware or firmware
-> > > > functionality, like maybe we'll get a notification for hotplug events
-> > > > when the device is in D3?  D3hot?  D3cold?  What is the notification?
-> > > > Is it immediate or when the device comes back to D0?  How do we
-> > > > control and field the notification?
-> > > 
-> > > I think it simply gives the OS a hint that it can put PCIe hotplug
-> > > capable port into D3 and expect it to wake up when device is detected.
-> > 
-> > I'd really like more specific details than this.  PCI power management
-> > is explicitly controlled by software, so I don't know what it means
-> > for a bridge to "wake up when device is detected."
-> 
-> Note these are for PCIe which is not the same as the parallel PCI.
+elapsed time: 484m
 
-Sure, but the PCI power management framework doesn't need to know
-about PCI/PCIe differences.
+configs tested: 150
+configs skipped: 0
 
-> What I mean here is that there is some sort of wake depending whether
-> the link is in L1 or L2/L3 and then resulting the link to go to L0 and
-> PME message being send over to the root complex.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-This is compatible with conventional PCI behavior.  PME_Support in the
-PM Capability tells us whether the device can generate a PME from D0,
-D1, D2, D3hot, or D3cold.  AFAIK, this applies to both conventional
-PCI and PCIe, so I think this _DSD must be telling us something more
-than just "this PCIe device can assert PME from D3hot and D3cold."
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+arm                           efm32_defconfig
+arm                         at91_dt_defconfig
+arm                        shmobile_defconfig
+arm64                               defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                           sunxi_defconfig
+arm                        multi_v7_defconfig
+sparc                            allyesconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                             alldefconfig
+arm64                            allmodconfig
+arm                              allmodconfig
+nios2                         3c120_defconfig
+nios2                         10m50_defconfig
+c6x                        evmc6678_defconfig
+xtensa                          iss_defconfig
+c6x                              allyesconfig
+xtensa                       common_defconfig
+openrisc                 simple_smp_defconfig
+openrisc                    or1ksim_defconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                                defconfig
+alpha                               defconfig
+h8300                       h8s-sim_defconfig
+h8300                     edosk2674_defconfig
+m68k                       m5475evb_defconfig
+m68k                             allmodconfig
+h8300                    h8300h-sim_defconfig
+m68k                           sun3_defconfig
+m68k                          multi_defconfig
+arc                                 defconfig
+arc                              allyesconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                generic-64bit_defconfig
+parisc                generic-32bit_defconfig
+parisc                           allyesconfig
+i386                 randconfig-a002-20200410
+x86_64               randconfig-a001-20200410
+x86_64               randconfig-a002-20200410
+i386                 randconfig-a003-20200410
+x86_64               randconfig-a003-20200410
+i386                 randconfig-a001-20200410
+mips                 randconfig-a001-20200410
+nds32                randconfig-a001-20200410
+m68k                 randconfig-a001-20200410
+riscv                randconfig-a001-20200410
+alpha                randconfig-a001-20200410
+parisc               randconfig-a001-20200410
+h8300                randconfig-a001-20200411
+nios2                randconfig-a001-20200411
+c6x                  randconfig-a001-20200411
+microblaze           randconfig-a001-20200411
+sparc64              randconfig-a001-20200411
+x86_64               randconfig-b002-20200410
+i386                 randconfig-b001-20200410
+x86_64               randconfig-b001-20200410
+x86_64               randconfig-b003-20200410
+i386                 randconfig-b003-20200410
+i386                 randconfig-b002-20200410
+i386                 randconfig-d002-20200410
+x86_64               randconfig-d003-20200410
+x86_64               randconfig-d001-20200410
+i386                 randconfig-d003-20200410
+i386                 randconfig-d001-20200410
+x86_64               randconfig-d002-20200410
+i386                 randconfig-e001-20200410
+i386                 randconfig-e002-20200410
+x86_64               randconfig-e002-20200410
+i386                 randconfig-e003-20200410
+x86_64               randconfig-e003-20200410
+i386                 randconfig-f003-20200411
+i386                 randconfig-f002-20200411
+x86_64               randconfig-f003-20200411
+x86_64               randconfig-f001-20200411
+x86_64               randconfig-f002-20200411
+i386                 randconfig-f001-20200411
+x86_64               randconfig-g003-20200410
+i386                 randconfig-g003-20200410
+x86_64               randconfig-g002-20200410
+x86_64               randconfig-g001-20200410
+i386                 randconfig-g002-20200410
+i386                 randconfig-g001-20200410
+i386                 randconfig-h003-20200411
+i386                 randconfig-h002-20200411
+i386                 randconfig-h001-20200411
+x86_64               randconfig-h002-20200411
+arm64                randconfig-a001-20200410
+ia64                 randconfig-a001-20200410
+arc                  randconfig-a001-20200410
+sparc                randconfig-a001-20200410
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+s390                       zfcpdump_defconfig
+s390                          debug_defconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                             alldefconfig
+s390                                defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                            titan_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                                allnoconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
 
-PME_Support tells us whether the device can generate PMEs from D3cold,
-but of course it doesn't say anything about whether hotplug events
-cause those PMEs.
-
-PCIe r5.0, sec 6.7.3.4, says ports must support PMEs for hotplug
-events while the device is in D1, D2, or D3hot.  It clearly leaves out
-D3cold.
-
-So maybe this _DSD tells us that this device can generate *hotplug*
-event PMEs from D3cold?
-
-> > Normally Linux would get some kind of notification like a PME, then
-> > execute an ACPI method and/or write PCI_PM_CTRL to put the device back
-> > in D0.
-> 
-> Right.
-> 
-> > Are we talking about D3hot or D3cold?
-> 
-> My interpretation is that both (D3 implies both D3hot and D3cold) but I
-> did not write that spec.
-> 
-> Systems where this is used typically go down to D3cold with the PCIe
-> topology (links are in L2).
-> 
-> > The PCI PM capability already has a way to advertise that it can
-> > generate PME from D3cold.  How is this different from that?
-> 
-> Well you always need some platform (ACPI) help in order to even to
-> D3cold. This applies to waking up as well. The PCIe device may advertise
-> that it supports this but I don't think it can be sure that the system
-> it is connected to has this plumbing.
-
-Yes, transitions to/from D3cold require platform support.  But those
-transitions are done by ACPI methods, so any plumbing is ACPI's
-problem, and I don't think this _DSD helps the OS with that.
-
-> For PCIe hotplug ports there have been issues that have prevented doing
-> power management for those. The _DSD is there to provide a hint to the
-> OS saying that yeah, this port actually is expected to work even if it
-> goes into D3 (cold/hot).
-
-That doesn't really help fix bugs in this area or help with future
-refactoring, because it's not specific about what the issues were or
-what the _DSD means.
-
-I think the combination of PCIe r5.0 7.5.2.1 (PME_Support from D0, D1,
-D2, D3hot, D3cold) and 6.7.3.4 (hotplug PME events from D1, D2,
-D3hot) covers everything except hotplug PME events from D3cold.
-
-So my guess is that this _DSD is a way to tell the OS that this device
-generates PMEs for hotplug events even when the device is in D3cold.
-Does that make any sense?
-
-> > Is this _DSD something that *could* be advertised via PCI config
-> > space, i.e., is it completely determined by the Root Port?  Or is it
-> > something that requires ACPI support, so it cannot be done directly by
-> > the hardware device?
-> 
-> You always need help from platform (ACPI) to get into D3cold.
-> 
-> > These are all things we need to know in order to make power management
-> > reliable.
-
-> > > > > +static inline bool platform_pci_bridge_d3(struct pci_dev *dev)
-> > > > > +{
-> > > > > +	return pci_platform_pm ? pci_platform_pm->bridge_d3(dev) : false;
-> > > > 
-> > > > This patch added a .bridge_d3() implementation for ACPI but
-> > > > not for MID.  What prevents us from calling
-> > > > platform_pci_bridge_d3() on a MID platform and trying to call
-> > > > through a NULL pointer?
-> > > > 
-> > > > Shouldn't we do something like the patch attached below?
-> > > 
-> > > IIRC MID devices in general don't have PCIe ports (so we never
-> > > enable PM for them). Is this a real problem that crashes peoples
-> > > kernels on MID systems? Then yes I think the patch makes sense
-> > > to have.
-> > > 
-> > > I also remember testing some other stuff on one MID system
-> > > (Edison) quite recently and did not see any issues.
-> > 
-> > I have not seen reports of crashes, but I do think this is a real
-> > problem.  The problem is that the code as-is relies on assumptions
-> > ("MID does not have PCI and never will") that are implicit and
-> > impossible to verify, which is a maintenance problem.
-> 
-> Well, there won't be any new MID devices and the only one we support
-> partially is Edison and it does not have a single PCIe port that
-> could even be power managed.
-
-The problem I'm trying to solve is making this code understandable.
-It doesn't help to assert that "there are no devices that exercise
-this path" because one cannot figure that out by looking at the code.
-
-> > > BTW, this patch was merged over a year ago so I'm not sure why you comment
-> > > it now. Or you want me to add incremental changes to it?
-> > 
-> > I was reviewing [1], which updates pci_find_pcie_root_port(), which is
-> > used by acpi_pci_bridge_d3().  I noticed a potential NULL pointer
-> > dereference, which was a distraction.
-> > 
-> > Unless you object, I'll merge something like the patch below to
-> > prevent that distraction for others.
-> 
-> No objections :)
-> 
-> However, in order to make this more maintainable, what if we check in
-> the platform_pci_bridge_d3() itself whether the pointer is NULL and
-> return false? That would work for any future platforms and avoid adding
-> the dummy implementation each time.
-
-That's a much better idea, thank you!  I'll cc you when I revise the
-patch.
-
-Bjorn
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
