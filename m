@@ -1,103 +1,111 @@
 Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from vger.kernel.org (unknown [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 822941A631A
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Apr 2020 08:36:08 +0200 (CEST)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.lfdr.de (Postfix) with ESMTP id 6BD691A65ED
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Apr 2020 13:51:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728544AbgDMGgC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Apr 2020 02:36:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.18]:51890 "EHLO
+        id S1729176AbgDMLvY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Apr 2020 07:51:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727536AbgDMGgC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Apr 2020 02:36:02 -0400
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFAB3C008673;
-        Sun, 12 Apr 2020 23:36:01 -0700 (PDT)
-Received: by mail-qk1-x742.google.com with SMTP id t3so4691483qkg.1;
-        Sun, 12 Apr 2020 23:36:01 -0700 (PDT)
+        with ESMTP id S1729195AbgDMLt4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Apr 2020 07:49:56 -0400
+X-Greylist: delayed 525 seconds by postgrey-1.27 at vger.kernel.org; Mon, 13 Apr 2020 07:49:56 EDT
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9460C008612
+        for <linux-acpi@vger.kernel.org>; Mon, 13 Apr 2020 04:41:09 -0700 (PDT)
+Received: by mail-il1-x131.google.com with SMTP id e4so5884296ils.4
+        for <linux-acpi@vger.kernel.org>; Mon, 13 Apr 2020 04:41:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KMpw6K79lA/hKqIcCn2kKRSspiTDXkb2D8JjBGFr8zQ=;
-        b=uz5+521nlHBocaytihEXa/MzRtF6lSl6OnhByj/4tYGgzxMgsJepipn9S0nNQZMDJz
-         P9ee2v+EOPvrZl1stRWdTm9Of9V5vQioB7DSLHUIFvX8TZX3V1LKRUTYZ0fERav4znaL
-         ZQk7orz6i9h4g6ZzPYHczp93XiJ1euMZ2rulHWmEGDtfoxa4CRd/aewcwaAEHQdI75YQ
-         umHMLAFnEEzpJsCqD/LGFB7rPxGqxW9NBs//tY0mSGGrX1NmQJq+BRbg3orUyls6Eq5f
-         nMjVM/Z+9Tvx9dFxQHWvQGH1c63oXgjcGODdQ7gvgZTD0bQCB1/tpNBC/EHYReMxxX+J
-         oKMQ==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=qlKWExEze9qCqlwbpw1q4+d2Zjr4ETGVa64TcX+dTlk=;
+        b=HxOaFJZljqXQIeSLw7dw+YeTIVe76Yo57NkC3rYQjPPsruaWLZEetJYgTw7mDA7iYw
+         4KM/sQKuVdxfTyBgHy0QGrcgvhBAp/s2WR+7lhwMEms7c5U3ARzlxX4w9gHN6kyIVCTo
+         InVjjBwajQbgYMLlLr/dGAnfAOq75HLmi2bmQShdg5UrDH6ZNHdmpjirCjsFE3E+W3lI
+         4HPNdhIk9GHy3wOVy8qt79oLhQ3V0WJ+l2R8YfTk5No8OB207Mc1ssyzLdiNdU6iDIon
+         HSnId1sWR9JHq8BkscMOY+TVCS7WuDDdfTSRJRDObUGUY3pKdsd/NGq97n4qtv5szVJr
+         IEMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KMpw6K79lA/hKqIcCn2kKRSspiTDXkb2D8JjBGFr8zQ=;
-        b=tgqWtRRrxSr2eDB/injdtVY48C4Ki1TeIZ/oQz6vho80zdfdI8SgHX8YETDSlapzGq
-         JPSoiq9GdKnusBkzmEPQ/JTmq3DJoWBrBJ4XEGbMQ+EP/vdYXs51yK7p2O4nQZGzdfAL
-         hZ/XTzoRHQyXEMux98sq3bfzQMAZEQfK11ZGQWZKoiQdiQRjGHsDuqOaGW5RL6i8E/U2
-         FPe94y6mOmDhkEf1Nr20ImDAwuUw4zM7pP3r8wekiKbXH2grtTSLEaeF1SsstnUqnQPJ
-         iSZtE76y+N0yZChluiMYylYi9uBxLiWZeFY9/CpU25C/rVw/0rqu/CRxDiss/mqnWpEu
-         GWqQ==
-X-Gm-Message-State: AGi0PuZ55bqQ9oU4+nwCRXo5BALb5VDWQVThe4IKTmOn4vjsOwVp5rVz
-        C5MWyAUUVkTiJ3nXhfHlOGC1eQDa2KP8bVf/Jng=
-X-Google-Smtp-Source: APiQypLAkeIgbG9vE5BMPoUzyd5dJuTAeNpXUZF1UwhH8UT1xsBlzhBm3dFEKEbDE+I8yBJb7oDCmyFUzPvyYPBCdUQ=
-X-Received: by 2002:a37:ac6:: with SMTP id 189mr952703qkk.60.1586759759747;
- Sun, 12 Apr 2020 23:35:59 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=qlKWExEze9qCqlwbpw1q4+d2Zjr4ETGVa64TcX+dTlk=;
+        b=lDbm7JnGWkVgrg1hsROISdj0A8+qPeZWZsP3r3c3ftpNITSTZPCp9Re91whh5gVGcs
+         JYglgRgyefOWrSN4O81fiu9WUURFma4ykcMOGhBzgYPot9N81KUQCXdZeV6kKmrmMv9r
+         zjHgWDdruQSN9WZO+xgLYx+5jEetzyUutAUcEnpA6cmhLmsfzSKWFOxbbCmQUVP1OKiI
+         Vzy9kI8Kir7+FuKPcr2z9ZHyc9RHFIKWzwgmUSyQUt7u8rWOSoFpWKcvFw9by2fevHF4
+         d68asMpEgxPTp3izNe3eVIbVW7c+bEHccKbFcWwZzpXzGvBvTT5bjtjk2LANG3SUWcIC
+         7mmQ==
+X-Gm-Message-State: AGi0PualqoJjtfc8bkZ2QLxV4chqmPV5y2rWVY+Rnrug2x/3Bw2/aY/K
+        I9SLvflaEgp11KcjQmYZnpJCkDTv8oPr5uGqIw==
+X-Google-Smtp-Source: APiQypJ8Xf5JZIaJmuakcegBHklRN/w3ObzOY1fG2hZhiF0393fUgrxf6qaSVcLD5pLEm/4TEQgoj9oGK8tQ5EeyGAU=
+X-Received: by 2002:a05:6e02:c8f:: with SMTP id b15mr14965961ile.35.1586778068198;
+ Mon, 13 Apr 2020 04:41:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <1888197.j9z7NJ8yPn@kreacher> <5092680.jloV5Ae5OO@kreacher>
-In-Reply-To: <5092680.jloV5Ae5OO@kreacher>
-From:   Jeff Kirsher <jeffrey.t.kirsher@intel.com>
-Date:   Sun, 12 Apr 2020 23:35:48 -0700
-Message-ID: <CAL3LdT71aa3NfqoGTvmz-XzS7Ng=LqpwPROWyf=w_+PyvEET-w@mail.gmail.com>
-Subject: Re: [PATCH 5/7] PM: sleep: core: Rename DPM_FLAG_NEVER_SKIP
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Hans De Goede <hdegoede@redhat.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        DRI-devel <dri-devel@lists.freedesktop.org>,
-        Intel Graphics <intel-gfx@lists.freedesktop.org>,
-        intel-wired-lan <intel-wired-lan@lists.osuosl.org>
+Received: by 2002:a02:5e49:0:0:0:0:0 with HTTP; Mon, 13 Apr 2020 04:41:07
+ -0700 (PDT)
+Reply-To: mgbenin903@gmail.com
+From:   Barrister Robert Richter UN-Attorney at Law Court-Benin 
+        <info.zennitbankplcnigerian@gmail.com>
+Date:   Mon, 13 Apr 2020 13:41:07 +0200
+Message-ID: <CABHzvrm3rWryg1yAooKeHwdxzrKD47PRAEfC+ay1A6i5z3Wdiw@mail.gmail.com>
+Subject: I have already sent you first payment US$5000.00 this morning through
+ MONEY Gram service.it is available to pick up in address now.
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Apr 10, 2020 at 9:03 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
->
-> From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
->
-> Rename DPM_FLAG_NEVER_SKIP to DPM_FLAG_NO_DIRECT_COMPLETE which
-> matches its purpose more closely.
->
-> No functional impact.
->
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+ATTN DEAR BENEFICIARY.
 
-Acked-by: Jeff Kirsher <jeffrey.t.kirsher@intel.com>
+GOOD NEWS.
 
-For the driver changes to e1000e, igb and igc.
+I have already sent you first payment US$5000.00 this morning through
+MONEY Gram service.it is available to pick up in address now.
 
-> ---
->  Documentation/driver-api/pm/devices.rst    |  6 +++---
->  Documentation/power/pci.rst                | 10 +++++-----
->  drivers/base/power/main.c                  |  2 +-
->  drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c    |  2 +-
->  drivers/gpu/drm/i915/intel_runtime_pm.c    |  2 +-
->  drivers/gpu/drm/radeon/radeon_kms.c        |  2 +-
->  drivers/misc/mei/pci-me.c                  |  2 +-
->  drivers/misc/mei/pci-txe.c                 |  2 +-
->  drivers/net/ethernet/intel/e1000e/netdev.c |  2 +-
->  drivers/net/ethernet/intel/igb/igb_main.c  |  2 +-
->  drivers/net/ethernet/intel/igc/igc_main.c  |  2 +-
->  drivers/pci/pcie/portdrv_pci.c             |  2 +-
->  include/linux/pm.h                         |  6 +++---
->  13 files changed, 21 insertions(+), 21 deletions(-)
->
+So we advise you to Contact This Money Gram office to pick up your
+transfer $US5000.00 today.
+
+
+Note that your compensation payment funds is total amount $US2.800,000
+Million Dollars.We have instructed the Money Gram Agent,Mr. James
+Gadner to keep sending the transfer to you daily, but the maximum
+amount you will be receiving everyday is US$5000.00. Contact Agent now
+to pick up your first payment $US5000.00 immediately.
+
+Contact Person, Mr. James Gadner, Dir. Money Gram Benin.
+Email: mgbenin903@gmail.com
+Telephone Numbers: +229 62819378/ +229 98477762
+
+HERE IS YOUR PAYMENT DETAILS FOR THE FIRST =C2=A3US5000.00 SENT TODAY.
+
+Track View Website link:
+https://secure.moneygram.com/track
+Sender=E2=80=99s First name: David
+Sender=E2=80=99s Last Name: Joiner
+Money Transfer Control Number (MTCN) (REFERENCE)# 26046856
+
+Contact the Mmoney Gram Urgent and reconfirm your address to the
+office before, they will allow you to pick up the transfer today.
+
+HERE IS WHAT REQUIRED OF YOU.
+
+YOUR FULL NAME---------
+ADDRESS--------------
+COUNTRY-----------------------------
+TELEPHONE NUMBERS-----------------
+
+Note, I paid the transfer fee for you, but only you are required to
+send to the office is $75 only,Been Your Payment File activation fee,
+Send once you contact the office,before you can able to pick up your
+transfer today.
+
+Let me know once you pick up first payment today.
+
+Barrister Robert Richter UN-Attorney at Law Court-Benin
