@@ -2,105 +2,225 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 662111A8E14
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Apr 2020 23:53:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 445521A8E6C
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Apr 2020 00:15:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504741AbgDNVxQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Apr 2020 17:53:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53716 "EHLO
+        id S2387481AbgDNWO5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Apr 2020 18:14:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2440819AbgDNVxN (ORCPT
+        by vger.kernel.org with ESMTP id S1732991AbgDNWO4 (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 14 Apr 2020 17:53:13 -0400
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A8AC061A41
-        for <linux-acpi@vger.kernel.org>; Tue, 14 Apr 2020 14:53:12 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id cb27so1668841edb.11
-        for <linux-acpi@vger.kernel.org>; Tue, 14 Apr 2020 14:53:12 -0700 (PDT)
+        Tue, 14 Apr 2020 18:14:56 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A0F5C061A0C
+        for <linux-acpi@vger.kernel.org>; Tue, 14 Apr 2020 15:14:54 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id h26so5037179wrb.7
+        for <linux-acpi@vger.kernel.org>; Tue, 14 Apr 2020 15:14:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=vanguardiasur-com-ar.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6XJggBeqNZwHcHHLY6sfVeMbXT+yRwu9kmL0zKIOza0=;
-        b=wO7J5PV5FopClacEDaXHeMrwLMwC17ui0SIQ6zF4hBB0JwsYSsHQcsO5AZjXXbQBqJ
-         3zkwayOjJq/AHgwrVV+QGe118BDRodau2efv2VgMEBcbOVNhidTBarndJobl5/O7c7vW
-         tfK+Gx/M9r8JRYxvNQDrvcknJbIsWgEjP1VglMGQ8mjWMve+6SkCr/nRvSe8kTMsSd/r
-         mu1r+ciy84hDdk+WHmYkTdnrqVNCR9GiNSlR6f2bOYr7YZEojOH2lV9I/YSKRIPol7ed
-         e84jIHLgq/3JhGeJU8amfIfUIjbSVgLILi9PeGfXXAAzDqDEmEXQff+61X9q+a1R9cuO
-         vIdA==
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=tFNbkDDuu+xJJGMOQnSsTSZToEf+DrCp0hBRrSm4NEc=;
+        b=qabW9Cwsrm5flCJViset/DUU4XAV92iY6uYTR6CKgMWINRrDE/p0FdK2jJYOTZGz+/
+         s7esIJSyksYapk5/fn6o0kQ6QRp0KX+QMW66qQvkBQ321UC34lorcDk1XNHw9XKLl4sn
+         Van8EM9t8zDbWrbFSGieU/bvQFG4SG7dKeGOGtTc4P1ZhF99ggZrLcsQm+hS+o5GYs7y
+         HaRMSFJD3RGWsF683rGYkcbQOUo4/wYjoAOfk4jrsHcsH8OZOojhBUoAvY1OlwRaXLoL
+         P5tjnf86p6ZwIpdaDB7apkv1IHWCqfM8M8CYXECtoj4tIYqk6jV/clruQ0aO0t1jf6qX
+         yELg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6XJggBeqNZwHcHHLY6sfVeMbXT+yRwu9kmL0zKIOza0=;
-        b=kGjT18Ly+MH6zD+5ulA1jbEqgrEs1jKDzjt2jR81XwR6nJDkNkl0ps/Irs9Eonq9D2
-         jDb3G6KvWFAOCiXB5YgO3zQ8Lw6U98wutGRkSvVcpMuD2evD29ZkC0MhUXnTC1P1M4QZ
-         Hzl9JeubPvTf5BZnu5y8PQPHL8KsDJTPVtVKm3ojfU7VvJaFrFKDQDTaPsn9qyDGvicl
-         PYV7r41jemVvuvTeyIZelYiuUeu8t4cfEcNc4zTIhp5LmM3ZyzFyAWw3/OcPwK3zNOP5
-         dmn6FWdAaKK0BbE21tsbwXJXcGI0B+bwSy9ELYjpea1G3dFN/KQ5/oQosb2HTF+lMKIh
-         udoA==
-X-Gm-Message-State: AGi0PuZhgZU7mnKs0LoUfi7F6FELwufUh7UvmemEIBu7biCj9+kqAMUD
-        pgfCrQ/Dq+85TlWQ4NIZ7QZ/+1DZHHIbxvzoXPb4zA==
-X-Google-Smtp-Source: APiQypLki1g/gVUbhYrj9kqnpCfe34IkYcW0Znyiw/nNCI+JYjLa2TqgKGZzxlNCajxLF4KJ/EkcPl3s1JpnvWDv+lw=
-X-Received: by 2002:a05:6402:1587:: with SMTP id c7mr3505722edv.61.1586901191377;
- Tue, 14 Apr 2020 14:53:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <2bc5a902-acde-526a-11a5-2357d899916c@linaro.org> <20200414180105.20042-1-andrzej.p@collabora.com>
-In-Reply-To: <20200414180105.20042-1-andrzej.p@collabora.com>
-From:   Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-Date:   Tue, 14 Apr 2020 18:52:59 -0300
-Message-ID: <CAAEAJfAZCq2OWfTT2Vqy5xzpOre3yYDOOP29+Y0n5_oGrrbsQg@mail.gmail.com>
-Subject: Re: [RFC v2 0/9] Stop monitoring disabled devices
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Cc:     Linux-pm mailing list <linux-pm@vger.kernel.org>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=tFNbkDDuu+xJJGMOQnSsTSZToEf+DrCp0hBRrSm4NEc=;
+        b=LSM/+mwKwi4h+HqejrL2CHBfxrBe1SGh7AwgfJco93PMuPfQ50qiCxjs5po+rhfOei
+         plvK2ow8OdBheHjoLg3e+fERfUuCOm03orVc6BQUzzSfNT9wqcHwK27A5HByJyUmf8Sa
+         n3gwng0s5Q4FQdu1AHV+wPUbq2aJaM9r5nllKBLTA9Mekb2jkSRFW6mpSJE+za7yqJrF
+         iKXPb/cJO7Iplg/NayI5Kur8s1KgDa8L11uBwRCNSE8E+wnaNtFoBc1l601hUccRl3ip
+         Y8uRb6NZxOn720Jbeeoa71TdeRRMueyKt33Mhdk2jSngcqemqFgYEjm7VbpoflUz2nDH
+         GBwA==
+X-Gm-Message-State: AGi0PuaFABbunrZ/jCHhWh+HrDRVC0efN9p+6cRKG94gTBb2CZRZgq4u
+        4G8ciejgCzO55NsQEFHEcFR0Vg==
+X-Google-Smtp-Source: APiQypJCM7RZYbnn05d5p3O23E+0h2bnGY34lOEUBW3XV9QKLjxerTTj5VEgsJydss45wo2Ye1GFqg==
+X-Received: by 2002:adf:fc4c:: with SMTP id e12mr25646050wrs.265.1586902493086;
+        Tue, 14 Apr 2020 15:14:53 -0700 (PDT)
+Received: from [192.168.0.41] (lns-bzn-59-82-252-135-148.adsl.proxad.net. [82.252.135.148])
+        by smtp.googlemail.com with ESMTPSA id k184sm20036949wmf.9.2020.04.14.15.14.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Apr 2020 15:14:52 -0700 (PDT)
+Subject: Re: [RFC v2 3/9] thermal: Properly handle mode values in .set_mode()
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-pm@vger.kernel.org
+Cc:     Zhang Rui <rui.zhang@intel.com>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        platform-driver-x86@vger.kernel.org, kernel@collabora.com,
-        Fabio Estevam <festevam@gmail.com>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-acpi@vger.kernel.org, NXP Linux Team <linux-imx@nxp.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
+        Len Brown <lenb@kernel.org>, Jiri Pirko <jiri@mellanox.com>,
         Ido Schimmel <idosch@mellanox.com>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Peter Kaestle <peter@piie.net>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Networking <netdev@vger.kernel.org>,
-        Enrico Weigelt <info@metux.net>,
         "David S . Miller" <davem@davemloft.net>,
-        Andy Shevchenko <andy@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, kernel@collabora.com
+References: <2bc5a902-acde-526a-11a5-2357d899916c@linaro.org>
+ <20200414180105.20042-1-andrzej.p@collabora.com>
+ <20200414180105.20042-4-andrzej.p@collabora.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <e7ed4bcf-8605-c6ad-4412-acb33251a0b3@linaro.org>
+Date:   Wed, 15 Apr 2020 00:14:50 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
+MIME-Version: 1.0
+In-Reply-To: <20200414180105.20042-4-andrzej.p@collabora.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+
 Hi Andrzej,
 
-Thanks for your patches.
+you can drop this patch. It is not useful as the caller checks the
+correctness of the values in the patch 4/9.
 
-On Tue, 14 Apr 2020 at 15:01, Andrzej Pietrasiewicz
-<andrzej.p@collabora.com> wrote:
->
-> This is the second iteration of this RFC.
->
-> The series now focuses on cleaning up the code in the first place.
->
-[..]
->  12 files changed, 180 insertions(+), 208 deletions(-)
->
+Moreover the patch is bogus because it returns before releasing the lock.
 
-Compared with the previous iteration, and just judging
-by this diffstat, I think it's a step in the right direction.
+On 14/04/2020 20:00, Andrzej Pietrasiewicz wrote:
+> Allow only THERMAL_DEVICE_ENABLED and THERMAL_DEVICE_DISABLED as valid
+> states to transition to.
 
-Nice job :-)
 
-Ezequiel
+
+
+> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+> ---
+>  drivers/net/ethernet/mellanox/mlxsw/core_thermal.c | 8 ++++++--
+>  drivers/platform/x86/acerhdf.c                     | 4 ++++
+>  drivers/thermal/imx_thermal.c                      | 4 +++-
+>  drivers/thermal/intel/intel_quark_dts_thermal.c    | 5 ++++-
+>  drivers/thermal/of-thermal.c                       | 4 +++-
+>  5 files changed, 20 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_thermal.c b/drivers/net/ethernet/mellanox/mlxsw/core_thermal.c
+> index ce0a6837daa3..cd435ca7adbe 100644
+> --- a/drivers/net/ethernet/mellanox/mlxsw/core_thermal.c
+> +++ b/drivers/net/ethernet/mellanox/mlxsw/core_thermal.c
+> @@ -296,8 +296,10 @@ static int mlxsw_thermal_set_mode(struct thermal_zone_device *tzdev,
+>  
+>  	if (mode == THERMAL_DEVICE_ENABLED)
+>  		tzdev->polling_delay = thermal->polling_delay;
+> -	else
+> +	else if (mode == THERMAL_DEVICE_DISABLED)
+>  		tzdev->polling_delay = 0;
+> +	else
+> +		return -EINVAL;
+>  
+>  	mutex_unlock(&tzdev->lock);
+>  
+> @@ -486,8 +488,10 @@ static int mlxsw_thermal_module_mode_set(struct thermal_zone_device *tzdev,
+>  
+>  	if (mode == THERMAL_DEVICE_ENABLED)
+>  		tzdev->polling_delay = thermal->polling_delay;
+> -	else
+> +	else if (mode == THERMAL_DEVICE_DISABLED)
+>  		tzdev->polling_delay = 0;
+> +	else
+> +		return -EINVAL;
+>  
+>  	mutex_unlock(&tzdev->lock);
+>  
+> diff --git a/drivers/platform/x86/acerhdf.c b/drivers/platform/x86/acerhdf.c
+> index 8cc86f4e3ac1..d5188c1d688b 100644
+> --- a/drivers/platform/x86/acerhdf.c
+> +++ b/drivers/platform/x86/acerhdf.c
+> @@ -431,6 +431,10 @@ static int acerhdf_get_mode(struct thermal_zone_device *thermal,
+>  static int acerhdf_set_mode(struct thermal_zone_device *thermal,
+>  			    enum thermal_device_mode mode)
+>  {
+> +	if (mode != THERMAL_DEVICE_DISABLED &&
+> +	    mode != THERMAL_DEVICE_ENABLED)
+> +		return -EINVAL;
+> +
+>  	if (mode == THERMAL_DEVICE_DISABLED && kernelmode)
+>  		acerhdf_revert_to_bios_mode();
+>  	else if (mode == THERMAL_DEVICE_ENABLED && !kernelmode)
+> diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
+> index e761c9b42217..36b1924f1938 100644
+> --- a/drivers/thermal/imx_thermal.c
+> +++ b/drivers/thermal/imx_thermal.c
+> @@ -361,7 +361,7 @@ static int imx_set_mode(struct thermal_zone_device *tz,
+>  			data->irq_enabled = true;
+>  			enable_irq(data->irq);
+>  		}
+> -	} else {
+> +	} else if (mode == THERMAL_DEVICE_DISABLED) {
+>  		regmap_write(map, soc_data->sensor_ctrl + REG_CLR,
+>  			     soc_data->measure_temp_mask);
+>  		regmap_write(map, soc_data->sensor_ctrl + REG_SET,
+> @@ -374,6 +374,8 @@ static int imx_set_mode(struct thermal_zone_device *tz,
+>  			disable_irq(data->irq);
+>  			data->irq_enabled = false;
+>  		}
+> +	} else {
+> +		return -EINVAL;
+>  	}
+>  
+>  	data->mode = mode;
+> diff --git a/drivers/thermal/intel/intel_quark_dts_thermal.c b/drivers/thermal/intel/intel_quark_dts_thermal.c
+> index d704fc104cfd..11d7db895125 100644
+> --- a/drivers/thermal/intel/intel_quark_dts_thermal.c
+> +++ b/drivers/thermal/intel/intel_quark_dts_thermal.c
+> @@ -325,8 +325,11 @@ static int sys_set_mode(struct thermal_zone_device *tzd,
+>  	mutex_lock(&dts_update_mutex);
+>  	if (mode == THERMAL_DEVICE_ENABLED)
+>  		ret = soc_dts_enable(tzd);
+> -	else
+> +	else if (mode == THERMAL_DEVICE_DISABLED)
+>  		ret = soc_dts_disable(tzd);
+> +	else
+> +		return -EINVAL;
+> +
+>  	mutex_unlock(&dts_update_mutex);
+>  
+>  	return ret;
+> diff --git a/drivers/thermal/of-thermal.c b/drivers/thermal/of-thermal.c
+> index 874a47d6923f..36bebf623980 100644
+> --- a/drivers/thermal/of-thermal.c
+> +++ b/drivers/thermal/of-thermal.c
+> @@ -289,9 +289,11 @@ static int of_thermal_set_mode(struct thermal_zone_device *tz,
+>  	if (mode == THERMAL_DEVICE_ENABLED) {
+>  		tz->polling_delay = data->polling_delay;
+>  		tz->passive_delay = data->passive_delay;
+> -	} else {
+> +	} else if (mode == THERMAL_DEVICE_DISABLED) {
+>  		tz->polling_delay = 0;
+>  		tz->passive_delay = 0;
+> +	} else {
+> +		return -EINVAL;
+>  	}
+>  
+>  	mutex_unlock(&tz->lock);
+> 
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
