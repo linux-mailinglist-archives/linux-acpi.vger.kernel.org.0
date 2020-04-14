@@ -2,154 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 952A71A819E
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Apr 2020 17:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20E021A8858
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Apr 2020 20:03:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440276AbgDNPK7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Apr 2020 11:10:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44852 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2437268AbgDNPKx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 14 Apr 2020 11:10:53 -0400
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 327F8C061A0C
-        for <linux-acpi@vger.kernel.org>; Tue, 14 Apr 2020 08:10:53 -0700 (PDT)
-Received: by mail-qk1-x742.google.com with SMTP id x66so13527933qkd.9
-        for <linux-acpi@vger.kernel.org>; Tue, 14 Apr 2020 08:10:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=rIZ0DCpY1Pp7B3wv2bPDU+0HXY5iXLSvClXRWjLvkkQ=;
-        b=fCyc053SB2qlgTuaFkp8z+8t4vZfLWn+qcVeK8qtwb2TV8BPij2WpcZiPHnR0G5kSj
-         KSZGjCkejypBSyNupM0sPMCWG+FYfehmLTI5UuFPrdO+1+9YdDpOJMSzo+hSfHs1sH8n
-         OFshk0+XJAKq4fp2ESGHS3KegWExzp4qSPX6qeCC4jl/aljnosjQ8p2izyxr9Jo6ns9r
-         CXPyEetntLikspC62dFEggL+vTT11TmQIZeKE7tDLzzD5Eqj+a9qPViBbc8/fCQPCHqw
-         xxhQDVonAdDe0j+x2mDKJWU9NAh3SNaDfQd6U5sXlNWBbE3M8zYgIpoy4sE0tv8dnCEB
-         7NuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=rIZ0DCpY1Pp7B3wv2bPDU+0HXY5iXLSvClXRWjLvkkQ=;
-        b=T/9FUMgocTliesyEE+wtoM19RmyCIpGZev4AaDWmvVjLdBBGB1mX3M3vofE2fTCzUZ
-         X4RNfxp6X9WnLHD9BP3SnBzSU7ybU0CVfRFpxQHYyqgWLpo0iUemGmI6SacvSHZVbaGC
-         DbiXwYPlP2dKzWQZZTvM79Q6OJ3GiqG0/baLN7zQy44Ve8AEWn03JPvoLqprWRo857Lp
-         ZLflRe7zJDX2SV9ZkjUb5ndm3TuDg/uCqaI+2UoFLxKRs5UNi5MYqsnSeGqqvX4WZG+a
-         OSW1fEZMleivpnnT+qc/AROttsUBGeXx2mD5QWBONM228zITZ7Skqqp5+AtcGWFcZa+v
-         Q8FA==
-X-Gm-Message-State: AGi0PubaXNiNaXBO7mpXHZ5oCUmRsdgWc793p4/lZEEarSWzqhZDomI3
-        ucfMrYDae9agPbssWws9xgYTgEmh5jy3eA==
-X-Google-Smtp-Source: APiQypLW4lrPzcOv/3ifsnmULX8xFPu+h/Ghs2yhvEwKGx0LbKvxPM23+720Zfx1vnwLDmnHb+7sQg==
-X-Received: by 2002:a05:620a:1253:: with SMTP id a19mr1748486qkl.226.1586877052183;
-        Tue, 14 Apr 2020 08:10:52 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.57.212])
-        by smtp.gmail.com with ESMTPSA id m26sm11309900qta.53.2020.04.14.08.10.51
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 14 Apr 2020 08:10:51 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1jOND8-0004z0-Ai; Tue, 14 Apr 2020 12:10:50 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     linux-acpi@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH] pnp: Use list_for_each_entry() instead of open coding
-Date:   Tue, 14 Apr 2020 12:10:50 -0300
-Message-Id: <0-v1-f68011aff1f8+d8-pnp_gcc10%jgg@mellanox.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        id S2503169AbgDNSBU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Apr 2020 14:01:20 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:46626 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730908AbgDNSBS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Apr 2020 14:01:18 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id 5A7222A1BDC
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+To:     linux-pm@vger.kernel.org
+Cc:     Zhang Rui <rui.zhang@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, kernel@collabora.com,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Subject: [RFC v2 0/9] Stop monitoring disabled devices
+Date:   Tue, 14 Apr 2020 20:00:56 +0200
+Message-Id: <20200414180105.20042-1-andrzej.p@collabora.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <2bc5a902-acde-526a-11a5-2357d899916c@linaro.org>
+References: <2bc5a902-acde-526a-11a5-2357d899916c@linaro.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Jason Gunthorpe <jgg@mellanox.com>
+This is the second iteration of this RFC.
 
-Aside from good practice, this avoids a warning from gcc 10:
+The series now focuses on cleaning up the code in the first place.
 
-./include/linux/kernel.h:997:3: warning: array subscript -31 is outside array bounds of ‘struct list_head[1]’ [-Warray-bounds]
-  997 |  ((type *)(__mptr - offsetof(type, member))); })
-      |  ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/linux/list.h:493:2: note: in expansion of macro ‘container_of’
-  493 |  container_of(ptr, type, member)
-      |  ^~~~~~~~~~~~
-./include/linux/pnp.h:275:30: note: in expansion of macro ‘list_entry’
-  275 | #define global_to_pnp_dev(n) list_entry(n, struct pnp_dev, global_list)
-      |                              ^~~~~~~~~~
-./include/linux/pnp.h:281:11: note: in expansion of macro ‘global_to_pnp_dev’
-  281 |  (dev) != global_to_pnp_dev(&pnp_global); \
-      |           ^~~~~~~~~~~~~~~~~
-arch/x86/kernel/rtc.c:189:2: note: in expansion of macro ‘pnp_for_each_dev’
-  189 |  pnp_for_each_dev(dev) {
+After the cleanups in patches 1-3 struct thermal_zone_device is extended
+so that it contains a "mode" member (patch 4/9).
 
-Because the common code doesn't cast the starting list_head to the
-containing struct.
+The next patch (5/9) makes all thermal zone devices use the "mode" member.
+This patch makes drivers' ->get_mode() methods redundant, so the next one
+(6/9) removes the method altogether.
 
-Signed-off-by: Jason Gunthorpe <jgg@mellanox.com>
----
- include/linux/pnp.h | 29 +++++++++--------------------
- 1 file changed, 9 insertions(+), 20 deletions(-)
+Patches 7-8/9 ensure that after changing thermal zone device's mode
+an attempt will be made to monitor the device.
 
-Compile tested only
+And finally patch 9/9 prevents DISABLED devices from being monitored.
+It also adds THERMAL_DEVICE_INITIAL to accommodate the devices, which
+should be monitored but cannot be initially ENABLED.
 
-(resent with mailing list in cc, sorry)
+Andrzej Pietrasiewicz (9):
+  thermal: int3400_thermal: Statically initialize
+    .get_mode()/.set_mode() ops
+  thermal: Eliminate an always-false condition
+  thermal: Properly handle mode values in .set_mode()
+  thermal: core: Let thermal zone device's mode be stored in its struct
+  thermal: Store mode in thermal_zone_device
+  thermal: Remove get_mode() method
+  thermal: core: Monitor thermal zone after mode change
+  thermal: of: Monitor thermal zone after enabling it
+  thermal: core: Stop polling DISABLED thermal devices
 
-diff --git a/include/linux/pnp.h b/include/linux/pnp.h
-index b18dca67253d66..db41156b1b4044 100644
---- a/include/linux/pnp.h
-+++ b/include/linux/pnp.h
-@@ -220,10 +220,8 @@ struct pnp_card {
- #define global_to_pnp_card(n) list_entry(n, struct pnp_card, global_list)
- #define protocol_to_pnp_card(n) list_entry(n, struct pnp_card, protocol_list)
- #define to_pnp_card(n) container_of(n, struct pnp_card, dev)
--#define pnp_for_each_card(card) \
--	for((card) = global_to_pnp_card(pnp_cards.next); \
--	(card) != global_to_pnp_card(&pnp_cards); \
--	(card) = global_to_pnp_card((card)->global_list.next))
-+#define pnp_for_each_card(card)                                                \
-+	list_for_each_entry(card, &pnp_cards, global_list)
- 
- struct pnp_card_link {
- 	struct pnp_card *card;
-@@ -276,14 +274,9 @@ struct pnp_dev {
- #define card_to_pnp_dev(n) list_entry(n, struct pnp_dev, card_list)
- #define protocol_to_pnp_dev(n) list_entry(n, struct pnp_dev, protocol_list)
- #define	to_pnp_dev(n) container_of(n, struct pnp_dev, dev)
--#define pnp_for_each_dev(dev) \
--	for((dev) = global_to_pnp_dev(pnp_global.next); \
--	(dev) != global_to_pnp_dev(&pnp_global); \
--	(dev) = global_to_pnp_dev((dev)->global_list.next))
--#define card_for_each_dev(card,dev) \
--	for((dev) = card_to_pnp_dev((card)->devices.next); \
--	(dev) != card_to_pnp_dev(&(card)->devices); \
--	(dev) = card_to_pnp_dev((dev)->card_list.next))
-+#define pnp_for_each_dev(dev) list_for_each_entry(dev, &pnp_global, global_list)
-+#define card_for_each_dev(card, dev)                                           \
-+	list_for_each_entry(dev, &(card)->devices, card_list)
- #define pnp_dev_name(dev) (dev)->name
- 
- static inline void *pnp_get_drvdata(struct pnp_dev *pdev)
-@@ -437,14 +430,10 @@ struct pnp_protocol {
- };
- 
- #define to_pnp_protocol(n) list_entry(n, struct pnp_protocol, protocol_list)
--#define protocol_for_each_card(protocol,card) \
--	for((card) = protocol_to_pnp_card((protocol)->cards.next); \
--	(card) != protocol_to_pnp_card(&(protocol)->cards); \
--	(card) = protocol_to_pnp_card((card)->protocol_list.next))
--#define protocol_for_each_dev(protocol,dev) \
--	for((dev) = protocol_to_pnp_dev((protocol)->devices.next); \
--	(dev) != protocol_to_pnp_dev(&(protocol)->devices); \
--	(dev) = protocol_to_pnp_dev((dev)->protocol_list.next))
-+#define protocol_for_each_card(protocol, card)                                 \
-+	list_for_each_entry(card, &(protocol)->cards, protocol_list)
-+#define protocol_for_each_dev(protocol, dev)                                   \
-+	list_for_each_entry(dev, &(protocol)->devices, protocol_list)
- 
- extern struct bus_type pnp_bus_type;
- 
+ drivers/acpi/thermal.c                        | 44 +++++----------
+ .../ethernet/mellanox/mlxsw/core_thermal.c    | 43 ++++-----------
+ drivers/platform/x86/acerhdf.c                | 28 +++++-----
+ drivers/thermal/da9062-thermal.c              | 12 +---
+ drivers/thermal/imx_thermal.c                 | 30 ++++------
+ .../intel/int340x_thermal/int3400_thermal.c   | 39 +++----------
+ .../thermal/intel/intel_quark_dts_thermal.c   | 27 ++++-----
+ drivers/thermal/of-thermal.c                  | 28 ++++------
+ drivers/thermal/thermal_core.c                | 40 ++++++++++++--
+ drivers/thermal/thermal_core.h                |  2 +
+ drivers/thermal/thermal_sysfs.c               | 40 ++++----------
+ include/linux/thermal.h                       | 55 ++++++++++++++++++-
+ 12 files changed, 180 insertions(+), 208 deletions(-)
+
 -- 
-2.26.0
+2.17.1
 
