@@ -2,122 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60BA11A7FD5
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Apr 2020 16:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1A241A7FE7
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Apr 2020 16:35:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390935AbgDNOc0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Apr 2020 10:32:26 -0400
-Received: from foss.arm.com ([217.140.110.172]:56984 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390932AbgDNOcX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 14 Apr 2020 10:32:23 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B553E30E;
-        Tue, 14 Apr 2020 07:32:22 -0700 (PDT)
-Received: from red-moon.cambridge.arm.com (unknown [10.57.27.66])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A55293F73D;
-        Tue, 14 Apr 2020 07:32:18 -0700 (PDT)
-Date:   Tue, 14 Apr 2020 15:32:11 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Cc:     linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        robin.murphy@arm.com, ard.biesheuvel@linaro.org,
-        ioana.ciornei@nxp.com, diana.craciun@oss.nxp.com, maz@kernel.org,
-        jon@solid-run.com, pankaj.bansal@nxp.com, makarand.pawagi@nxp.com,
-        calvin.johnson@nxp.com, V.Sethi@nxp.com, cristian.sovaiala@nxp.com,
-        Stuart.Yoder@arm.com, jeremy.linton@arm.com, joro@8bytes.org,
-        tglx@linutronix.de, jason@lakedaemon.net
-Subject: Re: [RFC PATCH 1/4] bus: fsl-mc: add custom .dma_configure
- implementation
-Message-ID: <20200414143211.GA14905@red-moon.cambridge.arm.com>
-References: <20200227100542.13819-1-laurentiu.tudor@nxp.com>
- <20200325125109.GA5430@red-moon.cambridge.arm.com>
- <499fbf9a-416f-d7c7-0655-881d92138a6c@nxp.com>
+        id S2390986AbgDNOfs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Apr 2020 10:35:48 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:44320 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390985AbgDNOfr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Apr 2020 10:35:47 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: eballetbo)
+        with ESMTPSA id DCC392A00DF
+Subject: Re: [PATCH v4] platform: x86: Add ACPI driver for ChromeOS
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Collabora Kernel ML <kernel@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Dmitry Torokhov <dtor@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>, vbendeb@chromium.org,
+        Andy Shevchenko <andy@infradead.org>,
+        Ayman Bagabas <ayman.bagabas@gmail.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        =?UTF-8?Q?Bla=c5=be_Hrastnik?= <blaz@mxxn.io>,
+        Darren Hart <dvhart@infradead.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Jeremy Soller <jeremy@system76.com>,
+        Mattias Jacobsson <2pi@mok.nu>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Rajat Jain <rajatja@google.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Platform Driver <"platform- driver-x86"@vger.kernel.org>
+References: <20200413134611.478441-1-enric.balletbo@collabora.com>
+ <CAJZ5v0gWZ27_DwWQadsJOUxLo4a0rAMe45d4AWXS2gHJZfgfKg@mail.gmail.com>
+From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Message-ID: <a2953d50-da22-279a-f1e4-faa796d815b1@collabora.com>
+Date:   Tue, 14 Apr 2020 16:35:38 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <499fbf9a-416f-d7c7-0655-881d92138a6c@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <CAJZ5v0gWZ27_DwWQadsJOUxLo4a0rAMe45d4AWXS2gHJZfgfKg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 25, 2020 at 06:48:55PM +0200, Laurentiu Tudor wrote:
-> Hi Lorenzo,
-> 
-> On 3/25/2020 2:51 PM, Lorenzo Pieralisi wrote:
-> > On Thu, Feb 27, 2020 at 12:05:39PM +0200, laurentiu.tudor@nxp.com wrote:
-> >> From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-> >>
-> >> The devices on this bus are not discovered by way of device tree
-> >> but by queries to the firmware. It makes little sense to trick the
-> >> generic of layer into thinking that these devices are of related so
-> >> that we can get our dma configuration. Instead of doing that, add
-> >> our custom dma configuration implementation.
-> >>
-> >> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-> >> ---
-> >>  drivers/bus/fsl-mc/fsl-mc-bus.c | 31 ++++++++++++++++++++++++++++++-
-> >>  1 file changed, 30 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-> >> index 36eb25f82c8e..eafaa0e0b906 100644
-> >> --- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-> >> +++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-> >> @@ -132,11 +132,40 @@ static int fsl_mc_bus_uevent(struct device *dev, struct kobj_uevent_env *env)
-> >>  static int fsl_mc_dma_configure(struct device *dev)
-> >>  {
-> >>  	struct device *dma_dev = dev;
-> >> +	struct iommu_fwspec *fwspec;
-> >> +	const struct iommu_ops *iommu_ops;
-> >> +	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
-> >> +	int ret;
-> >> +	u32 icid;
-> >>  
-> >>  	while (dev_is_fsl_mc(dma_dev))
-> >>  		dma_dev = dma_dev->parent;
-> >>  
-> >> -	return of_dma_configure(dev, dma_dev->of_node, 0);
-> >> +	fwspec = dev_iommu_fwspec_get(dma_dev);
-> >> +	if (!fwspec)
-> >> +		return -ENODEV;
-> >> +	iommu_ops = iommu_ops_from_fwnode(fwspec->iommu_fwnode);
-> >> +	if (!iommu_ops)
-> >> +		return -ENODEV;
-> >> +
-> >> +	ret = iommu_fwspec_init(dev, fwspec->iommu_fwnode, iommu_ops);
-> >> +	if (ret)
-> >> +		return ret;
-> >> +
-> >> +	icid = mc_dev->icid;
-> >> +	ret = iommu_fwspec_add_ids(dev, &icid, 1);
-> > 
-> > I see. So with this patch we would use the MC named component only to
-> > retrieve the iommu_ops
-> 
-> Right. I'd also add that the implementation tries to follow the existing
-> standard .dma_configure implementations, e.g. of_dma_configure +
-> of_iommu_configure. I'd also note that similarly to the ACPI case, this
-> MC FW device is probed as a platform device in the DT scenario, binding
-> here [1].
-> A similar approach is used for the retrieval of the msi irq domain, see
-> following patch.
-> 
-> > - the streamid are injected directly here bypassing OF/IORT bindings translations altogether. 
-> 
-> Actually I've submitted a v2 [2] that calls into .of_xlate() to allow
-> the smmu driver to do some processing on the raw streamid coming from
-> the firmware. I have not yet tested this with ACPI but expect it to
-> work, however, it's debatable how valid is this approach in the context
-> of ACPI.
+Hi Rafael,
 
-Actually, what I think you need is of_map_rid() (and an IORT
-equivalent, that I am going to write - generalizing iort_msi_map_rid()).
+On 13/4/20 22:41, Rafael J. Wysocki wrote:
+> On Mon, Apr 13, 2020 at 3:46 PM Enric Balletbo i Serra
+> <enric.balletbo@collabora.com> wrote:
+>>
+>> This driver attaches to the ChromeOS ACPI device and then exports the values
+>> reported by the ACPI in a sysfs directory. These values are not exported
+>> via the standard ACPI tables, hence a specific driver is needed to do
+>> it.
+> 
+> So how exactly are they exported?
+> 
 
-Would that be enough to enable IORT "normal" mappings in the MC bus
-named components ?
+They are exported through sysfs.
 
-Thanks,
-Lorenzo
+>> The ACPI values are presented in the string form (numbers as decimal
+>> values) or binary blobs, and can be accessed as the contents of the
+>> appropriate read only files in the standard ACPI devices sysfs directory tree.
+> 
+> My understanding based on a cursory look at the patch is that there is
+> an ACPI device with _HID equal to "GGL0001"  and one or more special
+> methods under it that return values which you want to export over
+> sysfs as binary attributes.  They appear to be read-only.
+> 
+
+Exactly, there is an ACPI device equal to "GGL0001" and one special method
+called MLST that returns a list of the other control methods supported by the
+Chrome OS hardware device. The driver calls the special MLST method and goes
+through the list.
+
+> I guess that these data are to be consubed by user space?
+> 
+
+Yes, this is used by user space, to be more specific ChromeOS userspace uses it.
+
