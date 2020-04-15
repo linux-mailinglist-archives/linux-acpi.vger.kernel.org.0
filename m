@@ -2,37 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ACCB1A9FF9
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Apr 2020 14:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7DC91A9FD5
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Apr 2020 14:23:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S369010AbgDOMUP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Apr 2020 08:20:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40416 "EHLO mail.kernel.org"
+        id S368829AbgDOMR5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Apr 2020 08:17:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41112 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2409243AbgDOLqA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 15 Apr 2020 07:46:00 -0400
+        id S2409281AbgDOLqT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 15 Apr 2020 07:46:19 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EA73820775;
-        Wed, 15 Apr 2020 11:45:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 62B0420775;
+        Wed, 15 Apr 2020 11:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586951159;
-        bh=Gqglel3VWWVrZC/6kFFL/p3h0vWJ/7YVXMFCIsSMLSs=;
+        s=default; t=1586951179;
+        bh=S8BciryhmOjmP06oCroyDH/n35WS5a6CLZ6N5yiRrvQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aeukdPif/KJXf3mevXwTqaZaNtKJfSSO355H90paDtsKobuYu8b3HC3z1OP/dQwTN
-         BCRtgQdF9NUdapgWTIySlS6oyoBXrUzvvux02tM1BgZJw3rNdGkdcdYbqXUBXtwYOE
-         zt4RZNxKmS1jpRgUE0z0a1BB9q3Gy6NbvfMulp40=
+        b=sIqtJTvw+0jZ6EXCJaAgF4Ewv76mM1WB1uOkribtNJ0hToIgXdxYNKVOSyz5D0wEO
+         1J5CUby2ZJpmqkDYO76picHP0pEwslKlbEwfxsgZ3zMdH0m0dzbo2sDbbO5/6O3CvY
+         47IMQhupxMkelyAxleALbe1npxnJmALPGsSsnACQ=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Bob Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org
-Subject: [PATCH AUTOSEL 5.4 65/84] ACPICA: Fixes for acpiExec namespace init file
-Date:   Wed, 15 Apr 2020 07:44:22 -0400
-Message-Id: <20200415114442.14166-65-sashal@kernel.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-nvdimm@lists.01.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 82/84] acpi/nfit: improve bounds checking for 'func'
+Date:   Wed, 15 Apr 2020 07:44:39 -0400
+Message-Id: <20200415114442.14166-82-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200415114442.14166-1-sashal@kernel.org>
 References: <20200415114442.14166-1-sashal@kernel.org>
@@ -45,297 +44,84 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Bob Moore <robert.moore@intel.com>
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-[ Upstream commit 9a1ae80412dcaa67a29eecf19de44f32b5f1c357 ]
+[ Upstream commit 01091c496f920e634ea84b689f480c39016752a8 ]
 
-This is the result of squashing the following ACPICA commit ID's:
-6803997e5b4f3635cea6610b51ff69e29d251de3
-f31cdf8bfda22fe265c1a176d0e33d311c82a7f7
+The 'func' variable can come from the user in the __nd_ioctl().  If it's
+too high then the (1 << func) shift in acpi_nfit_clear_to_send() is
+undefined.  In acpi_nfit_ctl() we pass 'func' to test_bit(func, &dsm_mask)
+which could result in an out of bounds access.
 
-This change fixes several problems with the support for the
-acpi_exec namespace init file (-fi option). Specifically, it
-fixes AE_ALREADY_EXISTS errors, as well as various seg faults.
+To fix these issues, I introduced the NVDIMM_CMD_MAX (31) define and
+updated nfit_dsm_revid() to use that define as well instead of magic
+numbers.
 
-Link: https://github.com/acpica/acpica/commit/f31cdf8b
-Link: https://github.com/acpica/acpica/commit/6803997e
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 11189c1089da ("acpi/nfit: Fix command-supported detection")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://lore.kernel.org/r/20200225161927.hvftuq7kjn547fyj@kili.mountain
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/acnamesp.h |  2 ++
- drivers/acpi/acpica/dbinput.c  | 16 +++++++---------
- drivers/acpi/acpica/dswexec.c  | 33 ++++++++++++++++++++++++++++++++
- drivers/acpi/acpica/dswload.c  |  2 --
- drivers/acpi/acpica/dswload2.c | 35 ++++++++++++++++++++++++++++++++++
- drivers/acpi/acpica/nsnames.c  |  6 +-----
- drivers/acpi/acpica/utdelete.c |  9 +++++----
- 7 files changed, 83 insertions(+), 20 deletions(-)
+ drivers/acpi/nfit/core.c | 10 ++++++----
+ drivers/acpi/nfit/nfit.h |  1 +
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/acpica/acnamesp.h b/drivers/acpi/acpica/acnamesp.h
-index 7da1864798a0e..ecaa28733dc61 100644
---- a/drivers/acpi/acpica/acnamesp.h
-+++ b/drivers/acpi/acpica/acnamesp.h
-@@ -256,6 +256,8 @@ u32
- acpi_ns_build_normalized_path(struct acpi_namespace_node *node,
- 			      char *full_path, u32 path_size, u8 no_trailing);
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 14e68f202f810..12d980aafc5ff 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -360,7 +360,7 @@ static union acpi_object *acpi_label_info(acpi_handle handle)
  
-+void acpi_ns_normalize_pathname(char *original_path);
-+
- char *acpi_ns_get_normalized_pathname(struct acpi_namespace_node *node,
- 				      u8 no_trailing);
+ static u8 nfit_dsm_revid(unsigned family, unsigned func)
+ {
+-	static const u8 revid_table[NVDIMM_FAMILY_MAX+1][32] = {
++	static const u8 revid_table[NVDIMM_FAMILY_MAX+1][NVDIMM_CMD_MAX+1] = {
+ 		[NVDIMM_FAMILY_INTEL] = {
+ 			[NVDIMM_INTEL_GET_MODES] = 2,
+ 			[NVDIMM_INTEL_GET_FWINFO] = 2,
+@@ -386,7 +386,7 @@ static u8 nfit_dsm_revid(unsigned family, unsigned func)
  
-diff --git a/drivers/acpi/acpica/dbinput.c b/drivers/acpi/acpica/dbinput.c
-index 55a7e10998d87..1ef053585bbb8 100644
---- a/drivers/acpi/acpica/dbinput.c
-+++ b/drivers/acpi/acpica/dbinput.c
-@@ -464,16 +464,14 @@ char *acpi_db_get_next_token(char *string,
- 		return (NULL);
+ 	if (family > NVDIMM_FAMILY_MAX)
+ 		return 0;
+-	if (func > 31)
++	if (func > NVDIMM_CMD_MAX)
+ 		return 0;
+ 	id = revid_table[family][func];
+ 	if (id == 0)
+@@ -492,7 +492,8 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+ 	 * Check for a valid command.  For ND_CMD_CALL, we also have to
+ 	 * make sure that the DSM function is supported.
+ 	 */
+-	if (cmd == ND_CMD_CALL && !test_bit(func, &dsm_mask))
++	if (cmd == ND_CMD_CALL &&
++	    (func > NVDIMM_CMD_MAX || !test_bit(func, &dsm_mask)))
+ 		return -ENOTTY;
+ 	else if (!test_bit(cmd, &cmd_mask))
+ 		return -ENOTTY;
+@@ -3499,7 +3500,8 @@ static int acpi_nfit_clear_to_send(struct nvdimm_bus_descriptor *nd_desc,
+ 	if (nvdimm && cmd == ND_CMD_CALL &&
+ 			call_pkg->nd_family == NVDIMM_FAMILY_INTEL) {
+ 		func = call_pkg->nd_command;
+-		if ((1 << func) & NVDIMM_INTEL_SECURITY_CMDMASK)
++		if (func > NVDIMM_CMD_MAX ||
++		    (1 << func) & NVDIMM_INTEL_SECURITY_CMDMASK)
+ 			return -EOPNOTSUPP;
  	}
  
--	/* Remove any spaces at the beginning */
-+	/* Remove any spaces at the beginning, ignore blank lines */
+diff --git a/drivers/acpi/nfit/nfit.h b/drivers/acpi/nfit/nfit.h
+index 24241941181ce..b317f4043705f 100644
+--- a/drivers/acpi/nfit/nfit.h
++++ b/drivers/acpi/nfit/nfit.h
+@@ -34,6 +34,7 @@
+ 		| ACPI_NFIT_MEM_NOT_ARMED | ACPI_NFIT_MEM_MAP_FAILED)
  
--	if (*string == ' ') {
--		while (*string && (*string == ' ')) {
--			string++;
--		}
-+	while (*string && isspace(*string)) {
-+		string++;
-+	}
+ #define NVDIMM_FAMILY_MAX NVDIMM_FAMILY_HYPERV
++#define NVDIMM_CMD_MAX 31
  
--		if (!(*string)) {
--			return (NULL);
--		}
-+	if (!(*string)) {
-+		return (NULL);
- 	}
- 
- 	switch (*string) {
-@@ -551,7 +549,7 @@ char *acpi_db_get_next_token(char *string,
- 
- 		/* Find end of token */
- 
--		while (*string && (*string != ' ')) {
-+		while (*string && !isspace(*string)) {
- 			string++;
- 		}
- 		break;
-diff --git a/drivers/acpi/acpica/dswexec.c b/drivers/acpi/acpica/dswexec.c
-index d75aae3045958..a68237b97c4c8 100644
---- a/drivers/acpi/acpica/dswexec.c
-+++ b/drivers/acpi/acpica/dswexec.c
-@@ -16,6 +16,9 @@
- #include "acinterp.h"
- #include "acnamesp.h"
- #include "acdebug.h"
-+#ifdef ACPI_EXEC_APP
-+#include "aecommon.h"
-+#endif
- 
- #define _COMPONENT          ACPI_DISPATCHER
- ACPI_MODULE_NAME("dswexec")
-@@ -329,6 +332,10 @@ acpi_status acpi_ds_exec_end_op(struct acpi_walk_state *walk_state)
- 	u32 op_class;
- 	union acpi_parse_object *next_op;
- 	union acpi_parse_object *first_arg;
-+#ifdef ACPI_EXEC_APP
-+	char *namepath;
-+	union acpi_operand_object *obj_desc;
-+#endif
- 
- 	ACPI_FUNCTION_TRACE_PTR(ds_exec_end_op, walk_state);
- 
-@@ -537,6 +544,32 @@ acpi_status acpi_ds_exec_end_op(struct acpi_walk_state *walk_state)
- 
- 			status =
- 			    acpi_ds_eval_buffer_field_operands(walk_state, op);
-+			if (ACPI_FAILURE(status)) {
-+				break;
-+			}
-+#ifdef ACPI_EXEC_APP
-+			/*
-+			 * acpi_exec support for namespace initialization file (initialize
-+			 * buffer_fields in this code.)
-+			 */
-+			namepath =
-+			    acpi_ns_get_external_pathname(op->common.node);
-+			status = ae_lookup_init_file_entry(namepath, &obj_desc);
-+			if (ACPI_SUCCESS(status)) {
-+				status =
-+				    acpi_ex_write_data_to_field(obj_desc,
-+								op->common.
-+								node->object,
-+								NULL);
-+				if ACPI_FAILURE
-+					(status) {
-+					ACPI_EXCEPTION((AE_INFO, status,
-+							"While writing to buffer field"));
-+					}
-+			}
-+			ACPI_FREE(namepath);
-+			status = AE_OK;
-+#endif
- 			break;
- 
- 		case AML_TYPE_CREATE_OBJECT:
-diff --git a/drivers/acpi/acpica/dswload.c b/drivers/acpi/acpica/dswload.c
-index 4bcf15bf03ded..6cf93fae4d07f 100644
---- a/drivers/acpi/acpica/dswload.c
-+++ b/drivers/acpi/acpica/dswload.c
-@@ -14,7 +14,6 @@
- #include "acdispat.h"
- #include "acinterp.h"
- #include "acnamesp.h"
--
- #ifdef ACPI_ASL_COMPILER
- #include "acdisasm.h"
- #endif
-@@ -399,7 +398,6 @@ acpi_status acpi_ds_load1_end_op(struct acpi_walk_state *walk_state)
- 	union acpi_parse_object *op;
- 	acpi_object_type object_type;
- 	acpi_status status = AE_OK;
--
- #ifdef ACPI_ASL_COMPILER
- 	u8 param_count;
- #endif
-diff --git a/drivers/acpi/acpica/dswload2.c b/drivers/acpi/acpica/dswload2.c
-index 935a8e2623e4b..15d92bf15f0b6 100644
---- a/drivers/acpi/acpica/dswload2.c
-+++ b/drivers/acpi/acpica/dswload2.c
-@@ -15,6 +15,9 @@
- #include "acinterp.h"
- #include "acnamesp.h"
- #include "acevents.h"
-+#ifdef ACPI_EXEC_APP
-+#include "aecommon.h"
-+#endif
- 
- #define _COMPONENT          ACPI_DISPATCHER
- ACPI_MODULE_NAME("dswload2")
-@@ -373,6 +376,10 @@ acpi_status acpi_ds_load2_end_op(struct acpi_walk_state *walk_state)
- 	struct acpi_namespace_node *new_node;
- 	u32 i;
- 	u8 region_space;
-+#ifdef ACPI_EXEC_APP
-+	union acpi_operand_object *obj_desc;
-+	char *namepath;
-+#endif
- 
- 	ACPI_FUNCTION_TRACE(ds_load2_end_op);
- 
-@@ -466,6 +473,11 @@ acpi_status acpi_ds_load2_end_op(struct acpi_walk_state *walk_state)
- 		 * be evaluated later during the execution phase
- 		 */
- 		status = acpi_ds_create_buffer_field(op, walk_state);
-+		if (ACPI_FAILURE(status)) {
-+			ACPI_EXCEPTION((AE_INFO, status,
-+					"CreateBufferField failure"));
-+			goto cleanup;
-+			}
- 		break;
- 
- 	case AML_TYPE_NAMED_FIELD:
-@@ -604,6 +616,29 @@ acpi_status acpi_ds_load2_end_op(struct acpi_walk_state *walk_state)
- 		case AML_NAME_OP:
- 
- 			status = acpi_ds_create_node(walk_state, node, op);
-+			if (ACPI_FAILURE(status)) {
-+				goto cleanup;
-+			}
-+#ifdef ACPI_EXEC_APP
-+			/*
-+			 * acpi_exec support for namespace initialization file (initialize
-+			 * Name opcodes in this code.)
-+			 */
-+			namepath = acpi_ns_get_external_pathname(node);
-+			status = ae_lookup_init_file_entry(namepath, &obj_desc);
-+			if (ACPI_SUCCESS(status)) {
-+
-+				/* Detach any existing object, attach new object */
-+
-+				if (node->object) {
-+					acpi_ns_detach_object(node);
-+				}
-+				acpi_ns_attach_object(node, obj_desc,
-+						      obj_desc->common.type);
-+			}
-+			ACPI_FREE(namepath);
-+			status = AE_OK;
-+#endif
- 			break;
- 
- 		case AML_METHOD_OP:
-diff --git a/drivers/acpi/acpica/nsnames.c b/drivers/acpi/acpica/nsnames.c
-index 370bbc8677453..c717fff7d9b57 100644
---- a/drivers/acpi/acpica/nsnames.c
-+++ b/drivers/acpi/acpica/nsnames.c
-@@ -13,9 +13,6 @@
- #define _COMPONENT          ACPI_NAMESPACE
- ACPI_MODULE_NAME("nsnames")
- 
--/* Local Prototypes */
--static void acpi_ns_normalize_pathname(char *original_path);
--
- /*******************************************************************************
-  *
-  * FUNCTION:    acpi_ns_get_external_pathname
-@@ -30,7 +27,6 @@ static void acpi_ns_normalize_pathname(char *original_path);
-  *              for error and debug statements.
-  *
-  ******************************************************************************/
--
- char *acpi_ns_get_external_pathname(struct acpi_namespace_node *node)
- {
- 	char *name_buffer;
-@@ -411,7 +407,7 @@ char *acpi_ns_build_prefixed_pathname(union acpi_generic_state *prefix_scope,
-  *
-  ******************************************************************************/
- 
--static void acpi_ns_normalize_pathname(char *original_path)
-+void acpi_ns_normalize_pathname(char *original_path)
- {
- 	char *input_path = original_path;
- 	char *new_path_buffer;
-diff --git a/drivers/acpi/acpica/utdelete.c b/drivers/acpi/acpica/utdelete.c
-index eee263cb7beb0..c365faf4e6cd4 100644
---- a/drivers/acpi/acpica/utdelete.c
-+++ b/drivers/acpi/acpica/utdelete.c
-@@ -452,13 +452,13 @@ acpi_ut_update_ref_count(union acpi_operand_object *object, u32 action)
-  *
-  * FUNCTION:    acpi_ut_update_object_reference
-  *
-- * PARAMETERS:  object              - Increment ref count for this object
-- *                                    and all sub-objects
-+ * PARAMETERS:  object              - Increment or decrement the ref count for
-+ *                                    this object and all sub-objects
-  *              action              - Either REF_INCREMENT or REF_DECREMENT
-  *
-  * RETURN:      Status
-  *
-- * DESCRIPTION: Increment the object reference count
-+ * DESCRIPTION: Increment or decrement the object reference count
-  *
-  * Object references are incremented when:
-  * 1) An object is attached to a Node (namespace object)
-@@ -492,7 +492,7 @@ acpi_ut_update_object_reference(union acpi_operand_object *object, u16 action)
- 		}
- 
- 		/*
--		 * All sub-objects must have their reference count incremented
-+		 * All sub-objects must have their reference count updated
- 		 * also. Different object types have different subobjects.
- 		 */
- 		switch (object->common.type) {
-@@ -559,6 +559,7 @@ acpi_ut_update_object_reference(union acpi_operand_object *object, u16 action)
- 					break;
- 				}
- 			}
-+
- 			next_object = NULL;
- 			break;
- 
+ #define NVDIMM_STANDARD_CMDMASK \
+ (1 << ND_CMD_SMART | 1 << ND_CMD_SMART_THRESHOLD | 1 << ND_CMD_DIMM_FLAGS \
 -- 
 2.20.1
 
