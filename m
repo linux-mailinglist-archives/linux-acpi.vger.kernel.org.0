@@ -2,306 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3B8C1A8E9F
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Apr 2020 00:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E66C31A917A
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Apr 2020 05:14:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391999AbgDNWan (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Apr 2020 18:30:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59568 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2391989AbgDNWaf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 14 Apr 2020 18:30:35 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24080C061A0F
-        for <linux-acpi@vger.kernel.org>; Tue, 14 Apr 2020 15:30:35 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id x4so14946410wmj.1
-        for <linux-acpi@vger.kernel.org>; Tue, 14 Apr 2020 15:30:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=okVUGJ3ikrrEbdgJgp1xfbeReFhs19fwarQOs8B1AZk=;
-        b=FEbTmIVNW0JoSjYjr3F58Dza+Cb1Ac/sA7nNj8BJjD5avga0CHKNryFlZnyWoMT1E2
-         na8aftYRyJNOnjaU94xdsOPIs71//+sqT+bELBHBZIbzI3nbi3kByYX15ybKGjV8hqN8
-         PxohgfpVVFNtgIAZ8+2c5mP0p6CodDxUFWMY4O2jSjXsEBQJo7J8DK9ftSUKzLWke7nn
-         oAeGy3RkG0ySkJTzFv/BokwJwPVpqQYV+DSF2MSBBYwES8cAPcLFhiyABwkrSKDt1/Xd
-         zIbH9mjT61r1ANGVDNH0HBZbSuIrs3gfbCaJ63UJPyZrYL+Xj0hS9iZs1617fg7qMyP9
-         Bgww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=okVUGJ3ikrrEbdgJgp1xfbeReFhs19fwarQOs8B1AZk=;
-        b=ciuPqynCjTZYSLzKg9qxGY2d3x1XrtLaMowISz38vLuyJu9YswjrvrtpZLAD+NTXO3
-         vOXRhwVGiLR9p/U27AmSnFjzq4OfkjdRAI6rdAPqLsdsYH6zjAn7PEaeo/j0kDaXXQtZ
-         pCeaRaiLs+Zt6o7sCSJkBgQhR2dSCUSA75eiYOo9Gi9c5XmJxk8rzOSL4TqbxrDaXd0D
-         eKQoHppoUw2HDZCL5Hf1UqSVWZAUiP61HJ0WR45doRsc4Qx0LFQs1DtGMyz6SpDJ6x4k
-         xIdpbbme0liKZn5OvNtTzfzZ0krDIiKqkMkEFKTakTXk0MRdLu2ABtgoa9RTVWCrckTe
-         DNjg==
-X-Gm-Message-State: AGi0PuZp/7npTOootJDpIxDE82JCVQhLUu34y0kcEMFyItfLAuNtYu0V
-        uE1K8YkQn1xzbEgrcrqxeuzg4A==
-X-Google-Smtp-Source: APiQypIbVYGNGOComyaA0BUnVsxnNYsocIyXxHF8/fexB9IRx/uxZhOitPNh1Qfq4Q5sjQ8E/NKUGA==
-X-Received: by 2002:a1c:bd08:: with SMTP id n8mr1947813wmf.23.1586903433566;
-        Tue, 14 Apr 2020 15:30:33 -0700 (PDT)
-Received: from [192.168.0.41] (lns-bzn-59-82-252-135-148.adsl.proxad.net. [82.252.135.148])
-        by smtp.googlemail.com with ESMTPSA id g186sm21701352wmg.36.2020.04.14.15.30.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Apr 2020 15:30:33 -0700 (PDT)
-Subject: Re: [RFC v2 4/9] thermal: core: Let thermal zone device's mode be
- stored in its struct
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-pm@vger.kernel.org
-Cc:     Zhang Rui <rui.zhang@intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Jiri Pirko <jiri@mellanox.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Peter Kaestle <peter@piie.net>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Allison Randal <allison@lohutok.net>,
-        Enrico Weigelt <info@metux.net>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, kernel@collabora.com
-References: <2bc5a902-acde-526a-11a5-2357d899916c@linaro.org>
- <20200414180105.20042-1-andrzej.p@collabora.com>
- <20200414180105.20042-5-andrzej.p@collabora.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <c053480c-8279-2a51-7a55-252ff723b432@linaro.org>
-Date:   Wed, 15 Apr 2020 00:30:31 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1731516AbgDODOG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Apr 2020 23:14:06 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:2322 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1731048AbgDODOD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 14 Apr 2020 23:14:03 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id E965EEBDCFC4ED20D06F;
+        Wed, 15 Apr 2020 11:13:59 +0800 (CST)
+Received: from [127.0.0.1] (10.173.221.195) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.487.0; Wed, 15 Apr 2020
+ 11:13:56 +0800
+Subject: Re: [PATCH] ACPICA: Use ARRAY_SIZE instead of hardcoded siz
+To:     "Moore, Robert" <robert.moore@intel.com>,
+        "Kaneda, Erik" <erik.kaneda@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20200413143156.22633-1-yanaijie@huawei.com>
+ <94F2FBAB4432B54E8AACC7DFDE6C92E3C68A849E@ORSMSX108.amr.corp.intel.com>
+From:   Jason Yan <yanaijie@huawei.com>
+Message-ID: <7c560f1c-5074-fa6c-4dbf-fb2ae37b0c46@huawei.com>
+Date:   Wed, 15 Apr 2020 11:13:55 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-In-Reply-To: <20200414180105.20042-5-andrzej.p@collabora.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <94F2FBAB4432B54E8AACC7DFDE6C92E3C68A849E@ORSMSX108.amr.corp.intel.com>
+Content-Type: text/plain; charset="gbk"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.221.195]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 14/04/2020 20:01, Andrzej Pietrasiewicz wrote:
-> All the drivers which provide ->get_mode()/->set_mode() methods store their
-> mode in a thermal_device_mode enum, so keep this information in struct
-> thermal_zone_device rather than scattered all over the place.
+
+
+ÔÚ 2020/4/15 4:22, Moore, Robert Ð´µÀ:
+> I think we've discussed this in the past. ARRAY_SIZE is not standard, and will get in the way of portability:
 > 
-> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+
+Thanks for the explanation. Got it.
+
+
+> On gcc v7.4.0:
+> ../../../source/components/resources/rsdumpinfo.c:335:25: note: in expansion of macro 'ACPI_RSD_TABLE_SIZE'
+>       {ACPI_RSD_TITLE,    ACPI_RSD_TABLE_SIZE (AcpiRsDumpGenericReg),         "Generic Register",         NULL},
+> 
+> ../../../source/components/resources/rsdumpinfo.c:166:37: error: initializer element is not constant
+>   #define ACPI_RSD_TABLE_SIZE(name)   ARRAY_SIZE (name)
+> 
+> 
+> And, on MSVC 2017:
+> Severity	Code	Description	Project	File	Line	Suppression State
+> Warning	C4013	'ARRAY_SIZE' undefined; assuming extern returning int	AcpiExec	c:\acpica\source\components\resources\rsdumpinfo.c	179	
+> -----Original Message-----
+> From: Jason Yan <yanaijie@huawei.com>
+> Sent: Monday, April 13, 2020 7:32 AM
+> To: Moore, Robert <robert.moore@intel.com>; Kaneda, Erik <erik.kaneda@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>; lenb@kernel.org; linux-acpi@vger.kernel.org; devel@acpica.org; linux-kernel@vger.kernel.org
+> Cc: Jason Yan <yanaijie@huawei.com>
+> Subject: [PATCH] ACPICA: Use ARRAY_SIZE instead of hardcoded siz
+> 
+> Fix the following coccicheck warning:
+> 
+> ./drivers/acpi/acpica/rsdumpinfo.c:18:48-49: WARNING: Use ARRAY_SIZE
+> ./drivers/acpi/acpica/rsdumpinfo.c:18:48-49: WARNING: Use ARRAY_SIZE
+> ./drivers/acpi/acpica/rsdumpinfo.c:18:48-49: WARNING: Use ARRAY_SIZE
+> ./drivers/acpi/acpica/rsdumpinfo.c:18:48-49: WARNING: Use ARRAY_SIZE
+> ./drivers/acpi/acpica/rsdumpinfo.c:18:48-49: WARNING: Use ARRAY_SIZE
+> ./drivers/acpi/acpica/rsdumpinfo.c:18:48-49: WARNING: Use ARRAY_SIZE
+> ./drivers/acpi/acpica/rsdumpinfo.c:18:48-49: WARNING: Use ARRAY_SIZE
+> 
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
 > ---
->  drivers/thermal/thermal_core.c  | 28 +++++++++++++++++++
->  drivers/thermal/thermal_sysfs.c |  9 +++----
->  include/linux/thermal.h         | 48 +++++++++++++++++++++++++++++++++
->  3 files changed, 79 insertions(+), 6 deletions(-)
+>   drivers/acpi/acpica/rsdumpinfo.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-> index 9a321dc548c8..cb0ff47f0dbe 100644
-> --- a/drivers/thermal/thermal_core.c
-> +++ b/drivers/thermal/thermal_core.c
-> @@ -469,6 +469,34 @@ static void thermal_zone_device_reset(struct thermal_zone_device *tz)
->  	thermal_zone_device_init(tz);
->  }
->  
-> +int thermal_zone_device_get_mode(struct thermal_zone_device *tz,
-> +				 enum thermal_device_mode *mode)
-> +{
-> +	if (tz->ops->get_mode)
-> +		return tz->ops->get_mode(tz, mode);
-
-I think we can get rid of the get_mode here.
-
-locks missing.
-
-and mode = tz->mode must be always set.
-
-> +	*mode = tz->mode;
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_zone_device_get_mode);
-> +
-> +int thermal_zone_device_set_mode(struct thermal_zone_device *tz,
-> +				 enum thermal_device_mode mode)
-> +{
-> +	if (mode != THERMAL_DEVICE_DISABLED &&
-> +	    mode != THERMAL_DEVICE_ENABLED)
-> +		return -EINVAL;
-
-I'm not sure this is useful as 'mode' is an enum and this condition will
-be always correct.
-
-locks missing.
-
-> +	if (tz->ops->set_mode)
-> +		return tz->ops->set_mode(tz, mode);
-
-> +	tz->mode = mode;
-
-It should be like:
-
-	int ret = 0;
-
-	mutex_lock(&tz->lock);
-
-	if (tz->ops->set_mode)
-		ret = tz->ops->set_mode(tz, mode);
-
-	*mode = tz->mode;
-
-	mutex_unlock(&tz->lock);
-
-	return ret;
-
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_zone_device_set_mode);
-> +
->  void thermal_zone_device_update(struct thermal_zone_device *tz,
->  				enum thermal_notify_event event)
->  {
-> diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sysfs.c
-> index aa99edb4dff7..66d9691b8bd6 100644
-> --- a/drivers/thermal/thermal_sysfs.c
-> +++ b/drivers/thermal/thermal_sysfs.c
-> @@ -52,10 +52,7 @@ mode_show(struct device *dev, struct device_attribute *attr, char *buf)
->  	enum thermal_device_mode mode;
->  	int result;
->  
-> -	if (!tz->ops->get_mode)
-> -		return -EPERM;
-> -
-> -	result = tz->ops->get_mode(tz, &mode);
-> +	result = thermal_zone_device_get_mode(tz, &mode);
->  	if (result)
->  		return result;
->  
-> @@ -74,9 +71,9 @@ mode_store(struct device *dev, struct device_attribute *attr,
->  		return -EPERM;
->  
->  	if (!strncmp(buf, "enabled", sizeof("enabled") - 1))
-> -		result = tz->ops->set_mode(tz, THERMAL_DEVICE_ENABLED);
-> +		result = thermal_zone_device_enable(tz);
->  	else if (!strncmp(buf, "disabled", sizeof("disabled") - 1))
-> -		result = tz->ops->set_mode(tz, THERMAL_DEVICE_DISABLED);
-> +		result = thermal_zone_device_disable(tz);
->  	else
->  		result = -EINVAL;
->  
-> diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-> index c91b1e344d56..9ff8542b7e7d 100644
-> --- a/include/linux/thermal.h
-> +++ b/include/linux/thermal.h
-> @@ -143,6 +143,7 @@ struct thermal_attr {
->   * @trip_temp_attrs:	attributes for trip points for sysfs: trip temperature
->   * @trip_type_attrs:	attributes for trip points for sysfs: trip type
->   * @trip_hyst_attrs:	attributes for trip points for sysfs: trip hysteresis
-> + * @mode:		current mode of this thermal zone
->   * @devdata:	private pointer for device private data
->   * @trips:	number of trip points the thermal zone supports
->   * @trips_disabled;	bitmap for disabled trips
-> @@ -185,6 +186,7 @@ struct thermal_zone_device {
->  	struct thermal_attr *trip_temp_attrs;
->  	struct thermal_attr *trip_type_attrs;
->  	struct thermal_attr *trip_hyst_attrs;
-> +	enum thermal_device_mode mode;
->  	void *devdata;
->  	int trips;
->  	unsigned long trips_disabled;	/* bitmap for disabled trips */
-> @@ -437,6 +439,19 @@ int thermal_zone_bind_cooling_device(struct thermal_zone_device *, int,
->  				     unsigned int);
->  int thermal_zone_unbind_cooling_device(struct thermal_zone_device *, int,
->  				       struct thermal_cooling_device *);
-> +
-> +int thermal_zone_device_get_mode(struct thermal_zone_device *tz,
-> +				 enum thermal_device_mode *mode);
-> +int thermal_zone_device_set_mode(struct thermal_zone_device *tz,
-> +				 enum thermal_device_mode mode);
-> +
-> +static inline void
-> +thermal_zone_device_store_mode(struct thermal_zone_device *tz,
-> +			       enum thermal_device_mode mode)
-> +{
-> +	tz->mode = mode;
-> +}
-> +
-
-Please remove this store_mode function, it is not needed.
-
-Just:
-
-thermal_zone_device_get_mode()
-thermal_zone_device_set_mode()
-thermal_zone_device_disable()
-thermal_zone_device_enable()
-
-And all of them in drivers/thermal/thermal_core.h
-
->  void thermal_zone_device_update(struct thermal_zone_device *,
->  				enum thermal_notify_event);
->  void thermal_zone_set_trips(struct thermal_zone_device *);
-> @@ -494,6 +509,17 @@ static inline int thermal_zone_unbind_cooling_device(
->  	struct thermal_zone_device *tz, int trip,
->  	struct thermal_cooling_device *cdev)
->  { return -ENODEV; }
-> +static inline int thermal_zone_device_get_mode(struct thermal_zone_device *tz,
-> +					       enum thermal_device_mode *mode)
-> +{ return -ENODEV; }
-> +static inline int thermal_zone_device_set_mode(struct thermal_zone_device *tz,
-> +					       enum thermal_device_mode mode)
-> +{ return -ENODEV; }
-> +static inline void
-> +thermal_zone_device_store_mode(struct thermal_zone_device *tz,
-> +			       enum thermal_device_mode mode)
-> +{ }
-> +
->  static inline void thermal_zone_device_update(struct thermal_zone_device *tz,
->  					      enum thermal_notify_event event)
->  { }
-> @@ -543,4 +569,26 @@ static inline void thermal_notify_framework(struct thermal_zone_device *tz,
->  { }
->  #endif /* CONFIG_THERMAL */
->  
-> +static inline int thermal_zone_device_enable(struct thermal_zone_device *tz)
-> +{
-> +	return thermal_zone_device_set_mode(tz, THERMAL_DEVICE_ENABLED);
-> +}
-> +
-> +static inline int thermal_zone_device_disable(struct thermal_zone_device *tz)
-> +{
-> +	return thermal_zone_device_set_mode(tz, THERMAL_DEVICE_DISABLED);
-> +}
-> +
-> +static inline void
-> +thermal_zone_device_store_enabled(struct thermal_zone_device *tz)
-> +{
-> +	thermal_zone_device_store_mode(tz, THERMAL_DEVICE_ENABLED);
-> +}
-> +
-> +static inline void
-> +thermal_zone_device_store_disabled(struct thermal_zone_device *tz)
-> +{
-> +	thermal_zone_device_store_mode(tz, THERMAL_DEVICE_DISABLED);
-> +}
-> +
->  #endif /* __THERMAL_H__ */
+> diff --git a/drivers/acpi/acpica/rsdumpinfo.c b/drivers/acpi/acpica/rsdumpinfo.c
+> index cafa8134b4c6..f1ba4cd8080f 100644
+> --- a/drivers/acpi/acpica/rsdumpinfo.c
+> +++ b/drivers/acpi/acpica/rsdumpinfo.c
+> @@ -15,7 +15,7 @@ ACPI_MODULE_NAME("rsdumpinfo")  #if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DISASSEMBLER) || defined(ACPI_DEBUGGER)
+>   #define ACPI_RSD_OFFSET(f)          (u8) ACPI_OFFSET (union acpi_resource_data,f)
+>   #define ACPI_PRT_OFFSET(f)          (u8) ACPI_OFFSET (struct acpi_pci_routing_table,f)
+> -#define ACPI_RSD_TABLE_SIZE(name)   (sizeof(name) / sizeof (struct acpi_rsdump_info))
+> +#define ACPI_RSD_TABLE_SIZE(name)   ARRAY_SIZE(name)
+>   /*******************************************************************************
+>    *
+>    * Resource Descriptor info tables
+> --
+> 2.21.1
+> 
+> 
+> .
 > 
 
-
--- 
-<http://www.linaro.org/> Linaro.org â”‚ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
