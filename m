@@ -2,79 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B41B61A92CA
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Apr 2020 07:59:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC5981A9638
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Apr 2020 10:24:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2441065AbgDOF7o (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Apr 2020 01:59:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44258 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2441062AbgDOF7m (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 15 Apr 2020 01:59:42 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD0D8C061A0C;
-        Tue, 14 Apr 2020 22:59:41 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id i10so17579603wrv.10;
-        Tue, 14 Apr 2020 22:59:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bsdw+AlvxpaYVY8Lcjiqb5lWVO+/dV7fKji2stjWQoM=;
-        b=JcWcWuiDWGrat7PLbbGGpy+VPCwZm+B8+b6wIR5Qlxfxy+BWIl7W3IQIkJhpT9dMQ/
-         KHWM043X+68VVMlKeKimAMxZXIuFAWaKNOyTQ7mygKJZirRFrXpLfga5nca6/yN7sb7m
-         JeQn2eTsJoY0SsenEcw6+1hEASroKswAcE4X35r0YOiPZ5jGBKQApmHqFZ4sq4gHjKdG
-         Y3n6+YfWWVguF7/onY60Kqj/u2fjv8erG23gS8RGAkzk0bQHYB1BDVnfjrHaE8CS5aSt
-         Rjr7k+3et5/Y/3dqyE09ehmdQNqJPeeYs/kLKup/xCUwjwdd68D89T8FnDTSl+XL6fb+
-         smZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bsdw+AlvxpaYVY8Lcjiqb5lWVO+/dV7fKji2stjWQoM=;
-        b=daNe2Lm+Is6pfWmordGgi+Cxl+3yMz9wigDI7lbCmY7hs6nBsKZORcwYYw63CRJ6ja
-         oHOPSZML964TT0S9kiQlG8gohW6Bcvv4JOWTp0nZ4KXuKFuUJcFp9udKmnMr+/BkpR7o
-         7H1Nd1GvsFVa52dulJRhddNnCu1EcWBeUZUw7f8n4QrCdWe2MZrzMNlx6cFQFFOIq9ok
-         +A4U8XtexsXPrt6PFhQGhgTcT4xpYCWWMqoH2bUG53vfcQ0c04xDIBWJSBbkSBCIMtd7
-         +xzl/W4z+P9BaQm7ri2W89HhK4HC1XqBoWoH2t8Q6OU3Umo5nym9xbCM2qy4Dg/mZadZ
-         QaFA==
-X-Gm-Message-State: AGi0Pub6l2ehgXKpJyn4uGnY1dznb+JpzCeGnE4peFmHlYpEc5rD7GIF
-        pGTfLc+wBR8N6c+jHrB/QSRHTT5C2g2zq3ZdGso=
-X-Google-Smtp-Source: APiQypLIUSKaAEG1Gvkn2HdyUu7XOJ1Ks6l0f/YpHQQasnkp1D78E3DW2NpedLoUJjzQcwbl8mvUogTsn+2/TeKZq4Y=
-X-Received: by 2002:adf:db4d:: with SMTP id f13mr6637560wrj.289.1586930380463;
- Tue, 14 Apr 2020 22:59:40 -0700 (PDT)
+        id S2635879AbgDOIXU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Apr 2020 04:23:20 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2376 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2635867AbgDOIXS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 15 Apr 2020 04:23:18 -0400
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 1DF0D655974E4098D7B1;
+        Wed, 15 Apr 2020 16:23:16 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.487.0; Wed, 15 Apr 2020
+ 16:23:05 +0800
+From:   Jason Yan <yanaijie@huawei.com>
+To:     <robert.moore@intel.com>, <erik.kaneda@intel.com>,
+        <rafael.j.wysocki@intel.com>, <lenb@kernel.org>,
+        <linux-acpi@vger.kernel.org>, <devel@acpica.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Jason Yan <yanaijie@huawei.com>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH] ACPICA: make acpi_protocol_lengths static
+Date:   Wed, 15 Apr 2020 16:49:33 +0800
+Message-ID: <20200415084933.6251-1-yanaijie@huawei.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-References: <20200311171422.10484-1-david@redhat.com> <20200311171422.10484-2-david@redhat.com>
-In-Reply-To: <20200311171422.10484-2-david@redhat.com>
-From:   Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Date:   Wed, 15 Apr 2020 07:59:28 +0200
-Message-ID: <CAM9Jb+ic2e3A9uaD3whMB9G+dXfeX877vtjF7TgiPKhwZ2nvzQ@mail.gmail.com>
-Subject: Re: [PATCH v2 01/10] virtio-mem: Paravirtualized memory hotplug
-To:     David Hildenbrand <david@redhat.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>,
-        virtio-dev@lists.oasis-open.org,
-        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
-        Michal Hocko <mhocko@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Igor Mammedov <imammedo@redhat.com>,
-        Dave Young <dyoung@redhat.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Stefan Hajnoczi <stefanha@redhat.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-I spent quite some time to review and also tested this driver.
-This looks good to me. Feel free to add.
+Fix the following sparse warning:
 
-Reviewed-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+drivers/acpi/acpica/exfield.c:25:10: warning: symbol
+'acpi_protocol_lengths' was not declared. Should it be static?
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
+---
+ drivers/acpi/acpica/exfield.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/acpica/exfield.c b/drivers/acpi/acpica/exfield.c
+index e85eb31e5075..3323a2ba6a31 100644
+--- a/drivers/acpi/acpica/exfield.c
++++ b/drivers/acpi/acpica/exfield.c
+@@ -22,7 +22,7 @@ ACPI_MODULE_NAME("exfield")
+  */
+ #define ACPI_INVALID_PROTOCOL_ID        0x80
+ #define ACPI_MAX_PROTOCOL_ID            0x0F
+-const u8 acpi_protocol_lengths[] = {
++static const u8 acpi_protocol_lengths[] = {
+ 	ACPI_INVALID_PROTOCOL_ID,	/* 0 - reserved */
+ 	ACPI_INVALID_PROTOCOL_ID,	/* 1 - reserved */
+ 	0x00,			/* 2 - ATTRIB_QUICK */
+-- 
+2.21.1
+
