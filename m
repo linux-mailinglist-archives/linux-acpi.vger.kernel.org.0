@@ -2,39 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26DB31A9DD6
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Apr 2020 13:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 765F81A9EBE
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Apr 2020 14:06:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2897582AbgDOLq6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Apr 2020 07:46:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41934 "EHLO mail.kernel.org"
+        id S2409369AbgDOLrm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Apr 2020 07:47:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43014 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2897576AbgDOLqz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 15 Apr 2020 07:46:55 -0400
+        id S2409351AbgDOLri (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 15 Apr 2020 07:47:38 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C9D2420768;
-        Wed, 15 Apr 2020 11:46:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 69948214D8;
+        Wed, 15 Apr 2020 11:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586951214;
-        bh=ReiwWY5DS7R9ZcBugP7lliqJr2hem4U0KmNLfZYzg2s=;
+        s=default; t=1586951257;
+        bh=fNvkOOLN2cnYhJMXeJjzecyXBCk4CvWhpDwNDVKmJq8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KNTmdoaVKt0OtVqUF6LY8DonqEOpcsfeBEVRvVnBo0yXO04KdOxPWERAhaiwlWiVw
-         ahXoeIXsMp4P+9BEoGhJ6DM00o5MwCqeEhM7Qz5StD762/3O4g0Ge/qrqbuzrhdA7P
-         +gVuGq3t37gO/sZpb1p9kUyUdzOrWDyMhktLQgJs=
+        b=JdsBlbPZzutdtnMPp0td3Nr6kFl0ET/r9P9LHR/AqcVbFYMtIhRJtz4QzGQFeJG3k
+         SLKgAM8ZecXNBO9bEGZCJUhHtCJTlFI9j0JAenc+BjtwTPnwGJWQ96XddHBupVOKiH
+         IQzBzmCmOohJOruWtbSWZY5d8J9AECsvIiTTlpAI=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Qian Cai <cai@lca.pw>, Borislav Petkov <bp@suse.de>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-pm@vger.kernel.org,
         linux-acpi@vger.kernel.org, devel@acpica.org
-Subject: [PATCH AUTOSEL 4.19 26/40] x86: ACPI: fix CPU hotplug deadlock
-Date:   Wed, 15 Apr 2020 07:46:09 -0400
-Message-Id: <20200415114623.14972-26-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 21/30] x86: ACPI: fix CPU hotplug deadlock
+Date:   Wed, 15 Apr 2020 07:47:02 -0400
+Message-Id: <20200415114711.15381-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200415114623.14972-1-sashal@kernel.org>
-References: <20200415114623.14972-1-sashal@kernel.org>
+In-Reply-To: <20200415114711.15381-1-sashal@kernel.org>
+References: <20200415114711.15381-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -155,7 +155,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
-index 158ad1483c435..92539a1c3e317 100644
+index dde437f5d14ff..596e7640d895a 100644
 --- a/arch/x86/kernel/acpi/cstate.c
 +++ b/arch/x86/kernel/acpi/cstate.c
 @@ -133,7 +133,8 @@ int acpi_processor_ffh_cstate_probe(unsigned int cpu,
@@ -169,10 +169,10 @@ index 158ad1483c435..92539a1c3e317 100644
  		/* Use the hint in CST */
  		percpu_entry->states[cx->index].eax = cx->address;
 diff --git a/drivers/acpi/processor_throttling.c b/drivers/acpi/processor_throttling.c
-index fbc936cf2025c..62c0fe9ef4124 100644
+index 7f9aff4b8d627..9fdc13a2f2d59 100644
 --- a/drivers/acpi/processor_throttling.c
 +++ b/drivers/acpi/processor_throttling.c
-@@ -910,13 +910,6 @@ static long __acpi_processor_get_throttling(void *data)
+@@ -909,13 +909,6 @@ static long __acpi_processor_get_throttling(void *data)
  	return pr->throttling.acpi_processor_get_throttling(pr);
  }
  
@@ -187,10 +187,10 @@ index fbc936cf2025c..62c0fe9ef4124 100644
  {
  	if (!pr)
 diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-index 1194a4c78d557..5b9eab15a1e6c 100644
+index d591bb77f592b..f4bff23135479 100644
 --- a/include/acpi/processor.h
 +++ b/include/acpi/processor.h
-@@ -293,6 +293,14 @@ static inline void acpi_processor_ffh_cstate_enter(struct acpi_processor_cx
+@@ -291,6 +291,14 @@ static inline void acpi_processor_ffh_cstate_enter(struct acpi_processor_cx
  }
  #endif
  
