@@ -2,39 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7DC91A9FD5
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Apr 2020 14:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26DB31A9DD6
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Apr 2020 13:50:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S368829AbgDOMR5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Apr 2020 08:17:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41112 "EHLO mail.kernel.org"
+        id S2897582AbgDOLq6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Apr 2020 07:46:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41934 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2409281AbgDOLqT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 15 Apr 2020 07:46:19 -0400
+        id S2897576AbgDOLqz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 15 Apr 2020 07:46:55 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 62B0420775;
-        Wed, 15 Apr 2020 11:46:18 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C9D2420768;
+        Wed, 15 Apr 2020 11:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586951179;
-        bh=S8BciryhmOjmP06oCroyDH/n35WS5a6CLZ6N5yiRrvQ=;
+        s=default; t=1586951214;
+        bh=ReiwWY5DS7R9ZcBugP7lliqJr2hem4U0KmNLfZYzg2s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sIqtJTvw+0jZ6EXCJaAgF4Ewv76mM1WB1uOkribtNJ0hToIgXdxYNKVOSyz5D0wEO
-         1J5CUby2ZJpmqkDYO76picHP0pEwslKlbEwfxsgZ3zMdH0m0dzbo2sDbbO5/6O3CvY
-         47IMQhupxMkelyAxleALbe1npxnJmALPGsSsnACQ=
+        b=KNTmdoaVKt0OtVqUF6LY8DonqEOpcsfeBEVRvVnBo0yXO04KdOxPWERAhaiwlWiVw
+         ahXoeIXsMp4P+9BEoGhJ6DM00o5MwCqeEhM7Qz5StD762/3O4g0Ge/qrqbuzrhdA7P
+         +gVuGq3t37gO/sZpb1p9kUyUdzOrWDyMhktLQgJs=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-nvdimm@lists.01.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 82/84] acpi/nfit: improve bounds checking for 'func'
-Date:   Wed, 15 Apr 2020 07:44:39 -0400
-Message-Id: <20200415114442.14166-82-sashal@kernel.org>
+Cc:     Qian Cai <cai@lca.pw>, Borislav Petkov <bp@suse.de>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-pm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devel@acpica.org
+Subject: [PATCH AUTOSEL 4.19 26/40] x86: ACPI: fix CPU hotplug deadlock
+Date:   Wed, 15 Apr 2020 07:46:09 -0400
+Message-Id: <20200415114623.14972-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200415114442.14166-1-sashal@kernel.org>
-References: <20200415114442.14166-1-sashal@kernel.org>
+In-Reply-To: <20200415114623.14972-1-sashal@kernel.org>
+References: <20200415114623.14972-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,84 +44,167 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
+From: Qian Cai <cai@lca.pw>
 
-[ Upstream commit 01091c496f920e634ea84b689f480c39016752a8 ]
+[ Upstream commit 696ac2e3bf267f5a2b2ed7d34e64131f2287d0ad ]
 
-The 'func' variable can come from the user in the __nd_ioctl().  If it's
-too high then the (1 << func) shift in acpi_nfit_clear_to_send() is
-undefined.  In acpi_nfit_ctl() we pass 'func' to test_bit(func, &dsm_mask)
-which could result in an out of bounds access.
+Similar to commit 0266d81e9bf5 ("acpi/processor: Prevent cpu hotplug
+deadlock") except this is for acpi_processor_ffh_cstate_probe():
 
-To fix these issues, I introduced the NVDIMM_CMD_MAX (31) define and
-updated nfit_dsm_revid() to use that define as well instead of magic
-numbers.
+"The problem is that the work is scheduled on the current CPU from the
+hotplug thread associated with that CPU.
 
-Fixes: 11189c1089da ("acpi/nfit: Fix command-supported detection")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://lore.kernel.org/r/20200225161927.hvftuq7kjn547fyj@kili.mountain
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+It's not required to invoke these functions via the workqueue because
+the hotplug thread runs on the target CPU already.
+
+Check whether current is a per cpu thread pinned on the target CPU and
+invoke the function directly to avoid the workqueue."
+
+ WARNING: possible circular locking dependency detected
+ ------------------------------------------------------
+ cpuhp/1/15 is trying to acquire lock:
+ ffffc90003447a28 ((work_completion)(&wfc.work)){+.+.}-{0:0}, at: __flush_work+0x4c6/0x630
+
+ but task is already holding lock:
+ ffffffffafa1c0e8 (cpuidle_lock){+.+.}-{3:3}, at: cpuidle_pause_and_lock+0x17/0x20
+
+ which lock already depends on the new lock.
+
+ the existing dependency chain (in reverse order) is:
+
+ -> #1 (cpu_hotplug_lock){++++}-{0:0}:
+ cpus_read_lock+0x3e/0xc0
+ irq_calc_affinity_vectors+0x5f/0x91
+ __pci_enable_msix_range+0x10f/0x9a0
+ pci_alloc_irq_vectors_affinity+0x13e/0x1f0
+ pci_alloc_irq_vectors_affinity at drivers/pci/msi.c:1208
+ pqi_ctrl_init+0x72f/0x1618 [smartpqi]
+ pqi_pci_probe.cold.63+0x882/0x892 [smartpqi]
+ local_pci_probe+0x7a/0xc0
+ work_for_cpu_fn+0x2e/0x50
+ process_one_work+0x57e/0xb90
+ worker_thread+0x363/0x5b0
+ kthread+0x1f4/0x220
+ ret_from_fork+0x27/0x50
+
+ -> #0 ((work_completion)(&wfc.work)){+.+.}-{0:0}:
+ __lock_acquire+0x2244/0x32a0
+ lock_acquire+0x1a2/0x680
+ __flush_work+0x4e6/0x630
+ work_on_cpu+0x114/0x160
+ acpi_processor_ffh_cstate_probe+0x129/0x250
+ acpi_processor_evaluate_cst+0x4c8/0x580
+ acpi_processor_get_power_info+0x86/0x740
+ acpi_processor_hotplug+0xc3/0x140
+ acpi_soft_cpu_online+0x102/0x1d0
+ cpuhp_invoke_callback+0x197/0x1120
+ cpuhp_thread_fun+0x252/0x2f0
+ smpboot_thread_fn+0x255/0x440
+ kthread+0x1f4/0x220
+ ret_from_fork+0x27/0x50
+
+ other info that might help us debug this:
+
+ Chain exists of:
+ (work_completion)(&wfc.work) --> cpuhp_state-up --> cpuidle_lock
+
+ Possible unsafe locking scenario:
+
+ CPU0                    CPU1
+ ----                    ----
+ lock(cpuidle_lock);
+                         lock(cpuhp_state-up);
+                         lock(cpuidle_lock);
+ lock((work_completion)(&wfc.work));
+
+ *** DEADLOCK ***
+
+ 3 locks held by cpuhp/1/15:
+ #0: ffffffffaf51ab10 (cpu_hotplug_lock){++++}-{0:0}, at: cpuhp_thread_fun+0x69/0x2f0
+ #1: ffffffffaf51ad40 (cpuhp_state-up){+.+.}-{0:0}, at: cpuhp_thread_fun+0x69/0x2f0
+ #2: ffffffffafa1c0e8 (cpuidle_lock){+.+.}-{3:3}, at: cpuidle_pause_and_lock+0x17/0x20
+
+ Call Trace:
+ dump_stack+0xa0/0xea
+ print_circular_bug.cold.52+0x147/0x14c
+ check_noncircular+0x295/0x2d0
+ __lock_acquire+0x2244/0x32a0
+ lock_acquire+0x1a2/0x680
+ __flush_work+0x4e6/0x630
+ work_on_cpu+0x114/0x160
+ acpi_processor_ffh_cstate_probe+0x129/0x250
+ acpi_processor_evaluate_cst+0x4c8/0x580
+ acpi_processor_get_power_info+0x86/0x740
+ acpi_processor_hotplug+0xc3/0x140
+ acpi_soft_cpu_online+0x102/0x1d0
+ cpuhp_invoke_callback+0x197/0x1120
+ cpuhp_thread_fun+0x252/0x2f0
+ smpboot_thread_fn+0x255/0x440
+ kthread+0x1f4/0x220
+ ret_from_fork+0x27/0x50
+
+Signed-off-by: Qian Cai <cai@lca.pw>
+Tested-by: Borislav Petkov <bp@suse.de>
+[ rjw: Subject ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/nfit/core.c | 10 ++++++----
- drivers/acpi/nfit/nfit.h |  1 +
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ arch/x86/kernel/acpi/cstate.c       | 3 ++-
+ drivers/acpi/processor_throttling.c | 7 -------
+ include/acpi/processor.h            | 8 ++++++++
+ 3 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index 14e68f202f810..12d980aafc5ff 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -360,7 +360,7 @@ static union acpi_object *acpi_label_info(acpi_handle handle)
+diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
+index 158ad1483c435..92539a1c3e317 100644
+--- a/arch/x86/kernel/acpi/cstate.c
++++ b/arch/x86/kernel/acpi/cstate.c
+@@ -133,7 +133,8 @@ int acpi_processor_ffh_cstate_probe(unsigned int cpu,
  
- static u8 nfit_dsm_revid(unsigned family, unsigned func)
+ 	/* Make sure we are running on right CPU */
+ 
+-	retval = work_on_cpu(cpu, acpi_processor_ffh_cstate_probe_cpu, cx);
++	retval = call_on_cpu(cpu, acpi_processor_ffh_cstate_probe_cpu, cx,
++			     false);
+ 	if (retval == 0) {
+ 		/* Use the hint in CST */
+ 		percpu_entry->states[cx->index].eax = cx->address;
+diff --git a/drivers/acpi/processor_throttling.c b/drivers/acpi/processor_throttling.c
+index fbc936cf2025c..62c0fe9ef4124 100644
+--- a/drivers/acpi/processor_throttling.c
++++ b/drivers/acpi/processor_throttling.c
+@@ -910,13 +910,6 @@ static long __acpi_processor_get_throttling(void *data)
+ 	return pr->throttling.acpi_processor_get_throttling(pr);
+ }
+ 
+-static int call_on_cpu(int cpu, long (*fn)(void *), void *arg, bool direct)
+-{
+-	if (direct || (is_percpu_thread() && cpu == smp_processor_id()))
+-		return fn(arg);
+-	return work_on_cpu(cpu, fn, arg);
+-}
+-
+ static int acpi_processor_get_throttling(struct acpi_processor *pr)
  {
--	static const u8 revid_table[NVDIMM_FAMILY_MAX+1][32] = {
-+	static const u8 revid_table[NVDIMM_FAMILY_MAX+1][NVDIMM_CMD_MAX+1] = {
- 		[NVDIMM_FAMILY_INTEL] = {
- 			[NVDIMM_INTEL_GET_MODES] = 2,
- 			[NVDIMM_INTEL_GET_FWINFO] = 2,
-@@ -386,7 +386,7 @@ static u8 nfit_dsm_revid(unsigned family, unsigned func)
+ 	if (!pr)
+diff --git a/include/acpi/processor.h b/include/acpi/processor.h
+index 1194a4c78d557..5b9eab15a1e6c 100644
+--- a/include/acpi/processor.h
++++ b/include/acpi/processor.h
+@@ -293,6 +293,14 @@ static inline void acpi_processor_ffh_cstate_enter(struct acpi_processor_cx
+ }
+ #endif
  
- 	if (family > NVDIMM_FAMILY_MAX)
- 		return 0;
--	if (func > 31)
-+	if (func > NVDIMM_CMD_MAX)
- 		return 0;
- 	id = revid_table[family][func];
- 	if (id == 0)
-@@ -492,7 +492,8 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
- 	 * Check for a valid command.  For ND_CMD_CALL, we also have to
- 	 * make sure that the DSM function is supported.
- 	 */
--	if (cmd == ND_CMD_CALL && !test_bit(func, &dsm_mask))
-+	if (cmd == ND_CMD_CALL &&
-+	    (func > NVDIMM_CMD_MAX || !test_bit(func, &dsm_mask)))
- 		return -ENOTTY;
- 	else if (!test_bit(cmd, &cmd_mask))
- 		return -ENOTTY;
-@@ -3499,7 +3500,8 @@ static int acpi_nfit_clear_to_send(struct nvdimm_bus_descriptor *nd_desc,
- 	if (nvdimm && cmd == ND_CMD_CALL &&
- 			call_pkg->nd_family == NVDIMM_FAMILY_INTEL) {
- 		func = call_pkg->nd_command;
--		if ((1 << func) & NVDIMM_INTEL_SECURITY_CMDMASK)
-+		if (func > NVDIMM_CMD_MAX ||
-+		    (1 << func) & NVDIMM_INTEL_SECURITY_CMDMASK)
- 			return -EOPNOTSUPP;
- 	}
++static inline int call_on_cpu(int cpu, long (*fn)(void *), void *arg,
++			      bool direct)
++{
++	if (direct || (is_percpu_thread() && cpu == smp_processor_id()))
++		return fn(arg);
++	return work_on_cpu(cpu, fn, arg);
++}
++
+ /* in processor_perflib.c */
  
-diff --git a/drivers/acpi/nfit/nfit.h b/drivers/acpi/nfit/nfit.h
-index 24241941181ce..b317f4043705f 100644
---- a/drivers/acpi/nfit/nfit.h
-+++ b/drivers/acpi/nfit/nfit.h
-@@ -34,6 +34,7 @@
- 		| ACPI_NFIT_MEM_NOT_ARMED | ACPI_NFIT_MEM_MAP_FAILED)
- 
- #define NVDIMM_FAMILY_MAX NVDIMM_FAMILY_HYPERV
-+#define NVDIMM_CMD_MAX 31
- 
- #define NVDIMM_STANDARD_CMDMASK \
- (1 << ND_CMD_SMART | 1 << ND_CMD_SMART_THRESHOLD | 1 << ND_CMD_DIMM_FLAGS \
+ #ifdef CONFIG_CPU_FREQ
 -- 
 2.20.1
 
