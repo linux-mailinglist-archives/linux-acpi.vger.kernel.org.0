@@ -2,80 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55DD71ABA06
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Apr 2020 09:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 956761AC62F
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Apr 2020 16:37:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439374AbgDPHet (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Apr 2020 03:34:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56976 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2439350AbgDPHes (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 16 Apr 2020 03:34:48 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF1F6C061A10
-        for <linux-acpi@vger.kernel.org>; Thu, 16 Apr 2020 00:34:47 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id x23so4828087lfq.1
-        for <linux-acpi@vger.kernel.org>; Thu, 16 Apr 2020 00:34:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=nrt+67omyziFxx3WaLfBQr2iyIgq4drGGzCS11Pkerg=;
-        b=mSND34R/NPjH0H/0avQv/GDBtGeBVrz4jiUZ6dKhw825DHjKKCGbhVeb98eNBh/1lP
-         42lWNFlMmYMoKFMDcgAS5HYu0ytaxjo2hlH251n2ufZlWDm4zyr9CqoU+evd2rbh55m0
-         Bj+/Z9DnPuhSPPX7cfwtO3NuMO0hxhcKs+1slZoPxOAITSw/+bykBUvaYrhXqo5KGg86
-         GAnKhe1e8G/lLe1Y9FhUsV1vUBXGC7v2Vi8ELIqu6t4G+ury5THipSvuC5sMbQgKxUBg
-         CWZTFGymLDxL79/bVdS7NcoFQHa9ypZTFSwI+ipiJ88bRe1uopT0bJQE2I7RPkxNaCIE
-         p54w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nrt+67omyziFxx3WaLfBQr2iyIgq4drGGzCS11Pkerg=;
-        b=ZWHeRFFn1tJnq7qD0jGqEvWn8Cdrzu8O69beBCAQGxXp/GcRwftB23SKWejibkBr0G
-         56snzjDNrK1mcQbAljT9pH6FkygS/aFEts5A39E+vS4M4Y72FbS/NtCIhX5Q9XGYpEFM
-         6kqXrDaz7MASNhcZvuotLDacftINgqhlpKuzGu59iOECV65n6AA/h1DFrhHpNOhKjEQn
-         6cLLz2G80HTFWdgJT6AcMEuIQJhSjQBk9n8SnjuGH7662HxMRnz+hM9uYp04DqW8xqWx
-         OJrlwl/mqLko8EX4+BnKKtaVBNhwoJdM/8Xc1y7Y4nWmCuZ+oqT4TVSszZ7kSw9Mbtpm
-         H0EA==
-X-Gm-Message-State: AGi0Pua3aWrQdyTUwS+7z8e4wQ/YuCn6fwUq6smY3CXTWCcHAXrVT6wi
-        zeBjz1OVv0rbQnCWga9r64N+SGGFvLzThzOsuqTwGw==
-X-Google-Smtp-Source: APiQypLhh2T+qM89diZg7iMorNOnJb7adMEVgj8G7IAhkT17uvQA0//jXFY3D/uUpCsjMQeXE4oyUGLHirCOJZBUgdk=
-X-Received: by 2002:ac2:4a9d:: with SMTP id l29mr4969920lfp.4.1587022486345;
- Thu, 16 Apr 2020 00:34:46 -0700 (PDT)
+        id S2388359AbgDPOfP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Apr 2020 10:35:15 -0400
+Received: from mga05.intel.com ([192.55.52.43]:37704 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2442013AbgDPORb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 16 Apr 2020 10:17:31 -0400
+IronPort-SDR: ctvYkLTXhpWe68q4mB7rj1epUrhjj/6CIdUeXSu688ytYdRaW4k587JjMQ+W2LTUX5vREAx49g
+ eK9PFSNk5ZDg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2020 07:17:30 -0700
+IronPort-SDR: nNhPh8yY5LWX0JiAFW/fjHon2zQMrTXSaBa/C9M33JWkvjotn9dguAJItmREhpyILssKg6pSTu
+ IrXb49j4tEnQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,391,1580803200"; 
+   d="scan'208";a="288910450"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga002.fm.intel.com with ESMTP; 16 Apr 2020 07:17:28 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1jP5Kc-0012r5-Pn; Thu, 16 Apr 2020 17:17:30 +0300
+Date:   Thu, 16 Apr 2020 17:17:30 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        platform-driver-x86@vger.kernel.org,
+        Darren Hart <dvhart@infradead.org>
+Subject: Re: [PATCH v1 0/6] platform/x86: intel_cht_int33fe: clean up series
+Message-ID: <20200416141730.GE185537@smile.fi.intel.com>
+References: <20200408160905.12101-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-References: <20200325103956.109284-1-hdegoede@redhat.com> <20200325103956.109284-2-hdegoede@redhat.com>
-In-Reply-To: <20200325103956.109284-2-hdegoede@redhat.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 16 Apr 2020 09:34:35 +0200
-Message-ID: <CACRpkdYz5224+whjXW_Xmv+usn_kBxuZW6+1Vb0z8RQsYeZ9cA@mail.gmail.com>
-Subject: Re: [PATCH resend] gpiolib: acpi: Add missing __init(const) markers
- to initcall-s
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200408160905.12101-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 25, 2020 at 11:40 AM Hans de Goede <hdegoede@redhat.com> wrote:
+On Wed, Apr 08, 2020 at 07:09:00PM +0300, Andy Shevchenko wrote:
+> When I started looking into the intel_cht_int33fe driver for an example of use
+> software node API, I have noticed that it's hard to get and code a bit messy.
+> Here is a clean up, main part of which is to introduce node groups and API to
+> register and unregister them. This and some pre-existing APIs can be used in
+> the driver.
+> 
+> So, because of cross-subsystem nature of this series, I may recommend to create
+> myself the immutable branch which can be pulled to Rafael's and Greg's trees
+> respectively. I'm also open for other proposals how to proceed.
 
-> The gpiolib ACPI code uses 2 initcall-s and the called function
-> (and used DMI table) is missing __init(const) markers.
->
-> This commit fixes this freeing up some extra memory once the kernel
-> has completed booting.
->
-> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Greg, Rafael,
+any suggestion how to proceed with this series?
 
-Patch applied.
+(It has been reviewed and tested).
 
-Yours,
-Linus Walleij
+> Andy Shevchenko (6):
+>   device property: export set_secondary_fwnode() to modules
+>   software node: Allow register and unregister software node groups
+>   platform/x86: intel_cht_int33fe: Convert software node array to group
+>   platform/x86: intel_cht_int33fe: Convert to use set_secondary_fwnode()
+>   platform/x86: intel_cht_int33fe: Switch to use
+>     acpi_dev_hid_uid_match()
+>   platform/x86: intel_cht_int33fe: Fix spelling issues
+> 
+>  drivers/base/core.c                           |   1 +
+>  drivers/base/swnode.c                         |  48 ++++++++
+>  .../platform/x86/intel_cht_int33fe_typec.c    | 106 +++++++++---------
+>  include/linux/property.h                      |   3 +
+>  4 files changed, 108 insertions(+), 50 deletions(-)
+> 
+> -- 
+> 2.25.1
+> 
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
