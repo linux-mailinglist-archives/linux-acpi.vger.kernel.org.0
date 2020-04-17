@@ -2,58 +2,172 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D56B1AD34F
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Apr 2020 01:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3790E1AD44D
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Apr 2020 04:06:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725859AbgDPXg3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Apr 2020 19:36:29 -0400
-Received: from mail.dsns.gov.ua ([194.0.148.99]:41546 "EHLO mail.dsns.gov.ua"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725770AbgDPXg3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 16 Apr 2020 19:36:29 -0400
-X-Greylist: delayed 9359 seconds by postgrey-1.27 at vger.kernel.org; Thu, 16 Apr 2020 19:36:28 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.dsns.gov.ua (Postfix) with ESMTP id 5BD1C1EC83C6;
-        Thu, 16 Apr 2020 23:35:37 +0300 (EEST)
-Received: from mail.dsns.gov.ua ([127.0.0.1])
-        by localhost (mail.dsns.gov.ua [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id g-ZArepfx4xB; Thu, 16 Apr 2020 23:35:37 +0300 (EEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.dsns.gov.ua (Postfix) with ESMTP id 5C5BF1EC85F6;
-        Thu, 16 Apr 2020 23:35:26 +0300 (EEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.dsns.gov.ua 5C5BF1EC85F6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dsns.gov.ua;
-        s=1E60DAC0-2607-11E9-81E6-7A77C2B36653; t=1587069326;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=BFrHb0sdI6ttGZUrYrU3NgniYtd1aDAhnXXb2vKIb2B9styAswbm0NbzZRAHiMp0y
-         hUE3veWMbUD+qTP/VmiRFig+sJh7tgrjRSipmI8jEPDH4mLyVFQtPdyPojLkpu/SlT
-         y/CjSPHdIqozfsh/zyWU9aeO41yKuuO77HTVyT/eVGDUtLYGTijz0IeETvwB1Yur4I
-         5RegLOWC96rliENvAjVU5IoM4JfcadYa95Q959RRtGyCSnevHOMfGycVhDjkxX/p7G
-         0gUYzq9GdO73hW8YI3AV2m5dSWB1tPfsxP4FJUwoBTp88jIZZeY7uAiDenSeAUtBdj
-         PKl/BScyij7GQ==
-X-Virus-Scanned: amavisd-new at dsns.gov.ua
-Received: from mail.dsns.gov.ua ([127.0.0.1])
-        by localhost (mail.dsns.gov.ua [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 0gPL-OgTTn97; Thu, 16 Apr 2020 23:35:26 +0300 (EEST)
-Received: from mail.dsns.gov.ua (localhost [127.0.0.1])
-        by mail.dsns.gov.ua (Postfix) with ESMTP id 9BAF81EC8118;
-        Thu, 16 Apr 2020 23:35:15 +0300 (EEST)
-Date:   Thu, 16 Apr 2020 23:35:15 +0300 (EEST)
-From:   Saleem Netanyahu <duchenko@dsns.gov.ua>
-Reply-To: Saleem Netanyahu <saleemnetu@gmail.com>
-Message-ID: <1255292802.718114.1587069315574.JavaMail.zimbra@dsns.gov.ua>
-Subject: Hey, how are u, can we talk?
+        id S1728985AbgDQCGq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Apr 2020 22:06:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33030 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728954AbgDQCGp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 16 Apr 2020 22:06:45 -0400
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF97C061A0F
+        for <linux-acpi@vger.kernel.org>; Thu, 16 Apr 2020 19:06:45 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id x26so340589pgc.10
+        for <linux-acpi@vger.kernel.org>; Thu, 16 Apr 2020 19:06:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=Hfdx7uDJvgrGkRYQDhx6DARmHevGcYuM4GwFr74akkA=;
+        b=FQVf+DFnRHPeQ/SGO5Hw0smu9KCNhym996v6AIV/dsuwaWRyhQrYQwMlpB1zt0+nX/
+         BSOYTHaqkFX/m3b9KlZPcrLzLGvOlmcJROEVN5Y5MvozAx1dvDjYDESncXlfAe105qfx
+         onkTOTzapOUqP3I+4socEd8Os145UAQyxt7/I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=Hfdx7uDJvgrGkRYQDhx6DARmHevGcYuM4GwFr74akkA=;
+        b=oeNqlfYvd4iXwA7dgT6GEz1wks0gKTucX1pxiIRG5sq8G4ub7uVGs6MQ3IhBCvMn9d
+         EJlJvBNHn+WQQoZXGc9t25341woAt6SsyCf3RturoWAStDJR+EHo3zIYkU67RZYOkZHH
+         DQb4XzUktus2p56P85YSvvjLtbpmgqq1DQVfxohxYtSnd0oL8M3YPOYE0UYQOpcv03N0
+         6IJyb8Oq07X5ECUxWwLRmsfz0bgEOo3xzUF01uxfHYwiWlvtnekgD3koNEkvWJ5OTUVz
+         MnsHbwCMULtzdSN2iXPDtquOMeeuhx/SzOC0sG78BfPF3itfP/n7SuHr0qzdVJXt3+3E
+         UEvA==
+X-Gm-Message-State: AGi0PuZKhJtNhmegOGvZpZTWaPHJUuQDi8IptUG8n2iPZcP/N3NJzQ7f
+        GGJnKeDbIHzMmTGr/AH500Vx1g==
+X-Google-Smtp-Source: APiQypIAm+eOkLnh9jfVGsJPFCRSE3u2oQZAeMT8zXL+p+ToKv0aaogvmqJScYekjpJ7CEwbwJZhCw==
+X-Received: by 2002:a63:2cce:: with SMTP id s197mr761627pgs.184.1587089205194;
+        Thu, 16 Apr 2020 19:06:45 -0700 (PDT)
+Received: from google.com ([2620:15c:202:1:534:b7c0:a63c:460c])
+        by smtp.gmail.com with ESMTPSA id t5sm365532pjo.19.2020.04.16.19.06.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Apr 2020 19:06:44 -0700 (PDT)
+Date:   Thu, 16 Apr 2020 19:06:41 -0700
+From:   Brian Norris <briannorris@chromium.org>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     =?utf-8?Q?Micha=C5=82?= Stanek <mst@semihalf.com>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stanekm@google.com,
+        stable@vger.kernel.org, Marcin Wojtas <mw@semihalf.com>,
+        levinale@chromium.org, andriy.shevchenko@linux.intel.com,
+        Linus Walleij <linus.walleij@linaro.org>,
+        bgolaszewski@baylibre.com, rafael.j.wysocki@intel.com,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: Re: [PATCH] pinctrl: cherryview: Add quirk with custom translation
+ of ACPI GPIO numbers
+Message-ID: <20200417020641.GA145784@google.com>
+References: <20200205194804.1647-1-mst@semihalf.com>
+ <20200206083149.GK2667@lahna.fi.intel.com>
+ <CAMiGqYi2rVAc=hepkY-4S1U_3dJdbR4pOoB0f8tbBL4pzWLdxA@mail.gmail.com>
+ <20200207075654.GB2667@lahna.fi.intel.com>
+ <CAMiGqYjmd2edUezEXsX4JBSyOozzks1Pu8miPEviGsx=x59nZQ@mail.gmail.com>
+ <20200210101414.GN2667@lahna.fi.intel.com>
+ <CAMiGqYiYp=aSgW-4ro5ceUEaB7g0XhepFg+HZgfPvtvQL9Z1jA@mail.gmail.com>
+ <20200310144913.GY2540@lahna.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [45.82.223.36, 172.69.54.54]
-X-Mailer: Zimbra 8.8.15_GA_3918 (zclient/8.8.15_GA_3918)
-Thread-Index: oV9MZN6+Sh4gFPdsGziQ2IngcJhATw==
-Thread-Topic: Hey, how are u, can we talk?
-To:     unlisted-recipients:; (no To-header on input)
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200310144913.GY2540@lahna.fi.intel.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Mika,
+
+I'm following along with attempts to "fix" our user space to paper over
+this issue, and I think some of this conversation missed the mark.
+(Sorry for jumping in late.)
+
+On Tue, Mar 10, 2020 at 04:49:13PM +0200, Mika Westerberg wrote:
+> On Tue, Mar 10, 2020 at 03:12:00PM +0100, Michał Stanek wrote:
+> > On Mon, Feb 10, 2020 at 11:14 AM Mika Westerberg
+> > <mika.westerberg@linux.intel.com> wrote:
+> > > On Sat, Feb 08, 2020 at 07:43:24PM +0100, Michał Stanek wrote:
+> > > > > >
+> > > > > > Hi Mika,
+> > > > > >
+> > > > > > The previous patches from Dmitry handled IRQ numbering, here we have a
+> > > > > > similar issue with GPIO to pin translation - hardcoded values in FW
+> > > > > > which do not agree with the (non-consecutive) numbering in newer
+> > > > > > kernels.
+> > > > >
+> > > > > Hmm, so instead of passing GpioIo/GpioInt resources to devices the
+> > > > > firmware uses some hard-coded Linux GPIO numbering scheme? Would you
+> > > > > able to share the exact firmware description where this happens?
+> > > >
+> > > > Actually it is a GPIO offset in ACPI tables for Braswell that was
+> > > > hardcoded in the old firmware to match the previous (consecutive)
+> > > > Linux GPIO numbering.
+> > >
+> > > Can you share the ACPI tables and point me to the GPIO that is using
+> > > Linux number?
+> > 
+> > I think this is the one:
+> > https://chromium-review.googlesource.com/c/chromiumos/third_party/coreboot/%2B/286534/2/src/mainboard/google/cyan/acpi/chromeos.asl
+> > 
+> > On Kefka the sysfs GPIO number for wpsw_cur was gpio392 before the
+> > translation change occurred in Linux.
+> 
+> But that table does not seem to have any GPIO numbers in it.
+
+Actually, it's encoding pin numbers, not GPIO numbers. The 0x10016 (or
+now, 0x10013) is encoding a bank offset (0x10000) and pin number (0x16
+or 0x13). The actual pin numbers is 0x16, I believe, but someone decided
+to subtract 3, because the Linux numbering used to be contiguous,
+skipping over the hole between 11 and 15.
+
+So no, nobody was hard-coding gpiochip numbers -- we were hard-coding
+the contiguous pin number (relative to the bank). Now that commit
+03c4749dd6c7ff94 ("gpio / ACPI: Drop unnecessary ACPI GPIO to Linux GPIO
+translation") made those non-contiguous, we're kinda screwed -- we have
+to guess (based on the kernel version number) whether pin numbers
+(within a single bank!) are contiguous or not.
+
+> > > This is something that should be fixed in userspace. Using global Linux
+> > > GPIO or IRQ numbers is fragile and source of issues like this.
+
+To be clear, we're not hard-coding global <anything> numbers in user
+space.
+
+> > > in case of sysfs, you can
+> > > find the base of the chip
+
+We're doing that.
+
+> > > and then user relative numbering against it or
+> > > switch
+
+^^ This is the problem. The *bank-relative* numbers changed.
+
+> > > Both cases the GPIO number are relative against the GPIO chip so
+> > > they work even if global Linux GPIO numbering changes.
+> > 
+> > I analyzed crossystem source code and it looks like it is doing
+> > exactly what you're saying without any hardcoded assumptions.
+
+^^ Exactly.
+
+> > With the newer kernel the gpiochip%d number is different so crossystem
+> > ends up reading the wrong pin.
+> 
+> Hmm, so gpiochipX is also not considered a stable number. It is based on
+> ARCH_NR_GPIOS which may change. So if the userspace is relaying certain GPIO
+> chip is always gpichip200 for example then it is wrong.
+
+If you just read the last sentence from Michal, you get the wrong
+picture. There's no hard-coding of gpiochipX numbers going on. We only
+had the pin offsets "hardcoded" (in ACPI), and the kernel driver
+unilaterally changed from a contiguous mapping to a non-contiguous
+mapping.
+
+How do you recommend determining (both pre- and
+post-commit-03c4749dd6c7ff94) whether pin 22 is at offset 22, vs. offset
+19?
+
+Brian
