@@ -2,106 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA3EB1AD966
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Apr 2020 11:05:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB2131AE0D8
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Apr 2020 17:16:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730040AbgDQJFI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Apr 2020 05:05:08 -0400
-Received: from mga18.intel.com ([134.134.136.126]:27130 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728419AbgDQJFG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 17 Apr 2020 05:05:06 -0400
-IronPort-SDR: 16Tx0uSrbMV34ixbWqLRGR1nMYsgmoFF4zjxesj+pG/gfVkXYEBITYhhEJ+El0nEvi4E6zgaB+
- w7nP8U5ZBE5Q==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2020 02:05:05 -0700
-IronPort-SDR: iImZ98H6UD3xcWqYoNqzdpqoBINcrRfzHDRb1nBDIsxheRoaWWd338Fac35K5WTATRAqRj0z2X
- Pzvhpr0Af3jQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,394,1580803200"; 
-   d="scan'208";a="364275266"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga001.fm.intel.com with SMTP; 17 Apr 2020 02:05:01 -0700
-Received: by lahna (sSMTP sendmail emulation); Fri, 17 Apr 2020 12:05:00 +0300
-Date:   Fri, 17 Apr 2020 12:05:00 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     =?utf-8?Q?Micha=C5=82?= Stanek <mst@semihalf.com>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stanekm@google.com,
-        stable@vger.kernel.org, Marcin Wojtas <mw@semihalf.com>,
-        levinale@chromium.org, andriy.shevchenko@linux.intel.com,
-        Linus Walleij <linus.walleij@linaro.org>,
-        bgolaszewski@baylibre.com, rafael.j.wysocki@intel.com,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: Re: [PATCH] pinctrl: cherryview: Add quirk with custom translation
- of ACPI GPIO numbers
-Message-ID: <20200417090500.GM2586@lahna.fi.intel.com>
-References: <20200205194804.1647-1-mst@semihalf.com>
- <20200206083149.GK2667@lahna.fi.intel.com>
- <CAMiGqYi2rVAc=hepkY-4S1U_3dJdbR4pOoB0f8tbBL4pzWLdxA@mail.gmail.com>
- <20200207075654.GB2667@lahna.fi.intel.com>
- <CAMiGqYjmd2edUezEXsX4JBSyOozzks1Pu8miPEviGsx=x59nZQ@mail.gmail.com>
- <20200210101414.GN2667@lahna.fi.intel.com>
- <CAMiGqYiYp=aSgW-4ro5ceUEaB7g0XhepFg+HZgfPvtvQL9Z1jA@mail.gmail.com>
- <20200310144913.GY2540@lahna.fi.intel.com>
- <20200417020641.GA145784@google.com>
+        id S1728529AbgDQPQj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Apr 2020 11:16:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42622 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728272AbgDQPQj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 17 Apr 2020 11:16:39 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE0DBC061A0F
+        for <linux-acpi@vger.kernel.org>; Fri, 17 Apr 2020 08:16:38 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id a32so1225817pje.5
+        for <linux-acpi@vger.kernel.org>; Fri, 17 Apr 2020 08:16:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=yWjSH2H1+WBal025wKvI61t1jVFcTOP5DDCuzNCykmQ=;
+        b=Jkcu8NcNm5+2I4w0SRn/uGJsDb500sUZmGIML9ShC4j4t5RPSUpu2y5LggJwR/ceTg
+         F/JIyQNry6IBYLVcff0JmzRZZKT5bRs0UoidPbzw/vDVZkfvWDrvwbbNKhr5U/NgHnS+
+         wFus/n3Yz3kc6NLt6AC/dHyPPOuRaRRFT/+eEpi0lkH4P2Lo8xsxNFSbYx2BHRlMW7ly
+         wPnPVegIQY/icqR8+IuaiN/eaTA6XbNQYNoKUsgFTopoGnAQHVRoj+22u6sLb1MWLMYZ
+         In6omCAGhuVKE29skIquq8psIRE/f1YQio3oH+8Qihld86kBp53BRA3PMfW9Y08LAIzk
+         NmxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=yWjSH2H1+WBal025wKvI61t1jVFcTOP5DDCuzNCykmQ=;
+        b=bRornA2a8cjvFEMzrlOGum1r305mwUzJGDMZdjHSOaDNBd+3R/wo906mEB/pAQqv3x
+         DSo3Ex0hSMPN/zeHezvJOCzbkzzz1Me6/RZT/1KlMpOzXBptNRLY6Jmgo/EGJZUxQyOM
+         611xgMd/DxsxUdp3J5KyE1IRXqtXRs5J2FoRCVSAqaVB7u8Wp1WPOQYh+cs/a4fS1IzF
+         l5zoqw7mksF4P+YoVz74+nV5rCaAHnhJHXN1Is76G7kY+j/vmVGRE0xnhzcdovQVC82M
+         l1dxE/45usf5Ic3kCgTU8WCkXqRkWiX4sxZ4XYMk8tvBWUpmr+7W4UFx+yylCFpFzfm7
+         /CAg==
+X-Gm-Message-State: AGi0PuZn81yvGiEukL6iKrjg2Iwk+4gvshnjY6APTTXbPJzzeWvZ5BxC
+        SuaGfZtPZ8ZORQdSoyisV73Orep7oPuYfqGzx7o=
+X-Google-Smtp-Source: APiQypI0IGW/JYNtvqU1TkZNlhWaSa+m/A2nBIurB+mN9L48CAS+pzqUwpC5I+QZnyNkP0fAeIyTGeFhrUve/1XqNcU=
+X-Received: by 2002:a17:902:6ac9:: with SMTP id i9mr4070609plt.35.1587136598443;
+ Fri, 17 Apr 2020 08:16:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200417020641.GA145784@google.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Received: by 2002:a17:90a:17aa:0:0:0:0 with HTTP; Fri, 17 Apr 2020 08:16:37
+ -0700 (PDT)
+From:   Mrs Carlsen Monika <carlsen.monika@gmail.com>
+Date:   Fri, 17 Apr 2020 08:16:37 -0700
+X-Google-Sender-Auth: IeaE384yCiC3fmoe2la0vs0kga0
+Message-ID: <CAO5ptebZey1_DzmZMXF1QNje9D4za4XnDEy7BLyFMq-3zpzESw@mail.gmail.com>
+Subject: Greetings My Dear, Please I Need Your Help.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 16, 2020 at 07:06:41PM -0700, Brian Norris wrote:
-> If you just read the last sentence from Michal, you get the wrong
-> picture. There's no hard-coding of gpiochipX numbers going on. We only
-> had the pin offsets "hardcoded" (in ACPI), and the kernel driver
-> unilaterally changed from a contiguous mapping to a non-contiguous
-> mapping.
+Greetings My Dear,
 
-OK, I now understand the issue. My apologies that I was not able to
-figure that out from the previous explanation.
+    I sent this mail praying it will found you in a good condition of
+health, since I myself are in a very critical health
 
-So indeed if relative GPIO numbering inside the gpiochip was changed
-then it is kernel regression and needs to be dealt with.
+condition in which I  sleep every night without knowing if I may be
+alive to see the next day. I am Mrs. Monika John
 
-> How do you recommend determining (both pre- and
-> post-commit-03c4749dd6c7ff94) whether pin 22 is at offset 22, vs. offset
-> 19?
+ Carlsen from Denmark wife of late Mr John Carlsen, a widow suffering
+from long time illness. I have some funds I
 
-I wonder if we can add back the previous GPIO base like this?
+inherited from my late husband, the sum of (eleven million dollars) my
+Doctor told me recently that I have serious
 
-diff --git a/drivers/pinctrl/intel/pinctrl-cherryview.c b/drivers/pinctrl/intel/pinctrl-cherryview.c
-index 4c74fdde576d..f53de56bb763 100644
---- a/drivers/pinctrl/intel/pinctrl-cherryview.c
-+++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
-@@ -1591,17 +1591,18 @@ static int chv_gpio_add_pin_ranges(struct gpio_chip *chip)
- 	struct chv_pinctrl *pctrl = gpiochip_get_data(chip);
- 	const struct chv_community *community = pctrl->community;
- 	const struct chv_gpio_pinrange *range;
--	int ret, i;
-+	int ret, i, offset;
- 
--	for (i = 0; i < community->ngpio_ranges; i++) {
-+	for (i = 0, offset = 0; i < community->ngpio_ranges; i++) {
- 		range = &community->gpio_ranges[i];
--		ret = gpiochip_add_pin_range(chip, dev_name(pctrl->dev),
--					     range->base, range->base,
--					     range->npins);
-+		ret = gpiochip_add_pin_range(chip, dev_name(pctrl->dev), offset,
-+					     range->base, range->npins);
- 		if (ret) {
- 			dev_err(pctrl->dev, "failed to add GPIO pin range\n");
- 			return ret;
- 		}
-+
-+		offset += range->npins;
- 	}
- 
- 	return 0;
+sickness which is cancer problem. What disturbs me most is my stroke
+sickness. Having known my condition, I
+
+decided to donate this fund to a good person that will utilize it the
+way i am going to instruct herein. I need a very
+
+honest and God fearing person who can claim this money and use it for
+Charity works, for orphanages, widows
+
+and also  build schools for less privileges that will be named after
+my late husband if possible and to promote the
+
+word of God and the effort that the house of God is maintained.
+
+I do not want a situation where this money will be used in an ungodly
+manner. That's why I'm taking this decision.
+
+I'm not afraid of death so I know where I'm going. I accept this
+decision because I do not have any child who will
+
+inherit this money after I die. Please I want your sincerely and
+urgent answer to know if you will be able to
+
+execute this project, and I will give you more information on how the
+fund will be transferred to your bank
+
+account. I am waiting for your reply.
+
+May God Bless you,
+Mrs. Monika John  Carlsen
