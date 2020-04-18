@@ -2,93 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 002491AEC34
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Apr 2020 13:50:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 956F81AEDAB
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Apr 2020 15:53:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725914AbgDRLuN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 18 Apr 2020 07:50:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35014 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725887AbgDRLuN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 18 Apr 2020 07:50:13 -0400
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A208C061A0C;
-        Sat, 18 Apr 2020 04:50:13 -0700 (PDT)
-Received: by mail-pj1-x1043.google.com with SMTP id a7so2009733pju.2;
-        Sat, 18 Apr 2020 04:50:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=t7x7mBwrdcLmRy6gPmeEMqwM6KZwtRU6wkHvtNG3wbI=;
-        b=hmOH2DpHd1SfJlKqiFdUWs194K8KRA5mpQC4X9k8B65vQ4bXkkg+EdenNvq6sJlY5b
-         Eiy+aGf0qRrlIvt2Z7HvQGTHRbvs2PnX0PDlZkabnjq9x5x1RREqo+KI0Tp73Hhq42/E
-         S1KjcyrBl7bsakS5IMYNxIqmMYqtRPmP2H3j1SQvjKtgoKs8mxxrV9krT0wem4SYPQud
-         eQfJWVMi5XN8f6dqiRTbMH9PL4w/xJqPjEWjFqK0PzYv3YC8xBafNeLkZ5lvNGXbfzsk
-         TUuUgcO66eaGRpUawwnYisRZsjGNjNjj46b8mStEQ++T7faJjrgtuiSaEhY72j7mLC0j
-         ueiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=t7x7mBwrdcLmRy6gPmeEMqwM6KZwtRU6wkHvtNG3wbI=;
-        b=FLT5h9r4Op4gduhit42QFXdfR1Qz8O+D9NsrQAdj8KWXBia4QBIh59RAjfDwEr9pd/
-         YFIuqvJdFusIOVWmrB5x7UsGZFJuJBBTrZs4xqMa25xyKdBtuF7yapwRqvXRcZbuja7K
-         dkX6m2EEaA7ORdJpClU1NmrtzuURv/IlXoqgbMQuMxbsbxKE6A+UJ3sFdGHQlcQA25tD
-         Cgx97h8fbgGGARBNd5XEwKQ3irtfCpi45D2PizSuQ0M4sbPOAXzkFihmMmx4FqDRJOyu
-         QpLKk8UUydloxvH0eTvrZp+Rmk8GEA6PexgnSQ3ke1Hti4xMzasFIuawinsCY4vY39uo
-         hEzQ==
-X-Gm-Message-State: AGi0PuaAfznX8ExMFQ1AA5XEeaSW5H3vRqiUWOpAvpZzskwjycP6Ajlh
-        /MUCfExURjNfHevbMgH6a15EvlqIVWkLa6uBpKQ=
-X-Google-Smtp-Source: APiQypJdq43iw4xUV6/QLxSn3B02VE0FPKDXOYpe5P9bsGiPVvtIa8M7lNnDiJjUc63A5Q3mWUbB2+Tuy2ri4POIkx8=
-X-Received: by 2002:a17:902:9306:: with SMTP id bc6mr7866551plb.255.1587210612583;
- Sat, 18 Apr 2020 04:50:12 -0700 (PDT)
+        id S1726373AbgDRNxW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 18 Apr 2020 09:53:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54508 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725879AbgDRNsY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 18 Apr 2020 09:48:24 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 63F9122240;
+        Sat, 18 Apr 2020 13:48:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587217703;
+        bh=6zGuVlsnnAF2MBnoLbzHZy4QBMSzi7A2hpbIrg/pvyI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Sjz0FABcTdemgyS73Voi6gkuYKueGJoNGa0+Lr0pURax4G6sQHyFNfZG85Ivccwug
+         4YkDP3maTVO3TgLdiVHxzPiNaUceImyrh+A6DK+u/ggmU1SvB4CMLRkR9yRy3s05C0
+         rCIMFQDEKr+Dc5Wa3kRFXDRcZbWlnrhKC8IaBjeU=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-nvdimm@lists.01.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 06/73] acpi/nfit: improve bounds checking for 'func'
+Date:   Sat, 18 Apr 2020 09:47:08 -0400
+Message-Id: <20200418134815.6519-6-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200418134815.6519-1-sashal@kernel.org>
+References: <20200418134815.6519-1-sashal@kernel.org>
 MIME-Version: 1.0
-References: <20200418105432.11233-1-calvin.johnson@oss.nxp.com>
- <20200418105432.11233-2-calvin.johnson@oss.nxp.com> <20200418114116.GU25745@shell.armlinux.org.uk>
-In-Reply-To: <20200418114116.GU25745@shell.armlinux.org.uk>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 18 Apr 2020 14:50:01 +0300
-Message-ID: <CAHp75VenEkAQ5OWtj90ij3KXTM4ZQg28Q9b_TCBwGnyC6YQKSg@mail.gmail.com>
-Subject: Re: [RFC net-next PATCH v2 1/2] net/fsl: add ACPI support for mdio bus
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>, linux.cj@gmail.com,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        netdev <netdev@vger.kernel.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Varun Sethi <V.Sethi@nxp.com>, Marcin Wojtas <mw@semihalf.com>,
-        "Rajesh V . Bikkina" <rajesh.bikkina@nxp.com>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Apr 18, 2020 at 2:41 PM Russell King - ARM Linux admin
-<linux@armlinux.org.uk> wrote:
-> On Sat, Apr 18, 2020 at 04:24:31PM +0530, Calvin Johnson wrote:
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-> You seem to be duplicating the OF implementation in a private driver,
-> converting it to fwnode.  This is not how we develop the Linux kernel.
-> We fix subsystem problems by fixing the subsystems, not by throwing
-> what should be subsystem code into private drivers.
+[ Upstream commit 01091c496f920e634ea84b689f480c39016752a8 ]
 
-I didn't dive into the details, but I feel same way.
+The 'func' variable can come from the user in the __nd_ioctl().  If it's
+too high then the (1 << func) shift in acpi_nfit_clear_to_send() is
+undefined.  In acpi_nfit_ctl() we pass 'func' to test_bit(func, &dsm_mask)
+which could result in an out of bounds access.
 
+To fix these issues, I introduced the NVDIMM_CMD_MAX (31) define and
+updated nfit_dsm_revid() to use that define as well instead of magic
+numbers.
+
+Fixes: 11189c1089da ("acpi/nfit: Fix command-supported detection")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://lore.kernel.org/r/20200225161927.hvftuq7kjn547fyj@kili.mountain
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/nfit/core.c | 10 ++++++----
+ drivers/acpi/nfit/nfit.h |  1 +
+ 2 files changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index a3320f93616de..d0090f71585c4 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -360,7 +360,7 @@ static union acpi_object *acpi_label_info(acpi_handle handle)
+ 
+ static u8 nfit_dsm_revid(unsigned family, unsigned func)
+ {
+-	static const u8 revid_table[NVDIMM_FAMILY_MAX+1][32] = {
++	static const u8 revid_table[NVDIMM_FAMILY_MAX+1][NVDIMM_CMD_MAX+1] = {
+ 		[NVDIMM_FAMILY_INTEL] = {
+ 			[NVDIMM_INTEL_GET_MODES] = 2,
+ 			[NVDIMM_INTEL_GET_FWINFO] = 2,
+@@ -386,7 +386,7 @@ static u8 nfit_dsm_revid(unsigned family, unsigned func)
+ 
+ 	if (family > NVDIMM_FAMILY_MAX)
+ 		return 0;
+-	if (func > 31)
++	if (func > NVDIMM_CMD_MAX)
+ 		return 0;
+ 	id = revid_table[family][func];
+ 	if (id == 0)
+@@ -492,7 +492,8 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+ 	 * Check for a valid command.  For ND_CMD_CALL, we also have to
+ 	 * make sure that the DSM function is supported.
+ 	 */
+-	if (cmd == ND_CMD_CALL && !test_bit(func, &dsm_mask))
++	if (cmd == ND_CMD_CALL &&
++	    (func > NVDIMM_CMD_MAX || !test_bit(func, &dsm_mask)))
+ 		return -ENOTTY;
+ 	else if (!test_bit(cmd, &cmd_mask))
+ 		return -ENOTTY;
+@@ -3492,7 +3493,8 @@ static int acpi_nfit_clear_to_send(struct nvdimm_bus_descriptor *nd_desc,
+ 	if (nvdimm && cmd == ND_CMD_CALL &&
+ 			call_pkg->nd_family == NVDIMM_FAMILY_INTEL) {
+ 		func = call_pkg->nd_command;
+-		if ((1 << func) & NVDIMM_INTEL_SECURITY_CMDMASK)
++		if (func > NVDIMM_CMD_MAX ||
++		    (1 << func) & NVDIMM_INTEL_SECURITY_CMDMASK)
+ 			return -EOPNOTSUPP;
+ 	}
+ 
+diff --git a/drivers/acpi/nfit/nfit.h b/drivers/acpi/nfit/nfit.h
+index 24241941181ce..b317f4043705f 100644
+--- a/drivers/acpi/nfit/nfit.h
++++ b/drivers/acpi/nfit/nfit.h
+@@ -34,6 +34,7 @@
+ 		| ACPI_NFIT_MEM_NOT_ARMED | ACPI_NFIT_MEM_MAP_FAILED)
+ 
+ #define NVDIMM_FAMILY_MAX NVDIMM_FAMILY_HYPERV
++#define NVDIMM_CMD_MAX 31
+ 
+ #define NVDIMM_STANDARD_CMDMASK \
+ (1 << ND_CMD_SMART | 1 << ND_CMD_SMART_THRESHOLD | 1 << ND_CMD_DIMM_FLAGS \
 -- 
-With Best Regards,
-Andy Shevchenko
+2.20.1
+
