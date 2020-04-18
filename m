@@ -2,28 +2,28 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B53641AEFEE
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Apr 2020 16:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2DF71AF161
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Apr 2020 17:00:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726421AbgDROqO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 18 Apr 2020 10:46:14 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:46548 "EHLO vps0.lunn.ch"
+        id S1725923AbgDRPAf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 18 Apr 2020 11:00:35 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:46608 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728849AbgDROqN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 18 Apr 2020 10:46:13 -0400
+        id S1725903AbgDRPAf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 18 Apr 2020 11:00:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
         s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
         Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
         List-Post:List-Owner:List-Archive;
-        bh=dpss5G2N7uvUMvkaD6b2KJzZija+Nemnz6JbBa7IjiY=; b=ouT/UqhyzwL6J/ctwSdntyWusU
-        SIeWEnq+ldQajILAFZXJyifjGMy0xoYWnxvPS2GRjnKOkvT7PrOi0FCbIwKRfZ78Ai2RsbDK49QWg
-        tcq4LFaMTlY/k2J83cu6d91FJxbkkyGocMEUGL6rUSdmBO2TKIK/6KRMMt9ejumCABf0=;
+        bh=3k2dnf2InJf5CY0m1dDSEfIyndBrROF/WgHcjwyBxz4=; b=KZEI8tMMhflTCK9sm+aYt1BQh5
+        r0QGwzESr7kJXvksintdRLT/3sVUATQbUgfHf//Cv4Cf24va5mHEZd+9Unk7p33MfBJzdChpPBqwI
+        ZzvR2BzA0fosErF5fON5HkgcP9thFH1bSG/lL3sbiM3NhEgkqJF1bTUWe24BwDKqlkoQ=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.93)
         (envelope-from <andrew@lunn.ch>)
-        id 1jPojO-003TLN-2J; Sat, 18 Apr 2020 16:46:06 +0200
-Date:   Sat, 18 Apr 2020 16:46:06 +0200
+        id 1jPoxJ-003TWR-36; Sat, 18 Apr 2020 17:00:29 +0200
+Date:   Sat, 18 Apr 2020 17:00:29 +0200
 From:   Andrew Lunn <andrew@lunn.ch>
 To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
 Cc:     linux.cj@gmail.com, Jeremy Linton <jeremy.linton@arm.com>,
@@ -42,26 +42,46 @@ Cc:     linux.cj@gmail.com, Jeremy Linton <jeremy.linton@arm.com>,
         "Rajesh V . Bikkina" <rajesh.bikkina@nxp.com>,
         Pankaj Bansal <pankaj.bansal@nxp.com>,
         Makarand Pawagi <makarand.pawagi@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [RFC net-next PATCH v2 1/2] net/fsl: add ACPI support for mdio
- bus
-Message-ID: <20200418144606.GG804711@lunn.ch>
+        "David S. Miller" <davem@davemloft.net>,
+        Ioana Radulescu <ruxandra.radulescu@nxp.com>
+Subject: Re: [RFC net-next PATCH v2 2/2] net: dpaa2-mac: Add ACPI support for
+ DPAA2 MAC driver
+Message-ID: <20200418150029.GH804711@lunn.ch>
 References: <20200418105432.11233-1-calvin.johnson@oss.nxp.com>
- <20200418105432.11233-2-calvin.johnson@oss.nxp.com>
+ <20200418105432.11233-3-calvin.johnson@oss.nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200418105432.11233-2-calvin.johnson@oss.nxp.com>
+In-Reply-To: <20200418105432.11233-3-calvin.johnson@oss.nxp.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> -	ret = of_mdiobus_register(bus, np);
+> -	err = phylink_of_phy_connect(mac->phylink, dpmac_node, 0);
+> +	if (is_of_node(dpmac_node))
+> +		err = phylink_of_phy_connect(mac->phylink,
+> +					     to_of_node(dpmac_node), 0);
+> +	else if (is_acpi_node(dpmac_node)) {
+> +		status = acpi_node_get_property_reference(dpmac_node,
+> +							  "phy-handle",
+> +							  0, &args);
+> +		if (ACPI_FAILURE(status))
+> +			goto err_phylink_destroy;
+> +		phy_dev = fwnode_phy_find_device(args.fwnode);
+> +		if (!phy_dev)
+> +			goto err_phylink_destroy;
+> +
+> +		err = phylink_connect_phy(mac->phylink, phy_dev);
+> +		if (err)
+> +			phy_detach(phy_dev);
 
-So this is the interesting part. What you really want to be doing is
-adding a device_mdiobus_register(bus, dev) to the core. And it needs
-to share as much as possible with the of_mdiobus_register()
-implementation.
+So it looks like you need to add a phylink_fwnode_phy_connect(). And
+maybe on top of that you need a phylink_device_phy_connect()?
 
-       Andrew
+So please stop. Take a step back, look at how the of_, device_,
+fwnode_, and acpi_ abstractions all stack on top of each other, then
+propose phylib and phylink core changes to implement these
+abstractions.
+
+	Andrew
