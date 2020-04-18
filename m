@@ -2,86 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2DF71AF161
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Apr 2020 17:00:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 565D31AF2A2
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Apr 2020 19:12:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725923AbgDRPAf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 18 Apr 2020 11:00:35 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:46608 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725903AbgDRPAf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 18 Apr 2020 11:00:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=3k2dnf2InJf5CY0m1dDSEfIyndBrROF/WgHcjwyBxz4=; b=KZEI8tMMhflTCK9sm+aYt1BQh5
-        r0QGwzESr7kJXvksintdRLT/3sVUATQbUgfHf//Cv4Cf24va5mHEZd+9Unk7p33MfBJzdChpPBqwI
-        ZzvR2BzA0fosErF5fON5HkgcP9thFH1bSG/lL3sbiM3NhEgkqJF1bTUWe24BwDKqlkoQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.93)
-        (envelope-from <andrew@lunn.ch>)
-        id 1jPoxJ-003TWR-36; Sat, 18 Apr 2020 17:00:29 +0200
-Date:   Sat, 18 Apr 2020 17:00:29 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     linux.cj@gmail.com, Jeremy Linton <jeremy.linton@arm.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        netdev@vger.kernel.org, Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        linux-kernel@vger.kernel.org, Varun Sethi <V.Sethi@nxp.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        "Rajesh V . Bikkina" <rajesh.bikkina@nxp.com>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Ioana Radulescu <ruxandra.radulescu@nxp.com>
-Subject: Re: [RFC net-next PATCH v2 2/2] net: dpaa2-mac: Add ACPI support for
- DPAA2 MAC driver
-Message-ID: <20200418150029.GH804711@lunn.ch>
-References: <20200418105432.11233-1-calvin.johnson@oss.nxp.com>
- <20200418105432.11233-3-calvin.johnson@oss.nxp.com>
+        id S1727943AbgDRRMK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 18 Apr 2020 13:12:10 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:61994 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727883AbgDRRMA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 18 Apr 2020 13:12:00 -0400
+Received: from 185.80.35.16 (185.80.35.16) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
+ id e15ac2bf6ca7d3cf; Sat, 18 Apr 2020 19:11:57 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux PM <linux-pm@vger.kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Hans De Goede <hdegoede@redhat.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH v2 0/9] PM: sleep: core: Rearrange the handling of driver power management flags
+Date:   Sat, 18 Apr 2020 18:23:08 +0200
+Message-ID: <5673945.BT02kTCndr@kreacher>
+In-Reply-To: <1888197.j9z7NJ8yPn@kreacher>
+References: <1888197.j9z7NJ8yPn@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200418105432.11233-3-calvin.johnson@oss.nxp.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> -	err = phylink_of_phy_connect(mac->phylink, dpmac_node, 0);
-> +	if (is_of_node(dpmac_node))
-> +		err = phylink_of_phy_connect(mac->phylink,
-> +					     to_of_node(dpmac_node), 0);
-> +	else if (is_acpi_node(dpmac_node)) {
-> +		status = acpi_node_get_property_reference(dpmac_node,
-> +							  "phy-handle",
-> +							  0, &args);
-> +		if (ACPI_FAILURE(status))
-> +			goto err_phylink_destroy;
-> +		phy_dev = fwnode_phy_find_device(args.fwnode);
-> +		if (!phy_dev)
-> +			goto err_phylink_destroy;
-> +
-> +		err = phylink_connect_phy(mac->phylink, phy_dev);
-> +		if (err)
-> +			phy_detach(phy_dev);
+Hi,
 
-So it looks like you need to add a phylink_fwnode_phy_connect(). And
-maybe on top of that you need a phylink_device_phy_connect()?
+This is an update including some fixes and extra patches based on the
+continuation of the discussion [1].
 
-So please stop. Take a step back, look at how the of_, device_,
-fwnode_, and acpi_ abstractions all stack on top of each other, then
-propose phylib and phylink core changes to implement these
-abstractions.
+On Friday, April 10, 2020 5:46:27 PM CEST Rafael J. Wysocki wrote:
+> Hi Alan,
+> 
+> Following our recent discussion regarding the DPM_FLAG_* family of flags [1],
+> I have decided to follow some of your recommendations and make changes to the
+> core code handling those flags.
+> 
+> The purpose of this is basically to make the code more consistent internally,
+> easier to follow and better documented.
+> 
+> First of all, patch [1/7] changes the PM core to skip driver-level "late"
+> and "noirq" suspend callbacks for devices with SMART_SUSPEND set if they are
+> still runtime-suspended during the "late" system-wide suspend phase (without
+> the patch it does that only if subsystem-level late/noirq/early suspend/resume
+> callbacks are not present for the device, which is demonstrably inconsistent)
+> and updates the resume part of the code accordingly (it doesn't need to check
+> whether or not the subsystem-level callbacks are present any more).
+> 
+> The next patch, [2/7], is purely cosmetic and its only purpose is to reduce
+> the LOC number and move related pieces of code closer to each other.
 
-	Andrew
+The first two patches have not changed.
+
+> Patch [3/7] changes the PM core so that it doesn't skip any subsystem-level
+> callbacks during system-wide resume (without the patch they may be skipped in
+> the "early resume" and "resume" phases due to LEAVE_SUSPENDED being set which
+> may be problematic) and to always run the driver's ->resume callback if the
+> corresponding subsystem-level callback is not present (without the patch it
+> may be skipped if LEAVE_SUSPENDED is set) to let it reverse the changes made
+> by the driver's ->suspend callback (which always runs too) if need be.
+
+The difference between this one and patch [3/9] in the v2 is the fixed
+definition of dev_pm_may_skip_resume(), renamed to dev_pm_skip_resume() by
+one of the next patches.
+
+Patch [4/9] changes the handling of the power.may_skip_resume flag to set it
+to 'true' by default and updates the subsystems aware of it to clear it when
+they don't want devices to stay in suspend.
+
+> Patches [4-6/7] rename one function in the PM core and two driver PM flags to
+> make their names better reflect their purpose.
+
+These are patches [5/9] and [7-8/9] in the v2 and patch [6/9] renames
+dev_pm_smart_suspend_and_suspended() to dev_pm_skip_suspend().
+
+> Finally, patch [7/7] updates the documentation of the driver PM flags to
+> reflect the new code flows.
+
+This patch [9/9] now and it has been updated to reflect the new code changes.
+
+The pm-sleep-core branch:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+  pm-sleep-core
+
+contains the v2 now.
+
+Cheers!
+
+
+[1] https://lore.kernel.org/linux-pm/Pine.LNX.4.44L0.2003251631360.1724-100000@netrider.rowland.org/
+
+
+
