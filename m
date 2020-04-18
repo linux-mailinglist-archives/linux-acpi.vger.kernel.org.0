@@ -2,65 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72AEA1AF451
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Apr 2020 21:41:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B64E91AF45C
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Apr 2020 21:43:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728143AbgDRTld (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 18 Apr 2020 15:41:33 -0400
-Received: from netrider.rowland.org ([192.131.102.5]:41835 "HELO
-        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with SMTP id S1727951AbgDRTld (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 18 Apr 2020 15:41:33 -0400
-Received: (qmail 8750 invoked by uid 500); 18 Apr 2020 15:41:32 -0400
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 18 Apr 2020 15:41:32 -0400
-Date:   Sat, 18 Apr 2020 15:41:32 -0400 (EDT)
-From:   Alan Stern <stern@rowland.harvard.edu>
-X-X-Sender: stern@netrider.rowland.org
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
+        id S1728079AbgDRTng (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 18 Apr 2020 15:43:36 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:41945 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728051AbgDRTng (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 18 Apr 2020 15:43:36 -0400
+Received: from 185.80.35.16 (185.80.35.16) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
+ id e337815ac515ad22; Sat, 18 Apr 2020 21:43:34 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Hans De Goede <hdegoede@redhat.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v2 0/9] PM: sleep: core: Rearrange the handling of driver
- power management flags
-In-Reply-To: <CAJZ5v0hAyLv2+xE_eMgmra5kccDLGY941inJbKZyWPStKXk2nQ@mail.gmail.com>
-Message-ID: <Pine.LNX.4.44L0.2004181540230.8036-100000@netrider.rowland.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Darren Hart <dvhart@infradead.org>
+Subject: Re: [PATCH v1 0/6] platform/x86: intel_cht_int33fe: clean up series
+Date:   Sat, 18 Apr 2020 21:43:34 +0200
+Message-ID: <1920083.GZryhg05AW@kreacher>
+In-Reply-To: <CAHp75Vf6MT1AFacUkRUP3760nv=3V5kzF2AHWJG64tr5yZ2=dg@mail.gmail.com>
+References: <20200408160905.12101-1-andriy.shevchenko@linux.intel.com> <CAJZ5v0ihzD4knW=pKFmcsW0Q9c5rfyJMFh2ChiePe5SWO6G_TQ@mail.gmail.com> <CAHp75Vf6MT1AFacUkRUP3760nv=3V5kzF2AHWJG64tr5yZ2=dg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, 18 Apr 2020, Rafael J. Wysocki wrote:
-
-> On Sat, Apr 18, 2020 at 8:00 PM Alan Stern <stern@rowland.harvard.edu> wrote:
+On Thursday, April 16, 2020 5:21:15 PM CEST Andy Shevchenko wrote:
+> On Thu, Apr 16, 2020 at 6:05 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
 > >
-> > On Sat, 18 Apr 2020, Rafael J. Wysocki wrote:
-> >
-> > > Hi,
+> > On Thu, Apr 16, 2020 at 4:17 PM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
 > > >
-> > > This is an update including some fixes and extra patches based on the
-> > > continuation of the discussion [1].
+> > > On Wed, Apr 08, 2020 at 07:09:00PM +0300, Andy Shevchenko wrote:
+> > > > When I started looking into the intel_cht_int33fe driver for an example of use
+> > > > software node API, I have noticed that it's hard to get and code a bit messy.
+> > > > Here is a clean up, main part of which is to introduce node groups and API to
+> > > > register and unregister them. This and some pre-existing APIs can be used in
+> > > > the driver.
+> > > >
+> > > > So, because of cross-subsystem nature of this series, I may recommend to create
+> > > > myself the immutable branch which can be pulled to Rafael's and Greg's trees
+> > > > respectively. I'm also open for other proposals how to proceed.
+> > >
+> > > Greg, Rafael,
+> > > any suggestion how to proceed with this series?
+> > >
+> > > (It has been reviewed and tested).
 > >
-> > I haven't checked the updates in detail yet.  However, it seems that
-> > dev_pm_skip_suspend() and dev_pm_skip_resume() should be EXPORTed,
-> > since they are intended to be used by subsystems, which may be in
-> > modules.
+> > You can merge them through platform/x86 as far as I'm concerned, or
+> > please let me know if you want me to pick them up.
 > 
-> OK, so what about an extra patch to export them?
-> 
-> Currently there are no modular users of these functions.
+> Works for me, but I would like to ask for formal Ack tag.
 
-Ah, all right.  So when/if I want to use them, I will submit such a 
-patch.
+I'm guessing that you talk about the first two patches, right?
 
-Alan Stern
+Please feel free to add my ACK to both, thanks!
+
+
 
