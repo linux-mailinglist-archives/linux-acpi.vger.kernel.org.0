@@ -2,95 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8C351AE908
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Apr 2020 02:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8B031AEAAF
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Apr 2020 10:09:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725949AbgDRA4B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Apr 2020 20:56:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47982 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725856AbgDRA4B (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 17 Apr 2020 20:56:01 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C5AAC061A0C
-        for <linux-acpi@vger.kernel.org>; Fri, 17 Apr 2020 17:56:01 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id e25so3904539ljg.5
-        for <linux-acpi@vger.kernel.org>; Fri, 17 Apr 2020 17:56:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Qs6wrAd2usiw5E/NvfsaWD9NmqabIB9KmK4sn2np7kI=;
-        b=U4x5PtWjYno+y9kpXnPl1TultiRn27j4BA37HWNBlr8kBkFNbIKmdMCjn5+3qALEe6
-         dRH3LlE3dIu3QUb/4qxHvQ9l4xMOL9Mb/kG0fdw89qIxkUEdLh7LgPPZdg/O0R+zWCWz
-         DW9rBf94bWBr7s2zss5IpNuRxdZPbLRIPLmgI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Qs6wrAd2usiw5E/NvfsaWD9NmqabIB9KmK4sn2np7kI=;
-        b=dd66YAWpXncD11yd/bz0Rlsw0jlab4ZuT4ifQS/hdPSS5USrspczZtYdtvQK0LJNmI
-         yr+WWqmYFF3tEIZfAMSjWiKZB5iYxC4Fs/IVANcinhJaSFk/vZoAorsPW7/pHNmlU0dH
-         pZCsgs6E4w27zByNnY4gyT7FxV53CtEsLBYHVCyES0AM/HdvxMohRQIk5qKnKkPqg7rq
-         wBj1r+LWZF/q75Z2EUo7t6u3EBFq7p33pQdzxTmqQM7h+uPQqDIdXmwqdQoSqxEWNW9G
-         lMw4TgVgHnr8qFi2jno3ySs1CbvLdOL85EcKcobY+0IABGrtyWVQDGX4Bh9biwhGeeQG
-         Djaw==
-X-Gm-Message-State: AGi0PuZxUa26cZJvZwu8xw7OM9wn14+01nylWkg0J/0K93aaV9ytznWj
-        +n3ZzG4pA8Mjc4bOJCvod4/g6Bdwu3I=
-X-Google-Smtp-Source: APiQypKj23y7zDteMfmyzadx6D8BBz6GLbT5M3DvpIcBWKkepuiczg629pqR+vggRnB0qRTZkgwp7g==
-X-Received: by 2002:a2e:7a0a:: with SMTP id v10mr3729883ljc.143.1587171359389;
-        Fri, 17 Apr 2020 17:55:59 -0700 (PDT)
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com. [209.85.167.48])
-        by smtp.gmail.com with ESMTPSA id b16sm17367386ljh.20.2020.04.17.17.55.56
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Apr 2020 17:55:57 -0700 (PDT)
-Received: by mail-lf1-f48.google.com with SMTP id x23so3291834lfq.1
-        for <linux-acpi@vger.kernel.org>; Fri, 17 Apr 2020 17:55:56 -0700 (PDT)
-X-Received: by 2002:ac2:4859:: with SMTP id 25mr3711879lfy.59.1587171355790;
- Fri, 17 Apr 2020 17:55:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200205194804.1647-1-mst@semihalf.com> <20200206083149.GK2667@lahna.fi.intel.com>
- <CAMiGqYi2rVAc=hepkY-4S1U_3dJdbR4pOoB0f8tbBL4pzWLdxA@mail.gmail.com>
- <20200207075654.GB2667@lahna.fi.intel.com> <CAMiGqYjmd2edUezEXsX4JBSyOozzks1Pu8miPEviGsx=x59nZQ@mail.gmail.com>
- <20200210101414.GN2667@lahna.fi.intel.com> <CAMiGqYiYp=aSgW-4ro5ceUEaB7g0XhepFg+HZgfPvtvQL9Z1jA@mail.gmail.com>
- <20200310144913.GY2540@lahna.fi.intel.com> <20200417020641.GA145784@google.com>
- <20200417090500.GM2586@lahna.fi.intel.com>
-In-Reply-To: <20200417090500.GM2586@lahna.fi.intel.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Fri, 17 Apr 2020 17:55:44 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXM9mrkGfxtVVNWkqnDNzcok2LAqdfVbQL2RV7yWE0tMWw@mail.gmail.com>
-Message-ID: <CA+ASDXM9mrkGfxtVVNWkqnDNzcok2LAqdfVbQL2RV7yWE0tMWw@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: cherryview: Add quirk with custom translation of
- ACPI GPIO numbers
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     linux-gpio@vger.kernel.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        id S1725862AbgDRIJO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 18 Apr 2020 04:09:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47166 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725856AbgDRIJO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 18 Apr 2020 04:09:14 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 50A9820857;
+        Sat, 18 Apr 2020 08:09:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587197353;
+        bh=nw+VTw9UskCuMvCgX4Me999roXJP64ZnEdNNc8xXhJ4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=V0xRHuyGIN1GggiMdr3RoQFAPmUy9SZjHIrt8NbV9p19Wfc5yAVLxnDziXEe8kzUe
+         MySocPsF/pd6Ig00xdFAHVi+2rC22mUhkv6ZSTH2A8k8+GtRpYEjgiqkBr56dfhJUt
+         iEgHqeL89iDRzZITbOL8o6c2b0r0mGvVdCwMeaGI=
+Date:   Sat, 18 Apr 2020 10:09:11 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Cc:     Toralf =?iso-8859-1?Q?F=F6rster?= <toralf.foerster@gmx.de>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
         Linux Kernel <linux-kernel@vger.kernel.org>,
-        stanekm@google.com, stable <stable@vger.kernel.org>,
-        Marcin Wojtas <mw@semihalf.com>, levinale@chromium.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        bgolaszewski@baylibre.com,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        ACPI Devel Mailing List <linux-acpi@vger.kernel.org>,
+        Stable <stable@vger.kernel.org>
+Subject: Re: regression 5.6.4->5.6.5 at drivers/acpi/ec.c
+Message-ID: <20200418080911.GA2412912@kroah.com>
+References: <fdd9ce1d-146a-5fbf-75c5-3a9384603312@gmx.de>
+ <5478a950-4355-8084-ea7d-fe8b270bf2e3@infradead.org>
+ <5392275.BHAU0OPJTB@kreacher>
+ <4b21c095-fbe5-1138-b977-a505baa41a2b@gmx.de>
+ <CAJZ5v0icdVL6_yGpfsorqszdi9GcLxzYdvDqTJyG4ENzkOG2pQ@mail.gmail.com>
+ <d66ad8f1-d7c5-dd8a-0eb4-9e560dc9ada1@gmx.de>
+ <CAJZ5v0iXJK_kFzr=cOdcTdc947MOcm2hvNV1WgvAnxOY7uvWfg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0iXJK_kFzr=cOdcTdc947MOcm2hvNV1WgvAnxOY7uvWfg@mail.gmail.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-- Michal (bouncing)
+On Fri, Apr 17, 2020 at 09:54:54PM +0200, Rafael J. Wysocki wrote:
+> On Fri, Apr 17, 2020 at 9:41 PM Toralf Förster <toralf.foerster@gmx.de> wrote:
+> >
+> > On 4/17/20 8:52 PM, Rafael J. Wysocki wrote:
+> > > On Fri, Apr 17, 2020 at 6:36 PM Toralf Förster <toralf.foerster@gmx.de> wrote:
+> > >>
+> > >> On 4/17/20 5:53 PM, Rafael J. Wysocki wrote:
+> > >>> Does the patch below (untested) make any difference?
+> > >>>
+> > >>> ---
+> > >>>  drivers/acpi/ec.c |    5 ++++-
+> > >>>  1 file changed, 4 insertions(+), 1 deletion(-)
+> > >>>
+> > >>> Index: linux-pm/drivers/acpi/ec.c
+> > >>> ===================================================================
+> > >>> --- linux-pm.orig/drivers/acpi/ec.c
+> > >>> +++ linux-pm/drivers/acpi/ec.c
+> > >>> @@ -2067,7 +2067,10 @@ static struct acpi_driver acpi_ec_driver
+> > >>>               .add = acpi_ec_add,
+> > >>>               .remove = acpi_ec_remove,
+> > >>>               },
+> > >>> -     .drv.pm = &acpi_ec_pm,
+> > >>> +     .drv = {
+> > >>> +             .probe_type = PROBE_FORCE_SYNCHRONOUS,
+> > >>> +             .pm = &acpi_ec_pm,
+> > >>> +     },
+> > >>>  };
+> > >>>
+> > >>>  static void acpi_ec_destroy_workqueues(void)
+> > >> I'd say no, but for completeness:
+> > >
+> > > OK, it looks like mainline commit
+> > >
+> > > 65a691f5f8f0 ("ACPI: EC: Do not clear boot_ec_is_ecdt in acpi_ec_add()")
+> > >
+> > > was backported into 5.6.5 by mistake.
+> > >
+> > > Can you please revert that patch and retest?
+> > >
+> > Yes, reverting that commit solved the issue.
+> 
+> OK, thanks!
+> 
+> Greg, I'm not sure why commit 65a691f5f8f0 from the mainline ended up in 5.6.5.
+> 
+> It has not been marked for -stable or otherwise requested to be
+> included AFAICS.  Also it depends on other mainline commits that have
+> not been included into 5.6.5.
+> 
+> Can you please drop it?
 
-On Fri, Apr 17, 2020 at 2:05 AM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
-> I wonder if we can add back the previous GPIO base like this?
-
-Thanks for the patch! At first glance, it looks like the right kind of
-thing. Unfortunately, it doesn't appear to work quite right for me.
-I'm out of time for today to look any further, but I (or perhaps
-someone else on this email) will try to follow up next week sometime.
-
-Cheers,
-Brian
+Will go do so right now, sorry about that.  Sasha, you might want to
+adjust your tools a bit...
