@@ -2,76 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE42E1AFBA7
-	for <lists+linux-acpi@lfdr.de>; Sun, 19 Apr 2020 17:14:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CD191AFBAD
+	for <lists+linux-acpi@lfdr.de>; Sun, 19 Apr 2020 17:17:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726228AbgDSPOL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 19 Apr 2020 11:14:11 -0400
-Received: from mail-oo1-f68.google.com ([209.85.161.68]:41020 "EHLO
-        mail-oo1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725910AbgDSPOK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 19 Apr 2020 11:14:10 -0400
-Received: by mail-oo1-f68.google.com with SMTP id t3so1534346oou.8;
-        Sun, 19 Apr 2020 08:14:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=o4eGY9TLJHufi4vAG1QGgq29m2UtPv1KIcyHNOs1Kx0=;
-        b=AqmMr1xZsfqYN4Jyo4AWjNoG78nqaLH6lOGGnLDHaWkeNtO9OG2++mXX+cE6SyPme+
-         hinGRcf08VaJlCmdjj371EONrtwX+ZbVMB+rUOqplSEdjypgtJL3a5VyGrWZGDNr7c0v
-         uers7m8j1T/3+CQN9pAbEGqeK2dtTet3/y6v/goajwlgBir7cOBpuTgN2z7mcX9+5/rx
-         rvwBd3BCCgfd8kdgzjzbKJhfpdz02rBnTFGuBUuBvxuF02lCsE9HLKPCKzFecHBgfIlY
-         cOoGTqS8zcZMYurnppGIRzHEItnHGJ/TJkdnpGf+UcZc9X3ODe/453+rIeOeqWTN8IRi
-         So8w==
-X-Gm-Message-State: AGi0PuZ0k/bRv9DIBSXKwx/v/G2NsjTv/0J7GrPS34B62o0lzo8cWNe/
-        kwQnabFSBY6qG8qk1DWZfX4OmJMxqX5mNalTCRY=
-X-Google-Smtp-Source: APiQypLtUEOee3fsi1dMjAxiswAhSnzkTuk8dq4mD9gM6SE25cC+IXvIALybg7nOSGvvGzTUJGOYfLISZPWyfOFmufQ=
-X-Received: by 2002:a4a:4c46:: with SMTP id a67mr9508805oob.1.1587309249893;
- Sun, 19 Apr 2020 08:14:09 -0700 (PDT)
+        id S1726208AbgDSPRE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 19 Apr 2020 11:17:04 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:20259 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726099AbgDSPRE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 19 Apr 2020 11:17:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1587309423;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=LRbFemGrpsDOuqq7wzxlVQ0qcFZKVZNZjd2oB7alHE0=;
+        b=XBRbzS1Wf5w6NLjXx5epHt5FwS0jTFYbv2/m9EwhX4s5ViQzXPyI6HS4Y7olfGeLVXJ85c
+        Q5XNAOFeMBbA+Rt8hVV6ywM/2lR/EfI2tWDubNCQoUhkfGF+ghlWeJSbsQFDestQZv1NUP
+        Df1seeJIPGdpFSurst0qVbo1tO/3/iQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-183-16L0w_HxPY6uotpWNpN8Rg-1; Sun, 19 Apr 2020 11:16:42 -0400
+X-MC-Unique: 16L0w_HxPY6uotpWNpN8Rg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AFE291005513;
+        Sun, 19 Apr 2020 15:16:41 +0000 (UTC)
+Received: from x1.com (ovpn-112-70.ams2.redhat.com [10.36.112.70])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B44E518A85;
+        Sun, 19 Apr 2020 15:16:40 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: button: Drop no longer necessary Asus T200TA lid_init_state quirk
+Date:   Sun, 19 Apr 2020 17:16:13 +0200
+Message-Id: <20200419151613.14933-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <5673945.BT02kTCndr@kreacher> <Pine.LNX.4.44L0.2004191040400.29527-100000@netrider.rowland.org>
-In-Reply-To: <Pine.LNX.4.44L0.2004191040400.29527-100000@netrider.rowland.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sun, 19 Apr 2020 17:13:58 +0200
-Message-ID: <CAJZ5v0hdO5d9bwA00oW1=WLtXzsMeAJHzm_xv6uMM1Q-c3GkMQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/9] PM: sleep: core: Rearrange the handling of driver
- power management flags
-To:     Alan Stern <stern@rowland.harvard.edu>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Hans De Goede <hdegoede@redhat.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Apr 19, 2020 at 4:43 PM Alan Stern <stern@rowland.harvard.edu> wrote:
->
-> On Sat, 18 Apr 2020, Rafael J. Wysocki wrote:
->
-> > Hi,
-> >
-> > This is an update including some fixes and extra patches based on the
-> > continuation of the discussion [1].
->
-> The new code in pm.h and main.c all looks good.  Please add my
-> Acked-by: or Suggested-by: to the portions of the patches that affect
-> those files.
+Commit 17e5888e4e18 ("x86: Select HARDIRQS_SW_RESEND on x86") fixes
+the edge-triggered embedded-controller (WC) IRQ not being replayed after
+resume when woken by opening the lid, which gets signaled by the EC.
 
-I will, thank you!
+This means that the lid_init_state=3DACPI_BUTTON_LID_INIT_OPEN quirk for
+the Asus T200TA is no longer necessary, the lid now works properly
+without it, so drop the quirk.
 
-> It's nice to see that, aside from the documentation, the patches ended
-> up removing more lines than they added.
+Fixes: 17e5888e4e18 ("x86: Select HARDIRQS_SW_RESEND on x86")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/button.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-Indeed.
+diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+index 00112cf15322..78cfc70cb320 100644
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -87,18 +87,6 @@ static const struct dmi_system_id dmi_lid_quirks[] =3D=
+ {
+ 		},
+ 		.driver_data =3D (void *)(long)ACPI_BUTTON_LID_INIT_DISABLED,
+ 	},
+-	{
+-		/*
+-		 * Asus T200TA, _LID keeps reporting closed after every second
+-		 * openening of the lid. Causing immediate re-suspend after
+-		 * opening every other open. Using LID_INIT_OPEN fixes this.
+-		 */
+-		.matches =3D {
+-			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "T200TA"),
+-		},
+-		.driver_data =3D (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
+-	},
+ 	{
+ 		/* GP-electronic T701, _LID method points to a floating GPIO */
+ 		.matches =3D {
+--=20
+2.26.0
 
-Cheers!
