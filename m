@@ -2,87 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A4891B11AD
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Apr 2020 18:37:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A3C51B1432
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Apr 2020 20:17:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726224AbgDTQhJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Apr 2020 12:37:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41292 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726049AbgDTQhJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 20 Apr 2020 12:37:09 -0400
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0AD7C025491
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Apr 2020 09:37:08 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id c3so8646673otp.8
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Apr 2020 09:37:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=etEE1N98WBWmiFqKNjkKyy3q/HcY+WbPxte/Y1UQWWs=;
-        b=sEbTZwza7S+jmk1MASXCoPq6FzKK0u6RLB/dK3FWJ479fRdjGbFv0sy4qa+3s1k5ID
-         1A0Nr646LqTuqamWJdpQtxsKenGvKLitu+g/eBQbocTIZWLh825tRTyhh4W/YyKoSGr/
-         N4aBb/ON8WaXuMzC8PjiKY6jG8kTtyvUBBscnA388Nw9zePmwapwMWKM49pqBE8hRTER
-         etvHnkmU/IXZYoMvTSEgGfRkrFVus4FFiKBGfIed6bojVXB/qqzeV/3pQYoNQj98Z6vI
-         xcZEb8Q0/0k7XexnV1uzOzVL5nivLRtLTsBfGAZFXPnU/8QKzDL3rrPxbF2eBslXkHxt
-         odbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=etEE1N98WBWmiFqKNjkKyy3q/HcY+WbPxte/Y1UQWWs=;
-        b=NAMFGoGoVdYNkhZ4JcFxE2qgKeJsIY3O1s9YQ9kmUU6c8uA9HeYyoLxTcY/5Av+UxS
-         /LxbrwGE0TYrLoYpUBsEoidraLPtujn7YgiPbPY+ut8VY7aBAdBnR4b6e8AfLFZcaVmi
-         A2879dIZdSAumOs2jTj+5P9+r5qpvlK9qO6B96moNEaaW3tHT+1oN5lvfWziNx+se4RN
-         VAoZPuN19nfm9dVn03H8qo11MM7mcOlbPcYoEOhbiN33yx0WD56mYTUReBAF1J865tfQ
-         8SOs8Va5WhdRRvFgBccH20lDXgN6cbBBjJD5KpDU18XkUZMj4Q69fEEIw2ZWS/hoM0uu
-         tefA==
-X-Gm-Message-State: AGi0PuZ6HceB1B+8d+n5Y2Mf3JsoA87g+NCH3TmBnHxDA52ERSfyR+7Z
-        41AkKoVkAZ7rms2YV7EObbm2Wiv6E7LYil70tyE=
-X-Google-Smtp-Source: APiQypJyfk5V5aoUbgWjavwF0KoSuV3M+ez+fPImILY/fx4ND3cWhR98zkAjbOvBgVq2A7z+CnWrV7May8bQsPxHg9k=
-X-Received: by 2002:a9d:7144:: with SMTP id y4mr569194otj.7.1587400628133;
- Mon, 20 Apr 2020 09:37:08 -0700 (PDT)
-MIME-Version: 1.0
-Reply-To: ina.gaylard@outlook.com
-From:   Mr Ian Gaylard <info.adfd@gmail.com>
-Date:   Mon, 20 Apr 2020 17:36:52 +0100
-Message-ID: <CAOWo8Pxz+pE+MBbp8xWrCsXK9Ki4dJATEn3MbP=BfxgSoy=yMw@mail.gmail.com>
-Subject: Let me know if we can work together.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        id S1727768AbgDTSRw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Apr 2020 14:17:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57110 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725891AbgDTSRw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Apr 2020 14:17:52 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A4FCC061A0C;
+        Mon, 20 Apr 2020 11:17:52 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id 16DD62A0FEB
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+To:     linux-pm@vger.kernel.org
+Cc:     Zhang Rui <rui.zhang@intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, kernel@collabora.com,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        Barlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: [PATCH 0/2] Stop monitoring disabled devices
+Date:   Mon, 20 Apr 2020 20:17:39 +0200
+Message-Id: <20200420181741.13167-1-andrzej.p@collabora.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <d7efa7dd-6a07-beff-e3d1-8797dd203105@samsung.com>
+References: <d7efa7dd-6a07-beff-e3d1-8797dd203105@samsung.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Greetings:
+After 3 revisions of an RFC I'm sending this as a PATCH series.
 
-Thank you for connecting on LinkedIn from where I got your contact details.
-I hope that this email meets you well. I have been given authority to
-appoint a reliable international investment manager to reinvest an
-inheritance of my client, to generate a targeted annual ROI of 3.5%.
+The first patch makes all the drivers store their mode in struct
+thermal_zone_device. Such a move has consequences: driver-specific
+variables for storing mode are not necessary. Consequently get_mode()
+methods become obsolete. Then sysfs "mode" attribute stops depending
+on get_mode() being provided, because it is always provided from now on.
 
-I am hoping that we can build the understanding to cooperate in this
-deal for mutual benefit. My client is offering 10% of the total
-investment value to the investment initiators which will be you, and
-me.
+The first patch also introduces the initial mode to be optionally passed
+to thermal_zone_device_register().
 
-You will need to confirm your understanding, that the 10%
-compensation/commission will be shared in the ratio of 5%-5% between
-us.
+Given all the groundwork done in patch 1/2 patch 2/2 becomes very simple.
 
-The investor's attorney will prepare an agreement to confirm the
-statement above to enable us have mutual understanding and stands in
-this investment cooperation. I will look forward to hear from you.
+Compared to RFC v3 this series addresses comments from Bartlomiej,
+thank you Bartlomiej for your review!
 
-On your positive response,I will present you to my client, as the
-investment manager for her inheritance, into a profitable field that
-will generate the expected ROI.
+RFCv3..this PATCH:
+
+- export thermal_zone_device_{enable|disable}() for drivers
+- don't check provided enum values in acpi's thermal_zet_mode()
+and in int3400_thermal_set_mode()
+- use thermal_zone_device_enable() in of_thermal instead of open coding it
+- use thermal_zone_device_{enable|disable}() in hisi_thermal, rockchip_thermal
+and sprd_thermal
+- assume THERMAL_DEVICE_ENABLED is thermal_zone_params not provided at
+tzd's register time
+- eliminated tzp-s which contain only .initial_mode = THERMAL_DEVICE_ENABLED,
+- don't set tz->need_update and don't call thermal_zone_device_update()
+at the end of thermal_zone_device_register()
+- used .initial_mode in int340x_thermal_zone, x86_pkg_temp_thermal and
+int3400_thermal
+
+Andrzej Pietrasiewicz (2):
+  thermal: core: Let thermal zone device's mode be stored in its struct
+  thermal: core: Stop polling DISABLED thermal devices
+
+ drivers/acpi/thermal.c                        | 35 ++--------
+ .../ethernet/mellanox/mlxsw/core_thermal.c    | 42 ------------
+ drivers/platform/x86/acerhdf.c                | 17 +----
+ drivers/thermal/da9062-thermal.c              | 11 ----
+ drivers/thermal/hisi_thermal.c                |  6 +-
+ drivers/thermal/imx_thermal.c                 | 24 ++-----
+ .../intel/int340x_thermal/int3400_thermal.c   | 31 ++-------
+ .../int340x_thermal/int340x_thermal_zone.c    |  1 +
+ .../thermal/intel/intel_quark_dts_thermal.c   | 22 ++-----
+ drivers/thermal/intel/x86_pkg_temp_thermal.c  |  1 +
+ drivers/thermal/of-thermal.c                  | 24 +------
+ drivers/thermal/rockchip_thermal.c            |  6 +-
+ drivers/thermal/sprd_thermal.c                |  6 +-
+ drivers/thermal/thermal_core.c                | 65 ++++++++++++++++---
+ drivers/thermal/thermal_core.h                |  3 +
+ drivers/thermal/thermal_sysfs.c               | 29 +--------
+ include/linux/thermal.h                       | 22 ++++++-
+ 17 files changed, 121 insertions(+), 224 deletions(-)
 
 
-Let me know if we can work together.
+base-commit: 79799562bf087b30d9dd0fddf5bed2d3b038be08
+-- 
+2.17.1
 
-Sincere Regards,
-
-Mr Ian Gaylard
