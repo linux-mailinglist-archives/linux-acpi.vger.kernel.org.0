@@ -2,67 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1467B1B206B
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Apr 2020 09:55:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5009A1B23DF
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Apr 2020 12:31:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726052AbgDUHz3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Apr 2020 03:55:29 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:45300 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725992AbgDUHz3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Apr 2020 03:55:29 -0400
-Received: from 61-220-137-37.hinet-ip.hinet.net ([61.220.137.37] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <kai.heng.feng@canonical.com>)
-        id 1jQnkc-0002yx-1p; Tue, 21 Apr 2020 07:55:26 +0000
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-To:     rjw@rjwysocki.net
-Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org (open list:ACPI),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] ACPI: PM: Output correct message on target power state
-Date:   Tue, 21 Apr 2020 15:55:16 +0800
-Message-Id: <20200421075516.23019-1-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.17.1
+        id S1728532AbgDUKa6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Apr 2020 06:30:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39886 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726741AbgDUKa5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Apr 2020 06:30:57 -0400
+Received: from mail-ua1-x941.google.com (mail-ua1-x941.google.com [IPv6:2607:f8b0:4864:20::941])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 620E8C061A10
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Apr 2020 03:30:57 -0700 (PDT)
+Received: by mail-ua1-x941.google.com with SMTP id z16so150216uae.11
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Apr 2020 03:30:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+Nmmt4cUyHLEe6qve6WvcXD9XM2QrRLQtbhGo4+r1qY=;
+        b=KycdRg1y9oQM3pZPaP3bxRnhvW1zUmoQIZW2WRzxFR2dQn/3L4nMD8XzdppM8rTkZ1
+         m8aCfMmSkq/htN3OrmP7HBWGtLYHToudPjD8M8ZqZD+PW90JzYDbk0WqZP+D4YFljGJ4
+         VKCkoDHOYm82W6pyaTLd5gjAuSdQnWwL5SM2tXDmCG0d2VAvVArx7zWPt9Y+Dplm9ykj
+         AwnU3caAvLH/DIlTeloP07h0x+NMLq+s8LVzkPbObaHMecie8vvUYuJKAiPLGebkdG5o
+         Hb5JUODBuPGnGPHLnCglQWCwG/GlsoJhEaAg3FskzyNDu3V2k1CTXv6Ahy0ruIzMoaLh
+         kddw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+Nmmt4cUyHLEe6qve6WvcXD9XM2QrRLQtbhGo4+r1qY=;
+        b=Ur0zDvE7eGOkHGtf1YPbmmfo6GsXx5eHp7XEpDpUvzmjdw9PoBCJXAiUxrznWwRO0c
+         EBO0cF0YTeNpYIfvJ96wETP0gV6BiFZS9ogz1anCzhmkjRZZVESQ4lPUumT33SXpJnQx
+         GMXRqoz+BEEcRlq3GD+j8CrNQ3L2GNh3Gid6ZeExNTp19b0xSmsCT/44Omyj4vsC5lZS
+         rF47Z0IxoqBWfEAQ3qsP0diqWHCngSwdctJQeON/1cxUe3N449GD3LAJrGbpx+tnSIl1
+         ib5zYIOw4HDqq7wEo3z8wf8BdCDBGcdLFiS0lLByRzKsiP1tqDE18Jx4hNI3PB7xdDcW
+         MhFQ==
+X-Gm-Message-State: AGi0PuZgrt2hfjrahOIRWZhKY41EoWsKeJaqPC1nM6UmWMCdnOrk4yGd
+        vsVh23OhN/DLByeNLVC69qcxBNm2t8KIRckO3UIQZw==
+X-Google-Smtp-Source: APiQypJjJlGRUhECl9LUNHsivRWgdQRbBS7vnJgH8AQX+Nfndksy1VNAV4ImNERQV4t9bCWuXCZorue5jXGTrIUmCJ0=
+X-Received: by 2002:a9f:25af:: with SMTP id 44mr11675574uaf.104.1587465054589;
+ Tue, 21 Apr 2020 03:30:54 -0700 (PDT)
+MIME-Version: 1.0
+References: <1888197.j9z7NJ8yPn@kreacher> <5673945.BT02kTCndr@kreacher>
+In-Reply-To: <5673945.BT02kTCndr@kreacher>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 21 Apr 2020 12:30:18 +0200
+Message-ID: <CAPDyKFoV-gMn34nghBBK91pRYy3c90D8jrA4-OP2SGxQPzxgdg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/9] PM: sleep: core: Rearrange the handling of driver
+ power management flags
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Hans De Goede <hdegoede@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Transitioned power state logged at the end of setting ACPI power.
+On Sat, 18 Apr 2020 at 19:11, Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+>
+> Hi,
+>
+> This is an update including some fixes and extra patches based on the
+> continuation of the discussion [1].
+>
+> On Friday, April 10, 2020 5:46:27 PM CEST Rafael J. Wysocki wrote:
+> > Hi Alan,
+> >
+> > Following our recent discussion regarding the DPM_FLAG_* family of flags [1],
+> > I have decided to follow some of your recommendations and make changes to the
+> > core code handling those flags.
+> >
+> > The purpose of this is basically to make the code more consistent internally,
+> > easier to follow and better documented.
+> >
+> > First of all, patch [1/7] changes the PM core to skip driver-level "late"
+> > and "noirq" suspend callbacks for devices with SMART_SUSPEND set if they are
+> > still runtime-suspended during the "late" system-wide suspend phase (without
+> > the patch it does that only if subsystem-level late/noirq/early suspend/resume
+> > callbacks are not present for the device, which is demonstrably inconsistent)
+> > and updates the resume part of the code accordingly (it doesn't need to check
+> > whether or not the subsystem-level callbacks are present any more).
+> >
+> > The next patch, [2/7], is purely cosmetic and its only purpose is to reduce
+> > the LOC number and move related pieces of code closer to each other.
+>
+> The first two patches have not changed.
+>
+> > Patch [3/7] changes the PM core so that it doesn't skip any subsystem-level
+> > callbacks during system-wide resume (without the patch they may be skipped in
+> > the "early resume" and "resume" phases due to LEAVE_SUSPENDED being set which
+> > may be problematic) and to always run the driver's ->resume callback if the
+> > corresponding subsystem-level callback is not present (without the patch it
+> > may be skipped if LEAVE_SUSPENDED is set) to let it reverse the changes made
+> > by the driver's ->suspend callback (which always runs too) if need be.
+>
+> The difference between this one and patch [3/9] in the v2 is the fixed
+> definition of dev_pm_may_skip_resume(), renamed to dev_pm_skip_resume() by
+> one of the next patches.
+>
+> Patch [4/9] changes the handling of the power.may_skip_resume flag to set it
+> to 'true' by default and updates the subsystems aware of it to clear it when
+> they don't want devices to stay in suspend.
+>
+> > Patches [4-6/7] rename one function in the PM core and two driver PM flags to
+> > make their names better reflect their purpose.
+>
+> These are patches [5/9] and [7-8/9] in the v2 and patch [6/9] renames
+> dev_pm_smart_suspend_and_suspended() to dev_pm_skip_suspend().
+>
+> > Finally, patch [7/7] updates the documentation of the driver PM flags to
+> > reflect the new code flows.
+>
+> This patch [9/9] now and it has been updated to reflect the new code changes.
+>
+> The pm-sleep-core branch:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+>   pm-sleep-core
+>
+> contains the v2 now.
+>
+> Cheers!
 
-However, D3cold won't be in the message because state can only be D3hot
-at most.
+Rafael, apologize for taking some time to review and respond. I
+noticed you have queued this up on your next branch by now, good.
 
-Use target_state to corretly report when power state is D3cold.
+In any case, I have looked through the series and I think it looks good, thanks!
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
- drivers/acpi/device_pm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Kind regards
+Uffe
 
-diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-index b2263ec67b43..5832bc10aca8 100644
---- a/drivers/acpi/device_pm.c
-+++ b/drivers/acpi/device_pm.c
-@@ -273,13 +273,13 @@ int acpi_device_set_power(struct acpi_device *device, int state)
-  end:
- 	if (result) {
- 		dev_warn(&device->dev, "Failed to change power state to %s\n",
--			 acpi_power_state_string(state));
-+			 acpi_power_state_string(target_state));
- 	} else {
- 		device->power.state = target_state;
- 		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
- 				  "Device [%s] transitioned to %s\n",
- 				  device->pnp.bus_id,
--				  acpi_power_state_string(state)));
-+				  acpi_power_state_string(target_state)));
- 	}
- 
- 	return result;
--- 
-2.17.1
-
+>
+>
+> [1] https://lore.kernel.org/linux-pm/Pine.LNX.4.44L0.2003251631360.1724-100000@netrider.rowland.org/
+>
+>
+>
