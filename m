@@ -2,131 +2,145 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00F711B2522
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Apr 2020 13:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F20FF1B2770
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Apr 2020 15:18:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728285AbgDULdM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Apr 2020 07:33:12 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:37883 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726691AbgDULdL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Apr 2020 07:33:11 -0400
-Received: by mail-oi1-f196.google.com with SMTP id r25so11723615oij.4;
-        Tue, 21 Apr 2020 04:33:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HW9k9kfTW78ME8X5ahcJnyYNk11gvYfm0hTWpxib3PU=;
-        b=kYvcoUfMP/IQ7Y6lMxW/hMoH6vfLAB8YNs0GbF86ZOQVMVLOUTKQP2lxTEekdIsDG2
-         4D+YgLjQ4nG+RF0UfYG+gjNjm/bsGNoI4m3bCc/tbXsURFclaCoj1wO6QHUeCOSvnnmA
-         qLYmDxVxpoOVePbkjlkZ5dlpyz0CjySv402aFuvvALMn3YqVA6QoPkR4c1Js1hdw0sVM
-         dEUZCM85svc8SlKV/782qF1dR1QgAwE4ujVaM6ptsVpfERBtR5cy9OrKnxGTrIbjWYxv
-         xgnh6yZn953cam1OUmga8jb+NCUd15z078f5WYFuN4KYe4TTdgJfdiKr3K8KSYyFL2rR
-         vu5A==
-X-Gm-Message-State: AGi0PuaHaSS7sjkPjqcZpMa9uBZWkCfVM15K1oiUEYL9356Vk1qrsFgP
-        przzXsJgKtk5DyuDqqru6H3i0NW58iE8wqnbf1o=
-X-Google-Smtp-Source: APiQypLN96ZexQcfh1NyKo0/zqGY6oMeGu2AGd9i5r1cD0mnDcePTx9i44H4ZpIkfqEAujnUYUtfIKys73CXfTqBwXU=
-X-Received: by 2002:a05:6808:81:: with SMTP id s1mr2709126oic.68.1587468790638;
- Tue, 21 Apr 2020 04:33:10 -0700 (PDT)
+        id S1728881AbgDUNS1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Apr 2020 09:18:27 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2075 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726018AbgDUNSV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 21 Apr 2020 09:18:21 -0400
+Received: from lhreml721-chm.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id 03865D7CE7C48204ACB2;
+        Tue, 21 Apr 2020 14:18:18 +0100 (IST)
+Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
+ lhreml721-chm.china.huawei.com (10.201.108.72) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Tue, 21 Apr 2020 14:18:17 +0100
+Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
+ lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1913.007;
+ Tue, 21 Apr 2020 14:18:17 +0100
+From:   Shiju Jose <shiju.jose@huawei.com>
+To:     James Morse <james.morse@arm.com>, Borislav Petkov <bp@alien8.de>
+CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "helgaas@kernel.org" <helgaas@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "zhangliguang@linux.alibaba.com" <zhangliguang@linux.alibaba.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        Linuxarm <linuxarm@huawei.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        tanxiaofei <tanxiaofei@huawei.com>,
+        yangyicong <yangyicong@huawei.com>
+Subject: RE: [PATCH v6 1/2] ACPI / APEI: Add support to notify the vendor
+ specific HW errors
+Thread-Topic: [PATCH v6 1/2] ACPI / APEI: Add support to notify the vendor
+ specific HW errors
+Thread-Index: AQHWAsR+4nldebv71E6VKNN8PAfzw6hcw70AgBI/yoCAFI/PUA==
+Date:   Tue, 21 Apr 2020 13:18:17 +0000
+Message-ID: <4d7bfedd175345a198d47e5fa0561ec1@huawei.com>
+References: <ShijuJose> <20200325164223.650-1-shiju.jose@huawei.com>
+ <20200325164223.650-2-shiju.jose@huawei.com> <20200327182214.GD8015@zn.tnic>
+ <c73bb18b-02ef-6c35-f4cf-1738c17a96e5@arm.com>
+In-Reply-To: <c73bb18b-02ef-6c35-f4cf-1738c17a96e5@arm.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.47.83.77]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <1888197.j9z7NJ8yPn@kreacher> <5673945.BT02kTCndr@kreacher> <CAPDyKFoV-gMn34nghBBK91pRYy3c90D8jrA4-OP2SGxQPzxgdg@mail.gmail.com>
-In-Reply-To: <CAPDyKFoV-gMn34nghBBK91pRYy3c90D8jrA4-OP2SGxQPzxgdg@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 21 Apr 2020 13:32:50 +0200
-Message-ID: <CAJZ5v0hsVZQpm5SFfvCQQMNURJ28RNd+i6Cyh=ZUmt+izZhvRw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/9] PM: sleep: core: Rearrange the handling of driver
- power management flags
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Hans De Goede <hdegoede@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Apr 21, 2020 at 12:30 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> On Sat, 18 Apr 2020 at 19:11, Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
-> >
-> > Hi,
-> >
-> > This is an update including some fixes and extra patches based on the
-> > continuation of the discussion [1].
-> >
-> > On Friday, April 10, 2020 5:46:27 PM CEST Rafael J. Wysocki wrote:
-> > > Hi Alan,
-> > >
-> > > Following our recent discussion regarding the DPM_FLAG_* family of flags [1],
-> > > I have decided to follow some of your recommendations and make changes to the
-> > > core code handling those flags.
-> > >
-> > > The purpose of this is basically to make the code more consistent internally,
-> > > easier to follow and better documented.
-> > >
-> > > First of all, patch [1/7] changes the PM core to skip driver-level "late"
-> > > and "noirq" suspend callbacks for devices with SMART_SUSPEND set if they are
-> > > still runtime-suspended during the "late" system-wide suspend phase (without
-> > > the patch it does that only if subsystem-level late/noirq/early suspend/resume
-> > > callbacks are not present for the device, which is demonstrably inconsistent)
-> > > and updates the resume part of the code accordingly (it doesn't need to check
-> > > whether or not the subsystem-level callbacks are present any more).
-> > >
-> > > The next patch, [2/7], is purely cosmetic and its only purpose is to reduce
-> > > the LOC number and move related pieces of code closer to each other.
-> >
-> > The first two patches have not changed.
-> >
-> > > Patch [3/7] changes the PM core so that it doesn't skip any subsystem-level
-> > > callbacks during system-wide resume (without the patch they may be skipped in
-> > > the "early resume" and "resume" phases due to LEAVE_SUSPENDED being set which
-> > > may be problematic) and to always run the driver's ->resume callback if the
-> > > corresponding subsystem-level callback is not present (without the patch it
-> > > may be skipped if LEAVE_SUSPENDED is set) to let it reverse the changes made
-> > > by the driver's ->suspend callback (which always runs too) if need be.
-> >
-> > The difference between this one and patch [3/9] in the v2 is the fixed
-> > definition of dev_pm_may_skip_resume(), renamed to dev_pm_skip_resume() by
-> > one of the next patches.
-> >
-> > Patch [4/9] changes the handling of the power.may_skip_resume flag to set it
-> > to 'true' by default and updates the subsystems aware of it to clear it when
-> > they don't want devices to stay in suspend.
-> >
-> > > Patches [4-6/7] rename one function in the PM core and two driver PM flags to
-> > > make their names better reflect their purpose.
-> >
-> > These are patches [5/9] and [7-8/9] in the v2 and patch [6/9] renames
-> > dev_pm_smart_suspend_and_suspended() to dev_pm_skip_suspend().
-> >
-> > > Finally, patch [7/7] updates the documentation of the driver PM flags to
-> > > reflect the new code flows.
-> >
-> > This patch [9/9] now and it has been updated to reflect the new code changes.
-> >
-> > The pm-sleep-core branch:
-> >
-> >   git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
-> >   pm-sleep-core
-> >
-> > contains the v2 now.
-> >
-> > Cheers!
->
-> Rafael, apologize for taking some time to review and respond. I
-> noticed you have queued this up on your next branch by now, good.
->
-> In any case, I have looked through the series and I think it looks good, thanks!
-
-Thanks for letting me know!
-
-Cheers!
+SGkgSmFtZXMsDQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IGxpbnV4LXBj
+aS1vd25lckB2Z2VyLmtlcm5lbC5vcmcgW21haWx0bzpsaW51eC1wY2ktDQo+b3duZXJAdmdlci5r
+ZXJuZWwub3JnXSBPbiBCZWhhbGYgT2YgSmFtZXMgTW9yc2UNCj5TZW50OiAwOCBBcHJpbCAyMDIw
+IDExOjAzDQo+VG86IEJvcmlzbGF2IFBldGtvdiA8YnBAYWxpZW44LmRlPjsgU2hpanUgSm9zZSA8
+c2hpanUuam9zZUBodWF3ZWkuY29tPg0KPkNjOiBsaW51eC1hY3BpQHZnZXIua2VybmVsLm9yZzsg
+bGludXgtcGNpQHZnZXIua2VybmVsLm9yZzsgbGludXgtDQo+a2VybmVsQHZnZXIua2VybmVsLm9y
+Zzsgcmp3QHJqd3lzb2NraS5uZXQ7IGhlbGdhYXNAa2VybmVsLm9yZzsNCj5sZW5iQGtlcm5lbC5v
+cmc7IHRvbnkubHVja0BpbnRlbC5jb207IGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3JnOw0KPnpo
+YW5nbGlndWFuZ0BsaW51eC5hbGliYWJhLmNvbTsgdGdseEBsaW51dHJvbml4LmRlOyBMaW51eGFy
+bQ0KPjxsaW51eGFybUBodWF3ZWkuY29tPjsgSm9uYXRoYW4gQ2FtZXJvbg0KPjxqb25hdGhhbi5j
+YW1lcm9uQGh1YXdlaS5jb20+OyB0YW54aWFvZmVpIDx0YW54aWFvZmVpQGh1YXdlaS5jb20+Ow0K
+Pnlhbmd5aWNvbmcgPHlhbmd5aWNvbmdAaHVhd2VpLmNvbT4NCj5TdWJqZWN0OiBSZTogW1BBVENI
+IHY2IDEvMl0gQUNQSSAvIEFQRUk6IEFkZCBzdXBwb3J0IHRvIG5vdGlmeSB0aGUgdmVuZG9yDQo+
+c3BlY2lmaWMgSFcgZXJyb3JzDQo+DQo+SGkgQm9yaXMsIFNoaWp1LA0KPg0KPlNvcnJ5IGZvciBu
+b3Qgc3BvdHRpbmcgdGhpcyByZXBseSBlYXJsaWVyOiBJdHMgaW4tcmVwbHkgdG8gdjEsIHNvIGdl
+dHMgYnVyaWVkLg0KSSB3aWxsIHJlc2VuZCB0aGUgdjcgcGF0Y2ggc29sdmluZyB0aGlzIGlzc3Vl
+Lg0KSSBndWVzcyB0aGUgcmVtYWluaW5nICBxdWVzdGlvbnMgaGVyZSBhcmUgZm9yIEJvcmlzLiBN
+YXkgYmUgY2FuIHdlIGRpc2N1c3MNCnlvdXIgY29tbWVudHMgd2l0aCBWNyBwYXRjaCwgd2hpY2gg
+SSB3aWxsIHNlbmQ/DQoNCj4NCj5PbiAyNy8wMy8yMDIwIDE4OjIyLCBCb3Jpc2xhdiBQZXRrb3Yg
+d3JvdGU6DQo+PiBPbiBXZWQsIE1hciAyNSwgMjAyMCBhdCAwNDo0MjoyMlBNICswMDAwLCBTaGlq
+dSBKb3NlIHdyb3RlOg0KPj4+IFByZXNlbnRseSBBUEVJIGRvZXMgbm90IHN1cHBvcnQgcmVwb3J0
+aW5nIHRoZSB2ZW5kb3Igc3BlY2lmaWMgSFcNCj4+PiBlcnJvcnMsIHJlY2VpdmVkIGluIHRoZSB2
+ZW5kb3IgZGVmaW5lZCB0YWJsZSBlbnRyaWVzLCB0byB0aGUgdmVuZG9yDQo+Pj4gZHJpdmVycyBm
+b3IgYW55IHJlY292ZXJ5Lg0KPj4+DQo+Pj4gVGhpcyBwYXRjaCBhZGRzIHRoZSBzdXBwb3J0IHRv
+IHJlZ2lzdGVyIGFuZCB1bnJlZ2lzdGVyIHRoZQ0KPj4NCj4+IEF2b2lkIGhhdmluZyAiVGhpcyBw
+YXRjaCIgb3IgIlRoaXMgY29tbWl0IiBpbiB0aGUgY29tbWl0IG1lc3NhZ2UuIEl0DQo+PiBpcyB0
+YXV0b2xvZ2ljYWxseSB1c2VsZXNzLg0KPj4NCj4+IEFsc28sIGRvDQo+Pg0KPj4gJCBnaXQgZ3Jl
+cCAnVGhpcyBwYXRjaCcgRG9jdW1lbnRhdGlvbi9wcm9jZXNzDQo+Pg0KPj4gZm9yIG1vcmUgZGV0
+YWlscy4NCj4+DQo+Pj4gZXJyb3IgaGFuZGxpbmcgZnVuY3Rpb24gZm9yIHRoZSB2ZW5kb3Igc3Bl
+Y2lmaWMgSFcgZXJyb3JzIGFuZCBub3RpZnkNCj4+PiB0aGUgcmVnaXN0ZXJlZCBrZXJuZWwgZHJp
+dmVyLg0KPg0KPj4+IEBAIC01MjYsMTAgKzU1MiwxNyBAQCBzdGF0aWMgdm9pZCBnaGVzX2RvX3By
+b2Moc3RydWN0IGdoZXMgKmdoZXMsDQo+Pj4gIAkJCWxvZ19hcm1faHdfZXJyb3IoZXJyKTsNCj4+
+PiAgCQl9IGVsc2Ugew0KPj4+ICAJCQl2b2lkICplcnIgPSBhY3BpX2hlc3RfZ2V0X3BheWxvYWQo
+Z2RhdGEpOw0KPj4+ICsJCQl1OCBlcnJvcl9oYW5kbGVkID0gZmFsc2U7DQo+Pj4gKwkJCWludCBy
+ZXQ7DQo+Pj4gKw0KPj4+ICsJCQlyZXQgPQ0KPmF0b21pY19ub3RpZmllcl9jYWxsX2NoYWluKCZn
+aGVzX2V2ZW50X25vdGlmeV9saXN0LCAwLA0KPj4+ICtnZGF0YSk7DQo+Pg0KPj4gV2VsbCwgdGhp
+cyBpcyBhIG5vdGlmaWVyIHdpdGggc3RhbmRhcmQgbmFtZSBmb3IgYSBub24tc3RhbmRhcmQgZXZl
+bnQuDQo+PiBOb3Qgb3B0aW1hbC4NCj4+DQo+PiBXaHkgZG9lcyBvbmx5IHRoaXMgZXZlbnQgbmVl
+ZCBhIG5vdGlmaWVyPyBCZWNhdXNlIHlvdXIgZHJpdmVyIGlzDQo+PiBpbnRlcmVzdGVkIGluIG9u
+bHkgdGhvc2UgZXZlbnRzPw0KPg0KPkl0cyB0aGUgJ2Vsc2UnIGNhdGNoLWFsbCBmb3Igc3R1ZmYg
+ZHJpdmVycy9hY3BpL2FwZWkgIGRvZXNuJ3Qga25vdyB0byBoYW5kbGUuDQo+DQo+SW4gdGhpcyBj
+YXNlIGl0cyBiZWNhdXNlIGl0cyBhIHZlbmRvciBzcGVjaWZpYyBHVUlEIHRoYXQgb25seSB0aGUg
+dmVuZG9yIGRyaXZlcg0KPmtub3dzIGhvdyB0byBwYXJzZS4NCj4NCj4NCj4+PiArCQkJaWYgKHJl
+dCAmIE5PVElGWV9PSykNCj4+PiArCQkJCWVycm9yX2hhbmRsZWQgPSB0cnVlOw0KPj4+DQo+Pj4g
+IAkJCWxvZ19ub25fc3RhbmRhcmRfZXZlbnQoc2VjX3R5cGUsIGZydV9pZCwgZnJ1X3RleHQsDQo+
+Pj4gIAkJCQkJICAgICAgIHNlY19zZXYsIGVyciwNCj4+PiAtCQkJCQkgICAgICAgZ2RhdGEtPmVy
+cm9yX2RhdGFfbGVuZ3RoKTsNCj4+PiArCQkJCQkgICAgICAgZ2RhdGEtPmVycm9yX2RhdGFfbGVu
+Z3RoLA0KPj4+ICsJCQkJCSAgICAgICBlcnJvcl9oYW5kbGVkKTsNCj4+DQo+PiBXaGF0J3MgdGhh
+dCBlcnJvcl9oYW5kbGVkIHRoaW5nIGZvcj8gVGhhdCdzIGp1c3Qgc2lsbHkuDQo+Pg0KPj4gWW91
+ciBub3RpZmllciByZXR1cm5zIE5PVElGWV9TVE9QIHdoZW4gaXQgaGFzIHF1ZXVlZCB0aGUgZXJy
+b3IuIElmIHlvdQ0KPj4gZG9uJ3Qgd2FudCB0byBsb2cgaXQsIGp1c3QgdGVzdCA9PSBOT1RJRllf
+U1RPUCBhbmQgZG8gbm90IGxvZyBpdCB0aGVuLg0KPg0KPk15IHRoaW5raW5nIGZvciB0aGlzIGJl
+aW5nIG5lZWRlZCB3YXMgc28gdXNlci1zcGFjZSBjb25zdW1lcnMgb2YgdGhvc2UNCj50cmFjZXBv
+aW50cyBrZWVwIHdvcmtpbmcuIE90aGVyd2lzZSB5b3UgdXBncmFkZSwgZ2V0IHRoaXMgZmVhdHVy
+ZSwgYW5kIHlvdXINCj51c2VyLXNwYWNlIGNvdW50ZXJzIHN0b3Agd29ya2luZy4NCj4NCj5Zb3Un
+ZCBuZWVkIHRvIGtub3cgdGhpcyBlcnJvciBzb3VyY2Ugd2FzIG5vdyBtYW5hZ2VkIGJ5IGFuIGlu
+LWtlcm5lbA0KPmRyaXZlciwgd2hpY2ggbWF5IHJlcG9ydCB0aGUgZXJyb3JzIHNvbWV3aGVyZSBl
+bHNlLi4uDQo+DQo+DQo+PiBUaGVuIHlvdXIgbm90aWZpZXIgY2FsbGJhY2sgaXMgcXVldWluZyB0
+aGUgZXJyb3IgaW50byBhIGtmaWZvIGZvcg0KPj4gd2hhdGV2ZXIgcmVhc29uIGFuZCB0aGVuIHNj
+aGVkdWxpbmcgYSB3b3JrcXVldWUgdG8gaGFuZGxlIGl0IGluIHVzZXINCj4+IGNvbnRleHQuLi4N
+Cj4+DQo+PiBTbyBJJ20gdGhpbmtpbmcgdGhhdCBpdCB3b3VsZCBiZSBiZXR0ZXIgaWYgeW91Og0K
+Pj4NCj4+ICogbWFrZSB0aGF0IGtmaWZvIGdlbmVyaWMgYW5kIHBhcnQgb2YgZ2hlcy5jIGFuZCBx
+dWV1ZSBhbGwgdHlwZXMgb2YNCj4+IGVycm9yIHJlY29yZHMgaW50byBpdCBpbiBnaGVzX2RvX3By
+b2MoKSAtIG5vdCBqdXN0IHRoZSBub24tc3RhbmRhcmQNCj4+IG9uZXMuDQo+DQo+TW92ZSB0aGUg
+ZHJvcCB0byBwcm9jZXNzIGNvbnRleHQgaW50byBnaGVzLmM/IFRoaXMgc2hvdWxkIHJlc3VsdCBp
+biBsZXNzIGNvZGUuDQo+DQo+SSBhc2tlZCBmb3IgdGhpcyBob29raW5nIHRvIG9ubHkgYmUgZm9y
+IHRoZSAnY2F0Y2ggYWxsJyBkb24ndC1rbm93IGNhc2Ugc28gdGhhdA0KPndlIGRvbid0IGdldCBk
+cml2ZXJzIHRyeWluZyB0byBob29rIGFuZCBoYW5kbGUgbWVtb3J5IGVycm9ycy4gKGlmIHdlIGV2
+ZXINCj53YW50ZWQgdGhhdCwgaXQgc2hvdWxkIGJlIGZyb20gcGFydCBvZiBtZW1vcnlfZmFpbHVy
+ZSgpIHNvIGl0IGNhdGNoZXMgYWxsIHRoZQ0KPndheXMgb2YgcmVwb3J0aW5nIG1lbW9yeS1mYWls
+dXJlKSAzMmJpdCBhcm0gaGFzIHByaW9yIGluIHRoaXMgYXJlYS4NCj4NCj4NCj4+ICogdGhlbiwg
+d2hlbiB5b3UncmUgZG9uZSBxdWV1aW5nLCB5b3Uga2ljayBhIHdvcmtxdWV1ZS4NCj4+DQo+PiAq
+IHRoYXQgd29ya3F1ZXVlIHJ1bnMgYSBub3JtYWwsIGJsb2NraW5nIG5vdGlmaWVyIHRvIHdoaWNo
+IGRyaXZlcnMNCj4+IHJlZ2lzdGVyLg0KPj4NCj4+IFlvdXIgZHJpdmVyIGNhbiByZWdpc3RlciB0
+byB0aGF0IG5vdGlmaWVyIHRvbyBhbmQgZG8gdGhlIG5vcm1hbA0KPj4gaGFuZGxpbmcgdGhlbiBh
+bmQgbm90IGhhdmUgdGhpcyBhZC1ob2MsIHNlbWktZ2VuZXJpYywgc2VtaS12ZW5kb3Itc3BlY2lm
+aWMNCj50aGluZy4NCj4NCj5BcyBsb25nIGFzIHdlIGRvbid0IHdhbGsgYSBsaXN0IG9mIHRoaW5n
+cyB0aGF0IG1pZ2h0IGhhbmRsZSBhIG1lbW9yeS1lcnJvciwNCj5hbmQgaGF2ZSBzb21lIHJhbmRv
+bSBkcml2ZXIgdHJ5IGFuZCBOT1RJRllfU1RPUCBpdC4uLi4NCj4NCj5hZXJfcmVjb3Zlcl9xdWV1
+ZSgpIHdvdWxkIGJlIHJlcGxhY2VkIGJ5IHRoaXMuIG1lbW9yeV9mYWlsdXJlX3F1ZXVlKCkgaGFz
+DQo+b25lIGFkZGl0aW9uYWwgY2FsbGVyIGluIGRyaXZlcnMvcmFzL2NlYy5jLg0KPg0KPg0KPlRo
+YW5rcywNCj4NCj5KYW1lcw0KVGhhbmtzLA0KU2hpanUNCg==
