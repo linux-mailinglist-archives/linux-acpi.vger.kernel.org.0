@@ -2,77 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFDE91B38D4
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Apr 2020 09:22:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D9E31B3BB7
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Apr 2020 11:48:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725929AbgDVHWo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Apr 2020 03:22:44 -0400
-Received: from mga17.intel.com ([192.55.52.151]:38538 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725786AbgDVHWo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 22 Apr 2020 03:22:44 -0400
-IronPort-SDR: DW72mMAaUbwAXkUm0t6IJ5tZarEEjNAq+uHj+TqifR8tNoiMAyAZSlchsH62FfN2kq+FzpDxJN
- fUbyx9SZPIPQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2020 00:22:43 -0700
-IronPort-SDR: fiT0mkFU71ax0a149oxd1WlMhZqTljfj78m6jFNPGJvnzJfmEXkg4XeO/4/j+BpsPB38rjD5QW
- RAr3T96ZXMGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,412,1580803200"; 
-   d="scan'208";a="429813447"
-Received: from power-sh.sh.intel.com ([10.239.48.5])
-  by orsmga005.jf.intel.com with ESMTP; 22 Apr 2020 00:22:42 -0700
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     rjw@rjwysocki.net
-Cc:     linux-acpi@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>
-Subject: [PATCH] ACPI: processor: allowing probing on platforms with one ACPI C-state
-Date:   Wed, 22 Apr 2020 15:26:07 +0800
-Message-Id: <20200422072607.18179-1-rui.zhang@intel.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726023AbgDVJsg convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 22 Apr 2020 05:48:36 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:44594 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725961AbgDVJsf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Apr 2020 05:48:35 -0400
+Received: from 185.80.35.16 (185.80.35.16) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
+ id e858c47feeb885bf; Wed, 22 Apr 2020 11:48:32 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Jason Gunthorpe <jgg@ziepe.ca>
+Cc:     linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH] pnp: Use list_for_each_entry() instead of open coding
+Date:   Wed, 22 Apr 2020 11:48:32 +0200
+Message-ID: <4331726.1SaVFhkE9D@kreacher>
+In-Reply-To: <0-v1-f68011aff1f8+d8-pnp_gcc10%jgg@mellanox.com>
+References: <0-v1-f68011aff1f8+d8-pnp_gcc10%jgg@mellanox.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-It is possible for ACPI _CST to return only one ACPI C-state, for
-example, when deep cstate disabled in the BIOS.
-And it is better for the acpi_idle driver to probe in this case as well
-for consistency.
+On Tuesday, April 14, 2020 5:10:50 PM CEST Jason Gunthorpe wrote:
+> From: Jason Gunthorpe <jgg@mellanox.com>
+> 
+> Aside from good practice, this avoids a warning from gcc 10:
+> 
+> ./include/linux/kernel.h:997:3: warning: array subscript -31 is outside array bounds of ‘struct list_head[1]’ [-Warray-bounds]
+>   997 |  ((type *)(__mptr - offsetof(type, member))); })
+>       |  ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> ./include/linux/list.h:493:2: note: in expansion of macro ‘container_of’
+>   493 |  container_of(ptr, type, member)
+>       |  ^~~~~~~~~~~~
+> ./include/linux/pnp.h:275:30: note: in expansion of macro ‘list_entry’
+>   275 | #define global_to_pnp_dev(n) list_entry(n, struct pnp_dev, global_list)
+>       |                              ^~~~~~~~~~
+> ./include/linux/pnp.h:281:11: note: in expansion of macro ‘global_to_pnp_dev’
+>   281 |  (dev) != global_to_pnp_dev(&pnp_global); \
+>       |           ^~~~~~~~~~~~~~~~~
+> arch/x86/kernel/rtc.c:189:2: note: in expansion of macro ‘pnp_for_each_dev’
+>   189 |  pnp_for_each_dev(dev) {
+> 
+> Because the common code doesn't cast the starting list_head to the
+> containing struct.
+> 
+> Signed-off-by: Jason Gunthorpe <jgg@mellanox.com>
+> ---
+>  include/linux/pnp.h | 29 +++++++++--------------------
+>  1 file changed, 9 insertions(+), 20 deletions(-)
+> 
+> Compile tested only
+> 
+> (resent with mailing list in cc, sorry)
+> 
+> diff --git a/include/linux/pnp.h b/include/linux/pnp.h
+> index b18dca67253d66..db41156b1b4044 100644
+> --- a/include/linux/pnp.h
+> +++ b/include/linux/pnp.h
+> @@ -220,10 +220,8 @@ struct pnp_card {
+>  #define global_to_pnp_card(n) list_entry(n, struct pnp_card, global_list)
+>  #define protocol_to_pnp_card(n) list_entry(n, struct pnp_card, protocol_list)
+>  #define to_pnp_card(n) container_of(n, struct pnp_card, dev)
+> -#define pnp_for_each_card(card) \
+> -	for((card) = global_to_pnp_card(pnp_cards.next); \
+> -	(card) != global_to_pnp_card(&pnp_cards); \
+> -	(card) = global_to_pnp_card((card)->global_list.next))
+> +#define pnp_for_each_card(card)                                                \
+> +	list_for_each_entry(card, &pnp_cards, global_list)
+>  
+>  struct pnp_card_link {
+>  	struct pnp_card *card;
+> @@ -276,14 +274,9 @@ struct pnp_dev {
+>  #define card_to_pnp_dev(n) list_entry(n, struct pnp_dev, card_list)
+>  #define protocol_to_pnp_dev(n) list_entry(n, struct pnp_dev, protocol_list)
+>  #define	to_pnp_dev(n) container_of(n, struct pnp_dev, dev)
+> -#define pnp_for_each_dev(dev) \
+> -	for((dev) = global_to_pnp_dev(pnp_global.next); \
+> -	(dev) != global_to_pnp_dev(&pnp_global); \
+> -	(dev) = global_to_pnp_dev((dev)->global_list.next))
+> -#define card_for_each_dev(card,dev) \
+> -	for((dev) = card_to_pnp_dev((card)->devices.next); \
+> -	(dev) != card_to_pnp_dev(&(card)->devices); \
+> -	(dev) = card_to_pnp_dev((dev)->card_list.next))
+> +#define pnp_for_each_dev(dev) list_for_each_entry(dev, &pnp_global, global_list)
+> +#define card_for_each_dev(card, dev)                                           \
+> +	list_for_each_entry(dev, &(card)->devices, card_list)
+>  #define pnp_dev_name(dev) (dev)->name
+>  
+>  static inline void *pnp_get_drvdata(struct pnp_dev *pdev)
+> @@ -437,14 +430,10 @@ struct pnp_protocol {
+>  };
+>  
+>  #define to_pnp_protocol(n) list_entry(n, struct pnp_protocol, protocol_list)
+> -#define protocol_for_each_card(protocol,card) \
+> -	for((card) = protocol_to_pnp_card((protocol)->cards.next); \
+> -	(card) != protocol_to_pnp_card(&(protocol)->cards); \
+> -	(card) = protocol_to_pnp_card((card)->protocol_list.next))
+> -#define protocol_for_each_dev(protocol,dev) \
+> -	for((dev) = protocol_to_pnp_dev((protocol)->devices.next); \
+> -	(dev) != protocol_to_pnp_dev(&(protocol)->devices); \
+> -	(dev) = protocol_to_pnp_dev((dev)->protocol_list.next))
+> +#define protocol_for_each_card(protocol, card)                                 \
+> +	list_for_each_entry(card, &(protocol)->cards, protocol_list)
+> +#define protocol_for_each_dev(protocol, dev)                                   \
+> +	list_for_each_entry(dev, &(protocol)->devices, protocol_list)
+>  
+>  extern struct bus_type pnp_bus_type;
 
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
----
- drivers/acpi/processor_idle.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+Applied with some minor white space changes, as 5.7-rc material.
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index dcc289e30166..75534c5b5433 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -308,11 +308,7 @@ static int acpi_processor_get_power_info_cst(struct acpi_processor *pr)
- 	if (ret)
- 		return ret;
- 
--	/*
--	 * It is expected that there will be at least 2 states, C1 and
--	 * something else (C2 or C3), so fail if that is not the case.
--	 */
--	if (pr->power.count < 2)
-+	if (!pr->power.count)
- 		return -EFAULT;
- 
- 	pr->flags.has_cst = 1;
-@@ -468,8 +464,7 @@ static int acpi_processor_get_cstate_info(struct acpi_processor *pr)
- 	for (i = 1; i < ACPI_PROCESSOR_MAX_POWER; i++) {
- 		if (pr->power.states[i].valid) {
- 			pr->power.count = i;
--			if (pr->power.states[i].type >= ACPI_STATE_C2)
--				pr->flags.power = 1;
-+			pr->flags.power = 1;
- 		}
- 	}
- 
--- 
-2.17.1
+Thanks!
+
+
 
