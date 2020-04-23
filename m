@@ -2,108 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA5EC1B6166
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Apr 2020 18:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C2071B618D
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Apr 2020 19:07:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729791AbgDWQ5Z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Apr 2020 12:57:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38766 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729783AbgDWQ5Y (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Apr 2020 12:57:24 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27F0C09B042;
-        Thu, 23 Apr 2020 09:57:24 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: andrzej.p)
-        with ESMTPSA id 75D292A2810
-From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-To:     linux-pm@vger.kernel.org
-Cc:     Zhang Rui <rui.zhang@intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Jiri Pirko <jiri@mellanox.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Peter Kaestle <peter@piie.net>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, kernel@collabora.com,
-        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        Barlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [PATCH v3 2/2] thermal: core: Stop polling DISABLED thermal devices
-Date:   Thu, 23 Apr 2020 18:57:05 +0200
-Message-Id: <20200423165705.13585-3-andrzej.p@collabora.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200423165705.13585-1-andrzej.p@collabora.com>
-References: <a3998ad2-19bc-0893-a10d-2bb5adf7d99f@samsung.com>
- <20200423165705.13585-1-andrzej.p@collabora.com>
+        id S1729841AbgDWRHV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Apr 2020 13:07:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48938 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729840AbgDWRHV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 23 Apr 2020 13:07:21 -0400
+Received: from localhost (mobile-166-175-187-210.mycingular.net [166.175.187.210])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3E0BB2076C;
+        Thu, 23 Apr 2020 17:07:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587661640;
+        bh=yw9wJXzgI852NvRxPmOyJyXU9gysczH5+gd8R6BRqdg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=jRBGlpIAOMr0aJEhtE9qf9xmylLTnD1+54cwHWFclX7d4jCcl2dYjP2Ky/QQ44gSB
+         cw+8hXorBVHvZRIKuHFLtZExR5YTTmPk8/qfasQtq4F55wkr9CzeWvU9INQJntPHzP
+         74k2wAD7i4pxKssLvx8nwPa1cqjoK93h+egLbs1w=
+Date:   Thu, 23 Apr 2020 12:07:18 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Hans De Goede <hdegoede@redhat.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH v2 0/9] PM: sleep: core: Rearrange the handling of driver
+ power management flags
+Message-ID: <20200423170718.GA190576@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5673945.BT02kTCndr@kreacher>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Polling DISABLED devices is not desired, as all such "disabled" devices
-are meant to be handled by userspace. This patch introduces and uses
-should_stop_polling() to decide whether the device should be polled or not.
+On Sat, Apr 18, 2020 at 06:23:08PM +0200, Rafael J. Wysocki wrote:
+> Hi,
+> 
+> This is an update including some fixes and extra patches based on the
+> continuation of the discussion [1].
+> 
+> On Friday, April 10, 2020 5:46:27 PM CEST Rafael J. Wysocki wrote:
+> > Hi Alan,
+> > 
+> > Following our recent discussion regarding the DPM_FLAG_* family of flags [1],
+> > I have decided to follow some of your recommendations and make changes to the
+> > core code handling those flags.
+> > 
+> > The purpose of this is basically to make the code more consistent internally,
+> > easier to follow and better documented.
+> > 
+> > First of all, patch [1/7] changes the PM core to skip driver-level "late"
+> > and "noirq" suspend callbacks for devices with SMART_SUSPEND set if they are
+> > still runtime-suspended during the "late" system-wide suspend phase (without
+> > the patch it does that only if subsystem-level late/noirq/early suspend/resume
+> > callbacks are not present for the device, which is demonstrably inconsistent)
+> > and updates the resume part of the code accordingly (it doesn't need to check
+> > whether or not the subsystem-level callbacks are present any more).
+> > 
+> > The next patch, [2/7], is purely cosmetic and its only purpose is to reduce
+> > the LOC number and move related pieces of code closer to each other.
+> 
+> The first two patches have not changed.
+> 
+> > Patch [3/7] changes the PM core so that it doesn't skip any subsystem-level
+> > callbacks during system-wide resume (without the patch they may be skipped in
+> > the "early resume" and "resume" phases due to LEAVE_SUSPENDED being set which
+> > may be problematic) and to always run the driver's ->resume callback if the
+> > corresponding subsystem-level callback is not present (without the patch it
+> > may be skipped if LEAVE_SUSPENDED is set) to let it reverse the changes made
+> > by the driver's ->suspend callback (which always runs too) if need be.
+> 
+> The difference between this one and patch [3/9] in the v2 is the fixed
+> definition of dev_pm_may_skip_resume(), renamed to dev_pm_skip_resume() by
+> one of the next patches.
+> 
+> Patch [4/9] changes the handling of the power.may_skip_resume flag to set it
+> to 'true' by default and updates the subsystems aware of it to clear it when
+> they don't want devices to stay in suspend.
+> 
+> > Patches [4-6/7] rename one function in the PM core and two driver PM flags to
+> > make their names better reflect their purpose.
+> 
+> These are patches [5/9] and [7-8/9] in the v2 and patch [6/9] renames
+> dev_pm_smart_suspend_and_suspended() to dev_pm_skip_suspend().
+> 
+> > Finally, patch [7/7] updates the documentation of the driver PM flags to
+> > reflect the new code flows.
+> 
+> This patch [9/9] now and it has been updated to reflect the new code changes.
+> 
+> The pm-sleep-core branch:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+>   pm-sleep-core
+> 
+> contains the v2 now.
 
-Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
----
- drivers/thermal/thermal_core.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+For the drivers/pci parts:
 
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index a2a5034f76e7..03c4d8d23284 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -305,13 +305,22 @@ static void thermal_zone_device_set_polling(struct thermal_zone_device *tz,
- 		cancel_delayed_work(&tz->poll_queue);
- }
- 
-+static inline bool should_stop_polling(struct thermal_zone_device *tz)
-+{
-+	return thermal_zone_device_get_mode(tz) == THERMAL_DEVICE_DISABLED;
-+}
-+
- static void monitor_thermal_zone(struct thermal_zone_device *tz)
- {
-+	bool stop;
-+
-+	stop = should_stop_polling(tz);
-+
- 	mutex_lock(&tz->lock);
- 
--	if (tz->passive)
-+	if (!stop && tz->passive)
- 		thermal_zone_device_set_polling(tz, tz->passive_delay);
--	else if (tz->polling_delay)
-+	else if (!stop && tz->polling_delay)
- 		thermal_zone_device_set_polling(tz, tz->polling_delay);
- 	else
- 		thermal_zone_device_set_polling(tz, 0);
-@@ -503,6 +512,9 @@ void thermal_zone_device_update(struct thermal_zone_device *tz,
- {
- 	int count;
- 
-+	if (should_stop_polling(tz))
-+		return;
-+
- 	if (atomic_read(&in_suspend))
- 		return;
- 
--- 
-2.17.1
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
