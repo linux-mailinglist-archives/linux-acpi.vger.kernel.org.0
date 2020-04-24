@@ -2,189 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED8451B7034
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Apr 2020 11:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EFDA1B70CD
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Apr 2020 11:27:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726695AbgDXJEB convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 24 Apr 2020 05:04:01 -0400
-Received: from mga02.intel.com ([134.134.136.20]:33393 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725868AbgDXJEB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 24 Apr 2020 05:04:01 -0400
-IronPort-SDR: qIAIfFNtAjFsuldYT5wCSBposeGCOkoytbul3mroTiEFVlr6vZ1Ufz6GJJhG16jXzFIEYvIAYS
- dxYiIB/ZmSrw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2020 02:04:00 -0700
-IronPort-SDR: 3SAvLIk0KN+WtdbnyIlIpHsSgCNHuLoEG5MFe0W5WEAli89MdmWowTPM+6iGENS1KWttUGvrO2
- w6jCqjReSCYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,311,1583222400"; 
-   d="scan'208";a="366287367"
-Received: from fmsmsx108.amr.corp.intel.com ([10.18.124.206])
-  by fmsmga001.fm.intel.com with ESMTP; 24 Apr 2020 02:03:59 -0700
-Received: from fmsmsx605.amr.corp.intel.com (10.18.126.85) by
- FMSMSX108.amr.corp.intel.com (10.18.124.206) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Fri, 24 Apr 2020 02:03:32 -0700
-Received: from fmsmsx605.amr.corp.intel.com (10.18.126.85) by
- fmsmsx605.amr.corp.intel.com (10.18.126.85) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Fri, 24 Apr 2020 02:03:31 -0700
-Received: from shsmsx103.ccr.corp.intel.com (10.239.4.69) by
- fmsmsx605.amr.corp.intel.com (10.18.126.85) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5
- via Frontend Transport; Fri, 24 Apr 2020 02:03:31 -0700
-Received: from shsmsx108.ccr.corp.intel.com ([169.254.8.7]) by
- SHSMSX103.ccr.corp.intel.com ([169.254.4.146]) with mapi id 14.03.0439.000;
- Fri, 24 Apr 2020 17:03:29 +0800
-From:   "Zhang, Rui" <rui.zhang@intel.com>
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
-CC:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Jiri Pirko <jiri@mellanox.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Peter Kaestle <peter@piie.net>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        "Support Opensource" <support.opensource@diasemi.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "kernel@collabora.com" <kernel@collabora.com>,
-        Barlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: RE: [PATCH v3 2/2] thermal: core: Stop polling DISABLED thermal
- devices
-Thread-Topic: [PATCH v3 2/2] thermal: core: Stop polling DISABLED thermal
- devices
-Thread-Index: AQHWGZBG4VqXwdwSNk6/8EtFFGs1V6iH9bQA
-Date:   Fri, 24 Apr 2020 09:03:29 +0000
-Message-ID: <744357E9AAD1214791ACBA4B0B90926377CF60E3@SHSMSX108.ccr.corp.intel.com>
-References: <a3998ad2-19bc-0893-a10d-2bb5adf7d99f@samsung.com>
- <20200423165705.13585-1-andrzej.p@collabora.com>
- <20200423165705.13585-3-andrzej.p@collabora.com>
-In-Reply-To: <20200423165705.13585-3-andrzej.p@collabora.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [10.239.127.40]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1726298AbgDXJ1K (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Apr 2020 05:27:10 -0400
+Received: from mail-vi1eur05on2058.outbound.protection.outlook.com ([40.107.21.58]:28365
+        "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726347AbgDXJ1K (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 24 Apr 2020 05:27:10 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hKzxG829k5GPx5BEBUowYqaxFfzwA/N1UGnyzvOwFfmw8tjbtrKetrPx3X0oJdqf8NifhAiLqDjb5qT3WYdEQVd1ueSEmuynrUbak/1xajCDvA/bFsxWyCNQFHek79DjNPLa2wy9T5otXfg6CUoXib7haBL6tYLGT/AZshijbNRh9sXFWTN2WbwD/rvddnz0J7I8ownc8KKfmz6yjkRXW+LqCU+3NA8f797vQM5G4+fc4AIcwvXKYp3eqww8VCEjYk0a0CL0ndx4CLO/vQcRid9D+SI1fQv5XsAz6+kNVo+nURsnw13w6wxE+gkWD1BZUC12Fykk+gxG+0wH5d96Ug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7BJM/Wjjdm80vp5fOaTtwFDwVOJE1Ui37dfD8EIGaLM=;
+ b=AjeqAnGi28XgnXwHLEWFNdsLGuliKM0JiYWkjWbad8IoEy81c0NESkWYU+6tBgOwo5tqodHRofkCQAw8WOXkfNtSzYlUeebDten6zOQTaAkcjimLPKvPCF33DjnnUKA9NBFnH3AJKm2J3LoHxZWQwICtdajrPQCcz69mHZjNI67rmpJRg2uoqBVMR3LvvXm4lcWjKLcFB8Nbhl4ziHiGz62pmtzCo98HHQa/2Av1DOilr71qX3N5IX/9VfMew+OYJINNDwYxyRDbaGFuUctg9CZhr39oPErMVcBdWZe5pEPhKeQSajAVs4DhopZWPmEJt8KoH+opJ3f8VvkF5Vr32w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7BJM/Wjjdm80vp5fOaTtwFDwVOJE1Ui37dfD8EIGaLM=;
+ b=k8zpJ+8E6HAW344HUwXWcJoE895ti/fPQo/v7qyhtshfK4628Z/d7OI5PfbXzut6vK7+H7tUNg7YOtfWt5kL4cwTSJqv4q85S30g5TvbmKFl+nO6iU0J5YA5UowECavC2yL0ei0PBVjzPQju/uL7Mcp7d/P5ezsAIzHo/j8vnFI=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=calvin.johnson@oss.nxp.com; 
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
+ by AM0PR04MB5876.eurprd04.prod.outlook.com (2603:10a6:208:130::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.22; Fri, 24 Apr
+ 2020 09:27:05 +0000
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::c4fe:d4a4:f0e1:a75b]) by AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::c4fe:d4a4:f0e1:a75b%4]) with mapi id 15.20.2921.030; Fri, 24 Apr 2020
+ 09:27:05 +0000
+Date:   Fri, 24 Apr 2020 14:56:51 +0530
+From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     linux.cj@gmail.com, Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        linux-acpi@vger.kernel.org,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Pankaj Bansal <pankaj.bansal@nxp.com>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Varun Sethi <V.Sethi@nxp.com>, Marcin Wojtas <mw@semihalf.com>,
+        Makarand Pawagi <makarand.pawagi@nxp.com>,
+        "Rajesh V . Bikkina" <rajesh.bikkina@nxp.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [net-next PATCH v1 1/2] device property: Introduce
+ fwnode_phy_find_device()
+Message-ID: <20200424092651.GA4501@lsv03152.swis.in-blr01.nxp.com>
+References: <20200424031617.24033-1-calvin.johnson@oss.nxp.com>
+ <20200424031617.24033-2-calvin.johnson@oss.nxp.com>
+ <b583f6fb-e6fe-3320-41c6-e019a4e10388@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b583f6fb-e6fe-3320-41c6-e019a4e10388@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ClientProxiedBy: SG2PR02CA0022.apcprd02.prod.outlook.com
+ (2603:1096:3:17::34) To AM0PR04MB5636.eurprd04.prod.outlook.com
+ (2603:10a6:208:130::22)
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR02CA0022.apcprd02.prod.outlook.com (2603:1096:3:17::34) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.13 via Frontend Transport; Fri, 24 Apr 2020 09:26:58 +0000
+X-Originating-IP: [14.142.151.118]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 231d6687-ca56-431a-727c-08d7e831a6d4
+X-MS-TrafficTypeDiagnostic: AM0PR04MB5876:|AM0PR04MB5876:
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR04MB58764AA80BA6B44F9D790328D2D00@AM0PR04MB5876.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
+X-Forefront-PRVS: 03838E948C
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(346002)(39860400002)(136003)(376002)(396003)(1006002)(1076003)(6666004)(86362001)(26005)(6916009)(55236004)(7416002)(53546011)(6506007)(316002)(2906002)(33656002)(186003)(16526019)(956004)(7696005)(66556008)(66476007)(66946007)(52116002)(44832011)(9686003)(5660300002)(478600001)(81156014)(8676002)(54906003)(4326008)(8936002)(55016002)(110426005);DIR:OUT;SFP:1101;
+Received-SPF: None (protection.outlook.com: oss.nxp.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: MSi2/CvGv4lgZbLLcZVAVAOvEIX9CrzBvTS15v72pvPTrViC1AgWrM3ktcWS/ceTTtWy+oYYkt3XLYl3sYCuYu6kb+SeBKrNjrwXzzmoaz1MQAeK0x68FmHHY61NPbzls4jfjI2rpac6/DUXYpzhYhoCitEJ24eneQ8tAjgWAx5MzRc61tiZW6aUy3mFo1lTdd5aGBFnKs386S7pBV48dw63LBAHtLPfK/KwmQ1HvAsVTRsEb5OR3bK6zoVDlYdfqExrs72O83RG3gtCwgkMp4ILeZd8/GSPQUlZ1fbYUnn6mEU3dyRWOj55elgpMXjYfjz8uik0ldSEV1Rib6ace2sulCKY46gk2Ng+3694ZWENxJa9MdkrAd9YI2bbzEkltuReSakg6wTuEGv6chy0JStjsj2d1IafDPFS5KLykDIQlmIHQP7bd0DM6L7I1cz/WU6JWzAGeituk4PI4gIC1aDUhNWNgms+NNgOpz8+ZlCi4dT5aexozeo3WcEBW0ET
+X-MS-Exchange-AntiSpam-MessageData: y4WzgI6rnORMM+mBl1isOtVe4dxq1Hmx1WnK9g+S9+3Yt0oMzG5Zz6sv0BMOSe5j5qODjS/Uni1SF0TIF2g9QA3a4nvwTsANxpXTlvlqsjOlhztr+5trUh2M485sAAFeloO6yObNGU46h3QaM+OepQ==
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 231d6687-ca56-431a-727c-08d7e831a6d4
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2020 09:27:05.5402
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3JO/kr4mDENotUQ6nwLzCHVrYQj2yFv4fIUHHeD4B3juSgBjC0UXDwK0kxTm+HREssjEdBcQNXQewOvtLY6faw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB5876
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Andrzej,
-
-Thanks for the patches. My Linux laptop was broken and won't get fixed till next
-week, so I may lost some of the discussions previously.
-
-> -----Original Message-----
-> From: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-> Sent: Friday, April 24, 2020 12:57 AM
-> To: linux-pm@vger.kernel.org
-> Cc: Zhang, Rui <rui.zhang@intel.com>; Rafael J . Wysocki
-> <rjw@rjwysocki.net>; Len Brown <lenb@kernel.org>; Jiri Pirko
-> <jiri@mellanox.com>; Ido Schimmel <idosch@mellanox.com>; David S .
-> Miller <davem@davemloft.net>; Peter Kaestle <peter@piie.net>; Darren
-> Hart <dvhart@infradead.org>; Andy Shevchenko <andy@infradead.org>;
-> Support Opensource <support.opensource@diasemi.com>; Daniel Lezcano
-> <daniel.lezcano@linaro.org>; Amit Kucheria
-> <amit.kucheria@verdurent.com>; Shawn Guo <shawnguo@kernel.org>;
-> Sascha Hauer <s.hauer@pengutronix.de>; Pengutronix Kernel Team
-> <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; NXP
-> Linux Team <linux-imx@nxp.com>; Heiko Stuebner <heiko@sntech.de>;
-> Orson Zhai <orsonzhai@gmail.com>; Baolin Wang
-> <baolin.wang7@gmail.com>; Chunyan Zhang <zhang.lyra@gmail.com>; linux-
-> acpi@vger.kernel.org; netdev@vger.kernel.org; platform-driver-
-> x86@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
-> kernel@collabora.com; Andrzej Pietrasiewicz <andrzej.p@collabora.com>;
-> Barlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Subject: [PATCH v3 2/2] thermal: core: Stop polling DISABLED thermal devices
-> Importance: High
+On Thu, Apr 23, 2020 at 08:45:03PM -0700, Florian Fainelli wrote:
 > 
-> Polling DISABLED devices is not desired, as all such "disabled" devices are
-> meant to be handled by userspace. This patch introduces and uses
-> should_stop_polling() to decide whether the device should be polled or not.
 > 
-Thanks for the fix, and IMO, this reveal some more problems.
-Say, we need to define "DISABLED" thermal zone.
-Can we read the temperature? Can we trust the trip point value?
+> On 4/23/2020 8:16 PM, Calvin Johnson wrote:
+> > Define fwnode_phy_find_device() to iterate an mdiobus and find the
+> > phy device of the provided phy fwnode.
+> > 
+> > Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
+> 
+> If you forget to update the MAINTAINERS file, or do not place this code
+> under drivers/net/phy/* or drivers/of/of_mdio.c then this is going to
+> completely escape the sight of the PHYLIB/PHYLINK maintainers...
 
-IMO, a disabled thermal zone does not mean it is handled by userspace, because
-that is what the userspace governor designed for.
-Instead, if a thermal zone is disabled, in thermal_zone_device_update(), we should
-basically skip all the other operations as well.
+Did you mean the following change?
 
-I'll try your patches and probably make an incremental patch.
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6354,6 +6354,7 @@ F:
+Documentation/devicetree/bindings/net/ethernet-phy.yaml
+ F:     Documentation/devicetree/bindings/net/mdio*
+ F:     Documentation/devicetree/bindings/net/qca,ar803x.yaml
+ F:     Documentation/networking/phy.rst
++F:     drivers/base/property.c
+ F:     drivers/net/phy/
+ F:     drivers/of/of_mdio.c
 
-Thanks,
-rui
+Do I need to send v2 with this? On checking CC and MAINTAINERS, I see
+only hkallweit1@gmail.com was missed.
 
-> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-> ---
->  drivers/thermal/thermal_core.c | 16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/thermal/thermal_core.c
-> b/drivers/thermal/thermal_core.c index a2a5034f76e7..03c4d8d23284 100644
-> --- a/drivers/thermal/thermal_core.c
-> +++ b/drivers/thermal/thermal_core.c
-> @@ -305,13 +305,22 @@ static void thermal_zone_device_set_polling(struct
-> thermal_zone_device *tz,
->  		cancel_delayed_work(&tz->poll_queue);
->  }
-> 
-> +static inline bool should_stop_polling(struct thermal_zone_device *tz)
-> +{
-> +	return thermal_zone_device_get_mode(tz) ==
-> THERMAL_DEVICE_DISABLED; }
-> +
->  static void monitor_thermal_zone(struct thermal_zone_device *tz)  {
-> +	bool stop;
-> +
-> +	stop = should_stop_polling(tz);
-> +
->  	mutex_lock(&tz->lock);
-> 
-> -	if (tz->passive)
-> +	if (!stop && tz->passive)
->  		thermal_zone_device_set_polling(tz, tz->passive_delay);
-> -	else if (tz->polling_delay)
-> +	else if (!stop && tz->polling_delay)
->  		thermal_zone_device_set_polling(tz, tz->polling_delay);
->  	else
->  		thermal_zone_device_set_polling(tz, 0); @@ -503,6 +512,9
-> @@ void thermal_zone_device_update(struct thermal_zone_device *tz,  {
->  	int count;
-> 
-> +	if (should_stop_polling(tz))
-> +		return;
-> +
->  	if (atomic_read(&in_suspend))
->  		return;
-> 
-> --
-> 2.17.1
+Please let me know.
 
+Regards
+Calvin
