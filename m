@@ -2,61 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 888201B7140
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Apr 2020 11:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D0171B714D
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Apr 2020 11:56:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726647AbgDXJyf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Apr 2020 05:54:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55908 "EHLO
+        id S1726846AbgDXJ4p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Apr 2020 05:56:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726582AbgDXJyf (ORCPT
+        by vger.kernel.org with ESMTP id S1726839AbgDXJ4p (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 24 Apr 2020 05:54:35 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 802C9C09B045;
-        Fri, 24 Apr 2020 02:54:34 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id o185so4413170pgo.3;
-        Fri, 24 Apr 2020 02:54:34 -0700 (PDT)
+        Fri, 24 Apr 2020 05:56:45 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 958BFC09B045;
+        Fri, 24 Apr 2020 02:56:44 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id o15so4416565pgi.1;
+        Fri, 24 Apr 2020 02:56:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=iVvYIfEqTyiL0cJpR1ziiocvVVbqCRYQEWmIpkQdSo4=;
-        b=lNQg7yUM1uHwNZH9rRi6aMycHtL1Wrb5aNMA14RGDMtHDItmAykWFl25jb742vRfhF
-         EToY+8xjZ3SGMPWKCWL/d0VBa26J8XWpkzgQ2YkpiobCnlFhsf2wFQJfRWFTEdJIxt+L
-         tOALbRk1YJkPUconj59UScO5akAZO43/Rude99MbOaxAFladi7T3HCeVxwu3QVLyjXqW
-         wuD6ASN6ByFkw5EXnKYCxq9ZKthzLmzdzmc/1QrG44xetQ7KbXWUL2MiCOgM0eeXCdQ6
-         h4gYVDa3Ae5GfEJ5C1n9XwkuAvet6QEQfXGzAbAZ1naPIg45QtWPruZmvjAgTlJestom
-         OZwQ==
+        bh=8g1Qeu2PJu2OXoQ3lMahtFGRconFZq/a+DVsXd6HwAs=;
+        b=EDPb40iEk4xe3gjopzZRdm0PXV3UNcBpXaXQwvVkK6Gks2ubrPWTqneru4oMuXdOQ+
+         m7wy7cLJ3DarRKECjTxse5/OCNU8WhkX9FzcjaAsbkcSJjgUqg9VujC2sVwjqPSN3tyA
+         /ANiw4DBFT5aOy0Bku0574L44kTcWhA4BioScPGRYTP/Z9SKqeC8o8RzXN5EK6K83lym
+         Xh7XjAfAxREZFaFXIbMziFSjKK1KTPY3/8ZZrPvK3zwGMd59OGKyaH/uAmT1ctyVznxb
+         l1TOx83AIqjULTw+Oxi1uQKjo5n/eRoROEUseVnCN2ta84Kd6xXTNnPJLShRiFASMzbl
+         azdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=iVvYIfEqTyiL0cJpR1ziiocvVVbqCRYQEWmIpkQdSo4=;
-        b=hp/Kq9Ehb8/xMSAKg0bBwH4kJc2wYYIeSIXxpGLNd35jXzMNEMJCiybiXNNO1XuUAt
-         VQwsVdpYdLL7S9xaWeUbYoJuUNIf6oaWqYstvLLdCO021A7wDjDxQGUAOcp2VMSbVNpD
-         T8OdXWDZfhBAQwOxk0Jfnh9lehBhaInORwgew2JlSHnVA73gcXCrt9gvg3CLMCzRyZpn
-         KPutpCjXOtRjwu9l2Ba9Bd0NWIzc8Q/DOfnafO6rCLELLapGBKWOqZN1H6PjqAIGItGj
-         wL7cUL30ZsDfgSvpFM5gwnRts0n+1pnX+SCNMm4uU3excu5bOul6PL7PVJsf8OEVlU6W
-         T+yw==
-X-Gm-Message-State: AGi0PuZcoUnINnrCvmECFTyuG2QW/4RVYtX1PdBLCDbjf5m1Cnq95puD
-        L8P8kSLVObt4eEhY6G/8FrmEuDdWyltN1jpSVMs=
-X-Google-Smtp-Source: APiQypLTdtY2h3+c0DJDMGPfzEIOPk2dta0lyKEsWgoM7Y++nWond/ddP3DuM+fDmLggdLnM2ad9czHqSI0wS3/NnOw=
-X-Received: by 2002:aa7:8f26:: with SMTP id y6mr8944170pfr.36.1587722073914;
- Fri, 24 Apr 2020 02:54:33 -0700 (PDT)
+        bh=8g1Qeu2PJu2OXoQ3lMahtFGRconFZq/a+DVsXd6HwAs=;
+        b=ewq+Cc8G8RZhoknsgZyzHiyOrvn6vqKnDO1pyQ/dPT/Ndt4hMnaTXW84GBEGmdtVlF
+         Qf6l8pXJFuxDOCzlzJonYRnCRjU6BnfWmOAeahVxDDNn1to7mjOdYba/lCqiCuXtvlwf
+         zGSW+pcnzmB1KUNeHjQF6tdwZhlQM4pj5fyJJqXspR0TUqC6AX4eV9yYixKeQ1bXb9Bh
+         RQNfaELRsGjCWbIdYn6V+nW0QIJrJK48GyZGTimOYtwwFIWFcegqIcYfjdcuWklwqrl4
+         UVSr7+hcoYfn2H60yrczeh0mfEt3cX+hYa4rwxbcsR+N/Pg3RQBY9gq5awPPuubLSxl3
+         V71A==
+X-Gm-Message-State: AGi0Pua9DD/qNKz34hkYEtenx4ycPHuO2bigPst+K+uF4XWpT7l0uLwG
+        4OY9OR9PeLShf5sl3jlbwSIzeIEa6BDHbp/NLjs=
+X-Google-Smtp-Source: APiQypJoSVO02AhLEULSq00w+T9tSO+dGfUkCB9MaeL3fJM2YBvorpMGA+TqH8RN4vRqzgEpcjgVuiAnEW+pfufBUxc=
+X-Received: by 2002:a63:1d4:: with SMTP id 203mr8109776pgb.74.1587722204197;
+ Fri, 24 Apr 2020 02:56:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200424031617.24033-1-calvin.johnson@oss.nxp.com>
- <20200424031617.24033-2-calvin.johnson@oss.nxp.com> <b583f6fb-e6fe-3320-41c6-e019a4e10388@gmail.com>
- <20200424092651.GA4501@lsv03152.swis.in-blr01.nxp.com>
-In-Reply-To: <20200424092651.GA4501@lsv03152.swis.in-blr01.nxp.com>
+References: <20200424031617.24033-1-calvin.johnson@oss.nxp.com> <20200424031617.24033-3-calvin.johnson@oss.nxp.com>
+In-Reply-To: <20200424031617.24033-3-calvin.johnson@oss.nxp.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 24 Apr 2020 12:54:26 +0300
-Message-ID: <CAHp75VdxFjzs2uj7ZYNmwt9DC386gMNahi3A_MYV4wE3kbtq=g@mail.gmail.com>
-Subject: Re: [net-next PATCH v1 1/2] device property: Introduce fwnode_phy_find_device()
+Date:   Fri, 24 Apr 2020 12:56:37 +0300
+Message-ID: <CAHp75Vftq3OEEC5DfW8CgV4yQKZ3doD-r6khXxgn0oOmrLnLkA@mail.gmail.com>
+Subject: Re: [net-next PATCH v1 2/2] phylink: introduce phylink_fwnode_phy_connect()
 To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>, linux.cj@gmail.com,
-        Jeremy Linton <jeremy.linton@arm.com>,
+Cc:     linux.cj@gmail.com, Jeremy Linton <jeremy.linton@arm.com>,
         Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         Russell King - ARM Linux admin <linux@armlinux.org.uk>,
         Cristi Sovaiala <cristian.sovaiala@nxp.com>,
         Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
@@ -72,34 +70,38 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>, linux.cj@gmail.com,
         Marcin Wojtas <mw@semihalf.com>,
         Makarand Pawagi <makarand.pawagi@nxp.com>,
         "Rajesh V . Bikkina" <rajesh.bikkina@nxp.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>
+        "David S. Miller" <davem@davemloft.net>,
+        Heiner Kallweit <hkallweit1@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Apr 24, 2020 at 12:27 PM Calvin Johnson
+On Fri, Apr 24, 2020 at 6:17 AM Calvin Johnson
 <calvin.johnson@oss.nxp.com> wrote:
-> On Thu, Apr 23, 2020 at 08:45:03PM -0700, Florian Fainelli wrote:
-> > On 4/23/2020 8:16 PM, Calvin Johnson wrote:
-
-> > If you forget to update the MAINTAINERS file, or do not place this code
-> > under drivers/net/phy/* or drivers/of/of_mdio.c then this is going to
-> > completely escape the sight of the PHYLIB/PHYLINK maintainers...
 >
-> Did you mean the following change?
+> Define phylink_fwnode_phy_connect() to connect phy specified by
+> a fwnode to a phylink instance. This function will handle both
+> DT and ACPI nodes.
 
-I don't think this is an appreciated option.
-Second one was to locate this code under drivers/net, which may be
-better. And perhaps other not basic (to the properties) stuff should
-be also moved to respective subsystems.
+>  #include <linux/spinlock.h>
+>  #include <linux/timer.h>
+>  #include <linux/workqueue.h>
+> +#include <linux/acpi.h>
+
+Looks like broken order.
+
+> +       if (is_of_node(fwnode)) {
+> +       } else if (is_acpi_node(fwnode)) {
+> +       }
+
+I'm wondering if there is an API that allows you to drop all this
+stuff. In property provider agnostic code we really don't want to see
+this.
+
+> +       if (!phy_dev)
+> +               return -ENODEV;
 
 -- 
 With Best Regards,
