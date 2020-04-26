@@ -2,148 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A2521B8F0F
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Apr 2020 12:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BF181B8F35
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Apr 2020 13:03:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726170AbgDZKr2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 26 Apr 2020 06:47:28 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:23870 "EHLO
+        id S1726179AbgDZLDR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 26 Apr 2020 07:03:17 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:31234 "EHLO
         us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726144AbgDZKr1 (ORCPT
+        by vger.kernel.org with ESMTP id S1726154AbgDZLDK (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 26 Apr 2020 06:47:27 -0400
+        Sun, 26 Apr 2020 07:03:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1587898044;
+        s=mimecast20190719; t=1587898988;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ameLghCB4urIBaiOFKoYPKuTDYVd0O7mLx3+vt0PmiM=;
-        b=bMWRnq5lSpP8NTk2O+0lPhqV35DrtWlf26dbI1gx+cprtT7ydKlNxfYitU+Q+72oDt67zb
-        B/C7Mv8nytk7cP2zyL1cYJElzBgO2oSmZ1Qn/BGlpktB9N1deHWeNOUmF6XPjdKgZavzp7
-        F0pab9xsfM/z1uWAdA+/Yq5PF4MLeCk=
+         content-transfer-encoding:content-transfer-encoding;
+        bh=XDnRW1OXXiAC0WD3am+tOEpqeaV+ob+FQwHX7z++4IU=;
+        b=Jb5kIK1033u5YHF0V+mDQv1chLHvWyY4Ff4eS+FGEAr5Kt+HJtdFGrdOkaq+d3lHmYMBWP
+        Y5tcfuvXRqc5qrazHAAXarbczgVtc+wMWOyR12BlLkF82TDuQ43+HKbHETDKhCCKnRsrC2
+        x+Nd1a8eJAxDe59nmxWPK6QMDqm7Qzs=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-125-qLBDTMThPXi08NF_M3g5Hg-1; Sun, 26 Apr 2020 06:47:23 -0400
-X-MC-Unique: qLBDTMThPXi08NF_M3g5Hg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+ us-mta-142-YDclGxIiMfmhZqMzga3eaw-1; Sun, 26 Apr 2020 07:03:05 -0400
+X-MC-Unique: YDclGxIiMfmhZqMzga3eaw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9BE8B800D24;
-        Sun, 26 Apr 2020 10:47:21 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B45B480B713;
+        Sun, 26 Apr 2020 11:03:02 +0000 (UTC)
 Received: from x1.localdomain.com (ovpn-112-32.ams2.redhat.com [10.36.112.32])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0A2C55D715;
-        Sun, 26 Apr 2020 10:47:19 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 45DF01001281;
+        Sun, 26 Apr 2020 11:02:58 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
         Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>
+        Andy Shevchenko <andy@infradead.org>,
+        Kevin Tsai <ktsai@capellamicro.com>,
+        Jonathan Cameron <jic23@kernel.org>
 Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] ACPI / scan: Create platform device for CPLM3218 ACPI nodes
-Date:   Sun, 26 Apr 2020 12:47:13 +0200
-Message-Id: <20200426104713.216896-3-hdegoede@redhat.com>
-In-Reply-To: <20200426104713.216896-1-hdegoede@redhat.com>
-References: <20200426104713.216896-1-hdegoede@redhat.com>
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: [PATCH 1/8] iio: light: cm32181: Add some extra register defines
+Date:   Sun, 26 Apr 2020 13:02:49 +0200
+Message-Id: <20200426110256.218186-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Some CPLM3218 ACPI nodes also put the SMBus Alert Response Address (0x0c)
-in their ACPI resource table; and they put it there as the first entry,
-here is an example from the CPLM3218 device in the DSDT of an Asus T100TA=
-:
+These come from a newer version of cm32181.c, which is floating around
+the net, with a copyright of:
 
- Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
- {
-     Name (SBUF, ResourceTemplate ()
-     {
-         I2cSerialBusV2 (0x000C, ControllerInitiated, 0x00061A80,
-             AddressingMode7Bit, "\\_SB.I2C3",
-             0x00, ResourceConsumer, , Exclusive,
-             )
-         I2cSerialBusV2 (0x0048, ControllerInitiated, 0x00061A80,
-             AddressingMode7Bit, "\\_SB.I2C3",
-             0x00, ResourceConsumer, , Exclusive,
-             )
-         Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive, ,, )
-         {
-             0x00000033,
-         }
-     })
-     Return (SBUF) /* \_SB_.I2C3.ALSD._CRS.SBUF */
- }
+ * Copyright (C) 2014 Capella Microsystems Inc.
+ * Author: Kevin Tsai <ktsai@capellamicro.com>
+ *
+ * This program is free software; you can redistribute it and/or modify i=
+t
+ * under the terms of the GNU General Public License version 2, as publis=
+hed
+ * by the Free Software Foundation.
 
-The actual I2C address of the sensor in this case is the 0x48 address
-from the second resource-table entry. On some other devices
-(e.g. HP X2 Bay Trail models, Acer SW5-012) the CPLM3218 node contains
-only 1 I2C resource.
+Note that this removes the bogus CM32181_CMD_ALS_ENABLE define, there
+is no enable bit, only a disable bit and enabled is the absence of
+being disabled.
 
-Add the CPLM3218 to the I2C multi instantiate list, so that the
-i2c-multi-instantiate.c driver can handle it.
-
-Note in the case where there are 2 I2C resources we simply instatiate
-i2c-clients for both and let the cm32181 driver figure out that the
-first one is not the one it wants.
-
-Doing things this way is actually desirable because on devices where
-there are 2 I2C resources it seems that we first need to do a SMBus
-read of the 0x0c address before the sensor will respond to I2C transfers
-on its actual address.
+This is a preparation patch for adding support for the older
+CM3218 model of the light sensor.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/acpi/scan.c                          | 1 +
- drivers/platform/x86/i2c-multi-instantiate.c | 7 +++++++
- 2 files changed, 8 insertions(+)
+ drivers/iio/light/cm32181.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 6d3448895382..937d72fc212c 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1544,6 +1544,7 @@ static bool acpi_device_enumeration_by_parent(struc=
-t acpi_device *device)
- 	static const struct acpi_device_id i2c_multi_instantiate_ids[] =3D {
- 		{"BSG1160", },
- 		{"BSG2150", },
-+		{"CPLM3218", },
- 		{"INT33FE", },
- 		{"INT3515", },
- 		{}
-diff --git a/drivers/platform/x86/i2c-multi-instantiate.c b/drivers/platf=
-orm/x86/i2c-multi-instantiate.c
-index dcafb1a29d17..e1cdc44e6f57 100644
---- a/drivers/platform/x86/i2c-multi-instantiate.c
-+++ b/drivers/platform/x86/i2c-multi-instantiate.c
-@@ -180,6 +180,12 @@ static const struct i2c_inst_data int3515_data[]  =3D=
- {
- 	{}
- };
+diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
+index 5f4fb5674fa0..ee386afe811e 100644
+--- a/drivers/iio/light/cm32181.c
++++ b/drivers/iio/light/cm32181.c
+@@ -18,6 +18,9 @@
 =20
-+static const struct i2c_inst_data cplm3218_data[]  =3D {
-+	{ "cm32181", PASS_FWNODE },
-+	{ "cm32181", PASS_FWNODE },
-+	{}
-+};
+ /* Registers Address */
+ #define CM32181_REG_ADDR_CMD		0x00
++#define CM32181_REG_ADDR_WH		0x01
++#define CM32181_REG_ADDR_WL		0x02
++#define CM32181_REG_ADDR_TEST		0x03
+ #define CM32181_REG_ADDR_ALS		0x04
+ #define CM32181_REG_ADDR_STATUS		0x06
+ #define CM32181_REG_ADDR_ID		0x07
+@@ -26,9 +29,13 @@
+ #define CM32181_CONF_REG_NUM		0x01
+=20
+ /* CMD register */
+-#define CM32181_CMD_ALS_ENABLE		0x00
+-#define CM32181_CMD_ALS_DISABLE		0x01
+-#define CM32181_CMD_ALS_INT_EN		0x02
++#define CM32181_CMD_ALS_DISABLE		BIT(0)
++#define CM32181_CMD_ALS_INT_EN		BIT(1)
++#define CM32181_CMD_ALS_THRES_WINDOW	BIT(2)
 +
- /*
-  * Note new device-ids must also be added to i2c_multi_instantiate_ids i=
-n
-  * drivers/acpi/scan.c: acpi_device_enumeration_by_parent().
-@@ -187,6 +193,7 @@ static const struct i2c_inst_data int3515_data[]  =3D=
- {
- static const struct acpi_device_id i2c_multi_inst_acpi_ids[] =3D {
- 	{ "BSG1160", (unsigned long)bsg1160_data },
- 	{ "BSG2150", (unsigned long)bsg2150_data },
-+	{ "CPLM3218", (unsigned long)cplm3218_data },
- 	{ "INT3515", (unsigned long)int3515_data },
- 	{ }
- };
++#define CM32181_CMD_ALS_PERS_SHIFT	4
++#define CM32181_CMD_ALS_PERS_MASK	(0x03 << CM32181_CMD_ALS_PERS_SHIFT)
++#define CM32181_CMD_ALS_PERS_DEFAULT	(0x01 << CM32181_CMD_ALS_PERS_SHIFT=
+)
+=20
+ #define CM32181_CMD_ALS_IT_SHIFT	6
+ #define CM32181_CMD_ALS_IT_MASK		(0x0F << CM32181_CMD_ALS_IT_SHIFT)
+@@ -82,7 +89,7 @@ static int cm32181_reg_init(struct cm32181_chip *cm3218=
+1)
+ 		return -ENODEV;
+=20
+ 	/* Default Values */
+-	cm32181->conf_regs[CM32181_REG_ADDR_CMD] =3D CM32181_CMD_ALS_ENABLE |
++	cm32181->conf_regs[CM32181_REG_ADDR_CMD] =3D
+ 			CM32181_CMD_ALS_IT_DEFAULT | CM32181_CMD_ALS_SM_DEFAULT;
+ 	cm32181->calibscale =3D CM32181_CALIBSCALE_DEFAULT;
+=20
 --=20
 2.26.0
 
