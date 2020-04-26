@@ -2,26 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0C8A1B91B1
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Apr 2020 18:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E7491B91BC
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Apr 2020 18:31:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726147AbgDZQ2R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 26 Apr 2020 12:28:17 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:61014 "EHLO
+        id S1726182AbgDZQbu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 26 Apr 2020 12:31:50 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:50178 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726144AbgDZQ2R (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Apr 2020 12:28:17 -0400
+        with ESMTP id S1726144AbgDZQbu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Apr 2020 12:31:50 -0400
 Received: from 185.80.35.16 (185.80.35.16) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
- id 10a16a981ec5835b; Sun, 26 Apr 2020 18:28:14 +0200
+ id d4f95e24674149c7; Sun, 26 Apr 2020 18:31:47 +0200
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Zhang Rui <rui.zhang@intel.com>
-Cc:     linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] ACPI: processor: allowing probing on platforms with one ACPI C-state
-Date:   Sun, 26 Apr 2020 18:28:14 +0200
-Message-ID: <3014980.06ggM8U1O4@kreacher>
-In-Reply-To: <20200422072607.18179-1-rui.zhang@intel.com>
-References: <20200422072607.18179-1-rui.zhang@intel.com>
+To:     Zou Wei <zou_wei@huawei.com>
+Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] ACPI / CPPC: Make some symbols static
+Date:   Sun, 26 Apr 2020 18:31:47 +0200
+Message-ID: <2458050.BygcShJWPJ@kreacher>
+In-Reply-To: <1587626518-97669-1-git-send-email-zou_wei@huawei.com>
+References: <1587626518-97669-1-git-send-email-zou_wei@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -30,44 +31,40 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wednesday, April 22, 2020 9:26:07 AM CEST Zhang Rui wrote:
-> It is possible for ACPI _CST to return only one ACPI C-state, for
-> example, when deep cstate disabled in the BIOS.
-> And it is better for the acpi_idle driver to probe in this case as well
-> for consistency.
+On Thursday, April 23, 2020 9:21:58 AM CEST Zou Wei wrote:
+> Fix the following sparse warnings:
 > 
-> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+> drivers/acpi/cppc_acpi.c:353:20: warning: symbol 'cppc_mbox_cl' was not declared. Should it be static?
+> drivers/acpi/cppc_acpi.c:600:5: warning: symbol 'pcc_data_alloc' was not declared. Should it be static?
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Zou Wei <zou_wei@huawei.com>
 > ---
->  drivers/acpi/processor_idle.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
+>  drivers/acpi/cppc_acpi.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> index dcc289e30166..75534c5b5433 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -308,11 +308,7 @@ static int acpi_processor_get_power_info_cst(struct acpi_processor *pr)
->  	if (ret)
->  		return ret;
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 8b2e89c..f818400 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -350,7 +350,7 @@ static void cppc_chan_tx_done(struct mbox_client *cl, void *msg, int ret)
+>  				*(u16 *)msg, ret);
+>  }
 >  
-> -	/*
-> -	 * It is expected that there will be at least 2 states, C1 and
-> -	 * something else (C2 or C3), so fail if that is not the case.
-> -	 */
-> -	if (pr->power.count < 2)
-> +	if (!pr->power.count)
->  		return -EFAULT;
->  
->  	pr->flags.has_cst = 1;
-> @@ -468,8 +464,7 @@ static int acpi_processor_get_cstate_info(struct acpi_processor *pr)
->  	for (i = 1; i < ACPI_PROCESSOR_MAX_POWER; i++) {
->  		if (pr->power.states[i].valid) {
->  			pr->power.count = i;
-> -			if (pr->power.states[i].type >= ACPI_STATE_C2)
-> -				pr->flags.power = 1;
-> +			pr->flags.power = 1;
->  		}
->  	}
->  
+> -struct mbox_client cppc_mbox_cl = {
+> +static struct mbox_client cppc_mbox_cl = {
+>  	.tx_done = cppc_chan_tx_done,
+>  	.knows_txdone = true,
+>  };
+> @@ -597,7 +597,7 @@ bool __weak cpc_ffh_supported(void)
+>   *
+>   * Return: 0 for success, errno for failure
+>   */
+> -int pcc_data_alloc(int pcc_ss_id)
+> +static int pcc_data_alloc(int pcc_ss_id)
+>  {
+>  	if (pcc_ss_id < 0 || pcc_ss_id >= MAX_PCC_SUBSPACES)
+>  		return -EINVAL;
 > 
 
 Applied as 5.8-candidate material, thanks!
