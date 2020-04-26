@@ -2,73 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 981031B91CB
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Apr 2020 18:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E19411B9263
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Apr 2020 19:44:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726151AbgDZQhD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 26 Apr 2020 12:37:03 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:60400 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726147AbgDZQhD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Apr 2020 12:37:03 -0400
-Received: from 185.80.35.16 (185.80.35.16) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
- id 1cee46b1b99a3b96; Sun, 26 Apr 2020 18:37:01 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     Len Brown <lenb@kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ACPI: PM: Output correct message on target power state
-Date:   Sun, 26 Apr 2020 18:37:01 +0200
-Message-ID: <3055388.nd58z99ANK@kreacher>
-In-Reply-To: <20200421075516.23019-1-kai.heng.feng@canonical.com>
-References: <20200421075516.23019-1-kai.heng.feng@canonical.com>
+        id S1726196AbgDZRnq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 26 Apr 2020 13:43:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38642 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726156AbgDZRnq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 26 Apr 2020 13:43:46 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D28EEC061A0F;
+        Sun, 26 Apr 2020 10:43:44 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id 18so6418140pfv.8;
+        Sun, 26 Apr 2020 10:43:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=rt8GUdb+NK0I2GLuxT6jzzSLX3k/QT9d+BbEeLX7M/8=;
+        b=oAww4nbwiOwJa3AnN+BW6YViVNjnWjuz1v+e79bX1TEqOWxRMKjzI0Lg8EuX58DxPv
+         BaiP1atY82h2uwvlz8ZIFIYRnrxM1hKy8un6TruMv+vWSl/tjQNoATQ899R+m8/fc5wM
+         Fhb61/ckFlyL8pcJMXH2UXnDk5KQ6WNBSzJYB9gb9OWo8IwfunUQ0ykpU+T/EqNJIWSg
+         8KkJHz8pneblijJXdckdaTW5k/tujhj5Ca9oD0qmjVstRGUWx8sqss7jgHXiERypca8n
+         f1tIgwYXZ4ixMsXrgMNrCwzKjku5qiA447R34qrkxA6dJlzpH7jbezrgi5cen91ILRmH
+         jGfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rt8GUdb+NK0I2GLuxT6jzzSLX3k/QT9d+BbEeLX7M/8=;
+        b=JzOcXX5k+CZyG+XQyV0AohmFU10dA5OBas/FT7ZWPMn7PsadjVVpEqUzD8xShFl2Lq
+         xVuCAHbxUXDJ+F9TbV3OVinnjUCbmNEcqSqMLaoydOIwxItFKBZkWg7d4N1aFXrrLUho
+         JkPjgZ05oFZ41v++9QTg0aLkyNDl+vWEFXcuz3l0MdhaB16Bmla2eocWWlJAyElSwplF
+         ZLhIga6wzuQe+7ZNfLDBXbTzsdMzJUu0X0wCescZjyGxa1eSA53x+J+p3I8GLXtiUIq9
+         B7LUcPQxEgJoQ+Ebtf9cPtzHtuQf/SkMpaP2be/l/8xeQEPulN/Sq6Uw+Nu0jnH3PU35
+         Lb1Q==
+X-Gm-Message-State: AGi0PubyjRpl1gAoMaUQq5rOiOfsfRsSqQXlGeAZHkSsZjMTJyHDZEdN
+        L/FHthWKBYSsyQeFkzcUd2LXFuAGCY5P50NgkFo=
+X-Google-Smtp-Source: APiQypLHROrKSegIPV4KGfP7cRTWUsVaUDA24uRQRvLT5mX/USml0FUmdqrJLTO/mMb2xeWemvIthlBhFYlVkb4LR34=
+X-Received: by 2002:aa7:8f26:: with SMTP id y6mr20431103pfr.36.1587923024164;
+ Sun, 26 Apr 2020 10:43:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+References: <20200426110256.218186-1-hdegoede@redhat.com> <20200426110256.218186-3-hdegoede@redhat.com>
+In-Reply-To: <20200426110256.218186-3-hdegoede@redhat.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 26 Apr 2020 20:43:32 +0300
+Message-ID: <CAHp75VezxOatMRyLa8DQEYOK=QT8RgD3ET_kqDp+tL9q9fJw1g@mail.gmail.com>
+Subject: Re: [PATCH 3/8] iio: light: cm32181: Handle ACPI instantiating a
+ cm32181 client on the SMBus ARA
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Kevin Tsai <ktsai@capellamicro.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tuesday, April 21, 2020 9:55:16 AM CEST Kai-Heng Feng wrote:
-> Transitioned power state logged at the end of setting ACPI power.
-> 
-> However, D3cold won't be in the message because state can only be D3hot
-> at most.
-> 
-> Use target_state to corretly report when power state is D3cold.
-> 
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+On Sun, Apr 26, 2020 at 2:03 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Some ACPI systems list 2 I2C resources for the CM3218 sensor. On these
+> systems the first I2cSerialBus ACPI-resource points to the SMBus Alert
+> Response Address (ARA, 0x0c) and the second I2cSerialBus ACPI-resource
+> points to the actual CM3218 sensor address.
+>
+> From the ACPI/x86 side devices with more then 1 I2cSerialBus ACPI-resource
+> are handled by the drivers/platform/x86/i2c-multi-instantiate.c code.
+> This code will instantiate "cm32181" i2c_client-s for both resources.
+>
+> Add a check to cm32181_probe() for the client's address being the ARA
+> address, and in that case fail the probe with -ENODEV.
+>
+> On these ACPI systems the sensor may have a SMBus Alert asserted at boot,
+> if this is the case the sensor will not respond to any i2c_transfers on
+> its actual address until we read from the ARA register to clear the Alert.
+>
+> Therefor we must (try to) read a byte from the client with the ARA
+> register, before returning -ENODEV, so that we clear the Alert and when
+> we get called again for the client instantiated for the second
+> I2cSerialBus ACPI-resource the sensor will respond to our i2c-transfers.
+>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > ---
->  drivers/acpi/device_pm.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> index b2263ec67b43..5832bc10aca8 100644
-> --- a/drivers/acpi/device_pm.c
-> +++ b/drivers/acpi/device_pm.c
-> @@ -273,13 +273,13 @@ int acpi_device_set_power(struct acpi_device *device, int state)
->   end:
->  	if (result) {
->  		dev_warn(&device->dev, "Failed to change power state to %s\n",
-> -			 acpi_power_state_string(state));
-> +			 acpi_power_state_string(target_state));
->  	} else {
->  		device->power.state = target_state;
->  		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
->  				  "Device [%s] transitioned to %s\n",
->  				  device->pnp.bus_id,
-> -				  acpi_power_state_string(state)));
-> +				  acpi_power_state_string(target_state)));
->  	}
->  
->  	return result;
-> 
+>  drivers/iio/light/cm32181.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+>
+> diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
+> index fd371b36c7b3..e8be20d3902c 100644
+> --- a/drivers/iio/light/cm32181.c
+> +++ b/drivers/iio/light/cm32181.c
+> @@ -51,6 +51,8 @@
+>  #define CM32181_CALIBSCALE_RESOLUTION  1000
+>  #define MLUX_PER_LUX                   1000
+>
+> +#define SMBUS_ALERT_RESPONSE_ADDRESS   0x0c
+> +
+>  static const u8 cm32181_reg[CM32181_CONF_REG_NUM] = {
+>         CM32181_REG_ADDR_CMD,
+>  };
+> @@ -333,6 +335,20 @@ static int cm32181_probe(struct i2c_client *client,
+>         struct iio_dev *indio_dev;
+>         int ret;
+>
+> +       /*
+> +        * Some ACPI systems list 2 I2C resources for the CM3218 sensor, the
+> +        * SMBus Alert Response Address (ARA, 0x0c) and the actual I2C address.
+> +        * drivers/platform/x86/i2c-multi-instantiate.c instantiates "cm32181"
 
-Applied as a fix for 5.7-rc4, thanks!
+> +        * i2c_client-s for both resources, ignore the ARA client.
+
+A nit: 'I2C clients'
+
+> +        * On these systems the sensor may have a SMBus Alert asserted at boot,
+> +        * in that case the ARA must be read to clear the Alert otherwise the
+> +        * sensor will not respond on its actual I2C address.
+> +        */
+> +       if (client->addr == SMBUS_ALERT_RESPONSE_ADDRESS) {
+> +               i2c_smbus_read_byte(client);
+> +               return -ENODEV;
+> +       }
+> +
+>         indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*cm32181));
+>         if (!indio_dev) {
+>                 dev_err(&client->dev, "devm_iio_device_alloc failed\n");
+> --
+> 2.26.0
+>
 
 
-
-
+-- 
+With Best Regards,
+Andy Shevchenko
