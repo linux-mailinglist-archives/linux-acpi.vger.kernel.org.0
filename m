@@ -2,189 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF0531B9F4B
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Apr 2020 11:05:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28C431BA2BA
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Apr 2020 13:42:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726507AbgD0JFQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Apr 2020 05:05:16 -0400
-Received: from mo-csw-fb1116.securemx.jp ([210.130.202.175]:36920 "EHLO
-        mo-csw-fb.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726183AbgD0JFQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Apr 2020 05:05:16 -0400
-X-Greylist: delayed 711 seconds by postgrey-1.27 at vger.kernel.org; Mon, 27 Apr 2020 05:05:14 EDT
-Received: by mo-csw-fb.securemx.jp (mx-mo-csw-fb1116) id 03R8rOaE008423; Mon, 27 Apr 2020 17:53:24 +0900
-Received: by mo-csw.securemx.jp (mx-mo-csw1114) id 03R8qwAY012935; Mon, 27 Apr 2020 17:52:58 +0900
-X-Iguazu-Qid: 2wHHmtTglbDiQFar0U
-X-Iguazu-QSIG: v=2; s=0; t=1587977578; q=2wHHmtTglbDiQFar0U; m=xkIQ5G8uB+mBuk2KpbYQ9WX+PVEjESxzVhAAS6YBJ14=
-Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
-        by relay.securemx.jp (mx-mr1111) id 03R8qucT003817;
-        Mon, 27 Apr 2020 17:52:56 +0900
-Received: from enc02.toshiba.co.jp ([61.202.160.51])
-        by imx12.toshiba.co.jp  with ESMTP id 03R8quBJ001287;
-        Mon, 27 Apr 2020 17:52:56 +0900 (JST)
-Received: from hop101.toshiba.co.jp ([133.199.85.107])
-        by enc02.toshiba.co.jp  with ESMTP id 03R8qtgc029882;
-        Mon, 27 Apr 2020 17:52:55 +0900
-From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Punit Agrawal <punit1.agrawal@toshiba.co.jp>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Borislav Petkov <bp@alien8.de>,
-        James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
-        linux-efi@vger.kernel.org
-Subject: [PATCH] efi: cper: Add support for printing Firmware Error Record Reference
-Date:   Mon, 27 Apr 2020 17:52:42 +0900
-X-TSB-HOP: ON
-Message-Id: <20200427085242.2380614-1-punit1.agrawal@toshiba.co.jp>
-X-Mailer: git-send-email 2.26.2
+        id S1727049AbgD0Llf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Apr 2020 07:41:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36068 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726721AbgD0Lle (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Apr 2020 07:41:34 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9692CC03C1A6
+        for <linux-acpi@vger.kernel.org>; Mon, 27 Apr 2020 04:41:34 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id f3so18468788ioj.1
+        for <linux-acpi@vger.kernel.org>; Mon, 27 Apr 2020 04:41:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
+        b=uI1U3pP4FazEZaTfkDGgaf1Qyb1hL6AlgZB9tozzlJtw0tc2p0xAeW9BNdbY4A2XuL
+         JYn8lE6gg3HqjBgRaTT8CTSOLDZ9E79yDyBM0EGnWldSdHyzrk+BT/7frJGn/PAhMIrE
+         VCZdq7yfljhgiOOYhIeLP2AIIFXvLFMREe3IREMgf/Wimn5okrCaqK4gkS0+n2Tqfq3c
+         EFYh4cYLyK3nIET0YOm2adzDe5W5QN3hsgSvwW72euh+PRPDs3oxC82+7cfg/ZGTOz8/
+         eTagf6SblJMWIJeJ59y/zg3//EVOq9RPByBfKkQCDUJB6vE62XJLcx9qUgZNIxoYrz8S
+         JAeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
+        b=jDGDTmv6UxwDWIK35TK82nrEoJrEJsWEtefFlxWLfpjRje/2sRi1AEbdcgeLHRpud2
+         TsliRnh8DdyqqVDWvmxSgR3Tl7z5/7TI/2/fs9sUbk9NRVhWima5VOJmYMeV5h56X4yI
+         noHvyGyPiGTJxNcVWTaiSX25SOiz7r8P27VvWFGD45Qq9c4Am/UbnhEW8700VuNIfY8A
+         0/Eki2ol3knAsBU8lqL40gIOXHkaB5zLtirkPZ9761KxY87Z7I4BEB0DBNw3PVHffCCt
+         k9vqafjBZqe1XJCd387MK7/AvshSMFl5Di/r7ulEdn/67Qs8WAMos5mqjjcz3JIi98ob
+         ug5g==
+X-Gm-Message-State: AGi0PubOT1phLfZh5LImSMagCLRz6Tc1l1Bot/2wZExRNGd0AstJBlYX
+        QJJnvFFtsdqAhmtpHmb6yIuo+i4txyj1c524pb0=
+X-Google-Smtp-Source: APiQypJWdjzUZMbeRoAX94bUJV0IgwyoF5kUG7iPo3CBzKxW8lStFNsM/6tz3An/TyzRuH2Qw14DtavsVumw6JVLls0=
+X-Received: by 2002:a6b:7d4a:: with SMTP id d10mr4072296ioq.70.1587987694042;
+ Mon, 27 Apr 2020 04:41:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a5d:8f89:0:0:0:0:0 with HTTP; Mon, 27 Apr 2020 04:41:33
+ -0700 (PDT)
+Reply-To: convy0090@gmail.com
+From:   Ruben CONVY <andrewboccc@gmail.com>
+Date:   Mon, 27 Apr 2020 12:41:33 +0100
+Message-ID: <CAHVC0+Ag87TMCmfNNwWbxXOFxn5166q8GG5wEfPjwtixj9=EXQ@mail.gmail.com>
+Subject: Why continued silence 2
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-While debugging a boot failure, the following unknown error record was
-seen in the boot logs.
-
-    <...>
-    BERT: Error records from previous boot:
-    [Hardware Error]: event severity: fatal
-    [Hardware Error]:  Error 0, type: fatal
-    [Hardware Error]:   section type: unknown, 81212a96-09ed-4996-9471-8d729c8e69ed
-    [Hardware Error]:   section length: 0x290
-    [Hardware Error]:   00000000: 00000001 00000000 00000000 00020002  ................
-    [Hardware Error]:   00000010: 00020002 0000001f 00000320 00000000  ........ .......
-    [Hardware Error]:   00000020: 00000000 00000000 00000000 00000000  ................
-    [Hardware Error]:   00000030: 00000000 00000000 00000000 00000000  ................
-    <...>
-
-On further investigation, it was found that the error record with
-UUID (81212a96-09ed-4996-9471-8d729c8e69ed) has been defined in the
-UEFI Specification at least since v2.4 and has recently had additional
-fields defined in v2.7 Section N.2.10 Firmware Error Record Reference.
-
-Add support for parsing and printing the defined fields to give users
-a chance to figure out what's went wrong.
-
-Signed-off-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: James Morse <james.morse@arm.com>
-Cc: linux-acpi@vger.kernel.org
-Cc: linux-efi@vger.kernel.org
----
-
-Hi,
-
-I ran into this while debugging a boot failure on an end product
-device. Parsing known record types can help the user narrow down the
-investigation quickly to the failing components - firmware error in
-this case.
-
-It would be good to support the record types specified in the
-standard.
-
-Feedback welcome.
-
-Thanks,
-Punit
----
- drivers/firmware/efi/cper.c | 49 +++++++++++++++++++++++++++++++++++++
- include/linux/cper.h        | 11 +++++++++
- 2 files changed, 60 insertions(+)
-
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index 9d2512913d25..153b95257e23 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -407,6 +407,46 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
- 	}
- }
- 
-+static const char * const fw_err_rec_type_strs[] = {
-+	"IPF SAL Error Record",
-+	"SOC Firmware Error Record Type1 (Legacy CrashLog Support)",
-+	"SOC Firmware Error Record Type2",
-+};
-+
-+static void cper_print_fw_err(const char *pfx,
-+			      struct acpi_hest_generic_data *gdata,
-+			      const struct cper_sec_fw_err_rec_ref *fw_err)
-+{
-+	void *buf = acpi_hest_get_payload(gdata);
-+	u32 offset, length = gdata->error_data_length;
-+
-+	printk("%s""Firmware Error Record Type: %s\n", pfx,
-+	       fw_err->record_type < ARRAY_SIZE(fw_err_rec_type_strs) ?
-+	       fw_err_rec_type_strs[fw_err->record_type] : "unknown");
-+
-+	/* Record Type based on UEFI 2.7 */
-+	if (fw_err->revision == 0)
-+		printk("%s""Record Identifier: %08llx\n", pfx,
-+		       fw_err->record_identifier);
-+	else if (fw_err->revision == 2)
-+		printk("%s""Record Identifier: %pUl\n", pfx,
-+		       &fw_err->record_identifier_guid);
-+
-+	if (fw_err->revision == 0)
-+		offset = offsetof(struct cper_sec_fw_err_rec_ref,
-+				  record_identifier_guid);
-+	else if (fw_err->revision == 1)
-+		offset = offsetof(struct cper_sec_fw_err_rec_ref,
-+				  record_identifier);
-+	else
-+		offset = sizeof(*fw_err);
-+
-+	buf += offset;
-+	length -= offset;
-+
-+	print_hex_dump(pfx, "", DUMP_PREFIX_OFFSET, 16, 4, buf, length, true);
-+}
-+
- static void cper_print_tstamp(const char *pfx,
- 				   struct acpi_hest_generic_data_v300 *gdata)
- {
-@@ -494,6 +534,15 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
- 		else
- 			goto err_section_too_small;
- #endif
-+	} else if (guid_equal(sec_type, &CPER_SEC_FW_ERR_REC_REF)) {
-+		struct cper_sec_fw_err_rec_ref *fw_err = acpi_hest_get_payload(gdata);
-+
-+		printk("%ssection_type: Firmware Error Record Reference\n",
-+		       newpfx);
-+		if (gdata->error_data_length >= sizeof(*fw_err))
-+			cper_print_fw_err(newpfx, gdata, fw_err);
-+		else
-+			goto err_section_too_small;
- 	} else {
- 		const void *err = acpi_hest_get_payload(gdata);
- 
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index 4f005d95ce88..5cb57e69df70 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -521,6 +521,17 @@ struct cper_sec_pcie {
- 	u8	aer_info[96];
- };
- 
-+/* Firmware Error Record Reference, UEFI v2.7 sec N.2.10  */
-+struct cper_sec_fw_err_rec_ref {
-+	u8 record_type;
-+	union {
-+		u8 revision;
-+		u8 reserved[7];
-+	};
-+	u64 record_identifier;
-+	guid_t record_identifier_guid;
-+};
-+
- /* Reset to default packing */
- #pragma pack()
- 
--- 
-2.26.2
-
+Did you receive my previous email regarding your family inheritance?
+Reply strictly through: convy0090@gmail.com
+Best Regards,
+Ruben CONVY
