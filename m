@@ -2,79 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 590FA1BA744
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Apr 2020 17:06:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9D0B1BA804
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Apr 2020 17:31:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728012AbgD0PGN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Apr 2020 11:06:13 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:38208 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727864AbgD0PGM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Apr 2020 11:06:12 -0400
+        id S1728148AbgD0Pbb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Apr 2020 11:31:31 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:55831 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728157AbgD0Pbb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 27 Apr 2020 11:31:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1587999971;
+        s=mimecast20190719; t=1588001489;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZHWkGUvj4t05y2VKSH2hO4KlsW7WN90Jqwx2sM7eu3Q=;
-        b=VSCiIBYaJ7GpropyS3t7sAqtpJGmc81DzQafVEnoJPU1fjutfcZCHaUSIycWe8tkO7f6X6
-        Bj1meO+SJxDvuInNcmGM/SwHAARLuWiIAXGbhb/3Z8QdgGIqjvmwbjFL7kO/5HOYDAHElI
-        UFPs++6ddKYOzalPBlJCEfLcqixXbLE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-118-IPxlUV0ZM9Sb2VWBNnsLZw-1; Mon, 27 Apr 2020 11:06:09 -0400
-X-MC-Unique: IPxlUV0ZM9Sb2VWBNnsLZw-1
-Received: by mail-wr1-f71.google.com with SMTP id x15so10692673wrn.0
-        for <linux-acpi@vger.kernel.org>; Mon, 27 Apr 2020 08:06:09 -0700 (PDT)
+        bh=TKFWcoJJEHH5/ibI5vdJgvFR606TzkLnlJit+oD4SIw=;
+        b=Nqid3mtuCH8O28RxmQ6LLc+JTgTL5NXYAdL/LxoBk5VlDyVOs+IqiUgIzJ1O7eHHV4RZvR
+        Dtl00kjzX30a5cAsQEKonuyRj5RmMVEPKmUM9BbQrneRGLRbktTM4V04xD7gMqueihQsn1
+        YC+Pkxl6365tSi70IYhweQp3Y/7b8po=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-155-DYiQUBZ4PRO86w_NKVkfQw-1; Mon, 27 Apr 2020 11:31:27 -0400
+X-MC-Unique: DYiQUBZ4PRO86w_NKVkfQw-1
+Received: by mail-wm1-f72.google.com with SMTP id o26so23154wmh.1
+        for <linux-acpi@vger.kernel.org>; Mon, 27 Apr 2020 08:31:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=ZHWkGUvj4t05y2VKSH2hO4KlsW7WN90Jqwx2sM7eu3Q=;
-        b=r5ajIgIVDydJrETcinXgT7sfoojB1O5rP/YUavrgfi4Ba1xtYnhs3oBjwBbZveAHrt
-         6QB7By/sLwnJPORts+YGezGgcm6WyouiEAQcBwgD+DdD8o+BxKS6yDpaEngEA4Znly45
-         vNKccYlBM/P7cb6KKwQQxg3jR8O8jbfu3XdH44DJ1lYlP9PBrGV4pCsALmlN+s9WOKUC
-         F5mFmtZgGRhf6XTiemN/OwMC55ESzgSb3oeJtjuxsKdbbE04/O40WK2IqJ0D5AZl+XG/
-         tLQz7Ke5u3FGTZW5HeAYo1kyrY5hNIl5alJQWJj+H2iVTsJNL9ftzI+cNF/eIuOV5GQ8
-         wCZA==
-X-Gm-Message-State: AGi0PuY/zhi663lr5wHgQSqGGVbqUDQYVFUJ4KtQSjAZ/5A4MZ8aR0wZ
-        40zaK/npDv4SLBdIsm+I5NIBHu4316HlVT54UaCvkc6T4rHj9jEGe7d0hOrZW3/ZBCiE3Aw5umn
-        fhVmfymPp3BN/LgFOnGzaQw==
-X-Received: by 2002:a5d:6cc2:: with SMTP id c2mr16647075wrc.60.1587999965129;
-        Mon, 27 Apr 2020 08:06:05 -0700 (PDT)
-X-Google-Smtp-Source: APiQypItdoXY5PFxTED2h0uXEEC850ph4xpBIcVzeUSEgKxX4SO0paRCeuCRDQ38RZAEARYhNB+aiA==
-X-Received: by 2002:a5d:6cc2:: with SMTP id c2mr16647048wrc.60.1587999964863;
-        Mon, 27 Apr 2020 08:06:04 -0700 (PDT)
+        bh=TKFWcoJJEHH5/ibI5vdJgvFR606TzkLnlJit+oD4SIw=;
+        b=eyBTvAekloxaWpc+dUvaK4ddkeGReBK6/zhiwibR2BbXZTEQaza/A9ZEkPdl3h5JTd
+         L50S9w5ftsR9O3p6HQZSpU5F2X71KkEK+wUOzRKHkHYGAZrx+jViginoMg9wk+h+N4iN
+         19kqvLU6zgwusN2ZQWEF2Z1ePZtIWpP9N7Kph1Nk2hpJIrWBU2Bbb8L3RNOy9/fUERhd
+         QJt7c/VoWnh9156Oz6AQS4u4Dkg5lgpbh7ZO+XOkL6EeddCnzTNB8GmzxfEGzBrbF2Sw
+         z2B1T3QM+thk4HZ7GYx8gyB0aIdKbECVudqAUKc3OezSOooIthuGod3YH1Olff0x5KXZ
+         eusw==
+X-Gm-Message-State: AGi0PuZOoNYG10p+WeDYGr/qkJowWefVs58O6FegN5MBWgm0M8BUocHa
+        jW5Eilg47ISlMsWq1C8MKLU6VFyRB2lyERMTFXLMiDDGwgvsAAgTN4lUXHg7NutHnptrsx0ZLjT
+        ua6gMNoULKlrR6H/3BB0J8A==
+X-Received: by 2002:adf:f74f:: with SMTP id z15mr27610544wrp.297.1588001485952;
+        Mon, 27 Apr 2020 08:31:25 -0700 (PDT)
+X-Google-Smtp-Source: APiQypK1z0uJnIkyqKhTGjclHeQYArQfsANi9lGv3gcyQLqpd9WZYBRVORDchAEbGQqBBjAFAxmDtQ==
+X-Received: by 2002:adf:f74f:: with SMTP id z15mr27610523wrp.297.1588001485724;
+        Mon, 27 Apr 2020 08:31:25 -0700 (PDT)
 Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id r20sm15244349wmh.26.2020.04.27.08.06.03
+        by smtp.gmail.com with ESMTPSA id q184sm16239828wma.25.2020.04.27.08.31.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Apr 2020 08:06:04 -0700 (PDT)
-Subject: Re: [PATCH 1/2] platform/x86: i2c-multi-instantiate: Add flag for
- passing fwnode
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Wolfram Sang <wsa@the-dreams.de>
+        Mon, 27 Apr 2020 08:31:24 -0700 (PDT)
+Subject: Re: [PATCH 7/8] iio: light: cm32181: Add support for parsing CPM0 and
+ CPM1 ACPI tables
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
         Darren Hart <dvhart@infradead.org>,
         Andy Shevchenko <andy@infradead.org>,
+        Kevin Tsai <ktsai@capellamicro.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Platform Driver <platform-driver-x86@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-i2c@vger.kernel.org
-References: <20200426104713.216896-1-hdegoede@redhat.com>
- <20200426104713.216896-2-hdegoede@redhat.com>
- <CAHp75VdOd6C36oR7HAnqrKiinVBr4YcqqJ=dv3NpR3=Xp0QQ-Q@mail.gmail.com>
- <b5bdffb4-0af2-abb7-21f7-2f5da56d5dc6@redhat.com>
- <CAHp75VegakBqAzxn1e+MzF3EgB6fNya3L0eZHMh11yct6HHNKw@mail.gmail.com>
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>
+References: <20200426110256.218186-1-hdegoede@redhat.com>
+ <20200426110256.218186-7-hdegoede@redhat.com>
+ <CAHp75Vdzu18gKaix2B5btEAz6YX7JZ3wJfeSR-MAV6nLeJUMzg@mail.gmail.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <66619a61-c398-5a8a-4ee0-13dbe5d2c559@redhat.com>
-Date:   Mon, 27 Apr 2020 17:06:03 +0200
+Message-ID: <ade56f53-8ac5-1900-21fa-574f27e2a24a@redhat.com>
+Date:   Mon, 27 Apr 2020 17:31:24 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VegakBqAzxn1e+MzF3EgB6fNya3L0eZHMh11yct6HHNKw@mail.gmail.com>
+In-Reply-To: <CAHp75Vdzu18gKaix2B5btEAz6YX7JZ3wJfeSR-MAV6nLeJUMzg@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -85,138 +88,174 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-On 4/27/20 3:18 PM, Andy Shevchenko wrote:
-> On Mon, Apr 27, 2020 at 3:51 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On 4/26/20 7:50 PM, Andy Shevchenko wrote:
+> On Sun, Apr 26, 2020 at 2:03 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >>
->> Hi,
+>> On ACPI based systems the CPLM3218 ACPI device node describing the
+>> CM3218[1] sensor typically will have some extra tables with register
+>> init values for initializing the sensor and calibration info.
 >>
->> On 4/26/20 7:59 PM, Andy Shevchenko wrote:
->>> On Sun, Apr 26, 2020 at 1:47 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>>>
->>>> In some cases the driver for the i2c_client-s which i2c-multi-instantiate
->>>> instantiates may need access some fields / methods from to the ACPI fwnode
->>>> for which i2c_clients are being instantiated.
->>>>
->>>> An example of this are CPLM3218 ACPI device-s. These contain CPM0 and
->>>> CPM1 packages with various information (e.g. register init values) which
->>>> the driver needs.
->>>>
->>>> Passing the fwnode through the i2c_board_info struct also gives the
->>>> i2c-core access to it, and if we do not pass an IRQ then the i2c-core
->>>> will use the fwnode to get an IRQ, see i2c_acpi_get_irq().
->>>
->>> I'm wondering, can we rather do it in the same way like we do for
->>> GPIO/APIC case here.
->>> Introduce IRQ_RESOURCE_SHARED (or so) and
->>>
->>> case _SHARED:
->>>    irq = i2c_acpi_get_irq();
->>> ...
->>>
->>> ?
+>> This is based on a newer version of cm32181.c, with a copyright of:
 >>
->> I think you are miss-understanding the problem. The problem is not that
->> we want to share the IRQ, the problem is that we want to pass the single
->> IRQ in the resources to only 1 of the instantiated I2C-clients. But if we
->> do not pass an IRQ (we leave it at 0) and we do pass the fwnode then
->> i2c-core-base.c will see that there is an ACPI-node attached to the
->> device and will call i2c_acpi_get_irq().
+>>   * Copyright (C) 2014 Capella Microsystems Inc.
+>>   * Author: Kevin Tsai <ktsai@capellamicro.com>
+>>   *
+>>   * This program is free software; you can redistribute it and/or modify it
+>>   * under the terms of the GNU General Public License version 2, as published
+>>   * by the Free Software Foundation.
+>>
+>> Which is floating around on the net in various places, but the changes
+>> from this newer version never made it upstream.
+>>
+>> This was tested on the following models: Acer Switch 10 SW5-012 (CM32181)
+>> Asus T100TA (CM3218), Asus T100CHI (CM3218) and HP X2 10-n000nd (CM32181).
+>>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>>   drivers/iio/light/cm32181.c | 98 +++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 98 insertions(+)
+>>
+>> diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
+>> index e5674d4a8143..878fc13632d8 100644
+>> --- a/drivers/iio/light/cm32181.c
+>> +++ b/drivers/iio/light/cm32181.c
+>> @@ -4,6 +4,7 @@
+>>    * Author: Kevin Tsai <ktsai@capellamicro.com>
+>>    */
+>>
+>> +#include <linux/acpi.h>
+>>   #include <linux/delay.h>
+>>   #include <linux/err.h>
+>>   #include <linux/i2c.h>
+>> @@ -53,6 +54,15 @@
+>>
+>>   #define SMBUS_ALERT_RESPONSE_ADDRESS   0x0c
+>>
+>> +/* CPM0 Index 0: device-id (3218 or 32181), 1: Unknown, 2: init_regs_bitmap */
+>> +#define CPM0_REGS_BITMAP               2
+>> +#define CPM0_HEADER_SIZE               3
+>> +
+>> +/* CPM1 Index 0: lux_per_bit, 1: calibscale, 2: resolution (100000) */
+>> +#define CPM1_LUX_PER_BIT               0
+>> +#define CPM1_CALIBSCALE                        1
+>> +#define CPM1_SIZE                      3
+>> +
+>>   /* CM3218 Family */
+>>   static const int cm3218_als_it_bits[] = { 0, 1, 2, 3 };
+>>   static const int cm3218_als_it_values[] = { 100000, 200000, 400000, 800000 };
+>> @@ -76,6 +86,56 @@ struct cm32181_chip {
+>>          const int *als_it_values;
+>>   };
+>>
+>> +static int cm32181_read_als_it(struct cm32181_chip *cm32181, int *val2);
+>> +
+>> +#ifdef CONFIG_ACPI
+>> +/**
+>> + * cm32181_acpi_get_cpm() - Get CPM object from ACPI
+>> + * @client     pointer of struct i2c_client.
+>> + * @obj_name   pointer of ACPI object name.
+>> + * @count      maximum size of return array.
+>> + * @vals       pointer of array for return elements.
+>> + *
+>> + * Convert ACPI CPM table to array.
+>> + *
+>> + * Return: -ENODEV for fail.  Otherwise is number of elements.
+>> + */
+>> +static int cm32181_acpi_get_cpm(struct i2c_client *client, char *obj_name,
+>> +                               u64 *values, int count)
+>> +{
+>> +       struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+>> +       union acpi_object *cpm, *elem;
+>> +       acpi_handle handle;
+>> +       acpi_status status;
+>> +       int i;
+>> +
+>> +       handle = ACPI_HANDLE(&client->dev);
+>> +       if (!handle)
+>> +               return -ENODEV;
+>> +
+>> +       status = acpi_evaluate_object(handle, obj_name, NULL, &buffer);
+>> +       if (ACPI_FAILURE(status)) {
+>> +               dev_err(&client->dev, "object %s not found\n", obj_name);
+>> +               return -ENODEV;
+>> +       }
+>> +
+>> +       cpm = buffer.pointer;
+>> +       if (cpm->package.count > count)
+>> +               dev_warn(&client->dev, "%s table contains %d values, only using first %d values\n",
+>> +                        obj_name, cpm->package.count, count);
+>> +
+>> +       count = min_t(int, cpm->package.count, count);
+>> +       for (i = 0; i < count; i++) {
+>> +               elem = &(cpm->package.elements[i]);
+>> +               values[i] = elem->integer.value;
+>> +       }
+>> +
+>> +       kfree(buffer.pointer);
+>> +
+>> +       return count;
+>> +}
+>> +#endif /* CONFIG_ACPI */
+>> +
+>>   /**
+>>    * cm32181_reg_init() - Initialize CM32181 registers
+>>    * @cm32181:   pointer of struct cm32181.
+>> @@ -121,6 +181,44 @@ static int cm32181_reg_init(struct cm32181_chip *cm32181)
+>>          cm32181->lux_per_bit = CM32181_LUX_PER_BIT;
+>>          cm32181->lux_per_bit_base_it = CM32181_LUX_PER_BIT_BASE_IT;
+>>
+>> +#ifdef CONFIG_ACPI
+>> +       if (ACPI_HANDLE(&client->dev)) {
+>> +               u64 values[CPM0_HEADER_SIZE + CM32181_CONF_REG_NUM];
+>> +               int count;
+>> +
+>> +               count = cm32181_acpi_get_cpm(client, "CPM0",
+>> +                                            values, ARRAY_SIZE(values));
+>> +               if (count <= CPM0_HEADER_SIZE)
+>> +                       goto cpm_parsing_done;
+>> +
+>> +               count -= CPM0_HEADER_SIZE;
+>> +
+>> +               cm32181->init_regs_bitmap = values[CPM0_REGS_BITMAP];
+>> +               cm32181->init_regs_bitmap &= GENMASK(count - 1, 0);
+>> +               for (i = 0; i < count; i++) {
+>> +                       if (cm32181->init_regs_bitmap & BIT(i))
+>> +                               cm32181->conf_regs[i] =
+>> +                                       values[CPM0_HEADER_SIZE + i];
+>> +               }
+>> +
+>> +               count = cm32181_acpi_get_cpm(client, "CPM1",
+>> +                                            values, ARRAY_SIZE(values));
+>> +               if (count != CPM1_SIZE)
+>> +                       goto cpm_parsing_done;
+>> +
+>> +               cm32181->lux_per_bit = values[CPM1_LUX_PER_BIT];
+>> +
+>> +               /* Check for uncalibrated devices */
+>> +               if (values[CPM1_CALIBSCALE] == CM32181_CALIBSCALE_DEFAULT)
+>> +                       goto cpm_parsing_done;
+>> +
+>> +               cm32181->calibscale  = values[CPM1_CALIBSCALE];
+>> +               /* CPM1 lux_per_bit is for the current it value */
+>> +               cm32181_read_als_it(cm32181, &cm32181->lux_per_bit_base_it);
+>> +       }
+>> +cpm_parsing_done:
 > 
-> Do we know ahead which device should take IRQ resource and which should not?
-> Can we use current _NONE flag for them?
+> Perhaps factor out to a helper, will
+> a) allow to get rid of a label;
+> b) drop indentation level.
 
-The problem is not internal to i2c-multi-instantiate.c, the problem
-(once we pass a fwnode) is the API between i2c-multi-instantiate.c and
-the i2c-core. For the IRQ_RESOURCE_NONE case i2c-multi-instantiate.c
-sets board_info.irq to 0, which is the correct way to specify that
-we do not have an IRQ, but if don't pass an IRQ then the i2c-core
-will try to find one itself.  And once we pass the fwnode, then
-the "try to find one itself" code will call i2c_acpi_get_irq()
-and find the same IRQ for clients we instantiate, leading to
-the earlier mentioned IRQ conflict.
+Thank you for the reviews.
 
-<adding Wolfram + i2c lists to the Cc>
+Factoring this into a helper is a good idea, that will also allow
+getting rid of 1 of the CONFIG_ACPI #ifdef-s.
 
-We could set board_info.irq to -ENOENT to indicate that there should
-not be an irq. But that will get passed to various i2c-drivers, many of
-which check for an irq like this:
+I also agree with your comments on the other patches.
 
-	if (client->irq) {
-		...
-	}
-
-We can avoid this, without needing to change all the drivers
-by making the i2c-core check for board_info.irq < 0 to skip its
-own "try to find IRQ" code and then set client->irq to 0 after
-that check, rather then setting it to board_info.irq = -ENOENT.
-
-If we do that then we can unconditionally pass the fwnode in
-the i2c-multi-instantiate code.
+I'll prepare and test a v2 with these changes and then submit
+it with your Reviewed-by added.
 
 Regards,
 
 Hans
-
-
-
-
-
->> So the solution is definitely not calling i2c_acpi_get_irq() inside
->> i2c-multi-instantiate.c we want to avoid the i2c_acpi_get_irq(),
->> leaving the other 2 clients for the BSG1160 device without an IRQ
->> and thus avoiding the IRQ mismatch (it is a mismatch because the
->> drivers do not set the shared flag; and that is ok, we do not want
->> to share the IRQ, it is just for the accelerometer AFAIK).
-> 
->>>> This is a problem when there is only an IRQ for 1 of the clients described
->>>> in the ACPI device we are instantiating clients for. If we unconditionally
->>>> pass the fwnode, then i2c_acpi_get_irq() will assign the same IRQ to all
->>>> clients instantiated, leading to kernel-oopses like this (BSG1160 device):
->>>>
->>>> [   27.340557] genirq: Flags mismatch irq 76. 00002001 (bmc150_magn_event) vs. 00000001 (bmc150_accel_event)
->>>> [   27.340567] Call Trace:
->>>> ...
->>>>
->>>> So we cannot simply always pass the fwnode. This commit adds a PASS_FWNODE
->>>> flag, which can be used to pass the fwnode in cases where we do not have
->>>> the IRQ problem and the driver for the instantiated client(s) needs access
->>>> to the fwnode.
->>>>
->>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>>> ---
->>>>    drivers/platform/x86/i2c-multi-instantiate.c | 6 ++++++
->>>>    1 file changed, 6 insertions(+)
->>>>
->>>> diff --git a/drivers/platform/x86/i2c-multi-instantiate.c b/drivers/platform/x86/i2c-multi-instantiate.c
->>>> index 6acc8457866e..dcafb1a29d17 100644
->>>> --- a/drivers/platform/x86/i2c-multi-instantiate.c
->>>> +++ b/drivers/platform/x86/i2c-multi-instantiate.c
->>>> @@ -20,6 +20,8 @@
->>>>    #define IRQ_RESOURCE_GPIO      1
->>>>    #define IRQ_RESOURCE_APIC      2
->>>>
->>>> +#define PASS_FWNODE            BIT(2)
->>>> +
->>>>    struct i2c_inst_data {
->>>>           const char *type;
->>>>           unsigned int flags;
->>>> @@ -93,6 +95,10 @@ static int i2c_multi_inst_probe(struct platform_device *pdev)
->>>>                   snprintf(name, sizeof(name), "%s-%s.%d", dev_name(dev),
->>>>                            inst_data[i].type, i);
->>>>                   board_info.dev_name = name;
->>>> +
->>>> +               if (inst_data[i].flags & PASS_FWNODE)
->>>> +                       board_info.fwnode = dev->fwnode;
->>>> +
->>>>                   switch (inst_data[i].flags & IRQ_RESOURCE_TYPE) {
->>>>                   case IRQ_RESOURCE_GPIO:
->>>>                           ret = acpi_dev_gpio_irq_get(adev, inst_data[i].irq_idx);
->>>> --
->>>> 2.26.0
->>>>
->>>
->>>
->>
-> 
-> 
 
