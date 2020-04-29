@@ -2,108 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9A701BE21F
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Apr 2020 17:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B21411BE35B
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Apr 2020 18:08:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726530AbgD2PKx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Apr 2020 11:10:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60844 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726516AbgD2PKw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 29 Apr 2020 11:10:52 -0400
-Received: from redsun51.ssa.fujisawa.hgst.com (unknown [199.255.47.7])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726519AbgD2QIg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Apr 2020 12:08:36 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:29774 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726476AbgD2QIf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 29 Apr 2020 12:08:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1588176513;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=RqcnavPFirGVOTXHhjY5q5DM9FLFgis6bxz7RvWdVJE=;
+        b=QZPrrd8zNNebgZXnzhIAYA2aP84wbXzXTC4SfYYO6rv5ju2/aeWwsXYRoUwkzVKNDRurdJ
+        YxExOEc0hr+rJQkkFgPUr+ph31cSB3GXU2c+/TgswYJtJaAdE4hLZ9KBhaCdgY7s0ei/vk
+        ZW/gaMqEpwiuaxXcYVMdRLbEU5DvYnE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-480-F36vCcGRMVu93iH7TXheIg-1; Wed, 29 Apr 2020 12:08:26 -0400
+X-MC-Unique: F36vCcGRMVu93iH7TXheIg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 164D72074A;
-        Wed, 29 Apr 2020 15:10:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588173051;
-        bh=8A+8vDkMP+/JIF1TdfhS0LnIA8WKy9bVLiwsTDkUSTI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=c+2m4Dap45V77moeWAWH+2CYGA+rcZ2K/2OztHOy+BvupHtxBxuOcFzc0f716mlq8
-         SRHd7Vuz5ZNEnYuu6ClzWTH5I0Z9AfqndxDyjDcbiHIpD9ASe9sglx4azZrWB6rq68
-         aMDBsDpM1DlYf7FagC6/0AkN9e5GAbjA4COdzq3k=
-Date:   Thu, 30 Apr 2020 00:10:46 +0900
-From:   Keith Busch <kbusch@kernel.org>
-To:     "Williams, Dan J" <dan.j.williams@intel.com>
-Cc:     "hch@lst.de" <hch@lst.de>,
-        "david.e.box@linux.intel.com" <david.e.box@linux.intel.com>,
-        "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-        "sagi@grimberg.me" <sagi@grimberg.me>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "axboe@fb.com" <axboe@fb.com>,
-        "bhelgaas@google.com" <bhelgaas@google.com>
-Subject: Re: [PATCH 0/2] Add support for StorageD3Enable _DSD property
-Message-ID: <20200429151046.GA6222@redsun51.ssa.fujisawa.hgst.com>
-References: <20200428003214.3764-1-david.e.box@linux.intel.com>
- <20200428051312.GB17146@lst.de>
- <de052d30cc881ac67f9410b50b0760ee5bf9a623.camel@linux.intel.com>
- <20200428142247.GB5439@lst.de>
- <de2d78556fcb10f97364201256ac8f342a58eb75.camel@linux.intel.com>
- <296064bbcf702744bf603932c9d849307db2e5b7.camel@intel.com>
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E4E0C1895A28;
+        Wed, 29 Apr 2020 16:08:21 +0000 (UTC)
+Received: from t480s.redhat.com (ovpn-114-55.ams2.redhat.com [10.36.114.55])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id BAF7C605FB;
+        Wed, 29 Apr 2020 16:08:07 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, virtio-dev@lists.oasis-open.org,
+        virtualization@lists.linux-foundation.org,
+        linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+        linux-nvdimm@lists.01.org, linux-hyperv@vger.kernel.org,
+        linux-s390@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Michal Hocko <mhocko@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Michael S . Tsirkin" <mst@redhat.com>,
+        David Hildenbrand <david@redhat.com>,
+        Baoquan He <bhe@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Juergen Gross <jgross@suse.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Len Brown <lenb@kernel.org>,
+        Leonardo Bras <leobras.c@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Hocko <mhocko@suse.com>,
+        Nathan Lynch <nathanl@linux.ibm.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Pingfan Liu <kernelfans@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        Wei Yang <richard.weiyang@gmail.com>
+Subject: [PATCH v1 0/3] mm/memory_hotplug: Make virtio-mem play nicely with kexec-tools
+Date:   Wed, 29 Apr 2020 18:08:00 +0200
+Message-Id: <20200429160803.109056-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <296064bbcf702744bf603932c9d849307db2e5b7.camel@intel.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Apr 29, 2020 at 05:20:09AM +0000, Williams, Dan J wrote:
-> On Tue, 2020-04-28 at 08:27 -0700, David E. Box wrote:
-> > On Tue, 2020-04-28 at 16:22 +0200, Christoph Hellwig wrote:
-> > > On Tue, Apr 28, 2020 at 07:09:59AM -0700, David E. Box wrote:
-> > > > > I'm not sure who came up with the idea to put this into ACPI,
-> > > > > but
-> > > > > it
-> > > > > belongs into NVMe.  Please talk to the NVMe technical working
-> > > > > group
-> > > > > instead of trying to overrules them in an unrelated group that
-> > > > > doesn't
-> > > > > apply to all of PCIe.
-> > > > 
-> > > > Agreed that this is not ideal since it does not apply to all of
-> > > > PCIe.
-> > > > But as the property already exists on shipping systems, we need
-> > > > to
-> > > > be
-> > > > able to read it in the NVMe driver and the patch is consitent
-> > > > with
-> > > > the
-> > > > way properties under PCI ports are read.
-> > > 
-> > > The point is that it is not the BIOSes job do decide how Linux does
-> > > power management.  For example D3 has really horrible entry and
-> > > exit
-> > > latencies in many cases, and will lead to higher power usage.
-> > 
-> > The platform can know which pm policies will save the most power. But
-> > since the solution doesn't apply to all PCIe devices (despite BIOS
-> > specifying it that way) I'll withdraw this patch. Thanks.
-> 
-> Wait, why withdraw? In this case the platform is unfortunately
-> preventing the standard driver from making a proper determination. So
-> while I agree that it's not the BIOSes job, when the platform actively
-> prevents proper operation due to some ill conceived non-standard
-> platform property what is Linux left to do on these systems?
-> 
-> The *patch* is not trying to overrule NVME, and the best I can say is
-> that the Intel Linux team was not in the loop when this was being
-> decided between the platform BIOS implemenation and  whomever  thought
-> they could just publish random ACPI properties that impacted NVME
-> operation [1].
-> 
-> So now David is trying to get these platform unbroken because they are
-> already shipping with this b0rkage.
+This series is based on [1]:
+	[PATCH v2 00/10] virtio-mem: paravirtualized memory
+That will hopefull get picked up soon, rebased to -next.
 
-Rather than quirking all these cases, which I get the feeling there
-are many more than we've currently got in our quirk list, perhaps it'd
-be simpler to default to the simple suspend. AFAIK, the simple suspend
-works for all platforms, though it may not realize the best power savings
-and/or exit latency.
+The following patches were reverted from -next [2]:
+	[PATCH 0/3] kexec/memory_hotplug: Prevent removal and accidental use
+As discussed in that thread, they should be reverted from -next already.
+
+In theory, if people agree, we could take the first two patches via the
+-mm tree now and the last (virtio-mem) patch via MST's tree once picking =
+up
+virtio-mem. No strong feelings.
+
+
+Memory added by virtio-mem is special and might contain logical holes,
+especially after memory unplug, but also when adding memory in
+sub-section size. While memory in these holes can usually be read, that
+memory should not be touched. virtio-mem managed device memory is never
+exposed via any firmware memmap (esp., e820). The device driver will
+request to plug memory from the hypervisor and add it to Linux.
+
+On a cold start, all memory is unplugged, and the guest driver will first
+request to plug memory from the hypervisor, to then add it to Linux. Afte=
+r
+a reboot, all memory will get unplugged (except in rare, special cases). =
+In
+case the device driver comes up and detects that some memory is still
+plugged after a reboot, it will manually request to unplug all memory fro=
+m
+the hypervisor first - to then request to plug memory from the hypervisor
+and add to Linux. This is essentially a defragmentation step, where all
+logical holes are removed.
+
+As the device driver is responsible for detecting, adding and managing th=
+at
+memory, also kexec should treat it like that. It is special. We need a wa=
+y
+to teach kexec-tools to not add that memory to the fixed-up firmware
+memmap, to not place kexec images onto this memory, but still allow kdump
+to dump it. Add a flag to tell memory hotplug code to
+not create /sys/firmware/memmap entries and to indicate it via
+"System RAM (driver managed)" in /proc/iomem.
+
+Before this series, kexec_file_load() already did the right thing (for
+virtio-mem) by not adding that memory to the fixed-up firmware memmap and
+letting the device driver handle it. With this series, also kexec_load() =
+-
+which relies on user space to provide a fixed up firmware memmap - does
+the right thing with virtio-mem memory.
+
+When the virtio-mem device driver(s) come up, they will request to unplug
+all memory from the hypervisor first (esp. defragment), to then request t=
+o
+plug consecutive memory ranges from the hypervisor, and add them to Linux
+- just like on a reboot where we still have memory plugged.
+
+[1] https://lore.kernel.org/r/20200311171422.10484-1-david@redhat.com/
+[2] https://lore.kernel.org/r/20200326180730.4754-1-james.morse@arm.com
+
+David Hildenbrand (3):
+  mm/memory_hotplug: Prepare passing flags to add_memory() and friends
+  mm/memory_hotplug: Introduce MHP_DRIVER_MANAGED
+  virtio-mem: Add memory with MHP_DRIVER_MANAGED
+
+ arch/powerpc/platforms/powernv/memtrace.c     |  2 +-
+ .../platforms/pseries/hotplug-memory.c        |  2 +-
+ drivers/acpi/acpi_memhotplug.c                |  2 +-
+ drivers/base/memory.c                         |  2 +-
+ drivers/dax/kmem.c                            |  2 +-
+ drivers/hv/hv_balloon.c                       |  2 +-
+ drivers/s390/char/sclp_cmd.c                  |  2 +-
+ drivers/virtio/virtio_mem.c                   |  3 +-
+ drivers/xen/balloon.c                         |  2 +-
+ include/linux/memory_hotplug.h                | 15 +++++++--
+ mm/memory_hotplug.c                           | 31 +++++++++++++------
+ 11 files changed, 44 insertions(+), 21 deletions(-)
+
+--=20
+2.25.3
+
