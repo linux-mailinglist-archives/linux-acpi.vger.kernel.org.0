@@ -2,125 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 455711BE37A
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Apr 2020 18:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33B481BE41F
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Apr 2020 18:42:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726773AbgD2QLO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Apr 2020 12:11:14 -0400
-Received: from mga05.intel.com ([192.55.52.43]:55638 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726580AbgD2QLO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 29 Apr 2020 12:11:14 -0400
-IronPort-SDR: YUm3PqD1sz9z329ebCkWLr8Sx5Wqt/gEXJjdfSjVAOqcNIUJnm5YgFuUBdNPrdzYgB908uDrzB
- rLkjAluXueSw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2020 09:11:13 -0700
-IronPort-SDR: lx2KkyTZPhRl1sD40I4Y7gLUcq7I5rdu5EFyb/8mWtnfuMy8EnenzMatqwkSikUnQqCqGtHMR3
- hmFSOvd9wCxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,332,1583222400"; 
-   d="scan'208";a="249494877"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmsmga008.fm.intel.com with ESMTP; 29 Apr 2020 09:11:13 -0700
-Received: from debox1-desk1.jf.intel.com (debox1-desk1.jf.intel.com [10.7.201.137])
-        by linux.intel.com (Postfix) with ESMTP id 52DD8580613;
-        Wed, 29 Apr 2020 09:11:13 -0700 (PDT)
-Message-ID: <537edbfaa088a655eb22e7eba05075aa61d941be.camel@linux.intel.com>
-Subject: Re: [PATCH 0/2] Add support for StorageD3Enable _DSD property
-From:   "David E. Box" <david.e.box@linux.intel.com>
-Reply-To: david.e.box@linux.intel.com
-To:     "Williams, Dan J" <dan.j.williams@intel.com>,
-        "hch@lst.de" <hch@lst.de>
-Cc:     "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-        "sagi@grimberg.me" <sagi@grimberg.me>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "axboe@fb.com" <axboe@fb.com>,
-        "kbusch@kernel.org" <kbusch@kernel.org>,
-        "bhelgaas@google.com" <bhelgaas@google.com>
-Date:   Wed, 29 Apr 2020 09:11:13 -0700
-In-Reply-To: <296064bbcf702744bf603932c9d849307db2e5b7.camel@intel.com>
-References: <20200428003214.3764-1-david.e.box@linux.intel.com>
-         <20200428051312.GB17146@lst.de>
-         <de052d30cc881ac67f9410b50b0760ee5bf9a623.camel@linux.intel.com>
-         <20200428142247.GB5439@lst.de>
-         <de2d78556fcb10f97364201256ac8f342a58eb75.camel@linux.intel.com>
-         <296064bbcf702744bf603932c9d849307db2e5b7.camel@intel.com>
-Organization: David E. Box
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+        id S1726755AbgD2QmB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Apr 2020 12:42:01 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:35340 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726493AbgD2QmA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Apr 2020 12:42:00 -0400
+Received: by mail-wm1-f65.google.com with SMTP id r26so2765278wmh.0;
+        Wed, 29 Apr 2020 09:41:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=b1NmnG+Bha+R6DCsicsXkjR18of0wt/SYtjmCqwDrqU=;
+        b=PR+6NhRs7ma3EUG96L3i8LgOEy/NDjUnLNIwxK3li0CbGM8rXzGX+vp6eF78DZ/nSM
+         QKKNjhEniYZCMrsVyoqFGrDqevTsPXmtyJvMe3kYaYe/UZPzCPf9H9f3cyxcYlVi7ma7
+         xesPgqgAFheQeKVS9kCy+VG3z6j6ybPcgFfzNgV2+aKaBM2DJErDrjs8mFKaDEEk/kfp
+         WpOxVxh1u+b0QgaVsv6Kum4Aq5GUArU7d/Gok3e4rQicnPLolDibhGNG2EfCDbMUknD6
+         ZnECIh6/ivV5WxnBvqV0ICbyIrx88Vxt7h3WtHHNCDFV3lUggPT/dAs5VlAx00g+1cWl
+         GV0Q==
+X-Gm-Message-State: AGi0PuaPD2jbx8GrkKc+at1Aw19eXwGMlU3ydOlAcU7Z/ajiTWQ6KJp+
+        B/VN+Z+qmZ8gvWrBfBu13rE=
+X-Google-Smtp-Source: APiQypK92COmCk6jtDXQuM8RbqIzlQmTZkmvIjtD7/GMtqebIJTWbJ+7ip3K+A9bRbw+AFyvMNQEDw==
+X-Received: by 2002:a1c:2383:: with SMTP id j125mr4175112wmj.6.1588178518352;
+        Wed, 29 Apr 2020 09:41:58 -0700 (PDT)
+Received: from liuwe-devbox-debian-v2.j3c5onc20sse1dnehy4noqpfcg.zx.internal.cloudapp.net ([51.145.34.42])
+        by smtp.gmail.com with ESMTPSA id i25sm8360761wml.43.2020.04.29.09.41.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Apr 2020 09:41:57 -0700 (PDT)
+Date:   Wed, 29 Apr 2020 16:41:55 +0000
+From:   Wei Liu <wei.liu@kernel.org>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        virtio-dev@lists.oasis-open.org,
+        virtualization@lists.linux-foundation.org,
+        linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+        linux-nvdimm@lists.01.org, linux-hyperv@vger.kernel.org,
+        linux-s390@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Michal Hocko <mhocko@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Michael S . Tsirkin" <mst@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Pingfan Liu <kernelfans@gmail.com>,
+        Leonardo Bras <leobras.c@gmail.com>,
+        Nathan Lynch <nathanl@linux.ibm.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>,
+        Wei Yang <richard.weiyang@gmail.com>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Eric Biederman <ebiederm@xmission.com>
+Subject: Re: [PATCH v1 1/3] mm/memory_hotplug: Prepare passing flags to
+ add_memory() and friends
+Message-ID: <20200429164154.ctflq4ouwrwwe4wq@liuwe-devbox-debian-v2.j3c5onc20sse1dnehy4noqpfcg.zx.internal.cloudapp.net>
+References: <20200429160803.109056-1-david@redhat.com>
+ <20200429160803.109056-2-david@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200429160803.109056-2-david@redhat.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 2020-04-29 at 05:20 +0000, Williams, Dan J wrote:
-> On Tue, 2020-04-28 at 08:27 -0700, David E. Box wrote:
-> > On Tue, 2020-04-28 at 16:22 +0200, Christoph Hellwig wrote:
-> > > On Tue, Apr 28, 2020 at 07:09:59AM -0700, David E. Box wrote:
-> > > > > I'm not sure who came up with the idea to put this into ACPI,
-> > > > > but
-> > > > > it
-> > > > > belongs into NVMe.  Please talk to the NVMe technical working
-> > > > > group
-> > > > > instead of trying to overrules them in an unrelated group
-> > > > > that
-> > > > > doesn't
-> > > > > apply to all of PCIe.
-> > > > 
-> > > > Agreed that this is not ideal since it does not apply to all of
-> > > > PCIe.
-> > > > But as the property already exists on shipping systems, we need
-> > > > to
-> > > > be
-> > > > able to read it in the NVMe driver and the patch is consitent
-> > > > with
-> > > > the
-> > > > way properties under PCI ports are read.
-> > > 
-> > > The point is that it is not the BIOSes job do decide how Linux
-> > > does
-> > > power management.  For example D3 has really horrible entry and
-> > > exit
-> > > latencies in many cases, and will lead to higher power usage.
-> > 
-> > The platform can know which pm policies will save the most power.
-> > But
-> > since the solution doesn't apply to all PCIe devices (despite BIOS
-> > specifying it that way) I'll withdraw this patch. Thanks.
+On Wed, Apr 29, 2020 at 06:08:01PM +0200, David Hildenbrand wrote:
+> We soon want to pass flags - prepare for that.
 > 
-> Wait, why withdraw? In this case the platform is unfortunately
-> preventing the standard driver from making a proper determination. So
-> while I agree that it's not the BIOSes job, when the platform
-> actively
-> prevents proper operation due to some ill conceived non-standard
-> platform property what is Linux left to do on these systems?
+> This patch is based on a similar patch by Oscar Salvador:
 > 
-> The *patch* is not trying to overrule NVME, and the best I can say is
-> that the Intel Linux team was not in the loop when this was being
-> decided between the platform BIOS implemenation
-> and  whomever  thought
-> they could just publish random ACPI properties that impacted NVME
-> operation [1].
+> https://lkml.kernel.org/r/20190625075227.15193-3-osalvador@suse.de
 > 
-> So now David is trying to get these platform unbroken because they
-> are
-> already shipping with this b0rkage.
+[...]
+> ---
+>  drivers/hv/hv_balloon.c                         |  2 +-
 
-Not drop completely. This patch copied the code used to read _DSD
-properties under PCI root ports. But I agree that such properties
-should apply to all devices on those ports and unfortuntely that's not
-the case here. BIOS got it wrong. My thought in dropping this patch is
-to rewrite it to read the property directly from the nvme driver. Not
-the way it's typically done either but it would avoid a global change
-in the pci core while allowing us to deal with the firmware we have.
+> diff --git a/drivers/hv/hv_balloon.c b/drivers/hv/hv_balloon.c
+> index 32e3bc0aa665..0194bed1a573 100644
+> --- a/drivers/hv/hv_balloon.c
+> +++ b/drivers/hv/hv_balloon.c
+> @@ -726,7 +726,7 @@ static void hv_mem_hot_add(unsigned long start, unsigned long size,
+>  
+>  		nid = memory_add_physaddr_to_nid(PFN_PHYS(start_pfn));
+>  		ret = add_memory(nid, PFN_PHYS((start_pfn)),
+> -				(HA_CHUNK << PAGE_SHIFT));
+> +				(HA_CHUNK << PAGE_SHIFT), 0);
+>  
+>  		if (ret) {
+>  			pr_err("hot_add memory failed error is %d\n", ret);
 
-David
-
+Acked-by: Wei Liu <wei.liu@kernel.org>
