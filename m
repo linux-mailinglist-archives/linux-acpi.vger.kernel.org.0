@@ -2,127 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 282971BCF71
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Apr 2020 00:09:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E0261BD3F0
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Apr 2020 07:20:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726424AbgD1WIn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Apr 2020 18:08:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49742 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726343AbgD1WIm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 28 Apr 2020 18:08:42 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A34C8C03C1AC;
-        Tue, 28 Apr 2020 15:08:42 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id n16so2869pgb.7;
-        Tue, 28 Apr 2020 15:08:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=CucLDCAtx0OGxZhd7U3+pHytapXL85CWzXGFNadaJVE=;
-        b=u8UHPtK1e2CkwXwCIbugkPBrGfbll+2jZRPd5hxNVAPnRdPNIiaxQLWp0qctJuW3hZ
-         TQFg2KWVdic6sCbm+fpRzywFvfjmaUkbLEEn5PbkAlomVTmvOWXUD5FSP1Zu/yCMXkXK
-         7ul0qqpWHaXihJh4pYp4s3vBZuwjBPTll67qRISvg2JYnb2NK3vh7k6/fNBoWBC6IZAp
-         /cWNk3N9t21YNqm50XA+Khtsc+vJCGhaNxST1UR/2EmPAPdKNdxutjKcyn5drifpKyK9
-         pbpYNYt29TzmKJ0HSGrWGLy08Jdw006OMQr022lPvHNYIZyKTyUZQOmmzZPG7TdAa3Uw
-         /ewA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CucLDCAtx0OGxZhd7U3+pHytapXL85CWzXGFNadaJVE=;
-        b=dNf/0FjqaZR0ZfxqTbBoCQN0k7b/KhUH6Mju/lLK/bjiDUq199yYDX6DvUcwUzrV/D
-         djzcqxPNjYbQth0jzxLMY0e0HRazylwbS6CV74wP5QC0qFGvIrnB9c3693ToOrIE5tlx
-         9LqhuKsBCFJDeDjMb6YmodzssS7gGSwi8956K6bCkm3yANZaa0xzEmTCQ1oIM+BvBvBu
-         1W0ex5glu6pJPncJWnMhzLFY9iDHphYjTRiOf+sJjSkuh4+mlztmu3MiSriDKNyup4It
-         oPC97QnlehvYA8TIRitYBMmIEACX01GoCxrGHeYdZBnMlDVL/UK8cACb4rKFCJth+7Lq
-         WIww==
-X-Gm-Message-State: AGi0PuafWH6U3glVNvKjAlWqintt+ZSLFJqHfeI/abJQUFR270+uQ5YZ
-        uklF3dlX7UuaFLZEP12Nw2fIvVpxLEthPE7y1Ro=
-X-Google-Smtp-Source: APiQypII6SQ5Okuw51pNlgbiYJwS78/56MsUavstfIBtJG+uEuAH2KEa+LkeL7KGv5KMNZ+oiRyok8ChtOfvf7/z2/E=
-X-Received: by 2002:a62:f908:: with SMTP id o8mr1552806pfh.170.1588111722155;
- Tue, 28 Apr 2020 15:08:42 -0700 (PDT)
+        id S1726739AbgD2FUM convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 29 Apr 2020 01:20:12 -0400
+Received: from mga09.intel.com ([134.134.136.24]:2243 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726736AbgD2FUL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 29 Apr 2020 01:20:11 -0400
+IronPort-SDR: 9vY+KN+4pTAxQsWP/tIAiD3+AxqWw49yzdwWG+gs/n8qASrZgN6mz0kqLW7dKiZZHg8tYRwWNV
+ YpaZl5+4lOLw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2020 22:20:11 -0700
+IronPort-SDR: qZAwIGjYFXEwc9gn7eJBUXXY7T9uXzfVFuBF4Ch77I1paTO/rTowIqW+PyVP28RtGTT6YD6skR
+ mGvAhhGh3hAw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,330,1583222400"; 
+   d="scan'208";a="432440250"
+Received: from orsmsx104.amr.corp.intel.com ([10.22.225.131])
+  by orsmga005.jf.intel.com with ESMTP; 28 Apr 2020 22:20:11 -0700
+Received: from orsmsx159.amr.corp.intel.com (10.22.240.24) by
+ ORSMSX104.amr.corp.intel.com (10.22.225.131) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Tue, 28 Apr 2020 22:20:10 -0700
+Received: from orsmsx107.amr.corp.intel.com ([169.254.1.205]) by
+ ORSMSX159.amr.corp.intel.com ([169.254.11.195]) with mapi id 14.03.0439.000;
+ Tue, 28 Apr 2020 22:20:10 -0700
+From:   "Williams, Dan J" <dan.j.williams@intel.com>
+To:     "hch@lst.de" <hch@lst.de>,
+        "david.e.box@linux.intel.com" <david.e.box@linux.intel.com>
+CC:     "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+        "sagi@grimberg.me" <sagi@grimberg.me>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "axboe@fb.com" <axboe@fb.com>,
+        "kbusch@kernel.org" <kbusch@kernel.org>,
+        "bhelgaas@google.com" <bhelgaas@google.com>
+Subject: Re: [PATCH 0/2] Add support for StorageD3Enable _DSD property
+Thread-Topic: [PATCH 0/2] Add support for StorageD3Enable _DSD property
+Thread-Index: AQHWHeXa7+nQtLOpJUmuLMlaOXTLQw==
+Date:   Wed, 29 Apr 2020 05:20:09 +0000
+Message-ID: <296064bbcf702744bf603932c9d849307db2e5b7.camel@intel.com>
+References: <20200428003214.3764-1-david.e.box@linux.intel.com>
+         <20200428051312.GB17146@lst.de>
+         <de052d30cc881ac67f9410b50b0760ee5bf9a623.camel@linux.intel.com>
+         <20200428142247.GB5439@lst.de>
+         <de2d78556fcb10f97364201256ac8f342a58eb75.camel@linux.intel.com>
+In-Reply-To: <de2d78556fcb10f97364201256ac8f342a58eb75.camel@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.254.30.10]
+Content-Type: text/plain; charset="utf-7"
+Content-ID: <70CC327022932945B5FF865EF7EEC18B@intel.com>
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-References: <20200428215804.48481-1-arnd@arndb.de>
-In-Reply-To: <20200428215804.48481-1-arnd@arndb.de>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 29 Apr 2020 01:08:30 +0300
-Message-ID: <CAHp75VfSny=nSeiCnjE8MwL=hLT92G--9qy6=_0mittzuPxc-A@mail.gmail.com>
-Subject: Re: [PATCH] acpi: avoid uninialized-variable warning
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Apr 29, 2020 at 1:03 AM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> Older compilers like gcc-4.8 produce a bogus warning here
->
-> In file included from include/linux/compiler_types.h:68:0,
->                  from <command-line>:0:
-> drivers/acpi/property.c: In function 'acpi_data_prop_read':
-> include/linux/compiler-gcc.h:75:45: error: 'obj' may be used uninitialized in this function [-Werror=maybe-uninitialized]
->  #define __UNIQUE_ID(prefix) __PASTE(__PASTE(__UNIQUE_ID_, prefix), __COUNTER__)
->                                              ^
-> drivers/acpi/property.c:934:27: note: 'obj' was declared here
->   const union acpi_object *obj;
->                            ^
->
-> Ensure the output is always initialized even when returning an error
-> to avoid the warning.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  drivers/acpi/property.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> index e601c4511a8b..3aa71daeb0b4 100644
-> --- a/drivers/acpi/property.c
-> +++ b/drivers/acpi/property.c
-> @@ -587,8 +587,10 @@ static int acpi_data_get_property_array(const struct acpi_device_data *data,
->         int ret, i;
->
->         ret = acpi_data_get_property(data, name, ACPI_TYPE_PACKAGE, &prop);
-> -       if (ret)
-> +       if (ret && obj) {
+On Tue, 2020-04-28 at 08:27 -0700, David E. Box wrote:
++AD4- On Tue, 2020-04-28 at 16:22 +-0200, Christoph Hellwig wrote:
++AD4- +AD4- On Tue, Apr 28, 2020 at 07:09:59AM -0700, David E. Box wrote:
++AD4- +AD4- +AD4- +AD4- I'm not sure who came up with the idea to put this into ACPI,
++AD4- +AD4- +AD4- +AD4- but
++AD4- +AD4- +AD4- +AD4- it
++AD4- +AD4- +AD4- +AD4- belongs into NVMe.  Please talk to the NVMe technical working
++AD4- +AD4- +AD4- +AD4- group
++AD4- +AD4- +AD4- +AD4- instead of trying to overrules them in an unrelated group that
++AD4- +AD4- +AD4- +AD4- doesn't
++AD4- +AD4- +AD4- +AD4- apply to all of PCIe.
++AD4- +AD4- +AD4- 
++AD4- +AD4- +AD4- Agreed that this is not ideal since it does not apply to all of
++AD4- +AD4- +AD4- PCIe.
++AD4- +AD4- +AD4- But as the property already exists on shipping systems, we need
++AD4- +AD4- +AD4- to
++AD4- +AD4- +AD4- be
++AD4- +AD4- +AD4- able to read it in the NVMe driver and the patch is consitent
++AD4- +AD4- +AD4- with
++AD4- +AD4- +AD4- the
++AD4- +AD4- +AD4- way properties under PCI ports are read.
++AD4- +AD4- 
++AD4- +AD4- The point is that it is not the BIOSes job do decide how Linux does
++AD4- +AD4- power management.  For example D3 has really horrible entry and
++AD4- +AD4- exit
++AD4- +AD4- latencies in many cases, and will lead to higher power usage.
++AD4- 
++AD4- The platform can know which pm policies will save the most power. But
++AD4- since the solution doesn't apply to all PCIe devices (despite BIOS
++AD4- specifying it that way) I'll withdraw this patch. Thanks.
 
-It changes semantics and requires obj to be non-NULL.
+Wait, why withdraw? In this case the platform is unfortunately
+preventing the standard driver from making a proper determination. So
+while I agree that it's not the BIOSes job, when the platform actively
+prevents proper operation due to some ill conceived non-standard
+platform property what is Linux left to do on these systems?
 
-Should be
-if (ret) {
-  if (obj)
-    *obj = NULL;
-  return ret;
-}
+The +ACo-patch+ACo- is not trying to overrule NVME, and the best I can say is
+that the Intel Linux team was not in the loop when this was being
+decided between the platform BIOS implemenation and  whomever  thought
+they could just publish random ACPI properties that impacted NVME
+operation +AFs-1+AF0-.
 
-> +               *obj = NULL;
->                 return ret;
-> +       }
->
->         if (type != ACPI_TYPE_ANY) {
->                 /* Check that all elements are of correct type. */
-> --
-> 2.26.0
->
+So now David is trying to get these platform unbroken because they are
+already shipping with this b0rkage.
+
++AFs-1+AF0-: 
+https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
 
 
--- 
-With Best Regards,
-Andy Shevchenko
