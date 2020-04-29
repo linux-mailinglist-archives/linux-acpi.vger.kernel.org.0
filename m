@@ -2,124 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46A541BE371
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Apr 2020 18:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 455711BE37A
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Apr 2020 18:11:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726915AbgD2QIw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Apr 2020 12:08:52 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:27357 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726948AbgD2QIw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Apr 2020 12:08:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1588176530;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=cZEMgwn0RdunIfg2yunfCJF8r1H9z41yqLf2sGNY0wM=;
-        b=M0WbGyn9Y19J0as6sn0UpHe8NbyjD34/LSPGlzdKvj7WR00VV9+gvk4tmvIkwqCWT9U/4T
-        wcWrDIQHYBZab7OgRPUYvsSApxpciT/uXpP1HQryPqjU8Nb+B1PJZpe6xqLGi4nMBznR0Q
-        gsl9e4Zwo6FfbniZqKlhsXg5FO9KvSU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-494-pvtDQR0OOPCL64QlN-zLcg-1; Wed, 29 Apr 2020 12:08:46 -0400
-X-MC-Unique: pvtDQR0OOPCL64QlN-zLcg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B80BA107ACCA;
-        Wed, 29 Apr 2020 16:08:44 +0000 (UTC)
-Received: from t480s.redhat.com (ovpn-114-55.ams2.redhat.com [10.36.114.55])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 8D1E3605F7;
-        Wed, 29 Apr 2020 16:08:41 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, virtio-dev@lists.oasis-open.org,
-        virtualization@lists.linux-foundation.org,
-        linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
-        linux-nvdimm@lists.01.org, linux-hyperv@vger.kernel.org,
-        linux-s390@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Michal Hocko <mhocko@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        David Hildenbrand <david@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Michal Hocko <mhocko@suse.com>,
-        Eric Biederman <ebiederm@xmission.com>
-Subject: [PATCH v1 3/3] virtio-mem: Add memory with MHP_DRIVER_MANAGED
-Date:   Wed, 29 Apr 2020 18:08:03 +0200
-Message-Id: <20200429160803.109056-4-david@redhat.com>
-In-Reply-To: <20200429160803.109056-1-david@redhat.com>
-References: <20200429160803.109056-1-david@redhat.com>
+        id S1726773AbgD2QLO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Apr 2020 12:11:14 -0400
+Received: from mga05.intel.com ([192.55.52.43]:55638 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726580AbgD2QLO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 29 Apr 2020 12:11:14 -0400
+IronPort-SDR: YUm3PqD1sz9z329ebCkWLr8Sx5Wqt/gEXJjdfSjVAOqcNIUJnm5YgFuUBdNPrdzYgB908uDrzB
+ rLkjAluXueSw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2020 09:11:13 -0700
+IronPort-SDR: lx2KkyTZPhRl1sD40I4Y7gLUcq7I5rdu5EFyb/8mWtnfuMy8EnenzMatqwkSikUnQqCqGtHMR3
+ hmFSOvd9wCxQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,332,1583222400"; 
+   d="scan'208";a="249494877"
+Received: from linux.intel.com ([10.54.29.200])
+  by fmsmga008.fm.intel.com with ESMTP; 29 Apr 2020 09:11:13 -0700
+Received: from debox1-desk1.jf.intel.com (debox1-desk1.jf.intel.com [10.7.201.137])
+        by linux.intel.com (Postfix) with ESMTP id 52DD8580613;
+        Wed, 29 Apr 2020 09:11:13 -0700 (PDT)
+Message-ID: <537edbfaa088a655eb22e7eba05075aa61d941be.camel@linux.intel.com>
+Subject: Re: [PATCH 0/2] Add support for StorageD3Enable _DSD property
+From:   "David E. Box" <david.e.box@linux.intel.com>
+Reply-To: david.e.box@linux.intel.com
+To:     "Williams, Dan J" <dan.j.williams@intel.com>,
+        "hch@lst.de" <hch@lst.de>
+Cc:     "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+        "sagi@grimberg.me" <sagi@grimberg.me>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "axboe@fb.com" <axboe@fb.com>,
+        "kbusch@kernel.org" <kbusch@kernel.org>,
+        "bhelgaas@google.com" <bhelgaas@google.com>
+Date:   Wed, 29 Apr 2020 09:11:13 -0700
+In-Reply-To: <296064bbcf702744bf603932c9d849307db2e5b7.camel@intel.com>
+References: <20200428003214.3764-1-david.e.box@linux.intel.com>
+         <20200428051312.GB17146@lst.de>
+         <de052d30cc881ac67f9410b50b0760ee5bf9a623.camel@linux.intel.com>
+         <20200428142247.GB5439@lst.de>
+         <de2d78556fcb10f97364201256ac8f342a58eb75.camel@linux.intel.com>
+         <296064bbcf702744bf603932c9d849307db2e5b7.camel@intel.com>
+Organization: David E. Box
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-We don't want /sys/firmware/memmap entries and we want to indicate
-our memory as "System RAM (driver managed)" in /proc/iomem. This is
-especially relevant for kexec-tools, which have to be updated to
-support dumping virtio-mem memory after this patch. Expected behavior in
-kexec-tools:
-- Don't use this memory when creating a fixed-up firmware memmap. Works
-  now out of the box on x86-64.
-- Don't use this memory for placing kexec segments. Works now out of the
-  box on x86-64.
-- Consider "System RAM (driver managed)" when creating the elfcorehdr
-  for kdump. This memory has to be dumped. Needs update of kexec-tools.
+On Wed, 2020-04-29 at 05:20 +0000, Williams, Dan J wrote:
+> On Tue, 2020-04-28 at 08:27 -0700, David E. Box wrote:
+> > On Tue, 2020-04-28 at 16:22 +0200, Christoph Hellwig wrote:
+> > > On Tue, Apr 28, 2020 at 07:09:59AM -0700, David E. Box wrote:
+> > > > > I'm not sure who came up with the idea to put this into ACPI,
+> > > > > but
+> > > > > it
+> > > > > belongs into NVMe.  Please talk to the NVMe technical working
+> > > > > group
+> > > > > instead of trying to overrules them in an unrelated group
+> > > > > that
+> > > > > doesn't
+> > > > > apply to all of PCIe.
+> > > > 
+> > > > Agreed that this is not ideal since it does not apply to all of
+> > > > PCIe.
+> > > > But as the property already exists on shipping systems, we need
+> > > > to
+> > > > be
+> > > > able to read it in the NVMe driver and the patch is consitent
+> > > > with
+> > > > the
+> > > > way properties under PCI ports are read.
+> > > 
+> > > The point is that it is not the BIOSes job do decide how Linux
+> > > does
+> > > power management.  For example D3 has really horrible entry and
+> > > exit
+> > > latencies in many cases, and will lead to higher power usage.
+> > 
+> > The platform can know which pm policies will save the most power.
+> > But
+> > since the solution doesn't apply to all PCIe devices (despite BIOS
+> > specifying it that way) I'll withdraw this patch. Thanks.
+> 
+> Wait, why withdraw? In this case the platform is unfortunately
+> preventing the standard driver from making a proper determination. So
+> while I agree that it's not the BIOSes job, when the platform
+> actively
+> prevents proper operation due to some ill conceived non-standard
+> platform property what is Linux left to do on these systems?
+> 
+> The *patch* is not trying to overrule NVME, and the best I can say is
+> that the Intel Linux team was not in the loop when this was being
+> decided between the platform BIOS implemenation
+> and  whomever  thought
+> they could just publish random ACPI properties that impacted NVME
+> operation [1].
+> 
+> So now David is trying to get these platform unbroken because they
+> are
+> already shipping with this b0rkage.
 
-With this patch on x86-64:
+Not drop completely. This patch copied the code used to read _DSD
+properties under PCI root ports. But I agree that such properties
+should apply to all devices on those ports and unfortuntely that's not
+the case here. BIOS got it wrong. My thought in dropping this patch is
+to rewrite it to read the property directly from the nvme driver. Not
+the way it's typically done either but it would avoid a global change
+in the pci core while allowing us to deal with the firmware we have.
 
-/proc/iomem:
-	00000000-00000fff : Reserved
-	00001000-0009fbff : System RAM
-	[...]
-	fffc0000-ffffffff : Reserved
-	100000000-13fffffff : System RAM
-	140000000-147ffffff : System RAM (driver managed)
-	340000000-347ffffff : System RAM (driver managed)
-	348000000-34fffffff : System RAM (driver managed)
-	[..]
-	3280000000-32ffffffff : PCI Bus 0000:00
-
-/sys/firmware/memmap:
-	0000000000000000-000000000009fc00 (System RAM)
-	000000000009fc00-00000000000a0000 (Reserved)
-	00000000000f0000-0000000000100000 (Reserved)
-	0000000000100000-00000000bffe0000 (System RAM)
-	00000000bffe0000-00000000c0000000 (Reserved)
-	00000000feffc000-00000000ff000000 (Reserved)
-	00000000fffc0000-0000000100000000 (Reserved)
-	0000000100000000-0000000140000000 (System RAM)
-
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Eric Biederman <ebiederm@xmission.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- drivers/virtio/virtio_mem.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
-index 3101cbf9e59d..6f658d1aeac4 100644
---- a/drivers/virtio/virtio_mem.c
-+++ b/drivers/virtio/virtio_mem.c
-@@ -421,7 +421,8 @@ static int virtio_mem_mb_add(struct virtio_mem *vm, u=
-nsigned long mb_id)
- 		nid =3D memory_add_physaddr_to_nid(addr);
-=20
- 	dev_dbg(&vm->vdev->dev, "adding memory block: %lu\n", mb_id);
--	return add_memory(nid, addr, memory_block_size_bytes(), 0);
-+	return add_memory(nid, addr, memory_block_size_bytes(),
-+			  MHP_DRIVER_MANAGED);
- }
-=20
- /*
---=20
-2.25.3
+David
 
