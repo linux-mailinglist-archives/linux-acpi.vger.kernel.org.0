@@ -2,129 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 781881BF6C3
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Apr 2020 13:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C3231BF7D3
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Apr 2020 14:06:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726790AbgD3LXr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Apr 2020 07:23:47 -0400
-Received: from mga06.intel.com ([134.134.136.31]:24474 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726413AbgD3LXr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 30 Apr 2020 07:23:47 -0400
-IronPort-SDR: hjHRGopFv8Hv0xQ1I90auL8CBw7fsSrTPsuLe6EFkccpbfpFwgtAslOiGu8GOsPhdN8rhs+Ubo
- xX2T40bPna/Q==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2020 04:23:46 -0700
-IronPort-SDR: SHV7wT4BPVHKAo0WmoTz8aq1kRHCx/RdPvBe0nAp3qbMO/SAPWXKmXN7i75QlP4e04SgRh2wTx
- AK59XRR1ll/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,334,1583222400"; 
-   d="scan'208";a="261745559"
-Received: from isdasana-mobl1.amr.corp.intel.com (HELO [10.254.74.214]) ([10.254.74.214])
-  by orsmga006.jf.intel.com with ESMTP; 30 Apr 2020 04:23:46 -0700
-Subject: Re: [PATCH v2 3/3] device-dax: Add system ram (add_memory()) with
- MHP_NO_FIRMWARE_MEMMAP
-To:     David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, virtio-dev@lists.oasis-open.org,
-        virtualization@lists.linux-foundation.org,
-        linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
-        linux-nvdimm@lists.01.org, linux-hyperv@vger.kernel.org,
-        linux-s390@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Michal Hocko <mhocko@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        Michal Hocko <mhocko@suse.com>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Wei Yang <richard.weiyang@gmail.com>,
-        Baoquan He <bhe@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Dan Williams <dan.j.williams@intel.com>
-References: <20200430102908.10107-1-david@redhat.com>
- <20200430102908.10107-4-david@redhat.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
- z5cecg==
-Message-ID: <20b86ced-7c47-02ca-0e0e-1bd5d6cc95c1@intel.com>
-Date:   Thu, 30 Apr 2020 04:23:42 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1726481AbgD3MGG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Apr 2020 08:06:06 -0400
+Received: from mail-eopbgr80073.outbound.protection.outlook.com ([40.107.8.73]:23518
+        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726127AbgD3MGF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 30 Apr 2020 08:06:05 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HWSF5YscwOMmLWJfHWpU8xxypQ/GolX6ZLfbQ3XIGQf0yGg0KZxJMUWHT9t9paiQ0Vsiq9RnzUIDx88jLbuF7pN8/wKLTmUQmCgYuqVXNmekJIHJHqsKv0T4IIgxwmxz/SILlTrU7wH0ImuKqV8O6xucDp3uzJuE6Q3Hf3Qg9XMBwG8Owisen8khd+zjGUMajIUTEQNkL/JGOTx7ms+fkjZq0G4f2Qh/sQSk4R/D5hN06c51gQ4P5i0E7Ddc/1/AASO/KmeRcRhSK5SL8i8R05xVMzRx4MlWM/Xx/hdLJLIF34d7sXWPnaUPi0HGzLSYNgFj5RfQvU7O1+uNHDtXbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TcHDJkr8twbZIBzugmOzaLCjeJwVTLtWJ+NTd6YpWMw=;
+ b=J/jRw1qd3HlCprHO+UrbyP4wyMxrDXKunsQ9sA5XfKlXxaNrl4C9oigSra7Lt7Lf1OTGjclovrqosmzbiMLs3lNmD+NH8fRPKEnG6mjdunm5KxoOPJrAC5RCSi79AjmTRTMfEejZNmh0dTuKIURsB3/PGLUjOgn1RZFfon0jTokxEJ1j2GDgc680LMaebU9qbWEcFI2Hfd4p0S147kPsQksDLGTn9rCsMohVuwdhiuPPYF61BGn/+tYhHZU5gs5+NSZIp/Ub0oyK6Icjo8W/EJMlW3O1awPmaj5iE1N7Hxp8pDGiuUEneGuroaDQCXx+RMN0zLOxRynwUGx82qYlnQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TcHDJkr8twbZIBzugmOzaLCjeJwVTLtWJ+NTd6YpWMw=;
+ b=SiTYsTlp3Av22oCnKGgdPgt203OaTHfyCdA7K7qYksucHb/jmIL/IG6eHGFReqZbRXWSCwYHsH3JcTf/tUMwMRNKwbzwiLa1UawS5erdRRINcnNhnnQKqAPOTEX6astDL/h8OIsYVzulq80VVK+DC/8BpFE2E6BcAFp8IZXoNyo=
+Authentication-Results: armlinux.org.uk; dkim=none (message not signed)
+ header.d=none;armlinux.org.uk; dmarc=none action=none
+ header.from=oss.nxp.com;
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
+ by AM0PR04MB5059.eurprd04.prod.outlook.com (2603:10a6:208:bf::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.22; Thu, 30 Apr
+ 2020 12:06:01 +0000
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::c4fe:d4a4:f0e1:a75b]) by AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::c4fe:d4a4:f0e1:a75b%4]) with mapi id 15.20.2958.019; Thu, 30 Apr 2020
+ 12:06:01 +0000
+Date:   Thu, 30 Apr 2020 17:35:47 +0530
+From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
+To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        linux-acpi@vger.kernel.org, Marcin Wojtas <mw@semihalf.com>,
+        Makarand Pawagi <makarand.pawagi@nxp.com>,
+        "Rajesh V . Bikkina" <rajesh.bikkina@nxp.com>,
+        Varun Sethi <V.Sethi@nxp.com>, linux-kernel@vger.kernel.org,
+        Pankaj Bansal <pankaj.bansal@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Heiner Kallweit <hkallweit1@gmail.com>
+Subject: Re: [net-next PATCH v2 0/3] Introduce new APIs to support phylink
+ and phy layers
+Message-ID: <20200430120547.GA19262@lsv03152.swis.in-blr01.nxp.com>
+References: <20200427132409.23664-1-calvin.johnson@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200427132409.23664-1-calvin.johnson@oss.nxp.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ClientProxiedBy: SG2PR04CA0148.apcprd04.prod.outlook.com
+ (2603:1096:3:16::32) To AM0PR04MB5636.eurprd04.prod.outlook.com
+ (2603:10a6:208:130::22)
 MIME-Version: 1.0
-In-Reply-To: <20200430102908.10107-4-david@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR04CA0148.apcprd04.prod.outlook.com (2603:1096:3:16::32) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2958.20 via Frontend Transport; Thu, 30 Apr 2020 12:05:54 +0000
+X-Originating-IP: [14.142.151.118]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 621bbaad-9d09-4da5-4a23-08d7ecfed8ef
+X-MS-TrafficTypeDiagnostic: AM0PR04MB5059:|AM0PR04MB5059:
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR04MB5059BD6D63F84E31491E6A03D2AA0@AM0PR04MB5059.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-Forefront-PRVS: 0389EDA07F
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(396003)(346002)(136003)(376002)(366004)(39860400002)(316002)(54906003)(956004)(7416002)(33656002)(8936002)(8676002)(55236004)(26005)(6506007)(5660300002)(186003)(7696005)(66476007)(6666004)(44832011)(66946007)(52116002)(66556008)(110136005)(1006002)(1076003)(4326008)(16526019)(55016002)(478600001)(9686003)(86362001)(2906002)(110426005)(921003);DIR:OUT;SFP:1101;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: vCb3Dc5VpIOWySpinUu2P7EB0/4ZEAW5jANrZAYer6BL3xtG5kXp4rvzQQfDAM+ILI3k0VqFD7FN0VtgmZ5LdXSNLYTUKhf98mh30PnqEcAWw/ZDE71gHmb99nRiPPehIqkjXrFlu6pjHelAaSutdYiwChjHUwspJwtpKYkwHKWdNuDeRtkHWl/Q4q//vZkOv1XcsDVddaPQOJT9DWNW56BtmLICdNUjvAgdluAn3CO7rPEkqh1lsVoa9KlKIEOmR7yfuF/j4tHjlAo4dP+2ZjdCDv84Zboy2DuZBuWVsxxdpM+iPuPKkntyhZrXrb+QPFIlugTOQ5eLBT4FKuw3trfD7rHrrVYhU+gee6HEfvyDWEeGwzaMsy5SyNl86mcuBAtu2kGE4LoS4idQmVwIlhUCjeaamHPjxf1sgTh/a8v8MpKBLnycIn5BWi9p62X3nO2FM1aNLdDTT2k/pHwEk/sPUl8ez9VtUztqN+rnFJ8/0zEq083Gw0FAY8SiASNCtwVrMzmWJUljiWAgh27o8w==
+X-MS-Exchange-AntiSpam-MessageData: lRazfolALNbRdaLQjzUZtLbFB+cO9fAf7gALuYV9TyhslZelOOgaLptR4kvGuo3Sz4AqTDLXAHWbSi/Od6vYT/Q2UqddryEuNsmbsTkk4Tll5BpTAz6mV29vaIn5ge0nUJIz5GeTnJkbTg4GdE6O+srXgKsfCsnk0q1XbBeDk6kT5SR+EWN4XiSQV2zcNNzAhY8Dfizp/s9NcMdQr0JsLadn7Gvj8dp9073ur/RzFp7+ugsaieTSjiTaIpDKE5kst0tI1J2ZIeazzN6APv8s5oGmGuvMdjqcTnwJO+Aia6gJlHC8X/2gPoPVj8XO+DJKymk/40CEi2H4jDMF1QIATCpyH8MTbH5ZOhDPepswd/yvfMOP71w95bc0syfnVs3pN22ezzmLckytejTnI+dsrgHuOishFNg7WDVUekGMFuvziFEPtHuUS+1wrDU1uJ8CuUo3QwSNtH80i6lCnvMJPBY6TtIx0VmTAuvPRgXybGzqZa/eFbi+ocLVpR8L27Ug8fKzOK9GZCotrbXiZq4ySXq4DX4p8Zm04JLBwKm6y8gRqUokI6DaoqRPm00MMBi0Wq2ZTasschtcTHALVnjFMeQY1I2I9MvNjs+mwwwZTROMcQrD7q/Em59OIga9aKWdqN0XIB4aVrYJnRM+LPIsRaA65RNYFaAxNYVaJlHEABoqyqqeRH/+qvNuBzTj7RjWZ24jGk+DcCdbTbxBwq36GK8fO33+lGHi1o2WTCJsleN4gakLZW0TbuLjjynws173s+z0ECr9wkn6utP9/HL671YH7PKoHIbIjh6jS1d0B70=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 621bbaad-9d09-4da5-4a23-08d7ecfed8ef
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2020 12:06:00.9229
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tRZvVcNW3hDrFL9BGMLHLyKfjwiF6neb1MId7+xX1mK688VK2RFjBuboL5JnMQLCmqwGMScNiHEfqDtJ0eQYcQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB5059
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 4/30/20 3:29 AM, David Hildenbrand wrote:
-> Currently, when adding memory, we create entries in /sys/firmware/memmap/
-> as "System RAM". This does not reflect the reality and will lead to
-> kexec-tools to add that memory to the fixed-up initial memmap for a
-> kexec kernel (loaded via kexec_load()). The memory will be considered
-> initial System RAM by the kexec kernel.
+On Mon, Apr 27, 2020 at 06:54:06PM +0530, Calvin Johnson wrote:
+
+Hi Russell, others,
+
+> Following functions are defined:
+>   phylink_fwnode_phy_connect()
+>   phylink_device_phy_connect()
+>   fwnode_phy_find_device()
+>   device_phy_find_device()
+>   fwnode_get_phy_node()
 > 
-> We should let the kexec kernel decide how to use that memory - just as
-> we do during an ordinary reboot.
-...
-> -	rc = add_memory(numa_node, new_res->start, resource_size(new_res), 0);
-> +	rc = add_memory(numa_node, new_res->start, resource_size(new_res),
-> +			MHP_NO_FIRMWARE_MEMMAP);
+> First two help in connecting phy to phylink instance.
+> Next two help in finding a phy on a mdiobus.
+> Last one helps in getting phy_node from a fwnode.
+> 
+> Changes in v2:
+>   move phy code from base/property.c to net/phy/phy_device.c
+>   replace acpi & of code to get phy-handle with fwnode_find_reference
+>   replace of_ and acpi_ code with generic fwnode to get phy-handle.
+> 
+> Calvin Johnson (3):
+>   device property: Introduce phy related fwnode functions
+>   net: phy: alphabetically sort header includes
+>   phylink: Introduce phylink_fwnode_phy_connect()
+> 
+>  drivers/net/phy/phy_device.c | 83 ++++++++++++++++++++++++++++++------
+>  drivers/net/phy/phylink.c    | 68 +++++++++++++++++++++++++++++
+>  include/linux/phy.h          |  3 ++
+>  include/linux/phylink.h      |  6 +++
+>  4 files changed, 146 insertions(+), 14 deletions(-)
 
-Looks fine.  But, if you send another revision, could you add a comment
-about the actual goal of MHP_NO_FIRMWARE_MEMMAP?  Maybe:
+I've a new patch introducing fwnode_mdiobus_register_phy and fwnode_get_phy_id.
+Can I introduce it in v3 of this patchset or do I need to send it separately?
+Please advice.
 
-	/*
-	 * MHP_NO_FIRMWARE_MEMMAP ensures that future
-	 * kexec'd kernels will not treat this as RAM.
-	 */
-
-Not a biggie, though.
-
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Thanks
+Calvin
