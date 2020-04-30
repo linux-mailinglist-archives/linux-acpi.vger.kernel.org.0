@@ -2,142 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B53011BF2E4
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Apr 2020 10:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25A3A1BF566
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Apr 2020 12:29:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726701AbgD3IeN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Apr 2020 04:34:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33346 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726412AbgD3IeM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 30 Apr 2020 04:34:12 -0400
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83289C035494
-        for <linux-acpi@vger.kernel.org>; Thu, 30 Apr 2020 01:34:12 -0700 (PDT)
-Received: by mail-ej1-x644.google.com with SMTP id re23so3993706ejb.4
-        for <linux-acpi@vger.kernel.org>; Thu, 30 Apr 2020 01:34:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=87dIcS/jrU3IxflLIkdtnvU4qll0iHvEZNuLGZ4o7wI=;
-        b=C7NzSwQeQ8r7hb6zu0mE43nN5BVsWOZy21t9s86oMspwPoqNG+2r9QwYXMI253bkO+
-         f2NXbqJEZlVUDXw2jKOJXTdMksOMSeCU/1+d1/KW3kPK6bDnIkjaV85ydvslVx7+7VaK
-         H/Wy8s3jtrbog9dFPbt+U8g4F9a/kPxAFzoHfDtTpSCDud/nTiDKxbIHNOx4gDT1cWli
-         scShmtfTOkTf1D6LztaDjOZAMAIUOcl9E1Ehg4s+icpPrmffJn6TfhOtMJuuVZZemCWo
-         u5q8IaOdIkls7C87+V/X7frCMtH72XB/et/faVXvhnFad5uP3/TQ8BbSLNTCllAusarT
-         BwFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=87dIcS/jrU3IxflLIkdtnvU4qll0iHvEZNuLGZ4o7wI=;
-        b=ithyq2qQKDpob3XTQDbB/6taukFLC+2nTW09zJQ5oeQwJgVaUdts/f2EVpIfawH90f
-         220OxM/zmyA27s9zMKqEaF8EwEMjaPQPzzlQKqfDyhbsPm6ctji6OPi9lQKallYkpfD6
-         Q9qLyD3Ups6/iT2XqTxz545XAs4HoxTbolpObxR6QTGyR9tpLzX3dIpSOCjs7zQLC3TY
-         VrmZ9+jNhLx+xi56ce9qnsEXhUKyJHlP+seUxTbtw0943SrHG7XuiKWDD4Hd0+qzVVCJ
-         ugythfguJHo1PUCZ4eiBZxuIa9qRDMS8tOOMfyvn7/N+N3dsJEfKBUCt630aQsDYrzP1
-         yi0g==
-X-Gm-Message-State: AGi0PuaI/CwJ1GPcdl1F+Wh3VJdu8pYh4eyaAYz9m8FfYuQNAkCLx+eS
-        kgkPmTCAprHTE27xX1FTm01VcxmkBAwyzRVNJd86Jg==
-X-Google-Smtp-Source: APiQypLBVztlIIHfr3wCtEt+MVa/TaJHl/O1nuNqStB0TwAKkS6wTTbCgFJlPXMDG8iI601GTPaB481cRsH+FNdImHY=
-X-Received: by 2002:a17:906:7750:: with SMTP id o16mr1715515ejn.12.1588235651152;
- Thu, 30 Apr 2020 01:34:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200429160803.109056-1-david@redhat.com> <20200429160803.109056-3-david@redhat.com>
- <a7305cd8-8b2f-1d8f-7654-ecf777c46df6@redhat.com> <CAPcyv4i04+QLxiOyz04_eef2DFetEFKBUmi2A4xxw9abQD8hNQ@mail.gmail.com>
- <e32522cd-31bb-e129-47a6-9ec13b570506@redhat.com>
-In-Reply-To: <e32522cd-31bb-e129-47a6-9ec13b570506@redhat.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Thu, 30 Apr 2020 01:34:00 -0700
-Message-ID: <CAPcyv4gjRE23BHsBAnaVWAPUHWdenxYMUwDBnDF7UmoejmmbNQ@mail.gmail.com>
-Subject: Re: [PATCH v1 2/3] mm/memory_hotplug: Introduce MHP_DRIVER_MANAGED
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux MM <linux-mm@kvack.org>, virtio-dev@lists.oasis-open.org,
+        id S1726829AbgD3K3q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Apr 2020 06:29:46 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:50637 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726127AbgD3K3q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Apr 2020 06:29:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1588242585;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=F00GW0IDxO2YtXf8I1Htd7Li0LSvuJyIHlJhh9ba9cc=;
+        b=ET/HEcMaPnnU8Ikjs61jZltkM1jseyY3c45PGlU7miJREHCpkXXQLaY03Qe9vKzx/vNlZE
+        eKvP6zLAHOsdyXX/QZKFc24fU77NAjotl1JoCYIApC469dlGO4tppelP/N8c24f7OyH2V1
+        H3WFLVSoOOPwCGabrnnBfqff3BfwSUU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-319-F5xrMv_8M0upE38nqrJ6fA-1; Thu, 30 Apr 2020 06:29:37 -0400
+X-MC-Unique: F5xrMv_8M0upE38nqrJ6fA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0BD301899521;
+        Thu, 30 Apr 2020 10:29:32 +0000 (UTC)
+Received: from t480s.redhat.com (ovpn-113-172.ams2.redhat.com [10.36.113.172])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 963F15D780;
+        Thu, 30 Apr 2020 10:29:16 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, virtio-dev@lists.oasis-open.org,
         virtualization@lists.linux-foundation.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        linux-hyperv@vger.kernel.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        xen-devel <xen-devel@lists.xenproject.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+        linux-nvdimm@lists.01.org, linux-hyperv@vger.kernel.org,
+        linux-s390@vger.kernel.org, xen-devel@lists.xenproject.org,
         Michal Hocko <mhocko@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         "Michael S . Tsirkin" <mst@redhat.com>,
-        Michal Hocko <mhocko@suse.com>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Wei Yang <richard.weiyang@gmail.com>,
+        David Hildenbrand <david@redhat.com>,
         Baoquan He <bhe@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
         Eric Biederman <ebiederm@xmission.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Juergen Gross <jgross@suse.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Len Brown <lenb@kernel.org>,
+        Leonardo Bras <leobras.c@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Hocko <mhocko@suse.com>,
+        Nathan Lynch <nathanl@linux.ibm.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Paul Mackerras <paulus@samba.org>,
         Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+        Pingfan Liu <kernelfans@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        Wei Yang <richard.weiyang@gmail.com>
+Subject: [PATCH v2 0/3] mm/memory_hotplug: Allow to not create firmware memmap entries
+Date:   Thu, 30 Apr 2020 12:29:05 +0200
+Message-Id: <20200430102908.10107-1-david@redhat.com>
+MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 30, 2020 at 1:21 AM David Hildenbrand <david@redhat.com> wrote:
-> >> Just because we decided to use some DAX memory in the current kernel as
-> >> system ram, doesn't mean we should make that decision for the kexec
-> >> kernel (e.g., using it as initial memory, placing kexec binaries onto
-> >> it, etc.). This is also not what we would observe during a real reboot.
-> >
-> > Agree.
-> >
-> >> I can see that the "System RAM" resource will show up as child resource
-> >> under the device e.g., in /proc/iomem.
-> >>
-> >> However, entries in /sys/firmware/memmap/ are created as "System RAM".
-> >
-> > True. Do you think this rename should just be limited to what type
-> > /sys/firmware/memmap/ emits? I have the concern, but no proof
->
-> We could split this patch into
->
-> MHP_NO_FIRMWARE_MEMMAP (create firmware memmap entries)
->
-> and
->
-> MHP_DRIVER_MANAGED (name of the resource)
->
-> See below, the latter might not be needed.
->
-> > currently, that there are /proc/iomem walkers that explicitly look for
-> > "System RAM", but might be thrown off by "System RAM (driver
-> > managed)". I was not aware of /sys/firmware/memmap until about 5
-> > minutes ago.
->
-> The only two users of /proc/iomem I am aware of are kexec-tools and some
-> s390x tools.
->
-> kexec-tools on x86-64 uses /sys/firmware/memmap to craft the initial
-> memmap, but uses /proc/iomem to
-> a) Find places for kexec images
-> b) Detect memory regions to dump via kdump
->
-> I am not yet sure if we really need the "System RAM (driver managed)"
-> part. If we can teach kexec-tools to
-> a) Don't place kexec images on "System RAM" that has a parent resource
-> (most likely requires kexec-tools changes)
-> b) Consider for kdump "System RAM" that has a parent resource
-> we might be able to avoid renaming that. (I assume that's already done)
->
-> E.g., regarding virtio-mem (patch #3) I am currently also looking into
-> creating a parent resource instead, like dax/kmem to avoid the rename:
->
-> :/# cat /proc/iomem
-> 00000000-00000fff : Reserved
-> [...]
-> 100000000-13fffffff : System RAM
-> 140000000-33fffffff : virtio0
->   140000000-147ffffff : System RAM
->   148000000-14fffffff : System RAM
->   150000000-157ffffff : System RAM
-> 340000000-303fffffff : virtio1
->   340000000-347ffffff : System RAM
-> 3280000000-32ffffffff : PCI Bus 0000:00
+This is the follow up of [1]:
+	[PATCH v1 0/3] mm/memory_hotplug: Make virtio-mem play nicely with
+	kexec-tools
 
-Looks good to me if it flies with kexec-tools.
+I realized that this is not only helpful for virtio-mem, but also for
+dax/kmem - it's a fix for that use case (see patch #3) of persistent
+memory.
+
+Also, while testing, I discovered that kexec-tools will *not* add dax/kme=
+m
+memory (anything not directly under the root when parsing /proc/iomem) to
+the elfcorehdr, so this memory will never get included in a dump. This
+probably has to be fixed in kexec-tools - virtio-mem will require this as
+well.
+
+v1 -> v2:
+- Don't change the resource name
+- Rename the flag to MHP_NO_FIRMWARE_MEMMAP to reflect what it is doing
+- Rephrase subjects/descriptions
+- Use the flag for dax/kmem
+
+I'll have to rebase virtio-mem on these changes, there will be a resend.
+
+[1] https://lkml.kernel.org/r/20200429160803.109056-1-david@redhat.com
+
+David Hildenbrand (3):
+  mm/memory_hotplug: Prepare passing flags to add_memory() and friends
+  mm/memory_hotplug: Introduce MHP_NO_FIRMWARE_MEMMAP
+  device-dax: Add system ram (add_memory()) with MHP_NO_FIRMWARE_MEMMAP
+
+ arch/powerpc/platforms/powernv/memtrace.c       |  2 +-
+ arch/powerpc/platforms/pseries/hotplug-memory.c |  2 +-
+ drivers/acpi/acpi_memhotplug.c                  |  2 +-
+ drivers/base/memory.c                           |  2 +-
+ drivers/dax/kmem.c                              |  3 ++-
+ drivers/hv/hv_balloon.c                         |  2 +-
+ drivers/s390/char/sclp_cmd.c                    |  2 +-
+ drivers/xen/balloon.c                           |  2 +-
+ include/linux/memory_hotplug.h                  | 15 ++++++++++++---
+ mm/memory_hotplug.c                             | 14 ++++++++------
+ 10 files changed, 29 insertions(+), 17 deletions(-)
+
+--=20
+2.25.3
+
