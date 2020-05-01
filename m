@@ -2,167 +2,173 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B02461C105F
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 May 2020 11:32:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 171E21C1063
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 May 2020 11:34:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728443AbgEAJcs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 May 2020 05:32:48 -0400
-Received: from foss.arm.com ([217.140.110.172]:38002 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728236AbgEAJcs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 1 May 2020 05:32:48 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C09991FB;
-        Fri,  1 May 2020 02:32:47 -0700 (PDT)
-Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E041C3F305;
-        Fri,  1 May 2020 02:32:45 -0700 (PDT)
-Date:   Fri, 1 May 2020 10:32:40 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Will Deacon <will@kernel.org>, Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        John Garry <john.garry@huawei.com>,
-        Shameerali Kolothum Thodi 
-        <shameerali.kolothum.thodi@huawei.com>,
-        Ganapatrao Kulkarni <gkulkarni@marvell.com>,
-        Tyler Baicar <baicar@os.amperecomputing.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>
-Subject: Re: [PATCH v2] ACPI/IORT: Fix 'Number of IDs' handling in
- iort_id_map()
-Message-ID: <20200501093240.GA3701@e121166-lin.cambridge.arm.com>
-References: <1579004051-48797-1-git-send-email-guohanjun@huawei.com>
- <20200117121448.GA8199@willie-the-truck>
- <20200117123226.GA9918@e121166-lin.cambridge.arm.com>
- <CAKv+Gu-24EzfM+d7wBKUK7BC3gy+kQ2-T7CvemqtJsdQay7EjQ@mail.gmail.com>
- <20200501085404.GA3449@e121166-lin.cambridge.arm.com>
- <CAMj1kXFULq=KpLA-n4KfpYqAJ2Rg96VDr-7awUnsTEVB5vq6Lg@mail.gmail.com>
+        id S1728384AbgEAJej (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 May 2020 05:34:39 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:37971 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728325AbgEAJei (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 May 2020 05:34:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1588325676;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+        bh=HtdiKEBYnl+F4fKOxJyusZbV9rQDJIfKH4dG2/G+1qg=;
+        b=gSAG3Mu50fMiEPGFNm6G5Sexi8OCiZh8Wn+yemLcvBeA0NXyUAaTWII0iarHR6C5mwpb0a
+        k0z3WNG1RZIkOXswsgS6JE0zn9r+HPL1w1HkQ4jZdlFN8lDPjWlGtmPcObhfZxGZywS2lz
+        Iex0E89okpA3UL1S78G373suPv348f0=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-319-YZZnaj37OHisW4YVqlgBvA-1; Fri, 01 May 2020 05:34:32 -0400
+X-MC-Unique: YZZnaj37OHisW4YVqlgBvA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 12CF21054F8B;
+        Fri,  1 May 2020 09:34:30 +0000 (UTC)
+Received: from [10.36.112.251] (ovpn-112-251.ams2.redhat.com [10.36.112.251])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 86CCB6A954;
+        Fri,  1 May 2020 09:34:23 +0000 (UTC)
+Subject: Re: [PATCH v2 2/3] mm/memory_hotplug: Introduce
+ MHP_NO_FIRMWARE_MEMMAP
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        virtio-dev@lists.oasis-open.org,
+        virtualization@lists.linux-foundation.org,
+        linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+        linux-nvdimm@lists.01.org, linux-hyperv@vger.kernel.org,
+        linux-s390@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Michal Hocko <mhocko@kernel.org>,
+        "Michael S . Tsirkin" <mst@redhat.com>,
+        Michal Hocko <mhocko@suse.com>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Wei Yang <richard.weiyang@gmail.com>,
+        Baoquan He <bhe@redhat.com>
+References: <20200430102908.10107-1-david@redhat.com>
+ <20200430102908.10107-3-david@redhat.com>
+ <87pnbp2dcz.fsf@x220.int.ebiederm.org>
+ <1b49c3be-6e2f-57cb-96f7-f66a8f8a9380@redhat.com>
+ <871ro52ary.fsf@x220.int.ebiederm.org>
+ <373a6898-4020-4af1-5b3d-f827d705dd77@redhat.com>
+ <875zdg26hp.fsf@x220.int.ebiederm.org>
+ <b28c9e02-8cf2-33ae-646b-fe50a185738e@redhat.com>
+ <20200430152403.e0d6da5eb1cad06411ac6d46@linux-foundation.org>
+From:   David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: Red Hat GmbH
+Message-ID: <5c908ec3-9495-531e-9291-cbab24f292d6@redhat.com>
+Date:   Fri, 1 May 2020 11:34:22 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXFULq=KpLA-n4KfpYqAJ2Rg96VDr-7awUnsTEVB5vq6Lg@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200430152403.e0d6da5eb1cad06411ac6d46@linux-foundation.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 01, 2020 at 11:02:48AM +0200, Ard Biesheuvel wrote:
-> On Fri, 1 May 2020 at 10:54, Lorenzo Pieralisi
-> <lorenzo.pieralisi@arm.com> wrote:
-> >
-> > On Fri, May 01, 2020 at 10:30:11AM +0200, Ard Biesheuvel wrote:
-> > > On Fri, 17 Jan 2020 at 13:32, Lorenzo Pieralisi
-> > > <lorenzo.pieralisi@arm.com> wrote:
-> > > >
-> > > > On Fri, Jan 17, 2020 at 12:14:49PM +0000, Will Deacon wrote:
-> > > > > On Tue, Jan 14, 2020 at 08:14:11PM +0800, Hanjun Guo wrote:
-> > > > > > The IORT specification [0] (Section 3, table 4, page 9) defines the
-> > > > > > 'Number of IDs' as 'The number of IDs in the range minus one'.
-> > > > > >
-> > > > > > However, the IORT ID mapping function iort_id_map() treats the 'Number
-> > > > > > of IDs' field as if it were the full IDs mapping count, with the
-> > > > > > following check in place to detect out of boundary input IDs:
-> > > > > >
-> > > > > > InputID >= Input base + Number of IDs
-> > > > > >
-> > > > > > This check is flawed in that it considers the 'Number of IDs' field as
-> > > > > > the full number of IDs mapping and disregards the 'minus one' from
-> > > > > > the IDs count.
-> > > > > >
-> > > > > > The correct check in iort_id_map() should be implemented as:
-> > > > > >
-> > > > > > InputID > Input base + Number of IDs
-> > > > > >
-> > > > > > this implements the specification correctly but unfortunately it breaks
-> > > > > > existing firmwares that erroneously set the 'Number of IDs' as the full
-> > > > > > IDs mapping count rather than IDs mapping count minus one.
-> > > > > >
-> > > > > > e.g.
-> > > > > >
-> > > > > > PCI hostbridge mapping entry 1:
-> > > > > > Input base:  0x1000
-> > > > > > ID Count:    0x100
-> > > > > > Output base: 0x1000
-> > > > > > Output reference: 0xC4  //ITS reference
-> > > > > >
-> > > > > > PCI hostbridge mapping entry 2:
-> > > > > > Input base:  0x1100
-> > > > > > ID Count:    0x100
-> > > > > > Output base: 0x2000
-> > > > > > Output reference: 0xD4  //ITS reference
-> > > > > >
-> > > > > > Two mapping entries which the second entry's Input base = the first
-> > > > > > entry's Input base + ID count, so for InputID 0x1100 and with the
-> > > > > > correct InputID check in place in iort_id_map() the kernel would map
-> > > > > > the InputID to ITS 0xC4 not 0xD4 as it would be expected.
-> > > > > >
-> > > > > > Therefore, to keep supporting existing flawed firmwares, introduce a
-> > > > > > workaround that instructs the kernel to use the old InputID range check
-> > > > > > logic in iort_id_map(), so that we can support both firmwares written
-> > > > > > with the flawed 'Number of IDs' logic and the correct one as defined in
-> > > > > > the specifications.
-
-[...]
-
-> > > I just ran into this while playing with the LX2160 I received this week.
-> >
-> > Side note: that firmware must be updatable or there is something I am
-> > missing in relation to the ongoing ITS/SMMU mapping discussions.
-> >
+On 01.05.20 00:24, Andrew Morton wrote:
+> On Thu, 30 Apr 2020 20:43:39 +0200 David Hildenbrand <david@redhat.com> wrote:
 > 
-> Sure. But they are following the spec, and they use num_ids = 0x0 for
-> regions consisting of a single mapping. This is completely broken
-> without this patch.
-
-Yes sure - I thought you were saying that the FW has issues with
-the *current* kernel whereas you are asking if this fix can be
-rewritten to remove the quirking mechanism - that's always a good
-aim :)
-
-> > > I wonder if it would be better to detect the failure case dynamically,
-> > > rather than having these hardcoded quirks. It should be rather
-> > > straightforward to detect overlaps at the edges of these multi-range
-> > > mappings, in which case we could just let the spurious one (living at
-> > > the end of the region) be superseded by the correct one (living at the
-> > > start of the next region).
-> >
-> > This could be done I think but probably requires some boot time parsing
-> > to create some structure defining ranges (to avoid running the logic you
-> > describe above every time a device has to be mapped).
-> >
+>>>
+>>> Why does the firmware map support hotplug entries?
+>>
+>> I assume:
+>>
+>> The firmware memmap was added primarily for x86-64 kexec (and still, is
+>> mostly used on x86-64 only IIRC). There, we had ACPI hotplug. When DIMMs
+>> get hotplugged on real HW, they get added to e820. Same applies to
+>> memory added via HyperV balloon (unless memory is unplugged via
+>> ballooning and you reboot ... the the e820 is changed as well). I assume
+>> we wanted to be able to reflect that, to make kexec look like a real reboot.
+>>
+>> This worked for a while. Then came dax/kmem. Now comes virtio-mem.
+>>
+>>
+>> But I assume only Andrew can enlighten us.
+>>
+>> @Andrew, any guidance here? Should we really add all memory to the
+>> firmware memmap, even if this contradicts with the existing
+>> documentation? (especially, if the actual firmware memmap will *not*
+>> contain that memory after a reboot)
 > 
-> It could be done much simpler than that: if iort_id_map() matches on
-> the last value of a region with size > 1 (so num_ids > 0), we return
-> the mapping but don't exit the loop. If we match it again, we use that
-> value, otherwise we use the tentative value from the first iteration.
+> For some reason that patch is misattributed - it was authored by
+> Shaohui Zheng <shaohui.zheng@intel.com>, who hasn't been heard from in
+> a decade.  I looked through the email discussion from that time and I'm
+> not seeing anything useful.  But I wasn't able to locate Dave Hansen's
+> review comments.
 
-We need to see how the code will look like in both cases, again, I am
-not a priori against implementing it.
+Okay, thanks for checking. I think the documentation from 2008 is pretty
+clear what has to be done here. I will add some of these details to the
+patch description.
 
-Instead of relying on ranges, we can precompute structures to define
-for a device which mapping+mapping_index should be ignored, this
-will save us from doing it dynamically (still require some additional
-data).
+Also, now that I know that esp. kexec-tools already don't consider
+dax/kmem memory properly (memory will not get dumped via kdump) and
+won't really suffer from a name change in /proc/iomem, I will go back to
+the MHP_DRIVER_MANAGED approach and
+1. Don't create firmware memmap entries
+2. Name the resource "System RAM (driver managed)"
+3. Flag the resource via something like IORESOURCE_MEM_DRIVER_MANAGED.
 
-> > Given that I have not heard of any regressions on the existing crop
-> > of platforms and the one you mentioned has FW that is not set in stone
-> > I think we can live with the quirk mechanism for the time being,
-> > what do you think ?
-> >
-> 
-> The more quirks we keep, the harder it becomes to push back on new ones.
-> 
-> So if we can fix this cleanly, I'd much prefer it.
+This way, kernel users and user space can figure out that this memory
+has different semantics and handle it accordingly - I think that was
+what Eric was asking for.
 
-I agree with that, more so given that this is not impossible to rewrite
-more cleanly.
+Of course, open for suggestions.
 
+-- 
 Thanks,
-Lorenzo
+
+David / dhildenb
+
