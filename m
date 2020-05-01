@@ -2,148 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD9841C1A5D
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 May 2020 18:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 834B61C1AC1
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 May 2020 18:45:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729981AbgEAQKa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 May 2020 12:10:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33348 "EHLO mail.kernel.org"
+        id S1729041AbgEAQpw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 May 2020 12:45:52 -0400
+Received: from foss.arm.com ([217.140.110.172]:43732 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728495AbgEAQKa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 1 May 2020 12:10:30 -0400
-Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3C53824957;
-        Fri,  1 May 2020 16:10:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588349430;
-        bh=0Sszvt5a994Rw/6MNs8ExhBptMa9b9Vl/iIWVwl6VKI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wh/shXif544RAUtlzDXCytz/e/F8IhDcdAfIS5WdH0tw9GCAUofaRGNxW81x9MQeU
-         ducpt0+h9bxXLMh4VHAb6X70tt+JuTq7a+E4iSwTqahUN6PMoHW5WPmMH9YQNIhnCg
-         keuOsc84GbwRbLUebJnTs97hsov8uqyHXiB67JpM=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     linux-acpi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>,
-        Will Deacon <will@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        id S1728896AbgEAQpw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 1 May 2020 12:45:52 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 799CF30E;
+        Fri,  1 May 2020 09:45:51 -0700 (PDT)
+Received: from melchizedek.cambridge.arm.com (melchizedek.cambridge.arm.com [10.1.196.50])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 989803F305;
+        Fri,  1 May 2020 09:45:49 -0700 (PDT)
+From:   James Morse <james.morse@arm.com>
+To:     linux-mm@kvack.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Rafael Wysocki <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>
-Subject: [PATCH v2 2/2] ACPI/IORT: work around num_ids ambiguity
-Date:   Fri,  1 May 2020 18:10:14 +0200
-Message-Id: <20200501161014.5935-3-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200501161014.5935-1-ardb@kernel.org>
-References: <20200501161014.5935-1-ardb@kernel.org>
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Tyler Baicar <tyler@amperecomputing.com>,
+        Xie XiuQi <xiexiuqi@huawei.com>,
+        James Morse <james.morse@arm.com>
+Subject: [PATCH v2 0/3] ACPI / APEI: Kick the memory_failure() queue for synchronous errors
+Date:   Fri,  1 May 2020 17:45:40 +0100
+Message-Id: <20200501164543.24423-1-james.morse@arm.com>
+X-Mailer: git-send-email 2.19.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The ID mapping table structure of the IORT table describes the size of
-a range using a num_ids field carrying the number of IDs in the region
-minus one. This has been misinterpreted in the past in the parsing code,
-and firmware is known to have shipped where this results in an ambiguity,
-where regions that should be adjacent have an overlap of one value.
+Hello!
 
-So let's work around this by detecting this case specifically: when
-resolving an ID translation, allow one that matches right at the end of
-a multi-ID region to be superseded by a subsequent one.
+These are the remaining patches from the SDEI series[0] that fix
+a race between memory_failure() and user-space re-triggering the error
+taking us back to ghes.c.
 
-To prevent potential regressions on broken firmware that happened to
-work before, only take the subsequent match into account if it occurs
-at the start of a mapping region.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/acpi/arm64/iort.c | 40 +++++++++++++++++---
- 1 file changed, 34 insertions(+), 6 deletions(-)
+ghes_handle_memory_failure() calls memory_failure_queue() from
+IRQ context to schedule memory_failure()s work as it needs to sleep.
+Once the GHES machinery returns from the IRQ, it may return to user-space
+before memory_failure() runs.
 
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 98be18266a73..9f139a94a1d3 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -300,7 +300,7 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
- }
- 
- static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
--		       u32 *rid_out)
-+		       u32 *rid_out, bool check_overlap)
- {
- 	/* Single mapping does not care for input id */
- 	if (map->flags & ACPI_IORT_ID_SINGLE_MAPPING) {
-@@ -316,10 +316,34 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
- 	}
- 
- 	if (rid_in < map->input_base ||
--	    (rid_in >= map->input_base + map->id_count))
-+	    (rid_in > map->input_base + map->id_count))
- 		return -ENXIO;
- 
-+	if (check_overlap) {
-+		/*
-+		 * We already found a mapping for this input ID at the end of
-+		 * another region. If it coincides with the start of this
-+		 * region, we assume the prior match was due to the off-by-1
-+		 * issue mentioned below, and allow it to be superseded.
-+		 * Otherwise, things are *really* broken, and we just disregard
-+		 * duplicate matches entirely to retain compatibility.
-+		 */
-+		pr_err(FW_BUG "[map %p] conflicting mapping for input ID 0x%x\n",
-+		       map, rid_in);
-+		if (rid_in != map->input_base)
-+			return -ENXIO;
-+	}
-+
- 	*rid_out = map->output_base + (rid_in - map->input_base);
-+
-+	/*
-+	 * Due to confusion regarding the meaning of the id_count field (which
-+	 * carries the number of IDs *minus 1*), we may have to disregard this
-+	 * match if it is at the end of the range, and overlaps with the start
-+	 * of another one.
-+	 */
-+	if (map->id_count > 0 && rid_in == map->input_base + map->id_count)
-+		return -EAGAIN;
- 	return 0;
- }
- 
-@@ -404,7 +428,8 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
- 	/* Parse the ID mapping tree to find specified node type */
- 	while (node) {
- 		struct acpi_iort_id_mapping *map;
--		int i, index;
-+		int i, index, rc = 0;
-+		u32 out_ref = 0, map_id = id;
- 
- 		if (IORT_TYPE_MASK(node->type) & type_mask) {
- 			if (id_out)
-@@ -438,15 +463,18 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
- 			if (i == index)
- 				continue;
- 
--			if (!iort_id_map(map, node->type, id, &id))
-+			rc = iort_id_map(map, node->type, map_id, &id, out_ref);
-+			if (!rc)
- 				break;
-+			if (rc == -EAGAIN)
-+				out_ref = map->output_reference;
- 		}
- 
--		if (i == node->mapping_count)
-+		if (i == node->mapping_count && !out_ref)
- 			goto fail_map;
- 
- 		node = ACPI_ADD_PTR(struct acpi_iort_node, iort_table,
--				    map->output_reference);
-+				    rc ? out_ref : map->output_reference);
- 	}
- 
- fail_map:
+If the error that kicked all this off is specific to user-space, e.g. a
+load from corrupted memory, we may find ourselves taking the error
+again. If the user-space task is scheduled out, and memory_failure() runs,
+the same user-space task may be scheduled in on another CPU, which could
+also take the same error.
+
+These lead to exaggerated error counters, which may cause some threshold
+to be reached early.
+
+This can happen with any error that causes a Synchronous External Abort
+on arm64. I can't see why the same wouldn't happen with a machine-check
+handled firmware first on x86.
+
+
+This series adds a memory_failure_queue_kick() helper to
+memory-failure.c, and calls it as task-work before returning to
+user-space.
+
+Currently arm64 papers over this problem by ignoring ghes_notify_sea()'s
+return code as it knows there is still work to do. arm64 generates its
+own signal to user-space, which means the first task to discover an
+error will always be killed, even if the error was later handled.
+(which is no improvement on the no-RAS behaviour)
+
+As a final piece, arm64 can try to process the irq work queued by
+ghes_notify_sea() while its still in the external abort handler. A succesfull
+return value here now means the memory_failure() work will be done before we
+return to user-space, we no longer need to generate our own signal.
+This lets the original task survive the error if memory_failure() can
+recover the corrupted memory.
+
+Based on v5.7-rc3. I'm afraid it touches three different trees.
+$subject says ACPI as that is where the bulk of the diffstat is.
+
+This series may conflict in arm64 with a series from Mark Rutland to
+cleanup the daif/PMR toggling.
+
+Changes since v1:
+ * Removed spurious 'ghes' parameter.
+ * Collected tags.
+
+Known issues:
+ * arm64's apei_claim_sea() may unwittingly re-enable debug if it takes
+   an external-abort from debug context. Patch 3 makes this worse
+   instead of fixing it. The fix would make use of helpers from Mark R's
+   series.
+
+
+Thanks,
+
+James Morse (3):
+  mm/memory-failure: Add memory_failure_queue_kick()
+  ACPI / APEI: Kick the memory_failure() queue for synchronous errors
+  arm64: acpi: Make apei_claim_sea() synchronise with APEI's irq work
+
+
+[0] https://lore.kernel.org/linux-arm-kernel/20190129184902.102850-1-james.morse@arm.com/
+[1] https://lore.kernel.org/linux-acpi/1506516620-20033-3-git-send-email-xiexiuqi@huawei.com/
+
+ arch/arm64/kernel/acpi.c | 25 +++++++++++++++
+ arch/arm64/mm/fault.c    | 12 ++++---
+ drivers/acpi/apei/ghes.c | 67 +++++++++++++++++++++++++++++++++-------
+ include/acpi/ghes.h      |  3 ++
+ include/linux/mm.h       |  1 +
+ mm/memory-failure.c      | 15 ++++++++-
+ 6 files changed, 106 insertions(+), 17 deletions(-)
+
 -- 
-2.17.1
+2.26.1
 
