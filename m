@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AC051C108E
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 May 2020 11:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1E331C108F
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 May 2020 11:59:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728365AbgEAJ65 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 May 2020 05:58:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33982 "EHLO mail.kernel.org"
+        id S1728508AbgEAJ7B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 May 2020 05:59:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34044 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728119AbgEAJ65 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 1 May 2020 05:58:57 -0400
+        id S1728119AbgEAJ7A (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 1 May 2020 05:59:00 -0400
 Received: from e123331-lin.home (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 679D92166E;
-        Fri,  1 May 2020 09:58:54 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DD2F02173E;
+        Fri,  1 May 2020 09:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588327137;
-        bh=aFo1Y0DYbsYo3jYYrmHZ2Qv7b19V9eJuOxE+i6hPCD4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=qyhREBc/MbW7sftq4eFaMnKGNk1n7RdIPIrgfRGJN32n9CERZiyG0O/G5O+vYa77C
-         ZhMrvEpNRRiAX2YEoGJwb7SEY91LKL5UGGSAhdIPFM5FXBQbI2vmfntKr53w9mc8sk
-         Fgc2BT57h/hCTcf9qHaYr5o4DguLh505gnsU2XTM=
+        s=default; t=1588327140;
+        bh=yqjxjNbvDvgpGXMyUQLw+kBshy3NV1WeyfDFrv6omJc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=o5e1t4Al7VXHPPCgMJyavEap0uPX8d62Vq93UnbXxXd2CrI1TPesw/RNnXgx4+HJ3
+         hV1PMi/ymMJpei2upJKOkWiXKOPk1gx1elfINnXuQyPlkhg42gBniUVQfWRwj6j4SG
+         j/JVG07AnYkS2axad81aR9qV0zVdL0/mBe2GTZ0Q=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     linux-acpi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -33,41 +33,105 @@ Cc:     linux-acpi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Sudeep Holla <sudeep.holla@arm.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Robin Murphy <robin.murphy@arm.com>
-Subject: [PATCH RFC 0/2] ACPI/IORT: rework num_ids off-by-one quirk
-Date:   Fri,  1 May 2020 11:58:41 +0200
-Message-Id: <20200501095843.25401-1-ardb@kernel.org>
+Subject: [PATCH RFC 1/2] Revert "ACPI/IORT: Fix 'Number of IDs' handling in iort_id_map()"
+Date:   Fri,  1 May 2020 11:58:42 +0200
+Message-Id: <20200501095843.25401-2-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200501095843.25401-1-ardb@kernel.org>
+References: <20200501095843.25401-1-ardb@kernel.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Replace the ACPI OEM ID matching based IORT quirk for the ID region size
-ambiguity with runtime handling of this condition.
+This reverts commit 3c23b83a88d00383e1d498cfa515249aa2fe0238.
 
-This is based on the observation that we only care about this when it
-causes ambiguity regarding the output reference, which means that we
-will have more than one match for the input ID. In this case, we can
-just disregard the one at the end of a multi-ID region: if we hit it
-first, we record it tentatively but allow a subsequent match to
-supersede it. If we hit the correct match first, there is nothing we
-need to do.
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/acpi/arm64/iort.c | 57 +-------------------
+ 1 file changed, 2 insertions(+), 55 deletions(-)
 
-Cc: Hanjun Guo <guohanjun@huawei.com>
-Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc: Pankaj Bansal <pankaj.bansal@nxp.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-
-Ard Biesheuvel (2):
-  Revert "ACPI/IORT: Fix 'Number of IDs' handling in iort_id_map()"
-  ACPI/IORT: work around num_ids ambiguity
-
- drivers/acpi/arm64/iort.c | 78 +++++---------------
- 1 file changed, 19 insertions(+), 59 deletions(-)
-
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 7d04424189df..98be18266a73 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -299,59 +299,6 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
+ 	return status;
+ }
+ 
+-struct iort_workaround_oem_info {
+-	char oem_id[ACPI_OEM_ID_SIZE + 1];
+-	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
+-	u32 oem_revision;
+-};
+-
+-static bool apply_id_count_workaround;
+-
+-static struct iort_workaround_oem_info wa_info[] __initdata = {
+-	{
+-		.oem_id		= "HISI  ",
+-		.oem_table_id	= "HIP07   ",
+-		.oem_revision	= 0,
+-	}, {
+-		.oem_id		= "HISI  ",
+-		.oem_table_id	= "HIP08   ",
+-		.oem_revision	= 0,
+-	}
+-};
+-
+-static void __init
+-iort_check_id_count_workaround(struct acpi_table_header *tbl)
+-{
+-	int i;
+-
+-	for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
+-		if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
+-		    !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
+-		    wa_info[i].oem_revision == tbl->oem_revision) {
+-			apply_id_count_workaround = true;
+-			pr_warn(FW_BUG "ID count for ID mapping entry is wrong, applying workaround\n");
+-			break;
+-		}
+-	}
+-}
+-
+-static inline u32 iort_get_map_max(struct acpi_iort_id_mapping *map)
+-{
+-	u32 map_max = map->input_base + map->id_count;
+-
+-	/*
+-	 * The IORT specification revision D (Section 3, table 4, page 9) says
+-	 * Number of IDs = The number of IDs in the range minus one, but the
+-	 * IORT code ignored the "minus one", and some firmware did that too,
+-	 * so apply a workaround here to keep compatible with both the spec
+-	 * compliant and non-spec compliant firmwares.
+-	 */
+-	if (apply_id_count_workaround)
+-		map_max--;
+-
+-	return map_max;
+-}
+-
+ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
+ 		       u32 *rid_out)
+ {
+@@ -368,7 +315,8 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
+ 		return -ENXIO;
+ 	}
+ 
+-	if (rid_in < map->input_base || rid_in > iort_get_map_max(map))
++	if (rid_in < map->input_base ||
++	    (rid_in >= map->input_base + map->id_count))
+ 		return -ENXIO;
+ 
+ 	*rid_out = map->output_base + (rid_in - map->input_base);
+@@ -1703,6 +1651,5 @@ void __init acpi_iort_init(void)
+ 		return;
+ 	}
+ 
+-	iort_check_id_count_workaround(iort_table);
+ 	iort_init_platform_devices();
+ }
 -- 
 2.17.1
 
