@@ -2,174 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E52E51C0B11
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 May 2020 01:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC85D1C0B83
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 May 2020 03:13:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727787AbgD3Xrz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Apr 2020 19:47:55 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:44492 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726562AbgD3Xry (ORCPT
+        id S1727124AbgEABNH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Apr 2020 21:13:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48942 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727114AbgEABNG (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 30 Apr 2020 19:47:54 -0400
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03UNX6iE087849;
-        Thu, 30 Apr 2020 19:47:51 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 30r7md1nda-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 30 Apr 2020 19:47:50 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
-        by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03UNdfeE032515;
-        Thu, 30 Apr 2020 23:47:49 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
-        by ppma02wdc.us.ibm.com with ESMTP id 30mcu71c9h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 30 Apr 2020 23:47:49 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-        by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 03UNlnZ755443940
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 30 Apr 2020 23:47:49 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 024C4112062;
-        Thu, 30 Apr 2020 23:47:49 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id B313C112063;
-        Thu, 30 Apr 2020 23:47:48 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-        Thu, 30 Apr 2020 23:47:48 +0000 (GMT)
-Subject: Re: [PATCH v4 1/2] acpi: Extend TPM2 ACPI table with missing log
- fields
-To:     rafael@kernel.org, linux-integrity@vger.kernel.org,
-        jarkko.sakkinen@linux.intel.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-security-module@vger.kernel.org
-References: <20200402225140.922789-1-stefanb@linux.vnet.ibm.com>
- <20200402225140.922789-2-stefanb@linux.vnet.ibm.com>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-Message-ID: <982e60e5-c36d-d983-1add-f8914fccdba6@linux.ibm.com>
-Date:   Thu, 30 Apr 2020 19:47:48 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        Thu, 30 Apr 2020 21:13:06 -0400
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 733B3C035494
+        for <linux-acpi@vger.kernel.org>; Thu, 30 Apr 2020 18:13:06 -0700 (PDT)
+Received: by mail-ot1-x341.google.com with SMTP id e26so1454380otr.2
+        for <linux-acpi@vger.kernel.org>; Thu, 30 Apr 2020 18:13:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=1EppxRrve6S2zF12WqlNXwmHbnuWXeqHARTl/wNCU8Y=;
+        b=WRHpBU/GNAKk880b5Z9J11XG5nQ0/TVxmXxt7OIfaHJXeGXe4J4fzDHckGhVLnMECm
+         FQqKBrGPxkybli2JAm1hUdlLaSgmM7/dPD24i6rccs/YvPX0LHYPGKoLcSEW7VXzQ6Wu
+         weyL1QrNF7v872ohncqX3BOein7Ps5ugjyRUxM43CCX4+8kVPxPOwlX67vV+TtDQ0TJ/
+         8paYOJl+Wvk74/SAtK+4oND4YGf31TQFZ7tnDDNcwedPVfSjbhV4ZBzwUhDZ1Fd3vYlV
+         TFxE8LdIG1g46Wr4wydz8692dfrzrFuGGokD/gyDJBDazdCQxovchgJD1BGO1AedHLAQ
+         lAWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=1EppxRrve6S2zF12WqlNXwmHbnuWXeqHARTl/wNCU8Y=;
+        b=KZelhDtReruJ7kPWazh0gmACie15JzT9qRnrfnjlPOihtmCIIvljATYNPc40YIjZze
+         B1YRNZh75KLIbDJpcggzVnrUHYPotePfVP2BFY8WJaFz+tReHFa6VsqECPfU+NzOpvU/
+         NvGrVzIcUTBrDqK9ni7tmpXJ/ZOwf9TZsGbNrpHOUKwLgFFYwC1SwUxupHgE6pbPM/kY
+         RhZOF3N5u9DCUKGbglOcD+pSpUWTUkb852cOPZQQSZ1OgschohlvEB05Xi4ibkjW068O
+         KQzsay5yOcoSiXTu6VFobTKxt6cndrnScJ3U8Au2/djKUDNcSBXdS4X2wHMDIqvYcRlF
+         C2sA==
+X-Gm-Message-State: AGi0PuYFw+ssDLtghkS46pI/2FCU1RqRqd0qif9h33R8aueg8ZXv2BNy
+        CK4MI0ZTGV2VE+F9A+lleZpkmUSVW8zIVLgVkfY=
+X-Google-Smtp-Source: APiQypIBVcDEeQcb4QCv4O+rguy8PO+DQD41c/vIfdqwizoZsHJpx008cxIJIlXNt7luagas5BQCJ91QQ5U2mcsnnMk=
+X-Received: by 2002:a05:6830:4d6:: with SMTP id s22mr1706873otd.129.1588295585794;
+ Thu, 30 Apr 2020 18:13:05 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200402225140.922789-2-stefanb@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-04-30_13:2020-04-30,2020-04-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- bulkscore=0 lowpriorityscore=0 malwarescore=0 mlxlogscore=999
- priorityscore=1501 suspectscore=0 clxscore=1011 phishscore=0 adultscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004300173
+From:   =?UTF-8?B?5Lq/5LiA?= <teroincn@gmail.com>
+Date:   Fri, 1 May 2020 09:12:55 +0800
+Message-ID: <CANTwqXATxhOVXC0OLcSMLeuhKLPM6+Mjas4tpQarLRRD5+aWJQ@mail.gmail.com>
+Subject: =?UTF-8?Q?drivers=2Facpi=2Fsysfs=2Ec=EF=BC=9Aa_kobject_memleak_in_acpi=5Fsys?=
+        =?UTF-8?Q?fs=5Fadd=5Fhotplug=5Fprofile=3F?=
+To:     rjw@rjwysocki.net, lenb@kernel.org
+Cc:     linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+Hi all,
+I notice that most of the usage of kobject_init_and_add in drivers are
+wrong, and now some drivers code has maken it right
+please see commit dfb5394f804e (https://lkml.org/lkml/2020/4/11/282)
+function acpi_sysfs_add_hotplug_profile() in drivers/acpi/sysfs.c may
+have the similar issue and leak kobject.
+if kobject_init_and_add() failed, the hotplug->kobj may already
+increased it's refcnt and allocated memory to store it's name,
+so a kobject_put is need before return.
+void acpi_sysfs_add_hotplug_profile(struct acpi_hotplug_profile *hotplug,
+   const char *name)
+{
+int error;
 
-   can you ACK this patch?
+if (!hotplug_kobj)
+goto err_out;
 
-Regards,
-    Stefan
-> From: Stefan Berger <stefanb@linux.ibm.com>
->
-> Recent extensions of the TPM2 ACPI table added 3 more fields
-> including 12 bytes of start method specific parameters and Log Area
-> Minimum Length (u32) and Log Area Start Address (u64). So, we extend
-> the existing structure with these fields to allow non-UEFI systems
-> to access the TPM2's log.
->
-> The specification that has the new fields is the following:
->    TCG ACPI Specification
->    Family "1.2" and "2.0"
->    Version 1.2, Revision 8
->
-> Adapt all existing table size calculations to use
-> offsetof(struct acpi_table_tpm2, start_method_specific)
-> [where start_method_specific is a newly added field]
-> rather than sizeof(struct acpi_table_tpm2) so that the addition
-> of the new fields does not affect current systems that may not
-> have them.
->
-> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> Cc: linux-acpi@vger.kernel.org
-> ---
->   drivers/char/tpm/tpm_crb.c | 13 ++++++++++---
->   drivers/char/tpm/tpm_tis.c |  4 +++-
->   include/acpi/actbl3.h      |  5 +++--
->   3 files changed, 16 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
-> index a9dcf31eadd2..0565aa5482f9 100644
-> --- a/drivers/char/tpm/tpm_crb.c
-> +++ b/drivers/char/tpm/tpm_crb.c
-> @@ -669,7 +669,9 @@ static int crb_acpi_add(struct acpi_device *device)
->   
->   	status = acpi_get_table(ACPI_SIG_TPM2, 1,
->   				(struct acpi_table_header **) &buf);
-> -	if (ACPI_FAILURE(status) || buf->header.length < sizeof(*buf)) {
-> +	if (ACPI_FAILURE(status) || buf->header.length <
-> +			offsetof(struct acpi_table_tpm2,
-> +				 start_method_specific)) {
->   		dev_err(dev, FW_BUG "failed to get TPM2 ACPI table\n");
->   		return -EINVAL;
->   	}
-> @@ -684,14 +686,19 @@ static int crb_acpi_add(struct acpi_device *device)
->   		return -ENOMEM;
->   
->   	if (sm == ACPI_TPM2_COMMAND_BUFFER_WITH_ARM_SMC) {
-> -		if (buf->header.length < (sizeof(*buf) + sizeof(*crb_smc))) {
-> +		if (buf->header.length <
-> +			(offsetof(struct acpi_table_tpm2,
-> +				  start_method_specific) +
-> +			 sizeof(*crb_smc))) {
->   			dev_err(dev,
->   				FW_BUG "TPM2 ACPI table has wrong size %u for start method type %d\n",
->   				buf->header.length,
->   				ACPI_TPM2_COMMAND_BUFFER_WITH_ARM_SMC);
->   			return -EINVAL;
->   		}
-> -		crb_smc = ACPI_ADD_PTR(struct tpm2_crb_smc, buf, sizeof(*buf));
-> +		crb_smc = ACPI_ADD_PTR(struct tpm2_crb_smc, buf,
-> +			   offsetof(struct acpi_table_tpm2,
-> +				    start_method_specific));
->   		priv->smc_func_id = crb_smc->smc_func_id;
->   	}
->   
-> diff --git a/drivers/char/tpm/tpm_tis.c b/drivers/char/tpm/tpm_tis.c
-> index e7df342a317d..a80f36860bac 100644
-> --- a/drivers/char/tpm/tpm_tis.c
-> +++ b/drivers/char/tpm/tpm_tis.c
-> @@ -111,7 +111,9 @@ static int check_acpi_tpm2(struct device *dev)
->   	 */
->   	st =
->   	    acpi_get_table(ACPI_SIG_TPM2, 1, (struct acpi_table_header **)&tbl);
-> -	if (ACPI_FAILURE(st) || tbl->header.length < sizeof(*tbl)) {
-> +	if (ACPI_FAILURE(st) || tbl->header.length <
-> +			offsetof(struct acpi_table_tpm2,
-> +				 start_method_specific)) {
->   		dev_err(dev, FW_BUG "failed to get TPM2 ACPI table\n");
->   		return -EINVAL;
->   	}
-> diff --git a/include/acpi/actbl3.h b/include/acpi/actbl3.h
-> index 2bf3baf819bb..b6118c67af0c 100644
-> --- a/include/acpi/actbl3.h
-> +++ b/include/acpi/actbl3.h
-> @@ -411,8 +411,9 @@ struct acpi_table_tpm2 {
->   	u16 reserved;
->   	u64 control_address;
->   	u32 start_method;
-> -
-> -	/* Platform-specific data follows */
-> +	u8  start_method_specific[12];
-> +	u32 log_area_minimum_length;		/* optional */
-> +	u64 log_area_start_address;		/* optional */
->   };
->   
->   /* Values for start_method above */
+error = kobject_init_and_add(&hotplug->kobj,
+&acpi_hotplug_profile_ktype, hotplug_kobj, "%s", name);
+if (error)
+goto err_out;
+
+kobject_uevent(&hotplug->kobj, KOBJ_ADD);
+return;
+
+ err_out:
+pr_err(PREFIX "Unable to add hotplug profile '%s'\n", name);
+}
 
 
+Best regards,
+Lin Yi
