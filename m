@@ -2,40 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 488091C2458
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 May 2020 11:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9DC41C2762
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 May 2020 20:03:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726488AbgEBJ1B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 2 May 2020 05:27:01 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:37771 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726574AbgEBJ07 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 2 May 2020 05:26:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1588411616;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=7BlBxvbDuA+9KvE9CDetQLMcWvsctxQWUvlkpoisi9Y=;
-        b=dJ+3ixDi1lTGbT7IbJh8puhuXzy54eombXibMx69XdpWziNf2zD7kWcPcv+Y+Q9r4Y7GiD
-        1P/luydqFlqaRd9AIGoxuvDj55SReUYVPJpRf4SMWhCGR5GFiiose+k5RJsjzV2AN7CsDB
-        XcrCcuQl0kaVnktJhgzmWwKew9Du7I4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-58-IYiQA9KcOLe61Ujso1qrMw-1; Sat, 02 May 2020 05:26:51 -0400
-X-MC-Unique: IYiQA9KcOLe61Ujso1qrMw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 409B51005510;
-        Sat,  2 May 2020 09:26:49 +0000 (UTC)
-Received: from [10.36.112.72] (ovpn-112-72.ams2.redhat.com [10.36.112.72])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0E16B1001281;
-        Sat,  2 May 2020 09:26:41 +0000 (UTC)
-Subject: Re: [PATCH v2 2/3] mm/memory_hotplug: Introduce
- MHP_NO_FIRMWARE_MEMMAP
-To:     Dan Williams <dan.j.williams@intel.com>
+        id S1728161AbgEBSDO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 2 May 2020 14:03:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35054 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727988AbgEBSDO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 2 May 2020 14:03:14 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDF3AC061A0C
+        for <linux-acpi@vger.kernel.org>; Sat,  2 May 2020 11:03:13 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id t12so9875356edw.3
+        for <linux-acpi@vger.kernel.org>; Sat, 02 May 2020 11:03:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gzsuxDlItzKXIUBK7WGNpTkOsm9nq+BDdgFK8X2BWvo=;
+        b=aSBw5wCDConKD/IcaaHbp4Mo0CTJ0pgKRvNWRkiIWGE3lCN/oPbrEa9/oKAglpfRn1
+         ybYK1kBJxRVbPzvApGi7N1gI88wlw4xjREME4zX7kVXKZH3FDgSbie3ks5shBRY8TZ6q
+         DMFWhZRW7RkjeJCSKPKh/8pZ2QWGSZw/Nyq/zAlnOngdfv/+o/QV9wf4QVQZ5gXVDkzN
+         XNN+MYW95/ejtNi3wUzQ6oJ8i+BfB05eb9CwAbUAIbruiYbVwz5lfsdGnAXaouOdPAgk
+         c8v1YIbx6b+WQ999NPSKnSrIN3qI9oKtRGvdPYhTcKRXMBwc/GxItvO5XlgyBCaOSzcl
+         2H2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gzsuxDlItzKXIUBK7WGNpTkOsm9nq+BDdgFK8X2BWvo=;
+        b=aPOvOdVZMBJJQcM6IXK0MijR9nSkbXTI3KpMdHZE0rhIM0uK52e/1CMqQ+1U4LYgJU
+         jQPFu/D/buWNedBwQoggrr+gbYMIeZgMbju6IoC5hxKJT42FCkERcpvfW1fAYKeP5OtZ
+         hdmflnbIVc6ylUEP5VVixTJ/gCZBQKwEJhA5GWaQSSKMZHnuIuJv4XOIgFQuZR2eVt2F
+         Zc9pRbdKIQcLInFbMqQZSnRerW5ALX8XVP9GNFjxJWh5wItB7ZBA+Vfr6BK7FC++6Nbj
+         2MRoROmLrBuVmeNCpXtlDQWHq+MMIG6Ic7zlv9gwc0vJpDLpKwuya7hsMs/SqbnIGdq2
+         oP8w==
+X-Gm-Message-State: AGi0PuZHFCHJW+ue1PCRFgG83FV0DRgoZNtSqGvZmlQnOw5QZ/cD810y
+        2vsSVkoclBvkVPMmqWBSg2i+Ux2vknfLPHQ2FQfIKQ==
+X-Google-Smtp-Source: APiQypJrbz2VzfjebhxcGzu52aKY5ET0/26CFym5+FOkkSLJ9Vu46v3NJUgCYAVe4ZsgBJWlfsgCXWWgDBxtIIIlF1U=
+X-Received: by 2002:a05:6402:3136:: with SMTP id dd22mr8275680edb.165.1588442592251;
+ Sat, 02 May 2020 11:03:12 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200430102908.10107-1-david@redhat.com> <875zdg26hp.fsf@x220.int.ebiederm.org>
+ <b28c9e02-8cf2-33ae-646b-fe50a185738e@redhat.com> <20200430152403.e0d6da5eb1cad06411ac6d46@linux-foundation.org>
+ <5c908ec3-9495-531e-9291-cbab24f292d6@redhat.com> <CAPcyv4j=YKnr1HW4OhAmpzbuKjtfP7FdAn4-V7uA=b-Tcpfu+A@mail.gmail.com>
+ <2d019c11-a478-9d70-abd5-4fd2ebf4bc1d@redhat.com> <CAPcyv4iOqS0Wbfa2KPfE1axQFGXoRB4mmPRP__Lmqpw6Qpr_ig@mail.gmail.com>
+ <62dd4ce2-86cc-5b85-734f-ec8766528a1b@redhat.com> <0169e822-a6cc-1543-88ed-2a85d95ffb93@redhat.com>
+ <CAPcyv4jGnR_fPtpKBC1rD2KRcT88bTkhqnTMmuwuc+f9Dwrz1g@mail.gmail.com>
+ <9f3a813e-dc1d-b675-6e69-85beed3057a4@redhat.com> <CAPcyv4jjrxQ27rsfmz6wYPgmedevU=KG+wZ0GOm=qiE6tqa+VA@mail.gmail.com>
+ <04242d48-5fa9-6da4-3e4a-991e401eb580@redhat.com> <CAPcyv4iXyOUDZgqhWH1KCObvATL=gP55xEr64rsRfUuJg5B+eQ@mail.gmail.com>
+ <8242c0c5-2df2-fc0c-079a-3be62c113a11@redhat.com> <CAPcyv4h1nWjszkVJQgeXkUc=-nPv5=Me25BOGFQCpihUyFsD6w@mail.gmail.com>
+ <467ccba3-80ac-085c-3127-d5618d77d3e0@redhat.com>
+In-Reply-To: <467ccba3-80ac-085c-3127-d5618d77d3e0@redhat.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Sat, 2 May 2020 11:03:01 -0700
+Message-ID: <CAPcyv4iqwh6k40DUy-Pwi2h5pJm9vu7+JU1ghELy=3MGM1naNg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] mm/memory_hotplug: Introduce MHP_NO_FIRMWARE_MEMMAP
+To:     David Hildenbrand <david@redhat.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         "Eric W. Biederman" <ebiederm@xmission.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
@@ -54,126 +78,56 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Wei Yang <richard.weiyang@gmail.com>,
         Baoquan He <bhe@redhat.com>,
         Dave Hansen <dave.hansen@linux.intel.com>
-References: <20200430102908.10107-1-david@redhat.com>
- <875zdg26hp.fsf@x220.int.ebiederm.org>
- <b28c9e02-8cf2-33ae-646b-fe50a185738e@redhat.com>
- <20200430152403.e0d6da5eb1cad06411ac6d46@linux-foundation.org>
- <5c908ec3-9495-531e-9291-cbab24f292d6@redhat.com>
- <CAPcyv4j=YKnr1HW4OhAmpzbuKjtfP7FdAn4-V7uA=b-Tcpfu+A@mail.gmail.com>
- <2d019c11-a478-9d70-abd5-4fd2ebf4bc1d@redhat.com>
- <CAPcyv4iOqS0Wbfa2KPfE1axQFGXoRB4mmPRP__Lmqpw6Qpr_ig@mail.gmail.com>
- <62dd4ce2-86cc-5b85-734f-ec8766528a1b@redhat.com>
- <0169e822-a6cc-1543-88ed-2a85d95ffb93@redhat.com>
- <CAPcyv4jGnR_fPtpKBC1rD2KRcT88bTkhqnTMmuwuc+f9Dwrz1g@mail.gmail.com>
- <9f3a813e-dc1d-b675-6e69-85beed3057a4@redhat.com>
- <CAPcyv4jjrxQ27rsfmz6wYPgmedevU=KG+wZ0GOm=qiE6tqa+VA@mail.gmail.com>
- <04242d48-5fa9-6da4-3e4a-991e401eb580@redhat.com>
- <CAPcyv4iXyOUDZgqhWH1KCObvATL=gP55xEr64rsRfUuJg5B+eQ@mail.gmail.com>
- <8242c0c5-2df2-fc0c-079a-3be62c113a11@redhat.com>
- <CAPcyv4h1nWjszkVJQgeXkUc=-nPv5=Me25BOGFQCpihUyFsD6w@mail.gmail.com>
-From:   David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
-Organization: Red Hat GmbH
-Message-ID: <467ccba3-80ac-085c-3127-d5618d77d3e0@redhat.com>
-Date:   Sat, 2 May 2020 11:26:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <CAPcyv4h1nWjszkVJQgeXkUc=-nPv5=Me25BOGFQCpihUyFsD6w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
->> Now, let's clarify what I want regarding virtio-mem:
->>
->> 1. kexec should not add virtio-mem memory to the initial firmware
->>    memmap. The driver has to be in charge as discussed.
->> 2. kexec should not place kexec images onto virtio-mem memory. That
->>    would end badly.
->> 3. kexec should still dump virtio-mem memory via kdump.
->=20
-> Ok, but then seems to say to me that dax/kmem is a different type of
-> (driver managed) than virtio-mem and it's confusing to try to apply
-> the same meaning. Why not just call your type for the distinct type it
-> is "System RAM (virtio-mem)" and let any other driver managed memory
-> follow the same "System RAM ($driver)" format if it wants?
+On Sat, May 2, 2020 at 2:27 AM David Hildenbrand <david@redhat.com> wrote:
+>
+> >> Now, let's clarify what I want regarding virtio-mem:
+> >>
+> >> 1. kexec should not add virtio-mem memory to the initial firmware
+> >>    memmap. The driver has to be in charge as discussed.
+> >> 2. kexec should not place kexec images onto virtio-mem memory. That
+> >>    would end badly.
+> >> 3. kexec should still dump virtio-mem memory via kdump.
+> >
+> > Ok, but then seems to say to me that dax/kmem is a different type of
+> > (driver managed) than virtio-mem and it's confusing to try to apply
+> > the same meaning. Why not just call your type for the distinct type it
+> > is "System RAM (virtio-mem)" and let any other driver managed memory
+> > follow the same "System RAM ($driver)" format if it wants?
+>
+> I had the same idea but discarded it because it seemed to uglify the
+> add_memory() interface (passing yet another parameter only relevant for
+> driver managed memory). Maybe we really want a new one, because I like
+> that idea:
+>
+> /*
+>  * Add special, driver-managed memory to the system as system ram.
+>  * The resource_name is expected to have the name format "System RAM
+>  * ($DRIVER)", so user space (esp. kexec-tools)" can special-case it.
+>  *
+>  * For this memory, no entries in /sys/firmware/memmap are created,
+>  * as this memory won't be part of the raw firmware-provided memory map
+>  * e.g., after a reboot. Also, the created memory resource is flagged
+>  * with IORESOURCE_MEM_DRIVER_MANAGED, so in-kernel users can special-
+>  * case this memory (e.g., not place kexec images onto it).
+>  */
+> int add_memory_driver_managed(int nid, u64 start, u64 size,
+>                               const char *resource_name);
+>
+>
+> If we'd ever have to special case it even more in the kernel, we could
+> allow to specify further resource flags. While passing the driver name
+> instead of the resource_name would be an option, this way we don't have
+> to hand craft new resource strings for added memory resources.
+>
+> Thoughts?
 
-I had the same idea but discarded it because it seemed to uglify the
-add_memory() interface (passing yet another parameter only relevant for
-driver managed memory). Maybe we really want a new one, because I like
-that idea:
-
-/*
- * Add special, driver-managed memory to the system as system ram.
- * The resource_name is expected to have the name format "System RAM
- * ($DRIVER)", so user space (esp. kexec-tools)" can special-case it.
- *
- * For this memory, no entries in /sys/firmware/memmap are created,
- * as this memory won't be part of the raw firmware-provided memory map
- * e.g., after a reboot. Also, the created memory resource is flagged
- * with IORESOURCE_MEM_DRIVER_MANAGED, so in-kernel users can special-
- * case this memory (e.g., not place kexec images onto it).
- */
-int add_memory_driver_managed(int nid, u64 start, u64 size,
-			      const char *resource_name);
-
-
-If we'd ever have to special case it even more in the kernel, we could
-allow to specify further resource flags. While passing the driver name
-instead of the resource_name would be an option, this way we don't have
-to hand craft new resource strings for added memory resources.
-
-Thoughts?
-
---=20
-Thanks,
-
-David / dhildenb
-
+Looks useful to me and simplifies walking /proc/iomem. I personally
+like the safety of the string just being the $driver component of the
+name, but I won't lose sleep if the interface stays freeform like you
+propose.
