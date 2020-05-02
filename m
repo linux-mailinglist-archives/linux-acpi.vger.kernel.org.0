@@ -2,143 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC24C1C27B9
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 May 2020 20:30:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED17F1C281B
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 May 2020 21:56:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728411AbgEBSaQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 2 May 2020 14:30:16 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:58068 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728439AbgEBSaN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 2 May 2020 14:30:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1588444212;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=letQVDOo3V2j1mmTVFw1o6et9y8zvcG1xCoXp2K/63E=;
-        b=MRyBlAVGK/YYih7ATHHMsKIi3syCu1mctTE/o2Mx8K0+Cai3d5UhNU9twVaabJUZxSMgs3
-        Ye6Ibe8DChdpMEbTRfliZOgHaKivtAqFgmZvaQqL5tO+eYG+svaMScy4tPp7QRFLAXN+Ta
-        Pr02RQBBl3M+4EtQQjizzVcN58usUVM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-152-ubq-5E0lNFWza9zgE-YR_w-1; Sat, 02 May 2020 14:30:08 -0400
-X-MC-Unique: ubq-5E0lNFWza9zgE-YR_w-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 07EFE8005B7;
-        Sat,  2 May 2020 18:30:07 +0000 (UTC)
-Received: from x1.localdomain.com (ovpn-112-4.ams2.redhat.com [10.36.112.4])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 82A30600E5;
-        Sat,  2 May 2020 18:30:05 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Mario Limonciello <mario.limonciello@dell.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 5/5] platform/x86: intel-vbtn: Fix probe failure on devices with only switches
-Date:   Sat,  2 May 2020 20:29:51 +0200
-Message-Id: <20200502182951.114231-6-hdegoede@redhat.com>
-In-Reply-To: <20200502182951.114231-1-hdegoede@redhat.com>
-References: <20200502182951.114231-1-hdegoede@redhat.com>
+        id S1728475AbgEBT45 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 2 May 2020 15:56:57 -0400
+Received: from mail-ot1-f42.google.com ([209.85.210.42]:34424 "EHLO
+        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728107AbgEBT45 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 2 May 2020 15:56:57 -0400
+Received: by mail-ot1-f42.google.com with SMTP id 72so5454610otu.1;
+        Sat, 02 May 2020 12:56:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=Ku7FT7H/qujkTpfndppU/5D0Q3HreZKL0CE63+jkaGE=;
+        b=C9KuUp2jQKVlt00/MfqggsyuEh2lma18QJUeiBA8/VyP/ybUc+MW0WmDasZMp7U5aS
+         AP4VNa1KowaJzlkeR7AldWzaF3ejEBD52vEZ7ubFfJBgEmGbFalt2GfMLVjSQFkOJrKP
+         XGr4WZpS7tHzWlDXM0+YttPszbJU5aIloh+GMOQCjwff712Dof45VPJMozUMdYmVn+yk
+         iPPMKlErrW5fuAbbZtfmHCANPLZlXjkOgjQGrhDLFp8JdfM9Mrt+Zh1E421/N/9j/LWQ
+         0WeqKZGLGk5cdrJsy4TgwMmI63/d1Gssh4Qz2N1fkpZH9//E6xZzqnB9PeUSTFXGorVS
+         bLXg==
+X-Gm-Message-State: AGi0PuYjSOI2S/F1rJbNs5qZVevfNRCVpq8Z5oCw/USibZfQKK/lEx+Q
+        ycOcPSadf6f/49gByI0FJ9ayveHumo1SZUFzVtKXgi8C
+X-Google-Smtp-Source: APiQypJDMfsCYoxZLVpdfFCTqyN+78U8CyqwHxduOqRrk0pa7UvzuIcoyttl7/Fwd66VN6AF8QRPAV5Orra9qj/xcKg=
+X-Received: by 2002:a05:6830:18d0:: with SMTP id v16mr8217505ote.118.1588449416859;
+ Sat, 02 May 2020 12:56:56 -0700 (PDT)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Content-Transfer-Encoding: quoted-printable
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Sat, 2 May 2020 21:56:46 +0200
+Message-ID: <CAJZ5v0huWpQa3NgmmJ_OWGB_ngQvA4V3YCX1i3-QutqSxZOzdw@mail.gmail.com>
+Subject: [GIT PULL] Power management fixes for v5.7-rc4
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On some devices the INT33D6 vbtn device is only used to report
-tablet-mode / docked status (switches) and there are no vbtn managed
-buttons.
+Hi Linus,
 
-On these devices there is no VBDL object.
+Please pull from the tag
 
-Move the VBDL check to a intel_vbtn_has_buttons() helper and only exit
-from intel_vbtn_probe() with -ENODEV when there are both no buttons and
-no switches. Also only report the buttons being present to userspace if
-the has_buttons check has succeeded.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-5.7-rc4
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/platform/x86/intel-vbtn.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+with top-most commit a53839963ee22470a716de665bca39d2dae63c27
 
-diff --git a/drivers/platform/x86/intel-vbtn.c b/drivers/platform/x86/int=
-el-vbtn.c
-index 4921fc15dc6c..4efc70b693a7 100644
---- a/drivers/platform/x86/intel-vbtn.c
-+++ b/drivers/platform/x86/intel-vbtn.c
-@@ -55,6 +55,7 @@ static const struct key_entry intel_vbtn_switchmap[] =3D=
- {
- struct intel_vbtn_priv {
- 	struct key_entry keymap[KEYMAP_LEN];
- 	struct input_dev *input_dev;
-+	bool has_buttons;
- 	bool has_switches;
- 	bool wakeup_mode;
- };
-@@ -64,7 +65,7 @@ static int intel_vbtn_input_setup(struct platform_devic=
-e *device)
- 	struct intel_vbtn_priv *priv =3D dev_get_drvdata(&device->dev);
- 	int ret, keymap_len =3D 0;
-=20
--	if (true) {
-+	if (priv->has_buttons) {
- 		memcpy(&priv->keymap[keymap_len], intel_vbtn_keymap,
- 		       ARRAY_SIZE(intel_vbtn_keymap) *
- 		       sizeof(struct key_entry));
-@@ -155,6 +156,14 @@ static void detect_tablet_mode(struct platform_devic=
-e *device)
- 	input_report_switch(priv->input_dev, SW_DOCK, m);
- }
-=20
-+static bool intel_vbtn_has_buttons(acpi_handle handle)
-+{
-+	acpi_status status;
-+
-+	status =3D acpi_evaluate_object(handle, "VBDL", NULL, NULL);
-+	return ACPI_SUCCESS(status);
-+}
-+
- static bool intel_vbtn_has_switches(acpi_handle handle)
- {
- 	const char *chassis_type =3D dmi_get_system_info(DMI_CHASSIS_TYPE);
-@@ -181,12 +190,15 @@ static bool intel_vbtn_has_switches(acpi_handle han=
-dle)
- static int intel_vbtn_probe(struct platform_device *device)
- {
- 	acpi_handle handle =3D ACPI_HANDLE(&device->dev);
-+	bool has_buttons, has_switches;
- 	struct intel_vbtn_priv *priv;
- 	acpi_status status;
- 	int err;
-=20
--	status =3D acpi_evaluate_object(handle, "VBDL", NULL, NULL);
--	if (ACPI_FAILURE(status)) {
-+	has_buttons =3D intel_vbtn_has_buttons(handle);
-+	has_switches =3D intel_vbtn_has_switches(handle);
-+
-+	if (!has_buttons && !has_switches) {
- 		dev_warn(&device->dev, "failed to read Intel Virtual Button driver\n")=
-;
- 		return -ENODEV;
- 	}
-@@ -196,7 +208,8 @@ static int intel_vbtn_probe(struct platform_device *d=
-evice)
- 		return -ENOMEM;
- 	dev_set_drvdata(&device->dev, priv);
-=20
--	priv->has_switches =3D intel_vbtn_has_switches(handle);
-+	priv->has_buttons =3D has_buttons;
-+	priv->has_switches =3D has_switches;
-=20
- 	err =3D intel_vbtn_input_setup(device);
- 	if (err) {
---=20
-2.26.0
+ Merge branches 'pm-cpufreq' and 'pm-sleep'
 
+on top of commit 6a8b55ed4056ea5559ebe4f6a4b247f627870d4c
+
+ Linux 5.7-rc3
+
+to receive power management fixes for 5.7-rc4.
+
+These prevent the intel_pstate driver from printing excessive
+diagnostic messages in some cases (Chris Wilson), make the
+hibernation restore kernel freeze kernel threads as well as user
+space tasks (Dexuan Cui) and fix the ACPI device PM disagnostic
+messages to include the correct power state name (Kai-Heng Feng).
+
+Thanks!
+
+
+---------------
+
+Chris Wilson (1):
+      cpufreq: intel_pstate: Only mention the BIOS disabling turbo mode once
+
+Dexuan Cui (1):
+      PM: hibernate: Freeze kernel threads in software_resume()
+
+Kai-Heng Feng (1):
+      PM: ACPI: Output correct message on target power state
+
+---------------
+
+ drivers/acpi/device_pm.c       | 4 ++--
+ drivers/cpufreq/intel_pstate.c | 2 +-
+ kernel/power/hibernate.c       | 7 +++++++
+ 3 files changed, 10 insertions(+), 3 deletions(-)
