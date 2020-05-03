@@ -2,87 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED17F1C281B
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 May 2020 21:56:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE82B1C2A6C
+	for <lists+linux-acpi@lfdr.de>; Sun,  3 May 2020 08:52:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728475AbgEBT45 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 2 May 2020 15:56:57 -0400
-Received: from mail-ot1-f42.google.com ([209.85.210.42]:34424 "EHLO
-        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728107AbgEBT45 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 2 May 2020 15:56:57 -0400
-Received: by mail-ot1-f42.google.com with SMTP id 72so5454610otu.1;
-        Sat, 02 May 2020 12:56:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=Ku7FT7H/qujkTpfndppU/5D0Q3HreZKL0CE63+jkaGE=;
-        b=C9KuUp2jQKVlt00/MfqggsyuEh2lma18QJUeiBA8/VyP/ybUc+MW0WmDasZMp7U5aS
-         AP4VNa1KowaJzlkeR7AldWzaF3ejEBD52vEZ7ubFfJBgEmGbFalt2GfMLVjSQFkOJrKP
-         XGr4WZpS7tHzWlDXM0+YttPszbJU5aIloh+GMOQCjwff712Dof45VPJMozUMdYmVn+yk
-         iPPMKlErrW5fuAbbZtfmHCANPLZlXjkOgjQGrhDLFp8JdfM9Mrt+Zh1E421/N/9j/LWQ
-         0WeqKZGLGk5cdrJsy4TgwMmI63/d1Gssh4Qz2N1fkpZH9//E6xZzqnB9PeUSTFXGorVS
-         bLXg==
-X-Gm-Message-State: AGi0PuYjSOI2S/F1rJbNs5qZVevfNRCVpq8Z5oCw/USibZfQKK/lEx+Q
-        ycOcPSadf6f/49gByI0FJ9ayveHumo1SZUFzVtKXgi8C
-X-Google-Smtp-Source: APiQypJDMfsCYoxZLVpdfFCTqyN+78U8CyqwHxduOqRrk0pa7UvzuIcoyttl7/Fwd66VN6AF8QRPAV5Orra9qj/xcKg=
-X-Received: by 2002:a05:6830:18d0:: with SMTP id v16mr8217505ote.118.1588449416859;
- Sat, 02 May 2020 12:56:56 -0700 (PDT)
+        id S1726974AbgECGwa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 3 May 2020 02:52:30 -0400
+Received: from sonic308-19.consmr.mail.ir2.yahoo.com ([77.238.178.147]:36335
+        "EHLO sonic308-19.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727085AbgECGwa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 3 May 2020 02:52:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1588488747; bh=HCBdmXO5/l665w/MwYeTKYgprR4CxrsZjPuQNxf8ZBg=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Vv2+uM6nj7NBa97+9iZ6RXO1cBFs3xJP+HRgPl7HgBjtac8RCvfVQ08EkPf9wvtd6a7EGGj+65Am/zblOQf2tenQRtvyQrTaIkxXi0EaPIuJpe67rZ3l/Rac9nowsccpN05nO4XwQN1Bl83IiVkZk+PCXz4hbCrHPwUB6SNu4jITnKKUTZdEoCMXqdjT4jWOrO6TpESSIhocxcAqZV9WUJwckZ7TyfJpbzXfKEyxRwuYv169weQ6N8jT98xSqTqVPhxkXoCz3tisDKt2N+pi35Ju6EaQ4WourUcWXTOyEgg9GxvXOyEOmjFjs70KkR4wBaRIEKMcEDlXV8WNGuidjA==
+X-YMail-OSG: oiMm6S0VM1lm7JxgEsjb6A.UbPyn83nGg7OaotgBSllRQUIyNXVcxaO7lANcZMU
+ aHnkUmO3iHTwTH2Mh2L3sU4DIvkvWYYQkxuxnWwUUS1JVXyVchvVojh1INFmb.R7DeZGRDiS9I2c
+ XXKAv588Awk2rTYAX7bSoqQsoh7Nys2yX891FS5Zd4GaTmY2brNX_G6qPothhB5UNnDvLBGNw_QE
+ 7mdSKynpbGjLpJOeXiSeJjprLNCFxzn9v1CaliBs9O0Pv_79LB875TTdcQU6SUO7_wkx8jqix7Rj
+ 5azy63OZ0mFXBIORIYyYUh8wcgVYoLMC7NFChvuGd54aHClywbKsU2r_5CkyO66ck5MI21NOHvIG
+ i614CwvPjlRhbymGtF968AJ3n9l2FanPXnfoU8NseEIT.6Rq6a1xo3e3e7bXIe6s0p.XPE_ttZch
+ wJPufl5gS36qYWe0Uc5KP1YHtE.ZiiGIr2pJl.XMnBwR_EXsYbfXCtQpVgzwy1YYk6PLIKU9Kmo1
+ 29ebFRjkmXNNEEIYH0ZWnjLp9ceL6Cwyu0j7EAc6uF2DfWm16A5ScpXBtUi7elYdGQt6kW5kMUHx
+ XuuqCnSuslenjvgqmLhiRxwrY5Ia34HiYzAziX_CRPe6uI6BYfqPdRIjvta7Zl69U7Y1iiTpdiZO
+ ha4VKfbUaCqBpR.WgbLLybVcTNWeMZmbJCz_6sm5fl.Q6FzNNLJsq7sX1rv4wNzXCTPrdA8NlWmu
+ vJYLG28PIY6.bHeWmSc3WB6nH75QDi629guHNtjDQBLfvEXdpuXzXHwezEnWEEUP7hejcFZ.Bokp
+ bxRMWISZhb29Ijt3CqTLd5LAhKoyBsB0.il4dznwP6xpomhTxbS9LYNSYCCDONk_gNlmkSAgwLgn
+ KgU1rd29XERkdeBTv3CxzAbtoNJCQZGksbuNqtMh7WOINDDvcNT87CWTTPtw7sjXLSkg_X7VhHQF
+ pHgXNaJ6qq5ztcoZ0rRbHh7M3nU_qf4v8QZmnVVrYgAu12uFUbT5gztDZ0hde2W.7e9nLr1CDekM
+ oxJiXBIOmqBy_Dn6qm1N9p0eMg6gBGTWW1OqTqRme3uM87ddfPximYkTty6AK_Fo0tcptM6dqQ4D
+ ul7nHg2UlwhF8XhoaQnWljb9f8R5Kjs_XvIoguNyhLtDC9dhtjOdX2niFKDstUZSEGtBK.4J.I51
+ FjPl_Ht7VmocFuXXt8KgN1fXkseNMoLN4Um2qnYmrR9FO5n8firFT1zY3_MQ.uuY0CyL_2gAdNT6
+ dOjVTCauGElamXzGprJneoYzJOMOoPCUZ.ItPCDBpMUboLac_VEnYzinMKXX1_UvF2EoII_pRqw-
+ -
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ir2.yahoo.com with HTTP; Sun, 3 May 2020 06:52:27 +0000
+Date:   Sun, 3 May 2020 06:52:26 +0000 (UTC)
+From:   Miss Pamela Render <pamelarender45@gmail.com>
+Reply-To: pamelarender45@gmail.com
+Message-ID: <1137921726.642686.1588488746422@mail.yahoo.com>
+Subject: Greetings From Miss Pamela Render Please I Need Your Urgent Reply!
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 2 May 2020 21:56:46 +0200
-Message-ID: <CAJZ5v0huWpQa3NgmmJ_OWGB_ngQvA4V3YCX1i3-QutqSxZOzdw@mail.gmail.com>
-Subject: [GIT PULL] Power management fixes for v5.7-rc4
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <1137921726.642686.1588488746422.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15756 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:75.0) Gecko/20100101 Firefox/75.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
-
-Please pull from the tag
-
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pm-5.7-rc4
-
-with top-most commit a53839963ee22470a716de665bca39d2dae63c27
-
- Merge branches 'pm-cpufreq' and 'pm-sleep'
-
-on top of commit 6a8b55ed4056ea5559ebe4f6a4b247f627870d4c
-
- Linux 5.7-rc3
-
-to receive power management fixes for 5.7-rc4.
-
-These prevent the intel_pstate driver from printing excessive
-diagnostic messages in some cases (Chris Wilson), make the
-hibernation restore kernel freeze kernel threads as well as user
-space tasks (Dexuan Cui) and fix the ACPI device PM disagnostic
-messages to include the correct power state name (Kai-Heng Feng).
-
-Thanks!
 
 
----------------
+Greetings From Miss Pamela Render Please I Need Your Urgent Reply!
 
-Chris Wilson (1):
-      cpufreq: intel_pstate: Only mention the BIOS disabling turbo mode once
+I'm Pamela Render, from USA. I am a highly motivated and willing to learn, I'm also hard working lady, very relaible. I really want to establish mutual friendship with you, I will introduce myself better as soon as i receive your email response.
 
-Dexuan Cui (1):
-      PM: hibernate: Freeze kernel threads in software_resume()
-
-Kai-Heng Feng (1):
-      PM: ACPI: Output correct message on target power state
-
----------------
-
- drivers/acpi/device_pm.c       | 4 ++--
- drivers/cpufreq/intel_pstate.c | 2 +-
- kernel/power/hibernate.c       | 7 +++++++
- 3 files changed, 10 insertions(+), 3 deletions(-)
+Kind regards
+Miss Pamela Render
