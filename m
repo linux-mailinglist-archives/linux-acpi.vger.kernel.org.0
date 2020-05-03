@@ -2,247 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EF8E1C2BAA
-	for <lists+linux-acpi@lfdr.de>; Sun,  3 May 2020 13:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF8981C2DEB
+	for <lists+linux-acpi@lfdr.de>; Sun,  3 May 2020 18:25:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727103AbgECLWo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 3 May 2020 07:22:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59502 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727073AbgECLWo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 3 May 2020 07:22:44 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3269220787;
-        Sun,  3 May 2020 11:22:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588504963;
-        bh=wnnsyL0o/zvjpdE6ZpNhT9ztjGznPAWcIyoxAbZkloY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=EINw1NC6pLdiy1wCEQYEt7aBhornNpv71ZND5ao4YQ1UALG5+MN97spIL+179S1Qe
-         fREl4OMFZFFaATq9BOcqQZk5DnslkroiUN3670TkQ3cGBSrBtv+TfTXUYAqr8tmQWi
-         UWOA9OSPSSUxfUiavPsxV/DJxdkVnzA8REZbycuI=
-Date:   Sun, 3 May 2020 12:22:37 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        id S1728753AbgECQZd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 3 May 2020 12:25:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44838 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728002AbgECQZd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 3 May 2020 12:25:33 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF13C061A0E;
+        Sun,  3 May 2020 09:25:32 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id z1so4346920pfn.3;
+        Sun, 03 May 2020 09:25:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=N3PY0NJ7YL1BNARD0oetT7jynu4pCokp1u8ZAvx5dx4=;
+        b=uHgi4jckBb1RaPiRnyys/tkc39VdwZl7c3o+IQlNjugZL8FZYQn75n77dVAU+bCjLs
+         9eq7vhb99S00JA58zhzo13ohJMlwEbJdqDhuTNmc5DU689eE2JcVK+RF0JiWICCLhu0A
+         GBe6DRYG28uXIsb1t/ZrAvcbvJl3sIECsWP8CQl+yhrMfPsWqemHwMPB5zCnyQ0nwK/C
+         WCifDlVGNcjT5mugw7i1kzvwXWF7hVJt5rkIiplYpFSCYtMKxC+qxXUUgbioH3kuJz7D
+         M6yqH+t3dFiLUWQjFrbF/2/464jS+nZBjqD+pa0QWNy2bomD6btiMSyLt0X6kuEkYcrV
+         Sx+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=N3PY0NJ7YL1BNARD0oetT7jynu4pCokp1u8ZAvx5dx4=;
+        b=Zxqoe0thq5IvgKsDln3YVt1hmDG+YmqsiMUgKXQy5dW89gn9VjT5Q3wZPInZw44oRC
+         Sy7onZBaSXu0FF1F1HKtUoT3ygOuRuUS99vxEl6eiIAQbUk2CLst0rPgd2JhMQA2lRyV
+         Ry9W472ySzCqqThCcgbDa/uncVSpLNJC7XgjnMOlDYA7v3chRByZWQh+5jelSAbqqQMT
+         E4PqTpaXsQcyrOW+Id9nQFUnSljPEswPC13SRfqWTN3yfE6++U/YcPilCJYD5gZdqR7a
+         2vWjtBYsUC+CDQu44KDn/d3/2S0qg2lfRpAGY2yYSoTP5/U77q2XYvG/SdE+YYSFdb+v
+         DOYA==
+X-Gm-Message-State: AGi0PuYDHjnM98xf4V8rrBJ1FJ6nCh3EzHf3OIxb4T2bpvf3fi/go+Ln
+        Mn+pglBtX/yoJRNfqE0kCvTb5bpg4Pj+DSYo+3I=
+X-Google-Smtp-Source: APiQypIdkxCKDQcOl5esMtYineYHmnfKgOTXof+YtrxX0N/0Q0zcOtHVkEZH2obVS8ilArA2woICWcXUSh4qFjhVf9I=
+X-Received: by 2002:a63:1c1:: with SMTP id 184mr13829522pgb.203.1588523132175;
+ Sun, 03 May 2020 09:25:32 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200428172923.567806-1-hdegoede@redhat.com> <20200428172923.567806-10-hdegoede@redhat.com>
+ <20200503122237.4af34181@archlinux>
+In-Reply-To: <20200503122237.4af34181@archlinux>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 3 May 2020 19:25:20 +0300
+Message-ID: <CAHp75Vdt+shL3yXHfct17DUHdRBBrCzC4vBjQL8YHbimFefV7A@mail.gmail.com>
+Subject: Re: [PATCH v3 10/11] iio: light: cm32181: Add support for parsing
+ CPM0 and CPM1 ACPI tables
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
         Darren Hart <dvhart@infradead.org>,
         Andy Shevchenko <andy@infradead.org>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v3 10/11] iio: light: cm32181: Add support for parsing
- CPM0 and CPM1 ACPI tables
-Message-ID: <20200503122237.4af34181@archlinux>
-In-Reply-To: <20200428172923.567806-10-hdegoede@redhat.com>
-References: <20200428172923.567806-1-hdegoede@redhat.com>
-        <20200428172923.567806-10-hdegoede@redhat.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 28 Apr 2020 19:29:22 +0200
-Hans de Goede <hdegoede@redhat.com> wrote:
+On Sun, May 3, 2020 at 2:22 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> On Tue, 28 Apr 2020 19:29:22 +0200
+> Hans de Goede <hdegoede@redhat.com> wrote:
 
-> On ACPI based systems the CPLM3218 ACPI device node describing the
-> CM3218[1] sensor typically will have some extra tables with register
-> init values for initializing the sensor and calibration info.
-> 
-> This is based on a newer version of cm32181.c, with a copyright of:
-> 
->  * Copyright (C) 2014 Capella Microsystems Inc.
->  * Author: Kevin Tsai <ktsai@capellamicro.com>
->  *
->  * This program is free software; you can redistribute it and/or modify it
->  * under the terms of the GNU General Public License version 2, as published
->  * by the Free Software Foundation.
-> 
-> Which is floating around on the net in various places, but the changes
-> from this newer version never made it upstream.
-> 
-> This was tested on the following models: Acer Switch 10 SW5-012 (CM32181)
-> Asus T100TA (CM3218), Asus T100CHI (CM3218) and HP X2 10-n000nd (CM32181).
+...
 
-I assume it's far too much to hope this CPM0 / CPM1 stuff is actually defined
-in a spec anywhere?  
+> > This was tested on the following models: Acer Switch 10 SW5-012 (CM32181)
+> > Asus T100TA (CM3218), Asus T100CHI (CM3218) and HP X2 10-n000nd (CM32181).
+>
+> I assume it's far too much to hope this CPM0 / CPM1 stuff is actually defined
+> in a spec anywhere?
+>
+> There are standard way of adding vendor specific data blobs to ACPI and this
+> isn't one of them (unless I'm missing something).  People need to beat
+> up vendors earlier about this stuff.
+>
+> Grumble over...
+>
+> Code looks fine to me, but I'd like an ACPI review ideally.
 
-There are standard way of adding vendor specific data blobs to ACPI and this
-isn't one of them (unless I'm missing something).  People need to beat
-up vendors earlier about this stuff.
+ACPI didn't cover embedded world and has the following issues
+a) where it should be strict (like how many I2CSerialBus() resources
+can be given and for what type of devices, etc), it doesn't
+b) they need to provides better validation tools, but they didn't
+c) it's still windows oriented :-(
 
-Grumble over...
+Above is custom extension on how to add device properties (and note,
+we have now _DSD() and still we have some M$ way of thinking how to
+use them).
 
-Code looks fine to me, but I'd like an ACPI review ideally.
+Since the above approach is in the wild, I'm afraid we have not many
+possibilities here (each of them with own problems):
+1/ shout at vendors to use ACPI properly and simple don't by broken
+hardware (rather firmware)
+2/ try to support custom changes (may lead to several approaches for
+the same thing)
+3/ create a lot of board files (something in between 1/ and 2/)
 
-Thanks,
+As a result:
+1/ is obviously a best one, but I think it's an utopia.
+2/ in practice we don't have many deviations (luckily OEMs are quite
+lazy to modify reference BIOSes and often reuse existing approaches)
+3/ may not work, because on cheap laptops the means of distinguishing
+them (like DMI strings) may also been broken.
 
-Jonathan
-
-> 
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
-> Changes in v2:
-> - Factor out the parsing into a separate helper function
-> ---
->  drivers/iio/light/cm32181.c | 101 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 101 insertions(+)
-> 
-> diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
-> index cae2264e4336..d8b128286527 100644
-> --- a/drivers/iio/light/cm32181.c
-> +++ b/drivers/iio/light/cm32181.c
-> @@ -4,6 +4,7 @@
->   * Author: Kevin Tsai <ktsai@capellamicro.com>
->   */
->  
-> +#include <linux/acpi.h>
->  #include <linux/delay.h>
->  #include <linux/err.h>
->  #include <linux/i2c.h>
-> @@ -53,6 +54,15 @@
->  
->  #define SMBUS_ALERT_RESPONSE_ADDRESS	0x0c
->  
-> +/* CPM0 Index 0: device-id (3218 or 32181), 1: Unknown, 2: init_regs_bitmap */
-> +#define CPM0_REGS_BITMAP		2
-> +#define CPM0_HEADER_SIZE		3
-> +
-> +/* CPM1 Index 0: lux_per_bit, 1: calibscale, 2: resolution (100000) */
-> +#define CPM1_LUX_PER_BIT		0
-> +#define CPM1_CALIBSCALE			1
-> +#define CPM1_SIZE			3
-> +
->  /* CM3218 Family */
->  static const int cm3218_als_it_bits[] = { 0, 1, 2, 3 };
->  static const int cm3218_als_it_values[] = { 100000, 200000, 400000, 800000 };
-> @@ -65,6 +75,7 @@ static const int cm32181_als_it_values[] = {
->  
->  struct cm32181_chip {
->  	struct i2c_client *client;
-> +	struct device *dev;
->  	struct mutex lock;
->  	u16 conf_regs[CM32181_CONF_REG_NUM];
->  	unsigned long init_regs_bitmap;
-> @@ -76,6 +87,92 @@ struct cm32181_chip {
->  	const int *als_it_values;
->  };
->  
-> +static int cm32181_read_als_it(struct cm32181_chip *cm32181, int *val2);
-> +
-> +#ifdef CONFIG_ACPI
-> +/**
-> + * cm32181_acpi_get_cpm() - Get CPM object from ACPI
-> + * @client	pointer of struct i2c_client.
-> + * @obj_name	pointer of ACPI object name.
-> + * @count	maximum size of return array.
-> + * @vals	pointer of array for return elements.
-> + *
-> + * Convert ACPI CPM table to array.
-> + *
-> + * Return: -ENODEV for fail.  Otherwise is number of elements.
-> + */
-> +static int cm32181_acpi_get_cpm(struct device *dev, char *obj_name,
-> +				u64 *values, int count)
-> +{
-> +	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-> +	union acpi_object *cpm, *elem;
-> +	acpi_handle handle;
-> +	acpi_status status;
-> +	int i;
-> +
-> +	handle = ACPI_HANDLE(dev);
-> +	if (!handle)
-> +		return -ENODEV;
-> +
-> +	status = acpi_evaluate_object(handle, obj_name, NULL, &buffer);
-> +	if (ACPI_FAILURE(status)) {
-> +		dev_err(dev, "object %s not found\n", obj_name);
-> +		return -ENODEV;
-> +	}
-> +
-> +	cpm = buffer.pointer;
-> +	if (cpm->package.count > count)
-> +		dev_warn(dev, "%s table contains %d values, only using first %d values\n",
-> +			 obj_name, cpm->package.count, count);
-> +
-> +	count = min_t(int, cpm->package.count, count);
-> +	for (i = 0; i < count; i++) {
-> +		elem = &(cpm->package.elements[i]);
-> +		values[i] = elem->integer.value;
-> +	}
-> +
-> +	kfree(buffer.pointer);
-> +
-> +	return count;
-> +}
-> +
-> +static void cm32181_acpi_parse_cpm_tables(struct cm32181_chip *cm32181)
-> +{
-> +	u64 vals[CPM0_HEADER_SIZE + CM32181_CONF_REG_NUM];
-> +	struct device *dev = cm32181->dev;
-> +	int i, count;
-> +
-> +	count = cm32181_acpi_get_cpm(dev, "CPM0", vals, ARRAY_SIZE(vals));
-> +	if (count <= CPM0_HEADER_SIZE)
-> +		return;
-> +
-> +	count -= CPM0_HEADER_SIZE;
-> +
-> +	cm32181->init_regs_bitmap = vals[CPM0_REGS_BITMAP];
-> +	cm32181->init_regs_bitmap &= GENMASK(count - 1, 0);
-> +	for_each_set_bit(i, &cm32181->init_regs_bitmap, count)
-> +		cm32181->conf_regs[i] =	vals[CPM0_HEADER_SIZE + i];
-> +
-> +	count = cm32181_acpi_get_cpm(dev, "CPM1", vals, ARRAY_SIZE(vals));
-> +	if (count != CPM1_SIZE)
-> +		return;
-> +
-> +	cm32181->lux_per_bit = vals[CPM1_LUX_PER_BIT];
-> +
-> +	/* Check for uncalibrated devices */
-> +	if (vals[CPM1_CALIBSCALE] == CM32181_CALIBSCALE_DEFAULT)
-> +		return;
-> +
-> +	cm32181->calibscale = vals[CPM1_CALIBSCALE];
-> +	/* CPM1 lux_per_bit is for the current it value */
-> +	cm32181_read_als_it(cm32181, &cm32181->lux_per_bit_base_it);
-> +}
-> +#else
-> +static void cm32181_acpi_parse_cpm_tables(struct cm32181_chip *cm32181)
-> +{
-> +}
-> +#endif /* CONFIG_ACPI */
-> +
->  /**
->   * cm32181_reg_init() - Initialize CM32181 registers
->   * @cm32181:	pointer of struct cm32181.
-> @@ -119,6 +216,9 @@ static int cm32181_reg_init(struct cm32181_chip *cm32181)
->  	cm32181->lux_per_bit = CM32181_LUX_PER_BIT;
->  	cm32181->lux_per_bit_base_it = CM32181_LUX_PER_BIT_BASE_IT;
->  
-> +	if (ACPI_HANDLE(cm32181->dev))
-> +		cm32181_acpi_parse_cpm_tables(cm32181);
-> +
->  	/* Initialize registers*/
->  	for_each_set_bit(i, &cm32181->init_regs_bitmap, CM32181_CONF_REG_NUM) {
->  		ret = i2c_smbus_write_word_data(client, i,
-> @@ -361,6 +461,7 @@ static int cm32181_probe(struct i2c_client *client)
->  
->  	cm32181 = iio_priv(indio_dev);
->  	cm32181->client = client;
-> +	cm32181->dev = dev;
->  
->  	mutex_init(&cm32181->lock);
->  	indio_dev->dev.parent = dev;
-
+-- 
+With Best Regards,
+Andy Shevchenko
