@@ -2,57 +2,133 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE82B1C2A6C
-	for <lists+linux-acpi@lfdr.de>; Sun,  3 May 2020 08:52:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AE081C2B7B
+	for <lists+linux-acpi@lfdr.de>; Sun,  3 May 2020 12:55:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726974AbgECGwa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 3 May 2020 02:52:30 -0400
-Received: from sonic308-19.consmr.mail.ir2.yahoo.com ([77.238.178.147]:36335
-        "EHLO sonic308-19.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727085AbgECGwa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 3 May 2020 02:52:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1588488747; bh=HCBdmXO5/l665w/MwYeTKYgprR4CxrsZjPuQNxf8ZBg=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Vv2+uM6nj7NBa97+9iZ6RXO1cBFs3xJP+HRgPl7HgBjtac8RCvfVQ08EkPf9wvtd6a7EGGj+65Am/zblOQf2tenQRtvyQrTaIkxXi0EaPIuJpe67rZ3l/Rac9nowsccpN05nO4XwQN1Bl83IiVkZk+PCXz4hbCrHPwUB6SNu4jITnKKUTZdEoCMXqdjT4jWOrO6TpESSIhocxcAqZV9WUJwckZ7TyfJpbzXfKEyxRwuYv169weQ6N8jT98xSqTqVPhxkXoCz3tisDKt2N+pi35Ju6EaQ4WourUcWXTOyEgg9GxvXOyEOmjFjs70KkR4wBaRIEKMcEDlXV8WNGuidjA==
-X-YMail-OSG: oiMm6S0VM1lm7JxgEsjb6A.UbPyn83nGg7OaotgBSllRQUIyNXVcxaO7lANcZMU
- aHnkUmO3iHTwTH2Mh2L3sU4DIvkvWYYQkxuxnWwUUS1JVXyVchvVojh1INFmb.R7DeZGRDiS9I2c
- XXKAv588Awk2rTYAX7bSoqQsoh7Nys2yX891FS5Zd4GaTmY2brNX_G6qPothhB5UNnDvLBGNw_QE
- 7mdSKynpbGjLpJOeXiSeJjprLNCFxzn9v1CaliBs9O0Pv_79LB875TTdcQU6SUO7_wkx8jqix7Rj
- 5azy63OZ0mFXBIORIYyYUh8wcgVYoLMC7NFChvuGd54aHClywbKsU2r_5CkyO66ck5MI21NOHvIG
- i614CwvPjlRhbymGtF968AJ3n9l2FanPXnfoU8NseEIT.6Rq6a1xo3e3e7bXIe6s0p.XPE_ttZch
- wJPufl5gS36qYWe0Uc5KP1YHtE.ZiiGIr2pJl.XMnBwR_EXsYbfXCtQpVgzwy1YYk6PLIKU9Kmo1
- 29ebFRjkmXNNEEIYH0ZWnjLp9ceL6Cwyu0j7EAc6uF2DfWm16A5ScpXBtUi7elYdGQt6kW5kMUHx
- XuuqCnSuslenjvgqmLhiRxwrY5Ia34HiYzAziX_CRPe6uI6BYfqPdRIjvta7Zl69U7Y1iiTpdiZO
- ha4VKfbUaCqBpR.WgbLLybVcTNWeMZmbJCz_6sm5fl.Q6FzNNLJsq7sX1rv4wNzXCTPrdA8NlWmu
- vJYLG28PIY6.bHeWmSc3WB6nH75QDi629guHNtjDQBLfvEXdpuXzXHwezEnWEEUP7hejcFZ.Bokp
- bxRMWISZhb29Ijt3CqTLd5LAhKoyBsB0.il4dznwP6xpomhTxbS9LYNSYCCDONk_gNlmkSAgwLgn
- KgU1rd29XERkdeBTv3CxzAbtoNJCQZGksbuNqtMh7WOINDDvcNT87CWTTPtw7sjXLSkg_X7VhHQF
- pHgXNaJ6qq5ztcoZ0rRbHh7M3nU_qf4v8QZmnVVrYgAu12uFUbT5gztDZ0hde2W.7e9nLr1CDekM
- oxJiXBIOmqBy_Dn6qm1N9p0eMg6gBGTWW1OqTqRme3uM87ddfPximYkTty6AK_Fo0tcptM6dqQ4D
- ul7nHg2UlwhF8XhoaQnWljb9f8R5Kjs_XvIoguNyhLtDC9dhtjOdX2niFKDstUZSEGtBK.4J.I51
- FjPl_Ht7VmocFuXXt8KgN1fXkseNMoLN4Um2qnYmrR9FO5n8firFT1zY3_MQ.uuY0CyL_2gAdNT6
- dOjVTCauGElamXzGprJneoYzJOMOoPCUZ.ItPCDBpMUboLac_VEnYzinMKXX1_UvF2EoII_pRqw-
- -
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ir2.yahoo.com with HTTP; Sun, 3 May 2020 06:52:27 +0000
-Date:   Sun, 3 May 2020 06:52:26 +0000 (UTC)
-From:   Miss Pamela Render <pamelarender45@gmail.com>
-Reply-To: pamelarender45@gmail.com
-Message-ID: <1137921726.642686.1588488746422@mail.yahoo.com>
-Subject: Greetings From Miss Pamela Render Please I Need Your Urgent Reply!
+        id S1728188AbgECKzE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 3 May 2020 06:55:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50950 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727051AbgECKzC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 3 May 2020 06:55:02 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 649022071C;
+        Sun,  3 May 2020 10:54:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588503301;
+        bh=fZQ7cC46CUTZaUrGeHFBxKEhMwBLwuhUAblK/lbIiCw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=rKPgZktsbGAKq1XOfzayn1qZg/K1bsR9r1qYuSGx7TsbIyUMmMTjnc6eF+dVyQHuv
+         +Pobfei/LEOes8lv1CB6MJN1LEtEURzR7XdXUE8N4sJHSjccaoTqQvPlQKXNl/sTno
+         upr/67Tz/pX+U05sd+8isKEE8GMbJS9z1n1T4rAY=
+Date:   Sun, 3 May 2020 11:54:56 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 01/11] iio: light: cm32181: Switch to new style
+ i2c-driver probe function
+Message-ID: <20200503115456.11a16411@archlinux>
+In-Reply-To: <20200428172923.567806-1-hdegoede@redhat.com>
+References: <20200428172923.567806-1-hdegoede@redhat.com>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-References: <1137921726.642686.1588488746422.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15756 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:75.0) Gecko/20100101 Firefox/75.0
-To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Tue, 28 Apr 2020 19:29:13 +0200
+Hans de Goede <hdegoede@redhat.com> wrote:
+
+> Switch to the new style i2c-driver probe_new probe function and drop the
+> unnecessary i2c_device_id table (we do not have any old style board files
+> using this).
+> 
+> This is a preparation patch for adding ACPI binding support.
+> 
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Changes in v3:
+> - This is a new patch in v3 of this patch-set
+> ---
+>  drivers/iio/light/cm32181.c | 15 +++------------
+>  1 file changed, 3 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
+> index 5f4fb5674fa0..cc57190a24cb 100644
+> --- a/drivers/iio/light/cm32181.c
+> +++ b/drivers/iio/light/cm32181.c
+> @@ -294,8 +294,7 @@ static const struct iio_info cm32181_info = {
+>  	.attrs			= &cm32181_attribute_group,
+>  };
+>  
+> -static int cm32181_probe(struct i2c_client *client,
+> -			const struct i2c_device_id *id)
+> +static int cm32181_probe(struct i2c_client *client)
+>  {
+>  	struct cm32181_chip *cm32181;
+>  	struct iio_dev *indio_dev;
+> @@ -316,7 +315,7 @@ static int cm32181_probe(struct i2c_client *client,
+>  	indio_dev->channels = cm32181_channels;
+>  	indio_dev->num_channels = ARRAY_SIZE(cm32181_channels);
+>  	indio_dev->info = &cm32181_info;
+> -	indio_dev->name = id->name;
+> +	indio_dev->name = dev_name(&client->dev);
+
+ABI breakage.  The name needs to be unaffected by this patch and I'm 
+fairly sure it just gained the vendor prefix.
+
+So to drop that table, you need to provide the 'clean' part number
+somewhere else.  Seeing as driver currently only supports one number,
+you could just provide it directly here. However, as you are
+going to add support for another part number later, you'll need
+to do something more clever when you introduce that. 
+
+I'll make this suggestion in that patch, but I think you should add
+a chip_info structure for each of the supported chips rather than using
+a switch to put a number of different elements in place.  The name
+would then go in there.
+
+Jonathan
 
 
-Greetings From Miss Pamela Render Please I Need Your Urgent Reply!
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  
+>  	ret = cm32181_reg_init(cm32181);
+> @@ -338,13 +337,6 @@ static int cm32181_probe(struct i2c_client *client,
+>  	return 0;
+>  }
+>  
+> -static const struct i2c_device_id cm32181_id[] = {
+> -	{ "cm32181", 0 },
+> -	{ }
+> -};
+> -
+> -MODULE_DEVICE_TABLE(i2c, cm32181_id);
+> -
+>  static const struct of_device_id cm32181_of_match[] = {
+>  	{ .compatible = "capella,cm32181" },
+>  	{ }
+> @@ -356,8 +348,7 @@ static struct i2c_driver cm32181_driver = {
+>  		.name	= "cm32181",
+>  		.of_match_table = of_match_ptr(cm32181_of_match),
+>  	},
+> -	.id_table       = cm32181_id,
+> -	.probe		= cm32181_probe,
+> +	.probe_new	= cm32181_probe,
+>  };
+>  
+>  module_i2c_driver(cm32181_driver);
 
-I'm Pamela Render, from USA. I am a highly motivated and willing to learn, I'm also hard working lady, very relaible. I really want to establish mutual friendship with you, I will introduce myself better as soon as i receive your email response.
-
-Kind regards
-Miss Pamela Render
