@@ -2,239 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81FE71C36CD
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 May 2020 12:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F41671C3774
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 May 2020 13:00:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728200AbgEDKYE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 4 May 2020 06:24:04 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2157 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726351AbgEDKYD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 4 May 2020 06:24:03 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id ED3D942896E395478F86;
-        Mon,  4 May 2020 11:24:01 +0100 (IST)
-Received: from localhost (10.47.88.153) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 4 May 2020
- 11:24:01 +0100
-Date:   Mon, 4 May 2020 11:23:42 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        <linux-acpi@vger.kernel.org>,
-        <platform-driver-x86@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v3 04/11] iio: light: cm32181: Add support for the
- CM3218
-Message-ID: <20200504112342.00001cac@Huawei.com>
-In-Reply-To: <3eae2042-209e-5944-b90e-f747da820ac9@redhat.com>
-References: <20200428172923.567806-1-hdegoede@redhat.com>
-        <20200428172923.567806-4-hdegoede@redhat.com>
-        <20200503115906.6fb86b49@archlinux>
-        <3eae2042-209e-5944-b90e-f747da820ac9@redhat.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1727970AbgEDLA7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 May 2020 07:00:59 -0400
+Received: from foss.arm.com ([217.140.110.172]:41856 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727098AbgEDLA7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 4 May 2020 07:00:59 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 321811FB;
+        Mon,  4 May 2020 04:00:58 -0700 (PDT)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F17D93F71F;
+        Mon,  4 May 2020 04:00:56 -0700 (PDT)
+Date:   Mon, 4 May 2020 12:00:46 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Pankaj Bansal <pankaj.bansal@nxp.com>,
+        Will Deacon <will@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>
+Subject: Re: [PATCH v2 2/2] ACPI/IORT: work around num_ids ambiguity
+Message-ID: <20200504110037.GA26486@e121166-lin.cambridge.arm.com>
+References: <20200501161014.5935-1-ardb@kernel.org>
+ <20200501161014.5935-3-ardb@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.88.153]
-X-ClientProxiedBy: lhreml739-chm.china.huawei.com (10.201.108.189) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200501161014.5935-3-ardb@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 4 May 2020 11:49:59 +0200
-Hans de Goede <hdegoede@redhat.com> wrote:
+On Fri, May 01, 2020 at 06:10:14PM +0200, Ard Biesheuvel wrote:
+> The ID mapping table structure of the IORT table describes the size of
+> a range using a num_ids field carrying the number of IDs in the region
+> minus one. This has been misinterpreted in the past in the parsing code,
+> and firmware is known to have shipped where this results in an ambiguity,
+> where regions that should be adjacent have an overlap of one value.
+> 
+> So let's work around this by detecting this case specifically: when
+> resolving an ID translation, allow one that matches right at the end of
+> a multi-ID region to be superseded by a subsequent one.
+> 
+> To prevent potential regressions on broken firmware that happened to
+> work before, only take the subsequent match into account if it occurs
+> at the start of a mapping region.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  drivers/acpi/arm64/iort.c | 40 +++++++++++++++++---
+>  1 file changed, 34 insertions(+), 6 deletions(-)
 
-> Hi,
-> 
-> On 5/3/20 12:59 PM, Jonathan Cameron wrote:
-> > On Tue, 28 Apr 2020 19:29:16 +0200
-> > Hans de Goede <hdegoede@redhat.com> wrote:
-> >   
-> >> Add support for the CM3218 which is an older version of the
-> >> CM32181.
-> >>
-> >> This is based on a newer version of cm32181.c, with a copyright of:
-> >>
-> >>   * Copyright (C) 2014 Capella Microsystems Inc.
-> >>   * Author: Kevin Tsai <ktsai@capellamicro.com>
-> >>   *
-> >>   * This program is free software; you can redistribute it and/or modify it
-> >>   * under the terms of the GNU General Public License version 2, as published
-> >>   * by the Free Software Foundation.
-> >>
-> >> Which is floating around on the net in various places, but the changes
-> >> from this newer version never made it upstream.
-> >>
-> >> This was tested on an Asus T100TA and an Asus T100CHI, which both come
-> >> with the CM3218 variant of the light sensor.
-> >>
-> >> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> >> Signed-off-by: Hans de Goede <hdegoede@redhat.com>  
-> > 
-> > The need to also store the name for the different sensors makes
-> > the case for picking between 'chip_info' structures in here stronger.
-> > So I'd do that instead of setting multiple elements in your
-> > switch statement... (See inline)
-> >   
-> >> ---
-> >>   drivers/iio/light/cm32181.c | 48 +++++++++++++++++++++++++++----------
-> >>   1 file changed, 36 insertions(+), 12 deletions(-)
-> >>
-> >> diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
-> >> index 6fc0a753c499..065bc7a11f84 100644
-> >> --- a/drivers/iio/light/cm32181.c
-> >> +++ b/drivers/iio/light/cm32181.c
-> >> @@ -55,15 +55,24 @@ static const u8 cm32181_reg[CM32181_CONF_REG_NUM] = {
-> >>   	CM32181_REG_ADDR_CMD,
-> >>   };
-> >>   
-> >> -static const int als_it_bits[] = {12, 8, 0, 1, 2, 3};
-> >> -static const int als_it_value[] = {25000, 50000, 100000, 200000, 400000,
-> >> -	800000};
-> >> +/* CM3218 Family */
-> >> +static const int cm3218_als_it_bits[] = { 0, 1, 2, 3 };
-> >> +static const int cm3218_als_it_values[] = { 100000, 200000, 400000, 800000 };
-> >> +
-> >> +/* CM32181 Family */
-> >> +static const int cm32181_als_it_bits[] = { 12, 8, 0, 1, 2, 3 };
-> >> +static const int cm32181_als_it_values[] = {
-> >> +	25000, 50000, 100000, 200000, 400000, 800000
-> >> +};
-> >>   
-> >>   struct cm32181_chip {
-> >>   	struct i2c_client *client;
-> >>   	struct mutex lock;
-> >>   	u16 conf_regs[CM32181_CONF_REG_NUM];
-> >>   	int calibscale;
-> >> +	int num_als_it;
-> >> +	const int *als_it_bits;
-> >> +	const int *als_it_values;  
-> > These are constant for each type of chip and come as a set.
-> > Better to just have a cm32181_chip_info structure with all 3 in it
-> > (and the name as mentioned earlier).  That way your switch below
-> > just becomes a matter of setting a single pointer for each case.  
-> 
-> Ok I will add a chip_info structure for v4 off the patch-set.
-> 
-> 
-> >   
-> >>   };
-> >>   
-> >>   /**
-> >> @@ -85,8 +94,21 @@ static int cm32181_reg_init(struct cm32181_chip *cm32181)
-> >>   		return ret;
-> >>   
-> >>   	/* check device ID */
-> >> -	if ((ret & 0xFF) != 0x81)
-> >> +	switch (ret & 0xFF) {
-> >> +	case 0x18: /* CM3218 */  
-> > 
-> > I'd ideally like to see a sanity check that we have the part expected.
-> > So the compatible matches what we actually get.  
-> 
-> Erm, so far I've only seen the CM3218 on X86 + ACPI devices which
-> use an ACPI id of CPLM3218 for both sensor models, so at least
-> on ACPI there is nothing to check.
+The patch logic is sound - I still think that the resulting code can
+benefit from a one-off boot time mapping data initialisation but we can
+address that later as a clean-up, first thing is to remove the quirk
+mechanism.
 
-Groan.  Never mind then.
+Goes without saying, this needs extensive testing on existing
+platforms before sending it to stable kernels.
 
-J 
+Reviewed-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
 
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index 98be18266a73..9f139a94a1d3 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -300,7 +300,7 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
+>  }
+>  
+>  static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
+> -		       u32 *rid_out)
+> +		       u32 *rid_out, bool check_overlap)
+>  {
+>  	/* Single mapping does not care for input id */
+>  	if (map->flags & ACPI_IORT_ID_SINGLE_MAPPING) {
+> @@ -316,10 +316,34 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
+>  	}
+>  
+>  	if (rid_in < map->input_base ||
+> -	    (rid_in >= map->input_base + map->id_count))
+> +	    (rid_in > map->input_base + map->id_count))
+>  		return -ENXIO;
+>  
+> +	if (check_overlap) {
+> +		/*
+> +		 * We already found a mapping for this input ID at the end of
+> +		 * another region. If it coincides with the start of this
+> +		 * region, we assume the prior match was due to the off-by-1
+> +		 * issue mentioned below, and allow it to be superseded.
+> +		 * Otherwise, things are *really* broken, and we just disregard
+> +		 * duplicate matches entirely to retain compatibility.
+> +		 */
+> +		pr_err(FW_BUG "[map %p] conflicting mapping for input ID 0x%x\n",
+> +		       map, rid_in);
+> +		if (rid_in != map->input_base)
+> +			return -ENXIO;
+> +	}
+> +
+>  	*rid_out = map->output_base + (rid_in - map->input_base);
+> +
+> +	/*
+> +	 * Due to confusion regarding the meaning of the id_count field (which
+> +	 * carries the number of IDs *minus 1*), we may have to disregard this
+> +	 * match if it is at the end of the range, and overlaps with the start
+> +	 * of another one.
+> +	 */
+> +	if (map->id_count > 0 && rid_in == map->input_base + map->id_count)
+> +		return -EAGAIN;
+>  	return 0;
+>  }
+>  
+> @@ -404,7 +428,8 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
+>  	/* Parse the ID mapping tree to find specified node type */
+>  	while (node) {
+>  		struct acpi_iort_id_mapping *map;
+> -		int i, index;
+> +		int i, index, rc = 0;
+> +		u32 out_ref = 0, map_id = id;
+>  
+>  		if (IORT_TYPE_MASK(node->type) & type_mask) {
+>  			if (id_out)
+> @@ -438,15 +463,18 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
+>  			if (i == index)
+>  				continue;
+>  
+> -			if (!iort_id_map(map, node->type, id, &id))
+> +			rc = iort_id_map(map, node->type, map_id, &id, out_ref);
+> +			if (!rc)
+>  				break;
+> +			if (rc == -EAGAIN)
+> +				out_ref = map->output_reference;
+>  		}
+>  
+> -		if (i == node->mapping_count)
+> +		if (i == node->mapping_count && !out_ref)
+>  			goto fail_map;
+>  
+>  		node = ACPI_ADD_PTR(struct acpi_iort_node, iort_table,
+> -				    map->output_reference);
+> +				    rc ? out_ref : map->output_reference);
+>  	}
+>  
+>  fail_map:
+> -- 
+> 2.17.1
 > 
-> Regards,
-> 
-> Hans
-> 
-> 
-> 
-> > 
-> > If it doesn't but the part is still one we support print a warning.
-> >   
-> >> +		cm32181->num_als_it = ARRAY_SIZE(cm3218_als_it_bits);
-> >> +		cm32181->als_it_bits = cm3218_als_it_bits;
-> >> +		cm32181->als_it_values = cm3218_als_it_values;
-> >> +		break;
-> >> +	case 0x81: /* CM32181 */
-> >> +	case 0x82: /* CM32182, fully compat. with CM32181 */
-> >> +		cm32181->num_als_it = ARRAY_SIZE(cm32181_als_it_bits);
-> >> +		cm32181->als_it_bits = cm32181_als_it_bits;
-> >> +		cm32181->als_it_values = cm32181_als_it_values;
-> >> +		break;
-> >> +	default:
-> >>   		return -ENODEV;
-> >> +	}
-> >>   
-> >>   	/* Default Values */
-> >>   	cm32181->conf_regs[CM32181_REG_ADDR_CMD] =
-> >> @@ -121,9 +143,9 @@ static int cm32181_read_als_it(struct cm32181_chip *cm32181, int *val2)
-> >>   	als_it = cm32181->conf_regs[CM32181_REG_ADDR_CMD];
-> >>   	als_it &= CM32181_CMD_ALS_IT_MASK;
-> >>   	als_it >>= CM32181_CMD_ALS_IT_SHIFT;
-> >> -	for (i = 0; i < ARRAY_SIZE(als_it_bits); i++) {
-> >> -		if (als_it == als_it_bits[i]) {
-> >> -			*val2 = als_it_value[i];
-> >> +	for (i = 0; i < cm32181->num_als_it; i++) {
-> >> +		if (als_it == cm32181->als_it_bits[i]) {
-> >> +			*val2 = cm32181->als_it_values[i];
-> >>   			return IIO_VAL_INT_PLUS_MICRO;
-> >>   		}
-> >>   	}
-> >> @@ -146,14 +168,14 @@ static int cm32181_write_als_it(struct cm32181_chip *cm32181, int val)
-> >>   	u16 als_it;
-> >>   	int ret, i, n;
-> >>   
-> >> -	n = ARRAY_SIZE(als_it_value);
-> >> +	n = cm32181->num_als_it;
-> >>   	for (i = 0; i < n; i++)
-> >> -		if (val <= als_it_value[i])
-> >> +		if (val <= cm32181->als_it_values[i])
-> >>   			break;
-> >>   	if (i >= n)
-> >>   		i = n - 1;
-> >>   
-> >> -	als_it = als_it_bits[i];
-> >> +	als_it = cm32181->als_it_bits[i];
-> >>   	als_it <<= CM32181_CMD_ALS_IT_SHIFT;
-> >>   
-> >>   	mutex_lock(&cm32181->lock);
-> >> @@ -265,11 +287,12 @@ static int cm32181_write_raw(struct iio_dev *indio_dev,
-> >>   static ssize_t cm32181_get_it_available(struct device *dev,
-> >>   			struct device_attribute *attr, char *buf)
-> >>   {
-> >> +	struct cm32181_chip *cm32181 = iio_priv(dev_to_iio_dev(dev));
-> >>   	int i, n, len;
-> >>   
-> >> -	n = ARRAY_SIZE(als_it_value);
-> >> +	n = cm32181->num_als_it;
-> >>   	for (i = 0, len = 0; i < n; i++)
-> >> -		len += sprintf(buf + len, "0.%06u ", als_it_value[i]);
-> >> +		len += sprintf(buf + len, "0.%06u ", cm32181->als_it_values[i]);
-> >>   	return len + sprintf(buf + len, "\n");
-> >>   }
-> >>   
-> >> @@ -345,6 +368,7 @@ static int cm32181_probe(struct i2c_client *client)
-> >>   }
-> >>   
-> >>   static const struct of_device_id cm32181_of_match[] = {
-> >> +	{ .compatible = "capella,cm3218" },
-> >>   	{ .compatible = "capella,cm32181" },
-> >>   	{ }
-> >>   };  
-> >   
-> 
-
-
