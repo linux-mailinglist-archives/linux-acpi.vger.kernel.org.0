@@ -2,54 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ECB1F1C2E81
-	for <lists+linux-acpi@lfdr.de>; Sun,  3 May 2020 20:35:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 208591C31D8
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 May 2020 06:32:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728913AbgECSfH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 3 May 2020 14:35:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52760 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728857AbgECSfH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 3 May 2020 14:35:07 -0400
-Subject: Re: [GIT PULL] Power management fixes for v5.7-rc4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588530907;
-        bh=iAA/BK2K8L9aAuphhVJVosilOtXQj7bchRw8XI1G8g0=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=BMTlnlZwazFGSntz9vHAFe21lU+wBdGizwpjQPRMKedXvOhR02J59k3s+L98lLhyp
-         BCj0Jx6i3tmGsniUgbI85eyaLh22CS/OOBsYAwblElNm7qXeYZuAj8HpEtA8ukAbfE
-         4HpjF2jEx3LY2SQIv1r3V9HZGvptxCPM+nI3XTSw=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0huWpQa3NgmmJ_OWGB_ngQvA4V3YCX1i3-QutqSxZOzdw@mail.gmail.com>
-References: <CAJZ5v0huWpQa3NgmmJ_OWGB_ngQvA4V3YCX1i3-QutqSxZOzdw@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0huWpQa3NgmmJ_OWGB_ngQvA4V3YCX1i3-QutqSxZOzdw@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-5.7-rc4
-X-PR-Tracked-Commit-Id: a53839963ee22470a716de665bca39d2dae63c27
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 743f05732f49bacd196306de87864aa074492026
-Message-Id: <158853090723.15713.12905345329050167255.pr-tracker-bot@kernel.org>
-Date:   Sun, 03 May 2020 18:35:07 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        id S1726625AbgEDEcU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 May 2020 00:32:20 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:56930 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725859AbgEDEcU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 4 May 2020 00:32:20 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 5A058784538CDCB1D6BB;
+        Mon,  4 May 2020 12:32:17 +0800 (CST)
+Received: from [127.0.0.1] (10.166.213.93) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.487.0; Mon, 4 May 2020
+ 12:32:09 +0800
+Subject: Re: [PATCH v2 2/2] ACPI/IORT: work around num_ids ambiguity
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+CC:     <linux-acpi@vger.kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Pankaj Bansal <pankaj.bansal@nxp.com>,
+        "Will Deacon" <will@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Catalin Marinas" <catalin.marinas@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Linuxarm <linuxarm@huawei.com>
+References: <20200501161014.5935-1-ardb@kernel.org>
+ <20200501161014.5935-3-ardb@kernel.org>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <bbd56b89-643a-2f86-79af-f65ef46822ef@huawei.com>
+Date:   Mon, 4 May 2020 12:32:08 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
+MIME-Version: 1.0
+In-Reply-To: <20200501161014.5935-3-ardb@kernel.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.166.213.93]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Sat, 2 May 2020 21:56:46 +0200:
+On 2020/5/2 0:10, Ard Biesheuvel wrote:
+> The ID mapping table structure of the IORT table describes the size of
+> a range using a num_ids field carrying the number of IDs in the region
+> minus one. This has been misinterpreted in the past in the parsing code,
+> and firmware is known to have shipped where this results in an ambiguity,
+> where regions that should be adjacent have an overlap of one value.
+> 
+> So let's work around this by detecting this case specifically: when
+> resolving an ID translation, allow one that matches right at the end of
+> a multi-ID region to be superseded by a subsequent one.
+> 
+> To prevent potential regressions on broken firmware that happened to
+> work before, only take the subsequent match into account if it occurs
+> at the start of a mapping region.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>   drivers/acpi/arm64/iort.c | 40 +++++++++++++++++---
+>   1 file changed, 34 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index 98be18266a73..9f139a94a1d3 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -300,7 +300,7 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
+>   }
+>   
+>   static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
+> -		       u32 *rid_out)
+> +		       u32 *rid_out, bool check_overlap)
+>   {
+>   	/* Single mapping does not care for input id */
+>   	if (map->flags & ACPI_IORT_ID_SINGLE_MAPPING) {
+> @@ -316,10 +316,34 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
+>   	}
+>   
+>   	if (rid_in < map->input_base ||
+> -	    (rid_in >= map->input_base + map->id_count))
+> +	    (rid_in > map->input_base + map->id_count))
+>   		return -ENXIO;
+>   
+> +	if (check_overlap) {
+> +		/*
+> +		 * We already found a mapping for this input ID at the end of
+> +		 * another region. If it coincides with the start of this
+> +		 * region, we assume the prior match was due to the off-by-1
+> +		 * issue mentioned below, and allow it to be superseded.
+> +		 * Otherwise, things are *really* broken, and we just disregard
+> +		 * duplicate matches entirely to retain compatibility.
+> +		 */
+> +		pr_err(FW_BUG "[map %p] conflicting mapping for input ID 0x%x\n",
+> +		       map, rid_in);
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-5.7-rc4
+As we already applied a workaround here, can we add "applying
+workaround" in the error message? This will make the customers
+less uneasy to see such message in the boot log. Once the product
+was deliveried to customers, it's not that easy to update all the
+firmwares entirely.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/743f05732f49bacd196306de87864aa074492026
+I'm out of reach for D05/D06 hardware as it's holidays in China,
+please allow me to test this patch set in Wednesday this week.
 
-Thank you!
+Thanks
+Hanjun
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
