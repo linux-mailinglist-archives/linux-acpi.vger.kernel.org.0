@@ -2,137 +2,209 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E0F71C3DD9
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 May 2020 17:00:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3BC91C4611
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 May 2020 20:37:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726445AbgEDPAG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 4 May 2020 11:00:06 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:41197 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727104AbgEDPAG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 May 2020 11:00:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1588604404;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=3Xw+Uaums8e6DhRGeikQZLeNUe/5GzNdvE9z9LG9DVI=;
-        b=ACVAwHlqxuo0CXu5qZUU7mnCyXYmkYKvPc4DLWWv+7u8//ERW3aonjuq1M7X/C8ZS4fMbQ
-        QK3a3CRo389BfzuZ38Ep9x08KuK9gfoobqP00Yjea/8+65SkmZZCU4x4lEBq1k20tS/sPR
-        SMFYAiAx2wY7ABiukd5+WY2a6cqyZOo=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-271-8-fWDiVGMxyZoe0CE84Qfg-1; Mon, 04 May 2020 11:00:02 -0400
-X-MC-Unique: 8-fWDiVGMxyZoe0CE84Qfg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 927DB19057C0;
-        Mon,  4 May 2020 15:00:00 +0000 (UTC)
-Received: from x1.localdomain.com (ovpn-114-224.ams2.redhat.com [10.36.114.224])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 237CA60621;
-        Mon,  4 May 2020 14:59:58 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
-        linux-gpio@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH v2] pinctrl: cherryview: Ensure _REG(ACPI_ADR_SPACE_GPIO, 1) gets called
-Date:   Mon,  4 May 2020 16:59:57 +0200
-Message-Id: <20200504145957.480418-1-hdegoede@redhat.com>
-MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+        id S1726291AbgEDSh1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 May 2020 14:37:27 -0400
+Received: from mx0a-00154904.pphosted.com ([148.163.133.20]:6174 "EHLO
+        mx0a-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725981AbgEDSh1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 May 2020 14:37:27 -0400
+X-Greylist: delayed 10771 seconds by postgrey-1.27 at vger.kernel.org; Mon, 04 May 2020 14:37:27 EDT
+Received: from pps.filterd (m0170391.ppops.net [127.0.0.1])
+        by mx0a-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 044FVLif032765;
+        Mon, 4 May 2020 11:37:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=smtpout1;
+ bh=qKQjYVmtNTVgpbpac2gqElMiV14sV7QCUi4AU9A9xJo=;
+ b=Ffwvw4KOWUQzKXiWWP0056LuzyE4Me+2yUY5XgAhf0vXZbfxsgeaSY0jY/ufipHDxErl
+ VLQZQfgcMttzZq9VO2bVHdsSqtQ7arYubUsAp8CX/8b9/EsIhsHpcki7U8NBDcLfAkEW
+ SqCiL2p19EmCcvdusbYp4wxokLeiZELS00HdzblfDN0rd5zNSjiFcPZkwzDnt7BzvOIT
+ irOXmFjSd3uheocPw8k4KFZZYfW0gIG2cHha9UC+wsTd/V/U/3yoPmx5BtcHZaUPY14C
+ BqyVtMYg8Dyn+GgPBkYDibi/Rs2tx+08XkxzcmZAoeGGIVN9Zav8n8PQakRr38scKYxq ZQ== 
+Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
+        by mx0a-00154904.pphosted.com with ESMTP id 30sxjm2eks-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 04 May 2020 11:37:54 -0400
+Received: from pps.filterd (m0090351.ppops.net [127.0.0.1])
+        by mx0b-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 044FWhDC053426;
+        Mon, 4 May 2020 11:37:54 -0400
+Received: from ausxippc101.us.dell.com (ausxippc101.us.dell.com [143.166.85.207])
+        by mx0b-00154901.pphosted.com with ESMTP id 30s57eg0g7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 04 May 2020 11:37:54 -0400
+X-LoopCount0: from 10.166.132.128
+X-PREM-Routing: D-Outbound
+X-IronPort-AV: E=Sophos;i="5.60,346,1549951200"; 
+   d="scan'208";a="1384301358"
+From:   <Mario.Limonciello@dell.com>
+To:     <hdegoede@redhat.com>, <dvhart@infradead.org>, <andy@infradead.org>
+CC:     <linux-acpi@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH 4/5] platform/x86: intel-vbtn: Also handle tablet-mode
+ switch on "Detachable" and "Portable" chassis-types
+Thread-Topic: [PATCH 4/5] platform/x86: intel-vbtn: Also handle tablet-mode
+ switch on "Detachable" and "Portable" chassis-types
+Thread-Index: AQHWIK+7lmbxrem4aUOvjmuguWcpP6iYECVg
+Date:   Mon, 4 May 2020 15:37:51 +0000
+Message-ID: <7c3e5f844a224ff780cd8e3b3f5f7641@AUSX13MPC101.AMER.DELL.COM>
+References: <20200502182951.114231-1-hdegoede@redhat.com>
+ <20200502182951.114231-5-hdegoede@redhat.com>
+In-Reply-To: <20200502182951.114231-5-hdegoede@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Enabled=True;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Owner=Mario_Limonciello@Dell.com;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SetDate=2020-05-04T15:37:48.8278993Z;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Name=External Public;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Application=Microsoft Azure
+ Information Protection;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_ActionId=5e6660b9-a2eb-46dd-82e8-74aa2b3a23f5;
+ MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Extended_MSFT_Method=Manual
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [143.166.24.60]
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-05-04_10:2020-05-04,2020-05-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
+ bulkscore=0 phishscore=0 clxscore=1011 mlxlogscore=999 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005040126
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0 mlxscore=0
+ malwarescore=0 adultscore=0 clxscore=1011 spamscore=0 priorityscore=1501
+ phishscore=0 suspectscore=0 lowpriorityscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005040126
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Cherry Trail devices there are 2 possible ACPI OpRegions for
-accessing GPIOs. The standard GeneralPurposeIo OpRegion and the Cherry
-Trail specific UserDefined 0x9X OpRegions.
 
-Having 2 different types of OpRegions leads to potential issues with
-checks for OpRegion availability, or in other words checks if _REG has
-been called for the OpRegion which the ACPI code wants to use.
 
-The ACPICA core does not call _REG on an ACPI node which does not
-define an OpRegion matching the type being registered; and the reference
-design DSDT, from which most Cherry Trail DSDTs are derived, does not
-define GeneralPurposeIo, nor UserDefined(0x93) OpRegions for the GPO2
-(UID 3) device, because no pins were assigned ACPI controlled functions
-in the reference design.
+> -----Original Message-----
+> From: Hans de Goede <hdegoede@redhat.com>
+> Sent: Saturday, May 2, 2020 1:30 PM
+> To: Darren Hart; Andy Shevchenko; Limonciello, Mario
+> Cc: Hans de Goede; linux-acpi@vger.kernel.org; platform-driver-
+> x86@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: [PATCH 4/5] platform/x86: intel-vbtn: Also handle tablet-mode sw=
+itch
+> on "Detachable" and "Portable" chassis-types
+>=20
+>=20
+> [EXTERNAL EMAIL]
+>=20
+> Commit de9647efeaa9 ("platform/x86: intel-vbtn: Only activate tablet mode
+> switch on 2-in-1's") added a DMI chassis-type check to avoid accidentally
+> reporting SW_TABLET_MODE =3D 1 to userspace on laptops.
+>=20
+> Some devices with a detachable keyboard and using the intel-vbnt (INT33D6=
+)
+> interface to report if they are in tablet mode (keyboard detached) or not=
+,
+> report 32 / "Detachable" as chassis-type, e.g. the HP Pavilion X2 series.
+>=20
+> Other devices with a detachable keyboard and using the intel-vbnt (INT33D=
+6)
+> interface to report SW_TABLET_MODE, report 8 / "Portable" as chassis-type=
+.
+> The Dell Venue 11 Pro 7130 is an example of this.
+>=20
+> Extend the DMI chassis-type check to also accept Portables and Detachable=
+s
+> so that the intel-vbtn driver will report SW_TABLET_MODE on these devices=
+.
+>=20
+> Note the chassis-type check was originally added to avoid a false-positiv=
+e
+> tablet-mode report on the Dell XPS 9360 laptop. To the best of my knowled=
+ge
+> that laptop is using a chassis-type of 9 / "Laptop", so after this commit
+> we still ignore the tablet-switch for that chassis-type.
 
-Together this leads to the perfect storm, at least on the Cherry Trail
-based Medion Akayo E1239T. This design does use a GPO2 pin from its ACPI
-code and has added the Cherry Trail specific UserDefined(0x93) opregion
-to its GPO2 ACPI node to access this pin.
+Yes that's correct.
 
-But it uses a has _REG been called availability check for the standard
-GeneralPurposeIo OpRegion. This clearly is a bug in the DSDT, but this
-does work under Windows. This issue leads to the intel_vbtn driver
-reporting the device always being in tablet-mode at boot, even if it
-is in laptop mode. Which in turn causes userspace to ignore touchpad
-events. So iow this issues causes the touchpad to not work at boot.
+>=20
+> Fixes: de9647efeaa9 ("platform/x86: intel-vbtn: Only activate tablet mode
+> switch on 2-in-1's")
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Looking at the Microsoft Windows documentation for tablet-mode reporting:
+> https://docs.microsoft.com/en-us/windows-hardware/drivers/gpiobtn/button-
+> implementation
+>=20
+> Then the presence of a tablet-mode switch is indicated by the presence
+> of a PNP0C60 compatible ACPI devices. There are 2 ways in which this devi=
+ce
+> can report the tablet-mode. 1. Directly providing a GpioInt resource insi=
+de
+> the PNP0C60 device, 2. Through injecting events from a Windows driver.
+>=20
+> It seems that the intel-vbtn / the INT33D6 ACPI device is the ACPI side
+> of Intel's generic solution for the case where the tablet-mode comes from
+> the embedded-controller and needs to be "injected".
+>=20
+> This all suggests that it might be better to replace the chassis-type
+> check with a acpi_dev_present("PNP0C60", NULL, -1) check.
+>=20
+> Mario, can you provide an acpidump and alsa-info.sh output for the
+> Dell XPS 9360, so that I can check if that might help with the issue
+> there, and thus is a potential candidate to replace the chassis-type
+> check?
 
-Since the bug in the DSDT stems from the confusion of having 2 different
-OpRegion types for accessing GPIOs on Cherry Trail devices, I believe
-that this is best fixed inside the Cherryview pinctrl driver.
+Unfortunately with WFH right now, I don't have access to a XPS 9630 to
+double check the patch series.
 
-This commit adds a workaround to the Cherryview pinctrl driver so
-that the DSDT's expectations of _REG always getting called for the
-GeneralPurposeIo OpRegion are met.
+However I do agree this should be a good approach.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v2:
-- Drop unnecessary if (acpi_has_method(adev->handle, "_REG")) check
-- Fix Cherryview spelling in the commit message
----
- drivers/pinctrl/intel/pinctrl-cherryview.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+Reviewed-by: Mario Limonciello <Mario.limonciello@dell.com>
 
-diff --git a/drivers/pinctrl/intel/pinctrl-cherryview.c b/drivers/pinctrl=
-/intel/pinctrl-cherryview.c
-index 4c74fdde576d..4817aec114d6 100644
---- a/drivers/pinctrl/intel/pinctrl-cherryview.c
-+++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
-@@ -1693,6 +1693,8 @@ static acpi_status chv_pinctrl_mmio_access_handler(=
-u32 function,
-=20
- static int chv_pinctrl_probe(struct platform_device *pdev)
- {
-+	struct acpi_object_list input;
-+	union acpi_object params[2];
- 	struct chv_pinctrl *pctrl;
- 	struct acpi_device *adev;
- 	acpi_status status;
-@@ -1755,6 +1757,22 @@ static int chv_pinctrl_probe(struct platform_devic=
-e *pdev)
- 	if (ACPI_FAILURE(status))
- 		dev_err(&pdev->dev, "failed to install ACPI addr space handler\n");
-=20
-+	/*
-+	 * Some DSDT-s use the chv_pinctrl_mmio_access_handler while checking
-+	 * for the regular GeneralPurposeIo OpRegion availability, mixed with
-+	 * the DSDT not defining a GeneralPurposeIo OpRegion at all. In this
-+	 * case the ACPICA code will not call _REG to signal availability of
-+	 * the GeneralPurposeIo OpRegion. Manually call _REG here so that
-+	 * the DSDT-s GeneralPurposeIo availability checks will succeed.
-+	 */
-+	params[0].type =3D ACPI_TYPE_INTEGER;
-+	params[0].integer.value =3D ACPI_ADR_SPACE_GPIO;
-+	params[1].type =3D ACPI_TYPE_INTEGER;
-+	params[1].integer.value =3D 1;
-+	input.count =3D 2;
-+	input.pointer =3D params;
-+	acpi_evaluate_object(adev->handle, "_REG", &input, NULL);
-+
- 	platform_set_drvdata(pdev, pctrl);
-=20
- 	return 0;
---=20
-2.26.0
+> ---
+>  drivers/platform/x86/intel-vbtn.c | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/platform/x86/intel-vbtn.c b/drivers/platform/x86/int=
+el-
+> vbtn.c
+> index 500fae82e12c..4921fc15dc6c 100644
+> --- a/drivers/platform/x86/intel-vbtn.c
+> +++ b/drivers/platform/x86/intel-vbtn.c
+> @@ -158,12 +158,22 @@ static void detect_tablet_mode(struct platform_devi=
+ce
+> *device)
+>  static bool intel_vbtn_has_switches(acpi_handle handle)
+>  {
+>  	const char *chassis_type =3D dmi_get_system_info(DMI_CHASSIS_TYPE);
+> +	unsigned long chassis_type_int;
+>  	unsigned long long vgbs;
+>  	acpi_status status;
+>=20
+> -	if (!(chassis_type && strcmp(chassis_type, "31") =3D=3D 0))
+> +	if (kstrtoul(chassis_type, 10, &chassis_type_int))
+>  		return false;
+>=20
+> +	switch (chassis_type_int) {
+> +	case  8: /* Portable */
+> +	case 31: /* Convertible */
+> +	case 32: /* Detachable */
+> +		break;
+> +	default:
+> +		return false;
+> +	}
+> +
+>  	status =3D acpi_evaluate_integer(handle, "VGBS", NULL, &vgbs);
+>  	return ACPI_SUCCESS(status);
+>  }
+> --
+> 2.26.0
 
