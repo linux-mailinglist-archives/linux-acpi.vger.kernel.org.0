@@ -2,125 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A0EE1C33B9
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 May 2020 09:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5251B1C35EC
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 May 2020 11:41:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727827AbgEDHhI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 4 May 2020 03:37:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56664 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727088AbgEDHhH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 4 May 2020 03:37:07 -0400
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EB5A321835
-        for <linux-acpi@vger.kernel.org>; Mon,  4 May 2020 07:37:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588577827;
-        bh=t8IlpBfd5v4b7aMW8w5EYYQ13kNx8+iPpKqLXfYgEX0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=WrYuWPdBY8fvLD5rbLiGy0wH80w2hjNz3+iAC/SbnwB5lZ9YIx3OOJsW3aF69ek7B
-         wKQr1XQtN3+eGQ9VDcOHZzZpyX2dOFiu4lDdjrF/hM6fozqiGbnVYwwrfP4q+jBMrL
-         mB1tg9Cq801T8u7SgEvoOwMFYN4dQ39Bw4298jnA=
-Received: by mail-il1-f181.google.com with SMTP id i16so10325177ils.12
-        for <linux-acpi@vger.kernel.org>; Mon, 04 May 2020 00:37:06 -0700 (PDT)
-X-Gm-Message-State: AGi0PuZaZ/4qpXvezpbANI8am0rSNXylC2OZKUCaExa7Sl1GaRyjKjQr
-        vPk6AWWRxscbYa/E61IInmR/5H1rOyPwm3dryoo=
-X-Google-Smtp-Source: APiQypKNPYX7ad+kctS/AbY8KuKLDocsFDox+qQJT05gRIgyhoBoUx71Nx7bevStf4WtJv25L/UBUkyl2JKmOvnuE44=
-X-Received: by 2002:a92:3c55:: with SMTP id j82mr15500599ila.258.1588577826285;
- Mon, 04 May 2020 00:37:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200501161014.5935-1-ardb@kernel.org> <20200501161014.5935-3-ardb@kernel.org>
- <bbd56b89-643a-2f86-79af-f65ef46822ef@huawei.com>
-In-Reply-To: <bbd56b89-643a-2f86-79af-f65ef46822ef@huawei.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 4 May 2020 09:36:55 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEuV_Lmhu-2zZhD-YgL-zu+o0v+vooQTK30cemJW5dfNg@mail.gmail.com>
-Message-ID: <CAMj1kXEuV_Lmhu-2zZhD-YgL-zu+o0v+vooQTK30cemJW5dfNg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] ACPI/IORT: work around num_ids ambiguity
-To:     Hanjun Guo <guohanjun@huawei.com>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        id S1727781AbgEDJlK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 May 2020 05:41:10 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2152 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726625AbgEDJlK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 4 May 2020 05:41:10 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 015F3B768F29FFD504CC;
+        Mon,  4 May 2020 10:41:08 +0100 (IST)
+Received: from localhost (10.47.88.153) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 4 May 2020
+ 10:41:07 +0100
+Date:   Mon, 4 May 2020 10:40:48 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>,
-        Will Deacon <will@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Linuxarm <linuxarm@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v3 10/11] iio: light: cm32181: Add support for parsing
+ CPM0 and CPM1 ACPI tables
+Message-ID: <20200504104048.00003f35@Huawei.com>
+In-Reply-To: <CAHp75Vdt+shL3yXHfct17DUHdRBBrCzC4vBjQL8YHbimFefV7A@mail.gmail.com>
+References: <20200428172923.567806-1-hdegoede@redhat.com>
+        <20200428172923.567806-10-hdegoede@redhat.com>
+        <20200503122237.4af34181@archlinux>
+        <CAHp75Vdt+shL3yXHfct17DUHdRBBrCzC4vBjQL8YHbimFefV7A@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.88.153]
+X-ClientProxiedBy: lhreml739-chm.china.huawei.com (10.201.108.189) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 4 May 2020 at 06:32, Hanjun Guo <guohanjun@huawei.com> wrote:
->
-> On 2020/5/2 0:10, Ard Biesheuvel wrote:
-> > The ID mapping table structure of the IORT table describes the size of
-> > a range using a num_ids field carrying the number of IDs in the region
-> > minus one. This has been misinterpreted in the past in the parsing code,
-> > and firmware is known to have shipped where this results in an ambiguity,
-> > where regions that should be adjacent have an overlap of one value.
-> >
-> > So let's work around this by detecting this case specifically: when
-> > resolving an ID translation, allow one that matches right at the end of
-> > a multi-ID region to be superseded by a subsequent one.
-> >
-> > To prevent potential regressions on broken firmware that happened to
-> > work before, only take the subsequent match into account if it occurs
-> > at the start of a mapping region.
-> >
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >   drivers/acpi/arm64/iort.c | 40 +++++++++++++++++---
-> >   1 file changed, 34 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> > index 98be18266a73..9f139a94a1d3 100644
-> > --- a/drivers/acpi/arm64/iort.c
-> > +++ b/drivers/acpi/arm64/iort.c
-> > @@ -300,7 +300,7 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
-> >   }
-> >
-> >   static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
-> > -                    u32 *rid_out)
-> > +                    u32 *rid_out, bool check_overlap)
-> >   {
-> >       /* Single mapping does not care for input id */
-> >       if (map->flags & ACPI_IORT_ID_SINGLE_MAPPING) {
-> > @@ -316,10 +316,34 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
-> >       }
-> >
-> >       if (rid_in < map->input_base ||
-> > -         (rid_in >= map->input_base + map->id_count))
-> > +         (rid_in > map->input_base + map->id_count))
-> >               return -ENXIO;
-> >
-> > +     if (check_overlap) {
-> > +             /*
-> > +              * We already found a mapping for this input ID at the end of
-> > +              * another region. If it coincides with the start of this
-> > +              * region, we assume the prior match was due to the off-by-1
-> > +              * issue mentioned below, and allow it to be superseded.
-> > +              * Otherwise, things are *really* broken, and we just disregard
-> > +              * duplicate matches entirely to retain compatibility.
-> > +              */
-> > +             pr_err(FW_BUG "[map %p] conflicting mapping for input ID 0x%x\n",
-> > +                    map, rid_in);
->
-> As we already applied a workaround here, can we add "applying
-> workaround" in the error message? This will make the customers
-> less uneasy to see such message in the boot log. Once the product
-> was deliveried to customers, it's not that easy to update all the
-> firmwares entirely.
->
+On Sun, 3 May 2020 19:25:20 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-Sure.
+> On Sun, May 3, 2020 at 2:22 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> > On Tue, 28 Apr 2020 19:29:22 +0200
+> > Hans de Goede <hdegoede@redhat.com> wrote:  
+> 
+> ...
+> 
+> > > This was tested on the following models: Acer Switch 10 SW5-012 (CM32181)
+> > > Asus T100TA (CM3218), Asus T100CHI (CM3218) and HP X2 10-n000nd (CM32181).  
+> >
+> > I assume it's far too much to hope this CPM0 / CPM1 stuff is actually defined
+> > in a spec anywhere?
+> >
+> > There are standard way of adding vendor specific data blobs to ACPI and this
+> > isn't one of them (unless I'm missing something).  People need to beat
+> > up vendors earlier about this stuff.
+> >
+> > Grumble over...
+> >
+> > Code looks fine to me, but I'd like an ACPI review ideally.  
+> 
+> ACPI didn't cover embedded world and has the following issues
+> a) where it should be strict (like how many I2CSerialBus() resources
+> can be given and for what type of devices, etc), it doesn't
+> b) they need to provides better validation tools, but they didn't
+> c) it's still windows oriented :-(
+> 
+> Above is custom extension on how to add device properties (and note,
+> we have now _DSD() and still we have some M$ way of thinking how to
+> use them).
+> 
+> Since the above approach is in the wild, I'm afraid we have not many
+> possibilities here (each of them with own problems):
+> 1/ shout at vendors to use ACPI properly and simple don't by broken
+> hardware (rather firmware)
+> 2/ try to support custom changes (may lead to several approaches for
+> the same thing)
+> 3/ create a lot of board files (something in between 1/ and 2/)
+> 
+> As a result:
+> 1/ is obviously a best one, but I think it's an utopia.
 
-> I'm out of reach for D05/D06 hardware as it's holidays in China,
-> please allow me to test this patch set in Wednesday this week.
->
+Let's keep the "shout" bit where possible :)  Makes us feel better anyway.
 
-Yes please
+> 2/ in practice we don't have many deviations (luckily OEMs are quite
+> lazy to modify reference BIOSes and often reuse existing approaches)
+> 3/ may not work, because on cheap laptops the means of distinguishing
+> them (like DMI strings) may also been broken.
+> 
+
+The UEFI forum are finally making steps in the right direction on
+how they develop their specs (sort of) so I guess interested companies
+should rock up and see if they can get some of this stuff fixed.
+(those that can attend meetings anyway - but that's a different issue).
+
+Spec meetings are fun and everyone loves the EDK2 source code :)
+
+J
+
+
+
