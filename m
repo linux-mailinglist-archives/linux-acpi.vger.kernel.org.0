@@ -2,74 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 566291C5C1F
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 May 2020 17:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 162801C5DC6
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 May 2020 18:44:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729510AbgEEPou (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 May 2020 11:44:50 -0400
-Received: from mga05.intel.com ([192.55.52.43]:40262 "EHLO mga05.intel.com"
+        id S1729885AbgEEQoT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 May 2020 12:44:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51874 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730520AbgEEPos (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 5 May 2020 11:44:48 -0400
-IronPort-SDR: m0RCNkw9wSsvgHeZIJ2AYP3Znthr8LWjpUi3f2A/zBIdrCtfGqrjNfzJzWdmoJjovqcrqDlCkw
- h+fp5/Tj0+qg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2020 08:44:47 -0700
-IronPort-SDR: c83OjqTcYVomZQyXm54dQMs1rBgzxZvQoFtZROvqLqkq0/IYAm5Lt0YjRj8363HpGn7WPLFAy2
- fskqwk9DhJFw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,355,1583222400"; 
-   d="scan'208";a="406884579"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga004.jf.intel.com with ESMTP; 05 May 2020 08:44:44 -0700
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1jVzkV-004qBJ-Mo; Tue, 05 May 2020 18:44:47 +0300
-Date:   Tue, 5 May 2020 18:44:47 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        id S1729717AbgEEQoS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 5 May 2020 12:44:18 -0400
+Received: from localhost (mobile-166-175-56-67.mycingular.net [166.175.56.67])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0ED1B206CC;
+        Tue,  5 May 2020 16:44:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588697058;
+        bh=XSouw40XSxJMsUn+OkpO2j16zf164hOmtUD4omR06L4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=Ulek5cyVtH6qIcceVmKvo1UIL7MuZpIrYLO8E1m8fGtePVVKUb8vDbBoNFR443aZE
+         ErEu7ZKQHuLDznlpeOM9xLX+tiBY7oVhNDI9752V/XhsTybVguccI4iNAbKzg+aZZt
+         QgAPq7U4LRFymloRdti4v3O45wRK5TzJwb6stYbQ=
+Date:   Tue, 5 May 2020 11:44:16 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
 To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
         Bjorn Helgaas <bhelgaas@google.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
         linux-gpio@vger.kernel.org
-Subject: Re: [PATCH 0/3] ACPI / utils: Add acpi_evaluate_reg() helper
-Message-ID: <20200505154447.GU185537@smile.fi.intel.com>
-References: <20200505132128.19476-1-hdegoede@redhat.com>
+Subject: Re: [PATCH 1/3] ACPI / utils: Add acpi_evaluate_reg() helper
+Message-ID: <20200505164416.GA365505@bjorn-Precision-5520>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200505132128.19476-1-hdegoede@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20200505132128.19476-2-hdegoede@redhat.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 05, 2020 at 03:21:25PM +0200, Hans de Goede wrote:
-> Hi All,
-> 
-> Here is a small series adding an acpi_evaluate_reg() helper, note
-> the third patch sits on top of a fix for the pinctrl-cherryview
-> driver which I recently submitted and which is still finding its
-> way upstream.
-> 
-> Since this is not urgent (just a small code cleanup) I suggest
-> that the ACPI people can pick up patches 1-2 and then the last patch
-> can be merged post 5.8-rc1, at which point all the dependencies for
-> it should have landed already.
+On Tue, May 05, 2020 at 03:21:26PM +0200, Hans de Goede wrote:
+> With a recent fix to the pinctrl-cherryview driver we know have
+> 2 drivers open-coding the parameter building / passing for calling
+> _REG on an ACPI handle.
 
-Thank you!
-
-Some minor comments to be addressed.
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+s/know/now/
