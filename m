@@ -2,72 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DCE61C4B44
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 May 2020 03:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 958D11C6B85
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 May 2020 10:22:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726744AbgEEBIi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 4 May 2020 21:08:38 -0400
-Received: from mga02.intel.com ([134.134.136.20]:40502 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726551AbgEEBIh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 4 May 2020 21:08:37 -0400
-IronPort-SDR: OPvbQQT/0KdQcI92n789/53NvbQmlFI6pK0zsYqMxhNBRV9MPz9fb8psncLmf9lnpAN9x+BXIF
- D79mBITDO1Zg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2020 18:08:36 -0700
-IronPort-SDR: XjNqaxG07zq2BzZam9t5zWiKGoqEBlQ7hHSjPiKqKitwV1vXeIb8Xx98Ku4kBulNq3pO0BNGRA
- xx+28bxxsZxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,354,1583222400"; 
-   d="scan'208";a="460865804"
-Received: from sibelius.jf.intel.com ([10.54.75.172])
-  by fmsmga005.fm.intel.com with ESMTP; 04 May 2020 18:08:35 -0700
-From:   Erik Kaneda <erik.kaneda@intel.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org
-Cc:     Bob Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
-Subject: [PATCH 6/6] ACPICA: Update version to 20200430
-Date:   Mon,  4 May 2020 17:46:54 -0700
-Message-Id: <20200505004654.2870591-7-erik.kaneda@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200505004654.2870591-1-erik.kaneda@intel.com>
-References: <20200505004654.2870591-1-erik.kaneda@intel.com>
+        id S1728519AbgEFIWo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 May 2020 04:22:44 -0400
+Received: from [101.71.143.117] ([101.71.143.117]:2477 "EHLO
+        host-192-168-3-84.localdomain" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728349AbgEFIWn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 May 2020 04:22:43 -0400
+X-Greylist: delayed 34754 seconds by postgrey-1.27 at vger.kernel.org; Wed, 06 May 2020 04:22:42 EDT
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+        by host-192-168-3-84.localdomain (Postfix) with SMTP id 344504245AE6;
+        Tue,  5 May 2020 04:16:43 -0400 (EDT)
+Received: from [208.248.220.158] by 127.0.0.1 with ESMTP id 6EC93B7FE2F; Tue, 05 May 2020 04:14:35 -0500
+Message-ID: <j$3ajr-$feeam-h7i0$72f$6-zsnc2@2hs.h.9.8.3w>
+From:   "JEAN MARIE" <fkinneyofd@tampabay.rr.com>
+Reply-To: "JEAN MARIE" <fkinneyofd@tampabay.rr.com>
+To:     linshaw@shaw.ca
+Subject: Kindly Acknowledge Receipt
+Date:   Tue, 05 May 20 04:14:35 GMT
+X-Mailer: Microsoft Outlook, Build 10.0.2616
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+        boundary="A.9_1_.A_067_6DE_A81B_"
+X-Priority: 3
+X-MSMail-Priority: Normal
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Bob Moore <robert.moore@intel.com>
 
-ACPICA commit c00a5cd99fa3fe6cd053a2a1a557e54b4fea26f7
+--A.9_1_.A_067_6DE_A81B_
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-Version 20200430.
+I 'm a Financial Consultant.  under my network as a financial consultant, =
+there are few private investors offering capital injection as project fund=
+ing or business expansion in critical areas of Investment placements such =
+as Real Estate, Healthcare, Transportation and Agriculture. 
+Get back to me for more details as you express your interest areas of spec=
+ialization.
 
-Link: https://github.com/acpica/acpica/commit/c00a5cd9
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
----
- include/acpi/acpixf.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Regards.
+Mr. J. Marie
+fkinneyofd Consulting
 
-diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
-index 49b519f36b69..1dc8d262035b 100644
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -12,7 +12,7 @@
- 
- /* Current ACPICA subsystem version in YYYYMMDD format */
- 
--#define ACPI_CA_VERSION                 0x20200326
-+#define ACPI_CA_VERSION                 0x20200430
- 
- #include <acpi/acconfig.h>
- #include <acpi/actypes.h>
--- 
-2.25.1
+--A.9_1_.A_067_6DE_A81B_--
 
