@@ -2,44 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C8D21C5909
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 May 2020 16:21:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C388C1C591A
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 May 2020 16:22:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729797AbgEEOVX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 May 2020 10:21:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50030 "EHLO
+        id S1730617AbgEEOWI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 May 2020 10:22:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730604AbgEEOVW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 May 2020 10:21:22 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86ADBC061A10;
-        Tue,  5 May 2020 07:21:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=vgLgwA2IYB8xZ+i4x2z61nR3kQ321LSxvjJp90lZwhk=; b=emwvWX7QcAOvZyEwWRtlY3u75
-        YrX1Uqcns0qRJwr2MAlCIPi+uSNplwaVui1xMGOENdmL8I4P9spu4Wg9JZR987liWr7K4Cq6lnbum
-        lZacolR99lTdruHc1EjyNWly0E96wof1BEtJwXJt2x0c/aGPzrmUF0c8Plw+2LUmlnn1tInPcokgV
-        wJxC3v7fjOvva8xRJ/NR74yaGtk8quY9LvGwS0tX+jNMfYeHtQDUVkh3/qOhuVg5qDSxg2waIb45O
-        JA6aeyCKI/Hm9AAJRA5+2a3cAakP5gMaXnONZgVJIGJMNjORsxoER52ZwVnZHJn2GtWd2zJQ712nw
-        9o8G9Wdkg==;
-Received: from shell.armlinux.org.uk ([2001:4d48:ad52:3201:5054:ff:fe00:4ec]:36328)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.90_1)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1jVyRI-0002rx-5s; Tue, 05 May 2020 15:20:52 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1jVyRC-0007Dj-U4; Tue, 05 May 2020 15:20:46 +0100
-Date:   Tue, 5 May 2020 15:20:46 +0100
-From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>, linux.cj@gmail.com,
-        Jeremy Linton <jeremy.linton@arm.com>,
+        by vger.kernel.org with ESMTP id S1730616AbgEEOWH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 May 2020 10:22:07 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A521AC061A0F;
+        Tue,  5 May 2020 07:22:07 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id b8so1072278pgi.11;
+        Tue, 05 May 2020 07:22:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DGtEu1KsY1dr41QJrz50PNo/qEe9hhqV40ULoK/JQEY=;
+        b=fppBqTIEYFEQOtLCh6kQJwvY3nR8D9p8ij1Nzx+hThzSI07ASyz3kBNezKy+tic7KP
+         Zsf+wOm64CalAwkvMC2Mn9o9GRINg584C08ghOx8sZ4R8wGd/azhLscwrtMcgP/mYDnB
+         ZgRFeECtreW8oFOaEZr6Qg21KCWVxM01TVWPcQxJ2DMZ9UR37Nzdv0e41hgJ0k7F79h8
+         2JYbgfr495aRcvDK02NYDBI3LfbGcvRNNJN+672pBDjqas9b7zmCfil/XJjjqPYnS0P7
+         sIoQmrXY0ZceG8GEVLvJ9Y3oGMXtLSJXeRx2/ukitX0em9Qy7H+YEvjg3qurclkmeY3s
+         xjnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DGtEu1KsY1dr41QJrz50PNo/qEe9hhqV40ULoK/JQEY=;
+        b=r4QbKiuehOirAHmkQXQ9+tylWtr3Hanltq1D8hA0eP7+WTUmIMWi8mq9pHgE+HmzMu
+         JinNsrox4nMxR+Z6OvnSaaEZZ/sZ/BiVTfoNlO3ofiPJ9OKLrrWrsGEKQCaZKFYR/BEX
+         TijO9TswO0CNGBBRxrTxPa6/bd3y/E32q5y3HurziAfIuKC8V4+j608C8PlfI45TQIYX
+         1LQCU1E73fSpkyn5++mF7MaPd6Ym7LO6FuG1fdIc88ZaCdJpmW0izyTg6gBJ9KjaTRHf
+         37GjCFttVhTbJIiJWUjGY9sO9FED/QKRvc+2DUxREyEGnI5wWbYIYzAxcZBApT4ldSmm
+         CurQ==
+X-Gm-Message-State: AGi0PublH/Gc2piZWPhx7oErDGWNGwdyQFs9Zo5gH9jMPlmKmYTNFhqq
+        cHAfJs1WGZSH8UKaLtrSPHIxIyeySjkEfb2uUgI=
+X-Google-Smtp-Source: APiQypIUZH8pTQ1mbnyQiBF+62SPk1HAQJexRMaWRWP7pjcZ9uW5NVk9E1Cq2JTRPBaIyTEIMjg4XAmxWxh6LToXh94=
+X-Received: by 2002:a65:6251:: with SMTP id q17mr3052332pgv.4.1588688527041;
+ Tue, 05 May 2020 07:22:07 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200505132905.10276-1-calvin.johnson@oss.nxp.com> <20200505132905.10276-6-calvin.johnson@oss.nxp.com>
+In-Reply-To: <20200505132905.10276-6-calvin.johnson@oss.nxp.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 5 May 2020 17:22:00 +0300
+Message-ID: <CAHp75VfOcQiACsOcfWyJSP1dzdYpaCa-_KKf==4YCkaM_Wk3Tg@mail.gmail.com>
+Subject: Re: [net-next PATCH v3 5/5] net: mdiobus: Introduce fwnode_mdiobus_register_phy()
+To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        linux.cj@gmail.com, Jeremy Linton <jeremy.linton@arm.com>,
         Andrew Lunn <andrew@lunn.ch>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Cristi Sovaiala <cristian.sovaiala@nxp.com>,
@@ -60,34 +74,87 @@ Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
         Pankaj Bansal <pankaj.bansal@nxp.com>,
         "David S. Miller" <davem@davemloft.net>,
         Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [net-next PATCH v3 4/5] net: phy: Introduce fwnode_get_phy_id()
-Message-ID: <20200505142046.GI1551@shell.armlinux.org.uk>
-References: <20200505132905.10276-1-calvin.johnson@oss.nxp.com>
- <20200505132905.10276-5-calvin.johnson@oss.nxp.com>
- <CAHp75VfQ_ueABUcgUUirQ7kK60CR6vMi1gP-UsdDd+UmsSE4Sw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75VfQ_ueABUcgUUirQ7kK60CR6vMi1gP-UsdDd+UmsSE4Sw@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 05, 2020 at 05:15:16PM +0300, Andy Shevchenko wrote:
-> On Tue, May 5, 2020 at 4:29 PM Calvin Johnson
-> > +               if (sscanf(cp, "ethernet-phy-id%4x.%4x",
-> > +                          &upper, &lower) == 2) {
-> 
-> > +                       *phy_id = ((upper & 0xFFFF) << 16) | (lower & 0xFFFF);
-> 
-> How upper can be bigger than 0xfff? Same for lower.
+On Tue, May 5, 2020 at 4:30 PM Calvin Johnson
+<calvin.johnson@oss.nxp.com> wrote:
+>
+> Introduce fwnode_mdiobus_register_phy() to register PHYs on the
+> mdiobus. From the compatible string, identify whether the PHY is
+> c45 and based on this create a PHY device instance which is
+> registered on the mdiobus.
 
-I think your comment is incorrect here.  Four hex digits can be larger
-than 0xfff.  "1000" interpreted as hex is four hex digits and larger
-than 0xfff, for example.
+...
+
+> +int fwnode_mdiobus_register_phy(struct mii_bus *bus,
+> +                               struct fwnode_handle *child, u32 addr)
+> +{
+> +       struct phy_device *phy;
+
+> +       bool is_c45 = false;
+
+Redundant assignment, see below.
+
+> +       const char *cp;
+> +       u32 phy_id;
+> +       int rc;
+> +
+
+> +       fwnode_property_read_string(child, "compatible", &cp);
+
+Consider rc = ...; otherwise you will have UB below.
+
+> +       if (!strcmp(cp, "ethernet-phy-ieee802.3-c45"))
+
+UB!
+
+> +               is_c45 = true;
+
+is_c45 = !(rc || strcmp(...));
+
+> +       if (!is_c45 && !fwnode_get_phy_id(child, &phy_id))
+
+Perhaps positive conditional
+
+if (is_c45 || fwnode_...(...))
+  get_phy_device();
+else
+  ...
+
+> +               phy = phy_device_create(bus, addr, phy_id, 0, NULL);
+> +       else
+> +               phy = get_phy_device(bus, addr, is_c45);
+> +       if (IS_ERR(phy))
+> +               return PTR_ERR(phy);
+> +
+> +       phy->irq = bus->irq[addr];
+> +
+> +       /* Associate the fwnode with the device structure so it
+> +        * can be looked up later.
+> +        */
+> +       phy->mdio.dev.fwnode = child;
+> +
+> +       /* All data is now stored in the phy struct, so register it */
+> +       rc = phy_device_register(phy);
+> +       if (rc) {
+> +               phy_device_free(phy);
+
+> +               fwnode_handle_put(child);
+
+Shouldn't mdio.dev.fwnode be put rather than child (yes, I see the assignment)
+
+> +               return rc;
+> +       }
+> +
+> +       dev_dbg(&bus->dev, "registered phy at address %i\n", addr);
+> +
+> +       return 0;
+> +}
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 10.2Mbps down 587kbps up
+With Best Regards,
+Andy Shevchenko
