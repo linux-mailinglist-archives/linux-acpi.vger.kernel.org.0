@@ -2,228 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF9F21C59E5
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 May 2020 16:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A6F81C5BC0
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 May 2020 17:41:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729237AbgEEOpV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 May 2020 10:45:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53792 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727857AbgEEOpV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 May 2020 10:45:21 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7878C061A0F;
-        Tue,  5 May 2020 07:45:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=bce39cuhX+v1hhfYsPnYxLnuYR5lP/z3GapCTjD03hM=; b=b2Jt5T0jNdoZl3RJSWosMCfhx
-        kgLFhgINbBWKyjtBOcxA48/fC1ckaCPZjO8j937EwIiBU4erqDB7D6RmWvm8RHrOqtENm7l8eHZ+C
-        f+YnQvZk6yGKlVtaXZAhBkEuJPKAa4fA/+tCo2SJgGVFLrHiMw5b0aA/webhWeJX1A9tmjuzfpMMQ
-        EiOLtC5g8TLkvnMlRURyYhWvzpC9ddO9H52wFyZmELgmCDazwji3PP3ueKlVEUEmJyQzS45eFLsci
-        AQQd2bWz7zT+OGSLFNkNYkd/lkL8nV3EZKre9zaUHj8OX/lu/HbIGwE8iBgAHEbT5LLfJR4IuBDFP
-        ucLMiqVAw==;
-Received: from shell.armlinux.org.uk ([2001:4d48:ad52:3201:5054:ff:fe00:4ec]:36340)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.90_1)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1jVyod-00030V-EZ; Tue, 05 May 2020 15:44:59 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1jVyoc-0007F0-7K; Tue, 05 May 2020 15:44:58 +0100
-Date:   Tue, 5 May 2020 15:44:58 +0100
-From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>, linux.cj@gmail.com,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Varun Sethi <V.Sethi@nxp.com>,
-        "Rajesh V . Bikkina" <rajesh.bikkina@nxp.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        netdev@vger.kernel.org, Marcin Wojtas <mw@semihalf.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Pankaj Bansal <pankaj.bansal@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [net-next PATCH v3 1/5] net: phy: Introduce phy related fwnode
- functions
-Message-ID: <20200505144458.GK1551@shell.armlinux.org.uk>
-References: <20200505132905.10276-1-calvin.johnson@oss.nxp.com>
- <20200505132905.10276-2-calvin.johnson@oss.nxp.com>
+        id S1729579AbgEEPlg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 May 2020 11:41:36 -0400
+Received: from mga09.intel.com ([134.134.136.24]:15617 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729398AbgEEPlg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 5 May 2020 11:41:36 -0400
+IronPort-SDR: kL3i5/dE+LLkejljAgC7LbAIgbaHC7YRtCP3U/CAT+EMJdCzLhn5TukSPoBcSOg9nYkI9+ykp4
+ JCp7zv4XH6AQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2020 08:41:35 -0700
+IronPort-SDR: jJkmnoYMRdO4Xpdqwud5ysq5xL3z4x/9rNWJCba2AxrNNR0+EpdOnOfvcS6LFzjp57RSniYg6G
+ H4lyf+wXG/sQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,355,1583222400"; 
+   d="scan'208";a="263209128"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga006.jf.intel.com with ESMTP; 05 May 2020 08:41:33 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1jVzhQ-004q9S-08; Tue, 05 May 2020 18:41:36 +0300
+Date:   Tue, 5 May 2020 18:41:35 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-gpio@vger.kernel.org
+Subject: Re: [PATCH 2/3] ACPI / hotplug / PCI: Use the new
+ acpi_evaluate_reg() helper
+Message-ID: <20200505154135.GQ185537@smile.fi.intel.com>
+References: <20200505132128.19476-1-hdegoede@redhat.com>
+ <20200505132128.19476-3-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200505132905.10276-2-calvin.johnson@oss.nxp.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200505132128.19476-3-hdegoede@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 05, 2020 at 06:59:01PM +0530, Calvin Johnson wrote:
-> Define fwnode_phy_find_device() to iterate an mdiobus and find the
-> phy device of the provided phy fwnode. Additionally define
-> device_phy_find_device() to find phy device of provided device.
-> 
-> Define fwnode_get_phy_node() to get phy_node using named reference.
-> 
-> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
-> ---
-> 
-> Changes in v3:
->   move fwnode APIs to appropriate place
->   stubs fwnode APIs for !CONFIG_PHYLIB
->   improve comment on function return condition.
-> 
-> Changes in v2:
->   move phy code from base/property.c to net/phy/phy_device.c
->   replace acpi & of code to get phy-handle with fwnode_find_reference
-> 
->  drivers/net/phy/phy_device.c | 53 ++++++++++++++++++++++++++++++++++++
->  include/linux/phy.h          | 19 +++++++++++++
->  2 files changed, 72 insertions(+)
-> 
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index 7e1ddd5745d2..3e8224132218 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
-> @@ -31,6 +31,7 @@
->  #include <linux/mdio.h>
->  #include <linux/io.h>
->  #include <linux/uaccess.h>
-> +#include <linux/property.h>
->  
->  MODULE_DESCRIPTION("PHY library");
->  MODULE_AUTHOR("Andy Fleming");
-> @@ -2436,6 +2437,58 @@ static bool phy_drv_supports_irq(struct phy_driver *phydrv)
->  	return phydrv->config_intr && phydrv->ack_interrupt;
->  }
->  
-> +/**
-> + * fwnode_phy_find_device - Find phy_device on the mdiobus for the provided
-> + * phy_fwnode.
-> + * @phy_fwnode: Pointer to the phy's fwnode.
-> + *
-> + * If successful, returns a pointer to the phy_device with the embedded
-> + * struct device refcount incremented by one, or NULL on failure.
-> + */
-> +struct phy_device *fwnode_phy_find_device(struct fwnode_handle *phy_fwnode)
-> +{
-> +	struct device *d;
-> +	struct mdio_device *mdiodev;
-> +
-> +	if (!phy_fwnode)
-> +		return NULL;
-> +
-> +	d = bus_find_device_by_fwnode(&mdio_bus_type, phy_fwnode);
-> +	if (d) {
-> +		mdiodev = to_mdio_device(d);
-> +		if (mdiodev->flags & MDIO_DEVICE_FLAG_PHY)
-> +			return to_phy_device(d);
-> +		put_device(d);
-> +	}
-> +
-> +	return NULL;
-> +}
-> +EXPORT_SYMBOL(fwnode_phy_find_device);
+On Tue, May 05, 2020 at 03:21:27PM +0200, Hans de Goede wrote:
+> Use the new acpi_evaluate_reg() helper in the acpiphp_glue.c code.
 
-This is basically functionally equivalent to of_phy_find_device().  If
-we replaced of_mdio_find_device() with a fwnode equivalent and used that
-above, we could have both of_mdio_find_device() and of_phy_find_device()
-be wrappers around their fwnode equivalents.
+> -		/* _REG is optional, we don't care about if there is failure */
 
-That also means less lines of code to maintain, and means that we're
-unlikely to have two implementations that may drift apart functionally
-over time because their separated in two different parts of the kernel.
-That is an especially important point given that fwnodes can be DT
-nodes, so one may call fwnode APIs on a DT platform.
-
-> +
-> +/**
-> + * device_phy_find_device - For the given device, get the phy_device
-> + * @dev: Pointer to the given device
-> + *
-> + * Refer return conditions of fwnode_phy_find_device().
-> + */
-> +struct phy_device *device_phy_find_device(struct device *dev)
-> +{
-> +	return fwnode_phy_find_device(dev_fwnode(dev));
-> +}
-> +EXPORT_SYMBOL_GPL(device_phy_find_device);
-> +
-> +/**
-> + * fwnode_get_phy_node - Get the phy_node using the named reference.
-> + * @fwnode: Pointer to fwnode from which phy_node has to be obtained.
-> + *
-> + * Refer return conditions of fwnode_find_reference().
-> + */
-> +struct fwnode_handle *fwnode_get_phy_node(struct fwnode_handle *fwnode)
-> +{
-> +	return fwnode_find_reference(fwnode, "phy-handle", 0);
-> +}
-> +EXPORT_SYMBOL_GPL(fwnode_get_phy_node);
-
-What if the fwnode is a DT device handle?  Shouldn't this also check for
-the legacy properties as well, so we can transition code over to this
-new interface?
-
-> +
->  /**
->   * phy_probe - probe and init a PHY device
->   * @dev: device to probe and init
-> diff --git a/include/linux/phy.h b/include/linux/phy.h
-> index e2bfb9240587..f2664730a331 100644
-> --- a/include/linux/phy.h
-> +++ b/include/linux/phy.h
-> @@ -1141,10 +1141,29 @@ struct phy_device *phy_device_create(struct mii_bus *bus, int addr, u32 phy_id,
->  				     bool is_c45,
->  				     struct phy_c45_device_ids *c45_ids);
->  #if IS_ENABLED(CONFIG_PHYLIB)
-> +struct phy_device *fwnode_phy_find_device(struct fwnode_handle *phy_fwnode);
-> +struct phy_device *device_phy_find_device(struct device *dev);
-> +struct fwnode_handle *fwnode_get_phy_node(struct fwnode_handle *fwnode);
->  struct phy_device *get_phy_device(struct mii_bus *bus, int addr, bool is_c45);
->  int phy_device_register(struct phy_device *phy);
->  void phy_device_free(struct phy_device *phydev);
->  #else
-> +static inline
-> +struct phy_device *fwnode_phy_find_device(struct fwnode_handle *phy_fwnode)
-> +{
-> +	return NULL;
-> +}
-> +
-> +static inline struct phy_device *device_phy_find_device(struct device *dev)
-> +{
-> +	return NULL;
-> +}
-> +
-> +struct fwnode_handle *fwnode_get_phy_node(struct fwnode_handle *fwnode)
-> +{
-> +	return NULL;
-> +}
-> +
->  static inline
->  struct phy_device *get_phy_device(struct mii_bus *bus, int addr, bool is_c45)
->  {
-> -- 
-> 2.17.1
-> 
-> 
+This may be left.
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 10.2Mbps down 587kbps up
+With Best Regards,
+Andy Shevchenko
+
+
