@@ -2,166 +2,198 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A2D51C5975
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 May 2020 16:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0141C59BC
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 May 2020 16:36:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729247AbgEEO1w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 May 2020 10:27:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51048 "EHLO
+        id S1729246AbgEEOg3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 May 2020 10:36:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729346AbgEEO1t (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 May 2020 10:27:49 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45F61C061A0F;
-        Tue,  5 May 2020 07:27:48 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id t9so1215266pjw.0;
-        Tue, 05 May 2020 07:27:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0d2zCfXjqEkoPjXPCO2eW50jfsT6IHtXFCM1nqKnraI=;
-        b=FMGNXT2fKKRoI0Pby3QgAP4Puaf5obX+oQRGw4q02LmDjkOt+RB6cbjPh0JwHzPXfm
-         AHgHRP5heysnfoNbOXjMjPwe8r8YvUqZYGmP0RO83fTG6L+69/EfRbWXibcjJEy4klyV
-         ZkVXEgz1N+v2K2Upz/9ML8/Ba9tJGB9+/XJ9/7DVg8asisv+bu2bxXRwNeUmRu4GS+rQ
-         rnmONhdRXEj+ZJuD0x7PLI2XHbxKq8lKli1c1n4pX2VMrBHmcR28oHgqtcjOLi7KktiM
-         b8StMxT9POylTHoanWOo3dIONP33MQIuul6kPigKUGMMWQ3HZmwaUKYbJBSJB+xZNnaH
-         zY0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0d2zCfXjqEkoPjXPCO2eW50jfsT6IHtXFCM1nqKnraI=;
-        b=icpyOGM7V3Lj9PJQO6gvlswQnj7J4IHV0uB5If0bkIbI1vroxNNT5d99CedpzeCkbb
-         xXWtQsCfuN6zgdUL6a1yuiFhZb5gLw1hlspxqn4ElJYmgrT1cFPScKrkRSIxZCOrHz3L
-         aePNq+eoo/UmqwK9Spm0pCQh0XmzXhEI90mlxM3O1dlt5HItVqftUWzlIOihZw0C2eVe
-         BUpBlPI2/vr7iof0Fueo+Kc1x/HOOew0hrEHbtyoy2S/3B1UXJ12OzghauTFpuo96iEO
-         7O/HVkzDj/AbdhQt90pJNYpnlTI3Pl9WjIkqCBa9qzkwrJ6gOUSJ5uT4HRfoLBbz4gvQ
-         JCzA==
-X-Gm-Message-State: AGi0PuYTCai6Cv7s/X3Oj7Hh9T3qme0msReFwrkwSHl2/zur5q6T+Nmb
-        rsDqlbekm0iI2mD56ic+J3pJBM8AqYxoKD96cDs=
-X-Google-Smtp-Source: APiQypI3q+uz07fz96ONWB3ggyRrtBojxXIGIS+eu+fruU+zGJ0LKKFfiU+ajF4EFSxYHvXi9wX/IzALXoeJqGzIQko=
-X-Received: by 2002:a17:90a:fa81:: with SMTP id cu1mr3442100pjb.25.1588688867728;
- Tue, 05 May 2020 07:27:47 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1729123AbgEEOg3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 May 2020 10:36:29 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF1B9C061A0F;
+        Tue,  5 May 2020 07:36:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=JHqeW2n9o8eTf4Hj7Xby8dss3L4FHej0u+cvFpm1AoA=; b=GDDaMxFr/i1udh9LrXu6dWreK
+        r28SRTfpehqGgO/3BlnNRVwB7mdrW7xBnVPGeiIGVOAiDzF0/5vmc8zgNIAfZQvFfXyZATf+kRN+3
+        iRS+dtALs24P+0ElYCsS78KRX48bXcODPVQFpR878hQogOs4f7kOvk3XkpCGUd/wKpQ+GKJfNPbRF
+        rIDFJgJdyViOV9mRsMuoGh3ylNSsPtvnj5y2YDGOSxZj3GIOnP0q8WHr+39iLDLynHDCNF0ILLypd
+        HixG9HokCuyUkZhIe9aAENG+VoIYS13gGtzTZnjundmF+bmjSQJlnUSDMFlVclzcDlgHfo1hRslzS
+        EpnQu/4QA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56510)
+        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.90_1)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1jVyfz-0002xZ-I8; Tue, 05 May 2020 15:36:03 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1jVyfv-0007Dz-PQ; Tue, 05 May 2020 15:35:59 +0100
+Date:   Tue, 5 May 2020 15:35:59 +0100
+From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>, linux.cj@gmail.com,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Varun Sethi <V.Sethi@nxp.com>,
+        "Rajesh V . Bikkina" <rajesh.bikkina@nxp.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        netdev@vger.kernel.org, Marcin Wojtas <mw@semihalf.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Makarand Pawagi <makarand.pawagi@nxp.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Pankaj Bansal <pankaj.bansal@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Heiner Kallweit <hkallweit1@gmail.com>
+Subject: Re: [net-next PATCH v3 3/5] phylink: Introduce
+ phylink_fwnode_phy_connect()
+Message-ID: <20200505143559.GJ1551@shell.armlinux.org.uk>
+References: <20200505132905.10276-1-calvin.johnson@oss.nxp.com>
+ <20200505132905.10276-4-calvin.johnson@oss.nxp.com>
 MIME-Version: 1.0
-References: <20200502182951.114231-1-hdegoede@redhat.com> <20200502182951.114231-5-hdegoede@redhat.com>
- <7c3e5f844a224ff780cd8e3b3f5f7641@AUSX13MPC101.AMER.DELL.COM>
- <13a8ec94-1eae-4d95-7238-85c612ebc896@redhat.com> <afe7c366c97f4ab18d5a98a9695ceff6@AUSX13MPC101.AMER.DELL.COM>
-In-Reply-To: <afe7c366c97f4ab18d5a98a9695ceff6@AUSX13MPC101.AMER.DELL.COM>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 5 May 2020 17:27:41 +0300
-Message-ID: <CAHp75VcNJFfgshhL_pYsHodF1pMNySw08Z_4jr-vVkE-Xpj_ng@mail.gmail.com>
-Subject: Re: [PATCH 4/5] platform/x86: intel-vbtn: Also handle tablet-mode
- switch on "Detachable" and "Portable" chassis-types
-To:     Mario Limonciello <Mario.Limonciello@dell.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200505132905.10276-4-calvin.johnson@oss.nxp.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 5, 2020 at 5:22 PM <Mario.Limonciello@dell.com> wrote:
->
-> > -----Original Message-----
-> > From: platform-driver-x86-owner@vger.kernel.org <platform-driver-x86-
-> > owner@vger.kernel.org> On Behalf Of Hans de Goede
-> > Sent: Tuesday, May 5, 2020 4:06 AM
-> > To: Limonciello, Mario; dvhart@infradead.org; andy@infradead.org
-> > Cc: linux-acpi@vger.kernel.org; platform-driver-x86@vger.kernel.org; linux-
-> > kernel@vger.kernel.org
-> > Subject: Re: [PATCH 4/5] platform/x86: intel-vbtn: Also handle tablet-mode
-> > switch on "Detachable" and "Portable" chassis-types
-> >
-> >
-> > [EXTERNAL EMAIL]
-> >
-> > Hi,
-> >
-> > On 5/4/20 5:37 PM, Mario.Limonciello@dell.com wrote:
-> > >
-> > >
-> > >> -----Original Message-----
-> > >> From: Hans de Goede <hdegoede@redhat.com>
-> > >> Sent: Saturday, May 2, 2020 1:30 PM
-> > >> To: Darren Hart; Andy Shevchenko; Limonciello, Mario
-> > >> Cc: Hans de Goede; linux-acpi@vger.kernel.org; platform-driver-
-> > >> x86@vger.kernel.org; linux-kernel@vger.kernel.org
-> > >> Subject: [PATCH 4/5] platform/x86: intel-vbtn: Also handle tablet-mode
-> > switch
-> > >> on "Detachable" and "Portable" chassis-types
-> > >>
-> > >>
-> > >> [EXTERNAL EMAIL]
-> > >>
-> > >> Commit de9647efeaa9 ("platform/x86: intel-vbtn: Only activate tablet mode
-> > >> switch on 2-in-1's") added a DMI chassis-type check to avoid accidentally
-> > >> reporting SW_TABLET_MODE = 1 to userspace on laptops.
-> > >>
-> > >> Some devices with a detachable keyboard and using the intel-vbnt (INT33D6)
-> > >> interface to report if they are in tablet mode (keyboard detached) or not,
-> > >> report 32 / "Detachable" as chassis-type, e.g. the HP Pavilion X2 series.
-> > >>
-> > >> Other devices with a detachable keyboard and using the intel-vbnt (INT33D6)
-> > >> interface to report SW_TABLET_MODE, report 8 / "Portable" as chassis-type.
-> > >> The Dell Venue 11 Pro 7130 is an example of this.
-> > >>
-> > >> Extend the DMI chassis-type check to also accept Portables and Detachables
-> > >> so that the intel-vbtn driver will report SW_TABLET_MODE on these devices.
-> > >>
-> > >> Note the chassis-type check was originally added to avoid a false-positive
-> > >> tablet-mode report on the Dell XPS 9360 laptop. To the best of my knowledge
-> > >> that laptop is using a chassis-type of 9 / "Laptop", so after this commit
-> > >> we still ignore the tablet-switch for that chassis-type.
-> > >
-> > > Yes that's correct.
-> > >
-> > >>
-> > >> Fixes: de9647efeaa9 ("platform/x86: intel-vbtn: Only activate tablet mode
-> > >> switch on 2-in-1's")
-> > >> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> > >> ---
-> > >> Looking at the Microsoft Windows documentation for tablet-mode reporting:
-> > >> https://docs.microsoft.com/en-us/windows-hardware/drivers/gpiobtn/button-
-> > >> implementation
-> > >>
-> > >> Then the presence of a tablet-mode switch is indicated by the presence
-> > >> of a PNP0C60 compatible ACPI devices. There are 2 ways in which this device
-> > >> can report the tablet-mode. 1. Directly providing a GpioInt resource inside
-> > >> the PNP0C60 device, 2. Through injecting events from a Windows driver.
-> > >>
-> > >> It seems that the intel-vbtn / the INT33D6 ACPI device is the ACPI side
-> > >> of Intel's generic solution for the case where the tablet-mode comes from
-> > >> the embedded-controller and needs to be "injected".
-> > >>
-> > >> This all suggests that it might be better to replace the chassis-type
-> > >> check with a acpi_dev_present("PNP0C60", NULL, -1) check.
-> > >>
-> > >> Mario, can you provide an acpidump and alsa-info.sh output for the
-> > >> Dell XPS 9360, so that I can check if that might help with the issue
-> > >> there, and thus is a potential candidate to replace the chassis-type
-> > >> check?
-> > >
-> > > Unfortunately with WFH right now, I don't have access to a XPS 9630 to
-> > > double check the patch series.
-> > >
-> > > However I do agree this should be a good approach.
-> >
-> > Ok, so lets stick with the chassis-type check (as amended by this patch)
-> > for now then. Then once you are able to go to your office again, we
-> > can examine the acpi_dev_present("PNP0C60", NULL, -1) alternative.
->
-> I know XPS 13's are pretty popular, perhaps someone on the mailing list who has
-> one can share ACPI dump in the interim.
+On Tue, May 05, 2020 at 06:59:03PM +0530, Calvin Johnson wrote:
+> Define phylink_fwnode_phy_connect() to connect phy specified by
+> a fwnode to a phylink instance.
+> 
+> Signed-off-by: Calvin Johnson <calvin.johnson@oss.nxp.com>
+> ---
+> 
+> Changes in v3:
+>   remove NULL return check as it is invalid
+>   remove unused phylink_device_phy_connect()
+> 
+> Changes in v2:
+>   replace of_ and acpi_ code with generic fwnode to get phy-handle.
+> 
+>  drivers/net/phy/phylink.c | 48 +++++++++++++++++++++++++++++++++++++++
+>  include/linux/phylink.h   |  3 +++
+>  2 files changed, 51 insertions(+)
+> 
+> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+> index 0f23bec431c1..560d1069426c 100644
+> --- a/drivers/net/phy/phylink.c
+> +++ b/drivers/net/phy/phylink.c
+> @@ -961,6 +961,54 @@ int phylink_connect_phy(struct phylink *pl, struct phy_device *phy)
+>  }
+>  EXPORT_SYMBOL_GPL(phylink_connect_phy);
+>  
+> +/**
+> + * phylink_fwnode_phy_connect() - connect the PHY specified in the fwnode.
+> + * @pl: a pointer to a &struct phylink returned from phylink_create()
+> + * @fwnode: a pointer to a &struct fwnode_handle.
+> + * @flags: PHY-specific flags to communicate to the PHY device driver
+> + *
+> + * Connect the phy specified @fwnode to the phylink instance specified
+> + * by @pl. Actions specified in phylink_connect_phy() will be
+> + * performed.
+> + *
+> + * Returns 0 on success or a negative errno.
+> + */
+> +int phylink_fwnode_phy_connect(struct phylink *pl,
+> +			       struct fwnode_handle *fwnode,
+> +			       u32 flags)
+> +{
+> +	struct fwnode_handle *phy_fwnode;
+> +	struct phy_device *phy_dev;
+> +	int ret = 0;
+> +
+> +	/* Fixed links and 802.3z are handled without needing a PHY */
+> +	if (pl->cfg_link_an_mode == MLO_AN_FIXED ||
+> +	    (pl->cfg_link_an_mode == MLO_AN_INBAND &&
+> +	     phy_interface_mode_is_8023z(pl->link_interface)))
+> +		return 0;
+> +
+> +	phy_fwnode = fwnode_get_phy_node(fwnode);
+> +	if ((IS_ERR(phy_fwnode)) && pl->cfg_link_an_mode == MLO_AN_PHY)
+> +		return -ENODEV;
 
-https://github.com/intel/dptfxtract/issues/13
-?
+This doesn't reflect the behaviour of phylink_of_phy_connect() - it is
+*not* a cleanup of what is there, which is:
+
+                if (!phy_node) {
+                        if (pl->cfg_link_an_mode == MLO_AN_PHY)
+                                return -ENODEV;
+                        return 0;
+                }
+
+which does:
+
+- if there is a PHY node, find the PHY and connect it.
+- if there is no PHY node, then:
+   + if we are expecting a PHY to be present, return an error.
+   + otherwise, it is not a problem, continue.
+
+That is very important behaviour - it allows drivers to call
+phylink_*_phy_connect() without knowing whether there should or should
+not be a PHY - and keeps that knowledge within phylink.  It means
+network drivers don't have to parse the firmware to find out if there's
+a fixed link or SFP cage attached, and decide whether to call these
+functions.
+
+> +
+> +	phy_dev = fwnode_phy_find_device(phy_fwnode);
+> +	fwnode_handle_put(phy_fwnode);
+> +	if (!phy_dev)
+> +		return -ENODEV;
+> +
+> +	ret = phy_attach_direct(pl->netdev, phy_dev, flags,
+> +				pl->link_interface);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = phylink_bringup_phy(pl, phy_dev, pl->link_config.interface);
+> +	if (ret)
+> +		phy_detach(phy_dev);
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(phylink_fwnode_phy_connect);
+> +
+
+I think we need to go further with this, and we need to have
+phylink_fwnode_phy_connect() functionally identical to
+phylink_of_phy_connect() for DT-based fwnodes.  Doing so will avoid
+introducing errors such as the one you've added above.
+
+The only difference between these two is that DT has a number of
+legacy properties - these can be omitted if the fwnode is not a DT
+node.
+
+Remember that fwnode is compatible with DT, so fwnode_phy_find_device()
+can internally decide whether to look for the ACPI property or one of
+the three DT properties.
+
+It also means that phylink_of_phy_connect() can become:
+
+int phylink_of_phy_connect(struct phylink *pl, struct device_node *dn,
+                           u32 flags)
+{
+        return phylink_fwnode_phy_connect(pl, of_fwnode_handle(dn), flags);
+}
 
 -- 
-With Best Regards,
-Andy Shevchenko
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line in suburbia: sync at 10.2Mbps down 587kbps up
