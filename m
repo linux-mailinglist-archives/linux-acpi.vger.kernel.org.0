@@ -2,199 +2,295 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FB481C5187
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 May 2020 11:05:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EDCA1C54A4
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 May 2020 13:43:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728540AbgEEJFi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 May 2020 05:05:38 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:24732 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727931AbgEEJFi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 May 2020 05:05:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1588669537;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=1+LmrUrtcqgzqAfGxHD9QsGnOcwbmZustjV1q6uvrdU=;
-        b=CvgMWppjspccpOh4V3psn/CsF8o/FdF0VXPlvuXJdTF8bGiq6zC8kZ6xiG2a1B1p8OoMRJ
-        a270Bzse6oGrebymYfSj3zzEXZ2OWzvWdns/tRnABWl17yaNyUVidzJ1iNhUkRoN/S4Y42
-        rL5Zy7sMMFHKUAQUWLxZZFUt6lXNZ7Q=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-104-QjicFNkXPpiGAoBhd-8CVg-1; Tue, 05 May 2020 05:05:34 -0400
-X-MC-Unique: QjicFNkXPpiGAoBhd-8CVg-1
-Received: by mail-wm1-f72.google.com with SMTP id 71so518679wmb.8
-        for <linux-acpi@vger.kernel.org>; Tue, 05 May 2020 02:05:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=1+LmrUrtcqgzqAfGxHD9QsGnOcwbmZustjV1q6uvrdU=;
-        b=XbuzDL6almM4DI5K97vyNefOJ0udXrf+PZe+G6LxNj1iUcIH1+cODFgrcYZGPEqyzI
-         3ApeS3IFTDBgnqf90Uvw9Fp/YDu7HAmXxG03YAW3YEIckiNErCzlyWHnQLbL96RjUpYn
-         3LRWpz8dFza62Eg+Rixv2ebF0uvJLDMXDMGGYFapWuJHPfVNJXIVoljJ22RSG3y45Cil
-         K2uaj0Fg5Oijctgqv8ba3hQZ9tzakzIEu+ivlzmloA7rP9pDPhmmiZoJCmjOukrRUWq3
-         Kc+dQyjNXiStOIx5OIqVfmXT3Rd8tD+j2JnAOOBtHPSP5m5C0oPF0R/vakhNsBd5agNX
-         ncXQ==
-X-Gm-Message-State: AGi0PuZWwFQhENGiYTQqAs3eN3si4+3ZayS+RFOLTLke9kY4kk/Xx3BD
-        yiwt/RxiKDYgHiLJHT3grTFzMV6B2jCP8oRmkydZbnEXq0aQ2icJCA1kxlmlGNbv4Ytfp8X7iZy
-        lR0YmlY2YmzqM5WhP/jYa4Q==
-X-Received: by 2002:adf:ea02:: with SMTP id q2mr2407573wrm.31.1588669533069;
-        Tue, 05 May 2020 02:05:33 -0700 (PDT)
-X-Google-Smtp-Source: APiQypKtqaQzd19ogkzAgqERbPwpBGWoQ3+Cfgvk9+W2U1ocgZR5wFhnTwBp38CSTb/3ae2ZTv89Bw==
-X-Received: by 2002:adf:ea02:: with SMTP id q2mr2407542wrm.31.1588669532831;
-        Tue, 05 May 2020 02:05:32 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id n7sm2069667wrm.86.2020.05.05.02.05.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 May 2020 02:05:32 -0700 (PDT)
-Subject: Re: [PATCH 4/5] platform/x86: intel-vbtn: Also handle tablet-mode
- switch on "Detachable" and "Portable" chassis-types
-To:     Mario.Limonciello@dell.com, dvhart@infradead.org,
-        andy@infradead.org
-Cc:     linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200502182951.114231-1-hdegoede@redhat.com>
- <20200502182951.114231-5-hdegoede@redhat.com>
- <7c3e5f844a224ff780cd8e3b3f5f7641@AUSX13MPC101.AMER.DELL.COM>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <13a8ec94-1eae-4d95-7238-85c612ebc896@redhat.com>
-Date:   Tue, 5 May 2020 11:05:31 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1728869AbgEELnt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 May 2020 07:43:49 -0400
+Received: from mga01.intel.com ([192.55.52.88]:62531 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728497AbgEELns (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 5 May 2020 07:43:48 -0400
+IronPort-SDR: teX/szcJNDRZK2FQLhKzuPmPVtXYaDzxDtVWMLqGWf/O6D+9CXuidtM++wj/7TbDWfgW6dd4LO
+ XxoNWZsGTUsg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2020 04:43:47 -0700
+IronPort-SDR: gbqUbdAidyOdY/+RyXLPOE4jOoKjkeE808a5nZLDiXVJqlEjttfcExw7e3iWJC/hv3um8hgYXA
+ cS75dEXfevug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,354,1583222400"; 
+   d="scan'208";a="304454962"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 05 May 2020 04:43:46 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jVvzF-000GMC-FH; Tue, 05 May 2020 19:43:45 +0800
+Date:   Tue, 05 May 2020 19:43:40 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 1985b45de01473658db9194e948eb151f9e076ae
+Message-ID: <5eb1516c.V6ENfdDLNTTMZ8HN%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <7c3e5f844a224ff780cd8e3b3f5f7641@AUSX13MPC101.AMER.DELL.COM>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: 1985b45de01473658db9194e948eb151f9e076ae  Merge branch 'pm-cpuidle' into linux-next
 
-On 5/4/20 5:37 PM, Mario.Limonciello@dell.com wrote:
-> 
-> 
->> -----Original Message-----
->> From: Hans de Goede <hdegoede@redhat.com>
->> Sent: Saturday, May 2, 2020 1:30 PM
->> To: Darren Hart; Andy Shevchenko; Limonciello, Mario
->> Cc: Hans de Goede; linux-acpi@vger.kernel.org; platform-driver-
->> x86@vger.kernel.org; linux-kernel@vger.kernel.org
->> Subject: [PATCH 4/5] platform/x86: intel-vbtn: Also handle tablet-mode switch
->> on "Detachable" and "Portable" chassis-types
->>
->>
->> [EXTERNAL EMAIL]
->>
->> Commit de9647efeaa9 ("platform/x86: intel-vbtn: Only activate tablet mode
->> switch on 2-in-1's") added a DMI chassis-type check to avoid accidentally
->> reporting SW_TABLET_MODE = 1 to userspace on laptops.
->>
->> Some devices with a detachable keyboard and using the intel-vbnt (INT33D6)
->> interface to report if they are in tablet mode (keyboard detached) or not,
->> report 32 / "Detachable" as chassis-type, e.g. the HP Pavilion X2 series.
->>
->> Other devices with a detachable keyboard and using the intel-vbnt (INT33D6)
->> interface to report SW_TABLET_MODE, report 8 / "Portable" as chassis-type.
->> The Dell Venue 11 Pro 7130 is an example of this.
->>
->> Extend the DMI chassis-type check to also accept Portables and Detachables
->> so that the intel-vbtn driver will report SW_TABLET_MODE on these devices.
->>
->> Note the chassis-type check was originally added to avoid a false-positive
->> tablet-mode report on the Dell XPS 9360 laptop. To the best of my knowledge
->> that laptop is using a chassis-type of 9 / "Laptop", so after this commit
->> we still ignore the tablet-switch for that chassis-type.
-> 
-> Yes that's correct.
-> 
->>
->> Fixes: de9647efeaa9 ("platform/x86: intel-vbtn: Only activate tablet mode
->> switch on 2-in-1's")
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->> Looking at the Microsoft Windows documentation for tablet-mode reporting:
->> https://docs.microsoft.com/en-us/windows-hardware/drivers/gpiobtn/button-
->> implementation
->>
->> Then the presence of a tablet-mode switch is indicated by the presence
->> of a PNP0C60 compatible ACPI devices. There are 2 ways in which this device
->> can report the tablet-mode. 1. Directly providing a GpioInt resource inside
->> the PNP0C60 device, 2. Through injecting events from a Windows driver.
->>
->> It seems that the intel-vbtn / the INT33D6 ACPI device is the ACPI side
->> of Intel's generic solution for the case where the tablet-mode comes from
->> the embedded-controller and needs to be "injected".
->>
->> This all suggests that it might be better to replace the chassis-type
->> check with a acpi_dev_present("PNP0C60", NULL, -1) check.
->>
->> Mario, can you provide an acpidump and alsa-info.sh output for the
->> Dell XPS 9360, so that I can check if that might help with the issue
->> there, and thus is a potential candidate to replace the chassis-type
->> check?
-> 
-> Unfortunately with WFH right now, I don't have access to a XPS 9630 to
-> double check the patch series.
-> 
-> However I do agree this should be a good approach.
+elapsed time: 1303m
 
-Ok, so lets stick with the chassis-type check (as amended by this patch)
-for now then. Then once you are able to go to your office again, we
-can examine the acpi_dev_present("PNP0C60", NULL, -1) alternative.
+configs tested: 235
+configs skipped: 0
 
-> Reviewed-by: Mario Limonciello <Mario.limonciello@dell.com>
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Thank you.
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm                              allmodconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+arm                           efm32_defconfig
+arm                         at91_dt_defconfig
+arm                        shmobile_defconfig
+arm64                               defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                           sunxi_defconfig
+arm                        multi_v7_defconfig
+sparc                            allyesconfig
+powerpc                             defconfig
+ia64                                defconfig
+parisc                generic-32bit_defconfig
+mips                             allmodconfig
+xtensa                       common_defconfig
+m68k                           sun3_defconfig
+h8300                       h8s-sim_defconfig
+s390                             allyesconfig
+h8300                    h8300h-sim_defconfig
+powerpc                     ep8248e_defconfig
+ia64                        generic_defconfig
+riscv                          rv32_defconfig
+powerpc                          g5_defconfig
+mips                          ath79_defconfig
+nds32                             allnoconfig
+mips                       capcella_defconfig
+riscv                             allnoconfig
+parisc                           allmodconfig
+s390                          debug_defconfig
+ia64                             allyesconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                              allnoconfig
+ia64                          tiger_defconfig
+ia64                         bigsur_defconfig
+ia64                             alldefconfig
+m68k                       m5475evb_defconfig
+m68k                             allmodconfig
+m68k                       bvme6000_defconfig
+m68k                          multi_defconfig
+nios2                         3c120_defconfig
+nios2                         10m50_defconfig
+c6x                        evmc6678_defconfig
+c6x                              allyesconfig
+openrisc                 simple_smp_defconfig
+openrisc                    or1ksim_defconfig
+nds32                               defconfig
+csky                                defconfig
+alpha                               defconfig
+h8300                     edosk2674_defconfig
+xtensa                          iss_defconfig
+arc                                 defconfig
+arc                              allyesconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+mips                            ar7_defconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                malta_kvm_guest_defconfig
+mips                         tb0287_defconfig
+mips                           ip32_defconfig
+mips                  decstation_64_defconfig
+mips                      loongson3_defconfig
+mips                        bcm63xx_defconfig
+parisc                            allnoconfig
+parisc                generic-64bit_defconfig
+parisc                           allyesconfig
+powerpc                      chrp32_defconfig
+powerpc                       holly_defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+powerpc                           allnoconfig
+powerpc                  mpc866_ads_defconfig
+powerpc                    amigaone_defconfig
+powerpc                    adder875_defconfig
+powerpc                     mpc512x_defconfig
+m68k                 randconfig-a001-20200505
+mips                 randconfig-a001-20200505
+nds32                randconfig-a001-20200505
+parisc               randconfig-a001-20200505
+alpha                randconfig-a001-20200505
+riscv                randconfig-a001-20200505
+m68k                 randconfig-a001-20200503
+mips                 randconfig-a001-20200503
+nds32                randconfig-a001-20200503
+alpha                randconfig-a001-20200503
+parisc               randconfig-a001-20200503
+riscv                randconfig-a001-20200503
+m68k                 randconfig-a001-20200502
+mips                 randconfig-a001-20200502
+nds32                randconfig-a001-20200502
+alpha                randconfig-a001-20200502
+parisc               randconfig-a001-20200502
+riscv                randconfig-a001-20200502
+h8300                randconfig-a001-20200503
+nios2                randconfig-a001-20200503
+microblaze           randconfig-a001-20200503
+c6x                  randconfig-a001-20200503
+sparc64              randconfig-a001-20200503
+s390                 randconfig-a001-20200504
+xtensa               randconfig-a001-20200504
+sh                   randconfig-a001-20200504
+openrisc             randconfig-a001-20200504
+csky                 randconfig-a001-20200504
+s390                 randconfig-a001-20200505
+xtensa               randconfig-a001-20200505
+sh                   randconfig-a001-20200505
+openrisc             randconfig-a001-20200505
+csky                 randconfig-a001-20200505
+xtensa               randconfig-a001-20200503
+sh                   randconfig-a001-20200503
+openrisc             randconfig-a001-20200503
+csky                 randconfig-a001-20200503
+s390                 randconfig-a001-20200430
+xtensa               randconfig-a001-20200430
+csky                 randconfig-a001-20200430
+openrisc             randconfig-a001-20200430
+sh                   randconfig-a001-20200430
+x86_64               randconfig-a003-20200505
+x86_64               randconfig-a001-20200505
+i386                 randconfig-a001-20200505
+i386                 randconfig-a003-20200505
+i386                 randconfig-a002-20200505
+i386                 randconfig-b003-20200503
+x86_64               randconfig-b002-20200503
+i386                 randconfig-b001-20200503
+x86_64               randconfig-b003-20200503
+x86_64               randconfig-b001-20200503
+i386                 randconfig-b002-20200503
+i386                 randconfig-b003-20200502
+i386                 randconfig-b001-20200502
+x86_64               randconfig-b003-20200502
+x86_64               randconfig-b001-20200502
+i386                 randconfig-b002-20200502
+x86_64               randconfig-c002-20200502
+i386                 randconfig-c002-20200502
+i386                 randconfig-c001-20200502
+i386                 randconfig-c003-20200502
+x86_64               randconfig-c002-20200505
+x86_64               randconfig-c001-20200505
+i386                 randconfig-c002-20200505
+i386                 randconfig-c003-20200505
+x86_64               randconfig-c003-20200505
+i386                 randconfig-c001-20200505
+i386                 randconfig-d003-20200502
+i386                 randconfig-d001-20200502
+x86_64               randconfig-d002-20200502
+i386                 randconfig-d002-20200502
+x86_64               randconfig-e003-20200503
+x86_64               randconfig-e002-20200503
+i386                 randconfig-e003-20200503
+x86_64               randconfig-e001-20200503
+i386                 randconfig-e002-20200503
+i386                 randconfig-e001-20200503
+i386                 randconfig-e003-20200505
+x86_64               randconfig-e002-20200505
+x86_64               randconfig-e003-20200505
+x86_64               randconfig-e001-20200505
+i386                 randconfig-e002-20200505
+i386                 randconfig-e001-20200505
+i386                 randconfig-f003-20200503
+x86_64               randconfig-f002-20200503
+i386                 randconfig-f001-20200503
+i386                 randconfig-f002-20200503
+i386                 randconfig-f003-20200505
+x86_64               randconfig-f001-20200505
+x86_64               randconfig-f003-20200505
+i386                 randconfig-f001-20200505
+i386                 randconfig-f002-20200505
+i386                 randconfig-f003-20200502
+x86_64               randconfig-f001-20200502
+x86_64               randconfig-f003-20200502
+x86_64               randconfig-f002-20200502
+i386                 randconfig-f001-20200502
+i386                 randconfig-f002-20200502
+i386                 randconfig-g003-20200505
+i386                 randconfig-g002-20200505
+i386                 randconfig-g001-20200505
+x86_64               randconfig-g002-20200505
+i386                 randconfig-h001-20200503
+i386                 randconfig-h002-20200503
+i386                 randconfig-h003-20200503
+x86_64               randconfig-h002-20200503
+ia64                 randconfig-a001-20200503
+arm64                randconfig-a001-20200503
+arc                  randconfig-a001-20200503
+arm                  randconfig-a001-20200503
+sparc                randconfig-a001-20200503
+ia64                 randconfig-a001-20200505
+arc                  randconfig-a001-20200505
+powerpc              randconfig-a001-20200505
+arm                  randconfig-a001-20200505
+sparc                randconfig-a001-20200505
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                       zfcpdump_defconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                             alldefconfig
+s390                                defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                            titan_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                                allnoconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                    rhel-7.6-kselftests
 
-Regards,
-
-Hans
-
-
-
-
->> ---
->>   drivers/platform/x86/intel-vbtn.c | 12 +++++++++++-
->>   1 file changed, 11 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/platform/x86/intel-vbtn.c b/drivers/platform/x86/intel-
->> vbtn.c
->> index 500fae82e12c..4921fc15dc6c 100644
->> --- a/drivers/platform/x86/intel-vbtn.c
->> +++ b/drivers/platform/x86/intel-vbtn.c
->> @@ -158,12 +158,22 @@ static void detect_tablet_mode(struct platform_device
->> *device)
->>   static bool intel_vbtn_has_switches(acpi_handle handle)
->>   {
->>   	const char *chassis_type = dmi_get_system_info(DMI_CHASSIS_TYPE);
->> +	unsigned long chassis_type_int;
->>   	unsigned long long vgbs;
->>   	acpi_status status;
->>
->> -	if (!(chassis_type && strcmp(chassis_type, "31") == 0))
->> +	if (kstrtoul(chassis_type, 10, &chassis_type_int))
->>   		return false;
->>
->> +	switch (chassis_type_int) {
->> +	case  8: /* Portable */
->> +	case 31: /* Convertible */
->> +	case 32: /* Detachable */
->> +		break;
->> +	default:
->> +		return false;
->> +	}
->> +
->>   	status = acpi_evaluate_integer(handle, "VGBS", NULL, &vgbs);
->>   	return ACPI_SUCCESS(status);
->>   }
->> --
->> 2.26.0
-> 
-
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
