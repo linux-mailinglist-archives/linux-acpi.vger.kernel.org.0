@@ -2,106 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FEF41C70F2
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 May 2020 14:55:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 283D21C7129
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 May 2020 14:58:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728716AbgEFMza (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 6 May 2020 08:55:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38158 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728699AbgEFMzZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 6 May 2020 08:55:25 -0400
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2400E20769;
-        Wed,  6 May 2020 12:55:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588769724;
-        bh=hOEa8M2o2GKkO0H6+efDl9rCOdcYeheD//h24pzNdQU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KIRtzLVP863khnT7pZ+po91AuV7aLKyKLxF7+vpN69Uu0uYB06h5G/hVOf6cNA6tN
-         O8ysp4ZIhy8zPojiBWvZYUzCDAJN2mX4oo1ZR1ZP2c7fwA9FjPHFpppi8FjXMKCl0J
-         SF9HUCCh0ARwmuc6oMT6ZH2tMKvrY2xru4A+IZlY=
-Date:   Wed, 6 May 2020 13:55:19 +0100
-From:   Will Deacon <will@kernel.org>
-To:     Hanjun Guo <guohanjun@huawei.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Linuxarm <linuxarm@huawei.com>
-Subject: Re: [PATCH v2 2/2] ACPI/IORT: work around num_ids ambiguity
-Message-ID: <20200506125519.GI8043@willie-the-truck>
-References: <20200501161014.5935-1-ardb@kernel.org>
- <20200501161014.5935-3-ardb@kernel.org>
- <bbd56b89-643a-2f86-79af-f65ef46822ef@huawei.com>
- <CAMj1kXEuV_Lmhu-2zZhD-YgL-zu+o0v+vooQTK30cemJW5dfNg@mail.gmail.com>
- <86c60895-365e-9166-8f70-7a353bbc4e86@huawei.com>
+        id S1728296AbgEFM6q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 May 2020 08:58:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35918 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728081AbgEFM6q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 May 2020 08:58:46 -0400
+Received: from mail-oo1-xc41.google.com (mail-oo1-xc41.google.com [IPv6:2607:f8b0:4864:20::c41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34E67C061A0F
+        for <linux-acpi@vger.kernel.org>; Wed,  6 May 2020 05:58:46 -0700 (PDT)
+Received: by mail-oo1-xc41.google.com with SMTP id x17so458279ooa.3
+        for <linux-acpi@vger.kernel.org>; Wed, 06 May 2020 05:58:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=ruwpJ2SIHBd8FaO8vvKDrjjlbrhdRWEAzgpAo7eh+cM=;
+        b=qI80E4+I6eLsoH/893foD+osWZP0xywkogWWjp2Z4Upd27PSXbIRcGtzpa5UH8JnUi
+         K/97GDXk95D1+cI7OdPOQxhEWdtTbEHYgmM3/6xV/REB5FmKAm/ANkYf0+vlTYOsHbhm
+         bKgwYgGtQ9ELSIKUgMwUE/q847OlnZIdHbNmG9nc420AAghZpglhDgUG8J8tKPRSpngW
+         AMD/+shoRnlAGTIgomQ1isGrCLzmBetrk63URKBDKmKu5QrKBdIXTYSHnByYbhQkLb/O
+         H/4s7hZdGQOWYmvQAIww+APIPXDGR7rypnd4a7L3SP8dcMWoFBqZbRzmta2htDn/g5qn
+         heuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=ruwpJ2SIHBd8FaO8vvKDrjjlbrhdRWEAzgpAo7eh+cM=;
+        b=jBOQY8yeuJQa4rZE/OHLuBdzNRxV4yvmmNRtvYmpEu1xU5qhgQ3vSLuq1rzkTWE1B7
+         7w6ScIcHeAJq6jcZFeUrIp954BY1Z9ULW3eL4Og80UlJBs5tWJ5kYys2awjb/llu/CYx
+         Gw1m70OiHCF7f5hF60gICXqMWHzPCuIqKlNnQcPCYjcXXo2QnHccQPEtwnuE6bRE+kjD
+         chasLvaeW0HUtowInkvTbcNcYc+riRrsRtrpZ+dw8aXiGRb0traHHiInQZRzR4CShJb6
+         3dk/yZecNMkR3zNsTRdbbVrDKEb5AwUGpWALSCEBGog+ZsbUy4KbYPGCBbpbV+73M3Wd
+         e0Jw==
+X-Gm-Message-State: AGi0PuZooi1VihohBzdHQYQsKYvlyErchZY1y2G9dmfd2Uk10Kxwx49v
+        FquKGLEKvFDX4S5pIPn4xURoSlEQyDv7A8vBIqlg3pc3HyDfaw==
+X-Google-Smtp-Source: APiQypJu8to6Wz5qLtkBZB1KslHZ5cfQthRn9rn7p5EXX5uQF9cEW2Xe3LBv6qinhLmLt9m4ae51jYYHc1qg5FRU2GQ=
+X-Received: by 2002:a4a:e04b:: with SMTP id v11mr2911757oos.92.1588769925427;
+ Wed, 06 May 2020 05:58:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <86c60895-365e-9166-8f70-7a353bbc4e86@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+From:   =?UTF-8?B?5Lq/5LiA?= <teroincn@gmail.com>
+Date:   Wed, 6 May 2020 20:58:33 +0800
+Message-ID: <CANTwqXBYTyQukX4nA20iq+juGqGbb7-gwrMLhBmP4FGDgSdg-g@mail.gmail.com>
+Subject: is there a memleak in function acpi_cppc_processor_probe
+To:     rjw@rjwysocki.net, lenb@kernel.org
+Cc:     linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 06, 2020 at 08:44:55PM +0800, Hanjun Guo wrote:
-> On 2020/5/4 15:36, Ard Biesheuvel wrote:
-> > On Mon, 4 May 2020 at 06:32, Hanjun Guo <guohanjun@huawei.com> wrote:
-> > > On 2020/5/2 0:10, Ard Biesheuvel wrote:
-> > > > diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> > > > index 98be18266a73..9f139a94a1d3 100644
-> > > > --- a/drivers/acpi/arm64/iort.c
-> > > > +++ b/drivers/acpi/arm64/iort.c
-> > > > @@ -300,7 +300,7 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
-> > > >    }
-> > > > 
-> > > >    static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
-> > > > -                    u32 *rid_out)
-> > > > +                    u32 *rid_out, bool check_overlap)
-> > > >    {
-> > > >        /* Single mapping does not care for input id */
-> > > >        if (map->flags & ACPI_IORT_ID_SINGLE_MAPPING) {
-> > > > @@ -316,10 +316,34 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
-> > > >        }
-> > > > 
-> > > >        if (rid_in < map->input_base ||
-> > > > -         (rid_in >= map->input_base + map->id_count))
-> > > > +         (rid_in > map->input_base + map->id_count))
-> > > >                return -ENXIO;
-> > > > 
-> > > > +     if (check_overlap) {
-> > > > +             /*
-> > > > +              * We already found a mapping for this input ID at the end of
-> > > > +              * another region. If it coincides with the start of this
-> > > > +              * region, we assume the prior match was due to the off-by-1
-> > > > +              * issue mentioned below, and allow it to be superseded.
-> > > > +              * Otherwise, things are *really* broken, and we just disregard
-> > > > +              * duplicate matches entirely to retain compatibility.
-> > > > +              */
-> > > > +             pr_err(FW_BUG "[map %p] conflicting mapping for input ID 0x%x\n",
-> > > > +                    map, rid_in);
-> > > 
-> > > As we already applied a workaround here, can we add "applying
-> > > workaround" in the error message? This will make the customers
-> > > less uneasy to see such message in the boot log. Once the product
-> > > was deliveried to customers, it's not that easy to update all the
-> > > firmwares entirely.
-> > > 
-> > 
-> > Sure.
-> 
-> Since Will already merged this patchset, I would like to send a patch
-> on top of it, what do you think?
+Hi all,
+I notice that most of the usage of kobject_init_and_add in drivers are
+wrong, and now some drivers code has maken it right
+please see commit dfb5394f804e (https://lkml.org/lkml/2020/4/11/282).
+function acpi_cppc_processor_probe() in drivers/acpi/cppc_acpi.c may
+have the similar issue and leak kobject.
+if kobject_init_and_add() failed, the cpc_ptr->kobj may already
+increased it's refcnt and allocated memory to store it's name,
+so a kobject_put is need before return.
 
-Yes, please! I figured I'd queue it, as I could always revert it if your
-testing came back negative but extra stuff on top is always fine.
+int acpi_cppc_processor_probe(struct acpi_processor *pr)
+{
 
-Will
+ret = kobject_init_and_add(&cpc_ptr->kobj, &cppc_ktype, &cpu_dev->kobj,
+"acpi_cppc");
+if (ret) {
+per_cpu(cpc_desc_ptr, pr->id) = NULL;
+goto out_free;
+}
+
+kfree(output.pointer);
+return 0;
+
+out_free:
+/* Free all the mapped sys mem areas for this CPU */
+for (i = 2; i < cpc_ptr->num_entries; i++) {
+void __iomem *addr = cpc_ptr->cpc_regs[i-2].sys_mem_vaddr;
+
+if (addr)
+iounmap(addr);
+}
+kfree(cpc_ptr);
+
+out_buf_free:
+kfree(output.pointer);
+return ret;
+}
+
+
+Best regards,
+Lin Yi
