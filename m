@@ -2,209 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE5661C8085
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 May 2020 05:31:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FCA31C808E
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 May 2020 05:38:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725857AbgEGDbZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 6 May 2020 23:31:25 -0400
-Received: from mo-csw1114.securemx.jp ([210.130.202.156]:48660 "EHLO
-        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725809AbgEGDbZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 May 2020 23:31:25 -0400
-Received: by mo-csw.securemx.jp (mx-mo-csw1114) id 0473V11k016859; Thu, 7 May 2020 12:31:01 +0900
-X-Iguazu-Qid: 2wHHidEfDYx9vilE7l
-X-Iguazu-QSIG: v=2; s=0; t=1588822261; q=2wHHidEfDYx9vilE7l; m=6BRE7ZphtOumFxP7lJTmXQeCwrfuLxBXJdfkmmJii4E=
-Received: from imx12.toshiba.co.jp (imx12.toshiba.co.jp [61.202.160.132])
-        by relay.securemx.jp (mx-mr1113) id 0473UwSB030330;
-        Thu, 7 May 2020 12:30:59 +0900
-Received: from enc02.toshiba.co.jp ([61.202.160.51])
-        by imx12.toshiba.co.jp  with ESMTP id 0473UwHP018679;
-        Thu, 7 May 2020 12:30:58 +0900 (JST)
-Received: from hop101.toshiba.co.jp ([133.199.85.107])
-        by enc02.toshiba.co.jp  with ESMTP id 0473Uv3g003704;
-        Thu, 7 May 2020 12:30:58 +0900
-From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Borislav Petkov <bp@alien8.de>,
-        James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
-        linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: [PATCH] efi: cper: Add support for printing Firmware Error Record Reference
-References: <20200427085242.2380614-1-punit1.agrawal@toshiba.co.jp>
-        <CAMj1kXFvaA0k7fZmWcWrjDEPu3rKUt2SM6y3pdROLQztjPKM=A@mail.gmail.com>
-Date:   Thu, 07 May 2020 12:30:56 +0900
-In-Reply-To: <CAMj1kXFvaA0k7fZmWcWrjDEPu3rKUt2SM6y3pdROLQztjPKM=A@mail.gmail.com>
-        (Ard Biesheuvel's message of "Thu, 30 Apr 2020 14:08:08 +0200")
-X-TSB-HOP: ON
-Message-ID: <877dxos9ov.fsf@kokedama.swc.toshiba.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S1725879AbgEGDiZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 May 2020 23:38:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60614 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725857AbgEGDiY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 May 2020 23:38:24 -0400
+Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58B28C061A0F
+        for <linux-acpi@vger.kernel.org>; Wed,  6 May 2020 20:38:24 -0700 (PDT)
+Received: by mail-oi1-x233.google.com with SMTP id c124so3706474oib.13
+        for <linux-acpi@vger.kernel.org>; Wed, 06 May 2020 20:38:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=d0cQq4xYVzYPxzyVLbBLMpWehBwGYgPxNzAF85GiSfE=;
+        b=XeHQ3OiHkwJ8xT3Ya6XM1SJOsqPv23Pjveh468DQabZ5fp+bykhAi+ZmC9PoKgG9CR
+         Yl+3Xi4b7WQmgDPI9noIy777DxVwgGgP0oSxGHoi0woUcd8iXj2H5VI81C6dabWmD0P/
+         h+RagNwXqFR8VAmWPzqHmvaxrlpfClz72fKiuqpA0dtAiodikqRvbvzpKL94i/ZK9Hwu
+         nqvWexmvmy1bw8u7K7urw4H1igbO1rcqoPDZIBRJywqRqsj1ClwMPhjHcAUnNrhkTYTv
+         QCiwQQOzslL7v0wqJpLIihMWVNlKRrjyZMG6ASI8Cpd9AxqdHIQloHNHkXww8JL0OUeL
+         uBfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=d0cQq4xYVzYPxzyVLbBLMpWehBwGYgPxNzAF85GiSfE=;
+        b=A11uyRaduNRIo1sNRviF3P0XKaBEHW9T6s5BR5pmkdxslzQdaFMo5a9n/lMI1EAerl
+         BVY0ziFoKUg/7mvvN7iWN6d9xvsV7eV9X+vqMayKXijGijCxX/wnOZ6MDsz/5HKtn1eN
+         w3QTwMHYJL+tgGW5FtbG/o3KjYgFJKiw2gilUfAd1oNNIF0kNEDgC6nZEjJFZxPc04L3
+         n0UtDmcD9qFWO0Qlycb8vcbBOSXYKHwUWnU+8mtUelOu8mxxIWe3iTYz1hHQ8m0J/4kI
+         dUQrCg/GiTixAHTp7C3LEZrTWTBY2cM+qcpOjOLxPotzJUnDi3zLiMAg2zaHhCxkhloN
+         lgMw==
+X-Gm-Message-State: AGi0PuaQivrA9VnCNeD/F7iHbVHFnHa20k5+8B7EYZfpQxSp9KTjoRV+
+        Td8O0b1EcThSL8tO6awt/sIcozHHgtikvM2WQHQ4H9/kdHXZJGY8
+X-Google-Smtp-Source: APiQypKeoTq4Fn0g+OFMHCi+moiq/xR/F6cwta6TxxrGshqaggMLYBBmp/8fE4jGyVDn1L0+Qub8g2v2+ELApD1EDO0=
+X-Received: by 2002:aca:447:: with SMTP id 68mr4938547oie.94.1588822702710;
+ Wed, 06 May 2020 20:38:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <CAB4CAwdqo7=MvyG_PE+PGVfeA17AHF5i5JucgaKqqMX6mjArbQ@mail.gmail.com>
+ <CAJZ5v0gZH61ui04Howzif-_Xc3-X9GyAx7FgZ=ZS2X=4KotEng@mail.gmail.com> <CAJZ5v0gX1gx1_zTZg=M+xEOqxPEaq8ZU-N3hwk7OGcGdzrdBTg@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gX1gx1_zTZg=M+xEOqxPEaq8ZU-N3hwk7OGcGdzrdBTg@mail.gmail.com>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Thu, 7 May 2020 11:38:11 +0800
+Message-ID: <CAB4CAweZcN0SPe-a7jbthV=-ip9cCzJOM=NfP9YvtXw97ugKgQ@mail.gmail.com>
+Subject: Re: System fails to exit s2idle by a keystroke on my laptop
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Seth Forshee <seth.forshee@canonical.com>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Ard,
-
-Ard Biesheuvel <ardb@kernel.org> writes:
-
-> Hello Punit,
+On Wed, May 6, 2020 at 6:19 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> On Mon, 27 Apr 2020 at 11:03, Punit Agrawal
-> <punit1.agrawal@toshiba.co.jp> wrote:
->>
->> While debugging a boot failure, the following unknown error record was
->> seen in the boot logs.
->>
->>     <...>
->>     BERT: Error records from previous boot:
->>     [Hardware Error]: event severity: fatal
->>     [Hardware Error]:  Error 0, type: fatal
->>     [Hardware Error]:   section type: unknown, 81212a96-09ed-4996-9471-8d729c8e69ed
->>     [Hardware Error]:   section length: 0x290
->>     [Hardware Error]:   00000000: 00000001 00000000 00000000 00020002  ................
->>     [Hardware Error]:   00000010: 00020002 0000001f 00000320 00000000  ........ .......
->>     [Hardware Error]:   00000020: 00000000 00000000 00000000 00000000  ................
->>     [Hardware Error]:   00000030: 00000000 00000000 00000000 00000000  ................
->>     <...>
->>
->> On further investigation, it was found that the error record with
->> UUID (81212a96-09ed-4996-9471-8d729c8e69ed) has been defined in the
->> UEFI Specification at least since v2.4 and has recently had additional
->> fields defined in v2.7 Section N.2.10 Firmware Error Record Reference.
->>
->> Add support for parsing and printing the defined fields to give users
->> a chance to figure out what's went wrong.
->>
->> Signed-off-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
->> Cc: Ard Biesheuvel <ardb@kernel.org>
->> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
->> Cc: Borislav Petkov <bp@alien8.de>
->> Cc: James Morse <james.morse@arm.com>
->> Cc: linux-acpi@vger.kernel.org
->> Cc: linux-efi@vger.kernel.org
-
-[...]
-
->>  drivers/firmware/efi/cper.c | 49 +++++++++++++++++++++++++++++++++++++
->>  include/linux/cper.h        | 11 +++++++++
->>  2 files changed, 60 insertions(+)
->>
->> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
->> index 9d2512913d25..153b95257e23 100644
->> --- a/drivers/firmware/efi/cper.c
->> +++ b/drivers/firmware/efi/cper.c
->> @@ -407,6 +407,46 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
->>         }
->>  }
->>
->> +static const char * const fw_err_rec_type_strs[] = {
->> +       "IPF SAL Error Record",
->> +       "SOC Firmware Error Record Type1 (Legacy CrashLog Support)",
->> +       "SOC Firmware Error Record Type2",
->> +};
->> +
->> +static void cper_print_fw_err(const char *pfx,
->> +                             struct acpi_hest_generic_data *gdata,
->> +                             const struct cper_sec_fw_err_rec_ref *fw_err)
->> +{
->> +       void *buf = acpi_hest_get_payload(gdata);
->> +       u32 offset, length = gdata->error_data_length;
->> +
->> +       printk("%s""Firmware Error Record Type: %s\n", pfx,
->> +              fw_err->record_type < ARRAY_SIZE(fw_err_rec_type_strs) ?
->> +              fw_err_rec_type_strs[fw_err->record_type] : "unknown");
->> +
->> +       /* Record Type based on UEFI 2.7 */
->> +       if (fw_err->revision == 0)
->> +               printk("%s""Record Identifier: %08llx\n", pfx,
->> +                      fw_err->record_identifier);
->> +       else if (fw_err->revision == 2)
->> +               printk("%s""Record Identifier: %pUl\n", pfx,
->> +                      &fw_err->record_identifier_guid);
->> +
+> On Wed, May 6, 2020 at 11:32 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >
+> >
+> > Thanks for the report, the issue evidently is EC-related.
+> >
+> > > @@ -1024,7 +1024,7 @@ static bool acpi_s2idle_wake(void)
+> > >                  * regarded as a spurious one.
+> > >                  */
+> > >                 if (!acpi_ec_dispatch_gpe())
+> > > -                       return false;
+> > > +                       return true;
+> >
+> > Have you tried commenting out simply removing the if () check and the
+> > following return statement?
 >
-> Please use {} for multi-line statements between the ifs
+> Scratch that.
 >
->> +       if (fw_err->revision == 0)
->> +               offset = offsetof(struct cper_sec_fw_err_rec_ref,
->> +                                 record_identifier_guid);
->> +       else if (fw_err->revision == 1)
->> +               offset = offsetof(struct cper_sec_fw_err_rec_ref,
->> +                                 record_identifier);
->> +       else
->> +               offset = sizeof(*fw_err);
->> +
+> Instead, please try doing
 >
-> This logic is slightly confusing, so it could do with a comment
-> regarding which part of the structure is being dumped and why.
+> acpi_ec_dispatch_gpe()
 >
->
->> +       buf += offset;
->> +       length -= offset;
->> +
->> +       print_hex_dump(pfx, "", DUMP_PREFIX_OFFSET, 16, 4, buf, length, true);
->> +}
->> +
->>  static void cper_print_tstamp(const char *pfx,
->>                                    struct acpi_hest_generic_data_v300 *gdata)
->>  {
->> @@ -494,6 +534,15 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
->>                 else
->>                         goto err_section_too_small;
->>  #endif
->> +       } else if (guid_equal(sec_type, &CPER_SEC_FW_ERR_REC_REF)) {
->> +               struct cper_sec_fw_err_rec_ref *fw_err = acpi_hest_get_payload(gdata);
->> +
->> +               printk("%ssection_type: Firmware Error Record Reference\n",
->> +                      newpfx);
->> +               if (gdata->error_data_length >= sizeof(*fw_err))
->> +                       cper_print_fw_err(newpfx, gdata, fw_err);
->
-> This doesn't work for revision 0 structures unless they happen to have
-> some trailing data, which is not necessarily the case, right?
+> instead of the if () and the following return statement.
 
-Good catch. I will re-work this to avoid skipping revision 0 record.
+Yes. I verified with the modification you suggested on my laptop. It's
+working OK.
+I can wake from a keystroke w/o problem.
 
->> +               else
->> +                       goto err_section_too_small;
->>         } else {
->>                 const void *err = acpi_hest_get_payload(gdata);
->>
->> diff --git a/include/linux/cper.h b/include/linux/cper.h
->> index 4f005d95ce88..5cb57e69df70 100644
->> --- a/include/linux/cper.h
->> +++ b/include/linux/cper.h
->> @@ -521,6 +521,17 @@ struct cper_sec_pcie {
->>         u8      aer_info[96];
->>  };
->>
->> +/* Firmware Error Record Reference, UEFI v2.7 sec N.2.10  */
->> +struct cper_sec_fw_err_rec_ref {
->> +       u8 record_type;
->> +       union {
->> +               u8 revision;
->> +               u8 reserved[7];
->> +       };
->
-> Even though the spec is slightly silly here, I think we can avoid the
-> union, and just have
->
->   u8 record_type;
->   u8 revision;
->   u8 reserved[6];
->
-> as the leading fields.
+@ -1024,8 +1024,7 @@ static bool acpi_s2idle_wake(void)
+                 * If the EC GPE status bit has not been set, the wakeup is
+                 * regarded as a spurious one.
+                 */
+-               if (!acpi_ec_dispatch_gpe())
+-                       return false;
++               acpi_ec_dispatch_gpe();
 
-That's a better interpretation of the spec. I will follow your
-suggestion and send a new version incorporating this and other
-suggestions.
-
-Thanks for taking a look.
-
-Punit
-
-[...]
-
+                /*
+                 * Cancel the wakeup and process all pending events in case
