@@ -2,176 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFC5D1C98BB
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 May 2020 20:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BB8F1C9A58
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 May 2020 21:02:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728204AbgEGSFW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 May 2020 14:05:22 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:51330 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728373AbgEGSFV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 May 2020 14:05:21 -0400
-Received: from 89-64-84-94.dynamic.chello.pl (89.64.84.94) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
- id eede8e33c27c587e; Thu, 7 May 2020 20:05:18 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Chris Chiu <chiu@endlessm.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Seth Forshee <seth.forshee@canonical.com>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Subject: Re: System fails to exit s2idle by a keystroke on my laptop
-Date:   Thu, 07 May 2020 20:05:11 +0200
-Message-ID: <5029155.caIQduTdCh@kreacher>
-In-Reply-To: <CAB4CAweZcN0SPe-a7jbthV=-ip9cCzJOM=NfP9YvtXw97ugKgQ@mail.gmail.com>
-References: <CAB4CAwdqo7=MvyG_PE+PGVfeA17AHF5i5JucgaKqqMX6mjArbQ@mail.gmail.com> <CAJZ5v0gX1gx1_zTZg=M+xEOqxPEaq8ZU-N3hwk7OGcGdzrdBTg@mail.gmail.com> <CAB4CAweZcN0SPe-a7jbthV=-ip9cCzJOM=NfP9YvtXw97ugKgQ@mail.gmail.com>
+        id S1728045AbgEGTCN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 May 2020 15:02:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33280 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726926AbgEGTCM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 7 May 2020 15:02:12 -0400
+Received: from embeddedor (unknown [189.207.59.248])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 04D4F2083B;
+        Thu,  7 May 2020 19:02:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588878132;
+        bh=1BaK2d/28Q3HiRySzkjK8VA6eqj1T7RCpk6P2tPRcUQ=;
+        h=Date:From:To:Cc:Subject:From;
+        b=SjV2+HqlI/Oyuk1tKqHzIVyfvzIIC0ng2W75q3QOaNO8CdboTX8sTZAFnr7y1vpd8
+         DGxg8REQrOFAuld69/Gt+037N7+iFJXTvLQoRy/hJ9ipynYwbnItpXmhMPCM3dde2Y
+         QlKSMQeEErUXj3kJvXWdOw/mCb9O9+0nIYSllaCk=
+Date:   Thu, 7 May 2020 14:06:38 -0500
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] PNPBIOS: Replace zero-length array with flexible-array
+Message-ID: <20200507190638.GA15700@embeddedor>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thursday, May 7, 2020 5:38:11 AM CEST Chris Chiu wrote:
-> On Wed, May 6, 2020 at 6:19 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Wed, May 6, 2020 at 11:32 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > >
-> > >
-> > > Thanks for the report, the issue evidently is EC-related.
-> > >
-> > > > @@ -1024,7 +1024,7 @@ static bool acpi_s2idle_wake(void)
-> > > >                  * regarded as a spurious one.
-> > > >                  */
-> > > >                 if (!acpi_ec_dispatch_gpe())
-> > > > -                       return false;
-> > > > +                       return true;
-> > >
-> > > Have you tried commenting out simply removing the if () check and the
-> > > following return statement?
-> >
-> > Scratch that.
-> >
-> > Instead, please try doing
-> >
-> > acpi_ec_dispatch_gpe()
-> >
-> > instead of the if () and the following return statement.
-> 
-> Yes. I verified with the modification you suggested on my laptop. It's
-> working OK.
-> I can wake from a keystroke w/o problem.
-> 
-> @ -1024,8 +1024,7 @@ static bool acpi_s2idle_wake(void)
->                  * If the EC GPE status bit has not been set, the wakeup is
->                  * regarded as a spurious one.
->                  */
-> -               if (!acpi_ec_dispatch_gpe())
-> -                       return false;
-> +               acpi_ec_dispatch_gpe();
-> 
->                 /*
->                  * Cancel the wakeup and process all pending events in case
-> 
+The current codebase makes use of the zero-length array language
+extension to the C90 standard, but the preferred mechanism to declare
+variable-length types such as these ones is a flexible array member[1][2],
+introduced in C99:
 
-OK, great, thanks for the confirmation!
+struct foo {
+        int stuff;
+        struct boo array[];
+};
 
-Does the appended patch work for you then?
+By making use of the mechanism above, we will get a compiler warning
+in case the flexible array does not occur last in the structure, which
+will help us prevent some kind of undefined behavior bugs from being
+inadvertently introduced[3] to the codebase from now on.
 
-It should be functionally equivalent to the above change if I didn't mess it up.
+Also, notice that, dynamic memory allocations won't be affected by
+this change:
 
+"Flexible array members have incomplete type, and so the sizeof operator
+may not be applied. As a quirk of the original implementation of
+zero-length arrays, sizeof evaluates to zero."[1]
 
+sizeof(flexible-array-member) triggers a warning because flexible array
+members have incomplete type[1]. There are some instances of code in
+which the sizeof operator is being incorrectly/erroneously applied to
+zero-length arrays and the result is zero. Such instances may be hiding
+some bugs. So, this work (flexible-array member conversions) will also
+help to get completely rid of those sorts of issues.
+
+This issue was found with the help of Coccinelle.
+
+[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+[2] https://github.com/KSPP/linux/issues/21
+[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
+
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- drivers/acpi/ec.c       |   23 ++++++++++++++---------
- drivers/acpi/internal.h |    1 -
- drivers/acpi/sleep.c    |   14 ++------------
- 3 files changed, 16 insertions(+), 22 deletions(-)
+ drivers/pnp/pnpbios/pnpbios.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: linux-pm/drivers/acpi/sleep.c
-===================================================================
---- linux-pm.orig/drivers/acpi/sleep.c
-+++ linux-pm/drivers/acpi/sleep.c
-@@ -1013,21 +1013,11 @@ static bool acpi_s2idle_wake(void)
- 		if (acpi_check_wakeup_handlers())
- 			return true;
+diff --git a/drivers/pnp/pnpbios/pnpbios.h b/drivers/pnp/pnpbios/pnpbios.h
+index 37acb8378f39..2ce739ff9c1a 100644
+--- a/drivers/pnp/pnpbios/pnpbios.h
++++ b/drivers/pnp/pnpbios/pnpbios.h
+@@ -107,7 +107,7 @@ struct pnp_bios_node {
+ 	__u32 eisa_id;
+ 	__u8 type_code[3];
+ 	__u16 flags;
+-	__u8 data[0];
++	__u8 data[];
+ };
+ #pragma pack()
  
--		/*
--		 * If the status bit is set for any enabled GPE other than the
--		 * EC one, the wakeup is regarded as a genuine one.
--		 */
--		if (acpi_ec_other_gpes_active())
-+		/* Check non-EC GPE wakeups and dispatch the EC GPE. */
-+		if (acpi_ec_dispatch_gpe())
- 			return true;
- 
- 		/*
--		 * If the EC GPE status bit has not been set, the wakeup is
--		 * regarded as a spurious one.
--		 */
--		if (!acpi_ec_dispatch_gpe())
--			return false;
--
--		/*
- 		 * Cancel the wakeup and process all pending events in case
- 		 * there are any wakeup ones in there.
- 		 *
-Index: linux-pm/drivers/acpi/ec.c
-===================================================================
---- linux-pm.orig/drivers/acpi/ec.c
-+++ linux-pm/drivers/acpi/ec.c
-@@ -1994,23 +1994,28 @@ void acpi_ec_set_gpe_wake_mask(u8 action
- 		acpi_set_gpe_wake_mask(NULL, first_ec->gpe, action);
- }
- 
--bool acpi_ec_other_gpes_active(void)
--{
--	return acpi_any_gpe_status_set(first_ec ? first_ec->gpe : U32_MAX);
--}
--
- bool acpi_ec_dispatch_gpe(void)
- {
- 	u32 ret;
- 
- 	if (!first_ec)
--		return false;
-+		return acpi_any_gpe_status_set(U32_MAX);
- 
-+	/*
-+	 * Report wakeup if the status bit is set for any enabled GPE other
-+	 * than the EC one.
-+	 */
-+	if (acpi_any_gpe_status_set(first_ec->gpe))
-+		return true;
-+
-+	/*
-+	 * Dispatch the EC GPE in-band, but do not report wakeup in any case
-+	 * to allow the caller to process events properly after that.
-+	 */
- 	ret = acpi_dispatch_gpe(NULL, first_ec->gpe);
--	if (ret == ACPI_INTERRUPT_HANDLED) {
-+	if (ret == ACPI_INTERRUPT_HANDLED)
- 		pm_pr_dbg("EC GPE dispatched\n");
--		return true;
--	}
-+
- 	return false;
- }
- #endif /* CONFIG_PM_SLEEP */
-Index: linux-pm/drivers/acpi/internal.h
-===================================================================
---- linux-pm.orig/drivers/acpi/internal.h
-+++ linux-pm/drivers/acpi/internal.h
-@@ -202,7 +202,6 @@ void acpi_ec_remove_query_handler(struct
- 
- #ifdef CONFIG_PM_SLEEP
- void acpi_ec_flush_work(void);
--bool acpi_ec_other_gpes_active(void);
- bool acpi_ec_dispatch_gpe(void);
- #endif
- 
-
-
 
