@@ -2,260 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7F811C86D5
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 May 2020 12:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F39B71C873E
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 May 2020 12:49:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726519AbgEGKcX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 May 2020 06:32:23 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:38538 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725809AbgEGKcU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 May 2020 06:32:20 -0400
+        id S1726074AbgEGKt0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 May 2020 06:49:26 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:31000 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726218AbgEGKt0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 May 2020 06:49:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1588847538;
+        s=mimecast20190719; t=1588848563;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rWXWkv8vN9fjpn9UiZGTDZqowsNGIfPpltO1Iw80T6Y=;
-        b=CLfFWkjPgRDzOOF7afMUaG6mR1FB+Duj27Bvm1UNbW2lC1JqLAnefuvX8qj+yWpTcRVsCj
-        ErTs149j0MF3CQyYPjbIoMDighFNzhfbvebpzQ00P8ihhRIgaYmVorRGFl3N176uP3LwvH
-        RFSJmDk0NUsJLWMZyPQogvt6rsWAH9s=
+         content-transfer-encoding:content-transfer-encoding;
+        bh=BEUh2QIFXXLvv2dwamDy5GA1DUcQGCNNDhH7clDR2zQ=;
+        b=bdezBYQgxVIUoPsCkBHxEkYuOuhZ4xjfajbJZJS1gGNIL7xH8OCd9GtH916+6/WK+OCBlD
+        R4woIxCEcLPkr12pYSj6ZR1jZY/F/dFXhnoUaUoXATp+PDRxrcRaEwCGVfh4BSX3LGjWuc
+        5fv5B+qfsKd1vGTbONV8cOAOpUjC2gc=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-424-V5a1ZtF1MwmggBgERMnwKw-1; Thu, 07 May 2020 06:32:14 -0400
-X-MC-Unique: V5a1ZtF1MwmggBgERMnwKw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+ us-mta-379-a2fs5XMLMgOxBCmmrwq2cw-1; Thu, 07 May 2020 06:49:21 -0400
+X-MC-Unique: a2fs5XMLMgOxBCmmrwq2cw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 79C7F19200C1;
-        Thu,  7 May 2020 10:32:12 +0000 (UTC)
-Received: from t480s.redhat.com (ovpn-113-245.ams2.redhat.com [10.36.113.245])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 8A2155D9C5;
-        Thu,  7 May 2020 10:32:05 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, virtio-dev@lists.oasis-open.org,
-        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
-        Michal Hocko <mhocko@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        David Hildenbrand <david@redhat.com>,
-        Michal Hocko <mhocko@suse.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Igor Mammedov <imammedo@redhat.com>,
-        Dave Young <dyoung@redhat.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Stefan Hajnoczi <stefanha@redhat.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH v3 02/15] virtio-mem: Allow to specify an ACPI PXM as nid
-Date:   Thu,  7 May 2020 12:31:06 +0200
-Message-Id: <20200507103119.11219-3-david@redhat.com>
-In-Reply-To: <20200507103119.11219-1-david@redhat.com>
-References: <20200507103119.11219-1-david@redhat.com>
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4228D80183C;
+        Thu,  7 May 2020 10:49:20 +0000 (UTC)
+Received: from x1.localdomain.com (ovpn-115-120.ams2.redhat.com [10.36.115.120])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 51C6060C81;
+        Thu,  7 May 2020 10:49:18 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-gpio@vger.kernel.org
+Subject: [PATCH v2 1/2] ACPI / utils: Add acpi_evaluate_reg() helper
+Date:   Thu,  7 May 2020 12:49:16 +0200
+Message-Id: <20200507104917.116589-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-We want to allow to specify (similar as for a DIMM), to which node a
-virtio-mem device (and, therefore, its memory) belongs. Add a new
-virtio-mem feature flag and export pxm_to_node, so it can be used in kern=
-el
-module context.
+With a recent fix to the pinctrl-cherryview driver we now have
+2 drivers open-coding the parameter building / passing for calling
+_REG on an ACPI handle.
 
-Acked-by: Michal Hocko <mhocko@suse.com> # for the export
-Acked-by: "Rafael J. Wysocki" <rafael@kernel.org> # for the export
-Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Tested-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Igor Mammedov <imammedo@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Signed-off-by: David Hildenbrand <david@redhat.com>
+Add a helper for this, so that these 2 drivers can be converted to this
+helper.
+
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/acpi/numa/srat.c        |  1 +
- drivers/virtio/virtio_mem.c     | 39 +++++++++++++++++++++++++++++++--
- include/uapi/linux/virtio_mem.h | 10 ++++++++-
- 3 files changed, 47 insertions(+), 3 deletions(-)
+Changes in v2:
+- Fix spelling error in commit message
+- Add Andy's Suggested-by and Reviewed-by
+---
+ drivers/acpi/utils.c    | 25 +++++++++++++++++++++++++
+ include/acpi/acpi_bus.h |  1 +
+ 2 files changed, 26 insertions(+)
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 47b4969d9b93..5be5a977da1b 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -35,6 +35,7 @@ int pxm_to_node(int pxm)
- 		return NUMA_NO_NODE;
- 	return pxm_to_node_map[pxm];
- }
-+EXPORT_SYMBOL(pxm_to_node);
-=20
- int node_to_pxm(int node)
- {
-diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
-index 5d1dcaa6fc42..270ddeaec059 100644
---- a/drivers/virtio/virtio_mem.c
-+++ b/drivers/virtio/virtio_mem.c
-@@ -21,6 +21,8 @@
- #include <linux/bitmap.h>
- #include <linux/lockdep.h>
-=20
-+#include <acpi/acpi_numa.h>
-+
- enum virtio_mem_mb_state {
- 	/* Unplugged, not added to Linux. Can be reused later. */
- 	VIRTIO_MEM_MB_STATE_UNUSED =3D 0,
-@@ -72,6 +74,8 @@ struct virtio_mem {
-=20
- 	/* The device block size (for communicating with the device). */
- 	uint32_t device_block_size;
-+	/* The translated node id. NUMA_NO_NODE in case not specified. */
-+	int nid;
- 	/* Physical start address of the memory region. */
- 	uint64_t addr;
- 	/* Maximum region size in bytes. */
-@@ -389,7 +393,10 @@ static int virtio_mem_sb_bitmap_prepare_next_mb(stru=
-ct virtio_mem *vm)
- static int virtio_mem_mb_add(struct virtio_mem *vm, unsigned long mb_id)
- {
- 	const uint64_t addr =3D virtio_mem_mb_id_to_phys(mb_id);
--	int nid =3D memory_add_physaddr_to_nid(addr);
-+	int nid =3D vm->nid;
-+
-+	if (nid =3D=3D NUMA_NO_NODE)
-+		nid =3D memory_add_physaddr_to_nid(addr);
-=20
- 	dev_dbg(&vm->vdev->dev, "adding memory block: %lu\n", mb_id);
- 	return add_memory(nid, addr, memory_block_size_bytes());
-@@ -407,7 +414,10 @@ static int virtio_mem_mb_add(struct virtio_mem *vm, =
-unsigned long mb_id)
- static int virtio_mem_mb_remove(struct virtio_mem *vm, unsigned long mb_=
-id)
- {
- 	const uint64_t addr =3D virtio_mem_mb_id_to_phys(mb_id);
--	int nid =3D memory_add_physaddr_to_nid(addr);
-+	int nid =3D vm->nid;
-+
-+	if (nid =3D=3D NUMA_NO_NODE)
-+		nid =3D memory_add_physaddr_to_nid(addr);
-=20
- 	dev_dbg(&vm->vdev->dev, "removing memory block: %lu\n", mb_id);
- 	return remove_memory(nid, addr, memory_block_size_bytes());
-@@ -426,6 +436,17 @@ static void virtio_mem_retry(struct virtio_mem *vm)
- 	spin_unlock_irqrestore(&vm->removal_lock, flags);
+diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
+index 804ac0df58ec..838b719ec7ce 100644
+--- a/drivers/acpi/utils.c
++++ b/drivers/acpi/utils.c
+@@ -605,6 +605,31 @@ acpi_status acpi_evaluate_lck(acpi_handle handle, in=
+t lock)
+ 	return status;
  }
 =20
-+static int virtio_mem_translate_node_id(struct virtio_mem *vm, uint16_t =
-node_id)
++/**
++ * acpi_evaluate_reg: Evaluate _REG method to register OpRegion presence
++ * @handle: ACPI device handle
++ * @space_id: ACPI address space id to register OpRegion presence for
++ * @function: Parameter to pass to _REG one of ACPI_REG_CONNECT or
++ *            ACPI_REG_DISCONNECT
++ *
++ * Evaluate device's _REG method to register OpRegion presence.
++ */
++acpi_status acpi_evaluate_reg(acpi_handle handle, u8 space_id, u32 funct=
+ion)
 +{
-+	int node =3D NUMA_NO_NODE;
++	struct acpi_object_list arg_list;
++	union acpi_object params[2];
 +
-+#if defined(CONFIG_ACPI_NUMA)
-+	if (virtio_has_feature(vm->vdev, VIRTIO_MEM_F_ACPI_PXM))
-+		node =3D pxm_to_node(node_id);
-+#endif
-+	return node;
++	params[0].type =3D ACPI_TYPE_INTEGER;
++	params[0].integer.value =3D space_id;
++	params[1].type =3D ACPI_TYPE_INTEGER;
++	params[1].integer.value =3D function;
++	arg_list.count =3D 2;
++	arg_list.pointer =3D params;
++
++	return acpi_evaluate_object(handle, "_REG", &arg_list, NULL);
 +}
++EXPORT_SYMBOL(acpi_evaluate_reg);
 +
- /*
-  * Test if a virtio-mem device overlaps with the given range. Can be cal=
-led
-  * from (notifier) callbacks lockless.
-@@ -1267,6 +1288,7 @@ static bool virtio_mem_any_memory_present(unsigned =
-long start,
- static int virtio_mem_init(struct virtio_mem *vm)
- {
- 	const uint64_t phys_limit =3D 1UL << MAX_PHYSMEM_BITS;
-+	uint16_t node_id;
-=20
- 	if (!vm->vdev->config->get) {
- 		dev_err(&vm->vdev->dev, "config access disabled\n");
-@@ -1287,6 +1309,9 @@ static int virtio_mem_init(struct virtio_mem *vm)
- 		     &vm->plugged_size);
- 	virtio_cread(vm->vdev, struct virtio_mem_config, block_size,
- 		     &vm->device_block_size);
-+	virtio_cread(vm->vdev, struct virtio_mem_config, node_id,
-+		     &node_id);
-+	vm->nid =3D virtio_mem_translate_node_id(vm, node_id);
- 	virtio_cread(vm->vdev, struct virtio_mem_config, addr, &vm->addr);
- 	virtio_cread(vm->vdev, struct virtio_mem_config, region_size,
- 		     &vm->region_size);
-@@ -1365,6 +1390,8 @@ static int virtio_mem_init(struct virtio_mem *vm)
- 		 memory_block_size_bytes());
- 	dev_info(&vm->vdev->dev, "subblock size: 0x%x",
- 		 vm->subblock_size);
-+	if (vm->nid !=3D NUMA_NO_NODE)
-+		dev_info(&vm->vdev->dev, "nid: %d", vm->nid);
-=20
- 	return 0;
- }
-@@ -1508,12 +1535,20 @@ static int virtio_mem_restore(struct virtio_devic=
-e *vdev)
- }
- #endif
-=20
-+static unsigned int virtio_mem_features[] =3D {
-+#if defined(CONFIG_NUMA) && defined(CONFIG_ACPI_NUMA)
-+	VIRTIO_MEM_F_ACPI_PXM,
-+#endif
-+};
-+
- static struct virtio_device_id virtio_mem_id_table[] =3D {
- 	{ VIRTIO_ID_MEM, VIRTIO_DEV_ANY_ID },
- 	{ 0 },
- };
-=20
- static struct virtio_driver virtio_mem_driver =3D {
-+	.feature_table =3D virtio_mem_features,
-+	.feature_table_size =3D ARRAY_SIZE(virtio_mem_features),
- 	.driver.name =3D KBUILD_MODNAME,
- 	.driver.owner =3D THIS_MODULE,
- 	.id_table =3D virtio_mem_id_table,
-diff --git a/include/uapi/linux/virtio_mem.h b/include/uapi/linux/virtio_=
-mem.h
-index 1bfade78bdfd..e0a9dc7397c3 100644
---- a/include/uapi/linux/virtio_mem.h
-+++ b/include/uapi/linux/virtio_mem.h
-@@ -83,6 +83,12 @@
-  * device is busy.
-  */
-=20
-+/* --- virtio-mem: feature bits --- */
-+
-+/* node_id is an ACPI PXM and is valid */
-+#define VIRTIO_MEM_F_ACPI_PXM		0
-+
-+
- /* --- virtio-mem: guest -> host requests --- */
-=20
- /* request to plug memory blocks */
-@@ -177,7 +183,9 @@ struct virtio_mem_resp {
- struct virtio_mem_config {
- 	/* Block size and alignment. Cannot change. */
- 	__u32 block_size;
--	__u32 padding;
-+	/* Valid with VIRTIO_MEM_F_ACPI_PXM. Cannot change. */
-+	__u16 node_id;
-+	__u16 padding;
- 	/* Start address of the memory region. Cannot change. */
- 	__u64 addr;
- 	/* Region size (maximum). Cannot change. */
+ /**
+  * acpi_evaluate_dsm - evaluate device's _DSM method
+  * @handle: ACPI device handle
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index a92bea7184a8..5afb6ceb284f 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -44,6 +44,7 @@ acpi_status acpi_execute_simple_method(acpi_handle hand=
+le, char *method,
+ 				       u64 arg);
+ acpi_status acpi_evaluate_ej0(acpi_handle handle);
+ acpi_status acpi_evaluate_lck(acpi_handle handle, int lock);
++acpi_status acpi_evaluate_reg(acpi_handle handle, u8 space_id, u32 funct=
+ion);
+ bool acpi_ata_match(acpi_handle handle);
+ bool acpi_bay_match(acpi_handle handle);
+ bool acpi_dock_match(acpi_handle handle);
 --=20
-2.25.3
+2.26.0
 
