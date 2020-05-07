@@ -2,104 +2,176 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFD8A1C97B5
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 May 2020 19:27:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFC5D1C98BB
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 May 2020 20:06:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726308AbgEGR1w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 May 2020 13:27:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48892 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726222AbgEGR1w (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 May 2020 13:27:52 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF6C4C05BD43;
-        Thu,  7 May 2020 10:27:51 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id v63so3307695pfb.10;
-        Thu, 07 May 2020 10:27:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sI6MW+ENUHkNJh2ieEfqb2bnhAZ3RCNTWxJcYdnJPQ0=;
-        b=fw6712JF9/XP6LQunEFLYb0L3Hu5ZvOjiwZaYjUOYARWSTU6cUpPwT1mREY73Q0lcz
-         Ux/KeXELOEUHJXhu+fQdD2m+PvZLEgLRXD9LHp5MtiJP9eimFksIXjI/cy3nfvc3vo6c
-         EnHUBiCI3w93ddm9j9zO6dnfk9CkchHGY/+2IAZNTQoXNwBPgeZyh71Spr8dvDJIyw/+
-         UbXKl1uzTrdWUsPYYMIzS4tnSCKePPqGcXUK7g5HcX9zheTZs6yjaODjo8LMj7+RYfuG
-         Z0ayJgokLlO3FWlitIERjSFHHzD510h8OGBamTktyIiycyrQAc/XdIxYy0AJQpUE4o6R
-         lJSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sI6MW+ENUHkNJh2ieEfqb2bnhAZ3RCNTWxJcYdnJPQ0=;
-        b=Fo3tyPYzLH09wk65N029Gl23MuTtFwe8juh7+QRzBV/XCGrV7fKqG5oS5JbAznQAMp
-         4XziOia+nCLZsOUOZYgPxpglTHhWpmalCuhCZXmMq1eMw+z4XMjUHcLokSk8YaOaZAGd
-         hqWp71FWc/2dA8bgEyBNNzGxvM1E+hvR08Q1+Xt6u67lNKt7c+HY7g8Q8EhVoPSa/Vze
-         Aqrov8i7lr9OsjYA0B51R1WVW9MrWHnwQU8MPwT2LJA4JZb/Q7/sh8U/r4iHCTwkkLJw
-         kUqYXzjOJ7PlvkV/vS1Pa1d1CLHo25RWIfCWSzhaxE4wMF2LKNcEVg4mkpE5d+jndaMD
-         kLWQ==
-X-Gm-Message-State: AGi0PubCWR604p4UBy0gWOgsAc6ZasAqwacVQbQg+lreVLPLWTx2XNdA
-        +n5IymJZKAU7qvFsz+GI8yGSlHxGJjgzsllOYG4=
-X-Google-Smtp-Source: APiQypI7YgiQ9vvHBaf8ZcHCNpabxiuE+6U2dZsbLwFTkafu86kfC64HTxUYw0xpEU0ELMf7TkAsxj3N30X42MNPPSc=
-X-Received: by 2002:aa7:8f26:: with SMTP id y6mr15059528pfr.36.1588872471304;
- Thu, 07 May 2020 10:27:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200505132905.10276-1-calvin.johnson@oss.nxp.com>
- <20200505132905.10276-5-calvin.johnson@oss.nxp.com> <67e263cf-5cd7-98d1-56ff-ebd9ac2265b6@arm.com>
-In-Reply-To: <67e263cf-5cd7-98d1-56ff-ebd9ac2265b6@arm.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 7 May 2020 20:27:44 +0300
-Message-ID: <CAHp75Vew8Fh6HEoOACk+J9KCpw+AE2t2+oFnXteK1eShopfYAA@mail.gmail.com>
-Subject: Re: [net-next PATCH v3 4/5] net: phy: Introduce fwnode_get_phy_id()
-To:     Jeremy Linton <jeremy.linton@arm.com>
-Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        linux.cj@gmail.com, Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Varun Sethi <V.Sethi@nxp.com>,
-        "Rajesh V . Bikkina" <rajesh.bikkina@nxp.com>,
+        id S1728204AbgEGSFW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 May 2020 14:05:22 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:51330 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728373AbgEGSFV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 May 2020 14:05:21 -0400
+Received: from 89-64-84-94.dynamic.chello.pl (89.64.84.94) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
+ id eede8e33c27c587e; Thu, 7 May 2020 20:05:18 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Chris Chiu <chiu@endlessm.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Seth Forshee <seth.forshee@canonical.com>,
+        Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        netdev <netdev@vger.kernel.org>, Marcin Wojtas <mw@semihalf.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>
+Subject: Re: System fails to exit s2idle by a keystroke on my laptop
+Date:   Thu, 07 May 2020 20:05:11 +0200
+Message-ID: <5029155.caIQduTdCh@kreacher>
+In-Reply-To: <CAB4CAweZcN0SPe-a7jbthV=-ip9cCzJOM=NfP9YvtXw97ugKgQ@mail.gmail.com>
+References: <CAB4CAwdqo7=MvyG_PE+PGVfeA17AHF5i5JucgaKqqMX6mjArbQ@mail.gmail.com> <CAJZ5v0gX1gx1_zTZg=M+xEOqxPEaq8ZU-N3hwk7OGcGdzrdBTg@mail.gmail.com> <CAB4CAweZcN0SPe-a7jbthV=-ip9cCzJOM=NfP9YvtXw97ugKgQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, May 7, 2020 at 4:26 PM Jeremy Linton <jeremy.linton@arm.com> wrote:
-> On 5/5/20 8:29 AM, Calvin Johnson wrote:
+On Thursday, May 7, 2020 5:38:11 AM CEST Chris Chiu wrote:
+> On Wed, May 6, 2020 at 6:19 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >
+> > On Wed, May 6, 2020 at 11:32 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > >
+> > >
+> > > Thanks for the report, the issue evidently is EC-related.
+> > >
+> > > > @@ -1024,7 +1024,7 @@ static bool acpi_s2idle_wake(void)
+> > > >                  * regarded as a spurious one.
+> > > >                  */
+> > > >                 if (!acpi_ec_dispatch_gpe())
+> > > > -                       return false;
+> > > > +                       return true;
+> > >
+> > > Have you tried commenting out simply removing the if () check and the
+> > > following return statement?
+> >
+> > Scratch that.
+> >
+> > Instead, please try doing
+> >
+> > acpi_ec_dispatch_gpe()
+> >
+> > instead of the if () and the following return statement.
+> 
+> Yes. I verified with the modification you suggested on my laptop. It's
+> working OK.
+> I can wake from a keystroke w/o problem.
+> 
+> @ -1024,8 +1024,7 @@ static bool acpi_s2idle_wake(void)
+>                  * If the EC GPE status bit has not been set, the wakeup is
+>                  * regarded as a spurious one.
+>                  */
+> -               if (!acpi_ec_dispatch_gpe())
+> -                       return false;
+> +               acpi_ec_dispatch_gpe();
+> 
+>                 /*
+>                  * Cancel the wakeup and process all pending events in case
+> 
 
-> > +             if (sscanf(cp, "ethernet-phy-id%4x.%4x",
-> > +                        &upper, &lower) == 2) {
-> > +                     *phy_id = ((upper & 0xFFFF) << 16) | (lower & 0xFFFF);
-> > +                     return 0;
-> > +             }
+OK, great, thanks for the confirmation!
 
-> Isn't the ACPI _CID() conceptually similar to the DT compatible
-> property?
+Does the appended patch work for you then?
 
-Where?
+It should be functionally equivalent to the above change if I didn't mess it up.
 
-> It even appears to be getting used in a similar way to
-> identify particular phy drivers in this case.
 
-_CID() is a string. It can't be used as pure number.
+---
+ drivers/acpi/ec.c       |   23 ++++++++++++++---------
+ drivers/acpi/internal.h |    1 -
+ drivers/acpi/sleep.c    |   14 ++------------
+ 3 files changed, 16 insertions(+), 22 deletions(-)
 
--- 
-With Best Regards,
-Andy Shevchenko
+Index: linux-pm/drivers/acpi/sleep.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/sleep.c
++++ linux-pm/drivers/acpi/sleep.c
+@@ -1013,21 +1013,11 @@ static bool acpi_s2idle_wake(void)
+ 		if (acpi_check_wakeup_handlers())
+ 			return true;
+ 
+-		/*
+-		 * If the status bit is set for any enabled GPE other than the
+-		 * EC one, the wakeup is regarded as a genuine one.
+-		 */
+-		if (acpi_ec_other_gpes_active())
++		/* Check non-EC GPE wakeups and dispatch the EC GPE. */
++		if (acpi_ec_dispatch_gpe())
+ 			return true;
+ 
+ 		/*
+-		 * If the EC GPE status bit has not been set, the wakeup is
+-		 * regarded as a spurious one.
+-		 */
+-		if (!acpi_ec_dispatch_gpe())
+-			return false;
+-
+-		/*
+ 		 * Cancel the wakeup and process all pending events in case
+ 		 * there are any wakeup ones in there.
+ 		 *
+Index: linux-pm/drivers/acpi/ec.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/ec.c
++++ linux-pm/drivers/acpi/ec.c
+@@ -1994,23 +1994,28 @@ void acpi_ec_set_gpe_wake_mask(u8 action
+ 		acpi_set_gpe_wake_mask(NULL, first_ec->gpe, action);
+ }
+ 
+-bool acpi_ec_other_gpes_active(void)
+-{
+-	return acpi_any_gpe_status_set(first_ec ? first_ec->gpe : U32_MAX);
+-}
+-
+ bool acpi_ec_dispatch_gpe(void)
+ {
+ 	u32 ret;
+ 
+ 	if (!first_ec)
+-		return false;
++		return acpi_any_gpe_status_set(U32_MAX);
+ 
++	/*
++	 * Report wakeup if the status bit is set for any enabled GPE other
++	 * than the EC one.
++	 */
++	if (acpi_any_gpe_status_set(first_ec->gpe))
++		return true;
++
++	/*
++	 * Dispatch the EC GPE in-band, but do not report wakeup in any case
++	 * to allow the caller to process events properly after that.
++	 */
+ 	ret = acpi_dispatch_gpe(NULL, first_ec->gpe);
+-	if (ret == ACPI_INTERRUPT_HANDLED) {
++	if (ret == ACPI_INTERRUPT_HANDLED)
+ 		pm_pr_dbg("EC GPE dispatched\n");
+-		return true;
+-	}
++
+ 	return false;
+ }
+ #endif /* CONFIG_PM_SLEEP */
+Index: linux-pm/drivers/acpi/internal.h
+===================================================================
+--- linux-pm.orig/drivers/acpi/internal.h
++++ linux-pm/drivers/acpi/internal.h
+@@ -202,7 +202,6 @@ void acpi_ec_remove_query_handler(struct
+ 
+ #ifdef CONFIG_PM_SLEEP
+ void acpi_ec_flush_work(void);
+-bool acpi_ec_other_gpes_active(void);
+ bool acpi_ec_dispatch_gpe(void);
+ #endif
+ 
+
+
+
