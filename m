@@ -2,211 +2,224 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE8AC1C8820
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 May 2020 13:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10D9B1C8AC3
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 May 2020 14:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726950AbgEGLZv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 May 2020 07:25:51 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:22372 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725903AbgEGLZs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 May 2020 07:25:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1588850745;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=okJLc56HxgwRQ3pAUVl+d+At6cmSRE2fHfdVLfqeU9E=;
-        b=MjMZ+p0S8dPw5ntZrZgV5n5Z0DfFwxmNEP4n4b7ktpnumulFBis0EAe93HEvWE2QFH/keo
-        mgCsQjn9vI2QQIMLYS6L9oBCxt3fwdPL12p7vlBqrLI1DjQerC+HXBGX65lsqDEtna8NlN
-        ZsNDHxVygtUWfSRwsZgWRjFHLD1kJ+E=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-374-jFPA_0YoM823OxGa-0ZRrQ-1; Thu, 07 May 2020 07:25:41 -0400
-X-MC-Unique: jFPA_0YoM823OxGa-0ZRrQ-1
-Received: by mail-wm1-f71.google.com with SMTP id h22so3193906wml.1
-        for <linux-acpi@vger.kernel.org>; Thu, 07 May 2020 04:25:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=okJLc56HxgwRQ3pAUVl+d+At6cmSRE2fHfdVLfqeU9E=;
-        b=pezkFjzDgV6VZPVsZvjUL6gbIzvMry3wTgU03M6+UaFsyI2VpTSZHgTYN0CafoJtpZ
-         GYK55PWQ0Hntoxc2xeni4UPqzCjVgWdT/jcT/JuN6YhARSowsqm0abqHc9v+lB1IYS+y
-         H2vu2pUgeQnkBRWumk9g2Czr4OJAslRkVbFcbIH2hv1NjYEVDc16ShEK2JUWqpixaVIY
-         B6MFO3MaOm8hGog8MzAyq0B0WnsRfFH/jxsDcaP6vWBesx+QmNeiXOyOl/9xX7ObyoCH
-         4wEo23qV9Yk2GHwh+6mrA8L6RgljoUKVPctUBH0FSxPpLGLH/rnJQoZS9kdBeu5KyB5N
-         dR2w==
-X-Gm-Message-State: AGi0PuYU0iWZcAXRyz2D0nFu6WfNpCKrZseDwNCm/p/w6AqF99ltWDz2
-        QDX+nAHxh2WWIOtDPAhM96fPu4jhkVA6LlZ/CV/0IP9wlJ/y+GFu8Z0kSQBCPzH8a1oyaXnoPOw
-        g3f/2Gf8FE/hOJucelfe0jA==
-X-Received: by 2002:adf:dd8a:: with SMTP id x10mr15287562wrl.308.1588850740413;
-        Thu, 07 May 2020 04:25:40 -0700 (PDT)
-X-Google-Smtp-Source: APiQypJNANnxsVsnNOEDgu94fgMKk/XWfA1Fdjv1VV703EFoHeL4+phgQNEomnmqNuXDRae/SyMmxA==
-X-Received: by 2002:adf:dd8a:: with SMTP id x10mr15287547wrl.308.1588850740181;
-        Thu, 07 May 2020 04:25:40 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id n9sm7412749wrv.43.2020.05.07.04.25.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 May 2020 04:25:39 -0700 (PDT)
-Subject: Re: [PATCH 4/5] platform/x86: intel-vbtn: Also handle tablet-mode
- switch on "Detachable" and "Portable" chassis-types
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Mario Limonciello <Mario.Limonciello@dell.com>
-Cc:     Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20200502182951.114231-1-hdegoede@redhat.com>
- <20200502182951.114231-5-hdegoede@redhat.com>
- <7c3e5f844a224ff780cd8e3b3f5f7641@AUSX13MPC101.AMER.DELL.COM>
- <13a8ec94-1eae-4d95-7238-85c612ebc896@redhat.com>
- <afe7c366c97f4ab18d5a98a9695ceff6@AUSX13MPC101.AMER.DELL.COM>
- <CAHp75VcNJFfgshhL_pYsHodF1pMNySw08Z_4jr-vVkE-Xpj_ng@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <ca5e5db1-eac5-358b-7d85-95d62e87b6f0@redhat.com>
-Date:   Thu, 7 May 2020 13:25:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1726007AbgEGMae (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 May 2020 08:30:34 -0400
+Received: from mga12.intel.com ([192.55.52.136]:14215 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725903AbgEGMae (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 7 May 2020 08:30:34 -0400
+IronPort-SDR: 0tjuxXzSwqYdrea6clOVtOqQX3LvGv2LiFT82MmPzETXGQIt9vCvnwAbzX8m61lqD6pvp4frLH
+ TUx3exSoMaHQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2020 05:30:30 -0700
+IronPort-SDR: t2ATrTX9MVIuhS1TEX7c7IbFkjeEbujlLwRxsnDVdcFyC/oMzMMG7APiNWQQfCX0pcEKqy5pQW
+ bllLLPQgF5OQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,363,1583222400"; 
+   d="scan'208";a="370102481"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga001.fm.intel.com with SMTP; 07 May 2020 05:30:26 -0700
+Received: by lahna (sSMTP sendmail emulation); Thu, 07 May 2020 15:30:25 +0300
+Date:   Thu, 7 May 2020 15:30:25 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
+        stable@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Bob Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>
+Subject: Re: [PATCH v2] pinctrl: cherryview: Ensure _REG(ACPI_ADR_SPACE_GPIO,
+ 1) gets called
+Message-ID: <20200507123025.GR487496@lahna.fi.intel.com>
+References: <20200504145957.480418-1-hdegoede@redhat.com>
+ <20200506064057.GU487496@lahna.fi.intel.com>
+ <f7ebb693-94ec-fd9f-c0a8-cfe8f9d4e9bf@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VcNJFfgshhL_pYsHodF1pMNySw08Z_4jr-vVkE-Xpj_ng@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f7ebb693-94ec-fd9f-c0a8-cfe8f9d4e9bf@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 5/5/20 4:27 PM, Andy Shevchenko wrote:
-> On Tue, May 5, 2020 at 5:22 PM <Mario.Limonciello@dell.com> wrote:
->>
->>> -----Original Message-----
->>> From: platform-driver-x86-owner@vger.kernel.org <platform-driver-x86-
->>> owner@vger.kernel.org> On Behalf Of Hans de Goede
->>> Sent: Tuesday, May 5, 2020 4:06 AM
->>> To: Limonciello, Mario; dvhart@infradead.org; andy@infradead.org
->>> Cc: linux-acpi@vger.kernel.org; platform-driver-x86@vger.kernel.org; linux-
->>> kernel@vger.kernel.org
->>> Subject: Re: [PATCH 4/5] platform/x86: intel-vbtn: Also handle tablet-mode
->>> switch on "Detachable" and "Portable" chassis-types
->>>
->>>
->>> [EXTERNAL EMAIL]
->>>
->>> Hi,
->>>
->>> On 5/4/20 5:37 PM, Mario.Limonciello@dell.com wrote:
->>>>
->>>>
->>>>> -----Original Message-----
->>>>> From: Hans de Goede <hdegoede@redhat.com>
->>>>> Sent: Saturday, May 2, 2020 1:30 PM
->>>>> To: Darren Hart; Andy Shevchenko; Limonciello, Mario
->>>>> Cc: Hans de Goede; linux-acpi@vger.kernel.org; platform-driver-
->>>>> x86@vger.kernel.org; linux-kernel@vger.kernel.org
->>>>> Subject: [PATCH 4/5] platform/x86: intel-vbtn: Also handle tablet-mode
->>> switch
->>>>> on "Detachable" and "Portable" chassis-types
->>>>>
->>>>>
->>>>> [EXTERNAL EMAIL]
->>>>>
->>>>> Commit de9647efeaa9 ("platform/x86: intel-vbtn: Only activate tablet mode
->>>>> switch on 2-in-1's") added a DMI chassis-type check to avoid accidentally
->>>>> reporting SW_TABLET_MODE = 1 to userspace on laptops.
->>>>>
->>>>> Some devices with a detachable keyboard and using the intel-vbnt (INT33D6)
->>>>> interface to report if they are in tablet mode (keyboard detached) or not,
->>>>> report 32 / "Detachable" as chassis-type, e.g. the HP Pavilion X2 series.
->>>>>
->>>>> Other devices with a detachable keyboard and using the intel-vbnt (INT33D6)
->>>>> interface to report SW_TABLET_MODE, report 8 / "Portable" as chassis-type.
->>>>> The Dell Venue 11 Pro 7130 is an example of this.
->>>>>
->>>>> Extend the DMI chassis-type check to also accept Portables and Detachables
->>>>> so that the intel-vbtn driver will report SW_TABLET_MODE on these devices.
->>>>>
->>>>> Note the chassis-type check was originally added to avoid a false-positive
->>>>> tablet-mode report on the Dell XPS 9360 laptop. To the best of my knowledge
->>>>> that laptop is using a chassis-type of 9 / "Laptop", so after this commit
->>>>> we still ignore the tablet-switch for that chassis-type.
->>>>
->>>> Yes that's correct.
->>>>
->>>>>
->>>>> Fixes: de9647efeaa9 ("platform/x86: intel-vbtn: Only activate tablet mode
->>>>> switch on 2-in-1's")
->>>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>>>> ---
->>>>> Looking at the Microsoft Windows documentation for tablet-mode reporting:
->>>>> https://docs.microsoft.com/en-us/windows-hardware/drivers/gpiobtn/button-
->>>>> implementation
->>>>>
->>>>> Then the presence of a tablet-mode switch is indicated by the presence
->>>>> of a PNP0C60 compatible ACPI devices. There are 2 ways in which this device
->>>>> can report the tablet-mode. 1. Directly providing a GpioInt resource inside
->>>>> the PNP0C60 device, 2. Through injecting events from a Windows driver.
->>>>>
->>>>> It seems that the intel-vbtn / the INT33D6 ACPI device is the ACPI side
->>>>> of Intel's generic solution for the case where the tablet-mode comes from
->>>>> the embedded-controller and needs to be "injected".
->>>>>
->>>>> This all suggests that it might be better to replace the chassis-type
->>>>> check with a acpi_dev_present("PNP0C60", NULL, -1) check.
->>>>>
->>>>> Mario, can you provide an acpidump and alsa-info.sh output for the
->>>>> Dell XPS 9360, so that I can check if that might help with the issue
->>>>> there, and thus is a potential candidate to replace the chassis-type
->>>>> check?
->>>>
->>>> Unfortunately with WFH right now, I don't have access to a XPS 9630 to
->>>> double check the patch series.
->>>>
->>>> However I do agree this should be a good approach.
->>>
->>> Ok, so lets stick with the chassis-type check (as amended by this patch)
->>> for now then. Then once you are able to go to your office again, we
->>> can examine the acpi_dev_present("PNP0C60", NULL, -1) alternative.
->>
->> I know XPS 13's are pretty popular, perhaps someone on the mailing list who has
->> one can share ACPI dump in the interim.
+On Thu, May 07, 2020 at 12:15:09PM +0200, Hans de Goede wrote:
+> Hi,
 > 
-> https://github.com/intel/dptfxtract/issues/13
+> On 5/6/20 8:40 AM, Mika Westerberg wrote:
+> > +Rafael and ACPICA folks.
+> > 
+> > On Mon, May 04, 2020 at 04:59:57PM +0200, Hans de Goede wrote:
+> > > On Cherry Trail devices there are 2 possible ACPI OpRegions for
+> > > accessing GPIOs. The standard GeneralPurposeIo OpRegion and the Cherry
+> > > Trail specific UserDefined 0x9X OpRegions.
+> > > 
+> > > Having 2 different types of OpRegions leads to potential issues with
+> > > checks for OpRegion availability, or in other words checks if _REG has
+> > > been called for the OpRegion which the ACPI code wants to use.
+> > > 
+> > > The ACPICA core does not call _REG on an ACPI node which does not
+> > > define an OpRegion matching the type being registered; and the reference
+> > > design DSDT, from which most Cherry Trail DSDTs are derived, does not
+> > > define GeneralPurposeIo, nor UserDefined(0x93) OpRegions for the GPO2
+> > > (UID 3) device, because no pins were assigned ACPI controlled functions
+> > > in the reference design.
+> > > 
+> > > Together this leads to the perfect storm, at least on the Cherry Trail
+> > > based Medion Akayo E1239T. This design does use a GPO2 pin from its ACPI
+> > > code and has added the Cherry Trail specific UserDefined(0x93) opregion
+> > > to its GPO2 ACPI node to access this pin.
+> > > 
+> > > But it uses a has _REG been called availability check for the standard
+> > > GeneralPurposeIo OpRegion. This clearly is a bug in the DSDT, but this
+> > > does work under Windows.
+> > 
+> > Do we know why this works under Windows? I mean if possible we should do
+> > the same and I kind of suspect that they forcibly call _REG in their
+> > GPIO driver.
+> 
+> Windows has its own ACPI implementation, so it could also be that their
+> equivalent of the:
+> 
+>         status = acpi_install_address_space_handler(handle, ACPI_ADR_SPACE_GPIO,
+>                                                     acpi_gpio_adr_space_handler,
+>                                                     NULL, achip);
+> 
+> Call from drivers/gpio/gpiolib-acpi.c indeed always calls _REG on the handle
+> without checking that there is an actual OpRegion with a space-id
+> of ACPI_ADR_SPACE_GPIO defined, as the ACPICA code does.  Note that the
+> current ACPICA code would require significant rework to allow this, or
+> it would need to add a _REG call at the end of acpi_install_address_space_handler(),
+> potentially calling _REG twice in many cases.
 
-Good one.
+I actually think this is the correct solution. Reading ACPI spec it say
+this:
 
-So this has:
+  Once _REG has been executed for a particular operation region,
+  indicating that the operation region handler is ready, a control
+  method can access fields in the operation region
 
-         Device (CIND)
-         {
-             Name (_HID, "INT33D3" /* Intel GPIO Buttons */)  // _HID: Hardware I
-             Name (_CID, "PNP0C60" /* Display Sensor Device */)  // _CID: Compati
-             Method (_STA, 0, Serialized)  // _STA: Status
-             {
-                 If ((OSYS >= 0x07DC))
-                 {
-                     Return (0x0F)
-                 }
+You can interpret it so that _REG gets called when operation region
+handler is ready. It does not say that there needs to be an actual
+operation region even though the examples following all have operation
+region.
 
-                 Return (Zero)
-             }
-         }
+I wonder what our ACPICA gurus think about this? Rafael, Bob, Erik?
 
-And OSYS >= 0x07DC checks for "Windows 2012" which Linux does advertise,
-so despite not having a tablet-mode(switch) the XPS 9360 still has a
-PNP0C60 ACPI device and will report 0xf (present) as status for it,
-so a acpi_dev_present("PNP0C60", NULL, -1) check will succeed on it.
+> We could move the manual _REG call I'm adding to pinctrl-cherry-view.c
+> but that has the same issue of calling _REG twice in many cases.
+> 
+> Most (all?) _REG implementations are fine with that, as they just set a
+> variable to 1 (to the Arg1 value). Still calling _REG twice is something
+> which we might want to avoid.
+> 
+> As a compromise I've chosen to add the extra unconditional _REG call
+> to pinctrl-cherryview.c because:
+> 
+> 1. The problem in the DSDT in question stems from there being 2
+> different OpRegions for accessing GPIOs which AFAIK is unique to
+> cherryview
+> 
+> 2. I've seen many many cherryview DSDT-s and as such I'm confident
+> that calling _REG twice is not an issue on cherryview.
+> 
+> > Are the ACPI tables from this system available somewhere?
+> 
+> Here you go:
+> https://fedorapeople.org/~jwrdegoede/medion-e1239t-dsdt.dsl
 
-Conclusion: such a check is not a valid alternative for checking DMI
-chassis-types (and from that pov this series thus is ready for merging).
+Thanks for sharing!
 
-Regards,
+> The problem is that on line 12624 there is a GPO2.AVBL == One
+> check, before GPO2.DCDT is used. If you then look at line
+> 17688 you see that _REG for the GPO2 device checkes for a
+> space-id of 8 (ACPI_ADR_SPACE_GPIO) to set AVBL
+> 
+> But the only OpRegion defined for the GPO2 device, and the
+> OpRegion to which GPO2.DCDT is mapped is the cherryview
+> UserDefined 0x93 GPIO access OpRegion, see line 17760.
+> Since there is no OpRegion for the ACPI_ADR_SPACE_GPIO
+> space-id, ACPICA never calls _REG with Arg0 == 8.
 
-Hans
+Indeed, I see the issue now. I guess calling _REG always when there is
+handler installed would solve this as well?
 
+> So as already mentioned the problem stems from the confusion
+> of there being 2 different OpRegions for accessing GPIOs
+> on cherryview.
+> 
+> Regards,
+> 
+> Hans
+> 
+> 
+> 
+> > > This issue leads to the intel_vbtn driver
+> > > reporting the device always being in tablet-mode at boot, even if it
+> > > is in laptop mode. Which in turn causes userspace to ignore touchpad
+> > > events. So iow this issues causes the touchpad to not work at boot.
+> > > 
+> > > Since the bug in the DSDT stems from the confusion of having 2 different
+> > > OpRegion types for accessing GPIOs on Cherry Trail devices, I believe
+> > > that this is best fixed inside the Cherryview pinctrl driver.
+> > > 
+> > > This commit adds a workaround to the Cherryview pinctrl driver so
+> > > that the DSDT's expectations of _REG always getting called for the
+> > > GeneralPurposeIo OpRegion are met.
+> > 
+> > I would like to understand the issue bit better before we do this.
+> > 
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> > > ---
+> > > Changes in v2:
+> > > - Drop unnecessary if (acpi_has_method(adev->handle, "_REG")) check
+> > > - Fix Cherryview spelling in the commit message
+> > > ---
+> > >   drivers/pinctrl/intel/pinctrl-cherryview.c | 18 ++++++++++++++++++
+> > >   1 file changed, 18 insertions(+)
+> > > 
+> > > diff --git a/drivers/pinctrl/intel/pinctrl-cherryview.c b/drivers/pinctrl/intel/pinctrl-cherryview.c
+> > > index 4c74fdde576d..4817aec114d6 100644
+> > > --- a/drivers/pinctrl/intel/pinctrl-cherryview.c
+> > > +++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
+> > > @@ -1693,6 +1693,8 @@ static acpi_status chv_pinctrl_mmio_access_handler(u32 function,
+> > >   static int chv_pinctrl_probe(struct platform_device *pdev)
+> > >   {
+> > > +	struct acpi_object_list input;
+> > > +	union acpi_object params[2];
+> > >   	struct chv_pinctrl *pctrl;
+> > >   	struct acpi_device *adev;
+> > >   	acpi_status status;
+> > > @@ -1755,6 +1757,22 @@ static int chv_pinctrl_probe(struct platform_device *pdev)
+> > >   	if (ACPI_FAILURE(status))
+> > >   		dev_err(&pdev->dev, "failed to install ACPI addr space handler\n");
+> > > +	/*
+> > > +	 * Some DSDT-s use the chv_pinctrl_mmio_access_handler while checking
+> > > +	 * for the regular GeneralPurposeIo OpRegion availability, mixed with
+> > > +	 * the DSDT not defining a GeneralPurposeIo OpRegion at all. In this
+> > > +	 * case the ACPICA code will not call _REG to signal availability of
+> > > +	 * the GeneralPurposeIo OpRegion. Manually call _REG here so that
+> > > +	 * the DSDT-s GeneralPurposeIo availability checks will succeed.
+> > > +	 */
+> > > +	params[0].type = ACPI_TYPE_INTEGER;
+> > > +	params[0].integer.value = ACPI_ADR_SPACE_GPIO;
+> > > +	params[1].type = ACPI_TYPE_INTEGER;
+> > > +	params[1].integer.value = 1;
+> > > +	input.count = 2;
+> > > +	input.pointer = params;
+> > > +	acpi_evaluate_object(adev->handle, "_REG", &input, NULL);
+> > > +
+> > >   	platform_set_drvdata(pdev, pctrl);
+> > >   	return 0;
+> > > -- 
+> > > 2.26.0
+> > 
