@@ -2,109 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0888E1C96AF
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 May 2020 18:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFD8A1C97B5
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 May 2020 19:27:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726788AbgEGQkM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 May 2020 12:40:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35814 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726222AbgEGQkM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 7 May 2020 12:40:12 -0400
-Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7BFD02084D
-        for <linux-acpi@vger.kernel.org>; Thu,  7 May 2020 16:40:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588869611;
-        bh=GG1N4eYVC6gF2jkWtOf+2i+94GM+Npe39EG8Lf+ifms=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=HgJwnUm2oLXN80bpkEvbRGUcxO7po8C3x+eey1I1d9h16G8qEy4dyYPWtHMA+/CU8
-         wMP9Z9o7JuhBTBldGAWOeFWND8Css3TFi7aacE4S84ZElrx+cepmd8zVX0UWmm6+CO
-         mDQ/VUMY2FfS/WO8rZqbmImH6hXwc58bgV3p6Rko=
-Received: by mail-io1-f42.google.com with SMTP id d7so2790076ioq.5
-        for <linux-acpi@vger.kernel.org>; Thu, 07 May 2020 09:40:11 -0700 (PDT)
-X-Gm-Message-State: AGi0PuYQZX2ujFsaxdQdZ6u2rCmBvooFoFQOJUACIRXC15jqXQG9w+Fy
-        QsM46fs53+CXIJ9+iRf7aotn8mXtunrj4XVYANk=
-X-Google-Smtp-Source: APiQypJU8CxXD0K+wmjkUZLW0ktGnLc+EwVNbQw+UBmlCqtOEoPpKmbWJbvupmPg1sRh5Xk+l48nSrDsKKRjQXG30+w=
-X-Received: by 2002:a02:3341:: with SMTP id k1mr13309473jak.74.1588869610945;
- Thu, 07 May 2020 09:40:10 -0700 (PDT)
+        id S1726308AbgEGR1w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 May 2020 13:27:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48892 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726222AbgEGR1w (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 May 2020 13:27:52 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF6C4C05BD43;
+        Thu,  7 May 2020 10:27:51 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id v63so3307695pfb.10;
+        Thu, 07 May 2020 10:27:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=sI6MW+ENUHkNJh2ieEfqb2bnhAZ3RCNTWxJcYdnJPQ0=;
+        b=fw6712JF9/XP6LQunEFLYb0L3Hu5ZvOjiwZaYjUOYARWSTU6cUpPwT1mREY73Q0lcz
+         Ux/KeXELOEUHJXhu+fQdD2m+PvZLEgLRXD9LHp5MtiJP9eimFksIXjI/cy3nfvc3vo6c
+         EnHUBiCI3w93ddm9j9zO6dnfk9CkchHGY/+2IAZNTQoXNwBPgeZyh71Spr8dvDJIyw/+
+         UbXKl1uzTrdWUsPYYMIzS4tnSCKePPqGcXUK7g5HcX9zheTZs6yjaODjo8LMj7+RYfuG
+         Z0ayJgokLlO3FWlitIERjSFHHzD510h8OGBamTktyIiycyrQAc/XdIxYy0AJQpUE4o6R
+         lJSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=sI6MW+ENUHkNJh2ieEfqb2bnhAZ3RCNTWxJcYdnJPQ0=;
+        b=Fo3tyPYzLH09wk65N029Gl23MuTtFwe8juh7+QRzBV/XCGrV7fKqG5oS5JbAznQAMp
+         4XziOia+nCLZsOUOZYgPxpglTHhWpmalCuhCZXmMq1eMw+z4XMjUHcLokSk8YaOaZAGd
+         hqWp71FWc/2dA8bgEyBNNzGxvM1E+hvR08Q1+Xt6u67lNKt7c+HY7g8Q8EhVoPSa/Vze
+         Aqrov8i7lr9OsjYA0B51R1WVW9MrWHnwQU8MPwT2LJA4JZb/Q7/sh8U/r4iHCTwkkLJw
+         kUqYXzjOJ7PlvkV/vS1Pa1d1CLHo25RWIfCWSzhaxE4wMF2LKNcEVg4mkpE5d+jndaMD
+         kLWQ==
+X-Gm-Message-State: AGi0PubCWR604p4UBy0gWOgsAc6ZasAqwacVQbQg+lreVLPLWTx2XNdA
+        +n5IymJZKAU7qvFsz+GI8yGSlHxGJjgzsllOYG4=
+X-Google-Smtp-Source: APiQypI7YgiQ9vvHBaf8ZcHCNpabxiuE+6U2dZsbLwFTkafu86kfC64HTxUYw0xpEU0ELMf7TkAsxj3N30X42MNPPSc=
+X-Received: by 2002:aa7:8f26:: with SMTP id y6mr15059528pfr.36.1588872471304;
+ Thu, 07 May 2020 10:27:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <1588858868-18039-1-git-send-email-guohanjun@huawei.com>
- <CAMj1kXHGfW=OKLO1S1Mf__9TzNXkrZ5BNvD8H_QYUTtF+awwpg@mail.gmail.com>
- <251b222a-7340-2d06-f07b-f81a9c19ac43@huawei.com> <628896e3-e43f-5814-a5ff-2bd5de223f20@huawei.com>
-In-Reply-To: <628896e3-e43f-5814-a5ff-2bd5de223f20@huawei.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 7 May 2020 18:39:59 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHY1mwtWYe3JnO4Gw_oEqSgNLiRxVyFFR2rxp4nh6sF0g@mail.gmail.com>
-Message-ID: <CAMj1kXHY1mwtWYe3JnO4Gw_oEqSgNLiRxVyFFR2rxp4nh6sF0g@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: IORT: Add extra message "applying workaround" for
- off-by-1 issue
-To:     Hanjun Guo <guohanjun@huawei.com>
-Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Will Deacon <will@kernel.org>,
+References: <20200505132905.10276-1-calvin.johnson@oss.nxp.com>
+ <20200505132905.10276-5-calvin.johnson@oss.nxp.com> <67e263cf-5cd7-98d1-56ff-ebd9ac2265b6@arm.com>
+In-Reply-To: <67e263cf-5cd7-98d1-56ff-ebd9ac2265b6@arm.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 7 May 2020 20:27:44 +0300
+Message-ID: <CAHp75Vew8Fh6HEoOACk+J9KCpw+AE2t2+oFnXteK1eShopfYAA@mail.gmail.com>
+Subject: Re: [net-next PATCH v3 4/5] net: phy: Introduce fwnode_get_phy_id()
+To:     Jeremy Linton <jeremy.linton@arm.com>
+Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        linux.cj@gmail.com, Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Varun Sethi <V.Sethi@nxp.com>,
+        "Rajesh V . Bikkina" <rajesh.bikkina@nxp.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        netdev <netdev@vger.kernel.org>, Marcin Wojtas <mw@semihalf.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Makarand Pawagi <makarand.pawagi@nxp.com>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Pankaj Bansal <pankaj.bansal@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Heiner Kallweit <hkallweit1@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 7 May 2020 at 16:02, Hanjun Guo <guohanjun@huawei.com> wrote:
->
-> On 2020/5/7 21:53, Hanjun Guo wrote:
-> > Hi Ard,
-> >
-> > On 2020/5/7 21:49, Ard Biesheuvel wrote:
-> >> On Thu, 7 May 2020 at 15:47, Hanjun Guo <guohanjun@huawei.com> wrote:
-> >>>
-> >>> As we already applied a workaround for the off-by-1 issue,
-> >>> it's good to add extra message "applying workaround" to
-> >>> make people less uneasy to see such message in the boot log.
-> >>>
-> >>> Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
-> >>
-> >> Hi Hanjun,
-> >>
-> >>> ---
-> >>>
-> >>> Based on top of for-next/acpi branch of ARM64 repo
-> >>>
-> >>>   drivers/acpi/arm64/iort.c | 2 +-
-> >>>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> >>> index b011d25..f3d492a 100644
-> >>> --- a/drivers/acpi/arm64/iort.c
-> >>> +++ b/drivers/acpi/arm64/iort.c
-> >>> @@ -328,7 +328,7 @@ static int iort_id_map(struct
-> >>> acpi_iort_id_mapping *map, u8 type, u32 rid_in,
-> >>>                   * Otherwise, things are *really* broken, and we
-> >>> just disregard
-> >>>                   * duplicate matches entirely to retain compatibility.
-> >>>                   */
-> >>> -               pr_err(FW_BUG "[map %p] conflicting mapping for input
-> >>> ID 0x%x\n",
-> >>> +               pr_err(FW_BUG "[map %p] conflicting mapping for input
-> >>> ID 0x%x, applying workaround\n",
-> >>
-> >> This is not correct. The workaround is only applied if rid_in ==
-> >> map->input_base, so better to print a second line after the 'return'
-> >> below that is only reached in that particular case.
-> >
-> > Obvious I'm wrong, I will update this patch, thanks a lot!
->
-> By the way, how about the print below? Should I add something more?
->
->                  if (rid_in != map->input_base)
->                          return -ENXIO;
-> +
-> +         pr_err(FW_BUG "applying workaround for the conflicting
-> mapping\n");
->
+On Thu, May 7, 2020 at 4:26 PM Jeremy Linton <jeremy.linton@arm.com> wrote:
+> On 5/5/20 8:29 AM, Calvin Johnson wrote:
 
-Simply 'applying workaround' should do it imo.
+> > +             if (sscanf(cp, "ethernet-phy-id%4x.%4x",
+> > +                        &upper, &lower) == 2) {
+> > +                     *phy_id = ((upper & 0xFFFF) << 16) | (lower & 0xFFFF);
+> > +                     return 0;
+> > +             }
+
+> Isn't the ACPI _CID() conceptually similar to the DT compatible
+> property?
+
+Where?
+
+> It even appears to be getting used in a similar way to
+> identify particular phy drivers in this case.
+
+_CID() is a string. It can't be used as pure number.
+
+-- 
+With Best Regards,
+Andy Shevchenko
