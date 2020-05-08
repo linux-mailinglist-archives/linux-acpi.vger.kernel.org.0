@@ -2,128 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F09621CBB57
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 May 2020 01:43:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 862321CBB62
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 May 2020 01:49:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728231AbgEHXnM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 May 2020 19:43:12 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:50160 "EHLO vps0.lunn.ch"
+        id S1728051AbgEHXtd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 May 2020 19:49:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50432 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727778AbgEHXnL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 8 May 2020 19:43:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=VieCsnbAAH7ShY/le63Gu8FMcfhJPUddj2RQTmeSZkc=; b=j/zivjwsfKTO3NJdPZ1Xkc0NMS
-        stqHbu/mibnqlxCUPiEvYElq+cYGn7gXuzGJw8Y9noaxxexZeAkB30T8zy8Z9okui8vzzlQnoI2ED
-        VVZhLcyi4vETgL05SKfKuVbO4i618JeaQGJTGls8WuwreVQWM7bmWTAJ+PcHMuUyctZU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.93)
-        (envelope-from <andrew@lunn.ch>)
-        id 1jXCdt-001R9J-5t; Sat, 09 May 2020 01:42:57 +0200
-Date:   Sat, 9 May 2020 01:42:57 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Jeremy Linton <jeremy.linton@arm.com>
-Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        linux.cj@gmail.com, Florian Fainelli <f.fainelli@gmail.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Varun Sethi <V.Sethi@nxp.com>,
-        "Rajesh V . Bikkina" <rajesh.bikkina@nxp.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Diana Madalina Craciun <diana.craciun@nxp.com>,
-        netdev <netdev@vger.kernel.org>, Marcin Wojtas <mw@semihalf.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [net-next PATCH v3 4/5] net: phy: Introduce fwnode_get_phy_id()
-Message-ID: <20200508234257.GA338317@lunn.ch>
-References: <20200505132905.10276-1-calvin.johnson@oss.nxp.com>
- <20200505132905.10276-5-calvin.johnson@oss.nxp.com>
- <67e263cf-5cd7-98d1-56ff-ebd9ac2265b6@arm.com>
- <CAHp75Vew8Fh6HEoOACk+J9KCpw+AE2t2+oFnXteK1eShopfYAA@mail.gmail.com>
- <83ab4ca4-9c34-4cdd-4413-3b4cdf96727d@arm.com>
- <20200508160755.GB10296@lsv03152.swis.in-blr01.nxp.com>
- <20200508181301.GF298574@lunn.ch>
- <1e33605e-42fd-baf8-7584-e8fcd5ca6fd3@arm.com>
- <20200508202722.GI298574@lunn.ch>
- <97a9e145-bbaa-efb8-6215-dc3109ee7290@arm.com>
+        id S1727774AbgEHXtb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 8 May 2020 19:49:31 -0400
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1344A24965
+        for <linux-acpi@vger.kernel.org>; Fri,  8 May 2020 23:49:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588981771;
+        bh=mIKkm78zlsFmzyNyUggpg/nLJ1Pv+yfyI9aRpBMvboY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Qgrr/ZVrtyMMSjMvGdjIv+FxJZuAng9m7yuTdoCTyOB79iIyIxJif4vCLsbkFNCoK
+         qXIxL+QBwozjrrBbZe3ADXJGrf4sPvGFA4/sHOtcGrKlf1HKamC+RT5s3LctwL8pAQ
+         ysSq0F9r3y6BM21/Dmx5hSBkWO5ZF2Tjj3znNxI0=
+Received: by mail-wm1-f48.google.com with SMTP id e26so11951955wmk.5
+        for <linux-acpi@vger.kernel.org>; Fri, 08 May 2020 16:49:30 -0700 (PDT)
+X-Gm-Message-State: AGi0PuaOcK7eqShrwC5kDdgOA3mYMSooVeRDqRPLAu30CULiX6Q3F+YO
+        K2YKp1tEJMUeS0skshl+x2QnWcUzUouAi2h5pK4tww==
+X-Google-Smtp-Source: APiQypK0d4AuGP8O5iSc/+LZKwChQkendzKhSNJ9rrZnhtoC2RLyao6v06bE42N0zruNedhXQebsB28r6/WvMhKE28c=
+X-Received: by 2002:a1c:9989:: with SMTP id b131mr18252758wme.176.1588981769476;
+ Fri, 08 May 2020 16:49:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <97a9e145-bbaa-efb8-6215-dc3109ee7290@arm.com>
+References: <20200508144043.13893-1-joro@8bytes.org> <CALCETrX0ubjc0Gf4hCY9RWH6cVEKF1hv3RzqToKMt9_bEXXBvw@mail.gmail.com>
+ <20200508213609.GU8135@suse.de>
+In-Reply-To: <20200508213609.GU8135@suse.de>
+From:   Andy Lutomirski <luto@kernel.org>
+Date:   Fri, 8 May 2020 16:49:17 -0700
+X-Gmail-Original-Message-ID: <CALCETrVxP87o2+aaf=RLW--DSpMrs=BXSQphN6bG5Y4X+OY8GQ@mail.gmail.com>
+Message-ID: <CALCETrVxP87o2+aaf=RLW--DSpMrs=BXSQphN6bG5Y4X+OY8GQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/7] mm: Get rid of vmalloc_sync_(un)mappings()
+To:     Joerg Roedel <jroedel@suse.de>
+Cc:     Andy Lutomirski <luto@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+        X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Michal Hocko <mhocko@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 08, 2020 at 05:48:33PM -0500, Jeremy Linton wrote:
-> Hi,
-> 
-> On 5/8/20 3:27 PM, Andrew Lunn wrote:
-> > > > There is a very small number of devices where the vendor messed up,
-> > > > and did not put valid contents in the ID registers. In such cases, we
-> > > > can read the IDs from device tree. These are then used in exactly the
-> > > > same way as if they were read from the device.
-> > > > 
-> > > 
-> > > Is that the case here?
-> > 
-> > Sorry, I don't understand the question?
-> 
-> I was asking in general, does this machine report the ID's correctly.
+On Fri, May 8, 2020 at 2:36 PM Joerg Roedel <jroedel@suse.de> wrote:
+>
+> On Fri, May 08, 2020 at 02:33:19PM -0700, Andy Lutomirski wrote:
+> > On Fri, May 8, 2020 at 7:40 AM Joerg Roedel <joro@8bytes.org> wrote:
+>
+> > What's the maximum on other system types?  It might make more sense to
+> > take the memory hit and pre-populate all the tables at boot so we
+> > never have to sync them.
+>
+> Need to look it up for 5-level paging, with 4-level paging its 64 pages
+> to pre-populate the vmalloc area.
+>
+> But that would not solve the problem on x86-32, which needs to
+> synchronize unmappings on the PMD level.
 
-Very likely, it does.
+What changes in this series with x86-32?  We already do that
+synchronization, right?  IOW, in the cases where the vmalloc *fault*
+code does anything at all, we should have a small bound for how much
+memory to preallocate and, if we preallocate it, then there is nothing
+to sync and nothing to fault.  And we have the benefit that we never
+need to sync anything on 64-bit, which is kind of nice.
 
-> The embedded single mac:mdio per nic case seems like the normal case, and
-> most of the existing ACPI described devices are setup that way.
+Do we actually need PMD-level things for 32-bit?  What if we just
+outlawed huge pages in the vmalloc space on 32-bit non-PAE?
 
-Somebody in this thread pointed to ACPI patches for the
-MACCHIATOBin. If i remember the hardware correctly, it has 4 Ethernet
-interfaces, and two MDIO bus masters. One of the bus masters can only
-do C22 and the other can only do C45. It is expected that the busses
-are shared, not a nice one to one mapping.
+Or maybe the net result isn't much of a cleanup after all given the
+need to support 32-bit.
 
-> But at the same time, that shifts the c22/45 question to the nic
-> driver, where use of a DSD property before instantiating/probing
-> MDIO isn't really a problem if needed.
-
-This in fact does not help you. The MAC driver has no idea what PHY is
-connected to it. The MAC does not know if it is C22 or C45. It uses
-the phylib abstraction which hides all this. Even if you assume 1:1,
-use phy_find_first(), it will not find a C45 PHY because without
-knowing there is a C45 PHY, we don't scan for it. And we should expect
-C45 PHYs to become more popular in the next few years.
-
-> In fact this embedded nic/mac/mdio/phy 1:1:1 case, is likely a requirement
-> for passthrough into a generic VM, otherwise someone has to create a virtual
-> mdio, and pass the phy in for the nic/mac.
-> 
-> AFAIK, NXP's part avoids this despite having a shared MDIO, because the phy
-> state never leaves the mgmt side of the picture. It monitors the state and
-> then feeds that back into their nic mgmt complex rather than using it
-> directly.
-
-That is the other model. Don't use Linux to drive the PHY, use
-firmware in the MAC. A number of MACs do that, but it has the usual
-problems of firmware. It limits you on your choice of PHYs, bugs in
-the firmware cannot be fixed by the community, no sharing of drivers
-because firmware is generally proprietary, no 'for free features'
-because somebody else added features to the linux PHY driver etc.  But
-it will make ACPI support simple, this whole discussion goes away, no
-ACPI needed at all.
-
-   Andrew
+>
+>
+>         Joerg
