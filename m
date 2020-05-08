@@ -2,17 +2,17 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D22B91CA1CE
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 May 2020 06:12:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C9CA1CA1CD
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 May 2020 06:12:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725287AbgEHEMS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 May 2020 00:12:18 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:40962 "EHLO huawei.com"
+        id S1725550AbgEHEMQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 May 2020 00:12:16 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:40940 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725780AbgEHEMR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 8 May 2020 00:12:17 -0400
+        id S1725287AbgEHEMQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 8 May 2020 00:12:16 -0400
 Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 82F1688CE6760E452CDF;
+        by Forcepoint Email with ESMTP id 7DA261CDD37E0367DED5;
         Fri,  8 May 2020 12:12:13 +0800 (CST)
 Received: from linux-ibm.site (10.175.102.37) by
  DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
@@ -25,10 +25,12 @@ To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
 CC:     <linux-acpi@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         Hanjun Guo <guohanjun@huawei.com>
-Subject: [PATCH 1/2] ACPI: GTDT: Put GTDT table after parsing
-Date:   Fri, 8 May 2020 12:05:52 +0800
-Message-ID: <1588910753-18543-1-git-send-email-guohanjun@huawei.com>
+Subject: [PATCH 2/2] ACPI: IORT: Add comments for not calling acpi_put_table()
+Date:   Fri, 8 May 2020 12:05:53 +0800
+Message-ID: <1588910753-18543-2-git-send-email-guohanjun@huawei.com>
 X-Mailer: git-send-email 1.7.12.4
+In-Reply-To: <1588910753-18543-1-git-send-email-guohanjun@huawei.com>
+References: <1588910753-18543-1-git-send-email-guohanjun@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.175.102.37]
@@ -38,40 +40,29 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The mapped GTDT table needs to be released after
-the driver init.
+The iort_table will be used at runtime after acpi_iort_init(),
+so add some comments to clarify this to make it less confusing.
 
 Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
 ---
+ drivers/acpi/arm64/iort.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Patch 1/2 2/2 are based on top of for-next/acpi branch of                       
-the ARM64 repo.
-
- drivers/acpi/arm64/gtdt.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
-index 01962c6..f2d0e59 100644
---- a/drivers/acpi/arm64/gtdt.c
-+++ b/drivers/acpi/arm64/gtdt.c
-@@ -394,7 +394,7 @@ static int __init gtdt_sbsa_gwdt_init(void)
- 	 */
- 	ret = acpi_gtdt_init(table, &timer_count);
- 	if (ret || !timer_count)
--		return ret;
-+		goto out_put_gtdt;
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 6e445bc..619a3e5 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -1667,6 +1667,10 @@ void __init acpi_iort_init(void)
+ {
+ 	acpi_status status;
  
- 	for_each_platform_timer(platform_timer) {
- 		if (is_non_secure_watchdog(platform_timer)) {
-@@ -408,6 +408,8 @@ static int __init gtdt_sbsa_gwdt_init(void)
- 	if (gwdt_count)
- 		pr_info("found %d SBSA generic Watchdog(s).\n", gwdt_count);
- 
-+out_put_gtdt:
-+	acpi_put_table(table);
- 	return ret;
- }
- 
++	/* iort_table will be used at runtime after the iort init,
++	 * so we don't need to call acpi_put_table() to release
++	 * the IORT table mapping.
++	 */
+ 	status = acpi_get_table(ACPI_SIG_IORT, 0, &iort_table);
+ 	if (ACPI_FAILURE(status)) {
+ 		if (status != AE_NOT_FOUND) {
 -- 
 1.7.12.4
 
