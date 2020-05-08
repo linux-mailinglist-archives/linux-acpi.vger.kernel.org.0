@@ -2,84 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E49491CB7F7
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 May 2020 21:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDB2A1CB80A
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 May 2020 21:18:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726877AbgEHTLP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 May 2020 15:11:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35636 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726767AbgEHTLO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 May 2020 15:11:14 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2C5AC061A0C;
-        Fri,  8 May 2020 12:11:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=tUWbBKI5h7qcIWqn7V5B9OOroJpHaOkMQ99gt8+paWg=; b=ZFIdwDhlPQCBP+06Xc6FGc6o8R
-        j4DJhPCH38rngf1Il0cTp/VUfH9Np0uLsnYfo0MGHwHFjmQyAvch8XUco4wEhUDgfDrulWKfm7+Y8
-        xOyo+9JvgR/pioiJwmMKz6uTB92VX0IPpurv9wUvNpcHWJ0YXO9AOqYdWkGgm0G/K8QQvqdigrrSX
-        c6eQ0hynD5RgDcm832/SyKns3BR3ugOKv9sbjDy13tg7Vr/hc8rAd8LrsD5WWUIEPsUhOXmLwZuAL
-        vfoywGZ8lH8pQY55bkkXAQI3eCvfk5jVYrJ/CbTotVTJtQvLk9bb9NhVMlWBrpLuonmfu3eZEk0zP
-        TI82M9Ng==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jX8OZ-0001Qe-1C; Fri, 08 May 2020 19:10:51 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 7FB2F301DFC;
-        Fri,  8 May 2020 21:10:48 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 6AECD203CB697; Fri,  8 May 2020 21:10:48 +0200 (CEST)
-Date:   Fri, 8 May 2020 21:10:48 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Joerg Roedel <joro@8bytes.org>
-Cc:     x86@kernel.org, hpa@zytor.com,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>, rjw@rjwysocki.net,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Michal Hocko <mhocko@kernel.org>,
-        Joerg Roedel <jroedel@suse.de>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [RFC PATCH 2/7] mm/vmalloc: Track which page-table levels were
- modified
-Message-ID: <20200508191048.GA2957@hirez.programming.kicks-ass.net>
-References: <20200508144043.13893-1-joro@8bytes.org>
- <20200508144043.13893-3-joro@8bytes.org>
+        id S1726807AbgEHTSx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 May 2020 15:18:53 -0400
+Received: from foss.arm.com ([217.140.110.172]:52060 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726767AbgEHTSx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 8 May 2020 15:18:53 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E877AD6E;
+        Fri,  8 May 2020 12:18:52 -0700 (PDT)
+Received: from [192.168.122.166] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A4C353F305;
+        Fri,  8 May 2020 12:18:51 -0700 (PDT)
+Subject: Re: [net-next PATCH v3 4/5] net: phy: Introduce fwnode_get_phy_id()
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Calvin Johnson <calvin.johnson@oss.nxp.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        linux.cj@gmail.com, Florian Fainelli <f.fainelli@gmail.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Varun Sethi <V.Sethi@nxp.com>,
+        "Rajesh V . Bikkina" <rajesh.bikkina@nxp.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        netdev <netdev@vger.kernel.org>, Marcin Wojtas <mw@semihalf.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Makarand Pawagi <makarand.pawagi@nxp.com>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Pankaj Bansal <pankaj.bansal@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Heiner Kallweit <hkallweit1@gmail.com>
+References: <20200505132905.10276-1-calvin.johnson@oss.nxp.com>
+ <20200505132905.10276-5-calvin.johnson@oss.nxp.com>
+ <67e263cf-5cd7-98d1-56ff-ebd9ac2265b6@arm.com>
+ <CAHp75Vew8Fh6HEoOACk+J9KCpw+AE2t2+oFnXteK1eShopfYAA@mail.gmail.com>
+ <83ab4ca4-9c34-4cdd-4413-3b4cdf96727d@arm.com>
+ <20200508160755.GB10296@lsv03152.swis.in-blr01.nxp.com>
+ <20200508181301.GF298574@lunn.ch>
+From:   Jeremy Linton <jeremy.linton@arm.com>
+Message-ID: <1e33605e-42fd-baf8-7584-e8fcd5ca6fd3@arm.com>
+Date:   Fri, 8 May 2020 14:18:50 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200508144043.13893-3-joro@8bytes.org>
+In-Reply-To: <20200508181301.GF298574@lunn.ch>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 08, 2020 at 04:40:38PM +0200, Joerg Roedel wrote:
+Hi,
 
-> +/*
-> + * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
-> + * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
-> + * needs to be called.
-> + */
-> +#ifndef ARCH_PAGE_TABLE_SYNC_MASK
-> +#define ARCH_PAGE_TABLE_SYNC_MASK 0
-> +#endif
-> +
-> +void arch_sync_kernel_mappings(unsigned long start, unsigned long end);
+On 5/8/20 1:13 PM, Andrew Lunn wrote:
+>>> It does have a numeric version defined for EISA types. OTOH I suspect that
+>>> your right. If there were a "PHY\VEN_IDvvvv&ID_DDDD" definition, it may not
+>>> be ideal to parse it. Instead the normal ACPI model of exactly matching the
+>>> complete string in the phy driver might be more appropriate.
+>>
+>> IMO, it should be fine to parse the string to extract the phy_id. Is there any
+>> reason why we cannot do this?
+> 
+> Some background here, about what the PHY core does.
+> 
+> PHYs have two ID registers. This contains vendor, device, and often
+> revision of the PHY. Only the vendor part is standardised, vendors can
+> decide how to use the device part, but it is common for the lowest
+> nibble to be revision. The core will read these ID registers, and then
+> go through all the PHY drivers registered and ask them if they support
+> this ID. The drivers provide a table of IDs and masks. The mask is
+> applied, and then if the ID matches, the driver is used. The mask
+> allows the revision to be ignored, etc.
+> 
+> There is a very small number of devices where the vendor messed up,
+> and did not put valid contents in the ID registers. In such cases, we
+> can read the IDs from device tree. These are then used in exactly the
+> same way as if they were read from the device.
+>
+
+Is that the case here?
+
+Also, how much of this was caused by uboot being deficient, and failing 
+to do vendor specific setup? AKA like what has been happening with the 
+mac addresses, where it turns out the difference between a chip being 
+used on x86 vs arm has frequently been that no one bothered to port all 
+the option rom functionality to uboot (and in some cases edk2).
+
+> If you want the ACPI model to be used, an exact match on the string,
+> you are going to have to modify the core and the drivers. They
+> currently don't have any string, and have no idea about different
+> revisions which are out in the wild.
+
+Right, not pretty. But _DSD should never be used to provide functionally 
+provided elsewhere in the spec, and with ACPI the attempt is to make the 
+firmware less linux focused, and more generic.
+
+> 
+>>> Similarly to how I suspect the next patch's use of "compatible" isn't ideal
+>>> either, because whether a device is c45 or not, should tend to be fixed to a
+>>> particular vendor/device implementation and not a firmware provided
+>>> property.
+> 
+> Not exactly true. It is the combination of can the bus master do C45
+> and can the device do C45. Unfortunately, we have no knowledge of the
+> bus masters capabilities, if it can do C45. And many MDIO drivers will
+> do a C22 transaction when asked to perform a C45 transaction. All new
+> submissions for MDIO drivers i ask for EOPNOTSUPP to be returned if
+> C45 is not supported. But we cannot rely on that. Too much history >
+>>
+>> I tend to agree with you on this. Even for DT, ideal case, IMO should be:
+>>
+>> 1) mdiobus_scan scans the mdiobus for c22 devices by reading phy id from
+>> registers 2 and 3
+>> 2) if not found scan for c45 devices <= looks like this is missing in Linux
+>> 3) look for phy_id from compatible string.
+> 
+> It is somewhat more complex, in that there are a small number of
+> devices which will respond to both C22 and C45. Generally, you want to
+> use C45 if supported. So you would want to do the C45 scan first. But
+> then the earlier problem comes to play, you have no idea if the bus
+> master actually correctly supports C45.
+
+But this shouldn't this be implied by the mdio vendor/model? AKA, you 
+wouldn't have a part with a given _HID() where the capabilities would 
+change.You would only have a situation where the phy's capabilities 
+change, but they must in the end support whatever is provided by the master.
+
+> 
+> Given the issues, we assume all bus masters and PHY devices are C22
+> unless DT says the bus master and PHY combination is compatible with
+> C45.
+
+How much of this can be simplified for ACPI buy ignoring the legacy and 
+putting some guides around the ACPI/platform requirements?
 
 
-> +	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
-> +		arch_sync_kernel_mappings(start, end);
-
-So you're relying on the compiler DCE'ing the call in the 'normal' case.
-
-Works I suppose, but I went over the patches twice to look for a default
-implementation of it before I figured that out ...
+Thanks,
