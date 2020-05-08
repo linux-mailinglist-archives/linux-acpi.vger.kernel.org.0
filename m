@@ -2,67 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C9CA1CA1CD
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 May 2020 06:12:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 699601CA28C
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 May 2020 07:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725550AbgEHEMQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 May 2020 00:12:16 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:40940 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725287AbgEHEMQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 8 May 2020 00:12:16 -0400
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 7DA261CDD37E0367DED5;
-        Fri,  8 May 2020 12:12:13 +0800 (CST)
-Received: from linux-ibm.site (10.175.102.37) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.487.0; Fri, 8 May 2020 12:12:03 +0800
-From:   Hanjun Guo <guohanjun@huawei.com>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Will Deacon <will@kernel.org>
-CC:     <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Hanjun Guo <guohanjun@huawei.com>
-Subject: [PATCH 2/2] ACPI: IORT: Add comments for not calling acpi_put_table()
-Date:   Fri, 8 May 2020 12:05:53 +0800
-Message-ID: <1588910753-18543-2-git-send-email-guohanjun@huawei.com>
-X-Mailer: git-send-email 1.7.12.4
-In-Reply-To: <1588910753-18543-1-git-send-email-guohanjun@huawei.com>
-References: <1588910753-18543-1-git-send-email-guohanjun@huawei.com>
+        id S1725681AbgEHFLt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 May 2020 01:11:49 -0400
+Received: from mail8235c14.megamailservers.com ([66.226.82.35]:56308 "EHLO
+        mail8235c14.megamailservers.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725550AbgEHFLt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 May 2020 01:11:49 -0400
+X-Greylist: delayed 796 seconds by postgrey-1.27 at vger.kernel.org; Fri, 08 May 2020 01:11:49 EDT
+Received: from postfix-webmail2.cogeco.net (wmsmtp.cogeco.ca [216.221.81.100])
+        by mail8235c14.megamailservers.com (mail8235c14) with ESMTP id C287C9237FD0E;
+        Fri,  8 May 2020 00:56:50 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cogeco.ca; s=email;
+        t=1588913911; bh=frcCV1k9oG9oKj3dpUqdJg1PxRT2RSN/XKdLCPjaYaY=;
+        h=From:Reply-To:Date:Subject:From;
+        b=HXnI6KvHcE3O/xfv/ULJOOgrQWH6xcMHMvqdPnAoD9shBJj4KiWIIljotKtvuw8bg
+         KP7stap9d+HUWFY+wJVqZJRSsRXaKisbweKES9eCzuucKfzjm4K25TXTKkvxH79ZOM
+         kIWvUW8SQXjVuPL4VH7f9WAUoZe4y88DN/6wTlrQ=
+Feedback-ID: gmccloy@cogeco.
+Received: from cgocable.ca (unknown [192.168.200.103])
+        by postfix-webmail2.cogeco.net (Postfix) with ESMTP id A9FD64093B10;
+        Fri,  8 May 2020 00:56:50 -0400 (EDT)
+Received: from [192.168.201.171] (Forwarded-For: 189.131.50.38) by
+ busywm04.int.cogeco.net (mshttpd); Thu, 07 May 2020 23:56:50 -0500
+From:   "CHENG JIANGUO" <gmccloy@cogeco.ca>
+Reply-To: cjianguo@universaldept.co.uk
+Message-ID: <73e0f60c32637.5eb4a042@cgocable.ca>
+Date:   Thu, 07 May 2020 23:56:50 -0500
+X-Mailer: Oracle Communications Messenger Express 7.0.5.29.0 64bit
+ (built Jul  9 2013)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.102.37]
-X-CFilter-Loop: Reflected
+Content-Language: en
+Subject: Hello, I have Business for you. Please respond if you are
+ interested.
+X-Accept-Language: en
+X-CSC:  0
+X-CHA:  v=2.3 cv=cuflbGwi c=1 sm=1 tr=0 a=mhp++lgYISqxKd8g2iav1w==:117
+        a=mhp++lgYISqxKd8g2iav1w==:17 a=9cW_t1CCXrUA:10 a=vTYKi3DYiPYA:10
+        a=sTwFKg_x9MkA:10 a=tclcd6dtLQvEqt9_mmAA:9
+X-CTCH-RefID: str=0001.0A020202.5EB4E6F7.000C,ss=1,re=0.000,recu=0.000,reip=0.000,lb,cl=3,cld=1,fgs=0
+X-CTCH-VOD: Unknown
+X-CTCH-Spam: Bulk
+X-CTCH-Score: 0.000
+X-CTCH-Rules: 
+X-CTCH-Flags: 0
+X-CTCH-ScoreCust: 0.000
+X-Origin-Country: CA
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
-
-The iort_table will be used at runtime after acpi_iort_init(),
-so add some comments to clarify this to make it less confusing.
-
-Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
----
- drivers/acpi/arm64/iort.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 6e445bc..619a3e5 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -1667,6 +1667,10 @@ void __init acpi_iort_init(void)
- {
- 	acpi_status status;
- 
-+	/* iort_table will be used at runtime after the iort init,
-+	 * so we don't need to call acpi_put_table() to release
-+	 * the IORT table mapping.
-+	 */
- 	status = acpi_get_table(ACPI_SIG_IORT, 0, &iort_table);
- 	if (ACPI_FAILURE(status)) {
- 		if (status != AE_NOT_FOUND) {
--- 
-1.7.12.4
 
