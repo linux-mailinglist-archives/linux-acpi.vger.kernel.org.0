@@ -2,161 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56F031CC356
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 May 2020 19:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87A5E1CC35B
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 May 2020 19:52:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728144AbgEIRty (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 9 May 2020 13:49:54 -0400
-Received: from mga07.intel.com ([134.134.136.100]:9524 "EHLO mga07.intel.com"
+        id S1728275AbgEIRwW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 9 May 2020 13:52:22 -0400
+Received: from mx2.suse.de ([195.135.220.15]:54418 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726214AbgEIRty (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 9 May 2020 13:49:54 -0400
-IronPort-SDR: FWZud03+JBAirAfRubFBitoVghW0eTIO0e/HPj0o7uy5OV6mwutQCRVujBTJiOFgi/IWjQUf9b
- 8hCcC/8bg7og==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2020 10:49:53 -0700
-IronPort-SDR: v/iyVDcBL1iaj0nfyu37j6vK3O4t9MaXXR3b5zjsFSHZere9/avoZaLOO9//LjE0KMKNdnVYNu
- crpTpV0tmGsQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,372,1583222400"; 
-   d="scan'208";a="279351361"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 09 May 2020 10:49:51 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jXTbj-0002so-5D; Sun, 10 May 2020 01:49:51 +0800
-Date:   Sun, 10 May 2020 01:49:17 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 6df1213fbae91c875034ec8888404aa30022dad7
-Message-ID: <5eb6ed1d.E3VWSpltXspfcw18%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726214AbgEIRwW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 9 May 2020 13:52:22 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 5F09FACFA;
+        Sat,  9 May 2020 17:52:23 +0000 (UTC)
+Date:   Sat, 9 May 2020 19:52:17 +0200
+From:   Joerg Roedel <jroedel@suse.de>
+To:     Andy Lutomirski <luto@kernel.org>
+Cc:     Joerg Roedel <joro@8bytes.org>, X86 ML <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Michal Hocko <mhocko@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>
+Subject: Re: [RFC PATCH 0/7] mm: Get rid of vmalloc_sync_(un)mappings()
+Message-ID: <20200509175217.GV8135@suse.de>
+References: <20200508144043.13893-1-joro@8bytes.org>
+ <CALCETrX0ubjc0Gf4hCY9RWH6cVEKF1hv3RzqToKMt9_bEXXBvw@mail.gmail.com>
+ <20200508213609.GU8135@suse.de>
+ <CALCETrVxP87o2+aaf=RLW--DSpMrs=BXSQphN6bG5Y4X+OY8GQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <CALCETrVxP87o2+aaf=RLW--DSpMrs=BXSQphN6bG5Y4X+OY8GQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: 6df1213fbae91c875034ec8888404aa30022dad7  Merge branch 'acpi-pci' into bleeding-edge
+On Fri, May 08, 2020 at 04:49:17PM -0700, Andy Lutomirski wrote:
+> On Fri, May 8, 2020 at 2:36 PM Joerg Roedel <jroedel@suse.de> wrote:
+> >
+> > On Fri, May 08, 2020 at 02:33:19PM -0700, Andy Lutomirski wrote:
+> > > On Fri, May 8, 2020 at 7:40 AM Joerg Roedel <joro@8bytes.org> wrote:
+> >
+> > > What's the maximum on other system types?  It might make more sense to
+> > > take the memory hit and pre-populate all the tables at boot so we
+> > > never have to sync them.
+> >
+> > Need to look it up for 5-level paging, with 4-level paging its 64 pages
+> > to pre-populate the vmalloc area.
+> >
+> > But that would not solve the problem on x86-32, which needs to
+> > synchronize unmappings on the PMD level.
+> 
+> What changes in this series with x86-32?
 
-elapsed time: 480m
+This series sets ARCH_PAGE_TABLE_SYNC_MASK to PGTBL_PMD_MODIFIED, so
+that the synchronization happens every time PMD(s) in the vmalloc areas
+are changed. Before this series this synchronization only happened at
+arbitrary places calling vmalloc_sync_(un)mappings().
 
-configs tested: 101
-configs skipped: 1
+> We already do that synchronization, right?  IOW, in the cases where
+> the vmalloc *fault* code does anything at all, we should have a small
+> bound for how much memory to preallocate and, if we preallocate it,
+> then there is nothing to sync and nothing to fault.  And we have the
+> benefit that we never need to sync anything on 64-bit, which is kind
+> of nice.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Don't really get you here, what is pre-allocated and why is there no
+need to sync and fault then?
 
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-i386                              allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-microblaze                       allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a005-20200509
-x86_64               randconfig-a003-20200509
-x86_64               randconfig-a001-20200509
-i386                 randconfig-a005-20200509
-i386                 randconfig-a004-20200509
-i386                 randconfig-a003-20200509
-i386                 randconfig-a002-20200509
-i386                 randconfig-a001-20200509
-i386                 randconfig-a006-20200509
-x86_64               randconfig-a015-20200509
-x86_64               randconfig-a014-20200509
-x86_64               randconfig-a011-20200509
-x86_64               randconfig-a013-20200509
-x86_64               randconfig-a012-20200509
-x86_64               randconfig-a016-20200509
-i386                 randconfig-a012-20200509
-i386                 randconfig-a014-20200509
-i386                 randconfig-a016-20200509
-i386                 randconfig-a011-20200509
-i386                 randconfig-a013-20200509
-i386                 randconfig-a015-20200509
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
+> Do we actually need PMD-level things for 32-bit?  What if we just
+> outlawed huge pages in the vmalloc space on 32-bit non-PAE?
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Disallowing huge-pages would at least remove the need to sync
+unmappings, but we still need to sync new PMD entries. Remember that the
+size of the vmalloc area on 32 bit is dynamic and depends on the VM-split
+and the actual amount of RAM on the system.
+
+A machine wit 512MB of RAM and a 1G/3G split will have around 2.5G of
+VMALLOC address space. And if we want to avoid vmalloc-faults there, we
+need to pre-allocate all PTE pages for that area (and the amount of PTE
+pages needed increases when RAM decreases).
+
+On a machine with 512M of RAM we would need ca. 1270+ PTE pages, which
+is around 5M (or 1% of total system memory).
+
+Regards,
+
+	Joerg
