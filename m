@@ -2,27 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56F1D1CBFDA
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 May 2020 11:35:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5104C1CBFFF
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 May 2020 11:41:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727086AbgEIJfZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 9 May 2020 05:35:25 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:45888 "EHLO
+        id S1728000AbgEIJlN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 9 May 2020 05:41:13 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:50948 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726885AbgEIJfZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 9 May 2020 05:35:25 -0400
+        with ESMTP id S1726885AbgEIJlN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 9 May 2020 05:41:13 -0400
 Received: from 89-77-60-66.dynamic.chello.pl (89.77.60.66) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
- id 50d46019d67d5f50; Sat, 9 May 2020 11:35:23 +0200
+ id 27d721ed7a9161ea; Sat, 9 May 2020 11:41:10 +0200
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Zheng Zengkai <zhengzengkai@huawei.com>
-Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH -next] ACPI: debug: Make two functions static
-Date:   Sat, 09 May 2020 11:35:22 +0200
-Message-ID: <11439051.xyQN3uvUWn@kreacher>
-In-Reply-To: <20200507070736.25418-1-zhengzengkai@huawei.com>
-References: <20200507070736.25418-1-zhengzengkai@huawei.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Len Brown <lenb@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] ACPI / hotplug / PCI: Use the new acpi_evaluate_reg() helper
+Date:   Sat, 09 May 2020 11:41:10 +0200
+Message-ID: <1840051.TrPhkc76kE@kreacher>
+In-Reply-To: <20200507104917.116589-2-hdegoede@redhat.com>
+References: <20200507104917.116589-1-hdegoede@redhat.com> <20200507104917.116589-2-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -31,46 +35,51 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thursday, May 7, 2020 9:07:36 AM CEST Zheng Zengkai wrote:
-> Fix sparse warnings:
+On Thursday, May 7, 2020 12:49:17 PM CEST Hans de Goede wrote:
+> Use the new acpi_evaluate_reg() helper in the acpiphp_glue.c code.
 > 
-> drivers/acpi/acpi_dbg.c:748:12: warning:
->  symbol 'acpi_aml_init' was not declared. Should it be static?
-> drivers/acpi/acpi_dbg.c:774:13: warning:
->  symbol 'acpi_aml_exit' was not declared. Should it be static?
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Zheng Zengkai <zhengzengkai@huawei.com>
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > ---
->  drivers/acpi/acpi_dbg.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> Changes in v2:
+> - Leave comment about not caring about _REG errors in place
+> - Add Bjorn's Acked-by
+> - Add Andy's Reviewed-by
+> ---
+>  drivers/pci/hotplug/acpiphp_glue.c | 13 +++----------
+>  1 file changed, 3 insertions(+), 10 deletions(-)
 > 
-> diff --git a/drivers/acpi/acpi_dbg.c b/drivers/acpi/acpi_dbg.c
-> index 7a265c2171c0..6041974c7627 100644
-> --- a/drivers/acpi/acpi_dbg.c
-> +++ b/drivers/acpi/acpi_dbg.c
-> @@ -745,7 +745,7 @@ static const struct acpi_debugger_ops acpi_aml_debugger = {
->  	.notify_command_complete = acpi_aml_notify_command_complete,
->  };
->  
-> -int __init acpi_aml_init(void)
-> +static int __init acpi_aml_init(void)
+> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
+> index b3869951c0eb..b4c92cee13f8 100644
+> --- a/drivers/pci/hotplug/acpiphp_glue.c
+> +++ b/drivers/pci/hotplug/acpiphp_glue.c
+> @@ -385,19 +385,12 @@ static unsigned char acpiphp_max_busnr(struct pci_bus *bus)
+>  static void acpiphp_set_acpi_region(struct acpiphp_slot *slot)
 >  {
->  	int ret;
+>  	struct acpiphp_func *func;
+> -	union acpi_object params[2];
+> -	struct acpi_object_list arg_list;
 >  
-> @@ -771,7 +771,7 @@ int __init acpi_aml_init(void)
->  	return 0;
+>  	list_for_each_entry(func, &slot->funcs, sibling) {
+> -		arg_list.count = 2;
+> -		arg_list.pointer = params;
+> -		params[0].type = ACPI_TYPE_INTEGER;
+> -		params[0].integer.value = ACPI_ADR_SPACE_PCI_CONFIG;
+> -		params[1].type = ACPI_TYPE_INTEGER;
+> -		params[1].integer.value = 1;
+>  		/* _REG is optional, we don't care about if there is failure */
+> -		acpi_evaluate_object(func_to_handle(func), "_REG", &arg_list,
+> -				     NULL);
+> +		acpi_evaluate_reg(func_to_handle(func),
+> +				  ACPI_ADR_SPACE_PCI_CONFIG,
+> +				  ACPI_REG_CONNECT);
+>  	}
 >  }
 >  
-> -void __exit acpi_aml_exit(void)
-> +static void __exit acpi_aml_exit(void)
->  {
->  	if (acpi_aml_initialized) {
->  		acpi_unregister_debugger(&acpi_aml_debugger);
 > 
 
-Applied as 5.8 material, thanks!
-
+Applied as 5.8 material along with the [1/2], thanks!
 
 
 
