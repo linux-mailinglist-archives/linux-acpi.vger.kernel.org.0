@@ -2,161 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C82F1CCCA7
-	for <lists+linux-acpi@lfdr.de>; Sun, 10 May 2020 19:27:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4D5A1CCD46
+	for <lists+linux-acpi@lfdr.de>; Sun, 10 May 2020 21:30:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729076AbgEJR1y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 10 May 2020 13:27:54 -0400
-Received: from mga02.intel.com ([134.134.136.20]:63797 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728360AbgEJR1x (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 10 May 2020 13:27:53 -0400
-IronPort-SDR: 4dZvyEYv7/+ArD5qTS8+K+GOCJq7QrisaO64i7UShxMaT2tyugFUGSPmYRYFkqnvgpbMXllyBj
- 02ziDvlwSHJg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2020 10:27:53 -0700
-IronPort-SDR: 6HBmt3eri5NysWAIzVdwwmEpicxlmtU+vGL0m6WYC/b1gRo8qgLE+b+qwnkYslFiFxdZmHXDuH
- B987YwJ19aAQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,376,1583222400"; 
-   d="scan'208";a="408675000"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 10 May 2020 10:27:51 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jXpjy-0009ow-Ss; Mon, 11 May 2020 01:27:50 +0800
-Date:   Mon, 11 May 2020 01:26:52 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 6a6044584305b1d608cd3b6d42c01fd4ac35cabf
-Message-ID: <5eb8395c.ysD0ybywpyDl62/p%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+        id S1728763AbgEJTaZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 10 May 2020 15:30:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60618 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728756AbgEJTaZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 10 May 2020 15:30:25 -0400
+Received: from mail-qv1-xf4a.google.com (mail-qv1-xf4a.google.com [IPv6:2607:f8b0:4864:20::f4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6268BC061A0C
+        for <linux-acpi@vger.kernel.org>; Sun, 10 May 2020 12:30:25 -0700 (PDT)
+Received: by mail-qv1-xf4a.google.com with SMTP id l17so1916372qvm.12
+        for <linux-acpi@vger.kernel.org>; Sun, 10 May 2020 12:30:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=mXwZ5xEMacGLAGAT+hxUPz7o/gx/ASvU7vsUpQBpy3c=;
+        b=XUoDFznFaPfqCl2BoC5ySwRvOwJYLBlXmiBEmSdcosG433unOWfJizFt04Ny0vkLTc
+         nUVPAOvrCFc/or9Y47Scr9LjpfaXwdjOZe6Drmw05Q4hsPT58QQkBKy049Oa8Gk1Q94G
+         pLTYMzBcwIAR3/l2WWY3HnkAIeNZX+HEj0X9HeSmMpgzVgyqfkgO35zg2M2TJXhpIKyR
+         VGJ6Bq94ktdL/EMHY7q6B3WwX84n6j9O3JkHMC5elRNDjtvPZ+5oNk7Fb2oKqUjXDtKS
+         wIh5hYbq0CtmVv/BijQBo7cjigboj9NLtPgvfzdW0S0f7e4P0e3hrT1rPYw9+Gr+m6q8
+         gmag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=mXwZ5xEMacGLAGAT+hxUPz7o/gx/ASvU7vsUpQBpy3c=;
+        b=EBO/LdlhCOGPwQfUsQqFIrHI505xneB7Q18q7mL6XQA1kX+hAuo6czOu/Uwkq6ypVO
+         9LMXzVhjp4OFISlcoYonS7NTUaEUoP7AsFzpn+RDIZrRORADRWuTLQF5azyZ/ld5X/jE
+         FRi0acbuInVmIgeqDEiKI4ao5diriVz0j+ad7Hw9UgGfc64RTeLLXA0inKVo0voyVkD8
+         nlzNYPVRADVI2o9cZX2MxWOnDJumVkuTICaRobxxGln1Xm303AuO6T0Txk2pjBwkMySX
+         cs8eti1O2bAMxlSQxtq9jcCI1ZYDWg/hMvtGA8PdgGnrWV8TDE7oNhJBcGGEWr7Ri0rm
+         UZAw==
+X-Gm-Message-State: AGi0PuZKR2Cqt6kEB1UxipKRLgAAPelQtxwc91nL2qVgmZHsxCpfB6Op
+        yUVT5HPfrdsRw78lEJwEuRcNDEry5MmO
+X-Google-Smtp-Source: APiQypJcwkKf5yk+n7t76FpvDZg+C1Ze5SkZY2UCjpjO5wjduNmknOO1OFYfb69P6qufqGoYYeTo79hlFIW4
+X-Received: by 2002:ad4:4b6b:: with SMTP id m11mr12237295qvx.130.1589139024298;
+ Sun, 10 May 2020 12:30:24 -0700 (PDT)
+Date:   Sun, 10 May 2020 20:30:16 +0100
+Message-Id: <20200510193016.100818-1-pterjan@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.26.2.645.ge9eca65c58-goog
+Subject: [PATCH] ACPI: Delete unused proc filename macros
+From:   Pascal Terjan <pterjan@google.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Cc:     Pascal Terjan <pterjan@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: 6a6044584305b1d608cd3b6d42c01fd4ac35cabf  Merge branch 'pm-acpi' into bleeding-edge
+Those were used to create files in /proc/acpi long ago
+and were missed when that code was deleted.
 
-elapsed time: 482m
-
-configs tested: 101
-configs skipped: 1
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-sparc                            allyesconfig
-m68k                             allyesconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-microblaze                       allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a006-20200510
-i386                 randconfig-a005-20200510
-i386                 randconfig-a003-20200510
-i386                 randconfig-a001-20200510
-i386                 randconfig-a004-20200510
-i386                 randconfig-a002-20200510
-x86_64               randconfig-a016-20200510
-x86_64               randconfig-a012-20200510
-x86_64               randconfig-a015-20200510
-x86_64               randconfig-a013-20200510
-x86_64               randconfig-a014-20200510
-x86_64               randconfig-a011-20200510
-i386                 randconfig-a012-20200510
-i386                 randconfig-a016-20200510
-i386                 randconfig-a014-20200510
-i386                 randconfig-a011-20200510
-i386                 randconfig-a013-20200510
-i386                 randconfig-a015-20200510
-x86_64               randconfig-a005-20200510
-x86_64               randconfig-a003-20200510
-x86_64               randconfig-a001-20200510
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
-
+Signed-off-by: Pascal Terjan <pterjan@google.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/acpi/button.c   | 1 -
+ drivers/acpi/ec.c       | 1 -
+ drivers/acpi/pci_link.c | 2 --
+ drivers/acpi/power.c    | 2 --
+ drivers/acpi/sbs.c      | 3 ---
+ 5 files changed, 9 deletions(-)
+
+diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+index 78cfc70cb320..3c35e57dd854 100644
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -24,7 +24,6 @@
+ #define PREFIX "ACPI: "
+ 
+ #define ACPI_BUTTON_CLASS		"button"
+-#define ACPI_BUTTON_FILE_INFO		"info"
+ #define ACPI_BUTTON_FILE_STATE		"state"
+ #define ACPI_BUTTON_TYPE_UNKNOWN	0x00
+ #define ACPI_BUTTON_NOTIFY_STATUS	0x80
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index b4c0152e92aa..8535bea2f4e3 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -34,7 +34,6 @@
+ 
+ #define ACPI_EC_CLASS			"embedded_controller"
+ #define ACPI_EC_DEVICE_NAME		"Embedded Controller"
+-#define ACPI_EC_FILE_INFO		"info"
+ 
+ /* EC status register */
+ #define ACPI_EC_FLAG_OBF	0x01	/* Output buffer full */
+diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
+index ed3d2182cf2c..606da5d77ad3 100644
+--- a/drivers/acpi/pci_link.c
++++ b/drivers/acpi/pci_link.c
+@@ -31,8 +31,6 @@
+ ACPI_MODULE_NAME("pci_link");
+ #define ACPI_PCI_LINK_CLASS		"pci_irq_routing"
+ #define ACPI_PCI_LINK_DEVICE_NAME	"PCI Interrupt Link"
+-#define ACPI_PCI_LINK_FILE_INFO		"info"
+-#define ACPI_PCI_LINK_FILE_STATUS	"state"
+ #define ACPI_PCI_LINK_MAX_POSSIBLE	16
+ 
+ static int acpi_pci_link_add(struct acpi_device *device,
+diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
+index fe1e7bc91a5e..837b875d075e 100644
+--- a/drivers/acpi/power.c
++++ b/drivers/acpi/power.c
+@@ -36,8 +36,6 @@
+ ACPI_MODULE_NAME("power");
+ #define ACPI_POWER_CLASS		"power_resource"
+ #define ACPI_POWER_DEVICE_NAME		"Power Resource"
+-#define ACPI_POWER_FILE_INFO		"info"
+-#define ACPI_POWER_FILE_STATUS		"state"
+ #define ACPI_POWER_RESOURCE_STATE_OFF	0x00
+ #define ACPI_POWER_RESOURCE_STATE_ON	0x01
+ #define ACPI_POWER_RESOURCE_STATE_UNKNOWN 0xFF
+diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
+index 6e88224f60f0..f158b8c30113 100644
+--- a/drivers/acpi/sbs.c
++++ b/drivers/acpi/sbs.c
+@@ -28,9 +28,6 @@
+ #define ACPI_SBS_CLASS			"sbs"
+ #define ACPI_AC_CLASS			"ac_adapter"
+ #define ACPI_SBS_DEVICE_NAME		"Smart Battery System"
+-#define ACPI_SBS_FILE_INFO		"info"
+-#define ACPI_SBS_FILE_STATE		"state"
+-#define ACPI_SBS_FILE_ALARM		"alarm"
+ #define ACPI_BATTERY_DIR_NAME		"BAT%i"
+ #define ACPI_AC_DIR_NAME		"AC0"
+ 
+-- 
+2.26.2.645.ge9eca65c58-goog
+
