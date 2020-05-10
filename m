@@ -2,98 +2,139 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36EC91CC951
-	for <lists+linux-acpi@lfdr.de>; Sun, 10 May 2020 10:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 897511CC9C1
+	for <lists+linux-acpi@lfdr.de>; Sun, 10 May 2020 11:48:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728146AbgEJIPV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 10 May 2020 04:15:21 -0400
-Received: from mx2.suse.de ([195.135.220.15]:60116 "EHLO mx2.suse.de"
+        id S1726906AbgEJJsL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 10 May 2020 05:48:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54136 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726630AbgEJIPV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 10 May 2020 04:15:21 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id AF43EAC69;
-        Sun, 10 May 2020 08:15:21 +0000 (UTC)
-Date:   Sun, 10 May 2020 10:15:16 +0200
-From:   Joerg Roedel <jroedel@suse.de>
-To:     Andy Lutomirski <luto@kernel.org>
-Cc:     Joerg Roedel <joro@8bytes.org>, X86 ML <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Michal Hocko <mhocko@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>
-Subject: Re: [RFC PATCH 0/7] mm: Get rid of vmalloc_sync_(un)mappings()
-Message-ID: <20200510081516.GX8135@suse.de>
-References: <20200508144043.13893-1-joro@8bytes.org>
- <CALCETrX0ubjc0Gf4hCY9RWH6cVEKF1hv3RzqToKMt9_bEXXBvw@mail.gmail.com>
- <20200508213609.GU8135@suse.de>
- <CALCETrVxP87o2+aaf=RLW--DSpMrs=BXSQphN6bG5Y4X+OY8GQ@mail.gmail.com>
- <20200509175217.GV8135@suse.de>
- <CALCETrVU-+G3K5ABBRSEMiwnskL4mZsVcoTESZXnu34J7TaOqw@mail.gmail.com>
- <20200509215713.GE18353@8bytes.org>
- <CALCETrWyQA=4y57PsKhhcRWpxfCufBpda5g7gyEVSST6H5FNJQ@mail.gmail.com>
+        id S1726104AbgEJJsL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 10 May 2020 05:48:11 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D42F220820;
+        Sun, 10 May 2020 09:48:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589104090;
+        bh=It5Bs3mGUycZO8AmlCBz6x4Tq/NHxfaoV+60NhmqddI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ED/ykdB+3XjqF/FI5Jl03ZaQTSBSIvnQzAR9wDxrrSQrPcPiMQVsdTAykgBip/Lpm
+         AOUUUSUt5Ec2rGpZ1Uj6eaTMMrskpTL9ipW2QuLJNwdQGmghfSOkogrtvLQTFbielC
+         zqscIYkmwRzZiKpL4DqKRd863eNVc+uEFjhvbHSI=
+Date:   Sun, 10 May 2020 10:48:06 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v4 01/11] iio: light: cm32181: Switch to new style
+ i2c-driver probe function
+Message-ID: <20200510104806.63ffeae5@archlinux>
+In-Reply-To: <20200504125551.434647-1-hdegoede@redhat.com>
+References: <20200504125551.434647-1-hdegoede@redhat.com>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALCETrWyQA=4y57PsKhhcRWpxfCufBpda5g7gyEVSST6H5FNJQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, May 09, 2020 at 10:05:43PM -0700, Andy Lutomirski wrote:
-> On Sat, May 9, 2020 at 2:57 PM Joerg Roedel <joro@8bytes.org> wrote:
-> I spent some time looking at the code, and I'm guessing you're talking
-> about the 3-level !SHARED_KERNEL_PMD case.  I can't quite figure out
-> what's going on.
+On Mon,  4 May 2020 14:55:41 +0200
+Hans de Goede <hdegoede@redhat.com> wrote:
+
+> Switch to the new style i2c-driver probe_new probe function and drop the
+> unnecessary i2c_device_id table (we do not have any old style board files
+> using this).
 > 
-> Can you explain what is actually going on that causes different
-> mms/pgds to have top-level entries in the kernel range that point to
-> different tables?  Because I'm not seeing why this makes any sense.
+> This is a preparation patch for adding ACPI binding support.
+> 
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Hi Hans,
 
-There are three cases where the PMDs are not shared on x86-32:
+Seems these have all been sent with mime type of quoted-printable.
+As git am really doesn't like that I ended up pulling these down from
+patchwork.
 
-	1) With non-PAE the top-level is already the PMD level, because
-	   the page-table only has two levels. Since the top-level can't
-	   be shared, the PMDs are also not shared.
+Please try and sort that email issue out for future patch sets until
+we get git am that works with it in standard distro packages (assuming
+it ever does)
 
-	2) For some reason Xen-PV also does not share kernel PMDs on PAE
-	   systems, but I havn't looked into why.
+Otherwise, a bit of fuzz from the patch that dropped the of_match_ptr
+protections.
 
-	3) On 32-bit PAE with PTI enabled the kernel address space
-	   contains the LDT mapping, which is also different per-PGD.
-	   There is one PMD entry reserved for the LDT, giving it 2MB of
-	   address space. I implemented it this way to keep the 32-bit
-	   implementation of PTI mostly similar to the 64-bit one.
+Series applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to play with it.
 
-> Why does it need to be partitioned at all?  The only thing that comes
-> to mind is that the LDT range is per-mm.  So I can imagine that the
-> PAE case with a 3G user / 1G kernel split has to have the vmalloc
-> range and the LDT range in the same top-level entry.  Yuck.
+Thanks,
 
-PAE with 3G user / 1G kernel has _all_ of the kernel mappings in one
-top-level entry (direct-mapping, vmalloc, ldt, fixmap).
-
-> If it's *just* the LDT that's a problem, we could plausibly shrink the
-> user address range a little bit and put the LDT in the user portion.
-> I suppose this could end up creating its own set of problems involving
-> tracking which code owns which page tables.
-
-Yeah, for the PTI case it is only the LDT that causes the unshared
-kernel PMDs, but even if we move the LDT somewhere else we still have
-two-level paging and the xen-pv case.
+Jonathan
 
 
-	Joerg
+> ---
+> Changes in v4:
+> - Set indio_dev->name to "cm32181" instead of setting it to dev_name(dev)
+> 
+> Changes in v3:
+> - This is a new patch in v3 of this patch-set
+> ---
+>  drivers/iio/light/cm32181.c | 15 +++------------
+>  1 file changed, 3 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
+> index 5f4fb5674fa0..2c139d85ef0c 100644
+> --- a/drivers/iio/light/cm32181.c
+> +++ b/drivers/iio/light/cm32181.c
+> @@ -294,8 +294,7 @@ static const struct iio_info cm32181_info = {
+>  	.attrs			= &cm32181_attribute_group,
+>  };
+>  
+> -static int cm32181_probe(struct i2c_client *client,
+> -			const struct i2c_device_id *id)
+> +static int cm32181_probe(struct i2c_client *client)
+>  {
+>  	struct cm32181_chip *cm32181;
+>  	struct iio_dev *indio_dev;
+> @@ -316,7 +315,7 @@ static int cm32181_probe(struct i2c_client *client,
+>  	indio_dev->channels = cm32181_channels;
+>  	indio_dev->num_channels = ARRAY_SIZE(cm32181_channels);
+>  	indio_dev->info = &cm32181_info;
+> -	indio_dev->name = id->name;
+> +	indio_dev->name = "cm32181";
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  
+>  	ret = cm32181_reg_init(cm32181);
+> @@ -338,13 +337,6 @@ static int cm32181_probe(struct i2c_client *client,
+>  	return 0;
+>  }
+>  
+> -static const struct i2c_device_id cm32181_id[] = {
+> -	{ "cm32181", 0 },
+> -	{ }
+> -};
+> -
+> -MODULE_DEVICE_TABLE(i2c, cm32181_id);
+> -
+>  static const struct of_device_id cm32181_of_match[] = {
+>  	{ .compatible = "capella,cm32181" },
+>  	{ }
+> @@ -356,8 +348,7 @@ static struct i2c_driver cm32181_driver = {
+>  		.name	= "cm32181",
+>  		.of_match_table = of_match_ptr(cm32181_of_match),
+>  	},
+> -	.id_table       = cm32181_id,
+> -	.probe		= cm32181_probe,
+> +	.probe_new	= cm32181_probe,
+>  };
+>  
+>  module_i2c_driver(cm32181_driver);
 
