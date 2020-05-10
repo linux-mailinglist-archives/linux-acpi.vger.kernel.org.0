@@ -2,168 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 939E71CCA83
-	for <lists+linux-acpi@lfdr.de>; Sun, 10 May 2020 13:00:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C82F1CCCA7
+	for <lists+linux-acpi@lfdr.de>; Sun, 10 May 2020 19:27:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728918AbgEJLAW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 10 May 2020 07:00:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37780 "EHLO mail.kernel.org"
+        id S1729076AbgEJR1y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 10 May 2020 13:27:54 -0400
+Received: from mga02.intel.com ([134.134.136.20]:63797 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726104AbgEJLAW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 10 May 2020 07:00:22 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 70A1F20708;
-        Sun, 10 May 2020 11:00:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589108421;
-        bh=y6Q7eSTVZ1KzZiuOCrv0FQwCH4hWBWN3Tp4Umxf+9W8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NnfImhX7HKPftayZYG9B2Q1EKNznqqfYZTsww3lfw3LQ+FdmCHYB5R/96Ju+SLww1
-         f4vzU5fE3bFiOSOlWXZL7qcnJKD93o3YWi4t+WOgNkYH7y3vZz+6JcJ0MYby4YehTl
-         5u+PGAxSoPGDWmmUJxiEFDmneOTUHTeEK6P4oJZQ=
-Date:   Sun, 10 May 2020 12:00:16 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4 01/11] iio: light: cm32181: Switch to new style
- i2c-driver probe function
-Message-ID: <20200510120016.7b360d81@archlinux>
-In-Reply-To: <e30bbcb4-c0cd-e95f-501a-89270f8dd19e@redhat.com>
-References: <20200504125551.434647-1-hdegoede@redhat.com>
-        <20200510104806.63ffeae5@archlinux>
-        <e30bbcb4-c0cd-e95f-501a-89270f8dd19e@redhat.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1728360AbgEJR1x (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 10 May 2020 13:27:53 -0400
+IronPort-SDR: 4dZvyEYv7/+ArD5qTS8+K+GOCJq7QrisaO64i7UShxMaT2tyugFUGSPmYRYFkqnvgpbMXllyBj
+ 02ziDvlwSHJg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2020 10:27:53 -0700
+IronPort-SDR: 6HBmt3eri5NysWAIzVdwwmEpicxlmtU+vGL0m6WYC/b1gRo8qgLE+b+qwnkYslFiFxdZmHXDuH
+ B987YwJ19aAQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,376,1583222400"; 
+   d="scan'208";a="408675000"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 10 May 2020 10:27:51 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jXpjy-0009ow-Ss; Mon, 11 May 2020 01:27:50 +0800
+Date:   Mon, 11 May 2020 01:26:52 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 6a6044584305b1d608cd3b6d42c01fd4ac35cabf
+Message-ID: <5eb8395c.ysD0ybywpyDl62/p%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, 10 May 2020 12:03:08 +0200
-Hans de Goede <hdegoede@redhat.com> wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: 6a6044584305b1d608cd3b6d42c01fd4ac35cabf  Merge branch 'pm-acpi' into bleeding-edge
 
-> Hi,
-> 
-> On 5/10/20 11:48 AM, Jonathan Cameron wrote:
-> > On Mon,  4 May 2020 14:55:41 +0200
-> > Hans de Goede <hdegoede@redhat.com> wrote:
-> >   
-> >> Switch to the new style i2c-driver probe_new probe function and drop the
-> >> unnecessary i2c_device_id table (we do not have any old style board files
-> >> using this).
-> >>
-> >> This is a preparation patch for adding ACPI binding support.
-> >>
-> >> Signed-off-by: Hans de Goede <hdegoede@redhat.com>  
-> > Hi Hans,
-> > 
-> > Seems these have all been sent with mime type of quoted-printable.
-> > As git am really doesn't like that I ended up pulling these down from
-> > patchwork.
-> > 
-> > Please try and sort that email issue out for future patch sets until
-> > we get git am that works with it in standard distro packages (assuming
-> > it ever does)  
-> 
-> Weird, I used git send-email to send the patches, as I always do.
-> I contribute to a lot of subsystems and this is the first complaint I'm
-> getting about this ?
-It's not been true of the previous ones you've sent me.
+elapsed time: 482m
 
-A bit of googling suggests git-send-email will do this if it finds a CR
-in the patch.  Perhaps that's what happened?
+configs tested: 101
+configs skipped: 1
 
-Maybe try sending them one at a time and see if a particular patch is causing
-it to happen.  Then play detective on why.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Or just take it as one of those things and ignore it unless it happens again!
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+sparc                            allyesconfig
+m68k                             allyesconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+microblaze                       allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a006-20200510
+i386                 randconfig-a005-20200510
+i386                 randconfig-a003-20200510
+i386                 randconfig-a001-20200510
+i386                 randconfig-a004-20200510
+i386                 randconfig-a002-20200510
+x86_64               randconfig-a016-20200510
+x86_64               randconfig-a012-20200510
+x86_64               randconfig-a015-20200510
+x86_64               randconfig-a013-20200510
+x86_64               randconfig-a014-20200510
+x86_64               randconfig-a011-20200510
+i386                 randconfig-a012-20200510
+i386                 randconfig-a016-20200510
+i386                 randconfig-a014-20200510
+i386                 randconfig-a011-20200510
+i386                 randconfig-a013-20200510
+i386                 randconfig-a015-20200510
+x86_64               randconfig-a005-20200510
+x86_64               randconfig-a003-20200510
+x86_64               randconfig-a001-20200510
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
 
-J
-
-> 
-> > Otherwise, a bit of fuzz from the patch that dropped the of_match_ptr
-> > protections.
-> > 
-> > Series applied to the togreg branch of iio.git and pushed out as testing for
-> > the autobuilders to play with it.  
-> 
-> Great, thank you.
-> 
-> Regards,
-> 
-> Hans
-> 
-> 
-> 
-> >> ---
-> >> Changes in v4:
-> >> - Set indio_dev->name to "cm32181" instead of setting it to dev_name(dev)
-> >>
-> >> Changes in v3:
-> >> - This is a new patch in v3 of this patch-set
-> >> ---
-> >>   drivers/iio/light/cm32181.c | 15 +++------------
-> >>   1 file changed, 3 insertions(+), 12 deletions(-)
-> >>
-> >> diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
-> >> index 5f4fb5674fa0..2c139d85ef0c 100644
-> >> --- a/drivers/iio/light/cm32181.c
-> >> +++ b/drivers/iio/light/cm32181.c
-> >> @@ -294,8 +294,7 @@ static const struct iio_info cm32181_info = {
-> >>   	.attrs			= &cm32181_attribute_group,
-> >>   };
-> >>   
-> >> -static int cm32181_probe(struct i2c_client *client,
-> >> -			const struct i2c_device_id *id)
-> >> +static int cm32181_probe(struct i2c_client *client)
-> >>   {
-> >>   	struct cm32181_chip *cm32181;
-> >>   	struct iio_dev *indio_dev;
-> >> @@ -316,7 +315,7 @@ static int cm32181_probe(struct i2c_client *client,
-> >>   	indio_dev->channels = cm32181_channels;
-> >>   	indio_dev->num_channels = ARRAY_SIZE(cm32181_channels);
-> >>   	indio_dev->info = &cm32181_info;
-> >> -	indio_dev->name = id->name;
-> >> +	indio_dev->name = "cm32181";
-> >>   	indio_dev->modes = INDIO_DIRECT_MODE;
-> >>   
-> >>   	ret = cm32181_reg_init(cm32181);
-> >> @@ -338,13 +337,6 @@ static int cm32181_probe(struct i2c_client *client,
-> >>   	return 0;
-> >>   }
-> >>   
-> >> -static const struct i2c_device_id cm32181_id[] = {
-> >> -	{ "cm32181", 0 },
-> >> -	{ }
-> >> -};
-> >> -
-> >> -MODULE_DEVICE_TABLE(i2c, cm32181_id);
-> >> -
-> >>   static const struct of_device_id cm32181_of_match[] = {
-> >>   	{ .compatible = "capella,cm32181" },
-> >>   	{ }
-> >> @@ -356,8 +348,7 @@ static struct i2c_driver cm32181_driver = {
-> >>   		.name	= "cm32181",
-> >>   		.of_match_table = of_match_ptr(cm32181_of_match),
-> >>   	},
-> >> -	.id_table       = cm32181_id,
-> >> -	.probe		= cm32181_probe,
-> >> +	.probe_new	= cm32181_probe,
-> >>   };
-> >>   
-> >>   module_i2c_driver(cm32181_driver);  
-> >   
-> 
-
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
