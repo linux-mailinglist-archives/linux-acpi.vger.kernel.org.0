@@ -2,111 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE4CE1CE085
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 May 2020 18:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A5121CE117
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 May 2020 19:02:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730707AbgEKQdo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 May 2020 12:33:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58892 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728556AbgEKQdn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 11 May 2020 12:33:43 -0400
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A392C061A0E
-        for <linux-acpi@vger.kernel.org>; Mon, 11 May 2020 09:33:42 -0700 (PDT)
-Received: by mail-il1-x142.google.com with SMTP id c18so9173019ile.5
-        for <linux-acpi@vger.kernel.org>; Mon, 11 May 2020 09:33:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=et/ZymkirD1QygJLFDSmGkpZxp/V++5w/bxpZ0mAkxQ=;
-        b=I7Mts3+ro62o7Ti94rrIyD0lIdQVdgJ6KCyjJLJF3I88OtJG7X+c0hKXo5Y8u0ec5N
-         Po04BrhoAo0ZTA4qZlgwMoqipj8V44G3+ulzNGjpr3bHiZWsJGdm6AexFaeS/x4ZRwEM
-         d0nm0LO5zZUDisAAmTkrRf3TRR9aC+PtGTxP0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=et/ZymkirD1QygJLFDSmGkpZxp/V++5w/bxpZ0mAkxQ=;
-        b=bRjaNrkKYrC5Hmzn56UjftR3W/QnYcDvHGeKCrpRXbOc9XPPHdk5W9Wkv9tmjZPdUC
-         Ijx3rVASw7xfsx9pPtkUX76jjH83M0SWVQqFKed36qxN1esFCsW/LdSR+eylgkYvVp0R
-         i7Li3e7THgP5hQkb8TjRcENUcvxx6VV+u7xfxFpwbIVa3sVB8ydVDt6tFUTQuP0z4q4t
-         U3wjTLPqcpry6WVwMtHA/nj8sJoqhXgq0CDX0enFTBx1sRAokTi22nEACBFO4tcXk3jX
-         ujfFQOpjzHjXfFIhkYUTOZAxB7Ck0YqlMaZK3NX/TB8lsE+5lbobsc3aBm4mugawhMaL
-         F0HA==
-X-Gm-Message-State: AGi0PubXW3+6YI5+EhwQaXejB3B6o7UHEYs0av+4Po2ztU9h5LRhUUpY
-        ItiuX4nGmS1hcB7SCDTQcNw1hvLCLApqEg==
-X-Google-Smtp-Source: APiQypJf+O/nDuyRo72ouM16+AEuR7MSnpTCFjwQ5vLlX2G0HUePUY7lEyQcCHD/5B6ubI5Ionwh3Q==
-X-Received: by 2002:a92:d186:: with SMTP id z6mr16579261ilz.119.1589214821511;
-        Mon, 11 May 2020 09:33:41 -0700 (PDT)
-Received: from rrangel920.bld.corp.google.com (h184-60-195-141.arvdco.broadband.dynamic.tds.net. [184.60.195.141])
-        by smtp.gmail.com with ESMTPSA id z86sm5312142ilk.79.2020.05.11.09.33.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2020 09:33:40 -0700 (PDT)
-From:   Raul E Rangel <rrangel@chromium.org>
-To:     Joerg Roedel <jroedel@suse.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        iommu@lists.linux-foundation.org, linux-acpi@vger.kernel.org
-Cc:     evgreen@chromium.org, dianders@chromium.org,
-        Daniel Kurtz <djkurtz@chromium.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Raul E Rangel <rrangel@chromium.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] iommu/amd: Fix get_acpihid_device_id()
-Date:   Mon, 11 May 2020 10:33:36 -0600
-Message-Id: <20200511103229.v2.1.I6f1b6f973ee6c8af1348611370c73a0ec0ea53f1@changeid>
-X-Mailer: git-send-email 2.26.2.645.ge9eca65c58-goog
+        id S1730797AbgEKRCe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 May 2020 13:02:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35182 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730066AbgEKRCd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 May 2020 13:02:33 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1A3FC061A0C;
+        Mon, 11 May 2020 10:02:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=Hy07Ws6ek9XvAGJzrptGNVmN+sgjs2KIi/oCXeVqo9E=; b=c3U4wuy0ttwAXhwRpOyq47EcOS
+        R6BOJ5hTKfV9cW8xiSDAIUq0HXFikJF4ynwAq2vypi9olfTDqkb8ufZMT5CdzATb4pwn0Qk9J7SPT
+        7BH7P/aQYee+IokeeKf35kRg9Wmd7JuXGNX9J+h1igQwb86BgPLoijcEkBNddzK2nN5fn85jy8Vyt
+        +SJyixpxAMl+sc5RquVfvSaqZYi5y8y8ukaTlE7TPPhj7mPTbxr6gjm9iNY3oHOE346HsINHrmgF9
+        px9am0ZSFLIKDsibuJ5+DooCPkne6W5heGMWIZYD5BJEurvKKcpF722OXItxoehCgllZpODKHto9m
+        mF7LkNEg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jYBol-0002Do-R6; Mon, 11 May 2020 17:02:16 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id DC87C304123;
+        Mon, 11 May 2020 19:02:12 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id CBF5329D8226A; Mon, 11 May 2020 19:02:12 +0200 (CEST)
+Date:   Mon, 11 May 2020 19:02:12 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Joerg Roedel <jroedel@suse.de>, Joerg Roedel <joro@8bytes.org>,
+        x86@kernel.org, hpa@zytor.com,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>, rjw@rjwysocki.net,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Michal Hocko <mhocko@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [RFC PATCH 0/7] mm: Get rid of vmalloc_sync_(un)mappings()
+Message-ID: <20200511170212.GI2957@hirez.programming.kicks-ass.net>
+References: <20200508144043.13893-1-joro@8bytes.org>
+ <20200508192000.GB2957@hirez.programming.kicks-ass.net>
+ <20200508213407.GT8135@suse.de>
+ <20200509092516.GC2957@hirez.programming.kicks-ass.net>
+ <20200510011157.GU16070@bombadil.infradead.org>
+ <20200511073134.GD2957@hirez.programming.kicks-ass.net>
+ <20200511155204.GW16070@bombadil.infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200511155204.GW16070@bombadil.infradead.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-acpi_dev_hid_uid_match() expects a null pointer for UID if it doesn't
-exist. The acpihid_map_entry contains a char buffer for holding the
-UID. If no UID was provided in the IVRS table, this buffer will be
-zeroed. If we pass in a null string, acpi_dev_hid_uid_match() will
-return false because it will try and match an empty string to the ACPI
-UID of the device.
+On Mon, May 11, 2020 at 08:52:04AM -0700, Matthew Wilcox wrote:
+> On Mon, May 11, 2020 at 09:31:34AM +0200, Peter Zijlstra wrote:
+> > On Sat, May 09, 2020 at 06:11:57PM -0700, Matthew Wilcox wrote:
+> > > Iterating an XArray (whether the entire thing
+> > > or with marks) is RCU-safe and faster than iterating a linked list,
+> > > so this should solve the problem?
+> > 
+> > It can hardly be faster if you want all elements -- which is I think the
+> > case here. We only call into this if we change an entry, and then we
+> > need to propagate that change to all.
+> 
+> Of course it can be faster.  Iterating an array is faster than iterating
+> a linked list because caches.  While an XArray is a segmented array
+> (so slower than a plain array), it's plainly going to be faster than
+> iterating a linked list.
 
-Fixes: ae5e6c6439c3 ("iommu/amd: Switch to use acpi_dev_hid_uid_match()")
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Raul E Rangel <rrangel@chromium.org>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
----
-
-Changes in v2:
-- Added Suggested by
-- Fixed commit description
-- Decided to keep `p->uid[0]` instead of `*p->uid` since the data member is an array instead of a pointer.
-- Used clang-format
-
- drivers/iommu/amd_iommu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iommu/amd_iommu.c b/drivers/iommu/amd_iommu.c
-index 20cce366e951..06f603366cb1 100644
---- a/drivers/iommu/amd_iommu.c
-+++ b/drivers/iommu/amd_iommu.c
-@@ -125,7 +125,8 @@ static inline int get_acpihid_device_id(struct device *dev,
- 		return -ENODEV;
- 
- 	list_for_each_entry(p, &acpihid_map, list) {
--		if (acpi_dev_hid_uid_match(adev, p->hid, p->uid)) {
-+		if (acpi_dev_hid_uid_match(adev, p->hid,
-+					   p->uid[0] ? p->uid : NULL)) {
- 			if (entry)
- 				*entry = p;
- 			return p->devid;
--- 
-2.26.2.645.ge9eca65c58-goog
-
+Fair enough, mostly also because the actual work (setting a single PTE)
+doesn't dominate in this case.
