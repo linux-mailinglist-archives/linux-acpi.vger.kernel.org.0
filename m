@@ -2,95 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 148201CE138
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 May 2020 19:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A4BC1CE212
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 May 2020 19:57:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730743AbgEKRHV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 May 2020 13:07:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35948 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730734AbgEKRHU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 May 2020 13:07:20 -0400
-Received: from merlin.infradead.org (unknown [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92009C061A0C;
-        Mon, 11 May 2020 10:07:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=bXc6/TC/fZd2A0tKIOuFHMPLNl2BdCBVGsE8fSj7QXY=; b=28Ffg6ORBIyHGTftSfOhouhHMk
-        Tf6ecTJhdIajQ7tRRE5NmP+qKfDtEpdZqHsg1bIEjirRoF04iCG8I8WLGSm1Gw9pmxsrPQ2IdIFpY
-        VKbR0W/fH6z41vCLkx8zhHyHRWCJOsavPXoNvuHkJnV4yc7HdLXSQ2ODzRIjk6cPZb4/BzPp9tNQs
-        QWtW1PJTDA1PJFTLBCTPGXUkNSk8AxJtjyijDCBoKVBmyxwwmKP00bSlhHnUnSydU0IEKovGUGlvO
-        zJ3qYS/6jVxeMgQas8m1UMDn8FODT5RlJejjWdTV4esB8mYPiId7Zv94MjBPSXjRltpaNDKSyMpyE
-        4YST0k2A==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jYBtB-00043D-UG; Mon, 11 May 2020 17:06:50 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D0CA4301A66;
-        Mon, 11 May 2020 19:06:46 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id BCF2B29DA4B49; Mon, 11 May 2020 19:06:46 +0200 (CEST)
-Date:   Mon, 11 May 2020 19:06:46 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Andy Lutomirski <luto@kernel.org>
-Cc:     Joerg Roedel <jroedel@suse.de>, Joerg Roedel <joro@8bytes.org>,
-        X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Michal Hocko <mhocko@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>
-Subject: Re: [RFC PATCH 0/7] mm: Get rid of vmalloc_sync_(un)mappings()
-Message-ID: <20200511170646.GJ2957@hirez.programming.kicks-ass.net>
-References: <20200508144043.13893-1-joro@8bytes.org>
- <CALCETrX0ubjc0Gf4hCY9RWH6cVEKF1hv3RzqToKMt9_bEXXBvw@mail.gmail.com>
- <20200508213609.GU8135@suse.de>
- <CALCETrVxP87o2+aaf=RLW--DSpMrs=BXSQphN6bG5Y4X+OY8GQ@mail.gmail.com>
- <20200509175217.GV8135@suse.de>
- <CALCETrVU-+G3K5ABBRSEMiwnskL4mZsVcoTESZXnu34J7TaOqw@mail.gmail.com>
- <20200511074243.GE2957@hirez.programming.kicks-ass.net>
- <CALCETrVyoAXXOqm8cYs+31fjWK8mcnKR+wM0_HeJx9=bOaZC6Q@mail.gmail.com>
+        id S1729143AbgEKR5W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 May 2020 13:57:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43674 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726310AbgEKR5V (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 11 May 2020 13:57:21 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA5C9C061A0C
+        for <linux-acpi@vger.kernel.org>; Mon, 11 May 2020 10:57:21 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id mq3so8272462pjb.1
+        for <linux-acpi@vger.kernel.org>; Mon, 11 May 2020 10:57:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=/4VPW/3YLXwoqcjHvmu+U93vY1XvtT8ILR97l+aBRHM=;
+        b=XYsodElimbqFJLNFnU/6UJl3lwNcwYu/y1MR1mjVNPFY94eInf7JUE6nLmVgUkHowr
+         4zSTdezoG0smW1qmL27QUdfb65KUD5AuCFfMJHnfOwzRVwH5uwUY2BPnP2uILCu+GQY0
+         PICJ13i5ZMC1iPneXD+vBuFAGy2Rk3JBqX/2k=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=/4VPW/3YLXwoqcjHvmu+U93vY1XvtT8ILR97l+aBRHM=;
+        b=FwHEcahGVaXjTVRgMnN2i7Scjum/RCnpIoZ2tKpXF3lGoL4bIMdOyuOzyTESm7xmRj
+         2vmdz/WMx/bx0MYSz8G7gcSduijEHS5kv+VsWsU7uo6jDGAtG/kYvKo23mPFoL2WoH64
+         XlfLc073C76AIZ9NpwHFYpJD0fNKHhYuVvASr7DoMay42gW98ZJUOCen+cHw0wwsHINt
+         LrtJt/ayFb6q/3gggYMrZbYd/aOQlNNaHmU0G8lCTF8bp9i96/ZchaTSY/2ZJmxGfgmp
+         2f9bvDn7FUJEGfPF1+JCNXg95eQ+CjDkf5sdeWkLkcumA/lCGlZO/Amy6SnJHy8ChKrm
+         T9sQ==
+X-Gm-Message-State: AGi0PuZaE+7I4fWlEVuajAooqVqQeNHfmwT5pagRFNmmkfdnVdNZy7Nz
+        UeBIxW19UXPr9j+Da1vS34FGQw==
+X-Google-Smtp-Source: APiQypKPWCdtCZVF1JVQ+N/i5CTxy1YZ2uxgAQ2wkunQWyauVm+9tyh+T7jrBtoR7DjFIZl3sskrPw==
+X-Received: by 2002:a17:90a:1b67:: with SMTP id q94mr23611499pjq.84.1589219841106;
+        Mon, 11 May 2020 10:57:21 -0700 (PDT)
+Received: from google.com ([2620:15c:202:201:476b:691:abc3:38db])
+        by smtp.gmail.com with ESMTPSA id z190sm9750203pfz.84.2020.05.11.10.57.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2020 10:57:20 -0700 (PDT)
+Date:   Mon, 11 May 2020 10:57:19 -0700
+From:   Prashant Malani <pmalani@chromium.org>
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Benson Leung <bleung@chromium.org>, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 2/4] usb: typec: mux: intel_pmc_mux: Support for static
+ SBU/HSL orientation
+Message-ID: <20200511175719.GA136540@google.com>
+References: <20200507150900.12102-1-heikki.krogerus@linux.intel.com>
+ <20200507150900.12102-3-heikki.krogerus@linux.intel.com>
+ <20200507224041.GA247416@google.com>
+ <20200508111840.GG645261@kuha.fi.intel.com>
+ <20200511133202.GA2085641@kuha.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CALCETrVyoAXXOqm8cYs+31fjWK8mcnKR+wM0_HeJx9=bOaZC6Q@mail.gmail.com>
+In-Reply-To: <20200511133202.GA2085641@kuha.fi.intel.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 11, 2020 at 08:36:31AM -0700, Andy Lutomirski wrote:
-> On Mon, May 11, 2020 at 12:42 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> >
-> > On Sat, May 09, 2020 at 12:05:29PM -0700, Andy Lutomirski wrote:
-> >
-> > > On x86_64, the only real advantage is that the handful of corner cases
-> > > that make vmalloc faults unpleasant (mostly relating to vmap stacks)
-> > > go away.  On x86_32, a bunch of mind-bending stuff (everything your
-> > > series deletes but also almost everything your series *adds*) goes
-> > > away.  There may be a genuine tiny performance hit on 2-level systems
-> > > due to the loss of huge pages in vmalloc space, but I'm not sure I
-> > > care or that we use them anyway on these systems.  And PeterZ can stop
-> > > even thinking about RCU.
-> > >
-> > > Am I making sense?
-> >
-> > I think it'll work for x86_64 and that is really all I care about :-)
-> 
-> Sadly, I think that Joerg has convinced my that this doesn't really
-> work for 32-bit unless we rework the LDT code or drop support for
-> something that we might not want to drop support for.
+Hi Heikki,
 
-I was thinking keep these patches for 32bit and fix 64bit 'proper'. But
-sure, if we can get rid of it all by stripping 32bit features I'm not
-going to object either.
+Thanks a lot for looking into this. Kindly see my response inline:
+
+On Mon, May 11, 2020 at 04:32:02PM +0300, Heikki Krogerus wrote:
+> On Fri, May 08, 2020 at 02:18:44PM +0300, Heikki Krogerus wrote:
+> > Hi Prashant,
+> > 
+> > On Thu, May 07, 2020 at 03:40:41PM -0700, Prashant Malani wrote:
+> > > > +static int sbu_orientation(struct pmc_usb_port *port)
+> > > > +{
+> > > > +	if (port->sbu_orientation)
+> > > > +		return port->sbu_orientation - 1;
+> > > > +
+> > > > +	return port->orientation - 1;
+> > > > +}
+> > > > +
+> > > > +static int hsl_orientation(struct pmc_usb_port *port)
+> > > > +{
+> > > > +	if (port->hsl_orientation)
+> > > > +		return port->hsl_orientation - 1;
+> > > > +
+> > > > +	return port->orientation - 1;
+> > > > +}
+> > > > +
+> > > >  static int pmc_usb_command(struct pmc_usb_port *port, u8 *msg, u32 len)
+> > > >  {
+> > > >  	u8 response[4];
+> > > > @@ -151,8 +170,9 @@ pmc_usb_mux_dp(struct pmc_usb_port *port, struct typec_mux_state *state)
+> > > >  
+> > > >  	req.mode_data = (port->orientation - 1) << PMC_USB_ALTMODE_ORI_SHIFT;
+> > > >  	req.mode_data |= (port->role - 1) << PMC_USB_ALTMODE_UFP_SHIFT;
+> > > > -	req.mode_data |= (port->orientation - 1) << PMC_USB_ALTMODE_ORI_AUX_SHIFT;
+> > > > -	req.mode_data |= (port->orientation - 1) << PMC_USB_ALTMODE_ORI_HSL_SHIFT;
+> > > > +
+> > > > +	req.mode_data |= sbu_orientation(port) << PMC_USB_ALTMODE_ORI_AUX_SHIFT;
+> > > 
+> > > I'm curious to know what would happen when sbu-orientation == "normal".
+> > > That means |port->sbu_orientation| == 1.
+> > > 
+> > > It sounds like what should happen is the AUX_SHIFT orientation
+> > > setting should follow what |port->orientation| is, but here it
+> > > looks like it will always be set to |port->sbu_orientation - 1|, i.e 0,
+> > > even if port->orientation == TYPEC_ORIENTATION_REVERSE, i.e 2, meaning
+> > > it should be set to 1 ?
+> > 
+> > I'll double check this, and get back to you..
+> 
+> This is not exactly an answer to your question, but it seems that
+> those bits are only valid if "Alternate-Direct" message is used.
+> Currently the driver does not support that message.
+Could you kindly provide some detail on when "Alternate-Direct" would be
+preferred to the current method?
+Also, is there anything on the PMC side which is preventing the use of
+"Alternate-Direct" messages? It seems like the state transition diagram
+there would be simpler, although I'm likely missing significant details
+here.
+
+> 
+> I think the correct thing to do now is to remove the two lines from
+> the driver where those bits (ORI-HSL and ORI-Aux) are set.
+I see. How would orientation then be handled in a retimer configuration
+where AUX/SBU is flipped by the retimer itself?
+
+Best regards,
+
+-Prashant
+> 
+> Let me know if that's OK, and I'll update the series.
+> 
+> thanks,
+> 
+> -- 
+> heikki
