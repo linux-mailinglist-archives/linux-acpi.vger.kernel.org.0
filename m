@@ -2,70 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16F271CD291
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 May 2020 09:31:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9F741CD29D
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 May 2020 09:32:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726071AbgEKHbE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 May 2020 03:31:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58996 "EHLO
+        id S1728566AbgEKHcV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 May 2020 03:32:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725916AbgEKHbE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 May 2020 03:31:04 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0C93C061A0C
-        for <linux-acpi@vger.kernel.org>; Mon, 11 May 2020 00:31:03 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id w20so8317780ljj.0
-        for <linux-acpi@vger.kernel.org>; Mon, 11 May 2020 00:31:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=KTscfAD0JCHvSYiPLgfsrC0xcobt60NP7Gi96XZWkns=;
-        b=jMbYO7NZMuJHj26QIlPtOO3zD/WpBvkft7wip3JItO3UmWZi77uBWoVQnOZIczyFAO
-         uBAjT+BnTndhcvHaC0452icq5eVHB/JXKvtUKP8lqHGBC5Dm3pOCNiBF3W68QafAk59a
-         vnxld9vzXNB8X2BTWeF1ASvN4tmxqPALzT83zSJsVGn0SkTg+NIWbW76PyYdJlAFjMkW
-         YL9OT6N3109lci4aQPQKta0SLRPO8nQApC0NGDGAJC7SNx7EToH7K88Q3o/4tCMsxZ6z
-         FQQ6gEr+k+T+lbZ47aAjsHntIBUiInypjMJeAN7LjYgvyvSFl1kGNNLXRRuIrWS6k2L/
-         ZcAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=KTscfAD0JCHvSYiPLgfsrC0xcobt60NP7Gi96XZWkns=;
-        b=kRJgwGlhK00QYm3vj8TI9PCMzj3PTrh/Osw4K23OjxuC1uS7CBNYNVaG4cdy8a7O8U
-         H6tiIV/omwvLxt/wktskCTQSxUmqMd/4smktnSQhXBx6tyyTgxs3NiumqL+sUiHq/PUY
-         FcydoIbDK4RBnOMdSg1BO0crvZFQUPnI3XqAsM8urmuA2vLerenj7u24C957Z4WIbTvo
-         BH8LvzOpJQ8LOtTzKHSPAVVURItvL1cxZekynv3eownMdf+jx9hQGUgihu8iSROx+6ge
-         iP/HxLXCq6B5JvrlrOWdpZmKd/PFa7rvbN6T2rwgOICwIEHmYYJS5KO1Mb6QystP0/uN
-         Ctsg==
-X-Gm-Message-State: AOAM533R8xUHwDpbLC8UEbvcTsgqE8Tb2s0gD0GcvGJTDBLNNiBQNwZu
-        NdWdzOVimpO6Cw+7oF8e4v7TV/p+SOor3TLsq10=
-X-Google-Smtp-Source: ABdhPJysp9hwyznNNlHwKsdllhRPl7qqGztrc2nJRx2cAoht6ZT1e01mL/GkvMRmwfC28nMc9BbtItIX680HF6MCO3k=
-X-Received: by 2002:a2e:9dcd:: with SMTP id x13mr8819222ljj.120.1589182262411;
- Mon, 11 May 2020 00:31:02 -0700 (PDT)
+        with ESMTP id S1728564AbgEKHcV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 May 2020 03:32:21 -0400
+Received: from merlin.infradead.org (unknown [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA6E3C061A0C;
+        Mon, 11 May 2020 00:32:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=UQU0B9NH1zcG5ih3frGbvcAoJriOpbADo62D6un1kGw=; b=P8dhMvRZsO8HVSTS2DKAhF4+Dz
+        l3+qc9UNmKUvRNxyjm1fe3xdICnaYrQKfmOFATzkAIA+m/55V7+aGGbsb24aXS93rtFf+TDD+3h/j
+        +WcquBE0T/zxLzUhRauRp/opgqKE8XryQTA+G8Jmp+J5XSJsHCIjLysjbehvGdp++fWujWmpOufCo
+        Dcht8qJgNXr3YA1l6sNQunsdCYslASmkMQkVQHwf7C4FfAK3lWRfXTjd4ogg08M0tlXXtbM+P+kwF
+        6tRNzMrRnuylt7QDtGn75SzZsYyEcmnzBnt0g5sDJk7XFLqH2SdQm72ztyhSO6ysYzo/nYNoAMH1y
+        PSfnKYpw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jY2uY-0006aH-EN; Mon, 11 May 2020 07:31:38 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 94E02301A80;
+        Mon, 11 May 2020 09:31:34 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 792BB2077D3FE; Mon, 11 May 2020 09:31:34 +0200 (CEST)
+Date:   Mon, 11 May 2020 09:31:34 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Joerg Roedel <jroedel@suse.de>, Joerg Roedel <joro@8bytes.org>,
+        x86@kernel.org, hpa@zytor.com,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>, rjw@rjwysocki.net,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Michal Hocko <mhocko@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [RFC PATCH 0/7] mm: Get rid of vmalloc_sync_(un)mappings()
+Message-ID: <20200511073134.GD2957@hirez.programming.kicks-ass.net>
+References: <20200508144043.13893-1-joro@8bytes.org>
+ <20200508192000.GB2957@hirez.programming.kicks-ass.net>
+ <20200508213407.GT8135@suse.de>
+ <20200509092516.GC2957@hirez.programming.kicks-ass.net>
+ <20200510011157.GU16070@bombadil.infradead.org>
 MIME-Version: 1.0
-From:   Aaron Chou <zhoubb.aaron@gmail.com>
-Date:   Mon, 11 May 2020 15:30:51 +0800
-Message-ID: <CAMpQs4JoyZcHQLahh4w8OaowQ1y3pkTCTYvDn+dkVNOQ4zDpHQ@mail.gmail.com>
-Subject: [ARM64 ACPI] different CPU L3 cache size reported by /sys/device/ and dmidecode
-To:     lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
-        sudeep.holla@arm.com, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200510011157.GU16070@bombadil.infradead.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In the system, I can get the L3 cache size from two or more ways.
+On Sat, May 09, 2020 at 06:11:57PM -0700, Matthew Wilcox wrote:
+> Iterating an XArray (whether the entire thing
+> or with marks) is RCU-safe and faster than iterating a linked list,
+> so this should solve the problem?
 
-Firstly, I can get it from the kernel interface, such as the `lscpu` command.
-Also, I can cat the file `/sys/devices/system/cpu/cpu3/cache/index3/size`.
-
-The way above can give me the L3 cache size is 32768K.
-
-Now if I use the `dmidecode -t cache` command, I get the L3 cache size
-is 24576K.
-
-And the real size of the L3 cache is 24576K.
-
-Why is it? who can explain it to me?
-
-Thanks.
+It can hardly be faster if you want all elements -- which is I think the
+case here. We only call into this if we change an entry, and then we
+need to propagate that change to all.
