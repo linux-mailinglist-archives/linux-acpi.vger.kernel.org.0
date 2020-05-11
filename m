@@ -2,143 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A4BC1CE212
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 May 2020 19:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2201D1CE3A3
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 May 2020 21:14:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729143AbgEKR5W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 May 2020 13:57:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43674 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726310AbgEKR5V (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 11 May 2020 13:57:21 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA5C9C061A0C
-        for <linux-acpi@vger.kernel.org>; Mon, 11 May 2020 10:57:21 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id mq3so8272462pjb.1
-        for <linux-acpi@vger.kernel.org>; Mon, 11 May 2020 10:57:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=/4VPW/3YLXwoqcjHvmu+U93vY1XvtT8ILR97l+aBRHM=;
-        b=XYsodElimbqFJLNFnU/6UJl3lwNcwYu/y1MR1mjVNPFY94eInf7JUE6nLmVgUkHowr
-         4zSTdezoG0smW1qmL27QUdfb65KUD5AuCFfMJHnfOwzRVwH5uwUY2BPnP2uILCu+GQY0
-         PICJ13i5ZMC1iPneXD+vBuFAGy2Rk3JBqX/2k=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=/4VPW/3YLXwoqcjHvmu+U93vY1XvtT8ILR97l+aBRHM=;
-        b=FwHEcahGVaXjTVRgMnN2i7Scjum/RCnpIoZ2tKpXF3lGoL4bIMdOyuOzyTESm7xmRj
-         2vmdz/WMx/bx0MYSz8G7gcSduijEHS5kv+VsWsU7uo6jDGAtG/kYvKo23mPFoL2WoH64
-         XlfLc073C76AIZ9NpwHFYpJD0fNKHhYuVvASr7DoMay42gW98ZJUOCen+cHw0wwsHINt
-         LrtJt/ayFb6q/3gggYMrZbYd/aOQlNNaHmU0G8lCTF8bp9i96/ZchaTSY/2ZJmxGfgmp
-         2f9bvDn7FUJEGfPF1+JCNXg95eQ+CjDkf5sdeWkLkcumA/lCGlZO/Amy6SnJHy8ChKrm
-         T9sQ==
-X-Gm-Message-State: AGi0PuZaE+7I4fWlEVuajAooqVqQeNHfmwT5pagRFNmmkfdnVdNZy7Nz
-        UeBIxW19UXPr9j+Da1vS34FGQw==
-X-Google-Smtp-Source: APiQypKPWCdtCZVF1JVQ+N/i5CTxy1YZ2uxgAQ2wkunQWyauVm+9tyh+T7jrBtoR7DjFIZl3sskrPw==
-X-Received: by 2002:a17:90a:1b67:: with SMTP id q94mr23611499pjq.84.1589219841106;
-        Mon, 11 May 2020 10:57:21 -0700 (PDT)
-Received: from google.com ([2620:15c:202:201:476b:691:abc3:38db])
-        by smtp.gmail.com with ESMTPSA id z190sm9750203pfz.84.2020.05.11.10.57.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2020 10:57:20 -0700 (PDT)
-Date:   Mon, 11 May 2020 10:57:19 -0700
-From:   Prashant Malani <pmalani@chromium.org>
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Benson Leung <bleung@chromium.org>, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 2/4] usb: typec: mux: intel_pmc_mux: Support for static
- SBU/HSL orientation
-Message-ID: <20200511175719.GA136540@google.com>
-References: <20200507150900.12102-1-heikki.krogerus@linux.intel.com>
- <20200507150900.12102-3-heikki.krogerus@linux.intel.com>
- <20200507224041.GA247416@google.com>
- <20200508111840.GG645261@kuha.fi.intel.com>
- <20200511133202.GA2085641@kuha.fi.intel.com>
+        id S1731331AbgEKTOU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 May 2020 15:14:20 -0400
+Received: from mx2.suse.de ([195.135.220.15]:35708 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728613AbgEKTOU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 11 May 2020 15:14:20 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 0909DAF6F;
+        Mon, 11 May 2020 19:14:21 +0000 (UTC)
+Date:   Mon, 11 May 2020 21:14:14 +0200
+From:   Joerg Roedel <jroedel@suse.de>
+To:     Andy Lutomirski <luto@kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Joerg Roedel <joro@8bytes.org>, X86 ML <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Michal Hocko <mhocko@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>
+Subject: Re: [RFC PATCH 0/7] mm: Get rid of vmalloc_sync_(un)mappings()
+Message-ID: <20200511191414.GY8135@suse.de>
+References: <20200508144043.13893-1-joro@8bytes.org>
+ <CALCETrX0ubjc0Gf4hCY9RWH6cVEKF1hv3RzqToKMt9_bEXXBvw@mail.gmail.com>
+ <20200508213609.GU8135@suse.de>
+ <CALCETrVxP87o2+aaf=RLW--DSpMrs=BXSQphN6bG5Y4X+OY8GQ@mail.gmail.com>
+ <20200509175217.GV8135@suse.de>
+ <CALCETrVU-+G3K5ABBRSEMiwnskL4mZsVcoTESZXnu34J7TaOqw@mail.gmail.com>
+ <20200511074243.GE2957@hirez.programming.kicks-ass.net>
+ <CALCETrVyoAXXOqm8cYs+31fjWK8mcnKR+wM0_HeJx9=bOaZC6Q@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200511133202.GA2085641@kuha.fi.intel.com>
+In-Reply-To: <CALCETrVyoAXXOqm8cYs+31fjWK8mcnKR+wM0_HeJx9=bOaZC6Q@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Heikki,
+On Mon, May 11, 2020 at 08:36:31AM -0700, Andy Lutomirski wrote:
+> What if we make 32-bit PTI depend on PAE?
 
-Thanks a lot for looking into this. Kindly see my response inline:
+It already does, PTI support for legacy paging had to be removed because
+there were memory corruption problems with THP. The reason was that huge
+PTEs in the user-space area were mapped in two page-tables (kernel and
+user), but A/D bits were only fetched from the kernel part. To not make
+things more complicated we agreed on just not supporting PTI without
+PAE.
 
-On Mon, May 11, 2020 at 04:32:02PM +0300, Heikki Krogerus wrote:
-> On Fri, May 08, 2020 at 02:18:44PM +0300, Heikki Krogerus wrote:
-> > Hi Prashant,
-> > 
-> > On Thu, May 07, 2020 at 03:40:41PM -0700, Prashant Malani wrote:
-> > > > +static int sbu_orientation(struct pmc_usb_port *port)
-> > > > +{
-> > > > +	if (port->sbu_orientation)
-> > > > +		return port->sbu_orientation - 1;
-> > > > +
-> > > > +	return port->orientation - 1;
-> > > > +}
-> > > > +
-> > > > +static int hsl_orientation(struct pmc_usb_port *port)
-> > > > +{
-> > > > +	if (port->hsl_orientation)
-> > > > +		return port->hsl_orientation - 1;
-> > > > +
-> > > > +	return port->orientation - 1;
-> > > > +}
-> > > > +
-> > > >  static int pmc_usb_command(struct pmc_usb_port *port, u8 *msg, u32 len)
-> > > >  {
-> > > >  	u8 response[4];
-> > > > @@ -151,8 +170,9 @@ pmc_usb_mux_dp(struct pmc_usb_port *port, struct typec_mux_state *state)
-> > > >  
-> > > >  	req.mode_data = (port->orientation - 1) << PMC_USB_ALTMODE_ORI_SHIFT;
-> > > >  	req.mode_data |= (port->role - 1) << PMC_USB_ALTMODE_UFP_SHIFT;
-> > > > -	req.mode_data |= (port->orientation - 1) << PMC_USB_ALTMODE_ORI_AUX_SHIFT;
-> > > > -	req.mode_data |= (port->orientation - 1) << PMC_USB_ALTMODE_ORI_HSL_SHIFT;
-> > > > +
-> > > > +	req.mode_data |= sbu_orientation(port) << PMC_USB_ALTMODE_ORI_AUX_SHIFT;
-> > > 
-> > > I'm curious to know what would happen when sbu-orientation == "normal".
-> > > That means |port->sbu_orientation| == 1.
-> > > 
-> > > It sounds like what should happen is the AUX_SHIFT orientation
-> > > setting should follow what |port->orientation| is, but here it
-> > > looks like it will always be set to |port->sbu_orientation - 1|, i.e 0,
-> > > even if port->orientation == TYPEC_ORIENTATION_REVERSE, i.e 2, meaning
-> > > it should be set to 1 ?
-> > 
-> > I'll double check this, and get back to you..
-> 
-> This is not exactly an answer to your question, but it seems that
-> those bits are only valid if "Alternate-Direct" message is used.
-> Currently the driver does not support that message.
-Could you kindly provide some detail on when "Alternate-Direct" would be
-preferred to the current method?
-Also, is there anything on the PMC side which is preventing the use of
-"Alternate-Direct" messages? It seems like the state transition diagram
-there would be simpler, although I'm likely missing significant details
-here.
+> And drop 32-bit Xen PV support?  And make 32-bit huge pages depend on
+> PAE?  Then 32-bit non-PAE can use the direct-mapped LDT, 32-bit PTI
+> (and optionally PAE non-PTI) can use the evil virtually mapped LDT.
+> And 32-bit non-PAE (the 2-level case) will only have pointers to page
+> tables at the top level.  And then we can preallocate.
 
-> 
-> I think the correct thing to do now is to remove the two lines from
-> the driver where those bits (ORI-HSL and ORI-Aux) are set.
-I see. How would orientation then be handled in a retimer configuration
-where AUX/SBU is flipped by the retimer itself?
+Not sure I can follow you here. How can 32-bit PTI with PAE use the LDT
+from the direct mapping? I am guessing you want to get rid of the
+SHARED_KERNEL_PMD==0 case for PAE kernels. This would indeed make
+syncing unneccessary on PAE, but pre-allocation would still be needed
+for 2-level paging. Just the amount of memory needed for the
+pre-allocated PTE pages is half as big as it would be with PAE.
 
-Best regards,
+> Or maybe we don't want to defeature this much, or maybe the memory hit
+> from this preallocation will hurt little 2-level 32-bit systems too
+> much.
 
--Prashant
-> 
-> Let me know if that's OK, and I'll update the series.
-> 
-> thanks,
-> 
-> -- 
-> heikki
+It will certainly make Linux less likely to boot on low-memory x86-32
+systems, whoever will be affected by this.
+
+
+	Joerg
