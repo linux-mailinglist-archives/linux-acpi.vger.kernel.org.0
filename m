@@ -2,100 +2,201 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAE231CEBD2
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 May 2020 06:09:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F81C1CEC33
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 May 2020 06:55:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726726AbgELEJi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 May 2020 00:09:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54278 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726667AbgELEJh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 12 May 2020 00:09:37 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6DE6C05BD09
-        for <linux-acpi@vger.kernel.org>; Mon, 11 May 2020 21:09:37 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id k7so3861714pjs.5
-        for <linux-acpi@vger.kernel.org>; Mon, 11 May 2020 21:09:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=6S28BNiWmQ/hEXUnU1MTnqXBi18kA3ePoZOYdtU1cwQ=;
-        b=zKPMo9VxVy3jMqZvbDFZzd0rfMvjK8sIRqKU+RRM8fhiK3BsQbxVPPqNYrdq3CNlJp
-         srwFwGJmFE53BiW8OELV7eGESL1CDt3+K4ya4VOcLbsiDUEhRhJL5Hsx5wYQmr4/a1ha
-         npM2phtb/qYoGwQEx97t6GacPM8Z7YAe5eoPRlt84htL5JM81zMsdpd3BUasJ+/8QsnH
-         dkV7TQ2UOgKSRXuw2IGL0NHMPpGwN/hPYlde9jC+uvFu5gspfztR7vKX+YVtfvubS0Zb
-         /IgWuGFfL2eesthQolXE8F1dD/HdpBfJqLHJnovOiJQqYzfmg/aL8KblwwEQlXwQIPtH
-         rPJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=6S28BNiWmQ/hEXUnU1MTnqXBi18kA3ePoZOYdtU1cwQ=;
-        b=YshQqi5Kz31aKHppjx1Azt4vzgSviGsLKl9WdA1jwu6Pou2q2K/lv8hz2YijJRylFc
-         kQQTHIU0y4PgPao1oRbU05sTn9BDvG0zXEUr9cFCHA70emCPBzXi5W5CB0HuRklYCC8s
-         zA2KZrXPIY17Plx3zK2bhsRUrQrhc+2LFsQUHwgjakOYLi8YLoPnAU2op/CmDYQYBaQQ
-         xuUQEIXnylZhASZopiHXsb1TUwdbVmYDs3F83FGdPN8A7XekEHgOl34RIWM3n/MpP/2O
-         bbyrI6vBROvBdCGBkP9eiNdu6n6NqXmBvzhboCWS+Yw4Nfxhhm2cWJFJoCIcvFW0Nxj6
-         koiw==
-X-Gm-Message-State: AGi0Puaf8sGcSp8OO+aIezsUoJ1Clj7nav58FQJs9v0lRWzeCsLaHDZB
-        A2nWc5Is5bQ9rfhkde1mjYR8Kw==
-X-Google-Smtp-Source: APiQypIz5wcptWAsZSR4zFqLILzJ6EQ/AyMRL3bPtWuTsky6Bgy54mQMi2/qmxe6ZV1FPbWCHDML+A==
-X-Received: by 2002:a17:902:728e:: with SMTP id d14mr18153543pll.107.1589256577364;
-        Mon, 11 May 2020 21:09:37 -0700 (PDT)
-Received: from localhost.localdomain ([240e:362:443:6f00:91af:f25c:441c:7ba4])
-        by smtp.gmail.com with ESMTPSA id e4sm9471527pge.45.2020.05.11.21.09.24
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 11 May 2020 21:09:36 -0700 (PDT)
-From:   Zhangfei Gao <zhangfei.gao@linaro.org>
-To:     Joerg Roedel <joro@8bytes.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        id S1725892AbgELEzf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 May 2020 00:55:35 -0400
+Received: from mo-csw1514.securemx.jp ([210.130.202.153]:48958 "EHLO
+        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725868AbgELEzf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 May 2020 00:55:35 -0400
+Received: by mo-csw.securemx.jp (mx-mo-csw1514) id 04C4tBCB028612; Tue, 12 May 2020 13:55:11 +0900
+X-Iguazu-Qid: 34trcFcTSdIJNcGUFe
+X-Iguazu-QSIG: v=2; s=0; t=1589259311; q=34trcFcTSdIJNcGUFe; m=lDCzbs4o132H/rv9S8n0JfYb3mfEtVjfQUawIKZ1uaI=
+Received: from imx2.toshiba.co.jp (imx2.toshiba.co.jp [106.186.93.51])
+        by relay.securemx.jp (mx-mr1510) id 04C4t9oB017332;
+        Tue, 12 May 2020 13:55:10 +0900
+Received: from enc01.localdomain ([106.186.93.100])
+        by imx2.toshiba.co.jp  with ESMTP id 04C4t9HT029314;
+        Tue, 12 May 2020 13:55:09 +0900 (JST)
+Received: from hop001.toshiba.co.jp ([133.199.164.63])
+        by enc01.localdomain  with ESMTP id 04C4t8Au032254;
+        Tue, 12 May 2020 13:55:09 +0900
+From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Punit Agrawal <punit1.agrawal@toshiba.co.jp>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        jean-philippe <jean-philippe@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        kenneth-lee-2012@foxmail.com, Wangzhou <wangzhou1@hisilicon.com>
-Cc:     linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        iommu@lists.linux-foundation.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: [PATCH 2/2] ACPI/IORT: Let pci_fixup_final access iommu_fwnode
-Date:   Tue, 12 May 2020 12:08:31 +0800
-Message-Id: <1589256511-12446-3-git-send-email-zhangfei.gao@linaro.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1589256511-12446-1-git-send-email-zhangfei.gao@linaro.org>
-References: <1589256511-12446-1-git-send-email-zhangfei.gao@linaro.org>
+        Borislav Petkov <bp@alien8.de>,
+        James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
+        linux-efi@vger.kernel.org
+Subject: [Patch v2] efi: cper: Add support for printing Firmware Error Record Reference
+Date:   Tue, 12 May 2020 13:55:02 +0900
+X-TSB-HOP: ON
+Message-Id: <20200512045502.3810339-1-punit1.agrawal@toshiba.co.jp>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Calling pci_fixup_final after iommu_fwspec_init, which alloc
-iommu_fwnode. Some platform devices appear as PCI but are
-actually on the AMBA bus, and they need fixup in
-drivers/pci/quirks.c handling iommu_fwnode.
-So calling pci_fixup_final after iommu_fwnode is allocated.
+While debugging a boot failure, the following unknown error record was
+seen in the boot logs.
 
-Signed-off-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+    <...>
+    BERT: Error records from previous boot:
+    [Hardware Error]: event severity: fatal
+    [Hardware Error]:  Error 0, type: fatal
+    [Hardware Error]:   section type: unknown, 81212a96-09ed-4996-9471-8d729c8e69ed
+    [Hardware Error]:   section length: 0x290
+    [Hardware Error]:   00000000: 00000001 00000000 00000000 00020002  ................
+    [Hardware Error]:   00000010: 00020002 0000001f 00000320 00000000  ........ .......
+    [Hardware Error]:   00000020: 00000000 00000000 00000000 00000000  ................
+    [Hardware Error]:   00000030: 00000000 00000000 00000000 00000000  ................
+    <...>
+
+On further investigation, it was found that the error record with
+UUID (81212a96-09ed-4996-9471-8d729c8e69ed) has been defined in the
+UEFI Specification at least since v2.4 and has recently had additional
+fields defined in v2.7 Section N.2.10 Firmware Error Record Reference.
+
+Add support for parsing and printing the defined fields to give users
+a chance to figure out what went wrong.
+
+Signed-off-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: James Morse <james.morse@arm.com>
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-efi@vger.kernel.org
 ---
- drivers/acpi/arm64/iort.c | 1 +
- 1 file changed, 1 insertion(+)
+Hi Ard,
 
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 7d04424..02e361d 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -1027,6 +1027,7 @@ const struct iommu_ops *iort_iommu_configure(struct device *dev)
- 		info.node = node;
- 		err = pci_for_each_dma_alias(to_pci_dev(dev),
- 					     iort_pci_iommu_init, &info);
-+		pci_fixup_device(pci_fixup_final, to_pci_dev(dev));
+I've updated the patch based on your feedback.
+
+As you noted, some aspects of the spec make it a bit tricky to support
+all revisions in a nice way (e.g., size check) but this version should
+fix existing issues.
+
+Thanks,
+Punit
+
+v1[0] -> v2:
+* Simplified error record structure definition
+* Fixed size check
+* Added comment to clarify offset calculation for dumped data
+* Style fixes for multiline if blocks
+
+[0] https://lkml.kernel.org/lkml/20200427085242.2380614-1-punit1.agrawal@toshiba.co.jp/
+---
+ drivers/firmware/efi/cper.c | 62 +++++++++++++++++++++++++++++++++++++
+ include/linux/cper.h        |  9 ++++++
+ 2 files changed, 71 insertions(+)
+
+diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+index 9d2512913d25..f564e15fbc7e 100644
+--- a/drivers/firmware/efi/cper.c
++++ b/drivers/firmware/efi/cper.c
+@@ -407,6 +407,58 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
+ 	}
+ }
  
- 		fwspec = dev_iommu_fwspec_get(dev);
- 		if (fwspec && iort_pci_rc_supports_ats(node))
++static const char * const fw_err_rec_type_strs[] = {
++	"IPF SAL Error Record",
++	"SOC Firmware Error Record Type1 (Legacy CrashLog Support)",
++	"SOC Firmware Error Record Type2",
++};
++
++static void cper_print_fw_err(const char *pfx,
++			      struct acpi_hest_generic_data *gdata,
++			      const struct cper_sec_fw_err_rec_ref *fw_err)
++{
++	void *buf = acpi_hest_get_payload(gdata);
++	u32 offset, length = gdata->error_data_length;
++
++	printk("%s""Firmware Error Record Type: %s\n", pfx,
++	       fw_err->record_type < ARRAY_SIZE(fw_err_rec_type_strs) ?
++	       fw_err_rec_type_strs[fw_err->record_type] : "unknown");
++	printk("%s""Revision: %d\n", pfx, fw_err->revision);
++
++	/* Record Type based on UEFI 2.7 */
++	if (fw_err->revision == 0) {
++		printk("%s""Record Identifier: %08llx\n", pfx,
++		       fw_err->record_identifier);
++	} else if (fw_err->revision == 2) {
++		printk("%s""Record Identifier: %pUl\n", pfx,
++		       &fw_err->record_identifier_guid);
++	}
++
++	/*
++	 * The FW error record may contain trailing data beyond the
++	 * structure defined by the specification. As the fields
++	 * defined (and hence the offset of any trailing data) vary
++	 * with the revision, set the offset to account for this
++	 * variation.
++	 */
++	if (fw_err->revision == 0) {
++		/* record_identifier_guid not defined */
++		offset = offsetof(struct cper_sec_fw_err_rec_ref,
++				  record_identifier_guid);
++	} else if (fw_err->revision == 1) {
++		/* record_identifier not defined */
++		offset = offsetof(struct cper_sec_fw_err_rec_ref,
++				  record_identifier);
++	} else {
++		offset = sizeof(*fw_err);
++	}
++
++	buf += offset;
++	length -= offset;
++
++	print_hex_dump(pfx, "", DUMP_PREFIX_OFFSET, 16, 4, buf, length, true);
++}
++
+ static void cper_print_tstamp(const char *pfx,
+ 				   struct acpi_hest_generic_data_v300 *gdata)
+ {
+@@ -494,6 +546,16 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
+ 		else
+ 			goto err_section_too_small;
+ #endif
++	} else if (guid_equal(sec_type, &CPER_SEC_FW_ERR_REC_REF)) {
++		struct cper_sec_fw_err_rec_ref *fw_err = acpi_hest_get_payload(gdata);
++
++		printk("%ssection_type: Firmware Error Record Reference\n",
++		       newpfx);
++		/* The minimal FW Error Record contains 16 bytes */
++		if (gdata->error_data_length >= SZ_16)
++			cper_print_fw_err(newpfx, gdata, fw_err);
++		else
++			goto err_section_too_small;
+ 	} else {
+ 		const void *err = acpi_hest_get_payload(gdata);
+ 
+diff --git a/include/linux/cper.h b/include/linux/cper.h
+index 4f005d95ce88..8537e9282a65 100644
+--- a/include/linux/cper.h
++++ b/include/linux/cper.h
+@@ -521,6 +521,15 @@ struct cper_sec_pcie {
+ 	u8	aer_info[96];
+ };
+ 
++/* Firmware Error Record Reference, UEFI v2.7 sec N.2.10  */
++struct cper_sec_fw_err_rec_ref {
++	u8 record_type;
++	u8 revision;
++	u8 reserved[6];
++	u64 record_identifier;
++	guid_t record_identifier_guid;
++};
++
+ /* Reset to default packing */
+ #pragma pack()
+ 
 -- 
-2.7.4
+2.26.2
 
