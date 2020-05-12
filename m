@@ -2,217 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E75C31CF2D8
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 May 2020 12:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 028FE1CF301
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 May 2020 13:00:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729659AbgELKsN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 May 2020 06:48:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34234 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729639AbgELKsL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 12 May 2020 06:48:11 -0400
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1728990AbgELLAw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 May 2020 07:00:52 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:42849 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727783AbgELLAw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 12 May 2020 07:00:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1589281250;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=tQSc1TJDaYwxYLceWP29iPDKblot1rwfivc0kNtIR+o=;
+        b=hsHRPziqfDg1w7PLMy7ZQw2pfOhGkaTSjHycct1ZNsAy/FB9FDpNYqmuV2sIhQ1fSJyWOy
+        CFHOAbCw1l7U2RwlnkNZLJXyzi6YXf61nSqqynVB9sxWkI80DzA9rBnDmyBrvAPqjAeXZf
+        jFny5CVt1LOtl9XVblzPyyzuuDTktWU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-457-Xu03e-A9OeWDOLi_le5K1A-1; Tue, 12 May 2020 07:00:48 -0400
+X-MC-Unique: Xu03e-A9OeWDOLi_le5K1A-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ABA5A20731;
-        Tue, 12 May 2020 10:48:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589280490;
-        bh=ec2u7fiwEX8z3gl7q4XcFA1SD2R8KacLDpSUINJUYBg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=HwPdPyFu87aAL4/LLpNjBOyFO7DQ5+aEu5nTHautuwZQLmwEjjfK+lUIvds0KIQZu
-         0V3BZEU61nKPMMQzPMny0yWfyMqkhjYKPaj6vrd32+gzGZYwDgSn7v7X6arODd221s
-         8AAn5vWXDVU7J3/wc2QxC2LqbhWlUpF/FcbAxqYE=
-Received: by mail-io1-f54.google.com with SMTP id e18so499352iog.9;
-        Tue, 12 May 2020 03:48:10 -0700 (PDT)
-X-Gm-Message-State: AGi0PublluOoGjc+M8zwjad9oOSh0OBOZZAPuwzG19yuXwNk6Gjj8HKF
-        D3UeAJnXb7H5MU6nKe4Z9ooQWOJjNlBA7XmhzKQ=
-X-Google-Smtp-Source: APiQypIgQdCurvaC8kNfI9ogq1z5tOeVBnUy1rhQqT5JvdNhwj93KsyomBZKFN1Y2z/9kmeCojNdoMpGCdTiJzXEQW4=
-X-Received: by 2002:a02:c6b4:: with SMTP id o20mr7529554jan.134.1589280490038;
- Tue, 12 May 2020 03:48:10 -0700 (PDT)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 080618018A7;
+        Tue, 12 May 2020 11:00:47 +0000 (UTC)
+Received: from x1.localdomain.com (ovpn-113-117.ams2.redhat.com [10.36.113.117])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7CBAB78B21;
+        Tue, 12 May 2020 11:00:45 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-pwm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH] pwm: lpss: Fix get_state runtime-pm reference handling
+Date:   Tue, 12 May 2020 13:00:44 +0200
+Message-Id: <20200512110044.95984-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <20200512045502.3810339-1-punit1.agrawal@toshiba.co.jp>
-In-Reply-To: <20200512045502.3810339-1-punit1.agrawal@toshiba.co.jp>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 12 May 2020 12:47:59 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGNWptRShYVtDwoB7jL1_2M1ioroFV=veFt0MB=n6_-OQ@mail.gmail.com>
-Message-ID: <CAMj1kXGNWptRShYVtDwoB7jL1_2M1ioroFV=veFt0MB=n6_-OQ@mail.gmail.com>
-Subject: Re: [Patch v2] efi: cper: Add support for printing Firmware Error
- Record Reference
-To:     Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Borislav Petkov <bp@alien8.de>,
-        James Morse <james.morse@arm.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 12 May 2020 at 06:55, Punit Agrawal
-<punit1.agrawal@toshiba.co.jp> wrote:
->
-> While debugging a boot failure, the following unknown error record was
-> seen in the boot logs.
->
->     <...>
->     BERT: Error records from previous boot:
->     [Hardware Error]: event severity: fatal
->     [Hardware Error]:  Error 0, type: fatal
->     [Hardware Error]:   section type: unknown, 81212a96-09ed-4996-9471-8d729c8e69ed
->     [Hardware Error]:   section length: 0x290
->     [Hardware Error]:   00000000: 00000001 00000000 00000000 00020002  ................
->     [Hardware Error]:   00000010: 00020002 0000001f 00000320 00000000  ........ .......
->     [Hardware Error]:   00000020: 00000000 00000000 00000000 00000000  ................
->     [Hardware Error]:   00000030: 00000000 00000000 00000000 00000000  ................
->     <...>
->
-> On further investigation, it was found that the error record with
-> UUID (81212a96-09ed-4996-9471-8d729c8e69ed) has been defined in the
-> UEFI Specification at least since v2.4 and has recently had additional
-> fields defined in v2.7 Section N.2.10 Firmware Error Record Reference.
->
-> Add support for parsing and printing the defined fields to give users
-> a chance to figure out what went wrong.
->
-> Signed-off-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: James Morse <james.morse@arm.com>
-> Cc: linux-acpi@vger.kernel.org
-> Cc: linux-efi@vger.kernel.org
-> ---
-> Hi Ard,
->
-> I've updated the patch based on your feedback.
->
-> As you noted, some aspects of the spec make it a bit tricky to support
-> all revisions in a nice way (e.g., size check) but this version should
-> fix existing issues.
->
-> Thanks,
-> Punit
->
-> v1[0] -> v2:
-> * Simplified error record structure definition
-> * Fixed size check
-> * Added comment to clarify offset calculation for dumped data
-> * Style fixes for multiline if blocks
->
+Before commit cfc4c189bc70 ("pwm: Read initial hardware state at request
+time"), a driver's get_state callback would get called once per PWM from
+pwmchip_add().
 
-Thanks. I will queue this as a fix.
+pwm-lpss' runtime-pm code was relying on this, getting a runtime-pm ref for
+PWMs which are enabled at probe time from within its get_state callback,
+before enabling runtime-pm.
 
+The change to calling get_state at request time causes a number of
+problems:
 
-> [0] https://lkml.kernel.org/lkml/20200427085242.2380614-1-punit1.agrawal@toshiba.co.jp/
-> ---
->  drivers/firmware/efi/cper.c | 62 +++++++++++++++++++++++++++++++++++++
->  include/linux/cper.h        |  9 ++++++
->  2 files changed, 71 insertions(+)
->
-> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-> index 9d2512913d25..f564e15fbc7e 100644
-> --- a/drivers/firmware/efi/cper.c
-> +++ b/drivers/firmware/efi/cper.c
-> @@ -407,6 +407,58 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
->         }
->  }
->
-> +static const char * const fw_err_rec_type_strs[] = {
-> +       "IPF SAL Error Record",
-> +       "SOC Firmware Error Record Type1 (Legacy CrashLog Support)",
-> +       "SOC Firmware Error Record Type2",
-> +};
-> +
-> +static void cper_print_fw_err(const char *pfx,
-> +                             struct acpi_hest_generic_data *gdata,
-> +                             const struct cper_sec_fw_err_rec_ref *fw_err)
-> +{
-> +       void *buf = acpi_hest_get_payload(gdata);
-> +       u32 offset, length = gdata->error_data_length;
-> +
-> +       printk("%s""Firmware Error Record Type: %s\n", pfx,
-> +              fw_err->record_type < ARRAY_SIZE(fw_err_rec_type_strs) ?
-> +              fw_err_rec_type_strs[fw_err->record_type] : "unknown");
-> +       printk("%s""Revision: %d\n", pfx, fw_err->revision);
-> +
-> +       /* Record Type based on UEFI 2.7 */
-> +       if (fw_err->revision == 0) {
-> +               printk("%s""Record Identifier: %08llx\n", pfx,
-> +                      fw_err->record_identifier);
-> +       } else if (fw_err->revision == 2) {
-> +               printk("%s""Record Identifier: %pUl\n", pfx,
-> +                      &fw_err->record_identifier_guid);
-> +       }
-> +
-> +       /*
-> +        * The FW error record may contain trailing data beyond the
-> +        * structure defined by the specification. As the fields
-> +        * defined (and hence the offset of any trailing data) vary
-> +        * with the revision, set the offset to account for this
-> +        * variation.
-> +        */
-> +       if (fw_err->revision == 0) {
-> +               /* record_identifier_guid not defined */
-> +               offset = offsetof(struct cper_sec_fw_err_rec_ref,
-> +                                 record_identifier_guid);
-> +       } else if (fw_err->revision == 1) {
-> +               /* record_identifier not defined */
-> +               offset = offsetof(struct cper_sec_fw_err_rec_ref,
-> +                                 record_identifier);
-> +       } else {
-> +               offset = sizeof(*fw_err);
-> +       }
-> +
-> +       buf += offset;
-> +       length -= offset;
-> +
-> +       print_hex_dump(pfx, "", DUMP_PREFIX_OFFSET, 16, 4, buf, length, true);
-> +}
-> +
->  static void cper_print_tstamp(const char *pfx,
->                                    struct acpi_hest_generic_data_v300 *gdata)
->  {
-> @@ -494,6 +546,16 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
->                 else
->                         goto err_section_too_small;
->  #endif
-> +       } else if (guid_equal(sec_type, &CPER_SEC_FW_ERR_REC_REF)) {
-> +               struct cper_sec_fw_err_rec_ref *fw_err = acpi_hest_get_payload(gdata);
-> +
-> +               printk("%ssection_type: Firmware Error Record Reference\n",
-> +                      newpfx);
-> +               /* The minimal FW Error Record contains 16 bytes */
-> +               if (gdata->error_data_length >= SZ_16)
-> +                       cper_print_fw_err(newpfx, gdata, fw_err);
-> +               else
-> +                       goto err_section_too_small;
->         } else {
->                 const void *err = acpi_hest_get_payload(gdata);
->
-> diff --git a/include/linux/cper.h b/include/linux/cper.h
-> index 4f005d95ce88..8537e9282a65 100644
-> --- a/include/linux/cper.h
-> +++ b/include/linux/cper.h
-> @@ -521,6 +521,15 @@ struct cper_sec_pcie {
->         u8      aer_info[96];
->  };
->
-> +/* Firmware Error Record Reference, UEFI v2.7 sec N.2.10  */
-> +struct cper_sec_fw_err_rec_ref {
-> +       u8 record_type;
-> +       u8 revision;
-> +       u8 reserved[6];
-> +       u64 record_identifier;
-> +       guid_t record_identifier_guid;
-> +};
-> +
->  /* Reset to default packing */
->  #pragma pack()
->
-> --
-> 2.26.2
->
+1. PWMs enabled at probe time may get runtime suspended before they are
+requested, causing e.g. a LCD backlight controlled by the PWM to turn off.
+
+2. When the request happens when the PWM has been runtime suspended, the
+ctrl register will read all 1 / 0xffffffff, causing get_state to store
+bogus values in the pwm_state.
+
+3. get_state was using an async pm_runtime_get() call, because it assumed
+that runtime-pm has not been enabled yet. If shortly after the request an
+apply call is made, then the pwm_lpss_is_updating() check may trigger
+because the resume triggered by the pm_runtime_get() call is not complete
+yet, so the ctrl register still reads all 1 / 0xffffffff.
+
+This commit fixes these issues by moving the initial pm_runtime_get() call
+for PWMs which are enabled at probe time to the pwm_lpss_probe() function;
+and by making get_state take a runtime-pm ref before reading the ctrl reg.
+
+BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1828927
+Fixes: cfc4c189bc70 ("pwm: Read initial hardware state at request time")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/pwm/pwm-lpss.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/pwm/pwm-lpss.c b/drivers/pwm/pwm-lpss.c
+index 75bbfe5f3bc2..9d965ffe66d1 100644
+--- a/drivers/pwm/pwm-lpss.c
++++ b/drivers/pwm/pwm-lpss.c
+@@ -158,7 +158,6 @@ static int pwm_lpss_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	return 0;
+ }
+ 
+-/* This function gets called once from pwmchip_add to get the initial state */
+ static void pwm_lpss_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			       struct pwm_state *state)
+ {
+@@ -167,6 +166,8 @@ static void pwm_lpss_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	unsigned long long base_unit, freq, on_time_div;
+ 	u32 ctrl;
+ 
++	pm_runtime_get_sync(chip->dev);
++
+ 	base_unit_range = BIT(lpwm->info->base_unit_bits);
+ 
+ 	ctrl = pwm_lpss_read(pwm);
+@@ -187,8 +188,7 @@ static void pwm_lpss_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	state->polarity = PWM_POLARITY_NORMAL;
+ 	state->enabled = !!(ctrl & PWM_ENABLE);
+ 
+-	if (state->enabled)
+-		pm_runtime_get(chip->dev);
++	pm_runtime_put(chip->dev);
+ }
+ 
+ static const struct pwm_ops pwm_lpss_ops = {
+@@ -202,7 +202,8 @@ struct pwm_lpss_chip *pwm_lpss_probe(struct device *dev, struct resource *r,
+ {
+ 	struct pwm_lpss_chip *lpwm;
+ 	unsigned long c;
+-	int ret;
++	int i, ret;
++	u32 ctrl;
+ 
+ 	if (WARN_ON(info->npwm > MAX_PWMS))
+ 		return ERR_PTR(-ENODEV);
+@@ -232,6 +233,12 @@ struct pwm_lpss_chip *pwm_lpss_probe(struct device *dev, struct resource *r,
+ 		return ERR_PTR(ret);
+ 	}
+ 
++	for (i = 0; i < lpwm->info->npwm; i++) {
++		ctrl = pwm_lpss_read(&lpwm->chip.pwms[i]);
++		if (ctrl & PWM_ENABLE)
++			pm_runtime_get(dev);
++	}
++
+ 	return lpwm;
+ }
+ EXPORT_SYMBOL_GPL(pwm_lpss_probe);
+-- 
+2.26.0
+
