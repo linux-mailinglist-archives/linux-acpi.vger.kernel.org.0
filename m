@@ -2,138 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C64A61CF6F5
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 May 2020 16:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF5211CF81E
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 May 2020 16:57:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730142AbgELOXO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 May 2020 10:23:14 -0400
-Received: from mga02.intel.com ([134.134.136.20]:24333 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728085AbgELOXO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 12 May 2020 10:23:14 -0400
-IronPort-SDR: ZiBXA76rb1/qZhNuKw1vgwQ2DC1XW3Kk46lXmqcYNjWIsc9o1haLQW2ZQ6LJ1X5Z1cPX6+KvQx
- T88Ij9y0cT7g==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2020 07:23:11 -0700
-IronPort-SDR: GlzZtu1sGARwiLFsda7n5jP+UidS5IcfVek8rox5EIDoV01vzHRDGFl9rq8vjh2j1rPhVTZ4+J
- 9F++snUjWrew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,384,1583222400"; 
-   d="scan'208";a="371578153"
-Received: from kuha.fi.intel.com ([10.237.72.162])
-  by fmsmga001.fm.intel.com with SMTP; 12 May 2020 07:22:52 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 12 May 2020 17:22:51 +0300
-Date:   Tue, 12 May 2020 17:22:51 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Prashant Malani <pmalani@chromium.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Benson Leung <bleung@chromium.org>, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 2/4] usb: typec: mux: intel_pmc_mux: Support for static
- SBU/HSL orientation
-Message-ID: <20200512142251.GD2085641@kuha.fi.intel.com>
-References: <20200507150900.12102-1-heikki.krogerus@linux.intel.com>
- <20200507150900.12102-3-heikki.krogerus@linux.intel.com>
- <20200507224041.GA247416@google.com>
- <20200508111840.GG645261@kuha.fi.intel.com>
- <20200511133202.GA2085641@kuha.fi.intel.com>
- <20200511175719.GA136540@google.com>
+        id S1730546AbgELO5j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 May 2020 10:57:39 -0400
+Received: from sonic312-20.consmr.mail.bf2.yahoo.com ([74.6.128.82]:46165 "EHLO
+        sonic312-20.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730441AbgELO5j (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 12 May 2020 10:57:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1589295457; bh=KB5k1+sCGpSRd9pTKc0P9/4ZGPy9ZVtmix5g8Hf7Eac=; h=Date:From:Reply-To:Subject:References:From:Subject; b=FT0WlNnNXkt0IqX6UPVz/7iqN4CLw3hgXjPFebC8i/gum420HtavgzRh7JKe9j92iCmsyN2TcjaYqz5Z2xgJX8HZn3y/TSHohxrQMdR0yUhEL16M77oDy3BFHm1M8Ml/+OI+cp1hHG0MbIgPNxNpbV9q2IUAxzAWt24fjZZ3WO7c+RQyy++xhzM48BvzQyv20nDbrVYjx9JxuYxachHdwYg080cM+FQMfFqwrlmA6uGl+98hcfKl55R+bp1YWsrpNeVyAvFUl4boawWFY43+J2PvpDfUjuZ/+VFun0V0t//BXAHuTbY9qCth6tvbggsKK5XRueEqOdiwPRkvtLKRRA==
+X-YMail-OSG: XC7dt5MVM1kpMfVoviaDuxET1q5buyQkYmY6L2HleHBzBRw8NThlJ5Rq53XoUYw
+ JQZMp6FjZU1YtnxjJHg.61g4Sjhkz26MbNzCJT2g7OLG6xldQcm1FRAVCpfuIB3NU8c8tccTJN3Y
+ 0sKez6HgzIV36EFA0iMUt0VE5C8jKJaO6p65TQZhIcdcxjlVrd8MTif5aYMJs3phBDpz2gGPtn00
+ 3z32JxRaOKpyAn04VN337XR4vVQOxDNq_HYW25mEvKyAsqCKraaMQHUOOEEby6.HYrlf3PgY.vfU
+ boYsuY5u7KPA5HFWgZLFGYMOZTIsKdJoQisXue9v0IpthSjlf3H2VL3rOAJSQ_ZUlUVaRC8QChtr
+ svTikRlCjMy25GQDWa802SzrlbV5goSb1B8PT9LW3omgEYgtog1H7uQihMq1dIBhtE5xvclpx0jT
+ VMt6vLFnYpzdgFE8l2e4vEHsZKVQvp49W4YGBwpcAV2.ygUw1bD2m3XpBl_13fIg7WfXpmnf.XHG
+ xLQ3Q5DL5zcbJsIAgewE6L5jJ0bKccG5d5BY1TeqM5lHK3Pey4cSeCukcgGIB8DWXJMTR11rcQWl
+ eihXCyBnWXfVLmFFDxadMmrFN0xfXBsMjJLH0jC616k7h5PygjyLKF3BPyRPQ3z6COyCHvYOyBSs
+ ugXsfWKNt9EzsfwZIoC5U0dMY6_apRGl42Wx8IVlYnsuPqNhToT6Qt16ZiHzfNMkgy6li1yVT8wH
+ s3UuTcwxpAZmwnxS0nMUGRbPakJy91OVRLyVA4pJtascgICuuf_LjX3clQ4.WJy3pVltjzE_Bw6n
+ zqXp_GwSvEgUDmnOS03nBc1evtDf3EgcQqbVESbnFElMXOC2XMMAfo6ANQSLFRYavHVHakfRBV7M
+ k0.Di9_ersmOz11fzBD__R0vHtLqqF2cba9Hg.7n2NmxiAxJ1Go3InVV0paDmIjuW2QfToAp8fiw
+ aGGHOqZJwgb3w9yqe6XYFXXchOi0pnCL8zzvHM0sV9IpBz1WvKWk1NjU_CiMwVmHSorVDQRjKsdK
+ e.EkI._6nQmOceZZM_uuFUs6OXIBwbdhRC6fla4QOf7dQD726q7fC61Y4.4uf5Kwn0B4vCkckGDs
+ zYHi1rYZUg3XOp67rtzv6s.4n6a_fTv624qcBW2sSIj3CXD0LAcaGOJWkjGvw1dJW2.g28ydUMyS
+ kY0.cM_7BY9zLXlaA8WNRdfG04aOfp78A2qdPGBDCz9d4UpYUYOIz5WjUgDTHirSGFFoRhHS9rca
+ uYBwZxm1m06RZst8tkxOiakUoGupNI31BnYFqOeyUg.FOU_rIt883pAxmFMH4mFLKuB8X2n.b
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.bf2.yahoo.com with HTTP; Tue, 12 May 2020 14:57:37 +0000
+Date:   Tue, 12 May 2020 14:57:36 +0000 (UTC)
+From:   jerom Njitap <jerome.njitap@aol.com>
+Reply-To: jeromenjitap100@gmail.com
+Message-ID: <1246117271.1049125.1589295456036@mail.yahoo.com>
+Subject: SESAME SEED SUPPLY BURKINA FASO
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200511175719.GA136540@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <1246117271.1049125.1589295456036.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15904 YMailNodin Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:76.0) Gecko/20100101 Firefox/76.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Prashant,
+Dear Sir,
 
-On Mon, May 11, 2020 at 10:57:19AM -0700, Prashant Malani wrote:
-> Hi Heikki,
-> 
-> Thanks a lot for looking into this. Kindly see my response inline:
-> 
-> On Mon, May 11, 2020 at 04:32:02PM +0300, Heikki Krogerus wrote:
-> > On Fri, May 08, 2020 at 02:18:44PM +0300, Heikki Krogerus wrote:
-> > > Hi Prashant,
-> > > 
-> > > On Thu, May 07, 2020 at 03:40:41PM -0700, Prashant Malani wrote:
-> > > > > +static int sbu_orientation(struct pmc_usb_port *port)
-> > > > > +{
-> > > > > +	if (port->sbu_orientation)
-> > > > > +		return port->sbu_orientation - 1;
-> > > > > +
-> > > > > +	return port->orientation - 1;
-> > > > > +}
-> > > > > +
-> > > > > +static int hsl_orientation(struct pmc_usb_port *port)
-> > > > > +{
-> > > > > +	if (port->hsl_orientation)
-> > > > > +		return port->hsl_orientation - 1;
-> > > > > +
-> > > > > +	return port->orientation - 1;
-> > > > > +}
-> > > > > +
-> > > > >  static int pmc_usb_command(struct pmc_usb_port *port, u8 *msg, u32 len)
-> > > > >  {
-> > > > >  	u8 response[4];
-> > > > > @@ -151,8 +170,9 @@ pmc_usb_mux_dp(struct pmc_usb_port *port, struct typec_mux_state *state)
-> > > > >  
-> > > > >  	req.mode_data = (port->orientation - 1) << PMC_USB_ALTMODE_ORI_SHIFT;
-> > > > >  	req.mode_data |= (port->role - 1) << PMC_USB_ALTMODE_UFP_SHIFT;
-> > > > > -	req.mode_data |= (port->orientation - 1) << PMC_USB_ALTMODE_ORI_AUX_SHIFT;
-> > > > > -	req.mode_data |= (port->orientation - 1) << PMC_USB_ALTMODE_ORI_HSL_SHIFT;
-> > > > > +
-> > > > > +	req.mode_data |= sbu_orientation(port) << PMC_USB_ALTMODE_ORI_AUX_SHIFT;
-> > > > 
-> > > > I'm curious to know what would happen when sbu-orientation == "normal".
-> > > > That means |port->sbu_orientation| == 1.
-> > > > 
-> > > > It sounds like what should happen is the AUX_SHIFT orientation
-> > > > setting should follow what |port->orientation| is, but here it
-> > > > looks like it will always be set to |port->sbu_orientation - 1|, i.e 0,
-> > > > even if port->orientation == TYPEC_ORIENTATION_REVERSE, i.e 2, meaning
-> > > > it should be set to 1 ?
-> > > 
-> > > I'll double check this, and get back to you..
-> > 
-> > This is not exactly an answer to your question, but it seems that
-> > those bits are only valid if "Alternate-Direct" message is used.
-> > Currently the driver does not support that message.
-> Could you kindly provide some detail on when "Alternate-Direct" would be
-> preferred to the current method?
-
-Alternate Mode Direct request is supposed to be used if an alternate
-mode is entered directly from disconnected state.
-
-> Also, is there anything on the PMC side which is preventing the use of
-> "Alternate-Direct" messages? It seems like the state transition diagram
-> there would be simpler, although I'm likely missing significant details
-> here.
-
-So we actually should use the "direct" request if we are in
-disconnected state to enter alt modes if I understood correctly. But
-otherwise we should use the normal Alternate Mode request and not the
-Alternate Mode "direct" request. And I'm afraid I don't know why.
-
-> > I think the correct thing to do now is to remove the two lines from
-> > the driver where those bits (ORI-HSL and ORI-Aux) are set.
-> I see. How would orientation then be handled in a retimer configuration
-> where AUX/SBU is flipped by the retimer itself?
-
-Note that if we send a separate "connection" request first, then we
-already tell the HSL and SBU orientation as part of the payload of
-that request. That is why there is no need to tell about the HSL and
-SBU orientation with the normal Alternate Mode Request.
-
-So we have already handled the HSL and SBU orientation by the time
-this function is called.
+This is to bring to your notice that we can supply your needs for
+quality Sesame seeds and other products listed below :
 
 
-thanks,
+Cashew nut
+Raw cotton
+Sesame seed
+Copper cathode
+Copper wire scraps
+Mazut 100 oil,D6
+Used rails
+HMS 1/2
 
--- 
-heikki
+
+We offer the best quality at reasonable prices both on CIF and FOB,
+depending on the nature of your offer. Our company has been in this
+line of business for over a decade so you you can expect nothing but a
+top-notch professional touch and guarantee when you deal or trade with
+us.all communication should be through this email address for
+confidencial purpose(jeromenjitap100@gmail.com)and your whatsaap number.
+
+Look forward to your response.
+
+Regards
+Mr Jerome
