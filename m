@@ -2,146 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 028FE1CF301
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 May 2020 13:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C64A61CF6F5
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 May 2020 16:23:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728990AbgELLAw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 May 2020 07:00:52 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:42849 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727783AbgELLAw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 12 May 2020 07:00:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589281250;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=tQSc1TJDaYwxYLceWP29iPDKblot1rwfivc0kNtIR+o=;
-        b=hsHRPziqfDg1w7PLMy7ZQw2pfOhGkaTSjHycct1ZNsAy/FB9FDpNYqmuV2sIhQ1fSJyWOy
-        CFHOAbCw1l7U2RwlnkNZLJXyzi6YXf61nSqqynVB9sxWkI80DzA9rBnDmyBrvAPqjAeXZf
-        jFny5CVt1LOtl9XVblzPyyzuuDTktWU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-457-Xu03e-A9OeWDOLi_le5K1A-1; Tue, 12 May 2020 07:00:48 -0400
-X-MC-Unique: Xu03e-A9OeWDOLi_le5K1A-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 080618018A7;
-        Tue, 12 May 2020 11:00:47 +0000 (UTC)
-Received: from x1.localdomain.com (ovpn-113-117.ams2.redhat.com [10.36.113.117])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7CBAB78B21;
-        Tue, 12 May 2020 11:00:45 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-pwm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH] pwm: lpss: Fix get_state runtime-pm reference handling
-Date:   Tue, 12 May 2020 13:00:44 +0200
-Message-Id: <20200512110044.95984-1-hdegoede@redhat.com>
+        id S1730142AbgELOXO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 May 2020 10:23:14 -0400
+Received: from mga02.intel.com ([134.134.136.20]:24333 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728085AbgELOXO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 12 May 2020 10:23:14 -0400
+IronPort-SDR: ZiBXA76rb1/qZhNuKw1vgwQ2DC1XW3Kk46lXmqcYNjWIsc9o1haLQW2ZQ6LJ1X5Z1cPX6+KvQx
+ T88Ij9y0cT7g==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2020 07:23:11 -0700
+IronPort-SDR: GlzZtu1sGARwiLFsda7n5jP+UidS5IcfVek8rox5EIDoV01vzHRDGFl9rq8vjh2j1rPhVTZ4+J
+ 9F++snUjWrew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,384,1583222400"; 
+   d="scan'208";a="371578153"
+Received: from kuha.fi.intel.com ([10.237.72.162])
+  by fmsmga001.fm.intel.com with SMTP; 12 May 2020 07:22:52 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 12 May 2020 17:22:51 +0300
+Date:   Tue, 12 May 2020 17:22:51 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Prashant Malani <pmalani@chromium.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Benson Leung <bleung@chromium.org>, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 2/4] usb: typec: mux: intel_pmc_mux: Support for static
+ SBU/HSL orientation
+Message-ID: <20200512142251.GD2085641@kuha.fi.intel.com>
+References: <20200507150900.12102-1-heikki.krogerus@linux.intel.com>
+ <20200507150900.12102-3-heikki.krogerus@linux.intel.com>
+ <20200507224041.GA247416@google.com>
+ <20200508111840.GG645261@kuha.fi.intel.com>
+ <20200511133202.GA2085641@kuha.fi.intel.com>
+ <20200511175719.GA136540@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200511175719.GA136540@google.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Before commit cfc4c189bc70 ("pwm: Read initial hardware state at request
-time"), a driver's get_state callback would get called once per PWM from
-pwmchip_add().
+Hi Prashant,
 
-pwm-lpss' runtime-pm code was relying on this, getting a runtime-pm ref for
-PWMs which are enabled at probe time from within its get_state callback,
-before enabling runtime-pm.
+On Mon, May 11, 2020 at 10:57:19AM -0700, Prashant Malani wrote:
+> Hi Heikki,
+> 
+> Thanks a lot for looking into this. Kindly see my response inline:
+> 
+> On Mon, May 11, 2020 at 04:32:02PM +0300, Heikki Krogerus wrote:
+> > On Fri, May 08, 2020 at 02:18:44PM +0300, Heikki Krogerus wrote:
+> > > Hi Prashant,
+> > > 
+> > > On Thu, May 07, 2020 at 03:40:41PM -0700, Prashant Malani wrote:
+> > > > > +static int sbu_orientation(struct pmc_usb_port *port)
+> > > > > +{
+> > > > > +	if (port->sbu_orientation)
+> > > > > +		return port->sbu_orientation - 1;
+> > > > > +
+> > > > > +	return port->orientation - 1;
+> > > > > +}
+> > > > > +
+> > > > > +static int hsl_orientation(struct pmc_usb_port *port)
+> > > > > +{
+> > > > > +	if (port->hsl_orientation)
+> > > > > +		return port->hsl_orientation - 1;
+> > > > > +
+> > > > > +	return port->orientation - 1;
+> > > > > +}
+> > > > > +
+> > > > >  static int pmc_usb_command(struct pmc_usb_port *port, u8 *msg, u32 len)
+> > > > >  {
+> > > > >  	u8 response[4];
+> > > > > @@ -151,8 +170,9 @@ pmc_usb_mux_dp(struct pmc_usb_port *port, struct typec_mux_state *state)
+> > > > >  
+> > > > >  	req.mode_data = (port->orientation - 1) << PMC_USB_ALTMODE_ORI_SHIFT;
+> > > > >  	req.mode_data |= (port->role - 1) << PMC_USB_ALTMODE_UFP_SHIFT;
+> > > > > -	req.mode_data |= (port->orientation - 1) << PMC_USB_ALTMODE_ORI_AUX_SHIFT;
+> > > > > -	req.mode_data |= (port->orientation - 1) << PMC_USB_ALTMODE_ORI_HSL_SHIFT;
+> > > > > +
+> > > > > +	req.mode_data |= sbu_orientation(port) << PMC_USB_ALTMODE_ORI_AUX_SHIFT;
+> > > > 
+> > > > I'm curious to know what would happen when sbu-orientation == "normal".
+> > > > That means |port->sbu_orientation| == 1.
+> > > > 
+> > > > It sounds like what should happen is the AUX_SHIFT orientation
+> > > > setting should follow what |port->orientation| is, but here it
+> > > > looks like it will always be set to |port->sbu_orientation - 1|, i.e 0,
+> > > > even if port->orientation == TYPEC_ORIENTATION_REVERSE, i.e 2, meaning
+> > > > it should be set to 1 ?
+> > > 
+> > > I'll double check this, and get back to you..
+> > 
+> > This is not exactly an answer to your question, but it seems that
+> > those bits are only valid if "Alternate-Direct" message is used.
+> > Currently the driver does not support that message.
+> Could you kindly provide some detail on when "Alternate-Direct" would be
+> preferred to the current method?
 
-The change to calling get_state at request time causes a number of
-problems:
+Alternate Mode Direct request is supposed to be used if an alternate
+mode is entered directly from disconnected state.
 
-1. PWMs enabled at probe time may get runtime suspended before they are
-requested, causing e.g. a LCD backlight controlled by the PWM to turn off.
+> Also, is there anything on the PMC side which is preventing the use of
+> "Alternate-Direct" messages? It seems like the state transition diagram
+> there would be simpler, although I'm likely missing significant details
+> here.
 
-2. When the request happens when the PWM has been runtime suspended, the
-ctrl register will read all 1 / 0xffffffff, causing get_state to store
-bogus values in the pwm_state.
+So we actually should use the "direct" request if we are in
+disconnected state to enter alt modes if I understood correctly. But
+otherwise we should use the normal Alternate Mode request and not the
+Alternate Mode "direct" request. And I'm afraid I don't know why.
 
-3. get_state was using an async pm_runtime_get() call, because it assumed
-that runtime-pm has not been enabled yet. If shortly after the request an
-apply call is made, then the pwm_lpss_is_updating() check may trigger
-because the resume triggered by the pm_runtime_get() call is not complete
-yet, so the ctrl register still reads all 1 / 0xffffffff.
+> > I think the correct thing to do now is to remove the two lines from
+> > the driver where those bits (ORI-HSL and ORI-Aux) are set.
+> I see. How would orientation then be handled in a retimer configuration
+> where AUX/SBU is flipped by the retimer itself?
 
-This commit fixes these issues by moving the initial pm_runtime_get() call
-for PWMs which are enabled at probe time to the pwm_lpss_probe() function;
-and by making get_state take a runtime-pm ref before reading the ctrl reg.
+Note that if we send a separate "connection" request first, then we
+already tell the HSL and SBU orientation as part of the payload of
+that request. That is why there is no need to tell about the HSL and
+SBU orientation with the normal Alternate Mode Request.
 
-BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1828927
-Fixes: cfc4c189bc70 ("pwm: Read initial hardware state at request time")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/pwm/pwm-lpss.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+So we have already handled the HSL and SBU orientation by the time
+this function is called.
 
-diff --git a/drivers/pwm/pwm-lpss.c b/drivers/pwm/pwm-lpss.c
-index 75bbfe5f3bc2..9d965ffe66d1 100644
---- a/drivers/pwm/pwm-lpss.c
-+++ b/drivers/pwm/pwm-lpss.c
-@@ -158,7 +158,6 @@ static int pwm_lpss_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 	return 0;
- }
- 
--/* This function gets called once from pwmchip_add to get the initial state */
- static void pwm_lpss_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
- 			       struct pwm_state *state)
- {
-@@ -167,6 +166,8 @@ static void pwm_lpss_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
- 	unsigned long long base_unit, freq, on_time_div;
- 	u32 ctrl;
- 
-+	pm_runtime_get_sync(chip->dev);
-+
- 	base_unit_range = BIT(lpwm->info->base_unit_bits);
- 
- 	ctrl = pwm_lpss_read(pwm);
-@@ -187,8 +188,7 @@ static void pwm_lpss_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
- 	state->polarity = PWM_POLARITY_NORMAL;
- 	state->enabled = !!(ctrl & PWM_ENABLE);
- 
--	if (state->enabled)
--		pm_runtime_get(chip->dev);
-+	pm_runtime_put(chip->dev);
- }
- 
- static const struct pwm_ops pwm_lpss_ops = {
-@@ -202,7 +202,8 @@ struct pwm_lpss_chip *pwm_lpss_probe(struct device *dev, struct resource *r,
- {
- 	struct pwm_lpss_chip *lpwm;
- 	unsigned long c;
--	int ret;
-+	int i, ret;
-+	u32 ctrl;
- 
- 	if (WARN_ON(info->npwm > MAX_PWMS))
- 		return ERR_PTR(-ENODEV);
-@@ -232,6 +233,12 @@ struct pwm_lpss_chip *pwm_lpss_probe(struct device *dev, struct resource *r,
- 		return ERR_PTR(ret);
- 	}
- 
-+	for (i = 0; i < lpwm->info->npwm; i++) {
-+		ctrl = pwm_lpss_read(&lpwm->chip.pwms[i]);
-+		if (ctrl & PWM_ENABLE)
-+			pm_runtime_get(dev);
-+	}
-+
- 	return lpwm;
- }
- EXPORT_SYMBOL_GPL(pwm_lpss_probe);
+
+thanks,
+
 -- 
-2.26.0
-
+heikki
