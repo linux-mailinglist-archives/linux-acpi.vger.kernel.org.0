@@ -2,42 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D0421D19CC
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 May 2020 17:47:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4D0B1D1A53
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 May 2020 18:02:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389178AbgEMPrB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 May 2020 11:47:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43276 "EHLO mail.kernel.org"
+        id S1732938AbgEMQCD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 May 2020 12:02:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52482 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389058AbgEMPrB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 13 May 2020 11:47:01 -0400
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+        id S1731894AbgEMQBS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 13 May 2020 12:01:18 -0400
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C8560207BA
-        for <linux-acpi@vger.kernel.org>; Wed, 13 May 2020 15:47:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F3E84207DF
+        for <linux-acpi@vger.kernel.org>; Wed, 13 May 2020 16:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589384821;
-        bh=nzgdwqBNsrP+73eJCjx0UH7nQXREgSbxf60tXOz/1mA=;
+        s=default; t=1589385678;
+        bh=1DCrwT/NDlw0uuTKsF4bXhoDTKqfm27Uln6KkJ8YNbk=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=p4Atx0aUEnifHVd3/OUWW8H+qTI/K7630hPdqjB3fUkCPrqxCpY6sUGWGNAA8GRZw
-         Y4qXB4z3DbmHp+Gajo/SiOHVQZJXmkK0A6+YXCdQB+Lo3Ex5Qxn8iyrrS6owKygp7G
-         G3F2iaU28QF8W9wn45cS/qXPMInbvnItP5fhW9nU=
-Received: by mail-wm1-f48.google.com with SMTP id k12so27022398wmj.3
-        for <linux-acpi@vger.kernel.org>; Wed, 13 May 2020 08:47:00 -0700 (PDT)
-X-Gm-Message-State: AGi0PuZZ/CIC9ZxcFz1xzt6SiYTUaXBKuA8emxNkJoXPi05XZXV+NWTM
-        Dxz4+auLoQJdV8PRDiIpVOkxojW9jxZPOG6j5fFDFg==
-X-Google-Smtp-Source: APiQypKuUOoHroqVE1Q2xSEZ5CJAKVmZYRRug6GQ131e/OlvUQIzVUtZ4lvV/wUI+iagtz1aPdU6tH9xKFo/pnQ17qg=
-X-Received: by 2002:a05:600c:2299:: with SMTP id 25mr22837779wmf.138.1589384818895;
- Wed, 13 May 2020 08:46:58 -0700 (PDT)
+        b=blwwIrJXdRO2MTbHNEVNVdoqPhEZedEXfGgkRG50ypFS5O/gmrdqIV8kJE7xRhWNi
+         82/hhW83RJtvHNWrUt5ogzWhb2evQUXRH167YmgAgO1GMMu50lRVEb7+WCKJGB2nl/
+         rrt3X4VSe3bK2jHIxtpgB589tl4YGk0tTSfnjF8w=
+Received: by mail-wr1-f49.google.com with SMTP id 50so16795wrc.11
+        for <linux-acpi@vger.kernel.org>; Wed, 13 May 2020 09:01:17 -0700 (PDT)
+X-Gm-Message-State: AOAM531KMO3SdLD4xqwj69/ICIMLJqxuLImEOVttBl29hHceDrpwRCXU
+        w4RlJE8Q+yg+ckOCImjkw+nRqjhiHEcXx8vTt3Cs1Q==
+X-Google-Smtp-Source: ABdhPJxQhnLFml0LQ5CNx+hd8QPNyz2a2pbd6SvSmnZfjxvRUTYQ5OXx8AY4s1SOG5rFKf9HvCVi09jd8JzDiGbm9SY=
+X-Received: by 2002:adf:a389:: with SMTP id l9mr71447wrb.18.1589385676030;
+ Wed, 13 May 2020 09:01:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200513152137.32426-1-joro@8bytes.org> <20200513152137.32426-8-joro@8bytes.org>
-In-Reply-To: <20200513152137.32426-8-joro@8bytes.org>
+References: <20200513152137.32426-1-joro@8bytes.org>
+In-Reply-To: <20200513152137.32426-1-joro@8bytes.org>
 From:   Andy Lutomirski <luto@kernel.org>
-Date:   Wed, 13 May 2020 08:46:47 -0700
-X-Gmail-Original-Message-ID: <CALCETrUq=-huvWXJpVLvPRNwTiniQg8DP6R__J33gE8iSoEGAg@mail.gmail.com>
-Message-ID: <CALCETrUq=-huvWXJpVLvPRNwTiniQg8DP6R__J33gE8iSoEGAg@mail.gmail.com>
-Subject: Re: [PATCH v2 7/7] x86/mm: Remove vmalloc faulting
+Date:   Wed, 13 May 2020 09:01:04 -0700
+X-Gmail-Original-Message-ID: <CALCETrW1Y2Q7dWwv4X7PHf3yxOGMcDaBG0NK7BWPAR=FiqsoPQ@mail.gmail.com>
+Message-ID: <CALCETrW1Y2Q7dWwv4X7PHf3yxOGMcDaBG0NK7BWPAR=FiqsoPQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] mm: Get rid of vmalloc_sync_(un)mappings()
 To:     Joerg Roedel <joro@8bytes.org>
 Cc:     X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
@@ -63,9 +63,36 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 On Wed, May 13, 2020 at 8:21 AM Joerg Roedel <joro@8bytes.org> wrote:
 >
-> From: Joerg Roedel <jroedel@suse.de>
+> Hi,
 >
-> Remove fault handling on vmalloc areas, as the vmalloc code now takes
-> care of synchronizing changes to all page-tables in the system.
+> here is the next post of this series with these changes to the first
+> version:
+>
+>         - Rebased to v5.7-rc5
+>
+>         - As a result of the rebase, also removed the
+>           vmalloc_sync_mappings() call from tracing code
+>
+>         - Added a comment that we rely on the compiler optimizing calls
+>           to arch_syn_kernel_mappings() away when
+>           ARCH_PAGE_TABLE_SYNC_MASK is 0
+>
+> The first version can be found here:
+>
+>         https://lore.kernel.org/lkml/20200508144043.13893-1-joro@8bytes.org/
+>
+> The cover letter of the first post also has more details on the
+> motivation for this patch-set.
+>
+> Please review.
+>
 
-You should also remove sync_current_stack_to_mm().
+Assuming the missing cleanup at the end gets done:
+
+Acked-by: Andy Lutomirski <luto@kernel.org>
+
+grumpily acked, anyway.
+
+I would love to see a followup patch that preallocates the vmalloc
+region on 64-bit and compiles out pgd_list and all of the associated
+gunk.
