@@ -2,110 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFEEF1D050E
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 May 2020 04:37:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A76B61D054E
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 May 2020 05:16:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726011AbgEMChA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 May 2020 22:37:00 -0400
-Received: from mo-csw1516.securemx.jp ([210.130.202.155]:56258 "EHLO
-        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725898AbgEMChA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 May 2020 22:37:00 -0400
-Received: by mo-csw.securemx.jp (mx-mo-csw1516) id 04D2ae54007140; Wed, 13 May 2020 11:36:40 +0900
-X-Iguazu-Qid: 34trDAmeIu11rkEjys
-X-Iguazu-QSIG: v=2; s=0; t=1589337400; q=34trDAmeIu11rkEjys; m=pK2KXljWZTLcH9XwqUT1Sc58njnMsc8wOqfGuj2Bpqo=
-Received: from imx2.toshiba.co.jp (imx2.toshiba.co.jp [106.186.93.51])
-        by relay.securemx.jp (mx-mr1513) id 04D2acok007719;
-        Wed, 13 May 2020 11:36:39 +0900
-Received: from enc01.localdomain ([106.186.93.100])
-        by imx2.toshiba.co.jp  with ESMTP id 04D2acj8000332;
-        Wed, 13 May 2020 11:36:38 +0900 (JST)
-Received: from hop001.toshiba.co.jp ([133.199.164.63])
-        by enc01.localdomain  with ESMTP id 04D2acCb026192;
-        Wed, 13 May 2020 11:36:38 +0900
-From:   Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        id S1726161AbgEMDQj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 May 2020 23:16:39 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:4400 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725898AbgEMDQi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 12 May 2020 23:16:38 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 2437A48CDD2EC4FFADEA;
+        Wed, 13 May 2020 11:16:36 +0800 (CST)
+Received: from [127.0.0.1] (10.166.213.93) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.487.0; Wed, 13 May 2020
+ 11:16:34 +0800
+Subject: Re: [PATCH v2] ACPI/IORT: Fix PMCG node always look for a single ID
+ mapping.
+To:     Tuan Phan <tuanphan@os.amperecomputing.com>
+CC:     <patches@amperecomputing.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Borislav Petkov <bp@alien8.de>,
-        James Morse <james.morse@arm.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: [Patch v2] efi: cper: Add support for printing Firmware Error Record Reference
-References: <20200512045502.3810339-1-punit1.agrawal@toshiba.co.jp>
-        <CAMj1kXGNWptRShYVtDwoB7jL1_2M1ioroFV=veFt0MB=n6_-OQ@mail.gmail.com>
-Date:   Wed, 13 May 2020 11:36:37 +0900
-In-Reply-To: <CAMj1kXGNWptRShYVtDwoB7jL1_2M1ioroFV=veFt0MB=n6_-OQ@mail.gmail.com>
-        (Ard Biesheuvel's message of "Tue, 12 May 2020 12:47:59 +0200")
-X-TSB-HOP: ON
-Message-ID: <87v9l0o91m.fsf@kokedama.swc.toshiba.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Len Brown <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <1589327760-5464-1-git-send-email-tuanphan@os.amperecomputing.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <6f9996d3-18f1-0432-0e59-adc2cf086c9c@huawei.com>
+Date:   Wed, 13 May 2020 11:16:33 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <1589327760-5464-1-git-send-email-tuanphan@os.amperecomputing.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.166.213.93]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Ard Biesheuvel <ardb@kernel.org> writes:
+On 2020/5/13 7:56, Tuan Phan wrote:
+> PMCG node can have zero ID mapping if its overflow interrupt
+> is wire based. The code to parse PMCG node can not assume it will
+> have a single ID mapping.
+> 
+> Signed-off-by: Tuan Phan <tuanphan@os.amperecomputing.com>
 
-> On Tue, 12 May 2020 at 06:55, Punit Agrawal
-> <punit1.agrawal@toshiba.co.jp> wrote:
->>
->> While debugging a boot failure, the following unknown error record was
->> seen in the boot logs.
->>
->>     <...>
->>     BERT: Error records from previous boot:
->>     [Hardware Error]: event severity: fatal
->>     [Hardware Error]:  Error 0, type: fatal
->>     [Hardware Error]:   section type: unknown, 81212a96-09ed-4996-9471-8d729c8e69ed
->>     [Hardware Error]:   section length: 0x290
->>     [Hardware Error]:   00000000: 00000001 00000000 00000000 00020002  ................
->>     [Hardware Error]:   00000010: 00020002 0000001f 00000320 00000000  ........ .......
->>     [Hardware Error]:   00000020: 00000000 00000000 00000000 00000000  ................
->>     [Hardware Error]:   00000030: 00000000 00000000 00000000 00000000  ................
->>     <...>
->>
->> On further investigation, it was found that the error record with
->> UUID (81212a96-09ed-4996-9471-8d729c8e69ed) has been defined in the
->> UEFI Specification at least since v2.4 and has recently had additional
->> fields defined in v2.7 Section N.2.10 Firmware Error Record Reference.
->>
->> Add support for parsing and printing the defined fields to give users
->> a chance to figure out what went wrong.
->>
->> Signed-off-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
->> Cc: Ard Biesheuvel <ardb@kernel.org>
->> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
->> Cc: Borislav Petkov <bp@alien8.de>
->> Cc: James Morse <james.morse@arm.com>
->> Cc: linux-acpi@vger.kernel.org
->> Cc: linux-efi@vger.kernel.org
->> ---
->> Hi Ard,
->>
->> I've updated the patch based on your feedback.
->>
->> As you noted, some aspects of the spec make it a bit tricky to support
->> all revisions in a nice way (e.g., size check) but this version should
->> fix existing issues.
->>
->> Thanks,
->> Punit
->>
->> v1[0] -> v2:
->> * Simplified error record structure definition
->> * Fixed size check
->> * Added comment to clarify offset calculation for dumped data
->> * Style fixes for multiline if blocks
->
-> Thanks. I will queue this as a fix.
+It's better to add
 
-Thanks!
+Fixes: 24e516049360 ("ACPI/IORT: Add support for PMCG")
 
-Just for my understanding - are you planning to send this for v5.7 or
-v5.8? There's no rush, so I am fine either ways.
+> ---
+> Changes in v2:
+> - Used pmcg node to detect wired base overflow interrupt.
+>   
+>   drivers/acpi/arm64/iort.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index ed3d2d1..11a4e8e 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -414,6 +414,7 @@ static struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
+>   static int iort_get_id_mapping_index(struct acpi_iort_node *node)
+>   {
+>   	struct acpi_iort_smmu_v3 *smmu;
+> +	struct acpi_iort_pmcg *pmcg;
+>   
+>   	switch (node->type) {
+>   	case ACPI_IORT_NODE_SMMU_V3:
+> @@ -441,6 +442,10 @@ static int iort_get_id_mapping_index(struct acpi_iort_node *node)
+>   
+>   		return smmu->id_mapping_index;
+>   	case ACPI_IORT_NODE_PMCG:
+> +		pmcg = (struct acpi_iort_pmcg *)node->node_data;
+> +		if (pmcg->overflow_gsiv)
+> +			return -EINVAL;
+> +
+>   		return 0;
+>   	default:
+>   		return -EINVAL;
 
-[...]
+With my comments addressed,
+
+Reviewed-by: Hanjun Guo <guoahanjun@huawei.com>
 
