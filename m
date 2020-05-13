@@ -2,104 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE44D1D0FB2
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 May 2020 12:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BAB31D1939
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 May 2020 17:22:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728049AbgEMK3D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 May 2020 06:29:03 -0400
-Received: from foss.arm.com ([217.140.110.172]:42530 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727932AbgEMK3C (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 13 May 2020 06:29:02 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9E4691FB;
-        Wed, 13 May 2020 03:29:01 -0700 (PDT)
-Received: from [10.57.36.85] (unknown [10.57.36.85])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F355B3F305;
-        Wed, 13 May 2020 03:28:59 -0700 (PDT)
-Subject: Re: [PATCH v2] ACPI/IORT: Fix PMCG node always look for a single ID
- mapping.
-To:     Hanjun Guo <guohanjun@huawei.com>,
-        Tuan Phan <tuanphan@os.amperecomputing.com>
-Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        id S1732461AbgEMPWI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 May 2020 11:22:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44656 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729573AbgEMPVo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 May 2020 11:21:44 -0400
+Received: from theia.8bytes.org (8bytes.org [IPv6:2a01:238:4383:600:38bc:a715:4b6d:a889])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1565CC061A0F;
+        Wed, 13 May 2020 08:21:44 -0700 (PDT)
+Received: by theia.8bytes.org (Postfix, from userid 1000)
+        id B9A14694; Wed, 13 May 2020 17:21:40 +0200 (CEST)
+From:   Joerg Roedel <joro@8bytes.org>
+To:     x86@kernel.org
+Cc:     hpa@zytor.com, Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, rjw@rjwysocki.net,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Michal Hocko <mhocko@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Joerg Roedel <jroedel@suse.de>, joro@8bytes.org,
         linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        patches@amperecomputing.com, linux-arm-kernel@lists.infradead.org,
-        Len Brown <lenb@kernel.org>
-References: <1589327760-5464-1-git-send-email-tuanphan@os.amperecomputing.com>
- <6f9996d3-18f1-0432-0e59-adc2cf086c9c@huawei.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <2c2795ed-c2cb-a166-cd6d-0e920bd05ea3@arm.com>
-Date:   Wed, 13 May 2020 11:28:57 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
-MIME-Version: 1.0
-In-Reply-To: <6f9996d3-18f1-0432-0e59-adc2cf086c9c@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+        linux-arch@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH v2 0/7] mm: Get rid of vmalloc_sync_(un)mappings()
+Date:   Wed, 13 May 2020 17:21:30 +0200
+Message-Id: <20200513152137.32426-1-joro@8bytes.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2020-05-13 4:16 am, Hanjun Guo wrote:
-> On 2020/5/13 7:56, Tuan Phan wrote:
->> PMCG node can have zero ID mapping if its overflow interrupt
->> is wire based. The code to parse PMCG node can not assume it will
->> have a single ID mapping.
->>
->> Signed-off-by: Tuan Phan <tuanphan@os.amperecomputing.com>
-> 
-> It's better to add
-> 
-> Fixes: 24e516049360 ("ACPI/IORT: Add support for PMCG")
-> 
->> ---
->> Changes in v2:
->> - Used pmcg node to detect wired base overflow interrupt.
->>   drivers/acpi/arm64/iort.c | 5 +++++
->>   1 file changed, 5 insertions(+)
->>
->> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
->> index ed3d2d1..11a4e8e 100644
->> --- a/drivers/acpi/arm64/iort.c
->> +++ b/drivers/acpi/arm64/iort.c
->> @@ -414,6 +414,7 @@ static struct acpi_iort_node 
->> *iort_node_get_id(struct acpi_iort_node *node,
->>   static int iort_get_id_mapping_index(struct acpi_iort_node *node)
->>   {
->>       struct acpi_iort_smmu_v3 *smmu;
->> +    struct acpi_iort_pmcg *pmcg;
->>       switch (node->type) {
->>       case ACPI_IORT_NODE_SMMU_V3:
->> @@ -441,6 +442,10 @@ static int iort_get_id_mapping_index(struct 
->> acpi_iort_node *node)
->>           return smmu->id_mapping_index;
->>       case ACPI_IORT_NODE_PMCG:
->> +        pmcg = (struct acpi_iort_pmcg *)node->node_data;
->> +        if (pmcg->overflow_gsiv)
+Hi,
 
-	if (pmcg->overflow_gsiv || node->mapping_count == 0)
+here is the next post of this series with these changes to the first
+version:
 
-...if there is no GSIV, we should still *also* check that index 0 is 
-valid before we return it.
+	- Rebased to v5.7-rc5
 
-Robin.
+	- As a result of the rebase, also removed the
+	  vmalloc_sync_mappings() call from tracing code
 
->> +            return -EINVAL;
->> +
->>           return 0;
->>       default:
->>           return -EINVAL;
-> 
-> With my comments addressed,
-> 
-> Reviewed-by: Hanjun Guo <guoahanjun@huawei.com>
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+	- Added a comment that we rely on the compiler optimizing calls
+	  to arch_syn_kernel_mappings() away when
+	  ARCH_PAGE_TABLE_SYNC_MASK is 0
+
+The first version can be found here:
+
+	https://lore.kernel.org/lkml/20200508144043.13893-1-joro@8bytes.org/
+
+The cover letter of the first post also has more details on the
+motivation for this patch-set.
+
+Please review.
+
+Regards,
+
+	Joerg
+
+Joerg Roedel (7):
+  mm: Add functions to track page directory modifications
+  mm/vmalloc: Track which page-table levels were modified
+  mm/ioremap: Track which page-table levels were modified
+  x86/mm/64: Implement arch_sync_kernel_mappings()
+  x86/mm/32: Implement arch_sync_kernel_mappings()
+  mm: Remove vmalloc_sync_(un)mappings()
+  x86/mm: Remove vmalloc faulting
+
+ arch/x86/include/asm/pgtable-2level_types.h |   2 +
+ arch/x86/include/asm/pgtable-3level_types.h |   2 +
+ arch/x86/include/asm/pgtable_64_types.h     |   2 +
+ arch/x86/include/asm/switch_to.h            |  23 ---
+ arch/x86/kernel/setup_percpu.c              |   6 +-
+ arch/x86/mm/fault.c                         | 176 +-------------------
+ arch/x86/mm/init_64.c                       |   5 +
+ arch/x86/mm/pti.c                           |   8 +-
+ drivers/acpi/apei/ghes.c                    |   6 -
+ include/asm-generic/5level-fixup.h          |   5 +-
+ include/asm-generic/pgtable.h               |  23 +++
+ include/linux/mm.h                          |  46 +++++
+ include/linux/vmalloc.h                     |  18 +-
+ kernel/notifier.c                           |   1 -
+ kernel/trace/trace.c                        |  12 --
+ lib/ioremap.c                               |  46 +++--
+ mm/nommu.c                                  |  12 --
+ mm/vmalloc.c                                | 109 +++++++-----
+ 18 files changed, 204 insertions(+), 298 deletions(-)
+
+-- 
+2.17.1
+
