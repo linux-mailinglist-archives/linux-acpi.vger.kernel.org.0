@@ -2,130 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C21B41D2C30
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 May 2020 12:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 563021D2C51
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 May 2020 12:16:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725978AbgENKKF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 May 2020 06:10:05 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:52220 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725955AbgENKKF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 May 2020 06:10:05 -0400
-Received: from 89-64-84-17.dynamic.chello.pl (89.64.84.17) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
- id bfcb0575ef1464d6; Thu, 14 May 2020 12:10:02 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        Chris Chiu <chiu@endlessm.com>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH[RFT]] ACPI: EC: s2idle: Avoid flushing EC work when EC GPE is inactive
-Date:   Thu, 14 May 2020 12:10:01 +0200
-Message-ID: <4502272.pByIgeXik9@kreacher>
+        id S1726024AbgENKQG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 May 2020 06:16:06 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:42703 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726011AbgENKQG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 May 2020 06:16:06 -0400
+Received: by mail-ot1-f65.google.com with SMTP id m18so1888431otq.9;
+        Thu, 14 May 2020 03:16:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=RCuJSybcf0s1akIYY/bh28cVX3CU4HK4vp6WG+osZaU=;
+        b=QHUDiXt5CpZArQNvGfuzwr1GQt6VtrStDbCMsCKAxtMCyEird3AHFQpYxlMPzUJcmv
+         sisvvvijy2Auc/0qUFey+j9dz63F3WJIHlOhBHez9EwQRqVUqdZ7krh+wEHPcMcc//9m
+         IcJePmB4l0JHXm5XpNlg+5hP23sVW+riAqXmQyrA6hee83Domy7DSTcARWcDEDqV+t2N
+         f1JiX4BXwAyy+CPIzFUKILVXeJj4R53hffXhmLyTzutRJRDIkzuuhFXDJ8JbgtNFW+7Q
+         CX44XzU26pf4QSo58jOm5A/IjwiA2QwIzJ7Ds01KVvSGwm9ZqOjeJt1XyhM2ObbngJOo
+         c/EQ==
+X-Gm-Message-State: AOAM531UXQQOLWJAyigamxiLvAdOLdV92BqxP5KQWzeDGj/aVif71G2X
+        57GQUS/U3ZKiQUlgtYeSgOAojmkxPcxoHKTynjzaFu/T
+X-Google-Smtp-Source: ABdhPJwuRFDmjmnaUvxYOXar162GewT6aw7SHwnuEvLuM4kHkd4JuzohYfSvFHGspEtXUcG0h6mUKijzH4wlTsPFFGE=
+X-Received: by 2002:a9d:6ac8:: with SMTP id m8mr2937499otq.262.1589451365408;
+ Thu, 14 May 2020 03:16:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 14 May 2020 12:15:54 +0200
+Message-ID: <CAJZ5v0jgvBE4=14fwsFUx1q+iOO+xt2Jv4L6ER1N5pTLNk1fDw@mail.gmail.com>
+Subject: [GIT PULL] Power management fix for v5.7-rc6
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi Linus,
 
-Flushing the EC work while suspended to idle when the EC GPE status
-is not set causes some EC wakeup events (notably power button and
-lid ones) to be missed after a series of spurious wakeups on the Dell
-XPS13 9360 in my office.
+Please pull from the tag
 
-If that happens, the machine cannot be woken up from suspend-to-idle
-by a power button press or lid status change and it needs to be woken
-up in some other way (eg. by a key press).
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-5.7-rc6
 
-Flushing the EC work only after successful dispatching the EC GPE,
-which means that its status has been set, avoids the issue, so change
-the code in question accordingly.
+with top-most commit 7b301750f7f8f6503e11f1af4a03832525f58c66
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
+ ACPI: EC: PM: Avoid premature returns from acpi_s2idle_wake()
 
-Hi Chris,
+on top of commit 0e698dfa282211e414076f9dc7e83c1c288314fd
 
-Please check if the key press wakeup still works on your system with this patch
-applied (on top of https://patchwork.kernel.org/patch/11538065/).
+ Linux 5.7-rc4
+
+to receive a power management fix for 5.7-rc6.
+
+This prevents the suspend-to-idle internal loop from busy spinning
+after a spurious ACPI SCI wakeup in some cases.
 
 Thanks!
 
----
- drivers/acpi/ec.c    |    6 +++++-
- drivers/acpi/sleep.c |   15 ++++-----------
- 2 files changed, 9 insertions(+), 12 deletions(-)
 
-Index: linux-pm/drivers/acpi/ec.c
-===================================================================
---- linux-pm.orig/drivers/acpi/ec.c
-+++ linux-pm/drivers/acpi/ec.c
-@@ -2020,9 +2020,13 @@ bool acpi_ec_dispatch_gpe(void)
- 	 * to allow the caller to process events properly after that.
- 	 */
- 	ret = acpi_dispatch_gpe(NULL, first_ec->gpe);
--	if (ret == ACPI_INTERRUPT_HANDLED)
-+	if (ret == ACPI_INTERRUPT_HANDLED) {
- 		pm_pr_dbg("EC GPE dispatched\n");
- 
-+		/* Flush the event and query workqueues. */
-+		acpi_ec_flush_work();
-+	}
-+
- 	return false;
- }
- #endif /* CONFIG_PM_SLEEP */
-Index: linux-pm/drivers/acpi/sleep.c
-===================================================================
---- linux-pm.orig/drivers/acpi/sleep.c
-+++ linux-pm/drivers/acpi/sleep.c
-@@ -980,13 +980,6 @@ static int acpi_s2idle_prepare_late(void
- 	return 0;
- }
- 
--static void acpi_s2idle_sync(void)
--{
--	/* The EC driver uses special workqueues that need to be flushed. */
--	acpi_ec_flush_work();
--	acpi_os_wait_events_complete(); /* synchronize Notify handling */
--}
--
- static bool acpi_s2idle_wake(void)
- {
- 	if (!acpi_sci_irq_valid())
-@@ -1018,7 +1011,7 @@ static bool acpi_s2idle_wake(void)
- 			return true;
- 
- 		/*
--		 * Cancel the wakeup and process all pending events in case
-+		 * Cancel the SCI wakeup and process all pending events in case
- 		 * there are any wakeup ones in there.
- 		 *
- 		 * Note that if any non-EC GPEs are active at this point, the
-@@ -1026,8 +1019,7 @@ static bool acpi_s2idle_wake(void)
- 		 * should be missed by canceling the wakeup here.
- 		 */
- 		pm_system_cancel_wakeup();
--
--		acpi_s2idle_sync();
-+		acpi_os_wait_events_complete();
- 
- 		/*
- 		 * The SCI is in the "suspended" state now and it cannot produce
-@@ -1060,7 +1052,8 @@ static void acpi_s2idle_restore(void)
- 	 * of GPEs.
- 	 */
- 	acpi_os_wait_events_complete(); /* synchronize GPE processing */
--	acpi_s2idle_sync();
-+	acpi_ec_flush_work(); /* flush the EC driver's workqueues */
-+	acpi_os_wait_events_complete(); /* synchronize Notify handling */
- 
- 	s2idle_wakeup = false;
- 
+---------------
 
+Rafael J. Wysocki (1):
+      ACPI: EC: PM: Avoid premature returns from acpi_s2idle_wake()
 
+---------------
 
+ drivers/acpi/ec.c       | 24 ++++++++++++++++--------
+ drivers/acpi/internal.h |  1 -
+ drivers/acpi/sleep.c    | 14 ++------------
+ 3 files changed, 18 insertions(+), 21 deletions(-)
