@@ -2,101 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD6AF1D2B6D
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 May 2020 11:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C21B41D2C30
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 May 2020 12:10:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726011AbgENJ3x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 May 2020 05:29:53 -0400
-Received: from foss.arm.com ([217.140.110.172]:33072 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725878AbgENJ3x (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 14 May 2020 05:29:53 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F26531B;
-        Thu, 14 May 2020 02:29:52 -0700 (PDT)
-Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D47A93F71E;
-        Thu, 14 May 2020 02:29:50 -0700 (PDT)
-Date:   Thu, 14 May 2020 10:29:44 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Tuan Phan <tuanphan@os.amperecomputing.com>
-Cc:     patches@amperecomputing.com, Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Neil Leeder <nleeder@codeaurora.org>,
-        Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] ACPI/IORT: Fix PMCG node always look for a single ID
- mapping.
-Message-ID: <20200514092944.GA18032@e121166-lin.cambridge.arm.com>
-References: <1589415122-5899-1-git-send-email-tuanphan@os.amperecomputing.com>
+        id S1725978AbgENKKF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 May 2020 06:10:05 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:52220 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725955AbgENKKF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 May 2020 06:10:05 -0400
+Received: from 89-64-84-17.dynamic.chello.pl (89.64.84.17) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
+ id bfcb0575ef1464d6; Thu, 14 May 2020 12:10:02 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Chris Chiu <chiu@endlessm.com>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: [PATCH[RFT]] ACPI: EC: s2idle: Avoid flushing EC work when EC GPE is inactive
+Date:   Thu, 14 May 2020 12:10:01 +0200
+Message-ID: <4502272.pByIgeXik9@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1589415122-5899-1-git-send-email-tuanphan@os.amperecomputing.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Please update the subject:
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Subject: "ACPI/IORT: Fix PMCG node single ID mapping handling"
+Flushing the EC work while suspended to idle when the EC GPE status
+is not set causes some EC wakeup events (notably power button and
+lid ones) to be missed after a series of spurious wakeups on the Dell
+XPS13 9360 in my office.
 
-On Wed, May 13, 2020 at 05:12:02PM -0700, Tuan Phan wrote:
-> PMCG node can have zero ID mapping if its overflow interrupt
-> is wire based. The code to parse PMCG node can not assume it will
-> have a single ID mapping.
+If that happens, the machine cannot be woken up from suspend-to-idle
+by a power button press or lid status change and it needs to be woken
+up in some other way (eg. by a key press).
 
-"An IORT PMCG node can have no ID mapping if its overflow interrupt is
-wire based therefore the code that parses the PMCG node can not assume
-the node will always have a single mapping present at index 0.
+Flushing the EC work only after successful dispatching the EC GPE,
+which means that its status has been set, avoids the issue, so change
+the code in question accordingly.
 
-Fix iort_get_id_mapping_index() by checking for an overflow interrupt
-and mapping count."
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
 
-> Fixes: 24e516049360 ("ACPI/IORT: Add support for PMCG")
-> Reviewed-by: Hanjun Guo <guoahanjun@huawei.com>
-> Signed-off-by: Tuan Phan <tuanphan@os.amperecomputing.com>
-> ---
-> v1 -> v2:
-> - Use pmcg node to detect wired base overflow interrupt.
-> 
-> v2 -> v3:
-> - Address Hanjun and Robin's comments.
-> 
->  drivers/acpi/arm64/iort.c | 5 +++++
->  1 file changed, 5 insertions(+)
+Hi Chris,
 
-Acked-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Please check if the key press wakeup still works on your system with this patch
+applied (on top of https://patchwork.kernel.org/patch/11538065/).
 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index ed3d2d1..12bb70e 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -414,6 +414,7 @@ static struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
->  static int iort_get_id_mapping_index(struct acpi_iort_node *node)
->  {
->  	struct acpi_iort_smmu_v3 *smmu;
-> +	struct acpi_iort_pmcg *pmcg;
->  
->  	switch (node->type) {
->  	case ACPI_IORT_NODE_SMMU_V3:
-> @@ -441,6 +442,10 @@ static int iort_get_id_mapping_index(struct acpi_iort_node *node)
->  
->  		return smmu->id_mapping_index;
->  	case ACPI_IORT_NODE_PMCG:
-> +		pmcg = (struct acpi_iort_pmcg *)node->node_data;
-> +		if (pmcg->overflow_gsiv || node->mapping_count == 0)
-> +			return -EINVAL;
-> +
->  		return 0;
->  	default:
->  		return -EINVAL;
-> -- 
-> 2.7.4
-> 
+Thanks!
+
+---
+ drivers/acpi/ec.c    |    6 +++++-
+ drivers/acpi/sleep.c |   15 ++++-----------
+ 2 files changed, 9 insertions(+), 12 deletions(-)
+
+Index: linux-pm/drivers/acpi/ec.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/ec.c
++++ linux-pm/drivers/acpi/ec.c
+@@ -2020,9 +2020,13 @@ bool acpi_ec_dispatch_gpe(void)
+ 	 * to allow the caller to process events properly after that.
+ 	 */
+ 	ret = acpi_dispatch_gpe(NULL, first_ec->gpe);
+-	if (ret == ACPI_INTERRUPT_HANDLED)
++	if (ret == ACPI_INTERRUPT_HANDLED) {
+ 		pm_pr_dbg("EC GPE dispatched\n");
+ 
++		/* Flush the event and query workqueues. */
++		acpi_ec_flush_work();
++	}
++
+ 	return false;
+ }
+ #endif /* CONFIG_PM_SLEEP */
+Index: linux-pm/drivers/acpi/sleep.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/sleep.c
++++ linux-pm/drivers/acpi/sleep.c
+@@ -980,13 +980,6 @@ static int acpi_s2idle_prepare_late(void
+ 	return 0;
+ }
+ 
+-static void acpi_s2idle_sync(void)
+-{
+-	/* The EC driver uses special workqueues that need to be flushed. */
+-	acpi_ec_flush_work();
+-	acpi_os_wait_events_complete(); /* synchronize Notify handling */
+-}
+-
+ static bool acpi_s2idle_wake(void)
+ {
+ 	if (!acpi_sci_irq_valid())
+@@ -1018,7 +1011,7 @@ static bool acpi_s2idle_wake(void)
+ 			return true;
+ 
+ 		/*
+-		 * Cancel the wakeup and process all pending events in case
++		 * Cancel the SCI wakeup and process all pending events in case
+ 		 * there are any wakeup ones in there.
+ 		 *
+ 		 * Note that if any non-EC GPEs are active at this point, the
+@@ -1026,8 +1019,7 @@ static bool acpi_s2idle_wake(void)
+ 		 * should be missed by canceling the wakeup here.
+ 		 */
+ 		pm_system_cancel_wakeup();
+-
+-		acpi_s2idle_sync();
++		acpi_os_wait_events_complete();
+ 
+ 		/*
+ 		 * The SCI is in the "suspended" state now and it cannot produce
+@@ -1060,7 +1052,8 @@ static void acpi_s2idle_restore(void)
+ 	 * of GPEs.
+ 	 */
+ 	acpi_os_wait_events_complete(); /* synchronize GPE processing */
+-	acpi_s2idle_sync();
++	acpi_ec_flush_work(); /* flush the EC driver's workqueues */
++	acpi_os_wait_events_complete(); /* synchronize Notify handling */
+ 
+ 	s2idle_wakeup = false;
+ 
+
+
+
