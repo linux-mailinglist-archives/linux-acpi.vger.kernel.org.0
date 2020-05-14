@@ -2,181 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF04A1D3F4B
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 May 2020 22:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76B361D3F4A
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 May 2020 22:51:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728053AbgENUvo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 May 2020 16:51:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38870 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726035AbgENUvn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 14 May 2020 16:51:43 -0400
-Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70DF4C061A0C
-        for <linux-acpi@vger.kernel.org>; Thu, 14 May 2020 13:51:43 -0700 (PDT)
-Received: by mail-qv1-xf44.google.com with SMTP id r3so28091qve.1
-        for <linux-acpi@vger.kernel.org>; Thu, 14 May 2020 13:51:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=CEO5MKxsOiGcoZ39AsHbecY6ymOt3yQ4dCldSFUPnR4=;
-        b=nSO+tCI9Zh7sRx+j/A6zP12qApAJl7YPoucFFniaPNg63f6d/RJbqGvHBbbdz3qR4q
-         wxQNpJ4ZIOCIIsp5ABxFrQkrZWd4iUPjVGPhYw01jxSLQ8Ncs4KZRqZPhr4wZIQxc+9r
-         kRHo62eCYWEsQ51YWnuWSvkk/F9oX8bUbIsU4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CEO5MKxsOiGcoZ39AsHbecY6ymOt3yQ4dCldSFUPnR4=;
-        b=LhUR9dCogDaqHDtVpyV+ziule2GFbOa9FKzDqpfP5nhqLGVgwlJuBh74zTLvvX+G2I
-         Ume8hWI2zrdw9YOdkNW6Jn0tGg6Lus50v1a9+zJL/SKKqSkK8gELdlCbS0fK7W3xbtIr
-         kXRX4YMWdGTuzcpQJF/D+kQBC5L1o1fM29CJzRN3hhq+JuT18OGeJ7lQEMcWEOt3fchg
-         sBQ6w90sNW+wgyQ9F9nVHdq7M/Kw6FnUUXIchFBOl6lCtYv6TbQJIG0p3Ld+NIPA18yS
-         QWjUzggYioVhrrgFD2+PDPm2W79Fm6U1Yb0Q0qYTJF7QCf4cEXTivBnrGY3AAPM572DE
-         SZXQ==
-X-Gm-Message-State: AOAM5311kNHe5I1mGfzXYzFqd+HFNwmR7pveQH0/WbcLyf/qWwsXn88E
-        gowoLtHOtk4TnOn1AUIa27BfzfXqJiUTAzTedH9eWKho
-X-Google-Smtp-Source: ABdhPJwZIDQ0iffdn72gpulU1LnB9Bmp5RlA17+pbGPp6hkz8/U1ki4Yh9hvEH+g3T7fP+yL9FS3YYKm8La8/jz7ldA=
-X-Received: by 2002:a0c:e304:: with SMTP id s4mr303192qvl.133.1589489502504;
- Thu, 14 May 2020 13:51:42 -0700 (PDT)
+        id S1727882AbgENUvm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 May 2020 16:51:42 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:20285 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726035AbgENUvm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 May 2020 16:51:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1589489500;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Z1B3fYOYm8pvnyTjtbhTkkBslablP1daKS/L1NhMlF8=;
+        b=c6JLmEteVhiMcWCniGWE5yi11AY1YuHjm9r1iUjXZCmOh97DI3XP3vH9dKcL+HQpsKrExB
+        JpLQ+KkJiBWv2RD9xyIDcM1WfiKZzYGz04Oi1mqgjvGrC6IlgEt+QiurR6tDJuHI+FAOTh
+        a7nzx6mwjifk91tMx23wPXLYYvM7PLU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-261-ncydFaPxN8Wy1lKpBFILfg-1; Thu, 14 May 2020 16:51:39 -0400
+X-MC-Unique: ncydFaPxN8Wy1lKpBFILfg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E78A3107ACF2;
+        Thu, 14 May 2020 20:51:37 +0000 (UTC)
+Received: from x1.localdomain.com (ovpn-112-24.ams2.redhat.com [10.36.112.24])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3A91E7D965;
+        Thu, 14 May 2020 20:51:36 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
+        linux-input@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        Andy Shevchenko <andy@infradead.org>
+Subject: [PATCH] Input: soc_button_array - Add support for INT33D3 tablet-mode switch devices
+Date:   Thu, 14 May 2020 22:51:34 +0200
+Message-Id: <20200514205134.136782-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <20200507150900.12102-1-heikki.krogerus@linux.intel.com>
- <20200507150900.12102-3-heikki.krogerus@linux.intel.com> <20200507224041.GA247416@google.com>
- <20200508111840.GG645261@kuha.fi.intel.com> <20200511133202.GA2085641@kuha.fi.intel.com>
- <20200511175719.GA136540@google.com> <20200512142251.GD2085641@kuha.fi.intel.com>
- <20200512191910.GD136540@google.com>
-In-Reply-To: <20200512191910.GD136540@google.com>
-From:   Prashant Malani <pmalani@chromium.org>
-Date:   Thu, 14 May 2020 13:51:32 -0700
-Message-ID: <CACeCKad4BebiBJS_wO=FdWVWypgOD822Dir7HeRBf0uXUuJusA@mail.gmail.com>
-Subject: Re: [PATCH 2/4] usb: typec: mux: intel_pmc_mux: Support for static
- SBU/HSL orientation
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Benson Leung <bleung@chromium.org>,
-        "open list:USB NETWORKING DRIVERS" <linux-usb@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-acpi@vger.kernel.org,
-        Tim Wawrzynczak <twawrzynczak@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Heikki,
+According to the Microsoft documentation for Windows 8 convertible
+devices, these devices should implement a PNP0C60 "laptop/slate mode state
+indicator" ACPI device.
 
-On Tue, May 12, 2020 at 12:19 PM Prashant Malani <pmalani@chromium.org> wrote:
->
-> Hi Heikki,
->
-> On Tue, May 12, 2020 at 05:22:51PM +0300, Heikki Krogerus wrote:
-> > Hi Prashant,
-> >
-> > On Mon, May 11, 2020 at 10:57:19AM -0700, Prashant Malani wrote:
-> > > Hi Heikki,
-> > >
-> > > Thanks a lot for looking into this. Kindly see my response inline:
-> > >
-> > > On Mon, May 11, 2020 at 04:32:02PM +0300, Heikki Krogerus wrote:
-> > > > On Fri, May 08, 2020 at 02:18:44PM +0300, Heikki Krogerus wrote:
-> > > > > Hi Prashant,
-> > > > >
-> > > > > On Thu, May 07, 2020 at 03:40:41PM -0700, Prashant Malani wrote:
-> > > > > > > +static int sbu_orientation(struct pmc_usb_port *port)
-> > > > > > > +{
-> > > > > > > +   if (port->sbu_orientation)
-> > > > > > > +           return port->sbu_orientation - 1;
-> > > > > > > +
-> > > > > > > +   return port->orientation - 1;
-> > > > > > > +}
-> > > > > > > +
-> > > > > > > +static int hsl_orientation(struct pmc_usb_port *port)
-> > > > > > > +{
-> > > > > > > +   if (port->hsl_orientation)
-> > > > > > > +           return port->hsl_orientation - 1;
-> > > > > > > +
-> > > > > > > +   return port->orientation - 1;
-> > > > > > > +}
-> > > > > > > +
-> > > > > > >  static int pmc_usb_command(struct pmc_usb_port *port, u8 *msg, u32 len)
-> > > > > > >  {
-> > > > > > >     u8 response[4];
-> > > > > > > @@ -151,8 +170,9 @@ pmc_usb_mux_dp(struct pmc_usb_port *port, struct typec_mux_state *state)
-> > > > > > >
-> > > > > > >     req.mode_data = (port->orientation - 1) << PMC_USB_ALTMODE_ORI_SHIFT;
-> > > > > > >     req.mode_data |= (port->role - 1) << PMC_USB_ALTMODE_UFP_SHIFT;
-> > > > > > > -   req.mode_data |= (port->orientation - 1) << PMC_USB_ALTMODE_ORI_AUX_SHIFT;
-> > > > > > > -   req.mode_data |= (port->orientation - 1) << PMC_USB_ALTMODE_ORI_HSL_SHIFT;
-> > > > > > > +
-> > > > > > > +   req.mode_data |= sbu_orientation(port) << PMC_USB_ALTMODE_ORI_AUX_SHIFT;
-> > > > > >
-> > > > > > I'm curious to know what would happen when sbu-orientation == "normal".
-> > > > > > That means |port->sbu_orientation| == 1.
-> > > > > >
-> > > > > > It sounds like what should happen is the AUX_SHIFT orientation
-> > > > > > setting should follow what |port->orientation| is, but here it
-> > > > > > looks like it will always be set to |port->sbu_orientation - 1|, i.e 0,
-> > > > > > even if port->orientation == TYPEC_ORIENTATION_REVERSE, i.e 2, meaning
-> > > > > > it should be set to 1 ?
-> > > > >
-> > > > > I'll double check this, and get back to you..
-> > > >
-> > > > This is not exactly an answer to your question, but it seems that
-> > > > those bits are only valid if "Alternate-Direct" message is used.
-> > > > Currently the driver does not support that message.
-> > > Could you kindly provide some detail on when "Alternate-Direct" would be
-> > > preferred to the current method?
-> >
-> > Alternate Mode Direct request is supposed to be used if an alternate
-> > mode is entered directly from disconnected state.
->
-> Ack.
-> >
-> > > Also, is there anything on the PMC side which is preventing the use of
-> > > "Alternate-Direct" messages? It seems like the state transition diagram
-> > > there would be simpler, although I'm likely missing significant details
-> > > here.
-> >
-> > So we actually should use the "direct" request if we are in
-> > disconnected state to enter alt modes if I understood correctly. But
-> > otherwise we should use the normal Alternate Mode request and not the
-> > Alternate Mode "direct" request. And I'm afraid I don't know why.
->
-> SG.
-> >
-> > > > I think the correct thing to do now is to remove the two lines from
-> > > > the driver where those bits (ORI-HSL and ORI-Aux) are set.
-> > > I see. How would orientation then be handled in a retimer configuration
-> > > where AUX/SBU is flipped by the retimer itself?
-> >
-> > Note that if we send a separate "connection" request first, then we
-> > already tell the HSL and SBU orientation as part of the payload of
-> > that request. That is why there is no need to tell about the HSL and
-> > SBU orientation with the normal Alternate Mode Request.
-> >
-> > So we have already handled the HSL and SBU orientation by the time
-> > this function is called.
->
-> Thanks for the explanation. I assume the HSL and SBU bit setting lines
-> will be removed from pmc_usb_mux_tbt() too?
->
-I just realized, the issue I initially pointed out would apply to the
-connect message too, i.e I'm not sure if "normal" orientation setting
-handles the case where port orientation is reversed correctly.
-Overall, I am not sure that re-using the typec_orientations[] string
-list is the best option for this use-case.
-we're looking for "normal" (i.e follows port->orientation) and "fixed"
-(i.e is always the same orientation, regardless of what
-port->orientation is), so it is perhaps better to just define a new
-array just for this driver.
+This device can work in 2 ways, if there is a GPIO which directly
+indicates the device is in tablet-mode or not then the direct-gpio mode
+should be used. If there is no such GPIO, but instead the events are
+coming from e.g. the embedded-controller, then there should still be
+a PNP0C60 ACPI device and event-injection should be used to send the
+events. The drivers/platform/x86/intel-vbtn.c code is an example from
+a standardized manner of doing the latter.
 
-> Best regards,
-> >
-> >
-> > thanks,
-> >
-> > --
-> > heikki
+On various 2-in-1s with either a detachable keyboard, or with 360°
+hinges, the direct GPIO mode is indicated by an ACPI device with a
+HID of INT33D3, which contains a single GpioInt in its ACPI resource
+table, which directly indicates if the device is in tablet-mode or not.
+
+This commit adds support for this to the soc_button_array code, as
+well as for the alternative ID9001 HID which some devices use
+instead of the INT33D3 HID.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/input/misc/soc_button_array.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/input/misc/soc_button_array.c b/drivers/input/misc/soc_button_array.c
+index e3a22a61f5d9..837c787e9c4b 100644
+--- a/drivers/input/misc/soc_button_array.c
++++ b/drivers/input/misc/soc_button_array.c
+@@ -397,6 +397,15 @@ static const struct soc_device_data soc_device_PNP0C40 = {
+ 	.button_info = soc_button_PNP0C40,
+ };
+ 
++static const struct soc_button_info soc_button_INT33D3[] = {
++	{ "tablet_mode", 0, EV_SW, SW_TABLET_MODE, false, false, false },
++	{ }
++};
++
++static const struct soc_device_data soc_device_INT33D3 = {
++	.button_info = soc_button_INT33D3,
++};
++
+ /*
+  * Special device check for Surface Book 2 and Surface Pro (2017).
+  * Both, the Surface Pro 4 (surfacepro3_button.c) and the above mentioned
+@@ -459,6 +468,8 @@ static const struct soc_device_data soc_device_MSHW0040 = {
+ 
+ static const struct acpi_device_id soc_button_acpi_match[] = {
+ 	{ "PNP0C40", (unsigned long)&soc_device_PNP0C40 },
++	{ "INT33D3", (unsigned long)&soc_device_INT33D3 },
++	{ "ID9001", (unsigned long)&soc_device_INT33D3 },
+ 	{ "ACPI0011", 0 },
+ 
+ 	/* Microsoft Surface Devices (5th and 6th generation) */
+-- 
+2.26.0
+
