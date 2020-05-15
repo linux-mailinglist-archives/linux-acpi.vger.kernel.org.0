@@ -2,104 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7DFD1D55D9
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 May 2020 18:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 751F61D5604
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 May 2020 18:28:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726242AbgEOQYL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 May 2020 12:24:11 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:37303 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726188AbgEOQYL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 May 2020 12:24:11 -0400
-Received: by mail-oi1-f196.google.com with SMTP id r25so2720224oij.4;
-        Fri, 15 May 2020 09:24:09 -0700 (PDT)
+        id S1726168AbgEOQ2g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 May 2020 12:28:36 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:33026 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726144AbgEOQ2g (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 May 2020 12:28:36 -0400
+Received: by mail-oi1-f194.google.com with SMTP id o24so2754183oic.0
+        for <linux-acpi@vger.kernel.org>; Fri, 15 May 2020 09:28:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ACCtTcg1s186xI0wZJ8DSeKuwtaoE6YIF10m8QSgqOU=;
-        b=Bz5rKf8mW8lvCMvciLl51asZRueVu9MPRaH67fg+YOcE0DpriaNrPjfglwOZJRvb4c
-         cyw1foti/gJesWQdDnzEDN/x4SG1fAEu1YcOkK1c7cyJRzpLv7MVMjaCiLavtMf20wwh
-         Ul8SEB7uWqp07mOhJkL87KJV1ArMdFGGrgApYahka52XjNl4kDBRaBO5VnPijtBg2bJS
-         PKn/PnEf7ENXFKedPY26U3AKKYRGODpZfrDItwIZ2kKxPXJvc7oVrfoZQ3GV6tzy0B+U
-         d5Vn509HIACHrzxrZ895OpyqY0wMkjIVRirsVCOGCxV/lD8vmjMwQGiXqulR8nBKqeB8
-         vHpg==
-X-Gm-Message-State: AOAM530uNYpeYutHs80OgDLyvxFxwiNhlvnwjrpTwhIdN98b7Ia70OEV
-        5xmvcfwcMexAQ3EXilx/shQ5NlLr7NnnGCGEHa4=
-X-Google-Smtp-Source: ABdhPJy4Shi2Xe7FSqHjeuRzM4zEpP9ZG1dGi78c/HxUu1cNDBakNavNO7EHk8idZTIVyb4szdp22GWBj9BaBsMO+jo=
-X-Received: by 2002:aca:4fd5:: with SMTP id d204mr2797417oib.103.1589559848833;
- Fri, 15 May 2020 09:24:08 -0700 (PDT)
+        bh=9JO6K8ZkDYog0FAZlSVdOKYU4OY/IKhh0/sWYIZeNXA=;
+        b=JHwohrLWVdHyrSy1WDuBrhQqk3mQsDFtRnWSIyIsnCfBCdG76Xl6LxtFAGWtbb59gC
+         9ILzQ5MDpay3nxCZMF0Grysm0yl9hA7RFC0qst4FAKldroa5V5LuY3O+i9byoyrJUbAZ
+         l3KQnZflnFg5bqgiJPVmtJyqo0TQ1Sm+BQoFWNXO3OdMcfps8D34VKo6XX6KmwOc/xdJ
+         AZUtXHSpn7t9akWkd6dSK+rhJlwung/1Me5MNCBwMEyjymgP4d/gDW1C9JSQVh4UefrZ
+         5XWe9ZdYYtd6pfjS8SWRfkdkkeanD0CeQwvEcMbwFUBWwmJ1ualD3PSLkLJ2lPw6MVcw
+         31dg==
+X-Gm-Message-State: AOAM532+hKrRqCQuryIucHYw5MYZk9XsiXoTHeIOFN+Qn9tOs93UiuZx
+        2/h/eNVCRCiV1fpvxoP4r3OOS3awtL/fuXuiQ/Y=
+X-Google-Smtp-Source: ABdhPJwS16qIjoA04pwHF9Vzpw4bmn7Kv9HF4FTo9GOmdcROcCX5shCnSim1WuvKhxUr6ISGC1PDpohoAFm64PzTPnw=
+X-Received: by 2002:aca:4254:: with SMTP id p81mr2606497oia.68.1589560114092;
+ Fri, 15 May 2020 09:28:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200507190638.GA15700@embeddedor>
-In-Reply-To: <20200507190638.GA15700@embeddedor>
+References: <cover.1589262490.git.mchehab+huawei@kernel.org> <4ea6a89bcde8c72427e69a87551bdfca8bf1af11.1589262490.git.mchehab+huawei@kernel.org>
+In-Reply-To: <4ea6a89bcde8c72427e69a87551bdfca8bf1af11.1589262490.git.mchehab+huawei@kernel.org>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 15 May 2020 18:23:57 +0200
-Message-ID: <CAJZ5v0hCERp+5m33qhXOkq1LDEj87CbZkiz7t_oD7HmD9cA+Xw@mail.gmail.com>
-Subject: Re: [PATCH] PNPBIOS: Replace zero-length array with flexible-array
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+Date:   Fri, 15 May 2020 18:28:22 +0200
+Message-ID: <CAJZ5v0gRScLoBGr6546=zJBtZj2D0-Yv48RZobN-0eih01L29A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ACPI / PMIC: Add i2c address for thermal control
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Hans de Goede <hdegoede@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, May 7, 2020 at 9:02 PM Gustavo A. R. Silva
-<gustavoars@kernel.org> wrote:
+On Tue, May 12, 2020 at 7:52 AM Mauro Carvalho Chehab
+<mchehab+huawei@kernel.org> wrote:
 >
-> The current codebase makes use of the zero-length array language
-> extension to the C90 standard, but the preferred mechanism to declare
-> variable-length types such as these ones is a flexible array member[1][2],
-> introduced in C99:
+> On Asus T101HA, we keep receiving those error messages:
 >
-> struct foo {
->         int stuff;
->         struct boo array[];
-> };
+>         i915 0000:00:02.0: [drm] *ERROR* mipi_exec_pmic failed, error: -95
+>         intel_soc_pmic_exec_mipi_pmic_seq_element: Not implemented
+>         intel_soc_pmic_exec_mipi_pmic_seq_element: i2c-addr: 0x5e reg-addr 0x4b value 0x59 mask 0xff
 >
-> By making use of the mechanism above, we will get a compiler warning
-> in case the flexible array does not occur last in the structure, which
-> will help us prevent some kind of undefined behavior bugs from being
-> inadvertently introduced[3] to the codebase from now on.
+> Because the opregion is missing the I2C address.
 >
-> Also, notice that, dynamic memory allocations won't be affected by
-> this change:
->
-> "Flexible array members have incomplete type, and so the sizeof operator
-> may not be applied. As a quirk of the original implementation of
-> zero-length arrays, sizeof evaluates to zero."[1]
->
-> sizeof(flexible-array-member) triggers a warning because flexible array
-> members have incomplete type[1]. There are some instances of code in
-> which the sizeof operator is being incorrectly/erroneously applied to
-> zero-length arrays and the result is zero. Such instances may be hiding
-> some bugs. So, this work (flexible-array member conversions) will also
-> help to get completely rid of those sorts of issues.
->
-> This issue was found with the help of Coccinelle.
->
-> [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-> [2] https://github.com/KSPP/linux/issues/21
-> [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
->
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Suggested-by: Hans de Goede <hdegoede@redhat.com>
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 > ---
->  drivers/pnp/pnpbios/pnpbios.h |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/pmic/intel_pmic_chtdc_ti.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/drivers/pnp/pnpbios/pnpbios.h b/drivers/pnp/pnpbios/pnpbios.h
-> index 37acb8378f39..2ce739ff9c1a 100644
-> --- a/drivers/pnp/pnpbios/pnpbios.h
-> +++ b/drivers/pnp/pnpbios/pnpbios.h
-> @@ -107,7 +107,7 @@ struct pnp_bios_node {
->         __u32 eisa_id;
->         __u8 type_code[3];
->         __u16 flags;
-> -       __u8 data[0];
-> +       __u8 data[];
+> diff --git a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
+> index 7ccd7d9660bc..a5101b07611a 100644
+> --- a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
+> +++ b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
+> @@ -102,6 +102,7 @@ static struct intel_pmic_opregion_data chtdc_ti_pmic_opregion_data = {
+>         .power_table_count = ARRAY_SIZE(chtdc_ti_power_table),
+>         .thermal_table = chtdc_ti_thermal_table,
+>         .thermal_table_count = ARRAY_SIZE(chtdc_ti_thermal_table),
+> +       .pmic_i2c_address = 0x5e,
 >  };
->  #pragma pack()
+>
+>  static int chtdc_ti_pmic_opregion_probe(struct platform_device *pdev)
+> --
 
-Applied as 5.8 material, thanks!
+This appears to be part of a series, but the second patch has not been
+CCed to linux-acpi.
+
+Can I assume that this one will be applied along with the [2/2] by
+another maintainer?
+
+Thanks!
