@@ -2,88 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 751F61D5604
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 May 2020 18:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A22F1D5615
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 May 2020 18:32:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726168AbgEOQ2g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 May 2020 12:28:36 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:33026 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726144AbgEOQ2g (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 May 2020 12:28:36 -0400
-Received: by mail-oi1-f194.google.com with SMTP id o24so2754183oic.0
-        for <linux-acpi@vger.kernel.org>; Fri, 15 May 2020 09:28:34 -0700 (PDT)
+        id S1726212AbgEOQc1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 May 2020 12:32:27 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:33115 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726179AbgEOQc1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 May 2020 12:32:27 -0400
+Received: by mail-ot1-f67.google.com with SMTP id v17so2398039ote.0;
+        Fri, 15 May 2020 09:32:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=9JO6K8ZkDYog0FAZlSVdOKYU4OY/IKhh0/sWYIZeNXA=;
-        b=JHwohrLWVdHyrSy1WDuBrhQqk3mQsDFtRnWSIyIsnCfBCdG76Xl6LxtFAGWtbb59gC
-         9ILzQ5MDpay3nxCZMF0Grysm0yl9hA7RFC0qst4FAKldroa5V5LuY3O+i9byoyrJUbAZ
-         l3KQnZflnFg5bqgiJPVmtJyqo0TQ1Sm+BQoFWNXO3OdMcfps8D34VKo6XX6KmwOc/xdJ
-         AZUtXHSpn7t9akWkd6dSK+rhJlwung/1Me5MNCBwMEyjymgP4d/gDW1C9JSQVh4UefrZ
-         5XWe9ZdYYtd6pfjS8SWRfkdkkeanD0CeQwvEcMbwFUBWwmJ1ualD3PSLkLJ2lPw6MVcw
-         31dg==
-X-Gm-Message-State: AOAM532+hKrRqCQuryIucHYw5MYZk9XsiXoTHeIOFN+Qn9tOs93UiuZx
-        2/h/eNVCRCiV1fpvxoP4r3OOS3awtL/fuXuiQ/Y=
-X-Google-Smtp-Source: ABdhPJwS16qIjoA04pwHF9Vzpw4bmn7Kv9HF4FTo9GOmdcROcCX5shCnSim1WuvKhxUr6ISGC1PDpohoAFm64PzTPnw=
-X-Received: by 2002:aca:4254:: with SMTP id p81mr2606497oia.68.1589560114092;
- Fri, 15 May 2020 09:28:34 -0700 (PDT)
+        bh=1EkG6O/3cmUPYt5DCQJXeRo2YDJdl3A9XsZfu0rbjpI=;
+        b=J8GcQEZcq0uG1iye5NP9ZfV5wqn7JSx+VMYpTy8Gq0qzKobMC7mXd3JromxwtbdvAA
+         Qum5rRLXBa/I0mobuEdDTtSk6IP7iNp37+Vd1LiNi289SKkA1OPbE10PG+IIIB1nWbKq
+         05jpLyy4SNawXgV4V76RRz4eX35FGlSxiiAtWxpDYM+8Nt0HRVzyQLCO5xir1rwh/kD3
+         0+dGbkIDwMKUIn057FPB2usmUomDm9G4YjDAi/M8a+9it1YIXwA0vq07ZSj2V1I6BjJ+
+         n/VORGqR/aD2xt/ZiATbuhrE3jJ9z7XZrhp+h/lvm5+UrSRI99CFSOHXVzmAvVshHgK3
+         F93A==
+X-Gm-Message-State: AOAM532L7pru267NtOM9nijzch36dHmzNDvGsm64r14A4cM0nRrnlsTz
+        v+amUpA0EmWzwkYvw+LpZ7KFq+0OKgVxZRSHOwAOlw==
+X-Google-Smtp-Source: ABdhPJxo0/cj2tVHy034QYN22JdcAzua5TQIunVoodyMMWprdbREtuanWAuUarfMnKINXK9/gLW23mnPdEZd/9cbVdI=
+X-Received: by 2002:a9d:6ac8:: with SMTP id m8mr2917760otq.262.1589560346499;
+ Fri, 15 May 2020 09:32:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1589262490.git.mchehab+huawei@kernel.org> <4ea6a89bcde8c72427e69a87551bdfca8bf1af11.1589262490.git.mchehab+huawei@kernel.org>
-In-Reply-To: <4ea6a89bcde8c72427e69a87551bdfca8bf1af11.1589262490.git.mchehab+huawei@kernel.org>
+References: <20200515093613.18691-1-ardb@kernel.org>
+In-Reply-To: <20200515093613.18691-1-ardb@kernel.org>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 15 May 2020 18:28:22 +0200
-Message-ID: <CAJZ5v0gRScLoBGr6546=zJBtZj2D0-Yv48RZobN-0eih01L29A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ACPI / PMIC: Add i2c address for thermal control
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+Date:   Fri, 15 May 2020 18:32:14 +0200
+Message-ID: <CAJZ5v0guHdbZTsU5e7KDAHDy9Gnh67JwtSSCeDaK8mUwAk1d3g@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: GED: add support for _Exx / _Lxx handler methods
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
+        Stable <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 12, 2020 at 7:52 AM Mauro Carvalho Chehab
-<mchehab+huawei@kernel.org> wrote:
+On Fri, May 15, 2020 at 11:37 AM Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> On Asus T101HA, we keep receiving those error messages:
+> Per the ACPI spec, interrupts in the range [0, 255] may be handled
+> in AML using individual methods whose naming is based on the format
+> _Exx or _Lxx, where xx is the hex representation of the interrupt
+> index.
 >
->         i915 0000:00:02.0: [drm] *ERROR* mipi_exec_pmic failed, error: -95
->         intel_soc_pmic_exec_mipi_pmic_seq_element: Not implemented
->         intel_soc_pmic_exec_mipi_pmic_seq_element: i2c-addr: 0x5e reg-addr 0x4b value 0x59 mask 0xff
+> Add support for this missing feature to our ACPI GED driver.
 >
-> Because the opregion is missing the I2C address.
->
-> Suggested-by: Hans de Goede <hdegoede@redhat.com>
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: <stable@vger.kernel.org> # v4.9+
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 > ---
->  drivers/acpi/pmic/intel_pmic_chtdc_ti.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/acpi/evged.c | 22 +++++++++++++++++---
+>  1 file changed, 19 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> index 7ccd7d9660bc..a5101b07611a 100644
-> --- a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> +++ b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> @@ -102,6 +102,7 @@ static struct intel_pmic_opregion_data chtdc_ti_pmic_opregion_data = {
->         .power_table_count = ARRAY_SIZE(chtdc_ti_power_table),
->         .thermal_table = chtdc_ti_thermal_table,
->         .thermal_table_count = ARRAY_SIZE(chtdc_ti_thermal_table),
-> +       .pmic_i2c_address = 0x5e,
->  };
+> diff --git a/drivers/acpi/evged.c b/drivers/acpi/evged.c
+> index aba0d0027586..6d7a522952bf 100644
+> --- a/drivers/acpi/evged.c
+> +++ b/drivers/acpi/evged.c
+> @@ -79,6 +79,8 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
+>         struct resource r;
+>         struct acpi_resource_irq *p = &ares->data.irq;
+>         struct acpi_resource_extended_irq *pext = &ares->data.extended_irq;
+> +       char ev_name[5];
+> +       u8 trigger;
 >
->  static int chtdc_ti_pmic_opregion_probe(struct platform_device *pdev)
+>         if (ares->type == ACPI_RESOURCE_TYPE_END_TAG)
+>                 return AE_OK;
+> @@ -87,14 +89,28 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
+>                 dev_err(dev, "unable to parse IRQ resource\n");
+>                 return AE_ERROR;
+>         }
+> -       if (ares->type == ACPI_RESOURCE_TYPE_IRQ)
+> +       if (ares->type == ACPI_RESOURCE_TYPE_IRQ) {
+>                 gsi = p->interrupts[0];
+> -       else
+> +               trigger = p->triggering;
+> +       } else {
+>                 gsi = pext->interrupts[0];
+> +               trigger = p->triggering;
+> +       }
+>
+>         irq = r.start;
+>
+> -       if (ACPI_FAILURE(acpi_get_handle(handle, "_EVT", &evt_handle))) {
+> +       switch (gsi) {
+> +       case 0 ... 255:
+> +               sprintf(ev_name, "_%c%02hhX",
+> +                       trigger == ACPI_EDGE_SENSITIVE ? 'E' : 'L', gsi);
+> +
+> +               if (ACPI_SUCCESS(acpi_get_handle(handle, ev_name, &evt_handle)))
+> +                       break;
+> +               /* fall through */
+> +       default:
+> +               if (ACPI_SUCCESS(acpi_get_handle(handle, "_EVT", &evt_handle)))
+> +                       break;
+> +
+>                 dev_err(dev, "cannot locate _EVT method\n");
+>                 return AE_ERROR;
+>         }
 > --
 
-This appears to be part of a series, but the second patch has not been
-CCed to linux-acpi.
-
-Can I assume that this one will be applied along with the [2/2] by
-another maintainer?
-
-Thanks!
+Applied as 5.8 material, thanks!
