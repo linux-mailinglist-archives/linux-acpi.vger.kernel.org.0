@@ -2,104 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BD371D49C2
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 May 2020 11:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 958131D4D5F
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 May 2020 14:05:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728007AbgEOJhT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 May 2020 05:37:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41464 "EHLO mail.kernel.org"
+        id S1726118AbgEOMF5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 May 2020 08:05:57 -0400
+Received: from mga11.intel.com ([192.55.52.93]:4688 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727785AbgEOJhS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 15 May 2020 05:37:18 -0400
-Received: from e123331-lin.nice.arm.com (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9F222206B6;
-        Fri, 15 May 2020 09:37:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589535438;
-        bh=5flVIIVoCW9OqOrK26kxVVwyL8Cf+v7jca5MloG5TN8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=z1uivef2SOZo6Oz9O9V8EN4yuJnLd5w4nXZ/hCNRKtsVRJUq7EyBDjtjunKSCHEUM
-         umyJADPcDlAHskHgdGCbtZsEhbvHKx6BzfGp0bD4zSXDzdCoEc4mTXTKE7nR2mkqUX
-         m8yHxALCxAn4Lv7oWDnxle6FdKA4XLQVziZegHYE=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Ard Biesheuvel <ardb@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH] ACPI: GED: add support for _Exx / _Lxx handler methods
-Date:   Fri, 15 May 2020 11:36:13 +0200
-Message-Id: <20200515093613.18691-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        id S1726112AbgEOMF4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 15 May 2020 08:05:56 -0400
+IronPort-SDR: pbNWTpnTexALeOgUTQEJWtgskadJOYSEAPv7RTbh6zLW7pZmxF6YzFs4fyvcWzzFhHOskXad9k
+ y1i8qEAfy3dg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2020 05:05:56 -0700
+IronPort-SDR: ETu/rW6/uFdF7TdKoh27Q9VwNarsKv/Nw6Rqg/wuXAUPeJO4JbkpXTzyU+NuZoqdLKCQMtm7hB
+ 56shWPE1OBtQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,395,1583222400"; 
+   d="scan'208";a="372670460"
+Received: from kuha.fi.intel.com ([10.237.72.162])
+  by fmsmga001.fm.intel.com with SMTP; 15 May 2020 05:05:53 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Fri, 15 May 2020 15:05:52 +0300
+Date:   Fri, 15 May 2020 15:05:52 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Prashant Malani <pmalani@chromium.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Benson Leung <bleung@chromium.org>,
+        "open list:USB NETWORKING DRIVERS" <linux-usb@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-acpi@vger.kernel.org,
+        Tim Wawrzynczak <twawrzynczak@chromium.org>
+Subject: Re: [PATCH 2/4] usb: typec: mux: intel_pmc_mux: Support for static
+ SBU/HSL orientation
+Message-ID: <20200515120552.GC1511@kuha.fi.intel.com>
+References: <20200507150900.12102-1-heikki.krogerus@linux.intel.com>
+ <20200507150900.12102-3-heikki.krogerus@linux.intel.com>
+ <20200507224041.GA247416@google.com>
+ <20200508111840.GG645261@kuha.fi.intel.com>
+ <20200511133202.GA2085641@kuha.fi.intel.com>
+ <20200511175719.GA136540@google.com>
+ <20200512142251.GD2085641@kuha.fi.intel.com>
+ <20200512191910.GD136540@google.com>
+ <CACeCKad4BebiBJS_wO=FdWVWypgOD822Dir7HeRBf0uXUuJusA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACeCKad4BebiBJS_wO=FdWVWypgOD822Dir7HeRBf0uXUuJusA@mail.gmail.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Per the ACPI spec, interrupts in the range [0, 255] may be handled
-in AML using individual methods whose naming is based on the format
-_Exx or _Lxx, where xx is the hex representation of the interrupt
-index.
+Hi Prashant,
 
-Add support for this missing feature to our ACPI GED driver.
+> I just realized, the issue I initially pointed out would apply to the
+> connect message too, i.e I'm not sure if "normal" orientation setting
+> handles the case where port orientation is reversed correctly.
+> Overall, I am not sure that re-using the typec_orientations[] string
+> list is the best option for this use-case.
+> we're looking for "normal" (i.e follows port->orientation) and "fixed"
+> (i.e is always the same orientation, regardless of what
+> port->orientation is), so it is perhaps better to just define a new
+> array just for this driver.
 
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Cc: <stable@vger.kernel.org> # v4.9+
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/acpi/evged.c | 22 +++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+Sorry, I got sidetracked with that Alternate-Direct Request stuff.
+Let's start over..
 
-diff --git a/drivers/acpi/evged.c b/drivers/acpi/evged.c
-index aba0d0027586..6d7a522952bf 100644
---- a/drivers/acpi/evged.c
-+++ b/drivers/acpi/evged.c
-@@ -79,6 +79,8 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
- 	struct resource r;
- 	struct acpi_resource_irq *p = &ares->data.irq;
- 	struct acpi_resource_extended_irq *pext = &ares->data.extended_irq;
-+	char ev_name[5];
-+	u8 trigger;
- 
- 	if (ares->type == ACPI_RESOURCE_TYPE_END_TAG)
- 		return AE_OK;
-@@ -87,14 +89,28 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
- 		dev_err(dev, "unable to parse IRQ resource\n");
- 		return AE_ERROR;
- 	}
--	if (ares->type == ACPI_RESOURCE_TYPE_IRQ)
-+	if (ares->type == ACPI_RESOURCE_TYPE_IRQ) {
- 		gsi = p->interrupts[0];
--	else
-+		trigger = p->triggering;
-+	} else {
- 		gsi = pext->interrupts[0];
-+		trigger = p->triggering;
-+	}
- 
- 	irq = r.start;
- 
--	if (ACPI_FAILURE(acpi_get_handle(handle, "_EVT", &evt_handle))) {
-+	switch (gsi) {
-+	case 0 ... 255:
-+		sprintf(ev_name, "_%c%02hhX",
-+			trigger == ACPI_EDGE_SENSITIVE ? 'E' : 'L', gsi);
-+
-+		if (ACPI_SUCCESS(acpi_get_handle(handle, ev_name, &evt_handle)))
-+			break;
-+		/* fall through */
-+	default:
-+		if (ACPI_SUCCESS(acpi_get_handle(handle, "_EVT", &evt_handle)))
-+			break;
-+
- 		dev_err(dev, "cannot locate _EVT method\n");
- 		return AE_ERROR;
- 	}
+The property itself is the indicator that the orientation is fixed for
+those lines, not its value. If the property exists, we know the
+orientation is fixed, and if it doesn't exist, we know we need to use
+the cable plug orientation. So if we only want to use the property as
+a flag, then it does not need to have any value at all. It would be a
+boolean property.
+
+But we would then always leave the ORI-HSL field with value 0 when the
+orientation is fixed, and that would rule out the possibility of
+supporting a platform where we have to use a fixed value of 1 there
+(fixed-reversed). If we ever needed to support configuration like
+that, then we would need to add a new property.
+
+That scenario may not be relevant on this platform, and it may seem
+like an unlikely, or even impossible case now, but experience (and the
+north mux-agent documentation) tells me we should prepare also for
+that. That is why I use the typec_orientation strings as the values
+for these properties. Then the fixed-reversed orientation is also
+covered with the same properties if we ever need to support it.
+
+Maybe this code would be better, or more clear in the driver:
+
+/*
+ * Returns the value for the HSL-ORI field.
+ */
+static int hsl_orientation(struct pmc_usb_port *port)
+{
+        enum typec_orientation orientation;
+
+        /*
+         * Is the orientation fixed:
+         *   Yes, use the fixed orientation.
+         *   No, use cable plug orientation.
+         */
+        if (port->hsl_orientation)
+                orientation = hsl_orientation;
+        else
+                orientation = port->orientation;
+
+        switch (orientation) {
+        case TYPEC_ORIENTATION_NORMAL:
+                return 0;
+        case TYPEC_ORIENTATION_REVERSE:
+                return 1;
+        }
+
+        return -EINVAL;
+}
+
+thanks,
+
 -- 
-2.17.1
-
+heikki
