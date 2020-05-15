@@ -2,116 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A22F1D5615
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 May 2020 18:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CF9B1D5682
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 May 2020 18:49:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726212AbgEOQc1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 May 2020 12:32:27 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:33115 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726179AbgEOQc1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 May 2020 12:32:27 -0400
-Received: by mail-ot1-f67.google.com with SMTP id v17so2398039ote.0;
-        Fri, 15 May 2020 09:32:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1EkG6O/3cmUPYt5DCQJXeRo2YDJdl3A9XsZfu0rbjpI=;
-        b=J8GcQEZcq0uG1iye5NP9ZfV5wqn7JSx+VMYpTy8Gq0qzKobMC7mXd3JromxwtbdvAA
-         Qum5rRLXBa/I0mobuEdDTtSk6IP7iNp37+Vd1LiNi289SKkA1OPbE10PG+IIIB1nWbKq
-         05jpLyy4SNawXgV4V76RRz4eX35FGlSxiiAtWxpDYM+8Nt0HRVzyQLCO5xir1rwh/kD3
-         0+dGbkIDwMKUIn057FPB2usmUomDm9G4YjDAi/M8a+9it1YIXwA0vq07ZSj2V1I6BjJ+
-         n/VORGqR/aD2xt/ZiATbuhrE3jJ9z7XZrhp+h/lvm5+UrSRI99CFSOHXVzmAvVshHgK3
-         F93A==
-X-Gm-Message-State: AOAM532L7pru267NtOM9nijzch36dHmzNDvGsm64r14A4cM0nRrnlsTz
-        v+amUpA0EmWzwkYvw+LpZ7KFq+0OKgVxZRSHOwAOlw==
-X-Google-Smtp-Source: ABdhPJxo0/cj2tVHy034QYN22JdcAzua5TQIunVoodyMMWprdbREtuanWAuUarfMnKINXK9/gLW23mnPdEZd/9cbVdI=
-X-Received: by 2002:a9d:6ac8:: with SMTP id m8mr2917760otq.262.1589560346499;
- Fri, 15 May 2020 09:32:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200515093613.18691-1-ardb@kernel.org>
-In-Reply-To: <20200515093613.18691-1-ardb@kernel.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 15 May 2020 18:32:14 +0200
-Message-ID: <CAJZ5v0guHdbZTsU5e7KDAHDy9Gnh67JwtSSCeDaK8mUwAk1d3g@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: GED: add support for _Exx / _Lxx handler methods
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        id S1726223AbgEOQtw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 May 2020 12:49:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56866 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726023AbgEOQtv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 15 May 2020 12:49:51 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98844C061A0C;
+        Fri, 15 May 2020 09:49:51 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id AB6292A32FD
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+To:     linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        kernel@collabora.com
+Subject: [PATCHv2 0/7] Support inhibiting input devices
+Date:   Fri, 15 May 2020 18:49:43 +0200
+Message-Id: <20200515164943.28480-1-andrzej.p@collabora.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200506002746.GB89269@dtor-ws>
+References: <20200506002746.GB89269@dtor-ws>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 15, 2020 at 11:37 AM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> Per the ACPI spec, interrupts in the range [0, 255] may be handled
-> in AML using individual methods whose naming is based on the format
-> _Exx or _Lxx, where xx is the hex representation of the interrupt
-> index.
->
-> Add support for this missing feature to our ACPI GED driver.
->
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> Cc: <stable@vger.kernel.org> # v4.9+
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  drivers/acpi/evged.c | 22 +++++++++++++++++---
->  1 file changed, 19 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/acpi/evged.c b/drivers/acpi/evged.c
-> index aba0d0027586..6d7a522952bf 100644
-> --- a/drivers/acpi/evged.c
-> +++ b/drivers/acpi/evged.c
-> @@ -79,6 +79,8 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
->         struct resource r;
->         struct acpi_resource_irq *p = &ares->data.irq;
->         struct acpi_resource_extended_irq *pext = &ares->data.extended_irq;
-> +       char ev_name[5];
-> +       u8 trigger;
->
->         if (ares->type == ACPI_RESOURCE_TYPE_END_TAG)
->                 return AE_OK;
-> @@ -87,14 +89,28 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
->                 dev_err(dev, "unable to parse IRQ resource\n");
->                 return AE_ERROR;
->         }
-> -       if (ares->type == ACPI_RESOURCE_TYPE_IRQ)
-> +       if (ares->type == ACPI_RESOURCE_TYPE_IRQ) {
->                 gsi = p->interrupts[0];
-> -       else
-> +               trigger = p->triggering;
-> +       } else {
->                 gsi = pext->interrupts[0];
-> +               trigger = p->triggering;
-> +       }
->
->         irq = r.start;
->
-> -       if (ACPI_FAILURE(acpi_get_handle(handle, "_EVT", &evt_handle))) {
-> +       switch (gsi) {
-> +       case 0 ... 255:
-> +               sprintf(ev_name, "_%c%02hhX",
-> +                       trigger == ACPI_EDGE_SENSITIVE ? 'E' : 'L', gsi);
-> +
-> +               if (ACPI_SUCCESS(acpi_get_handle(handle, ev_name, &evt_handle)))
-> +                       break;
-> +               /* fall through */
-> +       default:
-> +               if (ACPI_SUCCESS(acpi_get_handle(handle, "_EVT", &evt_handle)))
-> +                       break;
-> +
->                 dev_err(dev, "cannot locate _EVT method\n");
->                 return AE_ERROR;
->         }
-> --
+Userspace might want to implement a policy to temporarily disregard input
+from certain devices, including not treating them as wakeup sources.
 
-Applied as 5.8 material, thanks!
+An example use case is a laptop, whose keyboard can be folded under the
+screen to create tablet-like experience. The user then must hold the laptop
+in such a way that it is difficult to avoid pressing the keyboard keys. It
+is therefore desirable to temporarily disregard input from the keyboard,
+until it is folded back. This obviously is a policy which should be kept
+out of the kernel, but the kernel must provide suitable means to implement
+such a policy.
+
+Due to interactions with suspend/resume, a helper has been added for drivers
+to decide if the device is being used or not (PATCH 1/7) and it has been
+applied to relevant drivers (PATCH 2-5/7). Patches 2-5 are only being sent
+to relevant mailing lists and maintainers.
+
+PATCH 6/7 adds support for inhibiting input devices, while PATCH 7/7
+provides an example how to convert a driver to take advantage of this
+new feature. Patch 7/7 is only being sent to input mailing list and
+maintainer.
+
+This work is inspired by:
+
+https://chromium.googlesource.com/chromiumos/third_party/kernel/+/45c2d7bb398f74adfae0017e20b224152fde3822
+
+and
+
+https://chromium.googlesource.com/chromiumos/third_party/kernel/+/4ce0e8a3697edb8fd071110b3af65014512061c7
+
+v1..v2:
+- added input_device_enabled() helper and used it in drivers (Dmitry)
+- the fact of open() and close() being called in inhibit/uninhibit paths has
+been emphasized in the commit message of PATCH 6/7 (Dmitry)
+
+Andrzej Pietrasiewicz (5):
+  Input: add input_device_enabled()
+  Input: use input_device_enabled()
+  ACPI: button: Use input_device_enabled() helper
+  iio: adc: exynos: Use input_device_enabled()
+  platform/x86: thinkpad_acpi: Use input_device_enabled()
+
+Dmitry Torokhov (1):
+  Input: elan_i2c: Support inhibiting
+
+Patrik Fimml (1):
+  Input: Add "inhibited" property
+
+ drivers/acpi/button.c                       |   8 +-
+ drivers/iio/adc/exynos_adc.c                |  11 +-
+ drivers/input/input.c                       | 142 ++++++++++++++++++--
+ drivers/input/joystick/xpad.c               |   4 +-
+ drivers/input/keyboard/ep93xx_keypad.c      |   2 +-
+ drivers/input/keyboard/gpio_keys.c          |   4 +-
+ drivers/input/keyboard/imx_keypad.c         |   4 +-
+ drivers/input/keyboard/ipaq-micro-keys.c    |   2 +-
+ drivers/input/keyboard/lpc32xx-keys.c       |   4 +-
+ drivers/input/keyboard/pmic8xxx-keypad.c    |   4 +-
+ drivers/input/keyboard/pxa27x_keypad.c      |   2 +-
+ drivers/input/keyboard/samsung-keypad.c     |   4 +-
+ drivers/input/keyboard/spear-keyboard.c     |   8 +-
+ drivers/input/keyboard/st-keyscan.c         |   4 +-
+ drivers/input/keyboard/tegra-kbc.c          |   4 +-
+ drivers/input/misc/drv260x.c                |   4 +-
+ drivers/input/misc/drv2665.c                |   4 +-
+ drivers/input/misc/drv2667.c                |   4 +-
+ drivers/input/misc/gp2ap002a00f.c           |   4 +-
+ drivers/input/misc/kxtj9.c                  |   4 +-
+ drivers/input/misc/sirfsoc-onkey.c          |   2 +-
+ drivers/input/mouse/elan_i2c_core.c         | 112 +++++++++++----
+ drivers/input/mouse/navpoint.c              |   4 +-
+ drivers/input/touchscreen/ad7879.c          |   6 +-
+ drivers/input/touchscreen/atmel_mxt_ts.c    |   4 +-
+ drivers/input/touchscreen/auo-pixcir-ts.c   |   8 +-
+ drivers/input/touchscreen/bu21029_ts.c      |   4 +-
+ drivers/input/touchscreen/chipone_icn8318.c |   4 +-
+ drivers/input/touchscreen/cyttsp_core.c     |   4 +-
+ drivers/input/touchscreen/eeti_ts.c         |   4 +-
+ drivers/input/touchscreen/ektf2127.c        |   4 +-
+ drivers/input/touchscreen/imx6ul_tsc.c      |   4 +-
+ drivers/input/touchscreen/ipaq-micro-ts.c   |   2 +-
+ drivers/input/touchscreen/iqs5xx.c          |   4 +-
+ drivers/input/touchscreen/lpc32xx_ts.c      |   4 +-
+ drivers/input/touchscreen/melfas_mip4.c     |   4 +-
+ drivers/input/touchscreen/mms114.c          |   6 +-
+ drivers/input/touchscreen/pixcir_i2c_ts.c   |   8 +-
+ drivers/input/touchscreen/ucb1400_ts.c      |   4 +-
+ drivers/input/touchscreen/wm97xx-core.c     |  14 +-
+ drivers/input/touchscreen/zforce_ts.c       |   8 +-
+ drivers/platform/x86/thinkpad_acpi.c        |   4 +-
+ include/linux/input.h                       |  10 ++
+ 43 files changed, 336 insertions(+), 119 deletions(-)
+
+
+base-commit: 2ef96a5bb12be62ef75b5828c0aab838ebb29cb8
+-- 
+2.17.1
+
