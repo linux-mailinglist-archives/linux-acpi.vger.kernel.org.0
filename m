@@ -2,143 +2,352 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A25491D59F2
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 May 2020 21:25:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C5D71D5A80
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 May 2020 22:01:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726227AbgEOTZM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 May 2020 15:25:12 -0400
-Received: from mail-co1nam11on2127.outbound.protection.outlook.com ([40.107.220.127]:17505
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726206AbgEOTZL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 15 May 2020 15:25:11 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bVp7q8ciQiq5qYjk6frTtXyTljlvSvj49cfdg4MZmVYxmLEreHvbf4iDUKL959F6FCEor7x0ZWEu1yXJIW8yNVyGKEEZvOGj54akCq6CD0kNXCTtczUslW1IYb+Dk/gHYVXCdly6/mV5wx37rdtlO552z6DPDXyTjuJN5TPb4cPmCWnyaHPgA2dGcBmOw7cGcsTWcvSod/7nokJrirzgKH4xAJBmKQlcw9AIYb/R38GNCsH22dvEJ71zwOhl7jNHd/uMMLapGryJ4+nzTxjZyFLekiG1wwbStLGNgyoKJYA/ezQRsw9BFec0od8OGqhI87aWnwhw3/EpoIbrMwmEkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1OgmjdGF6wPU3xIv5703pTeMeMlxOsvo5ko1SpqQv4w=;
- b=hCL3xVPGzWEZZ00xSDo/dU4NmicbLtIzIthT3l+BwrgxZoPZC8JoHrcqDXBHHTq7qkV6MOkuZLdxoVc2uFvkhcU2zVFyPlieWONjGB+2q8V5EWbXcupHwD9RZ/phdGGwdozIxzgJePnNjh79Zvba3PYkidd5qxs0wsL4euJJ0G4C11cfBgnJli/H7+yq+y+MrJUCBZpEEZnrhyV+Nrj4qxw+0gfK6voRaKYTi1ZzvxNYXe27u1tTUws1mUurmYYTy7d5fdoewZz1mVlh9fhDvpxeCPtICxt264Zz01XbTacpdKNZIBbIQg2bBMu9eigc7EFvoqTmovNo03GUtzJJ+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=os.amperecomputing.com; dkim=pass
- header.d=os.amperecomputing.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1OgmjdGF6wPU3xIv5703pTeMeMlxOsvo5ko1SpqQv4w=;
- b=ICAlGijx9SzyihYJRmx+nznplHVJhmwkTJhQwC9zXPbHOXmQv/6ieRtzfdKKgCxLvoJfRLtTJf2SJwR2Ada8oWd7jHqSk2Fp0b6Nf3iozkNbS43VpR3auInUP6rcMJLZxq1Ef/GlXUWv1WyJMgzrgbkT3Jvbcn3K3n50S8fQCtI=
-Authentication-Results: amperecomputing.com; dkim=none (message not signed)
- header.d=none;amperecomputing.com; dmarc=none action=none
- header.from=os.amperecomputing.com;
-Received: from BYAPR01MB4598.prod.exchangelabs.com (2603:10b6:a03:8a::18) by
- BYAPR01MB4133.prod.exchangelabs.com (2603:10b6:a03:5f::17) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2979.35; Fri, 15 May 2020 19:25:09 +0000
-Received: from BYAPR01MB4598.prod.exchangelabs.com
- ([fe80::296c:b848:8bf0:6f2c]) by BYAPR01MB4598.prod.exchangelabs.com
- ([fe80::296c:b848:8bf0:6f2c%5]) with mapi id 15.20.2979.033; Fri, 15 May 2020
- 19:25:09 +0000
-From:   Tuan Phan <tuanphan@os.amperecomputing.com>
-Cc:     patches@amperecomputing.com,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Neil Leeder <nleeder@codeaurora.org>,
-        Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v4] ACPI/IORT: Fix PMCG node single ID mapping handling.
-Date:   Fri, 15 May 2020 12:24:46 -0700
-Message-Id: <1589570686-5780-1-git-send-email-tuanphan@os.amperecomputing.com>
-X-Mailer: git-send-email 2.7.4
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR07CA0099.namprd07.prod.outlook.com
- (2603:10b6:a03:12b::40) To BYAPR01MB4598.prod.exchangelabs.com
- (2603:10b6:a03:8a::18)
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from aptiov-dev-Latitude-E7470.amperecomputing.com (4.28.12.214) by BYAPR07CA0099.namprd07.prod.outlook.com (2603:10b6:a03:12b::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.3000.20 via Frontend Transport; Fri, 15 May 2020 19:25:08 +0000
-X-Mailer: git-send-email 2.7.4
-X-Originating-IP: [4.28.12.214]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 25de0aaf-faf7-4ea2-feb1-08d7f905ae31
-X-MS-TrafficTypeDiagnostic: BYAPR01MB4133:|BYAPR01MB4133:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BYAPR01MB41330246EE05BF334790C37CE0BD0@BYAPR01MB4133.prod.exchangelabs.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
-X-Forefront-PRVS: 04041A2886
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Ve5j2odSFQStkdnDD427HAJfe7xXrOzhh+eX5o+rZj/qVtPOwbUd2hgYDXUp4BfQm1FSK52FEdM7iQmrTTClorKOjno+07TeuquZDuMpvzmerVAvyMeK2rFRO6KMrulrnBCMorG1zvfQGLzkWiAq7iSlEyQwdtb/Gwl697EhmW6owvq94867AJQJn0im5JXiVv+DKXfl4w+em2SAI6LWu8NkDBvMh9gXfqESWHZKoh9tNpkMllhJrsWmSszTGFtlUXfuKPYc5piOZr/VIh1y445pT+LeMzBxOh5f0y9qC+niE1dgKg+ZFoYvp+nMF9LMolnsuAwXcRIenh1Seerr0nsLCPieuVSrsF3rg8MfcDjxvJruELDbd7y/bYbLCEVngqSmiXLandO6q4ZeeXTW6esi78VojM91SfUXkRdlktAS7LqTH0LA6GbV5OjDgbeAOfCdGH2xOsfw3Cheztf5dAAJl3W49cSZxIRFS2plr2Y=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR01MB4598.prod.exchangelabs.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(346002)(376002)(136003)(366004)(39840400004)(396003)(66476007)(66556008)(6506007)(66946007)(2616005)(956004)(6512007)(8676002)(8936002)(54906003)(86362001)(2906002)(52116002)(478600001)(6486002)(186003)(316002)(5660300002)(4326008)(6666004)(26005)(7416002)(109986005)(16526019)(266003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: SZT5G/jjNtWL1vTY/TvZq4i18sOSTAxAXV8zBbzoTwUYGud8+DHQuK7vjPqK2CjDkoPU+xR67qzdV0woqyn9tiDJJBBJM/UndkpTJ52sTBxQhLw2BRi8q0suBAX9bWBARTP9oYLWOW/1pkVzzg12KO9Xy3tb5aM41Jda38h3FCBl4VCCMk4nH81IH0LeHwVFGIf5HrUI4tnD2xBGjXKzEbQLjVytHetBt8hthkIJMXgtQqkpL2GgqON7kTFMhr02CMauC3FTwbpRziADHxTopE1CyOXZ5bonyQa2fzRoWt/EGAP+38vYu8D6YQQhpCRROD7qAOwFsDk4Ygg7Ccmai4wA/KSyOGY4JP5wmAYjN2DeZojQXXAGgHOhX80laAoCgA8FxIlyoVYJTPOyVQui1iHg+9nocsBbYme1DwNtEUMnsJuEGW49wAGy45LViuwcvgh26BTA3Ys02sJRKJ0+Yoghp70C85PPgL4VuDgDXaM=
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25de0aaf-faf7-4ea2-feb1-08d7f905ae31
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2020 19:25:09.3246
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6n0mAt0v9FUeiMPKM4KayAElpsXtHckuSB17w3IXkyeT/A3Su7SWOqFs8LBoKJj/Z0+frPTT33NO5Gp32IJxfYmFNDWgR3heWVCFY0Lz6AjRoLJeunkcFEKuWZ+r1Aew
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR01MB4133
-To:     unlisted-recipients:; (no To-header on input)
+        id S1726226AbgEOUBo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 May 2020 16:01:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52570 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726197AbgEOUBo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 15 May 2020 16:01:44 -0400
+Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net [73.231.172.41])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8AED420727;
+        Fri, 15 May 2020 20:01:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589572903;
+        bh=hrb0NjlAGs243jz20skr4JyPcHlHUFR+OdxSllgZnYM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=VnImy+mbJ7aCP3ALfPDqJ1xZma70fF5k5/smHK7ELq1um0M3nRPni8+qpkYQkoiB8
+         6EnEoZa2bty30wH7st+xf1j918NgjMe7piFPa6D+RZFvXRGM70OdLTsm8yebYnCPrw
+         qhX76ha6l4t06mZAxe3rljHXmXNEAhvuAKP5TZ0w=
+Date:   Fri, 15 May 2020 13:01:42 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Joerg Roedel <joro@8bytes.org>
+Cc:     x86@kernel.org, hpa@zytor.com,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, rjw@rjwysocki.net,
+        Arnd Bergmann <arnd@arndb.de>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Michal Hocko <mhocko@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Joerg Roedel <jroedel@suse.de>, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org, Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH v3 2/7] mm/vmalloc: Track which page-table levels were
+ modified
+Message-Id: <20200515130142.4ca90ee590e9d8ab88497676@linux-foundation.org>
+In-Reply-To: <20200515140023.25469-3-joro@8bytes.org>
+References: <20200515140023.25469-1-joro@8bytes.org>
+        <20200515140023.25469-3-joro@8bytes.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-An IORT PMCG node can have no ID mapping if its overflow interrupt is
-wire based therefore the code that parses the PMCG node can not assume
-the node will always have a single mapping present at index 0.
+On Fri, 15 May 2020 16:00:18 +0200 Joerg Roedel <joro@8bytes.org> wrote:
 
-Fix iort_get_id_mapping_index() by checking for an overflow interrupt
-and mapping count.
+> Track at which levels in the page-table entries were modified by
+> vmap/vunmap. After the page-table has been modified, use that
+> information do decide whether the new arch_sync_kernel_mappings()
+> needs to be called.
 
-Fixes: 24e516049360 ("ACPI/IORT: Add support for PMCG").
+Lots of collisions here with Christoph's "decruft the vmalloc API" series
+(http://lkml.kernel.org/r/20200414131348.444715-1-hch@lst.de).
 
-Acked-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Reviewed-by: Hanjun Guo <guoahanjun@huawei.com>
-Signed-off-by: Tuan Phan <tuanphan@os.amperecomputing.com>
+I attempted to fix things up.
+
+unmap_kernel_range_noflush() needed to be redone.
+
+map_kernel_range_noflush() might need the arch_sync_kernel_mappings() call?
+
+
+From: Joerg Roedel <jroedel@suse.de>
+Subject: mm/vmalloc: Track which page-table levels were modified
+
+Track at which levels in the page-table entries were modified by
+vmap/vunmap.  After the page-table has been modified, use that information
+do decide whether the new arch_sync_kernel_mappings() needs to be called.
+
+Link: http://lkml.kernel.org/r/20200515140023.25469-3-joro@8bytes.org
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Acked-by: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-v1 -> v2:
-- Use pmcg node to detect wired base overflow interrupt.
 
-v2 -> v3:
-- Address Hanjun and Robin's comments.
+ include/linux/vmalloc.h |   16 ++++++
+ mm/vmalloc.c            |   91 +++++++++++++++++++++++++++-----------
+ 2 files changed, 81 insertions(+), 26 deletions(-)
 
-v3 -> v4:
-- Update the title and description as mentioned by Lorenzo.
-
- drivers/acpi/arm64/iort.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index ed3d2d1..12bb70e 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -414,6 +414,7 @@ static struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
- static int iort_get_id_mapping_index(struct acpi_iort_node *node)
- {
- 	struct acpi_iort_smmu_v3 *smmu;
-+	struct acpi_iort_pmcg *pmcg;
+--- a/include/linux/vmalloc.h~mm-vmalloc-track-which-page-table-levels-were-modified
++++ a/include/linux/vmalloc.h
+@@ -134,6 +134,22 @@ void vmalloc_sync_mappings(void);
+ void vmalloc_sync_unmappings(void);
  
- 	switch (node->type) {
- 	case ACPI_IORT_NODE_SMMU_V3:
-@@ -441,6 +442,10 @@ static int iort_get_id_mapping_index(struct acpi_iort_node *node)
- 
- 		return smmu->id_mapping_index;
- 	case ACPI_IORT_NODE_PMCG:
-+		pmcg = (struct acpi_iort_pmcg *)node->node_data;
-+		if (pmcg->overflow_gsiv || node->mapping_count == 0)
-+			return -EINVAL;
+ /*
++ * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
++ * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
++ * needs to be called.
++ */
++#ifndef ARCH_PAGE_TABLE_SYNC_MASK
++#define ARCH_PAGE_TABLE_SYNC_MASK 0
++#endif
 +
- 		return 0;
- 	default:
- 		return -EINVAL;
--- 
-2.7.4
++/*
++ * There is no default implementation for arch_sync_kernel_mappings(). It is
++ * relied upon the compiler to optimize calls out if ARCH_PAGE_TABLE_SYNC_MASK
++ * is 0.
++ */
++void arch_sync_kernel_mappings(unsigned long start, unsigned long end);
++
++/*
+  *	Lowlevel-APIs (not for driver use!)
+  */
+ 
+--- a/mm/vmalloc.c~mm-vmalloc-track-which-page-table-levels-were-modified
++++ a/mm/vmalloc.c
+@@ -69,7 +69,8 @@ static void free_work(struct work_struct
+ 
+ /*** Page table manipulation functions ***/
+ 
+-static void vunmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end)
++static void vunmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
++			     pgtbl_mod_mask *mask)
+ {
+ 	pte_t *pte;
+ 
+@@ -78,59 +79,81 @@ static void vunmap_pte_range(pmd_t *pmd,
+ 		pte_t ptent = ptep_get_and_clear(&init_mm, addr, pte);
+ 		WARN_ON(!pte_none(ptent) && !pte_present(ptent));
+ 	} while (pte++, addr += PAGE_SIZE, addr != end);
++	*mask |= PGTBL_PTE_MODIFIED;
+ }
+ 
+-static void vunmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end)
++static void vunmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
++			     pgtbl_mod_mask *mask)
+ {
+ 	pmd_t *pmd;
+ 	unsigned long next;
++	int cleared;
+ 
+ 	pmd = pmd_offset(pud, addr);
+ 	do {
+ 		next = pmd_addr_end(addr, end);
+-		if (pmd_clear_huge(pmd))
++
++		cleared = pmd_clear_huge(pmd);
++		if (cleared || pmd_bad(*pmd))
++			*mask |= PGTBL_PMD_MODIFIED;
++
++		if (cleared)
+ 			continue;
+ 		if (pmd_none_or_clear_bad(pmd))
+ 			continue;
+-		vunmap_pte_range(pmd, addr, next);
++		vunmap_pte_range(pmd, addr, next, mask);
+ 	} while (pmd++, addr = next, addr != end);
+ }
+ 
+-static void vunmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end)
++static void vunmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
++			     pgtbl_mod_mask *mask)
+ {
+ 	pud_t *pud;
+ 	unsigned long next;
++	int cleared;
+ 
+ 	pud = pud_offset(p4d, addr);
+ 	do {
+ 		next = pud_addr_end(addr, end);
+-		if (pud_clear_huge(pud))
++
++		cleared = pud_clear_huge(pud);
++		if (cleared || pud_bad(*pud))
++			*mask |= PGTBL_PUD_MODIFIED;
++
++		if (cleared)
+ 			continue;
+ 		if (pud_none_or_clear_bad(pud))
+ 			continue;
+-		vunmap_pmd_range(pud, addr, next);
++		vunmap_pmd_range(pud, addr, next, mask);
+ 	} while (pud++, addr = next, addr != end);
+ }
+ 
+-static void vunmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end)
++static void vunmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
++			     pgtbl_mod_mask *mask)
+ {
+ 	p4d_t *p4d;
+ 	unsigned long next;
++	int cleared;
+ 
+ 	p4d = p4d_offset(pgd, addr);
+ 	do {
+ 		next = p4d_addr_end(addr, end);
+-		if (p4d_clear_huge(p4d))
++
++		cleared = p4d_clear_huge(p4d);
++		if (cleared || p4d_bad(*p4d))
++			*mask |= PGTBL_P4D_MODIFIED;
++
++		if (cleared)
+ 			continue;
+ 		if (p4d_none_or_clear_bad(p4d))
+ 			continue;
+-		vunmap_pud_range(p4d, addr, next);
++		vunmap_pud_range(p4d, addr, next, mask);
+ 	} while (p4d++, addr = next, addr != end);
+ }
+ 
+ /**
+  * unmap_kernel_range_noflush - unmap kernel VM area
+- * @addr: start of the VM area to unmap
++ * @start: start of the VM area to unmap
+  * @size: size of the VM area to unmap
+  *
+  * Unmap PFN_UP(@size) pages at @addr.  The VM area @addr and @size specify
+@@ -141,24 +164,33 @@ static void vunmap_p4d_range(pgd_t *pgd,
+  * for calling flush_cache_vunmap() on to-be-mapped areas before calling this
+  * function and flush_tlb_kernel_range() after.
+  */
+-void unmap_kernel_range_noflush(unsigned long addr, unsigned long size)
++void unmap_kernel_range_noflush(unsigned long start, unsigned long size)
+ {
+-	unsigned long end = addr + size;
++	unsigned long end = start + size;
+ 	unsigned long next;
+ 	pgd_t *pgd;
++	unsigned long addr = start;
++	pgtbl_mod_mask mask = 0;
+ 
+ 	BUG_ON(addr >= end);
++	start = addr;
+ 	pgd = pgd_offset_k(addr);
+ 	do {
+ 		next = pgd_addr_end(addr, end);
++		if (pgd_bad(*pgd))
++			mask |= PGTBL_PGD_MODIFIED;
+ 		if (pgd_none_or_clear_bad(pgd))
+ 			continue;
+-		vunmap_p4d_range(pgd, addr, next);
++		vunmap_p4d_range(pgd, addr, next, &mask);
+ 	} while (pgd++, addr = next, addr != end);
++
++	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
++		arch_sync_kernel_mappings(start, end);
+ }
+ 
+ static int vmap_pte_range(pmd_t *pmd, unsigned long addr,
+-		unsigned long end, pgprot_t prot, struct page **pages, int *nr)
++		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
++		pgtbl_mod_mask *mask)
+ {
+ 	pte_t *pte;
+ 
+@@ -167,7 +199,7 @@ static int vmap_pte_range(pmd_t *pmd, un
+ 	 * callers keep track of where we're up to.
+ 	 */
+ 
+-	pte = pte_alloc_kernel(pmd, addr);
++	pte = pte_alloc_kernel_track(pmd, addr, mask);
+ 	if (!pte)
+ 		return -ENOMEM;
+ 	do {
+@@ -180,55 +212,59 @@ static int vmap_pte_range(pmd_t *pmd, un
+ 		set_pte_at(&init_mm, addr, pte, mk_pte(page, prot));
+ 		(*nr)++;
+ 	} while (pte++, addr += PAGE_SIZE, addr != end);
++	*mask |= PGTBL_PTE_MODIFIED;
+ 	return 0;
+ }
+ 
+ static int vmap_pmd_range(pud_t *pud, unsigned long addr,
+-		unsigned long end, pgprot_t prot, struct page **pages, int *nr)
++		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
++		pgtbl_mod_mask *mask)
+ {
+ 	pmd_t *pmd;
+ 	unsigned long next;
+ 
+-	pmd = pmd_alloc(&init_mm, pud, addr);
++	pmd = pmd_alloc_track(&init_mm, pud, addr, mask);
+ 	if (!pmd)
+ 		return -ENOMEM;
+ 	do {
+ 		next = pmd_addr_end(addr, end);
+-		if (vmap_pte_range(pmd, addr, next, prot, pages, nr))
++		if (vmap_pte_range(pmd, addr, next, prot, pages, nr, mask))
+ 			return -ENOMEM;
+ 	} while (pmd++, addr = next, addr != end);
+ 	return 0;
+ }
+ 
+ static int vmap_pud_range(p4d_t *p4d, unsigned long addr,
+-		unsigned long end, pgprot_t prot, struct page **pages, int *nr)
++		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
++		pgtbl_mod_mask *mask)
+ {
+ 	pud_t *pud;
+ 	unsigned long next;
+ 
+-	pud = pud_alloc(&init_mm, p4d, addr);
++	pud = pud_alloc_track(&init_mm, p4d, addr, mask);
+ 	if (!pud)
+ 		return -ENOMEM;
+ 	do {
+ 		next = pud_addr_end(addr, end);
+-		if (vmap_pmd_range(pud, addr, next, prot, pages, nr))
++		if (vmap_pmd_range(pud, addr, next, prot, pages, nr, mask))
+ 			return -ENOMEM;
+ 	} while (pud++, addr = next, addr != end);
+ 	return 0;
+ }
+ 
+ static int vmap_p4d_range(pgd_t *pgd, unsigned long addr,
+-		unsigned long end, pgprot_t prot, struct page **pages, int *nr)
++		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
++		pgtbl_mod_mask *mask)
+ {
+ 	p4d_t *p4d;
+ 	unsigned long next;
+ 
+-	p4d = p4d_alloc(&init_mm, pgd, addr);
++	p4d = p4d_alloc_track(&init_mm, pgd, addr, mask);
+ 	if (!p4d)
+ 		return -ENOMEM;
+ 	do {
+ 		next = p4d_addr_end(addr, end);
+-		if (vmap_pud_range(p4d, addr, next, prot, pages, nr))
++		if (vmap_pud_range(p4d, addr, next, prot, pages, nr, mask))
+ 			return -ENOMEM;
+ 	} while (p4d++, addr = next, addr != end);
+ 	return 0;
+@@ -260,12 +296,15 @@ int map_kernel_range_noflush(unsigned lo
+ 	pgd_t *pgd;
+ 	int err = 0;
+ 	int nr = 0;
++	pgtbl_mod_mask mask = 0;
+ 
+ 	BUG_ON(addr >= end);
+ 	pgd = pgd_offset_k(addr);
+ 	do {
+ 		next = pgd_addr_end(addr, end);
+-		err = vmap_p4d_range(pgd, addr, next, prot, pages, &nr);
++		if (pgd_bad(*pgd))
++			mask |= PGTBL_PGD_MODIFIED;
++		err = vmap_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
+ 		if (err)
+ 			return err;
+ 	} while (pgd++, addr = next, addr != end);
+_
 
