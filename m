@@ -2,55 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D4201D4547
+	by mail.lfdr.de (Postfix) with ESMTP id C81F91D4548
 	for <lists+linux-acpi@lfdr.de>; Fri, 15 May 2020 07:35:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726341AbgEOFfJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 May 2020 01:35:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35700 "EHLO
+        id S1726613AbgEOFfM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 May 2020 01:35:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726314AbgEOFfH (ORCPT
+        by vger.kernel.org with ESMTP id S1726314AbgEOFfL (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 15 May 2020 01:35:07 -0400
-Received: from mail-qt1-x84a.google.com (mail-qt1-x84a.google.com [IPv6:2607:f8b0:4864:20::84a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC42C05BD0A
-        for <linux-acpi@vger.kernel.org>; Thu, 14 May 2020 22:35:07 -0700 (PDT)
-Received: by mail-qt1-x84a.google.com with SMTP id u61so1246482qtd.4
-        for <linux-acpi@vger.kernel.org>; Thu, 14 May 2020 22:35:07 -0700 (PDT)
+        Fri, 15 May 2020 01:35:11 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40CF6C05BD0B
+        for <linux-acpi@vger.kernel.org>; Thu, 14 May 2020 22:35:10 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id h129so1416781ybc.3
+        for <linux-acpi@vger.kernel.org>; Thu, 14 May 2020 22:35:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=EZoy6w7ha0DNuHCPHtXM/SP1BLypAsOupCZ9P6v8cMM=;
-        b=rOovWDSJYXWE5Bmy7IlspRdZnHrW3vC8hO0zRosezAonLPXvCkp4SGejQLIRYpLSlv
-         QfdRJ92IBQkIQW188k9n/iXvg4qHBBRuydnWHU1LlPDJfpnfaDdF2WcN96jNPK3XknVN
-         ClYXIl7QaaHGPmUiYUPJZOqBCncHbos5xkyX+i68aMXwhfkmGKjGQ1HyjlobIvmNmhna
-         4+6OZLy3n/1ROIjmOYDG2XgMTFSaARz1ChwsCyhnPfL96S1evSHhST4tjA9s2RapQXna
-         wBgOw9417hZKdE4zXjSNPWBk88p7+sdHK6Q7yRi2pmCfb0iyD/O0jUiI8GPItZDnZFzY
-         aIxA==
+        bh=RUCHt3IUTaAuIZ5RcDy4DbI7lEInPDSWSCSV1x0aJWU=;
+        b=NNmMCJFsnc8QFuD5OYt292G7roqEzHRNUYulBcoESHwmzCM16suaXcwxL7JDzWuXay
+         Dz81ANTMnpkXBwhmnbiMvHbNioUQM/0Jpu3HXydj063az53GvyNz/ybUZi60vtEftqsX
+         5y3CuDlXPN0VWTHOizdO8em6WneEBZOh05j/7gzZ+EyL4MN+N+nBFKGcWK9B06gY26KJ
+         EGI22WFBwOcvhbXCvYFfJ+BLuzRTTJq8pGhTf0uMvGUdpHIb43ZqlK9z+ik7oP4ePFz0
+         M6M70Lurbci12BP0XFdJqAvYdNFGYV/6XA+xhipiiPq+tnAWLrAKkNFkoATNHlcwVIG2
+         kS+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=EZoy6w7ha0DNuHCPHtXM/SP1BLypAsOupCZ9P6v8cMM=;
-        b=tlr+j2HvKvJt/pvQfPa1SZyW65h8TO71Xc6XiSKw9yI15JGFqgEMeYKz4qFLdMxEFH
-         1zAwyl5DWUkA+DkgyZV25EKjjnnaZUoUVvbpJNaN+2ogMXnTP+qep++/jUp6Cbse+iHY
-         QlDEgzEoEf9s6WWYm4BQ+BjMdF1frkd0lpag6FfwOfSnIgKAhS0aGWn01rRKwIHdtV4n
-         PAcbmAj+rHfjcbn0trAq2iheJqtZYjhg3HqmkygwbLUmF3Cwgmz3ivComy1+8BTaYtmM
-         /8BJp8uzHoGVwpJUDBS/+fgUxRD/QPf9S9EokJpNSKwj+H5viw4yhFNNwt4qL6vmPB5+
-         csNQ==
-X-Gm-Message-State: AOAM530a6WfRgLaELiPrxvNXOUcxCQC9xgEocwq/BNuvzG8v3EEXv0Br
-        OytQWiacwTjBpA09N7rmqJfbEluIShc4aZc=
-X-Google-Smtp-Source: ABdhPJwaE6/0XCEsVs67aBW7TEyiScvmgrKOX5Hlong/h0NOfDzB7vfDCEcF3sKLCbo5eLpiZQ6wtkRsTF4+GrQ=
-X-Received: by 2002:a05:6214:70a:: with SMTP id b10mr1910835qvz.186.1589520906395;
- Thu, 14 May 2020 22:35:06 -0700 (PDT)
-Date:   Thu, 14 May 2020 22:34:57 -0700
+        bh=RUCHt3IUTaAuIZ5RcDy4DbI7lEInPDSWSCSV1x0aJWU=;
+        b=tZtQqwdJL5SDIk3yZGGauDgTrPrVJLN/CGTb/Ox0UPNsibJCgKypIc/27RXTVaLdCV
+         q+4QPBWahKV6seNW2EjqvHD85WDO3/M7JJhFN6yhiT5pRj8tZ/+bvASViPfNVjPARjrP
+         Q72SzKyhAdmWuA7F+tLExniX5j+uqs9FcntITXqYVRwyoEvx0LeyYeaLV15Aoy6Xf3vi
+         RStG3igqE3pPshe4NAHXBTaYko6Lenc+ielJuxyIWCJU+gjgECR3BSfaUB0WaAysbd6D
+         3ty//qZTlfsVdROidNvRHvyFGEuWTrooZ6JUM0aQW0+8cUKjaITm9J38KGWekyqnL/sn
+         NDOw==
+X-Gm-Message-State: AOAM530KY1iIA4jLbQgy1in8LDYiNpK/Ta9Yhc82u1zuiGQoy46Banha
+        Jvd5JjA3sBju7brTtMPHizo2i1ARdWhMUnc=
+X-Google-Smtp-Source: ABdhPJz5Il4KBtVez3mKTqB6IUL3C6pYb+iGjAt2GhlZ7PEp1DIpmYHxcPfv+5v4AeIr7I9PrnjCEiAD3DCPmSY=
+X-Received: by 2002:a25:ba8b:: with SMTP id s11mr2591447ybg.310.1589520908664;
+ Thu, 14 May 2020 22:35:08 -0700 (PDT)
+Date:   Thu, 14 May 2020 22:34:58 -0700
 In-Reply-To: <20200515053500.215929-1-saravanak@google.com>
-Message-Id: <20200515053500.215929-2-saravanak@google.com>
+Message-Id: <20200515053500.215929-3-saravanak@google.com>
 Mime-Version: 1.0
 References: <20200515053500.215929-1-saravanak@google.com>
 X-Mailer: git-send-email 2.26.2.761.g0e0b3e54be-goog
-Subject: [PATCH v1 1/4] driver core: Move code to the right part of the file
+Subject: [PATCH v1 2/4] driver core: Look for waiting consumers only for a
+ fwnode's primary device
 From:   Saravana Kannan <saravanak@google.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -66,92 +67,77 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This commit just moves around code to match the general organization of
-the file.
+Commit 4dbe191c046e ("driver core: Add device links from fwnode only for
+the primary device") skipped linking a fwnode's secondary device to
+the suppliers listed in its fwnode.
+
+However, a fwnode's secondary device can't be found using
+get_dev_from_fwnode(). So, there's no point in trying to see if devices
+waiting for suppliers might want to link to a fwnode's secondary device.
+
+This commit removes that unnecessary step for devices that aren't a
+fwnode's primary device and also moves the code to a more appropriate
+part of the file.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 ---
- drivers/base/core.c | 60 ++++++++++++++++++++++-----------------------
- 1 file changed, 30 insertions(+), 30 deletions(-)
+ drivers/base/core.c | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/base/core.c b/drivers/base/core.c
-index c9045521596f..2b454aae64b5 100644
+index 2b454aae64b5..f585d92e09d0 100644
 --- a/drivers/base/core.c
 +++ b/drivers/base/core.c
-@@ -1143,6 +1143,36 @@ static void device_links_purge(struct device *dev)
- 	device_links_write_unlock();
+@@ -1173,6 +1173,21 @@ static bool fw_devlink_is_permissive(void)
+ 	return fw_devlink_flags == DL_FLAG_SYNC_STATE_ONLY;
  }
  
-+static u32 fw_devlink_flags = DL_FLAG_SYNC_STATE_ONLY;
-+static int __init fw_devlink_setup(char *arg)
++static void fw_devlink_link_device(struct device *dev)
 +{
-+	if (!arg)
-+		return -EINVAL;
++	int fw_ret;
 +
-+	if (strcmp(arg, "off") == 0) {
-+		fw_devlink_flags = 0;
-+	} else if (strcmp(arg, "permissive") == 0) {
-+		fw_devlink_flags = DL_FLAG_SYNC_STATE_ONLY;
-+	} else if (strcmp(arg, "on") == 0) {
-+		fw_devlink_flags = DL_FLAG_AUTOPROBE_CONSUMER;
-+	} else if (strcmp(arg, "rpm") == 0) {
-+		fw_devlink_flags = DL_FLAG_AUTOPROBE_CONSUMER |
-+				   DL_FLAG_PM_RUNTIME;
++	device_link_add_missing_supplier_links();
++
++	if (fw_devlink_flags && fwnode_has_op(dev->fwnode, add_links)) {
++		fw_ret = fwnode_call_int_op(dev->fwnode, add_links, dev);
++		if (fw_ret == -ENODEV && !fw_devlink_is_permissive())
++			device_link_wait_for_mandatory_supplier(dev);
++		else if (fw_ret)
++			device_link_wait_for_optional_supplier(dev);
 +	}
-+	return 0;
-+}
-+early_param("fw_devlink", fw_devlink_setup);
-+
-+u32 fw_devlink_get_flags(void)
-+{
-+	return fw_devlink_flags;
-+}
-+
-+static bool fw_devlink_is_permissive(void)
-+{
-+	return fw_devlink_flags == DL_FLAG_SYNC_STATE_ONLY;
 +}
 +
  /* Device links support end. */
  
  int (*platform_notify)(struct device *dev) = NULL;
-@@ -2345,36 +2375,6 @@ static int device_private_init(struct device *dev)
- 	return 0;
- }
+@@ -2407,7 +2422,7 @@ int device_add(struct device *dev)
+ 	struct device *parent;
+ 	struct kobject *kobj;
+ 	struct class_interface *class_intf;
+-	int error = -EINVAL, fw_ret;
++	int error = -EINVAL;
+ 	struct kobject *glue_dir = NULL;
+ 	bool is_fwnode_dev = false;
  
--static u32 fw_devlink_flags = DL_FLAG_SYNC_STATE_ONLY;
--static int __init fw_devlink_setup(char *arg)
--{
--	if (!arg)
--		return -EINVAL;
+@@ -2524,16 +2539,8 @@ int device_add(struct device *dev)
+ 	 * waiting consumers can link to it before the driver is bound to the
+ 	 * device and the driver sync_state callback is called for this device.
+ 	 */
+-	device_link_add_missing_supplier_links();
 -
--	if (strcmp(arg, "off") == 0) {
--		fw_devlink_flags = 0;
--	} else if (strcmp(arg, "permissive") == 0) {
--		fw_devlink_flags = DL_FLAG_SYNC_STATE_ONLY;
--	} else if (strcmp(arg, "on") == 0) {
--		fw_devlink_flags = DL_FLAG_AUTOPROBE_CONSUMER;
--	} else if (strcmp(arg, "rpm") == 0) {
--		fw_devlink_flags = DL_FLAG_AUTOPROBE_CONSUMER |
--				   DL_FLAG_PM_RUNTIME;
+-	if (fw_devlink_flags && is_fwnode_dev &&
+-	    fwnode_has_op(dev->fwnode, add_links)) {
+-		fw_ret = fwnode_call_int_op(dev->fwnode, add_links, dev);
+-		if (fw_ret == -ENODEV && !fw_devlink_is_permissive())
+-			device_link_wait_for_mandatory_supplier(dev);
+-		else if (fw_ret)
+-			device_link_wait_for_optional_supplier(dev);
 -	}
--	return 0;
--}
--early_param("fw_devlink", fw_devlink_setup);
--
--u32 fw_devlink_get_flags(void)
--{
--	return fw_devlink_flags;
--}
--
--static bool fw_devlink_is_permissive(void)
--{
--	return fw_devlink_flags == DL_FLAG_SYNC_STATE_ONLY;
--}
--
- /**
-  * device_add - add device to device hierarchy.
-  * @dev: device.
++	if (is_fwnode_dev)
++		fw_devlink_link_device(dev);
+ 
+ 	bus_probe_device(dev);
+ 	if (parent)
 -- 
 2.26.2.761.g0e0b3e54be-goog
 
