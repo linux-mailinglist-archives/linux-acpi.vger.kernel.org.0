@@ -2,153 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D9E01D58EE
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 May 2020 20:19:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A25491D59F2
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 May 2020 21:25:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726234AbgEOSTS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 May 2020 14:19:18 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:58693 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726257AbgEOSTR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 May 2020 14:19:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589566755;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Fedn2inRka4QMAnXx9FxSm7/vZYS9uY++6sVEGlzAa0=;
-        b=FmfAuVh4QGkOpPgfhCFAuYt7jmv7Qagj1fzOAUyM01z8aAILrmmE7Ffn2dB4qTegdq1Shp
-        d/5G7ZCAVreovBNZmSD9zeIoqfER5+DTXru1T58BU9nfaNx7+GQTLlGXQU0xm81jmqojTk
-        ePaeUnUZj/WKqZMpPivCquDW6Q5eJEI=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-332-oqJ15Pk8N2GNU5bfGiJJfw-1; Fri, 15 May 2020 14:19:13 -0400
-X-MC-Unique: oqJ15Pk8N2GNU5bfGiJJfw-1
-Received: by mail-wm1-f72.google.com with SMTP id a67so1544941wme.6
-        for <linux-acpi@vger.kernel.org>; Fri, 15 May 2020 11:19:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Fedn2inRka4QMAnXx9FxSm7/vZYS9uY++6sVEGlzAa0=;
-        b=IoaUt0JGmevePabN0fLzFD/0ZcwOobxsaQdMhLiUux/C3UyNeewZr6osboaYYmBcqH
-         0qRp0K1w6cRfNc/8wy4IcxihtM3N6lok0yyJFTgtDgWgC+vSo6iO025mV2PnMKRuqJW9
-         tZ+CNY9lv9+3PJU2z5bczIDKjlSCM/a5p0+Xz979Shr4dncrgGJnIs3kcrCqYpOnHYky
-         qwEBdrgFWzpeDTsI6cNY5imQopMH2dPn/iPhWQTXK21syR5KG7du4e1+tMonWaFiF918
-         zCdPx5QEJ2yGcPdSbbW/dz1h4XOAWWENKP8HxIlzCa761wZiKThmm6ecWA8xI6Xq8OKn
-         oVag==
-X-Gm-Message-State: AOAM533DaUC8Q0RIv8YKGI5B79GGOfKS3Q+ZzNTO43V1Kw9VzIba7QSB
-        nlksANehZGIZ70Ele3gEEoXkeaFU+WHHvYa7GyVI7XNbjmlPqiys/139LATTTLmb4c0f4faVQDB
-        /EUKyduOJ+PE3hYGhEyXiCw==
-X-Received: by 2002:a1c:b406:: with SMTP id d6mr5299521wmf.89.1589566752682;
-        Fri, 15 May 2020 11:19:12 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwEhyZogIb52tbS8Sjh71yaPa5wKbVCzzV1bSu62tN2QyZWoHUXHTTKTerADtg5ez9J3v5UBw==
-X-Received: by 2002:a1c:b406:: with SMTP id d6mr5299458wmf.89.1589566752273;
-        Fri, 15 May 2020 11:19:12 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id a15sm4604338wrw.56.2020.05.15.11.19.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 May 2020 11:19:11 -0700 (PDT)
-Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        id S1726227AbgEOTZM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 May 2020 15:25:12 -0400
+Received: from mail-co1nam11on2127.outbound.protection.outlook.com ([40.107.220.127]:17505
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726206AbgEOTZL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 15 May 2020 15:25:11 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bVp7q8ciQiq5qYjk6frTtXyTljlvSvj49cfdg4MZmVYxmLEreHvbf4iDUKL959F6FCEor7x0ZWEu1yXJIW8yNVyGKEEZvOGj54akCq6CD0kNXCTtczUslW1IYb+Dk/gHYVXCdly6/mV5wx37rdtlO552z6DPDXyTjuJN5TPb4cPmCWnyaHPgA2dGcBmOw7cGcsTWcvSod/7nokJrirzgKH4xAJBmKQlcw9AIYb/R38GNCsH22dvEJ71zwOhl7jNHd/uMMLapGryJ4+nzTxjZyFLekiG1wwbStLGNgyoKJYA/ezQRsw9BFec0od8OGqhI87aWnwhw3/EpoIbrMwmEkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1OgmjdGF6wPU3xIv5703pTeMeMlxOsvo5ko1SpqQv4w=;
+ b=hCL3xVPGzWEZZ00xSDo/dU4NmicbLtIzIthT3l+BwrgxZoPZC8JoHrcqDXBHHTq7qkV6MOkuZLdxoVc2uFvkhcU2zVFyPlieWONjGB+2q8V5EWbXcupHwD9RZ/phdGGwdozIxzgJePnNjh79Zvba3PYkidd5qxs0wsL4euJJ0G4C11cfBgnJli/H7+yq+y+MrJUCBZpEEZnrhyV+Nrj4qxw+0gfK6voRaKYTi1ZzvxNYXe27u1tTUws1mUurmYYTy7d5fdoewZz1mVlh9fhDvpxeCPtICxt264Zz01XbTacpdKNZIBbIQg2bBMu9eigc7EFvoqTmovNo03GUtzJJ+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1OgmjdGF6wPU3xIv5703pTeMeMlxOsvo5ko1SpqQv4w=;
+ b=ICAlGijx9SzyihYJRmx+nznplHVJhmwkTJhQwC9zXPbHOXmQv/6ieRtzfdKKgCxLvoJfRLtTJf2SJwR2Ada8oWd7jHqSk2Fp0b6Nf3iozkNbS43VpR3auInUP6rcMJLZxq1Ef/GlXUWv1WyJMgzrgbkT3Jvbcn3K3n50S8fQCtI=
+Authentication-Results: amperecomputing.com; dkim=none (message not signed)
+ header.d=none;amperecomputing.com; dmarc=none action=none
+ header.from=os.amperecomputing.com;
+Received: from BYAPR01MB4598.prod.exchangelabs.com (2603:10b6:a03:8a::18) by
+ BYAPR01MB4133.prod.exchangelabs.com (2603:10b6:a03:5f::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2979.35; Fri, 15 May 2020 19:25:09 +0000
+Received: from BYAPR01MB4598.prod.exchangelabs.com
+ ([fe80::296c:b848:8bf0:6f2c]) by BYAPR01MB4598.prod.exchangelabs.com
+ ([fe80::296c:b848:8bf0:6f2c%5]) with mapi id 15.20.2979.033; Fri, 15 May 2020
+ 19:25:09 +0000
+From:   Tuan Phan <tuanphan@os.amperecomputing.com>
+Cc:     patches@amperecomputing.com,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
-        Benjamin Tissoires <btissoir@redhat.com>
-References: <20200506002746.GB89269@dtor-ws>
- <20200515164943.28480-1-andrzej.p@collabora.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
-Date:   Fri, 15 May 2020 20:19:10 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        Robin Murphy <robin.murphy@arm.com>,
+        Neil Leeder <nleeder@codeaurora.org>,
+        Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4] ACPI/IORT: Fix PMCG node single ID mapping handling.
+Date:   Fri, 15 May 2020 12:24:46 -0700
+Message-Id: <1589570686-5780-1-git-send-email-tuanphan@os.amperecomputing.com>
+X-Mailer: git-send-email 2.7.4
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR07CA0099.namprd07.prod.outlook.com
+ (2603:10b6:a03:12b::40) To BYAPR01MB4598.prod.exchangelabs.com
+ (2603:10b6:a03:8a::18)
 MIME-Version: 1.0
-In-Reply-To: <20200515164943.28480-1-andrzej.p@collabora.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from aptiov-dev-Latitude-E7470.amperecomputing.com (4.28.12.214) by BYAPR07CA0099.namprd07.prod.outlook.com (2603:10b6:a03:12b::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.3000.20 via Frontend Transport; Fri, 15 May 2020 19:25:08 +0000
+X-Mailer: git-send-email 2.7.4
+X-Originating-IP: [4.28.12.214]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 25de0aaf-faf7-4ea2-feb1-08d7f905ae31
+X-MS-TrafficTypeDiagnostic: BYAPR01MB4133:|BYAPR01MB4133:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BYAPR01MB41330246EE05BF334790C37CE0BD0@BYAPR01MB4133.prod.exchangelabs.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-Forefront-PRVS: 04041A2886
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Ve5j2odSFQStkdnDD427HAJfe7xXrOzhh+eX5o+rZj/qVtPOwbUd2hgYDXUp4BfQm1FSK52FEdM7iQmrTTClorKOjno+07TeuquZDuMpvzmerVAvyMeK2rFRO6KMrulrnBCMorG1zvfQGLzkWiAq7iSlEyQwdtb/Gwl697EhmW6owvq94867AJQJn0im5JXiVv+DKXfl4w+em2SAI6LWu8NkDBvMh9gXfqESWHZKoh9tNpkMllhJrsWmSszTGFtlUXfuKPYc5piOZr/VIh1y445pT+LeMzBxOh5f0y9qC+niE1dgKg+ZFoYvp+nMF9LMolnsuAwXcRIenh1Seerr0nsLCPieuVSrsF3rg8MfcDjxvJruELDbd7y/bYbLCEVngqSmiXLandO6q4ZeeXTW6esi78VojM91SfUXkRdlktAS7LqTH0LA6GbV5OjDgbeAOfCdGH2xOsfw3Cheztf5dAAJl3W49cSZxIRFS2plr2Y=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR01MB4598.prod.exchangelabs.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(346002)(376002)(136003)(366004)(39840400004)(396003)(66476007)(66556008)(6506007)(66946007)(2616005)(956004)(6512007)(8676002)(8936002)(54906003)(86362001)(2906002)(52116002)(478600001)(6486002)(186003)(316002)(5660300002)(4326008)(6666004)(26005)(7416002)(109986005)(16526019)(266003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: SZT5G/jjNtWL1vTY/TvZq4i18sOSTAxAXV8zBbzoTwUYGud8+DHQuK7vjPqK2CjDkoPU+xR67qzdV0woqyn9tiDJJBBJM/UndkpTJ52sTBxQhLw2BRi8q0suBAX9bWBARTP9oYLWOW/1pkVzzg12KO9Xy3tb5aM41Jda38h3FCBl4VCCMk4nH81IH0LeHwVFGIf5HrUI4tnD2xBGjXKzEbQLjVytHetBt8hthkIJMXgtQqkpL2GgqON7kTFMhr02CMauC3FTwbpRziADHxTopE1CyOXZ5bonyQa2fzRoWt/EGAP+38vYu8D6YQQhpCRROD7qAOwFsDk4Ygg7Ccmai4wA/KSyOGY4JP5wmAYjN2DeZojQXXAGgHOhX80laAoCgA8FxIlyoVYJTPOyVQui1iHg+9nocsBbYme1DwNtEUMnsJuEGW49wAGy45LViuwcvgh26BTA3Ys02sJRKJ0+Yoghp70C85PPgL4VuDgDXaM=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25de0aaf-faf7-4ea2-feb1-08d7f905ae31
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2020 19:25:09.3246
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6n0mAt0v9FUeiMPKM4KayAElpsXtHckuSB17w3IXkyeT/A3Su7SWOqFs8LBoKJj/Z0+frPTT33NO5Gp32IJxfYmFNDWgR3heWVCFY0Lz6AjRoLJeunkcFEKuWZ+r1Aew
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR01MB4133
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andrezj,
+An IORT PMCG node can have no ID mapping if its overflow interrupt is
+wire based therefore the code that parses the PMCG node can not assume
+the node will always have a single mapping present at index 0.
 
-On 5/15/20 6:49 PM, Andrzej Pietrasiewicz wrote:
-> Userspace might want to implement a policy to temporarily disregard input
-> from certain devices, including not treating them as wakeup sources.
-> 
-> An example use case is a laptop, whose keyboard can be folded under the
-> screen to create tablet-like experience. The user then must hold the laptop
-> in such a way that it is difficult to avoid pressing the keyboard keys. It
-> is therefore desirable to temporarily disregard input from the keyboard,
-> until it is folded back. This obviously is a policy which should be kept
-> out of the kernel, but the kernel must provide suitable means to implement
-> such a policy.
+Fix iort_get_id_mapping_index() by checking for an overflow interrupt
+and mapping count.
 
-Actually libinput already binds together (inside libinput) SW_TABLET_MODE
-generating evdev nodes and e.g. internal keyboards on devices with 360°
-hinges for this reason. libinput simply closes the /dev/input/event#
-node when folded and re-opens it when the keyboard should become active
-again. Thus not only suppresses events but allows e.g. touchpads to
-enter runtime suspend mode which saves power. Typically closing the
-/dev/input/event# node will also disable the device as wakeup source.
+Fixes: 24e516049360 ("ACPI/IORT: Add support for PMCG").
 
-So I wonder what this series actually adds for functionality for
-userspace which can not already be achieved this way?
+Acked-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Reviewed-by: Hanjun Guo <guoahanjun@huawei.com>
+Signed-off-by: Tuan Phan <tuanphan@os.amperecomputing.com>
+---
+v1 -> v2:
+- Use pmcg node to detect wired base overflow interrupt.
 
-I also noticed that you keep the device open (do not call the
-input_device's close callback) when inhibited and just throw away
-any events generated. This seems inefficient and may lead to
-the internal state getting out of sync. What if a key is pressed
-while inhibited and then the device is uninhibited while the key
-is still pressed?  Now the press event is lost and userspace
-querying the current state will see the pressed key as being
-released.
+v2 -> v3:
+- Address Hanjun and Robin's comments.
 
-On top of this you add special inhibit and uninhibit callbacks
-and implement those for just a few devices. How do these differ
-from just closing the device and later opening it again ?
+v3 -> v4:
+- Update the title and description as mentioned by Lorenzo.
 
-Also using a sysfs property for this is very weird given that the
-rest of the evdev interface is using ioctls for everything...
+ drivers/acpi/arm64/iort.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-So all in all I see a lot of question marks here and I think we
-need to have a detailed discussion about what use-cases this
-series tries to enable before moving forward with this.
-
-Regards,
-
-Hans
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index ed3d2d1..12bb70e 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -414,6 +414,7 @@ static struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
+ static int iort_get_id_mapping_index(struct acpi_iort_node *node)
+ {
+ 	struct acpi_iort_smmu_v3 *smmu;
++	struct acpi_iort_pmcg *pmcg;
+ 
+ 	switch (node->type) {
+ 	case ACPI_IORT_NODE_SMMU_V3:
+@@ -441,6 +442,10 @@ static int iort_get_id_mapping_index(struct acpi_iort_node *node)
+ 
+ 		return smmu->id_mapping_index;
+ 	case ACPI_IORT_NODE_PMCG:
++		pmcg = (struct acpi_iort_pmcg *)node->node_data;
++		if (pmcg->overflow_gsiv || node->mapping_count == 0)
++			return -EINVAL;
++
+ 		return 0;
+ 	default:
+ 		return -EINVAL;
+-- 
+2.7.4
 
