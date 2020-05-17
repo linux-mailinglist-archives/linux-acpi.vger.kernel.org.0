@@ -2,106 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D10F21D64AB
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 May 2020 01:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 792081D680A
+	for <lists+linux-acpi@lfdr.de>; Sun, 17 May 2020 14:58:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726729AbgEPXRi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 16 May 2020 19:17:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60150 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726707AbgEPXRh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 16 May 2020 19:17:37 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAA81C061A0C
-        for <linux-acpi@vger.kernel.org>; Sat, 16 May 2020 16:17:37 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id j8so6656046iog.13
-        for <linux-acpi@vger.kernel.org>; Sat, 16 May 2020 16:17:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=sHKDXXFmKLefk7ouUJEbUpV3R1SbP7mtwMpt76UA+DA=;
-        b=s8E5zFCoME+AWnWQ1J4M3VSxmCJML8PXYlskJWbHdGKlryZT/CilMcPRbZZIz2ARMv
-         L3eVktEB+jXyOM9Xy7sKOJaiGSnHZ7c1YJvHua0xd2DQ2m7SL9TODGnW27DhmyOuucEP
-         JA7ZLTwQtvot4TPOSnLIUeHBQ4Oxs5t7L2R5Nd4D1gUMe2bg1TFoXKrubyZ2xOMpNGiI
-         4Wvjbx9fsSfxZ8E7yptyEmWHpsGiE3EMOdedCU/oMpVXbyo2JpAc/EeH1FnVTWVNDhr+
-         M1t75/CZ1h2xewJ4VdZ5Flf+UQK7DNFHeJil4NMvqVZ0TfR6V0C5nMcR0bqsBzlK0sJ2
-         BYkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=sHKDXXFmKLefk7ouUJEbUpV3R1SbP7mtwMpt76UA+DA=;
-        b=tjR/ETy8PpaM0qZ47uTi+p4rEPfBR0ZtgzR1dAWaXKEzV9O3Cm19xZdcBUYsVyOwBy
-         LniIfDjQNtHRLQvR963k/JzjrTNOK9tt+rBTBFOHCqWcbWFPuqDZbQeIK2Ir8m0IIJfC
-         dXJX/pIc3dmJQbSDk6ZQYBzjXsQKGHVTVkEvJCf5YiWLxi+Tznq5mHzvHAiXGr712FOG
-         R9XYXKCCqK3KVKZ1//BBZU8Y/tW5yV4Z9Gj4gV6cY8suDtmblzObHMHwt1vbdkKdG+d4
-         D6CsNRIktYYJHn2hzwLCKauNSa5l+wz4J78qcBkl4GDy2er5bZZHOGe2xyTxEK1QCi5Y
-         fLrQ==
-X-Gm-Message-State: AOAM533+PsLpTwD18HiwPrzrKLwxgrFR1vJiZUf09+vwuhul44do5a2g
-        TIYeBZ1mlgw4tYMn59ELFE+y7DFRfWRQzlhV3xE=
-X-Google-Smtp-Source: ABdhPJxeP/3wcUU1wntaTSC/EHKwepqrnr9o1DhSp8wPnBWXWbVGlKjL68FWet+gfdELxviwBhpPbm58FhHaBijyEzw=
-X-Received: by 2002:a6b:8e15:: with SMTP id q21mr4044955iod.107.1589671056846;
- Sat, 16 May 2020 16:17:36 -0700 (PDT)
+        id S1727983AbgEQM6b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 17 May 2020 08:58:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51284 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727893AbgEQM6b (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 17 May 2020 08:58:31 -0400
+Received: from e123331-lin.nice.arm.com (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 893D2204EC;
+        Sun, 17 May 2020 12:58:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589720310;
+        bh=Rnx4PKhR9N7HkKTSbEqSZqvHuX0lxDTfH9izm/bufok=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Z1lNhALMlTRK79px1LZ6rb2gyoKcocn1rIV58uSDYBbpgE79hr5mnBXqHehXzpgHt
+         s/bJpD3kj1GSAwTcI6SPg3CueSZwZFexx4TMGY01zm1FScj4seBbFyb/k1oAe30CLd
+         6XA77dQaVezUibpC0eDvv6aLgKghbd2ZXP40wq6Y=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Benjamin Thiel <b.thiel@posteo.de>,
+        Borislav Petkov <bp@alien8.de>, Dave Young <dyoung@redhat.com>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Lenny Szubowicz <lszubowi@redhat.com>,
+        linux-acpi@vger.kernel.org, Loic Yhuel <loic.yhuel@gmail.com>,
+        Matthew Garrett <mjg59@google.com>,
+        Mike Lothian <mike@fireburn.co.uk>,
+        Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+Subject: [GIT PULL 0/7] EFI fixes for v5.7
+Date:   Sun, 17 May 2020 14:57:47 +0200
+Message-Id: <20200517125754.8934-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Received: by 2002:a02:dc5:0:0:0:0:0 with HTTP; Sat, 16 May 2020 16:17:36 -0700 (PDT)
-From:   Hannah Wilson <hannahwilson192@gmail.com>
-Date:   Sat, 16 May 2020 23:17:36 +0000
-X-Google-Sender-Auth: FY3GASFWyZAZUH0ETaL754ggMG0
-Message-ID: <CAEB4LwtuecRWiE7D-e1dquEv2hm8w40foTJUkpOdiCkGzL5Psw@mail.gmail.com>
-Subject: please i really need your urgent assistance.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello My Dear.
+The following changes since commit a088b858f16af85e3db359b6c6aaa92dd3bc0921:
 
-Please do not feel disturbed for contacting =C2=A0you in this regards, It
-was based on the critical health condition I find mine self. =C2=A0My names
- are Mrs. Hannah Wilson David, a widow and I=E2=80=99m suffering from brain
-tumor disease and this illness has gotten to a very bad stage, I
- married my husband for Ten years without any family members and no
-child. =C2=A0My husband died after a brief illness that lasted for few
-days.
+  efi/x86: Revert struct layout change to fix kexec boot regression (2020-04-14 08:32:17 +0200)
 
-Since the death of my husband, I decided not to remarry again, When my
-late husband was alive he deposited the sum of =C2=A0($  11,450,000.00,
-Nine Million Four Hundred and Fifty Thousand Dollars) with the Bank.
-Presently this money is still in bank. And My  Doctor told me that I
-don't have much time to live because my illness has gotten to a very
-bad stage, Having known my condition I  decided to entrust over the
-deposited fund under your custody to take care of the less-privileged
-ones therein your country or position,
-which i believe that you will utilize this money the way I am going to
-instruct herein.
+are available in the Git repository at:
 
-However all I need and required from you is your sincerity and ability
-to carry out the transaction successfully and fulfill my final wish in
-implementing the charitable project as it requires absolute trust and
-devotion without any failure and I will be glad to see that the bank
-finally release and transfer the fund into your bank account in your
-country even before I die here in the hospital, because my present
-health condition is very critical at the moment everything needs to be
-process rapidly as soon as possible.
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent
 
-It will be my pleasure to compensate you as my Investment
-Manager/Partner with 35 % percent of the total fund for your effort in
- handling the transaction, 5 % percent for any expenses or processing
-charges fee that will involve during this process while 60% of the
-fund will be Invested into the charity project there in your country
-for the mutual benefit of the orphans and the less privileges ones.
+for you to fetch changes up to b4f1874c62168159fdb419ced4afc77c1b51c475:
 
-Meanwhile I am waiting for your prompt respond, if only you are
-interested for further details of the transaction and execution of
-this  humanitarian project for the glory and honor of God the merciful
-compassionate.
+  tpm: check event log version before reading final events (2020-05-17 11:46:50 +0200)
 
-May bless you and your family.
-Regards,
-Mrs. Hannah Wilson David.
-written from Hospital.
+----------------------------------------------------------------
+EFI fixes for v5.7-rcX:
+- fix EFI framebuffer earlycon for wide fonts
+- avoid filling screen_info with garbage if the EFI framebuffer is not
+  available
+- fix a potential host tool build error due to a symbol clash on x86
+- work around a EFI firmware bug regarding the binary format of the TPM
+  final events table
+- fix a missing memory free by reworking the E820 table sizing routine to
+  not do the allocation in the first place
+- add CPER parsing for firmware errors
+
+----------------------------------------------------------------
+Arvind Sankar (1):
+      x86/boot: Mark global variables as static
+
+Benjamin Thiel (1):
+      efi: Pull up arch-specific prototype efi_systab_show_arch()
+
+Dave Young (1):
+      efi/earlycon: Fix early printk for wider fonts
+
+Heinrich Schuchardt (1):
+      efi/libstub: Avoid returning uninitialized data from setup_graphics()
+
+Lenny Szubowicz (1):
+      efi/libstub/x86: Avoid EFI map buffer alloc in allocate_e820()
+
+Loïc Yhuel (1):
+      tpm: check event log version before reading final events
+
+Punit Agrawal (1):
+      efi: cper: Add support for printing Firmware Error Record Reference
+
+ arch/x86/boot/tools/build.c             | 16 ++++-----
+ drivers/firmware/efi/cper.c             | 62 +++++++++++++++++++++++++++++++++
+ drivers/firmware/efi/earlycon.c         | 14 ++++----
+ drivers/firmware/efi/efi.c              |  5 +--
+ drivers/firmware/efi/libstub/arm-stub.c |  6 +++-
+ drivers/firmware/efi/libstub/efistub.h  | 13 +++++++
+ drivers/firmware/efi/libstub/mem.c      |  2 --
+ drivers/firmware/efi/libstub/tpm.c      |  5 +--
+ drivers/firmware/efi/libstub/x86-stub.c | 24 +++++--------
+ drivers/firmware/efi/tpm.c              |  5 ++-
+ include/linux/cper.h                    |  9 +++++
+ include/linux/efi.h                     |  2 ++
+ 12 files changed, 124 insertions(+), 39 deletions(-)
