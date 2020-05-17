@@ -2,127 +2,185 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CAB91D6823
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 May 2020 14:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDFB21D6DE8
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 00:55:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728111AbgEQM7C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 17 May 2020 08:59:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52090 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728035AbgEQM7C (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 17 May 2020 08:59:02 -0400
-Received: from e123331-lin.nice.arm.com (amontpellier-657-1-18-247.w109-210.abo.wanadoo.fr [109.210.65.247])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 57FEC204EC;
-        Sun, 17 May 2020 12:58:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589720341;
-        bh=K4bW9SUbhJFwMKYXQlU1RiO8Sw6g6tGuIMcVLffkWtQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=18z8pliLqz4DFmOz9J9BnY3COarwmndS4ufpOhNNlGWHJCAL/O4I7tbGdc2Jqp+ZI
-         pgolYbCZG9MVlLz39aLLLZhL+JouD7SH2Ot+n3aAMdbFCzoGMCnYl0bo08ZcGA8dH/
-         n9BOSSHYbE9UG3DOTmMwS9ZeZ1+iEdFHrtjsW794=
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Benjamin Thiel <b.thiel@posteo.de>,
-        Borislav Petkov <bp@alien8.de>, Dave Young <dyoung@redhat.com>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Lenny Szubowicz <lszubowi@redhat.com>,
-        linux-acpi@vger.kernel.org, Loic Yhuel <loic.yhuel@gmail.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Mike Lothian <mike@fireburn.co.uk>,
-        Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-Subject: [PATCH 7/7] tpm: check event log version before reading final events
-Date:   Sun, 17 May 2020 14:57:54 +0200
-Message-Id: <20200517125754.8934-8-ardb@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200517125754.8934-1-ardb@kernel.org>
-References: <20200517125754.8934-1-ardb@kernel.org>
+        id S1726602AbgEQWza (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 17 May 2020 18:55:30 -0400
+Received: from new1-smtp.messagingengine.com ([66.111.4.221]:51479 "EHLO
+        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726591AbgEQWza (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 17 May 2020 18:55:30 -0400
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.47])
+        by mailnew.nyi.internal (Postfix) with ESMTP id CC413580135;
+        Sun, 17 May 2020 18:55:28 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute7.internal (MEProxy); Sun, 17 May 2020 18:55:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=who-t.net; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:content-transfer-encoding:in-reply-to; s=fm3; bh=Y
+        +ufOws1a8u4D45GLH8cH2b31BsgtOeXytbtlxDEocM=; b=aPVWima/CN66WHQAx
+        47LyH7yzmfyS/tYoEugzowuOejurfEf25wMuCGi6JZkDr2t44zPE036AZNeuwG0J
+        FEQGMVL2y94x1VNUOxsYkeucRKO/RwVF3u5w+B63dA/XmjolvLrEMvBRAH63598X
+        o7OZ6VhWVp8mdiBADj+/sipkcIgQRZGwvoZd2vWfazAvq8qFoI8NZ+5aa7LwHI5P
+        cc1ps8eBFCtIH/BliSyQU2QQCAqj/uFU+kQlegb97VLuQvHJ+o0kFfUvoNygurl2
+        Y47hnCZFEvy3DR32+E/yGESNhmI0wt/lPAWbkSP9e2HVOImbORZR5SEvdS4bvYiJ
+        5gQHw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:from:in-reply-to:message-id:mime-version:references
+        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; bh=Y+ufOws1a8u4D45GLH8cH2b31BsgtOeXytbtlxDEo
+        cM=; b=ZR5j8MZ589WoZH8nR/THxh86gHJSfZA+ze9OIaMEyi+OLO45glLz67cLJ
+        jjTjkeY85XmC7WsMkCBiAUAaRse7aSuEDXqfrxsfUDvSqX0BgRO8ordnEczKMgMx
+        xmT88P4Le9zx96m2WJDyG20L3XSLxs7IuE0UHR9B3Cw2EDjwrZfE2jCUiH7wahSe
+        0zi+By0KB2tia5/d/oV2LrHWQWYOldmid9h75SVJhd5rZwGaMBkZ3FoH/S5fc1Oh
+        FtPKfptHAa57rS+Kik2ADBfC+Xb8Ogn/qd7Vy4WVzsXOUjHsi7xEQu+qjnEzmjrE
+        ToICGnKu94IAXS077azAzvtuFi2Bg==
+X-ME-Sender: <xms:3cDBXjtZRBKleY1vDtazOehQUmWjyppvULxnyhzYK_WMUS0yBMoUzw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedruddtgedgudegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtugfgjgesthekredttddtudenucfhrhhomheprfgvthgv
+    rhcujfhuthhtvghrvghruceophgvthgvrhdrhhhuthhtvghrvghrseifhhhoqdhtrdhnvg
+    htqeenucggtffrrghtthgvrhhnpefhgeevfefhkefgudekffegfeekveeuleeuieeutdfg
+    jeeiieegkeejudfggfdtkeenucfkphepuddujedrvddtrdejuddruddtleenucevlhhush
+    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehpvghtvghrrdhhuhht
+    thgvrhgvrhesfihhohdqthdrnhgvth
+X-ME-Proxy: <xmx:3cDBXkccn-PNipkl64wwUbHDk5rDibutmBWNyFiU-2cHnX9gK4nfAg>
+    <xmx:3cDBXmws-3jvJV16csSKRSO4K_zD82Ot6irFlUTdpseVs6WPWWZoIw>
+    <xmx:3cDBXiNeTg1Zpp6ZrSfytXuMu3q169TdbKy0eVbt1rBZybs3K-op-w>
+    <xmx:4MDBXpxeXAoX8iisBna-URpxZMHuVswcVTvIMVC9KWFH54_Mfr9_1Q>
+Received: from koala (117-20-71-109.751447.bne.nbn.aussiebb.net [117.20.71.109])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 050AE328005A;
+        Sun, 17 May 2020 18:55:14 -0400 (EDT)
+Date:   Mon, 18 May 2020 08:55:10 +1000
+From:   Peter Hutterer <peter.hutterer@who-t.net>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
+        Benjamin Tissoires <btissoir@redhat.com>
+Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
+Message-ID: <20200517225510.GA205823@koala>
+References: <20200506002746.GB89269@dtor-ws>
+ <20200515164943.28480-1-andrzej.p@collabora.com>
+ <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Loic Yhuel <loic.yhuel@gmail.com>
+On Fri, May 15, 2020 at 08:19:10PM +0200, Hans de Goede wrote:
+> Hi Andrezj,
+> 
+> On 5/15/20 6:49 PM, Andrzej Pietrasiewicz wrote:
+> > Userspace might want to implement a policy to temporarily disregard input
+> > from certain devices, including not treating them as wakeup sources.
+> > 
+> > An example use case is a laptop, whose keyboard can be folded under the
+> > screen to create tablet-like experience. The user then must hold the laptop
+> > in such a way that it is difficult to avoid pressing the keyboard keys. It
+> > is therefore desirable to temporarily disregard input from the keyboard,
+> > until it is folded back. This obviously is a policy which should be kept
+> > out of the kernel, but the kernel must provide suitable means to implement
+> > such a policy.
+> 
+> Actually libinput already binds together (inside libinput) SW_TABLET_MODE
+> generating evdev nodes and e.g. internal keyboards on devices with 360∞
+> hinges for this reason. libinput simply closes the /dev/input/event#
+> node when folded and re-opens it when the keyboard should become active
+> again. Thus not only suppresses events but allows e.g. touchpads to
+> enter runtime suspend mode which saves power. Typically closing the
+> /dev/input/event# node will also disable the device as wakeup source.
+> 
+> So I wonder what this series actually adds for functionality for
+> userspace which can not already be achieved this way?
 
-This fixes the boot issues since 5.3 on several Dell models when the TPM
-is enabled. Depending on the exact grub binary, booting the kernel would
-freeze early, or just report an error parsing the final events log.
+Thanks Hans. To expand on this:
+libinput has heuristics to guess which input devices (keyboards, touchpads)
+are built-in ones. When the tablet mode switch is on, we disable these
+devices internally (this is not visible to callers), and re-enable it again
+later when the tablet mode switch is off again.
 
-We get an event log in the SHA-1 format, which doesn't have a
-tcg_efi_specid_event_head in the first event, and there is a final events
-table which doesn't match the crypto agile format.
-__calc_tpm2_event_size reads bad "count" and "efispecid->num_algs", and
-either fails, or loops long enough for the machine to be appear frozen.
+This is done for keyboards and touchpads atm (and I think pointing sticks)
+and where the heuristics fail we have extra quirks in place. For example
+the Lenovo Yogas tend to disable the keyboard mechanically in tablet mode
+but buttons (e.g. volume keys) around the screen send events through the
+same event node. So on those devices we don't disable the keyboard.
 
-So we now only parse the final events table, which is per the spec always
-supposed to be in the crypto agile format, when we got a event log in this
-format.
+We've had this code for a few years now and the only changes to it have been
+the various device quirks for devices that must not suspend the keyboard,
+it's otherwise working as expected.
 
-Fixes: c46f3405692de ("tpm: Reserve the TPM final events table")
-Fixes: 166a2809d65b2 ("tpm: Don't duplicate events from the final event log in the TCG2 log")
-Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=1779611
-Signed-off-by: Lo√Øc Yhuel <loic.yhuel@gmail.com>
-Link: https://lore.kernel.org/r/20200512040113.277768-1-loic.yhuel@gmail.com
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Reviewed-by: Matthew Garrett <mjg59@google.com>
-[ardb: warn when final events table is missing or in the wrong format]
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/tpm.c | 5 +++--
- drivers/firmware/efi/tpm.c         | 5 ++++-
- 2 files changed, 7 insertions(+), 3 deletions(-)
+If we ever have a device where we need to disable parts of the keyboard
+only, we could address this with EVIOCSMASK but so far that hasn't been
+necessary.
 
-diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
-index 1d59e103a2e3..e9a684637b70 100644
---- a/drivers/firmware/efi/libstub/tpm.c
-+++ b/drivers/firmware/efi/libstub/tpm.c
-@@ -54,7 +54,7 @@ void efi_retrieve_tpm2_eventlog(void)
- 	efi_status_t status;
- 	efi_physical_addr_t log_location = 0, log_last_entry = 0;
- 	struct linux_efi_tpm_eventlog *log_tbl = NULL;
--	struct efi_tcg2_final_events_table *final_events_table;
-+	struct efi_tcg2_final_events_table *final_events_table = NULL;
- 	unsigned long first_entry_addr, last_entry_addr;
- 	size_t log_size, last_entry_size;
- 	efi_bool_t truncated;
-@@ -127,7 +127,8 @@ void efi_retrieve_tpm2_eventlog(void)
- 	 * Figure out whether any events have already been logged to the
- 	 * final events structure, and if so how much space they take up
- 	 */
--	final_events_table = get_efi_config_table(LINUX_EFI_TPM_FINAL_LOG_GUID);
-+	if (version == EFI_TCG2_EVENT_LOG_FORMAT_TCG_2)
-+		final_events_table = get_efi_config_table(LINUX_EFI_TPM_FINAL_LOG_GUID);
- 	if (final_events_table && final_events_table->nr_events) {
- 		struct tcg_pcr_event2_head *header;
- 		int offset;
-diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-index 31f9f0e369b9..0543fbf60222 100644
---- a/drivers/firmware/efi/tpm.c
-+++ b/drivers/firmware/efi/tpm.c
-@@ -62,8 +62,11 @@ int __init efi_tpm_eventlog_init(void)
- 	tbl_size = sizeof(*log_tbl) + log_tbl->size;
- 	memblock_reserve(efi.tpm_log, tbl_size);
- 
--	if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR)
-+	if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR ||
-+	    log_tbl->version != EFI_TCG2_EVENT_LOG_FORMAT_TCG_2) {
-+		pr_warn(FW_BUG "TPM Final Events table missing or invalid\n");
- 		goto out;
-+	}
- 
- 	final_tbl = early_memremap(efi.tpm_final_log, sizeof(*final_tbl));
- 
--- 
-2.17.1
+I agree with Hans, right now I don't see the usefulness of this new sysfs
+toggle. For it to be really useful you'd have to guarantee that it's
+available for 100% of the devices and that's IMO unlikely to happen.
 
+Cheers,
+   Peter
+
+> I also noticed that you keep the device open (do not call the
+> input_device's close callback) when inhibited and just throw away
+> any events generated. This seems inefficient and may lead to
+> the internal state getting out of sync. What if a key is pressed
+> while inhibited and then the device is uninhibited while the key
+> is still pressed?  Now the press event is lost and userspace
+> querying the current state will see the pressed key as being
+> released.
+> 
+> On top of this you add special inhibit and uninhibit callbacks
+> and implement those for just a few devices. How do these differ
+> from just closing the device and later opening it again ?
+> 
+> Also using a sysfs property for this is very weird given that the
+> rest of the evdev interface is using ioctls for everything...
+> 
+> So all in all I see a lot of question marks here and I think we
+> need to have a detailed discussion about what use-cases this
+> series tries to enable before moving forward with this.
+> 
+> Regards,
+> 
+> Hans
+> 
