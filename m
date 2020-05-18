@@ -2,91 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B4011D7FF2
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 19:20:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9677A1D83E7
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 20:08:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728280AbgERRUg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 May 2020 13:20:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56470 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727020AbgERRUg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 May 2020 13:20:36 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D277EC05BD0A
-        for <linux-acpi@vger.kernel.org>; Mon, 18 May 2020 10:20:35 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id e10so9152369edq.0
-        for <linux-acpi@vger.kernel.org>; Mon, 18 May 2020 10:20:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GgTcEd+caanrx1t1o1gL/Ypc50CeCw/F8i23bYyVrUw=;
-        b=PuiVlzFghkrRKLS1pILHxv+676poFWDYeHwwBLU2TzTknD+dFYLk0xk+5TDy5pgW64
-         qhuwEWP7J2W6vsJz9bxByoo2dcZ36iMpyHBw7XLV0g5MUF4S816ICg1DZOwDObAlCM3l
-         jlS2qNoPNiw16Z9LbJPF9al5A655ElOJAWZCiLcMB/bVFyCP105iTKNVuysDuncWhyKd
-         BhtMjOTMlylTNZO9ZnTXwTC3GcHLAoPHCQ+Rc0wCdFGDFSgZbzPR0IlAhtNd6yFRaXUC
-         QFTeTJBaBJG91RBZss95qPo8+kfKyS7kah/YxohaMXsSe2dPgCxaCsSp+E0yeuj4kHg4
-         cGjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GgTcEd+caanrx1t1o1gL/Ypc50CeCw/F8i23bYyVrUw=;
-        b=hL7XJk345mJcoQD43/i/Fb37rj4tzG7r2Wp7oGPCffOCyklcvumr+SA11KjeZwwzW7
-         qJQWd6Qz9RBRC26SfhU29LzJEVHAzXrsHCFOFlz1uciltaCh5Ebhxyrs1Mq7EdnPIFy+
-         OcKeVTRHhUVpXfgxixlLKemYf9Q9jDB+42BPyXYv1YX/E2IcYrkQI7Z46ds9gCh82mbd
-         B0rbLeNdoPMu4Cm/88dasxwJ07QwI4Lgj4XGMablBzKl0UwZEmZtDXZqpzKnnLEhqwFN
-         epD8qB9/faGHDlPc96ewfGhEqpfujUtPpc8KrqUBBweVFG6lxD9C/mj7328kd//pZPwi
-         hNjg==
-X-Gm-Message-State: AOAM532r7N5VWyEamhAqZXctkCUP1BB5smor2Zo8wcj5lIVyAfStiiRj
-        2TFpIS23xebaExbK7hm+tvDLg5dvgM5ilFFAgONI+g==
-X-Google-Smtp-Source: ABdhPJz5bmBALzw+D9Jia6d4zvkIV02xWwFo/oM2e8pEt1WN25M6AUsNVPV+EY0iKhYAw1fQk4Bl1vsVwJ4nmUApjn8=
-X-Received: by 2002:a05:6402:1c1e:: with SMTP id ck30mr14064996edb.154.1589822434411;
- Mon, 18 May 2020 10:20:34 -0700 (PDT)
+        id S2387491AbgERSIX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 May 2020 14:08:23 -0400
+Received: from foss.arm.com ([217.140.110.172]:46554 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732579AbgERSIW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 18 May 2020 14:08:22 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1230E101E;
+        Mon, 18 May 2020 11:08:21 -0700 (PDT)
+Received: from [192.168.0.14] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D701B3F305;
+        Mon, 18 May 2020 11:08:18 -0700 (PDT)
+Subject: Re: [ACPI] b13663bdf9:
+ BUG:sleeping_function_called_from_invalid_context_at_kernel/locking/mutex.c
+To:     Dan Williams <dan.j.williams@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc:     kernel test robot <rong.a.chen@intel.com>,
+        stable <stable@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-nvdimm <linux-nvdimm@lists.01.org>, lkp@lists.01.org,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Huang, Ying" <ying.huang@intel.com>
+References: <20200511090034.GX5770@shao2-debian>
+ <440dae1b-9146-0bc3-e8f2-bd3cb3aa89bb@intel.com>
+ <CAPcyv4jKZp2bOZZ+ZMrcbFw9fPzeDu8waqwG6mBVpWwGq2DGtw@mail.gmail.com>
+From:   James Morse <james.morse@arm.com>
+Message-ID: <438c1743-5c8a-287d-3f97-e4a451ae8027@arm.com>
+Date:   Mon, 18 May 2020 19:08:17 +0100
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <20200428003214.3764-1-david.e.box@linux.intel.com>
- <20200428051312.GB17146@lst.de> <de052d30cc881ac67f9410b50b0760ee5bf9a623.camel@linux.intel.com>
- <20200428142247.GB5439@lst.de> <de2d78556fcb10f97364201256ac8f342a58eb75.camel@linux.intel.com>
- <296064bbcf702744bf603932c9d849307db2e5b7.camel@intel.com> <b0ca81f973ba55a2d6a8c84bc00f2324bad64f30.camel@infradead.org>
-In-Reply-To: <b0ca81f973ba55a2d6a8c84bc00f2324bad64f30.camel@infradead.org>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Mon, 18 May 2020 10:20:23 -0700
-Message-ID: <CAPcyv4hE6iW3MwW=qybN8aXN4wHJ7R2OCDCUEw9FdKu4NeZ6iw@mail.gmail.com>
-Subject: Re: [PATCH 0/2] Add support for StorageD3Enable _DSD property
-To:     David Woodhouse <dwmw2@infradead.org>
-Cc:     "hch@lst.de" <hch@lst.de>,
-        "david.e.box@linux.intel.com" <david.e.box@linux.intel.com>,
-        "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-        "sagi@grimberg.me" <sagi@grimberg.me>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "axboe@fb.com" <axboe@fb.com>,
-        "kbusch@kernel.org" <kbusch@kernel.org>,
-        "bhelgaas@google.com" <bhelgaas@google.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAPcyv4jKZp2bOZZ+ZMrcbFw9fPzeDu8waqwG6mBVpWwGq2DGtw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 18, 2020 at 6:52 AM David Woodhouse <dwmw2@infradead.org> wrote:
->
-> On Wed, 2020-04-29 at 05:20 +0000, Williams, Dan J wrote:
-> > The *patch* is not trying to overrule NVME, and the best I can say is
-> > that the Intel Linux team was not in the loop when this was being
-> > decided between the platform BIOS implemenation and  whomever  thought
-> > they could just publish random ACPI properties that impacted NVME
-> > operation [1].
-> >
-> > So now David is trying to get these platform unbroken because they are
-> > already shipping with this b0rkage.
->
-> This is what we have WARN_TAINT() for though, right? It can suitably
-> warn users when such breakage is detected in the platform.
->
+Hi guys,
 
-I see WARN_TAINT() as "BIOS implemented its specification wrong". This
-case is BIOS "implemented a mechanism in the wrong specification".
+On 12/05/2020 19:05, Dan Williams wrote:
+> On Tue, May 12, 2020 at 9:28 AM Rafael J. Wysocki
+> <rafael.j.wysocki@intel.com> wrote:
+>> Dan,
+>>
+>> Has this been addressed in the v2?
+> 
+> No, this looks like a case I was concerned about, i.e. the GHES code
+> is not being completely careful to avoid calling potentially sleeping
+> functions with interrupts disabled. There is the nice comment that
+> indicates that the fixmap should be used when ghes_notify_lock_irq()
+> is held, but there seems to be no infrastructure to use / divert to
+> the fixmap in the ghes_proc() path.
+
+ghes_map()/ghes_unmap() use the fixmap for reading the firmware provided records,
+but this came through apei_read(), which claims to be IRQ and NMI safe...
+
+
+> That needs to be reworked first.
+> It seems the implementation was getting lucky before to hit the cached
+> acpi_ioremap in this path under rcu_read_lock(), but it appears it
+> should have always been using the fixmap. Ying, James, is my read
+> correct?
+
+The path through this thing is pretty tortuous: The static HEST contains the address of
+the pointer that firmware updates to point to CPER records when they are generated. This
+pointer might be static (records are always in the same place), it might not.
+
+The address in the tables is static. ghes.c maps it in ghes_new():
+|	rc = apei_map_generic_address(&generic->error_status_address);
+
+which happens before the ghes_add_timer()/request_irq()/ghes_nmi_add() stuff, so we should
+always use the existing mapping.
+
+__ghes_peek_estatus() reads the pointer with apei_read(), which should use the mapping
+from ghes_new(), then uses ghes_copy_tofrom_phys() which uses the fixmap to read the CPER
+records.
+
+
+Does apei_map_generic_address() no longer keep the GAR/address mapped?
+(also possible I've totally mis-understood how ACPIs caching of mappings works!)
+
+
+Thanks,
+
+James
