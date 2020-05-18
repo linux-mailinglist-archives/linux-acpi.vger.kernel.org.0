@@ -2,30 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B48681D78B2
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 14:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24A151D78C8
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 14:40:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727076AbgERMeh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 May 2020 08:34:37 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:55816 "EHLO
+        id S1726854AbgERMkw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 May 2020 08:40:52 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:62696 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726800AbgERMeh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 May 2020 08:34:37 -0400
+        with ESMTP id S1726739AbgERMkw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 May 2020 08:40:52 -0400
 Received: from 89-64-86-21.dynamic.chello.pl (89.64.86.21) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
- id 240662dfe3aa87da; Mon, 18 May 2020 14:34:34 +0200
+ id 0d093ed2be4aae80; Mon, 18 May 2020 14:40:50 +0200
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     "David E. Box" <david.e.box@linux.intel.com>
-Cc:     lenb@kernel.org, bhelgaas@google.com, kbusch@kernel.org,
-        axboe@fb.com, hch@lst.de, sagi@grimberg.me,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH 1/2] pci: Add ACPI StorageD3Enable _DSD support
-Date:   Mon, 18 May 2020 14:34:33 +0200
-Message-ID: <1967525.XL736rHnAO@kreacher>
-In-Reply-To: <20200428003214.3764-2-david.e.box@linux.intel.com>
-References: <20200428003214.3764-1-david.e.box@linux.intel.com> <20200428003214.3764-2-david.e.box@linux.intel.com>
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Cc:     linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Len Brown <lenb@kernel.org>, kernel@collabora.com
+Subject: Re: [PATCHv2 3/7] ACPI: button: Use input_device_enabled() helper
+Date:   Mon, 18 May 2020 14:40:45 +0200
+Message-ID: <1834268.b3YDLlcz4u@kreacher>
+In-Reply-To: <20200515165327.29212-1-andrzej.p@collabora.com>
+References: <20200515164943.28480-1-andrzej.p@collabora.com> <20200515165327.29212-1-andrzej.p@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -34,111 +31,55 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tuesday, April 28, 2020 2:32:13 AM CEST David E. Box wrote:
-> NVMe storage power management during suspend-to-idle, particularly on
-> laptops, has been inconsistent with some devices working with D3 while
-> others must rely on NVMe APST in order for power savings to be realized.
-> Currently the default is to use APST unless quirked to do otherwise.
-> However newer platforms, like Intel Comet Lake systems, may require NVMe
-> drives to use D3 in order for the PCIe ports to be properly power managed.
-> To make it easier for drivers to choose, these platforms may supply a
-> special "StorageD3Enable" _DSD property under the root port that the device
-> is attached to. If supplied, the driver must use D3 in order for the
-> platform to realize the deepest power savings in suspend-to-idle.
+On Friday, May 15, 2020 6:53:27 PM CEST Andrzej Pietrasiewicz wrote:
+> A new helper is available, so use it. Inspecting input device's 'users'
+> member should be done under device's mutex, so add appropriate invocations.
 > 
-> Adds support for the _DSD to the pci/acpi layer.
-> 
-> Acked-by: Dan Williams <dan.j.williams@intel.com>
-> Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
-> Signed-off-by: David E. Box <david.e.box@linux.intel.com>
+> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
 > ---
->  drivers/acpi/property.c |  3 +++
->  drivers/pci/pci-acpi.c  | 47 +++++++++++++++++++++++++++++++++++++++++
->  drivers/pci/pci.c       |  6 ++++++
->  drivers/pci/pci.h       |  4 ++++
->  include/linux/pci.h     |  1 +
->  5 files changed, 61 insertions(+)
+>  drivers/acpi/button.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> index e601c4511a8b..f09375ab40e4 100644
-> --- a/drivers/acpi/property.c
-> +++ b/drivers/acpi/property.c
-> @@ -45,6 +45,9 @@ static const guid_t prp_guids[] = {
->  	/* Thunderbolt GUID for WAKE_SUPPORTED: 6c501103-c189-4296-ba72-9bf5a26ebe5d */
->  	GUID_INIT(0x6c501103, 0xc189, 0x4296,
->  		  0xba, 0x72, 0x9b, 0xf5, 0xa2, 0x6e, 0xbe, 0x5d),
-> +	/* D3 Support for storage devivce: 5025030f-842f-4ab4-a561-99a5189762d0 */
-> +	GUID_INIT(0x5025030f, 0x842f, 0x4ab4,
-> +		  0xa5, 0x61, 0x99, 0xa5, 0x18, 0x97, 0x62, 0xd0),
->  };
+> diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+> index 78cfc70cb320..7e081bae48ab 100644
+> --- a/drivers/acpi/button.c
+> +++ b/drivers/acpi/button.c
+> @@ -411,7 +411,7 @@ static void acpi_button_notify(struct acpi_device *device, u32 event)
+>  		input = button->input;
+>  		if (button->type == ACPI_BUTTON_TYPE_LID) {
+>  			mutex_lock(&button->input->mutex);
+> -			users = button->input->users;
+> +			users = input_device_enabled(button->input);
+>  			mutex_unlock(&button->input->mutex);
+>  			if (users)
+>  				acpi_lid_update_state(device, true);
+> @@ -456,13 +456,17 @@ static int acpi_button_resume(struct device *dev)
+>  {
+>  	struct acpi_device *device = to_acpi_device(dev);
+>  	struct acpi_button *button = acpi_driver_data(device);
+> +	struct input_dev *input = button->input;
 >  
->  /* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index d21969fba6ab..5df249ebf022 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -972,6 +972,52 @@ static bool acpi_pci_bridge_d3(struct pci_dev *dev)
->  	return val == 1;
+>  	button->suspended = false;
+> -	if (button->type == ACPI_BUTTON_TYPE_LID && button->input->users) {
+> +	mutex_lock(&input->mutex);
+> +	if (button->type == ACPI_BUTTON_TYPE_LID &&
+> +	    input_device_enabled(input)) {
+>  		button->last_state = !!acpi_lid_evaluate_state(device);
+>  		button->last_time = ktime_get();
+>  		acpi_lid_initialize_state(device);
+>  	}
+> +	mutex_unlock(&input->mutex);
+>  	return 0;
 >  }
->  
-> +static bool acpi_pci_storage_d3(struct pci_dev *dev)
-> +{
-> +	const struct fwnode_handle *fwnode;
-> +	struct acpi_device *adev;
-> +	struct pci_dev *root;
-> +	acpi_handle handle;
-> +	acpi_status status;
-> +	u8 val;
-> +
-> +	/*
-> +	 * Look for _DSD property specifying that the storage device on
-> +	 * the port must use D3 to support deep platform power savings during
-> +	 * suspend-to-idle
-> +	 */
-> +	root = pci_find_pcie_root_port(dev);
-> +	if (!root)
-> +		return false;
-> +
-> +	adev = ACPI_COMPANION(&root->dev);
-> +	if (root == dev) {
-> +		/*
-> +		 * It is possible that the ACPI companion is not yet bound
-> +		 * for the root port so look it up manually here.
-> +		 */
-> +		if (!adev && !pci_dev_is_added(root))
-> +			adev = acpi_pci_find_companion(&root->dev);
-> +	}
-> +
-> +	if (!adev)
-> +		return false;
-> +
-> +	status = acpi_get_handle(adev->handle, "PXSX", &handle);
-> +	if (ACPI_FAILURE(status))
-> +		return false;
-> +
-> +	adev = acpi_bus_get_acpi_device(handle);
-> +	if (!adev)
-> +		return false;
-> +
-> +	fwnode = acpi_fwnode_handle(adev);
-> +	if (!fwnode_property_read_u8(fwnode, "StorageD3Enable", &val))
-> +		return val == 1;
-> +
-> +	return false;
-> +}
+>  #endif
+> 
 
-Kind of orthogonal to what happens to the second patch in this series, I don't
-think that the PCI changes below are all needed.
+This appears to conflate a fix (the introduction of the missing mutex locking)
+with adding new functionality through input_device_enabled().
 
-IMO it would be sufficient to export the function above, maybe as
-pci_acpi_storage_d3(), to drivers, so that they can call it directly as
-desired.
+Please do the fix separately in advance so it can be backported.
 
-Since _DSD return data are not allowed by the spec to change between
-subsequent invocations of it, the interested driver may call this function
-once at the device init time and quirk it accordingly if needed.
-
-Cheers!
+Thanks!
 
 
 
