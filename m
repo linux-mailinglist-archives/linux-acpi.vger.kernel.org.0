@@ -2,117 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA2641D78E1
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 14:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 241F41D7905
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 14:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727912AbgERMpJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 May 2020 08:45:09 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:65032 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726758AbgERMpJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 May 2020 08:45:09 -0400
-Received: from 89-64-86-21.dynamic.chello.pl (89.64.86.21) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
- id 49b173e4072387ec; Mon, 18 May 2020 14:45:07 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     James Morse <james.morse@arm.com>
-Cc:     linux-mm@kvack.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Tyler Baicar <tyler@amperecomputing.com>,
-        Xie XiuQi <xiexiuqi@huawei.com>
-Subject: Re: [PATCH v2 1/3] mm/memory-failure: Add memory_failure_queue_kick()
-Date:   Mon, 18 May 2020 14:45:05 +0200
-Message-ID: <49686237.p6yG9EJavU@kreacher>
-In-Reply-To: <20200501164543.24423-2-james.morse@arm.com>
-References: <20200501164543.24423-1-james.morse@arm.com> <20200501164543.24423-2-james.morse@arm.com>
+        id S1727008AbgERMxL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 May 2020 08:53:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43928 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726709AbgERMxK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 18 May 2020 08:53:10 -0400
+Received: from coco.lan (ip5f5ad5c5.dynamic.kabel-deutschland.de [95.90.213.197])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 97F6C20787;
+        Mon, 18 May 2020 12:53:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589806390;
+        bh=8GLIs34nZZnF9Zwpy48l6Q69nZOjRQeAvh4rHYxlgEM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=SdChjss5sexPx09tjw2Ucwq/BKruq/QAThbm5a3AbjDUGWJ+GIXGBi3LHat7YHQXm
+         wl22kJdJgRjqf+OLTKE0b2p0CF0wk0Pq2ndhTmlaVcx3VWrgE1cGb1NW26wWtQoCIS
+         W8lWRIAHy4+V5ujNKzBS0WPyy1ZTtun+inb9msAI=
+Date:   Mon, 18 May 2020 14:53:02 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Lee Jones <lee.jones@linaro.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Jean Delvare <jdelvare@suse.de>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Max Staudt <max@enpas.org>, Stefan Roese <sr@denx.de>,
+        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] mfd: ensure that AXP20X_I2C will have the right
+ deps on X86
+Message-ID: <20200518145302.56642b22@coco.lan>
+In-Reply-To: <aa23c170-f4e8-e1f0-5c7f-35e51ec84533@redhat.com>
+References: <cover.1589801950.git.mchehab+huawei@kernel.org>
+        <cfbb80f220bba5051640d92fc00825bdaa2ec877.1589801950.git.mchehab+huawei@kernel.org>
+        <aa23c170-f4e8-e1f0-5c7f-35e51ec84533@redhat.com>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Friday, May 1, 2020 6:45:41 PM CEST James Morse wrote:
-> The GHES code calls memory_failure_queue() from IRQ context to schedule
-> work on the current CPU so that memory_failure() can sleep.
-> 
-> For synchronous memory errors the arch code needs to know any signals
-> that memory_failure() will trigger are pending before it returns to
-> user-space, possibly when exiting from the IRQ.
-> 
-> Add a helper to kick the memory failure queue, to ensure the scheduled
-> work has happened. This has to be called from process context, so may
-> have been migrated from the original cpu. Pass the cpu the work was
-> queued on.
-> 
-> Change memory_failure_work_func() to permit being called on the 'wrong'
-> cpu.
-> 
-> Signed-off-by: James Morse <james.morse@arm.com>
-> Tested-by: Tyler Baicar <baicar@os.amperecomputing.com>
-> ---
->  include/linux/mm.h  |  1 +
->  mm/memory-failure.c | 15 ++++++++++++++-
->  2 files changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 5a323422d783..c606dbbfa5e1 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3012,6 +3012,7 @@ enum mf_flags {
->  };
->  extern int memory_failure(unsigned long pfn, int flags);
->  extern void memory_failure_queue(unsigned long pfn, int flags);
-> +extern void memory_failure_queue_kick(int cpu);
->  extern int unpoison_memory(unsigned long pfn);
->  extern int get_hwpoison_page(struct page *page);
->  #define put_hwpoison_page(page)	put_page(page)
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index a96364be8ab4..c4afb407bf0f 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -1493,7 +1493,7 @@ static void memory_failure_work_func(struct work_struct *work)
->  	unsigned long proc_flags;
->  	int gotten;
->  
-> -	mf_cpu = this_cpu_ptr(&memory_failure_cpu);
-> +	mf_cpu = container_of(work, struct memory_failure_cpu, work);
->  	for (;;) {
->  		spin_lock_irqsave(&mf_cpu->lock, proc_flags);
->  		gotten = kfifo_get(&mf_cpu->fifo, &entry);
-> @@ -1507,6 +1507,19 @@ static void memory_failure_work_func(struct work_struct *work)
->  	}
->  }
->  
-> +/*
-> + * Process memory_failure work queued on the specified CPU.
-> + * Used to avoid return-to-userspace racing with the memory_failure workqueue.
-> + */
-> +void memory_failure_queue_kick(int cpu)
-> +{
-> +	struct memory_failure_cpu *mf_cpu;
-> +
-> +	mf_cpu = &per_cpu(memory_failure_cpu, cpu);
-> +	cancel_work_sync(&mf_cpu->work);
-> +	memory_failure_work_func(&mf_cpu->work);
-> +}
-> +
->  static int __init memory_failure_init(void)
->  {
->  	struct memory_failure_cpu *mf_cpu;
-> 
+Em Mon, 18 May 2020 14:17:06 +0200
+Hans de Goede <hdegoede@redhat.com> escreveu:
 
-I could apply this provided an ACK from the mm people.
+> Hi,
+> 
+> On 5/18/20 1:42 PM, Mauro Carvalho Chehab wrote:
+> > The axp20x I2C driver can be used on X86, but also on ARM
+> > platforms.
+> > 
+> > Yet, for X86, it has to be builtin and need ACPI OpRegion
+> > support enabled.
+> > 
+> > So, the dependency chain is diferent for X86 and for other
+> > archs.
+> > 
+> > Change the dependency chain to take this into consideration,
+> > ensuring that everything will be set as it should.
+> > 
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>  
+> 
+> Hmm, last time we tried something like this (it was tried before,
+> but in a bit different way) we ran into all kind of dependency /
+> select cycles / issues.
 
-Thanks!
+Yeah, changes like that could cause troubles, specially where
+select is used. With the approach I took, there's just one
+new select for "IOSF_MBI".
 
+I double-checked that, on most places, this feature is selected.
+After this patch, there will be only three "depends on IOSF_MBI",
+that could likely be also converted to "select":
 
+diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
+index 0ad7ad8cf8e1..d99ad532e17a 100644
+--- a/drivers/platform/x86/Kconfig
++++ b/drivers/platform/x86/Kconfig
+@@ -740,7 +740,8 @@ config THINKPAD_ACPI_HOTKEY_POLL
+ 
+ config INTEL_ATOMISP2_PM
+ 	tristate "Intel AtomISP2 dummy / power-management driver"
+-	depends on PCI && IOSF_MBI && PM
++	depends on PCI && PM
++	select IOSF_MBI
+ 	help
+ 	  Power-management driver for Intel's Image Signal Processor found on
+ 	  Bay Trail and Cherry Trail devices. This dummy driver's sole purpose
+@@ -1185,7 +1186,8 @@ config TOUCHSCREEN_DMI
+ 
+ config INTEL_IMR
+ 	bool "Intel Isolated Memory Region support"
+-	depends on X86_INTEL_QUARK && IOSF_MBI
++	depends on X86_INTEL_QUARK
++	select IOSF_MBI
+ 	---help---
+ 	  This option provides a means to manipulate Isolated Memory Regions.
+ 	  IMRs are a set of registers that define read and write access masks
+diff --git a/drivers/powercap/Kconfig b/drivers/powercap/Kconfig
+index dc1c1381d7fa..f4a3f110c720 100644
+--- a/drivers/powercap/Kconfig
++++ b/drivers/powercap/Kconfig
+@@ -21,7 +21,8 @@ config INTEL_RAPL_CORE
+ 
+ config INTEL_RAPL
+ 	tristate "Intel RAPL Support via MSR Interface"
+-	depends on X86 && IOSF_MBI
++	depends on X86
++	select IOSF_MBI
+ 	select INTEL_RAPL_CORE
+ 	---help---
+ 	  This enables support for the Intel Running Average Power Limit (RAPL)
 
+The one for INTEL_IMR could even be dropped, as config 
+X86_INTEL_QUARK already selects it too.
+
+> With that said I'm fine with giving this another try, maybe let
+> the test builders / rand config builds play with it for a while
+> and see what happens?
+
+Yeah, it makes sense to me.
+
+Thanks,
+Mauro
