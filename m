@@ -2,220 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA5BB1D6F09
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 04:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57E581D71B1
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 09:23:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726803AbgERCkj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 17 May 2020 22:40:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60034 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726786AbgERCki (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 17 May 2020 22:40:38 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF9CCC061A0C;
-        Sun, 17 May 2020 19:40:38 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id f15so3616848plr.3;
-        Sun, 17 May 2020 19:40:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=BSi1j3B+LKlZ+pND+2uv+E9eGj8LmHGTLONT1ZbFAyQ=;
-        b=ZsX2V0MmYF50na3aWBoR7eEKTHYC85N+iEUm9lY7ZV2vIPvM4qWwRf72zMRcVvvsRh
-         6FZFoXlSmY2r/n9X2BPIIwfLai6WxwMqr1OTVRNfAemUrnsa37Ybe/vhnmPCoaQBQzTF
-         a8Urn+gvx4DtjuIDJ3qdIKQUzBrMQmUhk1KoD/DEIqbij9VU0XuKgoxtLfhptHBgejsN
-         VltvFqKeFPpM4dsoexRUH7OCeEUyXPEJyh3/264sXr7MGmGARRE7BhQ8+dkbTZC82gOY
-         V70cYtMgKVHywicpO1khfY8YK+4DAG+HcqiCgEbQKrwloC6qalMginFFw9T53WbDXm/W
-         cuow==
+        id S1726489AbgERHW7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 May 2020 03:22:59 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:38139 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726127AbgERHW7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 18 May 2020 03:22:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1589786577;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=CDV6x+LbRIT81sDBbNhyRgMHCkZ5P5dh5ZdEq0nLHtA=;
+        b=aga6SMOsKWNppK8vyqWZei1Xs09wUn/g68ccOJNHxXP50OGNA11MpABLGBJ/odmSBnzsLv
+        p/Vz8mMS/Bm7YMKv12WrWAOhzvM6vYA0bSHmAfHTHaX6Oq18T+EFnlrrL+ODPC6XPhk1gd
+        vPOuOQIxxEDwjoJG3OArC04rA94Cyzc=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-306-r7MTMDhkPDuRHdX3j7VTUw-1; Mon, 18 May 2020 03:22:55 -0400
+X-MC-Unique: r7MTMDhkPDuRHdX3j7VTUw-1
+Received: by mail-wr1-f71.google.com with SMTP id z5so5191968wrt.17
+        for <linux-acpi@vger.kernel.org>; Mon, 18 May 2020 00:22:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=BSi1j3B+LKlZ+pND+2uv+E9eGj8LmHGTLONT1ZbFAyQ=;
-        b=fI+MxXNDtsM2rF3VYnEU34nrbwe52zc9xNLnfmhW7nIjJaJ7YHuyLLOKFr3Y1Fz6/z
-         n/g93SRhHs2igqMgKB1E7zJQZ2Pe/OkhgzI3I7ia7fpDaYlRJ1cMZP7p4PRSSg8foNnF
-         3f+lwNWXLMeAOKV5Va/8e1kkaRGKn8hcsmKItIIotbi+q2GHvvtHfVyk2oVkWAOk7eUz
-         iKXQ6VYt+BM9ZoMGnOTe5wceLIG6+/DlfOrjmwlbPR71SHDCXVbFXAZgciv9g/N33loi
-         nbac1MXfwEeZXiNFr7PPpeRyDDmMmevfaP9YbwNfJdifujCHflLFaZh0Wr4XgER9fwOm
-         3ziw==
-X-Gm-Message-State: AOAM530oD16JKJglyO42VoMw5EXX7nqZQ4+YDsqlWs75DXN+KbCgtmY7
-        3Ddx3/Fbhf31KnxYYUJkUM0=
-X-Google-Smtp-Source: ABdhPJw6+D0pVLHENKQEm5RucsG1mrNeCZaFYuYqbZFDLGhDKldJppMOzBpLcQebfqpE8BGs2bUiSg==
-X-Received: by 2002:a17:90b:3d4:: with SMTP id go20mr10710415pjb.208.1589769637579;
-        Sun, 17 May 2020 19:40:37 -0700 (PDT)
-Received: from dtor-ws ([2620:15c:202:201:3c2a:73a9:c2cf:7f45])
-        by smtp.gmail.com with ESMTPSA id a2sm7218540pfl.28.2020.05.17.19.40.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2020 19:40:36 -0700 (PDT)
-Date:   Sun, 17 May 2020 19:40:34 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Peter Hutterer <peter.hutterer@who-t.net>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=CDV6x+LbRIT81sDBbNhyRgMHCkZ5P5dh5ZdEq0nLHtA=;
+        b=Kk9mpm1iLWZ7VKXt4+7SeMztg1zIO3ObF8anSnNtZXComcSUrd/wAc0zMgIbE7Mqyf
+         jscW306xjXMxUelRSG0dU3V9rrx36dHpE5TRYwz+mTNPX/W/ug7ABIDbUi7p3/1AJN87
+         IytSb7tiB9ytvQ8UBJNe8kj8KiQ3vtYHi0wHBZLoHINAsbQrJThzkbjB5AKrP63ZEU/O
+         Vo6fmDD7ReqmD5vuD5yM6cmwEDXyj0gwdOgEsyZ7JvYWRBa9OFi7TAdWS96YVaGQAPgx
+         bWOwi+zbW02M8XyDDVdK97lBXg5lA5fVFfhGn5NLgZE/e3lUYiKSIFhtvYYNHkTdV7Ts
+         SFwQ==
+X-Gm-Message-State: AOAM5305mDjpKdn4gQpxNJBdI0Gb6H2KNRYxnwi2lPqRxVDHFizpOmgL
+        4oZ+E0eypd3StqMXaE3gqmgk1fD3c2VvGGwfPsnHmypTNpRYrhmubyQZ4fKQ26q0X8krZVeFoFG
+        Gg/nsKNmzrr3SSNEK4So3ng==
+X-Received: by 2002:a1c:49:: with SMTP id 70mr17068089wma.184.1589786574457;
+        Mon, 18 May 2020 00:22:54 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxQsxRMMMhF3+7UoPaofmXTgG0IdeYJenN30PROILcSoebYagjpzY916Llt3TsieWh2pHWUNQ==
+X-Received: by 2002:a1c:49:: with SMTP id 70mr17068068wma.184.1589786574266;
+        Mon, 18 May 2020 00:22:54 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id h27sm17386798wrc.46.2020.05.18.00.22.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 May 2020 00:22:53 -0700 (PDT)
+Subject: Re: [PATCH 1/2] ACPI / PMIC: Add i2c address for thermal control
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
-        Benjamin Tissoires <btissoir@redhat.com>
-Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
-Message-ID: <20200518024034.GL89269@dtor-ws>
-References: <20200506002746.GB89269@dtor-ws>
- <20200515164943.28480-1-andrzej.p@collabora.com>
- <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
- <20200517225510.GA205823@koala>
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+References: <cover.1589262490.git.mchehab+huawei@kernel.org>
+ <4ea6a89bcde8c72427e69a87551bdfca8bf1af11.1589262490.git.mchehab+huawei@kernel.org>
+ <CAJZ5v0gRScLoBGr6546=zJBtZj2D0-Yv48RZobN-0eih01L29A@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <89fd7ece-ab9c-cee0-e575-7652a992fe3a@redhat.com>
+Date:   Mon, 18 May 2020 09:22:53 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200517225510.GA205823@koala>
+In-Reply-To: <CAJZ5v0gRScLoBGr6546=zJBtZj2D0-Yv48RZobN-0eih01L29A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Hans, Peter,
+Hi Rafael,
 
-On Mon, May 18, 2020 at 08:55:10AM +1000, Peter Hutterer wrote:
-> On Fri, May 15, 2020 at 08:19:10PM +0200, Hans de Goede wrote:
-> > Hi Andrezj,
-> > 
-> > On 5/15/20 6:49 PM, Andrzej Pietrasiewicz wrote:
-> > > Userspace might want to implement a policy to temporarily disregard input
-> > > from certain devices, including not treating them as wakeup sources.
-> > > 
-> > > An example use case is a laptop, whose keyboard can be folded under the
-> > > screen to create tablet-like experience. The user then must hold the laptop
-> > > in such a way that it is difficult to avoid pressing the keyboard keys. It
-> > > is therefore desirable to temporarily disregard input from the keyboard,
-> > > until it is folded back. This obviously is a policy which should be kept
-> > > out of the kernel, but the kernel must provide suitable means to implement
-> > > such a policy.
-> > 
-> > Actually libinput already binds together (inside libinput) SW_TABLET_MODE
-> > generating evdev nodes and e.g. internal keyboards on devices with 360°
-> > hinges for this reason. libinput simply closes the /dev/input/event#
-> > node when folded and re-opens it when the keyboard should become active
-> > again. Thus not only suppresses events but allows e.g. touchpads to
-> > enter runtime suspend mode which saves power. Typically closing the
-> > /dev/input/event# node will also disable the device as wakeup source.
-> > 
-> > So I wonder what this series actually adds for functionality for
-> > userspace which can not already be achieved this way?
+On 5/15/20 6:28 PM, Rafael J. Wysocki wrote:
+> On Tue, May 12, 2020 at 7:52 AM Mauro Carvalho Chehab
+> <mchehab+huawei@kernel.org> wrote:
+>>
+>> On Asus T101HA, we keep receiving those error messages:
+>>
+>>          i915 0000:00:02.0: [drm] *ERROR* mipi_exec_pmic failed, error: -95
+>>          intel_soc_pmic_exec_mipi_pmic_seq_element: Not implemented
+>>          intel_soc_pmic_exec_mipi_pmic_seq_element: i2c-addr: 0x5e reg-addr 0x4b value 0x59 mask 0xff
+>>
+>> Because the opregion is missing the I2C address.
+>>
+>> Suggested-by: Hans de Goede <hdegoede@redhat.com>
+>> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+>> ---
+>>   drivers/acpi/pmic/intel_pmic_chtdc_ti.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
+>> index 7ccd7d9660bc..a5101b07611a 100644
+>> --- a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
+>> +++ b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
+>> @@ -102,6 +102,7 @@ static struct intel_pmic_opregion_data chtdc_ti_pmic_opregion_data = {
+>>          .power_table_count = ARRAY_SIZE(chtdc_ti_power_table),
+>>          .thermal_table = chtdc_ti_thermal_table,
+>>          .thermal_table_count = ARRAY_SIZE(chtdc_ti_thermal_table),
+>> +       .pmic_i2c_address = 0x5e,
+>>   };
+>>
+>>   static int chtdc_ti_pmic_opregion_probe(struct platform_device *pdev)
+>> --
 > 
-> Thanks Hans. To expand on this:
-> libinput has heuristics to guess which input devices (keyboards, touchpads)
-> are built-in ones. When the tablet mode switch is on, we disable these
-> devices internally (this is not visible to callers), and re-enable it again
-> later when the tablet mode switch is off again.
+> This appears to be part of a series, but the second patch has not been
+> CCed to linux-acpi.
 
-I think that is great that libinput has tried solving this for the
-tablet mode, but unfortunately libinput only works for users of
-libinput, leaving cases such as:
+Mauro send out 3 patches related to the PMIC, this one and 2 MFD patches.
+I think his intention was to send out this standalone and the 2 MFD patches
+as a series, but instead he send out this 1 + 1 MFD patch as a series and
+the other MFD patch as a standalone patch.
 
-1. In-kernel input handlers, such as SysRq, VT and others
-2. Systems that do not rely on libinput for userspace handing (Android,
-Chrome OS)
-3. Systems with policies that are more complex than tablet mode only.
+Either way this patch is a standalone patch, the 2/2 patch is almost
+completely unrelated, so if you can pick this one up, then that would be
+great.
 
-Because of libinput's inability to affect the kernel, and the presence
-of "always on" input handlers (sysrq, VT keyboard, potentially others),
-while libinput may control whether consumers receive events from certain
-input devices, it will not allow power savings that an explicit
-"inhibit" allows when coming from dedicated power policy manager.
+Regards,
 
-I think pushing policy decisions into a library, and trying to have all
-clients agree with it, is much harder and leaks unnecessary knowledge
-into quite a few layers. A dedicated power policy manager, that is not
-only responsible for input device, but power state of the system as a
-whole, is a very viable architecture.
+Hans
 
-> 
-> This is done for keyboards and touchpads atm (and I think pointing sticks)
-> and where the heuristics fail we have extra quirks in place. For example
-> the Lenovo Yogas tend to disable the keyboard mechanically in tablet mode
-> but buttons (e.g. volume keys) around the screen send events through the
-> same event node. So on those devices we don't disable the keyboard.
-> 
-> We've had this code for a few years now and the only changes to it have been
-> the various device quirks for devices that must not suspend the keyboard,
-> it's otherwise working as expected.
-> 
-> If we ever have a device where we need to disable parts of the keyboard
-> only, we could address this with EVIOCSMASK but so far that hasn't been
-> necessary.
-> 
-> I agree with Hans, right now I don't see the usefulness of this new sysfs
-> toggle. For it to be really useful you'd have to guarantee that it's
-> available for 100% of the devices and that's IMO unlikely to happen.
-
-The inhibiting of the events works for 100% of input devices, the power
-savings work for the ones that implement it. It is responsibility of
-folds shipping the systems to make sure drivers they use support inhibit
-if they believe it will help their battery life.
-
-> 
-> Cheers,
->    Peter
-> 
-> > I also noticed that you keep the device open (do not call the
-> > input_device's close callback) when inhibited and just throw away
-> > any events generated. This seems inefficient and may lead to
-> > the internal state getting out of sync. What if a key is pressed
-> > while inhibited and then the device is uninhibited while the key
-> > is still pressed?  Now the press event is lost and userspace
-> > querying the current state will see the pressed key as being
-> > released.
-
-This is a good point. We should look into signalling that some events
-have been dropped (via EV_SYN/SYN_DROPPED) so that clients are aware of
-it.
-
-> > 
-> > On top of this you add special inhibit and uninhibit callbacks
-> > and implement those for just a few devices. How do these differ
-> > from just closing the device and later opening it again ?
-
-I believe majority will simply reuse open/close callbacks. In Chrome OS
-we have dedicated inhibit/uninhibit, but I would like to allow using
-open/close as alternatives.
-
-> > 
-> > Also using a sysfs property for this is very weird given that the
-> > rest of the evdev interface is using ioctls for everything...
-
-This is not evdev interface, it is at the level above evdev (so that it
-can affect all handlers, not only evdev). As such it is not bound by
-evdev interface.
-
-Thanks.
-
--- 
-Dmitry
