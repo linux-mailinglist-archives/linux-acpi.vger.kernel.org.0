@@ -2,97 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C7F41D73B0
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 11:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05E651D7416
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 11:32:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726694AbgERJPT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 May 2020 05:15:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56814 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726675AbgERJPR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 May 2020 05:15:17 -0400
-Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2965720829;
-        Mon, 18 May 2020 09:15:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589793317;
-        bh=sNUlztveAJmm2fG/0q/M4GeYZ6rBhLJUQL5DhHVZvK4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=r5tppO3WttYFqmI/6cAYpnHh/CB7jLrjAuoFpekIdwtZjUlgdWxkGYoeau60MVckb
-         MKh8qAINrYZ75mPxTwngXfHrBeyouZMkl387o0bZjw/YOIH1ytd7gRNRig9xcCy2Bd
-         S/bViTImsCWu+9R97Rfrm3MfsKKHD8yvC9529sLE=
-Received: by mail-il1-f182.google.com with SMTP id 18so184228iln.9;
-        Mon, 18 May 2020 02:15:17 -0700 (PDT)
-X-Gm-Message-State: AOAM532Sn2almpxnWIjlaZ0HzJlM40/U1+3RMxwbP+MF5WNubomZ/zQq
-        KJXLTTbeX62WUPP0oslCxPRzDJwebBB0M3vr3qQ=
-X-Google-Smtp-Source: ABdhPJw0Jj+zCyjLeSB2lkHXVRYCqJYNFRmf+fCB5ep87YsnuouFjIitXVOzsn92D0RXZ2WlhL8KQ+OuPoyOfADrS2Q=
-X-Received: by 2002:a92:a312:: with SMTP id a18mr15414538ili.80.1589793316534;
- Mon, 18 May 2020 02:15:16 -0700 (PDT)
+        id S1726932AbgERJcS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 May 2020 05:32:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39406 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726676AbgERJcS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 May 2020 05:32:18 -0400
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F02BC061A0C
+        for <linux-acpi@vger.kernel.org>; Mon, 18 May 2020 02:32:18 -0700 (PDT)
+Received: by mail-oi1-x243.google.com with SMTP id i22so8408733oik.10
+        for <linux-acpi@vger.kernel.org>; Mon, 18 May 2020 02:32:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=r4y8pOF1U2hIXUEaQHB5pp1+f6cCMjasAlccauvS3u8=;
+        b=p+4e8OGbkl4jtB21Kp0Taies1F3UglkyxEVlBRQUQ1JCB7uuaBDtommPyyPp+nFWc3
+         1Xguh2oulhrEM1GT03E7NzWVydFgKZNO9PxIrx2t4zUNhN2e2Yzekzb5Kd8ItHWtaWJ+
+         DJRzZRP0Zod3TVkJ8lxGJbG7FIMvQZ7pP+Yi5IcziQk+yOTY+8Ijv+n/4M4sTFnh95o/
+         YyGb1xwUv7sa8c9Jbj4KOSqiGGjhEjVMmHGmH4kDJ/f+dly1SZSizUV2p+nmhaft5URq
+         EUcitTFvt2xe/bdolmFD5KvRRInAoLbZB0WCOCNiPysMYx9wph5eWaErFcbLXSzPw6Y3
+         SQ6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=r4y8pOF1U2hIXUEaQHB5pp1+f6cCMjasAlccauvS3u8=;
+        b=JpegazoNRwJeMEQRrnmOJOXwZutMzHsE1WSpOBm/fjqVoDxnvTL+cxjOeimO0pijgZ
+         9vnMX4QPhBLTN790Oci32WkCed0rW8BkX7Pdb8bpLQk65i8eqeKQiE5PA04HRw9vUa1b
+         aTlnUByY8/k5CIUhLIpzbbqYzp5KUIIrx/Ulj0vy5GvM6636bA/bhPcSRPsEB8UO1fBe
+         lRgO0Gl6zwrklDcPEY/GhzuSHI+OK6+E3bfUtRDXrRpFjkowqt1LrJDVrPkufn56lhsK
+         dmFzLDX5bcOsZRlVsmPoprB5O3W/BIb1YkK9N9VtE7iDbzZ2EQIrDivp6jTfVJKHEvUP
+         Ifug==
+X-Gm-Message-State: AOAM533UtfXS0FG46LlebV2gGVo/Dm1CCi7+tqpm8b03btl55ZlaK4Mv
+        R82Loy5xY+OSeyrVnNlTsWmt8OYXm2ifDyWfCKTzuXlwBDk=
+X-Google-Smtp-Source: ABdhPJyrEJAISIZWsXEyVlyc4BlPLuXVfhVNfJE1HrEOPfH8Lbw8GOfGkNCHlNzM0DGX7IOc1TiEmiYBdJ1xs3xDRQ4=
+X-Received: by 2002:aca:ea46:: with SMTP id i67mr9709314oih.152.1589794337493;
+ Mon, 18 May 2020 02:32:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200517125754.8934-1-ardb@kernel.org> <20200518090727.GB25034@zn.tnic>
-In-Reply-To: <20200518090727.GB25034@zn.tnic>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 18 May 2020 11:15:05 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGArZihaTkq49vSi0=3UWQrtsCDMeBbuK=EO9R1ik5AcQ@mail.gmail.com>
-Message-ID: <CAMj1kXGArZihaTkq49vSi0=3UWQrtsCDMeBbuK=EO9R1ik5AcQ@mail.gmail.com>
-Subject: Re: [GIT PULL 0/7] EFI fixes for v5.7
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Benjamin Thiel <b.thiel@posteo.de>,
-        Dave Young <dyoung@redhat.com>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Lenny Szubowicz <lszubowi@redhat.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Loic Yhuel <loic.yhuel@gmail.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Mike Lothian <mike@fireburn.co.uk>,
-        Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+References: <4502272.pByIgeXik9@kreacher> <CAJZ5v0j6S+we7tHeV9TM30LS+TO3zWigACe0ZUFfWphg2FBBZQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0j6S+we7tHeV9TM30LS+TO3zWigACe0ZUFfWphg2FBBZQ@mail.gmail.com>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Mon, 18 May 2020 17:32:06 +0800
+Message-ID: <CAB4CAweV+U_pPv9877S+j6UVUPjcTzJq26rarxnJfwc6on1ESA@mail.gmail.com>
+Subject: Re: [PATCH[RFT]] ACPI: EC: s2idle: Avoid flushing EC work when EC GPE
+ is inactive
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 18 May 2020 at 11:07, Borislav Petkov <bp@alien8.de> wrote:
+On Mon, May 18, 2020 at 4:59 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> Hi,
->
-> On Sun, May 17, 2020 at 02:57:47PM +0200, Ard Biesheuvel wrote:
-> > The following changes since commit a088b858f16af85e3db359b6c6aaa92dd3bc0921:
+> On Thu, May 14, 2020 at 12:10 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
 > >
-> >   efi/x86: Revert struct layout change to fix kexec boot regression (2020-04-14 08:32:17 +0200)
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > >
-> > are available in the Git repository at:
+> > Flushing the EC work while suspended to idle when the EC GPE status
+> > is not set causes some EC wakeup events (notably power button and
+> > lid ones) to be missed after a series of spurious wakeups on the Dell
+> > XPS13 9360 in my office.
 > >
-> >   git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent
+> > If that happens, the machine cannot be woken up from suspend-to-idle
+> > by a power button press or lid status change and it needs to be woken
+> > up in some other way (eg. by a key press).
+> >
+> > Flushing the EC work only after successful dispatching the EC GPE,
+> > which means that its status has been set, avoids the issue, so change
+> > the code in question accordingly.
+> >
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >
+> > Hi Chris,
+> >
+> > Please check if the key press wakeup still works on your system with this patch
+> > applied (on top of https://patchwork.kernel.org/patch/11538065/).
 >
-> can you please make your tags unique? For example call this one:
+> Hi Chris,
 >
-> efi-urgent-for-v5.7-rc6
+> Since I haven't heard back from you and the problem at hand is a
+> regression on the machine where it happens, I'm going to push this
+> patch for merging.
 >
-> or so so that the git history can show for which -rc that urgent tag was
-> meant?
+> If it causes the key press wakeup issue to reappear on your machine,
+> I'm afraid that we'll need to quirk it in the EC driver.
 >
-> I mean, technically one can do that already with git but it would be
-> easier if it had the rc in the name. We do that already in tip - either
-> -rc name or the date of the tag.
->
-> Also, using the same tag gives:
->
-> From git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi
->  ! [rejected]                  efi-next           -> efi-next  (would clobber existing tag)
->  ! [rejected]                  efi-urgent         -> efi-urgent  (would clobber existing tag)
->
-> when I try to fetch from you and I can delete the old tag but having
-> unique tag names makes the history more user-friendly, I'd say.
+> Thanks!
 >
 
-Sure
+Sorry that I missed this email. I'll apply this patch and test again.
