@@ -2,128 +2,164 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D94AC1D886D
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 21:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDCB61D8890
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 21:57:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728420AbgERTpJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 May 2020 15:45:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50912 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728409AbgERTpJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 May 2020 15:45:09 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADD65C061A0C
-        for <linux-acpi@vger.kernel.org>; Mon, 18 May 2020 12:45:08 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id b91so9561029edf.3
-        for <linux-acpi@vger.kernel.org>; Mon, 18 May 2020 12:45:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=98AvPLVUFFiv8829bVvMBDsSV4ORTaaKvOxhTAw6au4=;
-        b=bgaWUWFS8BQa27P81AmG/w9hGlORYFhFFEVixIKGbalMrY+SzrbARefgkNpirjGoYI
-         F26Z5l7yKrmjse3GY/98043ujFVAWV9pKs8aclgUWlahTMbt3HWVCLwAtfGXc1huxbaY
-         nzRCqNEqdn8kNpyKSa23/PGY53VfXNcec4u3J5lI3jeYv+RYxiJllO8htErQ88yg1vim
-         Cdmb7L9yAwhWZ8eh6Ucg/0XbFLRT8AlJXFxU6PVAitYBJInEOk2EdPeaZLq61ua/6Pt4
-         AcSXIiSSk5XR2oOOr1/Zw8JnNWN2iCiR1v1l4PwtAQG3sMRD9Vm06/JLx0eTvGxQ+DUz
-         /nkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=98AvPLVUFFiv8829bVvMBDsSV4ORTaaKvOxhTAw6au4=;
-        b=CTpK0+OTwyuNCtI20uGVIkekFcS+A0Y2QOUW+oSkElA/fUTDMehrSafbjLu3zNVjKS
-         ZkHNZl0o5Rg3LWGdSW91BDp/WG0poRfASWR8EN5l6A5vklzEORQxFt6b1/9Ruz0tvkGJ
-         viiQV8XcEXyFKU3mnqRGFMy3cKIXCPrN/jtXk6IoBXwvmgHX6tR4Qd6cmmdBT2+ZE8HZ
-         5zZygiKx7yNGEztVAIUdWp0/bDIY07o3muZd+gP+6dL1ipa3KKfOXWSWBimEj4nVpgnh
-         v/FK5K9K37feRNov7l+L5sfdx+lzK9D7eocoUB8CVei1MRznuYINGK7rAcObp9Okqvro
-         ByyQ==
-X-Gm-Message-State: AOAM530+LenyvuQ06lLPkn+gmrnOZcK+IWBvuZaFvRtcPPexoCmccEtN
-        39qWLvqyqmSVgXicx5eeEo/AFhB9f36s5FuTlyH54Q==
-X-Google-Smtp-Source: ABdhPJxPSkNBXQqdwy3+WaOEI9qyJGv/GoSr3pXUWmXyeJvuVZ5OleDuHHY5nQ/2I+LrDbv6A7cc3OdmEYHc+akuda4=
-X-Received: by 2002:aa7:c944:: with SMTP id h4mr10732201edt.383.1589831107355;
- Mon, 18 May 2020 12:45:07 -0700 (PDT)
+        id S1728526AbgERTz7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 May 2020 15:55:59 -0400
+Received: from mga18.intel.com ([134.134.136.126]:32156 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726478AbgERTz7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 18 May 2020 15:55:59 -0400
+IronPort-SDR: rrSG37EOeX1MVcizng4ReLy2D6cjmkNUrxar2dphGHMhndnVqOkYP3+9EuTPNBJdYk9sgqe5EE
+ NGxG0QXzEE9w==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2020 12:55:58 -0700
+IronPort-SDR: pS1ePkmo+FQeU5Nb9ddkZ3vUqdn/wx31m7W6rvZwl7KFhZm/P+4fJJpJ+nRpptDMWb+EMi+B9l
+ VpzrAvfurJFg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,407,1583222400"; 
+   d="scan'208";a="253006253"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 18 May 2020 12:55:56 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jalrf-000AhL-UL; Tue, 19 May 2020 03:55:55 +0800
+Date:   Tue, 19 May 2020 03:55:39 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ c28a27fcb43003e1f9b9e12e7e2cdb9678f0d3be
+Message-ID: <5ec2e83b.FIdYw1WRguiceYx+%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20200511090034.GX5770@shao2-debian> <440dae1b-9146-0bc3-e8f2-bd3cb3aa89bb@intel.com>
- <CAPcyv4jKZp2bOZZ+ZMrcbFw9fPzeDu8waqwG6mBVpWwGq2DGtw@mail.gmail.com> <438c1743-5c8a-287d-3f97-e4a451ae8027@arm.com>
-In-Reply-To: <438c1743-5c8a-287d-3f97-e4a451ae8027@arm.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Mon, 18 May 2020 12:44:55 -0700
-Message-ID: <CAPcyv4i=Mty-rvXFXNU85VJpB0zB445Gu9-J5qadHftYmpVEXg@mail.gmail.com>
-Subject: Re: [ACPI] b13663bdf9: BUG:sleeping_function_called_from_invalid_context_at_kernel/locking/mutex.c
-To:     James Morse <james.morse@arm.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        kernel test robot <rong.a.chen@intel.com>,
-        stable <stable@vger.kernel.org>, Len Brown <lenb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>, lkp@lists.01.org,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        "Huang, Ying" <ying.huang@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 18, 2020 at 11:08 AM James Morse <james.morse@arm.com> wrote:
->
-> Hi guys,
->
-> On 12/05/2020 19:05, Dan Williams wrote:
-> > On Tue, May 12, 2020 at 9:28 AM Rafael J. Wysocki
-> > <rafael.j.wysocki@intel.com> wrote:
-> >> Dan,
-> >>
-> >> Has this been addressed in the v2?
-> >
-> > No, this looks like a case I was concerned about, i.e. the GHES code
-> > is not being completely careful to avoid calling potentially sleeping
-> > functions with interrupts disabled. There is the nice comment that
-> > indicates that the fixmap should be used when ghes_notify_lock_irq()
-> > is held, but there seems to be no infrastructure to use / divert to
-> > the fixmap in the ghes_proc() path.
->
-> ghes_map()/ghes_unmap() use the fixmap for reading the firmware provided records,
-> but this came through apei_read(), which claims to be IRQ and NMI safe...
->
->
-> > That needs to be reworked first.
-> > It seems the implementation was getting lucky before to hit the cached
-> > acpi_ioremap in this path under rcu_read_lock(), but it appears it
-> > should have always been using the fixmap. Ying, James, is my read
-> > correct?
->
-> The path through this thing is pretty tortuous: The static HEST contains the address of
-> the pointer that firmware updates to point to CPER records when they are generated. This
-> pointer might be static (records are always in the same place), it might not.
->
-> The address in the tables is static. ghes.c maps it in ghes_new():
-> |       rc = apei_map_generic_address(&generic->error_status_address);
->
-> which happens before the ghes_add_timer()/request_irq()/ghes_nmi_add() stuff, so we should
-> always use the existing mapping.
->
-> __ghes_peek_estatus() reads the pointer with apei_read(), which should use the mapping
-> from ghes_new(), then uses ghes_copy_tofrom_phys() which uses the fixmap to read the CPER
-> records.
->
->
-> Does apei_map_generic_address() no longer keep the GAR/address mapped?
-> (also possible I've totally mis-understood how ACPIs caching of mappings works!)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: c28a27fcb43003e1f9b9e12e7e2cdb9678f0d3be  Merge branch 'acpi-pmic' into bleeding-edge
 
-Upon further investigation the problem appears to be that
-System-Memory OperationRegions are dynamically mapped at runtime for
-ASL code. This results in every unmap event triggering eviction from
-the cache and incurring synchronize_rcu_expedited(). The APEI code
-avoids this path by taking an extra reference at the beginning of time
-such that the rcu-walk through the cache at NMI time is guaranteed to
-both succeed, and not trigger an unmap event.
+elapsed time: 512m
 
-So now I'm looking at whether System-Memory OperationRegions can be
-generically pre-mapped in a similar fashion.
+configs tested: 104
+configs skipped: 1
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+sparc                            allyesconfig
+mips                             allyesconfig
+sh                   secureedge5410_defconfig
+sh                        apsh4ad0a_defconfig
+sh                                  defconfig
+mips                          rm200_defconfig
+mips                     loongson1c_defconfig
+alpha                               defconfig
+arm                          imote2_defconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+i386                              allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a006-20200518
+i386                 randconfig-a005-20200518
+i386                 randconfig-a001-20200518
+i386                 randconfig-a003-20200518
+i386                 randconfig-a004-20200518
+i386                 randconfig-a002-20200518
+x86_64               randconfig-a016-20200518
+x86_64               randconfig-a012-20200518
+x86_64               randconfig-a015-20200518
+x86_64               randconfig-a013-20200518
+x86_64               randconfig-a011-20200518
+x86_64               randconfig-a014-20200518
+i386                 randconfig-a012-20200518
+i386                 randconfig-a014-20200518
+i386                 randconfig-a016-20200518
+i386                 randconfig-a011-20200518
+i386                 randconfig-a015-20200518
+i386                 randconfig-a013-20200518
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+x86_64                              defconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
