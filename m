@@ -2,109 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFEC11D72CC
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 10:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 106091D735D
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 10:59:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726828AbgERISv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 May 2020 04:18:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42846 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726489AbgERISu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 May 2020 04:18:50 -0400
-Received: from coco.lan (ip5f5ad5c5.dynamic.kabel-deutschland.de [95.90.213.197])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 854B7206D4;
-        Mon, 18 May 2020 08:18:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589789930;
-        bh=yDfS8c4N/SpGiovX7gFG42rDeUyPq38+mXhSWeh847Y=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=h+YfJoXk+l0nWV3YAQ96POVzARIlaC6QX9aYk9hyrbPqwIRqUM0yRecxO4dOh+ya6
-         66aPwWa0aNoKNr0wYYQAO3dim4WIECE6iD5w0Bsus/85r9IJBr4+1ZBRtgghpkH9DK
-         9wmhUzkuQgFechswrCGGmnAOeXg/hoLSrRKJb9qI=
-Date:   Mon, 18 May 2020 10:18:45 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH 1/2] ACPI / PMIC: Add i2c address for thermal control
-Message-ID: <20200518101845.65da0634@coco.lan>
-In-Reply-To: <89fd7ece-ab9c-cee0-e575-7652a992fe3a@redhat.com>
-References: <cover.1589262490.git.mchehab+huawei@kernel.org>
-        <4ea6a89bcde8c72427e69a87551bdfca8bf1af11.1589262490.git.mchehab+huawei@kernel.org>
-        <CAJZ5v0gRScLoBGr6546=zJBtZj2D0-Yv48RZobN-0eih01L29A@mail.gmail.com>
-        <89fd7ece-ab9c-cee0-e575-7652a992fe3a@redhat.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        id S1726526AbgERI7e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 May 2020 04:59:34 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:42602 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726180AbgERI7d (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 May 2020 04:59:33 -0400
+Received: by mail-ot1-f65.google.com with SMTP id z3so5745900otp.9;
+        Mon, 18 May 2020 01:59:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HcC5d0dkGCVtIC0H6I2J3H5klgnWGhpsgSC2d3NhmtY=;
+        b=dSe7x6Xn0/BmroqGeGszSIzWEqOWDMRGKr5R6+cSXqDzT9w5YGci0RMxs8wZhgU/Ww
+         U+lWGTkdPWeHqcvV9ZwSsgSuG2gT1kuvxKyqcWGuMMmkuYmxX5etXrS0p8IduyJYp8db
+         fTEaD7dZq5C2VCjLoyY4cv1WPSYOfyzn1hZtaG9YwZ18oXDXFvb8OWd+BAcJJCOm4PdK
+         kwd/NPCvsraafwYZTyT+NTIG+Uwc/tGy0CcO8s5Q6rSbAiPvMUzJ3aNW9QN6JOpQL/3N
+         G989r1evWT1lwwxyv0wbLCCXhVgGl2Yz05qmxD4yJAxg8IxQnRb+mxmgQ+cl5J5hJDcJ
+         DNJw==
+X-Gm-Message-State: AOAM531p+VO33VxRkjTBDKtNH1mwgiLV48J3GELhUOA6iW3moefGdXWO
+        rPRh5oezuxvqMw+7+6gvIJ0tmPRsO4EptcNB7Gg=
+X-Google-Smtp-Source: ABdhPJzHU/Z1F5YsgIDVwxzd5lXbIG4cpPdzQkCfjzP+lYB0PuTC/2UalzJ4qHxT8jZN0CA1Ix7+aLSUeVJU7LdzUGI=
+X-Received: by 2002:a9d:3d05:: with SMTP id a5mr426572otc.262.1589792372469;
+ Mon, 18 May 2020 01:59:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <4502272.pByIgeXik9@kreacher>
+In-Reply-To: <4502272.pByIgeXik9@kreacher>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 18 May 2020 10:59:17 +0200
+Message-ID: <CAJZ5v0j6S+we7tHeV9TM30LS+TO3zWigACe0ZUFfWphg2FBBZQ@mail.gmail.com>
+Subject: Re: [PATCH[RFT]] ACPI: EC: s2idle: Avoid flushing EC work when EC GPE
+ is inactive
+To:     Chris Chiu <chiu@endlessm.com>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Em Mon, 18 May 2020 09:22:53 +0200
-Hans de Goede <hdegoede@redhat.com> escreveu:
+On Thu, May 14, 2020 at 12:10 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+>
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> Flushing the EC work while suspended to idle when the EC GPE status
+> is not set causes some EC wakeup events (notably power button and
+> lid ones) to be missed after a series of spurious wakeups on the Dell
+> XPS13 9360 in my office.
+>
+> If that happens, the machine cannot be woken up from suspend-to-idle
+> by a power button press or lid status change and it needs to be woken
+> up in some other way (eg. by a key press).
+>
+> Flushing the EC work only after successful dispatching the EC GPE,
+> which means that its status has been set, avoids the issue, so change
+> the code in question accordingly.
+>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>
+> Hi Chris,
+>
+> Please check if the key press wakeup still works on your system with this patch
+> applied (on top of https://patchwork.kernel.org/patch/11538065/).
 
-> Hi Rafael,
-> 
-> On 5/15/20 6:28 PM, Rafael J. Wysocki wrote:
-> > On Tue, May 12, 2020 at 7:52 AM Mauro Carvalho Chehab
-> > <mchehab+huawei@kernel.org> wrote:  
-> >>
-> >> On Asus T101HA, we keep receiving those error messages:
-> >>
-> >>          i915 0000:00:02.0: [drm] *ERROR* mipi_exec_pmic failed, error: -95
-> >>          intel_soc_pmic_exec_mipi_pmic_seq_element: Not implemented
-> >>          intel_soc_pmic_exec_mipi_pmic_seq_element: i2c-addr: 0x5e reg-addr 0x4b value 0x59 mask 0xff
-> >>
-> >> Because the opregion is missing the I2C address.
-> >>
-> >> Suggested-by: Hans de Goede <hdegoede@redhat.com>
-> >> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> >> ---
-> >>   drivers/acpi/pmic/intel_pmic_chtdc_ti.c | 1 +
-> >>   1 file changed, 1 insertion(+)
-> >>
-> >> diff --git a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> >> index 7ccd7d9660bc..a5101b07611a 100644
-> >> --- a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> >> +++ b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> >> @@ -102,6 +102,7 @@ static struct intel_pmic_opregion_data chtdc_ti_pmic_opregion_data = {
-> >>          .power_table_count = ARRAY_SIZE(chtdc_ti_power_table),
-> >>          .thermal_table = chtdc_ti_thermal_table,
-> >>          .thermal_table_count = ARRAY_SIZE(chtdc_ti_thermal_table),
-> >> +       .pmic_i2c_address = 0x5e,
-> >>   };
-> >>
-> >>   static int chtdc_ti_pmic_opregion_probe(struct platform_device *pdev)
-> >> --  
-> > 
-> > This appears to be part of a series, but the second patch has not been
-> > CCed to linux-acpi.  
-> 
-> Mauro send out 3 patches related to the PMIC, this one and 2 MFD patches.
-> I think his intention was to send out this standalone and the 2 MFD patches
-> as a series, but instead he send out this 1 + 1 MFD patch as a series and
-> the other MFD patch as a standalone patch.
-> 
-> Either way this patch is a standalone patch, the 2/2 patch is almost
-> completely unrelated, so if you can pick this one up, then that would be
-> great.
+Hi Chris,
 
-Yeah, patch 2/2 is independent of this one. It touches only drivers/mfd/Kconfig,
-addressing a problem when building with INTEL_SOC_PMIC_CHTDC_TI=m.
+Since I haven't heard back from you and the problem at hand is a
+regression on the machine where it happens, I'm going to push this
+patch for merging.
 
-The third patch for the MFD tree addresses similar issues with drivers that
-register an OpRegion, but won't work properly if compiled as module.
+If it causes the key press wakeup issue to reappear on your machine,
+I'm afraid that we'll need to quirk it in the EC driver.
 
-Please pick this one via your tree. The other two patches should probably
-go via MFD tree.
+Thanks!
 
-Thanks,
-Mauro
+> ---
+>  drivers/acpi/ec.c    |    6 +++++-
+>  drivers/acpi/sleep.c |   15 ++++-----------
+>  2 files changed, 9 insertions(+), 12 deletions(-)
+>
+> Index: linux-pm/drivers/acpi/ec.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/ec.c
+> +++ linux-pm/drivers/acpi/ec.c
+> @@ -2020,9 +2020,13 @@ bool acpi_ec_dispatch_gpe(void)
+>          * to allow the caller to process events properly after that.
+>          */
+>         ret = acpi_dispatch_gpe(NULL, first_ec->gpe);
+> -       if (ret == ACPI_INTERRUPT_HANDLED)
+> +       if (ret == ACPI_INTERRUPT_HANDLED) {
+>                 pm_pr_dbg("EC GPE dispatched\n");
+>
+> +               /* Flush the event and query workqueues. */
+> +               acpi_ec_flush_work();
+> +       }
+> +
+>         return false;
+>  }
+>  #endif /* CONFIG_PM_SLEEP */
+> Index: linux-pm/drivers/acpi/sleep.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/sleep.c
+> +++ linux-pm/drivers/acpi/sleep.c
+> @@ -980,13 +980,6 @@ static int acpi_s2idle_prepare_late(void
+>         return 0;
+>  }
+>
+> -static void acpi_s2idle_sync(void)
+> -{
+> -       /* The EC driver uses special workqueues that need to be flushed. */
+> -       acpi_ec_flush_work();
+> -       acpi_os_wait_events_complete(); /* synchronize Notify handling */
+> -}
+> -
+>  static bool acpi_s2idle_wake(void)
+>  {
+>         if (!acpi_sci_irq_valid())
+> @@ -1018,7 +1011,7 @@ static bool acpi_s2idle_wake(void)
+>                         return true;
+>
+>                 /*
+> -                * Cancel the wakeup and process all pending events in case
+> +                * Cancel the SCI wakeup and process all pending events in case
+>                  * there are any wakeup ones in there.
+>                  *
+>                  * Note that if any non-EC GPEs are active at this point, the
+> @@ -1026,8 +1019,7 @@ static bool acpi_s2idle_wake(void)
+>                  * should be missed by canceling the wakeup here.
+>                  */
+>                 pm_system_cancel_wakeup();
+> -
+> -               acpi_s2idle_sync();
+> +               acpi_os_wait_events_complete();
+>
+>                 /*
+>                  * The SCI is in the "suspended" state now and it cannot produce
+> @@ -1060,7 +1052,8 @@ static void acpi_s2idle_restore(void)
+>          * of GPEs.
+>          */
+>         acpi_os_wait_events_complete(); /* synchronize GPE processing */
+> -       acpi_s2idle_sync();
+> +       acpi_ec_flush_work(); /* flush the EC driver's workqueues */
+> +       acpi_os_wait_events_complete(); /* synchronize Notify handling */
+>
+>         s2idle_wakeup = false;
+>
+>
+>
+>
