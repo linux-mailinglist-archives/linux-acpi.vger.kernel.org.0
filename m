@@ -2,180 +2,252 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 944D01D7A74
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 15:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5538A1D7B19
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 16:23:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726997AbgERNyD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 May 2020 09:54:03 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:56684 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726895AbgERNyC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 May 2020 09:54:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Mime-Version:Content-Type:References:
-        In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=XtLlCGtUP/kCGEG2LHNIpz49eM4V0d1B+UtuwUyFr8o=; b=09GVOIkz6LFvvy6cX9nYz5TJZd
-        0Rihs/mn29wlm/CmmmFKtQ6xqqEC25gDFDgKz9ik6QfmZdi3I5LHKiYGTdy2PfSGIEWeTM8hu5r8S
-        i6pZIJZXWs7UU6yxhVTeDVoQD5jBxJZwWXInH5+ZMGUpwkQagmjQ6D2P/KL22zBbahlTrCi28HD3m
-        terg3zf80AyVC96qmuXJoAaYmiDS9rTy8zrj5vqPKEELFBBH9atWwesqvPEKfcgI5x9r+2e7+tPNG
-        z5rW7poi6+EWFWd7/Zzo9mwh5hM9Yx2gr4H+9HAlbWG/IRUxJhVELou//Z6IN/XwXsGFc9Q53ub6a
-        TEKBDj8g==;
-Received: from 54-240-197-239.amazon.com ([54.240.197.239] helo=u3832b3a9db3152.ant.amazon.com)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jagAh-0003w0-Hp; Mon, 18 May 2020 13:51:11 +0000
-Message-ID: <b0ca81f973ba55a2d6a8c84bc00f2324bad64f30.camel@infradead.org>
-Subject: Re: [PATCH 0/2] Add support for StorageD3Enable _DSD property
-From:   David Woodhouse <dwmw2@infradead.org>
-To:     "Williams, Dan J" <dan.j.williams@intel.com>,
-        "hch@lst.de" <hch@lst.de>,
-        "david.e.box@linux.intel.com" <david.e.box@linux.intel.com>
-Cc:     "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-        "sagi@grimberg.me" <sagi@grimberg.me>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "axboe@fb.com" <axboe@fb.com>,
-        "kbusch@kernel.org" <kbusch@kernel.org>,
-        "bhelgaas@google.com" <bhelgaas@google.com>
-Date:   Mon, 18 May 2020 14:51:06 +0100
-In-Reply-To: <296064bbcf702744bf603932c9d849307db2e5b7.camel@intel.com>
-References: <20200428003214.3764-1-david.e.box@linux.intel.com>
-         <20200428051312.GB17146@lst.de>
-         <de052d30cc881ac67f9410b50b0760ee5bf9a623.camel@linux.intel.com>
-         <20200428142247.GB5439@lst.de>
-         <de2d78556fcb10f97364201256ac8f342a58eb75.camel@linux.intel.com>
-         <296064bbcf702744bf603932c9d849307db2e5b7.camel@intel.com>
-Content-Type: multipart/signed; micalg="sha-256";
-        protocol="application/x-pkcs7-signature";
-        boundary="=-Z1oE88ygGVvnbjFrv0RL"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
-Mime-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by merlin.infradead.org. See http://www.infradead.org/rpr.html
+        id S1728119AbgEROX3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 May 2020 10:23:29 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:32252 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727122AbgEROX3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 18 May 2020 10:23:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1589811806;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=N4kEWsurXWVRb491n6rW9nQFxH83gE62FpZ7K4CZ4Y8=;
+        b=gPkmNsYwHcODmqrtBJ4fX+q6gqm7hHhnZd1/h8qfobbOeu3YlXQFsAnE2wZZxj0xhaPV51
+        jNMo9+kCK4Tve+MSZG3mFvkvps5lkf3CIgFUX2fytCqgvRmpIhVhqjOmoYt0A0drDh/WxI
+        jDB/9aqRqq7NkjsQPZKXdg7B0I3A6oQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-275-ot5Q_mOTM520aOJ_-6F4hg-1; Mon, 18 May 2020 10:23:25 -0400
+X-MC-Unique: ot5Q_mOTM520aOJ_-6F4hg-1
+Received: by mail-wm1-f71.google.com with SMTP id l26so3164661wmh.3
+        for <linux-acpi@vger.kernel.org>; Mon, 18 May 2020 07:23:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=N4kEWsurXWVRb491n6rW9nQFxH83gE62FpZ7K4CZ4Y8=;
+        b=mlf56rpgiOUFKuHagn5xwiUELFoQOxeSO/yYfpq574cejmv9VWRQk1rFwAhz/+Sxd+
+         SsAiryIAEKi4e0t7qosUtXW4XLAzVt+++2fImN+e01dqUwZPAdrX+h0ngoaphFr9z6u2
+         8DOr/P6QhjvYVh/HuTL2I2XtgF7HmnUDOa8T1PWyjpqhROk0D8uXuNueRJkVMl/1tOzJ
+         rPzev8f83l4Mrao2Z6kBr9Jej9pDfV2hyaBgYLX2Kqe/ulQjLRGFeni6r8lKIxGgZOoP
+         P9zoOKd45HZg4U2OuRmD3DnAOB3NfL6/KsI2HOwUR7hUjvzMH49zjNoYN3DyaAtxVJ7k
+         1z2g==
+X-Gm-Message-State: AOAM533DD+1v33Qa1g0z38n4qM9LMlqoLLDPkdK+0W6jZL/wo8H50R4f
+        3CdUegU/MxTEszD88nXZ4I5G7sAE0Phf473PAINfN8oWNulEpwlzmn9RXngpk+z5KXNFxK+vx0K
+        oBfxp/Q/TxULlCHeaFy17nA==
+X-Received: by 2002:adf:e388:: with SMTP id e8mr19930285wrm.174.1589811804153;
+        Mon, 18 May 2020 07:23:24 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyi/JVZYfBkPZCJ33i9pkkZ3Iw8Uks7lUYbBZX8naP80oeusj8a8mSkVZW0YdNpNt9SYero8A==
+X-Received: by 2002:adf:e388:: with SMTP id e8mr19930254wrm.174.1589811803884;
+        Mon, 18 May 2020 07:23:23 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id g187sm16732224wmf.30.2020.05.18.07.23.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 May 2020 07:23:23 -0700 (PDT)
+Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
+        Benjamin Tissoires <btissoir@redhat.com>
+References: <20200506002746.GB89269@dtor-ws>
+ <20200515164943.28480-1-andrzej.p@collabora.com>
+ <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
+ <e6030957-97dc-5b04-7855-bc14a78164c8@collabora.com>
+ <6d9921fc-5c2f-beda-4dcd-66d6970a22fe@redhat.com>
+ <09679de4-75d3-1f29-ec5f-8d42c84273dd@collabora.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <f674ba4f-bd83-0877-c730-5dc6ea09ae4b@redhat.com>
+Date:   Mon, 18 May 2020 16:23:21 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
+MIME-Version: 1.0
+In-Reply-To: <09679de4-75d3-1f29-ec5f-8d42c84273dd@collabora.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi,
 
---=-Z1oE88ygGVvnbjFrv0RL
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 5/18/20 3:49 PM, Andrzej Pietrasiewicz wrote:
+> Hi Hans,
+> 
+> W dniu 18.05.2020 o 14:24, Hans de Goede pisze:
+>> Hi,
+>>
+>> On 5/18/20 12:48 PM, Andrzej Pietrasiewicz wrote:
+>>> Hi Hans,
+>>>
+>>> W dniu 15.05.2020 o 20:19, Hans de Goede pisze:
+>>>> Hi Andrezj,
+>>>>
+>>>> On 5/15/20 6:49 PM, Andrzej Pietrasiewicz wrote:
+>>>>> Userspace might want to implement a policy to temporarily disregard input
+>>>>> from certain devices, including not treating them as wakeup sources.
+>>>>>
+>>>>> An example use case is a laptop, whose keyboard can be folded under the
+>>>>> screen to create tablet-like experience. The user then must hold the laptop
+>>>>> in such a way that it is difficult to avoid pressing the keyboard keys. It
+>>>>> is therefore desirable to temporarily disregard input from the keyboard,
+>>>>> until it is folded back. This obviously is a policy which should be kept
+>>>>> out of the kernel, but the kernel must provide suitable means to implement
+>>>>> such a policy.
+>>>>
+>>>> Actually libinput already binds together (inside libinput) SW_TABLET_MODE
+>>>> generating evdev nodes and e.g. internal keyboards on devices with 360°
+>>>> hinges for this reason. libinput simply closes the /dev/input/event#
+>>>> node when folded and re-opens it when the keyboard should become active
+>>>> again. Thus not only suppresses events but allows e.g. touchpads to
+>>>> enter runtime suspend mode which saves power. Typically closing the
+>>>> /dev/input/event# node will also disable the device as wakeup source.
+>>>>
+>>>> So I wonder what this series actually adds for functionality for
+>>>> userspace which can not already be achieved this way?
+>>>>
+>>>> I also noticed that you keep the device open (do not call the
+>>>> input_device's close callback) when inhibited and just throw away
+>>>
+>>> I'm not sure if I understand you correctly, it is called:
+>>>
+>>> +static inline void input_stop(struct input_dev *dev)
+>>> +{
+>>> +    if (dev->poller)
+>>> +        input_dev_poller_stop(dev->poller);
+>>> +    if (dev->close)
+>>> +        dev->close(dev);
+>>>                  ^^^^^^^^^^^^^^^^
+>>> +static int input_inhibit(struct input_dev *dev)
+>>> +{
+>>> +    int ret = 0;
+>>> +
+>>> +    mutex_lock(&dev->mutex);
+>>> +
+>>> +    if (dev->inhibited)
+>>> +        goto out;
+>>> +
+>>> +    if (dev->users) {
+>>> +        if (dev->inhibit) {
+>>> +            ret = dev->inhibit(dev);
+>>> +            if (ret)
+>>> +                goto out;
+>>> +        }
+>>> +        input_stop(dev);
+>>>                  ^^^^^^^^^^^^^^^^
+>>>
+>>> It will not be called when dev->users is zero, but if it is zero,
+>>> then nobody has opened the device yet so there is nothing to close.
+>>
+>> Ah, I missed that.
+>>
+>> So if the device implements the inhibit call back then on
+>> inhibit it will get both the inhibit and close callback called?
+>>
+> 
+> That's right. And conversely, upon uninhibit open() and uninhibit()
+> callbacks will be invoked. Please note that just as with open()/close(),
+> providing inhibit()/uninhibit() is optional.
 
-On Wed, 2020-04-29 at 05:20 +0000, Williams, Dan J wrote:
-> The *patch* is not trying to overrule NVME, and the best I can say is
-> that the Intel Linux team was not in the loop when this was being
-> decided between the platform BIOS implemenation and  whomever  thought
-> they could just publish random ACPI properties that impacted NVME
-> operation [1].
->=20
-> So now David is trying to get these platform unbroken because they are
-> already shipping with this b0rkage.
+Ack.
 
-This is what we have WARN_TAINT() for though, right? It can suitably
-warn users when such breakage is detected in the platform.
+>> And what happens if the last user goes away and the device
+>> is not inhibited?
+> 
+> close() is called as usually.
 
+But not inhibit, hmm, see below.
 
+>> I'm trying to understand here what the difference between the 2
+>> is / what the goal of having a separate inhibit callback ?
+>>
+> 
+> Drivers have very different ideas about what it means to suspend/resume
+> and open/close. The optional inhibit/uninhibit callbacks are meant for
+> the drivers to know that it is this particular action going on.
 
---=-Z1oE88ygGVvnbjFrv0RL
-Content-Type: application/x-pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+So the inhibit() callback triggers the "suspend" behavior ?
+But shouldn't drivers which are capable of suspending the device
+always do so on close() ?
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCECow
-ggUcMIIEBKADAgECAhEA4rtJSHkq7AnpxKUY8ZlYZjANBgkqhkiG9w0BAQsFADCBlzELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEaMBgG
-A1UEChMRQ09NT0RPIENBIExpbWl0ZWQxPTA7BgNVBAMTNENPTU9ETyBSU0EgQ2xpZW50IEF1dGhl
-bnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1haWwgQ0EwHhcNMTkwMTAyMDAwMDAwWhcNMjIwMTAxMjM1
-OTU5WjAkMSIwIAYJKoZIhvcNAQkBFhNkd213MkBpbmZyYWRlYWQub3JnMIIBIjANBgkqhkiG9w0B
-AQEFAAOCAQ8AMIIBCgKCAQEAsv3wObLTCbUA7GJqKj9vHGf+Fa+tpkO+ZRVve9EpNsMsfXhvFpb8
-RgL8vD+L133wK6csYoDU7zKiAo92FMUWaY1Hy6HqvVr9oevfTV3xhB5rQO1RHJoAfkvhy+wpjo7Q
-cXuzkOpibq2YurVStHAiGqAOMGMXhcVGqPuGhcVcVzVUjsvEzAV9Po9K2rpZ52FE4rDkpDK1pBK+
-uOAyOkgIg/cD8Kugav5tyapydeWMZRJQH1vMQ6OVT24CyAn2yXm2NgTQMS1mpzStP2ioPtTnszIQ
-Ih7ASVzhV6csHb8Yrkx8mgllOyrt9Y2kWRRJFm/FPRNEurOeNV6lnYAXOymVJwIDAQABo4IB0zCC
-Ac8wHwYDVR0jBBgwFoAUgq9sjPjF/pZhfOgfPStxSF7Ei8AwHQYDVR0OBBYEFLfuNf820LvaT4AK
-xrGK3EKx1DE7MA4GA1UdDwEB/wQEAwIFoDAMBgNVHRMBAf8EAjAAMB0GA1UdJQQWMBQGCCsGAQUF
-BwMEBggrBgEFBQcDAjBGBgNVHSAEPzA9MDsGDCsGAQQBsjEBAgEDBTArMCkGCCsGAQUFBwIBFh1o
-dHRwczovL3NlY3VyZS5jb21vZG8ubmV0L0NQUzBaBgNVHR8EUzBRME+gTaBLhklodHRwOi8vY3Js
-LmNvbW9kb2NhLmNvbS9DT01PRE9SU0FDbGllbnRBdXRoZW50aWNhdGlvbmFuZFNlY3VyZUVtYWls
-Q0EuY3JsMIGLBggrBgEFBQcBAQR/MH0wVQYIKwYBBQUHMAKGSWh0dHA6Ly9jcnQuY29tb2RvY2Eu
-Y29tL0NPTU9ET1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcnQwJAYI
-KwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmNvbW9kb2NhLmNvbTAeBgNVHREEFzAVgRNkd213MkBpbmZy
-YWRlYWQub3JnMA0GCSqGSIb3DQEBCwUAA4IBAQALbSykFusvvVkSIWttcEeifOGGKs7Wx2f5f45b
-nv2ghcxK5URjUvCnJhg+soxOMoQLG6+nbhzzb2rLTdRVGbvjZH0fOOzq0LShq0EXsqnJbbuwJhK+
-PnBtqX5O23PMHutP1l88AtVN+Rb72oSvnD+dK6708JqqUx2MAFLMevrhJRXLjKb2Mm+/8XBpEw+B
-7DisN4TMlLB/d55WnT9UPNHmQ+3KFL7QrTO8hYExkU849g58Dn3Nw3oCbMUgny81ocrLlB2Z5fFG
-Qu1AdNiBA+kg/UxzyJZpFbKfCITd5yX49bOriL692aMVDyqUvh8fP+T99PqorH4cIJP6OxSTdxKM
-MIIFHDCCBASgAwIBAgIRAOK7SUh5KuwJ6cSlGPGZWGYwDQYJKoZIhvcNAQELBQAwgZcxCzAJBgNV
-BAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGjAY
-BgNVBAoTEUNPTU9ETyBDQSBMaW1pdGVkMT0wOwYDVQQDEzRDT01PRE8gUlNBIENsaWVudCBBdXRo
-ZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTE5MDEwMjAwMDAwMFoXDTIyMDEwMTIz
-NTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCASIwDQYJKoZIhvcN
-AQEBBQADggEPADCCAQoCggEBALL98Dmy0wm1AOxiaio/bxxn/hWvraZDvmUVb3vRKTbDLH14bxaW
-/EYC/Lw/i9d98CunLGKA1O8yogKPdhTFFmmNR8uh6r1a/aHr301d8YQea0DtURyaAH5L4cvsKY6O
-0HF7s5DqYm6tmLq1UrRwIhqgDjBjF4XFRqj7hoXFXFc1VI7LxMwFfT6PStq6WedhROKw5KQytaQS
-vrjgMjpICIP3A/CroGr+bcmqcnXljGUSUB9bzEOjlU9uAsgJ9sl5tjYE0DEtZqc0rT9oqD7U57My
-ECIewElc4VenLB2/GK5MfJoJZTsq7fWNpFkUSRZvxT0TRLqznjVepZ2AFzsplScCAwEAAaOCAdMw
-ggHPMB8GA1UdIwQYMBaAFIKvbIz4xf6WYXzoHz0rcUhexIvAMB0GA1UdDgQWBBS37jX/NtC72k+A
-CsaxitxCsdQxOzAOBgNVHQ8BAf8EBAMCBaAwDAYDVR0TAQH/BAIwADAdBgNVHSUEFjAUBggrBgEF
-BQcDBAYIKwYBBQUHAwIwRgYDVR0gBD8wPTA7BgwrBgEEAbIxAQIBAwUwKzApBggrBgEFBQcCARYd
-aHR0cHM6Ly9zZWN1cmUuY29tb2RvLm5ldC9DUFMwWgYDVR0fBFMwUTBPoE2gS4ZJaHR0cDovL2Ny
-bC5jb21vZG9jYS5jb20vQ09NT0RPUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFp
-bENBLmNybDCBiwYIKwYBBQUHAQEEfzB9MFUGCCsGAQUFBzAChklodHRwOi8vY3J0LmNvbW9kb2Nh
-LmNvbS9DT01PRE9SU0FDbGllbnRBdXRoZW50aWNhdGlvbmFuZFNlY3VyZUVtYWlsQ0EuY3J0MCQG
-CCsGAQUFBzABhhhodHRwOi8vb2NzcC5jb21vZG9jYS5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAC20spBbrL71ZEiFrbXBHonzhhirO1sdn+X+O
-W579oIXMSuVEY1LwpyYYPrKMTjKECxuvp24c829qy03UVRm742R9Hzjs6tC0oatBF7KpyW27sCYS
-vj5wbal+TttzzB7rT9ZfPALVTfkW+9qEr5w/nSuu9PCaqlMdjABSzHr64SUVy4ym9jJvv/FwaRMP
-gew4rDeEzJSwf3eeVp0/VDzR5kPtyhS+0K0zvIWBMZFPOPYOfA59zcN6AmzFIJ8vNaHKy5QdmeXx
-RkLtQHTYgQPpIP1Mc8iWaRWynwiE3ecl+PWzq4i+vdmjFQ8qlL4fHz/k/fT6qKx+HCCT+jsUk3cS
-jDCCBeYwggPOoAMCAQICEGqb4Tg7/ytrnwHV2binUlYwDQYJKoZIhvcNAQEMBQAwgYUxCzAJBgNV
-BAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGjAY
-BgNVBAoTEUNPTU9ETyBDQSBMaW1pdGVkMSswKQYDVQQDEyJDT01PRE8gUlNBIENlcnRpZmljYXRp
-b24gQXV0aG9yaXR5MB4XDTEzMDExMDAwMDAwMFoXDTI4MDEwOTIzNTk1OVowgZcxCzAJBgNVBAYT
-AkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGjAYBgNV
-BAoTEUNPTU9ETyBDQSBMaW1pdGVkMT0wOwYDVQQDEzRDT01PRE8gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAvrOeV6wodnVAFsc4A5jTxhh2IVDzJXkLTLWg0X06WD6cpzEup/Y0dtmEatrQPTRI5Or1u6zf
-+bGBSyD9aH95dDSmeny1nxdlYCeXIoymMv6pQHJGNcIDpFDIMypVpVSRsivlJTRENf+RKwrB6vcf
-WlP8dSsE3Rfywq09N0ZfxcBa39V0wsGtkGWC+eQKiz4pBZYKjrc5NOpG9qrxpZxyb4o4yNNwTqza
-aPpGRqXB7IMjtf7tTmU2jqPMLxFNe1VXj9XB1rHvbRikw8lBoNoSWY66nJN/VCJv5ym6Q0mdCbDK
-CMPybTjoNCQuelc0IAaO4nLUXk0BOSxSxt8kCvsUtQIDAQABo4IBPDCCATgwHwYDVR0jBBgwFoAU
-u69+Aj36pvE8hI6t7jiY7NkyMtQwHQYDVR0OBBYEFIKvbIz4xf6WYXzoHz0rcUhexIvAMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMBEGA1UdIAQKMAgwBgYEVR0gADBMBgNVHR8E
-RTBDMEGgP6A9hjtodHRwOi8vY3JsLmNvbW9kb2NhLmNvbS9DT01PRE9SU0FDZXJ0aWZpY2F0aW9u
-QXV0aG9yaXR5LmNybDBxBggrBgEFBQcBAQRlMGMwOwYIKwYBBQUHMAKGL2h0dHA6Ly9jcnQuY29t
-b2RvY2EuY29tL0NPTU9ET1JTQUFkZFRydXN0Q0EuY3J0MCQGCCsGAQUFBzABhhhodHRwOi8vb2Nz
-cC5jb21vZG9jYS5jb20wDQYJKoZIhvcNAQEMBQADggIBAHhcsoEoNE887l9Wzp+XVuyPomsX9vP2
-SQgG1NgvNc3fQP7TcePo7EIMERoh42awGGsma65u/ITse2hKZHzT0CBxhuhb6txM1n/y78e/4ZOs
-0j8CGpfb+SJA3GaBQ+394k+z3ZByWPQedXLL1OdK8aRINTsjk/H5Ns77zwbjOKkDamxlpZ4TKSDM
-KVmU/PUWNMKSTvtlenlxBhh7ETrN543j/Q6qqgCWgWuMAXijnRglp9fyadqGOncjZjaaSOGTTFB+
-E2pvOUtY+hPebuPtTbq7vODqzCM6ryEhNhzf+enm0zlpXK7q332nXttNtjv7VFNYG+I31gnMrwfH
-M5tdhYF/8v5UY5g2xANPECTQdu9vWPoqNSGDt87b3gXb1AiGGaI06vzgkejL580ul+9hz9D0S0U4
-jkhJiA7EuTecP/CFtR72uYRBcunwwH3fciPjviDDAI9SnC/2aPY8ydehzuZutLbZdRJ5PDEJM/1t
-yZR2niOYihZ+FCbtf3D9mB12D4ln9icgc7CwaxpNSCPt8i/GqK2HsOgkL3VYnwtx7cJUmpvVdZ4o
-gnzgXtgtdk3ShrtOS1iAN2ZBXFiRmjVzmehoMof06r1xub+85hFQzVxZx5/bRaTKTlL8YXLI8nAb
-R9HWdFqzcOoB/hxfEyIQpx9/s81rgzdEZOofSlZHynoSMYIDyjCCA8YCAQEwga0wgZcxCzAJBgNV
-BAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGjAY
-BgNVBAoTEUNPTU9ETyBDQSBMaW1pdGVkMT0wOwYDVQQDEzRDT01PRE8gUlNBIENsaWVudCBBdXRo
-ZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA4rtJSHkq7AnpxKUY8ZlYZjANBglghkgB
-ZQMEAgEFAKCCAe0wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjAw
-NTE4MTM1MTA2WjAvBgkqhkiG9w0BCQQxIgQgmfE3efwzej6N21vJivYBXtnw841H/uwXgCdodYCC
-eZIwgb4GCSsGAQQBgjcQBDGBsDCBrTCBlzELMAkGA1UEBhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIg
-TWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEaMBgGA1UEChMRQ09NT0RPIENBIExpbWl0ZWQx
-PTA7BgNVBAMTNENPTU9ETyBSU0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1h
-aWwgQ0ECEQDiu0lIeSrsCenEpRjxmVhmMIHABgsqhkiG9w0BCRACCzGBsKCBrTCBlzELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEaMBgG
-A1UEChMRQ09NT0RPIENBIExpbWl0ZWQxPTA7BgNVBAMTNENPTU9ETyBSU0EgQ2xpZW50IEF1dGhl
-bnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1haWwgQ0ECEQDiu0lIeSrsCenEpRjxmVhmMA0GCSqGSIb3
-DQEBAQUABIIBAH2Yl7ruF0PgnjsMH3oj2zTNUpdHFr+UkZdM4w0s+WzAfw7Z0m1hoBwVkcsDyl86
-yeQHazg8szvuLmweLQ5BBIosWx3wXG1FSCzht1jErXXdGXgNe4pdB7h+oYCp7Xag4Xu/ShZs5UjA
-Krc/WyGIJmHyaB0jOEjyir6y9/44Hq6FWYne5rc4DP8bSSrdk0WWBtTOP+CMmO58yNwgmtb6ZztU
-Kf4Mzo9ggjAyNvPmf9zR0zYqysSngK1MU4717YciQyp2WmaEP+bhmUmtm5LUKW4zqfK8SL9DEe+j
-HU3k3/nk8gIcMNmo0Vmn7YjRl8217QcgrZ8BZLmT6s9RUn+qmHMAAAAAAAA=
+Since your current proposal also calls close() on inhibit() I
+really see little difference between an inhibit() and the last
+user of the device closing it and IMHO unless there is a good
+reason to actually differentiate the 2 it would be better
+to only stick with the existing close() and in cases where
+that does not put the device in a low-power mode yet, fix
+the existing close() callback to do the low-power mode
+setting instead of adding a new callback.
 
+> For inhibit() there's one more argument: close() does not return a value,
+> so its meaning is "do some last cleanup" and as such it is not allowed
+> to fail - whatever its effect is, we must deem it successful. inhibit()
+> does return a value and so it is allowed to fail.
 
---=-Z1oE88ygGVvnbjFrv0RL--
+Well, we could make close() return an error and at least in the inhibit()
+case propagate that to userspace. I wonder if userspace is going to
+do anything useful with that error though...
+
+In my experience errors during cleanup/shutdown are best logged
+(using dev_err) and otherwise ignored, so that we try to clean up
+as much possible. Unless the very first step of the shutdown process
+fails the device is going to be in some twilight zone state anyways
+at this point we might as well try to cleanup as much as possible.
+
+> All in all, it is up to the drivers to decide which callback they
+> provide. Based on my work so far I would say that there are tens
+> of simple cases where open() and close() are sufficient, out of total
+> ~400 users of input_allocate_device():
+> 
+> $ git grep "input_allocate_device(" | grep -v ^Documentation | \
+> cut -f1 -d: | sort | uniq | wc
+>      390     390   13496
+
+So can you explain a bit more about the cases where only having
+open/close is not sufficient?  So far I have the feeling that
+those are all we need and that we really do not need separate
+[un]inhibit callbacks.
+
+Regards,
+
+Hans
 
