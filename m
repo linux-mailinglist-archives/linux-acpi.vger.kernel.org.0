@@ -2,252 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5538A1D7B19
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 16:23:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B4011D7FF2
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 May 2020 19:20:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728119AbgEROX3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 May 2020 10:23:29 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:32252 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727122AbgEROX3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 May 2020 10:23:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589811806;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=N4kEWsurXWVRb491n6rW9nQFxH83gE62FpZ7K4CZ4Y8=;
-        b=gPkmNsYwHcODmqrtBJ4fX+q6gqm7hHhnZd1/h8qfobbOeu3YlXQFsAnE2wZZxj0xhaPV51
-        jNMo9+kCK4Tve+MSZG3mFvkvps5lkf3CIgFUX2fytCqgvRmpIhVhqjOmoYt0A0drDh/WxI
-        jDB/9aqRqq7NkjsQPZKXdg7B0I3A6oQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-275-ot5Q_mOTM520aOJ_-6F4hg-1; Mon, 18 May 2020 10:23:25 -0400
-X-MC-Unique: ot5Q_mOTM520aOJ_-6F4hg-1
-Received: by mail-wm1-f71.google.com with SMTP id l26so3164661wmh.3
-        for <linux-acpi@vger.kernel.org>; Mon, 18 May 2020 07:23:25 -0700 (PDT)
+        id S1728280AbgERRUg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 May 2020 13:20:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56470 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727020AbgERRUg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 May 2020 13:20:36 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D277EC05BD0A
+        for <linux-acpi@vger.kernel.org>; Mon, 18 May 2020 10:20:35 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id e10so9152369edq.0
+        for <linux-acpi@vger.kernel.org>; Mon, 18 May 2020 10:20:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GgTcEd+caanrx1t1o1gL/Ypc50CeCw/F8i23bYyVrUw=;
+        b=PuiVlzFghkrRKLS1pILHxv+676poFWDYeHwwBLU2TzTknD+dFYLk0xk+5TDy5pgW64
+         qhuwEWP7J2W6vsJz9bxByoo2dcZ36iMpyHBw7XLV0g5MUF4S816ICg1DZOwDObAlCM3l
+         jlS2qNoPNiw16Z9LbJPF9al5A655ElOJAWZCiLcMB/bVFyCP105iTKNVuysDuncWhyKd
+         BhtMjOTMlylTNZO9ZnTXwTC3GcHLAoPHCQ+Rc0wCdFGDFSgZbzPR0IlAhtNd6yFRaXUC
+         QFTeTJBaBJG91RBZss95qPo8+kfKyS7kah/YxohaMXsSe2dPgCxaCsSp+E0yeuj4kHg4
+         cGjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=N4kEWsurXWVRb491n6rW9nQFxH83gE62FpZ7K4CZ4Y8=;
-        b=mlf56rpgiOUFKuHagn5xwiUELFoQOxeSO/yYfpq574cejmv9VWRQk1rFwAhz/+Sxd+
-         SsAiryIAEKi4e0t7qosUtXW4XLAzVt+++2fImN+e01dqUwZPAdrX+h0ngoaphFr9z6u2
-         8DOr/P6QhjvYVh/HuTL2I2XtgF7HmnUDOa8T1PWyjpqhROk0D8uXuNueRJkVMl/1tOzJ
-         rPzev8f83l4Mrao2Z6kBr9Jej9pDfV2hyaBgYLX2Kqe/ulQjLRGFeni6r8lKIxGgZOoP
-         P9zoOKd45HZg4U2OuRmD3DnAOB3NfL6/KsI2HOwUR7hUjvzMH49zjNoYN3DyaAtxVJ7k
-         1z2g==
-X-Gm-Message-State: AOAM533DD+1v33Qa1g0z38n4qM9LMlqoLLDPkdK+0W6jZL/wo8H50R4f
-        3CdUegU/MxTEszD88nXZ4I5G7sAE0Phf473PAINfN8oWNulEpwlzmn9RXngpk+z5KXNFxK+vx0K
-        oBfxp/Q/TxULlCHeaFy17nA==
-X-Received: by 2002:adf:e388:: with SMTP id e8mr19930285wrm.174.1589811804153;
-        Mon, 18 May 2020 07:23:24 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyi/JVZYfBkPZCJ33i9pkkZ3Iw8Uks7lUYbBZX8naP80oeusj8a8mSkVZW0YdNpNt9SYero8A==
-X-Received: by 2002:adf:e388:: with SMTP id e8mr19930254wrm.174.1589811803884;
-        Mon, 18 May 2020 07:23:23 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id g187sm16732224wmf.30.2020.05.18.07.23.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 May 2020 07:23:23 -0700 (PDT)
-Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
-        Benjamin Tissoires <btissoir@redhat.com>
-References: <20200506002746.GB89269@dtor-ws>
- <20200515164943.28480-1-andrzej.p@collabora.com>
- <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
- <e6030957-97dc-5b04-7855-bc14a78164c8@collabora.com>
- <6d9921fc-5c2f-beda-4dcd-66d6970a22fe@redhat.com>
- <09679de4-75d3-1f29-ec5f-8d42c84273dd@collabora.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <f674ba4f-bd83-0877-c730-5dc6ea09ae4b@redhat.com>
-Date:   Mon, 18 May 2020 16:23:21 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GgTcEd+caanrx1t1o1gL/Ypc50CeCw/F8i23bYyVrUw=;
+        b=hL7XJk345mJcoQD43/i/Fb37rj4tzG7r2Wp7oGPCffOCyklcvumr+SA11KjeZwwzW7
+         qJQWd6Qz9RBRC26SfhU29LzJEVHAzXrsHCFOFlz1uciltaCh5Ebhxyrs1Mq7EdnPIFy+
+         OcKeVTRHhUVpXfgxixlLKemYf9Q9jDB+42BPyXYv1YX/E2IcYrkQI7Z46ds9gCh82mbd
+         B0rbLeNdoPMu4Cm/88dasxwJ07QwI4Lgj4XGMablBzKl0UwZEmZtDXZqpzKnnLEhqwFN
+         epD8qB9/faGHDlPc96ewfGhEqpfujUtPpc8KrqUBBweVFG6lxD9C/mj7328kd//pZPwi
+         hNjg==
+X-Gm-Message-State: AOAM532r7N5VWyEamhAqZXctkCUP1BB5smor2Zo8wcj5lIVyAfStiiRj
+        2TFpIS23xebaExbK7hm+tvDLg5dvgM5ilFFAgONI+g==
+X-Google-Smtp-Source: ABdhPJz5bmBALzw+D9Jia6d4zvkIV02xWwFo/oM2e8pEt1WN25M6AUsNVPV+EY0iKhYAw1fQk4Bl1vsVwJ4nmUApjn8=
+X-Received: by 2002:a05:6402:1c1e:: with SMTP id ck30mr14064996edb.154.1589822434411;
+ Mon, 18 May 2020 10:20:34 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <09679de4-75d3-1f29-ec5f-8d42c84273dd@collabora.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20200428003214.3764-1-david.e.box@linux.intel.com>
+ <20200428051312.GB17146@lst.de> <de052d30cc881ac67f9410b50b0760ee5bf9a623.camel@linux.intel.com>
+ <20200428142247.GB5439@lst.de> <de2d78556fcb10f97364201256ac8f342a58eb75.camel@linux.intel.com>
+ <296064bbcf702744bf603932c9d849307db2e5b7.camel@intel.com> <b0ca81f973ba55a2d6a8c84bc00f2324bad64f30.camel@infradead.org>
+In-Reply-To: <b0ca81f973ba55a2d6a8c84bc00f2324bad64f30.camel@infradead.org>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Mon, 18 May 2020 10:20:23 -0700
+Message-ID: <CAPcyv4hE6iW3MwW=qybN8aXN4wHJ7R2OCDCUEw9FdKu4NeZ6iw@mail.gmail.com>
+Subject: Re: [PATCH 0/2] Add support for StorageD3Enable _DSD property
+To:     David Woodhouse <dwmw2@infradead.org>
+Cc:     "hch@lst.de" <hch@lst.de>,
+        "david.e.box@linux.intel.com" <david.e.box@linux.intel.com>,
+        "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+        "sagi@grimberg.me" <sagi@grimberg.me>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "axboe@fb.com" <axboe@fb.com>,
+        "kbusch@kernel.org" <kbusch@kernel.org>,
+        "bhelgaas@google.com" <bhelgaas@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Mon, May 18, 2020 at 6:52 AM David Woodhouse <dwmw2@infradead.org> wrote:
+>
+> On Wed, 2020-04-29 at 05:20 +0000, Williams, Dan J wrote:
+> > The *patch* is not trying to overrule NVME, and the best I can say is
+> > that the Intel Linux team was not in the loop when this was being
+> > decided between the platform BIOS implemenation and  whomever  thought
+> > they could just publish random ACPI properties that impacted NVME
+> > operation [1].
+> >
+> > So now David is trying to get these platform unbroken because they are
+> > already shipping with this b0rkage.
+>
+> This is what we have WARN_TAINT() for though, right? It can suitably
+> warn users when such breakage is detected in the platform.
+>
 
-On 5/18/20 3:49 PM, Andrzej Pietrasiewicz wrote:
-> Hi Hans,
-> 
-> W dniu 18.05.2020 o 14:24, Hans de Goede pisze:
->> Hi,
->>
->> On 5/18/20 12:48 PM, Andrzej Pietrasiewicz wrote:
->>> Hi Hans,
->>>
->>> W dniu 15.05.2020 o 20:19, Hans de Goede pisze:
->>>> Hi Andrezj,
->>>>
->>>> On 5/15/20 6:49 PM, Andrzej Pietrasiewicz wrote:
->>>>> Userspace might want to implement a policy to temporarily disregard input
->>>>> from certain devices, including not treating them as wakeup sources.
->>>>>
->>>>> An example use case is a laptop, whose keyboard can be folded under the
->>>>> screen to create tablet-like experience. The user then must hold the laptop
->>>>> in such a way that it is difficult to avoid pressing the keyboard keys. It
->>>>> is therefore desirable to temporarily disregard input from the keyboard,
->>>>> until it is folded back. This obviously is a policy which should be kept
->>>>> out of the kernel, but the kernel must provide suitable means to implement
->>>>> such a policy.
->>>>
->>>> Actually libinput already binds together (inside libinput) SW_TABLET_MODE
->>>> generating evdev nodes and e.g. internal keyboards on devices with 360°
->>>> hinges for this reason. libinput simply closes the /dev/input/event#
->>>> node when folded and re-opens it when the keyboard should become active
->>>> again. Thus not only suppresses events but allows e.g. touchpads to
->>>> enter runtime suspend mode which saves power. Typically closing the
->>>> /dev/input/event# node will also disable the device as wakeup source.
->>>>
->>>> So I wonder what this series actually adds for functionality for
->>>> userspace which can not already be achieved this way?
->>>>
->>>> I also noticed that you keep the device open (do not call the
->>>> input_device's close callback) when inhibited and just throw away
->>>
->>> I'm not sure if I understand you correctly, it is called:
->>>
->>> +static inline void input_stop(struct input_dev *dev)
->>> +{
->>> +    if (dev->poller)
->>> +        input_dev_poller_stop(dev->poller);
->>> +    if (dev->close)
->>> +        dev->close(dev);
->>>                  ^^^^^^^^^^^^^^^^
->>> +static int input_inhibit(struct input_dev *dev)
->>> +{
->>> +    int ret = 0;
->>> +
->>> +    mutex_lock(&dev->mutex);
->>> +
->>> +    if (dev->inhibited)
->>> +        goto out;
->>> +
->>> +    if (dev->users) {
->>> +        if (dev->inhibit) {
->>> +            ret = dev->inhibit(dev);
->>> +            if (ret)
->>> +                goto out;
->>> +        }
->>> +        input_stop(dev);
->>>                  ^^^^^^^^^^^^^^^^
->>>
->>> It will not be called when dev->users is zero, but if it is zero,
->>> then nobody has opened the device yet so there is nothing to close.
->>
->> Ah, I missed that.
->>
->> So if the device implements the inhibit call back then on
->> inhibit it will get both the inhibit and close callback called?
->>
-> 
-> That's right. And conversely, upon uninhibit open() and uninhibit()
-> callbacks will be invoked. Please note that just as with open()/close(),
-> providing inhibit()/uninhibit() is optional.
-
-Ack.
-
->> And what happens if the last user goes away and the device
->> is not inhibited?
-> 
-> close() is called as usually.
-
-But not inhibit, hmm, see below.
-
->> I'm trying to understand here what the difference between the 2
->> is / what the goal of having a separate inhibit callback ?
->>
-> 
-> Drivers have very different ideas about what it means to suspend/resume
-> and open/close. The optional inhibit/uninhibit callbacks are meant for
-> the drivers to know that it is this particular action going on.
-
-So the inhibit() callback triggers the "suspend" behavior ?
-But shouldn't drivers which are capable of suspending the device
-always do so on close() ?
-
-Since your current proposal also calls close() on inhibit() I
-really see little difference between an inhibit() and the last
-user of the device closing it and IMHO unless there is a good
-reason to actually differentiate the 2 it would be better
-to only stick with the existing close() and in cases where
-that does not put the device in a low-power mode yet, fix
-the existing close() callback to do the low-power mode
-setting instead of adding a new callback.
-
-> For inhibit() there's one more argument: close() does not return a value,
-> so its meaning is "do some last cleanup" and as such it is not allowed
-> to fail - whatever its effect is, we must deem it successful. inhibit()
-> does return a value and so it is allowed to fail.
-
-Well, we could make close() return an error and at least in the inhibit()
-case propagate that to userspace. I wonder if userspace is going to
-do anything useful with that error though...
-
-In my experience errors during cleanup/shutdown are best logged
-(using dev_err) and otherwise ignored, so that we try to clean up
-as much possible. Unless the very first step of the shutdown process
-fails the device is going to be in some twilight zone state anyways
-at this point we might as well try to cleanup as much as possible.
-
-> All in all, it is up to the drivers to decide which callback they
-> provide. Based on my work so far I would say that there are tens
-> of simple cases where open() and close() are sufficient, out of total
-> ~400 users of input_allocate_device():
-> 
-> $ git grep "input_allocate_device(" | grep -v ^Documentation | \
-> cut -f1 -d: | sort | uniq | wc
->      390     390   13496
-
-So can you explain a bit more about the cases where only having
-open/close is not sufficient?  So far I have the feeling that
-those are all we need and that we really do not need separate
-[un]inhibit callbacks.
-
-Regards,
-
-Hans
-
+I see WARN_TAINT() as "BIOS implemented its specification wrong". This
+case is BIOS "implemented a mechanism in the wrong specification".
