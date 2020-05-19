@@ -2,180 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F7761D9D8F
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 May 2020 19:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9482C1D9E43
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 May 2020 19:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729197AbgESRK5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 May 2020 13:10:57 -0400
-Received: from mga06.intel.com ([134.134.136.31]:52187 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729001AbgESRK5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 19 May 2020 13:10:57 -0400
-IronPort-SDR: mUdAwHwjaLqzVHZvw2xYplJCqd4YFkaQJFZJoEiJLoxkQd/1UTfAk50jEODfJCKf/iPmaNJGC0
- k43Gg1CoxXeA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2020 10:10:56 -0700
-IronPort-SDR: YEfPeTPLf3xKET0vqRozbESjJnBS3MFTOVE2oJhdp6jdCl/X6iv5Zo3fjjH1ObYkx3Y+d4KkDk
- 1MFbd3hx6BeA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,410,1583222400"; 
-   d="scan'208";a="343201225"
-Received: from linux.intel.com ([10.54.29.200])
-  by orsmga001.jf.intel.com with ESMTP; 19 May 2020 10:10:55 -0700
-Received: from debox1-desk1.jf.intel.com (debox1-desk1.jf.intel.com [10.7.201.137])
-        by linux.intel.com (Postfix) with ESMTP id 0C8375803C5;
-        Tue, 19 May 2020 10:10:54 -0700 (PDT)
-Message-ID: <8003f408ec9bcf0ea2522122ba4051ffb571e1b7.camel@linux.intel.com>
-Subject: Re: [PATCH 1/2] pci: Add ACPI StorageD3Enable _DSD support
-From:   "David E. Box" <david.e.box@linux.intel.com>
-Reply-To: david.e.box@linux.intel.com
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     lenb@kernel.org, bhelgaas@google.com, kbusch@kernel.org,
-        axboe@fb.com, hch@lst.de, sagi@grimberg.me,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Dan Williams <dan.j.williams@intel.com>
-Date:   Tue, 19 May 2020 10:10:53 -0700
-In-Reply-To: <1967525.XL736rHnAO@kreacher>
-References: <20200428003214.3764-1-david.e.box@linux.intel.com>
-         <20200428003214.3764-2-david.e.box@linux.intel.com>
-         <1967525.XL736rHnAO@kreacher>
-Organization: David E. Box
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+        id S1727814AbgESRyJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 19 May 2020 13:54:09 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:39216 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726059AbgESRyJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 May 2020 13:54:09 -0400
+Received: by mail-oi1-f196.google.com with SMTP id s198so515183oie.6
+        for <linux-acpi@vger.kernel.org>; Tue, 19 May 2020 10:54:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=oLkdDiI5HFWL8C7O6W36h9N6UH3412FNuY/4J1ySuKI=;
+        b=BIxbhrzNLd98yodnnR2h8w+FvaTDdJtBN9sB6cQamRDo5XKWqvledas++CSeLvGdlp
+         pGeHjBoydD6emDPG65uTfOQfZg557Q5ySQpbYY3MSG8PdTTLA1yPxKx9ReATDfF9JdiF
+         2qbKpLWwqPw+m1rfth3yMWpbMQ2wRcTAs58HPPVXiWyJoamq5WOOeksf82H94raRSa+R
+         Z4FUouzbFGK+N2tqs/j5rPkPAfVc/kTMe0Qo99HxdW/0Y6IupJn9yaNCtT/77MALseM3
+         djxfNio0+VtgD7RVAGZjsx75f2vVbuvM3+gLyfTwIXaHTci10ajVp6sfrdYpsWu1avoH
+         zFUw==
+X-Gm-Message-State: AOAM533sGt0CI3Tcham02cYsBubz4v4Tvv6PL+htT1zXuau2Z0e29pf5
+        CViZMZaq3Dpzd6wMZdAlVcmSed6Nt0M++PBhcHM=
+X-Google-Smtp-Source: ABdhPJyQZS1Xr8gnb53yM7SiKuoBHfAVWDm0sXFCpKkYsNKzAITxSaP4lvBa4TN4o5V50bKrrF/ZMaRIevhXPrGZPZs=
+X-Received: by 2002:aca:4254:: with SMTP id p81mr454025oia.68.1589910847813;
+ Tue, 19 May 2020 10:54:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20200501164543.24423-1-james.morse@arm.com> <20200501164543.24423-2-james.morse@arm.com>
+ <49686237.p6yG9EJavU@kreacher> <20200518125828.e4e3973c743556e976c5ee65@linux-foundation.org>
+ <20200519031511.GA31023@hori.linux.bs1.fc.nec.co.jp>
+In-Reply-To: <20200519031511.GA31023@hori.linux.bs1.fc.nec.co.jp>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 19 May 2020 19:53:56 +0200
+Message-ID: <CAJZ5v0g0295WMiNUzwnJE+SuCrEt2FOCor5QNdUFEyfv3pTpcQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] mm/memory-failure: Add memory_failure_queue_kick()
+To:     =?UTF-8?B?SE9SSUdVQ0hJIE5BT1lBKOWggOWPoyDnm7TkuZ8p?= 
+        <naoya.horiguchi@nec.com>, James Morse <james.morse@arm.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+        Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Tyler Baicar <tyler@amperecomputing.com>,
+        Xie XiuQi <xiexiuqi@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 2020-05-18 at 14:34 +0200, Rafael J. Wysocki wrote:
-> On Tuesday, April 28, 2020 2:32:13 AM CEST David E. Box wrote:
-> > NVMe storage power management during suspend-to-idle, particularly
-> > on
-> > laptops, has been inconsistent with some devices working with D3
-> > while
-> > others must rely on NVMe APST in order for power savings to be
-> > realized.
-> > Currently the default is to use APST unless quirked to do
-> > otherwise.
-> > However newer platforms, like Intel Comet Lake systems, may require
-> > NVMe
-> > drives to use D3 in order for the PCIe ports to be properly power
-> > managed.
-> > To make it easier for drivers to choose, these platforms may supply
-> > a
-> > special "StorageD3Enable" _DSD property under the root port that
-> > the device
-> > is attached to. If supplied, the driver must use D3 in order for
-> > the
-> > platform to realize the deepest power savings in suspend-to-idle.
-> > 
-> > Adds support for the _DSD to the pci/acpi layer.
-> > 
-> > Acked-by: Dan Williams <dan.j.williams@intel.com>
-> > Link: 
-> > https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
-> > Signed-off-by: David E. Box <david.e.box@linux.intel.com>
-> > ---
-> >  drivers/acpi/property.c |  3 +++
-> >  drivers/pci/pci-acpi.c  | 47
-> > +++++++++++++++++++++++++++++++++++++++++
-> >  drivers/pci/pci.c       |  6 ++++++
-> >  drivers/pci/pci.h       |  4 ++++
-> >  include/linux/pci.h     |  1 +
-> >  5 files changed, 61 insertions(+)
-> > 
-> > diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> > index e601c4511a8b..f09375ab40e4 100644
-> > --- a/drivers/acpi/property.c
-> > +++ b/drivers/acpi/property.c
-> > @@ -45,6 +45,9 @@ static const guid_t prp_guids[] = {
-> >  	/* Thunderbolt GUID for WAKE_SUPPORTED: 6c501103-c189-4296-
-> > ba72-9bf5a26ebe5d */
-> >  	GUID_INIT(0x6c501103, 0xc189, 0x4296,
-> >  		  0xba, 0x72, 0x9b, 0xf5, 0xa2, 0x6e, 0xbe, 0x5d),
-> > +	/* D3 Support for storage devivce: 5025030f-842f-4ab4-a561-
-> > 99a5189762d0 */
-> > +	GUID_INIT(0x5025030f, 0x842f, 0x4ab4,
-> > +		  0xa5, 0x61, 0x99, 0xa5, 0x18, 0x97, 0x62, 0xd0),
-> >  };
-> >  
-> >  /* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-
-> > 1319f52a966b */
-> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> > index d21969fba6ab..5df249ebf022 100644
-> > --- a/drivers/pci/pci-acpi.c
-> > +++ b/drivers/pci/pci-acpi.c
-> > @@ -972,6 +972,52 @@ static bool acpi_pci_bridge_d3(struct pci_dev
-> > *dev)
-> >  	return val == 1;
-> >  }
-> >  
-> > +static bool acpi_pci_storage_d3(struct pci_dev *dev)
-> > +{
-> > +	const struct fwnode_handle *fwnode;
-> > +	struct acpi_device *adev;
-> > +	struct pci_dev *root;
-> > +	acpi_handle handle;
-> > +	acpi_status status;
-> > +	u8 val;
-> > +
-> > +	/*
-> > +	 * Look for _DSD property specifying that the storage device on
-> > +	 * the port must use D3 to support deep platform power savings
-> > during
-> > +	 * suspend-to-idle
-> > +	 */
-> > +	root = pci_find_pcie_root_port(dev);
-> > +	if (!root)
-> > +		return false;
-> > +
-> > +	adev = ACPI_COMPANION(&root->dev);
-> > +	if (root == dev) {
-> > +		/*
-> > +		 * It is possible that the ACPI companion is not yet
-> > bound
-> > +		 * for the root port so look it up manually here.
-> > +		 */
-> > +		if (!adev && !pci_dev_is_added(root))
-> > +			adev = acpi_pci_find_companion(&root->dev);
-> > +	}
-> > +
-> > +	if (!adev)
-> > +		return false;
-> > +
-> > +	status = acpi_get_handle(adev->handle, "PXSX", &handle);
-> > +	if (ACPI_FAILURE(status))
-> > +		return false;
-> > +
-> > +	adev = acpi_bus_get_acpi_device(handle);
-> > +	if (!adev)
-> > +		return false;
-> > +
-> > +	fwnode = acpi_fwnode_handle(adev);
-> > +	if (!fwnode_property_read_u8(fwnode, "StorageD3Enable", &val))
-> > +		return val == 1;
-> > +
-> > +	return false;
-> > +}
-> 
-> Kind of orthogonal to what happens to the second patch in this
-> series, I don't
-> think that the PCI changes below are all needed.
-> 
-> IMO it would be sufficient to export the function above, maybe as
-> pci_acpi_storage_d3(), to drivers, so that they can call it directly
-> as
-> desired.
-> 
-> Since _DSD return data are not allowed by the spec to change between
-> subsequent invocations of it, the interested driver may call this
-> function
-> once at the device init time and quirk it accordingly if needed.
+On Tue, May 19, 2020 at 5:15 AM HORIGUCHI NAOYA(堀口　直也)
+<naoya.horiguchi@nec.com> wrote:
+>
+> On Mon, May 18, 2020 at 12:58:28PM -0700, Andrew Morton wrote:
+> > On Mon, 18 May 2020 14:45:05 +0200 "Rafael J. Wysocki" <rjw@rjwysocki.net> wrote:
+> >
+> > > On Friday, May 1, 2020 6:45:41 PM CEST James Morse wrote:
+> > > > The GHES code calls memory_failure_queue() from IRQ context to schedule
+> > > > work on the current CPU so that memory_failure() can sleep.
+> > > >
+> > > > For synchronous memory errors the arch code needs to know any signals
+> > > > that memory_failure() will trigger are pending before it returns to
+> > > > user-space, possibly when exiting from the IRQ.
+> > > >
+> > > > Add a helper to kick the memory failure queue, to ensure the scheduled
+> > > > work has happened. This has to be called from process context, so may
+> > > > have been migrated from the original cpu. Pass the cpu the work was
+> > > > queued on.
+> > > >
+> > > > Change memory_failure_work_func() to permit being called on the 'wrong'
+> > > > cpu.
+> > > >
+> > > > --- a/include/linux/mm.h
+> > > > +++ b/include/linux/mm.h
+> > > > @@ -3012,6 +3012,7 @@ enum mf_flags {
+> > > >  };
+> > > >  extern int memory_failure(unsigned long pfn, int flags);
+> > > >  extern void memory_failure_queue(unsigned long pfn, int flags);
+> > > > +extern void memory_failure_queue_kick(int cpu);
+> > > >  extern int unpoison_memory(unsigned long pfn);
+> > > >  extern int get_hwpoison_page(struct page *page);
+> > > >  #define put_hwpoison_page(page)  put_page(page)
+> > > > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> > > > index a96364be8ab4..c4afb407bf0f 100644
+> > > > --- a/mm/memory-failure.c
+> > > > +++ b/mm/memory-failure.c
+> > > > @@ -1493,7 +1493,7 @@ static void memory_failure_work_func(struct work_struct *work)
+> > > >   unsigned long proc_flags;
+> > > >   int gotten;
+> > > >
+> > > > - mf_cpu = this_cpu_ptr(&memory_failure_cpu);
+> > > > + mf_cpu = container_of(work, struct memory_failure_cpu, work);
+> > > >   for (;;) {
+> > > >           spin_lock_irqsave(&mf_cpu->lock, proc_flags);
+> > > >           gotten = kfifo_get(&mf_cpu->fifo, &entry);
+> > > > @@ -1507,6 +1507,19 @@ static void memory_failure_work_func(struct work_struct *work)
+> > > >   }
+> > > >  }
+> > > >
+> > > > +/*
+> > > > + * Process memory_failure work queued on the specified CPU.
+> > > > + * Used to avoid return-to-userspace racing with the memory_failure workqueue.
+> > > > + */
+> > > > +void memory_failure_queue_kick(int cpu)
+> > > > +{
+> > > > + struct memory_failure_cpu *mf_cpu;
+> > > > +
+> > > > + mf_cpu = &per_cpu(memory_failure_cpu, cpu);
+> > > > + cancel_work_sync(&mf_cpu->work);
+> > > > + memory_failure_work_func(&mf_cpu->work);
+> > > > +}
+> > > > +
+> > > >  static int __init memory_failure_init(void)
+> > > >  {
+> > > >   struct memory_failure_cpu *mf_cpu;
+> > > >
+> > >
+> > > I could apply this provided an ACK from the mm people.
+> > >
+> >
+> > Naoya Horiguchi is the memory-failure.c person.  A review would be
+> > appreciated please?
+> >
+> > I'm struggling with it a bit.  memory_failure_queue_kick() should be
+> > called on the cpu which is identified by arg `cpu', yes?
+> > memory_failure_work_func() appears to assume this.
+> >
+> > If that's right then a) why bother passing in the `cpu' arg?  and b)
+> > what keeps this thread pinned to that CPU?  cancel_work_sync() can
+> > schedule.
+>
+> If I read correctly, memory_failure work is queue on the CPU on which the
+> user process ran when it touched the corrupted memory, and the process can
+> be scheduled on another CPU when the kernel returned back to userspace after
+> handling the GHES event.  So we need to remember where the memory_failure
+> event is queued to flush proper work queue.  So I feel that this properly
+> implements it.
+>
+> Considering the effect to the other caller, currently memory_failure_queue()
+> has 2 callers, ghes_handle_memory_failure() and cec_add_elem(). The former
+> is what we try to change now.  And the latter is to execute soft offline
+> (which is related to corrected non-fatal errors), so that's not affected by
+> the reported issue.  So I don't think that this change breaks the other
+> caller.
+>
+> So I'm fine with the suggested change.
+>
+> Acked-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
 
-Yeah this is better. Will do. Thanks.
+OK, thanks!
 
+So because patch [1/3] has been ACKed already, I'm applying this
+series as 5.8 material.
+
+Thanks everyone!
