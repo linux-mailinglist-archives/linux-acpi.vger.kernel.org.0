@@ -2,75 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D8D81D9B11
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 May 2020 17:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA8D91D9BEB
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 May 2020 18:03:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729000AbgESPZR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 May 2020 11:25:17 -0400
-Received: from mx2.suse.de ([195.135.220.15]:43100 "EHLO mx2.suse.de"
+        id S1729160AbgESQDi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 May 2020 12:03:38 -0400
+Received: from mga06.intel.com ([134.134.136.31]:45832 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728773AbgESPZQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 19 May 2020 11:25:16 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id D5A5FB275;
-        Tue, 19 May 2020 15:25:17 +0000 (UTC)
-Date:   Tue, 19 May 2020 17:25:12 +0200
-From:   Joerg Roedel <jroedel@suse.de>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Joerg Roedel <joro@8bytes.org>, x86@kernel.org, hpa@zytor.com,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, rjw@rjwysocki.net,
-        Arnd Bergmann <arnd@arndb.de>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Michal Hocko <mhocko@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org,
-        Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH v3 2/7] mm/vmalloc: Track which page-table levels were
- modified
-Message-ID: <20200519152512.GO8135@suse.de>
-References: <20200515140023.25469-1-joro@8bytes.org>
- <20200515140023.25469-3-joro@8bytes.org>
- <20200515130142.4ca90ee590e9d8ab88497676@linux-foundation.org>
- <20200516125641.GK8135@suse.de>
- <20200518151828.ad3c714a29209b359e326ec4@linux-foundation.org>
+        id S1729001AbgESQDh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 19 May 2020 12:03:37 -0400
+IronPort-SDR: IgvqnSkXSR4Awa/tcl8nFcoHlsy5CQlqiGyBywmzZziT9tvw0+vR5KFuZI4phqEWubDYgADmFY
+ 5felWYtiiusA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2020 09:03:36 -0700
+IronPort-SDR: fWovSdDswM66AcZN6edBdprpQo/g/swtmfnojYgrnPQHHmWpH8wQSNcdzQ5OlY0Xubw7IOxOQo
+ +lHSZcut863g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,410,1583222400"; 
+   d="scan'208";a="411683296"
+Received: from linux.intel.com ([10.54.29.200])
+  by orsmga004.jf.intel.com with ESMTP; 19 May 2020 09:03:36 -0700
+Received: from debox1-desk1.jf.intel.com (debox1-desk1.jf.intel.com [10.7.201.137])
+        by linux.intel.com (Postfix) with ESMTP id 87C905803C5;
+        Tue, 19 May 2020 09:03:36 -0700 (PDT)
+Message-ID: <d0022af356cf9bd5b544187d9a396734d85a76b3.camel@linux.intel.com>
+Subject: Re: Low Latency Tolerance preventing Intel Package from entering
+ deep sleep states
+From:   "David E. Box" <david.e.box@linux.intel.com>
+Reply-To: david.e.box@linux.intel.com
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "larsh@apache.org" <larsh@apache.org>,
+        "ibm-acpi-devel@lists.sourceforge.net" 
+        <ibm-acpi-devel@lists.sourceforge.net>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Date:   Tue, 19 May 2020 09:03:36 -0700
+In-Reply-To: <2952287.p5mUHPKNZq@kreacher>
+References: <1505028180.591737.1589564161284.ref@mail.yahoo.com>
+         <1505028180.591737.1589564161284@mail.yahoo.com>
+         <CAHp75VfC0NdyyR1zXbk47G_9y5ResrpV+w3cOntDqP_naocuvQ@mail.gmail.com>
+         <2952287.p5mUHPKNZq@kreacher>
+Organization: David E. Box
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200518151828.ad3c714a29209b359e326ec4@linux-foundation.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 18, 2020 at 03:18:28PM -0700, Andrew Morton wrote:
-> On Sat, 16 May 2020 14:56:41 +0200 Joerg Roedel <jroedel@suse.de> wrote:
-> --- a/mm/vmalloc.c~mm-vmalloc-track-which-page-table-levels-were-modified-fix
-> +++ a/mm/vmalloc.c
-> @@ -309,6 +309,9 @@ int map_kernel_range_noflush(unsigned lo
->  			return err;
->  	} while (pgd++, addr = next, addr != end);
->  
-> +	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
-> +		arch_sync_kernel_mappings(start, end);
-> +
->  	return 0;
->  }
+> > > Does anybody know what's going on or how to debug this further?
+> > > As stated above, I was able to work around this problem by
+> > > ignoring SOUTHPORT_A via /sys/kernel/debug/pmc_core/ltr_ignore.
+> > > There has to be a better way, and I'm sure I'm not the only one
+> > > running into this.
 
-Yes, this is the right call.
+ltr_show shows the PMC's (Power Management Controller) view of SoC
+devices and busses. The SOUTHPORTs are the PCIe root ports on your
+system. When you run lspci they are the PCI bridges. Generally, the
+bridges are enumerated in the same order as the SOUTHPORTs, so
+SOUTHPORT_A is your first bridge and the device attached to it (shown
+in lspci -t) is the device that was blocking deeper PC states according
+to your debug.
 
-> It would be nice to get all this (ie, linux-next) retested before we
-> send it upstream, please.
+Determine what this device is on your system. If the ltr was low it's
+because that is what the device requested. You should first check that
+runtime pm is enabled for the device. To do this, check the control
+file in /sys/bus/pci/devices/<SSSS:BB:DD.F>/power, where SSSS:BB:DD.F
+is the enumeration of your device as shown in lspci. If it is 'on' then
+runtime pm is disabled. To enable it echo 'auto' into the file with
+root privileges. Enabling runtime pm should allow the driver to reduce
+functionality of the device when idle. This should lead to a larger
+latency request on the PCI bus which should be reflected in ltr_show.
+You can see if the device is actually runtime suspended and how much
+time it's been suspended (or active) by reading the associated files in
+the power folder.
 
-Will do and report back.
+If this doesn't work, then it's possible that your device doesn't
+support runtime pm. This may be purposely for reliability reasons or
+the driver may just lack support. Check forums discussing issues with
+the device and look for possible options in the driver to force pm
+support (generally this will be centered around enabling ASPM).
 
+You can also download powertop to see the package c-state residencies
+more clearly as percentages of time. powertop also has a tunables tab
+that will show the status of runtime pm on all devices on the system
+and allow you to enable them individually.
 
-Thanks,
-
-	Joerg
+David
 
