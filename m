@@ -2,209 +2,195 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A56471D8E1E
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 May 2020 05:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B0341D8FFA
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 May 2020 08:25:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726407AbgESDPS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 May 2020 23:15:18 -0400
-Received: from mail-eopbgr1300072.outbound.protection.outlook.com ([40.107.130.72]:48096
-        "EHLO APC01-HK2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726293AbgESDPR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 May 2020 23:15:17 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=M1Q3a/QhBQgNHc+5T6/U72mayONzlRzKfYWn2ssZxtRH3e4jXs2lOZa6mI11UAgERUY1XtTPGj847occzbEXEOvwUTxLkOI2wpP7KjRzv3842gjXlqiIiNfcfzQC8a/ilAlx9SJF7mqhjNQwehQLhs5ORI+TAdNQKLkiScN17X/u6piEl776ojrzmdVBQjZql2ROYyy0hbcb+/fBKE1b3Rx82upiLOtzHeTNsTd+yA3o1pY4py0Q1t7YK0p+aLtvxqjY3FrEm2XYrI+SXv3vm7ERG1JRiAWwjheBYJ6Rb10OaUuI6hWkD+VCIqYDzGPlIdzcYpLe9fDJ2I6TZ+7XDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vWqOyqeRr1mwEo+b86cueOyFMF89zN6DpRX+1siARnI=;
- b=GJcC7vE/vvRNfO5JOaLiMDDlvP3bB3+45+9Df3e7pVJRFif0yOWxhBFhazLObMGEHQ8QSwMHsoygrW6VELUAZqqh0w2DOyrEmT63wD8sSj+6MIyqCirvH0lnuxQ43hF5HwJAW36Rj5d5lJXF6Z/NiV8/4S2ua8n3rPZPv+EeH3x/ulmT2yWbiyH2ai1fa7s7zkwnWVLvoKg9gNbBV4/tFVUGul1XSZ7lzjPlTdPPxHoMpmTlQIvQ5pK6JEDsTOzDj181QMeZdGE13M9JPRkXKLPHo27t6QEuWbTLwVGVMl+URJmi2Nzjv7U6StGEcHIldJQr5q3z+EuDalSxlBFPdw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nec.com; dmarc=pass action=none header.from=nec.com; dkim=pass
- header.d=nec.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=necglobal.onmicrosoft.com; s=selector1-necglobal-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vWqOyqeRr1mwEo+b86cueOyFMF89zN6DpRX+1siARnI=;
- b=Cbka+AmrgC0RXsr9a+8ZHjcVhafzGjt5xF/iouCSThc2NlsEysgvudsSnbWhwiEHZDyZ/xTcwKi6Ylzg1Uv6pgcLdOsSgDZRHDQbSJdiCQnyXiBGN2BJfWH1JtPiWUoPJqb4iGX2Ve6q8Ojj1HQX4hNl1FbvxGzjMlfQNnviuxU=
-Received: from TY2PR01MB3210.jpnprd01.prod.outlook.com (2603:1096:404:74::14)
- by TY2PR01MB4058.jpnprd01.prod.outlook.com (2603:1096:404:d7::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.26; Tue, 19 May
- 2020 03:15:11 +0000
-Received: from TY2PR01MB3210.jpnprd01.prod.outlook.com
- ([fe80::3841:ec9f:5cdf:f58]) by TY2PR01MB3210.jpnprd01.prod.outlook.com
- ([fe80::3841:ec9f:5cdf:f58%5]) with mapi id 15.20.3000.034; Tue, 19 May 2020
- 03:15:11 +0000
-From:   =?iso-2022-jp?B?SE9SSUdVQ0hJIE5BT1lBKBskQktZOH0hIUQ+TGkbKEIp?= 
-        <naoya.horiguchi@nec.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        James Morse <james.morse@arm.com>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-        Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Tyler Baicar <tyler@amperecomputing.com>,
-        Xie XiuQi <xiexiuqi@huawei.com>
-Subject: Re: [PATCH v2 1/3] mm/memory-failure: Add memory_failure_queue_kick()
-Thread-Topic: [PATCH v2 1/3] mm/memory-failure: Add
- memory_failure_queue_kick()
-Thread-Index: AQHWH9gLTSNZrBgxpkSNHu3+w+LRAKit5J6AgAB5FgCAAHoFgA==
-Date:   Tue, 19 May 2020 03:15:11 +0000
-Message-ID: <20200519031511.GA31023@hori.linux.bs1.fc.nec.co.jp>
-References: <20200501164543.24423-1-james.morse@arm.com>
- <20200501164543.24423-2-james.morse@arm.com> <49686237.p6yG9EJavU@kreacher>
- <20200518125828.e4e3973c743556e976c5ee65@linux-foundation.org>
-In-Reply-To: <20200518125828.e4e3973c743556e976c5ee65@linux-foundation.org>
-Accept-Language: ja-JP, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: linux-foundation.org; dkim=none (message not signed)
- header.d=none;linux-foundation.org; dmarc=none action=none
- header.from=nec.com;
-x-originating-ip: [165.225.110.202]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: d15019ed-8d7d-4003-ef8f-08d7fba2d790
-x-ms-traffictypediagnostic: TY2PR01MB4058:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <TY2PR01MB4058E3EA651A3AB5220DC146E7B90@TY2PR01MB4058.jpnprd01.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-forefront-prvs: 040866B734
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 0epd9lO8SuCSp6kp6qDTZOBwQ/H01gnqYY2+iqPikTej57FGhzjELrK8UpOFXJuY2+Zj0U6QcXdQ2dh3GRGDwg9yr4adLgd2bWqQr0lQVuVyIzn+9hmja4VINA0U9xB/ifrAFvoI6hqbp/7c7DdDviPnu4vPeo7cXCJXlRQNYsI3ymInLC1cxEnogh27bO8iPQTiSgXgWy79QwEYPRXhOSWzSeLrkdXum/0yFRJ/nQvAft8Nryt2sPAqzKg+RUezZdTdGC8j9MDrLFXyYjGtBeavYeXL+kjD+qX6w4cHmAdaqJU6ouJExuhKDoFi6tkR76xfX0zEgqU7TE53HnLpDVez+0rOnMZulT3jp3TFnGdl34ofntpmsTwTXQzVkFDdzjB9QbGy1nc6FG+gslWkPCEGKkyaGji1nUKQY9YNbmhjlRT4gQMm/56/gL0D8abC
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY2PR01MB3210.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(136003)(346002)(376002)(39860400002)(396003)(4326008)(6916009)(6486002)(33656002)(2906002)(478600001)(9686003)(6512007)(85182001)(7416002)(55236004)(86362001)(6506007)(53546011)(186003)(71200400001)(26005)(54906003)(8676002)(8936002)(76116006)(66946007)(1076003)(66556008)(66476007)(64756008)(66446008)(316002)(5660300002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: H4Al6d4lzlRJV4PxA+0GyiwedT2kOU88gyFMEzidHTUt78x0hBq71PI15smD9WKOvBoyaFroQXBBHAZxBCHhEDEpm7nZQCP8XWjrvFir9RBzF49947W7EP/dJ7HQVi+J+2qXhV5Eu9gRhgR0+/AglB7IU4OGNcjERDOhDhgHrzc68XKG8eQdYm5g7Dr//jRGqjVO8mbKdcZgjKYl0AWhs3g8l7DGSm0dfVu4ij0k0n94wXSg9gnCQJADvPiiKWEgV1CtyvJAZgGMZJRVnwQmMZY+Q9pCGpaFG7Ygpo3fMSp/LgtT73XDDC2tly+JN7ym+FA8jAbCh5bQs5bVv3Uk868uG55sEjXHuhY9wr5qMJzAUvw67oGVY5X88oVvvyp/zRjabYrqHXKwuQyUS/7VMLvnqsAwOzANyuDzJ8GRWfi+KwoQQgI4G4CGxcF93zlulA9Ff0Fj65jHGLxazcXf2HWGlslpTGLk2Yj6d4BsD5HqDtyLlfY9anq33+FbJHJz
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-ID: <E059626AE2FD5A41A7AAE8C323888CDB@jpnprd01.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        id S1728216AbgESGZN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 May 2020 02:25:13 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:44983 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727074AbgESGZM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 May 2020 02:25:12 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200519062511euoutp012f01509cd9fc8c47d20b036f55663d30~QWeWXGUCL3126131261euoutp01I
+        for <linux-acpi@vger.kernel.org>; Tue, 19 May 2020 06:25:11 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200519062511euoutp012f01509cd9fc8c47d20b036f55663d30~QWeWXGUCL3126131261euoutp01I
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1589869511;
+        bh=0mW8JOdJHsUIuudHdYQY2xk3EpXB94vPBsb+CkQ0YLM=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=IX/urPLJunFGzHZ1iVPk2oI7Kx2ZKm5vTo63BWHGWiVzfjxS0jT8MTfM13gDlUriI
+         AcykNnFXg0hJBdbPIdF+0yn+r0zW83cUr3NpLelttrBhxe6ckpf0TMTDTrqVHDLD6q
+         PO4nEXgsOlhrBOCcQUGqGvpf0jkfv9Y62S3gmnbk=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200519062510eucas1p193d04a2ebe1b0ba231cc4cd1f5611e39~QWeWFaLvj2639226392eucas1p10;
+        Tue, 19 May 2020 06:25:10 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id B3.07.60679.6CB73CE5; Tue, 19
+        May 2020 07:25:10 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200519062510eucas1p27bc59da66e1b77534855103a27f87452~QWeVp_qk70674606746eucas1p27;
+        Tue, 19 May 2020 06:25:10 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200519062510eusmtrp25052833a9b71e6ec5b0b3efe1d020f32~QWeVpNDDJ2870828708eusmtrp2o;
+        Tue, 19 May 2020 06:25:10 +0000 (GMT)
+X-AuditID: cbfec7f4-0cbff7000001ed07-99-5ec37bc60e22
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 7F.89.08375.6CB73CE5; Tue, 19
+        May 2020 07:25:10 +0100 (BST)
+Received: from [106.210.88.143] (unknown [106.210.88.143]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200519062509eusmtip2ae416adb5fb901ac1d88051c545cd8c9~QWeU_A1_a1418614186eusmtip2S;
+        Tue, 19 May 2020 06:25:09 +0000 (GMT)
+Subject: Re: [PATCH v1 4/4] of: platform: Batch fwnode parsing when adding
+ all top level devices
+To:     Saravana Kannan <saravanak@google.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>
+Cc:     kernel-team@android.com, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Ji Luo <ji.luo@nxp.com>,
+        'Linux Samsung SOC' <linux-samsung-soc@vger.kernel.org>
+From:   Marek Szyprowski <m.szyprowski@samsung.com>
+Message-ID: <e0f9211d-9cf6-a12d-eb63-df06910920ed@samsung.com>
+Date:   Tue, 19 May 2020 08:25:11 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+        Thunderbird/68.8.0
 MIME-Version: 1.0
-X-OriginatorOrg: nec.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d15019ed-8d7d-4003-ef8f-08d7fba2d790
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 May 2020 03:15:11.5528
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: e67df547-9d0d-4f4d-9161-51c6ed1f7d11
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: cQ7zlTk2hJucDJ4dbMCEfOQ/m6pShI0AbSr/Kt6OwtuEsHqXKLDNFwJWrhDBeV+uj4LT65nCP/CBXfqjcFciJw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY2PR01MB4058
+In-Reply-To: <20200515053500.215929-5-saravanak@google.com>
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrHKsWRmVeSWpSXmKPExsWy7djPc7rHqg/HGXw9rWsx/8g5VouZb/6z
+        WTQvXs9mMePOEXaLHdtFLHY+fMtmsXxfP6PF5V1zgOLn9zFZzP0yldmidS9QRdehv2wOPB7b
+        dm9j9dg56y67x4JNpR6bVnWyeeyfu4bdY+O7HUwenzfJBbBHcdmkpOZklqUW6dslcGWsWPKF
+        teCiWMX3DRsZGxifCHUxcnJICJhIPFzzm62LkYtDSGAFo0Tb6RnMEM4XRomlz2YwQjifGSUe
+        ft7DCtMy+ctzqKrljBJbl51lh3DeM0ps71gKVMXBISyQJPF9Ch9IXETgA6PE49k3WEAcZoHj
+        jBIPps9iBBnFJmAo0fW2iw3E5hWwk7hw/CYziM0ioCqxaNVJsBpRgViJ04s3M0LUCEqcnPmE
+        BcTmFLCWeDhhD1gvs4C8RPPW2cwQtrjErSfzmUCWSQi8ZJd4++YZO8TdLhJHXzdA/SAs8er4
+        Fqi4jMT/nTANzUCPnlvLDuH0MEpcbprBCFFlLXHn3C82kN+YBTQl1u/Shwg7SmxunMwCEpYQ
+        4JO48VYQ4gg+iUnbpjNDhHklOtqgoa0mMev4Ori1By9cYp7AqDQLyWuzkLwzC8k7sxD2LmBk
+        WcUonlpanJueWmyUl1quV5yYW1yal66XnJ+7iRGYyk7/O/5lB+OuP0mHGAU4GJV4eBPyD8UJ
+        sSaWFVfmHmKU4GBWEuGd8AIoxJuSWFmVWpQfX1Sak1p8iFGag0VJnNd40ctYIYH0xJLU7NTU
+        gtQimCwTB6dUA2NUlEX3wxeLF50tq8n6c8ywa7YU39/5bpMdGf+f/zmhb/Etd+8zv3O/Pn3d
+        dGr3y5X26m3Nj0T0FJK7+jTs+JcUzLlbVVK+c3vL32jJkq7HHx+Hfg2cdNnkuv/hjBtp+TUG
+        HAsTZ0Sp+l153LG5gtFK+ditl2dSxKJVt+zn9o5J8K1dsk1DXU+JpTgj0VCLuag4EQCl9sCW
+        YQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrHIsWRmVeSWpSXmKPExsVy+t/xe7rHqg/HGfxp5rWYf+Qcq8XMN//Z
+        LJoXr2ezmHHnCLvFju0iFjsfvmWzWL6vn9Hi8q45QPHz+5gs5n6ZymzRuheoouvQXzYHHo9t
+        u7exeuycdZfdY8GmUo9NqzrZPPbPXcPusfHdDiaPz5vkAtij9GyK8ktLUhUy8otLbJWiDS2M
+        9AwtLfSMTCz1DI3NY62MTJX07WxSUnMyy1KL9O0S9DJWLPnCWnBRrOL7ho2MDYxPhLoYOTkk
+        BEwkJn95ztzFyMUhJLCUUeLxpNWMEAkZiZPTGlghbGGJP9e62CCK3jJK7Jr3h6WLkYNDWCBJ
+        4sE8S5C4iMAHRokP0+6wgjjMAicZJVadb2QEKRISyJbYedAAZBCbgKFE11uQQZwcvAJ2EheO
+        32QGsVkEVCUWrToJtlhUIFZi9bVWRogaQYmTM5+wgNicAtYSDyfsAetlFjCTmLf5ITOELS/R
+        vHU2lC0ucevJfKYJjEKzkLTPQtIyC0nLLCQtCxhZVjGKpJYW56bnFhvqFSfmFpfmpesl5+du
+        YgTG7bZjPzfvYLy0MfgQowAHoxIPb0L+oTgh1sSy4srcQ4wSHMxKIrwTXgCFeFMSK6tSi/Lj
+        i0pzUosPMZoCPTeRWUo0OR+YUvJK4g1NDc0tLA3Njc2NzSyUxHk7BA7GCAmkJ5akZqemFqQW
+        wfQxcXBKNTDWfnmwS3Wto3iR40bFYw/+1uzfcSd/5rXX1+98+8b5JMSpQ6nUyOmc40mt+x9S
+        tbSs7vifVU7I+K5e+1U0ZdV9g29xq7aLTZjGts2L+19rXarUzdW6831ZxG9s3FVmNW9N7+ag
+        s2eUrpulh2gJOx5dUFJhoW6c0avt6TJjuc2h/OuO9xYd8/BUYinOSDTUYi4qTgQAHOWNNvEC
+        AAA=
+X-CMS-MailID: 20200519062510eucas1p27bc59da66e1b77534855103a27f87452
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200519062510eucas1p27bc59da66e1b77534855103a27f87452
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200519062510eucas1p27bc59da66e1b77534855103a27f87452
+References: <20200515053500.215929-1-saravanak@google.com>
+        <20200515053500.215929-5-saravanak@google.com>
+        <CGME20200519062510eucas1p27bc59da66e1b77534855103a27f87452@eucas1p2.samsung.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 18, 2020 at 12:58:28PM -0700, Andrew Morton wrote:
-> On Mon, 18 May 2020 14:45:05 +0200 "Rafael J. Wysocki" <rjw@rjwysocki.net=
-> wrote:
->=20
-> > On Friday, May 1, 2020 6:45:41 PM CEST James Morse wrote:
-> > > The GHES code calls memory_failure_queue() from IRQ context to schedu=
-le
-> > > work on the current CPU so that memory_failure() can sleep.
-> > >=20
-> > > For synchronous memory errors the arch code needs to know any signals
-> > > that memory_failure() will trigger are pending before it returns to
-> > > user-space, possibly when exiting from the IRQ.
-> > >=20
-> > > Add a helper to kick the memory failure queue, to ensure the schedule=
-d
-> > > work has happened. This has to be called from process context, so may
-> > > have been migrated from the original cpu. Pass the cpu the work was
-> > > queued on.
-> > >=20
-> > > Change memory_failure_work_func() to permit being called on the 'wron=
-g'
-> > > cpu.
-> > >=20
-> > > --- a/include/linux/mm.h
-> > > +++ b/include/linux/mm.h
-> > > @@ -3012,6 +3012,7 @@ enum mf_flags {
-> > >  };
-> > >  extern int memory_failure(unsigned long pfn, int flags);
-> > >  extern void memory_failure_queue(unsigned long pfn, int flags);
-> > > +extern void memory_failure_queue_kick(int cpu);
-> > >  extern int unpoison_memory(unsigned long pfn);
-> > >  extern int get_hwpoison_page(struct page *page);
-> > >  #define put_hwpoison_page(page)	put_page(page)
-> > > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> > > index a96364be8ab4..c4afb407bf0f 100644
-> > > --- a/mm/memory-failure.c
-> > > +++ b/mm/memory-failure.c
-> > > @@ -1493,7 +1493,7 @@ static void memory_failure_work_func(struct wor=
-k_struct *work)
-> > >  	unsigned long proc_flags;
-> > >  	int gotten;
-> > > =20
-> > > -	mf_cpu =3D this_cpu_ptr(&memory_failure_cpu);
-> > > +	mf_cpu =3D container_of(work, struct memory_failure_cpu, work);
-> > >  	for (;;) {
-> > >  		spin_lock_irqsave(&mf_cpu->lock, proc_flags);
-> > >  		gotten =3D kfifo_get(&mf_cpu->fifo, &entry);
-> > > @@ -1507,6 +1507,19 @@ static void memory_failure_work_func(struct wo=
-rk_struct *work)
-> > >  	}
-> > >  }
-> > > =20
-> > > +/*
-> > > + * Process memory_failure work queued on the specified CPU.
-> > > + * Used to avoid return-to-userspace racing with the memory_failure =
-workqueue.
-> > > + */
-> > > +void memory_failure_queue_kick(int cpu)
-> > > +{
-> > > +	struct memory_failure_cpu *mf_cpu;
-> > > +
-> > > +	mf_cpu =3D &per_cpu(memory_failure_cpu, cpu);
-> > > +	cancel_work_sync(&mf_cpu->work);
-> > > +	memory_failure_work_func(&mf_cpu->work);
-> > > +}
-> > > +
-> > >  static int __init memory_failure_init(void)
-> > >  {
-> > >  	struct memory_failure_cpu *mf_cpu;
-> > >=20
-> >=20
-> > I could apply this provided an ACK from the mm people.
-> >=20
->=20
-> Naoya Horiguchi is the memory-failure.c person.  A review would be
-> appreciated please?
->=20
-> I'm struggling with it a bit.  memory_failure_queue_kick() should be
-> called on the cpu which is identified by arg `cpu', yes?=20
-> memory_failure_work_func() appears to assume this.
->=20
-> If that's right then a) why bother passing in the `cpu' arg?  and b)
-> what keeps this thread pinned to that CPU?  cancel_work_sync() can
-> schedule.
+Hi Saravana,
 
-If I read correctly, memory_failure work is queue on the CPU on which the
-user process ran when it touched the corrupted memory, and the process can
-be scheduled on another CPU when the kernel returned back to userspace afte=
-r
-handling the GHES event.  So we need to remember where the memory_failure
-event is queued to flush proper work queue.  So I feel that this properly
-implements it.
+On 15.05.2020 07:35, Saravana Kannan wrote:
+> The fw_devlink_pause() and fw_devlink_resume() APIs allow batching the
+> parsing of the device tree nodes when a lot of devices are added. This
+> will significantly cut down parsing time (as much a 1 second on some
+> systems). So, use them when adding devices for all the top level device
+> tree nodes in a system.
+>
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
 
-Considering the effect to the other caller, currently memory_failure_queue(=
-)
-has 2 callers, ghes_handle_memory_failure() and cec_add_elem(). The former
-is what we try to change now.  And the latter is to execute soft offline
-(which is related to corrected non-fatal errors), so that's not affected by
-the reported issue.  So I don't think that this change breaks the other
-caller.
+This patch recently landed in linux-next 20200518. Sadly, it causes 
+regression on Samsung Exynos5433-based TM2e board:
 
-So I'm fine with the suggested change.
+s3c64xx-spi 14d30000.spi: Failed to get RX DMA channel
+s3c64xx-spi 14d50000.spi: Failed to get RX DMA channel
+s3c64xx-spi 14d30000.spi: Failed to get RX DMA channel
+s3c64xx-spi 14d50000.spi: Failed to get RX DMA channel
+s3c64xx-spi 14d30000.spi: Failed to get RX DMA channel
 
-Acked-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Internal error: synchronous external abort: 96000210 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 0 PID: 50 Comm: kworker/0:1 Not tainted 5.7.0-rc5+ #701
+Hardware name: Samsung TM2E board (DT)
+Workqueue: events deferred_probe_work_func
+pstate: 60000005 (nZCv daif -PAN -UAO)
+pc : samsung_i2s_probe+0x768/0x8f0
+lr : samsung_i2s_probe+0x688/0x8f0
+...
+Call trace:
+  samsung_i2s_probe+0x768/0x8f0
+  platform_drv_probe+0x50/0xa8
+  really_probe+0x108/0x370
+  driver_probe_device+0x54/0xb8
+  __device_attach_driver+0x90/0xc0
+  bus_for_each_drv+0x70/0xc8
+  __device_attach+0xdc/0x140
+  device_initial_probe+0x10/0x18
+  bus_probe_device+0x94/0xa0
+  deferred_probe_work_func+0x70/0xa8
+  process_one_work+0x2a8/0x718
+  worker_thread+0x48/0x470
+  kthread+0x134/0x160
+  ret_from_fork+0x10/0x1c
+Code: 17ffffaf d503201f f94086c0 91003000 (88dffc00)
+---[ end trace ccf721c9400ddbd6 ]---
+Kernel panic - not syncing: Fatal exception
+SMP: stopping secondary CPUs
+Kernel Offset: disabled
+CPU features: 0x090002,24006087
+Memory Limit: none
 
-Thanks,
-Naoya Horiguchi=
+---[ end Kernel panic - not syncing: Fatal exception ]---
+
+Both issues, the lack of DMA for SPI device and Synchronous abort in I2S 
+probe are new after applying this patch. I'm trying to investigate which 
+resources are missing and why. The latter issue means typically that the 
+registers for the given device has been accessed without enabling the 
+needed clocks or power domains.
+
+> ---
+>   drivers/of/platform.c | 2 ++
+>   1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> index 3371e4a06248..55d719347810 100644
+> --- a/drivers/of/platform.c
+> +++ b/drivers/of/platform.c
+> @@ -538,7 +538,9 @@ static int __init of_platform_default_populate_init(void)
+>   	}
+>   
+>   	/* Populate everything else. */
+> +	fw_devlink_pause();
+>   	of_platform_default_populate(NULL, NULL, NULL);
+> +	fw_devlink_resume();
+>   
+>   	return 0;
+>   }
+
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
