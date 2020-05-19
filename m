@@ -2,167 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9482C1D9E43
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 May 2020 19:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BF931D9EB5
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 May 2020 20:03:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727814AbgESRyJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 19 May 2020 13:54:09 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:39216 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726059AbgESRyJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 May 2020 13:54:09 -0400
-Received: by mail-oi1-f196.google.com with SMTP id s198so515183oie.6
-        for <linux-acpi@vger.kernel.org>; Tue, 19 May 2020 10:54:08 -0700 (PDT)
+        id S1729457AbgESSD1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 May 2020 14:03:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33710 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726862AbgESSD0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 May 2020 14:03:26 -0400
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC23C08C5C2
+        for <linux-acpi@vger.kernel.org>; Tue, 19 May 2020 11:03:26 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id d7so248162ote.6
+        for <linux-acpi@vger.kernel.org>; Tue, 19 May 2020 11:03:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=mEF6JImDlZtl9dd5DwbZ+u4aD5H341Tlf4Pwdu0TU+o=;
+        b=O1wfisRulz9CoxDrv6qokmb34hMkANCg3EhTpEf3NEqJsA+ZmZJ07dbKmng/EfVA5D
+         nPT8mgLwfSarEywarGM6h7tCVITUVt6DRqsNgjllMir5/afeMJnLOgnY337B3AXwz9SM
+         Oqgm9lj4hVV5LnGx8wH/rUDprVWwc1s/cDChVMODcwiEvaLfzQGEhhbY16/Cg4wgngUm
+         ndYmyZYcCHsrOp+OB43ftulrbAR7pz1+EE7oaLNr5bVmm01rJ3rxaiza1wagWBVUHjIa
+         ivZDSdmBIw007YKAB/RKld1rA8gbmnVxP+OVzwaWng1zxA7ML9r4l0C7sDpccbFUdTfv
+         iImg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=oLkdDiI5HFWL8C7O6W36h9N6UH3412FNuY/4J1ySuKI=;
-        b=BIxbhrzNLd98yodnnR2h8w+FvaTDdJtBN9sB6cQamRDo5XKWqvledas++CSeLvGdlp
-         pGeHjBoydD6emDPG65uTfOQfZg557Q5ySQpbYY3MSG8PdTTLA1yPxKx9ReATDfF9JdiF
-         2qbKpLWwqPw+m1rfth3yMWpbMQ2wRcTAs58HPPVXiWyJoamq5WOOeksf82H94raRSa+R
-         Z4FUouzbFGK+N2tqs/j5rPkPAfVc/kTMe0Qo99HxdW/0Y6IupJn9yaNCtT/77MALseM3
-         djxfNio0+VtgD7RVAGZjsx75f2vVbuvM3+gLyfTwIXaHTci10ajVp6sfrdYpsWu1avoH
-         zFUw==
-X-Gm-Message-State: AOAM533sGt0CI3Tcham02cYsBubz4v4Tvv6PL+htT1zXuau2Z0e29pf5
-        CViZMZaq3Dpzd6wMZdAlVcmSed6Nt0M++PBhcHM=
-X-Google-Smtp-Source: ABdhPJyQZS1Xr8gnb53yM7SiKuoBHfAVWDm0sXFCpKkYsNKzAITxSaP4lvBa4TN4o5V50bKrrF/ZMaRIevhXPrGZPZs=
-X-Received: by 2002:aca:4254:: with SMTP id p81mr454025oia.68.1589910847813;
- Tue, 19 May 2020 10:54:07 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=mEF6JImDlZtl9dd5DwbZ+u4aD5H341Tlf4Pwdu0TU+o=;
+        b=Pq28mPNvAptKZsQbPimcuM/AJqikoKXqdwFP3uEaH12YVgu9p2jt4i9oReMrDruCAG
+         +TS+ArdxYy8UkTUgJY5yssPdhQVCN9nuuQt6x1FrB5vC49rhY4AzpHnpGX56cJGuOTYw
+         H+eTWXTyEdgaHWY8UlapazYQMElwYFPbeBmRbTeCpoSJ1SOwb/7Ntt9ZVQfqHN6BAPnj
+         4p/7wdsPEmE24egkXpSjWlLy2v+LslYuPrU5s0f5RbD6wEHa2YxosdbpW+EkRCApKk6f
+         ZT+0ORR+gIUOQcM+YfkUaEjqrMZDubLye9ULKKJtYWhKvU0uYkkJ/lZu3aTMYQsxrghA
+         TK+w==
+X-Gm-Message-State: AOAM532eNAJqad98uKfLnCOSlluE9YBlj1UUnJZ/g+5V2rX+84V/oxJb
+        ykAJPWTPbNxF6V5IkE7rb/XJDTl841V6KTrCVE64Eg==
+X-Google-Smtp-Source: ABdhPJxDZS36lbikLWNWNKsGTyaSjkhcXB1D0+SUJ5UbhDsdbvvhGykFD+NnS2G+8jChrXraoEPEk7x1IBlfu/Qlymg=
+X-Received: by 2002:a05:6830:1e45:: with SMTP id e5mr214825otj.236.1589911405140;
+ Tue, 19 May 2020 11:03:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200501164543.24423-1-james.morse@arm.com> <20200501164543.24423-2-james.morse@arm.com>
- <49686237.p6yG9EJavU@kreacher> <20200518125828.e4e3973c743556e976c5ee65@linux-foundation.org>
- <20200519031511.GA31023@hori.linux.bs1.fc.nec.co.jp>
-In-Reply-To: <20200519031511.GA31023@hori.linux.bs1.fc.nec.co.jp>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 19 May 2020 19:53:56 +0200
-Message-ID: <CAJZ5v0g0295WMiNUzwnJE+SuCrEt2FOCor5QNdUFEyfv3pTpcQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] mm/memory-failure: Add memory_failure_queue_kick()
-To:     =?UTF-8?B?SE9SSUdVQ0hJIE5BT1lBKOWggOWPoyDnm7TkuZ8p?= 
-        <naoya.horiguchi@nec.com>, James Morse <james.morse@arm.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-        Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Tyler Baicar <tyler@amperecomputing.com>,
-        Xie XiuQi <xiexiuqi@huawei.com>
+References: <20200515053500.215929-1-saravanak@google.com> <CGME20200519062510eucas1p27bc59da66e1b77534855103a27f87452@eucas1p2.samsung.com>
+ <20200515053500.215929-5-saravanak@google.com> <e0f9211d-9cf6-a12d-eb63-df06910920ed@samsung.com>
+ <CAGETcx_FOGgHdaNY8Dd-4rgT28U7_OHYeLsazbUE-1hyuatRSg@mail.gmail.com>
+ <18332705-dd61-9a0e-d931-ae610c8fb600@samsung.com> <8dd9ecc2-0c61-49b7-d485-b169eb721712@samsung.com>
+In-Reply-To: <8dd9ecc2-0c61-49b7-d485-b169eb721712@samsung.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Tue, 19 May 2020 11:02:49 -0700
+Message-ID: <CAGETcx_VtJXCqih4ZadZ0dFVJwKOBEQnnrr9JxxmGNh7HX_vNQ@mail.gmail.com>
+Subject: Re: [PATCH v1 4/4] of: platform: Batch fwnode parsing when adding all
+ top level devices
+To:     Marek Szyprowski <m.szyprowski@samsung.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Android Kernel Team <kernel-team@android.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Ji Luo <ji.luo@nxp.com>,
+        Linux Samsung SOC <linux-samsung-soc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 19, 2020 at 5:15 AM HORIGUCHI NAOYA(堀口　直也)
-<naoya.horiguchi@nec.com> wrote:
+On Tue, May 19, 2020 at 3:32 AM Marek Szyprowski
+<m.szyprowski@samsung.com> wrote:
 >
-> On Mon, May 18, 2020 at 12:58:28PM -0700, Andrew Morton wrote:
-> > On Mon, 18 May 2020 14:45:05 +0200 "Rafael J. Wysocki" <rjw@rjwysocki.net> wrote:
+> Hi
+>
+> On 19.05.2020 09:11, Marek Szyprowski wrote:
+> > On 19.05.2020 08:48, Saravana Kannan wrote:
+> >> On Mon, May 18, 2020 at 11:25 PM Marek Szyprowski
+> >> <m.szyprowski@samsung.com> wrote:
+> >>> On 15.05.2020 07:35, Saravana Kannan wrote:
+> >>>> The fw_devlink_pause() and fw_devlink_resume() APIs allow batching the
+> >>>> parsing of the device tree nodes when a lot of devices are added. This
+> >>>> will significantly cut down parsing time (as much a 1 second on some
+> >>>> systems). So, use them when adding devices for all the top level
+> >>>> device
+> >>>> tree nodes in a system.
+> >>>>
+> >>>> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> >>> This patch recently landed in linux-next 20200518. Sadly, it causes
+> >>> regression on Samsung Exynos5433-based TM2e board:
+> >>>
+> >>> ...
+> >>>
+> >>> Both issues, the lack of DMA for SPI device and Synchronous abort in
+> >>> I2S
+> >>> probe are new after applying this patch. I'm trying to investigate
+> >>> which
+> >>> resources are missing and why. The latter issue means typically that
+> >>> the
+> >>> registers for the given device has been accessed without enabling the
+> >>> needed clocks or power domains.
+> >> Did you try this copy-pasta fix that I sent later?
+> >> https://lore.kernel.org/lkml/20200517173453.157703-1-saravanak@google.com/
+> >>
+> >>
+> >> Not every system would need it (my test setup didn't), but it helps
+> >> some cases.
+> >>
+> >> If that fix doesn't help, then some tips for debugging the failing
+> >> drivers.
+> >> What this pause/resume patch effectively (not explicitly) does is:
+> >> 1. Doesn't immediately probe the devices as they are added in
+> >> of_platform_default_populate_init()
+> >> 2. Adds them in order to the deferred probe list.
+> >> 3. Then kicks off deferred probe on them in the order they were added.
+> >>
+> >> These drivers are just not handling -EPROBE_DEFER correctly or
+> >> assuming probe order and that's causing these issues.
+> >>
+> >> So, we can either fix that or you can try adding some code to flush
+> >> the deferred probe workqueue at the end of fw_devlink_resume().
+> >>
+> >> Let me know how it goes.
 > >
-> > > On Friday, May 1, 2020 6:45:41 PM CEST James Morse wrote:
-> > > > The GHES code calls memory_failure_queue() from IRQ context to schedule
-> > > > work on the current CPU so that memory_failure() can sleep.
-> > > >
-> > > > For synchronous memory errors the arch code needs to know any signals
-> > > > that memory_failure() will trigger are pending before it returns to
-> > > > user-space, possibly when exiting from the IRQ.
-> > > >
-> > > > Add a helper to kick the memory failure queue, to ensure the scheduled
-> > > > work has happened. This has to be called from process context, so may
-> > > > have been migrated from the original cpu. Pass the cpu the work was
-> > > > queued on.
-> > > >
-> > > > Change memory_failure_work_func() to permit being called on the 'wrong'
-> > > > cpu.
-> > > >
-> > > > --- a/include/linux/mm.h
-> > > > +++ b/include/linux/mm.h
-> > > > @@ -3012,6 +3012,7 @@ enum mf_flags {
-> > > >  };
-> > > >  extern int memory_failure(unsigned long pfn, int flags);
-> > > >  extern void memory_failure_queue(unsigned long pfn, int flags);
-> > > > +extern void memory_failure_queue_kick(int cpu);
-> > > >  extern int unpoison_memory(unsigned long pfn);
-> > > >  extern int get_hwpoison_page(struct page *page);
-> > > >  #define put_hwpoison_page(page)  put_page(page)
-> > > > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> > > > index a96364be8ab4..c4afb407bf0f 100644
-> > > > --- a/mm/memory-failure.c
-> > > > +++ b/mm/memory-failure.c
-> > > > @@ -1493,7 +1493,7 @@ static void memory_failure_work_func(struct work_struct *work)
-> > > >   unsigned long proc_flags;
-> > > >   int gotten;
-> > > >
-> > > > - mf_cpu = this_cpu_ptr(&memory_failure_cpu);
-> > > > + mf_cpu = container_of(work, struct memory_failure_cpu, work);
-> > > >   for (;;) {
-> > > >           spin_lock_irqsave(&mf_cpu->lock, proc_flags);
-> > > >           gotten = kfifo_get(&mf_cpu->fifo, &entry);
-> > > > @@ -1507,6 +1507,19 @@ static void memory_failure_work_func(struct work_struct *work)
-> > > >   }
-> > > >  }
-> > > >
-> > > > +/*
-> > > > + * Process memory_failure work queued on the specified CPU.
-> > > > + * Used to avoid return-to-userspace racing with the memory_failure workqueue.
-> > > > + */
-> > > > +void memory_failure_queue_kick(int cpu)
-> > > > +{
-> > > > + struct memory_failure_cpu *mf_cpu;
-> > > > +
-> > > > + mf_cpu = &per_cpu(memory_failure_cpu, cpu);
-> > > > + cancel_work_sync(&mf_cpu->work);
-> > > > + memory_failure_work_func(&mf_cpu->work);
-> > > > +}
-> > > > +
-> > > >  static int __init memory_failure_init(void)
-> > > >  {
-> > > >   struct memory_failure_cpu *mf_cpu;
-> > > >
-> > >
-> > > I could apply this provided an ACK from the mm people.
-> > >
+> > So far it looks that your patch revealed a hidden issue in exynos5433
+> > clocks configuration, because adding clk_ignore_unused parameter to
+> > kernel command line fixes the boot. I'm still investigating it, so
+> > probable you can ignore my regression report. I will let you know asap
+> > I finish checking it.
 > >
-> > Naoya Horiguchi is the memory-failure.c person.  A review would be
-> > appreciated please?
-> >
-> > I'm struggling with it a bit.  memory_failure_queue_kick() should be
-> > called on the cpu which is identified by arg `cpu', yes?
-> > memory_failure_work_func() appears to assume this.
-> >
-> > If that's right then a) why bother passing in the `cpu' arg?  and b)
-> > what keeps this thread pinned to that CPU?  cancel_work_sync() can
-> > schedule.
->
-> If I read correctly, memory_failure work is queue on the CPU on which the
-> user process ran when it touched the corrupted memory, and the process can
-> be scheduled on another CPU when the kernel returned back to userspace after
-> handling the GHES event.  So we need to remember where the memory_failure
-> event is queued to flush proper work queue.  So I feel that this properly
-> implements it.
->
-> Considering the effect to the other caller, currently memory_failure_queue()
-> has 2 callers, ghes_handle_memory_failure() and cec_add_elem(). The former
-> is what we try to change now.  And the latter is to execute soft offline
-> (which is related to corrected non-fatal errors), so that's not affected by
-> the reported issue.  So I don't think that this change breaks the other
-> caller.
->
-> So I'm fine with the suggested change.
->
-> Acked-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
+> Okay, I confirm that the issue is in the Exynos I2S driver and
+> Exynos5433 clock provider. I've posted a quick workaround. I'm sorry for
+> the noise, your patch is fine.
 
-OK, thanks!
+Thanks for debugging and finding the real issue. I tried finding your
+patches, but couldn't. Can you point me to a lore.kernel.org link? I'm
+just curious to see what the issue was.
 
-So because patch [1/3] has been ACKed already, I'm applying this
-series as 5.8 material.
+I'm guessing you didn't need to pick up this one?
+https://lore.kernel.org/lkml/20200517173453.157703-1-saravanak@google.com/
 
-Thanks everyone!
+-Saravana
