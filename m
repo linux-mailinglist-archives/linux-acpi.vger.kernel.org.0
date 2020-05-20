@@ -2,109 +2,274 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50F9C1DAE76
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 May 2020 11:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC87D1DAF11
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 May 2020 11:42:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726452AbgETJPc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 May 2020 05:15:32 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:45353 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726435AbgETJPb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 May 2020 05:15:31 -0400
-Received: by mail-ot1-f65.google.com with SMTP id c3so1865179otr.12;
-        Wed, 20 May 2020 02:15:30 -0700 (PDT)
+        id S1726546AbgETJm2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 20 May 2020 05:42:28 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:42209 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726443AbgETJm1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 May 2020 05:42:27 -0400
+Received: by mail-oi1-f195.google.com with SMTP id l6so2359273oic.9;
+        Wed, 20 May 2020 02:42:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bqoyHeOoEDMlB+jQwZuDNn8FHfH7mQ3PMOITKSmc9rM=;
-        b=DPxvfZqG/qRiPIHMNr4/vnu+UfEN+lEEd+HEWG3e0HDb/0Y2IQCA9o9jMNyM7cualp
-         wuesSXYA4Ci1WBSBiR2hyMpeB0EhlgkXFIc93Ox1FlCQWRCs2qVJLW+RHOSmqGrnjwBq
-         kXq0Kjk31AbojylE0E1rcH7hQrnTp+6Wx7CszxI5QgCS6kXfxY8bLGbVpNu5VtKhRqVx
-         HfxqPw0wsnqkSH4wsDFLeIUdzw8O/cCvNR0CDYDkR0FGTZjyr1qprXpsVHnJKjY3EHE3
-         rsx2s50glQltQJt0J7WlKaO/2y13T1oLEP8fjZ3yenz7OjzR0I1UP9h812O8SOS/IO8g
-         UuwA==
-X-Gm-Message-State: AOAM532XxtrZAM5MuSjzwTtMK64QTZtsL1j2jwc6BJQq6ywnmfk1qg+A
-        eDtnF1+NL5vkk2AcU1KacnXG2mPBYjOn6L757kg=
-X-Google-Smtp-Source: ABdhPJyAQnNwUbpbP3PLRjXubPXhxP1e5qRO/5LlKFxssnkRW8i1aQTDADuYa6bxey7awz5NwtSwBv6uQ99bF+Kj+8M=
-X-Received: by 2002:a9d:6356:: with SMTP id y22mr2364835otk.167.1589966129710;
- Wed, 20 May 2020 02:15:29 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=nugmEbtCazlXCQDSz2W1N82eZimQB1QpohzBG1gKV4s=;
+        b=TqOaj3ugo4+TDUMfzXKNgaABxNI7J5l6M0nfJIbYPrgbZho7vSy4M9V6UZ0GsrrVCG
+         TBsUUx0bggR8UzZGrEn0GfRqVnpYhd7iu/kZbo8PA9TOOLz3ionzUFfXhejXjQEv6V24
+         r03NF3kc29B6fdkSQi4MYMAy6i1/RVqvhUR4CDB91zpc5lhrk1UUVvs7APrVEwrQydyz
+         1LpIkcyP3w3efkEK4NfqsidRnhvX3Lhg/rBeoCFm/KYxd3QUnRSDC5NWsnt874FN77Ja
+         0pYfrGqIdcTl04Z51CD1WEM22K4WkeOONGma6aiOOAlOroxCD71Q5nef0OCDSZy43SLK
+         163g==
+X-Gm-Message-State: AOAM531v3tRAIpNd/vgn+ve0+k70q0nwwJYBFQ4UfCns/ip0QL6pSQM4
+        PTHKZsUePoPlm4LApJP2Hu5CG0bWZ3qpAC9kn90=
+X-Google-Smtp-Source: ABdhPJzOiYHvtvgDAhZyQHWugtECBMHFvnDNduCyRa11VSymu3LsBForG2fd9+to5VmtbxJiLn8IGvu+XUrw9lafTvM=
+X-Received: by 2002:aca:eb56:: with SMTP id j83mr2638352oih.110.1589967746203;
+ Wed, 20 May 2020 02:42:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200518222722.GA7791@embeddedor> <CAJZ5v0goZpvRQ6du214FqvFNQnqZHR9-kz=WhEgRsMJ3Zx0WiQ@mail.gmail.com>
- <20200519225058.GA14138@embeddedor>
-In-Reply-To: <20200519225058.GA14138@embeddedor>
+References: <20200519222409.616078-1-srinivas.pandruvada@linux.intel.com>
+In-Reply-To: <20200519222409.616078-1-srinivas.pandruvada@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 20 May 2020 11:15:18 +0200
-Message-ID: <CAJZ5v0jg9HoE2KEm45hxKNB1g61DzCn-GWH74w1goeHH3AKRaA@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: Replace one-element array and use struct_size() helper
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+Date:   Wed, 20 May 2020 11:42:15 +0200
+Message-ID: <CAJZ5v0i-jtE5d0dAMiQxbEmSfMBnAK4C3Ek_7+86W2La2_UCNw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI / DPTF: Add additional attributes to power
+ participant driver
+To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Kees Cook <keescook@chromium.org>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 20, 2020 at 12:46 AM Gustavo A. R. Silva
-<gustavoars@kernel.org> wrote:
+ powerOn Wed, May 20, 2020 at 12:24 AM Srinivas Pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
 >
-> On Tue, May 19, 2020 at 12:25:13PM +0200, Rafael J. Wysocki wrote:
-> > On Tue, May 19, 2020 at 12:22 AM Gustavo A. R. Silva
-> > <gustavoars@kernel.org> wrote:
-> > >
-> > > The current codebase makes use of one-element arrays in the following
-> > > form:
-> > >
-> > > struct something {
-> > >     int length;
-> > >     u8 data[1];
-> > > };
-> > >
-> > > struct something *instance;
-> > >
-> > > instance = kmalloc(sizeof(*instance) + size, GFP_KERNEL);
-> > > instance->length = size;
-> > > memcpy(instance->data, source, size);
-> > >
-> > > but the preferred mechanism to declare variable-length types such as
-> > > these ones is a flexible array member[1][2], introduced in C99:
-> > >
-> > > struct foo {
-> > >         int stuff;
-> > >         struct boo array[];
-> > > };
-> > >
-> > > By making use of the mechanism above, we will get a compiler warning
-> > > in case the flexible array does not occur last in the structure, which
-> > > will help us prevent some kind of undefined behavior bugs from being
-> > > inadvertently introduced[3] to the codebase from now on.
-> >
-> > However, the ACPICA code in the kernel comes from an external project
-> > and changes of this type are generally not applicable to it unless
-> > accepted upstream.
->
-> Hi Rafael,
->
-> By _accepted upstream_, in this case, you mean the adoption of the
-> flexible-arrays in the whole codebase, first?
+> Add two additional attributes to the existing power participant driver:
+> rest_of_platform_power_mw: (RO) Shows the rest of worst case platform
+> power in mW.
 
-I meant whether or not the patch is accepted by the ACPICA upstream.
+It would be good to explain or at least give an example of what the
+"rest of worst case platform power" can be.
 
->  If this is the case
-> notice that there are hundreds of these flexible-array conversions
-> in mainline, already:
+> prochot_confirm: (WO) Confirm EC about a prochot notification.
 >
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/?qt=grep&q=flexible-array
+> Also userspace is notified via sysfs_notify(), whenever power source or
+> rest of the platform power is changed. So user space can use poll()
+> system call on those attributes.
 >
-> Is this what you mean?
-
-I'm not actually sure what you mean here.
+> The ACPI methods used in this patch are as follows:
+>
+> PROP
+> This object evaluates to the rest of worst case platform power in mW.
+> Bits:
+> 23:0 Worst case rest of platform power in mW.
+>
+> PBOK
+> PBOK is a method designed to provide a mechanism for OSPM to change power
+> setting before EC can de-assert a PROCHOT from a device. The EC may
+> receive several PROCHOTs, so it has a sequence number attached to PSRC
+> (read via existing attribute "platform_power_source"). Once OSPM takes
+> action for a PSRC change notification, it can call PBOK method to confirm
+> with the sequence number.
+> Bits:
+> 3:0 Power Delivery State Change Sequence number
+> 30  Reserved
+> 31  0 – Not OK to de-assert PROCHOT
+>     1 – OK to de-assert PROCHOT
+>
+> PSRC (Platform Power Source): Not new in this patch but for
+> documentation for new bits
+> This object evaluates to an integer that represents the system power
+> source as well as the power delivery state change sequence number.
+> Bits:
+> 3:0 The current power source as an integer for AC, DC, USB, Wireless.
+> 0 = DC, 1 = AC, 2 = USB, 3 = Wireless Charging
+> 7:4 Power Delivery State Change Sequence Number. Default value is 0
+>
+> Notifications:
+> 0x81: (Power State Change) Used to notify when the power source has
+> changed.
+> 0x84: (PROP change) Used to notify when the platform rest of power has
+> changed.
+>
+> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> ---
+>  Documentation/ABI/testing/sysfs-platform-dptf | 24 +++++--
+>  drivers/acpi/dptf/dptf_power.c                | 69 ++++++++++++++++++-
+>  2 files changed, 88 insertions(+), 5 deletions(-)
+>
+> diff --git a/Documentation/ABI/testing/sysfs-platform-dptf b/Documentation/ABI/testing/sysfs-platform-dptf
+> index 325dc0667dbb..cf4eb5d676de 100644
+> --- a/Documentation/ABI/testing/sysfs-platform-dptf
+> +++ b/Documentation/ABI/testing/sysfs-platform-dptf
+> @@ -27,10 +27,12 @@ KernelVersion:      v4.10
+>  Contact:       linux-acpi@vger.kernel.org
+>  Description:
+>                 (RO) Display the platform power source
+> -               0x00 = DC
+> -               0x01 = AC
+> -               0x02 = USB
+> -               0x03 = Wireless Charger
+> +               bits[3:0] Current power source
+> +                       0x00 = DC
+> +                       0x01 = AC
+> +                       0x02 = USB
+> +                       0x03 = Wireless Charger
+> +               bits[7:4] Power source sequence number
+>
+>  What:          /sys/bus/platform/devices/INT3407:00/dptf_power/battery_steady_power
+>  Date:          Jul, 2016
+> @@ -38,3 +40,17 @@ KernelVersion:       v4.10
+>  Contact:       linux-acpi@vger.kernel.org
+>  Description:
+>                 (RO) The maximum sustained power for battery in milliwatts.
+> +
+> +What:          /sys/bus/platform/devices/INT3407:00/dptf_power/rest_of_platform_power_mw
+> +Date:          June, 2020
+> +KernelVersion: v5.8
+> +Contact:       linux-acpi@vger.kernel.org
+> +Description:
+> +               (RO) Shows the rest of worst case platform power in mW.
+> +
+> +What:          /sys/bus/platform/devices/INT3407:00/dptf_power/prochot_confirm
+> +Date:          June, 2020
+> +KernelVersion: v5.8
+> +Contact:       linux-acpi@vger.kernel.org
+> +Description:
+> +               (WO) Confirm embedded controller about a prochot notification.
+> diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_power.c
+> index e4e8b75d39f0..abe99039af74 100644
+> --- a/drivers/acpi/dptf/dptf_power.c
+> +++ b/drivers/acpi/dptf/dptf_power.c
+> @@ -16,6 +16,7 @@
+>   * ARTG : Adapter rating
+>   * CTYP : Charger type
+>   * PBSS : Battery steady power
+> + * PROP : Rest of worst case platform Power
+>   */
+>  #define DPTF_POWER_SHOW(name, object) \
+>  static ssize_t name##_show(struct device *dev,\
+> @@ -39,12 +40,34 @@ DPTF_POWER_SHOW(platform_power_source, PSRC)
+>  DPTF_POWER_SHOW(adapter_rating_mw, ARTG)
+>  DPTF_POWER_SHOW(battery_steady_power_mw, PBSS)
+>  DPTF_POWER_SHOW(charger_type, CTYP)
+> +DPTF_POWER_SHOW(rest_of_platform_power_mw, PROP)
+>
+>  static DEVICE_ATTR_RO(max_platform_power_mw);
+>  static DEVICE_ATTR_RO(platform_power_source);
+>  static DEVICE_ATTR_RO(adapter_rating_mw);
+>  static DEVICE_ATTR_RO(battery_steady_power_mw);
+>  static DEVICE_ATTR_RO(charger_type);
+> +static DEVICE_ATTR_RO(rest_of_platform_power_mw);
+> +
+> +static ssize_t prochot_confirm_store(struct device *dev,
+> +                                    struct device_attribute *attr,
+> +                                    const char *buf, size_t count)
+> +{
+> +       struct acpi_device *acpi_dev = dev_get_drvdata(dev);
+> +       acpi_status status;
+> +       int seq_no;
+> +
+> +       if (kstrtouint(buf, 0, &seq_no) < 0)
+> +               return -EINVAL;
+> +
+> +       status = acpi_execute_simple_method(acpi_dev->handle, "PBOK", seq_no);
+> +       if (ACPI_SUCCESS(status))
+> +               return count;
+> +
+> +       return -EINVAL;
+> +}
+> +
+> +static DEVICE_ATTR_WO(prochot_confirm);
+>
+>  static struct attribute *dptf_power_attrs[] = {
+>         &dev_attr_max_platform_power_mw.attr,
+> @@ -52,6 +75,8 @@ static struct attribute *dptf_power_attrs[] = {
+>         &dev_attr_adapter_rating_mw.attr,
+>         &dev_attr_battery_steady_power_mw.attr,
+>         &dev_attr_charger_type.attr,
+> +       &dev_attr_rest_of_platform_power_mw.attr,
+> +       &dev_attr_prochot_confirm.attr,
+>         NULL
+>  };
+>
+> @@ -60,6 +85,33 @@ static const struct attribute_group dptf_power_attribute_group = {
+>         .name = "dptf_power"
+>  };
+>
+> +#define POWER_STATE_CHANGED            0x81
+> +#define POWER_PROP_CHANGE_EVENT        0x84
+> +
+> +static void dptf_power_notify(acpi_handle handle, u32 event, void *data)
+> +{
+> +       struct platform_device *pdev = data;
+> +       char *attr;
+> +
+> +       switch (event) {
+> +       case POWER_STATE_CHANGED:
+> +               attr = "platform_power_source";
+> +               break;
+> +       case POWER_PROP_CHANGE_EVENT:
+> +               attr = "rest_of_platform_power_mw";
+> +               break;
+> +       default:
+> +               dev_err(&pdev->dev, "Unsupported event [0x%x]\n", event);
+> +               return;
+> +       }
+> +
+> +       /*
+> +        * Notify that an attribute is changed, so that user space can read
+> +        * again.
+> +        */
+> +       sysfs_notify(&pdev->dev.kobj, "dptf_power", attr);
+> +}
+> +
+>  static int dptf_power_add(struct platform_device *pdev)
+>  {
+>         struct acpi_device *acpi_dev;
+> @@ -78,10 +130,21 @@ static int dptf_power_add(struct platform_device *pdev)
+>         if (ptype != 0x11)
+>                 return -ENODEV;
+>
+> +       result = acpi_install_notify_handler(acpi_dev->handle,
+> +                                            ACPI_DEVICE_NOTIFY,
+> +                                            dptf_power_notify,
+> +                                            (void *)pdev);
+> +       if (result)
+> +               return result;
+> +
+>         result = sysfs_create_group(&pdev->dev.kobj,
+>                                     &dptf_power_attribute_group);
+> -       if (result)
+> +       if (result) {
+> +               acpi_remove_notify_handler(acpi_dev->handle,
+> +                                          ACPI_DEVICE_NOTIFY,
+> +                                          dptf_power_notify);
+>                 return result;
+> +       }
+>
+>         platform_set_drvdata(pdev, acpi_dev);
+>
+> @@ -90,7 +153,11 @@ static int dptf_power_add(struct platform_device *pdev)
+>
+>  static int dptf_power_remove(struct platform_device *pdev)
+>  {
+> +       struct acpi_device *acpi_dev = platform_get_drvdata(pdev);
+>
+> +       acpi_remove_notify_handler(acpi_dev->handle,
+> +                                  ACPI_DEVICE_NOTIFY,
+> +                                  dptf_power_notify);
+>         sysfs_remove_group(&pdev->dev.kobj, &dptf_power_attribute_group);
+>
+>         return 0;
+> --
+> 2.25.4
+>
