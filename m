@@ -2,151 +2,199 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DF111DA4E9
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 May 2020 00:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A0DF1DA90A
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 May 2020 06:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727833AbgESWqM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 May 2020 18:46:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49132 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726064AbgESWqM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 19 May 2020 18:46:12 -0400
-Received: from embeddedor (unknown [189.207.59.248])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 85816205CB;
-        Tue, 19 May 2020 22:46:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589928371;
-        bh=a9pqT8KJ66g+xF2tnOt7wMSRGCEp8vB8fOPKZwpRaVs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EPG/ZSzfIp2yIfDN90ZfsHWqbGYNwNiCwwVJwXmKzd8ZLcklpx5SQX/YHT08t3zl9
-         ZZrv1TACOd92zdHPKrFhl4qr4WQF0qLV7HMuqr1rFqORmBSwdaMVCF6taJMwujkUTX
-         q+rSss0/3OaOda+I9cIcvTWl2DDFBpJmXupbzlqM=
-Date:   Tue, 19 May 2020 17:50:58 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        id S1726571AbgETEV2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 May 2020 00:21:28 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:39364 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725785AbgETEV1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 May 2020 00:21:27 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200520042125euoutp018c276f6dadbabdf8989b7e9e3987dbd8~QoblQPlCZ1895318953euoutp01h
+        for <linux-acpi@vger.kernel.org>; Wed, 20 May 2020 04:21:25 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200520042125euoutp018c276f6dadbabdf8989b7e9e3987dbd8~QoblQPlCZ1895318953euoutp01h
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1589948485;
+        bh=xiWXMWfNTMDhpyYN6ynqaEoNJ+Fc3bIMAx5GVLMVvWo=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=bxVvSUqCDndl8Du69qqiRAAfgUbulItHjsf613JVgWJGI/P1MxvZLTlIisZd63tV0
+         HBpni8DG4f61uPBNqNloGRoIWaf1H/CRdyjFeNLMjYA69y+XRXRUr3BPjio1JTQAXi
+         AXc2YPY2TFwrJoyacya6G+6CHJPEZcgluPc7vcfI=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200520042125eucas1p261681d480f781be6db7485d6b3f328ba~QobktHNkQ2740227402eucas1p2a;
+        Wed, 20 May 2020 04:21:25 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 69.70.60698.540B4CE5; Wed, 20
+        May 2020 05:21:25 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200520042124eucas1p1a848a7353c8cc5183688f9acd189b360~QobkVS_eG2110621106eucas1p1F;
+        Wed, 20 May 2020 04:21:24 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200520042124eusmtrp2cdbe049b0513fdc44ac09ed185f1f0e9~QobkUnVw20913609136eusmtrp2x;
+        Wed, 20 May 2020 04:21:24 +0000 (GMT)
+X-AuditID: cbfec7f5-a0fff7000001ed1a-2a-5ec4b0452ffa
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 75.57.07950.440B4CE5; Wed, 20
+        May 2020 05:21:24 +0100 (BST)
+Received: from [106.210.88.143] (unknown [106.210.88.143]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200520042124eusmtip1e56f8e692b6a8f3e6890b7fb4fcc62e9~QobjrEmBf2685426854eusmtip10;
+        Wed, 20 May 2020 04:21:24 +0000 (GMT)
+Subject: Re: [PATCH v1 4/4] of: platform: Batch fwnode parsing when adding
+ all top level devices
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
         Len Brown <lenb@kernel.org>,
+        Android Kernel Team <kernel-team@android.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH] ACPICA: Replace one-element array and use struct_size()
- helper
-Message-ID: <20200519225058.GA14138@embeddedor>
-References: <20200518222722.GA7791@embeddedor>
- <CAJZ5v0goZpvRQ6du214FqvFNQnqZHR9-kz=WhEgRsMJ3Zx0WiQ@mail.gmail.com>
+        Ji Luo <ji.luo@nxp.com>,
+        Linux Samsung SOC <linux-samsung-soc@vger.kernel.org>
+From:   Marek Szyprowski <m.szyprowski@samsung.com>
+Message-ID: <f53cee8b-c4e9-fc1c-a340-e8cda7b10311@samsung.com>
+Date:   Wed, 20 May 2020 06:21:25 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+        Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0goZpvRQ6du214FqvFNQnqZHR9-kz=WhEgRsMJ3Zx0WiQ@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <CAGETcx_VtJXCqih4ZadZ0dFVJwKOBEQnnrr9JxxmGNh7HX_vNQ@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrDKsWRmVeSWpSXmKPExsWy7djPc7quG47EGUxq47CYf+Qcq8XMN//Z
+        LJoXr2ezmHHnCLvFju0iFjsfvmWzWL6vn9Hi8q45QPHz+5gs5n6ZymzRuheoouvQXzYHHo9t
+        u7exeuycdZfdY8GmUo9NqzrZPPbPXcPusfHdDiaPz5vkAtijuGxSUnMyy1KL9O0SuDJ2bnrA
+        XtAnU9Hf/5mpgbFXvIuRk0NCwERi28V+1i5GLg4hgRWMEpsWz2SDcL4wSvx/3cUCUiUk8JlR
+        YtEZN5iOl0dXQ3UsZ5Q4/P4uE4TznlFi6qV1QO0cHMICSRLfp/CBNIgIaElsuvaYBaSGWaCF
+        ReL2zHlsIAk2AUOJrrddYDavgJ3EhxXrwLaxCKhK/GraxQ5iiwrESpxevJkRokZQ4uTMJ2A1
+        nAKBEmfbTzOD2MwC8hLb386BssUlbj2ZD3aQhMA9domrx2czQpztIjF52z8WCFtY4tXxLewQ
+        tozE/50wDc2MEg/PrWWHcHoYJS43zYDqtpa4c+4X2GvMApoS63fpQ4QdJTY3TmYBCUsI8Enc
+        eCsIcQSfxKRt05khwrwSHW1CENVqErOOr4Nbe/DCJeYJjEqzkLw2C8k7s5C8Mwth7wJGllWM
+        4qmlxbnpqcXGeanlesWJucWleel6yfm5mxiBaez0v+NfdzDu+5N0iFGAg1GJh/fGzsNxQqyJ
+        ZcWVuYcYJTiYlUR4J7w4FCfEm5JYWZValB9fVJqTWnyIUZqDRUmc13jRy1ghgfTEktTs1NSC
+        1CKYLBMHp1QD40Upz19XlIXzlEW5F620Xes6ge+DSVCErXE395wHpuwqR95L2OfF2DreWHT6
+        xflig2ar22f+WwoKnvicqbZB4VN46G9J2bfb2hMX6GaxLeNN2Wj0QfrQtJCvH675qItuY3NP
+        uKlw3+xXzNubZsdXpqgV3Q825sqf8FpgoUzhy/hDn9d/2ct2V4mlOCPRUIu5qDgRACuhKx9f
+        AwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrPIsWRmVeSWpSXmKPExsVy+t/xu7ouG47EGVw/qmMx/8g5VouZb/6z
+        WTQvXs9mMePOEXaLHdtFLHY+fMtmsXxfP6PF5V1zgOLn9zFZzP0yldmidS9QRdehv2wOPB7b
+        dm9j9dg56y67x4JNpR6bVnWyeeyfu4bdY+O7HUwenzfJBbBH6dkU5ZeWpCpk5BeX2CpFG1oY
+        6RlaWugZmVjqGRqbx1oZmSrp29mkpOZklqUW6dsl6GXs3PSAvaBPpqK//zNTA2OveBcjJ4eE
+        gInEy6OrWbsYuTiEBJYySrzomsMOkZCRODmtgRXCFpb4c62LDaLoLaPElittQAkODmGBJIkH
+        8yxBakQEtCQ2XXvMAlLDLNDGInFo/nGohjfMEmu2/AabxCZgKNH1FmQSJwevgJ3EhxXrWEBs
+        FgFViV9Nu8A2iwrESqy+1soIUSMocXLmE7AaToFAibPtp5lBbGYBM4l5mx9C2fIS29/OgbLF
+        JW49mc80gVFoFpL2WUhaZiFpmYWkZQEjyypGkdTS4tz03GIjveLE3OLSvHS95PzcTYzAyN12
+        7OeWHYxd74IPMQpwMCrx8BrsORwnxJpYVlyZe4hRgoNZSYR3wotDcUK8KYmVValF+fFFpTmp
+        xYcYTYGem8gsJZqcD0wqeSXxhqaG5haWhubG5sZmFkrivB0CB2OEBNITS1KzU1MLUotg+pg4
+        OKUaGJOMGUs4p2h02divUvjp6ua6aoPCwo03FGQrRaPmXnX2+d3z9ml0YP5kS4nJievW8wtH
+        /EhYVeBtfceOReU7X+17wzlbP6Q+07YX0z3I2XVzw/GWR4sW9IXUeDvLlrM5aDvteJ3dEi/l
+        eTXwzUdp4eeXHn87JNJyRlv8eHcQa8f0S0nvanjXKLEUZyQaajEXFScCAIIPUZLyAgAA
+X-CMS-MailID: 20200520042124eucas1p1a848a7353c8cc5183688f9acd189b360
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200519062510eucas1p27bc59da66e1b77534855103a27f87452
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200519062510eucas1p27bc59da66e1b77534855103a27f87452
+References: <20200515053500.215929-1-saravanak@google.com>
+        <CGME20200519062510eucas1p27bc59da66e1b77534855103a27f87452@eucas1p2.samsung.com>
+        <20200515053500.215929-5-saravanak@google.com>
+        <e0f9211d-9cf6-a12d-eb63-df06910920ed@samsung.com>
+        <CAGETcx_FOGgHdaNY8Dd-4rgT28U7_OHYeLsazbUE-1hyuatRSg@mail.gmail.com>
+        <18332705-dd61-9a0e-d931-ae610c8fb600@samsung.com>
+        <8dd9ecc2-0c61-49b7-d485-b169eb721712@samsung.com>
+        <CAGETcx_VtJXCqih4ZadZ0dFVJwKOBEQnnrr9JxxmGNh7HX_vNQ@mail.gmail.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 19, 2020 at 12:25:13PM +0200, Rafael J. Wysocki wrote:
-> On Tue, May 19, 2020 at 12:22 AM Gustavo A. R. Silva
-> <gustavoars@kernel.org> wrote:
-> >
-> > The current codebase makes use of one-element arrays in the following
-> > form:
-> >
-> > struct something {
-> >     int length;
-> >     u8 data[1];
-> > };
-> >
-> > struct something *instance;
-> >
-> > instance = kmalloc(sizeof(*instance) + size, GFP_KERNEL);
-> > instance->length = size;
-> > memcpy(instance->data, source, size);
-> >
-> > but the preferred mechanism to declare variable-length types such as
-> > these ones is a flexible array member[1][2], introduced in C99:
-> >
-> > struct foo {
-> >         int stuff;
-> >         struct boo array[];
-> > };
-> >
-> > By making use of the mechanism above, we will get a compiler warning
-> > in case the flexible array does not occur last in the structure, which
-> > will help us prevent some kind of undefined behavior bugs from being
-> > inadvertently introduced[3] to the codebase from now on.
-> 
-> However, the ACPICA code in the kernel comes from an external project
-> and changes of this type are generally not applicable to it unless
-> accepted upstream.
+Hi Saravana,
 
-Hi Rafael,
+On 19.05.2020 20:02, Saravana Kannan wrote:
+> On Tue, May 19, 2020 at 3:32 AM Marek Szyprowski
+> <m.szyprowski@samsung.com> wrote:
+>> On 19.05.2020 09:11, Marek Szyprowski wrote:
+>>> On 19.05.2020 08:48, Saravana Kannan wrote:
+>>>> On Mon, May 18, 2020 at 11:25 PM Marek Szyprowski
+>>>> <m.szyprowski@samsung.com> wrote:
+>>>>> On 15.05.2020 07:35, Saravana Kannan wrote:
+>>>>>> The fw_devlink_pause() and fw_devlink_resume() APIs allow batching the
+>>>>>> parsing of the device tree nodes when a lot of devices are added. This
+>>>>>> will significantly cut down parsing time (as much a 1 second on some
+>>>>>> systems). So, use them when adding devices for all the top level
+>>>>>> device
+>>>>>> tree nodes in a system.
+>>>>>>
+>>>>>> Signed-off-by: Saravana Kannan <saravanak@google.com>
+>>>>> This patch recently landed in linux-next 20200518. Sadly, it causes
+>>>>> regression on Samsung Exynos5433-based TM2e board:
+>>>>>
+>>>>> ...
+>>>>>
+>>>>> Both issues, the lack of DMA for SPI device and Synchronous abort in
+>>>>> I2S
+>>>>> probe are new after applying this patch. I'm trying to investigate
+>>>>> which
+>>>>> resources are missing and why. The latter issue means typically that
+>>>>> the
+>>>>> registers for the given device has been accessed without enabling the
+>>>>> needed clocks or power domains.
+>>>> Did you try this copy-pasta fix that I sent later?
+>>>> https://lore.kernel.org/lkml/20200517173453.157703-1-saravanak@google.com/
+>>>>
+>>>>
+>>>> Not every system would need it (my test setup didn't), but it helps
+>>>> some cases.
+>>>>
+>>>> If that fix doesn't help, then some tips for debugging the failing
+>>>> drivers.
+>>>> What this pause/resume patch effectively (not explicitly) does is:
+>>>> 1. Doesn't immediately probe the devices as they are added in
+>>>> of_platform_default_populate_init()
+>>>> 2. Adds them in order to the deferred probe list.
+>>>> 3. Then kicks off deferred probe on them in the order they were added.
+>>>>
+>>>> These drivers are just not handling -EPROBE_DEFER correctly or
+>>>> assuming probe order and that's causing these issues.
+>>>>
+>>>> So, we can either fix that or you can try adding some code to flush
+>>>> the deferred probe workqueue at the end of fw_devlink_resume().
+>>>>
+>>>> Let me know how it goes.
+>>> So far it looks that your patch revealed a hidden issue in exynos5433
+>>> clocks configuration, because adding clk_ignore_unused parameter to
+>>> kernel command line fixes the boot. I'm still investigating it, so
+>>> probable you can ignore my regression report. I will let you know asap
+>>> I finish checking it.
+>>>
+>> Okay, I confirm that the issue is in the Exynos I2S driver and
+>> Exynos5433 clock provider. I've posted a quick workaround. I'm sorry for
+>> the noise, your patch is fine.
+> Thanks for debugging and finding the real issue. I tried finding your
+> patches, but couldn't. Can you point me to a lore.kernel.org link? I'm
+> just curious to see what the issue was.
 
-By _accepted upstream_, in this case, you mean the adoption of the
-flexible-arrays in the whole codebase, first?  If this is the case
-notice that there are hundreds of these flexible-array conversions
-in mainline, already:
+https://lore.kernel.org/linux-samsung-soc/f67db8c1-453b-4c70-67b9-59762ac34f64@kernel.org/T/#t
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/?qt=grep&q=flexible-array
+It looks that one more clock has to be enabled to properly read init 
+configuration. So far it worked, because that device was probed much 
+earlier, before the unused clocks are turned off. Your patch changed the 
+probe order, so that device is probed later.
 
-Is this what you mean?
+> I'm guessing you didn't need to pick up this one?
+> https://lore.kernel.org/lkml/20200517173453.157703-1-saravanak@google.com/
 
-Thanks
---
-Gustavo
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-> 
-> I'll let Erik and Bob take over.
-> 
-> > Also, make use of the new struct_size() helper to properly calculate the
-> > size of struct acpi_pnp_device_id_list.
-> >
-> > This issue was found with the help of Coccinellea and, audited and
-> > fixed _manually_.
-> >
-> > [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-> > [2] https://github.com/KSPP/linux/issues/21
-> > [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
-> >
-> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> > ---
-> >  drivers/acpi/acpica/utids.c | 4 +---
-> >  include/acpi/actypes.h      | 2 +-
-> >  2 files changed, 2 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/acpi/acpica/utids.c b/drivers/acpi/acpica/utids.c
-> > index 3bb06935a2ad3..c2f819a39424a 100644
-> > --- a/drivers/acpi/acpica/utids.c
-> > +++ b/drivers/acpi/acpica/utids.c
-> > @@ -262,9 +262,7 @@ acpi_ut_execute_CID(struct acpi_namespace_node *device_node,
-> >          * 2) Size of the CID PNP_DEVICE_ID array +
-> >          * 3) Size of the actual CID strings
-> >          */
-> > -       cid_list_size = sizeof(struct acpi_pnp_device_id_list) +
-> > -           ((count - 1) * sizeof(struct acpi_pnp_device_id)) +
-> > -           string_area_size;
-> > +       cid_list_size = struct_size(cid_list, ids, count) + string_area_size;
-> >
-> >         cid_list = ACPI_ALLOCATE_ZEROED(cid_list_size);
-> >         if (!cid_list) {
-> > diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-> > index 4defed58ea338..c7bcda0ad366a 100644
-> > --- a/include/acpi/actypes.h
-> > +++ b/include/acpi/actypes.h
-> > @@ -1145,7 +1145,7 @@ struct acpi_pnp_device_id {
-> >  struct acpi_pnp_device_id_list {
-> >         u32 count;              /* Number of IDs in Ids array */
-> >         u32 list_size;          /* Size of list, including ID strings */
-> > -       struct acpi_pnp_device_id ids[1];       /* ID array */
-> > +       struct acpi_pnp_device_id ids[];        /* ID array */
-> >  };
-> >
-> >  /*
-> > --
-> > 2.26.2
-> >
