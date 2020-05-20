@@ -2,43 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87BFC1DC13E
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 May 2020 23:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C24F1DC161
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 May 2020 23:31:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728056AbgETVTZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 May 2020 17:19:25 -0400
-Received: from mga14.intel.com ([192.55.52.115]:62119 "EHLO mga14.intel.com"
+        id S1726619AbgETVbO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 May 2020 17:31:14 -0400
+Received: from mga12.intel.com ([192.55.52.136]:58312 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727083AbgETVTZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 20 May 2020 17:19:25 -0400
-IronPort-SDR: RJC3jIs/lfqrMKXnWXA7/xApBSk2Te93GAyVS/MabAvmHS6/52mXRMeE4n5126lMotPOX0aS5u
- 8IluGkQE4nng==
+        id S1726892AbgETVbO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 20 May 2020 17:31:14 -0400
+IronPort-SDR: 42yqDEqiKtv3/6K2Ll0x9RQv3Cr3KUd+DohlWDdUReDaxYfAJqpnjckr69CZ14hRb8GPSgQsEQ
+ uPzrGyMOAZeg==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2020 14:19:23 -0700
-IronPort-SDR: bzpDiYVGjg1C84wFwOLdYXtwQZpqqrBrQQFurl4/mkkJHJitwmDeloWbm1V774Vs9fHGlCc0uY
- cqLHz9sv3/+A==
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2020 14:31:13 -0700
+IronPort-SDR: yVrPDlzXjifRbjVpx3Gwl2jVP7wcbu/B0KlcKiR8ecrY62zaI4HtIqU+24uM4qUO3uZJfBUinF
+ SuXFepU9lXQg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.73,415,1583222400"; 
-   d="scan'208";a="253740025"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 20 May 2020 14:19:18 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id E8AE21ED; Thu, 21 May 2020 00:19:17 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        linux-gpio@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 5/5] gpio: pca953x: Override GpioInt() pin for Intel Galileo Gen 2
-Date:   Thu, 21 May 2020 00:19:16 +0300
-Message-Id: <20200520211916.25727-5-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200520211916.25727-1-andriy.shevchenko@linux.intel.com>
-References: <20200520211916.25727-1-andriy.shevchenko@linux.intel.com>
+   d="scan'208";a="289491666"
+Received: from spandruv-mobl.amr.corp.intel.com ([10.255.228.34])
+  by fmsmga004.fm.intel.com with ESMTP; 20 May 2020 14:31:12 -0700
+From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     rjw@rjwysocki.net, lenb@kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: [UPDATE][PATCH] ACPI / DPTF: Add additional attributes to power participant driver
+Date:   Wed, 20 May 2020 14:31:08 -0700
+Message-Id: <20200520213108.944764-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -47,87 +40,228 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-ACPI table on Intel Galileo Gen 2 has wrong pin number for IRQ resource
-of one of the I²C GPIO expanders. ACPI GPIO library provides a special
-quirk which we may use in this case. With help of it, override GpioInt()
-pin for the affected platform.
+Add two additional attributes to the existing power participant driver:
+rest_of_platform_power_mw: (RO) Shows the rest of worst case platform
+power in mW. This will help in power distribution to SoC and rest of the
+system. For example on a test system, this value is 2.5W with a 15W TDP
+SoC. Based on the adapter rating (adapter_rating_mw), user space
+software can decide on proper power allocation to SoC to improve
+short term performance via powercap/RAPL interface.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+prochot_confirm: (WO) Confirm EC about a prochot notification.
+
+Also userspace is notified via sysfs_notify(), whenever power source or
+rest of the platform power is changed. So user space can use poll()
+system call on those attributes.
+
+The ACPI methods used in this patch are as follows:
+
+PROP
+This object evaluates to the rest of worst case platform power in mW.
+Bits:
+23:0 Worst case rest of platform power in mW.
+
+PBOK
+PBOK is a method designed to provide a mechanism for OSPM to change power
+setting before EC can de-assert a PROCHOT from a device. The EC may
+receive several PROCHOTs, so it has a sequence number attached to PSRC
+(read via existing attribute "platform_power_source"). Once OSPM takes
+action for a PSRC change notification, it can call PBOK method to confirm
+with the sequence number.
+Bits:
+3:0 Power Delivery State Change Sequence number
+30  Reserved
+31  0 – Not OK to de-assert PROCHOT
+    1 – OK to de-assert PROCHOT
+
+PSRC (Platform Power Source): Not new in this patch but for
+documentation for new bits
+This object evaluates to an integer that represents the system power
+source as well as the power delivery state change sequence number.
+Bits:
+3:0 The current power source as an integer for AC, DC, USB, Wireless.
+0 = DC, 1 = AC, 2 = USB, 3 = Wireless Charging
+7:4 Power Delivery State Change Sequence Number. Default value is 0
+
+Notifications:
+0x81: (Power State Change) Used to notify when the power source has
+changed.
+0x84: (PROP change) Used to notify when the platform rest of power has
+changed.
+
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 ---
- drivers/gpio/gpio-pca953x.c | 44 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+Changes:
+	Updated the commit description for rest of the platform power.
 
-diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-index 1fca8dd7824f..2014563309be 100644
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -10,6 +10,7 @@
+ Documentation/ABI/testing/sysfs-platform-dptf | 24 +++++--
+ drivers/acpi/dptf/dptf_power.c                | 69 ++++++++++++++++++-
+ 2 files changed, 88 insertions(+), 5 deletions(-)
+
+diff --git a/Documentation/ABI/testing/sysfs-platform-dptf b/Documentation/ABI/testing/sysfs-platform-dptf
+index 325dc0667dbb..cf4eb5d676de 100644
+--- a/Documentation/ABI/testing/sysfs-platform-dptf
++++ b/Documentation/ABI/testing/sysfs-platform-dptf
+@@ -27,10 +27,12 @@ KernelVersion:	v4.10
+ Contact:	linux-acpi@vger.kernel.org
+ Description:
+ 		(RO) Display the platform power source
+-		0x00 = DC
+-		0x01 = AC
+-		0x02 = USB
+-		0x03 = Wireless Charger
++		bits[3:0] Current power source
++			0x00 = DC
++			0x01 = AC
++			0x02 = USB
++			0x03 = Wireless Charger
++		bits[7:4] Power source sequence number
  
- #include <linux/acpi.h>
- #include <linux/bitmap.h>
-+#include <linux/dmi.h>
- #include <linux/gpio/driver.h>
- #include <linux/gpio/consumer.h>
- #include <linux/i2c.h>
-@@ -113,6 +114,39 @@ static const struct acpi_device_id pca953x_acpi_ids[] = {
- };
- MODULE_DEVICE_TABLE(acpi, pca953x_acpi_ids);
+ What:		/sys/bus/platform/devices/INT3407:00/dptf_power/battery_steady_power
+ Date:		Jul, 2016
+@@ -38,3 +40,17 @@ KernelVersion:	v4.10
+ Contact:	linux-acpi@vger.kernel.org
+ Description:
+ 		(RO) The maximum sustained power for battery in milliwatts.
++
++What:		/sys/bus/platform/devices/INT3407:00/dptf_power/rest_of_platform_power_mw
++Date:		June, 2020
++KernelVersion:	v5.8
++Contact:	linux-acpi@vger.kernel.org
++Description:
++		(RO) Shows the rest of worst case platform power in mW.
++
++What:		/sys/bus/platform/devices/INT3407:00/dptf_power/prochot_confirm
++Date:		June, 2020
++KernelVersion:	v5.8
++Contact:	linux-acpi@vger.kernel.org
++Description:
++		(WO) Confirm embedded controller about a prochot notification.
+diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_power.c
+index e4e8b75d39f0..abe99039af74 100644
+--- a/drivers/acpi/dptf/dptf_power.c
++++ b/drivers/acpi/dptf/dptf_power.c
+@@ -16,6 +16,7 @@
+  * ARTG : Adapter rating
+  * CTYP : Charger type
+  * PBSS : Battery steady power
++ * PROP : Rest of worst case platform Power
+  */
+ #define DPTF_POWER_SHOW(name, object) \
+ static ssize_t name##_show(struct device *dev,\
+@@ -39,12 +40,34 @@ DPTF_POWER_SHOW(platform_power_source, PSRC)
+ DPTF_POWER_SHOW(adapter_rating_mw, ARTG)
+ DPTF_POWER_SHOW(battery_steady_power_mw, PBSS)
+ DPTF_POWER_SHOW(charger_type, CTYP)
++DPTF_POWER_SHOW(rest_of_platform_power_mw, PROP)
  
-+#ifdef CONFIG_GPIO_PCA953X_IRQ
-+static const struct acpi_gpio_params pca953x_interrupt_gpios = { 0, 0, true };
+ static DEVICE_ATTR_RO(max_platform_power_mw);
+ static DEVICE_ATTR_RO(platform_power_source);
+ static DEVICE_ATTR_RO(adapter_rating_mw);
+ static DEVICE_ATTR_RO(battery_steady_power_mw);
+ static DEVICE_ATTR_RO(charger_type);
++static DEVICE_ATTR_RO(rest_of_platform_power_mw);
 +
-+static const struct acpi_gpio_mapping pca953x_acpi_interrupt_gpios[] = {
-+	{ "interrupt-gpios", &pca953x_interrupt_gpios, 1, ACPI_GPIO_QUIRK_FORCE_PIN, 1 },
-+	{ }
-+};
-+
-+static int pca953x_acpi_interrupt_get_irq(struct device *dev)
++static ssize_t prochot_confirm_store(struct device *dev,
++				     struct device_attribute *attr,
++				     const char *buf, size_t count)
 +{
-+	struct gpio_desc *desc;
++	struct acpi_device *acpi_dev = dev_get_drvdata(dev);
++	acpi_status status;
++	int seq_no;
 +
-+	if (devm_acpi_dev_add_driver_gpios(dev, pca953x_acpi_interrupt_gpios))
-+		dev_warn(dev, "can't add GPIO ACPI mapping\n");
++	if (kstrtouint(buf, 0, &seq_no) < 0)
++		return -EINVAL;
 +
-+	desc = devm_gpiod_get(dev, "interrupt", GPIOD_IN);
-+	if (IS_ERR(desc))
-+		return PTR_ERR(desc);
++	status = acpi_execute_simple_method(acpi_dev->handle, "PBOK", seq_no);
++	if (ACPI_SUCCESS(status))
++		return count;
 +
-+	return gpiod_to_irq(desc);
++	return -EINVAL;
 +}
 +
-+static const struct dmi_system_id pca953x_dmi_acpi_interrupt_info[] = {
-+	{
-+		.ident = "Intel Galileo Gen 2",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GalileoGen2"),
-+		},
-+	},
-+	{}
-+};
-+#endif
-+
- #define MAX_BANK 5
- #define BANK_SZ 8
- #define MAX_LINE	(MAX_BANK * BANK_SZ)
-@@ -750,8 +784,18 @@ static int pca953x_irq_setup(struct pca953x_chip *chip, int irq_base)
- 	struct irq_chip *irq_chip = &chip->irq_chip;
- 	DECLARE_BITMAP(reg_direction, MAX_LINE);
- 	DECLARE_BITMAP(irq_stat, MAX_LINE);
-+	const struct dmi_system_id *id;
- 	int ret;
++static DEVICE_ATTR_WO(prochot_confirm);
  
-+	id = dmi_first_match(pca953x_dmi_acpi_interrupt_info);
-+	if (id) {
-+		dev_info(&client->dev, "Applying ACPI interrupt quirk\n");
+ static struct attribute *dptf_power_attrs[] = {
+ 	&dev_attr_max_platform_power_mw.attr,
+@@ -52,6 +75,8 @@ static struct attribute *dptf_power_attrs[] = {
+ 	&dev_attr_adapter_rating_mw.attr,
+ 	&dev_attr_battery_steady_power_mw.attr,
+ 	&dev_attr_charger_type.attr,
++	&dev_attr_rest_of_platform_power_mw.attr,
++	&dev_attr_prochot_confirm.attr,
+ 	NULL
+ };
+ 
+@@ -60,6 +85,33 @@ static const struct attribute_group dptf_power_attribute_group = {
+ 	.name = "dptf_power"
+ };
+ 
++#define POWER_STATE_CHANGED		0x81
++#define POWER_PROP_CHANGE_EVENT	0x84
 +
-+		ret = pca953x_acpi_interrupt_get_irq(&client->dev);
-+		if (ret > 0)
-+			client->irq = ret;
++static void dptf_power_notify(acpi_handle handle, u32 event, void *data)
++{
++	struct platform_device *pdev = data;
++	char *attr;
++
++	switch (event) {
++	case POWER_STATE_CHANGED:
++		attr = "platform_power_source";
++		break;
++	case POWER_PROP_CHANGE_EVENT:
++		attr = "rest_of_platform_power_mw";
++		break;
++	default:
++		dev_err(&pdev->dev, "Unsupported event [0x%x]\n", event);
++		return;
 +	}
 +
- 	if (!client->irq)
- 		return 0;
++	/*
++	 * Notify that an attribute is changed, so that user space can read
++	 * again.
++	 */
++	sysfs_notify(&pdev->dev.kobj, "dptf_power", attr);
++}
++
+ static int dptf_power_add(struct platform_device *pdev)
+ {
+ 	struct acpi_device *acpi_dev;
+@@ -78,10 +130,21 @@ static int dptf_power_add(struct platform_device *pdev)
+ 	if (ptype != 0x11)
+ 		return -ENODEV;
  
++	result = acpi_install_notify_handler(acpi_dev->handle,
++					     ACPI_DEVICE_NOTIFY,
++					     dptf_power_notify,
++					     (void *)pdev);
++	if (result)
++		return result;
++
+ 	result = sysfs_create_group(&pdev->dev.kobj,
+ 				    &dptf_power_attribute_group);
+-	if (result)
++	if (result) {
++		acpi_remove_notify_handler(acpi_dev->handle,
++					   ACPI_DEVICE_NOTIFY,
++					   dptf_power_notify);
+ 		return result;
++	}
+ 
+ 	platform_set_drvdata(pdev, acpi_dev);
+ 
+@@ -90,7 +153,11 @@ static int dptf_power_add(struct platform_device *pdev)
+ 
+ static int dptf_power_remove(struct platform_device *pdev)
+ {
++	struct acpi_device *acpi_dev = platform_get_drvdata(pdev);
+ 
++	acpi_remove_notify_handler(acpi_dev->handle,
++				   ACPI_DEVICE_NOTIFY,
++				   dptf_power_notify);
+ 	sysfs_remove_group(&pdev->dev.kobj, &dptf_power_attribute_group);
+ 
+ 	return 0;
 -- 
-2.26.2
+2.25.4
 
