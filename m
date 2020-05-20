@@ -2,103 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF1FA1DB453
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 May 2020 14:58:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABF461DB51C
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 May 2020 15:34:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726560AbgETM6f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 May 2020 08:58:35 -0400
-Received: from foss.arm.com ([217.140.110.172]:55752 "EHLO foss.arm.com"
+        id S1726691AbgETNec (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 May 2020 09:34:32 -0400
+Received: from www.zeus03.de ([194.117.254.33]:59226 "EHLO mail.zeus03.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726439AbgETM6f (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 20 May 2020 08:58:35 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A917130E;
-        Wed, 20 May 2020 05:58:34 -0700 (PDT)
-Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 246EE3F52E;
-        Wed, 20 May 2020 05:58:33 -0700 (PDT)
-Date:   Wed, 20 May 2020 13:58:23 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Tuan Phan <tuanphan@os.amperecomputing.com>
-Cc:     patches@amperecomputing.com, Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        id S1726439AbgETNec (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 20 May 2020 09:34:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=k1; bh=udmxY3eElyisrOqhNbRKohBCfXPS
+        2K3Axj2gciVQ+Ew=; b=PHWMs9Yk2Na88RyxULIH1iLcLVgRlqO5As6BQZEgRz+M
+        q8Ag46CeHXO9j2718wl7ABf5CpSCjk5Rjybl+afalhMMPTAwB67xYmO65s1lrpDj
+        MbM0QG/kw77XPDjz2gDI9gUDuWcxL2TMMV/JeMgAZ+cUn5GvNU3567wB7bCzdsE=
+Received: (qmail 673327 invoked from network); 20 May 2020 15:34:30 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 20 May 2020 15:34:30 +0200
+X-UD-Smtp-Session: l3s3148p1@7JqndBSmOt4gAwDPXwjBAFv42Jy9rssU
+Date:   Wed, 20 May 2020 15:34:29 +0200
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Neil Leeder <nleeder@codeaurora.org>,
-        Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] ACPI/IORT: Fix PMCG node single ID mapping handling.
-Message-ID: <20200520125813.GA6906@e121166-lin.cambridge.arm.com>
-References: <1589570686-5780-1-git-send-email-tuanphan@os.amperecomputing.com>
+        Len Brown <lenb@kernel.org>, Lee Jones <lee.jones@linaro.org>,
+        Jean Delvare <jdelvare@suse.de>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Max Staudt <max@enpas.org>, Stefan Roese <sr@denx.de>,
+        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] mfd: ensure that AXP20X_I2C will have the right
+ deps on X86
+Message-ID: <20200520133429.GC5759@ninjato>
+References: <cover.1589801950.git.mchehab+huawei@kernel.org>
+ <cfbb80f220bba5051640d92fc00825bdaa2ec877.1589801950.git.mchehab+huawei@kernel.org>
+ <aa23c170-f4e8-e1f0-5c7f-35e51ec84533@redhat.com>
+ <20200518145302.56642b22@coco.lan>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="xo44VMWPx7vlQ2+2"
 Content-Disposition: inline
-In-Reply-To: <1589570686-5780-1-git-send-email-tuanphan@os.amperecomputing.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200518145302.56642b22@coco.lan>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 15, 2020 at 12:24:46PM -0700, Tuan Phan wrote:
-> An IORT PMCG node can have no ID mapping if its overflow interrupt is
-> wire based therefore the code that parses the PMCG node can not assume
-> the node will always have a single mapping present at index 0.
-> 
-> Fix iort_get_id_mapping_index() by checking for an overflow interrupt
-> and mapping count.
-> 
-> Fixes: 24e516049360 ("ACPI/IORT: Add support for PMCG").
 
-Remove these periods in the $SUBJECT and commit references, I
-don't know why you keep adding them.
+--xo44VMWPx7vlQ2+2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Anyway - I don't know if it is too late for v5.8 but this patch
-is ready to be merged (minus the nits I have just mentioned).
 
-Lorenzo
+> > With that said I'm fine with giving this another try, maybe let
+> > the test builders / rand config builds play with it for a while
+> > and see what happens?
+>=20
+> Yeah, it makes sense to me.
 
-> Acked-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> Reviewed-by: Hanjun Guo <guoahanjun@huawei.com>
-> Signed-off-by: Tuan Phan <tuanphan@os.amperecomputing.com>
-> ---
-> v1 -> v2:
-> - Use pmcg node to detect wired base overflow interrupt.
-> 
-> v2 -> v3:
-> - Address Hanjun and Robin's comments.
-> 
-> v3 -> v4:
-> - Update the title and description as mentioned by Lorenzo.
-> 
->  drivers/acpi/arm64/iort.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index ed3d2d1..12bb70e 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -414,6 +414,7 @@ static struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
->  static int iort_get_id_mapping_index(struct acpi_iort_node *node)
->  {
->  	struct acpi_iort_smmu_v3 *smmu;
-> +	struct acpi_iort_pmcg *pmcg;
->  
->  	switch (node->type) {
->  	case ACPI_IORT_NODE_SMMU_V3:
-> @@ -441,6 +442,10 @@ static int iort_get_id_mapping_index(struct acpi_iort_node *node)
->  
->  		return smmu->id_mapping_index;
->  	case ACPI_IORT_NODE_PMCG:
-> +		pmcg = (struct acpi_iort_pmcg *)node->node_data;
-> +		if (pmcg->overflow_gsiv || node->mapping_count == 0)
-> +			return -EINVAL;
-> +
->  		return 0;
->  	default:
->  		return -EINVAL;
-> -- 
-> 2.7.4
-> 
+I'd like to see an ACK from the designware maintainers before sending
+this upstream. Testing is all fine, of course.
+
+
+--xo44VMWPx7vlQ2+2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl7FMeQACgkQFA3kzBSg
+KbbHeg/+KhGr/M5GB/4C/j1LiglUMLhY5MY/aTO0UFUQYG2dHkBRmpN1iFHkUa3v
+QzWcU9uZ1q/Ew84IXLiX+myrbCwX7ugbrQZhR1XnVXmB2SonkJvXeOqdNoLkDFT7
+rSU6I3Uu7QnCXQDH986GgH1DGYQehdHArPje833DzUaY1okLE3R8pXYRZvs9eVVq
+Hf2eKFTNczDYGhXqfTrTW6n9cnvmooIfAMTCj6p9fpbcous61ZUuMgHiPUBMkuoL
+v7G7+oYpD+R7l2oNIOE/ZTdCp6aJENmEi/seoeNoDAqMDVwYg7XZJUzc3FvJ4pJd
+Se1H3cIc08Ytqr3Aa1l7kxSZ1iBvf1hf/xIyGO4dTiNJAUxR3QV4oTe2QClqhP38
+DLiNZ74/98Aq13XwdOssk9OQXlTMfS4Bd7v4JJcXqJiLtLINbrM6tmfFWkYmGTFJ
+Rku2P+pvO4bNf/1Szh5rWWPCHRzBc5Ux8hbevO11aHUvf2453U5OsmmVomJK6rn4
+fd32JKN8PGOdkZOnPYtHeLdzQcBXouXNk0fxVajFD5hNneuey6dtgU4g4wxh0F33
+8ONTBKMFbMhY8AVevHWcMGgwWhdqs+aIZoNldjbFLtrSB1dHe1Fkwuy5OqjvAp9a
+Lr5Qu7G37ES7GGCb5uiy+XPV4cv7kGpdzhTtz09J18vWi1ogTLw=
+=LZ2J
+-----END PGP SIGNATURE-----
+
+--xo44VMWPx7vlQ2+2--
