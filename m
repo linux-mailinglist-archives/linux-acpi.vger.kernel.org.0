@@ -2,266 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C24F1DC161
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 May 2020 23:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E9B51DC923
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 May 2020 11:00:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726619AbgETVbO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 May 2020 17:31:14 -0400
-Received: from mga12.intel.com ([192.55.52.136]:58312 "EHLO mga12.intel.com"
+        id S1728716AbgEUJAA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 May 2020 05:00:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44754 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726892AbgETVbO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 20 May 2020 17:31:14 -0400
-IronPort-SDR: 42yqDEqiKtv3/6K2Ll0x9RQv3Cr3KUd+DohlWDdUReDaxYfAJqpnjckr69CZ14hRb8GPSgQsEQ
- uPzrGyMOAZeg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2020 14:31:13 -0700
-IronPort-SDR: yVrPDlzXjifRbjVpx3Gwl2jVP7wcbu/B0KlcKiR8ecrY62zaI4HtIqU+24uM4qUO3uZJfBUinF
- SuXFepU9lXQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,415,1583222400"; 
-   d="scan'208";a="289491666"
-Received: from spandruv-mobl.amr.corp.intel.com ([10.255.228.34])
-  by fmsmga004.fm.intel.com with ESMTP; 20 May 2020 14:31:12 -0700
-From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     rjw@rjwysocki.net, lenb@kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: [UPDATE][PATCH] ACPI / DPTF: Add additional attributes to power participant driver
-Date:   Wed, 20 May 2020 14:31:08 -0700
-Message-Id: <20200520213108.944764-1-srinivas.pandruvada@linux.intel.com>
-X-Mailer: git-send-email 2.25.4
+        id S1728560AbgEUJAA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 21 May 2020 05:00:00 -0400
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8F88220738;
+        Thu, 21 May 2020 08:59:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590051599;
+        bh=OF167bw6TAO1xV/ri9mfdhSX8/TqgsxqTsszhaeYVdU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=KeCVzphIBaDgUS+6LJznJ8wiNmY8Akr6xMkMYcd1JAOfb2/Oi/J2nZAc8vhZTzNwg
+         DEFCndWqrLgyluhcEJFf6/4ffV3dLi9Xl2aLNPQrJvdAK6Wz9F0r/D/fhwjFk2ExF5
+         7Ah8nsBe6BQRRv41EihksT9U8HLjs8ei3N8oqDxM=
+Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
+        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <maz@kernel.org>)
+        id 1jbh3V-00EBYj-Pi; Thu, 21 May 2020 09:59:57 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 21 May 2020 09:59:57 +0100
+From:   Marc Zyngier <maz@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v1 3/3] irqdomain: Allow software node to be correct one
+ for IRQ domain
+In-Reply-To: <20200520164927.39090-3-andriy.shevchenko@linux.intel.com>
+References: <20200520164927.39090-1-andriy.shevchenko@linux.intel.com>
+ <20200520164927.39090-3-andriy.shevchenko@linux.intel.com>
+User-Agent: Roundcube Webmail/1.4.4
+Message-ID: <c7432ac8e2564c1c2177ef6e71f252ac@kernel.org>
+X-Sender: maz@kernel.org
+X-SA-Exim-Connect-IP: 51.254.78.96
+X-SA-Exim-Rcpt-To: andriy.shevchenko@linux.intel.com, tglx@linutronix.de, linux-kernel@vger.kernel.org, rjw@rjwysocki.net, linux-acpi@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add two additional attributes to the existing power participant driver:
-rest_of_platform_power_mw: (RO) Shows the rest of worst case platform
-power in mW. This will help in power distribution to SoC and rest of the
-system. For example on a test system, this value is 2.5W with a 15W TDP
-SoC. Based on the adapter rating (adapter_rating_mw), user space
-software can decide on proper power allocation to SoC to improve
-short term performance via powercap/RAPL interface.
+Hi Andy,
 
-prochot_confirm: (WO) Confirm EC about a prochot notification.
+On 2020-05-20 17:49, Andy Shevchenko wrote:
+> In some cases we might need to have an IRQ domain created out of 
+> software node.
+> One of such cases is DesignWare GPIO driver when it's instantiated from
+> half-baked ACPI table (alas, we can't fix it for devices which are few 
+> years
+> on market) and thus using software nodes to quirk this up. But the 
+> driver
+> is using IRQ domains based on per GPIO port firmware nodes, which are 
+> in
+> the above case software ones. This brings a warning message to be 
+> printed
+> 
+>   [   73.957183] irq: Invalid fwnode type for irqdomain
+> 
+> and creates an unknown IRQ domain.
+> 
+> When we allow software node to be correct one for IRQ domain we will
+> get rid of the warning message and nice domain name at the same time:
+> 
+>   % ls -1 /sys/kernel/debug/irq/domains/
+>   ...
+>   intel-quark-dw-apb-gpio:portA
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  kernel/irq/irqdomain.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+> index c6204bc606a2..e4ebc5398ef5 100644
+> --- a/kernel/irq/irqdomain.c
+> +++ b/kernel/irq/irqdomain.c
+> @@ -161,7 +161,8 @@ struct irq_domain *__irq_domain_add(struct
+> fwnode_handle *fwnode, int size,
+>  			domain->name = fwid->name;
+>  			break;
+>  		}
+> -	} else if (is_of_node(fwnode) || is_acpi_device_node(fwnode)) {
+> +	} else if (is_of_node(fwnode) || is_acpi_device_node(fwnode) ||
+> +		   is_software_node(fwnode)) {
+>  		char *name;
+> 
+>  		/*
 
-Also userspace is notified via sysfs_notify(), whenever power source or
-rest of the platform power is changed. So user space can use poll()
-system call on those attributes.
+Thanks for this. I've applied it to irqchip-next. In the future,
+please consider adding a cover letter describing the overall
+goal of the series.
 
-The ACPI methods used in this patch are as follows:
+Cheers,
 
-PROP
-This object evaluates to the rest of worst case platform power in mW.
-Bits:
-23:0 Worst case rest of platform power in mW.
-
-PBOK
-PBOK is a method designed to provide a mechanism for OSPM to change power
-setting before EC can de-assert a PROCHOT from a device. The EC may
-receive several PROCHOTs, so it has a sequence number attached to PSRC
-(read via existing attribute "platform_power_source"). Once OSPM takes
-action for a PSRC change notification, it can call PBOK method to confirm
-with the sequence number.
-Bits:
-3:0 Power Delivery State Change Sequence number
-30  Reserved
-31  0 – Not OK to de-assert PROCHOT
-    1 – OK to de-assert PROCHOT
-
-PSRC (Platform Power Source): Not new in this patch but for
-documentation for new bits
-This object evaluates to an integer that represents the system power
-source as well as the power delivery state change sequence number.
-Bits:
-3:0 The current power source as an integer for AC, DC, USB, Wireless.
-0 = DC, 1 = AC, 2 = USB, 3 = Wireless Charging
-7:4 Power Delivery State Change Sequence Number. Default value is 0
-
-Notifications:
-0x81: (Power State Change) Used to notify when the power source has
-changed.
-0x84: (PROP change) Used to notify when the platform rest of power has
-changed.
-
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
----
-Changes:
-	Updated the commit description for rest of the platform power.
-
- Documentation/ABI/testing/sysfs-platform-dptf | 24 +++++--
- drivers/acpi/dptf/dptf_power.c                | 69 ++++++++++++++++++-
- 2 files changed, 88 insertions(+), 5 deletions(-)
-
-diff --git a/Documentation/ABI/testing/sysfs-platform-dptf b/Documentation/ABI/testing/sysfs-platform-dptf
-index 325dc0667dbb..cf4eb5d676de 100644
---- a/Documentation/ABI/testing/sysfs-platform-dptf
-+++ b/Documentation/ABI/testing/sysfs-platform-dptf
-@@ -27,10 +27,12 @@ KernelVersion:	v4.10
- Contact:	linux-acpi@vger.kernel.org
- Description:
- 		(RO) Display the platform power source
--		0x00 = DC
--		0x01 = AC
--		0x02 = USB
--		0x03 = Wireless Charger
-+		bits[3:0] Current power source
-+			0x00 = DC
-+			0x01 = AC
-+			0x02 = USB
-+			0x03 = Wireless Charger
-+		bits[7:4] Power source sequence number
- 
- What:		/sys/bus/platform/devices/INT3407:00/dptf_power/battery_steady_power
- Date:		Jul, 2016
-@@ -38,3 +40,17 @@ KernelVersion:	v4.10
- Contact:	linux-acpi@vger.kernel.org
- Description:
- 		(RO) The maximum sustained power for battery in milliwatts.
-+
-+What:		/sys/bus/platform/devices/INT3407:00/dptf_power/rest_of_platform_power_mw
-+Date:		June, 2020
-+KernelVersion:	v5.8
-+Contact:	linux-acpi@vger.kernel.org
-+Description:
-+		(RO) Shows the rest of worst case platform power in mW.
-+
-+What:		/sys/bus/platform/devices/INT3407:00/dptf_power/prochot_confirm
-+Date:		June, 2020
-+KernelVersion:	v5.8
-+Contact:	linux-acpi@vger.kernel.org
-+Description:
-+		(WO) Confirm embedded controller about a prochot notification.
-diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_power.c
-index e4e8b75d39f0..abe99039af74 100644
---- a/drivers/acpi/dptf/dptf_power.c
-+++ b/drivers/acpi/dptf/dptf_power.c
-@@ -16,6 +16,7 @@
-  * ARTG : Adapter rating
-  * CTYP : Charger type
-  * PBSS : Battery steady power
-+ * PROP : Rest of worst case platform Power
-  */
- #define DPTF_POWER_SHOW(name, object) \
- static ssize_t name##_show(struct device *dev,\
-@@ -39,12 +40,34 @@ DPTF_POWER_SHOW(platform_power_source, PSRC)
- DPTF_POWER_SHOW(adapter_rating_mw, ARTG)
- DPTF_POWER_SHOW(battery_steady_power_mw, PBSS)
- DPTF_POWER_SHOW(charger_type, CTYP)
-+DPTF_POWER_SHOW(rest_of_platform_power_mw, PROP)
- 
- static DEVICE_ATTR_RO(max_platform_power_mw);
- static DEVICE_ATTR_RO(platform_power_source);
- static DEVICE_ATTR_RO(adapter_rating_mw);
- static DEVICE_ATTR_RO(battery_steady_power_mw);
- static DEVICE_ATTR_RO(charger_type);
-+static DEVICE_ATTR_RO(rest_of_platform_power_mw);
-+
-+static ssize_t prochot_confirm_store(struct device *dev,
-+				     struct device_attribute *attr,
-+				     const char *buf, size_t count)
-+{
-+	struct acpi_device *acpi_dev = dev_get_drvdata(dev);
-+	acpi_status status;
-+	int seq_no;
-+
-+	if (kstrtouint(buf, 0, &seq_no) < 0)
-+		return -EINVAL;
-+
-+	status = acpi_execute_simple_method(acpi_dev->handle, "PBOK", seq_no);
-+	if (ACPI_SUCCESS(status))
-+		return count;
-+
-+	return -EINVAL;
-+}
-+
-+static DEVICE_ATTR_WO(prochot_confirm);
- 
- static struct attribute *dptf_power_attrs[] = {
- 	&dev_attr_max_platform_power_mw.attr,
-@@ -52,6 +75,8 @@ static struct attribute *dptf_power_attrs[] = {
- 	&dev_attr_adapter_rating_mw.attr,
- 	&dev_attr_battery_steady_power_mw.attr,
- 	&dev_attr_charger_type.attr,
-+	&dev_attr_rest_of_platform_power_mw.attr,
-+	&dev_attr_prochot_confirm.attr,
- 	NULL
- };
- 
-@@ -60,6 +85,33 @@ static const struct attribute_group dptf_power_attribute_group = {
- 	.name = "dptf_power"
- };
- 
-+#define POWER_STATE_CHANGED		0x81
-+#define POWER_PROP_CHANGE_EVENT	0x84
-+
-+static void dptf_power_notify(acpi_handle handle, u32 event, void *data)
-+{
-+	struct platform_device *pdev = data;
-+	char *attr;
-+
-+	switch (event) {
-+	case POWER_STATE_CHANGED:
-+		attr = "platform_power_source";
-+		break;
-+	case POWER_PROP_CHANGE_EVENT:
-+		attr = "rest_of_platform_power_mw";
-+		break;
-+	default:
-+		dev_err(&pdev->dev, "Unsupported event [0x%x]\n", event);
-+		return;
-+	}
-+
-+	/*
-+	 * Notify that an attribute is changed, so that user space can read
-+	 * again.
-+	 */
-+	sysfs_notify(&pdev->dev.kobj, "dptf_power", attr);
-+}
-+
- static int dptf_power_add(struct platform_device *pdev)
- {
- 	struct acpi_device *acpi_dev;
-@@ -78,10 +130,21 @@ static int dptf_power_add(struct platform_device *pdev)
- 	if (ptype != 0x11)
- 		return -ENODEV;
- 
-+	result = acpi_install_notify_handler(acpi_dev->handle,
-+					     ACPI_DEVICE_NOTIFY,
-+					     dptf_power_notify,
-+					     (void *)pdev);
-+	if (result)
-+		return result;
-+
- 	result = sysfs_create_group(&pdev->dev.kobj,
- 				    &dptf_power_attribute_group);
--	if (result)
-+	if (result) {
-+		acpi_remove_notify_handler(acpi_dev->handle,
-+					   ACPI_DEVICE_NOTIFY,
-+					   dptf_power_notify);
- 		return result;
-+	}
- 
- 	platform_set_drvdata(pdev, acpi_dev);
- 
-@@ -90,7 +153,11 @@ static int dptf_power_add(struct platform_device *pdev)
- 
- static int dptf_power_remove(struct platform_device *pdev)
- {
-+	struct acpi_device *acpi_dev = platform_get_drvdata(pdev);
- 
-+	acpi_remove_notify_handler(acpi_dev->handle,
-+				   ACPI_DEVICE_NOTIFY,
-+				   dptf_power_notify);
- 	sysfs_remove_group(&pdev->dev.kobj, &dptf_power_attribute_group);
- 
- 	return 0;
+         M.
 -- 
-2.25.4
-
+Jazz is not dead. It just smells funny...
