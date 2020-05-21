@@ -2,442 +2,236 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B15791DD0B5
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 May 2020 17:03:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBE571DD467
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 May 2020 19:30:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729633AbgEUPDj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 May 2020 11:03:39 -0400
-Received: from mail-vi1eur05on2049.outbound.protection.outlook.com ([40.107.21.49]:24163
-        "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728229AbgEUPDj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 21 May 2020 11:03:39 -0400
+        id S1728213AbgEURaV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 May 2020 13:30:21 -0400
+Received: from mga05.intel.com ([192.55.52.43]:15517 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728022AbgEURaV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 21 May 2020 13:30:21 -0400
+IronPort-SDR: 1gCFes3yvQGm3VIdz8ZdHVjcXVdI0sVPkI5Ma4Qapcmh3wcLqR9nvPA+VBPjPzfMIydnRxxecU
+ KdwmRJ/ZpxOw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 10:30:15 -0700
+IronPort-SDR: 1jb3CluUYf3Gx+oCuTsHuwxDflRgxIgNDChnR6xO8Wr4RG8OdHkdr97xqHVQpmsoS26R9jOWIR
+ joKC+5rcRVBQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,418,1583222400"; 
+   d="scan'208";a="374495882"
+Received: from orsmsx110.amr.corp.intel.com ([10.22.240.8])
+  by fmsmga001.fm.intel.com with ESMTP; 21 May 2020 10:30:14 -0700
+Received: from orsmsx607.amr.corp.intel.com (10.22.229.20) by
+ ORSMSX110.amr.corp.intel.com (10.22.240.8) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 21 May 2020 10:30:14 -0700
+Received: from orsmsx607.amr.corp.intel.com (10.22.229.20) by
+ ORSMSX607.amr.corp.intel.com (10.22.229.20) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Thu, 21 May 2020 10:30:14 -0700
+Received: from ORSEDG002.ED.cps.intel.com (10.7.248.5) by
+ orsmsx607.amr.corp.intel.com (10.22.229.20) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5
+ via Frontend Transport; Thu, 21 May 2020 10:30:14 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.100)
+ by edgegateway.intel.com (134.134.137.101) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 21 May 2020 10:30:13 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TtN6+n/RacHsA9gHu6HuKkZ39BCUIRVNVobuqOFtXmaOx1Rl8aJhD1EU2F+JUl73AAAeHLR/mUzelL3fukFQ58rdD/BjpmOjYw1D9yMsczFleGqAwL/2byLrayQ+4bBUCvclf1XfBaPaYuQI6BPSNh28z5mKlPXC7IeDWVpS6esgVDjYoLvxSKo10t9ctQh+DqV/14T7iZgI0ndy8eH0fOrcXhIU7sllfyDZNDDpocr3pkY/rDQ22X8wiH3mfsjs4DW6H/lxtpb7fGNI2d88JKKXKKWzbYn3CZEVr7XQHxvKwXV88+xrs/W+D3mi973NIo/OUxXJvL6oQRlzU3fL3Q==
+ b=My8nqA7Q/IWESAl+P774tkR98gR1X9ElytwTcpFevmO3czfRfaK5WOAXNcztz+0PsBPbLpb+mqUhbfDdhBo5XnouzX53/cgykbnQesj73Lewg1zJWvn+pOwEmJhJuk5ee26CQGyxOH3u6sOAcQQHpadzcLWjwpwx4Rnq5vOt2tktHOgCOaTRZppZZuIoP9ZIHE+c+WAy9vXpnwLmE1k/XCGfVcF2nHjEtogCIU2NA6YxjNcA9++kbDP+EDvQqs9qs3u1FUX9jYLcV3n5v8YPd765BqA8swGmutOk9q/U5WZIp6wWGIjpy28WB73CwWH3e8Ql3oHo0dwGxz9WYuyVzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o6IhSuCxNIUhMJU28fHdUeD3ip3Uj9Qf8OhoJJ2VmZ0=;
- b=A2pxsRzvYKtEcpsLYa7bOg7JJAhnKFg1HF+T8YKUfKzyqjtOn+9yXSCOA6FL+V6vQy95lGatn3cm6dQzvZ9B7xrX8+ESrQihlUEvWOWNQ2/mEeDpRVbVeq+ahjj1RmhDthyWlU9uy+3J3VDc/BqsyP+lrxUbgZ2QIh2IUSyt1dvNI54xVKUOPLMkk+32iCXkR/MiPEsKVBugUAn2vFQbWJRb5HrNbgshqilK8dekASL/bpLjtn6cu+Xu9fGpsSxqzjgtV57stZB21ozDD4S/IoXMBgc9AYJ4IgxqvTqGFWRyhGnzxZBlpVnPHMjhgUxDyB9aPTAiqF0hk+6lzHMfdw==
+ bh=qvca2crIzD0BMGjrAaJSCEUa8AuaIs1cxStLbulV9FY=;
+ b=RvX9Vx8ZbQNZUNTRaZnV6GXgn1x/WNgt1IEGIRaJqfrKPfrPcDnhE9Tfc/mgPncbHp4vpAKMpv19aGC7AFz0dJC2chtXXkDB/giVvL0idSRNQmT+MczZkALvc6SNnsaXtr8w4jxuqx5DzOrqrWkFanIXcnCPQimkykgkqLpEjVa73VMeXDZs6NB1p9TxZ1clNeaFPk/PpNQYooikWFC5lhPsaPjLZXCA/JLeCHXD5fIZClPjSHc18d5DKh6OtFxhXu6OJn3HYR/ZEoO8VfuxYRXFVrJkgLLRxoegNz2Vh5HrFbSeOxJCScL7U2haNTvpLMGrFWXhmZ9DGVydvBY6gA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o6IhSuCxNIUhMJU28fHdUeD3ip3Uj9Qf8OhoJJ2VmZ0=;
- b=WE4nGzt/O6zIQb7s8wPKRKlsrnO2qfmwVtx1v41rnO5ff0wtZO9V/RUcIHqx9zp4+VXRixilIFUaEtrW26rI1vd43bxpNCGwrIRI4Fq/WH/7XmGL+5qHF2qK7H6204eOYKDVX0raI4ATaITb8NLeHP5LzdmMYL/Tj3FWK1BJilk=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=nxp.com;
-Received: from VI1PR0402MB3405.eurprd04.prod.outlook.com (2603:10a6:803:3::26)
- by VI1PR0402MB3647.eurprd04.prod.outlook.com (2603:10a6:803:1c::23) with
+ bh=qvca2crIzD0BMGjrAaJSCEUa8AuaIs1cxStLbulV9FY=;
+ b=nVSGpmXmZybn7v2pU7ZFoy+e8sD/WjBIN1jLeS4W57Gj6okrwtfEuEIYI4vp8fns+Jf5tNldvnSP41percwOmtGUZGyIYu6ZpJekf4AJ3NlpHwxuh1rN4jPgz8FOfuTcUFReAliFczA1xRlYMD4iH6rcraBYA+aVwpZh5/SVTc0=
+Received: from BYAPR11MB3096.namprd11.prod.outlook.com (2603:10b6:a03:8f::14)
+ by BYAPR11MB3173.namprd11.prod.outlook.com (2603:10b6:a03:1d::29) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.27; Thu, 21 May
- 2020 15:03:35 +0000
-Received: from VI1PR0402MB3405.eurprd04.prod.outlook.com
- ([fe80::c7e:c51a:1ea4:968d]) by VI1PR0402MB3405.eurprd04.prod.outlook.com
- ([fe80::c7e:c51a:1ea4:968d%5]) with mapi id 15.20.3000.022; Thu, 21 May 2020
- 15:03:35 +0000
-Subject: Re: [PATCH 12/12] bus: fsl-mc: Add ACPI support for fsl-mc
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        linux-arm-kernel@lists.infradead.org
-Cc:     Diana Craciun <diana.craciun@oss.nxp.com>,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        iommu@lists.linux-foundation.org, linux-acpi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Joerg Roedel <joro@8bytes.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>
-References: <20200521130008.8266-1-lorenzo.pieralisi@arm.com>
- <20200521130008.8266-13-lorenzo.pieralisi@arm.com>
-From:   Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Message-ID: <3045acd5-0bcf-40c1-e65f-0b740200b2e0@nxp.com>
-Date:   Thu, 21 May 2020 18:03:21 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
-In-Reply-To: <20200521130008.8266-13-lorenzo.pieralisi@arm.com>
-Content-Type: text/plain; charset=utf-8
+ 2020 17:30:11 +0000
+Received: from BYAPR11MB3096.namprd11.prod.outlook.com
+ ([fe80::94e7:471d:f545:3c3e]) by BYAPR11MB3096.namprd11.prod.outlook.com
+ ([fe80::94e7:471d:f545:3c3e%5]) with mapi id 15.20.3000.034; Thu, 21 May 2020
+ 17:30:11 +0000
+From:   "Kaneda, Erik" <erik.kaneda@intel.com>
+To:     Kees Cook <keescook@chromium.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        "Moore, Robert" <robert.moore@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: RE: [PATCH] ACPICA: Replace one-element array and use struct_size()
+ helper
+Thread-Topic: [PATCH] ACPICA: Replace one-element array and use struct_size()
+ helper
+Thread-Index: AQHWLr0g3tIHe82D7UK/h7k3pA0Ak6iyyoPQ
+Date:   Thu, 21 May 2020 17:30:11 +0000
+Message-ID: <BYAPR11MB3096B2FE15AAC6A0C8BCC4CAF0B70@BYAPR11MB3096.namprd11.prod.outlook.com>
+References: <20200518222722.GA7791@embeddedor>
+ <CAJZ5v0goZpvRQ6du214FqvFNQnqZHR9-kz=WhEgRsMJ3Zx0WiQ@mail.gmail.com>
+ <20200519225058.GA14138@embeddedor>
+ <CAJZ5v0jg9HoE2KEm45hxKNB1g61DzCn-GWH74w1goeHH3AKRaA@mail.gmail.com>
+ <202005200831.41DA095B2@keescook>
+In-Reply-To: <202005200831.41DA095B2@keescook>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR07CA0307.eurprd07.prod.outlook.com
- (2603:10a6:800:130::35) To VI1PR0402MB3405.eurprd04.prod.outlook.com
- (2603:10a6:803:3::26)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-version: 11.2.0.6
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+authentication-results: chromium.org; dkim=none (message not signed)
+ header.d=none;chromium.org; dmarc=none action=none header.from=intel.com;
+x-originating-ip: [192.55.52.204]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 6cde263f-de6e-4c00-268e-08d7fdac9da8
+x-ms-traffictypediagnostic: BYAPR11MB3173:
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BYAPR11MB31736B53BBFBD9D6332AFFB7F0B70@BYAPR11MB3173.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-forefront-prvs: 041032FF37
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: S6Y4RE1idC+orSyiIAVQBupANWyiaDSPat0Y4EXaaB48zbx2BcgJqMcmsvWoLv/uyvNMYi9f+831s7KKJdVfWIFvjbowQpIhYUQgAqk0Tb7VD50erItZEIDtPkTVp2xTVWGklxqD+N7WpH5emYiEINlz9wsTvnPfQR6Xf1bdTx97Cy9q26qXqxRHoGHJg2Rfx3s1v5Hdo0C29UOB475u8k1WLU1yM153Dnxni1ccItYvIDxAwP6Ley8qmz7Irj5Zxw1sKkwWeFeB2XQm7aMO+xAB5s5IR0Ctp5ExN3ZiZxguXQZuXy+6Xtmisulnlksefa3MLaxPdc+vbXU9J5nIA8InDKW73ZGkAM86v/OyylBTnkRZPwxzrk2H40ECgO++7Fb/BmbXzEvj1Xg4vd48ZX7IPMe9l90Wu0Uor/XoYW00gs7fwzCtQf0wl7/P4oVn4+aXrDQOme0vA9gBrPaqBuBIKySZdtYQU1XVC8DaDhJ0pEoFzsYyvD2QY2y4udjqgh+d2LlpEQ83JThagGufhw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3096.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(39860400002)(366004)(136003)(396003)(376002)(346002)(54906003)(110136005)(316002)(7696005)(71200400001)(66476007)(66556008)(66446008)(52536014)(66946007)(64756008)(6506007)(26005)(53546011)(76116006)(86362001)(33656002)(186003)(8936002)(5660300002)(478600001)(966005)(55016002)(4326008)(2906002)(8676002)(9686003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: xLt/Ysgl2sESE7l/s7cClCQcbtatPa5WWzAvhZKtMZ08pMa00h23ra1ZvRpTazSWPnlZsojvEqPaEg19eLgiMcXO91HEBxi1H7zeVqUU1Y1hjT4O1XWl9NfCUuyU2hUBpsIgnQhdLy173lx6LBhIK7wpMm3irEcb1TmUkiH02Nxw11rMpU4T1wGwdbZ6VX8ksWnH89ryj5jzi9dDE8mmqma9ijgj5N2tbvrasLAjhbPfslYofo7QOpOnnDE9ilZBNX9xxMHY9VMi7fvLaRd3qbXdlW0/gCJOOsdmTAn2gFnarkgUIXJa4HFz49hGsH8fm/4FXRn6pGA7QAufJYe6fky8eSnv2qVa2KtnhjeEa3PVxn/RmejgmI4q2XeXSBt6Rtf38DrVdzs/joU31S9p/TkwCsFqRoX9X7vaTlKIeSZrAnY5YRBUKtbmDaeH4J337Vjm/Us3wl7DMguwrm8fGgGI7ZFrbS0O5LBO2Yurs6U=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.43.159] (213.233.104.197) by VI1PR07CA0307.eurprd07.prod.outlook.com (2603:10a6:800:130::35) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3045.8 via Frontend Transport; Thu, 21 May 2020 15:03:33 +0000
-X-Originating-IP: [213.233.104.197]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: f4cf816b-abaa-473a-42df-08d7fd98226d
-X-MS-TrafficTypeDiagnostic: VI1PR0402MB3647:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VI1PR0402MB36477425C77CE45473D995FBECB70@VI1PR0402MB3647.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:232;
-X-Forefront-PRVS: 041032FF37
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ZZeFBiztcbrix8f7bh3QTHWTTTQb5iN5KT4mSsYIs7Yuk2MxlQs15kSldNVh7p4dNCaU7UcyTA81+UC13A6/7y2pu1M2TWEj60mJPqgv0hsKpRHp1/6LG94cZQkqsGea6WlrQqR30CE+xxA/MwREeHkoceOx2OdqoqfGbE8urRkxHbTzIdxxAH3kqwPRU1qTlyyF2gziOhjBh8ouUCS9240G3LY13Q0y/a6HfRH+UkTmkD4Zr3QvSzTgR5agSfXcnh15vBTMkrzgCD+7gSCB3aAXPloK0QxF5SW77eDIwlh9R7bxWUh27sdSgGmksirN7E2YwUSD9YWuF4Ty/9J5GVGx6k0ubAAW8t7hUnHfLdkjyVolKj06k1DI2fdFV+xYixG/TU+XxJbhCJhdlPPK4sJLQwSUiD6ZhidY7+1U/vmLkbKfOSsDxQW7SAkY0XfX7hRha3UN2AuYwyURT9oXIu9tfYLdFRRJ6PmQC5jIDrfGePIOsPQmcZLL6cQ8EHxk
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR0402MB3405.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(396003)(39860400002)(346002)(366004)(136003)(376002)(316002)(16526019)(16576012)(6666004)(956004)(2616005)(6486002)(66946007)(54906003)(86362001)(52116002)(53546011)(66556008)(26005)(31696002)(186003)(5660300002)(7416002)(8936002)(31686004)(66476007)(36756003)(478600001)(30864003)(8676002)(4326008)(2906002)(44832011)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: 7vlpk8gtbVXCisSlz25gm6HEAgUAUSj2qApaDt4IolRe1EVfafuCy71gP2CVIHQQ8rUQ5vORW3ajderxxhnQ2lapdXE54Vo2EirZOJhO+Pp7BsvNFvalXvzLpVkdcOJk2yOFU/Onv36D9K+Vbavyk5j9AsW1V2bw1Wo2vGJR211Hiw0ihktNAWVWhnEnzgirXp5aGXRAfU6XXD1o2GNJ9I1VGLqVJ5cHEsyDmW2rH9/dN5voQIafWa8Crd4aMMLqckMjHqYExVqHP+LTWp8/3abqQjTGIUW28TYdUi73sdEpjx+VRBhqQuAxlyKsPxCFtDtWyf6oIrtU8I0O2SgNZsWdpZGogg7ZZL8xBcHqgg4PsnLXgoWrucdE8Yoz5+JxzeELDkJ+NII2DhQ3jdT2IMf/DTfCeKTaUzIm6eFCOkXCryiyVHzrrTLxJcRPvUIdi8x45q448lGaDU6ApRwDalhoknJHNzMaVXj/02G1/JtBICo+ZFJI836n1FLWWr4Q
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4cf816b-abaa-473a-42df-08d7fd98226d
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2020 15:03:35.3681
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6cde263f-de6e-4c00-268e-08d7fdac9da8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 May 2020 17:30:11.6160
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vnXdjIjYwLB3dzcwrglXqVP75MbAKSchgmqUgWRUwV643JoMLkGMPYRNRFPYQcvp04LSe5UaJaUq1w856XcSTg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0402MB3647
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4+0egUVjlckp79EFfYbWFRvjuzAVWhfGwTpe4ADCYLqwrblOEeVOFm5rgPz8PPR+L1ZIx9MRvxrSCe641kPfmg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB3173
+X-OriginatorOrg: intel.com
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Lorenzo,
-
-On 5/21/2020 4:00 PM, Lorenzo Pieralisi wrote:
-> From: Diana Craciun <diana.craciun@oss.nxp.com>
-> 
-> Add ACPI support in the fsl-mc driver. Driver parses MC DSDT table to
-> extract memory and other resources.
-> 
-> Interrupt (GIC ITS) information is extracted from the MADT table
-> by drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c.
-> 
-> IORT table is parsed to configure DMA.
-> 
-> Signed-off-by: Makarand Pawagi <makarand.pawagi@nxp.com>
-> Signed-off-by: Diana Craciun <diana.craciun@oss.nxp.com>
-> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-> ---
-
-The author of this patch should be Makarand. I think I accidentaly broke
-it when we exchanged the patches. Very sorry about it.
-
----
-Best Regards, Laurentiu
 
 
->  drivers/bus/fsl-mc/fsl-mc-bus.c             | 73 +++++++++++++++-----
->  drivers/bus/fsl-mc/fsl-mc-msi.c             | 37 +++++-----
->  drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c | 75 ++++++++++++++++++++-
->  3 files changed, 150 insertions(+), 35 deletions(-)
-> 
-> diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-> index 824ff77bbe86..324d49d6df89 100644
-> --- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-> +++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-> @@ -18,6 +18,8 @@
->  #include <linux/bitops.h>
->  #include <linux/msi.h>
->  #include <linux/dma-mapping.h>
-> +#include <linux/acpi.h>
-> +#include <linux/iommu.h>
->  
->  #include "fsl-mc-private.h"
->  
-> @@ -38,6 +40,7 @@ struct fsl_mc {
->  	struct fsl_mc_device *root_mc_bus_dev;
->  	u8 num_translation_ranges;
->  	struct fsl_mc_addr_translation_range *translation_ranges;
-> +	void *fsl_mc_regs;
->  };
->  
->  /**
-> @@ -56,6 +59,10 @@ struct fsl_mc_addr_translation_range {
->  	phys_addr_t start_phys_addr;
->  };
->  
-> +#define FSL_MC_FAPR	0x28
-> +#define MC_FAPR_PL	BIT(18)
-> +#define MC_FAPR_BMT	BIT(17)
-> +
->  /**
->   * fsl_mc_bus_match - device to driver matching callback
->   * @dev: the fsl-mc device to match against
-> @@ -124,7 +131,10 @@ static int fsl_mc_dma_configure(struct device *dev)
->  	while (dev_is_fsl_mc(dma_dev))
->  		dma_dev = dma_dev->parent;
->  
-> -	return of_dma_configure_id(dev, dma_dev->of_node, 0, &input_id);
-> +	if (dev_of_node(dma_dev))
-> +		return of_dma_configure_id(dev, dma_dev->of_node, 0, &input_id);
-> +
-> +	return acpi_dma_configure_id(dev, DEV_DMA_COHERENT, &input_id);
->  }
->  
->  static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
-> @@ -865,8 +875,11 @@ static int fsl_mc_bus_probe(struct platform_device *pdev)
->  	struct fsl_mc_io *mc_io = NULL;
->  	int container_id;
->  	phys_addr_t mc_portal_phys_addr;
-> -	u32 mc_portal_size;
-> -	struct resource res;
-> +	u32 mc_portal_size, mc_stream_id;
-> +	struct resource *plat_res;
-> +
-> +	if (!iommu_present(&fsl_mc_bus_type))
-> +		return -EPROBE_DEFER;
->  
->  	mc = devm_kzalloc(&pdev->dev, sizeof(*mc), GFP_KERNEL);
->  	if (!mc)
-> @@ -874,19 +887,33 @@ static int fsl_mc_bus_probe(struct platform_device *pdev)
->  
->  	platform_set_drvdata(pdev, mc);
->  
-> +	plat_res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-> +	mc->fsl_mc_regs = devm_ioremap_resource(&pdev->dev, plat_res);
-> +	if (IS_ERR(mc->fsl_mc_regs))
-> +		return PTR_ERR(mc->fsl_mc_regs);
-> +
-> +	if (IS_ENABLED(CONFIG_ACPI) && !dev_of_node(&pdev->dev)) {
-> +		mc_stream_id = readl(mc->fsl_mc_regs + FSL_MC_FAPR);
-> +		/*
-> +		 * HW ORs the PL and BMT bit, places the result in bit 15 of
-> +		 * the StreamID and ORs in the ICID. Calculate it accordingly.
-> +		 */
-> +		mc_stream_id = (mc_stream_id & 0xffff) |
-> +				((mc_stream_id & (MC_FAPR_PL | MC_FAPR_BMT)) ?
-> +					0x4000 : 0);
-> +		error = acpi_dma_configure_id(&pdev->dev, DEV_DMA_COHERENT,
-> +					      &mc_stream_id);
-> +		if (error)
-> +			dev_warn(&pdev->dev, "failed to configure dma: %d.\n",
-> +				 error);
-> +	}
-> +
->  	/*
->  	 * Get physical address of MC portal for the root DPRC:
->  	 */
-> -	error = of_address_to_resource(pdev->dev.of_node, 0, &res);
-> -	if (error < 0) {
-> -		dev_err(&pdev->dev,
-> -			"of_address_to_resource() failed for %pOF\n",
-> -			pdev->dev.of_node);
-> -		return error;
-> -	}
-> -
-> -	mc_portal_phys_addr = res.start;
-> -	mc_portal_size = resource_size(&res);
-> +	plat_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	mc_portal_phys_addr = plat_res->start;
-> +	mc_portal_size = resource_size(plat_res);
->  	error = fsl_create_mc_io(&pdev->dev, mc_portal_phys_addr,
->  				 mc_portal_size, NULL,
->  				 FSL_MC_IO_ATOMIC_CONTEXT_PORTAL, &mc_io);
-> @@ -903,11 +930,13 @@ static int fsl_mc_bus_probe(struct platform_device *pdev)
->  	dev_info(&pdev->dev, "MC firmware version: %u.%u.%u\n",
->  		 mc_version.major, mc_version.minor, mc_version.revision);
->  
-> -	error = get_mc_addr_translation_ranges(&pdev->dev,
-> -					       &mc->translation_ranges,
-> -					       &mc->num_translation_ranges);
-> -	if (error < 0)
-> -		goto error_cleanup_mc_io;
-> +	if (dev_of_node(&pdev->dev)) {
-> +		error = get_mc_addr_translation_ranges(&pdev->dev,
-> +						&mc->translation_ranges,
-> +						&mc->num_translation_ranges);
-> +		if (error < 0)
-> +			goto error_cleanup_mc_io;
-> +	}
->  
->  	error = dprc_get_container_id(mc_io, 0, &container_id);
->  	if (error < 0) {
-> @@ -934,6 +963,7 @@ static int fsl_mc_bus_probe(struct platform_device *pdev)
->  		goto error_cleanup_mc_io;
->  
->  	mc->root_mc_bus_dev = mc_bus_dev;
-> +	mc_bus_dev->dev.fwnode = pdev->dev.fwnode;
->  	return 0;
->  
->  error_cleanup_mc_io:
-> @@ -967,11 +997,18 @@ static const struct of_device_id fsl_mc_bus_match_table[] = {
->  
->  MODULE_DEVICE_TABLE(of, fsl_mc_bus_match_table);
->  
-> +static const struct acpi_device_id fsl_mc_bus_acpi_match_table[] = {
-> +	{"NXP0008", 0 },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(acpi, fsl_mc_bus_acpi_match_table);
-> +
->  static struct platform_driver fsl_mc_bus_driver = {
->  	.driver = {
->  		   .name = "fsl_mc_bus",
->  		   .pm = NULL,
->  		   .of_match_table = fsl_mc_bus_match_table,
-> +		   .acpi_match_table = fsl_mc_bus_acpi_match_table,
->  		   },
->  	.probe = fsl_mc_bus_probe,
->  	.remove = fsl_mc_bus_remove,
-> diff --git a/drivers/bus/fsl-mc/fsl-mc-msi.c b/drivers/bus/fsl-mc/fsl-mc-msi.c
-> index e7bbff445a83..8edadf05cbb7 100644
-> --- a/drivers/bus/fsl-mc/fsl-mc-msi.c
-> +++ b/drivers/bus/fsl-mc/fsl-mc-msi.c
-> @@ -13,6 +13,7 @@
->  #include <linux/irq.h>
->  #include <linux/irqdomain.h>
->  #include <linux/msi.h>
-> +#include <linux/acpi_iort.h>
->  
->  #include "fsl-mc-private.h"
->  
-> @@ -179,25 +180,31 @@ struct irq_domain *fsl_mc_msi_create_irq_domain(struct fwnode_handle *fwnode,
->  
->  struct irq_domain *fsl_mc_find_msi_domain(struct device *dev)
->  {
-> -	struct irq_domain *msi_domain = NULL;
-> +	struct device *root_dprc_dev;
-> +	struct device *bus_dev;
-> +	struct irq_domain *msi_domain;
->  	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
->  
-> -	msi_domain = of_msi_map_get_device_domain(dev, mc_dev->icid,
-> +	fsl_mc_get_root_dprc(dev, &root_dprc_dev);
-> +	bus_dev = root_dprc_dev->parent;
-> +
-> +	if (bus_dev->of_node) {
-> +		msi_domain = of_msi_map_get_device_domain(dev,
-> +						  mc_dev->icid,
->  						  DOMAIN_BUS_FSL_MC_MSI);
->  
-> -	/*
-> -	 * if the msi-map property is missing assume that all the
-> -	 * child containers inherit the domain from the parent
-> -	 */
-> -	if (!msi_domain) {
-> -		struct device *root_dprc_dev;
-> -		struct device *bus_dev;
-> -
-> -		fsl_mc_get_root_dprc(dev, &root_dprc_dev);
-> -		bus_dev = root_dprc_dev->parent;
-> -		msi_domain = of_msi_get_domain(bus_dev,
-> -					       bus_dev->of_node,
-> -					       DOMAIN_BUS_FSL_MC_MSI);
-> +		/*
-> +		 * if the msi-map property is missing assume that all the
-> +		 * child containers inherit the domain from the parent
-> +		 */
-> +		if (!msi_domain)
-> +
-> +			msi_domain = of_msi_get_domain(bus_dev,
-> +						bus_dev->of_node,
-> +						DOMAIN_BUS_FSL_MC_MSI);
-> +	} else {
-> +		msi_domain = iort_get_device_domain(dev, mc_dev->icid,
-> +						    DOMAIN_BUS_FSL_MC_MSI);
->  	}
->  
->  	return msi_domain;
-> diff --git a/drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c b/drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c
-> index a5c8d577e424..b8b948fb6b2d 100644
-> --- a/drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c
-> +++ b/drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c
-> @@ -7,6 +7,8 @@
->   *
->   */
->  
-> +#include <linux/acpi.h>
-> +#include <linux/acpi_iort.h>
->  #include <linux/of_device.h>
->  #include <linux/of_address.h>
->  #include <linux/irq.h>
-> @@ -30,7 +32,8 @@ static u32 fsl_mc_msi_domain_get_msi_id(struct irq_domain *domain,
->  	u32 out_id;
->  
->  	of_node = irq_domain_get_of_node(domain);
-> -	out_id = of_msi_map_id(&mc_dev->dev, of_node, mc_dev->icid);
-> +	out_id = of_node ? of_msi_map_id(&mc_dev->dev, of_node, mc_dev->icid) :
-> +			iort_msi_map_id(&mc_dev->dev, mc_dev->icid);
->  
->  	return out_id;
->  }
-> @@ -79,7 +82,67 @@ static const struct of_device_id its_device_id[] = {
->  	{},
->  };
->  
-> -static int __init its_fsl_mc_msi_init(void)
-> +static int __init its_fsl_mc_msi_init_one(struct fwnode_handle *handle,
-> +					  const char *name)
-> +{
-> +	struct irq_domain *parent;
-> +	struct irq_domain *mc_msi_domain;
-> +
-> +	parent = irq_find_matching_fwnode(handle, DOMAIN_BUS_NEXUS);
-> +	if (!parent || !msi_get_domain_info(parent)) {
-> +		pr_err("%s: Unable to locate ITS domain\n", name);
-> +		return -ENXIO;
-> +	}
-> +
-> +	mc_msi_domain = fsl_mc_msi_create_irq_domain(handle,
-> +						&its_fsl_mc_msi_domain_info,
-> +						parent);
-> +	if (!mc_msi_domain)
-> +		pr_err("ACPIF: unable to create fsl-mc domain\n");
-> +
-> +	pr_info("fsl-mc MSI: domain created\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static int __init
-> +its_fsl_mc_msi_parse_madt(union acpi_subtable_headers *header,
-> +			  const unsigned long end)
-> +{
-> +	struct acpi_madt_generic_translator *its_entry;
-> +	struct fwnode_handle *dom_handle;
-> +	const char *node_name;
-> +	int err = -ENXIO;
-> +
-> +	its_entry = (struct acpi_madt_generic_translator *)header;
-> +	node_name = kasprintf(GFP_KERNEL, "ITS@0x%lx",
-> +			      (long)its_entry->base_address);
-> +
-> +	dom_handle = iort_find_domain_token(its_entry->translation_id);
-> +	if (!dom_handle) {
-> +		pr_err("%s: Unable to locate ITS domain handle\n", node_name);
-> +		goto out;
-> +	}
-> +
-> +	err = its_fsl_mc_msi_init_one(dom_handle, node_name);
-> +	if (!err)
-> +		pr_info("fsl-mc MSI: %s domain created\n", node_name);
-> +
-> +out:
-> +	kfree(node_name);
-> +	return err;
-> +}
-> +
-> +
-> +static int __init its_fsl_mc_acpi_msi_init(void)
-> +{
-> +	acpi_table_parse_madt(ACPI_MADT_TYPE_GENERIC_TRANSLATOR,
-> +			      its_fsl_mc_msi_parse_madt, 0);
-> +
-> +	return 0;
-> +}
-> +
-> +static int __init its_fsl_mc_of_msi_init(void)
->  {
->  	struct device_node *np;
->  	struct irq_domain *parent;
-> @@ -113,4 +176,12 @@ static int __init its_fsl_mc_msi_init(void)
->  	return 0;
->  }
->  
-> +static int __init its_fsl_mc_msi_init(void)
-> +{
-> +	its_fsl_mc_of_msi_init();
-> +	its_fsl_mc_acpi_msi_init();
-> +
-> +	return 0;
-> +}
-> +
->  early_initcall(its_fsl_mc_msi_init);
-> 
+> -----Original Message-----
+> From: linux-acpi-owner@vger.kernel.org <linux-acpi-
+> owner@vger.kernel.org> On Behalf Of Kees Cook
+> Sent: Wednesday, May 20, 2020 8:41 AM
+> To: Rafael J. Wysocki <rafael@kernel.org>
+> Cc: Gustavo A. R. Silva <gustavoars@kernel.org>; Moore, Robert
+> <robert.moore@intel.com>; Kaneda, Erik <erik.kaneda@intel.com>; Wysocki,
+> Rafael J <rafael.j.wysocki@intel.com>; Len Brown <lenb@kernel.org>; ACPI
+> Devel Maling List <linux-acpi@vger.kernel.org>; open list:ACPI COMPONENT
+> ARCHITECTURE (ACPICA) <devel@acpica.org>; Linux Kernel Mailing List
+> <linux-kernel@vger.kernel.org>; Gustavo A. R. Silva
+> <gustavo@embeddedor.com>
+> Subject: Re: [PATCH] ACPICA: Replace one-element array and use
+> struct_size() helper
+>=20
+> On Wed, May 20, 2020 at 11:15:18AM +0200, Rafael J. Wysocki wrote:
+> > On Wed, May 20, 2020 at 12:46 AM Gustavo A. R. Silva
+> > <gustavoars@kernel.org> wrote:
+> > >
+> > > On Tue, May 19, 2020 at 12:25:13PM +0200, Rafael J. Wysocki wrote:
+> > > > On Tue, May 19, 2020 at 12:22 AM Gustavo A. R. Silva
+> > > > <gustavoars@kernel.org> wrote:
+> > > > >
+> > > > > The current codebase makes use of one-element arrays in the
+> > > > > following
+> > > > > form:
+> > > > >
+> > > > > struct something {
+> > > > >     int length;
+> > > > >     u8 data[1];
+> > > > > };
+> > > > >
+> > > > > struct something *instance;
+> > > > >
+> > > > > instance =3D kmalloc(sizeof(*instance) + size, GFP_KERNEL);
+> > > > > instance->length =3D size;
+> > > > > memcpy(instance->data, source, size);
+> > > > >
+> > > > > but the preferred mechanism to declare variable-length types
+> > > > > such as these ones is a flexible array member[1][2], introduced i=
+n C99:
+> > > > >
+> > > > > struct foo {
+> > > > >         int stuff;
+> > > > >         struct boo array[];
+> > > > > };
+> > > > >
+> > > > > By making use of the mechanism above, we will get a compiler
+> > > > > warning in case the flexible array does not occur last in the
+> > > > > structure, which will help us prevent some kind of undefined
+> > > > > behavior bugs from being inadvertently introduced[3] to the
+> codebase from now on.
+> > > >
+> > > > However, the ACPICA code in the kernel comes from an external
+> > > > project and changes of this type are generally not applicable to
+> > > > it unless accepted upstream.
+> > >
+> > > Hi Rafael,
+> > >
+> > > By _accepted upstream_, in this case, you mean the adoption of the
+> > > flexible-arrays in the whole codebase, first?
+> >
+> > I meant whether or not the patch is accepted by the ACPICA upstream.
+>=20
+> Is that here? https://github.com/acpica/acpica/commits/master
+>=20
+> >
+> > >  If this is the case
+> > > notice that there are hundreds of these flexible-array conversions
+> > > in mainline, already:
+> > >
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/l
+> > > og/?qt=3Dgrep&q=3Dflexible-array
+> > >
+> > > Is this what you mean?
+> >
+> > I'm not actually sure what you mean here.
+>=20
+> I think this was just a misunderstanding about what "upstream" meant. :)
+>=20
+> I hope ACPICA will take these changes -- it seems like we keep running in=
+to
+> these issues with the kernel's language feature clean-ups and ACPICA
+> upstream, though each have been resolved so far! :) Flexible array member=
+s
+> are a C99 feature, so it's hardly a new way to express things.
+> In fact, it looks like ACPICA already builds with -c99 by default:
+> https://github.com/acpica/acpica/blob/master/generate/unix/Makefile.conf
+> ig#L202
+> https://github.com/acpica/acpica/blob/master/generate/efi/Makefile.config
+> #L93
+>=20
+> MSVC has supported them (called "unsized arrays") since 7.1 in 2003.
+>=20
+> Gustavo, can you build a merge request for the ACPICA project directly?
+
+The flexible array members will be fine.
+
+The struct_size helper uses the typeof operator which is a GCC extension.
+
+ACPICA codebase is intended to be compiled by many different compilers (not
+just GCC and MSVC) so we cannot support struct_size.
+
+Erik
+>=20
+> --
+> Kees Cook
