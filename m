@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C3A31DDA79
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 May 2020 00:47:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57E6F1DDAA9
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 May 2020 01:02:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730732AbgEUWrd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 May 2020 18:47:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46040 "EHLO mail.kernel.org"
+        id S1730719AbgEUXCd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 May 2020 19:02:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50852 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730579AbgEUWrd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 21 May 2020 18:47:33 -0400
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+        id S1730041AbgEUXCd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 21 May 2020 19:02:33 -0400
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 95E1A20874;
-        Thu, 21 May 2020 22:47:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4DCFE2088E;
+        Thu, 21 May 2020 23:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590101251;
-        bh=pJDrBrHsn0aoHb+92XvQ+JRb285FS90rYU9wwQF6w1E=;
+        s=default; t=1590102152;
+        bh=u4I01Bd2QyL8HPxDkUrMsX0HSNDq0LynubrHvmfSbXA=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=neYhPbGrZrQAZ3u5z01iEsEXxnDlPfrZZl9nuDK34BIMd7ft50/f4VfkaqlEzPDpK
-         2Idg115oRhA0+sxbfZ5pTxP51PHoeE+Poecsy+XrpQohjVun8uhCJe7o6qvO3Gigtp
-         2Db3aCCY14NyVyZlbOkX2+7A59YWWNG6NC3igBww=
-Received: by mail-ot1-f47.google.com with SMTP id o13so6858586otl.5;
-        Thu, 21 May 2020 15:47:31 -0700 (PDT)
-X-Gm-Message-State: AOAM531lLCYrgrjI1mUtevairymExL6tYWoZ3O3revV31EFSDnvwtn1P
-        0j6vC8IZX3EhiFV7RteOAkpLEAZIQZvlcNEW9A==
-X-Google-Smtp-Source: ABdhPJwSEzqj/VK1u9Gw13Fm46tFV4U9CHwMaWoNmbRr1ndGt9yuz27+8oVBtPgb4KdDh4RCFHDwUkfRxTOBwL2IZM0=
-X-Received: by 2002:a9d:51ca:: with SMTP id d10mr2977821oth.129.1590101250769;
- Thu, 21 May 2020 15:47:30 -0700 (PDT)
+        b=RiYUJx3r0NSHRBi8CE9gwpJPXRgz5WqYyZuoDvG/k/mV29oeCTMPA50Plh9HX9ac9
+         ymVWclaGK1LCxKJKteoWzNj5exfqEiApBISSekxqsOLadecgNFhpB0S6E23smC/RO1
+         UqBvA944tDh1FRa8/kjEC+nhcFSqtsgenhggmGKc=
+Received: by mail-oi1-f174.google.com with SMTP id x23so7721380oic.3;
+        Thu, 21 May 2020 16:02:32 -0700 (PDT)
+X-Gm-Message-State: AOAM530qO+4fdgT+VLFZuUJYwh6N36Rh8ynDUzMFekqIl8PB/Hcf3Mfw
+        uLUgcVEs2Sha1hvnQ6zdZ2QNJDfZLDo5RZBjdw==
+X-Google-Smtp-Source: ABdhPJyTEOAtWUCXqQRm64QnwpCZ0isYcN6LyugKOxRT91W8qbotthhsTXaUlNcGWLVO8KSMeec5LvCcv0JMwyl2JAA=
+X-Received: by 2002:a05:6808:7cb:: with SMTP id f11mr710834oij.152.1590102151546;
+ Thu, 21 May 2020 16:02:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200521130008.8266-1-lorenzo.pieralisi@arm.com> <20200521130008.8266-7-lorenzo.pieralisi@arm.com>
-In-Reply-To: <20200521130008.8266-7-lorenzo.pieralisi@arm.com>
+References: <20200521130008.8266-1-lorenzo.pieralisi@arm.com> <20200521130008.8266-8-lorenzo.pieralisi@arm.com>
+In-Reply-To: <20200521130008.8266-8-lorenzo.pieralisi@arm.com>
 From:   Rob Herring <robh+dt@kernel.org>
-Date:   Thu, 21 May 2020 16:47:19 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqK5aiEMAZpqgTmrOq=HPRSFEoQWJrpR2YA0hziEtLMwrg@mail.gmail.com>
-Message-ID: <CAL_JsqK5aiEMAZpqgTmrOq=HPRSFEoQWJrpR2YA0hziEtLMwrg@mail.gmail.com>
-Subject: Re: [PATCH 06/12] of/iommu: Make of_map_rid() PCI agnostic
+Date:   Thu, 21 May 2020 17:02:20 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJw3wyiUrbd1AekwDc5+uqhHi9BwoB-rYpypUEGNgzCtw@mail.gmail.com>
+Message-ID: <CAL_JsqJw3wyiUrbd1AekwDc5+uqhHi9BwoB-rYpypUEGNgzCtw@mail.gmail.com>
+Subject: Re: [PATCH 07/12] of/device: Add input id to of_dma_configure()
 To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
 Cc:     "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
         <linux-arm-kernel@lists.infradead.org>,
-        Joerg Roedel <joro@8bytes.org>,
         Robin Murphy <robin.murphy@arm.com>,
-        Marc Zyngier <maz@kernel.org>,
+        Joerg Roedel <joro@8bytes.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
         Linux IOMMU <iommu@lists.linux-foundation.org>,
         linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
         PCI <linux-pci@vger.kernel.org>,
@@ -52,10 +52,9 @@ Cc:     "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
         Bjorn Helgaas <bhelgaas@google.com>,
         Sudeep Holla <sudeep.holla@arm.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
+        Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
         Makarand Pawagi <makarand.pawagi@nxp.com>,
-        Diana Craciun <diana.craciun@oss.nxp.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>
+        Diana Craciun <diana.craciun@oss.nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
@@ -65,205 +64,65 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 On Thu, May 21, 2020 at 7:00 AM Lorenzo Pieralisi
 <lorenzo.pieralisi@arm.com> wrote:
 >
-> There is nothing PCI specific (other than the RID - requester ID)
-> in the of_map_rid() implementation, so the same function can be
-> reused for input/output IDs mapping for other busses just as well.
+> Devices sitting on proprietary busses have a device ID space that
+> is owned by the respective bus and related firmware bindings. In order
+> to let the generic OF layer handle the input translations to
+> an IOMMU id, for such busses the current of_dma_configure() interface
+> should be extended in order to allow the bus layer to provide the
+> device input id parameter - that is retrieved/assigned in bus
+> specific code and firmware.
 >
-> Rename the RID instances/names to a generic "id" tag and provide
-> an of_map_rid() wrapper function so that we can leave the existing
-> (and legitimate) callers unchanged.
-
-It's not all that clear to a casual observer that RID is a PCI thing,
-so I don't know that keeping it buys much. And there's only 3 callers.
-
-> No functionality change intended.
+> Augment of_dma_configure() to add an optional input_id parameter,
+> leaving current functionality unchanged.
 >
 > Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
 > Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Joerg Roedel <joro@8bytes.org>
 > Cc: Robin Murphy <robin.murphy@arm.com>
-> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Joerg Roedel <joro@8bytes.org>
+> Cc: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 > ---
->  drivers/iommu/of_iommu.c |  2 +-
->  drivers/of/base.c        | 42 ++++++++++++++++++++--------------------
->  include/linux/of.h       | 17 +++++++++++++++-
->  3 files changed, 38 insertions(+), 23 deletions(-)
+>  drivers/bus/fsl-mc/fsl-mc-bus.c |  4 ++-
+>  drivers/iommu/of_iommu.c        | 53 +++++++++++++++++++++------------
+>  drivers/of/device.c             |  8 +++--
+>  include/linux/of_device.h       | 16 ++++++++--
+>  include/linux/of_iommu.h        |  6 ++--
+>  5 files changed, 60 insertions(+), 27 deletions(-)
 >
+> diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+> index 40526da5c6a6..8ead3f0238f2 100644
+> --- a/drivers/bus/fsl-mc/fsl-mc-bus.c
+> +++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+> @@ -118,11 +118,13 @@ static int fsl_mc_bus_uevent(struct device *dev, struct kobj_uevent_env *env)
+>  static int fsl_mc_dma_configure(struct device *dev)
+>  {
+>         struct device *dma_dev = dev;
+> +       struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
+> +       u32 input_id = mc_dev->icid;
+>
+>         while (dev_is_fsl_mc(dma_dev))
+>                 dma_dev = dma_dev->parent;
+>
+> -       return of_dma_configure(dev, dma_dev->of_node, 0);
+> +       return of_dma_configure_id(dev, dma_dev->of_node, 0, &input_id);
+>  }
+>
+>  static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
 > diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-> index 20738aacac89..ad96b87137d6 100644
+> index ad96b87137d6..4516d5bf6cc9 100644
 > --- a/drivers/iommu/of_iommu.c
 > +++ b/drivers/iommu/of_iommu.c
-> @@ -145,7 +145,7 @@ static int of_fsl_mc_iommu_init(struct fsl_mc_device *mc_dev,
->         struct of_phandle_args iommu_spec = { .args_count = 1 };
->         int err;
->
-> -       err = of_map_rid(master_np, mc_dev->icid, "iommu-map",
-> +       err = of_map_id(master_np, mc_dev->icid, "iommu-map",
-
-I'm not sure this is an improvement because I'd refactor this function
-and of_pci_iommu_init() into a single function:
-
-of_bus_iommu_init(struct device *dev, struct device_node *np, u32 id)
-
-Then of_pci_iommu_init() becomes:
-
-of_pci_iommu_init()
-{
-  return of_bus_iommu_init(info->dev, info->np, alias);
-}
-
-And replace of_fsl_mc_iommu_init call with:
-err = of_bus_iommu_init(dev, master_np, to_fsl_mc_device(dev)->icid);
-
->                          "iommu-map-mask", &iommu_spec.np,
->                          iommu_spec.args);
->         if (err)
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index ae03b1218b06..e000e17bd602 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -2201,15 +2201,15 @@ int of_find_last_cache_level(unsigned int cpu)
+> @@ -139,25 +139,53 @@ static int of_pci_iommu_init(struct pci_dev *pdev, u16 alias, void *data)
+>         return err;
 >  }
 >
->  /**
-> - * of_map_rid - Translate a requester ID through a downstream mapping.
-> + * of_map_id - Translate a requester ID through a downstream mapping.
+> -static int of_fsl_mc_iommu_init(struct fsl_mc_device *mc_dev,
+> -                               struct device_node *master_np)
+> +static int of_iommu_configure_dev_id(struct device_node *master_np,
+> +                                    struct device *dev,
+> +                                    const u32 *id)
 
-Still a requester ID?
+Should have read this patch before #6. I guess you could still make
+of_pci_iommu_init() call
+of_iommu_configure_dev_id.
 
->   * @np: root complex device node.
-> - * @rid: device requester ID to map.
-> + * @id: device ID to map.
->   * @map_name: property name of the map to use.
->   * @map_mask_name: optional property name of the mask to use.
->   * @target: optional pointer to a target device node.
->   * @id_out: optional pointer to receive the translated ID.
->   *
-> - * Given a device requester ID, look up the appropriate implementation-defined
-> + * Given a device ID, look up the appropriate implementation-defined
->   * platform ID and/or the target device which receives transactions on that
->   * ID, as per the "iommu-map" and "msi-map" bindings. Either of @target or
->   * @id_out may be NULL if only the other is required. If @target points to
-> @@ -2219,11 +2219,11 @@ int of_find_last_cache_level(unsigned int cpu)
->   *
->   * Return: 0 on success or a standard error code on failure.
->   */
-> -int of_map_rid(struct device_node *np, u32 rid,
-> +int of_map_id(struct device_node *np, u32 id,
->                const char *map_name, const char *map_mask_name,
->                struct device_node **target, u32 *id_out)
->  {
-> -       u32 map_mask, masked_rid;
-> +       u32 map_mask, masked_id;
->         int map_len;
->         const __be32 *map = NULL;
->
-> @@ -2235,7 +2235,7 @@ int of_map_rid(struct device_node *np, u32 rid,
->                 if (target)
->                         return -ENODEV;
->                 /* Otherwise, no map implies no translation */
-> -               *id_out = rid;
-> +               *id_out = id;
->                 return 0;
->         }
->
-> @@ -2255,22 +2255,22 @@ int of_map_rid(struct device_node *np, u32 rid,
->         if (map_mask_name)
->                 of_property_read_u32(np, map_mask_name, &map_mask);
->
-> -       masked_rid = map_mask & rid;
-> +       masked_id = map_mask & id;
->         for ( ; map_len > 0; map_len -= 4 * sizeof(*map), map += 4) {
->                 struct device_node *phandle_node;
-> -               u32 rid_base = be32_to_cpup(map + 0);
-> +               u32 id_base = be32_to_cpup(map + 0);
->                 u32 phandle = be32_to_cpup(map + 1);
->                 u32 out_base = be32_to_cpup(map + 2);
-> -               u32 rid_len = be32_to_cpup(map + 3);
-> +               u32 id_len = be32_to_cpup(map + 3);
->
-> -               if (rid_base & ~map_mask) {
-> -                       pr_err("%pOF: Invalid %s translation - %s-mask (0x%x) ignores rid-base (0x%x)\n",
-> +               if (id_base & ~map_mask) {
-> +                       pr_err("%pOF: Invalid %s translation - %s-mask (0x%x) ignores id-base (0x%x)\n",
->                                 np, map_name, map_name,
-> -                               map_mask, rid_base);
-> +                               map_mask, id_base);
->                         return -EFAULT;
->                 }
->
-> -               if (masked_rid < rid_base || masked_rid >= rid_base + rid_len)
-> +               if (masked_id < id_base || masked_id >= id_base + id_len)
->                         continue;
->
->                 phandle_node = of_find_node_by_phandle(phandle);
-> @@ -2288,20 +2288,20 @@ int of_map_rid(struct device_node *np, u32 rid,
->                 }
->
->                 if (id_out)
-> -                       *id_out = masked_rid - rid_base + out_base;
-> +                       *id_out = masked_id - id_base + out_base;
->
-> -               pr_debug("%pOF: %s, using mask %08x, rid-base: %08x, out-base: %08x, length: %08x, rid: %08x -> %08x\n",
-> -                       np, map_name, map_mask, rid_base, out_base,
-> -                       rid_len, rid, masked_rid - rid_base + out_base);
-> +               pr_debug("%pOF: %s, using mask %08x, id-base: %08x, out-base: %08x, length: %08x, id: %08x -> %08x\n",
-> +                       np, map_name, map_mask, id_base, out_base,
-> +                       id_len, id, masked_id - id_base + out_base);
->                 return 0;
->         }
->
-> -       pr_info("%pOF: no %s translation for rid 0x%x on %pOF\n", np, map_name,
-> -               rid, target && *target ? *target : NULL);
-> +       pr_info("%pOF: no %s translation for id 0x%x on %pOF\n", np, map_name,
-> +               id, target && *target ? *target : NULL);
->
->         /* Bypasses translation */
->         if (id_out)
-> -               *id_out = rid;
-> +               *id_out = id;
->         return 0;
->  }
-> -EXPORT_SYMBOL_GPL(of_map_rid);
-> +EXPORT_SYMBOL_GPL(of_map_id);
-> diff --git a/include/linux/of.h b/include/linux/of.h
-> index c669c0a4732f..b7934566a1aa 100644
-> --- a/include/linux/of.h
-> +++ b/include/linux/of.h
-> @@ -554,10 +554,18 @@ bool of_console_check(struct device_node *dn, char *name, int index);
->
->  extern int of_cpu_node_to_id(struct device_node *np);
->
-> -int of_map_rid(struct device_node *np, u32 rid,
-> +int of_map_id(struct device_node *np, u32 id,
->                const char *map_name, const char *map_mask_name,
->                struct device_node **target, u32 *id_out);
->
-> +static inline int of_map_rid(struct device_node *np, u32 rid,
-> +                            const char *map_name,
-> +                            const char *map_mask_name,
-> +                            struct device_node **target, u32 *id_out)
-> +{
-> +       return of_map_id(np, rid, map_name, map_mask_name, target, id_out);
-> +}
-> +
->  #else /* CONFIG_OF */
->
->  static inline void of_core_init(void)
-> @@ -978,6 +986,13 @@ static inline int of_cpu_node_to_id(struct device_node *np)
->         return -ENODEV;
->  }
->
-> +static inline int of_map_id(struct device_node *np, u32 id,
-> +                            const char *map_name, const char *map_mask_name,
-> +                            struct device_node **target, u32 *id_out)
-> +{
-> +       return -EINVAL;
-> +}
-> +
->  static inline int of_map_rid(struct device_node *np, u32 rid,
->                              const char *map_name, const char *map_mask_name,
->                              struct device_node **target, u32 *id_out)
-> --
-> 2.26.1
->
+Rob
