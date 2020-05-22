@@ -2,111 +2,177 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 319DE1DE935
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 May 2020 16:45:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE2C71DEC00
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 May 2020 17:36:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730025AbgEVOpa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 May 2020 10:45:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47848 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729868AbgEVOpa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 22 May 2020 10:45:30 -0400
-Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2200621534;
-        Fri, 22 May 2020 14:45:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590158729;
-        bh=JJFT+F3Ml0IsJnlUkyWUziZpN/+xTkSQfeqtW0Lv3ek=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Lp8ESUFXUWue5ssidflAQSNbp4QO3jmmq4j/PF1vFWw9ND1ZXlOwpk8i+ej8YykFl
-         ixZFC0MY0umf6tR+wHBwpzAjvnrPvsKm9GpIQiS0qcwmpC0vYPK/qsc7pyZipiC5Nd
-         F+Kmc7e0dBlG73Pc5Neja6bc3n6O76iI8eqSyXLc=
-Received: by mail-io1-f42.google.com with SMTP id d7so11608522ioq.5;
-        Fri, 22 May 2020 07:45:29 -0700 (PDT)
-X-Gm-Message-State: AOAM532dn+nPJCJlKeT3eMpE/otlRicunC91oM3Q7xoEhqCTko+ZdSzc
-        ZQ+vmxxEdHgytHqt2nflmv2YOvG3nmjJslx2oww=
-X-Google-Smtp-Source: ABdhPJyhlLvFQ0WQkr3hDN61INpdGsheflZGjozbDLpURWMljOyFHLzvNSXk8utBm7+M4D0JYgdLDCCOjonAHHDaNik=
-X-Received: by 2002:a05:6602:2dcd:: with SMTP id l13mr3392593iow.203.1590158728428;
- Fri, 22 May 2020 07:45:28 -0700 (PDT)
+        id S1730546AbgEVPgD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 May 2020 11:36:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35954 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727807AbgEVPgC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 May 2020 11:36:02 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B397C061A0E;
+        Fri, 22 May 2020 08:36:02 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id 7F0622A38F6
+Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Peter Hutterer <peter.hutterer@who-t.net>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-input@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
+        Benjamin Tissoires <btissoir@redhat.com>
+References: <20200506002746.GB89269@dtor-ws>
+ <20200515164943.28480-1-andrzej.p@collabora.com>
+ <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
+ <20200517225510.GA205823@koala> <20200518024034.GL89269@dtor-ws>
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Message-ID: <513f25c0-7125-c564-0090-052d626fe508@collabora.com>
+Date:   Fri, 22 May 2020 17:35:56 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-References: <20200517125754.8934-1-ardb@kernel.org> <CAMj1kXGUxPuQCv9KPezqpLf1qLTbJh_j9JeVnnYZ=HbnL65=AQ@mail.gmail.com>
- <20200522134004.GF28750@zn.tnic> <CAMj1kXHogO=3wAyZPi9WtHP9++N5KH6OjNgY_CQ_o8nZJ5jjVA@mail.gmail.com>
- <87mu60rrq2.fsf@nanos.tec.linutronix.de>
-In-Reply-To: <87mu60rrq2.fsf@nanos.tec.linutronix.de>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 22 May 2020 16:45:16 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFZhq09MWCMTuN07WqA=PEKtJf5i7feO5pTPRObK-NeQQ@mail.gmail.com>
-Message-ID: <CAMj1kXFZhq09MWCMTuN07WqA=PEKtJf5i7feO5pTPRObK-NeQQ@mail.gmail.com>
-Subject: Re: [GIT PULL 0/7] EFI fixes for v5.7
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Benjamin Thiel <b.thiel@posteo.de>,
-        Dave Young <dyoung@redhat.com>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Lenny Szubowicz <lszubowi@redhat.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Loic Yhuel <loic.yhuel@gmail.com>,
-        Matthew Garrett <mjg59@google.com>,
-        Mike Lothian <mike@fireburn.co.uk>,
-        Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200518024034.GL89269@dtor-ws>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 22 May 2020 at 16:04, Thomas Gleixner <tglx@linutronix.de> wrote:
->
-> Ard,
->
-> Ard Biesheuvel <ardb@kernel.org> writes:
-> > On Fri, 22 May 2020 at 15:40, Borislav Petkov <bp@alien8.de> wrote:
-> >>
-> >> On Fri, May 22, 2020 at 03:06:20PM +0200, Ard Biesheuvel wrote:
-> >> > Ping?
-> >>
-> >> Did you want to make your tags unique from the next pull request onwards
-> >> and I were supposed to pull this one as is?
-> >
-> > What usually happens is that Ingo applies the patches piecemeal,
-> > ignoring the tag altogether, so without any coordination between you
-> > as x86 maintainers or communication back to me, that is what i was
-> > expecting to happen this time as well.
-> >
-> > Note that I have another PR pending since two weeks ago [0].
-> >
-> > So if you want to start dealing with the EFI trees in a different way
-> > from now on, that is perfectly fine with me, but please align with
-> > Ingo and Thomas first.
->
-> /me dons managerial hat
->
-> Yes, please. Your pull request really do not need any special handling.
->
-> Please add a unique signed tag to each pull request and stick the
-> description, e.g.
->
->  " EFI fixes for v5.7-rcX:
->    - fix EFI framebuffer earlycon for wide fonts
->    - avoid filling screen_info with garbage...."
->
-> into the tag which gives us the merge commit message automagically.
->
+Hi Hans, hi Dmitry,
 
-Sure.
+W dniu 18.05.2020 o 04:40, Dmitry Torokhov pisze:
+> Hi Hans, Peter,
+> 
+> On Mon, May 18, 2020 at 08:55:10AM +1000, Peter Hutterer wrote:
+>> On Fri, May 15, 2020 at 08:19:10PM +0200, Hans de Goede wrote:
+>>> Hi Andrezj,
+>>>
 
-In that case, please pull these changes from
+<snip>
 
-efi-fixes-for-v5.7-rc6
+>>
+>>> I also noticed that you keep the device open (do not call the
+>>> input_device's close callback) when inhibited and just throw away
+>>> any events generated. This seems inefficient and may lead to
+>>> the internal state getting out of sync. What if a key is pressed
+>>> while inhibited and then the device is uninhibited while the key
+>>> is still pressed?  Now the press event is lost and userspace
+>>> querying the current state will see the pressed key as being
+>>> released.
+> 
+> This is a good point. We should look into signalling that some events
+> have been dropped (via EV_SYN/SYN_DROPPED) so that clients are aware of
+> it.
+> 
 
-instead, and disregard the PR for v5.8. I will respin that, include
-some patches that came in in the mean time, and tag it in the correct
-way before resending the PR.
+It seems to me that the situation Hans envisions is not possible,
+or will not be possible with a simple change. Let me explain.
+
+For a start, let's recall that the input core prevents consecutive
+events of the same kind (type _and_ code _and_ value) from being
+delivered to handlers. The decision is made in input_get_disposition().
+For EV_KEY it is:
+
+		if (is_event_supported(code, dev->keybit, KEY_MAX)) {
+
+			/* auto-repeat bypasses state updates */
+			if (value == 2) {
+				disposition = INPUT_PASS_TO_HANDLERS;
+				break;
+			}
+
+			if (!!test_bit(code, dev->key) != !!value) {
+
+				__change_bit(code, dev->key);
+				disposition = INPUT_PASS_TO_HANDLERS;
+			}
+		}
+
+Let's now focus on value != 2 (events other than auto-repeat).
+The disposition changes from the default INPUT_IGNORE_EVENT to
+INPUT_PASS_TO_HANDLERS only when the event in question changes
+the current state: either by releasing a pressed key, or by
+pressing a released key. Subsequent releases of a released key
+or subsequent presses of a pressed key will be ignored.
+
+What Hans points out is the possibility of uninhibiting a device
+while its key is pressed and then releasing the key. First of all,
+during inhibiting input_dev_release_keys() is called, so input_dev's
+internal state will be cleared of all pressed keys. Then the device
+- after being uninhibited - all of a sudden produces a key release
+event. It will be ignored as per the "subsequent releases of a
+released key" case, so the handlers will not be passed an unmatched
+key release event. Assuming that passing an unmatched key release
+event was Hans's concern, in this case it seems impossible.
+
+Now, the value of 2 (auto-repeat) needs some attention. There are two
+cases to consider: the device uses input core's software repeat or it
+uses its own (hardware) repeat.
+
+Let's consider the first case. The timer which generates auto-repeat
+is only started on a key press event and only stopped on a key release
+event. As such, if any auto-repeat was in progress when inhibiting
+happened, it must have been stopped as per input_dev_release_keys().
+Then the key is pressed and held after the device has been inhibited,
+and the device is being uninhibited. Since it uses software auto-repeat,
+no events will be reported by the device until the key is released,
+and, as explained above, the release event will be ignored.
+
+Let's consider the second case. The key is pressed and held after the
+device has been inhibited and the device is being uninhibited. The worst
+thing that can happen is unmatched key repeat events will start coming
+from the device. We must prevent them from reaching the handlers and
+ignore them instead. So I suggest something on the lines of:
+
+if (is_event_supported(code, dev->keybit, KEY_MAX)) {
+
+			/* auto-repeat bypasses state updates */
+-			if (value == 2) {
++			if (value == 2 && test_bit(code, dev->key)) {
+				disposition = INPUT_PASS_TO_HANDLERS;
+				break;
+			}
+
+The intended meaning is "ignore key repeat events if the key is not
+pressed".
+
+With this small change I believe it is not possible to have neither
+unmatched release nor unmatched repeat being delivered to handlers.
+
+Regards,
+
+Andrzej
