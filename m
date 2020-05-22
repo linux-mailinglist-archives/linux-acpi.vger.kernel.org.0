@@ -2,191 +2,177 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D32B1DE282
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 May 2020 10:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD7361DE365
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 May 2020 11:42:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729328AbgEVI7C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 May 2020 04:59:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58898 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728424AbgEVI7B (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 May 2020 04:59:01 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D155FC061A0E;
-        Fri, 22 May 2020 01:59:01 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id ci21so4661962pjb.3;
-        Fri, 22 May 2020 01:59:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=V0IWUwMc/srUWcJUu+6/hxd1H7cj5uoLmAUBBeUE/nY=;
-        b=b0R2Kgc9ZuREKf/56jiSRr+W4l/4mWqn+/PTbWFmPfMPVja+B48AFFDo6iZQ/o50wv
-         lUd9GO51RSvxzphhTzwGBlKW16hylYbbEplCW8ihoQch90rpeinw9Qy3H7lx/QtaoBzm
-         f3Ms3h4moBV3CVgR/5AXJz6WuKuW9uGz7DUYxKyEgzyZvjNbFP2E4zwelQ7eCfqJ4zIv
-         GKTzZ3SzarXIS09blxsQIaePVTmP63FOyKdh9yVbyW7BKYW+eEcZFnS2Uhiwq8byFFBo
-         zsjEQYOFunlE09hit14SLny1aZU3Kl0lLb9hBpfAzhLmeoKjrPkLOmiC6Z5zcBQRYUlm
-         HIbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=V0IWUwMc/srUWcJUu+6/hxd1H7cj5uoLmAUBBeUE/nY=;
-        b=ZiOQHOgtHaOp+BrNkaGOH1C+dngwLcBJhwlsu+9JheWZW2DRsUZIahkwOmkeNteNxf
-         NrXKQ6cMl4SVAA9qdvsm7NytDsN0lGyXOmeCIEu+PNB4VUVHigxHgFSvuMmNbP79od+p
-         HPyLQRGlO7QzbAGs+EM7tDKwgWISJZHKFfamtYHw4AcoQJOYVqg0AWHng4E+q9m82HwU
-         KknNS2Zd87VBbm9ym4+qhVSY4XAgsRkAcD3TiXhT34PSIyHNHKEpYOu28kUvX2NtLG+M
-         6GyPt2ad4TMtCddlmttl3RijGeWa/JKQuNGQuKFYG6T79R4PWi/q0w1N4wkYGRdsvFRy
-         2vlQ==
-X-Gm-Message-State: AOAM531XG/nz+5/qPTPWSglDxVKT5tHqQL3q9RYeLfM8uOAzTMVIGouw
-        tO0F//eeEQGA30IurE3EfAGjv14DHxVeNewbJZI=
-X-Google-Smtp-Source: ABdhPJzW1PCtrjJS+E3ZJX5U/D6yVKL3hJO8V1b3sbmsgyKBMMjWrXatV4ohJM4jUty8jBBXIxDvZvE0p2k4Egt3f+c=
-X-Received: by 2002:a17:90b:113:: with SMTP id p19mr3374828pjz.129.1590137941381;
- Fri, 22 May 2020 01:59:01 -0700 (PDT)
+        id S1728425AbgEVJmu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 May 2020 05:42:50 -0400
+Received: from foss.arm.com ([217.140.110.172]:60234 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728212AbgEVJmu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 22 May 2020 05:42:50 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5D4FC30E;
+        Fri, 22 May 2020 02:42:49 -0700 (PDT)
+Received: from [10.57.2.168] (unknown [10.57.2.168])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 11AEE3F305;
+        Fri, 22 May 2020 02:42:46 -0700 (PDT)
+Subject: Re: [PATCH 09/12] dt-bindings: arm: fsl: Add msi-map device-tree
+ binding for fsl-mc bus
+To:     Rob Herring <robh+dt@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     devicetree@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Diana Craciun <diana.craciun@oss.nxp.com>,
+        PCI <linux-pci@vger.kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Makarand Pawagi <makarand.pawagi@nxp.com>,
+        linux-acpi@vger.kernel.org,
+        Linux IOMMU <iommu@lists.linux-foundation.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>
+References: <20200521130008.8266-1-lorenzo.pieralisi@arm.com>
+ <20200521130008.8266-10-lorenzo.pieralisi@arm.com>
+ <CAL_Jsq+h18gH2D3B-OZku6ACCgonPUJcUnrN8a5=jApsXHdB5Q@mail.gmail.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <abca6ecb-5d93-832f-ff7c-de53bb6203f3@arm.com>
+Date:   Fri, 22 May 2020 10:42:45 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-References: <1505028180.591737.1589564161284.ref@mail.yahoo.com>
- <1505028180.591737.1589564161284@mail.yahoo.com> <CAHp75VfC0NdyyR1zXbk47G_9y5ResrpV+w3cOntDqP_naocuvQ@mail.gmail.com>
- <2952287.p5mUHPKNZq@kreacher> <d0022af356cf9bd5b544187d9a396734d85a76b3.camel@linux.intel.com>
- <193598853.2172716.1590128099214@mail.yahoo.com>
-In-Reply-To: <193598853.2172716.1590128099214@mail.yahoo.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 22 May 2020 11:58:44 +0300
-Message-ID: <CAHp75VcQSECZeK-5OhJqXaZdW0r8gnvt_PBSKGK4+BKpa9D9KQ@mail.gmail.com>
-Subject: Re: Low Latency Tolerance preventing Intel Package from entering deep
- sleep states
-To:     "larsh@apache.org" <larsh@apache.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "David E. Box" <david.e.box@linux.intel.com>,
-        "ibm-acpi-devel@lists.sourceforge.net" 
-        <ibm-acpi-devel@lists.sourceforge.net>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAL_Jsq+h18gH2D3B-OZku6ACCgonPUJcUnrN8a5=jApsXHdB5Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-+Cc: Adrian
+On 2020-05-22 00:10, Rob Herring wrote:
+> On Thu, May 21, 2020 at 7:00 AM Lorenzo Pieralisi
+> <lorenzo.pieralisi@arm.com> wrote:
+>>
+>> From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+>>
+>> The existing bindings cannot be used to specify the relationship
+>> between fsl-mc devices and GIC ITSes.
+>>
+>> Add a generic binding for mapping fsl-mc devices to GIC ITSes, using
+>> msi-map property.
+>>
+>> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+>> Cc: Rob Herring <robh+dt@kernel.org>
+>> ---
+>>   .../devicetree/bindings/misc/fsl,qoriq-mc.txt | 30 +++++++++++++++++--
+>>   1 file changed, 27 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+>> index 9134e9bcca56..b0813b2d0493 100644
+>> --- a/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+>> +++ b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+>> @@ -18,9 +18,9 @@ same hardware "isolation context" and a 10-bit value called an ICID
+>>   the requester.
+>>
+>>   The generic 'iommus' property is insufficient to describe the relationship
+>> -between ICIDs and IOMMUs, so an iommu-map property is used to define
+>> -the set of possible ICIDs under a root DPRC and how they map to
+>> -an IOMMU.
+>> +between ICIDs and IOMMUs, so the iommu-map and msi-map properties are used
+>> +to define the set of possible ICIDs under a root DPRC and how they map to
+>> +an IOMMU and a GIC ITS respectively.
+>>
+>>   For generic IOMMU bindings, see
+>>   Documentation/devicetree/bindings/iommu/iommu.txt.
+>> @@ -28,6 +28,9 @@ Documentation/devicetree/bindings/iommu/iommu.txt.
+>>   For arm-smmu binding, see:
+>>   Documentation/devicetree/bindings/iommu/arm,smmu.yaml.
+>>
+>> +For GICv3 and GIC ITS bindings, see:
+>> +Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml.
+>> +
+>>   Required properties:
+>>
+>>       - compatible
+>> @@ -119,6 +122,15 @@ Optional properties:
+>>     associated with the listed IOMMU, with the iommu-specifier
+>>     (i - icid-base + iommu-base).
+>>
+>> +- msi-map: Maps an ICID to a GIC ITS and associated iommu-specifier
+>> +  data.
+>> +
+>> +  The property is an arbitrary number of tuples of
+>> +  (icid-base,iommu,iommu-base,length).
+> 
+> I'm confused because the example has GIC ITS phandle, not an IOMMU.
+> 
+> What is an iommu-base?
 
-On Fri, May 22, 2020 at 9:15 AM larsh@apache.org <larsh@apache.org> wrote:
->
-> Thanks David!
->
-> With this I tracked down the SD Card Reader (Genesys Logic, Inc Device 9755) as the culprit.
-> These are standard in many ThinkPads.
-> The curious part is that resume from suspend (S3 or S0iX) also fixes the problem.
-> Looks like the driver is not initializing correctly at boot time.
->
-> Transcript:
->
-> $ cat /sys/kernel/debug/pmc_core/ltr_show | grep SOUTHPORT
-> SOUTHPORT_A                             LTR: RAW: 0x88018c01            Non-Snoop(ns): 1024             Snoop(ns): 32768
-> SOUTHPORT_B                             LTR: RAW: 0x0                   Non-Snoop(ns): 0                Snoop(ns): 0
-> SOUTHPORT_C                             LTR: RAW: 0x9f409f4             Non-Snoop(ns): 0                Snoop(ns): 0
-> SOUTHPORT_D                             LTR: RAW: 0x88aa88aa            Non-Snoop(ns): 174080           Snoop(ns): 174080
-> SOUTHPORT_E                             LTR: RAW: 0x0                   Non-Snoop(ns): 0                Snoop(ns): 0
->
-> $ lspci -t
-> -[0000:00]-+-00.0
->            +-01.0-[01]--+-00.0
->            |            \-00.1
->            +-02.0
->            +-04.0
->            +-08.0
->            +-12.0
->            +-14.0
->            +-14.2
->            +-15.0
->            +-16.0
->            +-1c.0-[53]----00.0
->            +-1d.0-[02]----00.0
->            +-1d.6-[52]----00.0
->            +-1e.0
->            +-1f.0
->            +-1f.3
->            +-1f.4
->            +-1f.5
->            \-1f.6
->
-> $ lspci | grep 53
-> 53:00.0 SD Host controller: Genesys Logic, Inc Device 9755
->
-> $ cat /sys/bus/pci/devices/0000\:53\:00.0/power/control
-> auto
->
-> $ echo 1 > /sys/bus/pci/devices/0000\:53\:00.0/remove
-> 1
->
-> $ cat /sys/kernel/debug/pmc_core/ltr_show | grep SOUTHPORT
-> SOUTHPORT_A                             LTR: RAW: 0x8010c01             Non-Snoop(ns): 0                Snoop(ns): 0
-> SOUTHPORT_B                             LTR: RAW: 0x0                   Non-Snoop(ns): 0                Snoop(ns): 0
-> SOUTHPORT_C                             LTR: RAW: 0x9f409f4             Non-Snoop(ns): 0                Snoop(ns): 0
-> SOUTHPORT_D                             LTR: RAW: 0x8c548c54            Non-Snoop(ns): 2752512          Snoop(ns): 2752512
-> SOUTHPORT_E                             LTR: RAW: 0x0                   Non-Snoop(ns): 0                Snoop(ns): 0
->
-> Cheers.
->
-> -- Lars
->
->
->
->
->
->
->
->
-> On Tuesday, May 19, 2020, 9:03:53 AM PDT, David E. Box <david.e.box@linux.intel.com> wrote:
->
->
->
->
->
-> > > > Does anybody know what's going on or how to debug this further?
-> > > > As stated above, I was able to work around this problem by
-> > > > ignoring SOUTHPORT_A via /sys/kernel/debug/pmc_core/ltr_ignore.
-> > > > There has to be a better way, and I'm sure I'm not the only one
-> > > > running into this.
->
-> ltr_show shows the PMC's (Power Management Controller) view of SoC
-> devices and busses. The SOUTHPORTs are the PCIe root ports on your
-> system. When you run lspci they are the PCI bridges. Generally, the
-> bridges are enumerated in the same order as the SOUTHPORTs, so
-> SOUTHPORT_A is your first bridge and the device attached to it (shown
-> in lspci -t) is the device that was blocking deeper PC states according
-> to your debug.
->
-> Determine what this device is on your system. If the ltr was low it's
-> because that is what the device requested. You should first check that
-> runtime pm is enabled for the device. To do this, check the control
-> file in /sys/bus/pci/devices/<SSSS:BB:DD.F>/power, where SSSS:BB:DD.F
-> is the enumeration of your device as shown in lspci. If it is 'on' then
-> runtime pm is disabled. To enable it echo 'auto' into the file with
-> root privileges. Enabling runtime pm should allow the driver to reduce
-> functionality of the device when idle. This should lead to a larger
-> latency request on the PCI bus which should be reflected in ltr_show.
-> You can see if the device is actually runtime suspended and how much
-> time it's been suspended (or active) by reading the associated files in
-> the power folder.
->
-> If this doesn't work, then it's possible that your device doesn't
-> support runtime pm. This may be purposely for reliability reasons or
-> the driver may just lack support. Check forums discussing issues with
-> the device and look for possible options in the driver to force pm
-> support (generally this will be centered around enabling ASPM).
->
-> You can also download powertop to see the package c-state residencies
-> more clearly as percentages of time. powertop also has a tunables tab
-> that will show the status of runtime pm on all devices on the system
-> and allow you to enable them individually.
->
->
-> David
->
+Right, I was already halfway through writing a reply to say that all the 
+copy-pasted "iommu" references here should be using the terminology from 
+the pci-msi.txt binding instead.
 
+>> +
+>> +  Any ICID in the interval [icid-base, icid-base + length) is
+>> +  associated with the listed GIC ITS, with the iommu-specifier
+>> +  (i - icid-base + iommu-base).
+>>   Example:
+>>
+>>           smmu: iommu@5000000 {
+>> @@ -128,6 +140,16 @@ Example:
+>>                  ...
+>>           };
+>>
+>> +       gic: interrupt-controller@6000000 {
+>> +               compatible = "arm,gic-v3";
+>> +               ...
+>> +               its: gic-its@6020000 {
+>> +                       compatible = "arm,gic-v3-its";
+>> +                       msi-controller;
+>> +                       ...
+>> +               };
+>> +       };
+>> +
+>>           fsl_mc: fsl-mc@80c000000 {
+>>                   compatible = "fsl,qoriq-mc";
+>>                   reg = <0x00000008 0x0c000000 0 0x40>,    /* MC portal base */
+>> @@ -135,6 +157,8 @@ Example:
+>>                   msi-parent = <&its>;
 
--- 
-With Best Regards,
-Andy Shevchenko
+Side note: is it right to keep msi-parent here? It rather implies that 
+the MC itself has a 'native' Device ID rather than an ICID, which I 
+believe is not strictly true. Plus it's extra-confusing that it doesn't 
+specify an ID either way, since that makes it look like the legacy PCI 
+case that gets treated implicitly as an identity msi-map, which makes no 
+sense at all to combine with an actual msi-map.
+
+>>                   /* define map for ICIDs 23-64 */
+>>                   iommu-map = <23 &smmu 23 41>;
+>> +                /* define msi map for ICIDs 23-64 */
+>> +                msi-map = <23 &its 23 41>;
+> 
+> Seeing 23 twice is odd. The numbers to the right of 'its' should be an
+> ITS number space.
+
+On about 99% of systems the values in the SMMU Stream ID and ITS Device 
+ID spaces are going to be the same. Nobody's going to bother carrying 
+*two* sets of sideband data across the interconnect if they don't have to ;)
+
+Robin.
+
+>>                   #address-cells = <3>;
+>>                   #size-cells = <1>;
+>>
+>> --
+>> 2.26.1
+>>
+> _______________________________________________
+> iommu mailing list
+> iommu@lists.linux-foundation.org
+> https://lists.linuxfoundation.org/mailman/listinfo/iommu
+> 
