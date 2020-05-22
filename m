@@ -2,198 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E70A1DDAD8
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 May 2020 01:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4AEC1DDD0A
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 May 2020 04:13:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730741AbgEUXRt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 May 2020 19:17:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35164 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730716AbgEUXRt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 21 May 2020 19:17:49 -0400
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 693222100A;
-        Thu, 21 May 2020 23:17:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590103068;
-        bh=EyK2DMGY1yaM+F8516LQrBIpk2NNn0s0Z37DLtuZPEA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=CLhLY45tfjDzW/4QzoCLzjzXDitprZjeX6jCl/TTiDNf1smTgNixutkYBE1Ltk7N+
-         bGuj4VCEQRCeGfsupUKY8MgwYvf2v3r3ry5ehzBBz2Vd9XnvyT50v3+/1fYDziASsk
-         an0rGuPaYsEVmZTE5CauU7LzvZWPFnLZ8bU6LsLs=
-Received: by mail-ot1-f53.google.com with SMTP id 63so6893002oto.8;
-        Thu, 21 May 2020 16:17:48 -0700 (PDT)
-X-Gm-Message-State: AOAM531oK31t74ap52p2EU9xCDgZmV0OibQTBzdK8ZPFlcpa+pPQk0NM
-        xNyF4QMq5u61oots8DalIcTpLv615yH7G6zylA==
-X-Google-Smtp-Source: ABdhPJxVgcCXhuH2DfTXSUau1TIQTXIwHoWhmRU4UZnxmjy/ftT6A+o4gIk78ZAgFUEU2gCUM+w/Etpe/R6HZFsyFVk=
-X-Received: by 2002:a05:6830:18d9:: with SMTP id v25mr8467347ote.107.1590103067633;
- Thu, 21 May 2020 16:17:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200521130008.8266-1-lorenzo.pieralisi@arm.com> <20200521130008.8266-11-lorenzo.pieralisi@arm.com>
-In-Reply-To: <20200521130008.8266-11-lorenzo.pieralisi@arm.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Thu, 21 May 2020 17:17:27 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLTBxX_3KjiEqMfw0qMaTmj_DdPD3j-yMUvrvONPBSvjg@mail.gmail.com>
-Message-ID: <CAL_JsqLTBxX_3KjiEqMfw0qMaTmj_DdPD3j-yMUvrvONPBSvjg@mail.gmail.com>
-Subject: Re: [PATCH 10/12] of/irq: Make of_msi_map_rid() PCI bus agnostic
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Linux IOMMU <iommu@lists.linux-foundation.org>,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        PCI <linux-pci@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Joerg Roedel <joro@8bytes.org>,
+        id S1727055AbgEVCNo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 May 2020 22:13:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52360 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727024AbgEVCNo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 May 2020 22:13:44 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB67FC08C5C0
+        for <linux-acpi@vger.kernel.org>; Thu, 21 May 2020 19:13:43 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id y18so4445332pfl.9
+        for <linux-acpi@vger.kernel.org>; Thu, 21 May 2020 19:13:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=HANfjGaXtL4q1FSiLdXuotCYBYmAdZjgvWQJr0H9YMg=;
+        b=lelQxwbz5KvLR8BmclI8jocAnat7kuQ1eoRzL4S3qO9Am83e3fverb4PWKqs6DEOyV
+         NCdrcMPKKWM2WpSrCYZ8JIgZVhlby1jGUdTgnc5paxcSO+yOhjHZ0waaLltp5qtM79Ir
+         7cVjPp9/qLsXl1tg2uYAOzrV72+cuggHGqg4L3wQxpNUiWn39K2jb05JVfUJ+E/EZ+ad
+         tnxMBzEG/SPmbLbYrXFMbKdRrE9cidfG4wyUFnoPSK0Eyss0/H/7RVn/PUEBUQJcz/Ti
+         /GBlephoJpBLfGqCBvjK2aMoFrvN0D/c7fg7WlMhF+ZE3/QFFcrN31nexgxv+NnNa+Mo
+         Qptg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=HANfjGaXtL4q1FSiLdXuotCYBYmAdZjgvWQJr0H9YMg=;
+        b=DyXxqmM52O3RnXQqeuTTQpZOXv0jdP8/CXU32UJfPwaxzKjrHQwGkLRJLluYR1ZPDW
+         8y9ZrnXsR0yZ04acRuqAYsQ+vAeSVYxalK4yz/1Pewopdk8SMhwD4gMpI8MLzePVbvzw
+         XME8AGzA1RdLY0mlCwGAuXbdN1yaoG4EEho6F0zwOQOFA6BxicnWLK/vyDVxnSY5To2F
+         R4sg6NdoyCwAasuQY28I2V3dvc5MeGxqxRVRMZbhASKoyA/0lPByl5SKMpbFCurQgN4V
+         53eHW1H8bhHd0ULL57cXiG//xoMXs5L6FPVtj6eQVFpFpShvovWtJ4ATC6JayaG68Fsd
+         cvpw==
+X-Gm-Message-State: AOAM531JTYF8hE7nJ1EyWoiOzzcCJm0YiPqZQ6lnHZDeJSsj/p/1f4t2
+        +Owc4PtVqw8M+6j6ups3cjfwjw==
+X-Google-Smtp-Source: ABdhPJxh64wrCE5tLGl7klLmD3mr5bD+4uqj8uhZIjERdP/SqzgqKR0fB/XxlGgIJJR01XokaX+kyA==
+X-Received: by 2002:a63:c58:: with SMTP id 24mr11923950pgm.246.1590113623304;
+        Thu, 21 May 2020 19:13:43 -0700 (PDT)
+Received: from [10.191.1.102] ([45.135.186.71])
+        by smtp.gmail.com with ESMTPSA id y5sm5043843pge.50.2020.05.21.19.13.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 May 2020 19:13:42 -0700 (PDT)
+Subject: Re: [PATCH 0/2] Let pci_fixup_final access iommu_fwnode
+To:     Joerg Roedel <joro@8bytes.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Hanjun Guo <guohanjun@huawei.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
         Sudeep Holla <sudeep.holla@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        Diana Craciun <diana.craciun@oss.nxp.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        jean-philippe <jean-philippe@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        kenneth-lee-2012@foxmail.com, Wangzhou <wangzhou1@hisilicon.com>
+Cc:     linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        iommu@lists.linux-foundation.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+References: <1589256511-12446-1-git-send-email-zhangfei.gao@linaro.org>
+From:   Zhangfei Gao <zhangfei.gao@linaro.org>
+Message-ID: <631857df-8e70-88e3-9959-1a750faf4f85@linaro.org>
+Date:   Fri, 22 May 2020 10:13:11 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <1589256511-12446-1-git-send-email-zhangfei.gao@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, May 21, 2020 at 7:00 AM Lorenzo Pieralisi
-<lorenzo.pieralisi@arm.com> wrote:
+Hi, Joerg
+
+On 2020/5/12 下午12:08, Zhangfei Gao wrote:
+> Some platform devices appear as PCI but are
+> actually on the AMBA bus, and they need fixup in
+> drivers/pci/quirks.c handling iommu_fwnode.
+> So calling pci_fixup_final after iommu_fwnode is allocated.
 >
-> There is nothing PCI bus specific in the of_msi_map_rid()
-> implementation other than the requester ID tag for the input
-> ID space. Rename requester ID to a more generic ID so that
-> the translation code can be used by all busses that require
-> input/output ID translations.
+> For example:
+> Hisilicon platform device need fixup in
+> drivers/pci/quirks.c
 >
-> Leave a wrapper function of_msi_map_rid() in place to keep
-> existing PCI code mapping requester ID syntactically unchanged.
->
-> No functional change intended.
->
-> Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Marc Zyngier <maz@kernel.org>
-> ---
->  drivers/of/irq.c       | 28 ++++++++++++++--------------
->  include/linux/of_irq.h | 14 ++++++++++++--
->  2 files changed, 26 insertions(+), 16 deletions(-)
->
-> diff --git a/drivers/of/irq.c b/drivers/of/irq.c
-> index 48a40326984f..25d17b8a1a1a 100644
-> --- a/drivers/of/irq.c
-> +++ b/drivers/of/irq.c
-> @@ -576,43 +576,43 @@ void __init of_irq_init(const struct of_device_id *matches)
->         }
->  }
->
-> -static u32 __of_msi_map_rid(struct device *dev, struct device_node **np,
-> -                           u32 rid_in)
-> +static u32 __of_msi_map_id(struct device *dev, struct device_node **np,
-> +                           u32 id_in)
->  {
->         struct device *parent_dev;
-> -       u32 rid_out = rid_in;
-> +       u32 id_out = id_in;
->
->         /*
->          * Walk up the device parent links looking for one with a
->          * "msi-map" property.
->          */
->         for (parent_dev = dev; parent_dev; parent_dev = parent_dev->parent)
-> -               if (!of_map_rid(parent_dev->of_node, rid_in, "msi-map",
-> -                               "msi-map-mask", np, &rid_out))
-> +               if (!of_map_id(parent_dev->of_node, id_in, "msi-map",
-> +                               "msi-map-mask", np, &id_out))
->                         break;
-> -       return rid_out;
-> +       return id_out;
->  }
->
->  /**
-> - * of_msi_map_rid - Map a MSI requester ID for a device.
-> + * of_msi_map_id - Map a MSI ID for a device.
->   * @dev: device for which the mapping is to be done.
->   * @msi_np: device node of the expected msi controller.
-> - * @rid_in: unmapped MSI requester ID for the device.
-> + * @id_in: unmapped MSI ID for the device.
->   *
->   * Walk up the device hierarchy looking for devices with a "msi-map"
-> - * property.  If found, apply the mapping to @rid_in.
-> + * property.  If found, apply the mapping to @id_in.
->   *
-> - * Returns the mapped MSI requester ID.
-> + * Returns the mapped MSI ID.
->   */
-> -u32 of_msi_map_rid(struct device *dev, struct device_node *msi_np, u32 rid_in)
-> +u32 of_msi_map_id(struct device *dev, struct device_node *msi_np, u32 id_in)
->  {
-> -       return __of_msi_map_rid(dev, &msi_np, rid_in);
-> +       return __of_msi_map_id(dev, &msi_np, id_in);
->  }
->
->  /**
->   * of_msi_map_get_device_domain - Use msi-map to find the relevant MSI domain
->   * @dev: device for which the mapping is to be done.
-> - * @rid: Requester ID for the device.
-> + * @id: Device ID.
->   * @bus_token: Bus token
->   *
->   * Walk up the device hierarchy looking for devices with a "msi-map"
-> @@ -625,7 +625,7 @@ struct irq_domain *of_msi_map_get_device_domain(struct device *dev, u32 id,
->  {
->         struct device_node *np = NULL;
->
-> -       __of_msi_map_rid(dev, &np, id);
-> +       __of_msi_map_id(dev, &np, id);
->         return irq_find_matching_host(np, bus_token);
->  }
->
-> diff --git a/include/linux/of_irq.h b/include/linux/of_irq.h
-> index 7142a3722758..cf9cb1e545ce 100644
-> --- a/include/linux/of_irq.h
-> +++ b/include/linux/of_irq.h
-> @@ -55,7 +55,12 @@ extern struct irq_domain *of_msi_map_get_device_domain(struct device *dev,
->                                                         u32 id,
->                                                         u32 bus_token);
->  extern void of_msi_configure(struct device *dev, struct device_node *np);
-> -u32 of_msi_map_rid(struct device *dev, struct device_node *msi_np, u32 rid_in);
-> +u32 of_msi_map_id(struct device *dev, struct device_node *msi_np, u32 id_in);
-> +static inline u32 of_msi_map_rid(struct device *dev,
-> +                                struct device_node *msi_np, u32 rid_in)
+> +static void quirk_huawei_pcie_sva(struct pci_dev *pdev)
 > +{
-> +       return of_msi_map_id(dev, msi_np, rid_in);
+> +	struct iommu_fwspec *fwspec;
+> +
+> +	pdev->eetlp_prefix_path = 1;
+> +	fwspec = dev_iommu_fwspec_get(&pdev->dev);
+> +	if (fwspec)
+> +		fwspec->can_stall = 1;
 > +}
->  #else
->  static inline int of_irq_count(struct device_node *dev)
->  {
-> @@ -93,10 +98,15 @@ static inline struct irq_domain *of_msi_map_get_device_domain(struct device *dev
->  static inline void of_msi_configure(struct device *dev, struct device_node *np)
->  {
->  }
-> +static inline u32 of_msi_map_id(struct device *dev,
-> +                                struct device_node *msi_np, u32 id_in)
-> +{
-> +       return id_in;
-> +}
->  static inline u32 of_msi_map_rid(struct device *dev,
->                                  struct device_node *msi_np, u32 rid_in)
-
-Move this out of the ifdef and you only need it declared once.
-
-But again, I think I'd just kill of_msi_map_rid.
-
->  {
-> -       return rid_in;
-> +       return of_msi_map_id(dev, msi_np, rid_in);
->  }
->  #endif
+> +
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_HUAWEI, 0xa250, quirk_huawei_pcie_sva);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_HUAWEI, 0xa251, quirk_huawei_pcie_sva);
+>   
 >
-> --
-> 2.26.1
+> Zhangfei Gao (2):
+>    iommu/of: Let pci_fixup_final access iommu_fwnode
+>    ACPI/IORT: Let pci_fixup_final access iommu_fwnode
 >
+>   drivers/acpi/arm64/iort.c | 1 +
+>   drivers/iommu/of_iommu.c  | 1 +
+>   2 files changed, 2 insertions(+)
+>
+Would you mind give any suggestion?
+
+We need access fwspec->can_stall describing the platform device (a fake 
+pcie) can support stall feature.
+can_stall will be used arm_smmu_add_device [1].
+And stall is not a pci feature, so no such member in struct pci_dev.
+
+iommu_fwnode is allocated in iommu_fwspec_init, from of_pci_iommu_init 
+or iort_pci_iommu_init.
+The pci_fixup_device(pci_fixup_final, dev) in pci_bus_add_device is too 
+early that  iommu_fwnode
+is not allocated.
+The pci_fixup_device(pci_fixup_enable, dev) in do_pci_enable_device is 
+too late after
+
+arm_smmu_add_device.
+
+
+So the idea here is calling pci_fixup_device(pci_fixup_final) after
+of_pci_iommu_init and iort_pci_iommu_init, where iommu_fwnode is allocated.
+
+
+
+[1] https://www.spinics.net/lists/linux-pci/msg94559.html
+
+Thanks
+
