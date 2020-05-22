@@ -2,199 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41FD21DE910
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 May 2020 16:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 319DE1DE935
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 May 2020 16:45:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729851AbgEVOec (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 May 2020 10:34:32 -0400
-Received: from foss.arm.com ([217.140.110.172]:36650 "EHLO foss.arm.com"
+        id S1730025AbgEVOpa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 May 2020 10:45:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47848 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729952AbgEVOec (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 22 May 2020 10:34:32 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5AEA0D6E;
-        Fri, 22 May 2020 07:34:31 -0700 (PDT)
-Received: from [10.57.2.168] (unknown [10.57.2.168])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 26E7D3F68F;
-        Fri, 22 May 2020 07:34:29 -0700 (PDT)
-Subject: Re: [PATCH 09/12] dt-bindings: arm: fsl: Add msi-map device-tree
- binding for fsl-mc bus
-To:     Rob Herring <robh+dt@kernel.org>,
-        Diana Craciun OSS <diana.craciun@oss.nxp.com>
-Cc:     devicetree@vger.kernel.org, Hanjun Guo <guohanjun@huawei.com>,
-        Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-        PCI <linux-pci@vger.kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux IOMMU <iommu@lists.linux-foundation.org>,
-        linux-acpi@vger.kernel.org,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>
-References: <20200521130008.8266-1-lorenzo.pieralisi@arm.com>
- <20200521130008.8266-10-lorenzo.pieralisi@arm.com>
- <CAL_Jsq+h18gH2D3B-OZku6ACCgonPUJcUnrN8a5=jApsXHdB5Q@mail.gmail.com>
- <abca6ecb-5d93-832f-ff7c-de53bb6203f3@arm.com>
- <ee7a5c04-814e-215f-ec74-52c2f3b881d0@oss.nxp.com>
- <CAL_JsqKf+cq9Nhs+M8ihC-Ls24YH-WEofW8H4kkFPWMhZw=unA@mail.gmail.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <7f8d00ae-b225-a58d-8a11-e8c68edc877b@arm.com>
-Date:   Fri, 22 May 2020 15:34:27 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1729868AbgEVOpa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 22 May 2020 10:45:30 -0400
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2200621534;
+        Fri, 22 May 2020 14:45:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590158729;
+        bh=JJFT+F3Ml0IsJnlUkyWUziZpN/+xTkSQfeqtW0Lv3ek=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Lp8ESUFXUWue5ssidflAQSNbp4QO3jmmq4j/PF1vFWw9ND1ZXlOwpk8i+ej8YykFl
+         ixZFC0MY0umf6tR+wHBwpzAjvnrPvsKm9GpIQiS0qcwmpC0vYPK/qsc7pyZipiC5Nd
+         F+Kmc7e0dBlG73Pc5Neja6bc3n6O76iI8eqSyXLc=
+Received: by mail-io1-f42.google.com with SMTP id d7so11608522ioq.5;
+        Fri, 22 May 2020 07:45:29 -0700 (PDT)
+X-Gm-Message-State: AOAM532dn+nPJCJlKeT3eMpE/otlRicunC91oM3Q7xoEhqCTko+ZdSzc
+        ZQ+vmxxEdHgytHqt2nflmv2YOvG3nmjJslx2oww=
+X-Google-Smtp-Source: ABdhPJyhlLvFQ0WQkr3hDN61INpdGsheflZGjozbDLpURWMljOyFHLzvNSXk8utBm7+M4D0JYgdLDCCOjonAHHDaNik=
+X-Received: by 2002:a05:6602:2dcd:: with SMTP id l13mr3392593iow.203.1590158728428;
+ Fri, 22 May 2020 07:45:28 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAL_JsqKf+cq9Nhs+M8ihC-Ls24YH-WEofW8H4kkFPWMhZw=unA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+References: <20200517125754.8934-1-ardb@kernel.org> <CAMj1kXGUxPuQCv9KPezqpLf1qLTbJh_j9JeVnnYZ=HbnL65=AQ@mail.gmail.com>
+ <20200522134004.GF28750@zn.tnic> <CAMj1kXHogO=3wAyZPi9WtHP9++N5KH6OjNgY_CQ_o8nZJ5jjVA@mail.gmail.com>
+ <87mu60rrq2.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <87mu60rrq2.fsf@nanos.tec.linutronix.de>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 22 May 2020 16:45:16 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFZhq09MWCMTuN07WqA=PEKtJf5i7feO5pTPRObK-NeQQ@mail.gmail.com>
+Message-ID: <CAMj1kXFZhq09MWCMTuN07WqA=PEKtJf5i7feO5pTPRObK-NeQQ@mail.gmail.com>
+Subject: Re: [GIT PULL 0/7] EFI fixes for v5.7
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Borislav Petkov <bp@alien8.de>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Benjamin Thiel <b.thiel@posteo.de>,
+        Dave Young <dyoung@redhat.com>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Lenny Szubowicz <lszubowi@redhat.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Loic Yhuel <loic.yhuel@gmail.com>,
+        Matthew Garrett <mjg59@google.com>,
+        Mike Lothian <mike@fireburn.co.uk>,
+        Punit Agrawal <punit1.agrawal@toshiba.co.jp>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2020-05-22 15:08, Rob Herring wrote:
-> On Fri, May 22, 2020 at 3:57 AM Diana Craciun OSS
-> <diana.craciun@oss.nxp.com> wrote:
->>
->> On 5/22/2020 12:42 PM, Robin Murphy wrote:
->>> On 2020-05-22 00:10, Rob Herring wrote:
->>>> On Thu, May 21, 2020 at 7:00 AM Lorenzo Pieralisi
->>>> <lorenzo.pieralisi@arm.com> wrote:
->>>>>
->>>>> From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
->>>>>
->>>>> The existing bindings cannot be used to specify the relationship
->>>>> between fsl-mc devices and GIC ITSes.
->>>>>
->>>>> Add a generic binding for mapping fsl-mc devices to GIC ITSes, using
->>>>> msi-map property.
->>>>>
->>>>> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
->>>>> Cc: Rob Herring <robh+dt@kernel.org>
->>>>> ---
->>>>>    .../devicetree/bindings/misc/fsl,qoriq-mc.txt | 30
->>>>> +++++++++++++++++--
->>>>>    1 file changed, 27 insertions(+), 3 deletions(-)
->>>>>
->>>>> diff --git a/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
->>>>> b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
->>>>> index 9134e9bcca56..b0813b2d0493 100644
->>>>> --- a/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
->>>>> +++ b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
->>>>> @@ -18,9 +18,9 @@ same hardware "isolation context" and a 10-bit
->>>>> value called an ICID
->>>>>    the requester.
->>>>>
->>>>>    The generic 'iommus' property is insufficient to describe the
->>>>> relationship
->>>>> -between ICIDs and IOMMUs, so an iommu-map property is used to define
->>>>> -the set of possible ICIDs under a root DPRC and how they map to
->>>>> -an IOMMU.
->>>>> +between ICIDs and IOMMUs, so the iommu-map and msi-map properties
->>>>> are used
->>>>> +to define the set of possible ICIDs under a root DPRC and how they
->>>>> map to
->>>>> +an IOMMU and a GIC ITS respectively.
->>>>>
->>>>>    For generic IOMMU bindings, see
->>>>>    Documentation/devicetree/bindings/iommu/iommu.txt.
->>>>> @@ -28,6 +28,9 @@ Documentation/devicetree/bindings/iommu/iommu.txt.
->>>>>    For arm-smmu binding, see:
->>>>>    Documentation/devicetree/bindings/iommu/arm,smmu.yaml.
->>>>>
->>>>> +For GICv3 and GIC ITS bindings, see:
->>>>> +Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml.
->>>>>
->>>>> +
->>>>>    Required properties:
->>>>>
->>>>>        - compatible
->>>>> @@ -119,6 +122,15 @@ Optional properties:
->>>>>      associated with the listed IOMMU, with the iommu-specifier
->>>>>      (i - icid-base + iommu-base).
->>>>>
->>>>> +- msi-map: Maps an ICID to a GIC ITS and associated iommu-specifier
->>>>> +  data.
->>>>> +
->>>>> +  The property is an arbitrary number of tuples of
->>>>> +  (icid-base,iommu,iommu-base,length).
->>>>
->>>> I'm confused because the example has GIC ITS phandle, not an IOMMU.
->>>>
->>>> What is an iommu-base?
->>>
->>> Right, I was already halfway through writing a reply to say that all
->>> the copy-pasted "iommu" references here should be using the
->>> terminology from the pci-msi.txt binding instead.
->>
->> Right, will change it.
->>
->>>
->>>>> +
->>>>> +  Any ICID in the interval [icid-base, icid-base + length) is
->>>>> +  associated with the listed GIC ITS, with the iommu-specifier
->>>>> +  (i - icid-base + iommu-base).
->>>>>    Example:
->>>>>
->>>>>            smmu: iommu@5000000 {
->>>>> @@ -128,6 +140,16 @@ Example:
->>>>>                   ...
->>>>>            };
->>>>>
->>>>> +       gic: interrupt-controller@6000000 {
->>>>> +               compatible = "arm,gic-v3";
->>>>> +               ...
->>>>> +               its: gic-its@6020000 {
->>>>> +                       compatible = "arm,gic-v3-its";
->>>>> +                       msi-controller;
->>>>> +                       ...
->>>>> +               };
->>>>> +       };
->>>>> +
->>>>>            fsl_mc: fsl-mc@80c000000 {
->>>>>                    compatible = "fsl,qoriq-mc";
->>>>>                    reg = <0x00000008 0x0c000000 0 0x40>,    /* MC
->>>>> portal base */
->>>>> @@ -135,6 +157,8 @@ Example:
->>>>>                    msi-parent = <&its>;
->>>
->>> Side note: is it right to keep msi-parent here? It rather implies that
->>> the MC itself has a 'native' Device ID rather than an ICID, which I
->>> believe is not strictly true. Plus it's extra-confusing that it
->>> doesn't specify an ID either way, since that makes it look like the
->>> legacy PCI case that gets treated implicitly as an identity msi-map,
->>> which makes no sense at all to combine with an actual msi-map.
->>
->> Before adding msi-map, the fsl-mc code assumed that ICID and streamID
->> are equal and used msi-parent just to get the reference to the ITS node.
->> Removing msi-parent will break the backward compatibility of the already
->> existing systems. Maybe we should mention that this is legacy and not to
->> be used for newer device trees.
-> 
-> If ids are 1:1, then the DT should use msi-parent. If there is
-> remapping, then use msi-map. A given system should use one or the
-> other. I suppose if some ids are 1:1 and the msi-map was added to add
-> additional support for ids not 1:1, then you could end up with both.
-> That's fine in dts files, but examples should reflect the 'right' way.
+On Fri, 22 May 2020 at 16:04, Thomas Gleixner <tglx@linutronix.de> wrote:
+>
+> Ard,
+>
+> Ard Biesheuvel <ardb@kernel.org> writes:
+> > On Fri, 22 May 2020 at 15:40, Borislav Petkov <bp@alien8.de> wrote:
+> >>
+> >> On Fri, May 22, 2020 at 03:06:20PM +0200, Ard Biesheuvel wrote:
+> >> > Ping?
+> >>
+> >> Did you want to make your tags unique from the next pull request onwards
+> >> and I were supposed to pull this one as is?
+> >
+> > What usually happens is that Ingo applies the patches piecemeal,
+> > ignoring the tag altogether, so without any coordination between you
+> > as x86 maintainers or communication back to me, that is what i was
+> > expecting to happen this time as well.
+> >
+> > Note that I have another PR pending since two weeks ago [0].
+> >
+> > So if you want to start dealing with the EFI trees in a different way
+> > from now on, that is perfectly fine with me, but please align with
+> > Ingo and Thomas first.
+>
+> /me dons managerial hat
+>
+> Yes, please. Your pull request really do not need any special handling.
+>
+> Please add a unique signed tag to each pull request and stick the
+> description, e.g.
+>
+>  " EFI fixes for v5.7-rcX:
+>    - fix EFI framebuffer earlycon for wide fonts
+>    - avoid filling screen_info with garbage...."
+>
+> into the tag which gives us the merge commit message automagically.
+>
 
-Is that defined anywhere? The generic MSI binding just has some weaselly 
-wording about buses:
+Sure.
 
-"When #msi-cells is non-zero, busses with an msi-parent will require 
-additional properties to describe the relationship between devices on 
-the bus and the set of MSIs they can potentially generate."
+In that case, please pull these changes from
 
-which appears at odds with its own definition of msi-parent as including 
-an msi-specifier (or at best very unclear about what value that 
-specifier should take in this case).
+efi-fixes-for-v5.7-rc6
 
-The PCI MSI binding goes even further and specifically reserves 
-msi-parent for cases where there is no sideband data. As far as I'm 
-aware, the fact that the ITS driver implements a bodge for the "empty 
-msi-parent even though #msi-cells > 0" case is merely a compatibility 
-thing for old DTs from before this was really thought through, not an 
-officially-specified behaviour.
-
-Robin.
+instead, and disregard the PR for v5.8. I will respin that, include
+some patches that came in in the mean time, and tag it in the correct
+way before resending the PR.
