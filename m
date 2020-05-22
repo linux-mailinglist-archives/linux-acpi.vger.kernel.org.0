@@ -2,201 +2,324 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F44D1DEF33
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 May 2020 20:30:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E6541DF167
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 May 2020 23:45:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730936AbgEVSaX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 May 2020 14:30:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35032 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730824AbgEVSaW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 May 2020 14:30:22 -0400
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 494DDC061A0E;
-        Fri, 22 May 2020 11:30:22 -0700 (PDT)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jcCQz-0002l9-2V; Fri, 22 May 2020 20:30:17 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id B327F1C0475;
-        Fri, 22 May 2020 20:30:16 +0200 (CEST)
-Date:   Fri, 22 May 2020 18:30:16 -0000
-From:   "tip-bot2 for Punit Agrawal" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi: cper: Add support for printing Firmware Error
- Record Reference
-Cc:     Punit Agrawal <punit1.agrawal@toshiba.co.jp>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Borislav Petkov <bp@alien8.de>,
-        James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
-        linux-efi@vger.kernel.org, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200512045502.3810339-1-punit1.agrawal@toshiba.co.jp>
-References: <20200512045502.3810339-1-punit1.agrawal@toshiba.co.jp>
+        id S1731083AbgEVVpO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 May 2020 17:45:14 -0400
+Received: from mga01.intel.com ([192.55.52.88]:1829 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731036AbgEVVpO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 22 May 2020 17:45:14 -0400
+IronPort-SDR: wyNlP05v2QZgCvQiL+nDBe4njUr9hZDGH4BFkDyykCRtfx8e/a8KRl+szQHU8J30US+zBqMpU0
+ OvyeH8YiREbg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2020 14:45:13 -0700
+IronPort-SDR: iQVFDAqkKs0sASnlwzGZJkhDLcy8EYTFt0TNSJj2HV00g62mhL7SHX1Ogh6l+EzTeGLYqg65ko
+ F4TrOwyHdSQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,423,1583222400"; 
+   d="scan'208";a="283523359"
+Received: from spandruv-mobl.amr.corp.intel.com ([10.254.101.173])
+  by orsmga002.jf.intel.com with ESMTP; 22 May 2020 14:45:13 -0700
+From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     rjw@rjwysocki.net, lenb@kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: [PATCH] ACPI / DPTF: Add DPTF battery participant driver
+Date:   Fri, 22 May 2020 14:45:09 -0700
+Message-Id: <20200522214509.1003362-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Message-ID: <159017221661.17951.2040359767337422693.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The following commit has been merged into the efi/urgent branch of tip:
+This driver adds support for Dynamic Platform and Thermal Framework
+battery participant device support.
 
-Commit-ID:     3d8c11efd528d56972d44ed0de51c4e11a9a4fa9
-Gitweb:        https://git.kernel.org/tip/3d8c11efd528d56972d44ed0de51c4e11a9a4fa9
-Author:        Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-AuthorDate:    Tue, 12 May 2020 13:55:02 +09:00
-Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Thu, 14 May 2020 11:11:20 +02:00
+These attributes are presented via sysfs interface under the platform
+device for the battery participant:
+$ls /sys/bus/platform/devices/INT3532:00/dptf_battery
+	current_discharge_capbility_ma
+	max_platform_power_mw
+	no_load_voltage_mv
+	high_freq_impedance_mohm
+	max_steady_state_power_mw
 
-efi: cper: Add support for printing Firmware Error Record Reference
+Refer to the documentation at
+Documentation/ABI/testing/sysfs-platform-dptf
+for details.
 
-While debugging a boot failure, the following unknown error record was
-seen in the boot logs.
+Here the implementation reuses existing dptf-power.c as the motivation and
+processing is same. It also shares one ACPI method. Here this change is
+using participant type, "PTYP" method to identify and do different
+processing. By using participant type, create/delete either "dptf_power"
+or "dptf_battery" attribute group and send notifications.
 
-    <...>
-    BERT: Error records from previous boot:
-    [Hardware Error]: event severity: fatal
-    [Hardware Error]:  Error 0, type: fatal
-    [Hardware Error]:   section type: unknown, 81212a96-09ed-4996-9471-8d729c8e69ed
-    [Hardware Error]:   section length: 0x290
-    [Hardware Error]:   00000000: 00000001 00000000 00000000 00020002  ................
-    [Hardware Error]:   00000010: 00020002 0000001f 00000320 00000000  ........ .......
-    [Hardware Error]:   00000020: 00000000 00000000 00000000 00000000  ................
-    [Hardware Error]:   00000030: 00000000 00000000 00000000 00000000  ................
-    <...>
+The particpant type for for the battery participant is 0x0C.
 
-On further investigation, it was found that the error record with
-UUID (81212a96-09ed-4996-9471-8d729c8e69ed) has been defined in the
-UEFI Specification at least since v2.4 and has recently had additional
-fields defined in v2.7 Section N.2.10 Firmware Error Record Reference.
+ACPI methods description:
 
-Add support for parsing and printing the defined fields to give users
-a chance to figure out what went wrong.
+PMAX (Intel(R) Dynamic Tuning Platform Max Power Supplied by Battery):
+This object evaluates to the maximum platform power that can be supported
+by the battery in milli watts.
 
-Signed-off-by: Punit Agrawal <punit1.agrawal@toshiba.co.jp>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: James Morse <james.morse@arm.com>
-Cc: linux-acpi@vger.kernel.org
-Cc: linux-efi@vger.kernel.org
-Link: https://lore.kernel.org/r/20200512045502.3810339-1-punit1.agrawal@toshiba.co.jp
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+PBSS (Intel(R) Dynamic Tuning Power Battery Steady State):
+This object returns the max sustained power for battery in milli watts.
+
+RBHF (Intel(R) Dynamic Tuning High Frequency Impedance):
+This object returns high frequency impedance value that can be obtained
+from battery fuel gauge.
+
+VBNL (Intel(R) Dynamic Tuning No-Load Voltage)
+This object returns battery instantaneous no-load voltage that can be
+obtained from battery fuel gauge in milli volts
+
+CMPP (Intel(R) Dynamic Tuning Current Discharge Capability)
+This object returns battery discharge current capability obtained from
+battery fuel gauge milli amps.
+
+Notifications:
+
+0x80: PMAX change. Used to notify Intel(R)Dynamic Tuning Battery
+participant driver when the PMAX has changed by 250mw.
+0x83: PBSS change. Used to notify Intel(R) Dynamic Tuning Battery
+participant driver when the power source has changed.
+0x85: RBHF change. Used to notify Intel(R)Dynamic Tuning Battery
+participant driver when the RBHF has changed over a threshold by
+5mOhm.
+0x86: Battery Capability change. Used to notify Intel(R)Dynamic Tuning
+Battery participant driver when the battery capability has changed.
+
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 ---
- drivers/firmware/efi/cper.c | 62 ++++++++++++++++++++++++++++++++++++-
- include/linux/cper.h        |  9 +++++-
- 2 files changed, 71 insertions(+)
+Comment
+	I know this is close to merge window, so it can be differed to 5.9
+	if this is a problem.
 
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index 9d25129..f564e15 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -407,6 +407,58 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
- 	}
- }
+ Documentation/ABI/testing/sysfs-platform-dptf | 38 +++++++++
+ drivers/acpi/dptf/dptf_power.c                | 82 ++++++++++++++++---
+ 2 files changed, 110 insertions(+), 10 deletions(-)
+
+diff --git a/Documentation/ABI/testing/sysfs-platform-dptf b/Documentation/ABI/testing/sysfs-platform-dptf
+index e83a9d208849..ef923958c750 100644
+--- a/Documentation/ABI/testing/sysfs-platform-dptf
++++ b/Documentation/ABI/testing/sysfs-platform-dptf
+@@ -54,3 +54,41 @@ KernelVersion:	v5.8
+ Contact:	linux-acpi@vger.kernel.org
+ Description:
+ 		(WO) Confirm embedded controller about a prochot notification.
++
++What:		/sys/bus/platform/devices/INT3532:00/dptf_battery/max_platform_power_mw
++Date:		June, 2020
++KernelVersion:	v5.8
++Contact:	linux-acpi@vger.kernel.org
++Description:
++		(RO) The maximum platform power that can be supported by the battery in milli watts.
++
++What:		/sys/bus/platform/devices/INT3532:00/dptf_battery/max_steady_state_power_mw
++Date:		June, 2020
++KernelVersion:	v5.8
++Contact:	linux-acpi@vger.kernel.org
++Description:
++		(RO) The maximum sustained power for battery in milli watts.
++
++What:		/sys/bus/platform/devices/INT3532:00/dptf_battery/high_freq_impedance_mohm
++Date:		June, 2020
++KernelVersion:	v5.8
++Contact:	linux-acpi@vger.kernel.org
++Description:
++		(RO) The high frequency impedance value that can be obtained from battery
++		fuel gauge in milli Ohms.
++
++What:		/sys/bus/platform/devices/INT3532:00/dptf_battery/no_load_voltage_mv
++Date:		June, 2020
++KernelVersion:	v5.8
++Contact:	linux-acpi@vger.kernel.org
++Description:
++		(RO) The no-load voltage that can be obtained from battery fuel gauge in
++		milli volts.
++
++What:		/sys/bus/platform/devices/INT3532:00/dptf_battery/current_discharge_capbility_ma
++Date:		June, 2020
++KernelVersion:	v5.8
++Contact:	linux-acpi@vger.kernel.org
++Description:
++		(RO) The battery discharge current capability obtained from battery fuel gauge in
++		milli Amps.
+diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_power.c
+index abe99039af74..5fab7e350db8 100644
+--- a/drivers/acpi/dptf/dptf_power.c
++++ b/drivers/acpi/dptf/dptf_power.c
+@@ -10,13 +10,19 @@
+ #include <linux/platform_device.h>
  
-+static const char * const fw_err_rec_type_strs[] = {
-+	"IPF SAL Error Record",
-+	"SOC Firmware Error Record Type1 (Legacy CrashLog Support)",
-+	"SOC Firmware Error Record Type2",
-+};
-+
-+static void cper_print_fw_err(const char *pfx,
-+			      struct acpi_hest_generic_data *gdata,
-+			      const struct cper_sec_fw_err_rec_ref *fw_err)
-+{
-+	void *buf = acpi_hest_get_payload(gdata);
-+	u32 offset, length = gdata->error_data_length;
-+
-+	printk("%s""Firmware Error Record Type: %s\n", pfx,
-+	       fw_err->record_type < ARRAY_SIZE(fw_err_rec_type_strs) ?
-+	       fw_err_rec_type_strs[fw_err->record_type] : "unknown");
-+	printk("%s""Revision: %d\n", pfx, fw_err->revision);
-+
-+	/* Record Type based on UEFI 2.7 */
-+	if (fw_err->revision == 0) {
-+		printk("%s""Record Identifier: %08llx\n", pfx,
-+		       fw_err->record_identifier);
-+	} else if (fw_err->revision == 2) {
-+		printk("%s""Record Identifier: %pUl\n", pfx,
-+		       &fw_err->record_identifier_guid);
-+	}
-+
-+	/*
-+	 * The FW error record may contain trailing data beyond the
-+	 * structure defined by the specification. As the fields
-+	 * defined (and hence the offset of any trailing data) vary
-+	 * with the revision, set the offset to account for this
-+	 * variation.
-+	 */
-+	if (fw_err->revision == 0) {
-+		/* record_identifier_guid not defined */
-+		offset = offsetof(struct cper_sec_fw_err_rec_ref,
-+				  record_identifier_guid);
-+	} else if (fw_err->revision == 1) {
-+		/* record_identifier not defined */
-+		offset = offsetof(struct cper_sec_fw_err_rec_ref,
-+				  record_identifier);
-+	} else {
-+		offset = sizeof(*fw_err);
-+	}
-+
-+	buf += offset;
-+	length -= offset;
-+
-+	print_hex_dump(pfx, "", DUMP_PREFIX_OFFSET, 16, 4, buf, length, true);
-+}
-+
- static void cper_print_tstamp(const char *pfx,
- 				   struct acpi_hest_generic_data_v300 *gdata)
- {
-@@ -494,6 +546,16 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
- 		else
- 			goto err_section_too_small;
- #endif
-+	} else if (guid_equal(sec_type, &CPER_SEC_FW_ERR_REC_REF)) {
-+		struct cper_sec_fw_err_rec_ref *fw_err = acpi_hest_get_payload(gdata);
-+
-+		printk("%ssection_type: Firmware Error Record Reference\n",
-+		       newpfx);
-+		/* The minimal FW Error Record contains 16 bytes */
-+		if (gdata->error_data_length >= SZ_16)
-+			cper_print_fw_err(newpfx, gdata, fw_err);
-+		else
-+			goto err_section_too_small;
- 	} else {
- 		const void *err = acpi_hest_get_payload(gdata);
+ /*
+- * Presentation of attributes which are defined for INT3407. They are:
++ * Presentation of attributes which are defined for INT3407 and INT3532.
++ * They are:
+  * PMAX : Maximum platform powe
+  * PSRC : Platform power source
+  * ARTG : Adapter rating
+  * CTYP : Charger type
+  * PBSS : Battery steady power
+  * PROP : Rest of worst case platform Power
++ * PBSS : Power Battery Steady State
++ * PBSS : Power Battery Steady State
++ * RBHF : High Frequency Impedance
++ * VBNL : Instantaneous No-Load Voltage
++ * CMPP : Current Discharge Capability
+  */
+ #define DPTF_POWER_SHOW(name, object) \
+ static ssize_t name##_show(struct device *dev,\
+@@ -41,6 +47,10 @@ DPTF_POWER_SHOW(adapter_rating_mw, ARTG)
+ DPTF_POWER_SHOW(battery_steady_power_mw, PBSS)
+ DPTF_POWER_SHOW(charger_type, CTYP)
+ DPTF_POWER_SHOW(rest_of_platform_power_mw, PROP)
++DPTF_POWER_SHOW(max_steady_state_power_mw, PBSS)
++DPTF_POWER_SHOW(high_freq_impedance_mohm, RBHF)
++DPTF_POWER_SHOW(no_load_voltage_mv, VBNL)
++DPTF_POWER_SHOW(current_discharge_capbility_ma, CMPP);
  
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index 4f005d9..8537e92 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -521,6 +521,15 @@ struct cper_sec_pcie {
- 	u8	aer_info[96];
+ static DEVICE_ATTR_RO(max_platform_power_mw);
+ static DEVICE_ATTR_RO(platform_power_source);
+@@ -48,6 +58,10 @@ static DEVICE_ATTR_RO(adapter_rating_mw);
+ static DEVICE_ATTR_RO(battery_steady_power_mw);
+ static DEVICE_ATTR_RO(charger_type);
+ static DEVICE_ATTR_RO(rest_of_platform_power_mw);
++static DEVICE_ATTR_RO(max_steady_state_power_mw);
++static DEVICE_ATTR_RO(high_freq_impedance_mohm);
++static DEVICE_ATTR_RO(no_load_voltage_mv);
++static DEVICE_ATTR_RO(current_discharge_capbility_ma);
+ 
+ static ssize_t prochot_confirm_store(struct device *dev,
+ 				     struct device_attribute *attr,
+@@ -85,8 +99,38 @@ static const struct attribute_group dptf_power_attribute_group = {
+ 	.name = "dptf_power"
  };
  
-+/* Firmware Error Record Reference, UEFI v2.7 sec N.2.10  */
-+struct cper_sec_fw_err_rec_ref {
-+	u8 record_type;
-+	u8 revision;
-+	u8 reserved[6];
-+	u64 record_identifier;
-+	guid_t record_identifier_guid;
++static struct attribute *dptf_battery_attrs[] = {
++	&dev_attr_max_platform_power_mw.attr,
++	&dev_attr_max_steady_state_power_mw.attr,
++	&dev_attr_high_freq_impedance_mohm.attr,
++	&dev_attr_no_load_voltage_mv.attr,
++	&dev_attr_current_discharge_capbility_ma.attr,
++	NULL
 +};
 +
- /* Reset to default packing */
- #pragma pack()
++static const struct attribute_group dptf_battery_attribute_group = {
++	.attrs = dptf_battery_attrs,
++	.name = "dptf_battery"
++};
++
++#define MAX_POWER_CHANGED		0x80
+ #define POWER_STATE_CHANGED		0x81
++#define STEADY_STATE_POWER_CHANGED	0x83
+ #define POWER_PROP_CHANGE_EVENT	0x84
++#define IMPEDANCED_CHNGED		0x85
++#define VOLTAGE_CURRENT_CHANGED	0x86
++
++static long long dptf_participant_type(acpi_handle handle)
++{
++	unsigned long long ptype;
++	acpi_status status;
++
++	status = acpi_evaluate_integer(handle, "PTYP", NULL, &ptype);
++	if (ACPI_FAILURE(status))
++		return -ENODEV;
++
++	return ptype;
++}
  
+ static void dptf_power_notify(acpi_handle handle, u32 event, void *data)
+ {
+@@ -100,6 +144,15 @@ static void dptf_power_notify(acpi_handle handle, u32 event, void *data)
+ 	case POWER_PROP_CHANGE_EVENT:
+ 		attr = "rest_of_platform_power_mw";
+ 		break;
++	case MAX_POWER_CHANGED:
++		attr = "max_platform_power_mw";
++		break;
++	case STEADY_STATE_POWER_CHANGED:
++		attr = "max_steady_state_power_mw";
++		break;
++	case VOLTAGE_CURRENT_CHANGED:
++		attr = "no_load_voltage_mv";
++		break;
+ 	default:
+ 		dev_err(&pdev->dev, "Unsupported event [0x%x]\n", event);
+ 		return;
+@@ -109,13 +162,16 @@ static void dptf_power_notify(acpi_handle handle, u32 event, void *data)
+ 	 * Notify that an attribute is changed, so that user space can read
+ 	 * again.
+ 	 */
+-	sysfs_notify(&pdev->dev.kobj, "dptf_power", attr);
++	if (dptf_participant_type(handle) == 0x0CULL)
++		sysfs_notify(&pdev->dev.kobj, "dptf_battery", attr);
++	else
++		sysfs_notify(&pdev->dev.kobj, "dptf_power", attr);
+ }
+ 
+ static int dptf_power_add(struct platform_device *pdev)
+ {
++	const struct attribute_group *attr_group;
+ 	struct acpi_device *acpi_dev;
+-	acpi_status status;
+ 	unsigned long long ptype;
+ 	int result;
+ 
+@@ -123,11 +179,12 @@ static int dptf_power_add(struct platform_device *pdev)
+ 	if (!acpi_dev)
+ 		return -ENODEV;
+ 
+-	status = acpi_evaluate_integer(acpi_dev->handle, "PTYP", NULL, &ptype);
+-	if (ACPI_FAILURE(status))
+-		return -ENODEV;
+-
+-	if (ptype != 0x11)
++	ptype = dptf_participant_type(acpi_dev->handle);
++	if (ptype == 0x11)
++		attr_group = &dptf_power_attribute_group;
++	else if (ptype == 0x0C)
++		attr_group = &dptf_battery_attribute_group;
++	else
+ 		return -ENODEV;
+ 
+ 	result = acpi_install_notify_handler(acpi_dev->handle,
+@@ -138,7 +195,7 @@ static int dptf_power_add(struct platform_device *pdev)
+ 		return result;
+ 
+ 	result = sysfs_create_group(&pdev->dev.kobj,
+-				    &dptf_power_attribute_group);
++				    attr_group);
+ 	if (result) {
+ 		acpi_remove_notify_handler(acpi_dev->handle,
+ 					   ACPI_DEVICE_NOTIFY,
+@@ -158,13 +215,18 @@ static int dptf_power_remove(struct platform_device *pdev)
+ 	acpi_remove_notify_handler(acpi_dev->handle,
+ 				   ACPI_DEVICE_NOTIFY,
+ 				   dptf_power_notify);
+-	sysfs_remove_group(&pdev->dev.kobj, &dptf_power_attribute_group);
++
++	if (dptf_participant_type(acpi_dev->handle) == 0x0CULL)
++		sysfs_remove_group(&pdev->dev.kobj, &dptf_battery_attribute_group);
++	else
++		sysfs_remove_group(&pdev->dev.kobj, &dptf_power_attribute_group);
+ 
+ 	return 0;
+ }
+ 
+ static const struct acpi_device_id int3407_device_ids[] = {
+ 	{"INT3407", 0},
++	{"INT3532", 0},
+ 	{"INTC1047", 0},
+ 	{"", 0},
+ };
+-- 
+2.25.4
+
