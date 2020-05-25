@@ -2,40 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C4A41E0E03
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 May 2020 14:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D03321E0E4E
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 May 2020 14:21:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390326AbgEYMBM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 25 May 2020 08:01:12 -0400
-Received: from mga01.intel.com ([192.55.52.88]:23928 "EHLO mga01.intel.com"
+        id S2390504AbgEYMVk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 25 May 2020 08:21:40 -0400
+Received: from mga18.intel.com ([134.134.136.126]:61729 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390299AbgEYMBM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 25 May 2020 08:01:12 -0400
-IronPort-SDR: l3VAbRYm1OE6EofGXVXNWceZtlE76ovRMaCi33giAhsfrNBb8c36hArAe/CTJZBuWcKST2JYcV
- aw4isDZG07Kg==
+        id S2390492AbgEYMVk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 25 May 2020 08:21:40 -0400
+IronPort-SDR: 6Dk/Ku8y43EvWd+C2foT8a3rnUBUcwYR3Vb0na3y2/eIX5k/NQJnUWpBCotkdLbLyndT56SKUU
+ b+4RfKlc10hg==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2020 05:01:12 -0700
-IronPort-SDR: nQwnq3Y/NM045CWwUEFauUJBiYdrhecUTI0GSZIADEAFMUqm/CyD/zWqIBNc39JyVEdeEWrFjP
- iWQzSBQfOghg==
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2020 05:21:39 -0700
+IronPort-SDR: iKYvWKIiNTV7MhfeH6NCb4l5ZjsyaXr72Ns2w0hTOsz7qnbIFmoAcI8sumCSf68rb237qNP8v8
+ 1yJhHzO+xCYw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.73,433,1583222400"; 
-   d="scan'208";a="441708809"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga005.jf.intel.com with ESMTP; 25 May 2020 05:01:09 -0700
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1jdBn6-008mUt-U4; Mon, 25 May 2020 15:01:12 +0300
-Date:   Mon, 25 May 2020 15:01:12 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+   d="scan'208";a="375421070"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga001.fm.intel.com with SMTP; 25 May 2020 05:21:36 -0700
+Received: by lahna (sSMTP sendmail emulation); Mon, 25 May 2020 15:21:36 +0300
+Date:   Mon, 25 May 2020 15:21:36 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
 Subject: Re: [PATCH v1 5/5] gpio: pca953x: Override GpioInt() pin for Intel
  Galileo Gen 2
-Message-ID: <20200525120112.GT1634618@smile.fi.intel.com>
+Message-ID: <20200525122136.GV247495@lahna.fi.intel.com>
 References: <20200520211916.25727-1-andriy.shevchenko@linux.intel.com>
  <20200520211916.25727-5-andriy.shevchenko@linux.intel.com>
  <20200525092028.GQ247495@lahna.fi.intel.com>
@@ -74,12 +72,11 @@ On Mon, May 25, 2020 at 02:35:51PM +0300, Andy Shevchenko wrote:
 > 
 > Is it correct?
 
-Ah, and before all these, to detect properly the IO expander that actually has
-that resource in the table (something like gpiod_count() or do we have better
-approach to answer the question "does this device has a GpioInt() resource?").
+Well, no. In the first patch you do this:
 
--- 
-With Best Regards,
-Andy Shevchenko
+  pin = lookup->info.quirks_data;
 
-
+and this essentially becomes 1 so you know the pin number upfront in the
+driver. Why not simply get GPIO number 1 in the driver and use it as an
+interrupt? You know already that this particular board with the matching
+DMI identifier always uses the this number anyway.
