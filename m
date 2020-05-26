@@ -2,47 +2,25 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D9C71E1D77
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 May 2020 10:39:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 927191E1EF9
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 May 2020 11:45:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730023AbgEZIjK convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 26 May 2020 04:39:10 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:42355 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728516AbgEZIjJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 May 2020 04:39:09 -0400
-Received: by mail-ot1-f67.google.com with SMTP id z3so15626949otp.9;
-        Tue, 26 May 2020 01:39:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=MpwY3EHc5z85EihmevYmSupSr3w2Pyaz4sc6UHi08wA=;
-        b=THJavD6TYGCMTkFEN445a4SyCaYydzMAEnjQ4yo3GHCeH7RP+WZy8uJJuPgZ2/pLfC
-         x9igDO4yJmCJtVoypSWlVb96jb1cmxDovIgbOODut3UXEq52tlpgZYtV630arLaultMe
-         WgoN96/7MOnzQHLvmF80oa7Fl3U1zD4AXAtzFTDRxdWJVVX+UM/iUAkvfn9GBOMxDQbn
-         CoCJJwN/9lR9M+BzeAJ2Fvu6Ew1quXmt5BHM1a9TDEPinK12Y9FFEdr2H2hdSkaMR5nj
-         uPH9e7X1x8lsd237CMFsegWizytsLwIJJnvLQCDh0t6eNbYoUcYlwu518FRW9q9IVe2y
-         Y0uA==
-X-Gm-Message-State: AOAM532+cJb3MDqSS6QdXTcf5LwAF685IGszKu0Kjp4V1aHyfptx0AQU
-        4b1hWTGbPm/j75JxsTBvKpPCPHQbU5TAVGAhUBA=
-X-Google-Smtp-Source: ABdhPJyg99dhbbsUdUpzqyLlD2Zp0WEwPi+B3o8RxPqwRzQCCrVCeDF3laDVas19O0CvHdxuwQP2MEhi6k5TafK25JQ=
-X-Received: by 2002:a9d:6c0f:: with SMTP id f15mr94657otq.118.1590482348592;
- Tue, 26 May 2020 01:39:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200525182608.1823735-1-kw@linux.com> <20200525182608.1823735-6-kw@linux.com>
-In-Reply-To: <20200525182608.1823735-6-kw@linux.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 26 May 2020 10:38:56 +0200
-Message-ID: <CAJZ5v0i-RnP7RycZ3GqOZuEYqrX_+r5-VS7DqtNCyHDwp1sPKg@mail.gmail.com>
-Subject: Re: [PATCH 5/8] usb: phy: fsl: Use the new device_to_pm() helper to
- access struct dev_pm_ops
-To:     =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        id S1731748AbgEZJpW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 May 2020 05:45:22 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:55976 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728686AbgEZJpW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 May 2020 05:45:22 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 791CE1C02C0; Tue, 26 May 2020 11:45:19 +0200 (CEST)
+Date:   Tue, 26 May 2020 11:45:18 +0200
+From:   Pavel Machek <pavel@denx.de>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>, Kevin Hilman <khilman@kernel.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Pavel Machek <pavel@ucw.cz>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
         Bjorn Helgaas <bhelgaas@google.com>,
@@ -64,64 +42,88 @@ Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
         "open list:TARGET SUBSYSTEM" <linux-scsi@vger.kernel.org>,
         "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
         <linux-usb@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Subject: Re: [PATCH 2/8] ACPI: PM: Use the new device_to_pm() helper to
+ access struct dev_pm_ops
+Message-ID: <20200526094518.GA4600@amd>
+References: <20200525182608.1823735-1-kw@linux.com>
+ <20200525182608.1823735-3-kw@linux.com>
+ <CAJZ5v0jQUmdDYmJsP43Ja3urpVLUxe-yD_Hm_Jd2LtCoPiXsrQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="bg08WKrSYDhXBjb5"
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0jQUmdDYmJsP43Ja3urpVLUxe-yD_Hm_Jd2LtCoPiXsrQ@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 25, 2020 at 8:26 PM Krzysztof Wilczyński <kw@linux.com> wrote:
->
-> Use the new device_to_pm() helper to access Power Management callbacs
-> (struct dev_pm_ops) for a particular device (struct device_driver).
->
-> No functional change intended.
->
-> Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
-> ---
->  drivers/usb/phy/phy-fsl-usb.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/usb/phy/phy-fsl-usb.c b/drivers/usb/phy/phy-fsl-usb.c
-> index b451f4695f3f..3b9ad5db8380 100644
-> --- a/drivers/usb/phy/phy-fsl-usb.c
-> +++ b/drivers/usb/phy/phy-fsl-usb.c
-> @@ -460,6 +460,7 @@ int fsl_otg_start_host(struct otg_fsm *fsm, int on)
->         struct device *dev;
->         struct fsl_otg *otg_dev =
->                 container_of(otg->usb_phy, struct fsl_otg, phy);
-> +       const struct dev_pm_ops *pm;
->         u32 retval = 0;
->
->         if (!otg->host)
-> @@ -479,8 +480,9 @@ int fsl_otg_start_host(struct otg_fsm *fsm, int on)
->                 else {
->                         otg_reset_controller();
->                         VDBG("host on......\n");
-> -                       if (dev->driver->pm && dev->driver->pm->resume) {
-> -                               retval = dev->driver->pm->resume(dev);
-> +                       pm = driver_to_pm(dev->driver);
-> +                       if (pm && pm->resume) {
-> +                               retval = pm->resume(dev);
 
-And why is the new version better this time?
+--bg08WKrSYDhXBjb5
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->                                 if (fsm->id) {
->                                         /* default-b */
->                                         fsl_otg_drv_vbus(fsm, 1);
-> @@ -504,8 +506,9 @@ int fsl_otg_start_host(struct otg_fsm *fsm, int on)
->                 else {
->                         VDBG("host off......\n");
->                         if (dev && dev->driver) {
-> -                               if (dev->driver->pm && dev->driver->pm->suspend)
-> -                                       retval = dev->driver->pm->suspend(dev);
-> +                               pm = driver_to_pm(dev->driver);
-> +                               if (pm && pm->suspend)
-> +                                       retval = pm->suspend(dev);
->                                 if (fsm->id)
->                                         /* default-b */
->                                         fsl_otg_drv_vbus(fsm, 0);
-> --
-> 2.26.2
->
+On Tue 2020-05-26 10:37:36, Rafael J. Wysocki wrote:
+> On Mon, May 25, 2020 at 8:26 PM Krzysztof Wilczy=C5=84ski <kw@linux.com> =
+wrote:
+> >
+> > Use the new device_to_pm() helper to access Power Management callbacs
+> > (struct dev_pm_ops) for a particular device (struct device_driver).
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Krzysztof Wilczy=C5=84ski <kw@linux.com>
+> > ---
+> >  drivers/acpi/device_pm.c | 5 +++--
+> >  1 file changed, 3 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+> > index 5832bc10aca8..b98a32c48fbe 100644
+> > --- a/drivers/acpi/device_pm.c
+> > +++ b/drivers/acpi/device_pm.c
+> > @@ -1022,9 +1022,10 @@ static bool acpi_dev_needs_resume(struct device =
+*dev, struct acpi_device *adev)
+> >  int acpi_subsys_prepare(struct device *dev)
+> >  {
+> >         struct acpi_device *adev =3D ACPI_COMPANION(dev);
+> > +       const struct dev_pm_ops *pm =3D driver_to_pm(dev->driver);
+>=20
+> I don't really see a reason for this change.
+>=20
+> What's wrong with the check below?
+
+Duplicated code. Yes, compiler can sort it out, but... new version
+looks better to me.
+
+Best regards,
+								pavel
+
+> >
+> > -       if (dev->driver && dev->driver->pm && dev->driver->pm->prepare)=
+ {
+> > -               int ret =3D dev->driver->pm->prepare(dev);
+> > +       if (pm && pm->prepare) {
+> > +               int ret =3D pm->prepare(dev);
+
+
+
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--bg08WKrSYDhXBjb5
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl7M5S0ACgkQMOfwapXb+vJLqgCcCbDmh7NooqBM+qslb58avjsp
+78cAn1mUUlj/BAfzgJELHWPID2a0mmvg
+=+Cmh
+-----END PGP SIGNATURE-----
+
+--bg08WKrSYDhXBjb5--
