@@ -2,68 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C16491E246C
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 May 2020 16:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE49B1E24A5
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 May 2020 16:57:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729173AbgEZOrJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 May 2020 10:47:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49290 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726437AbgEZOrI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 May 2020 10:47:08 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C375CC03E96D;
-        Tue, 26 May 2020 07:47:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=0Lm8kIZucM9N101SLlLcwGvyzcwDFh9rh0/kpGAsWR8=; b=iFU/FK7WgcwuU1nzH+IvLCDEOD
-        YW7VLT4NCbBO4cOYoghFHPWsHEwrpF4u0zer832+q3IxpnxJl8WDMI88a5n0shvG+FnLOoglo6l7m
-        nBwOdx29rjE2SXhYw9An4k+rTcd3zEWAbd4T3H/2czviIm9e1FgwaCa4ecfsOuFylZmMf66QNPWs+
-        6mzmPJOUafuLVb3g45f1LeBEz6HRq9V37zOT3LER8/BKQPtI/WSburZIopEnE2UKazsrtlu2QzVH1
-        Pd3yDpx5Z4HpRq6oYD/qL7uamCmt81uIRkA46myiz5qRqe1u7cgEMkkmlUNal1fWdOAApqtTrftfn
-        UyN0pNcQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jdaqq-0005YE-Ty; Tue, 26 May 2020 14:46:44 +0000
-Date:   Tue, 26 May 2020 07:46:44 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Zhangfei Gao <zhangfei.gao@linaro.org>
-Cc:     Joerg Roedel <joro@8bytes.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        id S1728888AbgEZO5r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 May 2020 10:57:47 -0400
+Received: from mail-ej1-f65.google.com ([209.85.218.65]:37776 "EHLO
+        mail-ej1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727978AbgEZO5r (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 May 2020 10:57:47 -0400
+Received: by mail-ej1-f65.google.com with SMTP id l21so24159170eji.4;
+        Tue, 26 May 2020 07:57:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=h/vc/U48e43hYebkBpRwszhtS9SjYZ2xSvS7nTqAhXk=;
+        b=JPgpJnLNkWjACul1dvYApARVGs2Cs5gfG38iSSaBGT9/l5HFAlskGf9v34VHttoTvd
+         cN9mDEwJ9T2RpslOcBxIh3Ok6hEdzIQwFiiibxZG5vsq7L6QpmZwS2RWsfcLS4DzBhpL
+         2UsyWHHXavFq7+qswrou69yuetvQU/XCZlHtrhiyueM6ERqDLX8Xd3B0xuRVF4u0T/JB
+         3FbgiyyU/xsDy3HAghkLsm0BWrnDttYQlIdKeg33LsCiCJA9GTkm9MSzIjVerh8ATz3W
+         fvX6oKgTZC+77hTsTqts/rPQf8cB7ZzNHFrzvM3tRsKxivdTMljMV9kdwqgl9PT3z9r8
+         ql7g==
+X-Gm-Message-State: AOAM5322H1G4oVJlE4HYNCDokfd3D5xFWS8N3RXUnHQpcWHMowcngU31
+        1wgyg9nuoHj3xOkFpKT+l+Y=
+X-Google-Smtp-Source: ABdhPJzdElVIHtsR0qMTrQLNXyURt2kuG/VwKifaQBwdr8EPvJOXOlo0YVxmLG6Ml176FD4Quk6tgg==
+X-Received: by 2002:a17:906:4406:: with SMTP id x6mr1463667ejo.160.1590505065110;
+        Tue, 26 May 2020 07:57:45 -0700 (PDT)
+Received: from rocinante ([95.155.85.46])
+        by smtp.gmail.com with ESMTPSA id v3sm149610ejj.14.2020.05.26.07.57.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2020 07:57:44 -0700 (PDT)
+Date:   Tue, 26 May 2020 16:57:42 +0200
+From:   Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To:     Ursula Braun <ubraun@linux.ibm.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        jean-philippe <jean-philippe@linaro.org>,
+        Len Brown <lenb@kernel.org>, Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Pavel Machek <pavel@ucw.cz>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        kenneth-lee-2012@foxmail.com, Wangzhou <wangzhou1@hisilicon.com>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org,
-        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/2] PCI: Introduce PCI_FIXUP_IOMMU
-Message-ID: <20200526144644.GA20784@infradead.org>
-References: <1590493749-13823-1-git-send-email-zhangfei.gao@linaro.org>
- <1590493749-13823-2-git-send-email-zhangfei.gao@linaro.org>
+        Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Julian Wiedmann <jwi@linux.ibm.com>,
+        Karsten Graul <kgraul@linux.ibm.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        greybus-dev@lists.linaro.org, netdev@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH 8/8] net/iucv: Use the new device_to_pm() helper to
+ access struct dev_pm_ops
+Message-ID: <20200526145742.GA75990@rocinante>
+References: <20200525182608.1823735-1-kw@linux.com>
+ <20200525182608.1823735-9-kw@linux.com>
+ <55c3d2eb-feff-bf33-235d-b89c0abef7b1@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1590493749-13823-2-git-send-email-zhangfei.gao@linaro.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <55c3d2eb-feff-bf33-235d-b89c0abef7b1@linux.ibm.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 26, 2020 at 07:49:08PM +0800, Zhangfei Gao wrote:
-> Some platform devices appear as PCI but are actually on the AMBA bus,
-> and they need fixup in drivers/pci/quirks.c handling iommu_fwnode.
-> Here introducing PCI_FIXUP_IOMMU, which is called after iommu_fwnode
-> is allocated, instead of reusing PCI_FIXUP_FINAL since it will slow
-> down iommu probing as all devices in fixup final list will be
-> reprocessed.
+Hi Ursula,
 
-Who is going to use this?  I don't see a single user in the series.
+On 20-05-26 09:07:27, Ursula Braun wrote:
+> 
+> 
+> On 5/25/20 8:26 PM, Krzysztof Wilczyński wrote:
+> > Use the new device_to_pm() helper to access Power Management callbacs
+> > (struct dev_pm_ops) for a particular device (struct device_driver).
+> > 
+> > No functional change intended.
+> > 
+> > Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
+> 
+> pm support is going to be removed (for s390 in general and) for
+> net/iucv/iucv.c with this net-next patch:
+[...]
+
+Good to know!  Thank you for letting me know.  I appreciate that.
+
+Krzysztof
