@@ -2,80 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D88CD1E48E8
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 May 2020 17:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3A4F1E4950
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 May 2020 18:07:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388041AbgE0P5P (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 May 2020 11:57:15 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:44797 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730921AbgE0P5O (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 May 2020 11:57:14 -0400
-Received: by mail-ot1-f66.google.com with SMTP id f18so19529384otq.11;
-        Wed, 27 May 2020 08:57:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BHXnsm9FgPRIvAJXm9vXdaP6dHYEAo0qih1OcX3Oy5Q=;
-        b=tlcJYixA4V6MbXZbgQdShQ7bSJiIhPUh+kuq0hftpR2bMDS+T6l8ZXYwVSsN3CGX62
-         2sNIojm/gT7G/78VGzSUSZGxMgpMBBj8oH8uYOgqSAICIJ9/CkatNo7iNGg783l7F+8u
-         yn+J+9f/4rwR8LgUWdkg/2Qbgy1vVsQ6x5T76Z3C5c890lgbC7lThRGwClWEF+qzh3Dk
-         AArGfWmVHbLls82YoI2OcBuX8Z2W6+xPXZA0AgA8LK5R12M37yxa1RSW6ju+KhfR+xhE
-         UOK4max0syMqKn4NLRtK500nLsUIPsbPOObboNkBZpKUDNAZwxs9nfm9X10DCC9ZBXJK
-         wPgQ==
-X-Gm-Message-State: AOAM53261SNWJtirUYOmlCSkWQAeXcmdynhOOJ0m2YAxwzY8/XoAL7Y/
-        8Ff6R5TH4diHWABmZAAUMVSmO7eTRetm/pEdQj4=
-X-Google-Smtp-Source: ABdhPJwkP+hoFNQs/+ZP0moiGYxQtu0ohqp5UBCeH+ouDHvfNaOpL1CG4pf4SgqPt6RFs2DR/IW7QpMqt0HkpTp1Zfc=
-X-Received: by 2002:a9d:3d05:: with SMTP id a5mr5174224otc.262.1590595033025;
- Wed, 27 May 2020 08:57:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200527113700.3579-1-ardb@kernel.org>
-In-Reply-To: <20200527113700.3579-1-ardb@kernel.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 27 May 2020 17:57:02 +0200
-Message-ID: <CAJZ5v0g_pHDN9iZP-pvcNZm6aZdkRkxgWfUmiXy7wtzCinf0EA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: GED: use correct trigger type field in _Exx / _Lxx handling
-To:     Ard Biesheuvel <ardb@kernel.org>
+        id S2390800AbgE0QHc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 May 2020 12:07:32 -0400
+Received: from mx2.suse.de ([195.135.220.15]:48128 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389648AbgE0QH1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 27 May 2020 12:07:27 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 04ABFAF69;
+        Wed, 27 May 2020 16:07:28 +0000 (UTC)
+From:   Thomas Renninger <trenn@suse.de>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        "Zhang, Rui" <rui.zhang@intel.com>
+Subject: Re: Remove last acpi procfs dirs after being marked deprecated for a decade
+Date:   Wed, 27 May 2020 18:07:25 +0200
+Message-ID: <5786623.y7pTLF2AKN@c100>
+In-Reply-To: <CAJZ5v0hAYRb9gZ8s=bZQ1NQrm5uUk5eLhLMwj2+pR2Apmd+WfA@mail.gmail.com>
+References: <1696561.dScFM4BVNv@c100> <CAJZ5v0hAYRb9gZ8s=bZQ1NQrm5uUk5eLhLMwj2+pR2Apmd+WfA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 27, 2020 at 1:37 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> Commit ea6f3af4c5e63f69 ("ACPI: GED: add support for _Exx / _Lxx handler
-> methods") added a reference to the 'triggering' field of either the
-> normal or the extended ACPI IRQ resource struct, but inadvertently used
-> the wrong pointer in the latter case. Note that both pointers refer to the
-> same union, and the 'triggering' field appears at the same offset in both
-> struct types, so it currently happens to work by accident. But let's fix
-> it nonetheless
->
-> Fixes: ea6f3af4c5e63f69 ("ACPI: GED: add support for _Exx / _Lxx handler methods")
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  drivers/acpi/evged.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/evged.c b/drivers/acpi/evged.c
-> index 6d7a522952bf..ccd900690b6f 100644
-> --- a/drivers/acpi/evged.c
-> +++ b/drivers/acpi/evged.c
-> @@ -94,7 +94,7 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
->                 trigger = p->triggering;
->         } else {
->                 gsi = pext->interrupts[0];
-> -               trigger = p->triggering;
-> +               trigger = pext->triggering;
->         }
->
->         irq = r.start;
-> --
+Am Mittwoch, 27. Mai 2020, 17:49:09 CEST schrieb Rafael J. Wysocki:
+> On Wed, May 27, 2020 at 5:33 PM Thomas Renninger <trenn@suse.de> wrote:
+> > Kernel development should not be hindered anymore by this absolutely
+> > outdated stuff.
+> 
+> Well, this is a bit vague.
+> 
+> I'm not against making this change, but why do it now?  Is there
+> anything in particular that cannot be done without it?
 
-Applied, thanks!
+Because of the deprecated message being shown on laptops booting with
+the option enabled. I got a bugreport about it recently.
+
+I could not please check_patch to properly include this commit id
+(recon the double quotes in the title):
+
+e63f6e28dda6de3de2392ddca321e211fd860925
+Date:   Mon Jul 7 01:13:46 2014 +0200
+
+    Revert "ACPI / AC: Remove AC's proc directory."
+    
+    Revert commit ab0fd674d6ce (ACPI / AC: Remove AC's proc directory.),
+    because some old tools (e.g. kpowersave from kde 3.5.10) are still
+    using /proc/acpi/ac_adapter.
+    
+    Fixes: ab0fd674d6ce (ACPI / AC: Remove AC's proc directory.)
+
+
+kpowersave was written by myself and I can say for sure, that this stuff
+is more than outdated.
+
+Thanks,
+
+   Thomas
+
+
