@@ -2,34 +2,37 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FA891E3D05
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 May 2020 11:01:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F2441E3E1B
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 May 2020 11:54:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388330AbgE0JBp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 May 2020 05:01:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35522 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388213AbgE0JBp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 27 May 2020 05:01:45 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5CC1F20723;
-        Wed, 27 May 2020 09:01:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590570104;
-        bh=Ly0PPgLoVOdP2MHz53CmBLAFstCS5mfpl1WpLZ15gps=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=onCoAOhnzHO9z1pUO0//RWYJLmKfFMRTqXoBIY+gdObr+17e6nwXXsvWN0RMThy9e
-         uwLwAnL2f9xW9oLDKOWZn/Nzmaln1ON7ULTIQPpaM1zsoyYnkrxXXpwhUkArhx2hE2
-         yEEIJrw8f7A1SPpbRQGH1EvlHjbsZMtVrqHdWmVk=
-Date:   Wed, 27 May 2020 11:01:42 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Zhangfei Gao <zhangfei.gao@linaro.org>
-Cc:     Christoph Hellwig <hch@infradead.org>,
+        id S1729557AbgE0JyI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 May 2020 05:54:08 -0400
+Received: from mout.kundenserver.de ([212.227.17.13]:32817 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727064AbgE0JyH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 May 2020 05:54:07 -0400
+Received: from mail-qv1-f47.google.com ([209.85.219.47]) by
+ mrelayeu.kundenserver.de (mreue109 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1MBltK-1jjLKT2c6m-00CDQl; Wed, 27 May 2020 11:54:05 +0200
+Received: by mail-qv1-f47.google.com with SMTP id dh1so10830611qvb.13;
+        Wed, 27 May 2020 02:54:05 -0700 (PDT)
+X-Gm-Message-State: AOAM533l6opv8qtsuRCknZJWxN9mxqkxakKQZXRox1ZB6l8pPY/cujqk
+        libGPswclU007e0F2M3O/sNDzmsOyV7OYa0nueM=
+X-Google-Smtp-Source: ABdhPJwFY+9e2QwGxBuOVJhyvZzHkmdup67C33Hon0tX+xYCanXD6siiWNyzzW3vpc4K6tTqx9WsMyOJzXh6HoLxoPA=
+X-Received: by 2002:a05:6214:370:: with SMTP id t16mr24222212qvu.197.1590573244279;
+ Wed, 27 May 2020 02:54:04 -0700 (PDT)
+MIME-Version: 1.0
+References: <1590493749-13823-1-git-send-email-zhangfei.gao@linaro.org> <20200527090007.GA179718@kroah.com>
+In-Reply-To: <20200527090007.GA179718@kroah.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 27 May 2020 11:53:48 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a35fjXt1F2hJygup5gWfjPHZTuU+VD69K5uzrNhhgu0Pw@mail.gmail.com>
+Message-ID: <CAK8P3a35fjXt1F2hJygup5gWfjPHZTuU+VD69K5uzrNhhgu0Pw@mail.gmail.com>
+Subject: Re: [PATCH 0/2] Introduce PCI_FIXUP_IOMMU
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Zhangfei Gao <zhangfei.gao@linaro.org>,
         Joerg Roedel <joro@8bytes.org>,
         Bjorn Helgaas <bhelgaas@google.com>,
-        Arnd Bergmann <arnd@arndb.de>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Hanjun Guo <guohanjun@huawei.com>,
         Sudeep Holla <sudeep.holla@arm.com>,
@@ -38,49 +41,56 @@ Cc:     Christoph Hellwig <hch@infradead.org>,
         jean-philippe <jean-philippe@linaro.org>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         kenneth-lee-2012@foxmail.com, Wangzhou <wangzhou1@hisilicon.com>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org,
-        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/2] PCI: Introduce PCI_FIXUP_IOMMU
-Message-ID: <20200527090142.GC179718@kroah.com>
-References: <1590493749-13823-1-git-send-email-zhangfei.gao@linaro.org>
- <1590493749-13823-2-git-send-email-zhangfei.gao@linaro.org>
- <20200526144644.GA20784@infradead.org>
- <39144dc0-3b04-3127-978b-bd8487dd06e0@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <39144dc0-3b04-3127-978b-bd8487dd06e0@linaro.org>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>,
+        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-pci <linux-pci@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:7K2loUdsuzT4IObBECaTn5y/oTwu9Qnf7fQGq3o3+5XHTkSeubV
+ RkTn504d1Z3tqqH5zotfEfCbYHNzcz7ngEoG4h5+ogwKwxhFOdzfXXT1uY0AWLucWB2PLHR
+ dqkjxVfhTidDANOLpVF1+u7kI0XC3zFrDVIpU5sBiApHBh/4OxfJ/bzSbYnmnvJuFl8225L
+ jAT9cXT8IQvkLTSHkfbQw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:DbAEUAVsBkM=:7+j/lOP7swsqLFFxJSAwFf
+ ItEC3r0lBQC310bf0/c3QzQbF84sZuRnNiMCBE8TLhSAeUv8xxYikqgF650oIKqNymmHdt004
+ F08oVFVZ7aXRpfvfjzEqavIlw8j/Ba95gvaqi3+x/Ncc6rtSxY5xU7cOl9RynkZqVURxlYKLo
+ 4LH7Ws/t0aqA9WXGeQ3k1+u+lfkfcGVir/daeX3QTAXmKku/spJl4u1B+3c+clr1WnFVWg5ar
+ oLk9Ow3KVtUp+KvVJAcvYPa9FuuzDVkUWrgvKr0EwP02DFcRzAqBdIRfvTMw003Rq6+4BIXyM
+ am1JdeZ35CoJGUTxe538lEdwobpe8YPs8+jvs5R5+rqWmex/KC7FyTvX5WX6Gwu2+2v3aPQXj
+ ZiZ1Ik7xwSRDWe0DgulC3XwlE5EyI/Yp8Zxx/dt3ETB7WyDtIX5DFfxAX26bQnIi0kh1S1kkm
+ zJuSO4KrO8HvLJvF/BHhg5xEy1w03Mfq9JMNWZabgxKxd1+gnQw6QHxW3CElkr+t0N0nqD38R
+ xu1XrBBdgctMN74gdHWvaIsNDLVASuOOxKKZBmBwebuQ9twv9IJdWU49lUPxaLRPaAkUq8kpb
+ uP4EwQG4f7mreMQykVlroIbC+XRj3fdte3PFEs570mYw3gWbb2lsEmFtCV/0Hp+ndYulb/D58
+ JgQwRg7AASPjMOo1Aat8IywGuyGp+RxqwQbKsofsnCas2HojPD37fSuxyCGj8RGqiLbn+02EY
+ OQpuJmkC3a32velZ0MjS2ODlSOp8TPOGiGQhZsLoqwauWQCWJlkz9GL3Fzh4bHSiU5Q8VkJbg
+ UJYRC664fnWhVVjS/xKOLJofbn8Sr9EmixSWQ3D+C4mSpPjUjU=
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 26, 2020 at 11:09:57PM +0800, Zhangfei Gao wrote:
-> Hi, Christoph
-> 
-> On 2020/5/26 下午10:46, Christoph Hellwig wrote:
-> > On Tue, May 26, 2020 at 07:49:08PM +0800, Zhangfei Gao wrote:
-> > > Some platform devices appear as PCI but are actually on the AMBA bus,
-> > > and they need fixup in drivers/pci/quirks.c handling iommu_fwnode.
-> > > Here introducing PCI_FIXUP_IOMMU, which is called after iommu_fwnode
-> > > is allocated, instead of reusing PCI_FIXUP_FINAL since it will slow
-> > > down iommu probing as all devices in fixup final list will be
-> > > reprocessed.
-> > Who is going to use this?  I don't see a single user in the series.
-> We will add iommu fixup in drivers/pci/quirks.c, handling
-> 
-> fwspec->can_stall, which is introduced in
-> 
-> https://www.spinics.net/lists/linux-pci/msg94559.html
-> 
-> Unfortunately, the patch does not catch v5.8, so we have to wait.
-> And we want to check whether this is a right method to solve this issue.
+On Wed, May 27, 2020 at 11:00 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Tue, May 26, 2020 at 07:49:07PM +0800, Zhangfei Gao wrote:
+> > Some platform devices appear as PCI but are actually on the AMBA bus,
+>
+> Why would these devices not just show up on the AMBA bus and use all of
+> that logic instead of being a PCI device and having to go through odd
+> fixes like this?
 
-We can't take new apis without a real user, so please submit them all at
-once.
+There is a general move to having hardware be discoverable even with
+ARM processors. Having on-chip devices be discoverable using PCI config
+space is how x86 SoCs usually do it, and that is generally a good thing
+as it means we don't need to describe them in DT
 
-thanks,
+I guess as the hardware designers are still learning about it, this is not
+always done correctly. In general, we can also describe PCI devices on
+DT and do fixups during the probing there, but I suspect that won't work
+as easily using ACPI probing, so the fixup is keyed off the hardware ID,
+again as is common for x86 on-chip devices.
 
-greg k-h
+      Arnd
