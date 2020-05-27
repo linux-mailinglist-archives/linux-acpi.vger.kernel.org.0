@@ -2,147 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CB4E1E50B4
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 May 2020 23:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A9DA1E516B
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 May 2020 00:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726129AbgE0Vs6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 May 2020 17:48:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58442 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725940AbgE0Vs6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 27 May 2020 17:48:58 -0400
-Received: from localhost (mobile-166-175-190-200.mycingular.net [166.175.190.200])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1725613AbgE0WpT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 May 2020 18:45:19 -0400
+Received: from mta-p8.oit.umn.edu ([134.84.196.208]:49812 "EHLO
+        mta-p8.oit.umn.edu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725267AbgE0WpT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 May 2020 18:45:19 -0400
+X-Greylist: delayed 559 seconds by postgrey-1.27 at vger.kernel.org; Wed, 27 May 2020 18:45:18 EDT
+Received: from localhost (unknown [127.0.0.1])
+        by mta-p8.oit.umn.edu (Postfix) with ESMTP id 49XQf73Kxlz9vJbx
+        for <linux-acpi@vger.kernel.org>; Wed, 27 May 2020 22:35:59 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at umn.edu
+Received: from mta-p8.oit.umn.edu ([127.0.0.1])
+        by localhost (mta-p8.oit.umn.edu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id o9wSVrZfW8tQ for <linux-acpi@vger.kernel.org>;
+        Wed, 27 May 2020 17:35:59 -0500 (CDT)
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 32E2420899;
-        Wed, 27 May 2020 21:48:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590616137;
-        bh=VxwMLFdqxnAPqgauCV5/DmruSIHLnC3MfEd40C7RVU8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=IpcKZczFI5hF0S/9QZvgZXV01DR4F6ARqI3uemTIeFK8l/MTr9yu6EHtp015tu7hI
-         mAAnFzMQXfnTBxcLPAZ3Unkl1HD+yThZSGFX10dc/5CuJQPgbMKvHC0Xh4B1YyvFww
-         tNkDwHQBm/+uzNzRpAKSMHCow//9CCvSTA9a4dWQ=
-Date:   Wed, 27 May 2020 16:48:55 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] PCI: Rename _DSM constants to align with PCI Firmware
- specification
-Message-ID: <20200527214855.GA267502@bjorn-Precision-5520>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200526213905.2479381-1-kw@linux.com>
+        by mta-p8.oit.umn.edu (Postfix) with ESMTPS id 49XQf71g2Hz9vJb5
+        for <linux-acpi@vger.kernel.org>; Wed, 27 May 2020 17:35:59 -0500 (CDT)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mta-p8.oit.umn.edu 49XQf71g2Hz9vJb5
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-p8.oit.umn.edu 49XQf71g2Hz9vJb5
+Received: by mail-il1-f200.google.com with SMTP id q2so21722228ild.6
+        for <linux-acpi@vger.kernel.org>; Wed, 27 May 2020 15:35:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umn.edu; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=CpatvuW2oCiIL+IhriroImU7P7m/r0JsGdlS3UL0xRI=;
+        b=epsKr2KQQFASD91Q+FKeGYrbfnjMtu941ofPh58h1X3OFGvYwWvkA8DYxpICLP5JxL
+         igEof6dlVtyaEa7orVWfb0MHPf/bxadZ22yUFUi+7ueMlwvZa6uPRuW3DfRCwN3RgH2K
+         wi7mABV9A6aAXxxxN1tRUmwCBqxr4JXYffQ4XxwGwYRUXg45eLV5q55+tH0lMb6VVnE/
+         DDB3+SRCOfbmNyoWTy5LganvRCPg/iL97DftKHHR4Omxt/KHF4sduSDTBcbEz5TOYAWq
+         9JhrmkckVvHLMp72Xz3tBMfPH94dUU5G5TOoEBPvM7sHIHQvjFZlEpU74xwRkwiJ6mXX
+         Tmsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=CpatvuW2oCiIL+IhriroImU7P7m/r0JsGdlS3UL0xRI=;
+        b=YL5IO9xnYk0PjMsivBD9l2zS48dL7S60w4P3+8fmqsR21bfl6HdED4Ym0uTdWHDmpL
+         C/EBgymukvH757oCsVKsM8vOGayDysmIEFs33e3T01X7VQVmACllITMVQCRu7yB5Qzii
+         pDk8xr3fF7t/7JWUPi1sNzy29O1KtCAo+EAH9m+H7QDr9LkcRk2ZnZodGc6QVVxsfb8r
+         zMxBxRXIzhsxUKX6DX8qMPnKrmwE35Fon/WLkoujN0KC9Z/t+wIsBGXGxHxzt3iHaXQ8
+         B7/o+LJL9bqLoHfiRVlQX8dW3ni41AMn9lRwlvJrZnFCvEMQHOuPxbyxeyYwgsRCpO4h
+         d8ZA==
+X-Gm-Message-State: AOAM533hr3LtD7SVXmOrTl2NDPPuDHIYB5QrDqp/+8PoZQU/D+y74Niu
+        RGUkS82tdyyQwJ4Tqi+33bKjoQrbtRMr0BbLgvxHWmW2nFI1dFnR/OJK2oC2YfEPwIbv4mV9+Gh
+        s+0OUWyAZoPZWzjNQ9ZYZjUJKtw==
+X-Received: by 2002:a05:6e02:e8c:: with SMTP id t12mr483783ilj.186.1590618958817;
+        Wed, 27 May 2020 15:35:58 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJywrYsi6lG1iitaeUz/omV2z7LDZxc73HSoMA4aAWYo8kzkH8F8jJi7zhm/0M8Fqsku4JWGqw==
+X-Received: by 2002:a05:6e02:e8c:: with SMTP id t12mr483768ilj.186.1590618958532;
+        Wed, 27 May 2020 15:35:58 -0700 (PDT)
+Received: from qiushi.dtc.umn.edu (cs-kh5248-02-umh.cs.umn.edu. [128.101.106.4])
+        by smtp.gmail.com with ESMTPSA id o70sm2368169ild.3.2020.05.27.15.35.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2020 15:35:57 -0700 (PDT)
+From:   wu000273@umn.edu
+To:     kjlu@umn.edu
+Cc:     wu000273@umn.edu, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Prashanth Prakash <pprakash@codeaurora.org>,
+        Ashwin Chaugule <ashwin.chaugule@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI: CPPC: Fix reference count leak in acpi_cppc_processor_probe.
+Date:   Wed, 27 May 2020 17:35:51 -0500
+Message-Id: <20200527223551.20156-1-wu000273@umn.edu>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 26, 2020 at 09:39:05PM +0000, Krzysztof Wilczyński wrote:
-> Rename PCI-related _DSM constants to better align them with the PCI
-> Firmware specification (see PCI Firmware Specification, Revision 3.2,
-> Section 4.6., p. 58).  All the constants names should correlate more
-> strongly with the descriptions in the aforementioned specification to
-> make them unambiguous.
-> 
-> Additionally, all of the renamed constants will use the DSM_ prefix,
-> similarly to the PCI _OSC constants that use the OSC_ prefix, to make it
-> clear what these are.
-> 
-> Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
+From: Qiushi Wu <wu000273@umn.edu>
 
-Applied to pci/misc for v5.8, thanks!
+kobject_init_and_add() takes reference even when it fails.
+If this function returns an error, kobject_put() must be called to
+properly clean up the memory associated with the object. Previous
+commit "b8eb718348b8" fixed a similar problem.
 
-> ---
->  drivers/acpi/pci_root.c  |  2 +-
->  drivers/pci/pci-acpi.c   |  4 ++--
->  drivers/pci/pci-label.c  |  4 ++--
->  include/linux/pci-acpi.h | 10 ++++++----
->  4 files changed, 11 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> index ac8ad6cb82aa..ee4d0bf717fd 100644
-> --- a/drivers/acpi/pci_root.c
-> +++ b/drivers/acpi/pci_root.c
-> @@ -938,7 +938,7 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
->  	 * assignments made by firmware for this host bridge.
->  	 */
->  	obj = acpi_evaluate_dsm(ACPI_HANDLE(bus->bridge), &pci_acpi_dsm_guid, 1,
-> -	                        IGNORE_PCI_BOOT_CONFIG_DSM, NULL);
-> +				DSM_PCI_IGNORE_BOOT_CONFIG, NULL);
->  	if (obj && obj->type == ACPI_TYPE_INTEGER && obj->integer.value == 0)
->  		host_bridge->preserve_config = 1;
->  	ACPI_FREE(obj);
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index d21969fba6ab..a2e9f01434de 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -1128,7 +1128,7 @@ void acpi_pci_add_bus(struct pci_bus *bus)
->  		return;
->  
->  	obj = acpi_evaluate_dsm(ACPI_HANDLE(bus->bridge), &pci_acpi_dsm_guid, 3,
-> -				RESET_DELAY_DSM, NULL);
-> +				DSM_PCI_POWER_ON_RESET_DELAY, NULL);
->  	if (!obj)
->  		return;
->  
-> @@ -1193,7 +1193,7 @@ static void pci_acpi_optimize_delay(struct pci_dev *pdev,
->  		pdev->d3cold_delay = 0;
->  
->  	obj = acpi_evaluate_dsm(handle, &pci_acpi_dsm_guid, 3,
-> -				FUNCTION_DELAY_DSM, NULL);
-> +				DSM_PCI_DEVICE_READINESS_DURATIONS, NULL);
->  	if (!obj)
->  		return;
->  
-> diff --git a/drivers/pci/pci-label.c b/drivers/pci/pci-label.c
-> index a5910f942857..69db1fd10f21 100644
-> --- a/drivers/pci/pci-label.c
-> +++ b/drivers/pci/pci-label.c
-> @@ -178,7 +178,7 @@ static int dsm_get_label(struct device *dev, char *buf,
->  		return -1;
->  
->  	obj = acpi_evaluate_dsm(handle, &pci_acpi_dsm_guid, 0x2,
-> -				DEVICE_LABEL_DSM, NULL);
-> +				DSM_PCI_PCIE_DEVICE_NAME, NULL);
->  	if (!obj)
->  		return -1;
->  
-> @@ -218,7 +218,7 @@ static bool device_has_dsm(struct device *dev)
->  		return false;
->  
->  	return !!acpi_check_dsm(handle, &pci_acpi_dsm_guid, 0x2,
-> -				1 << DEVICE_LABEL_DSM);
-> +				1 << DSM_PCI_PCIE_DEVICE_NAME);
->  }
->  
->  static umode_t acpi_index_string_exist(struct kobject *kobj,
-> diff --git a/include/linux/pci-acpi.h b/include/linux/pci-acpi.h
-> index 2d155bfb8fbf..21b32fe47607 100644
-> --- a/include/linux/pci-acpi.h
-> +++ b/include/linux/pci-acpi.h
-> @@ -107,10 +107,12 @@ static inline void acpiphp_check_host_bridge(struct acpi_device *adev) { }
->  #endif
->  
->  extern const guid_t pci_acpi_dsm_guid;
-> -#define IGNORE_PCI_BOOT_CONFIG_DSM	0x05
-> -#define DEVICE_LABEL_DSM		0x07
-> -#define RESET_DELAY_DSM			0x08
-> -#define FUNCTION_DELAY_DSM		0x09
-> +
-> +/* _DSM Definitions for PCI */
-> +#define DSM_PCI_IGNORE_BOOT_CONFIG		0x05
-> +#define DSM_PCI_PCIE_DEVICE_NAME		0x07
-> +#define DSM_PCI_POWER_ON_RESET_DELAY		0x08
-> +#define DSM_PCI_DEVICE_READINESS_DURATIONS	0x09
->  
->  #ifdef CONFIG_PCIE_EDR
->  void pci_acpi_add_edr_notifier(struct pci_dev *pdev);
-> -- 
-> 2.26.2
-> 
+Fixes: 158c998ea44b ("ACPI / CPPC: add sysfs support to compute delivered performance")
+Signed-off-by: Qiushi Wu <wu000273@umn.edu>
+---
+ drivers/acpi/cppc_acpi.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 8b2e89c20c11..067067bc03d4 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -846,6 +846,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
+ 			"acpi_cppc");
+ 	if (ret) {
+ 		per_cpu(cpc_desc_ptr, pr->id) = NULL;
++		kobject_put(&cpc_ptr->kobj);
+ 		goto out_free;
+ 	}
+ 
+-- 
+2.17.1
+
