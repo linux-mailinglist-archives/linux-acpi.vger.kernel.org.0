@@ -2,95 +2,160 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F2441E3E1B
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 May 2020 11:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31E081E3F0B
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 May 2020 12:32:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729557AbgE0JyI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 May 2020 05:54:08 -0400
-Received: from mout.kundenserver.de ([212.227.17.13]:32817 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727064AbgE0JyH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 May 2020 05:54:07 -0400
-Received: from mail-qv1-f47.google.com ([209.85.219.47]) by
- mrelayeu.kundenserver.de (mreue109 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1MBltK-1jjLKT2c6m-00CDQl; Wed, 27 May 2020 11:54:05 +0200
-Received: by mail-qv1-f47.google.com with SMTP id dh1so10830611qvb.13;
-        Wed, 27 May 2020 02:54:05 -0700 (PDT)
-X-Gm-Message-State: AOAM533l6opv8qtsuRCknZJWxN9mxqkxakKQZXRox1ZB6l8pPY/cujqk
-        libGPswclU007e0F2M3O/sNDzmsOyV7OYa0nueM=
-X-Google-Smtp-Source: ABdhPJwFY+9e2QwGxBuOVJhyvZzHkmdup67C33Hon0tX+xYCanXD6siiWNyzzW3vpc4K6tTqx9WsMyOJzXh6HoLxoPA=
-X-Received: by 2002:a05:6214:370:: with SMTP id t16mr24222212qvu.197.1590573244279;
- Wed, 27 May 2020 02:54:04 -0700 (PDT)
+        id S1729844AbgE0Kc3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 May 2020 06:32:29 -0400
+Received: from mga05.intel.com ([192.55.52.43]:19762 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728930AbgE0Kc3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 27 May 2020 06:32:29 -0400
+IronPort-SDR: /bRv1tMuHfIms/3R/Ge7C+7TORWO0ZwPsUq+Ocf8JQPidDY6QwGV98WdzytmQXbAWpaZyB0OcG
+ TJCf17U6n/Lg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2020 03:32:29 -0700
+IronPort-SDR: dZG3PcYY/W3GkNcEuDtFHcEQkBJK6zp+IuvNBRuf8ovrabxKhxdmJSc/krZknkjCzLZuJAAVQK
+ A2Mg2joCpcHQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,441,1583222400"; 
+   d="scan'208";a="284761056"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 27 May 2020 03:32:27 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jdtMI-000Hjv-JG; Wed, 27 May 2020 18:32:26 +0800
+Date:   Wed, 27 May 2020 18:31:47 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ e14ff33f1ff98f45d4bc39c136cb4c6b97828f2f
+Message-ID: <5ece4193.2xwFVVIvNID8th7c%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <1590493749-13823-1-git-send-email-zhangfei.gao@linaro.org> <20200527090007.GA179718@kroah.com>
-In-Reply-To: <20200527090007.GA179718@kroah.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 27 May 2020 11:53:48 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a35fjXt1F2hJygup5gWfjPHZTuU+VD69K5uzrNhhgu0Pw@mail.gmail.com>
-Message-ID: <CAK8P3a35fjXt1F2hJygup5gWfjPHZTuU+VD69K5uzrNhhgu0Pw@mail.gmail.com>
-Subject: Re: [PATCH 0/2] Introduce PCI_FIXUP_IOMMU
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Zhangfei Gao <zhangfei.gao@linaro.org>,
-        Joerg Roedel <joro@8bytes.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        jean-philippe <jean-philippe@linaro.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        kenneth-lee-2012@foxmail.com, Wangzhou <wangzhou1@hisilicon.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-pci <linux-pci@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:7K2loUdsuzT4IObBECaTn5y/oTwu9Qnf7fQGq3o3+5XHTkSeubV
- RkTn504d1Z3tqqH5zotfEfCbYHNzcz7ngEoG4h5+ogwKwxhFOdzfXXT1uY0AWLucWB2PLHR
- dqkjxVfhTidDANOLpVF1+u7kI0XC3zFrDVIpU5sBiApHBh/4OxfJ/bzSbYnmnvJuFl8225L
- jAT9cXT8IQvkLTSHkfbQw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:DbAEUAVsBkM=:7+j/lOP7swsqLFFxJSAwFf
- ItEC3r0lBQC310bf0/c3QzQbF84sZuRnNiMCBE8TLhSAeUv8xxYikqgF650oIKqNymmHdt004
- F08oVFVZ7aXRpfvfjzEqavIlw8j/Ba95gvaqi3+x/Ncc6rtSxY5xU7cOl9RynkZqVURxlYKLo
- 4LH7Ws/t0aqA9WXGeQ3k1+u+lfkfcGVir/daeX3QTAXmKku/spJl4u1B+3c+clr1WnFVWg5ar
- oLk9Ow3KVtUp+KvVJAcvYPa9FuuzDVkUWrgvKr0EwP02DFcRzAqBdIRfvTMw003Rq6+4BIXyM
- am1JdeZ35CoJGUTxe538lEdwobpe8YPs8+jvs5R5+rqWmex/KC7FyTvX5WX6Gwu2+2v3aPQXj
- ZiZ1Ik7xwSRDWe0DgulC3XwlE5EyI/Yp8Zxx/dt3ETB7WyDtIX5DFfxAX26bQnIi0kh1S1kkm
- zJuSO4KrO8HvLJvF/BHhg5xEy1w03Mfq9JMNWZabgxKxd1+gnQw6QHxW3CElkr+t0N0nqD38R
- xu1XrBBdgctMN74gdHWvaIsNDLVASuOOxKKZBmBwebuQ9twv9IJdWU49lUPxaLRPaAkUq8kpb
- uP4EwQG4f7mreMQykVlroIbC+XRj3fdte3PFEs570mYw3gWbb2lsEmFtCV/0Hp+ndYulb/D58
- JgQwRg7AASPjMOo1Aat8IywGuyGp+RxqwQbKsofsnCas2HojPD37fSuxyCGj8RGqiLbn+02EY
- OQpuJmkC3a32velZ0MjS2ODlSOp8TPOGiGQhZsLoqwauWQCWJlkz9GL3Fzh4bHSiU5Q8VkJbg
- UJYRC664fnWhVVjS/xKOLJofbn8Sr9EmixSWQ3D+C4mSpPjUjU=
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 27, 2020 at 11:00 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, May 26, 2020 at 07:49:07PM +0800, Zhangfei Gao wrote:
-> > Some platform devices appear as PCI but are actually on the AMBA bus,
->
-> Why would these devices not just show up on the AMBA bus and use all of
-> that logic instead of being a PCI device and having to go through odd
-> fixes like this?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: e14ff33f1ff98f45d4bc39c136cb4c6b97828f2f  Merge branch 'pm-core' into bleeding-edge
 
-There is a general move to having hardware be discoverable even with
-ARM processors. Having on-chip devices be discoverable using PCI config
-space is how x86 SoCs usually do it, and that is generally a good thing
-as it means we don't need to describe them in DT
+elapsed time: 1536m
 
-I guess as the hardware designers are still learning about it, this is not
-always done correctly. In general, we can also describe PCI devices on
-DT and do fixups during the probing there, but I suspect that won't work
-as easily using ACPI probing, so the fixup is keyed off the hardware ID,
-again as is common for x86 on-chip devices.
+configs tested: 100
+configs skipped: 3
 
-      Arnd
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm                         s3c6400_defconfig
+m68k                             allmodconfig
+arm                           spitz_defconfig
+xtensa                          iss_defconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+i386                              allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+csky                             allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                                defconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20200526
+i386                 randconfig-a004-20200526
+i386                 randconfig-a003-20200526
+i386                 randconfig-a006-20200526
+i386                 randconfig-a002-20200526
+i386                 randconfig-a005-20200526
+i386                 randconfig-a013-20200526
+i386                 randconfig-a015-20200526
+i386                 randconfig-a012-20200526
+i386                 randconfig-a011-20200526
+i386                 randconfig-a016-20200526
+i386                 randconfig-a014-20200526
+x86_64               randconfig-a006-20200527
+x86_64               randconfig-a002-20200527
+x86_64               randconfig-a005-20200527
+x86_64               randconfig-a003-20200527
+x86_64               randconfig-a004-20200527
+x86_64               randconfig-a001-20200527
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc64                             defconfig
+sparc64                          allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+sparc64                           allnoconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
