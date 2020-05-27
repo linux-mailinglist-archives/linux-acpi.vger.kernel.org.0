@@ -2,86 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E4341E4C4B
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 May 2020 19:46:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D0F01E4CF1
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 May 2020 20:18:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728337AbgE0Rqf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 May 2020 13:46:35 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:39044 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726487AbgE0Rqf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 May 2020 13:46:35 -0400
-Received: by mail-ot1-f67.google.com with SMTP id d7so226018ote.6
-        for <linux-acpi@vger.kernel.org>; Wed, 27 May 2020 10:46:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pQbLHTo4crsvMnRjC344nlt//ak/qzoSH3shsybm79A=;
-        b=Dg9NW69JHPlqMC24PWv3eEDr36zl+2Gd+yfiDZ/o54ChZXgHBzETyK4zXtyC5MpWd5
-         Jg6jFW/8OI4F/PhOlqN+Gv+609z7g6ahjEWafMX4wgZYJLOe5JNmKqv8eqacuC6j4rZ8
-         IuO1vJkGsZt7atoE7TQM3yPCZJERgma4tfVGpsQV2ZK6qQDqAFRVZTDeSxQMgubl/pXA
-         zpPzCOrW1pKOkNWwrFvJpXmaGGllesmwqDmIH2uWZscKde3j5jJisUCmWCM9rbBAux9K
-         7kzU1UYxYTqlOh90WW48u/tf4AfzB302S/iQ6hXg5WWL43CA3acz+9wfUjCpHno4oAI+
-         imVg==
-X-Gm-Message-State: AOAM531fU7qfz2JXrbZAF8DcQD+9/FGaNtibsS2Y1fzjH60k1fNtI6K8
-        TvSEoaipE4JTtbmZ3OVn7Xg2AljQg82c8AOHEKg=
-X-Google-Smtp-Source: ABdhPJwtOFPCtxbCCIWLWrOpkgQeHxHU6mkLk9gL7x5stU7v4LLANlnMV2B/eSqo4pPrjAGPo8cYVRXRGDKWlmoolw4=
-X-Received: by 2002:a9d:6c0f:: with SMTP id f15mr5284988otq.118.1590601594497;
- Wed, 27 May 2020 10:46:34 -0700 (PDT)
+        id S2391934AbgE0SSp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 May 2020 14:18:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54726 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2391932AbgE0SSp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 27 May 2020 14:18:45 -0400
+Received: from localhost (mobile-166-175-190-200.mycingular.net [166.175.190.200])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3CF692075A;
+        Wed, 27 May 2020 18:18:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590603524;
+        bh=IlJRE+s/Xn0kFANnhdpCDcIhPKRLpygy8ad6xlPlHjQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=nIx2hX8lM30uXBDTL7TuhND9kQ3G+qZ++mUq5WECUp59CfqdUpYK43QoUK7AXlVPf
+         KxTUevqFBycL9TlKq7SmWveEDn1K/rg1pDaaEGJos75PWipKFqulr3bGwuDJBHuVi1
+         7/+Jn7myhnHFa+KsZWLZ+HqvliJJB2ISAncHJDyU=
+Date:   Wed, 27 May 2020 13:18:42 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Zhangfei Gao <zhangfei.gao@linaro.org>
+Cc:     Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        jean-philippe <jean-philippe@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        kenneth-lee-2012@foxmail.com, Wangzhou <wangzhou1@hisilicon.com>,
+        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        iommu@lists.linux-foundation.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH 0/2] Introduce PCI_FIXUP_IOMMU
+Message-ID: <20200527181842.GA256680@bjorn-Precision-5520>
 MIME-Version: 1.0
-References: <1696561.dScFM4BVNv@c100> <CAJZ5v0hAYRb9gZ8s=bZQ1NQrm5uUk5eLhLMwj2+pR2Apmd+WfA@mail.gmail.com>
- <5786623.y7pTLF2AKN@c100>
-In-Reply-To: <5786623.y7pTLF2AKN@c100>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 27 May 2020 19:46:23 +0200
-Message-ID: <CAJZ5v0hJ4o3nkJOUFEkvRBekWjm2YXfL1UOUBy2RK3VepMOdFg@mail.gmail.com>
-Subject: Re: Remove last acpi procfs dirs after being marked deprecated for a decade
-To:     Thomas Renninger <trenn@suse.de>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        "Zhang, Rui" <rui.zhang@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1590493749-13823-1-git-send-email-zhangfei.gao@linaro.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 27, 2020 at 6:07 PM Thomas Renninger <trenn@suse.de> wrote:
->
-> Am Mittwoch, 27. Mai 2020, 17:49:09 CEST schrieb Rafael J. Wysocki:
-> > On Wed, May 27, 2020 at 5:33 PM Thomas Renninger <trenn@suse.de> wrote:
-> > > Kernel development should not be hindered anymore by this absolutely
-> > > outdated stuff.
-> >
-> > Well, this is a bit vague.
-> >
-> > I'm not against making this change, but why do it now?  Is there
-> > anything in particular that cannot be done without it?
->
-> Because of the deprecated message being shown on laptops booting with
-> the option enabled. I got a bugreport about it recently.
->
-> I could not please check_patch to properly include this commit id
-> (recon the double quotes in the title):
->
-> e63f6e28dda6de3de2392ddca321e211fd860925
-> Date:   Mon Jul 7 01:13:46 2014 +0200
->
->     Revert "ACPI / AC: Remove AC's proc directory."
->
->     Revert commit ab0fd674d6ce (ACPI / AC: Remove AC's proc directory.),
->     because some old tools (e.g. kpowersave from kde 3.5.10) are still
->     using /proc/acpi/ac_adapter.
->
->     Fixes: ab0fd674d6ce (ACPI / AC: Remove AC's proc directory.)
->
->
-> kpowersave was written by myself and I can say for sure, that this stuff
-> is more than outdated.
+On Tue, May 26, 2020 at 07:49:07PM +0800, Zhangfei Gao wrote:
+> Some platform devices appear as PCI but are actually on the AMBA bus,
+> and they need fixup in drivers/pci/quirks.c handling iommu_fwnode.
+> Here introducing PCI_FIXUP_IOMMU, which is called after iommu_fwnode
+> is allocated, instead of reusing PCI_FIXUP_FINAL since it will slow
+> down iommu probing as all devices in fixup final list will be
+> reprocessed, suggested by Joerg, [1]
 
-Fair enough, but I'd rather stage it for 5.9 to give it a full cycle
-of baking in linux-next.
+Is this slowdown significant?  We already iterate over every device
+when applying PCI_FIXUP_FINAL quirks, so if we used the existing
+PCI_FIXUP_FINAL, we wouldn't be adding a new loop.  We would only be
+adding two more iterations to the loop in pci_do_fixups() that tries
+to match quirks against the current device.  I doubt that would be a
+measurable slowdown.
 
-Thanks!
+> For example:
+> Hisilicon platform device need fixup in
+> drivers/pci/quirks.c handling fwspec->can_stall, which is introduced in [2]
+> 
+> +static void quirk_huawei_pcie_sva(struct pci_dev *pdev)
+> +{
+> +    struct iommu_fwspec *fwspec;
+> +
+> +    pdev->eetlp_prefix_path = 1;
+> +    fwspec = dev_iommu_fwspec_get(&pdev->dev);
+> +    if (fwspec)
+> +        fwspec->can_stall = 1;
+> +}
+> +
+> +DECLARE_PCI_FIXUP_IOMMU(PCI_VENDOR_ID_HUAWEI, 0xa250, quirk_huawei_pcie_sva);
+> +DECLARE_PCI_iFIXUP_IOMMU(PCI_VENDOR_ID_HUAWEI, 0xa251, quirk_huawei_pcie_sva); 
+> 
+> [1] https://www.spinics.net/lists/iommu/msg44591.html
+> [2] https://www.spinics.net/lists/linux-pci/msg94559.html
+
+If you reference these in the commit logs, please use lore.kernel.org
+links instead of spinics.
+
+> Zhangfei Gao (2):
+>   PCI: Introduce PCI_FIXUP_IOMMU
+>   iommu: calling pci_fixup_iommu in iommu_fwspec_init
+> 
+>  drivers/iommu/iommu.c             | 4 ++++
+>  drivers/pci/quirks.c              | 7 +++++++
+>  include/asm-generic/vmlinux.lds.h | 3 +++
+>  include/linux/pci.h               | 8 ++++++++
+>  4 files changed, 22 insertions(+)
+> 
+> -- 
+> 2.7.4
+> 
