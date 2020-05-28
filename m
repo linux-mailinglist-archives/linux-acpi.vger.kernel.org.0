@@ -2,81 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66D5E1E5EB0
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 May 2020 13:50:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF14E1E6396
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 May 2020 16:19:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388491AbgE1Lu0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 May 2020 07:50:26 -0400
-Received: from mail-oo1-f67.google.com ([209.85.161.67]:44936 "EHLO
-        mail-oo1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388480AbgE1LuZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 May 2020 07:50:25 -0400
-Received: by mail-oo1-f67.google.com with SMTP id u40so2700353ooi.11;
-        Thu, 28 May 2020 04:50:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XLJo2hS383AKVmW050P0lpuDCi+PHLJHoR9wahnQtWc=;
-        b=dRdL4y045cp1ZR/cq/uemDDMCoGySk2ccmID2d/SmIiydSLjsl6Zm655+qdmxfYzjX
-         8znY7/8Bml5+kd1xP+DSWnCxMZE0FmhgLIXZO+N7wqnm+Sl3b/4hOQ8DMxsA8hOxzJY9
-         3hyVz2Ng+tA7hpIiKeh4D2YYWFNI244VgWR4OBsxFqihVrpl5fW6k00VjIwbAplxBi+L
-         6RmAZbJ+RsDK6Q36RCS30MNEpXJ1nU+de1JO/8uMxAchDqfPAwkP5YjMjA/7ytELyHaj
-         9hgGqu0LgIWtcFOzhbn3qGOqKE+hyuMUaS6sxV/W9FqiBd1w7tWLX70Dn1TY7fp1ASCu
-         Y3ow==
-X-Gm-Message-State: AOAM531DAugSCzKZpdMOO5WRjePbdacVcK4OBfuYGC1G2/pJNnPkWOg+
-        Qwk8D5XUAHBwU0JSm62/cJMZG1/rpZFtfk5GX4w=
-X-Google-Smtp-Source: ABdhPJyXSh7LDat7dDoI7pFL7G1eRu8tjzqfouImv88Dg/hXTeHDI7LOUBh4MsuEIm0PHOhyaTKRrDYxG5jGh0jqasc=
-X-Received: by 2002:a4a:e0d1:: with SMTP id e17mr2146272oot.1.1590666623991;
- Thu, 28 May 2020 04:50:23 -0700 (PDT)
+        id S2390928AbgE1OTC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 May 2020 10:19:02 -0400
+Received: from mga07.intel.com ([134.134.136.100]:64022 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390880AbgE1OTC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 28 May 2020 10:19:02 -0400
+IronPort-SDR: F1YHOZxgWvisaKeYo5wHIBZ374lphDxlEIcNt59IjLcQt9W2ZGil7ghF/McbwN/biuzrlmyr6W
+ N16Qc21O3QbA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2020 07:19:01 -0700
+IronPort-SDR: Msf4DbFpLFycq+neVAka0xHfjZGWVNji1fJ2hAdesFwsSSWEgS/9kaV5V+D6+AQDVbFNQpKkcm
+ MQ/DyYaAkK5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,444,1583222400"; 
+   d="scan'208";a="442964121"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga005.jf.intel.com with ESMTP; 28 May 2020 07:18:59 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id D2A10230; Thu, 28 May 2020 17:18:58 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-i2c@vger.kernel.org, Wolfram Sang <wsa@kernel.org>,
+        linux-acpi@vger.kernel.org
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1] i2c: acpi: Drop double check for ACPI companion device
+Date:   Thu, 28 May 2020 17:18:58 +0300
+Message-Id: <20200528141858.82648-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200527211717.14956-1-wu000273@umn.edu>
-In-Reply-To: <20200527211717.14956-1-wu000273@umn.edu>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 28 May 2020 13:50:12 +0200
-Message-ID: <CAJZ5v0gTQVMYgfXNUs=3jDv0zzT3RVuwJ_OfzzOwTQkT-0W=ZQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: sysfs: Fix reference count leak in acpi_sysfs_add_hotplug_profile.
-To:     wu000273@umn.edu
-Cc:     Kangjie Lu <kjlu@umn.edu>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Toshi Kani <toshi.kani@hp.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 27, 2020 at 11:17 PM <wu000273@umn.edu> wrote:
->
-> From: Qiushi Wu <wu000273@umn.edu>
->
-> kobject_init_and_add() takes reference even when it fails.
-> Thus, when kobject_init_and_add() returns an error,
-> kobject_put() must be called to properly clean up the kobject.
->
-> Fixes: 3f8055c35836 ("ACPI / hotplug: Introduce user space interface for hotplug profiles")
-> Signed-off-by: Qiushi Wu <wu000273@umn.edu>
-> ---
->  drivers/acpi/sysfs.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-> index c60d2c6d31d6..3a89909b50a6 100644
-> --- a/drivers/acpi/sysfs.c
-> +++ b/drivers/acpi/sysfs.c
-> @@ -993,8 +993,10 @@ void acpi_sysfs_add_hotplug_profile(struct acpi_hotplug_profile *hotplug,
->
->         error = kobject_init_and_add(&hotplug->kobj,
->                 &acpi_hotplug_profile_ktype, hotplug_kobj, "%s", name);
-> -       if (error)
-> +       if (error) {
-> +               kobject_put(&hotplug->kobj);
->                 goto err_out;
-> +       }
->
->         kobject_uevent(&hotplug->kobj, KOBJ_ADD);
->         return;
-> --
+acpi_dev_get_resources() does perform the NULL pointer check against
+ACPI companion device which is given as function parameter. Thus,
+there is no need to duplicate this check in the caller.
 
-Applied as 5.8 material, thanks!
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/i2c/i2c-core-acpi.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index c8f42f2037cb..2ade99b105b9 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -468,16 +468,12 @@ struct notifier_block i2c_acpi_notifier = {
+ struct i2c_client *i2c_acpi_new_device(struct device *dev, int index,
+ 				       struct i2c_board_info *info)
+ {
++	struct acpi_device *adev = ACPI_COMPANION(dev);
+ 	struct i2c_acpi_lookup lookup;
+ 	struct i2c_adapter *adapter;
+-	struct acpi_device *adev;
+ 	LIST_HEAD(resource_list);
+ 	int ret;
+ 
+-	adev = ACPI_COMPANION(dev);
+-	if (!adev)
+-		return ERR_PTR(-EINVAL);
+-
+ 	memset(&lookup, 0, sizeof(lookup));
+ 	lookup.info = info;
+ 	lookup.device_handle = acpi_device_handle(adev);
+-- 
+2.26.2
+
