@@ -2,77 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF14E1E6396
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 May 2020 16:19:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 504D01E667E
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 May 2020 17:45:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390928AbgE1OTC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 May 2020 10:19:02 -0400
-Received: from mga07.intel.com ([134.134.136.100]:64022 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390880AbgE1OTC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 28 May 2020 10:19:02 -0400
-IronPort-SDR: F1YHOZxgWvisaKeYo5wHIBZ374lphDxlEIcNt59IjLcQt9W2ZGil7ghF/McbwN/biuzrlmyr6W
- N16Qc21O3QbA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2020 07:19:01 -0700
-IronPort-SDR: Msf4DbFpLFycq+neVAka0xHfjZGWVNji1fJ2hAdesFwsSSWEgS/9kaV5V+D6+AQDVbFNQpKkcm
- MQ/DyYaAkK5Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,444,1583222400"; 
-   d="scan'208";a="442964121"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga005.jf.intel.com with ESMTP; 28 May 2020 07:18:59 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id D2A10230; Thu, 28 May 2020 17:18:58 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c@vger.kernel.org, Wolfram Sang <wsa@kernel.org>,
-        linux-acpi@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1] i2c: acpi: Drop double check for ACPI companion device
-Date:   Thu, 28 May 2020 17:18:58 +0300
-Message-Id: <20200528141858.82648-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.26.2
+        id S2404592AbgE1PpP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 May 2020 11:45:15 -0400
+Received: from mx3.molgen.mpg.de ([141.14.17.11]:51223 "EHLO mx1.molgen.mpg.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2404587AbgE1PpN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 28 May 2020 11:45:13 -0400
+Received: from [192.168.0.7] (ip5f5af798.dynamic.kabel-deutschland.de [95.90.247.152])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: pmenzel)
+        by mx.molgen.mpg.de (Postfix) with ESMTPSA id 66828206442FF;
+        Thu, 28 May 2020 17:45:11 +0200 (CEST)
+To:     Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Thomas Lendacky <Thomas.Lendacky@amd.com>,
+        Mario Limonciello <mario.limonciello@dell.com>
+From:   Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: AMD Ryzen: pci 0000:00:00.2: can't derive routing for PCI INT A
+Message-ID: <8579bd14-e369-1141-917b-204d20cff528@molgen.mpg.de>
+Date:   Thu, 28 May 2020 17:45:10 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-acpi_dev_get_resources() does perform the NULL pointer check against
-ACPI companion device which is given as function parameter. Thus,
-there is no need to duplicate this check in the caller.
+Dear Linux folks,
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/i2c/i2c-core-acpi.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index c8f42f2037cb..2ade99b105b9 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -468,16 +468,12 @@ struct notifier_block i2c_acpi_notifier = {
- struct i2c_client *i2c_acpi_new_device(struct device *dev, int index,
- 				       struct i2c_board_info *info)
- {
-+	struct acpi_device *adev = ACPI_COMPANION(dev);
- 	struct i2c_acpi_lookup lookup;
- 	struct i2c_adapter *adapter;
--	struct acpi_device *adev;
- 	LIST_HEAD(resource_list);
- 	int ret;
- 
--	adev = ACPI_COMPANION(dev);
--	if (!adev)
--		return ERR_PTR(-EINVAL);
--
- 	memset(&lookup, 0, sizeof(lookup));
- 	lookup.info = info;
- 	lookup.device_handle = acpi_device_handle(adev);
--- 
-2.26.2
+On most (if not all) AMD Ryzen systems, including the Dell OptiPlex 
+5055, [1][2], Linux prints the warning below:
 
+     $ dmesg --level=warn
+     [    0.871377] pci 0000:00:00.2: can't derive routing for PCI INT A
+     [    0.871732] pci 0000:00:00.2: PCI INT A: not connected
+     [    0.884890]  PPR NX GT IA GA PC GA_vAPIC
+     $ more /proc/version
+     Linux version 5.4.39.mx64.334 (root@lol.molgen.mpg.de) (gcc version 
+7.5.0 (GCC)) #1 SMP Thu May 7 14:27:50 CEST 2020
+     pmenzel@donut:~$ dmesg | grep 'DMI:'
+     [    0.000000] DMI: Dell Inc. OptiPlex 5055 Ryzen CPU/0P03DX, BIOS 
+1.1.20 05/31/2019
+
+The system seems to work fine. What effect might be caused by the 
+missing routing information?
+
+I assume this is a firmware issue? Can I patch the ACPI tables to 
+provide the correct information?
+
+Should this indeed be an AMD AGESA issue, it be great, if somebody with 
+contacts at AMD could be forward this to the appropriate folks.
+
+
+Kind regards,
+
+Paul
+
+
+[1]: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1804589
+[2]: https://bugs.launchpad.net/dell-sputnik/+bug/1881121
