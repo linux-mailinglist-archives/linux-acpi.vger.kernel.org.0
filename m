@@ -2,84 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08DC01E5E8F
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 May 2020 13:42:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3903B1E5EAE
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 May 2020 13:49:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388449AbgE1LmZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 May 2020 07:42:25 -0400
-Received: from mail-oo1-f66.google.com ([209.85.161.66]:36776 "EHLO
-        mail-oo1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388427AbgE1LmY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 May 2020 07:42:24 -0400
-Received: by mail-oo1-f66.google.com with SMTP id 18so917748ooy.3;
-        Thu, 28 May 2020 04:42:24 -0700 (PDT)
+        id S2388490AbgE1Ltx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 May 2020 07:49:53 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:42100 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388480AbgE1Ltw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 May 2020 07:49:52 -0400
+Received: by mail-ot1-f67.google.com with SMTP id z3so2097512otp.9;
+        Thu, 28 May 2020 04:49:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=nY9Gt3iZipKBlqZgOSR97jgJqUKPR4PYBCZrqkRD0Pc=;
-        b=JzsFST+jErypp1LcyKrkMqwK2FA07sE74xqXLiSkLmCsZWR6tN0H4LXznJNgjHugB/
-         +uKwggk8Bi+cCv4BIs+kQc9qyLrZezCoZLTcf/+ATZsveKBTUAdp1Y+bhtUMo9gtEBez
-         LQhMKntvtbSP101g2+vVqHWDjzDyKF3HL5DjWiMpfTDyn5+hg7zJS1mLrlburLgRqbDv
-         5Wr5Md3BmrKpEuioLxLC8erJ+9wc+LyA14XThSO3o5150Kg/Z+1UfuMzjo69cuUot5uD
-         nXSPC/NbSp9XQrFLkxOhlpbmcKtaqzNSdJCOV5f0wdhoM3+HApgj4rHRL0dDsQKiLs9E
-         HfJA==
-X-Gm-Message-State: AOAM530xE9jiTjEbYjF4UzRMdMEMuG/Z3ouK3y1zGJsJXqOulT57Mzsk
-        RiFzw2w+vTSWwBQ8hyDAii9AEy52Lyy7nP8wdx4=
-X-Google-Smtp-Source: ABdhPJzCOOgSLNbe3FHx2kCPFngkCbw8PjNF5b6OpmqSKFrub/Fk3eVTdV8/ZRvazaCaBO22RP7sIbATlLWeAXMMtZk=
-X-Received: by 2002:a4a:e0d1:: with SMTP id e17mr2124959oot.1.1590666143690;
- Thu, 28 May 2020 04:42:23 -0700 (PDT)
+        bh=AaBonLX68Shl/cr/OjMysREG0VPDSDKN16LVHgtCeIs=;
+        b=cVpozyuUr3Kz6PokwwRmyuF8DcsbX3DFtbc5GUkHlaz6isQBHFWyGfJxRYvnZqk6PZ
+         G19YXJ0fRyYUA4cUZHJkWoej2TIWaNbkNCJgl2uKyk1+A9bDd6lFrNZkIopJhWxkLiwE
+         qhAIyQK6enwDM/ruG0Ga9EpP5X6KB75E/tSdRr8YUPcFWBuQIfc95cGpqdxXm15tVLGP
+         AjIQ2fNPk+BoOVLl2PFiUe4mPthfTaqo1niTTmtncQapKUj3nPIVa5VKblqb9/6HSoSL
+         cU21TJXIPEBHV/+Qc5fUfCuDuupkb4TIdRJFN7Wobzr3AkM9VzT7jAJ/7AUCijvEV7AV
+         JLgw==
+X-Gm-Message-State: AOAM533S4V+p16086+6BVPZSDclZVt9uS8XgRDfqVJAoceThrsdradBO
+        40yyXTg+hjD7VUji4HkIeetW68K5iB5n/AlgkJI=
+X-Google-Smtp-Source: ABdhPJxVYdkmtmI3XFgV3IC8O4r6Rc3v9KMkBMkdt1MoxRgw7rciBYu0q2weGZJoqCjn9VcR6myNO8WuhuiMdREtyHI=
+X-Received: by 2002:a9d:3d05:: with SMTP id a5mr1982592otc.262.1590666591853;
+ Thu, 28 May 2020 04:49:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <1590655125-23949-1-git-send-email-yangyicong@hisilicon.com>
-In-Reply-To: <1590655125-23949-1-git-send-email-yangyicong@hisilicon.com>
+References: <20200527223551.20156-1-wu000273@umn.edu>
+In-Reply-To: <20200527223551.20156-1-wu000273@umn.edu>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 28 May 2020 13:42:10 +0200
-Message-ID: <CAJZ5v0g9O5r7tpLMN7SJu+KZEeEcdeTKeQ=hEo5r+VJzc6g08Q@mail.gmail.com>
-Subject: Re: [PATCH] PCI/ASPM: Print correct ASPM status when _OSC failed
-To:     Yicong Yang <yangyicong@hisilicon.com>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PCI <linux-pci@vger.kernel.org>,
+Date:   Thu, 28 May 2020 13:49:40 +0200
+Message-ID: <CAJZ5v0jj60jvU_0C2mpXaK0-eeHwhzSMZCtUpAKJRtjbU2H6Mw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: CPPC: Fix reference count leak in acpi_cppc_processor_probe.
+To:     wu000273@umn.edu
+Cc:     Kangjie Lu <kjlu@umn.edu>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Prashanth Prakash <pprakash@codeaurora.org>,
+        Ashwin Chaugule <ashwin.chaugule@linaro.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linuxarm <linuxarm@huawei.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, May 28, 2020 at 10:39 AM Yicong Yang <yangyicong@hisilicon.com> wrote:
+On Thu, May 28, 2020 at 12:45 AM <wu000273@umn.edu> wrote:
 >
-> Previously we'll print wrong ASPM status if _OSC method return
-> failed. For example, if ASPM is enabled by setting pcie_aspm=force,
-> we get message below:
+> From: Qiushi Wu <wu000273@umn.edu>
 >
->     acpi PNP0A08:02: _OSC failed (AE_NOT_FOUND); disabling ASPM
+> kobject_init_and_add() takes reference even when it fails.
+> If this function returns an error, kobject_put() must be called to
+> properly clean up the memory associated with the object. Previous
+> commit "b8eb718348b8" fixed a similar problem.
 >
-> Fix it and print correct ASPM status when _OSC failed.
->
-> Fixes: 1ad61b612b95 ("PCI/ACPI: Correct error message for ASPM disabling")
-> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> Fixes: 158c998ea44b ("ACPI / CPPC: add sysfs support to compute delivered performance")
+> Signed-off-by: Qiushi Wu <wu000273@umn.edu>
 > ---
->  drivers/acpi/pci_root.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/cppc_acpi.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> index ac8ad6c..5140b26 100644
-> --- a/drivers/acpi/pci_root.c
-> +++ b/drivers/acpi/pci_root.c
-> @@ -456,7 +456,7 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
->
->                 dev_info(&device->dev, "_OSC failed (%s)%s\n",
->                          acpi_format_exception(status),
-> -                        pcie_aspm_support_enabled() ? "; disabling ASPM" : "");
-> +                        pcie_aspm_support_enabled() ? "" : "; disabling ASPM");
->                 return;
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 8b2e89c20c11..067067bc03d4 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -846,6 +846,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
+>                         "acpi_cppc");
+>         if (ret) {
+>                 per_cpu(cpc_desc_ptr, pr->id) = NULL;
+> +               kobject_put(&cpc_ptr->kobj);
+>                 goto out_free;
 >         }
 >
 > --
 
-Applied as 5.8 material under the "ACPI: PCI: Fix the ASPM part of the
-_OSC failure message" subject and with a different changelog.
-
-Thanks!
+Applied as 5.8 material, thanks!
