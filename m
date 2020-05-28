@@ -2,80 +2,179 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FBE51E6701
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 May 2020 18:03:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4845A1E6A4E
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 May 2020 21:21:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404695AbgE1QDA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 May 2020 12:03:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47596 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404631AbgE1QC5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 28 May 2020 12:02:57 -0400
-Received: from localhost (p5486c949.dip0.t-ipconnect.de [84.134.201.73])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 12F872071A;
-        Thu, 28 May 2020 16:02:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590681776;
-        bh=EQZAsITFjSTR/q09X/8lN3XhCtq6tnw+2iECXybITcc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cWWZvUeJb6htSFeqHlZSCbfW0IfMKb6k5zowU44QhtYkc9XkdhbdUF1M4kLgaW1nH
-         s4SsVwkVaRvoSuJGQFpjDMyOcDAd7nUGpb7keHjLKE/EJO4ydoElBHAhwnghzoLkWz
-         Q3Jv3rg/4SoNSsB4slytXldS+pMaEh3PfAmq8UJo=
-Date:   Thu, 28 May 2020 18:02:50 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1] i2c: acpi: Drop double check for ACPI companion device
-Message-ID: <20200528160250.GA2875@ninjato>
-References: <20200528141858.82648-1-andriy.shevchenko@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="6TrnltStXW4iwmi0"
-Content-Disposition: inline
-In-Reply-To: <20200528141858.82648-1-andriy.shevchenko@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S2406322AbgE1TVO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 May 2020 15:21:14 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:57514 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406317AbgE1TVJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 May 2020 15:21:09 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id E76512A41B5
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+To:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        kernel@collabora.com
+Subject: [PATCH v4 00/11] Stop monitoring disabled devices
+Date:   Thu, 28 May 2020 21:20:40 +0200
+Message-Id: <20200528192051.28034-1-andrzej.p@collabora.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <Message-ID: <4493c0e4-51aa-3907-810c-74949ff27ca4@samsung.com>
+References: <Message-ID: <4493c0e4-51aa-3907-810c-74949ff27ca4@samsung.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+There is already a reviewed v3 (not to be confused with RFC v3), which can
+be considered for merging:
 
---6TrnltStXW4iwmi0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+https://lore.kernel.org/linux-pm/20200423165705.13585-2-andrzej.p@collabora.com/
 
-On Thu, May 28, 2020 at 05:18:58PM +0300, Andy Shevchenko wrote:
-> acpi_dev_get_resources() does perform the NULL pointer check against
-> ACPI companion device which is given as function parameter. Thus,
-> there is no need to duplicate this check in the caller.
->=20
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Let me cite Bartlomiej Zolnierkiewicz:
 
-Applied to for-next, thanks!
+"I couldn't find the problems with the patch itself (no new issues
+being introduced, all changes seem to be improvements over the current
+situation).
+
+Also the patch is not small but it also not that big and it mostly
+removes the code:
+
+17 files changed, 105 insertions(+), 244 deletions(-)"
+
+There have been raised some concerns about bisectability and about
+introducing "initial_mode" member in struct thermal_zone_params.
+
+This v4 series addresses those concerns: it takes a more gradual
+approach and uses explicit tzd state initialization, hence there are more
+insertions than in v3, and the net effect is -63 lines versus -139 lines
+in v3.
+
+Patch 2/11 converts the 3 drivers which don't store their mode in
+enum thermal_device_mode to do so. Once that is cleared,
+struct thermal_zone_device gains its "mode" member (patch 3/11) and then
+all interested drivers change the location where they store their
+state: instead of storing it in some variable in a driver, they store it
+in struct thermal_zone_device (patch 4/11). Patch 4/11 does not introduce
+other changes. Then get_mode() driver method becomes redundant, and so
+it is removed (patch 5/11). This is the first part of the groundwork.
+
+The second part of the groundwork is to add (patch 6/11) and use (patch
+7/11) helpers for accessing tzd's state from drivers. From this moment
+on the drivers don't access tzd->mode directly. Please note that after
+patch 4/11 all thermal zone devices have their mode implicitly initialized
+to DISABLED, as a result of kzalloc and THERMAL_DEVICE_DISABLED == 0.
+This is not a problem from the point of view of polling them, because
+their state is not considered when deciding to poll or to cease polling.
+In preparation for considering tzd's state when deciding to poll or to
+cease polling it ensured (patch 8/11 and some in patch 7/11) that all the
+drivers are explicitly initialized with regard to their state.
+
+With all that groundwork in place now it makes sense to modify thermal_core
+so that it stops polling DISABLED devices (patch 9/11), which is the
+ultimate purpose of this work.
+
+While at it, some set_mode() implementations only change the polling
+variables to make the core stop polling their drivers, but that is now
+unnecessary and those set_mode() implementations are removed. In other
+implementations polling variables modifications are removed. Some other
+set_mode() implementations are simplified or removed (patch 10/11).
+
+set_mode() is now only called when tzd's mode is about to change. Actual
+setting is performed in thermal_core, in thermal_zone_device_set_mode().
+The meaning of set_mode() callback is actually to notify the driver about
+the mode being changed and giving the driver a chance to oppose such
+a change. To better reflect the purpose of the method it is renamed to
+change_mode() (patch 11/11).
+
+Andrzej Pietrasiewicz (11):
+  acpi: thermal: Fix error handling in the register function
+  thermal: Store thermal mode in a dedicated enum
+  thermal: Add current mode to thermal zone device
+  thermal: Store device mode in struct thermal_zone_device
+  thermal: remove get_mode() operation of drivers
+  thermal: Add mode helpers
+  thermal: Use mode helpers in drivers
+  thermal: Explicitly enable non-changing thermal zone devices
+  thermal: core: Stop polling DISABLED thermal devices
+  thermal: Simplify or eliminate unnecessary set_mode() methods
+  thermal: Rename set_mode() to change_mode()
+
+ drivers/acpi/thermal.c                        | 75 +++++----------
+ .../ethernet/chelsio/cxgb4/cxgb4_thermal.c    |  8 ++
+ .../ethernet/mellanox/mlxsw/core_thermal.c    | 91 ++++---------------
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |  9 +-
+ drivers/platform/x86/acerhdf.c                | 33 +++----
+ drivers/platform/x86/intel_mid_thermal.c      |  6 ++
+ drivers/power/supply/power_supply_core.c      |  9 +-
+ drivers/thermal/armada_thermal.c              |  6 ++
+ drivers/thermal/da9062-thermal.c              | 16 +---
+ drivers/thermal/dove_thermal.c                |  6 ++
+ drivers/thermal/hisi_thermal.c                |  6 +-
+ drivers/thermal/imx_thermal.c                 | 57 ++++--------
+ .../intel/int340x_thermal/int3400_thermal.c   | 43 +++------
+ .../int340x_thermal/int340x_thermal_zone.c    |  5 +
+ drivers/thermal/intel/intel_pch_thermal.c     |  5 +
+ .../thermal/intel/intel_quark_dts_thermal.c   | 34 ++-----
+ drivers/thermal/intel/intel_soc_dts_iosf.c    |  3 +
+ drivers/thermal/intel/x86_pkg_temp_thermal.c  |  6 ++
+ drivers/thermal/kirkwood_thermal.c            |  7 ++
+ drivers/thermal/rcar_thermal.c                |  9 +-
+ drivers/thermal/rockchip_thermal.c            |  6 +-
+ drivers/thermal/spear_thermal.c               |  7 ++
+ drivers/thermal/sprd_thermal.c                |  6 +-
+ drivers/thermal/st/st_thermal.c               |  5 +
+ drivers/thermal/thermal_core.c                | 76 ++++++++++++++--
+ drivers/thermal/thermal_of.c                  | 51 ++---------
+ drivers/thermal/thermal_sysfs.c               | 37 +-------
+ include/linux/thermal.h                       | 19 +++-
+ 28 files changed, 289 insertions(+), 352 deletions(-)
 
 
---6TrnltStXW4iwmi0
-Content-Type: application/pgp-signature; name="signature.asc"
+base-commit: 351f4911a477ae01239c42f771f621d85b06ea10
+-- 
+2.17.1
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl7P4KYACgkQFA3kzBSg
-KbaUjRAAkH5mW+ULUxU3+We5mKm5Y6z3qpQkoMgz57aORgW4xnWpKoAOsrJvDVQk
-cxh4/y9i3FqByU16AkYPCpcCMNnGXkv240uRw0C6kqVQ7ZJzRGVF56cfVjEjbYSi
-htr/Bm0JEY0Tpccb+yaNwIrsdIerq8Eywz4dJEk4qirpwtLScKKrd6oCTsa/Th4Y
-nksfONEJXfbo4IQwGtHtd3pBCuuLWxnSUla2z/Lf7HP/7T9MYGmqBixZ9RTJwBBR
-6lKOqlbAgT4QpfuZxacaJIiPo/Mg+9CYOpACpbrtweYkVSIIU6AMD5v1PGj1h4GL
-/pwt7LSE1WRf1PK8FH6wtfdhKUpYVsRLybgJcEKVRPixVmc/3jAx94CN2qRNNgy+
-bzz1lh3oKyrmULU8tECw5oetzk+g9YXG+I/rGmCJ5y8byfanLH0bRP5bK4JX3vn3
-rchljZQ5JOKvIHWYzKwo24GjVXPR/aaU1HjZtmWyN7FN2mgrqwhbWoEm0QekVqF2
-quZhi7D78yYFVvs0JrguMXAC0sTbnyfy5m7H8uVzxu8I2LV6CZCejzbLD6iXAIor
-FCaommTHtCx0c2Ff+n4rGEOuueQoSQnUqTz2bwx0QPsfMf5Hhz4aBn6VXw2+Yla9
-i07/kDgpELI71aXEVkg5y7S46yxzQSCt1aeYJWgpIO1YtRKPyJA=
-=WR8p
------END PGP SIGNATURE-----
-
---6TrnltStXW4iwmi0--
