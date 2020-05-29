@@ -2,54 +2,21 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C482D1E8283
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 May 2020 17:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6BDA1E8332
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 May 2020 18:09:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727115AbgE2PwI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 29 May 2020 11:52:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53534 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726838AbgE2PwI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 29 May 2020 11:52:08 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D6D4C03E969;
-        Fri, 29 May 2020 08:52:08 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id f3so1515752pfd.11;
-        Fri, 29 May 2020 08:52:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=Kr2DFnvRW9808DjObzViZreH2QLKCskc9zy5dtQmZdI=;
-        b=calztOD7MAQYZJLZ6WlEsjCp2RnV/0HiXuizF4nZHL9DybyCEERhbozciRw3D78NKL
-         vUQ00WTLbGwfhAjfdRq/0M+cyXi0zgLtB9PsEBoWv36Cvdw2VgDG3GX7xMtarrSpSUIH
-         8nX0SsqLpX2eqT2Qy1dRy9csYEEyXxgxRS1QMnQYfq7MIKgm63Q4D4nHxBn2S3/LE7PW
-         tnahKzvdEKXyg5oWiu8DmsR+hq6Jf7EQ72D23nX24ZZFNHnhyHRpTzEQsThwtuQWyOmZ
-         ZMn8vWEGY7fOkBpsj5HCmAGHZ2ASS0GfXqG6JHl+vHiFca5CCJdTFUOg+bL3MMY8wTnk
-         NmCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :mime-version:content-disposition:user-agent;
-        bh=Kr2DFnvRW9808DjObzViZreH2QLKCskc9zy5dtQmZdI=;
-        b=mBQ6qOIQMPtb9I7rmy8xNkZUzr6pazYZ2dBy3I5ubHVJUABGswXBDdGtTr/HoC/5DF
-         /jFUvf5DYT9Qhgp8BN68UUviyH3rvfNyyBv4uJ7OY/Z8pa1oLa61E+QPmc1nMtx9/MnI
-         h5elsbVkvrRG4y9Jjt6ep1zUMejcoUfIJsz+sG2fwI+xDFpGdDfJMnC9ikyYgUItoJmC
-         y95xAeAgDGaMi99GyRBgxEm0QvDsTL4PDXNx4f8nD/NcLD2CWSPxT7ZQKPVIV0uKByx8
-         4h6pVE9AJaR6axs+FtyLCIr/KgDb/g0EPiXfRaE0nV0F6AaYjAlrYHAQWk6bGifIScs1
-         GkqA==
-X-Gm-Message-State: AOAM531VDNfVM5G7uN7lu05UeRAajeIJ6ENYCHmbeu1pNetNGIVTVwB5
-        RmuWwzxYjcygZVDGEQp8Q54=
-X-Google-Smtp-Source: ABdhPJxB71OKpoh+MwI4lnPVWPMWtTaTiNLX8800beLrNOo1twtsI/3nlAS7CbCEk6IwxGp4GEUUUg==
-X-Received: by 2002:a62:174c:: with SMTP id 73mr9027078pfx.71.1590767527890;
-        Fri, 29 May 2020 08:52:07 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id z23sm7074614pga.86.2020.05.29.08.52.07
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 29 May 2020 08:52:07 -0700 (PDT)
-Date:   Fri, 29 May 2020 08:52:06 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+        id S1726616AbgE2QJA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 29 May 2020 12:09:00 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:41062 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725601AbgE2QJA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 29 May 2020 12:09:00 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id E130E2A2DFE
+Subject: Re: [PATCH v4 04/11] thermal: Store device mode in struct
+ thermal_zone_device
+To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
         netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
         platform-driver-x86@vger.kernel.org,
@@ -87,127 +54,66 @@ Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
         Sebastian Reichel <sre@kernel.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Niklas =?iso-8859-1?Q?S=F6derlund?= 
-        <niklas.soderlund@ragnatech.se>, Shawn Guo <shawnguo@kernel.org>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Shawn Guo <shawnguo@kernel.org>,
         "David S . Miller" <davem@davemloft.net>,
         Andy Shevchenko <andy@infradead.org>
-Subject: Re: [PATCH v4 06/11] thermal: Add mode helpers
-Message-ID: <20200529155206.GA158553@roeck-us.net>
+References: <20200529154205.GA157653@roeck-us.net>
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Message-ID: <5010f7df-59d6-92ef-c99a-0dbd715f0ad2@collabora.com>
+Date:   Fri, 29 May 2020 18:08:51 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200529154205.GA157653@roeck-us.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, May 28, 2020 at 09:20:46PM +0200, Andrzej Pietrasiewicz wrote:
-> Prepare for making the drivers not access tzd's private members.
+Hi Guenter,
+
+W dniu 29.05.2020 o 17:42, Guenter Roeck pisze:
+> On Thu, May 28, 2020 at 09:20:44PM +0200, Andrzej Pietrasiewicz wrote:
+>> Prepare for eliminating get_mode().
+>>
+> Might be worthwhile to explain (not only in the subject) what you are
+> doing here.
 > 
-> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-> ---
->  drivers/thermal/thermal_core.c | 53 ++++++++++++++++++++++++++++++++++
->  include/linux/thermal.h        | 13 +++++++++
->  2 files changed, 66 insertions(+)
+>> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+>> ---
+>>   drivers/acpi/thermal.c                        | 18 ++++++----------
+>>   .../ethernet/mellanox/mlxsw/core_thermal.c    | 21 +++++++------------
+>>   drivers/platform/x86/acerhdf.c                | 15 ++++++-------
+>>   drivers/thermal/da9062-thermal.c              |  6 ++----
+>>   drivers/thermal/imx_thermal.c                 | 17 +++++++--------
+>>   .../intel/int340x_thermal/int3400_thermal.c   | 12 +++--------
+>>   .../thermal/intel/intel_quark_dts_thermal.c   | 16 +++++++-------
+>>   drivers/thermal/thermal_of.c                  | 10 +++------
 > 
-> diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-> index 14d3b1b94c4f..f2a5c5ee3455 100644
-> --- a/drivers/thermal/thermal_core.c
-> +++ b/drivers/thermal/thermal_core.c
-> @@ -459,6 +459,59 @@ static void thermal_zone_device_reset(struct thermal_zone_device *tz)
->  	thermal_zone_device_init(tz);
->  }
->  
-> +int thermal_zone_device_set_mode(struct thermal_zone_device *tz,
-> +				 enum thermal_device_mode mode)
-> +{
-> +	int ret = 0;
-> +
-> +	mutex_lock(&tz->lock);
-> +
-> +	/* do nothing if mode isn't changing */
-> +	if (mode == tz->mode) {
-> +		mutex_unlock(&tz->lock);
-> +
-Nit: unnecessary empty line.
+> After this patch is applied on top of the thermal 'testing' branch,
+> there are still local instances of thermal_device_mode in
+> 	drivers/thermal/st/stm_thermal.c
+> 	drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> 
+> If there is a reason not to replace those, it might make sense to explain
+> it here.
+> 
 
-> +		return ret;
-> +	}
-> +
-> +	if (tz->ops->set_mode)
-> +		ret = tz->ops->set_mode(tz, mode);
-> +
-> +	if (!ret)
-> +		tz->mode = mode;
-> +
-> +	mutex_unlock(&tz->lock);
-> +
-> +	thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
-> +
-> +	return ret;
-> +}
-> +
-> +int thermal_zone_device_enable(struct thermal_zone_device *tz)
-> +{
-> +	return thermal_zone_device_set_mode(tz, THERMAL_DEVICE_ENABLED);
-> +}
-> +EXPORT_SYMBOL(thermal_zone_device_enable);
+My understanding is that these two are sensor devices which are "plugged"
+into their "parent" thermal zone device. The latter is the "proper" tzd.
+They both use thermal_zone_of_device_ops instead of thermal_zone_device_ops.
+The former doesn't even have get_mode(). The thermal core, when it calls
+get_mode(), operates on the "parent" thermal zone devices.
 
-Other exports in thermal/ use EXPORT_SYMBOL_GPL.
+Consequently, the drivers you mention use their "mode" members for
+their private purpose, not for the purpose of storing the "parent"
+thermal zone device mode.
 
-> +
-> +int thermal_zone_device_disable(struct thermal_zone_device *tz)
-> +{
-> +	return thermal_zone_device_set_mode(tz, THERMAL_DEVICE_DISABLED);
-> +}
-> +EXPORT_SYMBOL(thermal_zone_device_disable);
-> +
-> +int thermal_zone_device_is_enabled(struct thermal_zone_device *tz)
-> +{
-> +	enum thermal_device_mode mode;
-> +
-> +	mutex_lock(&tz->lock);
-> +
-> +	mode = tz->mode;
-> +
-> +	mutex_unlock(&tz->lock);
-> +
-> +	return mode == THERMAL_DEVICE_ENABLED;
-> +}
-> +EXPORT_SYMBOL(thermal_zone_device_is_enabled);
-> +
->  void thermal_zone_device_update(struct thermal_zone_device *tz,
->  				enum thermal_notify_event event)
->  {
-> diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-> index a808f6fa2777..df013c39ba9b 100644
-> --- a/include/linux/thermal.h
-> +++ b/include/linux/thermal.h
-> @@ -416,6 +416,9 @@ int thermal_zone_get_offset(struct thermal_zone_device *tz);
->  
->  void thermal_cdev_update(struct thermal_cooling_device *);
->  void thermal_notify_framework(struct thermal_zone_device *, int);
-> +int thermal_zone_device_enable(struct thermal_zone_device *tz);
-> +int thermal_zone_device_disable(struct thermal_zone_device *tz);
-> +int thermal_zone_device_is_enabled(struct thermal_zone_device *tz);
->  #else
->  static inline struct thermal_zone_device *thermal_zone_device_register(
->  	const char *type, int trips, int mask, void *devdata,
-> @@ -463,6 +466,16 @@ static inline void thermal_cdev_update(struct thermal_cooling_device *cdev)
->  static inline void thermal_notify_framework(struct thermal_zone_device *tz,
->  	int trip)
->  { }
-> +
-> +static inline int thermal_zone_device_enable(struct thermal_zone_device *tz)
-> +{ return -ENODEV; }
-> +
-> +static inline int thermal_zone_device_disable(struct thermal_zone_device *tz)
-> +{ return -ENODEV; }
-> +
-> +static inline int
-> +thermal_zone_device_is_enabled(struct thermal_zone_device *tz)
-> +{ return -ENODEV; }
->  #endif /* CONFIG_THERMAL */
->  
->  #endif /* __THERMAL_H__ */
+Andrzej
+
+
+
