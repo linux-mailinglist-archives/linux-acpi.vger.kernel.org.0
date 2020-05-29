@@ -2,139 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBCB51E84A4
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 May 2020 19:19:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBB781E84AF
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 May 2020 19:22:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727903AbgE2RTr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 29 May 2020 13:19:47 -0400
-Received: from mout.gmx.net ([212.227.17.21]:37435 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727900AbgE2RTr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 29 May 2020 13:19:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1590772765;
-        bh=neh9UrSP9bO+wKS/cV7Mb81hOYu1y9//cRNSX6IME/o=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=T1T9LR/w3kBuqWO8Su09Op1EFM06tPZn4twLi9YwSV4LstFuZw8hrEoa5l5R8Ij+u
-         ZhaED2tY7CVwC6hqKCXXxiMNO5bZyR/xtHF6Uuq1dsQs6PfCfmY/avjTdNxiXYzpcP
-         EFtXIpEhp+7VbeTeVLwOTO8oifcEU8hmbUULqkx4=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost.localdomain ([83.52.229.196]) by mail.gmx.com
- (mrgmx104 [212.227.17.174]) with ESMTPSA (Nemesis) id
- 1Msq24-1iqCVY3XtA-00t8ge; Fri, 29 May 2020 19:19:25 +0200
-From:   Oscar Carter <oscar.carter@gmx.com>
-To:     Kees Cook <keescook@chromium.org>,
+        id S1725914AbgE2RV7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 29 May 2020 13:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39244 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725839AbgE2RV6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 29 May 2020 13:21:58 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CDF4C03E969;
+        Fri, 29 May 2020 10:21:58 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id F17622A194B
+Subject: Re: [PATCH v4 04/11] thermal: Store device mode in struct
+ thermal_zone_device
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        kernel@collabora.com, Fabio Estevam <festevam@gmail.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Allison Randal <allison@lohutok.net>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Cc:     Oscar Carter <oscar.carter@gmx.com>,
-        kernel-hardening@lists.openwall.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH v3 2/2] drivers/irqchip: Use new macro ACPI_DECLARE_SUBTABLE_PROBE_ENTRY
-Date:   Fri, 29 May 2020 19:18:47 +0200
-Message-Id: <20200529171847.10267-3-oscar.carter@gmx.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200529171847.10267-1-oscar.carter@gmx.com>
-References: <20200529171847.10267-1-oscar.carter@gmx.com>
+        Kalle Valo <kvalo@codeaurora.org>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Enrico Weigelt <info@metux.net>,
+        Peter Kaestle <peter@piie.net>,
+        Sebastian Reichel <sre@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Shawn Guo <shawnguo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Andy Shevchenko <andy@infradead.org>
+References: <20200529154205.GA157653@roeck-us.net>
+ <5010f7df-59d6-92ef-c99a-0dbd715f0ad2@collabora.com>
+Message-ID: <a0c0310f-9870-47be-4ca3-c07e41c380fc@collabora.com>
+Date:   Fri, 29 May 2020 19:21:50 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Xbh6bc2AmKF5eUpe1JkLy04Gyi3Hb9L75YPMV4IOuT+BURFd86X
- QvCGG2899ZFmQmHxw4xv0sgrlbLGNr6vXbyyEUTV/j7WUl1KXnS/cSM5ZOFaWzMkqwMOUlh
- lAJfFVQQErGpc1+tiKPw+AKBMTpJ+duPgHDtZcDIR2dt98493If6An2WKlqLdDcZVvsdgWm
- i4pAUsQPQz8viQ6vtuxGA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cK5pSdYPuYw=:cgBVRC43BeXuVFlw7NN1y5
- UBXR7VOvd0fbpnIL6EOPaqUSD23+KtXJCFi13A1RPvw8934ONa3QUNJ7HeK/a5bELNDW7b3YV
- KpTux8y6DvlapqfhfKnBO7UQdH1mCUag5uLd2i182hO7RMvZGeS3z2oacIuSL+RSGk9WNlv6z
- zO65gGkxuJ6zKQ40vXqeWeExhzToVnsnUvPQrWtay+tn2biPumJz7OW9gs+hg7UnsZC5UBNt4
- 6sLnj3EAJ3+rCMalXr4hJZEqzF7QkGNjfZPQuhEQGvoNptSDGoNK/SVDnIlNONYolOex5b2xF
- l4OR1jWPkPgpgfCimojidEoKin2EOE4GIiWTIYemXBeDT5ge8tpjsgam6RyakcNL3vKFnimRp
- OEeEoFVAhbQx7ag34TEdyZNAIBIMA1UbLQqAYE7UkKe88alRgBcxkIUGwFrM4VrlFFKpnf0zq
- aMeMXpeLnwN/me1S6Ua/QQDh6a9GKaBI24WI5MBAV/NTT3Nb8A1uIEIXbhIK+6DI8Vjw7i8ZH
- FXPpQyQVgxAbv79UcORvXb3CIqQOendix1Wv+xVum9hlR8DnSa9SNwDBgcWkgNO66s4P/xOkR
- LHbYU5feM+QDugil6JBHIp4zng6vfNOivSdrlQYGqGBBXO0FH+6PulUw9HPSvYtbQALOjgUuj
- SzSkhRkjkJxNsKX5V69hnISQApJtYKEsS+hVrDq1aQUL2oT2xEeBtowactJKMHGJjJyzTJ74B
- CErkJPo9H2mmYdekKODtaN1f5AciV2dquEQ4TrZYhT6odGevQ8b+AFAYy7T9QffDiTmmxMD+7
- d++FsMUhOU14+kbGAMHvURc2e/4+sQdmHgD30AO3P+5TxeP+0wsXY1OpbkjU0uyMy+heXlkXt
- MQU0HWuo5plfNxf7lFqtCMHCtBr6EvywqKFZdock4Ux28MYfR3Tkmc30hxehESkh9eNpqkot+
- +9MQOnIjBslV8o/OIIKFBqwCEYQEJV0mnvxcfqJaPTWGLI6wLp6WDMiavYTxiQ1Wn5MI5cH+a
- zJEV44S/t+juj945Snbv+AyrmHKEqXYFjXN9vOjkVfdeT0MUYHUAXcn1WZqgDj+lETTD2cNAv
- 87YicXY4DNA7+t58loMex8QgKKsG5fwW32QziQXxbLGxAsg5JSB9xgtQwlT5O57mZF8YIRkFM
- 3hjnCIOTRWMXbjZvmAls+EGFwqVP0BBo3O6nDyTf1bbPduV0ReV+HL6X+e28Bxod0ZNLwFl13
- qMzqawkInlseylrYd
+In-Reply-To: <5010f7df-59d6-92ef-c99a-0dbd715f0ad2@collabora.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In an effort to enable -Wcast-function-type in the top-level Makefile to
-support Control Flow Integrity builds, there are the need to remove all
-the function callback casts.
+Hi again,
 
-To do this, modify the IRQCHIP_ACPI_DECLARE macro to use the new defined
-macro ACPI_DECLARE_SUBTABLE_PROBE_ENTRY instead of the macro
-ACPI_DECLARE_PROBE_ENTRY. This is necessary to be able to initialize the
-the acpi_probe_entry struct using the probe_subtbl field instead of the
-probe_table field and avoid function cast mismatches.
+W dniu 29.05.2020 o 18:08, Andrzej Pietrasiewicz pisze:
+> Hi Guenter,
+> 
+> W dniu 29.05.2020 o 17:42, Guenter Roeck pisze:
+>> On Thu, May 28, 2020 at 09:20:44PM +0200, Andrzej Pietrasiewicz wrote:
+>>> Prepare for eliminating get_mode().
+>>>
+>> Might be worthwhile to explain (not only in the subject) what you are
+>> doing here.
+>>
+>>> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+>>> ---
+>>>   drivers/acpi/thermal.c                        | 18 ++++++----------
+>>>   .../ethernet/mellanox/mlxsw/core_thermal.c    | 21 +++++++------------
+>>>   drivers/platform/x86/acerhdf.c                | 15 ++++++-------
+>>>   drivers/thermal/da9062-thermal.c              |  6 ++----
+>>>   drivers/thermal/imx_thermal.c                 | 17 +++++++--------
+>>>   .../intel/int340x_thermal/int3400_thermal.c   | 12 +++--------
+>>>   .../thermal/intel/intel_quark_dts_thermal.c   | 16 +++++++-------
+>>>   drivers/thermal/thermal_of.c                  | 10 +++------
+>>
+>> After this patch is applied on top of the thermal 'testing' branch,
+>> there are still local instances of thermal_device_mode in
+>>     drivers/thermal/st/stm_thermal.c
+>>     drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+>>
+>> If there is a reason not to replace those, it might make sense to explain
+>> it here.
+>>
+> 
+> My understanding is that these two are sensor devices which are "plugged"
+> into their "parent" thermal zone device. The latter is the "proper" tzd.
+> They both use thermal_zone_of_device_ops instead of thermal_zone_device_ops.
+> The former doesn't even have get_mode(). The thermal core, when it calls
+> get_mode(), operates on the "parent" thermal zone devices.
+> 
+> Consequently, the drivers you mention use their "mode" members for
+> their private purpose, not for the purpose of storing the "parent"
+> thermal zone device mode.
+> 
 
-Also, modify the prototype of the functions used by the invocation of the
-IRQCHIP_ACPI_DECLARE macro to match all the parameters.
+Let me also say it differently.
 
-Co-developed-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Oscar Carter <oscar.carter@gmx.com>
-=2D--
- drivers/irqchip/irq-gic-v3.c | 2 +-
- drivers/irqchip/irq-gic.c    | 2 +-
- include/linux/irqchip.h      | 5 +++--
- 3 files changed, 5 insertions(+), 4 deletions(-)
+Both drivers which you mention use devm_thermal_zone_of_sensor_register().
+It calls thermal_zone_of_sensor_register(), which "will search the list of
+thermal zones described in device tree and look for the zone that refer to
+the sensor device pointed by @dev->of_node as temperature providers. For
+the zone pointing to the sensor node, the sensor will be added to the DT
+thermal zone device." When a match is found thermal_zone_of_add_sensor()
+is invoked, which (using thermal_zone_get_zone_by_name()) iterates over
+all registered thermal_zone_devices. The one eventually found will be
+returned and propagated to the original caller of
+devm_thermal_zone_of_sensor_register(). The state of this returned
+device is managed elsewhere (in that device's struct tzd). The "mode"
+member you are referring to is thus unrelated.
 
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index d7006ef18a0d..3870e9d4d3a8 100644
-=2D-- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -2117,7 +2117,7 @@ static void __init gic_acpi_setup_kvm_info(void)
- }
+Regards,
 
- static int __init
--gic_acpi_init(struct acpi_subtable_header *header, const unsigned long en=
-d)
-+gic_acpi_init(union acpi_subtable_headers *header, const unsigned long en=
-d)
- {
- 	struct acpi_madt_generic_distributor *dist;
- 	struct fwnode_handle *domain_handle;
-diff --git a/drivers/irqchip/irq-gic.c b/drivers/irqchip/irq-gic.c
-index 30ab623343d3..fc431857ce90 100644
-=2D-- a/drivers/irqchip/irq-gic.c
-+++ b/drivers/irqchip/irq-gic.c
-@@ -1593,7 +1593,7 @@ static void __init gic_acpi_setup_kvm_info(void)
- 	gic_set_kvm_info(&gic_v2_kvm_info);
- }
-
--static int __init gic_v2_acpi_init(struct acpi_subtable_header *header,
-+static int __init gic_v2_acpi_init(union acpi_subtable_headers *header,
- 				   const unsigned long end)
- {
- 	struct acpi_madt_generic_distributor *dist;
-diff --git a/include/linux/irqchip.h b/include/linux/irqchip.h
-index 950e4b2458f0..447f22880a69 100644
-=2D-- a/include/linux/irqchip.h
-+++ b/include/linux/irqchip.h
-@@ -39,8 +39,9 @@
-  * @fn: initialization function
-  */
- #define IRQCHIP_ACPI_DECLARE(name, subtable, validate, data, fn)	\
--	ACPI_DECLARE_PROBE_ENTRY(irqchip, name, ACPI_SIG_MADT, 		\
--				 subtable, validate, data, fn)
-+	ACPI_DECLARE_SUBTABLE_PROBE_ENTRY(irqchip, name,		\
-+					  ACPI_SIG_MADT, subtable,	\
-+					  validate, data, fn)
-
- #ifdef CONFIG_IRQCHIP
- void irqchip_init(void);
-=2D-
-2.20.1
-
+Andrzej
