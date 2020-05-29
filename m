@@ -2,21 +2,21 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77C6E1E8142
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 May 2020 17:08:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFB3B1E8168
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 May 2020 17:14:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727009AbgE2PI2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 29 May 2020 11:08:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46528 "EHLO
+        id S1726975AbgE2POE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 29 May 2020 11:14:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725901AbgE2PI2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 29 May 2020 11:08:28 -0400
+        with ESMTP id S1725901AbgE2POC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 29 May 2020 11:14:02 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03708C03E969;
-        Fri, 29 May 2020 08:08:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7930C03E969;
+        Fri, 29 May 2020 08:14:01 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: andrzej.p)
-        with ESMTPSA id B4BEF2A46A5
+        with ESMTPSA id 3E3602A3AAC
 Subject: Re: [PATCH v4 02/11] thermal: Store thermal mode in a dedicated enum
 To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
@@ -60,14 +60,17 @@ Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
         Shawn Guo <shawnguo@kernel.org>,
         "David S . Miller" <davem@davemloft.net>,
         Andy Shevchenko <andy@infradead.org>
-References: <20200529150549.GA154196@roeck-us.net>
+References: <4493c0e4-51aa-3907-810c-74949ff27ca4@samsung.com>
+ <20200528192051.28034-1-andrzej.p@collabora.com>
+ <20200528192051.28034-3-andrzej.p@collabora.com>
+ <20200529144821.GA93994@roeck-us.net>
 From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Message-ID: <b9aa246f-4534-db23-aea1-07aae2edbdd5@collabora.com>
-Date:   Fri, 29 May 2020 17:08:18 +0200
+Message-ID: <e48e5948-51f0-7ce7-265b-d432ea058b7e@collabora.com>
+Date:   Fri, 29 May 2020 17:13:55 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200529150549.GA154196@roeck-us.net>
+In-Reply-To: <20200529144821.GA93994@roeck-us.net>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -76,21 +79,45 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-W dniu 29.05.2020 o 17:05, Guenter Roeck pisze:
+Hi Guenter,
+
+W dniu 29.05.2020 o 16:48, Guenter Roeck pisze:
 > On Thu, May 28, 2020 at 09:20:42PM +0200, Andrzej Pietrasiewicz wrote:
 >> Prepare for storing mode in struct thermal_zone_device.
 >>
 >> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-> 
-> What is the baseline for this series ? I can't get this patch to apply
-> on top of current mainline, nor on v5.6, nor on top of linux-next.
-> 
-> Thanks,
-> Guenter
-> 
+>> ---
+>>   drivers/acpi/thermal.c                        | 27 +++++++++----------
+>>   drivers/platform/x86/acerhdf.c                |  8 ++++--
+>>   .../intel/int340x_thermal/int3400_thermal.c   | 18 +++++--------
+>>   3 files changed, 25 insertions(+), 28 deletions(-)
 
-git://git.kernel.org/pub/scm/linux/kernel/git/thermal/linux.git, branch "testing".
+<snip>
 
-base-commit: 351f4911a477ae01239c42f771f621d85b06ea10
+>> @@ -544,27 +543,25 @@ static int thermal_set_mode(struct thermal_zone_device *thermal,
+>>   				enum thermal_device_mode mode)
+>>   {
+>>   	struct acpi_thermal *tz = thermal->devdata;
+>> -	int enable;
+>>   
+>>   	if (!tz)
+>>   		return -EINVAL;
+>>   
+>> +	if (mode != THERMAL_DEVICE_DISABLED &&
+>> +	    mode != THERMAL_DEVICE_ENABLED)
+>> +		return -EINVAL;
+> 
+> Personally I find this check unnecessary: The enum has no other values,
+> and it is verifyable that the callers provide the enum and not some other
+> value.
 
-Andrzej
+It is getting removed in PATCH 10/11.
+
+
+>> +	if (mode != THERMAL_DEVICE_ENABLED &&
+>> +	    mode != THERMAL_DEVICE_DISABLED)
+>>   		return -EINVAL;
+> 
+> Same as above.
+
+ditto.
