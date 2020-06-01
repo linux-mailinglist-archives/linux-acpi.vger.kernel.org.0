@@ -2,79 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D51411EA252
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jun 2020 12:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B79341EA28C
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jun 2020 13:16:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725847AbgFAK7I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Jun 2020 06:59:08 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:45310 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725788AbgFAK7I (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Jun 2020 06:59:08 -0400
-Received: by mail-oi1-f194.google.com with SMTP id p70so3852985oic.12;
-        Mon, 01 Jun 2020 03:59:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=keLV8Gd9C9GRlhQTmWInhDyaWAHDTSmesa5VJ61KhzA=;
-        b=Iwq0U5l30/QISPgqe5GgmwukfMZiUgKOx6QnPCciJLeHfI5t5pkzsj2MILdFG8y+Y3
-         kkNfug1Tu7luwVu8YfCRM7lZ03gO+BMHt1vBFgwyg87IyojB+r9dgam2/aCTlkx2H19e
-         FOubFxgYacwt72eUbiUGbhPRUz/iQ5a8EsgdULygvpnlwxm/wTMlHplO8Ny046QNlR3l
-         mahvNtJwus0jRp7D6oueE5+RRFYb0z2UDxA7yOnmllAg31ZP8AJTMuZ2+H0B3sJInnSd
-         Eu3kfLB5YGDu/7AmHjagNsxv/b470hIEz9rYtEvDeV8B//NL+a7CvOui1GfEAZpZ2FMu
-         wo0A==
-X-Gm-Message-State: AOAM532B49EQaSMBbuYmjq0jo8ow+E+ojP7gHoACIXgSadHtqq0UmTFH
-        zxPVrA+uQQu13xApH1jvJM9/bWMycOMjxPKmmng=
-X-Google-Smtp-Source: ABdhPJxKFI0X2eb7fOqmhHgAFLbKDxQT1bWtfSLhpslRIxFwL6VsL7FmOTE2aXhPfb3zKacj1e952K5zvKHjWjsWsjI=
-X-Received: by 2002:a05:6808:486:: with SMTP id z6mr14374613oid.103.1591009146050;
- Mon, 01 Jun 2020 03:59:06 -0700 (PDT)
+        id S1725999AbgFALQr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Jun 2020 07:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57546 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725788AbgFALQq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Jun 2020 07:16:46 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCC2DC061A0E;
+        Mon,  1 Jun 2020 04:16:46 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id 8966B2A15EF
+Subject: Re: [PATCH v4 06/11] thermal: Add mode helpers
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        kernel@collabora.com, Fabio Estevam <festevam@gmail.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Allison Randal <allison@lohutok.net>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Enrico Weigelt <info@metux.net>,
+        Peter Kaestle <peter@piie.net>,
+        Sebastian Reichel <sre@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Shawn Guo <shawnguo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Andy Shevchenko <andy@infradead.org>
+References: <20200529155206.GA158553@roeck-us.net>
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Message-ID: <526286da-70d2-7c55-3c41-15fd2c969a39@collabora.com>
+Date:   Mon, 1 Jun 2020 13:16:37 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-References: <bdc33be8-1db6-b147-cbc4-90fa0dc3d999@gmail.com>
- <20200529202135.GA461617@bjorn-Precision-5520> <20200529205900.whx3mxuvt6ijlqwg@srcf.ucam.org>
- <824d63d8-668c-22c8-a303-b44e30e805e1@gmail.com> <20200529225801.szl4obsas6ndilz4@srcf.ucam.org>
- <7c8cab08-e2d4-1952-1923-aa023ea67657@gmail.com> <20200530071434.vjkqxfmgo7xpls6j@srcf.ucam.org>
- <20200530113344.GA2834@infradead.org>
-In-Reply-To: <20200530113344.GA2834@infradead.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 1 Jun 2020 12:58:49 +0200
-Message-ID: <CAJZ5v0gxntUoxu70jpzsEHbytXwKC=EBsFD3y=0H6E0hLytybw@mail.gmail.com>
-Subject: Re: Lost PCIe PME after a914ff2d78ce ("PCI/ASPM: Don't select
- CONFIG_PCIEASPM by default")
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Matthew Garrett <mjg59@srcf.ucam.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200529155206.GA158553@roeck-us.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, May 30, 2020 at 1:34 PM Christoph Hellwig <hch@infradead.org> wrote:
->
-> On Sat, May 30, 2020 at 08:14:34AM +0100, Matthew Garrett wrote:
-> > On Sat, May 30, 2020 at 08:33:50AM +0200, Heiner Kallweit wrote:
-> >
-> > > It *was* default y. This changed with a914ff2d78ce ("PCI/ASPM: Don't
-> > > select CONFIG_PCIEASPM by default") and that's what triggered the
-> > > problem. If there's no easy solution, then maybe it's best to revert
-> > > the change for now.
-> >
-> > Oh, sorry, I was looking at mainline. CONFIG_PCIEASPM should
-> > *definitely* be enabled by default - platforms expect the OS to support
-> > it. If we want to get rid of default y then I think it'd make more sense
-> > to have a CONFIG_DISABLE_PCIEASPM that's under EXPERT, and people who
-> > really want to disable the code can do so.
->
-> I think the fact that the EXPERT didn't get removed in the above bug
-> is a defintive bug.  But I'd go further and think the CONFIG_PCIEASPM
-> option should be removed entirely.  There is absolutely no good reason
-> to not build this small amount of code if PCIe support is enabled.
+Hi Guenter,
 
-Well stated, thanks!
+W dniu 29.05.2020 o 17:52, Guenter Roeck pisze:
+> On Thu, May 28, 2020 at 09:20:46PM +0200, Andrzej Pietrasiewicz wrote:
+>> Prepare for making the drivers not access tzd's private members.
+>>
+>> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+
+<snip>
+
+>> +
+> Nit: unnecessary empty line.
+> 
+>> +		return ret;
+
+<snip>
+
+>> +	return thermal_zone_device_set_mode(tz, THERMAL_DEVICE_ENABLED);
+>> +}
+>> +EXPORT_SYMBOL(thermal_zone_device_enable);
+> 
+> Other exports in thermal/ use EXPORT_SYMBOL_GPL.
+
+Other than that does it look good to you?
+I can send a v5 where the two above will be corrected, but did you have
+a chance to review patches 7-11?
+
+Andrzej
