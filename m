@@ -2,100 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4B2B1EA1B8
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jun 2020 12:20:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D51411EA252
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jun 2020 12:59:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726073AbgFAKUZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Jun 2020 06:20:25 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:37226 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725788AbgFAKUX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Jun 2020 06:20:23 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: andrzej.p)
-        with ESMTPSA id C139F2A22FB
-Subject: Re: [PATCH v4 00/11] Stop monitoring disabled devices
-To:     =?UTF-8?Q?Peter_K=c3=a4stle?= <peter@piie.net>,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Enrico Weigelt <info@metux.net>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        kernel@collabora.com
-References: <20200528192051.28034-1-andrzej.p@collabora.com> <Message-ID:
- <4493c0e4-51aa-3907-810c-74949ff27ca4@samsung.com>
- <23327363eae19d051b7c960d3cbc1523@piie.net>
-From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Message-ID: <adce13cb-e94c-ee43-0bc5-d4a0ec1746f4@collabora.com>
-Date:   Mon, 1 Jun 2020 12:20:08 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1725847AbgFAK7I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Jun 2020 06:59:08 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:45310 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725788AbgFAK7I (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Jun 2020 06:59:08 -0400
+Received: by mail-oi1-f194.google.com with SMTP id p70so3852985oic.12;
+        Mon, 01 Jun 2020 03:59:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=keLV8Gd9C9GRlhQTmWInhDyaWAHDTSmesa5VJ61KhzA=;
+        b=Iwq0U5l30/QISPgqe5GgmwukfMZiUgKOx6QnPCciJLeHfI5t5pkzsj2MILdFG8y+Y3
+         kkNfug1Tu7luwVu8YfCRM7lZ03gO+BMHt1vBFgwyg87IyojB+r9dgam2/aCTlkx2H19e
+         FOubFxgYacwt72eUbiUGbhPRUz/iQ5a8EsgdULygvpnlwxm/wTMlHplO8Ny046QNlR3l
+         mahvNtJwus0jRp7D6oueE5+RRFYb0z2UDxA7yOnmllAg31ZP8AJTMuZ2+H0B3sJInnSd
+         Eu3kfLB5YGDu/7AmHjagNsxv/b470hIEz9rYtEvDeV8B//NL+a7CvOui1GfEAZpZ2FMu
+         wo0A==
+X-Gm-Message-State: AOAM532B49EQaSMBbuYmjq0jo8ow+E+ojP7gHoACIXgSadHtqq0UmTFH
+        zxPVrA+uQQu13xApH1jvJM9/bWMycOMjxPKmmng=
+X-Google-Smtp-Source: ABdhPJxKFI0X2eb7fOqmhHgAFLbKDxQT1bWtfSLhpslRIxFwL6VsL7FmOTE2aXhPfb3zKacj1e952K5zvKHjWjsWsjI=
+X-Received: by 2002:a05:6808:486:: with SMTP id z6mr14374613oid.103.1591009146050;
+ Mon, 01 Jun 2020 03:59:06 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <23327363eae19d051b7c960d3cbc1523@piie.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <bdc33be8-1db6-b147-cbc4-90fa0dc3d999@gmail.com>
+ <20200529202135.GA461617@bjorn-Precision-5520> <20200529205900.whx3mxuvt6ijlqwg@srcf.ucam.org>
+ <824d63d8-668c-22c8-a303-b44e30e805e1@gmail.com> <20200529225801.szl4obsas6ndilz4@srcf.ucam.org>
+ <7c8cab08-e2d4-1952-1923-aa023ea67657@gmail.com> <20200530071434.vjkqxfmgo7xpls6j@srcf.ucam.org>
+ <20200530113344.GA2834@infradead.org>
+In-Reply-To: <20200530113344.GA2834@infradead.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 1 Jun 2020 12:58:49 +0200
+Message-ID: <CAJZ5v0gxntUoxu70jpzsEHbytXwKC=EBsFD3y=0H6E0hLytybw@mail.gmail.com>
+Subject: Re: Lost PCIe PME after a914ff2d78ce ("PCI/ASPM: Don't select
+ CONFIG_PCIEASPM by default")
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Matthew Garrett <mjg59@srcf.ucam.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-W dniu 01.06.2020 o 12:02, Peter Kästle pisze:
-> Hi,
-> 
-> 28. Mai 2020 21:21, "Andrzej Pietrasiewicz" <andrzej.p@collabora.com> schrieb:
-> 
-> [...]
-> 
->> This v4 series addresses those concerns: it takes a more gradual
->> approach and uses explicit tzd state initialization, hence there are more
->> insertions than in v3, and the net effect is -63 lines versus -139 lines
->> in v3.
-> 
-> I'd like to test it.  Which git repo / branch do you base this series of patches on?
-> 
-> [...]
-> 
->> base-commit: 351f4911a477ae01239c42f771f621d85b06ea10
-> 
-> Can't find this hashref anywhere.
-> 
+On Sat, May 30, 2020 at 1:34 PM Christoph Hellwig <hch@infradead.org> wrote:
+>
+> On Sat, May 30, 2020 at 08:14:34AM +0100, Matthew Garrett wrote:
+> > On Sat, May 30, 2020 at 08:33:50AM +0200, Heiner Kallweit wrote:
+> >
+> > > It *was* default y. This changed with a914ff2d78ce ("PCI/ASPM: Don't
+> > > select CONFIG_PCIEASPM by default") and that's what triggered the
+> > > problem. If there's no easy solution, then maybe it's best to revert
+> > > the change for now.
+> >
+> > Oh, sorry, I was looking at mainline. CONFIG_PCIEASPM should
+> > *definitely* be enabled by default - platforms expect the OS to support
+> > it. If we want to get rid of default y then I think it'd make more sense
+> > to have a CONFIG_DISABLE_PCIEASPM that's under EXPERT, and people who
+> > really want to disable the code can do so.
+>
+> I think the fact that the EXPERT didn't get removed in the above bug
+> is a defintive bug.  But I'd go further and think the CONFIG_PCIEASPM
+> option should be removed entirely.  There is absolutely no good reason
+> to not build this small amount of code if PCIe support is enabled.
 
-git://git.kernel.org/pub/scm/linux/kernel/git/thermal/linux.git, branch "testing".
-
-base-commit: 351f4911a477ae01239c42f771f621d85b06ea10
+Well stated, thanks!
