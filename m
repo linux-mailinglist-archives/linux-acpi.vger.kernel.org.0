@@ -2,75 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54C691EA758
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jun 2020 17:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58B741EA879
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jun 2020 19:41:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726113AbgFAPvi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Jun 2020 11:51:38 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:35835 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726075AbgFAPvi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Jun 2020 11:51:38 -0400
-Received: by mail-ot1-f67.google.com with SMTP id 69so8384875otv.2;
-        Mon, 01 Jun 2020 08:51:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=Cfw4YeD4Ny1INfDH1tv7NS/t1naJ0UW1Mxkm3+KOoXg=;
-        b=uSOOrHZwnMyrpwyrYlHIofsbkbACd2b4tQZfYf6upyeBUsin1samK/Ge1ezA9N9y8L
-         IMC+S8PHVdhSXkI2YBD9NA6DmJr/IOiT98w0rRSK1gIofo/FDTR3enXg8S0gYkShlWrC
-         YH2RwyvtP0ldPiG1B7fyvcdxhVQbClN0YnlvQO0yzcquliwG4WCk0nlhMIkbxyh3hX8S
-         K0j9z+haZIVr88y2n5vf7CyldQj7Oza9rCb9aPwcRQMgpC78HbQofess2o+r9xNQcnaB
-         H11hPpLwDhbDfx8lMULwvXG8BY3fsruU48rLaPaSlMOLFddPaeyGL5eO4iZLOoYnLuH3
-         651Q==
-X-Gm-Message-State: AOAM531WhWMozwIRNMaHIID7VWF1tRFUevcx3eOoMIK9xyycroEUcbgs
-        pTxtiZEy6AEagjdrSRwW5dVfIagiQxc89sqBbgg=
-X-Google-Smtp-Source: ABdhPJxJ1Ku4wZm+4rfvD//MpGp4sgWJodrIZZ7i8Be7HgDnEEAtK166KrEN50hB4e9S889rf6TZFAmWP1L2i8YdzZ8=
-X-Received: by 2002:a9d:6c0f:: with SMTP id f15mr16501345otq.118.1591026697401;
- Mon, 01 Jun 2020 08:51:37 -0700 (PDT)
+        id S1726667AbgFARlH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Jun 2020 13:41:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58534 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726017AbgFARlH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 1 Jun 2020 13:41:07 -0400
+Received: from localhost (mobile-166-175-190-200.mycingular.net [166.175.190.200])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 48FEF206A4;
+        Mon,  1 Jun 2020 17:41:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1591033266;
+        bh=egFH6RgQ4a+4kLCfGrEDkjv5v4bJblqDQOjodPikqEM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=PBS/XvI5mPBJhMQPW3QR/267YghZh8VBNHFVIA3y76nvmv7wSAOnIG8ZofBmrwL3W
+         hjX/e/kbh6hI/0SHMT/KsCJ3IYwK/78zwY6ZY8W6ZDDtNYI4kfbVVgq5NF84Mj/Dz5
+         u9OiYWmcq6uvLgae6Udy20G6q8HsslAkBraLQcZo=
+Date:   Mon, 1 Jun 2020 12:41:04 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Joerg Roedel <joro@8bytes.org>
+Cc:     Zhangfei Gao <zhangfei.gao@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        jean-philippe <jean-philippe@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        kenneth-lee-2012@foxmail.com, Wangzhou <wangzhou1@hisilicon.com>,
+        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        iommu@lists.linux-foundation.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH 0/2] Introduce PCI_FIXUP_IOMMU
+Message-ID: <20200601174104.GA734973@bjorn-Precision-5520>
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 1 Jun 2020 17:51:26 +0200
-Message-ID: <CAJZ5v0iimLWRbrwFy51oC-ZGhuVax5zfcXy2O+O-vchjyY3i-Q@mail.gmail.com>
-Subject: [GIT PULL] PNP update for v5.8-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200528073344.GO5221@8bytes.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+On Thu, May 28, 2020 at 09:33:44AM +0200, Joerg Roedel wrote:
+> On Wed, May 27, 2020 at 01:18:42PM -0500, Bjorn Helgaas wrote:
+> > Is this slowdown significant?  We already iterate over every device
+> > when applying PCI_FIXUP_FINAL quirks, so if we used the existing
+> > PCI_FIXUP_FINAL, we wouldn't be adding a new loop.  We would only be
+> > adding two more iterations to the loop in pci_do_fixups() that tries
+> > to match quirks against the current device.  I doubt that would be a
+> > measurable slowdown.
+> 
+> I don't know how significant it is, but I remember people complaining
+> about adding new PCI quirks because it takes too long for them to run
+> them all. That was in the discussion about the quirk disabling ATS on
+> AMD Stoney systems.
+> 
+> So it probably depends on how many PCI devices are in the system whether
+> it causes any measureable slowdown.
 
-Please pull from the tag
+I found this [1] from Paul Menzel, which was a slowdown caused by
+quirk_usb_early_handoff().  I think the real problem is individual
+quirks that take a long time.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pnp-5.8-rc1
+The PCI_FIXUP_IOMMU things we're talking about should be fast, and of
+course, they're only run for matching devices anyway.  So I'd rather
+keep them as PCI_FIXUP_FINAL than add a whole new phase.
 
-with top-most commit 9361797c7696874a1136442b5ee69c62b0e54738
+Bjorn
 
- PNPBIOS: Replace zero-length array with flexible-array
-
-on top of commit 2ef96a5bb12be62ef75b5828c0aab838ebb29cb8
-
- Linux 5.7-rc5
-
-to receive a PNP update for 5.8-rc1.
-
-This replaces a zero-length array with a flexible-array (Gustavo
-A. R. Silva).
-
-Thanks!
-
-
----------------
-
-Gustavo A. R. Silva (1):
-      PNPBIOS: Replace zero-length array with flexible-array
-
----------------
-
- drivers/pnp/pnpbios/pnpbios.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[1] https://lore.kernel.org/linux-pci/b1533fd5-1fae-7256-9597-36d3d5de9d2a@molgen.mpg.de/
