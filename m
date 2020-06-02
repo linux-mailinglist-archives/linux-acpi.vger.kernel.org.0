@@ -2,89 +2,190 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F5011EC15B
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jun 2020 19:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D51C1EC16D
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jun 2020 19:52:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726139AbgFBRuk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Jun 2020 13:50:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60846 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726037AbgFBRuj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 2 Jun 2020 13:50:39 -0400
-Received: from [192.168.68.109] (75-58-59-55.lightspeed.rlghnc.sbcglobal.net [75.58.59.55])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5867F206C3;
-        Tue,  2 Jun 2020 17:50:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591120239;
-        bh=d6pgAEgTTtNx6bhHqA0A4yu/Wbiv7kUU0mDs7Lpv/Ow=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=WLhZ4BcxBeRYfDYNEiCpOZc/AtdsCfDdwJMKfWFyd++/DYflng9sIUm6VQCz8/2u+
-         rdukxA6eOvSAxsoWyou39uDFavRSDetcLjcCva8p0bzyOQTb1MMF430+6Cqd027nSb
-         kM8tZS0A4MIhH7NC4a6CylGczoPt37TDPdFLYKAA=
-Subject: Re: [PATCH] PCI/ASPM: Print correct ASPM status when _OSC failed
-To:     Yicong Yang <yangyicong@hisilicon.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linuxarm <linuxarm@huawei.com>
-References: <1590655125-23949-1-git-send-email-yangyicong@hisilicon.com>
- <CAJZ5v0g9O5r7tpLMN7SJu+KZEeEcdeTKeQ=hEo5r+VJzc6g08Q@mail.gmail.com>
- <6f6aa87f-7c4d-61f6-f8c2-42ad05b5c845@kernel.org>
- <1908398.Rfmu1g3mcC@kreacher>
- <60d31995-1511-4d82-b026-e7119d88a891@hisilicon.com>
-From:   Sinan Kaya <okaya@kernel.org>
-Autocrypt: addr=okaya@kernel.org; keydata=
- mQENBFrnOrUBCADGOL0kF21B6ogpOkuYvz6bUjO7NU99PKhXx1MfK/AzK+SFgxJF7dMluoF6
- uT47bU7zb7HqACH6itTgSSiJeSoq86jYoq5s4JOyaj0/18Hf3/YBah7AOuwk6LtV3EftQIhw
- 9vXqCnBwP/nID6PQ685zl3vH68yzF6FVNwbDagxUz/gMiQh7scHvVCjiqkJ+qu/36JgtTYYw
- 8lGWRcto6gr0eTF8Wd8f81wspmUHGsFdN/xPsZPKMw6/on9oOj3AidcR3P9EdLY4qQyjvcNC
- V9cL9b5I/Ud9ghPwW4QkM7uhYqQDyh3SwgEFudc+/RsDuxjVlg9CFnGhS0nPXR89SaQZABEB
- AAG0HVNpbmFuIEtheWEgPG9rYXlhQGtlcm5lbC5vcmc+iQFOBBMBCAA4FiEEYdOlMSE+a7/c
- ckrQvGF4I+4LAFcFAlztcAoCGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQvGF4I+4L
- AFfidAf/VKHInxep0Z96iYkIq42432HTZUrxNzG9IWk4HN7c3vTJKv2W+b9pgvBF1SmkyQSy
- 8SJ3Zd98CO6FOHA1FigFyZahVsme+T0GsS3/OF1kjrtMktoREr8t0rK0yKpCTYVdlkHadxmR
- Qs5xLzW1RqKlrNigKHI2yhgpMwrpzS+67F1biT41227sqFzW9urEl/jqGJXaB6GV+SRKSHN+
- ubWXgE1NkmfAMeyJPKojNT7ReL6eh3BNB/Xh1vQJew+AE50EP7o36UXghoUktnx6cTkge0ZS
- qgxuhN33cCOU36pWQhPqVSlLTZQJVxuCmlaHbYWvye7bBOhmiuNKhOzb3FcgT7kBDQRa5zq1
- AQgAyRq/7JZKOyB8wRx6fHE0nb31P75kCnL3oE+smKW/sOcIQDV3C7mZKLf472MWB1xdr4Tm
- eXeL/wT0QHapLn5M5wWghC80YvjjdolHnlq9QlYVtvl1ocAC28y43tKJfklhHiwMNDJfdZbw
- 9lQ2h+7nccFWASNUu9cqZOABLvJcgLnfdDpnSzOye09VVlKr3NHgRyRZa7me/oFJCxrJlKAl
- 2hllRLt0yV08o7i14+qmvxI2EKLX9zJfJ2rGWLTVe3EJBnCsQPDzAUVYSnTtqELu2AGzvDiM
- gatRaosnzhvvEK+kCuXuCuZlRWP7pWSHqFFuYq596RRG5hNGLbmVFZrCxQARAQABiQEfBBgB
- CAAJBQJa5zq1AhsMAAoJELxheCPuCwBX2UYH/2kkMC4mImvoClrmcMsNGijcZHdDlz8NFfCI
- gSb3NHkarnA7uAg8KJuaHUwBMk3kBhv2BGPLcmAknzBIehbZ284W7u3DT9o1Y5g+LDyx8RIi
- e7pnMcC+bE2IJExCVf2p3PB1tDBBdLEYJoyFz/XpdDjZ8aVls/pIyrq+mqo5LuuhWfZzPPec
- 9EiM2eXpJw+Rz+vKjSt1YIhg46YbdZrDM2FGrt9ve3YaM5H0lzJgq/JQPKFdbd5MB0X37Qc+
- 2m/A9u9SFnOovA42DgXUyC2cSbIJdPWOK9PnzfXqF3sX9Aol2eLUmQuLpThJtq5EHu6FzJ7Y
- L+s0nPaNMKwv/Xhhm6Y=
-Message-ID: <dd5ba708-18a9-fd42-8cf1-af32ef367d5e@kernel.org>
-Date:   Tue, 2 Jun 2020 13:50:37 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1727839AbgFBRwr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Jun 2020 13:52:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34288 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726977AbgFBRwq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Jun 2020 13:52:46 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D32EC05BD1E;
+        Tue,  2 Jun 2020 10:52:46 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id nu7so1775788pjb.0;
+        Tue, 02 Jun 2020 10:52:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=DsDlTAN5nXx2eXeaYpyOizF6rp89+ZyQuZEoODyhpKQ=;
+        b=lOt5bDJGsfK9IyNxz3BNa4rLKdk08R28EoDJrT2TUNMLbDyn8CzBBmFfkFe6atRsGn
+         NQUzHizY/xR0tIwR/Fv6cLBvYq4vV4+Q1oNNa578UCAQkfJUbXwU0XvgRE6TIZ4K0ZVL
+         +IilnKMWHrYZbepwRYHoTr0hmJk9tLHnDUs3xNl11dsFboIB3dq7c9tD088BsqY9MbHi
+         +SPZDl667YmxpVexTZNqnhx5Pgecw0OPK+asacMRjWAHfk4LuN6hUAN5lYYRVMImMTkJ
+         rkLXt/cXLA5dp+fg8J/cStQdFtFGauWWiBHCKiftRfNn+KL8xQifFcVN5QzSVxpMF7pD
+         M3Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=DsDlTAN5nXx2eXeaYpyOizF6rp89+ZyQuZEoODyhpKQ=;
+        b=U00ouh3hVq2L2Jg3vGDxYcJ3zFR8t1gZ/1wcxlxJMosennXQF06KuA8aV2GDal0kKw
+         PI8zuYGCq+38jHEPqoduIcAIzNv7ZgSWT0JiPQaNqd8IE3yCSuof5R3MOKsWZrXnFUcb
+         +BuSwa2SBstAAiEQX4fOx+c6kPuBC6YlYEVtlP7gkwrfDwuq6Iy9oszydufX5UFX2Wib
+         QDXxU2aG7tGj5t9yPFQJOyYKHy/eevoG/AV2CkZZJKZEOOOnrR2FC0Y/Vegt4/xzQQ39
+         TBJqc2eK+RaElAbOlbkt/Uy7Kg6nq0p8fSAY9cDg6oCc+F2fqxKZcG860AbZjVmFW94T
+         58rQ==
+X-Gm-Message-State: AOAM532E0h2YggFJI1IZzECHCLAvpM+tTerk7c5eG+fLDMmgZLtWdJkb
+        kjFsDHsW/uac2yU45Xqn18s=
+X-Google-Smtp-Source: ABdhPJw4j3qAh/n1rbRzh5j+Qh1ZpRvg/yNd1He12Pkb+W7uWkt4zY60I9IIhaoAP1YKs8H+3eduzw==
+X-Received: by 2002:a17:902:c411:: with SMTP id k17mr22524187plk.165.1591120365656;
+        Tue, 02 Jun 2020 10:52:45 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:3c2a:73a9:c2cf:7f45])
+        by smtp.gmail.com with ESMTPSA id m9sm2909107pfo.200.2020.06.02.10.52.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jun 2020 10:52:44 -0700 (PDT)
+Date:   Tue, 2 Jun 2020 10:52:41 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-input@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
+        Benjamin Tissoires <btissoir@redhat.com>
+Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
+Message-ID: <20200602175241.GO89269@dtor-ws>
+References: <20200515164943.28480-1-andrzej.p@collabora.com>
+ <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
+ <e6030957-97dc-5b04-7855-bc14a78164c8@collabora.com>
+ <6d9921fc-5c2f-beda-4dcd-66d6970a22fe@redhat.com>
+ <09679de4-75d3-1f29-ec5f-8d42c84273dd@collabora.com>
+ <f674ba4f-bd83-0877-c730-5dc6ea09ae4b@redhat.com>
+ <2d224833-3a7e-bc7c-af15-1f803f466697@collabora.com>
+ <aa2ce2ab-e5bc-9cb4-8b53-c1ef9348b646@redhat.com>
+ <20200527063430.GJ89269@dtor-ws>
+ <88f939cd-1518-d516-59f2-8f627a6a70d2@collabora.com>
 MIME-Version: 1.0
-In-Reply-To: <60d31995-1511-4d82-b026-e7119d88a891@hisilicon.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <88f939cd-1518-d516-59f2-8f627a6a70d2@collabora.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Bjorn,
+Hi Andrzej,
 
-On 6/1/2020 9:57 PM, Yicong Yang wrote:
-> well, Sinan's words make sense to me. But I'm still confused that, the message
-> says we're "disabling ASPM" but ASPM maybe enabled if we designate
-> pcie_aspm=force as I mentioned in the commit message. Will it be possible if
-> we replace "disabling" to "disabled" or we can do something else to make
-> the message reflect the real status of ASPM?
+On Tue, Jun 02, 2020 at 06:56:40PM +0200, Andrzej Pietrasiewicz wrote:
+> Hi Dmitry,
+> 
+> W dniu 27.05.2020 o 08:34, Dmitry Torokhov pisze:
+> > That said, I think the way we should handle inhibit/uninhibit, is that
+> > if we have the callback defined, then we call it, and only call open and
+> > close if uninhibit or inhibit are _not_ defined.
+> > 
+> 
+> If I understand you correctly you suggest to call either inhibit,
+> if provided or close, if inhibit is not provided, but not both,
+> that is, if both are provided then on the inhibit path only
+> inhibit is called. And, consequently, you suggest to call either
+> uninhibit or open, but not both. The rest of my mail makes this
+> assumption, so kindly confirm if I understand you correctly.
 
-What do you think?
+Yes, that is correct. If a driver wants really fine-grained control, it
+will provide inhibit (or both inhibit and close), otherwise it will rely
+on close in place of inhibit.
 
-Sinan
+> 
+> In my opinion this idea will not work.
+> 
+> The first question is should we be able to inhibit a device
+> which is not opened? In my opinion we should, in order to be
+> able to inhibit a device in anticipation without needing to
+> open it first.
+
+I agree.
+
+> 
+> Then what does opening (with input_open_device()) an inhibited
+> device mean? Should it succeed or should it fail?
+
+It should succeed.
+
+> If it is not
+> the first opening then effectively it boils down to increasing
+> device's and handle's counters, so we can allow it to succeed.
+> If, however, the device is being opened for the first time,
+> the ->open() method wants to be called, but that somehow
+> contradicts the device's inhibited state. So a logical thing
+> to do is to either fail input_open_device() or postpone ->open()
+> invocation to the moment of uninhibiting - and the latter is
+> what the patches in this series currently do.
+> 
+> Failing input_open_device() because of the inhibited state is
+> not the right thing to do. Let me explain. Suppose that a device
+> is already inhibited and then a new matching handler appears
+> in the system. Most handlers (apm-power.c, evbug.c, input-leds.c,
+> mac_hid.c, sysrq.c, vt/keyboard.c and rfkill/input.c) don't create
+> any character devices (only evdev.c, joydev.c and mousedev.c do),
+> so for them it makes no sense to delay calling input_open_device()
+> and it is called in handler's ->connect(). If input_open_device()
+> now fails, we have lost the only chance for this ->connect() to
+> succeed.
+> 
+> Summarizing, IMO the uninhibit path should be calling both
+> ->open() and ->uninhibit() (if provided), and conversely, the inhibit
+> path should be calling both ->inhibit() and ->close() (if provided).
+
+So what you are trying to say is that you see inhibit as something that
+is done in addition to what happens in close. But what exactly do you
+want to do in inhibit, in addition to what close is doing?
+
+In my view, if we want to have a dedicated inhibit callback, then it
+will do everything that close does, they both are aware of each other
+and can sort out the state transitions between them. For drivers that do
+not have dedicated inhibit/uninhibit, we can use open and close
+handlers, and have input core sort out when each should be called. That
+means that we should not call dev->open() in input_open_device() when
+device is inhibited (and same for dev->close() in input_close_device).
+And when uninhibiting, we should not call dev->open() when there are no
+users for the device, and no dev->close() when inhibiting with no users.
+
+Do you see any problems with this approach?
+
+Thanks.
+
+-- 
+Dmitry
