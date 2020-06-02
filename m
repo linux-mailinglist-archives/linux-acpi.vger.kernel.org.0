@@ -2,116 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71F3D1EC461
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jun 2020 23:34:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8257D1EC51E
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jun 2020 00:36:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726373AbgFBVez (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Jun 2020 17:34:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49740 "EHLO mail.kernel.org"
+        id S1727898AbgFBWgV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Jun 2020 18:36:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53194 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726130AbgFBVez (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 2 Jun 2020 17:34:55 -0400
-Received: from embeddedor (unknown [189.207.59.248])
+        id S1726373AbgFBWgV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 2 Jun 2020 18:36:21 -0400
+Received: from localhost (mobile-166-175-190-200.mycingular.net [166.175.190.200])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F30AE206E2;
-        Tue,  2 Jun 2020 21:34:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4D011206C3;
+        Tue,  2 Jun 2020 22:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591133694;
-        bh=U5VQLBA0K584HyMnp25pHX350Ep4BaZZoHpAMfzXWOE=;
-        h=Date:From:To:Cc:Subject:From;
-        b=LHEuC4+DoL1LbalzPAmeFzSITJzZ7hODWN7PopM1OKU+1s8mHEmJJtHec0GBEaHoj
-         203o2uDa+HjRZEJ1ThVBUBux4B3RnuMMwJjI90C9OcpYK9g5Fej+OXAXSDFMG3iGp/
-         JDOBTjJS3zzuKz4zqk0Lsbfmp1Fi573mV5FbiVZk=
-Date:   Tue, 2 Jun 2020 16:39:58 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH v2] ACPICA: Replace one-element array with flexible-array
-Message-ID: <20200602213958.GA32150@embeddedor>
+        s=default; t=1591137380;
+        bh=/mIo8q1mMTXO4fFd8iQWpQDeSXxkevBUGxI6osoTx9A=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=v78wUJyl7H1wwkooJ5aVeAaY398gyz5qtAYJluYJaD0UkvlE2S017rCqfURZugebt
+         Mff3Ar2aB5MrR1dB9hc9n16m6ZsuYiJmk/3mntyxoDaOWr8RjfCtKqr6DOpUR2H3HI
+         UlCv/n89h+NOMsCnlBp/Y+sZSCw6lK1zSSqv41vc=
+Date:   Tue, 2 Jun 2020 17:36:18 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Sinan Kaya <okaya@kernel.org>
+Cc:     Yicong Yang <yangyicong@hisilicon.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linuxarm <linuxarm@huawei.com>
+Subject: Re: [PATCH] PCI/ASPM: Print correct ASPM status when _OSC failed
+Message-ID: <20200602223618.GA845676@bjorn-Precision-5520>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <dd5ba708-18a9-fd42-8cf1-af32ef367d5e@kernel.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The current codebase makes use of one-element arrays in the following
-form:
+On Tue, Jun 02, 2020 at 01:50:37PM -0400, Sinan Kaya wrote:
+> Bjorn,
+> 
+> On 6/1/2020 9:57 PM, Yicong Yang wrote:
+> > well, Sinan's words make sense to me. But I'm still confused that, the message
+> > says we're "disabling ASPM" but ASPM maybe enabled if we designate
+> > pcie_aspm=force as I mentioned in the commit message. Will it be possible if
+> > we replace "disabling" to "disabled" or we can do something else to make
+> > the message reflect the real status of ASPM?
+> 
+> What do you think?
 
-struct something {
-    int length;
-    u8 data[1];
-};
+ASPM is a mess in general, and the whole "no_aspm" dance for delaying
+setting of aspm_disabled is ... well, it's confusing at best.
 
-struct something *instance;
+These "_OSC failed" messages are confusing to users as well.  They
+lead to bug reports against Linux (when it's usually a BIOS problem)
+and users booting with "pcie_aspm=force" (which is a poor user
+experience and potentially dangerous since the platform hasn't granted
+us control of the PCIe Capability).
 
-instance = kmalloc(sizeof(*instance) + size, GFP_KERNEL);
-instance->length = size;
-memcpy(instance->data, source, size);
+And it's not even specific to ASPM; when _OSC fails, we don't take
+over *any* PCIe features.  At least, we're not *supposed* to -- I
+don't think we're very careful about random things in the PCIe
+capability.
 
-but the preferred mechanism to declare variable-length types such as
-these ones is a flexible array member[1][2], introduced in C99:
+What if we just removed the ASPM text from the message completely,
+e.g., something like this:
 
-struct foo {
-        int stuff;
-        struct boo array[];
-};
-
-By making use of the mechanism above, we will get a compiler warning
-in case the flexible array does not occur last in the structure, which
-will help us prevent some kind of undefined behavior bugs from being
-inadvertently introduced[3] to the codebase from now on.
-
-This issue was found with the help of Coccinelle and audited _manually_.
-
-[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-[2] https://github.com/KSPP/linux/issues/21
-[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
-
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
-Changes in v2:
- - Don't use struct_size() for now.
- - Update subject line and changelog text.
-
- drivers/acpi/acpica/utids.c | 2 +-
- include/acpi/actypes.h      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/acpica/utids.c b/drivers/acpi/acpica/utids.c
-index 3bb06935a2ad3..225f3c60203c7 100644
---- a/drivers/acpi/acpica/utids.c
-+++ b/drivers/acpi/acpica/utids.c
-@@ -263,7 +263,7 @@ acpi_ut_execute_CID(struct acpi_namespace_node *device_node,
- 	 * 3) Size of the actual CID strings
- 	 */
- 	cid_list_size = sizeof(struct acpi_pnp_device_id_list) +
--	    ((count - 1) * sizeof(struct acpi_pnp_device_id)) +
-+	    count * sizeof(struct acpi_pnp_device_id) +
- 	    string_area_size;
+diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+index 800a3d26d24b..49fdb07061b1 100644
+--- a/drivers/acpi/pci_root.c
++++ b/drivers/acpi/pci_root.c
+@@ -453,9 +453,8 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
+ 		if ((status == AE_NOT_FOUND) && !is_pcie)
+ 			return;
  
- 	cid_list = ACPI_ALLOCATE_ZEROED(cid_list_size);
-diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-index 4defed58ea338..c7bcda0ad366a 100644
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -1145,7 +1145,7 @@ struct acpi_pnp_device_id {
- struct acpi_pnp_device_id_list {
- 	u32 count;		/* Number of IDs in Ids array */
- 	u32 list_size;		/* Size of list, including ID strings */
--	struct acpi_pnp_device_id ids[1];	/* ID array */
-+	struct acpi_pnp_device_id ids[];	/* ID array */
- };
+-		dev_info(&device->dev, "_OSC failed (%s)%s\n",
+-			 acpi_format_exception(status),
+-			 pcie_aspm_support_enabled() ? "; disabling ASPM" : "");
++		dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
++			 acpi_format_exception(status));
+ 		return;
+ 	}
  
- /*
--- 
-2.27.0
-
+@@ -516,7 +515,7 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
+ 	} else {
+ 		decode_osc_control(root, "OS requested", requested);
+ 		decode_osc_control(root, "platform willing to grant", control);
+-		dev_info(&device->dev, "_OSC failed (%s); disabling ASPM\n",
++		dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
+ 			acpi_format_exception(status));
+ 
+ 		/*
