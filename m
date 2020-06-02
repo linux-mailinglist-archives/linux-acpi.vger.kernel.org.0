@@ -2,156 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 363D11EB29E
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jun 2020 02:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 149941EB329
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jun 2020 03:57:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725944AbgFBAQy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Jun 2020 20:16:54 -0400
-Received: from mga04.intel.com ([192.55.52.120]:63067 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725446AbgFBAQy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 1 Jun 2020 20:16:54 -0400
-IronPort-SDR: lSw3kANW9xYPVXZvI6UHe28XVIoGeXAafsDLfh74kEY97etAThgmIvDrnvzirQGO5D+2s1zuFo
- oqHYZWTxwSvQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2020 17:16:53 -0700
-IronPort-SDR: Zz0JUr6rke/XwlpSU7tS8uEuj1hn6e+/O2jwbffqzQkSqPX2mujdMrFzsVcDerZgwC7zL/bzdI
- KpKppSw8b5qw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,462,1583222400"; 
-   d="scan'208";a="303810730"
-Received: from lkp-server02.sh.intel.com (HELO 3e9a596e5d8c) ([10.239.97.151])
-  by fmsmga002.fm.intel.com with ESMTP; 01 Jun 2020 17:16:51 -0700
-Received: from kbuild by 3e9a596e5d8c with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1jfubr-00000M-9x; Tue, 02 Jun 2020 00:16:51 +0000
-Date:   Tue, 02 Jun 2020 08:16:33 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- c291ca907606f834e19abfb788b11dfbc888b7e4
-Message-ID: <5ed59a61.fTp3pBnAejJZ0U4Z%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1725826AbgFBB5Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Jun 2020 21:57:16 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:5836 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725801AbgFBB5P (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 1 Jun 2020 21:57:15 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 065C0E1A63503520C19F;
+        Tue,  2 Jun 2020 09:57:13 +0800 (CST)
+Received: from [10.65.58.147] (10.65.58.147) by DGGEMS414-HUB.china.huawei.com
+ (10.3.19.214) with Microsoft SMTP Server id 14.3.487.0; Tue, 2 Jun 2020
+ 09:57:05 +0800
+Subject: Re: [PATCH] PCI/ASPM: Print correct ASPM status when _OSC failed
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Sinan Kaya <okaya@kernel.org>
+References: <1590655125-23949-1-git-send-email-yangyicong@hisilicon.com>
+ <CAJZ5v0g9O5r7tpLMN7SJu+KZEeEcdeTKeQ=hEo5r+VJzc6g08Q@mail.gmail.com>
+ <6f6aa87f-7c4d-61f6-f8c2-42ad05b5c845@kernel.org>
+ <1908398.Rfmu1g3mcC@kreacher>
+CC:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>,
+        Linuxarm <linuxarm@huawei.com>
+From:   Yicong Yang <yangyicong@hisilicon.com>
+Message-ID: <60d31995-1511-4d82-b026-e7119d88a891@hisilicon.com>
+Date:   Tue, 2 Jun 2020 09:57:12 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <1908398.Rfmu1g3mcC@kreacher>
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.65.58.147]
+X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: c291ca907606f834e19abfb788b11dfbc888b7e4  Merge branch 'pm-cpufreq' into testing
+On 2020/6/1 23:22, Rafael J. Wysocki wrote:
+> On Monday, June 1, 2020 5:14:45 PM CEST Sinan Kaya wrote:
+>> On 5/28/2020 7:42 AM, Rafael J. Wysocki wrote:
+>>>> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+>>>> index ac8ad6c..5140b26 100644
+>>>> --- a/drivers/acpi/pci_root.c
+>>>> +++ b/drivers/acpi/pci_root.c
+>>>> @@ -456,7 +456,7 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
+>>>>
+>>>>                 dev_info(&device->dev, "_OSC failed (%s)%s\n",
+>>>>                          acpi_format_exception(status),
+>>>> -                        pcie_aspm_support_enabled() ? "; disabling ASPM" : "");
+>>>> +                        pcie_aspm_support_enabled() ? "" : "; disabling ASPM");
+>>>>                 return;
+>>>>         }
+>>>>
+>>>> --
+>>> Applied as 5.8 material under the "ACPI: PCI: Fix the ASPM part of the
+>>> _OSC failure message" subject and with a different changelog.
+>>
+>> I'm confused. The original change would print ASPM is getting disabled
+>> only when ASPM is supported. Now, we are printing disabling ASPM when
+>> ASPM is not supported.
+>>
+>> Now, we reverted the change and went back to incorrect behavior again.
+>>
+>> Am I missing something?
+> Well, it turns out that I was confused, as well as the author of the patch.
+>
+> Dropped now, thanks for the heads-up!
 
-elapsed time: 481m
+well, Sinan's words make sense to me. But I'm still confused that, the message
+says we're "disabling ASPM" but ASPM maybe enabled if we designate
+pcie_aspm=force as I mentioned in the commit message. Will it be possible if
+we replace "disabling" to "disabled" or we can do something else to make
+the message reflect the real status of ASPM?
 
-configs tested: 96
-configs skipped: 2
+Thanks,
+Yicong
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-nds32                            alldefconfig
-mips                         tb0287_defconfig
-sh                         microdev_defconfig
-powerpc                       holly_defconfig
-powerpc                mpc7448_hpc2_defconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-i386                              allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20200601
-i386                 randconfig-a006-20200601
-i386                 randconfig-a002-20200601
-i386                 randconfig-a005-20200601
-i386                 randconfig-a003-20200601
-i386                 randconfig-a004-20200601
-x86_64               randconfig-a002-20200601
-x86_64               randconfig-a006-20200601
-x86_64               randconfig-a001-20200601
-x86_64               randconfig-a003-20200601
-x86_64               randconfig-a004-20200601
-x86_64               randconfig-a005-20200601
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-um                               allmodconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
+>
+>
+>
+> .
+>
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
