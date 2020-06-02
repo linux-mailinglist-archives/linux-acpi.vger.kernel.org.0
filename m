@@ -2,246 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 458ED1EC082
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jun 2020 18:56:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F5011EC15B
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jun 2020 19:50:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726019AbgFBQ4t (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Jun 2020 12:56:49 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:54708 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725969AbgFBQ4s (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Jun 2020 12:56:48 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: andrzej.p)
-        with ESMTPSA id C8CF72A36C9
-Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Cc:     linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
-        Benjamin Tissoires <btissoir@redhat.com>
-References: <20200506002746.GB89269@dtor-ws>
- <20200515164943.28480-1-andrzej.p@collabora.com>
- <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
- <e6030957-97dc-5b04-7855-bc14a78164c8@collabora.com>
- <6d9921fc-5c2f-beda-4dcd-66d6970a22fe@redhat.com>
- <09679de4-75d3-1f29-ec5f-8d42c84273dd@collabora.com>
- <f674ba4f-bd83-0877-c730-5dc6ea09ae4b@redhat.com>
- <2d224833-3a7e-bc7c-af15-1f803f466697@collabora.com>
- <aa2ce2ab-e5bc-9cb4-8b53-c1ef9348b646@redhat.com>
- <20200527063430.GJ89269@dtor-ws>
-From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Message-ID: <88f939cd-1518-d516-59f2-8f627a6a70d2@collabora.com>
-Date:   Tue, 2 Jun 2020 18:56:40 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+        id S1726139AbgFBRuk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Jun 2020 13:50:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60846 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726037AbgFBRuj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 2 Jun 2020 13:50:39 -0400
+Received: from [192.168.68.109] (75-58-59-55.lightspeed.rlghnc.sbcglobal.net [75.58.59.55])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5867F206C3;
+        Tue,  2 Jun 2020 17:50:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1591120239;
+        bh=d6pgAEgTTtNx6bhHqA0A4yu/Wbiv7kUU0mDs7Lpv/Ow=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=WLhZ4BcxBeRYfDYNEiCpOZc/AtdsCfDdwJMKfWFyd++/DYflng9sIUm6VQCz8/2u+
+         rdukxA6eOvSAxsoWyou39uDFavRSDetcLjcCva8p0bzyOQTb1MMF430+6Cqd027nSb
+         kM8tZS0A4MIhH7NC4a6CylGczoPt37TDPdFLYKAA=
+Subject: Re: [PATCH] PCI/ASPM: Print correct ASPM status when _OSC failed
+To:     Yicong Yang <yangyicong@hisilicon.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linuxarm <linuxarm@huawei.com>
+References: <1590655125-23949-1-git-send-email-yangyicong@hisilicon.com>
+ <CAJZ5v0g9O5r7tpLMN7SJu+KZEeEcdeTKeQ=hEo5r+VJzc6g08Q@mail.gmail.com>
+ <6f6aa87f-7c4d-61f6-f8c2-42ad05b5c845@kernel.org>
+ <1908398.Rfmu1g3mcC@kreacher>
+ <60d31995-1511-4d82-b026-e7119d88a891@hisilicon.com>
+From:   Sinan Kaya <okaya@kernel.org>
+Autocrypt: addr=okaya@kernel.org; keydata=
+ mQENBFrnOrUBCADGOL0kF21B6ogpOkuYvz6bUjO7NU99PKhXx1MfK/AzK+SFgxJF7dMluoF6
+ uT47bU7zb7HqACH6itTgSSiJeSoq86jYoq5s4JOyaj0/18Hf3/YBah7AOuwk6LtV3EftQIhw
+ 9vXqCnBwP/nID6PQ685zl3vH68yzF6FVNwbDagxUz/gMiQh7scHvVCjiqkJ+qu/36JgtTYYw
+ 8lGWRcto6gr0eTF8Wd8f81wspmUHGsFdN/xPsZPKMw6/on9oOj3AidcR3P9EdLY4qQyjvcNC
+ V9cL9b5I/Ud9ghPwW4QkM7uhYqQDyh3SwgEFudc+/RsDuxjVlg9CFnGhS0nPXR89SaQZABEB
+ AAG0HVNpbmFuIEtheWEgPG9rYXlhQGtlcm5lbC5vcmc+iQFOBBMBCAA4FiEEYdOlMSE+a7/c
+ ckrQvGF4I+4LAFcFAlztcAoCGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQvGF4I+4L
+ AFfidAf/VKHInxep0Z96iYkIq42432HTZUrxNzG9IWk4HN7c3vTJKv2W+b9pgvBF1SmkyQSy
+ 8SJ3Zd98CO6FOHA1FigFyZahVsme+T0GsS3/OF1kjrtMktoREr8t0rK0yKpCTYVdlkHadxmR
+ Qs5xLzW1RqKlrNigKHI2yhgpMwrpzS+67F1biT41227sqFzW9urEl/jqGJXaB6GV+SRKSHN+
+ ubWXgE1NkmfAMeyJPKojNT7ReL6eh3BNB/Xh1vQJew+AE50EP7o36UXghoUktnx6cTkge0ZS
+ qgxuhN33cCOU36pWQhPqVSlLTZQJVxuCmlaHbYWvye7bBOhmiuNKhOzb3FcgT7kBDQRa5zq1
+ AQgAyRq/7JZKOyB8wRx6fHE0nb31P75kCnL3oE+smKW/sOcIQDV3C7mZKLf472MWB1xdr4Tm
+ eXeL/wT0QHapLn5M5wWghC80YvjjdolHnlq9QlYVtvl1ocAC28y43tKJfklhHiwMNDJfdZbw
+ 9lQ2h+7nccFWASNUu9cqZOABLvJcgLnfdDpnSzOye09VVlKr3NHgRyRZa7me/oFJCxrJlKAl
+ 2hllRLt0yV08o7i14+qmvxI2EKLX9zJfJ2rGWLTVe3EJBnCsQPDzAUVYSnTtqELu2AGzvDiM
+ gatRaosnzhvvEK+kCuXuCuZlRWP7pWSHqFFuYq596RRG5hNGLbmVFZrCxQARAQABiQEfBBgB
+ CAAJBQJa5zq1AhsMAAoJELxheCPuCwBX2UYH/2kkMC4mImvoClrmcMsNGijcZHdDlz8NFfCI
+ gSb3NHkarnA7uAg8KJuaHUwBMk3kBhv2BGPLcmAknzBIehbZ284W7u3DT9o1Y5g+LDyx8RIi
+ e7pnMcC+bE2IJExCVf2p3PB1tDBBdLEYJoyFz/XpdDjZ8aVls/pIyrq+mqo5LuuhWfZzPPec
+ 9EiM2eXpJw+Rz+vKjSt1YIhg46YbdZrDM2FGrt9ve3YaM5H0lzJgq/JQPKFdbd5MB0X37Qc+
+ 2m/A9u9SFnOovA42DgXUyC2cSbIJdPWOK9PnzfXqF3sX9Aol2eLUmQuLpThJtq5EHu6FzJ7Y
+ L+s0nPaNMKwv/Xhhm6Y=
+Message-ID: <dd5ba708-18a9-fd42-8cf1-af32ef367d5e@kernel.org>
+Date:   Tue, 2 Jun 2020 13:50:37 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200527063430.GJ89269@dtor-ws>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <60d31995-1511-4d82-b026-e7119d88a891@hisilicon.com>
+Content-Type: text/plain; charset=windows-1252
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Dmitry,
+Bjorn,
 
-W dniu 27.05.2020 o 08:34, Dmitry Torokhov pisze:
-> On Tue, May 19, 2020 at 11:36:34AM +0200, Hans de Goede wrote:
->> Hi,
->>
->> On 5/19/20 11:02 AM, Andrzej Pietrasiewicz wrote:
->>> Hi Hans, Hi Dmitry,
->>>
->>> W dniu 18.05.2020 o 16:23, Hans de Goede pisze:
->>>> Hi,
->>>
->>> <snip>
->>>
->>>>>>>>
->>>>>>>> So I wonder what this series actually adds for functionality for
->>>>>>>> userspace which can not already be achieved this way?
->>>>>>>>
->>>>>>>> I also noticed that you keep the device open (do not call the
->>>>>>>> input_device's close callback) when inhibited and just throw away
->>>>>>>
->>>>>>> I'm not sure if I understand you correctly, it is called:
->>>>>>>
->>>>>>> +static inline void input_stop(struct input_dev *dev)
->>>>>>> +{
->>>>>>> +    if (dev->poller)
->>>>>>> +        input_dev_poller_stop(dev->poller);
->>>>>>> +    if (dev->close)
->>>>>>> +        dev->close(dev);
->>>>>>>                   ^^^^^^^^^^^^^^^^
->>>>>>> +static int input_inhibit(struct input_dev *dev)
->>>>>>> +{
->>>>>>> +    int ret = 0;
->>>>>>> +
->>>>>>> +    mutex_lock(&dev->mutex);
->>>>>>> +
->>>>>>> +    if (dev->inhibited)
->>>>>>> +        goto out;
->>>>>>> +
->>>>>>> +    if (dev->users) {
->>>>>>> +        if (dev->inhibit) {
->>>>>>> +            ret = dev->inhibit(dev);
->>>>>>> +            if (ret)
->>>>>>> +                goto out;
->>>>>>> +        }
->>>>>>> +        input_stop(dev);
->>>>>>>                   ^^^^^^^^^^^^^^^^
->>>>>>>
->>>>>>> It will not be called when dev->users is zero, but if it is zero,
->>>>>>> then nobody has opened the device yet so there is nothing to close.
->>>>>>
->>>>>> Ah, I missed that.
->>>>>>
->>>>>> So if the device implements the inhibit call back then on
->>>>>> inhibit it will get both the inhibit and close callback called?
->>>>>>
->>>>>
->>>>> That's right. And conversely, upon uninhibit open() and uninhibit()
->>>>> callbacks will be invoked. Please note that just as with open()/close(),
->>>>> providing inhibit()/uninhibit() is optional.
->>>>
->>>> Ack.
->>>>
->>>>>> And what happens if the last user goes away and the device
->>>>>> is not inhibited?
->>>>>
->>>>> close() is called as usually.
->>>>
->>>> But not inhibit, hmm, see below.
->>>>
->>>>>> I'm trying to understand here what the difference between the 2
->>>>>> is / what the goal of having a separate inhibit callback ?
->>>>>>
->>>>>
->>>>> Drivers have very different ideas about what it means to suspend/resume
->>>>> and open/close. The optional inhibit/uninhibit callbacks are meant for
->>>>> the drivers to know that it is this particular action going on.
->>>>
->>>> So the inhibit() callback triggers the "suspend" behavior ?
->>>> But shouldn't drivers which are capable of suspending the device
->>>> always do so on close() ?
->>>>
->>>> Since your current proposal also calls close() on inhibit() I
->>>> really see little difference between an inhibit() and the last
->>>> user of the device closing it and IMHO unless there is a good
->>>> reason to actually differentiate the 2 it would be better
->>>> to only stick with the existing close() and in cases where
->>>> that does not put the device in a low-power mode yet, fix
->>>> the existing close() callback to do the low-power mode
->>>> setting instead of adding a new callback.
->>>>
->>>>> For inhibit() there's one more argument: close() does not return a value,
->>>>> so its meaning is "do some last cleanup" and as such it is not allowed
->>>>> to fail - whatever its effect is, we must deem it successful. inhibit()
->>>>> does return a value and so it is allowed to fail.
->>>>
->>>> Well, we could make close() return an error and at least in the inhibit()
->>>> case propagate that to userspace. I wonder if userspace is going to
->>>> do anything useful with that error though...
-> 
-> It really can't do anything. Have you ever seen userspace handling
-> errors from close()? And what can be done? A program is terminating, but
-> the kernel says "no, you closing input device failed, you have to
-> continue running indefinitely..."
-> 
->>>>
->>>> In my experience errors during cleanup/shutdown are best logged
->>>> (using dev_err) and otherwise ignored, so that we try to clean up
->>>> as much possible. Unless the very first step of the shutdown process
->>>> fails the device is going to be in some twilight zone state anyways
->>>> at this point we might as well try to cleanup as much as possible.
->>>
->>> What you say makes sense to me.
->>> @Dmitry?
-> 
-> I will note here, that inhibit is closer to suspend() than to close(),
-> and we do report errors for suspend(). Therefore we could conceivably
-> try to handle errors if driver really wants to be fancy. But I think
-> majority of cases will be quite happy with using close() and simply
-> logging errors, as Hans said.
-> 
-> That said, I think the way we should handle inhibit/uninhibit, is that
-> if we have the callback defined, then we call it, and only call open and
-> close if uninhibit or inhibit are _not_ defined.
-> 
+On 6/1/2020 9:57 PM, Yicong Yang wrote:
+> well, Sinan's words make sense to me. But I'm still confused that, the message
+> says we're "disabling ASPM" but ASPM maybe enabled if we designate
+> pcie_aspm=force as I mentioned in the commit message. Will it be possible if
+> we replace "disabling" to "disabled" or we can do something else to make
+> the message reflect the real status of ASPM?
 
-If I understand you correctly you suggest to call either inhibit,
-if provided or close, if inhibit is not provided, but not both,
-that is, if both are provided then on the inhibit path only
-inhibit is called. And, consequently, you suggest to call either
-uninhibit or open, but not both. The rest of my mail makes this
-assumption, so kindly confirm if I understand you correctly.
+What do you think?
 
-In my opinion this idea will not work.
-
-The first question is should we be able to inhibit a device
-which is not opened? In my opinion we should, in order to be
-able to inhibit a device in anticipation without needing to
-open it first.
-
-Then what does opening (with input_open_device()) an inhibited
-device mean? Should it succeed or should it fail? If it is not
-the first opening then effectively it boils down to increasing
-device's and handle's counters, so we can allow it to succeed.
-If, however, the device is being opened for the first time,
-the ->open() method wants to be called, but that somehow
-contradicts the device's inhibited state. So a logical thing
-to do is to either fail input_open_device() or postpone ->open()
-invocation to the moment of uninhibiting - and the latter is
-what the patches in this series currently do.
-
-Failing input_open_device() because of the inhibited state is
-not the right thing to do. Let me explain. Suppose that a device
-is already inhibited and then a new matching handler appears
-in the system. Most handlers (apm-power.c, evbug.c, input-leds.c,
-mac_hid.c, sysrq.c, vt/keyboard.c and rfkill/input.c) don't create
-any character devices (only evdev.c, joydev.c and mousedev.c do),
-so for them it makes no sense to delay calling input_open_device()
-and it is called in handler's ->connect(). If input_open_device()
-now fails, we have lost the only chance for this ->connect() to
-succeed.
-
-Summarizing, IMO the uninhibit path should be calling both
-->open() and ->uninhibit() (if provided), and conversely, the inhibit
-path should be calling both ->inhibit() and ->close() (if provided).
-
-What's your opinion?
-
-Regards,
-
-Andrzej
+Sinan
