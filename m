@@ -2,104 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16CC91EC87D
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jun 2020 06:48:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C919B1ECF64
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jun 2020 14:05:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725780AbgFCEsI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Jun 2020 00:48:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51346 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725275AbgFCEsH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 3 Jun 2020 00:48:07 -0400
-Received: from [192.168.68.109] (75-58-59-55.lightspeed.rlghnc.sbcglobal.net [75.58.59.55])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 21F2F20659;
-        Wed,  3 Jun 2020 04:48:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591159686;
-        bh=AphOIH+6/GvyTneJ0nSOFmpaZ59ec5x3izoW69DhFeE=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=l/aYsdB+rRcGwHkyRN59EyKAvQL/uZlLu8xldmNf3Wc7qYrcl8zTaOyfsJml7UsZ3
-         Ok9vkWgpuQJqWJh3hqWiOrdJfvgZcocrElW8mNVGf2d+dm0pJIIFJRa+J5vcKz+rRF
-         anA0Dh8yET8tV6mNSBsF1R6d7BIQcNUH8Is59wlg=
-Subject: Re: [PATCH] PCI/ASPM: Print correct ASPM status when _OSC failed
-To:     Sean V Kelley <sean.v.kelley@intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Yicong Yang <yangyicong@hisilicon.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linuxarm <linuxarm@huawei.com>
-References: <20200602223618.GA845676@bjorn-Precision-5520>
- <B2282A82-EEA4-40F8-B7F5-1D7AE7E3B573@intel.com>
-From:   Sinan Kaya <okaya@kernel.org>
-Autocrypt: addr=okaya@kernel.org; keydata=
- mQENBFrnOrUBCADGOL0kF21B6ogpOkuYvz6bUjO7NU99PKhXx1MfK/AzK+SFgxJF7dMluoF6
- uT47bU7zb7HqACH6itTgSSiJeSoq86jYoq5s4JOyaj0/18Hf3/YBah7AOuwk6LtV3EftQIhw
- 9vXqCnBwP/nID6PQ685zl3vH68yzF6FVNwbDagxUz/gMiQh7scHvVCjiqkJ+qu/36JgtTYYw
- 8lGWRcto6gr0eTF8Wd8f81wspmUHGsFdN/xPsZPKMw6/on9oOj3AidcR3P9EdLY4qQyjvcNC
- V9cL9b5I/Ud9ghPwW4QkM7uhYqQDyh3SwgEFudc+/RsDuxjVlg9CFnGhS0nPXR89SaQZABEB
- AAG0HVNpbmFuIEtheWEgPG9rYXlhQGtlcm5lbC5vcmc+iQFOBBMBCAA4FiEEYdOlMSE+a7/c
- ckrQvGF4I+4LAFcFAlztcAoCGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQvGF4I+4L
- AFfidAf/VKHInxep0Z96iYkIq42432HTZUrxNzG9IWk4HN7c3vTJKv2W+b9pgvBF1SmkyQSy
- 8SJ3Zd98CO6FOHA1FigFyZahVsme+T0GsS3/OF1kjrtMktoREr8t0rK0yKpCTYVdlkHadxmR
- Qs5xLzW1RqKlrNigKHI2yhgpMwrpzS+67F1biT41227sqFzW9urEl/jqGJXaB6GV+SRKSHN+
- ubWXgE1NkmfAMeyJPKojNT7ReL6eh3BNB/Xh1vQJew+AE50EP7o36UXghoUktnx6cTkge0ZS
- qgxuhN33cCOU36pWQhPqVSlLTZQJVxuCmlaHbYWvye7bBOhmiuNKhOzb3FcgT7kBDQRa5zq1
- AQgAyRq/7JZKOyB8wRx6fHE0nb31P75kCnL3oE+smKW/sOcIQDV3C7mZKLf472MWB1xdr4Tm
- eXeL/wT0QHapLn5M5wWghC80YvjjdolHnlq9QlYVtvl1ocAC28y43tKJfklhHiwMNDJfdZbw
- 9lQ2h+7nccFWASNUu9cqZOABLvJcgLnfdDpnSzOye09VVlKr3NHgRyRZa7me/oFJCxrJlKAl
- 2hllRLt0yV08o7i14+qmvxI2EKLX9zJfJ2rGWLTVe3EJBnCsQPDzAUVYSnTtqELu2AGzvDiM
- gatRaosnzhvvEK+kCuXuCuZlRWP7pWSHqFFuYq596RRG5hNGLbmVFZrCxQARAQABiQEfBBgB
- CAAJBQJa5zq1AhsMAAoJELxheCPuCwBX2UYH/2kkMC4mImvoClrmcMsNGijcZHdDlz8NFfCI
- gSb3NHkarnA7uAg8KJuaHUwBMk3kBhv2BGPLcmAknzBIehbZ284W7u3DT9o1Y5g+LDyx8RIi
- e7pnMcC+bE2IJExCVf2p3PB1tDBBdLEYJoyFz/XpdDjZ8aVls/pIyrq+mqo5LuuhWfZzPPec
- 9EiM2eXpJw+Rz+vKjSt1YIhg46YbdZrDM2FGrt9ve3YaM5H0lzJgq/JQPKFdbd5MB0X37Qc+
- 2m/A9u9SFnOovA42DgXUyC2cSbIJdPWOK9PnzfXqF3sX9Aol2eLUmQuLpThJtq5EHu6FzJ7Y
- L+s0nPaNMKwv/Xhhm6Y=
-Message-ID: <faaf2c47-6039-74fb-e5d2-91a5b3705459@kernel.org>
-Date:   Wed, 3 Jun 2020 00:48:04 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1726034AbgFCMFg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Jun 2020 08:05:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33984 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725961AbgFCMFg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Jun 2020 08:05:36 -0400
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A079AC08C5C1
+        for <linux-acpi@vger.kernel.org>; Wed,  3 Jun 2020 05:05:34 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id a25so2393513ljp.3
+        for <linux-acpi@vger.kernel.org>; Wed, 03 Jun 2020 05:05:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=9SpwZSDLLoRDpRZcnQb1YhQ1cJLsVFtPtxsWAHnQ96E=;
+        b=KYrSN3XwqTd8l8UwldrI1/Xoa180XrwAEd3HoPYcGOcF1OtHgwG2KM8YX8FeCtaFTd
+         8ahXFHa91KoxEyi8GVnbzui9KOKtt67Dd+G9SMTglFKY+VulzeK9LrvX84Qmiwm+6r3o
+         f5aqKrGsMqkyUmAJbcGAdfmDqLHTnWoV5xHBn1H1EjoAvudRzRC2oNHxYS80aLQoHsv9
+         R3Gm6SvV7oaf8dKPcTglPfcbwsSCDKve6gKmcClChHS9NfnT7eLmA3dM26zj1SdPSxcH
+         iuZar9OURVCj6SxBcaSn3sFVNIqNgfoNBVw/y9xGwlXdLdZ/NedX5E90lhOKXB4bKeUh
+         Jolw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=9SpwZSDLLoRDpRZcnQb1YhQ1cJLsVFtPtxsWAHnQ96E=;
+        b=CwtstEpax5Uuj7fg5EGGQjB8EgctBZ0x04hjjCmHRivIj2l+AhMoy7VeUQhLKJSW/8
+         K0dPx4u5bmkr1nWI8AlwH8kUR4zLhmPvdhF5CD8PKE+U89DZM5E52nFwnHSjFIZSEIXb
+         taYtUqorCJSlAn5JU2C/T4F/jD5n3DQGM0Y6mTL9eE6jwwS6hkn6Pp5jaEyfKfv40SWI
+         rnSzCYPVvy+weGsPjO0PwHybvTG7ljVqObcnAc51Ik7gYsHeJ2e+X1x44qnB5vNsZMVx
+         +ThvybMdUuYY8aZowgvyR/dhKX1PBDhlNN6drwbx3jx/gWfmQFWchaHNJ9KAUbGL+5MK
+         mJFg==
+X-Gm-Message-State: AOAM532z5tK/SllHFU2COJDZ7+hLNr2ISmhwW2efB5ev2kyPVD/QsJ6j
+        cg40piwiPowi4bG38QCCo6JRk13MhJp8WePYJo2rRg==
+X-Google-Smtp-Source: ABdhPJxDCM7eTXfshTCW0cR2ch2sO9/HZ5Y8fKiawF1it8noQiKNIEyjHGxZZjLrUdt6kJkQZ3iC2x8o4EwfT93tX/Y=
+X-Received: by 2002:a2e:974a:: with SMTP id f10mr1978577ljj.283.1591185933049;
+ Wed, 03 Jun 2020 05:05:33 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <B2282A82-EEA4-40F8-B7F5-1D7AE7E3B573@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20200520211916.25727-1-andriy.shevchenko@linux.intel.com>
+ <20200520211916.25727-3-andriy.shevchenko@linux.intel.com>
+ <20200525175819.GH1634618@smile.fi.intel.com> <CAMpxmJW71t5Vy6q+wdRO1dkmZbeDKZcP-_9W=CKXX69A866n8g@mail.gmail.com>
+In-Reply-To: <CAMpxmJW71t5Vy6q+wdRO1dkmZbeDKZcP-_9W=CKXX69A866n8g@mail.gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 3 Jun 2020 14:05:22 +0200
+Message-ID: <CACRpkdYZjmzEY04_qSZtAqU6od+kAr=_Sk+PMVFj2UOjXxNVFQ@mail.gmail.com>
+Subject: Re: [PATCH v1 3/5] gpio: pca953x: Drop unneeded ACPI_PTR()
+To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-gpio <linux-gpio@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 6/2/2020 7:21 PM, Sean V Kelley wrote:
+On Wed, May 27, 2020 at 3:13 PM Bartosz Golaszewski
+<bgolaszewski@baylibre.com> wrote:
+> pon., 25 maj 2020 o 19:58 Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> napisa=C5=82(a):
+> >
+> > On Thu, May 21, 2020 at 12:19:14AM +0300, Andy Shevchenko wrote:
+> > > ACPI_PTR() becomes a no-op when !CONFIG_ACPI. This is not needed sinc=
+e
+> > > we always have ID table enabled. Moreover, in the mentioned case comp=
+iler
+> > > will complain about defined but not used variable.
+> >
+> > Bart, are you going to apply this one, or should I resend it as a part =
+of v2?
+> >
+>
+> Ugh, I already sent my last PRs to Linus both for v5.7 fixes & v5.8
+> updates. I'll let Linus pick it up once he pulls from my tree.
 
+I cherry-picked this one (patch 3) on top of my devel branch.
 
-Thanks,
-
->> -        dev_info(&device->dev, "_OSC failed (%s)%s\n",
->> -             acpi_format_exception(status),
->> -             pcie_aspm_support_enabled() ? "; disabling ASPM" : "");
->> +        dev_info(&device->dev, "_OSC: platform retains control of
->> PCIe features (%s)\n",
->> +             acpi_format_exception(status));
->>          return;
->>      }
->>
->> @@ -516,7 +515,7 @@ static void negotiate_os_control(struct
->> acpi_pci_root *root, int *no_aspm,
->>      } else {
->>          decode_osc_control(root, "OS requested", requested);
->>          decode_osc_control(root, "platform willing to grant", control);
->> -        dev_info(&device->dev, "_OSC failed (%s); disabling ASPM\n",
->> +        dev_info(&device->dev, "_OSC: platform retains control of
->> PCIe features (%s)\n",
->>              acpi_format_exception(status));
->>
-> 
-
-feel free to include my reviewed by.
-
-Reviewed-by: Sinan Kaya <okaya@kernel.org>
-
+Yours,
+Linus Walleij
