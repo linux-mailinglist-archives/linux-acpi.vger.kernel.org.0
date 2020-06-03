@@ -2,88 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C919B1ECF64
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jun 2020 14:05:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30FD21ED066
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jun 2020 14:59:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726034AbgFCMFg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Jun 2020 08:05:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33984 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725961AbgFCMFg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Jun 2020 08:05:36 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A079AC08C5C1
-        for <linux-acpi@vger.kernel.org>; Wed,  3 Jun 2020 05:05:34 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id a25so2393513ljp.3
-        for <linux-acpi@vger.kernel.org>; Wed, 03 Jun 2020 05:05:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=9SpwZSDLLoRDpRZcnQb1YhQ1cJLsVFtPtxsWAHnQ96E=;
-        b=KYrSN3XwqTd8l8UwldrI1/Xoa180XrwAEd3HoPYcGOcF1OtHgwG2KM8YX8FeCtaFTd
-         8ahXFHa91KoxEyi8GVnbzui9KOKtt67Dd+G9SMTglFKY+VulzeK9LrvX84Qmiwm+6r3o
-         f5aqKrGsMqkyUmAJbcGAdfmDqLHTnWoV5xHBn1H1EjoAvudRzRC2oNHxYS80aLQoHsv9
-         R3Gm6SvV7oaf8dKPcTglPfcbwsSCDKve6gKmcClChHS9NfnT7eLmA3dM26zj1SdPSxcH
-         iuZar9OURVCj6SxBcaSn3sFVNIqNgfoNBVw/y9xGwlXdLdZ/NedX5E90lhOKXB4bKeUh
-         Jolw==
+        id S1725930AbgFCM75 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Jun 2020 08:59:57 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:44176 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725833AbgFCM75 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Jun 2020 08:59:57 -0400
+Received: by mail-oi1-f196.google.com with SMTP id x202so1677933oix.11;
+        Wed, 03 Jun 2020 05:59:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=9SpwZSDLLoRDpRZcnQb1YhQ1cJLsVFtPtxsWAHnQ96E=;
-        b=CwtstEpax5Uuj7fg5EGGQjB8EgctBZ0x04hjjCmHRivIj2l+AhMoy7VeUQhLKJSW/8
-         K0dPx4u5bmkr1nWI8AlwH8kUR4zLhmPvdhF5CD8PKE+U89DZM5E52nFwnHSjFIZSEIXb
-         taYtUqorCJSlAn5JU2C/T4F/jD5n3DQGM0Y6mTL9eE6jwwS6hkn6Pp5jaEyfKfv40SWI
-         rnSzCYPVvy+weGsPjO0PwHybvTG7ljVqObcnAc51Ik7gYsHeJ2e+X1x44qnB5vNsZMVx
-         +ThvybMdUuYY8aZowgvyR/dhKX1PBDhlNN6drwbx3jx/gWfmQFWchaHNJ9KAUbGL+5MK
-         mJFg==
-X-Gm-Message-State: AOAM532z5tK/SllHFU2COJDZ7+hLNr2ISmhwW2efB5ev2kyPVD/QsJ6j
-        cg40piwiPowi4bG38QCCo6JRk13MhJp8WePYJo2rRg==
-X-Google-Smtp-Source: ABdhPJxDCM7eTXfshTCW0cR2ch2sO9/HZ5Y8fKiawF1it8noQiKNIEyjHGxZZjLrUdt6kJkQZ3iC2x8o4EwfT93tX/Y=
-X-Received: by 2002:a2e:974a:: with SMTP id f10mr1978577ljj.283.1591185933049;
- Wed, 03 Jun 2020 05:05:33 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=2Avu73/RJTh7C6Zmn+PcLBAe4m5stgzWhjrslzFHSP0=;
+        b=jLBYOsarKhBG1YjFV/TG4X7FBYzGobFAle04Iem7aVuYJlfmKA0OkBRc4fD85sefgA
+         xynxspEy2ns7UCdY92TQQavM3S7mE6TraiUakHygcVd9HiZOkZNfAm8YSta9gVM8eEXB
+         JuR+YCcTsh9yhzCc4TLVWO3refpFZCeT21eMXgbcJbSxUUnM3GqZjkF2J81JzS1+psTY
+         Insobt2yKwoU9oouR6WQAmL9hO7thnsDclQDoGCIj8otP3kb6FVmdtAjDZFpwY6svsrj
+         Gt80x2HrKuMJ7dhhzANdDLxydvvfIlPxBXRUHCvizSFuL5Uw5Equ/20c55fn9LfRe52l
+         05kg==
+X-Gm-Message-State: AOAM530F2VPVFjkOVSMFj5paXRcurRKAY34cTyiG4VDERpyLyFhJ1Puv
+        9kFcyKLrbo9UZLFQ04OlE/SxYoJCceN1C7T90dE=
+X-Google-Smtp-Source: ABdhPJyJxV8ci7Gy/UVsoeIn0CieAgfklfLjvV2MpzQ0tBaMdkhQIJdMlqCuRQORLGmugftLli0nlNv4Wp4+0GUfdek=
+X-Received: by 2002:aca:eb56:: with SMTP id j83mr6404375oih.110.1591189195627;
+ Wed, 03 Jun 2020 05:59:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200520211916.25727-1-andriy.shevchenko@linux.intel.com>
- <20200520211916.25727-3-andriy.shevchenko@linux.intel.com>
- <20200525175819.GH1634618@smile.fi.intel.com> <CAMpxmJW71t5Vy6q+wdRO1dkmZbeDKZcP-_9W=CKXX69A866n8g@mail.gmail.com>
-In-Reply-To: <CAMpxmJW71t5Vy6q+wdRO1dkmZbeDKZcP-_9W=CKXX69A866n8g@mail.gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 3 Jun 2020 14:05:22 +0200
-Message-ID: <CACRpkdYZjmzEY04_qSZtAqU6od+kAr=_Sk+PMVFj2UOjXxNVFQ@mail.gmail.com>
-Subject: Re: [PATCH v1 3/5] gpio: pca953x: Drop unneeded ACPI_PTR()
-To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-gpio <linux-gpio@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+References: <dd5ba708-18a9-fd42-8cf1-af32ef367d5e@kernel.org> <20200602223618.GA845676@bjorn-Precision-5520>
+In-Reply-To: <20200602223618.GA845676@bjorn-Precision-5520>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 3 Jun 2020 14:59:41 +0200
+Message-ID: <CAJZ5v0ixNmH_h5OFQrH4HV0E2ie_=PsN0vj7wBBjASTH51Esuw@mail.gmail.com>
+Subject: Re: [PATCH] PCI/ASPM: Print correct ASPM status when _OSC failed
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Sinan Kaya <okaya@kernel.org>,
+        Yicong Yang <yangyicong@hisilicon.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linuxarm <linuxarm@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 27, 2020 at 3:13 PM Bartosz Golaszewski
-<bgolaszewski@baylibre.com> wrote:
-> pon., 25 maj 2020 o 19:58 Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> napisa=C5=82(a):
-> >
-> > On Thu, May 21, 2020 at 12:19:14AM +0300, Andy Shevchenko wrote:
-> > > ACPI_PTR() becomes a no-op when !CONFIG_ACPI. This is not needed sinc=
-e
-> > > we always have ID table enabled. Moreover, in the mentioned case comp=
-iler
-> > > will complain about defined but not used variable.
-> >
-> > Bart, are you going to apply this one, or should I resend it as a part =
-of v2?
-> >
+On Wed, Jun 3, 2020 at 12:36 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
 >
-> Ugh, I already sent my last PRs to Linus both for v5.7 fixes & v5.8
-> updates. I'll let Linus pick it up once he pulls from my tree.
+> On Tue, Jun 02, 2020 at 01:50:37PM -0400, Sinan Kaya wrote:
+> > Bjorn,
+> >
+> > On 6/1/2020 9:57 PM, Yicong Yang wrote:
+> > > well, Sinan's words make sense to me. But I'm still confused that, the message
+> > > says we're "disabling ASPM" but ASPM maybe enabled if we designate
+> > > pcie_aspm=force as I mentioned in the commit message. Will it be possible if
+> > > we replace "disabling" to "disabled" or we can do something else to make
+> > > the message reflect the real status of ASPM?
+> >
+> > What do you think?
+>
+> ASPM is a mess in general, and the whole "no_aspm" dance for delaying
+> setting of aspm_disabled is ... well, it's confusing at best.
+>
+> These "_OSC failed" messages are confusing to users as well.  They
+> lead to bug reports against Linux (when it's usually a BIOS problem)
+> and users booting with "pcie_aspm=force" (which is a poor user
+> experience and potentially dangerous since the platform hasn't granted
+> us control of the PCIe Capability).
+>
+> And it's not even specific to ASPM; when _OSC fails, we don't take
+> over *any* PCIe features.  At least, we're not *supposed* to -- I
+> don't think we're very careful about random things in the PCIe
+> capability.
+>
+> What if we just removed the ASPM text from the message completely,
+> e.g., something like this:
+>
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index 800a3d26d24b..49fdb07061b1 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -453,9 +453,8 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
+>                 if ((status == AE_NOT_FOUND) && !is_pcie)
+>                         return;
+>
+> -               dev_info(&device->dev, "_OSC failed (%s)%s\n",
+> -                        acpi_format_exception(status),
+> -                        pcie_aspm_support_enabled() ? "; disabling ASPM" : "");
+> +               dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
+> +                        acpi_format_exception(status));
+>                 return;
+>         }
+>
+> @@ -516,7 +515,7 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
+>         } else {
+>                 decode_osc_control(root, "OS requested", requested);
+>                 decode_osc_control(root, "platform willing to grant", control);
+> -               dev_info(&device->dev, "_OSC failed (%s); disabling ASPM\n",
+> +               dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
+>                         acpi_format_exception(status));
+>
+>                 /*
 
-I cherry-picked this one (patch 3) on top of my devel branch.
+Looks good to me.
 
-Yours,
-Linus Walleij
+Cheers!
