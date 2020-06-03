@@ -2,196 +2,505 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6B0F1ED6E7
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jun 2020 21:30:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 397211ED6F6
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jun 2020 21:37:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726190AbgFCTaj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Jun 2020 15:30:39 -0400
-Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:51242 "EHLO
-        rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725821AbgFCTai (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Jun 2020 15:30:38 -0400
-X-Greylist: delayed 559 seconds by postgrey-1.27 at vger.kernel.org; Wed, 03 Jun 2020 15:30:37 EDT
-Received: from mail-irv-17.broadcom.com (mail-irv-17.lvn.broadcom.net [10.75.242.48])
-        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 840DD30DD7D;
-        Wed,  3 Jun 2020 12:21:15 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com 840DD30DD7D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1591212075;
-        bh=/AQzYy/Wi51ZHDd+ThnXKaeww1EEOqsroMbykkRvvq8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=NtJkO7MeFX9UJlK8NUNrIV5R9Mx4cOS08pLbxG4NPk/I+q5/V9FpPpuH5/7NTn4h6
-         oXzIRd7IOw07qiMAAfQWzxBn0ktMI+2Y0HHNBVaAG6rqUobHv9JpcCr/2jYvZ/IP1F
-         NUugsjaWJwj9/B8MokjcNqcee5TK7Khm/EE80QP0=
-Received: from stbsrv-and-01.and.broadcom.net (stbsrv-and-01.and.broadcom.net [10.28.16.211])
-        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 9DA8814008C;
-        Wed,  3 Jun 2020 12:21:11 -0700 (PDT)
-From:   Jim Quinlan <james.quinlan@broadcom.com>
-To:     linux-pci@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        bcm-kernel-feedback-list@broadcom.com, james.quinlan@broadcom.com
-Cc:     Alan Stern <stern@rowland.harvard.edu>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>, Corey Minyard <minyard@acm.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        devel@driverdev.osuosl.org (open list:STAGING SUBSYSTEM),
-        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
-        DEVICE TREE),
-        dri-devel@lists.freedesktop.org (open list:DRM DRIVERS FOR ALLWINNER
-        A10), Florian Fainelli <f.fainelli@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        iommu@lists.linux-foundation.org (open list:IOMMU DRIVERS),
-        Jens Axboe <axboe@kernel.dk>, Joerg Roedel <jroedel@suse.de>,
-        Julien Grall <julien.grall@arm.com>,
-        linux-acpi@vger.kernel.org (open list:ACPI FOR ARM64 (ACPI/arm64)),
-        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
-        linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
-        Parallel ATA drivers)), linux-kernel@vger.kernel.org (open list),
-        linux-media@vger.kernel.org (open list:ALLWINNER A10 CSI DRIVER),
-        linux-remoteproc@vger.kernel.org (open list:REMOTE PROCESSOR
-        (REMOTEPROC) SUBSYSTEM),
-        linux-rpi-kernel@lists.infradead.org (moderated list:BROADCOM
-        BCM2711/BCM2835 ARM ARCHITECTURE),
-        linux-sh@vger.kernel.org (open list:SUPERH),
-        linux-usb@vger.kernel.org (open list:USB SUBSYSTEM),
-        Mark Brown <broonie@kernel.org>,
-        Oliver Neukum <oneukum@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Saravana Kannan <saravanak@google.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v3 00/13] PCI: brcmstb: enable PCIe for STB chips
-Date:   Wed,  3 Jun 2020 15:20:32 -0400
-Message-Id: <20200603192058.35296-1-james.quinlan@broadcom.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726087AbgFCThT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Jun 2020 15:37:19 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:32504 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726086AbgFCThS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Jun 2020 15:37:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1591213035;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=sj8DwrnZh85Ck6QTkl6G16Wo9om1OVn0LU/mlRGDKpI=;
+        b=VzWshBGTN/d0ov8VGrodTUpnA2gZavVFuWcEpHaXkT0iPPypE/szx/9i+uwXmlv9uveyQT
+        4+/PzYAzAoGlr1n7axd7MfAsvfvEZ7MogMQ7KHmpyPPtMIK5I/P/7jZPLB9LJ169WxDUJb
+        19BkT541dj68paGFhbB5kRU6D3LaJnc=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-308-LRdPnftsPD2LIoiwmT7wDA-1; Wed, 03 Jun 2020 15:37:14 -0400
+X-MC-Unique: LRdPnftsPD2LIoiwmT7wDA-1
+Received: by mail-wr1-f71.google.com with SMTP id w16so1452527wru.18
+        for <linux-acpi@vger.kernel.org>; Wed, 03 Jun 2020 12:37:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=sj8DwrnZh85Ck6QTkl6G16Wo9om1OVn0LU/mlRGDKpI=;
+        b=iK5rXRoaA0RSjIT8vX42VPyOZiOAu2TAkMDhXwmGuylPX2e0zqkhW4GXQcgDBKCfOc
+         KiIYCUtPl7US70FHV6XRo2PZ8isCoe9vcGSGpSEE0C2Pwnzy+u7WMI7omCTEXmfhZvke
+         dG3QK2aRIT/pTKOHwNBWJ4jzHbxD+HyT+M2znqNv5yfulIzTAw7Y7EYIm+gGVhngfbDA
+         IvQlY7GhKypKmTdf98PfvaPvBLtLp7T1V7I9dCuC/lnZWpIebSomgCbH9EpgelctNx+2
+         qeT50XQ61JxVHqmsQ1RQcrYIiiRPqToV8UwJGKvxHxwIpGRqQkEYnPv3tDzP1oqcLo8K
+         kvag==
+X-Gm-Message-State: AOAM533hzd/AZsV4kDlse6bOEy/vpEONutZaElG63c+hGoE/WbaPB5Zo
+        t7JStuZ0AplZaZCgiok1+2eM6WkXbydiEW7795fFfOJaKstY0aUXEgcV67bKinv6IxTJJ3n1w78
+        DsXf8BKpZ1BgmMKBYjZPfdA==
+X-Received: by 2002:a1c:5502:: with SMTP id j2mr712653wmb.56.1591213032615;
+        Wed, 03 Jun 2020 12:37:12 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxpOEMCf7lIDrWt8bkc/tbgg60nx+v5awVE0oDvn7V8736Lx9QAVjybI/3lYTsZ77kbwV2S3w==
+X-Received: by 2002:a1c:5502:: with SMTP id j2mr712619wmb.56.1591213032243;
+        Wed, 03 Jun 2020 12:37:12 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id m129sm4585267wmf.2.2020.06.03.12.37.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Jun 2020 12:37:11 -0700 (PDT)
+Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
+        Benjamin Tissoires <btissoir@redhat.com>
+References: <20200515164943.28480-1-andrzej.p@collabora.com>
+ <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
+ <e6030957-97dc-5b04-7855-bc14a78164c8@collabora.com>
+ <6d9921fc-5c2f-beda-4dcd-66d6970a22fe@redhat.com>
+ <09679de4-75d3-1f29-ec5f-8d42c84273dd@collabora.com>
+ <f674ba4f-bd83-0877-c730-5dc6ea09ae4b@redhat.com>
+ <2d224833-3a7e-bc7c-af15-1f803f466697@collabora.com>
+ <aa2ce2ab-e5bc-9cb4-8b53-c1ef9348b646@redhat.com>
+ <20200527063430.GJ89269@dtor-ws>
+ <88f939cd-1518-d516-59f2-8f627a6a70d2@collabora.com>
+ <20200602175241.GO89269@dtor-ws>
+ <82e9f2ab-a16e-51ee-1413-bedf0122026a@collabora.com>
+ <8f97d2e1-497a-495d-bc82-f46dbeba440c@redhat.com>
+ <fb5bee72-6a75-88aa-8157-75f07c491eeb@collabora.com>
+ <681abc14-ef0f-ff15-68ed-944b2f96bdaf@redhat.com>
+ <025361f4-5b1b-6669-ffa0-a6e8ad43940c@collabora.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <01b902dd-8841-e697-5ba7-96fa6b73c1cd@redhat.com>
+Date:   Wed, 3 Jun 2020 21:37:10 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
+MIME-Version: 1.0
+In-Reply-To: <025361f4-5b1b-6669-ffa0-a6e8ad43940c@collabora.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-v3:
-  Commit "device core: Introduce multiple dma pfn offsets"
-  Commit "arm: dma-mapping: Invoke dma offset func if needed"
-  -- The above two commits have been squashed.  More importantly,
-     the code has been modified so that the functionality for
-     multiple pfn offsets subsumes the use of dev->dma_pfn_offset.
-     In fact, dma_pfn_offset is removed and supplanted by
-     dma_pfn_offset_map, which is a pointer to an array.  The
-     more common case of a uniform offset is now handled as
-     a map with a single entry, while cases requiring multiple
-     pfn offsets use a map with multiple entries.  Code paths
-     that used to do this:
+Hi,
 
-         dev->dma_pfn_offset = mydrivers_pfn_offset;
+On 6/3/20 7:54 PM, Andrzej Pietrasiewicz wrote:
+> W dniu 03.06.2020 o 19:38, Hans de Goede pisze:
+>> Hi,
+>>
+>> On 6/3/20 3:07 PM, Andrzej Pietrasiewicz wrote:
+>>> Hi Hans, hi Dmitry,
+>>
+>> <snip>
+>>
+>>> I'm taking one step back and looking at the ->open() and ->close()
+>>> driver callbacks. They are called from input_open_device() and
+>>> input_close_device(), respectively:
+>>>
+>>> input_open_device():
+>>> "This function should be called by input handlers when they
+>>> want to start receive events from given input device."
+>>>
+>>> ->open() callback:
+>>> "this method is called when the very first user calls
+>>> input_open_device(). The driver must prepare the device to start
+>>> generating events (start polling thread, request an IRQ, submit
+>>> URB, etc.)"
+>>>
+>>> input_close_device():
+>>> "This function should be called by input handlers when they
+>>> want to stop receive events from given input device."
+>>>
+>>> ->close() callback:
+>>> "this method is called when the very last user calls
+>>> input_close_device()"
+>>>
+>>> It seems to me that the callback names do not reflect their
+>>> purpose: their meaning is not to "open" or to "close" but to
+>>> give drivers a chance to control when they start or stop
+>>> providing events to the input core.
+>>>
+>>> What would you say about changing the callbacks' names?
+>>> I'd envsion: ->provide_events() instead of ->open() and
+>>> ->stop_events() instead of ->close(). Of course drivers can
+>>> exploit the fact of knowing that nobody wants any events
+>>> from them and do whatever they consider appropriate, for
+>>> example go into a low power mode - but the latter is beyond
+>>> the scope of the input subsystem and is driver-specific.
+>>
+>> I don't have much of an opinion on changing the names,
+>> to me open/close have always means start/stop receiving
+>> events. This follows the everything is a file philosophy,
+>> e.g. you can also not really "open" a serial port,
+>> yet opening /dev/ttyS0 will activate the receive IRQ
+>> of the UART, etc. So maybe we just need to make the
+>> docs clearer rather then do the rename?  Doing the
+>> rename is certainly going to cause a lot of churn.
+> 
+> Right, I can see now that the suggestion to change names is
+> too far fetched. (I feel that release() would be better
+> than close(), though). But it exposes the message I wanted to
+> pass.
+> 
+>>
+>> Anyways as said, I don't have much of an opinion,
+>> so I'll leave commenting (more) on this to Dmitry.
+>>
+>>> With such a naming change in mind let's consider inhibiting.
+>>> We want to be able to control when to disregard events from
+>>> a given device. It makes sense to do it at device level, otherwise
+>>> such an operation would have to be invoked in all associated
+>>> handlers (those that have an open handle associating them with
+>>> the device in question). But of course we can do better than
+>>> merely ignoring the events received: we can tell the drivers
+>>> that we don't want any events from them, and later, at uninhibit
+>>> time, tell them to start providing the events again. Conceptually,
+>>> the two operations (provide or don't provide envents) are exactly
+>>> the same thing we want to be happening at input_open_device() and
+>>> input_close_device() time. To me, changing the names of
+>>> ->open() and ->close() exposes this fact very well.
+>>>
+>>> Consequently, ->inhibit() and ->uninhibit() won't be needed,
+>>> and drivers which already implement ->provide_events() (formerly
+>>> ->open()) and ->stop_events() (formerly ->close()) will receive
+>>> full inhibit/uninhibit support for free (subject to how well they
+>>> implement ->provide_events()/->stop_events()). Unless we can come
+>>> up with what the drivers might be doing on top of ->stop_events()
+>>> and ->provide_events() when inhibiting/uninhibiting, but it seems
+>>> to me we can't. Can we?
+>>
+>> Right. I'm happy that you've come to see that both on open/close
+>> and on inhibit/uninhibit we want to "start receiving events" and
+>> "stop receiving events", so that we only need one set of callbacks.
+>>
+> 
+> Yeah, that's my conclusion - at least on a conceptual level.
+> 
+> That said, what I can imagine is an existing driver (e.g. elan_i2c)
+> which does not implement neither open() nor close(), but does have
+> suspend() and resume(). Then it is maybe a bit easier to add inhibit()
+> and uninhibit() /they would be similar to suspend and resume/ instead
+> of open() and close(): If only open() and close() are possible, then
+> the probe function needs to be extended to "close" the device before it
+> gets registered, because from the moment it is registered it might be
+> opened right away.
 
-     have been changed to do this:
+The probe only needs to "close" it if for some reason it
+starts directly sending events in most cases the driver
+must actively do something to get it to send events.
 
-         attach_uniform_dma_pfn_offset(dev, pfn_offset);
+So in most cases this should be pretty straight forward,
+as for having to do some init / power-on during probe
+and then power-off at the end of the probe. Yes sometimes
+something like that might be necessary.
 
-  Commit "dt-bindings: PCI: Add bindings for more Brcmstb chips"
-  -- Add if/then clause for required props: resets, reset-names (RobH)
-  -- Change compatible list from const to enum (RobH)
-  -- Change list of u32-tuples to u64 (RobH)
+Looking at your suggested elan_i2c changes I think they
+look fine. I have the feeling that with some refactoring
+they can be made a bit cleaner (I did not look a the
+changes in too much detail) but overall I think they
+look ok.
 
-  Commit "of: Include a dev param in of_dma_get_range()"
-  -- modify of/unittests.c to add NULL param in of_dma_get_range() call.
+Note you may also want to look at using the runtime
+suspend framework for this, doing a pm_runtime_get_sync()
+in open() and then letting (runtime) suspend do the power
+off if you set a reasonable timeout for autosuspend after
+the last user is gone then that will also avoid an
+unnecessary suspend / resume cycle between probe()
+exiting and the first open() call and this avoids the
+need to do a poweroff() at the end of probe(), the
+runtime-pm framework will autosuspend the device after
+the timeout expires.
 
-  Commit "device core: Add ability to handle multiple dma offsets"
-  -- align comment in device.h (AndyS).
-  -- s/cpu_beg/cpu_start/ and s/dma_beg/dma_start/ in struct
-     dma_pfn_offset_region (AndyS).
+Regards,
 
-v2:
-Commit: "device core: Add ability to handle multiple dma offsets"
-  o Added helper func attach_dma_pfn_offset_map() in address.c (Chistoph)
-  o Helpers funcs added to __phys_to_dma() & __dma_to_phys() (Christoph)
-  o Added warning when multiple offsets are needed and !DMA_PFN_OFFSET_MAP
-  o dev->dma_pfn_map => dev->dma_pfn_offset_map
-  o s/frm/from/ for dma_pfn_offset_frm_{phys,dma}_addr() (Christoph)
-  o In device.h: s/const void */const struct dma_pfn_offset_region */
-  o removed 'unlikely' from unlikely(dev->dma_pfn_offset_map) since
-    guarded by CONFIG_DMA_PFN_OFFSET_MAP (Christoph)
-  o Since dev->dma_pfn_offset is copied in usb/core/{usb,message}.c, now
-    dev->dma_pfn_offset_map is copied as well.
-  o Merged two of the DMA commits into one (Christoph).
+Hans
 
-Commit "arm: dma-mapping: Invoke dma offset func if needed":
-  o Use helper functions instead of #if CONFIG_DMA_PFN_OFFSET
 
-Other commits' changes:
-  o Removed need for carrying of_id var in priv (Nicolas)
-  o Commit message rewordings (Bjorn)
-  o Commit log messages filled to 75 chars (Bjorn)
-  o devm_reset_control_get_shared())
-    => devm_reset_control_get_optional_shared (Philipp)
-  o Add call to reset_control_assert() in PCIe remove routines (Philipp)
-
-v1:
-This patchset expands the usefulness of the Broadcom Settop Box PCIe
-controller by building upon the PCIe driver used currently by the
-Raspbery Pi.  Other forms of this patchset were submitted by me years
-ago and not accepted; the major sticking point was the code required
-for the DMA remapping needed for the PCIe driver to work [1].
-
-There have been many changes to the DMA and OF subsystems since that
-time, making a cleaner and less intrusive patchset possible.  This
-patchset implements a generalization of "dev->dma_pfn_offset", except
-that instead of a single scalar offset it provides for multiple
-offsets via a function which depends upon the "dma-ranges" property of
-the PCIe host controller.  This is required for proper functionality
-of the BrcmSTB PCIe controller and possibly some other devices.
-
-[1] https://lore.kernel.org/linux-arm-kernel/1516058925-46522-5-git-send-email-jim2101024@gmail.com/
-
-Jim Quinlan (13):
-  PCI: brcmstb: PCIE_BRCMSTB depends on ARCH_BRCMSTB
-  ata: ahci_brcm: Fix use of BCM7216 reset controller
-  dt-bindings: PCI: Add bindings for more Brcmstb chips
-  PCI: brcmstb: Add bcm7278 reigister info
-  PCI: brcmstb: Add suspend and resume pm_ops
-  PCI: brcmstb: Add bcm7278 PERST support
-  PCI: brcmstb: Add control of rescal reset
-  of: Include a dev param in of_dma_get_range()
-  device core: Introduce multiple dma pfn offsets
-  PCI: brcmstb: Set internal memory viewport sizes
-  PCI: brcmstb: Accommodate MSI for older chips
-  PCI: brcmstb: Set bus max burst size by chip type
-  PCI: brcmstb: Add bcm7211, bcm7216, bcm7445, bcm7278 to match list
-
- .../bindings/pci/brcm,stb-pcie.yaml           |  58 ++-
- arch/arm/include/asm/dma-mapping.h            |   9 +-
- arch/arm/mach-keystone/keystone.c             |   9 +-
- arch/sh/drivers/pci/pcie-sh7786.c             |   3 +-
- arch/sh/kernel/dma-coherent.c                 |  17 +-
- arch/x86/pci/sta2x11-fixup.c                  |   7 +-
- drivers/acpi/arm64/iort.c                     |   5 +-
- drivers/ata/ahci_brcm.c                       |  14 +-
- drivers/gpu/drm/sun4i/sun4i_backend.c         |   7 +-
- drivers/iommu/io-pgtable-arm.c                |   2 +-
- .../platform/sunxi/sun4i-csi/sun4i_csi.c      |   5 +-
- .../platform/sunxi/sun6i-csi/sun6i_csi.c      |   5 +-
- drivers/of/address.c                          |  97 ++++-
- drivers/of/device.c                           |  10 +-
- drivers/of/of_private.h                       |   8 +-
- drivers/of/unittest.c                         |   2 +-
- drivers/pci/controller/Kconfig                |   3 +-
- drivers/pci/controller/pcie-brcmstb.c         | 408 +++++++++++++++---
- drivers/remoteproc/remoteproc_core.c          |   2 +-
- .../staging/media/sunxi/cedrus/cedrus_hw.c    |   7 +-
- drivers/usb/core/message.c                    |   4 +-
- drivers/usb/core/usb.c                        |   2 +-
- include/linux/device.h                        |   4 +-
- include/linux/dma-direct.h                    |  16 +-
- include/linux/dma-mapping.h                   |  45 ++
- kernel/dma/coherent.c                         |  11 +-
- 26 files changed, 631 insertions(+), 129 deletions(-)
-
--- 
-2.17.1
+> And the device must be available earlier during the
+> course of probe to query some parameters through i2c:
+> 
+> +static int elan_reactivate(struct elan_tp_data *data)
+> +{
+> +    struct device *dev = &data->client->dev;
+> +    int ret;
+> +
+> +    ret = elan_enable_power(data);
+> +    if (ret)
+> +        dev_err(dev, "failed to restore power: %d\n", ret);
+> +
+> +    ret = elan_initialize(data);
+> +    if (ret)
+> +        dev_err(dev, "failed to re-initialize touchpad: %d\n", ret);
+> +
+> +    return ret;
+> +}
+> +
+> +static int elan_open(struct input_dev *input)
+> +{
+> +    struct elan_tp_data *data = input_get_drvdata(input);
+> +    struct i2c_client *client = data->client;
+> +    int ret;
+> +
+> +    dev_dbg(&client->dev, "uninhibiting\n");
+> +
+> +    ret = mutex_lock_interruptible(&data->sysfs_mutex);
+> +    if (ret)
+> +        return ret;
+> +
+> +    ret = elan_reactivate(data);
+> +    if (ret == 0)
+> +        enable_irq(client->irq);
+> +
+> +    mutex_unlock(&data->sysfs_mutex);
+> +
+> +    return ret;
+> +}
+> +
+> +static int elan_inhibit(struct input_dev *input)
+> +{
+> +    struct elan_tp_data *data = input_get_drvdata(input);
+> +    struct i2c_client *client = data->client;
+> +    int ret;
+> +
+> +    dev_dbg(&client->dev, "closing\n");
+> +
+> +    /*
+> +     * We are taking the mutex to make sure sysfs operations are
+> +     * complete before we attempt to bring the device into low[er]
+> +     * power mode.
+> +     */
+> +    ret = mutex_lock_interruptible(&data->sysfs_mutex);
+> +    if (ret)
+> +        return ret;
+> +
+> +    disable_irq(client->irq);
+> +
+> +    ret = elan_disable_power(data);
+> +    if (ret)
+> +        enable_irq(client->irq);
+> +
+> +    mutex_unlock(&data->sysfs_mutex);
+> +
+> +    return ret;
+> +}
+> +
+> +static void elan_close(struct input_dev *input)
+> +{
+> +    elan_inhibit(input);
+> +}
+> +
+>   static int elan_query_device_info(struct elan_tp_data *data)
+>   {
+>       int error;
+>       u16 ic_type;
+> 
+>       error = data->ops->get_version(data->client, false, &data->fw_version);
+>       if (error)
+>           return error;
+> 
+>       error = data->ops->get_checksum(data->client, false,
+>                       &data->fw_checksum);
+>       if (error)
+>           return error;
+> 
+>       error = data->ops->get_version(data->client, true, &data->iap_version);
+>       if (error)
+>           return error;
+> @@ -1071,34 +1141,36 @@ static int elan_setup_trackpoint_input_device(struct elan_tp_data *data)
+> 
+>   static int elan_setup_input_device(struct elan_tp_data *data)
+>   {
+>       struct device *dev = &data->client->dev;
+>       struct input_dev *input;
+>       unsigned int max_width = max(data->width_x, data->width_y);
+>       unsigned int min_width = min(data->width_x, data->width_y);
+>       int error;
+> 
+>       input = devm_input_allocate_device(dev);
+>       if (!input)
+>           return -ENOMEM;
+> 
+>       input->name = "Elan Touchpad";
+>       input->id.bustype = BUS_I2C;
+>       input->id.vendor = ELAN_VENDOR_ID;
+>       input->id.product = data->product_id;
+> +    input->open = elan_open;
+> +    input->close = elan_close;
+>       input_set_drvdata(input, data);
+> 
+>       error = input_mt_init_slots(input, ETP_MAX_FINGERS,
+>                       INPUT_MT_POINTER | INPUT_MT_DROP_UNUSED);
+>       if (error) {
+>           dev_err(dev, "failed to initialize MT slots: %d\n", error);
+>           return error;
+>       }
+> 
+>       __set_bit(EV_ABS, input->evbit);
+>       __set_bit(INPUT_PROP_POINTER, input->propbit);
+>       if (data->clickpad) {
+>           __set_bit(INPUT_PROP_BUTTONPAD, input->propbit);
+>       } else {
+>           __set_bit(BTN_RIGHT, input->keybit);
+>           if (data->middle_button)
+>               __set_bit(BTN_MIDDLE, input->keybit);
+> @@ -1253,34 +1325,40 @@ static int elan_probe(struct i2c_client *client,
+>       if (!irqflags)
+>           irqflags = IRQF_TRIGGER_FALLING;
+> 
+>       error = devm_request_threaded_irq(dev, client->irq, NULL, elan_isr,
+>                         irqflags | IRQF_ONESHOT,
+>                         client->name, data);
+>       if (error) {
+>           dev_err(dev, "cannot register irq=%d\n", client->irq);
+>           return error;
+>       }
+> 
+>       error = devm_device_add_groups(dev, elan_sysfs_groups);
+>       if (error) {
+>           dev_err(dev, "failed to create sysfs attributes: %d\n", error);
+>           return error;
+>       }
+> 
+> +    error = elan_inhibit(data->input);
+> +    if (error) {
+> +        dev_err(dev, "failed to inhibit input device before registering: %d\n", error);
+> +        return error;
+> +    }
+> +
+>       error = input_register_device(data->input);
+>       if (error) {
+>           dev_err(dev, "failed to register input device: %d\n", error);
+>           return error;
+>       }
+> 
+>       if (data->tp_input) {
+>           error = input_register_device(data->tp_input);
+>           if (error) {
+>               dev_err(&client->dev,
+>                   "failed to register TrackPoint input device: %d\n",
+>                   error);
+>               return error;
+>           }
+>       }
+> 
+>       /*
+> @@ -1294,72 +1372,71 @@ static int elan_probe(struct i2c_client *client,
+>   }
+> 
+>   static int __maybe_unused elan_suspend(struct device *dev)
+>   {
+>       struct i2c_client *client = to_i2c_client(dev);
+>       struct elan_tp_data *data = i2c_get_clientdata(client);
+>       int ret;
+> 
+>       /*
+>        * We are taking the mutex to make sure sysfs operations are
+>        * complete before we attempt to bring the device into low[er]
+>        * power mode.
+>        */
+>       ret = mutex_lock_interruptible(&data->sysfs_mutex);
+>       if (ret)
+>           return ret;
+> 
+> -    disable_irq(client->irq);
+> +    mutex_lock(&data->input->mutex);
+> +    if (input_device_enabled(data->input)) {
+> +        disable_irq(client->irq);
+> 
+> -    if (device_may_wakeup(dev)) {
+> -        ret = elan_sleep(data);
+> -        /* Enable wake from IRQ */
+> -        data->irq_wake = (enable_irq_wake(client->irq) == 0);
+> -    } else {
+> -        ret = elan_disable_power(data);
+> +        if (device_may_wakeup(dev)) {
+> +            ret = elan_sleep(data);
+> +            /* Enable wake from IRQ */
+> +            data->irq_wake = (enable_irq_wake(client->irq) == 0);
+> +        } else {
+> +            ret = elan_disable_power(data);
+> +        }
+>       }
+> +    mutex_unlock(&data->input->mutex);
+> 
+>       mutex_unlock(&data->sysfs_mutex);
+>       return ret;
+>   }
+> 
+>   static int __maybe_unused elan_resume(struct device *dev)
+>   {
+>       struct i2c_client *client = to_i2c_client(dev);
+>       struct elan_tp_data *data = i2c_get_clientdata(client);
+> -    int error;
+> +    int ret = 0;
+> 
+> -    if (device_may_wakeup(dev) && data->irq_wake) {
+> -        disable_irq_wake(client->irq);
+> -        data->irq_wake = false;
+> -    }
+> +    mutex_lock(&data->input->mutex);
+> +    if (input_device_enabled(data->input)) {
+> +        if (data->irq_wake) {
+> +            disable_irq_wake(client->irq);
+> +            data->irq_wake = false;
+> +        }
+> 
+> -    error = elan_enable_power(data);
+> -    if (error) {
+> -        dev_err(dev, "power up when resuming failed: %d\n", error);
+> -        goto err;
+> +        ret = elan_reactivate(data);
+> +        enable_irq(data->client->irq);
+>       }
+> +    mutex_unlock(&data->input->mutex);
+> 
+> -    error = elan_initialize(data);
+> -    if (error)
+> -        dev_err(dev, "initialize when resuming failed: %d\n", error);
+> -
+> -err:
+> -    enable_irq(data->client->irq);
+> -    return error;
+> +    return ret;
+>   }
+> 
+> Regards,
+> 
+> Andrzej
+> 
 
