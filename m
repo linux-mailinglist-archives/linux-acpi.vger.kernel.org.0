@@ -2,112 +2,209 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 421B41ED09F
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jun 2020 15:19:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FA951ED516
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jun 2020 19:38:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725834AbgFCNTy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Jun 2020 09:19:54 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:47438 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725780AbgFCNTy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 3 Jun 2020 09:19:54 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 3D677AE57E255F573E1A;
-        Wed,  3 Jun 2020 21:19:52 +0800 (CST)
-Received: from [10.65.58.147] (10.65.58.147) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.487.0; Wed, 3 Jun 2020
- 21:19:44 +0800
-Subject: Re: [PATCH v2] ACPI: PCI: Remove ASPM text from _OSC failure message
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-References: <20200602223618.GA845676@bjorn-Precision-5520>
- <B2282A82-EEA4-40F8-B7F5-1D7AE7E3B573@intel.com>
- <faaf2c47-6039-74fb-e5d2-91a5b3705459@kernel.org>
- <03d2a6ca-78de-2d39-5428-2949c2017099@hisilicon.com>
- <CAJZ5v0hxwcbembJGDRdf_nBRaTzcO73L1YJ2TT3BYxaihV6orA@mail.gmail.com>
-CC:     Sinan Kaya <okaya@kernel.org>,
-        Sean V Kelley <sean.v.kelley@intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linuxarm <linuxarm@huawei.com>
-From:   Yicong Yang <yangyicong@hisilicon.com>
-Message-ID: <0e531765-0398-001f-c157-bab459f4aa94@hisilicon.com>
-Date:   Wed, 3 Jun 2020 21:19:51 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+        id S1726151AbgFCRiL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Jun 2020 13:38:11 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:54582 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726173AbgFCRiK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Jun 2020 13:38:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1591205888;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=g4JdSAXlLTFOykR3a704n7KRgSRjVj4aOucsElPOq3c=;
+        b=F9UhnPI9GQH0SQx47IIc5LTN28jE7cM9wph1+9htNvdVAoZmlU2XYbErwpmYJehlDWAx9y
+        96fAxTn75Y/M6fA+7fhDgessAkf4k7iIpgsmn4Q1clizOBqQOr0VmPTVSfbetJJyZjBMKq
+        u1DGNDTCwxZSZZBKJdnpCKhle2GdnoU=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-464-f4-vi1tVOW2rLFtCXT_zVg-1; Wed, 03 Jun 2020 13:38:07 -0400
+X-MC-Unique: f4-vi1tVOW2rLFtCXT_zVg-1
+Received: by mail-wr1-f72.google.com with SMTP id m14so1349659wrj.12
+        for <linux-acpi@vger.kernel.org>; Wed, 03 Jun 2020 10:38:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=g4JdSAXlLTFOykR3a704n7KRgSRjVj4aOucsElPOq3c=;
+        b=Yxfwy0p63EtwGU2ollZoL77qv+GddLiY8NpWnQRL/KUNAve2Ld7nVzb7JbEoCErljd
+         YhaT2j5SJhvYRkmsnrcM8aTbBXpumD8K5mPwwGJ+sb0dOiRiJ+7g1GrbNcDyo2TYzqEV
+         DOhKVyUUqICDmcFbV0eZTo1EcaG8jFynNZcFMmvx6SNishoAVxw8T7W13em2Y44Dsbhd
+         BG4hzgnpyRnIsXrHQJUf9yDGK5qTXnbq41ThIJjbe2tdkNZVeglZTgfvV7uV9VaMnojf
+         ZD3nYZqcjZBZ28KMKBQaV2lAK6fyS1465xDQFvycQqcv1K9EDnzqboSCbfh7grJ9om1a
+         zdzQ==
+X-Gm-Message-State: AOAM530ClbZ8qgsNX9z9PsZjaimvrwyBzcc52DcgwsVstKvQ+CsNGiXy
+        CVAWNlceFZPlZfUGGoVg2bXIjwYaeEoxFoT7Ig/XGogST61v7PBCRxmVoaFZ81xBdi6fOoaca3Q
+        gZtMGzzze+/cAmcnISvWALg==
+X-Received: by 2002:a7b:c385:: with SMTP id s5mr261303wmj.121.1591205885451;
+        Wed, 03 Jun 2020 10:38:05 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzLjq4IDRdqkukHBckHKOOOLiGmG+r2akHBeeZCOhLw2fV6SQWj3VXyhtQLJX0YNKizL01l8A==
+X-Received: by 2002:a7b:c385:: with SMTP id s5mr261254wmj.121.1591205885130;
+        Wed, 03 Jun 2020 10:38:05 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id f11sm4390115wrj.2.2020.06.03.10.38.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Jun 2020 10:38:04 -0700 (PDT)
+Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
+        Benjamin Tissoires <btissoir@redhat.com>
+References: <20200515164943.28480-1-andrzej.p@collabora.com>
+ <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
+ <e6030957-97dc-5b04-7855-bc14a78164c8@collabora.com>
+ <6d9921fc-5c2f-beda-4dcd-66d6970a22fe@redhat.com>
+ <09679de4-75d3-1f29-ec5f-8d42c84273dd@collabora.com>
+ <f674ba4f-bd83-0877-c730-5dc6ea09ae4b@redhat.com>
+ <2d224833-3a7e-bc7c-af15-1f803f466697@collabora.com>
+ <aa2ce2ab-e5bc-9cb4-8b53-c1ef9348b646@redhat.com>
+ <20200527063430.GJ89269@dtor-ws>
+ <88f939cd-1518-d516-59f2-8f627a6a70d2@collabora.com>
+ <20200602175241.GO89269@dtor-ws>
+ <82e9f2ab-a16e-51ee-1413-bedf0122026a@collabora.com>
+ <8f97d2e1-497a-495d-bc82-f46dbeba440c@redhat.com>
+ <fb5bee72-6a75-88aa-8157-75f07c491eeb@collabora.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <681abc14-ef0f-ff15-68ed-944b2f96bdaf@redhat.com>
+Date:   Wed, 3 Jun 2020 19:38:02 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0hxwcbembJGDRdf_nBRaTzcO73L1YJ2TT3BYxaihV6orA@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <fb5bee72-6a75-88aa-8157-75f07c491eeb@collabora.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.65.58.147]
-X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2020/6/3 21:02, Rafael J. Wysocki wrote:
-> On Wed, Jun 3, 2020 at 2:15 PM Yicong Yang <yangyicong@hisilicon.com> wrote:
->> Previously the _OSC failed message is rather confusing, as if we
->> forcibly enable ASPM by set pcie_aspm=force, we'll get the message
->> below, which doesn't the reflect the real status.
->>
->>   acpi PNP0A08:02: _OSC failed (AE_NOT_FOUND); disabling ASPM
->>
->> Reword the _OSC failure message and remove the ASPM text to make
->> it clear. As if _OSC failed we're not supposed to take over any
->> PCIe features including ASPM. After the Patch it'll look like:
->>
->>   acpi PNP0A08:02: _OSC: platform retains control of PCIe features (AE_NOT_FOUND)
->>
->> No functional change intended.
->>
->> Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
->> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
->> Reviewed-by: Sinan Kaya <okaya@kernel.org>
-> This is a Bjorn's patch to which you have added a changelog and posted
-> as yours.  It is not OK to do things like that.
+Hi,
 
-Please ignore this Patch !
+On 6/3/20 3:07 PM, Andrzej Pietrasiewicz wrote:
+> Hi Hans, hi Dmitry,
 
-Sorry for my mistake and thanks for pointing it out.
+<snip>
 
->
->> ---
->>  drivers/acpi/pci_root.c | 7 +++----
->>  1 file changed, 3 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
->> index ac8ad6c..8dd7f14 100644
->> --- a/drivers/acpi/pci_root.c
->> +++ b/drivers/acpi/pci_root.c
->> @@ -454,9 +454,8 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
->>   if ((status == AE_NOT_FOUND) && !is_pcie)
->>   return;
->>
->> - dev_info(&device->dev, "_OSC failed (%s)%s\n",
->> - acpi_format_exception(status),
->> - pcie_aspm_support_enabled() ? "; disabling ASPM" : "");
->> + dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
->> + acpi_format_exception(status));
->>   return;
->>   }
->>
->> @@ -517,7 +516,7 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
->>   } else {
->>   decode_osc_control(root, "OS requested", requested);
->>   decode_osc_control(root, "platform willing to grant", control);
->> - dev_info(&device->dev, "_OSC failed (%s); disabling ASPM\n",
->> + dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
->>   acpi_format_exception(status));
->>
->>   /*
->> --
->> 2.8.1
->>
->> .
->>
-> .
->
+> I'm taking one step back and looking at the ->open() and ->close()
+> driver callbacks. They are called from input_open_device() and
+> input_close_device(), respectively:
+> 
+> input_open_device():
+> "This function should be called by input handlers when they
+> want to start receive events from given input device."
+> 
+> ->open() callback:
+> "this method is called when the very first user calls
+> input_open_device(). The driver must prepare the device to start
+> generating events (start polling thread, request an IRQ, submit
+> URB, etc.)"
+> 
+> input_close_device():
+> "This function should be called by input handlers when they
+> want to stop receive events from given input device."
+> 
+> ->close() callback:
+> "this method is called when the very last user calls
+> input_close_device()"
+> 
+> It seems to me that the callback names do not reflect their
+> purpose: their meaning is not to "open" or to "close" but to
+> give drivers a chance to control when they start or stop
+> providing events to the input core.
+> 
+> What would you say about changing the callbacks' names?
+> I'd envsion: ->provide_events() instead of ->open() and
+> ->stop_events() instead of ->close(). Of course drivers can
+> exploit the fact of knowing that nobody wants any events
+> from them and do whatever they consider appropriate, for
+> example go into a low power mode - but the latter is beyond
+> the scope of the input subsystem and is driver-specific.
+
+I don't have much of an opinion on changing the names,
+to me open/close have always means start/stop receiving
+events. This follows the everything is a file philosophy,
+e.g. you can also not really "open" a serial port,
+yet opening /dev/ttyS0 will activate the receive IRQ
+of the UART, etc. So maybe we just need to make the
+docs clearer rather then do the rename?  Doing the
+rename is certainly going to cause a lot of churn.
+
+Anyways as said, I don't have much of an opinion,
+so I'll leave commenting (more) on this to Dmitry.
+
+> With such a naming change in mind let's consider inhibiting.
+> We want to be able to control when to disregard events from
+> a given device. It makes sense to do it at device level, otherwise
+> such an operation would have to be invoked in all associated
+> handlers (those that have an open handle associating them with
+> the device in question). But of course we can do better than
+> merely ignoring the events received: we can tell the drivers
+> that we don't want any events from them, and later, at uninhibit
+> time, tell them to start providing the events again. Conceptually,
+> the two operations (provide or don't provide envents) are exactly
+> the same thing we want to be happening at input_open_device() and
+> input_close_device() time. To me, changing the names of
+> ->open() and ->close() exposes this fact very well.
+> 
+> Consequently, ->inhibit() and ->uninhibit() won't be needed,
+> and drivers which already implement ->provide_events() (formerly
+> ->open()) and ->stop_events() (formerly ->close()) will receive
+> full inhibit/uninhibit support for free (subject to how well they
+> implement ->provide_events()/->stop_events()). Unless we can come
+> up with what the drivers might be doing on top of ->stop_events()
+> and ->provide_events() when inhibiting/uninhibiting, but it seems
+> to me we can't. Can we?
+
+Right. I'm happy that you've come to see that both on open/close
+and on inhibit/uninhibit we want to "start receiving events" and
+"stop receiving events", so that we only need one set of callbacks.
+
+> Optionally ->close() (only the callback, not input_close_device())
+> can be made return a value, just as Hans suggests. The value
+> can be ignored in input_close_device() but used in input_inhibit().
+> No strong opinion here, though. (btw it seems to me that
+> input_inhibit() should be renamed to input_inhibit_device()).
+
+Ack.
+
+Regards,
+
+Hans
 
