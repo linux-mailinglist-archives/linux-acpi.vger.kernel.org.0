@@ -2,184 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24D1B1EE75E
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jun 2020 17:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C9D21EE958
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jun 2020 19:22:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729078AbgFDPIg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Jun 2020 11:08:36 -0400
-Received: from foss.arm.com ([217.140.110.172]:45594 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728587AbgFDPIg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 4 Jun 2020 11:08:36 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE3BA1FB;
-        Thu,  4 Jun 2020 08:08:35 -0700 (PDT)
-Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 436823F305;
-        Thu,  4 Jun 2020 08:08:33 -0700 (PDT)
-Date:   Thu, 4 Jun 2020 16:08:27 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Rob Herring <robh+dt@kernel.org>
-Cc:     devicetree@vger.kernel.org, Sudeep Holla <sudeep.holla@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Diana Craciun <diana.craciun@oss.nxp.com>,
-        Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        linux-acpi@vger.kernel.org,
-        Linux IOMMU <iommu@lists.linux-foundation.org>,
-        PCI <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Subject: Re: [PATCH 10/12] of/irq: Make of_msi_map_rid() PCI bus agnostic
-Message-ID: <20200604150827.GA1232@e121166-lin.cambridge.arm.com>
-References: <20200521130008.8266-1-lorenzo.pieralisi@arm.com>
- <20200521130008.8266-11-lorenzo.pieralisi@arm.com>
- <CAL_JsqLTBxX_3KjiEqMfw0qMaTmj_DdPD3j-yMUvrvONPBSvjg@mail.gmail.com>
+        id S1730106AbgFDRWa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Jun 2020 13:22:30 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:42574 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730043AbgFDRWa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Jun 2020 13:22:30 -0400
+Received: from 89-64-85-58.dynamic.chello.pl (89.64.85.58) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
+ id 27bd5aa14999d311; Thu, 4 Jun 2020 19:22:27 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        youling257@gmail.com, LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+Subject: [PATCH] ACPI: PM: Avoid using power resources if there are none for D0
+Date:   Thu, 04 Jun 2020 19:22:26 +0200
+Message-ID: <13388608.OHKVb9tm6R@kreacher>
+In-Reply-To: <d084b424-a340-a24a-d681-c92d80d8421d@redhat.com>
+References: <20200603194659.185757-1-hdegoede@redhat.com> <CAJZ5v0g7rhiWs0ZeGGS5OoSMH7DiVT1D-EUgX5HFXYkcvXcm2Q@mail.gmail.com> <d084b424-a340-a24a-d681-c92d80d8421d@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqLTBxX_3KjiEqMfw0qMaTmj_DdPD3j-yMUvrvONPBSvjg@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, May 21, 2020 at 05:17:27PM -0600, Rob Herring wrote:
-> On Thu, May 21, 2020 at 7:00 AM Lorenzo Pieralisi
-> <lorenzo.pieralisi@arm.com> wrote:
-> >
-> > There is nothing PCI bus specific in the of_msi_map_rid()
-> > implementation other than the requester ID tag for the input
-> > ID space. Rename requester ID to a more generic ID so that
-> > the translation code can be used by all busses that require
-> > input/output ID translations.
-> >
-> > Leave a wrapper function of_msi_map_rid() in place to keep
-> > existing PCI code mapping requester ID syntactically unchanged.
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> > Cc: Rob Herring <robh+dt@kernel.org>
-> > Cc: Marc Zyngier <maz@kernel.org>
-> > ---
-> >  drivers/of/irq.c       | 28 ++++++++++++++--------------
-> >  include/linux/of_irq.h | 14 ++++++++++++--
-> >  2 files changed, 26 insertions(+), 16 deletions(-)
-> >
-> > diff --git a/drivers/of/irq.c b/drivers/of/irq.c
-> > index 48a40326984f..25d17b8a1a1a 100644
-> > --- a/drivers/of/irq.c
-> > +++ b/drivers/of/irq.c
-> > @@ -576,43 +576,43 @@ void __init of_irq_init(const struct of_device_id *matches)
-> >         }
-> >  }
-> >
-> > -static u32 __of_msi_map_rid(struct device *dev, struct device_node **np,
-> > -                           u32 rid_in)
-> > +static u32 __of_msi_map_id(struct device *dev, struct device_node **np,
-> > +                           u32 id_in)
-> >  {
-> >         struct device *parent_dev;
-> > -       u32 rid_out = rid_in;
-> > +       u32 id_out = id_in;
-> >
-> >         /*
-> >          * Walk up the device parent links looking for one with a
-> >          * "msi-map" property.
-> >          */
-> >         for (parent_dev = dev; parent_dev; parent_dev = parent_dev->parent)
-> > -               if (!of_map_rid(parent_dev->of_node, rid_in, "msi-map",
-> > -                               "msi-map-mask", np, &rid_out))
-> > +               if (!of_map_id(parent_dev->of_node, id_in, "msi-map",
-> > +                               "msi-map-mask", np, &id_out))
-> >                         break;
-> > -       return rid_out;
-> > +       return id_out;
-> >  }
-> >
-> >  /**
-> > - * of_msi_map_rid - Map a MSI requester ID for a device.
-> > + * of_msi_map_id - Map a MSI ID for a device.
-> >   * @dev: device for which the mapping is to be done.
-> >   * @msi_np: device node of the expected msi controller.
-> > - * @rid_in: unmapped MSI requester ID for the device.
-> > + * @id_in: unmapped MSI ID for the device.
-> >   *
-> >   * Walk up the device hierarchy looking for devices with a "msi-map"
-> > - * property.  If found, apply the mapping to @rid_in.
-> > + * property.  If found, apply the mapping to @id_in.
-> >   *
-> > - * Returns the mapped MSI requester ID.
-> > + * Returns the mapped MSI ID.
-> >   */
-> > -u32 of_msi_map_rid(struct device *dev, struct device_node *msi_np, u32 rid_in)
-> > +u32 of_msi_map_id(struct device *dev, struct device_node *msi_np, u32 id_in)
-> >  {
-> > -       return __of_msi_map_rid(dev, &msi_np, rid_in);
-> > +       return __of_msi_map_id(dev, &msi_np, id_in);
-> >  }
-> >
-> >  /**
-> >   * of_msi_map_get_device_domain - Use msi-map to find the relevant MSI domain
-> >   * @dev: device for which the mapping is to be done.
-> > - * @rid: Requester ID for the device.
-> > + * @id: Device ID.
-> >   * @bus_token: Bus token
-> >   *
-> >   * Walk up the device hierarchy looking for devices with a "msi-map"
-> > @@ -625,7 +625,7 @@ struct irq_domain *of_msi_map_get_device_domain(struct device *dev, u32 id,
-> >  {
-> >         struct device_node *np = NULL;
-> >
-> > -       __of_msi_map_rid(dev, &np, id);
-> > +       __of_msi_map_id(dev, &np, id);
-> >         return irq_find_matching_host(np, bus_token);
-> >  }
-> >
-> > diff --git a/include/linux/of_irq.h b/include/linux/of_irq.h
-> > index 7142a3722758..cf9cb1e545ce 100644
-> > --- a/include/linux/of_irq.h
-> > +++ b/include/linux/of_irq.h
-> > @@ -55,7 +55,12 @@ extern struct irq_domain *of_msi_map_get_device_domain(struct device *dev,
-> >                                                         u32 id,
-> >                                                         u32 bus_token);
-> >  extern void of_msi_configure(struct device *dev, struct device_node *np);
-> > -u32 of_msi_map_rid(struct device *dev, struct device_node *msi_np, u32 rid_in);
-> > +u32 of_msi_map_id(struct device *dev, struct device_node *msi_np, u32 id_in);
-> > +static inline u32 of_msi_map_rid(struct device *dev,
-> > +                                struct device_node *msi_np, u32 rid_in)
-> > +{
-> > +       return of_msi_map_id(dev, msi_np, rid_in);
-> > +}
-> >  #else
-> >  static inline int of_irq_count(struct device_node *dev)
-> >  {
-> > @@ -93,10 +98,15 @@ static inline struct irq_domain *of_msi_map_get_device_domain(struct device *dev
-> >  static inline void of_msi_configure(struct device *dev, struct device_node *np)
-> >  {
-> >  }
-> > +static inline u32 of_msi_map_id(struct device *dev,
-> > +                                struct device_node *msi_np, u32 id_in)
-> > +{
-> > +       return id_in;
-> > +}
-> >  static inline u32 of_msi_map_rid(struct device *dev,
-> >                                  struct device_node *msi_np, u32 rid_in)
-> 
-> Move this out of the ifdef and you only need it declared once.
-> 
-> But again, I think I'd just kill of_msi_map_rid.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Yes I don't think there is a clear benefit in keeping the _rid
-interface.
+As recently reported, some platforms provide a list of power
+resources for device power state D3hot, through the _PR3 object,
+but they do not provide a list of power resources for device power
+state D0.
 
-Thanks,
-Lorenzo
+Among other things, this causes acpi_device_get_power() to return
+D3hot as the current state of the device in question if all of the
+D3hot power resources are "on", because it sees the power_resources
+flag set and calls acpi_power_get_inferred_state() which finds that
+D3hot is the shallowest power state with all of the associated power
+resources turned "on", so that's what it returns.  Moreover, that
+value takes precedence over the acpi_dev_pm_explicit_get() return
+value, because it means a deeper power state.  The device may very
+well be in D0 physically at that point, however.
+
+Moreover, the presence of _PR3 without _PR0 for a given device
+means that only one D3-level power state can be supported by it.
+Namely, because there are no power resources to turn "off" when
+transitioning the device from D0 into D3cold (which should be
+supported since _PR3 is present), the evaluation of _PS3 should
+be sufficient to put it straight into D3cold, but this means that
+the effect of turning "on" the _PR3 power resources is unclear,
+so it is better to avoid doing that altogether.  Consequently,
+there is no practical way do distinguish D3cold from D3hot for
+the device in question and the power states of it can be labeled
+so that D3hot is the deepest supported one (and Linux assumes
+that putting a device into D3hot via ACPI may cause power to be
+removed from it anyway, for legacy reasons).
+
+To work around the problem described above modify the ACPI
+enumeration of devices so that power resources are only used
+for device power management if the list of D0 power resources
+is not empty and make it mart D3cold as supported only if that
+is the case and the D3hot list of power resources is not empty
+too.
+
+Fixes: ef85bdbec444 ("ACPI / scan: Consolidate extraction of power resources lists")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=205057
+Link: https://lore.kernel.org/linux-acpi/20200603194659.185757-1-hdegoede@redhat.com/
+Reported-by: Hans de Goede <hdegoede@redhat.com>
+Cc: 3.10+ <stable@vger.kernel.org> # 3.10+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/device_pm.c |    2 +-
+ drivers/acpi/scan.c      |   28 +++++++++++++++++++---------
+ 2 files changed, 20 insertions(+), 10 deletions(-)
+
+Index: linux-pm/drivers/acpi/scan.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/scan.c
++++ linux-pm/drivers/acpi/scan.c
+@@ -919,12 +919,9 @@ static void acpi_bus_init_power_state(st
+ 
+ 		if (buffer.length && package
+ 		    && package->type == ACPI_TYPE_PACKAGE
+-		    && package->package.count) {
+-			int err = acpi_extract_power_resources(package, 0,
+-							       &ps->resources);
+-			if (!err)
+-				device->power.flags.power_resources = 1;
+-		}
++		    && package->package.count)
++			acpi_extract_power_resources(package, 0, &ps->resources);
++
+ 		ACPI_FREE(buffer.pointer);
+ 	}
+ 
+@@ -971,14 +968,27 @@ static void acpi_bus_get_power_flags(str
+ 		acpi_bus_init_power_state(device, i);
+ 
+ 	INIT_LIST_HEAD(&device->power.states[ACPI_STATE_D3_COLD].resources);
+-	if (!list_empty(&device->power.states[ACPI_STATE_D3_HOT].resources))
+-		device->power.states[ACPI_STATE_D3_COLD].flags.valid = 1;
+ 
+-	/* Set defaults for D0 and D3hot states (always valid) */
++	/* Set the defaults for D0 and D3hot (always supported). */
+ 	device->power.states[ACPI_STATE_D0].flags.valid = 1;
+ 	device->power.states[ACPI_STATE_D0].power = 100;
+ 	device->power.states[ACPI_STATE_D3_HOT].flags.valid = 1;
+ 
++	/*
++	 * Use power resources only if the D0 list of them is populated, because
++	 * some platforms may provide _PR3 only to indicate D3cold support and
++	 * in those cases the power resources list returned by it may be bogus.
++	 */
++	if (!list_empty(&device->power.states[ACPI_STATE_D0].resources)) {
++		device->power.flags.power_resources = 1;
++		/*
++		 * D3cold is supported if the D3hot list of power resources is
++		 * not empty.
++		 */
++		if (!list_empty(&device->power.states[ACPI_STATE_D3_HOT].resources))
++			device->power.states[ACPI_STATE_D3_COLD].flags.valid = 1;
++	}
++
+ 	if (acpi_bus_init_power(device))
+ 		device->flags.power_manageable = 0;
+ }
+Index: linux-pm/drivers/acpi/device_pm.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/device_pm.c
++++ linux-pm/drivers/acpi/device_pm.c
+@@ -186,7 +186,7 @@ int acpi_device_set_power(struct acpi_de
+ 		 * possibly drop references to the power resources in use.
+ 		 */
+ 		state = ACPI_STATE_D3_HOT;
+-		/* If _PR3 is not available, use D3hot as the target state. */
++		/* If D3cold is not supported, use D3hot as the target state. */
+ 		if (!device->power.states[ACPI_STATE_D3_COLD].flags.valid)
+ 			target_state = state;
+ 	} else if (!device->power.states[state].flags.valid) {
+
+
+
