@@ -2,32 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C9D21EE958
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jun 2020 19:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA5631EE9AF
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jun 2020 19:46:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730106AbgFDRWa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Jun 2020 13:22:30 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:42574 "EHLO
+        id S1730225AbgFDRqu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Jun 2020 13:46:50 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:47430 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730043AbgFDRWa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Jun 2020 13:22:30 -0400
+        with ESMTP id S1730178AbgFDRqu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Jun 2020 13:46:50 -0400
 Received: from 89-64-85-58.dynamic.chello.pl (89.64.85.58) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
- id 27bd5aa14999d311; Thu, 4 Jun 2020 19:22:27 +0200
+ id 96f3bf1fcf2b2e54; Thu, 4 Jun 2020 19:46:47 +0200
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        youling257@gmail.com, LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: [PATCH] ACPI: PM: Avoid using power resources if there are none for D0
-Date:   Thu, 04 Jun 2020 19:22:26 +0200
-Message-ID: <13388608.OHKVb9tm6R@kreacher>
-In-Reply-To: <d084b424-a340-a24a-d681-c92d80d8421d@redhat.com>
-References: <20200603194659.185757-1-hdegoede@redhat.com> <CAJZ5v0g7rhiWs0ZeGGS5OoSMH7DiVT1D-EUgX5HFXYkcvXcm2Q@mail.gmail.com> <d084b424-a340-a24a-d681-c92d80d8421d@redhat.com>
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Guenter Roeck <guenter@roeck-us.net>
+Subject: [PATCH] kobject: Avoid premature parent object freeing in kobject_cleanup()
+Date:   Thu, 04 Jun 2020 19:46:46 +0200
+Message-ID: <1908555.IiAGLGrh1Z@kreacher>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -36,119 +35,132 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-As recently reported, some platforms provide a list of power
-resources for device power state D3hot, through the _PR3 object,
-but they do not provide a list of power resources for device power
-state D0.
+If kobject_del() is invoked by kobject_cleanup() to delete the
+target kobject, it may cause its parent kobject to be freed
+before invoking the target kobject's ->release() method, which
+effectively means freeing the parent before dealing with the
+child entirely.
 
-Among other things, this causes acpi_device_get_power() to return
-D3hot as the current state of the device in question if all of the
-D3hot power resources are "on", because it sees the power_resources
-flag set and calls acpi_power_get_inferred_state() which finds that
-D3hot is the shallowest power state with all of the associated power
-resources turned "on", so that's what it returns.  Moreover, that
-value takes precedence over the acpi_dev_pm_explicit_get() return
-value, because it means a deeper power state.  The device may very
-well be in D0 physically at that point, however.
+That is confusing at best and it may also lead to functional
+issues if the callers of kobject_cleanup() are not careful enough
+about the order in which these calls are made, so avoid the
+problem by making kobject_cleanup() drop the last reference to
+the target kobject's parent at the end, after invoking the target
+kobject's ->release() method.
 
-Moreover, the presence of _PR3 without _PR0 for a given device
-means that only one D3-level power state can be supported by it.
-Namely, because there are no power resources to turn "off" when
-transitioning the device from D0 into D3cold (which should be
-supported since _PR3 is present), the evaluation of _PS3 should
-be sufficient to put it straight into D3cold, but this means that
-the effect of turning "on" the _PR3 power resources is unclear,
-so it is better to avoid doing that altogether.  Consequently,
-there is no practical way do distinguish D3cold from D3hot for
-the device in question and the power states of it can be labeled
-so that D3hot is the deepest supported one (and Linux assumes
-that putting a device into D3hot via ACPI may cause power to be
-removed from it anyway, for legacy reasons).
+[ rjw: Rewrite the subject and changelog, make kobject_cleanup()
+  drop the parent reference only when __kobject_del() has been
+  called. ]
 
-To work around the problem described above modify the ACPI
-enumeration of devices so that power resources are only used
-for device power management if the list of D0 power resources
-is not empty and make it mart D3cold as supported only if that
-is the case and the D3hot list of power resources is not empty
-too.
-
-Fixes: ef85bdbec444 ("ACPI / scan: Consolidate extraction of power resources lists")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=205057
-Link: https://lore.kernel.org/linux-acpi/20200603194659.185757-1-hdegoede@redhat.com/
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Cc: 3.10+ <stable@vger.kernel.org> # 3.10+
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Reported-by: kernel test robot <rong.a.chen@intel.com>
+Fixes: 7589238a8cf3 ("Revert "software node: Simplify software_node_release() function"")
+Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/device_pm.c |    2 +-
- drivers/acpi/scan.c      |   28 +++++++++++++++++++---------
- 2 files changed, 20 insertions(+), 10 deletions(-)
 
-Index: linux-pm/drivers/acpi/scan.c
+Hi Greg,
+
+This is a replacement for commit 4ef12f719802 ("kobject: Make sure the parent
+does not get released before its children"), that you reverted, because it
+broke things and the reason why was that it was incorrect.
+
+Namely, it called kobject_put() on the target kobject's parent in
+kobject_cleanup() unconditionally, but it should only call it after
+invoking __kobject_del() on the target kobject.
+
+That problem is fixed in this patch and a functionally equivalent patch has
+been tested by Guenter without issues.
+
+The underlying issue addressed by the reverted commit is still there and
+it may show up again even though the test that triggered it originally was
+fixed in the meantime.  IMO it is worth fixing even though it may not be
+readily visible in the current kernel, so please consider this one for
+applying.
+
+Cheers!
+
+---
+ lib/kobject.c |   33 +++++++++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 10 deletions(-)
+
+Index: linux-pm/lib/kobject.c
 ===================================================================
---- linux-pm.orig/drivers/acpi/scan.c
-+++ linux-pm/drivers/acpi/scan.c
-@@ -919,12 +919,9 @@ static void acpi_bus_init_power_state(st
+--- linux-pm.orig/lib/kobject.c
++++ linux-pm/lib/kobject.c
+@@ -599,14 +599,7 @@ out:
+ }
+ EXPORT_SYMBOL_GPL(kobject_move);
  
- 		if (buffer.length && package
- 		    && package->type == ACPI_TYPE_PACKAGE
--		    && package->package.count) {
--			int err = acpi_extract_power_resources(package, 0,
--							       &ps->resources);
--			if (!err)
--				device->power.flags.power_resources = 1;
--		}
-+		    && package->package.count)
-+			acpi_extract_power_resources(package, 0, &ps->resources);
+-/**
+- * kobject_del() - Unlink kobject from hierarchy.
+- * @kobj: object.
+- *
+- * This is the function that should be called to delete an object
+- * successfully added via kobject_add().
+- */
+-void kobject_del(struct kobject *kobj)
++static void __kobject_del(struct kobject *kobj)
+ {
+ 	struct kernfs_node *sd;
+ 	const struct kobj_type *ktype;
+@@ -625,9 +618,23 @@ void kobject_del(struct kobject *kobj)
+ 
+ 	kobj->state_in_sysfs = 0;
+ 	kobj_kset_leave(kobj);
+-	kobject_put(kobj->parent);
+ 	kobj->parent = NULL;
+ }
 +
- 		ACPI_FREE(buffer.pointer);
++/**
++ * kobject_del() - Unlink kobject from hierarchy.
++ * @kobj: object.
++ *
++ * This is the function that should be called to delete an object
++ * successfully added via kobject_add().
++ */
++void kobject_del(struct kobject *kobj)
++{
++	struct kobject *parent = kobj->parent;
++
++	__kobject_del(kobj);
++	kobject_put(parent);
++}
+ EXPORT_SYMBOL(kobject_del);
+ 
+ /**
+@@ -663,6 +670,7 @@ EXPORT_SYMBOL(kobject_get_unless_zero);
+  */
+ static void kobject_cleanup(struct kobject *kobj)
+ {
++	struct kobject *parent = kobj->parent;
+ 	struct kobj_type *t = get_ktype(kobj);
+ 	const char *name = kobj->name;
+ 
+@@ -684,7 +692,10 @@ static void kobject_cleanup(struct kobje
+ 	if (kobj->state_in_sysfs) {
+ 		pr_debug("kobject: '%s' (%p): auto cleanup kobject_del\n",
+ 			 kobject_name(kobj), kobj);
+-		kobject_del(kobj);
++		__kobject_del(kobj);
++	} else {
++		/* avoid dropping the parent reference unnecessarily */
++		parent = NULL;
  	}
  
-@@ -971,14 +968,27 @@ static void acpi_bus_get_power_flags(str
- 		acpi_bus_init_power_state(device, i);
- 
- 	INIT_LIST_HEAD(&device->power.states[ACPI_STATE_D3_COLD].resources);
--	if (!list_empty(&device->power.states[ACPI_STATE_D3_HOT].resources))
--		device->power.states[ACPI_STATE_D3_COLD].flags.valid = 1;
- 
--	/* Set defaults for D0 and D3hot states (always valid) */
-+	/* Set the defaults for D0 and D3hot (always supported). */
- 	device->power.states[ACPI_STATE_D0].flags.valid = 1;
- 	device->power.states[ACPI_STATE_D0].power = 100;
- 	device->power.states[ACPI_STATE_D3_HOT].flags.valid = 1;
- 
-+	/*
-+	 * Use power resources only if the D0 list of them is populated, because
-+	 * some platforms may provide _PR3 only to indicate D3cold support and
-+	 * in those cases the power resources list returned by it may be bogus.
-+	 */
-+	if (!list_empty(&device->power.states[ACPI_STATE_D0].resources)) {
-+		device->power.flags.power_resources = 1;
-+		/*
-+		 * D3cold is supported if the D3hot list of power resources is
-+		 * not empty.
-+		 */
-+		if (!list_empty(&device->power.states[ACPI_STATE_D3_HOT].resources))
-+			device->power.states[ACPI_STATE_D3_COLD].flags.valid = 1;
-+	}
+ 	if (t && t->release) {
+@@ -698,6 +709,8 @@ static void kobject_cleanup(struct kobje
+ 		pr_debug("kobject: '%s': free name\n", name);
+ 		kfree_const(name);
+ 	}
 +
- 	if (acpi_bus_init_power(device))
- 		device->flags.power_manageable = 0;
++	kobject_put(parent);
  }
-Index: linux-pm/drivers/acpi/device_pm.c
-===================================================================
---- linux-pm.orig/drivers/acpi/device_pm.c
-+++ linux-pm/drivers/acpi/device_pm.c
-@@ -186,7 +186,7 @@ int acpi_device_set_power(struct acpi_de
- 		 * possibly drop references to the power resources in use.
- 		 */
- 		state = ACPI_STATE_D3_HOT;
--		/* If _PR3 is not available, use D3hot as the target state. */
-+		/* If D3cold is not supported, use D3hot as the target state. */
- 		if (!device->power.states[ACPI_STATE_D3_COLD].flags.valid)
- 			target_state = state;
- 	} else if (!device->power.states[state].flags.valid) {
+ 
+ #ifdef CONFIG_DEBUG_KOBJECT_RELEASE
 
 
 
