@@ -2,36 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24D2D1EECCD
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jun 2020 23:08:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F6D11EECCE
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jun 2020 23:08:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726062AbgFDVId (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Jun 2020 17:08:33 -0400
+        id S1726181AbgFDVIg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Jun 2020 17:08:36 -0400
 Received: from mga01.intel.com ([192.55.52.88]:13291 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725952AbgFDVId (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 4 Jun 2020 17:08:33 -0400
-IronPort-SDR: WoIzks2nZT+UaN/O6r1gJuami01LwyismMTzAVVJpF+HOOA831fakSt+Gby1fln4PD78LWJNyT
- d/o6YMd8dAfg==
+        id S1726106AbgFDVIg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 4 Jun 2020 17:08:36 -0400
+IronPort-SDR: tqb5MHdu9ht0KB3illx2SG8Sh4DGdg2arIti90rPwaEXDnZXB+3EP7xAr30IAyvsYFdxhvckUl
+ vK2jGJnkLT+w==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2020 14:08:32 -0700
-IronPort-SDR: b2/lZ/CYo9tqpFAe1ugHNC3g2hwQDx7YsPD5N9bpqE5HLM8jtT38yAygsmRAYjLV+EGbhfXZ6c
- PcNnn+MysR2w==
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2020 14:08:35 -0700
+IronPort-SDR: t7sADnaX4Vsjau0OGhS2w0Y2l9CM5/TiWGJl8wwWIzrPQdtZUDZM3JD3WRpD/bpA5IpeieTHiK
+ x0CNRsAW+VFw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.73,472,1583222400"; 
-   d="scan'208";a="287510449"
+   d="scan'208";a="287510474"
 Received: from sibelius.jf.intel.com ([10.54.75.172])
-  by orsmga002.jf.intel.com with ESMTP; 04 Jun 2020 14:08:32 -0700
+  by orsmga002.jf.intel.com with ESMTP; 04 Jun 2020 14:08:35 -0700
 From:   Erik Kaneda <erik.kaneda@intel.com>
 To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Bob Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
-Subject: [PATCH 1/3] ACPICA: acpidump: Removed dead code from oslinuxtbl.c
-Date:   Thu,  4 Jun 2020 13:44:19 -0700
-Message-Id: <20200604204421.592003-2-erik.kaneda@intel.com>
+Cc:     Erik Kaneda <erik.kaneda@intel.com>,
+        Bob Moore <robert.moore@intel.com>
+Subject: [PATCH 2/3] ACPICA: iASL: add new OperationRegion subtype keyword PlatformRtMechanism
+Date:   Thu,  4 Jun 2020 13:44:20 -0700
+Message-Id: <20200604204421.592003-3-erik.kaneda@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200604204421.592003-1-erik.kaneda@intel.com>
 References: <20200604204421.592003-1-erik.kaneda@intel.com>
@@ -42,76 +42,59 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Bob Moore <robert.moore@intel.com>
+ACPICA commit 2c2eefa827bd37297f5f9ca4b263fcba829aaf3f
 
-ACPICA BZ 1119.
-
-ACPICA commit 4d938d048790983b8b4252b0f4aeec59dabb476c
-
-Link: https://github.com/acpica/acpica/commit/4d938d04
-Signed-off-by: Bob Moore <robert.moore@intel.com>
+Link: https://github.com/acpica/acpica/commit/2c2eefa8
 Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
+Signed-off-by: Bob Moore <robert.moore@intel.com>
 ---
- .../acpi/os_specific/service_layers/oslinuxtbl.c      | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/acpi/acpica/dbdisply.c | 2 ++
+ drivers/acpi/acpica/utdecode.c | 3 ++-
+ include/acpi/actypes.h         | 3 ++-
+ 3 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tools/power/acpi/os_specific/service_layers/oslinuxtbl.c b/tools/power/acpi/os_specific/service_layers/oslinuxtbl.c
-index 5aaddc79adf7..dd38c2b2e1b4 100644
---- a/tools/power/acpi/os_specific/service_layers/oslinuxtbl.c
-+++ b/tools/power/acpi/os_specific/service_layers/oslinuxtbl.c
-@@ -35,7 +35,7 @@ static acpi_status osl_add_table_to_list(char *signature, u32 instance);
- static acpi_status
- osl_read_table_from_file(char *filename,
- 			 acpi_size file_offset,
--			 char *signature, struct acpi_table_header **table);
-+			 struct acpi_table_header **table);
+diff --git a/drivers/acpi/acpica/dbdisply.c b/drivers/acpi/acpica/dbdisply.c
+index f2df416d0d2d..d41eb9e67500 100644
+--- a/drivers/acpi/acpica/dbdisply.c
++++ b/drivers/acpi/acpica/dbdisply.c
+@@ -51,6 +51,8 @@ static acpi_adr_space_type acpi_gbl_space_id_list[] = {
+ 	ACPI_ADR_SPACE_IPMI,
+ 	ACPI_ADR_SPACE_GPIO,
+ 	ACPI_ADR_SPACE_GSBUS,
++	ACPI_ADR_SPACE_PLATFORM_COMM,
++	ACPI_ADR_SPACE_PLATFORM_RT,
+ 	ACPI_ADR_SPACE_DATA_TABLE,
+ 	ACPI_ADR_SPACE_FIXED_HARDWARE
+ };
+diff --git a/drivers/acpi/acpica/utdecode.c b/drivers/acpi/acpica/utdecode.c
+index 177ab88d95de..ed9aedf604a1 100644
+--- a/drivers/acpi/acpica/utdecode.c
++++ b/drivers/acpi/acpica/utdecode.c
+@@ -78,7 +78,8 @@ const char *acpi_gbl_region_types[ACPI_NUM_PREDEFINED_REGIONS] = {
+ 	"IPMI",			/* 0x07 */
+ 	"GeneralPurposeIo",	/* 0x08 */
+ 	"GenericSerialBus",	/* 0x09 */
+-	"PCC"			/* 0x0A */
++	"PCC",			/* 0x0A */
++	"PlatformRtMechanism"	/* 0x0B */
+ };
  
- static acpi_status
- osl_map_table(acpi_size address,
-@@ -1184,8 +1184,6 @@ osl_table_name_from_file(char *filename, char *signature, u32 *instance)
-  *
-  * PARAMETERS:  filename            - File that contains the desired table
-  *              file_offset         - Offset of the table in file
-- *              signature           - Optional ACPI Signature for desired table.
-- *                                    A null terminated 4-character string.
-  *              table               - Where a pointer to the table is returned
-  *
-  * RETURN:      Status; Table buffer is returned if AE_OK.
-@@ -1197,7 +1195,7 @@ osl_table_name_from_file(char *filename, char *signature, u32 *instance)
- static acpi_status
- osl_read_table_from_file(char *filename,
- 			 acpi_size file_offset,
--			 char *signature, struct acpi_table_header **table)
-+			 struct acpi_table_header **table)
- {
- 	FILE *table_file;
- 	struct acpi_table_header header;
-@@ -1225,6 +1223,8 @@ osl_read_table_from_file(char *filename,
- 		goto exit;
- 	}
+ const char *acpi_ut_get_region_name(u8 space_id)
+diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
+index 4defed58ea33..aa236b9e6f24 100644
+--- a/include/acpi/actypes.h
++++ b/include/acpi/actypes.h
+@@ -815,8 +815,9 @@ typedef u8 acpi_adr_space_type;
+ #define ACPI_ADR_SPACE_GPIO             (acpi_adr_space_type) 8
+ #define ACPI_ADR_SPACE_GSBUS            (acpi_adr_space_type) 9
+ #define ACPI_ADR_SPACE_PLATFORM_COMM    (acpi_adr_space_type) 10
++#define ACPI_ADR_SPACE_PLATFORM_RT      (acpi_adr_space_type) 11
  
-+#ifdef ACPI_OBSOLETE_FUNCTIONS
-+
- 	/* If signature is specified, it must match the table */
+-#define ACPI_NUM_PREDEFINED_REGIONS     11
++#define ACPI_NUM_PREDEFINED_REGIONS     12
  
- 	if (signature) {
-@@ -1244,6 +1244,7 @@ osl_read_table_from_file(char *filename,
- 			goto exit;
- 		}
- 	}
-+#endif
- 
- 	table_length = ap_get_table_length(&header);
- 	if (table_length == 0) {
-@@ -1366,7 +1367,7 @@ osl_get_customized_table(char *pathname,
- 	/* There is no physical address saved for customized tables, use zero */
- 
- 	*address = 0;
--	status = osl_read_table_from_file(table_filename, 0, NULL, table);
-+	status = osl_read_table_from_file(table_filename, 0, table);
- 
- 	return (status);
- }
+ /*
+  * Special Address Spaces
 -- 
 2.25.1
 
