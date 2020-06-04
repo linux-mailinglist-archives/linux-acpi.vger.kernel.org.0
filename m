@@ -2,210 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97B221EE448
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jun 2020 14:15:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF9C11EE563
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jun 2020 15:33:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728024AbgFDMPs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Jun 2020 08:15:48 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:24689 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727944AbgFDMPs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Jun 2020 08:15:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1591272946;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=DfxVNbryX4wqobrXfDFSJ/UxsktGybKS+BC33DeIRsY=;
-        b=GL/yKe9WJoJzwXrLOBcik3PbdpQxesya+sqQ+ZtIOIRNtIedJq4ldMlgKb3vA0f6G7EJaG
-        cqFo3HBERydjKslYZESPs2pDvzQdsrqX6UtXTQ8dXFyw1kujSmC7uHT+Kjt8VmHp5a9PxN
-        lljCf/piIw3jN65PIUbey+Y2ldTdJ1U=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-293-VcNbNmFONb2KlGn0cfc3TA-1; Thu, 04 Jun 2020 08:15:44 -0400
-X-MC-Unique: VcNbNmFONb2KlGn0cfc3TA-1
-Received: by mail-ed1-f71.google.com with SMTP id y9so2555211edr.22
-        for <linux-acpi@vger.kernel.org>; Thu, 04 Jun 2020 05:15:44 -0700 (PDT)
+        id S1728323AbgFDNdd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Jun 2020 09:33:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44722 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728447AbgFDNdd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Jun 2020 09:33:33 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22336C08C5C2
+        for <linux-acpi@vger.kernel.org>; Thu,  4 Jun 2020 06:33:33 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id t16so2186091plo.7
+        for <linux-acpi@vger.kernel.org>; Thu, 04 Jun 2020 06:33:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=RAV9/dNL++xiGiHR5A9Oc9TEhWA76VZjoAgyK161SVY=;
+        b=zPMPr/YxyP3965QTpRI2+WUxZFPPhZUrUCBk07JsMf7SI3dYonyONF/w0DXsy+H5hG
+         o/oJJjSdmpLtc+dJQvwp1leBctiT2Vq3wT+tqHFjb6xHMsfoWEaS9zvqmiv6i6Kypmcz
+         NuPrUukPkRrFI2m5XEndHGed2uTmcHb8pnRTofbn4DegJcnfjQFGe7zPoyuv2QGsXbWh
+         HH8bumkNPHc1m7ilS8Jcj/cIvN+irGawDlQl1LsOKy9ICdejCXO3r2FVOYnWv/nVXOPx
+         WfGKGP7iB52c9x+wjbCYhrs/rUdGBBvxGsKjhZBtuKFDffKB+jr+YPAY9FHogJdNolMo
+         B2Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=DfxVNbryX4wqobrXfDFSJ/UxsktGybKS+BC33DeIRsY=;
-        b=Lyg30eQn9Z1kXg0CLYKCwM050BJZsnHUqnc0/gCJRdUTf4zPkDMzDLKCI8sbW7T7Rk
-         PBUWxVrzbRfi5Tb1DBXLsExglErgx8CEbiv2EGmtMUCBV660uYSF8I9pDgvE7+4G4hnP
-         4upwl8/pETWiPxv669bb/eI+nW7djq3zw+zdSFTbGOrm/U2BibeLyHoWVaLD//PQ5CzJ
-         UZzTxpiHCtF25AKpHY84WhIQ6B62Vhu1GHvOf55sU9fQz6Kn/bXGNVzKF/VtabqgQvsD
-         ZJkP/1nVpXJ35DJFse8OtPHl5+aN3IapbDW1NwevfaTmsrlS/n3BKTFXsGw55CFWUwcP
-         OR0w==
-X-Gm-Message-State: AOAM530NI/CH3dRftK8DIjQ/Ok02lQQX/E0lHnko0uNMByT7k37Oud7V
-        vYGF5Z6zanvl39Vs8opnIku4vHjdhu4WH0FfewJOgXY6TYItYlx6v9ipTAxt4R4RqyNL9lCbM47
-        GaxG3PxdYkh2kSvcfNk5YQw==
-X-Received: by 2002:a17:906:7746:: with SMTP id o6mr3733582ejn.75.1591272942931;
-        Thu, 04 Jun 2020 05:15:42 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxEqlrcNhE1aRfiTNVpQPgjJ1sVKq72/Sj3BF97YzIy9sLyRcWiLaJkfTPVxXUmcD5X9d6IVw==
-X-Received: by 2002:a17:906:7746:: with SMTP id o6mr3733561ejn.75.1591272942651;
-        Thu, 04 Jun 2020 05:15:42 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id i21sm2258997edr.68.2020.06.04.05.15.41
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=RAV9/dNL++xiGiHR5A9Oc9TEhWA76VZjoAgyK161SVY=;
+        b=URFvY7oByDWc1XuAmk2WiCrNtfFfStzoRBe1XUUd0lxesnWyUFyP2qNEqFkYBDL+CK
+         RcOtXlRMGI2OhZzTPzQVVdd9JeEHJiISbwO/0JYaxQDaY6WY+YdYqF14ftQ0GPmv7uiC
+         8MzcXmctiP9BANEy5OQWyN+TweXs+fz2ApxLzHWp9LS7gzqPGm8XK2rIPu1TXBSMhpC9
+         9zeowtj5Tk662gfnHC/+Gk4eMs4ej1AHe40USGI53lv8ZJSP3aoS1gAJHfefcjq7Uef9
+         9lHN/RV817V+LkGb+v7fWRNEuf/HybWAZAZsEhKqRaxwMmHve5JOlUOilHXGcYMclMkU
+         k9oQ==
+X-Gm-Message-State: AOAM5304Ss2H9aI+IbLzQ+CmGlAKrD2eYAaJRpOIOZOSPcQTirXtOOs3
+        PynYp5i7UE8171HiujDAZ3nWvg==
+X-Google-Smtp-Source: ABdhPJyHAP7hdkjk0QRqpIxnyq/8FeJd16IwaXCeqaVfm7NZUPFQxKr/IxN2WFjd4DugkV/BUTo0Ew==
+X-Received: by 2002:a17:902:7d85:: with SMTP id a5mr4997837plm.106.1591277612461;
+        Thu, 04 Jun 2020 06:33:32 -0700 (PDT)
+Received: from [10.158.2.42] ([45.135.186.31])
+        by smtp.gmail.com with ESMTPSA id y6sm5569040pjw.15.2020.06.04.06.33.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jun 2020 05:15:41 -0700 (PDT)
-Subject: Re: [PATCH] ACPI / PM: Do not infer power-state if there are no D0
- power-resources
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Thu, 04 Jun 2020 06:33:31 -0700 (PDT)
+Subject: Re: [PATCH 0/2] Introduce PCI_FIXUP_IOMMU
+To:     Bjorn Helgaas <helgaas@kernel.org>, Joerg Roedel <joro@8bytes.org>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        youling257@gmail.com,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-References: <20200603194659.185757-1-hdegoede@redhat.com>
- <CAJZ5v0g7rhiWs0ZeGGS5OoSMH7DiVT1D-EUgX5HFXYkcvXcm2Q@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <d084b424-a340-a24a-d681-c92d80d8421d@redhat.com>
-Date:   Thu, 4 Jun 2020 14:15:41 +0200
+        jean-philippe <jean-philippe@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        kenneth-lee-2012@foxmail.com, Wangzhou <wangzhou1@hisilicon.com>,
+        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        iommu@lists.linux-foundation.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
+References: <20200601174104.GA734973@bjorn-Precision-5520>
+From:   Zhangfei Gao <zhangfei.gao@linaro.org>
+Message-ID: <779f4044-cf6a-b0d3-916f-0274450c07d3@linaro.org>
+Date:   Thu, 4 Jun 2020 21:33:07 +0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0g7rhiWs0ZeGGS5OoSMH7DiVT1D-EUgX5HFXYkcvXcm2Q@mail.gmail.com>
+In-Reply-To: <20200601174104.GA734973@bjorn-Precision-5520>
 Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
 
-On 6/4/20 1:22 PM, Rafael J. Wysocki wrote:
-> On Wed, Jun 3, 2020 at 9:47 PM Hans de Goede <hdegoede@redhat.com> wrote:
+
+On 2020/6/2 上午1:41, Bjorn Helgaas wrote:
+> On Thu, May 28, 2020 at 09:33:44AM +0200, Joerg Roedel wrote:
+>> On Wed, May 27, 2020 at 01:18:42PM -0500, Bjorn Helgaas wrote:
+>>> Is this slowdown significant?  We already iterate over every device
+>>> when applying PCI_FIXUP_FINAL quirks, so if we used the existing
+>>> PCI_FIXUP_FINAL, we wouldn't be adding a new loop.  We would only be
+>>> adding two more iterations to the loop in pci_do_fixups() that tries
+>>> to match quirks against the current device.  I doubt that would be a
+>>> measurable slowdown.
+>> I don't know how significant it is, but I remember people complaining
+>> about adding new PCI quirks because it takes too long for them to run
+>> them all. That was in the discussion about the quirk disabling ATS on
+>> AMD Stoney systems.
 >>
->> Some devices do not have a power-resource-list for D0, but do have a
->> power-resource-lists for e.g. D3 (_PR3).
-> 
-> This looks like a bug in the firmware.
+>> So it probably depends on how many PCI devices are in the system whether
+>> it causes any measureable slowdown.
+> I found this [1] from Paul Menzel, which was a slowdown caused by
+> quirk_usb_early_handoff().  I think the real problem is individual
+> quirks that take a long time.
+>
+> The PCI_FIXUP_IOMMU things we're talking about should be fast, and of
+> course, they're only run for matching devices anyway.  So I'd rather
+> keep them as PCI_FIXUP_FINAL than add a whole new phase.
+>
+Thanks Bjorn for taking time for this.
+If so, it would be much simpler.
 
-The DSDT for these devices definitely has somw warts, see
-below.
++++ b/drivers/iommu/iommu.c
+@@ -2418,6 +2418,10 @@ int iommu_fwspec_init(struct device *dev, struct 
+fwnode_handle *iommu_fwnode,
+         fwspec->iommu_fwnode = iommu_fwnode;
+         fwspec->ops = ops;
+         dev_iommu_fwspec_set(dev, fwspec);
++
++       if (dev_is_pci(dev))
++               pci_fixup_device(pci_fixup_final, to_pci_dev(dev));
++
 
-TBH I'm not sure of the whole inferring state from
-power-resource-lists is the best idea. I think just going
-for UNKNOWN as initial state would be better. The issue is
-that getting the initial state wrong will lead to either
-skipping _PS3 (as is happening here) or _PS0 on the first
-transition to the matching state which can have undesirable
-side-effects, where as just running _PS0/PS3 for a second
-time _usually_ should be fine.
+Then pci_fixup_final will be called twice, the first in pci_bus_add_device.
+Here in iommu_fwspec_init is the second time, specifically for iommu_fwspec.
+Will send this when 5.8-rc1 is open.
 
-Anyways I know we have the inferring code for a long time,
-and I guess it mostly does its job fine...
-
-> It is hard to imagine a design in which some power resources only need
-> to be "on" in the D3hot power state of a device and not in D0 (which
-> is implied by the lack of _PR0 and the presence of _PR3).
-
-Right, except that the listed resource is a dummy power
-resource, here is the AML for the USB power-resource which
-is the only resource in the _PR3 list:
-
-             PowerResource (USBC, 0x00, 0x0000)
-             {
-                 Method (_STA, 0, NotSerialized)  // _STA: Status
-                 {
-                     Return (0x0F)
-                 }
-
-                 Method (_ON, 0, NotSerialized)  // _ON_: Power On
-                 {
-                 }
-
-                 Method (_OFF, 0, NotSerialized)  // _OFF: Power Off
-                 {
-                 }
-             }
-
-So not having this in _PR0 does not matter because the
-whole thing is a dummy implementation.
-
-If you want the whole DSDT, the DSDT of one of the affected devices
-is attached here: https://bugzilla.kernel.org/show_bug.cgi?id=69011
-
-Note it seems that pretty much any Bay Trail tablet version based
-device suffers from this.
-
-> So when the device goes from D0 to D3hot, we are expected to turn some
-> power resources "on"?  What sense does this make?
-> 
-> I'm guessing that this only works at all, because we only use D0 and
-> D3cold with the affected devices and _PS0 simply turns the power
-> resource(s) in question on.
-> 
->> On these devices the "if (device->power.flags.power_resources)" check
->> in acpi_device_get_power() succeeds because of the presence of the _PR3
->> resources, so the code used to try and infer the power-state.
->>
->> In this case since there is no power-resource-list for D0, we can never
->> infer that the device is in D0 even though it very well might be in D0.
->> This results in the code inferring that the device is in D3HOT and on
->> the first suspend acpi_device_set_power() skips calling _PS3 for the
->> device because it thinks the device is already in D3.
->>
->> An example of a family of devices which are affected by this are
->> Bay Trail based devices. The ACPI device for the XHCI controller on
->> these devices does not have a _PR0 method, but it does have a _PR3
->> method. The problem described above causes the XHCI controller's _PS3
->> method not getting called on the first suspend of the device, which
->> causes these devices to not reach the S0i3 power-state during suspend.
->>
->> Since we cannot infer if the device is in D0 or not when there is no
->> power-resource-list for D0, the best thing to do is to change
->> acpi_power_get_inferred_state() to return ACPI_STATE_UNKNOWN in this
->> case.
->>
->> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=205057
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->>   drivers/acpi/power.c | 11 +++++++++++
->>   1 file changed, 11 insertions(+)
->>
->> diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
->> index fe1e7bc91a5e..db54393a077b 100644
->> --- a/drivers/acpi/power.c
->> +++ b/drivers/acpi/power.c
->> @@ -807,6 +807,17 @@ int acpi_power_get_inferred_state(struct acpi_device *device, int *state)
->>          if (!device || !state)
->>                  return -EINVAL;
->>
->> +       /*
->> +        * Some devices do not have a power-resource-list for D0, but do
->> +        * have a power-resource-lists for e.g. D3 so we do end up here.
->> +        * In this case we can never infer that the device is in D0 even
->> +        * though it might very well be in D0, so return ACPI_STATE_UNKNOWN.
->> +        */
->> +       if (list_empty(&device->power.states[ACPI_STATE_D0].resources)) {
->> +               *state = ACPI_STATE_UNKNOWN;
->> +               return 0;
->> +       }
-> 
-> Well, this makes things work on the particular affected platform, but
-> that seems to be just by accident, because _PS0 does something special
-> on it.
-> 
-> IMO this needs to be addressed elsewhere and in a different way.
-> 
-> Namely, it looks like if _PR0 is not present (or its return package is
-> empty), but _PR3 is present, we should use the _PR3 list of power
-> resources for D0 as well as for D3hot.
-
-That should work too.
-
-> Let me cut a patch for that.
-
-Ok, let me know when you have a patch ready then I will test it.
-
-Regards,
-
-Hans
-
+Thanks
