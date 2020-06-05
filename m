@@ -2,138 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5D8F1EFD74
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jun 2020 18:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2DC01EFE1B
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jun 2020 18:38:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726482AbgFEQVn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Jun 2020 12:21:43 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:34548 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726316AbgFEQVm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Jun 2020 12:21:42 -0400
-Received: by mail-ot1-f65.google.com with SMTP id b18so8061249oti.1;
-        Fri, 05 Jun 2020 09:21:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tNm/MEsuRiThlj0w2Ep6hniygV5tFbfb9SR7Z3GLj9Y=;
-        b=YbkqS2xAQNP8YNDMayOSoXFruFdNzU6pLFsUOiZKSdsZZL3FM+8Wqb6AAeGLdsmALy
-         1PicxwCxQIF+e7CJMPqTAKkVZySs+wchMe6cppRL94vAUOEF9+xUmOgqEWxzEKbJCeOv
-         wP0g1h2BlTcQe/3vPYZ8+AM25UX8VsPCCKBTgbqvcUwzzyC5cgwb8rJoWyaW3KzGR+Ir
-         gy5Jbe9YbjRfTm5q4NVKXytBdxK9gqQtRNXEGsZu/6/u677XXIc7jjxQH+6OKIgFXRc8
-         6cdA/Ib/FFou+s4u7/PvCq6iEH5oUlBTEGB9bv/OKM2lFGGuEn98bWqhKvHydC2QUOAF
-         k0MQ==
-X-Gm-Message-State: AOAM532ZOfGX0J0IYOGZlVy7UJFUHXP51uO8WoBGkzESzkylvHplMCVo
-        rqv0i064/mgK78sm/E5rkhASMb7eFpLysByHxeI=
-X-Google-Smtp-Source: ABdhPJwGbBmx3OnMsin8+/tCfwolPcXpa3AYr4pgSORGQmWTl8u3ZgO7Zkxncv+YIFsOCyUUBnNaQR6wgbRYJGe3OY4=
-X-Received: by 2002:a05:6830:20d1:: with SMTP id z17mr7872068otq.167.1591374101775;
- Fri, 05 Jun 2020 09:21:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
- <CAJZ5v0gq55A7880dOJD7skwx7mnjsqbCqEGFvEo552U9W2zH3Q@mail.gmail.com> <CAPcyv4gQNPNOmSVrp7epS5_10qLUuGbutQ2xz7LXnpEhkWeA_w@mail.gmail.com>
-In-Reply-To: <CAPcyv4gQNPNOmSVrp7epS5_10qLUuGbutQ2xz7LXnpEhkWeA_w@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 5 Jun 2020 18:21:30 +0200
-Message-ID: <CAJZ5v0g-TSk+7d-b0j5THeNtuSDeSJmKZHcG3mBesVZgkCyJOg@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: Drop rcu usage for MMIO mappings
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Stable <stable@vger.kernel.org>, Len Brown <lenb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Ira Weiny <ira.weiny@intel.com>,
-        James Morse <james.morse@arm.com>,
+        id S1726173AbgFEQio (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Jun 2020 12:38:44 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:45064 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725961AbgFEQim (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Jun 2020 12:38:42 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 055GWCR9129997;
+        Fri, 5 Jun 2020 16:38:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=GBw2x+1slDH/L7nexbscolsh28QbJeWBYvPtLNFoXcg=;
+ b=awYfieWRjiAW2PZAqKLuejsT7zkjRfWS1HASbQ9gFQEzqPxyn6Pw1tjmg3G4JiKOHxoP
+ TepJsRqBJBvsg/3bZewWfH7LPGOXzjPFC3kfqXmTlklJI9EwuHUG78DyjO54ic/q+n4d
+ JS+T+nulkrQkb+MbV3lWB7D3K+AXzWT7oypR3G9ry9skzHgEJePbr2CCiGAxy5WsTkR5
+ DTisa6ksj3F6Ayr5eka9I/bRce8XotErDoYW9h8CEfBhSKVJJz6ICTP/ZDGW5K0NoiQ4
+ gaWdxaNQ8zqYrzT0NYG5A43lPe3NdqlWM3QDeV1gUvVUnc2zzBKcZuGIDySuuuH/hdNH hQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 31f9263r2n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 05 Jun 2020 16:38:03 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 055GbdBQ010206;
+        Fri, 5 Jun 2020 16:38:02 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 31f925pqcs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 05 Jun 2020 16:38:02 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 055Gc0lQ006773;
+        Fri, 5 Jun 2020 16:38:00 GMT
+Received: from [10.175.51.78] (/10.175.51.78)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 05 Jun 2020 09:38:00 -0700
+Subject: Re: slub freelist issue / BUG: unable to handle page fault for
+ address: 000000003ffe0018
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Vlastimil Babka <vbabka@suse.cz>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
         Erik Kaneda <erik.kaneda@intel.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Christoph Lameter <cl@linux.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Marco Elver <elver@google.com>,
+        Waiman Long <longman@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux MM <linux-mm@kvack.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
-Content-Type: text/plain; charset="UTF-8"
+        Len Brown <lenb@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>
+References: <7839183d-1c0b-da02-73a2-bf5e1e8b02b9@suse.cz>
+ <94296941-1073-913c-2adb-bf2e41be9f0f@oracle.com>
+ <202006041054.874AA564@keescook>
+ <cb0cdaaa-7825-0b87-0384-db22329305bb@suse.cz>
+ <34455dce-6675-1fc2-8d61-45bf56f3f554@suse.cz>
+ <6b2b149e-c2bc-f87a-ea2c-3046c5e39bf9@oracle.com>
+ <faea2c18-edbe-f8b4-b171-6be866624856@oracle.com>
+ <CAJZ5v0jqmUmf7mv3wjniVM-YqPqhDSjxunU0E4VYCsUQqvrF_Q@mail.gmail.com>
+ <ce333dcb-2b2c-3e1f-2a7e-02a7819b1db4@suse.cz>
+ <894e8cee-33df-1f63-fb12-72dceb024ea7@oracle.com>
+ <202006050828.F85A75D13@keescook>
+From:   Vegard Nossum <vegard.nossum@oracle.com>
+Message-ID: <2055681b-35cf-1ca6-00d1-c47868bbf28d@oracle.com>
+Date:   Fri, 5 Jun 2020 18:37:55 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <202006050828.F85A75D13@keescook>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9643 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=999
+ malwarescore=0 bulkscore=0 mlxscore=0 spamscore=0 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006050125
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9643 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0
+ suspectscore=0 cotscore=-2147483648 bulkscore=0 clxscore=1015
+ impostorscore=0 priorityscore=1501 malwarescore=0 mlxlogscore=999
+ spamscore=0 lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006050124
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 5, 2020 at 6:18 PM Dan Williams <dan.j.williams@intel.com> wrote:
->
-> On Fri, Jun 5, 2020 at 6:32 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Fri, May 8, 2020 at 1:55 AM Dan Williams <dan.j.williams@intel.com> wrote:
-> > >
-> > > Recently a performance problem was reported for a process invoking a
-> > > non-trival ASL program. The method call in this case ends up
-> > > repetitively triggering a call path like:
-> > >
-> > >     acpi_ex_store
-> > >     acpi_ex_store_object_to_node
-> > >     acpi_ex_write_data_to_field
-> > >     acpi_ex_insert_into_field
-> > >     acpi_ex_write_with_update_rule
-> > >     acpi_ex_field_datum_io
-> > >     acpi_ex_access_region
-> > >     acpi_ev_address_space_dispatch
-> > >     acpi_ex_system_memory_space_handler
-> > >     acpi_os_map_cleanup.part.14
-> > >     _synchronize_rcu_expedited.constprop.89
-> > >     schedule
-> > >
-> > > The end result of frequent synchronize_rcu_expedited() invocation is
-> > > tiny sub-millisecond spurts of execution where the scheduler freely
-> > > migrates this apparently sleepy task. The overhead of frequent scheduler
-> > > invocation multiplies the execution time by a factor of 2-3X.
-> > >
-> > > For example, performance improves from 16 minutes to 7 minutes for a
-> > > firmware update procedure across 24 devices.
-> > >
-> > > Perhaps the rcu usage was intended to allow for not taking a sleeping
-> > > lock in the acpi_os_{read,write}_memory() path which ostensibly could be
-> > > called from an APEI NMI error interrupt?
-> >
-> > Not really.
-> >
-> > acpi_os_{read|write}_memory() end up being called from non-NMI
-> > interrupt context via acpi_hw_{read|write}(), respectively, and quite
-> > obviously ioremap() cannot be run from there, but in those cases the
-> > mappings in question are there in the list already in all cases and so
-> > the ioremap() isn't used then.
-> >
-> > RCU is there to protect these users from walking the list while it is
-> > being updated.
-> >
-> > > Neither rcu_read_lock() nor ioremap() are interrupt safe, so add a WARN_ONCE() to validate that rcu
-> > > was not serving as a mechanism to avoid direct calls to ioremap().
-> >
-> > But it would produce false-positives if the IRQ context was not NMI,
-> > wouldn't it?
-> >
-> > > Even the original implementation had a spin_lock_irqsave(), but that is not
-> > > NMI safe.
-> >
-> > Which is not a problem (see above).
-> >
-> > > APEI itself already has some concept of avoiding ioremap() from
-> > > interrupt context (see erst_exec_move_data()), if the new warning
-> > > triggers it means that APEI either needs more instrumentation like that
-> > > to pre-emptively fail, or more infrastructure to arrange for pre-mapping
-> > > the resources it needs in NMI context.
-> >
-> > Well, I'm not sure about that.
->
-> Right, this patch set is about 2-3 generations behind the architecture
-> of the fix we are discussing internally, you might mention that.
+On 2020-06-05 17:44, Kees Cook wrote:
+> On Fri, Jun 05, 2020 at 04:44:51PM +0200, Vegard Nossum wrote:
+>> That's it :-) This fixes it for me:
+>>
+>> diff --git a/drivers/acpi/acpica/nsaccess.c b/drivers/acpi/acpica/nsaccess.c
+>> index 2566e2d4c7803..b76bbab917941 100644
+>> --- a/drivers/acpi/acpica/nsaccess.c
+>> +++ b/drivers/acpi/acpica/nsaccess.c
+>> @@ -98,14 +98,12 @@ acpi_status acpi_ns_root_initialize(void)
+>>                   * predefined names are at the root level. It is much easier
+>> to
+>>                   * just create and link the new node(s) here.
+>>                   */
+>> -               new_node =
+>> -                   ACPI_ALLOCATE_ZEROED(sizeof(struct
+>> acpi_namespace_node));
+>> +               new_node = acpi_ns_create_node(*ACPI_CAST_PTR (u32,
+>> init_val->name));
+>>                  if (!new_node) {
+>>                          status = AE_NO_MEMORY;
+>>                          goto unlock_and_exit;
+>>                  }
+>>
+>> -               ACPI_COPY_NAMESEG(new_node->name.ascii, init_val->name);
+>>                  new_node->descriptor_type = ACPI_DESC_TYPE_NAMED;
+>>                  new_node->type = init_val->type;
+> 
+> I'm a bit confused by the internals of acpi_ns_create_note(). It can still
+> end up calling ACPI_ALLOCATE_ZEROED() via acpi_os_acquire_object(). Is
+> this fix correct?
+> 
 
-Yes, sorry.
+include/acpi/platform/aclinuxex.h:static inline void 
+*acpi_os_acquire_object(acpi_cache_t * cache)
+include/acpi/platform/aclinuxex.h-{
+include/acpi/platform/aclinuxex.h-      return kmem_cache_zalloc(cache,
+include/acpi/platform/aclinuxex.h- 
+irqs_disabled()? GFP_ATOMIC : GFP_KERNEL);
+include/acpi/platform/aclinuxex.h-}
 
-> The fix we are looking at now is to pre-map operation regions in a
-> similar manner as the way APEI resources are pre-mapped. The
-> pre-mapping would arrange for synchronize_rcu_expedited() to be elided
-> on each dynamic mapping attempt. The other piece is to arrange for
-> operation-regions to be mapped at their full size at once rather than
-> a page at a time.
+No comment.
 
-However, if the RCU usage in ACPI OSL can be replaced with an rwlock,
-some of the ACPICA changes above may not be necessary anymore (even
-though some of them may still be worth making).
+
+Vegard
