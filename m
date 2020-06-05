@@ -2,218 +2,331 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EEBE1F01A8
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jun 2020 23:28:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 242681F0296
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jun 2020 23:45:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728303AbgFEV1R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Jun 2020 17:27:17 -0400
-Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:38280 "EHLO
-        rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726664AbgFEV1Q (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Jun 2020 17:27:16 -0400
-Received: from mail-irv-17.broadcom.com (mail-irv-17.lvn.broadcom.net [10.75.242.48])
-        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 6323F30D861;
-        Fri,  5 Jun 2020 14:27:15 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com 6323F30D861
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1591392435;
-        bh=X1W5SBPglzGt+7ug7Z7PzaYs1FBERzpHlpxJDJ5NWW8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Yb7tCCTq3tEKqFK78fQleMf0F7oKo2GNKiGeJff4TJ8HjbO4U5hKMcBn5a/50b9QL
-         ASYiSDzdEAdFQtERUZgBWiULuxpC0aChlTLqu6cf55XS6z7yAfcc69QKiYMK0Af9yd
-         IC6UDRFn5YTpfAE57XQgz5wCaInS2sD8nKRoPv6w=
-Received: from stbsrv-and-01.and.broadcom.net (stbsrv-and-01.and.broadcom.net [10.28.16.211])
-        by mail-irv-17.broadcom.com (Postfix) with ESMTP id C1CD7140069;
-        Fri,  5 Jun 2020 14:27:11 -0700 (PDT)
-From:   Jim Quinlan <james.quinlan@broadcom.com>
-To:     linux-pci@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        bcm-kernel-feedback-list@broadcom.com, james.quinlan@broadcom.com
-Cc:     Alan Stern <stern@rowland.harvard.edu>,
+        id S1728358AbgFEVpi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Jun 2020 17:45:38 -0400
+Received: from mga12.intel.com ([192.55.52.136]:25970 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728252AbgFEVpi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 5 Jun 2020 17:45:38 -0400
+IronPort-SDR: 69HwLlCjMc5182MwheTyN4HdXPzIhumWni37VWursW6FbgaFZ8k1OqGryq13MrbwV+EFvLqgYH
+ F9pJ6wsjSLhA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2020 14:45:36 -0700
+IronPort-SDR: Iq0OK9SFv1F5SXL5OA2RKvUC0ON5I7K+ICzD+SCON6xC3NANvqzpOyVn1DU8acFRArr3AGOvy4
+ JgLlj/0STyuA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,477,1583222400"; 
+   d="scan'208";a="305363786"
+Received: from fmsmsx103.amr.corp.intel.com ([10.18.124.201])
+  by orsmga008.jf.intel.com with ESMTP; 05 Jun 2020 14:45:35 -0700
+Received: from fmsmsx604.amr.corp.intel.com (10.18.126.84) by
+ FMSMSX103.amr.corp.intel.com (10.18.124.201) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Fri, 5 Jun 2020 14:45:35 -0700
+Received: from fmsmsx604.amr.corp.intel.com (10.18.126.84) by
+ fmsmsx604.amr.corp.intel.com (10.18.126.84) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Fri, 5 Jun 2020 14:45:34 -0700
+Received: from FMSEDG002.ED.cps.intel.com (10.1.192.134) by
+ fmsmsx604.amr.corp.intel.com (10.18.126.84) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5
+ via Frontend Transport; Fri, 5 Jun 2020 14:45:34 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.177)
+ by edgegateway.intel.com (192.55.55.69) with Microsoft SMTP Server (TLS) id
+ 14.3.439.0; Fri, 5 Jun 2020 14:45:33 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=k7OJQ5QacWj0tcqlsMia1cGI/PgDI+LL9v3brANOXl8dI/v2QiIRbwKAtZaYvxGg5ynPEPwPO3Q0R739dcPW28CZbFFfuBkbisx46GsGjTiD8+5qmqRyh25JIAZpe8oiW7NeuDsOhOKGLkx0eDHv87FYHMCA7n+FqNFDmw7XTnfLRp/n3fFER6tu1K5mIEuQsfbTARwwv1lVb/Y2ByQapS34CplgH26CAIxARx8PnDCiZYQutBMFVdXPqt1IhJDn1HcRqRkPAkPjm04nQz4Wvczf7FrX8CwXYTw4oNeUvOmKdmOyV2IBV89w9UEzNySLIOcIuKeWs2hB1Vv+0JmHjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Lwa3j9tdYij9/6+AlgeWcyk45leO0KT9/h8dDi38ICM=;
+ b=GXOLC9aKvgdKmDCkB9dLUZrLPB3wWicz8kPnDf1xvEti1q7zL12vYs+GChH2nU2iHbYnUmddTGsqx/iO5yzKDNaGLnjpmfuUaloHX+khNkdv2gpJF/YV+h2Q2EUYw2mXXxXTDgyI1ZuEB/AVP5uGBVgmAMfcZ5DbAg9W++q/vt30tjIBwwiQFNW78KjrbNGkWDA7fMlkG/W8YsKOFZJs9RceSXnd448JTPfkjs6utHe2K2KEVTGBu6OPqZuOLx5Nvt63uqYPMZ3nKeza4lHVlQBLSy0sT2Jm+90rFz7giqhiMyak8/u8DwATJCY/lfuw4i6Z5T7C+WJEQbtqZlrErQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Lwa3j9tdYij9/6+AlgeWcyk45leO0KT9/h8dDi38ICM=;
+ b=pDUcKhtd8bmlUqh62uR2JbFDp7nZZy12sui7Q7NKrOAxZF5qeV//bCGs7g0tbgR4fPW9lXVKbeg7tU+xcgA+tvPp+AiguMoLoAwv4QGDECa13xJOkJo+lAa478jzBOLAW7jd5Xtv2uB5kvvY+Wy+n9FVlCzjjFoW3XbK3dqJ0Fc=
+Received: from BYAPR11MB3096.namprd11.prod.outlook.com (2603:10b6:a03:8f::14)
+ by BYAPR11MB3000.namprd11.prod.outlook.com (2603:10b6:a03:8e::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3066.20; Fri, 5 Jun
+ 2020 21:45:28 +0000
+Received: from BYAPR11MB3096.namprd11.prod.outlook.com
+ ([fe80::ad0c:c6a9:6f39:eb92]) by BYAPR11MB3096.namprd11.prod.outlook.com
+ ([fe80::ad0c:c6a9:6f39:eb92%5]) with mapi id 15.20.3045.022; Fri, 5 Jun 2020
+ 21:45:28 +0000
+From:   "Kaneda, Erik" <erik.kaneda@intel.com>
+To:     Vegard Nossum <vegard.nossum@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Moore, Robert" <robert.moore@intel.com>
+CC:     Kees Cook <keescook@chromium.org>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        Christoph Lameter <cl@linux.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Dan Williams <dan.j.williams@intel.com>,
-        David Kershner <david.kershner@unisys.com>,
-        devel@driverdev.osuosl.org (open list:STAGING SUBSYSTEM),
-        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
-        DEVICE TREE),
-        dri-devel@lists.freedesktop.org (open list:DRM DRIVERS FOR ALLWINNER
-        A10), Florian Fainelli <f.fainelli@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        iommu@lists.linux-foundation.org (open list:IOMMU DRIVERS),
-        Jens Axboe <axboe@kernel.dk>,
-        Julien Grall <julien.grall@arm.com>,
-        linux-acpi@vger.kernel.org (open list:ACPI FOR ARM64 (ACPI/arm64)),
-        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
-        linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
-        Parallel ATA drivers)), linux-kernel@vger.kernel.org (open list),
-        linux-media@vger.kernel.org (open list:ALLWINNER A10 CSI DRIVER),
-        linux-remoteproc@vger.kernel.org (open list:REMOTE PROCESSOR
-        (REMOTEPROC) SUBSYSTEM),
-        linux-rpi-kernel@lists.infradead.org (moderated list:BROADCOM
-        BCM2711/BCM2835 ARM ARCHITECTURE),
-        linux-sh@vger.kernel.org (open list:SUPERH),
-        linux-usb@vger.kernel.org (open list:USB SUBSYSTEM),
-        Mark Brown <broonie@kernel.org>,
-        Oliver Neukum <oneukum@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Saravana Kannan <saravanak@google.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v4 00/12] PCI: brcmstb: enable PCIe for STB chips
-Date:   Fri,  5 Jun 2020 17:26:40 -0400
-Message-Id: <20200605212706.7361-1-james.quinlan@broadcom.com>
-X-Mailer: git-send-email 2.17.1
+        Marco Elver <elver@google.com>,
+        Waiman Long <longman@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux MM <linux-mm@kvack.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>
+Subject: RE: slub freelist issue / BUG: unable to handle page fault for
+ address: 000000003ffe0018
+Thread-Topic: slub freelist issue / BUG: unable to handle page fault for
+ address: 000000003ffe0018
+Thread-Index: AQHWOqCUXxQkKqZT+02pGT3EswnpyKjJvTqAgAAHG4CAADVOAIAAByaAgAAPigCAAAoogIAActRw
+Date:   Fri, 5 Jun 2020 21:45:27 +0000
+Message-ID: <BYAPR11MB3096EB208B83D22E01F0C933F0860@BYAPR11MB3096.namprd11.prod.outlook.com>
+References: <4dc93ff8-f86e-f4c9-ebeb-6d3153a78d03@oracle.com>
+ <7839183d-1c0b-da02-73a2-bf5e1e8b02b9@suse.cz>
+ <94296941-1073-913c-2adb-bf2e41be9f0f@oracle.com>
+ <202006041054.874AA564@keescook>
+ <cb0cdaaa-7825-0b87-0384-db22329305bb@suse.cz>
+ <34455dce-6675-1fc2-8d61-45bf56f3f554@suse.cz>
+ <6b2b149e-c2bc-f87a-ea2c-3046c5e39bf9@oracle.com>
+ <faea2c18-edbe-f8b4-b171-6be866624856@oracle.com>
+ <CAJZ5v0jqmUmf7mv3wjniVM-YqPqhDSjxunU0E4VYCsUQqvrF_Q@mail.gmail.com>
+ <ce333dcb-2b2c-3e1f-2a7e-02a7819b1db4@suse.cz>
+ <894e8cee-33df-1f63-fb12-72dceb024ea7@oracle.com>
+In-Reply-To: <894e8cee-33df-1f63-fb12-72dceb024ea7@oracle.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-version: 11.2.0.6
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+authentication-results: oracle.com; dkim=none (message not signed)
+ header.d=none;oracle.com; dmarc=none action=none header.from=intel.com;
+x-originating-ip: [192.55.52.218]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: c2e5a69a-9a9f-4bf9-3df3-08d80999c315
+x-ms-traffictypediagnostic: BYAPR11MB3000:
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BYAPR11MB3000472F200475B5E584101BF0860@BYAPR11MB3000.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 0425A67DEF
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 3TkNCEWMq3W1wux+nV36l+t3yubGDI2dFVyvtHse2dCSvCeILEcQ5KbhERPcm62dZu3Do4qxHlbNZyVVhC5L0SaEjek8lkWSmaDYi+NG74pwgUeWD5vcv/+J6pbEqf8EAw3nKtth4inz6DP6ZjurCVUMu5RKdhaSnjFuxt/x3FZlBgWGgdfzHyVoBJUi5UkBob09PbNEdeRQ0jhEJ+Cbmsqsn8KBJpKZ+dcPn7KGI+12TNePLaZAIU3Y2nKm5xsYSUEQTnbMSV18R8nK4sMoSjRCNgO5DIKqRJOzGgUtrTFOFwZeHI4/F7t7drYF2cWKOL9hj15GMZPTanGysmvBPo4lfRt2gzeEzuH6Va3s41TYVlPUThuKsolsh1jCGadiX2LYdnHWMXfPV/LuxrLjeA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3096.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(136003)(396003)(366004)(346002)(376002)(39860400002)(186003)(76116006)(8676002)(66946007)(71200400001)(4326008)(66556008)(966005)(66446008)(8936002)(6636002)(86362001)(7416002)(64756008)(316002)(7696005)(66476007)(54906003)(5660300002)(52536014)(53546011)(478600001)(6506007)(110136005)(2906002)(26005)(33656002)(9686003)(55016002)(83380400001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: ArtTAwVuLC4KhGDBi9oTD0wRN9X2zt093ybpZndJgOm5QKXfnNBvxN8StbXMpnsvOy+LqyqNgJZfpLGL5AsJDdyscBZ/iE3dK2HUq/h1U4HztVkotXQiodAYmOS/WSJ2vANSWEeWVK6+ZKCYP5duev0nP8+oMcuiQ191QA4ECCTSzR15m102XN/rj2TOys3zCAgqZz1MGKEPJJCcm6Z2KVObY8RIzV2f2eYHekmaAJ/66NCBvQPQSlszYLya9rk5bkL8is08segAUiPm1G11T4ylc+9uth2cY+I2qoCWVYVqCHBZanYNr55+dMyHUtAIYccmpG8JWwCyniwUWG6HEfV2twAQnrYefrldwW1hE5C7VxyndSKBzVWr5BSFtk+hbcdTw/QzeGcpW2+T5yoCCqh3yQjn61j9xnEMMmT5G8n5+YCtOZkkf3YXk8juAZScZ+S5bh4OgP8v5c5qOESuDf2Ik8uk6794N3EPw8Oarj8=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2e5a69a-9a9f-4bf9-3df3-08d80999c315
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Jun 2020 21:45:27.8561
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 2AsYYRFd6fEHB5JiY79Zw47eCp1ymmfWEXpgeSqyG6OXuEKK+po8CdkHWMoesnA9rkDI871jNW/D9op/DEpz+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB3000
+X-OriginatorOrg: intel.com
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-v4:
-  Commit "device core: Introduce multiple dma pfn offsets"
-  -- of_dma_get_range() does not take a dev param but instead
-     takes two "out" params: map and map_size.  We do this so
-     that the code that parses dma-ranges is separate from
-     the code that modifies 'dev'.   (Nicolas)
-  -- the separate case of having a single pfn offset has
-     been removed and is now processed by going through the
-     map array. (Nicolas)
-  -- move attach_uniform_dma_pfn_offset() from of/address.c to
-     dma/mapping.c so that it does not depend on CONFIG_OF. (Nicolas)
-  -- devm_kcalloc => devm_kzalloc (DanC)
-  -- add/fix assignment to dev->dma_pfn_offset_map for func
-     attach_uniform_dma_pfn_offset() (DanC, Nicolas)
-  -- s/struct dma_pfn_offset_region/struct bus_dma_region/ (Nicolas)
-  -- s/attach_uniform_dma_pfn_offset/dma_attach_uniform_pfn_offset/
-  -- s/attach_dma_pfn_offset_map/dma_attach_pfn_offset_map/
-  -- More use of PFN_{PHYS,DOWN,UP}. (AndyS)
-  Commit "of: Include a dev param in of_dma_get_range()"
-  -- this commit was sqaushed with "device core: Introduce ..."
-
-v3:
-  Commit "device core: Introduce multiple dma pfn offsets"
-  Commit "arm: dma-mapping: Invoke dma offset func if needed"
-  -- The above two commits have been squashed.  More importantly,
-     the code has been modified so that the functionality for
-     multiple pfn offsets subsumes the use of dev->dma_pfn_offset.
-     In fact, dma_pfn_offset is removed and supplanted by
-     dma_pfn_offset_map, which is a pointer to an array.  The
-     more common case of a uniform offset is now handled as
-     a map with a single entry, while cases requiring multiple
-     pfn offsets use a map with multiple entries.  Code paths
-     that used to do this:
-
-         dev->dma_pfn_offset = mydrivers_pfn_offset;
-
-     have been changed to do this:
-
-         attach_uniform_dma_pfn_offset(dev, pfn_offset);
-
-  Commit "dt-bindings: PCI: Add bindings for more Brcmstb chips"
-  -- Add if/then clause for required props: resets, reset-names (RobH)
-  -- Change compatible list from const to enum (RobH)
-  -- Change list of u32-tuples to u64 (RobH)
-
-  Commit "of: Include a dev param in of_dma_get_range()"
-  -- modify of/unittests.c to add NULL param in of_dma_get_range() call.
-
-  Commit "device core: Add ability to handle multiple dma offsets"
-  -- align comment in device.h (AndyS).
-  -- s/cpu_beg/cpu_start/ and s/dma_beg/dma_start/ in struct
-     dma_pfn_offset_region (AndyS).
-
-v2:
-Commit: "device core: Add ability to handle multiple dma offsets"
-  o Added helper func attach_dma_pfn_offset_map() in address.c (Chistoph)
-  o Helpers funcs added to __phys_to_dma() & __dma_to_phys() (Christoph)
-  o Added warning when multiple offsets are needed and !DMA_PFN_OFFSET_MAP
-  o dev->dma_pfn_map => dev->dma_pfn_offset_map
-  o s/frm/from/ for dma_pfn_offset_frm_{phys,dma}_addr() (Christoph)
-  o In device.h: s/const void */const struct dma_pfn_offset_region */
-  o removed 'unlikely' from unlikely(dev->dma_pfn_offset_map) since
-    guarded by CONFIG_DMA_PFN_OFFSET_MAP (Christoph)
-  o Since dev->dma_pfn_offset is copied in usb/core/{usb,message}.c, now
-    dev->dma_pfn_offset_map is copied as well.
-  o Merged two of the DMA commits into one (Christoph).
-
-Commit "arm: dma-mapping: Invoke dma offset func if needed":
-  o Use helper functions instead of #if CONFIG_DMA_PFN_OFFSET
-
-Other commits' changes:
-  o Removed need for carrying of_id var in priv (Nicolas)
-  o Commit message rewordings (Bjorn)
-  o Commit log messages filled to 75 chars (Bjorn)
-  o devm_reset_control_get_shared())
-    => devm_reset_control_get_optional_shared (Philipp)
-  o Add call to reset_control_assert() in PCIe remove routines (Philipp)
-
-v1:
-This patchset expands the usefulness of the Broadcom Settop Box PCIe
-controller by building upon the PCIe driver used currently by the
-Raspbery Pi.  Other forms of this patchset were submitted by me years
-ago and not accepted; the major sticking point was the code required
-for the DMA remapping needed for the PCIe driver to work [1].
-
-There have been many changes to the DMA and OF subsystems since that
-time, making a cleaner and less intrusive patchset possible.  This
-patchset implements a generalization of "dev->dma_pfn_offset", except
-that instead of a single scalar offset it provides for multiple
-offsets via a function which depends upon the "dma-ranges" property of
-the PCIe host controller.  This is required for proper functionality
-of the BrcmSTB PCIe controller and possibly some other devices.
-
-[1] https://lore.kernel.org/linux-arm-kernel/1516058925-46522-5-git-send-email-jim2101024@gmail.com/
-
-Jim Quinlan (12):
-  PCI: brcmstb: PCIE_BRCMSTB depends on ARCH_BRCMSTB
-  ata: ahci_brcm: Fix use of BCM7216 reset controller
-  dt-bindings: PCI: Add bindings for more Brcmstb chips
-  PCI: brcmstb: Add bcm7278 register info
-  PCI: brcmstb: Add suspend and resume pm_ops
-  PCI: brcmstb: Add bcm7278 PERST support
-  PCI: brcmstb: Add control of rescal reset
-  device core: Introduce multiple dma pfn offsets
-  PCI: brcmstb: Set internal memory viewport sizes
-  PCI: brcmstb: Accommodate MSI for older chips
-  PCI: brcmstb: Set bus max burst size by chip type
-  PCI: brcmstb: Add bcm7211, bcm7216, bcm7445, bcm7278 to match list
-
- .../bindings/pci/brcm,stb-pcie.yaml           |  58 ++-
- arch/arm/include/asm/dma-mapping.h            |   9 +-
- arch/arm/mach-keystone/keystone.c             |   9 +-
- arch/sh/drivers/pci/pcie-sh7786.c             |   3 +-
- arch/sh/kernel/dma-coherent.c                 |  14 +-
- arch/x86/pci/sta2x11-fixup.c                  |   7 +-
- drivers/acpi/arm64/iort.c                     |   5 +-
- drivers/ata/ahci_brcm.c                       |  14 +-
- drivers/gpu/drm/sun4i/sun4i_backend.c         |   5 +-
- drivers/iommu/io-pgtable-arm.c                |   2 +-
- .../platform/sunxi/sun4i-csi/sun4i_csi.c      |   5 +-
- .../platform/sunxi/sun6i-csi/sun6i_csi.c      |   4 +-
- drivers/of/address.c                          |  72 +++-
- drivers/of/device.c                           |  19 +-
- drivers/of/of_private.h                       |  11 +-
- drivers/of/unittest.c                         |   8 +-
- drivers/pci/controller/Kconfig                |   3 +-
- drivers/pci/controller/pcie-brcmstb.c         | 408 +++++++++++++++---
- drivers/remoteproc/remoteproc_core.c          |   2 +-
- .../staging/media/sunxi/cedrus/cedrus_hw.c    |   7 +-
- drivers/usb/core/message.c                    |   4 +-
- drivers/usb/core/usb.c                        |   2 +-
- include/linux/device.h                        |   4 +-
- include/linux/dma-direct.h                    |  16 +-
- include/linux/dma-mapping.h                   |  38 ++
- kernel/dma/coherent.c                         |  11 +-
- kernel/dma/mapping.c                          |  38 ++
- 27 files changed, 647 insertions(+), 131 deletions(-)
-
--- 
-2.17.1
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVmVnYXJkIE5vc3N1bSA8
+dmVnYXJkLm5vc3N1bUBvcmFjbGUuY29tPg0KPiBTZW50OiBGcmlkYXksIEp1bmUgNSwgMjAyMCA3
+OjQ1IEFNDQo+IFRvOiBWbGFzdGltaWwgQmFia2EgPHZiYWJrYUBzdXNlLmN6PjsgUmFmYWVsIEou
+IFd5c29ja2kNCj4gPHJhZmFlbEBrZXJuZWwub3JnPjsgTW9vcmUsIFJvYmVydCA8cm9iZXJ0Lm1v
+b3JlQGludGVsLmNvbT47IEthbmVkYSwNCj4gRXJpayA8ZXJpay5rYW5lZGFAaW50ZWwuY29tPg0K
+PiBDYzogS2VlcyBDb29rIDxrZWVzY29va0BjaHJvbWl1bS5vcmc+OyBXeXNvY2tpLCBSYWZhZWwg
+Sg0KPiA8cmFmYWVsLmoud3lzb2NraUBpbnRlbC5jb20+OyBDaHJpc3RvcGggTGFtZXRlciA8Y2xA
+bGludXguY29tPjsgQW5kcmV3DQo+IE1vcnRvbiA8YWtwbUBsaW51eC1mb3VuZGF0aW9uLm9yZz47
+IE1hcmNvIEVsdmVyIDxlbHZlckBnb29nbGUuY29tPjsNCj4gV2FpbWFuIExvbmcgPGxvbmdtYW5A
+cmVkaGF0LmNvbT47IExLTUwgPGxpbnV4LQ0KPiBrZXJuZWxAdmdlci5rZXJuZWwub3JnPjsgTGlu
+dXggTU0gPGxpbnV4LW1tQGt2YWNrLm9yZz47IEFDUEkgRGV2ZWwNCj4gTWFsaW5nIExpc3QgPGxp
+bnV4LWFjcGlAdmdlci5rZXJuZWwub3JnPjsgTGVuIEJyb3duIDxsZW5iQGtlcm5lbC5vcmc+Ow0K
+PiBTdGV2ZW4gUm9zdGVkdCA8cm9zdGVkdEBnb29kbWlzLm9yZz4NCj4gU3ViamVjdDogUmU6IHNs
+dWIgZnJlZWxpc3QgaXNzdWUgLyBCVUc6IHVuYWJsZSB0byBoYW5kbGUgcGFnZSBmYXVsdCBmb3IN
+Cj4gYWRkcmVzczogMDAwMDAwMDAzZmZlMDAxOA0KPiANCj4gT24gMjAyMC0wNi0wNSAxNjowOCwg
+Vmxhc3RpbWlsIEJhYmthIHdyb3RlOg0KPiA+IE9uIDYvNS8yMCAzOjEyIFBNLCBSYWZhZWwgSi4g
+V3lzb2NraSB3cm90ZToNCj4gPj4gT24gRnJpLCBKdW4gNSwgMjAyMCBhdCAyOjQ4IFBNIFZlZ2Fy
+ZCBOb3NzdW0NCj4gPHZlZ2FyZC5ub3NzdW1Ab3JhY2xlLmNvbT4gd3JvdGU6DQo+ID4+Pg0KPiA+
+Pj4gT24gMjAyMC0wNi0wNSAxMTozNiwgVmVnYXJkIE5vc3N1bSB3cm90ZToNCj4gPj4+Pg0KPiA+
+Pj4+IE9uIDIwMjAtMDYtMDUgMTE6MTEsIFZsYXN0aW1pbCBCYWJrYSB3cm90ZToNCj4gPj4+Pj4g
+T24gNi80LzIwIDg6NDYgUE0sIFZsYXN0aW1pbCBCYWJrYSB3cm90ZToNCj4gPj4+Pj4+IE9uIDYv
+NC8yMCA3OjU3IFBNLCBLZWVzIENvb2sgd3JvdGU6DQo+ID4+Pj4+Pj4gT24gVGh1LCBKdW4gMDQs
+IDIwMjAgYXQgMDc6MjA6MThQTSArMDIwMCwgVmVnYXJkIE5vc3N1bSB3cm90ZToNCj4gPj4+Pj4+
+Pj4gT24gMjAyMC0wNi0wNCAxOToxOCwgVmxhc3RpbWlsIEJhYmthIHdyb3RlOg0KPiA+Pj4+Pj4+
+Pj4gT24gNi80LzIwIDc6MTQgUE0sIFZlZ2FyZCBOb3NzdW0gd3JvdGU6DQo+ID4+Pj4+Pj4+Pj4N
+Cj4gPj4+Pj4+Pj4+PiBIaSBhbGwsDQo+ID4+Pj4+Pj4+Pj4NCj4gPj4+Pj4+Pj4+PiBJIHJhbiBp
+bnRvIGEgYm9vdCBwcm9ibGVtIHdpdGggbGF0ZXN0IGxpbnVzL21hc3Rlcg0KPiA+Pj4+Pj4+Pj4+
+ICg2OTI5ZjcxZTQ2YmRkZGJmMWM0ZDY3YzI3Mjg2NDgxNzZjNjdjNTU1KSB0aGF0IG1hbmlmZXN0
+cw0KPiBsaWtlIHRoaXM6DQo+ID4+Pj4+Pj4+Pg0KPiA+Pj4+Pj4+Pj4gSGksIHdoYXQncyB0aGUg
+LmNvbmZpZyB5b3UgdXNlPw0KPiA+Pj4+Pj4+Pg0KPiA+Pj4+Pj4+PiBQcmV0dHkgbXVjaCB4ODZf
+NjQgZGVmY29uZmlnIG1pbnVzIGEgZmV3IG9wdGlvbnMgKFBDSSwgVVNCLA0KPiA+Pj4+Pj4+PiAu
+Li4pDQo+ID4+Pj4+Pj4NCj4gPj4+Pj4+PiBPaCB5ZXMgaW5kZWVkLiBJIGltbWVkaWF0ZWx5IGNy
+YXNoIGluIHRoZSBzYW1lIHdheSB3aXRoIHRoaXMgY29uZmlnLg0KPiA+Pj4+Pj4+IEknbGwNCj4g
+Pj4+Pj4+PiBzdGFydCBkaWdnaW5nLi4uDQo+ID4+Pj4+Pj4NCj4gPj4+Pj4+PiAoZGVmY29uZmln
+IGZpbmlzaGVzIGJvb3QpDQo+ID4+Pj4+Pg0KPiA+Pj4+Pj4gVGhpcyBpcyBmdW5ueSwgYm9vdGlu
+ZyB3aXRoIHNsdWJfZGVidWc9RiByZXN1bHRzIGluOg0KPiA+Pj4+Pj4gSSdtIG5vdCBzdXJlIGlm
+IGl0J3MgQUNQSSBvciBmdHJhY2Ugd3JvbmcgaGVyZSwgYnV0IGxvb2tzIGxpa2UNCj4gPj4+Pj4+
+IHRoZSBjaGFuZ2VkIGZyZWUgcG9pbnRlciBvZmZzZXQgbWVyZWx5IGV4cG9zZXMgYSBidWcgaW4g
+c29tZXRoaW5nDQo+ID4+Pj4+PiBlbHNlLg0KPiA+Pj4+Pg0KPiA+Pj4+PiBTbywgd2l0aCBLZWVz
+JyBwYXRjaCByZXZlcnRlZCwgYm9vdGluZyB3aXRoIHNsdWJfZGVidWc9RiAob3IgZXZlbg0KPiA+
+Pj4+PiBtb3JlIHNwZWNpZmljIHNsdWJfZGVidWc9RixmdHJhY2VfZXZlbnRfZmllbGQpIGFsc28g
+aGl0cyB0aGlzIGJ1Zw0KPiA+Pj4+PiBiZWxvdy4gSSB3YW50ZWQgdG8gYmlzZWN0IGl0LCBidXQg
+djUuNyB3YXMgYWxzbyBiYWQsIGFuZCBhbHNvDQo+ID4+Pj4+IHY1LjYuIERpZG4ndCB0cnkgZnVy
+dGhlciBpbiBoaXN0b3J5LiBTbyBpdCdzIG5vdCBuZXcgYXQgYWxsLCBhbmQNCj4gPj4+Pj4gbGlr
+ZWx5IHZlcnkgc3BlY2lmaWMgdG8geW91ciBjb25maWcrUUVNVT8gKGFuZCByZWxhdGVkIHRvIHRo
+ZSBBQ1BJDQo+ID4+Pj4+IGVycm9yIG1lc3NhZ2VzIHRoYXQgcHJlY2VkZSBpdD8pLg0KPiA+Pj4+
+DQo+ID4+Pj4gSSBzZWUgaXQgdG9vLCBidXQgbm90IG9uIHY1LjAuIEkgY2FuIGJpc2VjdCBpdC4N
+Cj4gPj4+DQo+ID4+PiBjb21taXQgNjdhNzI0MjBhMzI2YjQ1NTE0ZGViM2YyMTIwODVmYjJjZDE1
+OTViNQ0KPiA+Pj4gQXV0aG9yOiBCb2IgTW9vcmUgPHJvYmVydC5tb29yZUBpbnRlbC5jb20+DQo+
+ID4+PiBEYXRlOiAgIEZyaSBBdWcgMTYgMTQ6NDM6MjEgMjAxOSAtMDcwMA0KPiA+Pj4NCj4gPj4+
+ICAgICAgIEFDUElDQTogSW5jcmVhc2UgdG90YWwgbnVtYmVyIG9mIHBvc3NpYmxlIE93bmVyIElE
+cw0KPiA+Pj4NCj4gPj4+ICAgICAgIEFDUElDQSBjb21taXQgMWYxNjUyZGFkODhiOWQ3Njc3Njdi
+YzFmN2ViNGY3ZDk5ZTZiNTMyNA0KPiA+Pj4NCj4gPj4+ICAgICAgIEZyb20gMjU1IHRvIDQwOTUg
+cG9zc2libGUgSURzLg0KPiA+Pj4NCj4gPj4+ICAgICAgIExpbms6IGh0dHBzOi8vZ2l0aHViLmNv
+bS9hY3BpY2EvYWNwaWNhL2NvbW1pdC8xZjE2NTJkYQ0KPiA+Pj4gICAgICAgUmVwb3J0ZWQtYnk6
+IEhlZGkgQmVycmljaGUgPGhlZGkuYmVycmljaGUgQGhwZS5jb20+DQo+ID4+PiAgICAgICBTaWdu
+ZWQtb2ZmLWJ5OiBCb2IgTW9vcmUgPHJvYmVydC5tb29yZUBpbnRlbC5jb20+DQo+ID4+PiAgICAg
+ICBTaWduZWQtb2ZmLWJ5OiBFcmlrIFNjaG1hdXNzIDxlcmlrLnNjaG1hdXNzQGludGVsLmNvbT4N
+Cj4gPj4+ICAgICAgIFNpZ25lZC1vZmYtYnk6IFJhZmFlbCBKLiBXeXNvY2tpIDxyYWZhZWwuai53
+eXNvY2tpQGludGVsLmNvbT4NCj4gPj4NCj4gPj4gQm9iLCBFcmlrLCBkaWQgd2UgbWlzcyBzb21l
+dGhpbmcgaW4gdGhhdCBwYXRjaD8NCj4gPg0KPiA+IE1heWJlIHRoZSBwYXRjaCBqdXN0IGNoYW5n
+ZXMgbGF5b3V0IGluIGEgd2F5IHRoYXQgZXhwb3NlcyB0aGUgYnVnLg0KPiA+DQo+ID4gQW55d2F5
+IHRoZSAiZnRyYWNlX2V2ZW50X2ZpZWxkIiBjYWNoZSBpcyBub3QgcmVhbGx5IGludm9sdmVkLCB0
+aGlzIGlzDQo+ID4ganVzdCBiZWNhdXNlIG9mIHNsYWIgbWVyZ2luZy4gQWZ0ZXIgYWRkaW5nICJz
+bHViX25vbWVyZ2UiIHRvDQo+ID4gInNsdWJfZGVidWc9RiIsIGl0IHN0YXJ0cyBtYWtpbmcgbW9y
+ZSBzZW5zZSwgYXMgdGhlIGNhY2hlIGJlY29tZXMNCj4gPiBBY3BpLU5hbWVzcGFjZQ0KPiA+DQo+
+ID4gWyAgICAwLjE0MDQwOF0gLS0tLS0tLS0tLS0tWyBjdXQgaGVyZSBdLS0tLS0tLS0tLS0tDQo+
+ID4gWyAgICAwLjE0MDgzN10gY2FjaGVfZnJvbV9vYmo6IFdyb25nIHNsYWIgY2FjaGUuIEFjcGkt
+TmFtZXNwYWNlIGJ1dA0KPiBvYmplY3QgaXMgZnJvbSBrbWFsbG9jLTY0DQo+ID4gWyAgICAwLjE0
+MTQwNl0gV0FSTklORzogQ1BVOiAwIFBJRDogMSBhdCBtbS9zbGFiLmg6NTI0DQo+IGttZW1fY2Fj
+aGVfZnJlZSsweDFkMy8weDI1MA0KPiA+IFsgICAgMC4xNDIxMDVdIENQVTogMCBQSUQ6IDEgQ29t
+bTogc3dhcHBlci8wIE5vdCB0YWludGVkIDUuNy4wKyAjNDUNCj4gPiBbICAgIDAuMTQyMzkzXSBI
+YXJkd2FyZSBuYW1lOiBRRU1VIFN0YW5kYXJkIFBDIChpNDQwRlggKyBQSUlYLCAxOTk2KSwNCj4g
+QklPUyByZWwtMS4xMy4wLTAtZ2YyMWI1YTQtcmVidWlsdC5vcGVuc3VzZS5vcmcgMDQvMDEvMjAx
+NA0KPiA+IFsgICAgMC4xNDIzOTNdIFJJUDogMDAxMDprbWVtX2NhY2hlX2ZyZWUrMHgxZDMvMHgy
+NTANCj4gPiBbICAgIDAuMTQyMzkzXSBDb2RlOiAxOCA0ZCA4NSBlZCAwZiA4NCAxMCBmZiBmZiBm
+ZiA0YyAzOSBlZCA3NCAyZiA0OSA4YiA0ZCA1OCA0OA0KPiA4YiA1NSA1OCA0OCBjNyBjNiAxMCA0
+NyBhMSBhYyA0OCBjNyBjNyAwMCBjMiBiMCBhYyBlOCBiMSBjYyBlYiBmZiA8MGY+IDBiIDQ4IDg5
+IGRlDQo+IDRjIDg5IGVmIGU4IDEwIGQ3IGZmIGZmIDQ4IDhiIDE1IDU5IDM2IDliIDAwIDRjIDg5
+DQo+ID4gWyAgICAwLjE0MjM5M10gUlNQOiAwMDE4OmZmZmZiMzljYzAwMTNkYzAgRUZMQUdTOiAw
+MDAxMDI4Mg0KPiA+IFsgICAgMC4xNDIzOTNdIFJBWDogMDAwMDAwMDAwMDAwMDAwMCBSQlg6IGZm
+ZmY5MzcyODc0MDllMDAgUkNYOg0KPiAwMDAwMDAwMDAwMDAwMDAwDQo+ID4gWyAgICAwLjE0MjM5
+M10gUkRYOiAwMDAwMDAwMDAwMDAwMDAxIFJTSTogMDAwMDAwMDAwMDAwMDA5MiBSREk6DQo+IGZm
+ZmZmZmZmYWNmZGQzMmMNCj4gPiBbICAgIDAuMTQyMzkzXSBSQlA6IGZmZmY5MzcyODc0MmVmMDAg
+UjA4OiBmZmZmYjM5Y2MwMDEzYzdkIFIwOToNCj4gMDAwMDAwMDAwMDAwMDBmYw0KPiA+IFsgICAg
+MC4xNDIzOTNdIFIxMDogZmZmZmIzOWNjMDAxM2M3OCBSMTE6IGZmZmZiMzljYzAwMTNjN2QgUjEy
+Og0KPiBmZmZmOTM3MzA3NDA5ZTAwDQo+ID4gWyAgICAwLjE0MjM5M10gUjEzOiBmZmZmOTM3Mjg3
+NDAxZDAwIFIxNDogMDAwMDAwMDAwMDAwMDAwMCBSMTU6DQo+IDAwMDAwMDAwMDAwMDAwMDANCj4g
+PiBbICAgIDAuMTQyMzkzXSBGUzogIDAwMDAwMDAwMDAwMDAwMDAoMDAwMCkgR1M6ZmZmZjkzNzI4
+N2EwMDAwMCgwMDAwKQ0KPiBrbmxHUzowMDAwMDAwMDAwMDAwMDAwDQo+ID4gWyAgICAwLjE0MjM5
+M10gQ1M6ICAwMDEwIERTOiAwMDAwIEVTOiAwMDAwIENSMDogMDAwMDAwMDA4MDA1MDAzMw0KPiA+
+IFsgICAgMC4xNDIzOTNdIENSMjogMDAwMDAwMDAwMDAwMDAwMCBDUjM6IDAwMDAwMDAwMDNhMGEw
+MDAgQ1I0Og0KPiAwMDAwMDAwMDAwMzQwNmYwDQo+ID4gWyAgICAwLjE0MjM5M10gQ2FsbCBUcmFj
+ZToNCj4gPiBbICAgIDAuMTQyMzkzXSAgYWNwaV9vc19yZWxlYXNlX29iamVjdCsweDUvMHgxMA0K
+PiA+IFsgICAgMC4xNDIzOTNdICBhY3BpX25zX2RlbGV0ZV9jaGlsZHJlbisweDQ2LzB4NTkNCj4g
+PiBbICAgIDAuMTQyMzkzXSAgYWNwaV9uc19kZWxldGVfbmFtZXNwYWNlX3N1YnRyZWUrMHg1Yy8w
+eDc5DQo+ID4gWyAgICAwLjE0MjM5M10gID8gYWNwaV9zbGVlcF9wcm9jX2luaXQrMHgxZi8weDFm
+DQo+ID4gWyAgICAwLjE0MjM5M10gIGFjcGlfbnNfdGVybWluYXRlKzB4Yy8weDMxDQo+ID4gWyAg
+ICAwLjE0MjM5M10gIGFjcGlfdXRfc3Vic3lzdGVtX3NodXRkb3duKzB4NDUvMHhhMw0KPiA+IFsg
+ICAgMC4xNDIzOTNdICA/IGFjcGlfc2xlZXBfcHJvY19pbml0KzB4MWYvMHgxZg0KPiA+IFsgICAg
+MC4xNDIzOTNdICBhY3BpX3Rlcm1pbmF0ZSsweDUvMHhmDQo+ID4gWyAgICAwLjE0MjM5M10gIGFj
+cGlfaW5pdCsweDI3Yi8weDMwOA0KPiA+IFsgICAgMC4xNDIzOTNdICA/IHZpZGVvX3NldHVwKzB4
+NzkvMHg3OQ0KPiA+IFsgICAgMC4xNDIzOTNdICBkb19vbmVfaW5pdGNhbGwrMHg3Yi8weDE2MA0K
+PiA+IFsgICAgMC4xNDIzOTNdICBrZXJuZWxfaW5pdF9mcmVlYWJsZSsweDE5MC8weDFmMg0KPiA+
+IFsgICAgMC4xNDIzOTNdICA/IHJlc3RfaW5pdCsweDlhLzB4OWENCj4gPiBbICAgIDAuMTQyMzkz
+XSAga2VybmVsX2luaXQrMHg1LzB4ZjYNCj4gPiBbICAgIDAuMTQyMzkzXSAgcmV0X2Zyb21fZm9y
+aysweDIyLzB4MzANCj4gPiBbICAgIDAuMTQyMzkzXSAtLS1bIGVuZCB0cmFjZSAzNTM5ZjIzNmVm
+ODEyYmExIF0tLS0NCj4gPiBbICAgIDAuMTQyMzk2XSAtLS0tLS0tLS0tLS1bIGN1dCBoZXJlIF0t
+LS0tLS0tLS0tLS0NCj4gPg0KPiA+IEkndmUgYWxzbyBjaGFuZ2VkIHRoZSB3YXJuaW5nIHNvIGl0
+J3Mgbm90IHByaW50ZWQganVzdCBvbmNlLCBhbmQgYWxzbw0KPiA+IHByaW50cyB0cmFja2luZyBp
+bmZvIChzZWUgdGhlIGh1bmsgYXQgdGhlIGVuZCBvZiBteSBtYWlsLCBJJ2xsIHR1cm4gdGhpcyB0
+byBhDQo+IHByb3BlciBwYXRjaCBsYXRlcikuDQo+ID4NCj4gPiBXaXRoICJzbHViX2RlYnVnPUZV
+IHNsdWJfbm9tZXJnZSIgdGhlcmUgYXJlIG5vdyBtdWx0aXBsZSB3YXJuaW5ncywNCj4gYnV0IHRo
+ZXkgYWxsIGxvb2sgdGhlIHNhbWU6DQo+ID4NCj4gPiBbICAgIDAuMTQzODE1XSAtLS0tLS0tLS0t
+LS1bIGN1dCBoZXJlIF0tLS0tLS0tLS0tLS0NCj4gPiBbICAgIDAuMTQ0MTMxXSBjYWNoZV9mcm9t
+X29iajogV3Jvbmcgc2xhYiBjYWNoZS4gQWNwaS1OYW1lc3BhY2UgYnV0DQo+IG9iamVjdCBpcyBm
+cm9tIGttYWxsb2MtNjQNCj4gPiBbICAgIDAuMTQ0OTI5XSBXQVJOSU5HOiBDUFU6IDAgUElEOiAx
+IGF0IG1tL3NsYWIuaDo1MjQNCj4ga21lbV9jYWNoZV9mcmVlKzB4MWQzLzB4MjUwDQo+ID4gWyAg
+ICAwLjE0NTEyOV0gQ1BVOiAwIFBJRDogMSBDb21tOiBzd2FwcGVyLzAgTm90IHRhaW50ZWQgNS43
+LjArICM0NQ0KPiA+IFsgICAgMC4xNDUxMjldIEhhcmR3YXJlIG5hbWU6IFFFTVUgU3RhbmRhcmQg
+UEMgKGk0NDBGWCArIFBJSVgsIDE5OTYpLA0KPiBCSU9TIHJlbC0xLjEzLjAtMC1nZjIxYjVhNC1y
+ZWJ1aWx0Lm9wZW5zdXNlLm9yZyAwNC8wMS8yMDE0DQo+ID4gWyAgICAwLjE0NTEyOV0gUklQOiAw
+MDEwOmttZW1fY2FjaGVfZnJlZSsweDFkMy8weDI1MA0KPiA+IFsgICAgMC4xNDUxMjldIENvZGU6
+IDE4IDRkIDg1IGVkIDBmIDg0IDEwIGZmIGZmIGZmIDRjIDM5IGVkIDc0IDJmIDQ5IDhiIDRkIDU4
+IDQ4DQo+IDhiIDU1IDU4IDQ4IGM3IGM2IDEwIDQ3IGMxIDhkIDQ4IGM3IGM3IDAwIGMyIGQwIDhk
+IGU4IGIxIGNjIGViIGZmIDwwZj4gMGIgNDggODkgZGUNCj4gNGMgODkgZWYgZTggMTAgZDcgZmYg
+ZmYgNDggOGIgMTUgNTkgMzYgOWIgMDAgNGMgODkNCj4gPiBbICAgIDAuMTQ1MTI5XSBSU1A6IDAw
+MTg6ZmZmZjk5MGI4MDAxM2RjMCBFRkxBR1M6IDAwMDEwMjgyDQo+ID4gWyAgICAwLjE0NTEyOV0g
+UkFYOiAwMDAwMDAwMDAwMDAwMDAwIFJCWDogZmZmZjk3MmQ0NzRhZGE4MCBSQ1g6DQo+IDAwMDAw
+MDAwMDAwMDAwMDANCj4gPiBbICAgIDAuMTQ1MTI5XSBSRFg6IDAwMDAwMDAwMDAwMDAwMDEgUlNJ
+OiAwMDAwMDAwMDAwMDAwMDkyIFJESToNCj4gZmZmZmZmZmY4ZTFkZDMyYw0KPiA+IFsgICAgMC4x
+NDUxMjldIFJCUDogZmZmZjk3MmQ0NzQyNTY4MCBSMDg6IGZmZmY5OTBiODAwMTNjN2QgUjA5Og0K
+PiAwMDAwMDAwMDAwMDAwMGZjDQo+ID4gWyAgICAwLjE0NTEyOV0gUjEwOiBmZmZmOTkwYjgwMDEz
+Yzc4IFIxMTogZmZmZjk5MGI4MDAxM2M3ZCBSMTI6DQo+IGZmZmY5NzJkYzc0YWRhODANCj4gPiBb
+ICAgIDAuMTQ1MTI5XSBSMTM6IGZmZmY5NzJkNDc0MDM4YzAgUjE0OiAwMDAwMDAwMDAwMDAwMDAw
+IFIxNToNCj4gMDAwMDAwMDAwMDAwMDAwMA0KPiA+IFsgICAgMC4xNDUxMjldIEZTOiAgMDAwMDAw
+MDAwMDAwMDAwMCgwMDAwKSBHUzpmZmZmOTcyZDQ3YTAwMDAwKDAwMDApDQo+IGtubEdTOjAwMDAw
+MDAwMDAwMDAwMDANCj4gPiBbICAgIDAuMTQ1MTI5XSBDUzogIDAwMTAgRFM6IDAwMDAgRVM6IDAw
+MDAgQ1IwOiAwMDAwMDAwMDgwMDUwMDMzDQo+ID4gWyAgICAwLjE0NTEyOV0gQ1IyOiAwMDAwMDAw
+MDAwMDAwMDAwIENSMzogMDAwMDAwMDAwNjYwYTAwMCBDUjQ6DQo+IDAwMDAwMDAwMDAzNDA2ZjAN
+Cj4gPiBbICAgIDAuMTQ1MTI5XSBDYWxsIFRyYWNlOg0KPiA+IFsgICAgMC4xNDUxMjldICBhY3Bp
+X29zX3JlbGVhc2Vfb2JqZWN0KzB4NS8weDEwDQo+ID4gWyAgICAwLjE0NTEyOV0gIGFjcGlfbnNf
+ZGVsZXRlX2NoaWxkcmVuKzB4NDYvMHg1OQ0KPiA+IFsgICAgMC4xNDUxMjldICBhY3BpX25zX2Rl
+bGV0ZV9uYW1lc3BhY2Vfc3VidHJlZSsweDVjLzB4NzkNCj4gPiBbICAgIDAuMTQ1MTI5XSAgPyBh
+Y3BpX3NsZWVwX3Byb2NfaW5pdCsweDFmLzB4MWYNCj4gPiBbICAgIDAuMTQ1MTI5XSAgYWNwaV9u
+c190ZXJtaW5hdGUrMHhjLzB4MzENCj4gPiBbICAgIDAuMTQ1MTI5XSAgYWNwaV91dF9zdWJzeXN0
+ZW1fc2h1dGRvd24rMHg0NS8weGEzDQo+ID4gWyAgICAwLjE0NTEyOV0gID8gYWNwaV9zbGVlcF9w
+cm9jX2luaXQrMHgxZi8weDFmDQo+ID4gWyAgICAwLjE0NTEyOV0gIGFjcGlfdGVybWluYXRlKzB4
+NS8weGYNCj4gPiBbICAgIDAuMTQ1MTI5XSAgYWNwaV9pbml0KzB4MjdiLzB4MzA4DQo+ID4gWyAg
+ICAwLjE0NTEyOV0gID8gdmlkZW9fc2V0dXArMHg3OS8weDc5DQo+ID4gWyAgICAwLjE0NTEyOV0g
+IGRvX29uZV9pbml0Y2FsbCsweDdiLzB4MTYwDQo+ID4gWyAgICAwLjE0NTEyOV0gIGtlcm5lbF9p
+bml0X2ZyZWVhYmxlKzB4MTkwLzB4MWYyDQo+ID4gWyAgICAwLjE0NTEyOV0gID8gcmVzdF9pbml0
+KzB4OWEvMHg5YQ0KPiA+IFsgICAgMC4xNDUxMjldICBrZXJuZWxfaW5pdCsweDUvMHhmNg0KPiA+
+IFsgICAgMC4xNDUxMjldICByZXRfZnJvbV9mb3JrKzB4MjIvMHgzMA0KPiA+IFsgICAgMC4xNDUx
+MjldIC0tLVsgZW5kIHRyYWNlIDU3NDU1NGZjYTdiZDA2YmIgXS0tLQ0KPiA+IFsgICAgMC4xNDUx
+MzNdIElORk86IEFsbG9jYXRlZCBpbiBhY3BpX25zX3Jvb3RfaW5pdGlhbGl6ZSsweGI2LzB4MmQx
+IGFnZT01OA0KPiBjcHU9MCBwaWQ9MA0KPiA+IFsgICAgMC4xNDU4ODFdICBrbWVtX2NhY2hlX2Fs
+bG9jX3RyYWNlKzB4MWE5LzB4MWMwDQo+ID4gWyAgICAwLjE0NjEzMl0gIGFjcGlfbnNfcm9vdF9p
+bml0aWFsaXplKzB4YjYvMHgyZDENCj4gPiBbICAgIDAuMTQ2NTc4XSAgYWNwaV9pbml0aWFsaXpl
+X3N1YnN5c3RlbSsweDY1LzB4YTgNCj4gPiBbICAgIDAuMTQ3MDI0XSAgYWNwaV9lYXJseV9pbml0
+KzB4NWQvMHhkMQ0KPiA+IFsgICAgMC4xNDcxMzJdICBzdGFydF9rZXJuZWwrMHg0NWIvMHg1MTgN
+Cj4gPiBbICAgIDAuMTQ3NDkxXSAgc2Vjb25kYXJ5X3N0YXJ0dXBfNjQrMHhiNi8weGMwDQo+ID4g
+WyAgICAwLjE0Nzg5N10gLS0tLS0tLS0tLS0tWyBjdXQgaGVyZSBdLS0tLS0tLS0tLS0tDQo+ID4N
+Cj4gPiBBbmQgaXQgc2VlbXMgQUNQSSBpcyBhbGxvY2F0aW5nIGFuIG9iamVjdCB2aWEga21hbGxv
+YygpIGFuZCB0aGVuDQo+ID4gZnJlZWluZyBpdCB2aWEga21lbV9jYWNoZV9mcmVlKDwiQWNwaS1O
+YW1lc3BhY2UiIGttZW1fY2FjaGU+KSB3aGljaA0KPiBpcyB3cm9uZy4NCj4gPg0KPiA+PiAuL3Nj
+cmlwdHMvZmFkZHIybGluZSB2bWxpbnV4ICdhY3BpX25zX3Jvb3RfaW5pdGlhbGl6ZSsweGI2Jw0K
+PiA+IGFjcGlfbnNfcm9vdF9pbml0aWFsaXplKzB4YjYvMHgyZDE6DQo+ID4ga21hbGxvYyBhdCBp
+bmNsdWRlL2xpbnV4L3NsYWIuaDo1NTUNCj4gPiAoaW5saW5lZCBieSkga3phbGxvYyBhdCBpbmNs
+dWRlL2xpbnV4L3NsYWIuaDo2NjkgKGlubGluZWQgYnkpDQo+ID4gYWNwaV9vc19hbGxvY2F0ZV96
+ZXJvZWQgYXQgaW5jbHVkZS9hY3BpL3BsYXRmb3JtL2FjbGludXhleC5oOjU3DQo+ID4gKGlubGlu
+ZWQgYnkpIGFjcGlfbnNfcm9vdF9pbml0aWFsaXplIGF0DQo+ID4gZHJpdmVycy9hY3BpL2FjcGlj
+YS9uc2FjY2Vzcy5jOjEwMg0KPiA+DQo+IA0KSGksDQoNCj4gVGhhdCdzIGl0IDotKSBUaGlzIGZp
+eGVzIGl0IGZvciBtZToNCg0KSSd2ZSB0cmllZCB0aGlzIGFuZCBpdCdzIHdvcmtpbmcgb24gbXkg
+ZW5kLg0KDQpCb2IsIGFueSB0aG91Z2h0cz8NCg0KRXJpaw0KDQo+IA0KPiBkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9hY3BpL2FjcGljYS9uc2FjY2Vzcy5jIGIvZHJpdmVycy9hY3BpL2FjcGljYS9uc2Fj
+Y2Vzcy5jDQo+IGluZGV4IDI1NjZlMmQ0Yzc4MDMuLmI3NmJiYWI5MTc5NDEgMTAwNjQ0DQo+IC0t
+LSBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvbnNhY2Nlc3MuYw0KPiArKysgYi9kcml2ZXJzL2FjcGkv
+YWNwaWNhL25zYWNjZXNzLmMNCj4gQEAgLTk4LDE0ICs5OCwxMiBAQCBhY3BpX3N0YXR1cyBhY3Bp
+X25zX3Jvb3RfaW5pdGlhbGl6ZSh2b2lkKQ0KPiAgICAgICAgICAgICAgICAgICAqIHByZWRlZmlu
+ZWQgbmFtZXMgYXJlIGF0IHRoZSByb290IGxldmVsLiBJdCBpcyBtdWNoIGVhc2llciB0bw0KPiAg
+ICAgICAgICAgICAgICAgICAqIGp1c3QgY3JlYXRlIGFuZCBsaW5rIHRoZSBuZXcgbm9kZShzKSBo
+ZXJlLg0KPiAgICAgICAgICAgICAgICAgICAqLw0KPiAtICAgICAgICAgICAgICAgbmV3X25vZGUg
+PQ0KPiAtICAgICAgICAgICAgICAgICAgIEFDUElfQUxMT0NBVEVfWkVST0VEKHNpemVvZihzdHJ1
+Y3QNCj4gYWNwaV9uYW1lc3BhY2Vfbm9kZSkpOw0KPiArICAgICAgICAgICAgICAgbmV3X25vZGUg
+PSBhY3BpX25zX2NyZWF0ZV9ub2RlKCpBQ1BJX0NBU1RfUFRSICh1MzIsDQo+IGluaXRfdmFsLT5u
+YW1lKSk7DQo+ICAgICAgICAgICAgICAgICAgaWYgKCFuZXdfbm9kZSkgew0KPiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgc3RhdHVzID0gQUVfTk9fTUVNT1JZOw0KPiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgZ290byB1bmxvY2tfYW5kX2V4aXQ7DQo+ICAgICAgICAgICAgICAgICAgfQ0KPiAN
+Cj4gLSAgICAgICAgICAgICAgIEFDUElfQ09QWV9OQU1FU0VHKG5ld19ub2RlLT5uYW1lLmFzY2lp
+LCBpbml0X3ZhbC0+bmFtZSk7DQo+ICAgICAgICAgICAgICAgICAgbmV3X25vZGUtPmRlc2NyaXB0
+b3JfdHlwZSA9IEFDUElfREVTQ19UWVBFX05BTUVEOw0KPiAgICAgICAgICAgICAgICAgIG5ld19u
+b2RlLT50eXBlID0gaW5pdF92YWwtPnR5cGU7DQo+IA0KPiANCj4gVmVnYXJkDQo=
