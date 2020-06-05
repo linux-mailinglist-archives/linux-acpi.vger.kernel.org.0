@@ -2,153 +2,197 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBEA51EFF92
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jun 2020 20:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA83C1F0011
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jun 2020 20:46:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726245AbgFESCF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Jun 2020 14:02:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55972 "EHLO
+        id S1728199AbgFESqk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Jun 2020 14:46:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726077AbgFESCF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Jun 2020 14:02:05 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B074C08C5C3
-        for <linux-acpi@vger.kernel.org>; Fri,  5 Jun 2020 11:02:05 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id y17so4010813plb.8
-        for <linux-acpi@vger.kernel.org>; Fri, 05 Jun 2020 11:02:05 -0700 (PDT)
+        with ESMTP id S1728129AbgFESqj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Jun 2020 14:46:39 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59B4FC08C5C2
+        for <linux-acpi@vger.kernel.org>; Fri,  5 Jun 2020 11:46:39 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id g12so4061781pll.10
+        for <linux-acpi@vger.kernel.org>; Fri, 05 Jun 2020 11:46:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HHvqFJ8oCcu50e+zYBwkicGtXHwb2WQMqQiqUSCHqLM=;
-        b=lrLHiQpwrf3PSMg0+BYQkXEEFNO8TIAgOHdxf3VJP8Y7tqyWo6tsUDc0dqusobqRF4
-         7bs1I5NhcgtPDdgOFWoBiCTIfz2A0TyAjtktSJCsHdSEuImxvJFfiruh5PxXricNXJ1K
-         oIEyNoJYBqpjou5qSJMFi/BjGGW18QVKvOc60BFFpfPjcfql46+LG0LYwGzlM3ry+tMM
-         5kYWQNIdNbrBEWTEJE2+F/xU2b1TWP4DgaK5ZcaRoUog5QJt2MBkuf2WmxZLcOgHEGk2
-         wvBdswWjUkPa5JhmNiDmcWdCQBL8A1+GfPd515riCZao4TZU5yfnLEpxUDUbZ8R1j7dO
-         9LiA==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=9Da0IbFTrNfj9bJaxBOpwux7VHsiRSXba/ar+wuI/Gg=;
+        b=jVF836jpngEgOt8ljxat1BJiqjwfDFPTZi7flYc19znEdTtBiJY2eDmgaMXonEp3C+
+         iWjBg2OuU07b6zg0WeVRxc5RnyYkAhaGEWnN8MtUXutRFmKURQdumN+fTjo3nl7eUcx/
+         GoTrOUw5R2c69SKrEU01/XQVZdHNeb6jdGtQ4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HHvqFJ8oCcu50e+zYBwkicGtXHwb2WQMqQiqUSCHqLM=;
-        b=QeMaocskK5ft7qTA+3RBwe0cQOLOiR86T6weTA4nAfw+MIWTLWyYP12vs3g2gryPxD
-         qk+rrk/HYj+c/T166rNnE8KRGG2xsIWQWQIOyeOKaPd7wHebZ75M+4L0npY9qCkgz9Gv
-         K7Ln3EnULqGpwrno/0+mt4vhvm8jjn2Xo9UOX1vCIS+BvVfgXAeUeqckHcXOxvIiecfj
-         vPY5QPiBAqfFOloMDPKGad9/vD3upCNpyf5PnmlNfggoWQQ37YCyBj5XVdVm5H0HiULn
-         yjRoYWDk2WId2KWmq/L1c+r9yP9Azel6qDO/KWeVWUcYKrtyA7x88Sym9/pgiW+PRz2K
-         EhKQ==
-X-Gm-Message-State: AOAM5335OxagXXg/ZC5CVN7PjoZzLzE9VFUxIUN4m1dURRyrE1onVpa0
-        FmfBXKBSM4V/Nfd3AglUaGfIdnsbD8lyFmPuIzAYTg==
-X-Google-Smtp-Source: ABdhPJzc0mV2oziH4qGkpO5HC1UUDuJQsq6zz1Mj5V4/F/xYGsYIIdQgPNHbGtJnaWfjtaNY6UGENHHwjf5vXw6oKnQ=
-X-Received: by 2002:a17:90a:34cc:: with SMTP id m12mr4415124pjf.123.1591380124156;
- Fri, 05 Jun 2020 11:02:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200604195658.66201-1-mathewk@chromium.org> <CAJZ5v0iteOV=4CnQrVx5ZmnWq5Uf88k7UMMmKcMxgJnco3kxvg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0iteOV=4CnQrVx5ZmnWq5Uf88k7UMMmKcMxgJnco3kxvg@mail.gmail.com>
-From:   Mat King <mathewk@google.com>
-Date:   Fri, 5 Jun 2020 12:01:52 -0600
-Message-ID: <CAL_quvQRT+3wnxO9NsqHG+UcJiCc5aucN4a7V0mpMy2MxoX+ng@mail.gmail.com>
-Subject: Re: [PATCH] acpi: battery: Always read fresh battery state on update
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Mathew King <mathewk@chromium.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=9Da0IbFTrNfj9bJaxBOpwux7VHsiRSXba/ar+wuI/Gg=;
+        b=Wn9J8NmtXCHE5LaMxTS8/jRVLdEcbqiWG4Fe5JECsupfJPu8S73AyjAxXY9nxJCIs8
+         0l0opmql+7crRxItE8vqD8KoqbW7lmje43yk9HJUCIfSQc/oBfVKBIpSVffY3wUgJCUH
+         BaLyB99bQ2/c6teOyQWPHZhgETUnaaRsUa2qggJTH7EG6n17hSlKaw2BU6MsCOEmNsKh
+         S7kckVBzVKHP5udYgMKZ4Rwcy2Fqg4mNHJP8R0c2d6cRykQ5LFkluu25TIQGRKbwbPYX
+         XBiO92xehwNXUcm0becPgobOaT4xBuswvRxEhTSwrega3r5g+Kromw7n6eFrMhNTLv4f
+         DH1A==
+X-Gm-Message-State: AOAM531Tx8aIxzEDEVtrqu0iuw7wOa1zVieL3hJSpcEw6t/z8vCJXNc7
+        ESsT59mt7LHYQeoSj8zOXTyMEw==
+X-Google-Smtp-Source: ABdhPJya74OMyihjnTjGxzZFaoi1KSfjgwyxOOnrXbzf31ztL16rMNupMZQ5aig3yL4AWuICkr/eRg==
+X-Received: by 2002:a17:902:b582:: with SMTP id a2mr7488097pls.224.1591382798721;
+        Fri, 05 Jun 2020 11:46:38 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id m12sm8493256pjs.41.2020.06.05.11.46.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jun 2020 11:46:37 -0700 (PDT)
+Date:   Fri, 5 Jun 2020 11:46:36 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Vlastimil Babka <vbabka@suse.cz>
+Cc:     Vegard Nossum <vegard.nossum@oracle.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Christoph Lameter <cl@linux.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Marco Elver <elver@google.com>,
+        Waiman Long <longman@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux MM <linux-mm@kvack.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Steven Rostedt <rostedt@goodmis.org>,
+        Roman Gushchin <guro@fb.com>
+Subject: Re: slub freelist issue / BUG: unable to handle page fault for
+ address: 000000003ffe0018
+Message-ID: <202006051053.A61A42374C@keescook>
+References: <202006041054.874AA564@keescook>
+ <cb0cdaaa-7825-0b87-0384-db22329305bb@suse.cz>
+ <34455dce-6675-1fc2-8d61-45bf56f3f554@suse.cz>
+ <6b2b149e-c2bc-f87a-ea2c-3046c5e39bf9@oracle.com>
+ <faea2c18-edbe-f8b4-b171-6be866624856@oracle.com>
+ <CAJZ5v0jqmUmf7mv3wjniVM-YqPqhDSjxunU0E4VYCsUQqvrF_Q@mail.gmail.com>
+ <ce333dcb-2b2c-3e1f-2a7e-02a7819b1db4@suse.cz>
+ <894e8cee-33df-1f63-fb12-72dceb024ea7@oracle.com>
+ <202006050828.F85A75D13@keescook>
+ <92d994be-e4f5-b186-4ad7-21828de44967@suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <92d994be-e4f5-b186-4ad7-21828de44967@suse.cz>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 5, 2020 at 5:30 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Thu, Jun 4, 2020 at 9:57 PM Mathew King <mathewk@chromium.org> wrote:
-> >
-> > When the ACPI battery receives a notification event it should always
-> > read the battery state fresh from the ACPI device and not use the cached
-> > state.
->
-> Why should it?
+On Fri, Jun 05, 2020 at 06:55:27PM +0200, Vlastimil Babka wrote:
+> 
+> On 6/5/20 5:44 PM, Kees Cook wrote:
+> > On Fri, Jun 05, 2020 at 04:44:51PM +0200, Vegard Nossum wrote:
+> >> On 2020-06-05 16:08, Vlastimil Babka wrote:
+> >> > On 6/5/20 3:12 PM, Rafael J. Wysocki wrote:
+> >> > > On Fri, Jun 5, 2020 at 2:48 PM Vegard Nossum <vegard.nossum@oracle.com> wrote:
+> >> > > > 
+> >> > > > On 2020-06-05 11:36, Vegard Nossum wrote:
+> >> > > > > 
+> >> > > > > On 2020-06-05 11:11, Vlastimil Babka wrote:
+> >> > > > > > So, with Kees' patch reverted, booting with slub_debug=F (or even more
+> >> > > > > > specific slub_debug=F,ftrace_event_field) also hits this bug below. I
+> >> > > > > > wanted to bisect it, but v5.7 was also bad, and also v5.6. Didn't try
+> >> > > > > > further in history. So it's not new at all, and likely very specific to
+> >> > > > > > your config+QEMU? (and related to the ACPI error messages that precede
+> >> > > > > > it?).
+> >> > [...]
+> >> > [    0.140408] ------------[ cut here ]------------
+> >> > [    0.140837] cache_from_obj: Wrong slab cache. Acpi-Namespace but object is from kmalloc-64
+> >> > [    0.141406] WARNING: CPU: 0 PID: 1 at mm/slab.h:524 kmem_cache_free+0x1d3/0x250
+> > 
+> > Ah yes! Good. I had improved this check recently too, and I was worried
+> > the freelist pointer patch was somehow blocking it, but I see now that
+> > the failing config didn't have CONFIG_SLAB_FREELIST_HARDENED=y. Once
+> > SLAB_CONSISTENCY_CHECKS was enabled ("slub_debug=F"), it started
+> > tripping. Whew.
+> > 
+> > I wonder if that entire test block should just be removed from
+> > cache_from_obj():
+> > 
+> >         if (!memcg_kmem_enabled() &&
+> >             !IS_ENABLED(CONFIG_SLAB_FREELIST_HARDENED) &&
+> >             !unlikely(s->flags & SLAB_CONSISTENCY_CHECKS))
+> >                 return s;
+> > 
+> > and make this test unconditional? It's mostly only called during free(),
+> > and shouldn't be too expensive to be made unconditional. Hmm.
+> 
+> Hmm I have a different idea. The whole cache_from_obj() was added because of
+> kmemcg (commit b9ce5ef49f00d) where per-memcg cache can be different from the
+> root one. And I just realized this usecase can go away with Roman's series [1].
+> But cache_from_obj() also kept the original SLUB consistency check case, and you
+> added the freelist hardening case. If kmemcg use case went away it would be nice
+> to avoid the virt_to_cache() and check completely again, unless in debugging or
+> hardened kernel.
 
-According to the ACPI Spec 10.2.1 Battery Events, "When the present
-state of the battery has changed or when the trip point set by the
-_BTP control method is reached or crossed, the hardware will assert a
-general purpose event." So when this event is received we should
-assume that the cached state of the battery is no longer valid
+Is it that expensive? (I'm fine with it staying behind debug/hardening,
+but if we can make it on by default, that'd be safer.)
 
->
-> > Currently the cached state stays valid and the new state may not
-> > be read when a notification occurs. This can lead to a udev event
-> > showing that the battery has changed but the sysfs state will still have
-> > the cached state values.
->
-> Is there a bug entry or similar related to that which can be referred
-> to from this patch?
+> Furthermore, the original SLUB debugging case was an unconditional pr_err() plus
+> WARN_ON_ONCE(1), which was kept by commit b9ce5ef49f00d.  With freelist
+> hardening this all changed to WARN_ONCE. So the second and later cases are not
+> reported at all for hardening and also not for explicitly enabled debugging like
+> in this case, which is IMHO not ideal.
 
-No, I discovered this issue while working on an internal issue where
-it was observed that udev events generated when a battery changed did
-not accurately reflect the state of the battery. I initially suspected
-that the EC may not be updating its state before generating the ACPI
-event, however after much debugging I discovered that the battery
-driver was caching the state and the state is not always immediately
-updated when the event is received. If there is a more formal process
-to discuss the issue I will work through that process.
+Oh, I have no problem with WARN vs WARN_ONCE -- there's no reason to
+split this. And I'd love the hardening side to gain the tracking call
+too, if it's available.
 
->
-> > This change invalidates the update time forcing
-> > the state to be updated before notifying the power_supply subsystem of
-> > the change.
-> >
-> > Signed-off-by: Mathew King <mathewk@chromium.org>
-> > ---
-> >  drivers/acpi/battery.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-> > index 366c389175d8..ab7fa4879fbe 100644
-> > --- a/drivers/acpi/battery.c
-> > +++ b/drivers/acpi/battery.c
-> > @@ -981,6 +981,7 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
-> >                 acpi_battery_init_alarm(battery);
-> >         }
-> >
-> > +       battery->update_time = 0;
->
-> AFAICS this is equivalent to dropping battery->update_time altogether.
-> Isn't that a bit too excessive?
+I had just used WARN_ONCE() since sometimes it can be very noisy to keep
+warning for some condition that might not be correctable.
 
-It is not the same as dropping the update_time. The cached state is
-still used when acpi_battery_get_property() is called which happens
-anytime userspace accesses the sysfs properties it is also what is
-called by the power_supply subsystem when creating the environment for
-the udev events. In those cases the cache still works and makes sense.
-The acpi_battery_update() function is only called in a handful of
-cases and in all of these cases reading the battery state fresh makes
-sense to me. Those cases are:
+> So I propose the following - the freelist hardening case keeps the WARN_ONCE,
+> but also a one-line pr_err() for each case so they are not silent. The SLUB
+> debugging case is always a full warning, and printing the tracking info if
+> enabled and available. Pure kmemcg case does virt_to_cache() for now (until
+> hopefully removed by Roman's series) but no checking at all. Would that work for
+> everyone?
+> [...]
+> @@ -520,9 +528,18 @@ static inline struct kmem_cache *cache_from_obj(struct kmem_cache *s, void *x)
+>  		return s;
+>  
+>  	cachep = virt_to_cache(x);
+> -	WARN_ONCE(cachep && !slab_equal_or_root(cachep, s),
+> -		  "%s: Wrong slab cache. %s but object is from %s\n",
+> -		  __func__, s->name, cachep->name);
+> +	if (unlikely(s->flags & SLAB_CONSISTENCY_CHECKS)) {
+> +		if (WARN(cachep && !slab_equal_or_root(cachep, s),
+> +			  "%s: Wrong slab cache. %s but object is from %s\n",
+> +			  __func__, s->name, cachep->name))
+> +			slab_print_tracking(cachep, x);
+> +	} else if (IS_ENABLED(CONFIG_SLAB_FREELIST_HARDENED)) {
+> +		if (unlikely(cachep && !slab_equal_or_root(cachep, s))) {
+> +			pr_err("%s: Wrong slab cache. %s but object is from %s\n",
+> +				  __func__, s->name, cachep->name);
+> +			WARN_ON_ONCE(1);
+> +		}
+> +	}
 
-1. When the battery is added with acpi_battery_add(), this case the
-update_time is already cleared
-2. On system resume with acpi_battery_resume(), in this case
-update_time is cleared before calling acpi_battery_update() so that
-static battery info is also updated by calling acpi_battery_get_info()
-3. The acpi_battery_update() is called from procfs power functions
-which should not be called a frequency where reading fresh battery
-state from ACPI will have a performance impact
-4. Finally it is called from acpi_battery_notify() when a battery
-event is received from firmware that the state has changed
+How about just this (in addition to your slab_print_tracking() refactor):
 
-I considered clearing the update_time in acpi_battery_notify() before
-acpi_battery_update() is called but if I did that by itself then
-acpi_battery_get_info() would also get called and I wasn't sure that
-behavior would be wanted. So invalidating the cache where I did seemed
-to be the least disruptive way to fix the problem. I can see
-opportunities to refactor this driver and I felt that this fix was
-acceptable until a refactor could be done.
+diff --git a/mm/slab.h b/mm/slab.h
+index 207c83ef6e06..107b7f6db3c3 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -520,9 +520,10 @@ static inline struct kmem_cache *cache_from_obj(struct kmem_cache *s, void *x)
+ 		return s;
+ 
+ 	cachep = virt_to_cache(x);
+-	WARN_ONCE(cachep && !slab_equal_or_root(cachep, s),
++	if (WARN(cachep && !slab_equal_or_root(cachep, s),
+ 		  "%s: Wrong slab cache. %s but object is from %s\n",
+-		  __func__, s->name, cachep->name);
++		  __func__, s->name, cachep->name))
++		slab_print_tracking(cachep, x);
+ 	return cachep;
+ }
+ 
 
->
-> >         result = acpi_battery_get_state(battery);
-> >         if (result)
-> >                 return result;
-> > --
+-- 
+Kees Cook
