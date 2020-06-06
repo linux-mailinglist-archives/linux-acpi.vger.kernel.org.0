@@ -2,220 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 653A71F07A7
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 Jun 2020 17:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B72F41F0811
+	for <lists+linux-acpi@lfdr.de>; Sat,  6 Jun 2020 20:04:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726968AbgFFPpS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 6 Jun 2020 11:45:18 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:59225 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726089AbgFFPpS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 6 Jun 2020 11:45:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1591458315;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=VJQzV0rdN7ALnL6NeYYp172fRlPbPlchooy6Ga8Vcnw=;
-        b=hdWfJjyv+qpTD95utnbVggtkePgX7CNyj9QZWTdGduImB6TzY9AWYSkiCNKMxKBwWAgup0
-        hVgg/ncIdOCVrOYtcXU2mLdl9zI80gcwCurBEI0pZeVcwP3xKsBkFPObpAr1HYAa5syaJf
-        kFnHnhe3RNwAIzdm+UJfPKFLpMGt4qg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-272-qBf722vJPoG9WeJKclXbug-1; Sat, 06 Jun 2020 11:45:13 -0400
-X-MC-Unique: qBf722vJPoG9WeJKclXbug-1
-Received: by mail-wm1-f70.google.com with SMTP id j128so3647789wmj.6
-        for <linux-acpi@vger.kernel.org>; Sat, 06 Jun 2020 08:45:12 -0700 (PDT)
+        id S1728838AbgFFSEk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 6 Jun 2020 14:04:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53478 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728354AbgFFSEj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 6 Jun 2020 14:04:39 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6752FC03E96A;
+        Sat,  6 Jun 2020 11:04:39 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id bh7so4982240plb.11;
+        Sat, 06 Jun 2020 11:04:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=JPH5ctOxyMCdjLHMVbCVgL0WBomDEBN4mofIceuo0GU=;
+        b=t7hLn6wlwoTPvo4w1gGCsYXJNz5CF3z4rUYs1tB8I/gM2uAs23I6VJkAqNl00Kv+uA
+         h+VVza0e2viw0mPFY1WymqYYt7SmqPX+mIJc0ZECF72H+bQfYeZe4NPN5HUwFvhTCWoa
+         OIY1U6B1Gfw9pkNRiKNw8GznaWPkaxUUr0jWXRft9k0c72eeLciIRu2IwU89FI492Afs
+         tpGh4TFX61N1W0wF5iQ5/wMMzKuC+oBxbW4YcVSDTXKmCpiWih3Zhl9jLW2xF3YsD9mB
+         JISTpfF/5KDhEpB2GOtQI5Eo+qCSlJnndD44HWquI5DVI7WCAWUDbCsvp+JWUrzbUdyR
+         HdiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=VJQzV0rdN7ALnL6NeYYp172fRlPbPlchooy6Ga8Vcnw=;
-        b=LvvdzKMUk3wO0WlwQAOfet4PD4ICvtDEhytumW7axZCEwQ6WY2Cu58/tzAl/l+rw24
-         msZc7XcWY18AWIObZstvPBovF0F3axV86tYh9hGGlZbXz8XwUbbvRh/ZNu8rWPL+f6kt
-         aJBVVvMvyLEjd7ki/PSrbBIGwqk2tsuIpwW7fgvONPYvDkX5juBuIc4NFXOuOWHKmteF
-         nKrVz8cj08OF+vYUQRiA4wGfP13sdq/lUM54ydFWhe8KA10CL2h/5NaHsqukTXJIDmhq
-         ygRvIgWzE1RJse4nHWrznqpq1eJ8JLxjQHv0ZRRBfS3cXaylbIM5V/VY3EbBVPu5jTCf
-         VShg==
-X-Gm-Message-State: AOAM5327oFIi6hlMlOMCQJzwGUz1oaMZKSk4LBf9/LAeEPekpsTooUxZ
-        SK2Pj/qTYcQfq07DZu+yxAmVpd1aOBDINwlXjyaF0AN4dows/MIje6uhwj6k2OTy+JGRTvLNE6E
-        0bdNkjPA+CXZLbcX5dZJ/fA==
-X-Received: by 2002:a1c:3987:: with SMTP id g129mr7911379wma.139.1591458311901;
-        Sat, 06 Jun 2020 08:45:11 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwCDW5eisq+hVdc/k8mWioQT6xTsFq1sXcnNLuRMkVzcYDUxMLASfVmmPO56Y+qGXj0fQVHZA==
-X-Received: by 2002:a1c:3987:: with SMTP id g129mr7911353wma.139.1591458311579;
-        Sat, 06 Jun 2020 08:45:11 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id t14sm18219200wrb.94.2020.06.06.08.45.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 06 Jun 2020 08:45:10 -0700 (PDT)
-Subject: Re: [PATCH] ACPI: PM: Avoid using power resources if there are none
- for D0
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=JPH5ctOxyMCdjLHMVbCVgL0WBomDEBN4mofIceuo0GU=;
+        b=kqmV4BG6NZ9WNy0Lw2znZVniLrfuRUpjBzL1k1d+t+7KlMJrkBXY4S6BcirPw6NdUK
+         A1JioBlGXdxBrEEmcMM6MIP3PQRsS2nS+oMmBTsZ7TB36o+7PDyGerLxhiDn4iHdUQfY
+         srmd5+vu3r0lmNzPXivhNONA1hVJhk6Kb7uFDvo8m8vu5OGY2RbfCrPoxgBjUwQ3OYaH
+         s+PrZT0YzN9R9LKkt/ACLSsrn9J3/RQMq32rD46/cAlZ7llmlOwEjxDE1rYXcH+wBgsH
+         lyEttwbuao8QZio4q+vixBRKpNSofaPgp+Np/BgMUw/6Mc5w4wf2uHocMusKhO8HPcFd
+         Rbfw==
+X-Gm-Message-State: AOAM5327ErEnkk+At8VaCn/Zl0ZWpliSSuqa6u8C/fZwESo98LoUolUM
+        oTlNF7BLWETk4dn3gq6rSikyag8T
+X-Google-Smtp-Source: ABdhPJwpEhGJh9hj4x8vH2tqTdMACMiacQSV9exWCdyerOpLoWL+4lj0PJFYgbPFCxf5X55Kmu3hrQ==
+X-Received: by 2002:a17:902:c3cb:: with SMTP id j11mr6948030plj.171.1591466678666;
+        Sat, 06 Jun 2020 11:04:38 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:3c2a:73a9:c2cf:7f45])
+        by smtp.gmail.com with ESMTPSA id j7sm2827317pfh.154.2020.06.06.11.04.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Jun 2020 11:04:37 -0700 (PDT)
+Date:   Sat, 6 Jun 2020 11:04:35 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        youling257@gmail.com, LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-References: <20200603194659.185757-1-hdegoede@redhat.com>
- <CAJZ5v0g7rhiWs0ZeGGS5OoSMH7DiVT1D-EUgX5HFXYkcvXcm2Q@mail.gmail.com>
- <d084b424-a340-a24a-d681-c92d80d8421d@redhat.com>
- <13388608.OHKVb9tm6R@kreacher>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <fddf7e38-cbc3-e923-9e4c-fe4f9903f24e@redhat.com>
-Date:   Sat, 6 Jun 2020 17:45:10 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        Collabora Kernel ML <kernel@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Dmitry Torokhov <dtor@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>, vbendeb@chromium.org,
+        Andy Shevchenko <andy@infradead.org>,
+        Ayman Bagabas <ayman.bagabas@gmail.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        =?utf-8?B?Qmxhxb4=?= Hrastnik <blaz@mxxn.io>,
+        Darren Hart <dvhart@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Jeremy Soller <jeremy@system76.com>,
+        Mattias Jacobsson <2pi@mok.nu>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Rajat Jain <rajatja@google.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v4] platform: x86: Add ACPI driver for ChromeOS
+Message-ID: <20200606180435.GQ89269@dtor-ws>
+References: <20200413134611.478441-1-enric.balletbo@collabora.com>
+ <CAJZ5v0gWZ27_DwWQadsJOUxLo4a0rAMe45d4AWXS2gHJZfgfKg@mail.gmail.com>
+ <a2953d50-da22-279a-f1e4-faa796d815b1@collabora.com>
+ <10490419.gsntqH5CaE@kreacher>
 MIME-Version: 1.0
-In-Reply-To: <13388608.OHKVb9tm6R@kreacher>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <10490419.gsntqH5CaE@kreacher>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Rafael,
 
-On 6/4/20 7:22 PM, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Fri, Jun 05, 2020 at 01:17:15PM +0200, Rafael J. Wysocki wrote:
 > 
-> As recently reported, some platforms provide a list of power
-> resources for device power state D3hot, through the _PR3 object,
-> but they do not provide a list of power resources for device power
-> state D0.
+> First off, GGL0001 is not a valid ACPI device ID, because the GGL prefix is not
+> present in the list at https://uefi.org/acpi_id_list
 > 
-> Among other things, this causes acpi_device_get_power() to return
-> D3hot as the current state of the device in question if all of the
-> D3hot power resources are "on", because it sees the power_resources
-> flag set and calls acpi_power_get_inferred_state() which finds that
-> D3hot is the shallowest power state with all of the associated power
-> resources turned "on", so that's what it returns.  Moreover, that
-> value takes precedence over the acpi_dev_pm_explicit_get() return
-> value, because it means a deeper power state.  The device may very
-> well be in D0 physically at that point, however.
-> 
-> Moreover, the presence of _PR3 without _PR0 for a given device
-> means that only one D3-level power state can be supported by it.
-> Namely, because there are no power resources to turn "off" when
-> transitioning the device from D0 into D3cold (which should be
-> supported since _PR3 is present), the evaluation of _PS3 should
-> be sufficient to put it straight into D3cold, but this means that
-> the effect of turning "on" the _PR3 power resources is unclear,
-> so it is better to avoid doing that altogether.  Consequently,
-> there is no practical way do distinguish D3cold from D3hot for
-> the device in question and the power states of it can be labeled
-> so that D3hot is the deepest supported one (and Linux assumes
-> that putting a device into D3hot via ACPI may cause power to be
-> removed from it anyway, for legacy reasons).
-> 
-> To work around the problem described above modify the ACPI
-> enumeration of devices so that power resources are only used
-> for device power management if the list of D0 power resources
-> is not empty and make it mart D3cold as supported only if that
-> is the case and the D3hot list of power resources is not empty
-> too.
-> 
-> Fixes: ef85bdbec444 ("ACPI / scan: Consolidate extraction of power resources lists")
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=205057
-> Link: https://lore.kernel.org/linux-acpi/20200603194659.185757-1-hdegoede@redhat.com/
-> Reported-by: Hans de Goede <hdegoede@redhat.com>
-> Cc: 3.10+ <stable@vger.kernel.org> # 3.10+
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> There are two ways to address that.  One would be to take the GOOG prefix
+> (present in the list above), append a proper unique number (if I were to
+> guess, I would say that 0001 had been reserved already) to it and then
+> put the resulting device ID into the firmware, to be returned _HID for the
+> device in question (you can add a _CID returning "GGL0001" so it can be
+> found by the old invalid ID at least from the kernel).
 
-Thank you.
+This is not going to happen, as there are devices in the wild with such
+firmware (i.e. Samus - Google Pixel 2 - was shipped in 2015). Even if
+Google were to release updated firmware (which is quite unlikely), it
+does not mean that users who are not using Chrome OS would apply updated
+firmware.
 
-I've tested this and I can confirm that it fixes the issue:
+> The other one would
+> be to properly register the GGL prefix for Google and establish a process for
+> allocating IDs with that prefix internally.
 
-Tested-by: Hans de Goede <hdegoede@redhat.com>
+I think it depends on whether there are more instances of "GGL" prefix.
+I thought we mostly used GOOG for everything.
 
-I've also looked at the code and it looks good to me:
+Thanks.
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
-
-
-
-
-
-> ---
->   drivers/acpi/device_pm.c |    2 +-
->   drivers/acpi/scan.c      |   28 +++++++++++++++++++---------
->   2 files changed, 20 insertions(+), 10 deletions(-)
-> 
-> Index: linux-pm/drivers/acpi/scan.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/scan.c
-> +++ linux-pm/drivers/acpi/scan.c
-> @@ -919,12 +919,9 @@ static void acpi_bus_init_power_state(st
->   
->   		if (buffer.length && package
->   		    && package->type == ACPI_TYPE_PACKAGE
-> -		    && package->package.count) {
-> -			int err = acpi_extract_power_resources(package, 0,
-> -							       &ps->resources);
-> -			if (!err)
-> -				device->power.flags.power_resources = 1;
-> -		}
-> +		    && package->package.count)
-> +			acpi_extract_power_resources(package, 0, &ps->resources);
-> +
->   		ACPI_FREE(buffer.pointer);
->   	}
->   
-> @@ -971,14 +968,27 @@ static void acpi_bus_get_power_flags(str
->   		acpi_bus_init_power_state(device, i);
->   
->   	INIT_LIST_HEAD(&device->power.states[ACPI_STATE_D3_COLD].resources);
-> -	if (!list_empty(&device->power.states[ACPI_STATE_D3_HOT].resources))
-> -		device->power.states[ACPI_STATE_D3_COLD].flags.valid = 1;
->   
-> -	/* Set defaults for D0 and D3hot states (always valid) */
-> +	/* Set the defaults for D0 and D3hot (always supported). */
->   	device->power.states[ACPI_STATE_D0].flags.valid = 1;
->   	device->power.states[ACPI_STATE_D0].power = 100;
->   	device->power.states[ACPI_STATE_D3_HOT].flags.valid = 1;
->   
-> +	/*
-> +	 * Use power resources only if the D0 list of them is populated, because
-> +	 * some platforms may provide _PR3 only to indicate D3cold support and
-> +	 * in those cases the power resources list returned by it may be bogus.
-> +	 */
-> +	if (!list_empty(&device->power.states[ACPI_STATE_D0].resources)) {
-> +		device->power.flags.power_resources = 1;
-> +		/*
-> +		 * D3cold is supported if the D3hot list of power resources is
-> +		 * not empty.
-> +		 */
-> +		if (!list_empty(&device->power.states[ACPI_STATE_D3_HOT].resources))
-> +			device->power.states[ACPI_STATE_D3_COLD].flags.valid = 1;
-> +	}
-> +
->   	if (acpi_bus_init_power(device))
->   		device->flags.power_manageable = 0;
->   }
-> Index: linux-pm/drivers/acpi/device_pm.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/device_pm.c
-> +++ linux-pm/drivers/acpi/device_pm.c
-> @@ -186,7 +186,7 @@ int acpi_device_set_power(struct acpi_de
->   		 * possibly drop references to the power resources in use.
->   		 */
->   		state = ACPI_STATE_D3_HOT;
-> -		/* If _PR3 is not available, use D3hot as the target state. */
-> +		/* If D3cold is not supported, use D3hot as the target state. */
->   		if (!device->power.states[ACPI_STATE_D3_COLD].flags.valid)
->   			target_state = state;
->   	} else if (!device->power.states[state].flags.valid) {
-> 
-> 
-> 
-
+-- 
+Dmitry
