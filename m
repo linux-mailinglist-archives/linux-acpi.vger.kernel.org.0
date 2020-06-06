@@ -2,120 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B72F41F0811
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 Jun 2020 20:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DA031F0884
+	for <lists+linux-acpi@lfdr.de>; Sat,  6 Jun 2020 22:26:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728838AbgFFSEk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 6 Jun 2020 14:04:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53478 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728354AbgFFSEj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 6 Jun 2020 14:04:39 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6752FC03E96A;
-        Sat,  6 Jun 2020 11:04:39 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id bh7so4982240plb.11;
-        Sat, 06 Jun 2020 11:04:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=JPH5ctOxyMCdjLHMVbCVgL0WBomDEBN4mofIceuo0GU=;
-        b=t7hLn6wlwoTPvo4w1gGCsYXJNz5CF3z4rUYs1tB8I/gM2uAs23I6VJkAqNl00Kv+uA
-         h+VVza0e2viw0mPFY1WymqYYt7SmqPX+mIJc0ZECF72H+bQfYeZe4NPN5HUwFvhTCWoa
-         OIY1U6B1Gfw9pkNRiKNw8GznaWPkaxUUr0jWXRft9k0c72eeLciIRu2IwU89FI492Afs
-         tpGh4TFX61N1W0wF5iQ5/wMMzKuC+oBxbW4YcVSDTXKmCpiWih3Zhl9jLW2xF3YsD9mB
-         JISTpfF/5KDhEpB2GOtQI5Eo+qCSlJnndD44HWquI5DVI7WCAWUDbCsvp+JWUrzbUdyR
-         HdiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=JPH5ctOxyMCdjLHMVbCVgL0WBomDEBN4mofIceuo0GU=;
-        b=kqmV4BG6NZ9WNy0Lw2znZVniLrfuRUpjBzL1k1d+t+7KlMJrkBXY4S6BcirPw6NdUK
-         A1JioBlGXdxBrEEmcMM6MIP3PQRsS2nS+oMmBTsZ7TB36o+7PDyGerLxhiDn4iHdUQfY
-         srmd5+vu3r0lmNzPXivhNONA1hVJhk6Kb7uFDvo8m8vu5OGY2RbfCrPoxgBjUwQ3OYaH
-         s+PrZT0YzN9R9LKkt/ACLSsrn9J3/RQMq32rD46/cAlZ7llmlOwEjxDE1rYXcH+wBgsH
-         lyEttwbuao8QZio4q+vixBRKpNSofaPgp+Np/BgMUw/6Mc5w4wf2uHocMusKhO8HPcFd
-         Rbfw==
-X-Gm-Message-State: AOAM5327ErEnkk+At8VaCn/Zl0ZWpliSSuqa6u8C/fZwESo98LoUolUM
-        oTlNF7BLWETk4dn3gq6rSikyag8T
-X-Google-Smtp-Source: ABdhPJwpEhGJh9hj4x8vH2tqTdMACMiacQSV9exWCdyerOpLoWL+4lj0PJFYgbPFCxf5X55Kmu3hrQ==
-X-Received: by 2002:a17:902:c3cb:: with SMTP id j11mr6948030plj.171.1591466678666;
-        Sat, 06 Jun 2020 11:04:38 -0700 (PDT)
-Received: from dtor-ws ([2620:15c:202:201:3c2a:73a9:c2cf:7f45])
-        by smtp.gmail.com with ESMTPSA id j7sm2827317pfh.154.2020.06.06.11.04.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Jun 2020 11:04:37 -0700 (PDT)
-Date:   Sat, 6 Jun 2020 11:04:35 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Collabora Kernel ML <kernel@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Dmitry Torokhov <dtor@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>, vbendeb@chromium.org,
-        Andy Shevchenko <andy@infradead.org>,
-        Ayman Bagabas <ayman.bagabas@gmail.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        =?utf-8?B?Qmxhxb4=?= Hrastnik <blaz@mxxn.io>,
-        Darren Hart <dvhart@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Jeremy Soller <jeremy@system76.com>,
-        Mattias Jacobsson <2pi@mok.nu>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Rajat Jain <rajatja@google.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v4] platform: x86: Add ACPI driver for ChromeOS
-Message-ID: <20200606180435.GQ89269@dtor-ws>
-References: <20200413134611.478441-1-enric.balletbo@collabora.com>
- <CAJZ5v0gWZ27_DwWQadsJOUxLo4a0rAMe45d4AWXS2gHJZfgfKg@mail.gmail.com>
- <a2953d50-da22-279a-f1e4-faa796d815b1@collabora.com>
- <10490419.gsntqH5CaE@kreacher>
+        id S1728466AbgFFU0L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 6 Jun 2020 16:26:11 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:57684 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728350AbgFFU0K (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 6 Jun 2020 16:26:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1591475169;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=xTqw3kVnB8v3sRhZ7VbObD+yMIguMk4i/LcXMpFqEhQ=;
+        b=fYCEJ8TNEIRn6G4zjcU83mWLaAD9vhpb5OZJKeRlL7uRjp0sk1bPSD/P22OLe7crZ7vzV1
+        TBZeWvOXenhjEanKPQGUGI9zzEpilQqoQMto4sNTGKTuIf4smj8tg1ZPQZGRpADtX2GPMu
+        dHsID7iJOK9FwFneV3OG7SD1iuTfDGY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-136-nzGiU4zhPGC6e83HQDwwyA-1; Sat, 06 Jun 2020 16:26:07 -0400
+X-MC-Unique: nzGiU4zhPGC6e83HQDwwyA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 900127BAC;
+        Sat,  6 Jun 2020 20:26:05 +0000 (UTC)
+Received: from x1.localdomain.com (ovpn-112-50.ams2.redhat.com [10.36.112.50])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id BE3045C557;
+        Sat,  6 Jun 2020 20:26:02 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-pwm@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: pwm/i915: Convert pwm-crc and i915 driver's PWM code to use the atomic PWM API
+Date:   Sat,  6 Jun 2020 22:25:45 +0200
+Message-Id: <20200606202601.48410-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <10490419.gsntqH5CaE@kreacher>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+Hi All,
 
-On Fri, Jun 05, 2020 at 01:17:15PM +0200, Rafael J. Wysocki wrote:
-> 
-> First off, GGL0001 is not a valid ACPI device ID, because the GGL prefix is not
-> present in the list at https://uefi.org/acpi_id_list
-> 
-> There are two ways to address that.  One would be to take the GOOG prefix
-> (present in the list above), append a proper unique number (if I were to
-> guess, I would say that 0001 had been reserved already) to it and then
-> put the resulting device ID into the firmware, to be returned _HID for the
-> device in question (you can add a _CID returning "GGL0001" so it can be
-> found by the old invalid ID at least from the kernel).
+This patch series converts the i915 driver's cpde for controlling the
+panel's backlight with an external PWM controller to use the atomic PWM API.
 
-This is not going to happen, as there are devices in the wild with such
-firmware (i.e. Samus - Google Pixel 2 - was shipped in 2015). Even if
-Google were to release updated firmware (which is quite unlikely), it
-does not mean that users who are not using Chrome OS would apply updated
-firmware.
+Initially the plan was for this series to consist of 2 parts:
+1. convert the pwm-crc driver to support the atomic PWM API and
+2. convert the i915 driver's PWM code to use the atomic PWM API.
 
-> The other one would
-> be to properly register the GGL prefix for Google and establish a process for
-> allocating IDs with that prefix internally.
+But during testing I've found a number of bugs in the pwm-lpss and I
+found that the acpi_lpss code needs some special handling because of
+some ugliness found in most Cherry Trail DSDTs.
 
-I think it depends on whether there are more instances of "GGL" prefix.
-I thought we mostly used GOOG for everything.
+So now this series has grown somewhat large and consists of 4 parts:
 
-Thanks.
+1. acpi_lpss fixes workarounds for Cherry Trail DSTD nastiness
+2. various fixes to the pwm-lpss driver
+3. convert the pwm-crc driver to support the atomic PWM API and
+4. convert the i915 driver's PWM code to use the atomic PWM API
 
--- 
-Dmitry
+So we need to discuss how to merge this (once it passes review).
+Although the inter-dependencies are only runtime I still think we should
+make sure that 1-3 are in the drm-intel-next-queued (dinq) tree before
+merging the i915 changes. Both to make sure that the intel-gfx CI system
+does not become unhappy and for bisecting reasons.
+
+The involved acpi_lpss and pwm drivers do not see a whole lot of churn,
+so we could just merge everything through dinq, or we could use immutable
+branch and merge those into dinq.
+
+So Rafael and Thierry, can I either get your Acked-by for directly merging
+this into dinq, or can you provide an immutable branch with these patches?
+
+This series has been tested (and re-tested after adding various bug-fixes)
+extensively. It has been tested on the following devices:
+
+-Asus T100TA		BYT + CRC-PMIC PWM
+-Toshiba WT8-A		BYT + CRC-PMIC PWM
+-Thundersoft TS178	BYT + CRC-PMIC PWM, inverse PWM
+-Asus T100HA		CHT + CRC-PMIC PWM
+-Terra Pad 1061		BYT + LPSS PWM
+-Trekstor Twin 10.1	BYT + LPSS PWM
+-Asus T101HA		CHT + CRC-PMIC PWM
+-GPD Pocket		CHT + CRC-PMIC PWM
+
+Regards,
+
+Hans
+
