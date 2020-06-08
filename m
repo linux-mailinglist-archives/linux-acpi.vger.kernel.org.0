@@ -2,145 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B1A81F1194
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jun 2020 04:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0C221F11E3
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jun 2020 05:50:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728876AbgFHCyd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 7 Jun 2020 22:54:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47980 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728653AbgFHCya (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 7 Jun 2020 22:54:30 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86879C08C5C4
-        for <linux-acpi@vger.kernel.org>; Sun,  7 Jun 2020 19:54:30 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id v24so6071594plo.6
-        for <linux-acpi@vger.kernel.org>; Sun, 07 Jun 2020 19:54:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=TNiiby0GhibJHmG02ytGWtb3GrXv/h2IE3SFE6qK8wY=;
-        b=izDTLbNFapAPFawYa8bP5L1UpCxlkSTCCzx2ye/9STM1DqXymdysNnGkX12FV0/OIo
-         tKcjXEIEuxSNO572pWS545T9DoQqGqTM8DmMcj/pjObZb/s4KuucXPV8lxnGJsPOEWOP
-         creFxg4Q8lnO5UPN6FiY9AkscKdJteM1nKY+Qmci5RctGzZp1Lm8RhpxAeqkzQiUCQxI
-         Gn/htYffz0hnLWeWv7zjKwwzU0TiNbE2IVaAoUldJmQdAcEGN9qicP3+rskQKiUOfzQ9
-         T1+IF9bYkLx6QP/gZ6BWN651hoOpft0Cc6Lq2cjMJoEoVussc3m5Gv9e47HSM5NkG+Yl
-         PSSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=TNiiby0GhibJHmG02ytGWtb3GrXv/h2IE3SFE6qK8wY=;
-        b=cT6c1oyCCnq5VTF9Mnhthed7SIHwm7ezY+2GBRrIyQYoh47osguxx4xlbqYS0UdozL
-         WBVGGVifeSmyF977CZF43gChhSYdNWwTaWkB6Oio2MHfUXiZQgZCFkEIfOvosOe2QaLy
-         ILW4d29oQ3P//S+Z1cz4coOFvdKDIGDw2a04uHQIFEHtxbPG0iGlF4N+IVsmB0xh/jzC
-         0dtcPBG+tozq26XHO+xTOFdSSuO8Blpn1QRb/iWi+R/TaoR6TwL6DrOhy8MXD2esaunM
-         8uYeb0d/4aLrS8BDeqBEp4cD8s9DRgR6Bjbm4x+5jSwMHlSA/wyAj8qtSO7lkn4BaREj
-         NnJQ==
-X-Gm-Message-State: AOAM5334nEOcIZBTd9fuFZfn8QM+mUbCEG0hD72Z4RmR68fNjnJjn6ut
-        eS0tCRpdHMFbCdE6mBqdpWPN+Q==
-X-Google-Smtp-Source: ABdhPJxkqD1zFPHkx/wch8a4hS4Dcd7qZB1Ug7k+ig+u/wKNnkcnbqH/JdvGWQP6MIHxl1bz+Ni7fQ==
-X-Received: by 2002:a17:90a:f3c4:: with SMTP id ha4mr15260604pjb.18.1591584870012;
-        Sun, 07 Jun 2020 19:54:30 -0700 (PDT)
-Received: from [10.80.2.98] ([45.135.186.73])
-        by smtp.gmail.com with ESMTPSA id t9sm9533489pjs.16.2020.06.07.19.54.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 Jun 2020 19:54:29 -0700 (PDT)
-Subject: Re: [PATCH 0/2] Introduce PCI_FIXUP_IOMMU
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Joerg Roedel <joro@8bytes.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        jean-philippe <jean-philippe@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        kenneth-lee-2012@foxmail.com, Wangzhou <wangzhou1@hisilicon.com>,
-        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        iommu@lists.linux-foundation.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
-References: <20200605231909.GA1155454@bjorn-Precision-5520>
-From:   Zhangfei Gao <zhangfei.gao@linaro.org>
-Message-ID: <be91b0f0-c685-789d-6868-1c8ebd62b770@linaro.org>
-Date:   Mon, 8 Jun 2020 10:54:15 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1728855AbgFHDuZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 7 Jun 2020 23:50:25 -0400
+Received: from mga02.intel.com ([134.134.136.20]:26678 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728763AbgFHDuY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 7 Jun 2020 23:50:24 -0400
+IronPort-SDR: 7TlQWMk6JyuNyJJ32t/eiOAOn2gBLDhdrdy0qCLhA+UiotKU+NK+FEqD1F4GVXXRw+4AIACxYR
+ LcX8BpFC7sGg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2020 20:50:24 -0700
+IronPort-SDR: aBms9IEQNhijJBDDXaj4Ih289dsactoAreSJwOIoFVQlNORC8n8IEK99gECcaTtaEP8q7YgwB+
+ d2CD1mMArAWQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,486,1583222400"; 
+   d="scan'208";a="446588491"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga005.jf.intel.com with ESMTP; 07 Jun 2020 20:50:21 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1ji8nn-00Ba6K-HD; Mon, 08 Jun 2020 06:50:23 +0300
+Date:   Mon, 8 Jun 2020 06:50:23 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
+        <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 03/15] pwm: lpss: Add range limit check for the
+ base_unit register value
+Message-ID: <20200608035023.GZ2428291@smile.fi.intel.com>
+References: <20200607181840.13536-1-hdegoede@redhat.com>
+ <20200607181840.13536-4-hdegoede@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20200605231909.GA1155454@bjorn-Precision-5520>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200607181840.13536-4-hdegoede@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Bjorn
+On Sun, Jun 07, 2020 at 08:18:28PM +0200, Hans de Goede wrote:
+> When the user requests a high enough period ns value, then the
+> calculations in pwm_lpss_prepare() might result in a base_unit value of 0.
+> 
+> But according to the data-sheet the way the PWM controller works is that
+> each input clock-cycle the base_unit gets added to a N bit counter and
+> that counter overflowing determines the PWM output frequency. Adding 0
+> to the counter is a no-op. The data-sheet even explicitly states that
+> writing 0 to the base_unit bits will result in the PWM outputting a
+> continuous 0 signal.
 
-On 2020/6/6 上午7:19, Bjorn Helgaas wrote:
-> On Thu, Jun 04, 2020 at 09:33:07PM +0800, Zhangfei Gao wrote:
->> On 2020/6/2 上午1:41, Bjorn Helgaas wrote:
->>> On Thu, May 28, 2020 at 09:33:44AM +0200, Joerg Roedel wrote:
->>>> On Wed, May 27, 2020 at 01:18:42PM -0500, Bjorn Helgaas wrote:
->>>>> Is this slowdown significant?  We already iterate over every device
->>>>> when applying PCI_FIXUP_FINAL quirks, so if we used the existing
->>>>> PCI_FIXUP_FINAL, we wouldn't be adding a new loop.  We would only be
->>>>> adding two more iterations to the loop in pci_do_fixups() that tries
->>>>> to match quirks against the current device.  I doubt that would be a
->>>>> measurable slowdown.
->>>> I don't know how significant it is, but I remember people complaining
->>>> about adding new PCI quirks because it takes too long for them to run
->>>> them all. That was in the discussion about the quirk disabling ATS on
->>>> AMD Stoney systems.
->>>>
->>>> So it probably depends on how many PCI devices are in the system whether
->>>> it causes any measureable slowdown.
->>> I found this [1] from Paul Menzel, which was a slowdown caused by
->>> quirk_usb_early_handoff().  I think the real problem is individual
->>> quirks that take a long time.
->>>
->>> The PCI_FIXUP_IOMMU things we're talking about should be fast, and of
->>> course, they're only run for matching devices anyway.  So I'd rather
->>> keep them as PCI_FIXUP_FINAL than add a whole new phase.
->>>
->> Thanks Bjorn for taking time for this.
->> If so, it would be much simpler.
->>
->> +++ b/drivers/iommu/iommu.c
->> @@ -2418,6 +2418,10 @@ int iommu_fwspec_init(struct device *dev, struct
->> fwnode_handle *iommu_fwnode,
->>          fwspec->iommu_fwnode = iommu_fwnode;
->>          fwspec->ops = ops;
->>          dev_iommu_fwspec_set(dev, fwspec);
->> +
->> +       if (dev_is_pci(dev))
->> +               pci_fixup_device(pci_fixup_final, to_pci_dev(dev));
->> +
->>
->> Then pci_fixup_final will be called twice, the first in pci_bus_add_device.
->> Here in iommu_fwspec_init is the second time, specifically for iommu_fwspec.
->> Will send this when 5.8-rc1 is open.
-> Wait, this whole fixup approach seems wrong to me.  No matter how you
-> do the fixup, it's still a fixup, which means it requires ongoing
-> maintenance.  Surely we don't want to have to add the Vendor/Device ID
-> for every new AMBA device that comes along, do we?
->
->
-Here the fake pci device has standard PCI cfg space, but physical 
-implementation is base on AMBA
-They can provide pasid feature.
-However,
-1, does not support tlp since they are not real pci devices.
-2. does not support pri, instead support stall (provided by smmu)
-And stall is not a pci feature, so it is not described in struct 
-pci_dev, but in struct iommu_fwspec.
-So we use this fixup to tell pci system that the devices can support 
-stall, and hereby support pasid.
+So, and why it's a problem?
 
-Thanks
+> base_unit values > (base_unit_range / 256), or iow base_unit values using
+> the 8 most significant bits, cause loss of resolution of the duty-cycle.
+> E.g. assuming a base_unit_range of 65536 steps, then a base_unit value of
+> 768 (256 * 3), limits the duty-cycle resolution to 65536 / 768 = 85 steps.
+> Clamp the max base_unit value to base_unit_range / 32 to ensure a
+> duty-cycle resolution of at least 32 steps. This limits the maximum
+> output frequency to 600 KHz / 780 KHz depending on the base clock.
+
+This part I don't understand. Why we limiting base unit? I seems like a
+deliberate regression.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
