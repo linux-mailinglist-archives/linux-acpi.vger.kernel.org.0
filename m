@@ -2,82 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B21E1F11E7
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jun 2020 05:55:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A71001F127E
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jun 2020 07:37:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728773AbgFHDzN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 7 Jun 2020 23:55:13 -0400
-Received: from mga11.intel.com ([192.55.52.93]:54054 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728763AbgFHDzN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 7 Jun 2020 23:55:13 -0400
-IronPort-SDR: 7ku5LjBTjsWhi+HPfszCx699bQ+hIbNMiGFpzkwi94bLJ01pH4PpIH25Yi4gTXrcASnXfDqkET
- rrpoE2+lCLWw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2020 20:55:13 -0700
-IronPort-SDR: YNhNatDKk0QsxJql0eJaS+rm9XydwHtk7fa1palvrzLF+RZd9dpT7sKRAmctSRtkiSpoojEGYQ
- V5hg57xbK0YA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,486,1583222400"; 
-   d="scan'208";a="349043083"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga001.jf.intel.com with ESMTP; 07 Jun 2020 20:55:09 -0700
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ji8sS-00Ba8y-32; Mon, 08 Jun 2020 06:55:12 +0300
-Date:   Mon, 8 Jun 2020 06:55:12 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
-        <ville.syrjala@linux.intel.com>,
+        id S1727905AbgFHFhm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Jun 2020 01:37:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44698 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726929AbgFHFhm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Jun 2020 01:37:42 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A55C08C5C3;
+        Sun,  7 Jun 2020 22:37:42 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id ne5so2810589pjb.5;
+        Sun, 07 Jun 2020 22:37:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=RTapcU6gK7wVagdpIBy1syxYRT4o5dx2x3mb/55IfwQ=;
+        b=DITjcqepAg/aiVMxe1Gh2awTCmo91vVu3S9mlVdU3hgfcPrStCTsiH/eLXmFFx4VRn
+         o+ChFk5Yofnb659Ehd5fQWdqZmVijpUVnFuGNuFhMOE72kvC1E3+mfpKEr/ZswrbVsJy
+         sipQ8XyZUaVEwcIfHzLeHoRReoDiJt10fqtwJ3c4BO29KFNyabOsxQSftZ67b+4X3i7i
+         XR9li74InWK9fBIdE0y17Jbyz8DsjgWa/+fMyP1yne5aCzj4UJD1nLwMXWmxvqe9Spvq
+         wc9P1vraN5a+3iQ96WNuaUdHrp7GU+r2Ij6WnopwS0BjnouSD1RBVYKA1uSNqvSLb6Py
+         s/Sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=RTapcU6gK7wVagdpIBy1syxYRT4o5dx2x3mb/55IfwQ=;
+        b=mGHQBi0X0VUkABufhg1+Ev4KMP42P+k50fcovQFKnSKOF2ea/BrHawmIGd4egpI30r
+         a7juQPETJ3JbxVxWf7pdRiwVx52iHAiY39QupBk6wn3W/c2dspeFWGBc6v1knh7hYdAY
+         T4XewmmbvKlPz70DTG/zvpsnGxLtJoaKMXCMqiCyBiKHz1c+s6DcbS12cIJmv+Ngt9wq
+         Ci5vK26b7dreo4sMMpLKLt2qOMdwQZ9v+lwWlHHkOK8/7IdnA4dsVpgXGcg6x89IDxsM
+         IE7wg1o5PsYpKn/u7ULuF8Hqjap+oQweW7b0lf2/IZajDIjhEjcAEMaNJZXxjwnv6rV3
+         wnYg==
+X-Gm-Message-State: AOAM532mYJAlZHifT2eiitCzUn7x4pVBDH9g7t06sP0lLO7H4JzQxcyc
+        YgCQKVM09me4iG/znjO9RhU=
+X-Google-Smtp-Source: ABdhPJzN5CaIdVRcGxuqJwlU7nQJooHDxxicu9iq+KnTRKt689A3cjTNxnb8ofRVOYLQTpNcwc0RwQ==
+X-Received: by 2002:a17:90a:c283:: with SMTP id f3mr14534964pjt.166.1591594661380;
+        Sun, 07 Jun 2020 22:37:41 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:3c2a:73a9:c2cf:7f45])
+        by smtp.gmail.com with ESMTPSA id k14sm4926474pgn.94.2020.06.07.22.37.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Jun 2020 22:37:40 -0700 (PDT)
+Date:   Sun, 7 Jun 2020 22:37:37 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 04/15] pwm: lpss: Fix off by one error in base_unit
- math in pwm_lpss_prepare()
-Message-ID: <20200608035512.GA2428291@smile.fi.intel.com>
-References: <20200607181840.13536-1-hdegoede@redhat.com>
- <20200607181840.13536-5-hdegoede@redhat.com>
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Peter Hutterer <peter.hutterer@redhat.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com
+Subject: Re: [PATCH v3 0/7] Support inhibiting input devices
+Message-ID: <20200608053737.GS89269@dtor-ws>
+References: <20200604072853.GP89269@dtor-ws>
+ <20200605173335.13753-1-andrzej.p@collabora.com>
+ <20200607202414.GB13138@amd>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200607181840.13536-5-hdegoede@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20200607202414.GB13138@amd>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Jun 07, 2020 at 08:18:29PM +0200, Hans de Goede wrote:
-> According to the data-sheet the way the PWM controller works is that
-> each input clock-cycle the base_unit gets added to a N bit counter and
-> that counter overflowing determines the PWM output frequency.
+On Sun, Jun 07, 2020 at 10:24:14PM +0200, Pavel Machek wrote:
+> On Fri 2020-06-05 19:33:28, Andrzej Pietrasiewicz wrote:
+> > Userspace might want to implement a policy to temporarily disregard input
+> > from certain devices.
 > 
-> So assuming e.g. a 16 bit counter this means that if base_unit is set to 1,
-> after 65535 input clock-cycles the counter has been increased from 0 to
-> 65535 and it will overflow on the next cycle, so it will overflow after
-> every 65536 clock cycles and thus the calculations done in
-> pwm_lpss_prepare() should use 65536 and not 65535.
+> Wow, you certainly cc a lot of lists.
 > 
-> This commit fixes this. Note this also aligns the calculations in
-> pwm_lpss_prepare() with those in pwm_lpss_get_state().
+> > An example use case is a convertible laptop, whose keyboard can be folded
+> > under the screen to create tablet-like experience. The user then must hold
+> > the laptop in such a way that it is difficult to avoid pressing the keyboard
+> > keys. It is therefore desirable to temporarily disregard input from the
+> > keyboard, until it is folded back. This obviously is a policy which should
+> > be kept out of the kernel, but the kernel must provide suitable means to
+> > implement such a policy.
+> > 
+> > Due to interactions with suspend/resume, a helper has been added for drivers
+> > to decide if the device is being used or not (PATCH 1/7) and it has been
+> > applied to relevant drivers (PATCH 2,4,5,6/7).
+> 
+> But is that a right way to implement it?
+> 
+> We want this for cellphones, too -- touchscreen should be disabled
+> while the device is locked in the pocket -- but we really want the
+> touchscreen hardware to be powered down in that case (because it keeps
+> SoC busy and eats a _lot_ of electricity).
+> 
+> But simplistic "receive an event and then drop it if device is
+> inhibited" does not allow that...
 
-This one sounds like a bug which I have noticed on Broxton (but thought as a
-hardware issue). In any case it has to be tested on various platforms to see
-how it affects on them.
+I do not think you read the entirety of this patch series...
+
+Thanks.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Dmitry
