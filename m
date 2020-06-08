@@ -2,189 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C18701F20AB
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jun 2020 22:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54D1A1F2B38
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jun 2020 02:17:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726735AbgFHU35 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Jun 2020 16:29:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41692 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726730AbgFHU34 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Jun 2020 16:29:56 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8576C08C5C4
-        for <linux-acpi@vger.kernel.org>; Mon,  8 Jun 2020 13:29:56 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id bh7so7097376plb.11
-        for <linux-acpi@vger.kernel.org>; Mon, 08 Jun 2020 13:29:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9/ePEPr3ygUN4g38F3++3TkPRxfaceUs+kBlSlUSKY0=;
-        b=pw8Bxdhl9XS8tPgtRzulSMnEvJeKhw67A+rrpfiRgoNRVcVxkndGIyj1Htofn7jVH4
-         QQfC8wwV1c2hsbd3F+BArgJJLlVJygelysnZp9v8OWukz4LhpZm+mPNjLH12Rd6OrYqv
-         FEepyuJwLd31BVubTZVtn1FwTiI9AReTM8JynaA0xsEGX3ndHt2r47Zqeq30tgQZ8wVC
-         8g6XsZLQuN3A2UBO1Vc4xRfN66xu2jdQFy7ZOSpEIlWqwg+LIA2MCYx82el77wcfvMaA
-         K7z7TSrp13wbs0s5jkpBtBoquIhBmNnU+rdDHrJolRI2C6P7l78M4Jbr0MihSflNPFXb
-         +zfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9/ePEPr3ygUN4g38F3++3TkPRxfaceUs+kBlSlUSKY0=;
-        b=Yjcv5PERdwDfGw/LUIgUVFagSOa4WcCjkSKDJI69FSzB3zM6eWridf9QaViz13Ehu0
-         WKCsW5KTJSYucAxm/KHZP/HAvelH3uuer4241cpp2Y7HVpBPnJka5eF0OmAfex7H6N1L
-         6WYz/LGNnxi0jxKTBiVDQ0h7IoX9XZslFjLa6ok8XvXhg3j+V+5mttA1/n0UtVS3DSAg
-         DbLl0nDd+oUcf3mTGzeOWTAeLk6qAdi93vne1dE/pk8bgXHGv43kXnBDKMq0PqoG02z5
-         6ljYTiquKFC3tAogxjl/du0pEsiafwwtoR4jlWuLWqd0Wau4h5Szm0elFZ4AgKAkihUQ
-         FZ/Q==
-X-Gm-Message-State: AOAM533QYXs1r3JyIuJXKjYti2gvBZpzwlvcTGK2CKRO1jFvYZePSwUj
-        EKYYjq1pUdAyM7tzQ/vzHE31nfRerhytn+GNgQQEmg==
-X-Google-Smtp-Source: ABdhPJxqTvjFFkKCm0i/uL4/XPDo2bwuLtgj0Uxawq6E2pFoZqBvslwKDi6qgeiJF1A8ll3duqQhBNh0BQd5R/EezHw=
-X-Received: by 2002:a17:90a:e2c4:: with SMTP id fr4mr1046413pjb.32.1591648195517;
- Mon, 08 Jun 2020 13:29:55 -0700 (PDT)
+        id S1731293AbgFIAN0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Jun 2020 20:13:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42204 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730784AbgFHXTZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 8 Jun 2020 19:19:25 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0637520842;
+        Mon,  8 Jun 2020 23:19:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1591658364;
+        bh=liv92CA1wv+KMzl3ebp8kxsuQiCx/MmzeQG6u0qcm6E=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=1oqYrqzmc0iL1GiRGn//HqipH6vvYp2mwwrSbmf2/tbQnC58veTvynuv0oP/PtbBO
+         v/3GxFAApNn53aLAqwuVCd5jlZqgXXb1NkfxFTeZON+UZV/O46QVab5E4Mkbu5c+IA
+         orWCOiDKNlnRve5QoCZMKsXG0dYgPh5xk3qNzzes=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Erik Kaneda <erik.kaneda@intel.com>,
+        Kurt Kennett <kurt_kennett@hotmail.com>,
+        Bob Moore <robert.moore@intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
+        devel@acpica.org
+Subject: [PATCH AUTOSEL 5.4 029/175] ACPICA: Dispatcher: add status checks
+Date:   Mon,  8 Jun 2020 19:16:22 -0400
+Message-Id: <20200608231848.3366970-29-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200608231848.3366970-1-sashal@kernel.org>
+References: <20200608231848.3366970-1-sashal@kernel.org>
 MIME-Version: 1.0
-References: <CAMj1kXErFuvOoG=DB6sz5HBvDuHDiKwWD8uOyLuxaX-u8-+dbA@mail.gmail.com>
- <20200601231805.207441-1-ndesaulniers@google.com> <BYAPR11MB30969737340044437013BF44F08B0@BYAPR11MB3096.namprd11.prod.outlook.com>
- <CAKwvOdmsCmPFiDOq7AYUyEx=60B=qo8u9yhnJDQ6nd6Ew7xDkQ@mail.gmail.com> <20200608145150.GA7418@willie-the-truck>
-In-Reply-To: <20200608145150.GA7418@willie-the-truck>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Mon, 8 Jun 2020 13:29:44 -0700
-Message-ID: <CAKwvOdnBhHnhUZ9MHgqEQ4nEyzHWUH+DPV-J0KoYyWNEnsDHbg@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: fix UBSAN warning using __builtin_offsetof
-To:     Will Deacon <will@kernel.org>,
-        "Moore, Robert" <robert.moore@intel.com>
-Cc:     "Kaneda, Erik" <erik.kaneda@intel.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        "dvyukov@google.com" <dvyukov@google.com>,
-        "glider@google.com" <glider@google.com>,
-        "guohanjun@huawei.com" <guohanjun@huawei.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "pcc@google.com" <pcc@google.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 8, 2020 at 7:51 AM Will Deacon <will@kernel.org> wrote:
->
-> Hey Nick,
->
-> On Tue, Jun 02, 2020 at 11:46:31AM -0700, Nick Desaulniers wrote:
-> > On Mon, Jun 1, 2020 at 5:03 PM Kaneda, Erik <erik.kaneda@intel.com> wrote:
-> > > > Will reported UBSAN warnings:
-> > > > UBSAN: null-ptr-deref in drivers/acpi/acpica/tbfadt.c:459:37
-> > > > UBSAN: null-ptr-deref in arch/arm64/kernel/smp.c:596:6
-> > > >
-> > > > Looks like the emulated offsetof macro ACPI_OFFSET is causing these. We
-> > > > can avoid this by using the compiler builtin, __builtin_offsetof.
-> > >
-> > > I'll take a look at this tomorrow
-> > > >
-> > > > The non-kernel runtime of UBSAN would print:
-> > > > runtime error: member access within null pointer of type for this macro.
-> > >
-> > > actypes.h is owned by ACPICA so we typically do not allow compiler-specific
-> > > extensions because the code is intended to be compiled using the C99 standard
-> > > without compiler extensions. We could allow this sort of thing in a Linux-specific
-> > > header file like include/acpi/platform/aclinux.h but I'll take a look at the error as well..
-> >
-> > If I'm not allowed to touch that header, it looks like I can include
-> > <linux/stddef.h> (rather than my host's <stddef.h>) to get a
-> > definition of `offsetof` thats implemented in terms of
-> > `__builtin_offsetof`.  I should be able to use that to replace uses of
-> > ACPI_OFFSET.  Are any of these off limits?
->
-> It's not so much about not being allowed to touch the header, but rather
-> that the kernel imports the code from a different project:
->
-> https://acpica.org/community
->
-> > $ grep -rn ACPI_OFFSET
-> > arch/arm64/include/asm/acpi.h:34:#define ACPI_MADT_GICC_MIN_LENGTH
-> > ACPI_OFFSET(  \
-> > arch/arm64/include/asm/acpi.h:41:#define ACPI_MADT_GICC_SPE
-> > (ACPI_OFFSET(struct acpi_madt_generic_interrupt, \
->
-> I'm happy to take patches to the stuff under arch/arm64/, fwiw.
+From: Erik Kaneda <erik.kaneda@intel.com>
 
-Not really sure how to untangle this.  Those two cases under
-arch/arm64/ are straightforward to fix:
-```
-diff --git a/arch/arm64/include/asm/acpi.h
-b/arch/arm64/include/asm/acpi.h
-index b263e239cb59..a45366c3909b 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -12,6 +12,7 @@
- #include <linux/efi.h>
- #include <linux/memblock.h>
- #include <linux/psci.h>
-+#include <linux/stddef.h>
+[ Upstream commit 6bfe5344b2956d0bee116f1c640aef05e5cddd76 ]
 
- #include <asm/cputype.h>
- #include <asm/io.h>
-@@ -31,14 +32,14 @@
-  * is therefore used to delimit the MADT GICC structure minimum length
-  * appropriately.
-  */
--#define ACPI_MADT_GICC_MIN_LENGTH   ACPI_OFFSET(  \
-+#define ACPI_MADT_GICC_MIN_LENGTH   offsetof(  \
-        struct acpi_madt_generic_interrupt, efficiency_class)
+ACPICA commit 3244c1eeba9f9fb9ccedb875f7923a3d85e0c6aa
 
- #define BAD_MADT_GICC_ENTRY(entry, end)
-         \
-        (!(entry) || (entry)->header.length < ACPI_MADT_GICC_MIN_LENGTH || \
-        (unsigned long)(entry) + (entry)->header.length > (end))
+The status chekcs are used to to avoid NULL pointer dereference on
+field objects
 
--#define ACPI_MADT_GICC_SPE  (ACPI_OFFSET(struct acpi_madt_generic_interrupt, \
-+#define ACPI_MADT_GICC_SPE  (offsetof(struct acpi_madt_generic_interrupt, \
-        spe_interrupt) + sizeof(u16))
+Link: https://github.com/acpica/acpica/commit/3244c1ee
+Reported-by: Kurt Kennett <kurt_kennett@hotmail.com>
+Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
+Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/acpica/dsfield.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
- /* Basic configuration for ACPI */
-```
-
-But for one of the warnings you reported, as an example:
-UBSAN: null-ptr-deref in drivers/acpi/acpica/tbfadt.c:459:37
-
-```
-$ ag ACPI_FADT_V2_SIZE
-include/acpi/actbl.h
-394:#define ACPI_FADT_V2_SIZE       (u32) (ACPI_FADT_OFFSET
-(minor_revision) + 1)
-
-drivers/acpi/acpica/tbfadt.c
-459:    if (acpi_gbl_FADT.header.length <= ACPI_FADT_V2_SIZE) {
-
-$ ag ACPI_FADT_OFFSET
-...
-include/acpi/actbl.h
-376:#define ACPI_FADT_OFFSET(f)             (u16) ACPI_OFFSET (struct
-acpi_table_fadt, f)
-...
-```
-So the use of ACPI_FADT_V2_SIZE in drivers/acpi/acpica/tbfadt.c is
-triggering one of the warnings.  ACPI_FADT_V2_SIZE is defined in terms
-of ACPI_FADT_OFFSET which is defined in terms of ACPI_OFFSET in
-include/acpi/actbl.h.  From the link you posted, include/acpi/actbl.h
-is from the project under source/include/.
-
-Further, drivers/acpi/acpica/tbfadt.c seems to also be from the
-upstream project under source/components/tables/tbfadt.c.
-
-Regardless, the second of the two warnings is definitely fixed by my
-above diff, so let me rephrase the previous commit message with that
-diff and resend.
+diff --git a/drivers/acpi/acpica/dsfield.c b/drivers/acpi/acpica/dsfield.c
+index 8438e33aa447..fd9028a6bc20 100644
+--- a/drivers/acpi/acpica/dsfield.c
++++ b/drivers/acpi/acpica/dsfield.c
+@@ -518,13 +518,20 @@ acpi_ds_create_field(union acpi_parse_object *op,
+ 	info.region_node = region_node;
+ 
+ 	status = acpi_ds_get_field_names(&info, walk_state, arg->common.next);
++	if (ACPI_FAILURE(status)) {
++		return_ACPI_STATUS(status);
++	}
++
+ 	if (info.region_node->object->region.space_id ==
+-	    ACPI_ADR_SPACE_PLATFORM_COMM
+-	    && !(region_node->object->field.internal_pcc_buffer =
+-		 ACPI_ALLOCATE_ZEROED(info.region_node->object->region.
+-				      length))) {
+-		return_ACPI_STATUS(AE_NO_MEMORY);
++	    ACPI_ADR_SPACE_PLATFORM_COMM) {
++		region_node->object->field.internal_pcc_buffer =
++		    ACPI_ALLOCATE_ZEROED(info.region_node->object->region.
++					 length);
++		if (!region_node->object->field.internal_pcc_buffer) {
++			return_ACPI_STATUS(AE_NO_MEMORY);
++		}
+ 	}
++
+ 	return_ACPI_STATUS(status);
+ }
+ 
 -- 
-Thanks,
-~Nick Desaulniers
+2.25.1
+
