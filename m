@@ -2,147 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A44C1F1B16
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jun 2020 16:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19A421F1B77
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jun 2020 16:52:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730023AbgFHOfG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Jun 2020 10:35:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43186 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729938AbgFHOfG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Jun 2020 10:35:06 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B462BC08C5C2
-        for <linux-acpi@vger.kernel.org>; Mon,  8 Jun 2020 07:35:05 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id u13so15581030wml.1
-        for <linux-acpi@vger.kernel.org>; Mon, 08 Jun 2020 07:35:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ThWG7PLkTZsxbTGQI2QqS4ypuKcTM21qeWcb7Pqf2u0=;
-        b=Wtu/IESN641sfnMFWfEgg6CJ6ybv0wkD6kDu6juOnd3HKmOlTwyYjpki6wx8lMkCZr
-         II15j+zzfLYA2plLL6z1MfJ+VuPSoediq9yVINYJr3B9b++h/3U8OGqCoLCdI+I4QWXF
-         DbwpgHLw1JchAiihgET+gCGvuI5T/DtkVVb2g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ThWG7PLkTZsxbTGQI2QqS4ypuKcTM21qeWcb7Pqf2u0=;
-        b=MkVwxZn53wcdTbt4OrcQT3LIwNoN2qFxip2uL3gNqaRMcLhoU9XTqbI3lLWXiAiCs8
-         PmX0SSpnJtiZN/1s0SvdBOiA9dgYfCeb14hyz7fYLtqRo23oTBRMuIWjNlhoUTVsHjtb
-         bAGHZh8BC+mg58SM8T6qmQrRyu3la99emZhpuc0cR9e8Gib1wwRGYHMK480+Xl5PfsVj
-         CPvDN0M0Aa4WMc2dGFGT6Lb6H8UPI9QhpRvr8sCKYEgDQIgUA6eSVz8GHXUZd1suNfsf
-         gD4uo7Xyp5qmqyxzeKTiKr4tTnkvOq++a6Wl/zh69AeVOufDV1c9qH9kRm0c8ERetf/w
-         Qxmg==
-X-Gm-Message-State: AOAM532hKocMxjO9TkxuGwEqfje6iPQSiKg+D5dCcvchAtuYysptWnhV
-        Fg3gysDyjIDf15sJkTpLUlcVGg==
-X-Google-Smtp-Source: ABdhPJyXoO9cmG2YWT7CRaiLUKnDXmJGp9wEivXhk6yC+ifOrjoJSPuglGOvD7hufAunPazgABGmJg==
-X-Received: by 2002:a1c:9acf:: with SMTP id c198mr16847442wme.172.1591626904265;
-        Mon, 08 Jun 2020 07:35:04 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id b8sm23308626wrm.35.2020.06.08.07.35.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2020 07:35:03 -0700 (PDT)
-Date:   Mon, 8 Jun 2020 16:35:00 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
-        <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: pwm/i915: Convert pwm-crc and i915 driver's PWM code to use the
- atomic PWM API
-Message-ID: <20200608143500.GX20149@phenom.ffwll.local>
-References: <20200606202601.48410-1-hdegoede@redhat.com>
+        id S1730086AbgFHOv7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Jun 2020 10:51:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55018 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725975AbgFHOv5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 8 Jun 2020 10:51:57 -0400
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 13A7F206C3;
+        Mon,  8 Jun 2020 14:51:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1591627917;
+        bh=1puOhgt4Uwf+poNYxoCheW9wNrOBAmiWsqq8Yg7kpT0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=m1kfouFwxncpCcEUNSdwbfYPisRKvhk/SAz5yBJSKNX6jTYHy4QU21ppwYpPr5V7Q
+         HrEe8QaOQAhpPu78xdMKMQ4/xH32NzcJr496kd3wG0fJOyr/huuSLV/bX10UmZI42a
+         F8jFf2UKv1bK96myVv3ydxBmFRmlxTmMHY0GSYYA=
+Date:   Mon, 8 Jun 2020 15:51:50 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     "Kaneda, Erik" <erik.kaneda@intel.com>,
+        "Moore, Robert" <robert.moore@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        "dvyukov@google.com" <dvyukov@google.com>,
+        "glider@google.com" <glider@google.com>,
+        "guohanjun@huawei.com" <guohanjun@huawei.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "pcc@google.com" <pcc@google.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>
+Subject: Re: [PATCH] ACPICA: fix UBSAN warning using __builtin_offsetof
+Message-ID: <20200608145150.GA7418@willie-the-truck>
+References: <CAMj1kXErFuvOoG=DB6sz5HBvDuHDiKwWD8uOyLuxaX-u8-+dbA@mail.gmail.com>
+ <20200601231805.207441-1-ndesaulniers@google.com>
+ <BYAPR11MB30969737340044437013BF44F08B0@BYAPR11MB3096.namprd11.prod.outlook.com>
+ <CAKwvOdmsCmPFiDOq7AYUyEx=60B=qo8u9yhnJDQ6nd6Ew7xDkQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200606202601.48410-1-hdegoede@redhat.com>
-X-Operating-System: Linux phenom 5.6.0-1-amd64 
+In-Reply-To: <CAKwvOdmsCmPFiDOq7AYUyEx=60B=qo8u9yhnJDQ6nd6Ew7xDkQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jun 06, 2020 at 10:25:45PM +0200, Hans de Goede wrote:
-> Hi All,
-> 
-> This patch series converts the i915 driver's cpde for controlling the
-> panel's backlight with an external PWM controller to use the atomic PWM API.
-> 
-> Initially the plan was for this series to consist of 2 parts:
-> 1. convert the pwm-crc driver to support the atomic PWM API and
-> 2. convert the i915 driver's PWM code to use the atomic PWM API.
-> 
-> But during testing I've found a number of bugs in the pwm-lpss and I
-> found that the acpi_lpss code needs some special handling because of
-> some ugliness found in most Cherry Trail DSDTs.
-> 
-> So now this series has grown somewhat large and consists of 4 parts:
-> 
-> 1. acpi_lpss fixes workarounds for Cherry Trail DSTD nastiness
-> 2. various fixes to the pwm-lpss driver
-> 3. convert the pwm-crc driver to support the atomic PWM API and
-> 4. convert the i915 driver's PWM code to use the atomic PWM API
-> 
-> So we need to discuss how to merge this (once it passes review).
-> Although the inter-dependencies are only runtime I still think we should
-> make sure that 1-3 are in the drm-intel-next-queued (dinq) tree before
-> merging the i915 changes. Both to make sure that the intel-gfx CI system
-> does not become unhappy and for bisecting reasons.
+Hey Nick,
 
-Simplest is if acpi acks the acpi patches for merging through
-drm-intel.git. Second simplest is topic branch (drm-intel maintainers can
-do that) with the entire pile, which then acpi and drm-intel can both pull
-in.
+On Tue, Jun 02, 2020 at 11:46:31AM -0700, Nick Desaulniers wrote:
+> On Mon, Jun 1, 2020 at 5:03 PM Kaneda, Erik <erik.kaneda@intel.com> wrote:
+> > > Will reported UBSAN warnings:
+> > > UBSAN: null-ptr-deref in drivers/acpi/acpica/tbfadt.c:459:37
+> > > UBSAN: null-ptr-deref in arch/arm64/kernel/smp.c:596:6
+> > >
+> > > Looks like the emulated offsetof macro ACPI_OFFSET is causing these. We
+> > > can avoid this by using the compiler builtin, __builtin_offsetof.
+> >
+> > I'll take a look at this tomorrow
+> > >
+> > > The non-kernel runtime of UBSAN would print:
+> > > runtime error: member access within null pointer of type for this macro.
+> >
+> > actypes.h is owned by ACPICA so we typically do not allow compiler-specific
+> > extensions because the code is intended to be compiled using the C99 standard
+> > without compiler extensions. We could allow this sort of thing in a Linux-specific
+> > header file like include/acpi/platform/aclinux.h but I'll take a look at the error as well..
+> 
+> If I'm not allowed to touch that header, it looks like I can include
+> <linux/stddef.h> (rather than my host's <stddef.h>) to get a
+> definition of `offsetof` thats implemented in terms of
+> `__builtin_offsetof`.  I should be able to use that to replace uses of
+> ACPI_OFFSET.  Are any of these off limits?
 
-Up to the two maintainer teams to figure this one out.
+It's not so much about not being allowed to touch the header, but rather
+that the kernel imports the code from a different project:
 
-/me out
+https://acpica.org/community
 
-Cheers, Daniel
+> $ grep -rn ACPI_OFFSET
+> arch/arm64/include/asm/acpi.h:34:#define ACPI_MADT_GICC_MIN_LENGTH
+> ACPI_OFFSET(  \
+> arch/arm64/include/asm/acpi.h:41:#define ACPI_MADT_GICC_SPE
+> (ACPI_OFFSET(struct acpi_madt_generic_interrupt, \
 
-> 
-> The involved acpi_lpss and pwm drivers do not see a whole lot of churn,
-> so we could just merge everything through dinq, or we could use immutable
-> branch and merge those into dinq.
-> 
-> So Rafael and Thierry, can I either get your Acked-by for directly merging
-> this into dinq, or can you provide an immutable branch with these patches?
-> 
-> This series has been tested (and re-tested after adding various bug-fixes)
-> extensively. It has been tested on the following devices:
-> 
-> -Asus T100TA		BYT + CRC-PMIC PWM
-> -Toshiba WT8-A		BYT + CRC-PMIC PWM
-> -Thundersoft TS178	BYT + CRC-PMIC PWM, inverse PWM
-> -Asus T100HA		CHT + CRC-PMIC PWM
-> -Terra Pad 1061		BYT + LPSS PWM
-> -Trekstor Twin 10.1	BYT + LPSS PWM
-> -Asus T101HA		CHT + CRC-PMIC PWM
-> -GPD Pocket		CHT + CRC-PMIC PWM
-> 
-> Regards,
-> 
-> Hans
-> 
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+I'm happy to take patches to the stuff under arch/arm64/, fwiw.
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Will
