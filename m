@@ -2,119 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0EAB1F155D
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jun 2020 11:28:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74AF41F16F5
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jun 2020 12:51:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728745AbgFHJ2L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Jun 2020 05:28:11 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:32944 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728022AbgFHJ2L (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Jun 2020 05:28:11 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: andrzej.p)
-        with ESMTPSA id CEE412A10C1
-Subject: Re: [PATCH v3 0/7] Support inhibiting input devices
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>
-Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        id S1729403AbgFHKvs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Jun 2020 06:51:48 -0400
+Received: from mx2.suse.de ([195.135.220.15]:37140 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729286AbgFHKvs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 8 Jun 2020 06:51:48 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 76DDDAC37;
+        Mon,  8 Jun 2020 10:51:48 +0000 (UTC)
+Subject: Re: slub freelist issue / BUG: unable to handle page fault for
+ address: 000000003ffe0018
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Vegard Nossum <vegard.nossum@oracle.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Christoph Lameter <cl@linux.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Marco Elver <elver@google.com>,
+        Waiman Long <longman@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux MM <linux-mm@kvack.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Peter Hutterer <peter.hutterer@redhat.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com
-References: <20200604072853.GP89269@dtor-ws>
- <20200605173335.13753-1-andrzej.p@collabora.com> <20200607202414.GB13138@amd>
- <20200608053737.GS89269@dtor-ws>
-From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Message-ID: <b1b282ed-ddea-fdd8-bf1a-3e918653f1e3@collabora.com>
-Date:   Mon, 8 Jun 2020 11:28:03 +0200
+        Steven Rostedt <rostedt@goodmis.org>,
+        Roman Gushchin <guro@fb.com>
+References: <202006041054.874AA564@keescook>
+ <cb0cdaaa-7825-0b87-0384-db22329305bb@suse.cz>
+ <34455dce-6675-1fc2-8d61-45bf56f3f554@suse.cz>
+ <6b2b149e-c2bc-f87a-ea2c-3046c5e39bf9@oracle.com>
+ <faea2c18-edbe-f8b4-b171-6be866624856@oracle.com>
+ <CAJZ5v0jqmUmf7mv3wjniVM-YqPqhDSjxunU0E4VYCsUQqvrF_Q@mail.gmail.com>
+ <ce333dcb-2b2c-3e1f-2a7e-02a7819b1db4@suse.cz>
+ <894e8cee-33df-1f63-fb12-72dceb024ea7@oracle.com>
+ <202006050828.F85A75D13@keescook>
+ <92d994be-e4f5-b186-4ad7-21828de44967@suse.cz>
+ <202006051053.A61A42374C@keescook>
+From:   Vlastimil Babka <vbabka@suse.cz>
+Message-ID: <228295be-2e40-3c91-68a0-2715e66486d1@suse.cz>
+Date:   Mon, 8 Jun 2020 12:51:42 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-In-Reply-To: <20200608053737.GS89269@dtor-ws>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <202006051053.A61A42374C@keescook>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Pavel,
-
-W dniu 08.06.2020 o 07:37, Dmitry Torokhov pisze:
-> On Sun, Jun 07, 2020 at 10:24:14PM +0200, Pavel Machek wrote:
->> On Fri 2020-06-05 19:33:28, Andrzej Pietrasiewicz wrote:
->>> Userspace might want to implement a policy to temporarily disregard input
->>> from certain devices.
->>
->> Wow, you certainly cc a lot of lists.
->>
->>> An example use case is a convertible laptop, whose keyboard can be folded
->>> under the screen to create tablet-like experience. The user then must hold
->>> the laptop in such a way that it is difficult to avoid pressing the keyboard
->>> keys. It is therefore desirable to temporarily disregard input from the
->>> keyboard, until it is folded back. This obviously is a policy which should
->>> be kept out of the kernel, but the kernel must provide suitable means to
->>> implement such a policy.
->>>
->>> Due to interactions with suspend/resume, a helper has been added for drivers
->>> to decide if the device is being used or not (PATCH 1/7) and it has been
->>> applied to relevant drivers (PATCH 2,4,5,6/7).
->>
->> But is that a right way to implement it?
->>
->> We want this for cellphones, too -- touchscreen should be disabled
->> while the device is locked in the pocket -- but we really want the
->> touchscreen hardware to be powered down in that case (because it keeps
->> SoC busy and eats a _lot_ of electricity).
->>
->> But simplistic "receive an event and then drop it if device is
->> inhibited" does not allow that...
+On 6/5/20 8:46 PM, Kees Cook wrote:
+>> 
+>> Hmm I have a different idea. The whole cache_from_obj() was added because of
+>> kmemcg (commit b9ce5ef49f00d) where per-memcg cache can be different from the
+>> root one. And I just realized this usecase can go away with Roman's series [1].
+>> But cache_from_obj() also kept the original SLUB consistency check case, and you
+>> added the freelist hardening case. If kmemcg use case went away it would be nice
+>> to avoid the virt_to_cache() and check completely again, unless in debugging or
+>> hardened kernel.
 > 
-> I do not think you read the entirety of this patch series...
+> Is it that expensive? (I'm fine with it staying behind debug/hardening,
+> but if we can make it on by default, that'd be safer.)
+
+Well, it's fast path and e.g. networking guys did a lot of work to optimize
+SLUB. If we decide to stop trusting the supplied cache pointer completely, we
+can deprecate kmem_cache_free() and use kfree() everywhere (SLOB would need some
+adjustments to store size with each object like for kmalloc) but it would have
+to be a conscious decision.
+
+>> Furthermore, the original SLUB debugging case was an unconditional pr_err() plus
+>> WARN_ON_ONCE(1), which was kept by commit b9ce5ef49f00d.  With freelist
+>> hardening this all changed to WARN_ONCE. So the second and later cases are not
+>> reported at all for hardening and also not for explicitly enabled debugging like
+>> in this case, which is IMHO not ideal.
+> 
+> Oh, I have no problem with WARN vs WARN_ONCE -- there's no reason to
+> split this. And I'd love the hardening side to gain the tracking call
+> too, if it's available.
+> 
+> I had just used WARN_ONCE() since sometimes it can be very noisy to keep
+> warning for some condition that might not be correctable.
+
+OK.
+
+>> So I propose the following - the freelist hardening case keeps the WARN_ONCE,
+>> but also a one-line pr_err() for each case so they are not silent. The SLUB
+>> debugging case is always a full warning, and printing the tracking info if
+>> enabled and available. Pure kmemcg case does virt_to_cache() for now (until
+>> hopefully removed by Roman's series) but no checking at all. Would that work for
+>> everyone?
+>> [...]
+>> @@ -520,9 +528,18 @@ static inline struct kmem_cache *cache_from_obj(struct kmem_cache *s, void *x)
+>>  		return s;
+>>  
+>>  	cachep = virt_to_cache(x);
+>> -	WARN_ONCE(cachep && !slab_equal_or_root(cachep, s),
+>> -		  "%s: Wrong slab cache. %s but object is from %s\n",
+>> -		  __func__, s->name, cachep->name);
+>> +	if (unlikely(s->flags & SLAB_CONSISTENCY_CHECKS)) {
+>> +		if (WARN(cachep && !slab_equal_or_root(cachep, s),
+>> +			  "%s: Wrong slab cache. %s but object is from %s\n",
+>> +			  __func__, s->name, cachep->name))
+>> +			slab_print_tracking(cachep, x);
+>> +	} else if (IS_ENABLED(CONFIG_SLAB_FREELIST_HARDENED)) {
+>> +		if (unlikely(cachep && !slab_equal_or_root(cachep, s))) {
+>> +			pr_err("%s: Wrong slab cache. %s but object is from %s\n",
+>> +				  __func__, s->name, cachep->name);
+>> +			WARN_ON_ONCE(1);
+>> +		}
+>> +	}
+> 
+> How about just this (in addition to your slab_print_tracking() refactor):
+
+That could work, I will send a proper patch.
+
+> diff --git a/mm/slab.h b/mm/slab.h
+> index 207c83ef6e06..107b7f6db3c3 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -520,9 +520,10 @@ static inline struct kmem_cache *cache_from_obj(struct kmem_cache *s, void *x)
+>  		return s;
+>  
+>  	cachep = virt_to_cache(x);
+> -	WARN_ONCE(cachep && !slab_equal_or_root(cachep, s),
+> +	if (WARN(cachep && !slab_equal_or_root(cachep, s),
+>  		  "%s: Wrong slab cache. %s but object is from %s\n",
+> -		  __func__, s->name, cachep->name);
+> +		  __func__, s->name, cachep->name))
+> +		slab_print_tracking(cachep, x);
+>  	return cachep;
+>  }
+>  
 > 
 
-Yeah, kindly read the whole thread. Long story short: Inhibiting _is_ about
-ignoring events from inhibited devices. Obviously we can do better than
-just that. Indeed, the open() and close() callbacks (which are called at
-uninhibiting/inhibiting) mean "start providing events" and "stop providing
-events", respectively. How that translates into driver operation is highly
-driver-specific and cannot be handled at the input subsystem level, but it
-is the place where power savings can be realized: whenever the driver knows
-that nobody wants events from it it can do whatever it considers appropriate,
-including transitioning the device into low power mode, for example using
-PM runtime.
-
-Regards,
-
-Andrzej
