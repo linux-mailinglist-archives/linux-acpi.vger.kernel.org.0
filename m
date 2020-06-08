@@ -2,56 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74AF41F16F5
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jun 2020 12:51:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C7111F1734
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jun 2020 13:07:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729403AbgFHKvs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Jun 2020 06:51:48 -0400
-Received: from mx2.suse.de ([195.135.220.15]:37140 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729286AbgFHKvs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 8 Jun 2020 06:51:48 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 76DDDAC37;
-        Mon,  8 Jun 2020 10:51:48 +0000 (UTC)
-Subject: Re: slub freelist issue / BUG: unable to handle page fault for
- address: 000000003ffe0018
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Vegard Nossum <vegard.nossum@oracle.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Christoph Lameter <cl@linux.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Marco Elver <elver@google.com>,
-        Waiman Long <longman@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux MM <linux-mm@kvack.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Roman Gushchin <guro@fb.com>
-References: <202006041054.874AA564@keescook>
- <cb0cdaaa-7825-0b87-0384-db22329305bb@suse.cz>
- <34455dce-6675-1fc2-8d61-45bf56f3f554@suse.cz>
- <6b2b149e-c2bc-f87a-ea2c-3046c5e39bf9@oracle.com>
- <faea2c18-edbe-f8b4-b171-6be866624856@oracle.com>
- <CAJZ5v0jqmUmf7mv3wjniVM-YqPqhDSjxunU0E4VYCsUQqvrF_Q@mail.gmail.com>
- <ce333dcb-2b2c-3e1f-2a7e-02a7819b1db4@suse.cz>
- <894e8cee-33df-1f63-fb12-72dceb024ea7@oracle.com>
- <202006050828.F85A75D13@keescook>
- <92d994be-e4f5-b186-4ad7-21828de44967@suse.cz>
- <202006051053.A61A42374C@keescook>
-From:   Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <228295be-2e40-3c91-68a0-2715e66486d1@suse.cz>
-Date:   Mon, 8 Jun 2020 12:51:42 +0200
+        id S1729371AbgFHLHV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Jun 2020 07:07:21 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:39138 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729342AbgFHLHU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Jun 2020 07:07:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1591614438;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=e8PAvNJwl8CVvzuQhQrqiLIXXDJ1qmAQ7ddNr8veIRE=;
+        b=D+3yOyA0QOiB8otD8X6++S89FLHDDEdf1ZaY3ucrYMHs/C8UZGb4Os4Tq2LxNSyD6Zp9Fe
+        RueguPBudXyUsp00QFuaHtcdo48QOaMUwr4gA7Ewl9pBxm6m5Ec7WR2hv/XEtRZjpauIgi
+        yy0vUa/jPV9AyCi/b4382ubWC5XWzEs=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-170-U5Mw8n7CPhOfm5dG9vHtsQ-1; Mon, 08 Jun 2020 07:07:17 -0400
+X-MC-Unique: U5Mw8n7CPhOfm5dG9vHtsQ-1
+Received: by mail-wm1-f70.google.com with SMTP id g84so5125112wmf.4
+        for <linux-acpi@vger.kernel.org>; Mon, 08 Jun 2020 04:07:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=e8PAvNJwl8CVvzuQhQrqiLIXXDJ1qmAQ7ddNr8veIRE=;
+        b=mUBqWLUHePf/nGqwsbTnT9LNTmWU5JFXbh816TokyoGwMs5MaTm+XbipCA5bjOTqnI
+         vUiBrE4P6NXe9sQLYtyTozUMcDhA13xB2okrx7+Zwf5PgYxuVh8xQyPrqu0ypnbkD/yP
+         jl+CJJXGhe6AQUJRVfVNjBC5NNBy4ii3nmBcrUBypNwzguoEvgeRIx/wgvctTElO0Zqn
+         0q8i4EhFXJEu9Kr1xQa/DSlC3XWuN4ZVBH7QW+nBaA47RObMidKthoMTEpf4QYXi27cw
+         o70YhJcwhV8mL6TjQndhGg98bANDvCIYTRhulNh8cCkWxDD3UDUkY87lYGWeDbd1rz3R
+         6t1w==
+X-Gm-Message-State: AOAM530VSrEeKw0JIKx3OWiT8QPbD64MPB4g0A2CMcsU5u6y8WdzmWve
+        tB8iPzzZ3+BkMNxJ/asCK5kmB/K1c/GQBX5QwQhbvxPVYZr/9XDRSl8s53pkmWjqp6hTu59edBL
+        RiFm1w29O+Hehe3K7/wNWbg==
+X-Received: by 2002:a7b:c041:: with SMTP id u1mr3779531wmc.56.1591614434798;
+        Mon, 08 Jun 2020 04:07:14 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwdmXNioeILy0TwT3HF2mT0/SxnOtWw0UuEKWxJARe1kqkMmGS1C96ubFrpAE8YjhmMf7MKIQ==
+X-Received: by 2002:a7b:c041:: with SMTP id u1mr3779498wmc.56.1591614434473;
+        Mon, 08 Jun 2020 04:07:14 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id h15sm22301292wrt.73.2020.06.08.04.07.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Jun 2020 04:07:13 -0700 (PDT)
+Subject: Re: [PATCH v2 03/15] pwm: lpss: Add range limit check for the
+ base_unit register value
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+References: <20200607181840.13536-1-hdegoede@redhat.com>
+ <20200607181840.13536-4-hdegoede@redhat.com>
+ <20200608035023.GZ2428291@smile.fi.intel.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <90769dc0-3174-195b-34e0-ef4bb9d9b982@redhat.com>
+Date:   Mon, 8 Jun 2020 13:07:12 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <202006051053.A61A42374C@keescook>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20200608035023.GZ2428291@smile.fi.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
@@ -59,87 +83,73 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 6/5/20 8:46 PM, Kees Cook wrote:
->> 
->> Hmm I have a different idea. The whole cache_from_obj() was added because of
->> kmemcg (commit b9ce5ef49f00d) where per-memcg cache can be different from the
->> root one. And I just realized this usecase can go away with Roman's series [1].
->> But cache_from_obj() also kept the original SLUB consistency check case, and you
->> added the freelist hardening case. If kmemcg use case went away it would be nice
->> to avoid the virt_to_cache() and check completely again, unless in debugging or
->> hardened kernel.
+Hi,
+
+On 6/8/20 5:50 AM, Andy Shevchenko wrote:
+> On Sun, Jun 07, 2020 at 08:18:28PM +0200, Hans de Goede wrote:
+>> When the user requests a high enough period ns value, then the
+>> calculations in pwm_lpss_prepare() might result in a base_unit value of 0.
+>>
+>> But according to the data-sheet the way the PWM controller works is that
+>> each input clock-cycle the base_unit gets added to a N bit counter and
+>> that counter overflowing determines the PWM output frequency. Adding 0
+>> to the counter is a no-op. The data-sheet even explicitly states that
+>> writing 0 to the base_unit bits will result in the PWM outputting a
+>> continuous 0 signal.
 > 
-> Is it that expensive? (I'm fine with it staying behind debug/hardening,
-> but if we can make it on by default, that'd be safer.)
+> So, and why it's a problem?
 
-Well, it's fast path and e.g. networking guys did a lot of work to optimize
-SLUB. If we decide to stop trusting the supplied cache pointer completely, we
-can deprecate kmem_cache_free() and use kfree() everywhere (SLOB would need some
-adjustments to store size with each object like for kmalloc) but it would have
-to be a conscious decision.
+Lets sya the user requests a PWM output frequency of 100Hz on Cherry Trail
+which has a 19200000 Hz clock this will result in 100 * 65536 / 19200000 =
+0.3 -> 0 as base-unit value. So instead of getting 100 Hz the user will
+now get a pin which is always outputting low.
 
->> Furthermore, the original SLUB debugging case was an unconditional pr_err() plus
->> WARN_ON_ONCE(1), which was kept by commit b9ce5ef49f00d.  With freelist
->> hardening this all changed to WARN_ONCE. So the second and later cases are not
->> reported at all for hardening and also not for explicitly enabled debugging like
->> in this case, which is IMHO not ideal.
+OTOH if we clamp to 1 as lowest value, the user will get 192000000 / 65536
+= 292 Hz as output frequency which is as close to the requested value as
+we can get while actually still working as a PWM controller.
+
+>> base_unit values > (base_unit_range / 256), or iow base_unit values using
+>> the 8 most significant bits, cause loss of resolution of the duty-cycle.
+>> E.g. assuming a base_unit_range of 65536 steps, then a base_unit value of
+>> 768 (256 * 3), limits the duty-cycle resolution to 65536 / 768 = 85 steps.
+>> Clamp the max base_unit value to base_unit_range / 32 to ensure a
+>> duty-cycle resolution of at least 32 steps. This limits the maximum
+>> output frequency to 600 KHz / 780 KHz depending on the base clock.
 > 
-> Oh, I have no problem with WARN vs WARN_ONCE -- there's no reason to
-> split this. And I'd love the hardening side to gain the tracking call
-> too, if it's available.
-> 
-> I had just used WARN_ONCE() since sometimes it can be very noisy to keep
-> warning for some condition that might not be correctable.
+> This part I don't understand. Why we limiting base unit? I seems like a
+> deliberate regression.
 
-OK.
+The way the PWM controller works is that the base-unit gets added to
+say a 16 bit (on CHT) counter each input clock and then the highest 8
+bits of that counter get compared to the value programmed into the
+ON_TIME_DIV bits.
 
->> So I propose the following - the freelist hardening case keeps the WARN_ONCE,
->> but also a one-line pr_err() for each case so they are not silent. The SLUB
->> debugging case is always a full warning, and printing the tracking info if
->> enabled and available. Pure kmemcg case does virt_to_cache() for now (until
->> hopefully removed by Roman's series) but no checking at all. Would that work for
->> everyone?
->> [...]
->> @@ -520,9 +528,18 @@ static inline struct kmem_cache *cache_from_obj(struct kmem_cache *s, void *x)
->>  		return s;
->>  
->>  	cachep = virt_to_cache(x);
->> -	WARN_ONCE(cachep && !slab_equal_or_root(cachep, s),
->> -		  "%s: Wrong slab cache. %s but object is from %s\n",
->> -		  __func__, s->name, cachep->name);
->> +	if (unlikely(s->flags & SLAB_CONSISTENCY_CHECKS)) {
->> +		if (WARN(cachep && !slab_equal_or_root(cachep, s),
->> +			  "%s: Wrong slab cache. %s but object is from %s\n",
->> +			  __func__, s->name, cachep->name))
->> +			slab_print_tracking(cachep, x);
->> +	} else if (IS_ENABLED(CONFIG_SLAB_FREELIST_HARDENED)) {
->> +		if (unlikely(cachep && !slab_equal_or_root(cachep, s))) {
->> +			pr_err("%s: Wrong slab cache. %s but object is from %s\n",
->> +				  __func__, s->name, cachep->name);
->> +			WARN_ON_ONCE(1);
->> +		}
->> +	}
-> 
-> How about just this (in addition to your slab_print_tracking() refactor):
+Lets say we do not clamp and allow any value and lets say the user
+selects an output frequency of half the input clock, so base-unit
+value is 32768, then the counter will only have 2 values:
+0 and 32768 after that it will wrap around again. So any on time-div
+value < 128 will result in the output being always high and any
+value > 128 will result in the output being high/low 50% of the time
+and a value of 255 will make the output always low.
 
-That could work, I will send a proper patch.
+So in essence we now only have 3 duty cycle levels, which seems like
+a bad idea to me / not what a pwm controller is supposed to do.
 
-> diff --git a/mm/slab.h b/mm/slab.h
-> index 207c83ef6e06..107b7f6db3c3 100644
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -520,9 +520,10 @@ static inline struct kmem_cache *cache_from_obj(struct kmem_cache *s, void *x)
->  		return s;
->  
->  	cachep = virt_to_cache(x);
-> -	WARN_ONCE(cachep && !slab_equal_or_root(cachep, s),
-> +	if (WARN(cachep && !slab_equal_or_root(cachep, s),
->  		  "%s: Wrong slab cache. %s but object is from %s\n",
-> -		  __func__, s->name, cachep->name);
-> +		  __func__, s->name, cachep->name))
-> +		slab_print_tracking(cachep, x);
->  	return cachep;
->  }
->  
-> 
+So I decided to put a cut of at having at least 32 steps.
+
+The mean reason I wrote this patch though is to avoid a base-unit
+value of 0 which really results in a completely non working PWM
+output. I personally believe clamping on the high side is a good
+idea too. But if you are against that I can drop that part.
+
+Note that the clamping on the high side will not affect the
+primary user of the LPSS-pwm driver which is the i915 backlight
+code, that never asks for such high frequencies.  But it could
+help to avoid an user shooting themselves in the foot when using
+the PWM on a dev board through the sysfs interface.
+
+Regards,
+
+Hans
+
 
