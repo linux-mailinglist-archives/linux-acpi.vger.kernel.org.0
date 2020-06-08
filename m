@@ -2,124 +2,145 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFBC61F0F8B
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Jun 2020 22:24:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B1A81F1194
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jun 2020 04:54:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726872AbgFGUYS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 7 Jun 2020 16:24:18 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:53638 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726093AbgFGUYS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 7 Jun 2020 16:24:18 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 44C241C0BD2; Sun,  7 Jun 2020 22:24:15 +0200 (CEST)
-Date:   Sun, 7 Jun 2020 22:24:14 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        id S1728876AbgFHCyd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 7 Jun 2020 22:54:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47980 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728653AbgFHCya (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 7 Jun 2020 22:54:30 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86879C08C5C4
+        for <linux-acpi@vger.kernel.org>; Sun,  7 Jun 2020 19:54:30 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id v24so6071594plo.6
+        for <linux-acpi@vger.kernel.org>; Sun, 07 Jun 2020 19:54:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=TNiiby0GhibJHmG02ytGWtb3GrXv/h2IE3SFE6qK8wY=;
+        b=izDTLbNFapAPFawYa8bP5L1UpCxlkSTCCzx2ye/9STM1DqXymdysNnGkX12FV0/OIo
+         tKcjXEIEuxSNO572pWS545T9DoQqGqTM8DmMcj/pjObZb/s4KuucXPV8lxnGJsPOEWOP
+         creFxg4Q8lnO5UPN6FiY9AkscKdJteM1nKY+Qmci5RctGzZp1Lm8RhpxAeqkzQiUCQxI
+         Gn/htYffz0hnLWeWv7zjKwwzU0TiNbE2IVaAoUldJmQdAcEGN9qicP3+rskQKiUOfzQ9
+         T1+IF9bYkLx6QP/gZ6BWN651hoOpft0Cc6Lq2cjMJoEoVussc3m5Gv9e47HSM5NkG+Yl
+         PSSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=TNiiby0GhibJHmG02ytGWtb3GrXv/h2IE3SFE6qK8wY=;
+        b=cT6c1oyCCnq5VTF9Mnhthed7SIHwm7ezY+2GBRrIyQYoh47osguxx4xlbqYS0UdozL
+         WBVGGVifeSmyF977CZF43gChhSYdNWwTaWkB6Oio2MHfUXiZQgZCFkEIfOvosOe2QaLy
+         ILW4d29oQ3P//S+Z1cz4coOFvdKDIGDw2a04uHQIFEHtxbPG0iGlF4N+IVsmB0xh/jzC
+         0dtcPBG+tozq26XHO+xTOFdSSuO8Blpn1QRb/iWi+R/TaoR6TwL6DrOhy8MXD2esaunM
+         8uYeb0d/4aLrS8BDeqBEp4cD8s9DRgR6Bjbm4x+5jSwMHlSA/wyAj8qtSO7lkn4BaREj
+         NnJQ==
+X-Gm-Message-State: AOAM5334nEOcIZBTd9fuFZfn8QM+mUbCEG0hD72Z4RmR68fNjnJjn6ut
+        eS0tCRpdHMFbCdE6mBqdpWPN+Q==
+X-Google-Smtp-Source: ABdhPJxkqD1zFPHkx/wch8a4hS4Dcd7qZB1Ug7k+ig+u/wKNnkcnbqH/JdvGWQP6MIHxl1bz+Ni7fQ==
+X-Received: by 2002:a17:90a:f3c4:: with SMTP id ha4mr15260604pjb.18.1591584870012;
+        Sun, 07 Jun 2020 19:54:30 -0700 (PDT)
+Received: from [10.80.2.98] ([45.135.186.73])
+        by smtp.gmail.com with ESMTPSA id t9sm9533489pjs.16.2020.06.07.19.54.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 07 Jun 2020 19:54:29 -0700 (PDT)
+Subject: Re: [PATCH 0/2] Introduce PCI_FIXUP_IOMMU
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Peter Hutterer <peter.hutterer@redhat.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com
-Subject: Re: [PATCH v3 0/7] Support inhibiting input devices
-Message-ID: <20200607202414.GB13138@amd>
-References: <20200604072853.GP89269@dtor-ws>
- <20200605173335.13753-1-andrzej.p@collabora.com>
+        jean-philippe <jean-philippe@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        kenneth-lee-2012@foxmail.com, Wangzhou <wangzhou1@hisilicon.com>,
+        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        iommu@lists.linux-foundation.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
+References: <20200605231909.GA1155454@bjorn-Precision-5520>
+From:   Zhangfei Gao <zhangfei.gao@linaro.org>
+Message-ID: <be91b0f0-c685-789d-6868-1c8ebd62b770@linaro.org>
+Date:   Mon, 8 Jun 2020 10:54:15 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="E39vaYmALEf/7YXx"
-Content-Disposition: inline
-In-Reply-To: <20200605173335.13753-1-andrzej.p@collabora.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20200605231909.GA1155454@bjorn-Precision-5520>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi, Bjorn
 
---E39vaYmALEf/7YXx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 2020/6/6 上午7:19, Bjorn Helgaas wrote:
+> On Thu, Jun 04, 2020 at 09:33:07PM +0800, Zhangfei Gao wrote:
+>> On 2020/6/2 上午1:41, Bjorn Helgaas wrote:
+>>> On Thu, May 28, 2020 at 09:33:44AM +0200, Joerg Roedel wrote:
+>>>> On Wed, May 27, 2020 at 01:18:42PM -0500, Bjorn Helgaas wrote:
+>>>>> Is this slowdown significant?  We already iterate over every device
+>>>>> when applying PCI_FIXUP_FINAL quirks, so if we used the existing
+>>>>> PCI_FIXUP_FINAL, we wouldn't be adding a new loop.  We would only be
+>>>>> adding two more iterations to the loop in pci_do_fixups() that tries
+>>>>> to match quirks against the current device.  I doubt that would be a
+>>>>> measurable slowdown.
+>>>> I don't know how significant it is, but I remember people complaining
+>>>> about adding new PCI quirks because it takes too long for them to run
+>>>> them all. That was in the discussion about the quirk disabling ATS on
+>>>> AMD Stoney systems.
+>>>>
+>>>> So it probably depends on how many PCI devices are in the system whether
+>>>> it causes any measureable slowdown.
+>>> I found this [1] from Paul Menzel, which was a slowdown caused by
+>>> quirk_usb_early_handoff().  I think the real problem is individual
+>>> quirks that take a long time.
+>>>
+>>> The PCI_FIXUP_IOMMU things we're talking about should be fast, and of
+>>> course, they're only run for matching devices anyway.  So I'd rather
+>>> keep them as PCI_FIXUP_FINAL than add a whole new phase.
+>>>
+>> Thanks Bjorn for taking time for this.
+>> If so, it would be much simpler.
+>>
+>> +++ b/drivers/iommu/iommu.c
+>> @@ -2418,6 +2418,10 @@ int iommu_fwspec_init(struct device *dev, struct
+>> fwnode_handle *iommu_fwnode,
+>>          fwspec->iommu_fwnode = iommu_fwnode;
+>>          fwspec->ops = ops;
+>>          dev_iommu_fwspec_set(dev, fwspec);
+>> +
+>> +       if (dev_is_pci(dev))
+>> +               pci_fixup_device(pci_fixup_final, to_pci_dev(dev));
+>> +
+>>
+>> Then pci_fixup_final will be called twice, the first in pci_bus_add_device.
+>> Here in iommu_fwspec_init is the second time, specifically for iommu_fwspec.
+>> Will send this when 5.8-rc1 is open.
+> Wait, this whole fixup approach seems wrong to me.  No matter how you
+> do the fixup, it's still a fixup, which means it requires ongoing
+> maintenance.  Surely we don't want to have to add the Vendor/Device ID
+> for every new AMBA device that comes along, do we?
+>
+>
+Here the fake pci device has standard PCI cfg space, but physical 
+implementation is base on AMBA
+They can provide pasid feature.
+However,
+1, does not support tlp since they are not real pci devices.
+2. does not support pri, instead support stall (provided by smmu)
+And stall is not a pci feature, so it is not described in struct 
+pci_dev, but in struct iommu_fwspec.
+So we use this fixup to tell pci system that the devices can support 
+stall, and hereby support pasid.
 
-On Fri 2020-06-05 19:33:28, Andrzej Pietrasiewicz wrote:
-> Userspace might want to implement a policy to temporarily disregard input
-> from certain devices.
-
-Wow, you certainly cc a lot of lists.
-
-> An example use case is a convertible laptop, whose keyboard can be folded
-> under the screen to create tablet-like experience. The user then must hold
-> the laptop in such a way that it is difficult to avoid pressing the keybo=
-ard
-> keys. It is therefore desirable to temporarily disregard input from the
-> keyboard, until it is folded back. This obviously is a policy which should
-> be kept out of the kernel, but the kernel must provide suitable means to
-> implement such a policy.
->=20
-> Due to interactions with suspend/resume, a helper has been added for driv=
-ers
-> to decide if the device is being used or not (PATCH 1/7) and it has been
-> applied to relevant drivers (PATCH 2,4,5,6/7).
-
-But is that a right way to implement it?
-
-We want this for cellphones, too -- touchscreen should be disabled
-while the device is locked in the pocket -- but we really want the
-touchscreen hardware to be powered down in that case (because it keeps
-SoC busy and eats a _lot_ of electricity).
-
-But simplistic "receive an event and then drop it if device is
-inhibited" does not allow that...
-
-Best regards,
-								Pavel
-							=09
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
-
---E39vaYmALEf/7YXx
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl7dTO4ACgkQMOfwapXb+vKNuACgw3cpx7Z15Nm3EAs8yyTuu1RS
-DsYAn1yorcZKMbA2oKpOoVakbRalRIie
-=Dt1J
------END PGP SIGNATURE-----
-
---E39vaYmALEf/7YXx--
+Thanks
