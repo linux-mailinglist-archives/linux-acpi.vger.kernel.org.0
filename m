@@ -2,124 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7793B1F4152
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jun 2020 18:49:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8A071F4157
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jun 2020 18:49:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731179AbgFIQta (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Jun 2020 12:49:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51626 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731061AbgFIQt3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 9 Jun 2020 12:49:29 -0400
-Received: from localhost (mobile-166-170-222-206.mycingular.net [166.170.222.206])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3D1D420737;
-        Tue,  9 Jun 2020 16:49:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591721368;
-        bh=5Q7RvyofmbZbrB/I38g1tWmxg8QS/w1w0oFGJk1TAAE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=dvG4keriVYERu7ME7jmTxlggF24dPHuT8ZHwsHgyeBv8aHb5TopY1KdfJVDndSoXl
-         RxQiw2j9xiinR8ke3p9Ltba3X4AhyTf4XbSb9RwT2AqKWdKTjRg+cV7DgApD257z37
-         fAvyNM3ngOAOHRMuIGrK7cGIhRs7rGlN9Hoz8zWA=
-Date:   Tue, 9 Jun 2020 11:49:26 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Zhangfei Gao <zhangfei.gao@linaro.org>,
-        Joerg Roedel <joro@8bytes.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        jean-philippe <jean-philippe@linaro.org>,
+        id S1731247AbgFIQth (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 Jun 2020 12:49:37 -0400
+Received: from smtprelay0148.hostedemail.com ([216.40.44.148]:58246 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1731061AbgFIQtg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Jun 2020 12:49:36 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 07A511005E387;
+        Tue,  9 Jun 2020 16:49:34 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:967:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:1981:2194:2199:2393:2525:2553:2561:2564:2682:2685:2828:2859:2902:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3353:3865:3866:3867:3868:3870:3871:3872:3873:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:5007:7514:7875:7903:9025:10004:10400:10848:11026:11232:11658:11914:12043:12048:12296:12297:12555:12740:12760:12895:12986:13069:13311:13357:13439:13845:14181:14659:14721:21080:21451:21627:21740:21811:21939:30029:30054:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: van97_43148ba26dc4
+X-Filterd-Recvd-Size: 2619
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf19.hostedemail.com (Postfix) with ESMTPA;
+        Tue,  9 Jun 2020 16:49:31 +0000 (UTC)
+Message-ID: <9a79aded6981ec47f1f8b317b784e6e44158ac61.camel@perches.com>
+Subject: Re: [PATCH v3 0/7] Venus dynamic debug
+From:   Joe Perches <joe@perches.com>
+To:     Randy Dunlap <rdunlap@infradead.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        Jim Cromie <jim.cromie@gmail.com>
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        kenneth-lee-2012@foxmail.com, Wangzhou <wangzhou1@hisilicon.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-pci <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH 0/2] Introduce PCI_FIXUP_IOMMU
-Message-ID: <20200609164926.GA1452092@bjorn-Precision-5520>
+        Jason Baron <jbaron@akamai.com>
+Date:   Tue, 09 Jun 2020 09:49:30 -0700
+In-Reply-To: <c239d5df-e069-2091-589e-30f341c2cbd3@infradead.org>
+References: <20200609104604.1594-1-stanimir.varbanov@linaro.org>
+         <20200609111323.GA19604@bombadil.infradead.org>
+         <c239d5df-e069-2091-589e-30f341c2cbd3@infradead.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.2-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK8P3a38bhE_VO_eVcsfsGKgED=gmSEntQmrhwbLkeA6Si0qaw@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 09, 2020 at 11:15:06AM +0200, Arnd Bergmann wrote:
-> On Tue, Jun 9, 2020 at 6:02 AM Zhangfei Gao <zhangfei.gao@linaro.org> wrote:
-> > On 2020/6/9 上午12:41, Bjorn Helgaas wrote:
-> > > On Mon, Jun 08, 2020 at 10:54:15AM +0800, Zhangfei Gao wrote:
-> > >> On 2020/6/6 上午7:19, Bjorn Helgaas wrote:
-> > >>>> +++ b/drivers/iommu/iommu.c
-> > >>>> @@ -2418,6 +2418,10 @@ int iommu_fwspec_init(struct device *dev, struct
-> > >>>> fwnode_handle *iommu_fwnode,
-> > >>>>           fwspec->iommu_fwnode = iommu_fwnode;
-> > >>>>           fwspec->ops = ops;
-> > >>>>           dev_iommu_fwspec_set(dev, fwspec);
-> > >>>> +
-> > >>>> +       if (dev_is_pci(dev))
-> > >>>> +               pci_fixup_device(pci_fixup_final, to_pci_dev(dev));
-> > >>>> +
-> > >>>>
-> > >>>> Then pci_fixup_final will be called twice, the first in pci_bus_add_device.
-> > >>>> Here in iommu_fwspec_init is the second time, specifically for iommu_fwspec.
-> > >>>> Will send this when 5.8-rc1 is open.
-> > >>> Wait, this whole fixup approach seems wrong to me.  No matter how you
-> > >>> do the fixup, it's still a fixup, which means it requires ongoing
-> > >>> maintenance.  Surely we don't want to have to add the Vendor/Device ID
-> > >>> for every new AMBA device that comes along, do we?
-> > >>>
-> > >> Here the fake pci device has standard PCI cfg space, but physical
-> > >> implementation is base on AMBA
-> > >> They can provide pasid feature.
-> > >> However,
-> > >> 1, does not support tlp since they are not real pci devices.
-> > >> 2. does not support pri, instead support stall (provided by smmu)
-> > >> And stall is not a pci feature, so it is not described in struct pci_dev,
-> > >> but in struct iommu_fwspec.
-> > >> So we use this fixup to tell pci system that the devices can support stall,
-> > >> and hereby support pasid.
-> > > This did not answer my question.  Are you proposing that we update a
-> > > quirk every time a new AMBA device is released?  I don't think that
-> > > would be a good model.
-> >
-> > Yes, you are right, but we do not have any better idea yet.
-> > Currently we have three fake pci devices, which support stall and pasid.
-> > We have to let pci system know the device can support pasid, because of
-> > stall feature, though not support pri.
-> > Do you have any other ideas?
+(adding Jim Cromie and comments)
+
+On Tue, 2020-06-09 at 09:03 -0700, Randy Dunlap wrote:
+> On 6/9/20 4:13 AM, Matthew Wilcox wrote:
+> > On Tue, Jun 09, 2020 at 01:45:57PM +0300, Stanimir Varbanov wrote:
+> > > Here is the third version of dynamic debug improvements in Venus
+> > > driver.  As has been suggested on previous version by Joe [1] I've
+> > > made the relevant changes in dynamic debug core to handle leveling
+> > > as more generic way and not open-code/workaround it in the driver.
+> > > 
+> > > About changes:
+> > >  - added change in the dynamic_debug and in documentation
+> > >  - added respective pr_debug_level and dev_dbg_level
+> > 
+> > Honestly, this seems like you want to use tracepoints, not dynamic debug.
+
+Tracepoints are a bit heavy and do not have any class
+or grouping mechanism.
+
+debug_class is likely a better name than debug_level
+
+> Also see this patch series:
+> https://lore.kernel.org/lkml/20200605162645.289174-1-jim.cromie@gmail.com/
+> [PATCH 00/16] dynamic_debug: cleanups, 2 features
 > 
-> It sounds like the best way would be to allocate a PCI capability for it, so
-> detection can be done through config space, at least in future devices,
-> or possibly after a firmware update if the config space in your system
-> is controlled by firmware somewhere.  Once there is a proper mechanism
-> to do this, using fixups to detect the early devices that don't use that
-> should be uncontroversial. I have no idea what the process or timeline
-> is to add new capabilities into the PCIe specification, or if this one
-> would be acceptable to the PCI SIG at all.
+> It adds/expands dynamic debug flags quite a bit.
 
-That sounds like a possibility.  The spec already defines a
-Vendor-Specific Extended Capability (PCIe r5.0, sec 7.9.5) that might
-be a candidate.
+Yes, and thanks Randy and Jim and Stanimir
 
-> If detection cannot be done through PCI config space, the next best
-> alternative is to pass auxiliary data through firmware. On DT based
-> machines, you can list non-hotpluggable PCIe devices and add custom
-> properties that could be read during device enumeration. I assume
-> ACPI has something similar, but I have not done that.
+I haven't gone through Jim's proposal enough yet.
+It's unfortunate these patches series conflict.
 
-ACPI has _DSM (ACPI v6.3, sec 9.1.1), which might be a candidate.  I
-like this better than a PCI capability because the property you need
-to expose is not a PCI property.
+And for Jim, a link to Stanimir's patch series:
+https://lore.kernel.org/lkml/20200609104604.1594-1-stanimir.varbanov@linaro.org/
+
+
