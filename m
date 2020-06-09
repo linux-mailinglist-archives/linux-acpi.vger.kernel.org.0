@@ -2,122 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DF331F39CC
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jun 2020 13:32:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1717B1F3A9D
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jun 2020 14:28:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729038AbgFILc5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Jun 2020 07:32:57 -0400
-Received: from mga07.intel.com ([134.134.136.100]:11262 "EHLO mga07.intel.com"
+        id S1729185AbgFIM2B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 Jun 2020 08:28:01 -0400
+Received: from mx2.suse.de ([195.135.220.15]:51012 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728051AbgFILcz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 9 Jun 2020 07:32:55 -0400
-IronPort-SDR: qHweE/JlO8A+2+z9vDd9iLjTYLjo3JMQlj41njps88EDaoo0vBJDgxIl+v0tLzXZsnGHdTu5Ei
- Hfxam2zTsHYQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2020 04:32:54 -0700
-IronPort-SDR: lKDKus3APn1bKbgBIwg6urxIw7pI0i/NCuY2+woSiz0eO5RXJTgqSV+j0Rlr0Pox3HxkytogN9
- Rn11SihIRlqg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,491,1583222400"; 
-   d="scan'208";a="295808008"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga004.fm.intel.com with ESMTP; 09 Jun 2020 04:32:51 -0700
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1jicUw-00Bt7J-1x; Tue, 09 Jun 2020 14:32:54 +0300
-Date:   Tue, 9 Jun 2020 14:32:54 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
-        <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 11/15] pwm: crc: Implement get_state() method
-Message-ID: <20200609113254.GN2428291@smile.fi.intel.com>
-References: <20200607181840.13536-1-hdegoede@redhat.com>
- <20200607181840.13536-12-hdegoede@redhat.com>
+        id S1726903AbgFIM2A (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 9 Jun 2020 08:28:00 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 851C3AAC6;
+        Tue,  9 Jun 2020 12:28:00 +0000 (UTC)
+Date:   Tue, 9 Jun 2020 14:27:55 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, Joe Perches <joe@perches.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jason Baron <jbaron@akamai.com>, Chris Mason <clm@fb.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v3 2/7] dynamic_debug: Group debug messages by level
+ bitmask
+Message-ID: <20200609122755.GE23752@linux-b0ei>
+References: <20200609104604.1594-1-stanimir.varbanov@linaro.org>
+ <20200609104604.1594-3-stanimir.varbanov@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200607181840.13536-12-hdegoede@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20200609104604.1594-3-stanimir.varbanov@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Jun 07, 2020 at 08:18:36PM +0200, Hans de Goede wrote:
-> Implement the pwm_ops.get_state() method to complete the support for the
-> new atomic PWM API.
-
-This one is good.
-
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/pwm/pwm-crc.c | 29 +++++++++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
+On Tue 2020-06-09 13:45:59, Stanimir Varbanov wrote:
+> This will allow dynamic debug users and driver writers to group
+> debug messages by level bitmask.  The level bitmask should be a
+> hex number.
 > 
-> diff --git a/drivers/pwm/pwm-crc.c b/drivers/pwm/pwm-crc.c
-> index 58c7e9ef7278..6c75a3470bc8 100644
-> --- a/drivers/pwm/pwm-crc.c
-> +++ b/drivers/pwm/pwm-crc.c
-> @@ -114,8 +114,37 @@ static int crc_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
->  	return 0;
->  }
->  
-> +static void crc_pwm_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
-> +			       struct pwm_state *state)
-> +{
-> +	struct crystalcove_pwm *crc_pwm = to_crc_pwm(chip);
-> +	struct device *dev = crc_pwm->chip.dev;
-> +	unsigned int clk_div, clk_div_reg, duty_cycle_reg;
-> +	int error;
-> +
-> +	error = regmap_read(crc_pwm->regmap, PWM0_CLK_DIV, &clk_div_reg);
-> +	if (error) {
-> +		dev_err(dev, "Error reading PWM0_CLK_DIV %d\n", error);
-> +		return;
-> +	}
-> +
-> +	error = regmap_read(crc_pwm->regmap, PWM0_DUTY_CYCLE, &duty_cycle_reg);
-> +	if (error) {
-> +		dev_err(dev, "Error reading PWM0_DUTY_CYCLE %d\n", error);
-> +		return;
-> +	}
-> +
-> +	clk_div = (clk_div_reg & ~PWM_OUTPUT_ENABLE) + 1;
-> +
-> +	state->period     = clk_div * NSEC_PER_MHZ * 256 / PWM_BASE_CLK_MHZ;
-> +	state->duty_cycle = duty_cycle_reg * state->period / PWM_MAX_LEVEL;
-> +	state->polarity   = PWM_POLARITY_NORMAL;
-> +	state->enabled    = !!(clk_div_reg & PWM_OUTPUT_ENABLE);
-> +}
-> +
->  static const struct pwm_ops crc_pwm_ops = {
->  	.apply = crc_pwm_apply,
-> +	.get_state = crc_pwm_get_state,
+> Done this functionality by extending dynamic debug metadata with
+> new level member and propagate it over all the users.  Also
+> introduce new dynamic_pr_debug_level and dynamic_dev_dbg_level
+> macros to be used by the drivers.
+
+Could you please provide more details?
+
+What is the use case?
+What is the exact meaning of the level value?
+How the levels will get defined?
+
+Dynamic debug is used for messages with KERN_DEBUG log level.
+Is this another dimension of the message leveling?
+
+Given that the filter is defined by bits, it is rather grouping
+by context or so.
+
+
+> diff --git a/lib/dynamic_debug.c b/lib/dynamic_debug.c
+> index 8f199f403ab5..5d28d388f6dd 100644
+> --- a/lib/dynamic_debug.c
+> +++ b/lib/dynamic_debug.c
+> @@ -55,6 +55,7 @@ struct ddebug_query {
+>  	const char *function;
+>  	const char *format;
+>  	unsigned int first_lineno, last_lineno;
+> +	unsigned int level;
 >  };
 >  
->  static int crystalcove_pwm_probe(struct platform_device *pdev)
-> -- 
-> 2.26.2
-> 
+>  struct ddebug_iter {
+> @@ -187,6 +188,18 @@ static int ddebug_change(const struct ddebug_query *query,
+>  
+>  			nfound++;
+>  
+> +#ifdef CONFIG_JUMP_LABEL
+> +			if (query->level && query->level & dp->level) {
+> +				if (flags & _DPRINTK_FLAGS_PRINT)
+> +					static_branch_enable(&dp->key.dd_key_true);
+> +				else
+> +					static_branch_disable(&dp->key.dd_key_true);
+> +			} else if (query->level &&
+> +				   flags & _DPRINTK_FLAGS_PRINT) {
+> +				static_branch_disable(&dp->key.dd_key_true);
+> +				continue;
+> +			}
+> +#endif
 
--- 
-With Best Regards,
-Andy Shevchenko
+This looks like a hack in the existing code:
 
+  + It is suspicious that "continue" is only in one branch. It means
+    that static_branch_enable/disable() might get called 2nd time
+    by the code below. Or newflags are not stored when there is a change.
 
+  + It changes the behavior and the below vpr_info("changed ...")
+    is not called.
+
+Or do I miss anything?
+
+>			newflags = (dp->flags & mask) | flags;
+>  			if (newflags == dp->flags)
+>  				continue;
+
+Best Regards,
+Petr
