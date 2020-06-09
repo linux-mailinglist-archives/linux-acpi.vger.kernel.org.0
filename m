@@ -2,50 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B63E01F3893
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jun 2020 12:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD76A1F3891
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jun 2020 12:49:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728400AbgFIKtf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Jun 2020 06:49:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60774 "EHLO
+        id S1727093AbgFIKtc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 Jun 2020 06:49:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728891AbgFIKrs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Jun 2020 06:47:48 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 203C2C008634
-        for <linux-acpi@vger.kernel.org>; Tue,  9 Jun 2020 03:47:43 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id y13so21824631eju.2
-        for <linux-acpi@vger.kernel.org>; Tue, 09 Jun 2020 03:47:43 -0700 (PDT)
+        with ESMTP id S1728231AbgFIKr5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Jun 2020 06:47:57 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C5BCC00863C
+        for <linux-acpi@vger.kernel.org>; Tue,  9 Jun 2020 03:47:45 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id m32so10760377ede.8
+        for <linux-acpi@vger.kernel.org>; Tue, 09 Jun 2020 03:47:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=nJBKYN0yMS8AJgBotdxC1qOHMAr254b0bdL2BOSVBX8=;
-        b=q35TGCGg2mkkEjc2wKlEhVaWy46yXIz+7jdW6N6OkmJb73py5fZiUzxTInYQq0bo+F
-         D97pelWumzAAEdcO8aFTs9/xmUjvxBzF5dgRrVlNpV0QPs4BmirmqiXT60dogulqVqDk
-         /2/8mlHTtSWjanvIyzfTh11muRWkGWkVC1kL+s9b3aXLnqcsYKp4KBrqOK4Gd54yPPet
-         n8MSEc59ajB3s538tDFCCfQD/bylg4wisxrZJMp9ApiHtzVsi+QMSeyoo0xeNqwe8zhv
-         TTgpCcwVcQ1EuY5KZIhARuAFN4xdFt8NdIM8OlX4WRiuMtUaKoYHy93CvXg2HxkKZOv8
-         12mg==
+        bh=KgK4P2m0HWbcss1X1BSEkxtN1Ke/4iUpNFB9xpmQCOg=;
+        b=UPvX5QPGLBD6wvTceu7r+wBSYknWrZ9OGRE9Zsl1g3in+7vsnsuoDklsiQJvGe//YE
+         4hp574BPc7X4I70eobXw2nqhV1cp4ZVml9EZKW+ssvr0HYPdUT2gOYlNmU03rEfZ09dy
+         UrosjQag9MDC2HScC/txdU/oi9AsxXODKDZdc8MgzX1qiCtvVf8hfimibs725xMslHRN
+         kqHri+t64zKu4DE+9m9rlqW523rF8qoQP0EhH4GM17uui6B9dx1lP/yllSCGSHz56a7L
+         oNSz7+n+3zEhU8wVrL86XpV4bqhvQ6LRu39MQYd/yuVod/e5ELFg7Jn1cnOaUvR++hW7
+         EM1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=nJBKYN0yMS8AJgBotdxC1qOHMAr254b0bdL2BOSVBX8=;
-        b=hLSdC3Cv991+HRdd3G3aQZQ8gKP124E2WkK5PIt6BqaJeLWuCClsnTt8OIzelAjGXN
-         /pzfDIWaJAyOLiv6frLlUrysGKTlmgtiWFJbGCcLj1bqX80LubwSnxqpodau3yldYBDQ
-         ZPsfchGFqvurG7Ln5WPy2BcP9MQpaO7htvoXcjbWRVQq6ooRI87iVk4LcIAVDWHyrSbC
-         Nx8einQk9/fGwdReDa0eDgdA06y0ANw2srheC0rj+LAkj3qGdG64EzUiD3DmHi17cZQX
-         KKZf1tS/Snm6QhCBNd4b0x2pxclpdWaDEavgwsZV79mvn8tScj4swblm8j0w2xEAnACc
-         Qw7Q==
-X-Gm-Message-State: AOAM531YOf1kJproH0Veh+K5dWPybaeavbo5YhLspwh35W8u6iNJsrvt
-        z/nvIsAwpiNQB9U1qFG1uHuNVw==
-X-Google-Smtp-Source: ABdhPJwbs89Sxz204nqQDsKgXCoF+iaDYcP3btNQRBahLuS6eOL/DHBbG2RDImrJGYxnwGfYKSDVQg==
-X-Received: by 2002:a17:906:e247:: with SMTP id gq7mr24263420ejb.107.1591699661849;
-        Tue, 09 Jun 2020 03:47:41 -0700 (PDT)
+        bh=KgK4P2m0HWbcss1X1BSEkxtN1Ke/4iUpNFB9xpmQCOg=;
+        b=Act6KrYEc3tZYQb+4gF5xkQURyeLRPq/n5xMgv5A9Yv+UDf9Kv5Z2XvwjjGLs5Vehj
+         JjXuW0Zu1PrNPdciJqk66eCZdbuZUhsuMY5LMSnC0bJfe76vUU5gJgLKsDEvAi7JPp7I
+         YhaEWSeVmBeWovx0UqrqHn5TNosBBkyBIDmDo2eg200CxXEyJ0wlAu5OZ+pV56usBgNH
+         WIkm94hZECmyjTdwyJ0DfsPBPpl5A3VwTgnubk8Qxm6BF+sknAbdEDjOyV/mZ9xp5iKR
+         gndEMwvscxYxMOxxLk/YRYmhj9wNRl6uNKfRhdaQr0ySJ/3a2pd2bW9l4tOlFiMM4K17
+         FxZw==
+X-Gm-Message-State: AOAM5320Y/1GRHEHgb5JNHzAt/3ggox3RvYaq2WUOLJTtVnEAtX8IQzM
+        /2zgTl/NMpEyOIO0yBt5pjw+oQ==
+X-Google-Smtp-Source: ABdhPJzhW/FuUGYzWYiWQfrwNgrP7hBIs7fJIRdVHuyLuLXWjZ/RasdGZG4rvQtmuhDFDz63vVvStA==
+X-Received: by 2002:aa7:da17:: with SMTP id r23mr27104020eds.261.1591699664011;
+        Tue, 09 Jun 2020 03:47:44 -0700 (PDT)
 Received: from localhost.localdomain (hst-221-69.medicom.bg. [84.238.221.69])
-        by smtp.gmail.com with ESMTPSA id qt19sm12267763ejb.14.2020.06.09.03.47.40
+        by smtp.gmail.com with ESMTPSA id qt19sm12267763ejb.14.2020.06.09.03.47.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2020 03:47:41 -0700 (PDT)
+        Tue, 09 Jun 2020 03:47:43 -0700 (PDT)
 From:   Stanimir Varbanov <stanimir.varbanov@linaro.org>
 To:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
@@ -55,9 +55,9 @@ Cc:     Joe Perches <joe@perches.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jason Baron <jbaron@akamai.com>,
         Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Subject: [PATCH v3 4/7] printk: Add pr_debug_level macro over dynamic one
-Date:   Tue,  9 Jun 2020 13:46:01 +0300
-Message-Id: <20200609104604.1594-5-stanimir.varbanov@linaro.org>
+Subject: [PATCH v3 5/7] venus: Add debugfs interface to set firmware log level
+Date:   Tue,  9 Jun 2020 13:46:02 +0300
+Message-Id: <20200609104604.1594-6-stanimir.varbanov@linaro.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200609104604.1594-1-stanimir.varbanov@linaro.org>
 References: <20200609104604.1594-1-stanimir.varbanov@linaro.org>
@@ -66,37 +66,163 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Introduce new pr_debug_level macro over dynamic_debug level one
-to allow dynamic debugging to show only important messages.
+This will be useful when debugging specific issues related to
+firmware HFI interface.
 
 Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
 ---
- include/linux/printk.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/platform/qcom/venus/Makefile    |  2 +-
+ drivers/media/platform/qcom/venus/core.c      |  5 ++++
+ drivers/media/platform/qcom/venus/core.h      |  3 +++
+ drivers/media/platform/qcom/venus/dbgfs.c     | 26 +++++++++++++++++++
+ drivers/media/platform/qcom/venus/dbgfs.h     | 12 +++++++++
+ drivers/media/platform/qcom/venus/hfi_venus.c |  7 ++++-
+ 6 files changed, 53 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/media/platform/qcom/venus/dbgfs.c
+ create mode 100644 drivers/media/platform/qcom/venus/dbgfs.h
 
-diff --git a/include/linux/printk.h b/include/linux/printk.h
-index ceea84aa705b..2a6eca56010f 100644
---- a/include/linux/printk.h
-+++ b/include/linux/printk.h
-@@ -416,12 +416,18 @@ extern int kptr_restrict;
-  */
- #define pr_debug(fmt, ...)			\
- 	dynamic_pr_debug(fmt, ##__VA_ARGS__)
-+#define pr_debug_level(lvl, fmt, ...) \
-+	dynamic_pr_debug_level(lvl, fmt, ##__VA_ARGS__)
- #elif defined(DEBUG)
- #define pr_debug(fmt, ...) \
- 	printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__)
-+#define pr_debug_level(lvl, fmt, ...) \
-+	printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__)
- #else
- #define pr_debug(fmt, ...) \
- 	no_printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__)
-+#define pr_debug_level(lvl, fmt, ...) \
-+	no_printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__)
- #endif
+diff --git a/drivers/media/platform/qcom/venus/Makefile b/drivers/media/platform/qcom/venus/Makefile
+index 64af0bc1edae..dfc636865709 100644
+--- a/drivers/media/platform/qcom/venus/Makefile
++++ b/drivers/media/platform/qcom/venus/Makefile
+@@ -3,7 +3,7 @@
  
- /*
+ venus-core-objs += core.o helpers.o firmware.o \
+ 		   hfi_venus.o hfi_msgs.o hfi_cmds.o hfi.o \
+-		   hfi_parser.o pm_helpers.o
++		   hfi_parser.o pm_helpers.o dbgfs.o
+ 
+ venus-dec-objs += vdec.o vdec_ctrls.o
+ venus-enc-objs += venc.o venc_ctrls.o
+diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
+index 203c6538044f..bbb394ca4175 100644
+--- a/drivers/media/platform/qcom/venus/core.c
++++ b/drivers/media/platform/qcom/venus/core.c
+@@ -290,6 +290,10 @@ static int venus_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_dev_unregister;
+ 
++	ret = venus_dbgfs_init(core);
++	if (ret)
++		goto err_dev_unregister;
++
+ 	return 0;
+ 
+ err_dev_unregister:
+@@ -337,6 +341,7 @@ static int venus_remove(struct platform_device *pdev)
+ 	v4l2_device_unregister(&core->v4l2_dev);
+ 	mutex_destroy(&core->pm_lock);
+ 	mutex_destroy(&core->lock);
++	venus_dbgfs_deinit(core);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/media/platform/qcom/venus/core.h b/drivers/media/platform/qcom/venus/core.h
+index 7118612673c9..b48782f9aa95 100644
+--- a/drivers/media/platform/qcom/venus/core.h
++++ b/drivers/media/platform/qcom/venus/core.h
+@@ -12,6 +12,7 @@
+ #include <media/v4l2-ctrls.h>
+ #include <media/v4l2-device.h>
+ 
++#include "dbgfs.h"
+ #include "hfi.h"
+ 
+ #define VIDC_CLKS_NUM_MAX		4
+@@ -136,6 +137,7 @@ struct venus_caps {
+  * @priv:	a private filed for HFI operations
+  * @ops:		the core HFI operations
+  * @work:	a delayed work for handling system fatal error
++ * @root:	debugfs root directory
+  */
+ struct venus_core {
+ 	void __iomem *base;
+@@ -185,6 +187,7 @@ struct venus_core {
+ 	unsigned int codecs_count;
+ 	unsigned int core0_usage_count;
+ 	unsigned int core1_usage_count;
++	struct dentry *root;
+ };
+ 
+ struct vdec_controls {
+diff --git a/drivers/media/platform/qcom/venus/dbgfs.c b/drivers/media/platform/qcom/venus/dbgfs.c
+new file mode 100644
+index 000000000000..a2465fe8e20b
+--- /dev/null
++++ b/drivers/media/platform/qcom/venus/dbgfs.c
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2020 Linaro Ltd.
++ */
++
++#include <linux/debugfs.h>
++
++#include "core.h"
++
++extern int venus_fw_debug;
++
++int venus_dbgfs_init(struct venus_core *core)
++{
++	core->root = debugfs_create_dir("venus", NULL);
++	if (IS_ERR(core->root))
++		return IS_ERR(core->root);
++
++	debugfs_create_x32("fw_level", 0644, core->root, &venus_fw_debug);
++
++	return 0;
++}
++
++void venus_dbgfs_deinit(struct venus_core *core)
++{
++	debugfs_remove_recursive(core->root);
++}
+diff --git a/drivers/media/platform/qcom/venus/dbgfs.h b/drivers/media/platform/qcom/venus/dbgfs.h
+new file mode 100644
+index 000000000000..4e35bd7db15f
+--- /dev/null
++++ b/drivers/media/platform/qcom/venus/dbgfs.h
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2020 Linaro Ltd. */
++
++#ifndef __VENUS_DBGFS_H__
++#define __VENUS_DBGFS_H__
++
++struct venus_core;
++
++int venus_dbgfs_init(struct venus_core *core);
++void venus_dbgfs_deinit(struct venus_core *core);
++
++#endif
+diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
+index 0d8855014ab3..3a04b08ab85a 100644
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -130,7 +130,7 @@ struct venus_hfi_device {
+ };
+ 
+ static bool venus_pkt_debug;
+-static int venus_fw_debug = HFI_DEBUG_MSG_ERROR | HFI_DEBUG_MSG_FATAL;
++int venus_fw_debug = HFI_DEBUG_MSG_ERROR | HFI_DEBUG_MSG_FATAL;
+ static bool venus_sys_idle_indicator;
+ static bool venus_fw_low_power_mode = true;
+ static int venus_hw_rsp_timeout = 1000;
+@@ -1130,9 +1130,14 @@ static int venus_session_init(struct venus_inst *inst, u32 session_type,
+ 			      u32 codec)
+ {
+ 	struct venus_hfi_device *hdev = to_hfi_priv(inst->core);
++	struct device *dev = hdev->core->dev;
+ 	struct hfi_session_init_pkt pkt;
+ 	int ret;
+ 
++	ret = venus_sys_set_debug(hdev, venus_fw_debug);
++	if (ret)
++		dev_warn(dev, "setting fw debug msg ON failed (%d)\n", ret);
++
+ 	ret = pkt_session_init(&pkt, inst, session_type, codec);
+ 	if (ret)
+ 		goto err;
 -- 
 2.17.1
 
