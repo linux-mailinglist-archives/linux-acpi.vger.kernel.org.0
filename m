@@ -2,101 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 168141F3D3E
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jun 2020 15:50:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A38491F402F
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jun 2020 18:04:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730383AbgFINuY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Jun 2020 09:50:24 -0400
-Received: from mga05.intel.com ([192.55.52.43]:30177 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730382AbgFINuX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 9 Jun 2020 09:50:23 -0400
-IronPort-SDR: c3lTtC/EXhjAy58Fwx8sYyWaiAVAWeXLoSpBwcg5xkTMYyCTmIenleYQ4WubiYzhEQf23W39PV
- ekHx1eqAzqgQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2020 06:50:22 -0700
-IronPort-SDR: Zgny2YQ4DUmzk6biJUauB5s/Nn4ggetWOBN+fxwdo6NAsLTk14Lu2tJgYwHWvwDf4Y16R0WDzJ
- 3OM4tummlviA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,492,1583222400"; 
-   d="scan'208";a="306267063"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga008.jf.intel.com with ESMTP; 09 Jun 2020 06:50:18 -0700
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1jiedw-00BuiK-Mc; Tue, 09 Jun 2020 16:50:20 +0300
-Date:   Tue, 9 Jun 2020 16:50:20 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
-        <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 10/15] pwm: crc: Implement apply() method to support
- the new atomic PWM API
-Message-ID: <20200609135020.GP2428291@smile.fi.intel.com>
-References: <20200607181840.13536-1-hdegoede@redhat.com>
- <20200607181840.13536-11-hdegoede@redhat.com>
- <20200609113220.GM2428291@smile.fi.intel.com>
- <93c7843d-1225-c8c6-9eb7-1f11b44bec34@redhat.com>
+        id S1731205AbgFIQDp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 Jun 2020 12:03:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53188 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731060AbgFIQDo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Jun 2020 12:03:44 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CB3FC05BD1E;
+        Tue,  9 Jun 2020 09:03:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description;
+        bh=EbgramDsClABbRh6SAXFCh3bxBrc0kj7IkVo3KuqmtM=; b=cO3c2Jp4wSWBSIYCVjEGfETKzB
+        4MHEl3u1W+06LuzU/RiQYyNfWUdfKzFf+nCoV7IeleFAke6LnGCTwuJTCXkaXvbmtz3YJs6YjjkNb
+        +CENmEnwphZ/uA3zSIpXHyhbSlOE4t2OK9oaLPsXeetUZPBXY1FqbofhwGy3ZEJi2lc7+X9oF1S9t
+        u1A3Xc1S3aATO+IvvejggzFh1mhDM3IL1b3MgxgQNcevdtGZVJcg8ZyTqr7O1kwAg9zkGGB7S8irq
+        xq++b5wewuMW2HpxmZ3e0CMJOt8qzDnyA2IZQaUtBigSEV7HiEldcvXSPDWqlxAd7zy2HxXG/vpSt
+        wCdAlmPg==;
+Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac]
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jigiz-0001ZX-OG; Tue, 09 Jun 2020 16:03:41 +0000
+Subject: Re: [PATCH v3 0/7] Venus dynamic debug
+To:     Matthew Wilcox <willy@infradead.org>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, Joe Perches <joe@perches.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jason Baron <jbaron@akamai.com>
+References: <20200609104604.1594-1-stanimir.varbanov@linaro.org>
+ <20200609111323.GA19604@bombadil.infradead.org>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <c239d5df-e069-2091-589e-30f341c2cbd3@infradead.org>
+Date:   Tue, 9 Jun 2020 09:03:39 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <93c7843d-1225-c8c6-9eb7-1f11b44bec34@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20200609111323.GA19604@bombadil.infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 09, 2020 at 03:44:18PM +0200, Hans de Goede wrote:
-> On 6/9/20 1:32 PM, Andy Shevchenko wrote:
-> > On Sun, Jun 07, 2020 at 08:18:35PM +0200, Hans de Goede wrote:
-
-...
-
-> > And again... :-(
+On 6/9/20 4:13 AM, Matthew Wilcox wrote:
+> On Tue, Jun 09, 2020 at 01:45:57PM +0300, Stanimir Varbanov wrote:
+>> Here is the third version of dynamic debug improvements in Venus
+>> driver.  As has been suggested on previous version by Joe [1] I've
+>> made the relevant changes in dynamic debug core to handle leveling
+>> as more generic way and not open-code/workaround it in the driver.
+>>
+>> About changes:
+>>  - added change in the dynamic_debug and in documentation
+>>  - added respective pr_debug_level and dev_dbg_level
 > 
-> Well yes I cannot help it that the original code, as submitted by Intel,
-> was of very questionable quality, so instead of just converting it to the
-> atomic PWM API I had to do a ton of bugfixes first...   I tried to do
-> this all in small bits rather then in a single big rewrite the buggy
-> <beep> commit to make life easier for reviewers.
-
-Yes, I know about that old code quality, sorry, we were not at Intel that time
-(or were just right-less newbies).
-
-> I can introduce the crc_pwm_calc_clk_div helper earlier as you suggested
-> in an earlier mail. I guess I could also keep the helper here, and then
-> fold it into the function in a later commit (*).
+> Honestly, this seems like you want to use tracepoints, not dynamic debug.
 > 
-> Would that work for you ?
 
-Definitely.
+Also see this patch series:
+https://lore.kernel.org/lkml/20200605162645.289174-1-jim.cromie@gmail.com/
+[PATCH 00/16] dynamic_debug: cleanups, 2 features
 
-> *) Because having a helper for 3 lines of code when it is used only
-> once is not helpful IMHO, it only makes it harder to figure out what
-> the code is exactly doing when readin the code.
-
-At least it will reduce churn to just
-
-1) introduce foo();
-2) do many changes with foo() being used;
-3) drop foo() *if* it's not needed / makes little sense.
+It adds/expands dynamic debug flags quite a bit.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+~Randy
 
