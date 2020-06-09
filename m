@@ -2,117 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1717B1F3A9D
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jun 2020 14:28:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 083F21F3C39
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jun 2020 15:22:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729185AbgFIM2B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Jun 2020 08:28:01 -0400
-Received: from mx2.suse.de ([195.135.220.15]:51012 "EHLO mx2.suse.de"
+        id S1726463AbgFINWm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 Jun 2020 09:22:42 -0400
+Received: from mga14.intel.com ([192.55.52.115]:17193 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726903AbgFIM2A (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 9 Jun 2020 08:28:00 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 851C3AAC6;
-        Tue,  9 Jun 2020 12:28:00 +0000 (UTC)
-Date:   Tue, 9 Jun 2020 14:27:55 +0200
-From:   Petr Mladek <pmladek@suse.com>
-To:     Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, Joe Perches <joe@perches.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jason Baron <jbaron@akamai.com>, Chris Mason <clm@fb.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH v3 2/7] dynamic_debug: Group debug messages by level
- bitmask
-Message-ID: <20200609122755.GE23752@linux-b0ei>
-References: <20200609104604.1594-1-stanimir.varbanov@linaro.org>
- <20200609104604.1594-3-stanimir.varbanov@linaro.org>
+        id S1726083AbgFINWm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 9 Jun 2020 09:22:42 -0400
+IronPort-SDR: AiyUB6L67L/1CfFzQMMSNjBYGBhjMHjTsn93slCFhjspF/mlXGsBNFssehMDl8x+bDfb1MpW0V
+ 6eoFdrrbrlKw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2020 06:22:41 -0700
+IronPort-SDR: bh6qIMK0CBJdcZASAB7jHkSz62uUW5DCf5EO21s+gcrCC9hJh20iY6VpjzsKweFgOZ1YGBzPPl
+ qSB6QS91aQUQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,492,1583222400"; 
+   d="scan'208";a="379734592"
+Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 09 Jun 2020 06:22:40 -0700
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI / property: use cached name in acpi_fwnode_get_named_child_node()
+Date:   Tue,  9 Jun 2020 16:22:39 +0300
+Message-Id: <20200609132239.27272-1-heikki.krogerus@linux.intel.com>
+X-Mailer: git-send-email 2.27.0.rc2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200609104604.1594-3-stanimir.varbanov@linaro.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue 2020-06-09 13:45:59, Stanimir Varbanov wrote:
-> This will allow dynamic debug users and driver writers to group
-> debug messages by level bitmask.  The level bitmask should be a
-> hex number.
-> 
-> Done this functionality by extending dynamic debug metadata with
-> new level member and propagate it over all the users.  Also
-> introduce new dynamic_pr_debug_level and dynamic_dev_dbg_level
-> macros to be used by the drivers.
+There is no need to re-evaluate the object name.
 
-Could you please provide more details?
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+---
+ drivers/acpi/property.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-What is the use case?
-What is the exact meaning of the level value?
-How the levels will get defined?
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index e601c4511a8b5..6941062272e0b 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -606,13 +606,7 @@ static struct fwnode_handle *
+ acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
+ 				 const char *childname)
+ {
+-	char name[ACPI_PATH_SEGMENT_LENGTH];
+ 	struct fwnode_handle *child;
+-	struct acpi_buffer path;
+-	acpi_status status;
+-
+-	path.length = sizeof(name);
+-	path.pointer = name;
+ 
+ 	fwnode_for_each_child_node(fwnode, child) {
+ 		if (is_acpi_data_node(child)) {
+@@ -621,12 +615,8 @@ acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
+ 			continue;
+ 		}
+ 
+-		status = acpi_get_name(ACPI_HANDLE_FWNODE(child),
+-				       ACPI_SINGLE_NAME, &path);
+-		if (ACPI_FAILURE(status))
+-			break;
+-
+-		if (!strncmp(name, childname, ACPI_NAMESEG_SIZE))
++		if (!strncmp(acpi_device_bid(to_acpi_device_node(child)),
++			     childname, ACPI_NAMESEG_SIZE))
+ 			return child;
+ 	}
+ 
+-- 
+2.27.0.rc2
 
-Dynamic debug is used for messages with KERN_DEBUG log level.
-Is this another dimension of the message leveling?
-
-Given that the filter is defined by bits, it is rather grouping
-by context or so.
-
-
-> diff --git a/lib/dynamic_debug.c b/lib/dynamic_debug.c
-> index 8f199f403ab5..5d28d388f6dd 100644
-> --- a/lib/dynamic_debug.c
-> +++ b/lib/dynamic_debug.c
-> @@ -55,6 +55,7 @@ struct ddebug_query {
->  	const char *function;
->  	const char *format;
->  	unsigned int first_lineno, last_lineno;
-> +	unsigned int level;
->  };
->  
->  struct ddebug_iter {
-> @@ -187,6 +188,18 @@ static int ddebug_change(const struct ddebug_query *query,
->  
->  			nfound++;
->  
-> +#ifdef CONFIG_JUMP_LABEL
-> +			if (query->level && query->level & dp->level) {
-> +				if (flags & _DPRINTK_FLAGS_PRINT)
-> +					static_branch_enable(&dp->key.dd_key_true);
-> +				else
-> +					static_branch_disable(&dp->key.dd_key_true);
-> +			} else if (query->level &&
-> +				   flags & _DPRINTK_FLAGS_PRINT) {
-> +				static_branch_disable(&dp->key.dd_key_true);
-> +				continue;
-> +			}
-> +#endif
-
-This looks like a hack in the existing code:
-
-  + It is suspicious that "continue" is only in one branch. It means
-    that static_branch_enable/disable() might get called 2nd time
-    by the code below. Or newflags are not stored when there is a change.
-
-  + It changes the behavior and the below vpr_info("changed ...")
-    is not called.
-
-Or do I miss anything?
-
->			newflags = (dp->flags & mask) | flags;
->  			if (newflags == dp->flags)
->  				continue;
-
-Best Regards,
-Petr
