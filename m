@@ -2,86 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93DD81F3959
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jun 2020 13:16:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A5941F39B0
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jun 2020 13:29:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728153AbgFILQS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Jun 2020 07:16:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41230 "EHLO mail.kernel.org"
+        id S1728971AbgFIL3J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 Jun 2020 07:29:09 -0400
+Received: from mga18.intel.com ([134.134.136.126]:64407 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726083AbgFILQS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 9 Jun 2020 07:16:18 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 50236207ED;
-        Tue,  9 Jun 2020 11:16:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591701377;
-        bh=xU2wxxxrsLRWawYxncEIYiWeqskYMvCbos9vXfMghc4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fvtwVxjvZX99zxaniwh1G9/o2C8apo21iA4dq2KWDskckwppNIRJ7QPE53zLAXYIc
-         uBRlDf2dbCmgFsC0L1EUriB6WOyjiI5+3kKbIm+iBUHkklkqL/+wNHQlTMei9K6B15
-         rbg0aciyOuk2Uh1MInUEg34BZpUyEO9NZkiVt2aA=
-Date:   Tue, 9 Jun 2020 13:16:15 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, Joe Perches <joe@perches.com>,
-        Jason Baron <jbaron@akamai.com>,
-        Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH v3 1/7] Documentation: dynamic-debug: Add description of
- level bitmask
-Message-ID: <20200609111615.GD780233@kroah.com>
-References: <20200609104604.1594-1-stanimir.varbanov@linaro.org>
- <20200609104604.1594-2-stanimir.varbanov@linaro.org>
+        id S1728730AbgFIL3G (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 9 Jun 2020 07:29:06 -0400
+IronPort-SDR: qGV0XtEB9p2oSn6Pnj1zcNSJ69SiFlk5lZwW9NhA+2fT2yg9fit1cn5+k3uqYkkFxCZL0Vgop/
+ abIb3kcZQi5g==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2020 04:29:05 -0700
+IronPort-SDR: I9ZI5hVQJ8gIbUCnBOMI/UzhZ+Gbu7ciNfFaR4ypZ3pNkt8/JldgZKH6f5wcN4DYB5hfT0N6q7
+ Q1OEIaoCb5DA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,491,1583222400"; 
+   d="scan'208";a="270862142"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga003.jf.intel.com with ESMTP; 09 Jun 2020 04:29:02 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1jicRF-00Bt4F-B4; Tue, 09 Jun 2020 14:29:05 +0300
+Date:   Tue, 9 Jun 2020 14:29:05 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
+        <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 06/15] pwm: crc: Fix period / duty_cycle times being
+ off by a factor of 256
+Message-ID: <20200609112905.GK2428291@smile.fi.intel.com>
+References: <20200607181840.13536-1-hdegoede@redhat.com>
+ <20200607181840.13536-7-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200609104604.1594-2-stanimir.varbanov@linaro.org>
+In-Reply-To: <20200607181840.13536-7-hdegoede@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 09, 2020 at 01:45:58PM +0300, Stanimir Varbanov wrote:
-> This adds description of the level bitmask feature.
+On Sun, Jun 07, 2020 at 08:18:31PM +0200, Hans de Goede wrote:
+> While looking into adding atomic-pwm support to the pwm-crc driver I
+> noticed something odd, there is a PWM_BASE_CLK define of 6 MHz and
+> there is a clock-divider which divides this with a value between 1-128,
+> and there are 256 duty-cycle steps.
 > 
-> Cc: Jonathan Corbet <corbet@lwn.net> (maintainer:DOCUMENTATION)
+> The pwm-crc code before this commit assumed that a clock-divider
+> setting of 1 means that the PWM output is running at 6 MHZ, if that
+> is true, where do these 256 duty-cycle steps come from?
 > 
-> Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-> ---
->  Documentation/admin-guide/dynamic-debug-howto.rst | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+> This would require an internal frequency of 256 * 6 MHz = 1.5 GHz, that
+> seems unlikely for a PMIC which is using a silicon process optimized for
+> power-switching transistors. It is way more likely that there is an 8
+> bit counter for the duty cycle which acts as an extra fixed divider
+> wrt the PWM output frequency.
 > 
-> diff --git a/Documentation/admin-guide/dynamic-debug-howto.rst b/Documentation/admin-guide/dynamic-debug-howto.rst
-> index 0dc2eb8e44e5..c2b751fc8a17 100644
-> --- a/Documentation/admin-guide/dynamic-debug-howto.rst
-> +++ b/Documentation/admin-guide/dynamic-debug-howto.rst
-> @@ -208,6 +208,12 @@ line
->  	line -1605          // the 1605 lines from line 1 to line 1605
->  	line 1600-          // all lines from line 1600 to the end of the file
->  
-> +level
-> +    The given level will be a bitmask ANDed with the level of the each ``pr_debug()``
-> +    callsite. This will allow to group debug messages and show only those of the
-> +    same level.  The -p flag takes precedence over the given level. Note that we can
-> +    have up to five groups of debug messages.
+> The main user of the pwm-crc driver is the i915 GPU driver which uses it
+> for backlight control. Lets compare the PWM register values set by the
+> video-BIOS (the GOP), assuming the extra fixed divider is present versus
+> the PWM frequency specified in the Video-BIOS-Tables:
+> 
+> Device:		PWM Hz set by BIOS	PWM Hz specified in VBT
+> Asus T100TA 	200			200
+> Asus T100HA 	200			200
+> Lenovo Miix 2 8	23437			20000
+> Toshiba WT8-A	23437			20000
+> 
+> So as we can see if we assume the extra division by 256 then the register
+> values set by the GOP are an exact match for the VBT values, where as
+> otherwise the values would be of by a factor of 256.
+> 
+> This commit fixes the period / duty_cycle calculations to take the
+> extra division by 256 into account.
 
-As was pointed out, this isn't a "level", it's some arbitrary type of
-"grouping".
+...
 
-But step back, why?  What is wrong with the existing control of dynamic
-debug messages that you want to add another type of arbitrary grouping
-to it?  And who defines that grouping?  Will it be
-driver/subsystem/arch/author specific?  Or kernel-wide?
+> +#define NSEC_PER_MHZ		1000
 
-This feels like it could easily get out of hand really quickly.
+This is against physics. What this cryptic name means actually?
+Existing NSEC_PER_USEC ?
 
-Why not just use tracepoints if you really want to be fine-grained?
+-- 
+With Best Regards,
+Andy Shevchenko
 
-thanks,
 
-greg k-h
