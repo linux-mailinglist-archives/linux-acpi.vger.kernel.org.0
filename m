@@ -2,32 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 785EC1F4B13
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jun 2020 03:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 248581F4BAE
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jun 2020 05:10:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725988AbgFJB6H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Jun 2020 21:58:07 -0400
-Received: from smtprelay0064.hostedemail.com ([216.40.44.64]:45420 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725944AbgFJB6H (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Jun 2020 21:58:07 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 055DD181D3762;
-        Wed, 10 Jun 2020 01:58:06 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:960:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1537:1560:1593:1594:1711:1714:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3622:3866:3867:4321:5007:6642:6742:10004:10400:10848:11232:11658:11914:12297:12740:12760:12895:13069:13311:13357:13439:14659:21080:21451:21627:21990:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: offer29_1915d5526dc7
-X-Filterd-Recvd-Size: 1763
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf18.hostedemail.com (Postfix) with ESMTPA;
-        Wed, 10 Jun 2020 01:58:03 +0000 (UTC)
-Message-ID: <60799af26082bb05e92a7a74031e3fe88ebf87df.camel@perches.com>
+        id S1726053AbgFJDKq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 Jun 2020 23:10:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43434 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726030AbgFJDKp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Jun 2020 23:10:45 -0400
+Received: from mail-vk1-xa41.google.com (mail-vk1-xa41.google.com [IPv6:2607:f8b0:4864:20::a41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46A8AC05BD1E;
+        Tue,  9 Jun 2020 20:10:43 -0700 (PDT)
+Received: by mail-vk1-xa41.google.com with SMTP id e1so228946vkd.1;
+        Tue, 09 Jun 2020 20:10:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KZBhwJpe3f99/5LDVB8Bc5/cCcPk7wAvZ6DTVQ9hBQo=;
+        b=avSeW6EdipkgvBtqfFwap8GyOTxynTVR7JqrquqYKuotU0/nUvlM7xlHlJ1tAitGDu
+         QUYLYb87xZef7qj3qeDE1k4EmFE1cbYmQBfwIp09ULfRs+wYjiabO06Gibetk1NLU5gJ
+         rz5CnO6egYTloKqDOFWswZX+Qro6lyuXdsGra+adGQtRrNeqz0rCxNlGxP7ZObqx4AUF
+         stvyFWZSCqViy5vTX6NLyPyMg06O5duxH5cDOYMXNueL8NZbQl9UJrPYb9l3LdrILH6E
+         mdsSwmmV1rLAh1NQeFdUB2r7ptxXppY9s3qS69KO4aMfegJuLl9rYGsN+J8hVyUg8zJP
+         qYFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KZBhwJpe3f99/5LDVB8Bc5/cCcPk7wAvZ6DTVQ9hBQo=;
+        b=DWA14aZkwaQ44lR6kIP/BMdQn4DL4eG6pG7wJnebWakrj9MO9orf8XJX+UG8M0BpgG
+         S3C/EObVpyMUfau8z9puNbItd7aMAav0hZcBdcF4Ol+rEuJ0kU/sqB5rjO0mv4dMV0A+
+         3FjC1LJWCDCyw68s/RTa6DrRXby8dc1ige7lg9XPj45QlHBw5tdkIHuOvi5T1GKanGbU
+         nx2BjSqqiE5xQp/3QeP9AmvwTCb/+aVvqLe50B0ZArdkRbu0mIpzpDVB8uIpf3o1JiiP
+         DtXdOGNCOXeyolQoavxa/7o8QdQsoW5EPVLTTub2KGpz7OnFHyLaWGU0+IFVMXRyTGyr
+         IHFA==
+X-Gm-Message-State: AOAM533ajg6jBaBWKQ/YfLn6b5quzMNkN8X9ME5uK5DMTUz/4jdVOShM
+        OzOXjOR5uKdvDbKHtOKT5kxF7sqpINDNxldHZFI=
+X-Google-Smtp-Source: ABdhPJwhJJbrVDdVhPbiFe8woY8RZS6gzI8WAuQcnLKqPCqx6QB1rkMVrPvxE9COyN4yin3SLa4xOGD0F8W2ftqaENc=
+X-Received: by 2002:a1f:9094:: with SMTP id s142mr886695vkd.6.1591758642398;
+ Tue, 09 Jun 2020 20:10:42 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200609104604.1594-1-stanimir.varbanov@linaro.org>
+ <20200609111323.GA19604@bombadil.infradead.org> <c239d5df-e069-2091-589e-30f341c2cbd3@infradead.org>
+ <9a79aded6981ec47f1f8b317b784e6e44158ac61.camel@perches.com>
+ <CAJfuBxwyDysP30cMWDusw4CsSQitchA5hOKkpk1PktbsbCKTSw@mail.gmail.com> <6115b15ced02686f7408417411ff758445b42421.camel@perches.com>
+In-Reply-To: <6115b15ced02686f7408417411ff758445b42421.camel@perches.com>
+From:   jim.cromie@gmail.com
+Date:   Tue, 9 Jun 2020 21:10:15 -0600
+Message-ID: <CAJfuBxzd1Jmd726_zYxfjPy1YgTpcLzLU_fh=pd5FEBaVFCWrw@mail.gmail.com>
 Subject: Re: [PATCH v3 0/7] Venus dynamic debug
-From:   Joe Perches <joe@perches.com>
-To:     jim.cromie@gmail.com,
-        Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
+To:     Joe Perches <joe@perches.com>
+Cc:     Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
         Matthew Wilcox <willy@infradead.org>,
         Linux Documentation List <linux-doc@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>, linux-media@vger.kernel.org,
@@ -35,33 +63,43 @@ Cc:     Randy Dunlap <rdunlap@infradead.org>,
         linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jason Baron <jbaron@akamai.com>
-Date:   Tue, 09 Jun 2020 18:58:02 -0700
-In-Reply-To: <6115b15ced02686f7408417411ff758445b42421.camel@perches.com>
-References: <20200609104604.1594-1-stanimir.varbanov@linaro.org>
-         <20200609111323.GA19604@bombadil.infradead.org>
-         <c239d5df-e069-2091-589e-30f341c2cbd3@infradead.org>
-         <9a79aded6981ec47f1f8b317b784e6e44158ac61.camel@perches.com>
-         <CAJfuBxwyDysP30cMWDusw4CsSQitchA5hOKkpk1PktbsbCKTSw@mail.gmail.com>
-         <6115b15ced02686f7408417411ff758445b42421.camel@perches.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.2-0ubuntu1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 2020-06-09 at 15:23 -0700, Joe Perches wrote:
-> These are just driver developer mechanisms to enable/disable
-> groups of formats via some test for < level or | bitmap
+On Tue, Jun 9, 2020 at 4:23 PM Joe Perches <joe@perches.com> wrote:
+>
+> On Tue, 2020-06-09 at 15:21 -0600, jim.cromie@gmail.com wrote:
+> >
+> > As Joe noted, there is a lot of ad-hockery to possibly clean up,
+> > but I dont grok how these levels should be distinguished from
+> > KERN_(WARN|INFO|DEBUG) constants.
+>
+> These are not KERN_<LEVEL> at all, all are emitted at KERN_DEBUG
 
-duh: & bitmask
-
-> 	if (is_bitmask)
-> 		enable/disable(value|flag)
-
-obviously
-		enable/disable(value & flag)
+yes indeed.  but they are chosen by programmer, fixed by compiler.  not dynamic.
+<pmladek@suse.com> also noted the conceptual adjacency (ambiguity),
+and referenced KERN_<lvl>
 
 
+
+If we need this extra query-term, lets call it   mbits / mflags /
+module_flags / module_bits
+it needs to be module specific, so also requiring "module foo" search
+term in the query.
+( "modflags" is no good, cuz "mod" also means "modified" - just mflags
+is better )
+
+Already, we have function, file, module, all of which convey semantic
+structure of the code,
+and they also match wildcards, so " function foo_*_* " is an effective grouping.
+Id think this would cover most cases.
+
+Finally, all "module venus +p " callsites could be explicitly
+specified individually in
+universe=`grep venus control | wc -l`
+lines, likely a small set.
+Using the semantic structure exposed by `grep venus control`, it would
+likely be far less.
