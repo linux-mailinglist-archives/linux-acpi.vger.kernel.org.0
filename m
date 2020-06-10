@@ -2,62 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F16D31F5DF0
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jun 2020 23:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85D2C1F5E6E
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jun 2020 00:44:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726813AbgFJVwV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Jun 2020 17:52:21 -0400
-Received: from mx0b-00154904.pphosted.com ([148.163.137.20]:15172 "EHLO
-        mx0b-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726317AbgFJVwS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 10 Jun 2020 17:52:18 -0400
-Received: from pps.filterd (m0170395.ppops.net [127.0.0.1])
-        by mx0b-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05ALqGCn024963;
-        Wed, 10 Jun 2020 17:52:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=smtpout1;
- bh=jkIE3moYoaNpj1ljEBfKnxJ6RSIRje6RAXQB8no/Okk=;
- b=LcEVKNY0HmuRhX+IyDjU+kD/BOwt5+WTJKeC9jIdrj+gX+ijGIApckBtdJXNhG4scJcT
- kWDvJJA75eIiINTR1n28eGuiUrpFv568WDyy7VP/BxtWs7pffBxnX2y8WYxtyouHSO7O
- KV0N5kBD3s5GnYIZVznJ6UoLIgZ/AsZpy1RPfeTac1f/XKbg+sAXkqDR19l3bU4n/M23
- +P1dbOkv0XlekdSEudlBKPoTs5X+Rt17YSd1QCoA3Ogx8xolhU9ixQCy+gNdFrsprZ3S
- E/Yy/G+cpF/9H51Q5sqnGcZV0xM17V0brbO2W4cqncExxdEJZQgObbzbxhFRnxsHPoZx 2A== 
-Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
-        by mx0b-00154904.pphosted.com with ESMTP id 31jjqumpfs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 10 Jun 2020 17:52:16 -0400
-Received: from pps.filterd (m0134746.ppops.net [127.0.0.1])
-        by mx0a-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05ALYF9t013590;
-        Wed, 10 Jun 2020 17:52:14 -0400
-Received: from ausc60pc101.us.dell.com (ausc60pc101.us.dell.com [143.166.85.206])
-        by mx0a-00154901.pphosted.com with ESMTP id 31k6fq90ye-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 10 Jun 2020 17:52:14 -0400
-X-LoopCount0: from 10.166.132.131
-X-PREM-Routing: D-Outbound
-X-IronPort-AV: E=Sophos;i="5.60,349,1549951200"; 
-   d="scan'208";a="1564454969"
-From:   <Mario.Limonciello@dell.com>
-To:     <dmitry.torokhov@gmail.com>
-CC:     <enric.balletbo@collabora.com>, <rjw@rjwysocki.net>,
-        <rafael@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <lenb@kernel.org>,
-        <kernel@collabora.com>, <groeck@chromium.org>,
-        <bleung@chromium.org>, <dtor@chromium.org>, <gwendal@chromium.org>,
-        <vbendeb@chromium.org>, <andy@infradead.org>,
-        <ayman.bagabas@gmail.com>, <benjamin.tissoires@redhat.com>,
-        <blaz@mxxn.io>, <dvhart@infradead.org>,
-        <gregkh@linuxfoundation.org>, <hdegoede@redhat.com>,
-        <jeremy@system76.com>, <2pi@mok.nu>, <mchehab+samsung@kernel.org>,
-        <rajatja@google.com>, <srinivas.pandruvada@linux.intel.com>,
-        <platform-driver-x86@vger.kernel.org>
-Subject: RE: [PATCH v4] platform: x86: Add ACPI driver for ChromeOS
-Thread-Topic: [PATCH v4] platform: x86: Add ACPI driver for ChromeOS
-Thread-Index: AQHWEZn1ic1J55wnDUCcmSeyJR9LmKh32IiAgFJaEOiACNhPAP//rP0AgABYQ4D//63d4A==
-Date:   Wed, 10 Jun 2020 21:52:12 +0000
-Message-ID: <adf9daaf08f1464684e48ec203194fe9@AUSX13MPC105.AMER.DELL.COM>
+        id S1726365AbgFJWnK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Jun 2020 18:43:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55422 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726105AbgFJWnJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Jun 2020 18:43:09 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B46FC03E96B;
+        Wed, 10 Jun 2020 15:43:09 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id u8so1423507pje.4;
+        Wed, 10 Jun 2020 15:43:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=2mg+YttgENHXjRIUtb4vyDZuQUaaeI5RLdU6PJRUtdQ=;
+        b=FtzHHqy6K+fjV+6Pux67Eyo1b/0Hxc2LXCMESRP64FVaOjBK3sbVFOj9snBa5yPwko
+         oQixl35rYI3iK1k1AeKz3i/AApjU3blABn4EXQU1fc0SfmCVDw0BxxSbyqttHVEGrpl/
+         /72lrnrWo9YsrTqLEYq8FBdQai05NcqFNEy0pM/UrbiWNsCsKix6aoPUagdbjGBQTKz2
+         GXecUCGJ+zbgELo5PK3mZNpGCrLABLbmtRL2tkBA5m64jFOAmuDWwoHB0j6mEa4DNYbK
+         W3No7+Semq6QAUvOsNLX9nOdY1qelBXzTXmj+OUo17tJTE3mwixXLvbEQNk8QULZbjqj
+         xYpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=2mg+YttgENHXjRIUtb4vyDZuQUaaeI5RLdU6PJRUtdQ=;
+        b=PqjzGYOuvzt+GqU013OsapuYg94J4zrWyAiUKJz3i7Pu2ivPVdndCJM9Xkqvn8SNyJ
+         bI2kOBVjZjmcYEdVtQwxjBN2QberOhQhIh1TaERbOVLIdRBqtJydqpe+FSwCOgs6+0Em
+         EfhkSZO5+F/ooiamwM7OlTlw1A+tp+Q5A9YzyqSewtn2BtT/+Pr+HdWyVfzxG197ZmQF
+         0Tgud9IRVG3xmKjx450m/w8197DYeavOSgrK1Ib81YSijsemJGI9zwjZ6UxtZaAZLRVY
+         ldBiD3DV2D283H5Pd6NG3gPjoOSdx1KHWfl1g4Ju+kExh50qwRpGjA77FZu7Tsdgylio
+         HqSA==
+X-Gm-Message-State: AOAM530Hg5wNG6dUiuxB3soNoqxGJEvzEJNb2+mVkRg7FBbQN8cUUkmy
+        ee46g4msEDtwZGdbsYKd+p8=
+X-Google-Smtp-Source: ABdhPJy37/Sf8L8fVwa35S1cZE7A/66QgoXafLcN6YFX+TN/ZDLflUCR3U3QEiNli51Y1563eKMSRg==
+X-Received: by 2002:a17:902:a502:: with SMTP id s2mr4884310plq.267.1591828988742;
+        Wed, 10 Jun 2020 15:43:08 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:3c2a:73a9:c2cf:7f45])
+        by smtp.gmail.com with ESMTPSA id m7sm965668pfb.1.2020.06.10.15.43.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2020 15:43:07 -0700 (PDT)
+Date:   Wed, 10 Jun 2020 15:43:05 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Mario.Limonciello@dell.com
+Cc:     enric.balletbo@collabora.com, rjw@rjwysocki.net, rafael@kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        lenb@kernel.org, kernel@collabora.com, groeck@chromium.org,
+        bleung@chromium.org, dtor@chromium.org, gwendal@chromium.org,
+        vbendeb@chromium.org, andy@infradead.org, ayman.bagabas@gmail.com,
+        benjamin.tissoires@redhat.com, blaz@mxxn.io, dvhart@infradead.org,
+        gregkh@linuxfoundation.org, hdegoede@redhat.com,
+        jeremy@system76.com, 2pi@mok.nu, mchehab+samsung@kernel.org,
+        rajatja@google.com, srinivas.pandruvada@linux.intel.com,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v4] platform: x86: Add ACPI driver for ChromeOS
+Message-ID: <20200610224305.GC248110@dtor-ws>
 References: <20200413134611.478441-1-enric.balletbo@collabora.com>
  <CAJZ5v0gWZ27_DwWQadsJOUxLo4a0rAMe45d4AWXS2gHJZfgfKg@mail.gmail.com>
  <a2953d50-da22-279a-f1e4-faa796d815b1@collabora.com>
@@ -65,102 +69,80 @@ References: <20200413134611.478441-1-enric.balletbo@collabora.com>
  <4e7f8bf3-b72b-d418-ec95-e1f8c3d61261@collabora.com>
  <59771d3689da41a5bbc67541aa6f4777@AUSX13MPC105.AMER.DELL.COM>
  <20200610214033.GB248110@dtor-ws>
-In-Reply-To: <20200610214033.GB248110@dtor-ws>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Enabled=True;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Owner=Mario_Limonciello@Dell.com;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_SetDate=2020-06-10T21:48:50.9216576Z;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Name=External Public;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_ActionId=80b762a3-4bd9-4820-ae3a-ab81180832bf;
- MSIP_Label_17cb76b2-10b8-4fe1-93d4-2202842406cd_Extended_MSFT_Method=Manual
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [143.166.24.60]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ <adf9daaf08f1464684e48ec203194fe9@AUSX13MPC105.AMER.DELL.COM>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-06-10_13:2020-06-10,2020-06-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1015 adultscore=0
- malwarescore=0 cotscore=-2147483648 mlxlogscore=748 spamscore=0
- phishscore=0 priorityscore=1501 mlxscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006100156
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0
- mlxlogscore=880 phishscore=0 adultscore=0 bulkscore=0 malwarescore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006100157
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adf9daaf08f1464684e48ec203194fe9@AUSX13MPC105.AMER.DELL.COM>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> -----Original Message-----
-> From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Sent: Wednesday, June 10, 2020 4:41 PM
-> To: Limonciello, Mario
-> Cc: enric.balletbo@collabora.com; rjw@rjwysocki.net; rafael@kernel.org;
-> linux-kernel@vger.kernel.org; linux-acpi@vger.kernel.org; lenb@kernel.org=
-;
-> kernel@collabora.com; groeck@chromium.org; bleung@chromium.org;
-> dtor@chromium.org; gwendal@chromium.org; vbendeb@chromium.org;
-> andy@infradead.org; ayman.bagabas@gmail.com; benjamin.tissoires@redhat.co=
-m;
-> blaz@mxxn.io; dvhart@infradead.org; gregkh@linuxfoundation.org;
-> hdegoede@redhat.com; jeremy@system76.com; 2pi@mok.nu;
-> mchehab+samsung@kernel.org; rajatja@google.com;
-> srinivas.pandruvada@linux.intel.com; platform-driver-x86@vger.kernel.org
-> Subject: Re: [PATCH v4] platform: x86: Add ACPI driver for ChromeOS
->=20
->=20
-> [EXTERNAL EMAIL]
->=20
-> On Wed, Jun 10, 2020 at 09:28:36PM +0000, Mario.Limonciello@dell.com wrot=
-e:
+On Wed, Jun 10, 2020 at 09:52:12PM +0000, Mario.Limonciello@dell.com wrote:
+> > -----Original Message-----
+> > From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> > Sent: Wednesday, June 10, 2020 4:41 PM
+> > To: Limonciello, Mario
+> > Cc: enric.balletbo@collabora.com; rjw@rjwysocki.net; rafael@kernel.org;
+> > linux-kernel@vger.kernel.org; linux-acpi@vger.kernel.org; lenb@kernel.org;
+> > kernel@collabora.com; groeck@chromium.org; bleung@chromium.org;
+> > dtor@chromium.org; gwendal@chromium.org; vbendeb@chromium.org;
+> > andy@infradead.org; ayman.bagabas@gmail.com; benjamin.tissoires@redhat.com;
+> > blaz@mxxn.io; dvhart@infradead.org; gregkh@linuxfoundation.org;
+> > hdegoede@redhat.com; jeremy@system76.com; 2pi@mok.nu;
+> > mchehab+samsung@kernel.org; rajatja@google.com;
+> > srinivas.pandruvada@linux.intel.com; platform-driver-x86@vger.kernel.org
+> > Subject: Re: [PATCH v4] platform: x86: Add ACPI driver for ChromeOS
+> > 
+> > 
+> > [EXTERNAL EMAIL]
+> > 
+> > On Wed, Jun 10, 2020 at 09:28:36PM +0000, Mario.Limonciello@dell.com wrote:
+> > > >
+> > > > To give you some references, if I'm not wrong, this prefix is used in
+> > all
+> > > > or
+> > > > almost all Intel Chromebook devices (auron, cyan, eve, fizz, hatch,
+> > > > octopus,
+> > > > poppy, strago ...) The ACPI source for this device can be found here
+> > [1],
+> > > > and,
+> > > > if not all, almost all Intel based Chromebooks are shipped with the
+> > > > firmware
+> > > > that supports this.
 > > >
-> > > To give you some references, if I'm not wrong, this prefix is used in
-> all
-> > > or
-> > > almost all Intel Chromebook devices (auron, cyan, eve, fizz, hatch,
-> > > octopus,
-> > > poppy, strago ...) The ACPI source for this device can be found here
-> [1],
-> > > and,
-> > > if not all, almost all Intel based Chromebooks are shipped with the
-> > > firmware
-> > > that supports this.
-> >
-> > You can potentially carry a small patch in your downstream kernel for t=
-he
-> > legacy stuff until it reaches EOL.  At least for the new stuff you coul=
-d
-> > enact a process that properly reserves unique numbers and changes the
-> driver
-> > when the interface provided by the ACPI device has changed.
->=20
-> If we use this prefix for hatch EOL is ~7 years from now.
->=20
+> > > You can potentially carry a small patch in your downstream kernel for the
+> > > legacy stuff until it reaches EOL.  At least for the new stuff you could
+> > > enact a process that properly reserves unique numbers and changes the
+> > driver
+> > > when the interface provided by the ACPI device has changed.
+> > 
+> > If we use this prefix for hatch EOL is ~7 years from now.
+> > 
+> 
+> Isn't the whole point of the ACPI registry and choosing an ID?  You know internally
+> if you need to change the interface that a new ID is needed and a new driver will
+> be needed that comprehends that ID change.  So if you can't guarantee that 0001 is
+> the same driver interface in every firmware implementation google used then that is
+> where this falls apart.
+> 
+> I know there is a long support lifecycle but you're talking about rebasing
+> to new LTS kernels a handful of times between now and then.  If the interface really
+> is stable the patch should be small and it shouldn't be a large amount of technical
+> debt to carry downstream until EOL.
 
-Isn't the whole point of the ACPI registry and choosing an ID?  You know in=
-ternally
-if you need to change the interface that a new ID is needed and a new drive=
-r will
-be needed that comprehends that ID change.  So if you can't guarantee that =
-0001 is
-the same driver interface in every firmware implementation google used then=
- that is
-where this falls apart.
+I think we are talking about different things actually. Let's forget
+about Chrome OS and downstream kernels. We have devices that have
+already been shipped and in hands of users. Some of them are old, some
+of them are new. We can't not enforce that firmware for these devices
+will be either released or updated. Therefore, if we want expose this
+device in mainline kernel, we need to have it handle "GGL0001" HID in
+addition to whatever proper HID we may select for it.
 
-I know there is a long support lifecycle but you're talking about rebasing
-to new LTS kernels a handful of times between now and then.  If the interfa=
-ce really
-is stable the patch should be small and it shouldn't be a large amount of t=
-echnical
-debt to carry downstream until EOL.
-=20
+We internally can fix it (HID) for next generation of devices.
+
+Thanks.
+
+-- 
+Dmitry
