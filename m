@@ -2,89 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C5291F5855
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jun 2020 17:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3F551F5903
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jun 2020 18:29:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728269AbgFJPwU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Jun 2020 11:52:20 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:36280 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728217AbgFJPwT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Jun 2020 11:52:19 -0400
-Received: by mail-oi1-f194.google.com with SMTP id a137so2508445oii.3;
-        Wed, 10 Jun 2020 08:52:19 -0700 (PDT)
+        id S1728687AbgFJQ3o (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Jun 2020 12:29:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54082 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728718AbgFJQ3o (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Jun 2020 12:29:44 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 034ACC03E96B
+        for <linux-acpi@vger.kernel.org>; Wed, 10 Jun 2020 09:29:43 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id l17so2415086wmj.0
+        for <linux-acpi@vger.kernel.org>; Wed, 10 Jun 2020 09:29:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=j5Pct8v3ypV1WZLw0GyvqrOhrFs4NH3t96P5hnyBKhk=;
+        b=ZolXlrgAxaP5mpsSlFUEG0mAJKeCcZa7rx4fX8q2QmXYQVuNoUNXL1nnJ+E4IZdw7K
+         PoExNRxgvxCoxLIOdSjpDZnLhjwgFvHXpk7izi3epK2BAI6+tEAUHmWKFRoPNEuc4m5Q
+         qyvuZj7gVMS8F2JLlQ5Kq6gxRn9e9PqeBvRMIzLIVAa08G95d3yD3O2sSvTW6XgwX4Bj
+         nRqy+xCOifd7N6WavxIjQsBjmlpfLVIocb9odMgAy9lYOlIROD4vchbyDscs0DJxbixa
+         //IJeOysXjf1vmuW5dv83cHaUNkvAvw5Srwm3TG7gAxaQlPZNuqQDnP8ISQNo4H83Kdj
+         wdvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=MomNjD2kd8cNJ8vXpeYV/SgtWXFuaS4gqTbhFheJNvE=;
-        b=AaiRerKzO0lTn3VgAIqGPOExKslJaE4QFFxo1Qj5fk/iSgPgRf4sCtgGa7vWEJoEvl
-         LvRDljHgaPQpgB5CCqSQETc3IcB1bacWhWuGVQgfMQiTs7LkObRSSAD8Mg+cBM62KIWy
-         QOE9ycghs1NGLRiYeUoBcXFpBaYZ9/m8AU0Lib1HkoAU0X/Oi2e5/anQeV6ROCrzyGSn
-         7IyuwfzDjSQeWjzleLIAi+BNsZIqKhSc5fL+Pf5S4ggoS5QzGm0Efb+Esv86h1HtBeIJ
-         HchHa9qCwMOW3NCK22b3I/HDquDLSuuQVjxB38kuE7ZJ33Ah6k/pRQp3/LWXIKoXCXR+
-         0M7g==
-X-Gm-Message-State: AOAM53378NMgYXYz7UImTwilrrFs4zzCcv0xFX/m2XRfJgTgnGzmj2Pz
-        NTxZwPVVvjDbDcDOr+YzO3Cs4zarFpRcW+GdOmpwaVPO
-X-Google-Smtp-Source: ABdhPJwHZU0WZOW+GGh5+3jWA99X1qI8AWlBh3NQ/lK9c2COOK6KCXoU+c6wIZrdmk5kvLZ559ShCWSUjEgE63mFHsQ=
-X-Received: by 2002:aca:ab92:: with SMTP id u140mr2922759oie.68.1591804338890;
- Wed, 10 Jun 2020 08:52:18 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=j5Pct8v3ypV1WZLw0GyvqrOhrFs4NH3t96P5hnyBKhk=;
+        b=adQJcWfjFtOsqYTQ0CsEZiW5oNsl7DRHH9gf65FhkUhkIy6hJTiuhE9Stuv2QT7IAI
+         Dx1eNNLH0YCJRZrlFTT8Q5mfCJiqKbyQkZn5wC57diT5G6WaWj5IdRDaUYZ9Wi9OC0MR
+         WtEAySteynSevjtPVWHmqG6xSzhyV9LF8OIEvYVAsc2am7ihHOCF9hy+lwEnXMfLwPnp
+         v3YeYgkAQIFt8kE5rYDL6BWdZeOhBjnXPY4cAf10pncfqhJgoVbn9G2T2r+vBbwX6yHk
+         rxFBk4AThtXUyaUU5tsQS+Y5ZVHn2GpiopEEeTgjPkabzraYCKBPGQvK6GsqpAagy5Eg
+         j7lQ==
+X-Gm-Message-State: AOAM5316gh5yhRnuhUUgdqydcArh9xUN5wyY4Ow1tqmXuSZ6daW8akiv
+        n79nhDv+QhruZwtBB0CSIpMDdG+BMgw=
+X-Google-Smtp-Source: ABdhPJwoo/G2XH1cCJBRy2SRAZnceQcWmv/pHd5QQeAHK5Kh0LByCpUvzm0Ot2mj8ezCymd0evrfww==
+X-Received: by 2002:a7b:c090:: with SMTP id r16mr4200287wmh.105.1591806581137;
+        Wed, 10 Jun 2020 09:29:41 -0700 (PDT)
+Received: from garrit-VirtualBox ([94.31.102.44])
+        by smtp.gmail.com with ESMTPSA id 88sm494902wre.45.2020.06.10.09.29.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2020 09:29:40 -0700 (PDT)
+Date:   Wed, 10 Jun 2020 18:29:39 +0200
+From:   Garrit Franke <garritfranke@gmail.com>
+To:     rjw@rjwysocki.net, lenb@kernel.org
+Cc:     linux-acpi@vger.kernel.org
+Subject: [PATCH] acpi: apei-base: fix sparse warnings
+Message-ID: <20200610162939.GA105986@garrit-VirtualBox>
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 10 Jun 2020 17:52:08 +0200
-Message-ID: <CAJZ5v0iWARxun+oYiu5qx1p7E3=U-GJMEF3hHwYxagkSn_BRFA@mail.gmail.com>
-Subject: [GIT PULL] More ACPI updates for v5.8-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+Hi all,
 
-Please pull from the tag
+first off, I must admit that this is my first kernel patch, so I would
+love to receive any feedback. I thought that a good way to get started
+is to check for minor warnings in drivers, so I went ahead and fixed
+two of them:
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-5.8-rc1-2
+"drivers/acpi/apei/apei-base.c:290:23: warning: symbol
+'apei_resources_all' was not declared. Should it be static?"
 
-with top-most commit ede439be684c54f01147e1f65cc565c6baaca1a4
+"drivers/acpi/apei/apei-base.c:451:5: warning: symbol
+'arch_apei_filter_addr' was not declared. Should it be static?"
 
- Merge branch 'acpica'
+Thanks for your time,
+Garrit
 
-on top of commit 118d6e98293b30aee378a6b08d27a35320a3e34f
+Signed-off-by: Garrit Franke <garritfranke@gmail.com>
+---
+ drivers/acpi/apei/apei-base.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
- Merge tag 'acpi-5.8-rc1' of
-git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
+index e358d0046..321318dcb 100644
+--- a/drivers/acpi/apei/apei-base.c
++++ b/drivers/acpi/apei/apei-base.c
+@@ -287,7 +287,7 @@ struct apei_res {
+ };
+ 
+ /* Collect all resources requested, to avoid conflict */
+-struct apei_resources apei_resources_all = {
++static struct apei_resources apei_resources_all = {
+ 	.iomem = LIST_HEAD_INIT(apei_resources_all.iomem),
+ 	.ioport = LIST_HEAD_INIT(apei_resources_all.ioport),
+ };
+@@ -448,8 +448,9 @@ static int apei_get_nvs_resources(struct apei_resources *resources)
+ 	return acpi_nvs_for_each_region(apei_get_res_callback, resources);
+ }
+ 
+-int (*arch_apei_filter_addr)(int (*func)(__u64 start, __u64 size,
++static int (*arch_apei_filter_addr)(int (*func)(__u64 start, __u64 size,
+ 				     void *data), void *data);
++
+ static int apei_get_arch_resources(struct apei_resources *resources)
+ 
+ {
+-- 
+2.25.1
 
-to receive more ACPI updates for 5.8-rc1.
-
-These update the ACPICA code in the kernel to upstream revision
-20200528 with the following changes:
-
- - Remove some dead code from the acpidump utility (Bob Moore).
-
- - Add new OperationRegion subtype keyword PlatformRtMechanism
-   to the compiler (Erik Kaneda).
-
-Thanks!
-
-
----------------
-
-Bob Moore (2):
-      ACPICA: acpidump: Removed dead code from oslinuxtbl.c
-      ACPICA: Update version to 20200528
-
-Erik Kaneda (1):
-      ACPICA: iASL: add new OperationRegion subtype keyword PlatformRtMechanism
-
----------------
-
- drivers/acpi/acpica/dbdisply.c                           |  2 ++
- drivers/acpi/acpica/utdecode.c                           |  3 ++-
- include/acpi/acpixf.h                                    |  2 +-
- include/acpi/actypes.h                                   |  3 ++-
- tools/power/acpi/os_specific/service_layers/oslinuxtbl.c | 11 ++++++-----
- 5 files changed, 13 insertions(+), 8 deletions(-)
