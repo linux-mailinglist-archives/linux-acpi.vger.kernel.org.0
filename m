@@ -2,69 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EF0F1F5DD8
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jun 2020 23:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78F101F5DD5
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jun 2020 23:45:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726276AbgFJVpX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Jun 2020 17:45:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35244 "EHLO mail.kernel.org"
+        id S1726760AbgFJVpp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Jun 2020 17:45:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35228 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726293AbgFJVpX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 10 Jun 2020 17:45:23 -0400
-Subject: Re: [GIT PULL] virtio: features, fixes
+        id S1726621AbgFJVp0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 10 Jun 2020 17:45:26 -0400
+Subject: Re: [GIT PULL] More power management updates for v5.8-rc1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591825522;
-        bh=CE0aQdpou0/7Squu8lBaWHAf5wRg1NIwqMRssSM2m5Y=;
+        s=default; t=1591825525;
+        bh=HcV42kZSuE2vWuYag3VZRphUQeBdX+FQjXA4BqJaTpk=;
         h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=uwOfHFMudzPjx89JIxmzIihgrvNSZb8E5Y8VJPcl62MOMXz9JENAI7SwNDlcZT/Xu
-         SmsVNXCaYo4WTWgoOLs/nwK6d09/7X0uH5LMptEpaEyf2jR+uRf2bq+4UInSqLu7Ke
-         I+DUqB2wDcqbwMkgYQwYOqT59zhr0XsLAY6Enz8I=
+        b=ZAxomdMaeSg119tjRveDj5/S5h4gZdCAAhV4YUuJuxIY0oo+TicrOo7IpEtv7ztr0
+         yxYe/nlroWMjjFkhziIx5osTXGpwtm/+DvDAWpAbrDg4cZk7J67Q2OfmJeuUpFph2c
+         Xaoasr4o5uW7zH8G8Po+YFskQhy8CZ5sLOXcQv3E=
 From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20200610004455-mutt-send-email-mst@kernel.org>
-References: <20200610004455-mutt-send-email-mst@kernel.org>
+In-Reply-To: <CAJZ5v0iEWuYG7-FtYMSk_kJZn-vVgcUimPfud75zSF5MU1Adbw@mail.gmail.com>
+References: <CAJZ5v0iEWuYG7-FtYMSk_kJZn-vVgcUimPfud75zSF5MU1Adbw@mail.gmail.com>
 X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20200610004455-mutt-send-email-mst@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
-X-PR-Tracked-Commit-Id: 044e4b09223039e571e6ec540e25552054208765
+X-PR-Tracked-Message-Id: <CAJZ5v0iEWuYG7-FtYMSk_kJZn-vVgcUimPfud75zSF5MU1Adbw@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
+ pm-5.8-rc1-2
+X-PR-Tracked-Commit-Id: 50dd154ed7b17a8b3a1983fc32a8e41d4cc4211a
 X-PR-Merge-Tree: torvalds/linux.git
 X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 09102704c67457c6cdea6c0394c34843484a852c
-Message-Id: <159182552257.4867.17502702352097264992.pr-tracker-bot@kernel.org>
-Date:   Wed, 10 Jun 2020 21:45:22 +0000
-To:     "Michael S. Tsirkin" <mst@redhat.com>
+X-PR-Merge-Commit-Id: 0c67f6b29715ff888cb967cc98336221a8a23916
+Message-Id: <159182552563.4867.15640566154384885126.pr-tracker-bot@kernel.org>
+Date:   Wed, 10 Jun 2020 21:45:25 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        akpm@linux-foundation.org, alexander.h.duyck@linux.intel.com,
-        anshuman.khandual@arm.com, anthony.yznaga@oracle.com,
-        arei.gonglei@huawei.com, cai@lca.pw, clabbe@baylibre.com,
-        dan.j.williams@intel.com, davem@davemloft.net, david@redhat.com,
-        dyoung@redhat.com, elfring@users.sourceforge.net,
-        glider@google.com, gregkh@linuxfoundation.org,
-        guennadi.liakhovetski@linux.intel.com, hannes@cmpxchg.org,
-        herbert@gondor.apana.org.au, hulkci@huawei.com,
-        imammedo@redhat.com, jasowang@redhat.com, jgross@suse.com,
-        kernelfans@gmail.com, konrad.wilk@oracle.com, lenb@kernel.org,
-        lingshan.zhu@intel.com, linux-acpi@vger.kernel.org, lkp@intel.com,
-        longpeng2@huawei.com, matej.genci@nutanix.com,
-        mgorman@techsingularity.net, mhocko@kernel.org, mhocko@suse.com,
-        mst@redhat.com, osalvador@suse.com, osalvador@suse.de,
-        pankaj.gupta.linux@gmail.com, pasha.tatashin@soleen.com,
-        pavel.tatashin@microsoft.com, rafael@kernel.org,
-        richard.weiyang@gmail.com, rjw@rjwysocki.net, rppt@linux.ibm.com,
-        stable@vger.kernel.org, stefanha@redhat.com,
-        teawaterz@linux.alibaba.com, vbabka@suse.cz, zou_wei@huawei.com
+        Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Wed, 10 Jun 2020 00:44:55 -0400:
+The pull request you sent on Wed, 10 Jun 2020 17:50:33 +0200:
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-5.8-rc1-2
 
 has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/09102704c67457c6cdea6c0394c34843484a852c
+https://git.kernel.org/torvalds/c/0c67f6b29715ff888cb967cc98336221a8a23916
 
 Thank you!
 
