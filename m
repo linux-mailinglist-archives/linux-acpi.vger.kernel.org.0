@@ -2,89 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50B001F4ECB
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jun 2020 09:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0B891F4F9C
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jun 2020 09:52:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726367AbgFJHYa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Jun 2020 03:24:30 -0400
-Received: from smtprelay0191.hostedemail.com ([216.40.44.191]:33160 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726081AbgFJHY3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 10 Jun 2020 03:24:29 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 2364F180A7FCA;
-        Wed, 10 Jun 2020 07:24:28 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:960:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2693:2828:3138:3139:3140:3141:3142:3353:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:4250:4321:5007:6119:6742:7903:8604:9393:10004:10400:10848:11026:11232:11658:11914:12050:12297:12663:12679:12740:12760:12895:13069:13255:13311:13357:13439:14096:14097:14659:14721:21080:21324:21433:21627:21939:21990:30054:30062:30075:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: toad10_2409db926dc9
-X-Filterd-Recvd-Size: 2861
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf13.hostedemail.com (Postfix) with ESMTPA;
-        Wed, 10 Jun 2020 07:24:26 +0000 (UTC)
-Message-ID: <4b77ebf589ccc8ce0983539ce2fca4eba8f72a2a.camel@perches.com>
-Subject: Re: [PATCH v3 1/7] Documentation: dynamic-debug: Add description of
- level bitmask
-From:   Joe Perches <joe@perches.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, Jason Baron <jbaron@akamai.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Jim Cromie <jim.cromie@gmail.com>
-Date:   Wed, 10 Jun 2020 00:24:25 -0700
-In-Reply-To: <20200610070949.GB1923109@kroah.com>
-References: <20200609104604.1594-1-stanimir.varbanov@linaro.org>
-         <20200609104604.1594-2-stanimir.varbanov@linaro.org>
-         <20200609111615.GD780233@kroah.com>
-         <ba32bfa93ac2e147c2e0d3a4724815a7bbf41c59.camel@perches.com>
-         <20200610063103.GD1907120@kroah.com>
-         <f94b2abe85d7c849ca76677ff5a1e0b272bb3bdf.camel@perches.com>
-         <20200610070949.GB1923109@kroah.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.2-0ubuntu1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1726274AbgFJHwo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Jun 2020 03:52:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58554 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726396AbgFJHwo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Jun 2020 03:52:44 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD8CDC03E96B;
+        Wed, 10 Jun 2020 00:52:43 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id 2526C2A3FC4
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+To:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Peter Hutterer <peter.hutterer@redhat.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
+        kernel@collabora.com
+Subject: [FIXED PATCH v4 5/7] iio: adc: exynos: Use input_device_enabled()
+Date:   Wed, 10 Jun 2020 09:52:30 +0200
+Message-Id: <20200610075230.14172-1-andrzej.p@collabora.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200610012801.GA11530@qmqm.qmqm.pl>
+References: <20200610012801.GA11530@qmqm.qmqm.pl>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 2020-06-10 at 09:09 +0200, Greg Kroah-Hartman wrote:
-> On Tue, Jun 09, 2020 at 11:35:31PM -0700, Joe Perches wrote:
-> > On Wed, 2020-06-10 at 08:31 +0200, Greg Kroah-Hartman wrote:
-> > > On Tue, Jun 09, 2020 at 09:58:07AM -0700, Joe Perches wrote:
-> > > > On Tue, 2020-06-09 at 13:16 +0200, Greg Kroah-Hartman wrote:
-> > > > > What is wrong with the existing control of dynamic
-> > > > > debug messages that you want to add another type of arbitrary grouping
-> > > > > to it? 
-> > > > 
-> > > > There is no existing grouping mechanism.
-> > > 
-> > > info/warn/err/dbg is what I am referring to.
+A new helper is available, so use it. Inspecting 'users' member of
+input_dev requires taking device's mutex.
 
-This is specifically about dbg so that's not relevant is it.
-> But each "level" you all come up with will be intrepreted differently
-> per driver, causing total confusion (like we have today.)  Try to make
-> it better by just removing that mess.
+Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+---
+ drivers/iio/adc/exynos_adc.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Or add value as it allows the developer to do what's
-necessary for their development.
-
-> > > In the beginning, yes, adding loads of different types of debugging
-> > > options to a driver is needed by the author, but by the time it is added
-> > > to the kernel, all of that should be able to be removed and only a
-> > > single "enable debug" should be all that is needed.
-> > 
-> > No one does that.
-> 
-> We did that for USB drivers a decade ago, it can be done.
-
-And nearly no one does it.
-
-btw: look up usbip_debug_flag and usbip_dbg_<foo> or the uhci driver
-
+diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
+index 22131a677445..2761c3aea2c6 100644
+--- a/drivers/iio/adc/exynos_adc.c
++++ b/drivers/iio/adc/exynos_adc.c
+@@ -633,7 +633,9 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
+ 	bool pressed;
+ 	int ret;
+ 
+-	while (info->input->users) {
++	mutex_lock(&info->input->mutex);
++	while (input_device_enabled(info->input)) {
++		mutex_unlock(&info->input->mutex);
+ 		ret = exynos_read_s3c64xx_ts(dev, &x, &y);
+ 		if (ret == -ETIMEDOUT)
+ 			break;
+@@ -651,7 +653,10 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
+ 		input_sync(info->input);
+ 
+ 		usleep_range(1000, 1100);
++
++		mutex_lock(&info->input->mutex);
+ 	}
++	mutex_unlock(&info->input->mutex);
+ 
+ 	writel(0, ADC_V1_CLRINTPNDNUP(info->regs));
+ 
+-- 
+2.17.1
 
