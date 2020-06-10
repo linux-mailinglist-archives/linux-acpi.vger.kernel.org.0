@@ -2,194 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 773F61F5490
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jun 2020 14:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBE811F54BD
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jun 2020 14:26:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728988AbgFJMXj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Jun 2020 08:23:39 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:60752 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728571AbgFJMXj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Jun 2020 08:23:39 -0400
-Received: from 89-64-83-71.dynamic.chello.pl (89.64.83.71) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
- id 085cf89194671cbf; Wed, 10 Jun 2020 14:23:35 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Erik Kaneda <erik.kaneda@intel.com>, rafael.j.wysocki@intel.com,
-        Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        Ira Weiny <ira.weiny@intel.com>,
-        James Morse <james.morse@arm.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-nvdimm@lists.01.org, Bob Moore <robert.moore@intel.com>
-Subject: [RFT][PATCH 3/3] ACPI: OSL: Define ACPI_OS_MAP_MEMORY_FAST_PATH()
-Date:   Wed, 10 Jun 2020 14:22:50 +0200
-Message-ID: <6458983.dlBdKaB8z0@kreacher>
-In-Reply-To: <318372766.6LKUBsbRXE@kreacher>
-References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com> <318372766.6LKUBsbRXE@kreacher>
+        id S1729087AbgFJM0t (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Jun 2020 08:26:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38506 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729077AbgFJM0s (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 10 Jun 2020 08:26:48 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A8D02206F4;
+        Wed, 10 Jun 2020 12:26:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1591792007;
+        bh=PBnbsD1r4hBJSwpcdPlA8plwD/kWkJiD61twepTwXNE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jJpTTwI4BcRIVrN10ZRmWWQHb9uLqvUrrTbyJC1G5ckdCzOCEOBlPdgX2dMouNv0y
+         YAgEbPCewSSW4UUxn4RQtfuCNeuAdQ/VXQBBn5Ha87ZqsZt+1tcxAPrnMH0pHm3w0F
+         EFkHX/7w+geTl3Np545ZBkOWixSYUU12SBQ6Y3Ls=
+Date:   Wed, 10 Jun 2020 14:26:41 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, Joe Perches <joe@perches.com>,
+        Jason Baron <jbaron@akamai.com>,
+        Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH v3 1/7] Documentation: dynamic-debug: Add description of
+ level bitmask
+Message-ID: <20200610122641.GB1900758@kroah.com>
+References: <20200609104604.1594-1-stanimir.varbanov@linaro.org>
+ <20200609104604.1594-2-stanimir.varbanov@linaro.org>
+ <20200609111615.GD780233@kroah.com>
+ <0830ba57-d416-4788-351a-6d1b2ca5b7d8@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0830ba57-d416-4788-351a-6d1b2ca5b7d8@linaro.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+On Wed, Jun 10, 2020 at 01:29:20PM +0300, Stanimir Varbanov wrote:
+> Hi Greg,
+> 
+> On 6/9/20 2:16 PM, Greg Kroah-Hartman wrote:
+> > On Tue, Jun 09, 2020 at 01:45:58PM +0300, Stanimir Varbanov wrote:
+> >> This adds description of the level bitmask feature.
+> >>
+> >> Cc: Jonathan Corbet <corbet@lwn.net> (maintainer:DOCUMENTATION)
+> >>
+> >> Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+> >> ---
+> >>  Documentation/admin-guide/dynamic-debug-howto.rst | 10 ++++++++++
+> >>  1 file changed, 10 insertions(+)
+> >>
+> >> diff --git a/Documentation/admin-guide/dynamic-debug-howto.rst b/Documentation/admin-guide/dynamic-debug-howto.rst
+> >> index 0dc2eb8e44e5..c2b751fc8a17 100644
+> >> --- a/Documentation/admin-guide/dynamic-debug-howto.rst
+> >> +++ b/Documentation/admin-guide/dynamic-debug-howto.rst
+> >> @@ -208,6 +208,12 @@ line
+> >>  	line -1605          // the 1605 lines from line 1 to line 1605
+> >>  	line 1600-          // all lines from line 1600 to the end of the file
+> >>  
+> >> +level
+> >> +    The given level will be a bitmask ANDed with the level of the each ``pr_debug()``
+> >> +    callsite. This will allow to group debug messages and show only those of the
+> >> +    same level.  The -p flag takes precedence over the given level. Note that we can
+> >> +    have up to five groups of debug messages.
+> > 
+> > As was pointed out, this isn't a "level", it's some arbitrary type of
+> > "grouping".
+> 
+> Yes, it is grouping of KERN_DEBUG level messages by importance (my
+> fault, I put incorrect name).  What is important is driver author
+> decision.  Usually when the driver is huge and has a lot of debug
+> messages it is not practical to enable all of them to chasing a
+> particular bug or issue.  You know that debugging (printk) add delays
+> which could hide or rise additional issue(s) which would complicate
+> debug and waste time.
 
-Define the ACPI_OS_MAP_MEMORY_FAST_PATH() macro to allow
-acpi_ex_system_memory_space_handler() to avoid memory unmapping
-overhead by deferring the unmap operations to the point when the
-AML interpreter is exited after removing the operation region
-that held the memory mappings which are not used any more.
+That is why it is possible to turn on and off debugging messages on a
+function/line basis already.  Why not just use that instead?
 
-That macro, when called on a knwon-existing memory mapping,
-causes the reference counter of that mapping in the OS layer to be
-incremented and returns a pointer representing the virtual address
-of the start of the mapped memory area without really mapping it,
-so the first subsequent unmap operation on it will only decrement
-the reference counter.
+> For the Venus driver I have defined three groups of KERN_DEBUG - low,
+> medium and high (again the driver author(s) will decide what the
+> importance is depending on his past experience).
+> 
+> There is another point where the debugging is made by person who is not
+> familiar with the driver code. In that case he/she cannot enable lines
+> or range of lines because he don't know the details. Here the grouping
+> by importance could help.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/osl.c                | 67 +++++++++++++++++++++++--------
- include/acpi/platform/aclinuxex.h |  4 ++
- 2 files changed, 55 insertions(+), 16 deletions(-)
+And they will really know what "low/medium/high" are?
 
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index 762c5d50b8fe..b75f3a17776f 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -302,21 +302,8 @@ static void acpi_unmap(acpi_physical_address pg_off, void __iomem *vaddr)
- 		iounmap(vaddr);
- }
- 
--/**
-- * acpi_os_map_iomem - Get a virtual address for a given physical address range.
-- * @phys: Start of the physical address range to map.
-- * @size: Size of the physical address range to map.
-- *
-- * Look up the given physical address range in the list of existing ACPI memory
-- * mappings.  If found, get a reference to it and return a pointer to it (its
-- * virtual address).  If not found, map it, add it to that list and return a
-- * pointer to it.
-- *
-- * During early init (when acpi_permanent_mmap has not been set yet) this
-- * routine simply calls __acpi_map_table() to get the job done.
-- */
--void __iomem __ref
--*acpi_os_map_iomem(acpi_physical_address phys, acpi_size size)
-+static void __iomem __ref *__acpi_os_map_iomem(acpi_physical_address phys,
-+					       acpi_size size, bool fast_path)
- {
- 	struct acpi_ioremap *map;
- 	void __iomem *virt;
-@@ -328,8 +315,12 @@ void __iomem __ref
- 		return NULL;
- 	}
- 
--	if (!acpi_permanent_mmap)
-+	if (!acpi_permanent_mmap) {
-+		if (WARN_ON(fast_path))
-+			return NULL;
-+
- 		return __acpi_map_table((unsigned long)phys, size);
-+	}
- 
- 	mutex_lock(&acpi_ioremap_lock);
- 	/* Check if there's a suitable mapping already. */
-@@ -339,6 +330,11 @@ void __iomem __ref
- 		goto out;
- 	}
- 
-+	if (fast_path) {
-+		mutex_unlock(&acpi_ioremap_lock);
-+		return NULL;
-+	}
-+
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
- 	if (!map) {
- 		mutex_unlock(&acpi_ioremap_lock);
-@@ -366,6 +362,25 @@ void __iomem __ref
- 	mutex_unlock(&acpi_ioremap_lock);
- 	return map->virt + (phys - map->phys);
- }
-+
-+/**
-+ * acpi_os_map_iomem - Get a virtual address for a given physical address range.
-+ * @phys: Start of the physical address range to map.
-+ * @size: Size of the physical address range to map.
-+ *
-+ * Look up the given physical address range in the list of existing ACPI memory
-+ * mappings.  If found, get a reference to it and return a pointer representing
-+ * its virtual address.  If not found, map it, add it to that list and return a
-+ * pointer representing its virtual address.
-+ *
-+ * During early init (when acpi_permanent_mmap has not been set yet) call
-+ * __acpi_map_table() to obtain the mapping.
-+ */
-+void __iomem __ref *acpi_os_map_iomem(acpi_physical_address phys,
-+				      acpi_size size)
-+{
-+	return __acpi_os_map_iomem(phys, size, false);
-+}
- EXPORT_SYMBOL_GPL(acpi_os_map_iomem);
- 
- void *__ref acpi_os_map_memory(acpi_physical_address phys, acpi_size size)
-@@ -374,6 +389,24 @@ void *__ref acpi_os_map_memory(acpi_physical_address phys, acpi_size size)
- }
- EXPORT_SYMBOL_GPL(acpi_os_map_memory);
- 
-+/**
-+ * acpi_os_map_memory_fast_path - Fast-path physical-to-virtual address mapping.
-+ * @phys: Start of the physical address range to map.
-+ * @size: Size of the physical address range to map.
-+ *
-+ * Look up the given physical address range in the list of existing ACPI memory
-+ * mappings.  If found, get a reference to it and return a pointer representing
-+ * its virtual address.  If not found, return NULL.
-+ *
-+ * During early init (when acpi_permanent_mmap has not been set yet) log a
-+ * warning and return NULL.
-+ */
-+void __ref *acpi_os_map_memory_fast_path(acpi_physical_address phys,
-+					acpi_size size)
-+{
-+	return __acpi_os_map_iomem(phys, size, true);
-+}
-+
- /* Must be called with mutex_lock(&acpi_ioremap_lock) */
- static unsigned long acpi_os_drop_map_ref(struct acpi_ioremap *map)
- {
-@@ -1571,6 +1604,8 @@ acpi_status acpi_release_memory(acpi_handle handle, struct resource *res,
- 
- 	return acpi_walk_namespace(ACPI_TYPE_REGION, handle, level,
- 				   acpi_deactivate_mem_region, NULL, res, NULL);
-+
-+	acpi_release_unused_memory_mappings();
- }
- EXPORT_SYMBOL_GPL(acpi_release_memory);
- 
-diff --git a/include/acpi/platform/aclinuxex.h b/include/acpi/platform/aclinuxex.h
-index 04f88f2de781..1d8be4ac9ef9 100644
---- a/include/acpi/platform/aclinuxex.h
-+++ b/include/acpi/platform/aclinuxex.h
-@@ -139,6 +139,10 @@ static inline void acpi_os_terminate_debugger(void)
-  * OSL interfaces added by Linux
-  */
- 
-+void *acpi_os_map_memory_fast_path(acpi_physical_address where, acpi_size length);
-+
-+#define ACPI_OS_MAP_MEMORY_FAST_PATH(a, s)	acpi_os_map_memory_fast_path(a, s)
-+
- #endif				/* __KERNEL__ */
- 
- #endif				/* __ACLINUXEX_H__ */
--- 
-2.26.2
+Anyway, that makes a bit more sense, but the documentation could use a
+lot more in order to describe this type of behavior, and what is
+expected by both driver authors, and users of the interface.
 
+thanks,
 
-
-
+greg k-h
