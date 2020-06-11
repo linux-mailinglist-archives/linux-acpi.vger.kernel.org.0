@@ -2,188 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D06311F6F51
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jun 2020 23:19:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DCE41F6F5B
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jun 2020 23:21:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726385AbgFKVTt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 11 Jun 2020 17:19:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38622 "EHLO
+        id S1726332AbgFKVV4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 Jun 2020 17:21:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726153AbgFKVTt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Jun 2020 17:19:49 -0400
-Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C6D3C08C5C1;
-        Thu, 11 Jun 2020 14:19:49 -0700 (PDT)
-Received: by mail-vs1-xe44.google.com with SMTP id l10so4172286vsr.10;
-        Thu, 11 Jun 2020 14:19:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1anzsAXDWtZ5K2mcw80BCvcE8icDfice76lV0jTfYAA=;
-        b=MDmWelydbeCksVJLKPT78OCVuxJO7+H8IZANEJiiHrDodWUvLU72wq7aPJTlhDS9ET
-         lzRiOTs5ZBFUxua0uaYzb49RHWtkB0aJ8WsOukLaGXz7MevMpN0OJVkJPYYoEQhyz4De
-         DvwjfglVq3hOlo0hCgYIaum4siPju5qAl1/7sl/Gk2syvCDHKhxdSOzBP4YCC9nLwzLz
-         FHWaihN0x/MYoVNyiUNP2aSRq3Xwxn2qMwZHBPeRMgTHs76BxCGi4Qqgsq90h87xiSlx
-         LI3HPDW8AcHw0dONu7B1FbrI7I8bNoE+gVlspuUFVWXzi3kgOo7bKwuBZUd+k60wN8wL
-         vOVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1anzsAXDWtZ5K2mcw80BCvcE8icDfice76lV0jTfYAA=;
-        b=hiiU4k8qzznbIqoGiGzoS8AWYvOX/Ij5RDCafAUkg1WQH2KLojYvRfRAxGbtBbrt0o
-         xdoz5fger1tKZ0s5fH7arLNZ1iwxR3vmsBaT4WN/yxpFYOvUqZJeZWPtN1vSCpfT7wMs
-         0AD5/RpaDlG54iMhPrItxQ+gb2j0KRR/DfnZY8y2TysJX4/GGjij59GeJ/blW//YvGt+
-         Scw9G5gIgCKdiORlbOk0Bi4wDwxqHekZsxToOAYKAONdwij0eD52pQm/BeaTiBiuRaPn
-         mMo2znV57zo98S0j3lwQobw4U+Sgb4oqa+CWTqEay5rgUn7ZiKLLs1zQp4+CuFuKL9TA
-         yizA==
-X-Gm-Message-State: AOAM532EFmIWdKVS12iyyqs1B1HMkd0iHlDmfA4N3GlJ1be5st+maU/g
-        9fUmRPD4NzvK8tuYyY2l/NFOymLSl9c4Ni+mJqnpW6H9t6I=
-X-Google-Smtp-Source: ABdhPJy+E0/cF9nMa5aGYNVdqiPt5XHzlP8rg8uxvtC9H/Knxv9lR9jMJT25654cQYCFU37wUugHZOkb+Vlxac3CO5s=
-X-Received: by 2002:a67:8bc5:: with SMTP id n188mr8094751vsd.78.1591910387709;
- Thu, 11 Jun 2020 14:19:47 -0700 (PDT)
+        with ESMTP id S1726153AbgFKVV4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Jun 2020 17:21:56 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC13EC08C5C1
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Jun 2020 14:21:55 -0700 (PDT)
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1jjUdw-00059a-EA; Thu, 11 Jun 2020 23:21:48 +0200
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1jjUdu-0005Y0-VA; Thu, 11 Jun 2020 23:21:46 +0200
+Date:   Thu, 11 Jun 2020 23:21:44 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Daniel Vetter <daniel@ffwll.ch>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: pwm/i915: Convert pwm-crc and i915 driver's PWM code to use the
+ atomic PWM API
+Message-ID: <20200611212144.i7ma7kriznidds4r@taurus.defre.kleine-koenig.org>
+References: <20200606202601.48410-1-hdegoede@redhat.com>
+ <20200608143500.GX20149@phenom.ffwll.local>
 MIME-Version: 1.0
-References: <20200609104604.1594-7-stanimir.varbanov@linaro.org>
- <20200609111414.GC780233@kroah.com> <dc85bf9e-e3a6-15a1-afaa-0add3e878573@linaro.org>
- <20200610133717.GB1906670@kroah.com> <31e1aa72b41f9ff19094476033511442bb6ccda0.camel@perches.com>
- <2fab7f999a6b5e5354b23d06aea31c5018b9ce18.camel@perches.com>
- <20200611062648.GA2529349@kroah.com> <bc92ee5948c3e71b8f1de1930336bbe162d00b34.camel@perches.com>
- <20200611105217.73xwkd2yczqotkyo@holly.lan> <ed7dd5b4-aace-7558-d012-fb16ce8c92d6@linaro.org>
- <20200611121817.narzkqf5x7cvl6hp@holly.lan>
-In-Reply-To: <20200611121817.narzkqf5x7cvl6hp@holly.lan>
-From:   jim.cromie@gmail.com
-Date:   Thu, 11 Jun 2020 15:19:21 -0600
-Message-ID: <CAJfuBxzE=A0vzsjNai_jU_16R_P0haYA-FHnjZcaHOR_3fy__A@mail.gmail.com>
-Subject: Re: [PATCH v3 6/7] venus: Make debug infrastructure more flexible
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-        Joe Perches <joe@perches.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux Documentation List <linux-doc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>, linux-media@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-btrfs@vger.kernel.org,
-        linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
-        Jason Baron <jbaron@akamai.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="um757tuptzwklztk"
+Content-Disposition: inline
+In-Reply-To: <20200608143500.GX20149@phenom.ffwll.local>
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-trimmed..
 
-> > > Currently I think there not enough "levels" to map something like
-> > > drm.debug to the new dyn dbg feature. I don't think it is intrinsic
-> > > but I couldn't find the bit of the code where the 5-bit level in struct
-> > > _ddebug is converted from a mask to a bit number and vice-versa.
-> >
-> > Here [1] is Joe's initial suggestion. But I decided that bitmask is a
-> > good start for the discussion.
-> >
-> > I guess we can add new member uint "level" in struct _ddebug so that we
-> > can cover more "levels" (types, groups).
->
-> I don't think it is allocating only 5 bits that is the problem!
->
-> The problem is that those 5 bits need not be encoded as a bitmask by
-> dyndbg, that can simply be the category code for the message. They only
-> need be converted into a mask when we compare them to the mask provided
-> by the user.
->
->
-> Daniel.
+--um757tuptzwklztk
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Hello,
 
-heres what I have in mind.  whats described here is working.
-I'll send it out soon
+On Mon, Jun 08, 2020 at 04:35:00PM +0200, Daniel Vetter wrote:
+> On Sat, Jun 06, 2020 at 10:25:45PM +0200, Hans de Goede wrote:
+> > Hi All,
+> >=20
+> > This patch series converts the i915 driver's cpde for controlling the
+> > panel's backlight with an external PWM controller to use the atomic PWM=
+ API.
+> >=20
+> > Initially the plan was for this series to consist of 2 parts:
+> > 1. convert the pwm-crc driver to support the atomic PWM API and
+> > 2. convert the i915 driver's PWM code to use the atomic PWM API.
+> >=20
+> > But during testing I've found a number of bugs in the pwm-lpss and I
+> > found that the acpi_lpss code needs some special handling because of
+> > some ugliness found in most Cherry Trail DSDTs.
+> >=20
+> > So now this series has grown somewhat large and consists of 4 parts:
+> >=20
+> > 1. acpi_lpss fixes workarounds for Cherry Trail DSTD nastiness
+> > 2. various fixes to the pwm-lpss driver
+> > 3. convert the pwm-crc driver to support the atomic PWM API and
+> > 4. convert the i915 driver's PWM code to use the atomic PWM API
+> >=20
+> > So we need to discuss how to merge this (once it passes review).
+> > Although the inter-dependencies are only runtime I still think we should
+> > make sure that 1-3 are in the drm-intel-next-queued (dinq) tree before
+> > merging the i915 changes. Both to make sure that the intel-gfx CI system
+> > does not become unhappy and for bisecting reasons.
+>=20
+> Simplest is if acpi acks the acpi patches for merging through
+> drm-intel.git. Second simplest is topic branch (drm-intel maintainers can
+> do that) with the entire pile, which then acpi and drm-intel can both pull
+> in.
+>=20
+> Up to the two maintainer teams to figure this one out.
 
-commit 20298ec88cc2ed64269c8be7b287a24e60a5347e
-Author: Jim Cromie <jim.cromie@gmail.com>
-Date:   Wed Jun 10 12:55:08 2020 -0600
+I'm unclear about the dependencies, but the changes to drivers/pwm need
+an ack (or processing) by the PWM team.
 
-    dyndbg: WIP towards module->debugflags based callsite controls
+Best regards
+Uwe
 
-    There are *lots* of ad-hoc debug printing solutions in kernel,
-    this is a 1st attempt at providing a common mechanism for many of them.
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
-    Basically, there are 2 styles of debug printing:
-    - levels, with increasing verbosity, 1-10 forex
-    - bits/flags, independently controlling separate groups of dprints
+--um757tuptzwklztk
+Content-Type: application/pgp-signature; name="signature.asc"
 
-    This patch does bits/flags (with no distinction made yet between 2)
+-----BEGIN PGP SIGNATURE-----
 
-    API:
+iQEzBAEBCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl7ioGMACgkQwfwUeK3K
+7AlrPAgAhUE8d3GvXZoHPrmKHb+cPda0ce2u02QUj6/2tkjY86coGILKhleJhJto
+l/tBpJjC6ORuFRJDNIrCP3DYu+2f3kfMLlp3X5GoJqTmEoAcXaeuXYZuq+2KlFtX
+u+MVZnZYUjC1QvmNJTsW5j0pVbJB18J9xucYNK6TotZ6mnwg1bWOtrLq7ON6MXId
+W+LUiIrn7/foJGKHxkQeE6HuVMdvTk5RlCad3aGMerLSbgRQx9ylzvEn8u53Gfwb
+k94wKTmTgOGR0UnNl2Ae5scWRTPO3msjWBhQfGyKts0jwqVErqEqjv147CpClfn6
+bTOWIyzvJtnUmQav97PQpgvygfujbg==
+=95k0
+-----END PGP SIGNATURE-----
 
-    - change pr_debug(...)  -->  pr_debug_typed(type_id=0, ...)
-    - all existing uses have type_id=0
-    - developer creates exclusive types of log messages with type_id>0
-      1, 2, 3 are disjoint groups, for example: hi, mid, low
-
-    - !!type_id is just an additional callsite selection criterion
-
-      Qfoo() { echo module foo $* >/proc/dynamic_debug/control }
-      Qfoo +p               # all groups, including default 0
-      Qfoo mflags 1 +p      # only group 1
-      Qfoo mflags 12 +p     # TBD[1]: groups 1 or 2
-      Qfoo mflags 0 +p      # ignored atm TBD[2]
-      Qfoo mflags af +p     # TBD[3]: groups a or f (10 or 15)
-
-    so patch does:
-
-    - add u32 debugflags to struct module. Each bit is a separate print-class.
-
-    - add unsigned int mflags into struct ddebug_query
-      mflags matched in ddebug_change
-
-    - add unsigned int type_id:5 to struct _ddebug
-      picks a single debugflag bit.  No subclass or multitype nonsense.
-      nice and dense, packs with other members.
-      we will have a lot of struct _ddebugs.
-
-    - in ddebug_change()
-      filter on !! module->debugflags,
-      IFF query->module is given, and matches dt->mod_name
-      and query->mflags is given, and bitmatches module->debugflags
-
-    - in parse_query()
-      accept new query term: mflags $arg
-      populate query->mflags
-      arg-type needs some attention, but basic plumbing is there
-
-    WIP: not included:
-
-    - pr_debug_typed( bitpos=0, ....)
-      aka: pr_debug_class() or pr_debug_id()
-      the bitpos is 1<<shift, allowing a single type. no ISA relations.
-      this covers OP's high,mid,low case, many others
-
-    - no way to exersize new code in ddebug_change
-      need pr_debug_typed() to make a (not-null) typed callsite.
-      also no way to set module->debugflags
-
-    Im relying on:
-    cdf6d00696 dynamic_debug: don't duplicate modname in ddebug_add_module
-
-    which copies the ptr-val from module->name to dt->mod_name, which
-    allowed == tests instead of strcmp.
-
-    That equivalence and a (void*) cast in use of container_of() seem to
-    do the trick to get the module, then module->debugflags.
-
-    Notes:
-
-    1- A query ANDs all its query terms together, so Qfoo() above
-    requires both "module foo" AND all additional query terms given in $*
-
-    But since callsite type_id creates disjoint groups, "mflags 12" is
-    nonsense if it means groups 1 AND 2.  Here, 1 OR 2 is meaningful, if
-    its not judged to be too confusing.
-
-    2- im not sure what this does atm, or should do
-       Qfoo mflags 0 +p      # select only untyped ? or no flags check at all ?
-
-    3- since modflags has 32 bits, [1-9a-v] could select any single type_id
-       it is succinct, but arcane.
-       its a crude alphanumeric map for developers to make flags mnemonic
-       maybe query keyword should be mbits
+--um757tuptzwklztk--
