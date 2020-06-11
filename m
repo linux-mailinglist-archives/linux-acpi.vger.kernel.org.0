@@ -2,107 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 448C51F61D6
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jun 2020 08:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7CDA1F64F8
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jun 2020 11:52:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726547AbgFKGmv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 11 Jun 2020 02:42:51 -0400
-Received: from smtprelay0024.hostedemail.com ([216.40.44.24]:53622 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726147AbgFKGmv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 11 Jun 2020 02:42:51 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 3ECF0182CED34;
-        Thu, 11 Jun 2020 06:42:49 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2693:2828:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3868:3870:3872:3874:4250:4321:5007:6119:6691:7903:10004:10400:10848:11026:11232:11473:11658:11914:12043:12296:12297:12740:12760:12895:13161:13229:13439:14659:14721:21080:21433:21611:21627:21740:21939:21990:30012:30045:30054:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: milk04_120e82326dd1
-X-Filterd-Recvd-Size: 3673
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf14.hostedemail.com (Postfix) with ESMTPA;
-        Thu, 11 Jun 2020 06:42:47 +0000 (UTC)
-Message-ID: <bc92ee5948c3e71b8f1de1930336bbe162d00b34.camel@perches.com>
-Subject: Re: [PATCH v3 6/7] venus: Make debug infrastructure more flexible
-From:   Joe Perches <joe@perches.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, Jason Baron <jbaron@akamai.com>
-Date:   Wed, 10 Jun 2020 23:42:43 -0700
-In-Reply-To: <20200611062648.GA2529349@kroah.com>
-References: <20200609104604.1594-1-stanimir.varbanov@linaro.org>
-         <20200609104604.1594-7-stanimir.varbanov@linaro.org>
-         <20200609111414.GC780233@kroah.com>
-         <dc85bf9e-e3a6-15a1-afaa-0add3e878573@linaro.org>
-         <20200610133717.GB1906670@kroah.com>
-         <31e1aa72b41f9ff19094476033511442bb6ccda0.camel@perches.com>
-         <2fab7f999a6b5e5354b23d06aea31c5018b9ce18.camel@perches.com>
-         <20200611062648.GA2529349@kroah.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.2-0ubuntu1 
+        id S1726693AbgFKJw0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 Jun 2020 05:52:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44922 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726560AbgFKJwZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Jun 2020 05:52:25 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 961A5C08C5C1
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Jun 2020 02:52:25 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id e125so3174730lfd.1
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Jun 2020 02:52:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=oyH8ESYrAPi/9PkqEmGaq+D4CyK9NqOQkYGBYni9Kmk=;
+        b=QHtrTPx8ooZpZsxH/pQ4X7/JqOi8ojGRAaBtN3uwZ6SmyzvDWn3SdyaLZI1fo4tEXx
+         2t38ZHZptllR5SNpUPhc/nXq/7hF+ZPx21URDGwL0VxeI1KgvjSJfS/Hgw7y1Cufz73r
+         ERzL6mG6CwBVZQOaS+keY9tddm/ptb5AEGvuNHw0ia5IWoCaLrS3TO/t7tOC7mDmVIVw
+         Si8L+8EaI0iPC2hEDMCY+/d/0b9wmih2yqkmgH5YcORhPHkQssiqL5MkYoT/r58bfP6B
+         mXPbr4Lwq+N26yGOKDRrDwajvsQavyX5N0QmdtogqkHltOrKfIErteoNmAK2HaeOgnTt
+         X69w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=oyH8ESYrAPi/9PkqEmGaq+D4CyK9NqOQkYGBYni9Kmk=;
+        b=c7qXrx2Ve31EOEyNg0wuleONzegXhRSvWj11ktUmSCkJhFQDgr3DLgQ0isnsP9S3bt
+         CxTkN6WFWJJFuspVZh5LNzkZYuA/xKqMY054tHGg0+eXLZb2+HwlteuSPeRS8c9ZjK96
+         3RLW5tZW49TuUcLFlCGxFydktebhud3PRyTYXOYpC/sqtjA7oYlmE+JwU/FNh2wfiP0q
+         7butDXbS2mRUsxnuS1an33YhKKq2zyx7W0099WkIfDthZt1ZZ9CavVBZw+22PUE/lSy3
+         stYE1ZQwZvFymUR+vdCjlzm0bwCCDlsluT1f0ERQupOg9CcdLQxLtOFS0gRwN4YDFvaW
+         Ljbw==
+X-Gm-Message-State: AOAM53008VrpDxv2leih/I44JirmSFKKZ8Zyha+uD81XLRoOjNvuhlzm
+        pSZhhzks+EONnmBasbkwKlQR7OfU9+op5TD9Sxs=
+X-Google-Smtp-Source: ABdhPJy7g6m/XLY1xI8+RjzcSDzKAMOBIvSwoDwfvHyttCdR2dwIVdeZxJ9RVJHh0YCejxJdF3LO+0023e1OgeST6/g=
+X-Received: by 2002:a19:5f5c:: with SMTP id a28mr3814102lfj.98.1591869144098;
+ Thu, 11 Jun 2020 02:52:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a19:5e4b:0:0:0:0:0 with HTTP; Thu, 11 Jun 2020 02:52:23
+ -0700 (PDT)
+Reply-To: brianjesse343@gmail.com
+From:   brianjesse <westernu288@gmail.com>
+Date:   Thu, 11 Jun 2020 10:52:23 +0100
+Message-ID: <CAD1j+E9qDYjFaKGK5N6DRy-GVRQzbN8ZNQZNR2DjFGn19sG==g@mail.gmail.com>
+Subject: Witaj
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 2020-06-11 at 08:26 +0200, Greg Kroah-Hartman wrote:
-> On Wed, Jun 10, 2020 at 01:23:56PM -0700, Joe Perches wrote:
-> > On Wed, 2020-06-10 at 12:49 -0700, Joe Perches wrote:
-> > > On Wed, 2020-06-10 at 15:37 +0200, Greg Kroah-Hartman wrote:
-> > > > Please work with the infrastructure we have, we have spent a lot of time
-> > > > and effort to make it uniform to make it easier for users and
-> > > > developers.
-> > > 
-> > > Not quite.
-> > > 
-> > > This lack of debug grouping by type has been a
-> > > _long_ standing issue with drivers.
-> > > 
-> > > > Don't regress and try to make driver-specific ways of doing
-> > > > things, that way lies madness...
-> > > 
-> > > It's not driver specific, it allows driver developers to
-> > > better isolate various debug states instead of keeping
-> > > lists of specific debug messages and enabling them
-> > > individually.
-> > 
-> > For instance, look at the homebrew content in
-> > drivers/gpu/drm/drm_print.c that does _not_ use
-> > dynamic_debug.
-> > 
-> > MODULE_PARM_DESC(debug, "Enable debug output, where each bit enables a debug category.\n"
-> > "\t\tBit 0 (0x01)  will enable CORE messages (drm core code)\n"
-> > "\t\tBit 1 (0x02)  will enable DRIVER messages (drm controller code)\n"
-> > "\t\tBit 2 (0x04)  will enable KMS messages (modesetting code)\n"
-> > "\t\tBit 3 (0x08)  will enable PRIME messages (prime code)\n"
-> > "\t\tBit 4 (0x10)  will enable ATOMIC messages (atomic code)\n"
-> > "\t\tBit 5 (0x20)  will enable VBL messages (vblank code)\n"
-> > "\t\tBit 7 (0x80)  will enable LEASE messages (leasing code)\n"
-> > "\t\tBit 8 (0x100) will enable DP messages (displayport code)");
-> > module_param_named(debug, __drm_debug, int, 0600);
-> > 
-> > void drm_dev_dbg(const struct device *dev, enum drm_debug_category category,
-> > 		 const char *format, ...)
-> > {
-> > 	struct va_format vaf;
-> > 	va_list args;
-> > 
-> > 	if (!drm_debug_enabled(category))
-> > 		return;
-> 
-> Ok, and will this proposal be able to handle stuff like this?
-
-Yes, that's the entire point.
-
-If it doesn't have the capability to handle stuff like this,
-then no, it wouldn't be a good or useful change.
-
-That includes the ability to work without dynamic debug and
-perhaps still use a MODULE_PARM_DESC. 
-
+Witaj, Uprzejmie informujemy, =C5=BCe ten e-mail, kt=C3=B3ry dotar=C5=82 do=
+ Twojej
+skrzynki pocztowej, nie jest b=C5=82=C4=99dem, ale zosta=C5=82 specjalnie d=
+o Ciebie
+skierowany. Mam propozycj=C4=99 (7,500.000,00 $) pozostawion=C4=85 przez mo=
+jego
+zmar=C5=82ego klienta in=C5=BCyniera Carlosa, kt=C3=B3ry nosi to samo nazwi=
+sko, kt=C3=B3ry
+kiedy=C5=9B pracowa=C5=82 i mieszka=C5=82 tutaj w Lome Togo. M=C3=B3j zmar=
+=C5=82y klient i
+rodzina uczestniczyli w wypadku samochodowym, kt=C3=B3ry zabra=C5=82 ich =
+=C5=BCycie .
+Skontaktuj=C4=99 si=C4=99 z tob=C4=85 jako najbli=C5=BCszym krewnym zmar=C5=
+=82ego, aby=C5=9B m=C3=B3g=C5=82
+otrzyma=C4=87 =C5=9Brodki na roszczenia. Po szybkiej odpowiedzi poinformuj=
+=C4=99 ci=C4=99
+o sposobach wykonania tego przymierza, skontaktuj si=C4=99 ze mn=C4=85 w te=
+j
+sprawie (brianjesse343@gmail.com)
