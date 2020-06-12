@@ -2,159 +2,398 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38F6E1F7132
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jun 2020 02:09:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B0111F7139
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jun 2020 02:12:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726364AbgFLAJS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 11 Jun 2020 20:09:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36470 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726285AbgFLAJR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 Jun 2020 20:09:17 -0400
-Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C0C0C08C5C1;
-        Thu, 11 Jun 2020 17:09:16 -0700 (PDT)
-Received: by mail-vs1-xe43.google.com with SMTP id y123so4376330vsb.6;
-        Thu, 11 Jun 2020 17:09:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dQ0wVuVD5mbnL9oat3E9xbZZtGvABVpYY6zoc/gC/as=;
-        b=SM9Ay2c/2xgFdaM32eJi+cNPWo3yB3m6cBPUuiHhkD3ji1sb4saRSL6ZbZzg4xzfzC
-         Ego6OC6WRzAMugcreC7TNtKgVF2EXQj5tjsLBlWwGNxQd3g+pQo1WSDsHq8gLQPslSb3
-         qYCUJmIec6mluqiRWzPf7jmgb+UcRBbbgiD+kkwOSmXamFlGeqv4rRicZwBjhtddJv8N
-         hxYqaMTbKHEVg/CCboYR7XW4a4Mnh8K11q8r45irojfEgdFCz0TStwMS5vbQsV1yQuJY
-         XpiGeICTU6PeKdq0oLyX0cd2FXsHe8XhKZDRY8wtP+TxgbhYLu4/yAGowrLOVRya4fhn
-         VDdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dQ0wVuVD5mbnL9oat3E9xbZZtGvABVpYY6zoc/gC/as=;
-        b=KxVcX1WSjbFHFxzJsNjm66+1Nd8fZIjUBOxWAqCjBfSZtvAr2lYizKv4e8yHS8Pn2B
-         CBfj8hpvuoQAnr64xhYDZYFPiiPjWczM+DXEq4iRYFxTMxWUFyulST957AqmE3Vu7O/o
-         QJ6J14ZTaDCLHmJFGFL+zYxuxlFN2ucjvQgk/UisurfWDFETR9WHIu/BZxin5adIqLdJ
-         ECbusvOyIaJl2Iwr0R5jcZLbWMIAf9C3STo7J0AN9edJGCNnUk6IwVjX85AbOU133g4l
-         IYRRp2et5mQ9mbxbUZanVsTDbukPslQMqHZdHUldjXomyAFV4awQLe1DadD1AQN2NFb9
-         3r9g==
-X-Gm-Message-State: AOAM5338trVPdixgOYMt+U9XtV2SoiQxdJBkqn04IAv/+1Pji2z1D+sg
-        WRDH9EU/fscAkwkgyrU39rEx9PZRJcUGybdCBU0Yn2zJ
-X-Google-Smtp-Source: ABdhPJxKR4zwGXMlhODAP+l4ncod5fB9+ttu3+isDcOuBHeikejSU3l6mGXzKvhEiYWPJ02PLPMfcY/lN2W1EhnbQIk=
-X-Received: by 2002:a67:f918:: with SMTP id t24mr8872355vsq.18.1591920554784;
- Thu, 11 Jun 2020 17:09:14 -0700 (PDT)
+        id S1726305AbgFLAMM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 Jun 2020 20:12:12 -0400
+Received: from mga12.intel.com ([192.55.52.136]:40258 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726294AbgFLAML (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 11 Jun 2020 20:12:11 -0400
+IronPort-SDR: +rrF5NUyvCJhGHm9W8Ve6wS3+jVdvorOjcXB+xKug+qiMC7lpgBimRteIxHxc4Eb9/MxpXqG1o
+ rWy7SrP0lYJQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2020 17:12:09 -0700
+IronPort-SDR: WmSoRDXPlGay/stPwTrC0bJeqIZlezYfZxfcz9QvSlCD+EnCmo7s+5ejGCJT1kPtzKOoNxgMdn
+ Bn0zpWUNpWaA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,501,1583222400"; 
+   d="scan'208";a="275505971"
+Received: from fmsmsx106.amr.corp.intel.com ([10.18.124.204])
+  by orsmga006.jf.intel.com with ESMTP; 11 Jun 2020 17:12:08 -0700
+Received: from fmsmsx125.amr.corp.intel.com (10.18.125.40) by
+ FMSMSX106.amr.corp.intel.com (10.18.124.204) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 11 Jun 2020 17:12:08 -0700
+Received: from FMSEDG002.ED.cps.intel.com (10.1.192.134) by
+ FMSMSX125.amr.corp.intel.com (10.18.125.40) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 11 Jun 2020 17:12:08 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.42) by
+ edgegateway.intel.com (192.55.55.69) with Microsoft SMTP Server (TLS) id
+ 14.3.439.0; Thu, 11 Jun 2020 17:12:08 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZbnjKVdu0E6pdkfDs4popo8XXP36V3Rfqy0FPfuaEeqDnhwD+Ld4jABSUs1FAZtj1I4VyygXj+PX0m+/hb5Bu3RpI7S/2ALW+troN6p/R4GuC5Src80bDwBo1gLGxFVCOiVPzEHFayAvr/BbdwRQrbUU/S9nNmkxhfj0VSAeyWmsd1ndC/D2L+ysmqcNSs7kIZRYcQaH84z61JiHtpqVxrlWjO4dAPt8bgniHXU7cxet7TFImUNZQIOfybyvNZ4MLRr/2w6FrcZhY8ZfZToR0uuB4nEE1HxyVD3cGzIag/ae7MTVpk1G+deAa6Nrlb/crZP7UTWPJJP7U1TcE/ReZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h1mCJL/rgevaraxb4tWpEHitB1U0L12764I9IxkjHz8=;
+ b=kXM3H2ztrcBRWE4b/VVYuWloDdLHYqbaClnf6AlzBaG2SnAV6JPa3hug9DVehxccknY6JpgIKCEHAZffOgzLRzxF/FX/pbF39QTdsxVzK4sEfgRpE/elPhzHl/DsDMJCyVhvSef0Dvuo8re6OqxFyQr3/m0QilLLuw6GwbNKIRSP6c+NDMPzKKQYtRYP1zr+Sp6r9PHt2WshzAG6e8uldZem7+rO8/EpJGXqoZtcLBOJy6CtiqRCozNkTCwbOqV2tuzi9wG+FShw7C/bl2dkJ4X6AQPsJ6ks5lE+MQzYLLm9hL1bhDCzwHenOchAjz43e4LgpCcojQ8Qtj82h5uPpA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h1mCJL/rgevaraxb4tWpEHitB1U0L12764I9IxkjHz8=;
+ b=aIZOofC3o95xQunmUogj4/buHTBOXXydexmCvHXCC7oxE7X3VHaznz1STiz0Xa6t5zWYtgrgnX025fhgJlvheF5tes6QWqgiKzXMIqqi1be/xoHu5P8WB5tLFzRJF9fCnZTkAyMeVMfUDynBbyuQoacI5y0ymw4wkdyD7JIEnL8=
+Received: from BYAPR11MB3096.namprd11.prod.outlook.com (2603:10b6:a03:8f::14)
+ by BYAPR11MB3509.namprd11.prod.outlook.com (2603:10b6:a03:8e::25) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3088.21; Fri, 12 Jun
+ 2020 00:12:05 +0000
+Received: from BYAPR11MB3096.namprd11.prod.outlook.com
+ ([fe80::ad0c:c6a9:6f39:eb92]) by BYAPR11MB3096.namprd11.prod.outlook.com
+ ([fe80::ad0c:c6a9:6f39:eb92%5]) with mapi id 15.20.3088.019; Fri, 12 Jun 2020
+ 00:12:05 +0000
+From:   "Kaneda, Erik" <erik.kaneda@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Williams, Dan J" <dan.j.williams@intel.com>
+CC:     "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        "Weiny, Ira" <ira.weiny@intel.com>,
+        James Morse <james.morse@arm.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
+        "Moore, Robert" <robert.moore@intel.com>
+Subject: RE: [RFT][PATCH 2/3] ACPICA: Remove unused memory mappings on
+ interpreter exit
+Thread-Topic: [RFT][PATCH 2/3] ACPICA: Remove unused memory mappings on
+ interpreter exit
+Thread-Index: AQHWPyIKgbL3bQYNyEWDZiBdAuw+YqjUBIaQ
+Date:   Fri, 12 Jun 2020 00:12:05 +0000
+Message-ID: <BYAPR11MB30963CB784B940A5CD58C4FAF0810@BYAPR11MB3096.namprd11.prod.outlook.com>
+References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <318372766.6LKUBsbRXE@kreacher> <3974162.pZLctmZ5Iv@kreacher>
+In-Reply-To: <3974162.pZLctmZ5Iv@kreacher>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-version: 11.2.0.6
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+authentication-results: rjwysocki.net; dkim=none (message not signed)
+ header.d=none;rjwysocki.net; dmarc=none action=none header.from=intel.com;
+x-originating-ip: [134.134.136.214]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 669d60d8-bb16-4e59-9ecf-08d80e653d38
+x-ms-traffictypediagnostic: BYAPR11MB3509:
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr,ExtFwd
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BYAPR11MB3509AC253408E2334F4AA51DF0810@BYAPR11MB3509.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6790;
+x-forefront-prvs: 0432A04947
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: dwOTmjTVJ20kNU7O3+TNlhTel6jGqhT4/tV1+qoJM7N4wcmRZjUlZFbwdE5g3+kbv23BnaKXQypBhKrzYV2Qy7/D2jTsAKPcVmrMPdB2lyNKWSbhOcVEC/JZOFWQ78YbE0w3DyUbYN7M6IQ7DUqVUQojLUZjpgMliQb6KQSDurhL+q0rxqBPCc16PgvM5hRpiryN1VHktKp2GiJTErpfnrEqEp13uyJbigNswrKxVpKRTZuaYXyTKUgCbGx7IRiBpcHH62RUY4iV5ghmHUyiXVq0M2EMgrCJlVJFrNaKt3eX+V4xeQ+pihjqpaoEZh9n8XERypDfNDUI2CiZ8HpYQw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3096.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(396003)(39860400002)(136003)(376002)(346002)(366004)(52536014)(76116006)(66476007)(66946007)(66556008)(64756008)(54906003)(26005)(53546011)(7696005)(186003)(110136005)(33656002)(316002)(6506007)(83380400001)(66446008)(5660300002)(71200400001)(86362001)(2906002)(6636002)(4326008)(8936002)(7416002)(8676002)(478600001)(9686003)(55016002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: 5SRndGw3YQNZkOAs6hZ9eWJEv0B13LdFuDtHlktbGMND350Ab2W556fQdpiITHR0fA2kjsE9r3fYXBnQjE6i/E+nr4zR5mhZjfD2lgegEUG481Nrkojn3IytDZcKk0Fk+UUVaHi9HQkXiUECRwEhgWXT14lw2Gwob4YjiCTo0B6QI4oSYQ23B8qsmAy9EOcgvZu95QAiJ7WBgFN0k3QkF35egx6qdesgts/mdgZoi4DcDFiFeQEWfLxcRYyckySKJcHRQ+BsJJCO/7orjIkLyDeK5G63NnYOC+ZWDAA0NVaSqCLkFsLEDktVP5xH+vPg5dmslU8ZWqQBBhyxLAWo6tkG5+ZHL3W95RuDxFOhDAjaqRgHlnlH0+esWrczSANy4tqCdkbWSwBiiRJkx78QGq+R4WMIq9KKdEKggAV2ic1G0Y8wyqJUlH7KoykRaBsiQsMuqXTwilQdtVMjYRgWoEBuOwtkEVjSauxfmWseOpqbloW23PoY/UUcGkkK81Ix
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20200609104604.1594-7-stanimir.varbanov@linaro.org>
- <20200609111414.GC780233@kroah.com> <dc85bf9e-e3a6-15a1-afaa-0add3e878573@linaro.org>
- <20200610133717.GB1906670@kroah.com> <31e1aa72b41f9ff19094476033511442bb6ccda0.camel@perches.com>
- <2fab7f999a6b5e5354b23d06aea31c5018b9ce18.camel@perches.com>
- <20200611062648.GA2529349@kroah.com> <bc92ee5948c3e71b8f1de1930336bbe162d00b34.camel@perches.com>
- <20200611105217.73xwkd2yczqotkyo@holly.lan> <ed7dd5b4-aace-7558-d012-fb16ce8c92d6@linaro.org>
- <20200611121817.narzkqf5x7cvl6hp@holly.lan> <CAJfuBxzE=A0vzsjNai_jU_16R_P0haYA-FHnjZcaHOR_3fy__A@mail.gmail.com>
-In-Reply-To: <CAJfuBxzE=A0vzsjNai_jU_16R_P0haYA-FHnjZcaHOR_3fy__A@mail.gmail.com>
-From:   jim.cromie@gmail.com
-Date:   Thu, 11 Jun 2020 18:08:48 -0600
-Message-ID: <CAJfuBxyUfzM-Jmf_39YJHgfy0jLXdRjhdsNLuUacZbJA2unjcg@mail.gmail.com>
-Subject: Re: [PATCH v3 6/7] venus: Make debug infrastructure more flexible
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-        Joe Perches <joe@perches.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux Documentation List <linux-doc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>, linux-media@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-btrfs@vger.kernel.org,
-        linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
-        Jason Baron <jbaron@akamai.com>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-CrossTenant-Network-Message-Id: 669d60d8-bb16-4e59-9ecf-08d80e653d38
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jun 2020 00:12:05.2652
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: rqOpQYKXidWgzEn8vC2xEDaxm6TDMIXxtCX8cjdw/yXJkRFyFWt7DwQb1zNg5LU8+mcl9bxwUopl/08uH7RH2A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB3509
+X-OriginatorOrg: intel.com
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-calling out some thinkos
-
-On Thu, Jun 11, 2020 at 3:19 PM <jim.cromie@gmail.com> wrote:
->
-> heres what I have in mind.  whats described here is working.
-> I'll send it out soon
->
-> commit 20298ec88cc2ed64269c8be7b287a24e60a5347e
-> Author: Jim Cromie <jim.cromie@gmail.com>
-> Date:   Wed Jun 10 12:55:08 2020 -0600
->
->     dyndbg: WIP towards module->debugflags based callsite controls
->
->     There are *lots* of ad-hoc debug printing solutions in kernel,
->     this is a 1st attempt at providing a common mechanism for many of them.
->
->     Basically, there are 2 styles of debug printing:
->     - levels, with increasing verbosity, 1-10 forex
->     - bits/flags, independently controlling separate groups of dprints
->
->     This patch does bits/flags (with no distinction made yet between 2)
->
->     API:
->
->     - change pr_debug(...)  -->  pr_debug_typed(type_id=0, ...)
-
-pr_debug, pr_debug_n now in printk.h
-
-_?_?dynamic_.+_cl  adaptations in dynamic_debug.h
-
->     - all existing uses have type_id=0
->     - developer creates exclusive types of log messages with type_id>0
->       1, 2, 3 are disjoint groups, for example: hi, mid, low
->
->     - !!type_id is just an additional callsite selection criterion
->
->       Qfoo() { echo module foo $* >/proc/dynamic_debug/control }
->       Qfoo +p               # all groups, including default 0
->       Qfoo mflags 1 +p      # only group 1
->       Qfoo mflags 12 +p     # TBD[1]: groups 1 or 2
->       Qfoo mflags 0 +p      # ignored atm TBD[2]
->       Qfoo mflags af +p     # TBD[3]: groups a or f (10 or 15)
->
->     so patch does:
->
->     - add u32 debugflags to struct module. Each bit is a separate print-class.
-
-this is feeling wrong now.
-setting these bits would have to trigger an update via ddebug_exec_query
-kinda like setting a bit would trigger
-       echo module $foo mflags $bitpos +p > control
-
-its possible, but not 1st, or 2nd perhaps.
-In general Im quite leery of rigging up some callback to do it.
-
-its prudent to effect all debug changes via >control
-
->     - in ddebug_change()
->       filter on !! module->debugflags,
->       IFF query->module is given, and matches dt->mod_name
->       and query->mflags is given, and bitmatches module->debugflags
-
-wrong, ddebug_change cannot respond to changes of debugflags,
-most it could do is consult it on queries
 
 
->     - in parse_query()
->       accept new query term: mflags $arg
->       populate query->mflags
->       arg-type needs some attention, but basic plumbing is there
->
->     WIP: not included:
->
->     - pr_debug_typed( bitpos=0, ....)'
+> -----Original Message-----
+> From: Rafael J. Wysocki <rjw@rjwysocki.net>
+> Sent: Wednesday, June 10, 2020 5:22 AM
+> To: Williams, Dan J <dan.j.williams@intel.com>
+> Cc: Kaneda, Erik <erik.kaneda@intel.com>; Wysocki, Rafael J
+> <rafael.j.wysocki@intel.com>; Len Brown <lenb@kernel.org>; Borislav
+> Petkov <bp@alien8.de>; Weiny, Ira <ira.weiny@intel.com>; James Morse
+> <james.morse@arm.com>; Myron Stowe <myron.stowe@redhat.com>;
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com>; linux-
+> kernel@vger.kernel.org; linux-acpi@vger.kernel.org; linux-
+> nvdimm@lists.01.org; Moore, Robert <robert.moore@intel.com>
+> Subject: [RFT][PATCH 2/3] ACPICA: Remove unused memory mappings on
+> interpreter exit
+>=20
+> From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+>=20
+> For transient memory opregions that are created dynamically under
+> the namespace and interpreter mutexes and go away quickly, there
+> still is the problem that removing their memory mappings may take
+> significant time and so doing that while holding the mutexes should
+> be avoided.
+>=20
+> For example, unmapping a chunk of memory associated with a memory
+> opregion in Linux involves running synchronize_rcu_expedited()
+> which really should not be done with the namespace mutex held.
+>=20
+> To address that problem, notice that the unused memory mappings left
+> behind by the "dynamic" opregions that went away need not be unmapped
+> right away when the opregion is deactivated.  Instead, they may be
+> unmapped when exiting the interpreter, after the namespace and
+> interpreter mutexes have been dropped (there's one more place dealing
+> with opregions in the debug code that can be treated analogously).
+>=20
+> Accordingly, change acpi_ev_system_memory_region_setup() to put
+> the unused mappings into a global list instead of unmapping them
+> right away and add acpi_ev_system_release_memory_mappings() to
+> be called when leaving the interpreter in order to unmap the
+> unused memory mappings in the global list (which is protected
+> by the namespace mutex).
+>=20
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>  drivers/acpi/acpica/acevents.h |  2 ++
+>  drivers/acpi/acpica/dbtest.c   |  3 ++
+>  drivers/acpi/acpica/evrgnini.c | 51
+> ++++++++++++++++++++++++++++++++--
+>  drivers/acpi/acpica/exutils.c  |  3 ++
+>  drivers/acpi/acpica/utxface.c  | 23 +++++++++++++++
+>  include/acpi/acpixf.h          |  1 +
+>  6 files changed, 80 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/acpi/acpica/acevents.h b/drivers/acpi/acpica/acevent=
+s.h
+> index 79f292687bd6..463eb9124765 100644
+> --- a/drivers/acpi/acpica/acevents.h
+> +++ b/drivers/acpi/acpica/acevents.h
+> @@ -197,6 +197,8 @@ acpi_ev_execute_reg_method(union
+> acpi_operand_object *region_obj, u32 function);
+>  /*
+>   * evregini - Region initialization and setup
+>   */
+> +void acpi_ev_system_release_memory_mappings(void);
+> +
+>  acpi_status
+>  acpi_ev_system_memory_region_setup(acpi_handle handle,
+>  				   u32 function,
+> diff --git a/drivers/acpi/acpica/dbtest.c b/drivers/acpi/acpica/dbtest.c
+> index 6db44a5ac786..7dac6dae5c48 100644
+> --- a/drivers/acpi/acpica/dbtest.c
+> +++ b/drivers/acpi/acpica/dbtest.c
+> @@ -8,6 +8,7 @@
+>  #include <acpi/acpi.h>
+>  #include "accommon.h"
+>  #include "acdebug.h"
+> +#include "acevents.h"
+>  #include "acnamesp.h"
+>  #include "acpredef.h"
+>  #include "acinterp.h"
+> @@ -768,6 +769,8 @@ acpi_db_test_field_unit_type(union
+> acpi_operand_object *obj_desc)
+>  		acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+>  		acpi_ut_release_mutex(ACPI_MTX_INTERPRETER);
+>=20
+> +		acpi_ev_system_release_memory_mappings();
+> +
+>  		bit_length =3D obj_desc->common_field.bit_length;
+>  		byte_length =3D
+> ACPI_ROUND_BITS_UP_TO_BYTES(bit_length);
+>=20
+> diff --git a/drivers/acpi/acpica/evrgnini.c b/drivers/acpi/acpica/evrgnin=
+i.c
+> index 48a5e6eaf9b9..946c4eef054d 100644
+> --- a/drivers/acpi/acpica/evrgnini.c
+> +++ b/drivers/acpi/acpica/evrgnini.c
+> @@ -16,6 +16,52 @@
+>  #define _COMPONENT          ACPI_EVENTS
+>  ACPI_MODULE_NAME("evrgnini")
+>=20
+> +#ifdef ACPI_OS_MAP_MEMORY_FAST_PATH
+> +static struct acpi_mem_mapping *unused_memory_mappings;
+> +
+> +/*********************************************************
+> **********************
+> + *
+> + * FUNCTION:    acpi_ev_system_release_memory_mappings
+> + *
+> + * PARAMETERS:  None
+> + *
+> + * RETURN:      None
+> + *
+> + * DESCRIPTION: Release all of the unused memory mappings in the queue
+> + *              under the interpreter mutex.
+> + *
+> +
+> **********************************************************
+> ********************/
+> +void acpi_ev_system_release_memory_mappings(void)
+> +{
+> +	struct acpi_mem_mapping *mapping;
+> +
+> +
+> 	ACPI_FUNCTION_TRACE(acpi_ev_system_release_memory_mappin
+> gs);
+> +
+> +	acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
+> +
+> +	while (unused_memory_mappings) {
+> +		mapping =3D unused_memory_mappings;
+> +		unused_memory_mappings =3D mapping->next;
+> +
+> +		acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+> +
+> +		acpi_os_unmap_memory(mapping->logical_address,
+> mapping->length);
 
-now done, as pr_debug_n, pr_debug in printk.h
+acpi_os_unmap_memory calls synchronize_rcu_expedited(). I'm no RCU expert b=
+ut the=20
+definition of this function states:
 
-Ive adapted the macros with a "_cl(cl, " insertion,
+* Although this is a great improvement over previous expedited
+ * implementations, it is still unfriendly to real-time workloads, so is
+ * thus not recommended for any sort of common-case code.  In fact, if
+ * you are using synchronize_rcu_expedited() in a loop, please restructure
+ * your code to batch your updates, and then use a single synchronize_rcu()
+ * instead.
 
-also added trailing prcls to control output
 
->
->     - no way to exersize new code in ddebug_change
->       need pr_debug_typed() to make a (not-null) typed callsite.
->       also no way to set module->debugflags
+> +		ACPI_FREE(mapping);
+> +
+> +		acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
+> +	}
+> +
+> +	acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+> +
+> +	return_VOID;
+> +}
+> +#else /* !ACPI_OS_MAP_MEMORY_FAST_PATH */
+> +void acpi_ev_system_release_memory_mappings(void)
+> +{
+> +	return_VOID;
+> +}
+> +#endif /* !ACPI_OS_MAP_MEMORY_FAST_PATH */
+> +
+>=20
+> /**********************************************************
+> *********************
+>   *
+>   * FUNCTION:    acpi_ev_system_memory_region_setup
+> @@ -60,9 +106,8 @@ acpi_ev_system_memory_region_setup(acpi_handle
+> handle,
+>  				while (local_region_context->first_mapping)
+> {
+>  					mapping =3D local_region_context-
+> >first_mapping;
+>  					local_region_context->first_mapping
+> =3D mapping->next;
+> -					acpi_os_unmap_memory(mapping-
+> >logical_address,
+> -							     mapping->length);
+> -					ACPI_FREE(mapping);
+> +					mapping->next =3D
+> unused_memory_mappings;
+> +					unused_memory_mappings =3D
+> mapping;
+>  				}
+>  #endif
+>  			}
+> diff --git a/drivers/acpi/acpica/exutils.c b/drivers/acpi/acpica/exutils.=
+c
+> index 8fefa6feac2f..516d67664392 100644
+> --- a/drivers/acpi/acpica/exutils.c
+> +++ b/drivers/acpi/acpica/exutils.c
+> @@ -25,6 +25,7 @@
+>=20
+>  #include <acpi/acpi.h>
+>  #include "accommon.h"
+> +#include "acevents.h"
+>  #include "acinterp.h"
+>  #include "amlcode.h"
+>=20
+> @@ -106,6 +107,8 @@ void acpi_ex_exit_interpreter(void)
+>  			    "Could not release AML Interpreter mutex"));
+>  	}
+>=20
+> +	acpi_ev_system_release_memory_mappings();
+> +
+>  	return_VOID;
+>  }
+>=20
+> diff --git a/drivers/acpi/acpica/utxface.c b/drivers/acpi/acpica/utxface.=
+c
+> index ca7c9f0144ef..d972696be846 100644
+> --- a/drivers/acpi/acpica/utxface.c
+> +++ b/drivers/acpi/acpica/utxface.c
+> @@ -11,6 +11,7 @@
+>=20
+>  #include <acpi/acpi.h>
+>  #include "accommon.h"
+> +#include "acevents.h"
+>  #include "acdebug.h"
+>=20
+>  #define _COMPONENT          ACPI_UTILITIES
+> @@ -244,6 +245,28 @@ acpi_status acpi_purge_cached_objects(void)
+>=20
+>  ACPI_EXPORT_SYMBOL(acpi_purge_cached_objects)
+>=20
+> +/*********************************************************
+> ********************
+> + *
+> + * FUNCTION:    acpi_release_unused_memory_mappings
+> + *
+> + * PARAMETERS:  None
+> + *
+> + * RETURN:      None
+> + *
+> + * DESCRIPTION: Remove memory mappings that are not used any more.
+> + *
+> +
+> **********************************************************
+> ******************/
+> +void acpi_release_unused_memory_mappings(void)
+> +{
+> +	ACPI_FUNCTION_TRACE(acpi_release_unused_memory_mappings);
+> +
+> +	acpi_ev_system_release_memory_mappings();
+> +
+> +	return_VOID;
+> +}
+> +
+> +ACPI_EXPORT_SYMBOL(acpi_release_unused_memory_mappings)
+> +
+>=20
+> /**********************************************************
+> *******************
+>   *
+>   * FUNCTION:    acpi_install_interface
+> diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
+> index 1dc8d262035b..8d2cc02257ed 100644
+> --- a/include/acpi/acpixf.h
+> +++ b/include/acpi/acpixf.h
+> @@ -449,6 +449,7 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+>  						    acpi_size length,
+>  						    struct acpi_pld_info
+>  						    **return_buffer))
+> +ACPI_EXTERNAL_RETURN_VOID(void
+> acpi_release_unused_memory_mappings(void))
+>=20
+>  /*
+>   * ACPI table load/unload interfaces
+> --
+> 2.26.2
+>=20
+>=20
+>=20
 
-close enough to see the thinkos
