@@ -2,66 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EC7E1F7536
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jun 2020 10:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38BA51F754A
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jun 2020 10:30:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726324AbgFLISQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Jun 2020 04:18:16 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:33504 "EHLO
+        id S1726264AbgFLIag (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Jun 2020 04:30:36 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:57419 "EHLO
         us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726297AbgFLISM (ORCPT
+        by vger.kernel.org with ESMTP id S1726335AbgFLIaf (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 12 Jun 2020 04:18:12 -0400
+        Fri, 12 Jun 2020 04:30:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1591949889;
+        s=mimecast20190719; t=1591950632;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LbTU48ojgO2FlIo9PAsC9R4igbZ13z+cUADaXE0FnOU=;
-        b=aufwKLnvGuZrWaeCduCLOlFrAqSDZyJsk+VXEqBURvm/RlSqXyWsevYl1ZfX4reqfSRcyZ
-        WLJW3gQBRcLPeNqSzaCHBMkR3GUuye3mbDYomI+8oWEibHId6yiPF4aiuJv1PDq6Yn8weu
-        fR7bawkWoUgLg1nzEWyyoWS+DMBkI1E=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-360-BECNfx-xPuW-edIzBo8JZw-1; Fri, 12 Jun 2020 04:17:57 -0400
-X-MC-Unique: BECNfx-xPuW-edIzBo8JZw-1
-Received: by mail-ej1-f72.google.com with SMTP id gr26so3827496ejb.22
-        for <linux-acpi@vger.kernel.org>; Fri, 12 Jun 2020 01:17:57 -0700 (PDT)
+        bh=OPWeA1qjGBNWCHfcjBnCq0fW8SyKcT5HP9U/4tli77g=;
+        b=L7UzKNXQTHcY6HfVEPHn5AoUGhn/eafDvWcXcv/3aB11AOkv0/cWO3uCEItPFW/JZ3ipct
+        hqkGZzeDi4OxdwUkJRbcywZhZQ4mt3aFEe7k9T1HBzlb2b5ZKSPow8YbjMQ4ktXpuXtSwe
+        znoruux6VNXH3YhKEbWAD5dfhh/yI6Y=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-399-Oq2-hslcOYGcfoErqpX1xg-1; Fri, 12 Jun 2020 04:30:31 -0400
+X-MC-Unique: Oq2-hslcOYGcfoErqpX1xg-1
+Received: by mail-ej1-f69.google.com with SMTP id c30so3858012ejj.10
+        for <linux-acpi@vger.kernel.org>; Fri, 12 Jun 2020 01:30:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=LbTU48ojgO2FlIo9PAsC9R4igbZ13z+cUADaXE0FnOU=;
-        b=s6O9znEcASwRUsKReOYRZpwTtW9WUEezAlv/1X8vm1GdId10s5LQowo8sfZpW3du4W
-         YSHS9ANw+Kbmnz1URH/RYkPaYt8Y5J607v27LMAToUZMYKHpG4rTFFeX9be9NOSeevGB
-         ISMd+1fiXOeAWytQI1ju/TCCp0SJyon/iGzU5jBBwkRYoVOM4quP4xaodTECTVy9ZJyv
-         AoXqbiHC17TsvVqMZIwb5Dkr74PSyS0EwFWiOuWaOabjYGXXSgbhtaEDTo9tPekVO2V0
-         ZZabngtsI6Jmwk1gm/Q6MWDwMPIhgbbTEtq4k/CRKKzl+qSfjH9v+qxZ9G1JpIdw0wX9
-         I05g==
-X-Gm-Message-State: AOAM53218svFklI5+Ym0MtvRx28ZtO5m2P4+ebphal/lsbDouEIQan9B
-        zsQAO30VufLXj/lJEDoIvSmZaOY3XicPziJWQ1lfQoZf9LK1kJmBGGBs0V4BGtVHOVjUWkrwVJK
-        VxyBJDAPq4y0dMxDjciCRXA==
-X-Received: by 2002:a17:906:ccdd:: with SMTP id ot29mr11758803ejb.119.1591949875881;
-        Fri, 12 Jun 2020 01:17:55 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxwtNGBDEJyj/avNl3UCU7R4ntwBo4aI35VOBMw7tHPjvk5hJcx1khBKXvQ05G75ytNLMmeTQ==
-X-Received: by 2002:a17:906:ccdd:: with SMTP id ot29mr11758779ejb.119.1591949875662;
-        Fri, 12 Jun 2020 01:17:55 -0700 (PDT)
+        bh=OPWeA1qjGBNWCHfcjBnCq0fW8SyKcT5HP9U/4tli77g=;
+        b=BMbcZ9qLvS2qYHGICCWTb8Zi8GgaFfYa6IIw2pwGWPKuWiJhf61m9IvSDCC43NJnKt
+         Tmixv5e9n5XeLtigctpz/V/5QPP/wPG51S/TF2FZJLKrBBgAdOCxRO7YBplp0Ya9PFF4
+         Edi0hWI97ZqWbcUQZitAEoxpepJDytp/wt2OXwLA9ZNj2xKn1/359qxooeus0wm9B/s2
+         8Tytt7xFozYBgIV/DmFrQwJtxvQhsBmPJD72tH2zL48Wz/zaqHJtcvHPPWRHbwBKo9I9
+         6VOwVX8Y2DroJ5HqmNL2Lp8epOaDtXhJHpltMJ6zDfuRLNS7gUmmmnPxhTkkUUxofnEd
+         gXZw==
+X-Gm-Message-State: AOAM533oQH1aG1C7yj63Z8Jg9kMPxke4LLCCid0Rh7o23Tb38SEIe5kV
+        iH169RAbSr03yPWbFES7nUcGvIGyGtV4rG9aDpi0YeCmwEHBGzeVp65y4JMa4QAk/GuRUEMKHJY
+        aIIFzIWNz0Voj0XZlpNSnhg==
+X-Received: by 2002:a17:906:150c:: with SMTP id b12mr11118842ejd.545.1591950627662;
+        Fri, 12 Jun 2020 01:30:27 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzK+lnhXJPHcxkk+0REwmXPmNz4y9unDpw9LWEppS+/VYsL4Zuy/fGvFVeGkarTC5boVCicqQ==
+X-Received: by 2002:a17:906:150c:: with SMTP id b12mr11118797ejd.545.1591950627331;
+        Fri, 12 Jun 2020 01:30:27 -0700 (PDT)
 Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id mf24sm3166452ejb.13.2020.06.12.01.17.54
+        by smtp.gmail.com with ESMTPSA id k24sm2761134edk.95.2020.06.12.01.30.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jun 2020 01:17:54 -0700 (PDT)
+        Fri, 12 Jun 2020 01:30:26 -0700 (PDT)
 Subject: Re: [PATCH v4 0/7] Support inhibiting input devices
 To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Samsung SoC <linux-samsung-soc@vger.kernel.org>,
+        linux-input@vger.kernel.org,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        patches@opensource.cirrus.com,
         ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -87,16 +92,21 @@ Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Sangwon Jee <jeesw@melfas.com>,
         Peter Hutterer <peter.hutterer@redhat.com>,
         Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com
+        Collabora Kernel ML <kernel@collabora.com>
 References: <2336e15d-ff4b-bbb6-c701-dbf3aa110fcd@redhat.com>
  <20200608112211.12125-1-andrzej.p@collabora.com>
+ <964ca07a-3da5-101f-7edf-64bdeec98a4b@redhat.com>
+ <CAJZ5v0hB2ra2K=dd9ZjVyy1V2b1PmFHm79uDO2HtHU1D_4YUbw@mail.gmail.com>
+ <6136f26c-e090-e025-af55-4c5f3a6aec92@collabora.com>
+ <3e61c9c1-b211-da9f-c55b-b44eb6522f2a@redhat.com>
+ <2d5fd063-66bc-c707-4041-84a17c0a7d04@collabora.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <1821a5b7-cbf3-a739-2203-a93b06f0c6f2@redhat.com>
-Date:   Fri, 12 Jun 2020 10:17:53 +0200
+Message-ID: <40988408-8f36-3a52-6439-34084de6b129@redhat.com>
+Date:   Fri, 12 Jun 2020 10:30:25 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200608112211.12125-1-andrzej.p@collabora.com>
+In-Reply-To: <2d5fd063-66bc-c707-4041-84a17c0a7d04@collabora.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -107,72 +117,134 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-On 6/8/20 1:22 PM, Andrzej Pietrasiewicz wrote:
-> This is a quick respin of v3, with just two small changes, please see
-> the changelog below.
+On 6/10/20 3:41 PM, Andrzej Pietrasiewicz wrote:
+> Hi Hans,
 > 
-> Userspace might want to implement a policy to temporarily disregard input
-> from certain devices.
+> W dniu 10.06.2020 o 15:21, Hans de Goede pisze:
+>> Hi,
+>>
+>> On 6/10/20 3:12 PM, Andrzej Pietrasiewicz wrote:
+>>> Hi All,
+>>>
+>>> W dniu 10.06.2020 o 12:38, Rafael J. Wysocki pisze:
+>>>> On Wed, Jun 10, 2020 at 11:50 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>>>>>
+>>>>> Hi All,
+>>>>>
+>>>>> On 6/8/20 1:22 PM, Andrzej Pietrasiewicz wrote:
+>>>>>> This is a quick respin of v3, with just two small changes, please see
+>>>>>> the changelog below.
+>>>>>>
+>>>>>> Userspace might want to implement a policy to temporarily disregard input
+>>>>>> from certain devices.
+>>>>>>
+>>>>>> An example use case is a convertible laptop, whose keyboard can be folded
+>>>>>> under the screen to create tablet-like experience. The user then must hold
+>>>>>> the laptop in such a way that it is difficult to avoid pressing the keyboard
+>>>>>> keys. It is therefore desirable to temporarily disregard input from the
+>>>>>> keyboard, until it is folded back. This obviously is a policy which should
+>>>>>> be kept out of the kernel, but the kernel must provide suitable means to
+>>>>>> implement such a policy.
+>>>>>
+>>>>> First of all sorry to start a somewhat new discussion about this
+>>>>> while this patch set is also somewhat far along in the review process,
+>>>>> but I believe what I discuss below needs to be taken into account.
+>>>>>
+>>>>> Yesterday I have been looking into why an Asus T101HA would not stay
+>>>>> suspended when the LID is closed. The cause is that the USB HID multi-touch
+>>>>> touchpad in the base of the device starts sending events when the screen
+>>>>> gets close to the touchpad (so when the LID is fully closed) and these
+>>>>> events are causing a wakeup from suspend. HID multi-touch devices
+>>>>> do have a way to tell them to fully stop sending events, also disabling
+>>>>> the USB remote wakeup the device is doing. The question is when to tell
+>>>>> it to not send events though ...
+>>>>>
+>>>>> So now I've been thinking about how to fix this and I believe that there
+>>>>> is some interaction between this problem and this patch-set.
+>>>>>
+>>>>> The problem I'm seeing on the T101HA is about wakeups, so the question
+>>>>> which I want to discuss is:
+>>>>>
+>>>>> 1. How does inhibiting interact with enabling /
+>>>>> disabling the device as a wakeup source ?
+>>>>>
+>>>>> 2. Since we have now made inhibiting equal open/close how does open/close
+>>>>> interact with a device being a wakeup source ?
+>>>>>
+>>>>> And my own initial (to be discussed) answers to these questions:
+>>>>>
+>>>>> 1. It seems to me that when a device is inhibited it should not be a
+>>>>> wakeup source, so where possible a input-device-driver should disable
+>>>>> a device's wakeup capabilities on suspend if inhibited
+>>>>
+>>>> If "inhibit" means "do not generate any events going forward", then
+>>>> this must also cover wakeup events, so I agree.
+>>>
+>>> I agree, too.
+>>>
+>>>>
+>>>>> 2. This one is trickier I don't think we have really clearly specified
+>>>>> any behavior here. The default behavior of most drivers seems to be
+>>>>> using something like this in their suspend callback:
+>>>>>
+>>>>>           if (device_may_wakeup(dev))
+>>>>>                   enable_irq_wake(data->irq);
+>>>>>           else if (input->users)
+>>>>>                   foo_stop_receiving_events(data);
+>>>>>
+>>>>> Since this is what most drivers seem to do I believe we should keep
+>>>>> this as is and that we should just clearly document that if the
+>>>>> input_device has users (has been opened) or not does not matter
+>>>>> for its wakeup behavior.
+>>>>>
+>>>>> Combining these 2 answers leads to this new pseudo code template
+>>>>> for an input-device's suspend method:
+>>>>>
+>>>>>          /*
+>>>>>           * If inhibited we have already disabled events and
+>>>>>           * we do NOT want to setup the device as wake source.
+>>>>>           */
+>>>>>          if (input->inhibited)
+>>>>>                  return 0;
+>>>
+>>> Right, if a device is inhibited it shouldn't become a wakeup source,
+>>> because that would contradict the purpose of being inhibited.
+>>
+>> Ack. Note I do think that we need to document this (and more
+>> in general the answer to both questions from above) clearly so
+>> that going forward if there are any questions about how this is
+>> supposed to work we can just point to the docs.
+>>
+>> Can you do a follow-up patch, or include a patch in your next
+>> version which documents this (once we agree on what "this"
+>> exactly is) ?
 > 
-> An example use case is a convertible laptop, whose keyboard can be folded
-> under the screen to create tablet-like experience. The user then must hold
-> the laptop in such a way that it is difficult to avoid pressing the keyboard
-> keys. It is therefore desirable to temporarily disregard input from the
-> keyboard, until it is folded back. This obviously is a policy which should
-> be kept out of the kernel, but the kernel must provide suitable means to
-> implement such a policy.
-> 
-> Due to interactions with suspend/resume, a helper has been added for drivers
-> to decide if the device is being used or not (PATCH 1/7) and it has been
-> applied to relevant drivers (PATCH 2,4,5,6/7).
-> 
-> PATCH 7/7 adds support for inhibiting input devices.
-> 
-> This work is inspired by:
-> 
-> https://chromium.googlesource.com/chromiumos/third_party/kernel/+/45c2d7bb398f74adfae0017e20b224152fde3822
-> 
-> and
-> 
-> https://chromium.googlesource.com/chromiumos/third_party/kernel/+/4ce0e8a3697edb8fd071110b3af65014512061c7
-> 
-> In this respin the elan_i2c patch is dropped and converting it will be
-> addressed later.
-> 
-> v3..v4:
-> - updated the comment in input_open_device() (Hans)
-> - used more straightforward locking pattern in adc/exynos (Michał)
-> 
-> v2..v3:
-> - ignored autorepeat events in input_get_disposition() if a key is not
-> pressed (Hans)
-> - dropped inhibit()/uninhibit() driver callbacks (Hans)
-> - split ACPI button patch into taking the lock and using the helper (Rafael)
-> - dropped the elan_i2c conversion
-> - fixed typos in exynos adc
-> 
-> v1..v2:
-> - added input_device_enabled() helper and used it in drivers (Dmitry)
-> - the fact of open() and close() being called in inhibit/uninhibit paths has
-> been emphasized in the commit message of PATCH 6/7 (Dmitry)
-> 
-> Andrzej Pietrasiewicz (6):
->    Input: add input_device_enabled()
->    Input: use input_device_enabled()
->    ACPI: button: Access input device's users under appropriate mutex
->    ACPI: button: Use input_device_enabled() helper
->    iio: adc: exynos: Use input_device_enabled()
->    platform/x86: thinkpad_acpi: Use input_device_enabled()
-> 
-> Patrik Fimml (1):
->    Input: Add "inhibited" property
+> Sure I can. Just need to know when "this" becomes stable enough ;)
+> If this series otherwise looks mature enough I would opt for a
+> follow-up patch.
 
-The entire series looks good to me:
+FWIW after my flip-flop to agreeing with Dmitry that the 2
+(inhibit vs wakeup) should be completely orthogonal this new
+policy is stable/mature from my pov (and consistent with how
+we handle wakeup vs input_dev->users).
 
-Acked-by: Hans de Goede <hdegoede@redhat.com>
+I still think it would be good to do a follow-up documentation
+patch documenting that these (and esp. inhibit) are orthogonal.
+
+This will mean for example that if a device is inhibit but
+still wakeup enabled and the device's close method silences
+the devices, that it needs to be unsilenced in suspend.
+This might be worth mentioning in the docs even though
+drivers which silence the device on close should already
+unsilence the device on suspend when it is wakeup-enabled.
+
+Note maybe we should give it a couple of days for others to
+give their opinion before you submit the follow-up documentation
+patch.
 
 Regards,
 
 Hans
+
 
 
