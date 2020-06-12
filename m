@@ -2,290 +2,277 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DDBB1F7407
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jun 2020 08:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 323611F7520
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jun 2020 10:14:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726292AbgFLGqu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Jun 2020 02:46:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41046 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726287AbgFLGqu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Jun 2020 02:46:50 -0400
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFA63C03E96F;
-        Thu, 11 Jun 2020 23:46:49 -0700 (PDT)
-Received: by mail-oi1-x242.google.com with SMTP id 25so7744085oiy.13;
-        Thu, 11 Jun 2020 23:46:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=293SJMmZmVCGOunUSuOi65UyFjlasgM11ygVhvjbjJQ=;
-        b=Tgg4peMLB7HLe6fFzbX/bV38F19jJEw53LDr4gqmFzn0YdXeuXOBeE7/tbUN1ftDeF
-         5rqmhuRCjRXHuyowOnRl60WM9rnRIuAse0pD0eEpcgXlTlJ1banSdeS4jWgxwDO+GIkc
-         gDG3k8FUED4MjtDIzYUjZdWUgVei6K8wprT1bZXLLkrshifcZqZnfJudi8bvYag52B6A
-         c1XPT48eteML5JkQ1yYtstkCoqNVP0lc2WWI3X0o05SSzG47haIhXpuGqJobAx4egBkj
-         1ymaPgXgOpJwsqs0t8sQndl9XCc8bdKFoHO/JbRn1PfAFFTHNNmyvwAA9VsvnoOufWY4
-         n7MA==
+        id S1726462AbgFLIO1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Jun 2020 04:14:27 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:47083 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726310AbgFLIOZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Jun 2020 04:14:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1591949662;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=V2zTglIal5OiHZJ8iFKvfCqf75RWAmlyagUCe+VaIC8=;
+        b=DLDXQE/cUsVonjowdMcKOEQskFwqehdLz9weAcJRMxctaaWkEuGbxiFnPIeq/Pr4r4f+Xu
+        kvs3vKB8pwN6rFCavMPEIxOsfyhgHIyHH1NF1wN7WZMEIumTuMchSi23W2t3iNfQo/NFC8
+        moP9//Hvto5eMHJSvVAws8x+Z1tJTXI=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-44-7BbOWaGsMYGttnw7kGGD8Q-1; Fri, 12 Jun 2020 04:14:21 -0400
+X-MC-Unique: 7BbOWaGsMYGttnw7kGGD8Q-1
+Received: by mail-ej1-f72.google.com with SMTP id s4so3867520eju.3
+        for <linux-acpi@vger.kernel.org>; Fri, 12 Jun 2020 01:14:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=293SJMmZmVCGOunUSuOi65UyFjlasgM11ygVhvjbjJQ=;
-        b=TTYk1qGvKB2xw9L5YuuOdVhGU8kp9SAjppxAIWYi9r0mE9Hz/eNWczjqU2FAh0nD0z
-         r8myTJrMpZE4ys65aVuSCKeSHW/IdPu+WaFLY4rfXdQA5OOzfZ7/sOiamcXnnEysfRsv
-         7wWosARRYz6nshEhTuPGLwqDHCenlV4ho9qdvhrJij/7gG8Bmy5sLDHPTSc4PLdYpT+Z
-         jZ1Hsyc41uNcvDbIQF56QGbGfXYhozMeezJxhgyeZ60LMLP1BcrYXKv0SxrKSbmKwoQM
-         s1yQCUAOZxJJTjicYhS3fRsKFs7bix9j25wou2+aJqEVrcR66GqQXWGwg4vP4LXGsip0
-         ULpA==
-X-Gm-Message-State: AOAM531/I5ofjRyeTyWVdtYKitvhZ4hx4AMQJl1Tik572A0tP9u0wATh
-        iS6loZq+TH554qehkmR/2JE=
-X-Google-Smtp-Source: ABdhPJyDpZTY3Hr/oyAfz5V+2fGR2ae7hl9bs3HHZ91XwAvggeW+B3teTT2a4uUuMhadvnHdXaB2yw==
-X-Received: by 2002:aca:438a:: with SMTP id q132mr623443oia.44.1591944408956;
-        Thu, 11 Jun 2020 23:46:48 -0700 (PDT)
-Received: from ubuntu-n2-xlarge-x86 ([2604:1380:4111:8b00::3])
-        by smtp.gmail.com with ESMTPSA id v2sm853810oib.26.2020.06.11.23.46.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2020 23:46:48 -0700 (PDT)
-Date:   Thu, 11 Jun 2020 23:46:47 -0700
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        Sami Tolvanen <samitolvanen@google.com>,
-        yuu ichii <byahu140@heisei.be>
-Subject: Re: [PATCH] ACPI: sysfs: Fix pm_profile_attr type
-Message-ID: <20200612064647.GA34712@ubuntu-n2-xlarge-x86>
-References: <20200612045149.1837-1-natechancellor@gmail.com>
- <202006112217.2E6CE093@keescook>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=V2zTglIal5OiHZJ8iFKvfCqf75RWAmlyagUCe+VaIC8=;
+        b=j+XBeG8ZwHIWkLwdwCToQRk/E5JNh7wVkTNVQPKbGrIE70ey/TfQBrjIpn2RwG3RzM
+         vcW8SAUa7lLIp9sc/yr8+ffNH31J3PJeE7H4M6YHdIrQd9dzEkdFHShQgWAy+FEskhLh
+         +8vsP+aUdBeMXTOJrIhGiHBB0EBc6ij3j+2pGO3Mn2ght5V9WtgbgIetf/sN/0a1flBO
+         50SEyT5lmtkTeNA3zLyNJlcHExjzBd3CIMzHIPY1wRTK2F23+iv4TZZ0Ix0iIwIodOGN
+         70qOLa3l6QiLhVUitrKqiKfqFBZcoJ+j/jgEoRLGEV9Hkz8Ar2K01MyzHFhk+P1yJjN3
+         wuBw==
+X-Gm-Message-State: AOAM533ukmdAJGCjjsKkmYaSg/9x/bXoyXz7JRTG95Bxi6CW9apwr2R0
+        HGK83EfjevHIin5yhdgerA3WWgIB2Uhr9TDLieYsmHSl5oZxA5h2q4IAJCsvy6/+0WBSZtSFFVj
+        limxn8oWk04b9+iOg2eC5jQ==
+X-Received: by 2002:a17:907:209b:: with SMTP id pv27mr11743701ejb.146.1591949659883;
+        Fri, 12 Jun 2020 01:14:19 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyBAHer5t4lrLm+vMdTXed6gLDbil+57VlZQwx847llFMXVqLhRHTvWPje2pJt4EUELeeQ+uA==
+X-Received: by 2002:a17:907:209b:: with SMTP id pv27mr11743678ejb.146.1591949659541;
+        Fri, 12 Jun 2020 01:14:19 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id h1sm2725555edz.88.2020.06.12.01.14.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Jun 2020 01:14:18 -0700 (PDT)
+Subject: Re: [PATCH v4 0/7] Support inhibiting input devices
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Samsung SoC <linux-samsung-soc@vger.kernel.org>,
+        linux-input@vger.kernel.org,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Peter Hutterer <peter.hutterer@redhat.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        Collabora Kernel ML <kernel@collabora.com>
+References: <2336e15d-ff4b-bbb6-c701-dbf3aa110fcd@redhat.com>
+ <20200608112211.12125-1-andrzej.p@collabora.com>
+ <964ca07a-3da5-101f-7edf-64bdeec98a4b@redhat.com>
+ <CAJZ5v0hB2ra2K=dd9ZjVyy1V2b1PmFHm79uDO2HtHU1D_4YUbw@mail.gmail.com>
+ <20200610182836.GA248110@dtor-ws>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <2e4bd050-117c-cc5f-8cf0-055b5304717f@redhat.com>
+Date:   Fri, 12 Jun 2020 10:14:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202006112217.2E6CE093@keescook>
+In-Reply-To: <20200610182836.GA248110@dtor-ws>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 11, 2020 at 11:17:14PM -0700, Kees Cook wrote:
-> On Thu, Jun 11, 2020 at 09:51:50PM -0700, Nathan Chancellor wrote:
-> > When running a kernel with Clang's Control Flow Integrity implemented,
-> > there is a violation that happens when accessing
-> > /sys/firmware/acpi/pm_profile:
-> > 
-> > $ cat /sys/firmware/acpi/pm_profile
-> > 0
-> > 
-> > $ dmesg
-> > ...
-> > [   17.352564] ------------[ cut here ]------------
-> > [   17.352568] CFI failure (target: acpi_show_profile+0x0/0x8):
-> > [   17.352572] WARNING: CPU: 3 PID: 497 at kernel/cfi.c:29 __cfi_check_fail+0x33/0x40
-> > [   17.352573] Modules linked in:
-> > [   17.352575] CPU: 3 PID: 497 Comm: cat Tainted: G        W         5.7.0-microsoft-standard+ #1
-> > [   17.352576] RIP: 0010:__cfi_check_fail+0x33/0x40
-> > [   17.352577] Code: 48 c7 c7 50 b3 85 84 48 c7 c6 50 0a 4e 84 e8 a4 d8 60 00 85 c0 75 02 5b c3 48 c7 c7 dc 5e 49 84 48 89 de 31 c0 e8 7d 06 eb ff <0f> 0b 5b c3 00 00 cc cc 00 00 cc cc 00 85 f6 74 25 41 b9 ea ff ff
-> > [   17.352577] RSP: 0018:ffffaa6dc3c53d30 EFLAGS: 00010246
-> > [   17.352578] RAX: 331267e0c06cee00 RBX: ffffffff83d85890 RCX: ffffffff8483a6f8
-> > [   17.352579] RDX: ffff9cceabbb37c0 RSI: 0000000000000082 RDI: ffffffff84bb9e1c
-> > [   17.352579] RBP: ffffffff845b2bc8 R08: 0000000000000001 R09: ffff9cceabbba200
-> > [   17.352579] R10: 000000000000019d R11: 0000000000000000 R12: ffff9cc947766f00
-> > [   17.352580] R13: ffffffff83d6bd50 R14: ffff9ccc6fa80000 R15: ffffffff845bd328
-> > [   17.352582] FS:  00007fdbc8d13580(0000) GS:ffff9cce91ac0000(0000) knlGS:0000000000000000
-> > [   17.352582] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > [   17.352583] CR2: 00007fdbc858e000 CR3: 00000005174d0000 CR4: 0000000000340ea0
-> > [   17.352584] Call Trace:
-> > [   17.352586]  ? rev_id_show+0x8/0x8
-> > [   17.352587]  ? __cfi_check+0x45bac/0x4b640
-> > [   17.352589]  ? kobj_attr_show+0x73/0x80
-> > [   17.352590]  ? sysfs_kf_seq_show+0xc1/0x140
-> > [   17.352592]  ? ext4_seq_options_show.cfi_jt+0x8/0x8
-> > [   17.352593]  ? seq_read+0x180/0x600
-> > [   17.352595]  ? sysfs_create_file_ns.cfi_jt+0x10/0x10
-> > [   17.352596]  ? tlbflush_read_file+0x8/0x8
-> > [   17.352597]  ? __vfs_read+0x6b/0x220
-> > [   17.352598]  ? handle_mm_fault+0xa23/0x11b0
-> > [   17.352599]  ? vfs_read+0xa2/0x130
-> > [   17.352599]  ? ksys_read+0x6a/0xd0
-> > [   17.352601]  ? __do_sys_getpgrp+0x8/0x8
-> > [   17.352602]  ? do_syscall_64+0x72/0x120
-> > [   17.352603]  ? entry_SYSCALL_64_after_hwframe+0x44/0xa9
-> > [   17.352604] ---[ end trace 7b1fa81dc897e419 ]---
-> > 
-> > When /sys/firmware/acpi/pm_profile is read, sysfs_kf_seq_show is called,
-> > which in turn calls kobj_attr_show, which gets the ->show callback
-> > member by calling container_of on attr (casting it to struct
-> > kobj_attribute) then calls it.
-> > 
-> > There is a CFI violation because pm_profile_attr is of type
-> > struct device_attribute but kobj_attr_show calls ->show expecting it
-> > to be from struct kobj_attribute. CFI checking ensures that function
-> > pointer types match when doing indirect calls. Fix pm_profile_attr to
-> > be defined in terms of kobj_attribute so there is no violation or
-> > mismatch.
-> > 
-> > Fixes: 362b646062b2 ("ACPI: Export FADT pm_profile integer value to userspace")
-> > Link: https://github.com/ClangBuiltLinux/linux/issues/1051
-> > Reported-by: yuu ichii <byahu140@heisei.be>
-> > Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-> > ---
-> >  drivers/acpi/sysfs.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-> > index 3a89909b50a6..76c668c05fa0 100644
-> > --- a/drivers/acpi/sysfs.c
-> > +++ b/drivers/acpi/sysfs.c
-> > @@ -938,13 +938,13 @@ static void __exit interrupt_stats_exit(void)
-> >  }
-> >  
-> >  static ssize_t
-> > -acpi_show_profile(struct device *dev, struct device_attribute *attr,
-> > +acpi_show_profile(struct kobject *kobj, struct kobj_attribute *attr,
-> >  		  char *buf)
-> >  {
-> >  	return sprintf(buf, "%d\n", acpi_gbl_FADT.preferred_profile);
-> >  }
-> >  
-> > -static const struct device_attribute pm_profile_attr =
-> > +static const struct kobj_attribute pm_profile_attr =
-> >  	__ATTR(pm_profile, S_IRUGO, acpi_show_profile, NULL);
-> 
-> My mind absolutely rebelled at how this could not have been caught
-> at compile time nor runtime already. Everything appears to be wrong
-> here. It's a different structure, it's getting assigned, it's getting
-> called! And then I went looking and started to scream. Apologies if this
-> investigation is redundant to a thread I didn't see...
+Hi,
 
-Yes, I was rather shocked as well... There was no prior discussion to
-this patch, just something that was reported to me (the initial
-reproducer was 'grep -irl uname /sys').
+On 6/10/20 8:28 PM, Dmitry Torokhov wrote:
+> On Wed, Jun 10, 2020 at 12:38:30PM +0200, Rafael J. Wysocki wrote:
+>> On Wed, Jun 10, 2020 at 11:50 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>>>
+>>> Hi All,
+>>>
+>>> On 6/8/20 1:22 PM, Andrzej Pietrasiewicz wrote:
+>>>> This is a quick respin of v3, with just two small changes, please see
+>>>> the changelog below.
+>>>>
+>>>> Userspace might want to implement a policy to temporarily disregard input
+>>>> from certain devices.
+>>>>
+>>>> An example use case is a convertible laptop, whose keyboard can be folded
+>>>> under the screen to create tablet-like experience. The user then must hold
+>>>> the laptop in such a way that it is difficult to avoid pressing the keyboard
+>>>> keys. It is therefore desirable to temporarily disregard input from the
+>>>> keyboard, until it is folded back. This obviously is a policy which should
+>>>> be kept out of the kernel, but the kernel must provide suitable means to
+>>>> implement such a policy.
+>>>
+>>> First of all sorry to start a somewhat new discussion about this
+>>> while this patch set is also somewhat far along in the review process,
+>>> but I believe what I discuss below needs to be taken into account.
+>>>
+>>> Yesterday I have been looking into why an Asus T101HA would not stay
+>>> suspended when the LID is closed. The cause is that the USB HID multi-touch
+>>> touchpad in the base of the device starts sending events when the screen
+>>> gets close to the touchpad (so when the LID is fully closed) and these
+>>> events are causing a wakeup from suspend. HID multi-touch devices
+>>> do have a way to tell them to fully stop sending events, also disabling
+>>> the USB remote wakeup the device is doing. The question is when to tell
+>>> it to not send events though ...
+>>>
+>>> So now I've been thinking about how to fix this and I believe that there
+>>> is some interaction between this problem and this patch-set.
+>>>
+>>> The problem I'm seeing on the T101HA is about wakeups, so the question
+>>> which I want to discuss is:
+>>>
+>>> 1. How does inhibiting interact with enabling /
+>>> disabling the device as a wakeup source ?
+> 
+> One should not affect the other.
+> 
+>>>
+>>> 2. Since we have now made inhibiting equal open/close how does open/close
+>>> interact with a device being a wakeup source ?
+> 
+> One did not affect another, and it should not.
+> 
+>>>
+>>> And my own initial (to be discussed) answers to these questions:
+>>>
+>>> 1. It seems to me that when a device is inhibited it should not be a
+>>> wakeup source, so where possible a input-device-driver should disable
+>>> a device's wakeup capabilities on suspend if inhibited
+>>
+>> If "inhibit" means "do not generate any events going forward", then
+>> this must also cover wakeup events, so I agree.
+> 
+> Why? These are separate concepts. Do we disable wake on lan when
+> bringing network interface down? Do we update power/wakeup when device
+> is inhibited? Do we restore it afterwards? Do we un-inhibit if we
+> reenable wakeup after device is inhibited? Do we return error? How?
+> 
+> Inhibit works on logical level, i.e. if I have several input interfaces
+> on the same hardware device, I cam inhibit one leaving others intact.
+> This does not mean that the device should stop generating wakeup events.
+> We can't even guarantee this for composite devices.
 
-> First, __ATTR(), like most static initializer macros, is not typed.
-> Normally this is okay because different structures have different
-> members, so it wouldn't compile. But not in this case here. Everything
-> assigned by __ATTR exists in both because ... they have an identical set
-> of structure member names:
-> 
-> struct device_attribute {
->         struct attribute        attr;
->         ssize_t (*show)(struct device *dev, struct device_attribute *attr,
->                         char *buf);
->         ssize_t (*store)(struct device *dev, struct device_attribute *attr,
->                          const char *buf, size_t count);
-> };
-> 
-> struct kobj_attribute {
->         struct attribute attr;
->         ssize_t (*show)(struct kobject *kobj, struct kobj_attribute *attr,
->                         char *buf);
->         ssize_t (*store)(struct kobject *kobj, struct kobj_attribute *attr,
->                          const char *buf, size_t count);
-> };
-> 
-> But the show and store are different prototypes, so surely any variable
-> assignments or argument passing would catch the mismatch. But no!
-> The sysfs API only takes the .attr member address:
-> 
->         result = sysfs_create_file(acpi_kobj, &pm_profile_attr.attr);
-> 
-> and, of course, that doesn't break because both struct device_attribute
-> and struct kobj_attribute do, in fact, use the same structure for their
-> .attr (struct attribute).
-> 
-> But here's the kicker:
-> 
-> static ssize_t kobj_attr_show(struct kobject *kobj, struct attribute *attr,
->                               char *buf)
-> {
->         struct kobj_attribute *kattr;
->         ssize_t ret = -EIO;
-> 
->         kattr = container_of(attr, struct kobj_attribute, attr);
->         if (kattr->show)
->                 ret = kattr->show(kobj, kattr, buf);
-> 	...
-> 
-> A container_of() is used to calculate the offset. This doesn't explode
-> (normally) at runtime because, as established, these structures have the
-> same layout, so .show is in the same place.
+After thinking more about this I believe you are right and we should
+keep these as 2 separate, completely independent settings.
 
-Yes, this is all what I noticed as well (and tried to summarize in my
-commit message, hopefully it made sense).
+Especially since the wakeup setting typically is a setting of the
+parent device, where as the inhibit is done on the actual input-dev.
 
-> Some thoughts that I am terrified to check or attempt, but I can't help
-> myself:
-> 
-> 1) Is __ATTR() regularly used to perform cross-structure initialization?
-> 
-> Answer appears to be "yes":
-> 
-> include/linux/device.h: struct device_attribute dev_attr_##_name = __ATTR_WO(_name)
-> include/linux/device/bus.h:     struct bus_attribute bus_attr_##_name = __ATTR_RW(_name)
-> 
-> 2) Should static initializer macros be typed to catch bad cross-type
->    assignments? (Which depends on "1" being "no".)
-> 
-> Changing this looks very hard, but it does make me wonder about doing
-> stuff like this for static initializer macros:
-> 
-> -#define __ATTR(_name, _mode, _show, _store) { \
-> +#define __ATTR(_name, _mode, _show, _store) (struct kobject *) { \
-> 
-> Obviously not possible here, though.
-> 
-> 3) This cannot possibly be the only case of this. Given the answer to
->    #1, this bug must be endemic.
-> 
-> static inline int __must_check sysfs_create_file(struct kobject *kobj,
->                                                  const struct attribute *attr)
-> {
->         return sysfs_create_file_ns(kobj, attr, NULL);
-> }
-> 
-> $ git grep 'sysfs_create_file.*, &.*\.attr' | wc -l
-> 51
-> 
-> 16 appear to actually be kobj_attribute. Those are fine.
-> 
-> Similar to the patch above, 9 more are from DEVICE_ATTR() (named
-> "dev_attr_$foo):
-> 
-> #define DEVICE_ATTR(_name, _mode, _show, _store) \
->         struct device_attribute dev_attr_##_name = __ATTR(_name, _mode, _show, _store)
-> 
-> And a here are a bunch more macro-based ones:
-> 
-> class_attr	is struct class_attribute
-> 
-> mdev_type_attr	is struct mdev_type_attribute
-> 
-> format_attr	is half struct device_attribute and half struct kobj_attribute:
-> 
-> arch/x86/events/amd/uncore.c:static struct device_attribute format_attr_##_dev##_name = __ATTR_RO(_dev);
-> arch/x86/events/intel/cstate.c:static struct kobj_attribute format_attr_##_var =                \
-> arch/x86/events/intel/uncore.h:static struct kobj_attribute format_attr_##_var =                   \
-> arch/x86/events/rapl.c:static struct kobj_attribute format_attr_##_var = \
-> drivers/perf/thunderx2_pmu.c:static struct device_attribute format_attr_##_var =                   \
-> include/linux/perf_event.h:static struct device_attribute format_attr_##_name = __ATTR_RO(_name)
-> 
-> These 2 are also not kobj_attribute:
-> 
-> include/linux/module.h:extern struct module_attribute module_uevent;
-> kernel/module.c:struct module_attribute module_uevent =
-> 
-> I think all of these non-kobj_attribute cases will trip CFI too, and
-> this design pattern appears to be intentional. So that will be fun! :)
-> 
-> I haven't gone through all of the 51 carefully, but this looks like a
-> much larger problem than just this one place. :(
+###
 
-Yikes... :/ that is going to be fun to fully uncover. I am interested in
-seeing which ones I can get to trigger on real hardware.
+Some quick background info on my original thoughts here, as mentioned
+I started thinking about this because of spurious wakeups from suspend
+when the lid of an asus t101ha is "touching" its touchpad. The HID
+multi-touch protocol has a setting where we can ask the device to
+stop sending events. So even though the kbd + touchpad are a
+single composite USB device, we can disable wakeup (in a way)
+for just the touchpad at the hid-multitouch level.
 
-Thanks for the full analysis, I should have probably added some more
-myself.
+So I was thinking maybe adding a separate wakeup setting to the
+input device itself for this. But thinking more about it, when
+the lid is closed we can just disable wakeup on the entire USB
+device, since the keyboard is covered by the lid too.
 
-Cheers,
-Nathan
+And then on suspend the hid-multitouch driver can detect that its
+parent (or parents parent in the case of USB) has wakeup disabled
+and also tell the device to stop scanning for fingers to save some
+power.
+
+We probably also need a close and open callbacks add the HID-driver
+level, so that if there are no touchpad users we can also use
+the same option to put the HID multi-touch device in a low power mode
+where it does not scan for fingers.
+
+<snip>
+
+>>> A different, but related issue is how to make devices actually use the
+>>> new inhibit support on the builtin keyboard + touchpad when say the lid
+>>> is closed.   Arguably this is an userspace problem, but it is a tricky
+>>> one. Currently on most modern Linux distributions suspend-on-lid-close
+>>> is handled by systemd-logind and most modern desktop-environments are
+>>> happy to have logind handle this for them.
+>>>
+>>> But most knowledge about input devices and e.g. heurisitics to decide
+>>> if a touchpad is internal or external are part of libinput. Now we could
+>>> have libinput use the new inhibit support (1), but then when the lid
+>>> closes we get race between whatever process is using libinput trying
+>>> to inhibit the touchpad (which must be done before to suspend to disable
+>>> it as wakeup source) and logind trying to suspend the system.
+>>>
+>>> One solution here would be to move the setting of the inhibit sysfs
+>>> attr into logind, but that requires adding a whole bunch of extra
+>>> knowledge to logind which does not really belong there IMHO.
+> 
+> You do not need to push the knowledge into logind, you just need to
+> communicate to logind what devices can be wakeup sources and which ones
+> should not. Chrome OS uses udev tags/properties for that.
+
+True, I did not think of doing the tag thingie + letting logind do
+the inhibit on LID close based on that. logind could also disable
+wakeup (to save power while suspended) on devices which are tagged
+for it to do that (should probably be a separate tag from the
+inhibit tag).
+
+>>> I've been thinking a bit about this and to me it seems that the kernel
+>>> is in the ideal position to automatically inhibit some devices when
+>>> some EV_SW transitions from 0->1 (and uninhibit again on 1->0). The
+>>> issue here is to chose on which devices to enable this. I believe
+>>> that the auto inhibit on some switches mechanism is best done inside
+>>> the kernel (disabled by default) and then we can have a sysfs
+>>> attr called auto_inhibit_ev_sw_mask which can be set to e.g.
+>>> (1 << SW_LID) to make the kernel auto-inhibit the input-device whenever
+>>> the lid is closed, or to ((1 << SW_LID) | (1 << SW_TABLET_MODE)) to
+>>> inhibit both when the lid is closed or when switched to tablet mode.
+> 
+> This is a policy and should be kept out of the kernel. Yes, we had it
+> implemented with rfkill input handler, but it caused quite a few issues.
+> As far as I know it is not being used anymore and we should not try with
+> SW_LID->inhibit either.
+> 
+> I know it is faster to patch the kernel than to roll out proper
+> userspace because everyone updates kernel regularly, but it does not
+> mean it is the right solution.
+
+Agreed, I just could not come up with a clean userspace solution, but
+using udev+hwdb to set a tag for logind instead of having the write
+to a new auto_inhibit_ev_sw_mask will work nicely.
+
+So I think this is all resolved now (or at least we have a plan for it).
+
+Regards,
+
+Hans
+
