@@ -2,157 +2,272 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E06A1F7339
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jun 2020 06:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D72D01F73CF
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jun 2020 08:17:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725947AbgFLExW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Jun 2020 00:53:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51830 "EHLO
+        id S1726508AbgFLGRR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Jun 2020 02:17:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725862AbgFLExW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Jun 2020 00:53:22 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 057D5C03E96F;
-        Thu, 11 Jun 2020 21:53:22 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id g12so3255574pll.10;
-        Thu, 11 Jun 2020 21:53:22 -0700 (PDT)
+        with ESMTP id S1726499AbgFLGRR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Jun 2020 02:17:17 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82E68C08C5C1
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Jun 2020 23:17:17 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id 10so3818269pfx.8
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Jun 2020 23:17:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=zCSuxwEDtuJ9zf1mhrD1sDdbW3HCFiaQTMtlkEwhjQg=;
-        b=JcsAjc7wbX41+n8F9s6SlcLw2idm+q+x/n8TTJXnZimxnYNQsui0Zo6TV2pZ8jVnT7
-         lNNjYw1R42kj45fYrPe2M4Kh/iLbRCpdqFIqQ8wZ07GCiY4vwS/ipCyt/r1BpScjdrXS
-         RTCeWhu9tHqjqThXOozO3KFYawMFO9KxdO/xW9Ih+DBb6O0Rast/WtgX/we5T2HDHXCt
-         OxrLTdcLDVNl4CuYyLEhTr+vkBcy78wdvnQIKHHhIdUcRJdsIsIr+bsDFOwc3u1r2mEf
-         +OQ5O1y+xZJNeE35BVjLnhr9ROfILM0GotEhUy5Xw9wf5dOfjKRzXiwsH7fCgf1b8AxO
-         2BGg==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=zpNul/n24BGtA0wNEEb3Bqb48kl11YHKOy5UfmBsLkI=;
+        b=E4dphn7u1H3KUgTAblKyPzxsUnZOrvzjfhnEl5mYmP6Q0fDYgjGqlXgewWRJCDq01i
+         Xy4gkJ0c/FQTDK66FOyAk/VWoehlIxYbADReEIZhmBKcF2K3z6QorQl/60S++/VB8gk7
+         8u9l6aRCCAcx4KXYRnELq79FC0wI0YvGMv/sY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=zCSuxwEDtuJ9zf1mhrD1sDdbW3HCFiaQTMtlkEwhjQg=;
-        b=QB4Dn5DVwi7IfHYvK8ltXieVF+MMdSgGkuYZD+jVSPN+z1GaSYfC7OMrVbKykA05jK
-         Vn3kaaXq5YqcPvRr8fAG+3z+H0mWw2md4xrk4HGOPpk3opWIiwi9INjh9pV5pMXgzQQk
-         TPwTxjxO3GNoJ1sUipXG3YtDt9afiw89ioiso8n9gv4ucc2gkaOPn+h7JhkIaO/KB4UQ
-         C0Qxx9UHl6QiP6rXF1knkRFue9BbWzRXvDG0QIjfkp+2CXITHjTq1PykQERthXC1TIr3
-         gApG6wQ/LF2Rs4ugGT+9LvZGsZD/gJn941UAQ/v/3kgzLxUpmqsLFG6GDSUbPcCxouDs
-         2StA==
-X-Gm-Message-State: AOAM531UA6fjysv988VlslnI3qfrOelhWE1/pysKifxp5o928HzAIPrE
-        h5wb08jMWHLS+XfBH/l57H0=
-X-Google-Smtp-Source: ABdhPJww5vV+JroKn6WK+lcyhxjWEBwGZRdmKGmudYnyrLCVr1n8VtcddT8rciIVS+2HFoKQIb0anA==
-X-Received: by 2002:a17:90a:f0d4:: with SMTP id fa20mr11226260pjb.160.1591937600684;
-        Thu, 11 Jun 2020 21:53:20 -0700 (PDT)
-Received: from Ryzen-9-3900X.localdomain ([89.46.114.134])
-        by smtp.gmail.com with ESMTPSA id w206sm4735757pfc.28.2020.06.11.21.53.19
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=zpNul/n24BGtA0wNEEb3Bqb48kl11YHKOy5UfmBsLkI=;
+        b=UmNs9rT/9CjdUzSzQrAunOgNdPSK6lSdwgG9XdxyUyS+RDVnWMrnUYDp84iQX3uAHV
+         Vrc1dGHBg4Ml3m/oGzhJ3n7GN6V3wQi7Fer8DzRMmJXxV74fFRwQA2cAv/wBvxiKpFA4
+         tANmG04OFEAznzNZQY4hI4qVvgOBG7gGssloOaTvpnlL/JcR/M7BG7fOIVX/6FiDo/s+
+         CzDmt1itjThNR7WZ/Nn2sC8P39GeVpjsXpAFsNH3IIOB1mKVHd612qyBGp0RqQjiOnXo
+         1l9wBbIPSMdAi1ifOIZd79kXWh1XFW+Ea0o7iTKPjsFBavjLC3InNpfgrvGyBYEsemDF
+         BmbQ==
+X-Gm-Message-State: AOAM533cZ++4qHGatst3N3FmggSRt3FnYjKplsrnSoydLCxQ7hYINN9Y
+        UA7sf8aDmr0PWPoGed2Vy8cU/yZwG3MIZQ==
+X-Google-Smtp-Source: ABdhPJxydIJTq7+UxyA+1kUe/VOCN3WPnxT0CpkxlP8LyBceGpPVgC0UV3oPyd3kb5Aq1Z4wAxqKIQ==
+X-Received: by 2002:a63:3503:: with SMTP id c3mr9415517pga.371.1591942636884;
+        Thu, 11 Jun 2020 23:17:16 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id r3sm4068757pjj.21.2020.06.11.23.17.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2020 21:53:20 -0700 (PDT)
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com,
-        Kees Cook <keescook@chromium.org>,
+        Thu, 11 Jun 2020 23:17:15 -0700 (PDT)
+Date:   Thu, 11 Jun 2020 23:17:14 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Nathan Chancellor <natechancellor@gmail.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
         Sami Tolvanen <samitolvanen@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
         yuu ichii <byahu140@heisei.be>
-Subject: [PATCH] ACPI: sysfs: Fix pm_profile_attr type
-Date:   Thu, 11 Jun 2020 21:51:50 -0700
-Message-Id: <20200612045149.1837-1-natechancellor@gmail.com>
-X-Mailer: git-send-email 2.27.0
+Subject: Re: [PATCH] ACPI: sysfs: Fix pm_profile_attr type
+Message-ID: <202006112217.2E6CE093@keescook>
+References: <20200612045149.1837-1-natechancellor@gmail.com>
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200612045149.1837-1-natechancellor@gmail.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When running a kernel with Clang's Control Flow Integrity implemented,
-there is a violation that happens when accessing
-/sys/firmware/acpi/pm_profile:
+On Thu, Jun 11, 2020 at 09:51:50PM -0700, Nathan Chancellor wrote:
+> When running a kernel with Clang's Control Flow Integrity implemented,
+> there is a violation that happens when accessing
+> /sys/firmware/acpi/pm_profile:
+> 
+> $ cat /sys/firmware/acpi/pm_profile
+> 0
+> 
+> $ dmesg
+> ...
+> [   17.352564] ------------[ cut here ]------------
+> [   17.352568] CFI failure (target: acpi_show_profile+0x0/0x8):
+> [   17.352572] WARNING: CPU: 3 PID: 497 at kernel/cfi.c:29 __cfi_check_fail+0x33/0x40
+> [   17.352573] Modules linked in:
+> [   17.352575] CPU: 3 PID: 497 Comm: cat Tainted: G        W         5.7.0-microsoft-standard+ #1
+> [   17.352576] RIP: 0010:__cfi_check_fail+0x33/0x40
+> [   17.352577] Code: 48 c7 c7 50 b3 85 84 48 c7 c6 50 0a 4e 84 e8 a4 d8 60 00 85 c0 75 02 5b c3 48 c7 c7 dc 5e 49 84 48 89 de 31 c0 e8 7d 06 eb ff <0f> 0b 5b c3 00 00 cc cc 00 00 cc cc 00 85 f6 74 25 41 b9 ea ff ff
+> [   17.352577] RSP: 0018:ffffaa6dc3c53d30 EFLAGS: 00010246
+> [   17.352578] RAX: 331267e0c06cee00 RBX: ffffffff83d85890 RCX: ffffffff8483a6f8
+> [   17.352579] RDX: ffff9cceabbb37c0 RSI: 0000000000000082 RDI: ffffffff84bb9e1c
+> [   17.352579] RBP: ffffffff845b2bc8 R08: 0000000000000001 R09: ffff9cceabbba200
+> [   17.352579] R10: 000000000000019d R11: 0000000000000000 R12: ffff9cc947766f00
+> [   17.352580] R13: ffffffff83d6bd50 R14: ffff9ccc6fa80000 R15: ffffffff845bd328
+> [   17.352582] FS:  00007fdbc8d13580(0000) GS:ffff9cce91ac0000(0000) knlGS:0000000000000000
+> [   17.352582] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   17.352583] CR2: 00007fdbc858e000 CR3: 00000005174d0000 CR4: 0000000000340ea0
+> [   17.352584] Call Trace:
+> [   17.352586]  ? rev_id_show+0x8/0x8
+> [   17.352587]  ? __cfi_check+0x45bac/0x4b640
+> [   17.352589]  ? kobj_attr_show+0x73/0x80
+> [   17.352590]  ? sysfs_kf_seq_show+0xc1/0x140
+> [   17.352592]  ? ext4_seq_options_show.cfi_jt+0x8/0x8
+> [   17.352593]  ? seq_read+0x180/0x600
+> [   17.352595]  ? sysfs_create_file_ns.cfi_jt+0x10/0x10
+> [   17.352596]  ? tlbflush_read_file+0x8/0x8
+> [   17.352597]  ? __vfs_read+0x6b/0x220
+> [   17.352598]  ? handle_mm_fault+0xa23/0x11b0
+> [   17.352599]  ? vfs_read+0xa2/0x130
+> [   17.352599]  ? ksys_read+0x6a/0xd0
+> [   17.352601]  ? __do_sys_getpgrp+0x8/0x8
+> [   17.352602]  ? do_syscall_64+0x72/0x120
+> [   17.352603]  ? entry_SYSCALL_64_after_hwframe+0x44/0xa9
+> [   17.352604] ---[ end trace 7b1fa81dc897e419 ]---
+> 
+> When /sys/firmware/acpi/pm_profile is read, sysfs_kf_seq_show is called,
+> which in turn calls kobj_attr_show, which gets the ->show callback
+> member by calling container_of on attr (casting it to struct
+> kobj_attribute) then calls it.
+> 
+> There is a CFI violation because pm_profile_attr is of type
+> struct device_attribute but kobj_attr_show calls ->show expecting it
+> to be from struct kobj_attribute. CFI checking ensures that function
+> pointer types match when doing indirect calls. Fix pm_profile_attr to
+> be defined in terms of kobj_attribute so there is no violation or
+> mismatch.
+> 
+> Fixes: 362b646062b2 ("ACPI: Export FADT pm_profile integer value to userspace")
+> Link: https://github.com/ClangBuiltLinux/linux/issues/1051
+> Reported-by: yuu ichii <byahu140@heisei.be>
+> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> ---
+>  drivers/acpi/sysfs.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
+> index 3a89909b50a6..76c668c05fa0 100644
+> --- a/drivers/acpi/sysfs.c
+> +++ b/drivers/acpi/sysfs.c
+> @@ -938,13 +938,13 @@ static void __exit interrupt_stats_exit(void)
+>  }
+>  
+>  static ssize_t
+> -acpi_show_profile(struct device *dev, struct device_attribute *attr,
+> +acpi_show_profile(struct kobject *kobj, struct kobj_attribute *attr,
+>  		  char *buf)
+>  {
+>  	return sprintf(buf, "%d\n", acpi_gbl_FADT.preferred_profile);
+>  }
+>  
+> -static const struct device_attribute pm_profile_attr =
+> +static const struct kobj_attribute pm_profile_attr =
+>  	__ATTR(pm_profile, S_IRUGO, acpi_show_profile, NULL);
 
-$ cat /sys/firmware/acpi/pm_profile
-0
+My mind absolutely rebelled at how this could not have been caught
+at compile time nor runtime already. Everything appears to be wrong
+here. It's a different structure, it's getting assigned, it's getting
+called! And then I went looking and started to scream. Apologies if this
+investigation is redundant to a thread I didn't see...
 
-$ dmesg
-...
-[   17.352564] ------------[ cut here ]------------
-[   17.352568] CFI failure (target: acpi_show_profile+0x0/0x8):
-[   17.352572] WARNING: CPU: 3 PID: 497 at kernel/cfi.c:29 __cfi_check_fail+0x33/0x40
-[   17.352573] Modules linked in:
-[   17.352575] CPU: 3 PID: 497 Comm: cat Tainted: G        W         5.7.0-microsoft-standard+ #1
-[   17.352576] RIP: 0010:__cfi_check_fail+0x33/0x40
-[   17.352577] Code: 48 c7 c7 50 b3 85 84 48 c7 c6 50 0a 4e 84 e8 a4 d8 60 00 85 c0 75 02 5b c3 48 c7 c7 dc 5e 49 84 48 89 de 31 c0 e8 7d 06 eb ff <0f> 0b 5b c3 00 00 cc cc 00 00 cc cc 00 85 f6 74 25 41 b9 ea ff ff
-[   17.352577] RSP: 0018:ffffaa6dc3c53d30 EFLAGS: 00010246
-[   17.352578] RAX: 331267e0c06cee00 RBX: ffffffff83d85890 RCX: ffffffff8483a6f8
-[   17.352579] RDX: ffff9cceabbb37c0 RSI: 0000000000000082 RDI: ffffffff84bb9e1c
-[   17.352579] RBP: ffffffff845b2bc8 R08: 0000000000000001 R09: ffff9cceabbba200
-[   17.352579] R10: 000000000000019d R11: 0000000000000000 R12: ffff9cc947766f00
-[   17.352580] R13: ffffffff83d6bd50 R14: ffff9ccc6fa80000 R15: ffffffff845bd328
-[   17.352582] FS:  00007fdbc8d13580(0000) GS:ffff9cce91ac0000(0000) knlGS:0000000000000000
-[   17.352582] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   17.352583] CR2: 00007fdbc858e000 CR3: 00000005174d0000 CR4: 0000000000340ea0
-[   17.352584] Call Trace:
-[   17.352586]  ? rev_id_show+0x8/0x8
-[   17.352587]  ? __cfi_check+0x45bac/0x4b640
-[   17.352589]  ? kobj_attr_show+0x73/0x80
-[   17.352590]  ? sysfs_kf_seq_show+0xc1/0x140
-[   17.352592]  ? ext4_seq_options_show.cfi_jt+0x8/0x8
-[   17.352593]  ? seq_read+0x180/0x600
-[   17.352595]  ? sysfs_create_file_ns.cfi_jt+0x10/0x10
-[   17.352596]  ? tlbflush_read_file+0x8/0x8
-[   17.352597]  ? __vfs_read+0x6b/0x220
-[   17.352598]  ? handle_mm_fault+0xa23/0x11b0
-[   17.352599]  ? vfs_read+0xa2/0x130
-[   17.352599]  ? ksys_read+0x6a/0xd0
-[   17.352601]  ? __do_sys_getpgrp+0x8/0x8
-[   17.352602]  ? do_syscall_64+0x72/0x120
-[   17.352603]  ? entry_SYSCALL_64_after_hwframe+0x44/0xa9
-[   17.352604] ---[ end trace 7b1fa81dc897e419 ]---
+First, __ATTR(), like most static initializer macros, is not typed.
+Normally this is okay because different structures have different
+members, so it wouldn't compile. But not in this case here. Everything
+assigned by __ATTR exists in both because ... they have an identical set
+of structure member names:
 
-When /sys/firmware/acpi/pm_profile is read, sysfs_kf_seq_show is called,
-which in turn calls kobj_attr_show, which gets the ->show callback
-member by calling container_of on attr (casting it to struct
-kobj_attribute) then calls it.
+struct device_attribute {
+        struct attribute        attr;
+        ssize_t (*show)(struct device *dev, struct device_attribute *attr,
+                        char *buf);
+        ssize_t (*store)(struct device *dev, struct device_attribute *attr,
+                         const char *buf, size_t count);
+};
 
-There is a CFI violation because pm_profile_attr is of type
-struct device_attribute but kobj_attr_show calls ->show expecting it
-to be from struct kobj_attribute. CFI checking ensures that function
-pointer types match when doing indirect calls. Fix pm_profile_attr to
-be defined in terms of kobj_attribute so there is no violation or
-mismatch.
+struct kobj_attribute {
+        struct attribute attr;
+        ssize_t (*show)(struct kobject *kobj, struct kobj_attribute *attr,
+                        char *buf);
+        ssize_t (*store)(struct kobject *kobj, struct kobj_attribute *attr,
+                         const char *buf, size_t count);
+};
 
-Fixes: 362b646062b2 ("ACPI: Export FADT pm_profile integer value to userspace")
-Link: https://github.com/ClangBuiltLinux/linux/issues/1051
-Reported-by: yuu ichii <byahu140@heisei.be>
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
----
- drivers/acpi/sysfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+But the show and store are different prototypes, so surely any variable
+assignments or argument passing would catch the mismatch. But no!
+The sysfs API only takes the .attr member address:
 
-diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-index 3a89909b50a6..76c668c05fa0 100644
---- a/drivers/acpi/sysfs.c
-+++ b/drivers/acpi/sysfs.c
-@@ -938,13 +938,13 @@ static void __exit interrupt_stats_exit(void)
- }
- 
- static ssize_t
--acpi_show_profile(struct device *dev, struct device_attribute *attr,
-+acpi_show_profile(struct kobject *kobj, struct kobj_attribute *attr,
- 		  char *buf)
- {
- 	return sprintf(buf, "%d\n", acpi_gbl_FADT.preferred_profile);
- }
- 
--static const struct device_attribute pm_profile_attr =
-+static const struct kobj_attribute pm_profile_attr =
- 	__ATTR(pm_profile, S_IRUGO, acpi_show_profile, NULL);
- 
- static ssize_t hotplug_enabled_show(struct kobject *kobj,
+        result = sysfs_create_file(acpi_kobj, &pm_profile_attr.attr);
 
-base-commit: b791d1bdf9212d944d749a5c7ff6febdba241771
+and, of course, that doesn't break because both struct device_attribute
+and struct kobj_attribute do, in fact, use the same structure for their
+.attr (struct attribute).
+
+But here's the kicker:
+
+static ssize_t kobj_attr_show(struct kobject *kobj, struct attribute *attr,
+                              char *buf)
+{
+        struct kobj_attribute *kattr;
+        ssize_t ret = -EIO;
+
+        kattr = container_of(attr, struct kobj_attribute, attr);
+        if (kattr->show)
+                ret = kattr->show(kobj, kattr, buf);
+	...
+
+A container_of() is used to calculate the offset. This doesn't explode
+(normally) at runtime because, as established, these structures have the
+same layout, so .show is in the same place.
+
+Some thoughts that I am terrified to check or attempt, but I can't help
+myself:
+
+1) Is __ATTR() regularly used to perform cross-structure initialization?
+
+Answer appears to be "yes":
+
+include/linux/device.h: struct device_attribute dev_attr_##_name = __ATTR_WO(_name)
+include/linux/device/bus.h:     struct bus_attribute bus_attr_##_name = __ATTR_RW(_name)
+
+2) Should static initializer macros be typed to catch bad cross-type
+   assignments? (Which depends on "1" being "no".)
+
+Changing this looks very hard, but it does make me wonder about doing
+stuff like this for static initializer macros:
+
+-#define __ATTR(_name, _mode, _show, _store) { \
++#define __ATTR(_name, _mode, _show, _store) (struct kobject *) { \
+
+Obviously not possible here, though.
+
+3) This cannot possibly be the only case of this. Given the answer to
+   #1, this bug must be endemic.
+
+static inline int __must_check sysfs_create_file(struct kobject *kobj,
+                                                 const struct attribute *attr)
+{
+        return sysfs_create_file_ns(kobj, attr, NULL);
+}
+
+$ git grep 'sysfs_create_file.*, &.*\.attr' | wc -l
+51
+
+16 appear to actually be kobj_attribute. Those are fine.
+
+Similar to the patch above, 9 more are from DEVICE_ATTR() (named
+"dev_attr_$foo):
+
+#define DEVICE_ATTR(_name, _mode, _show, _store) \
+        struct device_attribute dev_attr_##_name = __ATTR(_name, _mode, _show, _store)
+
+And a here are a bunch more macro-based ones:
+
+class_attr	is struct class_attribute
+
+mdev_type_attr	is struct mdev_type_attribute
+
+format_attr	is half struct device_attribute and half struct kobj_attribute:
+
+arch/x86/events/amd/uncore.c:static struct device_attribute format_attr_##_dev##_name = __ATTR_RO(_dev);
+arch/x86/events/intel/cstate.c:static struct kobj_attribute format_attr_##_var =                \
+arch/x86/events/intel/uncore.h:static struct kobj_attribute format_attr_##_var =                   \
+arch/x86/events/rapl.c:static struct kobj_attribute format_attr_##_var = \
+drivers/perf/thunderx2_pmu.c:static struct device_attribute format_attr_##_var =                   \
+include/linux/perf_event.h:static struct device_attribute format_attr_##_name = __ATTR_RO(_name)
+
+These 2 are also not kobj_attribute:
+
+include/linux/module.h:extern struct module_attribute module_uevent;
+kernel/module.c:struct module_attribute module_uevent =
+
+I think all of these non-kobj_attribute cases will trip CFI too, and
+this design pattern appears to be intentional. So that will be fun! :)
+
+I haven't gone through all of the 51 carefully, but this looks like a
+much larger problem than just this one place. :(
+
 -- 
-2.27.0
-
+Kees Cook
