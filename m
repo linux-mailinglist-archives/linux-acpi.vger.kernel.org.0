@@ -2,104 +2,213 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E6951F7792
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jun 2020 13:57:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA7DF1F779E
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jun 2020 14:05:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726101AbgFLL5f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Jun 2020 07:57:35 -0400
-Received: from mga14.intel.com ([192.55.52.115]:8570 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726024AbgFLL5e (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 12 Jun 2020 07:57:34 -0400
-IronPort-SDR: JPCMpBjJsIC4SUFCRaBZXw10CM/OpSo2aT+sWsmOTtWOvwfBgSMefVKMPx6lo4YGC/dLKAMjIk
- aTeByTOk6Wcw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2020 04:57:33 -0700
-IronPort-SDR: ABSPo+JBvBU79vQhZigciL7kR9UOM6gudQ79a9E/eot+fTbjWJoQC0Uc00I99Okq50ZXR+JZHs
- +RV39hC8Hnhg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,503,1583222400"; 
-   d="scan'208";a="296922866"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga004.fm.intel.com with ESMTP; 12 Jun 2020 04:57:30 -0700
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1jjiJQ-00CYBT-2r; Fri, 12 Jun 2020 14:57:32 +0300
-Date:   Fri, 12 Jun 2020 14:57:32 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
-        <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 03/15] pwm: lpss: Add range limit check for the
- base_unit register value
-Message-ID: <20200612115732.GC2428291@smile.fi.intel.com>
-References: <20200607181840.13536-1-hdegoede@redhat.com>
- <20200607181840.13536-4-hdegoede@redhat.com>
- <20200608035023.GZ2428291@smile.fi.intel.com>
- <90769dc0-3174-195b-34e0-ef4bb9d9b982@redhat.com>
- <20200611221242.3bjqvnhcwwxaocxy@taurus.defre.kleine-koenig.org>
+        id S1726053AbgFLMFT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Jun 2020 08:05:19 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:37380 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725886AbgFLMFT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Jun 2020 08:05:19 -0400
+Received: by mail-oi1-f193.google.com with SMTP id a3so8447355oid.4;
+        Fri, 12 Jun 2020 05:05:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vFwhiYEH8oFfrk8TNiw5uMiuVfFehhn4UASR2l6vNwU=;
+        b=rpXwuNrIUBEsysoJlKwBAzay84x/N815Qgp7/4UpAemlXPmp6bCxcckcMlVeBwowyc
+         fYr21lgigZZt9Rkr/Hy4P12NnOm3SL2VaerWP0c+C9LkHOO73YWBXKG+fo476Svtbem1
+         ko+XxWYHnvz4irQigN7fROn2XDq/ULd4GvAcq+ZHVfdRH8SEUMsjjvefGqNoqdd+L65c
+         iAoMdu2OzoTvk064C3l6g1WBFWKWtQFL80xG6KbB6hVoe04MnztMGTw29t1v/UFBhD7S
+         J1akxtEzqG0MWGHIj5FMDUsdFqcxHpeRfID/PQ0ga1iasjiOtMl6UuQDEAgzWFz8YJcA
+         Fvbg==
+X-Gm-Message-State: AOAM532fMqdUKBmNczIkIUP+1VDRD4I7vptMHFir1C4WVN16GioL/OGL
+        aQtXwEGgnTUppMTBk1gRGIPW3YpmTarwu2oCdzI=
+X-Google-Smtp-Source: ABdhPJzzratWFEFnCI62Qa2Ya16bGmtMS72/S8i52Q1nskzw+ZVCcqsmcmX3yUortj+kqoj/uHbWSu+vHMfgewzhpGs=
+X-Received: by 2002:aca:ab92:: with SMTP id u140mr1819440oie.68.1591963516898;
+ Fri, 12 Jun 2020 05:05:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200611221242.3bjqvnhcwwxaocxy@taurus.defre.kleine-koenig.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <318372766.6LKUBsbRXE@kreacher> <3974162.pZLctmZ5Iv@kreacher> <BYAPR11MB30963CB784B940A5CD58C4FAF0810@BYAPR11MB3096.namprd11.prod.outlook.com>
+In-Reply-To: <BYAPR11MB30963CB784B940A5CD58C4FAF0810@BYAPR11MB3096.namprd11.prod.outlook.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 12 Jun 2020 14:05:01 +0200
+Message-ID: <CAJZ5v0h0ax4N-Tk+MfAeAyJ_tDYPW5vseqUU49UShBKZ4+F6Bw@mail.gmail.com>
+Subject: Re: [RFT][PATCH 2/3] ACPICA: Remove unused memory mappings on
+ interpreter exit
+To:     "Kaneda, Erik" <erik.kaneda@intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Williams, Dan J" <dan.j.williams@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        "Weiny, Ira" <ira.weiny@intel.com>,
+        James Morse <james.morse@arm.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
+        "Moore, Robert" <robert.moore@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 12, 2020 at 12:12:42AM +0200, Uwe Kleine-König wrote:
-> On Mon, Jun 08, 2020 at 01:07:12PM +0200, Hans de Goede wrote:
-> > On 6/8/20 5:50 AM, Andy Shevchenko wrote:
-> > > On Sun, Jun 07, 2020 at 08:18:28PM +0200, Hans de Goede wrote:
-> > > > When the user requests a high enough period ns value, then the
-> > > > calculations in pwm_lpss_prepare() might result in a base_unit value of 0.
-> > > > 
-> > > > But according to the data-sheet the way the PWM controller works is that
-> > > > each input clock-cycle the base_unit gets added to a N bit counter and
-> > > > that counter overflowing determines the PWM output frequency. Adding 0
-> > > > to the counter is a no-op. The data-sheet even explicitly states that
-> > > > writing 0 to the base_unit bits will result in the PWM outputting a
-> > > > continuous 0 signal.
-> > > 
-> > > So, and why it's a problem?
-> > 
-> > Lets sya the user requests a PWM output frequency of 100Hz on Cherry Trail
-> > which has a 19200000 Hz clock this will result in 100 * 65536 / 19200000 =
-> > 0.3 -> 0 as base-unit value. So instead of getting 100 Hz the user will
-> > now get a pin which is always outputting low.
-> 
-> I didn't follow the complete discussion but note that the general rule
-> is:
-> 
-> 	round period down to the next possible implementable period
-> 	round duty_cycle down to the next possible implementable duty_cycle
-> 
-> so if a small enough period (and so a small duty_cycle) is requested it
-> is expected that duty_cycle will be zero.
+On Fri, Jun 12, 2020 at 2:12 AM Kaneda, Erik <erik.kaneda@intel.com> wrote:
+>
+>
+>
+> > -----Original Message-----
+> > From: Rafael J. Wysocki <rjw@rjwysocki.net>
+> > Sent: Wednesday, June 10, 2020 5:22 AM
+> > To: Williams, Dan J <dan.j.williams@intel.com>
+> > Cc: Kaneda, Erik <erik.kaneda@intel.com>; Wysocki, Rafael J
+> > <rafael.j.wysocki@intel.com>; Len Brown <lenb@kernel.org>; Borislav
+> > Petkov <bp@alien8.de>; Weiny, Ira <ira.weiny@intel.com>; James Morse
+> > <james.morse@arm.com>; Myron Stowe <myron.stowe@redhat.com>;
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com>; linux-
+> > kernel@vger.kernel.org; linux-acpi@vger.kernel.org; linux-
+> > nvdimm@lists.01.org; Moore, Robert <robert.moore@intel.com>
+> > Subject: [RFT][PATCH 2/3] ACPICA: Remove unused memory mappings on
+> > interpreter exit
+> >
+> > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> >
+> > For transient memory opregions that are created dynamically under
+> > the namespace and interpreter mutexes and go away quickly, there
+> > still is the problem that removing their memory mappings may take
+> > significant time and so doing that while holding the mutexes should
+> > be avoided.
+> >
+> > For example, unmapping a chunk of memory associated with a memory
+> > opregion in Linux involves running synchronize_rcu_expedited()
+> > which really should not be done with the namespace mutex held.
+> >
+> > To address that problem, notice that the unused memory mappings left
+> > behind by the "dynamic" opregions that went away need not be unmapped
+> > right away when the opregion is deactivated.  Instead, they may be
+> > unmapped when exiting the interpreter, after the namespace and
+> > interpreter mutexes have been dropped (there's one more place dealing
+> > with opregions in the debug code that can be treated analogously).
+> >
+> > Accordingly, change acpi_ev_system_memory_region_setup() to put
+> > the unused mappings into a global list instead of unmapping them
+> > right away and add acpi_ev_system_release_memory_mappings() to
+> > be called when leaving the interpreter in order to unmap the
+> > unused memory mappings in the global list (which is protected
+> > by the namespace mutex).
+> >
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  drivers/acpi/acpica/acevents.h |  2 ++
+> >  drivers/acpi/acpica/dbtest.c   |  3 ++
+> >  drivers/acpi/acpica/evrgnini.c | 51
+> > ++++++++++++++++++++++++++++++++--
+> >  drivers/acpi/acpica/exutils.c  |  3 ++
+> >  drivers/acpi/acpica/utxface.c  | 23 +++++++++++++++
+> >  include/acpi/acpixf.h          |  1 +
+> >  6 files changed, 80 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/acpi/acpica/acevents.h b/drivers/acpi/acpica/acevents.h
+> > index 79f292687bd6..463eb9124765 100644
+> > --- a/drivers/acpi/acpica/acevents.h
+> > +++ b/drivers/acpi/acpica/acevents.h
+> > @@ -197,6 +197,8 @@ acpi_ev_execute_reg_method(union
+> > acpi_operand_object *region_obj, u32 function);
+> >  /*
+> >   * evregini - Region initialization and setup
+> >   */
+> > +void acpi_ev_system_release_memory_mappings(void);
+> > +
+> >  acpi_status
+> >  acpi_ev_system_memory_region_setup(acpi_handle handle,
+> >                                  u32 function,
+> > diff --git a/drivers/acpi/acpica/dbtest.c b/drivers/acpi/acpica/dbtest.c
+> > index 6db44a5ac786..7dac6dae5c48 100644
+> > --- a/drivers/acpi/acpica/dbtest.c
+> > +++ b/drivers/acpi/acpica/dbtest.c
+> > @@ -8,6 +8,7 @@
+> >  #include <acpi/acpi.h>
+> >  #include "accommon.h"
+> >  #include "acdebug.h"
+> > +#include "acevents.h"
+> >  #include "acnamesp.h"
+> >  #include "acpredef.h"
+> >  #include "acinterp.h"
+> > @@ -768,6 +769,8 @@ acpi_db_test_field_unit_type(union
+> > acpi_operand_object *obj_desc)
+> >               acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+> >               acpi_ut_release_mutex(ACPI_MTX_INTERPRETER);
+> >
+> > +             acpi_ev_system_release_memory_mappings();
+> > +
+> >               bit_length = obj_desc->common_field.bit_length;
+> >               byte_length =
+> > ACPI_ROUND_BITS_UP_TO_BYTES(bit_length);
+> >
+> > diff --git a/drivers/acpi/acpica/evrgnini.c b/drivers/acpi/acpica/evrgnini.c
+> > index 48a5e6eaf9b9..946c4eef054d 100644
+> > --- a/drivers/acpi/acpica/evrgnini.c
+> > +++ b/drivers/acpi/acpica/evrgnini.c
+> > @@ -16,6 +16,52 @@
+> >  #define _COMPONENT          ACPI_EVENTS
+> >  ACPI_MODULE_NAME("evrgnini")
+> >
+> > +#ifdef ACPI_OS_MAP_MEMORY_FAST_PATH
+> > +static struct acpi_mem_mapping *unused_memory_mappings;
+> > +
+> > +/*********************************************************
+> > **********************
+> > + *
+> > + * FUNCTION:    acpi_ev_system_release_memory_mappings
+> > + *
+> > + * PARAMETERS:  None
+> > + *
+> > + * RETURN:      None
+> > + *
+> > + * DESCRIPTION: Release all of the unused memory mappings in the queue
+> > + *              under the interpreter mutex.
+> > + *
+> > +
+> > **********************************************************
+> > ********************/
+> > +void acpi_ev_system_release_memory_mappings(void)
+> > +{
+> > +     struct acpi_mem_mapping *mapping;
+> > +
+> > +
+> >       ACPI_FUNCTION_TRACE(acpi_ev_system_release_memory_mappin
+> > gs);
+> > +
+> > +     acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
+> > +
+> > +     while (unused_memory_mappings) {
+> > +             mapping = unused_memory_mappings;
+> > +             unused_memory_mappings = mapping->next;
+> > +
+> > +             acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+> > +
+> > +             acpi_os_unmap_memory(mapping->logical_address,
+> > mapping->length);
+>
+> acpi_os_unmap_memory calls synchronize_rcu_expedited(). I'm no RCU expert but the
+> definition of this function states:
+>
+> * Although this is a great improvement over previous expedited
+>  * implementations, it is still unfriendly to real-time workloads, so is
+>  * thus not recommended for any sort of common-case code.  In fact, if
+>  * you are using synchronize_rcu_expedited() in a loop, please restructure
+>  * your code to batch your updates, and then use a single synchronize_rcu()
+>  * instead.
 
-...which brings me an idea that PWM framework should expose API to get a
-capabilities, like DMA Engine has.
+If this really ends up being a loop, the code without this patch will
+also call synchronize_rcu_expedited() in a loop, but indirectly and
+under the namespace and interpreter mutexes.
 
-In such capabilities, in particular, caller can get ranges of the correct
-frequencies of the underneath hardware.
+While I agree that this is still somewhat suboptimal, improving this
+would require more changes in the OSL code.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Cheers!
