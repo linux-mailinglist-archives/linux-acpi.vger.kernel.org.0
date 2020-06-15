@@ -2,243 +2,211 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEFAC1F95D2
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jun 2020 14:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4520D1F9ADB
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jun 2020 16:51:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729653AbgFOMA4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Jun 2020 08:00:56 -0400
-Received: from mga12.intel.com ([192.55.52.136]:4527 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728510AbgFOMA4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 15 Jun 2020 08:00:56 -0400
-IronPort-SDR: Qr38OtK4M26sUY6SS3kscwbcowEk4NMAX1hJX/8kzhqfAu+0Zz90K7m1HZ8wfpIVfMMOiEUW1g
- 03tvGy43c/VQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2020 05:00:55 -0700
-IronPort-SDR: eYLi5bV9Ncyhml927KcHlApGl4DBc1d8oJYSKsCOkxPAifk3KYl+Q5Hr88CbKJJVuPaiusdqo4
- B4fkKqG2vZkA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,514,1583222400"; 
-   d="scan'208";a="316887372"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by FMSMGA003.fm.intel.com with ESMTP; 15 Jun 2020 05:00:51 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1jknnJ-00DZ39-KG; Mon, 15 Jun 2020 15:00:53 +0300
-Date:   Mon, 15 Jun 2020 15:00:53 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Shiju Jose <shiju.jose@huawei.com>
-Cc:     linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rjw@rjwysocki.net, bp@alien8.de,
-        james.morse@arm.com, lenb@kernel.org, tony.luck@intel.com,
-        dan.carpenter@oracle.com, zhangliguang@linux.alibaba.com,
-        wangkefeng.wang@huawei.com, jroedel@suse.de,
-        yangyicong@hisilicon.com, jonathan.cameron@huawei.com,
-        tanxiaofei@huawei.com
-Subject: Re: [PATCH v9 2/2] PCI: hip: Add handling of HiSilicon HIP PCIe
- controller errors
-Message-ID: <20200615120053.GZ2428291@smile.fi.intel.com>
-References: <20200615101552.802-3-shiju.jose@huawei.com>
+        id S1730672AbgFOOvd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Jun 2020 10:51:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41400 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728304AbgFOOvd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Jun 2020 10:51:33 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E96C8C061A0E;
+        Mon, 15 Jun 2020 07:51:32 -0700 (PDT)
+Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1jkqSQ-0004kV-7n; Mon, 15 Jun 2020 16:51:30 +0200
+Date:   Mon, 15 Jun 2020 16:51:30 +0200
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Stephen Berman <stephen.berman@gmx.net>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: power-off delay/hang due to commit 6d25be57 (mainline)
+Message-ID: <20200615145130.bcdidqkp6w23xb6c@linutronix.de>
+References: <87y2owwo2o.fsf@rub.de>
+ <20200609202339.cgy57twm2zdtjhje@linutronix.de>
+ <87tuzjcovq.fsf@gmx.net>
+ <20200610102514.4vdzu5u7d6vnpicn@linutronix.de>
+ <87imfyh6yx.fsf@gmx.net>
+ <87wo4dligz.fsf@gmx.net>
+ <20200612110122.jossn5zrktcvpbpm@linutronix.de>
+ <87tuzdrgm5.fsf@gmx.net>
+ <20200614171005.3zy673p6bpwoqnmq@linutronix.de>
+ <874krcsquv.fsf@gmx.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/mixed; boundary="oidbd7fmhy4rt4hc"
 Content-Disposition: inline
-In-Reply-To: <20200615101552.802-3-shiju.jose@huawei.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <874krcsquv.fsf@gmx.net>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 15, 2020 at 11:15:52AM +0100, Shiju Jose wrote:
-> From: Yicong Yang <yangyicong@hisilicon.com>
-> 
-> The HiSilicon HIP PCIe controller is capable of handling errors
-> on root port and perform port reset separately at each root port.
-> 
-> Add error handling driver for HIP PCIe controller to log
-> and report recoverable errors. Perform root port reset and restore
-> link status after the recovery.
-> 
-> Following are some of the PCIe controller's recoverable errors
-> 1. completion transmission timeout error.
-> 2. CRS retry counter over the threshold error.
-> 3. ECC 2 bit errors
-> 4. AXI bresponse/rresponse errors etc.
-> 
-> The driver placed in the drivers/pci/controller/ because the
-> HIP PCIe controller does not use DWC ip.
 
-...
+--oidbd7fmhy4rt4hc
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> +#include <linux/acpi.h>
-> +#include <acpi/ghes.h>
+On 2020-06-15 09:58:00 [+0200], Stephen Berman wrote:
+> Ok, sorry, I had misunderstood, but now I've looked at the
+> documentation.  I had in fact already done `echo t >
+> /proc/sysrq-trigger' in an xterm (as root) and there was no output.
+> Later, after booting kernel 5.1.0 because of the message flooding with
+> 5.6.4, I did `echo t > /proc/sysrq-trigger' in a virtual tty (also as
+> root) and the only output was: `[ <timestamp>] sysrq: Show State'.  Is
+> this expected?  (In /proc/sys/kernel/sysrq there is `1'.)  I couldn't
+> try it in a 5.6.4 virtual tty because of the message flooding (see
+> below).
 
-bits.h ?
+If you do this "t" then there should be a lot of output on your console.
+If you do this from an xterm then you can see the output after typing
+"dmesg". The output should appear also in your system log.
 
-> +#include <linux/delay.h>
-> +#include <linux/pci.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/kfifo.h>
-> +#include <linux/spinlock.h>
+> The kernel log shows 305 of these messages in the 4 minutes and 17
+> seconds between the start of klogd and when I rebooted.
 
-...
+Okay, this is a lot.
 
-> +static guid_t hisi_pcie_sec_type = GUID_INIT(0xB2889FC9, 0xE7D7, 0x4F9D,
-> +			0xA8, 0x67, 0xAF, 0x42, 0xE9, 0x8B, 0xE7, 0x72);
+> > The interesting part is to see if there is a acpi_os_execute() adding a
+> > specific event multiple times which does not complete. Maybe at runtime,
+> > maybe at shutdown time. If that is the case then ignoring this specific
+> > event might fix the shutdown problem. With all this information so far,
+> > I don't see a relation with this problem and the commit=E2=80=A6
+>=20
+> In those 3 minutes and 8 seconds there were 5 "Adding
+> acpi_ev_asynch_enable_gpe" messages at the beginning, then 185 "Adding
+> acpi_ev_notify_dispatch" messages, which kept coming until I rebooted.
 
-Can we have it in more common pattern, i.e.
+5 acpi_ev_asynch_enable_gpe() in three minutes since boot isn't much.
+185 of "Adding acpi_ev_notify_dispatch" is a lot.
 
-static guid_t hisi_pcie_sec_type =
-	GUID_INIT(0xB2889FC9, 0xE7D7, 0x4F9D,
-		  0xA8, 0x67, 0xAF, 0x42, 0xE9, 0x8B, 0xE7, 0x72);
-?
+But to be clear, only=20
+  acpi_os_execute(1109) Adding acpi_ev_notify_dispatch" messages?
+No
+  "acpi_os_execute_deferred_notify() Start/End acpi_ev_notify_dispatch"?=20
 
-...
+The syslog should have captured the log on disk.
 
-> +#define HISI_PCIE_CORE_PORT_ID(v)        (((v) % 8) << 1)
+I attached a modified acpi_dbg.patch. Please enable:
+- CONFIG_ACPI_DEBUG=3Dy
 
-% -> & ?
+Looking at your 5.1 you have tracing enabled (hope it still is).
 
-...
+The attached patch will dump the date into the tracing buffer, so you
+console should remain "clean". Once it records 300 of those "requests
+for acpi_ev_notify_dispatch" it will stop recording.
+After 4-5 minutes please do
+	cat /sys/kernel/debug/tracing/trace > file.txt
 
-> +struct hisi_pcie_error_private {
-> +	struct notifier_block	nb;
-> +	struct platform_device	*pdev;
+compress it and send it.
 
-Do you really need platform device? Isn't struct device * enough?
+> Steve Berman
 
-> +};
+Sebastian
 
-...
+--oidbd7fmhy4rt4hc
+Content-Type: text/x-diff; charset=utf-8
+Content-Disposition: attachment; filename="acpi_dbg.patch"
 
-> +static char *hisi_pcie_sub_module_name(u8 id)
-> +{
-> +	switch (id) {
-> +	case HISI_PCIE_SUB_MODULE_ID_AP: return "AP Layer";
-> +	case HISI_PCIE_SUB_MODULE_ID_TL: return "TL Layer";
-> +	case HISI_PCIE_SUB_MODULE_ID_MAC: return "MAC Layer";
-> +	case HISI_PCIE_SUB_MODULE_ID_DL: return "DL Layer";
-> +	case HISI_PCIE_SUB_MODULE_ID_SDI: return "SDI Layer";
-> +	}
+diff --git a/drivers/acpi/acpica/evgpe.c b/drivers/acpi/acpica/evgpe.c
+index 3e39907fedd9..816e23d103c6 100644
+--- a/drivers/acpi/acpica/evgpe.c
++++ b/drivers/acpi/acpica/evgpe.c
+@@ -477,6 +477,7 @@ static void ACPI_SYSTEM_XFACE acpi_ev_asynch_execute_gpe_method(void *context)
+ 		 * notifies on multiple device objects.
+ 		 */
+ 		notify = gpe_event_info->dispatch.notify_list;
++		trace_printk("notify %px\n", gpe_event_info);
+ 		while (ACPI_SUCCESS(status) && notify) {
+ 			status =
+ 			    acpi_ev_queue_notify_request(notify->device_node,
+@@ -484,6 +485,7 @@ static void ACPI_SYSTEM_XFACE acpi_ev_asynch_execute_gpe_method(void *context)
+ 
+ 			notify = notify->next;
+ 		}
++		trace_printk("Event notify %px done %x\n", gpe_event_info, status);
+ 
+ 		break;
+ 
+@@ -491,6 +493,9 @@ static void ACPI_SYSTEM_XFACE acpi_ev_asynch_execute_gpe_method(void *context)
+ 
+ 		/* Allocate the evaluation information block */
+ 
++		trace_printk("Evaluate %4.4s\n",
++			     acpi_ut_get_node_name(gpe_event_info->dispatch.method_node));
++
+ 		info = ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_evaluate_info));
+ 		if (!info) {
+ 			status = AE_NO_MEMORY;
+diff --git a/drivers/acpi/acpica/evmisc.c b/drivers/acpi/acpica/evmisc.c
+index ce1eda6beb84..735057419a8e 100644
+--- a/drivers/acpi/acpica/evmisc.c
++++ b/drivers/acpi/acpica/evmisc.c
+@@ -72,6 +72,7 @@ acpi_ev_queue_notify_request(struct acpi_namespace_node *node, u32 notify_value)
+ 	union acpi_generic_state *info;
+ 	u8 handler_list_id = 0;
+ 	acpi_status status = AE_OK;
++	static int num_req = 0;
+ 
+ 	ACPI_FUNCTION_NAME(ev_queue_notify_request);
+ 
+@@ -129,19 +130,19 @@ acpi_ev_queue_notify_request(struct acpi_namespace_node *node, u32 notify_value)
+ 	info->notify.handler_list_head = handler_list_head;
+ 	info->notify.global = &acpi_gbl_global_notify[handler_list_id];
+ 
+-	ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+-			  "Dispatching Notify on [%4.4s] (%s) Value 0x%2.2X (%s) Node %p\n",
++	trace_printk("Dispatching Notify on [%4.4s] (%s) Value 0x%2.2X (%s) Node %px\n",
+ 			  acpi_ut_get_node_name(node),
+ 			  acpi_ut_get_type_name(node->type), notify_value,
+ 			  acpi_ut_get_notify_name(notify_value, ACPI_TYPE_ANY),
+-			  node));
++			  node);
+ 
+ 	status = acpi_os_execute(OSL_NOTIFY_HANDLER,
+ 				 acpi_ev_notify_dispatch, info);
+ 	if (ACPI_FAILURE(status)) {
+ 		acpi_ut_delete_generic_state(info);
+ 	}
+-
++	if (num_req++ == 300)
++		tracing_off();
+ 	return (status);
+ }
+ 
+diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+index 762c5d50b8fe..67d5ac9aa433 100644
+--- a/drivers/acpi/osl.c
++++ b/drivers/acpi/osl.c
+@@ -844,6 +844,16 @@ static void acpi_os_execute_deferred(struct work_struct *work)
+ 	kfree(dpc);
+ }
+ 
++static void acpi_os_execute_deferred_notify(struct work_struct *work)
++{
++	struct acpi_os_dpc *dpc = container_of(work, struct acpi_os_dpc, work);
++
++	trace_printk("Start %px %pS(%px)\n", dpc, dpc->function, dpc->context);
++	dpc->function(dpc->context);
++	trace_printk("End %px %pS(%px)\n", dpc, dpc->function, dpc->context);
++	kfree(dpc);
++}
++
+ #ifdef CONFIG_ACPI_DEBUGGER
+ static struct acpi_debugger acpi_debugger;
+ static bool acpi_debugger_initialized;
+@@ -1096,7 +1106,8 @@ acpi_status acpi_os_execute(acpi_execute_type type,
+ 	 */
+ 	if (type == OSL_NOTIFY_HANDLER) {
+ 		queue = kacpi_notify_wq;
+-		INIT_WORK(&dpc->work, acpi_os_execute_deferred);
++		trace_printk("Adding %pS %px <%px>\n", function, context, dpc);
++		INIT_WORK(&dpc->work, acpi_os_execute_deferred_notify);
+ 	} else if (type == OSL_GPE_HANDLER) {
+ 		queue = kacpid_wq;
+ 		INIT_WORK(&dpc->work, acpi_os_execute_deferred);
 
-match_string() ?
-
-> +	return "unknown";
-
-> +}
-> +
-> +static char *hisi_pcie_error_severity(u8 err_sev)
-> +{
-> +	switch (err_sev) {
-> +	case HISI_ERR_SEV_RECOVERABLE: return "recoverable";
-> +	case HISI_ERR_SEV_FATAL: return "fatal";
-> +	case HISI_ERR_SEV_CORRECTED: return "corrected";
-> +	case HISI_ERR_SEV_NONE: return "none";
-> +	}
-
-Ditto?
-
-> +	return "unknown";
-> +}
-
-...
-
-> +	pdev = pci_get_domain_bus_and_slot(domain, busnr, devfn);
-> +	if (!pdev) {
-
-> +		dev_info(device, "Fail to get root port %04x:%02x:%02x.%d device\n",
-> +			 domain, busnr, PCI_SLOT(devfn), PCI_FUNC(devfn));
-
-pci_info() ?
-
-> +		return -ENODEV;
-> +	}
-
-...
-
-> +	/*
-> +	 * The initialization time of subordinate devices after
-> +	 * hot reset is no more than 1s, which is required by
-> +	 * the PCI spec v5.0 sec 6.6.1. The time will shorten
-> +	 * if Readiness Notifications mechanisms are used. But
-> +	 * wait 1s here to adapt any conditions.
-> +	 */
-> +	ssleep(1UL);
-
-It's a huge time out... Can we reduce it somehow?
-
-...
-
-> +	for (i = 0; i < HISI_PCIE_ERR_MISC_REGS; i++) {
-> +		if (edata->val_bits &
-> +				BIT_ULL(HISI_PCIE_LOCAL_VALID_ERR_MISC + i))
-
-for_each_set_bit() ?
-
-> +			dev_info(dev,
-> +				 "ERR_MISC_%d = 0x%x\n", i, edata->err_misc[i]);
-> +	}
-
-> +
-> +	/* Recovery for the PCIe controller errors */
-> +	if (edata->err_severity == HISI_ERR_SEV_RECOVERABLE) {
-
-Perhaps negative conditional?
-
-> +		/* try reset PCI port for the error recovery */
-> +		rc = hisi_pcie_port_do_recovery(pdev, edata->socket_id,
-> +			HISI_PCIE_PORT_ID(edata->core_id, edata->port_id));
-> +		if (rc) {
-> +			dev_info(dev, "fail to do hisi pcie port reset\n");
-
-> +			return;
-
-redundant.
-
-> +		}
-> +	}
-
-...
-
-> +	const struct hisi_pcie_error_data *error_data =
-> +				acpi_hest_get_payload(gdata);
-
-One line is better to read.
-
-> +	struct platform_device *pdev = priv->pdev;
-
-> +	hisi_pcie_handle_error(pdev, error_data);
-
-And how exactly _platform_ device pointer is being used?
-
-...
-
-
-> +		dev_err(&pdev->dev, "%s : ghes_register_event_notifier fail\n",
-> +			__func__);
-
-Make error message more descriptive that __func__ will not be needed.
-
-...
-
-> +	kfree(priv);
-
-Double free?
-
-...
-
-> +static const struct acpi_device_id hisi_pcie_acpi_match[] = {
-> +	{ "HISI0361", 0 },
-
-', 0' part is not necessary to have.
-
-> +	{ }
-> +};
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--oidbd7fmhy4rt4hc--
