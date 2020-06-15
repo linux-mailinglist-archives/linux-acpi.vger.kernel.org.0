@@ -2,82 +2,243 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 783AF1F94CB
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jun 2020 12:44:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEFAC1F95D2
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jun 2020 14:00:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729027AbgFOKoB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Jun 2020 06:44:01 -0400
-Received: from mail.zx2c4.com ([192.95.5.64]:57179 "EHLO mail.zx2c4.com"
+        id S1729653AbgFOMA4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Jun 2020 08:00:56 -0400
+Received: from mga12.intel.com ([192.55.52.136]:4527 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728815AbgFOKoB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 15 Jun 2020 06:44:01 -0400
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 204a99b6;
-        Mon, 15 Jun 2020 10:26:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=from:to:cc
-        :subject:date:message-id:in-reply-to:references:mime-version
-        :content-transfer-encoding; s=mail; bh=W+psDjWP34bkbGREKoNGTKiwX
-        RY=; b=3jnAe/G5QpfRdhmbQNo/KC6yS+10Fj/j0sHOja4aJa6WQEKmPBksnzJPU
-        4PjH2fbCASselEcm2VspxMQJsm7vJdmi5OpWBVSHAN4aOqvaHH/cuVNHi/MgvhUl
-        cKoFNxP8rKxEg/tUSOW22eCKEj51G3kK1TrAJ37J1QI+Km++MIB+RTymZxgJzuJJ
-        7rYJzWAjWAPz/vAWSYmgUeCIWy/m0+Kjz6KXLeNA3VZMMiOrB5ocUTK7AI3Zv8Im
-        PwCQeORfydLLuqc+UA86L1DeLEkXqGS59WsJZdn6QY1mTTHbhdYzphppkbgrFHrm
-        gGT5CJMUnpweZZGMpyUJPRipeZSew==
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 22b6c329 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Mon, 15 Jun 2020 10:26:09 +0000 (UTC)
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        mjg59@srcf.ucam.org, kernel-hardening@lists.openwall.com
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>, stable@vger.kernel.org
-Subject: [PATCH] acpi: disallow loading configfs acpi tables when locked down
-Date:   Mon, 15 Jun 2020 04:43:32 -0600
-Message-Id: <20200615104332.901519-1-Jason@zx2c4.com>
-In-Reply-To: <CAHmME9rmAznrAmEQTOaLeMM82iMFTfCNfpxDGXw4CJjuVEF_gQ@mail.gmail.com>
-References: <CAHmME9rmAznrAmEQTOaLeMM82iMFTfCNfpxDGXw4CJjuVEF_gQ@mail.gmail.com>
+        id S1728510AbgFOMA4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 15 Jun 2020 08:00:56 -0400
+IronPort-SDR: Qr38OtK4M26sUY6SS3kscwbcowEk4NMAX1hJX/8kzhqfAu+0Zz90K7m1HZ8wfpIVfMMOiEUW1g
+ 03tvGy43c/VQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2020 05:00:55 -0700
+IronPort-SDR: eYLi5bV9Ncyhml927KcHlApGl4DBc1d8oJYSKsCOkxPAifk3KYl+Q5Hr88CbKJJVuPaiusdqo4
+ B4fkKqG2vZkA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,514,1583222400"; 
+   d="scan'208";a="316887372"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by FMSMGA003.fm.intel.com with ESMTP; 15 Jun 2020 05:00:51 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1jknnJ-00DZ39-KG; Mon, 15 Jun 2020 15:00:53 +0300
+Date:   Mon, 15 Jun 2020 15:00:53 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Shiju Jose <shiju.jose@huawei.com>
+Cc:     linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rjw@rjwysocki.net, bp@alien8.de,
+        james.morse@arm.com, lenb@kernel.org, tony.luck@intel.com,
+        dan.carpenter@oracle.com, zhangliguang@linux.alibaba.com,
+        wangkefeng.wang@huawei.com, jroedel@suse.de,
+        yangyicong@hisilicon.com, jonathan.cameron@huawei.com,
+        tanxiaofei@huawei.com
+Subject: Re: [PATCH v9 2/2] PCI: hip: Add handling of HiSilicon HIP PCIe
+ controller errors
+Message-ID: <20200615120053.GZ2428291@smile.fi.intel.com>
+References: <20200615101552.802-3-shiju.jose@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200615101552.802-3-shiju.jose@huawei.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Like other vectors already patched, this one here allows the root user
-to load ACPI tables, which enables arbitrary physical address writes,
-which in turn makes it possible to disable lockdown. This patch prevents
-this by checking the lockdown status before allowing a new ACPI table to be
-installed. The link in the trailer shows a PoC of how this might be
-used.
+On Mon, Jun 15, 2020 at 11:15:52AM +0100, Shiju Jose wrote:
+> From: Yicong Yang <yangyicong@hisilicon.com>
+> 
+> The HiSilicon HIP PCIe controller is capable of handling errors
+> on root port and perform port reset separately at each root port.
+> 
+> Add error handling driver for HIP PCIe controller to log
+> and report recoverable errors. Perform root port reset and restore
+> link status after the recovery.
+> 
+> Following are some of the PCIe controller's recoverable errors
+> 1. completion transmission timeout error.
+> 2. CRS retry counter over the threshold error.
+> 3. ECC 2 bit errors
+> 4. AXI bresponse/rresponse errors etc.
+> 
+> The driver placed in the drivers/pci/controller/ because the
+> HIP PCIe controller does not use DWC ip.
 
-Link: https://git.zx2c4.com/american-unsigned-language/tree/american-unsigned-language-2.sh
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
- drivers/acpi/acpi_configfs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+...
 
-diff --git a/drivers/acpi/acpi_configfs.c b/drivers/acpi/acpi_configfs.c
-index ece8c1a921cc..88c8af455ea3 100644
---- a/drivers/acpi/acpi_configfs.c
-+++ b/drivers/acpi/acpi_configfs.c
-@@ -11,6 +11,7 @@
- #include <linux/module.h>
- #include <linux/configfs.h>
- #include <linux/acpi.h>
-+#include <linux/security.h>
- 
- #include "acpica/accommon.h"
- #include "acpica/actables.h"
-@@ -28,7 +29,10 @@ static ssize_t acpi_table_aml_write(struct config_item *cfg,
- {
- 	const struct acpi_table_header *header = data;
- 	struct acpi_table *table;
--	int ret;
-+	int ret = security_locked_down(LOCKDOWN_ACPI_TABLES);
-+
-+	if (ret)
-+		return ret;
- 
- 	table = container_of(cfg, struct acpi_table, cfg);
- 
+> +#include <linux/acpi.h>
+> +#include <acpi/ghes.h>
+
+bits.h ?
+
+> +#include <linux/delay.h>
+> +#include <linux/pci.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/kfifo.h>
+> +#include <linux/spinlock.h>
+
+...
+
+> +static guid_t hisi_pcie_sec_type = GUID_INIT(0xB2889FC9, 0xE7D7, 0x4F9D,
+> +			0xA8, 0x67, 0xAF, 0x42, 0xE9, 0x8B, 0xE7, 0x72);
+
+Can we have it in more common pattern, i.e.
+
+static guid_t hisi_pcie_sec_type =
+	GUID_INIT(0xB2889FC9, 0xE7D7, 0x4F9D,
+		  0xA8, 0x67, 0xAF, 0x42, 0xE9, 0x8B, 0xE7, 0x72);
+?
+
+...
+
+> +#define HISI_PCIE_CORE_PORT_ID(v)        (((v) % 8) << 1)
+
+% -> & ?
+
+...
+
+> +struct hisi_pcie_error_private {
+> +	struct notifier_block	nb;
+> +	struct platform_device	*pdev;
+
+Do you really need platform device? Isn't struct device * enough?
+
+> +};
+
+...
+
+> +static char *hisi_pcie_sub_module_name(u8 id)
+> +{
+> +	switch (id) {
+> +	case HISI_PCIE_SUB_MODULE_ID_AP: return "AP Layer";
+> +	case HISI_PCIE_SUB_MODULE_ID_TL: return "TL Layer";
+> +	case HISI_PCIE_SUB_MODULE_ID_MAC: return "MAC Layer";
+> +	case HISI_PCIE_SUB_MODULE_ID_DL: return "DL Layer";
+> +	case HISI_PCIE_SUB_MODULE_ID_SDI: return "SDI Layer";
+> +	}
+
+match_string() ?
+
+> +	return "unknown";
+
+> +}
+> +
+> +static char *hisi_pcie_error_severity(u8 err_sev)
+> +{
+> +	switch (err_sev) {
+> +	case HISI_ERR_SEV_RECOVERABLE: return "recoverable";
+> +	case HISI_ERR_SEV_FATAL: return "fatal";
+> +	case HISI_ERR_SEV_CORRECTED: return "corrected";
+> +	case HISI_ERR_SEV_NONE: return "none";
+> +	}
+
+Ditto?
+
+> +	return "unknown";
+> +}
+
+...
+
+> +	pdev = pci_get_domain_bus_and_slot(domain, busnr, devfn);
+> +	if (!pdev) {
+
+> +		dev_info(device, "Fail to get root port %04x:%02x:%02x.%d device\n",
+> +			 domain, busnr, PCI_SLOT(devfn), PCI_FUNC(devfn));
+
+pci_info() ?
+
+> +		return -ENODEV;
+> +	}
+
+...
+
+> +	/*
+> +	 * The initialization time of subordinate devices after
+> +	 * hot reset is no more than 1s, which is required by
+> +	 * the PCI spec v5.0 sec 6.6.1. The time will shorten
+> +	 * if Readiness Notifications mechanisms are used. But
+> +	 * wait 1s here to adapt any conditions.
+> +	 */
+> +	ssleep(1UL);
+
+It's a huge time out... Can we reduce it somehow?
+
+...
+
+> +	for (i = 0; i < HISI_PCIE_ERR_MISC_REGS; i++) {
+> +		if (edata->val_bits &
+> +				BIT_ULL(HISI_PCIE_LOCAL_VALID_ERR_MISC + i))
+
+for_each_set_bit() ?
+
+> +			dev_info(dev,
+> +				 "ERR_MISC_%d = 0x%x\n", i, edata->err_misc[i]);
+> +	}
+
+> +
+> +	/* Recovery for the PCIe controller errors */
+> +	if (edata->err_severity == HISI_ERR_SEV_RECOVERABLE) {
+
+Perhaps negative conditional?
+
+> +		/* try reset PCI port for the error recovery */
+> +		rc = hisi_pcie_port_do_recovery(pdev, edata->socket_id,
+> +			HISI_PCIE_PORT_ID(edata->core_id, edata->port_id));
+> +		if (rc) {
+> +			dev_info(dev, "fail to do hisi pcie port reset\n");
+
+> +			return;
+
+redundant.
+
+> +		}
+> +	}
+
+...
+
+> +	const struct hisi_pcie_error_data *error_data =
+> +				acpi_hest_get_payload(gdata);
+
+One line is better to read.
+
+> +	struct platform_device *pdev = priv->pdev;
+
+> +	hisi_pcie_handle_error(pdev, error_data);
+
+And how exactly _platform_ device pointer is being used?
+
+...
+
+
+> +		dev_err(&pdev->dev, "%s : ghes_register_event_notifier fail\n",
+> +			__func__);
+
+Make error message more descriptive that __func__ will not be needed.
+
+...
+
+> +	kfree(priv);
+
+Double free?
+
+...
+
+> +static const struct acpi_device_id hisi_pcie_acpi_match[] = {
+> +	{ "HISI0361", 0 },
+
+', 0' part is not necessary to have.
+
+> +	{ }
+> +};
+
 -- 
-2.27.0
+With Best Regards,
+Andy Shevchenko
+
 
