@@ -2,166 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 585EE1FB10E
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jun 2020 14:46:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FBDF1FB891
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jun 2020 17:57:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726692AbgFPMqf convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 16 Jun 2020 08:46:35 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2315 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726526AbgFPMqf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 16 Jun 2020 08:46:35 -0400
-Received: from lhreml721-chm.china.huawei.com (unknown [172.18.7.106])
-        by Forcepoint Email with ESMTP id 952434D3FD68B8FF1BE1;
-        Tue, 16 Jun 2020 13:46:33 +0100 (IST)
-Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
- lhreml721-chm.china.huawei.com (10.201.108.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1913.5; Tue, 16 Jun 2020 13:46:33 +0100
-Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
- lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1913.007;
- Tue, 16 Jun 2020 13:46:33 +0100
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
-        "zhangliguang@linux.alibaba.com" <zhangliguang@linux.alibaba.com>,
-        "Wangkefeng (OS Kernel Lab)" <wangkefeng.wang@huawei.com>,
-        "jroedel@suse.de" <jroedel@suse.de>,
-        yangyicong <yangyicong@huawei.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        tanxiaofei <tanxiaofei@huawei.com>,
-        Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH v9 2/2] PCI: hip: Add handling of HiSilicon HIP PCIe
- controller errors
-Thread-Topic: [PATCH v9 2/2] PCI: hip: Add handling of HiSilicon HIP PCIe
- controller errors
-Thread-Index: AQHWQv5GPLiMMOPNiU6kqnJ8IzwlUKjZgnyAgAFqP0D///4fgIAAHHEAgAAYvgCAABDdQA==
-Date:   Tue, 16 Jun 2020 12:46:32 +0000
-Message-ID: <7a2aa2ac6ee6439096b26cc204194e58@huawei.com>
-References: <20200615101552.802-3-shiju.jose@huawei.com>
- <20200615120053.GZ2428291@smile.fi.intel.com>
- <51550b510d1e40479bf4fce47443747c@huawei.com>
- <20200616093041.GQ2428291@smile.fi.intel.com>
- <997bd6a17f54433dbdd2c43155682bdd@huawei.com>
- <20200616124102.GS2428291@smile.fi.intel.com>
-In-Reply-To: <20200616124102.GS2428291@smile.fi.intel.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.82.233]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1731973AbgFPPzE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 16 Jun 2020 11:55:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47612 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1733047AbgFPPzD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Jun 2020 11:55:03 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA81DC061573;
+        Tue, 16 Jun 2020 08:55:03 -0700 (PDT)
+Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1jlDvR-0001r7-MW; Tue, 16 Jun 2020 17:55:01 +0200
+Date:   Tue, 16 Jun 2020 17:55:01 +0200
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Stephen Berman <stephen.berman@gmx.net>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: power-off delay/hang due to commit 6d25be57 (mainline)
+Message-ID: <20200616155501.psduxnisltitodme@linutronix.de>
+References: <87imfyh6yx.fsf@gmx.net>
+ <87wo4dligz.fsf@gmx.net>
+ <20200612110122.jossn5zrktcvpbpm@linutronix.de>
+ <87tuzdrgm5.fsf@gmx.net>
+ <20200614171005.3zy673p6bpwoqnmq@linutronix.de>
+ <874krcsquv.fsf@gmx.net>
+ <20200615145130.bcdidqkp6w23xb6c@linutronix.de>
+ <87tuzbh482.fsf@gmx.net>
+ <20200616073827.vysntufld3ves666@linutronix.de>
+ <87o8pjh1i0.fsf@gmx.net>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <87o8pjh1i0.fsf@gmx.net>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+On 2020-06-16 10:13:27 [+0200], Stephen Berman wrote:
+> Yes, thanks, that did it.  Trace attached.
 
->-----Original Message-----
->From: Andy Shevchenko [mailto:andriy.shevchenko@linux.intel.com]
->Sent: 16 June 2020 13:41
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: linux-acpi@vger.kernel.org; linux-pci@vger.kernel.org; linux-
->kernel@vger.kernel.org; rjw@rjwysocki.net; bp@alien8.de;
->james.morse@arm.com; lenb@kernel.org; tony.luck@intel.com;
->dan.carpenter@oracle.com; zhangliguang@linux.alibaba.com; Wangkefeng
->(OS Kernel Lab) <wangkefeng.wang@huawei.com>; jroedel@suse.de;
->yangyicong <yangyicong@huawei.com>; Jonathan Cameron
-><jonathan.cameron@huawei.com>; tanxiaofei <tanxiaofei@huawei.com>;
->Linuxarm <linuxarm@huawei.com>
->Subject: Re: [PATCH v9 2/2] PCI: hip: Add handling of HiSilicon HIP PCIe
->controller errors
->
->On Tue, Jun 16, 2020 at 11:55:46AM +0000, Shiju Jose wrote:
->> >From: linux-acpi-owner@vger.kernel.org [mailto:linux-acpi-
->> >owner@vger.kernel.org] On Behalf Of Andy Shevchenko On Tue, Jun 16,
->> >2020 at 09:12:56AM +0000, Shiju Jose wrote:
->> >> >From: Andy Shevchenko [mailto:andriy.shevchenko@linux.intel.com]
->> >> >On Mon, Jun 15, 2020 at 11:15:52AM +0100, Shiju Jose wrote:
->
->...
->
->> >> >> +#define HISI_PCIE_CORE_PORT_ID(v)        (((v) % 8) << 1)
->> >> >
->> >> >% -> & ?
->> >> (((v) % 8) << 1) is correct. We can make bit operation instead.
->> >
->> >y % x is usually being used when we consume y / x or in cases when y
->> >is advanced and we need to keep it under some threshold.
->> >
->> >Here it's not obvious to me, and usual pattern is to use bitwise
->operations.
->> >
->> >In any case some clarification is needed.
->> We want (v % 8) * 2 here to get the core port id, a numerical value but not
->a bit mask.
->> Maybe you want us to use ((v) & 7) << 1?
->> please point it out if I understand wrong.
->
->I understand the result, I do not understand the properties of v.
->So, looks like
->a) (v & 7) << 1 // take 3 LSBs from v and shift right to get port id pair (looks
->like)
->b) (v % 8) * 2 // get next free port or circle over 0 if no free pair found
->
->Add some comment explaining what's going on.
-Sure.
+So TZ10 is a temperature sensor of some kind on your motherboard. In
+your v5.6 dmesg there is:
+| thermal LNXTHERM:00: registered as thermal_zone0
+| ACPI: Thermal Zone [TZ10] (17 C)
 
->
->...
->
->> >> >> +	switch (id) {
->> >> >> +	case HISI_PCIE_SUB_MODULE_ID_AP: return "AP Layer";
->> >> >> +	case HISI_PCIE_SUB_MODULE_ID_TL: return "TL Layer";
->> >> >> +	case HISI_PCIE_SUB_MODULE_ID_MAC: return "MAC Layer";
->> >> >> +	case HISI_PCIE_SUB_MODULE_ID_DL: return "DL Layer";
->> >> >> +	case HISI_PCIE_SUB_MODULE_ID_SDI: return "SDI Layer";
->> >> >> +	}
->> >> >
->> >> >match_string() ?
->> >>
->> >> match_string() does not work here because we need sub module id ->
->> >> string conversion.
->> >
->> >Why? Are you using non-sequential (a.k.a. sparse) values?
->> These are the sequential values.
->> I mean in this case we do not have the third parameter to the
->> match_string(), string to match with the strings in the array, we just
->> have the value for the sub module id.
->> Can you suggest some example of match_string() for the similar case?
->
->Ah, I realize, this is the opposite, but still perhaps better to have like this:
->
->static const char * const foo[] = {
->	"AB",
->	"CD",
->};
->
->const char *bar(int id)
->{
->	if (id >= ARRAY_SIZE(foo))
->		return "unknown"; // whatever
->	return foo[id];
->}
-Sure.
+So. In /sys/class/thermal/thermal_zone0/device/path you should also see
+TZ10. And /sys/class/thermal/thermal_zone0/temp should show the actual
+value.
+This comes from the "thermal" module.
+
+Looking at the trace, might query the temperature every second which
+somehow results in "Dispatching Notify on". I don't understand how it
+gets from reading of the temperature to the notify part, maybe it is
+part of the ACPI…
+
+However. Could you please make sure that the thermal module is not
+loaded at system startup? Adding
+    thermal.off=1
+
+to the kernel commandline should do the trick. And you should see
+   thermal control disabled
+
+in dmesg. That means your thermal_zone0 with TZ10 does not show up in
+/sys and nothing should schedule the work-items. This in turn should
+allow you to shutdown your system without the delay.
+
+If this works, could you please try to load the module with tzp=300?
+If you add this
+ 	thermal.tzp=300
   
->
->--
->With Best Regards,
->Andy Shevchenko
->
-Thanks,
-Shiju
+to the kernel commandline then it should do the trick. You can verify it
+by
+   cat /sys/module/thermal/parameters/tzp 
 
+This should change the polling interval from what ACPI says to 30secs.
+This should ensure that you don't have so many worker waiting. So you
+should also be able to shutdown the system.
+
+> Steve Berman
+
+Sebastian
