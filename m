@@ -2,140 +2,233 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03FCD1FBFFF
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jun 2020 22:29:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B99FF1FC04B
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jun 2020 22:55:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731666AbgFPU3C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Jun 2020 16:29:02 -0400
-Received: from mout.gmx.net ([212.227.15.19]:41521 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726428AbgFPU3B (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 16 Jun 2020 16:29:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1592339324;
-        bh=2pcxNtxOxco1guBLo7NG7YQuecY/6crnNcCqmrQnqaA=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:References:Date:In-Reply-To;
-        b=is2mj2dKu2pRc4DqNsDqgneXvL121xcu8x0wDhL7ns2TsnwhEixZ6yx3i1SnndQU3
-         SCWe2KKK+9UCHY2p/v9fYgf5yqEZaykYPF8vQOPNGu2AvWJ2AyIAXjAz35M2SrrYu5
-         Z8CXllhNz/AvXvy0i6zEvqmMPKb2cOUlwM2uLsJ0=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from strobe-jhalfs ([92.73.64.60]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MQ5vW-1jYB9o2TSa-00M33E; Tue, 16
- Jun 2020 22:28:44 +0200
-From:   Stephen Berman <stephen.berman@gmx.net>
-To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: power-off delay/hang due to commit 6d25be57 (mainline)
-References: <87imfyh6yx.fsf@gmx.net> <87wo4dligz.fsf@gmx.net>
-        <20200612110122.jossn5zrktcvpbpm@linutronix.de>
-        <87tuzdrgm5.fsf@gmx.net>
-        <20200614171005.3zy673p6bpwoqnmq@linutronix.de>
-        <874krcsquv.fsf@gmx.net>
-        <20200615145130.bcdidqkp6w23xb6c@linutronix.de>
-        <87tuzbh482.fsf@gmx.net>
-        <20200616073827.vysntufld3ves666@linutronix.de>
-        <87o8pjh1i0.fsf@gmx.net>
-        <20200616155501.psduxnisltitodme@linutronix.de>
-Date:   Tue, 16 Jun 2020 22:28:43 +0200
-In-Reply-To: <20200616155501.psduxnisltitodme@linutronix.de> (Sebastian
-        Andrzej Siewior's message of "Tue, 16 Jun 2020 17:55:01 +0200")
-Message-ID: <871rmesqkk.fsf@gmx.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.0.50 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:v6O2Oj6vpVD5HT5VMTCK58R+4ZYiC3+dCwrh+F5Wwhd8XCqu3ju
- sqArwwZb/HmbbXxk71EPzIX1DEtN0O4GEKux7YstO9rlXITe/SI+Ap1XBveZEMuRsFrvZkE
- 0tjUWXgudC+UBletGoJZhfZlkYuT0K8ZtIl6qycWHN7YcT4wTLN0OniUOsIZitUHoPPzwiU
- /XI4EM0HhdEwURd21ZUow==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:lldolxazXTI=:j4Kripz+Awwf6u29+QdgeD
- emPZjh1Sn8vzKc0hoz6qnl6Jkra9bxcPc0AA27HGdSIL1IP6Er2MM/mERKm9EJxP6W4f6E4A5
- aZbPc1SaXDU9hZE2SeRcs9F8SK7gQlPOxoR1u82DE9dKWtpfKko7iASksExpQF8ASiQXTBIRr
- v2ISZa+AuOPYGI4eNEid3rGn/XtTsNr/nxJrgAE9lCpI6wsCjCK+XEQyvghNcmuLawvWZfvVP
- D5dnrUsaa2Bemv3kUgdW/9+8I06aK8uHVCr1H4lC0BO5dfpzEmx/XLMfn851zuDC/YTLV41fb
- 4Ksk6hNnOxpJy56X3D71rkJrBwOsYrTJPR5L+woBQyP+ZdhdDY23gHSS/xREVjrT6ggCrzlMq
- dz4upZFQPtFyog0nsc2GMZxBVjGE2BkhZnQdSXr05ul94AfdE+B0S9kvsq3y0gMF6v99E5DXX
- nwhdlSLdgcMLXl80s+VSQtOKkbxVqItKqX30IP1reTIbKljj3RZru/BltXZ9LdeZH1M9+Lk5o
- 1WxgSperTRx5jIlljIZxPeC7bAXE0V0iWmcHOrobs3kk+SZa3QZq8uUvaDgcidNbFjqlwL7fw
- DKxn6RSXgfMgvAHaNC87XjD9iv2BvqNgfhZMOO7Z0ovqQ1iRXN+hqYcyqomELhtB/NnIsCU6u
- voYXNxti2W/WJY914T32bv2yVqh1qhJ2I3RJLwdiY7tdiT7GQy/UfC9DFXmzaFkxm+VThvGii
- zMGyoZRdak9VJQD3POW/u/4RwB6GNorKIOXL6mpq4uZsw6LiM/ZJ/Ap5tRVvFHm9HD+RrQkqG
- gfEsVc6oR+thjMbHoefiCMPHoVJFZU4I//WCHV1LIK3aQHgpCCSIkbcACNd2w4hqqpTcF8JV2
- 5EheD7hi4dOpx6J6LSFfC6a+sAkalUbt5LkawYzLBdIxn9ln6p8nP3+Yw4z/BgyO8KXeG9u5R
- ETHAHUTt8Rk5NpuXmOCieSFmk81GoKUrPaXTEa2OFL4j8eNo05RNBplILjCLuc7fZFscjQJMO
- 6HCP/vhycrmUaRb31aQyjGXta5ErMmiVVQ7cL6ys3WJFsqrwccAoopTrY1YohwTsWUvGROKdC
- VRwLpSoUCgUS+E8jbwNTCkvdPv5ZqLeExlGSPIQxuBnWNenfR9texwUcZfz6fOzCNdVDQkZjc
- Uf9irkcs5RU8Tpy31x12oMRGZevzAefnu7NHDO0AQSMtzKsefDrU3le0HM00Sm0VJir5tcJpd
- HGcJp3csuQPSkllPi
+        id S1729113AbgFPUzt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Jun 2020 16:55:49 -0400
+Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:33798 "EHLO
+        rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726296AbgFPUzs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 16 Jun 2020 16:55:48 -0400
+Received: from mail-irv-17.broadcom.com (mail-irv-17.lvn.broadcom.net [10.75.242.48])
+        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id E5B9C30D887;
+        Tue, 16 Jun 2020 13:55:46 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com E5B9C30D887
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1592340946;
+        bh=rfno4F7HiS8LiAdPYLi+a1WYnEQJIb94Ut0WyA5KWcI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=PaTfaUqcmDwD6JrrdtOJDGj9AieSbSy5n5dCRm4ofxbYKITAcKCxA9ctasj8YUusH
+         TyjbXiyk+Aq2DTfX53E9ixj4JZKhzXlPbmZxcTqfxrcVqnwhdP8sElx8kNXEY071cq
+         J6KOs/AtEwzC3fMmHmYu+sU+qanIY7yhUFU0Q2Ms=
+Received: from stbsrv-and-01.and.broadcom.net (stbsrv-and-01.and.broadcom.net [10.28.16.211])
+        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 64A55140069;
+        Tue, 16 Jun 2020 13:55:43 -0700 (PDT)
+From:   Jim Quinlan <james.quinlan@broadcom.com>
+To:     linux-pci@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        bcm-kernel-feedback-list@broadcom.com, james.quinlan@broadcom.com
+Cc:     Alan Stern <stern@rowland.harvard.edu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>, Corey Minyard <minyard@acm.org>,
+        devel@driverdev.osuosl.org (open list:STAGING SUBSYSTEM),
+        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
+        DEVICE TREE),
+        dri-devel@lists.freedesktop.org (open list:DRM DRIVERS FOR ALLWINNER
+        A10), Florian Fainelli <f.fainelli@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        iommu@lists.linux-foundation.org (open list:IOMMU DRIVERS),
+        Jens Axboe <axboe@kernel.dk>,
+        Julien Grall <julien.grall@arm.com>,
+        linux-acpi@vger.kernel.org (open list:ACPI FOR ARM64 (ACPI/arm64)),
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
+        linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
+        Parallel ATA drivers)), linux-kernel@vger.kernel.org (open list),
+        linux-media@vger.kernel.org (open list:ALLWINNER A10 CSI DRIVER),
+        linux-remoteproc@vger.kernel.org (open list:REMOTE PROCESSOR
+        (REMOTEPROC) SUBSYSTEM),
+        linux-rpi-kernel@lists.infradead.org (moderated list:BROADCOM
+        BCM2711/BCM2835 ARM ARCHITECTURE),
+        linux-sh@vger.kernel.org (open list:SUPERH),
+        linux-usb@vger.kernel.org (open list:USB SUBSYSTEM),
+        Oliver Neukum <oneukum@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Rob Herring <robh@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Saravana Kannan <saravanak@google.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH v5 00/12] PCI: brcmstb: enable PCIe for STB chips
+Date:   Tue, 16 Jun 2020 16:55:07 -0400
+Message-Id: <20200616205533.3513-1-james.quinlan@broadcom.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 16 Jun 2020 17:55:01 +0200 Sebastian Andrzej Siewior <bigeasy@linut=
-ronix.de> wrote:
+Patchset Summary:
+  Enhance a PCIe host controller driver.  Because of its unusual design
+  we are foced to change dev->dma_pfn_offset into a more general role
+  allowing multiple offsets.
 
-> On 2020-06-16 10:13:27 [+0200], Stephen Berman wrote:
->> Yes, thanks, that did it.  Trace attached.
->
-> So TZ10 is a temperature sensor of some kind on your motherboard. In
-> your v5.6 dmesg there is:
-> | thermal LNXTHERM:00: registered as thermal_zone0
-> | ACPI: Thermal Zone [TZ10] (17 C)
->
-> So. In /sys/class/thermal/thermal_zone0/device/path you should also see
-> TZ10. And /sys/class/thermal/thermal_zone0/temp should show the actual
-> value.
-> This comes from the "thermal" module.
+v5:
+  Commit "device core: Introduce multiple dma pfn offsets"
+  -- in of/address.c: "map_size = 0" => "*map_size = 0"
+  -- use kcalloc instead of kzalloc (AndyS)
+  -- use PHYS_ADDR_MAX instead of "~(phys_addr_t)0"
+  Commit "PCI: brcmstb: Set internal memory viewport sizes"
+  -- now gives error on missing dma-ranges property.
+  Commit "dt-bindings: PCI: Add bindings for more Brcmstb chips"
+  -- removed "Allof:" from brcm,scb-sizes definition (RobH)
+  All Commits:
+  -- indentation style, use max chars 100 (AndyS)
+  -- rebased to torvalds master
 
-Yes, TZ10 was in the thermal_zone0/device/path and the value in
-thermal_zone0/temp was 16800.
+v4:
+  Commit "device core: Introduce multiple dma pfn offsets"
+  -- of_dma_get_range() does not take a dev param but instead
+     takes two "out" params: map and map_size.  We do this so
+     that the code that parses dma-ranges is separate from
+     the code that modifies 'dev'.   (Nicolas)
+  -- the separate case of having a single pfn offset has
+     been removed and is now processed by going through the
+     map array. (Nicolas)
+  -- move attach_uniform_dma_pfn_offset() from of/address.c to
+     dma/mapping.c so that it does not depend on CONFIG_OF. (Nicolas)
+  -- devm_kcalloc => devm_kzalloc (DanC)
+  -- add/fix assignment to dev->dma_pfn_offset_map for func
+     attach_uniform_dma_pfn_offset() (DanC, Nicolas)
+  -- s/struct dma_pfn_offset_region/struct bus_dma_region/ (Nicolas)
+  -- s/attach_uniform_dma_pfn_offset/dma_attach_uniform_pfn_offset/
+  -- s/attach_dma_pfn_offset_map/dma_attach_pfn_offset_map/
+  -- More use of PFN_{PHYS,DOWN,UP}. (AndyS)
+  Commit "of: Include a dev param in of_dma_get_range()"
+  -- this commit was sqaushed with "device core: Introduce ..."
 
-> Looking at the trace, might query the temperature every second which
-> somehow results in "Dispatching Notify on". I don't understand how it
-> gets from reading of the temperature to the notify part, maybe it is
-> part of the ACPI=E2=80=A6
->
-> However. Could you please make sure that the thermal module is not
-> loaded at system startup? Adding
->     thermal.off=3D1
->
-> to the kernel commandline should do the trick. And you should see
->    thermal control disabled
->
-> in dmesg.=20
+v3:
+  Commit "device core: Introduce multiple dma pfn offsets"
+  Commit "arm: dma-mapping: Invoke dma offset func if needed"
+  -- The above two commits have been squashed.  More importantly,
+     the code has been modified so that the functionality for
+     multiple pfn offsets subsumes the use of dev->dma_pfn_offset.
+     In fact, dma_pfn_offset is removed and supplanted by
+     dma_pfn_offset_map, which is a pointer to an array.  The
+     more common case of a uniform offset is now handled as
+     a map with a single entry, while cases requiring multiple
+     pfn offsets use a map with multiple entries.  Code paths
+     that used to do this:
 
-Confirmed.  And the value in thermal_zone0/temp was now 33000.
+         dev->dma_pfn_offset = mydrivers_pfn_offset;
 
->           That means your thermal_zone0 with TZ10 does not show up in
-> /sys and nothing should schedule the work-items. This in turn should
-> allow you to shutdown your system without the delay.
+     have been changed to do this:
 
-It did!
+         attach_uniform_dma_pfn_offset(dev, pfn_offset);
 
-> If this works, could you please try to load the module with tzp=3D300?
-> If you add this
->  	thermal.tzp=3D300
->=20=20=20
-> to the kernel commandline then it should do the trick. You can verify it
-> by
->    cat /sys/module/thermal/parameters/tzp=20
->
-> This should change the polling interval from what ACPI says to 30secs.
-> This should ensure that you don't have so many worker waiting. So you
-> should also be able to shutdown the system.
+  Commit "dt-bindings: PCI: Add bindings for more Brcmstb chips"
+  -- Add if/then clause for required props: resets, reset-names (RobH)
+  -- Change compatible list from const to enum (RobH)
+  -- Change list of u32-tuples to u64 (RobH)
 
-Your assessment and predictions are right on the mark!
+  Commit "of: Include a dev param in of_dma_get_range()"
+  -- modify of/unittests.c to add NULL param in of_dma_get_range() call.
 
-I'm fine with the thermal.tzp=3D300 workaround, but it would be good to
-find out why this problem started with commit 6d25be57, if my git
-bisection was correct, or if it wasn't, then at least somewhere between
-5.1.0 and 5.2.0.  Or can you already deduce why?  If not, I'd be more
-than happy to continue applying any patches or trying any suggestions
-you have, if you want to continue debugging this issue.  In any case,
-thanks for pursuing it to this point.
+  Commit "device core: Add ability to handle multiple dma offsets"
+  -- align comment in device.h (AndyS).
+  -- s/cpu_beg/cpu_start/ and s/dma_beg/dma_start/ in struct
+     dma_pfn_offset_region (AndyS).
 
-Steve Berman
+v2:
+Commit: "device core: Add ability to handle multiple dma offsets"
+  o Added helper func attach_dma_pfn_offset_map() in address.c (Chistoph)
+  o Helpers funcs added to __phys_to_dma() & __dma_to_phys() (Christoph)
+  o Added warning when multiple offsets are needed and !DMA_PFN_OFFSET_MAP
+  o dev->dma_pfn_map => dev->dma_pfn_offset_map
+  o s/frm/from/ for dma_pfn_offset_frm_{phys,dma}_addr() (Christoph)
+  o In device.h: s/const void */const struct dma_pfn_offset_region */
+  o removed 'unlikely' from unlikely(dev->dma_pfn_offset_map) since
+    guarded by CONFIG_DMA_PFN_OFFSET_MAP (Christoph)
+  o Since dev->dma_pfn_offset is copied in usb/core/{usb,message}.c, now
+    dev->dma_pfn_offset_map is copied as well.
+  o Merged two of the DMA commits into one (Christoph).
+
+Commit "arm: dma-mapping: Invoke dma offset func if needed":
+  o Use helper functions instead of #if CONFIG_DMA_PFN_OFFSET
+
+Other commits' changes:
+  o Removed need for carrying of_id var in priv (Nicolas)
+  o Commit message rewordings (Bjorn)
+  o Commit log messages filled to 75 chars (Bjorn)
+  o devm_reset_control_get_shared())
+    => devm_reset_control_get_optional_shared (Philipp)
+  o Add call to reset_control_assert() in PCIe remove routines (Philipp)
+
+v1:
+This patchset expands the usefulness of the Broadcom Settop Box PCIe
+controller by building upon the PCIe driver used currently by the
+Raspbery Pi.  Other forms of this patchset were submitted by me years
+ago and not accepted; the major sticking point was the code required
+for the DMA remapping needed for the PCIe driver to work [1].
+
+There have been many changes to the DMA and OF subsystems since that
+time, making a cleaner and less intrusive patchset possible.  This
+patchset implements a generalization of "dev->dma_pfn_offset", except
+that instead of a single scalar offset it provides for multiple
+offsets via a function which depends upon the "dma-ranges" property of
+the PCIe host controller.  This is required for proper functionality
+of the BrcmSTB PCIe controller and possibly some other devices.
+
+[1] https://lore.kernel.org/linux-arm-kernel/1516058925-46522-5-git-send-email-jim2101024@gmail.com/
+
+Jim Quinlan (12):
+  PCI: brcmstb: PCIE_BRCMSTB depends on ARCH_BRCMSTB
+  ata: ahci_brcm: Fix use of BCM7216 reset controller
+  dt-bindings: PCI: Add bindings for more Brcmstb chips
+  PCI: brcmstb: Add bcm7278 register info
+  PCI: brcmstb: Add suspend and resume pm_ops
+  PCI: brcmstb: Add bcm7278 PERST support
+  PCI: brcmstb: Add control of rescal reset
+  device core: Introduce multiple dma pfn offsets
+  PCI: brcmstb: Set internal memory viewport sizes
+  PCI: brcmstb: Accommodate MSI for older chips
+  PCI: brcmstb: Set bus max burst size by chip type
+  PCI: brcmstb: Add bcm7211, bcm7216, bcm7445, bcm7278 to match list
+
+ .../bindings/pci/brcm,stb-pcie.yaml           |  56 ++-
+ arch/arm/include/asm/dma-mapping.h            |   9 +-
+ arch/arm/mach-keystone/keystone.c             |   8 +-
+ arch/sh/drivers/pci/pcie-sh7786.c             |   3 +-
+ arch/sh/kernel/dma-coherent.c                 |  14 +-
+ arch/x86/pci/sta2x11-fixup.c                  |   7 +-
+ drivers/acpi/arm64/iort.c                     |   4 +-
+ drivers/ata/ahci_brcm.c                       |  11 +-
+ drivers/gpu/drm/sun4i/sun4i_backend.c         |   5 +-
+ drivers/iommu/io-pgtable-arm.c                |   2 +-
+ .../platform/sunxi/sun4i-csi/sun4i_csi.c      |   5 +-
+ .../platform/sunxi/sun6i-csi/sun6i_csi.c      |   4 +-
+ drivers/of/address.c                          |  71 ++-
+ drivers/of/device.c                           |  19 +-
+ drivers/of/of_private.h                       |  11 +-
+ drivers/of/unittest.c                         |   8 +-
+ drivers/pci/controller/Kconfig                |   3 +-
+ drivers/pci/controller/pcie-brcmstb.c         | 403 +++++++++++++++---
+ drivers/remoteproc/remoteproc_core.c          |   2 +-
+ .../staging/media/sunxi/cedrus/cedrus_hw.c    |   7 +-
+ drivers/usb/core/message.c                    |   4 +-
+ drivers/usb/core/usb.c                        |   2 +-
+ include/linux/device.h                        |   4 +-
+ include/linux/dma-direct.h                    |  14 +-
+ include/linux/dma-mapping.h                   |  38 ++
+ kernel/dma/coherent.c                         |  11 +-
+ kernel/dma/mapping.c                          |  39 ++
+ 27 files changed, 632 insertions(+), 132 deletions(-)
+
+-- 
+2.17.1
+
