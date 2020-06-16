@@ -2,90 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FBDF1FB891
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jun 2020 17:57:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0097E1FBCEE
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jun 2020 19:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731973AbgFPPzE convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 16 Jun 2020 11:55:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47612 "EHLO
+        id S1730990AbgFPR3V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Jun 2020 13:29:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733047AbgFPPzD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Jun 2020 11:55:03 -0400
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA81DC061573;
-        Tue, 16 Jun 2020 08:55:03 -0700 (PDT)
-Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
-        (envelope-from <bigeasy@linutronix.de>)
-        id 1jlDvR-0001r7-MW; Tue, 16 Jun 2020 17:55:01 +0200
-Date:   Tue, 16 Jun 2020 17:55:01 +0200
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     Stephen Berman <stephen.berman@gmx.net>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: power-off delay/hang due to commit 6d25be57 (mainline)
-Message-ID: <20200616155501.psduxnisltitodme@linutronix.de>
-References: <87imfyh6yx.fsf@gmx.net>
- <87wo4dligz.fsf@gmx.net>
- <20200612110122.jossn5zrktcvpbpm@linutronix.de>
- <87tuzdrgm5.fsf@gmx.net>
- <20200614171005.3zy673p6bpwoqnmq@linutronix.de>
- <874krcsquv.fsf@gmx.net>
- <20200615145130.bcdidqkp6w23xb6c@linutronix.de>
- <87tuzbh482.fsf@gmx.net>
- <20200616073827.vysntufld3ves666@linutronix.de>
- <87o8pjh1i0.fsf@gmx.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <87o8pjh1i0.fsf@gmx.net>
+        with ESMTP id S1729272AbgFPR3U (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Jun 2020 13:29:20 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 421C4C061573;
+        Tue, 16 Jun 2020 10:29:20 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id 4CE612A2C75
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+To:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Peter Hutterer <peter.hutterer@redhat.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
+        kernel@collabora.com
+Subject: [PATCH] Input: document inhibiting
+Date:   Tue, 16 Jun 2020 19:29:09 +0200
+Message-Id: <20200616172909.21625-1-andrzej.p@collabora.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <40988408-8f36-3a52-6439-34084de6b129@redhat.com>
+References: <40988408-8f36-3a52-6439-34084de6b129@redhat.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2020-06-16 10:13:27 [+0200], Stephen Berman wrote:
-> Yes, thanks, that did it.  Trace attached.
+Document inhibiting input devices and its relation to being
+a wakeup source.
 
-So TZ10 is a temperature sensor of some kind on your motherboard. In
-your v5.6 dmesg there is:
-| thermal LNXTHERM:00: registered as thermal_zone0
-| ACPI: Thermal Zone [TZ10] (17 C)
+Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+---
 
-So. In /sys/class/thermal/thermal_zone0/device/path you should also see
-TZ10. And /sys/class/thermal/thermal_zone0/temp should show the actual
-value.
-This comes from the "thermal" module.
+@Hans, @Dmitry,
 
-Looking at the trace, might query the temperature every second which
-somehow results in "Dispatching Notify on". I don't understand how it
-gets from reading of the temperature to the notify part, maybe it is
-part of the ACPI…
+My fist attempt at documenting inhibiting. Kindly look at it to see if I haven't got anything
+wrong.
 
-However. Could you please make sure that the thermal module is not
-loaded at system startup? Adding
-    thermal.off=1
+Andrzej
 
-to the kernel commandline should do the trick. And you should see
-   thermal control disabled
+ Documentation/input/input-programming.rst | 36 +++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-in dmesg. That means your thermal_zone0 with TZ10 does not show up in
-/sys and nothing should schedule the work-items. This in turn should
-allow you to shutdown your system without the delay.
+diff --git a/Documentation/input/input-programming.rst b/Documentation/input/input-programming.rst
+index 45a4c6e05e39..0cd1ad4504fb 100644
+--- a/Documentation/input/input-programming.rst
++++ b/Documentation/input/input-programming.rst
+@@ -164,6 +164,42 @@ disconnects. Calls to both callbacks are serialized.
+ The open() callback should return a 0 in case of success or any nonzero value
+ in case of failure. The close() callback (which is void) must always succeed.
+ 
++Inhibiting input devices
++~~~~~~~~~~~~~~~~~~~~~~~~
++
++Inhibiting a device means ignoring input events from it. As such it is about maintaining
++relationships with input handlers - either an already existing relationships, or
++relationships to be established while the device is in inhibited state.
++
++If a device is inhibited, no input handler will receive events from it.
++
++The fact that nobody wants events from the device is exploited further, by calling device's
++close() (if there are users) and open() (if there are users) on inhibit and uninhibit
++operations, respectively. Indeed, the meaning of close() is to stop providing events
++to the input core and that of open() is to start providing events to the input core.
++
++Inhibiting and uninhibiting is orthogonal to opening and closing the device by input
++handlers. Userspace might want to inhibit a device in anticipation before any handler is
++positively matched against it.
++
++Inhibiting and uninhibiting is orthogonal to device's being a wakeup source, too. Being a
++wakeup source plays a role when the system is sleeping, not when the system is operating.
++How drivers should program their interaction between inhibiting, sleeping and being a wakeup
++source is driver-specific.
++
++Taking the analogy with the network devices - bringing a network interface down doesn't mean
++that it should be impossible to be wake the system up on LAN through this interface. So, there
++may be input drivers which should be considered wakeup sources even when inhibited. Actually,
++in many i2c input devices their interrupt is declared a wakeup interrupt and its handling
++happens in driver's core, which is not aware of input-specific inhibit (nor should it be).
++Composite devices containing several interfaces can be inhibited on a per-interface basis and
++e.g. inhibiting one interface shouldn't affect the device's capability of being a wakeup source.
++
++If a device is to be considered a wakeup source while inhibited, special care must be taken when
++programming its suspend(), as it might need to call device's open(). Depending on what close()
++means for the device in question not opening() it before going to sleep might make it impossible
++to provide any wakeup events. The device is going to sleep anyway.
++
+ Basic event types
+ ~~~~~~~~~~~~~~~~~
+ 
+-- 
+2.17.1
 
-If this works, could you please try to load the module with tzp=300?
-If you add this
- 	thermal.tzp=300
-  
-to the kernel commandline then it should do the trick. You can verify it
-by
-   cat /sys/module/thermal/parameters/tzp 
-
-This should change the polling interval from what ACPI says to 30secs.
-This should ensure that you don't have so many worker waiting. So you
-should also be able to shutdown the system.
-
-> Steve Berman
-
-Sebastian
