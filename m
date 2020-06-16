@@ -2,54 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A4F21FA58B
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jun 2020 03:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 315481FA58D
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jun 2020 03:18:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726906AbgFPBRz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Jun 2020 21:17:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53428 "EHLO
+        id S1726492AbgFPBSA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Jun 2020 21:18:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726897AbgFPBRy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Jun 2020 21:17:54 -0400
-Received: from mail-qt1-x849.google.com (mail-qt1-x849.google.com [IPv6:2607:f8b0:4864:20::849])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 213A3C08C5C3
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Jun 2020 18:17:54 -0700 (PDT)
-Received: by mail-qt1-x849.google.com with SMTP id u26so15429347qtj.21
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Jun 2020 18:17:54 -0700 (PDT)
+        with ESMTP id S1726934AbgFPBR6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Jun 2020 21:17:58 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A0ECC08C5C3
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Jun 2020 18:17:57 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id c3so23141414ybp.8
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Jun 2020 18:17:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=/xX6nZw43qnrS5POTejrGqQ7NU/q6i+TSuGWkPxARP8=;
-        b=K64yw4UaVuSTB06zM70ynWO3Qe34OlpnWZDFtQx+XohI9pGel76JaZtLQSBoWSuTVn
-         iUzYet0x27iuRTb1k2C8psq+ocK+eUc+lbqn/lM4DjoyK8Lwthh6he1ErlgUVUwd2DYt
-         +Ye+ql9uWjMbbc98okBddDJZZSEPasbtsclPT6fSyzC2cMfQoctWhwgA1EprQkRAaKW3
-         kZpng1WUzZbMtCYVB9VeNUn8PkNpzWWpfDFshQHOc4eQsm4yRF+loPV3Fp3xPvwnmEqr
-         I9MkdliB1IiEzSTXoV4J1n+HUh2x8Vc310feGGYXQTOVnGd2k9zdRqFaiLC6Nf2wojul
-         zk3w==
+        bh=kh7TdnSzjMmv55tOoFOguM4fQKcmXvzqJelRJT/2fHA=;
+        b=vzILdiTcV8zGZvfxPJjrCDkaIiDK8KCwgVW5sP5e/czfC9CFBD+4ikfLr1nNZiLCG4
+         yExyajLI5z2tPj5jVUXTZlmBhGBcd6BGVc1XxIDjdNS3taX9qDYcvZx28CMqEi9ygJgA
+         MWL6ea5rsIGkxxLvlq7vvECQtGR9tvELA1ucICg5NNO8B8aWbqA2h64ZsHzjXsnB1YQW
+         4b2MdI3q0G8zF3rBfgke02muupsh2/pTPE8RoaCWeIK9EoWZZ89jLrd6Hi0IDaGyOVQO
+         vuDTYNL7FXPLpo9k/VkK76GyxrbKc0NHqjiyuMipoIOah7pHfFDxwNZAF35HnrttIiGX
+         Sfow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=/xX6nZw43qnrS5POTejrGqQ7NU/q6i+TSuGWkPxARP8=;
-        b=mv6ZkC/p/OCWX6Ohfw68dziHjK7UYltDqFE3S+Wz25+6Xx6RsHDVhORk+IVtRcB7tk
-         mxt3Sw7eNwGaDFWSF1BI9JzXFGYwGJiI0xMGV0ysO89BzrJvSkGCu0lhk5tPOovTZts2
-         XgtzwNAlwLwKn9nrQOE5cWXa9Do/wlkmCbc81G6LB69lj5kOh3L6gzA7kEh+k/RcMqcx
-         WmkAzm7F+4h7Fqm2XfcT6N7wrmzl6lGUQlDmpc8mujopWNn+Uk48dRj3m/l0y4CKcNOX
-         6ffEthrv1LVBkKI9oDgicJsrOq1R2En6CjOLorHBPQ6P8THKZiGnltt7K+s8d1lAiaAx
-         whww==
-X-Gm-Message-State: AOAM531B6yhiwkw23aYAsVZtbtkrgkd1ML356eF487jHei3Gu1xyG7Pk
-        BOz9fqTJf6suvaHc8ddk3BpAZljtDiCM
-X-Google-Smtp-Source: ABdhPJx/VShp5rkGDpPUGAg/FhXNCRybPGhdLZkWV0hxwM8Gk42L1iKKJC5+PkUN237Ww8vlTPH4HPEgQvLG
-X-Received: by 2002:ad4:4374:: with SMTP id u20mr548678qvt.144.1592270273220;
- Mon, 15 Jun 2020 18:17:53 -0700 (PDT)
-Date:   Mon, 15 Jun 2020 18:17:41 -0700
+        bh=kh7TdnSzjMmv55tOoFOguM4fQKcmXvzqJelRJT/2fHA=;
+        b=ZXN1TizJ2g0EWZ16UTTzLsZbqTUSpS/obmcHIMKjI2nsMlkM+qijLnzMZqdL52xJ/M
+         vGo3O5+SBkc9VQlnE4UKISM7HYLE/ih5oE9Utak4cziUEPgHdh6cXituKe/08Ua9W2Ji
+         SW+pqd0b836r28ACl0fFZb8aOu2vBpX5RM2BS5C4BI2FWA6qST8nSSfCF3QUnbnyj9O1
+         PYL7TbTROw6kPsR73LHTM82Vl+TIdJqnua76yPK9K+/D7+sBEK3bvcDuO4lEyFd9Mmm9
+         Al9FqlRIOp3jEJWgp+Vq12dv1gYTDy0BmZIk5xSxOZAush5fl+6Np2yxE2FkN+RqUaT6
+         J1mg==
+X-Gm-Message-State: AOAM531jd+EwE5CSqd+HdlDNHiGSXSdiHu0zuoGhhS61BleiY4LeJq6t
+        YYN9tlC8V+r7R5F7hxapWmAXK5A+e1Nn
+X-Google-Smtp-Source: ABdhPJxAth06oSMz+frpUoX8kGWlQJ8aihUMBynZvrDOTpUM1ErZyuW821epnFDUXXRGd/C8nOzICVaMXji/
+X-Received: by 2002:a25:9746:: with SMTP id h6mr429416ybo.409.1592270276282;
+ Mon, 15 Jun 2020 18:17:56 -0700 (PDT)
+Date:   Mon, 15 Jun 2020 18:17:42 -0700
 In-Reply-To: <20200616011742.138975-1-rajatja@google.com>
-Message-Id: <20200616011742.138975-3-rajatja@google.com>
+Message-Id: <20200616011742.138975-4-rajatja@google.com>
 Mime-Version: 1.0
 References: <20200616011742.138975-1-rajatja@google.com>
 X-Mailer: git-send-email 2.27.0.290.gba653c62da-goog
-Subject: [PATCH 3/4] pci: acs: Enable PCI_ACS_TB for untrusted/external-facing devices
+Subject: [PATCH 4/4] pci: export untrusted attribute in sysfs
 From:   Rajat Jain <rajatja@google.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Lu Baolu <baolu.lu@linux.intel.com>,
@@ -85,61 +85,36 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When enabling ACS, currently the bit "translation blocking" was
-not getting changed at all. Set it to disable translation blocking
-too for all external facing or untrusted devices. This is OK
-because ATS is only allowed on internal devces.
+This is needed to allow the userspace to determine when an untrusted
+device has been added, and thus allowing it to bind the driver manually
+to it, if it so wishes. This is being done as part of the approach
+discussed at https://lkml.org/lkml/2020/6/9/1331
 
 Signed-off-by: Rajat Jain <rajatja@google.com>
 ---
- drivers/pci/pci.c    |  4 ++++
- drivers/pci/quirks.c | 11 +++++++++++
- 2 files changed, 15 insertions(+)
+ drivers/pci/pci-sysfs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index d2ff987585855..79853b52658a2 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3330,6 +3330,10 @@ static void pci_std_enable_acs(struct pci_dev *dev)
- 	/* Upstream Forwarding */
- 	ctrl |= (cap & PCI_ACS_UF);
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index 6d78df981d41a..574e9c613ba26 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -50,6 +50,7 @@ pci_config_attr(subsystem_device, "0x%04x\n");
+ pci_config_attr(revision, "0x%02x\n");
+ pci_config_attr(class, "0x%06x\n");
+ pci_config_attr(irq, "%u\n");
++pci_config_attr(untrusted, "%u\n");
  
-+	if (dev->external_facing || dev->untrusted)
-+		/* Translation Blocking */
-+		ctrl |= (cap & PCI_ACS_TB);
-+
- 	pci_write_config_word(dev, pos + PCI_ACS_CTRL, ctrl);
- }
+ static ssize_t broken_parity_status_show(struct device *dev,
+ 					 struct device_attribute *attr,
+@@ -608,6 +609,7 @@ static struct attribute *pci_dev_attrs[] = {
+ #endif
+ 	&dev_attr_driver_override.attr,
+ 	&dev_attr_ari_enabled.attr,
++	&dev_attr_untrusted.attr,
+ 	NULL,
+ };
  
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index b341628e47527..6294adeac4049 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4934,6 +4934,13 @@ static void pci_quirk_enable_intel_rp_mpc_acs(struct pci_dev *dev)
- 	}
- }
- 
-+/*
-+ * Currently this quirk does the equivalent of
-+ * PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF | PCI_ACS_SV
-+ *
-+ * Currently missing, it also needs to do equivalent of PCI_ACS_TB,
-+ * if dev->external_facing || dev->untrusted
-+ */
- static int pci_quirk_enable_intel_pch_acs(struct pci_dev *dev)
- {
- 	if (!pci_quirk_intel_pch_acs_match(dev))
-@@ -4973,6 +4980,10 @@ static int pci_quirk_enable_intel_spt_pch_acs(struct pci_dev *dev)
- 	ctrl |= (cap & PCI_ACS_CR);
- 	ctrl |= (cap & PCI_ACS_UF);
- 
-+	if (dev->external_facing || dev->untrusted)
-+		/* Translation Blocking */
-+		ctrl |= (cap & PCI_ACS_TB);
-+
- 	pci_write_config_dword(dev, pos + INTEL_SPT_ACS_CTRL, ctrl);
- 
- 	pci_info(dev, "Intel SPT PCH root port ACS workaround enabled\n");
 -- 
 2.27.0.290.gba653c62da-goog
 
