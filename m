@@ -2,126 +2,133 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F066B1FC9DE
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jun 2020 11:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACA501FCA9C
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jun 2020 12:18:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726558AbgFQJcK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 Jun 2020 05:32:10 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2319 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725554AbgFQJcJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 17 Jun 2020 05:32:09 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
-        by Forcepoint Email with ESMTP id 3A02CCEC14DEEF102460;
-        Wed, 17 Jun 2020 10:32:08 +0100 (IST)
-Received: from localhost (10.52.121.100) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1913.5; Wed, 17 Jun
- 2020 10:32:07 +0100
-Date:   Wed, 17 Jun 2020 10:31:20 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     "Kuppuswamy, Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-CC:     Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linuxarm@huawei.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Subject: Re: [PATCH 1/2] PCI/AER: Do not reset the device status if doing
- firmware first handling.
-Message-ID: <20200617103120.00006dcd@Huawei.com>
-In-Reply-To: <110fa7a9-1147-b755-2958-6f40c5d666a2@linux.intel.com>
-References: <20200616174731.GA1969609@bjorn-Precision-5520>
-        <110fa7a9-1147-b755-2958-6f40c5d666a2@linux.intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.121.100]
-X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+        id S1726494AbgFQKSf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 17 Jun 2020 06:18:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48368 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725554AbgFQKSf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 Jun 2020 06:18:35 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C874FC061573;
+        Wed, 17 Jun 2020 03:18:34 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id 95B322A395D
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+To:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Peter Hutterer <peter.hutterer@redhat.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
+        kernel@collabora.com
+Subject: [PATCH v2] Input: document inhibiting
+Date:   Wed, 17 Jun 2020 12:18:22 +0200
+Message-Id: <20200617101822.8558-1-andrzej.p@collabora.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <f9007f37-c526-5fa4-3188-a554d2434177@redhat.com>
+References: <f9007f37-c526-5fa4-3188-a554d2434177@redhat.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 16 Jun 2020 11:00:32 -0700
-"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
+Document inhibiting input devices and its relation to being
+a wakeup source.
 
-> Hi Jonathan,
-> 
-> On 6/16/20 10:47 AM, Bjorn Helgaas wrote:
-> > [+cc Sathy]
-> > 
-> > On Fri, May 22, 2020 at 01:31:33AM +0800, Jonathan Cameron wrote:  
-> >> pci_aer_clear_device_status() currently resets the device status even when
-> >> firmware first handling is going on.  In particular it resets it on the
-> >> root port.
-> >>
-> >> This has been discussed previously
-> >> https://lore.kernel.org/patchwork/patch/427375/.  
-> pci_aer_clear_device_status() is only used by handle_error_source(). And
-> I don't think handle_error_source() is called in FF mode. Can you
-> give more details on this issue ?
+Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+---
+v1..v2:
 
-It's called in pcie_do_recovery
+- Addressed editorial comments from Randy
+- Added a paragraph by Hans
 
-https://elixir.bootlin.com/linux/latest/source/drivers/pci/pcie/err.c#L200
+ Documentation/input/input-programming.rst | 40 +++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-Which is called from both handle_error_source and aer_recover_work_func.
-
-indirectly called from ghes_handle_aer / ghes_do_proc
-
-This particular flow will only happen (I think) on hardware reduced ACPI systems.
-
-Jonathan
-
-> > 
-> > I don't think this reference is really pertinent, is it?  That patch
-> > to b2c8881da764 changes pci_cleanup_aer_uncorrect_error_status() so it
-> > doesn't clear PCI_ERR_UNCOR_STATUS in "firmware-first" mode.
-> > 
-> > But your patch only affects PCI_EXP_DEVSTA, not PCI_ERR_UNCOR_STATUS.
-> >   
-> >> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >> ---
-> >>   drivers/pci/pcie/aer.c | 3 +++
-> >>   1 file changed, 3 insertions(+)
-> >>
-> >> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> >> index f4274d301235..43e78b97ace6 100644
-> >> --- a/drivers/pci/pcie/aer.c
-> >> +++ b/drivers/pci/pcie/aer.c
-> >> @@ -373,6 +373,9 @@ void pci_aer_clear_device_status(struct pci_dev *dev)
-> >>   {
-> >>   	u16 sta;
-> >>   
-> >> +	if (pcie_aer_get_firmware_first(dev))
-> >> +		return;  
-> > 
-> > This needs to be adjusted because pcie_aer_get_firmware_first() no
-> > longer exists after 708b20003624 ("PCI/AER: Remove HEST/FIRMWARE_FIRST
-> > parsing for AER ownership").
-> > 
-> > This will use the _OSC AER ownership bit to gate clearing of the
-> > status bits in the PCIe capability (not the AER capability).
-> > 
-> > I think that's the right thing to do, but it's certainly not obvious
-> > from the _OSC description in the PCI Firmware Spec r3.2.  I think we
-> > need a pointer to the ECN that clarifies this, i.e., sec 4.5.1 of:
-> > 
-> >    System Firmware Intermediary (SFI) _OSC and DPC Updates ECN, Feb 24,
-> >    2020, affecting PCI Firmware Specification, Rev. 3.2
-> >    https://members.pcisig.com/wg/PCI-SIG/document/14076
-> >   
-> >>   	pcie_capability_read_word(dev, PCI_EXP_DEVSTA, &sta);
-> >>   	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta);
-> >>   }
-> >> -- 
-> >> 2.19.1
-> >>  
-> 
-
+diff --git a/Documentation/input/input-programming.rst b/Documentation/input/input-programming.rst
+index 45a4c6e05e39..7432315cc829 100644
+--- a/Documentation/input/input-programming.rst
++++ b/Documentation/input/input-programming.rst
+@@ -164,6 +164,46 @@ disconnects. Calls to both callbacks are serialized.
+ The open() callback should return a 0 in case of success or any nonzero value
+ in case of failure. The close() callback (which is void) must always succeed.
+ 
++Inhibiting input devices
++~~~~~~~~~~~~~~~~~~~~~~~~
++
++Inhibiting a device means ignoring input events from it. As such it is about maintaining
++relationships with input handlers - either already existing relationships, or relationships
++to be established while the device is in inhibited state.
++
++If a device is inhibited, no input handler will receive events from it.
++
++The fact that nobody wants events from the device is exploited further, by calling device's
++close() (if there are users) and open() (if there are users) on inhibit and uninhibit
++operations, respectively. Indeed, the meaning of close() is to stop providing events
++to the input core and that of open() is to start providing events to the input core.
++
++Calling the device's close() method on inhibit (if there are users) allows the driver
++to save power. Either by directly powering down the device or by releasing the
++runtime-pm reference it got in open() when the driver is using runtime-pm.
++
++Inhibiting and uninhibiting are orthogonal to opening and closing the device by input
++handlers. Userspace might want to inhibit a device in anticipation before any handler is
++positively matched against it.
++
++Inhibiting and uninhibiting are orthogonal to device's being a wakeup source, too. Being a
++wakeup source plays a role when the system is sleeping, not when the system is operating.
++How drivers should program their interaction between inhibiting, sleeping and being a wakeup
++source is driver-specific.
++
++Taking the analogy with the network devices - bringing a network interface down doesn't mean
++that it should be impossible be wake the system up on LAN through this interface. So, there
++may be input drivers which should be considered wakeup sources even when inhibited. Actually,
++in many I2C input devices their interrupt is declared a wakeup interrupt and its handling
++happens in driver's core, which is not aware of input-specific inhibit (nor should it be).
++Composite devices containing several interfaces can be inhibited on a per-interface basis and
++e.g. inhibiting one interface shouldn't affect the device's capability of being a wakeup source.
++
++If a device is to be considered a wakeup source while inhibited, special care must be taken when
++programming its suspend(), as it might need to call device's open(). Depending on what close()
++means for the device in question, not opening() it before going to sleep might make it
++impossible to provide any wakeup events. The device is going to sleep anyway.
++
+ Basic event types
+ ~~~~~~~~~~~~~~~~~
+ 
+-- 
+2.17.1
 
