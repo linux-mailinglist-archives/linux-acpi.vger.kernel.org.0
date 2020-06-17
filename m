@@ -2,142 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CD871FD4A7
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jun 2020 20:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 516C41FD596
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jun 2020 21:53:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726971AbgFQSg4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 Jun 2020 14:36:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41214 "EHLO
+        id S1726761AbgFQTxp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 17 Jun 2020 15:53:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726942AbgFQSgw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 Jun 2020 14:36:52 -0400
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5275CC0613ED
-        for <linux-acpi@vger.kernel.org>; Wed, 17 Jun 2020 11:36:52 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id a21so2672951oic.8
-        for <linux-acpi@vger.kernel.org>; Wed, 17 Jun 2020 11:36:52 -0700 (PDT)
+        with ESMTP id S1726496AbgFQTxp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 Jun 2020 15:53:45 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54A27C061755
+        for <linux-acpi@vger.kernel.org>; Wed, 17 Jun 2020 12:53:44 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id d27so2066017lfq.5
+        for <linux-acpi@vger.kernel.org>; Wed, 17 Jun 2020 12:53:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=m743QY4j4N0DmjtOs9fMZ2T8zbdzv+0xDLVnEkgz8Xs=;
-        b=R04g9HSVEDCQQpAj4Fk2rkQDJgelNkX6wYPlwKU4hWgdpTKguFVt0V0/I7rk+UWoC7
-         y16mWHOEbe169ktuBkCp5ctFMIQnGqToadXzfD5XQGYb/+gRjCqWJfua2tV/HuvWGNmP
-         EL9ZaGmrYL6uCuxqjTW4Uu36mEK9mu29OG+zh8dEJj2MKZTUGnOcT6bsRf3CwqdiGo5l
-         rEqQrRnZzWxfp33TrhalkbIM24y97ZOLaoRuyfEqfsFm2ZPjy2Kg7OT2b12zzSWgg7Tn
-         j7N6sWyQQoYrKctp+dnnTnqwJ0tFdObNQD+maCXc9VGKdFjrtD+nFF+2Tb6iCby/vR8A
-         KDqA==
+        bh=652Df2r0/DgKireW06s96KgNYOn5wGhQAsXaGuNmXIU=;
+        b=u3Wa8m8AA+KUbrW2ZJpwKkh5OV+uw6/tbYieNTCpV+g/fKZMa/424dnXDq9k1pZPsC
+         R3FzepNEt9eHmKEZLsQB6039RHnI2oLz4CeV+LIiyjsGAuVvKHjPqJBF3Os+Yu3DAD8h
+         eayE3aq6KDW1uRolK2PO0BBU19aNm/+f0ZClqWN+6CBGWa1oZWt3Q1ccsHsxPC9fP8Fo
+         fRbkAnztmRQIhCW37CvRuaE6qD0vU9+o9o/RIpz49UZIQk8W128R+KBu/KuSbu6ST/8e
+         pUQ0WdEBLZ+YsiIPD892IivctXxTZsc2P7241Yy2nkAjGpLCkDQM5X2GbJvBqr2rZVAY
+         UQQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=m743QY4j4N0DmjtOs9fMZ2T8zbdzv+0xDLVnEkgz8Xs=;
-        b=QM1/J3vB6XPP1J5fPD8SEyLhRxE0WGyyn9XD2thEIlSSe4OM6y9jfVkVh30DfiQFF3
-         GrKacPQaJKZ8uLW6Fn51w1jbQ0WIy4mFysiv1v4yrKTMJOOMVZUbxuV3lGMSN8tuPyha
-         Cu3YRh4ikuuL+j3bZrfJRDt01I1s0wmIucxclUHAKwwkaSFhr8rpeydC5I7J6f2MFYbd
-         RS1I7KehP+Tx17AuMXHoFhEmjFPXnEGEBiEZYSIS42C6W1LpscRNFACOA8oADiHDRVXO
-         8fCl/Ob9oJorfftXsnbhZyP0LPUXvr/YAx094W18tshKCv58ZAFItnhCnJZCpXgSv8t2
-         /REw==
-X-Gm-Message-State: AOAM531MNIlKNKUwtGCMenAfcdb7kuPbhYv/ByZES8ouOw7HFf8MHlt0
-        kMNkH7v0NPTPVHCxG/6/xKDPynmDrWoYBOnlFnXJhg==
-X-Google-Smtp-Source: ABdhPJy1DeZtFko5KqEH1OkAXfc+QWxNhghwaA9TZRXvML2oplG4BdrzrsqYZHmUTIvdb3uTTchPN7CNviG7SM1cpt0=
-X-Received: by 2002:aca:530e:: with SMTP id h14mr86929oib.172.1592419011313;
- Wed, 17 Jun 2020 11:36:51 -0700 (PDT)
+        bh=652Df2r0/DgKireW06s96KgNYOn5wGhQAsXaGuNmXIU=;
+        b=nScavFv/wa7hASu28doy3RdZOhNV/l9s55Wpf3YuuHq//oGKFCDHL2/H+r1719yGgN
+         y9Uv2gwQlTADqtlZ4043nuvhgfMXsZMlrVyTPRnvQb4FlyrA4joStemusPQK9OvmdS0Q
+         L5hHv2OxbXUOYrjR5ukFMMVrWgP5rnMTwMAQRXCXTOkuVEe9T2IUAnGDmz0timFUiT09
+         vtBYMWIRGGo4JteEN9MwALYLEOR24+I49wP2MdwNdyEnoNAax7emTEot6hBDLcHmqdj0
+         8va8VwhaOZXON4la6PvBblYyKREH85WciuDlwf4Et4t3io7QKMV6OtwP7XDnC1BLg2OZ
+         CY8A==
+X-Gm-Message-State: AOAM5336cU6MPhGnev9G3Pn1fPNVwTN4EgCO0FCBmeGlBexTtRqXrbCx
+        KBYehHgTgKgpXeEJ4RDeWeka+izjiXbiDZYm+Zoh6Q==
+X-Google-Smtp-Source: ABdhPJyNvJoaAN28/Zg/o9OICE/84/JjfeagXh8bzJTkYAwiivCGPGUzVM1fri9Qg8kksG9nggUrDgCqrfFwoV4dkhw=
+X-Received: by 2002:ac2:41d4:: with SMTP id d20mr299095lfi.204.1592423622439;
+ Wed, 17 Jun 2020 12:53:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200515053500.215929-1-saravanak@google.com> <20200515053500.215929-5-saravanak@google.com>
- <CAMuHMdUnbDvn6GdK51MN-+5iRp6zYRf-yzKY+OwcQOGrYqOZPA@mail.gmail.com>
-In-Reply-To: <CAMuHMdUnbDvn6GdK51MN-+5iRp6zYRf-yzKY+OwcQOGrYqOZPA@mail.gmail.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Wed, 17 Jun 2020 11:36:15 -0700
-Message-ID: <CAGETcx9JKbNQWQwNah7pO5ppVSAe86R-OmMujZPYNkuTCLwKnQ@mail.gmail.com>
-Subject: Re: [PATCH v1 4/4] of: platform: Batch fwnode parsing when adding all
- top level devices
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        Android Kernel Team <kernel-team@android.com>,
+References: <20200616011742.138975-1-rajatja@google.com> <20200616011742.138975-4-rajatja@google.com>
+ <20200616073249.GB30385@infradead.org> <CACK8Z6ELaM8KxbwPor=BUquWN7pALQmmHu5geSOc71P3KoJ1QA@mail.gmail.com>
+ <20200617073100.GA14424@infradead.org>
+In-Reply-To: <20200617073100.GA14424@infradead.org>
+From:   Rajat Jain <rajatja@google.com>
+Date:   Wed, 17 Jun 2020 12:53:03 -0700
+Message-ID: <CACK8Z6FecYkAYQh4sm4RbAQ1iwb9gexqgY9ExD9BH2p-5Usj=g@mail.gmail.com>
+Subject: Re: [PATCH 4/4] pci: export untrusted attribute in sysfs
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, iommu@lists.linux-foundation.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Ji Luo <ji.luo@nxp.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>
+        linux-pci <linux-pci@vger.kernel.org>,
+        linux-acpi@vger.kernel.org, Raj Ashok <ashok.raj@intel.com>,
+        "Krishnakumar, Lalithambika" <lalithambika.krishnakumar@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Prashant Malani <pmalani@google.com>,
+        Benson Leung <bleung@google.com>,
+        Todd Broch <tbroch@google.com>,
+        Alex Levin <levinale@google.com>,
+        Mattias Nissler <mnissler@google.com>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Bernie Keany <bernie.keany@intel.com>,
+        Aaron Durbin <adurbin@google.com>,
+        Diego Rivas <diegorivas@google.com>,
+        Duncan Laurie <dlaurie@google.com>,
+        Furquan Shaikh <furquan@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Christian Kellner <christian@kellner.me>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Oliver O'Halloran" <oohall@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Geert,
+Hi Greg, Christoph,
 
-On Wed, Jun 17, 2020 at 5:20 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+On Wed, Jun 17, 2020 at 12:31 AM Christoph Hellwig <hch@infradead.org> wrote:
 >
-> Hi Saravana,
+> On Tue, Jun 16, 2020 at 12:27:35PM -0700, Rajat Jain wrote:
+> > Need clarification. The flag "untrusted" is currently a part of
+> > pci_dev struct, and is populated within the PCI subsystem.
 >
-> On Fri, May 15, 2020 at 7:38 AM Saravana Kannan <saravanak@google.com> wrote:
-> > The fw_devlink_pause() and fw_devlink_resume() APIs allow batching the
-> > parsing of the device tree nodes when a lot of devices are added. This
-> > will significantly cut down parsing time (as much a 1 second on some
-> > systems). So, use them when adding devices for all the top level device
-> > tree nodes in a system.
+> Yes, and that is the problem.
+>
 > >
-> > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > 1) Is your suggestion to move this flag as well as the attribute to
+> > device core (in "struct device")? This would allow other buses to
+> > populate/use this flag if they want. By default it'll be set to 0 for
+> > all devices (PCI subsystem will populate it based on platform info,
+> > like it does today).
+> >
+> > OR
+> >
+> > 2) Are you suggesting to keep the "untrusted" flag within PCI, but
+> > attach the sysfs attribute to the base device? (&pci_dev->dev)?
 >
-> This is now commit 93d2e4322aa74c1a ("of: platform: Batch fwnode parsing
-> when adding all top level devices") in v5.8-rc1, and I have bisected a
-> regression to it: on r8a7740/armadillo and sh73a0/kzm9g, the system can
-> no longer be woken up from s2ram by a GPIO key. Reverting the commit
-> fixes the issue.
->
-> On these systems, the GPIO/PFC block has its interrupt lines connected
-> to intermediate interrupt controllers (Renesas INTC), which are in turn
-> connected to the main interrupt controller (ARM GIC).  The INTC block is
-> part of a power and clock domain.  Hence if a GPIO is enabled as a
-> wake-up source, the INTC is part of the wake-up path, and thus must be
-> kept enabled when entering s2ram.
->
-> While this commit has no impact on probe order for me (unlike in Marek's
-> case), it does have an impact on suspend order:
->   - Before this commit:
->       1. The keyboard (gpio-keys) is suspended, and calls
->          enable_irq_wake() to inform the upstream interrupt controller
->          (INTC) that it is part of the wake-up path,
->       2. INTC is suspended, and calls device_set_wakeup_path() to inform
->          the device core that it must be kept enabled,
->       3. The system is woken by pressing a wake-up key.
->
->   - After this commit:
->       1. INTC is suspended, and is not aware it is part of the wake-up
->          path, so it is disabled by the device core,
->       2. gpio-keys is suspended, and calls enable_irq_wake() in vain,
->       3. Pressing a wake-up key has no effect, as INTC is disabled, and
->          the interrupt does not come through.
->
-> It looks like no device links are involved, as both gpio-keys and INTC have
-> no links.
-> Do you have a clue?
->
-> Thanks!
+> (1).  As for IOMMUs and userspace policy it really should not matter
+> what bus a device is on if it is external and not trustworthy.
 
-That patch of mine defers probe on all devices added by the
-of_platform_default_populate() call, and then once the call returns,
-it immediately triggers a deferred probe.
+Sure. I can move the flag to the "struct device" (and likely call
+it "external" instead of "untrusted" so as to make it suitable for
+more use cases later).  The buses can fill this up if they know which
+devices are external and which ones are not (otherwise it will be 0 by
+default). The PCI can fill this up like it does today, from platform
+info (ACPI / Device tree). Greg, how does this sound?
 
-So all these devices are being probed in parallel in the deferred
-probe workqueue while the main "initcall thread" continues down to
-further initcalls. It looks like some of the drivers in subsequent
-initcalls are assuming that devices in the earlier initcalls always
-probe and can't be deferred?
+Thanks,
 
-There are two options.
-1. Fix these drivers.
-2. Add a "flush deferred workqueue" in fw_devlink_resume()
-
-I'd rather we fix the drivers so that they handle deferred probes
-correctly. Thoughts?
-
--Saravana
+Rajat
