@@ -2,204 +2,187 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FB001FFB44
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Jun 2020 20:46:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 164E91FFE6C
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Jun 2020 01:01:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728514AbgFRSqd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Jun 2020 14:46:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56210 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727805AbgFRSqa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 18 Jun 2020 14:46:30 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3B2B2208DB;
-        Thu, 18 Jun 2020 18:46:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592505989;
-        bh=39kwGWJQnjfPiKs05x4HsotVBIPPsgkmzXLdYD1Ko8E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ji8AXAluHvvoAmMwrjxl6TLNm7J2vVNMEj/eNho7vDCFnChfn98b6KVXCtZxL1CFE
-         rGdaWGvdez9DKhhUd+a6J00iz0MRvJO/NRn8tTpyPk3hgUM520s8gGhy692qvYxDx6
-         1rgnQYgfRwNPX6/IxJPJpm+MD8Z+tVbt6MWvsfsU=
-Date:   Thu, 18 Jun 2020 20:46:21 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Rajat Jain <rajatja@google.com>
-Cc:     "Raj, Ashok" <ashok.raj@intel.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, iommu@lists.linux-foundation.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Krishnakumar, Lalithambika" <lalithambika.krishnakumar@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Prashant Malani <pmalani@google.com>,
-        Benson Leung <bleung@google.com>,
-        Todd Broch <tbroch@google.com>,
-        Alex Levin <levinale@google.com>,
-        Mattias Nissler <mnissler@google.com>,
-        Rajat Jain <rajatxjain@gmail.com>,
-        Bernie Keany <bernie.keany@intel.com>,
-        Aaron Durbin <adurbin@google.com>,
-        Diego Rivas <diegorivas@google.com>,
-        Duncan Laurie <dlaurie@google.com>,
-        Furquan Shaikh <furquan@google.com>,
-        Jesse Barnes <jsbarnes@google.com>,
-        Christian Kellner <christian@kellner.me>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        Jean-Philippe Brucker <jean-philippe.brucker@arm.com>
-Subject: Re: [PATCH 4/4] pci: export untrusted attribute in sysfs
-Message-ID: <20200618184621.GA446639@kroah.com>
-References: <CACK8Z6ELaM8KxbwPor=BUquWN7pALQmmHu5geSOc71P3KoJ1QA@mail.gmail.com>
- <20200617073100.GA14424@infradead.org>
- <CACK8Z6FecYkAYQh4sm4RbAQ1iwb9gexqgY9ExD9BH2p-5Usj=g@mail.gmail.com>
- <CAHp75Vc6eA33cyAQH-m+yixTuHqiobg6fo7nzbbb-J6vN6qFcA@mail.gmail.com>
- <20200618083646.GA1066967@kroah.com>
- <CAHp75Vf71f2s6yipHJ4Ys1oe1v7L4PiqBCEbo0uBcG7Wpcs5dQ@mail.gmail.com>
- <CACK8Z6F2Ssj=EqhR2DZ114ETgQ-3PhzVi2rm2xxenCNOVH=60g@mail.gmail.com>
- <20200618160212.GB3076467@kroah.com>
- <20200618162322.GI34820@otc-nc-03>
- <CACK8Z6EnqmJtSqPPz2ARk0jwFLR_yCTS0vSLQ0v4C9QF-6BQ1w@mail.gmail.com>
+        id S1730636AbgFRXBQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 Jun 2020 19:01:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49464 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730805AbgFRXBL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Jun 2020 19:01:11 -0400
+Received: from mail-oo1-xc42.google.com (mail-oo1-xc42.google.com [IPv6:2607:f8b0:4864:20::c42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C19C6C0613EF
+        for <linux-acpi@vger.kernel.org>; Thu, 18 Jun 2020 16:01:10 -0700 (PDT)
+Received: by mail-oo1-xc42.google.com with SMTP id v3so1529605oot.1
+        for <linux-acpi@vger.kernel.org>; Thu, 18 Jun 2020 16:01:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yc8mFXvH9+bvXdPbuCrBKeuEjVF5zsJFmzpNjkxHWMo=;
+        b=F6Qzk43n9hOMr0F4NODTytpPzKoJejgC53DX0hNIAani5BvakYsEg5BYejBSfJJRFK
+         Xveb1M2471hR5+hXD0nrRKJPWetO+Sm9CXdnLQ/354Jwx2+SAROf9zcH9nOj1f4r2BmG
+         4OhP4aiWNVP3N1Z3PnwsXKCCcwprjP/r7yknNF074Mqx5ocK34Qoz+i0yhVtZqSNZl8E
+         IbSthlYnPjQ4Ifcop0/QphEEIYcIl9WJqyKdM1ZE+wTYMUHzs/utKyK0LIdSCWoIkVRg
+         TFlIL6ILcD4OJudkIbjNqm5Ppsq4BTPCwfwbR9kT+/5+LeKmP6bHS9Q4Wvj+BLy2p9Uj
+         P1AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yc8mFXvH9+bvXdPbuCrBKeuEjVF5zsJFmzpNjkxHWMo=;
+        b=iKdVErMkhzvESZZo2JmhADLSy3kR0YBaRbAsIaCM1/VZ/5hoUn9m1hcZkoBJoCeIYc
+         zavFGP3QL76FyPb3ZaHrCpGQm4JouGgyjyVTKwIsuMs8bQepe31GmonLkIKzEkwvGOtG
+         NAhDl4rYtG5u7cIaW7/A8I6jw/3Agn5cn52vrd0n8gS+oSde23s/G0ZIl8X19QPGiCHb
+         3IdG0Gav2eavwyb5Ai5zMVqzzuEdQFVTJ1Ufmsy13eIC6QjRYmqX5eowThOAcjXrUauB
+         EP7eI1qci3xjbHF85coYGOgFzmQ7gpphgfiq4K2F363mWL4F0CVCrXIoxv7sckefU5tG
+         8zvQ==
+X-Gm-Message-State: AOAM531H9zt6QvJDkzNjdHhI+eNzPf+c5B5/TYg9L6o/rlNQd6F5bWVd
+        tKMNjJY9dBvqWaAjTWj3FAjZWGBID9JuILVF1qxC9g==
+X-Google-Smtp-Source: ABdhPJze5y3/R2DKImLZ7iiLzxaS6HhogUtDTZ6f6c1zd9yAOujkemUlEPJ8VwbBuyiv/TUaV+zXkBMoEOzKC1JUTAg=
+X-Received: by 2002:a4a:7ac2:: with SMTP id a185mr1035246ooc.84.1592521269356;
+ Thu, 18 Jun 2020 16:01:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACK8Z6EnqmJtSqPPz2ARk0jwFLR_yCTS0vSLQ0v4C9QF-6BQ1w@mail.gmail.com>
+References: <20200515053500.215929-1-saravanak@google.com> <20200515053500.215929-5-saravanak@google.com>
+ <CAMuHMdUnbDvn6GdK51MN-+5iRp6zYRf-yzKY+OwcQOGrYqOZPA@mail.gmail.com>
+ <CAGETcx9JKbNQWQwNah7pO5ppVSAe86R-OmMujZPYNkuTCLwKnQ@mail.gmail.com> <CAMuHMdU2gF=aTeVxRvtzAMLGY=GyBDfBwrYZxoRkL1tV7dL56g@mail.gmail.com>
+In-Reply-To: <CAMuHMdU2gF=aTeVxRvtzAMLGY=GyBDfBwrYZxoRkL1tV7dL56g@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Thu, 18 Jun 2020 16:00:33 -0700
+Message-ID: <CAGETcx-rHFthf-aLb_S-ST6Evozvgis5XX5u0LNxyvfMoJOLKQ@mail.gmail.com>
+Subject: Re: [PATCH v1 4/4] of: platform: Batch fwnode parsing when adding all
+ top level devices
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Android Kernel Team <kernel-team@android.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Ji Luo <ji.luo@nxp.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 18, 2020 at 10:23:38AM -0700, Rajat Jain wrote:
-> Thanks Greg and Andy for your continued inputs, and thanks Ashok for chiming in.
-> 
-> On Thu, Jun 18, 2020 at 9:23 AM Raj, Ashok <ashok.raj@intel.com> wrote:
-> >
-> > Hi Greg,
-> >
-> >
-> > On Thu, Jun 18, 2020 at 06:02:12PM +0200, Greg Kroah-Hartman wrote:
-> > > On Thu, Jun 18, 2020 at 08:03:49AM -0700, Rajat Jain wrote:
-> > > > Hello,
+On Thu, Jun 18, 2020 at 12:32 AM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+>
+> Hi Saravana,
+>
+> On Wed, Jun 17, 2020 at 8:36 PM Saravana Kannan <saravanak@google.com> wrote:
+> > On Wed, Jun 17, 2020 at 5:20 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > On Fri, May 15, 2020 at 7:38 AM Saravana Kannan <saravanak@google.com> wrote:
+> > > > The fw_devlink_pause() and fw_devlink_resume() APIs allow batching the
+> > > > parsing of the device tree nodes when a lot of devices are added. This
+> > > > will significantly cut down parsing time (as much a 1 second on some
+> > > > systems). So, use them when adding devices for all the top level device
+> > > > tree nodes in a system.
 > > > >
-> > > > On Thu, Jun 18, 2020 at 2:14 AM Andy Shevchenko
-> > > > <andy.shevchenko@gmail.com> wrote:
-> > > > >
-> > > > > On Thu, Jun 18, 2020 at 11:36 AM Greg Kroah-Hartman
-> > > > > <gregkh@linuxfoundation.org> wrote:
-> > > > > >
-> > > > > > On Thu, Jun 18, 2020 at 11:12:56AM +0300, Andy Shevchenko wrote:
-> > > > > > > On Wed, Jun 17, 2020 at 10:56 PM Rajat Jain <rajatja@google.com> wrote:
-> > > > > > > > On Wed, Jun 17, 2020 at 12:31 AM Christoph Hellwig <hch@infradead.org> wrote:
-> > > > > > >
-> > > > > > > ...
-> > > > > > >
-> > > > > > > > (and likely call it "external" instead of "untrusted".
-> > > > > > >
-> > > > > > > Which is not okay. 'External' to what? 'untrusted' has been carefully
-> > > > > > > chosen by the meaning of it.
-> > > > > > > What external does mean for M.2. WWAN card in my laptop? It's in ACPI
-> > > > > > > tables, but I can replace it.
-> > > > > >
-> > > > > > Then your ACPI tables should show this, there is an attribute for it,
-> > > > > > right?
-> > > > >
-> > > > > There is a _PLD() method, but it's for the USB devices (or optional
-> > > > > for others, I don't remember by heart). So, most of the ACPI tables,
-> > > > > alas, don't show this.
-> > > > >
-> > > > > > > This is only one example. Or if firmware of some device is altered,
-> > > > > > > and it's internal (whatever it means) is it trusted or not?
-> > > > > >
-> > > > > > That is what people are using policy for today, if you object to this,
-> > > > > > please bring it up to those developers :)
-> > > > >
-> > > > > > > So, please leave it as is (I mean name).
-> > > > > >
-> > > > > > firmware today exports this attribute, why do you not want userspace to
-> > > > > > also know it?
-> > > >
-> > > > To clarify, the attribute exposed by the firmware today is
-> > > > "ExternalFacingPort" and "external-facing" respectively:
-> > > >
-> > > > 617654aae50e ("PCI / ACPI: Identify untrusted PCI devices")
-> > > > 9cb30a71ac45d("PCI: OF: Support "external-facing" property")
-> > > >
-> > > > The kernel flag was named "untrusted" though, hence the assumption
-> > > > that "external=untrusted" is currently baked into the kernel today.
-> > > > IMHO, using "external" would fix that (The assumption can thus be
-> > > > contained in the IOMMU drivers) and at the same time allow more use of
-> > > > this attribute.
-> > > >
-> > > > > >
-> > > > > > Trust is different, yes, don't get the two mixed up please.  That should
-> > > > > > be a different sysfs attribute for obvious reasons.
-> > > > >
-> > > > > Yes, as a bottom line that's what I meant as well.
-> > > >
-> > > > So what is the consensus here? I don't have a strong opinion - but it
-> > > > seemed to me Greg is saying "external" and Andy is saying "untrusted"?
+> > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
 > > >
-> > > Those two things are totally separate things when it comes to a device.
-> >
-> > Agree that these are two separate attributes, and better not mixed.
-> 
-> +1.
-> 
-> >
+> > > This is now commit 93d2e4322aa74c1a ("of: platform: Batch fwnode parsing
+> > > when adding all top level devices") in v5.8-rc1, and I have bisected a
+> > > regression to it: on r8a7740/armadillo and sh73a0/kzm9g, the system can
+> > > no longer be woken up from s2ram by a GPIO key. Reverting the commit
+> > > fixes the issue.
 > > >
-> > > One (external) describes the location of the device in the system.
+> > > On these systems, the GPIO/PFC block has its interrupt lines connected
+> > > to intermediate interrupt controllers (Renesas INTC), which are in turn
+> > > connected to the main interrupt controller (ARM GIC).  The INTC block is
+> > > part of a power and clock domain.  Hence if a GPIO is enabled as a
+> > > wake-up source, the INTC is part of the wake-up path, and thus must be
+> > > kept enabled when entering s2ram.
 > > >
-> > > The other (untrusted) describes what you want the kernel to do with this
-> > > device (trust or not trust it).
+> > > While this commit has no impact on probe order for me (unlike in Marek's
+> > > case), it does have an impact on suspend order:
+> > >   - Before this commit:
+> > >       1. The keyboard (gpio-keys) is suspended, and calls
+> > >          enable_irq_wake() to inform the upstream interrupt controller
+> > >          (INTC) that it is part of the wake-up path,
+> > >       2. INTC is suspended, and calls device_set_wakeup_path() to inform
+> > >          the device core that it must be kept enabled,
+> > >       3. The system is woken by pressing a wake-up key.
 > > >
-> > > One you can change (from trust to untrusted or back), the other you can
-> > > not, it is a fixed read-only property that describes the hardware device
-> > > as defined by the firmware.
-> 
-> Correct. I believe what is being described by the firmware is a fixed
-> read-only property describing the location of the device ("external")
-> - not what to do with it ("untrusted").
-> 
+> > >   - After this commit:
+> > >       1. INTC is suspended, and is not aware it is part of the wake-up
+> > >          path, so it is disabled by the device core,
+> > >       2. gpio-keys is suspended, and calls enable_irq_wake() in vain,
+> > >       3. Pressing a wake-up key has no effect, as INTC is disabled, and
+> > >          the interrupt does not come through.
+> > >
+> > > It looks like no device links are involved, as both gpio-keys and INTC have
+> > > no links.
+> > > Do you have a clue?
+> > >
+> > > Thanks!
 > >
-> > The genesis is due to lack of a mechanism to establish if the device
-> > is trusted or not was the due lack of some specs and implementation around
-> > Component Measurement And Authentication (CMA). Treating external as
-> > untrusted was the best first effort. i.e trust internal
-> > devices and don't trust external devices for enabling ATS.
+> > That patch of mine defers probe on all devices added by the
+> > of_platform_default_populate() call, and then once the call returns,
+> > it immediately triggers a deferred probe.
 > >
-> > But that said external is just describing topology, and if Linux wants to
-> > use that in the policy that's different. Some day external device may also
-> > use CMA to estabilish trust. FWIW even internal devices aren't trust
-> > worthy, except maybe RCIEP's.
-> 
-> Correct. Since the firmware is actually describing the unchangeable
-> topology (and not the policy), the takeaway I am taking from this
-> discussion is that the flag should be called "external".
+> > So all these devices are being probed in parallel in the deferred
+> > probe workqueue while the main "initcall thread" continues down to
+> > further initcalls. It looks like some of the drivers in subsequent
+> > initcalls are assuming that devices in the earlier initcalls always
+> > probe and can't be deferred?
+> >
+> > There are two options.
+> > 1. Fix these drivers.
+> > 2. Add a "flush deferred workqueue" in fw_devlink_resume()
+> >
+> > I'd rather we fix the drivers so that they handle deferred probes
+> > correctly. Thoughts?
+>
+> While the affected drivers should handle deferred probe fine, none of
+> the affected drivers is subject to deferred probing: they all probe
+> successfully on first try (I had added debug prints to
+> platform_drv_probe() to be sure).
+> The affected drivers are still probed in the same order (INTC is one of
+> the earliest drivers probed, gpio-keys is the last).
 
-The attribute should be called something like "location" or something
-like that (naming is hard), as you don't always know if something is
-external or not (it could be internal, it could be unknown, it could be
-internal to an external device that you trust (think PCI drawers for
-"super" computers that are hot pluggable but yet really part of the
-internal bus).
+Thanks, this is useful info. Now I know that my patch isn't somehow
+reordering devices that would have probed as soon as
+of_platform_default_populate_init() added them.
 
-> Like I said, I don't have any hard opinions on this. So if you feel
-> that my conclusion is wrong and consensus was the other way around
-> ("untrusted"), let me know and I'll be happy to change this.
+When you say the "The affected drivers are still probed in the same
+order", are you only referring to the devices that would have probed
+before of_platform_default_populate_init() returns? Or ALL devices in
+the system are probing in the same order?
 
-"trust" has no direct relation to the location, except in a policy of
-what you wish to do with that device, so as long as you keep them
-separate that way, I am fine with it.
+I assume gpio-keys gets probed in the "normal init thread" and not by
+the deferred probe workqueue? I'm guessing this because gpio_keys
+driver seems to register during late_initcall() whereas
+of_platform_default_populate_init() runs as an arch_initcall_sync().
 
-thanks,
+> However, during
+> system suspend, gpio-keys is suspended before INTC, which is wrong, as
+> gpio-keys uses an interrupt provided by INTC.
+>
+> Perhaps the "in parallel" is the real culprit, and there is a race
+> condition somewhere?
 
-greg k-h
+I tried digging into the gpio_keys driver code to see how it interacts
+with INTC and if gpio-keys defers probe if INTC hasn't probed yet. But
+it seems like a rabbit hole that'd be easier to figure out when you
+have the device. Can you check if gpio-keys is probing before INTC in
+the "bad" case?
+
+Also, in general, can you see if there's a difference in the probe
+order between all the devices in the system? Adding a log to
+really_probe() would be better in case non-platform devices are
+getting reordered (my change affects all devices that are created from
+DT, not just platform devices).
+
+I want to make sure we understand the real issue before we try to fix it.
+
+Thanks,
+Saravana
