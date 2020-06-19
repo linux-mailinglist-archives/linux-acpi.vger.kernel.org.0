@@ -2,100 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B75F52012B7
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Jun 2020 17:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8608420146B
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Jun 2020 18:14:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392848AbgFSPzd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 Jun 2020 11:55:33 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:37479 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392508AbgFSPzc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Jun 2020 11:55:32 -0400
-Received: by mail-ot1-f65.google.com with SMTP id v13so7646330otp.4;
-        Fri, 19 Jun 2020 08:55:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sKylRjNEpAqnQ+WaZirKknI5bexwPLrj3iuq9vdD0CA=;
-        b=X/TKFmBJ0UPo7r4Ys16Gep89hMzFRiip4ieBT+C7dIZtCM16II3nJagzP6F5FL05Gb
-         yJhTWgEKqoQHICjp2DA92Svl7pVT4L5ZhHdDVQ80H9ZkWJHCMTqPKTw4V3hbGDmZWrU6
-         8SVUSuGyDexnwTyrSBKcscCrHlPGcYxjxq+S42RO6vxN90+dYWVd+mwuoc7zhAPJ4RYZ
-         uU8Perr8d6ecpqhQa7q9WxCKsrA4sTMPIlbQcA3GTOJJNKvKBh8u0zBcvoLJWwXe6DNN
-         MmZwXFOSVT74aY1584rV93g29RnpapT1pmsfWfxiRJCeDoTIgxHLBEnlq/5EGAne4Zrh
-         HrkQ==
-X-Gm-Message-State: AOAM530AH5zlRgi+iGSZzUVyBrMfcQh30YH2iN/MzW086JPeMW2foesn
-        dZMJc5YDV4PaaJ0CB7d8N0MJQUqkULtKaEiKFA8KeQ==
-X-Google-Smtp-Source: ABdhPJyhSqxeDfqtJxbOwrEXIFkN5IH/piua+hwM2UpE8o4bHRdGgkaqYQt5l8gSyJB6dHPW44SLsjC9Q+fprChYt5U=
-X-Received: by 2002:a9d:7d15:: with SMTP id v21mr3480467otn.118.1592582131467;
- Fri, 19 Jun 2020 08:55:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200331214949.883781-1-stefanb@linux.vnet.ibm.com>
- <20200401083729.GD17325@linux.intel.com> <CAJZ5v0gQ04h1+zN4wHj1vkwPvqu3RPfsY60VJ+GOtgUrvWuxLQ@mail.gmail.com>
- <20200402192145.GB10314@linux.intel.com> <dfd2d622-90cb-9621-7b7d-5282f5ee7359@linux.ibm.com>
-In-Reply-To: <dfd2d622-90cb-9621-7b7d-5282f5ee7359@linux.ibm.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 19 Jun 2020 17:55:19 +0200
-Message-ID: <CAJZ5v0isZCK8o6hopUV3SP25P5+BwZGSSRFtGQrunQ0n45t68g@mail.gmail.com>
-Subject: Re: [PATCH v3] acpi: Extend TPM2 ACPI table with missing log fields
-To:     Stefan Berger <stefanb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Stefan Berger <stefanb@linux.vnet.ibm.com>,
+        id S2391487AbgFSQKL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 Jun 2020 12:10:11 -0400
+Received: from mga03.intel.com ([134.134.136.65]:61879 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404125AbgFSQKK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 19 Jun 2020 12:10:10 -0400
+IronPort-SDR: TKMhlxq6sLTSpi9FX4kfvgLNITpE5/PdVeD9BsRnIYz78t+yJaMW5/SewWfbt1RcU7qqSSLnYN
+ W9GP4tfEVi8A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9657"; a="142922485"
+X-IronPort-AV: E=Sophos;i="5.75,255,1589266800"; 
+   d="scan'208";a="142922485"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2020 09:10:09 -0700
+IronPort-SDR: 7RubQq9VxRUfRzuPMeOWSStaHKgmrTEFu3KNxl6djYfk5OGCi6GIlI27lydbeTOfyd4+aOyEOX
+ VW8+JfhjviTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,255,1589266800"; 
+   d="scan'208";a="274323199"
+Received: from otc-nc-03.jf.intel.com (HELO otc-nc-03) ([10.54.39.25])
+  by orsmga003.jf.intel.com with ESMTP; 19 Jun 2020 09:10:09 -0700
+Date:   Fri, 19 Jun 2020 09:10:09 -0700
+From:   "Raj, Ashok" <ashok.raj@intel.com>
+To:     Rajat Jain <rajatja@google.com>
+Cc:     David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-integrity@vger.kernel.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Len Brown <lenb@kernel.org>, iommu@lists.linux-foundation.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, lalithambika.krishnakumar@intel.com,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Prashant Malani <pmalani@google.com>,
+        Benson Leung <bleung@google.com>,
+        Todd Broch <tbroch@google.com>,
+        Alex Levin <levinale@google.com>,
+        Mattias Nissler <mnissler@google.com>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Bernie Keany <bernie.keany@intel.com>,
+        Aaron Durbin <adurbin@google.com>,
+        Diego Rivas <diegorivas@google.com>,
+        Duncan Laurie <dlaurie@google.com>,
+        Furquan Shaikh <furquan@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Christian Kellner <christian@kellner.me>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        oohall@gmail.com, Ashok Raj <ashok.raj@intel.com>
+Subject: Re: [PATCH 3/4] pci: acs: Enable PCI_ACS_TB for
+ untrusted/external-facing devices
+Message-ID: <20200619161009.GH42799@otc-nc-03>
+References: <20200616011742.138975-1-rajatja@google.com>
+ <20200616011742.138975-3-rajatja@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200616011742.138975-3-rajatja@google.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 19, 2020 at 5:14 PM Stefan Berger <stefanb@linux.ibm.com> wrote:
->
-> On 4/2/20 3:21 PM, Jarkko Sakkinen wrote:
-> > On Wed, Apr 01, 2020 at 11:05:36AM +0200, Rafael J. Wysocki wrote:
-> >> On Wed, Apr 1, 2020 at 10:37 AM Jarkko Sakkinen
-> >> <jarkko.sakkinen@linux.intel.com> wrote:
-> >>> On Tue, Mar 31, 2020 at 05:49:49PM -0400, Stefan Berger wrote:
-> >>>> From: Stefan Berger <stefanb@linux.ibm.com>
-> >>>>
-> >>>> Recent extensions of the TPM2 ACPI table added 3 more fields
-> >>>> including 12 bytes of start method specific parameters and Log Area
-> >>>> Minimum Length (u32) and Log Area Start Address (u64). So, we extend
-> >>>> the existing structure with these fields to allow non-UEFI systems
-> >>>> to access the TPM2's log.
-> >>>>
-> >>>> The specification that has the new fields is the following:
-> >>>>    TCG ACPI Specification
-> >>>>    Family "1.2" and "2.0"
-> >>>>    Version 1.2, Revision 8
-> >>>>
-> >>>> Adapt all existing table size calculations to use
-> >>>> offsetof(struct acpi_table_tpm2, start_method_specific)
-> >>>> [where start_method_specific is a newly added field]
-> >>>> rather than sizeof(struct acpi_table_tpm2) so that the addition
-> >>>> of the new fields does not affect current systems that may not
-> >>>> have them.
-> >>>>
-> >>>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> >>>> Cc: linux-acpi@vger.kernel.org
-> >>> I think I'm cool with this but needs an ack from ACPI maintainer.
-> >>>
-> >>> Rafael, given that this not an intrusive change in any possible means,
-> >>> can I pick this patch and put it to my next pull request?
-> >> Yes, please.
-> >>
-> >> Thanks!
-> > Great, thanks Rafael.
-> >
-> > Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> >
-> > Do you mind if I add your ack to the commit?
->
+Hi Rajat
 
-It looks like I missed the previous message from Jarkko.
 
-Yes, please, feel free to add my ACK to the patch, thanks!
+On Mon, Jun 15, 2020 at 06:17:41PM -0700, Rajat Jain wrote:
+> When enabling ACS, currently the bit "translation blocking" was
+> not getting changed at all. Set it to disable translation blocking
+
+Maybe you meant "enable translation blocking" ?
+
+Keep the commit log simple:
+
+When enabling ACS, enable translation blocking for external facing ports
+and untrusted devices.
+
+> too for all external facing or untrusted devices. This is OK
+> because ATS is only allowed on internal devces.
+> 
+> Signed-off-by: Rajat Jain <rajatja@google.com>
+> ---
+>  drivers/pci/pci.c    |  4 ++++
+>  drivers/pci/quirks.c | 11 +++++++++++
+>  2 files changed, 15 insertions(+)
+> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index d2ff987585855..79853b52658a2 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -3330,6 +3330,10 @@ static void pci_std_enable_acs(struct pci_dev *dev)
+>  	/* Upstream Forwarding */
+>  	ctrl |= (cap & PCI_ACS_UF);
+>  
+> +	if (dev->external_facing || dev->untrusted)
+> +		/* Translation Blocking */
+> +		ctrl |= (cap & PCI_ACS_TB);
+> +
+>  	pci_write_config_word(dev, pos + PCI_ACS_CTRL, ctrl);
+>  }
+>  
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index b341628e47527..6294adeac4049 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -4934,6 +4934,13 @@ static void pci_quirk_enable_intel_rp_mpc_acs(struct pci_dev *dev)
+>  	}
+>  }
+>  
+> +/*
+> + * Currently this quirk does the equivalent of
+> + * PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF | PCI_ACS_SV
+> + *
+> + * Currently missing, it also needs to do equivalent of PCI_ACS_TB,
+> + * if dev->external_facing || dev->untrusted
+> + */
+>  static int pci_quirk_enable_intel_pch_acs(struct pci_dev *dev)
+>  {
+>  	if (!pci_quirk_intel_pch_acs_match(dev))
+> @@ -4973,6 +4980,10 @@ static int pci_quirk_enable_intel_spt_pch_acs(struct pci_dev *dev)
+>  	ctrl |= (cap & PCI_ACS_CR);
+>  	ctrl |= (cap & PCI_ACS_UF);
+>  
+> +	if (dev->external_facing || dev->untrusted)
+> +		/* Translation Blocking */
+> +		ctrl |= (cap & PCI_ACS_TB);
+> +
+>  	pci_write_config_dword(dev, pos + INTEL_SPT_ACS_CTRL, ctrl);
+>  
+>  	pci_info(dev, "Intel SPT PCH root port ACS workaround enabled\n");
+> -- 
+> 2.27.0.290.gba653c62da-goog
+> 
