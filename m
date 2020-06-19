@@ -2,201 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5397F200A73
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Jun 2020 15:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BE7E200F54
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Jun 2020 17:22:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730512AbgFSNmJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 Jun 2020 09:42:09 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2344 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726124AbgFSNmI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 19 Jun 2020 09:42:08 -0400
-Received: from lhreml712-chm.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id A9A41A06F1A0D92AE340;
-        Fri, 19 Jun 2020 14:42:05 +0100 (IST)
-Received: from lhreml715-chm.china.huawei.com (10.201.108.66) by
- lhreml712-chm.china.huawei.com (10.201.108.63) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1913.5; Fri, 19 Jun 2020 14:42:05 +0100
-Received: from lhreml715-chm.china.huawei.com ([10.201.108.66]) by
- lhreml715-chm.china.huawei.com ([10.201.108.66]) with mapi id 15.01.1913.007;
- Fri, 19 Jun 2020 14:42:04 +0100
-From:   Shiju Jose <shiju.jose@huawei.com>
-To:     James Morse <james.morse@arm.com>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "bp@alien8.de" <bp@alien8.de>, "lenb@kernel.org" <lenb@kernel.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
-        "zhangliguang@linux.alibaba.com" <zhangliguang@linux.alibaba.com>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "Wangkefeng (OS Kernel Lab)" <wangkefeng.wang@huawei.com>,
-        "jroedel@suse.de" <jroedel@suse.de>,
-        yangyicong <yangyicong@huawei.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        tanxiaofei <tanxiaofei@huawei.com>,
-        Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH v9 1/2] ACPI / APEI: Add support to notify the vendor
- specific HW errors
-Thread-Topic: [PATCH v9 1/2] ACPI / APEI: Add support to notify the vendor
- specific HW errors
-Thread-Index: AQHWQvs4YxSl5uNu+0m6mjIuOk17Uqjeo34AgAFSXnA=
-Date:   Fri, 19 Jun 2020 13:42:04 +0000
-Message-ID: <270ca5910c454f8f85ccba45d5ec00aa@huawei.com>
-References: <20200615095312.398-1-shiju.jose@huawei.com>
- <20200615095312.398-2-shiju.jose@huawei.com>
- <f6d4282e-08a4-7832-9dbc-6a4c0366eefd@arm.com>
-In-Reply-To: <f6d4282e-08a4-7832-9dbc-6a4c0366eefd@arm.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.87.231]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S2388599AbgFSPPd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 Jun 2020 11:15:33 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:2274 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2392419AbgFSPPb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 19 Jun 2020 11:15:31 -0400
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05JF3QjF114727;
+        Fri, 19 Jun 2020 11:14:26 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 31rkgjw7b2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 19 Jun 2020 11:14:26 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+        by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05JF9wSk027687;
+        Fri, 19 Jun 2020 15:14:25 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+        by ppma03wdc.us.ibm.com with ESMTP id 31q8km3xuq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 19 Jun 2020 15:14:25 +0000
+Received: from b03ledav002.gho.boulder.ibm.com (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+        by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 05JFEM0r10420970
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 Jun 2020 15:14:22 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 37C3613604F;
+        Fri, 19 Jun 2020 15:14:24 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4C39D136059;
+        Fri, 19 Jun 2020 15:14:21 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+        by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Fri, 19 Jun 2020 15:14:20 +0000 (GMT)
+Subject: Re: [PATCH v3] acpi: Extend TPM2 ACPI table with missing log fields
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Stefan Berger <stefanb@linux.vnet.ibm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-integrity@vger.kernel.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-security-module@vger.kernel.org
+References: <20200331214949.883781-1-stefanb@linux.vnet.ibm.com>
+ <20200401083729.GD17325@linux.intel.com>
+ <CAJZ5v0gQ04h1+zN4wHj1vkwPvqu3RPfsY60VJ+GOtgUrvWuxLQ@mail.gmail.com>
+ <20200402192145.GB10314@linux.intel.com>
+From:   Stefan Berger <stefanb@linux.ibm.com>
+Message-ID: <dfd2d622-90cb-9621-7b7d-5282f5ee7359@linux.ibm.com>
+Date:   Fri, 19 Jun 2020 11:14:20 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+In-Reply-To: <20200402192145.GB10314@linux.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
+ definitions=2020-06-19_16:2020-06-19,2020-06-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ clxscore=1011 priorityscore=1501 bulkscore=0 adultscore=0 mlxlogscore=999
+ impostorscore=0 phishscore=0 cotscore=-2147483648 lowpriorityscore=0
+ spamscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006190107
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGkgSmFtZXMsDQoNClRoYW5rcyBmb3IgcmV2aWV3aW5nIHRoZSBwYXRjaCBhbmQgdGhlIG1vZGlm
-aWNhdGlvbnMuDQogDQo+LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj5Gcm9tOiBKYW1lcyBN
-b3JzZSBbbWFpbHRvOmphbWVzLm1vcnNlQGFybS5jb21dDQo+U2VudDogMTggSnVuZSAyMDIwIDE5
-OjIwDQo+VG86IFNoaWp1IEpvc2UgPHNoaWp1Lmpvc2VAaHVhd2VpLmNvbT4NCj5DYzogbGludXgt
-YWNwaUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LXBjaUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LQ0K
-Pmtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IHJqd0Byand5c29ja2kubmV0OyBicEBhbGllbjguZGU7
-IGxlbmJAa2VybmVsLm9yZzsNCj50b255Lmx1Y2tAaW50ZWwuY29tOyBkYW4uY2FycGVudGVyQG9y
-YWNsZS5jb207DQo+emhhbmdsaWd1YW5nQGxpbnV4LmFsaWJhYmEuY29tOyBhbmRyaXkuc2hldmNo
-ZW5rb0BsaW51eC5pbnRlbC5jb207DQo+V2FuZ2tlZmVuZyAoT1MgS2VybmVsIExhYikgPHdhbmdr
-ZWZlbmcud2FuZ0BodWF3ZWkuY29tPjsNCj5qcm9lZGVsQHN1c2UuZGU7IHlhbmd5aWNvbmcgPHlh
-bmd5aWNvbmdAaHVhd2VpLmNvbT47IEpvbmF0aGFuIENhbWVyb24NCj48am9uYXRoYW4uY2FtZXJv
-bkBodWF3ZWkuY29tPjsgdGFueGlhb2ZlaSA8dGFueGlhb2ZlaUBodWF3ZWkuY29tPg0KPlN1Ympl
-Y3Q6IFJlOiBbUEFUQ0ggdjkgMS8yXSBBQ1BJIC8gQVBFSTogQWRkIHN1cHBvcnQgdG8gbm90aWZ5
-IHRoZSB2ZW5kb3INCj5zcGVjaWZpYyBIVyBlcnJvcnMNCj4NCj5IaSBTaGlqdSwNCj4NCj5PbiAx
-NS8wNi8yMDIwIDEwOjUzLCBTaGlqdSBKb3NlIHdyb3RlOg0KPj4gQWRkIHN1cHBvcnQgdG8gbm90
-aWZ5IHRoZSB2ZW5kb3Igc3BlY2lmaWMgbm9uLWZhdGFsIEhXIGVycm9ycyB0byB0aGUNCj4+IGRy
-aXZlcnMgZm9yIHRoZSBlcnJvciByZWNvdmVyeS4NCj4NCj5UaGlzIGRvZXNuJ3QgYXBwbHkgY2xl
-YW5seSB0byB2NS44LXJjMS4uLiB0aGFua3MgZm9yIHdhaXRpbmcgZm9yIHRoZSBtZXJnZQ0KPndp
-bmRvdyB0byBmaW5pc2gsIGJ1dCBwbGVhc2UgcmViYXNlIG9udG8gdGhlIGxhdGVzdCBhbmQgZ3Jl
-YXRlc3Qga2VybmVsIQ0KDQpWMTAgd2FzIHBvc3RlZCBiYXNlZCBvbiB2NS44LXJjMS4NCj4NCj5J
-J20gZ2xhZCB0aGUgbm90aWZpZXIgY2hhaW5zIGZvciBzdHVmZiB0aGF0IHNob3VsZCBiZSBidWls
-dC1pbiBoYXMgZ29uZS4NCj4oSW4gbXkgb3BpbmlvbiwgdGhlIFJBUyBjb2RlIHNob3VsZCBiZSBt
-b3ZpbmcgaW4gdGhlIGRpcmVjdGlvbiBvZiBoYXZpbmcgbGVzcw0KPmNvZGUgcnVuIGJldHdlZW4g
-YmVpbmcgdG9sZCBvZiBhbiBlcnJvciwgYW5kIHRoZSBoYW5kbGVyIHJ1bm5pbmcuIE5vdGlmaWVy
-DQo+Y2hhaW5zIGZvciB0aGluZ3MgbGlrZSBtZW1vcnktZXJyb3JzIHdhcyBtb3ZpbmcgaW4gdGhl
-IHdyb25nIGRpcmVjdGlvbiEpDQo+DQo+DQo+VGhlIEtmaWZvIGFuZCBwb29sIGFyZSBhZGRpbmcg
-Y29tcGxleGl0eSBJIGRvbid0IHRoaW5rIHlvdSBuZWVkLg0KPlBsZWFzZSBtYWtlIGl0IGNsZWFy
-IGZyb20gdGhlIG5hbWluZyB0aGlzIGlzIGZvciB2ZW5kb3IgcmVjb3Jkcy4gKHdoYXQgaXMgYW4N
-Cj5ldmVudD8pDQo+DQo+VGhlIG1lbWNweSgpIGZvciB0aGUgcmVjb3JkcyBpcyBhbm5veWluZywg
-YnV0IGVsaW1pbmF0aW5nIGl0IHRha2VzIHNvbWUNCj5yZWFsbHkgaW52YXNpdmUgY2hhbmdlcy4g
-TGV0cyBsaXZlIHdpdGggaXQgZm9yIG5vdy4NCk9rLg0KDQo+DQo+DQo+PiBkaWZmIC0tZ2l0IGEv
-ZHJpdmVycy9hY3BpL2FwZWkvZ2hlcy5jIGIvZHJpdmVycy9hY3BpL2FwZWkvZ2hlcy5jIGluZGV4
-DQo+PiAyNGM5NjQyZThmYzcuLjg1NGQ4MTE1Y2RmYyAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMv
-YWNwaS9hcGVpL2doZXMuYw0KPj4gKysrIGIvZHJpdmVycy9hY3BpL2FwZWkvZ2hlcy5jDQo+PiBA
-QCAtNjMsNiArNjQsMTEgQEANCj4+ICAjZGVmaW5lIEdIRVNfRVNUQVRVU19DQUNIRVNfU0laRQk0
-DQo+Pg0KPj4gICNkZWZpbmUgR0hFU19FU1RBVFVTX0lOX0NBQ0hFX01BWF9OU0VDCTEwMDAwMDAw
-MDAwVUxMDQo+PiArDQo+PiArI2RlZmluZSBHSEVTX0VWRU5UX1JJTkdfU0laRQkyNTYNCj4+ICsj
-ZGVmaW5lIEdIRVNfR0RBVEFfUE9PTF9NSU5fQUxMT0NfT1JERVIJMw0KPj4gKyNkZWZpbmUgR0hF
-U19HREFUQV9QT09MX01JTl9TSVpFCTY1NTM2DQo+DQo+SHVoLiBBbm90aGVyIHBvb2wgb2YgbWVt
-b3J5LCBhbmQgd2UgZG9uJ3Qga25vdyBpZiB0aGlzIHdpbGwgZXZlciBiZSB1c2VkLg0KPkNhbiB3
-ZSBhbGxvY2F0ZSBmcm9tIGdoZXNfZXN0YXR1c19wb29sIGluc3RlYWQ/DQo+DQo+Z2hlc19lc3Rh
-dHVzX3Bvb2wgaXMgYWxyZWFkeSBzY2FsZWQgd2l0aCB0aGUgbnVtYmVyIG9mIGVycm9yIHNvdXJj
-ZXMNCj5maXJtd2FyZSBkZXNjcmliZXMgaW4gZ2hlc19lc3RhdHVzX3Bvb2xfaW5pdCgpLCBzbyBp
-dCBzaG91bGQgYmUgYmlnIGVub3VnaC4NCj4NCj5naGVzX2VzdGF0dXNfcG9vbCBhbHJlYWR5IGhh
-cyBtdWx0aXBsZSB1c2VycywgZXN0YXR1c19ub2RlcyBmb3Igd29yaw0KPmRlZmVycmVkIGZyb20g
-Tk1JIGNvbWUgZnJvbSBoZXJlLCBhcyBkbyBnaGVzX2VzdGF0dXNfY2FjaGVzIGZvciB0aGUgbG93
-LQ0KPnBhc3MgZmlsdGVyIHRoaW5nLg0KDQpPay4NCj4NCj4NCj4+IEBAIC0xMjIsNiArMTI4LDE5
-IEBAIHN0YXRpYyBERUZJTkVfTVVURVgoZ2hlc19saXN0X211dGV4KTsNCj4+ICAgKi8NCj4+ICBz
-dGF0aWMgREVGSU5FX1NQSU5MT0NLKGdoZXNfbm90aWZ5X2xvY2tfaXJxKTsNCj4+DQo+PiArc3Ry
-dWN0IGdoZXNfZXZlbnRfZW50cnkgew0KPg0KPmdoZXNfdmVuZG9yX3JlY29yZF9lbnRyeSA/DQo+
-DQo+PiArCXN0cnVjdCBhY3BpX2hlc3RfZ2VuZXJpY19kYXRhICpnZGF0YTsNCj4+ICsJaW50IGVy
-cm9yX3NldmVyaXR5Ow0KPj4gK307DQo+DQo+PiArc3RhdGljIERFRklORV9LRklGTyhnaGVzX2V2
-ZW50X3JpbmcsIHN0cnVjdCBnaGVzX2V2ZW50X2VudHJ5LA0KPj4gKwkJICAgIEdIRVNfRVZFTlRf
-UklOR19TSVpFKTsNCj4+ICsNCj4+ICtzdGF0aWMgREVGSU5FX1NQSU5MT0NLKGdoZXNfZXZlbnRf
-cmluZ19sb2NrKTsNCj4NCj5EbyB5b3UgbmVlZCB0aGUgRklGTyBiZWhhdmlvdXI/DQo+SWYgeW91
-IHB1dCBhIHdvcmtfc3RydWN0IGluIHRoZSBzdHJ1Y3QgYW5kIHNjaGVkdWxlX3dvcmsoKSB0aGF0
-LCB0aGVzZSB3b3VsZA0KPnJ1biBpbiBhbnkgb3JkZXIsIGFuZCBpdCB3b3VsZCBiZSBsZXNzIGNv
-ZGUuDQo+DQo+DQo+PiArc3RhdGljIHN0cnVjdCBnZW5fcG9vbCAqZ2hlc19nZGF0YV9wb29sOyBz
-dGF0aWMgdW5zaWduZWQgbG9uZw0KPj4gK2doZXNfZ2RhdGFfcG9vbF9zaXplX3JlcXVlc3Q7DQo+
-PiArDQo+PiAgc3RhdGljIHN0cnVjdCBnZW5fcG9vbCAqZ2hlc19lc3RhdHVzX3Bvb2w7ICBzdGF0
-aWMgdW5zaWduZWQgbG9uZw0KPj4gZ2hlc19lc3RhdHVzX3Bvb2xfc2l6ZV9yZXF1ZXN0Ow0KPg0K
-PlBsZWFzZSB1c2UgdGhlIGV4aXN0aW5nIGdoZXNfZXN0YXR1c19wb29sLg0KPg0KPg0KPj4gQEAg
-LTE4OCw2ICsyMDcsNDAgQEAgaW50IGdoZXNfZXN0YXR1c19wb29sX2luaXQoaW50IG51bV9naGVz
-KQ0KPg0KPlsuLi5dDQo+DQo+PiArc3RhdGljIGludCBnaGVzX2dkYXRhX3Bvb2xfaW5pdCh2b2lk
-KSB7DQo+PiArCXVuc2lnbmVkIGxvbmcgYWRkciwgbGVuOw0KPj4gKwlpbnQgcmM7DQo+PiArDQo+
-PiArCWdoZXNfZ2RhdGFfcG9vbCA9DQo+Z2VuX3Bvb2xfY3JlYXRlKEdIRVNfR0RBVEFfUE9PTF9N
-SU5fQUxMT0NfT1JERVIsIC0xKTsNCj4+ICsJaWYgKCFnaGVzX2dkYXRhX3Bvb2wpDQo+PiArCQly
-ZXR1cm4gLUVOT01FTTsNCj4+ICsNCj4+ICsJaWYgKGdoZXNfZ2RhdGFfcG9vbF9zaXplX3JlcXVl
-c3QgPCBHSEVTX0dEQVRBX1BPT0xfTUlOX1NJWkUpDQo+PiArCQlnaGVzX2dkYXRhX3Bvb2xfc2l6
-ZV9yZXF1ZXN0ID0NCj5HSEVTX0dEQVRBX1BPT0xfTUlOX1NJWkU7DQo+PiArDQo+PiArCWxlbiA9
-IGdoZXNfZ2RhdGFfcG9vbF9zaXplX3JlcXVlc3Q7DQo+PiArCWFkZHIgPSAodW5zaWduZWQgbG9u
-Zyl2bWFsbG9jKFBBR0VfQUxJR04obGVuKSk7DQo+PiArCWlmICghYWRkcikNCj4+ICsJCWdvdG8g
-ZXJyX3Bvb2xfYWxsb2M7DQo+DQo+PiArCXZtYWxsb2Nfc3luY19tYXBwaW5ncygpOw0KPihUaGlz
-IGlzbid0IG5lZWRlZCBhbnltb3JlLiBTZWUgY29tbWl0IDczZjY5M2MzYTcwNSAoIm1tOiByZW1v
-dmUNCj52bWFsbG9jX3N5bmNfKHVuKW1hcHBpbmdzKCkiKSkNCj4NCj4NCj4+ICsJcmMgPSBnZW5f
-cG9vbF9hZGQoZ2hlc19nZGF0YV9wb29sLCBhZGRyLCBQQUdFX0FMSUdOKGxlbiksIC0xKTsNCj4+
-ICsJaWYgKHJjKQ0KPj4gKwkJZ290byBlcnJfcG9vbF9hZGQ7DQo+PiArDQo+PiArCXJldHVybiAw
-Ow0KPj4gKw0KPj4gK2Vycl9wb29sX2FkZDoNCj4+ICsJdmZyZWUoKHZvaWQgKilhZGRyKTsNCj4+
-ICsNCj4+ICtlcnJfcG9vbF9hbGxvYzoNCj4+ICsJZ2VuX3Bvb2xfZGVzdHJveShnaGVzX2dkYXRh
-X3Bvb2wpOw0KPj4gKw0KPj4gKwlyZXR1cm4gLUVOT01FTTsNCj4+ICt9DQo+DQo+QnV0OiB1c2lu
-ZyBnaGVzX2VzdGF0dXNfcG9vbCB3b3VsZCBhdm9pZCB0aGlzIGR1cGxpY2F0aW9uLg0KPg0KPg0K
-Pj4gQEAgLTI0Nyw2ICszMDAsMTAgQEAgc3RhdGljIHN0cnVjdCBnaGVzICpnaGVzX25ldyhzdHJ1
-Y3QNCj5hY3BpX2hlc3RfZ2VuZXJpYyAqZ2VuZXJpYykNCj4+ICAJCWdvdG8gZXJyX3VubWFwX3N0
-YXR1c19hZGRyOw0KPj4gIAl9DQo+Pg0KPj4gKwlnaGVzX2dkYXRhX3Bvb2xfc2l6ZV9yZXF1ZXN0
-ICs9IGdlbmVyaWMtPnJlY29yZHNfdG9fcHJlYWxsb2NhdGUgKg0KPj4gKwkJCQkJZ2VuZXJpYy0+
-bWF4X3NlY3Rpb25zX3Blcl9yZWNvcmQgKg0KPj4gKwkJCQkJZ2VuZXJpYy0+bWF4X3Jhd19kYXRh
-X2xlbmd0aDsNCj4+ICsNCj4NCj5DYXJlZnVsLCBJIHRoaW5rIGdoZXNfcHJvYmUoKSBjYW4gcnVu
-IGluIHBhcmFsbGVsIG9uIGRpZmZlcmVudCBDUFVzLiBZb3UgY2FuDQo+Y2VydGFpbmx5IHVuYmlu
-ZC9yZWJpbmQgaXQgZnJvbSB1c2VyLXNwYWNlLg0KPg0KPkkgcmVjYWxsIHRoZXNlIG1heCB0aGlz
-L3RoYXQvcHJlYWxsb2NhdGUgc3R1ZmYgYXJlIGp1bmsgdmFsdWVzIG9uIHNvbWUNCj5wbGF0Zm9y
-bS4NCj5Zb3UnZCBhdCBsZWFzdCBuZWVkIHRvIGNhcCBpdCB0byBzYW5lIG1heGltdW0gdmFsdWUu
-DQo+DQo+QnV0OiBVc2luZyBnaGVzX2VzdGF0dXNfcG9vbCB3b3VsZCB1c2UgZ2hlc19lc3RhdHVz
-X3Bvb2xfaW5pdCgpJ3Mgc2l6ZXMsDQo+d2hpY2ggYWxsb2NhdGVzIDY0SyBmb3IgZWFjaCBlcnJv
-ciBzb3VyY2UuDQo+DQo+SGlzdG9yeTogaHR0cHM6Ly93d3cuc3Bpbmljcy5uZXQvbGlzdHMvbGlu
-dXgtYWNwaS9tc2c4NDIzOC5odG1sDQo+DQo+DQo+PiBAQCAtNDkwLDYgKzU0Nyw2OCBAQCBzdGF0
-aWMgdm9pZCBnaGVzX2hhbmRsZV9hZXIoc3RydWN0DQo+PiBhY3BpX2hlc3RfZ2VuZXJpY19kYXRh
-ICpnZGF0YSkNCj4NCj5bLi4uXQ0KPg0KPj4gK3N0YXRpYyB2b2lkIGdoZXNfZXZlbnRfd29ya19m
-dW5jKHN0cnVjdCB3b3JrX3N0cnVjdCAqd29yaykgew0KPj4gKwlzdHJ1Y3QgZ2hlc19ldmVudF9l
-bnRyeSBlbnRyeTsNCj4+ICsJdTMyIGxlbjsNCj4+ICsNCj4+ICsJd2hpbGUgKGtmaWZvX2dldCgm
-Z2hlc19ldmVudF9yaW5nLCAmZW50cnkpKSB7DQo+PiArCQlibG9ja2luZ19ub3RpZmllcl9jYWxs
-X2NoYWluKCZnaGVzX2V2ZW50X25vdGlmeV9saXN0LA0KPj4gKwkJCQkJICAgICBlbnRyeS5lcnJv
-cl9zZXZlcml0eSwNCj4+ICsJCQkJCSAgICAgZW50cnkuZ2RhdGEpOw0KPj4gKwkJbGVuID0gYWNw
-aV9oZXN0X2dldF9yZWNvcmRfc2l6ZShlbnRyeS5nZGF0YSk7DQo+PiArCQlnZW5fcG9vbF9mcmVl
-KGdoZXNfZ2RhdGFfcG9vbCwgKHVuc2lnbmVkIGxvbmcpZW50cnkuZ2RhdGEsDQo+bGVuKTsNCj4+
-ICsJfQ0KPj4gK30NCj4+ICsNCj4+ICtzdGF0aWMgREVDTEFSRV9XT1JLKGdoZXNfZXZlbnRfd29y
-aywgZ2hlc19ldmVudF93b3JrX2Z1bmMpOw0KPj4gKw0KPj4gK3N0YXRpYyB2b2lkIGdoZXNfaGFu
-ZGxlX25vbl9zdGFuZGFyZF9ldmVudChzdHJ1Y3QNCj5hY3BpX2hlc3RfZ2VuZXJpY19kYXRhICpn
-ZGF0YSwNCj4+ICsJCQkJCSAgIGludCBzZXYpDQo+PiArew0KPj4gKwl1MzIgbGVuOw0KPg0KPj4g
-KwlzdHJ1Y3QgZ2hlc19ldmVudF9lbnRyeSBldmVudF9lbnRyeTsNCj4NCj4+ICsJbGVuID0gYWNw
-aV9oZXN0X2dldF9yZWNvcmRfc2l6ZShnZGF0YSk7DQo+PiArCWV2ZW50X2VudHJ5LmdkYXRhID0g
-KHZvaWQgKilnZW5fcG9vbF9hbGxvYyhnaGVzX2dkYXRhX3Bvb2wsIGxlbik7DQo+PiArCWlmIChl
-dmVudF9lbnRyeS5nZGF0YSkgew0KPj4gKwkJbWVtY3B5KGV2ZW50X2VudHJ5LmdkYXRhLCBnZGF0
-YSwgbGVuKTsNCj4+ICsJCWV2ZW50X2VudHJ5LmVycm9yX3NldmVyaXR5ID0gc2V2Ow0KPj4gKw0K
-Pj4gKwkJaWYgKGtmaWZvX2luX3NwaW5sb2NrZWQoJmdoZXNfZXZlbnRfcmluZywgJmV2ZW50X2Vu
-dHJ5LCAxLA0KPg0KPi4uLiBldmVudF9lbnRyeSBpcyBvbiB0aGUgc3RhY2sgLi4uDQo+DQpPay4N
-Cg0KPg0KPj4gKwkJCQkJJmdoZXNfZXZlbnRfcmluZ19sb2NrKSkNCj4+ICsJCQlzY2hlZHVsZV93
-b3JrKCZnaGVzX2V2ZW50X3dvcmspOw0KPj4gKwkJZWxzZQ0KPj4gKwkJCXByX3dhcm4oR0hFU19Q
-RlggImdoZXMgZXZlbnQgcXVldWUgZnVsbFxuIik7DQo+PiArCX0NCj4+ICt9DQo+DQo+DQo+SSB0
-aGluayB0aGUga2ZpZm8gaXMgYWRkaW5nIHVuLW5lZWRlZCBjb21wbGV4aXR5IGhlcmUuDQpPay4N
-Cj4NCj4NCj4+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2FjcGkvZ2hlcy5oIGIvaW5jbHVkZS9hY3Bp
-L2doZXMuaCBpbmRleA0KPj4gZTNmMWNkZGI0YWM4Li5hM2RkODIwNjkwNjkgMTAwNjQ0DQo+PiAt
-LS0gYS9pbmNsdWRlL2FjcGkvZ2hlcy5oDQo+PiArKysgYi9pbmNsdWRlL2FjcGkvZ2hlcy5oDQo+
-PiBAQCAtNTAsNiArNTAsMzQgQEAgZW51bSB7DQo+DQpbLi4uXQ0KPj4gK3ZvaWQgZ2hlc191bnJl
-Z2lzdGVyX2V2ZW50X25vdGlmaWVyKHN0cnVjdCBub3RpZmllcl9ibG9jayAqbmIpOyAjZWxzZQ0K
-Pg0KPlBsZWFzZSBtYWtlIGl0IGNsZWFyIGZyb20gdGhlIG5hbWVzIHRoZXNlIGFyZSBmb3IgdmVu
-ZG9yIGV2ZW50cywgdGhhdCB0aGUNCj5rZXJuZWwgd291bGQgb3RoZXJ3aXNlIGlnbm9yZS4gSXQg
-bG9va3MgbGlrZSB0aGVzZSBhcmUgZm9yIGV2ZXJ5dGhpbmcuIERyaXZlcnMNCj5oYXZlIG5vIGJ1
-c2luZXNzIHRyeWluZyB0byBoYW5kbGUgdGhlIGVycm9ycyB0aGF0IGFyZSBoYW5kbGVkIGJ5IHRo
-aW5ncyBsaWtlDQo+bWVtb3J5X2ZhaWx1cmUoKS4NCj4NCj5+DQo+DQo+SSB3b3VsZCBwb3N0IGEg
-dmVyc2lvbiBvZiB0aGlzIHRvIGlsbHVzdHJhdGUsIGJ1dCB0aGVyZSBhcmUgY29tbWVudHMgb24g
-cGF0Y2ggMg0KPnRvby4NCj4NCj5Tb21ldGhpbmcgbGlrZToNCj5odHRwOi8vd3d3LmxpbnV4LWFy
-bS5vcmcvZ2l0P3A9bGludXgtDQo+am0uZ2l0O2E9Y29tbWl0ZGlmZjtoPTljNjg1OWYzMTQ2MDAx
-Y2Q5ZjhlZGZhZjk2NTIzMmNiOTljN2RjNDINCj4NCj4oY2F2ZWF0IGVtcHRvcjogSSd2ZSBvbmx5
-IGJ1aWxkIHRlc3RlZCBpdCkNCg0KSSB0ZXN0ZWQgeW91ciBjaGFuZ2VzIGFuZCB3b3JrZWQgZmlu
-ZS4NClNob3VsZCBJIHNlbmQgdGhpcyBwYXRjaCBhbG9uZyB3aXRoIHRoZSB1cGRhdGVkIHBhdGNo
-IDI/DQoNCj4NCj4NCj5UaGFua3MsDQo+DQo+SmFtZXMNCg0KVGhhbmtzLA0KU2hpanUNCg==
+On 4/2/20 3:21 PM, Jarkko Sakkinen wrote:
+> On Wed, Apr 01, 2020 at 11:05:36AM +0200, Rafael J. Wysocki wrote:
+>> On Wed, Apr 1, 2020 at 10:37 AM Jarkko Sakkinen
+>> <jarkko.sakkinen@linux.intel.com> wrote:
+>>> On Tue, Mar 31, 2020 at 05:49:49PM -0400, Stefan Berger wrote:
+>>>> From: Stefan Berger <stefanb@linux.ibm.com>
+>>>>
+>>>> Recent extensions of the TPM2 ACPI table added 3 more fields
+>>>> including 12 bytes of start method specific parameters and Log Area
+>>>> Minimum Length (u32) and Log Area Start Address (u64). So, we extend
+>>>> the existing structure with these fields to allow non-UEFI systems
+>>>> to access the TPM2's log.
+>>>>
+>>>> The specification that has the new fields is the following:
+>>>>    TCG ACPI Specification
+>>>>    Family "1.2" and "2.0"
+>>>>    Version 1.2, Revision 8
+>>>>
+>>>> Adapt all existing table size calculations to use
+>>>> offsetof(struct acpi_table_tpm2, start_method_specific)
+>>>> [where start_method_specific is a newly added field]
+>>>> rather than sizeof(struct acpi_table_tpm2) so that the addition
+>>>> of the new fields does not affect current systems that may not
+>>>> have them.
+>>>>
+>>>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+>>>> Cc: linux-acpi@vger.kernel.org
+>>> I think I'm cool with this but needs an ack from ACPI maintainer.
+>>>
+>>> Rafael, given that this not an intrusive change in any possible means,
+>>> can I pick this patch and put it to my next pull request?
+>> Yes, please.
+>>
+>> Thanks!
+> Great, thanks Rafael.
+>
+> Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+>
+> Do you mind if I add your ack to the commit?
+
+
+Any chance to get v4 applied?
+
+
+>
+> /Jarkko
+
+
