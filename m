@@ -2,101 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E28AA201FCC
-	for <lists+linux-acpi@lfdr.de>; Sat, 20 Jun 2020 04:33:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18DC9202384
+	for <lists+linux-acpi@lfdr.de>; Sat, 20 Jun 2020 14:18:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731918AbgFTCd3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 Jun 2020 22:33:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49464 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731911AbgFTCd2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Jun 2020 22:33:28 -0400
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DF0FC0613F0
-        for <linux-acpi@vger.kernel.org>; Fri, 19 Jun 2020 19:33:28 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id i74so10231340oib.0
-        for <linux-acpi@vger.kernel.org>; Fri, 19 Jun 2020 19:33:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2izEUWmO2Z44gqGlokNsKJYCiU6NrD8s4mWVTOtP2bc=;
-        b=s4CI5rQA2oC41KDlMQtutcRiKWu4nTD2gRPf4ZpqQDclSutlsWz1q11wzgg5SpCVrB
-         vpeDt+HymrhzhRDYYUBdo59HdTt0DKIP9S7ovJhlf+iWvlUFTRf8Y71/jf1fFZwEY10e
-         hhAkJVTG412nIzCKVtxkFtzppe88Lq+gKhAMPNOcTZg8cTl/WRpIPw5cnA6PzJdMmkhN
-         6DsLyIGqhAnVoZ/zZZHo4VTNotbyFjC9sM7ABBV/YYqmwi2Qx+4EvdhqbG81HTkHEOvw
-         7ZO1lvU7Yf8FccTZzJCLyFSpwHF0yXqadkpxWIwk7X4UEPNRJ9W8kos63kFnqxjfJqOr
-         pfCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2izEUWmO2Z44gqGlokNsKJYCiU6NrD8s4mWVTOtP2bc=;
-        b=Uq4eqMwskIp2C7fQyR3batfPn7m1zjwGxPTzw+LgK++htY2ad3/GgKIWE6Nrm0llaY
-         WVLS65siL/k5o/wcQEKHxQmB0eh4SurSrGFDcd8k8UMifXJmJMkUEFWBUubgH2nz5+xa
-         0LKiYKra3HiMfPkyjf/ZxspQYjwhht1VWM81d/p9KkHqEz9dcSGIW88GcvGQsLMpfOFs
-         gQ9Tiuk1ouj7jhkLrISIMEV8joNNB6GnRy/uxixSqhMotiDzTvE73Tt0ZHAv16JDq3kf
-         tvQMZxaFJhfuOuqqK7esXh0etZrHlaUZOTaT5JT41Ixi4o3BnEmO0wdITWgbWNfD96rB
-         j+3A==
-X-Gm-Message-State: AOAM5320NDIwKhzSPdNIu3bTEDb7XRNLHBhPGjNP/B4IQovwLXskeQzk
-        AsoihGqO5vNUiQQYSOuqmF6UM1Df5LUqGFIv8ZgKCw==
-X-Google-Smtp-Source: ABdhPJzwMAGZETqCd57hDnIimD39x1lQ0rN7GHIBUMMaKf6xyMUxmekPnQIwoFszeceaY/MtRbLUsNoHsJe1HYXdiw8=
-X-Received: by 2002:aca:35d4:: with SMTP id c203mr5227824oia.30.1592620407638;
- Fri, 19 Jun 2020 19:33:27 -0700 (PDT)
+        id S1728070AbgFTMSJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 20 Jun 2020 08:18:09 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:60219 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728051AbgFTMSJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 20 Jun 2020 08:18:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1592655487;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=ILY0HXzYbH5WHATzGX0prIL9XMIDTzdOqRuYE0zzTt8=;
+        b=VBSKjehVCNZhysZFu/oYAX8LJfU3JyMUc6cC5W67AqXaAMYF4zCGX2j8w5xgUSEqVmGUgw
+        5/wkuCu+6MNPvZR2zbeXN8tebmLZrwKZOaSj82zbD91dXxHC1K7RKxeLKinKhBxAtbFKeg
+        QCP0hgfxT5DeAptQYcuOF/GbDk8+K9g=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-477-Vv7zVyLPMDeVLl8-y_R0Fw-1; Sat, 20 Jun 2020 08:18:05 -0400
+X-MC-Unique: Vv7zVyLPMDeVLl8-y_R0Fw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DB51C801503;
+        Sat, 20 Jun 2020 12:18:03 +0000 (UTC)
+Received: from x1.localdomain.com (ovpn-112-42.ams2.redhat.com [10.36.112.42])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6F3761001E91;
+        Sat, 20 Jun 2020 12:18:00 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-pwm@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH v3 00/15] acpi/pwm/i915: Convert pwm-crc and i915 driver's PWM code to use the atomic PWM API
+Date:   Sat, 20 Jun 2020 14:17:43 +0200
+Message-Id: <20200620121758.14836-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <20200515053500.215929-1-saravanak@google.com> <20200515053500.215929-5-saravanak@google.com>
- <CAMuHMdUnbDvn6GdK51MN-+5iRp6zYRf-yzKY+OwcQOGrYqOZPA@mail.gmail.com>
- <CAGETcx9JKbNQWQwNah7pO5ppVSAe86R-OmMujZPYNkuTCLwKnQ@mail.gmail.com>
- <CAMuHMdU2gF=aTeVxRvtzAMLGY=GyBDfBwrYZxoRkL1tV7dL56g@mail.gmail.com>
- <CAGETcx-rHFthf-aLb_S-ST6Evozvgis5XX5u0LNxyvfMoJOLKQ@mail.gmail.com>
- <CAMuHMdXW0jM-A5cvYtFVcgc1Gm3tKkvr0+kWpeJqpJDzNOuYeA@mail.gmail.com> <CAGETcx8W96KAw-d_siTX4qHB_-7ddk0miYRDQeHE6E0_8qx-6Q@mail.gmail.com>
-In-Reply-To: <CAGETcx8W96KAw-d_siTX4qHB_-7ddk0miYRDQeHE6E0_8qx-6Q@mail.gmail.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Fri, 19 Jun 2020 19:32:51 -0700
-Message-ID: <CAGETcx87JNfKEu4brQ3S-9wObv=OwXkAoDBSREQH5dAD68TPsA@mail.gmail.com>
-Subject: Re: [PATCH v1 4/4] of: platform: Batch fwnode parsing when adding all
- top level devices
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        Android Kernel Team <kernel-team@android.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Ji Luo <ji.luo@nxp.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 19, 2020 at 1:07 PM Saravana Kannan <saravanak@google.com> wrote:
->
-> I think instead of deferred_probe_work_func() moving the device to the
-> end of the dpm_list, I think the device probing successfully is what
-> should move it to the end of the dpm_list. That way, the dpm_list is
-> actually ordered by when the devices become functional and not the
-> random order in DT or random probe order which can get pretty
-> convoluted with multiple deferred probes. This feels right and will
-> make suspend/resume more robust against DT ordering -- but I'm not
-> sure what other wide ranging impact this has for other platforms.
+Hi All,
 
-Geert,
+Here is v3 of my patch series converting the i915 driver's code for
+controlling the panel's backlight with an external PWM controller to
+use the atomic PWM API. See below for the changelog.
 
-If you want to play around with a potential fix to test my hypothesis,
-I think it's just adding this one line to driver_bound():
-============
-klist_add_tail(&dev->p->knode_driver, &dev->driver->p->klist_devices);
-device_links_driver_bound(dev);
-+device_pm_move_to_tail(dev);
+Initially the plan was for this series to consist of 2 parts:
+1. convert the pwm-crc driver to support the atomic PWM API and
+2. convert the i915 driver's PWM code to use the atomic PWM API.
 
-device_pm_check_callbacks(dev);
-============
+But during testing I've found a number of bugs in the pwm-lpss and I
+found that the acpi_lpss code needs some special handling because of
+some ugliness found in most Cherry Trail DSDTs.
 
--Saravana
+So now this series has grown somewhat large and consists of 4 parts:
+
+1. acpi_lpss fixes workarounds for Cherry Trail DSTD nastiness
+2. various fixes to the pwm-lpss driver
+3. convert the pwm-crc driver to support the atomic PWM API and
+4. convert the i915 driver's PWM code to use the atomic PWM API
+
+So we need to discuss how to merge this (once it passes review).
+Although the inter-dependencies are only runtime I still think we should
+make sure that 1-3 are in the drm-intel-next-queued (dinq) tree before
+merging the i915 changes. Both to make sure that the intel-gfx CI system
+does not become unhappy and for bisecting reasons.
+
+The involved acpi_lpss and pwm drivers do not see a whole lot of churn, so
+it likely is the easiest to just merge everything through dinq.
+
+Rafael and Thierry, can I get your Acked-by for directly merging this into
+dinq?
+
+This series has been tested (and re-tested after adding various bug-fixes)
+extensively. It has been tested on the following devices:
+
+-Asus T100TA  BYT + CRC-PMIC PWM
+-Toshiba WT8-A  BYT + CRC-PMIC PWM
+-Thundersoft TS178 BYT + CRC-PMIC PWM, inverse PWM
+-Asus T100HA  CHT + CRC-PMIC PWM
+-Terra Pad 1061  BYT + LPSS PWM
+-Trekstor Twin 10.1 BYT + LPSS PWM
+-Asus T101HA  CHT + CRC-PMIC PWM
+-GPD Pocket  CHT + CRC-PMIC PWM
+
+Changelog:
+
+Changes in v2:
+- Fix coverletter subject
+- Drop accidentally included debugging patch
+- "[PATCH v3 02/15] ACPI / LPSS: Save Cherry Trail PWM ctx registers only once (
+  - Move #define LPSS_SAVE_CTX_ONCE define to group it with LPSS_SAVE_CTX
+
+Changes in v3:
+- "[PATCH v3 04/15] pwm: lpss: Add range limit check for the base_unit register value"
+  - Use base_unit_range - 1 as maximum value for the clamp()
+- "[PATCH v3 05/15] pwm: lpss: Use pwm_lpss_apply() when restoring state on resume"
+  - This replaces the "pwm: lpss: Set SW_UPDATE bit when enabling the PWM"
+    patch from previous versions of this patch-set, which really was a hack
+    working around the resume issue which this patch fixes properly.
+- PATCH v3 6 - 11 pwm-crc changes:
+  - Various small changes resulting from the reviews by Andy and Uwe,
+    including some refactoring of the patches to reduce the amount of churn
+    in the patch-set
+
+Regards,
+
+Hans
+
