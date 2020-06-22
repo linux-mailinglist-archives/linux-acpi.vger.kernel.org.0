@@ -2,158 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C74D203AD0
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jun 2020 17:28:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0AC6203B54
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jun 2020 17:45:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729049AbgFVP2G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 Jun 2020 11:28:06 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:39324 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728293AbgFVP2F (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Jun 2020 11:28:05 -0400
-Received: by mail-ot1-f68.google.com with SMTP id g5so13358718otg.6;
-        Mon, 22 Jun 2020 08:28:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=i2c95N6ci/w7OThvHcf5Fy4XsnnDSG6ckQoNsGPl1eo=;
-        b=f7vKEfOXl4WaAdH5q0JB9U8HDfCF6CPBxTeblqh57+TPvlampTHUIY7bwvNXwqklSW
-         waBCl43ICIL8FfprfAyq5EQG8NbbaHzlB2o/OrDLPz6v4gsX+Ox+foy1Wsz+lh4A89ls
-         SiEUIBbvHjxBzELGSqOWrzy8x7a4/iKMxGqQQl7wlgZHZXYYSThoqiqNEUAgCjJ0cEfa
-         5ihyLa2DRzY4d2rtF8imVjRjFoNshZIeqwgtS85coVZYHbe4yu5Xv7v2oZiJ0v4kddFe
-         gbB4//xCRGLa6gNVuhgZNqlHchqMluJvhhbJ5nxen826ZDVallCReJJJlc/LchAYmwbm
-         ynKA==
-X-Gm-Message-State: AOAM531cafPIiCs1bMyB/vpi1UFjH4He0txYcePvV4689kR4nZhhdP9+
-        MEPaZo0itaJxHQq4e2NyPXZcOm+hrLW1I5twc04=
-X-Google-Smtp-Source: ABdhPJwPycask6rXfFgrsgFmggHDR562yU+PZHy41snSPCHC1tppXmJo1aa1PK+69GQNrvfUgNROeNC4pvEbtPnx6sM=
-X-Received: by 2002:a05:6830:10ca:: with SMTP id z10mr13946922oto.167.1592839684757;
- Mon, 22 Jun 2020 08:28:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
- <2713141.s8EVnczdoM@kreacher> <1821880.vZFEW4x2Ui@kreacher> <CAHp75VePDyPevCAOntFpTajf5zd9ocwjeWRz80WmCNtiDicpLg@mail.gmail.com>
-In-Reply-To: <CAHp75VePDyPevCAOntFpTajf5zd9ocwjeWRz80WmCNtiDicpLg@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 22 Jun 2020 17:27:53 +0200
-Message-ID: <CAJZ5v0hu9_TA0KAe=9ZCSG4_KijSYb=qnt8MYe9QYwGbz=pmBg@mail.gmail.com>
-Subject: Re: [RFT][PATCH v2 2/4] ACPI: OSL: Add support for deferred unmapping
- of ACPI memory
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        Ira Weiny <ira.weiny@intel.com>,
-        James Morse <james.morse@arm.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        id S1729266AbgFVPpt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 Jun 2020 11:45:49 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:54934 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728431AbgFVPpt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Jun 2020 11:45:49 -0400
+Received: from 89-64-85-91.dynamic.chello.pl (89.64.85.91) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
+ id 19bc9c8f661b8d9f; Mon, 22 Jun 2020 17:45:47 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Thomas Renninger <trenn@suse.de>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
-        Bob Moore <robert.moore@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        "Zhang, Rui" <rui.zhang@intel.com>
+Subject: Re: Remove last acpi procfs dirs after being marked deprecated for a decade
+Date:   Mon, 22 Jun 2020 17:45:46 +0200
+Message-ID: <5013960.NG3uzariRI@kreacher>
+In-Reply-To: <CAJZ5v0hJ4o3nkJOUFEkvRBekWjm2YXfL1UOUBy2RK3VepMOdFg@mail.gmail.com>
+References: <1696561.dScFM4BVNv@c100> <5786623.y7pTLF2AKN@c100> <CAJZ5v0hJ4o3nkJOUFEkvRBekWjm2YXfL1UOUBy2RK3VepMOdFg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 22, 2020 at 4:56 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Mon, Jun 22, 2020 at 5:06 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+On Wednesday, May 27, 2020 7:46:23 PM CEST Rafael J. Wysocki wrote:
+> On Wed, May 27, 2020 at 6:07 PM Thomas Renninger <trenn@suse.de> wrote:
 > >
-> > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> > Am Mittwoch, 27. Mai 2020, 17:49:09 CEST schrieb Rafael J. Wysocki:
+> > > On Wed, May 27, 2020 at 5:33 PM Thomas Renninger <trenn@suse.de> wrote:
+> > > > Kernel development should not be hindered anymore by this absolutely
+> > > > outdated stuff.
+> > >
+> > > Well, this is a bit vague.
+> > >
+> > > I'm not against making this change, but why do it now?  Is there
+> > > anything in particular that cannot be done without it?
 > >
-> > Implement acpi_os_unmap_deferred() and
-> > acpi_os_release_unused_mappings() and set ACPI_USE_DEFERRED_UNMAPPING
-> > to allow ACPICA to use deferred unmapping of memory in
-> > acpi_ex_system_memory_space_handler() so as to avoid RCU-related
-> > performance issues with memory opregions.
->
-> ...
->
-> > +static bool acpi_os_drop_map_ref(struct acpi_ioremap *map, bool defer)
-> >  {
-> > -       unsigned long refcount = --map->refcount;
-> > +       if (--map->track.refcount)
-> > +               return true;
+> > Because of the deprecated message being shown on laptops booting with
+> > the option enabled. I got a bugreport about it recently.
 > >
-> > -       if (!refcount)
-> > -               list_del_rcu(&map->list);
-> > -       return refcount;
-> > +       list_del_rcu(&map->list);
-> > +
->
-> > +       if (defer) {
-> > +               INIT_LIST_HEAD(&map->track.gc);
-> > +               list_add_tail(&map->track.gc, &unused_mappings);
->
-> > +               return true;
-> > +       }
-> > +
-> > +       return false;
->
-> A nit:
->
-> Effectively it returns a value of defer.
->
->   return defer;
->
-> >  }
-
-Do you mean that one line of code could be saved?  Yes, it could.
-
->
-> ...
->
-> > @@ -416,26 +421,102 @@ void __ref acpi_os_unmap_iomem(void __iomem *virt, acpi_size size)
-> >         }
+> > I could not please check_patch to properly include this commit id
+> > (recon the double quotes in the title):
 > >
-> >         mutex_lock(&acpi_ioremap_lock);
-> > +
-> >         map = acpi_map_lookup_virt(virt, size);
->
-> A nit: should it be somewhere else (I mean in another patch)?
-
-Do you mean the extra empty line?
-
-No, I don't think so, or the code style after this patch would not
-look consistent.
-
-> >         if (!map) {
->
-> ...
->
-> > +       /* Release the unused mappings in the list. */
-> > +       while (!list_empty(&list)) {
-> > +               struct acpi_ioremap *map;
-> > +
-> > +               map = list_entry(list.next, struct acpi_ioremap, track.gc);
->
-> A nt: if __acpi_os_map_cleanup() (actually acpi_unmap() according to
-> the code) has no side effects, can we use list_for_each_entry_safe()
-> here?
-
-I actually prefer a do .. while version of this which saves the
-initial check (which has been carried out already).
-
-> > +               list_del(&map->track.gc);
-> > +               __acpi_os_map_cleanup(map);
-> > +       }
-> > +}
->
-> ...
->
-> > @@ -472,16 +552,18 @@ void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
-> >                 return;
+> > e63f6e28dda6de3de2392ddca321e211fd860925
+> > Date:   Mon Jul 7 01:13:46 2014 +0200
 > >
-> >         mutex_lock(&acpi_ioremap_lock);
-> > +
-> >         map = acpi_map_lookup(addr, gas->bit_width / 8);
->
-> A nit: should it be somewhere else (I mean in another patch)?
+> >     Revert "ACPI / AC: Remove AC's proc directory."
+> >
+> >     Revert commit ab0fd674d6ce (ACPI / AC: Remove AC's proc directory.),
+> >     because some old tools (e.g. kpowersave from kde 3.5.10) are still
+> >     using /proc/acpi/ac_adapter.
+> >
+> >     Fixes: ab0fd674d6ce (ACPI / AC: Remove AC's proc directory.)
+> >
+> >
+> > kpowersave was written by myself and I can say for sure, that this stuff
+> > is more than outdated.
+> 
+> Fair enough, but I'd rather stage it for 5.9 to give it a full cycle
+> of baking in linux-next.
 
-Nope.
+And so applied now as 5.9 material, thanks!
 
-Thanks!
+
+
