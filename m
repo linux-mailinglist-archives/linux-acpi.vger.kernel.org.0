@@ -2,104 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5948203B66
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jun 2020 17:47:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11E70203B79
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jun 2020 17:49:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729259AbgFVPrJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 Jun 2020 11:47:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40784 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729196AbgFVPrI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Jun 2020 11:47:08 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB4F3C061573;
-        Mon, 22 Jun 2020 08:47:08 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id j4so7741388plk.3;
-        Mon, 22 Jun 2020 08:47:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xc2mKgeExdGmIWqPOYOYWo2Adk+x5jGFKVodlRCWmyU=;
-        b=cHFkvNQ3kDK5qybk3Qkc7QMvYMDxnAW7w/x/z161hVHqWAJJ/0Mxy1ocu8GLKCHwwf
-         AL54f+6RUWVivK0X3t1NG3a0lB5qLdxCGOOb8sIzxjwbywiESpPsEbnWmuoFPAt7YEue
-         D83hrHNbHTPE0LkgCvRcCxjf7nPTEAVgTgiV+4R/1r9w/GwBO4vv3wN4UJF0jaOi0Cyw
-         wp86iZ1b5TX6/RDHzyacxQcruuDDIb/uVZJEbjmrFJu36VXuY3WhlUDx+iu+YZ2Cx65D
-         Mlc/2aK6I8TySALnESH8Q5RhFEavkhTc74hokrDyv/aYVOFILUOnwoLreHDmR/XWOEnf
-         E8eQ==
+        id S1729342AbgFVPtZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 Jun 2020 11:49:25 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:42264 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728293AbgFVPtZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Jun 2020 11:49:25 -0400
+Received: by mail-ot1-f67.google.com with SMTP id t6so13408054otk.9;
+        Mon, 22 Jun 2020 08:49:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=xc2mKgeExdGmIWqPOYOYWo2Adk+x5jGFKVodlRCWmyU=;
-        b=HX5/J01a8FMsMEm6Jco0K29JzMcNzvINPf1tkxiMGIjwxYs+Iv/J3GJ3pDC+SLOwGV
-         6ADNsOIIB4CizTLoWl36nBBv5iSti5uLZ45Ic+TyAXk3PieY+KDvZUcvnbzkSbjOI6JF
-         afm3endvgKmBbSW0PJ+rfZqT8yvh57pjhqCSN9ctzRbUlLhMW93Uo+gCB4U7H5yKt4GX
-         BWF8rnL7cXJHWGVyaJ068Gkj+TKvoVwg0iafe9r4aIzpdWbr6JLBMxOkf8Iiqfa1pWoI
-         Vew95qRNqw6vTtiFD8VH5URIhxt0tasLAc1SCSJC0yIddR4szjnspcvJGNq5rzpjh37y
-         Pn/Q==
-X-Gm-Message-State: AOAM531hC56usaaq382aSdD5/0l0SEOF3+F4we4KvgqxAm7GaWuiXpVn
-        3dAebcrDzDAuh0OPeVhLQm36Si8exPOYeXf2xJE=
-X-Google-Smtp-Source: ABdhPJz7jigT5zkg/O2S5/eaBk4kjsdhjro5aDd0v+PmSBHqwDtOO8xOJsJOC98Bakhoy/3YazfLdb/XwgY8UG1pf7Q=
-X-Received: by 2002:a17:90a:b30d:: with SMTP id d13mr18713382pjr.181.1592840828258;
- Mon, 22 Jun 2020 08:47:08 -0700 (PDT)
+        bh=ukHKRXuBbPQ+hCHp8ZkdpCwZxoKqRm4bkB6SlAMSyts=;
+        b=INgfEx/Ox65qHBF2f2NKQt1uc/q5M9MQyJEXraXilxZsnR2p63v95aQDFUg2lt4BOe
+         wsVUgsYQihmF5uVltxwEpzEX7kmV12CrsxaVatYko5nZk+g1WRhfF/kBycqXDhEYB1gw
+         XhPdnD6a6mXHZOQdbXbG7rMpkj2edullhoN0KdWB4T0DcxXfT5feK8GtvW6u+yzHROtF
+         cTk0q1zyt9mLiuHgkubaajG16nftVdM4gqhC9lj/WU+Tx/OfvBlieZX6NilOlDIKgw6q
+         Wv9ASm+62Iw2FcRFVvfRBy8tHLh7yn9W8EMvZh6W+uegbMglLVFAFOPpua2faISK0HRP
+         UiVg==
+X-Gm-Message-State: AOAM5302uTANwsXB1tjuT+A7/FS3CtcSetVQO3zxZAshistlTalWjFRs
+        +U9GHRwMeWIu6iHr0k7r2g1ctvpNS6v8oezAp/E=
+X-Google-Smtp-Source: ABdhPJyVUFz/In4cnlLRHIolL4alEhLcXovuLEA210Edp2UfV5x+qTGIiJivAxU9OTkdQkDrFPDlwe46o1wzUgjWtl4=
+X-Received: by 2002:a9d:62c2:: with SMTP id z2mr14189823otk.145.1592840964455;
+ Mon, 22 Jun 2020 08:49:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
- <2713141.s8EVnczdoM@kreacher> <1821880.vZFEW4x2Ui@kreacher>
- <CAHp75VePDyPevCAOntFpTajf5zd9ocwjeWRz80WmCNtiDicpLg@mail.gmail.com> <CAJZ5v0hu9_TA0KAe=9ZCSG4_KijSYb=qnt8MYe9QYwGbz=pmBg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hu9_TA0KAe=9ZCSG4_KijSYb=qnt8MYe9QYwGbz=pmBg@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 22 Jun 2020 18:46:55 +0300
-Message-ID: <CAHp75VdQbH28ZyqkgPU_tq8WpHf152=4LpLCSLUji3MmywMiQw@mail.gmail.com>
-Subject: Re: [RFT][PATCH v2 2/4] ACPI: OSL: Add support for deferred unmapping
- of ACPI memory
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        Ira Weiny <ira.weiny@intel.com>,
-        James Morse <james.morse@arm.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+References: <20200515053500.215929-1-saravanak@google.com> <20200515053500.215929-5-saravanak@google.com>
+ <CAMuHMdUnbDvn6GdK51MN-+5iRp6zYRf-yzKY+OwcQOGrYqOZPA@mail.gmail.com>
+ <CAGETcx9JKbNQWQwNah7pO5ppVSAe86R-OmMujZPYNkuTCLwKnQ@mail.gmail.com>
+ <CAMuHMdU2gF=aTeVxRvtzAMLGY=GyBDfBwrYZxoRkL1tV7dL56g@mail.gmail.com>
+ <CAGETcx-rHFthf-aLb_S-ST6Evozvgis5XX5u0LNxyvfMoJOLKQ@mail.gmail.com>
+ <CAMuHMdXW0jM-A5cvYtFVcgc1Gm3tKkvr0+kWpeJqpJDzNOuYeA@mail.gmail.com>
+ <CAGETcx8W96KAw-d_siTX4qHB_-7ddk0miYRDQeHE6E0_8qx-6Q@mail.gmail.com> <CAGETcx87JNfKEu4brQ3S-9wObv=OwXkAoDBSREQH5dAD68TPsA@mail.gmail.com>
+In-Reply-To: <CAGETcx87JNfKEu4brQ3S-9wObv=OwXkAoDBSREQH5dAD68TPsA@mail.gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 22 Jun 2020 17:49:13 +0200
+Message-ID: <CAMuHMdUsWAQ3XUGh1Jg_Y3LWz4G5aaZfHqL8JjNZv3DrW3TjvQ@mail.gmail.com>
+Subject: Re: [PATCH v1 4/4] of: platform: Batch fwnode parsing when adding all
+ top level devices
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Android Kernel Team <kernel-team@android.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
-        Bob Moore <robert.moore@intel.com>
+        Ji Luo <ji.luo@nxp.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 22, 2020 at 6:28 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> On Mon, Jun 22, 2020 at 4:56 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Mon, Jun 22, 2020 at 5:06 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+Hi Saravana,
 
-...
-
-> > > +               return true;
-> > > +       }
-> > > +
-> > > +       return false;
-> >
-> > A nit:
-> >
-> > Effectively it returns a value of defer.
-> >
-> >   return defer;
-> >
-> > >  }
+On Sat, Jun 20, 2020 at 4:33 AM Saravana Kannan <saravanak@google.com> wrote:
+> On Fri, Jun 19, 2020 at 1:07 PM Saravana Kannan <saravanak@google.com> wrote:
+> > I think instead of deferred_probe_work_func() moving the device to the
+> > end of the dpm_list, I think the device probing successfully is what
+> > should move it to the end of the dpm_list. That way, the dpm_list is
+> > actually ordered by when the devices become functional and not the
+> > random order in DT or random probe order which can get pretty
+> > convoluted with multiple deferred probes. This feels right and will
+> > make suspend/resume more robust against DT ordering -- but I'm not
+> > sure what other wide ranging impact this has for other platforms.
 >
-> Do you mean that one line of code could be saved?  Yes, it could.
+> If you want to play around with a potential fix to test my hypothesis,
+> I think it's just adding this one line to driver_bound():
+> ============
+> klist_add_tail(&dev->p->knode_driver, &dev->driver->p->klist_devices);
+> device_links_driver_bound(dev);
+> +device_pm_move_to_tail(dev);
+>
+> device_pm_check_callbacks(dev);
+> ============
 
-Yes. The question here would it make a cleaner way for the reader to
-understand the returned value?
+Thanks, that seems to fix the issue for me, on both affected systems!
+Note that this has quite some impact on the order devices are suspended,
+but this seems harmless.
 
-(For the rest, nevermind, choose whatever suits better in your opinion)
+Will try on more systems later...
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
