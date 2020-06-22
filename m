@@ -2,103 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11E70203B79
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jun 2020 17:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A8EB203B7D
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jun 2020 17:49:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729342AbgFVPtZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 Jun 2020 11:49:25 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:42264 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728293AbgFVPtZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Jun 2020 11:49:25 -0400
-Received: by mail-ot1-f67.google.com with SMTP id t6so13408054otk.9;
-        Mon, 22 Jun 2020 08:49:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ukHKRXuBbPQ+hCHp8ZkdpCwZxoKqRm4bkB6SlAMSyts=;
-        b=INgfEx/Ox65qHBF2f2NKQt1uc/q5M9MQyJEXraXilxZsnR2p63v95aQDFUg2lt4BOe
-         wsVUgsYQihmF5uVltxwEpzEX7kmV12CrsxaVatYko5nZk+g1WRhfF/kBycqXDhEYB1gw
-         XhPdnD6a6mXHZOQdbXbG7rMpkj2edullhoN0KdWB4T0DcxXfT5feK8GtvW6u+yzHROtF
-         cTk0q1zyt9mLiuHgkubaajG16nftVdM4gqhC9lj/WU+Tx/OfvBlieZX6NilOlDIKgw6q
-         Wv9ASm+62Iw2FcRFVvfRBy8tHLh7yn9W8EMvZh6W+uegbMglLVFAFOPpua2faISK0HRP
-         UiVg==
-X-Gm-Message-State: AOAM5302uTANwsXB1tjuT+A7/FS3CtcSetVQO3zxZAshistlTalWjFRs
-        +U9GHRwMeWIu6iHr0k7r2g1ctvpNS6v8oezAp/E=
-X-Google-Smtp-Source: ABdhPJyVUFz/In4cnlLRHIolL4alEhLcXovuLEA210Edp2UfV5x+qTGIiJivAxU9OTkdQkDrFPDlwe46o1wzUgjWtl4=
-X-Received: by 2002:a9d:62c2:: with SMTP id z2mr14189823otk.145.1592840964455;
- Mon, 22 Jun 2020 08:49:24 -0700 (PDT)
+        id S1729147AbgFVPt5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 Jun 2020 11:49:57 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:63854 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728293AbgFVPt5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Jun 2020 11:49:57 -0400
+Received: from 89-64-85-91.dynamic.chello.pl (89.64.85.91) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
+ id dd0acf60019f7936; Mon, 22 Jun 2020 17:49:53 +0200
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Nathan Chancellor <natechancellor@gmail.com>
+Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+        Kees Cook <keescook@chromium.org>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        yuu ichii <byahu140@heisei.be>
+Subject: Re: [PATCH] ACPI: sysfs: Fix pm_profile_attr type
+Date:   Mon, 22 Jun 2020 17:49:52 +0200
+Message-ID: <6575630.DxmDRdjBXZ@kreacher>
+In-Reply-To: <20200612045149.1837-1-natechancellor@gmail.com>
+References: <20200612045149.1837-1-natechancellor@gmail.com>
 MIME-Version: 1.0
-References: <20200515053500.215929-1-saravanak@google.com> <20200515053500.215929-5-saravanak@google.com>
- <CAMuHMdUnbDvn6GdK51MN-+5iRp6zYRf-yzKY+OwcQOGrYqOZPA@mail.gmail.com>
- <CAGETcx9JKbNQWQwNah7pO5ppVSAe86R-OmMujZPYNkuTCLwKnQ@mail.gmail.com>
- <CAMuHMdU2gF=aTeVxRvtzAMLGY=GyBDfBwrYZxoRkL1tV7dL56g@mail.gmail.com>
- <CAGETcx-rHFthf-aLb_S-ST6Evozvgis5XX5u0LNxyvfMoJOLKQ@mail.gmail.com>
- <CAMuHMdXW0jM-A5cvYtFVcgc1Gm3tKkvr0+kWpeJqpJDzNOuYeA@mail.gmail.com>
- <CAGETcx8W96KAw-d_siTX4qHB_-7ddk0miYRDQeHE6E0_8qx-6Q@mail.gmail.com> <CAGETcx87JNfKEu4brQ3S-9wObv=OwXkAoDBSREQH5dAD68TPsA@mail.gmail.com>
-In-Reply-To: <CAGETcx87JNfKEu4brQ3S-9wObv=OwXkAoDBSREQH5dAD68TPsA@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 22 Jun 2020 17:49:13 +0200
-Message-ID: <CAMuHMdUsWAQ3XUGh1Jg_Y3LWz4G5aaZfHqL8JjNZv3DrW3TjvQ@mail.gmail.com>
-Subject: Re: [PATCH v1 4/4] of: platform: Batch fwnode parsing when adding all
- top level devices
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        Android Kernel Team <kernel-team@android.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Ji Luo <ji.luo@nxp.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Saravana,
+On Friday, June 12, 2020 6:51:50 AM CEST Nathan Chancellor wrote:
+> When running a kernel with Clang's Control Flow Integrity implemented,
+> there is a violation that happens when accessing
+> /sys/firmware/acpi/pm_profile:
+> 
+> $ cat /sys/firmware/acpi/pm_profile
+> 0
+> 
+> $ dmesg
+> ...
+> [   17.352564] ------------[ cut here ]------------
+> [   17.352568] CFI failure (target: acpi_show_profile+0x0/0x8):
+> [   17.352572] WARNING: CPU: 3 PID: 497 at kernel/cfi.c:29 __cfi_check_fail+0x33/0x40
+> [   17.352573] Modules linked in:
+> [   17.352575] CPU: 3 PID: 497 Comm: cat Tainted: G        W         5.7.0-microsoft-standard+ #1
+> [   17.352576] RIP: 0010:__cfi_check_fail+0x33/0x40
+> [   17.352577] Code: 48 c7 c7 50 b3 85 84 48 c7 c6 50 0a 4e 84 e8 a4 d8 60 00 85 c0 75 02 5b c3 48 c7 c7 dc 5e 49 84 48 89 de 31 c0 e8 7d 06 eb ff <0f> 0b 5b c3 00 00 cc cc 00 00 cc cc 00 85 f6 74 25 41 b9 ea ff ff
+> [   17.352577] RSP: 0018:ffffaa6dc3c53d30 EFLAGS: 00010246
+> [   17.352578] RAX: 331267e0c06cee00 RBX: ffffffff83d85890 RCX: ffffffff8483a6f8
+> [   17.352579] RDX: ffff9cceabbb37c0 RSI: 0000000000000082 RDI: ffffffff84bb9e1c
+> [   17.352579] RBP: ffffffff845b2bc8 R08: 0000000000000001 R09: ffff9cceabbba200
+> [   17.352579] R10: 000000000000019d R11: 0000000000000000 R12: ffff9cc947766f00
+> [   17.352580] R13: ffffffff83d6bd50 R14: ffff9ccc6fa80000 R15: ffffffff845bd328
+> [   17.352582] FS:  00007fdbc8d13580(0000) GS:ffff9cce91ac0000(0000) knlGS:0000000000000000
+> [   17.352582] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   17.352583] CR2: 00007fdbc858e000 CR3: 00000005174d0000 CR4: 0000000000340ea0
+> [   17.352584] Call Trace:
+> [   17.352586]  ? rev_id_show+0x8/0x8
+> [   17.352587]  ? __cfi_check+0x45bac/0x4b640
+> [   17.352589]  ? kobj_attr_show+0x73/0x80
+> [   17.352590]  ? sysfs_kf_seq_show+0xc1/0x140
+> [   17.352592]  ? ext4_seq_options_show.cfi_jt+0x8/0x8
+> [   17.352593]  ? seq_read+0x180/0x600
+> [   17.352595]  ? sysfs_create_file_ns.cfi_jt+0x10/0x10
+> [   17.352596]  ? tlbflush_read_file+0x8/0x8
+> [   17.352597]  ? __vfs_read+0x6b/0x220
+> [   17.352598]  ? handle_mm_fault+0xa23/0x11b0
+> [   17.352599]  ? vfs_read+0xa2/0x130
+> [   17.352599]  ? ksys_read+0x6a/0xd0
+> [   17.352601]  ? __do_sys_getpgrp+0x8/0x8
+> [   17.352602]  ? do_syscall_64+0x72/0x120
+> [   17.352603]  ? entry_SYSCALL_64_after_hwframe+0x44/0xa9
+> [   17.352604] ---[ end trace 7b1fa81dc897e419 ]---
+> 
+> When /sys/firmware/acpi/pm_profile is read, sysfs_kf_seq_show is called,
+> which in turn calls kobj_attr_show, which gets the ->show callback
+> member by calling container_of on attr (casting it to struct
+> kobj_attribute) then calls it.
+> 
+> There is a CFI violation because pm_profile_attr is of type
+> struct device_attribute but kobj_attr_show calls ->show expecting it
+> to be from struct kobj_attribute. CFI checking ensures that function
+> pointer types match when doing indirect calls. Fix pm_profile_attr to
+> be defined in terms of kobj_attribute so there is no violation or
+> mismatch.
+> 
+> Fixes: 362b646062b2 ("ACPI: Export FADT pm_profile integer value to userspace")
+> Link: https://github.com/ClangBuiltLinux/linux/issues/1051
+> Reported-by: yuu ichii <byahu140@heisei.be>
+> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> ---
+>  drivers/acpi/sysfs.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
+> index 3a89909b50a6..76c668c05fa0 100644
+> --- a/drivers/acpi/sysfs.c
+> +++ b/drivers/acpi/sysfs.c
+> @@ -938,13 +938,13 @@ static void __exit interrupt_stats_exit(void)
+>  }
+>  
+>  static ssize_t
+> -acpi_show_profile(struct device *dev, struct device_attribute *attr,
+> +acpi_show_profile(struct kobject *kobj, struct kobj_attribute *attr,
+>  		  char *buf)
+>  {
+>  	return sprintf(buf, "%d\n", acpi_gbl_FADT.preferred_profile);
+>  }
+>  
+> -static const struct device_attribute pm_profile_attr =
+> +static const struct kobj_attribute pm_profile_attr =
+>  	__ATTR(pm_profile, S_IRUGO, acpi_show_profile, NULL);
+>  
+>  static ssize_t hotplug_enabled_show(struct kobject *kobj,
+> 
+> base-commit: b791d1bdf9212d944d749a5c7ff6febdba241771
+> 
 
-On Sat, Jun 20, 2020 at 4:33 AM Saravana Kannan <saravanak@google.com> wrote:
-> On Fri, Jun 19, 2020 at 1:07 PM Saravana Kannan <saravanak@google.com> wrote:
-> > I think instead of deferred_probe_work_func() moving the device to the
-> > end of the dpm_list, I think the device probing successfully is what
-> > should move it to the end of the dpm_list. That way, the dpm_list is
-> > actually ordered by when the devices become functional and not the
-> > random order in DT or random probe order which can get pretty
-> > convoluted with multiple deferred probes. This feels right and will
-> > make suspend/resume more robust against DT ordering -- but I'm not
-> > sure what other wide ranging impact this has for other platforms.
->
-> If you want to play around with a potential fix to test my hypothesis,
-> I think it's just adding this one line to driver_bound():
-> ============
-> klist_add_tail(&dev->p->knode_driver, &dev->driver->p->klist_devices);
-> device_links_driver_bound(dev);
-> +device_pm_move_to_tail(dev);
->
-> device_pm_check_callbacks(dev);
-> ============
+Applied as 5.8-rc material, thanks!
 
-Thanks, that seems to fix the issue for me, on both affected systems!
-Note that this has quite some impact on the order devices are suspended,
-but this seems harmless.
 
-Will try on more systems later...
 
-Gr{oetje,eeting}s,
 
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
