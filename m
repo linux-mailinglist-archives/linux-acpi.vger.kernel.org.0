@@ -2,170 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AD492047F4
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jun 2020 05:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C86B204B91
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jun 2020 09:49:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731118AbgFWDas (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 Jun 2020 23:30:48 -0400
-Received: from mga01.intel.com ([192.55.52.88]:37359 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731041AbgFWDar (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 22 Jun 2020 23:30:47 -0400
-IronPort-SDR: e97n6scrqdZTvJTgMfHz8Bt2afu+BgbfyFoUx4kgsJvzm3xg6+FTflNUwhM52wjswMIuu8Ol/N
- zplhYS823BMw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9660"; a="162028084"
-X-IronPort-AV: E=Sophos;i="5.75,269,1589266800"; 
-   d="scan'208";a="162028084"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2020 20:30:46 -0700
-IronPort-SDR: gUeYtFDqiFigNyzgQ7a/un72k0V6ut8TjWK+DuNbEceZjv/+9UgKOpXIRZ8WJcw7ZKTZlxDPZN
- QlWzesx8hexw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,269,1589266800"; 
-   d="scan'208";a="263178407"
-Received: from lkp-server01.sh.intel.com (HELO f484c95e4fd1) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 22 Jun 2020 20:30:44 -0700
-Received: from kbuild by f484c95e4fd1 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1jnZdz-0000aY-SD; Tue, 23 Jun 2020 03:30:43 +0000
-Date:   Tue, 23 Jun 2020 11:30:01 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 0d62e7bd3feab497ce3b148fc279e393bf4ba775
-Message-ID: <5ef17739.gydh2Go6Jo2RR0f5%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1731595AbgFWHsu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Jun 2020 03:48:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48688 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731522AbgFWHst (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Jun 2020 03:48:49 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBA3FC061573
+        for <linux-acpi@vger.kernel.org>; Tue, 23 Jun 2020 00:48:49 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id f9so874145pfn.0
+        for <linux-acpi@vger.kernel.org>; Tue, 23 Jun 2020 00:48:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=iXMHLbguntKcuTgr1nAq0fpxZctLmOVLPocRZ01HV1s=;
+        b=Dvb9jWrWxYf0cUS7+mre8Ce7N6LCPCbgM4TfzIgO9x/j/Sz44QbFtHYcBvV6YcHykC
+         /UOjUDAlRBaipXGhgPtfj5VOhd0MjmoLTxYmHS14ROKFa4k7B6adT6mjHgV2lQZYAb2L
+         9lBtnjHKiulqZ7h6mF5QFFytTHA5SEJIAChcsfvKC0+xwvXLEhh4oJ/sXC4FDnOEad0q
+         wFvAaXsf3se/vnfb3bW1sYXvPN+QVKdtP6yU8qG9ZHjQx6589ayIzIweyVGj7eNLSCdB
+         qISGLxSJaNs+JUUvbM8FXzy2OTirEzU1whLCBwbJsuBLePOiMyrCufoYlY4bb/bJX8TB
+         Kruw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=iXMHLbguntKcuTgr1nAq0fpxZctLmOVLPocRZ01HV1s=;
+        b=Fxm1/G3Ih0KlxpurdOhZJs0uZZYGCJbkkabL2u5euVdOaDggBGcsotsOMqeBtVGI9I
+         a0F2wqFszPeplvaNv26QuSaQp1XItSWw61E2FPNEZ1bO1zxGnPiRBJ5HKg1oawLb1Mir
+         RRtSRfRcIsPNpCDZv5ptd7Ot6VSXcUdIu2Rn6hwh3DamRo26Z6gGUr3zuN7u5fDSCFIw
+         /KAEITIFpy0UrsDUvvREb9DgHxUGzbcwWBspqFIHRCdY5896i7yLHd2qe6eR+EMNiQ0r
+         GZgLwXrc0104Ay7aVHmWEzQL6hXhkGSsWniEaBBjx9bs7GjgdvlUGKpahfkhLns4FC28
+         35gg==
+X-Gm-Message-State: AOAM532xNtAU1VW+kO2Buf46cUuwj6+fixAn36yVxbaYmXAeEPRuSmnc
+        RemuGTWI7x2FJu8HP7Vvag1/5XitHWKYPw==
+X-Google-Smtp-Source: ABdhPJxwJ+AW8uQAXY8Win57SIEKcys5G+XsLikqbv6KNfk0Z4v0oLWW7NunPD5K78dMacn0DXTtuQ==
+X-Received: by 2002:a62:f201:: with SMTP id m1mr25533751pfh.198.1592898529334;
+        Tue, 23 Jun 2020 00:48:49 -0700 (PDT)
+Received: from [10.37.1.30] ([45.135.186.125])
+        by smtp.gmail.com with ESMTPSA id u6sm16409369pfc.83.2020.06.23.00.48.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Jun 2020 00:48:48 -0700 (PDT)
+Subject: Re: [PATCH 0/2] Introduce PCI_FIXUP_IOMMU
+To:     Joerg Roedel <joro@8bytes.org>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        jean-philippe <jean-philippe@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        kenneth-lee-2012@foxmail.com, Wangzhou <wangzhou1@hisilicon.com>,
+        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        iommu@lists.linux-foundation.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
+References: <20200601174104.GA734973@bjorn-Precision-5520>
+ <779f4044-cf6a-b0d3-916f-0274450c07d3@linaro.org>
+ <20200622115536.GH3701@8bytes.org>
+From:   Zhangfei Gao <zhangfei.gao@linaro.org>
+Message-ID: <d007cbea-85c0-6c75-fc4a-e2872ff59ea4@linaro.org>
+Date:   Tue, 23 Jun 2020 15:48:25 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200622115536.GH3701@8bytes.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: 0d62e7bd3feab497ce3b148fc279e393bf4ba775  Merge branch 'acpi-sysfs-next' into bleeding-edge
+Hi, Joerg
 
-elapsed time: 726m
+On 2020/6/22 下午7:55, Joerg Roedel wrote:
+> On Thu, Jun 04, 2020 at 09:33:07PM +0800, Zhangfei Gao wrote:
+>> +++ b/drivers/iommu/iommu.c
+>> @@ -2418,6 +2418,10 @@ int iommu_fwspec_init(struct device *dev, struct
+>> fwnode_handle *iommu_fwnode,
+>>          fwspec->iommu_fwnode = iommu_fwnode;
+>>          fwspec->ops = ops;
+>>          dev_iommu_fwspec_set(dev, fwspec);
+>> +
+>> +       if (dev_is_pci(dev))
+>> +               pci_fixup_device(pci_fixup_final, to_pci_dev(dev));
+>> +
+> That's not going to fly, I don't think we should run the fixups twice,
+> and they should not be run from IOMMU code. Is the only reason for this
+> second pass that iommu_fwspec is not yet allocated when it runs the
+> first time? I ask because it might be easier to just allocate the struct
+> earlier then.
+Thanks for looking this.
 
-configs tested: 107
-configs skipped: 4
+Yes, it is the only reason calling fixup secondly after iommu_fwspec is 
+allocated.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The first time fixup final is very early in pci_bus_add_device.
+If allocating iommu_fwspec earlier, it maybe in pci_alloc_dev.
+And assigning ops still in iommu_fwspec_init.
+Have tested it works.
+Not sure is it acceptable?
 
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-mips                malta_kvm_guest_defconfig
-arm                         s3c6400_defconfig
-xtensa                           alldefconfig
-sh                  sh7785lcr_32bit_defconfig
-xtensa                    xip_kc705_defconfig
-arm                        keystone_defconfig
-arm                       versatile_defconfig
-m68k                            mac_defconfig
-sh                           sh2007_defconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-i386                              allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a006-20200622
-i386                 randconfig-a002-20200622
-i386                 randconfig-a003-20200622
-i386                 randconfig-a001-20200622
-i386                 randconfig-a005-20200622
-i386                 randconfig-a004-20200622
-x86_64               randconfig-a004-20200622
-x86_64               randconfig-a002-20200622
-x86_64               randconfig-a003-20200622
-x86_64               randconfig-a005-20200622
-x86_64               randconfig-a001-20200622
-x86_64               randconfig-a006-20200622
-i386                 randconfig-a013-20200622
-i386                 randconfig-a016-20200622
-i386                 randconfig-a012-20200622
-i386                 randconfig-a014-20200622
-i386                 randconfig-a015-20200622
-i386                 randconfig-a011-20200622
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
+Alternatively, adding can_stall to struct pci_dev is simple but ugly too,
+since pci does not know stall now.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+
+Thanks
+
+
+
