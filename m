@@ -2,133 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8D352050A1
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jun 2020 13:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E069820515D
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jun 2020 13:53:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732332AbgFWL1w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Jun 2020 07:27:52 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:34780 "EHLO
-        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732189AbgFWL1u (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 23 Jun 2020 07:27:50 -0400
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05NB6EWM032232;
-        Tue, 23 Jun 2020 07:27:45 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 31uds05fvx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 23 Jun 2020 07:27:45 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-        by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05NBQ8ZX015213;
-        Tue, 23 Jun 2020 11:27:44 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
-        by ppma05wdc.us.ibm.com with ESMTP id 31sa38ptxf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 23 Jun 2020 11:27:44 +0000
-Received: from b03ledav003.gho.boulder.ibm.com (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
-        by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 05NBRgYO10617418
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 23 Jun 2020 11:27:42 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id B43586A054;
-        Tue, 23 Jun 2020 11:27:43 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 002E16A047;
-        Tue, 23 Jun 2020 11:27:42 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-        by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Tue, 23 Jun 2020 11:27:42 +0000 (GMT)
-Subject: Re: [PATCH v3] acpi: Extend TPM2 ACPI table with missing log fields
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Stefan Berger <stefanb@linux.vnet.ibm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-integrity@vger.kernel.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-security-module@vger.kernel.org
-References: <20200331214949.883781-1-stefanb@linux.vnet.ibm.com>
- <20200401083729.GD17325@linux.intel.com>
- <CAJZ5v0gQ04h1+zN4wHj1vkwPvqu3RPfsY60VJ+GOtgUrvWuxLQ@mail.gmail.com>
- <20200402192145.GB10314@linux.intel.com>
- <dfd2d622-90cb-9621-7b7d-5282f5ee7359@linux.ibm.com>
- <20200623005647.GD28795@linux.intel.com>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-Message-ID: <8d032b3c-650b-b806-3d97-2921341b7f0e@linux.ibm.com>
-Date:   Tue, 23 Jun 2020 07:27:42 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1732488AbgFWLxx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Jun 2020 07:53:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58570 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732458AbgFWLxx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Jun 2020 07:53:53 -0400
+Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83C8AC061755
+        for <linux-acpi@vger.kernel.org>; Tue, 23 Jun 2020 04:53:52 -0700 (PDT)
+Received: by mail-il1-x141.google.com with SMTP id j16so6876538ili.9
+        for <linux-acpi@vger.kernel.org>; Tue, 23 Jun 2020 04:53:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
+        b=MJXVe3j4WrUheazf4oj3hZuoEGb1QUBwfIKXI+HYQLSy2SDPPwE1kVsLuA4hFFe7Ar
+         X3qg5QuHIEtAEKtqDlxXqb51cnZCKnVdUhKGJjykUIQMypqVxJAsC8KC3/epbM6l0Axc
+         oTYcVPb51xrAQqHbnbNSleKnCa7fDXJx76GCedWwHvYYSI7G5O2QFMePH+lATNn8z+R3
+         nyFHE2WytQ8aU8GYyr3ddecny9sUyeRKm/Wt+HIqkPKyT2RmHFeWf+gbVPod31wiLzmR
+         NX0AyVAXGcqsKTNIneMp3T4IS4RWTbjW9PvSjqHlq9TLbmAo0DoqZcISmnexcNE3Klbm
+         AY5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
+        b=S3eBUlIeCH97q5I3Q6ymwQnNjOedMFdYgi986AeJ0PxSb2XP/l8V/WdvoBqEswdqNy
+         wO6+3RujkBqYTNAPLmDJDbmR8b8p0LIW0t8vt8peX2YQmAial2gpIQhgNRA3/EWvHniS
+         gAP9GAZKKIXpB7u0EodsLYKFUiSxI0krqPjNLyvfu87O0l2pllOpT7ZxGCdTCDQ+maeP
+         1HdwcEO9WXCAL97x6+Mkiz6zRDVIe2cCjFRrBudQETQqOiPo+4uEEWwAk5mmbRw2WoUe
+         eAewhD74/GGiEOVYnsFla0xwJXPRGyc44H76QMG507swJEweOCZ3ALuAYZXy7mkgTGD9
+         p3dQ==
+X-Gm-Message-State: AOAM530iJfc9skbHK7lWumMMn0Nh7BWC44ZxPZU/3huIEpgUl38Fn5+X
+        XzFnor0/osn357alfCG9LOPe9p2+1U0BTk1JbDy+PX2mKVU=
+X-Google-Smtp-Source: ABdhPJwuA4xHW2G+kUKHPagKDvfPDwDGpReBrGfGHNKDMrt6U9N7GMq186QUJKG8UHwmhmcOTTkNOHsAkgb1NN6qduY=
+X-Received: by 2002:a92:9914:: with SMTP id p20mr23117530ili.273.1592913232014;
+ Tue, 23 Jun 2020 04:53:52 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200623005647.GD28795@linux.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-06-23_06:2020-06-23,2020-06-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- malwarescore=0 adultscore=0 phishscore=0 suspectscore=0
- cotscore=-2147483648 clxscore=1015 mlxscore=0 bulkscore=0 mlxlogscore=999
- lowpriorityscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006230084
+Received: by 2002:a92:290e:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 04:53:51
+ -0700 (PDT)
+Reply-To: bektery@outlook.com
+From:   YAVUZ BEKTER <bariskims@gmail.com>
+Date:   Tue, 23 Jun 2020 04:53:51 -0700
+Message-ID: <CAC21a+oHymu+PR-1SfXizxKeEyYo0c5ibQK+_BwSDsjZ7uX7HQ@mail.gmail.com>
+Subject: Hello.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 6/22/20 8:56 PM, Jarkko Sakkinen wrote:
-> On Fri, Jun 19, 2020 at 11:14:20AM -0400, Stefan Berger wrote:
->> On 4/2/20 3:21 PM, Jarkko Sakkinen wrote:
->>> On Wed, Apr 01, 2020 at 11:05:36AM +0200, Rafael J. Wysocki wrote:
->>>> On Wed, Apr 1, 2020 at 10:37 AM Jarkko Sakkinen
->>>> <jarkko.sakkinen@linux.intel.com> wrote:
->>>>> On Tue, Mar 31, 2020 at 05:49:49PM -0400, Stefan Berger wrote:
->>>>>> From: Stefan Berger <stefanb@linux.ibm.com>
->>>>>>
->>>>>> Recent extensions of the TPM2 ACPI table added 3 more fields
->>>>>> including 12 bytes of start method specific parameters and Log Area
->>>>>> Minimum Length (u32) and Log Area Start Address (u64). So, we extend
->>>>>> the existing structure with these fields to allow non-UEFI systems
->>>>>> to access the TPM2's log.
->>>>>>
->>>>>> The specification that has the new fields is the following:
->>>>>>     TCG ACPI Specification
->>>>>>     Family "1.2" and "2.0"
->>>>>>     Version 1.2, Revision 8
->>>>>>
->>>>>> Adapt all existing table size calculations to use
->>>>>> offsetof(struct acpi_table_tpm2, start_method_specific)
->>>>>> [where start_method_specific is a newly added field]
->>>>>> rather than sizeof(struct acpi_table_tpm2) so that the addition
->>>>>> of the new fields does not affect current systems that may not
->>>>>> have them.
->>>>>>
->>>>>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
->>>>>> Cc: linux-acpi@vger.kernel.org
->>>>> I think I'm cool with this but needs an ack from ACPI maintainer.
->>>>>
->>>>> Rafael, given that this not an intrusive change in any possible means,
->>>>> can I pick this patch and put it to my next pull request?
->>>> Yes, please.
->>>>
->>>> Thanks!
->>> Great, thanks Rafael.
->>>
->>> Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
->>>
->>> Do you mind if I add your ack to the commit?
->>
->> Any chance to get v4 applied?
-> You should split the actbl3.h change to a separate patch and add 'Cc:'
-> tag to Rafael to the commit message.
-
-I did this in one patch because it seems like a mistake to extend the 
-structure and not modify the size checks.
-
-   Stefan
-
->
-> /Jarkko
-
-
+I am the foreign operations director of Bank of Turkey.
+My name is Mr, Yavuz. I have a sensitive investment project to discuss
+with you, please reply now.
+________________________
+Ik ben de directeur buitenlandse activiteiten van de Bank of Turkey.
+Mijn naam is meneer Yavuz. Ik moet een gevoelig investeringsproject bespreken
+met u, antwoord dan nu.
