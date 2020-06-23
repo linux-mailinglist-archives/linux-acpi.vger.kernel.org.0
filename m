@@ -2,137 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12D28205B58
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jun 2020 21:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46DFE2068A3
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jun 2020 01:48:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733138AbgFWTBi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Jun 2020 15:01:38 -0400
-Received: from mail-eopbgr130095.outbound.protection.outlook.com ([40.107.13.95]:60643
-        "EHLO EUR01-HE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1733200AbgFWTBi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 23 Jun 2020 15:01:38 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ktg4GWDeNTg8lyFFO6xnMaTptBZZJ4zJO4/LMJ60+MYr4M+sGjeG7GN+bnA7XLONYgmO4D/pzXygrTzGriQ46Vr911PhI2hNSUU8oGwsjJsW12Q9befIhAdxkL6bwiHCQAPWxnRxDJVNw1WliWNfvGdBkrVvIo5yLNskKDlh7YIDof/VES3h9sgT6MyELfrc8AjLsYZ+4OaNugOrQYpx6GqjbMz9IvDnP3hlxbj/oRVFV8LirCNqcezv1YkzMd7RB9TV2MjXFasbeAMI9oLzJR7hrUlAE+QJ5KJNgigYNXYXquLzIBY2SueR5gfo+bzHJ7zy4cELF7v3YTFHNo+MDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EnpliP9+F/fX8p4zAR/gG06/5tPDh7GvwOFR4keLz0E=;
- b=R2MSSjS/uy/me1A3/nH5y8F9O/U7jkUn3gIoU11tRUcvoWGTQB5uMn6Q/lJeSbSUz5/mibgE9DdpkNegFF0QKJXn2OElBAg/egBIcGly2kQw/aX8ubAUUvN2BfA53Y3hV2R4S5aloq1ANSEGt9ikwhD1lcGiHAvz9Mf5UYwJFQBMCcsqnyRRyWA8bUW27uBE6ppQptT3C7XGhrzd5MYg3omgduoqldrVwm29VfEH0aMRxINc98+3aB+iHU81BRczW2SfebNXTMtFgkZUTMkT/gZ1DSFIo22IA3jqPrAsTvVLEBapfzjQmbcsHbdXj2Yb2YI5VD8UnmyknYFy/t4SIw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EnpliP9+F/fX8p4zAR/gG06/5tPDh7GvwOFR4keLz0E=;
- b=HoshDd676q6UfsyP09OxF6lfh6LI049i+SnQ7PTTCycF3LqT1DvWJY01y04/7HJwqK3Ezk1tdNhBCNUu7t3qs8XbW78x2lmu7IXlhFnzU+boqTjfw7KG4lluL55DKa/Ok7Rhamd43EEr36NR45kcXq7buEdZMN8vi5uwv/AnnIE=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=virtuozzo.com;
-Received: from AM0PR08MB5140.eurprd08.prod.outlook.com (2603:10a6:208:162::17)
- by AM0PR08MB5171.eurprd08.prod.outlook.com (2603:10a6:208:159::25) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.22; Tue, 23 Jun
- 2020 19:01:33 +0000
-Received: from AM0PR08MB5140.eurprd08.prod.outlook.com
- ([fe80::189d:9569:dbb8:2783]) by AM0PR08MB5140.eurprd08.prod.outlook.com
- ([fe80::189d:9569:dbb8:2783%6]) with mapi id 15.20.3109.027; Tue, 23 Jun 2020
- 19:01:33 +0000
-Subject: Re: [PATCH v2] ACPI / hotplug / PCI: lost acpiphp_put_context in
- acpiphp_grab_context()
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        id S2387613AbgFWXs5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Jun 2020 19:48:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56324 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387520AbgFWXs5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Jun 2020 19:48:57 -0400
+X-Greylist: delayed 385 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 23 Jun 2020 16:48:56 PDT
+Received: from mail.klausen.dk (mail.klausen.dk [IPv6:2001:470:1f0b:1730::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9142CC061573;
+        Tue, 23 Jun 2020 16:48:56 -0700 (PDT)
+Subject: Re: [PATCH v13 1/4] battery: Add the battery hooking API
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=klausen.dk; s=dkim;
+        t=1592955747;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=4g5w63uD1aXz3cObU8Y1okQo2GDDE+cBxkna1MnTOqQ=;
+        b=nKLcQnci93IxtvDZQUO5UhWuybhxYljcwchzOEd9aJXluuHbT1F1cJNocCeYKSVaYtqoss
+        vJbvFhqJozN/8h4GvzdkfSbjLeb88p4PYTFEsy5NWxW4KaVILqzTspWUyeMpTG3k0u4gAk
+        r0e6xzzpT3cEq7GRmsb0UEirrrU8Rd0=
+To:     Ognjen Galic <smclt30p@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>
-References: <CAJZ5v0gQD_T9WmoF4gv-eDpmKto4_c0pJGiy_7FPiipSGOTrQQ@mail.gmail.com>
- <d41ead67-f66d-43fd-7a4c-e4d92adb52f2@virtuozzo.com>
- <7280140.ndZnX9ZZJL@kreacher>
-From:   Vasily Averin <vvs@virtuozzo.com>
-Message-ID: <5c06169c-295d-040b-07e1-823880584bb9@virtuozzo.com>
-Date:   Tue, 23 Jun 2020 22:01:31 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
-In-Reply-To: <7280140.ndZnX9ZZJL@kreacher>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM0PR03CA0052.eurprd03.prod.outlook.com (2603:10a6:208::29)
- To AM0PR08MB5140.eurprd08.prod.outlook.com (2603:10a6:208:162::17)
+        Robert Moore <robert.moore@intel.com>,
+        Lv Zheng <lv.zheng@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        devel@acpica.org, Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        Sebastian Reichel <sre@kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        ibm-acpi-devel@lists.sourceforge.net,
+        Linux PM <linux-pm@vger.kernel.org>,
+        =?UTF-8?Q?Christoph_B=c3=b6hmwalder?= <christoph@boehmwalder.at>,
+        Kevin Locke <kevin@kevinlocke.name>
+References: <20180207145813.icmv6rwemyejhxbk@thinkpad>
+From:   Kristian Klausen <kristian@klausen.dk>
+Message-ID: <2270b8c7-beec-5ab6-f8b7-5ec41751c699@klausen.dk>
+Date:   Wed, 24 Jun 2020 01:42:26 +0200
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [172.16.24.21] (185.231.240.5) by AM0PR03CA0052.eurprd03.prod.outlook.com (2603:10a6:208::29) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.22 via Frontend Transport; Tue, 23 Jun 2020 19:01:32 +0000
-X-Originating-IP: [185.231.240.5]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 86383579-1fa9-4209-2014-08d817a7d88a
-X-MS-TrafficTypeDiagnostic: AM0PR08MB5171:
-X-Microsoft-Antispam-PRVS: <AM0PR08MB5171BB98ED8939233F4D9E71AA940@AM0PR08MB5171.eurprd08.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
-X-Forefront-PRVS: 04433051BF
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: JQilIaeIA8A9OruvQbWCpsZ9bSpXm2hJipno0mccKk+VL8Hf5BnNhpChEM/lxMQRBlboQU5MiDDP97ojsn9MRRcTCEkYqO1O0HmYDm5hiezroB4h+WzQo5T/tPBsJWjeuFIYZWJbnhJgYJhi2GcFUwKClo7i7QTwnQAdVrDLxCV7laMOsybGHF6LxvqwyK4t7gRXP0BKPmzAb/6/IPjeqHb5jt+uVju0Pb4h1zUvl7WbvBopTWoiu2EM3US6BtCCQPsGnPS2eWL4SaSf0IngVugvWae2xa86CPlIPxDLBa6rZruyCRiAQU1NAd6+yupGtEDpiJhAJCUCBjzrN3FAYA9EXpsiVA4qHmZyi2EvS/kbBXyFx4bZdUHiHOcc4kh4
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR08MB5140.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(136003)(376002)(346002)(39840400004)(366004)(396003)(66476007)(110136005)(66556008)(83380400001)(31696002)(5660300002)(2616005)(31686004)(956004)(86362001)(2906002)(26005)(53546011)(4326008)(186003)(16526019)(8676002)(52116002)(54906003)(66946007)(478600001)(6486002)(8936002)(36756003)(16576012)(316002)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: WSzLk65oqKeCk6YZU4TLFWTkVTDsRFh/gQjy+L9S5DoRiBVrJOQr37oojfrfFhMxnvbVjz504yrV5cbZ9pEvxf6nHYrAwkvyJ/cTWlzHyFt53eexL4HsxOjUFRHdLPnhOzv3o7LJ30sVA1yz0uVk0hk4v7wMnVZmTOrT2ilCiFUUcv2kby4l4S1HWtAJtWL7cpZmFpSlG0a2jV2hwhRirjbUHgCN8okMSuJv5w4pdOibObqA5t5lxCTdZbC98MDhJdD/l3qMBqj8LX580Bbi0kpKXQN0QmybVtr2HXTPk3WWCuOjqBDGuiusuUwqcVLj+IMQelXEvlos+Ye3FkDiIpqWRTtFE4S7Yt7bayiuHo72jZwsejAKP6LfOAHI/+aaX6wjidqbaphixYtV5F/qdngj3pFQtEv2NHvRJdeky6rlGAixLD/VJQaMjE/Rvf8glvDeGOFt/S6cR+8sBYb/9CtkdFbgGhFKb8kkZK+B6Qw=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86383579-1fa9-4209-2014-08d817a7d88a
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2020 19:01:33.5281
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1MhJJc27cdv1mSbV3N0/4b2tnSFASOtYD8/hFDVLxQAdRk2fI5E/+XxxZejVXQye9CphGPtCNfHtlwoo9yXXbg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR08MB5171
+In-Reply-To: <20180207145813.icmv6rwemyejhxbk@thinkpad>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 6/23/20 7:29 PM, Rafael J. Wysocki wrote:
-> On Tuesday, June 23, 2020 1:17:43 AM CEST Vasily Averin wrote:
->> v2: followed to rafael@'s proposal
->> Fixes: edf5bf34d408 ("ACPI / dock: Use callback pointers from devices' ACPI hotplug contexts")
->> Signed-off-by: Vasily Averin <vvs@virtuozzo.com>
-> Thanks for following my suggestion, but it occurred to me that it could still be
-> done in a better way.
-> 
-> So instead of the above I'd prefer to apply the following change (added PCI and Bjorn
-> for visibility):
+On 07.02.2018 15.58, Ognjen Galic wrote:
+> This is a patch that implements a generic hooking API for the
+> generic ACPI battery driver.
+>
+> With this new generic API, drivers can expose platform specific
+> behaviour via sysfs attributes in /sys/class/power_supply/BATn/
+> in a generic way.
+>
+> A perfect example of the need for this API are Lenovo ThinkPads.
+>
+> Lenovo ThinkPads have a ACPI extension that allows the setting of
+> start and stop charge thresholds in the EC and battery firmware
+> via ACPI. The thinkpad_acpi module can use this API to expose
+> sysfs attributes that it controls inside the ACPI battery driver
+> sysfs tree, under /sys/class/power_supply/BATN/.
+>
+> The file drivers/acpi/battery.h has been moved to
+> include/acpi/battery.h and the includes inside ac.c, sbs.c, and
+> battery.c have been adjusted to reflect that.
+>
+> When drivers hooks into the API, the API calls add_battery() for
+> each battery in the system that passes it a acpi_battery
+> struct. Then, the drivers can use device_create_file() to create
+> new sysfs attributes with that struct and identify the batteries
+> for per-battery attributes.
 
-Thank you,
-however could you please tell me what do you think about following variant?
+Hi
 
- drivers/pci/hotplug/acpiphp_glue.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+I did that, when I implemented charge threshold support for ASUS 
+laptops[1][2].
 
-diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-index b4c92cee13f8..5875c3654b52 100644
---- a/drivers/pci/hotplug/acpiphp_glue.c
-+++ b/drivers/pci/hotplug/acpiphp_glue.c
-@@ -119,16 +119,17 @@ static inline void put_bridge(struct acpiphp_bridge *bridge)
- 
- static struct acpiphp_context *acpiphp_grab_context(struct acpi_device *adev)
- {
--	struct acpiphp_context *context;
-+	struct acpiphp_context *c, *context = NULL;
- 
- 	acpi_lock_hp_context();
--	context = acpiphp_get_context(adev);
--	if (!context || context->func.parent->is_going_away) {
--		acpi_unlock_hp_context();
--		return NULL;
-+	c = acpiphp_get_context(adev);
-+	if (c) {
-+		if (c->func.parent->is_going_away == false) {
-+			get_bridge(c->func.parent);
-+			context = c;
-+		}
-+		acpiphp_put_context(c);
- 	}
--	get_bridge(context->func.parent);
--	acpiphp_put_context(context);
- 	acpi_unlock_hp_context();
- 	return context;
- }
+It works very well but I can't control the threshold with udev (also 
+reported by another user here[3]). So I did a bit of digging and the 
+doc[4] states: "If attributes are added after the device is registered, 
+then userspace won’t get notified and userspace will not know about the 
+new attributes.", which seems to be the way the current code works:
+power_supply_register_no_ws is called[5] and if it success all the hooks 
+are run.
+
+Looking at the code I'm not sure there is a easy way to fix it, do you 
+have any good ideas?
+
+Best
+Kristian Klausen
+
+[1] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d507a54f5865d8dcbdd16c66a1a2da15640878ca
+[2] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7973353e92ee1e7ca3b2eb361a4b7cb66c92abee
+[3] 
+https://www.reddit.com/r/linuxhardware/comments/g8kpee/psa_kernel_54_added_the_ability_to_set_a_battery/fp8bwgu/
+[4] 
+https://www.kernel.org/doc/html/v5.8-rc2/driver-api/driver-model/device.html
+[5] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/acpi/battery.c?id=8c3f6993c221cc1a2588046e3ff32d64580396b7#n854
+
+>
+> Signed-off-by: Ognjen Galic <smclt30p@gmail.com>
