@@ -2,114 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57FDA205512
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jun 2020 16:47:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB3DC205573
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jun 2020 17:04:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732781AbgFWOrG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Jun 2020 10:47:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57226 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732738AbgFWOrG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Jun 2020 10:47:06 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56670C061573;
-        Tue, 23 Jun 2020 07:47:06 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: eballetbo)
-        with ESMTPSA id 46FA62601D1
-Subject: Re: [PATCH v4] platform: x86: Add ACPI driver for ChromeOS
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        id S1733005AbgFWPEa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Jun 2020 11:04:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41322 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732946AbgFWPE3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 23 Jun 2020 11:04:29 -0400
+Received: from localhost (mobile-166-170-222-206.mycingular.net [166.170.222.206])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 94EC420723;
+        Tue, 23 Jun 2020 15:04:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592924669;
+        bh=pYSmEX90OpGgB4bw3JQlLwOPKGPZt8zcCg2Jw+YWJhM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=uyCRgzznNIaGzwTA5WSAD0mfkUx7PWjjDA0xuNRfK8wdFyqid6COQmfVRcULXo7eB
+         x6r9H+xRROcynvqijhjGKwufYcigaaHtOMvN1NklZTodXP7DkrU83liurSsGCNLFtO
+         sRrkKEDXRbWwc9kz0no38z13LtKl0kt/Ne0JEuNE=
+Date:   Tue, 23 Jun 2020 10:04:27 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Zhangfei Gao <zhangfei.gao@linaro.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Collabora Kernel ML <kernel@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Dmitry Torokhov <dtor@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>, vbendeb@chromium.org,
-        Andy Shevchenko <andy@infradead.org>,
-        Ayman Bagabas <ayman.bagabas@gmail.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        =?UTF-8?Q?Bla=c5=be_Hrastnik?= <blaz@mxxn.io>,
-        Darren Hart <dvhart@infradead.org>,
+        jean-philippe <jean-philippe@linaro.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Jeremy Soller <jeremy@system76.com>,
-        Mattias Jacobsson <2pi@mok.nu>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Rajat Jain <rajatja@google.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        platform-driver-x86@vger.kernel.org
-References: <20200413134611.478441-1-enric.balletbo@collabora.com>
- <CAJZ5v0gWZ27_DwWQadsJOUxLo4a0rAMe45d4AWXS2gHJZfgfKg@mail.gmail.com>
- <a2953d50-da22-279a-f1e4-faa796d815b1@collabora.com>
- <10490419.gsntqH5CaE@kreacher> <20200606180435.GQ89269@dtor-ws>
-From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Message-ID: <cb138300-6063-f345-f358-512193a9574c@collabora.com>
-Date:   Tue, 23 Jun 2020 16:46:58 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        kenneth-lee-2012@foxmail.com, Wangzhou <wangzhou1@hisilicon.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>,
+        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Thanu Rangarajan <Thanu.Rangarajan@arm.com>,
+        Souvik Chakravarty <Souvik.Chakravarty@arm.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: Re: [PATCH 0/2] Introduce PCI_FIXUP_IOMMU
+Message-ID: <20200623150427.GA2403606@bjorn-Precision-5520>
 MIME-Version: 1.0
-In-Reply-To: <20200606180435.GQ89269@dtor-ws>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c5d7b2f1-6b32-d965-3b60-eb70a26e02b4@linaro.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
-
-On 6/6/20 20:04, Dmitry Torokhov wrote:
-> Hi Rafael,
+On Fri, Jun 19, 2020 at 10:26:54AM +0800, Zhangfei Gao wrote:
+> Have studied _DSM method, two issues we met comparing using quirk.
 > 
-> On Fri, Jun 05, 2020 at 01:17:15PM +0200, Rafael J. Wysocki wrote:
->>
->> First off, GGL0001 is not a valid ACPI device ID, because the GGL prefix is not
->> present in the list at https://uefi.org/acpi_id_list
->>
-
-True, this device ID is not in the ACPI id list, but it is in the legacy PNP id
-list at https://uefi.org/pnp_id_list
-
-Even is a legacy one, this device has been here a long time, just that Google
-had an out-of-tree patch to support that we would like to upstream.
-
-So, I'm wondering if PNP id's are still valid?
-
->> There are two ways to address that.  One would be to take the GOOG prefix
->> (present in the list above), append a proper unique number (if I were to
->> guess, I would say that 0001 had been reserved already) to it and then
->> put the resulting device ID into the firmware, to be returned _HID for the
->> device in question (you can add a _CID returning "GGL0001" so it can be
->> found by the old invalid ID at least from the kernel).
+> 1. Need change definition of either pci_host_bridge or pci_dev, like adding
+> member can_stall,
+> while pci system does not know stall now.
 > 
-> This is not going to happen, as there are devices in the wild with such
-> firmware (i.e. Samus - Google Pixel 2 - was shipped in 2015). Even if
-> Google were to release updated firmware (which is quite unlikely), it
-> does not mean that users who are not using Chrome OS would apply updated
-> firmware.
-> 
->> The other one would
->> be to properly register the GGL prefix for Google and establish a process for
->> allocating IDs with that prefix internally.
-> 
-> I think it depends on whether there are more instances of "GGL" prefix.
-> I thought we mostly used GOOG for everything.
-> 
+> a, pci devices do not have uuid: uuid need be described in dsdt, while pci
+> devices are not defined in dsdt.
+>     so we have to use host bridge.
 
-I only see one instance using GGL, GGL0001 which I think is present on all
-ACPI-based Chromebooks, and I'd think that the PNP id GGL is a proper valid
-prefix for Google. However is true that then Google mostly used GOOG.
+PCI devices *can* be described in the DSDT.  IIUC these particular
+devices are hardwired (not plug-in cards), so platform firmware can
+know about them and could describe them in the DSDT.
 
-[1]
-https://chromium.googlesource.com/chromiumos/third_party/coreboot/+/refs/heads/chromeos-2016.05/src/vendorcode/google/chromeos/acpi/chromeos.asl
-
-Thanks,
- Enric
-
-> Thanks.
+> b,  Parsing dsdt is in in pci subsystem.
+> Like drivers/acpi/pci_root.c:
+>        obj = acpi_evaluate_dsm(ACPI_HANDLE(bus->bridge), &pci_acpi_dsm_guid,
+> 1,
+>                                 IGNORE_PCI_BOOT_CONFIG_DSM, NULL);
 > 
+> After parsing DSM in pci, we need record this info.
+> Currently, can_stall info is recorded in iommu_fwspec,
+> which is allocated in iommu_fwspec_init and called by iort_iommu_configure
+> for uefi.
+
+You can look for a _DSM wherever it is convenient for you.  It could
+be in an AMBA shim layer.
+
+> 2. Guest kernel also need support sva.
+> Using quirk, the guest can boot with sva enabled, since quirk is
+> self-contained by kernel.
+> If using  _DSM, a specific uefi or dtb has to be provided,
+> currently we can useQEMU_EFI.fd from apt install qemu-efi
+
+I don't quite understand what this means, but as I mentioned before, a
+quirk for a *limited* number of devices is OK, as long as there is a
+plan that removes the need for a quirk for future devices.
+
+E.g., if the next platform version ships with a DTB or firmware with a
+_DSM or other mechanism that enables the kernel to discover this
+information without a kernel change, it's fine to use a quirk to cover
+the early platform.
+
+The principles are:
+
+  - I don't want to have to update a quirk for every new Device ID
+    that needs this.
+
+  - I don't really want to have to manage non-PCI information in the
+    struct pci_dev.  If this is AMBA- or IOMMU-related, it should be
+    stored in a structure related to AMBA or the IOMMU.
