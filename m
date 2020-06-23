@@ -2,65 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E069820515D
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jun 2020 13:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2C522051CE
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jun 2020 14:07:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732488AbgFWLxx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Jun 2020 07:53:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58570 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732458AbgFWLxx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Jun 2020 07:53:53 -0400
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83C8AC061755
-        for <linux-acpi@vger.kernel.org>; Tue, 23 Jun 2020 04:53:52 -0700 (PDT)
-Received: by mail-il1-x141.google.com with SMTP id j16so6876538ili.9
-        for <linux-acpi@vger.kernel.org>; Tue, 23 Jun 2020 04:53:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=MJXVe3j4WrUheazf4oj3hZuoEGb1QUBwfIKXI+HYQLSy2SDPPwE1kVsLuA4hFFe7Ar
-         X3qg5QuHIEtAEKtqDlxXqb51cnZCKnVdUhKGJjykUIQMypqVxJAsC8KC3/epbM6l0Axc
-         oTYcVPb51xrAQqHbnbNSleKnCa7fDXJx76GCedWwHvYYSI7G5O2QFMePH+lATNn8z+R3
-         nyFHE2WytQ8aU8GYyr3ddecny9sUyeRKm/Wt+HIqkPKyT2RmHFeWf+gbVPod31wiLzmR
-         NX0AyVAXGcqsKTNIneMp3T4IS4RWTbjW9PvSjqHlq9TLbmAo0DoqZcISmnexcNE3Klbm
-         AY5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=S3eBUlIeCH97q5I3Q6ymwQnNjOedMFdYgi986AeJ0PxSb2XP/l8V/WdvoBqEswdqNy
-         wO6+3RujkBqYTNAPLmDJDbmR8b8p0LIW0t8vt8peX2YQmAial2gpIQhgNRA3/EWvHniS
-         gAP9GAZKKIXpB7u0EodsLYKFUiSxI0krqPjNLyvfu87O0l2pllOpT7ZxGCdTCDQ+maeP
-         1HdwcEO9WXCAL97x6+Mkiz6zRDVIe2cCjFRrBudQETQqOiPo+4uEEWwAk5mmbRw2WoUe
-         eAewhD74/GGiEOVYnsFla0xwJXPRGyc44H76QMG507swJEweOCZ3ALuAYZXy7mkgTGD9
-         p3dQ==
-X-Gm-Message-State: AOAM530iJfc9skbHK7lWumMMn0Nh7BWC44ZxPZU/3huIEpgUl38Fn5+X
-        XzFnor0/osn357alfCG9LOPe9p2+1U0BTk1JbDy+PX2mKVU=
-X-Google-Smtp-Source: ABdhPJwuA4xHW2G+kUKHPagKDvfPDwDGpReBrGfGHNKDMrt6U9N7GMq186QUJKG8UHwmhmcOTTkNOHsAkgb1NN6qduY=
-X-Received: by 2002:a92:9914:: with SMTP id p20mr23117530ili.273.1592913232014;
- Tue, 23 Jun 2020 04:53:52 -0700 (PDT)
+        id S1732562AbgFWMHn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Jun 2020 08:07:43 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:53122 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732333AbgFWMHm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 23 Jun 2020 08:07:42 -0400
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05NC2K1K015116;
+        Tue, 23 Jun 2020 08:06:38 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 31uhcqr422-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 23 Jun 2020 08:06:38 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+        by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05NBuFk6001568;
+        Tue, 23 Jun 2020 12:06:38 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com [9.57.198.26])
+        by ppma03wdc.us.ibm.com with ESMTP id 31sa38eywe-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 23 Jun 2020 12:06:38 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
+        by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 05NC6bSD16122874
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 23 Jun 2020 12:06:37 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B403212405A;
+        Tue, 23 Jun 2020 12:06:37 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9AE72124054;
+        Tue, 23 Jun 2020 12:06:37 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+        by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+        Tue, 23 Jun 2020 12:06:37 +0000 (GMT)
+From:   Stefan Berger <stefanb@linux.vnet.ibm.com>
+To:     linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        jarkko.sakkinen@linux.intel.com, linux-acpi@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Cc:     Stefan Berger <stfeanb@linux.ibm.com>
+Subject: [PATCH v5 0/2] tpm2: Make TPM2 logs accessible for non-UEFI firmware
+Date:   Tue, 23 Jun 2020 08:06:34 -0400
+Message-Id: <20200623120636.1453470-1-stefanb@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Received: by 2002:a92:290e:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 04:53:51
- -0700 (PDT)
-Reply-To: bektery@outlook.com
-From:   YAVUZ BEKTER <bariskims@gmail.com>
-Date:   Tue, 23 Jun 2020 04:53:51 -0700
-Message-ID: <CAC21a+oHymu+PR-1SfXizxKeEyYo0c5ibQK+_BwSDsjZ7uX7HQ@mail.gmail.com>
-Subject: Hello.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
+ definitions=2020-06-23_06:2020-06-23,2020-06-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
+ suspectscore=0 mlxlogscore=715 spamscore=0 bulkscore=0 lowpriorityscore=0
+ cotscore=-2147483648 mlxscore=0 priorityscore=1501 malwarescore=0
+ clxscore=1011 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006230088
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-I am the foreign operations director of Bank of Turkey.
-My name is Mr, Yavuz. I have a sensitive investment project to discuss
-with you, please reply now.
-________________________
-Ik ben de directeur buitenlandse activiteiten van de Bank of Turkey.
-Mijn naam is meneer Yavuz. Ik moet een gevoelig investeringsproject bespreken
-met u, antwoord dan nu.
+From: Stefan Berger <stfeanb@linux.ibm.com>
+
+This series of patches extends the existing TPM2 ACPI table with additional
+fields found in the TPM2 TCG ACPI specification (reference is in the patch)
+that allow access to the log's address and its size. We then modify the
+code that so far only enables access to a TPM 1.2's log for a TPM2 as well.
+This then enables access to the TPM2's log on non-UEFI system that for example
+run SeaBIOS.
+
+   Stefan
+
+v4->v5:
+ - Added R-bs and A-bs.
+
+v3->v4:
+  - Repost as one series
+
+v2->v3:
+  - Split the series into two separate patches
+  - Added comments to ACPI table fields
+  - Added check for null pointer to log area and zero log size
+
+v1->v2:
+  - Repost of the series
+
+
+Stefan Berger (2):
+  acpi: Extend TPM2 ACPI table with missing log fields
+  tpm: Add support for event log pointer found in TPM2 ACPI table
+
+ drivers/char/tpm/eventlog/acpi.c | 56 ++++++++++++++++++++------------
+ drivers/char/tpm/tpm_crb.c       | 13 ++++++--
+ drivers/char/tpm/tpm_tis.c       |  4 ++-
+ include/acpi/actbl3.h            |  5 +--
+ 4 files changed, 51 insertions(+), 27 deletions(-)
+
+-- 
+2.26.2
+
