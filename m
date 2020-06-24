@@ -2,93 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5965207F29
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jun 2020 00:09:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1195209727
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jun 2020 01:23:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390200AbgFXWJf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Jun 2020 18:09:35 -0400
-Received: from mga01.intel.com ([192.55.52.88]:16343 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389122AbgFXWJf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 24 Jun 2020 18:09:35 -0400
-IronPort-SDR: 4T8PccjApL1cNbva2EUMF28Y4n1ovlQ507NipKF0AqQcStfwmZDvTHB5bjvvZPTjKOb0OWi8IP
- icwbj9dAjtzQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9662"; a="162743991"
-X-IronPort-AV: E=Sophos;i="5.75,276,1589266800"; 
-   d="scan'208";a="162743991"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2020 15:09:33 -0700
-IronPort-SDR: 2SVh1mImTky8qw5v7uYe5jrIaRPakYHkCi8Im1bR39HTfEeR3VgDSbz4g1c+CN5zo5qWIASHQL
- HnQ1YZlUUXvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,276,1589266800"; 
-   d="scan'208";a="275836573"
-Received: from linux.intel.com ([10.54.29.200])
-  by orsmga003.jf.intel.com with ESMTP; 24 Jun 2020 15:09:33 -0700
-Received: from debox1-desk1.jf.intel.com (debox1-desk1.jf.intel.com [10.7.201.137])
-        by linux.intel.com (Postfix) with ESMTP id 8C58C5804D6;
-        Wed, 24 Jun 2020 15:09:33 -0700 (PDT)
-Message-ID: <e980bc2959b5a959bddfa63adb35aeae8261ab06.camel@linux.intel.com>
-Subject: Re: [PATCH V2 1/2] PCI: Add ACPI StorageD3Enable _DSD support
-From:   "David E. Box" <david.e.box@linux.intel.com>
-Reply-To: david.e.box@linux.intel.com
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     shyjumon.n@intel.com, rjw@rjwysocki.net, lenb@kernel.org,
-        bhelgaas@google.com, dan.j.williams@intel.com, kbusch@kernel.org,
-        axboe@fb.com, hch@lst.de, sagi@grimberg.me,
-        linux-acpi@vger.kernel.org, linux-nvme@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Date:   Wed, 24 Jun 2020 15:09:33 -0700
-In-Reply-To: <20200624213757.GA2591059@bjorn-Precision-5520>
-References: <20200624213757.GA2591059@bjorn-Precision-5520>
-Organization: David E. Box
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+        id S2388985AbgFXXXX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Jun 2020 19:23:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48734 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389067AbgFXXXT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Jun 2020 19:23:19 -0400
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC600C061796
+        for <linux-acpi@vger.kernel.org>; Wed, 24 Jun 2020 16:23:17 -0700 (PDT)
+Received: by mail-oi1-x241.google.com with SMTP id a21so3335938oic.8
+        for <linux-acpi@vger.kernel.org>; Wed, 24 Jun 2020 16:23:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dGipXZ9X17I+u12oD4DZ2rzNuQVhucODHVNdBawnSmI=;
+        b=M1wwfU36UoerE5HtEt7AEffn18uiUdtoM8XXl0AWGojXJGk3IpAdJ2M0usNyP93xIJ
+         C4K+tOo4fi/6g4LDkLfnGygf2naXQEjHsl+hfIdob42HpSMDH+RoiClBIpgTZBx++Gwz
+         F071ruwPJDr/lHuDqNMAs+amwuavPxIJt1JaWWxFc3xFISohL1QELXY5uKA9Dywb7DaN
+         A20RNPw7+ZloQGbS1jfx4jB/8WXiwu33UjOTyKHHu0VlWpJLIrtQtLaEzmdXeT9EE5GB
+         owoWOoO1ON0J7TmZDzZtNI5C/NRXNrd0BXcvAjC8iei4HAH1VMd+PspPMOJfibAazSDi
+         2QXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dGipXZ9X17I+u12oD4DZ2rzNuQVhucODHVNdBawnSmI=;
+        b=STS6onuHgz7Qgw9NWp5y/LEATblHGJ/igJdzaNoHoacUd9SBDoOTWNPt9QP6rPIF87
+         QCO8bzCDZ2Ij3Kd2U7Ki0UJbpn62uVmwjagmV6ID4u10WZTsrimq3QuwQfQXvMqB7znr
+         XtJ8afHTWn9X++F6H7R+Cbxn4sPLoxQag2F6fW0qX1SxvBmaz9+WCC61yqZasCBCootT
+         lyNnmLpdlMdJ9T8FADQVIRFUsIQwdu8J3h/UZnQyo1ykLHBQuL0megwlg9ir8LTYDYq1
+         gjmNUAXGCde7iR8UovXWvmDxIJUMYy+vnO0AYFqd5a9zoZzvR41kkVG0ra6kzZXOJ/Gz
+         9NYg==
+X-Gm-Message-State: AOAM531by6L2Muz03ykV2Lax50J3mepF0orhQfJD+SVdnyhrZnd+BI53
+        krEKs/U/hlhruj2R69y+D6wIQ0EFTBpoCmiuS8JsbA==
+X-Google-Smtp-Source: ABdhPJx5V5Rup3zninLm3/4nlfZ5WpzvvNUIwQf1nRP1tGt6s55UEoBgS6WnEaNkB6yHnFN0OU4E08/nB8eF6a04daw=
+X-Received: by 2002:aca:6208:: with SMTP id w8mr126619oib.69.1593040996906;
+ Wed, 24 Jun 2020 16:23:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20200515053500.215929-1-saravanak@google.com> <20200515053500.215929-5-saravanak@google.com>
+ <CAMuHMdUnbDvn6GdK51MN-+5iRp6zYRf-yzKY+OwcQOGrYqOZPA@mail.gmail.com>
+ <CAGETcx9JKbNQWQwNah7pO5ppVSAe86R-OmMujZPYNkuTCLwKnQ@mail.gmail.com>
+ <CAMuHMdU2gF=aTeVxRvtzAMLGY=GyBDfBwrYZxoRkL1tV7dL56g@mail.gmail.com>
+ <CAGETcx-rHFthf-aLb_S-ST6Evozvgis5XX5u0LNxyvfMoJOLKQ@mail.gmail.com>
+ <CAMuHMdXW0jM-A5cvYtFVcgc1Gm3tKkvr0+kWpeJqpJDzNOuYeA@mail.gmail.com>
+ <CAGETcx8W96KAw-d_siTX4qHB_-7ddk0miYRDQeHE6E0_8qx-6Q@mail.gmail.com>
+ <CAGETcx87JNfKEu4brQ3S-9wObv=OwXkAoDBSREQH5dAD68TPsA@mail.gmail.com> <CAMuHMdUsWAQ3XUGh1Jg_Y3LWz4G5aaZfHqL8JjNZv3DrW3TjvQ@mail.gmail.com>
+In-Reply-To: <CAMuHMdUsWAQ3XUGh1Jg_Y3LWz4G5aaZfHqL8JjNZv3DrW3TjvQ@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Wed, 24 Jun 2020 16:22:40 -0700
+Message-ID: <CAGETcx_gOQWbxUAS6joxEgLDx_wuXwn3AFqDuio_42XeeG++PQ@mail.gmail.com>
+Subject: Re: [PATCH v1 4/4] of: platform: Batch fwnode parsing when adding all
+ top level devices
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Android Kernel Team <kernel-team@android.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Ji Luo <ji.luo@nxp.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 2020-06-24 at 16:37 -0500, Bjorn Helgaas wrote:
-> On Fri, Jun 12, 2020 at 01:48:19PM -0700, David E. Box wrote:
-> > StorageD3Enable is a boolean property that indicates that the
-> > platform
-> > wants to use D3 for PCIe storage drives during suspend-to-idle. 
-> 
-> Is this something that should apply to plug-in drives, or does this
-> only apply to soldered-in things?
-> 
-> > It is a
-> > BIOS work around that is currently in use on shipping systems like
-> > some
-> > Intel Comet Lake platforms. 
-> 
-> What is this BIOS work around?  Is there a defect here that's being
-> worked around?  What's the defect?
+On Mon, Jun 22, 2020 at 8:49 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>
+> Hi Saravana,
+>
+> On Sat, Jun 20, 2020 at 4:33 AM Saravana Kannan <saravanak@google.com> wrote:
+> > On Fri, Jun 19, 2020 at 1:07 PM Saravana Kannan <saravanak@google.com> wrote:
+> > > I think instead of deferred_probe_work_func() moving the device to the
+> > > end of the dpm_list, I think the device probing successfully is what
+> > > should move it to the end of the dpm_list. That way, the dpm_list is
+> > > actually ordered by when the devices become functional and not the
+> > > random order in DT or random probe order which can get pretty
+> > > convoluted with multiple deferred probes. This feels right and will
+> > > make suspend/resume more robust against DT ordering -- but I'm not
+> > > sure what other wide ranging impact this has for other platforms.
+> >
+> > If you want to play around with a potential fix to test my hypothesis,
+> > I think it's just adding this one line to driver_bound():
+> > ============
+> > klist_add_tail(&dev->p->knode_driver, &dev->driver->p->klist_devices);
+> > device_links_driver_bound(dev);
+> > +device_pm_move_to_tail(dev);
+> >
+> > device_pm_check_callbacks(dev);
+> > ============
+>
+> Thanks, that seems to fix the issue for me, on both affected systems!
+> Note that this has quite some impact on the order devices are suspended,
+> but this seems harmless.
+>
+> Will try on more systems later...
 
-> 
-> > It is meant to change default driver policy for
-> > suspend that may cause higher power consumption.
-> 
-> I guess this means that by changing the driver policy from the
-> default, we can save some power?
+Thanks for testing. Maybe I should just send that change as a patch
+and see what Greg/Rafael have to say to that.
 
-Yes. Maybe 'work around' was a poor choice of words. 'Getting around
-default driver policy' is the issue. There is no hardware defect. One
-of the uses of the suspend-to-idle flow is to support compliance with
-increasingly tighter energy regulations. One of the ways to do this on
-desktop systems is to power off the ATX power supply during s2idle and
-use the 5V standby rail for self refresh and other low power needs. But
-the platforms that support this can't shutdown the PS unless PCI ports
-are placed in D3. On Linux this won't happen with NVMe drives because
-the default driver policy is to use ASPM (NVMe APST) during s2idle.
-Windows has a related concern. So to 'get around' the driver choosing a
-policy that will result in higher power consumption, they implemented
-this _DSD to inform the OS of its preference for D3 on the PCI port.
+It's a general fix anyway. So, might as well send it out.
 
-David
-
+-Saravana
