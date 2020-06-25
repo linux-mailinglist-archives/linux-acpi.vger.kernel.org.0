@@ -2,75 +2,165 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFCFB20A773
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jun 2020 23:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 208D720A789
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jun 2020 23:35:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406206AbgFYV0w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Jun 2020 17:26:52 -0400
-Received: from mga14.intel.com ([192.55.52.115]:39514 "EHLO mga14.intel.com"
+        id S2407223AbgFYVfb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Jun 2020 17:35:31 -0400
+Received: from mga01.intel.com ([192.55.52.88]:21158 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2403774AbgFYV0w (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 25 Jun 2020 17:26:52 -0400
-IronPort-SDR: Whb6tZnqOrtJbrlxcglWCzWMtoOflJi3MXNUKa8eLEZo+UplrUBPfP45lx7yGuIr89iMtlXFMi
- u9BlgnnwHDGw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9663"; a="144167268"
+        id S2403961AbgFYVfb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 25 Jun 2020 17:35:31 -0400
+IronPort-SDR: HPmykI6YZnOGrn5sQuoN8thFKQlC5ZHjeg1eDUMSOqMyTFVGhYLSMoPewIAHULdcMpZZwLVIra
+ SFL5WZdF+OKg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9663"; a="163166331"
 X-IronPort-AV: E=Sophos;i="5.75,280,1589266800"; 
-   d="scan'208";a="144167268"
+   d="scan'208";a="163166331"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2020 14:26:52 -0700
-IronPort-SDR: AjDnvS+eQm+6YRfKwm5rPF/W5hb3S6SISBcX0Vohp2LS5P3idzO84SZIIRl9Ve5ghWKdwWGUT+
- J4o8gUcB/f0g==
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2020 14:35:30 -0700
+IronPort-SDR: /ij78mFzAEC0wmcngtt+3FRA8yBO6Wxbgay6Vc6+cMMPiGG8kPTfrKU4u8HadKoS2v5AVX81Ml
+ 66tH8QOwIjMA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.75,280,1589266800"; 
-   d="scan'208";a="319847429"
+   d="scan'208";a="479786598"
 Received: from jproldan-mobl.ger.corp.intel.com (HELO localhost) ([10.252.49.123])
-  by FMSMGA003.fm.intel.com with ESMTP; 25 Jun 2020 14:26:48 -0700
-Date:   Fri, 26 Jun 2020 00:26:46 +0300
+  by fmsmga005.fm.intel.com with ESMTP; 25 Jun 2020 14:35:27 -0700
+Date:   Fri, 26 Jun 2020 00:35:26 +0300
 From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 To:     Stefan Berger <stefanb@linux.vnet.ibm.com>
 Cc:     linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Stefan Berger <stefanb@linux.ibm.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Jiandi An <anjiandi@codeaurora.org>
-Subject: Re: [PATCH v6 1/2] acpi: Extend TPM2 ACPI table with missing log
- fields
-Message-ID: <20200625212646.GD20341@linux.intel.com>
+        Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH v6 2/2] tpm: Add support for event log pointer found in
+ TPM2 ACPI table
+Message-ID: <20200625213526.GE20341@linux.intel.com>
 References: <20200625124222.1954580-1-stefanb@linux.vnet.ibm.com>
- <20200625124222.1954580-2-stefanb@linux.vnet.ibm.com>
+ <20200625124222.1954580-3-stefanb@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200625124222.1954580-2-stefanb@linux.vnet.ibm.com>
+In-Reply-To: <20200625124222.1954580-3-stefanb@linux.vnet.ibm.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 25, 2020 at 08:42:21AM -0400, Stefan Berger wrote:
+On Thu, Jun 25, 2020 at 08:42:22AM -0400, Stefan Berger wrote:
 > From: Stefan Berger <stefanb@linux.ibm.com>
 > 
-> Recent extensions of the TPM2 ACPI table added 3 more fields
-> including 12 bytes of start method specific parameters and Log Area
-> Minimum Length (u32) and Log Area Start Address (u64). So, we define
-> a new structure acpi_tpm2_phy that holds these optional new fields.
-> The new fields allow non-UEFI systems to access the TPM2's log.
-> 
-> The specification that has the new fields is the following:
->   TCG ACPI Specification
->   Family "1.2" and "2.0"
->   Version 1.2, Revision 8
-> 
-> https://trustedcomputinggroup.org/wp-content/uploads/TCG_ACPIGeneralSpecification_v1.20_r8.pdf
+> In case a TPM2 is attached, search for a TPM2 ACPI table when trying
+> to get the event log from ACPI. If one is found, use it to get the
+> start and length of the log area. This allows non-UEFI systems, such
+> as SeaBIOS, to pass an event log when using a TPM2.
 > 
 > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> Cc: linux-acpi@vger.kernel.org
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Cc: Jiandi An <anjiandi@codeaurora.org>
+> ---
+>  drivers/char/tpm/eventlog/acpi.c | 59 ++++++++++++++++++++------------
+>  1 file changed, 38 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/char/tpm/eventlog/acpi.c b/drivers/char/tpm/eventlog/acpi.c
+> index 63ada5e53f13..8b9e33d57f70 100644
+> --- a/drivers/char/tpm/eventlog/acpi.c
+> +++ b/drivers/char/tpm/eventlog/acpi.c
+> @@ -49,9 +49,9 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+>  	void __iomem *virt;
+>  	u64 len, start;
+>  	struct tpm_bios_log *log;
+> -
+> -	if (chip->flags & TPM_CHIP_FLAG_TPM2)
+> -		return -ENODEV;
+> +	struct acpi_table_tpm2 *tbl;
+> +	struct acpi_tpm2_phy *t2phy;
+> +	int format;
+>  
+>  	log = &chip->log;
+>  
+> @@ -61,23 +61,40 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+>  	if (!chip->acpi_dev_handle)
+>  		return -ENODEV;
+>  
+> -	/* Find TCPA entry in RSDT (ACPI_LOGICAL_ADDRESSING) */
+> -	status = acpi_get_table(ACPI_SIG_TCPA, 1,
+> -				(struct acpi_table_header **)&buff);
+> -
+> -	if (ACPI_FAILURE(status))
+> -		return -ENODEV;
+> -
+> -	switch(buff->platform_class) {
+> -	case BIOS_SERVER:
+> -		len = buff->server.log_max_len;
+> -		start = buff->server.log_start_addr;
+> -		break;
+> -	case BIOS_CLIENT:
+> -	default:
+> -		len = buff->client.log_max_len;
+> -		start = buff->client.log_start_addr;
+> -		break;
+> +	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
+> +		status = acpi_get_table("TPM2", 1,
+> +					(struct acpi_table_header **)&tbl);
+> +		if (ACPI_FAILURE(status))
+> +			return -ENODEV;
 
-Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Add empty line.
+
+> +		if (tbl->header.length <
+> +				sizeof(*tbl) + sizeof(struct acpi_tpm2_phy))
+> +			return -ENODEV;
+
+Ditto.
+
+> +		t2phy = (void *)tbl + sizeof(*tbl);
+> +		len = t2phy->log_area_minimum_length;
+
+Ditto.
+
+> +		start = t2phy->log_area_start_address;
+> +		if (!start || !len)
+> +			return -ENODEV;
+
+Ditto.
+
+> +		format = EFI_TCG2_EVENT_LOG_FORMAT_TCG_2;
+> +	} else {
+> +		/* Find TCPA entry in RSDT (ACPI_LOGICAL_ADDRESSING) */
+> +		status = acpi_get_table(ACPI_SIG_TCPA, 1,
+> +					(struct acpi_table_header **)&buff);
+> +
+
+Remove this empty line.
+
+> +		if (ACPI_FAILURE(status))
+> +			return -ENODEV;
+> +
+> +		switch (buff->platform_class) {
+> +		case BIOS_SERVER:
+> +			len = buff->server.log_max_len;
+> +			start = buff->server.log_start_addr;
+> +			break;
+> +		case BIOS_CLIENT:
+> +		default:
+> +			len = buff->client.log_max_len;
+> +			start = buff->client.log_start_addr;
+> +			break;
+> +		}
+> +		format = EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2;
+>  	}
+>  	if (!len) {
+>  		dev_warn(&chip->dev, "%s: TCPA log area empty\n", __func__);
+> @@ -98,7 +115,7 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+>  	memcpy_fromio(log->bios_event_log, virt, len);
+>  
+>  	acpi_os_unmap_iomem(virt, len);
+> -	return EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2;
+> +	return format;
+>  
+>  err:
+>  	kfree(log->bios_event_log);
+> -- 
+> 2.26.2
 
 /Jarkko
