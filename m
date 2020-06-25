@@ -2,161 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD6F120A40C
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jun 2020 19:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6DB520A5D0
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jun 2020 21:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404819AbgFYRa4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Jun 2020 13:30:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50710 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404698AbgFYRa4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 25 Jun 2020 13:30:56 -0400
-Received: from localhost (mobile-166-170-222-206.mycingular.net [166.170.222.206])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D2D0320789;
-        Thu, 25 Jun 2020 17:30:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593106255;
-        bh=FwCQ696O7Br9AROnL6MUzsJIYGTIRPIdruuU47avOfY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=VcR6UPQLooXvts5AMZD1x7Qy6i3ZI74p0iNvVpd12tmDSmSQ7d1+khqitauC42+as
-         fL/B9TaT3Ea4Mzg8BtsqeXk86xor0VZGaXUdnT1M/6KjNXZ5e/c1PRIPWmqMbLR+VY
-         Ls07poO3E+Yr065NFY9vxfsjXA1nyn/pwH3UN8Xg=
-Date:   Thu, 25 Jun 2020 12:30:53 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "David E. Box" <david.e.box@linux.intel.com>, shyjumon.n@intel.com,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-nvme <linux-nvme@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH V2 1/2] PCI: Add ACPI StorageD3Enable _DSD support
-Message-ID: <20200625173053.GA2694537@bjorn-Precision-5520>
+        id S2406468AbgFYT3d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Jun 2020 15:29:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36998 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406329AbgFYT3d (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Jun 2020 15:29:33 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C00D4C08C5C1
+        for <linux-acpi@vger.kernel.org>; Thu, 25 Jun 2020 12:29:32 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id k1so3255667pls.2
+        for <linux-acpi@vger.kernel.org>; Thu, 25 Jun 2020 12:29:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=I9ClT0BtwxTVUpdHAGXR7o4i9yCNCPbrz/AYOJH6pSI=;
+        b=Swc7w5wR/KkOZ3Uabcl4IdqEH4PlmqfGqhz6npLi9yrH3/qWxXHJ0Sy2DVst9s5KbP
+         NAYro3yOaFKZgjrTX1oNReN5C31zG+RiVVEAURxPYJ9HQ8OHVASav2BLcumjj7OjlSCn
+         kVmwFjRpGqvQHFkJ6oaz663CwIWZAH8f3Ce1kkpoq72m8EVapXsqGAFPU65RBtJlt63a
+         OnE3UwIrLf8IPCzbeoj03kp5u4esU3xo5bOToi83ARu97UIDNYHKilzKIn3fxygG5FHr
+         MgY70iWrUwEJXt+kIBncgDPH0OOcPdx7/RPvxfZN0w9jk6+cXGoieZ2bpfNMY3uUZWB6
+         URZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=I9ClT0BtwxTVUpdHAGXR7o4i9yCNCPbrz/AYOJH6pSI=;
+        b=RwGo3QjNrr0MHEAzw/D6a4kuuavM2OckjqdaFCgS6WhCcaPZBg3AmiZ0d/E8YQ9KIg
+         eJ6qWeDkpAr4YutYxjughKN9jmku3q1fbyFV/vneAQSvwCuKb04NdToKu5+r35UsDF1C
+         bzzYWqNWQ08b/30Zl7VAq67/s0rWdyB40Ah0G7c67/y3xi9Gt/uC/0NLl99aixJcJpzA
+         TEkDmoyz9ColDGIEpo1434liHU9XFqiLOInVR5YyNQBu307V8KbormZkE8VeaU8of39R
+         CRSOMdrrLe3ArTFxqq13/6sJIsvX7vgp5GxqCPvPHb7oJh8Lx/lLCEf4DxaBzU5uJWCl
+         cpDQ==
+X-Gm-Message-State: AOAM531v36L1cYzM2KRpPsfujVTsv0qYpagKLcFoQ8Ec3ZgfMz2t99w6
+        mOf88u+ubfW3xdq3CJAPwtfy/72Qg+DD9hwpLAo=
+X-Google-Smtp-Source: ABdhPJygAKTAcmhOMvQ3jZQuSiPs0tRjJBr/ucFkeopIKgE3+k/feugeqefrAaH+f+WlOqg5x8IYMb57wlnqwepGVb0=
+X-Received: by 2002:a17:902:b206:: with SMTP id t6mr33227017plr.262.1593113372296;
+ Thu, 25 Jun 2020 12:29:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0i8dCN=HMFk_+ZX-Wr73P6kdQBtV0i3FtrZrO9cegXsvQ@mail.gmail.com>
+References: <20200625043538.25464-1-calvin.johnson@oss.nxp.com> <202006251802.jt5kabG7%lkp@intel.com>
+In-Reply-To: <202006251802.jt5kabG7%lkp@intel.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 25 Jun 2020 22:29:15 +0300
+Message-ID: <CAHp75VcQwLwE1GMh+2Ht7p=Xa20mkTdGC2vt=bwNrr=G6SV1zg@mail.gmail.com>
+Subject: Re: [net-next PATCH v1] net: dpaa2-mac: Add ACPI support for DPAA2
+ MAC driver
+To:     kernel test robot <lkp@intel.com>
+Cc:     Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Jon <jon@solid-run.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        kbuild-all@lists.01.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 25, 2020 at 01:30:53PM +0200, Rafael J. Wysocki wrote:
-> On Wed, Jun 24, 2020 at 11:15 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > On Fri, Jun 12, 2020 at 01:48:19PM -0700, David E. Box wrote:
-> > > StorageD3Enable is a boolean property that indicates that the
-> > > platform wants to use D3 for PCIe storage drives during
-> > > suspend-to-idle. It is a BIOS work around that is currently in
-> > > use on shipping systems like some Intel Comet Lake platforms. It
-> > > is meant to change default driver policy for suspend that may
-> > > cause higher power consumption.
+On Thu, Jun 25, 2020 at 2:06 PM kernel test robot <lkp@intel.com> wrote:
 
-> > > +/**
-> > > + * pci_acpi_storage_d3 - whether root port requests D3 for idle suspend
-> > > + * @pdev: PCI device to check
-> > > + *
-> > > + * Returns true if the ACPI companion device contains the "StorageD3Enable"
-> > > + * _DSD property and the value is 1. This indicates that the root port is
-> > > + * used by a storage device and the platform is requesting D3 for the
-> > > + * device during suspend to idle in order to support platform pm.
-> > > + */
-> > > +bool pci_acpi_storage_d3(struct pci_dev *dev)
-> > > +{
-> > > +     const struct fwnode_handle *fwnode;
-> > > +     struct acpi_device *adev;
-> > > +     struct pci_dev *root;
-> > > +     acpi_handle handle;
-> > > +     acpi_status status;
-> > > +     bool ret = false;
-> > > +     u8 val;
-> > > +
-> > > +     /*
-> > > +      * Look for _DSD property specifying that the storage device on
-> > > +      * the port must use D3 to support deep platform power savings during
-> > > +      * suspend-to-idle
-> > > +      */
-> > > +     root = pci_find_pcie_root_port(dev);
-> >
-> > I think this would need to be updated to apply to v5.8-rc1 after
-> > 6ae72bfa656e ("PCI: Unify pcie_find_root_port() and
-> > pci_find_pcie_root_port()").
-> >
-> > https://git.kernel.org/linus/6ae72bfa656e
-> >
-> > > +     if (!root)
-> > > +             return false;
-> > > +
-> > > +     adev = ACPI_COMPANION(&root->dev);
-> > > +     if (!adev) {
-> > > +             /*
-> > > +              * It is possible that the ACPI companion is not yet bound
-> > > +              * for the root port so look it up manually here.
-> > > +              */
-> > > +             if (!adev && !pci_dev_is_added(root))
-> > > +                     adev = acpi_pci_find_companion(&root->dev);
-> >
-> > I see that you copied this "ACPI companion not yet bound" thing from
-> > acpi_pci_bridge_d3().  But it's ugly.
-> >
-> > Isn't there a way we can bind the ACPI companion during normal PCI
-> > enumeration so we don't need this exception case?
-> >
-> > I really do not like the idea of putting this code in the PCI core
-> > because AFAICT the PCI core can do nothing with this information.
-> >
-> > If we could make sure during enumeration that the root port always has
-> > an ACPI companion, this code could go to the nvme driver itself.  And
-> > we could also clean up the ugliness in acpi_pci_bridge_d3().
-> >
-> > Rafael, is that possible?  I don't really know how the companion
-> > device gets set.
-> 
-> That's a bit convoluted.
-> 
-> device_add() calls device_platform_notify(), before calling bus_add_device().
-> 
-> device_platform_notify() calls acpi_platform_notify() which invokes
-> acpi_device_notify() that looks for the companion via
-> type->find_companion() which for PCI points to
-> acpi_pci_find_companion().  If found, the companion is attached to the
-> dev structure as a physical_node, via acpi_bind_one().
-> 
-> So by the time bus_probe_device() runs, the companion should be there
-> already - if it is there at all.
-> 
-> The parent ACPI companion should be present when the child is probing
-> too, as per the above.
-> 
-> > Maybe this is could be done somewhere around pci_device_add()?
-> 
-> It is done in there.
-> 
-> It is not necessary to call acpi_pci_find_companion() from
-> pci_acpi_storage_d3() as long as that function is required to be
-> called by the target device's driver probe or later.
+>     50          } else if (is_acpi_node(dev->parent->fwnode)) {
 
-OK, great.  IIUC, that means this function doesn't need to be in
-drivers/pci and it could be moved to the NVMe code.
+Hmm... Is it a device or data node?
 
-> Ths acpi_pci_bridge_d3() case is different, though, AFAICS, because it
-> is invoked in the pci_pm_init() path, via pci_bridge_d3_possible(),
-> and that gets called from pci_device_add() *before* calling
-> device_add().
-> 
-> Mika, is that why acpi_pci_find_companion() gets called from
-> acpi_pci_bridge_d3()?
+>     51                  device_for_each_child_node(dev->parent, dpmac) {
+>   > 52                          status = acpi_evaluate_integer(ACPI_HANDLE_FWNODE(dpmac),
+>     53                                                         "_ADR", NULL, &adr);
+>     54                          if (ACPI_FAILURE(status)) {
+>     55                                  dev_info(dev, "_ADR returned status 0x%x\n", status);
+>     56                                  continue;
+>     57                          } else {
+>     58                                  id = (u32)adr;
+>     59                                  if (id == dpmac_id)
+>     60                                          return dpmac;
+>     61                          }
+>     62                  }
 
-Is pdev->bridge_d3 really needed before pci_device_add()?  It would be
-really nice if there were a way to get rid of that manual lookup of
-the companion device in acpi_pci_bridge_d3().
+Can't you use
 
-Bjorn
+ adev = acpi_find_child_device(ACPI_COMPANION(dev->parent), dpmac_id, false);
+ if (adev)
+  return ...
+
+?
+
+>     63          }
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
