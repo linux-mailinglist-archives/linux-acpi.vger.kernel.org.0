@@ -2,156 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57C14209E2D
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jun 2020 14:11:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14064209E41
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jun 2020 14:16:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404539AbgFYMLh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Jun 2020 08:11:37 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:64868 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2404450AbgFYMLg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 25 Jun 2020 08:11:36 -0400
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05PC3NN4160650;
-        Thu, 25 Jun 2020 08:10:34 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 31vbmu25d1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 25 Jun 2020 08:10:34 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-        by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05PC9k6f020517;
-        Thu, 25 Jun 2020 12:10:33 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
-        by ppma02dal.us.ibm.com with ESMTP id 31uurt6q4w-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 25 Jun 2020 12:10:33 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 05PCAWVb49611198
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 25 Jun 2020 12:10:32 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6B0D9112062;
-        Thu, 25 Jun 2020 12:10:32 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4A336112061;
-        Thu, 25 Jun 2020 12:10:32 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-        Thu, 25 Jun 2020 12:10:32 +0000 (GMT)
-Subject: Re: [PATCH v5 1/2] acpi: Extend TPM2 ACPI table with missing log
- fields
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     Stefan Berger <stefanb@linux.vnet.ibm.com>,
-        Jiandi An <anjiandi@codeaurora.org>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-References: <20200623120636.1453470-1-stefanb@linux.vnet.ibm.com>
- <20200623120636.1453470-2-stefanb@linux.vnet.ibm.com>
- <20200625000021.GC21758@linux.intel.com>
- <9d94c704-5774-ceeb-e4f3-010f74ffe37b@linux.ibm.com>
- <20200625023431.GB270125@linux.intel.com>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-Message-ID: <bbd532a8-c745-00e6-b002-5d092f630ed6@linux.ibm.com>
-Date:   Thu, 25 Jun 2020 08:10:32 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S2404475AbgFYMQ1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Jun 2020 08:16:27 -0400
+Received: from mga18.intel.com ([134.134.136.126]:40152 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404343AbgFYMQ1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 25 Jun 2020 08:16:27 -0400
+IronPort-SDR: 0Y1nujGV5mNPAVyv4tnzxDHTLOrVYUzoCq2OZaRWyRh6GJz3GL+tNM5N9s9uxoCU69nKPaX8aW
+ LhOLgUqBizFw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9662"; a="132302332"
+X-IronPort-AV: E=Sophos;i="5.75,279,1589266800"; 
+   d="scan'208";a="132302332"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2020 05:16:25 -0700
+IronPort-SDR: fWaSgBUWhlXYLDYK3rRqkXWDv/WZioOftV7rDKySVRLs+7vXiUofUwqy5+GSwYHmgPmjB0m7gt
+ 3ooekk1Ktfcw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,279,1589266800"; 
+   d="scan'208";a="479455359"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga006.fm.intel.com with SMTP; 25 Jun 2020 05:16:20 -0700
+Received: by lahna (sSMTP sendmail emulation); Thu, 25 Jun 2020 15:16:19 +0300
+Date:   Thu, 25 Jun 2020 15:16:19 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        "David E. Box" <david.e.box@linux.intel.com>, shyjumon.n@intel.com,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-nvme <linux-nvme@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH V2 1/2] PCI: Add ACPI StorageD3Enable _DSD support
+Message-ID: <20200625121619.GG2795@lahna.fi.intel.com>
+References: <20200612204820.20111-2-david.e.box@linux.intel.com>
+ <20200624211549.GA2586552@bjorn-Precision-5520>
+ <CAJZ5v0i8dCN=HMFk_+ZX-Wr73P6kdQBtV0i3FtrZrO9cegXsvQ@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200625023431.GB270125@linux.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-06-25_05:2020-06-25,2020-06-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- bulkscore=0 impostorscore=0 suspectscore=0 adultscore=0 spamscore=0
- phishscore=0 clxscore=1015 cotscore=-2147483648 mlxlogscore=999
- lowpriorityscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006250078
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0i8dCN=HMFk_+ZX-Wr73P6kdQBtV0i3FtrZrO9cegXsvQ@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 6/24/20 10:34 PM, Jarkko Sakkinen wrote:
-> On Wed, Jun 24, 2020 at 08:38:25PM -0400, Stefan Berger wrote:
->> On 6/24/20 8:00 PM, Jarkko Sakkinen wrote:
->>> On Tue, Jun 23, 2020 at 08:06:35AM -0400, Stefan Berger wrote:
->>>> From: Stefan Berger <stefanb@linux.ibm.com>
->>>>
->>>> Recent extensions of the TPM2 ACPI table added 3 more fields
->>>> including 12 bytes of start method specific parameters and Log Area
->>>> Minimum Length (u32) and Log Area Start Address (u64). So, we extend
->>>> the existing structure with these fields to allow non-UEFI systems
->>>> to access the TPM2's log.
->>>>
->>>> The specification that has the new fields is the following:
->>>>     TCG ACPI Specification
->>>>     Family "1.2" and "2.0"
->>>>     Version 1.2, Revision 8
->>>>
->>>> Adapt all existing table size calculations to use
->>>> offsetof(struct acpi_table_tpm2, start_method_specific)
->>>> [where start_method_specific is a newly added field]
->>>> rather than sizeof(struct acpi_table_tpm2) so that the addition
->>>> of the new fields does not affect current systems that may not
->>>> have them.
->>>>
->>> I found at least one regression from this patch. Please remove my
->>> reviewed-by comment form the next version.
->>>
->>> Should have:
->>>
->>>     Link: https://trustedcomputinggroup.org/wp-content/uploads/TCG_ACPIGeneralSpecification_v1.20_r8.pdf
->>>
->>> Please, add this.
->>>
->>>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
->>>> Cc: linux-acpi@vger.kernel.org
->>>> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>>> Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
->>>> ---
->>>>    drivers/char/tpm/tpm_crb.c | 13 ++++++++++---
->>>>    drivers/char/tpm/tpm_tis.c |  4 +++-
->>>>    include/acpi/actbl3.h      |  5 +++--
->>>>    3 files changed, 16 insertions(+), 6 deletions(-)
->>>>
->>>> diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
->>>> index a9dcf31eadd2..0565aa5482f9 100644
->>>> --- a/drivers/char/tpm/tpm_crb.c
->>>> +++ b/drivers/char/tpm/tpm_crb.c
->>>> @@ -669,7 +669,9 @@ static int crb_acpi_add(struct acpi_device *device)
->>>>    	status = acpi_get_table(ACPI_SIG_TPM2, 1,
->>>>    				(struct acpi_table_header **) &buf);
->>>> -	if (ACPI_FAILURE(status) || buf->header.length < sizeof(*buf)) {
->>>> +	if (ACPI_FAILURE(status) || buf->header.length <
->>>> +			offsetof(struct acpi_table_tpm2,
->>>> +				 start_method_specific)) {
->>>>    		dev_err(dev, FW_BUG "failed to get TPM2 ACPI table\n");
->>>>    		return -EINVAL;
->>>>    	}
->>>> @@ -684,14 +686,19 @@ static int crb_acpi_add(struct acpi_device *device)
->>>>    		return -ENOMEM;
->>>>    	if (sm == ACPI_TPM2_COMMAND_BUFFER_WITH_ARM_SMC) {
->>>> -		if (buf->header.length < (sizeof(*buf) + sizeof(*crb_smc))) {
->>>> +		if (buf->header.length <
->>>> +			(offsetof(struct acpi_table_tpm2,
->>>> +				  start_method_specific) +
->>> Should be
->>>
->>>     offsetof(struct acpti_table_tpm2, log_area_minimum_length)
->>
->> The old code had sizeof(*buf) with buf being 'struct acpi_table_tpm2' and
->> that was equivalent to offsetof(struct acpi_table_tpm2,
->> start_method_specific) since 'start_method_specific' is the first new field
->> that we are adding right here. Also see 3rd paragraph in the patch
->> description. The replacement rule described there should apply to all
->> sizeof() calculations on 'struct acpi_table_tpm2.'
-> Aren't you ignoring sizeof(*crb_smc) then?
+On Thu, Jun 25, 2020 at 01:30:53PM +0200, Rafael J. Wysocki wrote:
+> It is not necessary to call acpi_pci_find_companion() from
+> pci_acpi_storage_d3() as long as that function is required to be
+> called by the target device's driver probe or later.
+> 
+> Ths acpi_pci_bridge_d3() case is different, though, AFAICS, because it
+> is invoked in the pci_pm_init() path, via pci_bridge_d3_possible(),
+> and that gets called from pci_device_add() *before* calling
+> device_add().
+> 
+> Mika, is that why acpi_pci_find_companion() gets callled from
+> acpi_pci_bridge_d3()?
 
-It's still there.
-
-
-
+Yes, that's correct.
