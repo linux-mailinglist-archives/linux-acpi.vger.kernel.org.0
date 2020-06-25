@@ -2,190 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B910E209D79
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jun 2020 13:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57C14209E2D
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jun 2020 14:11:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404226AbgFYLbG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Jun 2020 07:31:06 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:43031 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404219AbgFYLbG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Jun 2020 07:31:06 -0400
-Received: by mail-oi1-f194.google.com with SMTP id s10so4407243oih.10;
-        Thu, 25 Jun 2020 04:31:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ceR1V6p7RGNF++3XLjRXzuggrknx1RWLDfnDURTRa10=;
-        b=kd3wbd1zjOuLTYKgkCuIDIVgLb5vg+vCuqGAtSBD6PZbdqrctAad5X/b4uidrtqUqA
-         R4K9tFhcY/46nCrqCYoV2t2FI1aG0d/+vQSO2mx8eWy9OKQ/cisvng72tOQkI4Q5Q1l7
-         Qt5qsiaiJmfmunUH1akbwEhIQoPZB7+duOSKkqFIHODTGfnwGuD8Iu27xw4OsyxAsCYn
-         kwW+kpPqGEx33zw8imLoEFMmKVF6j8lBr1AwskJQ+wJMKyw3bKNNXI2o7sE1HgTAdS0+
-         DkvYP4cHGp8PqtF4pNCRGEXnKnBWwqalGy0i5N6Px87/WQgtxsv7c9F3D8s/98m8Hz5P
-         XqyQ==
-X-Gm-Message-State: AOAM532QD9YdNcMDv/dViOVwiQmT8mAecK8sh1UgJhTRz1TqJvqb+jgH
-        Jx0GwpvlAtZhspBlZXs9FVMoLYr+1CoUBcx5n5E=
-X-Google-Smtp-Source: ABdhPJyklNBNQHH5j4xZ+MpbLP5vgIKFp9exs0rtM1iu2YH+8Aw6RTM6P9vtPnorNsBYobo61Jnpn1Fur6T/ALSpXvY=
-X-Received: by 2002:a54:4585:: with SMTP id z5mr1822683oib.110.1593084664345;
- Thu, 25 Jun 2020 04:31:04 -0700 (PDT)
+        id S2404539AbgFYMLh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Jun 2020 08:11:37 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:64868 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2404450AbgFYMLg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 25 Jun 2020 08:11:36 -0400
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05PC3NN4160650;
+        Thu, 25 Jun 2020 08:10:34 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 31vbmu25d1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 25 Jun 2020 08:10:34 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+        by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05PC9k6f020517;
+        Thu, 25 Jun 2020 12:10:33 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
+        by ppma02dal.us.ibm.com with ESMTP id 31uurt6q4w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 25 Jun 2020 12:10:33 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
+        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 05PCAWVb49611198
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 25 Jun 2020 12:10:32 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6B0D9112062;
+        Thu, 25 Jun 2020 12:10:32 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4A336112061;
+        Thu, 25 Jun 2020 12:10:32 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+        Thu, 25 Jun 2020 12:10:32 +0000 (GMT)
+Subject: Re: [PATCH v5 1/2] acpi: Extend TPM2 ACPI table with missing log
+ fields
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     Stefan Berger <stefanb@linux.vnet.ibm.com>,
+        Jiandi An <anjiandi@codeaurora.org>,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-security-module@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+References: <20200623120636.1453470-1-stefanb@linux.vnet.ibm.com>
+ <20200623120636.1453470-2-stefanb@linux.vnet.ibm.com>
+ <20200625000021.GC21758@linux.intel.com>
+ <9d94c704-5774-ceeb-e4f3-010f74ffe37b@linux.ibm.com>
+ <20200625023431.GB270125@linux.intel.com>
+From:   Stefan Berger <stefanb@linux.ibm.com>
+Message-ID: <bbd532a8-c745-00e6-b002-5d092f630ed6@linux.ibm.com>
+Date:   Thu, 25 Jun 2020 08:10:32 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-References: <20200612204820.20111-2-david.e.box@linux.intel.com> <20200624211549.GA2586552@bjorn-Precision-5520>
-In-Reply-To: <20200624211549.GA2586552@bjorn-Precision-5520>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 25 Jun 2020 13:30:53 +0200
-Message-ID: <CAJZ5v0i8dCN=HMFk_+ZX-Wr73P6kdQBtV0i3FtrZrO9cegXsvQ@mail.gmail.com>
-Subject: Re: [PATCH V2 1/2] PCI: Add ACPI StorageD3Enable _DSD support
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     "David E. Box" <david.e.box@linux.intel.com>, shyjumon.n@intel.com,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-nvme <linux-nvme@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200625023431.GB270125@linux.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
+ definitions=2020-06-25_05:2020-06-25,2020-06-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ bulkscore=0 impostorscore=0 suspectscore=0 adultscore=0 spamscore=0
+ phishscore=0 clxscore=1015 cotscore=-2147483648 mlxlogscore=999
+ lowpriorityscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006250078
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 24, 2020 at 11:15 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
->
-> On Fri, Jun 12, 2020 at 01:48:19PM -0700, David E. Box wrote:
-> > StorageD3Enable is a boolean property that indicates that the platform
-> > wants to use D3 for PCIe storage drives during suspend-to-idle. It is a
-> > BIOS work around that is currently in use on shipping systems like some
-> > Intel Comet Lake platforms. It is meant to change default driver policy for
-> > suspend that may cause higher power consumption.
-> >
-> > Add the DSD property for recognition by fwnode calls and provide an
-> > exported symbol for device drivers to use to read the property as needed.
-> >
-> > Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
-> > Signed-off-by: David E. Box <david.e.box@linux.intel.com>
-> > ---
-> >  drivers/acpi/property.c |  3 +++
-> >  drivers/pci/pci-acpi.c  | 59 +++++++++++++++++++++++++++++++++++++++++
-> >  include/linux/pci.h     |  2 ++
-> >  3 files changed, 64 insertions(+)
-> >
-> > diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> > index e601c4511a8b..c2e2ae774a19 100644
-> > --- a/drivers/acpi/property.c
-> > +++ b/drivers/acpi/property.c
-> > @@ -45,6 +45,9 @@ static const guid_t prp_guids[] = {
-> >       /* Thunderbolt GUID for WAKE_SUPPORTED: 6c501103-c189-4296-ba72-9bf5a26ebe5d */
-> >       GUID_INIT(0x6c501103, 0xc189, 0x4296,
-> >                 0xba, 0x72, 0x9b, 0xf5, 0xa2, 0x6e, 0xbe, 0x5d),
-> > +     /* Storage device needs D3 GUID: 5025030f-842f-4ab4-a561-99a5189762d0 */
-> > +     GUID_INIT(0x5025030f, 0x842f, 0x4ab4,
-> > +               0xa5, 0x61, 0x99, 0xa5, 0x18, 0x97, 0x62, 0xd0),
-> >  };
-> >
-> >  /* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
-> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> > index d21969fba6ab..732df524e09c 100644
-> > --- a/drivers/pci/pci-acpi.c
-> > +++ b/drivers/pci/pci-acpi.c
-> > @@ -972,6 +972,65 @@ static bool acpi_pci_bridge_d3(struct pci_dev *dev)
-> >       return val == 1;
-> >  }
-> >
-> > +/**
-> > + * pci_acpi_storage_d3 - whether root port requests D3 for idle suspend
-> > + * @pdev: PCI device to check
-> > + *
-> > + * Returns true if the ACPI companion device contains the "StorageD3Enable"
-> > + * _DSD property and the value is 1. This indicates that the root port is
-> > + * used by a storage device and the platform is requesting D3 for the
-> > + * device during suspend to idle in order to support platform pm.
-> > + */
-> > +bool pci_acpi_storage_d3(struct pci_dev *dev)
-> > +{
-> > +     const struct fwnode_handle *fwnode;
-> > +     struct acpi_device *adev;
-> > +     struct pci_dev *root;
-> > +     acpi_handle handle;
-> > +     acpi_status status;
-> > +     bool ret = false;
-> > +     u8 val;
-> > +
-> > +     /*
-> > +      * Look for _DSD property specifying that the storage device on
-> > +      * the port must use D3 to support deep platform power savings during
-> > +      * suspend-to-idle
-> > +      */
-> > +     root = pci_find_pcie_root_port(dev);
->
-> I think this would need to be updated to apply to v5.8-rc1 after
-> 6ae72bfa656e ("PCI: Unify pcie_find_root_port() and
-> pci_find_pcie_root_port()").
->
-> https://git.kernel.org/linus/6ae72bfa656e
->
-> > +     if (!root)
-> > +             return false;
-> > +
-> > +     adev = ACPI_COMPANION(&root->dev);
-> > +     if (!adev) {
-> > +             /*
-> > +              * It is possible that the ACPI companion is not yet bound
-> > +              * for the root port so look it up manually here.
-> > +              */
-> > +             if (!adev && !pci_dev_is_added(root))
-> > +                     adev = acpi_pci_find_companion(&root->dev);
->
-> I see that you copied this "ACPI companion not yet bound" thing from
-> acpi_pci_bridge_d3().  But it's ugly.
->
-> Isn't there a way we can bind the ACPI companion during normal PCI
-> enumeration so we don't need this exception case?
->
-> I really do not like the idea of putting this code in the PCI core
-> because AFAICT the PCI core can do nothing with this information.
->
-> If we could make sure during enumeration that the root port always has
-> an ACPI companion, this code could go to the nvme driver itself.  And
-> we could also clean up the ugliness in acpi_pci_bridge_d3().
->
-> Rafael, is that possible?  I don't really know how the companion
-> device gets set.
+On 6/24/20 10:34 PM, Jarkko Sakkinen wrote:
+> On Wed, Jun 24, 2020 at 08:38:25PM -0400, Stefan Berger wrote:
+>> On 6/24/20 8:00 PM, Jarkko Sakkinen wrote:
+>>> On Tue, Jun 23, 2020 at 08:06:35AM -0400, Stefan Berger wrote:
+>>>> From: Stefan Berger <stefanb@linux.ibm.com>
+>>>>
+>>>> Recent extensions of the TPM2 ACPI table added 3 more fields
+>>>> including 12 bytes of start method specific parameters and Log Area
+>>>> Minimum Length (u32) and Log Area Start Address (u64). So, we extend
+>>>> the existing structure with these fields to allow non-UEFI systems
+>>>> to access the TPM2's log.
+>>>>
+>>>> The specification that has the new fields is the following:
+>>>>     TCG ACPI Specification
+>>>>     Family "1.2" and "2.0"
+>>>>     Version 1.2, Revision 8
+>>>>
+>>>> Adapt all existing table size calculations to use
+>>>> offsetof(struct acpi_table_tpm2, start_method_specific)
+>>>> [where start_method_specific is a newly added field]
+>>>> rather than sizeof(struct acpi_table_tpm2) so that the addition
+>>>> of the new fields does not affect current systems that may not
+>>>> have them.
+>>>>
+>>> I found at least one regression from this patch. Please remove my
+>>> reviewed-by comment form the next version.
+>>>
+>>> Should have:
+>>>
+>>>     Link: https://trustedcomputinggroup.org/wp-content/uploads/TCG_ACPIGeneralSpecification_v1.20_r8.pdf
+>>>
+>>> Please, add this.
+>>>
+>>>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+>>>> Cc: linux-acpi@vger.kernel.org
+>>>> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>> Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+>>>> ---
+>>>>    drivers/char/tpm/tpm_crb.c | 13 ++++++++++---
+>>>>    drivers/char/tpm/tpm_tis.c |  4 +++-
+>>>>    include/acpi/actbl3.h      |  5 +++--
+>>>>    3 files changed, 16 insertions(+), 6 deletions(-)
+>>>>
+>>>> diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
+>>>> index a9dcf31eadd2..0565aa5482f9 100644
+>>>> --- a/drivers/char/tpm/tpm_crb.c
+>>>> +++ b/drivers/char/tpm/tpm_crb.c
+>>>> @@ -669,7 +669,9 @@ static int crb_acpi_add(struct acpi_device *device)
+>>>>    	status = acpi_get_table(ACPI_SIG_TPM2, 1,
+>>>>    				(struct acpi_table_header **) &buf);
+>>>> -	if (ACPI_FAILURE(status) || buf->header.length < sizeof(*buf)) {
+>>>> +	if (ACPI_FAILURE(status) || buf->header.length <
+>>>> +			offsetof(struct acpi_table_tpm2,
+>>>> +				 start_method_specific)) {
+>>>>    		dev_err(dev, FW_BUG "failed to get TPM2 ACPI table\n");
+>>>>    		return -EINVAL;
+>>>>    	}
+>>>> @@ -684,14 +686,19 @@ static int crb_acpi_add(struct acpi_device *device)
+>>>>    		return -ENOMEM;
+>>>>    	if (sm == ACPI_TPM2_COMMAND_BUFFER_WITH_ARM_SMC) {
+>>>> -		if (buf->header.length < (sizeof(*buf) + sizeof(*crb_smc))) {
+>>>> +		if (buf->header.length <
+>>>> +			(offsetof(struct acpi_table_tpm2,
+>>>> +				  start_method_specific) +
+>>> Should be
+>>>
+>>>     offsetof(struct acpti_table_tpm2, log_area_minimum_length)
+>>
+>> The old code had sizeof(*buf) with buf being 'struct acpi_table_tpm2' and
+>> that was equivalent to offsetof(struct acpi_table_tpm2,
+>> start_method_specific) since 'start_method_specific' is the first new field
+>> that we are adding right here. Also see 3rd paragraph in the patch
+>> description. The replacement rule described there should apply to all
+>> sizeof() calculations on 'struct acpi_table_tpm2.'
+> Aren't you ignoring sizeof(*crb_smc) then?
 
-That's a bit convoluted.
+It's still there.
 
-device_add() calls device_platform_notify(), before calling bus_add_device().
 
-device_platform_notify() calls acpi_platform_notify() which invokes
-acpi_device_notify() that looks for the companion via
-type->find_companion() which for PCI points to
-acpi_pci_find_companion().  If found, the companion is attached to the
-dev structure as a physical_node, via acpi_bind_one().
 
-So by the time bus_probe_device() runs, the companion should be there
-already - if it is there at all.
-
-The parent ACPI companion should be present when the child is probing
-too, as per the above.
-
-> Maybe this is could be done somewhere around pci_device_add()?
-
-It is done in there.
-
-It is not necessary to call acpi_pci_find_companion() from
-pci_acpi_storage_d3() as long as that function is required to be
-called by the target device's driver probe or later.
-
-Ths acpi_pci_bridge_d3() case is different, though, AFAICS, because it
-is invoked in the pci_pm_init() path, via pci_bridge_d3_possible(),
-and that gets called from pci_device_add() *before* calling
-device_add().
-
-Mika, is that why acpi_pci_find_companion() gets callled from
-acpi_pci_bridge_d3()?
