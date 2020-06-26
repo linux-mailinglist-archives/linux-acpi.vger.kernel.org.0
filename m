@@ -2,114 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1CB320B4D4
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jun 2020 17:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA72520B4EB
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jun 2020 17:40:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729667AbgFZPjJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 Jun 2020 11:39:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55770 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726613AbgFZPjI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 26 Jun 2020 11:39:08 -0400
-Received: from localhost (mobile-166-170-222-206.mycingular.net [166.170.222.206])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 301B720773;
-        Fri, 26 Jun 2020 15:39:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593185948;
-        bh=wZ7OWTnSecrf7D07hrerdFH+pIDkkrkHI6TyZ43C4OY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=g+vts0eFjefmiqi5onoMJ/9l7FfnI3aXem80MtyFtg3iWBMJ9Pxzbs+jX51NtgM1d
-         lDmnxfa0+90uxMSnkCRI7WY1RQX10VnnsNMFX772+BALvhnuJ/QUoHrzS/1jK+ejmS
-         zW9ol5x3OCMJmeDo2ax7nCIXEZUKlV8kq98qK4u0=
-Date:   Fri, 26 Jun 2020 10:39:06 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Rajat Jain <rajatja@google.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, iommu@lists.linux-foundation.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Raj Ashok <ashok.raj@intel.com>,
-        lalithambika.krishnakumar@intel.com,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Prashant Malani <pmalani@google.com>,
-        Benson Leung <bleung@google.com>,
-        Todd Broch <tbroch@google.com>,
-        Alex Levin <levinale@google.com>,
-        Mattias Nissler <mnissler@google.com>,
-        Rajat Jain <rajatxjain@gmail.com>,
-        Bernie Keany <bernie.keany@intel.com>,
-        Aaron Durbin <adurbin@google.com>,
-        Diego Rivas <diegorivas@google.com>,
-        Duncan Laurie <dlaurie@google.com>,
-        Furquan Shaikh <furquan@google.com>,
-        Jesse Barnes <jsbarnes@google.com>,
-        Christian Kellner <christian@kellner.me>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        oohall@gmail.com
-Subject: Re: [PATCH 1/2] pci: Add pci device even if the driver failed to
- attach
-Message-ID: <20200626153906.GA2897118@bjorn-Precision-5520>
+        id S1726710AbgFZPkF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 Jun 2020 11:40:05 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:62622 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729807AbgFZPj6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 26 Jun 2020 11:39:58 -0400
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05QFcRFq180282;
+        Fri, 26 Jun 2020 11:39:52 -0400
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 31wkbg8u3k-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 26 Jun 2020 11:39:52 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+        by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05QFaGV0007822;
+        Fri, 26 Jun 2020 15:39:51 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+        by ppma05wdc.us.ibm.com with ESMTP id 31uus1mwmr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 26 Jun 2020 15:39:51 +0000
+Received: from b03ledav005.gho.boulder.ibm.com (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+        by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 05QFdoZS46858732
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 26 Jun 2020 15:39:50 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3AE0FBE053;
+        Fri, 26 Jun 2020 15:39:50 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B24B7BE051;
+        Fri, 26 Jun 2020 15:39:49 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+        by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Fri, 26 Jun 2020 15:39:49 +0000 (GMT)
+From:   Stefan Berger <stefanb@linux.vnet.ibm.com>
+To:     linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        jarkko.sakkinen@linux.intel.com, linux-acpi@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Cc:     Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH v8 0/2] tpm2: Make TPM2 logs accessible for non-UEFI firmware
+Date:   Fri, 26 Jun 2020 11:39:46 -0400
+Message-Id: <20200626153948.2059251-1-stefanb@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200626002710.110200-1-rajatja@google.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
+ definitions=2020-06-26_08:2020-06-26,2020-06-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
+ phishscore=0 suspectscore=0 spamscore=0 mlxlogscore=639 impostorscore=0
+ cotscore=-2147483648 clxscore=1015 malwarescore=0 adultscore=0
+ lowpriorityscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006260106
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Nit: when you update these patches, can you run "git log --oneline
-drivers/pci/bus.c" and make your subject lines match the convention?
-E.g.,
+From: Stefan Berger <stefanb@linux.ibm.com>
 
-  PCI: Add device even if driver attach failed
+This series of patches adds an optional extensions for the TPM2 ACPI table
+with additional fields found in the TPM2 TCG ACPI specification (reference
+is in the patch) that allow access to the log's address and its size. We
+then modify the code that so far only enables access to a TPM 1.2's log for
+a TPM2 as well. This then enables access to the TPM2's log on non-UEFI
+system that for example run SeaBIOS.
 
-On Thu, Jun 25, 2020 at 05:27:09PM -0700, Rajat Jain wrote:
-> device_attach() returning failure indicates a driver error
-> while trying to probe the device. In such a scenario, the PCI
-> device should still be added in the system and be visible to
-> the user.
+   Stefan
 
-Nit: please wrap logs to fill 75 characters.  "git log" adds 4 spaces
-at the beginning, so 75+4 still fits nicely in 80 columns without
-wrapping.
+v7->v8:
+ - Added empty line.
 
-> This patch partially reverts:
-> commit ab1a187bba5c ("PCI: Check device_attach() return value always")
-> 
-> Signed-off-by: Rajat Jain <rajatja@google.com>
-> ---
->  drivers/pci/bus.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
-> index 8e40b3e6da77d..3cef835b375fd 100644
-> --- a/drivers/pci/bus.c
-> +++ b/drivers/pci/bus.c
-> @@ -322,12 +322,8 @@ void pci_bus_add_device(struct pci_dev *dev)
->  
->  	dev->match_driver = true;
->  	retval = device_attach(&dev->dev);
-> -	if (retval < 0 && retval != -EPROBE_DEFER) {
-> +	if (retval < 0 && retval != -EPROBE_DEFER)
->  		pci_warn(dev, "device attach failed (%d)\n", retval);
-> -		pci_proc_detach_device(dev);
-> -		pci_remove_sysfs_dev_files(dev);
+v6->v7:
+ - Added empty lines and R-b.
 
-Thanks for catching my bug!
+v5->v6:
+ - Moved extensions of TPM2 table into acpi_tpm2_phy.
 
-> -		return;
-> -	}
->  
->  	pci_dev_assign_added(dev, true);
->  }
-> -- 
-> 2.27.0.212.ge8ba1cc988-goog
-> 
+v4->v5:
+ - Added R-bs and A-bs.
+
+v3->v4:
+  - Repost as one series
+
+v2->v3:
+  - Split the series into two separate patches
+  - Added comments to ACPI table fields
+  - Added check for null pointer to log area and zero log size
+
+v1->v2:
+  - Repost of the series
+
+
+Stefan Berger (2):
+  acpi: Extend TPM2 ACPI table with missing log fields
+  tpm: Add support for event log pointer found in TPM2 ACPI table
+
+ drivers/char/tpm/eventlog/acpi.c | 63 +++++++++++++++++++++-----------
+ include/acpi/actbl3.h            |  7 ++++
+ 2 files changed, 49 insertions(+), 21 deletions(-)
+
+-- 
+2.26.2
+
