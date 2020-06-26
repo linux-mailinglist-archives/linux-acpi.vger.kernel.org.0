@@ -2,133 +2,172 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B8CD20ABB4
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jun 2020 07:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E0B920ABD9
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jun 2020 07:32:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726573AbgFZFJN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 Jun 2020 01:09:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41634 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725816AbgFZFJN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Jun 2020 01:09:13 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B1A4C08C5DB
-        for <linux-acpi@vger.kernel.org>; Thu, 25 Jun 2020 22:09:13 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id p20so8074614ejd.13
-        for <linux-acpi@vger.kernel.org>; Thu, 25 Jun 2020 22:09:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0KG6mHyc0pQ6LpydjXYySS5Bs9KvIV7RYbzUJYenScI=;
-        b=MK5JsoBT/Fc9UOrTmeD5yT7TMj/v6lrHC1bxrjpT4cDBo31ad6A65Vm9Mk+JEluVx0
-         9A86No4Ca02+k88TSPORiykbjsJ0rx1o77TD6JEtvhHTG2NFlkTSALFiq4XpeL86qnc6
-         bXiugoNq+Xdu7DUmuy9LEzVvRjNpE1pzWcnonkIsDXbhGIOye8ruIaSOwMlQyKzvtrAh
-         Ylck2Gh0x37RXnTYh+uMGHwGSayIidDUhOSJjZ7faq6zCwn5Y/z3NYhtqEqFdDBQsT4U
-         v7nn0dFGx++qOYVZ1QYnFElMoy4dbJEq3P+TiaXrInYV6XkZ5OECd0Mm6QIe/PVAu4gY
-         17BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0KG6mHyc0pQ6LpydjXYySS5Bs9KvIV7RYbzUJYenScI=;
-        b=tGSPzIuwhLnCayvTgwKO8m0ZEBGS7gW8hjTRrtWVlmOBBywqxtkzuAXbTsO0LE+1ni
-         Bpd8QyGdX9nheZsKsjisTgTscgYAiw4PrshLESLqG1X6gxX8ZeAIgL3M8SSXZguP2UDr
-         T9BRctbHOjyw+LmEYCa0JpqDtopixe+PIHowcLGYnKWlufwYrYSvbY8qXzfBV98JAtxS
-         kQEuYTnZ6LSyIQijtkPyIFvbI783hT2ZxBwqnVr16zo9DDNwlrpgOQAv0oPt2zfYwQfN
-         3SJwYdbKVaZr9LPPSLZwdYIcqZSmXpAgUVZlwJH+whRGyUW4M01mFHcjWpdepBpDzq+U
-         E1Mg==
-X-Gm-Message-State: AOAM533p+u6ZGUHA+t3alyvuIrYgqJD33M7PX1QsGCineYuKnyU2cYdZ
-        NOXaDZo0WYOEORbehm7cEP0J1SKmiEXHrihv3mKQmA==
-X-Google-Smtp-Source: ABdhPJwSbUQKE9HrD+ejpOvoP1YzH7aH7vlAXTl/tKcNEZckOJ+kb52supggo9Px3oqhAR6MhjzRF0GDnLRcdkRcIzA=
-X-Received: by 2002:a17:906:6d56:: with SMTP id a22mr1067109ejt.440.1593148151705;
- Thu, 25 Jun 2020 22:09:11 -0700 (PDT)
+        id S1726919AbgFZFcF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 Jun 2020 01:32:05 -0400
+Received: from mga11.intel.com ([192.55.52.93]:63280 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725306AbgFZFcF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 26 Jun 2020 01:32:05 -0400
+IronPort-SDR: PJ7oSkml9sZFB7p1syhqA85H4Lf4qFmbvbCgqdPDOoEAuZZDLJVEJMsiWm5SL7Q3zg2TPwbQ+j
+ 5aTtVk8HBlyg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9663"; a="143439895"
+X-IronPort-AV: E=Sophos;i="5.75,282,1589266800"; 
+   d="scan'208";a="143439895"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2020 22:32:04 -0700
+IronPort-SDR: D2oUEQTjKhFXqepQrh2ZwwWJ6JzrUV9y2dS2QLAWsHpg1ClBuTOROWL8ZzWIyFZJcSx1FdZPvw
+ MZHacCPimoHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,282,1589266800"; 
+   d="scan'208";a="319928074"
+Received: from lkp-server01.sh.intel.com (HELO 538b5e3c8319) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 25 Jun 2020 22:32:03 -0700
+Received: from kbuild by 538b5e3c8319 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1jogy2-00021C-Kf; Fri, 26 Jun 2020 05:32:02 +0000
+Date:   Fri, 26 Jun 2020 13:31:20 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ b3cad17e9253db657cacf38bedf70bbac8b542c3
+Message-ID: <5ef58828.3ocdG/pko47b5Xk2%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <159312902033.1850128.1712559453279208264.stgit@dwillia2-desk3.amr.corp.intel.com>
- <159312906372.1850128.11611897078988158727.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20200626050611.GA223424@kroah.com>
-In-Reply-To: <20200626050611.GA223424@kroah.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Thu, 25 Jun 2020 22:09:00 -0700
-Message-ID: <CAPcyv4jeFTWVYEx74AOhHjbgCJpYwcR7waTDx90artGKBvaKrw@mail.gmail.com>
-Subject: Re: [PATCH 08/12] driver-core: Introduce DEVICE_ATTR_ADMIN_{RO,RW}
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-nvdimm <linux-nvdimm@lists.01.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Vishal L Verma <vishal.l.verma@intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 25, 2020 at 10:06 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Thu, Jun 25, 2020 at 04:51:03PM -0700, Dan Williams wrote:
-> > A common pattern for using plain DEVICE_ATTR() instead of
-> > DEVICE_ATTR_RO() and DEVICE_ATTR_RW() is for attributes that want to
-> > limit read to only root.  I.e. many users of DEVICE_ATTR() are
-> > specifying 0400 or 0600 for permissions.
-> >
-> > Given the expectation that CAP_SYS_ADMIN is needed to access these
-> > sensitive attributes and an explicit helper with the _ADMIN_ identifier
-> > for DEVICE_ATTR_ADMIN_{RO,RW}.
-> >
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> > ---
-> >  include/linux/device.h |    4 ++++
-> >  include/linux/sysfs.h  |    7 +++++++
-> >  2 files changed, 11 insertions(+)
-> >
-> > diff --git a/include/linux/device.h b/include/linux/device.h
-> > index 15460a5ac024..d7c2570368fa 100644
-> > --- a/include/linux/device.h
-> > +++ b/include/linux/device.h
-> > @@ -128,8 +128,12 @@ ssize_t device_store_bool(struct device *dev, struct device_attribute *attr,
-> >               __ATTR_PREALLOC(_name, _mode, _show, _store)
-> >  #define DEVICE_ATTR_RW(_name) \
-> >       struct device_attribute dev_attr_##_name = __ATTR_RW(_name)
-> > +#define DEVICE_ATTR_ADMIN_RW(_name) \
-> > +     struct device_attribute dev_attr_##_name = __ATTR_RW_MODE(_name, 0600)
-> >  #define DEVICE_ATTR_RO(_name) \
-> >       struct device_attribute dev_attr_##_name = __ATTR_RO(_name)
-> > +#define DEVICE_ATTR_ADMIN_RO(_name) \
-> > +     struct device_attribute dev_attr_##_name = __ATTR_RO_MODE(_name, 0400)
-> >  #define DEVICE_ATTR_WO(_name) \
-> >       struct device_attribute dev_attr_##_name = __ATTR_WO(_name)
-> >  #define DEVICE_ULONG_ATTR(_name, _mode, _var) \
-> > diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
-> > index 86067dbe7745..34e84122f635 100644
-> > --- a/include/linux/sysfs.h
-> > +++ b/include/linux/sysfs.h
-> > @@ -123,6 +123,13 @@ struct attribute_group {
-> >       .show   = _name##_show,                                         \
-> >  }
-> >
-> > +#define __ATTR_RW_MODE(_name, _mode) {                                       \
-> > +     .attr   = { .name = __stringify(_name),                         \
-> > +                 .mode = VERIFY_OCTAL_PERMISSIONS(_mode) },          \
-> > +     .show   = _name##_show,                                         \
-> > +     .store  = _name##_store,                                        \
-> > +}
-> > +
-> >  #define __ATTR_WO(_name) {                                           \
-> >       .attr   = { .name = __stringify(_name), .mode = 0200 },         \
-> >       .store  = _name##_store,                                        \
-> >
->
-> Nice!  Want me to take this now, I know of many other places that could
-> be cleaned up to use this (like the raw device bug that I just fixed...)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
+branch HEAD: b3cad17e9253db657cacf38bedf70bbac8b542c3  Merge branch 'acpi-dptf' into bleeding-edge
 
-Sure, that'd be great.
+elapsed time: 723m
 
-> If not:
->
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+configs tested: 109
+configs skipped: 1
 
- Thanks Greg.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm                       mainstone_defconfig
+arm                          moxart_defconfig
+m68k                            q40_defconfig
+sh                          sdk7786_defconfig
+s390                              allnoconfig
+arm                            mps2_defconfig
+powerpc                  mpc885_ads_defconfig
+sh                        sh7763rdp_defconfig
+c6x                        evmc6472_defconfig
+riscv                          rv32_defconfig
+arm                            lart_defconfig
+mips                      loongson3_defconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+i386                              allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a002-20200624
+i386                 randconfig-a006-20200624
+i386                 randconfig-a003-20200624
+i386                 randconfig-a001-20200624
+i386                 randconfig-a005-20200624
+i386                 randconfig-a004-20200624
+i386                 randconfig-a013-20200624
+i386                 randconfig-a016-20200624
+i386                 randconfig-a012-20200624
+i386                 randconfig-a014-20200624
+i386                 randconfig-a011-20200624
+i386                 randconfig-a015-20200624
+x86_64               randconfig-a004-20200624
+x86_64               randconfig-a002-20200624
+x86_64               randconfig-a003-20200624
+x86_64               randconfig-a005-20200624
+x86_64               randconfig-a001-20200624
+x86_64               randconfig-a006-20200624
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
