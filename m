@@ -2,53 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5279820B379
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jun 2020 16:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46D2520B37E
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jun 2020 16:23:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728947AbgFZOW1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 Jun 2020 10:22:27 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:44116 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725864AbgFZOW1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Jun 2020 10:22:27 -0400
-Received: by mail-ot1-f67.google.com with SMTP id 5so6759668oty.11;
-        Fri, 26 Jun 2020 07:22:26 -0700 (PDT)
+        id S1728847AbgFZOXk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 Jun 2020 10:23:40 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:43041 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725864AbgFZOXk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Jun 2020 10:23:40 -0400
+Received: by mail-oi1-f194.google.com with SMTP id x83so635174oif.10;
+        Fri, 26 Jun 2020 07:23:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=zylLUqnkdMrer9YoBeoJCoYKdCDB3D8ttj9vwr5OJtU=;
-        b=Cw/i3qyk/q06UqwKOCrnqXpy9tpME4ZHEgVz7mSM5PPjOuUkz0xWxpH/NnEMVC8qPi
-         sGHFmbNhswqIWlhzBWyNdXYv9D9FWZKCQCSMg3K3dfuDGq8q1vyp4R1K/n6qNAXS2Gnw
-         pzZsO58wndSAVfXQ/7+1/fc14Q03jef1gieRoRjGO+3vRrdGG3ghKzVrvq9H5XJkEZ68
-         AJbIYQXmE9jxtu6wIjkReW4wzBlwYwPz+zp53SZ8c7U9yAWJApLUNgQlku62RYaEIR1B
-         jnVaThPVof3BYpqVdkD/qiMRSq5wYSoEfwOcEWRL6jqORUzq2dn2BItMqDNv+7iOgwsX
-         xvHA==
-X-Gm-Message-State: AOAM533nvyhgKjRiig1fvKPYeYUFUPGeZvXd6kEHQ2jdNGhKEB61CqXu
-        aG7hbckhd58K+ty3CT2FPZ4oPxCA/LiMtvtb7vkb+g==
-X-Google-Smtp-Source: ABdhPJwlqOmcvg/6oi2GQiPpb1emiKe3h/g+UPnIZRd8AgaCMf8EtxE5eGtW9wxjDO0n2al1FmoCDRJ0clqbo+lCNqY=
-X-Received: by 2002:a9d:7d15:: with SMTP id v21mr2546864otn.118.1593181345873;
- Fri, 26 Jun 2020 07:22:25 -0700 (PDT)
+        bh=1s+jOM03Ys0L0H6keRcrjY2jkiJrGLbo1O0phZPezKY=;
+        b=cwzo6RwcSkka6c/FFGq5vsaAVUJHfUAc/YDqnP9Qs4aBV7OcUredvxjBp8Dm1x+OQP
+         fThaUot13uNshuv9nm7ASB6u5yEhEiZeHy1g0G8rsQLeRf50FBa75QLw9lw7q9G35+jZ
+         J/e4CiV73uCH1TiUP7V6fBYaKeq6vHjpl0dRd2o34ItS9FMtDIVD0psXMYfIKl6RfXwL
+         DCvF2xrOLoYMX/5/TpasRahH81wAmNX3XB2+d+9zu1PdNT6Lm8HAiKHn1nJeZorajdBt
+         00PPiURapENMDwEIrPKl2EUl4HAlV6ld1vCHVf1rNxxRnHBYw+MsPhz5ksRyMzDD8NcP
+         zoZQ==
+X-Gm-Message-State: AOAM530TvMn7+qybGa0S6TtBqV7rtOlen96zYLDEesmNkCF218TOqFYd
+        Uh3Zp0mUVUSqEbxxqbq2L3Zla1c+FMWVDKIoGAQ=
+X-Google-Smtp-Source: ABdhPJz6ugoc6qjOUMHZbN/qVoA9N2ilGrzO14m64yxqaMJkzKgFIoX4Uv8A4Vz758e5B/07WM2QMXgtRst2wS7uixA=
+X-Received: by 2002:a05:6808:99b:: with SMTP id a27mr2542048oic.68.1593181419856;
+ Fri, 26 Jun 2020 07:23:39 -0700 (PDT)
 MIME-Version: 1.0
 References: <159312902033.1850128.1712559453279208264.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <159312902033.1850128.1712559453279208264.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <159312907937.1850128.15890323251117466770.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <159312907937.1850128.15890323251117466770.stgit@dwillia2-desk3.amr.corp.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 26 Jun 2020 16:22:14 +0200
-Message-ID: <CAJZ5v0h8Eg5_FVxz0COLDMK8cy72xxDk_2nFnXDJNUY-MvdBEQ@mail.gmail.com>
-Subject: Re: [PATCH 00/12] ACPI/NVDIMM: Runtime Firmware Activation
+Date:   Fri, 26 Jun 2020 16:23:29 +0200
+Message-ID: <CAJZ5v0gL66d7fo8nmKFUm6dSBe8bSRymcOfW9YeePUJ9U=3p-g@mail.gmail.com>
+Subject: Re: [PATCH 11/12] PM, libnvdimm: Add syscore_quiesced() callback for
+ firmware activation
 To:     Dan Williams <dan.j.williams@intel.com>
 Cc:     "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Pavel Machek <pavel@ucw.cz>, Stable <stable@vger.kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Len Brown <len.brown@intel.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -57,56 +54,30 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 26, 2020 at 2:06 AM Dan Williams <dan.j.williams@intel.com> wrote:
+On Fri, Jun 26, 2020 at 2:07 AM Dan Williams <dan.j.williams@intel.com> wrote:
 >
-> Quoting the documentation:
+> The runtime firmware activation capability of Intel NVDIMM devices
+> requires memory transactions to be disabled for 100s of microseconds.
+> This timeout is large enough to cause in-flight DMA to fail and other
+> application detectable timeouts. Arrange for firmware activation to be
+> executed while the system is "quiesced" all suspend operations have
+> completed successfully.
 >
->     Some persistent memory devices run a firmware locally on the device /
->     "DIMM" to perform tasks like media management, capacity provisioning,
->     and health monitoring. The process of updating that firmware typically
->     involves a reboot because it has implications for in-flight memory
->     transactions. However, reboots are disruptive and at least the Intel
->     persistent memory platform implementation, described by the Intel ACPI
->     DSM specification [1], has added support for activating firmware at
->     runtime.
+> Note that the placement of syscore_quiesced() before
+> suspend_disable_secondary_cpus() and the "TEST_PLATFORM" early exit in
+> suspend_enter():
 >
->     [1]: https://docs.pmem.io/persistent-memory/
+>         if (suspend_test(TEST_PLATFORM))
+>                 goto Platform_wake;
 >
-> The approach taken is to abstract the Intel platform specific mechanism
-> behind a libnvdimm-generic sysfs interface. The interface could support
-> runtime-firmware-activation on another architecture without need to
-> change userspace tooling.
->
-> The ACPI NFIT implementation involves a set of device-specific-methods
-> (DSMs) to 'arm' individual devices for activation and bus-level
-> 'trigger' method to execute the activation. Informational / enumeration
-> methods are also provided at the bus and device level.
->
-> One complicating aspect of the memory device firmware activation is that
-> the memory controller may need to be quiesced, no memory cycles, during
-> the activation. While the platform has mechanisms to support holding off
-> in-flight DMA during the activation, the device response to that delay
-> is potentially undefined. The platform may reject a runtime firmware
-> update if, for example a PCI-E device does not support its completion
-> timeout value being increased to meet the activation time. Outside of
-> device timeouts the quiesce period may also violate application
-> timeouts.
->
-> Given the above device and application timeout considerations the
-> implementation defaults to hooking into the suspend path to trigger the
-> activation, i.e. that a suspend-resume cycle (at least up to the syscore
-> suspend point) is required.
+> ...is a deliberate tradeoff. suspend_disable_secondary_cpus() causes
+> violence to drivers with many interrupts allocated (server-class network
+> adapters for example). So, allow for triggering firmware-activation
+> without requiring all irq vectors to be routed (oversubscribed) to a
+> single CPU.
 
-Well, that doesn't work if the suspend method for the system is set to
-suspend-to-idle (for example, via /sys/power/mem_sleep), because the
-syscore callbacks are not invoked in that case.
-
-Also you probably don't need the device power state toggling that
-happens during regular suspend/resume (you may not want it even for
-some devices).
-
-The hibernation freeze/thaw may be a better match and there is some
-test support in there already that may be kind of co-opted for your
-use case.
+So while the other patches in the series look good to me, this is kind
+of questionable for reasons described in my reply to the intro
+message.
 
 Cheers!
