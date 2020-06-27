@@ -2,171 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EEC0B20C0D8
-	for <lists+linux-acpi@lfdr.de>; Sat, 27 Jun 2020 12:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14EB820C0FA
+	for <lists+linux-acpi@lfdr.de>; Sat, 27 Jun 2020 13:09:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726175AbgF0KxJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 27 Jun 2020 06:53:09 -0400
-Received: from mga09.intel.com ([134.134.136.24]:42452 "EHLO mga09.intel.com"
+        id S1726457AbgF0LIj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 27 Jun 2020 07:08:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49432 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725991AbgF0KxJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 27 Jun 2020 06:53:09 -0400
-IronPort-SDR: sSUN/c196KuBHNjX+/Aq+knPj10qvEyJ+CBdggieRm5gjxKAvy0x2w+x+vk6jcb6zptDMiJer4
- 5oI2cC+5wjYA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9664"; a="147163784"
-X-IronPort-AV: E=Sophos;i="5.75,287,1589266800"; 
-   d="scan'208";a="147163784"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2020 03:53:08 -0700
-IronPort-SDR: LRH24RGf0IvBIgxxvIRd47KLMWG8nNiDgNSktN67AIyc+A9iz2vfzpWL6JgOCqf9O2418vabXP
- WQozxuo+35Yw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,287,1589266800"; 
-   d="scan'208";a="320222964"
-Received: from lkp-server01.sh.intel.com (HELO 538b5e3c8319) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 27 Jun 2020 03:53:06 -0700
-Received: from kbuild by 538b5e3c8319 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1jp8SI-0002lV-9j; Sat, 27 Jun 2020 10:53:06 +0000
-Date:   Sat, 27 Jun 2020 18:52:40 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        id S1726568AbgF0LIZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 27 Jun 2020 07:08:25 -0400
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D12A621531;
+        Sat, 27 Jun 2020 11:08:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593256105;
+        bh=CKFRZQvVXoQGRUt/fr1evMIOtF/D2G3jbib+jYbyxlU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=LGldGMH4GnVEZJM9lKrAO4vuHndpGt+hjl6cH5CtcHpuSHOS89YEYTeMdXj+1PQKX
+         IpFUxwH79KoWlnNgFGOfWbPavxAZkbyeSsGtIo3zhpECkuamaVI9UYUJyQ3WNJjsiF
+         4keML4Szu08xHn+uJV7hdRQ1XL2Ht1/vYL+oTEMY=
+Received: from 78.163-31-62.static.virginmediabusiness.co.uk ([62.31.163.78] helo=wait-a-minute.lan)
+        by disco-boy.misterjones.org with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <maz@kernel.org>)
+        id 1jp8h5-006s0z-9t; Sat, 27 Jun 2020 12:08:23 +0100
+From:   Marc Zyngier <maz@kernel.org>
+To:     Jason Cooper <jason@lakedaemon.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Oscar Carter <oscar.carter@gmx.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     Andrew Perepech <andrew.perepech@mediatek.com>,
+        linux-mediatek@lists.infradead.org,
+        Stephane Le Provost <stephane.leprovost@mediatek.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Pedro Tsai <pedro.tsai@mediatek.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Fabien Parent <fparent@baylibre.com>,
+        linux-kernel@vger.kernel.org, kernel-hardening@lists.openwall.com,
         linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- ab41a33191ea4f1ce5834f2b776988867dfad807
-Message-ID: <5ef724f8.RWOtu3miOLos04MU%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Subject: Re: [PATCH v5 0/3] drivers/acpi: Remove function callback casts
+Date:   Sat, 27 Jun 2020 12:08:05 +0100
+Message-Id: <159325548742.93134.13767620418777913420.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20200530143430.5203-1-oscar.carter@gmx.com>
+References: <20200530143430.5203-1-oscar.carter@gmx.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 62.31.163.78
+X-SA-Exim-Rcpt-To: jason@lakedaemon.net, matthias.bgg@gmail.com, brgl@bgdev.pl, tglx@linutronix.de, oscar.carter@gmx.com, keescook@chromium.org, rjw@rjwysocki.net, lenb@kernel.org, andrew.perepech@mediatek.com, linux-mediatek@lists.infradead.org, stephane.leprovost@mediatek.com, linux-arm-kernel@lists.infradead.org, pedro.tsai@mediatek.com, bgolaszewski@baylibre.com, fparent@baylibre.com, linux-kernel@vger.kernel.org, kernel-hardening@lists.openwall.com, linux-acpi@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git  bleeding-edge
-branch HEAD: ab41a33191ea4f1ce5834f2b776988867dfad807  Merge branch 'acpi-pci' into bleeding-edge
+On Sat, 30 May 2020 16:34:27 +0200, Oscar Carter wrote:
+> In an effort to enable -Wcast-function-type in the top-level Makefile to
+> support Control Flow Integrity builds, there are the need to remove all
+> the function callback casts in the acpi driver.
+> 
+> The first patch creates a macro called ACPI_DECLARE_SUBTABLE_PROBE_ENTRY
+> to initialize the acpi_probe_entry struct using the probe_subtbl field
+> instead of the probe_table field to avoid function cast mismatches.
+> 
+> [...]
 
-elapsed time: 722m
+Applied to irq/irqchip-5.9:
 
-configs tested: 108
-configs skipped: 3
+[1/3] drivers/acpi: Add new macro ACPI_DECLARE_SUBTABLE_PROBE_ENTRY
+      commit: 89778093d38d547cd80f6097659d1cf1c2dd4d9d
+[2/3] drivers/irqchip: Use new macro ACPI_DECLARE_SUBTABLE_PROBE_ENTRY
+      commit: aba3c7ed3fcf74524b7072615028827d5e5750d7
+[3/3] drivers/acpi: Remove function cast
+      commit: 8ebf642f3d809b59f57d0d408189a2218294e269
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Thanks,
 
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-sh                           se7751_defconfig
-arm                       imx_v6_v7_defconfig
-arm                            xcep_defconfig
-arm                      pxa255-idp_defconfig
-arm                          tango4_defconfig
-arm                             pxa_defconfig
-arm                         lpc18xx_defconfig
-mips                           ip27_defconfig
-arm                     eseries_pxa_defconfig
-mips                      loongson3_defconfig
-arm                            lart_defconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-i386                              allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20200624
-i386                 randconfig-a006-20200624
-i386                 randconfig-a003-20200624
-i386                 randconfig-a001-20200624
-i386                 randconfig-a005-20200624
-i386                 randconfig-a004-20200624
-i386                 randconfig-a013-20200624
-i386                 randconfig-a016-20200624
-i386                 randconfig-a012-20200624
-i386                 randconfig-a011-20200624
-i386                 randconfig-a015-20200624
-x86_64               randconfig-a004-20200624
-x86_64               randconfig-a002-20200624
-x86_64               randconfig-a003-20200624
-x86_64               randconfig-a005-20200624
-x86_64               randconfig-a001-20200624
-x86_64               randconfig-a006-20200624
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
+	M.
+-- 
+Without deviation from the norm, progress is not possible.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
