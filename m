@@ -2,90 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14EB820C0FA
-	for <lists+linux-acpi@lfdr.de>; Sat, 27 Jun 2020 13:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9850A20C465
+	for <lists+linux-acpi@lfdr.de>; Sat, 27 Jun 2020 23:54:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726457AbgF0LIj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 27 Jun 2020 07:08:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49432 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726568AbgF0LIZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 27 Jun 2020 07:08:25 -0400
-Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D12A621531;
-        Sat, 27 Jun 2020 11:08:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593256105;
-        bh=CKFRZQvVXoQGRUt/fr1evMIOtF/D2G3jbib+jYbyxlU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LGldGMH4GnVEZJM9lKrAO4vuHndpGt+hjl6cH5CtcHpuSHOS89YEYTeMdXj+1PQKX
-         IpFUxwH79KoWlnNgFGOfWbPavxAZkbyeSsGtIo3zhpECkuamaVI9UYUJyQ3WNJjsiF
-         4keML4Szu08xHn+uJV7hdRQ1XL2Ht1/vYL+oTEMY=
-Received: from 78.163-31-62.static.virginmediabusiness.co.uk ([62.31.163.78] helo=wait-a-minute.lan)
-        by disco-boy.misterjones.org with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <maz@kernel.org>)
-        id 1jp8h5-006s0z-9t; Sat, 27 Jun 2020 12:08:23 +0100
-From:   Marc Zyngier <maz@kernel.org>
-To:     Jason Cooper <jason@lakedaemon.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Oscar Carter <oscar.carter@gmx.com>,
-        Kees Cook <keescook@chromium.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Cc:     Andrew Perepech <andrew.perepech@mediatek.com>,
-        linux-mediatek@lists.infradead.org,
-        Stephane Le Provost <stephane.leprovost@mediatek.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Pedro Tsai <pedro.tsai@mediatek.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Fabien Parent <fparent@baylibre.com>,
-        linux-kernel@vger.kernel.org, kernel-hardening@lists.openwall.com,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v5 0/3] drivers/acpi: Remove function callback casts
-Date:   Sat, 27 Jun 2020 12:08:05 +0100
-Message-Id: <159325548742.93134.13767620418777913420.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200530143430.5203-1-oscar.carter@gmx.com>
-References: <20200530143430.5203-1-oscar.carter@gmx.com>
+        id S1725907AbgF0Vyf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 27 Jun 2020 17:54:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49358 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725916AbgF0Vye (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 27 Jun 2020 17:54:34 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0226C03E97A
+        for <linux-acpi@vger.kernel.org>; Sat, 27 Jun 2020 14:54:33 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id n2so576579edr.5
+        for <linux-acpi@vger.kernel.org>; Sat, 27 Jun 2020 14:54:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
+        b=PYwOu/B9Zh1rGzZM903Cpprywb83FCHUtNAUuiOO0o6zs6WHjlze2LXOC3hVAaGqcP
+         lg7H4pa9zGY5Ifm/Occ0RSYzXURL4hgFya6cts8HRx910s07nHPIQwuHOvC3CwSKWut7
+         W7lHESSwdkUYp3mu8F/+ONYut3Xpn3qtWv5jbLpGSjBshJ6ekhTBSCO1eoCC+HE4g/pN
+         3Oq9TtTNO3vJkKpqsqb3C/rPMy7fWmWmLKFmTu0RNDEBF2l3QJGtADAOwr4WGY+PWDtj
+         ZF9Zp08l9P41yL3JuvQth6+fpngrtjfi+iLA8IyUin9bEaOUirNwHBVJYrXrLbKq6R8z
+         N31g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
+        b=HrMjes8gFSdB+aU0sPXXNKKf7gx3t0ozZspeXRM30shp7eYuQ7HA10GisaFB61eNlh
+         H4EzA4Y4DiCClWGvbhpwuyotsFxwcZfvte/JzP6Xn79xuz25v1q+E4x5bEXRQKugfrcx
+         seLXzqQctlyb0UXXFU96svtYu5MAL0IqywjpEFFrYTwIIK5F4He1pXjFPNO+FkFelwQ/
+         02TRpMrXvOiaF/hwLv0Q4gsH1FhT3sgh3mSH6ECvEMDztSVc6LN49Ki1tlbmIEV82OYV
+         02XUcVF5T+MCKjplA8WKVer29NG8SJt9ELN+hPz0l5K6aPgjz2mn1oUWFYhcZJf0dbVO
+         YZvA==
+X-Gm-Message-State: AOAM532fQWUgchpQmr0OEaMCM0HZGzXdjmgZvxJh3LRWp4bCvpNSakma
+        iAH5p7oG1kqNroI6FYznzYQHD43r+UzZCigdz6Q=
+X-Google-Smtp-Source: ABdhPJy7OcR58Wulf3SrU9Hht/iHCkUTpvI0mqyV7myFOjn+5WspC4moqDhEDDIlhUbuX6rLtkz2lPM5XKvW/5XrhRs=
+X-Received: by 2002:a50:ee84:: with SMTP id f4mr9900212edr.183.1593294872387;
+ Sat, 27 Jun 2020 14:54:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 62.31.163.78
-X-SA-Exim-Rcpt-To: jason@lakedaemon.net, matthias.bgg@gmail.com, brgl@bgdev.pl, tglx@linutronix.de, oscar.carter@gmx.com, keescook@chromium.org, rjw@rjwysocki.net, lenb@kernel.org, andrew.perepech@mediatek.com, linux-mediatek@lists.infradead.org, stephane.leprovost@mediatek.com, linux-arm-kernel@lists.infradead.org, pedro.tsai@mediatek.com, bgolaszewski@baylibre.com, fparent@baylibre.com, linux-kernel@vger.kernel.org, kernel-hardening@lists.openwall.com, linux-acpi@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Received: by 2002:a50:2842:0:0:0:0:0 with HTTP; Sat, 27 Jun 2020 14:54:31
+ -0700 (PDT)
+Reply-To: un.org@i.ua
+From:   helen <info.isaacgeorge@gmail.com>
+Date:   Sat, 27 Jun 2020 22:54:31 +0100
+Message-ID: <CAABX3N8zm7a58jU5g8fzjfpsKNf48aUsUHECRV0m9PDLWU814A@mail.gmail.com>
+Subject: 
+To:     zhang@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, 30 May 2020 16:34:27 +0200, Oscar Carter wrote:
-> In an effort to enable -Wcast-function-type in the top-level Makefile to
-> support Control Flow Integrity builds, there are the need to remove all
-> the function callback casts in the acpi driver.
-> 
-> The first patch creates a macro called ACPI_DECLARE_SUBTABLE_PROBE_ENTRY
-> to initialize the acpi_probe_entry struct using the probe_subtbl field
-> instead of the probe_table field to avoid function cast mismatches.
-> 
-> [...]
+MONEY-GRAM TRANSFERRED PAYMENT INFO:
 
-Applied to irq/irqchip-5.9:
+Below is the sender=E2=80=99s information
 
-[1/3] drivers/acpi: Add new macro ACPI_DECLARE_SUBTABLE_PROBE_ENTRY
-      commit: 89778093d38d547cd80f6097659d1cf1c2dd4d9d
-[2/3] drivers/irqchip: Use new macro ACPI_DECLARE_SUBTABLE_PROBE_ENTRY
-      commit: aba3c7ed3fcf74524b7072615028827d5e5750d7
-[3/3] drivers/acpi: Remove function cast
-      commit: 8ebf642f3d809b59f57d0d408189a2218294e269
 
-Thanks,
 
-	M.
--- 
-Without deviation from the norm, progress is not possible.
+1. MG. REFERENCE NO#: 36360857
 
+2. SENDER'S NAME: Johnson Williams
+
+3. AMOUNT TO PICKUP: US$10,000
+
+
+
+Go to any Money Gram office near you and pick up the payment Track the
+
+Reference Number by visiting and click the link below
+
+(https://secure.moneygram.com/embed/track) and enter the Reference
+
+Number: 36360857 and the Last Name: Williams, you will find the payment
+
+available for pickup instantly.
+
+Yours Sincerely,
+
+Mrs. Helen Marvis
+United Nations Liaison Office
+Directorate for International Payments
