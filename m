@@ -2,89 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9850A20C465
-	for <lists+linux-acpi@lfdr.de>; Sat, 27 Jun 2020 23:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F6C220C921
+	for <lists+linux-acpi@lfdr.de>; Sun, 28 Jun 2020 19:09:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725907AbgF0Vyf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 27 Jun 2020 17:54:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49358 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725916AbgF0Vye (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 27 Jun 2020 17:54:34 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0226C03E97A
-        for <linux-acpi@vger.kernel.org>; Sat, 27 Jun 2020 14:54:33 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id n2so576579edr.5
-        for <linux-acpi@vger.kernel.org>; Sat, 27 Jun 2020 14:54:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
-        b=PYwOu/B9Zh1rGzZM903Cpprywb83FCHUtNAUuiOO0o6zs6WHjlze2LXOC3hVAaGqcP
-         lg7H4pa9zGY5Ifm/Occ0RSYzXURL4hgFya6cts8HRx910s07nHPIQwuHOvC3CwSKWut7
-         W7lHESSwdkUYp3mu8F/+ONYut3Xpn3qtWv5jbLpGSjBshJ6ekhTBSCO1eoCC+HE4g/pN
-         3Oq9TtTNO3vJkKpqsqb3C/rPMy7fWmWmLKFmTu0RNDEBF2l3QJGtADAOwr4WGY+PWDtj
-         ZF9Zp08l9P41yL3JuvQth6+fpngrtjfi+iLA8IyUin9bEaOUirNwHBVJYrXrLbKq6R8z
-         N31g==
+        id S1726060AbgF1RJT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 28 Jun 2020 13:09:19 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:39078 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726059AbgF1RJT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 28 Jun 2020 13:09:19 -0400
+Received: by mail-ot1-f66.google.com with SMTP id 18so13355758otv.6;
+        Sun, 28 Jun 2020 10:09:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
-        b=HrMjes8gFSdB+aU0sPXXNKKf7gx3t0ozZspeXRM30shp7eYuQ7HA10GisaFB61eNlh
-         H4EzA4Y4DiCClWGvbhpwuyotsFxwcZfvte/JzP6Xn79xuz25v1q+E4x5bEXRQKugfrcx
-         seLXzqQctlyb0UXXFU96svtYu5MAL0IqywjpEFFrYTwIIK5F4He1pXjFPNO+FkFelwQ/
-         02TRpMrXvOiaF/hwLv0Q4gsH1FhT3sgh3mSH6ECvEMDztSVc6LN49Ki1tlbmIEV82OYV
-         02XUcVF5T+MCKjplA8WKVer29NG8SJt9ELN+hPz0l5K6aPgjz2mn1oUWFYhcZJf0dbVO
-         YZvA==
-X-Gm-Message-State: AOAM532fQWUgchpQmr0OEaMCM0HZGzXdjmgZvxJh3LRWp4bCvpNSakma
-        iAH5p7oG1kqNroI6FYznzYQHD43r+UzZCigdz6Q=
-X-Google-Smtp-Source: ABdhPJy7OcR58Wulf3SrU9Hht/iHCkUTpvI0mqyV7myFOjn+5WspC4moqDhEDDIlhUbuX6rLtkz2lPM5XKvW/5XrhRs=
-X-Received: by 2002:a50:ee84:: with SMTP id f4mr9900212edr.183.1593294872387;
- Sat, 27 Jun 2020 14:54:32 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=aHBo9wbaRoVXLY9NDJVIGwtnv5GehbPHBWMQ1wY/EhI=;
+        b=fItJCqm4myUgd2+LuL/Q9OFRg+1GmcR5hcKD4e++SFrvLEDXb3WUD2GyKUDqf4qYHs
+         9KeeNyxv2Vk2kUuW9f6/mtxIvEZLOuqy2+ups2AbpSc4JImtBSa842fb4g0Cotn/OcRg
+         5ohhvfubaXMRyF+x9y6ewbnwpRzvKOGNUyiV/lG95dmceSGZVtucj5I8Q/tPYRM9xXGI
+         HJMpbkl3FMRzJ1XTZhKgQNbr5v0iJ6FD5KJNUUJPUHxBU+agSIqeVdj9oR7ghOuEdxCR
+         ayss1uwj9xnrqTDhWfKgVLQrBULYa9vYeZGG9iDJsLB96FYaZa4z3W4et1yMTQtggJKa
+         qwTg==
+X-Gm-Message-State: AOAM532aN7+1CLPympg6Yn8fB4QPAZn+W9g7qawXNtU8q5E3etxdk3az
+        65Kg7rLidxl329AWgZq2AMTBBy4WdfdkeDyibxY=
+X-Google-Smtp-Source: ABdhPJwaNxLa9utWgL4ulKbbgtv/kdZW4Bdg8bFZ+HQwwb00UUCEe4sYvKeUlGn7UPuAH99xcAgVC20KCp9+4PA8z0M=
+X-Received: by 2002:a9d:7d15:: with SMTP id v21mr10130090otn.118.1593364158371;
+ Sun, 28 Jun 2020 10:09:18 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a50:2842:0:0:0:0:0 with HTTP; Sat, 27 Jun 2020 14:54:31
- -0700 (PDT)
-Reply-To: un.org@i.ua
-From:   helen <info.isaacgeorge@gmail.com>
-Date:   Sat, 27 Jun 2020 22:54:31 +0100
-Message-ID: <CAABX3N8zm7a58jU5g8fzjfpsKNf48aUsUHECRV0m9PDLWU814A@mail.gmail.com>
-Subject: 
-To:     zhang@intel.com
+References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <2713141.s8EVnczdoM@kreacher> <2788992.3K7huLjdjL@kreacher> <CAPcyv4hXkzpTr3bif7zyVx5EqoWTwLgYrt87Aj2=gVMo+jtUyg@mail.gmail.com>
+In-Reply-To: <CAPcyv4hXkzpTr3bif7zyVx5EqoWTwLgYrt87Aj2=gVMo+jtUyg@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Sun, 28 Jun 2020 19:09:07 +0200
+Message-ID: <CAJZ5v0h4Hj4ax1mmMJn3z3VGtVWkoXzO0kOQ7CYnFKJV2cUGzw@mail.gmail.com>
+Subject: Re: [RFT][PATCH v3 0/4] ACPI: ACPICA / OSL: Avoid unmapping ACPI
+ memory inside of the AML interpreter
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Rafael J Wysocki <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        Ira Weiny <ira.weiny@intel.com>,
+        James Morse <james.morse@arm.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Bob Moore <robert.moore@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-MONEY-GRAM TRANSFERRED PAYMENT INFO:
+On Fri, Jun 26, 2020 at 8:41 PM Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> On Fri, Jun 26, 2020 at 10:34 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+> >
+> > Hi All,
+> >
+> > On Monday, June 22, 2020 3:50:42 PM CEST Rafael J. Wysocki wrote:
+> > > Hi All,
+> > >
+> > > This series is to address the problem with RCU synchronization occurring,
+> > > possibly relatively often, inside of acpi_ex_system_memory_space_handler(),
+> > > when the namespace and interpreter mutexes are held.
+> > >
+> > > Like I said before, I had decided to change the approach used in the previous
+> > > iteration of this series and to allow the unmap operations carried out by
+> > > acpi_ex_system_memory_space_handler() to be deferred in the first place,
+> > > which is done in patches [1-2/4].
+> >
+> > In the meantime I realized that calling syncrhonize_rcu_expedited() under the
+> > "tables" mutex within ACPICA is not quite a good idea too and that there is no
+> > reason for any users of acpi_os_unmap_memory() in the tree to use the "sync"
+> > variant of unmapping.
+> >
+> > So, unless I'm missing something, acpi_os_unmap_memory() can be changed to
+> > always defer the final unmapping and the only ACPICA change needed to support
+> > that is the addition of the acpi_os_release_unused_mappings() call to get rid
+> > of the unused mappings when leaving the interpreter (module the extra call in
+> > the debug code for consistency).
+> >
+> > So patches [1-2/4] have been changed accordingly.
+> >
+> > > However, it turns out that the "fast-path" mapping is still useful on top of
+> > > the above to reduce the number of ioremap-iounmap cycles for the same address
+> > > range and so it is introduced by patches [3-4/4].
+> >
+> > Patches [3-4/4] still do what they did, but they have been simplified a bit
+> > after rebasing on top of the new [1-2/4].
+> >
+> > The below information is still valid, but it applies to the v3, of course.
+> >
+> > > For details, please refer to the patch changelogs.
+> > >
+> > > The series is available from the git branch at
+> > >
+> > >  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+> > >  acpica-osl
+> > >
+> > > for easier testing.
+> >
+> > Also the series have been tested locally.
+>
+> Ok, I'm still trying to get the original reporter to confirm this
+> reduces the execution time for ASL routines with a lot of OpRegion
+> touches. Shall I rebuild that test kernel with these changes, or are
+> the results from the original RFT still interesting?
 
-Below is the sender=E2=80=99s information
+I'm mostly interested in the results with the v3 applied.
 
+Also it would be good to check the impact of the first two patches
+alone relative to all four.
 
-
-1. MG. REFERENCE NO#: 36360857
-
-2. SENDER'S NAME: Johnson Williams
-
-3. AMOUNT TO PICKUP: US$10,000
-
-
-
-Go to any Money Gram office near you and pick up the payment Track the
-
-Reference Number by visiting and click the link below
-
-(https://secure.moneygram.com/embed/track) and enter the Reference
-
-Number: 36360857 and the Last Name: Williams, you will find the payment
-
-available for pickup instantly.
-
-Yours Sincerely,
-
-Mrs. Helen Marvis
-United Nations Liaison Office
-Directorate for International Payments
+Thanks!
