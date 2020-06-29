@@ -2,231 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61AC220E06F
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jun 2020 23:56:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1026620DFF5
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jun 2020 23:55:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389493AbgF2UqH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Jun 2020 16:46:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43372 "EHLO
+        id S2389517AbgF2UlY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Jun 2020 16:41:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731548AbgF2TNx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Jun 2020 15:13:53 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D81FC0085B1;
-        Mon, 29 Jun 2020 04:16:46 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: andrzej.p)
-        with ESMTPSA id B841D2A0F61
-From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-To:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Peter Kaestle <peter@piie.net>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Enrico Weigelt <info@metux.net>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        kernel@collabora.com
-Subject: [PATCH v6 11/11] thermal: Rename set_mode() to change_mode()
-Date:   Mon, 29 Jun 2020 13:16:15 +0200
-Message-Id: <20200629111615.18131-12-andrzej.p@collabora.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200629111615.18131-1-andrzej.p@collabora.com>
-References: <CAHLCerO2XOOX9akEwaTu_cjSqRycFpNmoVxkSe36L8B4ALWidA@mail.gmail.com>
- <20200629111615.18131-1-andrzej.p@collabora.com>
+        with ESMTP id S1730780AbgF2TOG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Jun 2020 15:14:06 -0400
+Received: from EUR02-AM5-obe.outbound.protection.outlook.com (mail-am5eur02on061a.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe07::61a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5575FC0068C0
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Jun 2020 04:40:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=a/61uFHaZNd7buVOTiAOjB9BjRyK2aKf3qYdwyzFCN1GZgxoR/N9FT6ROp09W4/MOCEnfA9JF1DKemLiCfYGP4/CXU1LAUI92QV3IKACLtryx2RX3NxeZA1rQN3ho6vWq/MGy10DFvk5jzB4xqMv869X/jysmPlTVBycOwJUPTOHQWJdgdas0XwhjET4y5QAhoGOCV09StULnMe43vtBjGqRTf1ZvSRxBQylmozO57OCjaEn4nXnduq1g9QguY9xK1qW0hQMzR09UKyfMxM3Dfm9p5vkVY687aj+4uKcv2dMMX9jr/QUjMdL6QQ0PvP+OtpiPu/CGlev3XkLRZzjNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Pc5qHEZr4Hpr0QmzWkCEr9dSiS9/vV6OIUbtKxPyZ88=;
+ b=FX23w/dx10uYUCbirKxsisTidsEvI3+KECzh8UIuSqJh7HGVxwwz8MNUqRawx/hsS7Z/qUCl+3izTCcB4JR4koNkFFrLGurChitNqsPqAgOhENi/mw3E3L5E1jr3ZGqhLRP7PNYqnLuMZkooHVi4HVxSMfcJ53qXsa8cElRssyHR3qw49hwg8zB4N7tBQnsgAdJSCLVeLRS2g14H7D8ah+0HHtLXZ67IeI3Ydu9tW+dzYoXJ8T4kqrrWYQPxQ1w5HPM9u/DJmElIapblDoCACj7Ar7PuJiYeNsgc8OrgVoOnI3W06jm2Lanep2y+cOIj7RhJDsMiBXtli3PBkhHHMA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Pc5qHEZr4Hpr0QmzWkCEr9dSiS9/vV6OIUbtKxPyZ88=;
+ b=M+krqowUM46noZ4PVM+zMmpl2SZvbPTlLOjKwZv0of/RQGfMLhPBPg+OTh/th8V0qGknEXbk4iLHZqaRGaBa/Oa7zQmvxplkWa1wwyEjPxoOW/xvrle2TFaiQne4FSRKEVzJkzpKL2Qjpa563CEDpet4Q7UCZJTrmfhU6aWSmIs=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
+ by AM0PR04MB6210.eurprd04.prod.outlook.com (2603:10a6:208:13b::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3131.21; Mon, 29 Jun
+ 2020 11:40:39 +0000
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::7dda:a30:6b25:4d45]) by AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::7dda:a30:6b25:4d45%7]) with mapi id 15.20.3131.026; Mon, 29 Jun 2020
+ 11:40:39 +0000
+Date:   Mon, 29 Jun 2020 17:10:27 +0530
+From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     kernel test robot <lkp@intel.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Jon <jon@solid-run.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        kbuild-all@lists.01.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Subject: Re: [net-next PATCH v1] net: dpaa2-mac: Add ACPI support for DPAA2
+ MAC driver
+Message-ID: <20200629114027.GA18166@lsv03152.swis.in-blr01.nxp.com>
+References: <20200625043538.25464-1-calvin.johnson@oss.nxp.com>
+ <202006251802.jt5kabG7%lkp@intel.com>
+ <CAHp75VcQwLwE1GMh+2Ht7p=Xa20mkTdGC2vt=bwNrr=G6SV1zg@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VcQwLwE1GMh+2Ht7p=Xa20mkTdGC2vt=bwNrr=G6SV1zg@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ClientProxiedBy: SG2PR06CA0118.apcprd06.prod.outlook.com
+ (2603:1096:1:1d::20) To AM0PR04MB5636.eurprd04.prod.outlook.com
+ (2603:10a6:208:130::22)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR06CA0118.apcprd06.prod.outlook.com (2603:1096:1:1d::20) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3131.20 via Frontend Transport; Mon, 29 Jun 2020 11:40:34 +0000
+X-Originating-IP: [14.142.151.118]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 02fd6ded-7eb4-4fb1-be52-08d81c213e3c
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6210:
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR04MB6210CB17A1E2B1191876C855D26E0@AM0PR04MB6210.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2150;
+X-Forefront-PRVS: 044968D9E1
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 7F7TeY7GAFDOwEwoY/pbcNyCfbrzt0eYV3bFQjE51kLQITRW7AhuRpsmqX0PtNSsTk30G5pxqr+SuGhOunpcQ52T3cQGrMUZKOhXj6rnyn7I1W/GlmJtqJ4UwJmAZiAiztmto1Wz8Y5aw1fokgfWZS2O1kW7qfZUVvN9t3y0xjsOnQ2o6Q1z0l6hDg9gpAXc3bN0NQgVmsL0fsd4WCyytyIXHzvlXfe5xbIfDwy8Y0Z47kNAMYvA/8wU7y086ta7wtuCUvT5swKsq9kRfWEFRdWsr8O77Q6gjzK/rBJy3X2bjAk4y7N7ktQfe6Op3O/c0NMV0aDZQRR045OaAMtmYnxzYAaq2TEzJ/knrqwmOct3F8sHWYYGhU3ZphpKjRMG
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(346002)(376002)(396003)(366004)(136003)(39860400002)(54906003)(8676002)(5660300002)(6506007)(8936002)(55236004)(53546011)(83380400001)(86362001)(1076003)(4744005)(16526019)(186003)(1006002)(6666004)(66946007)(4326008)(2906002)(66476007)(44832011)(33656002)(26005)(956004)(66556008)(478600001)(316002)(6916009)(55016002)(9686003)(7696005)(52116002)(110426005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: FKQZadoqFqHi5Cbu2SBw0iNbs58BgUeU/n4Q0Nw6OUK0widRWFXlbK/BodRoHzUBnPWsH5wUj6XrbUpkrwyZXK5Lc6oUOLw+FWcOO0hf4PW5JppooPyr4E7pbUgbe8vFDwciofNc3gvCUDmoVeTAbBbVvyLB8zhNC/gAh8Lqo5l3ftJnoxpceFFxQAVvDBQ2RI9iEI/qfOmUGBaHjLlnsUdvHd6vmX5I2+6PWywaDJuVTSaICGDjP3+zAH4rmSQt5cLjh3/fV5uBUv5//A4pJhBDM3NrHIl4tInyT4PuCXeHmALwekwF3thZ328AIbeBv2GWVONquCv5LkS/mJVUX2a6TZuz4uw5O87cfpOGnYCAEgYEqclRuFTY8fdfgyyHg4UcB5K9MHhVU9cnkC8kWryKF+u1a5+ig6BiQ1gUViIL0u2GsnVTr/p3Cqs6WhXBIZleNIrnXCB20fc+hmsGYWsRMUA8iKN7UqvP+FCPlOlK1BI2TtyCBVRW5F+5I7Mn
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02fd6ded-7eb4-4fb1-be52-08d81c213e3c
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2020 11:40:38.8955
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cliQFeglhMU9KFWNXUU9hwZ0n3rX5bx8xmenX8MU63sqmCqfQB9Sr6fnNnRPJjl5ynmHJuWoT4P2y2LZyijgaA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6210
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-set_mode() is only called when tzd's mode is about to change. Actual
-setting is performed in thermal_core, in thermal_zone_device_set_mode().
-The meaning of set_mode() callback is actually to notify the driver about
-the mode being changed and giving the driver a chance to oppose such
-change.
+On Thu, Jun 25, 2020 at 10:29:15PM +0300, Andy Shevchenko wrote:
+> On Thu, Jun 25, 2020 at 2:06 PM kernel test robot <lkp@intel.com> wrote:
+> 
+> >     50          } else if (is_acpi_node(dev->parent->fwnode)) {
+> 
+> Hmm... Is it a device or data node?
 
-To better reflect the purpose of the method rename it to change_mode()
+Device node.
 
-Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-[for acerhdf]
-Acked-by: Peter Kaestle <peter@piie.net>
-Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
----
- drivers/platform/x86/acerhdf.c                          | 6 +++---
- drivers/thermal/imx_thermal.c                           | 8 ++++----
- drivers/thermal/intel/int340x_thermal/int3400_thermal.c | 6 +++---
- drivers/thermal/intel/intel_quark_dts_thermal.c         | 6 +++---
- drivers/thermal/thermal_core.c                          | 4 ++--
- include/linux/thermal.h                                 | 2 +-
- 6 files changed, 16 insertions(+), 16 deletions(-)
+> 
+> >     51                  device_for_each_child_node(dev->parent, dpmac) {
+> >   > 52                          status = acpi_evaluate_integer(ACPI_HANDLE_FWNODE(dpmac),
+> >     53                                                         "_ADR", NULL, &adr);
+> >     54                          if (ACPI_FAILURE(status)) {
+> >     55                                  dev_info(dev, "_ADR returned status 0x%x\n", status);
+> >     56                                  continue;
+> >     57                          } else {
+> >     58                                  id = (u32)adr;
+> >     59                                  if (id == dpmac_id)
+> >     60                                          return dpmac;
+> >     61                          }
+> >     62                  }
+> 
+> Can't you use
+> 
+>  adev = acpi_find_child_device(ACPI_COMPANION(dev->parent), dpmac_id, false);
+>  if (adev)
+>   return ...
 
-diff --git a/drivers/platform/x86/acerhdf.c b/drivers/platform/x86/acerhdf.c
-index 76323855c80c..f816a8a13039 100644
---- a/drivers/platform/x86/acerhdf.c
-+++ b/drivers/platform/x86/acerhdf.c
-@@ -413,8 +413,8 @@ static inline void acerhdf_enable_kernelmode(void)
-  *          the temperature and the fan.
-  * disabled: the BIOS takes control of the fan.
-  */
--static int acerhdf_set_mode(struct thermal_zone_device *thermal,
--			    enum thermal_device_mode mode)
-+static int acerhdf_change_mode(struct thermal_zone_device *thermal,
-+			       enum thermal_device_mode mode)
- {
- 	if (mode == THERMAL_DEVICE_DISABLED && kernelmode)
- 		acerhdf_revert_to_bios_mode();
-@@ -473,7 +473,7 @@ static struct thermal_zone_device_ops acerhdf_dev_ops = {
- 	.bind = acerhdf_bind,
- 	.unbind = acerhdf_unbind,
- 	.get_temp = acerhdf_get_ec_temp,
--	.set_mode = acerhdf_set_mode,
-+	.change_mode = acerhdf_change_mode,
- 	.get_trip_type = acerhdf_get_trip_type,
- 	.get_trip_hyst = acerhdf_get_trip_hyst,
- 	.get_trip_temp = acerhdf_get_trip_temp,
-diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
-index a02398118d88..9700ae39feb7 100644
---- a/drivers/thermal/imx_thermal.c
-+++ b/drivers/thermal/imx_thermal.c
-@@ -330,8 +330,8 @@ static int imx_get_temp(struct thermal_zone_device *tz, int *temp)
- 	return 0;
- }
- 
--static int imx_set_mode(struct thermal_zone_device *tz,
--			enum thermal_device_mode mode)
-+static int imx_change_mode(struct thermal_zone_device *tz,
-+			   enum thermal_device_mode mode)
- {
- 	struct imx_thermal_data *data = tz->devdata;
- 	struct regmap *map = data->tempmon;
-@@ -447,7 +447,7 @@ static struct thermal_zone_device_ops imx_tz_ops = {
- 	.bind = imx_bind,
- 	.unbind = imx_unbind,
- 	.get_temp = imx_get_temp,
--	.set_mode = imx_set_mode,
-+	.change_mode = imx_change_mode,
- 	.get_trip_type = imx_get_trip_type,
- 	.get_trip_temp = imx_get_trip_temp,
- 	.get_crit_temp = imx_get_crit_temp,
-@@ -860,7 +860,7 @@ static int __maybe_unused imx_thermal_suspend(struct device *dev)
- 	 * Need to disable thermal sensor, otherwise, when thermal core
- 	 * try to get temperature before thermal sensor resume, a wrong
- 	 * temperature will be read as the thermal sensor is powered
--	 * down. This is done in set_mode() operation called from
-+	 * down. This is done in change_mode() operation called from
- 	 * thermal_zone_device_disable()
- 	 */
- 	ret = thermal_zone_device_disable(data->tz);
-diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-index ce49d3b100d5..d3732f624913 100644
---- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-+++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-@@ -377,8 +377,8 @@ static int int3400_thermal_get_temp(struct thermal_zone_device *thermal,
- 	return 0;
- }
- 
--static int int3400_thermal_set_mode(struct thermal_zone_device *thermal,
--				enum thermal_device_mode mode)
-+static int int3400_thermal_change_mode(struct thermal_zone_device *thermal,
-+				       enum thermal_device_mode mode)
- {
- 	struct int3400_thermal_priv *priv = thermal->devdata;
- 	int result = 0;
-@@ -399,7 +399,7 @@ static int int3400_thermal_set_mode(struct thermal_zone_device *thermal,
- 
- static struct thermal_zone_device_ops int3400_thermal_ops = {
- 	.get_temp = int3400_thermal_get_temp,
--	.set_mode = int3400_thermal_set_mode,
-+	.change_mode = int3400_thermal_change_mode,
- };
- 
- static struct thermal_zone_params int3400_thermal_params = {
-diff --git a/drivers/thermal/intel/intel_quark_dts_thermal.c b/drivers/thermal/intel/intel_quark_dts_thermal.c
-index e29c3e330b17..3eafc6b0e6c3 100644
---- a/drivers/thermal/intel/intel_quark_dts_thermal.c
-+++ b/drivers/thermal/intel/intel_quark_dts_thermal.c
-@@ -298,8 +298,8 @@ static int sys_get_curr_temp(struct thermal_zone_device *tzd,
- 	return 0;
- }
- 
--static int sys_set_mode(struct thermal_zone_device *tzd,
--				enum thermal_device_mode mode)
-+static int sys_change_mode(struct thermal_zone_device *tzd,
-+			   enum thermal_device_mode mode)
- {
- 	int ret;
- 
-@@ -319,7 +319,7 @@ static struct thermal_zone_device_ops tzone_ops = {
- 	.get_trip_type = sys_get_trip_type,
- 	.set_trip_temp = sys_set_trip_temp,
- 	.get_crit_temp = sys_get_crit_temp,
--	.set_mode = sys_set_mode,
-+	.change_mode = sys_change_mode,
- };
- 
- static void free_soc_dts(struct soc_sensor_entry *aux_entry)
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index e613f5c07bad..a61e91513584 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -482,8 +482,8 @@ static int thermal_zone_device_set_mode(struct thermal_zone_device *tz,
- 		return ret;
- 	}
- 
--	if (tz->ops->set_mode)
--		ret = tz->ops->set_mode(tz, mode);
-+	if (tz->ops->change_mode)
-+		ret = tz->ops->change_mode(tz, mode);
- 
- 	if (!ret)
- 		tz->mode = mode;
-diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-index df013c39ba9b..b9efaa780d88 100644
---- a/include/linux/thermal.h
-+++ b/include/linux/thermal.h
-@@ -76,7 +76,7 @@ struct thermal_zone_device_ops {
- 		       struct thermal_cooling_device *);
- 	int (*get_temp) (struct thermal_zone_device *, int *);
- 	int (*set_trips) (struct thermal_zone_device *, int, int);
--	int (*set_mode) (struct thermal_zone_device *,
-+	int (*change_mode) (struct thermal_zone_device *,
- 		enum thermal_device_mode);
- 	int (*get_trip_type) (struct thermal_zone_device *, int,
- 		enum thermal_trip_type *);
--- 
-2.17.1
-
+Thanks. It looks better.
+> 
+> ?
+> 
+> >     63          }
+> 
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
