@@ -2,230 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E81AE20D34B
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jun 2020 21:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 306AC20D43B
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jun 2020 21:14:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730177AbgF2S5r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Jun 2020 14:57:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40924 "EHLO
+        id S1729389AbgF2TG1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Jun 2020 15:06:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730153AbgF2S5o (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Jun 2020 14:57:44 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E5BAC00F812;
-        Mon, 29 Jun 2020 05:30:07 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: andrzej.p)
-        with ESMTPSA id C716F2A2D98
-From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-To:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Peter Kaestle <peter@piie.net>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Enrico Weigelt <info@metux.net>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        kernel@collabora.com
-Subject: [PATCH v7 11/11] thermal: Rename set_mode() to change_mode()
-Date:   Mon, 29 Jun 2020 14:29:25 +0200
-Message-Id: <20200629122925.21729-12-andrzej.p@collabora.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200629122925.21729-1-andrzej.p@collabora.com>
-References: <20200629122925.21729-1-andrzej.p@collabora.com>
+        with ESMTP id S1730525AbgF2TCn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Jun 2020 15:02:43 -0400
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45E39C02A54F;
+        Mon, 29 Jun 2020 06:02:47 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id n5so15423190otj.1;
+        Mon, 29 Jun 2020 06:02:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7nlhWJJwNwhWkeMdSwXObsiOh2VHz3Q74vTd3L4F/E4=;
+        b=lGDfCfLqwyum+wheMtxLdsXH0kBg80MIs9SllgK3dlDn7I2Hoo8MoBDen1jtsdaAvs
+         pgcCEGXBUBtaIS6g5b1tZsw1sk0+/ATD9U+Yn1qMJ/E4dEi+kWcpGAZyTI/JCnzP0cRc
+         XR1RnL5PwpnVI7ezWGLTCFlRRzWZclbns1W2vNzY+EP0VjlwitiMDDLlxdivoa8i0ER4
+         6fJSfzPNOkaJ6CxzpdQQAlnd1Om2Z3fow1qjzQTqJvV6fOSfdPaajcdM/LKIi0B9Givj
+         X8Oa2kuKHAVLgvMMjsQS+2h+GiQD98GFYQEt2luBeMjlm1Ig8eQ18hWVa+eQhJIquOVd
+         eX6g==
+X-Gm-Message-State: AOAM530NYrlYHf+0nzK8xQoU7g74mUSKAppZEL68Ilkrfzdmrhh+AgcC
+        hHg4kOWniClj8vs4n6w9L/BXIw/RG7uE20dyiIBJUwjf
+X-Google-Smtp-Source: ABdhPJzIQwbdDVQsoe/mDFdG+UuqRokNsn9twuQiuHEM1ZLnII4nXYOarqbPDTLCqJLyUEpbS+m1QKmIfJ6D/m1WVN0=
+X-Received: by 2002:a9d:7d15:: with SMTP id v21mr12817982otn.118.1593435766462;
+ Mon, 29 Jun 2020 06:02:46 -0700 (PDT)
+MIME-Version: 1.0
+References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <2713141.s8EVnczdoM@kreacher> <13749323.0m2ImmhSHx@kreacher> <MWHPR11MB1599FBA57730E5C74B9B4588F0930@MWHPR11MB1599.namprd11.prod.outlook.com>
+In-Reply-To: <MWHPR11MB1599FBA57730E5C74B9B4588F0930@MWHPR11MB1599.namprd11.prod.outlook.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 29 Jun 2020 15:02:31 +0200
+Message-ID: <CAJZ5v0iXzYVb6RAR9p2mH=RjSjo4c9g39T7uaccXMm6uoLWDzw@mail.gmail.com>
+Subject: Re: [RFT][PATCH v2 3/4] ACPICA: Preserve memory opregion mappings if
+ supported by OS
+To:     "Kaneda, Erik" <erik.kaneda@intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Williams, Dan J" <dan.j.williams@intel.com>,
+        "Moore, Robert" <robert.moore@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        "Weiny, Ira" <ira.weiny@intel.com>,
+        James Morse <james.morse@arm.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-set_mode() is only called when tzd's mode is about to change. Actual
-setting is performed in thermal_core, in thermal_zone_device_set_mode().
-The meaning of set_mode() callback is actually to notify the driver about
-the mode being changed and giving the driver a chance to oppose such
-change.
+On Sat, Jun 27, 2020 at 12:53 AM Kaneda, Erik <erik.kaneda@intel.com> wrote:
+>
+>
+>
+> > -----Original Message-----
+> > From: Rafael J. Wysocki <rjw@rjwysocki.net>
+> > Sent: Monday, June 22, 2020 7:02 AM
+> > To: Williams, Dan J <dan.j.williams@intel.com>; Kaneda, Erik
+> > <erik.kaneda@intel.com>
+> > Cc: Wysocki, Rafael J <rafael.j.wysocki@intel.com>; Len Brown
+> > <lenb@kernel.org>; Borislav Petkov <bp@alien8.de>; Weiny, Ira
+> > <ira.weiny@intel.com>; James Morse <james.morse@arm.com>; Myron
+> > Stowe <myron.stowe@redhat.com>; Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com>; linux-kernel@vger.kernel.org; linux-
+> > acpi@vger.kernel.org; linux-nvdimm@lists.01.org; Moore, Robert
+> > <robert.moore@intel.com>
+> > Subject: [RFT][PATCH v2 3/4] ACPICA: Preserve memory opregion mappings
+> > if supported by OS
+> >
+> > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> >
+> > The ACPICA's strategy with respect to the handling of memory mappings
+> > associated with memory operation regions is to avoid mapping the
+> > entire region at once which may be problematic at least in principle
+> > (for example, it may lead to conflicts with overlapping mappings
+> > having different attributes created by drivers).  It may also be
+> > wasteful, because memory opregions on some systems take up vast
+> > chunks of address space while the fields in those regions actually
+> > accessed by AML are sparsely distributed.
+> >
+> > For this reason, a one-page "window" is mapped for a given opregion
+> > on the first memory access through it and if that "window" does not
+> > cover an address range accessed through that opregion subsequently,
+> > it is unmapped and a new "window" is mapped to replace it.  Next,
+> > if the new "window" is not sufficient to access memory through the
+> > opregion in question in the future, it will be replaced with yet
+> > another "window" and so on.  That may lead to a suboptimal sequence
+> > of memory mapping and unmapping operations, for example if two fields
+> > in one opregion separated from each other by a sufficiently wide
+> > chunk of unused address space are accessed in an alternating pattern.
+> >
+> > The situation may still be suboptimal if the deferred unmapping
+> > introduced previously is supported by the OS layer.  For instance,
+> > the alternating memory access pattern mentioned above may produce
+> > a relatively long list of mappings to release with substantial
+> > duplication among the entries in it, which could be avoided if
+> > acpi_ex_system_memory_space_handler() did not release the mapping
+> > used by it previously as soon as the current access was not covered
+> > by it.
+> >
+> > In order to improve that, modify acpi_ex_system_memory_space_handler()
+> > to take advantage of the memory mappings reference counting at the OS
+> > level if a suitable interface is provided.
+> >
+> Hi,
+>
+> > Namely, if ACPI_USE_FAST_PATH_MAPPING is set, the OS is expected to
+> > implement acpi_os_map_memory_fast_path() that will return NULL if
+> > there is no mapping covering the given address range known to it.
+> > If such a mapping is there, however, its reference counter will be
+> > incremented and a pointer representing the requested virtual address
+> > will be returned right away without any additional consequences.
+>
+> I do not fully understand why this is under a #ifdef. Is this to support operating systems that might not want to add support for this behavior?
 
-To better reflect the purpose of the method rename it to change_mode()
+Yes, and to protect the ones that have not added support for it just yet.
 
-Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-[for acerhdf]
-Acked-by: Peter Kaestle <peter@piie.net>
-Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
----
- drivers/platform/x86/acerhdf.c                          | 6 +++---
- drivers/thermal/imx_thermal.c                           | 8 ++++----
- drivers/thermal/intel/int340x_thermal/int3400_thermal.c | 6 +++---
- drivers/thermal/intel/intel_quark_dts_thermal.c         | 6 +++---
- drivers/thermal/thermal_core.c                          | 4 ++--
- include/linux/thermal.h                                 | 2 +-
- 6 files changed, 16 insertions(+), 16 deletions(-)
+Without the "fast-path" mapping support, ACPICA has no way to obtain
+additional references to known-existing mappings and the new code
+won't work as expected without it, so it is better to avoid building
+that code at all in those cases IMO.
 
-diff --git a/drivers/platform/x86/acerhdf.c b/drivers/platform/x86/acerhdf.c
-index 76323855c80c..f816a8a13039 100644
---- a/drivers/platform/x86/acerhdf.c
-+++ b/drivers/platform/x86/acerhdf.c
-@@ -413,8 +413,8 @@ static inline void acerhdf_enable_kernelmode(void)
-  *          the temperature and the fan.
-  * disabled: the BIOS takes control of the fan.
-  */
--static int acerhdf_set_mode(struct thermal_zone_device *thermal,
--			    enum thermal_device_mode mode)
-+static int acerhdf_change_mode(struct thermal_zone_device *thermal,
-+			       enum thermal_device_mode mode)
- {
- 	if (mode == THERMAL_DEVICE_DISABLED && kernelmode)
- 		acerhdf_revert_to_bios_mode();
-@@ -473,7 +473,7 @@ static struct thermal_zone_device_ops acerhdf_dev_ops = {
- 	.bind = acerhdf_bind,
- 	.unbind = acerhdf_unbind,
- 	.get_temp = acerhdf_get_ec_temp,
--	.set_mode = acerhdf_set_mode,
-+	.change_mode = acerhdf_change_mode,
- 	.get_trip_type = acerhdf_get_trip_type,
- 	.get_trip_hyst = acerhdf_get_trip_hyst,
- 	.get_trip_temp = acerhdf_get_trip_temp,
-diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
-index a02398118d88..9700ae39feb7 100644
---- a/drivers/thermal/imx_thermal.c
-+++ b/drivers/thermal/imx_thermal.c
-@@ -330,8 +330,8 @@ static int imx_get_temp(struct thermal_zone_device *tz, int *temp)
- 	return 0;
- }
- 
--static int imx_set_mode(struct thermal_zone_device *tz,
--			enum thermal_device_mode mode)
-+static int imx_change_mode(struct thermal_zone_device *tz,
-+			   enum thermal_device_mode mode)
- {
- 	struct imx_thermal_data *data = tz->devdata;
- 	struct regmap *map = data->tempmon;
-@@ -447,7 +447,7 @@ static struct thermal_zone_device_ops imx_tz_ops = {
- 	.bind = imx_bind,
- 	.unbind = imx_unbind,
- 	.get_temp = imx_get_temp,
--	.set_mode = imx_set_mode,
-+	.change_mode = imx_change_mode,
- 	.get_trip_type = imx_get_trip_type,
- 	.get_trip_temp = imx_get_trip_temp,
- 	.get_crit_temp = imx_get_crit_temp,
-@@ -860,7 +860,7 @@ static int __maybe_unused imx_thermal_suspend(struct device *dev)
- 	 * Need to disable thermal sensor, otherwise, when thermal core
- 	 * try to get temperature before thermal sensor resume, a wrong
- 	 * temperature will be read as the thermal sensor is powered
--	 * down. This is done in set_mode() operation called from
-+	 * down. This is done in change_mode() operation called from
- 	 * thermal_zone_device_disable()
- 	 */
- 	ret = thermal_zone_device_disable(data->tz);
-diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-index ce49d3b100d5..d3732f624913 100644
---- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-+++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-@@ -377,8 +377,8 @@ static int int3400_thermal_get_temp(struct thermal_zone_device *thermal,
- 	return 0;
- }
- 
--static int int3400_thermal_set_mode(struct thermal_zone_device *thermal,
--				enum thermal_device_mode mode)
-+static int int3400_thermal_change_mode(struct thermal_zone_device *thermal,
-+				       enum thermal_device_mode mode)
- {
- 	struct int3400_thermal_priv *priv = thermal->devdata;
- 	int result = 0;
-@@ -399,7 +399,7 @@ static int int3400_thermal_set_mode(struct thermal_zone_device *thermal,
- 
- static struct thermal_zone_device_ops int3400_thermal_ops = {
- 	.get_temp = int3400_thermal_get_temp,
--	.set_mode = int3400_thermal_set_mode,
-+	.change_mode = int3400_thermal_change_mode,
- };
- 
- static struct thermal_zone_params int3400_thermal_params = {
-diff --git a/drivers/thermal/intel/intel_quark_dts_thermal.c b/drivers/thermal/intel/intel_quark_dts_thermal.c
-index e29c3e330b17..3eafc6b0e6c3 100644
---- a/drivers/thermal/intel/intel_quark_dts_thermal.c
-+++ b/drivers/thermal/intel/intel_quark_dts_thermal.c
-@@ -298,8 +298,8 @@ static int sys_get_curr_temp(struct thermal_zone_device *tzd,
- 	return 0;
- }
- 
--static int sys_set_mode(struct thermal_zone_device *tzd,
--				enum thermal_device_mode mode)
-+static int sys_change_mode(struct thermal_zone_device *tzd,
-+			   enum thermal_device_mode mode)
- {
- 	int ret;
- 
-@@ -319,7 +319,7 @@ static struct thermal_zone_device_ops tzone_ops = {
- 	.get_trip_type = sys_get_trip_type,
- 	.set_trip_temp = sys_set_trip_temp,
- 	.get_crit_temp = sys_get_crit_temp,
--	.set_mode = sys_set_mode,
-+	.change_mode = sys_change_mode,
- };
- 
- static void free_soc_dts(struct soc_sensor_entry *aux_entry)
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index e613f5c07bad..a61e91513584 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -482,8 +482,8 @@ static int thermal_zone_device_set_mode(struct thermal_zone_device *tz,
- 		return ret;
- 	}
- 
--	if (tz->ops->set_mode)
--		ret = tz->ops->set_mode(tz, mode);
-+	if (tz->ops->change_mode)
-+		ret = tz->ops->change_mode(tz, mode);
- 
- 	if (!ret)
- 		tz->mode = mode;
-diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-index df013c39ba9b..b9efaa780d88 100644
---- a/include/linux/thermal.h
-+++ b/include/linux/thermal.h
-@@ -76,7 +76,7 @@ struct thermal_zone_device_ops {
- 		       struct thermal_cooling_device *);
- 	int (*get_temp) (struct thermal_zone_device *, int *);
- 	int (*set_trips) (struct thermal_zone_device *, int, int);
--	int (*set_mode) (struct thermal_zone_device *,
-+	int (*change_mode) (struct thermal_zone_device *,
- 		enum thermal_device_mode);
- 	int (*get_trip_type) (struct thermal_zone_device *, int,
- 		enum thermal_trip_type *);
--- 
-2.17.1
+> Also, instead of using the terminology fast_path, I think it would be easier to use terminology that describes the mechanism..
+> It might be easier for other Operating systems to understand something like acpi_os_map_preserved_memory or acpi_os_map_sysmem_opregion_memory.
 
+Well, the naming is not particularly important to me to be honest, but
+this is mostly about being able to get a new reference to a
+known-existing memory mapping.
+
+So something like acpi_os_ref_memory_map() perhaps?
+
+But I'm thinking that this can be implemented without the "fast-path"
+mapping support too, let me try to do that.
+
+Cheers!
