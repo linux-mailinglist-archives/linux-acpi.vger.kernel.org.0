@@ -2,55 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 999BE20E24D
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 00:00:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BAA920DD8D
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jun 2020 23:51:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390228AbgF2VED (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Jun 2020 17:04:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43352 "EHLO
+        id S1731352AbgF2TNZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Jun 2020 15:13:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731084AbgF2TMp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Jun 2020 15:12:45 -0400
-Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86DD5C08ED8E
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Jun 2020 00:05:02 -0700 (PDT)
-Received: by mail-vs1-xe43.google.com with SMTP id f24so8680599vsg.1
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Jun 2020 00:05:02 -0700 (PDT)
+        with ESMTP id S1731327AbgF2TNU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Jun 2020 15:13:20 -0400
+Received: from mail-vk1-xa42.google.com (mail-vk1-xa42.google.com [IPv6:2607:f8b0:4864:20::a42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF306C08EE2C
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Jun 2020 00:19:51 -0700 (PDT)
+Received: by mail-vk1-xa42.google.com with SMTP id q69so3487952vkq.10
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Jun 2020 00:19:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=verdurent-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=O4CL5jT1tY8QD8FjAFdyHeuWe+dWBhI6iRrYPmWg+K0=;
-        b=ufgK5aOt+VEkKCf7cfv7S4ZtNXtnnmklYABTUv1VaPxOyVYlRF0W+WWMz74ZV08AGE
-         1s1vKmMq4KVk+MBoFIT07TOKURsUNbRQdevHqaQ1aWm8cwm+U1Imt2LTLVn76ZfauBCL
-         Jn8YnNOHw3ZvLP+IWIJlri1ht33n4/CzEON0vrJSMjbdw8TJtfW8X1tddfpQMfXgkCZi
-         BtT26G9ckLhBaXLHozdLJ9i2lXgOWfKOEveukc+nllrmwg/ZQ4vjc16Owk1GMoom+Uhd
-         EtZSUhps1bb5xV0fHsgJxXJI4qzTSeRxyn0KdrZYD00xOxK3NemGIoaULhoM5HjdHhpi
-         jOmA==
+        bh=wUO3+r2sFoXJJwwAqV9c0Q0ogOkw7+fslU8OhD00s94=;
+        b=j6sxctFKb1mJwmXECAuxRFxfkqkfbZ1kOAtfSNS8rj2MadohBjSiToURKEtzZVv/p2
+         iUce2+4PqZNXqvUh7nf4X1mEVbbXUmaFDTTYMxg40OwPdijDO6g1WrQty40shNaKk6zM
+         Ik2xyBqi84PaQ9TCQ4ibRR1SMrBhgbe+Oz9DEVZgLPgpvP6sJolPmBjojhvt6Y5ymQRl
+         XeEbGtbZbcJMCA6gWSsrnzZfSfjCt6wFFf1Xnsa79SFK3medZIqtPagRwJOdtppBNK0w
+         W7K7ctJxA8JDaVu8Ea6+frG9WizNm1YAcuxJBjIlt5SIhWFdOzP4CCrTKdu37oYl/N+H
+         OOvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=O4CL5jT1tY8QD8FjAFdyHeuWe+dWBhI6iRrYPmWg+K0=;
-        b=Ov050W972/cyV6NMge7K1Lsq5mx1rDajD8cqbo0232XKb7RaSNBBsezRx/CDbRoTt3
-         j7nTvnfWJVUTcOT/F7rtutq+qAbDkkI8Fc4IP16ojuZqr9jCp9vZCL4Rqser4gLREKuT
-         aDzF2koODTNcMSv6C3HMrfGz3krQlSrb1u61wQpcKDz0ANbS1/B35zltQevyUDl5Hcif
-         wtFgjijFm9uQM/NBo4ZIbMWORURfPt679EvyK+7Yh4GRQjf1s2AUKUtsCmFeEbfP/N6Y
-         YjBrVehDojphBswCehLNepvv5Yp5yjYUWydPyHvcdLE4bxGIpWmU9zbh9E2sad9xqSQT
-         UbBg==
-X-Gm-Message-State: AOAM530ykjna75CPz1zcsfT5X2O73U2GRUgFMhfEtXV3qqdnMXMR89o8
-        +93zY4AFLARlB6HIG+MkkE6dYTUyF+dJ/wds03iZdA==
-X-Google-Smtp-Source: ABdhPJwExycQo0Z3q8vxfUV0tozODXEDNYpnqbSU0LS4IbWtPA6zbYd6g3HijjZDuNICJGxZ+gh7EBDX0w/h/Xyyvro=
-X-Received: by 2002:a05:6102:203:: with SMTP id z3mr2837721vsp.182.1593414301322;
- Mon, 29 Jun 2020 00:05:01 -0700 (PDT)
+        bh=wUO3+r2sFoXJJwwAqV9c0Q0ogOkw7+fslU8OhD00s94=;
+        b=byzfOy+aleVGGHhsUED92yk0DlPu+aPNcdf6VA5qaf7cZRI2klzHk0OAwGOUWQglRJ
+         R7JmqTcY+ltZnigp9ecAA6d6iFB+iiO8NWNEtsaeWkA2Qy5Pe+EbgYWTBgOr+hDbgU1N
+         y+h1g4eJONnV9uasPaRjZWG7gOMaGrHhjxfD1Jr0KunWCwanGgKKyzPYyLEnkq+BHJl2
+         x7YBq8sKz2mfxKlqVWx8G3H8rrXWlzfjnU2spBeooukp/x31rVgTlCBafvGmuJ5OGzcp
+         lsjHdXLjr83t0hPM+K8bIQbNkXKQ5fJ67ysZ5eiblFJuXiN5BWz7p/byP1ALkVRTnf6E
+         s9/A==
+X-Gm-Message-State: AOAM532zHSyj1wxVKIoZFMFcKvoYIEfGehPDSO1c/WLPzWhSkqheYRkx
+        BtyieuslMTBt6HOU3AFsJI/Ub1o7/kxwLpSP/lxRhg==
+X-Google-Smtp-Source: ABdhPJwykMxdCaunCw+6cjgT17VrZ+LKonlUMsHr7L1u0M4VXGQWOJZGkC2m5oFMwQFDbqUfYt7EG/cDnAZ+aaTq/ZA=
+X-Received: by 2002:ac5:c189:: with SMTP id z9mr9141504vkb.79.1593415190948;
+ Mon, 29 Jun 2020 00:19:50 -0700 (PDT)
 MIME-Version: 1.0
 References: <9cbffad6-69e4-0b33-4640-fde7c4f6a6e7@linaro.org>
- <20200626173755.26379-1-andrzej.p@collabora.com> <20200626173755.26379-7-andrzej.p@collabora.com>
-In-Reply-To: <20200626173755.26379-7-andrzej.p@collabora.com>
+ <20200626173755.26379-1-andrzej.p@collabora.com> <20200626173755.26379-2-andrzej.p@collabora.com>
+In-Reply-To: <20200626173755.26379-2-andrzej.p@collabora.com>
 From:   Amit Kucheria <amit.kucheria@verdurent.com>
-Date:   Mon, 29 Jun 2020 12:34:50 +0530
-Message-ID: <CAHLCerO2XOOX9akEwaTu_cjSqRycFpNmoVxkSe36L8B4ALWidA@mail.gmail.com>
-Subject: Re: [PATCH v5 06/11] thermal: Add mode helpers
+Date:   Mon, 29 Jun 2020 12:49:39 +0530
+Message-ID: <CAHLCerOi-rme0p7gmPdzmMgDRkj8jVn5Skkh0d5FMVO+-BqOBA@mail.gmail.com>
+Subject: Re: [PATCH v5 01/11] acpi: thermal: Fix error handling in the
+ register function
 To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
 Cc:     Linux PM list <linux-pm@vger.kernel.org>,
         linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
@@ -103,115 +104,64 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 On Fri, Jun 26, 2020 at 11:08 PM Andrzej Pietrasiewicz
 <andrzej.p@collabora.com> wrote:
 >
-> Prepare for making the drivers not access tzd's private members.
+> The acpi_thermal_register_thermal_zone() is missing any error handling.
+> This needs to be fixed.
 >
 > Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 > Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> [EXPORT_SYMBOL -> EXPORT_SYMBOL_GPL]
-> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+
+Reviewed-by: Amit Kucheria <amit.kucheria@linaro.org>
+
+
 > ---
->  drivers/thermal/thermal_core.c | 53 ++++++++++++++++++++++++++++++++++
->  include/linux/thermal.h        | 13 +++++++++
->  2 files changed, 66 insertions(+)
+>  drivers/acpi/thermal.c | 20 ++++++++++++++++----
+>  1 file changed, 16 insertions(+), 4 deletions(-)
 >
-> diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-> index 14d3b1b94c4f..3181295075b9 100644
-> --- a/drivers/thermal/thermal_core.c
-> +++ b/drivers/thermal/thermal_core.c
-> @@ -459,6 +459,59 @@ static void thermal_zone_device_reset(struct thermal_zone_device *tz)
->         thermal_zone_device_init(tz);
+> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+> index 19067a5e5293..6de8066ca1e7 100644
+> --- a/drivers/acpi/thermal.c
+> +++ b/drivers/acpi/thermal.c
+> @@ -901,23 +901,35 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+>         result = sysfs_create_link(&tz->device->dev.kobj,
+>                                    &tz->thermal_zone->device.kobj, "thermal_zone");
+>         if (result)
+> -               return result;
+> +               goto unregister_tzd;
+>
+>         result = sysfs_create_link(&tz->thermal_zone->device.kobj,
+>                                    &tz->device->dev.kobj, "device");
+>         if (result)
+> -               return result;
+> +               goto remove_tz_link;
+>
+>         status =  acpi_bus_attach_private_data(tz->device->handle,
+>                                                tz->thermal_zone);
+> -       if (ACPI_FAILURE(status))
+> -               return -ENODEV;
+> +       if (ACPI_FAILURE(status)) {
+> +               result = -ENODEV;
+> +               goto remove_dev_link;
+> +       }
+>
+>         tz->tz_enabled = 1;
+>
+>         dev_info(&tz->device->dev, "registered as thermal_zone%d\n",
+>                  tz->thermal_zone->id);
+> +
+>         return 0;
+> +
+> +remove_dev_link:
+> +       sysfs_remove_link(&tz->thermal_zone->device.kobj, "device");
+> +remove_tz_link:
+> +       sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
+> +unregister_tzd:
+> +       thermal_zone_device_unregister(tz->thermal_zone);
+> +
+> +       return result;
 >  }
 >
-> +int thermal_zone_device_set_mode(struct thermal_zone_device *tz,
-> +                                enum thermal_device_mode mode)
-
-Should this be static?
-
-> +{
-> +       int ret = 0;
-> +
-> +       mutex_lock(&tz->lock);
-> +
-> +       /* do nothing if mode isn't changing */
-> +       if (mode == tz->mode) {
-> +               mutex_unlock(&tz->lock);
-> +
-> +               return ret;
-> +       }
-> +
-> +       if (tz->ops->set_mode)
-> +               ret = tz->ops->set_mode(tz, mode);
-> +
-> +       if (!ret)
-> +               tz->mode = mode;
-> +
-> +       mutex_unlock(&tz->lock);
-> +
-> +       thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
-> +
-> +       return ret;
-> +}
-> +
-> +int thermal_zone_device_enable(struct thermal_zone_device *tz)
-> +{
-> +       return thermal_zone_device_set_mode(tz, THERMAL_DEVICE_ENABLED);
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_zone_device_enable);
-> +
-> +int thermal_zone_device_disable(struct thermal_zone_device *tz)
-> +{
-> +       return thermal_zone_device_set_mode(tz, THERMAL_DEVICE_DISABLED);
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_zone_device_disable);
-> +
-> +int thermal_zone_device_is_enabled(struct thermal_zone_device *tz)
-> +{
-> +       enum thermal_device_mode mode;
-> +
-> +       mutex_lock(&tz->lock);
-> +
-> +       mode = tz->mode;
-> +
-> +       mutex_unlock(&tz->lock);
-> +
-> +       return mode == THERMAL_DEVICE_ENABLED;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_zone_device_is_enabled);
-> +
->  void thermal_zone_device_update(struct thermal_zone_device *tz,
->                                 enum thermal_notify_event event)
->  {
-> diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-> index a808f6fa2777..df013c39ba9b 100644
-> --- a/include/linux/thermal.h
-> +++ b/include/linux/thermal.h
-> @@ -416,6 +416,9 @@ int thermal_zone_get_offset(struct thermal_zone_device *tz);
->
->  void thermal_cdev_update(struct thermal_cooling_device *);
->  void thermal_notify_framework(struct thermal_zone_device *, int);
-> +int thermal_zone_device_enable(struct thermal_zone_device *tz);
-> +int thermal_zone_device_disable(struct thermal_zone_device *tz);
-> +int thermal_zone_device_is_enabled(struct thermal_zone_device *tz);
->  #else
->  static inline struct thermal_zone_device *thermal_zone_device_register(
->         const char *type, int trips, int mask, void *devdata,
-> @@ -463,6 +466,16 @@ static inline void thermal_cdev_update(struct thermal_cooling_device *cdev)
->  static inline void thermal_notify_framework(struct thermal_zone_device *tz,
->         int trip)
->  { }
-> +
-> +static inline int thermal_zone_device_enable(struct thermal_zone_device *tz)
-> +{ return -ENODEV; }
-> +
-> +static inline int thermal_zone_device_disable(struct thermal_zone_device *tz)
-> +{ return -ENODEV; }
-> +
-> +static inline int
-> +thermal_zone_device_is_enabled(struct thermal_zone_device *tz)
-> +{ return -ENODEV; }
->  #endif /* CONFIG_THERMAL */
->
->  #endif /* __THERMAL_H__ */
+>  static void acpi_thermal_unregister_thermal_zone(struct acpi_thermal *tz)
 > --
 > 2.17.1
 >
