@@ -2,186 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B5E720F532
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 14:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F98A20F553
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 15:01:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388069AbgF3M6A (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Jun 2020 08:58:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39388 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388059AbgF3M55 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jun 2020 08:57:57 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75719C03E97A
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Jun 2020 05:57:57 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id g18so20061860wrm.2
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Jun 2020 05:57:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=WwiCRMR/atAzHQdqmr8uQelMa6OcJuGWGuwIRfhRdfs=;
-        b=PjtHdZDyhsfzOMknUBCzAw98LBJLOT+lMKu8FyLjhCUmY5zqFEKQjOpc0es34kiYw7
-         TEnUSoSJ3f61hHZTPcBVtChXqTKUT14Z1ygKNwosPCBzB0Pm7msxtjo5fYPA+1w7D3U4
-         JYy/2C4+NLEFNGgD3gyxAeXQqJVZpzuBvxQOI3xU1q0cTX7uddeB860HGcA+R9a2NxlU
-         qOTSAPhfdHAEOvdlwOeQX21T5qSrN6jUZabswuo4hqHGPCBCpAOpGIbYLHfj2nkekTdR
-         6EPB/JQvmiyH9Shvv0lfPtAWdeC/xfUmMiaNaQy2sSG+IcFqZJPB8yJf2CCLCRJbaFfP
-         TXnA==
+        id S2387986AbgF3NAs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Jun 2020 09:00:48 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:35058 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387860AbgF3NAr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jun 2020 09:00:47 -0400
+Received: by mail-ot1-f65.google.com with SMTP id d4so18322175otk.2;
+        Tue, 30 Jun 2020 06:00:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=WwiCRMR/atAzHQdqmr8uQelMa6OcJuGWGuwIRfhRdfs=;
-        b=eTiP7LHDYG73E1/sadNLzghzTkHKNwBrx7JqWbwb9rg4GTPuCmHjxFYRAXDeZwtqym
-         WMjuC0qYpl1kUD2OlXDqVDcnFWjByHKPU8VJNatMHZm9VB4Zdl0Ash2NvtBBrBVzbFct
-         aHKor2CYpDUfzwwNrubx4ARzNvDOptcB6MvAyW8EnwRsonr6wo/8UcoAxk0qGFrhpkLO
-         yc/O8nC1euANaKouZ4wIuirAW5L0QNtyq3BGnrabz1GJqCTcYm3fhqKKb6xNL7+jEGlP
-         dvQNm9xcavWT/gmtjBMflc/NyvtB0MN+JiTZySs0e5Nbt1CDUdSJqohYzzgNMHNgbUgm
-         AH3w==
-X-Gm-Message-State: AOAM531joRwFQ086kjUYkPlNWi0xLyW0EiigL17hzYeRMmGdkPSIIPWp
-        1Y6xQVnKkiGrWivcUcMc0V7VeQ==
-X-Google-Smtp-Source: ABdhPJwAuU8HZu7bzQUdUK7N+9kAxLdtAij91dHnV4cLlG9pUpOpa87mO5UpON9ihs0/vm3ANHX4DA==
-X-Received: by 2002:adf:ec42:: with SMTP id w2mr21971589wrn.269.1593521875852;
-        Tue, 30 Jun 2020 05:57:55 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:54f4:a99f:ab88:bc07? ([2a01:e34:ed2f:f020:54f4:a99f:ab88:bc07])
-        by smtp.googlemail.com with ESMTPSA id 133sm3823861wme.5.2020.06.30.05.57.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jun 2020 05:57:55 -0700 (PDT)
-Subject: Re: [PATCH v7 00/11] Stop monitoring disabled devices
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Peter Kaestle <peter@piie.net>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Enrico Weigelt <info@metux.net>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        kernel@collabora.com
-References: <20200629122925.21729-1-andrzej.p@collabora.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <aab40d90-3f72-657c-5e14-e53a34c4b420@linaro.org>
-Date:   Tue, 30 Jun 2020 14:57:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WqwbwU46JyOBSJ4M/llFeE1rugAXIYDl6Af9czQJBYA=;
+        b=jDFgAAuJGqYlbU3fXLv/gMLOuQAgYysSgZSbE6LepFkZOT3HfO8Qp2g512nitXF8WU
+         tNL8LbHaLiHWlMgAIIEiCFaAfI6TO/0L9EiHmYLaWoh6gUj1VLFDDvC/aVPiU86eNlzD
+         NWuurDaD4xa5PQzaFP/bfg4nNL2GJTW09ssxbhRplYCxZikO+6H75j0Q9MwIUq3s7Htc
+         4poFgdVtWsWy2dxLNFi6TDz4/vaAgL/rDpMso6eUUDfCVbFWLEmmN4fwK2mXrNcX1GAz
+         TmOlI6aWtq66iOgYRYYrpAN6RfUx0CbUwNnQzncJs2/WFMTdR7vaJX1ol8Fe6gG6vJfL
+         Xl/Q==
+X-Gm-Message-State: AOAM530oW9yWTHcFvY2+YKQ5T4QFA6QisDf0aqqI//cEwLhdIuchj9vF
+        uMDPD/AqqOnGSb60rDvQSvEjZVIcv4Khfs7w0b45kg==
+X-Google-Smtp-Source: ABdhPJxcZHXFcqosLW4f6iGFDsj3uWlS9K4nihvXh0uIED4aD7noF+010OtlL0o8ZeIfLr5tSucG2WE3CDKvAel9ATU=
+X-Received: by 2002:a9d:39f5:: with SMTP id y108mr17985171otb.262.1593522045805;
+ Tue, 30 Jun 2020 06:00:45 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200629122925.21729-1-andrzej.p@collabora.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20200630044943.3425049-1-rajatja@google.com> <20200630044943.3425049-6-rajatja@google.com>
+ <20200630104948.GC856968@kuha.fi.intel.com> <20200630125216.GA1109228@kroah.com>
+In-Reply-To: <20200630125216.GA1109228@kroah.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 30 Jun 2020 15:00:34 +0200
+Message-ID: <CAJZ5v0iYFKrouQx_b7afPnz7ohjWOKKDhdHj_3HObKYV_rRhiw@mail.gmail.com>
+Subject: Re: [PATCH v2 5/7] driver core: Add device location to "struct
+ device" and expose it in sysfs
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rajat Jain <rajatja@google.com>
+Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        "open list:AMD IOMMU (AMD-VI)" <iommu@lists.linux-foundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Raj Ashok <ashok.raj@intel.com>,
+        lalithambika.krishnakumar@intel.com,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Prashant Malani <pmalani@google.com>,
+        Benson Leung <bleung@google.com>,
+        Todd Broch <tbroch@google.com>,
+        Alex Levin <levinale@google.com>,
+        Mattias Nissler <mnissler@google.com>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Bernie Keany <bernie.keany@intel.com>,
+        Aaron Durbin <adurbin@google.com>,
+        Diego Rivas <diegorivas@google.com>,
+        Duncan Laurie <dlaurie@google.com>,
+        Furquan Shaikh <furquan@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Christian Kellner <christian@kellner.me>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Saravana Kannan <saravanak@google.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Tue, Jun 30, 2020 at 2:52 PM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Tue, Jun 30, 2020 at 01:49:48PM +0300, Heikki Krogerus wrote:
+> > On Mon, Jun 29, 2020 at 09:49:41PM -0700, Rajat Jain wrote:
+> > > Add a new (optional) field to denote the physical location of a device
+> > > in the system, and expose it in sysfs. This was discussed here:
+> > > https://lore.kernel.org/linux-acpi/20200618184621.GA446639@kroah.com/
+> > >
+> > > (The primary choice for attribute name i.e. "location" is already
+> > > exposed as an ABI elsewhere, so settled for "site"). Individual buses
+> > > that want to support this new attribute can opt-in by setting a flag in
+> > > bus_type, and then populating the location of device while enumerating
+> > > it.
+> >
+> > So why not just call it "physical_location"?
+>
+> That's better, and will allow us to put "3rd blue plug from the left,
+> 4th row down" in there someday :)
+>
+> All of this is "relative" to the CPU, right?  But what CPU?  Again, how
+> are the systems with drawers of PCI and CPUs and memory that can be
+> added/removed at any point in time being handled here?  What is
+> "internal" and "external" for them?
+>
+> What exactly is the physical boundry here that is attempting to be
+> described?
 
-Hi Andrzej,
+Also, where is the "physical location" information going to come from?
 
-I've tested your series with kernelci and there are 3 regressions for
-the imx6.
-
-https://kernelci.org/test/job/thermal/branch/testing/kernel/v5.8-rc3-11-gf5e50bf4d3ef/plan/baseline/
-
-
-On 29/06/2020 14:29, Andrzej Pietrasiewicz wrote:
-> A respin of v6 with these changes:
-> 
-> v6..v7:
-> - removed duplicate S-o-b line from patch 6/11
-> 
-> v5..v6:
-> - staticized thermal_zone_device_set_mode() (kbuild test robot)
-> 
-> v4..v5:
-> 
-> - EXPORT_SYMBOL -> EXPORT_SYMBOL_GPL (Daniel)
-> - dropped unnecessary thermal_zone_device_enable() in int3400_thermal.c
-> and in thermal_of.c (Bartlomiej)
-> 
-> Andrzej Pietrasiewicz (11):
->   acpi: thermal: Fix error handling in the register function
->   thermal: Store thermal mode in a dedicated enum
->   thermal: Add current mode to thermal zone device
->   thermal: Store device mode in struct thermal_zone_device
->   thermal: remove get_mode() operation of drivers
->   thermal: Add mode helpers
->   thermal: Use mode helpers in drivers
->   thermal: Explicitly enable non-changing thermal zone devices
->   thermal: core: Stop polling DISABLED thermal devices
->   thermal: Simplify or eliminate unnecessary set_mode() methods
->   thermal: Rename set_mode() to change_mode()
-> 
->  drivers/acpi/thermal.c                        | 75 +++++----------
->  .../ethernet/chelsio/cxgb4/cxgb4_thermal.c    |  8 ++
->  .../ethernet/mellanox/mlxsw/core_thermal.c    | 91 ++++---------------
->  drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |  9 +-
->  drivers/platform/x86/acerhdf.c                | 33 +++----
->  drivers/platform/x86/intel_mid_thermal.c      |  6 ++
->  drivers/power/supply/power_supply_core.c      |  9 +-
->  drivers/thermal/armada_thermal.c              |  6 ++
->  drivers/thermal/da9062-thermal.c              | 16 +---
->  drivers/thermal/dove_thermal.c                |  6 ++
->  drivers/thermal/hisi_thermal.c                |  6 +-
->  drivers/thermal/imx_thermal.c                 | 57 ++++--------
->  .../intel/int340x_thermal/int3400_thermal.c   | 38 ++------
->  .../int340x_thermal/int340x_thermal_zone.c    |  5 +
->  drivers/thermal/intel/intel_pch_thermal.c     |  5 +
->  .../thermal/intel/intel_quark_dts_thermal.c   | 34 ++-----
->  drivers/thermal/intel/intel_soc_dts_iosf.c    |  3 +
->  drivers/thermal/intel/x86_pkg_temp_thermal.c  |  6 ++
->  drivers/thermal/kirkwood_thermal.c            |  7 ++
->  drivers/thermal/rcar_thermal.c                |  9 +-
->  drivers/thermal/rockchip_thermal.c            |  6 +-
->  drivers/thermal/spear_thermal.c               |  7 ++
->  drivers/thermal/sprd_thermal.c                |  6 +-
->  drivers/thermal/st/st_thermal.c               |  5 +
->  drivers/thermal/thermal_core.c                | 76 ++++++++++++++--
->  drivers/thermal/thermal_of.c                  | 41 +--------
->  drivers/thermal/thermal_sysfs.c               | 37 +-------
->  include/linux/thermal.h                       | 19 +++-
->  28 files changed, 275 insertions(+), 351 deletions(-)
-> 
-> 
-> base-commit: 9ebcfadb0610322ac537dd7aa5d9cbc2b2894c68
-> 
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+If that is the platform firmware (which I suspect is the anticipated
+case), there may be problems with reliability related to that.
