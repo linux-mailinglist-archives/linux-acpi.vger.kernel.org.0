@@ -2,201 +2,173 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D51C220FAEC
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 19:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BEBF20FBC8
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 20:33:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731938AbgF3RoQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Jun 2020 13:44:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55448 "EHLO
+        id S2390835AbgF3Sdv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Jun 2020 14:33:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730858AbgF3RoO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jun 2020 13:44:14 -0400
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 590BCC03E97A
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Jun 2020 10:44:14 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id n6so19128623otl.0
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Jun 2020 10:44:14 -0700 (PDT)
+        with ESMTP id S2389516AbgF3Sdu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jun 2020 14:33:50 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFFDDC03E97A
+        for <linux-acpi@vger.kernel.org>; Tue, 30 Jun 2020 11:33:49 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id h5so21139822wrc.7
+        for <linux-acpi@vger.kernel.org>; Tue, 30 Jun 2020 11:33:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pvrPSyad64a06y3emmBaHBraeMnCfgt6QtYJn+H41Ho=;
-        b=AIvFwiVmHfWa0dr/Zj/nl3/Gf+Dd7lJR5y4sPWVHQ6irUWAzRxeWoOb/p2Glgrk5x7
-         TDEjkGmBqHJFS3FeMsKSUuM+D3gUcPWXfX8izqzDYuu0i5RlpD4ZYEGNnt5HD5TFGK/4
-         +VZg7MDSEIbgEZSrQtROVsWPTIRaGegwbqGtn6aYm7ZDVsTuiNa6Vz1uvzRXOMzrKN6M
-         vrZA71ayaPMxJ7T9dyamhd8XLmDYQA3mCTowCoZLR+iNzAZTh88X+FxrewQAkskd6ncd
-         EOt1xr66NGeLzGOPzxdLzf+Wr/iHl7eww9QdEkZ4ZlS5fCywYXwwCJ9aTWMyMziBOyS6
-         r9rA==
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=fJpxH5/djWt9U3VYoQjuqMYzJN+p95+ihodoPPW+SNQ=;
+        b=QtRvGqVxjzxpiFVybIea7lqehIQLky2ZFc2aG1M6771qlNANmaszRuCoEuuKojC4wO
+         e3gUMOhd6TiyI5C3zuqPkGO0Q61l1AUfwUIyFir+LMpB+pXEgIoiTyIse+E+W0JIoF1S
+         Ulyhd/nP9MSIRL7CQFpcHG+cwScKqaWXcQ/tUEnD/6C37OGTdUaiJf+DPwkPtWe/8/+H
+         pW6dOiQPIe+l5evZRZ/JGlvO4MKwSS91ACC5sj6UoHMgGtVpVLEnFRxyvyjuZIe8ACvV
+         zt1UeqXVyKh3Xxm3WcxDd6DXGrfYHQSZ3gPsXzrDcM2C9jWuSc6Z39R9xenraJNNEyLy
+         YGMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pvrPSyad64a06y3emmBaHBraeMnCfgt6QtYJn+H41Ho=;
-        b=ru+aWwVSKGYKv6d3OPiKL6wWxa5TVK5OLQ8tt+HP+hu6KQ0i4IHjkdKiwgYpah9akO
-         LLMy042aXfBQLfyDCoSuO6d/hsYFn2DQGKDaln0wKjWDRsG8Ecc4xhYSxgvZ9TYSlRuE
-         4Nd5kKiPV6RTpsK0nMdNDx1s4qXHSdGbZTEZeCPjTcl3/Z362hztuGqfD84Hl94qZ+IY
-         kSUiRiQMjdKHQb9gjoT2JvmVMmDB1os1IF/zJHcAcxTxwhQU+yG3rrOPM7oUsMwajIAY
-         atEQqIWOfVT+1B/8y9n6NaYXLzOfMXKcJTZnCu+JtcqNOuedY8R1xz3Dy/ZIZDThOl8L
-         Y7Zw==
-X-Gm-Message-State: AOAM533QSireKd37E0RfvhC7ud+l9f0fZ6qZR53KC/vuPvE5oWXrOhyN
-        7dRGOyG2hOl3w+CgDiDgMzJhOOLQ8BfKdsRivJcwkFQL
-X-Google-Smtp-Source: ABdhPJxvmOdBgLv+Am0qzfX+NxBE+/4lC8/0GP2QXouYO+Xni8icBayVXFLmI+l2lGzBS6ZBGHtQIVdLNxB8n7tHCR8=
-X-Received: by 2002:a9d:8ea:: with SMTP id 97mr11889961otf.231.1593539053111;
- Tue, 30 Jun 2020 10:44:13 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=fJpxH5/djWt9U3VYoQjuqMYzJN+p95+ihodoPPW+SNQ=;
+        b=tEvh5ck53hwOwuhy+LI7+hcq9YOxSOlsNt4K+ZSkEqsvYDqJCrweUL8thApHHz7rwp
+         OIGo2TmNJEtV9fU5dbUgYEVww0qi0iSOPd/OPREgKNzoZcpzihzHyhDf7H1kULnH5Mhf
+         kx4iPUH/HmxgQ6Zuj5mFp0MwDpoUb/HB38w3FXIdEklczMuglDpAT9mkUUjnZbXB+YpC
+         HPGL3LUReyLYPxLPfkuEZzebl7tFbazjX4fG1QTCYnRmY4jfwRP+JmT+yz3KfL7bh0xr
+         lbqh5IGXpxnsNods7ytNWDmbzvGG+CCvBTHOitb4+XvKj4AYwL1pnh9Eknr804X66UXi
+         yX2w==
+X-Gm-Message-State: AOAM530OB6SMW5VPoa7iBxo4CGApgh8NfTe3tl0Q0x/1S4uWNMLftQGO
+        Wp73yrLERzK/2MyvSeaj0vQCtw==
+X-Google-Smtp-Source: ABdhPJxLhcXrkHLv2/YCvgyaaG9WujOJsdKLAP5iiMsukPW0YrKfbKY169ibr3i+yNbysUtJLv4bdw==
+X-Received: by 2002:a5d:6ac1:: with SMTP id u1mr22357628wrw.123.1593542028223;
+        Tue, 30 Jun 2020 11:33:48 -0700 (PDT)
+Received: from ?IPv6:2a01:e34:ed2f:f020:54f4:a99f:ab88:bc07? ([2a01:e34:ed2f:f020:54f4:a99f:ab88:bc07])
+        by smtp.googlemail.com with ESMTPSA id b10sm4104203wmj.30.2020.06.30.11.33.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jun 2020 11:33:47 -0700 (PDT)
+Subject: Re: [PATCH v7 00/11] Stop monitoring disabled devices
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        kernel@collabora.com
+References: <20200629122925.21729-1-andrzej.p@collabora.com>
+ <aab40d90-3f72-657c-5e14-e53a34c4b420@linaro.org>
+ <3d03d1a2-ac06-b69b-93cb-e0203be62c10@collabora.com>
+ <47111821-d691-e71d-d740-e4325e290fa4@linaro.org>
+ <be9b7ee3-cad0-e462-126d-08de9b226285@collabora.com>
+ <4353a939-3f5e-8369-5bc0-ad8162b5ffc7@linaro.org>
+ <a531d80f-afd1-2dec-6c77-ed984e97595c@collabora.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <db1ff4e1-cbf8-89b3-5d64-b91a1fd88a41@linaro.org>
+Date:   Tue, 30 Jun 2020 20:33:45 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-References: <20200630044943.3425049-1-rajatja@google.com> <20200630044943.3425049-6-rajatja@google.com>
-In-Reply-To: <20200630044943.3425049-6-rajatja@google.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Tue, 30 Jun 2020 10:43:37 -0700
-Message-ID: <CAGETcx9hgV70DVdbOvCF+tO4b-6+1JzN1_OmPmnWjj9qJhB_dw@mail.gmail.com>
-Subject: Re: [PATCH v2 5/7] driver core: Add device location to "struct
- device" and expose it in sysfs
-To:     Rajat Jain <rajatja@google.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, iommu@lists.linux-foundation.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Raj Ashok <ashok.raj@intel.com>,
-        lalithambika.krishnakumar@intel.com,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Prashant Malani <pmalani@google.com>,
-        Benson Leung <bleung@google.com>,
-        Todd Broch <tbroch@google.com>,
-        Alex Levin <levinale@google.com>,
-        Mattias Nissler <mnissler@google.com>,
-        Rajat Jain <rajatxjain@gmail.com>,
-        Bernie Keany <bernie.keany@intel.com>,
-        Aaron Durbin <adurbin@google.com>,
-        Diego Rivas <diegorivas@google.com>,
-        Duncan Laurie <dlaurie@google.com>,
-        Furquan Shaikh <furquan@google.com>,
-        Jesse Barnes <jsbarnes@google.com>,
-        Christian Kellner <christian@kellner.me>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        oohall@gmail.com, Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <a531d80f-afd1-2dec-6c77-ed984e97595c@collabora.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 29, 2020 at 9:49 PM Rajat Jain <rajatja@google.com> wrote:
->
-> Add a new (optional) field to denote the physical location of a device
-> in the system, and expose it in sysfs. This was discussed here:
-> https://lore.kernel.org/linux-acpi/20200618184621.GA446639@kroah.com/
->
-> (The primary choice for attribute name i.e. "location" is already
-> exposed as an ABI elsewhere, so settled for "site"). Individual buses
-> that want to support this new attribute can opt-in by setting a flag in
-> bus_type, and then populating the location of device while enumerating
-> it.
->
-> Signed-off-by: Rajat Jain <rajatja@google.com>
-> ---
-> v2: (Initial version)
->
->  drivers/base/core.c        | 35 +++++++++++++++++++++++++++++++
->  include/linux/device.h     | 42 ++++++++++++++++++++++++++++++++++++++
->  include/linux/device/bus.h |  8 ++++++++
->  3 files changed, 85 insertions(+)
->
+On 30/06/2020 18:56, Andrzej Pietrasiewicz wrote:
+> Hi,
+> 
+> W dniu 30.06.2020 o 17:53, Daniel Lezcano pisze:
+>> On 30/06/2020 17:29, Andrzej Pietrasiewicz wrote:
+>>> Hi Daniel,
+>>>
+>>> W dniu 30.06.2020 o 16:53, Daniel Lezcano pisze:
+>>>> On 30/06/2020 15:43, Andrzej Pietrasiewicz wrote:
+>>>>> Hi Daniel,
+>>>>>
+>>>>> I am reading the logs and can't find anything specific to thermal.
+>>>>>
+>>>>> What I can see is
+>>>>>
+>>>>> "random: crng init done"
+>>>>>
+>>>>> with large times (~200s) and then e.g.
+>>>>>
+>>>>> 'auto-login-action timed out after 283 seconds'
+>>>>>
+>>>>> I'm looking at e.g.
+>>>>> https://storage.kernelci.org/thermal/testing/v5.8-rc3-11-gf5e50bf4d3ef/arm/multi_v7_defconfig/gcc-8/lab-baylibre/baseline-imx6q-sabrelite.html
+>>>>>
+>>>>>
+>>>>>
+>>>
+>>> f5e50bf4d3ef is PATCH 11/11. Does the problem happen at PATCH 1-10/11?
+>>> PATCH 11/11 renames a method and the code compiles, so it seems
+>>> unlikely that this is causing problems. One should never say never,
+>>> though ;)
+>>
+>> The sha1 is just the HEAD for the kernel reference. The regression
+>> happens with your series, somewhere.
+>>
+>>> The reported failure is not due to some test failing but rather due
+>>> to timeout logging into the test system. Could it be that there is
+>>> some other problem?
+>>
+>> I did reproduce:
+>>
+>> v5.8-rc3 + series => imx6 hang at boot time
+>> v5.8-rc3 => imx6 boots correctly
+>>
+> 
+> I kindly ask for a bisect.
 
-<snip> I'm not CC'ed in 4/7, so just replying
+I will give a try but it is a very long process as the board is running
+on kernelci.
 
-> diff --git a/include/linux/device.h b/include/linux/device.h
-> index 15460a5ac024a..a4143735ae712 100644
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -428,6 +428,31 @@ enum dl_dev_state {
->         DL_DEV_UNBINDING,
->  };
->
-> +/**
-> + * enum device_site - Physical location of the device in the system.
-> + * The semantics of values depend on subsystem / bus:
-> + *
-> + * @SITE_UNKNOWN:  Location is Unknown (default)
-> + *
-> + * @SITE_INTERNAL: Device is internal to the system, and cannot be (easily)
-> + *                 removed. E.g. SoC internal devices, onboard soldered
-> + *                 devices, internal M.2 cards (that cannot be removed
-> + *                 without opening the chassis).
-> + * @SITE_EXTENDED: Device sits an extension of the system. E.g. devices
-> + *                 on external PCIe trays, docking stations etc. These
-> + *                 devices may be removable, but are generally housed
-> + *                 internally on an extension board, so they are removed
-> + *                 only when that whole extension board is removed.
-> + * @SITE_EXTERNAL: Devices truly external to the system (i.e. plugged on
-> + *                 an external port) that may be removed or added frequently.
-> + */
-> +enum device_site {
-> +       SITE_UNKNOWN = 0,
-> +       SITE_INTERNAL,
-> +       SITE_EXTENDED,
-> +       SITE_EXTERNAL,
-> +};
-> +
->  /**
->   * struct dev_links_info - Device data related to device links.
->   * @suppliers: List of links to supplier devices.
-> @@ -513,6 +538,7 @@ struct dev_links_info {
->   *             device (i.e. the bus driver that discovered the device).
->   * @iommu_group: IOMMU group the device belongs to.
->   * @iommu:     Per device generic IOMMU runtime data
-> + * @site:      Physical location of the device w.r.t. the system
->   *
->   * @offline_disabled: If set, the device is permanently online.
->   * @offline:   Set after successful invocation of bus type's .offline().
-> @@ -613,6 +639,8 @@ struct device {
->         struct iommu_group      *iommu_group;
->         struct dev_iommu        *iommu;
->
-> +       enum device_site        site;   /* Device physical location */
-> +
->         bool                    offline_disabled:1;
->         bool                    offline:1;
->         bool                    of_node_reused:1;
-> @@ -806,6 +834,20 @@ static inline bool dev_has_sync_state(struct device *dev)
->         return false;
->  }
->
-> +static inline int dev_set_site(struct device *dev, enum device_site site)
-> +{
-> +       if (site < SITE_UNKNOWN || site > SITE_EXTERNAL)
-> +               return -EINVAL;
-> +
-> +       dev->site = site;
-> +       return 0;
-> +}
-> +
-> +static inline bool dev_is_external(struct device *dev)
-> +{
-> +       return dev->site == SITE_EXTERNAL;
-> +}
+I was not able to reproduce it on imx7 despite it is the same sensor :/
 
-I'm not CC'ed in the rest of the patches in this series, so just
-responding here. I see you use this function in patch 6/7 to decide if
-the PCI device is trusted. Anything other than EXTERNAL is being
-treated as trusted. I'd argue that anything that's not internal should
-be distrusted. For example, I can have a hacked up laptop dock that I
-can share with you when you visit my home/office and now you are
-trusting it when you shouldn't be.
 
-Also, "UNKNOWN" is treated as trusted in patch 6/7. I'm guessing this
-is because some of the devices might not have the info in their
-firmware? At which point, this feature isn't even protecting all the
-PCI ports properly? This adds to Greg point that this should be a
-userspace policy so that it can override whatever is wrong/missing in
-the firmware.
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
--Saravana
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
