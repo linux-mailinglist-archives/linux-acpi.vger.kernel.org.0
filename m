@@ -2,114 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2045320F014
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 10:02:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2851820F29D
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 12:25:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729193AbgF3IC2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Jun 2020 04:02:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42410 "EHLO mail.kernel.org"
+        id S1732532AbgF3KZI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Jun 2020 06:25:08 -0400
+Received: from foss.arm.com ([217.140.110.172]:36092 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726994AbgF3ICY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 30 Jun 2020 04:02:24 -0400
-Received: from localhost (unknown [84.241.197.94])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D604B2067D;
-        Tue, 30 Jun 2020 08:02:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593504143;
-        bh=l9em1xuyarZs6WU6lGVQVTbwQfuLz7IEaQ69vwvjbR0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oKxVuVQjOlEV89XeGjZL+EsE+ssdpkUV5c1dxojW7lqFvXHdE3E11ratNJHAnBnMQ
-         zeCuWnHl/2+If7Tp5g3qPlSHj8wOwKEjZeaSuNw82UTwMiTXYQ7SO8ce8ixj5l/2yI
-         i/Qn7sOpT0LMWB/KPsX/pjQEeVZYwm82uqwScFWY=
-Date:   Tue, 30 Jun 2020 10:02:20 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Rajat Jain <rajatja@google.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
+        id S1732514AbgF3KZD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 30 Jun 2020 06:25:03 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9943C31B;
+        Tue, 30 Jun 2020 03:25:02 -0700 (PDT)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 66CC53F68F;
+        Tue, 30 Jun 2020 03:25:00 -0700 (PDT)
+Date:   Tue, 30 Jun 2020 11:24:54 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Hanjun Guo <guohanjun@huawei.com>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Will Deacon <will@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        iommu@lists.linux-foundation.org, linux-acpi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
         Joerg Roedel <joro@8bytes.org>,
         Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, iommu@lists.linux-foundation.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Raj Ashok <ashok.raj@intel.com>,
-        lalithambika.krishnakumar@intel.com,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Prashant Malani <pmalani@google.com>,
-        Benson Leung <bleung@google.com>,
-        Todd Broch <tbroch@google.com>,
-        Alex Levin <levinale@google.com>,
-        Mattias Nissler <mnissler@google.com>,
-        Rajat Jain <rajatxjain@gmail.com>,
-        Bernie Keany <bernie.keany@intel.com>,
-        Aaron Durbin <adurbin@google.com>,
-        Diego Rivas <diegorivas@google.com>,
-        Duncan Laurie <dlaurie@google.com>,
-        Furquan Shaikh <furquan@google.com>,
-        Jesse Barnes <jsbarnes@google.com>,
-        Christian Kellner <christian@kellner.me>,
-        Alex Williamson <alex.williamson@redhat.com>, oohall@gmail.com,
-        Saravana Kannan <saravanak@google.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: Re: [PATCH v2 4/7] PCI: Add device even if driver attach failed
-Message-ID: <20200630080220.GC619174@kroah.com>
-References: <20200630044943.3425049-1-rajatja@google.com>
- <20200630044943.3425049-5-rajatja@google.com>
+        Marc Zyngier <maz@kernel.org>,
+        Makarand Pawagi <makarand.pawagi@nxp.com>,
+        Diana Craciun <diana.craciun@oss.nxp.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Subject: Re: [PATCH v2 01/12] ACPI/IORT: Make iort_match_node_callback walk
+ the ACPI namespace for NC
+Message-ID: <20200630102454.GA17556@e121166-lin.cambridge.arm.com>
+References: <20200521130008.8266-1-lorenzo.pieralisi@arm.com>
+ <20200619082013.13661-1-lorenzo.pieralisi@arm.com>
+ <20200619082013.13661-2-lorenzo.pieralisi@arm.com>
+ <718cae1f-2f33-f6d9-f278-157300b73116@huawei.com>
+ <20200629090551.GA28873@e121166-lin.cambridge.arm.com>
+ <765078e7-b3ec-af5d-0405-7834ba0f120a@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200630044943.3425049-5-rajatja@google.com>
+In-Reply-To: <765078e7-b3ec-af5d-0405-7834ba0f120a@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 29, 2020 at 09:49:40PM -0700, Rajat Jain wrote:
-> device_attach() returning failure indicates a driver error while trying to
-> probe the device. In such a scenario, the PCI device should still be added
-> in the system and be visible to the user.
-> 
-> This patch partially reverts:
-> commit ab1a187bba5c ("PCI: Check device_attach() return value always")
-> 
-> Signed-off-by: Rajat Jain <rajatja@google.com>
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
-> v2: Cosmetic change in commit log.
->     Add Greg's "reviewed-by"
-> 
->  drivers/pci/bus.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
-> index 8e40b3e6da77d..3cef835b375fd 100644
-> --- a/drivers/pci/bus.c
-> +++ b/drivers/pci/bus.c
-> @@ -322,12 +322,8 @@ void pci_bus_add_device(struct pci_dev *dev)
->  
->  	dev->match_driver = true;
->  	retval = device_attach(&dev->dev);
-> -	if (retval < 0 && retval != -EPROBE_DEFER) {
-> +	if (retval < 0 && retval != -EPROBE_DEFER)
->  		pci_warn(dev, "device attach failed (%d)\n", retval);
-> -		pci_proc_detach_device(dev);
-> -		pci_remove_sysfs_dev_files(dev);
-> -		return;
-> -	}
->  
->  	pci_dev_assign_added(dev, true);
->  }
+On Tue, Jun 30, 2020 at 11:06:41AM +0800, Hanjun Guo wrote:
 
-This should go first in the series, and cc: stable and get merged now.
-No need to tie it to this series at all.
+[...]
 
-Or just an independant patch, it doesn't have much to do with this
-series, it's a bugfix.
+> > For devices that aren't described in the DSDT - IORT translations
+> > are determined by their ACPI parent device. Do you see/Have you
+> > found any issue with this approach ?
+> 
+> The spec says "Describes the IO relationships between devices
+> represented in the ACPI namespace.", and in section 3.1.1.3 Named
+> component node, it says:
 
-thanks,
+PCI devices aren't necessarily described in the ACPI namespace and we
+still use IORT to describe them - through the RC node.
 
-greg k-h
+> "Named component nodes are used to describe devices that are also
+> included in the Differentiated System Description Table (DSDT). See
+> [ACPI]."
+> 
+> So from my understanding, the IORT spec for now, can only do ID
+> translations for devices in the DSDT.
+
+I think you can read this multiple ways but this patch does not
+change this concept. What changes, is applying parent's node IORT
+mapping to child nodes with no associated DSDT nodes, it is the
+same thing we do with PCI and the _DMA method - we could update
+the wording in the specs if that clarifies but I don't think this
+deliberately disregards the specifications.
+
+> > > For a platform device, if I use its parent's full path name for
+> > > its named component entry, then it will match, but this will violate
+> > > the IORT spec.
+> > 
+> > Can you elaborate on this please I don't get the point you
+> > are making.
+> 
+> For example, device A is not described in DSDT so can't represent
+> as a NC node in IORT. Device B can be described in DSDT and it
+> is the parent of device A, so device B can be represented in IORT
+> with memory access properties and node flags with Substream width
+> and Stall supported info.
+> 
+> When we trying to translate device A's ID, we reuse all the memory
+> access properties and node flags from its parent (device B), but
+> will it the same?
+
+I assume so why wouldn't it be ? Why would be describe them in
+a parent-child relationship if that's not how the system looks like
+in HW ?
+
+Do you have a specific example in mind that we should be aware of ?
+
+> So the IORT spec don't support this, at least it's pretty vague
+> I think.
+
+I think that's a matter of wording, it can be updated if it needs be,
+reach out if you see any issue with the current approach please.
+
+Thanks,
+Lorenzo
