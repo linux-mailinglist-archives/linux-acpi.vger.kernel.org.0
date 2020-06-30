@@ -2,158 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F1E20F8E8
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 17:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67D5620F918
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 18:08:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389791AbgF3PxV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Jun 2020 11:53:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38366 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389785AbgF3PxU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jun 2020 11:53:20 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B055CC08C5DB
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Jun 2020 08:53:18 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id w3so7644147wmi.4
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Jun 2020 08:53:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ZlhxamwqaiEMIpmJScsP8WaHtcSePSX2SSE4z4msAfU=;
-        b=pZMbiCji8j2GB9THF+qXVSgiyMCUWOFHbpWrTaTQ5T5hngskdKThzcqyS/urr5eKVO
-         equszs6sppekKylDyaCAdUDTCjVL0NqhJlKigviPxF3AkeCBXankW5oAu5fSYw3sJL0j
-         pN95T60h1NnV60aqhcJ4+JOxAl5l7GXafksuzsMsCyJRmbrM5outQ43liZtosxzBoari
-         8aQ+OZ567cvqIdHFwLXayD0BST12Yq8qqnxN5sT9F87L+PZg3Gg+jzIY6Vgikazpm40Y
-         MsD/kbGeVX1bCXKJWA61xX/b+MlinG5QKJ97kYzr2MaCyy/nlKOVVhxNA8tCCM+yOB4j
-         Osyw==
+        id S1726248AbgF3QIq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Jun 2020 12:08:46 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:42176 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726117AbgF3QIq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jun 2020 12:08:46 -0400
+Received: by mail-ot1-f67.google.com with SMTP id 76so4410060otu.9;
+        Tue, 30 Jun 2020 09:08:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ZlhxamwqaiEMIpmJScsP8WaHtcSePSX2SSE4z4msAfU=;
-        b=QBGNL1aDJnMfLuNaS7USkPntqcuxBuaR5MyikN8P6bWCdbftbELCfjXu/awcpoo1Z+
-         McJOP8bY/mFW4d5qp1XDEpUgaVT0Abi7ywq2HamO1GRAWz2/OnBm/kqDJtEXQ7QBNNKk
-         abgBMcXe4K2FoIvYprJL8eEOTVeyUHubJmAex5GzSE2TbRf/EPrBMOKXLorPtLj9HBg/
-         757BAYDrWbLhmnXC1yHHACp0gOTs4aaCCSyQSS585m/aa1uVt//AUaiqMBD0LoZug5dZ
-         y9My5FDLi5G/+RvigRfp9yeJ5R7spKx+uAzj3R2lwWb6Wn2kvxIV4FdUvBNcKcBHH8DJ
-         BBRQ==
-X-Gm-Message-State: AOAM533bxJlgecCyrQrTREL2vNsDJMBYeuzDo3EWLU5gleeO4Tw/PUtc
-        I4A8YG8b6QlSfra0PLBoKCfEaA==
-X-Google-Smtp-Source: ABdhPJxl2gp79Z5Dv6ITz5QGs5s+4SmumsdhYFya47TQ/xK22cY2dC2eBhxp9kUukoWVgtVejXnuBg==
-X-Received: by 2002:a7b:c14a:: with SMTP id z10mr21389052wmi.19.1593532397120;
-        Tue, 30 Jun 2020 08:53:17 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:54f4:a99f:ab88:bc07? ([2a01:e34:ed2f:f020:54f4:a99f:ab88:bc07])
-        by smtp.googlemail.com with ESMTPSA id a2sm4010629wrn.68.2020.06.30.08.53.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jun 2020 08:53:16 -0700 (PDT)
-Subject: Re: [PATCH v7 00/11] Stop monitoring disabled devices
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Peter Kaestle <peter@piie.net>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Enrico Weigelt <info@metux.net>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        kernel@collabora.com
-References: <20200629122925.21729-1-andrzej.p@collabora.com>
- <aab40d90-3f72-657c-5e14-e53a34c4b420@linaro.org>
- <3d03d1a2-ac06-b69b-93cb-e0203be62c10@collabora.com>
- <47111821-d691-e71d-d740-e4325e290fa4@linaro.org>
- <be9b7ee3-cad0-e462-126d-08de9b226285@collabora.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <4353a939-3f5e-8369-5bc0-ad8162b5ffc7@linaro.org>
-Date:   Tue, 30 Jun 2020 17:53:14 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=jQDz/WabqYjbF35ePxjq+94tU34dFjVcRR53QQxEhIE=;
+        b=K1q9NJXTaJ3HUAez4QAa7bUgGd/B59WXkiVSTRwyVEJ5lir+keaS5BcKvwLftJmws4
+         ZgsZo26J22s4uYGQj8T9NaDwtCFXkWmet1LzOXzbIniQ7I0jyi0lt2Uh9CDKLoruE2Oz
+         vWDS5XxgVntVzkCSkY+pp8K5F7ruTuHSujPrNbgGg8/jc64J1fK5bZVK+RQZdedFwhoZ
+         5DUpv0R4jlHPusEoEH3r36B2hcNQYPuwlNGldIL8AZleVi17D5XrebxrXBm07s1JHuYH
+         Y2wyCNbV2YY34QcAFKWOw3f/MacIhCLSyEztLoOIfDDijAOcvihX6d96OiZy8SLkXyHG
+         DlVQ==
+X-Gm-Message-State: AOAM530kjvkx1t9KNdMVhqqUguYr//cKN6HVM8e8OnVpEFQBAJ30mhVp
+        cgVgvssvfOjpWubRiz/o7Myp/cjuLcdWtTNxcMc=
+X-Google-Smtp-Source: ABdhPJxaWnX9yrMQHErQh8Vw+ezc/MNNEhYcKVhPEqUi65LAtj57f/zeJ/ze1v+SS/GdZrhEkvjMvThwgj4FoHTcVQM=
+X-Received: by 2002:a9d:1c82:: with SMTP id l2mr1108124ota.167.1593533322766;
+ Tue, 30 Jun 2020 09:08:42 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <be9b7ee3-cad0-e462-126d-08de9b226285@collabora.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20200630044943.3425049-1-rajatja@google.com> <20200630044943.3425049-6-rajatja@google.com>
+ <20200630104948.GC856968@kuha.fi.intel.com> <20200630125216.GA1109228@kroah.com>
+ <CAJZ5v0iYFKrouQx_b7afPnz7ohjWOKKDhdHj_3HObKYV_rRhiw@mail.gmail.com> <20200630153816.GD1785141@kroah.com>
+In-Reply-To: <20200630153816.GD1785141@kroah.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 30 Jun 2020 18:08:31 +0200
+Message-ID: <CAJZ5v0jUx-RVhJRDngkOXx-3szFJDOgCJs2yuGKFyo2f1qZAwA@mail.gmail.com>
+Subject: Re: [PATCH v2 5/7] driver core: Add device location to "struct
+ device" and expose it in sysfs
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rajat Jain <rajatja@google.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        "open list:AMD IOMMU (AMD-VI)" <iommu@lists.linux-foundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Raj Ashok <ashok.raj@intel.com>,
+        lalithambika.krishnakumar@intel.com,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Prashant Malani <pmalani@google.com>,
+        Benson Leung <bleung@google.com>,
+        Todd Broch <tbroch@google.com>,
+        Alex Levin <levinale@google.com>,
+        Mattias Nissler <mnissler@google.com>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Bernie Keany <bernie.keany@intel.com>,
+        Aaron Durbin <adurbin@google.com>,
+        Diego Rivas <diegorivas@google.com>,
+        Duncan Laurie <dlaurie@google.com>,
+        Furquan Shaikh <furquan@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Christian Kellner <christian@kellner.me>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Saravana Kannan <saravanak@google.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 30/06/2020 17:29, Andrzej Pietrasiewicz wrote:
-> Hi Daniel,
-> 
-> W dniu 30.06.2020 o 16:53, Daniel Lezcano pisze:
->> On 30/06/2020 15:43, Andrzej Pietrasiewicz wrote:
->>> Hi Daniel,
->>>
->>> I am reading the logs and can't find anything specific to thermal.
->>>
->>> What I can see is
->>>
->>> "random: crng init done"
->>>
->>> with large times (~200s) and then e.g.
->>>
->>> 'auto-login-action timed out after 283 seconds'
->>>
->>> I'm looking at e.g.
->>> https://storage.kernelci.org/thermal/testing/v5.8-rc3-11-gf5e50bf4d3ef/arm/multi_v7_defconfig/gcc-8/lab-baylibre/baseline-imx6q-sabrelite.html
->>>
->>>
-> 
-> f5e50bf4d3ef is PATCH 11/11. Does the problem happen at PATCH 1-10/11?
-> PATCH 11/11 renames a method and the code compiles, so it seems
-> unlikely that this is causing problems. One should never say never,
-> though ;)
+On Tue, Jun 30, 2020 at 5:38 PM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Tue, Jun 30, 2020 at 03:00:34PM +0200, Rafael J. Wysocki wrote:
+> > On Tue, Jun 30, 2020 at 2:52 PM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > On Tue, Jun 30, 2020 at 01:49:48PM +0300, Heikki Krogerus wrote:
+> > > > On Mon, Jun 29, 2020 at 09:49:41PM -0700, Rajat Jain wrote:
+> > > > > Add a new (optional) field to denote the physical location of a device
+> > > > > in the system, and expose it in sysfs. This was discussed here:
+> > > > > https://lore.kernel.org/linux-acpi/20200618184621.GA446639@kroah.com/
+> > > > >
+> > > > > (The primary choice for attribute name i.e. "location" is already
+> > > > > exposed as an ABI elsewhere, so settled for "site"). Individual buses
+> > > > > that want to support this new attribute can opt-in by setting a flag in
+> > > > > bus_type, and then populating the location of device while enumerating
+> > > > > it.
+> > > >
+> > > > So why not just call it "physical_location"?
+> > >
+> > > That's better, and will allow us to put "3rd blue plug from the left,
+> > > 4th row down" in there someday :)
+> > >
+> > > All of this is "relative" to the CPU, right?  But what CPU?  Again, how
+> > > are the systems with drawers of PCI and CPUs and memory that can be
+> > > added/removed at any point in time being handled here?  What is
+> > > "internal" and "external" for them?
+> > >
+> > > What exactly is the physical boundry here that is attempting to be
+> > > described?
+> >
+> > Also, where is the "physical location" information going to come from?
+>
+> Who knows?  :)
+>
+> Some BIOS seem to provide this, but do you trust that?
+>
+> > If that is the platform firmware (which I suspect is the anticipated
+> > case), there may be problems with reliability related to that.
+>
+> s/may/will/
+>
+> which means making the kernel inact a policy like this patch series
+> tries to add, will result in a lot of broken systems, which is why I
+> keep saying that it needs to be done in userspace.
+>
+> It's as if some of us haven't been down this road before and just keep
+> being ignored...
+>
+> {sigh}
 
-The sha1 is just the HEAD for the kernel reference. The regression
-happens with your series, somewhere.
+Well, to be honest, if you are a "vertical" vendor and you control the
+entire stack, *including* the platform firmware, it would be kind of
+OK for you to do that in a product kernel.
 
-> The reported failure is not due to some test failing but rather due
-> to timeout logging into the test system. Could it be that there is
-> some other problem?
+However, this is not a practical thing to do in the mainline kernel
+which must work for everybody, including people who happen to use
+systems with broken or even actively unfriendly firmware on them.
 
-I did reproduce:
+So I'm inclined to say that IMO this series "as is" would not be an
+improvement from the mainline perspective.
 
-v5.8-rc3 + series => imx6 hang at boot time
-v5.8-rc3 => imx6 boots correctly
+I guess it would make sense to have an attribute for user space to
+write to in order to make the kernel reject device plug-in events
+coming from a given port or connector, but the kernel has no reliable
+means to determine *which* ports or connectors are "safe", and even if
+there was a way for it to do that, it still may not agree with user
+space on which ports or connectors should be regarded as "safe".
 
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Cheers!
