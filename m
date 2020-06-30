@@ -2,57 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20D1720F358
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 13:04:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E198D20F3BB
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 13:45:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732770AbgF3LEy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Jun 2020 07:04:54 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:35377 "EHLO
+        id S1733054AbgF3LpG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Jun 2020 07:45:06 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:44102 "EHLO
         mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729924AbgF3LEe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jun 2020 07:04:34 -0400
-Received: by mail-oi1-f195.google.com with SMTP id k4so17089222oik.2;
-        Tue, 30 Jun 2020 04:04:33 -0700 (PDT)
+        with ESMTP id S1733050AbgF3LpF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jun 2020 07:45:05 -0400
+Received: by mail-oi1-f195.google.com with SMTP id k6so13283772oij.11;
+        Tue, 30 Jun 2020 04:45:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=vXIRIHHncqo0zBLK3dtMRuMsQ9p5Az0FH+7MVXNOGgk=;
-        b=K5bwXcOtIDbWYFJlyEiw59h4My36mdbLWRkhv3MFfX+NYheBF5pZfd2BGi3ClR3hEu
-         hLDVBqU/tSrTKlkdPywoXRo/+PwakNZ//my+yhx7JCwud5WYcSzkrvBKfShFuIz9l8iN
-         3EopntkNX19JvqoroTbhpOWzW82mUXdSs7XaVZJbZomdo/AMJgRp5Np7OhJr0bfI2Cv1
-         lp2ea7eJtltKrrPDn1SxJ4CC614Ggge4UvltBeydnZcTbanvP1pPPQD2LuCAlF+DmKun
-         Q2yDo4GSMlbeO+jI1cdKcoaWB73dePvWRKpAo6SAblx103jV0hr1YWGmGA6np7nEZyft
-         gysw==
-X-Gm-Message-State: AOAM532h4iok/G8EI4d3+U0rUKmuPbUPvZWlzEU+ovbY9F8cqXTjZJJC
-        CKgz5edLrPGRtJbJ7yhqfhiJxUfk7RvSSbmIOgI=
-X-Google-Smtp-Source: ABdhPJyrXV+odnKMMsJSNg1252EbQtYugp1MCGhfn0n9yvdE0dCa6B3S5wf96DbBHiDa3tUn2DkDotITWi/UNHXvnXk=
-X-Received: by 2002:a54:4585:: with SMTP id z5mr16015967oib.110.1593515073282;
- Tue, 30 Jun 2020 04:04:33 -0700 (PDT)
+        bh=bsb4MIquaSTYBlodVHOtWcad2ied9oc2sDMq3Pcztr8=;
+        b=RgSem/6hKZyL5bnr0I6wtLTuCIU5eROtT/fbswHXXSku/UQ2FfVFZVCMp9r9nr9WQB
+         aec61BhzkmYKzfgrzP/DgGQnP6lMtJ2RzTCuUjCsN/m3xcPqTweGY5HNprJ94XpnDNb5
+         NgpWcDcMcf5c7UdTeqbyIRuun0aiNR2LyPxYzbxB3NFhqqciSD/THcuqUeRMuK/dyD05
+         R10iqJK12/QJp6atG70VOckH6wasXnGiKf53Rn632euLG8nJVHNubwJ5jaNVC6A4Qu/C
+         Z8rE0b5OmY4VfWXnqCPyg5MLrGew7UlpzjInvJOf7dkGLohNgsjNS923/KOb4jxdPmJ3
+         1nHA==
+X-Gm-Message-State: AOAM532WGeazL+Lr7cNC8mtMi8z16lbjGa3pZ+i49gOkzewesTYPr6kz
+        lr0pzGQySBaixg6WdH+xapZ+SeRmJ3+rxsXIyh8=
+X-Google-Smtp-Source: ABdhPJwFw2GAEuZCNbPr0iNOFM+E2OWBK7BzCaHpl9FhHHuLN3NQg/TnqaWOD86/EaQux1Nj8hPKxgTGiCH4OqeDwRQ=
+X-Received: by 2002:aca:f58a:: with SMTP id t132mr9785173oih.68.1593517504450;
+ Tue, 30 Jun 2020 04:45:04 -0700 (PDT)
 MIME-Version: 1.0
 References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
- <2713141.s8EVnczdoM@kreacher> <2788992.3K7huLjdjL@kreacher>
- <CAPcyv4hXkzpTr3bif7zyVx5EqoWTwLgYrt87Aj2=gVMo+jtUyg@mail.gmail.com>
- <CAJZ5v0h4Hj4ax1mmMJn3z3VGtVWkoXzO0kOQ7CYnFKJV2cUGzw@mail.gmail.com> <CAPcyv4iZA6hHH=sh=CZPJ-6skJfeuAVRVAuMeTdD5LYVPRrTqQ@mail.gmail.com>
-In-Reply-To: <CAPcyv4iZA6hHH=sh=CZPJ-6skJfeuAVRVAuMeTdD5LYVPRrTqQ@mail.gmail.com>
+ <2788992.3K7huLjdjL@kreacher> <1666722.UopIai5n7p@kreacher>
+ <1794490.F2OrUDcHQn@kreacher> <20200629205708.GK1237914@redhat.com>
+In-Reply-To: <20200629205708.GK1237914@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 30 Jun 2020 13:04:21 +0200
-Message-ID: <CAJZ5v0g8=tXU8HHkoXSOwSmRhTgwb5rW8N8QQga6AU91kp1dVw@mail.gmail.com>
-Subject: Re: [RFT][PATCH v3 0/4] ACPI: ACPICA / OSL: Avoid unmapping ACPI
- memory inside of the AML interpreter
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+Date:   Tue, 30 Jun 2020 13:44:52 +0200
+Message-ID: <CAJZ5v0hiAVfgWTLcP2N5PWLsqL7mpHbuL1_de79svYYhd3R57A@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] ACPICA: Preserve memory opregion mappings
+To:     Al Stone <ahs3@redhat.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Dan Williams <dan.j.williams@intel.com>,
         Erik Kaneda <erik.kaneda@intel.com>,
-        Rafael J Wysocki <rafael.j.wysocki@intel.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
         Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
         Ira Weiny <ira.weiny@intel.com>,
         James Morse <james.morse@arm.com>,
         Myron Stowe <myron.stowe@redhat.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
         Bob Moore <robert.moore@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
@@ -60,89 +58,110 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 29, 2020 at 10:46 PM Dan Williams <dan.j.williams@intel.com> wrote:
+On Mon, Jun 29, 2020 at 10:57 PM Al Stone <ahs3@redhat.com> wrote:
 >
-> On Sun, Jun 28, 2020 at 10:09 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> On 29 Jun 2020 18:33, Rafael J. Wysocki wrote:
+> > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 > >
-> > On Fri, Jun 26, 2020 at 8:41 PM Dan Williams <dan.j.williams@intel.com> wrote:
-> > >
-> > > On Fri, Jun 26, 2020 at 10:34 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
-> > > >
-> > > > Hi All,
-> > > >
-> > > > On Monday, June 22, 2020 3:50:42 PM CEST Rafael J. Wysocki wrote:
-> > > > > Hi All,
-> > > > >
-> > > > > This series is to address the problem with RCU synchronization occurring,
-> > > > > possibly relatively often, inside of acpi_ex_system_memory_space_handler(),
-> > > > > when the namespace and interpreter mutexes are held.
-> > > > >
-> > > > > Like I said before, I had decided to change the approach used in the previous
-> > > > > iteration of this series and to allow the unmap operations carried out by
-> > > > > acpi_ex_system_memory_space_handler() to be deferred in the first place,
-> > > > > which is done in patches [1-2/4].
-> > > >
-> > > > In the meantime I realized that calling syncrhonize_rcu_expedited() under the
-> > > > "tables" mutex within ACPICA is not quite a good idea too and that there is no
-> > > > reason for any users of acpi_os_unmap_memory() in the tree to use the "sync"
-> > > > variant of unmapping.
-> > > >
-> > > > So, unless I'm missing something, acpi_os_unmap_memory() can be changed to
-> > > > always defer the final unmapping and the only ACPICA change needed to support
-> > > > that is the addition of the acpi_os_release_unused_mappings() call to get rid
-> > > > of the unused mappings when leaving the interpreter (module the extra call in
-> > > > the debug code for consistency).
-> > > >
-> > > > So patches [1-2/4] have been changed accordingly.
-> > > >
-> > > > > However, it turns out that the "fast-path" mapping is still useful on top of
-> > > > > the above to reduce the number of ioremap-iounmap cycles for the same address
-> > > > > range and so it is introduced by patches [3-4/4].
-> > > >
-> > > > Patches [3-4/4] still do what they did, but they have been simplified a bit
-> > > > after rebasing on top of the new [1-2/4].
-> > > >
-> > > > The below information is still valid, but it applies to the v3, of course.
-> > > >
-> > > > > For details, please refer to the patch changelogs.
-> > > > >
-> > > > > The series is available from the git branch at
-> > > > >
-> > > > >  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
-> > > > >  acpica-osl
-> > > > >
-> > > > > for easier testing.
-> > > >
-> > > > Also the series have been tested locally.
-> > >
-> > > Ok, I'm still trying to get the original reporter to confirm this
-> > > reduces the execution time for ASL routines with a lot of OpRegion
-> > > touches. Shall I rebuild that test kernel with these changes, or are
-> > > the results from the original RFT still interesting?
+> > The ACPICA's strategy with respect to the handling of memory mappings
+> > associated with memory operation regions is to avoid mapping the
+> > entire region at once which may be problematic at least in principle
+> > (for example, it may lead to conflicts with overlapping mappings
+> > having different attributes created by drivers).  It may also be
+> > wasteful, because memory opregions on some systems take up vast
+> > chunks of address space while the fields in those regions actually
+> > accessed by AML are sparsely distributed.
 > >
-> > I'm mostly interested in the results with the v3 applied.
+> > For this reason, a one-page "window" is mapped for a given opregion
+> > on the first memory access through it and if that "window" does not
+> > cover an address range accessed through that opregion subsequently,
+> > it is unmapped and a new "window" is mapped to replace it.  Next,
+> > if the new "window" is not sufficient to acess memory through the
+> > opregion in question in the future, it will be replaced with yet
+> > another "window" and so on.  That may lead to a suboptimal sequence
+> > of memory mapping and unmapping operations, for example if two fields
+> > in one opregion separated from each other by a sufficiently wide
+> > chunk of unused address space are accessed in an alternating pattern.
 > >
+> > The situation may still be suboptimal if the deferred unmapping
+> > introduced previously is supported by the OS layer.  For instance,
+> > the alternating memory access pattern mentioned above may produce
+> > a relatively long list of mappings to release with substantial
+> > duplication among the entries in it, which could be avoided if
+> > acpi_ex_system_memory_space_handler() did not release the mapping
+> > used by it previously as soon as the current access was not covered
+> > by it.
+> >
+> > In order to improve that, modify acpi_ex_system_memory_space_handler()
+> > to preserve all of the memory mappings created by it until the memory
+> > regions associated with them go away.
+> >
+> > Accordingly, update acpi_ev_system_memory_region_setup() to unmap all
+> > memory associated with memory opregions that go away.
+> >
+> > Reported-by: Dan Williams <dan.j.williams@intel.com>
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  drivers/acpi/acpica/evrgnini.c | 14 ++++----
+> >  drivers/acpi/acpica/exregion.c | 65 ++++++++++++++++++++++++----------
+> >  include/acpi/actypes.h         | 12 +++++--
+> >  3 files changed, 64 insertions(+), 27 deletions(-)
+> >
+> > diff --git a/drivers/acpi/acpica/evrgnini.c b/drivers/acpi/acpica/evrgnini.c
+> > index aefc0145e583..89be3ccdad53 100644
+> > --- a/drivers/acpi/acpica/evrgnini.c
+> > +++ b/drivers/acpi/acpica/evrgnini.c
+> > @@ -38,6 +38,7 @@ acpi_ev_system_memory_region_setup(acpi_handle handle,
+> >       union acpi_operand_object *region_desc =
+> >           (union acpi_operand_object *)handle;
+> >       struct acpi_mem_space_context *local_region_context;
+> > +     struct acpi_mem_mapping *mm;
+> >
+> >       ACPI_FUNCTION_TRACE(ev_system_memory_region_setup);
+> >
+> > @@ -46,13 +47,14 @@ acpi_ev_system_memory_region_setup(acpi_handle handle,
+> >                       local_region_context =
+> >                           (struct acpi_mem_space_context *)*region_context;
+> >
+> > -                     /* Delete a cached mapping if present */
+> > +                     /* Delete memory mappings if present */
+> >
+> > -                     if (local_region_context->mapped_length) {
+> > -                             acpi_os_unmap_memory(local_region_context->
+> > -                                                  mapped_logical_address,
+> > -                                                  local_region_context->
+> > -                                                  mapped_length);
+> > +                     while (local_region_context->first_mm) {
+> > +                             mm = local_region_context->first_mm;
+> > +                             local_region_context->first_mm = mm->next_mm;
+> > +                             acpi_os_unmap_memory(mm->logical_address,
+> > +                                                  mm->length);
+> > +                             ACPI_FREE(mm);
+> >                       }
+> >                       ACPI_FREE(local_region_context);
+> >                       *region_context = NULL;
+> > diff --git a/drivers/acpi/acpica/exregion.c b/drivers/acpi/acpica/exregion.c
+> > index d15a66de26c0..fd68f2134804 100644
+> > --- a/drivers/acpi/acpica/exregion.c
+> > +++ b/drivers/acpi/acpica/exregion.c
+> > @@ -41,6 +41,7 @@ acpi_ex_system_memory_space_handler(u32 function,
+> >       acpi_status status = AE_OK;
+> >       void *logical_addr_ptr = NULL;
+> >       struct acpi_mem_space_context *mem_info = region_context;
+> > +     struct acpi_mem_mapping *mm = mem_info->cur_mm;
+> >       u32 length;
+> >       acpi_size map_length;
 >
-> Ok, I just got feedback on v2 and it still showed the 30 minute
-> execution time where 7 minutes was achieved previously.
-
-This probably means that "transient" memory opregions, which appear
-and go away during the AML execution, are involved and so moving the
-RCU synchronization outside of the interpreter and namespace locks is
-not enough to cover this case.
-
-It should be covered by the v4
-(https://lore.kernel.org/linux-acpi/1666722.UopIai5n7p@kreacher/T/#u),
-though, because the unmapping is completely asynchronous in there and
-it doesn't add any significant latency to the interpreter exit path.
-So I would expect to see much better results with the v4, so I'd
-recommend testing this one next.
-
-> > Also it would be good to check the impact of the first two patches
-> > alone relative to all four.
+> I think this needs to be:
 >
-> I'll start with the full set and see if they can also support the
-> "first 2" experiment.
+>         acpi_size map_length = mem_info->length;
+>
+> since it now gets used in the ACPI_ERROR() call below.
 
-In the v4 there are just two patches, so it should be straightforward
-enough to test with and without the top-most one. :-)
+No, it's better to print the length value in the message.
+
+>  I'm getting a "maybe used unitialized" error on compilation.
+
+Thanks for reporting!
+
+I've updated the commit in the acpica-osl branch with the fix.
