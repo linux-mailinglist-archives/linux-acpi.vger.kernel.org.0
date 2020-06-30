@@ -2,133 +2,171 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB63C20F55E
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 15:04:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0404320F5FC
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 15:43:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387897AbgF3NE1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Jun 2020 09:04:27 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:6787 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2387492AbgF3NE1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 30 Jun 2020 09:04:27 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 27BDADEC1BEF76A390DF;
-        Tue, 30 Jun 2020 21:04:24 +0800 (CST)
-Received: from [127.0.0.1] (10.174.179.33) by DGGEMS402-HUB.china.huawei.com
- (10.3.19.202) with Microsoft SMTP Server id 14.3.487.0; Tue, 30 Jun 2020
- 21:04:21 +0800
-Subject: Re: [PATCH v2 01/12] ACPI/IORT: Make iort_match_node_callback walk
- the ACPI namespace for NC
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        Will Deacon <will@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        <iommu@lists.linux-foundation.org>, <linux-acpi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Joerg Roedel <joro@8bytes.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        Diana Craciun <diana.craciun@oss.nxp.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>
-References: <20200521130008.8266-1-lorenzo.pieralisi@arm.com>
- <20200619082013.13661-1-lorenzo.pieralisi@arm.com>
- <20200619082013.13661-2-lorenzo.pieralisi@arm.com>
- <718cae1f-2f33-f6d9-f278-157300b73116@huawei.com>
- <20200629090551.GA28873@e121166-lin.cambridge.arm.com>
- <765078e7-b3ec-af5d-0405-7834ba0f120a@huawei.com>
- <20200630102454.GA17556@e121166-lin.cambridge.arm.com>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <4817d766-0437-5356-a0b9-97b111d4cae2@huawei.com>
-Date:   Tue, 30 Jun 2020 21:04:20 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S2387760AbgF3Nn2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Jun 2020 09:43:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46460 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387429AbgF3Nn1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jun 2020 09:43:27 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63520C061755;
+        Tue, 30 Jun 2020 06:43:27 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id EDD2D2A4A92
+Subject: Re: [PATCH v7 00/11] Stop monitoring disabled devices
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        kernel@collabora.com
+References: <20200629122925.21729-1-andrzej.p@collabora.com>
+ <aab40d90-3f72-657c-5e14-e53a34c4b420@linaro.org>
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Message-ID: <3d03d1a2-ac06-b69b-93cb-e0203be62c10@collabora.com>
+Date:   Tue, 30 Jun 2020 15:43:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200630102454.GA17556@e121166-lin.cambridge.arm.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.179.33]
-X-CFilter-Loop: Reflected
+In-Reply-To: <aab40d90-3f72-657c-5e14-e53a34c4b420@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2020/6/30 18:24, Lorenzo Pieralisi wrote:
-> On Tue, Jun 30, 2020 at 11:06:41AM +0800, Hanjun Guo wrote:
+Hi Daniel,
+
+I am reading the logs and can't find anything specific to thermal.
+
+What I can see is
+
+"random: crng init done"
+
+with large times (~200s) and then e.g.
+
+'auto-login-action timed out after 283 seconds'
+
+I'm looking at e.g. 
+https://storage.kernelci.org/thermal/testing/v5.8-rc3-11-gf5e50bf4d3ef/arm/multi_v7_defconfig/gcc-8/lab-baylibre/baseline-imx6q-sabrelite.html
+
+Is there anywhere else I can look at?
+
+Andrzej
+
+W dniu 30.06.2020 o 14:57, Daniel Lezcano pisze:
 > 
-> [...]
+> Hi Andrzej,
 > 
->>> For devices that aren't described in the DSDT - IORT translations
->>> are determined by their ACPI parent device. Do you see/Have you
->>> found any issue with this approach ?
+> I've tested your series with kernelci and there are 3 regressions for
+> the imx6.
+> 
+> https://kernelci.org/test/job/thermal/branch/testing/kernel/v5.8-rc3-11-gf5e50bf4d3ef/plan/baseline/
+> 
+> 
+> On 29/06/2020 14:29, Andrzej Pietrasiewicz wrote:
+>> A respin of v6 with these changes:
 >>
->> The spec says "Describes the IO relationships between devices
->> represented in the ACPI namespace.", and in section 3.1.1.3 Named
->> component node, it says:
-> 
-> PCI devices aren't necessarily described in the ACPI namespace and we
-> still use IORT to describe them - through the RC node.
-> 
->> "Named component nodes are used to describe devices that are also
->> included in the Differentiated System Description Table (DSDT). See
->> [ACPI]."
+>> v6..v7:
+>> - removed duplicate S-o-b line from patch 6/11
 >>
->> So from my understanding, the IORT spec for now, can only do ID
->> translations for devices in the DSDT.
-> 
-> I think you can read this multiple ways but this patch does not
-> change this concept. What changes, is applying parent's node IORT
-> mapping to child nodes with no associated DSDT nodes, it is the
-> same thing we do with PCI and the _DMA method - we could update
-> the wording in the specs if that clarifies but I don't think this
-> deliberately disregards the specifications.
-
-I agree, but it's better to update the wording of the spec.
-
-> 
->>>> For a platform device, if I use its parent's full path name for
->>>> its named component entry, then it will match, but this will violate
->>>> the IORT spec.
->>>
->>> Can you elaborate on this please I don't get the point you
->>> are making.
+>> v5..v6:
+>> - staticized thermal_zone_device_set_mode() (kbuild test robot)
 >>
->> For example, device A is not described in DSDT so can't represent
->> as a NC node in IORT. Device B can be described in DSDT and it
->> is the parent of device A, so device B can be represented in IORT
->> with memory access properties and node flags with Substream width
->> and Stall supported info.
+>> v4..v5:
 >>
->> When we trying to translate device A's ID, we reuse all the memory
->> access properties and node flags from its parent (device B), but
->> will it the same?
+>> - EXPORT_SYMBOL -> EXPORT_SYMBOL_GPL (Daniel)
+>> - dropped unnecessary thermal_zone_device_enable() in int3400_thermal.c
+>> and in thermal_of.c (Bartlomiej)
+>>
+>> Andrzej Pietrasiewicz (11):
+>>    acpi: thermal: Fix error handling in the register function
+>>    thermal: Store thermal mode in a dedicated enum
+>>    thermal: Add current mode to thermal zone device
+>>    thermal: Store device mode in struct thermal_zone_device
+>>    thermal: remove get_mode() operation of drivers
+>>    thermal: Add mode helpers
+>>    thermal: Use mode helpers in drivers
+>>    thermal: Explicitly enable non-changing thermal zone devices
+>>    thermal: core: Stop polling DISABLED thermal devices
+>>    thermal: Simplify or eliminate unnecessary set_mode() methods
+>>    thermal: Rename set_mode() to change_mode()
+>>
+>>   drivers/acpi/thermal.c                        | 75 +++++----------
+>>   .../ethernet/chelsio/cxgb4/cxgb4_thermal.c    |  8 ++
+>>   .../ethernet/mellanox/mlxsw/core_thermal.c    | 91 ++++---------------
+>>   drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |  9 +-
+>>   drivers/platform/x86/acerhdf.c                | 33 +++----
+>>   drivers/platform/x86/intel_mid_thermal.c      |  6 ++
+>>   drivers/power/supply/power_supply_core.c      |  9 +-
+>>   drivers/thermal/armada_thermal.c              |  6 ++
+>>   drivers/thermal/da9062-thermal.c              | 16 +---
+>>   drivers/thermal/dove_thermal.c                |  6 ++
+>>   drivers/thermal/hisi_thermal.c                |  6 +-
+>>   drivers/thermal/imx_thermal.c                 | 57 ++++--------
+>>   .../intel/int340x_thermal/int3400_thermal.c   | 38 ++------
+>>   .../int340x_thermal/int340x_thermal_zone.c    |  5 +
+>>   drivers/thermal/intel/intel_pch_thermal.c     |  5 +
+>>   .../thermal/intel/intel_quark_dts_thermal.c   | 34 ++-----
+>>   drivers/thermal/intel/intel_soc_dts_iosf.c    |  3 +
+>>   drivers/thermal/intel/x86_pkg_temp_thermal.c  |  6 ++
+>>   drivers/thermal/kirkwood_thermal.c            |  7 ++
+>>   drivers/thermal/rcar_thermal.c                |  9 +-
+>>   drivers/thermal/rockchip_thermal.c            |  6 +-
+>>   drivers/thermal/spear_thermal.c               |  7 ++
+>>   drivers/thermal/sprd_thermal.c                |  6 +-
+>>   drivers/thermal/st/st_thermal.c               |  5 +
+>>   drivers/thermal/thermal_core.c                | 76 ++++++++++++++--
+>>   drivers/thermal/thermal_of.c                  | 41 +--------
+>>   drivers/thermal/thermal_sysfs.c               | 37 +-------
+>>   include/linux/thermal.h                       | 19 +++-
+>>   28 files changed, 275 insertions(+), 351 deletions(-)
+>>
+>>
+>> base-commit: 9ebcfadb0610322ac537dd7aa5d9cbc2b2894c68
+>>
 > 
-> I assume so why wouldn't it be ? Why would be describe them in
-> a parent-child relationship if that's not how the system looks like
-> in HW ?
-
-The point I'm making is that I'm not sure all the memory access and
-stall properties are the same for the parent and the device itself.
-
 > 
-> Do you have a specific example in mind that we should be aware of ?
-> 
->> So the IORT spec don't support this, at least it's pretty vague
->> I think.
-> 
-> I think that's a matter of wording, it can be updated if it needs be,
-> reach out if you see any issue with the current approach please.
-
-If the all the properties for parent and device itself are the same,
-I have no strong opinion for this patch, but it's better to update
-the wording of the spec as well.
-
-Thanks
-Hanjun
 
