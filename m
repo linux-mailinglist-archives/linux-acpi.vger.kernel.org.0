@@ -2,420 +2,208 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0DB520ED25
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 07:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 062C820EFA9
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 09:38:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728925AbgF3FIM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Jun 2020 01:08:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51690 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726019AbgF3FIL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jun 2020 01:08:11 -0400
-Received: from mail-vk1-xa41.google.com (mail-vk1-xa41.google.com [IPv6:2607:f8b0:4864:20::a41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FB07C061755
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Jun 2020 22:08:11 -0700 (PDT)
-Received: by mail-vk1-xa41.google.com with SMTP id y3so3962260vkg.11
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Jun 2020 22:08:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=verdurent-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HiecufVTiEjOfo/YHcow5WgExinvPEroQaoEf3MmndY=;
-        b=Lr2pHMkEu39c/kfeHzuatr6eZAI4j9ZdxptYHISRg5Eh2WH9+3IF2NKMMTm4H/9yVC
-         t8RL72pfvAAL3kYe+FHjfpo3ARELLKqLaUrqn3SqgebiTgvHLvaeOZcIK4Civp57p1i3
-         wgEZg8CN2UVsvNi/6sYKNX4oawpo4MB7YVy+q7u8haFR25zGpWj1xvg59Ufkbr+Z8k5E
-         YFhvQjJxBNUlRqRaeY8CLd4zVGTEpy2ptu3FBFCIQVT1UXWvB8WenDOvwRAc4nwI0SRr
-         bIoBmhkLQTiBGcBPaz8QFRCCU7qLfMvKdxQWV1QWWDSZ3B6pKeLU5EnihwMffppil0pr
-         f1KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HiecufVTiEjOfo/YHcow5WgExinvPEroQaoEf3MmndY=;
-        b=BEOf/tiVNcrSy53bwMDc1CJYegw9pTvLV7nCsSwFo5XjnWoMQY9G6gIHdBr41n3EM0
-         TSV5iezjGZDH1VKDUKBsq1lKyHvihHUqk9AntzML6zunIv+X0l9261I6CL4oNxBAYK0Y
-         oTJvbaT+WszFye60RimxYQklr3EqgavYykK0ZlggVuoMYMY+jXH/XI1x2HvYbIwDnoZ2
-         8h5VMx+e2r7SqgESEuv8ijgi7yFAmoMoQrg4aBJ8qh17t0pYW8cIRZb8CHoB9lx3toWt
-         0xel9Vq4pne+1NqAU/H16sfKUC/Ch25/HXE+uplgjQYT6/BFsy0qGFIMrDmcvc5B2u9t
-         NcIw==
-X-Gm-Message-State: AOAM530U9JzD0Kr1ezCwQkPYnQDb2kBFWeDbvIXd2ETnA2fRIZ6NshyS
-        Dj4ZnNJvLipzb/1YcRS0ldu+I2U8MTN4Wlt0cSff2g==
-X-Google-Smtp-Source: ABdhPJxO+cstx9z+jGKxT0HzDYpm5WXp00sfrhanyuT0fPwKT3gZlJRtmAWrNKAj+ujbX7PSNvT1giMzEkoD6jC2TxU=
-X-Received: by 2002:a1f:1f04:: with SMTP id f4mr12481194vkf.73.1593493690261;
- Mon, 29 Jun 2020 22:08:10 -0700 (PDT)
+        id S1731020AbgF3Hig (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Jun 2020 03:38:36 -0400
+Received: from mga06.intel.com ([134.134.136.31]:17194 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731076AbgF3Hig (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 30 Jun 2020 03:38:36 -0400
+IronPort-SDR: enRu76Hxh25iw2o1Q91dyrEFSWvF+j1kRBV62xXvele7M3W61auaFMX3YngGbyy74AojjrqYe5
+ BD+66PgfV/+g==
+X-IronPort-AV: E=McAfee;i="6000,8403,9666"; a="207680650"
+X-IronPort-AV: E=Sophos;i="5.75,296,1589266800"; 
+   d="scan'208";a="207680650"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2020 00:38:35 -0700
+IronPort-SDR: 5Rzu2gh6P8gXyz5LRBr0iXOPG7YJJHK7jjxO44B5I8lrvuOGm6ESOwTF9wOo72MgNhMGd8l1AX
+ iEjjH3hNJxNg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,296,1589266800"; 
+   d="scan'208";a="266410137"
+Received: from blu2-mobl3.ccr.corp.intel.com (HELO [10.249.173.186]) ([10.249.173.186])
+  by fmsmga008.fm.intel.com with ESMTP; 30 Jun 2020 00:38:28 -0700
+Cc:     baolu.lu@linux.intel.com
+Subject: Re: [PATCH v2 2/7] PCI: Set "untrusted" flag for truly external
+ devices only
+To:     Rajat Jain <rajatja@google.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, iommu@lists.linux-foundation.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Raj Ashok <ashok.raj@intel.com>,
+        lalithambika.krishnakumar@intel.com,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Prashant Malani <pmalani@google.com>,
+        Benson Leung <bleung@google.com>,
+        Todd Broch <tbroch@google.com>,
+        Alex Levin <levinale@google.com>,
+        Mattias Nissler <mnissler@google.com>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Bernie Keany <bernie.keany@intel.com>,
+        Aaron Durbin <adurbin@google.com>,
+        Diego Rivas <diegorivas@google.com>,
+        Duncan Laurie <dlaurie@google.com>,
+        Furquan Shaikh <furquan@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Christian Kellner <christian@kellner.me>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        oohall@gmail.com, Saravana Kannan <saravanak@google.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+References: <20200630044943.3425049-1-rajatja@google.com>
+ <20200630044943.3425049-3-rajatja@google.com>
+From:   Lu Baolu <baolu.lu@linux.intel.com>
+Message-ID: <606281b8-f71b-edb2-8e06-9f91a0cacf62@linux.intel.com>
+Date:   Tue, 30 Jun 2020 15:38:27 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-References: <20200629122925.21729-1-andrzej.p@collabora.com> <20200629122925.21729-9-andrzej.p@collabora.com>
-In-Reply-To: <20200629122925.21729-9-andrzej.p@collabora.com>
-From:   Amit Kucheria <amit.kucheria@verdurent.com>
-Date:   Tue, 30 Jun 2020 10:37:59 +0530
-Message-ID: <CAHLCerPdEX8QxmahJPSnPp6sSh3G07Ur-+82+5QuozO26W58RQ@mail.gmail.com>
-Subject: Re: [PATCH v7 08/11] thermal: Explicitly enable non-changing thermal
- zone devices
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Cc:     Linux PM list <linux-pm@vger.kernel.org>,
-        linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        lakml <linux-arm-kernel@lists.infradead.org>,
-        linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Peter Kaestle <peter@piie.net>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Enrico Weigelt <info@metux.net>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        kernel@collabora.com
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200630044943.3425049-3-rajatja@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 29, 2020 at 5:59 PM Andrzej Pietrasiewicz
-<andrzej.p@collabora.com> wrote:
->
-> Some thermal zone devices never change their state, so they should be
-> always enabled.
->
-> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+On 2020/6/30 12:49, Rajat Jain wrote:
+> The "ExternalFacing" devices (root ports) are still internal devices that
+> sit on the internal system fabric and thus trusted. Currently they were
+> being marked untrusted.
+> 
+> This patch uses the platform flag to identify the external facing devices
+> and then use it to mark any downstream devices as "untrusted". The
+> external-facing devices themselves are left as "trusted". This was
+> discussed here: https://lkml.org/lkml/2020/6/10/1049
+> 
+> Signed-off-by: Rajat Jain <rajatja@google.com>
 
-Reviewed-by: Amit Kucheria <amit.kucheria@linaro.org>
+For changes in Intel VT-d driver,
+
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+
+Best regards,
+baolu
 
 > ---
->  drivers/net/ethernet/chelsio/cxgb4/cxgb4_thermal.c       | 8 ++++++++
->  drivers/net/wireless/intel/iwlwifi/mvm/tt.c              | 9 ++++++++-
->  drivers/platform/x86/intel_mid_thermal.c                 | 6 ++++++
->  drivers/power/supply/power_supply_core.c                 | 9 +++++++--
->  drivers/thermal/armada_thermal.c                         | 6 ++++++
->  drivers/thermal/dove_thermal.c                           | 6 ++++++
->  .../thermal/intel/int340x_thermal/int340x_thermal_zone.c | 5 +++++
->  drivers/thermal/intel/intel_pch_thermal.c                | 5 +++++
->  drivers/thermal/intel/intel_soc_dts_iosf.c               | 3 +++
->  drivers/thermal/intel/x86_pkg_temp_thermal.c             | 6 ++++++
->  drivers/thermal/kirkwood_thermal.c                       | 7 +++++++
->  drivers/thermal/rcar_thermal.c                           | 9 ++++++++-
->  drivers/thermal/spear_thermal.c                          | 7 +++++++
->  drivers/thermal/st/st_thermal.c                          | 5 +++++
->  14 files changed, 87 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_thermal.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_thermal.c
-> index 3de8a5e83b6c..e3510e9b21f3 100644
-> --- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_thermal.c
-> +++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_thermal.c
-> @@ -92,6 +92,14 @@ int cxgb4_thermal_init(struct adapter *adap)
->                 ch_thermal->tzdev = NULL;
->                 return ret;
->         }
-> +
-> +       ret = thermal_zone_device_enable(ch_thermal->tzdev);
-> +       if (ret) {
-> +               dev_err(adap->pdev_dev, "Failed to enable thermal zone\n");
-> +               thermal_zone_device_unregister(adap->ch_thermal.tzdev);
-> +               return ret;
-> +       }
-> +
->         return 0;
->  }
->
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> index 418e59b7c671..0c95663bf9ed 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> @@ -733,7 +733,7 @@ static  struct thermal_zone_device_ops tzone_ops = {
->
->  static void iwl_mvm_thermal_zone_register(struct iwl_mvm *mvm)
->  {
-> -       int i;
-> +       int i, ret;
->         char name[16];
->         static atomic_t counter = ATOMIC_INIT(0);
->
-> @@ -759,6 +759,13 @@ static void iwl_mvm_thermal_zone_register(struct iwl_mvm *mvm)
->                 return;
->         }
->
-> +       ret = thermal_zone_device_enable(mvm->tz_device.tzone);
-> +       if (ret) {
-> +               IWL_DEBUG_TEMP(mvm, "Failed to enable thermal zone\n");
-> +               thermal_zone_device_unregister(mvm->tz_device.tzone);
-> +               return;
-> +       }
-> +
->         /* 0 is a valid temperature,
->          * so initialize the array with S16_MIN which invalid temperature
->          */
-> diff --git a/drivers/platform/x86/intel_mid_thermal.c b/drivers/platform/x86/intel_mid_thermal.c
-> index f402e2e74a38..f12f4e7bd971 100644
-> --- a/drivers/platform/x86/intel_mid_thermal.c
-> +++ b/drivers/platform/x86/intel_mid_thermal.c
-> @@ -493,6 +493,12 @@ static int mid_thermal_probe(struct platform_device *pdev)
->                         ret = PTR_ERR(pinfo->tzd[i]);
->                         goto err;
->                 }
-> +               ret = thermal_zone_device_enable(pinfo->tzd[i]);
-> +               if (ret) {
-> +                       kfree(td_info);
-> +                       thermal_zone_device_unregister(pinfo->tzd[i]);
-> +                       goto err;
-> +               }
->         }
->
->         pinfo->pdev = pdev;
-> diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
-> index 02b37fe6061c..90e56736d479 100644
-> --- a/drivers/power/supply/power_supply_core.c
-> +++ b/drivers/power/supply/power_supply_core.c
-> @@ -939,7 +939,7 @@ static struct thermal_zone_device_ops psy_tzd_ops = {
->
->  static int psy_register_thermal(struct power_supply *psy)
->  {
-> -       int i;
-> +       int i, ret;
->
->         if (psy->desc->no_thermal)
->                 return 0;
-> @@ -949,7 +949,12 @@ static int psy_register_thermal(struct power_supply *psy)
->                 if (psy->desc->properties[i] == POWER_SUPPLY_PROP_TEMP) {
->                         psy->tzd = thermal_zone_device_register(psy->desc->name,
->                                         0, 0, psy, &psy_tzd_ops, NULL, 0, 0);
-> -                       return PTR_ERR_OR_ZERO(psy->tzd);
-> +                       if (IS_ERR(psy->tzd))
-> +                               return PTR_ERR(psy->tzd);
-> +                       ret = thermal_zone_device_enable(psy->tzd);
-> +                       if (ret)
-> +                               thermal_zone_device_unregister(psy->tzd);
-> +                       return ret;
->                 }
->         }
->         return 0;
-> diff --git a/drivers/thermal/armada_thermal.c b/drivers/thermal/armada_thermal.c
-> index 7c447cd149e7..c2ebfb5be4b3 100644
-> --- a/drivers/thermal/armada_thermal.c
-> +++ b/drivers/thermal/armada_thermal.c
-> @@ -874,6 +874,12 @@ static int armada_thermal_probe(struct platform_device *pdev)
->                         return PTR_ERR(tz);
->                 }
->
-> +               ret = thermal_zone_device_enable(tz);
-> +               if (ret) {
-> +                       thermal_zone_device_unregister(tz);
-> +                       return ret;
-> +               }
-> +
->                 drvdata->type = LEGACY;
->                 drvdata->data.tz = tz;
->                 platform_set_drvdata(pdev, drvdata);
-> diff --git a/drivers/thermal/dove_thermal.c b/drivers/thermal/dove_thermal.c
-> index 75901ced4a62..73182eb94bc0 100644
-> --- a/drivers/thermal/dove_thermal.c
-> +++ b/drivers/thermal/dove_thermal.c
-> @@ -153,6 +153,12 @@ static int dove_thermal_probe(struct platform_device *pdev)
->                 return PTR_ERR(thermal);
->         }
->
-> +       ret = thermal_zone_device_enable(thermal);
-> +       if (ret) {
-> +               thermal_zone_device_unregister(thermal);
-> +               return ret;
-> +       }
-> +
->         platform_set_drvdata(pdev, thermal);
->
->         return 0;
-> diff --git a/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c b/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-> index 432213272f1e..6e479deff76b 100644
-> --- a/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-> +++ b/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-> @@ -259,9 +259,14 @@ struct int34x_thermal_zone *int340x_thermal_zone_add(struct acpi_device *adev,
->                 ret = PTR_ERR(int34x_thermal_zone->zone);
->                 goto err_thermal_zone;
->         }
-> +       ret = thermal_zone_device_enable(int34x_thermal_zone->zone);
-> +       if (ret)
-> +               goto err_enable;
->
->         return int34x_thermal_zone;
->
-> +err_enable:
-> +       thermal_zone_device_unregister(int34x_thermal_zone->zone);
->  err_thermal_zone:
->         acpi_lpat_free_conversion_table(int34x_thermal_zone->lpat_table);
->         kfree(int34x_thermal_zone->aux_trips);
-> diff --git a/drivers/thermal/intel/intel_pch_thermal.c b/drivers/thermal/intel/intel_pch_thermal.c
-> index 56401fd4708d..65702094f3d3 100644
-> --- a/drivers/thermal/intel/intel_pch_thermal.c
-> +++ b/drivers/thermal/intel/intel_pch_thermal.c
-> @@ -352,9 +352,14 @@ static int intel_pch_thermal_probe(struct pci_dev *pdev,
->                 err = PTR_ERR(ptd->tzd);
->                 goto error_cleanup;
->         }
-> +       err = thermal_zone_device_enable(ptd->tzd);
-> +       if (err)
-> +               goto err_unregister;
->
->         return 0;
->
-> +err_unregister:
-> +       thermal_zone_device_unregister(ptd->tzd);
->  error_cleanup:
->         iounmap(ptd->hw_base);
->  error_release:
-> diff --git a/drivers/thermal/intel/intel_soc_dts_iosf.c b/drivers/thermal/intel/intel_soc_dts_iosf.c
-> index f75271b669c6..4f1a2f7c016c 100644
-> --- a/drivers/thermal/intel/intel_soc_dts_iosf.c
-> +++ b/drivers/thermal/intel/intel_soc_dts_iosf.c
-> @@ -329,6 +329,9 @@ static int add_dts_thermal_zone(int id, struct intel_soc_dts_sensor_entry *dts,
->                 ret = PTR_ERR(dts->tzone);
->                 goto err_ret;
->         }
-> +       ret = thermal_zone_device_enable(dts->tzone);
-> +       if (ret)
-> +               goto err_enable;
->
->         ret = soc_dts_enable(id);
->         if (ret)
-> diff --git a/drivers/thermal/intel/x86_pkg_temp_thermal.c b/drivers/thermal/intel/x86_pkg_temp_thermal.c
-> index a006b9fd1d72..b81c33202f41 100644
-> --- a/drivers/thermal/intel/x86_pkg_temp_thermal.c
-> +++ b/drivers/thermal/intel/x86_pkg_temp_thermal.c
-> @@ -363,6 +363,12 @@ static int pkg_temp_thermal_device_add(unsigned int cpu)
->                 kfree(zonedev);
->                 return err;
->         }
-> +       err = thermal_zone_device_enable(zonedev->tzone);
-> +       if (err) {
-> +               thermal_zone_device_unregister(zonedev->tzone);
-> +               kfree(zonedev);
-> +               return err;
-> +       }
->         /* Store MSR value for package thermal interrupt, to restore at exit */
->         rdmsr(MSR_IA32_PACKAGE_THERM_INTERRUPT, zonedev->msr_pkg_therm_low,
->               zonedev->msr_pkg_therm_high);
-> diff --git a/drivers/thermal/kirkwood_thermal.c b/drivers/thermal/kirkwood_thermal.c
-> index 189b675cf14d..7fb6e476c82a 100644
-> --- a/drivers/thermal/kirkwood_thermal.c
-> +++ b/drivers/thermal/kirkwood_thermal.c
-> @@ -65,6 +65,7 @@ static int kirkwood_thermal_probe(struct platform_device *pdev)
->         struct thermal_zone_device *thermal = NULL;
->         struct kirkwood_thermal_priv *priv;
->         struct resource *res;
-> +       int ret;
->
->         priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
->         if (!priv)
-> @@ -82,6 +83,12 @@ static int kirkwood_thermal_probe(struct platform_device *pdev)
->                         "Failed to register thermal zone device\n");
->                 return PTR_ERR(thermal);
->         }
-> +       ret = thermal_zone_device_enable(thermal);
-> +       if (ret) {
-> +               thermal_zone_device_unregister(thermal);
-> +               dev_err(&pdev->dev, "Failed to enable thermal zone device\n");
-> +               return ret;
-> +       }
->
->         platform_set_drvdata(pdev, thermal);
->
-> diff --git a/drivers/thermal/rcar_thermal.c b/drivers/thermal/rcar_thermal.c
-> index 46aeb28b4e90..787710bb88fe 100644
-> --- a/drivers/thermal/rcar_thermal.c
-> +++ b/drivers/thermal/rcar_thermal.c
-> @@ -550,12 +550,19 @@ static int rcar_thermal_probe(struct platform_device *pdev)
->                         priv->zone = devm_thermal_zone_of_sensor_register(
->                                                 dev, i, priv,
->                                                 &rcar_thermal_zone_of_ops);
-> -               else
-> +               else {
->                         priv->zone = thermal_zone_device_register(
->                                                 "rcar_thermal",
->                                                 1, 0, priv,
->                                                 &rcar_thermal_zone_ops, NULL, 0,
->                                                 idle);
-> +
-> +                       ret = thermal_zone_device_enable(priv->zone);
-> +                       if (ret) {
-> +                               thermal_zone_device_unregister(priv->zone);
-> +                               priv->zone = ERR_PTR(ret);
-> +                       }
-> +               }
->                 if (IS_ERR(priv->zone)) {
->                         dev_err(dev, "can't register thermal zone\n");
->                         ret = PTR_ERR(priv->zone);
-> diff --git a/drivers/thermal/spear_thermal.c b/drivers/thermal/spear_thermal.c
-> index f68f581fd669..ee33ed692e4f 100644
-> --- a/drivers/thermal/spear_thermal.c
-> +++ b/drivers/thermal/spear_thermal.c
-> @@ -131,6 +131,11 @@ static int spear_thermal_probe(struct platform_device *pdev)
->                 ret = PTR_ERR(spear_thermal);
->                 goto disable_clk;
->         }
-> +       ret = thermal_zone_device_enable(spear_thermal);
-> +       if (ret) {
-> +               dev_err(&pdev->dev, "Cannot enable thermal zone\n");
-> +               goto unregister_tzd;
-> +       }
->
->         platform_set_drvdata(pdev, spear_thermal);
->
-> @@ -139,6 +144,8 @@ static int spear_thermal_probe(struct platform_device *pdev)
->
->         return 0;
->
-> +unregister_tzd:
-> +       thermal_zone_device_unregister(spear_thermal);
->  disable_clk:
->         clk_disable(stdev->clk);
->
-> diff --git a/drivers/thermal/st/st_thermal.c b/drivers/thermal/st/st_thermal.c
-> index b928ca6a289b..1276b95604fe 100644
-> --- a/drivers/thermal/st/st_thermal.c
-> +++ b/drivers/thermal/st/st_thermal.c
-> @@ -246,11 +246,16 @@ int st_thermal_register(struct platform_device *pdev,
->                 ret = PTR_ERR(sensor->thermal_dev);
->                 goto sensor_off;
->         }
-> +       ret = thermal_zone_device_enable(sensor->thermal_dev);
-> +       if (ret)
-> +               goto tzd_unregister;
->
->         platform_set_drvdata(pdev, sensor);
->
->         return 0;
->
-> +tzd_unregister:
-> +       thermal_zone_device_unregister(sensor->thermal_dev);
->  sensor_off:
->         st_thermal_sensor_off(sensor);
->
-> --
-> 2.17.1
->
+> v2: cosmetic changes in commit log
+> 
+>   drivers/iommu/intel/iommu.c |  2 +-
+>   drivers/pci/of.c            |  2 +-
+>   drivers/pci/pci-acpi.c      | 13 +++++++------
+>   drivers/pci/probe.c         |  2 +-
+>   include/linux/pci.h         |  8 ++++++++
+>   5 files changed, 18 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index d759e7234e982..1ccb224f82496 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -4743,7 +4743,7 @@ static inline bool has_untrusted_dev(void)
+>   	struct pci_dev *pdev = NULL;
+>   
+>   	for_each_pci_dev(pdev)
+> -		if (pdev->untrusted)
+> +		if (pdev->untrusted || pdev->external_facing)
+>   			return true;
+>   
+>   	return false;
+> diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+> index 27839cd2459f6..22727fc9558df 100644
+> --- a/drivers/pci/of.c
+> +++ b/drivers/pci/of.c
+> @@ -42,7 +42,7 @@ void pci_set_bus_of_node(struct pci_bus *bus)
+>   	} else {
+>   		node = of_node_get(bus->self->dev.of_node);
+>   		if (node && of_property_read_bool(node, "external-facing"))
+> -			bus->self->untrusted = true;
+> +			bus->self->external_facing = true;
+>   	}
+>   
+>   	bus->dev.of_node = node;
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index 7224b1e5f2a83..492c07805caf8 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -1213,22 +1213,23 @@ static void pci_acpi_optimize_delay(struct pci_dev *pdev,
+>   	ACPI_FREE(obj);
+>   }
+>   
+> -static void pci_acpi_set_untrusted(struct pci_dev *dev)
+> +static void pci_acpi_set_external_facing(struct pci_dev *dev)
+>   {
+>   	u8 val;
+>   
+> -	if (pci_pcie_type(dev) != PCI_EXP_TYPE_ROOT_PORT)
+> +	if (pci_pcie_type(dev) != PCI_EXP_TYPE_ROOT_PORT &&
+> +	    pci_pcie_type(dev) != PCI_EXP_TYPE_DOWNSTREAM)
+>   		return;
+>   	if (device_property_read_u8(&dev->dev, "ExternalFacingPort", &val))
+>   		return;
+>   
+>   	/*
+> -	 * These root ports expose PCIe (including DMA) outside of the
+> -	 * system so make sure we treat them and everything behind as
+> +	 * These root/down ports expose PCIe (including DMA) outside of the
+> +	 * system so make sure we treat everything behind them as
+>   	 * untrusted.
+>   	 */
+>   	if (val)
+> -		dev->untrusted = 1;
+> +		dev->external_facing = 1;
+>   }
+>   
+>   static void pci_acpi_setup(struct device *dev)
+> @@ -1240,7 +1241,7 @@ static void pci_acpi_setup(struct device *dev)
+>   		return;
+>   
+>   	pci_acpi_optimize_delay(pci_dev, adev->handle);
+> -	pci_acpi_set_untrusted(pci_dev);
+> +	pci_acpi_set_external_facing(pci_dev);
+>   	pci_acpi_add_edr_notifier(pci_dev);
+>   
+>   	pci_acpi_add_pm_notifier(adev, pci_dev);
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index 6d87066a5ecc5..8c40c00413e74 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -1552,7 +1552,7 @@ static void set_pcie_untrusted(struct pci_dev *dev)
+>   	 * untrusted as well.
+>   	 */
+>   	parent = pci_upstream_bridge(dev);
+> -	if (parent && parent->untrusted)
+> +	if (parent && (parent->untrusted || parent->external_facing))
+>   		dev->untrusted = true;
+>   }
+>   
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index a26be5332bba6..fe1bc603fda40 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -432,6 +432,14 @@ struct pci_dev {
+>   	 * mappings to make sure they cannot access arbitrary memory.
+>   	 */
+>   	unsigned int	untrusted:1;
+> +	/*
+> +	 * Devices are marked as external-facing using info from platform
+> +	 * (ACPI / devicetree). An external-facing device is still an internal
+> +	 * trusted device, but it faces external untrusted devices. Thus any
+> +	 * devices enumerated downstream an external-facing device is marked
+> +	 * as untrusted.
+> +	 */
+> +	unsigned int	external_facing:1;
+>   	unsigned int	broken_intx_masking:1;	/* INTx masking can't be used */
+>   	unsigned int	io_window_1k:1;		/* Intel bridge 1K I/O windows */
+>   	unsigned int	irq_managed:1;
+> 
