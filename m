@@ -2,193 +2,158 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AFE020F8DF
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 17:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24F1E20F8E8
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 17:53:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389392AbgF3PxE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Jun 2020 11:53:04 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:33512 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389385AbgF3PxD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jun 2020 11:53:03 -0400
-Received: by mail-ot1-f66.google.com with SMTP id n6so18821614otl.0;
-        Tue, 30 Jun 2020 08:53:02 -0700 (PDT)
+        id S2389791AbgF3PxV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Jun 2020 11:53:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38366 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389785AbgF3PxU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jun 2020 11:53:20 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B055CC08C5DB
+        for <linux-acpi@vger.kernel.org>; Tue, 30 Jun 2020 08:53:18 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id w3so7644147wmi.4
+        for <linux-acpi@vger.kernel.org>; Tue, 30 Jun 2020 08:53:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=ZlhxamwqaiEMIpmJScsP8WaHtcSePSX2SSE4z4msAfU=;
+        b=pZMbiCji8j2GB9THF+qXVSgiyMCUWOFHbpWrTaTQ5T5hngskdKThzcqyS/urr5eKVO
+         equszs6sppekKylDyaCAdUDTCjVL0NqhJlKigviPxF3AkeCBXankW5oAu5fSYw3sJL0j
+         pN95T60h1NnV60aqhcJ4+JOxAl5l7GXafksuzsMsCyJRmbrM5outQ43liZtosxzBoari
+         8aQ+OZ567cvqIdHFwLXayD0BST12Yq8qqnxN5sT9F87L+PZg3Gg+jzIY6Vgikazpm40Y
+         MsD/kbGeVX1bCXKJWA61xX/b+MlinG5QKJ97kYzr2MaCyy/nlKOVVhxNA8tCCM+yOB4j
+         Osyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BeGbI6TV+haW2F8p5+60mh0zp8T26FQUSPwAAL8OJU8=;
-        b=e1+7/6qdomONgx8sGa+HNUuNNCZlikyDzWBahVbRrLQ+bEKbk/EGR8pfazVBx9nRea
-         Vg3rOrq6J9v+QITJKreJPhioPz00Wqi8YutfcWQZWJbyVLl+p4CzmbniSiZGPO+Lz0kY
-         4FxDySwMI1Cx8baqxX/uw3Bm1eRvtaXNWHtXPOTnIpwDShkBPFSToJ0hA/JnlJ4/lDDN
-         GUHvGYIoH8An05PXVTGqSwf/FkdQ3eRtFNxch9Q/Yrs5015H8Ej2TXcJmUqPjkme6l/X
-         wWAALiWerzOekfFQWE7PcyA9WPk+H6juN/bsDJ9QbICzscu9xfNBeZSf5Li5tKiUqY/L
-         da6w==
-X-Gm-Message-State: AOAM5309I+FGJyHiQ34hLgo4DgrOAlWYpP6dzvBV7WjdnUk5R7d1rwK/
-        +loAuUFppZhu073ZKD7a5tNP5JZ/fERw6fiFz+Q=
-X-Google-Smtp-Source: ABdhPJzqX7NzZBPZYOk7h2+zMQdsatMA7pVfRhktyZ6wg8EiraoRJvqPlZVDW6JoVIc75Ds/Pz8hdGk5IAwCtzicWHM=
-X-Received: by 2002:a9d:39f5:: with SMTP id y108mr18773658otb.262.1593532382114;
- Tue, 30 Jun 2020 08:53:02 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ZlhxamwqaiEMIpmJScsP8WaHtcSePSX2SSE4z4msAfU=;
+        b=QBGNL1aDJnMfLuNaS7USkPntqcuxBuaR5MyikN8P6bWCdbftbELCfjXu/awcpoo1Z+
+         McJOP8bY/mFW4d5qp1XDEpUgaVT0Abi7ywq2HamO1GRAWz2/OnBm/kqDJtEXQ7QBNNKk
+         abgBMcXe4K2FoIvYprJL8eEOTVeyUHubJmAex5GzSE2TbRf/EPrBMOKXLorPtLj9HBg/
+         757BAYDrWbLhmnXC1yHHACp0gOTs4aaCCSyQSS585m/aa1uVt//AUaiqMBD0LoZug5dZ
+         y9My5FDLi5G/+RvigRfp9yeJ5R7spKx+uAzj3R2lwWb6Wn2kvxIV4FdUvBNcKcBHH8DJ
+         BBRQ==
+X-Gm-Message-State: AOAM533bxJlgecCyrQrTREL2vNsDJMBYeuzDo3EWLU5gleeO4Tw/PUtc
+        I4A8YG8b6QlSfra0PLBoKCfEaA==
+X-Google-Smtp-Source: ABdhPJxl2gp79Z5Dv6ITz5QGs5s+4SmumsdhYFya47TQ/xK22cY2dC2eBhxp9kUukoWVgtVejXnuBg==
+X-Received: by 2002:a7b:c14a:: with SMTP id z10mr21389052wmi.19.1593532397120;
+        Tue, 30 Jun 2020 08:53:17 -0700 (PDT)
+Received: from ?IPv6:2a01:e34:ed2f:f020:54f4:a99f:ab88:bc07? ([2a01:e34:ed2f:f020:54f4:a99f:ab88:bc07])
+        by smtp.googlemail.com with ESMTPSA id a2sm4010629wrn.68.2020.06.30.08.53.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jun 2020 08:53:16 -0700 (PDT)
+Subject: Re: [PATCH v7 00/11] Stop monitoring disabled devices
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        kernel@collabora.com
+References: <20200629122925.21729-1-andrzej.p@collabora.com>
+ <aab40d90-3f72-657c-5e14-e53a34c4b420@linaro.org>
+ <3d03d1a2-ac06-b69b-93cb-e0203be62c10@collabora.com>
+ <47111821-d691-e71d-d740-e4325e290fa4@linaro.org>
+ <be9b7ee3-cad0-e462-126d-08de9b226285@collabora.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <4353a939-3f5e-8369-5bc0-ad8162b5ffc7@linaro.org>
+Date:   Tue, 30 Jun 2020 17:53:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
- <2788992.3K7huLjdjL@kreacher> <1666722.UopIai5n7p@kreacher>
- <1794490.F2OrUDcHQn@kreacher> <20200629205708.GK1237914@redhat.com>
- <CAJZ5v0hiAVfgWTLcP2N5PWLsqL7mpHbuL1_de79svYYhd3R57A@mail.gmail.com> <20200630153127.GP1237914@redhat.com>
-In-Reply-To: <20200630153127.GP1237914@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 30 Jun 2020 17:52:51 +0200
-Message-ID: <CAJZ5v0hpe2pB76h=p+E4GpOFrDAP5ZGrreyQ-QVtga=08HQNUA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] ACPICA: Preserve memory opregion mappings
-To:     Al Stone <ahs3@redhat.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        Ira Weiny <ira.weiny@intel.com>,
-        James Morse <james.morse@arm.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
-        Bob Moore <robert.moore@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <be9b7ee3-cad0-e462-126d-08de9b226285@collabora.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 30, 2020 at 5:31 PM Al Stone <ahs3@redhat.com> wrote:
->
-> On 30 Jun 2020 13:44, Rafael J. Wysocki wrote:
-> > On Mon, Jun 29, 2020 at 10:57 PM Al Stone <ahs3@redhat.com> wrote:
-> > >
-> > > On 29 Jun 2020 18:33, Rafael J. Wysocki wrote:
-> > > > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> > > >
-> > > > The ACPICA's strategy with respect to the handling of memory mappings
-> > > > associated with memory operation regions is to avoid mapping the
-> > > > entire region at once which may be problematic at least in principle
-> > > > (for example, it may lead to conflicts with overlapping mappings
-> > > > having different attributes created by drivers).  It may also be
-> > > > wasteful, because memory opregions on some systems take up vast
-> > > > chunks of address space while the fields in those regions actually
-> > > > accessed by AML are sparsely distributed.
-> > > >
-> > > > For this reason, a one-page "window" is mapped for a given opregion
-> > > > on the first memory access through it and if that "window" does not
-> > > > cover an address range accessed through that opregion subsequently,
-> > > > it is unmapped and a new "window" is mapped to replace it.  Next,
-> > > > if the new "window" is not sufficient to acess memory through the
-> > > > opregion in question in the future, it will be replaced with yet
-> > > > another "window" and so on.  That may lead to a suboptimal sequence
-> > > > of memory mapping and unmapping operations, for example if two fields
-> > > > in one opregion separated from each other by a sufficiently wide
-> > > > chunk of unused address space are accessed in an alternating pattern.
-> > > >
-> > > > The situation may still be suboptimal if the deferred unmapping
-> > > > introduced previously is supported by the OS layer.  For instance,
-> > > > the alternating memory access pattern mentioned above may produce
-> > > > a relatively long list of mappings to release with substantial
-> > > > duplication among the entries in it, which could be avoided if
-> > > > acpi_ex_system_memory_space_handler() did not release the mapping
-> > > > used by it previously as soon as the current access was not covered
-> > > > by it.
-> > > >
-> > > > In order to improve that, modify acpi_ex_system_memory_space_handler()
-> > > > to preserve all of the memory mappings created by it until the memory
-> > > > regions associated with them go away.
-> > > >
-> > > > Accordingly, update acpi_ev_system_memory_region_setup() to unmap all
-> > > > memory associated with memory opregions that go away.
-> > > >
-> > > > Reported-by: Dan Williams <dan.j.williams@intel.com>
-> > > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > ---
-> > > >  drivers/acpi/acpica/evrgnini.c | 14 ++++----
-> > > >  drivers/acpi/acpica/exregion.c | 65 ++++++++++++++++++++++++----------
-> > > >  include/acpi/actypes.h         | 12 +++++--
-> > > >  3 files changed, 64 insertions(+), 27 deletions(-)
-> > > >
-> > > > diff --git a/drivers/acpi/acpica/evrgnini.c b/drivers/acpi/acpica/evrgnini.c
-> > > > index aefc0145e583..89be3ccdad53 100644
-> > > > --- a/drivers/acpi/acpica/evrgnini.c
-> > > > +++ b/drivers/acpi/acpica/evrgnini.c
-> > > > @@ -38,6 +38,7 @@ acpi_ev_system_memory_region_setup(acpi_handle handle,
-> > > >       union acpi_operand_object *region_desc =
-> > > >           (union acpi_operand_object *)handle;
-> > > >       struct acpi_mem_space_context *local_region_context;
-> > > > +     struct acpi_mem_mapping *mm;
-> > > >
-> > > >       ACPI_FUNCTION_TRACE(ev_system_memory_region_setup);
-> > > >
-> > > > @@ -46,13 +47,14 @@ acpi_ev_system_memory_region_setup(acpi_handle handle,
-> > > >                       local_region_context =
-> > > >                           (struct acpi_mem_space_context *)*region_context;
-> > > >
-> > > > -                     /* Delete a cached mapping if present */
-> > > > +                     /* Delete memory mappings if present */
-> > > >
-> > > > -                     if (local_region_context->mapped_length) {
-> > > > -                             acpi_os_unmap_memory(local_region_context->
-> > > > -                                                  mapped_logical_address,
-> > > > -                                                  local_region_context->
-> > > > -                                                  mapped_length);
-> > > > +                     while (local_region_context->first_mm) {
-> > > > +                             mm = local_region_context->first_mm;
-> > > > +                             local_region_context->first_mm = mm->next_mm;
-> > > > +                             acpi_os_unmap_memory(mm->logical_address,
-> > > > +                                                  mm->length);
-> > > > +                             ACPI_FREE(mm);
-> > > >                       }
-> > > >                       ACPI_FREE(local_region_context);
-> > > >                       *region_context = NULL;
-> > > > diff --git a/drivers/acpi/acpica/exregion.c b/drivers/acpi/acpica/exregion.c
-> > > > index d15a66de26c0..fd68f2134804 100644
-> > > > --- a/drivers/acpi/acpica/exregion.c
-> > > > +++ b/drivers/acpi/acpica/exregion.c
-> > > > @@ -41,6 +41,7 @@ acpi_ex_system_memory_space_handler(u32 function,
-> > > >       acpi_status status = AE_OK;
-> > > >       void *logical_addr_ptr = NULL;
-> > > >       struct acpi_mem_space_context *mem_info = region_context;
-> > > > +     struct acpi_mem_mapping *mm = mem_info->cur_mm;
-> > > >       u32 length;
-> > > >       acpi_size map_length;
-> > >
-> > > I think this needs to be:
-> > >
-> > >         acpi_size map_length = mem_info->length;
-> > >
-> > > since it now gets used in the ACPI_ERROR() call below.
-> >
-> > No, it's better to print the length value in the message.
->
-> Yeah, that was the other option.
->
-> > >  I'm getting a "maybe used unitialized" error on compilation.
-> >
-> > Thanks for reporting!
-> >
-> > I've updated the commit in the acpica-osl branch with the fix.
->
-> Thanks, Rafael.
->
-> Do you have a generic way of testing this?  I can see a way to do it
-> -- timing a call of a method in a dynamically loaded SSDT -- but if
-> you had a test case laying around, I could continue to be lazy :).
+On 30/06/2020 17:29, Andrzej Pietrasiewicz wrote:
+> Hi Daniel,
+> 
+> W dniu 30.06.2020 o 16:53, Daniel Lezcano pisze:
+>> On 30/06/2020 15:43, Andrzej Pietrasiewicz wrote:
+>>> Hi Daniel,
+>>>
+>>> I am reading the logs and can't find anything specific to thermal.
+>>>
+>>> What I can see is
+>>>
+>>> "random: crng init done"
+>>>
+>>> with large times (~200s) and then e.g.
+>>>
+>>> 'auto-login-action timed out after 283 seconds'
+>>>
+>>> I'm looking at e.g.
+>>> https://storage.kernelci.org/thermal/testing/v5.8-rc3-11-gf5e50bf4d3ef/arm/multi_v7_defconfig/gcc-8/lab-baylibre/baseline-imx6q-sabrelite.html
+>>>
+>>>
+> 
+> f5e50bf4d3ef is PATCH 11/11. Does the problem happen at PATCH 1-10/11?
+> PATCH 11/11 renames a method and the code compiles, so it seems
+> unlikely that this is causing problems. One should never say never,
+> though ;)
 
-I don't check the timing, but instrument the code to see if what
-happens is what is expected.
+The sha1 is just the HEAD for the kernel reference. The regression
+happens with your series, somewhere.
 
-Now, the overhead reduction resulting from this change in Linux is
-quite straightforward: Every time the current mapping doesn't cover
-the request at hand, an unmap is carried out by the original code,
-which involves a linear search through acpi_ioremaps, and which
-generally is (at least a bit) more expensive than the linear search
-through the list of opregion-specific mappings introduced by the
-$subject patch, because quite likely the acpi_ioremaps list holds more
-items.  And, of course, if the opregion in question holds many fields
-and they are not covered by one mapping, each of them needs to be
-mapped just once per the opregion life cycle.
+> The reported failure is not due to some test failing but rather due
+> to timeout logging into the test system. Could it be that there is
+> some other problem?
+
+I did reproduce:
+
+v5.8-rc3 + series => imx6 hang at boot time
+v5.8-rc3 => imx6 boots correctly
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
