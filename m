@@ -2,148 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEC1820F63F
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 15:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F34020F7A1
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 16:53:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388469AbgF3NwR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Jun 2020 09:52:17 -0400
-Received: from mga07.intel.com ([134.134.136.100]:9541 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388508AbgF3Nv7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 30 Jun 2020 09:51:59 -0400
-IronPort-SDR: 3iB4B89a40QTCVcgP+jZdUcXtAehkAIECJlvdoEIzGDveSYilzpyDtZxc9kEAO1zaaYsQ3WGps
- ib+lfztyY3nw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9666"; a="211297685"
-X-IronPort-AV: E=Sophos;i="5.75,297,1589266800"; 
-   d="scan'208";a="211297685"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2020 06:51:58 -0700
-IronPort-SDR: XKukowqspT+Ukx2NVyUVAxLdfpPpXh84dw+YvvRYLdUTHkl/s+XZZxhzq5+aVOtwdf862+OOl7
- PcfQIlh2qscg==
-X-IronPort-AV: E=Sophos;i="5.75,297,1589266800"; 
-   d="scan'208";a="454614744"
-Received: from rgrotewx-mobl.ger.corp.intel.com (HELO localhost) ([10.252.38.12])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2020 06:51:53 -0700
-From:   Jani Nikula <jani.nikula@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-pwm@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v3 00/15] acpi/pwm/i915: Convert pwm-crc and i915 driver's PWM code to use the atomic PWM API
-In-Reply-To: <20200620121758.14836-1-hdegoede@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20200620121758.14836-1-hdegoede@redhat.com>
-Date:   Tue, 30 Jun 2020 16:51:50 +0300
-Message-ID: <874kqsmzk9.fsf@intel.com>
+        id S2389120AbgF3Oxg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Jun 2020 10:53:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57384 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387601AbgF3Oxe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jun 2020 10:53:34 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3D1AC03E97E
+        for <linux-acpi@vger.kernel.org>; Tue, 30 Jun 2020 07:53:33 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id q5so20499360wru.6
+        for <linux-acpi@vger.kernel.org>; Tue, 30 Jun 2020 07:53:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Pd7u04aHacMlHQWEyySnd7sTkXliNVOpzVO8z+Rcu5w=;
+        b=NkFaCQ+V4OEnig591m8AkSZBQ1b/h4v4zSXQCbGQjK8FGeP7BHqOTEEGCastiiIUob
+         M0UVfI/NN4nkXDl8JWTMRjTXXxE7YY82izMG/nYeTbmQmokH3Y5w8MgUsyVL4e1VgYUT
+         N1cPSd+vrHvWo2gcY3lMTw+tftpI6X+sjeq0ogRJa32PGCXGWVSLibvqHvWLGnfsqlAZ
+         gVUWjjOIssl9YbMlBotqTT3aaqp+HzsPKnNLoe8ITTH2Rl9UfczmQAl3YiAfYlwvgbJs
+         Ns773D3M2fHMZu8r4tCMXhWe/imwGkam1Xq5u+xV3f2CTem3P28CCCllcf8ELrD2BE++
+         pOkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Pd7u04aHacMlHQWEyySnd7sTkXliNVOpzVO8z+Rcu5w=;
+        b=YE2gvtKlKKi8vcJ/RxVejZjizZLPRAtueJa0HlJm2z3fdaFK73NUsbyKDJhQbDcJKT
+         rkMpd8nb8/ps9qC7nOlk7yXubZdugdu0wm5vcqG4w0SSC1LX51lOVjv+NetPaCaHe4vh
+         18EO0qc+3wYUa91Xo0lQSFC61d1C6c66hZv5EecA+dpWh1YDGGY1XEZVY7/hZvoPH5Pb
+         cy0DOxIXxyFC+yX3atUhshPuXm2NrfyilQSIjkkkSk3UfOpbUdOcrR/HN1m8GsnkQ1Yp
+         tJp28/m5x9JTq/+4qyNe90t632aS1PL5g/mH6QlUYgfBpl+MEtD3Tz4vZ5aNn+OFA/9T
+         WMJA==
+X-Gm-Message-State: AOAM533hD4yfdfLEHdsS9LaqMIbmYxx1deywZ7ufQAcWuj7DHlYwLILr
+        Ivkch26t9W0aU6AdKDmElbwTgA==
+X-Google-Smtp-Source: ABdhPJwhGwFNFixe1BGFQoohJyS2prHI3aMDtNCIwm9jyQOp0qSvzuwh8OQOhlRmoHrNF73pfYRftA==
+X-Received: by 2002:a5d:51ce:: with SMTP id n14mr22295714wrv.155.1593528812400;
+        Tue, 30 Jun 2020 07:53:32 -0700 (PDT)
+Received: from ?IPv6:2a01:e34:ed2f:f020:54f4:a99f:ab88:bc07? ([2a01:e34:ed2f:f020:54f4:a99f:ab88:bc07])
+        by smtp.googlemail.com with ESMTPSA id g14sm3784671wrm.93.2020.06.30.07.53.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jun 2020 07:53:31 -0700 (PDT)
+Subject: Re: [PATCH v7 00/11] Stop monitoring disabled devices
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        kernel@collabora.com
+References: <20200629122925.21729-1-andrzej.p@collabora.com>
+ <aab40d90-3f72-657c-5e14-e53a34c4b420@linaro.org>
+ <3d03d1a2-ac06-b69b-93cb-e0203be62c10@collabora.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <47111821-d691-e71d-d740-e4325e290fa4@linaro.org>
+Date:   Tue, 30 Jun 2020 16:53:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <3d03d1a2-ac06-b69b-93cb-e0203be62c10@collabora.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, 20 Jun 2020, Hans de Goede <hdegoede@redhat.com> wrote:
-> Hi All,
->
-> Here is v3 of my patch series converting the i915 driver's code for
-> controlling the panel's backlight with an external PWM controller to
-> use the atomic PWM API. See below for the changelog.
->
-> Initially the plan was for this series to consist of 2 parts:
-> 1. convert the pwm-crc driver to support the atomic PWM API and
-> 2. convert the i915 driver's PWM code to use the atomic PWM API.
->
-> But during testing I've found a number of bugs in the pwm-lpss and I
-> found that the acpi_lpss code needs some special handling because of
-> some ugliness found in most Cherry Trail DSDTs.
->
-> So now this series has grown somewhat large and consists of 4 parts:
->
-> 1. acpi_lpss fixes workarounds for Cherry Trail DSTD nastiness
-> 2. various fixes to the pwm-lpss driver
-> 3. convert the pwm-crc driver to support the atomic PWM API and
-> 4. convert the i915 driver's PWM code to use the atomic PWM API
->
-> So we need to discuss how to merge this (once it passes review).
-> Although the inter-dependencies are only runtime I still think we should
-> make sure that 1-3 are in the drm-intel-next-queued (dinq) tree before
-> merging the i915 changes. Both to make sure that the intel-gfx CI system
-> does not become unhappy and for bisecting reasons.
->
-> The involved acpi_lpss and pwm drivers do not see a whole lot of churn, so
-> it likely is the easiest to just merge everything through dinq.
->
-> Rafael and Thierry, can I get your Acked-by for directly merging this into
-> dinq?
->
-> This series has been tested (and re-tested after adding various bug-fixes)
-> extensively. It has been tested on the following devices:
->
-> -Asus T100TA  BYT + CRC-PMIC PWM
-> -Toshiba WT8-A  BYT + CRC-PMIC PWM
-> -Thundersoft TS178 BYT + CRC-PMIC PWM, inverse PWM
-> -Asus T100HA  CHT + CRC-PMIC PWM
-> -Terra Pad 1061  BYT + LPSS PWM
-> -Trekstor Twin 10.1 BYT + LPSS PWM
-> -Asus T101HA  CHT + CRC-PMIC PWM
-> -GPD Pocket  CHT + CRC-PMIC PWM
+On 30/06/2020 15:43, Andrzej Pietrasiewicz wrote:
+> Hi Daniel,
+> 
+> I am reading the logs and can't find anything specific to thermal.
+> 
+> What I can see is
+> 
+> "random: crng init done"
+> 
+> with large times (~200s) and then e.g.
+> 
+> 'auto-login-action timed out after 283 seconds'
+> 
+> I'm looking at e.g.
+> https://storage.kernelci.org/thermal/testing/v5.8-rc3-11-gf5e50bf4d3ef/arm/multi_v7_defconfig/gcc-8/lab-baylibre/baseline-imx6q-sabrelite.html
+> 
+> 
+> Is there anywhere else I can look at?
 
-For the drm/i915 patches 12-15,
+No unfortunately :/
 
-Acked-by: Jani Nikula <jani.nikula@intel.com>
+I have a Meerkat96 which uses the same sensor as the imx6q.
 
-I eyeballed through them, and didn't spot anything obviously wrong, but
-at the same time didn't have the time to do an in-depth review. That
-said, I do have a lot of trust in you testing this with all the above
-devices. I think that's enough for merging.
+I'll give a try to see if I can reproduce and let you know.
 
-As for that matter, I'm fine with merging this via whichever tree you
-find best. Kind of stating the obvious, but please do ensure you have
-the proper acks in place for this.
-
-
-BR,
-Jani.
-
-
-
->
-> Changelog:
->
-> Changes in v2:
-> - Fix coverletter subject
-> - Drop accidentally included debugging patch
-> - "[PATCH v3 02/15] ACPI / LPSS: Save Cherry Trail PWM ctx registers only once (
->   - Move #define LPSS_SAVE_CTX_ONCE define to group it with LPSS_SAVE_CTX
->
-> Changes in v3:
-> - "[PATCH v3 04/15] pwm: lpss: Add range limit check for the base_unit register value"
->   - Use base_unit_range - 1 as maximum value for the clamp()
-> - "[PATCH v3 05/15] pwm: lpss: Use pwm_lpss_apply() when restoring state on resume"
->   - This replaces the "pwm: lpss: Set SW_UPDATE bit when enabling the PWM"
->     patch from previous versions of this patch-set, which really was a hack
->     working around the resume issue which this patch fixes properly.
-> - PATCH v3 6 - 11 pwm-crc changes:
->   - Various small changes resulting from the reviews by Andy and Uwe,
->     including some refactoring of the patches to reduce the amount of churn
->     in the patch-set
->
-> Regards,
->
-> Hans
->
 
 -- 
-Jani Nikula, Intel Open Source Graphics Center
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
