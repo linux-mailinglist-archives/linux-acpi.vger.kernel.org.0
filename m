@@ -2,245 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BB5F21036E
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 Jul 2020 07:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4660E2103AD
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Jul 2020 08:13:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726828AbgGAFvB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 1 Jul 2020 01:51:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54536 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726479AbgGAFvB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Jul 2020 01:51:01 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A295AC03E97B
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Jun 2020 22:51:00 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id z13so22475849wrw.5
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Jun 2020 22:51:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=rrsdbtnDHSEEqCjThvhWQtIqv3m+7T/9br2G4plX4Zc=;
-        b=K2zrGl7nEOpmf6z8uDnoMX7D2tfbTThdtS0HdVEwj0ErGb9XJaqYNlHJWq+GY4HvE7
-         Kc2N9afgknGJRm+0xgb0ehJDk8TfjM5A4siUjUUHDY9iR+f1qMzGDovHrV1zb0nuzzZD
-         RPPdSNYnPQjjGkE4BH2TP6+xFPioW8MSrXKYFPHjjObcSgQziy2jRmGMTgEmsBqiBd9a
-         GZu1J0UmhtXShKz+uUxZVag9OsUw7xlwGNtoabQHXitZOK3f4o1JfWgMFqbijdJHjxNe
-         WqF/KP6C7wVH7RYdLSLIK20LD50TA7lQO8EipwM8YM7DPs7/yudJfLGCfxd7Gkz4iJgB
-         Qn9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=rrsdbtnDHSEEqCjThvhWQtIqv3m+7T/9br2G4plX4Zc=;
-        b=JrolilsVZshjjlkySBa5UsbX9mkWVC4HiREeh3m+sE2SPDPRh/DGYuMdhSlEq4u2RW
-         WwE7KolWIu25yAt/FibDviqYO3/SmlbGUy3EzMJnWtAJoMsuQldknfp+WGkVBLjhSx65
-         iQuVX19NQIIgwmv3BDLGQKJPjTpSuExYnm7z1DQixBGB7arQY5TMjxAGUjh6AxD4CSKk
-         ZN17B/d82jjrSpwgHHuMwORFmzmAEuO6B2JoAUOLcNF07u0VRpr4yF1dJfhr1W5Z6gZ4
-         RCtEpCCMBKPpm4gA3rbUnfmh3+hLt6lkAGFJcCEng8/RjPCBWuxGoUfLfBmYW8pDkLY+
-         vehw==
-X-Gm-Message-State: AOAM5300xj+6KYMt+AIIcFMWn7QSqi4PXSADB7UsuAOccDln4Sfmcbqx
-        iBbl/B01mYu1ix4CmtZSkzSXAA==
-X-Google-Smtp-Source: ABdhPJwasB45K4yCXyxCNULMvHcQErc/DDp+uYqd1S+ZRpmt8sqpf2/4dPZq5GLCDaa0s2mUqlTisA==
-X-Received: by 2002:a5d:6786:: with SMTP id v6mr24674578wru.258.1593582658773;
-        Tue, 30 Jun 2020 22:50:58 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:54f4:a99f:ab88:bc07? ([2a01:e34:ed2f:f020:54f4:a99f:ab88:bc07])
-        by smtp.googlemail.com with ESMTPSA id f12sm5949218wrw.53.2020.06.30.22.50.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jun 2020 22:50:58 -0700 (PDT)
-Subject: Re: [PATCH] cpuidle: change enter_s2idle() prototype
-To:     Neal Liu <neal.liu@mediatek.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Len Brown <lenb@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, wsd_upstream@mediatek.com
-References: <1593421540-7397-1-git-send-email-neal.liu@mediatek.com>
- <1593421540-7397-2-git-send-email-neal.liu@mediatek.com>
- <9963896.lEaLCsxmBZ@kreacher> <1593571181.7383.5.camel@mtkswgap22>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <a65bb456-d5f4-2208-f924-0af989b8dd5f@linaro.org>
-Date:   Wed, 1 Jul 2020 07:50:56 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1726937AbgGAGNQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 1 Jul 2020 02:13:16 -0400
+Received: from mail-eopbgr00048.outbound.protection.outlook.com ([40.107.0.48]:57345
+        "EHLO EUR02-AM5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726615AbgGAGNP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 1 Jul 2020 02:13:15 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fB/1b4M3kq9qQ4SOO4u284XQD/G02oblfgbGOFr/VlMfS7ZLvlx5ERjupC2jxXLj8gQfWwaAn16jhvwKE2he3GALkDQjgvVwZq7szkgpaUDfxVM/5+EqzY34T3rB1EIXMZ0p5lKj9gXgb57rGH66ZpejWR5cYekpqLANAl+2s/k3OIkCKTQ4xihyxoXEc4Xdu6cyAiAXzUKfeGJmLbAu4ySBw2kms3YUaja7QwDCbt6nHjjekf5OUPXQTrrbbhRRqlYEDAjJR6ONkOboLss4sItgMiS9Ej5QXSl7MAPwmEfCyk8yVmwhKCfoyTmOvz680iTqOurRwGGtlSl/2d9bsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KZF/JbCDg8BMwel4EFMjg93OCrlfBHmVOaAzylbuPlQ=;
+ b=azsUagLhC/foRnLQIJ9nV28VdAYwdusVYoElXE7lz7b2G2GnALDUsI8b4Y3ojevobtdW0VX0gEld2ckaXnILZVGwb2u9k1PUlgLhljPCAgF1UUHljaq2nM279Z1waj7Y3GmjLSYdK6SFL1k64NULTeeS8D4lgaHX4h1XvMOOTgrnQJmYYrf+fE4VDZJossGjbhvR6Ewfqa8FAyfHY3x8BGDS3mtaJ4OGrG45KZUq+9aJuFIZtdZ42JBc+TIyfkyz7XuzQbt/yj5KfBs3w7ApS+U3ujB1df98r589tgFU5jv5YG+/50KbzCV/FUUApoetq0pmNYNdPYtN8966zjONMQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KZF/JbCDg8BMwel4EFMjg93OCrlfBHmVOaAzylbuPlQ=;
+ b=D+Dz5su1d10ZlbSukkGr8Mg7NHqRpatFJf8Br/4ASQ+9vGc8yUlnRLmxAra3us0X+gUhTJvfCv2PHDRn7fzxTGYSawh1Hf8zFbhCIbbRYikNWVF+Sx3JHwFDDp3SyLXb9PZdn6XtEH8YBjClOI5maCfPh9+aMsTAbmdNdZlunQk=
+Authentication-Results: arm.com; dkim=none (message not signed)
+ header.d=none;arm.com; dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
+ by AM0PR04MB4227.eurprd04.prod.outlook.com (2603:10a6:208:5e::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3131.25; Wed, 1 Jul
+ 2020 06:13:09 +0000
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::7dda:a30:6b25:4d45]) by AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::7dda:a30:6b25:4d45%7]) with mapi id 15.20.3131.026; Wed, 1 Jul 2020
+ 06:13:09 +0000
+From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
+To:     Jeremy Linton <jeremy.linton@arm.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Jon <jon@solid-run.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>
+Cc:     netdev@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux.cj@gmail.com, Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Ioana Radulescu <ruxandra.radulescu@nxp.com>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-kernel@vger.kernel.org
+Subject: [net-next PATCH v2 0/3]  ACPI support for dpaa2 MAC driver.
+Date:   Wed,  1 Jul 2020 11:42:30 +0530
+Message-Id: <20200701061233.31120-1-calvin.johnson@oss.nxp.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR06CA0230.apcprd06.prod.outlook.com
+ (2603:1096:4:ac::14) To AM0PR04MB5636.eurprd04.prod.outlook.com
+ (2603:10a6:208:130::22)
 MIME-Version: 1.0
-In-Reply-To: <1593571181.7383.5.camel@mtkswgap22>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR06CA0230.apcprd06.prod.outlook.com (2603:1096:4:ac::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3153.20 via Frontend Transport; Wed, 1 Jul 2020 06:13:04 +0000
+X-Mailer: git-send-email 2.17.1
+X-Originating-IP: [14.142.151.118]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: e8836880-89a6-4457-2f74-08d81d85d3c1
+X-MS-TrafficTypeDiagnostic: AM0PR04MB4227:
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR04MB42277F090D39B7472A57FB5ED26C0@AM0PR04MB4227.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-Forefront-PRVS: 04519BA941
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: dsYvtACEDcmDZZOcmelLZy4qpM8iyG81+b+Oq/jXTHeKMvDZau6/p+QedrLu11d3AE+NahnIdrLEuLlSQE7IseBGJPIBsKhJt9cmsXW6/mkN9kt8GK9FUV1LG6WPJGczT3Cxf04GEFPCUGg/01Qq3qBjbSKGpDFgl3vnchBfW2psXqH1ngHFhiJxDdW/7ETRmEwppPcfnbsKbzh8z+Wma0N9uc2VbW7ewTcjnUPemjsYA92ckEvCBZfI3YjUkid/5iMeoPxROOKAYrZOwL+Nf+3Fjwc26U2H0U6qK2Z0WH1Kj2RKYg280/NggYUobhVAWxoTXwLWvQUKtEmPnE4NzuhzPwv2k4f+Nlat5hkAJPBtnfMVgJqL0lVfwY5EAjzZ7i8NVd4QHyK0lK2kgXTEL+zbOOn85IxkcAItkQ7lOcKqFckn+QqsqrhHLWGR5t3f0ujZ1a/vHaWJDQfrL4ch5A==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(346002)(366004)(136003)(376002)(39860400002)(396003)(66556008)(66476007)(54906003)(966005)(5660300002)(6512007)(8676002)(2906002)(83380400001)(7416002)(52116002)(110136005)(1006002)(6666004)(1076003)(26005)(6636002)(66946007)(86362001)(6486002)(186003)(16526019)(8936002)(55236004)(478600001)(956004)(316002)(2616005)(44832011)(4326008)(6506007)(110426005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: COlFdv6RILD+ymuZkkBT734vfdHL5DS7fA0oUVlIpoHLJjZLzk+Ewv5QWDz1ODBYTHeLTSFvYsr9yVqAr54QBXiGkzd2eTmFVeWKto8KHoQNY1jOqQlKqpyqAegIUETR2fDlvE4NcaiAfMnpg6+AvQv43vnBfmP5/6jxCV0Hay9aGm9o8XZFtowj1IyIS3vIniTPZIf0A+1wB854sCgsJfhNI6y5wpnOwsa4M7Aj1hHOuDo1/YSLsJKOBAp93b7pj9j07wG6nkvjyiMZk9iq02VNodB7ex04/O5Ikrt7vQ3o9BNJ8vsQMal1IMJiuwkmi6FyKF81VjQDRDw/j0v9P9YNJeA93DYS5FDZqXoYyfFr+b35CcTip6/+t6Yo21n2+dF1jAKEwxYxva6HSxt7MweGn+KwGWVSzjtt/pIxzGuw7tI+PyJjk0H1FCxcyNWHdZwRD/ArqGG0vzFK8t2vhwaIZagFPgiM34VZC3dzgX7XIL1v8o2Tv3+1bUEVVbMI
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e8836880-89a6-4457-2f74-08d81d85d3c1
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2020 06:13:09.6732
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TKWhH7NAzLLPq23irxNQwqAwv+h9Oc7tSpxs1XLlpLQn6fEY5TvA0dFJxwKs69zTtkiknVQ8FefQ+RKg8sn7+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB4227
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 01/07/2020 04:39, Neal Liu wrote:
-> On Mon, 2020-06-29 at 17:17 +0200, Rafael J. Wysocki wrote:
->> On Monday, June 29, 2020 11:05:40 AM CEST Neal Liu wrote:
->>> Control Flow Integrity(CFI) is a security mechanism that disallows
->>> changes to the original control flow graph of a compiled binary,
->>> making it significantly harder to perform such attacks.
->>>
->>> init_state_node() assigns same function pointer to idle_state->enter
->>> and idle_state->enter_s2idle. This definitely causes CFI failure
->>> when calling either enter() or enter_s2idle().
->>>
->>> Align enter_s2idle() with enter() function prototype to fix CFI
->>> failure.
->>
->> That needs to be documented somewhere close to the definition of the
->> callbacks in question.
->>
->> Otherwise it is completely unclear why this is a good idea.
->>
-> 
-> The problem is, init_state_mode() assign same function callback to
-> different function pointer declarations.
-> 
-> static int init_state_node(struct cpuidle_state *idle_state,
->                            const struct of_device_id *matches,
->                            struct device_node *state_node)
-> {
-> ...
->         idle_state->enter = match_id->data;
-> ...
->         idle_state->enter_s2idle = match_id->data;
-> }
-> 
-> Function declarations:
-> 
-> struct cpuidle_state {
-> ...
->         int (*enter)    (struct cpuidle_device *dev,
->                         struct cpuidle_driver *drv,
->                         int index);
-> 
->         void (*enter_s2idle) (struct cpuidle_device *dev,
->                               struct cpuidle_driver *drv,
->                               int index);
-> };
-> 
-> In this case, either enter() or enter_s2idle() would cause CFI check
-> failed since they use same callee.
-> 
-> We try to align function prototype of enter() since it needs return
-> value for some use cases. The return value of enter_s2idle() is no need
-> currently.
+ This patch series provides ACPI support for dpaa2 MAC driver.
+ This also introduces ACPI mechanism to get PHYs registered on a
+ MDIO bus and provide them to be connected to MAC.
 
-Thanks for the clarification, you may add this description along with
-the changelog.
+ This patchset is dependent on the review patches available on:
+https://git.kernel.org/pub/scm/linux/kernel/git/lpieralisi/linux.git/log/?h=for-review/acpi-iort-id-rework
+
+ Device Tree can be tested with the below change which is also available in
+the above referenced review patches:
+
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -931,6 +931,7 @@ static int fsl_mc_bus_probe(struct platform_device *pdev)
+        if (error < 0)
+                goto error_cleanup_mc_io;
+
++       mc_bus_dev->dev.fwnode = pdev->dev.fwnode;
+        mc->root_mc_bus_dev = mc_bus_dev;
+        return 0;
 
 
->>> Signed-off-by: Neal Liu <neal.liu@mediatek.com>
->>> ---
->>>  drivers/acpi/processor_idle.c   |    6 ++++--
->>>  drivers/cpuidle/cpuidle-tegra.c |    8 +++++---
->>>  drivers/idle/intel_idle.c       |    6 ++++--
->>>  include/linux/cpuidle.h         |    6 +++---
->>>  4 files changed, 16 insertions(+), 10 deletions(-)
->>>
->>> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
->>> index 75534c5..6ffb6c9 100644
->>> --- a/drivers/acpi/processor_idle.c
->>> +++ b/drivers/acpi/processor_idle.c
->>> @@ -655,8 +655,8 @@ static int acpi_idle_enter(struct cpuidle_device *dev,
->>>  	return index;
->>>  }
->>>  
->>> -static void acpi_idle_enter_s2idle(struct cpuidle_device *dev,
->>> -				   struct cpuidle_driver *drv, int index)
->>> +static int acpi_idle_enter_s2idle(struct cpuidle_device *dev,
->>> +				  struct cpuidle_driver *drv, int index)
->>>  {
->>>  	struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
->>>  
->>> @@ -674,6 +674,8 @@ static void acpi_idle_enter_s2idle(struct cpuidle_device *dev,
->>>  		}
->>>  	}
->>>  	acpi_idle_do_entry(cx);
->>> +
->>> +	return 0;
->>>  }
->>>  
->>>  static int acpi_processor_setup_cpuidle_cx(struct acpi_processor *pr,
->>> diff --git a/drivers/cpuidle/cpuidle-tegra.c b/drivers/cpuidle/cpuidle-tegra.c
->>> index 1500458..a12fb14 100644
->>> --- a/drivers/cpuidle/cpuidle-tegra.c
->>> +++ b/drivers/cpuidle/cpuidle-tegra.c
->>> @@ -253,11 +253,13 @@ static int tegra_cpuidle_enter(struct cpuidle_device *dev,
->>>  	return err ? -1 : index;
->>>  }
->>>  
->>> -static void tegra114_enter_s2idle(struct cpuidle_device *dev,
->>> -				  struct cpuidle_driver *drv,
->>> -				  int index)
->>> +static int tegra114_enter_s2idle(struct cpuidle_device *dev,
->>> +				 struct cpuidle_driver *drv,
->>> +				 int index)
->>>  {
->>>  	tegra_cpuidle_enter(dev, drv, index);
->>> +
->>> +	return 0;
->>>  }
->>>  
->>>  /*
->>> diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
->>> index f449584..b178da3 100644
->>> --- a/drivers/idle/intel_idle.c
->>> +++ b/drivers/idle/intel_idle.c
->>> @@ -175,13 +175,15 @@ static __cpuidle int intel_idle(struct cpuidle_device *dev,
->>>   * Invoked as a suspend-to-idle callback routine with frozen user space, frozen
->>>   * scheduler tick and suspended scheduler clock on the target CPU.
->>>   */
->>> -static __cpuidle void intel_idle_s2idle(struct cpuidle_device *dev,
->>> -					struct cpuidle_driver *drv, int index)
->>> +static __cpuidle int intel_idle_s2idle(struct cpuidle_device *dev,
->>> +				       struct cpuidle_driver *drv, int index)
->>>  {
->>>  	unsigned long eax = flg2MWAIT(drv->states[index].flags);
->>>  	unsigned long ecx = 1; /* break on interrupt flag */
->>>  
->>>  	mwait_idle_with_hints(eax, ecx);
->>> +
->>> +	return 0;
->>>  }
->>>  
->>>  /*
->>> diff --git a/include/linux/cpuidle.h b/include/linux/cpuidle.h
->>> index ec2ef63..bee10c0 100644
->>> --- a/include/linux/cpuidle.h
->>> +++ b/include/linux/cpuidle.h
->>> @@ -66,9 +66,9 @@ struct cpuidle_state {
->>>  	 * suspended, so it must not re-enable interrupts at any point (even
->>>  	 * temporarily) or attempt to change states of clock event devices.
->>>  	 */
->>> -	void (*enter_s2idle) (struct cpuidle_device *dev,
->>> -			      struct cpuidle_driver *drv,
->>> -			      int index);
->>> +	int (*enter_s2idle)(struct cpuidle_device *dev,
->>> +			    struct cpuidle_driver *drv,
->>> +			    int index);
->>>  };
->>>  
->>>  /* Idle State Flags */
->>> -- 
->>> 1.7.9.5
->>>
->>
->>
->>
->>
-> 
+Changes in v2:
+    - clean up dpaa2_mac_get_node()
+    - introduce find_phy_device()
+    - use acpi_find_child_device()
 
+Calvin Johnson (3):
+  net: phy: introduce find_phy_device()
+  Documentation: ACPI: DSD: Document MDIO PHY
+  net: dpaa2-mac: Add ACPI support for DPAA2 MAC driver
+
+ Documentation/firmware-guide/acpi/dsd/phy.rst | 40 ++++++++++
+ .../net/ethernet/freescale/dpaa2/dpaa2-mac.c  | 79 ++++++++++++-------
+ drivers/net/phy/phy_device.c                  | 25 ++++++
+ include/linux/phy.h                           |  1 +
+ 4 files changed, 116 insertions(+), 29 deletions(-)
+ create mode 100644 Documentation/firmware-guide/acpi/dsd/phy.rst
 
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+2.17.1
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
