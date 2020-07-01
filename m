@@ -2,184 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07064210985
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 Jul 2020 12:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97565210AEE
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Jul 2020 14:19:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729842AbgGAKiM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 1 Jul 2020 06:38:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42870 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729180AbgGAKiM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Jul 2020 06:38:12 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BF3FC061755;
-        Wed,  1 Jul 2020 03:38:12 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id k5so1292816pjg.3;
-        Wed, 01 Jul 2020 03:38:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ay25oY07NOmbixOtBMWVYmhszlZHF/YFooJn+9Ipub8=;
-        b=E3KJ5G+nJ16g2CKalAuxGYpIOXxRdvvUoZBAYhyZdpv1+IRV/XdKVlrlD/ncMJRTlM
-         DQ72k5hr87hRV6RXLAwuL0790w3F/9VpHdyKak8P3gAr4vL0bnnvRfkHCl153pcBlZlT
-         b949Mmca2xjQ1NN6hqPGbAhdfzdioAVYoI7N8sWwqjUZKIjBX++yC14jJWEJapL25zIg
-         JV+HaXJ6VCDCO46HoGxHHd3AEAaMEQgvQ19V4JAKlCR0Yl2BH0JMq5i3Xp9kRdJQllZz
-         0Qa/D+Lit+3fpJeSg7DP9T5mpOAmjziidgetbF6OK0weRP6/2PZ02EEZ9Qn96+dWXfO0
-         pY5g==
+        id S1730422AbgGAMTe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 1 Jul 2020 08:19:34 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:37974 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730161AbgGAMTe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Jul 2020 08:19:34 -0400
+Received: by mail-oi1-f193.google.com with SMTP id r8so20400313oij.5;
+        Wed, 01 Jul 2020 05:19:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ay25oY07NOmbixOtBMWVYmhszlZHF/YFooJn+9Ipub8=;
-        b=WajHG/pkmYpDNAsT10bBQ3pI2lNAxKiHh3wWYCiLwcq/FmZ0V1DTGcjK7pdcL+e5zj
-         8Fk4N/zfPEtX+eHEt++1sFAQKzOAGlhnmzJzRfcEqRKZjYx7GViCXeiY0V0VnpLHO67K
-         4Nv4wuJQzc1XMN7iKCHcMZiShhSRCp5PZvRkYcA0fNMTjXrV9ohIff/E3xCDnWt5HqQM
-         BcZyps9ciAnCkC6QYtND83TpTYVwUW8UFlaT6fT2ZmvX+v8FutRpl4PI+NGVVAZymNiD
-         /GMk9DV/UMObCJc90dOBTDIzHR/PJC0V56g91P6hxViSdLTG2X7OZbQ6fxqhImR/G6ef
-         IYeQ==
-X-Gm-Message-State: AOAM531j0eM1EdFDkTqwAqu6ZO2wRpQwX8AzGGOZ3U+2MXTxa1tMC+jT
-        j5wsWo4LK9YDqGqQp6Nn7a7ThCZfGG/jgTh3XwqOKJ7Zr9g=
-X-Google-Smtp-Source: ABdhPJy7/D67hf5+MecXjYgpK9V7/RtGhKxzUBqStKpQiE9aKsQkiguOqWHY1pYzUUFZFqZ4rfpaxiOcOPlMiEWsdRQ=
-X-Received: by 2002:a17:90a:a393:: with SMTP id x19mr490320pjp.228.1593599891781;
- Wed, 01 Jul 2020 03:38:11 -0700 (PDT)
+        bh=0lKvcHCLUJbtgdK0hdZoGgT86fGFZZmtsMyR7+SlSG8=;
+        b=SivwNhHrv051c1WrI7MmTPYmCFRbL72Ma7NFNH0PWWCsEYqO8j7OSW2DxNxPJURiA9
+         0SPlTRdzonTBeyo9rrEkR/EZpszEX3MeTUHXxB/96S6BCRp305ofQoEfXPxTiPq00SkT
+         hkXi4apvHmOAclxAJCRGDsBia2q6jrxnMKTvW66fJfjZX7Ga0FZRH7JKcAMhURe6M6fK
+         fo7MI353ZQ98WZ7Wj5+3ZiHrkm7MJIvS0SwwDD30L0hda3O3o7HxAM+EI5F3A+R00Wgl
+         TlDQZXED/klnnE/01aHhIW4ERsrBTEyYFvHhJYTVj9LlJ3el8EZ8ki4yXn1kg5ug31B+
+         m8pg==
+X-Gm-Message-State: AOAM531HWV7sgzYASrw6ValD39opv2PxafgI+ulpbC56wWvHHqgdLCR2
+        WE9bhj34dkkYsYbZsQtPw0HIDGkVg/N5/Ke3qhY=
+X-Google-Smtp-Source: ABdhPJzLCE9xDXtcTvnQkYUY3+XR2ef/vN6UYnES49W6m7DDHnWOZ49LApIokEJcUPpwfIuEYqxZbZ1YV2pb+qGUQ3g=
+X-Received: by 2002:aca:4a89:: with SMTP id x131mr20767181oia.103.1593605973188;
+ Wed, 01 Jul 2020 05:19:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200701061233.31120-1-calvin.johnson@oss.nxp.com> <20200701061233.31120-4-calvin.johnson@oss.nxp.com>
-In-Reply-To: <20200701061233.31120-4-calvin.johnson@oss.nxp.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 1 Jul 2020 13:37:58 +0300
-Message-ID: <CAHp75VdMdefZpRh5hE0pWTAYoA-VJepTCrCHD-MYZa9P_aqk6w@mail.gmail.com>
-Subject: Re: [net-next PATCH v2 3/3] net: dpaa2-mac: Add ACPI support for
- DPAA2 MAC driver
-To:     Calvin Johnson <calvin.johnson@oss.nxp.com>
-Cc:     Jeremy Linton <jeremy.linton@arm.com>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Jon <jon@solid-run.com>,
-        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        netdev <netdev@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux.cj@gmail.com, "David S. Miller" <davem@davemloft.net>,
-        Ioana Radulescu <ruxandra.radulescu@nxp.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20200701062140.12953-1-laurent.pinchart+renesas@ideasonboard.com>
+ <20200701062140.12953-2-laurent.pinchart+renesas@ideasonboard.com> <20200701073405.GB836@valkosipuli.retiisi.org.uk>
+In-Reply-To: <20200701073405.GB836@valkosipuli.retiisi.org.uk>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 1 Jul 2020 14:19:21 +0200
+Message-ID: <CAJZ5v0iSpC=67p++vyH0WjcsuPG5SMtJJamit2T9vOQPb9jm0w@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] device property: Add a function to test is a
+ fwnode is a graph endpoint
+To:     Sakari Ailus <sakari.ailus@iki.fi>
+Cc:     Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        linux-media@vger.kernel.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Lad Prabhakar <prabhakar.csengg@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 1, 2020 at 9:13 AM Calvin Johnson
-<calvin.johnson@oss.nxp.com> wrote:
+On Wed, Jul 1, 2020 at 9:34 AM Sakari Ailus <sakari.ailus@iki.fi> wrote:
 >
-> Modify dpaa2_mac_connect() to support ACPI along with DT.
-> Modify dpaa2_mac_get_node() to get the dpmac fwnode from either
-> DT or ACPI.
-> Replace of_get_phy_mode with fwnode_get_phy_mode to get
-> phy-mode for a dpmac_node.
-> Define and use helper function find_phy_device() to find phy_dev
-> that is later connected to mac->phylink.
+> Hi Laurent,
+>
+> On Wed, Jul 01, 2020 at 09:21:37AM +0300, Laurent Pinchart wrote:
+> > Drivers may need to test if a fwnode is a graph endpoint. To avoid
+> > hand-written solutions that wouldn't work for all fwnode types, add a
+> > new fwnode_graph_is_endpoint() function for this purpose. We don't need
+> > to wire it up to different backends for OF and ACPI for now, as the
+> > implementation can simply be based on checkout the presence of a
+> > remote-endpoint property.
+> >
+> > Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+> > ---
+> >  include/linux/property.h | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/include/linux/property.h b/include/linux/property.h
+> > index 10d03572f52e..9f805c442819 100644
+> > --- a/include/linux/property.h
+> > +++ b/include/linux/property.h
+> > @@ -389,6 +389,11 @@ struct fwnode_handle *
+> >  fwnode_graph_get_remote_node(const struct fwnode_handle *fwnode, u32 port,
+> >                            u32 endpoint);
+> >
+> > +static inline bool fwnode_graph_is_endpoint(struct fwnode_handle *fwnode)
+> > +{
+> > +     return fwnode_property_present(fwnode, "remote-endpoint");
+> > +}
+> > +
+> >  /*
+> >   * Fwnode lookup flags
+> >   *
+>
+> Thanks for the patch. I've bounced it to devicetree and linux-acpi lists
+> (now cc'd) --- hope that works.
+>
+> Rafael: do you think this simple patch could go though the media tree,
+> assuming that folks are generally fine with the patch as such?
 
-...
-
->  #include "dpaa2-eth.h"
->  #include "dpaa2-mac.h"
-
-> +#include <linux/acpi.h>
-> +#include <linux/platform_device.h>
-
-Can we put (more) generic headers atop of (more) private ones?
-
-...
-
-> +       struct fwnode_handle *fsl_mc_fwnode = dev->parent->parent->fwnode;
-
-dev_fwnode() please.
-
-> +       struct fwnode_handle *dpmacs, *dpmac = NULL;
-> +       struct device *fsl_mc = dev->parent->parent;
-
-So. something like
-       struct device *fsl_mc = dev->parent->parent;
-       struct fwnode_handle *fsl_mc_fwnode = dev_fwnode(fsl_mc);
-
-...
-
-> +               dpmacs = device_get_named_child_node(fsl_mc, "dpmacs");
-
-If you have fwnode, why to use device_* API?
-               dpmacs = fwnode_get_named_child_node(fsl_mc_fwnode, "dpmacs");
-
-> +               if (!dpmacs)
-> +                       return NULL;
-> +
-> +               while ((dpmac = fwnode_get_next_child_node(dpmacs, dpmac))) {
-> +                       err = fwnode_property_read_u32(dpmac, "reg", &id);
-> +                       if (err)
-> +                               continue;
-> +                       if (id == dpmac_id)
-> +                               return dpmac;
-> +               }
-
-...
-
-> +       } else if (is_acpi_node(fsl_mc_fwnode)) {
-
-is_acpi_device_node() ?
-
-> +               adev = acpi_find_child_device(ACPI_COMPANION(dev->parent),
-> +                                             dpmac_id, false);
-> +               if (adev)
-
-> +                       return (&adev->fwnode);
-
-No need to have parentheses. Don't we have some special macro to get
-fwnode out of ACPI device?
-
-...
-
-> +       err = fwnode_get_phy_mode(dpmac_node);
-> +       if (err > 0)
-> +               return err;
-
-Positive?! Why? What's going on here?
-
-...
-
-> +       if (is_of_node(dpmac_node))
-> +               err = phylink_of_phy_connect(mac->phylink,
-> +                                            to_of_node(dpmac_node), 0);
-> +       else if (is_acpi_node(dpmac_node)) {
-> +               phy_dev = find_phy_device(dpmac_node);
-> +               if (IS_ERR(phy_dev))
-> +                       goto err_phylink_destroy;
-> +               err = phylink_connect_phy(mac->phylink, phy_dev);
-
-Can't you rather provide phylink_fwnode_connect_phy API and drop this
-conditional tree entirely?
-
-...
-
-> +       if (is_of_node(dpmac_node))
-
-Redundant.
-
-> +               of_node_put(to_of_node(dpmac_node));
-
-Honestly, looking at this code, I think one needs a bit more time to
-get into fwnode paradigm and APIs.
-
-...
-
-> +       if (is_of_node(dpmac_node))
-
-Ditto.
-
-> +               of_node_put(to_of_node(dpmac_node));
-
--- 
-With Best Regards,
-Andy Shevchenko
+Yes, it could.
