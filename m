@@ -2,86 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C40420FFB8
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jun 2020 23:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8498E210228
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Jul 2020 04:39:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726611AbgF3V46 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Jun 2020 17:56:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54776 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726291AbgF3V45 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 30 Jun 2020 17:56:57 -0400
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 894F22081A;
-        Tue, 30 Jun 2020 21:56:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593554216;
-        bh=Adv2/880uaGmJ4dh7B8Ggp1jOzWVuFLpdGHKuacuBSw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=GMhKMpQXblH1a/O0fh0GOyzv0WdIbAgigYUIXgIAMqAQBQYyuGUUiR7a4bXIbrKXP
-         jSMkLwxseVcB08wHZ8iOBf9Ur1bnzq1KAVWRVjtAtDx2Jydyl5PDsl3h2NRgufA90O
-         GfgsXG1AM3yGjmVEv5NbLUZnyer9jMJLB0Hf0fNU=
-Received: by mail-ot1-f49.google.com with SMTP id k15so19720781otp.8;
-        Tue, 30 Jun 2020 14:56:56 -0700 (PDT)
-X-Gm-Message-State: AOAM531ThqE3txRgotY/tZYBEvee3SvQ9feuqZZL6uMMzvIN+DP3/A5z
-        bf+w8+LQ8+AoMqFNn5gP/MfsyY4BkDKU2Aj52g==
-X-Google-Smtp-Source: ABdhPJyKDbfQDtx3HWuOj8pgh2vtwwUduqe+y/gv6f3hKh8dipeWe6XCyppTBRvPXxLq1UHPOfwznTH5xUq/MCLPMuw=
-X-Received: by 2002:a9d:2646:: with SMTP id a64mr18672129otb.107.1593554215926;
- Tue, 30 Jun 2020 14:56:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200521130008.8266-1-lorenzo.pieralisi@arm.com>
- <20200619082013.13661-1-lorenzo.pieralisi@arm.com> <20200619082013.13661-11-lorenzo.pieralisi@arm.com>
-In-Reply-To: <20200619082013.13661-11-lorenzo.pieralisi@arm.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Tue, 30 Jun 2020 15:56:44 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLPScU4be1tatPFqL4BpBdm5KgwzT79Hyjm_atAHPgm3Q@mail.gmail.com>
-Message-ID: <CAL_JsqLPScU4be1tatPFqL4BpBdm5KgwzT79Hyjm_atAHPgm3Q@mail.gmail.com>
-Subject: Re: [PATCH v2 10/12] of/irq: Make of_msi_map_rid() PCI bus agnostic
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        id S1726923AbgGACjr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Jun 2020 22:39:47 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:52805 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726430AbgGACjq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Jun 2020 22:39:46 -0400
+X-UUID: 066125d49a444ee8be5085ac19db7f8d-20200701
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=XoJLKTm3NDdj3w3RtzzMz1926jI4usuO5mIZGP7i8HI=;
+        b=ZULoZaFgfJ7pORj4FtHM8Ges3jP7sY2vvQTNVJBU7YJ8Zwsvvj88ofhU/nz792Uh2xnpkm3/nk6rI6N8df3xiQCsS9TfOjqg1EN5uzQtysiR8vvKrDqcIOffFSLCeSkAoFdFVXIpUeI5Wd3cW0uRKKmip1FyOlBe43DpNI4G7D8=;
+X-UUID: 066125d49a444ee8be5085ac19db7f8d-20200701
+Received: from mtkcas08.mediatek.inc [(172.21.101.126)] by mailgw02.mediatek.com
+        (envelope-from <neal.liu@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 1852284986; Wed, 01 Jul 2020 10:39:42 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs01n1.mediatek.inc (172.21.101.68) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 1 Jul 2020 10:39:40 +0800
+Received: from [172.21.77.33] (172.21.77.33) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 1 Jul 2020 10:39:41 +0800
+Message-ID: <1593571181.7383.5.camel@mtkswgap22>
+Subject: Re: [PATCH] cpuidle: change enter_s2idle() prototype
+From:   Neal Liu <neal.liu@mediatek.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+CC:     Neal Liu <neal.liu@mediatek.com>, Len Brown <lenb@kernel.org>,
+        "Daniel Lezcano" <daniel.lezcano@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        "Jacob Pan" <jacob.jun.pan@linux.intel.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Linux IOMMU <iommu@lists.linux-foundation.org>,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        PCI <linux-pci@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Joerg Roedel <joro@8bytes.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        Diana Craciun <diana.craciun@oss.nxp.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>
+        <linux-mediatek@lists.infradead.org>, <wsd_upstream@mediatek.com>
+Date:   Wed, 1 Jul 2020 10:39:41 +0800
+In-Reply-To: <9963896.lEaLCsxmBZ@kreacher>
+References: <1593421540-7397-1-git-send-email-neal.liu@mediatek.com>
+         <1593421540-7397-2-git-send-email-neal.liu@mediatek.com>
+         <9963896.lEaLCsxmBZ@kreacher>
 Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.3-0ubuntu6 
+MIME-Version: 1.0
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 19, 2020 at 2:20 AM Lorenzo Pieralisi
-<lorenzo.pieralisi@arm.com> wrote:
->
-> There is nothing PCI bus specific in the of_msi_map_rid()
-> implementation other than the requester ID tag for the input
-> ID space. Rename requester ID to a more generic ID so that
-> the translation code can be used by all busses that require
-> input/output ID translations.
->
-> No functional change intended.
->
-> Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Marc Zyngier <maz@kernel.org>
-> ---
->  drivers/of/irq.c       | 28 ++++++++++++++--------------
->  drivers/pci/msi.c      |  2 +-
->  include/linux/of_irq.h |  8 ++++----
->  3 files changed, 19 insertions(+), 19 deletions(-)
+T24gTW9uLCAyMDIwLTA2LTI5IGF0IDE3OjE3ICswMjAwLCBSYWZhZWwgSi4gV3lzb2NraSB3cm90
+ZToNCj4gT24gTW9uZGF5LCBKdW5lIDI5LCAyMDIwIDExOjA1OjQwIEFNIENFU1QgTmVhbCBMaXUg
+d3JvdGU6DQo+ID4gQ29udHJvbCBGbG93IEludGVncml0eShDRkkpIGlzIGEgc2VjdXJpdHkgbWVj
+aGFuaXNtIHRoYXQgZGlzYWxsb3dzDQo+ID4gY2hhbmdlcyB0byB0aGUgb3JpZ2luYWwgY29udHJv
+bCBmbG93IGdyYXBoIG9mIGEgY29tcGlsZWQgYmluYXJ5LA0KPiA+IG1ha2luZyBpdCBzaWduaWZp
+Y2FudGx5IGhhcmRlciB0byBwZXJmb3JtIHN1Y2ggYXR0YWNrcy4NCj4gPiANCj4gPiBpbml0X3N0
+YXRlX25vZGUoKSBhc3NpZ25zIHNhbWUgZnVuY3Rpb24gcG9pbnRlciB0byBpZGxlX3N0YXRlLT5l
+bnRlcg0KPiA+IGFuZCBpZGxlX3N0YXRlLT5lbnRlcl9zMmlkbGUuIFRoaXMgZGVmaW5pdGVseSBj
+YXVzZXMgQ0ZJIGZhaWx1cmUNCj4gPiB3aGVuIGNhbGxpbmcgZWl0aGVyIGVudGVyKCkgb3IgZW50
+ZXJfczJpZGxlKCkuDQo+ID4gDQo+ID4gQWxpZ24gZW50ZXJfczJpZGxlKCkgd2l0aCBlbnRlcigp
+IGZ1bmN0aW9uIHByb3RvdHlwZSB0byBmaXggQ0ZJDQo+ID4gZmFpbHVyZS4NCj4gDQo+IFRoYXQg
+bmVlZHMgdG8gYmUgZG9jdW1lbnRlZCBzb21ld2hlcmUgY2xvc2UgdG8gdGhlIGRlZmluaXRpb24g
+b2YgdGhlDQo+IGNhbGxiYWNrcyBpbiBxdWVzdGlvbi4NCj4gDQo+IE90aGVyd2lzZSBpdCBpcyBj
+b21wbGV0ZWx5IHVuY2xlYXIgd2h5IHRoaXMgaXMgYSBnb29kIGlkZWEuDQo+IA0KDQpUaGUgcHJv
+YmxlbSBpcywgaW5pdF9zdGF0ZV9tb2RlKCkgYXNzaWduIHNhbWUgZnVuY3Rpb24gY2FsbGJhY2sg
+dG8NCmRpZmZlcmVudCBmdW5jdGlvbiBwb2ludGVyIGRlY2xhcmF0aW9ucy4NCg0Kc3RhdGljIGlu
+dCBpbml0X3N0YXRlX25vZGUoc3RydWN0IGNwdWlkbGVfc3RhdGUgKmlkbGVfc3RhdGUsDQogICAg
+ICAgICAgICAgICAgICAgICAgICAgICBjb25zdCBzdHJ1Y3Qgb2ZfZGV2aWNlX2lkICptYXRjaGVz
+LA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgc3RydWN0IGRldmljZV9ub2RlICpzdGF0ZV9u
+b2RlKQ0Kew0KLi4uDQogICAgICAgIGlkbGVfc3RhdGUtPmVudGVyID0gbWF0Y2hfaWQtPmRhdGE7
+DQouLi4NCiAgICAgICAgaWRsZV9zdGF0ZS0+ZW50ZXJfczJpZGxlID0gbWF0Y2hfaWQtPmRhdGE7
+DQp9DQoNCkZ1bmN0aW9uIGRlY2xhcmF0aW9uczoNCg0Kc3RydWN0IGNwdWlkbGVfc3RhdGUgew0K
+Li4uDQogICAgICAgIGludCAoKmVudGVyKSAgICAoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpkZXYs
+DQogICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwNCiAg
+ICAgICAgICAgICAgICAgICAgICAgIGludCBpbmRleCk7DQoNCiAgICAgICAgdm9pZCAoKmVudGVy
+X3MyaWRsZSkgKHN0cnVjdCBjcHVpZGxlX2RldmljZSAqZGV2LA0KICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgc3RydWN0IGNwdWlkbGVfZHJpdmVyICpkcnYsDQogICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICBpbnQgaW5kZXgpOw0KfTsNCg0KSW4gdGhpcyBjYXNlLCBlaXRoZXIgZW50
+ZXIoKSBvciBlbnRlcl9zMmlkbGUoKSB3b3VsZCBjYXVzZSBDRkkgY2hlY2sNCmZhaWxlZCBzaW5j
+ZSB0aGV5IHVzZSBzYW1lIGNhbGxlZS4NCg0KV2UgdHJ5IHRvIGFsaWduIGZ1bmN0aW9uIHByb3Rv
+dHlwZSBvZiBlbnRlcigpIHNpbmNlIGl0IG5lZWRzIHJldHVybg0KdmFsdWUgZm9yIHNvbWUgdXNl
+IGNhc2VzLiBUaGUgcmV0dXJuIHZhbHVlIG9mIGVudGVyX3MyaWRsZSgpIGlzIG5vIG5lZWQNCmN1
+cnJlbnRseS4NCg0KDQo+ID4gU2lnbmVkLW9mZi1ieTogTmVhbCBMaXUgPG5lYWwubGl1QG1lZGlh
+dGVrLmNvbT4NCj4gPiAtLS0NCj4gPiAgZHJpdmVycy9hY3BpL3Byb2Nlc3Nvcl9pZGxlLmMgICB8
+ICAgIDYgKysrKy0tDQo+ID4gIGRyaXZlcnMvY3B1aWRsZS9jcHVpZGxlLXRlZ3JhLmMgfCAgICA4
+ICsrKysrLS0tDQo+ID4gIGRyaXZlcnMvaWRsZS9pbnRlbF9pZGxlLmMgICAgICAgfCAgICA2ICsr
+KystLQ0KPiA+ICBpbmNsdWRlL2xpbnV4L2NwdWlkbGUuaCAgICAgICAgIHwgICAgNiArKystLS0N
+Cj4gPiAgNCBmaWxlcyBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCspLCAxMCBkZWxldGlvbnMoLSkN
+Cj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL3Byb2Nlc3Nvcl9pZGxlLmMgYi9k
+cml2ZXJzL2FjcGkvcHJvY2Vzc29yX2lkbGUuYw0KPiA+IGluZGV4IDc1NTM0YzUuLjZmZmI2Yzkg
+MTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9hY3BpL3Byb2Nlc3Nvcl9pZGxlLmMNCj4gPiArKysg
+Yi9kcml2ZXJzL2FjcGkvcHJvY2Vzc29yX2lkbGUuYw0KPiA+IEBAIC02NTUsOCArNjU1LDggQEAg
+c3RhdGljIGludCBhY3BpX2lkbGVfZW50ZXIoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpkZXYsDQo+
+ID4gIAlyZXR1cm4gaW5kZXg7DQo+ID4gIH0NCj4gPiAgDQo+ID4gLXN0YXRpYyB2b2lkIGFjcGlf
+aWRsZV9lbnRlcl9zMmlkbGUoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpkZXYsDQo+ID4gLQkJCQkg
+ICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwgaW50IGluZGV4KQ0KPiA+ICtzdGF0aWMgaW50
+IGFjcGlfaWRsZV9lbnRlcl9zMmlkbGUoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpkZXYsDQo+ID4g
+KwkJCQkgIHN0cnVjdCBjcHVpZGxlX2RyaXZlciAqZHJ2LCBpbnQgaW5kZXgpDQo+ID4gIHsNCj4g
+PiAgCXN0cnVjdCBhY3BpX3Byb2Nlc3Nvcl9jeCAqY3ggPSBwZXJfY3B1KGFjcGlfY3N0YXRlW2lu
+ZGV4XSwgZGV2LT5jcHUpOw0KPiA+ICANCj4gPiBAQCAtNjc0LDYgKzY3NCw4IEBAIHN0YXRpYyB2
+b2lkIGFjcGlfaWRsZV9lbnRlcl9zMmlkbGUoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpkZXYsDQo+
+ID4gIAkJfQ0KPiA+ICAJfQ0KPiA+ICAJYWNwaV9pZGxlX2RvX2VudHJ5KGN4KTsNCj4gPiArDQo+
+ID4gKwlyZXR1cm4gMDsNCj4gPiAgfQ0KPiA+ICANCj4gPiAgc3RhdGljIGludCBhY3BpX3Byb2Nl
+c3Nvcl9zZXR1cF9jcHVpZGxlX2N4KHN0cnVjdCBhY3BpX3Byb2Nlc3NvciAqcHIsDQo+ID4gZGlm
+ZiAtLWdpdCBhL2RyaXZlcnMvY3B1aWRsZS9jcHVpZGxlLXRlZ3JhLmMgYi9kcml2ZXJzL2NwdWlk
+bGUvY3B1aWRsZS10ZWdyYS5jDQo+ID4gaW5kZXggMTUwMDQ1OC4uYTEyZmIxNCAxMDA2NDQNCj4g
+PiAtLS0gYS9kcml2ZXJzL2NwdWlkbGUvY3B1aWRsZS10ZWdyYS5jDQo+ID4gKysrIGIvZHJpdmVy
+cy9jcHVpZGxlL2NwdWlkbGUtdGVncmEuYw0KPiA+IEBAIC0yNTMsMTEgKzI1MywxMyBAQCBzdGF0
+aWMgaW50IHRlZ3JhX2NwdWlkbGVfZW50ZXIoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpkZXYsDQo+
+ID4gIAlyZXR1cm4gZXJyID8gLTEgOiBpbmRleDsNCj4gPiAgfQ0KPiA+ICANCj4gPiAtc3RhdGlj
+IHZvaWQgdGVncmExMTRfZW50ZXJfczJpZGxlKHN0cnVjdCBjcHVpZGxlX2RldmljZSAqZGV2LA0K
+PiA+IC0JCQkJICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwNCj4gPiAtCQkJCSAgaW50IGlu
+ZGV4KQ0KPiA+ICtzdGF0aWMgaW50IHRlZ3JhMTE0X2VudGVyX3MyaWRsZShzdHJ1Y3QgY3B1aWRs
+ZV9kZXZpY2UgKmRldiwNCj4gPiArCQkJCSBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwNCj4g
+PiArCQkJCSBpbnQgaW5kZXgpDQo+ID4gIHsNCj4gPiAgCXRlZ3JhX2NwdWlkbGVfZW50ZXIoZGV2
+LCBkcnYsIGluZGV4KTsNCj4gPiArDQo+ID4gKwlyZXR1cm4gMDsNCj4gPiAgfQ0KPiA+ICANCj4g
+PiAgLyoNCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9pZGxlL2ludGVsX2lkbGUuYyBiL2RyaXZl
+cnMvaWRsZS9pbnRlbF9pZGxlLmMNCj4gPiBpbmRleCBmNDQ5NTg0Li5iMTc4ZGEzIDEwMDY0NA0K
+PiA+IC0tLSBhL2RyaXZlcnMvaWRsZS9pbnRlbF9pZGxlLmMNCj4gPiArKysgYi9kcml2ZXJzL2lk
+bGUvaW50ZWxfaWRsZS5jDQo+ID4gQEAgLTE3NSwxMyArMTc1LDE1IEBAIHN0YXRpYyBfX2NwdWlk
+bGUgaW50IGludGVsX2lkbGUoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpkZXYsDQo+ID4gICAqIElu
+dm9rZWQgYXMgYSBzdXNwZW5kLXRvLWlkbGUgY2FsbGJhY2sgcm91dGluZSB3aXRoIGZyb3plbiB1
+c2VyIHNwYWNlLCBmcm96ZW4NCj4gPiAgICogc2NoZWR1bGVyIHRpY2sgYW5kIHN1c3BlbmRlZCBz
+Y2hlZHVsZXIgY2xvY2sgb24gdGhlIHRhcmdldCBDUFUuDQo+ID4gICAqLw0KPiA+IC1zdGF0aWMg
+X19jcHVpZGxlIHZvaWQgaW50ZWxfaWRsZV9zMmlkbGUoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpk
+ZXYsDQo+ID4gLQkJCQkJc3RydWN0IGNwdWlkbGVfZHJpdmVyICpkcnYsIGludCBpbmRleCkNCj4g
+PiArc3RhdGljIF9fY3B1aWRsZSBpbnQgaW50ZWxfaWRsZV9zMmlkbGUoc3RydWN0IGNwdWlkbGVf
+ZGV2aWNlICpkZXYsDQo+ID4gKwkJCQkgICAgICAgc3RydWN0IGNwdWlkbGVfZHJpdmVyICpkcnYs
+IGludCBpbmRleCkNCj4gPiAgew0KPiA+ICAJdW5zaWduZWQgbG9uZyBlYXggPSBmbGcyTVdBSVQo
+ZHJ2LT5zdGF0ZXNbaW5kZXhdLmZsYWdzKTsNCj4gPiAgCXVuc2lnbmVkIGxvbmcgZWN4ID0gMTsg
+LyogYnJlYWsgb24gaW50ZXJydXB0IGZsYWcgKi8NCj4gPiAgDQo+ID4gIAltd2FpdF9pZGxlX3dp
+dGhfaGludHMoZWF4LCBlY3gpOw0KPiA+ICsNCj4gPiArCXJldHVybiAwOw0KPiA+ICB9DQo+ID4g
+IA0KPiA+ICAvKg0KPiA+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4L2NwdWlkbGUuaCBiL2lu
+Y2x1ZGUvbGludXgvY3B1aWRsZS5oDQo+ID4gaW5kZXggZWMyZWY2My4uYmVlMTBjMCAxMDA2NDQN
+Cj4gPiAtLS0gYS9pbmNsdWRlL2xpbnV4L2NwdWlkbGUuaA0KPiA+ICsrKyBiL2luY2x1ZGUvbGlu
+dXgvY3B1aWRsZS5oDQo+ID4gQEAgLTY2LDkgKzY2LDkgQEAgc3RydWN0IGNwdWlkbGVfc3RhdGUg
+ew0KPiA+ICAJICogc3VzcGVuZGVkLCBzbyBpdCBtdXN0IG5vdCByZS1lbmFibGUgaW50ZXJydXB0
+cyBhdCBhbnkgcG9pbnQgKGV2ZW4NCj4gPiAgCSAqIHRlbXBvcmFyaWx5KSBvciBhdHRlbXB0IHRv
+IGNoYW5nZSBzdGF0ZXMgb2YgY2xvY2sgZXZlbnQgZGV2aWNlcy4NCj4gPiAgCSAqLw0KPiA+IC0J
+dm9pZCAoKmVudGVyX3MyaWRsZSkgKHN0cnVjdCBjcHVpZGxlX2RldmljZSAqZGV2LA0KPiA+IC0J
+CQkgICAgICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwNCj4gPiAtCQkJICAgICAgaW50IGlu
+ZGV4KTsNCj4gPiArCWludCAoKmVudGVyX3MyaWRsZSkoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpk
+ZXYsDQo+ID4gKwkJCSAgICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwNCj4gPiArCQkJICAg
+IGludCBpbmRleCk7DQo+ID4gIH07DQo+ID4gIA0KPiA+ICAvKiBJZGxlIFN0YXRlIEZsYWdzICov
+DQo+ID4gLS0gDQo+ID4gMS43LjkuNQ0KPiA+IA0KPiANCj4gDQo+IA0KPiANCg0K
 
-Reviewed-by: Rob Herring <robh@kernel.org>
