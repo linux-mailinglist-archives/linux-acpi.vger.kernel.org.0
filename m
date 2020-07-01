@@ -2,286 +2,251 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9201921125C
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 Jul 2020 20:07:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 865D2211503
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Jul 2020 23:23:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732851AbgGASHZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 1 Jul 2020 14:07:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56552 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732620AbgGASHX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Jul 2020 14:07:23 -0400
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B35C3C08C5C1
-        for <linux-acpi@vger.kernel.org>; Wed,  1 Jul 2020 11:07:22 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id z24so3408465ljn.8
-        for <linux-acpi@vger.kernel.org>; Wed, 01 Jul 2020 11:07:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GPchDjqYkLt5LIbAVBTKAkoGd+R4o2ZdbYc6covxDDQ=;
-        b=BsTGPXYCVpVlqYTgEWspxnsolANEIVOz/7dLLUO7vQR+2YRsZH1dYqAY7a9jjyk+ye
-         h+/+hovMD55Db+/6KXS2T2vM/It5sYnq0hOMDZ19nCKCxlXJOufqu8Qt0LDGM7cd8Pb1
-         LKeLBupoZJrJpuNVbRF9Aip1T2pZTKw2qWly1NDPQcvHskkCnL3zaapLf1s4GP222gUI
-         6HqjLvF5gwpcZE1D8h9AgakZFIp+b8wX5u1aF819W7kdKkggCJER8c/I8C52EGeabGNa
-         xE79UWetUqTFSxFMGrdglLqjEmyYgIJYMM/OOg2uxXYMddi2z+bBGWTSMM5wbV7Rc5zG
-         whPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GPchDjqYkLt5LIbAVBTKAkoGd+R4o2ZdbYc6covxDDQ=;
-        b=FqPSNq964hsOkKT32nyadsq3uTzngFHVew8B9hB+r4jUFV58lDUMAY+TWfYzebmXSI
-         g3XrNlSsJ6iGKlfcf/8vNP2S4CoM+Tm74C3LGSIcyPjz68j+C+1c0Gemb2Q+GwPIczGP
-         lA3/ywqnKRixqzEc/iOzyy90+JUauy/ShgW5S5dwFxFI9/Wvf6+G7clImmRXUItEnb12
-         EnUqW9RCCNC2PEUkaRd6ATJ0wy/atKI6SpRGyeWu/UL3RyY4ev5AejNFO6J+CtV14aDt
-         kBTbbp/uWKBRTRL+vD2aVG3TAv1Q/hz8/sH9vR5qjfO4eveF/ZkBT16PqRBzui3JRePc
-         9d2A==
-X-Gm-Message-State: AOAM531HPbsXw9x5Cvz7mFt1A21hDBuw3QUdY8xWFF90ZhAx89ZQxMm0
-        vyObxxY9Bl587JUiH9IDgcHXLHxhmePBj+knwLNoug==
-X-Google-Smtp-Source: ABdhPJyL3NPG9USNMnYd3yLWIqT+Oua7tSa5MNUojDCvTt+lpV65yUAnQ072eSVg/tCyEjA3gs/6Bzinn189gX4/V3E=
-X-Received: by 2002:a05:651c:550:: with SMTP id q16mr13910527ljp.188.1593626839643;
- Wed, 01 Jul 2020 11:07:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200630044943.3425049-1-rajatja@google.com> <20200630044943.3425049-6-rajatja@google.com>
- <20200630104948.GC856968@kuha.fi.intel.com> <20200630125216.GA1109228@kroah.com>
- <CAJZ5v0iYFKrouQx_b7afPnz7ohjWOKKDhdHj_3HObKYV_rRhiw@mail.gmail.com>
- <20200630153816.GD1785141@kroah.com> <CAJZ5v0jUx-RVhJRDngkOXx-3szFJDOgCJs2yuGKFyo2f1qZAwA@mail.gmail.com>
- <20200630170012.GB1894898@kroah.com>
-In-Reply-To: <20200630170012.GB1894898@kroah.com>
-From:   Rajat Jain <rajatja@google.com>
-Date:   Wed, 1 Jul 2020 11:06:43 -0700
-Message-ID: <CACK8Z6Fcrb8PtmbUJLn8RgiGnC8eqTC9GjsgjPmQgU212WPU0Q@mail.gmail.com>
-Subject: Re: [PATCH v2 5/7] driver core: Add device location to "struct
- device" and expose it in sysfs
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        id S1727789AbgGAVWJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 1 Jul 2020 17:22:09 -0400
+Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:43036 "EHLO
+        rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727124AbgGAVWI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Jul 2020 17:22:08 -0400
+Received: from mail-irv-17.broadcom.com (mail-irv-17.lvn.broadcom.net [10.75.242.48])
+        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 8CF3430C0B2;
+        Wed,  1 Jul 2020 14:22:06 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com 8CF3430C0B2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1593638526;
+        bh=nhrK2RlYox51CSLhX6kAW8Tc5Nzfqg2aOArAqXmjQoM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=rWmjvfLu2xdb5dBCSs2msmprlhJNkn8S5dVXenLzoHn34v3NkIG4LvR1NxJ8E4Yt0
+         GN0HE+FLpkmBfHttGAJUwKJJ5ofv2/RLGYZPDEwjVpSlvsq/WvDaLJfkA3eE8TTfFY
+         8fJtetnFJI2FqIGNf1NYqtVhOTROC88YoDWRlbEc=
+Received: from stbsrv-and-01.and.broadcom.net (stbsrv-and-01.and.broadcom.net [10.28.16.211])
+        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 57535140096;
+        Wed,  1 Jul 2020 14:22:00 -0700 (PDT)
+From:   Jim Quinlan <james.quinlan@broadcom.com>
+To:     linux-pci@vger.kernel.org,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        bcm-kernel-feedback-list@broadcom.com, james.quinlan@broadcom.com
+Cc:     Alan Stern <stern@rowland.harvard.edu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        devel@driverdev.osuosl.org (open list:STAGING SUBSYSTEM),
+        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
+        DEVICE TREE),
+        dri-devel@lists.freedesktop.org (open list:DRM DRIVERS FOR ALLWINNER
+        A10), Florian Fainelli <f.fainelli@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "open list:AMD IOMMU (AMD-VI)" <iommu@lists.linux-foundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Raj Ashok <ashok.raj@intel.com>,
-        "Krishnakumar, Lalithambika" <lalithambika.krishnakumar@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Prashant Malani <pmalani@google.com>,
-        Benson Leung <bleung@google.com>,
-        Todd Broch <tbroch@google.com>,
-        Alex Levin <levinale@google.com>,
-        Mattias Nissler <mnissler@google.com>,
-        Rajat Jain <rajatxjain@gmail.com>,
-        Bernie Keany <bernie.keany@intel.com>,
-        Aaron Durbin <adurbin@google.com>,
-        Diego Rivas <diegorivas@google.com>,
-        Duncan Laurie <dlaurie@google.com>,
-        Furquan Shaikh <furquan@google.com>,
-        Jesse Barnes <jsbarnes@google.com>,
-        Christian Kellner <christian@kellner.me>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        iommu@lists.linux-foundation.org (open list:IOMMU DRIVERS),
+        Jens Axboe <axboe@kernel.dk>,
+        Julien Grall <julien.grall@arm.com>,
+        linux-acpi@vger.kernel.org (open list:ACPI FOR ARM64 (ACPI/arm64)),
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
+        linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
+        Parallel ATA drivers)), linux-kernel@vger.kernel.org (open list),
+        linux-media@vger.kernel.org (open list:ALLWINNER A10 CSI DRIVER),
+        linux-remoteproc@vger.kernel.org (open list:REMOTE PROCESSOR
+        (REMOTEPROC) SUBSYSTEM),
+        linux-rpi-kernel@lists.infradead.org (moderated list:BROADCOM
+        BCM2711/BCM2835 ARM ARCHITECTURE),
+        linux-sh@vger.kernel.org (open list:SUPERH),
+        linux-usb@vger.kernel.org (open list:USB SUBSYSTEM),
+        Oliver Neukum <oneukum@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Rob Herring <robh@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
         Saravana Kannan <saravanak@google.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
         Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH v6 00/12] PCI: brcmstb: enable PCIe for STB chips
+Date:   Wed,  1 Jul 2020 17:21:30 -0400
+Message-Id: <20200701212155.37830-1-james.quinlan@broadcom.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello,
+Patchset Summary:
+  Enhance a PCIe host controller driver.  Because of its unusual design
+  we are foced to change dev->dma_pfn_offset into a more general role
+  allowing multiple offsets.  See the 'v1' notes below for more info.
 
-On Tue, Jun 30, 2020 at 10:00 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Jun 30, 2020 at 06:08:31PM +0200, Rafael J. Wysocki wrote:
-> > On Tue, Jun 30, 2020 at 5:38 PM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Tue, Jun 30, 2020 at 03:00:34PM +0200, Rafael J. Wysocki wrote:
-> > > > On Tue, Jun 30, 2020 at 2:52 PM Greg Kroah-Hartman
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > > >
-> > > > > On Tue, Jun 30, 2020 at 01:49:48PM +0300, Heikki Krogerus wrote:
-> > > > > > On Mon, Jun 29, 2020 at 09:49:41PM -0700, Rajat Jain wrote:
-> > > > > > > Add a new (optional) field to denote the physical location of a device
-> > > > > > > in the system, and expose it in sysfs. This was discussed here:
-> > > > > > > https://lore.kernel.org/linux-acpi/20200618184621.GA446639@kroah.com/
-> > > > > > >
-> > > > > > > (The primary choice for attribute name i.e. "location" is already
-> > > > > > > exposed as an ABI elsewhere, so settled for "site"). Individual buses
-> > > > > > > that want to support this new attribute can opt-in by setting a flag in
-> > > > > > > bus_type, and then populating the location of device while enumerating
-> > > > > > > it.
-> > > > > >
-> > > > > > So why not just call it "physical_location"?
-> > > > >
-> > > > > That's better, and will allow us to put "3rd blue plug from the left,
-> > > > > 4th row down" in there someday :)
-> > > > >
-> > > > > All of this is "relative" to the CPU, right?  But what CPU?  Again, how
-> > > > > are the systems with drawers of PCI and CPUs and memory that can be
-> > > > > added/removed at any point in time being handled here?  What is
-> > > > > "internal" and "external" for them?
-> > > > >
-> > > > > What exactly is the physical boundry here that is attempting to be
-> > > > > described?
-> > > >
-> > > > Also, where is the "physical location" information going to come from?
-> > >
-> > > Who knows?  :)
-> > >
-> > > Some BIOS seem to provide this, but do you trust that?
-> > >
-> > > > If that is the platform firmware (which I suspect is the anticipated
-> > > > case), there may be problems with reliability related to that.
-> > >
-> > > s/may/will/
-> > >
-> > > which means making the kernel inact a policy like this patch series
-> > > tries to add, will result in a lot of broken systems, which is why I
-> > > keep saying that it needs to be done in userspace.
-> > >
-> > > It's as if some of us haven't been down this road before and just keep
-> > > being ignored...
-> > >
-> > > {sigh}
-> >
-> > Well, to be honest, if you are a "vertical" vendor and you control the
-> > entire stack, *including* the platform firmware, it would be kind of
-> > OK for you to do that in a product kernel.
-> >
-> > However, this is not a practical thing to do in the mainline kernel
-> > which must work for everybody, including people who happen to use
-> > systems with broken or even actively unfriendly firmware on them.
-> >
-> > So I'm inclined to say that IMO this series "as is" would not be an
-> > improvement from the mainline perspective.
->
-> It can be, we have been using this for USB devices for many many years
-> now, quite successfully.  The key is not to trust that the platform
-> firmware got it right :)
->
-> > I guess it would make sense to have an attribute for user space to
-> > write to in order to make the kernel reject device plug-in events
-> > coming from a given port or connector, but the kernel has no reliable
-> > means to determine *which* ports or connectors are "safe", and even if
-> > there was a way for it to do that, it still may not agree with user
-> > space on which ports or connectors should be regarded as "safe".
->
-> Again, we have been doing this for USB devices for a very long time, PCI
-> shouldn't be any different.  Why people keep ignoring working solutions
-> is beyond me, there's nothing "special" about PCI devices here for this
-> type of "worry" or reasoning to try to create new solutions.
->
-> So, again, I ask, go do what USB does, and to do that, take the logic
-> out of the USB core, make it bus-agnositic, and _THEN_ add it to the PCI
-> code. Why the original submitter keeps ignoring my request to do this
-> is beyond me, I guess they like making patches that will get rejected :(
+v6:
+  Commit "device core: Introduce DMA range map":
+  -- of_dma_get_range() now takes a single argument and returns either
+     NULL, a valid map, or an ERR_PTR. (Robin)
+  -- offsets are no longer a PFN value but an actual address. (Robin)
+  -- the bus_dma_region struct stores the range size instead of
+     the cpu_end and pci_end values. (Robin)
+  -- devices that were setting a single offset with no boundaries
+     have been modified to have boundaries; in a few places
+     where this informatino was unavilable a /* FIXME: ... */
+     comment was added. (Robin)
+  -- dma_attach_offset_range() can be called when an offset
+     map already exists; if it's range is already present
+     nothing is done and success is returned. (Robin)
+  All commits:
+  -- Man name/style/corrections/etc changed (Bjorn)
+  -- rebase to Torvalds master
 
-IMHO I'm actually trying to precisely do what I think was the
-conclusion of our discussion, and then some changes because of the
-further feedback I received on those patches. Let's take a step back
-and please allow me to explain how I got here (my apologies but this
-spans a couple of threads, and I"m trying to tie them all together
-here):
+v5:
+  Commit "device core: Introduce multiple dma pfn offsets"
+  -- in of/address.c: "map_size = 0" => "*map_size = 0"
+  -- use kcalloc instead of kzalloc (AndyS)
+  -- use PHYS_ADDR_MAX instead of "~(phys_addr_t)0"
+  Commit "PCI: brcmstb: Set internal memory viewport sizes"
+  -- now gives error on missing dma-ranges property.
+  Commit "dt-bindings: PCI: Add bindings for more Brcmstb chips"
+  -- removed "Allof:" from brcm,scb-sizes definition (RobH)
+  All Commits:
+  -- indentation style, use max chars 100 (AndyS)
+  -- rebased to torvalds master
 
-GOAL: To allow user space to control what (PCI) drivers he wants to
-allow on external (thunderbolt) ports. There was a lot of debate about
-the need for such a policy at
-https://lore.kernel.org/linux-pci/CACK8Z6GR7-wseug=TtVyRarVZX_ao2geoLDNBwjtB+5Y7VWNEQ@mail.gmail.com/
-with the final conclusion that it should be OK to implement such a
-policy in userspace, as long as the policy is not implemented in the
-kernel. The kernel only needs to expose bits & info that is needed by
-the userspace to implement such a policy, and it can be used in
-conjunction with "drivers_autoprobe" to implement this policy:
---------------------------------------------------------------------
-....
-That's an odd thing, but sure, if you want to write up such a policy for
-your systems, great.  But that policy does not belong in the kernel, it
-belongs in userspace.
-....
---------------------------------------------------------------------
+v4:
+  Commit "device core: Introduce multiple dma pfn offsets"
+  -- of_dma_get_range() does not take a dev param but instead
+     takes two "out" params: map and map_size.  We do this so
+     that the code that parses dma-ranges is separate from
+     the code that modifies 'dev'.   (Nicolas)
+  -- the separate case of having a single pfn offset has
+     been removed and is now processed by going through the
+     map array. (Nicolas)
+  -- move attach_uniform_dma_pfn_offset() from of/address.c to
+     dma/mapping.c so that it does not depend on CONFIG_OF. (Nicolas)
+  -- devm_kcalloc => devm_kzalloc (DanC)
+  -- add/fix assignment to dev->dma_pfn_offset_map for func
+     attach_uniform_dma_pfn_offset() (DanC, Nicolas)
+  -- s/struct dma_pfn_offset_region/struct bus_dma_region/ (Nicolas)
+  -- s/attach_uniform_dma_pfn_offset/dma_attach_uniform_pfn_offset/
+  -- s/attach_dma_pfn_offset_map/dma_attach_pfn_offset_map/
+  -- More use of PFN_{PHYS,DOWN,UP}. (AndyS)
+  Commit "of: Include a dev param in of_dma_get_range()"
+  -- this commit was sqaushed with "device core: Introduce ..."
 
-1) The post https://lore.kernel.org/linux-pci/20200609210400.GA1461839@bjorn-Precision-5520/
-lists out the approach that was agreed on. Replicating it here:
------------------------------------------------------------------------
-  - Expose the PCI pdev->untrusted bit in sysfs.  We don't expose this
-    today, but doing so would be trivial.  I think I would prefer a
-    sysfs name like "external" so it's more descriptive and less of a
-    judgment.
+v3:
+  Commit "device core: Introduce multiple dma pfn offsets"
+  Commit "arm: dma-mapping: Invoke dma offset func if needed"
+  -- The above two commits have been squashed.  More importantly,
+     the code has been modified so that the functionality for
+     multiple pfn offsets subsumes the use of dev->dma_pfn_offset.
+     In fact, dma_pfn_offset is removed and supplanted by
+     dma_pfn_offset_map, which is a pointer to an array.  The
+     more common case of a uniform offset is now handled as
+     a map with a single entry, while cases requiring multiple
+     pfn offsets use a map with multiple entries.  Code paths
+     that used to do this:
 
-    This comes from either the DT "external-facing" property or the
-    ACPI "ExternalFacingPort" property.
+         dev->dma_pfn_offset = mydrivers_pfn_offset;
 
-  - All devices present at boot are enumerated.  Any statically built
-    drivers will bind to them before any userspace code runs.
+     have been changed to do this:
 
-    If you want to keep statically built drivers from binding, you'd
-    need to invent some mechanism so pci_driver_init() could clear
-    drivers_autoprobe after registering pci_bus_type.
+         attach_uniform_dma_pfn_offset(dev, pfn_offset);
 
-  - Early userspace code prevents modular drivers from automatically
-    binding to PCI devices:
+  Commit "dt-bindings: PCI: Add bindings for more Brcmstb chips"
+  -- Add if/then clause for required props: resets, reset-names (RobH)
+  -- Change compatible list from const to enum (RobH)
+  -- Change list of u32-tuples to u64 (RobH)
 
-      echo 0 > /sys/bus/pci/drivers_autoprobe
+  Commit "of: Include a dev param in of_dma_get_range()"
+  -- modify of/unittests.c to add NULL param in of_dma_get_range() call.
 
-    This prevents modular drivers from binding to all devices, whether
-    present at boot or hot-added.
+  Commit "device core: Add ability to handle multiple dma offsets"
+  -- align comment in device.h (AndyS).
+  -- s/cpu_beg/cpu_start/ and s/dma_beg/dma_start/ in struct
+     dma_pfn_offset_region (AndyS).
 
-  - Userspace code uses the sysfs "bind" file to control which drivers
-    are loaded and can bind to each device, e.g.,
+v2:
+Commit: "device core: Add ability to handle multiple dma offsets"
+  o Added helper func attach_dma_pfn_offset_map() in address.c (Chistoph)
+  o Helpers funcs added to __phys_to_dma() & __dma_to_phys() (Christoph)
+  o Added warning when multiple offsets are needed and !DMA_PFN_OFFSET_MAP
+  o dev->dma_pfn_map => dev->dma_pfn_offset_map
+  o s/frm/from/ for dma_pfn_offset_frm_{phys,dma}_addr() (Christoph)
+  o In device.h: s/const void */const struct dma_pfn_offset_region */
+  o removed 'unlikely' from unlikely(dev->dma_pfn_offset_map) since
+    guarded by CONFIG_DMA_PFN_OFFSET_MAP (Christoph)
+  o Since dev->dma_pfn_offset is copied in usb/core/{usb,message}.c, now
+    dev->dma_pfn_offset_map is copied as well.
+  o Merged two of the DMA commits into one (Christoph).
 
-      echo 0000:02:00.0 > /sys/bus/pci/drivers/nvme/bind
------------------------------------------------------------------------
+Commit "arm: dma-mapping: Invoke dma offset func if needed":
+  o Use helper functions instead of #if CONFIG_DMA_PFN_OFFSET
 
-2) As part of implementing the above agreed approach, when I exposed
-PCI "untrusted" attribute to userspace, it ran into discussion that
-concluded that instead of this, the device core should be enhanced
-with a location attribute.
-https://lore.kernel.org/linux-pci/20200618184621.GA446639@kroah.com/
------------------------------------------------------------------------
-...
-The attribute should be called something like "location" or something
-like that (naming is hard), as you don't always know if something is
-external or not (it could be internal, it could be unknown, it could be
-internal to an external device that you trust (think PCI drawers for
-"super" computers that are hot pluggable but yet really part of the
-internal bus).
-....
-"trust" has no direct relation to the location, except in a policy of
-what you wish to do with that device, so as long as you keep them
-separate that way, I am fine with it.
-...
------------------------------------------------------------------------
+Other commits' changes:
+  o Removed need for carrying of_id var in priv (Nicolas)
+  o Commit message rewordings (Bjorn)
+  o Commit log messages filled to 75 chars (Bjorn)
+  o devm_reset_control_get_shared())
+    => devm_reset_control_get_optional_shared (Philipp)
+  o Add call to reset_control_assert() in PCIe remove routines (Philipp)
 
-And hence this patch. I don't see an attribute in USB comparable to
-this new attribute, except for the boolean "removable" may be. Are you
-suggesting to pull that into the device core instead of adding this
-"physical_location" attribute?
+v1:
+This patchset expands the usefulness of the Broadcom Settop Box PCIe
+controller by building upon the PCIe driver used currently by the
+Raspbery Pi.  Other forms of this patchset were submitted by me years
+ago and not accepted; the major sticking point was the code required
+for the DMA remapping needed for the PCIe driver to work [1].
 
-3) The one deviation from the agreed approach in (1) is
-https://patchwork.kernel.org/patch/11633095/ . The reason is I
-realized that contrary to what I earlier believed, we might not be
-able to disable the PCI link to all external PCI devices at boot. So
-external PCI devices may actually bind to drivers before userspace
-comes up and does "echo 0 > /sys/bus/pci/drivers_autoprobe").
+There have been many changes to the DMA and OF subsystems since that
+time, making a cleaner and less intrusive patchset possible.  This
+patchset implements a generalization of "dev->dma_pfn_offset", except
+that instead of a single scalar offset it provides for multiple
+offsets via a function which depends upon the "dma-ranges" property of
+the PCIe host controller.  This is required for proper functionality
+of the BrcmSTB PCIe controller and possibly some other devices.
 
-I'm really happy to do what you think is the right way as long as it
-helps achieve my goal above. Really looking for clear directions here.
-
-Thanks & Best Regards,
-
-Rajat
+[1] https://lore.kernel.org/linux-arm-kernel/1516058925-46522-5-git-send-email-jim2101024@gmail.com/
 
 
-> thanks,
->
-> greg k-h
+Jim Quinlan (12):
+  PCI: brcmstb: PCIE_BRCMSTB depends on ARCH_BRCMSTB
+  ata: ahci_brcm: Fix use of BCM7216 reset controller
+  dt-bindings: PCI: Add bindings for more Brcmstb chips
+  PCI: brcmstb: Add bcm7278 register info
+  PCI: brcmstb: Add suspend and resume pm_ops
+  PCI: brcmstb: Add bcm7278 PERST# support
+  PCI: brcmstb: Add control of rescal reset
+  device core: Introduce DMA range map, supplanting dma_pfn_offset
+  PCI: brcmstb: Set additional internal memory DMA viewport sizes
+  PCI: brcmstb: Accommodate MSI for older chips
+  PCI: brcmstb: Set bus max burst size by chip type
+  PCI: brcmstb: Add bcm7211, bcm7216, bcm7445, bcm7278 to match list
+
+ .../bindings/pci/brcm,stb-pcie.yaml           |  56 ++-
+ arch/arm/include/asm/dma-mapping.h            |   9 +-
+ arch/arm/mach-keystone/keystone.c             |  17 +-
+ arch/sh/drivers/pci/pcie-sh7786.c             |   9 +-
+ arch/sh/kernel/dma-coherent.c                 |  14 +-
+ arch/x86/pci/sta2x11-fixup.c                  |   7 +-
+ drivers/acpi/arm64/iort.c                     |   5 +-
+ drivers/ata/ahci_brcm.c                       |  11 +-
+ drivers/gpu/drm/sun4i/sun4i_backend.c         |   7 +-
+ drivers/iommu/io-pgtable-arm.c                |   2 +-
+ .../platform/sunxi/sun4i-csi/sun4i_csi.c      |   6 +-
+ .../platform/sunxi/sun6i-csi/sun6i_csi.c      |   5 +-
+ drivers/of/address.c                          |  95 ++--
+ drivers/of/device.c                           |  50 ++-
+ drivers/of/of_private.h                       |   9 +-
+ drivers/of/unittest.c                         |  35 +-
+ drivers/pci/controller/Kconfig                |   3 +-
+ drivers/pci/controller/pcie-brcmstb.c         | 408 +++++++++++++++---
+ drivers/remoteproc/remoteproc_core.c          |   2 +-
+ .../staging/media/sunxi/cedrus/cedrus_hw.c    |   8 +-
+ drivers/usb/core/message.c                    |   4 +-
+ drivers/usb/core/usb.c                        |   2 +-
+ include/linux/device.h                        |   4 +-
+ include/linux/dma-direct.h                    |  10 +-
+ include/linux/dma-mapping.h                   |  37 ++
+ kernel/dma/coherent.c                         |  11 +-
+ kernel/dma/mapping.c                          |  53 +++
+ 27 files changed, 684 insertions(+), 195 deletions(-)
+
+-- 
+2.17.1
+
