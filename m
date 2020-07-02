@@ -2,153 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59387211E7D
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Jul 2020 10:24:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DBA0211EFD
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Jul 2020 10:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728203AbgGBIYw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Jul 2020 04:24:52 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:7346 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727043AbgGBIYu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 2 Jul 2020 04:24:50 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 277E4617FD2BE7EE03F4;
-        Thu,  2 Jul 2020 16:22:03 +0800 (CST)
-Received: from [127.0.0.1] (10.174.179.33) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.487.0; Thu, 2 Jul 2020
- 16:22:01 +0800
-Subject: Re: [PATCH v2 01/12] ACPI/IORT: Make iort_match_node_callback walk
- the ACPI namespace for NC
-To:     Robin Murphy <robin.murphy@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        Will Deacon <will@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        <iommu@lists.linux-foundation.org>, <linux-acpi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        id S1727784AbgGBIk0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Jul 2020 04:40:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49670 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726442AbgGBIk0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Jul 2020 04:40:26 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 258F2C08C5C1;
+        Thu,  2 Jul 2020 01:40:26 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id h5so27137986wrc.7;
+        Thu, 02 Jul 2020 01:40:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=HhIqs5H8Sh0TaWImCuxyQpDb5LLrmm9oiZJu/eGa88o=;
+        b=m56LE2FG27ERLTM2smVWanH1WZ8c73ZhZa5Y9WBqjYA589STp1NxLY3bSiuZcYJdce
+         p13dHQLyBEc1lKOLaggE/p6JUePhv6F1vpP6HuE4B3Azop6v48geGQNPkpQhbPH+DN8b
+         mYDTrq2blgYS0a+WND88IYOwlQL88RThbBIDELMtIZE6Z7aAhXrixXNDQDHt10rBg3fZ
+         +StHgRD4UTa5wxbKvJQLD8nSbRd+4QzJnkY6CK/NFyh+aPfnEAcqpoUtsqd2k4QpKq2U
+         +B00RnspeXUSrnf60AtCaVn0B+mtoLkeicqPxJD+S5jmzX8MnjeusWdvvviS46oZ91yA
+         +WUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=HhIqs5H8Sh0TaWImCuxyQpDb5LLrmm9oiZJu/eGa88o=;
+        b=VODY1pKx9X5TKD94+OLb2d+y991j9YvdfkceZvSrglBdI79wNp8u/RhRPPdgVASjMe
+         yeZ2/Y2PsjDPuukLMek9I+TFayBdVTonG0dR+28aR5auANrDIr/2LmkhyM5hrAf4/UMU
+         JIq6o3i1xIGntkjx1gSiTIkpT8cB9VIvz904PKpPJpPOwSb5cR4FHaghfAfASerDt1tF
+         1Lb9+B3ATjOMrmP2dy/sPAHxlBpE7G0q7yJMpYdzyINhMvku9aj9sAlQfcTkrMGy+bQF
+         467PrSD5zImfSBBI4E+Va+7Sy3FRUm+nKvmEleqxeAzrI9VNQY2Iojowg5mgNYhbY7QH
+         7DwA==
+X-Gm-Message-State: AOAM533ucEqLpNsRAbi5LiMyGGN3jXH+JO6VSQS6yt6uO6i/1jaajGl3
+        zE0yl7BalLEAZIgbnRn8wDM=
+X-Google-Smtp-Source: ABdhPJyK04Wf4jA1ICMU9g7GrNZXa1md7e+mjUuEotvKGvOj4HUmNMMgeRa0p26antgUXLdwhu512w==
+X-Received: by 2002:a5d:630c:: with SMTP id i12mr33510136wru.158.1593679224808;
+        Thu, 02 Jul 2020 01:40:24 -0700 (PDT)
+Received: from localhost.localdomain ([220.240.234.21])
+        by smtp.googlemail.com with ESMTPSA id m16sm5073053wro.0.2020.07.02.01.40.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2020 01:40:24 -0700 (PDT)
+Message-ID: <24f56c0ed6d10ef565cf83d47d0538d37ac0d8ef.camel@gmail.com>
+Subject: Re: [PATCH v2 5/7] driver core: Add device location to "struct
+ device" and expose it in sysfs
+From:   Oliver O'Halloran <oohall@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Rajat Jain <rajatja@google.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
         Joerg Roedel <joro@8bytes.org>,
         Bjorn Helgaas <bhelgaas@google.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Makarand Pawagi <makarand.pawagi@nxp.com>,
-        Diana Craciun <diana.craciun@oss.nxp.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>
-References: <20200521130008.8266-1-lorenzo.pieralisi@arm.com>
- <20200619082013.13661-1-lorenzo.pieralisi@arm.com>
- <20200619082013.13661-2-lorenzo.pieralisi@arm.com>
- <718cae1f-2f33-f6d9-f278-157300b73116@huawei.com>
- <20200629090551.GA28873@e121166-lin.cambridge.arm.com>
- <765078e7-b3ec-af5d-0405-7834ba0f120a@huawei.com>
- <20200630102454.GA17556@e121166-lin.cambridge.arm.com>
- <4817d766-0437-5356-a0b9-97b111d4cae2@huawei.com>
- <952a6720-f401-1441-5548-5b40cfc76d3a@arm.com>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <0cbd1da8-e283-7e13-d2b3-4d14775fd870@huawei.com>
-Date:   Thu, 2 Jul 2020 16:22:00 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        "open list:AMD IOMMU (AMD-VI)" <iommu@lists.linux-foundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Raj Ashok <ashok.raj@intel.com>,
+        "Krishnakumar, Lalithambika" <lalithambika.krishnakumar@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Prashant Malani <pmalani@google.com>,
+        Benson Leung <bleung@google.com>,
+        Todd Broch <tbroch@google.com>,
+        Alex Levin <levinale@google.com>,
+        Mattias Nissler <mnissler@google.com>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Bernie Keany <bernie.keany@intel.com>,
+        Aaron Durbin <adurbin@google.com>,
+        Diego Rivas <diegorivas@google.com>,
+        Duncan Laurie <dlaurie@google.com>,
+        Furquan Shaikh <furquan@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Christian Kellner <christian@kellner.me>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Saravana Kannan <saravanak@google.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Date:   Thu, 02 Jul 2020 18:40:09 +1000
+In-Reply-To: <20200702073226.GB1073011@kroah.com>
+References: <20200630044943.3425049-1-rajatja@google.com>
+         <20200630044943.3425049-6-rajatja@google.com>
+         <20200630104948.GC856968@kuha.fi.intel.com>
+         <20200630125216.GA1109228@kroah.com>
+         <CAJZ5v0iYFKrouQx_b7afPnz7ohjWOKKDhdHj_3HObKYV_rRhiw@mail.gmail.com>
+         <20200630153816.GD1785141@kroah.com>
+         <CAJZ5v0jUx-RVhJRDngkOXx-3szFJDOgCJs2yuGKFyo2f1qZAwA@mail.gmail.com>
+         <20200630170012.GB1894898@kroah.com>
+         <CACK8Z6Fcrb8PtmbUJLn8RgiGnC8eqTC9GjsgjPmQgU212WPU0Q@mail.gmail.com>
+         <CAOSf1CEZ82iXhYnig0UScS+oRRaxHzSCge9LbA1hW3NaQAiSxQ@mail.gmail.com>
+         <20200702073226.GB1073011@kroah.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.3 (3.36.3-1.fc32) 
 MIME-Version: 1.0
-In-Reply-To: <952a6720-f401-1441-5548-5b40cfc76d3a@arm.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.179.33]
-X-CFilter-Loop: Reflected
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Robin,
-
-On 2020/7/2 0:12, Robin Murphy wrote:
-> On 2020-06-30 14:04, Hanjun Guo wrote:
->> On 2020/6/30 18:24, Lorenzo Pieralisi wrote:
->>> On Tue, Jun 30, 2020 at 11:06:41AM +0800, Hanjun Guo wrote:
->>>
->>> [...]
->>>
->>>>> For devices that aren't described in the DSDT - IORT translations
->>>>> are determined by their ACPI parent device. Do you see/Have you
->>>>> found any issue with this approach ?
->>>>
->>>> The spec says "Describes the IO relationships between devices
->>>> represented in the ACPI namespace.", and in section 3.1.1.3 Named
->>>> component node, it says:
->>>
->>> PCI devices aren't necessarily described in the ACPI namespace and we
->>> still use IORT to describe them - through the RC node.
->>>
->>>> "Named component nodes are used to describe devices that are also
->>>> included in the Differentiated System Description Table (DSDT). See
->>>> [ACPI]."
->>>>
->>>> So from my understanding, the IORT spec for now, can only do ID
->>>> translations for devices in the DSDT.
->>>
->>> I think you can read this multiple ways but this patch does not
->>> change this concept. What changes, is applying parent's node IORT
->>> mapping to child nodes with no associated DSDT nodes, it is the
->>> same thing we do with PCI and the _DMA method - we could update
->>> the wording in the specs if that clarifies but I don't think this
->>> deliberately disregards the specifications.
->>
->> I agree, but it's better to update the wording of the spec.
->>
->>>
->>>>>> For a platform device, if I use its parent's full path name for
->>>>>> its named component entry, then it will match, but this will violate
->>>>>> the IORT spec.
->>>>>
->>>>> Can you elaborate on this please I don't get the point you
->>>>> are making.
->>>>
->>>> For example, device A is not described in DSDT so can't represent
->>>> as a NC node in IORT. Device B can be described in DSDT and it
->>>> is the parent of device A, so device B can be represented in IORT
->>>> with memory access properties and node flags with Substream width
->>>> and Stall supported info.
->>>>
->>>> When we trying to translate device A's ID, we reuse all the memory
->>>> access properties and node flags from its parent (device B), but
->>>> will it the same?
->>>
->>> I assume so why wouldn't it be ? Why would be describe them in
->>> a parent-child relationship if that's not how the system looks like
->>> in HW ?
->>
->> The point I'm making is that I'm not sure all the memory access and
->> stall properties are the same for the parent and the device itself.
+On Thu, 2020-07-02 at 09:32 +0200, Greg Kroah-Hartman wrote:
+> On Thu, Jul 02, 2020 at 03:23:23PM +1000, Oliver O'Halloran wrote:
+> > Yep, that's a problem. If we want to provide a useful mechanism to
+> > userspace then the default behaviour of the kernel can't undermine
+> > that mechanism. If that means we need another kernel command line
+> > parameter then I guess we just have to live with it.
 > 
-> Is that even a valid case though? The principal thing we want to 
-> accommodate here is when device B *is* the one accessing memory, either 
-> because it is a bridge with device A sat behind it, or because device A 
-> is actually just some logical function or subset of physical device B.
+> I really do not want yet-another-kernel-command-line-option if we can
+> help it at all.  Sane defaults are the best thing to do here.  Userspace
+> comes up really early, put your policy in there, not in blobs passed
+> from your bootloader.
 
-Thanks for the clarify, for CCA attributes, child device should be the
-same as its parent and that was written in the ACPI spec, so it's better
-to make it clear for other properties in the spec as well.
+Userspace comes up early, but builtin drivers will bind before init is
+started. e.g.
 
-> 
-> If the topology is such that device A is a completely independent device 
-> with its own path to memory such that it could have different 
-> properties, I would expect that it *should* be described in DSDT, and I 
-> can't easily think of a good reason why it wouldn't be. I'm also 
-> struggling to imagine how it might even have an ID that had to be 
-> interpreted in the context of device B if it wasn't one of the cases 
-> above :/
-> 
-> I don't doubt that people could - or maybe even have - come up with crap 
-> DSDT bindings that don't represent the hardware sufficiently accurately, 
-> but I'm not sure that should be IORT's problem...
+# dmesg | egrep '0002:01:00.0|/init'
+[    0.976800][    T1] pci 0002:01:00.0: [8086:1589] type 00 class 0x020000
+[    0.976923][    T1] pci 0002:01:00.0: reg 0x10: [mem 0x220000000000-0x2200007fffff 64bit pref]
+[    0.977004][    T1] pci 0002:01:00.0: reg 0x1c: [mem 0x220002000000-0x220002007fff 64bit pref]
+[    0.977068][    T1] pci 0002:01:00.0: reg 0x30: [mem 0x00000000-0x0007ffff pref]
+[    0.977122][    T1] pci 0002:01:00.0: BAR3 [mem size 0x00008000 64bit pref]: requesting alignment to 0x10000
+[    0.977401][    T1] pci 0002:01:00.0: PME# supported from D0 D3hot
+[    1.011929][    T1] pci 0002:01:00.0: BAR 0: assigned [mem 0x220000000000-0x2200007fffff 64bit pref]
+[    1.012085][    T1] pci 0002:01:00.0: BAR 6: assigned [mem 0x3fe100000000-0x3fe10007ffff pref]
+[    1.012127][    T1] pci 0002:01:00.0: BAR 3: assigned [mem 0x220002000000-0x220002007fff 64bit pref]
+[    4.399588][   T12] i40e 0002:01:00.0: enabling device (0140 -> 0142)
+[    4.410891][   T12] i40e 0002:01:00.0: fw 5.1.40981 api 1.5 nvm 5.03 0x80002469 1.1313.0 [8086:1589] [15d9:0000]
+[    4.647524][   T12] i40e 0002:01:00.0: MAC address: 0c:c4:7a:b7:fc:74
+[    4.647685][   T12] i40e 0002:01:00.0: FW LLDP is enabled
+[    4.653918][   T12] i40e 0002:01:00.0 eth0: NIC Link is Up, 1000 Mbps Full Duplex, Flow Control: None
+[    4.655552][   T12] i40e 0002:01:00.0: PCI-Express: Speed 8.0GT/s Width x8
+[    4.656071][   T12] i40e 0002:01:00.0: Features: PF-id[0] VSIs: 34 QP: 80 RSS FD_ATR FD_SB NTUPLE VxLAN Geneve PTP VEPA
+[   13.803709][    T1] Run /init as init process
+[   13.963242][  T711] i40e 0002:01:00.0 enP2p1s0f0: renamed from eth0
 
-As I said in previous email, I'm not against this patch, and seems
-have no regressions for platforms that using named component node
-such as D05/D06 (I will test it shortly to make sure), but it's better
-to update the wording of the spec (even after this patch set is merged).
+Building everything into the kernel is admittedly pretty niche. I only
+do it to avoid re-building the initramfs for my test kernels. It does
+seem relatively common on embedded systems, but I'm not sure how many
+of those care about PCIe. It would be nice to provide *something* to
+cover that case for the people who care.
 
-Thanks
-Hanjun
+Oliver
+
 
