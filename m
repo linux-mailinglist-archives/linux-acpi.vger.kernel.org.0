@@ -2,57 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B021213910
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jul 2020 13:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ACB8213916
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jul 2020 13:06:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726286AbgGCLFR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Jul 2020 07:05:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39998 "EHLO
+        id S1726112AbgGCLG2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Jul 2020 07:06:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726022AbgGCLFP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Jul 2020 07:05:15 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2111EC08C5DD
-        for <linux-acpi@vger.kernel.org>; Fri,  3 Jul 2020 04:05:15 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id 17so33626074wmo.1
-        for <linux-acpi@vger.kernel.org>; Fri, 03 Jul 2020 04:05:15 -0700 (PDT)
+        with ESMTP id S1726327AbgGCLG2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Jul 2020 07:06:28 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFB84C08C5E1
+        for <linux-acpi@vger.kernel.org>; Fri,  3 Jul 2020 04:06:26 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id g10so10716485wmc.1
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Jul 2020 04:06:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=3V8xENO3GmDZDQdIsL9fROUuBGe1Tx1oO+97CX2LTX8=;
-        b=o+WYd9LjQwXET+4lKvAmTVqDbkriQn2PZFkMX+cf7sO6gJ5zFu6/DhSy0j1kHVB71l
-         LDN/Yd/xSBBpvmLwH1lOauD9RCBcY637YAg5vLYpQWiW3Gh/QwpbItyYAwL1+F+3UjaU
-         UoDj1ms1Xc8Ry3kflHXShGqBKhP4RYEeSxCdTNhpJnP+VjKMOw+YLByPMn0IIia2/QsU
-         9+kYZpn/BMWfx3NmOCLkcrnqEOvupOjNe3XsAP0bAidb5SodU24GqeuXitqHYGqyr97W
-         yAZZuhc6dPORFV95pVU3XtgHH3FCuwlVE6VrWquMnm/F/Q8HHvZZIwcTuyPBYhqAixeF
-         Q40w==
+        bh=y81eMV6HsZOqLL6c1xuYsXbhUNOBcbUsGgBPDyFKgzg=;
+        b=gd8gAO8UDpxTYRl0sZn4kWJeCwGEMBxcVYS4QxJfzZ9Z7a6PS2EkXghtn42SdOPbO9
+         Lv0aIguI9URFJ/NdVQ1LSjkEv7oun7ZZpIEASsCzo8l2k2wXDEUf7hyXbYPXYx8p8c3G
+         iGEQRz/uFuBMMbZYzRrfiGdWDf0d+by8kzqOG1KOREwBu8d0D+nbod0P74qHg14A+48t
+         u4zaZrNkNsOV7fMf/DaBuNPBncf9dRCYdpT6o064KI5hFHbKvFZu3fqCzTIDH1Trt4H0
+         NjHpG4Va/DgI2BFoS3vl6JlgN6rspjHg064IGsxSyMHfasd2FRZXKB68RccVFAC0cJN6
+         pg5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=3V8xENO3GmDZDQdIsL9fROUuBGe1Tx1oO+97CX2LTX8=;
-        b=Cbt0rSWXc/oajdn6W2yVKd7mzUnDq2FlO5iZVXpCzL3MVLIKzJdct7QPS5ZASk/1h3
-         1phPxiPI4MycRc3ICnSWrMbuAXDW3o+UWcgoJlfkv6dS9BOu0XKHrjsu9B3UnNnoBiko
-         F+cc77RrPQRZJk+8Zu4KvXtYZmk/qdzAvm8yRq3MAGclIz7hoOhnXdADrOs76b3O1CB4
-         iL9QsfueARMXOUmiqtH+IIx0c1iSW8meL6idEKKwokuvOMew2fjgUjROPiljTtMzw9fF
-         +uf7MavIWzfsw0w2Gv5aapKSJIjgzknLx7lzqSxeLORw8fYY6J4fyqjsJh4lIWIugFWh
-         LPKQ==
-X-Gm-Message-State: AOAM530TG2KXuARVNpIcle05+FS7Yo7nHXi+DCbLtUtBEmF0IGkkjNxG
-        FMhwyhZS8nECjDj5Rv9e2ExEkw==
-X-Google-Smtp-Source: ABdhPJzD1B4nfpCSIpNO2dA5tAg0/FjO8jrO54oB6afhVaKV5atXZcdw79oFjb1P+lZWPXBkSmmKWg==
-X-Received: by 2002:a1c:2392:: with SMTP id j140mr35420704wmj.6.1593774313405;
-        Fri, 03 Jul 2020 04:05:13 -0700 (PDT)
+        bh=y81eMV6HsZOqLL6c1xuYsXbhUNOBcbUsGgBPDyFKgzg=;
+        b=ZUBzARxk+hxXpRsbztaN/3g1cCA+PorW4k0/zdkk+1Ot5dy4CsbSB67+pmymIkEGlm
+         O/TLhGtFhEVGsnx19WolIZdR1RprerFhIW241xR7ez/TBwAe/tVrJZnXI0VDU3v3H5su
+         1YKDeNENTF05ujFzEtKwsVneJ0yPcht4WVPt3T/uJZhJeZV+GtPlQ5i+PIDjJ1jQ5G4D
+         /vVl/rGRcAfZXcU5hX9rWOzJjUKF447vq7uNt03JtUm59NDeKTQE0vYW9Ilg4hqmHdqA
+         y069p39d/jlGJZ7lgiOX+Vk5F8aEZBuTvo3G9/lsNWGODjHN7WtRHNYQXVFnj+NB5aLu
+         l1Jw==
+X-Gm-Message-State: AOAM530tNE2DpO8nkEAjswNXj7XaJkIrzaCY+nNZCWFr11388Na3uXip
+        5cF/HLekvzMAtGtRSf9bj4LC0A==
+X-Google-Smtp-Source: ABdhPJx5+hhbJDm2XrJujJyKTYGWkG0fawls1pBeitg1Zd5leR55VAdCRLM6oj6h+HEL1s7BJ19+tw==
+X-Received: by 2002:a1c:e18a:: with SMTP id y132mr35371489wmg.27.1593774385057;
+        Fri, 03 Jul 2020 04:06:25 -0700 (PDT)
 Received: from ?IPv6:2a01:e34:ed2f:f020:7019:4e9b:2970:f860? ([2a01:e34:ed2f:f020:7019:4e9b:2970:f860])
-        by smtp.googlemail.com with ESMTPSA id j16sm13782474wrt.7.2020.07.03.04.05.10
+        by smtp.googlemail.com with ESMTPSA id r12sm13373362wrc.22.2020.07.03.04.06.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jul 2020 04:05:12 -0700 (PDT)
-Subject: Re: [PATCH v7 00/11] Stop monitoring disabled devices
+        Fri, 03 Jul 2020 04:06:24 -0700 (PDT)
+Subject: Re: [PATCH 0/3] Fixes for stop monitoring disabled devices series
 To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        Zhang Rui <rui.zhang@intel.com>, linux-pm@vger.kernel.org,
-        linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
         platform-driver-x86@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-renesas-soc@vger.kernel.org,
@@ -85,36 +84,21 @@ Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Orson Zhai <orsonzhai@gmail.com>,
         Baolin Wang <baolin.wang7@gmail.com>,
         Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
         Allison Randal <allison@lohutok.net>,
         Enrico Weigelt <info@metux.net>,
         Gayatri Kammela <gayatri.kammela@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         kernel@collabora.com
-References: <20200629122925.21729-1-andrzej.p@collabora.com>
- <aab40d90-3f72-657c-5e14-e53a34c4b420@linaro.org>
- <3d03d1a2-ac06-b69b-93cb-e0203be62c10@collabora.com>
- <47111821-d691-e71d-d740-e4325e290fa4@linaro.org>
- <be9b7ee3-cad0-e462-126d-08de9b226285@collabora.com>
- <4353a939-3f5e-8369-5bc0-ad8162b5ffc7@linaro.org>
- <a531d80f-afd1-2dec-6c77-ed984e97595c@collabora.com>
- <db1ff4e1-cbf8-89b3-5d64-b91a1fd88a41@linaro.org>
- <73942aea-ae79-753c-fe90-d4a99423d548@collabora.com>
- <374dddd9-b600-3a30-d6c3-8cfcefc944d9@linaro.org>
- <5a28deb7-f307-8b03-faad-ab05cb8095d1@collabora.com>
- <8aeb4f51-1813-63c1-165b-06640af5968f@linaro.org>
- <685ef627-e377-bbf1-da11-7f7556ca2dd7@collabora.com>
- <d41bf28f-ee91-6946-2334-f11ec81f96fe@linaro.org>
- <44c622dd7de8c7bf143c4435c0edd1b98d09a3d6.camel@intel.com>
- <58265668-fc6d-729a-c126-0c73c2ea853b@linaro.org>
- <625911aa-a55f-dcbf-66b3-719117c6aa32@collabora.com>
+References: <20200703104354.19657-1-andrzej.p@collabora.com>
 From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <9fcd1d07-26af-4ff3-56d7-7226ef42a7e6@linaro.org>
-Date:   Fri, 3 Jul 2020 13:05:06 +0200
+Message-ID: <fc1bb7f5-2096-a604-8c30-81d34bf5b737@linaro.org>
+Date:   Fri, 3 Jul 2020 13:06:20 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <625911aa-a55f-dcbf-66b3-719117c6aa32@collabora.com>
+In-Reply-To: <20200703104354.19657-1-andrzej.p@collabora.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -123,64 +107,37 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 03/07/2020 12:45, Andrzej Pietrasiewicz wrote:
-> Hi,
+On 03/07/2020 12:43, Andrzej Pietrasiewicz wrote:
+> This short series contains fixes for "Stop monitoring disabled devices"
+> series https://www.spinics.net/lists/arm-kernel/msg817861.html
 > 
-> W dniu 03.07.2020 o 08:38, Daniel Lezcano pisze:
->> On 03/07/2020 03:49, Zhang Rui wrote:
->>> On Thu, 2020-07-02 at 19:49 +0200, Daniel Lezcano wrote:
->>
->> [ ... ]
->>
->>>>> So the reason is that ->get_temp() is called while the mutex is
->>>>> held and
->>>>> thermal_zone_device_is_enabled() wants to take the same mutex.
->>>>
->>>> Yes, that's correct.
->>>>
->>>>> Is adding a comment to thermal_zone_device_is_enabled() to never
->>>>> call
->>>>> it while the mutex is held and adding another version of it which
->>>>> does
->>>>> not take the mutex ok?
->>>>
->>>> The thermal_zone_device_is_enabled() is only used in two places, acpi
->>>> and this imx driver, and given:
->>>>
->>>> 1. as soon as the mutex is released, there is no guarantee the
->>>> thermal
->>>> zone won't be changed right after, the lock is pointless, thus the
->>>> information also.
->>>>
->>>> 2. from a design point of view, I don't see why a driver should know
->>>> if
->>>> a thermal zone is disabled or not
->>>>
->>>> It would make sense to end with this function and do not give the
->>>> different drivers an opportunity to access this information.
->>>
->>> I agree.
->>>>
->>>> Why not add change_mode for the acpi in order to enable or disable
->>>> the
->>>> events
->>>
->>> thermal_zone_device_is_enabled() is invoked in acpi thermal driver
->>> because we only want to do thermal_zone_device_update() when the acpi
->>> thermal zone is enabled.
->>>
->>> As thermal_zone_device_update() can handle a disabled thermal zone now,
->>> we can just remove the check.
->>
->> Ah yes, good point!
->>
->>
->>
+> Invocation of thermal_zone_device_is_enabled() in acpi/thermal is now
+> redundant, because thermal_zone_device_update() now is capable of
+> handling disabled devices.
 > 
-> I sent a short series with fixes. Daniel, can you kindly test it?
+> In imx's ->get_temp() the lock must not be taken, otherwise a deadlock
+> happens. The decision whether explicitly running a measurement cycle
+> is needed is taken based on driver's local irq_enabled variable.
+> 
+> Finally, thermal_zone_device_is_enabled() is made available to the
+> core only, as there are no driver users of it.
+> 
+> Andrzej Pietrasiewicz (3):
+>   acpi: thermal: Don't call thermal_zone_device_is_enabled()
+>   thermal: imx: Use driver's local data to decide whether to run a
+>     measurement
+>   thermal: Make thermal_zone_device_is_enabled() available to core only
+> 
+>  drivers/acpi/thermal.c         | 3 ---
+>  drivers/thermal/imx_thermal.c  | 7 ++++---
+>  drivers/thermal/thermal_core.c | 1 -
+>  drivers/thermal/thermal_core.h | 2 ++
+>  include/linux/thermal.h        | 5 -----
+>  5 files changed, 6 insertions(+), 12 deletions(-)
 
-I confirm the i.MX is now correctly booting with the thermal zone
-temperature available.
+Is this series easily merge-able with the other series?
+
+
 
 
 -- 
