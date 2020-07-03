@@ -2,147 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ACB8213916
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jul 2020 13:06:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0375F21395F
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jul 2020 13:36:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726112AbgGCLG2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Jul 2020 07:06:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40204 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726327AbgGCLG2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Jul 2020 07:06:28 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFB84C08C5E1
-        for <linux-acpi@vger.kernel.org>; Fri,  3 Jul 2020 04:06:26 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id g10so10716485wmc.1
-        for <linux-acpi@vger.kernel.org>; Fri, 03 Jul 2020 04:06:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=y81eMV6HsZOqLL6c1xuYsXbhUNOBcbUsGgBPDyFKgzg=;
-        b=gd8gAO8UDpxTYRl0sZn4kWJeCwGEMBxcVYS4QxJfzZ9Z7a6PS2EkXghtn42SdOPbO9
-         Lv0aIguI9URFJ/NdVQ1LSjkEv7oun7ZZpIEASsCzo8l2k2wXDEUf7hyXbYPXYx8p8c3G
-         iGEQRz/uFuBMMbZYzRrfiGdWDf0d+by8kzqOG1KOREwBu8d0D+nbod0P74qHg14A+48t
-         u4zaZrNkNsOV7fMf/DaBuNPBncf9dRCYdpT6o064KI5hFHbKvFZu3fqCzTIDH1Trt4H0
-         NjHpG4Va/DgI2BFoS3vl6JlgN6rspjHg064IGsxSyMHfasd2FRZXKB68RccVFAC0cJN6
-         pg5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=y81eMV6HsZOqLL6c1xuYsXbhUNOBcbUsGgBPDyFKgzg=;
-        b=ZUBzARxk+hxXpRsbztaN/3g1cCA+PorW4k0/zdkk+1Ot5dy4CsbSB67+pmymIkEGlm
-         O/TLhGtFhEVGsnx19WolIZdR1RprerFhIW241xR7ez/TBwAe/tVrJZnXI0VDU3v3H5su
-         1YKDeNENTF05ujFzEtKwsVneJ0yPcht4WVPt3T/uJZhJeZV+GtPlQ5i+PIDjJ1jQ5G4D
-         /vVl/rGRcAfZXcU5hX9rWOzJjUKF447vq7uNt03JtUm59NDeKTQE0vYW9Ilg4hqmHdqA
-         y069p39d/jlGJZ7lgiOX+Vk5F8aEZBuTvo3G9/lsNWGODjHN7WtRHNYQXVFnj+NB5aLu
-         l1Jw==
-X-Gm-Message-State: AOAM530tNE2DpO8nkEAjswNXj7XaJkIrzaCY+nNZCWFr11388Na3uXip
-        5cF/HLekvzMAtGtRSf9bj4LC0A==
-X-Google-Smtp-Source: ABdhPJx5+hhbJDm2XrJujJyKTYGWkG0fawls1pBeitg1Zd5leR55VAdCRLM6oj6h+HEL1s7BJ19+tw==
-X-Received: by 2002:a1c:e18a:: with SMTP id y132mr35371489wmg.27.1593774385057;
-        Fri, 03 Jul 2020 04:06:25 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:7019:4e9b:2970:f860? ([2a01:e34:ed2f:f020:7019:4e9b:2970:f860])
-        by smtp.googlemail.com with ESMTPSA id r12sm13373362wrc.22.2020.07.03.04.06.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jul 2020 04:06:24 -0700 (PDT)
-Subject: Re: [PATCH 0/3] Fixes for stop monitoring disabled devices series
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Peter Kaestle <peter@piie.net>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Enrico Weigelt <info@metux.net>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        kernel@collabora.com
-References: <20200703104354.19657-1-andrzej.p@collabora.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <fc1bb7f5-2096-a604-8c30-81d34bf5b737@linaro.org>
-Date:   Fri, 3 Jul 2020 13:06:20 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1726039AbgGCLgE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Jul 2020 07:36:04 -0400
+Received: from mail-eopbgr70078.outbound.protection.outlook.com ([40.107.7.78]:53086
+        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726022AbgGCLgE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 3 Jul 2020 07:36:04 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=aGzxYTfBFXWKmng1cILt1e3H5aWNM3OORg9ITn3C8tBMLSP2JzdyGItO2I6M7UCNg6rcLGpzl9i0VQSG2csQlXkER8jfbwO8uwz7LAI0C+gr8ncy7+fvfTUCHf3DrVoyxO+ZkWmuQaAqQqtNz+t1HPcgOMAmWwvFFdv9PETwNYGSDKEL8Wmq6GE9DOlo7LMtYPDQ6Zj0XCsIl4z6M5q6ybq5UIU6Jfyryf300wI/yUuN8T3uBp1w8jKjCnlkIDneLO0LVKq6H3o5xJmfpJ9Hbe4EOVEpdQ0h9f31xBIreWTAlMhe56G7cKT7bCeSW4xIbUw8yxrVnHpohvaD6VFB9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=B4WXghm2qnT3HD9KDKA0r8RfhzYC44ID+xsS0APwG9A=;
+ b=XICDh7SvFSwL34I2aNWyDf/jqdpbIwHRUn2zM83tM3RCMFvsvEJ/yGX+Urk9D21SjowT/j/ifV7WXk24WcbjQl6FhFdI1fR/2wo+q5KpugUk8Kf2b5BB8M/Sys4lR9ia1pynMlxksYG8v8aEBRFkm7irdxprzuhZrMKWtvZ1QD98nd1BmsG3BgpSV5vz9OCLprPghv1OIH5L5DstETpYz5GFHI2IZ6RAvH/6YQrnGe1nh2sVFPEPwTLMHvWmLwO/39+RbYZOOU6S9/cvvhPKaus9bfe1YPWxCTkKlF1bW27Tl9jLX+coWMBVa3DLzHfukR0uX+hNfBpWIQhfNAzsCg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=B4WXghm2qnT3HD9KDKA0r8RfhzYC44ID+xsS0APwG9A=;
+ b=C/Acprs7/uSTySKXQ08v4SptaUbKZhNRx34vC1JK4myMB3h/6Vs/ONbqnmNFea68jNQ95sihFSkamTuSXaKOajSg0fPZu7ysd7jk9uBqOtdEiUyNcGRtLKE6hTrb0bNwnS0bwYbZLtDe4vJTUSQwuaI8TVsp2eNcimyiuq86ugU=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com (2603:10a6:208:130::22)
+ by AM0PR04MB3953.eurprd04.prod.outlook.com (2603:10a6:208:5b::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3153.24; Fri, 3 Jul
+ 2020 11:36:00 +0000
+Received: from AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::7dda:a30:6b25:4d45]) by AM0PR04MB5636.eurprd04.prod.outlook.com
+ ([fe80::7dda:a30:6b25:4d45%7]) with mapi id 15.20.3153.028; Fri, 3 Jul 2020
+ 11:36:00 +0000
+Date:   Fri, 3 Jul 2020 17:05:50 +0530
+From:   Calvin Johnson <calvin.johnson@oss.nxp.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jeremy Linton <jeremy.linton@arm.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Jon <jon@solid-run.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        netdev <netdev@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux.cj@gmail.com, Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [net-next PATCH v2 2/3] Documentation: ACPI: DSD: Document MDIO
+ PHY
+Message-ID: <20200703113550.GA16676@lsv03152.swis.in-blr01.nxp.com>
+References: <20200701061233.31120-1-calvin.johnson@oss.nxp.com>
+ <20200701061233.31120-3-calvin.johnson@oss.nxp.com>
+ <CAHp75VfxpogiUhiwGDaj3wT5BN7U4s9coMd3Rw10zX=sxSn6Lg@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VfxpogiUhiwGDaj3wT5BN7U4s9coMd3Rw10zX=sxSn6Lg@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ClientProxiedBy: SG2PR06CA0213.apcprd06.prod.outlook.com
+ (2603:1096:4:68::21) To AM0PR04MB5636.eurprd04.prod.outlook.com
+ (2603:10a6:208:130::22)
 MIME-Version: 1.0
-In-Reply-To: <20200703104354.19657-1-andrzej.p@collabora.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from lsv03152.swis.in-blr01.nxp.com (14.142.151.118) by SG2PR06CA0213.apcprd06.prod.outlook.com (2603:1096:4:68::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3153.20 via Frontend Transport; Fri, 3 Jul 2020 11:35:56 +0000
+X-Originating-IP: [14.142.151.118]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: efd30204-5701-4ab4-5e97-08d81f45423e
+X-MS-TrafficTypeDiagnostic: AM0PR04MB3953:
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR04MB39533600773ECE50C9696EC2D26A0@AM0PR04MB3953.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
+X-Forefront-PRVS: 045315E1EE
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: JPqQVgTr//o4EcwAhuqbUGoj3wj9VKdyWRnhNfjGbdo9spsRMCdD6UVo905Y35CkHF3FLuuSHpoktlxzZiXsviKvkO+CazZIQQ+hBmAaonnmQ/3aJ61yFn5HGpgzvbEYz/A62JYP6R2sDO5dR4a1gTnvPchYtvvahmPCTlj34frpY2o3MXfiaiYHnZxcDDATuT0AbWZrX7bLNGPnO/LzoWMibDEKNr0j8IV7AgerkgAUvLLhqDLqcffv+9t85EXUF8q2ieayyq5FUCaunMX1lvjyrypMAojLX0MQUIyK5aXVXVJua2WUz/RfLk5WXwisd8olVDZB/l1UpNL35+Xwpu/s/WTvEsE8I8uZd2nl6CIZm/N/srywGn5hY4ZMyHun7It0d6ukOYq3WpvLc3rbGKSRBMGU85d28poLPX19bj0C/5gE5XIG68Gf5pY40bugUBw0pqscJipcs8aWXb5LxQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(396003)(376002)(39860400002)(346002)(366004)(136003)(7416002)(478600001)(54906003)(316002)(956004)(7696005)(52116002)(966005)(33656002)(8676002)(16526019)(66556008)(66476007)(66946007)(8936002)(6506007)(4326008)(6666004)(1006002)(186003)(1076003)(44832011)(26005)(5660300002)(53546011)(2906002)(9686003)(6916009)(86362001)(55236004)(55016002)(110426005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: iERKr/v2I8pVPRCIS8fvoFSmm9uJeCfNHQiZ3wCJTZMmBcBzQbNpdxEPADwJDWLxbPU5NXyHFoPE5wDNc6nPREg7Tt8E/6igOuO+lQ34KYLlDViqyh2n++NJFJkd0sGNHEEB+kdJ1tqsJ3IUZiSu3whQbn/zk0JT9Y+PQg5cJnPoPxmqe+56dfR5ZWwlFzTA6cB+4mwgReUQ+pCkHR/eLS9drMcz5hZ4l4iDDLzlWk999UyGLZANOUMiqD2bG4uMHR3KXv3Tm4rWnY7fKvUtLOHHZ9K6xng4x9Z7BH3r0CldXrzNEV1tsxB1nFinP2XyDWEdxI1bx2P2IhDFDi9bsOTo4hgkyiywqWV2/p8Tz1SczXHEGDll8n9VAuN63IjhdOKl6/EY6gpSdaP5c2xKZxa6Ee5FWlvJGOIbHVokt+ArLK3sMzluh326h4Z+v1tWUPnq8TgwVwsiCeMnuyHoTht39E3Yh6cZ/0eV/veQPNt8UuubUZXaWuy5l/UZrsvE
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: efd30204-5701-4ab4-5e97-08d81f45423e
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5636.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2020 11:36:00.5308
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MTQ6W1XAWE1Pg5+eV2/IRIpAyt3kQoDQEHjglLNOZ6b9ZU5+3xFoNcyqjAEMJBV7bNS7CSpMftZueF9tNXqydw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB3953
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 03/07/2020 12:43, Andrzej Pietrasiewicz wrote:
-> This short series contains fixes for "Stop monitoring disabled devices"
-> series https://www.spinics.net/lists/arm-kernel/msg817861.html
+On Wed, Jul 01, 2020 at 01:27:43PM +0300, Andy Shevchenko wrote:
+> On Wed, Jul 1, 2020 at 9:13 AM Calvin Johnson
+> <calvin.johnson@oss.nxp.com> wrote:
+> >
+> > Introduce ACPI mechanism to get PHYs registered on a MDIO bus and
+> > provide them to be connected to MAC.
+> >
+> > An ACPI node property "mdio-handle" is introduced to reference the
+> > MDIO bus on which PHYs are registered with autoprobing method used
+> > by mdiobus_register().
 > 
-> Invocation of thermal_zone_device_is_enabled() in acpi/thermal is now
-> redundant, because thermal_zone_device_update() now is capable of
-> handling disabled devices.
+> ...
 > 
-> In imx's ->get_temp() the lock must not be taken, otherwise a deadlock
-> happens. The decision whether explicitly running a measurement cycle
-> is needed is taken based on driver's local irq_enabled variable.
+> > +                    Package (2) {"mdio-handle", Package (){\_SB.MDI0}}
 > 
-> Finally, thermal_zone_device_is_enabled() is made available to the
-> core only, as there are no driver users of it.
+> Reference as a package? Hmm... Is it really possible to have more than
+> one handle here?
+
+I didn't get your question here. Is it becasue of the (2)? I'll remove them
+as they are automatically counted.
+
+But if it is about the reference as a package. We've other similar examples.
+One of them here:
+https://github.com/tianocore/edk2-platforms/blob/master/Silicon/Hisilicon/Hi1610/Hi1610AcpiTables/Dsdt/D03Hns.asl#L581
+
 > 
-> Andrzej Pietrasiewicz (3):
->   acpi: thermal: Don't call thermal_zone_device_is_enabled()
->   thermal: imx: Use driver's local data to decide whether to run a
->     measurement
->   thermal: Make thermal_zone_device_is_enabled() available to core only
+> ...
 > 
->  drivers/acpi/thermal.c         | 3 ---
->  drivers/thermal/imx_thermal.c  | 7 ++++---
->  drivers/thermal/thermal_core.c | 1 -
->  drivers/thermal/thermal_core.h | 2 ++
->  include/linux/thermal.h        | 5 -----
->  5 files changed, 6 insertions(+), 12 deletions(-)
-
-Is this series easily merge-able with the other series?
-
-
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+> > +                   Package (2) {"phy-channel", 2},
+> > +                   Package (2) {"phy-mode", "rgmii-id"},
+> > +                   Package (2) {"mdio-handle", Package (){\_SB.MDI0}}
+> 
+> And drop all these 2s. They are counted automatically by `iasl`.
+> 
+Thanks
+Calvin
