@@ -2,60 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08FC4214C05
-	for <lists+linux-acpi@lfdr.de>; Sun,  5 Jul 2020 13:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B11EA214C20
+	for <lists+linux-acpi@lfdr.de>; Sun,  5 Jul 2020 13:45:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726631AbgGEL1p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 5 Jul 2020 07:27:45 -0400
-Received: from mail-40135.protonmail.ch ([185.70.40.135]:56748 "EHLO
-        mail-40135.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726454AbgGEL1p (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 5 Jul 2020 07:27:45 -0400
-Date:   Sun, 05 Jul 2020 11:20:18 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1593948027;
-        bh=ludDIecIecLRERf3nK6GDknuNZGkNiPAOtJ+rBhWNR8=;
-        h=Date:To:From:Reply-To:Subject:From;
-        b=h7J6MyUySr0jZ9mV9cgtVFTp1fsYlXXBKmz5Ol7FbyKrgij47f2rCV0YfMaiu2wz+
-         0k+7W0D+GmKqf6qhzcX6pta/Bi/pCWEPIXZwiCxR3e1EzLX0XumPkxlpppbykZRCxU
-         3KgExgYnxGkHEe4HBO6Zn3+oCd1W3xUKweowIhtA=
-To:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Subject: [QUESTION] multiple EC transactions atomically
-Message-ID: <9ILq1c0IEdOEJutX0acOTF19CCrqrvtwzfbFNAhQ7k2jWX4eNcmW8b82OgLBdrj44kTxRz0_GYKTbYyGGYwNMI2QVjwGgBcSjHSDl2Qc13A=@protonmail.com>
+        id S1726821AbgGELpi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 5 Jul 2020 07:45:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54868 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726454AbgGELpi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 5 Jul 2020 07:45:38 -0400
+Received: from kernel.org (unknown [87.71.40.38])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 52362206B6;
+        Sun,  5 Jul 2020 11:45:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593949538;
+        bh=1vDyPYB8P+w9epdFK6knYfZZJXgI1oimuZxcouCLZnI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UgEEh28GtfHOApvp+2oPFQuqFen4lGbGwNelUp54OSjCgqF/afgYLpDnHQoUcR8BG
+         b5sXaiFnFI9blHvXHvcgXCNoDUYwFQT+CSqpvzHAc/totY5KOJzjX34SgVTIIQ6+jC
+         HSb7NP5vB0bsLkNI4tAgkgv84Kx2cp0UuZ1vObnI=
+Date:   Sun, 5 Jul 2020 14:45:29 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        linux-doc@vger.kernel.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Dave Martin <Dave.Martin@arm.com>
+Subject: Re: [PATCH 0/3] Documentation: arm64: eliminate duplicated words
+Message-ID: <20200705114529.GE2999148@kernel.org>
+References: <20200703205110.29873-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=7.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on mail.protonmail.ch
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200703205110.29873-1-rdunlap@infradead.org>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello all,
-
-I am looking for a way, preferably with the acpi/ec driver, to execute mult=
-iple EC transactions atomically (with respect to other transactions). Unfor=
-tunately, I have failed to find any promising functions in that driver. Ple=
-ase let me know if I have missed anything.
-
-The reason I would like to do it is that I have a computer in which the EC =
-appears to have paged memory, and a series of commands must be executed to =
-read/write data in arbitrary pages, and I would like to guarantee that they=
- are executed as one atomic block.
-
-If there is no facility that would allow it to be done, then am I right in =
-assuming that making drivers/acpi/ec.c:acpi_ec_transaction accept multiple =
-transactions, that it then executes sequentially while holding the mutex, s=
-hould achieve the goal without much difficulty? I think that could work, ho=
-wever, I am not really familiar with ACPI or the EC driver.
-
-I would greatly appreciate any help, feedback. Thank your for your time.
+On Fri, Jul 03, 2020 at 01:51:07PM -0700, Randy Dunlap wrote:
+> Drop doubled words in Documentation/arm64/.
+> 
+> 
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: linux-doc@vger.kernel.org
+> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> Cc: Hanjun Guo <guohanjun@huawei.com>
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Dave Martin <Dave.Martin@arm.com>
 
 
-Barnab=C3=A1s P=C5=91cze
+Acked-by: Mike Rapoport <rppt@linux.ibm.com>
 
+> 
+>  Documentation/arm64/acpi_object_usage.rst |    2 +-
+>  Documentation/arm64/arm-acpi.rst          |    2 +-
+>  Documentation/arm64/sve.rst               |    2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+
+-- 
+Sincerely yours,
+Mike.
