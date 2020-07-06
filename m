@@ -2,55 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39411216168
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jul 2020 00:19:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E724821619C
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jul 2020 00:32:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727792AbgGFWTC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Jul 2020 18:19:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43900 "EHLO
+        id S1727064AbgGFWc2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Jul 2020 18:32:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726729AbgGFWTC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Jul 2020 18:19:02 -0400
+        with ESMTP id S1726889AbgGFWc0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Jul 2020 18:32:26 -0400
 Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF741C061794
-        for <linux-acpi@vger.kernel.org>; Mon,  6 Jul 2020 15:19:01 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id q7so34246134ljm.1
-        for <linux-acpi@vger.kernel.org>; Mon, 06 Jul 2020 15:19:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57D68C061755
+        for <linux-acpi@vger.kernel.org>; Mon,  6 Jul 2020 15:32:26 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id h22so40375871lji.9
+        for <linux-acpi@vger.kernel.org>; Mon, 06 Jul 2020 15:32:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=+g8b8UDutwpjfN6lizjtfC7IoMCTSDjsjPJug8YnTgg=;
-        b=KUh+nyqnQkj9RcybDE5PeCJrAdjLCL6MfvAIePJyXHNRX0F8FKTnKIeG1/vPX6JbR0
-         ZkH2vounWJTv0AHW++nq9HTK5t0tj2w7jkJDno0f/aPPilRdMq6kUjJLsLllyc6nZzA9
-         gFUpa3s60zoHwqlYS1ibCaFMDpBcrs4toKYyR9eGRtgpjbgUrfwu2ZQtV4h54mS9Dk8Q
-         lg38TgKrJ4Lvli78idB1ExZ9K7zVg+JISjzyd/fRrzPpJ9bQnYZblkHcGZJkJsuDKxMs
-         /oeUvTOZc6v1rGutbgXAGNSFIyPxvgBklnWYlKvi0d+6iWbY9jFw/OyGoH076u85nh1D
-         9QPQ==
+        bh=7jWD5vHooiaDqnTbtnYwVQHOG6k2FU8e2JhUtfDscDY=;
+        b=PHUr0UIPdkWgLSJepxSrub2FtIg2X2XWPcXgvp5CWfRhIf0zvVCVAlmLPDlfRGfjWV
+         ZydzybHf4FhrtbyDwGy0pM3rTAg6xRmq5dFmZ/8/Q157z6DJlScHF92HL2p1Af2ThFwL
+         X08QczssEp3vy1f0JcKXWpHtWn5TQeJewcttuw3P0jnnd/2viQRlDytRJSa0c0+KSrGw
+         5lLYlDaiK0VF79m0s+BT2kYwJ3RepZZe9PMNgm0Cc8o3TqLuUZz7zlYxxJpE78n5GkUC
+         BkkmVbwVdsduUk9ax/y1RWZ2Lu0dk0zZDF/1Sp4oZSatL2vfgewmEsCuw8egv+yiBUps
+         7Lkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=+g8b8UDutwpjfN6lizjtfC7IoMCTSDjsjPJug8YnTgg=;
-        b=o6raztRu2CX5hZyq45KpIGG6cWDpiPH71E1Qa7wl1UUcnG7dEIjRIuwPkESjkDbzoZ
-         pNzcakcmqcvN8m+elLydBfKhnZNSa/aLT1orLxr3jFGYtBnARDYcT2zczYXgfR/f6yjR
-         73BCSKvbmOpr2I2NKf7L8U75iSJ/402bzmY5ktabkct2a7DB5oUDLglbkENKLSXeZKyt
-         zfK9qsfFHAlJHmNRMSsywWblW6OtTTWpynAfoYnrjvOGv2np5Rkws5Yq3a3tDDAa4CTK
-         uGdaCQAXlX2EXE6s8Wm18rWLGSCcW09nerRn0ChheZqearz8RiZJg+QmSouhU+tJn0AL
-         g/5A==
-X-Gm-Message-State: AOAM5328VFgRQEiE9xo9wRYoM4l7+sc9U9eVdNvwJBYPMyKHHxl/h+w/
-        BqRFTgTzGUyYD6P72/smbe4UxGDtfqlVov/0ElAfbg==
-X-Google-Smtp-Source: ABdhPJyJihOFDUusDuGurRmf+ynZe/E6+YCOUFBYwFoV/94U5zmmw6gWFYJpZfrD7hx040m64pq6G+pFjE5iBr5QmJw=
-X-Received: by 2002:a2e:b5a8:: with SMTP id f8mr27313685ljn.247.1594073940036;
- Mon, 06 Jul 2020 15:19:00 -0700 (PDT)
+        bh=7jWD5vHooiaDqnTbtnYwVQHOG6k2FU8e2JhUtfDscDY=;
+        b=VAfdO+erVO81Qa1SMCvQw5TrQcmDPORPPeQEwVW5LDEsFGdXbnOpfUptfkuTXSGoN6
+         eKfFKa2ussraIvCGflrXM3a+rDr0p8YraErvTcdKYj81bEA1gBNOm7qqjdK0IDzafk+Y
+         QjmQgfPJF02MP2CTRxQHV6Yn5DF3rES/VdpEe1NE7hbmdJIBAZAOymcKXptL0gs9GyST
+         YaYEQL6Oz3+gewiPR4T8+Cut0YwX65M4vkSehdMXYELB4LNTB+hg/j2X7e4FSiteuFz6
+         FnVabzwdHg2QJy/T0LoOHx4aQOXNBAEw2zjfOqMEWy+DtrM4wPQDDXZJYhaam3wrTZen
+         0JRA==
+X-Gm-Message-State: AOAM533DXeOJJVfmphGh6tIXh4LXOhl8hp2mli3bdJEsTvGOfII+Y0zB
+        d8/uqxMC4UAjxYsy5qqsOp+TyXAlv25N371JId8B6A==
+X-Google-Smtp-Source: ABdhPJzB21KJ4LK/FE4YW6ebuBjyCZjP1YIA1Wom+fxwjuhACfVBKSC4uOygcHbB8iMIMSJngmUbQ633jaaJQ+KyCc0=
+X-Received: by 2002:a05:651c:550:: with SMTP id q16mr28254147ljp.188.1594074744364;
+ Mon, 06 Jul 2020 15:32:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200630044943.3425049-1-rajatja@google.com> <20200704114452.GA15530@amd>
-In-Reply-To: <20200704114452.GA15530@amd>
+References: <20200630044943.3425049-3-rajatja@google.com> <20200706163805.GA120024@bjorn-Precision-5520>
+In-Reply-To: <20200706163805.GA120024@bjorn-Precision-5520>
 From:   Rajat Jain <rajatja@google.com>
-Date:   Mon, 6 Jul 2020 15:18:23 -0700
-Message-ID: <CACK8Z6HP00o=rextd0-X-u2aH72PNU3t6zEczC2GGO_QfGhUcA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/7] Tighten PCI security, expose dev location in sysfs
-To:     Pavel Machek <pavel@denx.de>
+Date:   Mon, 6 Jul 2020 15:31:47 -0700
+Message-ID: <CACK8Z6FhWyZOJvkrPcHacyvJucGMupOpL=Jm8BpyO7wPrZ_DQA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/7] PCI: Set "untrusted" flag for truly external
+ devices only
+To:     Bjorn Helgaas <helgaas@kernel.org>
 Cc:     David Woodhouse <dwmw2@infradead.org>,
         Lu Baolu <baolu.lu@linux.intel.com>,
         Joerg Roedel <joro@8bytes.org>,
@@ -91,47 +92,203 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jul 4, 2020 at 4:44 AM Pavel Machek <pavel@denx.de> wrote:
->
-> Hi!
->
-> > * The first 3 patches tighten the PCI security using ACS, and take care
-> >   of a border case.
-> > * The 4th patch takes care of PCI bug.
-> > * 5th and 6th patches expose a device's location into the sysfs to allow
-> >   admin to make decision based on that.
->
-> I see no patch for Documentation -- new sysfs interfaces should be
-> documented for 5/6.
+Hello,
 
-Yes, sorry. The patches 5/6 have run into discussion and it looks are
-not acceptable at the moment.
+On Mon, Jul 6, 2020 at 9:38 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> On Mon, Jun 29, 2020 at 09:49:38PM -0700, Rajat Jain wrote:
+> > The "ExternalFacing" devices (root ports) are still internal devices that
+> > sit on the internal system fabric and thus trusted. Currently they were
+> > being marked untrusted.
+> >
+> > This patch uses the platform flag to identify the external facing devices
+> > and then use it to mark any downstream devices as "untrusted". The
+> > external-facing devices themselves are left as "trusted". This was
+> > discussed here: https://lkml.org/lkml/2020/6/10/1049
+>
+> Use the imperative mood in the commit log, as you did for 1/7.  E.g.,
+> instead of "This patch uses ...", say "Use the platform flag ...".
+> That helps all the commit logs read nicely together.
+>
+> I think this patch makes two changes that should be separated:
+>
+>   - Treat "external-facing" devices as internal.
+>
+>   - Look for the "external-facing" or "ExternalFacing" property on
+>     Switch Downstream Ports as well as Root Ports.
+>
+> > Signed-off-by: Rajat Jain <rajatja@google.com>
+> > ---
+> > v2: cosmetic changes in commit log
+> >
+> >  drivers/iommu/intel/iommu.c |  2 +-
+> >  drivers/pci/of.c            |  2 +-
+> >  drivers/pci/pci-acpi.c      | 13 +++++++------
+> >  drivers/pci/probe.c         |  2 +-
+> >  include/linux/pci.h         |  8 ++++++++
+> >  5 files changed, 18 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> > index d759e7234e982..1ccb224f82496 100644
+> > --- a/drivers/iommu/intel/iommu.c
+> > +++ b/drivers/iommu/intel/iommu.c
+> > @@ -4743,7 +4743,7 @@ static inline bool has_untrusted_dev(void)
+> >       struct pci_dev *pdev = NULL;
+> >
+> >       for_each_pci_dev(pdev)
+> > -             if (pdev->untrusted)
+> > +             if (pdev->untrusted || pdev->external_facing)
+>
+> I think checking pdev->external_facing is enough for this case,
+> because it's impossible to have pdev->untrusted unless a parent has
+> pdev->external_facing.
+
+Agree.
+
+>
+> IIUC, this usage is asking "might we ever have an external device?"
+> as opposed to the "pdev->untrusted" uses, which are asking "is *this*
+> device an external device?"
+
+Agree.
+
+>
+> >                       return true;
+> >
+> >       return false;
+> > diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+> > index 27839cd2459f6..22727fc9558df 100644
+> > --- a/drivers/pci/of.c
+> > +++ b/drivers/pci/of.c
+> > @@ -42,7 +42,7 @@ void pci_set_bus_of_node(struct pci_bus *bus)
+> >       } else {
+> >               node = of_node_get(bus->self->dev.of_node);
+> >               if (node && of_property_read_bool(node, "external-facing"))
+> > -                     bus->self->untrusted = true;
+> > +                     bus->self->external_facing = true;
+> >       }
+> >
+> >       bus->dev.of_node = node;
+> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> > index 7224b1e5f2a83..492c07805caf8 100644
+> > --- a/drivers/pci/pci-acpi.c
+> > +++ b/drivers/pci/pci-acpi.c
+> > @@ -1213,22 +1213,23 @@ static void pci_acpi_optimize_delay(struct pci_dev *pdev,
+> >       ACPI_FREE(obj);
+> >  }
+> >
+> > -static void pci_acpi_set_untrusted(struct pci_dev *dev)
+> > +static void pci_acpi_set_external_facing(struct pci_dev *dev)
+> >  {
+> >       u8 val;
+> >
+> > -     if (pci_pcie_type(dev) != PCI_EXP_TYPE_ROOT_PORT)
+> > +     if (pci_pcie_type(dev) != PCI_EXP_TYPE_ROOT_PORT &&
+> > +         pci_pcie_type(dev) != PCI_EXP_TYPE_DOWNSTREAM)
+>
+> This looks like a change worthy of its own patch.  We used to look for
+> "ExternalFacingPort" only on Root Ports; now we'll also do it for
+> Switch Downstream Ports.
+
+Can do. (please see below)
+
+>
+> Can you include DT and ACPI spec references if they exist?  I found
+> this mention:
+> https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports
+> which actually says it should only be implemented for Root Ports.
+
+I actually have no references. It seems to me that the microsoft spec
+assumes that all external ports must be implemented on root ports, but
+I think it would be equally fair for systems with PCIe switches to
+implement one on one of their switch downstream ports. I don't have an
+immediate use of this anyway, so if you think this should rather wait
+unless someone really has this case, this can wait. Let me know.
+
+>
+> It also mentions a "DmaProperty" that looks related.  Maybe Linux
+> should also pay attention to this?
+
+Interesting. Since this is not in use currently by the kernel as well
+as not exposed by (our) BIOS, I don't have an immediate use case for
+this. I'd like to defer this for later (as-the-need-arises).
+
+>
+> If we do change this, should we use pcie_downstream_port(), which
+> includes PCI-to-PCIe bridges as well?
+
+Sure, can do that.
+
+>
+> >               return;
+> >       if (device_property_read_u8(&dev->dev, "ExternalFacingPort", &val))
+> >               return;
+> >
+> >       /*
+> > -      * These root ports expose PCIe (including DMA) outside of the
+> > -      * system so make sure we treat them and everything behind as
+> > +      * These root/down ports expose PCIe (including DMA) outside of the
+> > +      * system so make sure we treat everything behind them as
+> >        * untrusted.
+> >        */
+> >       if (val)
+> > -             dev->untrusted = 1;
+> > +             dev->external_facing = 1;
+> >  }
+> >
+> >  static void pci_acpi_setup(struct device *dev)
+> > @@ -1240,7 +1241,7 @@ static void pci_acpi_setup(struct device *dev)
+> >               return;
+> >
+> >       pci_acpi_optimize_delay(pci_dev, adev->handle);
+> > -     pci_acpi_set_untrusted(pci_dev);
+> > +     pci_acpi_set_external_facing(pci_dev);
+> >       pci_acpi_add_edr_notifier(pci_dev);
+> >
+> >       pci_acpi_add_pm_notifier(adev, pci_dev);
+> > diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> > index 6d87066a5ecc5..8c40c00413e74 100644
+> > --- a/drivers/pci/probe.c
+> > +++ b/drivers/pci/probe.c
+> > @@ -1552,7 +1552,7 @@ static void set_pcie_untrusted(struct pci_dev *dev)
+> >        * untrusted as well.
+> >        */
+> >       parent = pci_upstream_bridge(dev);
+> > -     if (parent && parent->untrusted)
+> > +     if (parent && (parent->untrusted || parent->external_facing))
+> >               dev->untrusted = true;
+> >  }
+> >
+> > diff --git a/include/linux/pci.h b/include/linux/pci.h
+> > index a26be5332bba6..fe1bc603fda40 100644
+> > --- a/include/linux/pci.h
+> > +++ b/include/linux/pci.h
+> > @@ -432,6 +432,14 @@ struct pci_dev {
+> >        * mappings to make sure they cannot access arbitrary memory.
+> >        */
+> >       unsigned int    untrusted:1;
+> > +     /*
+> > +      * Devices are marked as external-facing using info from platform
+> > +      * (ACPI / devicetree). An external-facing device is still an internal
+> > +      * trusted device, but it faces external untrusted devices. Thus any
+> > +      * devices enumerated downstream an external-facing device is marked
+> > +      * as untrusted.
+>
+> This comment has a subject/verb agreement problem.
+
+I assume you meant s/is/are/ in last sentence. Will do.
 
 Thanks,
 
 Rajat
 
+
 >
->                                                                         Pavel
->
-> >  drivers/base/core.c         | 35 +++++++++++++++++++++++++++++++
-> >  drivers/iommu/intel/iommu.c | 31 ++++++++++++++++++---------
-> >  drivers/pci/ats.c           |  2 +-
-> >  drivers/pci/bus.c           | 13 ++++++------
-> >  drivers/pci/of.c            |  2 +-
-> >  drivers/pci/p2pdma.c        |  2 +-
-> >  drivers/pci/pci-acpi.c      | 13 ++++++------
-> >  drivers/pci/pci-driver.c    |  1 +
-> >  drivers/pci/pci.c           | 34 ++++++++++++++++++++++++++----
-> >  drivers/pci/pci.h           |  3 ++-
-> >  drivers/pci/probe.c         | 20 +++++++++++-------
-> >  drivers/pci/quirks.c        | 19 +++++++++++++----
-> >  include/linux/device.h      | 42 +++++++++++++++++++++++++++++++++++++
-> >  include/linux/device/bus.h  |  8 +++++++
-> >  include/linux/pci.h         | 13 ++++++------
-> >  15 files changed, 191 insertions(+), 47 deletions(-)
+> > +      */
+> > +     unsigned int    external_facing:1;
+> >       unsigned int    broken_intx_masking:1;  /* INTx masking can't be used */
+> >       unsigned int    io_window_1k:1;         /* Intel bridge 1K I/O windows */
+> >       unsigned int    irq_managed:1;
+> > --
+> > 2.27.0.212.ge8ba1cc988-goog
 > >
->
-> --
-> (english) http://www.livejournal.com/~pavelmachek
-> (cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html
