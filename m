@@ -2,66 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90F99214F69
-	for <lists+linux-acpi@lfdr.de>; Sun,  5 Jul 2020 22:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1472721514D
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jul 2020 05:14:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728294AbgGEUjA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 5 Jul 2020 16:39:00 -0400
-Received: from ms.lwn.net ([45.79.88.28]:51734 "EHLO ms.lwn.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728146AbgGEUi7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 5 Jul 2020 16:38:59 -0400
-Received: from lwn.net (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id 21ADE823;
-        Sun,  5 Jul 2020 20:38:59 +0000 (UTC)
-Date:   Sun, 5 Jul 2020 14:38:58 -0600
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Dave Martin <Dave.Martin@arm.com>
-Subject: Re: [PATCH 0/3] Documentation: arm64: eliminate duplicated words
-Message-ID: <20200705143858.4cd8491e@lwn.net>
-In-Reply-To: <20200703205110.29873-1-rdunlap@infradead.org>
-References: <20200703205110.29873-1-rdunlap@infradead.org>
-Organization: LWN.net
+        id S1728659AbgGFDNX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 5 Jul 2020 23:13:23 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:12422 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728641AbgGFDNX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 5 Jul 2020 23:13:23 -0400
+X-UUID: 5b6e781e7a5a4890a4b688aee2f9ed50-20200706
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=rI2cSHjQuS/pF7F/Z4krS5142urYzV5+3cIRuS8ygxo=;
+        b=inyypq31fagcP7tD51yXniVb6xe+PN9WY1mWviZPj5s0E/4jUyf6C2sdV1MjdpifQoNOwrbV5RMxEq7alFKemWLr2sk/Wa99WO5F3SU2sqAo+8izSGVEXMnIH1hJG98IzazSheWQet61m5gHorkSFdGsEij4aNHwuQMzwDQU5R4=;
+X-UUID: 5b6e781e7a5a4890a4b688aee2f9ed50-20200706
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <neal.liu@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 209215162; Mon, 06 Jul 2020 11:13:19 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs02n1.mediatek.inc (172.21.101.77) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Mon, 6 Jul 2020 11:13:16 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 6 Jul 2020 11:13:18 +0800
+From:   Neal Liu <neal.liu@mediatek.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sami Tolvanen <samitolvanen@google.com>
+CC:     Neal Liu <neal.liu@mediatek.com>, <linux-acpi@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        lkml <linux-kernel@vger.kernel.org>, <wsd_upstream@mediatek.com>
+Subject: [PATCH v2] cpuidle: Fix CFI failure
+Date:   Mon, 6 Jul 2020 11:13:15 +0800
+Message-ID: <1594005196-16327-1-git-send-email-neal.liu@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri,  3 Jul 2020 13:51:07 -0700
-Randy Dunlap <rdunlap@infradead.org> wrote:
+Y2hhbmdlcyBzaW5jZSB2MToNCi0gYWRkIG1vcmUgZGVzY3JpcHRpb24gaW4gY29tbWl0IG1lc3Nh
+Z2UuDQoNCioqKiBCTFVSQiBIRVJFICoqKg0KDQpOZWFsIExpdSAoMSk6DQogIGNwdWlkbGU6IGNo
+YW5nZSBlbnRlcl9zMmlkbGUoKSBwcm90b3R5cGUNCg0KIGRyaXZlcnMvYWNwaS9wcm9jZXNzb3Jf
+aWRsZS5jICAgfCA2ICsrKystLQ0KIGRyaXZlcnMvY3B1aWRsZS9jcHVpZGxlLXRlZ3JhLmMgfCA4
+ICsrKysrLS0tDQogZHJpdmVycy9pZGxlL2ludGVsX2lkbGUuYyAgICAgICB8IDYgKysrKy0tDQog
+aW5jbHVkZS9saW51eC9jcHVpZGxlLmggICAgICAgICB8IDYgKysrLS0tDQogNCBmaWxlcyBjaGFu
+Z2VkLCAxNiBpbnNlcnRpb25zKCspLCAxMCBkZWxldGlvbnMoLSkNCg0KLS0gDQoyLjE4LjANCg==
 
-> Drop doubled words in Documentation/arm64/.
-> 
-> 
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: linux-doc@vger.kernel.org
-> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> Cc: Hanjun Guo <guohanjun@huawei.com>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
-> Cc: linux-acpi@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Dave Martin <Dave.Martin@arm.com>
-> 
->  Documentation/arm64/acpi_object_usage.rst |    2 +-
->  Documentation/arm64/arm-acpi.rst          |    2 +-
->  Documentation/arm64/sve.rst               |    2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
-
-Applied, thanks.
-
-jon
