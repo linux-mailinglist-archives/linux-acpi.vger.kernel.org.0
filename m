@@ -2,135 +2,220 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09EB021514F
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jul 2020 05:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5173215A17
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jul 2020 16:57:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728710AbgGFDNf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 5 Jul 2020 23:13:35 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:22431 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728709AbgGFDNe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 5 Jul 2020 23:13:34 -0400
-X-UUID: 961b5db1c8e74aa99f2a2901d7107d2f-20200706
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=pKniBVcACW/1c0nv/+i0UMEccnPGSztmdOgnnm5URG0=;
-        b=IVmYEUN3vmp2vCR+13XeHdnDKPyhhE/A1MhmIXtWqBqo9n7y/LJFMlo1lrJr66e66tiWL5NXk3swUPlOdRxMdnpaUJ7rAlng+92hkbUoiDgjIexlFtPYHV3cD1TC30lk0BBWaYK9O/iZd+ShDjx5cgoaL5SdrkProUBNY4zolkE=;
-X-UUID: 961b5db1c8e74aa99f2a2901d7107d2f-20200706
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
-        (envelope-from <neal.liu@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1664098016; Mon, 06 Jul 2020 11:13:29 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs02n2.mediatek.inc (172.21.101.101) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 6 Jul 2020 11:13:16 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 6 Jul 2020 11:13:18 +0800
-From:   Neal Liu <neal.liu@mediatek.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sami Tolvanen <samitolvanen@google.com>
-CC:     Neal Liu <neal.liu@mediatek.com>, <linux-acpi@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        lkml <linux-kernel@vger.kernel.org>, <wsd_upstream@mediatek.com>
-Subject: [PATCH v2] cpuidle: change enter_s2idle() prototype
-Date:   Mon, 6 Jul 2020 11:13:16 +0800
-Message-ID: <1594005196-16327-2-git-send-email-neal.liu@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1594005196-16327-1-git-send-email-neal.liu@mediatek.com>
-References: <1594005196-16327-1-git-send-email-neal.liu@mediatek.com>
+        id S1729253AbgGFO5b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Jul 2020 10:57:31 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:35254 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729229AbgGFO5b (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Jul 2020 10:57:31 -0400
+Received: by mail-oi1-f194.google.com with SMTP id k4so32210917oik.2;
+        Mon, 06 Jul 2020 07:57:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=xsMo5LS5UqP0iJa64YwmoWgbDfJt8V7Y/MAehraBMKg=;
+        b=fdKqrNu9mN+SwAV2HEBp9LdosahyW1I9waZ62m87qMiDj/OorVqBHnPzwS8LZlqNN0
+         JDHGcLBLRNYXJ+2BfVn0C/YhZa9MArlIpzAtENt3oPKySTByaxQeX8Av7/F8Tw1rPS4c
+         Jjyx6B5C+UccswsBz51eVix/Lb8CrQV7U8ntMqNJw6HuEbAXXGxclWQPBZC1aCJy7jF4
+         akUsru6mZC33b3lyFwRaNLTa8CPebBk6rVJiQDqhGrOZZjHVQoennkiIs8aKvkktfdRA
+         1TyWIuBgCU9UPgDz1SuvtLlXHlV3OUoNrnFdabByjFhM+jdcLfkZHUlghFvkHghYD7pU
+         olRA==
+X-Gm-Message-State: AOAM533O4fdMDrq7wiWLqtLrBno5qvAkGNYAf+8bALlUvuAGZZiC+OJH
+        MLbrJHMDOXoi2TL54etTYjZOe/57BFqR0XvGHOg=
+X-Google-Smtp-Source: ABdhPJwEzTB2QXn2sVZNS3V46YYKse7FqLVD/BtTR6TwjIMSYqgvX6GIgV20x06VT5b+gw0IA4xXUA2LUyOZN9Y0cm0=
+X-Received: by 2002:a54:4e87:: with SMTP id c7mr5990792oiy.110.1594047450301;
+ Mon, 06 Jul 2020 07:57:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: 597824827A178439AFED3D26CDAD9F180957C939B943E4CAF103919A77FC3B032000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+References: <20200612204820.20111-1-david.e.box@linux.intel.com> <20200702225011.10932-1-david.e.box@linux.intel.com>
+In-Reply-To: <20200702225011.10932-1-david.e.box@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 6 Jul 2020 16:57:19 +0200
+Message-ID: <CAJZ5v0hC5OZQ+SpP4Pp99OvMjQCQ8M6_bkfMd_8nnuNNSh9q0w@mail.gmail.com>
+Subject: Re: [PATCH v4] drivers/nvme: Add support for ACPI StorageD3Enable property
+To:     "David E. Box" <david.e.box@linux.intel.com>
+Cc:     shyjumon.n@intel.com, Dan Williams <dan.j.williams@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Keith Busch <kbusch@kernel.org>,
+        Jens Axboe <axboe@fb.com>, Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-nvme <linux-nvme@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Q29udHJvbCBGbG93IEludGVncml0eShDRkkpIGlzIGEgc2VjdXJpdHkgbWVjaGFuaXNtIHRoYXQg
-ZGlzYWxsb3dzDQpjaGFuZ2VzIHRvIHRoZSBvcmlnaW5hbCBjb250cm9sIGZsb3cgZ3JhcGggb2Yg
-YSBjb21waWxlZCBiaW5hcnksDQptYWtpbmcgaXQgc2lnbmlmaWNhbnRseSBoYXJkZXIgdG8gcGVy
-Zm9ybSBzdWNoIGF0dGFja3MuDQoNCmluaXRfc3RhdGVfbm9kZSgpIGFzc2lnbiBzYW1lIGZ1bmN0
-aW9uIGNhbGxiYWNrIHRvIGRpZmZlcmVudA0KZnVuY3Rpb24gcG9pbnRlciBkZWNsYXJhdGlvbnMu
-DQoNCnN0YXRpYyBpbnQgaW5pdF9zdGF0ZV9ub2RlKHN0cnVjdCBjcHVpZGxlX3N0YXRlICppZGxl
-X3N0YXRlLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgY29uc3Qgc3RydWN0IG9mX2Rldmlj
-ZV9pZCAqbWF0Y2hlcywNCiAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0cnVjdCBkZXZpY2Vf
-bm9kZSAqc3RhdGVfbm9kZSkgeyAuLi4NCiAgICAgICAgaWRsZV9zdGF0ZS0+ZW50ZXIgPSBtYXRj
-aF9pZC0+ZGF0YTsgLi4uDQogICAgICAgIGlkbGVfc3RhdGUtPmVudGVyX3MyaWRsZSA9IG1hdGNo
-X2lkLT5kYXRhOyB9DQoNCkZ1bmN0aW9uIGRlY2xhcmF0aW9uczoNCg0Kc3RydWN0IGNwdWlkbGVf
-c3RhdGUgeyAuLi4NCiAgICAgICAgaW50ICgqZW50ZXIpIChzdHJ1Y3QgY3B1aWRsZV9kZXZpY2Ug
-KmRldiwNCiAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwN
-CiAgICAgICAgICAgICAgICAgICAgICBpbnQgaW5kZXgpOw0KDQogICAgICAgIHZvaWQgKCplbnRl
-cl9zMmlkbGUpIChzdHJ1Y3QgY3B1aWRsZV9kZXZpY2UgKmRldiwNCiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHN0cnVjdCBjcHVpZGxlX2RyaXZlciAqZHJ2LA0KICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgaW50IGluZGV4KTsgfTsNCg0KSW4gdGhpcyBjYXNlLCBlaXRoZXIgZW50
-ZXIoKSBvciBlbnRlcl9zMmlkbGUoKSB3b3VsZCBjYXVzZSBDRkkgY2hlY2sNCmZhaWxlZCBzaW5j
-ZSB0aGV5IHVzZSBzYW1lIGNhbGxlZS4NCg0KQWxpZ24gZnVuY3Rpb24gcHJvdG90eXBlIG9mIGVu
-dGVyKCkgc2luY2UgaXQgbmVlZHMgcmV0dXJuIHZhbHVlIGZvcg0Kc29tZSB1c2UgY2FzZXMuIFRo
-ZSByZXR1cm4gdmFsdWUgb2YgZW50ZXJfczJpZGxlKCkgaXMgbm8NCm5lZWQgY3VycmVudGx5Lg0K
-DQpTaWduZWQtb2ZmLWJ5OiBOZWFsIExpdSA8bmVhbC5saXVAbWVkaWF0ZWsuY29tPg0KLS0tDQog
-ZHJpdmVycy9hY3BpL3Byb2Nlc3Nvcl9pZGxlLmMgICB8ICAgIDYgKysrKy0tDQogZHJpdmVycy9j
-cHVpZGxlL2NwdWlkbGUtdGVncmEuYyB8ICAgIDggKysrKystLS0NCiBkcml2ZXJzL2lkbGUvaW50
-ZWxfaWRsZS5jICAgICAgIHwgICAgNiArKysrLS0NCiBpbmNsdWRlL2xpbnV4L2NwdWlkbGUuaCAg
-ICAgICAgIHwgICAgNiArKystLS0NCiA0IGZpbGVzIGNoYW5nZWQsIDE2IGluc2VydGlvbnMoKyks
-IDEwIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL3Byb2Nlc3Nvcl9p
-ZGxlLmMgYi9kcml2ZXJzL2FjcGkvcHJvY2Vzc29yX2lkbGUuYw0KaW5kZXggNzU1MzRjNS4uNmZm
-YjZjOSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvYWNwaS9wcm9jZXNzb3JfaWRsZS5jDQorKysgYi9k
-cml2ZXJzL2FjcGkvcHJvY2Vzc29yX2lkbGUuYw0KQEAgLTY1NSw4ICs2NTUsOCBAQCBzdGF0aWMg
-aW50IGFjcGlfaWRsZV9lbnRlcihzdHJ1Y3QgY3B1aWRsZV9kZXZpY2UgKmRldiwNCiAJcmV0dXJu
-IGluZGV4Ow0KIH0NCiANCi1zdGF0aWMgdm9pZCBhY3BpX2lkbGVfZW50ZXJfczJpZGxlKHN0cnVj
-dCBjcHVpZGxlX2RldmljZSAqZGV2LA0KLQkJCQkgICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRy
-diwgaW50IGluZGV4KQ0KK3N0YXRpYyBpbnQgYWNwaV9pZGxlX2VudGVyX3MyaWRsZShzdHJ1Y3Qg
-Y3B1aWRsZV9kZXZpY2UgKmRldiwNCisJCQkJICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwg
-aW50IGluZGV4KQ0KIHsNCiAJc3RydWN0IGFjcGlfcHJvY2Vzc29yX2N4ICpjeCA9IHBlcl9jcHUo
-YWNwaV9jc3RhdGVbaW5kZXhdLCBkZXYtPmNwdSk7DQogDQpAQCAtNjc0LDYgKzY3NCw4IEBAIHN0
-YXRpYyB2b2lkIGFjcGlfaWRsZV9lbnRlcl9zMmlkbGUoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpk
-ZXYsDQogCQl9DQogCX0NCiAJYWNwaV9pZGxlX2RvX2VudHJ5KGN4KTsNCisNCisJcmV0dXJuIDA7
-DQogfQ0KIA0KIHN0YXRpYyBpbnQgYWNwaV9wcm9jZXNzb3Jfc2V0dXBfY3B1aWRsZV9jeChzdHJ1
-Y3QgYWNwaV9wcm9jZXNzb3IgKnByLA0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvY3B1aWRsZS9jcHVp
-ZGxlLXRlZ3JhLmMgYi9kcml2ZXJzL2NwdWlkbGUvY3B1aWRsZS10ZWdyYS5jDQppbmRleCAxNTAw
-NDU4Li5hMTJmYjE0IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9jcHVpZGxlL2NwdWlkbGUtdGVncmEu
-Yw0KKysrIGIvZHJpdmVycy9jcHVpZGxlL2NwdWlkbGUtdGVncmEuYw0KQEAgLTI1MywxMSArMjUz
-LDEzIEBAIHN0YXRpYyBpbnQgdGVncmFfY3B1aWRsZV9lbnRlcihzdHJ1Y3QgY3B1aWRsZV9kZXZp
-Y2UgKmRldiwNCiAJcmV0dXJuIGVyciA/IC0xIDogaW5kZXg7DQogfQ0KIA0KLXN0YXRpYyB2b2lk
-IHRlZ3JhMTE0X2VudGVyX3MyaWRsZShzdHJ1Y3QgY3B1aWRsZV9kZXZpY2UgKmRldiwNCi0JCQkJ
-ICBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwNCi0JCQkJICBpbnQgaW5kZXgpDQorc3RhdGlj
-IGludCB0ZWdyYTExNF9lbnRlcl9zMmlkbGUoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpkZXYsDQor
-CQkJCSBzdHJ1Y3QgY3B1aWRsZV9kcml2ZXIgKmRydiwNCisJCQkJIGludCBpbmRleCkNCiB7DQog
-CXRlZ3JhX2NwdWlkbGVfZW50ZXIoZGV2LCBkcnYsIGluZGV4KTsNCisNCisJcmV0dXJuIDA7DQog
-fQ0KIA0KIC8qDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9pZGxlL2ludGVsX2lkbGUuYyBiL2RyaXZl
-cnMvaWRsZS9pbnRlbF9pZGxlLmMNCmluZGV4IGY0NDk1ODQuLmIxNzhkYTMgMTAwNjQ0DQotLS0g
-YS9kcml2ZXJzL2lkbGUvaW50ZWxfaWRsZS5jDQorKysgYi9kcml2ZXJzL2lkbGUvaW50ZWxfaWRs
-ZS5jDQpAQCAtMTc1LDEzICsxNzUsMTUgQEAgc3RhdGljIF9fY3B1aWRsZSBpbnQgaW50ZWxfaWRs
-ZShzdHJ1Y3QgY3B1aWRsZV9kZXZpY2UgKmRldiwNCiAgKiBJbnZva2VkIGFzIGEgc3VzcGVuZC10
-by1pZGxlIGNhbGxiYWNrIHJvdXRpbmUgd2l0aCBmcm96ZW4gdXNlciBzcGFjZSwgZnJvemVuDQog
-ICogc2NoZWR1bGVyIHRpY2sgYW5kIHN1c3BlbmRlZCBzY2hlZHVsZXIgY2xvY2sgb24gdGhlIHRh
-cmdldCBDUFUuDQogICovDQotc3RhdGljIF9fY3B1aWRsZSB2b2lkIGludGVsX2lkbGVfczJpZGxl
-KHN0cnVjdCBjcHVpZGxlX2RldmljZSAqZGV2LA0KLQkJCQkJc3RydWN0IGNwdWlkbGVfZHJpdmVy
-ICpkcnYsIGludCBpbmRleCkNCitzdGF0aWMgX19jcHVpZGxlIGludCBpbnRlbF9pZGxlX3MyaWRs
-ZShzdHJ1Y3QgY3B1aWRsZV9kZXZpY2UgKmRldiwNCisJCQkJICAgICAgIHN0cnVjdCBjcHVpZGxl
-X2RyaXZlciAqZHJ2LCBpbnQgaW5kZXgpDQogew0KIAl1bnNpZ25lZCBsb25nIGVheCA9IGZsZzJN
-V0FJVChkcnYtPnN0YXRlc1tpbmRleF0uZmxhZ3MpOw0KIAl1bnNpZ25lZCBsb25nIGVjeCA9IDE7
-IC8qIGJyZWFrIG9uIGludGVycnVwdCBmbGFnICovDQogDQogCW13YWl0X2lkbGVfd2l0aF9oaW50
-cyhlYXgsIGVjeCk7DQorDQorCXJldHVybiAwOw0KIH0NCiANCiAvKg0KZGlmZiAtLWdpdCBhL2lu
-Y2x1ZGUvbGludXgvY3B1aWRsZS5oIGIvaW5jbHVkZS9saW51eC9jcHVpZGxlLmgNCmluZGV4IGVj
-MmVmNjMuLmJlZTEwYzAgMTAwNjQ0DQotLS0gYS9pbmNsdWRlL2xpbnV4L2NwdWlkbGUuaA0KKysr
-IGIvaW5jbHVkZS9saW51eC9jcHVpZGxlLmgNCkBAIC02Niw5ICs2Niw5IEBAIHN0cnVjdCBjcHVp
-ZGxlX3N0YXRlIHsNCiAJICogc3VzcGVuZGVkLCBzbyBpdCBtdXN0IG5vdCByZS1lbmFibGUgaW50
-ZXJydXB0cyBhdCBhbnkgcG9pbnQgKGV2ZW4NCiAJICogdGVtcG9yYXJpbHkpIG9yIGF0dGVtcHQg
-dG8gY2hhbmdlIHN0YXRlcyBvZiBjbG9jayBldmVudCBkZXZpY2VzLg0KIAkgKi8NCi0Jdm9pZCAo
-KmVudGVyX3MyaWRsZSkgKHN0cnVjdCBjcHVpZGxlX2RldmljZSAqZGV2LA0KLQkJCSAgICAgIHN0
-cnVjdCBjcHVpZGxlX2RyaXZlciAqZHJ2LA0KLQkJCSAgICAgIGludCBpbmRleCk7DQorCWludCAo
-KmVudGVyX3MyaWRsZSkoc3RydWN0IGNwdWlkbGVfZGV2aWNlICpkZXYsDQorCQkJICAgIHN0cnVj
-dCBjcHVpZGxlX2RyaXZlciAqZHJ2LA0KKwkJCSAgICBpbnQgaW5kZXgpOw0KIH07DQogDQogLyog
-SWRsZSBTdGF0ZSBGbGFncyAqLw0KLS0gDQoxLjcuOS41DQo=
+On Fri, Jul 3, 2020 at 12:49 AM David E. Box
+<david.e.box@linux.intel.com> wrote:
+>
+> This patch implements a solution for a BIOS hack used on some currently
+> shipping Intel systems to change driver power management policy for PCIe
+> NVMe drives. Some newer Intel platforms, like some Comet Lake systems,
+> require that PCIe devices use D3 when doing suspend-to-idle in order to
+> allow the platform to realize maximum power savings. This is particularly
+> needed to support ATX power supply shutdown on desktop systems. In order to
+> ensure this happens for root ports with storage devices, Microsoft
+> apparently created this ACPI _DSD property as a way to influence their
+> driver policy. To my knowledge this property has not been discussed with
+> the NVME specification body.
+>
+> Though the solution is not ideal, it addresses a problem that also affects
+> Linux since the NVMe driver's default policy of using NVMe APST during
+> suspend-to-idle prevents the PCI root port from going to D3 and leads to
+> higher power consumption for these platforms. The power consumption
+> difference may be negligible on laptop systems, but many watts on desktop
+> systems when the ATX power supply is blocked from powering down.
+>
+> The patch creates a new nvme_acpi_storage_d3 function to check for the
+> StorageD3Enable property during probe and enables D3 as a quirk if set.  It
+> also provides a 'noacpi' module parameter to allow skipping the quirk if
+> needed.
+>
+> Tested on:
+> PM961 NVMe SED Samsung 512GB
+> INTEL SSDPEKKF512G8
+>
+> Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
+> Signed-off-by: David E. Box <david.e.box@linux.intel.com>
+> ---
+> Changes from V3:
+>         - Use pcie_find_root_port() instead of pci_find_pcie_root_port(),
+>           changed in 5.8.
+>         - Remove "Cc:" emails that ended up at top of V3 commit message.
+>         - Fix changelog numbering.
+>
+> Changes from V2:
+>         - Remove check for "not yet bound" ACPI companion device since
+>           this will not be a concern at driver probe time per Rafael.
+>         - Move storage_d3 function out of PCI core and into NVMe driver
+>           since there's nothing the PCI core can do with this code as
+>           noted by Bjorn.
+>
+> Changes from V1:
+>         - Export the pci_acpi_storage_d3 function for use by drivers as
+>           needed instead of modifying the pci header.
+>         - Add missing put on acpi device handle.
+>         - Add 'noacpi' module parameter to allow undoing this change.
+>         - Add info message that this is a platform quirk.
+>
+>  drivers/acpi/property.c |  3 +++
+>  drivers/nvme/host/pci.c | 55 +++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 58 insertions(+)
+>
+> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> index e601c4511a8b..c2e2ae774a19 100644
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -45,6 +45,9 @@ static const guid_t prp_guids[] = {
+>         /* Thunderbolt GUID for WAKE_SUPPORTED: 6c501103-c189-4296-ba72-9bf5a26ebe5d */
+>         GUID_INIT(0x6c501103, 0xc189, 0x4296,
+>                   0xba, 0x72, 0x9b, 0xf5, 0xa2, 0x6e, 0xbe, 0x5d),
+> +       /* Storage device needs D3 GUID: 5025030f-842f-4ab4-a561-99a5189762d0 */
+> +       GUID_INIT(0x5025030f, 0x842f, 0x4ab4,
+> +                 0xa5, 0x61, 0x99, 0xa5, 0x18, 0x97, 0x62, 0xd0),
+>  };
+>
+>  /* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
+> diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+> index e2bacd369a88..a3d3a82b0437 100644
+> --- a/drivers/nvme/host/pci.c
+> +++ b/drivers/nvme/host/pci.c
+> @@ -4,6 +4,7 @@
+>   * Copyright (c) 2011-2014, Intel Corporation.
+>   */
+>
+> +#include <linux/acpi.h>
+>  #include <linux/aer.h>
+>  #include <linux/async.h>
+>  #include <linux/blkdev.h>
+> @@ -94,6 +95,10 @@ static unsigned int poll_queues;
+>  module_param_cb(poll_queues, &io_queue_count_ops, &poll_queues, 0644);
+>  MODULE_PARM_DESC(poll_queues, "Number of queues to use for polled IO.");
+>
+> +static bool noacpi;
+> +module_param(noacpi, bool, 0444);
+> +MODULE_PARM_DESC(noacpi, "disable acpi bios quirks");
+> +
+>  struct nvme_dev;
+>  struct nvme_queue;
+>
+> @@ -2757,6 +2762,46 @@ static unsigned long check_vendor_combination_bug(struct pci_dev *pdev)
+>         return 0;
+>  }
+>
+> +static bool nvme_acpi_storage_d3(struct pci_dev *dev)
+> +{
+> +       const struct fwnode_handle *fwnode;
+> +       struct acpi_device *adev;
+> +       struct pci_dev *root;
+> +       acpi_handle handle;
+> +       acpi_status status;
+> +       bool ret = false;
+> +       u8 val;
+> +
+> +       /*
+> +        * Look for _DSD property specifying that the storage device on
+> +        * the port must use D3 to support deep platform power savings during
+> +        * suspend-to-idle
+> +        */
+> +       root = pcie_find_root_port(dev);
+> +       if (!root)
+> +               return false;
+> +
+> +       adev = ACPI_COMPANION(&root->dev);
+> +       if (!adev)
+> +               return false;
+> +
+> +       status = acpi_get_handle(adev->handle, "PXSX", &handle);
+> +       if (ACPI_FAILURE(status))
+> +               return false;
+> +
+> +       adev = acpi_bus_get_acpi_device(handle);
 
+This function needs to be exported to modules for nvme to be able to
+use it when modular.
+
+> +       if (!adev)
+> +               return false;
+> +
+> +       fwnode = acpi_fwnode_handle(adev);
+> +       if (!fwnode_property_read_u8(fwnode, "StorageD3Enable", &val))
+> +               ret = (val == 1);
+> +
+> +       acpi_bus_put_acpi_device(adev);
+
+And same here.
+
+> +
+> +       return ret;
+> +}
+> +
+>  static void nvme_async_probe(void *data, async_cookie_t cookie)
+>  {
+>         struct nvme_dev *dev = data;
+> @@ -2806,6 +2851,16 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>
+>         quirks |= check_vendor_combination_bug(pdev);
+>
+> +       if (!noacpi && nvme_acpi_storage_d3(pdev)) {
+> +               /*
+> +                * Some systems use a bios work around to ask for D3 on
+> +                * platforms that support kernel managed suspend.
+> +                */
+> +               dev_info(&pdev->dev,
+> +                        "platform quirk: setting simple suspend\n");
+> +               quirks |= NVME_QUIRK_SIMPLE_SUSPEND;
+> +       }
+> +
+>         /*
+>          * Double check that our mempool alloc size will cover the biggest
+>          * command we support.
+> --
+> 2.20.1
+>
