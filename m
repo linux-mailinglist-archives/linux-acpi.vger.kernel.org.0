@@ -2,66 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 944742161DB
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jul 2020 01:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C1AE2161ED
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jul 2020 01:13:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727099AbgGFXJT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Jul 2020 19:09:19 -0400
-Received: from mga12.intel.com ([192.55.52.136]:46986 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726845AbgGFXJS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 6 Jul 2020 19:09:18 -0400
-IronPort-SDR: +IhuSwzNJk1zfvF2st+AMGCt1NcQGDes6Zpee7yKSV3h34GY0BLwSaaKTBzluow1CDGtm+Bryz
- J5bosXuSrSzw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9674"; a="127107447"
-X-IronPort-AV: E=Sophos;i="5.75,321,1589266800"; 
-   d="scan'208";a="127107447"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 16:09:18 -0700
-IronPort-SDR: Oja8NwTouCdDLO8zKrRSzzVd8altTd2s8tHLU05KbmFl7R63l2eXcBw9YDKpRvuisXQzfQzUp8
- s/rmRDBFHWog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,321,1589266800"; 
-   d="scan'208";a="297158063"
-Received: from hartmaxe-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.53.13])
-  by orsmga002.jf.intel.com with ESMTP; 06 Jul 2020 16:09:15 -0700
-Date:   Tue, 7 Jul 2020 02:09:14 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Stefan Berger <stefanb@linux.vnet.ibm.com>
-Cc:     linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v9 2/2] tpm: Add support for event log pointer found in
- TPM2 ACPI table
-Message-ID: <20200706230914.GC20770@linux.intel.com>
-References: <20200706181953.3592084-1-stefanb@linux.vnet.ibm.com>
- <20200706181953.3592084-3-stefanb@linux.vnet.ibm.com>
+        id S1727789AbgGFXNL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Jul 2020 19:13:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52198 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727124AbgGFXNK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Jul 2020 19:13:10 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25C40C061794
+        for <linux-acpi@vger.kernel.org>; Mon,  6 Jul 2020 16:13:10 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id n23so47700606ljh.7
+        for <linux-acpi@vger.kernel.org>; Mon, 06 Jul 2020 16:13:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=SR19WDvOm+Jc/grBUK3DcAG61rsTa4WPLrkARxPZOAg=;
+        b=l+Kck4QLh/GjDatFbN1XEqM3Tz6lakJhs3E9J1XdsBwYLSppoM1PHrBrrsnb5/v4tJ
+         XrCDEAlLqxil2gTTmgd650zhncuLDENlO/0gQ/Y0lot0ofj1l6k0We1vcLPui5Eaq1nf
+         iZF6FzBFsxbC5H78jo0pWHQ53RAsKmA0Ieq6QuSmcaxBJaXPxDUXAymnSm1l5bXyziUN
+         E+k2/BSJGZ4dS3BsQdULyP/OQmSK4uXZTgrF/GtPuB6y8ObR8Hmqz1K86ft5+LQbtoy6
+         szM/3+oamdz2utop5yBaSYUpEFUNKElOpbs79VyOw5ciwTV0x4aUw9N4u7XXeXRT0hYa
+         w8MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SR19WDvOm+Jc/grBUK3DcAG61rsTa4WPLrkARxPZOAg=;
+        b=ts+sxGyyWcWnp3CNcIBuJ6h3u0DflHjejdwm1ajxMLMIBx3oyZtzgbzhv4ekkdPzml
+         jjTh8uKgiDEjRiMdau7HcvFzrnGpg4tNOCeCN97j4D3D3Hi0C2rTwkftG2wAFMAM4ROB
+         y4xEqSzsopkdG9aVBluoOoRZgVMTJz/E8Q4iO77gxntEgFbt4YVOtTxf34QBqbr1V9g5
+         61x9pe171T8DwyMCHa0jjulQahIayIjjZ5y3qmGf8RYqweSjI8rzv1xllJZzGARSIFKK
+         3T+3+K09NbkQIWyIfbi4Uh+EDDBOiGZnuOpMmcQOtvZGwYn1EVYgJ7ph2pFCm8MTj5Bp
+         R6rw==
+X-Gm-Message-State: AOAM531LU3/Tw1J3GZ8kMZhBn5+bGidlkKvV56xcLKPrUkSzmDiX+mxC
+        bA0nMKGgbpXFKvblbldapdaWPwgD2hpodB9z/qn4iQ==
+X-Google-Smtp-Source: ABdhPJxfpZUF/SiL6XakzrJYzR9zf4mbwwjNucTuoY4CEERAxdf2B8UbWftU6B65j4Lr/o8zaYhyCw9AyRNU1/YVzAk=
+X-Received: by 2002:a05:651c:550:: with SMTP id q16mr28313693ljp.188.1594077188285;
+ Mon, 06 Jul 2020 16:13:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200706181953.3592084-3-stefanb@linux.vnet.ibm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20200630044943.3425049-4-rajatja@google.com> <20200706164514.GA124720@bjorn-Precision-5520>
+In-Reply-To: <20200706164514.GA124720@bjorn-Precision-5520>
+From:   Rajat Jain <rajatja@google.com>
+Date:   Mon, 6 Jul 2020 16:12:31 -0700
+Message-ID: <CACK8Z6EVgeTZLph4CWaztB1WavocMyN237FwDAZudtEa=_e3Cg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/7] PCI/ACS: Enable PCI_ACS_TB for untrusted/external-facing
+ devices
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        "open list:AMD IOMMU (AMD-VI)" <iommu@lists.linux-foundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Raj Ashok <ashok.raj@intel.com>,
+        "Krishnakumar, Lalithambika" <lalithambika.krishnakumar@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Prashant Malani <pmalani@google.com>,
+        Benson Leung <bleung@google.com>,
+        Todd Broch <tbroch@google.com>,
+        Alex Levin <levinale@google.com>,
+        Mattias Nissler <mnissler@google.com>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Bernie Keany <bernie.keany@intel.com>,
+        Aaron Durbin <adurbin@google.com>,
+        Diego Rivas <diegorivas@google.com>,
+        Duncan Laurie <dlaurie@google.com>,
+        Furquan Shaikh <furquan@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Christian Kellner <christian@kellner.me>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Saravana Kannan <saravanak@google.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 06, 2020 at 02:19:53PM -0400, Stefan Berger wrote:
-> From: Stefan Berger <stefanb@linux.ibm.com>
-> 
-> In case a TPM2 is attached, search for a TPM2 ACPI table when trying
-> to get the event log from ACPI. If one is found, use it to get the
-> start and length of the log area. This allows non-UEFI systems, such
-> as SeaBIOS, to pass an event log when using a TPM2.
-> 
-> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+On Mon, Jul 6, 2020 at 9:45 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> On Mon, Jun 29, 2020 at 09:49:39PM -0700, Rajat Jain wrote:
+> > When enabling ACS, enable translation blocking for external facing ports
+> > and untrusted devices.
+> >
+> > Signed-off-by: Rajat Jain <rajatja@google.com>
+> > ---
+> > v2: Commit log change
+> >
+> >  drivers/pci/pci.c    |  4 ++++
+> >  drivers/pci/quirks.c | 11 +++++++++++
+> >  2 files changed, 15 insertions(+)
+> >
+> > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> > index d2ff987585855..79853b52658a2 100644
+> > --- a/drivers/pci/pci.c
+> > +++ b/drivers/pci/pci.c
+> > @@ -3330,6 +3330,10 @@ static void pci_std_enable_acs(struct pci_dev *dev)
+> >       /* Upstream Forwarding */
+> >       ctrl |= (cap & PCI_ACS_UF);
+> >
+> > +     if (dev->external_facing || dev->untrusted)
+> > +             /* Translation Blocking */
+> > +             ctrl |= (cap & PCI_ACS_TB);
+> > +
+> >       pci_write_config_word(dev, pos + PCI_ACS_CTRL, ctrl);
+> >  }
+> >
+> > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> > index b341628e47527..6294adeac4049 100644
+> > --- a/drivers/pci/quirks.c
+> > +++ b/drivers/pci/quirks.c
+> > @@ -4934,6 +4934,13 @@ static void pci_quirk_enable_intel_rp_mpc_acs(struct pci_dev *dev)
+> >       }
+> >  }
+> >
+> > +/*
+> > + * Currently this quirk does the equivalent of
+> > + * PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF | PCI_ACS_SV
+> > + *
+> > + * Currently missing, it also needs to do equivalent of PCI_ACS_TB,
+> > + * if dev->external_facing || dev->untrusted
+>
+> I don't understand this comment.  Is this a "TODO"?  Is there
+> something more that needs to be done here?
 
-Do you think that QEMU with TPM 1.2 emulator turned on would be a viable
-way to test this?
+Yes. I'll mark it as a TODO to make it more clear.
 
-I'm anyway more worried about breaking existing TPM 1.2 functionality
-and that requires only QEMU without extras.
-
-/Jarkko
+>
+> After a patch is applied, a comment should describe the code as it is.
+>
+> > + */
+> >  static int pci_quirk_enable_intel_pch_acs(struct pci_dev *dev)
+> >  {
+> >       if (!pci_quirk_intel_pch_acs_match(dev))
+> > @@ -4973,6 +4980,10 @@ static int pci_quirk_enable_intel_spt_pch_acs(struct pci_dev *dev)
+> >       ctrl |= (cap & PCI_ACS_CR);
+> >       ctrl |= (cap & PCI_ACS_UF);
+> >
+> > +     if (dev->external_facing || dev->untrusted)
+> > +             /* Translation Blocking */
+> > +             ctrl |= (cap & PCI_ACS_TB);
+> > +
+> >       pci_write_config_dword(dev, pos + INTEL_SPT_ACS_CTRL, ctrl);
+> >
+> >       pci_info(dev, "Intel SPT PCH root port ACS workaround enabled\n");
+> > --
+> > 2.27.0.212.ge8ba1cc988-goog
+> >
