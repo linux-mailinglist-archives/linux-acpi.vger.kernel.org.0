@@ -2,73 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B274D2161EB
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jul 2020 01:13:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC44E2161FD
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jul 2020 01:18:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726933AbgGFXND (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Jul 2020 19:13:03 -0400
-Received: from mga01.intel.com ([192.55.52.88]:10923 "EHLO mga01.intel.com"
+        id S1726869AbgGFXSv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Jul 2020 19:18:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58724 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726366AbgGFXNC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 6 Jul 2020 19:13:02 -0400
-IronPort-SDR: uDyzR1C+slFXilinK50G9L6qXGA8SNAJub/C8yLOQaLro+UWXXwqMx8Du1fod6fZWi1Wm90BgP
- q6asZYtiUHUQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9674"; a="165586810"
-X-IronPort-AV: E=Sophos;i="5.75,321,1589266800"; 
-   d="scan'208";a="165586810"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 16:13:02 -0700
-IronPort-SDR: 6TYtgomBXFRuWGlr6JvObSFiQlFGAAPw/oIykjZRlCpvfsdy2v1EYHYM1P2FyNzP863EBiGoVg
- 3C3mDQQGa6mg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,321,1589266800"; 
-   d="scan'208";a="323354356"
-Received: from hartmaxe-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.53.13])
-  by orsmga007.jf.intel.com with ESMTP; 06 Jul 2020 16:12:58 -0700
-Date:   Tue, 7 Jul 2020 02:12:57 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Stefan Berger <stefanb@linux.vnet.ibm.com>
-Cc:     linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v9 2/2] tpm: Add support for event log pointer found in
- TPM2 ACPI table
-Message-ID: <20200706231257.GD20770@linux.intel.com>
-References: <20200706181953.3592084-1-stefanb@linux.vnet.ibm.com>
- <20200706181953.3592084-3-stefanb@linux.vnet.ibm.com>
- <20200706230914.GC20770@linux.intel.com>
+        id S1726366AbgGFXSv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 6 Jul 2020 19:18:51 -0400
+Received: from localhost (mobile-166-175-191-139.mycingular.net [166.175.191.139])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id EDBE2205CB;
+        Mon,  6 Jul 2020 23:18:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594077530;
+        bh=yaC/st+ngw5Sh4IXqu2ErvTyb0SMPwfqL4dOJPo6D3A=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=bTaYqMbL88uMK3kvbCJf8qkcSU110j4Hlc2k73yEmfzzHiYvXa2NP6Y8ZNfRQpwnL
+         6drEEsZORiBloqcgUry8kQyZyf+NHp/oae19Zl6eTDHDBmy9NhZPRPypZBMK6qUGx6
+         x6sqtPhq85bUfdqMeYAhV6p248TsOWw60IZQN4fo=
+Date:   Mon, 6 Jul 2020 18:18:44 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Rajat Jain <rajatja@google.com>
+Cc:     David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        "open list:AMD IOMMU (AMD-VI)" <iommu@lists.linux-foundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Raj Ashok <ashok.raj@intel.com>,
+        "Krishnakumar, Lalithambika" <lalithambika.krishnakumar@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Prashant Malani <pmalani@google.com>,
+        Benson Leung <bleung@google.com>,
+        Todd Broch <tbroch@google.com>,
+        Alex Levin <levinale@google.com>,
+        Mattias Nissler <mnissler@google.com>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Bernie Keany <bernie.keany@intel.com>,
+        Aaron Durbin <adurbin@google.com>,
+        Diego Rivas <diegorivas@google.com>,
+        Duncan Laurie <dlaurie@google.com>,
+        Furquan Shaikh <furquan@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Christian Kellner <christian@kellner.me>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Saravana Kannan <saravanak@google.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: Re: [PATCH v2 1/7] PCI: Keep the ACS capability offset in device
+Message-ID: <20200706231844.GA168946@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200706230914.GC20770@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACK8Z6GtOH4o6J17YXnesf0VvQSQRTCR011RRD2U7gkrwA8ziQ@mail.gmail.com>
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jul 07, 2020 at 02:09:18AM +0300, Jarkko Sakkinen wrote:
-> On Mon, Jul 06, 2020 at 02:19:53PM -0400, Stefan Berger wrote:
-> > From: Stefan Berger <stefanb@linux.ibm.com>
-> > 
-> > In case a TPM2 is attached, search for a TPM2 ACPI table when trying
-> > to get the event log from ACPI. If one is found, use it to get the
-> > start and length of the log area. This allows non-UEFI systems, such
-> > as SeaBIOS, to pass an event log when using a TPM2.
-> > 
-> > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> 
-> Do you think that QEMU with TPM 1.2 emulator turned on would be a viable
-> way to test this?
-> 
-> I'm anyway more worried about breaking existing TPM 1.2 functionality
-> and that requires only QEMU without extras.
+On Mon, Jul 06, 2020 at 03:16:42PM -0700, Rajat Jain wrote:
+> On Mon, Jul 6, 2020 at 8:58 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > On Mon, Jun 29, 2020 at 09:49:37PM -0700, Rajat Jain wrote:
 
-BTW, you should cc your patches to all M- and R-entries in the
-MAINTAINERS file. Please, resend this patch set version. You can add
-acquired reviewed-by and tested-by tags (e.g. Jerry's) and use this tag
-for the patch set: "RESEND,PATCH v9".
+> > > +static void pci_enable_acs(struct pci_dev *dev);
+> >
+> > I don't think we need this forward declaration, do we?
+> 
+> We need it unless we move its definition further up in the file:
+> 
+> drivers/pci/pci.c: In function ‘pci_restore_state’:
+> drivers/pci/pci.c:1551:2: error: implicit declaration of function
+> ‘pci_enable_acs’; did you mean ‘pci_enable_ats’?
+> [-Werror=implicit-function-declaration]
+>  1551 |  pci_enable_acs(dev);
+> 
+> Do you want me to move it up in the file so that we do not need the
+> forward declaration?
 
-/Jarkko
+Yes, please move it.  Maybe a preliminary patch that moves it but
+doesn't change anything else.
+
+I think I thought you had renamed the function, in which case you
+could tell from the patch itself.  But I was mistaken!
+
+> > > @@ -4653,7 +4653,7 @@ static int pci_quirk_intel_spt_pch_acs(struct pci_dev *dev, u16 acs_flags)
+> > >       if (!pci_quirk_intel_spt_pch_acs_match(dev))
+> > >               return -ENOTTY;
+> > >
+> > > -     pos = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ACS);
+> > > +     pos = dev->acs_cap;
+> >
+> > I assume you verified that all these quirks are FINAL quirks, since
+> > pci_init_capabilities() is called after HEADER quirks.  I'll
+> > double-check before applying this.
+> 
+> None of these quirks are applied via DECLARE_PCI_FIXUP_*(). All these
+> quirks are called (directly or indirectly) from either
+> pci_enable_acs() or pci_acs_enabled(),
+> 
+> EXCEPT
+> 
+> pci_idt_bus_quirk(). That one is called from
+> pci_bus_read_dev_vendor_id() which should be called only after the
+> parent bridge has been added and setup correctly.
+> 
+> So it looks all good to me.
+
+Great, thanks for checking that.
