@@ -2,55 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC40821615F
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jul 2020 00:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39411216168
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jul 2020 00:19:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727008AbgGFWRV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Jul 2020 18:17:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43632 "EHLO
+        id S1727792AbgGFWTC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Jul 2020 18:19:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726763AbgGFWRV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Jul 2020 18:17:21 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29529C061794
-        for <linux-acpi@vger.kernel.org>; Mon,  6 Jul 2020 15:17:21 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id g2so23603502lfb.0
-        for <linux-acpi@vger.kernel.org>; Mon, 06 Jul 2020 15:17:21 -0700 (PDT)
+        with ESMTP id S1726729AbgGFWTC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Jul 2020 18:19:02 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF741C061794
+        for <linux-acpi@vger.kernel.org>; Mon,  6 Jul 2020 15:19:01 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id q7so34246134ljm.1
+        for <linux-acpi@vger.kernel.org>; Mon, 06 Jul 2020 15:19:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=VcTg7znjs5NM9gvezTd2PmxFMdpOTVCMT/3yPB+Qgb4=;
-        b=vNzVRDUl4U537XT+jFySQw2TYQYIYbNVvMi2vI75OS8G/oHkzYqETbWDdsyWrqnJvB
-         ZDagRVkHhKD8zrtLYJJ8qIXo0AuuWaJckY5WFye6ln6rpJlD+AplVS4Ho5fxKhazVYd+
-         WwNgl/fOyzqH2mIWWEgJom7RS2Ys5J/RcL078JbEZFoB+AoMeXlDAL/+dvD25aT6hP7g
-         cRY8zFElRYhBxqOzi9A+D7S29ctaddBPIC5OT/Ic4cekOp6Ldlh3Lmc0aMJePc/BbAgT
-         305sc89OsH87ksxbW1okc8uaJtthTw6avN9JtPmDdA9CbRbhBy4vF/SiokD2ssfDaKPU
-         KjfA==
+         :cc;
+        bh=+g8b8UDutwpjfN6lizjtfC7IoMCTSDjsjPJug8YnTgg=;
+        b=KUh+nyqnQkj9RcybDE5PeCJrAdjLCL6MfvAIePJyXHNRX0F8FKTnKIeG1/vPX6JbR0
+         ZkH2vounWJTv0AHW++nq9HTK5t0tj2w7jkJDno0f/aPPilRdMq6kUjJLsLllyc6nZzA9
+         gFUpa3s60zoHwqlYS1ibCaFMDpBcrs4toKYyR9eGRtgpjbgUrfwu2ZQtV4h54mS9Dk8Q
+         lg38TgKrJ4Lvli78idB1ExZ9K7zVg+JISjzyd/fRrzPpJ9bQnYZblkHcGZJkJsuDKxMs
+         /oeUvTOZc6v1rGutbgXAGNSFIyPxvgBklnWYlKvi0d+6iWbY9jFw/OyGoH076u85nh1D
+         9QPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=VcTg7znjs5NM9gvezTd2PmxFMdpOTVCMT/3yPB+Qgb4=;
-        b=acWrMbz3v+6697GYQv5FWn+ZuFAkaJcVihkRdP/JgrjTefsFAakL0V1MNN/ppoedNO
-         81u7pGYH90BOhpWDU/Y7ZDj5nDjhjcuPyWlhvDA3oPU5EKFTQLWkjAyeIXoMYAt8wlEq
-         5821xn/auC8FvTJSq64gkLmoumOGenh7ef0bSWSzYvQegbJ7MvqTSoDf2PD8CBE+UdN2
-         vZdwCQlEeA2EHvLIobP2jNVLUeN+JIhJEk8TfI7xp7GEsVRlCKLoxOgRbwqMdB3ZjiS5
-         aZPFwnKqVfn0FEwBUw+ZkHofThH7otK8hhbvkpeuLGskbJ8lNHVU6IMroO2QZbsNQe51
-         98uw==
-X-Gm-Message-State: AOAM530G/uoSa78JCXIa2aGDVOtXEiEUutwPQKDOTqxDbRJ58DZY2xRL
-        vwOIT6F1EXriCiy9USxxYb3EiFxoSiKwVViC6Cd+NQ==
-X-Google-Smtp-Source: ABdhPJwe3ex8kcVRA0T8G22gfsoP7JF+/rquu8J+b6ju8abD2HlCAo8f1V+eED2pMxSAfWVXjFqnh6BvhytT/R+z9+8=
-X-Received: by 2002:a19:435b:: with SMTP id m27mr31417703lfj.40.1594073839263;
- Mon, 06 Jul 2020 15:17:19 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=+g8b8UDutwpjfN6lizjtfC7IoMCTSDjsjPJug8YnTgg=;
+        b=o6raztRu2CX5hZyq45KpIGG6cWDpiPH71E1Qa7wl1UUcnG7dEIjRIuwPkESjkDbzoZ
+         pNzcakcmqcvN8m+elLydBfKhnZNSa/aLT1orLxr3jFGYtBnARDYcT2zczYXgfR/f6yjR
+         73BCSKvbmOpr2I2NKf7L8U75iSJ/402bzmY5ktabkct2a7DB5oUDLglbkENKLSXeZKyt
+         zfK9qsfFHAlJHmNRMSsywWblW6OtTTWpynAfoYnrjvOGv2np5Rkws5Yq3a3tDDAa4CTK
+         uGdaCQAXlX2EXE6s8Wm18rWLGSCcW09nerRn0ChheZqearz8RiZJg+QmSouhU+tJn0AL
+         g/5A==
+X-Gm-Message-State: AOAM5328VFgRQEiE9xo9wRYoM4l7+sc9U9eVdNvwJBYPMyKHHxl/h+w/
+        BqRFTgTzGUyYD6P72/smbe4UxGDtfqlVov/0ElAfbg==
+X-Google-Smtp-Source: ABdhPJyJihOFDUusDuGurRmf+ynZe/E6+YCOUFBYwFoV/94U5zmmw6gWFYJpZfrD7hx040m64pq6G+pFjE5iBr5QmJw=
+X-Received: by 2002:a2e:b5a8:: with SMTP id f8mr27313685ljn.247.1594073940036;
+ Mon, 06 Jul 2020 15:19:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200630044943.3425049-2-rajatja@google.com> <20200706155815.GA119406@bjorn-Precision-5520>
-In-Reply-To: <20200706155815.GA119406@bjorn-Precision-5520>
+References: <20200630044943.3425049-1-rajatja@google.com> <20200704114452.GA15530@amd>
+In-Reply-To: <20200704114452.GA15530@amd>
 From:   Rajat Jain <rajatja@google.com>
-Date:   Mon, 6 Jul 2020 15:16:42 -0700
-Message-ID: <CACK8Z6GtOH4o6J17YXnesf0VvQSQRTCR011RRD2U7gkrwA8ziQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/7] PCI: Keep the ACS capability offset in device
-To:     Bjorn Helgaas <helgaas@kernel.org>
+Date:   Mon, 6 Jul 2020 15:18:23 -0700
+Message-ID: <CACK8Z6HP00o=rextd0-X-u2aH72PNU3t6zEczC2GGO_QfGhUcA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] Tighten PCI security, expose dev location in sysfs
+To:     Pavel Machek <pavel@denx.de>
 Cc:     David Woodhouse <dwmw2@infradead.org>,
         Lu Baolu <baolu.lu@linux.intel.com>,
         Joerg Roedel <joro@8bytes.org>,
@@ -86,79 +86,52 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         Arnd Bergmann <arnd@arndb.de>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Bjorn,
-
-Thanks for taking a look.
-
-On Mon, Jul 6, 2020 at 8:58 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+On Sat, Jul 4, 2020 at 4:44 AM Pavel Machek <pavel@denx.de> wrote:
 >
-> On Mon, Jun 29, 2020 at 09:49:37PM -0700, Rajat Jain wrote:
-> > Currently this is being looked up at a number of places. Read and store=
- it
-> > once at bootup so that it can be used by all later.
+> Hi!
 >
-> Write the commit log so it is complete even without the subject.
-> Right now, you have to read the subject to know what "this" refers to.
+> > * The first 3 patches tighten the PCI security using ACS, and take care
+> >   of a border case.
+> > * The 4th patch takes care of PCI bug.
+> > * 5th and 6th patches expose a device's location into the sysfs to allow
+> >   admin to make decision based on that.
 >
-> The subject is like the title; the log is like the body of an article.
-> The title isn't *part* of the article, so the article has to make
-> sense all by itself.
+> I see no patch for Documentation -- new sysfs interfaces should be
+> documented for 5/6.
 
-Fixed.
-
->
-> > +static void pci_enable_acs(struct pci_dev *dev);
->
-> I don't think we need this forward declaration, do we?
-
-We need it unless we move its definition further up in the file:
-
-drivers/pci/pci.c: In function =E2=80=98pci_restore_state=E2=80=99:
-drivers/pci/pci.c:1551:2: error: implicit declaration of function
-=E2=80=98pci_enable_acs=E2=80=99; did you mean =E2=80=98pci_enable_ats=E2=
-=80=99?
-[-Werror=3Dimplicit-function-declaration]
- 1551 |  pci_enable_acs(dev);
-
-Do you want me to move it up in the file so that we do not need the
-forward declaration?
-
->
-> > @@ -4653,7 +4653,7 @@ static int pci_quirk_intel_spt_pch_acs(struct pci=
-_dev *dev, u16 acs_flags)
-> >       if (!pci_quirk_intel_spt_pch_acs_match(dev))
-> >               return -ENOTTY;
-> >
-> > -     pos =3D pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ACS);
-> > +     pos =3D dev->acs_cap;
->
-> I assume you verified that all these quirks are FINAL quirks, since
-> pci_init_capabilities() is called after HEADER quirks.  I'll
-> double-check before applying this.
-
-None of these quirks are applied via DECLARE_PCI_FIXUP_*(). All these
-quirks are called (directly or indirectly) from either
-pci_enable_acs() or pci_acs_enabled(),
-
-EXCEPT
-
-pci_idt_bus_quirk(). That one is called from
-pci_bus_read_dev_vendor_id() which should be called only after the
-parent bridge has been added and setup correctly.
-
-So it looks all good to me.
+Yes, sorry. The patches 5/6 have run into discussion and it looks are
+not acceptable at the moment.
 
 Thanks,
 
 Rajat
 
-
-
 >
-> Bjorn
+>                                                                         Pavel
+>
+> >  drivers/base/core.c         | 35 +++++++++++++++++++++++++++++++
+> >  drivers/iommu/intel/iommu.c | 31 ++++++++++++++++++---------
+> >  drivers/pci/ats.c           |  2 +-
+> >  drivers/pci/bus.c           | 13 ++++++------
+> >  drivers/pci/of.c            |  2 +-
+> >  drivers/pci/p2pdma.c        |  2 +-
+> >  drivers/pci/pci-acpi.c      | 13 ++++++------
+> >  drivers/pci/pci-driver.c    |  1 +
+> >  drivers/pci/pci.c           | 34 ++++++++++++++++++++++++++----
+> >  drivers/pci/pci.h           |  3 ++-
+> >  drivers/pci/probe.c         | 20 +++++++++++-------
+> >  drivers/pci/quirks.c        | 19 +++++++++++++----
+> >  include/linux/device.h      | 42 +++++++++++++++++++++++++++++++++++++
+> >  include/linux/device/bus.h  |  8 +++++++
+> >  include/linux/pci.h         | 13 ++++++------
+> >  15 files changed, 191 insertions(+), 47 deletions(-)
+> >
+>
+> --
+> (english) http://www.livejournal.com/~pavelmachek
+> (cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html
