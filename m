@@ -2,38 +2,37 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98A7921787D
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jul 2020 22:01:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94132217888
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jul 2020 22:04:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728208AbgGGUBv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Jul 2020 16:01:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39020 "EHLO mail.kernel.org"
+        id S1728530AbgGGUEM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Jul 2020 16:04:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40144 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727791AbgGGUBv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 7 Jul 2020 16:01:51 -0400
+        id S1727895AbgGGUEM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 7 Jul 2020 16:04:12 -0400
 Received: from embeddedor (unknown [200.39.26.250])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 62D27206F6;
-        Tue,  7 Jul 2020 20:01:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 46A9420771;
+        Tue,  7 Jul 2020 20:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594152110;
-        bh=J7lAbC5PPgARB8Nt2T5L13uK1ffYdLf3HflvHSt5qBg=;
+        s=default; t=1594152251;
+        bh=Ed/3Q7E4vJs5EEEvSsgo4t0m6Y1QmUKPsEeCTSlajUw=;
         h=Date:From:To:Cc:Subject:From;
-        b=q3mb52FUqVTx5yovDjDrabxslQ3GeLovuFs4eRaBZ9RQjGAPdGZT0kHQ/Xvc8zfrA
-         HOmoHB96w5qN6H+V2aUeimNepXam53uMF2tyK4iQHS+edl6vs5sEk+zaSAvoHc6MTB
-         2+zYMdEUr9YsQIurO4E6l1WgUTGXnfCf6Enfir/0=
-Date:   Tue, 7 Jul 2020 15:07:16 -0500
+        b=NpOwVTRcK4pi9d7+Ph7yi1fSUhNU4/YEm+Fl0RXO8wHxTESFYwqoV1mImsIQ2sM06
+         P9JVxou3jRy9QRV71ZF69o3kZUYknlCsfn2Eb2nIrfkKCEafLBCy+h5jq3jIq4ZiHZ
+         P/6FbXdK5zITYaHFKS/42MdBxKJQEeSQ5IWUJWUg=
+Date:   Tue, 7 Jul 2020 15:09:37 -0500
 From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org,
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: [PATCH][next] ACPICA: Use fallthrough pseudo-keyword
-Message-ID: <20200707200716.GA4920@embeddedor>
+Subject: [PATCH] ACPI: Use fallthrough pseudo-keyword
+Message-ID: <20200707200937.GA5056@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -51,169 +50,153 @@ fall-through markings when it is the case.
 
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- drivers/acpi/acpica/dscontrol.c |    2 +-
- drivers/acpi/acpica/dswexec.c   |    3 +--
- drivers/acpi/acpica/dswload.c   |    2 +-
- drivers/acpi/acpica/dswload2.c  |    4 +---
- drivers/acpi/acpica/exfldio.c   |    2 +-
- drivers/acpi/acpica/exresop.c   |    4 ++--
- drivers/acpi/acpica/exstore.c   |    4 ++--
- drivers/acpi/acpica/hwgpe.c     |    3 +--
- drivers/acpi/acpica/utdelete.c  |    3 +--
- drivers/acpi/acpica/utprint.c   |    2 +-
- 10 files changed, 12 insertions(+), 17 deletions(-)
+ drivers/acpi/ac.c             |    2 +-
+ drivers/acpi/acpi_processor.c |    2 +-
+ drivers/acpi/button.c         |    2 +-
+ drivers/acpi/dock.c           |    2 +-
+ drivers/acpi/evged.c          |    2 +-
+ drivers/acpi/processor_idle.c |    3 +--
+ drivers/acpi/resource.c       |    2 +-
+ drivers/acpi/spcr.c           |    4 ++--
+ drivers/pci/pci-acpi.c        |    6 +++---
+ 9 files changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/acpi/acpica/dscontrol.c b/drivers/acpi/acpica/dscontrol.c
-index 4b5b6e859f62..134d53380663 100644
---- a/drivers/acpi/acpica/dscontrol.c
-+++ b/drivers/acpi/acpica/dscontrol.c
-@@ -62,7 +62,7 @@ acpi_ds_exec_begin_control_op(struct acpi_walk_state *walk_state,
- 			}
- 		}
- 
--		/*lint -fallthrough */
-+		fallthrough;
- 
- 	case AML_IF_OP:
- 		/*
-diff --git a/drivers/acpi/acpica/dswexec.c b/drivers/acpi/acpica/dswexec.c
-index 1d4f8c81028c..41f6cb61778a 100644
---- a/drivers/acpi/acpica/dswexec.c
-+++ b/drivers/acpi/acpica/dswexec.c
-@@ -598,8 +598,7 @@ acpi_status acpi_ds_exec_end_op(struct acpi_walk_state *walk_state)
- 					break;
- 				}
- 
--				/* Fall through */
--				/*lint -fallthrough */
-+				fallthrough;
- 
- 			case AML_INT_EVAL_SUBTREE_OP:
- 
-diff --git a/drivers/acpi/acpica/dswload.c b/drivers/acpi/acpica/dswload.c
-index 27069325b6de..1d8789869dda 100644
---- a/drivers/acpi/acpica/dswload.c
-+++ b/drivers/acpi/acpica/dswload.c
-@@ -224,7 +224,7 @@ acpi_ds_load1_begin_op(struct acpi_walk_state *walk_state,
- 				break;
- 			}
- 
--			/*lint -fallthrough */
-+			fallthrough;
- 
- 		default:
- 
-diff --git a/drivers/acpi/acpica/dswload2.c b/drivers/acpi/acpica/dswload2.c
-index edadbe146506..de367e8e4cf4 100644
---- a/drivers/acpi/acpica/dswload2.c
-+++ b/drivers/acpi/acpica/dswload2.c
-@@ -213,9 +213,7 @@ acpi_ds_load2_begin_op(struct acpi_walk_state *walk_state,
- 			     parse_flags & ACPI_PARSE_MODULE_LEVEL)) {
- 				break;
- 			}
--
--			/*lint -fallthrough */
--
-+			fallthrough;
- 		default:
- 
- 			/* All other types are an error */
-diff --git a/drivers/acpi/acpica/exfldio.c b/drivers/acpi/acpica/exfldio.c
-index ade35ff1c7ba..677ba3ab1482 100644
---- a/drivers/acpi/acpica/exfldio.c
-+++ b/drivers/acpi/acpica/exfldio.c
-@@ -434,7 +434,7 @@ acpi_ex_field_datum_io(union acpi_operand_object *obj_desc,
- 		 * region_field case and write the datum to the Operation Region
- 		 */
- 
--		/*lint -fallthrough */
-+		fallthrough;
- 
- 	case ACPI_TYPE_LOCAL_REGION_FIELD:
- 		/*
-diff --git a/drivers/acpi/acpica/exresop.c b/drivers/acpi/acpica/exresop.c
-index 4d1b22971d58..7c8676adcf43 100644
---- a/drivers/acpi/acpica/exresop.c
-+++ b/drivers/acpi/acpica/exresop.c
-@@ -198,7 +198,7 @@ acpi_ex_resolve_operands(u16 opcode,
- 
- 					target_op = AML_DEBUG_OP;
- 
--					/*lint -fallthrough */
-+					fallthrough;
- 
- 				case ACPI_REFCLASS_ARG:
- 				case ACPI_REFCLASS_LOCAL:
-@@ -264,7 +264,7 @@ acpi_ex_resolve_operands(u16 opcode,
- 			 * Else not a string - fall through to the normal Reference
- 			 * case below
- 			 */
--			/*lint -fallthrough */
-+			fallthrough;
- 
- 		case ARGI_REFERENCE:	/* References: */
- 		case ARGI_INTEGER_REF:
-diff --git a/drivers/acpi/acpica/exstore.c b/drivers/acpi/acpica/exstore.c
-index 3adc0a29d890..fcf8dff56c5b 100644
---- a/drivers/acpi/acpica/exstore.c
-+++ b/drivers/acpi/acpica/exstore.c
-@@ -96,7 +96,7 @@ acpi_ex_store(union acpi_operand_object *source_desc,
- 			return_ACPI_STATUS(AE_OK);
- 		}
- 
--		/*lint -fallthrough */
-+		fallthrough;
- 
+diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
+index 69d2db13886b..2dfa08f939c6 100644
+--- a/drivers/acpi/ac.c
++++ b/drivers/acpi/ac.c
+@@ -236,7 +236,7 @@ static void acpi_ac_notify(struct acpi_device *device, u32 event)
  	default:
- 
-@@ -422,7 +422,7 @@ acpi_ex_store_object_to_node(union acpi_operand_object *source_desc,
- 				break;
- 			}
- 
--			/* Fallthrough */
-+			fallthrough;
- 
- 		case ACPI_TYPE_DEVICE:
- 		case ACPI_TYPE_EVENT:
-diff --git a/drivers/acpi/acpica/hwgpe.c b/drivers/acpi/acpica/hwgpe.c
-index 49c46d4dd070..19d574f64c78 100644
---- a/drivers/acpi/acpica/hwgpe.c
-+++ b/drivers/acpi/acpica/hwgpe.c
-@@ -95,8 +95,7 @@ acpi_hw_low_set_gpe(struct acpi_gpe_event_info *gpe_event_info, u32 action)
- 		if (!(register_bit & gpe_register_info->enable_mask)) {
- 			return (AE_BAD_PARAMETER);
- 		}
--
--		/*lint -fallthrough */
+ 		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+ 				  "Unsupported event [0x%x]\n", event));
+-	/* fall through */
++		fallthrough;
+ 	case ACPI_AC_NOTIFY_STATUS:
+ 	case ACPI_NOTIFY_BUS_CHECK:
+ 	case ACPI_NOTIFY_DEVICE_CHECK:
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index 5379bc3f275d..b51ddf3bb616 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -79,7 +79,7 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
+ 		 * PIIX4 models.
+ 		 */
+ 		errata.piix4.throttle = 1;
+-		/* fall through*/
 +		fallthrough;
  
- 	case ACPI_GPE_ENABLE:
- 
-diff --git a/drivers/acpi/acpica/utdelete.c b/drivers/acpi/acpica/utdelete.c
-index c365faf4e6cd..6db09eb9d257 100644
---- a/drivers/acpi/acpica/utdelete.c
-+++ b/drivers/acpi/acpica/utdelete.c
-@@ -111,8 +111,7 @@ static void acpi_ut_delete_internal_obj(union acpi_operand_object *object)
- 			(void)acpi_ev_delete_gpe_block(object->device.
- 						       gpe_block);
- 		}
--
--		/*lint -fallthrough */
+ 	case 2:		/* PIIX4E */
+ 	case 3:		/* PIIX4M */
+diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+index 3c35e57dd854..a4eda7fe50d3 100644
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -405,7 +405,7 @@ static void acpi_button_notify(struct acpi_device *device, u32 event)
+ 	switch (event) {
+ 	case ACPI_FIXED_HARDWARE_EVENT:
+ 		event = ACPI_BUTTON_NOTIFY_STATUS;
+-		/* fall through */
 +		fallthrough;
+ 	case ACPI_BUTTON_NOTIFY_STATUS:
+ 		input = button->input;
+ 		if (button->type == ACPI_BUTTON_TYPE_LID) {
+diff --git a/drivers/acpi/dock.c b/drivers/acpi/dock.c
+index e3414131bfca..9bd72c26ef46 100644
+--- a/drivers/acpi/dock.c
++++ b/drivers/acpi/dock.c
+@@ -469,7 +469,7 @@ int dock_notify(struct acpi_device *adev, u32 event)
+ 		surprise_removal = 1;
+ 		event = ACPI_NOTIFY_EJECT_REQUEST;
+ 		/* Fall back */
+-		/* fall through */
++		fallthrough;
+ 	case ACPI_NOTIFY_EJECT_REQUEST:
+ 		begin_undock(ds);
+ 		if ((immediate_undock && !(ds->flags & DOCK_IS_ATA))
+diff --git a/drivers/acpi/evged.c b/drivers/acpi/evged.c
+index ccd900690b6f..b1a7f8d6965e 100644
+--- a/drivers/acpi/evged.c
++++ b/drivers/acpi/evged.c
+@@ -106,7 +106,7 @@ static acpi_status acpi_ged_request_interrupt(struct acpi_resource *ares,
  
- 	case ACPI_TYPE_PROCESSOR:
- 	case ACPI_TYPE_THERMAL:
-diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c
-index 681c11f4af4e..f7e43baf5ff2 100644
---- a/drivers/acpi/acpica/utprint.c
-+++ b/drivers/acpi/acpica/utprint.c
-@@ -475,7 +475,7 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
- 		case 'X':
- 
- 			type |= ACPI_FORMAT_UPPER;
--			/* FALLTHROUGH */
+ 		if (ACPI_SUCCESS(acpi_get_handle(handle, ev_name, &evt_handle)))
+ 			break;
+-		/* fall through */
++		fallthrough;
+ 	default:
+ 		if (ACPI_SUCCESS(acpi_get_handle(handle, "_EVT", &evt_handle)))
+ 			break;
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index 75534c5b5433..9325feaac5f8 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -203,8 +203,7 @@ static void tsc_check_state(int state)
+ 		 */
+ 		if (boot_cpu_has(X86_FEATURE_NONSTOP_TSC))
+ 			return;
+-
+-		/*FALL THROUGH*/
++		fallthrough;
+ 	default:
+ 		/* TSC could halt in idle, so notify users */
+ 		if (state > ACPI_STATE_C1)
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 3b4448972374..ad04824ca3ba 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -373,7 +373,7 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
+ 	case ACPI_ACTIVE_BOTH:
+ 		if (triggering == ACPI_EDGE_SENSITIVE)
+ 			return IRQ_TYPE_EDGE_BOTH;
+-		/* fall through */
++		fallthrough;
+ 	default:
+ 		return IRQ_TYPE_NONE;
+ 	}
+diff --git a/drivers/acpi/spcr.c b/drivers/acpi/spcr.c
+index d73b4535e79d..88460bacd5ae 100644
+--- a/drivers/acpi/spcr.c
++++ b/drivers/acpi/spcr.c
+@@ -111,7 +111,7 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
+ 			table->serial_port.access_width))) {
+ 		default:
+ 			pr_err("Unexpected SPCR Access Width.  Defaulting to byte size\n");
+-			/* fall through */
 +			fallthrough;
+ 		case 8:
+ 			iotype = "mmio";
+ 			break;
+@@ -128,7 +128,7 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
+ 	switch (table->interface_type) {
+ 	case ACPI_DBG2_ARM_SBSA_32BIT:
+ 		iotype = "mmio32";
+-		/* fall through */
++		fallthrough;
+ 	case ACPI_DBG2_ARM_PL011:
+ 	case ACPI_DBG2_ARM_SBSA_GENERIC:
+ 	case ACPI_DBG2_BCM2835:
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index 7224b1e5f2a8..0d85025c55fd 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -527,8 +527,8 @@ static void program_hpx_type3_register(struct pci_dev *dev,
+ 			return;
  
- 		case 'x':
- 
+ 		break;
+-	case HPX_CFG_VEND_CAP:	/* Fall through */
+-	case HPX_CFG_DVSEC:	/* Fall through */
++	case HPX_CFG_VEND_CAP:
++	case HPX_CFG_DVSEC:
+ 	default:
+ 		pci_warn(dev, "Encountered _HPX type 3 with unsupported config space location");
+ 		return;
+@@ -1001,7 +1001,7 @@ static int acpi_pci_set_power_state(struct pci_dev *dev, pci_power_t state)
+ 			error = -EBUSY;
+ 			break;
+ 		}
+-		/* Fall through */
++		fallthrough;
+ 	case PCI_D0:
+ 	case PCI_D1:
+ 	case PCI_D2:
 
