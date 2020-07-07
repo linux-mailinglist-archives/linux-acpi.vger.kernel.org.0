@@ -2,124 +2,218 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D72E217819
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jul 2020 21:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98A7921787D
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jul 2020 22:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726951AbgGGTln (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Jul 2020 15:41:43 -0400
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:35257 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726763AbgGGTlm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Jul 2020 15:41:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1594150902;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=u6LSVtn4v8gZHllzz2UNn3EgKUqKY14zb/jR9VXFi0I=;
-        b=EVPVbcjF6CoYoWrVoxnKypJWHAqV6R6JP5dOz/LpLYzxE6sNdOBO6YsscpZyxCiCTRFI1R
-        X6nB2EfruQ52crWeUH8QVGq/yKQXZcts+pHDsoWLFOQ+8gpMtT6SftwaJvhuJQ5rGG7KR5
-        l6dtf17pOOgSECl6d29i9lor9K5TQyc=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-69-kI_DahfsObmc2NjNP1tqEA-1; Tue, 07 Jul 2020 15:41:38 -0400
-X-MC-Unique: kI_DahfsObmc2NjNP1tqEA-1
-Received: by mail-ed1-f72.google.com with SMTP id y66so48243132ede.19
-        for <linux-acpi@vger.kernel.org>; Tue, 07 Jul 2020 12:41:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=u6LSVtn4v8gZHllzz2UNn3EgKUqKY14zb/jR9VXFi0I=;
-        b=H8KJ05eXmHzfFYOb4cSrS10AUa2Hr08LfmeW8CI2sxS0KKEXNGeAVTTrjMqW48ErqA
-         cxuvow9gKsScWViyMw0Bty+eq3kLzV9Oa4qT2y+68yX63xLLOJXMRJBY1x6ARU5gqR+T
-         ODJ5HIDC6GzHHbVYDJ248uSpPpvkw87s38hlg61b9i0Qrzd8bX7OgTeuqJU873C6OhYB
-         gNQFgc6n/HCpYpiNgWLcA9rAveXAQj6j3DvDDyhUEEzcXpLc0/iMYMDOwRXe8QgP/qHz
-         b6PWwK9Vnbj+ZTGJB8kzQf6MinWJNOX6N2tSbPNSGREsCC3bE0W1420jGH2bwfbG6JYL
-         a66Q==
-X-Gm-Message-State: AOAM5327fnB5SWVzSbAAld4qLy9p3aJwt9Q6Eri337S6K9VXd7lOjpff
-        9S0NpCS7IiwLiumlx2YnRoQbZZfjwLyNQ2kFW6MxB1QrHTgCXEvCGp25NGsmiJOHVqdAw8sSdFU
-        F9fx2qzCgwXiHinmqbYX/zw==
-X-Received: by 2002:a17:906:410a:: with SMTP id j10mr37321715ejk.201.1594150897295;
-        Tue, 07 Jul 2020 12:41:37 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwXnVXEx7nXmWizq3WBrz1vcGCOHcpBwHufxNZFJvl6CfoS1RtIACGSwq90uZ4QNzldiNsZ3g==
-X-Received: by 2002:a17:906:410a:: with SMTP id j10mr37321708ejk.201.1594150897067;
-        Tue, 07 Jul 2020 12:41:37 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id d16sm787486ejo.31.2020.07.07.12.41.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jul 2020 12:41:36 -0700 (PDT)
-Subject: Re: [PATCH v3 04/15] pwm: lpss: Add range limit check for the
- base_unit register value
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pwm@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org, kernel@pengutronix.de
-References: <20200620121758.14836-1-hdegoede@redhat.com>
- <20200620121758.14836-5-hdegoede@redhat.com>
- <20200622073554.wf3smq3tvnr6t2xy@taurus.defre.kleine-koenig.org>
- <e07a7dd6-c361-32b8-c4e7-91e022f9c21d@redhat.com>
- <20200707073424.w6vd6e4bhl56kosd@pengutronix.de>
- <1496178b-ce39-9285-ff75-cd39bc0e9aa7@redhat.com>
- <20200707190955.e7wzmphdgi5reeyg@pengutronix.de>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <0e79b176-7e58-7ecb-0f82-ebfd0c777af3@redhat.com>
-Date:   Tue, 7 Jul 2020 21:41:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S1728208AbgGGUBv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Jul 2020 16:01:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39020 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727791AbgGGUBv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 7 Jul 2020 16:01:51 -0400
+Received: from embeddedor (unknown [200.39.26.250])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 62D27206F6;
+        Tue,  7 Jul 2020 20:01:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594152110;
+        bh=J7lAbC5PPgARB8Nt2T5L13uK1ffYdLf3HflvHSt5qBg=;
+        h=Date:From:To:Cc:Subject:From;
+        b=q3mb52FUqVTx5yovDjDrabxslQ3GeLovuFs4eRaBZ9RQjGAPdGZT0kHQ/Xvc8zfrA
+         HOmoHB96w5qN6H+V2aUeimNepXam53uMF2tyK4iQHS+edl6vs5sEk+zaSAvoHc6MTB
+         2+zYMdEUr9YsQIurO4E6l1WgUTGXnfCf6Enfir/0=
+Date:   Tue, 7 Jul 2020 15:07:16 -0500
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Subject: [PATCH][next] ACPICA: Use fallthrough pseudo-keyword
+Message-ID: <20200707200716.GA4920@embeddedor>
 MIME-Version: 1.0
-In-Reply-To: <20200707190955.e7wzmphdgi5reeyg@pengutronix.de>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Replace the existing /* fall through */ comments and its variants with
+the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
+fall-through markings when it is the case.
 
-On 7/7/20 9:09 PM, Uwe Kleine-König wrote:
-> Hello Hans,
-> 
-> On Tue, Jul 07, 2020 at 07:31:29PM +0200, Hans de Goede wrote:
->> On 7/7/20 9:34 AM, Uwe Kleine-König wrote:
->>> On Mon, Jul 06, 2020 at 10:53:08PM +0200, Hans de Goede wrote:
->>>> But if we do then I think closest to the truth would be:
->>>>
->>>> state->period     = UINT_MAX;
->>>> state->duty_cycle = 0;
->>>
->>> I'd say state->period = 1 & state->duty_cycle = 0 is a better
->>> representation.
->>
->> But that would suggest the output is configured for an
->> infinitely high output frequency, but the frequency is
->> actually 0, the reason why get_state needs to treat a
->> base_unit val of 0 special at all is to avoid a division
->> by 0, and in math dividing by 0 gives infinite, isn't
->> UINT_MAX a better way to represent infinity ?
-> 
-> Given that duty_cycle is 0, how can to tell anything about the period
-> when only seeing the signal (= a constant low)?
-> 
-> Given that (ideally) a period is completed when pwm_apply_state() is
-> called, a short period is much more sensible.
+[1] https://www.kernel.org/doc/html/latest/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
 
-Ok, I will add a patch to v4 of the patch-set to adjust the pwm-lpss
-driver's get_state method accordingly.
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ drivers/acpi/acpica/dscontrol.c |    2 +-
+ drivers/acpi/acpica/dswexec.c   |    3 +--
+ drivers/acpi/acpica/dswload.c   |    2 +-
+ drivers/acpi/acpica/dswload2.c  |    4 +---
+ drivers/acpi/acpica/exfldio.c   |    2 +-
+ drivers/acpi/acpica/exresop.c   |    4 ++--
+ drivers/acpi/acpica/exstore.c   |    4 ++--
+ drivers/acpi/acpica/hwgpe.c     |    3 +--
+ drivers/acpi/acpica/utdelete.c  |    3 +--
+ drivers/acpi/acpica/utprint.c   |    2 +-
+ 10 files changed, 12 insertions(+), 17 deletions(-)
 
-Regards,
-
-Hans
+diff --git a/drivers/acpi/acpica/dscontrol.c b/drivers/acpi/acpica/dscontrol.c
+index 4b5b6e859f62..134d53380663 100644
+--- a/drivers/acpi/acpica/dscontrol.c
++++ b/drivers/acpi/acpica/dscontrol.c
+@@ -62,7 +62,7 @@ acpi_ds_exec_begin_control_op(struct acpi_walk_state *walk_state,
+ 			}
+ 		}
+ 
+-		/*lint -fallthrough */
++		fallthrough;
+ 
+ 	case AML_IF_OP:
+ 		/*
+diff --git a/drivers/acpi/acpica/dswexec.c b/drivers/acpi/acpica/dswexec.c
+index 1d4f8c81028c..41f6cb61778a 100644
+--- a/drivers/acpi/acpica/dswexec.c
++++ b/drivers/acpi/acpica/dswexec.c
+@@ -598,8 +598,7 @@ acpi_status acpi_ds_exec_end_op(struct acpi_walk_state *walk_state)
+ 					break;
+ 				}
+ 
+-				/* Fall through */
+-				/*lint -fallthrough */
++				fallthrough;
+ 
+ 			case AML_INT_EVAL_SUBTREE_OP:
+ 
+diff --git a/drivers/acpi/acpica/dswload.c b/drivers/acpi/acpica/dswload.c
+index 27069325b6de..1d8789869dda 100644
+--- a/drivers/acpi/acpica/dswload.c
++++ b/drivers/acpi/acpica/dswload.c
+@@ -224,7 +224,7 @@ acpi_ds_load1_begin_op(struct acpi_walk_state *walk_state,
+ 				break;
+ 			}
+ 
+-			/*lint -fallthrough */
++			fallthrough;
+ 
+ 		default:
+ 
+diff --git a/drivers/acpi/acpica/dswload2.c b/drivers/acpi/acpica/dswload2.c
+index edadbe146506..de367e8e4cf4 100644
+--- a/drivers/acpi/acpica/dswload2.c
++++ b/drivers/acpi/acpica/dswload2.c
+@@ -213,9 +213,7 @@ acpi_ds_load2_begin_op(struct acpi_walk_state *walk_state,
+ 			     parse_flags & ACPI_PARSE_MODULE_LEVEL)) {
+ 				break;
+ 			}
+-
+-			/*lint -fallthrough */
+-
++			fallthrough;
+ 		default:
+ 
+ 			/* All other types are an error */
+diff --git a/drivers/acpi/acpica/exfldio.c b/drivers/acpi/acpica/exfldio.c
+index ade35ff1c7ba..677ba3ab1482 100644
+--- a/drivers/acpi/acpica/exfldio.c
++++ b/drivers/acpi/acpica/exfldio.c
+@@ -434,7 +434,7 @@ acpi_ex_field_datum_io(union acpi_operand_object *obj_desc,
+ 		 * region_field case and write the datum to the Operation Region
+ 		 */
+ 
+-		/*lint -fallthrough */
++		fallthrough;
+ 
+ 	case ACPI_TYPE_LOCAL_REGION_FIELD:
+ 		/*
+diff --git a/drivers/acpi/acpica/exresop.c b/drivers/acpi/acpica/exresop.c
+index 4d1b22971d58..7c8676adcf43 100644
+--- a/drivers/acpi/acpica/exresop.c
++++ b/drivers/acpi/acpica/exresop.c
+@@ -198,7 +198,7 @@ acpi_ex_resolve_operands(u16 opcode,
+ 
+ 					target_op = AML_DEBUG_OP;
+ 
+-					/*lint -fallthrough */
++					fallthrough;
+ 
+ 				case ACPI_REFCLASS_ARG:
+ 				case ACPI_REFCLASS_LOCAL:
+@@ -264,7 +264,7 @@ acpi_ex_resolve_operands(u16 opcode,
+ 			 * Else not a string - fall through to the normal Reference
+ 			 * case below
+ 			 */
+-			/*lint -fallthrough */
++			fallthrough;
+ 
+ 		case ARGI_REFERENCE:	/* References: */
+ 		case ARGI_INTEGER_REF:
+diff --git a/drivers/acpi/acpica/exstore.c b/drivers/acpi/acpica/exstore.c
+index 3adc0a29d890..fcf8dff56c5b 100644
+--- a/drivers/acpi/acpica/exstore.c
++++ b/drivers/acpi/acpica/exstore.c
+@@ -96,7 +96,7 @@ acpi_ex_store(union acpi_operand_object *source_desc,
+ 			return_ACPI_STATUS(AE_OK);
+ 		}
+ 
+-		/*lint -fallthrough */
++		fallthrough;
+ 
+ 	default:
+ 
+@@ -422,7 +422,7 @@ acpi_ex_store_object_to_node(union acpi_operand_object *source_desc,
+ 				break;
+ 			}
+ 
+-			/* Fallthrough */
++			fallthrough;
+ 
+ 		case ACPI_TYPE_DEVICE:
+ 		case ACPI_TYPE_EVENT:
+diff --git a/drivers/acpi/acpica/hwgpe.c b/drivers/acpi/acpica/hwgpe.c
+index 49c46d4dd070..19d574f64c78 100644
+--- a/drivers/acpi/acpica/hwgpe.c
++++ b/drivers/acpi/acpica/hwgpe.c
+@@ -95,8 +95,7 @@ acpi_hw_low_set_gpe(struct acpi_gpe_event_info *gpe_event_info, u32 action)
+ 		if (!(register_bit & gpe_register_info->enable_mask)) {
+ 			return (AE_BAD_PARAMETER);
+ 		}
+-
+-		/*lint -fallthrough */
++		fallthrough;
+ 
+ 	case ACPI_GPE_ENABLE:
+ 
+diff --git a/drivers/acpi/acpica/utdelete.c b/drivers/acpi/acpica/utdelete.c
+index c365faf4e6cd..6db09eb9d257 100644
+--- a/drivers/acpi/acpica/utdelete.c
++++ b/drivers/acpi/acpica/utdelete.c
+@@ -111,8 +111,7 @@ static void acpi_ut_delete_internal_obj(union acpi_operand_object *object)
+ 			(void)acpi_ev_delete_gpe_block(object->device.
+ 						       gpe_block);
+ 		}
+-
+-		/*lint -fallthrough */
++		fallthrough;
+ 
+ 	case ACPI_TYPE_PROCESSOR:
+ 	case ACPI_TYPE_THERMAL:
+diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c
+index 681c11f4af4e..f7e43baf5ff2 100644
+--- a/drivers/acpi/acpica/utprint.c
++++ b/drivers/acpi/acpica/utprint.c
+@@ -475,7 +475,7 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
+ 		case 'X':
+ 
+ 			type |= ACPI_FORMAT_UPPER;
+-			/* FALLTHROUGH */
++			fallthrough;
+ 
+ 		case 'x':
+ 
 
