@@ -2,95 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EA3B21875A
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jul 2020 14:33:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1C012189D1
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jul 2020 16:08:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729166AbgGHMdL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Jul 2020 08:33:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60230 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729122AbgGHMdL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Jul 2020 08:33:11 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE205C08E876
-        for <linux-acpi@vger.kernel.org>; Wed,  8 Jul 2020 05:33:10 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id c16so46764119ioi.9
-        for <linux-acpi@vger.kernel.org>; Wed, 08 Jul 2020 05:33:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=/vBVbAxvijag95IA6OM26aTa2bKDnUtimRlc1mZm/7M=;
-        b=fRBxl+Jly3zkBGRbLPYyolv6RN+tGDu250AQgHs6wNMnBAQthZ90eOvUI9D0qLlG4W
-         v42kUn+2+5Bhw26pEmDj74BGKBtrXSLCiFAqJXVUU93wwrqcNnYOoDeh2T5ij7kcaTNU
-         vvcKIRhThwOH0A0t6UY9+McUAEh2KRZD3GjnqJSZzRCMKENBJA/2Rbl3FsOHTCJOajpC
-         LS3jwNeXQ97uwHdyAh1QxZJ+4mur60fdsDHmSVGsDvfJfv/rhvN3IA9Xg1IdoNbeETsr
-         ZvBshIQwT/207HPTgTPWcNeBBXKH0zzc3YF+Q8UUDd/gq8TtJ1D8/qpw4gRrvzFvycY2
-         qY/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=/vBVbAxvijag95IA6OM26aTa2bKDnUtimRlc1mZm/7M=;
-        b=dEeHvwqR8/hQ9jWlX+wclfGsIjXOfd4rFXTe2JHv+FWArLAqB71SfQi+wVTdRnb9/2
-         qkfAFpoELv/EylBhnB5hrRIfINKa8q4HbV2FvIqnhbVZpBsDi1ZbowdZXHO5h4cppbRt
-         Brj+Lnm9ddFC7Mwlcb2esHX2gXHKjPI0E3FaOpbGHQPjCrOEQP6aUkUA1+LgeABjq1WZ
-         bkT+t9fyoeZQIGyO9s2FKo4IqeZz/jzaX6yZyoeGu1YuDr/pwIuHIbwoKryDECfn3Cyc
-         vsSFvd8VftsXCQyt/DBv3zSRzpRqVDW9ynkEmg76WYqnigRNcNF/gIIuYjPHEqocIvXG
-         3vlA==
-X-Gm-Message-State: AOAM5338xEiTEtJCLSh/GgFOZT07gT4wGQ2UKVu+lkgNNBnvpGbyKcti
-        RAjfK/wkShkRYggnOkSKcQibNxYclw2C+5rDPEA=
-X-Google-Smtp-Source: ABdhPJz+Yw/tRR3NYggdpI3xCJxdjZQQgovxkCgb7YeCM8zekh0rEvkzj7MEhsVQw3diu4X8+/vwvpSUXvtx+pQ6vnY=
-X-Received: by 2002:a05:6602:2c0a:: with SMTP id w10mr36231222iov.46.1594211588881;
- Wed, 08 Jul 2020 05:33:08 -0700 (PDT)
+        id S1729482AbgGHOH7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Jul 2020 10:07:59 -0400
+Received: from mga02.intel.com ([134.134.136.20]:29263 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728148AbgGHOH7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 8 Jul 2020 10:07:59 -0400
+IronPort-SDR: vmTDpWZTKkevxrFqlxBi71OawkZWrQcoY5aa5uOdxWccq+6D4Aln8z6653tDb3O7L6R5tNplUh
+ wGfeIyUoSg7Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9675"; a="136027091"
+X-IronPort-AV: E=Sophos;i="5.75,327,1589266800"; 
+   d="scan'208";a="136027091"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2020 07:07:58 -0700
+IronPort-SDR: /qeY/VuRKlFc+ez7PhFZz0m79tIeqkwYka6UISwhCTNiQf7Gl2A6cfELVsSKoz0gWSZGV6g9YT
+ eOPFAZnugEmA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,327,1589266800"; 
+   d="scan'208";a="283807420"
+Received: from jschirra-mobl.ger.corp.intel.com (HELO localhost) ([10.249.47.201])
+  by orsmga006.jf.intel.com with ESMTP; 08 Jul 2020 07:07:55 -0700
+Date:   Wed, 8 Jul 2020 17:07:53 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Stefan Berger <stefanb@linux.ibm.com>
+Cc:     Stefan Berger <stefanb@linux.vnet.ibm.com>,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v9 2/2] tpm: Add support for event log pointer found in
+ TPM2 ACPI table
+Message-ID: <20200708140753.GC538949@linux.intel.com>
+References: <20200706181953.3592084-1-stefanb@linux.vnet.ibm.com>
+ <20200706181953.3592084-3-stefanb@linux.vnet.ibm.com>
+ <20200706230914.GC20770@linux.intel.com>
+ <78ec872f-89b3-6464-6ede-bd0a46fe5c4c@linux.ibm.com>
+ <20200707022416.GC112019@linux.intel.com>
+ <f3e0fb50-8617-da40-1456-158531a070cb@linux.ibm.com>
+ <20200707040325.GB143804@linux.intel.com>
+ <85c27199-df55-eecc-855c-dedcea64f89e@linux.ibm.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6602:1582:0:0:0:0 with HTTP; Wed, 8 Jul 2020 05:33:07
- -0700 (PDT)
-Reply-To: mmsafiatou057@gmail.com
-From:   "Mrs. Safitaou Zoungrana" <richardlaurentdr@gmail.com>
-Date:   Wed, 8 Jul 2020 12:33:07 +0000
-Message-ID: <CALJAiTWJsL=xj-+mKa2Ry1622htq4_Fbxq9sWotVPkJRo5P=pQ@mail.gmail.com>
-Subject: My Dear Beloved One,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <85c27199-df55-eecc-855c-dedcea64f89e@linux.ibm.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-acpi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-My Dear Beloved One,
+On Tue, Jul 07, 2020 at 12:09:11AM -0400, Stefan Berger wrote:
+> On 7/7/20 12:03 AM, Jarkko Sakkinen wrote:
+> > On Mon, Jul 06, 2020 at 11:08:12PM -0400, Stefan Berger wrote:
+> > > On 7/6/20 10:24 PM, Jarkko Sakkinen wrote:
+> > > > On Mon, Jul 06, 2020 at 07:55:26PM -0400, Stefan Berger wrote:
+> > > > > On 7/6/20 7:09 PM, Jarkko Sakkinen wrote:
+> > > > > > On Mon, Jul 06, 2020 at 02:19:53PM -0400, Stefan Berger wrote:
+> > > > > > > From: Stefan Berger <stefanb@linux.ibm.com>
+> > > > > > > 
+> > > > > > > In case a TPM2 is attached, search for a TPM2 ACPI table when trying
+> > > > > > > to get the event log from ACPI. If one is found, use it to get the
+> > > > > > > start and length of the log area. This allows non-UEFI systems, such
+> > > > > > > as SeaBIOS, to pass an event log when using a TPM2.
+> > > > > > > 
+> > > > > > > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> > > > > > Do you think that QEMU with TPM 1.2 emulator turned on would be a viable
+> > > > > > way to test this?
+> > > > > Yes.
+> > > > Is the emulator bundled with QEMU or does it have to be installed
+> > > > separately?
+> > > It has to be installed separately. On Fedora 31 it would just be a `sudo dnf
+> > > -y install swtpm-tools` and you should be good to go with libvirt /
+> > > virt-manager.
+> > Is there some packaging for Debian/Ubuntu available?
+> 
+> 
+> So far may not be available yet. I had *experimented* with a PPA once:
+> https://launchpad.net/~stefanberger/+archive/ubuntu/swtpm-focal
 
-I greet you in the name of God almighty the givers of all good things
-in life. Please kindly pardon me for any inconvenience this letter may
-cost you because I know it may come to you as a surprise as we have no
-previous correspondence.  I sent this mail praying for it to reach you
-in good health, since I myself are in a very critical health condition
-in which I sleep every night without knowing if I may be alive to see
-the next day.
+There is a snap available:
 
-I am Mrs. Safiatou Zoungrana,  the wife of late Engineer Ralph
-Alphonso Zoungrana from Paris France but based here in Burkina Faso
-West Africa since eight years ago as a business woman dealing with
-gold exportation and Sales. We have been married for years before his
-sudden death although we were childless. I have been diagnosed with
-ovarian cancer and I have been battling with the sickness when my late
-lovely husband of a blessed memory was alive. May his soul rest in
-peace, Amen.
+name:      swtpm-mvo
+summary:   Libtpms-based TPM emulator
+publisher: Michael Vogt (mvo)
+store-url: https://snapcraft.io/swtpm-mvo
+license:   unset
+description: |
+  Libtpms-based TPM emulator with socket, character device, and Linux
+  CUSE interface.
+commands:
+  - swtpm-mvo.swtpm
+services:
+  swtpm-mvo.swtpm-sock: simple, enabled, active
+snap-id:      HNl1TwHRBk3OtXQ8OriRB93FDZ6vman7
+tracking:     latest/edge
+refresh-date: today at 02:05 EEST
+channels:
+  latest/stable:    –                         
+  latest/candidate: –                         
+  latest/beta:      0.1.0 2019-07-26 (11) 3MB -
+  latest/edge:      0.1.0 2020-07-08 (75) 3MB -
+installed:          0.1.0            (74) 3MB -
 
-My late Husband left the sum of =E2=82=AC7.900.000.00 Seven Million Nine
-Hundred Thousand Euros in a fix/suspense account in one of the prime
-bank here in Burkina Faso. Recently, my Doctor told me that I have few
-days to live due to the cancer problem. The one that disturbs me most
-is my blood pressure sickness.
+This is the version information:
 
-Having known my health condition I decided to seek for your kind
-assistance to transfer this fund into your account and you will use it
-to establish an orphanage home in my name. I will give you more
-details about the project as soon as I receive your reply in my
-private email (mmsafiatou057@gmail.com) to handle this project because
-I do not want to state all here until I see your reply, desire and
-commitment to handle this project.
+❯ swtpm-mvo.swtpm --version
+TPM emulator version 0.4.0, Copyright (c) 2014 IBM Corp.
 
-My Regards to your family.
-Mrs. Safiatou Zoungrana.
+However, if I try to run the first example from [*], I get:
+
+❯ swtpm-mvo.swtpm socket --tpmstate dir=/tmp/mytpm1 \
+  --ctrl type=unixio,path=/tmp/mytpm1/swtpm-sock \
+  --log level=20
+swtpm: Could not open UnixIO socket: No such file or directory
+
+[*] https://www.qemu.org/docs/master/specs/tpm.html
+
+/Jarkko
